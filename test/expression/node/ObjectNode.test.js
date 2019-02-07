@@ -2,10 +2,10 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RangeNode = math.expression.node.RangeNode
-const ObjectNode = math.expression.node.ObjectNode
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RangeNode = math.RangeNode
+const ObjectNode = math.ObjectNode
 
 // FIXME: a lot of tests depend on order of object keys, whilst the order is officially undeterministic
 

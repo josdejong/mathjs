@@ -35,7 +35,7 @@ describe('fraction', function () {
 
   it('should create a fraction for all elements in a Matrix', function () {
     const mat = math.fraction(math.matrix([0.2, 0.25, 0.125]))
-    assert.strictEqual(math.type.isMatrix(mat), true)
+    assert.strictEqual(math.isMatrix(mat), true)
 
     const arr = mat.toArray()
     equalFraction(arr[0], new Fraction(1, 5))

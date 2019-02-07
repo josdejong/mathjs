@@ -2,15 +2,15 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const AssignmentNode = math.expression.node.AssignmentNode
-const ConditionalNode = math.expression.node.ConditionalNode
-const OperatorNode = math.expression.node.OperatorNode
-const FunctionNode = math.expression.node.FunctionNode
-const FunctionAssignmentNode = math.expression.node.FunctionAssignmentNode
-const RangeNode = math.expression.node.RangeNode
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const AssignmentNode = math.AssignmentNode
+const ConditionalNode = math.ConditionalNode
+const OperatorNode = math.OperatorNode
+const FunctionNode = math.FunctionNode
+const FunctionAssignmentNode = math.FunctionAssignmentNode
+const RangeNode = math.RangeNode
 
 describe('FunctionAssignmentNode', function () {
   it('should create a FunctionAssignmentNode', function () {

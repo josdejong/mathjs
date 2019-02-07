@@ -169,6 +169,7 @@
     "compile": "gulp compile",
     "watch": "gulp watch",
     "docs": "gulp docs",
+    "validate": "gulp validate",
     "lint": "standard --env=mocha --env=worker",
     "lint:fix": "standard --fix --env=mocha --env=worker",
     "test": "npm run test:src && npm run lint",

@@ -55,7 +55,7 @@ describe('index', function () {
 
     assert.deepStrictEqual(math1.sqrt(-4), math1.complex(0, 2))
     assert.strictEqual(math1.typeOf(math1.pi), 'number')
-    assert.strictEqual(math1.typeOf(math1.type.Unit.UNITS.rad.value), 'number') // TODO: find a better way to unit test this
+    assert.strictEqual(math1.typeOf(math1.Unit.UNITS.rad.value), 'number') // TODO: find a better way to unit test this
     assert.strictEqual(math1.bignumber(1).div(3).toString(), '0.3333333333333333333333333333333333333333333333333333333333333333')
 
     const config = math1.config({
@@ -75,7 +75,7 @@ describe('index', function () {
 
     assert.ok(math1.isNaN(math1.sqrt(-4)))
     assert.strictEqual(math1.typeOf(math1.pi), 'BigNumber')
-    assert.strictEqual(math1.typeOf(math1.type.Unit.UNITS.rad.value), 'BigNumber') // TODO: find a better way to unit test this
+    assert.strictEqual(math1.typeOf(math1.Unit.UNITS.rad.value), 'BigNumber') // TODO: find a better way to unit test this
     assert.strictEqual(math1.bignumber(1).div(3).toString(), '0.3333')
 
     const config2 = math1.config({
@@ -95,7 +95,7 @@ describe('index', function () {
 
     assert.deepStrictEqual(math1.sqrt(-4), math1.complex(0, 2))
     assert.strictEqual(math1.typeOf(math1.pi), 'number')
-    assert.strictEqual(math1.typeOf(math1.type.Unit.UNITS.rad.value), 'number') // TODO: find a better way to unit test this
+    assert.strictEqual(math1.typeOf(math1.Unit.UNITS.rad.value), 'number') // TODO: find a better way to unit test this
     assert.strictEqual(math1.bignumber(1).div(3).toString(), '0.3333333333333333333333333333333333333333333333333333333333333333')
   })
 

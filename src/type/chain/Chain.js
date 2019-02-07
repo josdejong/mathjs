@@ -170,12 +170,13 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
   }
 
   const excludedNames = {
-    'expression': true,
-    'docs': true,
-    'type': true,
-    'classes': true,
-    'json': true,
-    'error': true
+    expression: true,
+    docs: true,
+    type: true,
+    classes: true,
+    json: true,
+    error: true,
+    isChain: true // conflicts with the property isChain of a Chain instance
   }
 
   // create proxy for everything that is in math.js

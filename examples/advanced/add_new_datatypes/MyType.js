@@ -21,12 +21,11 @@ function factory (type, config, load, typed) {
   })
 
   // return the construction function, this will
-  // be added to math.type.MyType when imported
+  // be added to math.MyType when imported
   return MyType
 }
 
 exports.name = 'MyType'
-exports.path = 'type' // will be imported into math.type.MyType
 exports.factory = factory
 exports.lazy = false // disable lazy loading as this factory has side
 // effects: it adds a type and a conversion.

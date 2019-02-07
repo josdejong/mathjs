@@ -1,11 +1,14 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
+import { createRange } from '../../function/matrix/range'
 
 const name = 'range'
-const dependencies = ['typed', 'range']
+const dependencies = ['typed', 'config', 'matrix', 'BigNumber']
 
-export const createRangeTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, range }) => {
+export const createRangeTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber }) => {
+  const range = createRange({ typed, config, matrix, BigNumber })
+
   /**
    * Attach a transform function to math.range
    * Adds a property transform containing the transform function.

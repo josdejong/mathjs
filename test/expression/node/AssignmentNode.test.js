@@ -2,14 +2,14 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Node = math.expression.node.Node
-const AccessorNode = math.expression.node.AccessorNode
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RangeNode = math.expression.node.RangeNode
-const AssignmentNode = math.expression.node.AssignmentNode
-const OperatorNode = math.expression.node.OperatorNode
-const IndexNode = math.expression.node.IndexNode
+const Node = math.Node
+const AccessorNode = math.AccessorNode
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RangeNode = math.RangeNode
+const AssignmentNode = math.AssignmentNode
+const OperatorNode = math.OperatorNode
+const IndexNode = math.IndexNode
 
 describe('AssignmentNode', function () {
   it('should create an AssignmentNode', function () {
@@ -146,13 +146,13 @@ describe('AssignmentNode', function () {
   it('should compile an AssignmentNode with bignumber setting', function () {
     const bigmath = math.create({ number: 'BigNumber' })
 
-    const object = new bigmath.expression.node.SymbolNode('a')
-    const index = new bigmath.expression.node.IndexNode([
-      new bigmath.expression.node.ConstantNode(2),
-      new bigmath.expression.node.ConstantNode(1)
+    const object = new bigmath.SymbolNode('a')
+    const index = new bigmath.IndexNode([
+      new bigmath.ConstantNode(2),
+      new bigmath.ConstantNode(1)
     ])
-    const value = new bigmath.expression.node.ConstantNode(bigmath.bignumber(5))
-    const n = new bigmath.expression.node.AssignmentNode(object, index, value)
+    const value = new bigmath.ConstantNode(bigmath.bignumber(5))
+    const n = new bigmath.AssignmentNode(object, index, value)
     const expr = n.compile()
 
     let scope = {

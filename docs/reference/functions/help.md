@@ -3,7 +3,7 @@
 # Function help
 
 Retrieve help on a function or data type.
-Help files are retrieved from the documentation in math.expression.docs.
+Help files are retrieved from the embedded documentation in math.docs.
 
 
 ## Syntax

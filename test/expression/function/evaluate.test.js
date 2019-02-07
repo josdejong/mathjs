@@ -2,9 +2,9 @@ import assert from 'assert'
 import approx from '../../../tools/approx'
 import math from '../../../src/mainBundle'
 
-const Complex = math.type.Complex
-const Unit = math.type.Unit
-const ResultSet = math.type.ResultSet
+const Complex = math.Complex
+const Unit = math.Unit
+const ResultSet = math.ResultSet
 
 describe('evaluate', function () {
   it('should evaluate expressions', function () {

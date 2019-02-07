@@ -81,8 +81,7 @@ describe('simplify', function () {
   })
 
   it('should handle function assignments', function () {
-    const node = math.expression.node
-    const f = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
+    const f = new math.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
     assert.strictEqual(f.toString(), 'sigma(x) = 1 / (1 + exp(-x))')
     assert.strictEqual(f.evaluate()(5), 0.9933071490757153)
     const fsimplified = math.simplify.simplifyCore(f)
@@ -143,8 +142,7 @@ describe('simplify', function () {
 
   it('should handle custom functions', function () {
     function doubleIt (x) { return x + x }
-    const node = math.expression.node
-    const f = new node.FunctionNode(new node.SymbolNode('doubleIt'), [new node.SymbolNode('value')])
+    const f = new math.FunctionNode(new math.SymbolNode('doubleIt'), [new math.SymbolNode('value')])
     assert.strictEqual(f.toString(), 'doubleIt(value)')
     assert.strictEqual(f.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
     const fsimplified = math.simplify.simplifyCore(f)
@@ -153,9 +151,8 @@ describe('simplify', function () {
   })
 
   it('should handle immediately invoked function assignments', function () {
-    const node = math.expression.node
-    const s = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
-    const f = new node.FunctionNode(s, [new node.SymbolNode('x')])
+    const s = new math.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
+    const f = new math.FunctionNode(s, [new math.SymbolNode('x')])
     assert.strictEqual(f.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)')
     assert.strictEqual(f.evaluate({ x: 5 }), 0.9933071490757153)
     const fsimplified = math.simplify.simplifyCore(f)

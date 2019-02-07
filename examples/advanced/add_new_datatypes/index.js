@@ -5,7 +5,7 @@ math.import(require('./MyType'))
 math.import(require('./myAdd'))
 
 // create a shortcut to the new type.
-const MyType = math.type.MyType
+const MyType = math.MyType
 
 // use the new type
 const ans = math.add(new MyType(2), new MyType(3)) // returns MyType(5)

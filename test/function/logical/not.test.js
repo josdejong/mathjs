@@ -7,9 +7,9 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const not = math.not
-const FunctionNode = math.expression.node.FunctionNode
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
+const FunctionNode = math.FunctionNode
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
 
 describe('not', function () {
   it('should not numbers correctly', function () {

@@ -94,7 +94,7 @@ describe('slu', function () {
     }
     cptr[n] = cindex.length
     // return matrix
-    return new math.type.SparseMatrix({
+    return new math.SparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,

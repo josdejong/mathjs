@@ -19,7 +19,17 @@ describe('mainFull', function () {
     // snapshot testing
     const newMathInstance = create()
 
+    // don't output all warnings "math.foo.bar is move to math.bar, ..."
+    const originalWarn = console.warn
+    console.warn = (...args) => {
+      if (args.join(' ').indexOf('is moved to') === -1) {
+        originalWarn.apply(console, args)
+      }
+    }
+
     validateBundle(expectedInstanceStructure, newMathInstance)
+
+    console.warn = originalWarn
   })
 
   it('evaluate should contain all functions from mathWithTransform', function () {
@@ -27,7 +37,6 @@ describe('mainFull', function () {
     const mathWithTransform = expectedInstanceStructure.expression.mathWithTransform
 
     Object.keys(mathWithTransform).forEach(key => {
-      // console.log('check', key)
       if (key === 'not') {
         // operator, special case
         assert.strictEqual(evaluate('not true'), false)

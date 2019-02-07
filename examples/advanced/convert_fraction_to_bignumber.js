@@ -26,7 +26,7 @@ math.typed.conversions.unshift({
   from: 'Fraction',
   to: 'BigNumber',
   convert: function (fraction) {
-    return new math.type.BigNumber(fraction.n).div(fraction.d)
+    return new math.BigNumber(fraction.n).div(fraction.d)
   }
 })
 

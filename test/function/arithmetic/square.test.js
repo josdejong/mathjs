@@ -27,7 +27,7 @@ describe('square', function () {
 
   it('should return the square of a fraction', function () {
     const a = fraction(0.5)
-    assert(square(a) instanceof math.type.Fraction)
+    assert(square(a) instanceof math.Fraction)
     assert.strictEqual(square(a).toString(), '0.25')
     assert.strictEqual(a.toString(), '0.5')
   })

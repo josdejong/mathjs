@@ -53,7 +53,7 @@ describe('fix', function () {
 
   it('should round fractions correctly', function () {
     const a = fraction('2/3')
-    assert(fix(a) instanceof math.type.Fraction)
+    assert(fix(a) instanceof math.Fraction)
     assert.strictEqual(a.toString(), '0.(6)')
 
     assert.strictEqual(fix(fraction(0)).toString(), '0')

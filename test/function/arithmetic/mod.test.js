@@ -100,7 +100,7 @@ describe('mod', function () {
     const a = mod(b, math.fraction(3))
     assert.strictEqual(a.toString(), '2')
     assert.strictEqual(b.toString(), '8')
-    assert(a instanceof math.type.Fraction)
+    assert(a instanceof math.Fraction)
 
     assert.strictEqual(mod(math.fraction(4.55), math.fraction(0.05)).toString(), '0')
   })

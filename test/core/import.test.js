@@ -87,21 +87,21 @@ describe('import', function () {
 
   it('wrapped imported functions should accept undefined and null', function () {
     math.import({
-      isNull: function (obj) {
+      testIsNull: function (obj) {
         return obj === null
       }
     }, { wrap: true })
-    assert.strictEqual(math.isNull(null), true)
-    assert.strictEqual(math.isNull(0), false)
+    assert.strictEqual(math.testIsNull(null), true)
+    assert.strictEqual(math.testIsNull(0), false)
 
     math.import({
-      isUndefined: function (obj) {
+      testIsUndefined: function (obj) {
         return obj === undefined
       }
     }, { wrap: true })
-    assert.strictEqual(math.isUndefined(undefined), true)
-    assert.strictEqual(math.isUndefined(0), false)
-    assert.strictEqual(math.isUndefined(null), false)
+    assert.strictEqual(math.testIsUndefined(undefined), true)
+    assert.strictEqual(math.testIsUndefined(0), false)
+    assert.strictEqual(math.testIsUndefined(null), false)
   })
 
   it('should throw an error in case of wrong number of arguments', function () {

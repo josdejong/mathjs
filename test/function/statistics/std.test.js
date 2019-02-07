@@ -1,10 +1,10 @@
 import assert from 'assert'
 import approx from '../../../tools/approx'
 import math from '../../../src/mainBundle'
-const BigNumber = math.type.BigNumber
-const Complex = math.type.Complex
-const DenseMatrix = math.type.DenseMatrix
-const Unit = math.type.Unit
+const BigNumber = math.BigNumber
+const Complex = math.Complex
+const DenseMatrix = math.DenseMatrix
+const Unit = math.Unit
 const std = math.std
 
 describe('std', function () {
@@ -15,7 +15,7 @@ describe('std', function () {
 
   it('should return the standard deviation of big numbers', function () {
     assert.deepStrictEqual(std(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
-      new math.type.BigNumber(2))
+      new math.BigNumber(2))
   })
 
   it('should return the standard deviation of complex numbers', function () {

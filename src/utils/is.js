@@ -17,19 +17,19 @@ export function isNumber (x) {
 }
 
 export function isBigNumber (x) {
-  return (x && x.constructor.prototype.isBigNumber) || false
+  return (x && x.constructor.prototype.isBigNumber === true) || false
 }
 
 export function isComplex (x) {
-  return (x && typeof x === 'object' && Object.getPrototypeOf(x).isComplex) || false
+  return (x && typeof x === 'object' && Object.getPrototypeOf(x).isComplex === true) || false
 }
 
 export function isFraction (x) {
-  return (x && typeof x === 'object' && Object.getPrototypeOf(x).isFraction) || false
+  return (x && typeof x === 'object' && Object.getPrototypeOf(x).isFraction === true) || false
 }
 
 export function isUnit (x) {
-  return (x && x.constructor.prototype.isUnit) || false
+  return (x && x.constructor.prototype.isUnit === true) || false
 }
 
 export function isString (x) {
@@ -39,7 +39,7 @@ export function isString (x) {
 export const isArray = Array.isArray
 
 export function isMatrix (x) {
-  return (x && x.constructor.prototype.isMatrix) || false
+  return (x && x.constructor.prototype.isMatrix === true) || false
 }
 
 /**
@@ -52,19 +52,19 @@ export function isCollection (x) {
 }
 
 export function isDenseMatrix (x) {
-  return (x && x.isDenseMatrix && x.constructor.prototype.isMatrix) || false
+  return (x && x.isDenseMatrix && x.constructor.prototype.isMatrix === true) || false
 }
 
 export function isSparseMatrix (x) {
-  return (x && x.isSparseMatrix && x.constructor.prototype.isMatrix) || false
+  return (x && x.isSparseMatrix && x.constructor.prototype.isMatrix === true) || false
 }
 
 export function isRange (x) {
-  return (x && x.constructor.prototype.isRange) || false
+  return (x && x.constructor.prototype.isRange === true) || false
 }
 
 export function isIndex (x) {
-  return (x && x.constructor.prototype.isIndex) || false
+  return (x && x.constructor.prototype.isIndex === true) || false
 }
 
 export function isBoolean (x) {
@@ -72,11 +72,11 @@ export function isBoolean (x) {
 }
 
 export function isResultSet (x) {
-  return (x && x.constructor.prototype.isResultSet) || false
+  return (x && x.constructor.prototype.isResultSet === true) || false
 }
 
 export function isHelp (x) {
-  return (x && x.constructor.prototype.isHelp) || false
+  return (x && x.constructor.prototype.isHelp === true) || false
 }
 
 export function isFunction (x) {
@@ -108,67 +108,67 @@ export function isUndefined (x) {
 }
 
 export function isAccessorNode (x) {
-  return (x && x.isAccessorNode && x.constructor.prototype.isNode) || false
+  return (x && x.isAccessorNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isArrayNode (x) {
-  return (x && x.isArrayNode && x.constructor.prototype.isNode) || false
+  return (x && x.isArrayNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isAssignmentNode (x) {
-  return (x && x.isAssignmentNode && x.constructor.prototype.isNode) || false
+  return (x && x.isAssignmentNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isBlockNode (x) {
-  return (x && x.isBlockNode && x.constructor.prototype.isNode) || false
+  return (x && x.isBlockNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isConditionalNode (x) {
-  return (x && x.isConditionalNode && x.constructor.prototype.isNode) || false
+  return (x && x.isConditionalNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isConstantNode (x) {
-  return (x && x.isConstantNode && x.constructor.prototype.isNode) || false
+  return (x && x.isConstantNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isFunctionAssignmentNode (x) {
-  return (x && x.isFunctionAssignmentNode && x.constructor.prototype.isNode) || false
+  return (x && x.isFunctionAssignmentNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isFunctionNode (x) {
-  return (x && x.isFunctionNode && x.constructor.prototype.isNode) || false
+  return (x && x.isFunctionNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isIndexNode (x) {
-  return (x && x.isIndexNode && x.constructor.prototype.isNode) || false
+  return (x && x.isIndexNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isNode (x) {
-  return (x && x.isNode && x.constructor.prototype.isNode) || false
+  return (x && x.isNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isObjectNode (x) {
-  return (x && x.isObjectNode && x.constructor.prototype.isNode) || false
+  return (x && x.isObjectNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isOperatorNode (x) {
-  return (x && x.isOperatorNode && x.constructor.prototype.isNode) || false
+  return (x && x.isOperatorNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isParenthesisNode (x) {
-  return (x && x.isParenthesisNode && x.constructor.prototype.isNode) || false
+  return (x && x.isParenthesisNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isRangeNode (x) {
-  return (x && x.isRangeNode && x.constructor.prototype.isNode) || false
+  return (x && x.isRangeNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isSymbolNode (x) {
-  return (x && x.isSymbolNode && x.constructor.prototype.isNode) || false
+  return (x && x.isSymbolNode === true && x.constructor.prototype.isNode === true) || false
 }
 
 export function isChain (x) {
-  return (x && x.constructor.prototype.isChain) || false
+  return (x && x.constructor.prototype.isChain === true) || false
 }
 
 export function typeOf (x) {

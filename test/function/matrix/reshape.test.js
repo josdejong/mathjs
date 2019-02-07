@@ -89,13 +89,13 @@ describe('reshape', function () {
   })
 
   it('should throw on attempting to reshape an ImmutableDenseMatrix', function () {
-    const immutableMatrix = new math.type.ImmutableDenseMatrix([[1, 2], [3, 4]])
+    const immutableMatrix = new math.ImmutableDenseMatrix([[1, 2], [3, 4]])
     assert.throws(function () { math.reshape(immutableMatrix, [1, 4]) },
       /Cannot invoke reshape on an Immutable Matrix instance/)
   })
 
   it('should throw on attempting to reshape a Matrix (abstract type)', function () {
-    const matrix = new math.type.Matrix([[1, 2], [3, 4]])
+    const matrix = new math.Matrix([[1, 2], [3, 4]])
     assert.throws(function () { math.reshape(matrix, [1, 4]) },
       /Cannot invoke reshape on a Matrix interface/)
   })

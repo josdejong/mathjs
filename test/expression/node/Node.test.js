@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Node = math.expression.node.Node
+const Node = math.Node
 
 describe('Node', function () {
   function MyNode (value) {
@@ -71,9 +71,9 @@ describe('Node', function () {
   })
 
   it('should shallow clone the content of a Node', function () {
-    const a = new math.expression.node.ConstantNode(1)
-    const b = new math.expression.node.ConstantNode(2)
-    const c = new math.expression.node.OperatorNode('+', 'add', [a, b])
+    const a = new math.ConstantNode(1)
+    const b = new math.ConstantNode(2)
+    const c = new math.OperatorNode('+', 'add', [a, b])
 
     const clone = c.clone()
 
@@ -84,9 +84,9 @@ describe('Node', function () {
   })
 
   it('should deepClone the content of a Node', function () {
-    const a = new math.expression.node.ConstantNode(1)
-    const b = new math.expression.node.ConstantNode(2)
-    const c = new math.expression.node.OperatorNode('+', 'add', [a, b])
+    const a = new math.ConstantNode(1)
+    const b = new math.ConstantNode(2)
+    const c = new math.OperatorNode('+', 'add', [a, b])
 
     const clone = c.cloneDeep()
 
@@ -130,12 +130,12 @@ describe('Node', function () {
       bla: function (node, callbacks) {}
     }
     const mymath = math.create()
-    mymath.expression.node.Node.prototype._toString = function () {
+    mymath.Node.prototype._toString = function () {
       return 'default'
     }
-    const n1 = new mymath.expression.node.Node()
-    const s = new mymath.expression.node.SymbolNode('bla')
-    const n2 = new mymath.expression.node.FunctionNode(s, [])
+    const n1 = new mymath.Node()
+    const s = new mymath.SymbolNode('bla')
+    const n2 = new mymath.FunctionNode(s, [])
 
     assert.strictEqual(n1.toString(callback1), 'default')
     assert.strictEqual(n2.toString(callback2), 'bla()')
@@ -147,12 +147,12 @@ describe('Node', function () {
       bla: function (node, callbacks) {}
     }
     const mymath = math.create()
-    mymath.expression.node.Node.prototype._toTex = function () {
+    mymath.Node.prototype._toTex = function () {
       return 'default'
     }
-    const n1 = new mymath.expression.node.Node()
-    const s = new mymath.expression.node.SymbolNode('bla')
-    const n2 = new mymath.expression.node.FunctionNode(s, [])
+    const n1 = new mymath.Node()
+    const s = new mymath.SymbolNode('bla')
+    const n2 = new mymath.FunctionNode(s, [])
 
     assert.strictEqual(n1.toTex(callback1), 'default')
     assert.strictEqual(n2.toTex(callback2), '\\mathrm{bla}\\left(\\right)')
@@ -172,7 +172,7 @@ describe('Node', function () {
   })
 
   it('should get the content of a Node', function () {
-    const c = new math.expression.node.ConstantNode(1)
+    const c = new math.ConstantNode(1)
 
     assert.strictEqual(c.getContent(), c)
     assert.deepStrictEqual(c.getContent(), c)

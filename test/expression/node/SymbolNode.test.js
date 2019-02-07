@@ -2,10 +2,10 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const OperatorNode = math.expression.node.OperatorNode
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const OperatorNode = math.OperatorNode
 
 describe('SymbolNode', function () {
   it('should create a SymbolNode', function () {

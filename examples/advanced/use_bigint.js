@@ -7,7 +7,7 @@ const math = require('../../index')
 
 math.import({
   name: 'BigInt',
-  path: 'type', // will be imported into math.type.BigInt
+  path: 'type', // will be imported into math.BigInt
   factory: (type, config, load, typed) => {
     typed.addType({
       name: 'BigInt',

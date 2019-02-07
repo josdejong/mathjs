@@ -4,14 +4,14 @@ import math from '../../../src/mainBundle'
 describe('help', function () {
   it('should find documentation for a function by its name', function () {
     const help = math.help('sin')
-    assert.ok(help instanceof math.type.Help)
-    assert.deepStrictEqual(help.doc, math.expression.docs.sin)
+    assert.ok(help instanceof math.Help)
+    assert.deepStrictEqual(help.doc, math.docs.sin)
   })
 
   it('should find documentation for a function by the function itself', function () {
     const help = math.help(math.sin)
-    assert.ok(help instanceof math.type.Help)
-    assert.deepStrictEqual(help.doc, math.expression.docs.sin)
+    assert.ok(help instanceof math.Help)
+    assert.deepStrictEqual(help.doc, math.docs.sin)
   })
 
   it('should throw an error on wrong number of arguments', function () {
@@ -21,25 +21,25 @@ describe('help', function () {
 
   it('should find help from a function name', function () {
     const help = math.help('sin')
-    assert(help instanceof math.type.Help)
+    assert(help instanceof math.Help)
     assert.strictEqual(help.doc.name, 'sin')
   })
 
   it('should find help from a function', function () {
     const help = math.help(math.sin)
-    assert(help instanceof math.type.Help)
+    assert(help instanceof math.Help)
     assert.strictEqual(help.doc.name, 'sin')
   })
 
   it('should find help from a constant name', function () {
     const help = math.help('pi')
-    assert(help instanceof math.type.Help)
+    assert(help instanceof math.Help)
     assert.strictEqual(help.doc.name, 'pi')
   })
 
   it('should find help from a constant', function () {
     const help = math.help(math.pi)
-    assert(help instanceof math.type.Help)
+    assert(help instanceof math.Help)
     assert.strictEqual(help.doc.name, 'pi')
   })
 

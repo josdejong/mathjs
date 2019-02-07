@@ -2,11 +2,14 @@
 
 import { factory } from '../../utils/factory'
 import { errorTransform } from './utils/errorTransform'
+import { createSubset } from '../../function/matrix/subset'
 
 const name = 'subset'
-const dependencies = ['typed', 'subset']
+const dependencies = ['typed', 'matrix']
 
-export const createSubsetTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, subset }) => {
+export const createSubsetTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+  const subset = createSubset({ typed, matrix })
+
   /**
    * Attach a transform function to math.subset
    * Adds a property transform containing the transform function.

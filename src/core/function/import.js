@@ -3,7 +3,7 @@
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
 import { isFactory, stripOptionalNotation } from '../../utils/factory'
 import { isLegacyFactory, lazy, traverse } from '../../utils/object'
-import { contains, initial } from '../../utils/array'
+import { contains } from '../../utils/array'
 import { ArgumentsError } from '../../error/ArgumentsError'
 import { warnOnce } from '../../utils/log'
 
@@ -286,25 +286,15 @@ export function importFactory (typed, load, math, factories) {
    * @private
    */
   function _importFactory (factory, options, name = factory.fn) {
-    const nameContainsPath = name.indexOf('.') !== -1
     if (contains(name, '.')) {
       throw new Error('Factory name should not contain a nested path. ' +
         'Name: ' + JSON.stringify(name))
     }
 
-    const path = nameContainsPath
-      ? initial(name.split('.'))
-      : (factory.meta !== undefined && factory.meta.isNode === true)
-        ? ['expression', 'node'] // path where we want to put node classes
-        : (factory.meta !== undefined && factory.meta.isClass === true)
-          ? ['type'] // path where we want to put classes
-          : (factory.meta !== undefined && factory.meta.isTransformFunction === true)
-            ? ['expression', 'transform']
-            : (name === 'reviver') // special case, JSON util function
-              ? ['json']
-              : undefined
+    const namespace = isTransformFunctionFactory(factory)
+      ? math.expression.transform
+      : math
 
-    const namespace = path !== undefined ? traverse(math, path) : math
     const existingTransform = name in math.expression.transform
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
@@ -324,13 +314,9 @@ export function importFactory (typed, load, math, factories) {
           } else if (dependency === 'mathWithTransform') {
             dependencies.mathWithTransform = math.expression.mathWithTransform
           } else if (dependency === 'classes') { // special case for json reviver
-            dependencies.classes = Object.assign({}, math.type, math.expression.node)
-          } else if (dependency === 'docs') { // special case for embedded docs
-            dependencies.docs = math.expression.docs
+            dependencies.classes = math
           } else {
-            dependencies[dependency] = (math.type[dependency] ||
-              math.expression.node[dependency] ||
-              math[dependency])
+            dependencies[dependency] = math[dependency]
           }
         })
 
@@ -373,9 +359,10 @@ export function importFactory (typed, load, math, factories) {
       }
     }
 
+    // TODO: improve factories, store a list with imports instead which can be re-played
     factories[name] = factory
 
-    math.emit('import', name, resolver, path)
+    math.emit('import', name, resolver)
   }
 
   /**
@@ -438,8 +425,7 @@ export function importFactory (typed, load, math, factories) {
     'docs': true,
     'error': true,
     'json': true,
-    'chain': true, // chain method not supported. Note that there is a unit chain too.
-    'reviver': true
+    'chain': true // chain method not supported. Note that there is a unit chain too.
   }
 
   return mathImport

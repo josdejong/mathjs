@@ -2,12 +2,12 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Index = math.type.Index
-const Range = math.type.Range
-const Help = math.type.Help
-const Unit = math.type.Unit
-const Complex = math.type.Complex
-const Fraction = math.type.Fraction
+const Index = math.Index
+const Range = math.Range
+const Help = math.Help
+const Unit = math.Unit
+const Complex = math.Complex
+const Fraction = math.Fraction
 
 describe('typeOf', function () {
   it('should return number type for a number', function () {
@@ -19,7 +19,7 @@ describe('typeOf', function () {
 
   it('should return bignumber type for a bignumber', function () {
     assert.strictEqual(math.typeOf(math.bignumber(0.1)), 'BigNumber')
-    assert.strictEqual(math.typeOf(new math.type.BigNumber('0.2')), 'BigNumber')
+    assert.strictEqual(math.typeOf(new math.BigNumber('0.2')), 'BigNumber')
   })
 
   it('should return string type for a string', function () {
@@ -88,26 +88,26 @@ describe('typeOf', function () {
 
   it('should return function type for a ResultSet', function () {
     assert.strictEqual(math.typeOf(math.evaluate('a=2\nb=3')), 'ResultSet')
-    assert.strictEqual(math.typeOf(new math.type.ResultSet([2, 3])), 'ResultSet')
+    assert.strictEqual(math.typeOf(new math.ResultSet([2, 3])), 'ResultSet')
   })
 
   it('should return function type for nodes', function () {
-    const constantNode = new math.expression.node.ConstantNode(2)
-    const symbolNode = new math.expression.node.SymbolNode('x')
-    const indexNode = new math.expression.node.IndexNode([])
+    const constantNode = new math.ConstantNode(2)
+    const symbolNode = new math.SymbolNode('x')
+    const indexNode = new math.IndexNode([])
 
-    assert.strictEqual(math.typeOf(new math.expression.node.AccessorNode(symbolNode, indexNode)), 'AccessorNode')
-    assert.strictEqual(math.typeOf(new math.expression.node.ArrayNode([])), 'ArrayNode')
-    assert.strictEqual(math.typeOf(new math.expression.node.AssignmentNode(symbolNode, constantNode)), 'AssignmentNode')
-    assert.strictEqual(math.typeOf(new math.expression.node.BlockNode([])), 'BlockNode')
-    assert.strictEqual(math.typeOf(new math.expression.node.ConditionalNode(symbolNode, constantNode, constantNode)), 'ConditionalNode')
+    assert.strictEqual(math.typeOf(new math.AccessorNode(symbolNode, indexNode)), 'AccessorNode')
+    assert.strictEqual(math.typeOf(new math.ArrayNode([])), 'ArrayNode')
+    assert.strictEqual(math.typeOf(new math.AssignmentNode(symbolNode, constantNode)), 'AssignmentNode')
+    assert.strictEqual(math.typeOf(new math.BlockNode([])), 'BlockNode')
+    assert.strictEqual(math.typeOf(new math.ConditionalNode(symbolNode, constantNode, constantNode)), 'ConditionalNode')
     assert.strictEqual(math.typeOf(constantNode), 'ConstantNode')
-    assert.strictEqual(math.typeOf(new math.expression.node.FunctionAssignmentNode('f', [], constantNode)), 'FunctionAssignmentNode')
-    assert.strictEqual(math.typeOf(new math.expression.node.FunctionNode('f', [])), 'FunctionNode')
+    assert.strictEqual(math.typeOf(new math.FunctionAssignmentNode('f', [], constantNode)), 'FunctionAssignmentNode')
+    assert.strictEqual(math.typeOf(new math.FunctionNode('f', [])), 'FunctionNode')
     assert.strictEqual(math.typeOf(indexNode), 'IndexNode')
-    assert.strictEqual(math.typeOf(new math.expression.node.ObjectNode({})), 'ObjectNode')
-    assert.strictEqual(math.typeOf(new math.expression.node.ParenthesisNode(constantNode)), 'ParenthesisNode')
-    assert.strictEqual(math.typeOf(new math.expression.node.RangeNode(constantNode, constantNode)), 'RangeNode')
+    assert.strictEqual(math.typeOf(new math.ObjectNode({})), 'ObjectNode')
+    assert.strictEqual(math.typeOf(new math.ParenthesisNode(constantNode)), 'ParenthesisNode')
+    assert.strictEqual(math.typeOf(new math.RangeNode(constantNode, constantNode)), 'RangeNode')
     assert.strictEqual(math.typeOf(symbolNode), 'SymbolNode')
   })
 

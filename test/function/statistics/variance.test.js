@@ -1,9 +1,9 @@
 import assert from 'assert'
 import math from '../../../src/mainBundle'
-const BigNumber = math.type.BigNumber
-const Complex = math.type.Complex
-const DenseMatrix = math.type.DenseMatrix
-const Unit = math.type.Unit
+const BigNumber = math.BigNumber
+const Complex = math.Complex
+const DenseMatrix = math.DenseMatrix
+const Unit = math.Unit
 const variance = math['variance']
 
 describe('variance', function () {
@@ -14,7 +14,7 @@ describe('variance', function () {
 
   it('should return the variance of big numbers', function () {
     assert.deepStrictEqual(variance(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
-      new math.type.BigNumber(4))
+      new math.BigNumber(4))
   })
 
   it('should return the variance of complex numbers', function () {

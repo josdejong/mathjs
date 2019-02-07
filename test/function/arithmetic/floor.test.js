@@ -52,7 +52,7 @@ describe('floor', function () {
 
   it('should floor fractions correctly', function () {
     const a = fraction('2/3')
-    assert(floor(a) instanceof math.type.Fraction)
+    assert(floor(a) instanceof math.Fraction)
     assert.strictEqual(a.toString(), '0.(6)')
 
     assert.strictEqual(floor(fraction(0)).toString(), '0')

@@ -39,7 +39,7 @@ describe('bitNot', function () {
   it('should perform element-wise bitwise not on a matrix', function () {
     const a2 = math.matrix([[1, 2], [3, 4]])
     const a7 = bitNot(a2)
-    assert.ok(a7 instanceof math.type.Matrix)
+    assert.ok(a7 instanceof math.Matrix)
     assert.deepStrictEqual(a7.size(), [2, 2])
     assert.deepStrictEqual(a7.valueOf(), [[-2, -3], [-4, -5]])
   })

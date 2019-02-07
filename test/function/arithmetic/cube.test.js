@@ -27,7 +27,7 @@ describe('cube', function () {
 
   it('should return the cube of a fraction', function () {
     const a = fraction(0.5)
-    assert(cube(a) instanceof math.type.Fraction)
+    assert(cube(a) instanceof math.Fraction)
     assert.strictEqual(cube(a).toString(), '0.125')
     assert.strictEqual(a.toString(), '0.5')
   })

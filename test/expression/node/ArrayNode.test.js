@@ -2,10 +2,10 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RangeNode = math.expression.node.RangeNode
-const ArrayNode = math.expression.node.ArrayNode
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RangeNode = math.RangeNode
+const ArrayNode = math.ArrayNode
 
 describe('ArrayNode', function () {
   it('should create an ArrayNode', function () {
@@ -55,11 +55,11 @@ describe('ArrayNode', function () {
 
   it('should compile an ArrayNode and evaluate as Array', function () {
     const mathArray = math.create({ matrix: 'Array' })
-    const a = new mathArray.expression.node.ConstantNode(1)
-    const b = new mathArray.expression.node.ConstantNode(2)
-    const c = new mathArray.expression.node.ConstantNode(3)
-    const d = new mathArray.expression.node.ConstantNode(4)
-    const n = new mathArray.expression.node.ArrayNode([a, b, c, d])
+    const a = new mathArray.ConstantNode(1)
+    const b = new mathArray.ConstantNode(2)
+    const c = new mathArray.ConstantNode(3)
+    const d = new mathArray.ConstantNode(4)
+    const n = new mathArray.ArrayNode([a, b, c, d])
     const expr = n.compile()
     assert.deepStrictEqual(expr.evaluate(), [1, 2, 3, 4])
   })

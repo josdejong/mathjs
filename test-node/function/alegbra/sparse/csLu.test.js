@@ -5,7 +5,7 @@ import { createCsLu } from '../../../../src/function/algebra/sparse/csLu'
 import { createCsSqr } from '../../../../src/function/algebra/sparse/csSqr'
 import * as market from '../../../../tools/matrixmarket'
 
-const { abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, type: { SparseMatrix } } = math
+const { abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, SparseMatrix } = math
 
 const csLu = createCsLu({ abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })
 const csSqr = createCsSqr({ add, multiply, transpose })

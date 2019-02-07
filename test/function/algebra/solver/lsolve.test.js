@@ -51,7 +51,7 @@ describe('lsolve', function () {
 
     const x = math.lsolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[1], [1], [1], [1]]))
   })
 
@@ -67,7 +67,7 @@ describe('lsolve', function () {
 
     const x = math.lsolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[1], [1], [1], [1]]))
   })
 
@@ -88,7 +88,7 @@ describe('lsolve', function () {
 
     const x = math.lsolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[1], [1], [1], [1]]))
   })
 
@@ -109,7 +109,7 @@ describe('lsolve', function () {
 
     const x = math.lsolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[1], [1], [1], [1]]))
   })
 

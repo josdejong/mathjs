@@ -33,7 +33,7 @@ describe('unaryMinus', function () {
 
   it('should perform unary minus of a fraction', function () {
     const a = fraction(0.5)
-    assert(math.unaryMinus(a) instanceof math.type.Fraction)
+    assert(math.unaryMinus(a) instanceof math.Fraction)
     assert.strictEqual(a.toString(), '0.5')
 
     assert.strictEqual(math.unaryMinus(fraction(0.5)).toString(), '-0.5')
@@ -56,7 +56,7 @@ describe('unaryMinus', function () {
   it('should perform element-wise unary minus on a matrix', function () {
     const a2 = math.matrix([[1, 2], [3, 4]])
     const a7 = math.unaryMinus(a2)
-    assert.ok(a7 instanceof math.type.Matrix)
+    assert.ok(a7 instanceof math.Matrix)
     assert.deepStrictEqual(a7.size(), [2, 2])
     assert.deepStrictEqual(a7.valueOf(), [[-1, -2], [-3, -4]])
     assert.deepStrictEqual(math.unaryMinus([[1, 2], [3, 4]]), [[-1, -2], [-3, -4]])

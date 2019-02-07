@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/mainBundle'
-const Chain = math.type.Chain
+const Chain = math.Chain
 
 describe('chain', function () {
   it('should construct a chain', function () {

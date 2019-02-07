@@ -3,7 +3,7 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Range = math.type.Range
+const Range = math.Range
 
 describe('range', function () {
   describe('create', function () {
@@ -144,14 +144,14 @@ describe('range', function () {
 
   describe('toString', function () {
     it('should stringify a range to format start:step:end', function () {
-      assert.strictEqual(new math.type.Range(0, 10).toString(), '0:10')
-      assert.strictEqual(new math.type.Range(0, 10, 2).toString(), '0:2:10')
+      assert.strictEqual(new math.Range(0, 10).toString(), '0:10')
+      assert.strictEqual(new math.Range(0, 10, 2).toString(), '0:2:10')
     })
 
     it('should stringify a range to format start:step:end with given precision', function () {
-      assert.strictEqual(new math.type.Range(1 / 3, 4 / 3, 2 / 3).format(3), '0.333:0.667:1.33')
-      assert.strictEqual(new math.type.Range(1 / 3, 4 / 3, 2 / 3).format(4), '0.3333:0.6667:1.333')
-      assert.strictEqual(new math.type.Range(1 / 3, 4 / 3, 2 / 3).format(14), '0.33333333333333:0.66666666666667:1.3333333333333')
+      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(3), '0.333:0.667:1.33')
+      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(4), '0.3333:0.6667:1.333')
+      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(14), '0.33333333333333:0.66666666666667:1.3333333333333')
     })
   })
 
@@ -179,12 +179,12 @@ describe('range', function () {
 
   describe('type', function () {
     it('should have a property isRange', function () {
-      const a = new math.type.Range(0, 10)
+      const a = new math.Range(0, 10)
       assert.strictEqual(a.isRange, true)
     })
 
     it('should have a property type', function () {
-      const a = new math.type.Range(0, 10)
+      const a = new math.Range(0, 10)
       assert.strictEqual(a.type, 'Range')
     })
   })

@@ -1,5 +1,5 @@
 /**
- * Validate whether all functions in math.js are documented in math.expression.docs
+ * Validate whether all functions in math.js are documented in math.docs
  * we use the minified bundle to also check whether that bundle is valid.
  */
 const gutil = require('gulp-util')
@@ -23,7 +23,7 @@ for (prop in math) {
   if (math.hasOwnProperty(prop)) {
     const obj = math[prop]
     if (math['typeOf'](obj) !== 'Object') {
-      if (!math.expression.docs[prop] && (ignore.indexOf(prop) === -1)) {
+      if (!math.docs[prop] && (ignore.indexOf(prop) === -1)) {
         gutil.log('WARNING: Function ' + prop + ' is undocumented')
         undocumentedCount++
       }
@@ -33,10 +33,10 @@ for (prop in math) {
 
 // test whether there is documentation for non existing functions
 let nonExistingCount = 0
-const docs = math.expression.docs
+const docs = math.docs
 for (prop in docs) {
   if (docs.hasOwnProperty(prop)) {
-    if (math[prop] === undefined && !math.type[prop]) {
+    if (math[prop] === undefined) {
       gutil.log('WARNING: Documentation for a non-existing function "' + prop + '"')
       nonExistingCount++
     }

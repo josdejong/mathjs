@@ -4,7 +4,7 @@ import assert from 'assert'
 
 import approx from '../../tools/approx'
 import math from '../../src/mainBundle'
-const Parser = math.type.Parser
+const Parser = math.Parser
 
 describe('parser', function () {
   it('should create a parser', function () {

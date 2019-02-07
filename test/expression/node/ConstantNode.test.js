@@ -3,9 +3,9 @@ import assert from 'assert'
 
 import math from '../../../src/mainBundle'
 const bigmath = math.create({ number: 'BigNumber' })
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
 
 describe('ConstantNode', function () {
   it('should create a ConstantNode', function () {
@@ -55,7 +55,7 @@ describe('ConstantNode', function () {
     const constantNode = bigmath.parse('2.3')
     assert.ok(constantNode.isConstantNode)
     const expr = constantNode.compile()
-    assert.deepStrictEqual(expr.evaluate(), new bigmath.type.BigNumber(2.3))
+    assert.deepStrictEqual(expr.evaluate(), new bigmath.BigNumber(2.3))
   })
 
   it('should find a ConstantNode', function () {
@@ -200,8 +200,8 @@ describe('ConstantNode', function () {
   })
 
   it('should LaTeX a ConstantNode with a fraction', function () {
-    const positive = new ConstantNode(new math.type.Fraction(1.5))
-    const negative = new ConstantNode(new math.type.Fraction(-1.5))
+    const positive = new ConstantNode(new math.Fraction(1.5))
+    const negative = new ConstantNode(new math.Fraction(-1.5))
 
     assert.strictEqual(positive.toTex(), '\\frac{3}{2}')
     assert.strictEqual(negative.toTex(), '-\\frac{3}{2}')

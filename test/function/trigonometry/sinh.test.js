@@ -78,7 +78,7 @@ describe('sinh', function () {
     approx.equal(sinh(unit('90deg')), 2.3012989023073, EPSILON)
     approx.equal(sinh(unit('-45deg')), -0.86867096148601, EPSILON)
 
-    assert(math.type.isBigNumber(sinh(unit(math.bignumber(90), 'deg'))))
+    assert(math.isBigNumber(sinh(unit(math.bignumber(90), 'deg'))))
     approx.equal(sinh(unit(math.bignumber(90), 'deg')).toNumber(), 2.3012989023073, EPSILON)
 
     approx.deepEqual(sinh(unit(complex('2 + i'), 'rad')), complex(1.9596010414216, 3.1657785132162), EPSILON)

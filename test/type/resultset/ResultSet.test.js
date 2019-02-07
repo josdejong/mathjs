@@ -3,8 +3,8 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Complex = math.type.Complex
-const ResultSet = math.type.ResultSet
+const Complex = math.Complex
+const ResultSet = math.ResultSet
 
 describe('ResultSet', function () {
   it('should create a ResultSet without entries', function () {
@@ -32,12 +32,12 @@ describe('ResultSet', function () {
   })
 
   it('should have a property isResultSet', function () {
-    const a = new math.type.ResultSet([])
+    const a = new math.ResultSet([])
     assert.strictEqual(a.isResultSet, true)
   })
 
   it('should have a property type', function () {
-    const a = new math.type.ResultSet([])
+    const a = new math.ResultSet([])
     assert.strictEqual(a.type, 'ResultSet')
   })
 

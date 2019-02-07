@@ -9,7 +9,7 @@ const dependencies = ['typed', 'math', 'docs', 'Help']
 export const createHelp = /* #__PURE__ */ factory(name, dependencies, ({ typed, math, docs, Help }) => {
   /**
    * Retrieve help on a function or data type.
-   * Help files are retrieved from the documentation in math.expression.docs.
+   * Help files are retrieved from the embedded documentation in math.docs.
    *
    * Syntax:
    *
@@ -43,7 +43,7 @@ export const createHelp = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
          if (!text) {
          // search data type
          for (prop in math.type) {
-         if (math.type.hasOwnProperty(prop)) {
+         if (math.hasOwnProperty(prop)) {
          if (search === math.type[prop]) {
          text = prop
          break

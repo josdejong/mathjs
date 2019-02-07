@@ -1,8 +1,8 @@
 import assert from 'assert'
 import { isCollection } from '../../../src/utils/is'
 import math from '../../../src/mainBundle'
-const DenseMatrix = math.type.DenseMatrix
-const SparseMatrix = math.type.SparseMatrix
+const DenseMatrix = math.DenseMatrix
+const SparseMatrix = math.SparseMatrix
 
 describe('isCollection', function () {
   it('should test whether an object is a collection', function () {

@@ -3,11 +3,14 @@
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { errorTransform } from './utils/errorTransform'
+import { createMax } from '../../function/statistics/max'
 
 const name = 'max'
-const dependencies = ['typed', 'max']
+const dependencies = ['typed', 'larger']
 
-export const createMaxTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, max }) => {
+export const createMaxTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, larger }) => {
+  const max = createMax({ typed, larger })
+
   /**
    * Attach a transform function to math.max
    * Adds a property transform containing the transform function.

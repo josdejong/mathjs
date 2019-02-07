@@ -3,8 +3,8 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Unit = math.type.Unit
-const Complex = math.type.Complex
+const Unit = math.Unit
+const Complex = math.Complex
 
 describe('Complex', function () {
   function assertComplex (complex, re, im) {
@@ -23,12 +23,12 @@ describe('Complex', function () {
     })
 
     it('should have a property isComplex', function () {
-      const a = new math.type.Complex(2, 3)
+      const a = new math.Complex(2, 3)
       assert.strictEqual(a.isComplex, true)
     })
 
     it('should have a property type', function () {
-      const a = new math.type.Complex(2, 3)
+      const a = new math.Complex(2, 3)
       assert.strictEqual(a.type, 'Complex')
     })
 

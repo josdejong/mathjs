@@ -3,13 +3,13 @@ import assert from 'assert'
 
 import math from '../../../src/mainBundle'
 const bigmath = math.create({ number: 'BigNumber' })
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const OperatorNode = math.expression.node.OperatorNode
-const SymbolNode = math.expression.node.SymbolNode
-const AccessorNode = math.expression.node.AccessorNode
-const IndexNode = math.expression.node.IndexNode
-const RangeNode = math.expression.node.RangeNode
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const OperatorNode = math.OperatorNode
+const SymbolNode = math.SymbolNode
+const AccessorNode = math.AccessorNode
+const IndexNode = math.IndexNode
+const RangeNode = math.RangeNode
 
 describe('AccessorNode', function () {
   it('should create a AccessorNode', function () {
@@ -44,12 +44,12 @@ describe('AccessorNode', function () {
   })
 
   it('should compile a AccessorNode', function () {
-    const a = new bigmath.expression.node.SymbolNode('a')
-    const index = new bigmath.expression.node.IndexNode([
-      new bigmath.expression.node.ConstantNode(2),
-      new bigmath.expression.node.ConstantNode(1)
+    const a = new bigmath.SymbolNode('a')
+    const index = new bigmath.IndexNode([
+      new bigmath.ConstantNode(2),
+      new bigmath.ConstantNode(1)
     ])
-    const n = new bigmath.expression.node.AccessorNode(a, index)
+    const n = new bigmath.AccessorNode(a, index)
     const expr = n.compile()
 
     let scope = {
@@ -186,11 +186,11 @@ describe('AccessorNode', function () {
   })
 
   it('should compile a AccessorNode with bignumber setting', function () {
-    const a = new bigmath.expression.node.SymbolNode('a')
-    const b = new bigmath.expression.node.ConstantNode(2)
-    const c = new bigmath.expression.node.ConstantNode(1)
-    const n = new bigmath.expression.node.AccessorNode(a,
-      new bigmath.expression.node.IndexNode([b, c]))
+    const a = new bigmath.SymbolNode('a')
+    const b = new bigmath.ConstantNode(2)
+    const c = new bigmath.ConstantNode(1)
+    const n = new bigmath.AccessorNode(a,
+      new bigmath.IndexNode([b, c]))
     const expr = n.compile()
 
     let scope = {

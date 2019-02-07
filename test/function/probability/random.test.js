@@ -4,7 +4,7 @@ import _ from 'underscore'
 
 const math2 = math.create({ randomSeed: 'test' })
 const random = math2.random
-const Matrix = math2.type.Matrix
+const Matrix = math2.Matrix
 
 describe('random', function () {
   it('should have a function random', function () {

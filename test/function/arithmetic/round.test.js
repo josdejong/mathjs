@@ -61,7 +61,7 @@ describe('round', function () {
 
   it('should round fractions', function () {
     const a = fraction('2/3')
-    assert(round(a) instanceof math.type.Fraction)
+    assert(round(a) instanceof math.Fraction)
     assert.strictEqual(a.toString(), '0.(6)')
 
     assert.strictEqual(round(fraction('2/3')).toString(), '1')

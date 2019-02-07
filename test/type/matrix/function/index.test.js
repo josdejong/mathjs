@@ -2,18 +2,18 @@
 import assert from 'assert'
 
 import math from '../../../../src/mainBundle'
-const Range = math.type.Range
-const ImmutableDenseMatrix = math.type.ImmutableDenseMatrix
+const Range = math.Range
+const ImmutableDenseMatrix = math.ImmutableDenseMatrix
 
 describe('index', function () {
   it('should create an index', function () {
     const index = math.index(new Range(2, 6))
-    assert.ok(index instanceof math.type.Index)
+    assert.ok(index instanceof math.Index)
     assert.deepStrictEqual(index._dimensions.length, 1)
     assert.deepStrictEqual(index._dimensions[0], new Range(2, 6, 1))
 
     const index2 = math.index(new Range(0, 4), new Range(5, 2, -1))
-    assert.ok(index2 instanceof math.type.Index)
+    assert.ok(index2 instanceof math.Index)
     assert.deepStrictEqual(index2._dimensions.length, 2)
     assert.deepStrictEqual(index2._dimensions[0], new Range(0, 4, 1))
     assert.deepStrictEqual(index2._dimensions[1], new Range(5, 2, -1))
@@ -21,7 +21,7 @@ describe('index', function () {
 
   it('should create an index from bignumbers (downgrades to numbers)', function () {
     const index = math.index(new Range(math.bignumber(2), math.bignumber(6)), math.bignumber(3))
-    assert.ok(index instanceof math.type.Index)
+    assert.ok(index instanceof math.Index)
     assert.deepStrictEqual(index._dimensions, [new Range(2, 6, 1), new ImmutableDenseMatrix([3])])
   })
 

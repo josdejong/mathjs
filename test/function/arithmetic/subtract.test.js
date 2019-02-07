@@ -145,7 +145,7 @@ describe('subtract', function () {
       const b = math.matrix([3, 2, 1])
       const c = subtract(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([-2, 0, 2]))
     })
 
@@ -154,7 +154,7 @@ describe('subtract', function () {
       const b = math.sparse([[6, 5, 4], [3, 2, 1]])
       const c = subtract(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([[-5, -3, -1], [1, 3, 5]]))
     })
   })
@@ -164,7 +164,7 @@ describe('subtract', function () {
       const a2 = math.matrix([[10, 20], [30, 40]])
       const a3 = math.matrix([[5, 6], [7, 8]])
       const a4 = subtract(a2, a3)
-      assert.ok(a4 instanceof math.type.Matrix)
+      assert.ok(a4 instanceof math.Matrix)
       assert.deepStrictEqual(a4.size(), [2, 2])
       assert.deepStrictEqual(a4.valueOf(), [[5, 14], [23, 32]])
     })
@@ -179,7 +179,7 @@ describe('subtract', function () {
       const b = [3, 2, 1]
       const c = subtract(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([-2, 0, 2]))
     })
 
@@ -188,7 +188,7 @@ describe('subtract', function () {
       const b = math.sparse([[3, 2, 1], [0, 0, 1]])
       const c = subtract(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([[-2, 0, 2], [1, 0, -1]]))
     })
   })
@@ -198,7 +198,7 @@ describe('subtract', function () {
       const a2 = math.matrix([[10, 20], [30, 0]], 'sparse')
       const a3 = math.matrix([[5, 6], [30, 8]], 'sparse')
       const a4 = subtract(a2, a3)
-      assert.ok(a4 instanceof math.type.Matrix)
+      assert.ok(a4 instanceof math.Matrix)
       assert.deepStrictEqual(a4, math.sparse([[5, 14], [0, -8]]))
     })
 
@@ -214,7 +214,7 @@ describe('subtract', function () {
       const b = [[3, 2, 1], [0, 0, 1]]
       const c = subtract(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c.valueOf(), [[-2, 0, 2], [1, 0, -1]])
     })
 
@@ -223,7 +223,7 @@ describe('subtract', function () {
       const b = math.matrix([[3, 2, 1], [0, 0, 1]])
       const c = subtract(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([[-2, 0, 2], [1, 0, -1]]))
     })
   })

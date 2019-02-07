@@ -39,7 +39,7 @@ export const createChain = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *         .done()     // [[24, 6], [9, 12]]
    *
    * @param {*} [value]   A value of any type on which to start a chained operation.
-   * @return {math.type.Chain} The created chain
+   * @return {math.Chain} The created chain
    */
   return typed(name, {
     '': function () {

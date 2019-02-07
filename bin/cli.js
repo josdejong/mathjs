@@ -121,7 +121,7 @@ function completer (text) {
     }
 
     // units
-    const Unit = math.type.Unit
+    const Unit = math.Unit
     for (let name in Unit.UNITS) {
       if (Unit.UNITS.hasOwnProperty(name)) {
         if (name.indexOf(keyword) === 0) {
@@ -218,7 +218,7 @@ function runStream (input, output, mode, parenthesis) {
               let node = math.parse(expr)
               let res = node.evaluate(scope)
 
-              if (math.type.isResultSet(res)) {
+              if (math.isResultSet(res)) {
                 // we can have 0 or 1 results in the ResultSet, as the CLI
                 // does not allow multiple expressions separated by a return
                 res = res.entries[0]
@@ -228,7 +228,7 @@ function runStream (input, output, mode, parenthesis) {
               }
 
               if (node) {
-                if (math.type.isAssignmentNode(node)) {
+                if (math.isAssignmentNode(node)) {
                   const name = findSymbolName(node)
                   if (name !== null) {
                     scope.ans = scope[name]
@@ -237,7 +237,7 @@ function runStream (input, output, mode, parenthesis) {
                     scope.ans = res
                     console.log(format(res))
                   }
-                } else if (math.type.isHelp(res)) {
+                } else if (math.isHelp(res)) {
                   console.log(res.toString())
                 } else {
                   scope.ans = res
@@ -292,7 +292,7 @@ function findSymbolName (node) {
   let n = node
 
   while (n) {
-    if (math.type.isSymbolNode(n)) {
+    if (math.isSymbolNode(n)) {
       return n.name
     }
     n = n.object

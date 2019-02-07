@@ -2,7 +2,7 @@ import assert from 'assert'
 import math from '../../../src/mainBundle'
 const subset = math.subset
 const matrix = math.matrix
-const Range = math.type.Range
+const Range = math.Range
 const index = math.index
 
 describe('subset', function () {

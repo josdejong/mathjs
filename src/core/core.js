@@ -86,22 +86,7 @@ export const createCore = factory('core', dependencies, ({ config }) => {
   }
 
   // create the mathjs instance
-  const math = emitter.mixin({})
-
-  // load config function and apply provided config
-  const _config = config // keep internal _config private
-  math.config = configFactory(_config, math.emit)
-
-  math.expression = {
-    transform: {},
-    node: {},
-    mathWithTransform: {
-      config: math.config
-    }
-  }
-  math.json = {}
-
-  math.type = {
+  const math = emitter.mixin({
     // only here for backward compatibility for legacy factory functions
     isNumber,
     isComplex,
@@ -142,6 +127,17 @@ export const createCore = factory('core', dependencies, ({ config }) => {
     isSymbolNode,
 
     isChain
+  })
+
+  // load config function and apply provided config
+  const _config = config // keep internal _config private
+  math.config = configFactory(_config, math.emit)
+
+  math.expression = {
+    transform: {},
+    mathWithTransform: {
+      config: math.config
+    }
   }
 
   // create a new typed instance

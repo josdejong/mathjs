@@ -3,11 +3,14 @@
 import { isBigNumber, isNumber } from '../../utils/is'
 import { errorTransform } from './utils/errorTransform'
 import { factory } from '../../utils/factory'
+import { createConcat } from '../../function/matrix/concat'
 
 const name = 'concat'
-const dependencies = ['typed', 'concat']
+const dependencies = ['typed', 'matrix', 'isInteger']
 
-export const createConcatTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, concat }) => {
+export const createConcatTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, isInteger }) => {
+  const concat = createConcat({ typed, matrix, isInteger })
+
   /**
    * Attach a transform function to math.range
    * Adds a property transform containing the transform function.

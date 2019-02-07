@@ -7,31 +7,31 @@ const matrix = math.matrix
 describe('matrix', function () {
   it('should create an empty matrix with one dimension if called without argument', function () {
     const a = matrix()
-    assert.ok(a instanceof math.type.Matrix)
+    assert.ok(a instanceof math.Matrix)
     assert.deepStrictEqual(math.size(a), matrix([0])) // TODO: wouldn't it be nicer if an empty matrix has zero dimensions?
   })
 
   it('should create empty matrix, dense format', function () {
     const a = matrix('dense')
-    assert.ok(a instanceof math.type.Matrix)
+    assert.ok(a instanceof math.Matrix)
     assert.deepStrictEqual(math.size(a), matrix([0]))
   })
 
   it('should create empty matrix, dense format, number datatype', function () {
     const a = matrix('dense', 'number')
-    assert.ok(a instanceof math.type.Matrix)
+    assert.ok(a instanceof math.Matrix)
     assert.deepStrictEqual(math.size(a), matrix([0]))
     assert(a.datatype(), 'number')
   })
 
   it('should create empty matrix, sparse', function () {
     const a = matrix('sparse')
-    assert.ok(a instanceof math.type.Matrix)
+    assert.ok(a instanceof math.Matrix)
   })
 
   it('should create a matrix from an array', function () {
     const b = matrix([[1, 2], [3, 4]])
-    assert.ok(b instanceof math.type.Matrix)
+    assert.ok(b instanceof math.Matrix)
     assert.deepStrictEqual(b, matrix([[1, 2], [3, 4]]))
     assert.deepStrictEqual(math.size(b), matrix([2, 2]))
   })
@@ -71,7 +71,7 @@ describe('matrix', function () {
 
   it('should create a matrix from a range correctly', function () {
     const d = matrix(math.range(1, 6))
-    assert.ok(d instanceof math.type.Matrix)
+    assert.ok(d instanceof math.Matrix)
     assert.deepStrictEqual(d, matrix([1, 2, 3, 4, 5]))
     assert.deepStrictEqual(math.size(d), matrix([5]))
   })

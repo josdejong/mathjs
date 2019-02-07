@@ -2,11 +2,11 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const IndexNode = math.expression.node.IndexNode
-const RangeNode = math.expression.node.RangeNode
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const IndexNode = math.IndexNode
+const RangeNode = math.RangeNode
 
 describe('IndexNode', function () {
   it('should create a IndexNode', function () {

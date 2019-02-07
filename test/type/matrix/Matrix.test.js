@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/mainBundle'
-const Matrix = math.type.Matrix
+const Matrix = math.Matrix
 
 describe('matrix', function () {
   describe('constructor', function () {

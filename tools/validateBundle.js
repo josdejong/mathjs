@@ -4,20 +4,24 @@
 const assert = require('assert')
 
 function validateBundle (expectedBundleStructure, bundle) {
+  const issues = []
+
   // see whether all expected functions and objects are there
   traverse(expectedBundleStructure, (expectedType, path) => {
     const actualValue = get(bundle, path)
     const actualType = validateTypeOf(actualValue)
 
     const message = (actualType === 'undefined')
-      ? `Missing entity in bundle (path=${JSON.stringify(path)})`
-      : `Unexpected type in bundle (path=${JSON.stringify(path)})`
+      ? `Missing entity in bundle. ` +
+      `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
+      : `Unexpected type in bundle. ` +
+      `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
 
-    // if (actualType !== expectedType) {
-    //   console.warn(message, actualType, expectedType)
-    // }
+    if (actualType !== expectedType) {
+      issues.push({ actualType, expectedType, message })
 
-    assert.strictEqual(actualType, expectedType, message)
+      console.warn(message)
+    }
   })
 
   // see whether there are any functions or objects that shouldn't be there
@@ -25,22 +29,33 @@ function validateBundle (expectedBundleStructure, bundle) {
     const actualType = validateTypeOf(actualValue)
     const expectedType = get(expectedBundleStructure, path) || 'undefined'
 
-    if (path.join('.').indexOf('expression.docs') !== -1) {
+    if (path.join('.').indexOf('docs.') !== -1) {
       // ignore the contents of docs
       return true
     }
 
     const message = (expectedType === 'undefined')
-      ? `Unknown entity in bundle (path=${JSON.stringify(path)}). ` +
-      'Is there a new function added which is missing in this snapshot test?'
-      : `Unexpected type in bundle (path=${JSON.stringify(path)})`
+      ? `Unknown entity in bundle. ` +
+      'Is there a new function added which is missing in this snapshot test? ' +
+      `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
+      : `Unexpected type in bundle. ` +
+      `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
 
-    // if (actualType !== expectedType) {
-    //   console.warn(message, actualType, expectedType)
-    // }
+    if (actualType !== expectedType) {
+      issues.push({ actualType, expectedType, message })
+
+      console.warn(message)
+    }
+  })
+
+  // assert on the first issue (if any)
+  if (issues.length > 0) {
+    const { actualType, expectedType, message } = issues[0]
+
+    console.warn(`${issues.length} bundle issues found`)
 
     assert.strictEqual(actualType, expectedType, message)
-  })
+  }
 }
 
 function traverse (obj, callback = (value, path) => {}, path = []) {

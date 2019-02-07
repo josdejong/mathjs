@@ -51,7 +51,7 @@ describe('lusolve', function () {
 
     const x = math.lusolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
   })
 
@@ -67,7 +67,7 @@ describe('lusolve', function () {
 
     const x = math.lusolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
   })
 
@@ -88,7 +88,7 @@ describe('lusolve', function () {
 
     const x = math.lusolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
   })
 
@@ -109,7 +109,7 @@ describe('lusolve', function () {
 
     const x = math.lusolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
   })
 

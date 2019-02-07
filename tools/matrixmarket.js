@@ -4,10 +4,10 @@ import math from '../src/mainBundle'
 
 const fs = require('fs')
 const typed = require('typed-function')
-const Spa = math.type.Spa
-const DenseMatrix = math.type.DenseMatrix
-const SparseMatrix = math.type.SparseMatrix
-const FibonacciHeap = math.type.FibonacciHeap
+const Spa = math.Spa
+const DenseMatrix = math.DenseMatrix
+const SparseMatrix = math.SparseMatrix
+const FibonacciHeap = math.FibonacciHeap
 
 const _importFromStream = function (stream) {
   return new Promise(function (resolve, reject) {

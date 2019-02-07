@@ -3,11 +3,14 @@
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { errorTransform } from './utils/errorTransform'
+import { createMean } from '../../function/statistics/mean'
 
 const name = 'mean'
-const dependencies = ['typed', 'mean']
+const dependencies = ['typed', 'add', 'divide']
 
-export const createMeanTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, mean }) => {
+export const createMeanTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide }) => {
+  const mean = createMean({ typed, add, divide })
+
   /**
    * Attach a transform function to math.mean
    * Adds a property transform containing the transform function.

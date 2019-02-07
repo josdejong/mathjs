@@ -9,7 +9,7 @@ const dependencies = ['typed', 'Unit']
 export const createUnit = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
   /**
    * Create a unit. Depending on the passed arguments, the function
-   * will create and return a new math.type.Unit object.
+   * will create and return a new math.Unit object.
    * When a matrix is provided, all elements will be converted to units.
    *
    * Syntax:

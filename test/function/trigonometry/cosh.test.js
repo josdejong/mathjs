@@ -56,7 +56,7 @@ describe('cosh', function () {
     approx.equal(cosh(unit('90deg')), 2.5091784786581)
     approx.equal(cosh(unit('-45deg')), 1.324609089252)
 
-    assert(math.type.isBigNumber(cosh(unit(math.bignumber(90), 'deg'))))
+    assert(math.isBigNumber(cosh(unit(math.bignumber(90), 'deg'))))
     approx.equal(cosh(unit(math.bignumber(90), 'deg')).toNumber(), 2.5091784786581)
 
     approx.deepEqual(cosh(math.unit(complex('2 + i'), 'rad')), complex(2.0327230070197, 3.0518977991518))

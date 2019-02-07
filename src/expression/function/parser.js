@@ -7,7 +7,7 @@ const dependencies = ['typed', 'math', 'Parser']
 
 export const createParser = /* #__PURE__ */ factory(name, dependencies, ({ typed, math, Parser }) => {
   /**
-   * Create a parser. The function creates a new `math.type.Parser` object.
+   * Create a parser. The function creates a new `math.Parser` object.
    *
    * Syntax:
    *

@@ -1,7 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/mainBundle'
 const splitUnit = math.splitUnit
-const Unit = math.type.Unit
+const Unit = math.Unit
 
 describe('splitUnit', function () {
   it('should split a unit into parts', function () {

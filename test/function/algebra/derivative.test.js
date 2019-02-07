@@ -2,9 +2,9 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const OperatorNode = math.expression.node.OperatorNode
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
+const OperatorNode = math.OperatorNode
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
 const derivative = math.derivative
 
 describe('derivative', function () {

@@ -72,7 +72,7 @@ describe('compare', function () {
   it('should compare two fractions', function () {
     const a = math.fraction(1, 3)
     const b = math.fraction(1, 6)
-    assert(compare(a, b) instanceof math.type.Fraction)
+    assert(compare(a, b) instanceof math.Fraction)
     assert.strictEqual(a.toString(), '0.(3)')
     assert.strictEqual(b.toString(), '0.1(6)')
 

@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../src/mainBundle'
-const Help = math.type.Help
+const Help = math.Help
 
 describe('help', function () {
   const doc = {
@@ -32,7 +32,7 @@ describe('help', function () {
 
   it('should throw an error when constructed without new operator', function () {
     assert.throws(function () {
-      console.log(Help(math.expression.docs.sin))
+      console.log(Help(math.docs.sin))
     }, /Constructor must be called with the new operator/)
   })
 

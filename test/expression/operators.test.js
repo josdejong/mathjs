@@ -1,12 +1,12 @@
 import assert from 'assert'
 import math from '../../src/mainBundle'
 import { getAssociativity, getPrecedence, isAssociativeWith } from '../../src/expression/operators'
-const OperatorNode = math.expression.node.OperatorNode
-const AssignmentNode = math.expression.node.AssignmentNode
-const SymbolNode = math.expression.node.SymbolNode
-const ConstantNode = math.expression.node.ConstantNode
-const Node = math.expression.node.Node
-const ParenthesisNode = math.expression.node.ParenthesisNode
+const OperatorNode = math.OperatorNode
+const AssignmentNode = math.AssignmentNode
+const SymbolNode = math.SymbolNode
+const ConstantNode = math.ConstantNode
+const Node = math.Node
+const ParenthesisNode = math.ParenthesisNode
 
 describe('operators', function () {
   it('should return the precedence of a node', function () {

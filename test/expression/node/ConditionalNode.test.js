@@ -2,11 +2,11 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const AssignmentNode = math.expression.node.AssignmentNode
-const ConditionalNode = math.expression.node.ConditionalNode
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const AssignmentNode = math.AssignmentNode
+const ConditionalNode = math.ConditionalNode
 
 describe('ConditionalNode', function () {
   const condition = new ConstantNode(true)

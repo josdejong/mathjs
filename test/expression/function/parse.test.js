@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Node = math.expression.node.Node
+const Node = math.Node
 
 describe('parse', function () {
   it('should parse an expression', function () {

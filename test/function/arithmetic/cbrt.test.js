@@ -96,12 +96,12 @@ describe('cbrt', function () {
     assert.strictEqual(cbrt(math.unit('27 m^3')).toString(), math.unit('3 m').toString())
     assert.strictEqual(cbrt(math.unit('-27 m^3')).toString(), math.unit('-3 m').toString())
 
-    assert(math.type.isBigNumber(cbrt(math.unit(math.bignumber(27), 'm^3')).value))
+    assert(math.isBigNumber(cbrt(math.unit(math.bignumber(27), 'm^3')).value))
     assert.deepStrictEqual(cbrt(math.unit(math.bignumber(27), 'm^3')).value, math.bignumber(3))
-    assert(math.type.isBigNumber(cbrt(math.unit(math.bignumber(-27), 'm^3')).value))
+    assert(math.isBigNumber(cbrt(math.unit(math.bignumber(-27), 'm^3')).value))
     assert.deepStrictEqual(cbrt(math.unit(math.bignumber(-27), 'm^3')).value, math.bignumber(-3))
 
-    assert(math.type.isComplex(cbrt(math.unit(math.complex(-46, 9), 's^3')).value))
+    assert(math.isComplex(cbrt(math.unit(math.complex(-46, 9), 's^3')).value))
     approx.deepEqual(cbrt(math.unit(math.complex(-46, 9), 's^3')).value, math.complex(2, 3))
   })
 

@@ -5,15 +5,15 @@ import approx from '../../tools/approx'
 import math from '../../src/mainBundle'
 
 const parse = math.parse
-const ConditionalNode = math.expression.node.ConditionalNode
-const ConstantNode = math.expression.node.ConstantNode
-const OperatorNode = math.expression.node.OperatorNode
-const RangeNode = math.expression.node.RangeNode
-const Complex = math.type.Complex
-const Matrix = math.type.Matrix
-const Range = math.type.Range
-const Unit = math.type.Unit
-const ResultSet = math.type.ResultSet
+const ConditionalNode = math.ConditionalNode
+const ConstantNode = math.ConstantNode
+const OperatorNode = math.OperatorNode
+const RangeNode = math.RangeNode
+const Complex = math.Complex
+const Matrix = math.Matrix
+const Range = math.Range
+const Unit = math.Unit
+const ResultSet = math.ResultSet
 
 /**
  * Helper function to parse an expression and immediately evaluate its results
@@ -289,7 +289,7 @@ describe('parse', function () {
         number: 'Fraction'
       })
 
-      assert(fmath.parse('0.1').compile().evaluate() instanceof math.type.Fraction)
+      assert(fmath.parse('0.1').compile().evaluate() instanceof math.Fraction)
       assert.strictEqual(fmath.parse('1/3').compile().evaluate().toString(), '0.(3)')
       assert.strictEqual(fmath.parse('0.1+0.2').compile().evaluate().toString(), '0.3')
     })
@@ -1746,7 +1746,7 @@ describe('parse', function () {
     const bigmath = math.create({
       number: 'BigNumber'
     })
-    const BigNumber = bigmath.type.BigNumber
+    const BigNumber = bigmath.BigNumber
 
     it('should parse numbers as bignumber', function () {
       assert.deepStrictEqual(bigmath.bignumber('2.3'), new BigNumber('2.3'))
@@ -1814,7 +1814,7 @@ describe('parse', function () {
     })
 
     it('should work with units', function () {
-      assert.deepStrictEqual(bigmath.evaluate('2 cm'), new bigmath.type.Unit(new bigmath.type.BigNumber(2), 'cm'))
+      assert.deepStrictEqual(bigmath.evaluate('2 cm'), new bigmath.Unit(new bigmath.BigNumber(2), 'cm'))
     })
   })
 
@@ -1969,7 +1969,7 @@ describe('parse', function () {
       function CustomNode (args) {
         this.args = args
       }
-      CustomNode.prototype = new math.expression.node.Node()
+      CustomNode.prototype = new math.Node()
       CustomNode.prototype.toString = function () {
         return 'CustomNode'
       }

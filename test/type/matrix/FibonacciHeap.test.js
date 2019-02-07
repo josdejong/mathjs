@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/mainBundle'
-const FibonacciHeap = math.type.FibonacciHeap
+const FibonacciHeap = math.FibonacciHeap
 
 describe('FibonacciHeap', function () {
   describe('constructor', function () {

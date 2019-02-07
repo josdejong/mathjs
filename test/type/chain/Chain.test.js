@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Chain = math.type.Chain
+const Chain = math.Chain
 
 describe('Chain', function () {
   it('should chain operations with numbers', function () {
@@ -11,12 +11,12 @@ describe('Chain', function () {
   })
 
   it('should have a property isChain', function () {
-    const a = new math.type.Chain(5)
+    const a = new math.Chain(5)
     assert.strictEqual(a.isChain, true)
   })
 
   it('should have a property type', function () {
-    const a = new math.type.Chain(5)
+    const a = new math.Chain(5)
     assert.strictEqual(a.type, 'Chain')
   })
 

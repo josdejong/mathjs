@@ -1,11 +1,11 @@
 import assert from 'assert'
 import math from '../../../src/mainBundle'
-const Matrix = math.type.Matrix
-const DenseMatrix = math.type.DenseMatrix
-const ImmutableDenseMatrix = math.type.ImmutableDenseMatrix
-const SparseMatrix = math.type.SparseMatrix
-const Complex = math.type.Complex
-const Range = math.type.Range
+const Matrix = math.Matrix
+const DenseMatrix = math.DenseMatrix
+const ImmutableDenseMatrix = math.ImmutableDenseMatrix
+const SparseMatrix = math.SparseMatrix
+const Complex = math.Complex
+const Range = math.Range
 
 const index = math.index
 

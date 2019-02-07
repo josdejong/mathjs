@@ -2,10 +2,10 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RelationalNode = math.expression.node.RelationalNode
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RelationalNode = math.RelationalNode
 
 describe('RelationalNode', function () {
   const one = new ConstantNode(1)

@@ -1042,16 +1042,16 @@ const math = /* #__PURE__ */ {
 
 // Do not use destructuring like { ...math } here, WebPack can't do tree-shaking in that case
 const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
-  concat: /* #__PURE__ */ createConcatTransform({ typed, concat }),
+  concat: /* #__PURE__ */ createConcatTransform({ typed, matrix, isInteger }),
   filter: /* #__PURE__ */ createFilterTransform({ typed, matrix }),
   forEach: /* #__PURE__ */ createForEachTransform({ typed }),
   index: /* #__PURE__ */ createIndexTransform({ Index }),
   map: /* #__PURE__ */ createMapTransform({ typed, matrix }),
-  max: /* #__PURE__ */ createMaxTransform({ typed, max }),
-  mean: /* #__PURE__ */ createMeanTransform({ typed, mean }),
-  min: /* #__PURE__ */ createMinTransform({ typed, min }),
-  range: /* #__PURE__ */ createRangeTransform({ typed, range }),
-  subset: /* #__PURE__ */ createSubsetTransform({ typed, subset })
+  max: /* #__PURE__ */ createMaxTransform({ typed, larger }),
+  mean: /* #__PURE__ */ createMeanTransform({ typed, add, divide }),
+  min: /* #__PURE__ */ createMinTransform({ typed, smaller }),
+  range: /* #__PURE__ */ createRangeTransform({ typed, config, matrix, BigNumber }),
+  subset: /* #__PURE__ */ createSubsetTransform({ typed, matrix })
 })
 
 // expression (4)
@@ -1103,6 +1103,7 @@ export const Help = /* #__PURE__ */ createHelpClass({ parse })
 export const Chain = /* #__PURE__ */ createChainClass({ math })
 
 // type (4)
+export { embeddedDocs as docs } from './expression/embeddedDocs/embeddedDocs'
 export const help = /* #__PURE__ */ createHelp({ math, typed, docs: embeddedDocs, Help })
 export const chain = /* #__PURE__ */ createChain({ typed, Chain })
 
@@ -1214,7 +1215,8 @@ const mathAdditional = /* __PURE__ */ {
   chain,
   simplify,
   derivative,
-  rationalize
+  rationalize,
+  reviver
 }
 /* #__PURE__ */ Object.assign(math, mathAdditional)
 /* #__PURE__ */ Object.assign(mathWithTransform, mathAdditional)

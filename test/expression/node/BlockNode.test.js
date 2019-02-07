@@ -2,14 +2,14 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RangeNode = math.expression.node.RangeNode
-const AssignmentNode = math.expression.node.AssignmentNode
-const OperatorNode = math.expression.node.OperatorNode
-const BlockNode = math.expression.node.BlockNode
-const ResultSet = math.type.ResultSet
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RangeNode = math.RangeNode
+const AssignmentNode = math.AssignmentNode
+const OperatorNode = math.OperatorNode
+const BlockNode = math.BlockNode
+const ResultSet = math.ResultSet
 
 describe('BlockNode', function () {
   it('should create a BlockNode', function () {

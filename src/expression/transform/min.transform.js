@@ -3,11 +3,14 @@
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { errorTransform } from './utils/errorTransform'
+import { createMin } from '../../function/statistics/min'
 
 const name = 'min'
-const dependencies = ['typed', 'min']
+const dependencies = ['typed', 'smaller']
 
-export const createMinTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, min }) => {
+export const createMinTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, smaller }) => {
+  const min = createMin({ typed, smaller })
+
   /**
    * Attach a transform function to math.min
    * Adds a property transform containing the transform function.

@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/mainBundle'
-const Spa = math.type.Spa
+const Spa = math.Spa
 
 describe('Spa', function () {
   describe('constructor', function () {

@@ -1,11 +1,11 @@
 import assert from 'assert'
 import math from '../../../src/mainBundle'
 const index = math.index
-const Matrix = math.type.Matrix
-const SparseMatrix = math.type.SparseMatrix
-const DenseMatrix = math.type.DenseMatrix
-const Complex = math.type.Complex
-const Range = math.type.Range
+const Matrix = math.Matrix
+const SparseMatrix = math.SparseMatrix
+const DenseMatrix = math.DenseMatrix
+const Complex = math.Complex
+const Range = math.Range
 
 describe('SparseMatrix', function () {
   describe('constructor', function () {

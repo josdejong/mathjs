@@ -2,9 +2,9 @@
 import assert from 'assert'
 
 import math from '../../../src/mainBundle'
-const Index = math.type.Index
-const Range = math.type.Range
-const ImmutableDenseMatrix = math.type.ImmutableDenseMatrix
+const Index = math.Index
+const Range = math.Range
+const ImmutableDenseMatrix = math.ImmutableDenseMatrix
 
 describe('Index', function () {
   it('should create an Index', function () {
@@ -190,20 +190,20 @@ describe('Index', function () {
   })
 
   it('should have a property isIndex', function () {
-    const a = new math.type.Index([2, 5])
+    const a = new math.Index([2, 5])
     assert.strictEqual(a.isIndex, true)
   })
 
   it('should have a property type', function () {
-    const a = new math.type.Index([2, 5])
+    const a = new math.Index([2, 5])
     assert.strictEqual(a.type, 'Index')
   })
 
   it('should test whether index contains an object property', function () {
-    assert.strictEqual(new math.type.Index(2, 3).isObjectProperty(), false)
-    assert.strictEqual(new math.type.Index([2, 5]).isObjectProperty(), false)
-    assert.strictEqual(new math.type.Index('foo', 'bar').isObjectProperty(), false)
-    assert.strictEqual(new math.type.Index('foo').isObjectProperty(), true)
+    assert.strictEqual(new math.Index(2, 3).isObjectProperty(), false)
+    assert.strictEqual(new math.Index([2, 5]).isObjectProperty(), false)
+    assert.strictEqual(new math.Index('foo', 'bar').isObjectProperty(), false)
+    assert.strictEqual(new math.Index('foo').isObjectProperty(), true)
   })
 
   it('should expand an index into an array', function () {

@@ -1,7 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/mainBundle'
 const unit = math.unit
-const Unit = math.type.Unit
+const Unit = math.Unit
 
 describe('unit', function () {
   it('should construct a unit', function () {
