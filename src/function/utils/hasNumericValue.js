@@ -5,6 +5,8 @@ function factory (type, config, load, typed) {
   /**
    * Test whether a value is an numeric value.
    *
+   * In case of a string, true is returned if the string contains a numeric value.
+   *
    * Syntax:
    *
    *     math.hasNumericValue(x)
