@@ -1543,6 +1543,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function parseObject (state) {
     if (state.token === '{') {
+      openParams(state)
       let key
 
       const properties = {}
@@ -1577,6 +1578,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       if (state.token !== '}') {
         throw createSyntaxError(state, 'Comma , or bracket } expected after object value')
       }
+      closeParams(state)
       getToken(state)
 
       let node = new ObjectNode(properties)

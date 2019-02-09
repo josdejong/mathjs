@@ -82,13 +82,13 @@ describe('Unit', function () {
       assert.throws(function () { console.log(new Unit(0, 3)) })
     })
 
-    it('should flag unit as already simplified', function () {
+    it('should skip automatic simplification if created directly in the constructor', function () {
       const unit1 = new Unit(9.81, 'kg m/s^2')
-      assert.strictEqual(unit1.isUnitListSimplified, true)
+      assert.strictEqual(unit1.skipAutomaticSimplification, true)
       assert.strictEqual(unit1.toString(), '9.81 (kg m) / s^2')
 
       const unit2 = new Unit(null, 'kg m/s^2')
-      assert.strictEqual(unit2.isUnitListSimplified, true)
+      assert.strictEqual(unit2.skipAutomaticSimplification, true)
       assert.strictEqual(unit2.toString(), '(kg m) / s^2')
     })
   })
@@ -237,12 +237,6 @@ describe('Unit', function () {
     it('should convert a unit to a numeric value', function () {
       const u = new Unit(math.fraction(1, 3), 'cm')
       assert.deepStrictEqual(u.toNumeric('mm'), math.fraction(10, 3))
-    })
-    it('should simplify units before returning a numeric value', function () {
-      const cm = new Unit(1, 'gram')
-      const m = new Unit(1, 'kilogram')
-      const product = cm.multiply(m)
-      assert.deepStrictEqual(product.toNumeric(), 0.001)
     })
   })
 
@@ -400,11 +394,15 @@ describe('Unit', function () {
       assert.strictEqual(u2.fixPrefix, true)
     })
 
-    it('should set isUnitListSimplified to true', function () {
-      const u1 = new Unit(1, 'ft lbf')
-      const u2 = u1.to('in lbf')
-      assert.strictEqual(u2.isUnitListSimplified, true)
-      assert.strictEqual(u2.toString(), '12 in lbf')
+    it('should skip automatic simplification if unit is result of to or toSI', function () {
+      const u1 = new Unit(1, 'ft lbf').multiply(new Unit(2, 'rad'))
+      assert.strictEqual(u1.skipAutomaticSimplification, false)
+      const u2 = u1.to('in lbf rad')
+      assert.strictEqual(u2.skipAutomaticSimplification, true)
+      assert.strictEqual(u2.toString(), '24 in lbf rad')
+      const u3 = u1.toSI()
+      assert.strictEqual(u3.skipAutomaticSimplification, true)
+      assert.strictEqual(u3.format(5), '2.7116 (kg m^2 rad) / s^2')
     })
 
     it('should throw an error when converting to an incompatible unit', function () {
@@ -495,7 +493,7 @@ describe('Unit', function () {
     })
   })
 
-  describe('simplifyUnitListLazy', function () {
+  describe('simplify', function () {
     it('should not simplify units created with new Unit()', function () {
       const unit1 = new Unit(10, 'kg m/s^2')
       assert.strictEqual(unit1.units[0].unit.name, 'g')
@@ -505,23 +503,10 @@ describe('Unit', function () {
     })
 
     it('should only simplify units with values', function () {
-      let unit1 = new Unit(null, 'kg m mol / s^2 / mol')
-      unit1.isUnitListSimplified = false
-      unit1.simplifyUnitListLazy()
+      let unit1 = new Unit(null, 'kg m mol / s^2 / mol').pow(1) // Remove the "skipSimplify" flag
       assert.strictEqual(unit1.toString(), '(kg m mol) / (s^2 mol)')
       unit1 = math.multiply(unit1, 1)
       assert.strictEqual(unit1.toString(), '1 N')
-    })
-
-    it('should simplify units resulting from multiply/divide/power functions only when formatting for output', function () {
-      const unit1 = new Unit(2, 'kg')
-      const unit2 = new Unit(5, 'm/s^2')
-      const unit3 = math.multiply(unit1, unit2)
-      assert.strictEqual(unit3.units[0].unit.name, 'g')
-      assert.strictEqual(unit3.units[1].unit.name, 'm')
-      assert.strictEqual(unit3.units[2].unit.name, 's')
-      assert.strictEqual(unit3.toString(), '10 N') // Triggers simplification
-      assert.strictEqual(unit3.units[0].unit.name, 'N')
     })
 
     it('should simplify units when they cancel out with {predictable: true}', function () {
@@ -530,11 +515,11 @@ describe('Unit', function () {
       const unit2 = new math2.Unit(2, 's')
       const unit3 = math2.multiply(unit1, unit2)
       assert.strictEqual(unit3.toString(), '4')
-      assert.strictEqual(unit3.units.length, 0)
+      assert.strictEqual(unit3.simplify().units.length, 0)
 
       const nounit = math2.evaluate('40m * 40N / (40J)')
       assert.strictEqual(nounit.toString(), '40')
-      assert.strictEqual(nounit.units.length, 0)
+      assert.strictEqual(nounit.simplify().units.length, 0)
 
       const a = math2.unit('3 s^-1')
       const b = math2.unit('4 s')
@@ -583,21 +568,18 @@ describe('Unit', function () {
     it('should simplify units according to chosen unit system', function () {
       const unit1 = new Unit(10, 'N')
       Unit.setUnitSystem('us')
-      unit1.isUnitListSimplified = false
-      assert.strictEqual(unit1.toString(), '2.248089430997105 lbf')
-      assert.strictEqual(unit1.units[0].unit.name, 'lbf')
+      assert.strictEqual(unit1.simplify().toString(), '2.248089430997105 lbf')
+      assert.strictEqual(unit1.simplify().units[0].unit.name, 'lbf')
 
       Unit.setUnitSystem('cgs')
-      unit1.isUnitListSimplified = false
-      assert.strictEqual(unit1.format(2), '1 Mdyn')
-      assert.strictEqual(unit1.units[0].unit.name, 'dyn')
+      assert.strictEqual(unit1.simplify().format(2), '1 Mdyn')
+      assert.strictEqual(unit1.simplify().units[0].unit.name, 'dyn')
     })
 
     it('should correctly simplify units when unit system is "auto"', function () {
       Unit.setUnitSystem('auto')
       const unit1 = new Unit(5, 'lbf min / s')
-      unit1.isUnitListSimplified = false
-      assert.strictEqual(unit1.toString(), '300 lbf')
+      assert.strictEqual(unit1.simplify().toString(), '300 lbf')
     })
 
     it('should simplify user-defined units when unit system is "auto"', function () {
@@ -956,19 +938,17 @@ describe('Unit', function () {
       assert.strictEqual(Unit.parse('34 kg m / s^2')._isDerived(), true)
       const unit1 = Unit.parse('34 kg m / s^2')
       assert.strictEqual(unit1._isDerived(), true)
-      unit1.isUnitListSimplified = false
-      unit1.simplifyUnitListLazy()
-      assert.strictEqual(unit1._isDerived(), false)
+      assert.strictEqual(unit1.simplify()._isDerived(), false)
     })
   })
 
   describe('multiply, divide, and pow', function () {
-    it('should flag the unit as requiring simplification', function () {
+    it('should return a Unit that will be automatically simplified', function () {
       const unit1 = new Unit(10, 'kg')
       const unit2 = new Unit(9.81, 'm/s^2')
-      assert.strictEqual(unit1.multiply(unit2).isUnitListSimplified, false)
-      assert.strictEqual(unit1.divide(unit2).isUnitListSimplified, false)
-      assert.strictEqual(unit1.pow(2).isUnitListSimplified, false)
+      assert.strictEqual(unit1.multiply(unit2).skipAutomaticSimplification, false)
+      assert.strictEqual(unit1.divide(unit2).skipAutomaticSimplification, false)
+      assert.strictEqual(unit1.pow(2).skipAutomaticSimplification, false)
     })
 
     it('should retain the units of their operands without simplifying', function () {
@@ -1241,6 +1221,7 @@ describe('Unit', function () {
 
     it('should return the unit in SI units', function () {
       assert.strictEqual(Unit.parse('3 ft').toSI().format(10), '0.9144 m')
+      assert.strictEqual(Unit.parse('0.111 ft^2').toSI().format(10), '0.01031223744 m^2')
     })
 
     it('should return SI units for valueless units', function () {

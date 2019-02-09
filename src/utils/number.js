@@ -136,7 +136,7 @@ export function format (value, options) {
     // determine precision from options
     if (isNumber(options)) {
       precision = options
-    } else if (options.precision) {
+    } else if (exports.isNumber(options.precision)) {
       precision = options.precision
     }
   }

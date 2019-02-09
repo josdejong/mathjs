@@ -200,8 +200,8 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
     const paramStrings = this.params.map(function (p, index) {
       const paramPrecedence = getPrecedence(p, parenthesis)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
-        ? '\\left(' + p.toString(options) + '\right)'
-        : p.toString(options)
+        ? '\\left(' + p.toTex(options) + '\right)'
+        : p.toTex(options)
     })
 
     let ret = paramStrings[0]

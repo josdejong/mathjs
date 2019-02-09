@@ -814,6 +814,10 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('{}'), {})
     })
 
+    it('should spread a object over multiple lines', function () {
+      assert.deepStrictEqual(parseAndEval('{\na:2+3,\nb:"foo"\n}'), { a: 5, b: 'foo' })
+    })
+
     it('should create an object with quoted keys', function () {
       assert.deepStrictEqual(parseAndEval('{"a":2+3,"b":"foo"}'), { a: 5, b: 'foo' })
     })

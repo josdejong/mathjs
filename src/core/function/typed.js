@@ -34,7 +34,7 @@
  *     })
  *
  * @param {string} [name]                          Optional name for the typed-function
- * @param {Object<string, function>} signatures   Object with one ore multiple function signatures
+ * @param {Object<string, function>} signatures   Object with one or multiple function signatures
  * @returns {function} The created typed-function.
  */
 

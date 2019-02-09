@@ -80,6 +80,17 @@ describe('bignumber', function () {
     assert.strictEqual(a.toString(), '0.33333333333333333333333333333333')
   })
 
+  it('should support very high precisions', function () {
+    const mymath = math.create({
+      precision: 2000
+    })
+
+    const a = mymath.bignumber(1).dividedBy(3)
+
+    const aStr = '0.' + Array(2001).join('3')
+    assert.strictEqual(a.toString(), aStr)
+  })
+
   it('should throw an error in case of unsupported type of argument', function () {
     assert.throws(function () { math.bignumber(new Date()) }, /TypeError: Unexpected type of argument/)
   })

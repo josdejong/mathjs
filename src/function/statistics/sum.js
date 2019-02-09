@@ -2,6 +2,7 @@
 
 import { deepForEach } from '../../utils/collection'
 import { factory } from '../../utils/factory'
+import reduce from '../../utils/collection/reduce'
 import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const name = 'sum'
@@ -32,19 +33,18 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    * @return {*} The sum of all values
    */
   return typed(name, {
-    'Array | Matrix': function (args) {
-      // sum([a, b, c, d, ...])
-      return _sum(args)
-    },
+    // sum([a, b, c, d, ...])
+    'Array | Matrix': _sum,
 
-    'Array | Matrix, number | BigNumber': function () {
-      // sum([a, b, c, d, ...], dim)
-      // TODO: implement sum(A, dim)
-      throw new Error('sum(A, dim) is not yet supported')
-    },
+    // sum([a, b, c, d, ...], dim)
+    'Array | Matrix, number | BigNumber': _nsumDim,
 
+    // sum(a, b, c, d, ...)
     '...': function (args) {
-      // sum(a, b, c, d, ...)
+      if (containsCollections(args)) {
+        throw new TypeError('Scalar values expected in function sum')
+      }
+
       return _sum(args)
     }
   })
@@ -56,29 +56,38 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    * @private
    */
   function _sum (array) {
-    let res
+    let sum
 
     deepForEach(array, function (value) {
       try {
-        res = (res === undefined) ? value : add(res, value)
+        sum = (sum === undefined) ? value : add(sum, value)
       } catch (err) {
         throw improveErrorMessage(err, 'sum', value)
       }
     })
 
-    if (res === undefined) {
+    if (sum === undefined) {
       switch (config.number) {
         case 'number':
           return 0
         case 'BigNumber':
-          return new BigNumber(0)
+          return new type.BigNumber(0)
         case 'Fraction':
-          return new Fraction(0)
+          return new type.Fraction(0)
         default:
           return 0
       }
     }
 
-    return res
+    return sum
+  }
+
+  function _nsumDim (array, dim) {
+    try {
+      const sum = reduce(array, dim, add)
+      return sum
+    } catch (err) {
+      throw improveErrorMessage(err, 'sum')
+    }
   }
 })

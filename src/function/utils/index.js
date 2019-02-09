@@ -4,6 +4,7 @@ import { createClone } from './clone'
 import { createIsInteger } from './isInteger'
 import { createIsNegative } from './isNegative'
 import { createIsNumeric } from './isNumeric'
+import { createHasNumericValue } from './hasNumericValue'
 import { createIsPositive } from './isPositive'
 import { createIsPrime } from './isPrime'
 import { createIsZero } from './isZero'
@@ -18,6 +19,7 @@ export default [
   createIsInteger,
   createIsNegative,
   createIsNumeric,
+  createHasNumericValue,
   createIsPositive,
   createIsPrime,
   createIsZero,

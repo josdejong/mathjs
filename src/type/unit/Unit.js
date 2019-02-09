@@ -104,7 +104,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // The justification behind this is that if the constructor is explicitly called,
     // the caller wishes the units to be returned exactly as he supplied.
-    this.isUnitListSimplified = true
+    this.skipAutomaticSimplification = true
   }
 
   /**
@@ -454,7 +454,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     const unit = new Unit()
 
     unit.fixPrefix = this.fixPrefix
-    unit.isUnitListSimplified = this.isUnitListSimplified
+    unit.skipAutomaticSimplification = this.skipAutomaticSimplification
 
     unit.value = clone(this.value)
     unit.dimensions = this.dimensions.slice(0)
@@ -684,7 +684,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.dimensions[i] = (this.dimensions[i] || 0) + (other.dimensions[i] || 0)
     }
 
-    // Append other's units list onto res (simplify later in Unit.prototype.format)
+    // Append other's units list onto res
     for (let i = 0; i < other.units.length; i++) {
       // Make a deep copy
       const inverted = {}
@@ -703,8 +703,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.value = null
     }
 
-    // Trigger simplification of the unit list at some future time
-    res.isUnitListSimplified = false
+    res.skipAutomaticSimplification = false
 
     return getNumericIfUnitless(res)
   }
@@ -723,7 +722,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.dimensions[i] = (this.dimensions[i] || 0) - (other.dimensions[i] || 0)
     }
 
-    // Invert and append other's units list onto res (simplify later in Unit.prototype.format)
+    // Invert and append other's units list onto res
     for (let i = 0; i < other.units.length; i++) {
       // Make a deep copy
       const inverted = {}
@@ -743,8 +742,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.value = null
     }
 
-    // Trigger simplification of the unit list at some future time
-    res.isUnitListSimplified = false
+    res.skipAutomaticSimplification = false
 
     return getNumericIfUnitless(res)
   }
@@ -780,8 +778,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.value = null
     }
 
-    // Trigger lazy evaluation of the unit list
-    res.isUnitListSimplified = false
+    res.skipAutomaticSimplification = false
 
     return getNumericIfUnitless(res)
   }
@@ -841,7 +838,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
       other.value = clone(value)
       other.fixPrefix = true
-      other.isUnitListSimplified = true
+      other.skipAutomaticSimplification = true
       return other
     } else if (isUnit(valuelessUnit)) {
       if (!this.equalBase(valuelessUnit)) {
@@ -853,7 +850,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       other = valuelessUnit.clone()
       other.value = clone(value)
       other.fixPrefix = true
-      other.isUnitListSimplified = true
+      other.skipAutomaticSimplification = true
       return other
     } else {
       throw new Error('String or Unit expected as parameter')
@@ -878,13 +875,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {number | BigNumber | Fraction} Returns the unit value
    */
   Unit.prototype.toNumeric = function (valuelessUnit) {
-    let other = this
+    let other
     if (valuelessUnit) {
       // Allow getting the numeric value without converting to a different unit
       other = this.to(valuelessUnit)
+    } else {
+      other = this.clone()
     }
-
-    other.simplifyUnitListLazy()
 
     if (other._isDerived()) {
       return other._denormalize(other.value)
@@ -938,27 +935,25 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   Unit.prototype.valueOf = Unit.prototype.toString
 
   /**
-   * Attempt to simplify the list of units for this unit according to the dimensions array and the current unit system. After the call, this Unit will contain a list of the "best" units for formatting.
-   * Intended to be evaluated lazily. You must set isUnitListSimplified = false before the call! After the call, isUnitListSimplified will be set to true.
+   * Simplify this Unit's unit list and return a new Unit with the simplified list.
+   * The returned Unit will contain a list of the "best" units for formatting.
    */
-  Unit.prototype.simplifyUnitListLazy = function () {
-    if (this.isUnitListSimplified || this.value === null) {
-      return
-    }
+  Unit.prototype.simplify = function () {
+    const ret = this.clone()
 
     const proposedUnitList = []
 
     // Search for a matching base
     let matchingBase
     for (const key in currentUnitSystem) {
-      if (this.hasBase(BASE_UNITS[key])) {
+      if (ret.hasBase(BASE_UNITS[key])) {
         matchingBase = key
         break
       }
     }
 
     if (matchingBase === 'NONE') {
-      this.units = []
+      ret.units = []
     } else {
       let matchingUnit
       if (matchingBase) {
@@ -968,7 +963,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         }
       }
       if (matchingUnit) {
-        this.units = [{
+        ret.units = [{
           unit: matchingUnit.unit,
           prefix: matchingUnit.prefix,
           power: 1.0
@@ -980,12 +975,12 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         let missingBaseDim = false
         for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
           const baseDim = BASE_DIMENSIONS[i]
-          if (Math.abs(this.dimensions[i] || 0) > 1e-12) {
+          if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
             if (currentUnitSystem.hasOwnProperty(baseDim)) {
               proposedUnitList.push({
                 unit: currentUnitSystem[baseDim].unit,
                 prefix: currentUnitSystem[baseDim].prefix,
-                power: this.dimensions[i] || 0
+                power: ret.dimensions[i] || 0
               })
             } else {
               missingBaseDim = true
@@ -994,16 +989,19 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         }
 
         // Is the proposed unit list "simpler" than the existing one?
-        if (proposedUnitList.length < this.units.length && !missingBaseDim) {
+        if (proposedUnitList.length < ret.units.length && !missingBaseDim) {
           // Replace this unit list with the proposed list
-          this.units = proposedUnitList
+          ret.units = proposedUnitList
         }
       }
     }
 
-    this.isUnitListSimplified = true
+    return ret
   }
 
+  /**
+   * Returns a new Unit in the SI system with the same value as this one
+   */
   Unit.prototype.toSI = function () {
     const ret = this.clone()
 
@@ -1030,20 +1028,18 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Replace this unit list with the proposed list
     ret.units = proposedUnitList
 
-    ret.isUnitListSimplified = true
+    ret.fixPrefix = true
+    ret.skipAutomaticSimplification = true
 
     return ret
   }
 
   /**
-   * Get a string representation of the units of this Unit, without the value.
+   * Get a string representation of the units of this Unit, without the value. The unit list is formatted as-is without first being simplified.
    * @memberof Unit
    * @return {string}
    */
   Unit.prototype.formatUnits = function () {
-    // Lazy evaluation of the unit list
-    this.simplifyUnitListLazy()
-
     let strNum = ''
     let strDen = ''
     let nNum = 0
@@ -1107,41 +1103,43 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {string}
    */
   Unit.prototype.format = function (options) {
-    // Simplfy the unit list, if necessary
-    this.simplifyUnitListLazy()
+    // Simplfy the unit list, unless it is valueless or was created directly in the
+    // constructor or as the result of to or toSI
+    const simp = this.skipAutomaticSimplification || this.value === null
+      ? this.clone() : this.simplify()
 
     // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
     let isImaginary = false
-    if (typeof (this.value) !== 'undefined' && this.value !== null && isComplex(this.value)) {
+    if (typeof (simp.value) !== 'undefined' && simp.value !== null && isComplex(simp.value)) {
       // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
-      isImaginary = Math.abs(this.value.re) < 1e-14
+      isImaginary = Math.abs(simp.value.re) < 1e-14
     }
 
-    for (const i in this.units) {
-      if (this.units[i].unit) {
-        if (this.units[i].unit.name === 'VA' && isImaginary) {
-          this.units[i].unit = UNITS['VAR']
-        } else if (this.units[i].unit.name === 'VAR' && !isImaginary) {
-          this.units[i].unit = UNITS['VA']
+    for (const i in simp.units) {
+      if (simp.units[i].unit) {
+        if (simp.units[i].unit.name === 'VA' && isImaginary) {
+          simp.units[i].unit = UNITS['VAR']
+        } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
+          simp.units[i].unit = UNITS['VA']
         }
       }
     }
 
     // Now apply the best prefix
     // Units must have only one unit and not have the fixPrefix flag set
-    if (this.units.length === 1 && !this.fixPrefix) {
+    if (simp.units.length === 1 && !simp.fixPrefix) {
       // Units must have integer powers, otherwise the prefix will change the
       // outputted value by not-an-integer-power-of-ten
-      if (Math.abs(this.units[0].power - Math.round(this.units[0].power)) < 1e-14) {
+      if (Math.abs(simp.units[0].power - Math.round(simp.units[0].power)) < 1e-14) {
         // Apply the best prefix
-        this.units[0].prefix = this._bestPrefix()
+        simp.units[0].prefix = simp._bestPrefix()
       }
     }
 
-    const value = this._denormalize(this.value)
-    let str = (this.value !== null) ? format(value, options || {}) : ''
-    const unitStr = this.formatUnits()
-    if (this.value && isComplex(this.value)) {
+    const value = simp._denormalize(simp.value)
+    let str = (simp.value !== null) ? format(value, options || {}) : ''
+    const unitStr = simp.formatUnits()
+    if (simp.value && isComplex(simp.value)) {
       str = '(' + str + ')' // Surround complex values with ( ) to enable better parsing
     }
     if (unitStr.length > 0 && str.length > 0) {
@@ -1367,7 +1365,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       'z': { name: 'z', value: 1e-63, scientific: true },
       'y': { name: 'y', value: 1e-72, scientific: true }
     },
-    BINARY_SHORT: {
+    BINARY_SHORT_SI: {
       '': { name: '', value: 1, scientific: true },
       'k': { name: 'k', value: 1e3, scientific: true },
       'M': { name: 'M', value: 1e6, scientific: true },
@@ -1376,8 +1374,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       'P': { name: 'P', value: 1e15, scientific: true },
       'E': { name: 'E', value: 1e18, scientific: true },
       'Z': { name: 'Z', value: 1e21, scientific: true },
-      'Y': { name: 'Y', value: 1e24, scientific: true },
-
+      'Y': { name: 'Y', value: 1e24, scientific: true }
+    },
+    BINARY_SHORT_IEC: {
+      '': { name: '', value: 1, scientific: true },
       'Ki': { name: 'Ki', value: 1024, scientific: true },
       'Mi': { name: 'Mi', value: Math.pow(1024, 2), scientific: true },
       'Gi': { name: 'Gi', value: Math.pow(1024, 3), scientific: true },
@@ -1387,7 +1387,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       'Zi': { name: 'Zi', value: Math.pow(1024, 7), scientific: true },
       'Yi': { name: 'Yi', value: Math.pow(1024, 8), scientific: true }
     },
-    BINARY_LONG: {
+    BINARY_LONG_SI: {
       '': { name: '', value: 1, scientific: true },
       'kilo': { name: 'kilo', value: 1e3, scientific: true },
       'mega': { name: 'mega', value: 1e6, scientific: true },
@@ -1396,8 +1396,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       'peta': { name: 'peta', value: 1e15, scientific: true },
       'exa': { name: 'exa', value: 1e18, scientific: true },
       'zetta': { name: 'zetta', value: 1e21, scientific: true },
-      'yotta': { name: 'yotta', value: 1e24, scientific: true },
-
+      'yotta': { name: 'yotta', value: 1e24, scientific: true }
+    },
+    BINARY_LONG_IEC: {
+      '': { name: '', value: 1, scientific: true },
       'kibi': { name: 'kibi', value: 1024, scientific: true },
       'mebi': { name: 'mebi', value: Math.pow(1024, 2), scientific: true },
       'gibi': { name: 'gibi', value: Math.pow(1024, 3), scientific: true },
@@ -1413,18 +1415,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
   }
 
-  // Add a prefix list for both short and long prefixes (for example for ohm and bar which support both Mohm and megaohm, mbar and millibar):
-  PREFIXES.SHORTLONG = {}
-  for (let key in PREFIXES.SHORT) {
-    if (PREFIXES.SHORT.hasOwnProperty(key)) {
-      PREFIXES.SHORTLONG[key] = PREFIXES.SHORT[key]
-    }
-  }
-  for (let key in PREFIXES.LONG) {
-    if (PREFIXES.LONG.hasOwnProperty(key)) {
-      PREFIXES.SHORTLONG[key] = PREFIXES.LONG[key]
-    }
-  }
+  PREFIXES.SHORTLONG = Object.assign(PREFIXES.SHORT, PREFIXES.LONG)
+  PREFIXES.BINARY_SHORT = Object.assign(PREFIXES.BINARY_SHORT_SI, PREFIXES.BINARY_SHORT_IEC)
+  PREFIXES.BINARY_LONG = Object.assign(PREFIXES.BINARY_LONG_SI, PREFIXES.BINARY_LONG_IEC)
 
   /* Internally, each unit is represented by a value and a dimension array. The elements of the dimensions array have the following meaning:
    * Index  Dimension
@@ -1531,7 +1524,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   const BASE_UNIT_NONE = {}
 
-  const UNIT_NONE = { name: '', base: BASE_UNIT_NONE, value: 1, offset: 0, dimensions: [0, 0, 0, 0, 0, 0, 0, 0, 0] }
+  const UNIT_NONE = { name: '', base: BASE_UNIT_NONE, value: 1, offset: 0, dimensions: BASE_DIMENSIONS.map(x => 0) }
 
   const UNITS = {
     // length

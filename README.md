@@ -35,7 +35,7 @@ Install math.js using [npm](https://www.npmjs.com/package/mathjs):
 
 > Note that when using mathjs in a TypeScript project, you will have to install type definition files too: `npm install @types/mathjs`.
 
-Or download mathjs via one of the CDN's listed on the downloads page: 
+Or download mathjs via one of the CDN's listed on the downloads page:
 
 &nbsp;&nbsp;&nbsp;&nbsp;[http://mathjs.org/download.html](http://mathjs.org/download.html#download)
 
@@ -71,7 +71,7 @@ math.chain(3)
     .done()  // 14
 ```
 
-See the [Getting Started](http://mathjs.org/docs/getting_started.html) for a more detailed tutorial. 
+See the [Getting Started](http://mathjs.org/docs/getting_started.html) for a more detailed tutorial.
 
 
 ## Browser support
@@ -148,7 +148,7 @@ Thanks Travis CI and BrowserStack for the generous free hosting of this open sou
 
 ## License
 
-Copyright (C) 2013-2018 Jos de Jong <wjosdejong@gmail.com>
+Copyright (C) 2013-2019 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

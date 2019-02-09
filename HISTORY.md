@@ -26,6 +26,49 @@ Non breaking:
 - Fixed `epsilon` setting being applied globally to Complex numbers.
 
 
+# not yet published, version 5.5.0
+
+- Upgrade tiny-emitter to v2.1.0 (#1397).
+
+
+# 2019-01-25, version 5.4.2
+
+- Fix `math.format` not working for BigNumbers with a precision above
+  1025 digits (see #1385). Thanks @ericman314.
+- Fix incorrect LaTeX output of `RelationalNode`. Thanks @rianmcguire.
+- Fixed a bug the methods `map`, `forEach`, `traverse`, and `transform`
+  of `FunctionNode`.
+
+
+# 2019-01-10, version 5.4.1
+
+- Fix #1378: negative bignumbers not formatted correctly.
+- Upgrade fraction.js to version 4.0.12 (#1369).
+
+
+# 2018-12-09, version 5.4.0
+
+- Extended sum.js to accept a dimension input to calculate the sum over a
+  specific axis. Thanks @bnlcas.
+- Fix #1328: objects can't be written multi-line. Thanks @GHolk.
+- Remove side effects caused by `Unit.format` and `Unit.toString`,
+  making changes to the unit on execution. Thanks @ericman314.
+
+
+# 2018-12-03, version 5.3.1
+
+- Fixed #1336: Unit.toSI() returning units with prefix like `mm` instead
+  of `m`. Thanks @ericman314.
+
+
+# 2018-11-29, version 5.3.0
+
+- Implemented function `hasNumericValue`. Thanks @Sathish-kumar-Subramani.
+- Fix #1326: non-ascii character in print.js.
+- Fix #1337: `math.format` not working correctly with `{ precision: 0 }`.
+  Thanks @dkenul.
+
+
 # 2018-10-30, version 5.2.3
 
 - Fixed #1293: non-unicode characters in `escape-latex` giving issues in some
@@ -33,6 +76,7 @@ Non breaking:
 - Fixed incorrect LaTeX output of function `bitNot`, see #1299. Thanks @FSMaxB.
 - Fixed #1304: function `pow` not supporting inputs `pow(Unit, BigNumber)`.
 - Upgraded dependencies (`escape-latex@1.2.0`)
+
 
 # 2018-10-23, version 5.2.2
 
