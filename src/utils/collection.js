@@ -86,7 +86,7 @@ export function reduce (mat, dim, callback) {
   } else {
     return _reduce(mat, dim, callback)
   }
-};
+}
 
 /**
  * Recursively reduce a matrix

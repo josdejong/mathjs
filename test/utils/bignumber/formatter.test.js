@@ -59,14 +59,12 @@ describe('format', function () {
 
     it('auto notation with very high precision', function () {
       const precision = 2000
-      const mymath = math.create({
-        precision: precision
-      })
+      const B = BigNumber.clone({ precision: 2000 })
 
-      const a = mymath.bignumber(1).dividedBy(3)
+      const a = new B(1).dividedBy(3)
 
       const aStr = '0.' + Array(precision + 1).join('3')
-      assert.strictEqual(formatter.format(a), aStr)
+      assert.strictEqual(format(a), aStr)
     })
 
     it('auto notation with precision as second parameter', function () {

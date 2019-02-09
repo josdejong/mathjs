@@ -1,5 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+import math from '../../../src/mainBundle'
+
 const hasNumericValue = math.hasNumericValue
 const bignumber = math.bignumber
 const fraction = math.fraction

@@ -14,6 +14,7 @@ import { createClone } from './function/utils/clone'
 import { createIsInteger } from './function/utils/isInteger'
 import { createIsNegative } from './function/utils/isNegative'
 import { createIsNumeric } from './function/utils/isNumeric'
+import { createHasNumericValue } from './function/utils/hasNumericValue'
 import { createIsPositive } from './function/utils/isPositive'
 import { createIsZero } from './function/utils/isZero'
 import { createIsNaN } from './function/utils/isNaN'
@@ -390,6 +391,7 @@ export const clone = /* #__PURE__ */ createClone({ typed })
 export const isInteger = /* #__PURE__ */ createIsInteger({ typed })
 export const isNegative = /* #__PURE__ */ createIsNegative({ typed })
 export const isNumeric = /* #__PURE__ */ createIsNumeric({ typed })
+export const hasNumericValue = /* #__PURE__ */ createHasNumericValue({ typed, isNumeric })
 export const isPositive = /* #__PURE__ */ createIsPositive({ typed })
 export const isZero = /* #__PURE__ */ createIsZero({ typed })
 export const isNaN = /* #__PURE__ */ createIsNaN({ typed })

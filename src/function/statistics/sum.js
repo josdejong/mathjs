@@ -1,8 +1,7 @@
 'use strict'
 
-import { deepForEach } from '../../utils/collection'
+import { containsCollections, deepForEach, reduce } from '../../utils/collection'
 import { factory } from '../../utils/factory'
-import reduce from '../../utils/collection/reduce'
 import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const name = 'sum'
@@ -71,9 +70,9 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
         case 'number':
           return 0
         case 'BigNumber':
-          return new type.BigNumber(0)
+          return new BigNumber(0)
         case 'Fraction':
-          return new type.Fraction(0)
+          return new Fraction(0)
         default:
           return 0
       }

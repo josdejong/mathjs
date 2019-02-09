@@ -168,8 +168,8 @@ describe('number', function () {
         assert.strictEqual(format(5.6999e-30, { notation, precision: 32 }),
           '0.00000000000000000000000000000570')
 
-        assert.strictEqual(number.format(123.456, { notation, precision: 0 }), '123')
-        assert.strictEqual(number.format(-123.456, { notation, precision: 0 }), '-123')
+        assert.strictEqual(format(123.456, { notation, precision: 0 }), '123')
+        assert.strictEqual(format(-123.456, { notation, precision: 0 }), '-123')
       })
 
       it('exponential notation', function () {
