@@ -313,6 +313,7 @@ import { createMinTransform } from './expression/transform/min.transform'
 import { createRangeTransform } from './expression/transform/range.transform'
 import { createSubsetTransform } from './expression/transform/subset.transform'
 import { createConcatTransform } from './expression/transform/concat.transform'
+import { createSumTransform } from './expression/transform/sum.transform'
 import { MATRIX_OPTIONS, NUMBER_OPTIONS } from './core/function/config'
 
 // create a read-only version of config
@@ -1053,7 +1054,8 @@ const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
   mean: /* #__PURE__ */ createMeanTransform({ typed, add, divide }),
   min: /* #__PURE__ */ createMinTransform({ typed, smaller }),
   range: /* #__PURE__ */ createRangeTransform({ typed, config, matrix, BigNumber }),
-  subset: /* #__PURE__ */ createSubsetTransform({ typed, matrix })
+  subset: /* #__PURE__ */ createSubsetTransform({ typed, matrix }),
+  sum: /* #__PURE__ */ createSumTransform({ typed, config, add, BigNumber, Fraction })
 })
 
 // expression (4)
