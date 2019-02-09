@@ -51,6 +51,11 @@ describe('mainFull', function () {
     })
   })
 
+  it('evaluate should not contain classes', function () {
+    assert.throws(() => { evaluate('Complex') }, /Undefined symbol Complex/)
+    assert.throws(() => { evaluate('SymbolNode') }, /Undefined symbol SymbolNode/)
+  })
+
   it('should export constants', () => {
     assert.strictEqual(pi, Math.PI)
   })

@@ -694,6 +694,8 @@ exports.expectedInstanceStructure = {
       subset: 'Function'
     },
     mathWithTransform: {
+      // note that we don't have classes here,
+      // only functions and constants are allowed in the editor
       ...allFunctions,
       'var': 'Function',
       'typeof': 'Function',
