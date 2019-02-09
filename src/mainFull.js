@@ -903,6 +903,7 @@ const math = /* #__PURE__ */ {
   isNaN,
   isNegative,
   isNumeric,
+  hasNumericValue,
   isPositive,
   isPrime,
   isZero,

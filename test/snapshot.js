@@ -693,7 +693,8 @@ exports.expectedInstanceStructure = {
       mean: 'Function',
       min: 'Function',
       range: 'Function',
-      subset: 'Function'
+      subset: 'Function',
+      sum: 'Function'
     },
     mathWithTransform: {
       // note that we don't have classes here,

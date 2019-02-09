@@ -1,4 +1,4 @@
-module.exports = {
+export const hasNumericValueDocs = {
   'name': 'hasNumericValue',
   'category': 'Utils',
   'syntax': [

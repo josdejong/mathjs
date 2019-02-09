@@ -4,6 +4,7 @@ import { isZeroDocs } from './function/utils/isZero'
 import { isPrimeDocs } from './function/utils/isPrime'
 import { isPositiveDocs } from './function/utils/isPositive'
 import { isNumericDocs } from './function/utils/isNumeric'
+import { hasNumericValueDocs } from './function/utils/hasNumericValue'
 import { isNegativeDocs } from './function/utils/isNegative'
 import { isIntegerDocs } from './function/utils/isInteger'
 import { isNaNDocs } from './function/utils/isNaN'
@@ -508,6 +509,7 @@ export const embeddedDocs = {
   isInteger: isIntegerDocs,
   isNegative: isNegativeDocs,
   isNumeric: isNumericDocs,
+  hasNumericValue: hasNumericValueDocs,
   isPositive: isPositiveDocs,
   isPrime: isPrimeDocs,
   isZero: isZeroDocs,
