@@ -1,7 +1,6 @@
 import { DEFAULT_CONFIG } from './core/config'
 import { createCore } from './core/core'
 import { lazy, traverse, values } from './utils/object'
-import * as all from './factory'
 import { ArgumentsError } from './error/ArgumentsError'
 import { DimensionError } from './error/DimensionError'
 import { IndexError } from './error/IndexError'
@@ -17,10 +16,24 @@ export function core (config) {
   })
 }
 
-export function create (config) {
+/**
+ * Create a mathjs instance from given factory functions and optionally config
+ *
+ * Usage:
+ *
+ *     const mathjs1 = create({ createAdd, createMultiply, ...})
+ *     const config = { number: 'BigNumber' }
+ *     const mathjs2 = create(all, config)
+ *
+ * @param {Object} factories   An object with factory functions
+ * @param {Object} [config]    Optional configuration
+ */
+export function create (factories, config) {
   const math = core(config)
 
-  math.create = create
+  // the create function exposed on the mathjs instance is bound to
+  // the factory functions passed before
+  math.create = create.bind(null, factories)
   math.core = core
 
   // Important: load docs before help
@@ -28,7 +41,7 @@ export function create (config) {
 
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
-  math['import'](values(all))
+  math['import'](values(factories))
 
   // TODO: deprecated since v6.0.0. Clean up some day
   const movedNames = [

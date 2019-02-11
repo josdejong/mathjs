@@ -1237,3 +1237,4 @@ export { ArgumentsError } from './error/ArgumentsError'
 // core
 
 export { core, create } from './mainInstance'
+export { all } from './all'
