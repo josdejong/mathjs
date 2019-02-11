@@ -5,7 +5,8 @@
  */
 
 // load math.js (using node.js)
-const math = require('../index')
+const { create, all } = require('../index')
+const math = create(all)
 
 /**
  * Define new functions and variables
