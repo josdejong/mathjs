@@ -2,11 +2,12 @@
 
 # Function var
 
-Compute the variance of a matrix or a list with values.
+Compute the variance of a matrix or a  list with values.
 In case of a (multi dimensional) array or matrix, the variance over all
-elements will be calculated, unless otherwise specified.
+elements will be calculated.
 
-For a multi dimensional array or matrix, is possible to compute the variance along the rows or columns by specifying the dimension as the second argument.
+Additionally, it is possible to compute the variance along the rows
+or columns of a matrix by specifying the dimension as the second argument.
 
 Optionally, the type of normalization can be specified as the final
 parameter. The parameter `normalization` can be one of the following values:
@@ -35,8 +36,7 @@ math.var(A, dimension, normalization)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`array` | Array &#124; Matrix |  A single matrix or or multiple scalar values.
-`dimension` | number &#124; BigNumber | The dimension along which the variance will be calculated.
+`array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
 `normalization` | string |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
 
 ### Returns

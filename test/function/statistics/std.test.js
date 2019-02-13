@@ -32,7 +32,7 @@ describe('std', function () {
     assert.strictEqual(std([5]), 0)
   })
 
-  it('should return the uncorrected variance from an array', function () {
+  it('should return the uncorrected standard deviation from an array', function () {
     assert.strictEqual(std([2, 4], 'uncorrected'), 1)
     assert.strictEqual(std([2, 4, 6, 8], 'uncorrected'), Math.sqrt(5))
   })
@@ -85,18 +85,18 @@ describe('std', function () {
     [ [190, 20], [210, 220], [230, 240] ]
   ]
 
-  it('should return the variance value along a dimension on a matrix', function () {
-    assert.deepStrictEqual(variance([
+  it('should return the standard deviation value along a dimension on a matrix', function () {
+    assert.deepStrictEqual(std([
       [2, 6],
       [4, 10]], 1), [math.sqrt(8), math.sqrt(18)])
-    assert.deepStrictEqual(variance([
+    assert.deepStrictEqual(std([
       [2, 6],
       [4, 10]], 0), [math.sqrt(2), math.sqrt(8)])
-    assert.deepEqual(variance(inputMatrix, 0),
+    assert.deepEqual(std(inputMatrix, 0),
       [[math.sqrt(6000), math.sqrt(6000)], [math.sqrt(6225), math.sqrt(5825)], [math.sqrt(5825), math.sqrt(5825)]])
-    assert.deepEqual(variance(inputMatrix, 1),
+    assert.deepEqual(std(inputMatrix, 1),
       [[math.sqrt(400.0000000000001), math.sqrt(7599.999999999999)], [math.sqrt(3433.3333333333358), math.sqrt(399.9999999999991)], [math.sqrt(433.3333333333303), math.sqrt(433.3333333333303)], [math.sqrt(399.99999999999636), math.sqrt(14799.999999999996)]])
-    assert.deepEqual(variance(inputMatrix, 2),
+    assert.deepEqual(std(inputMatrix, 2),
       [[math.sqrt(18050), math.sqrt(50), math.sqrt(50)], [math.sqrt(50), math.sqrt(50), math.sqrt(1800)], [math.sqrt(50), math.sqrt(50), math.sqrt(1800)], [math.sqrt(14450), math.sqrt(50), math.sqrt(50)]])
   })
 
@@ -109,8 +109,8 @@ describe('std', function () {
     assert.throws(function () { std(new Unit(5, 'cm'), new Unit(10, 'cm')) }, /Cannot calculate std, unexpected type of argument/)
     assert.throws(function () { std(2, 3, null) }, /Cannot calculate std, unexpected type of argument/)
     assert.throws(function () { std([2, 3, null]) }, /Cannot calculate std, unexpected type of argument/)
-    assert.throws(function () { std([[2, 4, 6], [1, 3, 5]], 'biased', 0) }, /Cannot calculate var, unexpected type of argument/)
-    assert.throws(function () { std([[2, 4, 6], [1, 3, 5]], 0, 0) }, /Cannot calculate var, unexpected type of argument/)
+    assert.throws(function () { std([[2, 4, 6], [1, 3, 5]], 'biased', 0) }, /Cannot calculate std, unexpected type of argument/)
+    assert.throws(function () { std([[2, 4, 6], [1, 3, 5]], 0, 0) }, /Cannot calculate std, unexpected type of argument/)
   })
 
   it('should throw an error if called with an empty array', function () {
