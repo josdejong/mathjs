@@ -2,6 +2,7 @@
 
 const DEFAULT_NORMALIZATION = 'unbiased'
 
+const apply = require('../../utils/collection/apply')
 const deepForEach = require('../../utils/collection/deepForEach')
 const deepMap = require('../../utils/collection/deepMap')
 
@@ -161,38 +162,7 @@ function factory (type, config, load, typed) {
       if (array.length === 0) {
         throw new SyntaxError('Function var requires one or more parameters (0 provided)')
       }
-      let num = 0
-      if (array.isMatrix) {
-        num = array.size()[dim]
-      } else {
-        num = size(array)[dim]
-      }
-      const meanOfSquares = mean(square(array), dim)
-      const squaredMean = square(mean(array, dim))
-      const varDim = subtract(meanOfSquares, squaredMean)
-
-      let correction = 0
-      let biasCorrection = function (val, cor) {
-        try {
-          return multiply(val, cor)
-        } catch (err) {
-          throw improveErrorMessage(err, 'var', val)
-        }
-      }
-      switch (normalization) {
-        case 'uncorrected':
-          return varDim
-        case 'biased':
-          correction = divide(num, num + 1)
-          return deepMap(varDim, (x) => biasCorrection(x, correction), true)
-        case 'unbiased':
-          const zero = type.isBigNumber(meanOfSquares) ? new type.BigNumber(0) : 0
-          correction = (num === 1) ? zero : divide(num, num - 1)
-          return deepMap(varDim, (x) => biasCorrection(x, correction), true)
-        default:
-          throw new Error('Unknown normalization "' + normalization + '". ' +
-          'Choose "unbiased" (default), "uncorrected", or "biased".')
-      }
+      return apply(array, dim, (x) => _var(x, normalization))
     } catch (err) {
       throw improveErrorMessage(err, 'var')
     }
