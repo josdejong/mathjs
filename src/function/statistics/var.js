@@ -4,16 +4,12 @@ const DEFAULT_NORMALIZATION = 'unbiased'
 
 const apply = require('../../utils/collection/apply')
 const deepForEach = require('../../utils/collection/deepForEach')
-const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))
   const subtract = load(require('../arithmetic/subtract'))
   const multiply = load(require('../arithmetic/multiplyScalar'))
   const divide = load(require('../arithmetic/divideScalar'))
-  const mean = load(require('../statistics/mean'))
-  const square = load(require('../arithmetic/square'))
-  const size = load(require('../matrix/size'))
   const isNaN = load(require('../utils/isNaN'))
   const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
@@ -54,8 +50,8 @@ function factory (type, config, load, typed) {
    *
    *     math.var([[1, 2, 3], [4, 5, 6]])      // returns 3.5
    *     math.var([[1, 2, 3], [4, 6, 8]], 0)    // returns [4.5, 8, 12.5]
-   *     math.var([[1, 2, 3], [4, 6, 8]], 1)    // returns [1.0000000000000005, 1.9999999999999964]
-   *     math.var([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.500000000000002, 1.9999999999999982]
+   *     math.var([[1, 2, 3], [4, 6, 8]], 1)    // returns [1, 4]
+   *     math.var([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.5, 2]
    *
    * See also:
    *

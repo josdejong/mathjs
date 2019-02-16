@@ -107,8 +107,8 @@ describe('variance', function () {
     assert.throws(function () { variance(new Unit(5, 'cm'), new Unit(10, 'cm')) }, /Cannot calculate var, unexpected type of argument/)
     assert.throws(function () { variance(2, 3, null) }, /Cannot calculate var, unexpected type of argument/)
     assert.throws(function () { variance([2, 3, null]) }, /Cannot calculate var, unexpected type of argument/)
-    assert.throws(function () { variance([[2, 4, 6], [1, 3, 5]], 'biased', 0) }, /Cannot calculate var, unexpected type of argument/)
-    assert.throws(function () { variance([[2, 4, 6], [1, 3, 5]], 0, 0) }, /Cannot calculate var, unexpected type of argument/)
+    assert.throws(function () { variance([[2, 4, 6], [1, 3, 5]], 'biased', 0) }, /Cannot convert "biased" to a number/)
+    assert.throws(function () { variance([[2, 4, 6], [1, 3, 5]], 0, new Date()) }, /Cannot calculate var, unexpected type of argument/)
   })
 
   it('should throw an error if the axis exceeds the dimension of the matrix')

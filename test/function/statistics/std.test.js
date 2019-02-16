@@ -109,8 +109,8 @@ describe('std', function () {
     assert.throws(function () { std(new Unit(5, 'cm'), new Unit(10, 'cm')) }, /Cannot calculate std, unexpected type of argument/)
     assert.throws(function () { std(2, 3, null) }, /Cannot calculate std, unexpected type of argument/)
     assert.throws(function () { std([2, 3, null]) }, /Cannot calculate std, unexpected type of argument/)
-    assert.throws(function () { std([[2, 4, 6], [1, 3, 5]], 'biased', 0) }, /Cannot calculate std, unexpected type of argument/)
-    assert.throws(function () { std([[2, 4, 6], [1, 3, 5]], 0, 0) }, /Cannot calculate std, unexpected type of argument/)
+    assert.throws(function () { std([[2, 4, 6], [1, 3, 5]], 'biased', 0) }, /Cannot convert "biased" to a number/)
+    assert.throws(function () { std([[2, 4, 6], [1, 3, 5]], 0, new Date()) }, /Cannot calculate std, unexpected type of argument/)
   })
 
   it('should throw an error if called with an empty array', function () {

@@ -2,11 +2,11 @@
 
 # Function var
 
-Compute the variance of a matrix or a  list with values.
+Compute the variance of a matrix or a list with values.
 In case of a (multi dimensional) array or matrix, the variance over all
-elements will be calculated.
+elements will be calculated, unless an axis is specified.
 
-Additionally, it is possible to compute the variance along the rows
+It is possible to compute the variance along the rows
 or columns of a matrix by specifying the dimension as the second argument.
 
 Optionally, the type of normalization can be specified as the final
@@ -56,8 +56,8 @@ math.var([2, 4, 6, 8], 'biased')      // returns 4
 
 math.var([[1, 2, 3], [4, 5, 6]])      // returns 3.5
 math.var([[1, 2, 3], [4, 6, 8]], 0)    // returns [4.5, 8, 12.5]
-math.var([[1, 2, 3], [4, 6, 8]], 1)    // returns [1.0000000000000005, 1.9999999999999964]
-math.var([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.500000000000002, 1.9999999999999982]
+math.var([[1, 2, 3], [4, 6, 8]], 1)    // returns [1, 2]
+math.var([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.5, 2]
 ```
 
 

@@ -2,14 +2,13 @@
 
 # Function std
 
-Compute the standard deviation of a matrix or a  list with values.
-The standard deviations is defined as the square root of the variance:
+Compute the standard deviation of a matrix or a list with values.
+The standard deviation is defined as the square root of the variance:
 `std(A) = sqrt(var(A))`.
 In case of a (multi dimensional) array or matrix, the standard deviation
-over all elements will be calculated by default, unless an axis is specified
-in which case the standard deviation will be computed along that axis.
+will be calculated over all elements by default, unless an axis is specified.
 
-Additionally, it is possible to compute the standard deviation along the rows
+It is possible to compute the standard deviation along the rows
 or columns of a matrix by specifying the dimension as the second argument.
 
 Optionally, the type of normalization can be specified as the final
@@ -54,8 +53,8 @@ math.std([2, 4, 6, 8], 'biased')      // returns 2
 
 math.std([[1, 2, 3], [4, 5, 6]])      // returns 1.8708286933869707
 math.std([[1, 2, 3], [4, 6, 8]], 0)    // returns [2.1213203435596424, 2.8284271247461903, 3.5355339059327378]
-math.std([[1, 2, 3], [4, 6, 8]], 1)    // returns [1.0000000000000002, 1.9999999999999991]
-math.std([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.7071067811865477, 1.4142135623730945]
+math.std([[1, 2, 3], [4, 6, 8]], 1)    // returns [1, 2]
+math.std([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.7071067811865476, 1.4142135623730951]
 ```
 
 
