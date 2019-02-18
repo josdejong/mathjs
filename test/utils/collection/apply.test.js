@@ -1,13 +1,11 @@
-// test bignumber utils
 const assert = require('assert')
 const apply = require('../../../src/utils/collection/apply')
 const sum = function (x) {
   let total = 0
-  for(var i = 0; i < x.length; i++)
-  {
+  for (var i = 0; i < x.length; i++) {
     total += x[i]
   }
-  return total;
+  return total
 }
 
 describe('apply', function () {
