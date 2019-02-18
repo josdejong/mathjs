@@ -21,9 +21,9 @@ module.exports = function (mat, dim, callback) {
   }
 
   if (isMatrix(mat)) {
-    return mat.create(_reduce(mat.valueOf(), dim, callback))
+    return mat.create(_apply(mat.valueOf(), dim, callback))
   } else {
-    return _reduce(mat, dim, callback)
+    return _apply(mat, dim, callback)
   }
 }
 
@@ -35,7 +35,7 @@ module.exports = function (mat, dim, callback) {
  * @returns {Array} ret
  * @private
  */
-function _reduce (mat, dim, callback) {
+function _apply (mat, dim, callback) {
   let i, ret, tran
 
   if (dim <= 0) {
@@ -45,14 +45,14 @@ function _reduce (mat, dim, callback) {
       tran = _switch(mat)
       ret = []
       for (i = 0; i < tran.length; i++) {
-        ret[i] = _reduce(tran[i], dim - 1, callback)
+        ret[i] = _apply(tran[i], dim - 1, callback)
       }
       return ret
     }
   } else {
     ret = []
     for (i = 0; i < mat.length; i++) {
-      ret[i] = _reduce(mat[i], dim - 1, callback)
+      ret[i] = _apply(mat[i], dim - 1, callback)
     }
     return ret
   }
