@@ -40,7 +40,8 @@ describe('createUnit', function () {
   })
 
   it('should override units', function () {
-    math.eval('createUnit({"bar": 1e12 Pa}, {"override":true})')
-    assert.strictEqual(math.eval('1 bar to Pa').toString(), '1e+12 Pa')
+    const math2 = math.create()
+    math2.eval('createUnit({"bar": 1e12 Pa}, {"override":true})')
+    assert.strictEqual(math2.eval('1 bar to Pa').toString(), '1e+12 Pa')
   })
 })

@@ -159,6 +159,8 @@ function factory (type, config, load, typed, math) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   FunctionNode.prototype.forEach = function (callback) {
+    callback(this.fn, 'fn', this)
+
     for (let i = 0; i < this.args.length; i++) {
       callback(this.args[i], 'args[' + i + ']', this)
     }
@@ -171,7 +173,7 @@ function factory (type, config, load, typed, math) {
    * @returns {FunctionNode} Returns a transformed copy of the node
    */
   FunctionNode.prototype.map = function (callback) {
-    const fn = this.fn.map(callback)
+    const fn = this._ifNode(callback(this.fn, 'fn', this))
     const args = []
     for (let i = 0; i < this.args.length; i++) {
       args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this))

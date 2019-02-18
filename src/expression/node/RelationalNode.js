@@ -196,8 +196,8 @@ function factory (type, config, load, typed) {
     const paramStrings = this.params.map(function (p, index) {
       const paramPrecedence = operators.getPrecedence(p, parenthesis)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
-        ? '\\left(' + p.toString(options) + '\right)'
-        : p.toString(options)
+        ? '\\left(' + p.toTex(options) + '\right)'
+        : p.toTex(options)
     })
 
     let ret = paramStrings[0]

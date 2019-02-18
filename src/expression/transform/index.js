@@ -11,5 +11,6 @@ module.exports = [
   require('./range.transform'),
   require('./std.transform'),
   require('./subset.transform'),
+  require('./sum.transform'),
   require('./var.transform')
 ]

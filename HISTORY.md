@@ -1,5 +1,48 @@
 # History
 
+# not yet published, version 5.5.0
+
+- Upgrade tiny-emitter to v2.1.0 (#1397).
+
+
+# 2019-01-25, version 5.4.2
+
+- Fix `math.format` not working for BigNumbers with a precision above
+  1025 digits (see #1385). Thanks @ericman314.
+- Fix incorrect LaTeX output of `RelationalNode`. Thanks @rianmcguire.
+- Fixed a bug the methods `map`, `forEach`, `traverse`, and `transform`
+  of `FunctionNode`.
+
+
+# 2019-01-10, version 5.4.1
+
+- Fix #1378: negative bignumbers not formatted correctly.
+- Upgrade fraction.js to version 4.0.12 (#1369).
+
+
+# 2018-12-09, version 5.4.0
+
+- Extended sum.js to accept a dimension input to calculate the sum over a
+  specific axis. Thanks @bnlcas.
+- Fix #1328: objects can't be written multi-line. Thanks @GHolk.
+- Remove side effects caused by `Unit.format` and `Unit.toString`,
+  making changes to the unit on execution. Thanks @ericman314.
+
+
+# 2018-12-03, version 5.3.1
+
+- Fixed #1336: Unit.toSI() returning units with prefix like `mm` instead
+  of `m`. Thanks @ericman314.
+
+
+# 2018-11-29, version 5.3.0
+
+- Implemented function `hasNumericValue`. Thanks @Sathish-kumar-Subramani.
+- Fix #1326: non-ascii character in print.js.
+- Fix #1337: `math.format` not working correctly with `{ precision: 0 }`.
+  Thanks @dkenul.
+
+
 # 2018-10-30, version 5.2.3
 
 - Fixed #1293: non-unicode characters in `escape-latex` giving issues in some
@@ -7,6 +50,7 @@
 - Fixed incorrect LaTeX output of function `bitNot`, see #1299. Thanks @FSMaxB.
 - Fixed #1304: function `pow` not supporting inputs `pow(Unit, BigNumber)`.
 - Upgraded dependencies (`escape-latex@1.2.0`)
+
 
 # 2018-10-23, version 5.2.2
 
@@ -70,7 +114,7 @@
 - Strongly improved the performance of functions `factorial` for numbers.
   This improves performance of functions `gamma`, `permutation`, and
   `combination` too. See #1170. Thanks @honeybar.
-- Strongly improved the performance of function `reshape`, thanks to a 
+- Strongly improved the performance of function `reshape`, thanks to a
   friend of @honeybar.
 
 
@@ -350,8 +394,8 @@ Non breaking changes:
 ## 2018-01-14, version 3.20.0
 
 - Implement support for 3 or more arguments for operators `+` and `*` in
-  `derivative`. Thanks @HarrySarson. See #1002. 
-- Fixed `simplify` evalution of `simplify` of functions with more than two 
+  `derivative`. Thanks @HarrySarson. See #1002.
+- Fixed `simplify` evalution of `simplify` of functions with more than two
   arguments wrongly: `simplify('f(x, y, z)') evaluated to `f(f(x, y), z)`
   instead of `f(x, y, z)`. Thanks @joelhoover.
 - Fixed `simplify` throwing an error in some cases when simplifying unknown
@@ -364,9 +408,9 @@ Non breaking changes:
 ## 2018-01-06, version 3.19.0
 
 - Extended functions `distance` and `intersect` with support for BigNumbers.
-  Thanks @ovk. 
-- Improvements in function `simplify`: added a rule that allows combining 
-  of like terms in embedded quantities. Thanks @joelhoover. 
+  Thanks @ovk.
+- Improvements in function `simplify`: added a rule that allows combining
+  of like terms in embedded quantities. Thanks @joelhoover.
 
 
 ## 2017-12-28, version 3.18.1
@@ -380,9 +424,9 @@ Non breaking changes:
 - Implemented function `rationalize`. Thanks @paulobuchsbaum.
 - Upgraded dependencies:
   ```
-  decimal.js    7.2.3  →  9.0.1 (no breaking changes affecting mathjs) 
-  fraction.js   4.0.2  →  4.0.4 
-  tiny-emitter  2.0.0  →  2.0.2 
+  decimal.js    7.2.3  →  9.0.1 (no breaking changes affecting mathjs)
+  fraction.js   4.0.2  →  4.0.4
+  tiny-emitter  2.0.0  →  2.0.2
   ```
 - Upgraded dev dependencies.
 - Fixed #975: a wrong example in the docs of lusolve.
@@ -411,7 +455,7 @@ Non breaking changes:
 
 ## 2017-10-01, version 3.16.4
 
-- Fixed #948, #949: function `simplify` returning wrong results or 
+- Fixed #948, #949: function `simplify` returning wrong results or
   running into an infinite recursive loop. Thanks @ericman314.
 - Fixed many small issues in the embedded docs.  Thanks @Schnark.
 
@@ -420,7 +464,7 @@ Non breaking changes:
 
 - Fixed #934: Wrong simplification of unary minus. Thanks @firepick1.
 - Fixed #933: function `simplify` reordering operations. Thanks @firepick1.
-- Fixed #930: function `isNaN` returning wrong result for complex 
+- Fixed #930: function `isNaN` returning wrong result for complex
   numbers having just one of their parts (re/im) being `NaN`.
 - Fixed #929: `FibonacciHeap.isEmpty` returning wrong result.
 
@@ -896,11 +940,11 @@ Non breaking changes:
 ## 2016-01-08, version 2.6.0
 
 - Implemented (complex) units `VA` and `VAR`.
-- Implemented time units for weeks, months, years, decades, centuries, and 
+- Implemented time units for weeks, months, years, decades, centuries, and
   millennia. Thanks @owenversteeg.
-- Implemented new notation `engineering` in function `math.format`. 
+- Implemented new notation `engineering` in function `math.format`.
   Thanks @johnmarinelli.
-- Fixed #523: In some circumstances, matrix subset returned a scalar instead 
+- Fixed #523: In some circumstances, matrix subset returned a scalar instead
   of the correct subset.
 - Fixed #536: A bug in an internal method used for sparse matrices.
 
@@ -909,10 +953,10 @@ Non breaking changes:
 
 - Implemented support for numeric types `Fraction` and `BigNumber` in units.
 - Implemented new method `toNumeric` for units.
-- Implemented new units `arcsec`, `arcsecond`, `arcmin`, `arcminute`. 
+- Implemented new units `arcsec`, `arcsecond`, `arcmin`, `arcminute`.
   Thanks @devdevdata222.
 - Implemented new unit `Herts` (`Hz`). Thanks @SwamWithTurtles.
-- Fixed #485: Scoping issue with variables both used globally as well as in a 
+- Fixed #485: Scoping issue with variables both used globally as well as in a
   function definition.
 - Fixed: Function `number` didn't support `Fraction` as input.
 
@@ -920,34 +964,34 @@ Non breaking changes:
 ## 2015-11-14, version 2.4.2
 
 - Fixed #502: Issue with `format` in some JavaScript engines.
-- Fixed #503: Removed trailing commas and the use of keyword `import` as 
+- Fixed #503: Removed trailing commas and the use of keyword `import` as
   property, as this gives issues with old JavaScript engines.
 
 
 ## 2015-10-29, version 2.4.1
 
 - Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
-- Fixed #490: `nthRoot` returning an error for negative values like 
+- Fixed #490: `nthRoot` returning an error for negative values like
   `nthRoot(-2, 3)`.
 - Fixed #489: an issue with initializing a sparse matrix without data.
   Thanks @Retsam.
-- Fixed: #493: function `combinations` did not throw an exception for 
+- Fixed: #493: function `combinations` did not throw an exception for
   non-integer values of `k`.
 - Fixed: function `import` did not override typed functions when the option
   override was set true.
-- Fixed: added functions `math.sparse` and `math.index` to the reference docs, 
+- Fixed: added functions `math.sparse` and `math.index` to the reference docs,
   they where missing.
-- Fixed: removed memoization from `gamma` and `factorial` functions, this 
+- Fixed: removed memoization from `gamma` and `factorial` functions, this
   could blow up memory.
 
 
 ## 2015-10-09, version 2.4.0
 
-- Added support in the expression parser for mathematical alphanumeric symbols 
-  in the expression parser: unicode range \u{1D400} to \u{1D7FF} excluding 
+- Added support in the expression parser for mathematical alphanumeric symbols
+  in the expression parser: unicode range \u{1D400} to \u{1D7FF} excluding
   invalid code points.
 - Extended function `distance` with more signatures. Thanks @kv-kunalvyas.
-- Fixed a bug in functions `sin` and `cos`, which gave wrong results for 
+- Fixed a bug in functions `sin` and `cos`, which gave wrong results for
   BigNumber integer values around multiples of tau (i.e. `sin(bignumber(7))`).
 - Fixed value of unit `stone`. Thanks @Esvandiary for finding the error.
 
@@ -978,7 +1022,7 @@ Non breaking changes:
 
 ## 2015-08-12, version 2.1.1
 
-- Fixed wrong values of the physical constants `speedOfLight`, `molarMassC12`,  
+- Fixed wrong values of the physical constants `speedOfLight`, `molarMassC12`,
   and `magneticFluxQuantum`. Thanks @ericman314 for finding two of them.
 
 
@@ -986,13 +1030,13 @@ Non breaking changes:
 
 - Implemented derived units (like `110 km/h in m/s`). Thanks @ericman314.
 - Implemented support for electric units. Thanks @ericman314.
-- Implemented about 50 physical constants like `speedOfLight`, `gravity`, etc. 
-- Implemented function `kldivergence` (Kullback-Leibler divergence). 
+- Implemented about 50 physical constants like `speedOfLight`, `gravity`, etc.
+- Implemented function `kldivergence` (Kullback-Leibler divergence).
   Thanks @saromanov.
 - Implemented function `mode`. Thanks @kv-kunalvyas.
 - Added support for unicode characters in the expression parser: greek letters
   and latin letters with accents. See #265.
-- Internal functions `Unit.parse` and `Complex.parse` now throw an Error 
+- Internal functions `Unit.parse` and `Complex.parse` now throw an Error
   instead of returning null when passing invalid input.
 
 
@@ -1009,7 +1053,7 @@ Non breaking changes:
   - allows to create custom bundles
   - functions are composed using `typed-function` and are extensible
 - Implemented support for fractions, powered by the library `fraction.js`.
-- Implemented matrix LU decomposition with partial pivoting and a LU based 
+- Implemented matrix LU decomposition with partial pivoting and a LU based
   linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
 - Implemented a new configuration option `predictable`, which can be set to
   true in order to ensure predictable function output types.
@@ -1017,19 +1061,19 @@ Non breaking changes:
 - Implemented support for adding `toTex` properties to custom functions.
   Thanks @FSMaxB.
 - Implemented support for complex values to `nthRoot`. Thanks @gangachris.
-- Implemented util functions `isInteger`, `isNegative`, `isNumeric`, 
+- Implemented util functions `isInteger`, `isNegative`, `isNumeric`,
   `isPositive`, and `isZero`.
 
 ### breaking changes
 
-- String input is now converted to numbers by default for all functions. 
-- Adding two strings will no longer concatenate them, but will convert the 
+- String input is now converted to numbers by default for all functions.
+- Adding two strings will no longer concatenate them, but will convert the
   strings to numbers and add them.
 - Function `index` does no longer accept an array `[start, end, step]`, but
   instead accepts an array with arbitrary index values. It also accepts
   a `Range` object as input.
 - Function `typeof` no longer returns lower case names, but now returns lower
-  case names for primitives (like `number`, `boolean`, `string`), and 
+  case names for primitives (like `number`, `boolean`, `string`), and
   upper-camel-case for non-primitives (like `Array`, `Complex`, `Function`).
 - Function `import` no longer supports a module name as argument. Instead,
   modules can be loaded using require: `math.import(require('module-name'))`.
@@ -1044,23 +1088,23 @@ Non breaking changes:
 
 ## 2015-07-12, version 1.7.1
 
-- Fixed #397: Inaccuracies in nthRoot for very large values, and wrong results 
+- Fixed #397: Inaccuracies in nthRoot for very large values, and wrong results
   for very small values. (backported from v2)
-- Fixed #405: Parser throws error when defining a function in a multiline 
+- Fixed #405: Parser throws error when defining a function in a multiline
   expression.
 
 
 ## 2015-05-31, version 1.7.0
 
 - Implemented function `quantileSeq` and `partitionSelect`. Thanks @BigFav.
-- Implemented functions `stirlingS2`, `bellNumbers`, `composition`, and 
+- Implemented functions `stirlingS2`, `bellNumbers`, `composition`, and
   `multinomial`. Thanks @devanp92.
 - Improved the performance of `median` (see #373). Thanks @BigFav.
 - Extended the command line interface with a `mode` option to output either
   the expressions result, string representation, or tex representation.
   Thanks @FSMaxB.
-- Fixed #309: Function median mutating the input matrix. Thanks @FSMaxB. 
-- Fixed `Node.transform` not recursing over replaced parts of the 
+- Fixed #309: Function median mutating the input matrix. Thanks @FSMaxB.
+- Fixed `Node.transform` not recursing over replaced parts of the
   node tree (see #349).
 - Fixed #381: issue in docs of `randomInt`.
 
@@ -1075,7 +1119,7 @@ Non breaking changes:
 ## 2015-04-09, version 1.5.2
 
 - Fixed #313: parsed functions did not handle recursive calls correctly.
-- Fixed #251: binary prefix and SI prefix incorrectly used for byte. Now 
+- Fixed #251: binary prefix and SI prefix incorrectly used for byte. Now
   following SI standards (`1 KiB == 1024 B`, `1 kB == 1000 B`).
 - Performance improvements in parsed functions.
 
@@ -1171,7 +1215,7 @@ Non breaking changes:
 
 ## 2014-09-12, version 1.0.1
 
-- Disabled array notation for ranges in a matrix index in the expression parser 
+- Disabled array notation for ranges in a matrix index in the expression parser
   (it is confusing and redundant there).
 - Fixed a regression in the build of function subset not being able to return
   a scalar.
@@ -1184,7 +1228,7 @@ Non breaking changes:
 - Removed `math.distribution` for now, needs some rethinking.
 - `math.number` can convert units to numbers (requires a second argument)
 - Fixed some precedence issues with the range and conversion operators.
-- Fixed an zero-based issue when getting a matrix subset using an index 
+- Fixed an zero-based issue when getting a matrix subset using an index
   containing a matrix.
 
 
@@ -1192,19 +1236,19 @@ Non breaking changes:
 
 - Implemented functions `sort(x [, compare])` and `flatten(x)`.
 - Implemented support for `null` in all functions.
-- Implemented support for "rawArgs" functions in the expression parser. Raw 
+- Implemented support for "rawArgs" functions in the expression parser. Raw
   functions are invoked with unevaluated parameters (nodes).
 - Expressions in the expression parser can now be spread over multiple lines,
   like '2 +\n3'.
 - Changed default value of the option `wrap` of function `math.import` to false.
-- Changed the default value for new entries in a resized matrix when to zero. 
-  To leave new entries uninitialized, use the new constant `math.uninitialized` 
+- Changed the default value for new entries in a resized matrix when to zero.
+  To leave new entries uninitialized, use the new constant `math.uninitialized`
   as default value.
 - Renamed transform property from `__transform__` to `transform`, and documented
   the transform feature.
 - Fixed a bug in `math.import` not applying options when passing a module name.
 - A returned matrix subset is now only squeezed when the `index` consists of
-  scalar values, and no longer for ranges resolving into a single value. 
+  scalar values, and no longer for ranges resolving into a single value.
 
 
 ## 2014-08-03, version 0.26.0
@@ -1215,10 +1259,10 @@ Non breaking changes:
 - Implemented `BigNumber` support for all constants: `pi`, `tau`, `e`, `phi`,
   `E`, `LN2`, `LN10`, `LOG2E`, `LOG10E`, `PI`, `SQRT1_2`, and `SQRT2`.
 - Implemented `BigNumber` support for functions `gcd`, `xgcd`, and `lcm`.
-- Fixed function `gxcd` returning an Array when math.js was configured 
+- Fixed function `gxcd` returning an Array when math.js was configured
   as `{matrix: 'matrix'}`.
 - Multi-line expressions now return a `ResultSet` instead of an `Array`.
-- Implemented transforms (used right now to transform one-based indices to 
+- Implemented transforms (used right now to transform one-based indices to
   zero-based for expressions).
 - When used inside the expression parser, functions `concat`, `min`, `max`,
   and `mean` expect an one-based dimension number.
@@ -1240,22 +1284,22 @@ Non breaking changes:
 ## 2014-07-01, version 0.25.0
 
 - The library now immediately returns a default instance of mathjs, there is
-  no need to instantiate math.js in a separate step unless one ones to set 
-  configuration options: 
-  
+  no need to instantiate math.js in a separate step unless one ones to set
+  configuration options:
+
         // instead of:
         var mathjs = require('mathjs'),  // load math.js
             math = mathjs();             // create an instance
-      
+
         // just do:
         var math = require('mathjs');
 - Implemented support for implicit multiplication, like `math.eval('2a', {a:3})`
-  and `math.eval('(2+3)(1-3)')`. This changes behavior of matrix indexes as 
-  well: an expression like `[...][...]` is not evaluated as taking a subset of 
+  and `math.eval('(2+3)(1-3)')`. This changes behavior of matrix indexes as
+  well: an expression like `[...][...]` is not evaluated as taking a subset of
   the first matrix, but as an implicit multiplication of two matrices.
-- Removed utility function `ifElse`. This function is redundant now the 
+- Removed utility function `ifElse`. This function is redundant now the
   expression parser has a conditional operator `a ? b : c`.
-- Fixed a bug with multiplying a number with a temperature,  
+- Fixed a bug with multiplying a number with a temperature,
   like `math.eval('10 * celsius')`.
 - Fixed a bug with symbols having value `undefined` not being evaluated.
 
@@ -1273,7 +1317,7 @@ Non breaking changes:
 - Objects `Complex`, `Unit`, and `Help` now return their string representation
   when calling `.valueOf()`.
 - Changed the default number of significant digits for BigNumbers from 20 to 64.
-- Changed the behavior of the conditional operator (a ? b : c) to lazy 
+- Changed the behavior of the conditional operator (a ? b : c) to lazy
   evaluating.
 - Fixed imported, wrapped functions not accepting `null` and `undefined` as
   function arguments.
@@ -1282,15 +1326,15 @@ Non breaking changes:
 ## 2014-06-10, version 0.23.0
 
 - Renamed some functions (everything now has a logical, camel case name):
-  - Renamed functions `edivide`, `emultiply`, and `epow` to `dotDivide`, 
-    `dotMultiply`, and `dotPow` respectively. 
+  - Renamed functions `edivide`, `emultiply`, and `epow` to `dotDivide`,
+    `dotMultiply`, and `dotPow` respectively.
   - Renamed functions `smallereq` and `largereq` to `smallerEq` and `largerEq`.
   - Renamed function `unary` to `unaryMinus` and added support for strings.
 - `end` is now a reserved keyword which cannot be used as function or symbol
   name in the expression parser, and is not allowed in the scope against which
   an expression is evaluated.
 - Implemented function `unaryPlus` and unary plus operator.
-- Implemented function `deepEqual` for matrix comparisons. 
+- Implemented function `deepEqual` for matrix comparisons.
 - Added constant `phi`, the golden ratio (`phi = 1.618...`).
 - Added constant `version`, returning the version number of math.js as string.
 - Added unit `drop` (`gtt`).
@@ -1298,10 +1342,10 @@ Non breaking changes:
 - Changed signature of `math.parse(expr, nodes)` to `math.parse(expr, options)`
   where `options: {nodes: Object.<String, Node>}`
 - Removed matrix support from conditional function `ifElse`.
-- Removed automatic assignment of expression results to variable `ans`. 
-  This functionality can be restored by pre- or postprocessing every evaluation, 
+- Removed automatic assignment of expression results to variable `ans`.
+  This functionality can be restored by pre- or postprocessing every evaluation,
   something like:
-  
+
         function evalWithAns (expr, scope) {
           var ans = math.eval(expr, scope);
           if (scope) {
@@ -1318,7 +1362,7 @@ Non breaking changes:
 - Output of matrix multiplication is now consistently squeezed.
 - Added reference documentation in the section /docs/reference.
 - Fixed a bug in multiplying units without value with a number (like `5 * cm`).
-- Fixed a bug in multiplying two matrices containing vectors (worked fine for 
+- Fixed a bug in multiplying two matrices containing vectors (worked fine for
   arrays).
 - Fixed random functions not accepting Matrix as input, and always returning
   a Matrix as output.

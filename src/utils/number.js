@@ -144,7 +144,7 @@ exports.format = function (value, options) {
     // determine precision from options
     if (exports.isNumber(options)) {
       precision = options
-    } else if (options.precision) {
+    } else if (exports.isNumber(options.precision)) {
       precision = options.precision
     }
   }
