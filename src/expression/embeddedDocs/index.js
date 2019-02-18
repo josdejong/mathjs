@@ -303,6 +303,7 @@ function factory (construction, config, load, typed) {
   docs.isInteger = require('./function/utils/isInteger')
   docs.isNegative = require('./function/utils/isNegative')
   docs.isNumeric = require('./function/utils/isNumeric')
+  docs.hasNumericValue = require('./function/utils/hasNumericValue')
   docs.isPositive = require('./function/utils/isPositive')
   docs.isPrime = require('./function/utils/isPrime')
   docs.isZero = require('./function/utils/isZero')

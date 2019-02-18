@@ -1511,6 +1511,7 @@ function factory (type, config, load, typed) {
    */
   function parseObject (state) {
     if (state.token === '{') {
+      openParams(state)
       let key
 
       const properties = {}
@@ -1545,6 +1546,7 @@ function factory (type, config, load, typed) {
       if (state.token !== '}') {
         throw createSyntaxError(state, 'Comma , or bracket } expected after object value')
       }
+      closeParams(state)
       getToken(state)
 
       let node = new ObjectNode(properties)

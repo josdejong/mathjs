@@ -227,7 +227,7 @@ Function | Description
 [math.max(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/max.md) | Compute the maximum value of a matrix or a  list with values.
 [math.mean(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/mean.md) | Compute the mean value of matrix or a list with values.
 [math.median(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/median.md) | Compute the median of a matrix or a list with values.
-[math.min(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/min.md) | Compute the maximum value of a matrix or a  list of values.
+[math.min(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/min.md) | Compute the minimum value of a matrix or a  list of values.
 [math.mode(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/mode.md) | Computes the mode of a set of numbers or a list with values(numbers or characters).
 [math.prod(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/prod.md) | Compute the product of a matrix or a list with values.
 [math.quantileSeq(A,&nbsp;prob[,&nbsp;sorted])](functions/quantileSeq.md) | Compute the prob order quantile of a matrix or a list with values.
@@ -283,6 +283,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.clone(x)](functions/clone.md) | Clone an object.
+[math.hasNumericValue(x)](functions/hasNumericValue.md) | Test whether a value is an numeric value.
 [math.isInteger(x)](functions/isInteger.md) | Test whether a value is an integer number.
 [math.isNaN(x)](functions/isNaN.md) | Test whether a value is NaN (not a number).
 [math.isNegative(x)](functions/isNegative.md) | Test whether a value is negative: smaller than zero.

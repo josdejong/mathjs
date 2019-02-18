@@ -114,7 +114,9 @@ describe('FunctionNode', function () {
     const b = new mymath.expression.node.ConstantNode(5)
     const n = new mymath.expression.node.FunctionNode(s, [a, b])
 
-    let scope = {}
+    let scope = {
+      foo: 'bar'
+    }
     assert.strictEqual(n.compile().eval(scope), 'myFunction(4, 5)')
   })
 
@@ -197,10 +199,11 @@ describe('FunctionNode', function () {
       assert.strictEqual(parent, f)
     })
 
-    assert.strictEqual(nodes.length, 2)
-    assert.strictEqual(nodes[0], c)
-    assert.strictEqual(nodes[1], d)
-    assert.deepStrictEqual(paths, ['args[0]', 'args[1]'])
+    assert.strictEqual(nodes.length, 3)
+    assert.strictEqual(nodes[0], s)
+    assert.strictEqual(nodes[1], c)
+    assert.strictEqual(nodes[2], d)
+    assert.deepStrictEqual(paths, ['fn', 'args[0]', 'args[1]'])
   })
 
   it('should map a FunctionNode', function () {
@@ -223,16 +226,17 @@ describe('FunctionNode', function () {
       return node instanceof SymbolNode && node.name === 'x' ? g : node
     })
 
-    assert.strictEqual(nodes.length, 2)
-    assert.strictEqual(nodes[0], c)
-    assert.strictEqual(nodes[1], d)
-    assert.deepStrictEqual(paths, ['args[0]', 'args[1]'])
+    assert.strictEqual(nodes.length, 3)
+    assert.strictEqual(nodes[0], s)
+    assert.strictEqual(nodes[1], c)
+    assert.strictEqual(nodes[2], d)
+    assert.deepStrictEqual(paths, ['fn', 'args[0]', 'args[1]'])
 
     assert.notStrictEqual(h, f)
+    assert.strictEqual(h.fn.name, 'multiply')
     assert.strictEqual(h.args[0], c)
     assert.strictEqual(h.args[0].args[0], a)
     assert.strictEqual(h.args[0].args[1], b)
-    assert.strictEqual(h.fn.name, 'multiply')
     assert.strictEqual(h.args[1], g)
   })
 
@@ -319,12 +323,18 @@ describe('FunctionNode', function () {
           break
 
         case 2:
+          assert.strictEqual(node, s)
+          assert.strictEqual(path, 'fn')
+          assert.strictEqual(parent, d)
+          break
+
+        case 3:
           assert.strictEqual(node, b)
           assert.strictEqual(path, 'args[0]')
           assert.strictEqual(parent, d)
           break
 
-        case 3:
+        case 4:
           assert.strictEqual(node, c)
           assert.strictEqual(path, 'args[1]')
           assert.strictEqual(parent, d)
@@ -332,7 +342,7 @@ describe('FunctionNode', function () {
       }
     })
 
-    assert.strictEqual(count, 3)
+    assert.strictEqual(count, 4)
   })
 
   it('should clone a FunctionNode', function () {

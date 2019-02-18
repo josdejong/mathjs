@@ -1,6 +1,7 @@
 const assert = require('assert')
 const BigNumber = require('decimal.js')
 const formatter = require('../../../src/utils/bignumber/formatter')
+const math = require('../../../src/main')
 
 describe('format', function () {
   describe('format', function () {
@@ -21,7 +22,9 @@ describe('format', function () {
       assert.strictEqual(formatter.format(new B(0.10400)), '0.104')
       assert.strictEqual(formatter.format(new B(1000)), '1000')
 
+      assert.strictEqual(formatter.format(new B(1)), '1')
       assert.strictEqual(formatter.format(new B(0)), '0')
+      assert.strictEqual(formatter.format(new B(-1)), '-1')
 
       assert.strictEqual(formatter.format(new B(2.4e-7)), '2.4e-7')
       assert.strictEqual(formatter.format(new B(2.4e-6)), '2.4e-6')
@@ -53,6 +56,18 @@ describe('format', function () {
       assert.strictEqual(formatter.format(new B(0.6666e+6)), '6.666e+5')
       assert.strictEqual(formatter.format(new B(0.9999e+6)), '9.999e+5')
       assert.strictEqual(formatter.format(new B(1.111e+6)), '1.111e+6')
+    })
+
+    it('auto notation with very high precision', function () {
+      const precision = 2000
+      const mymath = math.create({
+        precision: precision
+      })
+
+      const a = mymath.bignumber(1).dividedBy(3)
+
+      const aStr = '0.' + Array(precision + 1).join('3')
+      assert.strictEqual(formatter.format(a), aStr)
     })
 
     it('auto notation with precision as second parameter', function () {
