@@ -2,7 +2,7 @@
 
 # Function std
 
-Compute the standard deviation of a matrix or a list with values.
+Compute the standard deviation of a matrix or a  list with values.
 The standard deviations is defined as the square root of the variance:
 `std(A) = sqrt(var(A))`.
 In case of a (multi dimensional) array or matrix, the standard deviation

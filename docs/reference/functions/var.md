@@ -2,7 +2,7 @@
 
 # Function var
 
-Compute the variance of a matrix or a list with values.
+Compute the variance of a matrix or a  list with values.
 In case of a (multi dimensional) array or matrix, the variance over all
 elements will be calculated.
 
