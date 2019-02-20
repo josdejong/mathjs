@@ -1,18 +1,18 @@
 # History
 
-# not yet published, version 5.5.0
+# 2019-02-20, version 5.5.0
 
-- Fix #1401: methods `map` and `forEach` of `SparseMatrix` not working
+- Fixed #1401: methods `map` and `forEach` of `SparseMatrix` not working
   correctly when indexes are unordered.
-- Fix #1404: inconsistent rounding of negative numbers.
+- Fixed #1404: inconsistent rounding of negative numbers.
 - Upgrade tiny-emitter to v2.1.0 (#1397).
 
 
 # 2019-01-25, version 5.4.2
 
-- Fix `math.format` not working for BigNumbers with a precision above
+- Fixed `math.format` not working for BigNumbers with a precision above
   1025 digits (see #1385). Thanks @ericman314.
-- Fix incorrect LaTeX output of `RelationalNode`. Thanks @rianmcguire.
+- Fixed incorrect LaTeX output of `RelationalNode`. Thanks @rianmcguire.
 - Fixed a bug the methods `map`, `forEach`, `traverse`, and `transform`
   of `FunctionNode`.
 
