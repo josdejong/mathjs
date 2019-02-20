@@ -3,12 +3,13 @@
 # Function std
 
 Compute the standard deviation of a matrix or a list with values.
-The standard deviation is defined as the square root of the variance:
+The standard deviations is defined as the square root of the variance:
 `std(A) = sqrt(var(A))`.
 In case of a (multi dimensional) array or matrix, the standard deviation
-will be calculated over all elements by default, unless an axis is specified.
+over all elements will be calculated by default, unless an axis is specified
+in which case the standard deviation will be computed along that axis.
 
-It is possible to compute the standard deviation along the rows
+Additionally, it is possible to compute the standard deviation along the rows
 or columns of a matrix by specifying the dimension as the second argument.
 
 Optionally, the type of normalization can be specified as the final
