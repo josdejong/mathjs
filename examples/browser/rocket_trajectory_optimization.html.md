@@ -12,7 +12,7 @@ File: [rocket_trajectory_optimization.html](rocket_trajectory_optimization.html)
 <head>
   <title>math.js | rocket trajectory optimization</title>
 
-  <script src="https://unpkg.com/mathjs@5.4.2/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@5.5.0/dist/math.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
   <style>

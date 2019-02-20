@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 5.4.2
- * @date    2019-01-25
+ * @version 5.5.0
+ * @date    2019-02-20
  *
  * @license
  * Copyright (C) 2013-2019 Jos de Jong <wjosdejong@gmail.com>
@@ -10245,16 +10245,17 @@ function factory(type, config, load, typed) {
    * Examples:
    *
    *    math.isNumeric(2)                     // returns true
+   *    math.isNumeric('2')                   // returns true
+   *    math.hasNumericValue('2')             // returns true
    *    math.isNumeric(0)                     // returns true
    *    math.isNumeric(math.bignumber(500))   // returns true
    *    math.isNumeric(math.fraction(4))      // returns true
    *    math.isNumeric(math.complex('2-4i')   // returns false
-   *    math.isNumeric('3')                   // returns false
    *    math.isNumeric([2.3, 'foo', false])   // returns [true, false, true]
    *
    * See also:
    *
-   *    isZero, isPositive, isNegative, isInteger
+   *    isZero, isPositive, isNegative, isInteger, hasNumericValue
    *
    * @param {*} x       Value to be tested
    * @return {boolean}  Returns true when `x` is a `number`, `BigNumber`,
@@ -18820,7 +18821,9 @@ function factory(type, config, load, typed) {
    */
 
   var round = typed('round', {
-    'number': Math.round,
+    'number': function number(x) {
+      return _round(x, 0);
+    },
     'number, number': function numberNumber(x, n) {
       if (!isInteger(n)) {
         throw new TypeError(NO_INT);
@@ -25600,11 +25603,12 @@ function factory(construction, config, load, typed) {
   docs.isInteger = __webpack_require__(548);
   docs.isNegative = __webpack_require__(549);
   docs.isNumeric = __webpack_require__(550);
-  docs.isPositive = __webpack_require__(551);
-  docs.isPrime = __webpack_require__(552);
-  docs.isZero = __webpack_require__(553); // docs.print = require('./function/utils/print') // TODO: add documentation for print as soon as the parser supports objects.
+  docs.hasNumericValue = __webpack_require__(551);
+  docs.isPositive = __webpack_require__(552);
+  docs.isPrime = __webpack_require__(553);
+  docs.isZero = __webpack_require__(554); // docs.print = require('./function/utils/print') // TODO: add documentation for print as soon as the parser supports objects.
 
-  docs['typeof'] = __webpack_require__(554);
+  docs['typeof'] = __webpack_require__(555);
   return docs;
 }
 
@@ -32357,6 +32361,7 @@ E.prototype = {
 };
 
 module.exports = E;
+module.exports.TinyEmitter = E;
 
 
 /***/ }),
@@ -32822,8 +32827,8 @@ __webpack_require__(195), // functions
 // load ./expression *after* ./function since we need to
 // attach transforms to functions that are imported there
 __webpack_require__(352), // expression parsing
-__webpack_require__(574), // serialization utility (math.json.reviver)
-__webpack_require__(576) // errors
+__webpack_require__(575), // serialization utility (math.json.reviver)
+__webpack_require__(577) // errors
 ];
 
 /***/ }),
@@ -36933,34 +36938,33 @@ function factory(type, config, load, typed) {
       ptr.push(values.length); // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
 
       var k0 = matrix._ptr[j];
-      var k1 = matrix._ptr[j + 1]; // row pointer
+      var k1 = matrix._ptr[j + 1];
 
-      var p = minRow; // loop k within [k0, k1[
+      if (skipZeros) {
+        // loop k within [k0, k1[
+        for (var k = k0; k < k1; k++) {
+          // row index
+          var i = matrix._index[k]; // check i is in range
 
-      for (var k = k0; k < k1; k++) {
-        // row index
-        var i = matrix._index[k]; // check i is in range
+          if (i >= minRow && i <= maxRow) {
+            // value @ k
+            invoke(matrix._values[k], i - minRow, j - minColumn);
+          }
+        }
+      } else {
+        // create a cache holding all defined values
+        var _values = {};
 
-        if (i >= minRow && i <= maxRow) {
-          // zero values
-          if (!skipZeros) {
-            for (var x = p; x < i; x++) {
-              invoke(0, x - minRow, j - minColumn);
-            }
-          } // value @ k
-
-
-          invoke(matrix._values[k], i - minRow, j - minColumn);
-        } // update pointer
-
-
-        p = i + 1;
-      } // zero values
+        for (var _k = k0; _k < k1; _k++) {
+          var _i4 = matrix._index[_k];
+          _values[_i4] = matrix._values[_k];
+        } // loop over all rows (indexes can be unordered so we can't use that),
+        // and either read the value or zero
 
 
-      if (!skipZeros) {
-        for (var y = p; y <= maxRow; y++) {
-          invoke(0, y - minRow, j - minColumn);
+        for (var _i5 = minRow; _i5 <= maxRow; _i5++) {
+          var value = _i5 in _values ? _values[_i5] : 0;
+          invoke(value, _i5 - minRow, j - minColumn);
         }
       }
     } // store number of values in ptr
@@ -37000,35 +37004,31 @@ function factory(type, config, load, typed) {
     for (var j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
       var k0 = this._ptr[j];
-      var k1 = this._ptr[j + 1]; // column pointer
+      var k1 = this._ptr[j + 1];
 
-      var p = 0; // loop k within [k0, k1[
+      if (skipZeros) {
+        // loop k within [k0, k1[
+        for (var k = k0; k < k1; k++) {
+          // row index
+          var i = this._index[k]; // value @ k
 
-      for (var k = k0; k < k1; k++) {
-        // row index
-        var i = this._index[k]; // check we need to process zeros
+          callback(this._values[k], [i, j], me);
+        }
+      } else {
+        // create a cache holding all defined values
+        var values = {};
 
-        if (!skipZeros) {
-          // zero values
-          for (var x = p; x < i; x++) {
-            callback(0, [x, j], me);
-          } // eslint-disable-line standard/no-callback-literal
-
-        } // value @ k
-
-
-        callback(this._values[k], [i, j], me); // update pointer
-
-        p = i + 1;
-      } // check we need to process zeros
+        for (var _k2 = k0; _k2 < k1; _k2++) {
+          var _i6 = this._index[_k2];
+          values[_i6] = this._values[_k2];
+        } // loop over all rows (indexes can be unordered so we can't use that),
+        // and either read the value or zero
 
 
-      if (!skipZeros) {
-        // zero values
-        for (var y = p; y < rows; y++) {
-          callback(0, [y, j], me);
-        } // eslint-disable-line standard/no-callback-literal
-
+        for (var _i7 = 0; _i7 < rows; _i7++) {
+          var value = _i7 in values ? values[_i7] : 0;
+          callback(value, [_i7, j], me);
+        }
       }
     }
   };
@@ -38550,6 +38550,8 @@ __webpack_require__(192)];
 
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 var endsWith = __webpack_require__(9).endsWith;
 
@@ -40269,7 +40271,7 @@ function factory(type, config, load, typed, math) {
         scientific: true
       }
     },
-    BINARY_SHORT: {
+    BINARY_SHORT_SI: {
       '': {
         name: '',
         value: 1,
@@ -40314,6 +40316,13 @@ function factory(type, config, load, typed, math) {
         name: 'Y',
         value: 1e24,
         scientific: true
+      }
+    },
+    BINARY_SHORT_IEC: {
+      '': {
+        name: '',
+        value: 1,
+        scientific: true
       },
       'Ki': {
         name: 'Ki',
@@ -40356,7 +40365,7 @@ function factory(type, config, load, typed, math) {
         scientific: true
       }
     },
-    BINARY_LONG: {
+    BINARY_LONG_SI: {
       '': {
         name: '',
         value: 1,
@@ -40400,6 +40409,13 @@ function factory(type, config, load, typed, math) {
       'yotta': {
         name: 'yotta',
         value: 1e24,
+        scientific: true
+      }
+    },
+    BINARY_LONG_IEC: {
+      '': {
+        name: '',
+        value: 1,
         scientific: true
       },
       'kibi': {
@@ -40454,22 +40470,11 @@ function factory(type, config, load, typed, math) {
         value: 1e6,
         scientific: true
       }
-    } // Add a prefix list for both short and long prefixes (for example for ohm and bar which support both Mohm and megaohm, mbar and millibar):
-
+    }
   };
-  PREFIXES.SHORTLONG = {};
-
-  for (var key in PREFIXES.SHORT) {
-    if (PREFIXES.SHORT.hasOwnProperty(key)) {
-      PREFIXES.SHORTLONG[key] = PREFIXES.SHORT[key];
-    }
-  }
-
-  for (var _key in PREFIXES.LONG) {
-    if (PREFIXES.LONG.hasOwnProperty(_key)) {
-      PREFIXES.SHORTLONG[_key] = PREFIXES.LONG[_key];
-    }
-  }
+  PREFIXES.SHORTLONG = _extends(PREFIXES.SHORT, PREFIXES.LONG);
+  PREFIXES.BINARY_SHORT = _extends(PREFIXES.BINARY_SHORT_SI, PREFIXES.BINARY_SHORT_IEC);
+  PREFIXES.BINARY_LONG = _extends(PREFIXES.BINARY_LONG_SI, PREFIXES.BINARY_LONG_IEC);
   /* Internally, each unit is represented by a value and a dimension array. The elements of the dimensions array have the following meaning:
    * Index  Dimension
    * -----  ---------
@@ -40485,7 +40490,6 @@ function factory(type, config, load, typed, math) {
    * For example, the unit "298.15 K" is a pure temperature and would have a value of 298.15 and a dimension array of [0, 0, 0, 0, 1, 0, 0, 0, 0]. The unit "1 cal / (gm °C)" can be written in terms of the 9 fundamental dimensions as [length^2] / ([time^2] * [temperature]), and would a value of (after conversion to SI) 4184.0 and a dimensions array of [2, 0, -2, 0, -1, 0, 0, 0, 0].
    *
    */
-
 
   var BASE_DIMENSIONS = ['MASS', 'LENGTH', 'TIME', 'CURRENT', 'TEMPERATURE', 'LUMINOUS_INTENSITY', 'AMOUNT_OF_SUBSTANCE', 'ANGLE', 'BIT'];
   var BASE_UNITS = {
@@ -40566,8 +40570,8 @@ function factory(type, config, load, typed, math) {
     }
   };
 
-  for (var _key2 in BASE_UNITS) {
-    BASE_UNITS[_key2].key = _key2;
+  for (var key in BASE_UNITS) {
+    BASE_UNITS[key].key = key;
   }
 
   var BASE_UNIT_NONE = {};
@@ -42126,9 +42130,9 @@ function factory(type, config, load, typed, math) {
 
 
   Unit.getUnitSystem = function () {
-    for (var _key3 in UNIT_SYSTEMS) {
-      if (UNIT_SYSTEMS[_key3] === currentUnitSystem) {
-        return _key3;
+    for (var _key in UNIT_SYSTEMS) {
+      if (UNIT_SYSTEMS[_key] === currentUnitSystem) {
+        return _key;
       }
     }
   };
@@ -42171,8 +42175,8 @@ function factory(type, config, load, typed, math) {
   }; // Add dimensions to each built-in unit
 
 
-  for (var _key4 in UNITS) {
-    var unit = UNITS[_key4];
+  for (var _key2 in UNITS) {
+    var unit = UNITS[_key2];
     unit.dimensions = unit.base.dimensions;
   } // Create aliases
 
@@ -42182,9 +42186,9 @@ function factory(type, config, load, typed, math) {
       var _unit2 = UNITS[ALIASES[name]];
       var alias = {};
 
-      for (var _key5 in _unit2) {
-        if (_unit2.hasOwnProperty(_key5)) {
-          alias[_key5] = _unit2[_key5];
+      for (var _key3 in _unit2) {
+        if (_unit2.hasOwnProperty(_key3)) {
+          alias[_key3] = _unit2[_key3];
         }
       }
 
@@ -42241,14 +42245,14 @@ function factory(type, config, load, typed, math) {
 
 
     if (options && options.override) {
-      for (var _key6 in obj) {
-        if (obj.hasOwnProperty(_key6)) {
-          Unit.deleteUnit(_key6);
+      for (var _key4 in obj) {
+        if (obj.hasOwnProperty(_key4)) {
+          Unit.deleteUnit(_key4);
         }
 
-        if (obj[_key6].aliases) {
-          for (var i = 0; i < obj[_key6].aliases.length; i++) {
-            Unit.deleteUnit(obj[_key6].aliases[i]);
+        if (obj[_key4].aliases) {
+          for (var i = 0; i < obj[_key4].aliases.length; i++) {
+            Unit.deleteUnit(obj[_key4].aliases[i]);
           }
         }
       }
@@ -42257,9 +42261,9 @@ function factory(type, config, load, typed, math) {
 
     var lastUnit;
 
-    for (var _key7 in obj) {
-      if (obj.hasOwnProperty(_key7)) {
-        lastUnit = Unit.createUnitSingle(_key7, obj[_key7]);
+    for (var _key5 in obj) {
+      if (obj.hasOwnProperty(_key5)) {
+        lastUnit = Unit.createUnitSingle(_key5, obj[_key5]);
       }
     }
 
@@ -42451,9 +42455,9 @@ function factory(type, config, load, typed, math) {
       var aliasName = aliases[_i8];
       var _alias = {};
 
-      for (var _key8 in newUnit) {
-        if (newUnit.hasOwnProperty(_key8)) {
-          _alias[_key8] = newUnit[_key8];
+      for (var _key6 in newUnit) {
+        if (newUnit.hasOwnProperty(_key6)) {
+          _alias[_key6] = newUnit[_key6];
         }
       }
 
@@ -42970,7 +42974,7 @@ exports.math = true; // request access to the math namespace
 /* 194 */
 /***/ (function(module, exports) {
 
-module.exports = '5.4.2'; // Note: This file is automatically generated when building math.js.
+module.exports = '5.5.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 
 /***/ }),
@@ -57776,6 +57780,8 @@ function factory(type, config, load, typed) {
   /**
    * Test whether a value is an numeric value.
    *
+   * In case of a string, true is returned if the string contains a numeric value.
+   *
    * Syntax:
    *
    *     math.hasNumericValue(x)
@@ -57783,16 +57789,17 @@ function factory(type, config, load, typed) {
    * Examples:
    *
    *    math.hasNumericValue(2)                     // returns true
+   *    math.hasNumericValue('2')                   // returns true
+   *    math.isNumeric('2')                         // returns false
    *    math.hasNumericValue(0)                     // returns true
    *    math.hasNumericValue(math.bignumber(500))   // returns true
    *    math.hasNumericValue(math.fraction(4))      // returns true
    *    math.hasNumericValue(math.complex('2-4i')   // returns false
-   *    math.hasNumericValue('3')                   // returns true
    *    math.hasNumericValue([2.3, 'foo', false])   // returns [true, false, true]
    *
    * See also:
    *
-   *    isZero, isPositive, isNegative, isInteger
+   *    isZero, isPositive, isNegative, isInteger, isNumeric
    *
    * @param {*} x       Value to be tested
    * @return {boolean}  Returns true when `x` is a `number`, `BigNumber`,
@@ -57914,7 +57921,7 @@ exports.factory = factory;
 
 module.exports = [// Note that the docs folder is called "embeddedDocs" and not "docs" to prevent issues
 // with yarn autoclean. See https://github.com/josdejong/mathjs/issues/969
-__webpack_require__(148), __webpack_require__(555), __webpack_require__(559), __webpack_require__(561), __webpack_require__(573), __webpack_require__(43), __webpack_require__(152)];
+__webpack_require__(148), __webpack_require__(556), __webpack_require__(560), __webpack_require__(562), __webpack_require__(574), __webpack_require__(43), __webpack_require__(152)];
 
 /***/ }),
 /* 353 */
@@ -60485,12 +60492,25 @@ module.exports = {
   'category': 'Utils',
   'syntax': ['isNumeric(x)'],
   'description': 'Test whether a value is a numeric value. ' + 'Returns true when the input is a number, BigNumber, Fraction, or boolean.',
-  'examples': ['isNumeric(2)', 'isNumeric(0)', 'isNumeric(bignumber(500))', 'isNumeric(fraction(0.125))', 'isNumeric("3")', 'isNumeric(2 + 3i)', 'isNumeric([2.3, "foo", false])'],
-  'seealso': ['isInteger', 'isZero', 'isNegative', 'isPositive', 'isNaN']
+  'examples': ['isNumeric(2)', 'isNumeric("2")', 'hasNumericValue("2")', 'isNumeric(0)', 'isNumeric(bignumber(500))', 'isNumeric(fraction(0.125))', 'isNumeric(2 + 3i)', 'isNumeric([2.3, "foo", false])'],
+  'seealso': ['isInteger', 'isZero', 'isNegative', 'isPositive', 'isNaN', 'hasNumericValue']
 };
 
 /***/ }),
 /* 551 */
+/***/ (function(module, exports) {
+
+module.exports = {
+  'name': 'hasNumericValue',
+  'category': 'Utils',
+  'syntax': ['hasNumericValue(x)'],
+  'description': 'Test whether a value is an numeric value. ' + 'In case of a string, true is returned if the string contains a numeric value.',
+  'examples': ['hasNumericValue(2)', 'hasNumericValue("2")', 'isNumeric("2")', 'hasNumericValue(0)', 'hasNumericValue(bignumber(500))', 'hasNumericValue(fraction(0.125))', 'hasNumericValue(2 + 3i)', 'hasNumericValue([2.3, "foo", false])'],
+  'seealso': ['isInteger', 'isZero', 'isNegative', 'isPositive', 'isNaN', 'isNumeric']
+};
+
+/***/ }),
+/* 552 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -60503,7 +60523,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 552 */
+/* 553 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -60516,7 +60536,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 553 */
+/* 554 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -60529,7 +60549,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 554 */
+/* 555 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -60542,16 +60562,16 @@ module.exports = {
 };
 
 /***/ }),
-/* 555 */
+/* 556 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = [__webpack_require__(556), __webpack_require__(557), __webpack_require__(558), __webpack_require__(123), __webpack_require__(151)];
+module.exports = [__webpack_require__(557), __webpack_require__(558), __webpack_require__(559), __webpack_require__(123), __webpack_require__(151)];
 
 /***/ }),
-/* 556 */
+/* 557 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60612,7 +60632,7 @@ exports.name = 'compile';
 exports.factory = factory;
 
 /***/ }),
-/* 557 */
+/* 558 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60681,7 +60701,7 @@ exports.name = 'eval';
 exports.factory = factory;
 
 /***/ }),
-/* 558 */
+/* 559 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60756,16 +60776,16 @@ exports.name = 'help';
 exports.factory = factory;
 
 /***/ }),
-/* 559 */
+/* 560 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = [__webpack_require__(107), __webpack_require__(110), __webpack_require__(111), __webpack_require__(112), __webpack_require__(113), __webpack_require__(57), __webpack_require__(115), __webpack_require__(114), __webpack_require__(68), __webpack_require__(16), __webpack_require__(116), __webpack_require__(58), __webpack_require__(67), __webpack_require__(117), __webpack_require__(118), __webpack_require__(53), __webpack_require__(560)];
+module.exports = [__webpack_require__(107), __webpack_require__(110), __webpack_require__(111), __webpack_require__(112), __webpack_require__(113), __webpack_require__(57), __webpack_require__(115), __webpack_require__(114), __webpack_require__(68), __webpack_require__(16), __webpack_require__(116), __webpack_require__(58), __webpack_require__(67), __webpack_require__(117), __webpack_require__(118), __webpack_require__(53), __webpack_require__(561)];
 
 /***/ }),
-/* 560 */
+/* 561 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60788,16 +60808,16 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 561 */
+/* 562 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = [__webpack_require__(562), __webpack_require__(563), __webpack_require__(564), __webpack_require__(565), __webpack_require__(566), __webpack_require__(567), __webpack_require__(568), __webpack_require__(569), __webpack_require__(570), __webpack_require__(571), __webpack_require__(572)];
+module.exports = [__webpack_require__(563), __webpack_require__(564), __webpack_require__(565), __webpack_require__(566), __webpack_require__(567), __webpack_require__(568), __webpack_require__(569), __webpack_require__(570), __webpack_require__(571), __webpack_require__(572), __webpack_require__(573)];
 
 /***/ }),
-/* 562 */
+/* 563 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60842,7 +60862,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 563 */
+/* 564 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60935,7 +60955,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 564 */
+/* 565 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61013,7 +61033,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 565 */
+/* 566 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61066,7 +61086,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 566 */
+/* 567 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61160,7 +61180,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 567 */
+/* 568 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61207,7 +61227,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 568 */
+/* 569 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61254,7 +61274,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 569 */
+/* 570 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61301,7 +61321,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 570 */
+/* 571 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61335,7 +61355,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 571 */
+/* 572 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61368,7 +61388,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 572 */
+/* 573 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61415,7 +61435,7 @@ exports.path = 'expression.transform';
 exports.factory = factory;
 
 /***/ }),
-/* 573 */
+/* 574 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61554,16 +61574,16 @@ exports.path = 'type';
 exports.factory = factory;
 
 /***/ }),
-/* 574 */
+/* 575 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = [__webpack_require__(575)];
+module.exports = [__webpack_require__(576)];
 
 /***/ }),
-/* 575 */
+/* 576 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61593,7 +61613,7 @@ exports.factory = factory;
 exports.math = true; // request the math namespace as fifth argument
 
 /***/ }),
-/* 576 */
+/* 577 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

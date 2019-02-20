@@ -8,6 +8,8 @@ layout: default
 
 Test whether a value is an numeric value.
 
+In case of a string, true is returned if the string contains a numeric value.
+
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
@@ -32,11 +34,12 @@ boolean | Returns true when `x` is a `number`, `BigNumber`, `Fraction`, `Boolean
 
 ```js
 math.hasNumericValue(2)                     // returns true
+math.hasNumericValue('2')                   // returns true
+math.isNumeric('2')                         // returns false
 math.hasNumericValue(0)                     // returns true
 math.hasNumericValue(math.bignumber(500))   // returns true
 math.hasNumericValue(math.fraction(4))      // returns true
 math.hasNumericValue(math.complex('2-4i')   // returns false
-math.hasNumericValue('3')                   // returns true
 math.hasNumericValue([2.3, 'foo', false])   // returns [true, false, true]
 ```
 
@@ -46,4 +49,5 @@ math.hasNumericValue([2.3, 'foo', false])   // returns [true, false, true]
 [isZero](isZero.html),
 [isPositive](isPositive.html),
 [isNegative](isNegative.html),
-[isInteger](isInteger.html)
+[isInteger](isInteger.html),
+[isNumeric](isNumeric.html)

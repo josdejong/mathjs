@@ -4,11 +4,19 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20190220-version-550">2019-02-20, version 5.5.0 <a href="#20190220-version-550" title="Permalink">#</a></h1>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1401">#1401</a>: methods `map` and `forEach` of `SparseMatrix` not working
+  correctly when indexes are unordered.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1404">#1404</a>: inconsistent rounding of negative numbers.
+- Upgrade tiny-emitter to v2.1.0 (#1397).
+
+
 <h1 id="20190125-version-542">2019-01-25, version 5.4.2 <a href="#20190125-version-542" title="Permalink">#</a></h1>
 
-- Fix `math.format` not working for BigNumbers with a precision above
+- Fixed `math.format` not working for BigNumbers with a precision above
   1025 digits (see <a href="https://github.com/josdejong/mathjs/issues/1385">#1385</a>). Thanks <a href="https://github.com/ericman314">@ericman314</a>.
-- Fix incorrect LaTeX output of `RelationalNode`. Thanks <a href="https://github.com/rianmcguire">@rianmcguire</a>.
+- Fixed incorrect LaTeX output of `RelationalNode`. Thanks <a href="https://github.com/rianmcguire">@rianmcguire</a>.
 - Fixed a bug the methods `map`, `forEach`, `traverse`, and `transform`
   of `FunctionNode`.
 
