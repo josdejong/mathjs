@@ -48,7 +48,9 @@ function factory (type, config, load, typed) {
    */
   const round = typed('round', {
 
-    'number': Math.round,
+    'number': function (x) {
+      return _round(x, 0)
+    },
 
     'number, number': function (x, n) {
       if (!isInteger(n)) { throw new TypeError(NO_INT) }

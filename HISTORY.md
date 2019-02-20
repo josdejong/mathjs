@@ -4,6 +4,7 @@
 
 - Fix #1401: methods `map` and `forEach` of `SparseMatrix` not working
   correctly when indexes are unordered.
+- Fix #1404: inconsistent rounding of negative numbers.
 - Upgrade tiny-emitter to v2.1.0 (#1397).
 
 
