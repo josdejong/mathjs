@@ -9,7 +9,7 @@ layout: default
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1401">#1401</a>: methods `map` and `forEach` of `SparseMatrix` not working
   correctly when indexes are unordered.
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1404">#1404</a>: inconsistent rounding of negative numbers.
-- Upgrade tiny-emitter to v2.1.0 (#1397).
+- Upgrade tiny-emitter to v2.1.0  <a href="https://github.com/josdejong/mathjs/issues/1397">#1397</a>).
 
 
 <h1 id="20190125-version-542">2019-01-25, version 5.4.2 <a href="#20190125-version-542" title="Permalink">#</a></h1>
@@ -24,7 +24,7 @@ layout: default
 <h1 id="20190110-version-541">2019-01-10, version 5.4.1 <a href="#20190110-version-541" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1378">#1378</a>: negative bignumbers not formatted correctly.
-- Upgrade fraction.js to version 4.0.12 (#1369).
+- Upgrade fraction.js to version 4.0.12  <a href="https://github.com/josdejong/mathjs/issues/1369">#1369</a>).
 
 
 <h1 id="20181209-version-540">2018-12-09, version 5.4.0 <a href="#20181209-version-540" title="Permalink">#</a></h1>
