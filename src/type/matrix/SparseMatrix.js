@@ -1306,6 +1306,83 @@ function factory (type, config, load, typed) {
   }
 
   /**
+   * Return column in Matrix.
+   *
+   * @memberOf SparseMatrix
+   * @param {number} column  Matrix column index
+   *
+   * @return {SparseMatrix}  A column from Matrix
+   */
+  SparseMatrix.prototype.column = function (column) {
+    // validate index
+    validateIndex(column, this._size[1])
+
+    // check dimensions
+    if (this._size.length !== 2) {
+      throw new Error('Only two dimensional matrix is supported')
+    }
+
+    const values = []
+    const index = []
+    const ptr = [0, 0]
+    const sparseColumn = new SparseMatrix({
+      values: values,
+      index: index,
+      ptr: ptr,
+      size: [this._size[0], 1],
+      datatype: this._datatype
+    })
+
+    for (let i = this._ptr[column]; i < this._ptr[column + 1]; i += 1) {
+      sparseColumn.set([this._index[i], 0], this._values[i])
+    }
+
+    return sparseColumn
+  }
+
+  /**
+   * Return row in Matrix.
+   *
+   * @memberOf SparseMatrix
+   * @param {number} row  Matrix row index
+   *
+   * @return {SparseMatrix}  A row from Matrix
+   */
+  SparseMatrix.prototype.row = function (row) {
+    // validate index
+    validateIndex(row, this._size[0])
+
+    // check dimensions
+    if (this._size.length !== 2) {
+      throw new Error('Only two dimensional matrix is supported')
+    }
+
+    const values = []
+    const index = []
+    const ptr = []
+    for (let i = 0; i <= this._size[1]; i += 1) { ptr.push(0) }
+    const sparseRow = new SparseMatrix({
+      values: values,
+      index: index,
+      ptr: ptr,
+      size: [1, this._size[1]],
+      datatype: this._datatype
+    })
+
+    let ptrIndex = 0
+    for (let i = 0; i < this._index.length; i += 1) {
+      if (this._index[i] === row) {
+        while (this._ptr[ptrIndex] <= i) {
+          ptrIndex += 1
+        }
+        sparseRow.set([0, ptrIndex - 1], this._values[i])
+      }
+    }
+
+    return sparseRow
+  }
+
+  /**
    * Loop rows with data in column j.
    *
    * @param {number} j            Column

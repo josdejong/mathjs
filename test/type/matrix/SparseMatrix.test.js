@@ -2130,4 +2130,82 @@ describe('SparseMatrix', function () {
         ])
     })
   })
+
+  describe('row', function () {
+    const m = new SparseMatrix(
+      [
+        [0, 2, 0, 0, 0],
+        [0, 1, 0, 2, 4],
+        [0, 0, 0, 0, 0],
+        [8, 4, 0, 3, 0],
+        [0, 0, 0, 6, 0]
+      ])
+
+    it('should return the first row', function () {
+      const r = m.row(0)
+      assert.deepStrictEqual(
+        r.valueOf(), [[0, 2, 0, 0, 0]]
+      )
+    })
+
+    it('should return the last row', function () {
+      const r = m.row(4)
+      assert.deepStrictEqual(
+        r.valueOf(), [[0, 0, 0, 6, 0]]
+      )
+    })
+
+    it('should return an intermediate row', function () {
+      const r = m.row(1)
+      assert.deepStrictEqual(
+        r.valueOf(), [[0, 1, 0, 2, 4]]
+      )
+    })
+
+    it('should return an empty row', function () {
+      const r = m.row(2)
+      assert.deepStrictEqual(
+        r.valueOf(), [[0, 0, 0, 0, 0]]
+      )
+    })
+  })
+
+  describe('column', function () {
+    const m = new SparseMatrix(
+      [
+        [0, 2, 0, 0, 0],
+        [0, 1, 0, 2, 4],
+        [0, 0, 0, 0, 0],
+        [8, 4, 0, 3, 0],
+        [0, 0, 0, 6, 0]
+      ])
+
+    it('should return the first column', function () {
+      const c = m.column(0)
+      assert.deepStrictEqual(
+        c.valueOf(), [[0], [0], [0], [8], [0]]
+      )
+    })
+
+    it('should return the last column', function () {
+      const c = m.column(4)
+      assert.deepStrictEqual(
+        c.valueOf(), [[0], [4], [0], [0], [0]]
+      )
+    })
+
+    it('should return an intermediate column', function () {
+      const c = m.column(1)
+      assert.deepStrictEqual(
+        c.valueOf(), [[2], [1], [0], [4], [0]]
+      )
+    })
+
+    it('should return an empty column', function () {
+      const c = m.column(2)
+      assert.deepStrictEqual(
+        c.valueOf(), [[0], [0], [0], [0], [0]]
+      )
+    })
+  })
 })
