@@ -4,6 +4,8 @@
 
 Test whether a value is an numeric value.
 
+In case of a string, true is returned if the string contains a numeric value.
+
 
 ## Syntax
 
@@ -28,11 +30,12 @@ boolean | Returns true when `x` is a `number`, `BigNumber`, `Fraction`, `Boolean
 
 ```js
 math.hasNumericValue(2)                     // returns true
+math.hasNumericValue('2')                   // returns true
+math.isNumeric('2')                         // returns false
 math.hasNumericValue(0)                     // returns true
 math.hasNumericValue(math.bignumber(500))   // returns true
 math.hasNumericValue(math.fraction(4))      // returns true
 math.hasNumericValue(math.complex('2-4i')   // returns false
-math.hasNumericValue('3')                   // returns true
 math.hasNumericValue([2.3, 'foo', false])   // returns [true, false, true]
 ```
 
@@ -42,4 +45,5 @@ math.hasNumericValue([2.3, 'foo', false])   // returns [true, false, true]
 [isZero](isZero.md),
 [isPositive](isPositive.md),
 [isNegative](isNegative.md),
-[isInteger](isInteger.md)
+[isInteger](isInteger.md),
+[isNumeric](isNumeric.md)
