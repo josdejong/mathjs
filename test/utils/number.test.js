@@ -86,6 +86,8 @@ describe('number', function () {
     assert.strictEqual(number.toFixed(-0.005555, 4), '-0.0056')
     assert.strictEqual(number.toFixed(-0.005555, 8), '-0.00555500')
     assert.strictEqual(number.toFixed(2.135, 2), '2.14')
+    assert.strictEqual(number.toFixed(2.5, 0), '3')
+    assert.strictEqual(number.toFixed(-2.5, 0), '-3')
   })
 
   it('should format a number using toPrecision', function () {

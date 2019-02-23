@@ -16,6 +16,13 @@ describe('round', function () {
     approx.equal(round(math.pi, 6), 3.141593)
     approx.equal(round(1234.5678, 2), 1234.57)
     approx.equal(round(2.135, 2), 2.14)
+
+    assert.strictEqual(round(2.7), 3)
+    assert.strictEqual(round(2.5), 3)
+    assert.strictEqual(round(2.5, 0), 3)
+    assert.strictEqual(round(-2.5), -3)
+    assert.strictEqual(round(-2.7), -3)
+    assert.strictEqual(round(-2.5, 0), -3)
   })
 
   it('should round booleans (yeah, not really useful but it should be supported)', function () {
@@ -50,6 +57,10 @@ describe('round', function () {
 
   it('should round bignumbers', function () {
     assert.deepStrictEqual(round(bignumber(2.7)), bignumber(3))
+    assert.deepStrictEqual(round(bignumber(2.5)), bignumber(3))
+    assert.deepStrictEqual(round(bignumber(-2.5)), bignumber(-3))
+    assert.deepStrictEqual(round(bignumber(2.5), 0), bignumber(3))
+    assert.deepStrictEqual(round(bignumber(-2.5), 0), bignumber(-3))
     assert.deepStrictEqual(round(bignumber(2.1)), bignumber(2))
     assert.deepStrictEqual(round(bignumber(2.123456), bignumber(3)), bignumber(2.123))
     assert.deepStrictEqual(round(bignumber(2.123456), 3), bignumber(2.123))
