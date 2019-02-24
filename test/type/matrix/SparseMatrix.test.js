@@ -2141,6 +2141,24 @@ describe('SparseMatrix', function () {
         [0, 0, 0, 6, 0]
       ])
 
+    it('should throw an error if the column is out of range', function () {
+      assert.throws(function () {
+        const r = m.row(9)
+        assert.deepStrictEqual(
+          r.valueOf(), [[0], [0], [0], [0], [0]]
+        )
+      }, /IndexError: Index out of range \(9 > 4\)/)
+    })
+
+    it('should throw an error if the column is out of range', function () {
+      assert.throws(function () {
+        const r = m.row('x')
+        assert.deepStrictEqual(
+          r.valueOf(), [[0], [0], [0], [0], [0]]
+        )
+      }, /TypeError: Index must be an integer \(value: x\)/)
+    })
+
     it('should return the first row', function () {
       const r = m.row(0)
       assert.deepStrictEqual(
@@ -2179,6 +2197,24 @@ describe('SparseMatrix', function () {
         [8, 4, 0, 3, 0],
         [0, 0, 0, 6, 0]
       ])
+
+    it('should throw an error if the column is out of range', function () {
+      assert.throws(function () {
+        const c = m.column(9)
+        assert.deepStrictEqual(
+          c.valueOf(), [[0], [0], [0], [0], [0]]
+        )
+      }, /IndexError: Index out of range \(9 > 4\)/)
+    })
+
+    it('should throw an error if the column is out of range', function () {
+      assert.throws(function () {
+        const c = m.column('x')
+        assert.deepStrictEqual(
+          c.valueOf(), [[0], [0], [0], [0], [0]]
+        )
+      }, /TypeError: Index must be an integer \(value: x\)/)
+    })
 
     it('should return the first column', function () {
       const c = m.column(0)
