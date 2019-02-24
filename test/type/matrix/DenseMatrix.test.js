@@ -2,7 +2,6 @@ const assert = require('assert')
 const math = require('../../../src/main')
 const Matrix = math.type.Matrix
 const DenseMatrix = math.type.DenseMatrix
-const SparseMatrix = math.type.SparseMatrix
 const Complex = math.type.Complex
 const Range = math.type.Range
 
@@ -88,8 +87,8 @@ describe('DenseMatrix', function () {
       assert.deepStrictEqual(m1._datatype, m2._datatype)
     })
 
-    it('should create a DenseMatrix from a SparseMatrix', function () {
-      const m1 = new SparseMatrix(
+    it('should create a DenseMatrix from a DenseMatrix', function () {
+      const m1 = new DenseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
@@ -101,8 +100,8 @@ describe('DenseMatrix', function () {
       assert.deepStrictEqual(m1.toArray(), m2.toArray())
     })
 
-    it('should create a DenseMatrix from a SparseMatrix, number datatype', function () {
-      const m1 = new SparseMatrix(
+    it('should create a DenseMatrix from a DenseMatrix, number datatype', function () {
+      const m1 = new DenseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
@@ -1307,6 +1306,84 @@ describe('DenseMatrix', function () {
           [0, 2, 0],
           [10, 0, 0]
         ])
+    })
+
+    describe('row', function () {
+      const m = new DenseMatrix(
+        [
+          [0, 2, 0, 0, 0],
+          [0, 1, 0, 2, 4],
+          [0, 0, 0, 0, 0],
+          [8, 4, 0, 3, 0],
+          [0, 0, 0, 6, 0]
+        ])
+
+      it('should return the first row', function () {
+        const r = m.row(0)
+        assert.deepStrictEqual(
+          r.valueOf(), [[0, 2, 0, 0, 0]]
+        )
+      })
+
+      it('should return the last row', function () {
+        const r = m.row(4)
+        assert.deepStrictEqual(
+          r.valueOf(), [[0, 0, 0, 6, 0]]
+        )
+      })
+
+      it('should return an intermediate row', function () {
+        const r = m.row(1)
+        assert.deepStrictEqual(
+          r.valueOf(), [[0, 1, 0, 2, 4]]
+        )
+      })
+
+      it('should return an empty row', function () {
+        const r = m.row(2)
+        assert.deepStrictEqual(
+          r.valueOf(), [[0, 0, 0, 0, 0]]
+        )
+      })
+    })
+
+    describe('column', function () {
+      const m = new DenseMatrix(
+        [
+          [0, 2, 0, 0, 0],
+          [0, 1, 0, 2, 4],
+          [0, 0, 0, 0, 0],
+          [8, 4, 0, 3, 0],
+          [0, 0, 0, 6, 0]
+        ])
+
+      it('should return the first column', function () {
+        const c = m.column(0)
+        assert.deepStrictEqual(
+          c.valueOf(), [[0], [0], [0], [8], [0]]
+        )
+      })
+
+      it('should return the last column', function () {
+        const c = m.column(4)
+        assert.deepStrictEqual(
+          c.valueOf(), [[0], [4], [0], [0], [0]]
+        )
+      })
+
+      it('should return an intermediate column', function () {
+        const c = m.column(1)
+        assert.deepStrictEqual(
+          c.valueOf(), [[2], [1], [0], [4], [0]]
+        )
+      })
+
+      it('should return an empty column', function () {
+        const c = m.column(2)
+        assert.deepStrictEqual(
+          c.valueOf(), [[0], [0], [0], [0], [0]]
+        )
+      })
     })
   })
 })

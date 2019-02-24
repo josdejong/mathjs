@@ -18,6 +18,8 @@ const validateIndex = array.validateIndex
 function factory (type, config, load, typed) {
   const getArrayDataType = load(require('./utils/getArrayDataType'))
   const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
+  const MatrixIndex = load(require('./MatrixIndex'))
+  const Range = load(require('./Range'))
 
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
@@ -131,7 +133,7 @@ function factory (type, config, load, typed) {
    *
    * @memberof DenseMatrix
    * @param {Index} index
-   * @param {Array | DenseMatrix | *} [replacement]
+   * @param {Array | Matrix | *} [replacement]
    * @param {*} [defaultValue=0]      Default value, filled in on new entries when
    *                                  the matrix is resized. If not provided,
    *                                  new matrix elements will be filled with zeros.
@@ -621,7 +623,7 @@ function factory (type, config, load, typed) {
    * @memberof DenseMatrix
    * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will retrieved.
    *
-   * @returns {Array}                      The array vector with the diagonal values.
+   * @returns {Matrix}                     The matrix with the diagonal values.
    */
   DenseMatrix.prototype.diagonal = function (k) {
     // validate k if any
@@ -667,10 +669,11 @@ function factory (type, config, load, typed) {
    * Create a diagonal matrix.
    *
    * @memberof DenseMatrix
-   * @param {Array} size                   The matrix size.
-   * @param {number | Array} value          The values for the diagonal.
-   * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will be filled in.
-   * @param {number} [defaultValue]        The default value for non-diagonal
+   * @param {Array} size                     The matrix size.
+   * @param {number | Matrix | Array } value The values for the diagonal.
+   * @param {number | BigNumber} [k=0]       The kth diagonal where the vector will be filled in.
+   * @param {number} [defaultValue]          The default value for non-diagonal
+   * @param {string} [datatype]              The datatype for the diagonal
    *
    * @returns {DenseMatrix}
    */
@@ -795,6 +798,50 @@ function factory (type, config, load, typed) {
   }
 
   /**
+   * Return column in Matrix.
+   *
+   * @memberOf DenseMatrix
+   * @param {number} column  Matrix column index
+   *
+   * @return {DenseMatrix} A column from Matrix
+   */
+  DenseMatrix.prototype.column = function (column) {
+    // validate index
+    validateIndex(column, this._size[1])
+
+    // check dimensions
+    if (this._size.length !== 2) {
+      throw new Error('Only two dimensional matrix is supported')
+    }
+
+    const rowRange = new Range(0, this._size[0])
+    const index = new MatrixIndex(rowRange, column)
+    return this.subset(index)
+  }
+
+  /**
+   * Return row in Matrix.
+   *
+   * @memberOf DenseMatrix
+   * @param {number} row  Matrix row index
+   *
+   * @return {DenseMatrix}  A row from Matrix
+   */
+  DenseMatrix.prototype.row = function (row) {
+    // validate index
+    validateIndex(row, this._size[0])
+
+    // check dimensions
+    if (this._size.length !== 2) {
+      throw new Error('Only two dimensional matrix is supported')
+    }
+
+    const columnRange = new Range(0, this._size[1])
+    const index = new MatrixIndex(row, columnRange)
+    return this.subset(index)
+  }
+
+  /**
    * Swap rows i and j in Matrix.
    *
    * @memberof DenseMatrix
@@ -827,6 +874,7 @@ function factory (type, config, load, typed) {
    *
    * @param {number} i       Matrix row index 1
    * @param {number} j       Matrix row index 2
+   * @param {Array} data     Matrix data
    */
   DenseMatrix._swapRows = function (i, j, data) {
     // swap values i <-> j
