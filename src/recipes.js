@@ -43,19 +43,19 @@ export const MatrixRecipe = {
 }
 
 export const DenseMatrixRecipe = {
-  ...MatrixRecipe,
+  MatrixRecipe,
   createDenseMatrixClass
 }
 
 export const equalScalarRecipe = {
-  ...typedRecipe,
+  typedRecipe,
   createEqualScalar
 }
 
 export const SparseMatrixRecipe = {
-  ...typedRecipe,
-  ...MatrixRecipe,
-  ...equalScalarRecipe,
+  typedRecipe,
+  MatrixRecipe,
+  equalScalarRecipe,
   createSparseMatrixClass
 }
 
@@ -68,187 +68,187 @@ export const FractionRecipe = {
 }
 
 export const matrixRecipe = {
-  ...typedRecipe,
-  ...MatrixRecipe,
-  ...DenseMatrixRecipe,
-  ...SparseMatrixRecipe,
+  typedRecipe,
+  MatrixRecipe,
+  DenseMatrixRecipe,
+  SparseMatrixRecipe,
   createMatrix
 }
 
 export const addScalarRecipe = {
-  ...typedRecipe,
+  typedRecipe,
   createAddScalar
 }
 
 export const addRecipe = {
-  ...typedRecipe,
-  ...matrixRecipe,
-  ...addScalarRecipe,
-  ...equalScalarRecipe,
-  ...DenseMatrixRecipe,
-  ...SparseMatrixRecipe,
+  typedRecipe,
+  matrixRecipe,
+  addScalarRecipe,
+  equalScalarRecipe,
+  DenseMatrixRecipe,
+  SparseMatrixRecipe,
   createAdd
 }
 
 export const unaryMinusRecipe = {
-  ...typedRecipe,
+  typedRecipe,
   createUnaryMinus
 }
 
 export const subtractRecipe = {
-  ...typedRecipe,
-  ...matrixRecipe,
-  ...equalScalarRecipe,
-  ...addScalarRecipe,
-  ...unaryMinusRecipe,
-  ...DenseMatrixRecipe,
+  typedRecipe,
+  matrixRecipe,
+  equalScalarRecipe,
+  addScalarRecipe,
+  unaryMinusRecipe,
+  DenseMatrixRecipe,
   createSubtract
 }
 
 export const multiplyScalarRecipe = {
-  ...typedRecipe,
+  typedRecipe,
   createMultiplyScalar
 }
 
 export const multiplyRecipe = {
-  ...typedRecipe,
-  ...matrixRecipe,
-  ...addScalarRecipe,
-  ...multiplyScalarRecipe,
-  ...equalScalarRecipe,
+  typedRecipe,
+  matrixRecipe,
+  addScalarRecipe,
+  multiplyScalarRecipe,
+  equalScalarRecipe,
   createMultiply
 }
 
 export const numberRecipe = {
-  ...typedRecipe,
+  typedRecipe,
   createNumber
 }
 
 export const bignumberRecipe = {
-  ...typedRecipe,
-  ...BigNumberRecipe,
+  typedRecipe,
+  BigNumberRecipe,
   createBignumber
 }
 
 export const fractionRecipe = {
-  ...typedRecipe,
-  ...FractionRecipe,
+  typedRecipe,
+  FractionRecipe,
   createFraction
 }
 
 export const numericRecipe = {
-  ...typedRecipe,
-  ...numberRecipe,
-  ...bignumberRecipe,
-  ...fractionRecipe,
+  typedRecipe,
+  numberRecipe,
+  bignumberRecipe,
+  fractionRecipe,
   createNumeric
 }
 
 export const divideScalarRecipe = {
-  ...typedRecipe,
-  ...numericRecipe,
+  typedRecipe,
+  numericRecipe,
   createDivideScalar
 }
 
 export const absRecipe = {
-  ...typedRecipe,
+  typedRecipe,
   createAbs
 }
 
 export const smallerRecipe = {
-  ...typedRecipe,
-  ...matrixRecipe,
-  ...equalScalarRecipe,
-  ...divideScalarRecipe,
-  ...DenseMatrixRecipe,
+  typedRecipe,
+  matrixRecipe,
+  equalScalarRecipe,
+  divideScalarRecipe,
+  DenseMatrixRecipe,
   createSmaller
 }
 
 export const largerRecipe = {
-  ...typedRecipe,
-  ...matrixRecipe,
-  ...DenseMatrixRecipe,
+  typedRecipe,
+  matrixRecipe,
+  DenseMatrixRecipe,
   createLarger
 }
 
 export const FibonacciHeapRecipe = {
-  ...smallerRecipe,
-  ...largerRecipe,
+  smallerRecipe,
+  largerRecipe,
   createFibonacciHeapClass
 }
 
 export const SpaRecipe = {
-  ...addScalarRecipe,
-  ...equalScalarRecipe,
-  ...FibonacciHeapRecipe,
+  addScalarRecipe,
+  equalScalarRecipe,
+  FibonacciHeapRecipe,
   createSpaClass
 }
 
 export const lupRecipe = {
-  ...typedRecipe,
-  ...matrixRecipe,
-  ...absRecipe,
-  ...addScalarRecipe,
-  ...divideScalarRecipe,
-  ...multiplyScalarRecipe,
-  ...subtractRecipe,
-  ...largerRecipe,
-  ...equalScalarRecipe,
-  ...unaryMinusRecipe,
-  ...DenseMatrixRecipe,
-  ...SparseMatrixRecipe,
-  ...SpaRecipe,
+  typedRecipe,
+  matrixRecipe,
+  absRecipe,
+  addScalarRecipe,
+  divideScalarRecipe,
+  multiplyScalarRecipe,
+  subtractRecipe,
+  largerRecipe,
+  equalScalarRecipe,
+  unaryMinusRecipe,
+  DenseMatrixRecipe,
+  SparseMatrixRecipe,
+  SpaRecipe,
   createLup
 }
 
 export const detRecipe = {
-  ...typedRecipe,
-  ...matrixRecipe,
-  ...subtractRecipe,
-  ...multiplyRecipe,
-  ...unaryMinusRecipe,
-  ...lupRecipe,
+  typedRecipe,
+  matrixRecipe,
+  subtractRecipe,
+  multiplyRecipe,
+  unaryMinusRecipe,
+  lupRecipe,
   createDet
 }
 
 export const identityRecipe = {
-  ...typedRecipe,
-  ...matrixRecipe,
-  ...BigNumberRecipe,
-  ...DenseMatrixRecipe,
-  ...SparseMatrixRecipe,
+  typedRecipe,
+  matrixRecipe,
+  BigNumberRecipe,
+  DenseMatrixRecipe,
+  SparseMatrixRecipe,
   createIdentity
 }
 
 export const invRecipe = {
-  ...typedRecipe,
-  ...matrixRecipe,
-  ...divideScalarRecipe,
-  ...addScalarRecipe,
-  ...multiplyRecipe,
-  ...unaryMinusRecipe,
-  ...detRecipe,
-  ...identityRecipe,
-  ...absRecipe,
+  typedRecipe,
+  matrixRecipe,
+  divideScalarRecipe,
+  addScalarRecipe,
+  multiplyRecipe,
+  unaryMinusRecipe,
+  detRecipe,
+  identityRecipe,
+  absRecipe,
   createInv
 }
 
 export const divideRecipe = {
-  ...typedRecipe,
-  ...MatrixRecipe,
-  ...multiplyRecipe,
-  ...equalScalarRecipe,
-  ...divideScalarRecipe,
-  ...invRecipe,
+  typedRecipe,
+  MatrixRecipe,
+  multiplyRecipe,
+  equalScalarRecipe,
+  divideScalarRecipe,
+  invRecipe,
   createDivide
 }
 
 export const piRecipe = {
-  ...BigNumberRecipe,
+  BigNumberRecipe,
   createPi
 }
 
 export const sinRecipe = {
-  ...typedRecipe,
+  typedRecipe,
   createSin
 }

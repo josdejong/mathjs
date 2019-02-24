@@ -1,6 +1,6 @@
 import { DEFAULT_CONFIG } from './core/config'
 import { createCore } from './core/core'
-import { lazy, traverse, values } from './utils/object'
+import { deepFlatten, lazy, traverse, values } from './utils/object'
 import { ArgumentsError } from './error/ArgumentsError'
 import { DimensionError } from './error/DimensionError'
 import { IndexError } from './error/IndexError'
@@ -25,6 +25,8 @@ export function core (config) {
  *     const mathjs2 = create(all, config)
  *
  * @param {Object} factories   An object with factory functions
+ *                             The object can contain nested objects,
+ *                             all nested objects will be flattened.
  * @param {Object} [config]    Optional configuration
  */
 export function create (factories, config) {
@@ -37,7 +39,7 @@ export function create (factories, config) {
 
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
-  math['import'](values(factories))
+  math['import'](values(deepFlatten(factories)))
 
   // TODO: deprecated since v6.0.0. Clean up some day
   const movedNames = [

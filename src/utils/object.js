@@ -158,6 +158,33 @@ export function deepStrictEqual (a, b) {
 }
 
 /**
+ * Recursively flatten a nested object.
+ * @param {Object} nestedObject
+ * @return {Object} Returns the flattened object
+ */
+export function deepFlatten (nestedObject) {
+  const flattenedObject = {}
+
+  _deepFlatten(nestedObject, flattenedObject)
+
+  return flattenedObject
+}
+
+// helper function used by deepFlatten
+function _deepFlatten (nestedObject, flattenedObject) {
+  for (const prop in nestedObject) {
+    if (nestedObject.hasOwnProperty(prop)) {
+      const value = nestedObject[prop]
+      if (typeof value === 'object' && value !== null) {
+        _deepFlatten(value, flattenedObject)
+      } else {
+        flattenedObject[prop] = value
+      }
+    }
+  }
+}
+
+/**
  * Test whether the current JavaScript engine supports Object.defineProperty
  * @returns {boolean} returns true if supported
  */

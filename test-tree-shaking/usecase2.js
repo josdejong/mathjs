@@ -6,9 +6,9 @@ import { create, divideRecipe, sinRecipe, piRecipe } from '../src/mainFull'
 const config = { number: 'BigNumber' }
 
 const { divide, sin, pi } = create({
-  ...divideRecipe,
-  ...sinRecipe,
-  ...piRecipe
+  divideRecipe,
+  sinRecipe,
+  piRecipe
 }, config)
 
 console.log('\nuse case 2')

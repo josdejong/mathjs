@@ -2,15 +2,88 @@
 
 Starting points in the API design are:
 
-- We want to embrace pure functions over a monolithic, stateful instance.
+- We want to embrace pure functions over the old, monolithic, stateful instance.
 - Layered API: Open up low level factory functions,
   but also offer ready-made functions out of the box.
 - As little magic as possible, give the user full control.
+- Should be easy to understand and remember.
 - Allow picking just the functions that you actually use.
 - Allow picking just the data types that you use.
 
 
-# Use cases
+## Concepts
+
+The currently proposed API has the following concepts:
+
+1. **Loading functions**
+
+  There are two ways to load a function:
+
+  1.  Use ready made functions:
+
+      ```js
+      import { add, multiply } from 'mathjs'
+      ```
+
+  2.  Create a function yourself using `create` and `recipes`:
+
+      Create a mathjs instance using `create` and factory functions.
+      A factory function (like `createAdd`) typically has a number of dependencies
+      (like `typed`, `matrix`, ...).
+      To make it easy to load a function and its dependencies, the concept of a
+      "recipe" is introduced. A "recipe" is an object holding the factory functions
+      of the function that you want to create and all its dependencies.
+
+      ```js
+      import { create, addRecipe, divideRecipe } from 'mathjs'
+
+      const { divide, sin, pi } = create({ addRecipe, divideRecipe })
+      ```
+
+2. **Configuration**
+
+  Configuration can be set in two ways:
+
+  1.  Specify configuration statically when creating functions:
+
+      ```js
+      import { create, addRecipe, divideRecipe } from 'mathjs'
+
+      const config = { ... }
+      const { divide, sin, pi } = create({ addRecipe, divideRecipe }, config)
+      ```
+
+  2.  Create a mathjs instance and change config there dynamically:
+
+      ```js
+      import { create, addRecipe, divideRecipe } from 'mathjs'
+
+      const mathjs = create({ addRecipe, divideRecipe })
+      mathjs.config({ ... })
+      // use mathjs.add and mathjs.divide
+      ```
+
+3. **Data types**
+
+  There are different pre-made versions of all functions.
+  Currently there are "full" functions support all data types
+  (number, BigNumber, Complex, Fraction, Unit, Matrix, etc), and "number"
+  functions just supporting plain numbers. In the future, it is possible to
+  create versions only supporting BigNumbers for example.
+
+  1.  Load "full" versions of the functions:
+
+      ```js
+      import { add, multiply } from 'mathjs'
+      ```
+
+  2.  Load functions only supporting numbers:
+      ```js
+      import { add, multiply } from 'mathjs/number'
+      ```
+
+
+## Use cases
 
 To bundle all example use cases and run and explore them (linux, unix), run:
 
@@ -33,7 +106,7 @@ The following use cases are worked out as an example:
 2. use a few functions with config
 
 	```js
-    import { create, divideRecipe, sinRecipe, piRecipe } from '../src/mainFull'
+    import { create, divideRecipe, sinRecipe, piRecipe } from 'mathjs'
 
     const config = { number: 'BigNumber' }
 
@@ -51,7 +124,7 @@ The following use cases are worked out as an example:
 3. use all functions in the expression parser
 
 	```js
-    import { evaluate } from '../src/mainFull'
+    import { evaluate } from 'mathjs'
 
     console.log(evaluate('sin(pi / 2) / 3'))
     // number 0.3333333333333333
@@ -60,7 +133,7 @@ The following use cases are worked out as an example:
 4. use all functions in the expression parser with config
 
 	```js
-    import { create, allRecipe } from '../src/mainFull'
+    import { create, allRecipe } from 'mathjs'
 
     const config = { number: 'BigNumber' }
     const { evaluate } = create(allRecipe, config)
@@ -72,7 +145,7 @@ The following use cases are worked out as an example:
 5. use a few functions with just number support
 
 	```js
-    import { divide, sin, pi } from '../src/mainNumber'
+    import { divide, sin, pi } from 'mathjs/number'
 
     console.log(divide(sin(divide(pi, 2)), 3))
     // sin(pi / 2) / 3 =
@@ -82,7 +155,7 @@ The following use cases are worked out as an example:
 6. Use all functions and dynamically change config
 
 	```js
-    import { create, allRecipe } from '../src/mainFull'
+    import { create, allRecipe } from 'mathjs'
 
     const mathjs = create(allRecipe)
     console.log(mathjs.divide(mathjs.sin(mathjs.divide(mathjs.pi, 2)), 3))
@@ -98,6 +171,8 @@ The following use cases are worked out as an example:
 7. create functions yourself
 
     ```js
+    import { createHypot, createTyped } from 'mathjs/factories'
+
     // Create a hypot instance that only works with numbers:
     const typed = createTyped({})
     const hypot = createHypot({
@@ -115,7 +190,8 @@ The following use cases are worked out as an example:
     console.log('hypot(3, 4) =', hypot(3, 4)) // 5
     ```
 
-# Tree shaking results
+
+## Tree shaking results
 
 To get an idea what the size of the bundles is after tree-shaking:
 

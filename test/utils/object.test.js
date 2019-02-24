@@ -10,7 +10,8 @@ import {
   lazy,
   pick,
   set,
-  traverse
+  traverse,
+  deepFlatten
 } from '../../src/utils/object'
 
 describe('object', function () {
@@ -366,6 +367,23 @@ describe('object', function () {
           c: '[b.c:2]'
         }
       })
+    })
+  })
+
+  describe('deepFlatten', function () {
+    it('should flatten nested object properties', () => {
+      assert.deepStrictEqual(deepFlatten({
+        obj: { a: 2, b: 3 },
+        c: 4,
+        foo: { bar: { d: 5 } }
+      }), { a: 2, b: 3, c: 4, d: 5 })
+    })
+
+    it('should merge duplicate values when flatting nested object properties', () => {
+      assert.deepStrictEqual(deepFlatten({
+        obj: { a: 2 },
+        foo: { bar: { a: 3 } }
+      }), { a: 3 })
     })
   })
 })
