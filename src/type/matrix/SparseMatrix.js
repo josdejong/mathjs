@@ -17,6 +17,8 @@ const validateIndex = array.validateIndex
 
 function factory (type, config, load, typed) {
   const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
+  const MatrixIndex = load(require('./MatrixIndex'))
+  const Range = load(require('./Range'))
   const equalScalar = load(require('../../function/relational/equalScalar'))
   const getArrayDataType = load(require('./utils/getArrayDataType'))
 
@@ -225,7 +227,7 @@ function factory (type, config, load, typed) {
    *
    * @memberof SparseMatrix
    * @param {Index} index
-   * @param {Array | Maytrix | *} [replacement]
+   * @param {Array | Matrix | *} [replacement]
    * @param {*} [defaultValue=0]      Default value, filled in on new entries when
    *                                  the matrix is resized. If not provided,
    *                                  new matrix elements will be filled with zeros.
@@ -444,7 +446,7 @@ function factory (type, config, load, typed) {
    * Replace a single element in the matrix.
    * @memberof SparseMatrix
    * @param {number[]} index   Zero-based index
-   * @param {*} value
+   * @param {*} v
    * @param {*} [defaultValue]        Default value, filled in on new entries when
    *                                  the matrix is resized. If not provided,
    *                                  new matrix elements will be set to zero.
@@ -1149,6 +1151,7 @@ function factory (type, config, load, typed) {
    * @param {Array} size                       The matrix size.
    * @param {number | Array | Matrix } value   The values for the diagonal.
    * @param {number | BigNumber} [k=0]         The kth diagonal where the vector will be filled in.
+   * @param {number} [defaultValue]            The default value for non-diagonal
    * @param {string} [datatype]                The Matrix datatype, values must be of this datatype.
    *
    * @returns {SparseMatrix}
@@ -1322,22 +1325,9 @@ function factory (type, config, load, typed) {
       throw new Error('Only two dimensional matrix is supported')
     }
 
-    const values = []
-    const index = []
-    const ptr = [0, 0]
-    const sparseColumn = new SparseMatrix({
-      values: values,
-      index: index,
-      ptr: ptr,
-      size: [this._size[0], 1],
-      datatype: this._datatype
-    })
-
-    for (let i = this._ptr[column]; i < this._ptr[column + 1]; i += 1) {
-      sparseColumn.set([this._index[i], 0], this._values[i])
-    }
-
-    return sparseColumn
+    const rowRange = new Range(0, this._size[0])
+    const index = new MatrixIndex(rowRange, column)
+    return this.subset(index)
   }
 
   /**
@@ -1357,29 +1347,9 @@ function factory (type, config, load, typed) {
       throw new Error('Only two dimensional matrix is supported')
     }
 
-    const values = []
-    const index = []
-    const ptr = []
-    for (let i = 0; i <= this._size[1]; i += 1) { ptr.push(0) }
-    const sparseRow = new SparseMatrix({
-      values: values,
-      index: index,
-      ptr: ptr,
-      size: [1, this._size[1]],
-      datatype: this._datatype
-    })
-
-    let ptrIndex = 0
-    for (let i = 0; i < this._index.length; i += 1) {
-      if (this._index[i] === row) {
-        while (this._ptr[ptrIndex] <= i) {
-          ptrIndex += 1
-        }
-        sparseRow.set([0, ptrIndex - 1], this._values[i])
-      }
-    }
-
-    return sparseRow
+    const columnRange = new Range(0, this._size[1])
+    const index = new MatrixIndex(row, columnRange)
+    return this.subset(index)
   }
 
   /**
