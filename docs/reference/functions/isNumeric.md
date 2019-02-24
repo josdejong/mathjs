@@ -30,11 +30,12 @@ boolean | Returns true when `x` is a `number`, `BigNumber`, `Fraction`, or `bool
 
 ```js
 math.isNumeric(2)                     // returns true
+math.isNumeric('2')                   // returns true
+math.hasNumericValue('2')             // returns true
 math.isNumeric(0)                     // returns true
 math.isNumeric(math.bignumber(500))   // returns true
 math.isNumeric(math.fraction(4))      // returns true
 math.isNumeric(math.complex('2-4i')   // returns false
-math.isNumeric('3')                   // returns false
 math.isNumeric([2.3, 'foo', false])   // returns [true, false, true]
 ```
 
@@ -44,4 +45,5 @@ math.isNumeric([2.3, 'foo', false])   // returns [true, false, true]
 [isZero](isZero.md),
 [isPositive](isPositive.md),
 [isNegative](isNegative.md),
-[isInteger](isInteger.md)
+[isInteger](isInteger.md),
+[hasNumericValue](hasNumericValue.md)
