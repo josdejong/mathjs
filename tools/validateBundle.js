@@ -29,9 +29,10 @@ function validateBundle (expectedBundleStructure, bundle) {
     const actualType = validateTypeOf(actualValue)
     const expectedType = get(expectedBundleStructure, path) || 'undefined'
 
+    // FIXME: ugly to have these special cases
     if (path.join('.').indexOf('docs.') !== -1) {
       // ignore the contents of docs
-      return true
+      return
     }
 
     const message = (expectedType === 'undefined')
@@ -59,10 +60,20 @@ function validateBundle (expectedBundleStructure, bundle) {
 }
 
 function traverse (obj, callback = (value, path) => {}, path = []) {
-  if (validateTypeOf(obj) === 'Array') {
+  // FIXME: ugly to have these special cases
+  if (path.length > 0 && path[0].indexOf('Recipe') !== -1) {
+    // special case for objects with recipes
+    callback(obj, path)
+  } else if (validateTypeOf(obj) === 'Array') {
     obj.map((item, index) => traverse(item, callback, path.concat(index)))
   } else if (validateTypeOf(obj) === 'Object') {
     Object.keys(obj).forEach(key => {
+      // FIXME: ugly to have these special cases
+      // ignore special case of deprecated docs
+      if (key === 'docs' && path.join('.') === 'expression') {
+        return
+      }
+
       traverse(obj[key], callback, path.concat(key))
     })
   } else {

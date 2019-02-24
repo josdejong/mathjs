@@ -1,22 +1,11 @@
 // Use case 4
-// create functions yourself using factory functions
+// use all functions in the expression parser with config
 
-import { createTyped, createHypot } from '../src/factory'
+import { create, allRecipe } from '../src/mainFull'
+
+const config = { number: 'BigNumber' }
+const { evaluate } = create(allRecipe, config)
 
 console.log('\nuse case 4')
-
-// Create a hypot instance that only works with numbers:
-const typed = createTyped({})
-const hypot = createHypot({
-  typed,
-  abs: Math.abs,
-  addScalar: (a, b) => a + b,
-  divideScalar: (a, b) => a / b,
-  multiplyScalar: (a, b) => a * b,
-  sqrt: Math.sqrt,
-  smaller: (a, b) => a < b,
-  isPositive: a => a > 0
-})
-
-// Use the created function:
-console.log('hypot(3, 4) =', hypot(3, 4)) // 5
+console.log(evaluate('sin(pi / 2) / 3').toString())
+// BigNumber 0.3333333333333333333333333333333333333333333333333333333333333333

@@ -1,7 +1,8 @@
 // Use case 3
-// just use some plain functions, no runtime type checking
+// use all functions in the expression parser
 
-import { addNumber, multiplyNumber } from '../src/plain/number'
+import { evaluate } from '../src/mainFull'
 
 console.log('\nuse case 3')
-console.log('2 * 3 + 4 = ' + addNumber(multiplyNumber(2, 3), 4))
+console.log(evaluate('sin(pi / 2) / 3'))
+// number 0.3333333333333333

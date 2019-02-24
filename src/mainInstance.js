@@ -4,7 +4,6 @@ import { lazy, traverse, values } from './utils/object'
 import { ArgumentsError } from './error/ArgumentsError'
 import { DimensionError } from './error/DimensionError'
 import { IndexError } from './error/IndexError'
-import { embeddedDocs } from './expression/embeddedDocs/embeddedDocs'
 import { warnOnce } from './utils/log'
 import { initial, last } from './utils/array'
 
@@ -35,9 +34,6 @@ export function create (factories, config) {
   // the factory functions passed before
   math.create = create.bind(null, factories)
   math.core = core
-
-  // Important: load docs before help
-  math.docs = embeddedDocs
 
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
@@ -100,7 +96,6 @@ export function create (factories, config) {
     'type.Parser',
     'expression.parse',
     'expression.Parser',
-    'expression.docs',
     'expression.node.AccessorNode',
     'expression.node.ArrayNode',
     'expression.node.AssignmentNode',
@@ -134,6 +129,10 @@ export function create (factories, config) {
         'Please use the new location instead.')
       return math[name]
     })
+  })
+  lazy(math.expression, 'docs', () => {
+    throw new Error('math.expression.docs has been moved. ' +
+      'Please import via "import { docs } from \'mathjs\'"')
   })
 
   math.ArgumentsError = ArgumentsError

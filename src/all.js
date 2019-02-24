@@ -1,4 +1,4 @@
-import * as allFactory from './factory'
+// creating allRecipe here in a separate file was needed to get treeshaking working
+import * as allFactories from './factories'
 
-// all factory functions
-export const all = allFactory
+export const allRecipe = allFactories

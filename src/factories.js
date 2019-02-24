@@ -1,3 +1,4 @@
+export { createTyped } from './core/function/typed'
 export { createResultSet } from './type/resultset/ResultSet'
 export { createBigNumberClass } from './type/bignumber/BigNumber'
 export { createComplexClass } from './type/complex/Complex'

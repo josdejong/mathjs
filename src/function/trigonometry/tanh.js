@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'tanh'
-const dependencies = ['typed', 'Unit']
+const dependencies = ['typed']
 
-export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
+export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the hyperbolic tangent of a value,
    * defined as `tanh(x) = (exp(2 * x) - 1) / (exp(2 * x) + 1)`.
@@ -43,7 +43,7 @@ export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function tanh is no angle')
       }
       return tanh(x.value)

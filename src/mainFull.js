@@ -1,7 +1,6 @@
 // TODO: auto generate this file
 
 import { DEFAULT_CONFIG } from './core/config'
-import { embeddedDocs } from './expression/embeddedDocs/embeddedDocs'
 import { createResultSet } from './type/resultset/ResultSet'
 import { createBigNumberClass } from './type/bignumber/BigNumber'
 import { createComplexClass } from './type/complex/Complex'
@@ -380,12 +379,8 @@ export const Range = /* #__PURE__ */ createRangeClass()
 export const Matrix = /* #__PURE__ */ createMatrixClass()
 export const DenseMatrix = /* #__PURE__ */ createDenseMatrixClass({ Matrix })
 
-export const typed = /* #__PURE__ */ createTyped({
-  bignumber: (x) => new BigNumber(x),
-  complex: (re) => new Complex(re, 0),
-  fraction: (x) => new Fraction(x),
-  matrix: (x) => new DenseMatrix(x)
-})
+// core (1)
+export const typed = /* #__PURE__ */ createTyped({ BigNumber, Complex, Fraction, DenseMatrix })
 
 // utils (1)
 export const clone = /* #__PURE__ */ createClone({ typed })
@@ -673,18 +668,18 @@ export const asinh = /* #__PURE__ */ createAsinh({ typed })
 export const atan = /* #__PURE__ */ createAtan({ typed })
 export const atan2 = /* #__PURE__ */ createAtan2({ typed, matrix, equalScalar, BigNumber, DenseMatrix })
 export const atanh = /* #__PURE__ */ createAtanh({ config, typed, Complex })
-export const cos = /* #__PURE__ */ createCos({ typed, Unit })
-export const cosh = /* #__PURE__ */ createCosh({ typed, Unit })
-export const cot = /* #__PURE__ */ createCot({ typed, BigNumber, Unit })
-export const coth = /* #__PURE__ */ createCoth({ typed, BigNumber, Unit })
-export const csc = /* #__PURE__ */ createCsc({ typed, BigNumber, Unit })
-export const csch = /* #__PURE__ */ createCsch({ typed, BigNumber, Unit })
-export const sec = /* #__PURE__ */ createSec({ typed, BigNumber, Unit })
-export const sech = /* #__PURE__ */ createSech({ typed, BigNumber, Unit })
-export const sin = /* #__PURE__ */ createSin({ typed, BigNumber, Unit })
-export const sinh = /* #__PURE__ */ createSinh({ typed, Unit })
-export const tan = /* #__PURE__ */ createTan({ typed, Unit })
-export const tanh = /* #__PURE__ */ createTanh({ typed, Unit })
+export const cos = /* #__PURE__ */ createCos({ typed })
+export const cosh = /* #__PURE__ */ createCosh({ typed })
+export const cot = /* #__PURE__ */ createCot({ typed, BigNumber })
+export const coth = /* #__PURE__ */ createCoth({ typed, BigNumber })
+export const csc = /* #__PURE__ */ createCsc({ typed, BigNumber })
+export const csch = /* #__PURE__ */ createCsch({ typed, BigNumber })
+export const sec = /* #__PURE__ */ createSec({ typed, BigNumber })
+export const sech = /* #__PURE__ */ createSech({ typed, BigNumber })
+export const sin = /* #__PURE__ */ createSin({ typed })
+export const sinh = /* #__PURE__ */ createSinh({ typed })
+export const tan = /* #__PURE__ */ createTan({ typed })
+export const tanh = /* #__PURE__ */ createTanh({ typed })
 
 // set (2)
 export const setCartesian = /* #__PURE__ */ createSetCartesian({ typed, size, subset, compareNatural, Index, DenseMatrix })
@@ -1109,7 +1104,7 @@ export const Chain = /* #__PURE__ */ createChainClass({ math })
 
 // type (4)
 export { embeddedDocs as docs } from './expression/embeddedDocs/embeddedDocs'
-export const help = /* #__PURE__ */ createHelp({ math, typed, docs: embeddedDocs, Help })
+export const help = /* #__PURE__ */ createHelp({ math, typed, Help })
 export const chain = /* #__PURE__ */ createChain({ typed, Chain })
 
 // algebra (4)
@@ -1237,4 +1232,4 @@ export { ArgumentsError } from './error/ArgumentsError'
 // core
 
 export { core, create } from './mainInstance'
-export { all } from './all'
+export * from './recipes'

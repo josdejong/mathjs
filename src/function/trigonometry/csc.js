@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'csc'
-const dependencies = ['typed', 'BigNumber', 'Unit']
+const dependencies = ['typed', 'BigNumber']
 
-export const createCsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Unit }) => {
+export const createCsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Calculate the cosecant of a value, defined as `csc(x) = 1/sin(x)`.
    *
@@ -42,7 +42,7 @@ export const createCsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function csc is no angle')
       }
       return csc(x.value)

@@ -1,43 +1,105 @@
+# API design
+
+Starting points in the API design are:
+
+- We want to embrace pure functions over a monolithic, stateful instance.
+- Layered API: Open up low level factory functions,
+  but also offer ready-made functions out of the box.
+- As little magic as possible, give the user full control.
+- Allow picking just the functions that you actually use.
+- Allow picking just the data types that you use.
+
+
 # Use cases
 
-To bundle all example use cases and run them (linux, unix), run:
+To bundle all example use cases and run and explore them (linux, unix), run:
 
 ```
-sh bundle_and_run.sh
+sh bundle.sh
 ```
 
-To explore the source code to see what modules are packed in the bundle, run:
+The following use cases are worked out as an example:
 
-```
-sh explore.sh
-```
+1. use a few functions
 
-The following use cases are worked out:
+	```js
+	import { divide, sin, pi } from 'mathjs'
 
-1. just pick a few full functions (supporting all data types), using a default config:
+    console.log(divide(sin(divide(pi, 2)), 3))
+    // sin(pi / 2) / 3 =
+    // number 0.3333333333333333
+	```
+
+2. use a few functions with config
+
+	```js
+    import { create, divideRecipe, sinRecipe, piRecipe } from '../src/mainFull'
+
+    const config = { number: 'BigNumber' }
+
+    const { divide, sin, pi } = create({
+      ...divideRecipe,
+      ...sinRecipe,
+      ...piRecipe
+    }, config)
+
+    console.log(divide(sin(divide(pi, 2)), 3).toString())
+    // sin(pi / 2) / 3 =
+    // BigNumber 0.3333333333333333333333333333333333333333333333333333333333333333
+	```
+
+3. use all functions in the expression parser
+
+	```js
+    import { evaluate } from '../src/mainFull'
+
+    console.log(evaluate('sin(pi / 2) / 3'))
+    // number 0.3333333333333333
+	```
+
+4. use all functions in the expression parser with config
+
+	```js
+    import { create, allRecipe } from '../src/mainFull'
+
+    const config = { number: 'BigNumber' }
+    const { evaluate } = create(allRecipe, config)
+
+    console.log(evaluate('sin(pi / 2) / 3').toString())
+    // BigNumber 0.3333333333333333333333333333333333333333333333333333333333333333
+	```
+
+5. use a few functions with just number support
+
+	```js
+    import { divide, sin, pi } from '../src/mainNumber'
+
+    console.log(divide(sin(divide(pi, 2)), 3))
+    // sin(pi / 2) / 3 =
+    // number 0.3333333333333333
+	```
+
+6. Use all functions and dynamically change config
+
+	```js
+    import { create, allRecipe } from '../src/mainFull'
+
+    const mathjs = create(allRecipe)
+    console.log(mathjs.divide(mathjs.sin(mathjs.divide(mathjs.pi, 2)), 3))
+    // sin(pi / 2) / 3 =
+    // number 0.3333333333333333
+
+    mathjs.config({ number: 'BigNumber' })
+    console.log(mathjs.divide(mathjs.sin(mathjs.divide(mathjs.pi, 2)), 3).toString())
+    // sin(pi / 2) / 3 =
+    // BigNumber 0.3333333333333333333333333333333333333333333333333333333333333333
+	```
+
+7. create functions yourself
+
     ```js
-    import { add, multiply } from '../src/mainFull'
-    console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
-    ```
-
-2. just pick a few functions for use with one data type, using a default config:
-    ```js
-    import { add, multiply } from './mathjs/number'
-    console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
-    ```
-
-3. just pick a few plain functions:
-    ```js
-    import { add, multiply } from '../src/plain/number'
-    console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
-    ```
-
-4. create functions yourself using factory functions:
-    ```js
-    import { createTyped, createHypot } from '../src/factory'
-
     // Create a hypot instance that only works with numbers:
-    const typed = createTyped({ })
+    const typed = createTyped({})
     const hypot = createHypot({
       typed,
       abs: Math.abs,
@@ -53,19 +115,27 @@ The following use cases are worked out:
     console.log('hypot(3, 4) =', hypot(3, 4)) // 5
     ```
 
-5. mix and match typed functions
-    ```js
-    import { createTyped, createBigNumberClass } from '../src/factory'
-    import { addNumber, multiplyNumber } from '../src/plain/number'
-    import { addBigNumber, multiplyBigNumber, bignumber } from '../src/plain/bignumber'
-    import { DEFAULT_CONFIG } from '../src/core/config'
+# Tree shaking results
 
-    const BigNumber = createBigNumberClass({ config: DEFAULT_CONFIG })
-    const typed = createTyped({ BigNumber })
+To get an idea what the size of the bundles is after tree-shaking:
 
-    const add = typed('add', addNumber, addBigNumber)
-    const multiply = typed('multiply', multiplyNumber, multiplyBigNumber)
+Use case     | Description                                            | Minified + Gzipped size
+-------------|--------------------------------------------------------|------------------------
+Full library | Just everything in a bundle                            | 138 KB
+Use case 1   | Use a few functions                                    | 43 KB
+Use case 2   | Use a few functions with config                        | 41 KB
+Use case 3   | Use all functions in the expression parser             | 105 KB
+Use case 4   | Use all functions in the expression parser with config | 131 KB
+Use case 5   | Use a few functions with just number support           | 4 KB
+Use case 6   | Use all functions and dynamically change config        | 131 KB
+Use case 7   | Create functions yourself                              | 6 KB
 
-    console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
-    console.log('2 * bignumber(3) + 4 = ' + add(multiply(2, bignumber(3)), 4))
-    ```
+Some observations:
+
+- All "full" versions of most functions include support for numbers, BigNumbers, Complex numbers,
+  Fractions, Units, and matrices, and require typed-function support. This causes a high "base"
+  size in the order of 40 KB: the full libraries for data types like BigNumber and Complex.
+- The selected "few" functions in use cases 1, 2, and 5 are `sin`, `divide`, and `pi`.
+  Here, `divide` is a very large function since the matrix implementation involves
+  calculating the inverse, the inverse requires calculating the determinant,
+  the determinant requires calculating the LU decomposition, etc.

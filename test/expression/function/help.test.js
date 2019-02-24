@@ -1,17 +1,18 @@
 import assert from 'assert'
 import math from '../../../src/mainBundle'
+import { embeddedDocs } from '../../../src/expression/embeddedDocs/embeddedDocs'
 
 describe('help', function () {
   it('should find documentation for a function by its name', function () {
     const help = math.help('sin')
     assert.ok(help instanceof math.Help)
-    assert.deepStrictEqual(help.doc, math.docs.sin)
+    assert.deepStrictEqual(help.doc, embeddedDocs.sin)
   })
 
   it('should find documentation for a function by the function itself', function () {
     const help = math.help(math.sin)
     assert.ok(help instanceof math.Help)
-    assert.deepStrictEqual(help.doc, math.docs.sin)
+    assert.deepStrictEqual(help.doc, embeddedDocs.sin)
   })
 
   it('should throw an error on wrong number of arguments', function () {

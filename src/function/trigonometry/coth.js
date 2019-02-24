@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'coth'
-const dependencies = ['typed', 'BigNumber', 'Unit']
+const dependencies = ['typed', 'BigNumber']
 
-export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Unit }) => {
+export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Calculate the hyperbolic cotangent of a value,
    * defined as `coth(x) = 1 / tanh(x)`.
@@ -42,7 +42,7 @@ export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function coth is no angle')
       }
       return coth(x.value)

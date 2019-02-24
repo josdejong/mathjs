@@ -1,7 +1,10 @@
 // Use case 1:
-// Pick a number of functions from the full library
+// use a few functions
 
-import { add, multiply } from '../src/mainFull'
+import { divide, sin, pi } from '../src/mainFull'
 
 console.log('\nuse case 1')
-console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
+
+console.log(divide(sin(divide(pi, 2)), 3))
+// sin(pi / 2) / 3 =
+// number 0.3333333333333333

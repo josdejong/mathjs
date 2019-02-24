@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'tan'
-const dependencies = ['typed', 'Unit']
+const dependencies = ['typed']
 
-export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
+export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the tangent of a value. `tan(x)` is equal to `sin(x) / cos(x)`.
    *
@@ -42,7 +42,7 @@ export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed, U
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function tan is no angle')
       }
       return tan(x.value)

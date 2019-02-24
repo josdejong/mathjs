@@ -2,7 +2,6 @@
 
 import './../utils/polyfills'
 import { isLegacyFactory, values } from './../utils/object'
-import { createTyped } from './function/typed'
 import * as emitter from './../utils/emitter'
 import { importFactory } from './function/import'
 import { configFactory } from './function/config'
@@ -140,41 +139,6 @@ export const createCore = factory('core', dependencies, ({ config }) => {
     }
   }
 
-  // create a new typed instance
-  math.typed = createTyped({
-    config: math.config,
-
-    // (lazily) link to the factory functions (they may not exist, or may not exist yet)
-    bignumber: (x) => {
-      if (!math.bignumber) {
-        throw new Error(`Cannot convert value ${x} into a BigNumber: factory function 'math.bignumber' missing`)
-      }
-
-      return math.bignumber(x)
-    },
-    complex: (x) => {
-      if (!math.complex) {
-        throw new Error(`Cannot convert value ${x} into a Complex number: factory function 'math.complex' missing`)
-      }
-
-      return math.complex(x)
-    },
-    fraction: (x) => {
-      if (!math.fraction) {
-        throw new Error(`Cannot convert value ${x} into a Fraction: factory function 'math.fraction' missing`)
-      }
-
-      return math.fraction(x)
-    },
-    matrix: (x) => {
-      if (!math.fraction) {
-        throw new Error(`Cannot convert array into a Matrix: factory function 'math.matrix' missing`)
-      }
-
-      return math.matrix(x)
-    }
-  })
-
   // cached factories and instances used by function load
   const legacyFactories = []
   const legacyInstances = []
@@ -226,7 +190,10 @@ export const createCore = factory('core', dependencies, ({ config }) => {
   const factories = {}
 
   // load the import function
-  math['import'] = importFactory(math.typed, load, math, factories)
+  function lazyTyped (...args) {
+    return math.typed.apply(math.typed, args)
+  }
+  math['import'] = importFactory(lazyTyped, load, math, factories)
 
   // listen for changes in config, import all functions again when changed
   math.on('config', () => {

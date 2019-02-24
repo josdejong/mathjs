@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'cot'
-const dependencies = ['typed', 'BigNumber', 'Unit']
+const dependencies = ['typed', 'BigNumber']
 
-export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Unit }) => {
+export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Calculate the cotangent of a value. Defined as `cot(x) = 1 / tan(x)`.
    *
@@ -42,7 +42,7 @@ export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cot is no angle')
       }
       return cot(x.value)

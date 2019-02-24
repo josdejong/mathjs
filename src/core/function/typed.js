@@ -90,18 +90,18 @@ let _createTyped = function () {
 }
 
 const dependencies = [
-  '?bignumber',
-  '?complex',
-  '?matrix',
-  '?fraction'
+  '?BigNumber',
+  '?Complex',
+  '?DenseMatrix',
+  '?Fraction'
 ]
 
 /**
  * Factory function for creating a new typed instance
- * @param {Object} type   Object with data types like Complex and BigNumber
+ * @param {Object} dependencies   Object with data types like Complex and BigNumber
  * @returns {Function}
  */
-export const createTyped = /* #__PURE__ */ factory('typed', dependencies, function createTyped ({ bignumber, complex, matrix, fraction }) {
+export const createTyped = /* #__PURE__ */ factory('typed', dependencies, function createTyped ({ BigNumber, Complex, DenseMatrix, Fraction }) {
   // TODO: typed-function must be able to silently ignore signatures with unknown data types
 
   // get a new instance of typed-function
@@ -157,7 +157,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       from: 'number',
       to: 'BigNumber',
       convert: function (x) {
-        if (!bignumber) {
+        if (!BigNumber) {
           throwNoBignumber(x)
         }
 
@@ -167,17 +167,17 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
             '(value: ' + x + '). ' +
             'Use function bignumber(x) to convert to BigNumber.')
         }
-        return bignumber(x)
+        return new BigNumber(x)
       }
     }, {
       from: 'number',
       to: 'Complex',
       convert: function (x) {
-        if (!complex) {
+        if (!Complex) {
           throwNoComplex(x)
         }
 
-        return complex(x, 0)
+        return new Complex(x, 0)
       }
     }, {
       from: 'number',
@@ -189,11 +189,11 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       from: 'BigNumber',
       to: 'Complex',
       convert: function (x) {
-        if (!complex) {
+        if (!Complex) {
           throwNoComplex(x)
         }
 
-        return complex(x.toNumber(), 0)
+        return new Complex(x.toNumber(), 0)
       }
     }, {
       from: 'Fraction',
@@ -206,21 +206,21 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       from: 'Fraction',
       to: 'Complex',
       convert: function (x) {
-        if (!complex) {
+        if (!Complex) {
           throwNoComplex(x)
         }
 
-        return complex(x.valueOf(), 0)
+        return new Complex(x.valueOf(), 0)
       }
     }, {
       from: 'number',
       to: 'Fraction',
       convert: function (x) {
-        if (!fraction) {
+        if (!Fraction) {
           throwNoFraction(x)
         }
 
-        const f = fraction(x)
+        const f = new Fraction(x)
         if (f.valueOf() !== x) {
           throw new TypeError('Cannot implicitly convert a number to a Fraction when there will be a loss of precision ' +
             '(value: ' + x + '). ' +
@@ -249,12 +249,12 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       from: 'string',
       to: 'BigNumber',
       convert: function (x) {
-        if (!bignumber) {
+        if (!BigNumber) {
           throwNoBignumber(x)
         }
 
         try {
-          return bignumber(x)
+          return new BigNumber(x)
         } catch (err) {
           throw new Error('Cannot convert "' + x + '" to BigNumber')
         }
@@ -263,12 +263,12 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       from: 'string',
       to: 'Fraction',
       convert: function (x) {
-        if (!fraction) {
+        if (!Fraction) {
           throwNoFraction(x)
         }
 
         try {
-          return fraction(x)
+          return new Fraction(x)
         } catch (err) {
           throw new Error('Cannot convert "' + x + '" to Fraction')
         }
@@ -277,12 +277,12 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       from: 'string',
       to: 'Complex',
       convert: function (x) {
-        if (!complex) {
+        if (!Complex) {
           throwNoComplex(x)
         }
 
         try {
-          return complex(x)
+          return new Complex(x)
         } catch (err) {
           throw new Error('Cannot convert "' + x + '" to Complex')
         }
@@ -297,21 +297,21 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       from: 'boolean',
       to: 'BigNumber',
       convert: function (x) {
-        if (!bignumber) {
+        if (!BigNumber) {
           throwNoBignumber(x)
         }
 
-        return bignumber(+x)
+        return new BigNumber(+x)
       }
     }, {
       from: 'boolean',
       to: 'Fraction',
       convert: function (x) {
-        if (!fraction) {
+        if (!Fraction) {
           throwNoFraction(x)
         }
 
-        return fraction(+x)
+        return new Fraction(+x)
       }
     }, {
       from: 'boolean',
@@ -323,11 +323,11 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       from: 'Array',
       to: 'Matrix',
       convert: function (array) {
-        if (!matrix) {
+        if (!DenseMatrix) {
           throwNoMatrix()
         }
 
-        return matrix(array)
+        return new DenseMatrix(array)
       }
     }, {
       from: 'Matrix',
@@ -342,17 +342,17 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
 })
 
 function throwNoBignumber (x) {
-  throw new Error(`Cannot convert value ${x} into a BigNumber: no factory function 'bignumber' provided`)
+  throw new Error(`Cannot convert value ${x} into a BigNumber: no class 'BigNumber' provided`)
 }
 
 function throwNoComplex (x) {
-  throw new Error(`Cannot convert value ${x} into a Complex number: no factory function 'complex' provided`)
+  throw new Error(`Cannot convert value ${x} into a Complex number: no class 'Complex' provided`)
 }
 
 function throwNoMatrix () {
-  throw new Error(`Cannot convert array into a Matrix: no factory function 'matrix' provided`)
+  throw new Error(`Cannot convert array into a Matrix: no class 'DenseMatrix' provided`)
 }
 
 function throwNoFraction (x) {
-  throw new Error(`Cannot convert value ${x} into a Fraction, no factory function 'fraction' provided.`)
+  throw new Error(`Cannot convert value ${x} into a Fraction, no class 'Fraction' provided.`)
 }

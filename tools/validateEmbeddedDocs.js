@@ -23,9 +23,13 @@ for (prop in math) {
   if (math.hasOwnProperty(prop)) {
     const obj = math[prop]
     if (math['typeOf'](obj) !== 'Object') {
-      if (!math.docs[prop] && (ignore.indexOf(prop) === -1)) {
-        gutil.log('WARNING: Function ' + prop + ' is undocumented')
+      try {
+        if (ignore.indexOf(prop) === -1) {
+          math.help(prop).toString()
+        }
+      } catch (err) {
         undocumentedCount++
+        gutil.log('WARNING: Function ' + prop + ' is undocumented')
       }
     }
   }

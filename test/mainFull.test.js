@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainFull from '../src/mainFull'
 import { expectedInstanceStructure, expectedES6Structure } from './snapshot'
 import { validateBundle, validateTypeOf } from '../tools/validateBundle'
-const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate } = mainFull
+const { create, allRecipe, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate } = mainFull
 
 describe('mainFull', function () {
   it('should export functions', () => {
@@ -17,7 +17,7 @@ describe('mainFull', function () {
 
   it('new instance should have all expected functions', function () {
     // snapshot testing
-    const newMathInstance = create(all)
+    const newMathInstance = create(allRecipe)
 
     // don't output all warnings "math.foo.bar is move to math.bar, ..."
     const originalWarn = console.warn

@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'sec'
-const dependencies = ['typed', 'BigNumber', 'Unit']
+const dependencies = ['typed', 'BigNumber']
 
-export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Unit }) => {
+export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Calculate the secant of a value, defined as `sec(x) = 1/cos(x)`.
    *
@@ -42,7 +42,7 @@ export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sec is no angle')
       }
       return sec(x.value)

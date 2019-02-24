@@ -5,9 +5,9 @@ import { deepMap } from '../../utils/collection'
 import { sign } from '../../utils/number'
 
 const name = 'csch'
-const dependencies = ['typed', 'BigNumber', 'Unit']
+const dependencies = ['typed', 'BigNumber']
 
-export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Unit }) => {
+export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Calculate the hyperbolic cosecant of a value,
    * defined as `csch(x) = 1 / sinh(x)`.
@@ -43,7 +43,7 @@ export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function csch is no angle')
       }
       return csch(x.value)

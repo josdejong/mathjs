@@ -1,7 +1,17 @@
 // Use case 2
-// pick a few functions with support for just one data type
+// use a few functions with config
 
-import { add, multiply } from '../src/mainNumber'
+import { create, divideRecipe, sinRecipe, piRecipe } from '../src/mainFull'
+
+const config = { number: 'BigNumber' }
+
+const { divide, sin, pi } = create({
+  ...divideRecipe,
+  ...sinRecipe,
+  ...piRecipe
+}, config)
 
 console.log('\nuse case 2')
-console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
+console.log(divide(sin(divide(pi, 2)), 3).toString())
+// sin(pi / 2) / 3 =
+// BigNumber 0.3333333333333333333333333333333333333333333333333333333333333333

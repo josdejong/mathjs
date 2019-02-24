@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'sinh'
-const dependencies = ['typed', 'Unit']
+const dependencies = ['typed']
 
-export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
+export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the hyperbolic sine of a value,
    * defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
@@ -40,7 +40,7 @@ export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sinh is no angle')
       }
       return sinh(x.value)
