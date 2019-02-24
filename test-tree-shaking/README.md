@@ -2,13 +2,13 @@
 
 Starting points in the API design are:
 
-- We want to embrace pure functions over the old, monolithic, stateful instance.
-- Layered API: Open up low level factory functions,
-  but also offer ready-made functions out of the box.
-- As little magic as possible, give the user full control.
-- Should be easy to understand and remember.
-- Allow picking just the functions that you actually use.
-- Allow picking just the data types that you use.
+- We want to embrace pure functions over a monolithic, stateful instance.
+- We want a layered API: offer ready-made functions out of the box,
+  but also allow using low level factory functions.
+- We want the API to be easy to understand and remember.
+- We want as little magic as possible, give the user full control.
+- We want to be able to pick just the functions that you actually use.
+- We want to be able to pick just the data types that you use.
 
 
 ## Concepts
