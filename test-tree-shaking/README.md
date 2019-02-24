@@ -15,72 +15,73 @@ Starting points in the API design are:
 
 The currently proposed API has the following concepts:
 
-1. **Loading functions**
+### A. Loading functions
 
-  There are two ways to load a function:
+There are two ways to load a function:
 
-  1.  Use ready made functions:
+1.  Use ready made functions:
 
-      ```js
-      import { add, multiply } from 'mathjs'
-      ```
+    ```js
+    import { add, multiply } from 'mathjs'
+    ```
 
-  2.  Create a function yourself using `create` and `recipes`:
+2.  Create a function yourself using `create` and `recipes`:
 
-      Create a mathjs instance using `create` and factory functions.
-      A factory function (like `createAdd`) typically has a number of dependencies
-      (like `typed`, `matrix`, ...).
-      To make it easy to load a function and its dependencies, the concept of a
-      "recipe" is introduced. A "recipe" is an object holding the factory functions
-      of the function that you want to create and all its dependencies.
+    Create a mathjs instance using `create` and factory functions.
+    A factory function (like `createAdd`) typically has a number of dependencies
+    (like `typed`, `matrix`, ...).
+    To make it easy to load a function and its dependencies, the concept of a
+    "recipe" is introduced. A "recipe" is an object holding the factory functions
+    of the function that you want to create and all its dependencies.
 
-      ```js
-      import { create, addRecipe, divideRecipe } from 'mathjs'
+    ```js
+    import { create, addRecipe, divideRecipe } from 'mathjs'
 
-      const { divide, sin, pi } = create({ addRecipe, divideRecipe })
-      ```
+    const { divide, sin, pi } = create({ addRecipe, divideRecipe })
+    ```
 
-2. **Configuration**
+### B. Configuration
 
-  Configuration can be set in two ways:
+Configuration can be set in two ways:
 
-  1.  Specify configuration statically when creating functions:
+1.  Specify configuration statically when creating functions:
 
-      ```js
-      import { create, addRecipe, divideRecipe } from 'mathjs'
+    ```js
+    import { create, addRecipe, divideRecipe } from 'mathjs'
 
-      const config = { ... }
-      const { divide, sin, pi } = create({ addRecipe, divideRecipe }, config)
-      ```
+    const config = { ... }
+    const { divide, sin, pi } = create({ addRecipe, divideRecipe }, config)
+    ```
 
-  2.  Create a mathjs instance and change config there dynamically:
+2.  Create a mathjs instance and change config there dynamically:
 
-      ```js
-      import { create, addRecipe, divideRecipe } from 'mathjs'
+    ```js
+    import { create, addRecipe, divideRecipe } from 'mathjs'
 
-      const mathjs = create({ addRecipe, divideRecipe })
-      mathjs.config({ ... })
-      // use mathjs.add and mathjs.divide
-      ```
+    const mathjs = create({ addRecipe, divideRecipe })
+    mathjs.config({ ... })
+    // use mathjs.add and mathjs.divide
+    ```
 
-3. **Data types**
+### C. Data types
 
-  There are different pre-made versions of all functions.
-  Currently there are "full" functions support all data types
-  (number, BigNumber, Complex, Fraction, Unit, Matrix, etc), and "number"
-  functions just supporting plain numbers. In the future, it is possible to
-  create versions only supporting BigNumbers for example.
+There are different pre-made versions of all functions.
+Currently there are "full" functions support all data types
+(number, BigNumber, Complex, Fraction, Unit, Matrix, etc), and "number"
+functions just supporting plain numbers. In the future, it is possible to
+create versions only supporting BigNumbers for example.
 
-  1.  Load "full" versions of the functions:
+1.  Load "full" versions of the functions:
 
-      ```js
-      import { add, multiply } from 'mathjs'
-      ```
+    ```js
+    import { add, multiply } from 'mathjs'
+    ```
 
-  2.  Load functions only supporting numbers:
-      ```js
-      import { add, multiply } from 'mathjs/number'
-      ```
+2.  Load functions only supporting numbers:
+
+    ```js
+    import { add, multiply } from 'mathjs/number'
+    ```
 
 
 ## Use cases
