@@ -8,10 +8,12 @@ const IndexError = require('../../error/IndexError')
  * Apply function that takes an array and returns a Scalar
  * along a given axis of a matrix or array.
  * Returns a new matrix or array with one less dimension.
- * @param {Array | Matrix} mat
- * @param {number} dim
- * @param {Function} callback
- * @return {Array | Matrix} res
+ * @param {Array | Matrix} array
+ * @param {number} dim             The dimension along which the callback is applied
+ * @param {Function} callback      The callback function that is applied. This Function
+ *                                 should take an array or 1-d matrix as an input and
+ *                                 return a number.
+ * @return {Array | Matrix} res    The residual matrix with the function applied over some dimension.
  */
 module.exports = function (mat, dim, callback) {
   const size = Array.isArray(mat) ? arraySize(mat) : mat.size()
