@@ -87,7 +87,7 @@
     "Waldir Pimenta (https://github.com/waldyrious)",
     "Zach Zibrat (https://github.com/palimpsests)"
   ],
-  "homepage": "http://mathjs.org",
+  "homepage": "https://mathjs.org",
   "repository": {
     "type": "git",
     "url": "https://github.com/josdejong/mathjs.git"
@@ -110,7 +110,7 @@
   ],
   "dependencies": {
     "complex.js": "2.0.11",
-    "decimal.js": "10.0.2",
+    "decimal.js": "10.1.0",
     "escape-latex": "1.2.0",
     "fraction.js": "4.0.12",
     "javascript-natural-sort": "0.7.1",
@@ -119,9 +119,9 @@
     "typed-function": "1.1.0"
   },
   "devDependencies": {
-    "@babel/core": "7.3.3",
+    "@babel/core": "7.3.4",
     "@babel/plugin-transform-object-assign": "7.2.0",
-    "@babel/preset-env": "7.3.1",
+    "@babel/preset-env": "7.3.4",
     "@babel/register": "7.0.0",
     "babel-loader": "8.0.5",
     "benchmark": "2.1.4",

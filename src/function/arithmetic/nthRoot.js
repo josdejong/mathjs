@@ -150,7 +150,7 @@ function factory (type, config, load, typed) {
 
   /**
    * Calculate the nth root of a for BigNumbers, solve x^root == a
-   * http://rosettacode.org/wiki/Nth_root#JavaScript
+   * https://rosettacode.org/wiki/Nth_root#JavaScript
    * @param {BigNumber} a
    * @param {BigNumber} root
    * @private
@@ -191,7 +191,7 @@ function factory (type, config, load, typed) {
 
 /**
  * Calculate the nth root of a, solve x^root == a
- * http://rosettacode.org/wiki/Nth_root#JavaScript
+ * https://rosettacode.org/wiki/Nth_root#JavaScript
  * @param {number} a
  * @param {number} root
  * @private

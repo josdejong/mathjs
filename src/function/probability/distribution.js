@@ -267,7 +267,7 @@ function factory (type, config, load, typed, math) {
     },
 
     // Implementation of normal distribution using Box-Muller transform
-    // ref : http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+    // ref : https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
     // We take : mean = 0.5, standard deviation = 1/6
     // so that 99.7% values are in [0, 1].
     normal: function () {
