@@ -324,7 +324,7 @@ yotta | Y            | 1e24
 
 <h3 id="physical-constants">Physical Constants <a href="#physical-constants" title="Permalink">#</a></h3>
 
-Math.js includes the following physical constants. See [Wikipedia](http://en.wikipedia.org/wiki/Physical_constants) for more information.
+Math.js includes the following physical constants. See [Wikipedia](https://en.wikipedia.org/wiki/Physical_constants) for more information.
 
 
 <h4 id="universal-constants">Universal constants <a href="#universal-constants" title="Permalink">#</a></h4>

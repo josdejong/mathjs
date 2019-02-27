@@ -1,6 +1,6 @@
 # math.js website
 
-This project contains the website of math.js, available at http://mathjs.org.
+This project contains the website of math.js, available at https://mathjs.org.
 The website is static, and is hosted on [github pages](https://pages.github.com/).
 
 
@@ -20,7 +20,7 @@ To update the website with the latest version of math.js:
 
 - Ensure any new pages are added to git.
 
-- To generate the website locally using [Jekyll](http://jekyllrb.com/):
+- To generate the website locally using [Jekyll](https://jekyllrb.com/):
 
       jekyll
 

@@ -33,7 +33,7 @@ console.log(simplified.eval({x: 4}))   // 12
 
 For more details on the theory of expression simplification, see:
 
-- [Strategies for simplifying math expressions (Stackoverflow)](http://stackoverflow.com/questions/7540227/strategies-for-simplifying-math-expressions)
+- [Strategies for simplifying math expressions (Stackoverflow)](https://stackoverflow.com/questions/7540227/strategies-for-simplifying-math-expressions)
 - [Symbolic computation - Simplification (Wikipedia)](https://en.wikipedia.org/wiki/Symbolic_computation#Simplification)
 
 
@@ -60,7 +60,7 @@ console.log(dh.eval({x: 3}))      // '7'
 
 The rules used by `math.derivative` can be found on Wikipedia:
 
-- [Differentiation rules (Wikipedia)](http://en.wikipedia.org/wiki/Differentiation_rules)
+- [Differentiation rules (Wikipedia)](https://en.wikipedia.org/wiki/Differentiation_rules)
 
 
 <h2 id="rationalize">Rationalize <a href="#rationalize" title="Permalink">#</a></h2>

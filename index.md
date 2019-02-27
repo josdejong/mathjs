@@ -24,7 +24,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
     <h1 id="example">Example <a href="#example" title="Permalink">#</a></h1>
     <p>
       Here some example code demonstrating how to use the library.
-      <a href="http://jsbin.com/devacu/edit">Click here</a> to fiddle around.
+      <a href="https://jsbin.com/devacu/edit">Click here</a> to fiddle around.
     </p>
     <div>
 <pre class="highlight"><code class="language-js" data-lang="js"><span class="c1">// functions and constants</span>
@@ -73,7 +73,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
   <!-- github -->
   <!-- https://github.com/mdo/github-buttons -->
   <div class="like github">
-    <iframe src="http://ghbtns.com/github-btn.html?user=josdejong&repo=mathjs&type=watch&count=true"
+    <iframe src="https://ghbtns.com/github-btn.html?user=josdejong&repo=mathjs&type=watch&count=true"
             allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
   </div>
 
@@ -93,13 +93,13 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
       js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=537047263003274";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
-    <div class="fb-like" data-href="http://mathjs.org/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    <div class="fb-like" data-href="https://mathjs.org/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
   </div>
 
   <!-- linkedin -->
   <div class="like linkedin">
     <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
-    <script type="IN/Share" data-url="http://mathjs.org" data-counter="right"></script>
+    <script type="IN/Share" data-url="https://mathjs.org" data-counter="right"></script>
   </div>
 
   <!-- google+ -->

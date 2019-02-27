@@ -7,7 +7,7 @@ layout: default
 <h1 id="function-xgcd">Function xgcd <a href="#function-xgcd" title="Permalink">#</a></h1>
 
 Calculate the extended greatest common divisor for two values.
-See http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
+See https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>

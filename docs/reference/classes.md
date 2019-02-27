@@ -35,7 +35,7 @@ Stores values for a fractional number.
 Stores values for a arbitrary-precision floating point number.
 
 - [Overview](../datatypes/bignumbers.html)
-- [Class API](http://mikemcl.github.io/decimal.js/)
+- [Class API](https://mikemcl.github.io/decimal.js/)
 
 
 <h2 id="matrix">Matrix <a href="#matrix" title="Permalink">#</a></h2>

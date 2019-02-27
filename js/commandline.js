@@ -18,7 +18,7 @@ function CommandLineEditor (params) {
   /**
    * Returns the version of Internet Explorer or a -1
    * (indicating the use of another browser).
-   * Source: http://msdn.microsoft.com/en-us/library/ms537509(v=vs.85).aspx
+   * Source: https://msdn.microsoft.com/en-us/library/ms537509(v=vs.85).aspx
    * @return {Number} Internet Explorer version, or -1 in case of an other browser
    */
   util.getInternetExplorerVersion = function getInternetExplorerVersion () {
@@ -432,7 +432,7 @@ function CommandLineEditor (params) {
 
   /**
    * Trim a string
-   * http://stackoverflow.com/a/498995/1262753
+   * https://stackoverflow.com/a/498995/1262753
    * @param str
    * @return {*|void}
    */

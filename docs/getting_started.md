@@ -9,13 +9,13 @@ This getting started describes how to install, load, and use math.js.
 
 <h2 id="install">Install <a href="#install" title="Permalink">#</a></h2>
 
-Math.js can be installed using various package managers like [npm](https://npmjs.org/), or by just downloading the library from the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
+Math.js can be installed using various package managers like [npm](https://npmjs.org/), or by just downloading the library from the website: [https://mathjs.org/download.html](https://mathjs.org/download.html).
 
 To install via npm, run:
 
     npm install mathjs
 
-Other ways to install math.js are described on the [website](http://mathjs.org/download.html).
+Other ways to install math.js are described on the [website](https://mathjs.org/download.html).
 
 
 <h2 id="load">Load <a href="#load" title="Permalink">#</a></h2>
@@ -39,7 +39,7 @@ math.sqrt(-4) // 2i
 
 <h3 id="nodejs">Node.js <a href="#nodejs" title="Permalink">#</a></h3>
 
-Load math.js in [node.js](http://nodejs.org/):
+Load math.js in [node.js](https://nodejs.org/):
 
 ```js
 // load math.js
@@ -77,7 +77,7 @@ as well.
 
 <h3 id="requirejs">Require.js <a href="#requirejs" title="Permalink">#</a></h3>
 
-Load math.js in the browser using [require.js](http://requirejs.org/):
+Load math.js in the browser using [require.js](https://requirejs.org/):
 
 ```js
 require.config({
@@ -98,7 +98,7 @@ math.js can evaluate expressions (see [Expressions](expressions/index.html)) and
 supports chaining (see [Chaining](core/chaining.html)).
 
 The example code below shows how to use math.js. More examples can be found in the
-section [Examples](http://mathjs.org/examples/index.html).
+section [Examples](https://mathjs.org/examples/index.html).
 
 ```js
 // functions and constants
@@ -127,4 +127,4 @@ math.chain(3)
 To learn more about math.js, check out the available documentation and examples:
 
 - [Documentation](index.html)
-- [Examples](http://mathjs.org/examples/index.html)
+- [Examples](https://mathjs.org/examples/index.html)

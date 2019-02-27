@@ -14,7 +14,7 @@ The modulus is defined as:
 
     x - y * floor(x / y)
 
-See http://en.wikipedia.org/wiki/Modulo_operation.
+See https://en.wikipedia.org/wiki/Modulo_operation.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>

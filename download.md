@@ -126,4 +126,4 @@ The source code of math.js is available on GitHub: [https://github.com/josdejong
 <h1 id="license">License <a href="#license" title="Permalink">#</a></h1>
 
 Math.js is open source and licensed under the
-[Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
+[Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)

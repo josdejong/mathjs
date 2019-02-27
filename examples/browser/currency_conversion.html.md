@@ -42,11 +42,11 @@ File: [currency_conversion.html](currency_conversion.html) (click for a live dem
 <h1>Currency conversion with math.js</h1>
 
 <p>
-  This example demonstrates how you can fetch actual currencies from <a href="http://fixer.io">fixer.io</a> and use them in math.js.
+  This example demonstrates how you can fetch actual currencies from <a href="https://fixer.io">fixer.io</a> and use them in math.js.
 </p>
 
 <p>
-  Create a (free) account at <a href="http://fixer.io">fixer.io</a> and fill in your API access key below:
+  Create a (free) account at <a href="https://fixer.io">fixer.io</a> and fill in your API access key below:
 </p>
 
 <form id="fetchForm">
@@ -91,7 +91,7 @@ File: [currency_conversion.html](currency_conversion.html) (click for a live dem
 
   function fetchAndImportCurrencies (accessKey) {
     // fetch actual currency conversion rates
-    return fetch('http://data.fixer.io/api/latest?access_key=' + accessKey)
+    return fetch('https://data.fixer.io/api/latest?access_key=' + accessKey)
       .then(function (response) {
         return response.json()
       })
