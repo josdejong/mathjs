@@ -1,5 +1,10 @@
 # History
 
+# Not yet published, version 5.6.0
+
+- Upgrade decimal.js to v10.1.0 (#1421).
+
+
 # 2019-02-20, version 5.5.0
 
 - Fixed #1401: methods `map` and `forEach` of `SparseMatrix` not working
