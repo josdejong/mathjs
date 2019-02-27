@@ -69,7 +69,7 @@ describe('parse', function () {
   })
 
   it('should parse unicode and other special characters', function () {
-    // http://unicode-table.com/en
+    // https://unicode-table.com/en
     let scope = {}
 
     math.eval('$ab$c = 2', scope) // dollar sign

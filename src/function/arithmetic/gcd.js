@@ -129,7 +129,7 @@ function factory (type, config, load, typed) {
       throw new Error('Parameters in function gcd must be integer numbers')
     }
 
-    // http://en.wikipedia.org/wiki/Euclidean_algorithm
+    // https://en.wikipedia.org/wiki/Euclidean_algorithm
     const zero = new type.BigNumber(0)
     while (!b.isZero()) {
       const r = a.mod(b)
@@ -152,7 +152,7 @@ function _gcd (a, b) {
     throw new Error('Parameters in function gcd must be integer numbers')
   }
 
-  // http://en.wikipedia.org/wiki/Euclidean_algorithm
+  // https://en.wikipedia.org/wiki/Euclidean_algorithm
   let r
   while (b !== 0) {
     r = a % b
