@@ -72,7 +72,7 @@ Too large for you? Create your own [custom bundle](docs/custom_bundling.html).
 
 <h1 id="webservice">Web Service <a href="#webservice" title="Permalink">#</a></h1>
 
-Math.js is available as a RESTful web service: <a href="http://api.mathjs.org">http://api.mathjs.org</a>
+Math.js is available as a RESTful web service: <a href="https://api.mathjs.org">https://api.mathjs.org</a>
 
 
 <h1 id="extensions">Extensions <a href="#extensions" title="Permalink">#</a></h1>
