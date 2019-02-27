@@ -1309,7 +1309,7 @@ describe('SparseMatrix', function () {
         ])
     })
 
-    it('should process non-zero values', function () {
+    it('should process non-zero values only', function () {
       const m = new SparseMatrix(
         [
           [1, 0],
@@ -1395,7 +1395,7 @@ describe('SparseMatrix', function () {
       assert.deepStrictEqual(output, [])
     })
 
-    it('should process non-zero values', function () {
+    it('should process non-zero values only', function () {
       const m = new SparseMatrix(
         [
           [1, 0],
@@ -1427,6 +1427,68 @@ describe('SparseMatrix', function () {
         size: [3, 3]
       })
       assert.throws(function () { m.forEach(function () {}) }, /Cannot invoke forEach on a Pattern only matrix/)
+    })
+  })
+
+  describe('index ordering', () => {
+    const orderedSparseMatrix = new SparseMatrix({
+      values: [1, 3, 2, 4],
+      index: [0, 1, 0, 1],
+      ptr: [0, 2, 4],
+      size: [2, 2]
+    })
+
+    const unorderedSparseMatrix = new SparseMatrix({
+      values: [3, 1, 4, 2],
+      index: [1, 0, 1, 0],
+      ptr: [0, 2, 4],
+      size: [2, 2]
+    })
+
+    const expectedLogs = [
+      { value: 1, index: [ 0, 0 ] },
+      { value: 3, index: [ 1, 0 ] },
+      { value: 2, index: [ 0, 1 ] },
+      { value: 4, index: [ 1, 1 ] }
+    ]
+
+    it('should have parsed the two test matrices correctly', () => {
+      assert.deepStrictEqual(orderedSparseMatrix.toArray(), [[1, 2], [3, 4]])
+      assert.deepStrictEqual(unorderedSparseMatrix.toArray(), [[1, 2], [3, 4]])
+    })
+
+    it('should run forEach on a sparse matrix with ordered indexes', function () {
+      const logs = []
+      orderedSparseMatrix.forEach((value, index) => logs.push({ value, index }))
+
+      assert.deepStrictEqual(logs, expectedLogs)
+    })
+
+    it('should run map on a sparse matrix with ordered indexes', function () {
+      const logs = []
+      orderedSparseMatrix.map((value, index) => {
+        logs.push({ value, index })
+        return value
+      })
+
+      assert.deepStrictEqual(logs, expectedLogs)
+    })
+
+    it('should run forEach on a sparse matrix with unordered indexes', function () {
+      const logs = []
+      unorderedSparseMatrix.forEach((value, index) => logs.push({ value, index }))
+
+      assert.deepStrictEqual(logs, expectedLogs)
+    })
+
+    it('should run map on a sparse matrix with unordered indexes', function () {
+      const logs = []
+      unorderedSparseMatrix.map((value, index) => {
+        logs.push({ value, index })
+        return value
+      })
+
+      assert.deepStrictEqual(logs, expectedLogs)
     })
   })
 
