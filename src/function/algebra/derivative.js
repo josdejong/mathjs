@@ -21,7 +21,7 @@ function factory (type, config, load, typed) {
    *
    * This uses rules of differentiation which can be found here:
    *
-   * - [Differentiation rules (Wikipedia)](http://en.wikipedia.org/wiki/Differentiation_rules)
+   * - [Differentiation rules (Wikipedia)](https://en.wikipedia.org/wiki/Differentiation_rules)
    *
    * Syntax:
    *

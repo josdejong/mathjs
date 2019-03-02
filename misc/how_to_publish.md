@@ -73,7 +73,7 @@ Follow the readme in the `gh-pages` branch on how to update the website.
 
 ## Update the REST API
 
-Update the `mathjs-rest` project (served at http://api.mathjs.org).
+Update the `mathjs-rest` project (served at https://api.mathjs.org).
 
 
 ## Back to develop

@@ -6,7 +6,7 @@ Compute the erf function of a value using a rational Chebyshev
 approximations for different intervals of x.
 
 This is a translation of W. J. Cody's Fortran implementation from 1987
-( http://www.netlib.org/specfun/erf ). See the AMS publication
+( https://www.netlib.org/specfun/erf ). See the AMS publication
 "Rational Chebyshev Approximations for the Error Function" by W. J. Cody
 for an explanation of this process.
 
