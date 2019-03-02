@@ -133,7 +133,7 @@
     "gulp-util": "3.0.8",
     "istanbul": "0.4.5",
     "jsep": "0.3.4",
-    "karma": "3.1.4",
+    "karma": "4.0.1",
     "karma-browserstack-launcher": "1.4.0",
     "karma-firefox-launcher": "1.1.0",
     "karma-mocha": "1.3.0",
@@ -156,7 +156,7 @@
     "tar": "4.4.8",
     "uglify-js": "3.4.9",
     "underscore": "1.9.1",
-    "webpack": "4.29.5",
+    "webpack": "4.29.6",
     "zeros": "1.0.0"
   },
   "main": "./index",
