@@ -7,7 +7,7 @@ function factory (type, config, load, typed) {
 
   /**
    * Calculate the extended greatest common divisor for two values.
-   * See http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
+   * See https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
    *
    * Syntax:
    *
@@ -46,7 +46,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _xgcd (a, b) {
-    // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+    // source: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
     let t // used to swap two variables
     let q // quotient
     let r // remainder
@@ -92,7 +92,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _xgcdBigNumber (a, b) {
-    // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+    // source: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
     let // used to swap two variables
       t
 

@@ -10,7 +10,7 @@ The modulus is defined as:
 
     x - y * floor(x / y)
 
-See http://en.wikipedia.org/wiki/Modulo_operation.
+See https://en.wikipedia.org/wiki/Modulo_operation.
 
 
 ## Syntax

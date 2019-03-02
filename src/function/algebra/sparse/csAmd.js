@@ -19,8 +19,6 @@ function factory (type, config, load) {
    *
    * @param {Number} order    0: Natural, 1: Cholesky, 2: LU, 3: QR
    * @param {Matrix} m        Sparse Matrix
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
   const csAmd = function (order, a) {
     // check input parameters
