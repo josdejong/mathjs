@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 5.5.0
- * @date    2019-02-20
+ * @version 5.6.0
+ * @date    2019-03-02
  *
  * @license
  * Copyright (C) 2013-2019 Jos de Jong <wjosdejong@gmail.com>
@@ -16,7 +16,7 @@
  * use this file except in compliance with the License. You may obtain a copy
  * of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -7522,11 +7522,11 @@ function factory(type, config, load, typed) {
    * Test whether two given 16 bit characters form a surrogate pair of a
    * unicode math symbol.
    *
-   * http://unicode-table.com/en/
-   * http://www.wikiwand.com/en/Mathematical_operators_and_symbols_in_Unicode
+   * https://unicode-table.com/en/
+   * https://www.wikiwand.com/en/Mathematical_operators_and_symbols_in_Unicode
    *
    * Note: In ES6 will be unicode aware:
-   * http://stackoverflow.com/questions/280712/javascript-unicode-regexes
+   * https://stackoverflow.com/questions/280712/javascript-unicode-regexes
    * https://mathiasbynens.be/notes/es6-unicode-regex
    *
    * @param {string} high
@@ -8835,9 +8835,9 @@ function factory(type, config, load, typed) {
     // we extend the signatures of divideScalar with signatures dealing with matrices
     'Array | Matrix, Array | Matrix': function ArrayMatrixArrayMatrix(x, y) {
       // TODO: implement matrix right division using pseudo inverse
-      // http://www.mathworks.nl/help/matlab/ref/mrdivide.html
-      // http://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
-      // http://stackoverflow.com/questions/12263932/how-does-gnu-octave-matrix-division-work-getting-unexpected-behaviour
+      // https://www.mathworks.nl/help/matlab/ref/mrdivide.html
+      // https://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
+      // https://stackoverflow.com/questions/12263932/how-does-gnu-octave-matrix-division-work-getting-unexpected-behaviour
       return multiply(x, inv(y));
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
@@ -11633,14 +11633,17 @@ function factory(type, config, load, typed) {
 
       if (parens[0]) {
         operand = '(' + operand + ')';
-      }
+      } // for example for "not", we want a space between operand and argument
+
+
+      var opIsNamed = /[a-zA-Z]+/.test(this.op);
 
       if (assoc === 'right') {
         // prefix operator
-        return this.op + operand;
+        return this.op + (opIsNamed ? ' ' : '') + operand;
       } else if (assoc === 'left') {
         // postfix
-        return operand + this.op;
+        return operand + (opIsNamed ? ' ' : '') + this.op;
       } // fall back to postfix
 
 
@@ -13237,7 +13240,7 @@ function factory(type, config, load, typed) {
     } else {
       // this is a matrix of 3 x 3 or larger
       // calculate inverse using gauss-jordan elimination
-      //      http://en.wikipedia.org/wiki/Gaussian_elimination
+      //      https://en.wikipedia.org/wiki/Gaussian_elimination
       //      http://mathworld.wolfram.com/MatrixInverse.html
       //      http://math.uww.edu/~mcfarlat/inverse.htm
       // make a copy of the matrix (only the arrays, not of the elements)
@@ -15147,7 +15150,7 @@ function factory(type, config, load, typed, math) {
    *
    * For more details on the theory, see:
    *
-   * - [Strategies for simplifying math expressions (Stackoverflow)](http://stackoverflow.com/questions/7540227/strategies-for-simplifying-math-expressions)
+   * - [Strategies for simplifying math expressions (Stackoverflow)](https://stackoverflow.com/questions/7540227/strategies-for-simplifying-math-expressions)
    * - [Symbolic computation - Simplification (Wikipedia)](https://en.wikipedia.org/wiki/Symbolic_computation#Simplification)
    *
    *  An optional `options` argument can be passed as last argument of `simplify`.
@@ -17053,7 +17056,7 @@ function factory(type, config, load, typed) {
   /**
    * Quickselect algorithm.
    * Code adapted from:
-   * http://blog.teamleadnet.com/2012/07/quick-select-algorithm-find-kth-element.html
+   * https://blog.teamleadnet.com/2012/07/quick-select-algorithm-find-kth-element.html
    *
    * @param {Array} arr
    * @param {Number} k
@@ -17616,7 +17619,7 @@ function factory(type, config, load, typed, math) {
       return rng;
     },
     // Implementation of normal distribution using Box-Muller transform
-    // ref : http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+    // ref : https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
     // We take : mean = 0.5, standard deviation = 1/6
     // so that 99.7% values are in [0, 1].
     normal: function normal() {
@@ -22437,7 +22440,7 @@ function factory(type, config, load, typed) {
    * invoking node.eval().
    *
    * Note the evaluating arbitrary expressions may involve security risks,
-   * see [http://mathjs.org/docs/expressions/security.html](http://mathjs.org/docs/expressions/security.html) for more information.
+   * see [https://mathjs.org/docs/expressions/security.html](https://mathjs.org/docs/expressions/security.html) for more information.
    *
    * Syntax:
    *
@@ -25886,16 +25889,15 @@ exports.math = true; // requires the math namespace as 5th argument
 /* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v10.0.2 https://github.com/MikeMcl/decimal.js/LICENCE */
-;(function (globalScope) {
+var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
   'use strict';
 
 
   /*
-   *  decimal.js v10.0.2
+   *  decimal.js v10.1.1
    *  An arbitrary-precision Decimal type for JavaScript.
    *  https://github.com/MikeMcl/decimal.js
-   *  Copyright (c) 2018 Michael Mclaughlin <M8ch88l@gmail.com>
+   *  Copyright (c) 2019 Michael Mclaughlin <M8ch88l@gmail.com>
    *  MIT Licence
    */
 
@@ -27998,7 +28000,6 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v10.0.2 https://github.com/Mike
   P.toHexadecimal = P.toHex = function (sd, rm) {
     return toStringBinary(this, 16, sd, rm);
   };
-
 
 
   /*
@@ -30147,8 +30148,27 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v10.0.2 https://github.com/Mike
       // Duplicate.
       if (v instanceof Decimal) {
         x.s = v.s;
-        x.e = v.e;
-        x.d = (v = v.d) ? v.slice() : v;
+
+        if (external) {
+          if (!v.d || v.e > Decimal.maxE) {
+
+            // Infinity.
+            x.e = NaN;
+            x.d = null;
+          } else if (v.e < Decimal.minE) {
+
+            // Zero.
+            x.e = 0;
+            x.d = [0];
+          } else {
+            x.e = v.e;
+            x.d = v.d.slice();
+          }
+        } else {
+          x.e = v.e;
+          x.d = v.d ? v.d.slice() : v.d;
+        }
+
         return;
       }
 
@@ -30172,8 +30192,23 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v10.0.2 https://github.com/Mike
         // Fast path for small integers.
         if (v === ~~v && v < 1e7) {
           for (e = 0, i = v; i >= 10; i /= 10) e++;
-          x.e = e;
-          x.d = [v];
+
+          if (external) {
+            if (e > Decimal.maxE) {
+              x.e = NaN;
+              x.d = null;
+            } else if (e < Decimal.minE) {
+              x.e = 0;
+              x.d = [0];
+            } else {
+              x.e = e;
+              x.d = [v];
+            }
+          } else {
+            x.e = e;
+            x.d = [v];
+          }
+
           return;
 
         // Infinity, NaN.
@@ -42685,7 +42720,7 @@ function factory(type, config, load, typed, math) {
     var unit = type.Unit.parse(str);
     unit.fixPrefix = true;
     return unit;
-  } // Source: http://www.wikiwand.com/en/Physical_constant
+  } // Source: https://en.wikipedia.org/wiki/Physical_constant
   // Universal constants
 
 
@@ -42974,7 +43009,7 @@ exports.math = true; // request access to the math namespace
 /* 194 */
 /***/ (function(module, exports) {
 
-module.exports = '5.5.0'; // Note: This file is automatically generated when building math.js.
+module.exports = '5.6.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 
 /***/ }),
@@ -43026,7 +43061,7 @@ function factory(type, config, load, typed) {
    *
    * This uses rules of differentiation which can be found here:
    *
-   * - [Differentiation rules (Wikipedia)](http://en.wikipedia.org/wiki/Differentiation_rules)
+   * - [Differentiation rules (Wikipedia)](https://en.wikipedia.org/wiki/Differentiation_rules)
    *
    * Syntax:
    *
@@ -45043,8 +45078,6 @@ function factory(type, config, load) {
    *
    * @param {Number} order    0: Natural, 1: Cholesky, 2: LU, 3: QR
    * @param {Matrix} m        Sparse Matrix
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
 
   var csAmd = function csAmd(order, a) {
@@ -47045,7 +47078,7 @@ var _cbrtNumber = Math.cbrt || function (x) {
   }
 
   if (isFinite(x)) {
-    result = Math.exp(Math.log(x) / 3); // from http://en.wikipedia.org/wiki/Cube_root#Numerical_methods
+    result = Math.exp(Math.log(x) / 3); // from https://en.wikipedia.org/wiki/Cube_root#Numerical_methods
 
     result = (x / (result * result) + 2 * result) / 3;
   } else {
@@ -47695,7 +47728,7 @@ function factory(type, config, load, typed) {
   function _gcdBigNumber(a, b) {
     if (!a.isInt() || !b.isInt()) {
       throw new Error('Parameters in function gcd must be integer numbers');
-    } // http://en.wikipedia.org/wiki/Euclidean_algorithm
+    } // https://en.wikipedia.org/wiki/Euclidean_algorithm
 
 
     var zero = new type.BigNumber(0);
@@ -47721,7 +47754,7 @@ function factory(type, config, load, typed) {
 function _gcd(a, b) {
   if (!isInteger(a) || !isInteger(b)) {
     throw new Error('Parameters in function gcd must be integer numbers');
-  } // http://en.wikipedia.org/wiki/Euclidean_algorithm
+  } // https://en.wikipedia.org/wiki/Euclidean_algorithm
 
 
   var r;
@@ -47953,7 +47986,7 @@ function factory(type, config, load, typed) {
 
     if (a.isZero() || b.isZero()) {
       return new type.BigNumber(0);
-    } // http://en.wikipedia.org/wiki/Euclidean_algorithm
+    } // https://en.wikipedia.org/wiki/Euclidean_algorithm
     // evaluate lcm here inline to reduce overhead
 
 
@@ -47984,7 +48017,7 @@ function _lcm(a, b) {
 
   if (a === 0 || b === 0) {
     return 0;
-  } // http://en.wikipedia.org/wiki/Euclidean_algorithm
+  } // https://en.wikipedia.org/wiki/Euclidean_algorithm
   // evaluate lcm here inline to reduce overhead
 
 
@@ -48353,7 +48386,7 @@ function factory(type, config, load, typed) {
    *
    *     x - y * floor(x / y)
    *
-   * See http://en.wikipedia.org/wiki/Modulo_operation.
+   * See https://en.wikipedia.org/wiki/Modulo_operation.
    *
    * Syntax:
    *
@@ -48449,7 +48482,7 @@ function factory(type, config, load, typed) {
     if (y > 0) {
       // We don't use JavaScript's % operator here as this doesn't work
       // correctly for x < 0 and x === 0
-      // see http://en.wikipedia.org/wiki/Modulo_operation
+      // see https://en.wikipedia.org/wiki/Modulo_operation
       return x - y * Math.floor(x / y);
     } else if (y === 0) {
       return x;
@@ -48823,7 +48856,7 @@ function factory(type, config, load, typed) {
   return nthRoot;
   /**
    * Calculate the nth root of a for BigNumbers, solve x^root == a
-   * http://rosettacode.org/wiki/Nth_root#JavaScript
+   * https://rosettacode.org/wiki/Nth_root#JavaScript
    * @param {BigNumber} a
    * @param {BigNumber} root
    * @private
@@ -48868,7 +48901,7 @@ function factory(type, config, load, typed) {
 }
 /**
  * Calculate the nth root of a, solve x^root == a
- * http://rosettacode.org/wiki/Nth_root#JavaScript
+ * https://rosettacode.org/wiki/Nth_root#JavaScript
  * @param {number} a
  * @param {number} root
  * @private
@@ -49209,7 +49242,7 @@ function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
   /**
    * Calculate the extended greatest common divisor for two values.
-   * See http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
+   * See https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
    *
    * Syntax:
    *
@@ -49248,7 +49281,7 @@ function factory(type, config, load, typed) {
    */
 
   function _xgcd(a, b) {
-    // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+    // source: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
     var t; // used to swap two variables
 
     var q; // quotient
@@ -49297,7 +49330,7 @@ function factory(type, config, load, typed) {
 
 
   function _xgcdBigNumber(a, b) {
-    // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+    // source: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
     var // used to swap two variables
     t;
     var // quotient
@@ -55067,7 +55100,7 @@ function factory(type, config, load, typed) {
    * approximations for different intervals of x.
    *
    * This is a translation of W. J. Cody's Fortran implementation from 1987
-   * ( http://www.netlib.org/specfun/erf ). See the AMS publication
+   * ( https://www.netlib.org/specfun/erf ). See the AMS publication
    * "Rational Chebyshev Approximations for the Error Function" by W. J. Cody
    * for an explanation of this process.
    *
@@ -60646,7 +60679,7 @@ function factory(type, config, load, typed) {
    * Evaluate an expression.
    *
    * Note the evaluating arbitrary expressions may involve security risks,
-   * see [http://mathjs.org/docs/expressions/security.html](http://mathjs.org/docs/expressions/security.html) for more information.
+   * see [https://mathjs.org/docs/expressions/security.html](https://mathjs.org/docs/expressions/security.html) for more information.
    *
    * Syntax:
    *

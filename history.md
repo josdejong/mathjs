@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20190302-version-560">2019-03-02, version 5.6.0 <a href="#20190302-version-560" title="Permalink">#</a></h1>
+
+- Upgrade decimal.js to v10.1.1  <a href="https://github.com/josdejong/mathjs/issues/1421">#1421</a>).
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1418">#1418</a>: missing whitespace when stringifying an expression
+  containing "not".
+
+
 <h1 id="20190220-version-550">2019-02-20, version 5.5.0 <a href="#20190220-version-550" title="Permalink">#</a></h1>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1401">#1401</a>: methods `map` and `forEach` of `SparseMatrix` not working

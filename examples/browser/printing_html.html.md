@@ -12,7 +12,7 @@ File: [printing_html.html](printing_html.html) (click for a live demo)
 <head>
 	<title>math.js | printing HTML</title>
 
-	<script src="https://unpkg.com/mathjs@5.5.0/dist/math.min.js"></script>
+	<script src="https://unpkg.com/mathjs@5.6.0/dist/math.min.js"></script>
 
 	<style>
 		body {
