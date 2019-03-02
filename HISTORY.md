@@ -1,8 +1,8 @@
 # History
 
-# Not yet published, version 5.6.0
+# 2019-03-02, version 5.6.0
 
-- Upgrade decimal.js to v10.1.0 (#1421).
+- Upgrade decimal.js to v10.1.1 (#1421).
 - Fixed #1418: missing whitespace when stringifying an expression
   containing "not".
 
