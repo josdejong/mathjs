@@ -143,16 +143,18 @@ function factory (type, config, load, typed, math) {
    * @return {Node} Returns the original node or its replacement
    */
   Node.prototype.transform = function (callback) {
-    // traverse over all childs
-    function _transform (node, callback) {
-      return node.map(function (child, path, parent) {
-        const replacement = callback(child, path, parent)
-        return _transform(replacement, callback)
-      })
+    function _transform (child, path, parent) {
+      const replacement = callback(child, path, parent)
+
+      if (replacement !== child) {
+        // stop iterating when the node is replaced
+        return replacement
+      }
+
+      return child.map(_transform)
     }
 
-    const replacement = callback(this, null, null) // eslint-disable-line standard/no-callback-literal
-    return _transform(replacement, callback)
+    return _transform(this, null, null)
   }
 
   /**

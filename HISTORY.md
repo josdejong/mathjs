@@ -1,5 +1,14 @@
 # History
 
+
+# not yet released, version 6.0.0
+
+Breaking change:
+
+- Fixed #1428: transform iterating over replaced nodes. New behavior
+  is that it stops iterating when a node is replaced.
+
+
 # not yet released, version 5.7.0
 
 - Implemented support for `pow()` in `derivative`. Thanks @sam-19.
