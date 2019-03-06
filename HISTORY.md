@@ -1,5 +1,12 @@
 # History
 
+# Not yet published, version 5.6.0
+
+- Upgrade decimal.js to v10.1.1 (#1421).
+- Fixed #1418: missing whitespace when stringifying an expression
+  containing "not".
+
+
 # 2019-02-20, version 5.5.0
 
 - Fixed #1401: methods `map` and `forEach` of `SparseMatrix` not working

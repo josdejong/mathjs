@@ -9,7 +9,7 @@ function factory (type, config, load, typed, math) {
     return unit
   }
 
-  // Source: http://www.wikiwand.com/en/Physical_constant
+  // Source: https://en.wikipedia.org/wiki/Physical_constant
 
   // Universal constants
   setLazyConstant(math, 'speedOfLight', function () { return fixedUnit('299792458 m s^-1') })

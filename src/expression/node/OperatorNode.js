@@ -370,10 +370,13 @@ function factory (type, config, load, typed) {
         operand = '(' + operand + ')'
       }
 
+      // for example for "not", we want a space between operand and argument
+      const opIsNamed = /[a-zA-Z]+/.test(this.op)
+
       if (assoc === 'right') { // prefix operator
-        return this.op + operand
+        return this.op + (opIsNamed ? ' ' : '') + operand
       } else if (assoc === 'left') { // postfix
-        return operand + this.op
+        return operand + (opIsNamed ? ' ' : '') + this.op
       }
 
       // fall back to postfix

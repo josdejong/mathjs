@@ -136,7 +136,7 @@ function factory (type, config, load, typed) {
       return new type.BigNumber(0)
     }
 
-    // http://en.wikipedia.org/wiki/Euclidean_algorithm
+    // https://en.wikipedia.org/wiki/Euclidean_algorithm
     // evaluate lcm here inline to reduce overhead
     const prod = a.times(b)
     while (!b.isZero()) {
@@ -164,7 +164,7 @@ function _lcm (a, b) {
     return 0
   }
 
-  // http://en.wikipedia.org/wiki/Euclidean_algorithm
+  // https://en.wikipedia.org/wiki/Euclidean_algorithm
   // evaluate lcm here inline to reduce overhead
   let t
   const prod = a * b

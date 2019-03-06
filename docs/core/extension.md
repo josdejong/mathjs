@@ -56,7 +56,7 @@ parser.eval('hello("user")')   // 'hello, user!'
 
 External libraries like
 [numbers.js](https://github.com/sjkaliski/numbers.js) and
-[numeric.js](http://numericjs.com/) can be imported as follows.
+[numeric.js](https://github.com/sloisel/numeric) can be imported as follows.
 The libraries must be installed using npm:
 
     $ npm install numbers
