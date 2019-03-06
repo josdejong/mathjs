@@ -1,6 +1,11 @@
 # History
 
-# Not yet published, version 5.6.0
+# not yet released, version 5.7.0
+
+- Implemented support for `pow()` in `derivative`. Thanks @sam-19.
+
+
+# 2019-03-02, version 5.6.0
 
 - Upgrade decimal.js to v10.1.1 (#1421).
 - Fixed #1418: missing whitespace when stringifying an expression

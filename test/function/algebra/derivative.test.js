@@ -160,6 +160,16 @@ describe('derivative', function () {
     compareString(derivativeWithoutSimplify('acoth((2x))', 'x'), '-(2 * 1) / (1 - (2 x) ^ 2)')
     compareString(derivativeWithoutSimplify('abs(2x)', 'x'), '2 * 1 * abs(2 x) / (2 x)')
 
+    // See power operator tests above
+    compareString(derivativeWithoutSimplify('pow(0, 2^x + x^3 + 2)', 'x'), '0')
+    compareString(derivativeWithoutSimplify('pow(1, 2^x + x^3 + 2)', 'x'), '0')
+    compareString(derivativeWithoutSimplify('pow(10, 2x + 2)', 'x'), '10 ^ (2 x + 2) * log(10) * (2 * 1 + 0)')
+    compareString(derivativeWithoutSimplify('pow(x^x^x^x, 0)', 'x'), '0')
+    compareString(derivativeWithoutSimplify('pow(x + 2, 1)', 'x'), '1 + 0')
+    compareString(derivativeWithoutSimplify('2 * pow(x, 2)', 'x'), '2 * 2 * 1 * x ^ (2 - 1)')
+    compareString(derivativeWithoutSimplify('2 * pow(x, -2)', 'x'), '2 * -2 * 1 * x ^ (-2 - 1)')
+    compareString(derivativeWithoutSimplify('pow(x^3 + x, 5x + 2)', 'x'), '(x ^ 3 + x) ^ (5 x + 2) * ((3 * 1 * x ^ (3 - 1) + 1) * (5 x + 2) / (x ^ 3 + x) + (5 * 1 + 0) * log(x ^ 3 + x))')
+
     compareString(derivativeWithoutSimplify('exp(2x)', 'x'), '2 * 1 * exp(2 x)')
   })
 
