@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { atanhNumber } from '../../plain/number'
 
 const name = 'atanh'
 const dependencies = ['typed', 'config', 'Complex']
@@ -31,7 +32,7 @@ export const createAtanh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const atanh = typed(name, {
     'number': function (x) {
       if ((x <= 1 && x >= -1) || config.predictable) {
-        return _atanh(x)
+        return atanhNumber(x)
       }
       return new Complex(x, 0).atanh()
     },
@@ -52,13 +53,3 @@ export const createAtanh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
   return atanh
 })
-
-/**
- * Calculate the hyperbolic arctangent of a number
- * @param {number} x
- * @return {number}
- * @private
- */
-const _atanh = Math.atanh || function (x) {
-  return Math.log((1 + x) / (1 - x)) / 2
-}

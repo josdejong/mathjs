@@ -138,3 +138,17 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
   return equal
 })
+
+export const createEqualNumber = factory(name, ['typed', 'equalScalar'], ({ typed, equalScalar }) => {
+  return typed(name, {
+    'any, any': function (x, y) {
+      // strict equality for null and undefined?
+      if (x === null) { return y === null }
+      if (y === null) { return x === null }
+      if (x === undefined) { return y === undefined }
+      if (y === undefined) { return x === undefined }
+
+      return equalScalar(x, y)
+    }
+  })
+})

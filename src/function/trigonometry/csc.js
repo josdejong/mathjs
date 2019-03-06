@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { cscNumber } from '../../plain/number'
 
 const name = 'csc'
 const dependencies = ['typed', 'BigNumber']
@@ -29,9 +30,7 @@ export const createCsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
    * @return {number | Complex | Array | Matrix} Cosecant of x
    */
   const csc = typed(name, {
-    'number': function (x) {
-      return 1 / Math.sin(x)
-    },
+    'number': cscNumber,
 
     'Complex': function (x) {
       return x.csc()

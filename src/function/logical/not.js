@@ -2,6 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
+import { notNumber } from '../../plain/number'
 
 const name = 'not'
 const dependencies = ['typed']
@@ -33,9 +34,7 @@ export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *            Returns true when input is a zero or empty value.
    */
   const not = typed(name, {
-    'number': function (x) {
-      return !x
-    },
+    'number': notNumber,
 
     'Complex': function (x) {
       return x.re === 0 && x.im === 0

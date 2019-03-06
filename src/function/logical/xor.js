@@ -6,6 +6,7 @@ import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 import { factory } from '../../utils/factory'
+import { xorNumber } from '../../plain/number'
 
 const name = 'xor'
 const dependencies = [
@@ -51,9 +52,7 @@ export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    */
   const xor = typed(name, {
 
-    'number, number': function (x, y) {
-      return !!x !== !!y
-    },
+    'number, number': xorNumber,
 
     'Complex, Complex': function (x, y) {
       return ((x.re !== 0 || x.im !== 0) !== (y.re !== 0 || y.im !== 0))

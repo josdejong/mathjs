@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { cosh as coshNumber } from '../../utils/number'
 
 const name = 'cosh'
 const dependencies = ['typed']
@@ -29,7 +30,7 @@ export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic cosine of x
    */
   const cosh = typed(name, {
-    'number': _cosh,
+    'number': coshNumber,
 
     'Complex': function (x) {
       return x.cosh()
@@ -53,13 +54,3 @@ export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
 
   return cosh
 })
-
-/**
- * Calculate the hyperbolic cosine of a number
- * @param {number} x
- * @returns {number}
- * @private
- */
-const _cosh = Math.cosh || function (x) {
-  return (Math.exp(x) + Math.exp(-x)) / 2
-}

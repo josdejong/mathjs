@@ -4,9 +4,9 @@ import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 
 const name = 'isPrime'
-const dependencies = ['typed', 'BigNumber']
+const dependencies = ['typed']
 
-export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
+export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is prime: has no divisors other than itself and one.
    * The function supports type `number`, `bignumber`.
@@ -64,7 +64,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
       if (x.mod(2).isZero()) {
         return false
       }
-      for (let i = BigNumber(3); i.times(i).lte(x); i = i.plus(1)) {
+      for (let i = new x.constructor(3); i.times(i).lte(x); i = i.plus(1)) {
         if (x.mod(i).isZero()) {
           return false
         }

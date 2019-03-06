@@ -9,7 +9,7 @@ import { toSymbol } from '../../utils/latex'
 const name = 'SymbolNode'
 const dependencies = [
   'math',
-  'Unit',
+  '?Unit',
   'Node'
 ]
 

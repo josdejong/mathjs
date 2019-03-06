@@ -2,6 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
+import { isPositiveNumber } from '../../plain/number'
 
 const name = 'isPositive'
 const dependencies = ['typed']
@@ -39,9 +40,7 @@ export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ t
    *                    Throws an error in case of an unknown data type.
    */
   const isPositive = typed(name, {
-    'number': function (x) {
-      return x > 0
-    },
+    'number': isPositiveNumber,
 
     'BigNumber': function (x) {
       return !x.isNeg() && !x.isZero() && !x.isNaN()

@@ -8,6 +8,7 @@ import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { modNumber } from '../../plain/number'
 
 const name = 'mod'
 const dependencies = [
@@ -63,7 +64,7 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    */
   const mod = typed(name, {
 
-    'number, number': _mod,
+    'number, number': modNumber,
 
     'BigNumber, BigNumber': function (x, y) {
       return y.isZero() ? x : x.mod(y)
@@ -132,25 +133,4 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
   })
 
   return mod
-
-  /**
-   * Calculate the modulus of two numbers
-   * @param {number} x
-   * @param {number} y
-   * @returns {number} res
-   * @private
-   */
-  function _mod (x, y) {
-    if (y > 0) {
-      // We don't use JavaScript's % operator here as this doesn't work
-      // correctly for x < 0 and x === 0
-      // see http://en.wikipedia.org/wiki/Modulo_operation
-      return x - y * Math.floor(x / y)
-    } else if (y === 0) {
-      return x
-    } else { // y < 0
-      // TODO: implement mod for a negative divisor
-      throw new Error('Cannot calculate mod for a negative divisor')
-    }
-  }
 })

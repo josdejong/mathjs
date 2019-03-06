@@ -26,9 +26,9 @@ export function isInteger (value) {
 /**
  * Calculate the sign of a number
  * @param {number} x
- * @returns {*}
+ * @returns {number}
  */
-export const sign = Math.sign || function (x) {
+export const sign = /* #__PURE__ */ Math.sign || function (x) {
   if (x > 0) {
     return 1
   } else if (x < 0) {
@@ -36,6 +36,75 @@ export const sign = Math.sign || function (x) {
   } else {
     return 0
   }
+}
+
+/**
+ * Calculate the base-2 logarithm of a number
+ * @param {number} x
+ * @returns {number}
+ */
+export const log2 = /* #__PURE__ */ Math.log2 || function log2 (x) {
+  return Math.log(x) / Math.LN2
+}
+
+/**
+ * Calculate the base-10 logarithm of a number
+ * @param {number} x
+ * @returns {number}
+ */
+export const log10 = /* #__PURE__ */ Math.log10 || function log10 (x) {
+  return Math.log(x) / Math.LN10
+}
+
+/**
+ * Calculate the natural logarithm of a number + 1
+ * @param {number} x
+ * @returns {number}
+ */
+export const log1p = /* #__PURE__ */ Math.log1p || function (x) {
+  return Math.log(x + 1)
+}
+
+/**
+ * Calculate cubic root for a number
+ *
+ * Code from es6-shim.js:
+ *   https://github.com/paulmillr/es6-shim/blob/master/es6-shim.js#L1564-L1577
+ *
+ * @param {number} x
+ * @returns {number} Returns the cubic root of x
+ */
+export const cbrt = /* #__PURE__ */ Math.cbrt || function cbrt (x) {
+  if (x === 0) {
+    return x
+  }
+
+  const negate = x < 0
+  let result
+  if (negate) {
+    x = -x
+  }
+
+  if (isFinite(x)) {
+    result = Math.exp(Math.log(x) / 3)
+    // from http://en.wikipedia.org/wiki/Cube_root#Numerical_methods
+    result = (x / (result * result) + (2 * result)) / 3
+  } else {
+    result = x
+  }
+
+  return negate ? -result : result
+}
+
+/**
+ * Calculates exponentiation minus 1
+ * @param {number} x
+ * @return {number} res
+ */
+export const expm1 = /* #__PURE__ */ Math.expm1 || function expm1 (x) {
+  return (x >= 2e-4 || x <= -2e-4)
+    ? Math.exp(x) - 1
+    : x + x * x / 2 + x * x * x / 6
 }
 
 /**
@@ -519,4 +588,54 @@ export function nearlyEqual (x, y, epsilon) {
 
   // Infinite and Number or negative Infinite and positive Infinite cases
   return false
+}
+
+/**
+ * Calculate the hyperbolic arccos of a number
+ * @param {number} x
+ * @return {number}
+ */
+export const acosh = Math.acosh || function (x) {
+  return Math.log(Math.sqrt(x * x - 1) + x)
+}
+
+export const asinh = Math.asinh || function (x) {
+  return Math.log(Math.sqrt(x * x + 1) + x)
+}
+
+/**
+ * Calculate the hyperbolic arctangent of a number
+ * @param {number} x
+ * @return {number}
+ */
+export const atanh = Math.atanh || function (x) {
+  return Math.log((1 + x) / (1 - x)) / 2
+}
+
+/**
+ * Calculate the hyperbolic cosine of a number
+ * @param {number} x
+ * @returns {number}
+ */
+export const cosh = Math.cosh || function (x) {
+  return (Math.exp(x) + Math.exp(-x)) / 2
+}
+
+/**
+ * Calculate the hyperbolic sine of a number
+ * @param {number} x
+ * @returns {number}
+ */
+export const sinh = Math.sinh || function (x) {
+  return (Math.exp(x) - Math.exp(-x)) / 2
+}
+
+/**
+ * Calculate the hyperbolic tangent of a number
+ * @param {number} x
+ * @returns {number}
+ */
+export const tanh = Math.tanh || function (x) {
+  const e = Math.exp(2 * x)
+  return (e - 1) / (e + 1)
 }

@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { expm1Number } from '../../plain/number'
 
 const name = 'expm1'
 const dependencies = [ 'typed', 'Complex' ]
@@ -36,7 +37,7 @@ export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
   const expm1 = typed(name, {
-    'number': Math.expm1 || _expm1,
+    'number': expm1Number,
 
     'Complex': function (x) {
       const r = Math.exp(x.re)
@@ -54,18 +55,6 @@ export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return deepMap(x, expm1)
     }
   })
-
-  /**
-   * Calculates exponentiation minus 1.
-   * @param {number} x
-   * @return {number} res
-   * @private
-   */
-  function _expm1 (x) {
-    return (x >= 2e-4 || x <= -2e-4)
-      ? Math.exp(x) - 1
-      : x + x * x / 2 + x * x * x / 6
-  }
 
   return expm1
 })

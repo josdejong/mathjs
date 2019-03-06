@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { ceilNumber } from '../../plain/number'
 
 const name = 'ceil'
 const dependencies = ['typed']
@@ -36,7 +37,7 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   const ceil = typed(name, {
-    'number': Math.ceil,
+    'number': ceilNumber,
 
     'Complex': function (x) {
       return x.ceil()

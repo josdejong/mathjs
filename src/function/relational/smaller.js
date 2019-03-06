@@ -144,3 +144,11 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
 
   return smaller
 })
+
+export const createSmallerNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
+  return typed(name, {
+    'number, number': function (x, y) {
+      return x < y && !nearlyEqual(x, y, config.epsilon)
+    }
+  })
+})

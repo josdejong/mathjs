@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { acoshNumber } from '../../plain/number'
 
 const name = 'acosh'
 const dependencies = ['typed', 'config', 'Complex']
@@ -31,7 +32,7 @@ export const createAcosh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const acosh = typed(name, {
     'number': function (x) {
       if (x >= 1 || config.predictable) {
-        return _acosh(x)
+        return acoshNumber(x)
       }
       if (x <= -1) {
         return new Complex(Math.log(Math.sqrt(x * x - 1) - x), Math.PI)
@@ -54,13 +55,3 @@ export const createAcosh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
   return acosh
 })
-
-/**
- * Calculate the hyperbolic arccos of a number
- * @param {number} x
- * @return {number}
- * @private
- */
-const _acosh = Math.acosh || function (x) {
-  return Math.log(Math.sqrt(x * x - 1) + x)
-}

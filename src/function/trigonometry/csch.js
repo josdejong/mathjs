@@ -2,7 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
-import { sign } from '../../utils/number'
+import { cschNumber } from '../../plain/number'
 
 const name = 'csch'
 const dependencies = ['typed', 'BigNumber']
@@ -32,7 +32,7 @@ export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | Complex | Array | Matrix} Hyperbolic cosecant of x
    */
   const csch = typed(name, {
-    'number': _csch,
+    'number': cschNumber,
 
     'Complex': function (x) {
       return x.csch()
@@ -56,18 +56,3 @@ export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
   return csch
 })
-
-/**
- * Calculate the hyperbolic cosecant of a number
- * @param {number} x
- * @returns {number}
- * @private
- */
-function _csch (x) {
-  // consider values close to zero (+/-)
-  if (x === 0) {
-    return Number.POSITIVE_INFINITY
-  } else {
-    return Math.abs(2 / (Math.exp(x) - Math.exp(-x))) * sign(x)
-  }
-}

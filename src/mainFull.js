@@ -443,7 +443,7 @@ export const bitOr = /* #__PURE__ */ createBitOr({ typed, matrix, equalScalar, D
 export const bitXor = /* #__PURE__ */ createBitXor({ typed, matrix, DenseMatrix })
 
 // complex (1)
-export const arg = /* #__PURE__ */ createArg({ typed, BigNumber })
+export const arg = /* #__PURE__ */ createArg({ typed })
 export const conj = /* #__PURE__ */ createConj({ typed })
 export const im = /* #__PURE__ */ createIm({ typed })
 export const re = /* #__PURE__ */ createRe({ typed })
@@ -466,7 +466,7 @@ export const identity = /* #__PURE__ */ createIdentity({ config, typed, matrix, 
 export const kron = /* #__PURE__ */ createKron({ typed, matrix, multiplyScalar })
 export const map = /* #__PURE__ */ createMap({ typed })
 export const ones = /* #__PURE__ */ createOnes({ config, typed, matrix, BigNumber })
-export const range = /* #__PURE__ */ createRange({ config, typed, matrix, BigNumber })
+export const range = /* #__PURE__ */ createRange({ config, typed, matrix, bignumber })
 export const reshape = /* #__PURE__ */ createReshape({ typed, isInteger, matrix })
 export const resize = /* #__PURE__ */ createResize({ config, matrix })
 export const size = /* #__PURE__ */ createSize({ config, typed, matrix })
@@ -477,7 +477,7 @@ export const ctranspose = /* #__PURE__ */ createCtranspose({ typed, transpose, c
 export const zeros = /* #__PURE__ */ createZeros({ config, typed, matrix, BigNumber })
 
 // special (1)
-export const erf = /* #__PURE__ */ createErf({ typed, BigNumber })
+export const erf = /* #__PURE__ */ createErf({ typed })
 
 // statistics (1)
 export const mode = /* #__PURE__ */ createMode({ typed, isNaN, isNumeric })
@@ -491,7 +491,7 @@ export const print = /* #__PURE__ */ createPrint({ typed })
 export const to = /* #__PURE__ */ createTo({ typed, matrix })
 
 // utils (2)
-export const isPrime = /* #__PURE__ */ createIsPrime({ typed, BigNumber })
+export const isPrime = /* #__PURE__ */ createIsPrime({ typed })
 export const numeric = /* #__PURE__ */ createNumeric({ typed, number, bignumber, fraction })
 
 // arithmetic (2)
@@ -519,7 +519,7 @@ export const and = /* #__PURE__ */ createAnd({ typed, matrix, equalScalar, zeros
 // relational (2)
 export const compare = /* #__PURE__ */ createCompare({ config, typed, equalScalar, matrix, BigNumber, Fraction, DenseMatrix })
 export const compareNatural = /* #__PURE__ */ createCompareNatural({ typed, compare })
-export const compareText = /* #__PURE__ */ createCompareText({ config, typed, matrix })
+export const compareText = /* #__PURE__ */ createCompareText({ typed, matrix })
 export const equal = /* #__PURE__ */ createEqual({ config, typed, matrix, equalScalar, DenseMatrix })
 export const equalText = /* #__PURE__ */ createEqualText({ typed, compareText, isZero })
 export const smaller = /* #__PURE__ */ createSmaller({ config, typed, matrix, equalScalar, divideScalar, DenseMatrix })
@@ -527,7 +527,7 @@ export const smallerEq = /* #__PURE__ */ createSmallerEq({ config, typed, matrix
 export const larger = /* #__PURE__ */ createLarger({ config, typed, matrix, DenseMatrix })
 export const largerEq = /* #__PURE__ */ createLargerEq({ config, typed, matrix, DenseMatrix })
 export const deepEqual = /* #__PURE__ */ createDeepEqual({ config, typed, equal })
-export const unequal = /* #__PURE__ */ createUnequal({ config, typed, matrix, DenseMatrix })
+export const unequal = /* #__PURE__ */ createUnequal({ config, typed, equalScalar, matrix, DenseMatrix })
 
 // matrix (2)
 export const partitionSelect = /* #__PURE__ */ createPartitionSelect({ typed, isNumeric, isNaN, compare })
@@ -752,12 +752,12 @@ export const distance = /* #__PURE__ */ createDistance({ typed, addScalar, subtr
 export const intersect = /* #__PURE__ */ createIntersect({ config, typed, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar })
 
 // statistics (4)
-export const sum = /* #__PURE__ */ createSum({ config, typed, add, BigNumber, Fraction })
+export const sum = /* #__PURE__ */ createSum({ config, typed, add, bignumber, fraction })
 export const mean = /* #__PURE__ */ createMean({ typed, add, divide })
 export const median = /* #__PURE__ */ createMedian({ typed, add, divide, compare, partitionSelect })
 export const mad = /* #__PURE__ */ createMad({ typed, abs, map, median, subtract })
 export const variance = /* #__PURE__ */ createVariance({ typed, add, subtract, multiply, divide, isNaN })
-export const quantileSeq = /* #__PURE__ */ createQuantileSeq({ typed, add, multiply, partitionSelect, compare, BigNumber })
+export const quantileSeq = /* #__PURE__ */ createQuantileSeq({ typed, add, multiply, partitionSelect, compare })
 export const std = /* #__PURE__ */ createStd({ typed, sqrt, variance })
 
 // probability (4)
@@ -769,7 +769,7 @@ export const multinomial = /* #__PURE__ */ createMultinomial({ typed, add, divid
 export const permutations = /* #__PURE__ */ createPermutations({ typed, factorial })
 export const pickRandom = /* #__PURE__ */ createPickRandom({ typed, config })
 export const random = /* #__PURE__ */ createRandom({ typed, config, matrix })
-export const randomInt = /* #__PURE__ */ createRandomInt({ typed, config, matrix })
+export const randomInt = /* #__PURE__ */ createRandomInt({ typed, config })
 
 // combinatorics (4)
 export const stirlingS2 = /* #__PURE__ */ createStirlingS2({ typed, addScalar, subtract, multiplyScalar, divideScalar, pow, factorial, combinations, isNegative, isInteger, larger })
@@ -1049,9 +1049,9 @@ const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
   max: /* #__PURE__ */ createMaxTransform({ typed, larger }),
   mean: /* #__PURE__ */ createMeanTransform({ typed, add, divide }),
   min: /* #__PURE__ */ createMinTransform({ typed, smaller }),
-  range: /* #__PURE__ */ createRangeTransform({ typed, config, matrix, BigNumber }),
+  range: /* #__PURE__ */ createRangeTransform({ typed, config, matrix, bignumber }),
   subset: /* #__PURE__ */ createSubsetTransform({ typed, matrix }),
-  sum: /* #__PURE__ */ createSumTransform({ typed, config, add, BigNumber, Fraction })
+  sum: /* #__PURE__ */ createSumTransform({ typed, config, add, bignumber, fraction })
 })
 
 // expression (4)

@@ -1,6 +1,6 @@
 'use strict'
 
-import { isString, typeOf } from '../../utils/is'
+import { compareText as _compareText } from '../../utils/string'
 import { factory } from '../../utils/factory'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
@@ -8,11 +8,10 @@ import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 const name = 'compareText'
 const dependencies = [
   'typed',
-  'config',
   'matrix'
 ]
 
-export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix }) => {
+export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 
@@ -86,28 +85,11 @@ export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ 
     }
   })
 
-  /**
-   * Compare two strings
-   * @param {string} x
-   * @param {string} y
-   * @returns {number}
-   * @private
-   */
-  function _compareText (x, y) {
-    // we don't want to convert numbers to string, only accept string input
-    if (!isString(x)) {
-      throw new TypeError('Unexpected type of argument in function compareText ' +
-          '(expected: string or Array or Matrix, actual: ' + typeOf(x) + ', index: 0)')
-    }
-    if (!isString(y)) {
-      throw new TypeError('Unexpected type of argument in function compareText ' +
-          '(expected: string or Array or Matrix, actual: ' + typeOf(y) + ', index: 1)')
-    }
-
-    return (x === y)
-      ? 0
-      : (x > y ? 1 : -1)
-  }
-
   return compareText
+})
+
+export const createCompareTextNumber = /* #__PURE__ */ factory(name, ['typed'], ({ typed }) => {
+  return typed(name, {
+    'any, any': _compareText
+  })
 })

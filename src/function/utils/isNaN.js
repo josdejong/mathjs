@@ -2,6 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
+import { isNaNNumber } from '../../plain/number'
 
 const name = 'isNaN'
 const dependencies = ['typed']
@@ -37,9 +38,7 @@ export const createIsNaN = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    *                    Throws an error in case of an unknown data type.
    */
   return typed(name, {
-    'number': function (x) {
-      return Number.isNaN(x)
-    },
+    'number': isNaNNumber,
 
     'BigNumber': function (x) {
       return x.isNaN()

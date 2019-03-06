@@ -21,7 +21,7 @@
  * @return {BigNumber} Result of `x` & `y`, is fully precise
  * @private
  */
-export function bitAnd (x, y) {
+export function bitAndBigNumber (x, y) {
   if ((x.isFinite() && !x.isInteger()) || (y.isFinite() && !y.isInteger())) {
     throw new Error('Integers expected in function bitAnd')
   }
@@ -73,7 +73,7 @@ export function bitAnd (x, y) {
  * @return {BigNumber} Result of ~`x`, fully precise
  *
  */
-export function bitNot (x) {
+export function bitNotBigNumber (x) {
   if (x.isFinite() && !x.isInteger()) {
     throw new Error('Integer expected in function bitNot')
   }
@@ -109,7 +109,7 @@ export function bitNot (x) {
  * @param {BigNumber} y
  * @return {BigNumber} Result of `x` | `y`, fully precise
  */
-export function bitOr (x, y) {
+export function bitOrBigNumber (x, y) {
   if ((x.isFinite() && !x.isInteger()) || (y.isFinite() && !y.isInteger())) {
     throw new Error('Integers expected in function bitOr')
   }
@@ -155,7 +155,7 @@ export function bitwise (x, y, func) {
   const xSign = +(x.s < 0)
   const ySign = +(y.s < 0)
   if (xSign) {
-    xBits = decCoefficientToBinaryString(bitNot(x))
+    xBits = decCoefficientToBinaryString(bitNotBigNumber(x))
     for (let i = 0; i < xBits.length; ++i) {
       xBits[i] ^= 1
     }
@@ -163,7 +163,7 @@ export function bitwise (x, y, func) {
     xBits = decCoefficientToBinaryString(x)
   }
   if (ySign) {
-    yBits = decCoefficientToBinaryString(bitNot(y))
+    yBits = decCoefficientToBinaryString(bitNotBigNumber(y))
     for (let i = 0; i < yBits.length; ++i) {
       yBits[i] ^= 1
     }
@@ -211,7 +211,7 @@ export function bitwise (x, y, func) {
     outVal.s = -outVal.s
   }
   return outVal
-};
+}
 
 /* Extracted from decimal.js, and edited to specialize. */
 function decCoefficientToBinaryString (x) {
@@ -313,10 +313,10 @@ export function bitXor (x, y) {
 
   const negOne = new BigNumber(-1)
   if (x.eq(negOne)) {
-    return bitNot(y)
+    return bitNotBigNumber(y)
   }
   if (y.eq(negOne)) {
-    return bitNot(x)
+    return bitNotBigNumber(x)
   }
 
   if (!x.isFinite() || !y.isFinite()) {
@@ -348,7 +348,7 @@ export function bitXor (x, y) {
  * @return {BigNumber} Result of `x` << `y`
  *
  */
-export function leftShift (x, y) {
+export function leftShiftBigNumber (x, y) {
   if ((x.isFinite() && !x.isInteger()) || (y.isFinite() && !y.isInteger())) {
     throw new Error('Integers expected in function leftShift')
   }
@@ -390,7 +390,7 @@ export function leftShift (x, y) {
  * @return {BigNumber} Result of `x` >> `y`
  *
  */
-export function rightArithShift (x, y) {
+export function rightArithShiftBigNumber (x, y) {
   if ((x.isFinite() && !x.isInteger()) || (y.isFinite() && !y.isInteger())) {
     throw new Error('Integers expected in function rightArithShift')
   }

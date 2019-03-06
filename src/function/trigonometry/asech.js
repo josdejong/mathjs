@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { asechNumber } from '../../plain/number'
 
 const name = 'asech'
 const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
@@ -31,14 +32,13 @@ export const createAsech = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const asech = typed(name, {
     'number': function (x) {
       if ((x <= 1 && x >= -1) || config.predictable) {
-        x = 1 / x
-
-        const ret = Math.sqrt(x * x - 1)
-        if (x > 0 || config.predictable) {
-          return Math.log(ret + x)
+        const xInv = 1 / x
+        if (xInv > 0 || config.predictable) {
+          return asechNumber(x)
         }
 
-        return new Complex(Math.log(ret - x), Math.PI)
+        const ret = Math.sqrt(xInv * xInv - 1)
+        return new Complex(Math.log(ret - xInv), Math.PI)
       }
 
       return new Complex(x, 0).asech()

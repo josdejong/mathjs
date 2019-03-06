@@ -2,10 +2,11 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
-import { isInteger, toFixed } from '../../utils/number'
+import { isInteger } from '../../utils/number'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { roundNumber } from '../../plain/number'
 
 const NO_INT = 'Number of decimals in function round must be an integer'
 
@@ -56,15 +57,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   const round = typed(name, {
-
-    'number': Math.round,
-
-    'number, number': function (x, n) {
-      if (!isInteger(n)) { throw new TypeError(NO_INT) }
-      if (n < 0 || n > 15) { throw new Error('Number of decimals in function round must be in te range of 0-15') }
-
-      return _round(x, n)
-    },
+    ...roundNumberSignatures,
 
     'Complex': function (x) {
       return x.round()
@@ -153,14 +146,17 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   return round
 })
 
-/**
- * round a number to the given number of decimals, or to zero if decimals is
- * not provided
- * @param {number} value
- * @param {number} decimals       number of decimals, between 0 and 15 (0 by default)
- * @return {number} roundedValue
- * @private
- */
-function _round (value, decimals) {
-  return parseFloat(toFixed(value, decimals))
+const roundNumberSignatures = {
+  'number': roundNumber,
+
+  'number, number': function (x, n) {
+    if (!isInteger(n)) { throw new TypeError(NO_INT) }
+    if (n < 0 || n > 15) { throw new Error('Number of decimals in function round must be in te range of 0-15') }
+
+    return roundNumber(x, n)
+  }
 }
+
+export const createRoundNumber = /* #__PURE__ */ factory(name, ['typed'], ({ typed }) => {
+  return typed(name, roundNumberSignatures)
+})

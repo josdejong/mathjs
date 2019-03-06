@@ -2,7 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
-import { sign as numberSign } from '../../utils/number'
+import { signNumber } from '../../plain/number'
 
 const name = 'sign'
 const dependencies = ['typed', 'BigNumber', 'Fraction']
@@ -39,7 +39,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *            The sign of `x`
    */
   const sign = typed(name, {
-    'number': numberSign,
+    'number': signNumber,
 
     'Complex': function (x) {
       return x.sign()

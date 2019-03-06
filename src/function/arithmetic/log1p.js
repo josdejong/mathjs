@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { log1p as _log1p } from '../../utils/number'
 
 const name = 'log1p'
 const dependencies = [ 'typed', 'config', 'divideScalar', 'log', 'Complex' ]
@@ -39,7 +40,14 @@ export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *            Returns the logarithm of `x+1`
    */
   const log1p = typed(name, {
-    'number': _log1pNumber,
+    'number': function (x) {
+      if (x >= -1 || config.predictable) {
+        return _log1p(x)
+      } else {
+        // negative value -> complex value computation
+        return _log1pComplex(new Complex(x, 0))
+      }
+    },
 
     'Complex': _log1pComplex,
 
@@ -62,21 +70,6 @@ export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return divideScalar(log1p(x), log(base))
     }
   })
-
-  /**
-   * Calculate the natural logarithm of a `number+1`
-   * @param {number} x
-   * @returns {number | Complex}
-   * @private
-   */
-  function _log1pNumber (x) {
-    if (x >= -1 || config.predictable) {
-      return (Math.log1p) ? Math.log1p(x) : Math.log(x + 1)
-    } else {
-      // negative value -> complex value computation
-      return _log1pComplex(new Complex(x, 0))
-    }
-  }
 
   /**
    * Calculate the natural logarithm of a complex number + 1

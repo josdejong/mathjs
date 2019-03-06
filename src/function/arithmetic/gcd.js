@@ -1,12 +1,12 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { isInteger } from '../../utils/number'
 import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
 import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04'
 import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { gcdNumber } from '../../plain/number'
 
 const name = 'gcd'
 const dependencies = [
@@ -51,7 +51,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    */
   const gcd = typed(name, {
 
-    'number, number': _gcd,
+    'number, number': gcdNumber,
 
     'BigNumber, BigNumber': _gcdBigNumber,
 
@@ -150,25 +150,3 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     return a.lt(zero) ? a.neg() : a
   }
 })
-
-/**
- * Calculate gcd for numbers
- * @param {number} a
- * @param {number} b
- * @returns {number} Returns the greatest common denominator of a and b
- * @private
- */
-function _gcd (a, b) {
-  if (!isInteger(a) || !isInteger(b)) {
-    throw new Error('Parameters in function gcd must be integer numbers')
-  }
-
-  // http://en.wikipedia.org/wiki/Euclidean_algorithm
-  let r
-  while (b !== 0) {
-    r = a % b
-    a = b
-    b = r
-  }
-  return (a < 0) ? -a : a
-}

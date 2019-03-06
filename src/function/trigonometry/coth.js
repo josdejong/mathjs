@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { cothNumber } from '../../plain/number'
 
 const name = 'coth'
 const dependencies = ['typed', 'BigNumber']
@@ -31,7 +32,7 @@ export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | Complex | Array | Matrix} Hyperbolic cotangent of x
    */
   const coth = typed(name, {
-    'number': _coth,
+    'number': cothNumber,
 
     'Complex': function (x) {
       return x.coth()
@@ -55,14 +56,3 @@ export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
   return coth
 })
-
-/**
- * Calculate the hyperbolic cosine of a number
- * @param {number} x
- * @returns {number}
- * @private
- */
-function _coth (x) {
-  const e = Math.exp(2 * x)
-  return (e + 1) / (e - 1)
-}

@@ -1,7 +1,7 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { isInteger } from '../../utils/number'
+import { xgcdNumber } from '../../plain/number'
 
 const name = 'xgcd'
 const dependencies = ['typed', 'config', 'matrix', 'BigNumber']
@@ -31,56 +31,16 @@ export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *                              where `div = gcd(a, b)` and `a*m + b*n = div`
    */
   return typed(name, {
-    'number, number': _xgcd,
+    'number, number': function (a, b) {
+      const res = xgcdNumber(a, b)
+
+      return (config.matrix === 'Array')
+        ? res
+        : matrix(res)
+    },
     'BigNumber, BigNumber': _xgcdBigNumber
     // TODO: implement support for Fraction
   })
-
-  /**
-   * Calculate xgcd for two numbers
-   * @param {number} a
-   * @param {number} b
-   * @return {number} result
-   * @private
-   */
-  function _xgcd (a, b) {
-    // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-    let t // used to swap two variables
-    let q // quotient
-    let r // remainder
-    let x = 0
-    let lastx = 1
-    let y = 1
-    let lasty = 0
-
-    if (!isInteger(a) || !isInteger(b)) {
-      throw new Error('Parameters in function xgcd must be integer numbers')
-    }
-
-    while (b) {
-      q = Math.floor(a / b)
-      r = a - q * b
-
-      t = x
-      x = lastx - q * x
-      lastx = t
-
-      t = y
-      y = lasty - q * y
-      lasty = t
-
-      a = b
-      b = r
-    }
-
-    let res
-    if (a < 0) {
-      res = [-a, -lastx, -lasty]
-    } else {
-      res = [a, a ? lastx : 0, lasty]
-    }
-    return (config.matrix === 'Array') ? res : matrix(res)
-  }
 
   /**
    * Calculate xgcd for two BigNumbers

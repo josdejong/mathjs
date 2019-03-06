@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { expNumber } from '../../plain/number'
 
 const name = 'exp'
 const dependencies = ['typed']
@@ -36,7 +37,7 @@ export const createExp = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
   const exp = typed(name, {
-    'number': Math.exp,
+    'number': expNumber,
 
     'Complex': function (x) {
       return x.exp()

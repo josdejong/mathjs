@@ -1,13 +1,13 @@
 'use strict'
 
-import { bitAnd as bigBitAnd } from '../../utils/bignumber/bitwise'
-import { isInteger } from '../../utils/number'
+import { bitAndBigNumber } from '../../utils/bignumber/bitwise'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
 import { factory } from '../../utils/factory'
+import { bitAndNumber } from '../../plain/number'
 
 const name = 'bitAnd'
 const dependencies = [
@@ -47,15 +47,9 @@ export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed
    */
   const bitAnd = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function bitAnd')
-      }
+    'number, number': bitAndNumber,
 
-      return x & y
-    },
-
-    'BigNumber, BigNumber': bigBitAnd,
+    'BigNumber, BigNumber': bitAndBigNumber,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       return algorithm06(x, y, bitAnd, false)

@@ -1,6 +1,6 @@
 'use strict'
 
-import { isBigNumber, isString } from './is'
+import { isBigNumber, isString, typeOf } from './is'
 import { format as formatNumber } from './number'
 import { format as formatBigNumber } from './bignumber/formatter'
 
@@ -192,4 +192,26 @@ function looksLikeFraction (value) {
       typeof value.s === 'number' &&
       typeof value.n === 'number' &&
       typeof value.d === 'number') || false
+}
+
+/**
+ * Compare two strings
+ * @param {string} x
+ * @param {string} y
+ * @returns {number}
+ */
+export function compareText (x, y) {
+  // we don't want to convert numbers to string, only accept string input
+  if (!isString(x)) {
+    throw new TypeError('Unexpected type of argument in function compareText ' +
+      '(expected: string or Array or Matrix, actual: ' + typeOf(x) + ', index: 0)')
+  }
+  if (!isString(y)) {
+    throw new TypeError('Unexpected type of argument in function compareText ' +
+      '(expected: string or Array or Matrix, actual: ' + typeOf(y) + ', index: 1)')
+  }
+
+  return (x === y)
+    ? 0
+    : (x > y ? 1 : -1)
 }

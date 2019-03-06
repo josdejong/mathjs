@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { cubeNumber } from '../../plain/number'
 
 const name = 'cube'
 const dependencies = ['typed']
@@ -32,9 +33,7 @@ export const createCube = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} Cube of x
    */
   const cube = typed(name, {
-    'number': function (x) {
-      return x * x * x
-    },
+    'number': cubeNumber,
 
     'Complex': function (x) {
       return x.mul(x).mul(x) // Is faster than pow(x, 3)

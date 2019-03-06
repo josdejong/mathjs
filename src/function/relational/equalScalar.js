@@ -24,7 +24,7 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
     },
 
     'number, number': function (x, y) {
-      return x === y || nearlyEqual(x, y, config.epsilon)
+      return nearlyEqual(x, y, config.epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
@@ -48,4 +48,12 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
   })
 
   return equalScalar
+})
+
+export const createEqualScalarNumber = factory(name, ['typed', 'config'], ({ typed, config }) => {
+  return typed(name, {
+    'number, number': function (x, y) {
+      return nearlyEqual(x, y, config.epsilon)
+    }
+  })
 })

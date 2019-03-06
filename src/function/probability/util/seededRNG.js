@@ -8,7 +8,7 @@
 // See https://github.com/ForbesLindesay/seed-random/issues/6
 import seedrandom from 'seed-random'
 
-const singletonRandom = seedrandom()
+const singletonRandom = /* #__PURE__ */ seedrandom()
 
 export function createRng (randomSeed) {
   let random

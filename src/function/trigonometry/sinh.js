@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { sinhNumber } from '../../plain/number'
 
 const name = 'sinh'
 const dependencies = ['typed']
@@ -29,7 +30,7 @@ export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic sine of x
    */
   const sinh = typed(name, {
-    'number': _sinh,
+    'number': sinhNumber,
 
     'Complex': function (x) {
       return x.sinh()
@@ -54,13 +55,3 @@ export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
 
   return sinh
 })
-
-/**
- * Calculate the hyperbolic sine of a number
- * @param {number} x
- * @returns {number}
- * @private
- */
-const _sinh = Math.sinh || function (x) {
-  return (Math.exp(x) - Math.exp(-x)) / 2
-}

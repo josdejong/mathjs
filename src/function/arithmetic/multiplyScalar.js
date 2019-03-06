@@ -1,6 +1,7 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
+import { multiplyNumber } from '../../plain/number'
 
 const name = 'multiplyScalar'
 const dependencies = ['typed']
@@ -20,9 +21,7 @@ export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, 
    */
   const multiplyScalar = typed('multiplyScalar', {
 
-    'number, number': function (x, y) {
-      return x * y
-    },
+    'number, number': multiplyNumber,
 
     'Complex, Complex': function (x, y) {
       return x.mul(y)

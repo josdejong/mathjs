@@ -3,12 +3,9 @@
 import { factory } from '../../utils/factory'
 
 const name = 'range'
-const dependencies = ['typed', 'config', 'matrix', 'BigNumber']
+const dependencies = ['typed', 'config', 'matrix', 'bignumber']
 
-export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber }) => {
-  const ZERO = new BigNumber(0)
-  const ONE = new BigNumber(1)
-
+export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber }) => {
   /**
    * Create an array from a range.
    * By default, the range end is excluded. This can be customized by providing
@@ -77,15 +74,15 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'BigNumber, BigNumber': function (start, end) {
-      return _out(_bigRangeEx(start, end, ONE))
+      return _out(_bigRangeEx(start, end, bignumber(1)))
     },
     'BigNumber, BigNumber, BigNumber': function (start, end, step) {
       return _out(_bigRangeEx(start, end, step))
     },
     'BigNumber, BigNumber, boolean': function (start, end, includeEnd) {
       return includeEnd
-        ? _out(_bigRangeInc(start, end, ONE))
-        : _out(_bigRangeEx(start, end, ONE))
+        ? _out(_bigRangeInc(start, end, bignumber(1)))
+        : _out(_bigRangeEx(start, end, bignumber(1)))
     },
     'BigNumber, BigNumber, BigNumber, boolean': function (start, end, step, includeEnd) {
       return includeEnd
@@ -109,9 +106,9 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     if (config.number === 'BigNumber') {
       fn = includeEnd ? _bigRangeInc : _bigRangeEx
       return _out(fn(
-        new BigNumber(r.start),
-        new BigNumber(r.end),
-        new BigNumber(r.step)))
+        bignumber(r.start),
+        bignumber(r.end),
+        bignumber(r.step)))
     } else {
       fn = includeEnd ? _rangeInc : _rangeEx
       return _out(fn(r.start, r.end, r.step))
@@ -179,14 +176,15 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @private
    */
   function _bigRangeEx (start, end, step) {
+    const zero = bignumber(0)
     const array = []
     let x = start
-    if (step.gt(ZERO)) {
+    if (step.gt(zero)) {
       while (x.lt(end)) {
         array.push(x)
         x = x.plus(step)
       }
-    } else if (step.lt(ZERO)) {
+    } else if (step.lt(zero)) {
       while (x.gt(end)) {
         array.push(x)
         x = x.plus(step)
@@ -205,14 +203,15 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @private
    */
   function _bigRangeInc (start, end, step) {
+    const zero = bignumber(0)
     const array = []
     let x = start
-    if (step.gt(ZERO)) {
+    if (step.gt(zero)) {
       while (x.lte(end)) {
         array.push(x)
         x = x.plus(step)
       }
-    } else if (step.lt(ZERO)) {
+    } else if (step.lt(zero)) {
       while (x.gte(end)) {
         array.push(x)
         x = x.plus(step)

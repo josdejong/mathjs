@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { absNumber } from '../../plain/number'
 
 const name = 'abs'
 const dependencies = ['typed']
@@ -32,7 +33,7 @@ export const createAbs = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *            Absolute value of `x`
    */
   const abs = typed(name, {
-    'number': Math.abs,
+    'number': absNumber,
 
     'Complex': function (x) {
       return x.abs()

@@ -74,11 +74,11 @@ export const createPlanckTemperature = /* #__PURE__ */ unitFactory('planckTemper
 function unitFactory (name, valueStr, unitStr) {
   const dependencies = ['config', 'Unit', 'BigNumber']
 
-  return factory(name, dependencies, ({ config: { number }, Unit, BigNumber }) => {
+  return factory(name, dependencies, ({ config, Unit, BigNumber }) => {
     // Note that we can parse into number or BigNumber.
     // We do not parse into Fractions as that doesn't make sense: we would lose precision of the values
     // Therefore we dont use Unit.parse()
-    const value = number === 'BigNumber'
+    const value = config.number === 'BigNumber'
       ? new BigNumber(valueStr)
       : parseFloat(valueStr)
 
@@ -93,8 +93,8 @@ function unitFactory (name, valueStr, unitStr) {
 function numberFactory (name, value) {
   const dependencies = ['config', 'BigNumber']
 
-  return factory(name, dependencies, ({ config: { number }, Unit, BigNumber }) => {
-    return number === 'BigNumber'
+  return factory(name, dependencies, ({ config, BigNumber }) => {
+    return config.number === 'BigNumber'
       ? new BigNumber(value)
       : value
   })

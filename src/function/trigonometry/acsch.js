@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { acschNumber } from '../../plain/number'
 
 const name = 'acsch'
 const dependencies = ['typed', 'BigNumber']
@@ -29,10 +30,7 @@ export const createAcsch = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosecant of x
    */
   const acsch = typed(name, {
-    'number': function (x) {
-      x = 1 / x
-      return Math.log(x + Math.sqrt(x * x + 1))
-    },
+    'number': acschNumber,
 
     'Complex': function (x) {
       return x.acsch()

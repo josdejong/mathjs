@@ -6,11 +6,10 @@ import { factory } from '../../utils/factory'
 
 const name = 'erf'
 const dependencies = [
-  'typed',
-  'BigNumber'
+  'typed'
 ]
 
-export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
+export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the erf function of a value using a rational Chebyshev
    * approximations for different intervals of x.
@@ -55,7 +54,7 @@ export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
     //  Perhaps it would be best to set the precision of the number to that which
     //  is guaranteed by erf()
     'BigNumber': function (n) {
-      return new BigNumber(erf(n.toNumber()))
+      return new n.constructor(erf(n.toNumber()))
     },
 
     'Array | Matrix': function (n) {

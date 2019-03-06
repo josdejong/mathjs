@@ -1,6 +1,5 @@
 'use strict'
 
-import { isInteger } from '../../utils/number'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
@@ -9,6 +8,7 @@ import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
 import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
 import { createAlgorithm08 } from '../../type/matrix/utils/algorithm08'
 import { factory } from '../../utils/factory'
+import { rightLogShiftNumber } from '../../plain/number'
 
 const name = 'rightLogShift'
 const dependencies = [
@@ -54,13 +54,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
 
   const rightLogShift = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function rightLogShift')
-      }
-
-      return x >>> y
-    },
+    'number, number': rightLogShiftNumber,
 
     // 'BigNumber, BigNumber': ..., // TODO: implement BigNumber support for rightLogShift
 

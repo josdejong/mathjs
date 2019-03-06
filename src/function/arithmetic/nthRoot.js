@@ -7,6 +7,7 @@ import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { nthRootNumber } from '../../plain/number'
 
 const name = 'nthRoot'
 const dependencies = [
@@ -60,9 +61,10 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
   const nthRoot = typed(name, {
 
     'number': function (x) {
-      return _nthRoot(x, 2)
+      return nthRootNumber(x, 2)
     },
-    'number, number': _nthRoot,
+
+    'number, number': nthRootNumber,
 
     'BigNumber': function (x) {
       return _bigNthRoot(x, new BigNumber(2))
@@ -201,60 +203,9 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
   }
 })
 
-/**
- * Calculate the nth root of a, solve x^root == a
- * http://rosettacode.org/wiki/Nth_root#JavaScript
- * @param {number} a
- * @param {number} root
- * @private
- */
-function _nthRoot (a, root) {
-  const inv = root < 0
-  if (inv) {
-    root = -root
-  }
-
-  if (root === 0) {
-    throw new Error('Root must be non-zero')
-  }
-  if (a < 0 && (Math.abs(root) % 2 !== 1)) {
-    throw new Error('Root must be odd when a is negative.')
-  }
-
-  // edge cases zero and infinity
-  if (a === 0) {
-    return inv ? Infinity : 0
-  }
-  if (!isFinite(a)) {
-    return inv ? 0 : a
-  }
-
-  let x = Math.pow(Math.abs(a), 1 / root)
-  // If a < 0, we require that root is an odd integer,
-  // so (-1) ^ (1/root) = -1
-  x = a < 0 ? -x : x
-  return inv ? 1 / x : x
-
-  // Very nice algorithm, but fails with nthRoot(-2, 3).
-  // Newton's method has some well-known problems at times:
-  // https://en.wikipedia.org/wiki/Newton%27s_method#Failure_analysis
-  /*
-  let x = 1 // Initial guess
-  let xPrev = 1
-  let i = 0
-  const iMax = 10000
-  do {
-    const delta = (a / Math.pow(x, root - 1) - x) / root
-    xPrev = x
-    x = x + delta
-    i++
-  }
-  while (xPrev !== x && i < iMax)
-
-  if (xPrev !== x) {
-    throw new Error('Function nthRoot failed to converge')
-  }
-
-  return inv ? 1 / x : x
-  */
-}
+export const createNthRootNumber = /* #__PURE__ */ factory(name, ['typed'], ({ typed }) => {
+  return typed(name, {
+    'number': nthRootNumber,
+    'number, number': nthRootNumber
+  })
+})

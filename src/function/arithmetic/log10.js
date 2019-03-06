@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { log10Number } from '../../plain/number'
 
 const name = 'log10'
 const dependencies = [ 'typed', 'config', 'Complex' ]
@@ -35,7 +36,7 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const log10 = typed(name, {
     'number': function (x) {
       if (x >= 0 || config.predictable) {
-        return _log10(x)
+        return log10Number(x)
       } else {
         // negative value -> complex value computation
         return new Complex(x, 0).log().div(Math.LN10)
@@ -62,13 +63,3 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
   return log10
 })
-
-/**
- * Calculate the 10-base logarithm of a number
- * @param {number} x
- * @return {number}
- * @private
- */
-const _log10 = Math.log10 || function (x) {
-  return Math.log(x) / Math.LN10
-}

@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'arg'
-const dependencies = ['typed', 'BigNumber']
+const dependencies = ['typed']
 
-export const createArg = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
+export const createArg = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the argument of a complex value.
    * For a complex number `a + bi`, the argument is computed as `atan2(b, a)`.
@@ -40,7 +40,7 @@ export const createArg = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
     },
 
     'BigNumber': function (x) {
-      return BigNumber.atan2(0, x)
+      return x.constructor.atan2(0, x)
     },
 
     'Complex': function (x) {

@@ -8,6 +8,7 @@ import {
   createBigNumberPi,
   createBigNumberTau
 } from './utils/bignumber/constants'
+import { pi, tau, e, phi } from './plain/number'
 
 export const createTrue = /* #__PURE__ */ factory('true', [], () => true)
 export const createFalse = /* #__PURE__ */ factory('false', [], () => false)
@@ -34,7 +35,7 @@ export const createPi = /* #__PURE__ */ recreateFactory(
   ['config', 'BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? createBigNumberPi(BigNumber)
-    : Math.PI
+    : pi
 )
 
 export const createTau = /* #__PURE__ */ recreateFactory(
@@ -42,7 +43,7 @@ export const createTau = /* #__PURE__ */ recreateFactory(
   ['config', 'BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? createBigNumberTau(BigNumber)
-    : (2 * Math.PI)
+    : tau
 )
 
 export const createE = /* #__PURE__ */ recreateFactory(
@@ -50,7 +51,7 @@ export const createE = /* #__PURE__ */ recreateFactory(
   ['config', 'BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? createBigNumberE(BigNumber)
-    : Math.E
+    : e
 )
 
 // golden ratio, (1+sqrt(5))/2
@@ -59,7 +60,7 @@ export const createPhi = /* #__PURE__ */ recreateFactory(
   ['config', 'BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? createBigNumberPhi(BigNumber)
-    : 1.61803398874989484820458683436563811772030917980576286213545
+    : phi
 )
 
 export const createLN2 = /* #__PURE__ */ recreateFactory(

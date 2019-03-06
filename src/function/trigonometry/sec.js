@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { secNumber } from '../../plain/number'
 
 const name = 'sec'
 const dependencies = ['typed', 'BigNumber']
@@ -29,9 +30,7 @@ export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
    * @return {number | Complex | Array | Matrix} Secant of x
    */
   const sec = typed(name, {
-    'number': function (x) {
-      return 1 / Math.cos(x)
-    },
+    'number': secNumber,
 
     'Complex': function (x) {
       return x.sec()

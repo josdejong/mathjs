@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { acothNumber } from '../../plain/number'
 
 const name = 'acoth'
 const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
@@ -31,7 +32,7 @@ export const createAcoth = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const acoth = typed(name, {
     'number': function (x) {
       if (x >= 1 || x <= -1 || config.predictable) {
-        return isFinite(x) ? (Math.log((x + 1) / x) + Math.log(x / (x - 1))) / 2 : 0
+        return acothNumber(x)
       }
       return new Complex(x, 0).acoth()
     },

@@ -1,13 +1,13 @@
 'use strict'
 
 import { bitXor as bigBitXor } from '../../utils/bignumber/bitwise'
-import { isInteger } from '../../utils/number'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 import { factory } from '../../utils/factory'
+import { bitXorNumber } from '../../plain/number'
 
 const name = 'bitXor'
 const dependencies = [
@@ -47,13 +47,7 @@ export const createBitXor = /* #__PURE__ */ factory(name, dependencies, ({ typed
    */
   const bitXor = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function bitXor')
-      }
-
-      return x ^ y
-    },
+    'number, number': bitXorNumber,
 
     'BigNumber, BigNumber': bigBitXor,
 

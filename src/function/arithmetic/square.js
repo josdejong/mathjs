@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { squareNumber } from '../../plain/number'
 
 const name = 'square'
 const dependencies = ['typed']
@@ -34,9 +35,7 @@ export const createSquare = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *            Squared value
    */
   const square = typed(name, {
-    'number': function (x) {
-      return x * x
-    },
+    'number': squareNumber,
 
     'Complex': function (x) {
       return x.mul(x)

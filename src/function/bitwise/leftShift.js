@@ -1,7 +1,5 @@
 'use strict'
 
-import { leftShift as bigLeftShift } from '../../utils/bignumber/bitwise'
-import { isInteger } from '../../utils/number'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
@@ -10,6 +8,8 @@ import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
 import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
 import { createAlgorithm08 } from '../../type/matrix/utils/algorithm08'
 import { factory } from '../../utils/factory'
+import { leftShiftNumber } from '../../plain/number'
+import { leftShiftBigNumber } from '../../utils/bignumber/bitwise'
 
 const name = 'leftShift'
 const dependencies = [
@@ -54,15 +54,9 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
    */
   const leftShift = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function leftShift')
-      }
+    'number, number': leftShiftNumber,
 
-      return x << y
-    },
-
-    'BigNumber, BigNumber': bigLeftShift,
+    'BigNumber, BigNumber': leftShiftBigNumber,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       return algorithm08(x, y, leftShift, false)

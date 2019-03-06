@@ -71,13 +71,13 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'number, number': function (x, y) {
-      return (x === y || nearlyEqual(x, y, config.epsilon))
+      return nearlyEqual(x, y, config.epsilon)
         ? 0
         : (x > y ? 1 : -1)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return (x.eq(y) || bigNearlyEqual(x, y, config.epsilon))
+      return bigNearlyEqual(x, y, config.epsilon)
         ? new BigNumber(0)
         : new BigNumber(x.cmp(y))
     },
@@ -156,4 +156,14 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
   })
 
   return compare
+})
+
+export const createCompareNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
+  return typed(name, {
+    'number, number': function (x, y) {
+      return nearlyEqual(x, y, config.epsilon)
+        ? 0
+        : (x > y ? 1 : -1)
+    }
+  })
 })

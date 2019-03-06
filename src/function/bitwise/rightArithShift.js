@@ -1,7 +1,6 @@
 'use strict'
 
-import { rightArithShift as bigRightArithShift } from '../../utils/bignumber/bitwise'
-import { isInteger } from '../../utils/number'
+import { rightArithShiftBigNumber } from '../../utils/bignumber/bitwise'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
@@ -10,6 +9,7 @@ import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
 import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
 import { createAlgorithm08 } from '../../type/matrix/utils/algorithm08'
 import { factory } from '../../utils/factory'
+import { rightArithShiftNumber } from '../../plain/number'
 
 const name = 'rightArithShift'
 const dependencies = [
@@ -54,15 +54,9 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
    */
   const rightArithShift = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function rightArithShift')
-      }
+    'number, number': rightArithShiftNumber,
 
-      return x >> y
-    },
-
-    'BigNumber, BigNumber': bigRightArithShift,
+    'BigNumber, BigNumber': rightArithShiftBigNumber,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       return algorithm08(x, y, rightArithShift, false)

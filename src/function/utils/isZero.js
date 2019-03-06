@@ -2,6 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
+import { isZeroNumber } from '../../plain/number'
 
 const name = 'isZero'
 const dependencies = ['typed']
@@ -41,9 +42,7 @@ export const createIsZero = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *                    Throws an error in case of an unknown data type.
    */
   const isZero = typed(name, {
-    'number': function (x) {
-      return x === 0
-    },
+    'number': isZeroNumber,
 
     'BigNumber': function (x) {
       return x.isZero()

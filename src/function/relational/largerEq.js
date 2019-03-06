@@ -140,3 +140,11 @@ export const createLargerEq = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
   return largerEq
 })
+
+export const createLargerEqNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
+  return typed(name, {
+    'number, number': function (x, y) {
+      return x >= y || nearlyEqual(x, y, config.epsilon)
+    }
+  })
+})

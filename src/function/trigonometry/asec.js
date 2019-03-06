@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { asecNumber } from '../../plain/number'
 
 const name = 'asec'
 const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
@@ -33,7 +34,7 @@ export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   const asec = typed(name, {
     'number': function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
-        return Math.acos(1 / x)
+        return asecNumber(x)
       }
       return new Complex(x, 0).asec()
     },

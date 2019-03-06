@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { fixNumber } from '../../plain/number'
 
 const name = 'fix'
 const dependencies = ['typed', 'Complex']
@@ -35,9 +36,7 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
    */
   const fix = typed('fix', {
-    'number': function (x) {
-      return (x > 0) ? Math.floor(x) : Math.ceil(x)
-    },
+    'number': fixNumber,
 
     'Complex': function (x) {
       return new Complex(

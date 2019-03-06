@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { floorNumber } from '../../plain/number'
 
 const name = 'floor'
 const dependencies = ['typed']
@@ -35,7 +36,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   const floor = typed(name, {
-    'number': Math.floor,
+    'number': floorNumber,
 
     'Complex': function (x) {
       return x.floor()

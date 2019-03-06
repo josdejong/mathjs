@@ -2,8 +2,8 @@
 
 import { factory } from '../../utils/factory'
 import { isBigNumber, isComplex, isFraction } from '../../utils/is'
-
 import { deepMap } from '../../utils/collection'
+import { cbrtNumber } from '../../plain/number'
 
 const name = 'cbrt'
 const dependencies = [
@@ -58,7 +58,7 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *            Returns the cubic root of `x`
    */
   const cbrt = typed(name, {
-    'number': _cbrtNumber,
+    'number': cbrtNumber,
     // note: signature 'number, boolean' is also supported,
     //       created by typed as it knows how to convert number to Complex
 
@@ -94,13 +94,13 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
     const abs = x.abs()
 
     // principal root:
-    const principal = new Complex(_cbrtNumber(abs), 0).mul(new Complex(0, arg3).exp())
+    const principal = new Complex(cbrtNumber(abs), 0).mul(new Complex(0, arg3).exp())
 
     if (allRoots) {
       const all = [
         principal,
-        new Complex(_cbrtNumber(abs), 0).mul(new Complex(0, arg3 + Math.PI * 2 / 3).exp()),
-        new Complex(_cbrtNumber(abs), 0).mul(new Complex(0, arg3 - Math.PI * 2 / 3).exp())
+        new Complex(cbrtNumber(abs), 0).mul(new Complex(0, arg3 + Math.PI * 2 / 3).exp()),
+        new Complex(cbrtNumber(abs), 0).mul(new Complex(0, arg3 - Math.PI * 2 / 3).exp())
       ]
 
       return (config.matrix === 'Array') ? all : matrix(all)
@@ -150,35 +150,3 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
 
   return cbrt
 })
-
-/**
- * Calculate cbrt for a number
- *
- * Code from es6-shim.js:
- *   https://github.com/paulmillr/es6-shim/blob/master/es6-shim.js#L1564-L1577
- *
- * @param {number} x
- * @returns {number | Complex} Returns the cubic root of x
- * @private
- */
-const _cbrtNumber = Math.cbrt || function (x) {
-  if (x === 0) {
-    return x
-  }
-
-  const negate = x < 0
-  let result
-  if (negate) {
-    x = -x
-  }
-
-  if (isFinite(x)) {
-    result = Math.exp(Math.log(x) / 3)
-    // from http://en.wikipedia.org/wiki/Cube_root#Numerical_methods
-    result = (x / (result * result) + (2 * result)) / 3
-  } else {
-    result = x
-  }
-
-  return negate ? -result : result
-}

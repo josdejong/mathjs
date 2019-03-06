@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { asinhNumber } from '../../plain/number'
 
 const name = 'asinh'
 const dependencies = ['typed']
@@ -29,9 +30,7 @@ export const createAsinh = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsine of x
    */
   const asinh = typed('asinh', {
-    'number': Math.asinh || function (x) {
-      return Math.log(Math.sqrt(x * x + 1) + x)
-    },
+    'number': asinhNumber,
 
     'Complex': function (x) {
       return x.asinh()

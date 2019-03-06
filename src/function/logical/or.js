@@ -6,6 +6,7 @@ import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05'
 import { factory } from '../../utils/factory'
+import { orNumber } from '../../plain/number'
 
 const name = 'or'
 const dependencies = [
@@ -52,9 +53,7 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
    */
   const or = typed(name, {
 
-    'number, number': function (x, y) {
-      return !!(x || y)
-    },
+    'number, number': orNumber,
 
     'Complex, Complex': function (x, y) {
       return (x.re !== 0 || x.im !== 0) || (y.re !== 0 || y.im !== 0)

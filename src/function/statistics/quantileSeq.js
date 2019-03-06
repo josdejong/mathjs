@@ -6,9 +6,9 @@ import { flatten } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'quantileSeq'
-const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare', 'BigNumber']
+const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare']
 
-export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare, BigNumber }) => {
+export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned.
@@ -80,11 +80,13 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
         }
 
         if (isBigNumber(probOrN)) {
+          const BigNumber = probOrN.constructor
+
           if (probOrN.isNegative()) {
             throw new Error('N/prob must be non-negative')
           }
 
-          one = new probOrN.constructor(1)
+          one = new BigNumber(1)
 
           if (probOrN.lte(one)) {
             // quantileSeq([a, b, c, d, ...], prob[,sorted])

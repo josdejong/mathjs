@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { tanh as _tanh } from '../../utils/number'
 
 const name = 'tanh'
 const dependencies = ['typed']
@@ -57,14 +58,3 @@ export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
 
   return tanh
 })
-
-/**
- * Calculate the hyperbolic tangent of a number
- * @param {number} x
- * @returns {number}
- * @private
- */
-const _tanh = Math.tanh || function (x) {
-  const e = Math.exp(2 * x)
-  return (e - 1) / (e + 1)
-}

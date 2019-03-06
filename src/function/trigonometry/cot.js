@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { cotNumber } from '../../plain/number'
 
 const name = 'cot'
 const dependencies = ['typed', 'BigNumber']
@@ -29,9 +30,7 @@ export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
    * @return {number | Complex | Array | Matrix} Cotangent of x
    */
   const cot = typed(name, {
-    'number': function (x) {
-      return 1 / Math.tan(x)
-    },
+    'number': cotNumber,
 
     'Complex': function (x) {
       return x.cot()

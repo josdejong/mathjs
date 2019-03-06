@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { acotNumber } from '../../plain/number'
 
 const name = 'acot'
 const dependencies = ['typed', 'BigNumber']
@@ -31,9 +32,7 @@ export const createAcot = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | Complex | Array | Matrix} The arc cotangent of x
    */
   const acot = typed(name, {
-    'number': function (x) {
-      return Math.atan(1 / x)
-    },
+    'number': acotNumber,
 
     'Complex': function (x) {
       return x.acot()

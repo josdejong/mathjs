@@ -1,9 +1,9 @@
 'use strict'
 
-import { bitNot as bigBitNot } from '../../utils/bignumber/bitwise'
+import { bitNotBigNumber } from '../../utils/bignumber/bitwise'
 import { deepMap } from '../../utils/collection'
-import { isInteger } from '../../utils/number'
 import { factory } from '../../utils/factory'
+import { bitNotNumber } from '../../plain/number'
 
 const name = 'bitNot'
 const dependencies = ['typed']
@@ -32,15 +32,9 @@ export const createBitNot = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @return {number | BigNumber | Array | Matrix} NOT of `x`
    */
   const bitNot = typed(name, {
-    'number': function (x) {
-      if (!isInteger(x)) {
-        throw new Error('Integer expected in function bitNot')
-      }
+    'number': bitNotNumber,
 
-      return ~x
-    },
-
-    'BigNumber': bigBitNot,
+    'BigNumber': bitNotBigNumber,
 
     'Array | Matrix': function (x) {
       return deepMap(x, bitNot)

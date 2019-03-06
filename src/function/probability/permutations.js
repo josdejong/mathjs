@@ -1,7 +1,7 @@
 'use strict'
 
 import { isInteger } from '../../utils/number'
-import { product } from './product'
+import { product } from '../../utils/product'
 import { factory } from '../../utils/factory'
 
 const name = 'permutations'

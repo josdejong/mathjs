@@ -1,13 +1,13 @@
 'use strict'
 
-import { bitOr as bigBitOr } from '../../utils/bignumber/bitwise'
-import { isInteger } from '../../utils/number'
+import { bitOrBigNumber } from '../../utils/bignumber/bitwise'
 import { factory } from '../../utils/factory'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
 import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04'
 import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
+import { bitOrNumber } from '../../plain/number'
 
 const name = 'bitOr'
 const dependencies = [
@@ -49,15 +49,9 @@ export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   const bitOr = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function bitOr')
-      }
+    'number, number': bitOrNumber,
 
-      return x | y
-    },
-
-    'BigNumber, BigNumber': bigBitOr,
+    'BigNumber, BigNumber': bitOrBigNumber,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       return algorithm04(x, y, bitOr)

@@ -5,9 +5,9 @@ import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const name = 'sum'
-const dependencies = ['typed', 'config', 'add', 'BigNumber', 'Fraction']
+const dependencies = ['typed', 'config', 'add', 'bignumber', 'fraction']
 
-export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, BigNumber, Fraction }) => {
+export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, bignumber, fraction }) => {
   /**
    * Compute the sum of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all
@@ -70,9 +70,9 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
         case 'number':
           return 0
         case 'BigNumber':
-          return new BigNumber(0)
+          return bignumber(0)
         case 'Fraction':
-          return new Fraction(0)
+          return fraction(0)
         default:
           return 0
       }

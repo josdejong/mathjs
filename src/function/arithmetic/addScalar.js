@@ -1,6 +1,7 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
+import { addNumber } from '../../plain/number'
 
 const name = 'addScalar'
 const dependencies = ['typed']
@@ -20,9 +21,7 @@ export const createAddScalar = /* #__PURE__ */ factory(name, dependencies, ({ ty
    */
   const addScalar = typed(name, {
 
-    'number, number': function (x, y) {
-      return x + y
-    },
+    'number, number': addNumber,
 
     'Complex, Complex': function (x, y) {
       return x.add(y)

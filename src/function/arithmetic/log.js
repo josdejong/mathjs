@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { logNumber } from '../../plain/number'
 
 const name = 'log'
 const dependencies = ['config', 'typed', 'divideScalar', 'Complex']
@@ -44,7 +45,7 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
   const log = typed(name, {
     'number': function (x) {
       if (x >= 0 || config.predictable) {
-        return Math.log(x)
+        return logNumber(x)
       } else {
         // negative value -> complex value computation
         return new Complex(x, 0).log()

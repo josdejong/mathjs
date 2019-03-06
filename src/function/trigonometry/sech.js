@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { sechNumber } from '../../plain/number'
 
 const name = 'sech'
 const dependencies = ['typed', 'BigNumber']
@@ -31,7 +32,7 @@ export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | Complex | Array | Matrix} Hyperbolic secant of x
    */
   const sech = typed(name, {
-    'number': _sech,
+    'number': sechNumber,
 
     'Complex': function (x) {
       return x.sech()
@@ -55,13 +56,3 @@ export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
   return sech
 })
-
-/**
- * Calculate the hyperbolic secant of a number
- * @param {number} x
- * @returns {number}
- * @private
- */
-function _sech (x) {
-  return 2 / (Math.exp(x) + Math.exp(-x))
-}

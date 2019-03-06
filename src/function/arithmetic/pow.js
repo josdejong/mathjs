@@ -3,6 +3,7 @@
 import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 import { arraySize as size } from '../../utils/array'
+import { powNumber } from '../../plain/number'
 
 const name = 'pow'
 const dependencies = [
@@ -121,13 +122,6 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
       // Unable to express y as a fraction, so continue on
     }
 
-    // x^Infinity === 0 if -1 < x < 1
-    // A real number 0 is returned instead of complex(0)
-    if ((x * x < 1 && y === Infinity) ||
-        (x * x > 1 && y === -Infinity)) {
-      return 0
-    }
-
     // **for predictable mode** x^Infinity === NaN if x < -1
     // N.B. this behavour is different from `Math.pow` which gives
     // (-2)^Infinity === Infinity
@@ -138,8 +132,17 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     }
 
     if (isInteger(y) || x >= 0 || config.predictable) {
-      return Math.pow(x, y)
+      return powNumber(x, y)
     } else {
+      // TODO: the following infinity checks are duplicated from powNumber. Deduplicate this somehow
+
+      // x^Infinity === 0 if -1 < x < 1
+      // A real number 0 is returned instead of complex(0)
+      if ((x * x < 1 && y === Infinity) ||
+        (x * x > 1 && y === -Infinity)) {
+        return 0
+      }
+
       return new Complex(x, 0).pow(y, 0)
     }
   }

@@ -2,6 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { acscNumber } from '../../plain/number'
 
 const name = 'acsc'
 const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
@@ -33,7 +34,7 @@ export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   const acsc = typed(name, {
     'number': function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
-        return Math.asin(1 / x)
+        return acscNumber(x)
       }
       return new Complex(x, 0).acsc()
     },
