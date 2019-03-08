@@ -17,8 +17,6 @@ const validateIndex = array.validateIndex
 
 function factory (type, config, load, typed) {
   const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
-  const MatrixIndex = load(require('./MatrixIndex'))
-  const Range = load(require('./Range'))
   const equalScalar = load(require('../../function/relational/equalScalar'))
   const getArrayDataType = load(require('./utils/getArrayDataType'))
 
@@ -1316,50 +1314,6 @@ function factory (type, config, load, typed) {
     SparseMatrix._swapRows(i, j, this._size[1], this._values, this._index, this._ptr)
     // return current instance
     return this
-  }
-
-  /**
-   * Return column in Matrix.
-   *
-   * @memberOf SparseMatrix
-   * @param {number} column  Matrix column index
-   *
-   * @return {SparseMatrix}  A column from Matrix
-   */
-  SparseMatrix.prototype.column = function (column) {
-    // validate index
-    validateIndex(column, this._size[1])
-
-    // check dimensions
-    if (this._size.length !== 2) {
-      throw new Error('Only two dimensional matrix is supported')
-    }
-
-    const rowRange = new Range(0, this._size[0])
-    const index = new MatrixIndex(rowRange, column)
-    return this.subset(index)
-  }
-
-  /**
-   * Return row in Matrix.
-   *
-   * @memberOf SparseMatrix
-   * @param {number} row  Matrix row index
-   *
-   * @return {SparseMatrix}  A row from Matrix
-   */
-  SparseMatrix.prototype.row = function (row) {
-    // validate index
-    validateIndex(row, this._size[0])
-
-    // check dimensions
-    if (this._size.length !== 2) {
-      throw new Error('Only two dimensional matrix is supported')
-    }
-
-    const columnRange = new Range(0, this._size[1])
-    const index = new MatrixIndex(row, columnRange)
-    return this.subset(index)
   }
 
   /**

@@ -18,8 +18,6 @@ const validateIndex = array.validateIndex
 function factory (type, config, load, typed) {
   const getArrayDataType = load(require('./utils/getArrayDataType'))
   const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
-  const MatrixIndex = load(require('./MatrixIndex'))
-  const Range = load(require('./Range'))
 
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
@@ -795,50 +793,6 @@ function factory (type, config, load, typed) {
    */
   DenseMatrix.fromJSON = function (json) {
     return new DenseMatrix(json)
-  }
-
-  /**
-   * Return column in Matrix.
-   *
-   * @memberOf DenseMatrix
-   * @param {number} column  Matrix column index
-   *
-   * @return {DenseMatrix} A column from Matrix
-   */
-  DenseMatrix.prototype.column = function (column) {
-    // validate index
-    validateIndex(column, this._size[1])
-
-    // check dimensions
-    if (this._size.length !== 2) {
-      throw new Error('Only two dimensional matrix is supported')
-    }
-
-    const rowRange = new Range(0, this._size[0])
-    const index = new MatrixIndex(rowRange, column)
-    return this.subset(index)
-  }
-
-  /**
-   * Return row in Matrix.
-   *
-   * @memberOf DenseMatrix
-   * @param {number} row  Matrix row index
-   *
-   * @return {DenseMatrix}  A row from Matrix
-   */
-  DenseMatrix.prototype.row = function (row) {
-    // validate index
-    validateIndex(row, this._size[0])
-
-    // check dimensions
-    if (this._size.length !== 2) {
-      throw new Error('Only two dimensional matrix is supported')
-    }
-
-    const columnRange = new Range(0, this._size[1])
-    const index = new MatrixIndex(row, columnRange)
-    return this.subset(index)
   }
 
   /**
