@@ -3,8 +3,8 @@
 const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var ceil      = load(require('../../function/arithmetic/ceil'));
-  var floor     = load(require('../../function/arithmetic/floor'));
+  var ceil = load(require('../../function/arithmetic/ceil'))
+  var floor = load(require('../../function/arithmetic/floor'))
 
   /**
    * Round a value towards zero.
@@ -35,7 +35,7 @@ function factory (type, config, load, typed) {
    */
   const fix = typed('fix', {
     'number': function (x) {
-      return (x > 0) ? floor(x) : ceil(x);
+      return (x > 0) ? floor(x) : ceil(x)
     },
 
     'Complex': function (x) {

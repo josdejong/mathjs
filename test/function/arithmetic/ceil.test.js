@@ -66,16 +66,16 @@ describe('ceil', function () {
     assert.strictEqual(ceil(fraction(-2.1)).toString(), '-2')
   })
 
-  it('should gracefully handle round-off errors', function() {
-    assert.equal(ceil(3.0000000000000004), 3);
-    assert.equal(ceil(7.999999999999999), 8); 
-    assert.equal(ceil(-3.0000000000000004), -3);
-    assert.equal(ceil(-7.999999999999999), -8);
-    assert.equal(ceil(30000.000000000004), 30000);
-    assert.equal(ceil(799999.9999999999), 800000); 
-    assert.equal(ceil(-30000.000000000004), -30000);
-    assert.equal(ceil(-799999.9999999999), -800000);
-  });
+  it('should gracefully handle round-off errors', function () {
+    assert.equal(ceil(3.0000000000000004), 3)
+    assert.equal(ceil(7.999999999999999), 8)
+    assert.equal(ceil(-3.0000000000000004), -3)
+    assert.equal(ceil(-7.999999999999999), -8)
+    assert.equal(ceil(30000.000000000004), 30000)
+    assert.equal(ceil(799999.9999999999), 800000)
+    assert.equal(ceil(-30000.000000000004), -30000)
+    assert.equal(ceil(-799999.9999999999), -800000)
+  })
 
   it('should throw an error for units', function () {
     assert.throws(function () { ceil(unit('5cm')) }, TypeError, 'Function ceil(unit) not supported')
