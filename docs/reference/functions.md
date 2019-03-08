@@ -139,6 +139,7 @@ Function | Description
 
 Function | Description
 ---- | -----------
+[math.column(value,&nbsp;index)](functions/column.md) | Return column in Matrix.
 [math.concat(a,&nbsp;b,&nbsp;c,&nbsp;...&nbsp;[,&nbsp;dim])](functions/concat.md) | Concatenate two or more matrices.
 [math.cross(x,&nbsp;y)](functions/cross.md) | Calculate the cross product for two vectors in three dimensional space.
 [math.ctranspose(x)](functions/ctranspose.md) | Transpose and complex conjugate a matrix.
@@ -159,6 +160,7 @@ Function | Description
 [math.range(start,&nbsp;end&nbsp;[,&nbsp;step])](functions/range.md) | Create an array from a range.
 [math.reshape(x,&nbsp;sizes)](functions/reshape.md) | Reshape a multi dimensional array to fit the specified dimensions.
 [math.resize(x,&nbsp;size&nbsp;[,&nbsp;defaultValue])](functions/resize.md) | Resize a matrix.
+[math.row(value,&nbsp;index)](functions/row.md) | Return row in Matrix.
 [math.size(x)](functions/size.md) | Calculate the size of a matrix or scalar.
 [math.sort(x)](functions/sort.md) | Sort the items in a matrix.
 [X&nbsp;=&nbsp;math.sqrtm(A)](functions/sqrtm.md) | Calculate the principal square root of a square matrix.
