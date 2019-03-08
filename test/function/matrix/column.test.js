@@ -1,5 +1,6 @@
 const assert = require('assert')
 const math = require('../../../src/main')
+const column = math.column
 const matrix = math.matrix
 
 describe('column', function () {
@@ -14,7 +15,7 @@ describe('column', function () {
 
   it('should throw an error if the column is out of range', function () {
     assert.throws(function () {
-      const r = m.column(9)
+      const r = column(m, 9)
       assert.deepStrictEqual(
         r.valueOf(), [[0], [0], [0], [0], [0]]
       )
@@ -23,73 +24,73 @@ describe('column', function () {
 
   it('should throw an error if the column is not an integer', function () {
     assert.throws(function () {
-      const r = m.column('x')
+      const r = column(m, 'x')
       assert.deepStrictEqual(
         r.valueOf(), [[0], [0], [0], [0], [0]]
       )
-    }, /TypeError: Index must be an integer \(value: x\)/)
+    }, /Error: Cannot convert "x" to a number/)
   })
 
   it('should throw an error if the matrix does not have two dimensions', function () {
     assert.throws(function () {
       const m = matrix([[[1, 2, 3]]])
-      const r = m.column(0)
+      const r = column(m, 0)
       assert.deepStrictEqual(
         r.valueOf(), [[0], [0], [0], [0], [0]]
       )
     }, /Error: Only two dimensional matrix is supported/)
 
     it('should return the first matrix column', function () {
-      const c = m.column(0)
+      const c = column(m, 0)
       assert.deepStrictEqual(
         c.valueOf(), [[0], [0], [0], [8], [0]]
       )
     })
 
     it('should return the first array column', function () {
-      const c = a.column(0)
+      const c = column(a, 0)
       assert.deepStrictEqual(
         c.valueOf(), [0, 0, 0, 8, 0]
       )
     })
 
     it('should return the last matrix column', function () {
-      const c = m.column(4)
+      const c = column(m, 4)
       assert.deepStrictEqual(
         c.valueOf(), [[0], [4], [0], [0], [0]]
       )
     })
 
     it('should return the last array column', function () {
-      const c = a.column(4)
+      const c = column(a, 4)
       assert.deepStrictEqual(
         c.valueOf(), [0, 4, 0, 0, 0]
       )
     })
 
     it('should return an intermediate matrix column', function () {
-      const c = m.column(1)
+      const c = column(m, 1)
       assert.deepStrictEqual(
         c.valueOf(), [[2], [1], [0], [4], [0]]
       )
     })
 
     it('should return an intermediate array column', function () {
-      const c = a.column(1)
+      const c = column(a, 1)
       assert.deepStrictEqual(
         c.valueOf(), [2, 1, 0, 4, 0]
       )
     })
 
     it('should return an empty matrix column', function () {
-      const c = m.column(2)
+      const c = column(m, 2)
       assert.deepStrictEqual(
         c.valueOf(), [[0], [0], [0], [0], [0]]
       )
     })
 
     it('should return an empty array column', function () {
-      const c = a.column(2)
+      const c = column(a, 2)
       assert.deepStrictEqual(
         c.valueOf(), [0, 0, 0, 0, 0]
       )
