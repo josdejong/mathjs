@@ -85,9 +85,15 @@ describe('range', function () {
   })
 
   it('should gracefully handle round-off errors', function () {
-    assert.deepStrictEqual(range(10, 15, 1), matrix([10, 11, 12, 13, 14, 15]))
-    assert.deepStrictEqual(range(1, 1.5, 0.1), matrix([1, 1.1, 1.2, 1.3, 1.4, 1.5]))
-    assert.deepStrictEqual(range(0.1, 0.15, 0.01), matrix([0.1, 0.11, 0.12, 0.13, 0.14, 0.15]))
+    assert.deepStrictEqual(range(1, 2, 0.1, true)._size, [11])
+    assert.deepStrictEqual(range(0.1, 0.2, 0.01, true)._size, [11])
+    assert.deepStrictEqual(range(1, 5, 0.1)._size, [40])
+    assert.deepStrictEqual(range(2, 1, -0.1, true)._size, [11])
+    assert.deepStrictEqual(range(5, 1, -0.1)._size, [40])
+    assert.deepStrictEqual(range(-3.2909135802469143, 3.2909135802469143, (3.2909135802469143 + 3.2909135802469143) / 10, true)._size, [11])
+    assert.deepStrictEqual(range(-3.2909135802469143, 3.2909135802469143, (3.2909135802469143 + 3.2909135802469143) / 9, true)._size, [10])
+    assert.deepStrictEqual(range(-3.2909135802469143, 3.2909135802469143, (3.2909135802469143 + 3.2909135802469143) / 10)._size, [10])
+    assert.deepStrictEqual(range(-3.2909135802469143, 3.2909135802469143, (3.2909135802469143 + 3.2909135802469143) / 9)._size, [9])
   })
 
   describe('option includeEnd', function () {
