@@ -587,7 +587,7 @@ function factory (type, config, load, typed, math) {
         res[0].placeholders[rule.name] = node
       } else if (rule.name[0] === 'v') {
         // rule matches any variable thing (not a ConstantNode)
-        if (!type.isConstantNode(node)) {
+        if (!type.isConstantNode(node) && (node.fn != 'unaryMinus' || !type.isConstantNode(node.args[0]))) {
           res[0].placeholders[rule.name] = node
         } else {
           // Mis-match: rule was expecting something other than a ConstantNode
@@ -595,7 +595,7 @@ function factory (type, config, load, typed, math) {
         }
       } else if (rule.name[0] === 'c') {
         // rule matches any ConstantNode
-        if (node instanceof ConstantNode) {
+        if (node instanceof ConstantNode || node.fn == 'unaryMinus' && node.args[0] instanceof ConstantNode) {
           res[0].placeholders[rule.name] = node
         } else {
           // Mis-match: rule was expecting a ConstantNode
