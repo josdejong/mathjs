@@ -434,11 +434,11 @@ function factory (type, config, load, typed) {
    * Test whether two given 16 bit characters form a surrogate pair of a
    * unicode math symbol.
    *
-   * http://unicode-table.com/en/
-   * http://www.wikiwand.com/en/Mathematical_operators_and_symbols_in_Unicode
+   * https://unicode-table.com/en/
+   * https://www.wikiwand.com/en/Mathematical_operators_and_symbols_in_Unicode
    *
    * Note: In ES6 will be unicode aware:
-   * http://stackoverflow.com/questions/280712/javascript-unicode-regexes
+   * https://stackoverflow.com/questions/280712/javascript-unicode-regexes
    * https://mathiasbynens.be/notes/es6-unicode-regex
    *
    * @param {string} high

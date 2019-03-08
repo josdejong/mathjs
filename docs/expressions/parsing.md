@@ -134,7 +134,7 @@ code2.eval(scope)  // 27
 Parsed expressions can be exported to text using `node.toString()`, and can
 be exported to LaTeX using `node.toTex()`. The LaTeX export can be used to
 pretty print an expression in the browser with a library like
-[MathJax](http://www.mathjax.org/). Example usage:
+[MathJax](https://www.mathjax.org/). Example usage:
 
 ```js
 // parse an expression

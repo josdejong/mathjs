@@ -1,8 +1,32 @@
 # History
 
-# not yet released, version 5.4.2
+# not yet released, version 5.7.0
 
-- Fix incorrect LaTeX output of `RelationalNode`. Thanks @rianmcguire.
+- Implemented support for `pow()` in `derivative`. Thanks @sam-19.
+
+
+# 2019-03-02, version 5.6.0
+
+- Upgrade decimal.js to v10.1.1 (#1421).
+- Fixed #1418: missing whitespace when stringifying an expression
+  containing "not".
+
+
+# 2019-02-20, version 5.5.0
+
+- Fixed #1401: methods `map` and `forEach` of `SparseMatrix` not working
+  correctly when indexes are unordered.
+- Fixed #1404: inconsistent rounding of negative numbers.
+- Upgrade tiny-emitter to v2.1.0 (#1397).
+
+
+# 2019-01-25, version 5.4.2
+
+- Fixed `math.format` not working for BigNumbers with a precision above
+  1025 digits (see #1385). Thanks @ericman314.
+- Fixed incorrect LaTeX output of `RelationalNode`. Thanks @rianmcguire.
+- Fixed a bug the methods `map`, `forEach`, `traverse`, and `transform`
+  of `FunctionNode`.
 
 
 # 2019-01-10, version 5.4.1
