@@ -46,7 +46,7 @@ function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return x.isNegative() ? x.ceil() : x.floor()
+      return x.isNegative() ? ceil(x) : floor(x)
     },
 
     'Fraction': function (x) {

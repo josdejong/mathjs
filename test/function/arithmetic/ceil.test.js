@@ -77,6 +77,17 @@ describe('ceil', function () {
     assert.strictEqual(ceil(-799999.9999999999), -800000)
   })
 
+  it('should gracefully handle round-off errors with bignumbers', function () {
+    assert.deepStrictEqual(ceil(bignumber(3.0000000000000004)), bignumber(3))
+    assert.deepStrictEqual(ceil(bignumber(7.999999999999999)), bignumber(8))
+    assert.deepStrictEqual(ceil(bignumber(-3.0000000000000004)), bignumber(-3))
+    assert.deepStrictEqual(ceil(bignumber(-7.999999999999999)), bignumber(-8))
+    assert.deepStrictEqual(ceil(bignumber(30000.000000000004)), bignumber(30000))
+    assert.deepStrictEqual(ceil(bignumber(799999.9999999999)), bignumber(800000))
+    assert.deepStrictEqual(ceil(bignumber(-30000.000000000004)), bignumber(-30000))
+    assert.deepStrictEqual(ceil(bignumber(-799999.9999999999)), bignumber(-800000))
+  })
+
   it('should throw an error for units', function () {
     assert.throws(function () { ceil(unit('5cm')) }, TypeError, 'Function ceil(unit) not supported')
   })

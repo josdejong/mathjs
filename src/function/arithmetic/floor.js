@@ -48,7 +48,11 @@ function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return x.floor()
+      if (bigNearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return x.floor()
+      }
     },
 
     'Fraction': function (x) {

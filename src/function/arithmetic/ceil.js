@@ -49,7 +49,11 @@ function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return x.ceil()
+      if (bigNearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return x.ceil()
+      }
     },
 
     'Fraction': function (x) {

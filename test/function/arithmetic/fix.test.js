@@ -78,6 +78,17 @@ describe('fix', function () {
     assert.strictEqual(fix(-799999.9999999999), -800000)
   })
 
+  it('should gracefully handle round-off errors with bignumbers', function () {
+    assert.deepStrictEqual(fix(bignumber(3.0000000000000004)), bignumber(3))
+    assert.deepStrictEqual(fix(bignumber(7.999999999999999)), bignumber(8))
+    assert.deepStrictEqual(fix(bignumber(-3.0000000000000004)), bignumber(-3))
+    assert.deepStrictEqual(fix(bignumber(-7.999999999999999)), bignumber(-8))
+    assert.deepStrictEqual(fix(bignumber(30000.000000000004)), bignumber(30000))
+    assert.deepStrictEqual(fix(bignumber(799999.9999999999)), bignumber(800000))
+    assert.deepStrictEqual(fix(bignumber(-30000.000000000004)), bignumber(-30000))
+    assert.deepStrictEqual(fix(bignumber(-799999.9999999999)), bignumber(-800000))
+  })
+
   it('should throw an error on unit as parameter', function () {
     // unit
     assert.throws(function () { fix(unit('5cm')) }, TypeError, 'Function fix(unit) not supported')
