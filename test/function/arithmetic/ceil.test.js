@@ -49,7 +49,7 @@ describe('ceil', function () {
     approx.deepEqual(ceil(complex(-1.3, -1.8)), complex(-1, -1))
   })
 
-  it('should return the ceil of a number', function () {
+  it('should return the ceil of a fraction', function () {
     const a = fraction('2/3')
     assert(ceil(a) instanceof math.type.Fraction)
     assert.strictEqual(a.toString(), '0.(6)')
@@ -65,6 +65,17 @@ describe('ceil', function () {
     assert.strictEqual(ceil(fraction(-2)).toString(), '-2')
     assert.strictEqual(ceil(fraction(-2.1)).toString(), '-2')
   })
+
+  it('should gracefully handle round-off errors', function() {
+    assert.equal(ceil(3.0000000000000004), 3);
+    assert.equal(ceil(7.999999999999999), 8); 
+    assert.equal(ceil(-3.0000000000000004), -3);
+    assert.equal(ceil(-7.999999999999999), -8);
+    assert.equal(ceil(30000.000000000004), 30000);
+    assert.equal(ceil(799999.9999999999), 800000); 
+    assert.equal(ceil(-30000.000000000004), -30000);
+    assert.equal(ceil(-799999.9999999999), -800000);
+  });
 
   it('should throw an error for units', function () {
     assert.throws(function () { ceil(unit('5cm')) }, TypeError, 'Function ceil(unit) not supported')

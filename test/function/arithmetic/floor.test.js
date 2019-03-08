@@ -66,6 +66,16 @@ describe('floor', function () {
     assert.strictEqual(floor(fraction(-2.1)).toString(), '-3')
   })
 
+  it('should gracefully handle round-off errors', function() {
+    assert.equal(floor(3.0000000000000004), 3);
+    assert.equal(floor(7.999999999999999), 8); 
+    assert.equal(floor(-3.0000000000000004), -3);
+    assert.equal(floor(-7.999999999999999), -8);
+    assert.equal(floor(30000.000000000004), 30000);
+    assert.equal(floor(799999.9999999999), 800000); 
+    assert.equal(floor(-30000.000000000004), -30000);
+  });
+  
   it('should throw an error with a unit', function () {
     assert.throws(function () { floor(unit('5cm')) }, TypeError, 'Function floor(unit) not supported')
   })
