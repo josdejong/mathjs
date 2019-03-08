@@ -67,13 +67,13 @@ describe('floor', function () {
   })
 
   it('should gracefully handle round-off errors', function () {
-    assert.equal(floor(3.0000000000000004), 3)
-    assert.equal(floor(7.999999999999999), 8)
-    assert.equal(floor(-3.0000000000000004), -3)
-    assert.equal(floor(-7.999999999999999), -8)
-    assert.equal(floor(30000.000000000004), 30000)
-    assert.equal(floor(799999.9999999999), 800000)
-    assert.equal(floor(-30000.000000000004), -30000)
+    assert.strictEqual(floor(3.0000000000000004), 3)
+    assert.strictEqual(floor(7.999999999999999), 8)
+    assert.strictEqual(floor(-3.0000000000000004), -3)
+    assert.strictEqual(floor(-7.999999999999999), -8)
+    assert.strictEqual(floor(30000.000000000004), 30000)
+    assert.strictEqual(floor(799999.9999999999), 800000)
+    assert.strictEqual(floor(-30000.000000000004), -30000)
   })
 
   it('should throw an error with a unit', function () {

@@ -68,14 +68,14 @@ describe('fix', function () {
   })
 
   it('should gracefully handle round-off errors', function () {
-    assert.equal(fix(3.0000000000000004), 3)
-    assert.equal(fix(7.999999999999999), 8)
-    assert.equal(fix(-3.0000000000000004), -3)
-    assert.equal(fix(-7.999999999999999), -8)
-    assert.equal(fix(30000.000000000004), 30000)
-    assert.equal(fix(799999.9999999999), 800000)
-    assert.equal(fix(-30000.000000000004), -30000)
-    assert.equal(fix(-799999.9999999999), -800000)
+    assert.strictEqual(fix(3.0000000000000004), 3)
+    assert.strictEqual(fix(7.999999999999999), 8)
+    assert.strictEqual(fix(-3.0000000000000004), -3)
+    assert.strictEqual(fix(-7.999999999999999), -8)
+    assert.strictEqual(fix(30000.000000000004), 30000)
+    assert.strictEqual(fix(799999.9999999999), 800000)
+    assert.strictEqual(fix(-30000.000000000004), -30000)
+    assert.strictEqual(fix(-799999.9999999999), -800000)
   })
 
   it('should throw an error on unit as parameter', function () {
