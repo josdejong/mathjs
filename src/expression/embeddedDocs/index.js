@@ -186,6 +186,7 @@ function factory (construction, config, load, typed) {
   docs['xor'] = require('./function/logical/xor')
 
   // functions - matrix
+  docs.column = require('./function/matrix/column')
   docs['concat'] = require('./function/matrix/concat')
   docs.cross = require('./function/matrix/cross')
   docs.ctranspose = require('./function/matrix/ctranspose')
@@ -205,6 +206,7 @@ function factory (construction, config, load, typed) {
   docs.range = require('./function/matrix/range')
   docs.resize = require('./function/matrix/resize')
   docs.reshape = require('./function/matrix/reshape')
+  docs.row = require('./function/matrix/row')
   docs.size = require('./function/matrix/size')
   docs.sort = require('./function/matrix/sort')
   docs.squeeze = require('./function/matrix/squeeze')
