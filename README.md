@@ -1,6 +1,6 @@
 ![math.js](https://raw.github.com/josdejong/mathjs/master/img/mathjs.png)
 
-[http://mathjs.org](http://mathjs.org)
+[https://mathjs.org](https://mathjs.org)
 
 Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices. Powerful and easy to use.
 
@@ -8,7 +8,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![Downloads](https://img.shields.io/npm/dm/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Build Status](https://img.shields.io/travis/josdejong/mathjs.svg)](https://travis-ci.org/josdejong/mathjs)
 [![Greenkeeper badge](https://badges.greenkeeper.io/josdejong/mathjs.svg)](https://greenkeeper.io/)
-[![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
 [![Slack](https://slack.bri.im/badge.svg)](https://slack.bri.im)
@@ -37,13 +37,13 @@ Install math.js using [npm](https://www.npmjs.com/package/mathjs):
 
 Or download mathjs via one of the CDN's listed on the downloads page:
 
-&nbsp;&nbsp;&nbsp;&nbsp;[http://mathjs.org/download.html](http://mathjs.org/download.html#download)
+&nbsp;&nbsp;&nbsp;&nbsp;[https://mathjs.org/download.html](https://mathjs.org/download.html#download)
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate
-[expressions](http://mathjs.org/docs/expressions/index.html)
+[expressions](https://mathjs.org/docs/expressions/index.html)
 and supports
-[chained operations](http://mathjs.org/docs/core/chaining.html).
+[chained operations](https://mathjs.org/docs/core/chaining.html).
 
 ```js
 // load math.js
@@ -71,7 +71,7 @@ math.chain(3)
     .done()  // 14
 ```
 
-See the [Getting Started](http://mathjs.org/docs/getting_started.html) for a more detailed tutorial.
+See the [Getting Started](https://mathjs.org/docs/getting_started.html) for a more detailed tutorial.
 
 
 ## Browser support
@@ -84,10 +84,10 @@ when using the [es5-shim](https://github.com/kriskowal/es5-shim).
 
 ## Documentation
 
-- [Getting Started](http://mathjs.org/docs/getting_started.html)
-- [Examples](http://mathjs.org/examples/index.html)
-- [Overview](http://mathjs.org/docs/index.html)
-- [History](http://mathjs.org/history.html)
+- [Getting Started](https://mathjs.org/docs/getting_started.html)
+- [Examples](https://mathjs.org/examples/index.html)
+- [Overview](https://mathjs.org/docs/index.html)
+- [History](https://mathjs.org/history.html)
 
 
 ## Build
@@ -154,7 +154,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+   https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,

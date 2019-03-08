@@ -69,7 +69,7 @@ describe('parse', function () {
   })
 
   it('should parse unicode and other special characters', function () {
-    // http://unicode-table.com/en
+    // https://unicode-table.com/en
     let scope = {}
 
     math.eval('$ab$c = 2', scope) // dollar sign
@@ -1947,6 +1947,17 @@ describe('parse', function () {
       assert.strictEqual(parse('"hello"').toString(), '"hello"')
       assert.strictEqual(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3 i, 4]')
       assert.strictEqual(parse('1/2a').toString(), '1 / 2 a')
+    })
+
+    it('should correctly stringify named operators', function () {
+      assert.strictEqual(parse('7 mod 3').toString(), '7 mod 3')
+      assert.strictEqual(parse('5 inch to cm').toString(), '5 inch to cm')
+      assert.strictEqual(parse('5 inch in cm').toString(), '5 inch in cm')
+      assert.strictEqual(parse('false and true').toString(), 'false and true')
+      assert.strictEqual(parse('false xor true').toString(), 'false xor true')
+      assert.strictEqual(parse('false or true').toString(), 'false or true')
+      assert.strictEqual(parse('not true').toString(), 'not true')
+      assert.strictEqual(parse('5!').toString(), '5!')
     })
 
     it('should correctly stringify an index with dot notation', function () {

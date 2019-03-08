@@ -72,7 +72,7 @@ math.cos(c)                         // Number 0.7071067811865476
 // Kinetic energy of average sedan on highway
 const d = math.unit('80 mi/h')      // Unit 80 mi/h
 const e = math.unit('2 tonne')      // Unit 2 tonne
-const f = math.multiply(0.5, math.multipy(math.pow(d, 2), e)) 
+const f = math.multiply(0.5, math.multipy(math.pow(d, 2), e))
                                     // 1.2790064742399996 MJ
 ```
 
@@ -111,7 +111,7 @@ units on the page [Syntax](../expressions/syntax.md#units).
 You can add your own units to Math.js using the `math.createUnit` function. The following example defines a new unit `furlong`, then uses the user-defined unit in a calculation:
 
 ```js
-math.createUnit('furlong', '220 yards') 
+math.createUnit('furlong', '220 yards')
 math.eval('1 mile to furlong')             // 8 furlong
 ```
 
@@ -119,7 +119,7 @@ If you cannot express the new unit in terms of any existing unit, then the secon
 
 ```js
 // A 'foo' cannot be expressed in terms of any other unit.
-math.createUnit('foo') 
+math.createUnit('foo')
 math.eval('8 foo * 4 feet')                // 32 foo feet
 ```
 
@@ -217,7 +217,7 @@ The type of the returned value is always `number`.
 ### unit.toNumeric(unitName)
 Get the value of a unit when converted to the
 specified unit (a unit with optional prefix but without value).
-The type of the returned value depends on how the unit was created and 
+The type of the returned value depends on how the unit was created and
 can be `number`, `Fraction`, or `BigNumber`.
 
 ### unit.toSI()
@@ -241,7 +241,7 @@ Length              | meter (m), inch (in), foot (ft), yard (yd), mile (mi), lin
 Surface area        | m2, sqin, sqft, sqyd, sqmi, sqrd, sqch, sqmil, acre, hectare
 Volume              | m3, litre (l, L, lt, liter), cc, cuin, cuft, cuyd, teaspoon, tablespoon
 Liquid volume       | minim (min), fluiddram (fldr), fluidounce (floz), gill (gi), cup (cp), pint (pt), quart (qt), gallon (gal), beerbarrel (bbl), oilbarrel (obl), hogshead, drop (gtt)
-Angles              | rad (radian), deg (degree), grad (gradian), cycle, arcsec (arcsecond), arcmin (arcminute) 
+Angles              | rad (radian), deg (degree), grad (gradian), cycle, arcsec (arcsecond), arcmin (arcminute)
 Time                | second (s, secs, seconds), minute (mins, minutes), hour (h, hr, hrs, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia)
 Frequency           | hertz (Hz)
 Mass                | gram(g), tonne, ton, grain (gr), dram (dr), ounce (oz), poundmass (lbm, lb, lbs), hundredweight (cwt), stick, stone
@@ -258,7 +258,7 @@ Binary              | bit (b), byte (B)
 
 Note: all time units are based on the Julian year, with one month being 1/12th of a Julian year, a year being one Julian year, a decade being 10 Julian years, a century being 100, and a millennium being 1000.
 
-Note that all relevant units can also be written in plural form, for example `5 meters` instead of `5 meter` or `10 seconds` instead of `10 second`. 
+Note that all relevant units can also be written in plural form, for example `5 meters` instead of `5 meter` or `10 seconds` instead of `10 second`.
 
 Surface and volume units can alternatively be expressed in terms of length units raised to a power, for example `100 in^2` instead of `100 sqin`.
 
@@ -320,7 +320,7 @@ yotta | Y            | 1e24
 
 ### Physical Constants
 
-Math.js includes the following physical constants. See [Wikipedia](http://en.wikipedia.org/wiki/Physical_constants) for more information.
+Math.js includes the following physical constants. See [Wikipedia](https://en.wikipedia.org/wiki/Physical_constants) for more information.
 
 
 #### Universal constants
@@ -330,7 +330,7 @@ Name                  | Symbol                                                 |
 speedOfLight          | <i>c</i>                                               | 299792458         | m &#183; s<sup>-1</sup>
 gravitationConstant   | <i>G</i>                                               | 6.6738480e-11     | m<sup>3</sup> &#183; kg<sup>-1</sup> &#183; s<sup>-2</sup>
 planckConstant        | <i>h</i>                                               | 6.626069311e-34   | J &#183; s
-reducedPlanckConstant | <i><span style="text-decoration:overline">h</span></i> | 1.05457172647e-34 | J &#183; s 
+reducedPlanckConstant | <i><span style="text-decoration:overline">h</span></i> | 1.05457172647e-34 | J &#183; s
 
 
 #### Electromagnetic constants
@@ -350,7 +350,7 @@ nuclearMagneton           | <i>&mu;<sub>N</sub></i>                          | 5
 klitzing                  | <i>R<sub>K</sub></i>                             | 25812.807443484       | &ohm;
 
 <!-- TODO: implement josephson
-josephson                 | <i>K<sub>J</sub></i>                             | 4.8359787011e-14    | Hz &#183; V<sup>-1</sup> 
+josephson                 | <i>K<sub>J</sub></i>                             | 4.8359787011e-14    | Hz &#183; V<sup>-1</sup>
 -->
 
 
@@ -392,11 +392,11 @@ secondRadiation     | <i>c<sub>2</sub></i>         | 1.438777013e-2      | m &#1
 stefanBoltzmann     | <i>&sigma;</i>               | 5.67037321e-8       | W &#183; m<sup>-2</sup> &#183; K<sup>-4</sup>
 wienDisplacement    | <i>b</i>                     | 2.897772126e-3      | m &#183; K
 
-<!-- TODO: implement spectralRadiance 
+<!-- TODO: implement spectralRadiance
 spectralRadiance    | <i>c<sub>1L</sub></i>        | 1.19104286953e-16  | W &#183; m<sup>2</sup> &#183; sr<sup>-1</sup>
 -->
 
-Note that the values of `loschmidt` and `molarVolume` are at `T = 273.15 K` and `p = 101.325 kPa`. 
+Note that the values of `loschmidt` and `molarVolume` are at `T = 273.15 K` and `p = 101.325 kPa`.
 The value of `sackurTetrode` is at `T = 1 K` and `p = 101.325 kPa`.
 
 
@@ -415,7 +415,7 @@ atm           | <i>atm</i>                   | 101325  | Pa
 Name              | Symbol                | Value              | Unit
 ------------------|-----------------------|--------------------|-----
 planckLength      | <i>l<sub>P</sub></i>  | 1.61619997e-35     | m
-planckMass        | <i>m<sub>P</sub></i>  | 2.1765113e-8       | kg 
+planckMass        | <i>m<sub>P</sub></i>  | 2.1765113e-8       | kg
 planckTime        | <i>t<sub>P</sub></i>  | 5.3910632e-44      | s
 planckCharge      | <i>q<sub>P</sub></i>  | 1.87554595641e-18  | C
-planckTemperature | <i>T<sub>P</sub></i>  | 1.41683385e+32     | K 
+planckTemperature | <i>T<sub>P</sub></i>  | 1.41683385e+32     | K
