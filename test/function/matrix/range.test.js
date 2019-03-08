@@ -84,6 +84,12 @@ describe('range', function () {
     assert.throws(function () { bigmath.range('1:a') }, /is no valid range/)
   })
 
+  it('should gracefully handle round-off errors', function () {
+    assert.deepStrictEqual(range(10, 15, 1), matrix([10, 11, 12, 13, 14, 15]))
+    assert.deepStrictEqual(range(1, 1.5, 0.1), matrix([1, 1.1, 1.2, 1.3, 1.4, 1.5]))
+    assert.deepStrictEqual(range(0.1, 0.15, 0.01), matrix([0.1, 0.11, 0.12, 0.13, 0.14, 0.15]))
+  })
+
   describe('option includeEnd', function () {
     it('should parse a string and include end', function () {
       assert.deepStrictEqual(range('1:6', false), matrix([1, 2, 3, 4, 5]))
