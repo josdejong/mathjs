@@ -1,11 +1,11 @@
 'use strict'
 
 const deepMap = require('../../utils/collection/deepMap')
-var nearlyEqual = require('../../utils/number').nearlyEqual
-var bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
+const nearlyEqual = require('../../utils/number').nearlyEqual
+const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
 
 function factory (type, config, load, typed) {
-  var round = load(require('../../function/arithmetic/round'))
+  const round = load(require('../../function/arithmetic/round'))
 
   /**
    * Round a value towards plus infinity

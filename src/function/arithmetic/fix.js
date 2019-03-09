@@ -3,8 +3,8 @@
 const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var ceil = load(require('../../function/arithmetic/ceil'))
-  var floor = load(require('../../function/arithmetic/floor'))
+  const ceil = load(require('../../function/arithmetic/ceil'))
+  const floor = load(require('../../function/arithmetic/floor'))
 
   /**
    * Round a value towards zero.
