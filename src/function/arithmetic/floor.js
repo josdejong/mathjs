@@ -1,8 +1,12 @@
 'use strict'
 
 const deepMap = require('../../utils/collection/deepMap')
+const nearlyEqual = require('../../utils/number').nearlyEqual
+const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
 
 function factory (type, config, load, typed) {
+  const round = load(require('../../function/arithmetic/round'))
+
   /**
    * Round a value towards minus infinity.
    * For matrices, the function is evaluated element wise.
@@ -31,14 +35,24 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   const floor = typed('floor', {
-    'number': Math.floor,
+    'number': function (x) {
+      if (nearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return Math.floor(x)
+      }
+    },
 
     'Complex': function (x) {
       return x.floor()
     },
 
     'BigNumber': function (x) {
-      return x.floor()
+      if (bigNearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return x.floor()
+      }
     },
 
     'Fraction': function (x) {

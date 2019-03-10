@@ -2,6 +2,10 @@
 
 function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
+  const smaller = load(require('../relational/smaller'))
+  const larger = load(require('../relational/larger'))
+  const smallerEq = load(require('../relational/smallerEq'))
+  const largerEq = load(require('../relational/largerEq'))
 
   const ZERO = new type.BigNumber(0)
   const ONE = new type.BigNumber(1)
@@ -131,12 +135,12 @@ function factory (type, config, load, typed) {
     const array = []
     let x = start
     if (step > 0) {
-      while (x < end) {
+      while (smaller(x, end)) {
         array.push(x)
         x += step
       }
     } else if (step < 0) {
-      while (x > end) {
+      while (larger(x, end)) {
         array.push(x)
         x += step
       }
@@ -157,12 +161,12 @@ function factory (type, config, load, typed) {
     const array = []
     let x = start
     if (step > 0) {
-      while (x <= end) {
+      while (smallerEq(x, end)) {
         array.push(x)
         x += step
       }
     } else if (step < 0) {
-      while (x >= end) {
+      while (largerEq(x, end)) {
         array.push(x)
         x += step
       }
@@ -183,12 +187,12 @@ function factory (type, config, load, typed) {
     const array = []
     let x = start
     if (step.gt(ZERO)) {
-      while (x.lt(end)) {
+      while (smaller(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
     } else if (step.lt(ZERO)) {
-      while (x.gt(end)) {
+      while (larger(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
@@ -209,12 +213,12 @@ function factory (type, config, load, typed) {
     const array = []
     let x = start
     if (step.gt(ZERO)) {
-      while (x.lte(end)) {
+      while (smallerEq(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
     } else if (step.lt(ZERO)) {
-      while (x.gte(end)) {
+      while (largerEq(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
