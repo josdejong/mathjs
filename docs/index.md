@@ -11,7 +11,7 @@ Math.js can be used in the browser, in node.js and in any JavaScript engine. Ins
 <h2 id="getting-started">Getting Started <a href="#getting-started" title="Permalink">#</a></h2>
 
 - [Getting Started](getting_started.html)
-- [Examples](https://mathjs.org/examples/index.html)
+- [Examples](//mathjs.org/examples/index.html)
 
 <h2 id="documentation">Documentation <a href="#documentation" title="Permalink">#</a></h2>
 

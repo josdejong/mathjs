@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20190310-version-570">2019-03-10, version 5.7.0 <a href="#20190310-version-570" title="Permalink">#</a></h1>
+
+- Implemented support for `pow()` in `derivative`. Thanks <a href="https://github.com/sam-19">@sam-19</a>.
+- Gracefully handle round-off errors in fix, ceil, floor, and range
+  (Fixes <a href="https://github.com/josdejong/mathjs/issues/1429">#1429</a>, see also <a href="https://github.com/josdejong/mathjs/issues/1434">#1434</a>, <a href="https://github.com/josdejong/mathjs/issues/1432">#1432</a>). Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+
+
 <h1 id="20190302-version-560">2019-03-02, version 5.6.0 <a href="#20190302-version-560" title="Permalink">#</a></h1>
 
 - Upgrade decimal.js to v10.1.1  <a href="https://github.com/josdejong/mathjs/issues/1421">#1421</a>).
