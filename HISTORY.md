@@ -1,8 +1,10 @@
 # History
 
-# not yet released, version 5.7.0
+# 2019-03-10, version 5.7.0
 
 - Implemented support for `pow()` in `derivative`. Thanks @sam-19.
+- Gracefully handle round-off errors in fix, ceil, floor, and range
+  (Fixes #1429, see also #1434, #1432). Thanks @ericman314.
 
 
 # 2019-03-02, version 5.6.0
