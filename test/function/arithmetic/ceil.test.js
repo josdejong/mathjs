@@ -49,7 +49,7 @@ describe('ceil', function () {
     approx.deepEqual(ceil(complex(-1.3, -1.8)), complex(-1, -1))
   })
 
-  it('should return the ceil of a number', function () {
+  it('should return the ceil of a fraction', function () {
     const a = fraction('2/3')
     assert(ceil(a) instanceof math.type.Fraction)
     assert.strictEqual(a.toString(), '0.(6)')
@@ -64,6 +64,28 @@ describe('ceil', function () {
     assert.strictEqual(ceil(fraction(-1.8)).toString(), '-1')
     assert.strictEqual(ceil(fraction(-2)).toString(), '-2')
     assert.strictEqual(ceil(fraction(-2.1)).toString(), '-2')
+  })
+
+  it('should gracefully handle round-off errors', function () {
+    assert.strictEqual(ceil(3.0000000000000004), 3)
+    assert.strictEqual(ceil(7.999999999999999), 8)
+    assert.strictEqual(ceil(-3.0000000000000004), -3)
+    assert.strictEqual(ceil(-7.999999999999999), -8)
+    assert.strictEqual(ceil(30000.000000000004), 30000)
+    assert.strictEqual(ceil(799999.9999999999), 800000)
+    assert.strictEqual(ceil(-30000.000000000004), -30000)
+    assert.strictEqual(ceil(-799999.9999999999), -800000)
+  })
+
+  it('should gracefully handle round-off errors with bignumbers', function () {
+    assert.deepStrictEqual(ceil(bignumber(3.0000000000000004)), bignumber(3))
+    assert.deepStrictEqual(ceil(bignumber(7.999999999999999)), bignumber(8))
+    assert.deepStrictEqual(ceil(bignumber(-3.0000000000000004)), bignumber(-3))
+    assert.deepStrictEqual(ceil(bignumber(-7.999999999999999)), bignumber(-8))
+    assert.deepStrictEqual(ceil(bignumber(30000.000000000004)), bignumber(30000))
+    assert.deepStrictEqual(ceil(bignumber(799999.9999999999)), bignumber(800000))
+    assert.deepStrictEqual(ceil(bignumber(-30000.000000000004)), bignumber(-30000))
+    assert.deepStrictEqual(ceil(bignumber(-799999.9999999999)), bignumber(-800000))
   })
 
   it('should throw an error for units', function () {
