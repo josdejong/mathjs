@@ -35,9 +35,9 @@ There are two ways to load a function:
     of the function that you want to create and all its dependencies.
 
     ```js
-    import { create, addRecipe, divideRecipe } from 'mathjs'
+    import { create, divideRecipe, sinRecipe, piRecipe } from 'mathjs'
 
-    const { divide, sin, pi } = create({ addRecipe, divideRecipe })
+    const { divide, sin, pi } = create({ divideRecipe, sinRecipe, piRecipe })
     ```
 
 ### B. Configuration
@@ -47,20 +47,20 @@ Configuration can be set in two ways:
 1.  Specify configuration statically when creating functions:
 
     ```js
-    import { create, addRecipe, divideRecipe } from 'mathjs'
+    import { create, divideRecipe, sinRecipe, piRecipe } from 'mathjs'
 
     const config = { ... }
-    const { divide, sin, pi } = create({ addRecipe, divideRecipe }, config)
+    const { divide, sin, pi } = create({ divideRecipe, sinRecipe, piRecipe }, config)
     ```
 
 2.  Create a mathjs instance and change config there dynamically:
 
     ```js
-    import { create, addRecipe, divideRecipe } from 'mathjs'
+    import { create, divideRecipe, sinRecipe, piRecipe } from 'mathjs'
 
-    const mathjs = create({ addRecipe, divideRecipe })
+    const mathjs = create({ divideRecipe, sinRecipe, piRecipe })
     mathjs.config({ ... })
-    // use mathjs.add and mathjs.divide
+    // use mathjs.divide, mathjs.sin, and mathjs.pi
     ```
 
 ### C. Data types
