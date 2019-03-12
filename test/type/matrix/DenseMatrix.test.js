@@ -2,6 +2,7 @@ const assert = require('assert')
 const math = require('../../../src/main')
 const Matrix = math.type.Matrix
 const DenseMatrix = math.type.DenseMatrix
+const SparseMatrix = math.type.SparseMatrix
 const Complex = math.type.Complex
 const Range = math.type.Range
 
@@ -87,8 +88,8 @@ describe('DenseMatrix', function () {
       assert.deepStrictEqual(m1._datatype, m2._datatype)
     })
 
-    it('should create a DenseMatrix from a DenseMatrix', function () {
-      const m1 = new DenseMatrix(
+    it('should create a DenseMatrix from a SparseMatrix', function () {
+      const m1 = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
@@ -100,8 +101,8 @@ describe('DenseMatrix', function () {
       assert.deepStrictEqual(m1.toArray(), m2.toArray())
     })
 
-    it('should create a DenseMatrix from a DenseMatrix, number datatype', function () {
-      const m1 = new DenseMatrix(
+    it('should create a DenseMatrix from a SparseMatrix, number datatype', function () {
+      const m1 = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
