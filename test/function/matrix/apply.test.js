@@ -29,4 +29,8 @@ describe('apply', function () {
   it('should throw an error if the dimension is not an integer', function () {
     assert.throws(function () { math.apply([[1, 2], [3, 4]], [1, 2], sum) }, /Unexpected type of argument in function apply/)
   })
+
+  it('should throw an error if the matrix, is not a matrix or array', function () {
+    assert.throws(function () { math.apply('[[1, 2], [3, 4]]', 0, sum) }, /Unexpected type of argument in function apply/)
+  })
 })
