@@ -1,5 +1,5 @@
 const assert = require('assert')
-const apply = require('../../../src/utils/collection/apply')
+const apply = require('../../../src/function/matrix/apply')
 const sum = function (x) {
   let total = 0
   for (var i = 0; i < x.length; i++) {
