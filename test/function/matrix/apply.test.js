@@ -1,20 +1,15 @@
 const assert = require('assert')
-const apply = require('../../../src/function/matrix/apply')
-const sum = function (x) {
-  let total = 0
-  for (var i = 0; i < x.length; i++) {
-    total += x[i]
-  }
-  return total
-}
+const math = require('../../../src/main')
+
+const sum = math.sum
 
 describe('apply', function () {
   it('should apply a function to the rows of a matrix', function () {
-    assert.deepStrictEqual(apply([[1, 2], [3, 4]], 0, sum), [4, 6])
+    assert.deepStrictEqual(math.apply([[1, 2], [3, 4]], 0, sum), [4, 6])
   })
 
   it('should apply a function to the columns of a matrix', function () {
-    assert.deepStrictEqual(apply([[1, 2], [3, 4]], 1, sum), [3, 7])
+    assert.deepStrictEqual(math.apply([[1, 2], [3, 4]], 1, sum), [3, 7])
   })
 
   const inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
@@ -24,10 +19,14 @@ describe('apply', function () {
     [ [19, 20], [21, 22], [23, 24] ]
   ]
   it('should apply to the rows of a tensor', function () {
-    assert.deepStrictEqual(apply(inputMatrix, 2, sum), [[3, 7, 11], [15, 19, 23], [27, 31, 35], [39, 43, 47]])
+    assert.deepStrictEqual(math.apply(inputMatrix, 2, sum), [[3, 7, 11], [15, 19, 23], [27, 31, 35], [39, 43, 47]])
   })
 
   it('should throw an error if the dimension is out of range', function () {
-    assert.throws(function () { apply([[1, 2], [3, 4]], 3, sum) }, /Index out of range/)
+    assert.throws(function () { math.apply([[1, 2], [3, 4]], 3, sum) }, /Index out of range/)
+  })
+
+  it('should throw an error if the dimension is not an integer', function () {
+    assert.throws(function () { math.apply([[1, 2], [3, 4]], [1, 2], sum) }, /Unexpected type of argument in function apply/)
   })
 })

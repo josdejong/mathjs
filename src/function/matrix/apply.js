@@ -4,29 +4,64 @@ const arraySize = require('../../utils/array').size
 const isMatrix = require('../../utils/collection/isMatrix')
 const IndexError = require('../../error/IndexError')
 
-/**
- * Apply function that takes an array and returns a Scalar
- * along a given axis of a matrix or array.
- * Returns a new matrix or array with one less dimension.
- * @param {Array | Matrix} array
- * @param {number} dim             The dimension along which the callback is applied
- * @param {Function} callback      The callback function that is applied. This Function
- *                                 should take an array or 1-d matrix as an input and
- *                                 return a number.
- * @return {Array | Matrix} res    The residual matrix with the function applied over some dimension.
- */
-module.exports = function (mat, dim, callback) {
-  const size = Array.isArray(mat) ? arraySize(mat) : mat.size()
-  if (dim < 0 || (dim >= size.length)) {
-    // TODO: would be more clear when throwing a DimensionError here
-    throw new IndexError(dim, size.length)
-  }
+function factory (type, config, load, typed) {
+  const isInteger = load(require('../utils/isInteger'))
 
-  if (isMatrix(mat)) {
-    return mat.create(_apply(mat.valueOf(), dim, callback))
-  } else {
-    return _apply(mat, dim, callback)
-  }
+  /**
+   * Apply a function that maps an array to a scalar
+   * along a given axis of a matrix or array.
+   * Returns a new matrix or array with one less dimension than the input.
+   *
+   * Syntax:
+   *
+   *     math.apply(A, dim, callback)
+   *
+   * Where:
+   *
+   * - `dim: number` is a zero-based dimension over which to concatenate the matrices.
+   *
+   * Examples:
+   *
+   *    const A = [[1, 2], [3, 4]]
+   *    const sum = math.sum
+   *
+   *    math.apply(A, 0, sum)             // returns [4, 6]
+   *    math.apply(A, 1, sum)             // returns [3, 7]
+   *
+   * See also:
+   *
+   *    map, filter, forEach
+   *
+   * @param {Array | Matrix} array   The input Matrix
+   * @param {number} dim             The dimension along which the callback is applied
+   * @param {Function} callback      The callback function that is applied. This Function
+   *                                 should take an array or 1-d matrix as an input and
+   *                                 return a number.
+   * @return {Array | Matrix} res    The residual matrix with the function applied over some dimension.
+   */
+
+  const apply = typed('apply', {
+    'Array | Matrix, number | BigNumber, function': function (mat, dim, callback) {
+      if (!isInteger(dim)) {
+        throw new TypeError('Integer number expected for dimension')
+      }
+
+      const size = Array.isArray(mat) ? arraySize(mat) : mat.size()
+      if (dim < 0 || (dim >= size.length)) {
+        throw new IndexError(dim, size.length)
+      }
+
+      if (isMatrix(mat)) {
+        return mat.create(_apply(mat.valueOf(), dim, callback))
+      } else {
+        return _apply(mat, dim, callback)
+      }
+    }
+  })
+
+  apply.toTex = undefined // use default template
+
+  return apply
 }
 
 /**
@@ -80,3 +115,6 @@ function _switch (mat) {
   }
   return ret
 }
+
+exports.name = 'apply'
+exports.factory = factory
