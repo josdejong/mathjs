@@ -1,7 +1,7 @@
 'use strict'
 
-const arraySize = require('../array').size
-const isMatrix = require('../collection/isMatrix')
+const arraySize = require('../../utils/array').size
+const isMatrix = require('../../utils/collection/isMatrix')
 const IndexError = require('../../error/IndexError')
 
 /**
