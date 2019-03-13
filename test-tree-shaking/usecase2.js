@@ -1,14 +1,14 @@
 // Use case 2
 // use a few functions with config
 
-import { create, divideRecipe, sinRecipe, piRecipe } from '../src/mainFull'
+import { create, divideDependencies, piDependencies, sinDependencies } from '../src/mainFull'
 
 const config = { number: 'BigNumber' }
 
 const { divide, sin, pi } = create({
-  divideRecipe,
-  sinRecipe,
-  piRecipe
+  divideDependencies,
+  sinDependencies,
+  piDependencies
 }, config)
 
 console.log('\nuse case 2')

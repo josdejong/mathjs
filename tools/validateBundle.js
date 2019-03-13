@@ -61,8 +61,8 @@ function validateBundle (expectedBundleStructure, bundle) {
 
 function traverse (obj, callback = (value, path) => {}, path = []) {
   // FIXME: ugly to have these special cases
-  if (path.length > 0 && path[0].indexOf('Recipe') !== -1) {
-    // special case for objects with recipes
+  if (path.length > 0 && path[0].indexOf('Dependencies') !== -1) {
+    // special case for objects holding a collection of dependencies
     callback(obj, path)
   } else if (validateTypeOf(obj) === 'Array') {
     obj.map((item, index) => traverse(item, callback, path.concat(index)))

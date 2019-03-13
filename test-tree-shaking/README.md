@@ -17,7 +17,7 @@ The currently proposed API has the following concepts:
 
 ### A. Loading functions
 
-There are two ways to load a function:
+There are three ways to load a function:
 
 1.  Use ready made functions:
 
@@ -25,19 +25,37 @@ There are two ways to load a function:
     import { add, multiply } from 'mathjs'
     ```
 
-2.  Create a function yourself using `create` and `recipes`:
+2.  Create a function yourself using `create` and ready made collections of
+    factory functions, one collection per function.
 
-    Create a mathjs instance using `create` and factory functions.
     A factory function (like `createAdd`) typically has a number of dependencies
     (like `typed`, `matrix`, ...).
-    To make it easy to load a function and its dependencies, the concept of a
-    "recipe" is introduced. A "recipe" is an object holding the factory functions
-    of the function that you want to create and all its dependencies.
+    To make it easy to load a function and its dependencies, collections of
+    factory functions are available like `addDependencies`. This collection is
+    an object holding the factory function of the function that you want to
+    create and all its dependencies.
 
     ```js
-    import { create, divideRecipe, sinRecipe, piRecipe } from 'mathjs'
+    import { create, divideDependencies, sinDependencies, piDependencies } from 'mathjs'
 
-    const { divide, sin, pi } = create({ divideRecipe, sinRecipe, piRecipe })
+    const { divide, sin, pi } = create({ divideDependencies, sinDependencies, piDependencies })
+    ```
+
+3. Create a function yourself using a factory function, providing all dependencies yourself:
+
+    ```js
+    import { createHypot } from 'mathjs/factories'
+
+    const hypot = createHypot({
+      typed: ...,
+      abs: ...,
+      addScalar: ...,
+      divideScalar: ...,
+      multiplyScalar: ...,
+      sqrt: ...,
+      smaller: ...,
+      isPositive: ...
+    })
     ```
 
 ### B. Configuration
@@ -47,18 +65,22 @@ Configuration can be set in two ways:
 1.  Specify configuration statically when creating functions:
 
     ```js
-    import { create, divideRecipe, sinRecipe, piRecipe } from 'mathjs'
+    import { create, divideDependencies, sinDependencies, piDependencies } from 'mathjs'
 
     const config = { ... }
-    const { divide, sin, pi } = create({ divideRecipe, sinRecipe, piRecipe }, config)
+    const { divide, sin, pi } = create({
+      divideDependencies,
+      sinDependencies,
+      piDependencies
+    }, config)
     ```
 
 2.  Create a mathjs instance and change config there dynamically:
 
     ```js
-    import { create, divideRecipe, sinRecipe, piRecipe } from 'mathjs'
+    import { create, divideDependencies, sinDependencies, piDependencies } from 'mathjs'
 
-    const mathjs = create({ divideRecipe, sinRecipe, piRecipe })
+    const mathjs = create({ divideDependencies, sinDependencies, piDependencies })
     mathjs.config({ ... })
     // use mathjs.divide, mathjs.sin, and mathjs.pi
     ```
@@ -107,14 +129,14 @@ The following use cases are worked out as an example:
 2. use a few functions with config
 
 	```js
-    import { create, divideRecipe, sinRecipe, piRecipe } from 'mathjs'
+    import { create, divideDependencies, sinDependencies, piDependencies } from 'mathjs'
 
     const config = { number: 'BigNumber' }
 
     const { divide, sin, pi } = create({
-      ...divideRecipe,
-      ...sinRecipe,
-      ...piRecipe
+      divideDependencies,
+      sinDependencies,
+      piDependencies
     }, config)
 
     console.log(divide(sin(divide(pi, 2)), 3).toString())
@@ -134,10 +156,10 @@ The following use cases are worked out as an example:
 4. use all functions in the expression parser with config
 
 	```js
-    import { create, allRecipe } from 'mathjs'
+    import { create, allDependencies } from 'mathjs'
 
     const config = { number: 'BigNumber' }
-    const { evaluate } = create(allRecipe, config)
+    const { evaluate } = create(allDependencies, config)
 
     console.log(evaluate('sin(pi / 2) / 3').toString())
     // BigNumber 0.3333333333333333333333333333333333333333333333333333333333333333
@@ -156,9 +178,9 @@ The following use cases are worked out as an example:
 6. Use all functions and dynamically change config
 
 	```js
-    import { create, allRecipe } from 'mathjs'
+    import { create, allDependencies } from 'mathjs'
 
-    const mathjs = create(allRecipe)
+    const mathjs = create(allDependencies)
     console.log(mathjs.divide(mathjs.sin(mathjs.divide(mathjs.pi, 2)), 3))
     // sin(pi / 2) / 3 =
     // number 0.3333333333333333
@@ -203,7 +225,7 @@ Use case 1   | Use a few functions                                    | 43 KB
 Use case 2   | Use a few functions with config                        | 41 KB
 Use case 3   | Use all functions in the expression parser             | 105 KB
 Use case 4   | Use all functions in the expression parser with config | 131 KB
-Use case 5   | Use a few functions with just number support           | 4 KB
+Use case 5   | Use a few functions with just number support           | 12 KB
 Use case 6   | Use all functions and dynamically change config        | 131 KB
 Use case 7   | Create functions yourself                              | 6 KB
 

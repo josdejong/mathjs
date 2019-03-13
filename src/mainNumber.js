@@ -1076,4 +1076,4 @@ export { ArgumentsError } from './error/ArgumentsError'
 // core
 
 // export { core, create } from './mainInstance' // TODO: workout number main instance
-// export * from './recipes' // TODO: workout number recipes
+// export * from './dependenciesNumber' // TODO: workout number dependency collections

@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainNumber from '../src/mainNumber'
 import { expectedInstanceStructure, expectedES6Structure } from './snapshot'
 import { validateBundle, validateTypeOf } from '../tools/validateBundle'
-const { create, allRecipe, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate } = mainNumber
+const { create, allDependencies, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate } = mainNumber
 
 describe('mainNumber', function () {
   it('should export functions', () => {
@@ -19,7 +19,7 @@ describe('mainNumber', function () {
   // FIXME
   it.skip('new instance should have all expected functions', function () {
     // snapshot testing
-    const newMathInstance = create(allRecipe)
+    const newMathInstance = create(allDependencies)
 
     // don't output all warnings "math.foo.bar is move to math.bar, ..."
     const originalWarn = console.warn

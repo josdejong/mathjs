@@ -1,13 +1,13 @@
 import assert from 'assert'
-import { addRecipe, divideRecipe, piRecipe } from '../src/recipes'
+import { addDependencies, divideDependencies, piDependencies } from '../src/dependenciesFull'
 import { create } from '../src/mainInstance'
 
-describe('recipes', function () {
-  it('should create functions from recipes', () => {
+describe('dependencies', function () {
+  it('should create functions from a collection of dependencies', () => {
     const { add, divide, pi } = create({
-      addRecipe,
-      divideRecipe,
-      piRecipe
+      addDependencies,
+      divideDependencies,
+      piDependencies
     })
 
     assert.strictEqual(add(2, 3), 5)
@@ -18,7 +18,7 @@ describe('recipes', function () {
   it('should create functions from with config', () => {
     const config = { number: 'BigNumber' }
     const { pi } = create({
-      piRecipe
+      piDependencies
     }, config)
 
     assert.strictEqual(pi.isBigNumber, true)

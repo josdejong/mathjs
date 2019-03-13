@@ -1232,4 +1232,4 @@ export { ArgumentsError } from './error/ArgumentsError'
 // core
 
 export { core, create } from './mainInstance'
-export * from './recipes'
+export * from './dependenciesFull'
