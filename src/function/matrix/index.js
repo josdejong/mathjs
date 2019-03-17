@@ -1,5 +1,6 @@
 'use strict'
 module.exports = [
+  require('./apply'),
   require('./concat'),
   require('./cross'),
   require('./ctranspose'),
