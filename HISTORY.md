@@ -1,5 +1,11 @@
 # History
 
+
+# not yet published, version 5.8.0
+
+- Implemented new function `apply`. Thanks @bnlcas.
+
+
 # 2019-03-10, version 5.7.0
 
 - Implemented support for `pow()` in `derivative`. Thanks @sam-19.
