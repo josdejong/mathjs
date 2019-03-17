@@ -1,11 +1,10 @@
 'use strict'
 
 const DEFAULT_NORMALIZATION = 'unbiased'
-
-const apply = require('../../utils/collection/apply')
 const deepForEach = require('../../utils/collection/deepForEach')
 
 function factory (type, config, load, typed) {
+  const apply = load(require('../matrix/apply'))
   const add = load(require('../arithmetic/addScalar'))
   const subtract = load(require('../arithmetic/subtract'))
   const multiply = load(require('../arithmetic/multiplyScalar'))
