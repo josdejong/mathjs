@@ -3,6 +3,9 @@
 const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
+  const ceil = load(require('../../function/arithmetic/ceil'))
+  const floor = load(require('../../function/arithmetic/floor'))
+
   /**
    * Round a value towards zero.
    * For matrices, the function is evaluated element wise.
@@ -32,7 +35,7 @@ function factory (type, config, load, typed) {
    */
   const fix = typed('fix', {
     'number': function (x) {
-      return (x > 0) ? Math.floor(x) : Math.ceil(x)
+      return (x > 0) ? floor(x) : ceil(x)
     },
 
     'Complex': function (x) {
@@ -43,7 +46,7 @@ function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return x.isNegative() ? x.ceil() : x.floor()
+      return x.isNegative() ? ceil(x) : floor(x)
     },
 
     'Fraction': function (x) {

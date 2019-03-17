@@ -8,7 +8,7 @@ function factory (type, config, load, typed) {
    * invoking node.eval().
    *
    * Note the evaluating arbitrary expressions may involve security risks,
-   * see [http://mathjs.org/docs/expressions/security.html](http://mathjs.org/docs/expressions/security.html) for more information.
+   * see [https://mathjs.org/docs/expressions/security.html](https://mathjs.org/docs/expressions/security.html) for more information.
    *
    * Syntax:
    *

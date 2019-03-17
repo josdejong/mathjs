@@ -1,5 +1,6 @@
 'use strict'
 module.exports = [
+  require('./apply.transform'),
   require('./concat.transform'),
   require('./filter.transform'),
   require('./forEach.transform'),

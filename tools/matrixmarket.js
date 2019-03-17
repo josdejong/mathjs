@@ -275,7 +275,7 @@ const _importFromStream = function (stream, deferred) {
 }
 
 /**
- * Imports a Matrix Market matrix from the filesystem. (http://math.nist.gov/MatrixMarket/)
+ * Imports a Matrix Market matrix from the filesystem. (https://math.nist.gov/MatrixMarket/)
  */
 const _import = typed('importMatrix', {
   'Array': function (files) {

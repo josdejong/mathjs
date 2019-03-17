@@ -168,7 +168,7 @@ All nodes have the following methods:
 
 -   `toTex(options: object): string`
 
-    Get a [LaTeX](http://en.wikipedia.org/wiki/LaTeX) representation of the
+    Get a [LaTeX](https://en.wikipedia.org/wiki/LaTeX) representation of the
     expression. Example:
 
     ```js
