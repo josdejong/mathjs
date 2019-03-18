@@ -92,11 +92,11 @@ describe('std', function () {
     assert.deepStrictEqual(std([
       [2, 6],
       [4, 10]], 0), [math.sqrt(2), math.sqrt(8)])
-    assert.deepEqual(std(inputMatrix, 0),
+    assert.deepStrictEqual(std(inputMatrix, 0),
       [[math.sqrt(6000), math.sqrt(6000)], [math.sqrt(6225), math.sqrt(5825)], [math.sqrt(5825), math.sqrt(5825)]])
-    assert.deepEqual(std(inputMatrix, 1),
+    assert.deepStrictEqual(std(inputMatrix, 1),
       [[math.sqrt(400), math.sqrt(7600)], [math.sqrt(3433.3333333333335), math.sqrt(400.0)], [math.sqrt(433.33333333333337), math.sqrt(433.33333333333337)], [math.sqrt(400.0), math.sqrt(14800)]])
-    assert.deepEqual(std(inputMatrix, 2),
+    assert.deepStrictEqual(std(inputMatrix, 2),
       [[math.sqrt(18050), math.sqrt(50), math.sqrt(50)], [math.sqrt(50), math.sqrt(50), math.sqrt(1800)], [math.sqrt(50), math.sqrt(50), math.sqrt(1800)], [math.sqrt(14450), math.sqrt(50), math.sqrt(50)]])
   })
 

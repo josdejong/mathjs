@@ -90,11 +90,11 @@ describe('variance', function () {
     assert.deepStrictEqual(variance([
       [2, 6],
       [4, 10]], 0), [2, 8])
-    assert.deepEqual(variance(inputMatrix, 0),
+    assert.deepStrictEqual(variance(inputMatrix, 0),
       [[6000, 6000], [6225, 5825], [5825, 5825]])
-    assert.deepEqual(variance(inputMatrix, 1),
+    assert.deepStrictEqual(variance(inputMatrix, 1),
       [[400, 7600], [3433.3333333333335, 400], [433.33333333333337, 433.33333333333337], [400, 14800]])
-    assert.deepEqual(variance(inputMatrix, 2),
+    assert.deepStrictEqual(variance(inputMatrix, 2),
       [[18050, 50, 50], [50, 50, 1800], [50, 50, 1800], [14450, 50, 50]])
   })
 
