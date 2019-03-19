@@ -122,7 +122,7 @@
     "@babel/core": "7.4.0",
     "@babel/plugin-transform-object-assign": "7.2.0",
     "@babel/preset-env": "7.4.0",
-    "@babel/register": "7.0.0",
+    "@babel/register": "7.4.0",
     "babel-loader": "8.0.5",
     "benchmark": "2.1.4",
     "codecov": "3.2.0",
