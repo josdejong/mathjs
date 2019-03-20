@@ -4,6 +4,8 @@
 # not yet published, version 5.8.0
 
 - Implemented new function `apply`. Thanks @bnlcas.
+- Implemented passing an optional `dimension` argument to `std` and `var`.
+  Thanks @bnlcas.
 
 
 # 2019-03-10, version 5.7.0
