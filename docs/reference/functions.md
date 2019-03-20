@@ -139,6 +139,7 @@ Function | Description
 
 Function | Description
 ---- | -----------
+[math.apply(A,&nbsp;dim,&nbsp;callback)](functions/apply.md) | Apply a function that maps an array to a scalar along a given axis of a matrix or array.
 [math.concat(a,&nbsp;b,&nbsp;c,&nbsp;...&nbsp;[,&nbsp;dim])](functions/concat.md) | Concatenate two or more matrices.
 [math.cross(x,&nbsp;y)](functions/cross.md) | Calculate the cross product for two vectors in three dimensional space.
 [math.ctranspose(x)](functions/ctranspose.md) | Transpose and complex conjugate a matrix.

@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 5.8.0
+# 2018-03-20, version 5.8.0
 
 - Implemented new function `apply`. Thanks @bnlcas.
 - Implemented passing an optional `dimension` argument to `std` and `var`.
