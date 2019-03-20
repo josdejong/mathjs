@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h1 id="20180320-version-580">2018-03-20, version 5.8.0 <a href="#20180320-version-580" title="Permalink">#</a></h1>
+
+- Implemented new function `apply`. Thanks <a href="https://github.com/bnlcas">@bnlcas</a>.
+- Implemented passing an optional `dimension` argument to `std` and `var`.
+  Thanks <a href="https://github.com/bnlcas">@bnlcas</a>.
+
+
 <h1 id="20190310-version-570">2019-03-10, version 5.7.0 <a href="#20190310-version-570" title="Permalink">#</a></h1>
 
 - Implemented support for `pow()` in `derivative`. Thanks <a href="https://github.com/sam-19">@sam-19</a>.

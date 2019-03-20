@@ -11,7 +11,7 @@ File: [plot.html](plot.html) (click for a live demo)
 <html>
 <head>
   <title>math.js | plot</title>
-  <script src="https://unpkg.com/mathjs@5.7.0/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@5.8.0/dist/math.min.js"></script>
 
   <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
 
