@@ -6,12 +6,16 @@ Compute the variance of a matrix or a  list with values.
 In case of a (multi dimensional) array or matrix, the variance over all
 elements will be calculated.
 
-Optionally, the type of normalization can be specified as second
+Additionally, it is possible to compute the variance along the rows
+or columns of a matrix by specifying the dimension as the second argument.
+
+Optionally, the type of normalization can be specified as the final
 parameter. The parameter `normalization` can be one of the following values:
 
 - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
 - 'uncorrected'        The sum of squared errors is divided by n
 - 'biased'             The sum of squared errors is divided by (n + 1)
+
 
 Note that older browser may not like the variable name `var`. In that
 case, the function can be called as `math['var'](...)` instead of
@@ -24,6 +28,8 @@ case, the function can be called as `math['var'](...)` instead of
 math.var(a, b, c, ...)
 math.var(A)
 math.var(A, normalization)
+math.var(A, dimension)
+math.var(A, dimension, normalization)
 ```
 
 ### Parameters
@@ -49,6 +55,9 @@ math.var([2, 4, 6, 8], 'uncorrected') // returns 5
 math.var([2, 4, 6, 8], 'biased')      // returns 4
 
 math.var([[1, 2, 3], [4, 5, 6]])      // returns 3.5
+math.var([[1, 2, 3], [4, 6, 8]], 0)    // returns [4.5, 8, 12.5]
+math.var([[1, 2, 3], [4, 6, 8]], 1)    // returns [1, 4]
+math.var([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.5, 2]
 ```
 
 

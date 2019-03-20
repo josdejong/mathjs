@@ -1,10 +1,10 @@
 'use strict'
 
 const DEFAULT_NORMALIZATION = 'unbiased'
-
 const deepForEach = require('../../utils/collection/deepForEach')
 
 function factory (type, config, load, typed) {
+  const apply = load(require('../matrix/apply'))
   const add = load(require('../arithmetic/addScalar'))
   const subtract = load(require('../arithmetic/subtract'))
   const multiply = load(require('../arithmetic/multiplyScalar'))
@@ -17,12 +17,16 @@ function factory (type, config, load, typed) {
    * In case of a (multi dimensional) array or matrix, the variance over all
    * elements will be calculated.
    *
-   * Optionally, the type of normalization can be specified as second
+   * Additionally, it is possible to compute the variance along the rows
+   * or columns of a matrix by specifying the dimension as the second argument.
+   *
+   * Optionally, the type of normalization can be specified as the final
    * parameter. The parameter `normalization` can be one of the following values:
    *
    * - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
    * - 'uncorrected'        The sum of squared errors is divided by n
    * - 'biased'             The sum of squared errors is divided by (n + 1)
+   *
    *
    * Note that older browser may not like the variable name `var`. In that
    * case, the function can be called as `math['var'](...)` instead of
@@ -33,6 +37,8 @@ function factory (type, config, load, typed) {
    *     math.var(a, b, c, ...)
    *     math.var(A)
    *     math.var(A, normalization)
+   *     math.var(A, dimension)
+   *     math.var(A, dimension, normalization)
    *
    * Examples:
    *
@@ -42,6 +48,9 @@ function factory (type, config, load, typed) {
    *     math.var([2, 4, 6, 8], 'biased')      // returns 4
    *
    *     math.var([[1, 2, 3], [4, 5, 6]])      // returns 3.5
+   *     math.var([[1, 2, 3], [4, 6, 8]], 0)    // returns [4.5, 8, 12.5]
+   *     math.var([[1, 2, 3], [4, 6, 8]], 1)    // returns [1, 4]
+   *     math.var([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.5, 2]
    *
    * See also:
    *
@@ -52,8 +61,11 @@ function factory (type, config, load, typed) {
    * @param {string} [normalization='unbiased']
    *                        Determines how to normalize the variance.
    *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
+   * @param dimension {number | BigNumber}
+   *                        Determines the axis to compute the variance for a matrix
    * @return {*} The variance
    */
+
   const variance = typed('variance', {
     // var([a, b, c, d, ...])
     'Array | Matrix': function (array) {
@@ -62,6 +74,14 @@ function factory (type, config, load, typed) {
 
     // var([a, b, c, d, ...], normalization)
     'Array | Matrix, string': _var,
+
+    // var([a, b, c, c, ...], dim)
+    'Array | Matrix, number | BigNumber': function (array, dim) {
+      return _varDim(array, dim, DEFAULT_NORMALIZATION)
+    },
+
+    // var([a, b, c, c, ...], dim, normalization)
+    'Array | Matrix, number | BigNumber, string': _varDim,
 
     // var(a, b, c, d, ...)
     '...': function (args) {
@@ -130,6 +150,16 @@ function factory (type, config, load, typed) {
       default:
         throw new Error('Unknown normalization "' + normalization + '". ' +
         'Choose "unbiased" (default), "uncorrected", or "biased".')
+    }
+  }
+  function _varDim (array, dim, normalization) {
+    try {
+      if (array.length === 0) {
+        throw new SyntaxError('Function var requires one or more parameters (0 provided)')
+      }
+      return apply(array, dim, (x) => _var(x, normalization))
+    } catch (err) {
+      throw improveErrorMessage(err, 'var')
     }
   }
 }
