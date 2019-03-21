@@ -1,6 +1,7 @@
 'use strict'
 module.exports = [
   require('./apply.transform'),
+  require('./column.transform'),
   require('./concat.transform'),
   require('./filter.transform'),
   require('./forEach.transform'),
@@ -11,6 +12,7 @@ module.exports = [
   require('./min.transform'),
   require('./range.transform'),
   require('./std.transform'),
+  require('./row.transform'),
   require('./subset.transform'),
   require('./sum.transform'),
   require('./var.transform')

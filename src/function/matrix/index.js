@@ -1,6 +1,7 @@
 'use strict'
 module.exports = [
   require('./apply'),
+  require('./column'),
   require('./concat'),
   require('./cross'),
   require('./ctranspose'),
@@ -21,6 +22,7 @@ module.exports = [
   require('./range'),
   require('./reshape'),
   require('./resize'),
+  require('./row'),
   require('./size'),
   require('./sort'),
   require('./sqrtm'),

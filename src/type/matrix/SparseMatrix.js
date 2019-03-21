@@ -225,7 +225,7 @@ function factory (type, config, load, typed) {
    *
    * @memberof SparseMatrix
    * @param {Index} index
-   * @param {Array | Maytrix | *} [replacement]
+   * @param {Array | Matrix | *} [replacement]
    * @param {*} [defaultValue=0]      Default value, filled in on new entries when
    *                                  the matrix is resized. If not provided,
    *                                  new matrix elements will be filled with zeros.
@@ -444,7 +444,7 @@ function factory (type, config, load, typed) {
    * Replace a single element in the matrix.
    * @memberof SparseMatrix
    * @param {number[]} index   Zero-based index
-   * @param {*} value
+   * @param {*} v
    * @param {*} [defaultValue]        Default value, filled in on new entries when
    *                                  the matrix is resized. If not provided,
    *                                  new matrix elements will be set to zero.
@@ -1159,6 +1159,7 @@ function factory (type, config, load, typed) {
    * @param {Array} size                       The matrix size.
    * @param {number | Array | Matrix } value   The values for the diagonal.
    * @param {number | BigNumber} [k=0]         The kth diagonal where the vector will be filled in.
+   * @param {number} [defaultValue]            The default value for non-diagonal
    * @param {string} [datatype]                The Matrix datatype, values must be of this datatype.
    *
    * @returns {SparseMatrix}
