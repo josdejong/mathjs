@@ -963,6 +963,42 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('test()[2]', scope), 2)
     })
 
+    it('should parse column function', function () {
+      const a = [
+        [0, 2, 0, 0, 0],
+        [0, 1, 0, 2, 4],
+        [0, 0, 0, 0, 0],
+        [8, 4, 0, 3, 0],
+        [0, 0, 0, 6, 0]
+      ]
+      const m = math.matrix(a)
+      const c = math.matrix([[2], [1], [0], [4], [0]])
+      let scope = {
+        test: function () {
+          return m
+        }
+      }
+      assert.deepStrictEqual(parseAndEval('column(test(),2)', scope), c)
+    })
+
+    it('should parse row function', function () {
+      const a = [
+        [0, 2, 0, 0, 0],
+        [0, 1, 0, 2, 4],
+        [0, 0, 0, 0, 0],
+        [8, 4, 0, 3, 0],
+        [0, 0, 0, 6, 0]
+      ]
+      const m = math.matrix(a)
+      const r = math.matrix([[0, 1, 0, 2, 4]])
+      let scope = {
+        test: function () {
+          return m
+        }
+      }
+      assert.deepStrictEqual(parseAndEval('row(test(),2)', scope), r)
+    })
+
     it('should parse functions without parameters', function () {
       assert.strictEqual(parseAndEval('r()', { r: function () { return 2 } }), 2)
     })
