@@ -39,61 +39,61 @@ describe('row', function () {
         r.valueOf(), [[0], [0], [0], [0], [0]]
       )
     }, /Error: Only two dimensional matrix is supported/)
+  })
 
-    it('should return the first matrix row', function () {
-      const r = row(m, 0)
-      assert.deepStrictEqual(
-        r.valueOf(), [[0, 2, 0, 0, 0]]
-      )
-    })
+  it('should return the first matrix row', function () {
+    const r = row(m, 0)
+    assert.deepStrictEqual(
+      r.valueOf(), [[0, 2, 0, 0, 0]]
+    )
+  })
 
-    it('should return the first array row', function () {
-      const r = row(a, 0)
-      assert.deepStrictEqual(
-        r.valueOf(), [0, 2, 0, 0, 0]
-      )
-    })
+  it('should return the first array row', function () {
+    const r = row(a, 0)
+    assert.deepStrictEqual(
+      r.valueOf(), [[0, 2, 0, 0, 0]]
+    )
+  })
 
-    it('should return the last matrix row', function () {
-      const r = row(m, 4)
-      assert.deepStrictEqual(
-        r.valueOf(), [[0, 0, 0, 6, 0]]
-      )
-    })
+  it('should return the last matrix row', function () {
+    const r = row(m, 4)
+    assert.deepStrictEqual(
+      r.valueOf(), [[0, 0, 0, 6, 0]]
+    )
+  })
 
-    it('should return the last array row', function () {
-      const r = row(a, 4)
-      assert.deepStrictEqual(
-        r.valueOf(), [0, 0, 0, 6, 0]
-      )
-    })
+  it('should return the last array row', function () {
+    const r = row(a, 4)
+    assert.deepStrictEqual(
+      r.valueOf(), [[0, 0, 0, 6, 0]]
+    )
+  })
 
-    it('should return an intermediate matrix row', function () {
-      const r = row(m, 1)
-      assert.deepStrictEqual(
-        r.valueOf(), [[0, 1, 0, 2, 4]]
-      )
-    })
+  it('should return an intermediate matrix row', function () {
+    const r = row(m, 1)
+    assert.deepStrictEqual(
+      r.valueOf(), [[0, 1, 0, 2, 4]]
+    )
+  })
 
-    it('should return an intermediate array row', function () {
-      const r = row(a, 1)
-      assert.deepStrictEqual(
-        r.valueOf(), [0, 1, 0, 2, 4]
-      )
-    })
+  it('should return an intermediate array row', function () {
+    const r = row(a, 1)
+    assert.deepStrictEqual(
+      r.valueOf(), [[0, 1, 0, 2, 4]]
+    )
+  })
 
-    it('should return an empty matrix row', function () {
-      const r = row(m, 2)
-      assert.deepStrictEqual(
-        r.valueOf(), [[0, 0, 0, 0, 0]]
-      )
-    })
+  it('should return an empty matrix row', function () {
+    const r = row(m, 2)
+    assert.deepStrictEqual(
+      r.valueOf(), [[0, 0, 0, 0, 0]]
+    )
+  })
 
-    it('should return an empty array row', function () {
-      const r = row(a, 2)
-      assert.deepStrictEqual(
-        r.valueOf(), [0, 0, 0, 0, 0]
-      )
-    })
+  it('should return an empty array row', function () {
+    const r = row(a, 2)
+    assert.deepStrictEqual(
+      r.valueOf(), [[0, 0, 0, 0, 0]]
+    )
   })
 })
