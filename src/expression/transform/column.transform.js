@@ -19,7 +19,7 @@ function factory (type, config, load, typed) {
       const lastIndex = args.length - 1
       const last = args[lastIndex]
       if (type.isNumber(last)) {
-        args[lastIndex] = last + 1
+        args[lastIndex] = last - 1
       }
 
       try {
