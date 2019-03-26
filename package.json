@@ -135,7 +135,7 @@
     "istanbul": "0.4.5",
     "jsep": "0.3.4",
     "karma": "4.0.1",
-    "karma-browserstack-launcher": "1.4.0",
+    "karma-browserstack-launcher": "1.5.0",
     "karma-firefox-launcher": "1.1.0",
     "karma-mocha": "1.3.0",
     "karma-mocha-reporter": "2.2.5",
