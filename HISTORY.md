@@ -6,7 +6,7 @@
 - Implemented functions `row` and `column` (see #1413). Thanks @SzechuanSage.
 
 
-# 2018-03-20, version 5.8.0
+# 2019-03-20, version 5.8.0
 
 - Implemented new function `apply`. Thanks @bnlcas.
 - Implemented passing an optional `dimension` argument to `std` and `var`.
