@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { combinationsNumber } from '../../plain/number/combinations'
 
 const name = 'combinations'
-const dependencies = ['typed', 'BigNumber']
+const dependencies = ['typed']
 
-export const createCombinations = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
+export const createCombinations = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the number of ways of picking `k` unordered outcomes from `n`
    * possibilities.
@@ -34,6 +34,7 @@ export const createCombinations = /* #__PURE__ */ factory(name, dependencies, ({
     'number, number': combinationsNumber,
 
     'BigNumber, BigNumber': function (n, k) {
+      const BigNumber = n.constructor
       let max, result, i, ii
       const one = new BigNumber(1)
 

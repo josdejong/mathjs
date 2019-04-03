@@ -1,45 +1,78 @@
 import {
-  absNumber, acoshNumber, acosNumber, acothNumber, acotNumber, acschNumber, acscNumber,
-  addNumber, andNumber, asechNumber, asecNumber, asinhNumber, asinNumber, atan2Number, atanhNumber, atanNumber,
+  absNumber,
+  acoshNumber,
+  acosNumber,
+  acothNumber,
+  acotNumber,
+  acschNumber,
+  acscNumber,
+  addNumber,
+  andNumber,
+  asechNumber,
+  asecNumber,
+  asinhNumber,
+  asinNumber,
+  atan2Number,
+  atanhNumber,
+  atanNumber,
   bitAndNumber,
   bitNotNumber,
   bitOrNumber,
   bitXorNumber,
   cbrtNumber,
-  ceilNumber, coshNumber, cosNumber, cothNumber, cotNumber, cschNumber, cscNumber,
+  ceilNumber,
+  combinationsNumber,
+  coshNumber,
+  cosNumber,
+  cothNumber,
+  cotNumber,
+  cschNumber,
+  cscNumber,
   cubeNumber,
   divideNumber,
+  e,
   expm1Number,
   expNumber,
   fixNumber,
-  floorNumber, gammaNumber,
+  floorNumber,
+  gammaNumber,
   gcdNumber,
   isIntegerNumber,
   isNaNNumber,
   isNegativeNumber,
   isPositiveNumber,
   isZeroNumber,
-  lcmNumber, leftShiftNumber,
-  log10Number, log1pNumber,
-  log2Number, logNumber,
+  lcmNumber,
+  leftShiftNumber,
+  log10Number,
+  log1pNumber,
+  log2Number,
+  logNumber,
   modNumber,
-  multiplyNumber, normNumber,
+  multiplyNumber,
+  normNumber,
   notNumber,
   orNumber,
-  powNumber, rightArithShiftNumber, rightLogShiftNumber, sechNumber, secNumber,
-  signNumber, sinhNumber, sinNumber,
+  phi,
+  pi,
+  powNumber,
+  rightArithShiftNumber,
+  rightLogShiftNumber,
+  sechNumber,
+  secNumber,
+  signNumber,
+  sinhNumber,
+  sinNumber,
   sqrtNumber,
   squareNumber,
-  subtractNumber, tanhNumber, tanNumber,
+  subtractNumber,
+  tanhNumber,
+  tanNumber,
+  tau,
   unaryMinusNumber,
   unaryPlusNumber,
   xgcdNumber,
-  xorNumber,
-  pi,
-  tau,
-  e,
-  phi,
-  combinationsNumber
+  xorNumber
 } from './plain/number'
 import { DEFAULT_CONFIG } from './core/config'
 import { version } from './version'
@@ -137,6 +170,9 @@ import { createFilter } from './function/matrix/filter'
 import { createForEach } from './function/matrix/forEach'
 import { createMap } from './function/matrix/map'
 import { createRange } from './function/matrix/range'
+import { createSubsetTransform } from './expression/transform/subset.transform'
+import { createSubset } from './factoriesNumber'
+import { noMatrix } from './utils/noop'
 
 // create a read-only version of config
 export const config = /* #__PURE__ */ function (options) {
@@ -229,25 +265,8 @@ export const boolean = /* #__PURE__ */ createBoolean({ typed })
 // export const bignumber = /* #__PURE__ */ createBignumber({ typed, BigNumber })
 // export const complex = /* #__PURE__ */ createComplex({ typed, Complex })
 // export const fraction = /* #__PURE__ */ createFraction({ typed, Fraction })
-// export const matrix = /* #__PURE__ */ createMatrix({ typed, Matrix, DenseMatrix, SparseMatrix })
+export const matrix = /* #__PURE__ */ noMatrix // FIXME: remove export, currently required because of subset.transform dependency
 // export const splitUnit = /* #__PURE__ */ createSplitUnit({ typed })
-
-function bignumber () {
-  throw new Error('No BigNumber implementation available')
-}
-
-function fraction () {
-  throw new Error('No Fraction implementation available')
-}
-
-function matrix () {
-  throw new Error('No Matrix implementation available')
-}
-
-// FIXME: have a light weight implementation of subset
-function subset () {
-  throw new Error('No subset implementation available')
-}
 
 // arithmetic (1)
 export const unaryMinus = /* #__PURE__ */ typed(unaryMinusNumber)
@@ -298,7 +317,7 @@ export const xor = /* #__PURE__ */ typed(xorNumber)
 // export const cross = /* #__PURE__ */ createCross({ typed, matrix, subtract, multiply })
 // export const diag = /* #__PURE__ */ createDiag({ typed, matrix, DenseMatrix, SparseMatrix })
 // export const eye = /* #__PURE__ */ createEye({ typed, matrix })
-export const filter = /* #__PURE__ */ createFilter({ typed, matrix })
+export const filter = /* #__PURE__ */ createFilter({ typed })
 // export const flatten = /* #__PURE__ */ createFlatten({ typed, matrix })
 export const forEach = /* #__PURE__ */ createForEach({ typed })
 // export const getMatrixDataType = /* #__PURE__ */ createGetMatrixDataType({ typed })
@@ -306,12 +325,13 @@ export const forEach = /* #__PURE__ */ createForEach({ typed })
 // export const kron = /* #__PURE__ */ createKron({ typed, matrix, multiplyScalar })
 export const map = /* #__PURE__ */ createMap({ typed })
 // export const ones = /* #__PURE__ */ createOnes({ config, typed, matrix, BigNumber })
-export const range = /* #__PURE__ */ createRange({ config, typed, matrix, bignumber })
+export const range = /* #__PURE__ */ createRange({ config, typed })
 // export const reshape = /* #__PURE__ */ createReshape({ typed, isInteger, matrix })
 // export const resize = /* #__PURE__ */ createResize({ config, matrix })
 // export const size = /* #__PURE__ */ createSize({ config, typed, matrix })
 // export const squeeze = /* #__PURE__ */ createSqueeze({ typed, matrix })
-// export const subset = /* #__PURE__ */ createSubset({ typed, matrix })
+// FIXME: have a light weight implementation of subset
+export const subset = /* #__PURE__ */ createSubset({ typed, matrix })
 // export const transpose = /* #__PURE__ */ createTranspose({ typed, matrix })
 // export const ctranspose = /* #__PURE__ */ createCtranspose({ typed, transpose, conj })
 // export const zeros = /* #__PURE__ */ createZeros({ config, typed, matrix, BigNumber })
@@ -334,12 +354,7 @@ export const print = /* #__PURE__ */ createPrint({ typed })
 
 // utils (2)
 export const isPrime = /* #__PURE__ */ createIsPrime({ typed })
-export const numeric = /* #__PURE__ */ createNumeric({
-  typed,
-  number,
-  bignumber,
-  fraction
-})
+export const numeric = /* #__PURE__ */ createNumeric({ typed, number })
 
 // arithmetic (2)
 export const divideScalar = /* #__PURE__ */ typed(divideNumber)
@@ -596,7 +611,7 @@ export const divide = /* #__PURE__ */ typed(divideNumber)
 // export const intersect = /* #__PURE__ */ createIntersect({ config, typed, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar })
 
 // statistics (4)
-export const sum = /* #__PURE__ */ createSum({ config, typed, add, bignumber, fraction })
+export const sum = /* #__PURE__ */ createSum({ config, typed, add })
 export const mean = /* #__PURE__ */ createMean({ typed, add, divide })
 export const median = /* #__PURE__ */ createMedian({ typed, add, divide, compare, partitionSelect })
 export const mad = /* #__PURE__ */ createMad({ typed, abs, map, median, subtract })
@@ -765,7 +780,7 @@ const math = /* #__PURE__ */ {
   // magneticConstant,
   // magneticFluxQuantum,
   // map,
-  // matrix,
+  matrix, // FIXME: remove matrix here (subset.transform dependency)
   max,
   mean,
   median,
@@ -852,7 +867,7 @@ const math = /* #__PURE__ */ {
   // stefanBoltzmann,
   stirlingS2,
   string,
-  // subset,
+  subset,
   subtract,
   sum,
   tan,
@@ -886,16 +901,16 @@ const math = /* #__PURE__ */ {
 // Do not use destructuring like { ...math } here, WebPack can't do tree-shaking in that case
 const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
   // concat: /* #__PURE__ */ createConcatTransform({ typed, matrix, isInteger }),
-  filter: /* #__PURE__ */ createFilterTransform({ typed, matrix }),
+  filter: /* #__PURE__ */ createFilterTransform({ typed }),
   forEach: /* #__PURE__ */ createForEachTransform({ typed }),
   // index: /* #__PURE__ */ createIndexTransform({ Index }),
-  map: /* #__PURE__ */ createMapTransform({ typed, matrix }),
+  map: /* #__PURE__ */ createMapTransform({ typed }),
   max: /* #__PURE__ */ createMaxTransform({ typed, larger }),
   mean: /* #__PURE__ */ createMeanTransform({ typed, add, divide }),
   min: /* #__PURE__ */ createMinTransform({ typed, smaller }),
-  range: /* #__PURE__ */ createRangeTransform({ typed, config, matrix, bignumber }),
-  // subset: /* #__PURE__ */ createSubsetTransform({ typed, matrix }),
-  sum: /* #__PURE__ */ createSumTransform({ typed, config, add, bignumber, fraction })
+  range: /* #__PURE__ */ createRangeTransform({ typed, config }),
+  subset: /* #__PURE__ */ createSubsetTransform({ typed, matrix }),
+  sum: /* #__PURE__ */ createSumTransform({ typed, config, add })
 })
 
 // expression (4)
@@ -963,8 +978,6 @@ export const simplify = /* #__PURE__ */ createSimplify({
   pow,
   isZero,
   equal,
-  fraction,
-  bignumber,
   math,
   ConstantNode,
   FunctionNode,
@@ -998,8 +1011,6 @@ export const rationalize = /* #__PURE__ */ createRationalize({
   pow,
   isZero,
   equal,
-  fraction,
-  bignumber,
   math,
   ConstantNode,
   FunctionNode,
@@ -1075,5 +1086,5 @@ export { ArgumentsError } from './error/ArgumentsError'
 // ----------------------------------------------------------------------------
 // core
 
-// export { core, create } from './mainInstance' // TODO: workout number main instance
-// export * from './dependenciesNumber' // TODO: workout number dependency collections
+export { core, create } from './mainInstance'
+export * from './dependenciesNumber'

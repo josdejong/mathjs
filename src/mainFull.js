@@ -458,7 +458,7 @@ export const concat = /* #__PURE__ */ createConcat({ typed, matrix, isInteger })
 export const cross = /* #__PURE__ */ createCross({ typed, matrix, subtract, multiply })
 export const diag = /* #__PURE__ */ createDiag({ typed, matrix, DenseMatrix, SparseMatrix })
 export const eye = /* #__PURE__ */ createEye({ typed, matrix })
-export const filter = /* #__PURE__ */ createFilter({ typed, matrix })
+export const filter = /* #__PURE__ */ createFilter({ typed })
 export const flatten = /* #__PURE__ */ createFlatten({ typed, matrix })
 export const forEach = /* #__PURE__ */ createForEach({ typed })
 export const getMatrixDataType = /* #__PURE__ */ createGetMatrixDataType({ typed })
@@ -466,7 +466,7 @@ export const identity = /* #__PURE__ */ createIdentity({ config, typed, matrix, 
 export const kron = /* #__PURE__ */ createKron({ typed, matrix, multiplyScalar })
 export const map = /* #__PURE__ */ createMap({ typed })
 export const ones = /* #__PURE__ */ createOnes({ config, typed, matrix, BigNumber })
-export const range = /* #__PURE__ */ createRange({ config, typed, matrix, bignumber })
+export const range = /* #__PURE__ */ createRange({ config, typed, matrix })
 export const reshape = /* #__PURE__ */ createReshape({ typed, isInteger, matrix })
 export const resize = /* #__PURE__ */ createResize({ config, matrix })
 export const size = /* #__PURE__ */ createSize({ config, typed, matrix })
@@ -761,7 +761,7 @@ export const quantileSeq = /* #__PURE__ */ createQuantileSeq({ typed, add, multi
 export const std = /* #__PURE__ */ createStd({ typed, sqrt, variance })
 
 // probability (4)
-export const combinations = /* #__PURE__ */ createCombinations({ typed, BigNumber })
+export const combinations = /* #__PURE__ */ createCombinations({ typed })
 export const gamma = /* #__PURE__ */ createGamma({ config, typed, multiplyScalar, pow, BigNumber, Complex })
 export const factorial = /* #__PURE__ */ createFactorial({ typed, gamma })
 export const kldivergence = /* #__PURE__ */ createKldivergence({ typed, matrix, divide, sum, multiply, dotDivide, log, isNumeric })
@@ -1042,10 +1042,10 @@ const math = /* #__PURE__ */ {
 // Do not use destructuring like { ...math } here, WebPack can't do tree-shaking in that case
 const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
   concat: /* #__PURE__ */ createConcatTransform({ typed, matrix, isInteger }),
-  filter: /* #__PURE__ */ createFilterTransform({ typed, matrix }),
+  filter: /* #__PURE__ */ createFilterTransform({ typed }),
   forEach: /* #__PURE__ */ createForEachTransform({ typed }),
   index: /* #__PURE__ */ createIndexTransform({ Index }),
-  map: /* #__PURE__ */ createMapTransform({ typed, matrix }),
+  map: /* #__PURE__ */ createMapTransform({ typed }),
   max: /* #__PURE__ */ createMaxTransform({ typed, larger }),
   mean: /* #__PURE__ */ createMeanTransform({ typed, add, divide }),
   min: /* #__PURE__ */ createMinTransform({ typed, smaller }),

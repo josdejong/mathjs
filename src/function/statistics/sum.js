@@ -3,9 +3,10 @@
 import { containsCollections, deepForEach, reduce } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
+import { noBignumber, noFraction } from '../../utils/noop'
 
 const name = 'sum'
-const dependencies = ['typed', 'config', 'add', 'bignumber', 'fraction']
+const dependencies = ['typed', 'config', 'add', '?bignumber', '?fraction']
 
 export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, bignumber, fraction }) => {
   /**
@@ -70,9 +71,9 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
         case 'number':
           return 0
         case 'BigNumber':
-          return bignumber(0)
+          return bignumber ? bignumber(0) : noBignumber()
         case 'Fraction':
-          return fraction(0)
+          return fraction ? fraction(0) : noFraction()
         default:
           return 0
       }

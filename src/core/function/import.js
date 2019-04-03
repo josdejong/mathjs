@@ -351,7 +351,8 @@ export function importFactory (typed, load, math, factories) {
 
     lazy(namespace, name, resolver)
 
-    if (existingTransform) {
+    // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
+    if (existing && existingTransform) {
       _deleteTransform(name)
     } else {
       if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {

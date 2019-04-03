@@ -1,9 +1,10 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
+import { noBignumber, noMatrix } from '../../utils/noop'
 
 const name = 'range'
-const dependencies = ['typed', 'config', 'matrix', 'bignumber']
+const dependencies = ['typed', 'config', '?matrix', '?bignumber']
 
 export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber }) => {
   /**
@@ -74,15 +75,19 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'BigNumber, BigNumber': function (start, end) {
-      return _out(_bigRangeEx(start, end, bignumber(1)))
+      const BigNumber = start.constructor
+
+      return _out(_bigRangeEx(start, end, new BigNumber(1)))
     },
     'BigNumber, BigNumber, BigNumber': function (start, end, step) {
       return _out(_bigRangeEx(start, end, step))
     },
     'BigNumber, BigNumber, boolean': function (start, end, includeEnd) {
+      const BigNumber = start.constructor
+
       return includeEnd
-        ? _out(_bigRangeInc(start, end, bignumber(1)))
-        : _out(_bigRangeEx(start, end, bignumber(1)))
+        ? _out(_bigRangeInc(start, end, new BigNumber(1)))
+        : _out(_bigRangeEx(start, end, new BigNumber(1)))
     },
     'BigNumber, BigNumber, BigNumber, boolean': function (start, end, step, includeEnd) {
       return includeEnd
@@ -93,7 +98,11 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   })
 
   function _out (arr) {
-    return config.matrix === 'Array' ? arr : matrix(arr)
+    if (config.matrix === 'Matrix') {
+      return matrix ? matrix(arr) : noMatrix()
+    }
+
+    return arr
   }
 
   function _strRange (str, includeEnd) {
@@ -104,6 +113,10 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     let fn
     if (config.number === 'BigNumber') {
+      if (bignumber === undefined) {
+        noBignumber()
+      }
+
       fn = includeEnd ? _bigRangeInc : _bigRangeEx
       return _out(fn(
         bignumber(r.start),

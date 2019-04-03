@@ -13,7 +13,7 @@ import { createSum } from '../../function/statistics/sum'
  * from one-based to zero based
  */
 const name = 'sum'
-const dependencies = ['typed', 'config', 'add', 'bignumber', 'fraction']
+const dependencies = ['typed', 'config', 'add', '?bignumber', '?fraction']
 
 export const createSumTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, bignumber, fraction }) => {
   const sum = createSum({ typed, config, add, bignumber, fraction })

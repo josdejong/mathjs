@@ -5,9 +5,9 @@ import { maxArgumentCount } from '../../utils/function'
 import { factory } from '../../utils/factory'
 
 const name = 'filter'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed']
 
-export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Filter the items in an array or one dimensional matrix.
    *
@@ -41,13 +41,13 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
     'Array, function': _filterCallback,
 
     'Matrix, function': function (x, test) {
-      return matrix(_filterCallback(x.toArray(), test))
+      return x.create(_filterCallback(x.toArray(), test))
     },
 
     'Array, RegExp': filterRegExp,
 
     'Matrix, RegExp': function (x, test) {
-      return matrix(filterRegExp(x.toArray(), test))
+      return x.create(filterRegExp(x.toArray(), test))
     }
   })
 })

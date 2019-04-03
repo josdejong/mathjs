@@ -16,7 +16,7 @@ export const createNull = /* #__PURE__ */ factory('null', [], () => null)
 
 export const createInfinity = /* #__PURE__ */ recreateFactory(
   'Infinity',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? new BigNumber(Infinity)
     : Infinity
@@ -24,7 +24,7 @@ export const createInfinity = /* #__PURE__ */ recreateFactory(
 
 export const createNaN = /* #__PURE__ */ recreateFactory(
   'NaN',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? new BigNumber(NaN)
     : NaN
@@ -32,7 +32,7 @@ export const createNaN = /* #__PURE__ */ recreateFactory(
 
 export const createPi = /* #__PURE__ */ recreateFactory(
   'pi',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? createBigNumberPi(BigNumber)
     : pi
@@ -40,7 +40,7 @@ export const createPi = /* #__PURE__ */ recreateFactory(
 
 export const createTau = /* #__PURE__ */ recreateFactory(
   'tau',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? createBigNumberTau(BigNumber)
     : tau
@@ -48,7 +48,7 @@ export const createTau = /* #__PURE__ */ recreateFactory(
 
 export const createE = /* #__PURE__ */ recreateFactory(
   'e',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? createBigNumberE(BigNumber)
     : e
@@ -57,7 +57,7 @@ export const createE = /* #__PURE__ */ recreateFactory(
 // golden ratio, (1+sqrt(5))/2
 export const createPhi = /* #__PURE__ */ recreateFactory(
   'phi',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? createBigNumberPhi(BigNumber)
     : phi
@@ -65,7 +65,7 @@ export const createPhi = /* #__PURE__ */ recreateFactory(
 
 export const createLN2 = /* #__PURE__ */ recreateFactory(
   'LN2',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? new BigNumber(2).ln()
     : Math.LN2
@@ -73,7 +73,7 @@ export const createLN2 = /* #__PURE__ */ recreateFactory(
 
 export const createLN10 = /* #__PURE__ */ recreateFactory(
   'LN10',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? new BigNumber(10).ln()
     : Math.LN10
@@ -81,7 +81,7 @@ export const createLN10 = /* #__PURE__ */ recreateFactory(
 
 export const createLOG2E = /* #__PURE__ */ recreateFactory(
   'LOG2E',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? new BigNumber(1).div(new BigNumber(2).ln())
     : Math.LOG2E
@@ -89,7 +89,7 @@ export const createLOG2E = /* #__PURE__ */ recreateFactory(
 
 export const createLOG10E = /* #__PURE__ */ recreateFactory(
   'LOG10E',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? new BigNumber(1).div(new BigNumber(10).ln())
     : Math.LOG10E
@@ -97,7 +97,7 @@ export const createLOG10E = /* #__PURE__ */ recreateFactory(
 
 export const createSQRT1_2 = /* #__PURE__ */ recreateFactory( // eslint-disable-line camelcase
   'SQRT1_2',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? new BigNumber('0.5').sqrt()
     : Math.SQRT1_2
@@ -105,7 +105,7 @@ export const createSQRT1_2 = /* #__PURE__ */ recreateFactory( // eslint-disable-
 
 export const createSQRT2 = /* #__PURE__ */ recreateFactory(
   'SQRT2',
-  ['config', 'BigNumber'],
+  ['config', '?BigNumber'],
   ({ config, BigNumber }) => (config.number === 'BigNumber')
     ? new BigNumber(2).sqrt()
     : Math.SQRT2

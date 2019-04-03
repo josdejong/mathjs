@@ -2,9 +2,10 @@
 
 import { typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
+import { noBignumber, noFraction } from '../../utils/noop'
 
 const name = 'numeric'
-const dependencies = ['number', 'bignumber', 'fraction']
+const dependencies = ['number', '?bignumber', '?fraction']
 
 export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ number, bignumber, fraction }) => {
   const validInputTypes = {
@@ -17,8 +18,12 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
   // Load the conversion functions for each output type
   const validOutputTypes = {
     'number': (x) => number(x),
-    'BigNumber': (x) => bignumber(x),
-    'Fraction': (x) => fraction(x)
+    'BigNumber': bignumber
+      ? (x) => bignumber(x)
+      : noBignumber,
+    'Fraction': fraction
+      ? (x) => fraction(x)
+      : noFraction
   }
 
   /**

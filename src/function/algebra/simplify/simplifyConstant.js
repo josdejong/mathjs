@@ -4,14 +4,15 @@
 import { isFraction, isNode, isOperatorNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
 import { createUtil } from './util'
+import { noBignumber, noFraction } from '../../../utils/noop'
 
 const name = 'simplifyConstant'
 const dependencies = [
   'typed',
   'config',
   'math',
-  'fraction',
-  'bignumber',
+  '?fraction',
+  '?bignumber',
   'ConstantNode',
   'OperatorNode',
   'FunctionNode',
@@ -88,8 +89,14 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   const _toNumber = typed({
     'string, Object': function (s, options) {
       if (config.number === 'BigNumber') {
+        if (bignumber === undefined) {
+          noBignumber()
+        }
         return bignumber(s)
       } else if (config.number === 'Fraction') {
+        if (fraction === undefined) {
+          noFraction()
+        }
         return fraction(s)
       } else {
         const n = parseFloat(s)

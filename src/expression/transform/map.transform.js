@@ -7,9 +7,9 @@ import { factory } from '../../utils/factory'
 import { compileInlineExpression } from './utils/compileInlineExpression'
 
 const name = 'map'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed']
 
-export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Attach a transform function to math.map
    * Adds a property transform containing the transform function.
@@ -44,7 +44,7 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
     },
 
     'Matrix, function': function (x, callback) {
-      return matrix(_map(x.valueOf(), callback, x))
+      return x.create(_map(x.valueOf(), callback, x))
     }
   })
 

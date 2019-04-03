@@ -30,9 +30,9 @@ import { createTyped } from './core/function/typed'
 import { createPi } from './constants'
 import { createSin } from './function/trigonometry/sin'
 
-export { allDependencies } from './all'
+export { allDependencies } from './allFull'
 
-// FIXME: work out all collections of dependencies
+// FIXME: work out all dependency collections
 
 export const typedDependencies = {
   createTyped

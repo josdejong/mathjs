@@ -10,7 +10,7 @@ import { getPrecedence } from '../operators'
 const name = 'AssignmentNode'
 const dependencies = [
   'subset',
-  'matrix',
+  '?matrix', // FIXME: should not be needed at all, should be handled by subset
   'Node'
 ]
 

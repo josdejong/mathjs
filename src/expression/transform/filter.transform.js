@@ -7,9 +7,9 @@ import { compileInlineExpression } from './utils/compileInlineExpression'
 import { factory } from '../../utils/factory'
 
 const name = 'filter'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed']
 
-export const createFilterTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+export const createFilterTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Attach a transform function to math.filter
    * Adds a property transform containing the transform function.
@@ -43,13 +43,13 @@ export const createFilterTransform = /* #__PURE__ */ factory(name, dependencies,
     'Array, function': _filter,
 
     'Matrix, function': function (x, test) {
-      return matrix(_filter(x.toArray(), test))
+      return x.create(_filter(x.toArray(), test))
     },
 
     'Array, RegExp': filterRegExp,
 
     'Matrix, RegExp': function (x, test) {
-      return matrix(filterRegExp(x.toArray(), test))
+      return x.create(filterRegExp(x.toArray(), test))
     }
   })
 

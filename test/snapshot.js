@@ -1032,7 +1032,6 @@ exports.expectedInstanceStructure = {
   ...allInstanceFunctions,
   ...allInstanceConstants,
   ...allPhysicalConstants,
-  ...allTypeChecks,
   ...allErrorClasses,
   expression: {
     transform: {
@@ -1066,6 +1065,7 @@ exports.expectedInstanceStructure = {
     parse: 'Function',
     Parser: 'Function'
   },
+
   // deprecated stuff:
   type: {
     ...allTypeChecks,
@@ -1089,4 +1089,153 @@ exports.expectedES6Structure = {
   ...allErrorClasses,
   ...allDependencyCollections,
   docs: embeddedDocs
+}
+
+// not all functions are available for just numbers
+// we include all functions by default, and exclude the functions
+// from which we know they are not available for numbers (mostly
+// matrix functions)
+const excludedProperties = [].concat(
+  Object.keys(allPhysicalConstants),
+  [
+    'MatrixDependencies',
+    'DenseMatrixDependencies',
+    'SparseMatrixDependencies',
+    'BigNumberDependencies',
+    'FractionDependencies',
+    'FibonacciHeapDependencies',
+    'SpaDependencies',
+    'matrixDependencies',
+    'bignumberDependencies',
+    'fractionDependencies',
+    'lupDependencies',
+    'detDependencies',
+    'identityDependencies',
+    'invDependencies'
+  ],
+  [
+    'bignumber',
+    'complex',
+    'fraction',
+    'index',
+    // 'matrix', // FIXME: matrix should be excluded in the end (currently is a dependency of subset)
+    'sparse',
+    'unit',
+    'createUnit',
+    'splitUnit',
+    'qr',
+    'lup',
+    'slu',
+    'lsolve',
+    'lusolve',
+    'usolve',
+    'dotDivide',
+    'dotMultiply',
+    'dotPow',
+    'nthRoots',
+    'arg',
+    'conj',
+    'im',
+    're',
+    'intersect',
+    'distance',
+    'concat',
+    'cross',
+    'ctranspose',
+    'det',
+    'diag',
+    'dot',
+    'eye',
+    'expm',
+    'flatten',
+    'identity',
+    'inv',
+    'kron',
+    'ones',
+    'reshape',
+    'resize',
+    'size',
+    'sort',
+    'sqrtm',
+    'squeeze',
+    'trace',
+    'transpose',
+    'zeros',
+    'getMatrixDataType',
+    'kldivergence',
+    'setCartesian',
+    'setDifference',
+    'setDistinct',
+    'setIntersect',
+    'setIsSubset',
+    'setMultiplicity',
+    'setPowerset',
+    'setSize',
+    'setSymDifference',
+    'setUnion',
+    'to',
+    'i',
+    'BigNumber',
+    'Complex',
+    'Fraction',
+    'Matrix',
+    'DenseMatrix',
+    'SparseMatrix',
+    'Spa',
+    'FibonacciHeap',
+    'ImmutableDenseMatrix',
+    'Index',
+    'Unit'
+  ],
+  [
+    'var',
+    'eval',
+    'typeof'
+  ]
+)
+
+const excludedTypes = [
+  'BigNumber',
+  'Complex',
+  'Fraction',
+  'Matrix',
+  'DenseMatrix',
+  'SparseMatrix',
+  'Spa',
+  'FibonacciHeap',
+  'ImmutableDenseMatrix',
+  'Index',
+  'Unit'
+]
+
+exports.expectedES6StructureNumber = exclude(exports.expectedES6Structure, excludedProperties)
+
+exports.expectedInstanceStructureNumber = exclude(exports.expectedInstanceStructure, excludedProperties)
+const mathWithTransform = exclude(exports.expectedInstanceStructureNumber.expression.mathWithTransform, excludedProperties)
+const transform = exclude(exports.expectedInstanceStructureNumber.expression.transform, excludedProperties)
+exports.expectedInstanceStructureNumber.expression = Object.assign(
+  {},
+  exports.expectedInstanceStructureNumber.expression,
+  {
+    mathWithTransform,
+    transform
+  }
+)
+exports.expectedInstanceStructureNumber.type = exclude(exports.expectedInstanceStructureNumber.type, excludedTypes)
+
+/**
+ * Create a copy of the provided `object` and delete
+ * all properties listed in `excludedProperties`
+ * @param {Object} object
+ * @param {string[]} excludedProperties
+ * @return {Object}
+ */
+function exclude (object, excludedProperties) {
+  const strippedObject = Object.assign({}, object)
+
+  excludedProperties.forEach(excludedProperty => {
+    delete strippedObject[excludedProperty]
+  })
+
+  return strippedObject
 }

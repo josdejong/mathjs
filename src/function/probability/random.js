@@ -68,3 +68,28 @@ export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed
     return min + rng() * (max - min)
   }
 })
+
+// number only implementation of random, no matrix support
+// TODO: there is quite some duplicate code in both createRandom and createRandomNumber, can we improve that?
+export const createRandomNumber = /* #__PURE__ */ factory(name, ['typed', 'config', '?on'], ({ typed, config, on, matrix }) => {
+  // seeded pseudo random number generator1
+  let rng = createRng(config.randomSeed)
+
+  if (on) {
+    on('config', function (curr, prev) {
+      if (curr.randomSeed !== prev.randomSeed) {
+        rng = createRng(curr.randomSeed)
+      }
+    })
+  }
+
+  return typed(name, {
+    '': () => _random(0, 1),
+    'number': (max) => _random(0, max),
+    'number, number': (min, max) => _random(min, max)
+  })
+
+  function _random (min, max) {
+    return min + rng() * (max - min)
+  }
+})
