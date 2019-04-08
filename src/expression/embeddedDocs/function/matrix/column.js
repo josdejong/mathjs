@@ -4,9 +4,11 @@ module.exports = {
   'syntax': [
     'column(x, index)'
   ],
-  'description': 'Return a column from a matrix or array. Index is zero-based.',
+  'description': 'Return a column from a matrix or array.',
   'examples': [
-    'column([[1, 2], [3, 4]], 1)'
+    'A = [[1, 2], [3, 4]]',
+    'column(A, 1)',
+    'column(A, 2)'
   ],
   'seealso': ['row']
 }

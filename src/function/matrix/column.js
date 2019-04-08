@@ -9,17 +9,17 @@ function factory (type, config, load, typed) {
   const range = load(require('./range'))
 
   /**
-   * Return column in Matrix.
+   * Return a column from a Matrix.
    *
    * Syntax:
    *
-   *     math.column(value, index)    // retrieve a column
+   *     math.column(value, index)
    *
    * Example:
    *
    *     // get a column
    *     const d = [[1, 2], [3, 4]]
-   *     math.column(d, 1))        // returns [2, 4]
+   *     math.column(d, 1) // returns [2, 4]
    *
    * See also:
    *
