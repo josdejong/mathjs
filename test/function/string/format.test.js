@@ -140,6 +140,69 @@ describe('format', function () {
       assert.strictEqual(bigmath.format(oneThird, 5), '0.33333')
       assert.strictEqual(bigmath.format(oneThird, 18), '0.333333333333333333')
     })
+
+    describe('engineering notation', function () {
+      const bignumber = math.bignumber
+
+      it('should format positive single digit to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(3), { notation: 'engineering' }), '3e+0')
+      })
+      it('should format positive two digits to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(30), { notation: 'engineering' }), '30e+0')
+      })
+      it('should format positive three digits to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(300), { notation: 'engineering' }), '300e+0')
+      })
+      it('should format positive four digits to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(3000), { notation: 'engineering' }), '3e+3')
+      })
+      it('should format positive uneven four digits to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(3001), { notation: 'engineering' }), '3.001e+3')
+      })
+      it('should format positive uneven ten digits to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(3741293481), { notation: 'engineering' }), '3.741293481e+9')
+      })
+      it('should format negative uneven ten digits to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(-3741293481), { notation: 'engineering' }), '-3.741293481e+9')
+      })
+      it('should format positive single digit floating point numbers to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(0.1), { notation: 'engineering' }), '100e-3')
+      })
+      it('should format positive two digit floating point numbers to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(0.01), { notation: 'engineering' }), '10e-3')
+      })
+      it('should format positive three digit floating point numbers to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(0.003), { notation: 'engineering' }), '3e-3')
+      })
+      it('should format positive repeating three digit floating point numbers to engineering notation with precision', function () {
+        assert.strictEqual(math.format(bignumber(1).div(3), { precision: 3, notation: 'engineering' }), '333e-3')
+      })
+      it('should format positive seven digit floating point numbers to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(0.1234567), { notation: 'engineering' }), '123.4567e-3')
+      })
+      it('should format negative single digit floating point numbers to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber(-0.1), { notation: 'engineering' }), '-100e-3')
+      })
+      it('should format positive floating point number to engineering notation', function () {
+        assert.strictEqual(math.format(bignumber('13308.0333333333'), { precision: 11, notation: 'engineering' }), '13.308033333e+3')
+      })
+      it('should add or remove zeroes if necessary to output precision sig figs', function () {
+        assert.strictEqual(math.format(bignumber(12400), { notation: 'engineering', precision: 2 }), '12e+3')
+        assert.strictEqual(math.format(bignumber(12400), { notation: 'engineering', precision: 3 }), '12.4e+3')
+        assert.strictEqual(math.format(bignumber(124000), { notation: 'engineering', precision: 3 }), '124e+3')
+        assert.strictEqual(math.format(bignumber(124000), { notation: 'engineering', precision: 4 }), '124.0e+3')
+        assert.strictEqual(math.format(bignumber(12400), { notation: 'engineering', precision: 7 }), '12.40000e+3')
+        assert.strictEqual(math.format(bignumber(12400), { notation: 'engineering', precision: 8 }), '12.400000e+3')
+        assert.strictEqual(math.format(bignumber(12400), { notation: 'engineering', precision: 9 }), '12.4000000e+3')
+        assert.strictEqual(math.format(bignumber(-12400), { notation: 'engineering', precision: 7 }), '-12.40000e+3')
+        assert.strictEqual(math.format(bignumber(0.0124), { notation: 'engineering', precision: 7 }), '12.40000e-3')
+        assert.strictEqual(math.format(bignumber(0.00124), { notation: 'engineering', precision: 7 }), '1.240000e-3')
+        assert.strictEqual(math.format(bignumber(0.000124), { notation: 'engineering', precision: 7 }), '124.0000e-6')
+        assert.strictEqual(math.format(bignumber(0.000124), { notation: 'engineering', precision: 4 }), '124.0e-6')
+        assert.strictEqual(math.format(bignumber(0.000124), { notation: 'engineering', precision: 3 }), '124e-6')
+        assert.strictEqual(math.format(bignumber(1.24), { notation: 'engineering', precision: 3 }), '1.24e+0')
+      })
+    })
   })
 
   it('should throw an error on wrong number of arguments', function () {

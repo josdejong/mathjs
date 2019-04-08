@@ -4,9 +4,10 @@
 # not yet released, version 5.9.0
 
 - Implemented functions `row` and `column` (see #1413). Thanks @SzechuanSage.
+- Fixed #1459: `engineering` notation of function `format` not available
+  for `BigNumber`.
 - Fixed #1465: `node.toHTML()` not correct for unary operators like
   `factorial`.
-
 
 # 2019-03-20, version 5.8.0
 

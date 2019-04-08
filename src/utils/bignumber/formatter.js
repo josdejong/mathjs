@@ -106,6 +106,9 @@ exports.format = function (value, options) {
     case 'exponential':
       return exports.toExponential(value, precision)
 
+    case 'engineering':
+      return exports.toEngineering(value, precision)
+
     case 'auto':
       // TODO: clean up some day. Deprecated since: 2018-01-24
       // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
@@ -158,6 +161,24 @@ exports.format = function (value, options) {
       throw new Error('Unknown notation "' + notation + '". ' +
           'Choose "auto", "exponential", or "fixed".')
   }
+}
+
+/**
+ * Format a BigNumber in engineering notation. Like '1.23e+6', '2.3e+0', '3.500e-3'
+ * @param {BigNumber | string} value
+ * @param {number} [precision]        Optional number of significant figures to return.
+ */
+exports.toEngineering = function (value, precision) {
+  // find nearest lower multiple of 3 for exponent
+  const e = value.e
+  const newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))
+
+  // find difference in exponents, and calculate the value without exponent
+  const expDiff = Math.abs(e - newExp)
+  const valueWithoutExp = value.mul(Math.pow(10, expDiff - e))
+
+  return valueWithoutExp.toPrecision(precision).toString() +
+    'e' + (e >= 0 ? '+' : '') + newExp.toString()
 }
 
 /**
