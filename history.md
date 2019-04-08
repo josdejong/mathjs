@@ -5,7 +5,16 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
-<h1 id="20180320-version-580">2018-03-20, version 5.8.0 <a href="#20180320-version-580" title="Permalink">#</a></h1>
+<h1 id="20180408-version-590">2018-04-08, version 5.9.0 <a href="#20180408-version-590" title="Permalink">#</a></h1>
+
+- Implemented functions `row` and `column` (see <a href="https://github.com/josdejong/mathjs/issues/1413">#1413</a>). Thanks <a href="https://github.com/SzechuanSage">@SzechuanSage</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1459">#1459</a>: `engineering` notation of function `format` not available
+  for `BigNumber`.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1465">#1465</a>: `node.toHTML()` not correct for unary operators like
+  `factorial`.
+
+
+<h1 id="20190320-version-580">2019-03-20, version 5.8.0 <a href="#20190320-version-580" title="Permalink">#</a></h1>
 
 - Implemented new function `apply`. Thanks <a href="https://github.com/bnlcas">@bnlcas</a>.
 - Implemented passing an optional `dimension` argument to `std` and `var`.

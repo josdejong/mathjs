@@ -12,7 +12,7 @@ File: [currency_conversion.html](currency_conversion.html) (click for a live dem
 <head>
   <title>math.js | currency conversion</title>
 
-  <script src="https://unpkg.com/mathjs@5.8.0/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@5.9.0/dist/math.min.js"></script>
 
   <style>
     body,
