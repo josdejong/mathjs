@@ -766,6 +766,29 @@ describe('OperatorNode', function () {
     assert.strictEqual(h.toTex({ implicit: 'show' }), '2\\cdot\\left(3+4\\right)')
   })
 
+  it('should HTML operators', function () {
+    assert.strictEqual(math.parse('2 + 3').toHTML(),
+      '<span class="math-number">2</span>' +
+      '<span class="math-operator math-binary-operator math-explicit-binary-operator">+</span>' +
+      '<span class="math-number">3</span>'
+    )
+
+    assert.strictEqual(math.parse('not 5').toHTML(),
+      '<span class="math-operator math-unary-operator math-lefthand-unary-operator">not</span>' +
+      '<span class="math-number">5</span>'
+    )
+
+    assert.strictEqual(math.parse('5!').toHTML(),
+      '<span class="math-number">5</span>' +
+      '<span class="math-operator math-unary-operator math-righthand-unary-operator">!</span>'
+    )
+
+    assert.strictEqual(math.parse('5\'').toHTML(),
+      '<span class="math-number">5</span>' +
+      '<span class="math-operator math-unary-operator math-righthand-unary-operator">&#39;</span>'
+    )
+  })
+
   it('should stringify implicit multiplications between ConstantNodes with parentheses', function () {
     const a = math.parse('(4)(4)(4)(4)')
     const b = math.parse('4b*4(4)')

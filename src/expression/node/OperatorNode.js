@@ -463,12 +463,9 @@ function factory (type, config, load, typed) {
 
       if (assoc === 'right') { // prefix operator
         return '<span class="math-operator math-unary-operator math-lefthand-unary-operator">' + escape(this.op) + '</span>' + operand
-      } else if (assoc === 'left') { // postfix
-        return '<span class="math-operator math-unary-operator math-righthand-unary-operator">' + escape(this.op) + '</span>' + operand
+      } else { // postfix when assoc === 'left' or undefined
+        return operand + '<span class="math-operator math-unary-operator math-righthand-unary-operator">' + escape(this.op) + '</span>'
       }
-
-      // fall back to postfix
-      return '<span class="math-operator math-unary-operator math-righthand-unary-operator">' + escape(this.op) + '</span>' + operand
     } else if (args.length === 2) { // binary operatoes
       let lhs = args[0].toHTML(options) // left hand side
       let rhs = args[1].toHTML(options) // right hand side
