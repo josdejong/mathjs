@@ -120,7 +120,7 @@ import {
   createIsPositive,
   createIsZero,
   createIsNaN,
-  matrix,
+  createMatrix,
   createUnaryMinus,
   createUnaryPlus,
   createAbs,
@@ -191,7 +191,7 @@ import {
   createCombinations,
   createGamma
 } from './factoriesNumber'
-export { allDependencies } from './allNumber.js'
+export { all } from './allNumber.js'
 
 export const ResultSetDependencies = {
   createResultSet
@@ -394,7 +394,7 @@ export const isZeroDependencies = {
 }
 
 export const matrixDependencies = {
-  matrix
+  createMatrix
 }
 
 export const unaryPlusDependencies = {

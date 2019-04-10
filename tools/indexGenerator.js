@@ -72,7 +72,7 @@ function generateIndexFile (factories, factoriesLink, allLink, dependenciesDest)
   src += '} from \'' + factoriesLink + '\''
 
   src += '\n'
-  src += 'export { allDependencies } from \'' + allLink + '\'\n'
+  src += 'export { all } from \'' + allLink + '\'\n'
 
   const loaded = {}
   sortedFactories.forEach(factory => {

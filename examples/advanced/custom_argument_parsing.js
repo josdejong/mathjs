@@ -7,7 +7,8 @@
  * will be invoked with unevaluated arguments, allowing the function
  * to process the arguments in a customized way.
  */
-const math = require('../../index')
+const { create, all } = require('../../index')
+const math = create(all)
 
 /**
  * Calculate the numeric integration of a function

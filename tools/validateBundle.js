@@ -34,6 +34,10 @@ function validateBundle (expectedBundleStructure, bundle) {
       // ignore the contents of docs
       return
     }
+    if (path.join('.').indexOf('all.') !== -1) {
+      // ignore the contents of all dependencies
+      return
+    }
 
     const message = (expectedType === 'undefined')
       ? `Unknown entry in bundle. ` +

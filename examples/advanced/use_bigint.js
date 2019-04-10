@@ -3,7 +3,8 @@
 // have to defined more functions and define conversions from and to
 // other data types.
 
-const math = require('../../index')
+const { create, all } = require('../../index')
+const math = create(all)
 
 math.import({
   name: 'BigInt',

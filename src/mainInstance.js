@@ -143,3 +143,5 @@ export function create (factories, config) {
 
   return math
 }
+
+export { factory } from './utils/factory'

@@ -11,9 +11,17 @@
 // adding an extra conversion to the list of conversions as demonstrated in
 // this example.
 
-// Load the math.js core (contains only `import` and `config`)
-const core = require('../../core')
-const math = core.create()
+// Create an empty math.js instance, with only typed
+// (every instance contains `import` and `config` also out of the box)
+const { create, typedDependencies, all } = require('../../index')
+const math = create({
+  typedDependencies
+})
+
+// TODO: this should be much easier
+const allExceptLoaded = Object.keys(all)
+  .map(key => all[key])
+  .filter(factory => math[factory.fn] === undefined)
 
 // Configure to use fractions by default
 math.config({ number: 'Fraction' })
@@ -31,7 +39,7 @@ math.typed.conversions.unshift({
 })
 
 // Import all data types, functions, constants, the expression parser, etc.
-math.import(require('../../lib'))
+math.import(allExceptLoaded)
 
 // Operators `add` and `divide` do have support for Fractions, so the result
 // will simply be a Fraction (default behavior of math.js).

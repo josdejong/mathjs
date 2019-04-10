@@ -6,7 +6,8 @@
  * *transform* for the function. A transform is a function wrapping around a
  * function to be transformed or completely replaces a function.
  */
-const math = require('../../index')
+const { create, all } = require('../../index')
+const math = create(all)
 
 // create a function
 function addIt (a, b) {

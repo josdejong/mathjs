@@ -628,6 +628,7 @@ const allES6Functions = {
   typed: 'Function',
   core: 'Function',
   create: 'Function',
+  factory: 'Function',
   chain: 'Function'
 }
 
@@ -654,7 +655,7 @@ const allInstanceConstants = {
 }
 
 const allDependencyCollections = {
-  allDependencies: 'Object',
+  all: 'Object',
   ResultSetDependencies: 'Object',
   ComplexDependencies: 'Object',
   RangeDependencies: 'Object',

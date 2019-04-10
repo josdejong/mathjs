@@ -156,10 +156,10 @@ The following use cases are worked out as an example:
 4. use all functions in the expression parser with config
 
 	```js
-    import { create, allDependencies } from 'mathjs'
+    import { create, all } from 'mathjs'
 
     const config = { number: 'BigNumber' }
-    const { evaluate } = create(allDependencies, config)
+    const { evaluate } = create(all, config)
 
     console.log(evaluate('sin(pi / 2) / 3').toString())
     // BigNumber 0.3333333333333333333333333333333333333333333333333333333333333333
@@ -178,9 +178,9 @@ The following use cases are worked out as an example:
 6. Use all functions and dynamically change config
 
 	```js
-    import { create, allDependencies } from 'mathjs'
+    import { create, all } from 'mathjs'
 
-    const mathjs = create(allDependencies)
+    const mathjs = create(all)
     console.log(mathjs.divide(mathjs.sin(mathjs.divide(mathjs.pi, 2)), 3))
     // sin(pi / 2) / 3 =
     // number 0.3333333333333333

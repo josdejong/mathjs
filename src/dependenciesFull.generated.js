@@ -317,7 +317,7 @@ import {
   createConcatTransform,
   createSumTransform
 } from './factoriesFull.js'
-export { allDependencies } from './allFull.js'
+export { all } from './allFull.js'
 
 export const ResultSetDependencies = {
   createResultSet

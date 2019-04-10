@@ -1,5 +1,6 @@
-const math = require('../../../index')
+const { create, all } = require('../../../index')
 const workerpool = require('workerpool')
+const math = create(all)
 
 // disable the import function so the math.js instance cannot be changed
 function noImport () {
