@@ -373,7 +373,7 @@ export {
 // class (1)
 export const ResultSet = /* #__PURE__ */ createResultSet()
 export const BigNumber = /* #__PURE__ */ createBigNumberClass({ config })
-export const Complex = /* #__PURE__ */ createComplexClass({ config })
+export const Complex = /* #__PURE__ */ createComplexClass()
 export const Fraction = /* #__PURE__ */ createFractionClass()
 export const Range = /* #__PURE__ */ createRangeClass()
 export const Matrix = /* #__PURE__ */ createMatrixClass()
@@ -1232,4 +1232,4 @@ export { ArgumentsError } from './error/ArgumentsError'
 // core
 
 export { core, create } from './mainInstance'
-export * from './dependenciesFull'
+export * from './dependenciesFull.generated'

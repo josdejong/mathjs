@@ -111,7 +111,7 @@ export { createBoolean } from './type/boolean'
 // export const bignumber = /* #__PURE__ */ createBignumber({ typed, BigNumber })
 // export const complex = /* #__PURE__ */ createComplex({ typed, Complex })
 // export const fraction = /* #__PURE__ */ createFraction({ typed, Fraction })
-export const matrix = /* #__PURE__ */ factory('matrix', [], () => noMatrix) // FIXME: needed now because subset transform needs it. Remove the need for it in subset
+export const createMatrix = /* #__PURE__ */ factory('matrix', [], () => noMatrix) // FIXME: needed now because subset transform needs it. Remove the need for it in subset
 // export const splitUnit = /* #__PURE__ */ createSplitUnit({ typed })
 
 // arithmetic (1)

@@ -1087,4 +1087,4 @@ export { ArgumentsError } from './error/ArgumentsError'
 // core
 
 export { core, create } from './mainInstance'
-export * from './dependenciesNumber'
+export * from './dependenciesNumber.generated'

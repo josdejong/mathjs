@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { addDependencies, divideDependencies, piDependencies } from '../src/dependenciesFull'
+import { addDependencies, divideDependencies, piDependencies } from '../src/dependenciesFull.generated'
 import { create } from '../src/mainInstance'
 
 describe('dependencies', function () {
