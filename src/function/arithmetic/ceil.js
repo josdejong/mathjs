@@ -2,12 +2,14 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { nearlyEqual } from '../../utils/number'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { ceilNumber } from '../../plain/number'
 
 const name = 'ceil'
-const dependencies = ['typed']
+const dependencies = ['typed', 'config', 'round']
 
-export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round }) => {
   /**
    * Round a value towards plus infinity
    * If `x` is complex, both real and imaginary part are rounded towards plus infinity.
@@ -36,15 +38,25 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  const ceil = typed(name, {
-    'number': ceilNumber,
+  const ceil = typed('ceil', {
+    'number': function (x) {
+      if (nearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return ceilNumber(x)
+      }
+    },
 
     'Complex': function (x) {
       return x.ceil()
     },
 
     'BigNumber': function (x) {
-      return x.ceil()
+      if (bigNearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return x.ceil()
+      }
     },
 
     'Fraction': function (x) {

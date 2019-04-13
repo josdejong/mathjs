@@ -48,7 +48,7 @@ try {
 }
 
 /**
- * Import the math library numeric.js, http://numericjs.com/
+ * Import the math library numeric.js, https://github.com/sloisel/numeric
  * The library must be installed first using npm:
  *     npm install numeric
  */

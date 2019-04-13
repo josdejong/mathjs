@@ -82,7 +82,7 @@ export const createPartitionSelect = /* #__PURE__ */ factory(name, dependencies,
   /**
    * Quickselect algorithm.
    * Code adapted from:
-   * http://blog.teamleadnet.com/2012/07/quick-select-algorithm-find-kth-element.html
+   * https://blog.teamleadnet.com/2012/07/quick-select-algorithm-find-kth-element.html
    *
    * @param {Array} arr
    * @param {Number} k

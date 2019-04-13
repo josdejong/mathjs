@@ -2,12 +2,11 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
-import { fixNumber } from '../../plain/number'
 
 const name = 'fix'
-const dependencies = ['typed', 'Complex']
+const dependencies = ['typed', 'Complex', 'ceil', 'floor']
 
-export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex }) => {
+export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex, ceil, floor }) => {
   /**
    * Round a value towards zero.
    * For matrices, the function is evaluated element wise.
@@ -36,7 +35,9 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
    */
   const fix = typed('fix', {
-    'number': fixNumber,
+    'number': function (x) {
+      return (x > 0) ? floor(x) : ceil(x)
+    },
 
     'Complex': function (x) {
       return new Complex(
@@ -46,7 +47,7 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
     },
 
     'BigNumber': function (x) {
-      return x.isNegative() ? x.ceil() : x.floor()
+      return x.isNegative() ? ceil(x) : floor(x)
     },
 
     'Fraction': function (x) {

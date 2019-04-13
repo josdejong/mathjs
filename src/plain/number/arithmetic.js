@@ -84,7 +84,7 @@ export function gcdNumber (a, b) {
     throw new Error('Parameters in function gcd must be integer numbers')
   }
 
-  // http://en.wikipedia.org/wiki/Euclidean_algorithm
+  // https://en.wikipedia.org/wiki/Euclidean_algorithm
   let r
   while (b !== 0) {
     r = a % b
@@ -110,7 +110,7 @@ export function lcmNumber (a, b) {
     return 0
   }
 
-  // http://en.wikipedia.org/wiki/Euclidean_algorithm
+  // https://en.wikipedia.org/wiki/Euclidean_algorithm
   // evaluate lcm here inline to reduce overhead
   let t
   const prod = a * b
@@ -174,7 +174,7 @@ export function modNumber (x, y) {
   if (y > 0) {
     // We don't use JavaScript's % operator here as this doesn't work
     // correctly for x < 0 and x === 0
-    // see http://en.wikipedia.org/wiki/Modulo_operation
+    // see https://en.wikipedia.org/wiki/Modulo_operation
     return x - y * Math.floor(x / y)
   } else if (y === 0) {
     return x
@@ -267,7 +267,7 @@ squareNumber.signature = n1
  * @private
  */
 export function xgcdNumber (a, b) {
-  // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+  // source: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
   let t // used to swap two variables
   let q // quotient
   let r // remainder

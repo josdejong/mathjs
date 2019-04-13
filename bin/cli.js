@@ -36,7 +36,7 @@
  * use this file except in compliance with the License. You may obtain a copy
  * of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -323,7 +323,7 @@ function outputVersion () {
  */
 function outputHelp () {
   console.log('math.js')
-  console.log('http://mathjs.org')
+  console.log('https://mathjs.org')
   console.log()
   console.log('Math.js is an extensive math library for JavaScript and Node.js. It features ')
   console.log('real and complex numbers, units, matrices, a large set of mathematical')

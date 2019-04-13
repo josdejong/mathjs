@@ -9,26 +9,36 @@ import { warnOnce } from '../../utils/log'
 const DEFAULT_NORMALIZATION = 'unbiased'
 
 const name = 'variance'
-const dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'isNaN']
+const dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'apply', 'isNaN']
 
-export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract, multiply, divide, isNaN }) => {
+export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract, multiply, divide, apply, isNaN }) => {
   /**
    * Compute the variance of a matrix or a  list with values.
    * In case of a (multi dimensional) array or matrix, the variance over all
    * elements will be calculated.
    *
-   * Optionally, the type of normalization can be specified as second
+   * Additionally, it is possible to compute the variance along the rows
+   * or columns of a matrix by specifying the dimension as the second argument.
+   *
+   * Optionally, the type of normalization can be specified as the final
    * parameter. The parameter `normalization` can be one of the following values:
    *
    * - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
    * - 'uncorrected'        The sum of squared errors is divided by n
    * - 'biased'             The sum of squared errors is divided by (n + 1)
    *
+   *
+   * Note that older browser may not like the variable name `var`. In that
+   * case, the function can be called as `math['var'](...)` instead of
+   * `math.var(...)`.
+   *
    * Syntax:
    *
    *     math.variance(a, b, c, ...)
    *     math.variance(A)
    *     math.variance(A, normalization)
+   *     math.variance(A, dimension)
+   *     math.variance(A, dimension, normalization)
    *
    * Examples:
    *
@@ -38,6 +48,9 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *     math.variance([2, 4, 6, 8], 'biased')      // returns 4
    *
    *     math.variance([[1, 2, 3], [4, 5, 6]])      // returns 3.5
+   *     math.variance([[1, 2, 3], [4, 6, 8]], 0)   // returns [4.5, 8, 12.5]
+   *     math.variance([[1, 2, 3], [4, 6, 8]], 1)   // returns [1, 4]
+   *     math.variance([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.5, 2]
    *
    * See also:
    *
@@ -48,6 +61,8 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @param {string} [normalization='unbiased']
    *                        Determines how to normalize the variance.
    *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
+   * @param dimension {number | BigNumber}
+   *                        Determines the axis to compute the variance for a matrix
    * @return {*} The variance
    */
   return typed(name, {
@@ -58,6 +73,14 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
     // variance([a, b, c, d, ...], normalization)
     'Array | Matrix, string': _var,
+
+    // variance([a, b, c, c, ...], dim)
+    'Array | Matrix, number | BigNumber': function (array, dim) {
+      return _varDim(array, dim, DEFAULT_NORMALIZATION)
+    },
+
+    // variance([a, b, c, c, ...], dim, normalization)
+    'Array | Matrix, number | BigNumber, string': _varDim,
 
     // variance(a, b, c, d, ...)
     '...': function (args) {
@@ -122,6 +145,17 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
       default:
         throw new Error('Unknown normalization "' + normalization + '". ' +
         'Choose "unbiased" (default), "uncorrected", or "biased".')
+    }
+  }
+
+  function _varDim (array, dim, normalization) {
+    try {
+      if (array.length === 0) {
+        throw new SyntaxError('Function variance requires one or more parameters (0 provided)')
+      }
+      return apply(array, dim, (x) => _var(x, normalization))
+    } catch (err) {
+      throw improveErrorMessage(err, 'variance')
     }
   }
 })

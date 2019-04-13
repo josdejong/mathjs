@@ -40,6 +40,8 @@ describe('mainNumber', function () {
       if (key === 'not') {
         // operator, special case
         assert.strictEqual(evaluate('not true'), false)
+      } else if (key === 'apply') {
+        // TODO: special case, apply is not yet working in the expression parser due to security constraints
       } else {
         try {
           assert.strictEqual(validateTypeOf(evaluate(key)), mathWithTransform[key], `Compare type of "${key}"`)

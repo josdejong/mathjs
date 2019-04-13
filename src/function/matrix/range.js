@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { noBignumber, noMatrix } from '../../utils/noop'
 
 const name = 'range'
-const dependencies = ['typed', 'config', '?matrix', '?bignumber']
+const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq']
 
-export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber }) => {
+export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq }) => {
   /**
    * Create an array from a range.
    * By default, the range end is excluded. This can be customized by providing
@@ -140,12 +140,12 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     const array = []
     let x = start
     if (step > 0) {
-      while (x < end) {
+      while (smaller(x, end)) {
         array.push(x)
         x += step
       }
     } else if (step < 0) {
-      while (x > end) {
+      while (larger(x, end)) {
         array.push(x)
         x += step
       }
@@ -166,12 +166,12 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     const array = []
     let x = start
     if (step > 0) {
-      while (x <= end) {
+      while (smallerEq(x, end)) {
         array.push(x)
         x += step
       }
     } else if (step < 0) {
-      while (x >= end) {
+      while (largerEq(x, end)) {
         array.push(x)
         x += step
       }
@@ -193,12 +193,12 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     const array = []
     let x = start
     if (step.gt(zero)) {
-      while (x.lt(end)) {
+      while (smaller(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
     } else if (step.lt(zero)) {
-      while (x.gt(end)) {
+      while (larger(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
@@ -220,12 +220,12 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     const array = []
     let x = start
     if (step.gt(zero)) {
-      while (x.lte(end)) {
+      while (smallerEq(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
     } else if (step.lt(zero)) {
-      while (x.gte(end)) {
+      while (largerEq(x, end)) {
         array.push(x)
         x = x.plus(step)
       }

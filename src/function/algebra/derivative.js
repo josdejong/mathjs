@@ -41,7 +41,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * This uses rules of differentiation which can be found here:
    *
-   * - [Differentiation rules (Wikipedia)](http://en.wikipedia.org/wiki/Differentiation_rules)
+   * - [Differentiation rules (Wikipedia)](https://en.wikipedia.org/wiki/Differentiation_rules)
    *
    * Syntax:
    *
@@ -321,6 +321,10 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
             ]), constNodes)
           }
           break
+        case 'pow':
+          constNodes[arg1] = constNodes[node.args[1]]
+          // Pass to pow operator node parser
+          return _derivative(new OperatorNode('^', 'pow', [arg0, node.args[1]]), constNodes)
         case 'exp':
           // d/dx(e^x) = e^x
           funcDerivative = new FunctionNode('exp', [arg0.clone()])
@@ -767,7 +771,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function funcArgsCheck (node) {
     // TODO add min, max etc
-    if ((node.name === 'log' || node.name === 'nthRoot') && node.args.length === 2) {
+    if ((node.name === 'log' || node.name === 'nthRoot' || node.name === 'pow') && node.args.length === 2) {
       return
     }
 

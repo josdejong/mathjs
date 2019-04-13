@@ -133,7 +133,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    *
    * @memberof DenseMatrix
    * @param {Index} index
-   * @param {Array | DenseMatrix | *} [replacement]
+   * @param {Array | Matrix | *} [replacement]
    * @param {*} [defaultValue=0]      Default value, filled in on new entries when
    *                                  the matrix is resized. If not provided,
    *                                  new matrix elements will be filled with zeros.
@@ -623,7 +623,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @memberof DenseMatrix
    * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will retrieved.
    *
-   * @returns {Array}                      The array vector with the diagonal values.
+   * @returns {Matrix}                     The matrix with the diagonal values.
    */
   DenseMatrix.prototype.diagonal = function (k) {
     // validate k if any
@@ -669,10 +669,11 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * Create a diagonal matrix.
    *
    * @memberof DenseMatrix
-   * @param {Array} size                   The matrix size.
-   * @param {number | Array} value          The values for the diagonal.
-   * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will be filled in.
-   * @param {number} [defaultValue]        The default value for non-diagonal
+   * @param {Array} size                     The matrix size.
+   * @param {number | Matrix | Array } value The values for the diagonal.
+   * @param {number | BigNumber} [k=0]       The kth diagonal where the vector will be filled in.
+   * @param {number} [defaultValue]          The default value for non-diagonal
+   * @param {string} [datatype]              The datatype for the diagonal
    *
    * @returns {DenseMatrix}
    */
@@ -826,6 +827,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    *
    * @param {number} i       Matrix row index 1
    * @param {number} j       Matrix row index 2
+   * @param {Array} data     Matrix data
    */
   DenseMatrix._swapRows = function (i, j, data) {
     // swap values i <-> j

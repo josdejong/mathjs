@@ -373,10 +373,13 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         operand = '(' + operand + ')'
       }
 
+      // for example for "not", we want a space between operand and argument
+      const opIsNamed = /[a-zA-Z]+/.test(this.op)
+
       if (assoc === 'right') { // prefix operator
-        return this.op + operand
+        return this.op + (opIsNamed ? ' ' : '') + operand
       } else if (assoc === 'left') { // postfix
-        return operand + this.op
+        return operand + (opIsNamed ? ' ' : '') + this.op
       }
 
       // fall back to postfix
@@ -463,12 +466,9 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
       if (assoc === 'right') { // prefix operator
         return '<span class="math-operator math-unary-operator math-lefthand-unary-operator">' + escape(this.op) + '</span>' + operand
-      } else if (assoc === 'left') { // postfix
-        return '<span class="math-operator math-unary-operator math-righthand-unary-operator">' + escape(this.op) + '</span>' + operand
+      } else { // postfix when assoc === 'left' or undefined
+        return operand + '<span class="math-operator math-unary-operator math-righthand-unary-operator">' + escape(this.op) + '</span>'
       }
-
-      // fall back to postfix
-      return '<span class="math-operator math-unary-operator math-righthand-unary-operator">' + escape(this.op) + '</span>' + operand
     } else if (args.length === 2) { // binary operatoes
       let lhs = args[0].toHTML(options) // left hand side
       let rhs = args[1].toHTML(options) // right hand side

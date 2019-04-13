@@ -55,6 +55,8 @@ const bannerPlugin = new webpack.BannerPlugin({
 
 const webpackConfig = {
   entry: ENTRY,
+  mode: 'production',
+  performance: { hints: false }, // to hide the "asset size limit" warning
   output: {
     library: 'math',
     libraryTarget: 'umd',

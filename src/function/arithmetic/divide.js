@@ -55,9 +55,9 @@ export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     'Array | Matrix, Array | Matrix': function (x, y) {
       // TODO: implement matrix right division using pseudo inverse
-      // http://www.mathworks.nl/help/matlab/ref/mrdivide.html
-      // http://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
-      // http://stackoverflow.com/questions/12263932/how-does-gnu-octave-matrix-division-work-getting-unexpected-behaviour
+      // https://www.mathworks.nl/help/matlab/ref/mrdivide.html
+      // https://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
+      // https://stackoverflow.com/questions/12263932/how-does-gnu-octave-matrix-division-work-getting-unexpected-behaviour
       return multiply(x, inv(y))
     },
 

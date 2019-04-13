@@ -159,6 +159,7 @@ export const createOr = /* #__PURE__ */ createNumberFactory('or', orNumber)
 export const createXor = /* #__PURE__ */ createNumberFactory('xor', xorNumber)
 
 // matrix (1)
+export { createApply } from './function/matrix/apply'
 // export const concat = /* #__PURE__ */ createConcat({ typed, matrix, isInteger })
 // export const cross = /* #__PURE__ */ createCross({ typed, matrix, subtract, multiply })
 // export const diag = /* #__PURE__ */ createDiag({ typed, matrix, DenseMatrix, SparseMatrix })
@@ -490,6 +491,7 @@ export { createCatalan } from './function/combinatorics/catalan'
 export { createComposition } from './function/combinatorics/composition'
 
 // transforms
+export { createApplyTransform } from './expression/transform/apply.transform'
 export { createFilterTransform } from './expression/transform/filter.transform'
 export { createForEachTransform } from './expression/transform/forEach.transform'
 // export { createIndexTransform } from './expression/transform/index.transform'
@@ -500,7 +502,9 @@ export { createMinTransform } from './expression/transform/min.transform'
 export { createRangeTransform } from './expression/transform/range.transform'
 export { createSubsetTransform } from './expression/transform/subset.transform'
 // export { createConcatTransform } from './expression/transform/concat.transform'
+export { createStdTransform } from './expression/transform/std.transform'
 export { createSumTransform } from './expression/transform/sum.transform'
+export { createVarianceTransform } from './expression/transform/variance.transform'
 
 // expression (4)
 export { createNode } from './expression/node/Node'

@@ -140,7 +140,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       throw new Error('Parameters in function gcd must be integer numbers')
     }
 
-    // http://en.wikipedia.org/wiki/Euclidean_algorithm
+    // https://en.wikipedia.org/wiki/Euclidean_algorithm
     const zero = new BigNumber(0)
     while (!b.isZero()) {
       const r = a.mod(b)

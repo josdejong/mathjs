@@ -1,5 +1,7 @@
 'use strict'
 
+import { createApplyTransform } from './apply.transform'
+import { createColumnTransform } from './column.transform'
 import { createFilterTransform } from './filter.transform'
 import { createConcatTransform } from './concat.transform'
 import { createForEachTransform } from './forEach.transform'
@@ -11,10 +13,14 @@ import { createMinTransform } from './min.transform'
 import { createRangeTransform } from './range.transform'
 import { createSubsetTransform } from './subset.transform'
 import { createSumTransform } from './sum.transform'
+import { createStdTransform } from './std.transform'
+import { createVarianceTransform } from './variance.transform'
 
 console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
 
 export default [
+  createApplyTransform,
+  createColumnTransform,
   createConcatTransform,
   createFilterTransform,
   createForEachTransform,
@@ -25,5 +31,7 @@ export default [
   createMinTransform,
   createRangeTransform,
   createSubsetTransform,
-  createSumTransform
+  createSumTransform,
+  createStdTransform,
+  createVarianceTransform
 ]

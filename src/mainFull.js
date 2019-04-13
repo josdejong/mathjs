@@ -314,6 +314,14 @@ import { createSubsetTransform } from './expression/transform/subset.transform'
 import { createConcatTransform } from './expression/transform/concat.transform'
 import { createSumTransform } from './expression/transform/sum.transform'
 import { MATRIX_OPTIONS, NUMBER_OPTIONS } from './core/function/config'
+import { createApply } from './function/matrix/apply'
+import { createColumn } from './function/matrix/column'
+import { createRow } from './function/matrix/row'
+import { createApplyTransform } from './expression/transform/apply.transform'
+import { createStdTransform } from './expression/transform/std.transform'
+import { createVarianceTransform } from './expression/transform/variance.transform'
+import { createRowTransform } from './expression/transform/row.transform'
+import { createColumnTransform } from './expression/transform/column.transform'
 
 // create a read-only version of config
 export const config = /* #__PURE__ */ function (options) {
@@ -415,12 +423,9 @@ export const unaryPlus = /* #__PURE__ */ createUnaryPlus({ config, typed, BigNum
 export const abs = /* #__PURE__ */ createAbs({ typed })
 export const addScalar = /* #__PURE__ */ createAddScalar({ typed })
 export const cbrt = /* #__PURE__ */ createCbrt({ config, typed, isNegative, unaryMinus, matrix, Complex, BigNumber, Fraction })
-export const ceil = /* #__PURE__ */ createCeil({ typed })
 export const cube = /* #__PURE__ */ createCube({ typed })
 export const exp = /* #__PURE__ */ createExp({ typed })
 export const expm1 = /* #__PURE__ */ createExpm1({ typed, Complex })
-export const fix = /* #__PURE__ */ createFix({ typed, Complex })
-export const floor = /* #__PURE__ */ createFloor({ typed })
 export const gcd = /* #__PURE__ */ createGcd({ typed, matrix, equalScalar, BigNumber, DenseMatrix })
 export const lcm = /* #__PURE__ */ createLcm({ typed, matrix, equalScalar })
 export const log10 = /* #__PURE__ */ createLog10({ config, typed, Complex })
@@ -454,6 +459,7 @@ export const or = /* #__PURE__ */ createOr({ typed, matrix, equalScalar, DenseMa
 export const xor = /* #__PURE__ */ createXor({ typed, matrix, DenseMatrix })
 
 // matrix (1)
+export const apply = /* #__PURE__ */ createApply({ typed, isInteger })
 export const concat = /* #__PURE__ */ createConcat({ typed, matrix, isInteger })
 export const cross = /* #__PURE__ */ createCross({ typed, matrix, subtract, multiply })
 export const diag = /* #__PURE__ */ createDiag({ typed, matrix, DenseMatrix, SparseMatrix })
@@ -466,7 +472,6 @@ export const identity = /* #__PURE__ */ createIdentity({ config, typed, matrix, 
 export const kron = /* #__PURE__ */ createKron({ typed, matrix, multiplyScalar })
 export const map = /* #__PURE__ */ createMap({ typed })
 export const ones = /* #__PURE__ */ createOnes({ config, typed, matrix, BigNumber })
-export const range = /* #__PURE__ */ createRange({ config, typed, matrix })
 export const reshape = /* #__PURE__ */ createReshape({ typed, isInteger, matrix })
 export const resize = /* #__PURE__ */ createResize({ config, matrix })
 export const size = /* #__PURE__ */ createSize({ config, typed, matrix })
@@ -498,6 +503,9 @@ export const numeric = /* #__PURE__ */ createNumeric({ typed, number, bignumber,
 export const divideScalar = /* #__PURE__ */ createDivideScalar({ typed, numeric })
 export const pow = /* #__PURE__ */ createPow({ config, typed, identity, multiply, matrix, number, fraction, Complex })
 export const round = /* #__PURE__ */ createRound({ typed, matrix, equalScalar, zeros, BigNumber, DenseMatrix })
+export const floor = /* #__PURE__ */ createFloor({ config, typed, round })
+export const ceil = /* #__PURE__ */ createCeil({ config, typed, round })
+export const fix = /* #__PURE__ */ createFix({ typed, Complex, ceil, floor })
 export const log = /* #__PURE__ */ createLog({ config, typed, divideScalar, Complex })
 export const log1p = /* #__PURE__ */ createLog1p({ config, typed, divideScalar, log, Complex })
 export const nthRoots = /* #__PURE__ */ createNthRoots({ config, typed, divideScalar, Complex })
@@ -531,6 +539,7 @@ export const unequal = /* #__PURE__ */ createUnequal({ config, typed, equalScala
 
 // matrix (2)
 export const partitionSelect = /* #__PURE__ */ createPartitionSelect({ typed, isNumeric, isNaN, compare })
+export const range = /* #__PURE__ */ createRange({ config, typed, matrix, smaller, smallerEq, larger, largerEq })
 export const sort = /* #__PURE__ */ createSort({ typed, matrix, compare, compareNatural })
 
 // statistics (2)
@@ -702,6 +711,8 @@ export const norm = /* #__PURE__ */ createNorm({ typed, abs, add, pow, conj, sqr
 export const dot = /* #__PURE__ */ createDot({ typed, add, multiply })
 export const trace = /* #__PURE__ */ createTrace({ typed, matrix, add })
 export const index = /* #__PURE__ */ createIndex({ typed, Index })
+export const column = /* #__PURE__ */ createColumn({ typed, Index, matrix, range })
+export const row = /* #__PURE__ */ createRow({ typed, Index, matrix, range })
 
 // algebra (3)
 export const lup = /* #__PURE__ */ createLup({
@@ -756,7 +767,7 @@ export const sum = /* #__PURE__ */ createSum({ config, typed, add, bignumber, fr
 export const mean = /* #__PURE__ */ createMean({ typed, add, divide })
 export const median = /* #__PURE__ */ createMedian({ typed, add, divide, compare, partitionSelect })
 export const mad = /* #__PURE__ */ createMad({ typed, abs, map, median, subtract })
-export const variance = /* #__PURE__ */ createVariance({ typed, add, subtract, multiply, divide, isNaN })
+export const variance = /* #__PURE__ */ createVariance({ typed, add, subtract, multiply, divide, apply, isNaN })
 export const quantileSeq = /* #__PURE__ */ createQuantileSeq({ typed, add, multiply, partitionSelect, compare })
 export const std = /* #__PURE__ */ createStd({ typed, sqrt, variance })
 
@@ -1041,6 +1052,8 @@ const math = /* #__PURE__ */ {
 
 // Do not use destructuring like { ...math } here, WebPack can't do tree-shaking in that case
 const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
+  apply: /* #__PURE__ */ createApplyTransform({ typed, isInteger }),
+  column: /* #__PURE__ */ createColumnTransform({ typed, Index, matrix, range }),
   concat: /* #__PURE__ */ createConcatTransform({ typed, matrix, isInteger }),
   filter: /* #__PURE__ */ createFilterTransform({ typed }),
   forEach: /* #__PURE__ */ createForEachTransform({ typed }),
@@ -1049,9 +1062,12 @@ const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
   max: /* #__PURE__ */ createMaxTransform({ typed, larger }),
   mean: /* #__PURE__ */ createMeanTransform({ typed, add, divide }),
   min: /* #__PURE__ */ createMinTransform({ typed, smaller }),
-  range: /* #__PURE__ */ createRangeTransform({ typed, config, matrix, bignumber }),
+  range: /* #__PURE__ */ createRangeTransform({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq }),
+  row: /* #__PURE__ */ createRowTransform({ typed, Index, matrix, range }),
   subset: /* #__PURE__ */ createSubsetTransform({ typed, matrix }),
-  sum: /* #__PURE__ */ createSumTransform({ typed, config, add, bignumber, fraction })
+  sum: /* #__PURE__ */ createSumTransform({ typed, config, add, bignumber, fraction }),
+  std: /* #__PURE__ */ createStdTransform({ typed, sqrt, variance }),
+  variance: /* #__PURE__ */ createVarianceTransform({ typed, add, subtract, multiply, divide, apply, isNaN })
 })
 
 // expression (4)

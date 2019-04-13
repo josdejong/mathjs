@@ -87,7 +87,7 @@ export const cbrt = /* #__PURE__ */ Math.cbrt || function cbrt (x) {
 
   if (isFinite(x)) {
     result = Math.exp(Math.log(x) / 3)
-    // from http://en.wikipedia.org/wiki/Cube_root#Numerical_methods
+    // from https://en.wikipedia.org/wiki/Cube_root#Numerical_methods
     result = (x / (result * result) + (2 * result)) / 3
   } else {
     result = x

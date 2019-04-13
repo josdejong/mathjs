@@ -21,7 +21,9 @@ jobs:
     - script: npm run build && npm run test:dist
       node_js: lts/*
       name: Bundling Test
-
+    - script: npm run coverage && npx codecov
+      node_js: lts/*
+      name: Coverage
 git:
   depth: 5
 

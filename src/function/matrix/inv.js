@@ -131,7 +131,7 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     } else {
       // this is a matrix of 3 x 3 or larger
       // calculate inverse using gauss-jordan elimination
-      //      http://en.wikipedia.org/wiki/Gaussian_elimination
+      //      https://en.wikipedia.org/wiki/Gaussian_elimination
       //      http://mathworld.wolfram.com/MatrixInverse.html
       //      http://math.uww.edu/~mcfarlat/inverse.htm
 

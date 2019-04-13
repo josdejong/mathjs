@@ -164,7 +164,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
 
   /**
    * Calculate the nth root of a for BigNumbers, solve x^root == a
-   * http://rosettacode.org/wiki/Nth_root#JavaScript
+   * https://rosettacode.org/wiki/Nth_root#JavaScript
    * @param {BigNumber} a
    * @param {BigNumber} root
    * @private

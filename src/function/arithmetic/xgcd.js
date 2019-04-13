@@ -9,7 +9,7 @@ const dependencies = ['typed', 'config', 'matrix', 'BigNumber']
 export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber }) => {
   /**
    * Calculate the extended greatest common divisor for two values.
-   * See http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
+   * See https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
    *
    * Syntax:
    *
@@ -50,7 +50,7 @@ export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @private
    */
   function _xgcdBigNumber (a, b) {
-    // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+    // source: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
     let // used to swap two variables
       t
 

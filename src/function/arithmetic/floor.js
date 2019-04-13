@@ -2,12 +2,13 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
-import { floorNumber } from '../../plain/number'
+import { nearlyEqual } from '../../utils/number'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 
 const name = 'floor'
-const dependencies = ['typed']
+const dependencies = ['typed', 'config', 'round']
 
-export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round }) => {
   /**
    * Round a value towards minus infinity.
    * For matrices, the function is evaluated element wise.
@@ -35,15 +36,25 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  const floor = typed(name, {
-    'number': floorNumber,
+  const floor = typed('floor', {
+    'number': function (x) {
+      if (nearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return Math.floor(x)
+      }
+    },
 
     'Complex': function (x) {
       return x.floor()
     },
 
     'BigNumber': function (x) {
-      return x.floor()
+      if (bigNearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return x.floor()
+      }
     },
 
     'Fraction': function (x) {

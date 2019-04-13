@@ -32,6 +32,7 @@ describe('help', function () {
   })
 
   it('should throw an error when constructed without new operator', function () {
+    this.timeout(10000)
     assert.throws(function () {
       console.log(Help(embeddedDocs.sin))
     }, /Constructor must be called with the new operator/)

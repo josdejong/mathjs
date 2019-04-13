@@ -36,7 +36,7 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    *     x - y * floor(x / y)
    *
-   * See http://en.wikipedia.org/wiki/Modulo_operation.
+   * See https://en.wikipedia.org/wiki/Modulo_operation.
    *
    * Syntax:
    *

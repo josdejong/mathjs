@@ -148,7 +148,7 @@ export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       return b
     }
 
-    // http://en.wikipedia.org/wiki/Euclidean_algorithm
+    // https://en.wikipedia.org/wiki/Euclidean_algorithm
     // evaluate lcm here inline to reduce overhead
     const prod = a.times(b)
     while (!b.isZero()) {

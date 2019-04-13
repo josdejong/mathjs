@@ -2,7 +2,7 @@
 
 import { factory } from '../../utils/factory'
 
-// Source: http://www.wikiwand.com/en/Physical_constant
+// Source: https://en.wikipedia.org/wiki/Physical_constant
 
 // Universal constants
 export const createSpeedOfLight = /* #__PURE__ */ unitFactory('speedOfLight', '299792458', 'm s^-1')

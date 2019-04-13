@@ -11,7 +11,7 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * Evaluate an expression.
    *
    * Note the evaluating arbitrary expressions may involve security risks,
-   * see [http://mathjs.org/docs/expressions/security.html](http://mathjs.org/docs/expressions/security.html) for more information.
+   * see [https://mathjs.org/docs/expressions/security.html](https://mathjs.org/docs/expressions/security.html) for more information.
    *
    * Syntax:
    *

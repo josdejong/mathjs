@@ -173,6 +173,10 @@ import { createRange } from './function/matrix/range'
 import { createSubsetTransform } from './expression/transform/subset.transform'
 import { createSubset } from './factoriesNumber'
 import { noMatrix } from './utils/noop'
+import { createApply } from './function/matrix/apply'
+import { createApplyTransform } from './expression/transform/apply.transform'
+import { createStdTransform } from './expression/transform/std.transform'
+import { createVarianceTransform } from './expression/transform/variance.transform'
 
 // create a read-only version of config
 export const config = /* #__PURE__ */ function (options) {
@@ -313,6 +317,7 @@ export const or = /* #__PURE__ */ typed(orNumber)
 export const xor = /* #__PURE__ */ typed(xorNumber)
 
 // matrix (1)
+export const apply = /* #__PURE__ */ createApply({ typed, isInteger })
 // export const concat = /* #__PURE__ */ createConcat({ typed, matrix, isInteger })
 // export const cross = /* #__PURE__ */ createCross({ typed, matrix, subtract, multiply })
 // export const diag = /* #__PURE__ */ createDiag({ typed, matrix, DenseMatrix, SparseMatrix })
@@ -325,7 +330,6 @@ export const forEach = /* #__PURE__ */ createForEach({ typed })
 // export const kron = /* #__PURE__ */ createKron({ typed, matrix, multiplyScalar })
 export const map = /* #__PURE__ */ createMap({ typed })
 // export const ones = /* #__PURE__ */ createOnes({ config, typed, matrix, BigNumber })
-export const range = /* #__PURE__ */ createRange({ config, typed })
 // export const reshape = /* #__PURE__ */ createReshape({ typed, isInteger, matrix })
 // export const resize = /* #__PURE__ */ createResize({ config, matrix })
 // export const size = /* #__PURE__ */ createSize({ config, typed, matrix })
@@ -393,6 +397,7 @@ export const unequal = /* #__PURE__ */ createUnequalNumber({ config, typed, equa
 
 // matrix (2)
 export const partitionSelect = /* #__PURE__ */ createPartitionSelect({ typed, isNumeric, isNaN, compare })
+export const range = /* #__PURE__ */ createRange({ config, typed, smaller, smallerEq, larger, largerEq })
 // export const sort = /* #__PURE__ */ createSort({ typed, matrix, compare, compareNatural })
 
 // statistics (2)
@@ -615,7 +620,7 @@ export const sum = /* #__PURE__ */ createSum({ config, typed, add })
 export const mean = /* #__PURE__ */ createMean({ typed, add, divide })
 export const median = /* #__PURE__ */ createMedian({ typed, add, divide, compare, partitionSelect })
 export const mad = /* #__PURE__ */ createMad({ typed, abs, map, median, subtract })
-export const variance = /* #__PURE__ */ createVariance({ typed, add, subtract, multiply, divide, isNaN })
+export const variance = /* #__PURE__ */ createVariance({ typed, add, subtract, multiply, divide, apply, isNaN })
 export const quantileSeq = /* #__PURE__ */ createQuantileSeq({ typed, add, multiply, partitionSelect, compare })
 export const std = /* #__PURE__ */ createStd({ typed, sqrt, variance })
 
@@ -900,6 +905,7 @@ const math = /* #__PURE__ */ {
 
 // Do not use destructuring like { ...math } here, WebPack can't do tree-shaking in that case
 const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
+  apply: /* #__PURE__ */ createApplyTransform({ typed, isInteger }),
   // concat: /* #__PURE__ */ createConcatTransform({ typed, matrix, isInteger }),
   filter: /* #__PURE__ */ createFilterTransform({ typed }),
   forEach: /* #__PURE__ */ createForEachTransform({ typed }),
@@ -908,9 +914,11 @@ const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
   max: /* #__PURE__ */ createMaxTransform({ typed, larger }),
   mean: /* #__PURE__ */ createMeanTransform({ typed, add, divide }),
   min: /* #__PURE__ */ createMinTransform({ typed, smaller }),
-  range: /* #__PURE__ */ createRangeTransform({ typed, config }),
+  range: /* #__PURE__ */ createRangeTransform({ typed, config, smaller, smallerEq, larger, largerEq }),
   subset: /* #__PURE__ */ createSubsetTransform({ typed, matrix }),
-  sum: /* #__PURE__ */ createSumTransform({ typed, config, add })
+  sum: /* #__PURE__ */ createSumTransform({ typed, config, add }),
+  std: /* #__PURE__ */ createStdTransform({ typed, sqrt, variance }),
+  variance: /* #__PURE__ */ createVarianceTransform({ typed, add, subtract, multiply, divide, apply, isNaN })
 })
 
 // expression (4)

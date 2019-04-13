@@ -70,7 +70,7 @@ describe('parse', function () {
   })
 
   it('should parse unicode and other special characters', function () {
-    // http://unicode-table.com/en
+    // https://unicode-table.com/en
     let scope = {}
 
     math.evaluate('$ab$c = 2', scope) // dollar sign
@@ -974,6 +974,42 @@ describe('parse', function () {
         }
       }
       assert.strictEqual(parseAndEval('test()[2]', scope), 2)
+    })
+
+    it('should parse column function', function () {
+      const a = [
+        [0, 2, 0, 0, 0],
+        [0, 1, 0, 2, 4],
+        [0, 0, 0, 0, 0],
+        [8, 4, 0, 3, 0],
+        [0, 0, 0, 6, 0]
+      ]
+      const m = math.matrix(a)
+      const c = math.matrix([[2], [1], [0], [4], [0]])
+      let scope = {
+        test: function () {
+          return m
+        }
+      }
+      assert.deepStrictEqual(parseAndEval('column(test(),2)', scope), c)
+    })
+
+    it('should parse row function', function () {
+      const a = [
+        [0, 2, 0, 0, 0],
+        [0, 1, 0, 2, 4],
+        [0, 0, 0, 0, 0],
+        [8, 4, 0, 3, 0],
+        [0, 0, 0, 6, 0]
+      ]
+      const m = math.matrix(a)
+      const r = math.matrix([[0, 1, 0, 2, 4]])
+      let scope = {
+        test: function () {
+          return m
+        }
+      }
+      assert.deepStrictEqual(parseAndEval('row(test(),2)', scope), r)
     })
 
     it('should parse functions without parameters', function () {
@@ -1960,6 +1996,17 @@ describe('parse', function () {
       assert.strictEqual(parse('"hello"').toString(), '"hello"')
       assert.strictEqual(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3 i, 4]')
       assert.strictEqual(parse('1/2a').toString(), '1 / 2 a')
+    })
+
+    it('should correctly stringify named operators', function () {
+      assert.strictEqual(parse('7 mod 3').toString(), '7 mod 3')
+      assert.strictEqual(parse('5 inch to cm').toString(), '5 inch to cm')
+      assert.strictEqual(parse('5 inch in cm').toString(), '5 inch in cm')
+      assert.strictEqual(parse('false and true').toString(), 'false and true')
+      assert.strictEqual(parse('false xor true').toString(), 'false xor true')
+      assert.strictEqual(parse('false or true').toString(), 'false or true')
+      assert.strictEqual(parse('not true').toString(), 'not true')
+      assert.strictEqual(parse('5!').toString(), '5!')
     })
 
     it('should correctly stringify an index with dot notation', function () {

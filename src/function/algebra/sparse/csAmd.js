@@ -23,8 +23,6 @@ export const createCsAmd = /* #__PURE__ */ factory(name, dependencies, ({ add, m
    *
    * @param {Number} order    0: Natural, 1: Cholesky, 2: LU, 3: QR
    * @param {Matrix} m        Sparse Matrix
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
   return function csAmd (order, a) {
     // check input parameters

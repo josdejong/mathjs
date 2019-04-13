@@ -31,7 +31,7 @@ Stores values for a fractional number.
 Stores values for a arbitrary-precision floating point number.
 
 - [Overview](../datatypes/bignumbers.md)
-- [Class API](http://mikemcl.github.io/decimal.js/)
+- [Class API](https://mikemcl.github.io/decimal.js/)
 
 
 ## Matrix
