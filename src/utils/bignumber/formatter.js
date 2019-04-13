@@ -107,7 +107,7 @@ export function format (value, options) {
       return toExponential(value, precision)
 
     case 'engineering':
-      return exports.toEngineering(value, precision)
+      return toEngineering(value, precision)
 
     case 'auto':
       // TODO: clean up some day. Deprecated since: 2018-01-24
@@ -168,7 +168,7 @@ export function format (value, options) {
  * @param {BigNumber | string} value
  * @param {number} [precision]        Optional number of significant figures to return.
  */
-exports.toEngineering = function (value, precision) {
+export function toEngineering (value, precision) {
   // find nearest lower multiple of 3 for exponent
   const e = value.e
   const newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))

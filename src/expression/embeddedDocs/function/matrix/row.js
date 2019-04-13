@@ -1,4 +1,4 @@
-module.exports = {
+export const rowDocs = {
   'name': 'row',
   'category': 'Matrix',
   'syntax': [

@@ -204,6 +204,8 @@ import { subtractDocs } from './function/arithmetic/subtract'
 import { varianceDocs } from './function/statistics/variance'
 import { sinDocs } from './function/trigonometry/sin'
 import { numericDocs } from './function/utils/numeric'
+import { columnDocs } from './function/matrix/column'
+import { rowDocs } from './function/matrix/row'
 
 export const embeddedDocs = {
 
@@ -394,6 +396,7 @@ export const embeddedDocs = {
   // functions - matrix
   'concat': concatDocs,
   cross: crossDocs,
+  column: columnDocs,
   ctranspose: ctransposeDocs,
   det: detDocs,
   diag: diagDocs,
@@ -411,6 +414,7 @@ export const embeddedDocs = {
   range: rangeDocs,
   resize: resizeDocs,
   reshape: reshapeDocs,
+  row: rowDocs,
   size: sizeDocs,
   sort: sortDocs,
   squeeze: squeezeDocs,

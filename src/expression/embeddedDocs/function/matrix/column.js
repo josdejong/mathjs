@@ -1,4 +1,4 @@
-module.exports = {
+export const columnDocs = {
   'name': 'column',
   'category': 'Matrix',
   'syntax': [
