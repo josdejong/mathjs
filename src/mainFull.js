@@ -325,7 +325,7 @@ import { createColumnTransform } from './expression/transform/column.transform'
 import { createDeprecatedEval } from './expression/function/eval'
 import { createDeprecatedImport } from './core/function/deprecatedImport'
 import {
-  isAccessorNode,
+  isAccessorNode, isArray,
   isArrayNode,
   isAssignmentNode, isBigNumber,
   isBlockNode, isBoolean,
@@ -344,12 +344,9 @@ import {
   isOperatorNode,
   isParenthesisNode, isRange,
   isRangeNode,
-  isRegExp, isResultSet, isSparseMatrix,
-  isSymbolNode, isUnit
+  isRegExp, isResultSet, isSparseMatrix, isString,
+  isSymbolNode, isUndefined, isUnit
 } from './utils/is'
-import { isUndefined } from 'karma/common/util'
-import { isArray } from 'karma/lib/helper'
-import { isString } from 'mocha/lib/utils'
 import { ArgumentsError } from './error/ArgumentsError'
 import { DimensionError } from './error/DimensionError'
 import { IndexError } from './error/IndexError'
