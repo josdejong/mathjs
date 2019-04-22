@@ -208,7 +208,7 @@ export function importFactory (typed, load, math, factories) {
   // TODO: _importLegacyFactory is deprecated since v6.0.0, clean up some day
   function _importLegacyFactory (factory, options) {
     warnOnce('Factories of type { name, factory } are deprecated since v6. ' +
-      'Please change create your factory functions using the math.factory function.')
+      'Please create your factory functions using the math.factory function.')
 
     if (typeof factory.name === 'string') {
       const name = factory.name
