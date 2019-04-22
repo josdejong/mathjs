@@ -1,9 +1,5 @@
 'use strict'
 
-import { createErf } from './erf'
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
 
-console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
-
-export default [
-  createErf
-]
+deprecatedIndexFileError(__filename)

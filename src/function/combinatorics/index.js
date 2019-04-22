@@ -1,15 +1,5 @@
 'use strict'
 
-import { createBellNumbers } from './bellNumbers'
-import { createComposition } from './composition'
-import { createStirlingS2 } from './stirlingS2'
-import { createCatalan } from './catalan'
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
 
-console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
-
-export default [
-  createBellNumbers,
-  createComposition,
-  createStirlingS2,
-  createCatalan
-]
+deprecatedIndexFileError(__filename)

@@ -632,7 +632,11 @@ const allES6Functions = {
   core: 'Function',
   create: 'Function',
   factory: 'Function',
-  chain: 'Function'
+  chain: 'Function',
+  deprecatedEval: 'Function',
+  deprecatedImport: 'Function',
+  deprecatedVar: 'Function',
+  deprecatedTypeof: 'Function'
 }
 
 const allInstanceConstants = {
@@ -1379,7 +1383,26 @@ exports.expectedES6Structure = {
   ...allTypeChecks,
   ...allErrorClasses,
   ...allDependencyCollections,
-  docs: embeddedDocs
+  docs: embeddedDocs,
+
+  // deprecated stuff:
+  expression: {
+    node: {
+      ...allNodeClasses
+    },
+    parse: 'Function',
+    Parser: 'Function'
+  },
+  type: {
+    ...allTypeChecks,
+    ...allClasses
+  },
+  json: {
+    reviver: 'Function'
+  },
+  error: {
+    ...allErrorClasses
+  }
 }
 
 // not all functions are available for just numbers
@@ -1467,7 +1490,11 @@ const excludedProperties = [].concat(
   [
     'var',
     'eval',
-    'typeof'
+    'typeof',
+    'deprecatedEval',
+    'deprecatedImport',
+    'deprecatedTypeof',
+    'deprecatedVar'
   ],
   [
     'ComplexDependencies',
@@ -1617,6 +1644,10 @@ const excludedTypes = [
 ]
 
 exports.expectedES6StructureNumber = exclude(exports.expectedES6Structure, excludedProperties)
+delete exports.expectedES6StructureNumber.expression
+delete exports.expectedES6StructureNumber.type
+delete exports.expectedES6StructureNumber.error
+delete exports.expectedES6StructureNumber.json
 
 exports.expectedInstanceStructureNumber = exclude(exports.expectedInstanceStructure, excludedProperties)
 const mathWithTransform = exclude(exports.expectedInstanceStructureNumber.expression.mathWithTransform, excludedProperties)

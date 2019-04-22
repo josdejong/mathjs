@@ -10,7 +10,7 @@ export const warnOnce = (() => {
     if (!messages[message]) {
       messages[message] = true
 
-      console.warn(...args)
+      console.warn('Warning:', ...args)
     }
   }
 })()

@@ -208,7 +208,7 @@ export function importFactory (typed, load, math, factories) {
   // TODO: _importLegacyFactory is deprecated since v6.0.0, clean up some day
   function _importLegacyFactory (factory, options) {
     warnOnce('Factories of type { name, factory } are deprecated since v6. ' +
-      'Please refactor your factory functions.')
+      'Please change create your factory functions using the math.factory function.')
 
     if (typeof factory.name === 'string') {
       const name = factory.name
@@ -349,14 +349,28 @@ export function importFactory (typed, load, math, factories) {
       }
     }
 
-    lazy(namespace, name, resolver)
+    // TODO: add unit test with non-lazy factory
+    if (!factory.meta || factory.meta.lazy !== false) {
+      lazy(namespace, name, resolver)
 
-    // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
-    if (existing && existingTransform) {
-      _deleteTransform(name)
+      // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
+      if (existing && existingTransform) {
+        _deleteTransform(name)
+      } else {
+        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
+          lazy(math.expression.mathWithTransform, name, () => namespace[name])
+        }
+      }
     } else {
-      if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
-        lazy(math.expression.mathWithTransform, name, () => namespace[name])
+      namespace[name] = resolver()
+
+      // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
+      if (existing && existingTransform) {
+        _deleteTransform(name)
+      } else {
+        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
+          lazy(math.expression.mathWithTransform, name, () => namespace[name])
+        }
       }
     }
 

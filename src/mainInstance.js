@@ -127,7 +127,7 @@ export function create (factories, config) {
     const obj = traverse(math, path)
 
     lazy(obj, name, () => {
-      warnOnce(`Warning: math.${fullName} is moved to math.${name} in v6.0.0. ` +
+      warnOnce(`math.${fullName} is moved to math.${name} in v6.0.0. ` +
         'Please use the new location instead.')
       return math[name]
     })

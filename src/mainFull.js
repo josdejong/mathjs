@@ -17,7 +17,7 @@ import { createHasNumericValue } from './function/utils/hasNumericValue'
 import { createIsPositive } from './function/utils/isPositive'
 import { createIsZero } from './function/utils/isZero'
 import { createIsNaN } from './function/utils/isNaN'
-import { createTypeOf } from './function/utils/typeOf'
+import { createDeprecatedTypeof, createTypeOf } from './function/utils/typeOf'
 import { createEqualScalar } from './function/relational/equalScalar'
 import { createSparseMatrixClass } from './type/matrix/SparseMatrix'
 import { createNumber } from './type/number'
@@ -211,7 +211,7 @@ import { createSum } from './function/statistics/sum'
 import { createMean } from './function/statistics/mean'
 import { createMedian } from './function/statistics/median'
 import { createMad } from './function/statistics/mad'
-import { createVariance } from './function/statistics/variance'
+import { createDeprecatedVar, createVariance } from './function/statistics/variance'
 import { createQuantileSeq } from './function/statistics/quantileSeq'
 import { createStd } from './function/statistics/std'
 import { createCombinations } from './function/probability/combinations'
@@ -322,12 +322,50 @@ import { createStdTransform } from './expression/transform/std.transform'
 import { createVarianceTransform } from './expression/transform/variance.transform'
 import { createRowTransform } from './expression/transform/row.transform'
 import { createColumnTransform } from './expression/transform/column.transform'
+import { createDeprecatedEval } from './expression/function/eval'
+import { createDeprecatedImport } from './core/function/deprecatedImport'
+import {
+  isAccessorNode,
+  isArrayNode,
+  isAssignmentNode, isBigNumber,
+  isBlockNode, isBoolean,
+  isChain, isComplex,
+  isConditionalNode,
+  isConstantNode,
+  isDate, isDenseMatrix, isFraction, isFunction,
+  isFunctionAssignmentNode,
+  isFunctionNode, isHelp, isIndex,
+  isIndexNode, isMatrix,
+  isNode,
+  isNull,
+  isNumber,
+  isObject,
+  isObjectNode,
+  isOperatorNode,
+  isParenthesisNode, isRange,
+  isRangeNode,
+  isRegExp, isResultSet, isSparseMatrix,
+  isSymbolNode, isUnit
+} from './utils/is'
+import { isUndefined } from 'karma/common/util'
+import { isArray } from 'karma/lib/helper'
+import { isString } from 'mocha/lib/utils'
+import { ArgumentsError } from './error/ArgumentsError'
+import { DimensionError } from './error/DimensionError'
+import { IndexError } from './error/IndexError'
+import { lazy } from './utils/object'
+import { warnOnce } from './utils/log'
 
 // create a read-only version of config
 export const config = /* #__PURE__ */ function (options) {
   if (options) {
-    throw new Error('The global config is readonly. ' +
-      'Please create a mathjs instance if you want to change the default configuration.')
+    throw new Error('The global config is readonly. \n' +
+      'Please create a mathjs instance if you want to change the default configuration. \n' +
+      'Example:\n' +
+      '\n' +
+      '  import { create, all } from \'mathjs\';\n' +
+      '  const mathjs = create(all);\n' +
+      '  mathjs.config({ number: \'BigNumber\' });\n')
   }
 
   return Object.freeze(DEFAULT_CONFIG)
@@ -1249,3 +1287,123 @@ export { ArgumentsError } from './error/ArgumentsError'
 
 export { core, create, factory } from './mainInstance'
 export * from './dependenciesFull.generated'
+
+// ----------------------------------------------------------------------------
+// backward compatibility
+
+// TODO: deprecated since version 6.0.0. Date: 2019-04-14
+
+// "deprecatedEval" is also exposed as "eval" in the code compiled to ES5+CommonJs
+export const deprecatedEval = /* #__PURE__ */ createDeprecatedEval({ evaluate })
+
+// "deprecatedImport" is also exposed as "import" in the code compiled to ES5+CommonJs
+export const deprecatedImport = /* #__PURE__ */ createDeprecatedImport({})
+
+// "deprecatedVar" is also exposed as "var" in the code compiled to ES5+CommonJs
+export const deprecatedVar = /* #__PURE__ */ createDeprecatedVar({ variance })
+
+// "deprecatedTypeof" is also exposed as "typeof" in the code compiled to ES5+CommonJs
+export const deprecatedTypeof = /* #__PURE__ */ createDeprecatedTypeof({ typeOf })
+
+export const type = /* #__PURE__ */ createDeprecatedProperties('type', {
+  isNumber,
+  isComplex,
+  isBigNumber,
+  isFraction,
+  isUnit,
+  isString,
+  isArray,
+  isMatrix,
+  isDenseMatrix,
+  isSparseMatrix,
+  isRange,
+  isIndex,
+  isBoolean,
+  isResultSet,
+  isHelp,
+  isFunction,
+  isDate,
+  isRegExp,
+  isObject,
+  isNull,
+  isUndefined,
+  isAccessorNode,
+  isArrayNode,
+  isAssignmentNode,
+  isBlockNode,
+  isConditionalNode,
+  isConstantNode,
+  isFunctionAssignmentNode,
+  isFunctionNode,
+  isIndexNode,
+  isNode,
+  isObjectNode,
+  isOperatorNode,
+  isParenthesisNode,
+  isRangeNode,
+  isSymbolNode,
+  isChain,
+  BigNumber,
+  Chain,
+  Complex,
+  Fraction,
+  Matrix,
+  DenseMatrix,
+  SparseMatrix,
+  Spa,
+  FibonacciHeap,
+  ImmutableDenseMatrix,
+  Index,
+  Range,
+  ResultSet,
+  Unit,
+  Help,
+  Parser
+})
+
+export const expression = /* #__PURE__ */ createDeprecatedProperties('expression', {
+  parse,
+  Parser,
+  node: createDeprecatedProperties('expression.node', {
+    AccessorNode,
+    ArrayNode,
+    AssignmentNode,
+    BlockNode,
+    ConditionalNode,
+    ConstantNode,
+    IndexNode,
+    FunctionAssignmentNode,
+    FunctionNode,
+    Node,
+    ObjectNode,
+    OperatorNode,
+    ParenthesisNode,
+    RangeNode,
+    RelationalNode,
+    SymbolNode
+  })
+})
+
+export const json = /* #__PURE__ */ createDeprecatedProperties('json', {
+  reviver
+})
+
+export const error = /* #__PURE__ */ createDeprecatedProperties('error', {
+  ArgumentsError,
+  DimensionError,
+  IndexError
+})
+
+function createDeprecatedProperties (path, props) {
+  const obj = {}
+
+  Object.keys(props).forEach(name => {
+    lazy(obj, name, () => {
+      warnOnce(`math.${path}.${name} is moved to math.${name} in v6.0.0. ` +
+        'Please use the new location instead.')
+      return props[name]
+    })
+  })
+
+  return obj
+}

@@ -1,14 +1,5 @@
 'use strict'
 
-import { createFractionClass } from './Fraction'
-import { createFraction } from './function/fraction'
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
 
-console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
-
-export default [
-  // type
-  createFractionClass,
-
-  // construction function
-  createFraction
-]
+deprecatedIndexFileError(__filename)

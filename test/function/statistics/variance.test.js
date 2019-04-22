@@ -132,7 +132,7 @@ describe('variance', function () {
 
     // Note that the following assertion will fail if math.var is already used in a previous unit test
     assert.deepStrictEqual(logs, [
-      ['Function "var" has been renamed to "variance", please use the new function instead.']
+      ['Warning:', 'Function "var" has been renamed to "variance" in v6.0.0, please use the new function instead.']
     ])
 
     console.warn = warnOriginal

@@ -4,62 +4,78 @@
 const assert = require('assert')
 
 function validateBundle (expectedBundleStructure, bundle) {
-  const issues = []
+  const originalWarn = console.warn
 
-  // see whether all expected functions and objects are there
-  traverse(expectedBundleStructure, (expectedType, path) => {
-    const actualValue = get(bundle, path)
-    const actualType = validateTypeOf(actualValue)
-
-    const message = (actualType === 'undefined')
-      ? `Missing entry in bundle. ` +
-      `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
-      : `Unexpected entry type in bundle. ` +
-      `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
-
-    if (actualType !== expectedType) {
-      issues.push({ actualType, expectedType, message })
-
-      console.warn(message)
-    }
-  })
-
-  // see whether there are any functions or objects that shouldn't be there
-  traverse(bundle, (actualValue, path) => {
-    const actualType = validateTypeOf(actualValue)
-    const expectedType = get(expectedBundleStructure, path) || 'undefined'
-
-    // FIXME: ugly to have these special cases
-    if (path.join('.').indexOf('docs.') !== -1) {
-      // ignore the contents of docs
-      return
-    }
-    if (path.join('.').indexOf('all.') !== -1) {
-      // ignore the contents of all dependencies
+  console.warn = function (...args) {
+    if (args.join(' ').indexOf('is moved to') !== -1 && args.join(' ').indexOf('Please use the new location instead') !== -1) {
+      // Ignore warnings like:
+      // Warning: math.type.isNumber is moved to math.isNumber in v6.0.0. Please use the new location instead.
       return
     }
 
-    const message = (expectedType === 'undefined')
-      ? `Unknown entry in bundle. ` +
-      'Is there a new function added which is missing in this snapshot test? ' +
-      `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
-      : `Unexpected entry type in bundle. ` +
-      `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
+    originalWarn.apply(console, args)
+  }
 
-    if (actualType !== expectedType) {
-      issues.push({ actualType, expectedType, message })
+  try {
+    const issues = []
 
-      console.warn(message)
+    // see whether all expected functions and objects are there
+    traverse(expectedBundleStructure, (expectedType, path) => {
+      const actualValue = get(bundle, path)
+      const actualType = validateTypeOf(actualValue)
+
+      const message = (actualType === 'undefined')
+        ? `Missing entry in bundle. ` +
+        `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
+        : `Unexpected entry type in bundle. ` +
+        `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
+
+      if (actualType !== expectedType) {
+        issues.push({ actualType, expectedType, message })
+
+        console.warn(message)
+      }
+    })
+
+    // see whether there are any functions or objects that shouldn't be there
+    traverse(bundle, (actualValue, path) => {
+      const actualType = validateTypeOf(actualValue)
+      const expectedType = get(expectedBundleStructure, path) || 'undefined'
+
+      // FIXME: ugly to have these special cases
+      if (path.join('.').indexOf('docs.') !== -1) {
+        // ignore the contents of docs
+        return
+      }
+      if (path.join('.').indexOf('all.') !== -1) {
+        // ignore the contents of all dependencies
+        return
+      }
+
+      const message = (expectedType === 'undefined')
+        ? `Unknown entry in bundle. ` +
+        'Is there a new function added which is missing in this snapshot test? ' +
+        `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
+        : `Unexpected entry type in bundle. ` +
+        `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
+
+      if (actualType !== expectedType) {
+        issues.push({ actualType, expectedType, message })
+
+        console.warn(message)
+      }
+    })
+
+    // assert on the first issue (if any)
+    if (issues.length > 0) {
+      const { actualType, expectedType, message } = issues[0]
+
+      console.warn(`${issues.length} bundle issues found`)
+
+      assert.strictEqual(actualType, expectedType, message)
     }
-  })
-
-  // assert on the first issue (if any)
-  if (issues.length > 0) {
-    const { actualType, expectedType, message } = issues[0]
-
-    console.warn(`${issues.length} bundle issues found`)
-
-    assert.strictEqual(actualType, expectedType, message)
+  } finally {
+    console.warn = originalWarn
   }
 }
 

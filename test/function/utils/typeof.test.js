@@ -152,7 +152,7 @@ describe('typeOf', function () {
 
     // Note that the following assertion will fail if math.typeof is already used in a previous unit test
     assert.deepStrictEqual(logs, [
-      ['Function "typeof" has been renamed to "typeOf", please use the new function instead.']
+      ['Warning:', 'Function "typeof" has been renamed to "typeOf" in v6.0.0, please use the new function instead.']
     ])
 
     console.warn = warnOriginal

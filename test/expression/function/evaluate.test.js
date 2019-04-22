@@ -85,7 +85,7 @@ describe('evaluate', function () {
 
     // Note that the following assertion will fail if math.evaluate is already used in a previous unit test
     assert.deepStrictEqual(logs, [
-      ['Function "eval" has been renamed to "evaluate", please use the new function instead.']
+      ['Warning:', 'Function "eval" has been renamed to "evaluate" in v6.0.0, please use the new function instead.']
     ])
 
     console.warn = warnOriginal

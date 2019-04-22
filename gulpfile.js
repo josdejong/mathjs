@@ -14,6 +14,7 @@ const HEADER = './src/header.js'
 const VERSION = './src/version.js'
 const COMPILE_SRC = './src/**/*.js'
 const COMPILE_LIB = './lib'
+const COMPILED_MAIN_FULL = './lib/mainFull.js'
 const FILE = 'math.js'
 const FILE_MIN = 'math.min.js'
 const FILE_MAP = 'math.min.map'
@@ -210,6 +211,24 @@ function generateDocs (done) {
   done()
 }
 
+// Add links to deprecated functions in the node.js transpiled code mainFull.js
+// These names are not valid in ES6 where we use them as functions instead of properties.
+function addDeprecatedFunctions (done) {
+  const code = String(fs.readFileSync(COMPILED_MAIN_FULL))
+
+  const updatedCode = code + '\n\n' +
+    'exports[\'var\'] = exports.deprecatedVar;\n' +
+    'exports[\'typeof\'] = exports.deprecatedTypeof;\n' +
+    'exports[\'eval\'] = exports.deprecatedEval;\n' +
+    'exports[\'import\'] = exports.deprecatedImport;\n'
+
+  fs.writeFileSync(COMPILED_MAIN_FULL, updatedCode)
+
+  gutil.log('Added deprecated functions to ' + COMPILED_MAIN_FULL)
+
+  done()
+}
+
 // check whether any of the source files contains non-ascii characters
 gulp.task('validate:ascii', validateAscii)
 
@@ -224,8 +243,8 @@ gulp.task('watch', function watch () {
     delay: 100
   }
 
-  gulp.watch(files, options, gulp.parallel(bundle, compile))
+  gulp.watch(files, options, gulp.parallel(bundle, compile, addDeprecatedFunctions))
 })
 
 // The default task (called when you run `gulp`)
-gulp.task('default', gulp.series(bundle, compile, minify, validate, generateDocs))
+gulp.task('default', gulp.series(bundle, compile, addDeprecatedFunctions, minify, validate, generateDocs))

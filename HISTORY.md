@@ -7,20 +7,46 @@
 
 Breaking changes:
 
+- Functions `config` and `import` are not available anymore in the global
+  context:
+
+  ```js
+  import * as mathjs from 'mathjs'
+  mathjs.config(...) // error in v6.0.0
+  mathjs.import(...) // error in v6.0.0
+  ```
+
+  Instead, create your own mathjs instance and pass config and imports
+  there:
+
+  ```js
+  import { create, all } from 'mathjs'
+  const config = { number: 'BigNumber' }
+  const mathjs = create(all, config)
+  mathjs.import(...)
+  ```
+
 - Renamed function `typeof` to `typeOf`, `var` to `variance`,
   and `eval` to `evaluate`. (the old function names are reserved keywords
   which can only be used as a property name).
 - Deprecated having a `.toTex` property attached to functions.
   Use a custom toTex handler instead.
-- Functions no longer dynamically update configuration. Instead, functions
-  have to be re-created with new config. A math.js instance automatically
-  recreates all affected functions when the configuration changes.
 - Deprecated the `Matrix.storage` function. Use `math.matrix` instead to create
   a matrix.
 - Deprecated function `math.expression.parse`, use `math.parse` instead.
   Was used before for example to customize supported characters by replacing
   `math.parse.isAlpha`.
-- Moved class `math.expression.Parser` to `math.type.Parser`.
+- Moved all classes like `math.type.Unit` and `math.expression.Parser` to
+  `math.Unit` and `math.Parser` respectively.
+- Deprecated the index classes used to load a custom subset of functions.
+  Instead, load individual functions via the main index file like:
+
+  ```js
+  import { create, addDependencies, multiplyDependencies } from 'mathjs'
+  const math = create({ addDependencies, multiplyDependencies })
+  ```
+
+  See example `advanced/custom_loading.js`.
 
 Non breaking:
 

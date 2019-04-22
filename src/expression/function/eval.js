@@ -4,7 +4,7 @@ import { warnOnce } from '../../utils/log'
 
 export const createDeprecatedEval = /* #__PURE__ */ factory('eval', ['evaluate'], ({ evaluate }) => {
   return function (...args) {
-    warnOnce('Function "eval" has been renamed to "evaluate", please use the new function instead.')
+    warnOnce('Function "eval" has been renamed to "evaluate" in v6.0.0, please use the new function instead.')
 
     return evaluate.apply(evaluate, args)
   }

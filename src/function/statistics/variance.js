@@ -163,7 +163,7 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
 // For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-09
 export const createDeprecatedVar = /* #__PURE__ */ factory('var', ['variance'], ({ variance }) => {
   return function (...args) {
-    warnOnce('Function "var" has been renamed to "variance", please use the new function instead.')
+    warnOnce('Function "var" has been renamed to "variance" in v6.0.0, please use the new function instead.')
 
     return variance.apply(variance, args)
   }
