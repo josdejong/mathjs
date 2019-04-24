@@ -34,6 +34,7 @@ import {
   createUnaryMinus,
   createUnaryPlus,
   createAbs,
+  createApply,
   createAddScalar,
   createCbrt,
   createCeil,
@@ -68,6 +69,7 @@ import {
   createOr,
   createXor,
   createConcat,
+  createColumn,
   createCross,
   createDiag,
   createEye,
@@ -82,6 +84,7 @@ import {
   createRange,
   createReshape,
   createResize,
+  createRow,
   createSize,
   createSqueeze,
   createSubset,
@@ -305,6 +308,8 @@ import {
   createVacuumImpedance,
   createWeakMixingAngle,
   createWienDisplacement,
+  createApplyTransform,
+  createColumnTransform,
   createFilterTransform,
   createForEachTransform,
   createIndexTransform,
@@ -313,9 +318,12 @@ import {
   createMeanTransform,
   createMinTransform,
   createRangeTransform,
+  createRowTransform,
   createSubsetTransform,
   createConcatTransform,
-  createSumTransform
+  createStdTransform,
+  createSumTransform,
+  createVarianceTransform
 } from '../factoriesFull.js'
 export { all } from './allFull.js'
 
@@ -582,25 +590,21 @@ export const unaryPlusDependencies = {
   createUnaryPlus
 }
 
-export const addScalarDependencies = {
+export const applyDependencies = {
+  isIntegerDependencies,
   typedDependencies,
-  createAddScalar
+  createApply
 }
 
-export const ceilDependencies = {
+export const cubeDependencies = {
   typedDependencies,
-  createCeil
+  createCube
 }
 
-export const expDependencies = {
-  typedDependencies,
-  createExp
-}
-
-export const fixDependencies = {
+export const expm1Dependencies = {
   ComplexDependencies,
   typedDependencies,
-  createFix
+  createExpm1
 }
 
 export const log10Dependencies = {
@@ -784,6 +788,12 @@ export const LOG2EDependencies = {
   createLOG2E
 }
 
+export const applyTransformDependencies = {
+  isIntegerDependencies,
+  typedDependencies,
+  createApplyTransform
+}
+
 export const filterTransformDependencies = {
   typedDependencies,
   createFilterTransform
@@ -826,14 +836,14 @@ export const unaryMinusDependencies = {
   createUnaryMinus
 }
 
-export const cubeDependencies = {
+export const addScalarDependencies = {
   typedDependencies,
-  createCube
+  createAddScalar
 }
 
-export const floorDependencies = {
+export const expDependencies = {
   typedDependencies,
-  createFloor
+  createExp
 }
 
 export const log2Dependencies = {
@@ -1240,36 +1250,32 @@ export const absDependencies = {
   createAbs
 }
 
-export const lcmDependencies = {
-  equalScalarDependencies,
-  matrixDependencies,
+export const floorDependencies = {
+  roundDependencies,
   typedDependencies,
-  createLcm
+  createFloor
 }
 
-export const subtractDependencies = {
-  DenseMatrixDependencies,
+export const multiplyDependencies = {
   addScalarDependencies,
   equalScalarDependencies,
   matrixDependencies,
+  multiplyScalarDependencies,
   typedDependencies,
-  unaryMinusDependencies,
-  createSubtract
+  createMultiply
 }
 
-export const bitOrDependencies = {
-  DenseMatrixDependencies,
+export const dotMultiplyDependencies = {
   equalScalarDependencies,
   matrixDependencies,
+  multiplyScalarDependencies,
   typedDependencies,
-  createBitOr
+  createDotMultiply
 }
 
-export const xorDependencies = {
-  DenseMatrixDependencies,
-  matrixDependencies,
+export const reDependencies = {
   typedDependencies,
-  createXor
+  createRe
 }
 
 export const flattenDependencies = {
@@ -1283,10 +1289,36 @@ export const resizeDependencies = {
   createResize
 }
 
-export const transposeDependencies = {
+export const squeezeDependencies = {
   matrixDependencies,
   typedDependencies,
-  createTranspose
+  createSqueeze
+}
+
+export const prodDependencies = {
+  multiplyDependencies,
+  typedDependencies,
+  createProd
+}
+
+export const powDependencies = {
+  ComplexDependencies,
+  fractionDependencies,
+  identityDependencies,
+  matrixDependencies,
+  multiplyDependencies,
+  numberDependencies,
+  typedDependencies,
+  createPow
+}
+
+export const dotPowDependencies = {
+  DenseMatrixDependencies,
+  equalScalarDependencies,
+  matrixDependencies,
+  powDependencies,
+  typedDependencies,
+  createDotPow
 }
 
 export const rightArithShiftDependencies = {
@@ -1357,11 +1389,44 @@ export const setSizeDependencies = {
   createSetSize
 }
 
+export const normDependencies = {
+  absDependencies,
+  addDependencies,
+  conjDependencies,
+  equalScalarDependencies,
+  largerDependencies,
+  matrixDependencies,
+  multiplyDependencies,
+  powDependencies,
+  smallerDependencies,
+  sqrtDependencies,
+  typedDependencies,
+  createNorm
+}
+
 export const AssignmentNodeDependencies = {
   matrixDependencies,
   NodeDependencies,
   subsetDependencies,
   createAssignmentNode
+}
+
+export const quantileSeqDependencies = {
+  addDependencies,
+  compareDependencies,
+  multiplyDependencies,
+  partitionSelectDependencies,
+  typedDependencies,
+  createQuantileSeq
+}
+
+export const gammaDependencies = {
+  BigNumberDependencies,
+  ComplexDependencies,
+  multiplyScalarDependencies,
+  powDependencies,
+  typedDependencies,
+  createGamma
 }
 
 export const concatTransformDependencies = {
@@ -1377,18 +1442,19 @@ export const bignumberDependencies = {
   createBignumber
 }
 
-export const multiplyDependencies = {
-  addScalarDependencies,
+export const lcmDependencies = {
   equalScalarDependencies,
   matrixDependencies,
-  multiplyScalarDependencies,
   typedDependencies,
-  createMultiply
+  createLcm
 }
 
-export const reDependencies = {
+export const bitOrDependencies = {
+  DenseMatrixDependencies,
+  equalScalarDependencies,
+  matrixDependencies,
   typedDependencies,
-  createRe
+  createBitOr
 }
 
 export const kronDependencies = {
@@ -1398,36 +1464,17 @@ export const kronDependencies = {
   createKron
 }
 
-export const squeezeDependencies = {
+export const transposeDependencies = {
   matrixDependencies,
   typedDependencies,
-  createSqueeze
+  createTranspose
 }
 
-export const prodDependencies = {
-  multiplyDependencies,
-  typedDependencies,
-  createProd
-}
-
-export const powDependencies = {
-  ComplexDependencies,
+export const numericDependencies = {
+  bignumberDependencies,
   fractionDependencies,
-  identityDependencies,
-  matrixDependencies,
-  multiplyDependencies,
   numberDependencies,
-  typedDependencies,
-  createPow
-}
-
-export const dotPowDependencies = {
-  DenseMatrixDependencies,
-  equalScalarDependencies,
-  matrixDependencies,
-  powDependencies,
-  typedDependencies,
-  createDotPow
+  createNumeric
 }
 
 export const andDependencies = {
@@ -1460,19 +1507,11 @@ export const cotDependencies = {
   createCot
 }
 
-export const normDependencies = {
-  absDependencies,
+export const dotDependencies = {
   addDependencies,
-  conjDependencies,
-  equalScalarDependencies,
-  largerDependencies,
-  matrixDependencies,
   multiplyDependencies,
-  powDependencies,
-  smallerDependencies,
-  sqrtDependencies,
   typedDependencies,
-  createNorm
+  createDot
 }
 
 export const sumDependencies = {
@@ -1483,35 +1522,51 @@ export const sumDependencies = {
   createSum
 }
 
-export const quantileSeqDependencies = {
-  addDependencies,
-  compareDependencies,
-  multiplyDependencies,
-  partitionSelectDependencies,
+export const factorialDependencies = {
+  gammaDependencies,
   typedDependencies,
-  createQuantileSeq
+  createFactorial
 }
 
-export const gammaDependencies = {
-  BigNumberDependencies,
-  ComplexDependencies,
-  multiplyScalarDependencies,
-  powDependencies,
+export const permutationsDependencies = {
+  factorialDependencies,
   typedDependencies,
-  createGamma
+  createPermutations
 }
 
 export const rangeTransformDependencies = {
   bignumberDependencies,
   matrixDependencies,
+  largerDependencies,
+  largerEqDependencies,
+  smallerDependencies,
+  smallerEqDependencies,
   typedDependencies,
   createRangeTransform
 }
 
-export const expm1Dependencies = {
-  ComplexDependencies,
+export const sumTransformDependencies = {
+  bignumberDependencies,
+  fractionDependencies,
+  addDependencies,
   typedDependencies,
-  createExpm1
+  createSumTransform
+}
+
+export const ceilDependencies = {
+  roundDependencies,
+  typedDependencies,
+  createCeil
+}
+
+export const subtractDependencies = {
+  DenseMatrixDependencies,
+  addScalarDependencies,
+  equalScalarDependencies,
+  matrixDependencies,
+  typedDependencies,
+  unaryMinusDependencies,
+  createSubtract
 }
 
 export const crossDependencies = {
@@ -1580,23 +1635,10 @@ export const setPowersetDependencies = {
   createSetPowerset
 }
 
-export const dotDependencies = {
-  addDependencies,
-  multiplyDependencies,
+export const indexDependencies = {
+  IndexDependencies,
   typedDependencies,
-  createDot
-}
-
-export const factorialDependencies = {
-  gammaDependencies,
-  typedDependencies,
-  createFactorial
-}
-
-export const permutationsDependencies = {
-  factorialDependencies,
-  typedDependencies,
-  createPermutations
+  createIndex
 }
 
 export const indexTransformDependencies = {
@@ -1604,75 +1646,23 @@ export const indexTransformDependencies = {
   createIndexTransform
 }
 
-export const sumTransformDependencies = {
-  bignumberDependencies,
-  fractionDependencies,
-  addDependencies,
+export const fixDependencies = {
+  ComplexDependencies,
+  ceilDependencies,
+  floorDependencies,
   typedDependencies,
-  createSumTransform
-}
-
-export const dotMultiplyDependencies = {
-  equalScalarDependencies,
-  matrixDependencies,
-  multiplyScalarDependencies,
-  typedDependencies,
-  createDotMultiply
-}
-
-export const numericDependencies = {
-  bignumberDependencies,
-  fractionDependencies,
-  numberDependencies,
-  createNumeric
-}
-
-export const deepEqualDependencies = {
-  equalDependencies,
-  typedDependencies,
-  createDeepEqual
-}
-
-export const setDifferenceDependencies = {
-  DenseMatrixDependencies,
-  IndexDependencies,
-  compareNaturalDependencies,
-  sizeDependencies,
-  subsetDependencies,
-  typedDependencies,
-  createSetDifference
-}
-
-export const setMultiplicityDependencies = {
-  IndexDependencies,
-  compareNaturalDependencies,
-  sizeDependencies,
-  subsetDependencies,
-  typedDependencies,
-  createSetMultiplicity
-}
-
-export const indexDependencies = {
-  IndexDependencies,
-  typedDependencies,
-  createIndex
+  createFix
 }
 
 export const rangeDependencies = {
   bignumberDependencies,
   matrixDependencies,
+  largerDependencies,
+  largerEqDependencies,
+  smallerDependencies,
+  smallerEqDependencies,
   typedDependencies,
   createRange
-}
-
-export const setIntersectDependencies = {
-  DenseMatrixDependencies,
-  IndexDependencies,
-  compareNaturalDependencies,
-  sizeDependencies,
-  subsetDependencies,
-  typedDependencies,
-  createSetIntersect
 }
 
 export const divideScalarDependencies = {
@@ -1699,29 +1689,29 @@ export const lsolveDependencies = {
   createLsolve
 }
 
-export const UnitDependencies = {
-  BigNumberDependencies,
-  ComplexDependencies,
-  FractionDependencies,
-  absDependencies,
-  addScalarDependencies,
-  divideScalarDependencies,
+export const deepEqualDependencies = {
   equalDependencies,
-  fixDependencies,
-  formatDependencies,
-  isNumericDependencies,
-  multiplyScalarDependencies,
-  numberDependencies,
-  powDependencies,
-  roundDependencies,
-  subtractDependencies,
-  createUnitClass
+  typedDependencies,
+  createDeepEqual
 }
 
-export const createUnitDependencies = {
-  UnitDependencies,
+export const setDifferenceDependencies = {
+  DenseMatrixDependencies,
+  IndexDependencies,
+  compareNaturalDependencies,
+  sizeDependencies,
+  subsetDependencies,
   typedDependencies,
-  createCreateUnit
+  createSetDifference
+}
+
+export const setMultiplicityDependencies = {
+  IndexDependencies,
+  compareNaturalDependencies,
+  sizeDependencies,
+  subsetDependencies,
+  typedDependencies,
+  createSetMultiplicity
 }
 
 export const hypotDependencies = {
@@ -1813,6 +1803,156 @@ export const catalanDependencies = {
   multiplyScalarDependencies,
   typedDependencies,
   createCatalan
+}
+
+export const columnTransformDependencies = {
+  IndexDependencies,
+  matrixDependencies,
+  rangeDependencies,
+  typedDependencies,
+  createColumnTransform
+}
+
+export const rowTransformDependencies = {
+  IndexDependencies,
+  matrixDependencies,
+  rangeDependencies,
+  typedDependencies,
+  createRowTransform
+}
+
+export const xorDependencies = {
+  DenseMatrixDependencies,
+  matrixDependencies,
+  typedDependencies,
+  createXor
+}
+
+export const rowDependencies = {
+  IndexDependencies,
+  matrixDependencies,
+  rangeDependencies,
+  typedDependencies,
+  createRow
+}
+
+export const dotDivideDependencies = {
+  DenseMatrixDependencies,
+  divideScalarDependencies,
+  equalScalarDependencies,
+  matrixDependencies,
+  typedDependencies,
+  createDotDivide
+}
+
+export const UnitDependencies = {
+  BigNumberDependencies,
+  ComplexDependencies,
+  FractionDependencies,
+  absDependencies,
+  addScalarDependencies,
+  divideScalarDependencies,
+  equalDependencies,
+  fixDependencies,
+  formatDependencies,
+  isNumericDependencies,
+  multiplyScalarDependencies,
+  numberDependencies,
+  powDependencies,
+  roundDependencies,
+  subtractDependencies,
+  createUnitClass
+}
+
+export const createUnitDependencies = {
+  UnitDependencies,
+  typedDependencies,
+  createCreateUnit
+}
+
+export const setSymDifferenceDependencies = {
+  IndexDependencies,
+  concatDependencies,
+  setDifferenceDependencies,
+  sizeDependencies,
+  subsetDependencies,
+  typedDependencies,
+  createSetSymDifference
+}
+
+export const SymbolNodeDependencies = {
+  UnitDependencies,
+  NodeDependencies,
+  createSymbolNode
+}
+
+export const qrDependencies = {
+  addScalarDependencies,
+  conjDependencies,
+  divideScalarDependencies,
+  identityDependencies,
+  isZeroDependencies,
+  matrixDependencies,
+  multiplyScalarDependencies,
+  signDependencies,
+  sqrtDependencies,
+  subtractDependencies,
+  typedDependencies,
+  unaryMinusDependencies,
+  unequalDependencies,
+  zerosDependencies,
+  createQr
+}
+
+export const invDependencies = {
+  absDependencies,
+  addScalarDependencies,
+  detDependencies,
+  divideScalarDependencies,
+  identityDependencies,
+  matrixDependencies,
+  multiplyDependencies,
+  typedDependencies,
+  unaryMinusDependencies,
+  createInv
+}
+
+export const sqrtmDependencies = {
+  absDependencies,
+  addDependencies,
+  identityDependencies,
+  invDependencies,
+  maxDependencies,
+  multiplyDependencies,
+  sizeDependencies,
+  sqrtDependencies,
+  subtractDependencies,
+  typedDependencies,
+  createSqrtm
+}
+
+export const intersectDependencies = {
+  absDependencies,
+  addDependencies,
+  addScalarDependencies,
+  divideScalarDependencies,
+  equalScalarDependencies,
+  matrixDependencies,
+  multiplyDependencies,
+  multiplyScalarDependencies,
+  smallerDependencies,
+  subtractDependencies,
+  typedDependencies,
+  createIntersect
+}
+
+export const bellNumbersDependencies = {
+  addScalarDependencies,
+  isIntegerDependencies,
+  isNegativeDependencies,
+  stirlingS2Dependencies,
+  typedDependencies,
+  createBellNumbers
 }
 
 export const atomicMassDependencies = {
@@ -1953,101 +2093,60 @@ export const vacuumImpedanceDependencies = {
   createVacuumImpedance
 }
 
-export const logDependencies = {
-  ComplexDependencies,
-  divideScalarDependencies,
+export const columnDependencies = {
+  IndexDependencies,
+  matrixDependencies,
+  rangeDependencies,
   typedDependencies,
-  createLog
+  createColumn
 }
 
-export const dotDivideDependencies = {
+export const usolveDependencies = {
   DenseMatrixDependencies,
   divideScalarDependencies,
   equalScalarDependencies,
   matrixDependencies,
-  typedDependencies,
-  createDotDivide
-}
-
-export const unitDependencies = {
-  UnitDependencies,
-  typedDependencies,
-  createUnit
-}
-
-export const SymbolNodeDependencies = {
-  UnitDependencies,
-  NodeDependencies,
-  createSymbolNode
-}
-
-export const qrDependencies = {
-  addScalarDependencies,
-  conjDependencies,
-  divideScalarDependencies,
-  identityDependencies,
-  isZeroDependencies,
-  matrixDependencies,
   multiplyScalarDependencies,
-  signDependencies,
-  sqrtDependencies,
   subtractDependencies,
   typedDependencies,
-  unaryMinusDependencies,
-  unequalDependencies,
-  zerosDependencies,
-  createQr
+  createUsolve
 }
 
-export const invDependencies = {
-  absDependencies,
-  addScalarDependencies,
-  detDependencies,
-  divideScalarDependencies,
-  identityDependencies,
-  matrixDependencies,
-  multiplyDependencies,
+export const setIntersectDependencies = {
+  DenseMatrixDependencies,
+  IndexDependencies,
+  compareNaturalDependencies,
+  sizeDependencies,
+  subsetDependencies,
   typedDependencies,
-  unaryMinusDependencies,
-  createInv
+  createSetIntersect
 }
 
-export const sqrtmDependencies = {
+export const FunctionNodeDependencies = {
+  NodeDependencies,
+  SymbolNodeDependencies,
+  createFunctionNode
+}
+
+export const lusolveDependencies = {
+  DenseMatrixDependencies,
+  lsolveDependencies,
+  lupDependencies,
+  matrixDependencies,
+  sluDependencies,
+  typedDependencies,
+  usolveDependencies,
+  createLusolve
+}
+
+export const expmDependencies = {
   absDependencies,
   addDependencies,
   identityDependencies,
   invDependencies,
-  maxDependencies,
   multiplyDependencies,
-  sizeDependencies,
-  sqrtDependencies,
-  subtractDependencies,
   typedDependencies,
-  createSqrtm
-}
-
-export const intersectDependencies = {
-  absDependencies,
-  addDependencies,
-  addScalarDependencies,
-  divideScalarDependencies,
-  equalScalarDependencies,
-  matrixDependencies,
-  multiplyDependencies,
-  multiplyScalarDependencies,
-  smallerDependencies,
-  subtractDependencies,
-  typedDependencies,
-  createIntersect
-}
-
-export const bellNumbersDependencies = {
-  addScalarDependencies,
-  isIntegerDependencies,
-  isNegativeDependencies,
-  stirlingS2Dependencies,
-  typedDependencies,
-  createBellNumbers
+  createExpm
 }
 
 export const avogadroDependencies = {
@@ -2122,38 +2221,102 @@ export const wienDisplacementDependencies = {
   createWienDisplacement
 }
 
-export const log1pDependencies = {
+export const logDependencies = {
   ComplexDependencies,
   divideScalarDependencies,
-  logDependencies,
   typedDependencies,
-  createLog1p
+  createLog
 }
 
-export const setSymDifferenceDependencies = {
-  IndexDependencies,
-  concatDependencies,
-  setDifferenceDependencies,
-  sizeDependencies,
-  subsetDependencies,
+export const unitDependencies = {
+  UnitDependencies,
   typedDependencies,
-  createSetSymDifference
+  createUnit
 }
 
-export const FunctionNodeDependencies = {
-  NodeDependencies,
+export const parseDependencies = {
+  AccessorNodeDependencies,
+  ArrayNodeDependencies,
+  AssignmentNodeDependencies,
+  BlockNodeDependencies,
+  ConditionalNodeDependencies,
+  ConstantNodeDependencies,
+  FunctionAssignmentNodeDependencies,
+  FunctionNodeDependencies,
+  IndexNodeDependencies,
+  ObjectNodeDependencies,
+  OperatorNodeDependencies,
+  ParenthesisNodeDependencies,
+  RangeNodeDependencies,
+  RelationalNodeDependencies,
   SymbolNodeDependencies,
-  createFunctionNode
+  numericDependencies,
+  typedDependencies,
+  createParse
 }
 
-export const expmDependencies = {
-  absDependencies,
-  addDependencies,
-  identityDependencies,
+export const evaluateDependencies = {
+  parseDependencies,
+  typedDependencies,
+  createEvaluate
+}
+
+export const ParserDependencies = {
+  parseDependencies,
+  createParserClass
+}
+
+export const HelpDependencies = {
+  parseDependencies,
+  createHelpClass
+}
+
+export const divideDependencies = {
+  divideScalarDependencies,
+  equalScalarDependencies,
   invDependencies,
+  matrixDependencies,
   multiplyDependencies,
   typedDependencies,
-  createExpm
+  createDivide
+}
+
+export const medianDependencies = {
+  addDependencies,
+  compareDependencies,
+  divideDependencies,
+  partitionSelectDependencies,
+  typedDependencies,
+  createMedian
+}
+
+export const varianceDependencies = {
+  addDependencies,
+  applyDependencies,
+  divideDependencies,
+  isNaNDependencies,
+  multiplyDependencies,
+  subtractDependencies,
+  typedDependencies,
+  createVariance
+}
+
+export const stdDependencies = {
+  sqrtDependencies,
+  typedDependencies,
+  varianceDependencies,
+  createStd
+}
+
+export const multinomialDependencies = {
+  addDependencies,
+  divideDependencies,
+  factorialDependencies,
+  isIntegerDependencies,
+  isPositiveDependencies,
+  multiplyDependencies,
+  typedDependencies,
+  createMultinomial
 }
 
 export const bohrRadiusDependencies = {
@@ -2192,144 +2355,31 @@ export const thomsonCrossSectionDependencies = {
   createThomsonCrossSection
 }
 
-export const usolveDependencies = {
-  DenseMatrixDependencies,
-  divideScalarDependencies,
-  equalScalarDependencies,
-  matrixDependencies,
-  multiplyScalarDependencies,
-  subtractDependencies,
-  typedDependencies,
-  createUsolve
-}
-
-export const parseDependencies = {
-  AccessorNodeDependencies,
-  ArrayNodeDependencies,
-  AssignmentNodeDependencies,
-  BlockNodeDependencies,
-  ConditionalNodeDependencies,
-  ConstantNodeDependencies,
-  FunctionAssignmentNodeDependencies,
-  FunctionNodeDependencies,
-  IndexNodeDependencies,
-  ObjectNodeDependencies,
-  OperatorNodeDependencies,
-  ParenthesisNodeDependencies,
-  RangeNodeDependencies,
-  RelationalNodeDependencies,
-  SymbolNodeDependencies,
-  numericDependencies,
-  typedDependencies,
-  createParse
-}
-
-export const evaluateDependencies = {
-  parseDependencies,
-  typedDependencies,
-  createEvaluate
-}
-
-export const ParserDependencies = {
-  parseDependencies,
-  createParserClass
-}
-
-export const lusolveDependencies = {
-  DenseMatrixDependencies,
-  lsolveDependencies,
-  lupDependencies,
-  matrixDependencies,
-  sluDependencies,
-  typedDependencies,
-  usolveDependencies,
-  createLusolve
-}
-
-export const divideDependencies = {
-  divideScalarDependencies,
-  equalScalarDependencies,
-  invDependencies,
-  matrixDependencies,
-  multiplyDependencies,
-  typedDependencies,
-  createDivide
-}
-
-export const medianDependencies = {
-  addDependencies,
-  compareDependencies,
-  divideDependencies,
-  partitionSelectDependencies,
-  typedDependencies,
-  createMedian
-}
-
-export const varianceDependencies = {
-  addDependencies,
-  divideDependencies,
-  isNaNDependencies,
-  multiplyDependencies,
-  subtractDependencies,
-  typedDependencies,
-  createVariance
-}
-
-export const stdDependencies = {
+export const stdTransformDependencies = {
   sqrtDependencies,
   typedDependencies,
   varianceDependencies,
-  createStd
+  createStdTransform
 }
 
-export const multinomialDependencies = {
-  addDependencies,
-  divideDependencies,
-  factorialDependencies,
-  isIntegerDependencies,
-  isPositiveDependencies,
-  multiplyDependencies,
+export const log1pDependencies = {
+  ComplexDependencies,
+  divideScalarDependencies,
+  logDependencies,
   typedDependencies,
-  createMultinomial
+  createLog1p
 }
 
-export const coulombDependencies = {
-  BigNumberDependencies,
-  UnitDependencies,
-  createCoulomb
-}
-
-export const magneticFluxQuantumDependencies = {
-  BigNumberDependencies,
-  UnitDependencies,
-  createMagneticFluxQuantum
-}
-
-export const rydbergDependencies = {
-  BigNumberDependencies,
-  UnitDependencies,
-  createRydberg
-}
-
-export const setUnionDependencies = {
-  IndexDependencies,
-  concatDependencies,
-  setIntersectDependencies,
-  setSymDifferenceDependencies,
-  sizeDependencies,
-  subsetDependencies,
-  typedDependencies,
-  createSetUnion
-}
-
-export const evalDependencies = {
-  evaluateDependencies,
-  createDeprecatedEval
-}
-
-export const HelpDependencies = {
+export const compileDependencies = {
   parseDependencies,
-  createHelpClass
+  typedDependencies,
+  createCompile
+}
+
+export const parserDependencies = {
+  ParserDependencies,
+  typedDependencies,
+  createParser
 }
 
 export const meanDependencies = {
@@ -2385,16 +2435,34 @@ export const rationalizeDependencies = {
   createRationalize
 }
 
+export const gasConstantDependencies = {
+  BigNumberDependencies,
+  UnitDependencies,
+  createGasConstant
+}
+
 export const planckConstantDependencies = {
   BigNumberDependencies,
   UnitDependencies,
   createPlanckConstant
 }
 
-export const compileDependencies = {
-  parseDependencies,
+export const meanTransformDependencies = {
+  addDependencies,
+  divideDependencies,
   typedDependencies,
-  createCompile
+  createMeanTransform
+}
+
+export const setUnionDependencies = {
+  IndexDependencies,
+  concatDependencies,
+  setIntersectDependencies,
+  setSymDifferenceDependencies,
+  sizeDependencies,
+  subsetDependencies,
+  typedDependencies,
+  createSetUnion
 }
 
 export const helpDependencies = {
@@ -2415,16 +2483,21 @@ export const kldivergenceDependencies = {
   createKldivergence
 }
 
-export const gasConstantDependencies = {
+export const coulombDependencies = {
   BigNumberDependencies,
   UnitDependencies,
-  createGasConstant
+  createCoulomb
 }
 
-export const parserDependencies = {
-  ParserDependencies,
-  typedDependencies,
-  createParser
+export const rydbergDependencies = {
+  BigNumberDependencies,
+  UnitDependencies,
+  createRydberg
+}
+
+export const evalDependencies = {
+  evaluateDependencies,
+  createDeprecatedEval
 }
 
 export const derivativeDependencies = {
@@ -2442,6 +2515,17 @@ export const derivativeDependencies = {
   createDerivative
 }
 
+export const varianceTransformDependencies = {
+  addDependencies,
+  applyDependencies,
+  divideDependencies,
+  isNaNDependencies,
+  multiplyDependencies,
+  subtractDependencies,
+  typedDependencies,
+  createVarianceTransform
+}
+
 export const madDependencies = {
   absDependencies,
   mapDependencies,
@@ -2451,9 +2535,8 @@ export const madDependencies = {
   createMad
 }
 
-export const meanTransformDependencies = {
-  addDependencies,
-  divideDependencies,
-  typedDependencies,
-  createMeanTransform
+export const magneticFluxQuantumDependencies = {
+  BigNumberDependencies,
+  UnitDependencies,
+  createMagneticFluxQuantum
 }

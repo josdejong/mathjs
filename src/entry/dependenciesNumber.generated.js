@@ -15,6 +15,7 @@ import {
   createString,
   createBoolean,
   createNthRoot,
+  createApply,
   createFilter,
   createForEach,
   createMap,
@@ -77,6 +78,7 @@ import {
   createBellNumbers,
   createCatalan,
   createComposition,
+  createApplyTransform,
   createFilterTransform,
   createForEachTransform,
   createMapTransform,
@@ -85,7 +87,9 @@ import {
   createMinTransform,
   createRangeTransform,
   createSubsetTransform,
+  createStdTransform,
   createSumTransform,
+  createVarianceTransform,
   createNode,
   createAccessorNode,
   createArrayNode,
@@ -642,10 +646,10 @@ export const forEachTransformDependencies = {
   createForEachTransform
 }
 
-export const rangeTransformDependencies = {
+export const subsetTransformDependencies = {
   matrixDependencies,
   typedDependencies,
-  createRangeTransform
+  createSubsetTransform
 }
 
 export const ConditionalNodeDependencies = {
@@ -802,16 +806,20 @@ export const PIDependencies = {
   createUppercasePi
 }
 
-export const maxTransformDependencies = {
-  largerDependencies,
+export const applyTransformDependencies = {
+  isIntegerDependencies,
   typedDependencies,
-  createMaxTransform
+  createApplyTransform
 }
 
-export const subsetTransformDependencies = {
+export const rangeTransformDependencies = {
   matrixDependencies,
+  largerDependencies,
+  largerEqDependencies,
+  smallerDependencies,
+  smallerEqDependencies,
   typedDependencies,
-  createSubsetTransform
+  createRangeTransform
 }
 
 export const AccessorNodeDependencies = {
@@ -886,15 +894,20 @@ export const equalScalarDependencies = {
   createEqualScalar
 }
 
-export const printDependencies = {
+export const rangeDependencies = {
+  matrixDependencies,
+  largerDependencies,
+  largerEqDependencies,
+  smallerDependencies,
+  smallerEqDependencies,
   typedDependencies,
-  createPrint
+  createRange
 }
 
-export const equalDependencies = {
-  equalScalarDependencies,
+export const compareNaturalDependencies = {
+  compareDependencies,
   typedDependencies,
-  createEqual
+  createCompareNatural
 }
 
 export const unequalDependencies = {
@@ -968,39 +981,45 @@ export const addDependencies = {
   createAdd
 }
 
-export const rangeDependencies = {
-  matrixDependencies,
+export const applyDependencies = {
+  isIntegerDependencies,
   typedDependencies,
-  createRange
+  createApply
 }
 
-export const deepEqualDependencies = {
-  equalDependencies,
+export const equalDependencies = {
+  equalScalarDependencies,
   typedDependencies,
-  createDeepEqual
+  createEqual
 }
 
-export const trueDependencies = {
-  createTrue
+export const EDependencies = {
+  eDependencies,
+  createUppercaseE
 }
 
-export const sumDependencies = {
+export const hypotDependencies = {
+  absDependencies,
+  addScalarDependencies,
+  divideScalarDependencies,
+  isPositiveDependencies,
+  multiplyScalarDependencies,
+  smallerDependencies,
+  sqrtDependencies,
+  typedDependencies,
+  createHypot
+}
+
+export const meanDependencies = {
   addDependencies,
-  typedDependencies,
-  createSum
-}
-
-export const medianDependencies = {
-  addDependencies,
-  compareDependencies,
   divideDependencies,
-  partitionSelectDependencies,
   typedDependencies,
-  createMedian
+  createMean
 }
 
 export const varianceDependencies = {
   addDependencies,
+  applyDependencies,
   divideDependencies,
   isNaNDependencies,
   multiplyDependencies,
@@ -1042,10 +1061,22 @@ export const catalanDependencies = {
   createCatalan
 }
 
+export const meanTransformDependencies = {
+  addDependencies,
+  divideDependencies,
+  typedDependencies,
+  createMeanTransform
+}
+
 export const sumTransformDependencies = {
   addDependencies,
   typedDependencies,
   createSumTransform
+}
+
+export const OperatorNodeDependencies = {
+  NodeDependencies,
+  createOperatorNode
 }
 
 export const expm1Dependencies = {
@@ -1058,59 +1089,22 @@ export const acoshDependencies = {
   createAcosh
 }
 
-export const compareNaturalDependencies = {
+export const printDependencies = {
+  typedDependencies,
+  createPrint
+}
+
+export const trueDependencies = {
+  createTrue
+}
+
+export const medianDependencies = {
+  addDependencies,
   compareDependencies,
-  typedDependencies,
-  createCompareNatural
-}
-
-export const hypotDependencies = {
-  absDependencies,
-  addScalarDependencies,
-  divideScalarDependencies,
-  isPositiveDependencies,
-  multiplyScalarDependencies,
-  smallerDependencies,
-  sqrtDependencies,
-  typedDependencies,
-  createHypot
-}
-
-export const madDependencies = {
-  absDependencies,
-  mapDependencies,
-  medianDependencies,
-  subtractDependencies,
-  typedDependencies,
-  createMad
-}
-
-export const multinomialDependencies = {
-  addDependencies,
   divideDependencies,
-  factorialDependencies,
-  isIntegerDependencies,
-  isPositiveDependencies,
-  multiplyDependencies,
+  partitionSelectDependencies,
   typedDependencies,
-  createMultinomial
-}
-
-export const meanTransformDependencies = {
-  addDependencies,
-  divideDependencies,
-  typedDependencies,
-  createMeanTransform
-}
-
-export const bitNotDependencies = {
-  typedDependencies,
-  createbitNot
-}
-
-export const EDependencies = {
-  eDependencies,
-  createUppercaseE
+  createMedian
 }
 
 export const quantileSeqDependencies = {
@@ -1122,21 +1116,20 @@ export const quantileSeqDependencies = {
   createQuantileSeq
 }
 
-export const OperatorNodeDependencies = {
-  NodeDependencies,
-  createOperatorNode
+export const bellNumbersDependencies = {
+  addScalarDependencies,
+  isIntegerDependencies,
+  isNegativeDependencies,
+  stirlingS2Dependencies,
+  typedDependencies,
+  createBellNumbers
 }
 
-export const cscDependencies = {
+export const stdTransformDependencies = {
+  sqrtDependencies,
   typedDependencies,
-  createCsc
-}
-
-export const meanDependencies = {
-  addDependencies,
-  divideDependencies,
-  typedDependencies,
-  createMean
+  varianceDependencies,
+  createStdTransform
 }
 
 export const parseDependencies = {
@@ -1208,18 +1201,36 @@ export const rationalizeDependencies = {
   createRationalize
 }
 
-export const bellNumbersDependencies = {
-  addScalarDependencies,
-  isIntegerDependencies,
-  isNegativeDependencies,
-  stirlingS2Dependencies,
+export const cscDependencies = {
   typedDependencies,
-  createBellNumbers
+  createCsc
 }
 
-export const ParserDependencies = {
+export const deepEqualDependencies = {
+  equalDependencies,
+  typedDependencies,
+  createDeepEqual
+}
+
+export const madDependencies = {
+  absDependencies,
+  mapDependencies,
+  medianDependencies,
+  subtractDependencies,
+  typedDependencies,
+  createMad
+}
+
+export const maxTransformDependencies = {
+  largerDependencies,
+  typedDependencies,
+  createMaxTransform
+}
+
+export const compileDependencies = {
   parseDependencies,
-  createParserClass
+  typedDependencies,
+  createCompile
 }
 
 export const helpDependencies = {
@@ -1228,10 +1239,26 @@ export const helpDependencies = {
   createHelp
 }
 
-export const compileDependencies = {
-  parseDependencies,
+export const bitNotDependencies = {
   typedDependencies,
-  createCompile
+  createbitNot
+}
+
+export const sumDependencies = {
+  addDependencies,
+  typedDependencies,
+  createSum
+}
+
+export const varianceTransformDependencies = {
+  addDependencies,
+  applyDependencies,
+  divideDependencies,
+  isNaNDependencies,
+  multiplyDependencies,
+  subtractDependencies,
+  typedDependencies,
+  createVarianceTransform
 }
 
 export const derivativeDependencies = {
@@ -1247,6 +1274,22 @@ export const derivativeDependencies = {
   simplifyDependencies,
   typedDependencies,
   createDerivative
+}
+
+export const multinomialDependencies = {
+  addDependencies,
+  divideDependencies,
+  factorialDependencies,
+  isIntegerDependencies,
+  isPositiveDependencies,
+  multiplyDependencies,
+  typedDependencies,
+  createMultinomial
+}
+
+export const ParserDependencies = {
+  parseDependencies,
+  createParserClass
 }
 
 export const parserDependencies = {

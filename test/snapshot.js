@@ -975,7 +975,15 @@ const allDependencyCollections = {
   parserDependencies: 'Object',
   derivativeDependencies: 'Object',
   madDependencies: 'Object',
-  meanTransformDependencies: 'Object'
+  meanTransformDependencies: 'Object',
+  applyDependencies: 'Object',
+  applyTransformDependencies: 'Object',
+  columnTransformDependencies: 'Object',
+  rowTransformDependencies: 'Object',
+  rowDependencies: 'Object',
+  columnDependencies: 'Object',
+  stdTransformDependencies: 'Object',
+  varianceTransformDependencies: 'Object'
 }
 
 const allES6Constants = {
@@ -1517,7 +1525,6 @@ const excludedProperties = [].concat(
     'conjDependencies',
     'getMatrixDataTypeDependencies',
     'SparseMatrixDependencies',
-    'applyDependencies',
     'columnDependencies',
     'rowDependencies',
     'concatDependencies',
@@ -1625,7 +1632,9 @@ const excludedProperties = [].concat(
     'varDependencies',
     'planckConstantDependencies',
     'kldivergenceDependencies',
-    'gasConstantDependencies'
+    'gasConstantDependencies',
+    'columnTransformDependencies',
+    'rowTransformDependencies'
   ]
 )
 

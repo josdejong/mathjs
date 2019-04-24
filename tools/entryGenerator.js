@@ -3,13 +3,13 @@ const path = require('path')
 const factoriesFull = require('../lib/factoriesFull')
 const factoriesNumber = require('../lib/factoriesNumber')
 
-const FACTORIES_FULL_LINK = './factoriesFull.js'
+const FACTORIES_FULL_LINK = '../factoriesFull.js'
 const ALL_FULL_LINK = './allFull.js'
-const DEPENDENCIES_FULL_DEST = path.join(__dirname, '../src/dependenciesFull.generated.js')
+const DEPENDENCIES_FULL_DEST = path.join(__dirname, '../src/entry/dependenciesFull.generated.js')
 
-const FACTORIES_NUMBER_LINK = './factoriesNumber'
+const FACTORIES_NUMBER_LINK = '../factoriesNumber'
 const ALL_NUMBER_LINK = './allNumber.js'
-const DEPENDENCIES_NUMBER_DEST = path.join(__dirname, '../src/dependenciesNumber.generated.js')
+const DEPENDENCIES_NUMBER_DEST = path.join(__dirname, '../src/entry/dependenciesNumber.generated.js')
 
 const IGNORED_DEPENDENCIES = {
   'on': true,
