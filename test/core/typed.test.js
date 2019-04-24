@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../src/mainBundle'
+import math from '../../src/entry/mainBundle'
 const math2 = math.create()
 
 describe('typed', function () {

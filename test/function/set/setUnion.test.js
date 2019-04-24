@@ -1,7 +1,7 @@
 // test setUnion
 import assert from 'assert'
 
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 
 describe('setUnion', function () {
   it('should return the union of two sets', function () {

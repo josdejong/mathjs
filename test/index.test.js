@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../src/mainBundle'
+import math from '../src/entry/mainBundle'
 
 describe('index', function () {
   it('should get a default instance of mathjs', function () {

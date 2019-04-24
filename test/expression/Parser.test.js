@@ -3,7 +3,7 @@
 import assert from 'assert'
 
 import approx from '../../tools/approx'
-import math from '../../src/mainBundle'
+import math from '../../src/entry/mainBundle'
 const Parser = math.Parser
 
 describe('parser', function () {

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 
 const sum = math.sum
 const apply = math.expression.transform.apply

@@ -1,7 +1,7 @@
 // test ConstantNode
 import assert from 'assert'
 
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 const bigmath = math.create({ number: 'BigNumber' })
 const Node = math.Node
 const ConstantNode = math.ConstantNode

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 
 describe('clone', function () {
   it('should clone a boolean', function () {

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 
 describe('re', function () {
   it('should return the real part of a complex number', function () {

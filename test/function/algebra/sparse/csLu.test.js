@@ -1,6 +1,6 @@
 import assert from 'assert'
 import approx from '../../../../tools/approx'
-import math from '../../../../src/mainBundle'
+import math from '../../../../src/entry/mainBundle'
 import { csPermute } from '../../../../src/function/algebra/sparse/csPermute'
 import { createCsLu } from '../../../../src/function/algebra/sparse/csLu'
 import { createCsSqr } from '../../../../src/function/algebra/sparse/csSqr'

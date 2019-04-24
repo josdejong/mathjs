@@ -1,7 +1,7 @@
 // test Help
 import assert from 'assert'
 
-import math from '../../src/mainBundle'
+import math from '../../src/entry/mainBundle'
 import { embeddedDocs } from '../../src/expression/embeddedDocs/embeddedDocs'
 const Help = math.Help
 

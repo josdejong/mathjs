@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import { isPlainObject, isSafeMethod, isSafeProperty } from '../../src/utils/customs'
-import math from '../../src/mainBundle'
+import math from '../../src/entry/mainBundle'
 
 describe('customs', function () {
   describe('isSafeMethod', function () {

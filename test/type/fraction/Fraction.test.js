@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 
 describe('Fraction', function () {
   it('should have a property isFraction', function () {

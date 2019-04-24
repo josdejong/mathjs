@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/mainBundle'
+import math from '../../../../src/entry/mainBundle'
 const splitUnit = math.splitUnit
 const Unit = math.Unit
 

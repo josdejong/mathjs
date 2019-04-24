@@ -1,7 +1,7 @@
 // test sqrt
 import assert from 'assert'
 
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 const mathPredictable = math.create({ predictable: true })
 const sqrt = math.sqrt
 const bignumber = math.bignumber

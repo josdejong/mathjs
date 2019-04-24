@@ -1,7 +1,7 @@
 // test OperatorNode
 import assert from 'assert'
 
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode

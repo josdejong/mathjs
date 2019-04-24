@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import approx from '../../../tools/approx'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 import BigNumber from 'decimal.js'
 const add = math.add
 

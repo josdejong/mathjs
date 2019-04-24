@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 import _ from 'underscore'
 
 const math2 = math.create({ randomSeed: 'test2' })

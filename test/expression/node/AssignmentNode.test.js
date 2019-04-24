@@ -1,7 +1,7 @@
 // test AssignmentNode
 import assert from 'assert'
 
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 const Node = math.Node
 const AccessorNode = math.AccessorNode
 const ConstantNode = math.ConstantNode

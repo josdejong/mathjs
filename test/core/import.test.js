@@ -1,8 +1,8 @@
 import assert from 'assert'
-import mathjs from '../../src/mainBundle'
+import mathjs from '../../src/entry/mainBundle'
 import approx from '../../tools/approx'
 import { factory } from '../../src/utils/factory'
-import { core } from '../../src/mainFull'
+import { core } from '../../src/entry/mainFull'
 
 const multiplyTestFactory = factory('multiplyTest', [], () => {
   return function multiply (a, b) {

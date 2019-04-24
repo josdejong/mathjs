@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 
 describe('map', function () {
   it('should apply map to all elements of the matrix', function () {

@@ -316,7 +316,7 @@ import {
   createSubsetTransform,
   createConcatTransform,
   createSumTransform
-} from './factoriesFull.js'
+} from '../factoriesFull.js'
 export { all } from './allFull.js'
 
 export const ResultSetDependencies = {

@@ -158,9 +158,11 @@
     "uglify-js": "3.5.6",
     "underscore": "1.9.1",
     "webpack": "4.30.0",
+    "webpack-cli": "3.3.1",
     "zeros": "1.0.0"
   },
-  "main": "./index",
+  "main": "./lib/entry/mainFull.js",
+  "module": "src/entry/mainFull.js",
   "files": [
     "dist",
     "lib",

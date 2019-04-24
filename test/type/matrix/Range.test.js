@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 const Range = math.Range
 
 describe('range', function () {

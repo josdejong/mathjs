@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { addDependencies, divideDependencies, piDependencies } from '../src/dependenciesFull.generated'
-import { create } from '../src/mainInstance'
+import { addDependencies, divideDependencies, piDependencies } from '../src/entry/dependenciesFull.generated'
+import { create } from '../src/entry/mainInstance'
 
 describe('dependencies', function () {
   it('should create functions from a collection of dependencies', () => {

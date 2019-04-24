@@ -190,7 +190,7 @@ import {
   createDivide,
   createCombinations,
   createGamma
-} from './factoriesNumber'
+} from '../factoriesNumber'
 export { all } from './allNumber.js'
 
 export const ResultSetDependencies = {

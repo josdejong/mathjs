@@ -1,7 +1,7 @@
 // test parse
 import assert from 'assert'
 
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 const Node = math.Node
 
 describe('parse', function () {

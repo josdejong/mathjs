@@ -1,5 +1,5 @@
 import assert from 'assert'
-import * as mainFull from '../src/mainFull'
+import * as mainFull from '../src/entry/mainFull'
 import { expectedInstanceStructure, expectedES6Structure } from './snapshot'
 import { validateBundle, validateTypeOf } from '../tools/validateBundle'
 const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate } = mainFull

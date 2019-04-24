@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 import approx from '../../../tools/approx'
 const complex = math.complex
 const matrix = math.matrix

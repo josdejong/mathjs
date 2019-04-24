@@ -1,5 +1,5 @@
 import assert from 'assert'
-import * as mainNumber from '../src/mainNumber'
+import * as mainNumber from '../src/entry/mainNumber'
 import { expectedInstanceStructureNumber, expectedES6StructureNumber } from './snapshot'
 import { validateBundle, validateTypeOf } from '../tools/validateBundle'
 const { create, all, add, isObject, isNumber, pi, sqrt, evaluate } = mainNumber

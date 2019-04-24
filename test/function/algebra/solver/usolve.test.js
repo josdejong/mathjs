@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import approx from '../../../../tools/approx'
-import math from '../../../../src/mainBundle'
+import math from '../../../../src/entry/mainBundle'
 
 describe('usolve', function () {
   it('should solve linear system 4 x 4, arrays', function () {

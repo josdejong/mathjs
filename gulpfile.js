@@ -9,12 +9,12 @@ const uglify = require('uglify-js')
 const docgenerator = require('./tools/docgenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
 
-const ENTRY = './src/mainBundle.js'
+const ENTRY = './src/entry/mainBundle.js'
 const HEADER = './src/header.js'
 const VERSION = './src/version.js'
 const COMPILE_SRC = './src/**/*.js'
 const COMPILE_LIB = './lib'
-const COMPILED_MAIN_FULL = './lib/mainFull.js'
+const COMPILED_MAIN_FULL = './lib/entry/mainFull.js'
 const FILE = 'math.js'
 const FILE_MIN = 'math.min.js'
 const FILE_MAP = 'math.min.map'

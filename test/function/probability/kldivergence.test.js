@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 
 describe('kldivergence', function () {
   it('should return 0, cause distributions is equals', function () {

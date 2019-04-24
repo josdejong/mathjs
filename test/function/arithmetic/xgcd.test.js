@@ -1,7 +1,7 @@
 // test xgcd
 import assert from 'assert'
 
-import defaultMath from '../../../src/mainBundle'
+import defaultMath from '../../../src/entry/mainBundle'
 const math = defaultMath.create({ matrix: 'Array' })
 const gcd = math.gcd
 const xgcd = math.xgcd

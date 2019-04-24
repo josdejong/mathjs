@@ -1,236 +1,236 @@
 // TODO: auto generate this file
 
-import { DEFAULT_CONFIG } from './core/config'
-import { createResultSet } from './type/resultset/ResultSet'
-import { createBigNumberClass } from './type/bignumber/BigNumber'
-import { createComplexClass } from './type/complex/Complex'
-import { createFractionClass } from './type/fraction/Fraction'
-import { createRangeClass } from './type/matrix/Range'
-import { createMatrixClass } from './type/matrix/Matrix'
-import { createDenseMatrixClass } from './type/matrix/DenseMatrix'
-import { createTyped } from './core/function/typed'
-import { createClone } from './function/utils/clone'
-import { createIsInteger } from './function/utils/isInteger'
-import { createIsNegative } from './function/utils/isNegative'
-import { createIsNumeric } from './function/utils/isNumeric'
-import { createHasNumericValue } from './function/utils/hasNumericValue'
-import { createIsPositive } from './function/utils/isPositive'
-import { createIsZero } from './function/utils/isZero'
-import { createIsNaN } from './function/utils/isNaN'
-import { createDeprecatedTypeof, createTypeOf } from './function/utils/typeOf'
-import { createEqualScalar } from './function/relational/equalScalar'
-import { createSparseMatrixClass } from './type/matrix/SparseMatrix'
-import { createNumber } from './type/number'
-import { createString } from './type/string'
-import { createBoolean } from './type/boolean'
-import { createBignumber } from './type/bignumber/function/bignumber'
-import { createComplex } from './type/complex/function/complex'
-import { createFraction } from './type/fraction/function/fraction'
-import { createMatrix } from './type/matrix/function/matrix'
-import { createSplitUnit } from './type/unit/function/splitUnit'
-import { createUnaryMinus } from './function/arithmetic/unaryMinus'
-import { createUnaryPlus } from './function/arithmetic/unaryPlus'
-import { createAbs } from './function/arithmetic/abs'
-import { createAddScalar } from './function/arithmetic/addScalar'
-import { createCbrt } from './function/arithmetic/cbrt'
-import { createCeil } from './function/arithmetic/ceil'
-import { createCube } from './function/arithmetic/cube'
-import { createExp } from './function/arithmetic/exp'
-import { createExpm1 } from './function/arithmetic/expm1'
-import { createFix } from './function/arithmetic/fix'
-import { createFloor } from './function/arithmetic/floor'
-import { createGcd } from './function/arithmetic/gcd'
-import { createLcm } from './function/arithmetic/lcm'
-import { createLog10 } from './function/arithmetic/log10'
-import { createLog2 } from './function/arithmetic/log2'
-import { createMod } from './function/arithmetic/mod'
-import { createMultiplyScalar } from './function/arithmetic/multiplyScalar'
-import { createMultiply } from './function/arithmetic/multiply'
-import { createNthRoot } from './function/arithmetic/nthRoot'
-import { createSign } from './function/arithmetic/sign'
-import { createSqrt } from './function/arithmetic/sqrt'
-import { createSquare } from './function/arithmetic/square'
-import { createSubtract } from './function/arithmetic/subtract'
-import { createXgcd } from './function/arithmetic/xgcd'
-import { createDotMultiply } from './function/arithmetic/dotMultiply'
-import { createBitAnd } from './function/bitwise/bitAnd'
-import { createBitNot } from './function/bitwise/bitNot'
-import { createBitOr } from './function/bitwise/bitOr'
-import { createBitXor } from './function/bitwise/bitXor'
-import { createArg } from './function/complex/arg'
-import { createConj } from './function/complex/conj'
-import { createIm } from './function/complex/im'
-import { createRe } from './function/complex/re'
-import { createNot } from './function/logical/not'
-import { createOr } from './function/logical/or'
-import { createXor } from './function/logical/xor'
-import { createConcat } from './function/matrix/concat'
-import { createCross } from './function/matrix/cross'
-import { createDiag } from './function/matrix/diag'
-import { createEye } from './function/matrix/eye'
-import { createFilter } from './function/matrix/filter'
-import { createFlatten } from './function/matrix/flatten'
-import { createForEach } from './function/matrix/forEach'
-import { createGetMatrixDataType } from './function/matrix/getMatrixDataType'
-import { createIdentity } from './function/matrix/identity'
-import { createKron } from './function/matrix/kron'
-import { createMap } from './function/matrix/map'
-import { createOnes } from './function/matrix/ones'
-import { createRange } from './function/matrix/range'
-import { createReshape } from './function/matrix/reshape'
-import { createResize } from './function/matrix/resize'
-import { createSize } from './function/matrix/size'
-import { createSqueeze } from './function/matrix/squeeze'
-import { createSubset } from './function/matrix/subset'
-import { createTranspose } from './function/matrix/transpose'
-import { createCtranspose } from './function/matrix/ctranspose'
-import { createZeros } from './function/matrix/zeros'
-import { createErf } from './function/special/erf'
-import { createMode } from './function/statistics/mode'
-import { createProd } from './function/statistics/prod'
-import { createFormat } from './function/string/format'
-import { createPrint } from './function/string/print'
-import { createTo } from './function/unit/to'
-import { createIsPrime } from './function/utils/isPrime'
-import { createNumeric } from './function/utils/numeric'
-import { createDivideScalar } from './function/arithmetic/divideScalar'
-import { createPow } from './function/arithmetic/pow'
-import { createRound } from './function/arithmetic/round'
-import { createLog } from './function/arithmetic/log'
-import { createLog1p } from './function/arithmetic/log1p'
-import { createNthRoots } from './function/arithmetic/nthRoots'
-import { createDotPow } from './function/arithmetic/dotPow'
-import { createDotDivide } from './function/arithmetic/dotDivide'
-import { createLsolve } from './function/algebra/solver/lsolve'
-import { createUsolve } from './function/algebra/solver/usolve'
-import { createLeftShift } from './function/bitwise/leftShift'
-import { createRightArithShift } from './function/bitwise/rightArithShift'
-import { createRightLogShift } from './function/bitwise/rightLogShift'
-import { createAnd } from './function/logical/and'
-import { createCompare } from './function/relational/compare'
-import { createCompareNatural } from './function/relational/compareNatural'
-import { createCompareText } from './function/relational/compareText'
-import { createEqual } from './function/relational/equal'
-import { createEqualText } from './function/relational/equalText'
-import { createSmaller } from './function/relational/smaller'
-import { createSmallerEq } from './function/relational/smallerEq'
-import { createLarger } from './function/relational/larger'
-import { createLargerEq } from './function/relational/largerEq'
-import { createDeepEqual } from './function/relational/deepEqual'
-import { createUnequal } from './function/relational/unequal'
-import { createPartitionSelect } from './function/matrix/partitionSelect'
-import { createSort } from './function/matrix/sort'
-import { createMax } from './function/statistics/max'
-import { createMin } from './function/statistics/min'
-import { createImmutableDenseMatrixClass } from './type/matrix/ImmutableDenseMatrix'
-import { createIndexClass } from './type/matrix/MatrixIndex'
-import { createFibonacciHeapClass } from './type/matrix/FibonacciHeap'
-import { createSpaClass } from './type/matrix/Spa'
-import { createUnitClass } from './type/unit/Unit'
-import { createUnit as createUnitFactory } from './type/unit/function/unit'
-import { createSparse } from './type/matrix/function/sparse'
-import { createCreateUnit } from './type/unit/function/createUnit'
-import { createAcos } from './function/trigonometry/acos'
-import { createAcosh } from './function/trigonometry/acosh'
-import { createAcot } from './function/trigonometry/acot'
-import { createAcoth } from './function/trigonometry/acoth'
-import { createAcsc } from './function/trigonometry/acsc'
-import { createAcsch } from './function/trigonometry/acsch'
-import { createAsec } from './function/trigonometry/asec'
-import { createAsech } from './function/trigonometry/asech'
-import { createAsin } from './function/trigonometry/asin'
-import { createAsinh } from './function/trigonometry/asinh'
-import { createAtan } from './function/trigonometry/atan'
-import { createAtan2 } from './function/trigonometry/atan2'
-import { createAtanh } from './function/trigonometry/atanh'
-import { createCos } from './function/trigonometry/cos'
-import { createCosh } from './function/trigonometry/cosh'
-import { createCot } from './function/trigonometry/cot'
-import { createCoth } from './function/trigonometry/coth'
-import { createCsc } from './function/trigonometry/csc'
-import { createCsch } from './function/trigonometry/csch'
-import { createSec } from './function/trigonometry/sec'
-import { createSech } from './function/trigonometry/sech'
-import { createSin } from './function/trigonometry/sin'
-import { createSinh } from './function/trigonometry/sinh'
-import { createTan } from './function/trigonometry/tan'
-import { createTanh } from './function/trigonometry/tanh'
-import { createSetCartesian } from './function/set/setCartesian'
-import { createSetDifference } from './function/set/setDifference'
-import { createSetDistinct } from './function/set/setDistinct'
-import { createSetIntersect } from './function/set/setIntersect'
-import { createSetIsSubset } from './function/set/setIsSubset'
-import { createSetMultiplicity } from './function/set/setMultiplicity'
-import { createSetPowerset } from './function/set/setPowerset'
-import { createSetSize } from './function/set/setSize'
-import { createSetSymDifference } from './function/set/setSymDifference'
-import { createSetUnion } from './function/set/setUnion'
-import { createAdd } from './function/arithmetic/add'
-import { createHypot } from './function/arithmetic/hypot'
-import { createNorm } from './function/arithmetic/norm'
-import { createDot } from './function/matrix/dot'
-import { createTrace } from './function/matrix/trace'
-import { createIndex } from './type/matrix/function'
-import { createNode } from './expression/node/Node'
-import { createAccessorNode } from './expression/node/AccessorNode'
-import { createArrayNode } from './expression/node/ArrayNode'
-import { createAssignmentNode } from './expression/node/AssignmentNode'
-import { createBlockNode } from './expression/node/BlockNode'
-import { createConditionalNode } from './expression/node/ConditionalNode'
-import { createConstantNode } from './expression/node/ConstantNode'
-import { createFunctionAssignmentNode } from './expression/node/FunctionAssignmentNode'
-import { createIndexNode } from './expression/node/IndexNode'
-import { createObjectNode } from './expression/node/ObjectNode'
-import { createOperatorNode } from './expression/node/OperatorNode'
-import { createParenthesisNode } from './expression/node/ParenthesisNode'
-import { createRangeNode } from './expression/node/RangeNode'
-import { createRelationalNode } from './expression/node/RelationalNode'
-import { createSymbolNode } from './expression/node/SymbolNode'
-import { createFunctionNode } from './expression/node/FunctionNode'
-import { createParse } from './expression/parse'
-import { createCompile } from './expression/function/compile'
-import { createEvaluate } from './expression/function/evaluate'
-import { createParserClass } from './expression/Parser'
-import { createParser } from './expression/function/parser'
-import { createLup } from './function/algebra/decomposition/lup'
-import { createQr } from './function/algebra/decomposition/qr'
-import { createSlu } from './function/algebra/decomposition/slu'
-import { createLusolve } from './function/algebra/solver/lusolve'
-import { createHelpClass } from './expression/Help'
-import { createChainClass } from './type/chain/Chain'
-import { createHelp } from './expression/function/help'
-import { createChain } from './type/chain/function/chain'
-import { createDet } from './function/matrix/det'
-import { createInv } from './function/matrix/inv'
-import { createExpm } from './function/matrix/expm'
-import { createSqrtm } from './function/matrix/sqrtm'
-import { createDivide } from './function/arithmetic/divide'
-import { createDistance } from './function/geometry/distance'
-import { createIntersect } from './function/geometry/intersect'
-import { createSum } from './function/statistics/sum'
-import { createMean } from './function/statistics/mean'
-import { createMedian } from './function/statistics/median'
-import { createMad } from './function/statistics/mad'
-import { createDeprecatedVar, createVariance } from './function/statistics/variance'
-import { createQuantileSeq } from './function/statistics/quantileSeq'
-import { createStd } from './function/statistics/std'
-import { createCombinations } from './function/probability/combinations'
-import { createGamma } from './function/probability/gamma'
-import { createFactorial } from './function/probability/factorial'
-import { createKldivergence } from './function/probability/kldivergence'
-import { createMultinomial } from './function/probability/multinomial'
-import { createPermutations } from './function/probability/permutations'
-import { createPickRandom } from './function/probability/pickRandom'
-import { createRandom } from './function/probability/random'
-import { createRandomInt } from './function/probability/randomInt'
-import { createStirlingS2 } from './function/combinatorics/stirlingS2'
-import { createBellNumbers } from './function/combinatorics/bellNumbers'
-import { createCatalan } from './function/combinatorics/catalan'
-import { createComposition } from './function/combinatorics/composition'
-import { createSimplify } from './function/algebra/simplify'
-import { createDerivative } from './function/algebra/derivative'
-import { createRationalize } from './function/algebra/rationalize'
-import { createReviver } from './json/reviver'
+import { DEFAULT_CONFIG } from '../core/config'
+import { createResultSet } from '../type/resultset/ResultSet'
+import { createBigNumberClass } from '../type/bignumber/BigNumber'
+import { createComplexClass } from '../type/complex/Complex'
+import { createFractionClass } from '../type/fraction/Fraction'
+import { createRangeClass } from '../type/matrix/Range'
+import { createMatrixClass } from '../type/matrix/Matrix'
+import { createDenseMatrixClass } from '../type/matrix/DenseMatrix'
+import { createTyped } from '../core/function/typed'
+import { createClone } from '../function/utils/clone'
+import { createIsInteger } from '../function/utils/isInteger'
+import { createIsNegative } from '../function/utils/isNegative'
+import { createIsNumeric } from '../function/utils/isNumeric'
+import { createHasNumericValue } from '../function/utils/hasNumericValue'
+import { createIsPositive } from '../function/utils/isPositive'
+import { createIsZero } from '../function/utils/isZero'
+import { createIsNaN } from '../function/utils/isNaN'
+import { createTypeOf } from '../function/utils/typeOf'
+import { createEqualScalar } from '../function/relational/equalScalar'
+import { createSparseMatrixClass } from '../type/matrix/SparseMatrix'
+import { createNumber } from '../type/number'
+import { createString } from '../type/string'
+import { createBoolean } from '../type/boolean'
+import { createBignumber } from '../type/bignumber/function/bignumber'
+import { createComplex } from '../type/complex/function/complex'
+import { createFraction } from '../type/fraction/function/fraction'
+import { createMatrix } from '../type/matrix/function/matrix'
+import { createSplitUnit } from '../type/unit/function/splitUnit'
+import { createUnaryMinus } from '../function/arithmetic/unaryMinus'
+import { createUnaryPlus } from '../function/arithmetic/unaryPlus'
+import { createAbs } from '../function/arithmetic/abs'
+import { createAddScalar } from '../function/arithmetic/addScalar'
+import { createCbrt } from '../function/arithmetic/cbrt'
+import { createCeil } from '../function/arithmetic/ceil'
+import { createCube } from '../function/arithmetic/cube'
+import { createExp } from '../function/arithmetic/exp'
+import { createExpm1 } from '../function/arithmetic/expm1'
+import { createFix } from '../function/arithmetic/fix'
+import { createFloor } from '../function/arithmetic/floor'
+import { createGcd } from '../function/arithmetic/gcd'
+import { createLcm } from '../function/arithmetic/lcm'
+import { createLog10 } from '../function/arithmetic/log10'
+import { createLog2 } from '../function/arithmetic/log2'
+import { createMod } from '../function/arithmetic/mod'
+import { createMultiplyScalar } from '../function/arithmetic/multiplyScalar'
+import { createMultiply } from '../function/arithmetic/multiply'
+import { createNthRoot } from '../function/arithmetic/nthRoot'
+import { createSign } from '../function/arithmetic/sign'
+import { createSqrt } from '../function/arithmetic/sqrt'
+import { createSquare } from '../function/arithmetic/square'
+import { createSubtract } from '../function/arithmetic/subtract'
+import { createXgcd } from '../function/arithmetic/xgcd'
+import { createDotMultiply } from '../function/arithmetic/dotMultiply'
+import { createBitAnd } from '../function/bitwise/bitAnd'
+import { createBitNot } from '../function/bitwise/bitNot'
+import { createBitOr } from '../function/bitwise/bitOr'
+import { createBitXor } from '../function/bitwise/bitXor'
+import { createArg } from '../function/complex/arg'
+import { createConj } from '../function/complex/conj'
+import { createIm } from '../function/complex/im'
+import { createRe } from '../function/complex/re'
+import { createNot } from '../function/logical/not'
+import { createOr } from '../function/logical/or'
+import { createXor } from '../function/logical/xor'
+import { createConcat } from '../function/matrix/concat'
+import { createCross } from '../function/matrix/cross'
+import { createDiag } from '../function/matrix/diag'
+import { createEye } from '../function/matrix/eye'
+import { createFilter } from '../function/matrix/filter'
+import { createFlatten } from '../function/matrix/flatten'
+import { createForEach } from '../function/matrix/forEach'
+import { createGetMatrixDataType } from '../function/matrix/getMatrixDataType'
+import { createIdentity } from '../function/matrix/identity'
+import { createKron } from '../function/matrix/kron'
+import { createMap } from '../function/matrix/map'
+import { createOnes } from '../function/matrix/ones'
+import { createRange } from '../function/matrix/range'
+import { createReshape } from '../function/matrix/reshape'
+import { createResize } from '../function/matrix/resize'
+import { createSize } from '../function/matrix/size'
+import { createSqueeze } from '../function/matrix/squeeze'
+import { createSubset } from '../function/matrix/subset'
+import { createTranspose } from '../function/matrix/transpose'
+import { createCtranspose } from '../function/matrix/ctranspose'
+import { createZeros } from '../function/matrix/zeros'
+import { createErf } from '../function/special/erf'
+import { createMode } from '../function/statistics/mode'
+import { createProd } from '../function/statistics/prod'
+import { createFormat } from '../function/string/format'
+import { createPrint } from '../function/string/print'
+import { createTo } from '../function/unit/to'
+import { createIsPrime } from '../function/utils/isPrime'
+import { createNumeric } from '../function/utils/numeric'
+import { createDivideScalar } from '../function/arithmetic/divideScalar'
+import { createPow } from '../function/arithmetic/pow'
+import { createRound } from '../function/arithmetic/round'
+import { createLog } from '../function/arithmetic/log'
+import { createLog1p } from '../function/arithmetic/log1p'
+import { createNthRoots } from '../function/arithmetic/nthRoots'
+import { createDotPow } from '../function/arithmetic/dotPow'
+import { createDotDivide } from '../function/arithmetic/dotDivide'
+import { createLsolve } from '../function/algebra/solver/lsolve'
+import { createUsolve } from '../function/algebra/solver/usolve'
+import { createLeftShift } from '../function/bitwise/leftShift'
+import { createRightArithShift } from '../function/bitwise/rightArithShift'
+import { createRightLogShift } from '../function/bitwise/rightLogShift'
+import { createAnd } from '../function/logical/and'
+import { createCompare } from '../function/relational/compare'
+import { createCompareNatural } from '../function/relational/compareNatural'
+import { createCompareText } from '../function/relational/compareText'
+import { createEqual } from '../function/relational/equal'
+import { createEqualText } from '../function/relational/equalText'
+import { createSmaller } from '../function/relational/smaller'
+import { createSmallerEq } from '../function/relational/smallerEq'
+import { createLarger } from '../function/relational/larger'
+import { createLargerEq } from '../function/relational/largerEq'
+import { createDeepEqual } from '../function/relational/deepEqual'
+import { createUnequal } from '../function/relational/unequal'
+import { createPartitionSelect } from '../function/matrix/partitionSelect'
+import { createSort } from '../function/matrix/sort'
+import { createMax } from '../function/statistics/max'
+import { createMin } from '../function/statistics/min'
+import { createImmutableDenseMatrixClass } from '../type/matrix/ImmutableDenseMatrix'
+import { createIndexClass } from '../type/matrix/MatrixIndex'
+import { createFibonacciHeapClass } from '../type/matrix/FibonacciHeap'
+import { createSpaClass } from '../type/matrix/Spa'
+import { createUnitClass } from '../type/unit/Unit'
+import { createUnit as createUnitFactory } from '../type/unit/function/unit'
+import { createSparse } from '../type/matrix/function/sparse'
+import { createCreateUnit } from '../type/unit/function/createUnit'
+import { createAcos } from '../function/trigonometry/acos'
+import { createAcosh } from '../function/trigonometry/acosh'
+import { createAcot } from '../function/trigonometry/acot'
+import { createAcoth } from '../function/trigonometry/acoth'
+import { createAcsc } from '../function/trigonometry/acsc'
+import { createAcsch } from '../function/trigonometry/acsch'
+import { createAsec } from '../function/trigonometry/asec'
+import { createAsech } from '../function/trigonometry/asech'
+import { createAsin } from '../function/trigonometry/asin'
+import { createAsinh } from '../function/trigonometry/asinh'
+import { createAtan } from '../function/trigonometry/atan'
+import { createAtan2 } from '../function/trigonometry/atan2'
+import { createAtanh } from '../function/trigonometry/atanh'
+import { createCos } from '../function/trigonometry/cos'
+import { createCosh } from '../function/trigonometry/cosh'
+import { createCot } from '../function/trigonometry/cot'
+import { createCoth } from '../function/trigonometry/coth'
+import { createCsc } from '../function/trigonometry/csc'
+import { createCsch } from '../function/trigonometry/csch'
+import { createSec } from '../function/trigonometry/sec'
+import { createSech } from '../function/trigonometry/sech'
+import { createSin } from '../function/trigonometry/sin'
+import { createSinh } from '../function/trigonometry/sinh'
+import { createTan } from '../function/trigonometry/tan'
+import { createTanh } from '../function/trigonometry/tanh'
+import { createSetCartesian } from '../function/set/setCartesian'
+import { createSetDifference } from '../function/set/setDifference'
+import { createSetDistinct } from '../function/set/setDistinct'
+import { createSetIntersect } from '../function/set/setIntersect'
+import { createSetIsSubset } from '../function/set/setIsSubset'
+import { createSetMultiplicity } from '../function/set/setMultiplicity'
+import { createSetPowerset } from '../function/set/setPowerset'
+import { createSetSize } from '../function/set/setSize'
+import { createSetSymDifference } from '../function/set/setSymDifference'
+import { createSetUnion } from '../function/set/setUnion'
+import { createAdd } from '../function/arithmetic/add'
+import { createHypot } from '../function/arithmetic/hypot'
+import { createNorm } from '../function/arithmetic/norm'
+import { createDot } from '../function/matrix/dot'
+import { createTrace } from '../function/matrix/trace'
+import { createIndex } from '../type/matrix/function'
+import { createNode } from '../expression/node/Node'
+import { createAccessorNode } from '../expression/node/AccessorNode'
+import { createArrayNode } from '../expression/node/ArrayNode'
+import { createAssignmentNode } from '../expression/node/AssignmentNode'
+import { createBlockNode } from '../expression/node/BlockNode'
+import { createConditionalNode } from '../expression/node/ConditionalNode'
+import { createConstantNode } from '../expression/node/ConstantNode'
+import { createFunctionAssignmentNode } from '../expression/node/FunctionAssignmentNode'
+import { createIndexNode } from '../expression/node/IndexNode'
+import { createObjectNode } from '../expression/node/ObjectNode'
+import { createOperatorNode } from '../expression/node/OperatorNode'
+import { createParenthesisNode } from '../expression/node/ParenthesisNode'
+import { createRangeNode } from '../expression/node/RangeNode'
+import { createRelationalNode } from '../expression/node/RelationalNode'
+import { createSymbolNode } from '../expression/node/SymbolNode'
+import { createFunctionNode } from '../expression/node/FunctionNode'
+import { createParse } from '../expression/parse'
+import { createCompile } from '../expression/function/compile'
+import { createEvaluate } from '../expression/function/evaluate'
+import { createParserClass } from '../expression/Parser'
+import { createParser } from '../expression/function/parser'
+import { createLup } from '../function/algebra/decomposition/lup'
+import { createQr } from '../function/algebra/decomposition/qr'
+import { createSlu } from '../function/algebra/decomposition/slu'
+import { createLusolve } from '../function/algebra/solver/lusolve'
+import { createHelpClass } from '../expression/Help'
+import { createChainClass } from '../type/chain/Chain'
+import { createHelp } from '../expression/function/help'
+import { createChain } from '../type/chain/function/chain'
+import { createDet } from '../function/matrix/det'
+import { createInv } from '../function/matrix/inv'
+import { createExpm } from '../function/matrix/expm'
+import { createSqrtm } from '../function/matrix/sqrtm'
+import { createDivide } from '../function/arithmetic/divide'
+import { createDistance } from '../function/geometry/distance'
+import { createIntersect } from '../function/geometry/intersect'
+import { createSum } from '../function/statistics/sum'
+import { createMean } from '../function/statistics/mean'
+import { createMedian } from '../function/statistics/median'
+import { createMad } from '../function/statistics/mad'
+import { createVariance } from '../function/statistics/variance'
+import { createQuantileSeq } from '../function/statistics/quantileSeq'
+import { createStd } from '../function/statistics/std'
+import { createCombinations } from '../function/probability/combinations'
+import { createGamma } from '../function/probability/gamma'
+import { createFactorial } from '../function/probability/factorial'
+import { createKldivergence } from '../function/probability/kldivergence'
+import { createMultinomial } from '../function/probability/multinomial'
+import { createPermutations } from '../function/probability/permutations'
+import { createPickRandom } from '../function/probability/pickRandom'
+import { createRandom } from '../function/probability/random'
+import { createRandomInt } from '../function/probability/randomInt'
+import { createStirlingS2 } from '../function/combinatorics/stirlingS2'
+import { createBellNumbers } from '../function/combinatorics/bellNumbers'
+import { createCatalan } from '../function/combinatorics/catalan'
+import { createComposition } from '../function/combinatorics/composition'
+import { createSimplify } from '../function/algebra/simplify'
+import { createDerivative } from '../function/algebra/derivative'
+import { createRationalize } from '../function/algebra/rationalize'
+import { createReviver } from '../json/reviver'
 import {
   createE,
   createFalse,
@@ -249,7 +249,7 @@ import {
   createTau,
   createTrue,
   createVersion
-} from './constants'
+} from '../constants'
 import {
   createAtomicMass,
   createAvogadro,
@@ -301,57 +301,27 @@ import {
   createVacuumImpedance,
   createWeakMixingAngle,
   createWienDisplacement
-} from './type/unit/physicalConstants'
-import { createFilterTransform } from './expression/transform/filter.transform'
-import { createForEachTransform } from './expression/transform/forEach.transform'
-import { createIndexTransform } from './expression/transform/index.transform'
-import { createMapTransform } from './expression/transform/map.transform'
-import { createMaxTransform } from './expression/transform/max.transform'
-import { createMeanTransform } from './expression/transform/mean.transform'
-import { createMinTransform } from './expression/transform/min.transform'
-import { createRangeTransform } from './expression/transform/range.transform'
-import { createSubsetTransform } from './expression/transform/subset.transform'
-import { createConcatTransform } from './expression/transform/concat.transform'
-import { createSumTransform } from './expression/transform/sum.transform'
-import { MATRIX_OPTIONS, NUMBER_OPTIONS } from './core/function/config'
-import { createApply } from './function/matrix/apply'
-import { createColumn } from './function/matrix/column'
-import { createRow } from './function/matrix/row'
-import { createApplyTransform } from './expression/transform/apply.transform'
-import { createStdTransform } from './expression/transform/std.transform'
-import { createVarianceTransform } from './expression/transform/variance.transform'
-import { createRowTransform } from './expression/transform/row.transform'
-import { createColumnTransform } from './expression/transform/column.transform'
-import { createDeprecatedEval } from './expression/function/eval'
-import { createDeprecatedImport } from './core/function/deprecatedImport'
-import {
-  isAccessorNode, isArray,
-  isArrayNode,
-  isAssignmentNode, isBigNumber,
-  isBlockNode, isBoolean,
-  isChain, isComplex,
-  isConditionalNode,
-  isConstantNode,
-  isDate, isDenseMatrix, isFraction, isFunction,
-  isFunctionAssignmentNode,
-  isFunctionNode, isHelp, isIndex,
-  isIndexNode, isMatrix,
-  isNode,
-  isNull,
-  isNumber,
-  isObject,
-  isObjectNode,
-  isOperatorNode,
-  isParenthesisNode, isRange,
-  isRangeNode,
-  isRegExp, isResultSet, isSparseMatrix, isString,
-  isSymbolNode, isUndefined, isUnit
-} from './utils/is'
-import { ArgumentsError } from './error/ArgumentsError'
-import { DimensionError } from './error/DimensionError'
-import { IndexError } from './error/IndexError'
-import { lazy } from './utils/object'
-import { warnOnce } from './utils/log'
+} from '../type/unit/physicalConstants'
+import { createFilterTransform } from '../expression/transform/filter.transform'
+import { createForEachTransform } from '../expression/transform/forEach.transform'
+import { createIndexTransform } from '../expression/transform/index.transform'
+import { createMapTransform } from '../expression/transform/map.transform'
+import { createMaxTransform } from '../expression/transform/max.transform'
+import { createMeanTransform } from '../expression/transform/mean.transform'
+import { createMinTransform } from '../expression/transform/min.transform'
+import { createRangeTransform } from '../expression/transform/range.transform'
+import { createSubsetTransform } from '../expression/transform/subset.transform'
+import { createConcatTransform } from '../expression/transform/concat.transform'
+import { createSumTransform } from '../expression/transform/sum.transform'
+import { MATRIX_OPTIONS, NUMBER_OPTIONS } from '../core/function/config'
+import { createApply } from '../function/matrix/apply'
+import { createColumn } from '../function/matrix/column'
+import { createRow } from '../function/matrix/row'
+import { createApplyTransform } from '../expression/transform/apply.transform'
+import { createStdTransform } from '../expression/transform/std.transform'
+import { createVarianceTransform } from '../expression/transform/variance.transform'
+import { createRowTransform } from '../expression/transform/row.transform'
+import { createColumnTransform } from '../expression/transform/column.transform'
 
 // create a read-only version of config
 export const config = /* #__PURE__ */ function (options) {
@@ -408,7 +378,7 @@ export {
   isSparseMatrix,
   isSymbolNode,
   isUnit
-} from './utils/is'
+} from '../utils/is'
 
 // ----------------------------------------------------------------------------
 // classes and functions
@@ -1154,7 +1124,7 @@ export const Help = /* #__PURE__ */ createHelpClass({ parse })
 export const Chain = /* #__PURE__ */ createChainClass({ math })
 
 // type (4)
-export { embeddedDocs as docs } from './expression/embeddedDocs/embeddedDocs'
+export { embeddedDocs as docs } from '../expression/embeddedDocs/embeddedDocs'
 export const help = /* #__PURE__ */ createHelp({ math, typed, Help })
 export const chain = /* #__PURE__ */ createChain({ typed, Chain })
 
@@ -1271,136 +1241,3 @@ const mathAdditional = /* __PURE__ */ {
 }
 /* #__PURE__ */ Object.assign(math, mathAdditional)
 /* #__PURE__ */ Object.assign(mathWithTransform, mathAdditional)
-
-// ----------------------------------------------------------------------------
-// error classes
-
-export { IndexError } from './error/IndexError'
-export { DimensionError } from './error/DimensionError'
-export { ArgumentsError } from './error/ArgumentsError'
-
-// ----------------------------------------------------------------------------
-// core
-
-export { core, create, factory } from './mainInstance'
-export * from './dependenciesFull.generated'
-
-// ----------------------------------------------------------------------------
-// backward compatibility
-
-// TODO: deprecated since version 6.0.0. Date: 2019-04-14
-
-// "deprecatedEval" is also exposed as "eval" in the code compiled to ES5+CommonJs
-export const deprecatedEval = /* #__PURE__ */ createDeprecatedEval({ evaluate })
-
-// "deprecatedImport" is also exposed as "import" in the code compiled to ES5+CommonJs
-export const deprecatedImport = /* #__PURE__ */ createDeprecatedImport({})
-
-// "deprecatedVar" is also exposed as "var" in the code compiled to ES5+CommonJs
-export const deprecatedVar = /* #__PURE__ */ createDeprecatedVar({ variance })
-
-// "deprecatedTypeof" is also exposed as "typeof" in the code compiled to ES5+CommonJs
-export const deprecatedTypeof = /* #__PURE__ */ createDeprecatedTypeof({ typeOf })
-
-export const type = /* #__PURE__ */ createDeprecatedProperties('type', {
-  isNumber,
-  isComplex,
-  isBigNumber,
-  isFraction,
-  isUnit,
-  isString,
-  isArray,
-  isMatrix,
-  isDenseMatrix,
-  isSparseMatrix,
-  isRange,
-  isIndex,
-  isBoolean,
-  isResultSet,
-  isHelp,
-  isFunction,
-  isDate,
-  isRegExp,
-  isObject,
-  isNull,
-  isUndefined,
-  isAccessorNode,
-  isArrayNode,
-  isAssignmentNode,
-  isBlockNode,
-  isConditionalNode,
-  isConstantNode,
-  isFunctionAssignmentNode,
-  isFunctionNode,
-  isIndexNode,
-  isNode,
-  isObjectNode,
-  isOperatorNode,
-  isParenthesisNode,
-  isRangeNode,
-  isSymbolNode,
-  isChain,
-  BigNumber,
-  Chain,
-  Complex,
-  Fraction,
-  Matrix,
-  DenseMatrix,
-  SparseMatrix,
-  Spa,
-  FibonacciHeap,
-  ImmutableDenseMatrix,
-  Index,
-  Range,
-  ResultSet,
-  Unit,
-  Help,
-  Parser
-})
-
-export const expression = /* #__PURE__ */ createDeprecatedProperties('expression', {
-  parse,
-  Parser,
-  node: createDeprecatedProperties('expression.node', {
-    AccessorNode,
-    ArrayNode,
-    AssignmentNode,
-    BlockNode,
-    ConditionalNode,
-    ConstantNode,
-    IndexNode,
-    FunctionAssignmentNode,
-    FunctionNode,
-    Node,
-    ObjectNode,
-    OperatorNode,
-    ParenthesisNode,
-    RangeNode,
-    RelationalNode,
-    SymbolNode
-  })
-})
-
-export const json = /* #__PURE__ */ createDeprecatedProperties('json', {
-  reviver
-})
-
-export const error = /* #__PURE__ */ createDeprecatedProperties('error', {
-  ArgumentsError,
-  DimensionError,
-  IndexError
-})
-
-function createDeprecatedProperties (path, props) {
-  const obj = {}
-
-  Object.keys(props).forEach(name => {
-    lazy(obj, name, () => {
-      warnOnce(`math.${path}.${name} is moved to math.${name} in v6.0.0. ` +
-        'Please use the new location instead.')
-      return props[name]
-    })
-  })
-
-  return obj
-}

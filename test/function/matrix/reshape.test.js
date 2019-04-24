@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 import { DimensionError } from '../../../src/error/DimensionError'
 
 describe('reshape', function () {

@@ -1,6 +1,6 @@
 import assert from 'assert'
 import approx from '../../../tools/approx'
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 const bignumber = math.bignumber
 const gamma = math.gamma
 

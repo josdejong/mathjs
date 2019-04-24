@@ -1,11 +1,11 @@
-import { DEFAULT_CONFIG } from './core/config'
-import { createCore } from './core/core'
-import { deepFlatten, lazy, traverse, values } from './utils/object'
-import { ArgumentsError } from './error/ArgumentsError'
-import { DimensionError } from './error/DimensionError'
-import { IndexError } from './error/IndexError'
-import { warnOnce } from './utils/log'
-import { initial, last } from './utils/array'
+import { DEFAULT_CONFIG } from '../core/config'
+import { createCore } from '../core/core'
+import { deepFlatten, lazy, traverse, values } from '../utils/object'
+import { ArgumentsError } from '../error/ArgumentsError'
+import { DimensionError } from '../error/DimensionError'
+import { IndexError } from '../error/IndexError'
+import { warnOnce } from '../utils/log'
+import { initial, last } from '../utils/array'
 
 export function core (config) {
   const mergedConfig = Object.assign({}, DEFAULT_CONFIG, config)
@@ -144,4 +144,4 @@ export function create (factories, config) {
   return math
 }
 
-export { factory } from './utils/factory'
+export { factory } from '../utils/factory'

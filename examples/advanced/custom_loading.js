@@ -5,7 +5,7 @@ const {
   addDependencies,
   divideDependencies,
   formatDependencies
-} = require('../../index')
+} = require('../..')
 
 // Create a math.js instance with just the functions we want
 const { fraction, add, divide, format } = create({

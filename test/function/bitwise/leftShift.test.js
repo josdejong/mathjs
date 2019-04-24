@@ -1,7 +1,7 @@
 // test leftShift
 import assert from 'assert'
 
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 const matrix = math.matrix
 const sparse = math.sparse
 const bignumber = math.bignumber

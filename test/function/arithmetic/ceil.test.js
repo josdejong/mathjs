@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import approx from '../../../tools/approx'
-import { bignumber, ceil, complex, fraction, i, isFraction, matrix, pi, unit, parse } from '../../../src/mainFull'
+import { bignumber, ceil, complex, fraction, i, isFraction, matrix, pi, unit, parse } from '../../../src/entry/functionsFull'
 
 describe('ceil', function () {
   it('should return the ceil of a boolean', function () {

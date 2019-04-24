@@ -1,6 +1,6 @@
 'use strict'
 
-import math from '../src/mainBundle'
+import math from '../src/entry/mainBundle'
 
 const fs = require('fs')
 const typed = require('typed-function')

@@ -1,7 +1,7 @@
 // test derivative
 import assert from 'assert'
 
-import math from '../../../src/mainBundle'
+import math from '../../../src/entry/mainBundle'
 const OperatorNode = math.OperatorNode
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
