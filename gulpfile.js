@@ -134,9 +134,9 @@ function compile () {
     .pipe(babel())
     .pipe(gulp.dest(COMPILE_LIB))
 }
-function writeBanner(cb) {
-  fs.writeFileSync(COMPILED_HEADER, createBanner());
-  cb();
+function writeBanner (cb) {
+  fs.writeFileSync(COMPILED_HEADER, createBanner())
+  cb()
 }
 
 function minify (done) {
