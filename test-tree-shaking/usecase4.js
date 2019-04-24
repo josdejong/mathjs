@@ -1,7 +1,7 @@
 // Use case 4
 // use all functions in the expression parser with config
 
-import { create, all } from '../src/mainFull'
+import { create, all } from '..'
 
 const config = { number: 'BigNumber' }
 const { evaluate } = create(all, config)

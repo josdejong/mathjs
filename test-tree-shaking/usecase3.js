@@ -1,7 +1,7 @@
 // Use case 3
 // use all functions in the expression parser
 
-import { evaluate } from '../src/mainFull'
+import { evaluate } from '..'
 
 console.log('\nuse case 3')
 console.log(evaluate('sin(pi / 2) / 3'))

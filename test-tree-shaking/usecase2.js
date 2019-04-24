@@ -1,7 +1,7 @@
 // Use case 2
 // use a few functions with config
 
-import { create, divideDependencies, piDependencies, sinDependencies } from '../src/mainFull'
+import { create, divideDependencies, piDependencies, sinDependencies } from '..'
 
 const config = { number: 'BigNumber' }
 

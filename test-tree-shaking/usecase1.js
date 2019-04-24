@@ -1,7 +1,7 @@
 // Use case 1:
 // use a few functions
 
-import { divide, sin, pi } from '../src/mainFull'
+import { divide, sin, pi } from '..'
 
 console.log('\nuse case 1')
 

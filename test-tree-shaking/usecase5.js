@@ -1,7 +1,7 @@
 // Use case 5
 // use a few functions with just number support
 
-import { divide, sin, pi } from '../src/mainNumber'
+import { divide, sin, pi } from '../src/entry/mainNumber'
 
 console.log('\nuse case 5')
 console.log(divide(sin(divide(pi, 2)), 3))

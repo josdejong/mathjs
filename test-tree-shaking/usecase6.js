@@ -1,7 +1,7 @@
 // Use case 6
 // use dynamically changing config
 
-import { create, all } from '../src/mainFull'
+import { create, all } from '..'
 
 console.log('\nuse case 6')
 
