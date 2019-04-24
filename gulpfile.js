@@ -134,7 +134,7 @@ function compile () {
     .pipe(babel())
     .pipe(gulp.dest(COMPILE_LIB))
 }
-function addBanner(cb) {
+function writeBanner(cb) {
   fs.writeFileSync(COMPILED_HEADER, createBanner());
   cb();
 }
@@ -225,8 +225,8 @@ gulp.task('watch', function watch () {
     delay: 100
   }
 
-  gulp.watch(files, options, gulp.parallel(bundle, gulp.series(compile, addBanner)))
+  gulp.watch(files, options, gulp.parallel(bundle, compile))
 })
 
 // The default task (called when you run `gulp`)
-gulp.task('default', gulp.series(bundle, compile, minify, validate, generateDocs))
+gulp.task('default', gulp.series(bundle, compile, writeBanner, minify, validate, generateDocs))
