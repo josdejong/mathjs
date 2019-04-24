@@ -13,7 +13,7 @@
 
 // Create an empty math.js instance, with only typed
 // (every instance contains `import` and `config` also out of the box)
-const { create, typedDependencies, all } = require('../../index')
+const { create, typedDependencies, all } = require('../..')
 const math = create({
   typedDependencies
 })

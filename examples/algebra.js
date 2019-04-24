@@ -5,7 +5,7 @@
 // simplification and derivation on this tree.
 
 // load math.js (using node.js)
-const { simplify, parse, derivative } = require('../index')
+const { simplify, parse, derivative } = require('..')
 
 // simplify an expression
 console.log('simplify expressions')

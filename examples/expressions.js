@@ -8,7 +8,7 @@
  */
 
 // load math.js (using node.js)
-const math = require('../index')
+const math = require('..')
 
 // 1. using the function math.evaluate
 //

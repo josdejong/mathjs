@@ -18,7 +18,7 @@
 // functionality, these functions can be disabled, as demonstrated in this
 // example.
 
-const { create, all } = require('../../index')
+const { create, all } = require('../..')
 const math = create(all)
 
 const limitedEvaluate = math.evaluate

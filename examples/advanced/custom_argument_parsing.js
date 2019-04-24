@@ -7,7 +7,7 @@
  * will be invoked with unevaluated arguments, allowing the function
  * to process the arguments in a customized way.
  */
-const { create, all } = require('../../index')
+const { create, all } = require('../..')
 const math = create(all)
 
 /**

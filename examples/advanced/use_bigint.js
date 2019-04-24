@@ -3,7 +3,7 @@
 // have to defined more functions and define conversions from and to
 // other data types.
 
-const { create, all, factory } = require('../../index')
+const { create, all, factory } = require('../..')
 const math = create(all)
 
 // we can also add conversions here from number or string to BigInt

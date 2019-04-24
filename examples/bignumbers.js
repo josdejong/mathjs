@@ -1,7 +1,7 @@
 // BigNumbers
 
 // load math.js (using node.js)
-const { create, all } = require('../index')
+const { create, all } = require('..')
 const math = create(all)
 
 // configure the default type of numbers as BigNumbers

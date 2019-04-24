@@ -1,5 +1,5 @@
 // load math.js (using node.js)
-const { complex, reviver, typeOf } = require('../index')
+const { complex, reviver, typeOf } = require('..')
 
 // serialize a math.js data type into a JSON string
 const x = complex('2+3i')
