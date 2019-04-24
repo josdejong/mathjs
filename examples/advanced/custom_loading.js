@@ -1,11 +1,11 @@
 // Load the functions that we want to use
-const {
+import {
   create,
   fractionDependencies,
   addDependencies,
   divideDependencies,
   formatDependencies
-} = require('../..')
+} from '../..'
 
 // Create a math.js instance with just the functions we want
 const { fraction, add, divide, format } = create({

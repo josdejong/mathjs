@@ -3,13 +3,17 @@ const path = require('path')
 const factoriesFull = require('../lib/factoriesFull')
 const factoriesNumber = require('../lib/factoriesNumber')
 
+const ENTRY_FOLDER = path.join(__dirname, '../src/entry')
+
 const FACTORIES_FULL_LINK = '../factoriesFull.js'
 const ALL_FULL_LINK = './allFull.js'
-const DEPENDENCIES_FULL_DEST = path.join(__dirname, '../src/entry/dependenciesFull.generated.js')
+const DEPENDENCIES_FULL_INDEX = 'dependenciesFull.generated.js'
+const DEPENDENCIES_FULL_FOLDER = 'dependenciesFull'
 
-const FACTORIES_NUMBER_LINK = '../factoriesNumber'
+const FACTORIES_NUMBER_LINK = '../factoriesNumber.js'
 const ALL_NUMBER_LINK = './allNumber.js'
-const DEPENDENCIES_NUMBER_DEST = path.join(__dirname, '../src/entry/dependenciesNumber.generated.js')
+const DEPENDENCIES_NUMBER_INDEX = 'dependenciesNumber.generated.js'
+const DEPENDENCIES_NUMBER_FOLDER = 'dependenciesNumber'
 
 const IGNORED_DEPENDENCIES = {
   'on': true,
@@ -19,31 +23,37 @@ const IGNORED_DEPENDENCIES = {
   'classes': true
 }
 
-generateIndexFile(factoriesFull, FACTORIES_FULL_LINK, ALL_FULL_LINK, DEPENDENCIES_FULL_DEST)
-generateIndexFile(factoriesNumber, FACTORIES_NUMBER_LINK, ALL_NUMBER_LINK, DEPENDENCIES_NUMBER_DEST)
+generateIndexFile({
+  factories: factoriesFull,
+  factoriesLink: FACTORIES_FULL_LINK,
+  allLink: ALL_FULL_LINK,
+  entryFolder: ENTRY_FOLDER,
+  dependenciesFolder: DEPENDENCIES_FULL_FOLDER,
+  dependenciesIndexFile: DEPENDENCIES_FULL_INDEX
+})
+
+generateIndexFile({
+  factories: factoriesNumber,
+  factoriesLink: FACTORIES_NUMBER_LINK,
+  allLink: ALL_NUMBER_LINK,
+  entryFolder: ENTRY_FOLDER,
+  dependenciesFolder: DEPENDENCIES_NUMBER_FOLDER,
+  dependenciesIndexFile: DEPENDENCIES_NUMBER_INDEX
+})
 
 /**
  * Generate the following index files
  *   dependenciesFull.js
  *   dependenciesNumber.js
  */
-function generateIndexFile (factories, factoriesLink, allLink, dependenciesDest) {
-  // a map containing:
-  // {
-  //   'sqrt': 'createSqrt',
-  //   'subset{"isTransformFunction":true}': createSubsetTransform,
-  //   ...
-  // }
-  const factoryNameMap = {}
-  Object.keys(factories).forEach(factoryName => {
-    const factory = factories[factoryName]
-    const key = factory.fn + JSON.stringify(factory.meta)
-    factoryNameMap[key] = factoryName
-  })
-
-  const unsortedFactories = values(factories)
-  const sortedFactories = sortFactories(unsortedFactories)
-
+function generateIndexFile ({
+  factories,
+  factoriesLink,
+  allLink,
+  entryFolder,
+  dependenciesFolder,
+  dependenciesIndexFile
+}) {
   // a map containing:
   // {
   //   'sqrt': true,
@@ -51,55 +61,119 @@ function generateIndexFile (factories, factoriesLink, allLink, dependenciesDest)
   //   ...
   // }
   const exists = {}
-  sortedFactories.forEach(factory => {
+  Object.keys(factories).forEach(factoryName => {
+    const factory = factories[factoryName]
     exists[factory.fn] = true
   })
 
-  let src = ''
-  src += '/**\n'
-  src += ' * THIS FILE IS AUTO-GENERATED\n'
-  src += ' * DON\'T MAKE CHANGES HERE\n'
-  src += ' */\n'
+  // TODO: create template files and fill these in
+  const header = '/**\n' +
+   ' * THIS FILE IS AUTO-GENERATED\n' +
+   ' * DON\'T MAKE CHANGES HERE\n' +
+   ' */\n'
 
-  // src += factoriesFullSrc.replace(/export /g, 'import ')
-  src += 'import {\n'
-  const count = Object.keys(factories).length
-  Object.keys(factories).map((factoryName, index) => {
-    const eslint = factoryName === 'createSQRT1_2' ? ' // eslint-disable-line camelcase' : ''
-    const comma = index < count - 1 ? ',' : ''
-    src += '  ' + factoryName + comma + eslint + '\n'
+  mkdirSyncIfNotExists(path.join(entryFolder, dependenciesFolder))
+
+  // for each factory, create a separate file
+  Object.keys(factories).map((factoryName) => {
+    const factory = factories[factoryName]
+    // const transform = factory.meta && factory.meta.isTransformFunction ? 'Transform' : ''
+    const eslint = factory.fn === 'SQRT1_2' ? ' // eslint-disable-line camelcase' : ''
+    // const name = factory.fn + transform + 'Dependencies'
+    const name = getDependenciesName(factoryName, factories)
+    const fileName = getDependenciesFileName(factoryName)
+
+    const filteredDependencies = factory.dependencies
+      .map(stripOptionalNotation)
+      .filter(dependency => !IGNORED_DEPENDENCIES[dependency])
+      .filter(dependency => {
+        if (!exists[dependency]) {
+          if (factory.dependencies.indexOf(dependency) !== -1) {
+            throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
+          }
+
+          return false
+        }
+
+        return true
+      })
+
+    // add header
+    let src = header
+
+    // imports
+    filteredDependencies.forEach(dependency => {
+      // const name = dependency + 'Dependencies'
+      const factoryName = findFactoryName(factories, dependency)
+      const name = getDependenciesName(factoryName, factories)
+      const fileName = getDependenciesFileName(factoryName)
+      src += `import { ${name} } from './${fileName}.generated'\n`
+    })
+    src += `import { ${factoryName} } from '../${factoriesLink}'${eslint}\n`
+    src += '\n'
+
+    // exports
+    src += 'export const ' + name + ' = {' + eslint + '\n'
+    filteredDependencies.forEach(dependency => {
+      const name = getDependenciesName(findFactoryName(factories, dependency), factories)
+      src += '  ' + name + ',\n'
+    })
+    src += '  ' + factoryName + '\n'
+    src += '}\n'
+
+    const p = path.join(entryFolder, dependenciesFolder, fileName + '.generated.js')
+    fs.writeFileSync(p, src)
   })
-  src += '} from \'' + factoriesLink + '\''
+
+  // create one index file linking to all dependencies files
+  let src = header
+
+  Object.keys(factories).map((factoryName) => {
+    // const factory = factories[factoryName]
+    // const transform = factory.meta && factory.meta.isTransformFunction ? 'Transform' : ''
+    const eslint = factoryName === 'createSQRT1_2' ? ' // eslint-disable-line camelcase' : ''
+    // const name = factory.fn + transform + 'Dependencies'
+    const name = getDependenciesName(factoryName, factories)
+    const fileName = getDependenciesFileName(factoryName)
+
+    src += `export { ${name} } from './${dependenciesFolder}/${fileName}.generated'${eslint}\n`
+  })
 
   src += '\n'
   src += 'export { all } from \'' + allLink + '\'\n'
 
-  const loaded = {}
-  sortedFactories.forEach(factory => {
-    const transform = factory.meta && factory.meta.isTransformFunction ? 'Transform' : ''
-    const eslint = factory.fn === 'SQRT1_2' ? ' // eslint-disable-line camelcase' : ''
-    src += '\n'
-    src += 'export const ' + factory.fn + transform + 'Dependencies = {' + eslint + '\n'
+  fs.writeFileSync(path.join(entryFolder, dependenciesIndexFile), src)
+}
 
-    factory.dependencies
-      .map(stripOptionalNotation)
-      .filter(dependency => !IGNORED_DEPENDENCIES[dependency])
-      .filter(dependency => exists[dependency])
-      .forEach(dependency => {
-        src += '  ' + dependency + 'Dependencies,\n'
-      })
+function getDependenciesName (factoryName, factories) {
+  if (!factories) {
+    throw new Error(`Cannot create dependencies name: factories is undefined`)
+  }
 
-    const key = factory.fn + JSON.stringify(factory.meta)
-    src += '  ' + factoryNameMap[key] + '\n'
+  const factory = factories[factoryName]
+  const transform = factory.meta && factory.meta.isTransformFunction ? 'Transform' : ''
 
-    src += '}\n'
+  return factory.fn + transform + 'Dependencies'
+}
 
-    loaded[factory.fn] = true
-  })
+function getDependenciesFileName (factoryName) {
+  if (factoryName.indexOf('create') !== 0) {
+    throw new Error(`Cannot create dependencies name from factoryName "${factoryName}". Should start with "create..."`)
+  }
 
-  fs.writeFileSync(dependenciesDest, src)
+  return 'dependencies' + factoryName.slice(6)
+}
 
-  console.log('Generated file ' + dependenciesDest)
+function findFactoryName (factories, name) {
+  for (const factoryName in factories) {
+    if (factories.hasOwnProperty(factoryName)) {
+      if (factories[factoryName].fn === name) {
+        return factoryName
+      }
+    }
+  }
+
+  return undefined
 }
 
 /**
@@ -107,7 +181,8 @@ function generateIndexFile (factories, factoriesLink, allLink, dependenciesDest)
  * @param {Array} factories
  * @return {Array} Returns sorted factories
  */
-function sortFactories (factories) {
+// TODO: cleanup the function sortFactories if we don't need it in the end
+exports.sortFactories = function (factories) {
   const loaded = {}
   const leftOverFactories = factories.slice()
   const sortedFactories = []
@@ -152,7 +227,8 @@ function sortFactories (factories) {
   return sortedFactories
 }
 
-function values (object) {
+// TODO: cleanup the function values if we don't need it in the end
+exports.values = function (object) {
   return Object.keys(object).map(key => object[key])
 }
 
@@ -160,4 +236,14 @@ function stripOptionalNotation (dependency) {
   return dependency && dependency[0] === '?'
     ? dependency.slice(1)
     : dependency
+}
+
+// function will check if a directory exists, and create it if it doesn't
+// https://blog.raananweber.com/2015/12/15/check-if-a-directory-exists-in-node-js/
+function mkdirSyncIfNotExists (directory) {
+  try {
+    fs.statSync(directory)
+  } catch (error) {
+    fs.mkdirSync(directory)
+  }
 }
