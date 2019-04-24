@@ -22,6 +22,7 @@ const REF_SRC = './lib/'
 const REF_DEST = './docs/reference/functions'
 const REF_ROOT = './docs/reference'
 const MATH_JS = DIST + '/' + FILE
+const COMPILED_HEADER = COMPILE_LIB + '/header.js'
 
 // read the version number from package.json
 function getVersion () {
@@ -133,6 +134,10 @@ function compile () {
     .pipe(babel())
     .pipe(gulp.dest(COMPILE_LIB))
 }
+function writeBanner (cb) {
+  fs.writeFileSync(COMPILED_HEADER, createBanner())
+  cb()
+}
 
 function minify (done) {
   const oldCwd = process.cwd()
@@ -224,4 +229,4 @@ gulp.task('watch', function watch () {
 })
 
 // The default task (called when you run `gulp`)
-gulp.task('default', gulp.series(bundle, compile, minify, validate, generateDocs))
+gulp.task('default', gulp.series(bundle, compile, writeBanner, minify, validate, generateDocs))
