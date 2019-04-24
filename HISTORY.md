@@ -1,6 +1,11 @@
 # History
 
 
+# not yet published, version 5.9.1
+
+- Fix `lib/header.js` not having filled in date and version. Thanks @kevjin.
+
+
 # 2019-04-08, version 5.9.0
 
 - Implemented functions `row` and `column` (see #1413). Thanks @SzechuanSage.
