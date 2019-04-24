@@ -202,7 +202,7 @@ function validateAscii (done) {
 }
 
 function generateDocs (done) {
-  const all = require(REF_SRC + 'mainBundle')
+  const all = require(REF_SRC + 'entry/mainBundle')
   const functionNames = Object.keys(all)
     .filter(key => typeof all[key] === 'function')
 
