@@ -124,7 +124,7 @@
   "devDependencies": {
     "@babel/core": "7.4.4",
     "@babel/plugin-transform-object-assign": "7.2.0",
-    "@babel/preset-env": "7.4.3",
+    "@babel/preset-env": "7.4.4",
     "@babel/register": "7.4.0",
     "babel-loader": "8.0.5",
     "benchmark": "2.1.4",
