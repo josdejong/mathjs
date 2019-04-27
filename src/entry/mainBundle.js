@@ -1,6 +1,6 @@
 'use strict'
 
-const all = require('../factoriesFull')
+const all = require('../factoriesAny')
 const { create } = require('./mainInstance')
 
 const defaultInstance = create(all)

@@ -161,8 +161,8 @@
     "webpack-cli": "3.3.1",
     "zeros": "1.0.0"
   },
-  "main": "./lib/entry/mainFull.js",
-  "module": "src/entry/mainFull.js",
+  "main": "./lib/entry/mainAny.js",
+  "module": "src/entry/mainAny.js",
   "files": [
     "dist",
     "lib",

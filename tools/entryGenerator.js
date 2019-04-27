@@ -1,14 +1,14 @@
 const fs = require('fs')
 const path = require('path')
-const factoriesFull = require('../lib/factoriesFull')
+const factoriesAny = require('../lib/factoriesAny')
 const factoriesNumber = require('../lib/factoriesNumber')
 
 const ENTRY_FOLDER = path.join(__dirname, '../src/entry')
 
-const FACTORIES_FULL_LINK = '../factoriesFull.js'
-const ALL_FULL_LINK = './allFull.js'
-const DEPENDENCIES_FULL_INDEX = 'dependenciesFull.generated.js'
-const DEPENDENCIES_FULL_FOLDER = 'dependenciesFull'
+const FACTORIES_ANY_LINK = '../factoriesAny.js'
+const ALL_ANY_LINK = './allAny.js'
+const DEPENDENCIES_ANY_INDEX = 'dependenciesAny.generated.js'
+const DEPENDENCIES_ANY_FOLDER = 'dependenciesAny'
 
 const FACTORIES_NUMBER_LINK = '../factoriesNumber.js'
 const ALL_NUMBER_LINK = './allNumber.js'
@@ -24,12 +24,12 @@ const IGNORED_DEPENDENCIES = {
 }
 
 generateIndexFile({
-  factories: factoriesFull,
-  factoriesLink: FACTORIES_FULL_LINK,
-  allLink: ALL_FULL_LINK,
+  factories: factoriesAny,
+  factoriesLink: FACTORIES_ANY_LINK,
+  allLink: ALL_ANY_LINK,
   entryFolder: ENTRY_FOLDER,
-  dependenciesFolder: DEPENDENCIES_FULL_FOLDER,
-  dependenciesIndexFile: DEPENDENCIES_FULL_INDEX
+  dependenciesFolder: DEPENDENCIES_ANY_FOLDER,
+  dependenciesIndexFile: DEPENDENCIES_ANY_INDEX
 })
 
 generateIndexFile({
@@ -43,7 +43,7 @@ generateIndexFile({
 
 /**
  * Generate the following index files
- *   dependenciesFull.js
+ *   dependenciesAny.js
  *   dependenciesNumber.js
  */
 function generateIndexFile ({

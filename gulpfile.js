@@ -14,7 +14,7 @@ const HEADER = './src/header.js'
 const VERSION = './src/version.js'
 const COMPILE_SRC = './src/**/*.js'
 const COMPILE_LIB = './lib'
-const COMPILED_MAIN_FULL = './lib/entry/mainFull.js'
+const COMPILED_MAIN_ANY = './lib/entry/mainAny.js'
 const FILE = 'math.js'
 const FILE_MIN = 'math.min.js'
 const FILE_MAP = 'math.min.map'
@@ -211,10 +211,10 @@ function generateDocs (done) {
   done()
 }
 
-// Add links to deprecated functions in the node.js transpiled code mainFull.js
+// Add links to deprecated functions in the node.js transpiled code mainAny.js
 // These names are not valid in ES6 where we use them as functions instead of properties.
 function addDeprecatedFunctions (done) {
-  const code = String(fs.readFileSync(COMPILED_MAIN_FULL))
+  const code = String(fs.readFileSync(COMPILED_MAIN_ANY))
 
   const updatedCode = code + '\n\n' +
     'exports[\'var\'] = exports.deprecatedVar;\n' +
@@ -222,9 +222,9 @@ function addDeprecatedFunctions (done) {
     'exports[\'eval\'] = exports.deprecatedEval;\n' +
     'exports[\'import\'] = exports.deprecatedImport;\n'
 
-  fs.writeFileSync(COMPILED_MAIN_FULL, updatedCode)
+  fs.writeFileSync(COMPILED_MAIN_ANY, updatedCode)
 
-  gutil.log('Added deprecated functions to ' + COMPILED_MAIN_FULL)
+  gutil.log('Added deprecated functions to ' + COMPILED_MAIN_ANY)
 
   done()
 }

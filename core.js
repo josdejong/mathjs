@@ -1,5 +1,5 @@
-const create = require('./lib/mainInstance').create
-const typedDependencies = require('./lib/dependenciesFull.generated').typedDependencies
+const create = require('./lib/entry/mainInstance').create
+const typedDependencies = require('./lib/entry/dependenciesAny.generated').typedDependencies
 
 console.warn('Warning: ' +
   'The file "mathjs/core.js" is deprecated since v6.0.0. ' +
