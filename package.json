@@ -192,7 +192,7 @@
     "mathjs": "./bin/cli.js"
   },
   "engines": {
-    "node": ">= 6"
+    "node": ">= 8"
   },
   "bugs": {
     "url": "https://github.com/josdejong/mathjs/issues"
