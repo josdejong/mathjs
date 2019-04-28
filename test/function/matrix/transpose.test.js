@@ -1,7 +1,7 @@
 // test transpose
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 const transpose = math.transpose
 
 describe('transpose', function () {

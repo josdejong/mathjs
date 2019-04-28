@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 
 describe('filter', function () {
   it('should filter an array with a filter function', function () {

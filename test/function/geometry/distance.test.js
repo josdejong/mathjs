@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 
 describe('distance', function () {
   it('should calculate the distance of two 2D points', function () {

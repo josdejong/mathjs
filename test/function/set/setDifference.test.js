@@ -1,7 +1,7 @@
 // test setDifference
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 
 describe('setDifference', function () {
   it('should return the difference of two sets', function () {

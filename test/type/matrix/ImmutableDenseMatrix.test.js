@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 const Matrix = math.Matrix
 const DenseMatrix = math.DenseMatrix
 const ImmutableDenseMatrix = math.ImmutableDenseMatrix
@@ -229,7 +229,7 @@ describe('ImmutableDenseMatrix', function () {
       assert.throws(function () { m.get([1.2, 2]) })
       assert.throws(function () { m.get([1, -2]) })
       assert.throws(function () { m.get(1, 1) })
-      assert.throws(function () { m.get(math.index(1, 1)) })
+      assert.throws(function () { m.get(math.number(1, 1)) })
       assert.throws(function () { m.get([[1, 1]]) })
     })
   })

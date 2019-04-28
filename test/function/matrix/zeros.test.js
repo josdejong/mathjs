@@ -1,7 +1,7 @@
 // test zeros
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 const zeros = math.zeros
 const matrix = math.matrix
 

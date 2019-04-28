@@ -1,7 +1,7 @@
 // test chain
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 const Chain = math.Chain
 
 describe('Chain', function () {

@@ -1,7 +1,7 @@
 // test divide
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 import approx from '../../../tools/approx'
 const divide = math.divide
 const bignumber = math.bignumber

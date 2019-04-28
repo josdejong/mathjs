@@ -4,7 +4,7 @@
  * This simply preloads mathjs and drops you into a REPL to
  * help interactive debugging.
  **/
-global.math = require('../lib/entry/mainBundle')
+global.math = require('../lib/entry/bundleAny')
 const repl = require('repl')
 
 repl.start({ useGlobal: true })

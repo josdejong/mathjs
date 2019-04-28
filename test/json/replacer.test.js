@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../src/entry/mainBundle'
+import math from '../../src/entry/bundleAny'
 
 describe('replacer', function () {
   it('should stringify generic JSON', function () {

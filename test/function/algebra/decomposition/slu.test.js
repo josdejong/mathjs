@@ -1,5 +1,5 @@
 import approx from '../../../../tools/approx'
-import math from '../../../../src/entry/mainBundle'
+import math from '../../../../src/entry/bundleAny'
 
 describe('slu', function () {
   it('should decompose matrix, 4 x 4, natural ordering (order=0), partial pivoting', function () {

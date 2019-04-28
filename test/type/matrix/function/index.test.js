@@ -1,7 +1,7 @@
 // test index construction
 import assert from 'assert'
 
-import math from '../../../../src/entry/mainBundle'
+import math from '../../../../src/entry/bundleAny'
 const Range = math.Range
 const ImmutableDenseMatrix = math.ImmutableDenseMatrix
 

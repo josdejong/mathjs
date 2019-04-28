@@ -1,7 +1,7 @@
 // test dotMultiply (element-wise multiply)
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 import approx from '../../../tools/approx'
 const dotMultiply = math.dotMultiply
 const divide = math.divide

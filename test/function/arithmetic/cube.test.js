@@ -1,7 +1,7 @@
 // test cube
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 const bignumber = math.bignumber
 const fraction = math.fraction
 const matrix = math.matrix

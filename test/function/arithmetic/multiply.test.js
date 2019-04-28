@@ -1,7 +1,7 @@
 // test multiply
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 import approx from '../../../tools/approx'
 const multiply = math.multiply
 const divide = math.divide

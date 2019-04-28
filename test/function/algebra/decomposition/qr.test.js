@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import approx from '../../../../tools/approx'
-import math from '../../../../src/entry/mainBundle'
+import math from '../../../../src/entry/bundleAny'
 
 /**
  * Tests whether `Q` and `R` are the valid QR decomposition of `A`.

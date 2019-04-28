@@ -1,7 +1,7 @@
 // Use case 7
 // create functions yourself using factory functions
 
-import { createHypot, createTyped } from '../src/factoriesAny'
+import { createHypot, createTyped } from '..'
 
 // Create a hypot instance that only works with numbers:
 const typed = createTyped({})

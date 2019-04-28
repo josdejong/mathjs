@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import BigNumber from 'decimal.js'
-import math from '../../src/entry/mainBundle'
+import math from '../../src/entry/bundleAny'
 import { endsWith, escape, format } from '../../src/utils/string'
 
 describe('string', function () {

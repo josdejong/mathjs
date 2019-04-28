@@ -1,7 +1,7 @@
 // test setMultiplicity
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 
 describe('setMultiplicity', function () {
   it('should return the multiplicity on an element of a set', function () {

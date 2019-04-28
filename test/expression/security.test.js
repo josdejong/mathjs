@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../src/entry/mainBundle'
+import math from '../../src/entry/bundleAny'
 
 describe('security', function () {
   it('should not allow calling Function via constructor', function () {

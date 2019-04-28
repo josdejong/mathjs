@@ -1,7 +1,7 @@
 // test setSymDifference
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 
 describe('setSymDifference', function () {
   it('should return the symetric difference of two sets', function () {

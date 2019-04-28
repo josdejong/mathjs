@@ -1,7 +1,7 @@
 // test Node
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 const Node = math.Node
 
 describe('Node', function () {

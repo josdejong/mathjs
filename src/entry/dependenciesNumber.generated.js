@@ -194,4 +194,4 @@ export { divideDependencies } from './dependenciesNumber/dependenciesDivide.gene
 export { combinationsDependencies } from './dependenciesNumber/dependenciesCombinations.generated'
 export { gammaDependencies } from './dependenciesNumber/dependenciesGamma.generated'
 
-export { all } from './allNumber.js'
+export { all } from './allFactoriesNumber.js'

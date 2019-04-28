@@ -1,5 +1,5 @@
 import assert from 'assert'
-import mathjs from '../../src/entry/mainBundle'
+import mathjs from '../../src/entry/bundleAny'
 import approx from '../../tools/approx'
 import { factory } from '../../src/utils/factory'
 import { core } from '../../src/entry/mainAny'

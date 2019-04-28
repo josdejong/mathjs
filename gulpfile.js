@@ -9,7 +9,7 @@ const uglify = require('uglify-js')
 const docgenerator = require('./tools/docgenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
 
-const ENTRY = './src/entry/mainBundle.js'
+const ENTRY = './src/entry/bundleAny.js'
 const HEADER = './src/header.js'
 const VERSION = './src/version.js'
 const COMPILE_SRC = './src/**/*.js'
@@ -202,7 +202,7 @@ function validateAscii (done) {
 }
 
 function generateDocs (done) {
-  const all = require(REF_SRC + 'entry/mainBundle')
+  const all = require(REF_SRC + 'entry/bundleAny')
   const functionNames = Object.keys(all)
     .filter(key => typeof all[key] === 'function')
 
@@ -235,7 +235,7 @@ gulp.task('validate:ascii', validateAscii)
 // The watch task (to automatically rebuild when the source code changes)
 // Does only generate math.js, not the minified math.min.js
 gulp.task('watch', function watch () {
-  const files = ['package.json', 'index.js', 'src/**/*.js']
+  const files = ['package.json', 'number.js.js', 'src/**/*.js']
   const options = {
     // ignore version.js else we get an infinite loop since it's updated during bundle
     ignored: /version\.js/,

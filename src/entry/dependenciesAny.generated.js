@@ -324,4 +324,4 @@ export { stdTransformDependencies } from './dependenciesAny/dependenciesStdTrans
 export { sumTransformDependencies } from './dependenciesAny/dependenciesSumTransform.generated'
 export { varianceTransformDependencies } from './dependenciesAny/dependenciesVarianceTransform.generated'
 
-export { all } from './allAny.js'
+export { all } from './allFactoriesAny.js'

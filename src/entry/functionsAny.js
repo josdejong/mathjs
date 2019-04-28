@@ -127,7 +127,7 @@ import { createIndexClass } from '../type/matrix/MatrixIndex'
 import { createFibonacciHeapClass } from '../type/matrix/FibonacciHeap'
 import { createSpaClass } from '../type/matrix/Spa'
 import { createUnitClass } from '../type/unit/Unit'
-import { createUnit as createUnitFactory } from '../type/unit/function/unit'
+import { createUnitFunction } from '../type/unit/function/unit'
 import { createSparse } from '../type/matrix/function/sparse'
 import { createCreateUnit } from '../type/unit/function/createUnit'
 import { createAcos } from '../function/trigonometry/acos'
@@ -665,7 +665,7 @@ export const planckTemperature = /* #__PURE__ */ createPlanckTemperature(pyhisca
 
 // create (2)
 export const sparse = /* #__PURE__ */ createSparse({ typed, SparseMatrix })
-export const unit = /* #__PURE__ */ createUnitFactory({ typed, Unit })
+export const unit = /* #__PURE__ */ createUnitFunction({ typed, Unit })
 export const createUnit = /* #__PURE__ */ createCreateUnit({ typed, Unit })
 
 // trigonometry (2)

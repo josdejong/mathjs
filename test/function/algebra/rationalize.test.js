@@ -1,7 +1,7 @@
 'use strict'
 
 import assert from 'assert'
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 
 /**
    * Transform node, array and single type value in a string with no spaces inside.

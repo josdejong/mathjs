@@ -1,7 +1,7 @@
 // test size
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 const size = math.size
 const matrix = math.matrix
 

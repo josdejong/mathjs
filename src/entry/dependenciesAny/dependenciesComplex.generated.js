@@ -9,5 +9,5 @@ import { createComplex } from '../../factoriesAny.js'
 export const complexDependencies = {
   ComplexDependencies,
   typedDependencies,
-  createComplex
+  createComplex: createComplex
 }

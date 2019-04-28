@@ -1,7 +1,7 @@
 // test AccessorNode
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 const bigmath = math.create({ number: 'BigNumber' })
 const Node = math.Node
 const ConstantNode = math.ConstantNode

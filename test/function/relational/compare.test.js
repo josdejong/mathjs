@@ -1,7 +1,7 @@
 // test compare
 import assert from 'assert'
 
-import math from '../../../src/entry/mainBundle'
+import math from '../../../src/entry/bundleAny'
 const bignumber = math.bignumber
 const complex = math.complex
 const matrix = math.matrix

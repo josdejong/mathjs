@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import approx from '../../tools/approx'
-import math from '../../src/entry/mainBundle'
+import math from '../../src/entry/bundleAny'
 
 const parse = math.parse
 const ConditionalNode = math.ConditionalNode

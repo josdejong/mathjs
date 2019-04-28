@@ -142,10 +142,10 @@ export const createXgcd = /* #__PURE__ */ createNumberFactory('xgcd', xgcdNumber
 // export const dotMultiply = /* #__PURE__ */ createDotMultiply({ typed, matrix, equalScalar, multiplyScalar })
 
 // bitwise (1)
-export const createbitAnd = /* #__PURE__ */ createNumberFactory('bitAnd', bitAndNumber)
-export const createbitNot = /* #__PURE__ */ createNumberFactory('bitNot', bitNotNumber)
-export const createbitOr = /* #__PURE__ */ createNumberFactory('bitOr', bitOrNumber)
-export const createbitXor = /* #__PURE__ */ createNumberFactory('bitXor', bitXorNumber)
+export const createBitAnd = /* #__PURE__ */ createNumberFactory('bitAnd', bitAndNumber)
+export const createBitNot = /* #__PURE__ */ createNumberFactory('bitNot', bitNotNumber)
+export const createBitOr = /* #__PURE__ */ createNumberFactory('bitOr', bitOrNumber)
+export const createBitXor = /* #__PURE__ */ createNumberFactory('bitXor', bitXorNumber)
 
 // complex (1)
 // export const arg = /* #__PURE__ */ createArg({ typed })
