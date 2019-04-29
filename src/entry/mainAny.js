@@ -1,5 +1,6 @@
 // functions and constants
 export * from './functionsAny'
+export * from './evaluateAny'
 
 // error classes
 export { IndexError } from '../error/IndexError'

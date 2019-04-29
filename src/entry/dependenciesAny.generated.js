@@ -132,7 +132,7 @@ export { IndexDependencies } from './dependenciesAny/dependenciesIndexClass.gene
 export { FibonacciHeapDependencies } from './dependenciesAny/dependenciesFibonacciHeapClass.generated'
 export { SpaDependencies } from './dependenciesAny/dependenciesSpaClass.generated'
 export { UnitDependencies } from './dependenciesAny/dependenciesUnitClass.generated'
-export { unitDependencies } from './dependenciesAny/dependenciesUnit.generated'
+export { unitDependencies } from './dependenciesAny/dependenciesUnitFunction.generated'
 export { sparseDependencies } from './dependenciesAny/dependenciesSparse.generated'
 export { createUnitDependencies } from './dependenciesAny/dependenciesCreateUnit.generated'
 export { acosDependencies } from './dependenciesAny/dependenciesAcos.generated'

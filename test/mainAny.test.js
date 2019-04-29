@@ -89,6 +89,12 @@ describe('mainAny', function () {
     assert.strictEqual(typeof evaluate('rationalize'), 'function')
   })
 
+  it('should export evaluate having help and embedded docs', () => {
+    const h = evaluate('help(simplify)')
+
+    assert(h.toString().indexOf('Name: simplify') >= 0, true)
+  })
+
   // TODO: test export of create and core
   // TODO: test export of errors
   // TODO: test export json reviver

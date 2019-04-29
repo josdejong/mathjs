@@ -7,6 +7,7 @@ const webpack = require('webpack')
 const babel = require('gulp-babel')
 const uglify = require('uglify-js')
 const docgenerator = require('./tools/docgenerator')
+const entryGenerator = require('./tools/entryGenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
 
 const ENTRY = './src/entry/bundleAny.js'
@@ -211,6 +212,12 @@ function generateDocs (done) {
   done()
 }
 
+function generateEntryFiles (done) {
+  entryGenerator.generateEntryFiles()
+
+  done()
+}
+
 // Add links to deprecated functions in the node.js transpiled code mainAny.js
 // These names are not valid in ES6 where we use them as functions instead of properties.
 function addDeprecatedFunctions (done) {
@@ -247,4 +254,12 @@ gulp.task('watch', function watch () {
 })
 
 // The default task (called when you run `gulp`)
-gulp.task('default', gulp.series(bundle, compile, addDeprecatedFunctions, minify, validate, generateDocs))
+gulp.task('default', gulp.series(
+  bundle,
+  compile,
+  generateEntryFiles,
+  addDeprecatedFunctions,
+  minify,
+  validate,
+  generateDocs
+))

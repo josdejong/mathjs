@@ -6,12 +6,12 @@ const factoriesNumber = require('../lib/factoriesNumber')
 const ENTRY_FOLDER = path.join(__dirname, '../src/entry')
 
 const FACTORIES_ANY_LINK = '../factoriesAny.js'
-const ALL_ANY_LINK = './allAny.js'
+const ALL_ANY_LINK = './allFactoriesAny.js'
 const DEPENDENCIES_ANY_INDEX = 'dependenciesAny.generated.js'
 const DEPENDENCIES_ANY_FOLDER = 'dependenciesAny'
 
 const FACTORIES_NUMBER_LINK = '../factoriesNumber.js'
-const ALL_NUMBER_LINK = './allNumber.js'
+const ALL_NUMBER_LINK = './allFactoriesNumber.js'
 const DEPENDENCIES_NUMBER_INDEX = 'dependenciesNumber.generated.js'
 const DEPENDENCIES_NUMBER_FOLDER = 'dependenciesNumber'
 
@@ -23,23 +23,25 @@ const IGNORED_DEPENDENCIES = {
   'classes': true
 }
 
-generateIndexFile({
-  factories: factoriesAny,
-  factoriesLink: FACTORIES_ANY_LINK,
-  allLink: ALL_ANY_LINK,
-  entryFolder: ENTRY_FOLDER,
-  dependenciesFolder: DEPENDENCIES_ANY_FOLDER,
-  dependenciesIndexFile: DEPENDENCIES_ANY_INDEX
-})
+exports.generateEntryFiles = function () {
+  generateIndexFile({
+    factories: factoriesAny,
+    factoriesLink: FACTORIES_ANY_LINK,
+    allLink: ALL_ANY_LINK,
+    entryFolder: ENTRY_FOLDER,
+    dependenciesFolder: DEPENDENCIES_ANY_FOLDER,
+    dependenciesIndexFile: DEPENDENCIES_ANY_INDEX
+  })
 
-generateIndexFile({
-  factories: factoriesNumber,
-  factoriesLink: FACTORIES_NUMBER_LINK,
-  allLink: ALL_NUMBER_LINK,
-  entryFolder: ENTRY_FOLDER,
-  dependenciesFolder: DEPENDENCIES_NUMBER_FOLDER,
-  dependenciesIndexFile: DEPENDENCIES_NUMBER_INDEX
-})
+  generateIndexFile({
+    factories: factoriesNumber,
+    factoriesLink: FACTORIES_NUMBER_LINK,
+    allLink: ALL_NUMBER_LINK,
+    entryFolder: ENTRY_FOLDER,
+    dependenciesFolder: DEPENDENCIES_NUMBER_FOLDER,
+    dependenciesIndexFile: DEPENDENCIES_NUMBER_INDEX
+  })
+}
 
 /**
  * Generate the following index files

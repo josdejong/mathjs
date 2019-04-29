@@ -381,6 +381,7 @@ export const embeddedDocs = {
 
   // functions - expression
   'evaluate': evaluateDocs,
+  'eval': evaluateDocs, // TODO: deprecated, cleanup in v7
   help: helpDocs,
 
   // functions - geometry
@@ -475,6 +476,7 @@ export const embeddedDocs = {
   std: stdDocs,
   sum: sumDocs,
   'variance': varianceDocs,
+  'var': varianceDocs, // TODO: deprecated, cleanup in v7
 
   // functions - trigonometry
   acos: acosDocs,
@@ -519,5 +521,6 @@ export const embeddedDocs = {
   isZero: isZeroDocs,
   // print: printDocs // TODO: add documentation for print as soon as the parser supports objects.
   'typeOf': typeOfDocs,
+  'typeof': typeOfDocs, // TODO: deprecated, cleanup in v7
   'numeric': numericDocs
 }

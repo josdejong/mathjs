@@ -3,9 +3,9 @@
  * DON'T MAKE CHANGES HERE
  */
 import { typedDependencies } from './dependenciesTyped.generated'
-import { createbitOr } from '../../factoriesNumber.js'
+import { createBitNot } from '../../factoriesNumber.js'
 
-export const bitOrDependencies = {
+export const bitNotDependencies = {
   typedDependencies,
-  createbitOr
+  createBitNot
 }
