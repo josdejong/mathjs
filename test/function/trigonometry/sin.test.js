@@ -64,6 +64,11 @@ describe('sin', function () {
     assert.ok(bigmath2.sin(bigPi.times(2)).lt(1e-13))
     assert.ok(bigmath2.sin(bigmath2.tau).lt(1e-14))
     assert.ok(bigmath2.sin(bigmath2.tau.times(2)).lt(1e-13))
+
+
+    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+
+    assert.deepStrictEqual(bigmath61.sin(bigmath61.bignumber(-2)).toString(), '-0.909297426825681695396019865911744842702254971447890268378973')
   })
 
   it('should return the sine of a complex number', function () {
