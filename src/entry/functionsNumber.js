@@ -30,7 +30,6 @@ import {
   cscNumber,
   cubeNumber,
   divideNumber,
-  e,
   expm1Number,
   expNumber,
   fixNumber,
@@ -53,8 +52,6 @@ import {
   normNumber,
   notNumber,
   orNumber,
-  phi,
-  pi,
   powNumber,
   rightArithShiftNumber,
   rightLogShiftNumber,
@@ -68,14 +65,12 @@ import {
   subtractNumber,
   tanhNumber,
   tanNumber,
-  tau,
   unaryMinusNumber,
   unaryPlusNumber,
   xgcdNumber,
   xorNumber
 } from '../plain/number'
 import { DEFAULT_CONFIG } from '../core/config'
-import { version } from '../version'
 import { createResultSet } from '../type/resultset/ResultSet'
 import { createRangeClass } from '../type/matrix/Range'
 import { createTyped } from '../core/function/typed'
@@ -109,31 +104,6 @@ import { createPartitionSelect } from '../function/matrix/partitionSelect'
 import { createMax } from '../function/statistics/max'
 import { createMin } from '../function/statistics/min'
 import { createHypot } from '../function/arithmetic/hypot'
-import { createNode } from '../expression/node/Node'
-import { createAccessorNode } from '../expression/node/AccessorNode'
-import { createArrayNode } from '../expression/node/ArrayNode'
-import { createAssignmentNode } from '../expression/node/AssignmentNode'
-import { createBlockNode } from '../expression/node/BlockNode'
-import { createConditionalNode } from '../expression/node/ConditionalNode'
-import { createConstantNode } from '../expression/node/ConstantNode'
-import { createFunctionAssignmentNode } from '../expression/node/FunctionAssignmentNode'
-import { createIndexNode } from '../expression/node/IndexNode'
-import { createObjectNode } from '../expression/node/ObjectNode'
-import { createOperatorNode } from '../expression/node/OperatorNode'
-import { createParenthesisNode } from '../expression/node/ParenthesisNode'
-import { createRangeNode } from '../expression/node/RangeNode'
-import { createRelationalNode } from '../expression/node/RelationalNode'
-import { createSymbolNode } from '../expression/node/SymbolNode'
-import { createFunctionNode } from '../expression/node/FunctionNode'
-import { createParse } from '../expression/parse'
-import { createCompile } from '../expression/function/compile'
-import { createEvaluate } from '../expression/function/evaluate'
-import { createParserClass } from '../expression/Parser'
-import { createParser } from '../expression/function/parser'
-import { createHelpClass } from '../expression/Help'
-import { createChainClass } from '../type/chain/Chain'
-import { createHelp } from '../expression/function/help'
-import { createChain } from '../type/chain/function/chain'
 import { createSum } from '../function/statistics/sum'
 import { createMean } from '../function/statistics/mean'
 import { createMedian } from '../function/statistics/median'
@@ -151,18 +121,6 @@ import { createStirlingS2 } from '../function/combinatorics/stirlingS2'
 import { createBellNumbers } from '../function/combinatorics/bellNumbers'
 import { createCatalan } from '../function/combinatorics/catalan'
 import { createComposition } from '../function/combinatorics/composition'
-import { createSimplify } from '../function/algebra/simplify'
-import { createDerivative } from '../function/algebra/derivative'
-import { createRationalize } from '../function/algebra/rationalize'
-import { createReviver } from '../json/reviver'
-import { createFilterTransform } from '../expression/transform/filter.transform'
-import { createForEachTransform } from '../expression/transform/forEach.transform'
-import { createMapTransform } from '../expression/transform/map.transform'
-import { createMaxTransform } from '../expression/transform/max.transform'
-import { createMeanTransform } from '../expression/transform/mean.transform'
-import { createMinTransform } from '../expression/transform/min.transform'
-import { createRangeTransform } from '../expression/transform/range.transform'
-import { createSumTransform } from '../expression/transform/sum.transform'
 import { MATRIX_OPTIONS, NUMBER_OPTIONS } from '../core/function/config'
 import { createNumeric } from '../function/utils/numeric'
 import { createEqualNumber } from '../function/relational/equal'
@@ -170,13 +128,9 @@ import { createFilter } from '../function/matrix/filter'
 import { createForEach } from '../function/matrix/forEach'
 import { createMap } from '../function/matrix/map'
 import { createRange } from '../function/matrix/range'
-import { createSubsetTransform } from '../expression/transform/subset.transform'
 import { createSubset } from '../factoriesNumber'
 import { noMatrix } from '../utils/noop'
 import { createApply } from '../function/matrix/apply'
-import { createApplyTransform } from '../expression/transform/apply.transform'
-import { createStdTransform } from '../expression/transform/std.transform'
-import { createVarianceTransform } from '../expression/transform/variance.transform'
 
 // create a read-only version of config
 export const config = /* #__PURE__ */ function (options) {
