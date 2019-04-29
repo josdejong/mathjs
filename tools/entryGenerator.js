@@ -1,7 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const factoriesAny = require('../lib/factoriesAny')
-const factoriesNumber = require('../lib/factoriesNumber')
 
 const ENTRY_FOLDER = path.join(__dirname, '../src/entry')
 
@@ -24,6 +22,9 @@ const IGNORED_DEPENDENCIES = {
 }
 
 exports.generateEntryFiles = function () {
+  const factoriesAny = require('../lib/factoriesAny')
+  const factoriesNumber = require('../lib/factoriesNumber')
+
   generateIndexFile({
     factories: factoriesAny,
     factoriesLink: FACTORIES_ANY_LINK,
