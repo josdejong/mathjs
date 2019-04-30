@@ -2,13 +2,16 @@
 
 // load math.js (using node.js)
 const { create, all } = require('..')
-const math = create(all)
 
 // configure the default type of numbers as Fractions
-math.config({
-  number: 'Fraction' // Default type of number:
-  // 'number' (default), 'BigNumber', or 'Fraction'
-})
+const config = {
+  // Default type of number
+  // Available options: 'number' (default), 'BigNumber', or 'Fraction'
+  number: 'Fraction'
+}
+
+// create a mathjs instance with everything included
+const math = create(all, config)
 
 console.log('basic usage')
 printRatio(math.fraction(0.125)) // Fraction, 1/8

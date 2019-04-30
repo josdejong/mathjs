@@ -1,15 +1,17 @@
 // BigNumbers
 
-// load math.js (using node.js)
 const { create, all } = require('..')
-const math = create(all)
 
 // configure the default type of numbers as BigNumbers
-math.config({
-  number: 'BigNumber', // Default type of number:
-  // 'number' (default), 'BigNumber', or 'Fraction'
-  precision: 20 // Number of significant digits for BigNumbers
-})
+const config = {
+  // Default type of number
+  // Available options: 'number' (default), 'BigNumber', or 'Fraction'
+  number: 'BigNumber',
+
+  // Number of significant digits for BigNumbers
+  precision: 20
+}
+const math = create(all, config)
 
 console.log('round-off errors with numbers')
 print(math.add(0.1, 0.2)) // number, 0.30000000000000004

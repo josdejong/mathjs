@@ -5,6 +5,12 @@
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
+Most notable changes:
+
+- Support for tree-shaking out of the box.
+- New dependency injection solution.
+- Support for lightweight, number-only implementations of all functions.
+
 Breaking changes:
 
 - Functions `config` and `import` are not available anymore in the global
@@ -28,7 +34,7 @@ Breaking changes:
 
 - Renamed function `typeof` to `typeOf`, `var` to `variance`,
   and `eval` to `evaluate`. (the old function names are reserved keywords
-  which can only be used as a property name).
+  which can not be used as a variable name).
 - Deprecated having a `.toTex` property attached to functions.
   Use a custom toTex handler instead.
 - Deprecated the `Matrix.storage` function. Use `math.matrix` instead to create
@@ -38,12 +44,25 @@ Breaking changes:
   `math.parse.isAlpha`.
 - Moved all classes like `math.type.Unit` and `math.expression.Parser` to
   `math.Unit` and `math.Parser` respectively.
-- Deprecated the index classes used to load a custom subset of functions.
-  Instead, load individual functions via the main index file like:
+- Removed all index.js files used to load specific functions instead of all, like:
+
+  ```
+  // ... set up empty instance of mathjs, then load a set of functions:
+  math.import(require('mathjs/lib/function/arithmetic'))
+  ```
+
+  Individual functions are now loaded simply like:
+
+  ```js
+  import { add, multiply } from 'mathjs'
+  ```
+
+  To set a specific configuration on the functions:
 
   ```js
   import { create, addDependencies, multiplyDependencies } from 'mathjs'
-  const math = create({ addDependencies, multiplyDependencies })
+  const config = { number: 'BigNumber' }
+  const math = create({ addDependencies, multiplyDependencies }, config)
   ```
 
   See example `advanced/custom_loading.js`.
