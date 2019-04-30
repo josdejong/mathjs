@@ -5,18 +5,57 @@
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
-Most notable changes:
+### Most notable changes
 
-- Support for tree-shaking out of the box.
-- New dependency injection solution.
-- Support for lightweight, number-only implementations of all functions.
+1.  Full support for **ES6 modules**. Support for tree-shaking out of the box.
 
-Breaking changes:
+    Load all functions:
+
+    ```js
+    import * as math from 'mathjs'
+    ```
+
+    Use a few functions:
+
+    ```js
+    import { add, multiply } from 'mathjs'
+    ```
+
+    Load all functions with custom configuration:
+
+    ```js
+    import { create, all } from 'mathjs'
+    const config = { number: 'BigNumber' }
+    const math = create(all, config)
+    ```
+
+    Load a few functions with custom configuration:
+
+    ```js
+    import { create, addDependencies, multiplyDependencies } from 'mathjs'
+    const config = { number: 'BigNumber' }
+    const { add, multiply } = create({
+      addDependencies,
+      multiplyDependencies
+    }, config)
+    ```
+
+2.  Support for **lightweight, number-only** implementations of all functions:
+
+    ```
+    import { add, multiply } from 'mathjs/number'
+    ```
+
+3.  New **dependency injection** solution used under the hood.
+
+
+### Breaking changes
 
 - Functions `config` and `import` are not available anymore in the global
   context:
 
   ```js
+  // v5
   import * as mathjs from 'mathjs'
   mathjs.config(...) // error in v6.0.0
   mathjs.import(...) // error in v6.0.0
@@ -26,6 +65,7 @@ Breaking changes:
   there:
 
   ```js
+  // v6
   import { create, all } from 'mathjs'
   const config = { number: 'BigNumber' }
   const mathjs = create(all, config)
@@ -47,6 +87,7 @@ Breaking changes:
 - Removed all index.js files used to load specific functions instead of all, like:
 
   ```
+  // v5
   // ... set up empty instance of mathjs, then load a set of functions:
   math.import(require('mathjs/lib/function/arithmetic'))
   ```
@@ -54,12 +95,14 @@ Breaking changes:
   Individual functions are now loaded simply like:
 
   ```js
+  // v6
   import { add, multiply } from 'mathjs'
   ```
 
   To set a specific configuration on the functions:
 
   ```js
+  // v6
   import { create, addDependencies, multiplyDependencies } from 'mathjs'
   const config = { number: 'BigNumber' }
   const math = create({ addDependencies, multiplyDependencies }, config)
@@ -67,7 +110,7 @@ Breaking changes:
 
   See example `advanced/custom_loading.js`.
 
-Non breaking:
+### Non breaking changes
 
 - Fixed `epsilon` setting being applied globally to Complex numbers.
 
