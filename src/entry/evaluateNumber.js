@@ -620,3 +620,5 @@ Object.assign(mathWithTransform, math, {
   std: /* #__PURE__ */ createStdTransform({ typed, sqrt, variance }),
   variance: /* #__PURE__ */ createVarianceTransform({ typed, add, subtract, multiply, divide, apply, isNaN })
 })
+
+Chain.createProxy(math)

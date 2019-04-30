@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainAny from '../src/entry/mainAny'
 import { expectedInstanceStructure, expectedES6Structure } from './snapshot'
 import { validateBundle, validateTypeOf } from '../tools/validateBundle'
-const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate } = mainAny
+const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate, chain } = mainAny
 
 describe('mainAny', function () {
   it('should export functions', () => {
@@ -87,6 +87,11 @@ describe('mainAny', function () {
     assert.strictEqual(typeof evaluate('simplify'), 'function')
     assert.strictEqual(typeof evaluate('derivative'), 'function')
     assert.strictEqual(typeof evaluate('rationalize'), 'function')
+  })
+
+  it('should export chain with all functions', () => {
+    assert.strictEqual(chain(2).add(3).done(), 5)
+    assert.strictEqual(chain('x + 2 * x').simplify().done().toString(), '3 * x')
   })
 
   it('should export evaluate having help and embedded docs', () => {

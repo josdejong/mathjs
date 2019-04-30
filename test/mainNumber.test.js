@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainNumber from '../src/entry/mainNumber'
 import { expectedInstanceStructureNumber, expectedES6StructureNumber } from './snapshot'
 import { validateBundle, validateTypeOf } from '../tools/validateBundle'
-const { create, all, add, isObject, isNumber, pi, sqrt, evaluate } = mainNumber
+const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain } = mainNumber
 
 describe('mainNumber', function () {
   it('should export functions', () => {
@@ -81,6 +81,10 @@ describe('mainNumber', function () {
     assert.strictEqual(typeof evaluate('simplify'), 'function')
     assert.strictEqual(typeof evaluate('derivative'), 'function')
     assert.strictEqual(typeof evaluate('rationalize'), 'function')
+  })
+
+  it('should export chain with all functions', () => {
+    assert.strictEqual(chain(2).add(3).done(), 5)
   })
 
   it('should export evaluate having help and embedded docs', () => {
