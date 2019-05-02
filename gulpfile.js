@@ -24,6 +24,7 @@ const REF_SRC = './lib/'
 const REF_DEST = './docs/reference/functions'
 const REF_ROOT = './docs/reference'
 const MATH_JS = DIST + '/' + FILE
+const COMPILED_HEADER = COMPILE_LIB + '/header.js'
 
 // read the version number from package.json
 function getVersion () {
@@ -134,6 +135,10 @@ function compile () {
   return gulp.src(COMPILE_SRC)
     .pipe(babel())
     .pipe(gulp.dest(COMPILE_LIB))
+}
+function writeBanner (cb) {
+  fs.writeFileSync(COMPILED_HEADER, createBanner())
+  cb()
 }
 
 function minify (done) {
@@ -257,6 +262,7 @@ gulp.task('watch', function watch () {
 gulp.task('default', gulp.series(
   bundle,
   compile,
+  writeBanner,
   generateEntryFiles,
   addDeprecatedFunctions,
   minify,

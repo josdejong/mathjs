@@ -113,6 +113,12 @@
 ### Non breaking changes
 
 - Fixed `epsilon` setting being applied globally to Complex numbers.
+- Fix `math.simplify('add(2, 3)')` throwing an error.
+
+
+# not yet published, version 5.9.1
+
+- Fix `lib/header.js` not having filled in date and version. Thanks @kevjin.
 
 
 # 2019-04-08, version 5.9.0
@@ -522,7 +528,6 @@ Non breaking changes:
 - Upgraded devDependencies.
 - Fixed #1014: `derivative` silently dropping additional arguments
   from operator nodes with more than two arguments.
-- Fix `math.simplify('add(2, 3)')` throwing an error.
 
 
 ## 2018-02-07, version 3.20.2
