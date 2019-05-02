@@ -329,6 +329,16 @@ describe('simplify', function () {
     assert.strictEqual(simplified.toString({ implicit: 'hide' }), '2 x')
   })
 
+  it('should keep negated constants separte from non-constants', function () {
+    simplifyAndCompare('-5', '0', [{ l: 'c', r: '0' }])
+    simplifyAndCompare('-5', '-5', [{ l: 'v', r: '0' }])
+    // the rules are just for testing, not actually for use
+  })
+
+  it('should match negative constants', function () {
+    simplifyAndCompare('x ^ (-1)', '1 / x')
+  })
+
   describe('expression parser', function () {
     it('should evaluate simplify containing string value', function () {
       const res = math.eval('simplify("2x + 3x")')
