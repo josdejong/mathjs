@@ -151,7 +151,7 @@
     "ndarray-ops": "1.2.2",
     "ndarray-pack": "1.2.1",
     "numericjs": "1.2.6",
-    "nyc": "14.0.0",
+    "nyc": "14.1.0",
     "pad-right": "0.2.2",
     "q": "1.5.1",
     "standard": "12.0.1",
