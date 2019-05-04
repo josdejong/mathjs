@@ -70,7 +70,6 @@ import {
   xgcdNumber,
   xorNumber
 } from '../plain/number'
-import { DEFAULT_CONFIG } from '../core/config'
 import { createResultSet } from '../type/resultset/ResultSet'
 import { createRangeClass } from '../type/matrix/Range'
 import { createTyped } from '../core/function/typed'
@@ -121,7 +120,6 @@ import { createStirlingS2 } from '../function/combinatorics/stirlingS2'
 import { createBellNumbers } from '../function/combinatorics/bellNumbers'
 import { createCatalan } from '../function/combinatorics/catalan'
 import { createComposition } from '../function/combinatorics/composition'
-import { MATRIX_OPTIONS, NUMBER_OPTIONS } from '../core/function/config'
 import { createNumeric } from '../function/utils/numeric'
 import { createEqualNumber } from '../function/relational/equal'
 import { createFilter } from '../function/matrix/filter'
@@ -131,59 +129,12 @@ import { createRange } from '../function/matrix/range'
 import { createSubset } from '../factoriesNumber'
 import { noMatrix } from '../utils/noop'
 import { createApply } from '../function/matrix/apply'
+import { config } from './configReadonly'
 
-// create a read-only version of config
-export const config = /* #__PURE__ */ function (options) {
-  if (options) {
-    throw new Error('The global config is readonly. ' +
-      'Please create a mathjs instance if you want to change the default configuration.')
-  }
+// ----------------------------------------------------------------------------
+// read-only config
 
-  return Object.freeze(DEFAULT_CONFIG)
-}
-Object.assign(config, DEFAULT_CONFIG, { MATRIX_OPTIONS, NUMBER_OPTIONS })
-
-// util functions
-export {
-  isAccessorNode,
-  isArray,
-  isArrayNode,
-  isAssignmentNode,
-  isBigNumber,
-  isBlockNode,
-  isBoolean,
-  isChain,
-  isCollection,
-  isComplex,
-  isConditionalNode,
-  isConstantNode,
-  isDate,
-  isDenseMatrix,
-  isFraction,
-  isFunction,
-  isFunctionAssignmentNode,
-  isFunctionNode,
-  isHelp,
-  isIndex,
-  isIndexNode,
-  isMatrix,
-  isNode,
-  isNull,
-  isNumber,
-  isString,
-  isUndefined,
-  isObject,
-  isObjectNode,
-  isOperatorNode,
-  isParenthesisNode,
-  isRange,
-  isRangeNode,
-  isRegExp,
-  isResultSet,
-  isSparseMatrix,
-  isSymbolNode,
-  isUnit
-} from '../utils/is'
+export { config } from './configReadonly'
 
 // ----------------------------------------------------------------------------
 // classes and functions

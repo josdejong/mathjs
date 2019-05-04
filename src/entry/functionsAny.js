@@ -1,6 +1,5 @@
 // TODO: auto generate this file
 
-import { DEFAULT_CONFIG } from '../core/config'
 import { createResultSet } from '../type/resultset/ResultSet'
 import { createBigNumberClass } from '../type/bignumber/BigNumber'
 import { createComplexClass } from '../type/complex/Complex'
@@ -273,68 +272,15 @@ import {
   createWeakMixingAngle,
   createWienDisplacement
 } from '../type/unit/physicalConstants'
-import { MATRIX_OPTIONS, NUMBER_OPTIONS } from '../core/function/config'
 import { createApply } from '../function/matrix/apply'
 import { createColumn } from '../function/matrix/column'
 import { createRow } from '../function/matrix/row'
+import { config } from './configReadonly'
 
-// create a read-only version of config
-export const config = /* #__PURE__ */ function (options) {
-  if (options) {
-    throw new Error('The global config is readonly. \n' +
-      'Please create a mathjs instance if you want to change the default configuration. \n' +
-      'Example:\n' +
-      '\n' +
-      '  import { create, all } from \'mathjs\';\n' +
-      '  const mathjs = create(all);\n' +
-      '  mathjs.config({ number: \'BigNumber\' });\n')
-  }
+// ----------------------------------------------------------------------------
+// read-only config
 
-  return Object.freeze(DEFAULT_CONFIG)
-}
-Object.assign(config, DEFAULT_CONFIG, { MATRIX_OPTIONS, NUMBER_OPTIONS })
-
-// util functions
-export {
-  isAccessorNode,
-  isArray,
-  isArrayNode,
-  isAssignmentNode,
-  isBigNumber,
-  isBlockNode,
-  isBoolean,
-  isChain,
-  isCollection,
-  isComplex,
-  isConditionalNode,
-  isConstantNode,
-  isDate,
-  isDenseMatrix,
-  isFraction,
-  isFunction,
-  isFunctionAssignmentNode,
-  isFunctionNode,
-  isHelp,
-  isIndex,
-  isIndexNode,
-  isMatrix,
-  isNode,
-  isNull,
-  isNumber,
-  isString,
-  isUndefined,
-  isObject,
-  isObjectNode,
-  isOperatorNode,
-  isParenthesisNode,
-  isRange,
-  isRangeNode,
-  isRegExp,
-  isResultSet,
-  isSparseMatrix,
-  isSymbolNode,
-  isUnit
-} from '../utils/is'
+export { config } from './configReadonly'
 
 // ----------------------------------------------------------------------------
 // classes and functions

@@ -1,6 +1,7 @@
 // functions and constants
 export * from './functionsNumber'
 export * from './evaluateNumber'
+export * from './typeChecks'
 
 // error classes
 export { IndexError } from '../error/IndexError'
