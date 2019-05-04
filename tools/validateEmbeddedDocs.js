@@ -51,5 +51,5 @@ for (prop in docs) {
 if (undocumentedCount === 0 && nonExistingCount === 0) {
   log('Validation successful: all functions are documented.')
 } else {
-  log('Validation failed: not all functions are documented.')
+  log.error('Validation failed: not all functions are documented.')
 }

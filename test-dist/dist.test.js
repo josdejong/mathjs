@@ -1,11 +1,10 @@
-//
-// WARNING: don't use code here that can't run natively in node.js (like import)
-// else Webpack will need to transpile and bundle the bundles which is slow
-//
-const assert = require('assert')
-const validateBundle = require('../tools/validateBundle').validateBundle
-const expectedBundleStructure = require('../test/snapshot').expectedInstanceStructure
+import assert from 'assert'
+import { createSnapshotFromFactories } from '../test/entry/snapshot'
+import * as factoriesAny from '../lib/factoriesAny'
+import { validateBundle } from '../tools/validateBundle'
+
 const version = require('../package.json').version
+const { expectedInstanceStructure } = createSnapshotFromFactories(factoriesAny)
 
 describe('dist', function () {
   it('should load dist/math.js', function () {
@@ -34,7 +33,7 @@ describe('dist', function () {
       }
     }
 
-    validateBundle(expectedBundleStructure, math)
+    validateBundle(expectedInstanceStructure, math)
 
     console.warn = originalWarn
   })
@@ -51,7 +50,7 @@ describe('dist', function () {
       }
     }
 
-    validateBundle(expectedBundleStructure, math)
+    validateBundle(expectedInstanceStructure, math)
 
     console.warn = originalWarn
   })

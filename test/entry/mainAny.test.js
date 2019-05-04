@@ -1,10 +1,16 @@
 import assert from 'assert'
-import * as mainNumber from '../src/entry/mainNumber'
-import { expectedInstanceStructureNumber, expectedES6StructureNumber } from './snapshot'
-import { validateBundle, validateTypeOf } from '../tools/validateBundle'
-const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain } = mainNumber
+import * as mainAny from '../../src/entry/mainAny'
+import * as factoriesAny from '../../src/factoriesAny'
+import { createSnapshotFromFactories } from './snapshot'
+import { validateBundle, validateTypeOf } from '../../tools/validateBundle'
+const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate, chain } = mainAny
 
-describe('mainNumber', function () {
+const {
+  expectedInstanceStructure,
+  expectedES6Structure
+} = createSnapshotFromFactories(factoriesAny)
+
+describe('mainAny', function () {
   it('should export functions', () => {
     assert.strictEqual(add(2, 3), 5)
     assert.strictEqual(sqrt(4), 2)
@@ -12,7 +18,7 @@ describe('mainNumber', function () {
 
   it('should export all functions and constants', function () {
     // snapshot testing
-    validateBundle(expectedES6StructureNumber, mainNumber)
+    validateBundle(expectedES6Structure, mainAny)
   })
 
   it('new instance should have all expected functions', function () {
@@ -27,14 +33,14 @@ describe('mainNumber', function () {
       }
     }
 
-    validateBundle(expectedInstanceStructureNumber, newMathInstance)
+    validateBundle(expectedInstanceStructure, newMathInstance)
 
     console.warn = originalWarn
   })
 
   it('evaluate should contain all functions from mathWithTransform', function () {
     // snapshot testing
-    const mathWithTransform = expectedInstanceStructureNumber.expression.mathWithTransform
+    const mathWithTransform = expectedInstanceStructure.expression.mathWithTransform
 
     Object.keys(mathWithTransform).forEach(key => {
       if (key === 'not') {
@@ -62,15 +68,21 @@ describe('mainNumber', function () {
     assert.strictEqual(pi, Math.PI)
   })
 
+  it('should export physical constants', () => {
+    assert.strictEqual(speedOfLight.toString(), '2.99792458e+8 m / s')
+  })
+
   it('should export type checking functions', () => {
     assert.strictEqual(isObject({}), true)
     assert.strictEqual(isObject(null), false)
-    assert.strictEqual(isNumber('23'), false)
+    assert.strictEqual(isMatrix([]), false)
+    assert.strictEqual(isMatrix(matrix()), true)
   })
 
   it('should export evaluate having functions and constants', () => {
     assert.strictEqual(evaluate('sqrt(4)'), 2)
     assert.strictEqual(evaluate('pi'), Math.PI)
+    assert.strictEqual(evaluate('A[1]', { A: [1, 2, 3] }), 1) // one-based evaluation
 
     // TODO: should loop over all functions and constants
     assert.strictEqual(typeof evaluate('help'), 'function')
@@ -85,6 +97,7 @@ describe('mainNumber', function () {
 
   it('should export chain with all functions', () => {
     assert.strictEqual(chain(2).add(3).done(), 5)
+    assert.strictEqual(chain('x + 2 * x').simplify().done().toString(), '3 * x')
   })
 
   it('should export evaluate having help and embedded docs', () => {

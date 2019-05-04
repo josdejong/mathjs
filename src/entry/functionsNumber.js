@@ -153,6 +153,7 @@ export {
   isBlockNode,
   isBoolean,
   isChain,
+  isCollection,
   isComplex,
   isConditionalNode,
   isConstantNode,

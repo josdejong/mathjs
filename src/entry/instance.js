@@ -53,6 +53,7 @@ export function create (factories, config) {
     'type.isMatrix',
     'type.isDenseMatrix',
     'type.isSparseMatrix',
+    'type.isCollection',
     'type.isRange',
     'type.isIndex',
     'type.isBoolean',
