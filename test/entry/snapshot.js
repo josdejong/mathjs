@@ -1,6 +1,7 @@
 import * as allIsFunctions from '../../src/utils/is'
 import { create } from '../../src/entry/instance'
 import { validateTypeOf } from '../../tools/validateBundle'
+import { endsWith } from '../../src/utils/string'
 
 /**
  * Based on an object with factory functions, create the expected
@@ -37,7 +38,7 @@ export function createSnapshotFromFactories (factories) {
     }
 
     if (isClass) {
-      if (name.endsWith('Node')) {
+      if (endsWith(name, 'Node')) {
         allNodeClasses[name] = 'Function'
       } else {
         allClasses[name] = 'Function'
