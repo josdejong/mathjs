@@ -159,7 +159,7 @@
     "uglify-js": "3.5.10",
     "underscore": "1.9.1",
     "webpack": "4.30.0",
-    "webpack-cli": "3.3.1",
+    "webpack-cli": "3.3.2",
     "zeros": "1.0.0"
   },
   "main": "./es5",
