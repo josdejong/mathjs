@@ -1,12 +1,10 @@
-import assert from 'assert'
-import { createSnapshotFromFactories } from '../test/entry/snapshot'
-import * as factoriesAny from '../lib/factoriesAny'
-import { validateBundle } from '../tools/validateBundle'
-
+// Only use native node.js API's here, this file is not transpiled!
+const assert = require('assert')
+const { createSnapshotFromFactories, validateBundle } = require('../lib/utils/snapshot')
+const factoriesAny = require('../lib/factoriesAny')
 const version = require('../package.json').version
-const { expectedInstanceStructure } = createSnapshotFromFactories(factoriesAny)
 
-// TODO: dist.test.js is relatively slow because math.js and math.min.js are bundled with this test code. Find a solution for that
+const { expectedInstanceStructure } = createSnapshotFromFactories(factoriesAny)
 
 describe('dist', function () {
   it('should load dist/math.js', function () {

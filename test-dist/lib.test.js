@@ -1,3 +1,4 @@
+// Only use native node.js API's here, this file is not transpiled!
 const assert = require('assert')
 const version = require('../package.json').version
 

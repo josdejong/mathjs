@@ -1,7 +1,6 @@
 import assert from 'assert'
 import * as mainNumber from '../../src/entry/mainNumber'
-import { createSnapshotFromFactories } from './snapshot'
-import { validateBundle, validateTypeOf } from '../../tools/validateBundle'
+import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../src/utils/snapshot'
 import * as factoriesNumber from '../../src/factoriesNumber'
 const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain } = mainNumber
 
