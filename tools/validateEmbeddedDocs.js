@@ -9,18 +9,18 @@ let prop
 // names to ignore
 const ignore = [
   // functions not supported or relevant for the parser:
-  'create', 'core', 'typed', 'config',
-  'on', 'off', 'emit', 'once',
-  'compile', 'parse', 'parser',
-  'chain', 'print', 'uninitialized',
+  'chain', 'print',
+  'compile', 'parse', 'parser', // TODO: add embedded docs for compile, parse, and parser?
+  'reviver', // TODO: add embedded docs for reviver?
+  'apply', // FIXME: apply is not supported right now because of security concerns
   'eye', 'var', 'eval', 'typeof', // deprecated functions
   'addScalar', 'divideScalar', 'multiplyScalar', 'equalScalar'
 ]
 
 // test whether all functions are documented
 let undocumentedCount = 0
-for (prop in math) {
-  if (math.hasOwnProperty(prop)) {
+for (prop in math.expression.mathWithTransform) {
+  if (math.expression.mathWithTransform.hasOwnProperty(prop)) {
     const obj = math[prop]
     if (math['typeOf'](obj) !== 'Object') {
       try {
