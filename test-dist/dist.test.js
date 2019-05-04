@@ -6,6 +6,8 @@ import { validateBundle } from '../tools/validateBundle'
 const version = require('../package.json').version
 const { expectedInstanceStructure } = createSnapshotFromFactories(factoriesAny)
 
+// TODO: dist.test.js is relatively slow because math.js and math.min.js are bundled with this test code. Find a solution for that
+
 describe('dist', function () {
   it('should load dist/math.js', function () {
     const math = require('../dist/math.js')
