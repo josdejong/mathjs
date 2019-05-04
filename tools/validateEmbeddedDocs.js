@@ -2,7 +2,7 @@
  * Validate whether all functions in math.js are documented in math.docs
  * we use the minified bundle to also check whether that bundle is valid.
  */
-const gutil = require('gulp-util')
+const log = require('fancy-log')
 const math = require('../dist/math.min.js')
 let prop
 
@@ -29,7 +29,7 @@ for (prop in math.expression.mathWithTransform) {
         }
       } catch (err) {
         undocumentedCount++
-        gutil.log('WARNING: Function ' + prop + ' is undocumented')
+        log('WARNING: Function ' + prop + ' is undocumented')
       }
     }
   }
@@ -41,7 +41,7 @@ const docs = math.docs
 for (prop in docs) {
   if (docs.hasOwnProperty(prop)) {
     if (math[prop] === undefined) {
-      gutil.log('WARNING: Documentation for a non-existing function "' + prop + '"')
+      log('WARNING: Documentation for a non-existing function "' + prop + '"')
       nonExistingCount++
     }
   }
@@ -49,7 +49,7 @@ for (prop in docs) {
 
 // done. Output results
 if (undocumentedCount === 0 && nonExistingCount === 0) {
-  gutil.log('Validation successful: all functions are documented.')
+  log('Validation successful: all functions are documented.')
 } else {
-  gutil.log('Validation failed: not all functions are documented.')
+  log('Validation failed: not all functions are documented.')
 }

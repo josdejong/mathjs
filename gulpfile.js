@@ -2,7 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 const gulp = require('gulp')
-const gutil = require('gulp-util')
+const log = require('fancy-log')
 const webpack = require('webpack')
 const babel = require('gulp-babel')
 const uglify = require('uglify-js')
@@ -33,7 +33,7 @@ function getVersion () {
 
 // generate banner with today's date and correct version
 function createBanner () {
-  const today = gutil.date(new Date(), 'yyyy-mm-dd') // today, formatted as yyyy-mm-dd
+  const today = new Date().toISOString().substr(0, 10) // today, formatted as yyyy-mm-dd
   const version = getVersion()
 
   return String(fs.readFileSync(HEADER))
@@ -111,21 +111,21 @@ function bundle (done) {
 
   compiler.run(function (err, stats) {
     if (err) {
-      gutil.log(err)
+      log(err)
       done(err)
     }
     const info = stats.toJson()
 
     if (stats.hasWarnings()) {
-      gutil.log('Webpack warnings:\n' + info.warnings.join('\n'))
+      log('Webpack warnings:\n' + info.warnings.join('\n'))
     }
 
     if (stats.hasErrors()) {
-      gutil.log('Webpack errors:\n' + info.errors.join('\n'))
+      log('Webpack errors:\n' + info.errors.join('\n'))
       done(new Error('Compile failed'))
     }
 
-    gutil.log('bundled ' + MATH_JS)
+    log('bundled ' + MATH_JS)
 
     done()
   })
@@ -157,8 +157,8 @@ function minify (done) {
     fs.writeFileSync(FILE_MIN, result.code)
     fs.writeFileSync(FILE_MAP, result.map)
 
-    gutil.log('Minified ' + FILE_MIN)
-    gutil.log('Mapped ' + FILE_MAP)
+    log('Minified ' + FILE_MIN)
+    log('Mapped ' + FILE_MAP)
   } catch (e) {
     throw e
   } finally {
@@ -236,7 +236,7 @@ function addDeprecatedFunctions (done) {
 
   fs.writeFileSync(COMPILED_MAIN_ANY, updatedCode)
 
-  gutil.log('Added deprecated functions to ' + COMPILED_MAIN_ANY)
+  log('Added deprecated functions to ' + COMPILED_MAIN_ANY)
 
   done()
 }
