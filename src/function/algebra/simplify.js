@@ -227,7 +227,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   function removeParens (node) {
     return node.transform(function (node, path, parent) {
       return isParenthesisNode(node)
-        ? node.content
+        ? removeParens(node.content)
         : node
     })
   }
@@ -447,15 +447,13 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         }
 
         // Replace placeholders with their respective nodes without traversing deeper into the replaced nodes
-        const _transform = function (node) {
+        res = res.transform(function (node) {
           if (node.isSymbolNode && matches.placeholders.hasOwnProperty(node.name)) {
             return matches.placeholders[node.name].clone()
           } else {
-            return node.map(_transform)
+            return node
           }
-        }
-
-        res = _transform(res)
+        })
 
         // const after = res.toString({parenthesis: 'all'})
         // console.log('Simplified ' + before + ' to ' + after)

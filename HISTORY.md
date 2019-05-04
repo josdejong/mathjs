@@ -84,6 +84,8 @@
   `math.parse.isAlpha`.
 - Moved all classes like `math.type.Unit` and `math.expression.Parser` to
   `math.Unit` and `math.Parser` respectively.
+- Fixed #1428: transform iterating over replaced nodes. New behavior
+  is that it stops iterating when a node is replaced.
 - Removed all index.js files used to load specific functions instead of all, like:
 
   ```
