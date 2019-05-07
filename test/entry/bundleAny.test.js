@@ -10,14 +10,16 @@ describe('bundleAny', function () {
       precision: 64,
       predictable: false,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
+      implicitMultiplication: true
     })
   })
 
   it('should create an instance of math.js with custom configuration', function () {
     const math1 = math.create({
       matrix: 'Array',
-      number: 'BigNumber'
+      number: 'BigNumber',
+      implicitMultiplication: false
     })
 
     assert.strictEqual(typeof math1, 'object')
@@ -27,7 +29,8 @@ describe('bundleAny', function () {
       precision: 64,
       predictable: false,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
+      implicitMultiplication: false
     })
   })
 
@@ -70,7 +73,8 @@ describe('bundleAny', function () {
       precision: 4,
       predictable: true,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
+      implicitMultiplication: true
     })
 
     assert.ok(math1.isNaN(math1.sqrt(-4)))
@@ -90,7 +94,8 @@ describe('bundleAny', function () {
       precision: 64,
       predictable: false,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
+      implicitMultiplication: true
     })
 
     assert.deepStrictEqual(math1.sqrt(-4), math1.complex(0, 2))

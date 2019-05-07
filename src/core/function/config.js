@@ -39,6 +39,9 @@ export function configFactory (config, emit) {
    *                            {string} randomSeed
    *                              Random seed for seeded pseudo random number generator.
    *                              Set to null to randomly seed.
+ *                              {boolean} implicitMultiplication
+   *                              Boolean to set implicit multiplication.
+   *                              Default set to true
    * @return {Object} Returns the current configuration
    */
   function _config (options) {
