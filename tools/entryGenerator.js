@@ -177,8 +177,6 @@ exports.generateEntryFiles = function () {
   })
 }
 
-exports.generateEntryFiles() // FIXME: cleanup
-
 /**
  * Generate index files like
  *   dependenciesAny.generated.js
