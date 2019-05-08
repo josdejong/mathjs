@@ -144,7 +144,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.apply(A,&nbsp;dim,&nbsp;callback)](functions/apply.html) | Apply a function that maps an array to a scalar along a given axis of a matrix or array.
-[math.column(value,&nbsp;index)](functions/column.html) | Return column in Matrix.
+[math.column(value,&nbsp;index)](functions/column.html) | Return a column from a Matrix.
 [math.concat(a,&nbsp;b,&nbsp;c,&nbsp;...&nbsp;[,&nbsp;dim])](functions/concat.html) | Concatenate two or more matrices.
 [math.cross(x,&nbsp;y)](functions/cross.html) | Calculate the cross product for two vectors in three dimensional space.
 [math.ctranspose(x)](functions/ctranspose.html) | Transpose and complex conjugate a matrix.
@@ -165,7 +165,7 @@ Function | Description
 [math.range(start,&nbsp;end&nbsp;[,&nbsp;step])](functions/range.html) | Create an array from a range.
 [math.reshape(x,&nbsp;sizes)](functions/reshape.html) | Reshape a multi dimensional array to fit the specified dimensions.
 [math.resize(x,&nbsp;size&nbsp;[,&nbsp;defaultValue])](functions/resize.html) | Resize a matrix.
-[math.row(value,&nbsp;index)](functions/row.html) | Return row in Matrix.
+[math.row(value,&nbsp;index)](functions/row.html) | Return a row from a Matrix.
 [math.size(x)](functions/size.html) | Calculate the size of a matrix or scalar.
 [math.sort(x)](functions/sort.html) | Sort the items in a matrix.
 [X&nbsp;=&nbsp;math.sqrtm(A)](functions/sqrtm.html) | Calculate the principal square root of a square matrix.

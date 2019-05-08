@@ -5,7 +5,13 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
-<h1 id="20180408-version-590">2018-04-08, version 5.9.0 <a href="#20180408-version-590" title="Permalink">#</a></h1>
+<h1 id="20190508-version-5100">2019-05-08, version 5.10.0 <a href="#20190508-version-5100" title="Permalink">#</a></h1>
+
+- Fix `lib/header.js` not having filled in date and version. Thanks <a href="https://github.com/kevjin">@kevjin</a>.
+- Upgraded dependency `decimal.js@10.2.0`, fixing an issue on node.js 12.
+
+
+<h1 id="20190408-version-590">2019-04-08, version 5.9.0 <a href="#20190408-version-590" title="Permalink">#</a></h1>
 
 - Implemented functions `row` and `column` (see <a href="https://github.com/josdejong/mathjs/issues/1413">#1413</a>). Thanks <a href="https://github.com/SzechuanSage">@SzechuanSage</a>.
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1459">#1459</a>: `engineering` notation of function `format` not available

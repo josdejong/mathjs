@@ -6,13 +6,13 @@ layout: default
 
 <h1 id="function-column">Function column <a href="#function-column" title="Permalink">#</a></h1>
 
-Return column in Matrix.
+Return a column from a Matrix.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.column(value, index)    // retrieve a column
+math.column(value, index)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -34,7 +34,7 @@ Array &#124; Matrix | The retrieved column
 ```js
 // get a column
 const d = [[1, 2], [3, 4]]
-math.column(d, 1))        // returns [2, 4]
+math.column(d, 1) // returns [2, 4]
 ```
 
 

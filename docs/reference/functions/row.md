@@ -6,13 +6,13 @@ layout: default
 
 <h1 id="function-row">Function row <a href="#function-row" title="Permalink">#</a></h1>
 
-Return row in Matrix.
+Return a row from a Matrix.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.row(value, index)    // retrieve a row
+math.row(value, index)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -34,7 +34,7 @@ Array &#124; Matrix | The retrieved row
 ```js
 // get a row
 const d = [[1, 2], [3, 4]]
-math.row(d, 1))        // returns [3, 4]
+math.row(d, 1) // returns [3, 4]
 ```
 
 

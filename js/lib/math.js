@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 5.9.0
- * @date    2019-04-08
+ * @version 5.10.0
+ * @date    2019-05-08
  *
  * @license
  * Copyright (C) 2013-2019 Jos de Jong <wjosdejong@gmail.com>
@@ -24762,17 +24762,17 @@ function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(0));
   var range = load(__webpack_require__(77));
   /**
-   * Return column in Matrix.
+   * Return a column from a Matrix.
    *
    * Syntax:
    *
-   *     math.column(value, index)    // retrieve a column
+   *     math.column(value, index)
    *
    * Example:
    *
    *     // get a column
    *     const d = [[1, 2], [3, 4]]
-   *     math.column(d, 1))        // returns [2, 4]
+   *     math.column(d, 1) // returns [2, 4]
    *
    * See also:
    *
@@ -25039,17 +25039,17 @@ function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(0));
   var range = load(__webpack_require__(77));
   /**
-   * Return row in Matrix.
+   * Return a row from a Matrix.
    *
    * Syntax:
    *
-   *     math.row(value, index)    // retrieve a row
+   *     math.row(value, index)
    *
    * Example:
    *
    *     // get a row
    *     const d = [[1, 2], [3, 4]]
-   *     math.row(d, 1))        // returns [3, 4]
+   *     math.row(d, 1) // returns [3, 4]
    *
    * See also:
    *
@@ -26593,7 +26593,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
 
 
   /*
-   *  decimal.js v10.1.1
+   *  decimal.js v10.2.0
    *  An arbitrary-precision Decimal type for JavaScript.
    *  https://github.com/MikeMcl/decimal.js
    *  Copyright (c) 2019 Michael Mclaughlin <M8ch88l@gmail.com>
@@ -26907,7 +26907,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
     external = false;
 
     // Initial estimate.
-    s = x.s * Math.pow(x.s * x, 1 / 3);
+    s = x.s * mathpow(x.s * x, 1 / 3);
 
      // Math.cbrt underflow/overflow?
      // Pass x to Math.pow as integer, then adjust the exponent of the result.
@@ -26917,7 +26917,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
 
       // Adjust n exponent so it is a multiple of 3 away from x exponent.
       if (s = (e - n.length + 1) % 3) n += (s == 1 || s == -2 ? '0' : '00');
-      s = Math.pow(n, 1 / 3);
+      s = mathpow(n, 1 / 3);
 
       // Rarely, e may be one less than the result exponent value.
       e = mathfloor((e + 1) / 3) - (e % 3 == (e < 0 ? -1 : 2));
@@ -27136,7 +27136,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
     // TODO? Estimation reused from cosine() and may not be optimal here.
     if (len < 32) {
       k = Math.ceil(len / 3);
-      n = Math.pow(4, -k).toString();
+      n = (1 / tinyPow(4, k)).toString();
     } else {
       k = 16;
       n = '2.3283064365386962890625e-10';
@@ -27216,8 +27216,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
       k = 1.4 * Math.sqrt(len);
       k = k > 16 ? 16 : k | 0;
 
-      x = x.times(Math.pow(5, -k));
-
+      x = x.times(1 / tinyPow(5, k));
       x = taylorSeries(Ctor, 2, x, x, true);
 
       // Reverse argument reduction
@@ -29228,7 +29227,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
     // Estimate the optimum number of times to use the argument reduction.
     if (len < 32) {
       k = Math.ceil(len / 3);
-      y = Math.pow(4, -k).toString();
+      y = (1 / tinyPow(4, k)).toString();
     } else {
       k = 16;
       y = '2.3283064365386962890625e-10';
@@ -30239,7 +30238,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
     if (isFloat) x = divide(x, divisor, len * 4);
 
     // Multiply by the binary exponent part if present.
-    if (p) x = x.times(Math.abs(p) < 54 ? Math.pow(2, p) : Decimal.pow(2, p));
+    if (p) x = x.times(Math.abs(p) < 54 ? mathpow(2, p) : Decimal.pow(2, p));
     external = true;
 
     return x;
@@ -30265,8 +30264,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
     k = 1.4 * Math.sqrt(len);
     k = k > 16 ? 16 : k | 0;
 
-    // Max k before Math.pow precision loss is 22
-    x = x.times(Math.pow(5, -k));
+    x = x.times(1 / tinyPow(5, k));
     x = taylorSeries(Ctor, 2, x, x);
 
     // Reverse argument reduction
@@ -30316,6 +30314,14 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
     t.d.length = k + 1;
 
     return t;
+  }
+
+
+  // Exponent e must be positive and non-zero.
+  function tinyPow(b, e) {
+    var n = b;
+    while (--e) n *= b;
+    return n;
   }
 
 
@@ -30925,10 +30931,12 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
       }
 
       // Minus sign?
-      if (v.charCodeAt(0) === 45) {
+      if ((i = v.charCodeAt(0)) === 45) {
         v = v.slice(1);
         x.s = -1;
       } else {
+        // Plus sign?
+        if (i === 43) v = v.slice(1);
         x.s = 1;
       }
 
@@ -31044,6 +31052,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
    * rounded to `precision` significant digits using rounding mode `rounding`.
    *
    * hypot(a, b, ...) = sqrt(a^2 + b^2 + ...)
+   *
+   * arguments {number|string|Decimal}
    *
    */
   function hypot() {
@@ -31318,6 +31328,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
    *   0    if x is 0,
    *  -0    if x is -0,
    *   NaN  otherwise
+   *
+   * x {number|string|Decimal}
    *
    */
   function sign(x) {
@@ -43728,7 +43740,7 @@ exports.math = true; // request access to the math namespace
 /* 201 */
 /***/ (function(module, exports) {
 
-module.exports = '5.9.0'; // Note: This file is automatically generated when building math.js.
+module.exports = '5.10.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 
 /***/ }),
@@ -59625,8 +59637,8 @@ module.exports = {
   'name': 'column',
   'category': 'Matrix',
   'syntax': ['column(x, index)'],
-  'description': 'Return a column from a matrix or array. Index is zero-based.',
-  'examples': ['column([[1, 2], [3, 4]], 1)'],
+  'description': 'Return a column from a matrix or array.',
+  'examples': ['A = [[1, 2], [3, 4]]', 'column(A, 1)', 'column(A, 2)'],
   'seealso': ['row']
 };
 
@@ -59885,8 +59897,8 @@ module.exports = {
   'name': 'row',
   'category': 'Matrix',
   'syntax': ['row(x, index)'],
-  'description': 'Return a row from a matrix or array. Index is zero-based.',
-  'examples': ['row([[1, 2], [3, 4]], 1)'],
+  'description': 'Return a row from a matrix or array.',
+  'examples': ['A = [[1, 2], [3, 4]]', 'row(A, 1)', 'row(A, 2)'],
   'seealso': ['column']
 };
 
