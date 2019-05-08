@@ -2,13 +2,13 @@
 
 # Function row
 
-Return row in Matrix.
+Return a row from a Matrix.
 
 
 ## Syntax
 
 ```js
-math.row(value, index)    // retrieve a row
+math.row(value, index)
 ```
 
 ### Parameters
@@ -30,7 +30,7 @@ Array &#124; Matrix | The retrieved row
 ```js
 // get a row
 const d = [[1, 2], [3, 4]]
-math.row(d, 1))        // returns [3, 4]
+math.row(d, 1) // returns [3, 4]
 ```
 
 
