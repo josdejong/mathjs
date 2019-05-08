@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainNumber from '../../src/entry/mainNumber'
 import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../src/utils/snapshot'
 import * as factoriesNumber from '../../src/factoriesNumber'
-const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain } = mainNumber
+const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain, Range, reviver } = mainNumber
 
 const {
   expectedInstanceStructure,
@@ -111,9 +111,18 @@ describe('mainNumber', function () {
     assert(h.toString().indexOf('Name: simplify') >= 0, true)
   })
 
+  it('should export reviver', () => {
+    const json = '{"mathjs":"Range","start":2,"end":10}'
+    const r = new Range(2, 10)
+
+    const obj = JSON.parse(json, reviver)
+
+    assert(obj instanceof Range)
+    assert.deepStrictEqual(obj, r)
+  })
+
   // TODO: test export of create and core
   // TODO: test export of errors
-  // TODO: test export json reviver
   // TODO: test export of classes
   // TODO: test export of default instance
   // TODO: test snapshot of all exported things

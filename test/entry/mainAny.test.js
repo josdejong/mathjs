@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainAny from '../../src/entry/mainAny'
 import * as factoriesAny from '../../src/factoriesAny'
 import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../src/utils/snapshot'
-const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate, chain } = mainAny
+const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate, chain, reviver, Complex } = mainAny
 
 const {
   expectedInstanceStructure,
@@ -105,9 +105,18 @@ describe('mainAny', function () {
     assert(h.toString().indexOf('Name: simplify') >= 0, true)
   })
 
+  it('should export reviver', () => {
+    const json = '{"mathjs":"Complex","re":2,"im":4}'
+    const c = new Complex(2, 4)
+
+    const obj = JSON.parse(json, reviver)
+
+    assert(obj instanceof Complex)
+    assert.deepStrictEqual(obj, c)
+  })
+
   // TODO: test export of create and core
   // TODO: test export of errors
-  // TODO: test export json reviver
   // TODO: test export of classes
   // TODO: test export of default instance
   // TODO: test snapshot of all exported things

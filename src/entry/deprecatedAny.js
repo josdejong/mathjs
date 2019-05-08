@@ -63,7 +63,7 @@ import {
   typeOf,
   Unit,
   variance
-} from './functionsAny.generated'
+} from './pureFunctionsAny.generated'
 import {
   AccessorNode,
   ArrayNode,
@@ -87,7 +87,7 @@ import {
   RelationalNode,
   reviver,
   SymbolNode
-} from './evaluateAny'
+} from './impureFunctionsAny.generated'
 
 export const deprecatedEval = /* #__PURE__ */ createDeprecatedEval({ evaluate })
 

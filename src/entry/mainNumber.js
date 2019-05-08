@@ -2,8 +2,8 @@
 export { config } from './configReadonly'
 
 // functions and constants
-export * from './functionsNumber.generated'
-export * from './evaluateNumber'
+export * from './pureFunctionsNumber.generated'
+export * from './impureFunctionsNumber.generated'
 export * from './typeChecks'
 
 // error classes

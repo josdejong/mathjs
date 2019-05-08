@@ -12,12 +12,12 @@ const IGNORED_DEPENDENCIES = {
   'classes': true
 }
 
-const IGNORED_FACTORIES = {
-  'typeof': true,
-  'var': true,
-  'eval': true,
-  'E': true,
-  'PI': true
+const DEPRECATED_FACTORIES = {
+  'typeof': 'typeOf',
+  'var': 'variance',
+  'eval': 'evaluate',
+  'E': 'e',
+  'PI': 'pi'
 }
 
 const FACTORY_NAMES_ES6_MAPPING = {
@@ -66,19 +66,86 @@ const pureFunctionsTemplate = Handlebars.compile(`/**
  */
 import { config } from './configReadonly'
 import {
-  {{#factories}}
+  {{#pureFactories}}
   {{factoryName}}{{#unless @last}},{{/unless}}{{eslintComment}}
-  {{/factories}}
+  {{/pureFactories}}
 } from '../factories{{suffix}}'
 
-{{#factories}}
+{{#pureFactories}}
 export const {{name}} = /* #__PURE__ */ {{factoryName ~}}
 ({{braceOpen}}{{#if dependencies}} {{/if ~}}
 {{#dependencies ~}}
 {{name}}{{#unless @last}}, {{/unless ~}}
 {{/dependencies ~}}
 {{#if dependencies}} {{/if ~}}})
-{{/factories}}
+{{/pureFactories}}
+`)
+
+const impureFunctionsTemplate = Handlebars.compile(`/**
+ * THIS FILE IS AUTO-GENERATED
+ * DON'T MAKE CHANGES HERE
+ */
+import { config } from './configReadonly'
+import {
+  {{#impureFactories}}
+  {{factoryName}},{{eslintComment}}
+  {{/impureFactories}}
+  {{#transformFactories}}
+  {{factoryName}}{{#unless @last}},{{/unless}}{{eslintComment}}
+  {{/transformFactories}}
+} from '../factories{{suffix}}'
+import {
+  {{#pureFactories}}
+  {{name}}{{#unless @last}},{{/unless}}{{eslintComment}}
+  {{/pureFactories}}
+} from './pureFunctions{{suffix}}.generated'
+
+const math = {} // NOT pure!
+const mathWithTransform = {} // NOT pure!
+const classes = {} // NOT pure!
+
+{{#impureFactories}}
+export const {{name}} = {{factoryName ~}}
+({{braceOpen}}{{#if dependencies}} {{/if ~}}
+{{#dependencies ~}}
+{{name}}{{#unless @last}}, {{/unless ~}}
+{{/dependencies ~}}
+{{#if dependencies}} {{/if ~}}})
+{{/impureFactories}}
+
+Object.assign(math, {
+{{#math}}
+{{#if renamed}}
+  '{{name}}': {{renamed}},
+{{else if mappedName}}
+  {{name}}: {{mappedName}},
+{{else}}
+  {{name}},
+{{/if}}
+{{/math}}  
+  config
+})
+
+Object.assign(mathWithTransform, math, {
+  {{#transformFactories}}
+  {{name}}: {{factoryName ~}}
+  ({{braceOpen}}{{#if dependencies}} {{/if ~}}
+  {{#dependencies ~}}
+  {{name}}{{#unless @last}}, {{/unless ~}}
+  {{/dependencies ~}}
+  {{#if dependencies}} {{/if ~}}}){{#unless @last}},{{/unless}}
+  {{/transformFactories}}
+})
+
+Object.assign(classes, {
+{{#classes}}
+  {{name}}{{#unless @last}},{{/unless}}
+{{/classes}}
+})
+
+Chain.createProxy(math)
+
+export { embeddedDocs as docs } from '../expression/embeddedDocs/embeddedDocs'
 `)
 
 exports.generateEntryFiles = function () {
@@ -194,11 +261,13 @@ function generateDependenciesFiles ({ suffix, factories, entryFolder }) {
 
 /**
  * Generate index files like
- *   functionsAny.generated.js
- *   evaluateAny.generated.js
+ *   pureFunctionsAny.generated.js
+ *   impureFunctionsAny.generated.js
  */
 function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
   const braceOpen = '{' // a hack to be able to create a single brace open character in handlebars
+
+  const sortedFactories = sortFactories(values(factories))
 
   // sort the factories, and split them in three groups:
   // - transform: the transform functions
@@ -207,8 +276,8 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
   const pureFactories = []
   const impureFactories = []
   const transformFactories = []
-  sortFactories(values(factories))
-    .filter(factory => !IGNORED_FACTORIES[factory.fn])
+  sortedFactories
+    .filter(factory => !DEPRECATED_FACTORIES[factory.fn])
     .forEach(factory => {
       if (isTransform(factory)) {
         transformFactories.push(factory)
@@ -240,10 +309,31 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
     pureExists[factory.fn] = true
   })
 
-  // create file with all functions: functionsAny.js, functionsNumber.js
-  fs.writeFileSync(path.join(entryFolder, 'functions' + suffix + '.generated.js'), pureFunctionsTemplate({
+  const impureExists = {
+    ...pureExists
+  }
+  impureFactories.forEach(factory => {
+    impureExists[factory.fn] = true
+  })
+
+  const math = sortedFactories
+    .filter(factory => !isClass(factory))
+    .filter(factory => !isTransform(factory))
+    .map(factory => {
+      return {
+        name: factory.fn,
+        renamed: DEPRECATED_FACTORIES[factory.fn],
+        mappedName: FACTORY_NAMES_ES6_MAPPING[factory.fn]
+      }
+    })
+
+  const classes = sortedFactories
+    .filter(factory => isClass(factory))
+    .map(factory => ({ name: factory.fn }))
+
+  const data = {
     suffix,
-    factories: pureFactories.map(factory => {
+    pureFactories: pureFactories.map(factory => {
       const name = FACTORY_NAMES_ES6_MAPPING[factory.fn] || factory.fn
 
       return {
@@ -270,8 +360,83 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
           })
           .map(dependency => ({ name: dependency }))
       }
-    })
-  }))
+    }),
+
+    impureFactories: impureFactories.map(factory => {
+      const name = FACTORY_NAMES_ES6_MAPPING[factory.fn] || factory.fn
+
+      return {
+        braceOpen,
+        factoryName: findKey(factories, factory), // TODO: find a better way to match the factory names
+        eslintComment: name === 'SQRT1_2'
+          ? ' // eslint-disable-line camelcase'
+          : undefined,
+        name,
+        dependencies: factory.dependencies
+          .map(stripOptionalNotation)
+          .filter(dependency => !IGNORED_DEPENDENCIES_ES6[dependency])
+          .filter(dependency => {
+            if (dependency === 'math' || dependency === 'mathWithTransform' || dependency === 'classes') {
+              return true
+            }
+
+            // TODO: this code is duplicated. extract it in a separate function
+            if (!impureExists[dependency]) {
+              // if (factory.dependencies.indexOf(dependency) !== -1) {
+              //   throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
+              // }
+
+              return false
+            }
+
+            return true
+          })
+          .map(dependency => ({ name: dependency }))
+      }
+    }),
+
+    transformFactories: transformFactories.map(factory => {
+      const name = FACTORY_NAMES_ES6_MAPPING[factory.fn] || factory.fn
+
+      return {
+        braceOpen,
+        factoryName: findKey(factories, factory), // TODO: find a better way to match the factory names
+        eslintComment: name === 'SQRT1_2'
+          ? ' // eslint-disable-line camelcase'
+          : undefined,
+        name,
+        dependencies: factory.dependencies
+          .map(stripOptionalNotation)
+          .filter(dependency => !IGNORED_DEPENDENCIES_ES6[dependency])
+          .filter(dependency => {
+            if (dependency === 'math' || dependency === 'mathWithTransform' || dependency === 'classes') {
+              return true
+            }
+
+            // TODO: this code is duplicated. extract it in a separate function
+            if (!impureExists[dependency]) {
+              // if (factory.dependencies.indexOf(dependency) !== -1) {
+              //   throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
+              // }
+
+              return false
+            }
+
+            return true
+          })
+          .map(dependency => ({ name: dependency }))
+      }
+    }),
+
+    math,
+    classes
+  }
+
+  // create file with all functions: functionsAny.generated.js, functionsNumber.generated.js
+  fs.writeFileSync(path.join(entryFolder, 'pureFunctions' + suffix + '.generated.js'), pureFunctionsTemplate(data))
+
+  // create file with all functions: impureFunctions.generated.js, impureFunctions.generated.js
+  fs.writeFileSync(path.join(entryFolder, 'impureFunctions' + suffix + '.generated.js'), impureFunctionsTemplate(data))
 }
 
 function getDependenciesName (factoryName, factories) {
@@ -379,6 +544,10 @@ function contains (array, item) {
 
 function isTransform (factory) {
   return (factory && factory.meta && factory.meta.isTransformFunction === true) || false
+}
+
+function isClass (factory) {
+  return (factory && factory.meta && factory.meta.isClass === true) || false
 }
 
 function stripOptionalNotation (dependency) {
