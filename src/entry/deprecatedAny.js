@@ -12,7 +12,7 @@ import {
   isAssignmentNode,
   isBigNumber,
   isBlockNode,
-  isBoolean, isChain,
+  isBoolean, isChain, isCollection,
   isComplex,
   isConditionalNode,
   isConstantNode,
@@ -48,42 +48,46 @@ import { IndexError } from '../error/IndexError'
 import { lazy } from '../utils/object'
 import { warnOnce } from '../utils/log'
 import {
+  BigNumber,
+  Complex,
+  DenseMatrix,
+  FibonacciHeap,
+  Fraction,
+  ImmutableDenseMatrix,
+  Index,
+  Matrix,
+  ResultSet,
+  Range,
+  Spa,
+  SparseMatrix,
+  typeOf,
+  Unit,
+  variance
+} from './pureFunctionsAny.generated'
+import {
   AccessorNode,
   ArrayNode,
   AssignmentNode,
-  BigNumber,
   BlockNode,
   Chain,
-  Complex,
   ConditionalNode,
   ConstantNode,
-  DenseMatrix,
   evaluate,
-  FibonacciHeap,
-  Fraction,
   FunctionAssignmentNode,
   FunctionNode,
   Help,
-  ImmutableDenseMatrix,
-  Index,
   IndexNode,
-  Matrix,
   Node,
   ObjectNode,
   OperatorNode,
   ParenthesisNode,
   parse,
   Parser,
-  Range,
   RangeNode,
   RelationalNode,
-  ResultSet, reviver,
-  Spa,
-  SparseMatrix, SymbolNode,
-  typeOf,
-  Unit,
-  variance
-} from './functionsAny'
+  reviver,
+  SymbolNode
+} from './impureFunctionsAny.generated'
 
 export const deprecatedEval = /* #__PURE__ */ createDeprecatedEval({ evaluate })
 
@@ -105,6 +109,7 @@ export const type = /* #__PURE__ */ createDeprecatedProperties('type', {
   isString,
   isArray,
   isMatrix,
+  isCollection,
   isDenseMatrix,
   isSparseMatrix,
   isRange,

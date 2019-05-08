@@ -9,5 +9,5 @@ import { createFraction } from '../../factoriesAny.js'
 export const fractionDependencies = {
   FractionDependencies,
   typedDependencies,
-  createFraction: createFraction
+  createFraction
 }

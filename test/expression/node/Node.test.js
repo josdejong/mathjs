@@ -63,6 +63,56 @@ describe('Node', function () {
     assert.deepStrictEqual(c, b)
   })
 
+  it('transform should iterate over unchanged nodes', function () {
+    const logs = []
+
+    function TestNode (value) {
+      this.value = value
+    }
+    TestNode.prototype = new Node()
+    TestNode.prototype.map = function () {
+      logs.push('map ' + this.value)
+      return new TestNode(this.value)
+    }
+
+    const a = new TestNode('a')
+    const t = a.transform(function (node) {
+      logs.push('transform ' + node.value)
+      return node
+    })
+    assert.deepStrictEqual(t, a)
+    assert.deepStrictEqual(logs, [
+      'transform a',
+      'map a'
+    ])
+  })
+
+  it('transform should not iterate over replaced nodes', function () {
+    const logs = []
+
+    function TestNode (value) {
+      this.value = value
+    }
+    TestNode.prototype = new Node()
+    TestNode.prototype.map = function () {
+      logs.push('map ' + this.value)
+      return new TestNode(this.value)
+    }
+
+    const a = new TestNode('a')
+    const b = new TestNode('b')
+
+    const t = a.transform(function (node) {
+      logs.push('transform ' + node.value)
+      return b
+    })
+    assert.deepStrictEqual(t, b)
+    assert.deepStrictEqual(logs, [
+      'transform a'
+      // NO 'map b' here!
+    ])
+  })
+
   it('should throw an error when cloning a Node interface', function () {
     assert.throws(function () {
       const a = new Node()

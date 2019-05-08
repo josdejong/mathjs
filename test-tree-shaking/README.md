@@ -41,6 +41,14 @@ There are three ways to load a function:
     const { divide, sin, pi } = create({ divideDependencies, sinDependencies, piDependencies })
     ```
 
+    A shortcut to create all functions is using `all`:
+
+    ```
+    import { create, all } from 'mathjs'
+
+    const math = create(all)
+    ```
+
 3. Create a function yourself using a factory function, providing all dependencies yourself:
 
     ```js
@@ -102,7 +110,11 @@ create versions only supporting BigNumbers for example.
 2.  Load functions only supporting numbers:
 
     ```js
-    import { add, multiply } from 'mathjs/number'
+    import { add, multiply } from 'mathjs/number' // ES6
+    ```
+
+    ```js
+    const { add, multiply } = require('mathjs/es5/number') // ES5
     ```
 
 

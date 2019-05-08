@@ -1,11 +1,54 @@
 # History
 
-
-# not yet released, version 6.0.0
+# 2019-04-31, version 6.0.0-beta.1
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
-Breaking changes:
+### Most notable changes
+
+1.  Full support for **ES6 modules**. Support for tree-shaking out of the box.
+
+    Load all functions:
+
+    ```js
+    import * as math from 'mathjs'
+    ```
+
+    Use a few functions:
+
+    ```js
+    import { add, multiply } from 'mathjs'
+    ```
+
+    Load all functions with custom configuration:
+
+    ```js
+    import { create, all } from 'mathjs'
+    const config = { number: 'BigNumber' }
+    const math = create(all, config)
+    ```
+
+    Load a few functions with custom configuration:
+
+    ```js
+    import { create, addDependencies, multiplyDependencies } from 'mathjs'
+    const config = { number: 'BigNumber' }
+    const { add, multiply } = create({
+      addDependencies,
+      multiplyDependencies
+    }, config)
+    ```
+
+2.  Support for **lightweight, number-only** implementations of all functions:
+
+    ```
+    import { add, multiply } from 'mathjs/number'
+    ```
+
+3.  New **dependency injection** solution used under the hood.
+
+
+### Breaking changes
 
 - Node 6 is no longer supported.
 
@@ -13,6 +56,7 @@ Breaking changes:
   context:
 
   ```js
+  // v5
   import * as mathjs from 'mathjs'
   mathjs.config(...) // error in v6.0.0
   mathjs.import(...) // error in v6.0.0
@@ -22,6 +66,7 @@ Breaking changes:
   there:
 
   ```js
+  // v6
   import { create, all } from 'mathjs'
   const config = { number: 'BigNumber' }
   const mathjs = create(all, config)
@@ -30,7 +75,7 @@ Breaking changes:
 
 - Renamed function `typeof` to `typeOf`, `var` to `variance`,
   and `eval` to `evaluate`. (the old function names are reserved keywords
-  which can only be used as a property name).
+  which can not be used as a variable name).
 - Deprecated having a `.toTex` property attached to functions.
   Use a custom toTex handler instead.
 - Deprecated the `Matrix.storage` function. Use `math.matrix` instead to create
@@ -40,19 +85,44 @@ Breaking changes:
   `math.parse.isAlpha`.
 - Moved all classes like `math.type.Unit` and `math.expression.Parser` to
   `math.Unit` and `math.Parser` respectively.
-- Deprecated the index classes used to load a custom subset of functions.
-  Instead, load individual functions via the main index file like:
+- Fixed #1428: transform iterating over replaced nodes. New behavior
+  is that it stops iterating when a node is replaced.
+- Removed all index.js files used to load specific functions instead of all, like:
+
+  ```
+  // v5
+  // ... set up empty instance of mathjs, then load a set of functions:
+  math.import(require('mathjs/lib/function/arithmetic'))
+  ```
+
+  Individual functions are now loaded simply like:
 
   ```js
+  // v6
+  import { add, multiply } from 'mathjs'
+  ```
+
+  To set a specific configuration on the functions:
+
+  ```js
+  // v6
   import { create, addDependencies, multiplyDependencies } from 'mathjs'
-  const math = create({ addDependencies, multiplyDependencies })
+  const config = { number: 'BigNumber' }
+  const math = create({ addDependencies, multiplyDependencies }, config)
   ```
 
   See example `advanced/custom_loading.js`.
 
-Non breaking:
+### Non breaking changes
 
 - Fixed `epsilon` setting being applied globally to Complex numbers.
+- Fix `math.simplify('add(2, 3)')` throwing an error.
+
+
+# 2019-05-08, version 5.10.0
+
+- Fix `lib/header.js` not having filled in date and version. Thanks @kevjin.
+- Upgraded dependency `decimal.js@10.2.0`, fixing an issue on node.js 12.
 
 
 # 2019-04-08, version 5.9.0
@@ -462,7 +532,6 @@ Non breaking changes:
 - Upgraded devDependencies.
 - Fixed #1014: `derivative` silently dropping additional arguments
   from operator nodes with more than two arguments.
-- Fix `math.simplify('add(2, 3)')` throwing an error.
 
 
 ## 2018-02-07, version 3.20.2

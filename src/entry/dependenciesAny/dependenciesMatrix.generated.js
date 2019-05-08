@@ -13,5 +13,5 @@ export const matrixDependencies = {
   MatrixDependencies,
   SparseMatrixDependencies,
   typedDependencies,
-  createMatrix: createMatrix
+  createMatrix
 }

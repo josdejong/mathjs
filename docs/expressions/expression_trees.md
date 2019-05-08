@@ -188,6 +188,9 @@ All nodes have the following methods:
     in the tree, and must return a `Node`. Parameter `path` is a string containing
     a relative JSON Path.
 
+    The transform function will stop iterating when a node is replaced by the
+    callback function, it will not iterate over replaced nodes.
+
     For example, to replace all nodes of type `SymbolNode` having name 'x' with a
     ConstantNode with value `3`:
 

@@ -8,7 +8,7 @@
 const fs = require('fs')
 const glob = require('glob')
 const mkdirp = require('mkdirp')
-const gutil = require('gulp-util')
+const log = require('fancy-log')
 
 // special cases for function syntax
 const SYNTAX = {
@@ -533,7 +533,7 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
           const markdown = generateMarkdown(doc, functions)
           fs.writeFileSync(outputPath + '/' + fn.name + '.md', markdown)
         } else {
-          // gutil.log('Ignoring', fn.fullPath)
+          // log('Ignoring', fn.fullPath)
           delete functions[name]
         }
       }
@@ -612,9 +612,9 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
     // output all issues
     if (issues.length) {
       issues.forEach(function (issue) {
-        gutil.log('Warning: ' + issue)
+        log('Warning: ' + issue)
       })
-      gutil.log(issues.length + ' warnings')
+      log(issues.length + ' warnings')
     }
   })
 }

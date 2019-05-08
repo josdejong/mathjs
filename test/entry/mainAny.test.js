@@ -1,8 +1,13 @@
 import assert from 'assert'
-import * as mainAny from '../src/entry/mainAny'
-import { expectedInstanceStructure, expectedES6Structure } from './snapshot'
-import { validateBundle, validateTypeOf } from '../tools/validateBundle'
-const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate } = mainAny
+import * as mainAny from '../../src/entry/mainAny'
+import * as factoriesAny from '../../src/factoriesAny'
+import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../src/utils/snapshot'
+const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate, chain, reviver, Complex } = mainAny
+
+const {
+  expectedInstanceStructure,
+  expectedES6Structure
+} = createSnapshotFromFactories(factoriesAny)
 
 describe('mainAny', function () {
   it('should export functions', () => {
@@ -89,9 +94,29 @@ describe('mainAny', function () {
     assert.strictEqual(typeof evaluate('rationalize'), 'function')
   })
 
+  it('should export chain with all functions', () => {
+    assert.strictEqual(chain(2).add(3).done(), 5)
+    assert.strictEqual(chain('x + 2 * x').simplify().done().toString(), '3 * x')
+  })
+
+  it('should export evaluate having help and embedded docs', () => {
+    const h = evaluate('help(simplify)')
+
+    assert(h.toString().indexOf('Name: simplify') >= 0, true)
+  })
+
+  it('should export reviver', () => {
+    const json = '{"mathjs":"Complex","re":2,"im":4}'
+    const c = new Complex(2, 4)
+
+    const obj = JSON.parse(json, reviver)
+
+    assert(obj instanceof Complex)
+    assert.deepStrictEqual(obj, c)
+  })
+
   // TODO: test export of create and core
   // TODO: test export of errors
-  // TODO: test export json reviver
   // TODO: test export of classes
   // TODO: test export of default instance
   // TODO: test snapshot of all exported things

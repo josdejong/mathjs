@@ -52,7 +52,7 @@ import {
   createWeakMixingAngle,
   createWienDisplacement
 } from '../../../src/type/unit/physicalConstants'
-import { BigNumber, Unit } from '../../../src/entry/functionsAny'
+import { BigNumber, Unit } from '../../../src/entry/pureFunctionsAny.generated'
 
 describe('physical constants', function () {
   it('should return the correct value and unit for physical constants', function () {

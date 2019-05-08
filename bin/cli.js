@@ -112,8 +112,8 @@ function completer (text) {
 
     // math functions and constants
     const ignore = ['expr', 'type']
-    for (const func in math) {
-      if (math.hasOwnProperty(func)) {
+    for (const func in math.expression.mathWithTransform) {
+      if (math.expression.mathWithTransform.hasOwnProperty(func)) {
         if (func.indexOf(keyword) === 0 && ignore.indexOf(func) === -1) {
           matches.push(func)
         }

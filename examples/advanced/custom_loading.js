@@ -1,4 +1,3 @@
-// Load the functions that we want to use
 import {
   create,
   fractionDependencies,
@@ -7,13 +6,17 @@ import {
   formatDependencies
 } from '../..'
 
-// Create a math.js instance with just the functions we want
+const config = {
+  // specify configuration if needed
+}
+
+// Create a math.js instance just loading the functions we want
 const { fraction, add, divide, format } = create({
   fractionDependencies,
   addDependencies,
   divideDependencies,
   formatDependencies
-})
+}, config)
 
 // Use the created functions
 const a = fraction(1, 3)

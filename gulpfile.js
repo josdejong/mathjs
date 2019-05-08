@@ -2,11 +2,12 @@
 const fs = require('fs')
 const path = require('path')
 const gulp = require('gulp')
-const gutil = require('gulp-util')
+const log = require('fancy-log')
 const webpack = require('webpack')
 const babel = require('gulp-babel')
 const uglify = require('uglify-js')
 const docgenerator = require('./tools/docgenerator')
+const entryGenerator = require('./tools/entryGenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
 
 const ENTRY = './src/entry/bundleAny.js'
@@ -23,6 +24,7 @@ const REF_SRC = './lib/'
 const REF_DEST = './docs/reference/functions'
 const REF_ROOT = './docs/reference'
 const MATH_JS = DIST + '/' + FILE
+const COMPILED_HEADER = COMPILE_LIB + '/header.js'
 
 // read the version number from package.json
 function getVersion () {
@@ -31,7 +33,7 @@ function getVersion () {
 
 // generate banner with today's date and correct version
 function createBanner () {
-  const today = gutil.date(new Date(), 'yyyy-mm-dd') // today, formatted as yyyy-mm-dd
+  const today = new Date().toISOString().substr(0, 10) // today, formatted as yyyy-mm-dd
   const version = getVersion()
 
   return String(fs.readFileSync(HEADER))
@@ -109,21 +111,21 @@ function bundle (done) {
 
   compiler.run(function (err, stats) {
     if (err) {
-      gutil.log(err)
+      log(err)
       done(err)
     }
     const info = stats.toJson()
 
     if (stats.hasWarnings()) {
-      gutil.log('Webpack warnings:\n' + info.warnings.join('\n'))
+      log('Webpack warnings:\n' + info.warnings.join('\n'))
     }
 
     if (stats.hasErrors()) {
-      gutil.log('Webpack errors:\n' + info.errors.join('\n'))
+      log('Webpack errors:\n' + info.errors.join('\n'))
       done(new Error('Compile failed'))
     }
 
-    gutil.log('bundled ' + MATH_JS)
+    log('bundled ' + MATH_JS)
 
     done()
   })
@@ -133,6 +135,10 @@ function compile () {
   return gulp.src(COMPILE_SRC)
     .pipe(babel())
     .pipe(gulp.dest(COMPILE_LIB))
+}
+function writeBanner (cb) {
+  fs.writeFileSync(COMPILED_HEADER, createBanner())
+  cb()
 }
 
 function minify (done) {
@@ -151,8 +157,8 @@ function minify (done) {
     fs.writeFileSync(FILE_MIN, result.code)
     fs.writeFileSync(FILE_MAP, result.map)
 
-    gutil.log('Minified ' + FILE_MIN)
-    gutil.log('Mapped ' + FILE_MAP)
+    log('Minified ' + FILE_MIN)
+    log('Mapped ' + FILE_MAP)
   } catch (e) {
     throw e
   } finally {
@@ -211,6 +217,12 @@ function generateDocs (done) {
   done()
 }
 
+function generateEntryFiles (done) {
+  entryGenerator.generateEntryFiles()
+
+  done()
+}
+
 // Add links to deprecated functions in the node.js transpiled code mainAny.js
 // These names are not valid in ES6 where we use them as functions instead of properties.
 function addDeprecatedFunctions (done) {
@@ -224,7 +236,7 @@ function addDeprecatedFunctions (done) {
 
   fs.writeFileSync(COMPILED_MAIN_ANY, updatedCode)
 
-  gutil.log('Added deprecated functions to ' + COMPILED_MAIN_ANY)
+  log('Added deprecated functions to ' + COMPILED_MAIN_ANY)
 
   done()
 }
@@ -246,5 +258,16 @@ gulp.task('watch', function watch () {
   gulp.watch(files, options, gulp.parallel(bundle, compile, addDeprecatedFunctions))
 })
 
+gulp.task('compile', compile)
+
 // The default task (called when you run `gulp`)
-gulp.task('default', gulp.series(bundle, compile, addDeprecatedFunctions, minify, validate, generateDocs))
+gulp.task('default', gulp.series(
+  bundle,
+  compile,
+  writeBanner,
+  generateEntryFiles,
+  addDeprecatedFunctions,
+  minify,
+  validate,
+  generateDocs
+))

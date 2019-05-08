@@ -1,19 +1,8 @@
 const fs = require('fs')
 const path = require('path')
-const factoriesAny = require('../lib/factoriesAny')
-const factoriesNumber = require('../lib/factoriesNumber')
+const Handlebars = require('handlebars')
 
 const ENTRY_FOLDER = path.join(__dirname, '../src/entry')
-
-const FACTORIES_ANY_LINK = '../factoriesAny.js'
-const ALL_ANY_LINK = './allAny.js'
-const DEPENDENCIES_ANY_INDEX = 'dependenciesAny.generated.js'
-const DEPENDENCIES_ANY_FOLDER = 'dependenciesAny'
-
-const FACTORIES_NUMBER_LINK = '../factoriesNumber.js'
-const ALL_NUMBER_LINK = './allNumber.js'
-const DEPENDENCIES_NUMBER_INDEX = 'dependenciesNumber.generated.js'
-const DEPENDENCIES_NUMBER_FOLDER = 'dependenciesNumber'
 
 const IGNORED_DEPENDENCIES = {
   'on': true,
@@ -23,37 +12,180 @@ const IGNORED_DEPENDENCIES = {
   'classes': true
 }
 
-generateIndexFile({
-  factories: factoriesAny,
-  factoriesLink: FACTORIES_ANY_LINK,
-  allLink: ALL_ANY_LINK,
-  entryFolder: ENTRY_FOLDER,
-  dependenciesFolder: DEPENDENCIES_ANY_FOLDER,
-  dependenciesIndexFile: DEPENDENCIES_ANY_INDEX
+const DEPRECATED_FACTORIES = {
+  'typeof': 'typeOf',
+  'var': 'variance',
+  'eval': 'evaluate',
+  'E': 'e',
+  'PI': 'pi'
+}
+
+const FACTORY_NAMES_ES6_MAPPING = {
+  'true': '_true',
+  'false': '_false',
+  'NaN': '_NaN',
+  'null': '_null',
+  'Infinity': '_Infinity'
+}
+
+const IGNORED_DEPENDENCIES_ES6 = {
+  'on': true
+}
+
+const dependenciesIndexTemplate = Handlebars.compile(`/**
+ * THIS FILE IS AUTO-GENERATED
+ * DON'T MAKE CHANGES HERE
+ */
+{{#factories}}
+export { {{name}} } from '{{fileName}}'{{eslintComment}}
+{{/factories}}
+
+export { all } from './allFactories{{suffix}}.js'
+`)
+
+const dependenciesFileTemplate = Handlebars.compile(`/**
+ * THIS FILE IS AUTO-GENERATED
+ * DON'T MAKE CHANGES HERE
+ */
+{{#dependencies}}
+import { {{name}} } from '{{fileName}}'
+{{/dependencies}}
+import { {{factoryName}} } from '../../factories{{suffix}}.js'{{eslintComment}}
+
+export const {{name}} = {{braceOpen}}{{eslintComment}}
+  {{#dependencies}}
+  {{name}},
+  {{/dependencies}}
+  {{factoryName}}
+}
+`)
+
+const pureFunctionsTemplate = Handlebars.compile(`/**
+ * THIS FILE IS AUTO-GENERATED
+ * DON'T MAKE CHANGES HERE
+ */
+import { config } from './configReadonly'
+import {
+  {{#pureFactories}}
+  {{factoryName}}{{#unless @last}},{{/unless}}{{eslintComment}}
+  {{/pureFactories}}
+} from '../factories{{suffix}}'
+
+{{#pureFactories}}
+export const {{name}} = /* #__PURE__ */ {{factoryName ~}}
+({{braceOpen}}{{#if dependencies}} {{/if ~}}
+{{#dependencies ~}}
+{{name}}{{#unless @last}}, {{/unless ~}}
+{{/dependencies ~}}
+{{#if dependencies}} {{/if ~}}})
+{{/pureFactories}}
+`)
+
+const impureFunctionsTemplate = Handlebars.compile(`/**
+ * THIS FILE IS AUTO-GENERATED
+ * DON'T MAKE CHANGES HERE
+ */
+import { config } from './configReadonly'
+import {
+  {{#impureFactories}}
+  {{factoryName}},{{eslintComment}}
+  {{/impureFactories}}
+  {{#transformFactories}}
+  {{factoryName}}{{#unless @last}},{{/unless}}{{eslintComment}}
+  {{/transformFactories}}
+} from '../factories{{suffix}}'
+import {
+  {{#pureFactories}}
+  {{name}}{{#unless @last}},{{/unless}}{{eslintComment}}
+  {{/pureFactories}}
+} from './pureFunctions{{suffix}}.generated'
+
+const math = {} // NOT pure!
+const mathWithTransform = {} // NOT pure!
+const classes = {} // NOT pure!
+
+{{#impureFactories}}
+export const {{name}} = {{factoryName ~}}
+({{braceOpen}}{{#if dependencies}} {{/if ~}}
+{{#dependencies ~}}
+{{name}}{{#unless @last}}, {{/unless ~}}
+{{/dependencies ~}}
+{{#if dependencies}} {{/if ~}}})
+{{/impureFactories}}
+
+Object.assign(math, {
+{{#math}}
+{{#if renamed}}
+  '{{name}}': {{renamed}},
+{{else if mappedName}}
+  {{name}}: {{mappedName}},
+{{else}}
+  {{name}},
+{{/if}}
+{{/math}}  
+  config
 })
 
-generateIndexFile({
-  factories: factoriesNumber,
-  factoriesLink: FACTORIES_NUMBER_LINK,
-  allLink: ALL_NUMBER_LINK,
-  entryFolder: ENTRY_FOLDER,
-  dependenciesFolder: DEPENDENCIES_NUMBER_FOLDER,
-  dependenciesIndexFile: DEPENDENCIES_NUMBER_INDEX
+Object.assign(mathWithTransform, math, {
+  {{#transformFactories}}
+  {{name}}: {{factoryName ~}}
+  ({{braceOpen}}{{#if dependencies}} {{/if ~}}
+  {{#dependencies ~}}
+  {{name}}{{#unless @last}}, {{/unless ~}}
+  {{/dependencies ~}}
+  {{#if dependencies}} {{/if ~}}}){{#unless @last}},{{/unless}}
+  {{/transformFactories}}
 })
+
+Object.assign(classes, {
+{{#classes}}
+  {{name}}{{#unless @last}},{{/unless}}
+{{/classes}}
+})
+
+Chain.createProxy(math)
+
+export { embeddedDocs as docs } from '../expression/embeddedDocs/embeddedDocs'
+`)
+
+exports.generateEntryFiles = function () {
+  const factoriesAny = require('../lib/factoriesAny')
+  const factoriesNumber = require('../lib/factoriesNumber')
+
+  generateDependenciesFiles({
+    suffix: 'Any',
+    factories: factoriesAny,
+    entryFolder: ENTRY_FOLDER
+  })
+
+  generateDependenciesFiles({
+    suffix: 'Number',
+    factories: factoriesNumber,
+    entryFolder: ENTRY_FOLDER
+  })
+
+  generateFunctionsFiles({
+    suffix: 'Any',
+    factories: factoriesAny,
+    entryFolder: ENTRY_FOLDER
+  })
+
+  generateFunctionsFiles({
+    suffix: 'Number',
+    factories: factoriesNumber,
+    entryFolder: ENTRY_FOLDER
+  })
+}
 
 /**
- * Generate the following index files
- *   dependenciesAny.js
- *   dependenciesNumber.js
+ * Generate index files like
+ *   dependenciesAny.generated.js
+ *   dependenciesNumber.generated.js
+ * And the individual files for every dependencies collection.
  */
-function generateIndexFile ({
-  factories,
-  factoriesLink,
-  allLink,
-  entryFolder,
-  dependenciesFolder,
-  dependenciesIndexFile
-}) {
+function generateDependenciesFiles ({ suffix, factories, entryFolder }) {
+  const braceOpen = '{' // a hack to be able to create a single brace open character in handlebars
+
   // a map containing:
   // {
   //   'sqrt': true,
@@ -66,83 +198,243 @@ function generateIndexFile ({
     exists[factory.fn] = true
   })
 
-  // TODO: create template files and fill these in
-  const header = '/**\n' +
-   ' * THIS FILE IS AUTO-GENERATED\n' +
-   ' * DON\'T MAKE CHANGES HERE\n' +
-   ' */\n'
+  mkdirSyncIfNotExists(path.join(entryFolder, 'dependencies' + suffix))
 
-  mkdirSyncIfNotExists(path.join(entryFolder, dependenciesFolder))
+  const data = {
+    suffix,
+    factories: Object.keys(factories).map((factoryName) => {
+      const factory = factories[factoryName]
 
-  // for each factory, create a separate file
-  Object.keys(factories).map((factoryName) => {
-    const factory = factories[factoryName]
-    // const transform = factory.meta && factory.meta.isTransformFunction ? 'Transform' : ''
-    const eslint = factory.fn === 'SQRT1_2' ? ' // eslint-disable-line camelcase' : ''
-    // const name = factory.fn + transform + 'Dependencies'
-    const name = getDependenciesName(factoryName, factories)
-    const fileName = getDependenciesFileName(factoryName)
+      return {
+        suffix,
+        factoryName,
+        braceOpen,
+        name: getDependenciesName(factoryName, factories), // FIXME: rename name with dependenciesName, and functionName with name
+        fileName: './dependencies' + suffix + '/' + getDependenciesFileName(factoryName) + '.generated',
+        eslintComment: factoryName === 'createSQRT1_2'
+          ? ' // eslint-disable-line camelcase'
+          : undefined,
 
-    const filteredDependencies = factory.dependencies
-      .map(stripOptionalNotation)
-      .filter(dependency => !IGNORED_DEPENDENCIES[dependency])
-      .filter(dependency => {
-        if (!exists[dependency]) {
-          if (factory.dependencies.indexOf(dependency) !== -1) {
-            throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
-          }
+        dependencies: factory.dependencies
+          .map(stripOptionalNotation)
+          .filter(dependency => !IGNORED_DEPENDENCIES[dependency])
+          .filter(dependency => {
+            if (!exists[dependency]) {
+              if (factory.dependencies.indexOf(dependency) !== -1) {
+                throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
+              }
 
-          return false
-        }
+              return false
+            }
 
-        return true
-      })
+            return true
+          })
+          .map(dependency => {
+            const factoryName = findFactoryName(factories, dependency)
+            const name = getDependenciesName(factoryName, factories)
+            const fileName = './' + getDependenciesFileName(factoryName) + '.generated'
 
-    // add header
-    let src = header
-
-    // imports
-    filteredDependencies.forEach(dependency => {
-      // const name = dependency + 'Dependencies'
-      const factoryName = findFactoryName(factories, dependency)
-      const name = getDependenciesName(factoryName, factories)
-      const fileName = getDependenciesFileName(factoryName)
-      src += `import { ${name} } from './${fileName}.generated'\n`
+            return {
+              suffix,
+              name,
+              fileName
+            }
+          })
+      }
     })
-    src += `import { ${factoryName} } from '../${factoriesLink}'${eslint}\n`
-    src += '\n'
+  }
 
-    // exports
-    src += 'export const ' + name + ' = {' + eslint + '\n'
-    filteredDependencies.forEach(dependency => {
-      const name = getDependenciesName(findFactoryName(factories, dependency), factories)
-      src += '  ' + name + ',\n'
-    })
-    src += '  ' + factoryName + '\n'
-    src += '}\n'
+  // generate a file for every dependency
+  data.factories.forEach(factoryData => {
+    const generatedFactory = dependenciesFileTemplate(factoryData)
 
-    const p = path.join(entryFolder, dependenciesFolder, fileName + '.generated.js')
-    fs.writeFileSync(p, src)
+    const p = path.join(entryFolder, factoryData.fileName + '.js')
+    fs.writeFileSync(p, generatedFactory)
   })
 
-  // create one index file linking to all dependencies files
-  let src = header
+  // generate a file with links to all dependencies
+  const generated = dependenciesIndexTemplate(data)
+  fs.writeFileSync(path.join(entryFolder, 'dependencies' + suffix + '.generated.js'), generated)
+}
 
-  Object.keys(factories).map((factoryName) => {
-    // const factory = factories[factoryName]
-    // const transform = factory.meta && factory.meta.isTransformFunction ? 'Transform' : ''
-    const eslint = factoryName === 'createSQRT1_2' ? ' // eslint-disable-line camelcase' : ''
-    // const name = factory.fn + transform + 'Dependencies'
-    const name = getDependenciesName(factoryName, factories)
-    const fileName = getDependenciesFileName(factoryName)
+/**
+ * Generate index files like
+ *   pureFunctionsAny.generated.js
+ *   impureFunctionsAny.generated.js
+ */
+function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
+  const braceOpen = '{' // a hack to be able to create a single brace open character in handlebars
 
-    src += `export { ${name} } from './${dependenciesFolder}/${fileName}.generated'${eslint}\n`
+  const sortedFactories = sortFactories(values(factories))
+
+  // sort the factories, and split them in three groups:
+  // - transform: the transform functions
+  // - impure: the functions that depend on `math` or `mathWithTransform` (directly or indirectly),
+  // - pure: the rest
+  const pureFactories = []
+  const impureFactories = []
+  const transformFactories = []
+  sortedFactories
+    .filter(factory => !DEPRECATED_FACTORIES[factory.fn])
+    .forEach(factory => {
+      if (isTransform(factory)) {
+        transformFactories.push(factory)
+      } else if (
+        contains(factory.dependencies, 'math') ||
+        contains(factory.dependencies, 'mathWithTransform') ||
+        contains(factory.dependencies, 'classes') ||
+        isTransform(factory) ||
+        factory.dependencies.some(dependency => {
+          return impureFactories.find(f => f.fn === stripOptionalNotation(dependency))
+        })
+      ) {
+        impureFactories.push(factory)
+      } else {
+        pureFactories.push(factory)
+      }
+    })
+
+  // a map containing:
+  // {
+  //   'sqrt': true,
+  //   'subset': true,
+  //   ...
+  // }
+  const pureExists = {
+    config: true
+  }
+  pureFactories.forEach(factory => {
+    pureExists[factory.fn] = true
   })
 
-  src += '\n'
-  src += 'export { all } from \'' + allLink + '\'\n'
+  const impureExists = {
+    ...pureExists
+  }
+  impureFactories.forEach(factory => {
+    impureExists[factory.fn] = true
+  })
 
-  fs.writeFileSync(path.join(entryFolder, dependenciesIndexFile), src)
+  const math = sortedFactories
+    .filter(factory => !isClass(factory))
+    .filter(factory => !isTransform(factory))
+    .map(factory => {
+      return {
+        name: factory.fn,
+        renamed: DEPRECATED_FACTORIES[factory.fn],
+        mappedName: FACTORY_NAMES_ES6_MAPPING[factory.fn]
+      }
+    })
+
+  const classes = sortedFactories
+    .filter(factory => isClass(factory))
+    .map(factory => ({ name: factory.fn }))
+
+  const data = {
+    suffix,
+    pureFactories: pureFactories.map(factory => {
+      const name = FACTORY_NAMES_ES6_MAPPING[factory.fn] || factory.fn
+
+      return {
+        braceOpen,
+        factoryName: findKey(factories, factory), // TODO: find a better way to match the factory names
+        eslintComment: name === 'SQRT1_2'
+          ? ' // eslint-disable-line camelcase'
+          : undefined,
+        name,
+        dependencies: factory.dependencies
+          .map(stripOptionalNotation)
+          .filter(dependency => !IGNORED_DEPENDENCIES_ES6[dependency])
+          .filter(dependency => {
+            // TODO: this code is duplicated. extract it in a separate function
+            if (!pureExists[dependency]) {
+              if (factory.dependencies.indexOf(dependency) !== -1) {
+                throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
+              }
+
+              return false
+            }
+
+            return true
+          })
+          .map(dependency => ({ name: dependency }))
+      }
+    }),
+
+    impureFactories: impureFactories.map(factory => {
+      const name = FACTORY_NAMES_ES6_MAPPING[factory.fn] || factory.fn
+
+      return {
+        braceOpen,
+        factoryName: findKey(factories, factory), // TODO: find a better way to match the factory names
+        eslintComment: name === 'SQRT1_2'
+          ? ' // eslint-disable-line camelcase'
+          : undefined,
+        name,
+        dependencies: factory.dependencies
+          .map(stripOptionalNotation)
+          .filter(dependency => !IGNORED_DEPENDENCIES_ES6[dependency])
+          .filter(dependency => {
+            if (dependency === 'math' || dependency === 'mathWithTransform' || dependency === 'classes') {
+              return true
+            }
+
+            // TODO: this code is duplicated. extract it in a separate function
+            if (!impureExists[dependency]) {
+              // if (factory.dependencies.indexOf(dependency) !== -1) {
+              //   throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
+              // }
+
+              return false
+            }
+
+            return true
+          })
+          .map(dependency => ({ name: dependency }))
+      }
+    }),
+
+    transformFactories: transformFactories.map(factory => {
+      const name = FACTORY_NAMES_ES6_MAPPING[factory.fn] || factory.fn
+
+      return {
+        braceOpen,
+        factoryName: findKey(factories, factory), // TODO: find a better way to match the factory names
+        eslintComment: name === 'SQRT1_2'
+          ? ' // eslint-disable-line camelcase'
+          : undefined,
+        name,
+        dependencies: factory.dependencies
+          .map(stripOptionalNotation)
+          .filter(dependency => !IGNORED_DEPENDENCIES_ES6[dependency])
+          .filter(dependency => {
+            if (dependency === 'math' || dependency === 'mathWithTransform' || dependency === 'classes') {
+              return true
+            }
+
+            // TODO: this code is duplicated. extract it in a separate function
+            if (!impureExists[dependency]) {
+              // if (factory.dependencies.indexOf(dependency) !== -1) {
+              //   throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
+              // }
+
+              return false
+            }
+
+            return true
+          })
+          .map(dependency => ({ name: dependency }))
+      }
+    }),
+
+    math,
+    classes
+  }
+
+  // create file with all functions: functionsAny.generated.js, functionsNumber.generated.js
+  fs.writeFileSync(path.join(entryFolder, 'pureFunctions' + suffix + '.generated.js'), pureFunctionsTemplate(data))
+
+  // create file with all functions: impureFunctions.generated.js, impureFunctions.generated.js
+  fs.writeFileSync(path.join(entryFolder, 'impureFunctions' + suffix + '.generated.js'), impureFunctionsTemplate(data))
 }
 
 function getDependenciesName (factoryName, factories) {
@@ -151,7 +443,7 @@ function getDependenciesName (factoryName, factories) {
   }
 
   const factory = factories[factoryName]
-  const transform = factory.meta && factory.meta.isTransformFunction ? 'Transform' : ''
+  const transform = isTransform(factory) ? 'Transform' : ''
 
   return factory.fn + transform + 'Dependencies'
 }
@@ -176,13 +468,26 @@ function findFactoryName (factories, name) {
   return undefined
 }
 
+function findKey (object, value) {
+  for (const key in object) {
+    if (object.hasOwnProperty(key)) {
+      if (object[key] === value) {
+        return key
+      }
+    }
+  }
+
+  return undefined
+}
+
 /**
  * Sort the factories in such a way that their dependencies are resolved.
  * @param {Array} factories
  * @return {Array} Returns sorted factories
  */
-// TODO: cleanup the function sortFactories if we don't need it in the end
-exports.sortFactories = function (factories) {
+exports.sortFactories = sortFactories
+
+function sortFactories (factories) {
   const loaded = {}
   const leftOverFactories = factories.slice()
   const sortedFactories = []
@@ -208,7 +513,7 @@ exports.sortFactories = function (factories) {
     for (let i = 0; i < leftOverFactories.length; i++) {
       const factory = leftOverFactories[i]
       if (allDependenciesResolved(factory.dependencies)) {
-        if (!factory.meta || !factory.meta.isTransformFunction) {
+        if (!isTransform(factory)) {
           loaded[factory.fn] = true
         }
         sortedFactories.push(factory)
@@ -227,9 +532,20 @@ exports.sortFactories = function (factories) {
   return sortedFactories
 }
 
-// TODO: cleanup the function values if we don't need it in the end
-exports.values = function (object) {
+function values (object) {
   return Object.keys(object).map(key => object[key])
+}
+
+function contains (array, item) {
+  return array.indexOf(item) !== -1
+}
+
+function isTransform (factory) {
+  return (factory && factory.meta && factory.meta.isTransformFunction === true) || false
+}
+
+function isClass (factory) {
+  return (factory && factory.meta && factory.meta.isClass === true) || false
 }
 
 function stripOptionalNotation (dependency) {

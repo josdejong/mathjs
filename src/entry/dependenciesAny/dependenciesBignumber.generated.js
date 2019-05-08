@@ -9,5 +9,5 @@ import { createBignumber } from '../../factoriesAny.js'
 export const bignumberDependencies = {
   BigNumberDependencies,
   typedDependencies,
-  createBignumber: createBignumber
+  createBignumber
 }

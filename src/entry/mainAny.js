@@ -1,5 +1,10 @@
+// configuration
+export { config } from './configReadonly'
+
 // functions and constants
-export * from './functionsAny'
+export * from './pureFunctionsAny.generated'
+export * from './impureFunctionsAny.generated'
+export * from './typeChecks'
 
 // error classes
 export { IndexError } from '../error/IndexError'

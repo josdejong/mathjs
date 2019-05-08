@@ -1,8 +1,26 @@
 import assert from 'assert'
-import * as mainNumber from '../src/entry/mainNumber'
-import { expectedInstanceStructureNumber, expectedES6StructureNumber } from './snapshot'
-import { validateBundle, validateTypeOf } from '../tools/validateBundle'
-const { create, all, add, isObject, isNumber, pi, sqrt, evaluate } = mainNumber
+import * as mainNumber from '../../src/entry/mainNumber'
+import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../src/utils/snapshot'
+import * as factoriesNumber from '../../src/factoriesNumber'
+const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain, Range, reviver } = mainNumber
+
+const {
+  expectedInstanceStructure,
+  expectedES6Structure
+} = createSnapshotFromFactories(factoriesNumber)
+
+// number exports don't have all deprecated stuff that the any exports have
+delete expectedES6Structure['deprecatedEval']
+delete expectedES6Structure['deprecatedImport']
+delete expectedES6Structure['deprecatedVar']
+delete expectedES6Structure['deprecatedTypeof']
+delete expectedES6Structure['expression']
+delete expectedES6Structure['type']
+delete expectedES6Structure['json']
+delete expectedES6Structure['error']
+delete expectedInstanceStructure['var']
+delete expectedInstanceStructure['eval']
+delete expectedInstanceStructure['typeof']
 
 describe('mainNumber', function () {
   it('should export functions', () => {
@@ -12,7 +30,7 @@ describe('mainNumber', function () {
 
   it('should export all functions and constants', function () {
     // snapshot testing
-    validateBundle(expectedES6StructureNumber, mainNumber)
+    validateBundle(expectedES6Structure, mainNumber)
   })
 
   it('new instance should have all expected functions', function () {
@@ -27,14 +45,14 @@ describe('mainNumber', function () {
       }
     }
 
-    validateBundle(expectedInstanceStructureNumber, newMathInstance)
+    validateBundle(expectedInstanceStructure, newMathInstance)
 
     console.warn = originalWarn
   })
 
   it('evaluate should contain all functions from mathWithTransform', function () {
     // snapshot testing
-    const mathWithTransform = expectedInstanceStructureNumber.expression.mathWithTransform
+    const mathWithTransform = expectedInstanceStructure.expression.mathWithTransform
 
     Object.keys(mathWithTransform).forEach(key => {
       if (key === 'not') {
@@ -83,9 +101,28 @@ describe('mainNumber', function () {
     assert.strictEqual(typeof evaluate('rationalize'), 'function')
   })
 
+  it('should export chain with all functions', () => {
+    assert.strictEqual(chain(2).add(3).done(), 5)
+  })
+
+  it('should export evaluate having help and embedded docs', () => {
+    const h = evaluate('help(simplify)')
+
+    assert(h.toString().indexOf('Name: simplify') >= 0, true)
+  })
+
+  it('should export reviver', () => {
+    const json = '{"mathjs":"Range","start":2,"end":10}'
+    const r = new Range(2, 10)
+
+    const obj = JSON.parse(json, reviver)
+
+    assert(obj instanceof Range)
+    assert.deepStrictEqual(obj, r)
+  })
+
   // TODO: test export of create and core
   // TODO: test export of errors
-  // TODO: test export json reviver
   // TODO: test export of classes
   // TODO: test export of default instance
   // TODO: test snapshot of all exported things
