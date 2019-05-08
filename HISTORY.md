@@ -1,6 +1,5 @@
 # History
 
-
 # 2019-04-31, version 6.0.0-beta.1
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
@@ -118,9 +117,10 @@
 - Fix `math.simplify('add(2, 3)')` throwing an error.
 
 
-# not yet published, version 5.9.1
+# 2019-05-08, version 5.10.0
 
 - Fix `lib/header.js` not having filled in date and version. Thanks @kevjin.
+- Upgraded dependency `decimal.js@10.2.0`, fixing an issue on node.js 12.
 
 
 # 2019-04-08, version 5.9.0
