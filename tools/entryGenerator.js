@@ -12,6 +12,26 @@ const IGNORED_DEPENDENCIES = {
   'classes': true
 }
 
+const IGNORED_FACTORIES = {
+  'typeof': true,
+  'var': true,
+  'eval': true,
+  'E': true,
+  'PI': true
+}
+
+const FACTORY_NAMES_ES6_MAPPING = {
+  'true': '_true',
+  'false': '_false',
+  'NaN': '_NaN',
+  'null': '_null',
+  'Infinity': '_Infinity'
+}
+
+const IGNORED_DEPENDENCIES_ES6 = {
+  'on': true
+}
+
 const dependenciesIndexTemplate = Handlebars.compile(`/**
  * THIS FILE IS AUTO-GENERATED
  * DON'T MAKE CHANGES HERE
@@ -40,36 +60,67 @@ export const {{name}} = {{braceOpen}}{{eslintComment}}
 }
 `)
 
+const pureFunctionsTemplate = Handlebars.compile(`/**
+ * THIS FILE IS AUTO-GENERATED
+ * DON'T MAKE CHANGES HERE
+ */
+import { config } from './configReadonly'
+import {
+  {{#factories}}
+  {{factoryName}}{{#unless @last}},{{/unless}}{{eslintComment}}
+  {{/factories}}
+} from '../factories{{suffix}}'
+
+{{#factories}}
+export const {{name}} = /* #__PURE__ */ {{factoryName ~}}
+({{braceOpen}}{{#if dependencies}} {{/if ~}}
+{{#dependencies ~}}
+{{name}}{{#unless @last}}, {{/unless ~}}
+{{/dependencies ~}}
+{{#if dependencies}} {{/if ~}}})
+{{/factories}}
+`)
+
 exports.generateEntryFiles = function () {
   const factoriesAny = require('../lib/factoriesAny')
   const factoriesNumber = require('../lib/factoriesNumber')
 
-  generateIndexFile({
+  generateDependenciesFiles({
     suffix: 'Any',
     factories: factoriesAny,
     entryFolder: ENTRY_FOLDER
   })
 
-  generateIndexFile({
+  generateDependenciesFiles({
+    suffix: 'Number',
+    factories: factoriesNumber,
+    entryFolder: ENTRY_FOLDER
+  })
+
+  generateFunctionsFiles({
+    suffix: 'Any',
+    factories: factoriesAny,
+    entryFolder: ENTRY_FOLDER
+  })
+
+  generateFunctionsFiles({
     suffix: 'Number',
     factories: factoriesNumber,
     entryFolder: ENTRY_FOLDER
   })
 }
 
-exports.generateEntryFiles() // TODO: cleanup
+exports.generateEntryFiles() // FIXME: cleanup
 
 /**
- * Generate the following index files
- *   dependenciesAny.js
- *   dependenciesNumber.js
+ * Generate index files like
+ *   dependenciesAny.generated.js
+ *   dependenciesNumber.generated.js
+ * And the individual files for every dependencies collection.
  */
-// TODO: refactor this function: create template files and fill these in
-function generateIndexFile ({
-  suffix,
-  factories,
-  entryFolder
-}) {
+function generateDependenciesFiles ({ suffix, factories, entryFolder }) {
+  const braceOpen = '{' // a hack to be able to create a single brace open character in handlebars
+
   // a map containing:
   // {
   //   'sqrt': true,
@@ -92,8 +143,8 @@ function generateIndexFile ({
       return {
         suffix,
         factoryName,
-        braceOpen: '{',
-        name: getDependenciesName(factoryName, factories),
+        braceOpen,
+        name: getDependenciesName(factoryName, factories), // FIXME: rename name with dependenciesName, and functionName with name
         fileName: './dependencies' + suffix + '/' + getDependenciesFileName(factoryName) + '.generated',
         eslintComment: factoryName === 'createSQRT1_2'
           ? ' // eslint-disable-line camelcase'
@@ -141,13 +192,95 @@ function generateIndexFile ({
   fs.writeFileSync(path.join(entryFolder, 'dependencies' + suffix + '.generated.js'), generated)
 }
 
+/**
+ * Generate index files like
+ *   functionsAny.generated.js
+ *   evaluateAny.generated.js
+ */
+function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
+  const braceOpen = '{' // a hack to be able to create a single brace open character in handlebars
+
+  // sort the factories, and split them in three groups:
+  // - transform: the transform functions
+  // - impure: the functions that depend on `math` or `mathWithTransform` (directly or indirectly),
+  // - pure: the rest
+  const pureFactories = []
+  const impureFactories = []
+  const transformFactories = []
+  sortFactories(values(factories))
+    .filter(factory => !IGNORED_FACTORIES[factory.fn])
+    .forEach(factory => {
+      if (isTransform(factory)) {
+        transformFactories.push(factory)
+      } else if (
+        contains(factory.dependencies, 'math') ||
+        contains(factory.dependencies, 'mathWithTransform') ||
+        contains(factory.dependencies, 'classes') ||
+        isTransform(factory) ||
+        factory.dependencies.some(dependency => {
+          return impureFactories.find(f => f.fn === stripOptionalNotation(dependency))
+        })
+      ) {
+        impureFactories.push(factory)
+      } else {
+        pureFactories.push(factory)
+      }
+    })
+
+  // a map containing:
+  // {
+  //   'sqrt': true,
+  //   'subset': true,
+  //   ...
+  // }
+  const pureExists = {
+    config: true
+  }
+  pureFactories.forEach(factory => {
+    pureExists[factory.fn] = true
+  })
+
+  // create file with all functions: functionsAny.js, functionsNumber.js
+  fs.writeFileSync(path.join(entryFolder, 'functions' + suffix + '.generated.js'), pureFunctionsTemplate({
+    suffix,
+    factories: pureFactories.map(factory => {
+      const name = FACTORY_NAMES_ES6_MAPPING[factory.fn] || factory.fn
+
+      return {
+        braceOpen,
+        factoryName: findKey(factories, factory), // TODO: find a better way to match the factory names
+        eslintComment: name === 'SQRT1_2'
+          ? ' // eslint-disable-line camelcase'
+          : undefined,
+        name,
+        dependencies: factory.dependencies
+          .map(stripOptionalNotation)
+          .filter(dependency => !IGNORED_DEPENDENCIES_ES6[dependency])
+          .filter(dependency => {
+            // TODO: this code is duplicated. extract it in a separate function
+            if (!pureExists[dependency]) {
+              if (factory.dependencies.indexOf(dependency) !== -1) {
+                throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
+              }
+
+              return false
+            }
+
+            return true
+          })
+          .map(dependency => ({ name: dependency }))
+      }
+    })
+  }))
+}
+
 function getDependenciesName (factoryName, factories) {
   if (!factories) {
     throw new Error(`Cannot create dependencies name: factories is undefined`)
   }
 
   const factory = factories[factoryName]
-  const transform = factory.meta && factory.meta.isTransformFunction ? 'Transform' : ''
+  const transform = isTransform(factory) ? 'Transform' : ''
 
   return factory.fn + transform + 'Dependencies'
 }
@@ -172,13 +305,26 @@ function findFactoryName (factories, name) {
   return undefined
 }
 
+function findKey (object, value) {
+  for (const key in object) {
+    if (object.hasOwnProperty(key)) {
+      if (object[key] === value) {
+        return key
+      }
+    }
+  }
+
+  return undefined
+}
+
 /**
  * Sort the factories in such a way that their dependencies are resolved.
  * @param {Array} factories
  * @return {Array} Returns sorted factories
  */
-// TODO: cleanup the function sortFactories if we don't need it in the end
-exports.sortFactories = function (factories) {
+exports.sortFactories = sortFactories
+
+function sortFactories (factories) {
   const loaded = {}
   const leftOverFactories = factories.slice()
   const sortedFactories = []
@@ -204,7 +350,7 @@ exports.sortFactories = function (factories) {
     for (let i = 0; i < leftOverFactories.length; i++) {
       const factory = leftOverFactories[i]
       if (allDependenciesResolved(factory.dependencies)) {
-        if (!factory.meta || !factory.meta.isTransformFunction) {
+        if (!isTransform(factory)) {
           loaded[factory.fn] = true
         }
         sortedFactories.push(factory)
@@ -223,9 +369,16 @@ exports.sortFactories = function (factories) {
   return sortedFactories
 }
 
-// TODO: cleanup the function values if we don't need it in the end
-exports.values = function (object) {
+function values (object) {
   return Object.keys(object).map(key => object[key])
+}
+
+function contains (array, item) {
+  return array.indexOf(item) !== -1
+}
+
+function isTransform (factory) {
+  return (factory && factory.meta && factory.meta.isTransformFunction === true) || false
 }
 
 function stripOptionalNotation (dependency) {

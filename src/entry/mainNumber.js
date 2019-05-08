@@ -1,5 +1,8 @@
+// configuration
+export { config } from './configReadonly'
+
 // functions and constants
-export * from './functionsNumber'
+export * from './functionsNumber.generated'
 export * from './evaluateNumber'
 export * from './typeChecks'
 

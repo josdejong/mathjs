@@ -2,6 +2,7 @@
 // a circular reference between math -> evaluate -> simplify -> evaluate
 // so it is impure.
 
+import { config } from './configReadonly'
 import { createApplyTransform } from '../expression/transform/apply.transform'
 import { createColumnTransform } from '../expression/transform/column.transform'
 import { createConcatTransform } from '../expression/transform/concat.transform'
@@ -99,7 +100,6 @@ import {
   composition,
   concat,
   conductanceQuantum,
-  config,
   conj,
   cos,
   cosh,
@@ -318,7 +318,7 @@ import {
   xgcd,
   xor,
   zeros
-} from './functionsAny'
+} from './functionsAny.generated'
 
 const math = {} // NOT pure!
 const mathWithTransform = {} // NOT pure!

@@ -63,7 +63,7 @@ import {
   typeOf,
   Unit,
   variance
-} from './functionsAny'
+} from './functionsAny.generated'
 import {
   AccessorNode,
   ArrayNode,

@@ -1,3 +1,4 @@
+import { config } from './configReadonly'
 import { e, phi, pi, tau } from '../plain/number'
 import { version } from '../version'
 import { createApplyTransform } from '../expression/transform/apply.transform'
@@ -79,7 +80,6 @@ import {
   compareNatural,
   compareText,
   composition,
-  config,
   cos,
   cosh,
   cot,
@@ -179,7 +179,7 @@ import {
   unaryMinus,
   unaryPlus,
   unequal, variance, xgcd, xor
-} from './functionsNumber'
+} from './functionsNumber.generated'
 
 const math = {} // NOT pure!
 const mathWithTransform = {} // NOT pure!
