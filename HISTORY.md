@@ -50,6 +50,8 @@
 
 ### Breaking changes
 
+- Node 6 is no longer supported.
+
 - Functions `config` and `import` are not available anymore in the global
   context:
 
