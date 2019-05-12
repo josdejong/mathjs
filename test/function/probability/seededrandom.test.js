@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 
 describe('seed', function () {
   it('should generate same number with seed', function () {

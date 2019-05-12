@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../src/entry/bundleAny'
+import math from '../../src/bundleAny'
 import { getAssociativity, getPrecedence, isAssociativeWith } from '../../src/expression/operators'
 const OperatorNode = math.OperatorNode
 const AssignmentNode = math.AssignmentNode

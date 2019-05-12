@@ -1,6 +1,6 @@
 import assert from 'assert'
-
-import { abs, bignumber, complex, fraction, matrix, Matrix, unit, parse } from '../../../src/entry/mainAny'
+import math from '../../../src/bundleAny'
+const { abs, bignumber, complex, fraction, matrix, Matrix, unit, parse } = math
 
 describe('abs', function () {
   it('should return the abs value of a boolean', function () {

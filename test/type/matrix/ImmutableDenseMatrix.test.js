@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const Matrix = math.Matrix
 const DenseMatrix = math.DenseMatrix
 const ImmutableDenseMatrix = math.ImmutableDenseMatrix

@@ -1,9 +1,8 @@
 'use strict'
 
-import math from '../src/entry/bundleAny'
-
 const fs = require('fs')
 const typed = require('typed-function')
+const math = require('../lib/bundleAny')
 const Spa = math.Spa
 const DenseMatrix = math.DenseMatrix
 const SparseMatrix = math.SparseMatrix

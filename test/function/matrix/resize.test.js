@@ -1,7 +1,7 @@
 // test resize
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 
 describe('resize', function () {
   it('should resize an array', function () {

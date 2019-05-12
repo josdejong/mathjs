@@ -1,6 +1,7 @@
 import assert from 'assert'
 import { isBoolean, isNumber, isObject, isString } from '../../src/utils/is'
-import { bignumber, complex, fraction, matrix, parse } from '../../src/entry/mainAny'
+import math from '../../src/bundleAny'
+const { bignumber, complex, fraction, matrix, parse } = math
 
 describe('is', function () {
   it('isObject', function () {

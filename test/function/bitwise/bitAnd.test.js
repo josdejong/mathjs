@@ -1,7 +1,7 @@
 // test bitAnd
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const bitAnd = math.bitAnd
 

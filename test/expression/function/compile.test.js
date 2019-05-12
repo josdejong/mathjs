@@ -1,7 +1,7 @@
 // test compile
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 
 describe('compile', function () {
   it('should compile an expression', function () {

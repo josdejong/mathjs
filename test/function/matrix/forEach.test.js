@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 
 describe('forEach', function () {
   it('should iterate over all elements of the matrix', function () {

@@ -2,6 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 const gulp = require('gulp')
+const del = require('del')
 const log = require('fancy-log')
 const webpack = require('webpack')
 const babel = require('gulp-babel')
@@ -9,12 +10,15 @@ const uglify = require('uglify-js')
 const docgenerator = require('./tools/docgenerator')
 const entryGenerator = require('./tools/entryGenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
+const { validateEmbeddedDocs } = require('./tools/validateEmbeddedDocs')
 
-const ENTRY = './src/entry/bundleAny.js'
+const ENTRY = './src/bundleAny.js'
 const HEADER = './src/header.js'
 const VERSION = './src/version.js'
 const COMPILE_SRC = './src/**/*.js'
+const COMPILE_ENTRY_SRC = './src/entry/**/*.js'
 const COMPILE_LIB = './lib'
+const COMPILE_ENTRY_LIB = './lib/entry'
 const COMPILED_MAIN_ANY = './lib/entry/mainAny.js'
 const FILE = 'math.js'
 const FILE_MIN = 'math.min.js'
@@ -136,7 +140,14 @@ function compile () {
     .pipe(babel())
     .pipe(gulp.dest(COMPILE_LIB))
 }
-function writeBanner (cb) {
+
+function compileEntryFiles () {
+  return gulp.src(COMPILE_ENTRY_SRC)
+    .pipe(babel())
+    .pipe(gulp.dest(COMPILE_ENTRY_LIB))
+}
+
+function writeCompiledHeader (cb) {
   fs.writeFileSync(COMPILED_HEADER, createBanner())
   cb()
 }
@@ -168,22 +179,6 @@ function minify (done) {
   done()
 }
 
-function validate (done) {
-  const childProcess = require('child_process')
-
-  // this is run in a separate process as the modules need to be reloaded
-  // with every validation (and required modules stay in cache).
-  childProcess.execFile('node', ['./tools/validateEmbeddedDocs'], function (err, stdout, stderr) {
-    if (err instanceof Error) {
-      throw err
-    }
-    process.stdout.write(stdout)
-    process.stderr.write(stderr)
-
-    done()
-  })
-}
-
 function validateAscii (done) {
   const Reset = '\x1b[0m'
   const BgRed = '\x1b[41m'
@@ -208,7 +203,7 @@ function validateAscii (done) {
 }
 
 function generateDocs (done) {
-  const all = require(REF_SRC + 'entry/bundleAny')
+  const all = require(REF_SRC + 'bundleAny')
   const functionNames = Object.keys(all)
     .filter(key => typeof all[key] === 'function')
 
@@ -260,14 +255,23 @@ gulp.task('watch', function watch () {
 
 gulp.task('compile', compile)
 
+function clean () {
+  return del([
+    'dist/**/*',
+    'lib/**/*'
+  ])
+}
+
 // The default task (called when you run `gulp`)
 gulp.task('default', gulp.series(
-  bundle,
+  clean,
   compile,
-  writeBanner,
   generateEntryFiles,
+  compileEntryFiles,
+  writeCompiledHeader,
   addDeprecatedFunctions,
+  bundle,
   minify,
-  validate,
+  validateEmbeddedDocs,
   generateDocs
 ))

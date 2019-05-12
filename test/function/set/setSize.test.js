@@ -1,7 +1,7 @@
 // test setSize
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 
 describe('setSize', function () {
   it('should return the number of elements of a set', function () {

@@ -1,7 +1,7 @@
 // test matrix construction
 import assert from 'assert'
 
-import math from '../../../../src/entry/bundleAny'
+import math from '../../../../src/bundleAny'
 const matrix = math.matrix
 
 describe('matrix', function () {

@@ -1,7 +1,7 @@
 // test setUnion
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 
 describe('setUnion', function () {
   it('should return the union of two sets', function () {

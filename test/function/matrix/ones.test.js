@@ -1,7 +1,7 @@
 // test ones
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const ones = math.ones
 const matrix = math.matrix
 

@@ -1,7 +1,7 @@
 // test ObjectNode
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
 const RangeNode = math.RangeNode

@@ -1,7 +1,7 @@
 // test equalText
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const matrix = math.matrix
 const sparse = math.sparse

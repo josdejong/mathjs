@@ -1,7 +1,7 @@
 // test format
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 
 describe('format', function () {
   it('should format numbers', function () {

@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import approx from '../../../tools/approx'
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
 const matrix = math.matrix

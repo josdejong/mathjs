@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const isPositive = math.isPositive
 const bignumber = math.bignumber
 const fraction = math.fraction

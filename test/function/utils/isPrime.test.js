@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const isPrime = math.isPrime
 const bignumber = math.bignumber
 const complex = math.complex

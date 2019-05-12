@@ -1,4 +1,5 @@
-import math from '../../../../src/entry/bundleAny'
+// Only use native node.js API's and references to ./lib here, this file is not transpiled!
+const math = require('../../../../lib/bundleAny')
 const approx = require('../../../../tools/approx')
 const market = require('../../../../tools/matrixmarket')
 

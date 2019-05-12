@@ -1,7 +1,7 @@
 // test dotDivide (element-wise divide)
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 import approx from '../../../tools/approx'
 const dotDivide = math.dotDivide
 const complex = math.complex

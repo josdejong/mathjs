@@ -1,7 +1,7 @@
 // test rightLogShift
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const matrix = math.matrix
 const sparse = math.sparse
 const rightLogShift = math.rightLogShift

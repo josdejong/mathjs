@@ -1,7 +1,7 @@
 // test print
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 
 describe('print', function () {
   it('should interpolate values in a template (object template)', function () {

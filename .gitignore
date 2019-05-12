@@ -10,3 +10,4 @@ dist
 lib
 .nyc_output
 *.bak
+*.generated.js

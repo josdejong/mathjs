@@ -1,7 +1,7 @@
 // test atan2
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 import approx from '../../../tools/approx'
 const pi = math.pi
 const complex = math.complex

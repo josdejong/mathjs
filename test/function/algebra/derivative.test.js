@@ -1,7 +1,7 @@
 // test derivative
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const OperatorNode = math.OperatorNode
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode

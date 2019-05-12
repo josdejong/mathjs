@@ -1,7 +1,7 @@
 // test data type Index
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const Index = math.Index
 const Range = math.Range
 const ImmutableDenseMatrix = math.ImmutableDenseMatrix

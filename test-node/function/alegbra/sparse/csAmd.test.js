@@ -1,13 +1,13 @@
-import math from '../../../../src/entry/bundleAny'
-import { createCsAmd } from '../../../../src/function/algebra/sparse/csAmd'
+// Only use native node.js API's and references to ./lib here, this file is not transpiled!
+const math = require('../../../../lib/bundleAny')
+const { createCsAmd } = require('../../../../lib/function/algebra/sparse/csAmd')
 
 const assert = require('assert')
 const approx = require('../../../../tools/approx')
 const market = require('../../../../tools/matrixmarket')
 
 const { add, multiply, transpose } = math
-
-export const csAmd = createCsAmd({ add, multiply, transpose })
+const csAmd = createCsAmd({ add, multiply, transpose })
 
 describe('csAmd', function () {
   it('should approximate minimum degree ordering, 48 x 48, natural ordering (order=0), matrix market', function (done) {

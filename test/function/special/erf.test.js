@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 import actualErfValues from './erf.values.json'
 const bignumber = math.bignumber
 const subtract = math.subtract

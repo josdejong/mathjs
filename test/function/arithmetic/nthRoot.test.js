@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import approx from '../../../tools/approx'
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 const matrix = math.matrix
 const sparse = math.sparse
 const unit = math.unit

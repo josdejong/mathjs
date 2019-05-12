@@ -1,7 +1,7 @@
 // test setPowerset
 import assert from 'assert'
 
-import math from '../../../src/entry/bundleAny'
+import math from '../../../src/bundleAny'
 
 describe('setPowerset', function () {
   it('should return the powerset of a set', function () {

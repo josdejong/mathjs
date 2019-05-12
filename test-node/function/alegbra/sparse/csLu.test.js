@@ -1,9 +1,10 @@
-import approx from '../../../../tools/approx'
-import math from '../../../../src/entry/bundleAny'
-import { csPermute } from '../../../../src/function/algebra/sparse/csPermute'
-import { createCsLu } from '../../../../src/function/algebra/sparse/csLu'
-import { createCsSqr } from '../../../../src/function/algebra/sparse/csSqr'
-import * as market from '../../../../tools/matrixmarket'
+// Only use native node.js API's and references to ./lib here, this file is not transpiled!
+const approx = require('../../../../tools/approx')
+const math = require('../../../../lib/bundleAny')
+const { csPermute } = require('../../../../lib/function/algebra/sparse/csPermute')
+const { createCsLu } = require('../../../../lib/function/algebra/sparse/csLu')
+const { createCsSqr } = require('../../../../lib/function/algebra/sparse/csSqr')
+const market = require('../../../../tools/matrixmarket')
 
 const { abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, SparseMatrix } = math
 
