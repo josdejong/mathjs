@@ -396,7 +396,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
       latexConverter = latexFunctions[this.name]
     }
 
-    // for backward compatibility (deprecated in v6)
+    // toTex property on the function itself
     if (math[this.name] &&
       ((typeof math[this.name].toTex === 'function') ||
         (typeof math[this.name].toTex === 'object') ||

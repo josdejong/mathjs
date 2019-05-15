@@ -76,8 +76,6 @@
 - Renamed function `typeof` to `typeOf`, `var` to `variance`,
   and `eval` to `evaluate`. (the old function names are reserved keywords
   which can not be used as a variable name).
-- Deprecated having a `.toTex` property attached to functions.
-  Use a custom toTex handler instead.
 - Deprecated the `Matrix.storage` function. Use `math.matrix` instead to create
   a matrix.
 - Deprecated function `math.expression.parse`, use `math.parse` instead.
