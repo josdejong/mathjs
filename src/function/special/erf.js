@@ -50,13 +50,6 @@ export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return sign(x) * (1 - erfc3(y))
     },
 
-    // TODO: Not sure if there's a way to guarantee some degree of accuracy here.
-    //  Perhaps it would be best to set the precision of the number to that which
-    //  is guaranteed by erf()
-    'BigNumber': function (n) {
-      return new n.constructor(erf(n.toNumber()))
-    },
-
     'Array | Matrix': function (n) {
       return deepMap(n, erf)
     }

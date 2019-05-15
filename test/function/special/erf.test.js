@@ -1,10 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/bundleAny'
 import actualErfValues from './erf.values.json'
-const bignumber = math.bignumber
-const subtract = math.subtract
-const abs = math.abs
-const smaller = math.smaller
 const erf = math.erf
 
 const DIFF_THRESH = 5e-16
@@ -56,40 +52,6 @@ describe('erf', function () {
     assert.ok(Math.abs(erf(-1) - actualErfValues['-1.0']) < DIFF_THRESH)
     assert.ok(Math.abs(erf(-2) - actualErfValues['-2.0']) < DIFF_THRESH)
     assert.ok(Math.abs(erf(-3) - actualErfValues['-3.0']) < DIFF_THRESH)
-  })
-
-  it('should calculate the erf of a rational bignumber', function () {
-    assert.ok(smaller(
-      abs(subtract(erf(bignumber(0.1)), bignumber(actualErfValues['0.1']))),
-      DIFF_THRESH
-    ))
-    assert.ok(smaller(
-      abs(subtract(erf(bignumber(0.2)), bignumber(actualErfValues['0.2']))),
-      DIFF_THRESH
-    ))
-    assert.ok(smaller(
-      abs(subtract(erf(bignumber(0.3)), bignumber(actualErfValues['0.3']))),
-      DIFF_THRESH
-    ))
-    assert.ok(smaller(
-      abs(subtract(erf(bignumber(1.5)), bignumber(actualErfValues['1.5']))),
-      DIFF_THRESH
-    ))
-    assert.ok(smaller(
-      abs(subtract(erf(bignumber(2.5)), bignumber(actualErfValues['2.5']))),
-      DIFF_THRESH
-    ))
-
-    const bigmath = math.create({ precision: 15 })
-    assert.ok(smaller(
-      abs(subtract(bigmath.erf(bignumber(-1.5)), bigmath.bignumber(actualErfValues['-1.5']))),
-      DIFF_THRESH
-    ))
-    bigmath.config({ precision: 13 })
-    assert.ok(smaller(
-      abs(subtract(bigmath.erf(bignumber(-1.5)), bigmath.bignumber(actualErfValues['-1.5']))),
-      DIFF_THRESH
-    ))
   })
 
   it('should calculate the erf of a boolean (true = 1, false = 0)', function () {
