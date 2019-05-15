@@ -7,7 +7,7 @@ import { contains } from '../../utils/array'
 import { ArgumentsError } from '../../error/ArgumentsError'
 import { warnOnce } from '../../utils/log'
 
-export function importFactory (typed, load, math, factories) {
+export function importFactory (typed, load, math, importedFactories) {
   /**
    * Import functions from an object or a module
    *
@@ -126,7 +126,7 @@ export function importFactory (typed, load, math, factories) {
       }
 
       math[name] = value
-      delete factories[name]
+      delete importedFactories[name]
 
       _importTransform(name, value)
       math.emit('import', name, function resolver () {
@@ -137,7 +137,7 @@ export function importFactory (typed, load, math, factories) {
 
     if (math[name] === undefined || options.override) {
       math[name] = value
-      delete factories[name]
+      delete importedFactories[name]
 
       _importTransform(name, value)
       math.emit('import', name, function resolver () {
@@ -268,7 +268,7 @@ export function importFactory (typed, load, math, factories) {
       }
 
       const key = factory.path ? (factory.path + '.' + factory.name) : factory.name
-      factories[key] = factory
+      importedFactories[key] = factory
 
       math.emit('import', name, resolver, factory.path)
     } else {
@@ -375,7 +375,7 @@ export function importFactory (typed, load, math, factories) {
     }
 
     // TODO: improve factories, store a list with imports instead which can be re-played
-    factories[name] = factory
+    importedFactories[name] = factory
 
     math.emit('import', name, resolver)
   }

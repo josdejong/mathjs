@@ -126,7 +126,7 @@ export const createVersion = /* #__PURE__ */ factory('version', [], () => versio
 // helper function to create a factory with a flag recreateOnConfigChange
 // idea: allow passing optional properties to be attached to the factory function as 4th argument?
 function recreateFactory (name, dependencies, create) {
-  const f = factory(name, dependencies, create)
-  f.recreateOnConfigChange = true
-  return f
+  return factory(name, dependencies, create, {
+    recreateOnConfigChange: true
+  })
 }

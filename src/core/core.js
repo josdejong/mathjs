@@ -189,18 +189,18 @@ export const createCore = factory('core', dependencies, ({ config }) => {
     return instance
   }
 
-  const factories = {}
+  const importedFactories = {}
 
   // load the import function
   function lazyTyped (...args) {
     return math.typed.apply(math.typed, args)
   }
-  math['import'] = importFactory(lazyTyped, load, math, factories)
+  math['import'] = importFactory(lazyTyped, load, math, importedFactories)
 
   // listen for changes in config, import all functions again when changed
   math.on('config', () => {
-    values(factories).forEach(factory => {
-      if (factory && factory.recreateOnConfigChange) {
+    values(importedFactories).forEach(factory => {
+      if (factory && factory.meta && factory.meta.recreateOnConfigChange) {
         // FIXME: only re-create when the current instance is the same as was initially created
         // FIXME: delete the functions/constants before importing them again?
         math['import'](factory, { override: true })
