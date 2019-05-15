@@ -76,7 +76,7 @@ describe('random', function () {
   it('should pick uniformly distributed random matrix, with elements in [0, 1]', function () {
     const picked = []
     const matrices = []
-    const size = math.matrix([2, 3, 4])
+    const size = math2.matrix([2, 3, 4])
 
     _.times(100, function () {
       matrices.push(random(size))

@@ -21,6 +21,7 @@ export function assignFactory ({ subset, matrix }) {
   return function assign (object, index, value) {
     try {
       if (Array.isArray(object)) {
+        // we use matrix.subset here instead of the function subset because we must not clone the contents
         return matrix(object).subset(index, value).valueOf()
       } else if (object && typeof object.subset === 'function') { // Matrix
         return object.subset(index, value)

@@ -6,9 +6,9 @@ import { createRng } from './util/seededRNG'
 import { randomMatrix } from './util/randomMatrix'
 
 const name = 'random'
-const dependencies = ['typed', 'config', '?on', 'matrix']
+const dependencies = ['typed', 'config', '?on']
 
-export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, on, matrix }) => {
+export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, on }) => {
   // seeded pseudo random number generator
   let rng = createRng(config.randomSeed)
 
@@ -61,7 +61,7 @@ export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
   function _randomMatrix (size, min, max) {
     const res = randomMatrix(size.valueOf(), () => _random(min, max))
-    return isMatrix(size) ? matrix(res) : res
+    return isMatrix(size) ? size.create(res) : res
   }
 
   function _random (min, max) {
