@@ -60,8 +60,6 @@ export const createApply = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     }
   })
 
-  apply.toTex = undefined // use default template
-
   return apply
 })
 

@@ -37,8 +37,6 @@ export const createColumn = /* #__PURE__ */ factory(name, dependencies, ({ typed
     }
   })
 
-  column.toTex = undefined // use default template
-
   return column
 
   /**

@@ -37,8 +37,6 @@ export const createRow = /* #__PURE__ */ factory(name, dependencies, ({ typed, I
     }
   })
 
-  row.toTex = undefined // use default template
-
   return row
 
   /**

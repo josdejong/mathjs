@@ -5,9 +5,9 @@ import { getSafeProperty } from '../../utils/customs'
 import { embeddedDocs } from '../embeddedDocs/embeddedDocs'
 
 const name = 'help'
-const dependencies = ['typed', 'math', 'Help']
+const dependencies = ['typed', 'mathWithTransform', 'Help']
 
-export const createHelp = /* #__PURE__ */ factory(name, dependencies, ({ typed, math, Help }) => {
+export const createHelp = /* #__PURE__ */ factory(name, dependencies, ({ typed, mathWithTransform, Help }) => {
   /**
    * Retrieve help on a function or data type.
    * Help files are retrieved from the embedded documentation in math.docs.
@@ -32,9 +32,9 @@ export const createHelp = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       let searchName = search
 
       if (typeof search !== 'string') {
-        for (prop in math) {
+        for (prop in mathWithTransform) {
           // search in functions and constants
-          if (math.hasOwnProperty(prop) && (search === math[prop])) {
+          if (mathWithTransform.hasOwnProperty(prop) && (search === mathWithTransform[prop])) {
             searchName = prop
             break
           }
@@ -57,7 +57,8 @@ export const createHelp = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
       const doc = getSafeProperty(embeddedDocs, searchName)
       if (!doc) {
-        throw new Error('No documentation found on "' + searchName + '"')
+        const searchText = typeof searchName === 'function' ? searchName.name : searchName
+        throw new Error('No documentation found on "' + searchText + '"')
       }
       return new Help(doc)
     }

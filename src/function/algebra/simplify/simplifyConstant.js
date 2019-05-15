@@ -10,7 +10,7 @@ const name = 'simplifyConstant'
 const dependencies = [
   'typed',
   'config',
-  'math',
+  'mathWithTransform',
   '?fraction',
   '?bignumber',
   'ConstantNode',
@@ -22,7 +22,7 @@ const dependencies = [
 export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies, ({
   typed,
   config,
-  math,
+  mathWithTransform,
   fraction,
   bignumber,
   ConstantNode,
@@ -40,7 +40,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
 
   function _eval (fnname, args, options) {
     try {
-      return _toNumber(math[fnname].apply(null, args), options)
+      return _toNumber(mathWithTransform[fnname].apply(null, args), options)
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
       args = args.map(function (x) {
@@ -49,7 +49,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         }
         return x
       })
-      return _toNumber(math[fnname].apply(null, args), options)
+      return _toNumber(mathWithTransform[fnname].apply(null, args), options)
     }
   }
 
@@ -178,7 +178,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         }
         return node
       case 'FunctionNode':
-        if (math[node.name] && math[node.name].rawArgs) {
+        if (mathWithTransform[node.name] && mathWithTransform[node.name].rawArgs) {
           return node
         }
 
