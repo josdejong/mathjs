@@ -72,7 +72,7 @@ import {
 } from './plain/number'
 
 import { factory } from './utils/factory'
-import { noMatrix, noSubset } from './utils/noop'
+import { noSubset } from './utils/noop'
 
 // ----------------------------------------------------------------------------
 // classes and functions
@@ -171,7 +171,6 @@ export { createNumber } from './type/number'
 export { createString } from './type/string'
 export { createBoolean } from './type/boolean'
 export { createParser } from './expression/function/parser'
-export const createMatrix = /* #__PURE__ */ factory('matrix', [], () => noMatrix) // FIXME: needed now because subset transform needs it. Remove the need for it in subset
 
 // expression
 export { createNode } from './expression/node/Node'

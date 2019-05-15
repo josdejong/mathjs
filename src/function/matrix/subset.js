@@ -6,9 +6,10 @@ import { validateIndex } from '../../utils/array'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs'
 import { DimensionError } from '../../error/DimensionError'
 import { factory } from '../../utils/factory'
+import { noMatrix } from '../../utils/noop'
 
 const name = 'subset'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed', '?matrix']
 
 export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
@@ -48,6 +49,10 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
   return typed(name, {
     // get subset
     'Array, Index': function (value, index) {
+      if (!matrix) {
+        noMatrix()
+      }
+
       const m = matrix(value)
       const subset = m.subset(index) // returns a Matrix
       return index.isScalar()

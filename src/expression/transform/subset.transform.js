@@ -5,7 +5,7 @@ import { errorTransform } from './utils/errorTransform'
 import { createSubset } from '../../function/matrix/subset'
 
 const name = 'subset'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed', '?matrix']
 
 export const createSubsetTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   const subset = createSubset({ typed, matrix })
