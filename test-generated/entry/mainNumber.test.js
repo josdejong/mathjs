@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainNumber from '../../src/entry/mainNumber'
 import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../src/utils/snapshot'
 import * as factoriesNumber from '../../src/factoriesNumber'
-const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain, Range, reviver } = mainNumber
+const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain, Range, reviver, derivative, simplify } = mainNumber
 
 const {
   expectedInstanceStructure,
@@ -105,6 +105,14 @@ describe('mainNumber', function () {
     assert.strictEqual(chain(2).add(3).done(), 5)
   })
 
+  it('derivative should work', () => {
+    assert.strictEqual(derivative('2x', 'x').toString(), '2')
+  })
+
+  it('simplify should work', () => {
+    assert.strictEqual(simplify('2x + 3x').toString(), '5 * x')
+  })
+
   it('should export evaluate having help and embedded docs', () => {
     const h = evaluate('help(simplify)')
 
@@ -121,7 +129,6 @@ describe('mainNumber', function () {
     assert.deepStrictEqual(obj, r)
   })
 
-  // TODO: test export of create and core
   // TODO: test export of errors
   // TODO: test export of classes
   // TODO: test export of default instance
