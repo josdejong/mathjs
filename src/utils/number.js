@@ -322,13 +322,17 @@ export function toEngineering (value, precision) {
 
   if (isNumber(precision)) {
     // add zeroes to give correct sig figs
-    if (precision > c.length) c = c.concat(zeros(precision - c.length))
+    while (precision > c.length || (e - newExp) + 1 > c.length) {
+      c.push(0)
+    }
   } else {
     // concatenate coefficients with necessary zeros
     const significandsDiff = e >= 0 ? e : Math.abs(newExp)
 
     // add zeros if necessary (for ex: 1e+8)
-    if (c.length - 1 < significandsDiff) c = c.concat(zeros(significandsDiff - (c.length - 1)))
+    while (c.length - 1 < significandsDiff) {
+      c.push(0)
+    }
   }
 
   // find difference in exponents
@@ -337,7 +341,10 @@ export function toEngineering (value, precision) {
   let decimalIdx = 1
 
   // push decimal index over by expDiff times
-  while (--expDiff >= 0) decimalIdx++
+  while (expDiff > 0) {
+    decimalIdx++
+    expDiff--
+  }
 
   // if all coefficient values are zero after the decimal point and precision is unset, don't add a decimal value.
   // otherwise concat with the rest of the coefficients

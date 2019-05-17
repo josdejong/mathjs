@@ -118,6 +118,13 @@
 - Fix `math.simplify('add(2, 3)')` throwing an error.
 
 
+# 2019-05-17, version 5.10.1
+
+- Fix #1512: format using notation `engineering` can give wrong results
+  when the value has less significant digits than the number of digits in
+  the output.
+
+
 # 2019-05-08, version 5.10.0
 
 - Fix `lib/header.js` not having filled in date and version. Thanks @kevjin.
