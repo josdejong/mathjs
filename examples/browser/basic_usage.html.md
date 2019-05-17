@@ -11,7 +11,7 @@ File: [basic_usage.html](basic_usage.html) (click for a live demo)
 <html>
 <head>
   <title>math.js | basic usage</title>
-  <script src="https://unpkg.com/mathjs@5.10.0/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@5.10.1/dist/math.min.js"></script>
 </head>
 <body>
 

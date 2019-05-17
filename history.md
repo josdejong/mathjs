@@ -5,6 +5,13 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20190517-version-5101">2019-05-17, version 5.10.1 <a href="#20190517-version-5101" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1512">#1512</a>: format using notation `engineering` can give wrong results
+  when the value has less significant digits than the number of digits in
+  the output.
+
+
 <h1 id="20190508-version-5100">2019-05-08, version 5.10.0 <a href="#20190508-version-5100" title="Permalink">#</a></h1>
 
 - Fix `lib/header.js` not having filled in date and version. Thanks <a href="https://github.com/kevjin">@kevjin</a>.
