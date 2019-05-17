@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 5.10.1
+# 2019-05-17, version 5.10.1
 
 - Fix #1512: format using notation `engineering` can give wrong results
   when the value has less significant digits than the number of digits in
