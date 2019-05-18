@@ -1,6 +1,13 @@
 # History
 
 
+# 2019-05-18, version 5.10.2
+
+- Fix #1515, #1516, #1517: broken package due to a naming conflict in
+  the build folder of a util file `typeOf.js` and `typeof.js`.
+  Solved by properly cleaning all build folders before building.
+
+
 # 2019-05-17, version 5.10.1
 
 - Fix #1512: format using notation `engineering` can give wrong results

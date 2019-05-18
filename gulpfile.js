@@ -2,6 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 const gulp = require('gulp')
+const del = require('del')
 const gutil = require('gulp-util')
 const webpack = require('webpack')
 const babel = require('gulp-babel')
@@ -211,6 +212,13 @@ function generateDocs (done) {
   done()
 }
 
+function clean () {
+  return del([
+    'dist/**/*',
+    'lib/**/*'
+  ])
+}
+
 // check whether any of the source files contains non-ascii characters
 gulp.task('validate:ascii', validateAscii)
 
@@ -229,4 +237,4 @@ gulp.task('watch', function watch () {
 })
 
 // The default task (called when you run `gulp`)
-gulp.task('default', gulp.series(bundle, compile, writeBanner, minify, validate, generateDocs))
+gulp.task('default', gulp.series(clean, bundle, compile, writeBanner, minify, validate, generateDocs))
