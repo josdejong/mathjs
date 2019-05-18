@@ -2742,7 +2742,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       offset: 0
     },
 
-    //other dimensionless units
+    // Other dimensionless units
     bel: {
       name: 'bel',
       base: BASE_UNITS.SOUND_VOLUME,
@@ -2863,7 +2863,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     moles: 'mole',
 
     bels: 'bel',
-    decibels: 'decibel',
+    decibels: 'decibel'
   }
 
   /**
