@@ -1515,6 +1515,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     },
     BIT: {
       dimensions: [0, 0, 0, 0, 0, 0, 0, 0, 1]
+    },
+
+    SOUND_VOLUME: {
+      dimensions: [0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
   }
 
@@ -1983,10 +1987,17 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       value: 907.18474,
       offset: 0
     },
+    t: {
+      name: 't',
+      base: BASE_UNITS.MASS,
+      prefixes: PREFIXES.SHORT,
+      value: 1000,
+      offset: 0
+    },
     tonne: {
       name: 'tonne',
       base: BASE_UNITS.MASS,
-      prefixes: PREFIXES.SHORT,
+      prefixes: PREFIXES.LONG,
       value: 1000,
       offset: 0
     },
@@ -2362,14 +2373,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     cd: {
       name: 'cd',
       base: BASE_UNITS.LUMINOUS_INTENSITY,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1,
       offset: 0
     },
     candela: {
       name: 'candela',
       base: BASE_UNITS.LUMINOUS_INTENSITY,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1,
       offset: 0
     },
@@ -2729,6 +2740,29 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       prefixes: PREFIXES.BINARY_LONG,
       value: 8,
       offset: 0
+    },
+
+    //other dimensionless units
+    bel: {
+      name: 'bel',
+      base: BASE_UNITS.SOUND_VOLUME,
+      prefixes: PREFIXES.NONE,
+      value: 1,
+      offset: 0
+    },
+    decibel: {
+      name: 'decibel',
+      base: BASE_UNITS.SOUND_VOLUME,
+      prefixes: PREFIXES.NONE,
+      value: 0.1,
+      offset: 0
+    },
+    dB: {
+      name: 'dB',
+      base: BASE_UNITS.SOUND_VOLUME,
+      prefixes: PREFIXES.NONE,
+      value: 0.1,
+      offset: 0
     }
   }
 
@@ -2826,8 +2860,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     webers: 'weber',
     teslas: 'tesla',
     electronvolts: 'electronvolt',
-    moles: 'mole'
+    moles: 'mole',
 
+    bels: 'bel',
+    decibels: 'decibel',
   }
 
   /**
