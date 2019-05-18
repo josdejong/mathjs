@@ -236,6 +236,13 @@ function addDeprecatedFunctions (done) {
   done()
 }
 
+function clean () {
+  return del([
+    'dist/**/*',
+    'lib/**/*'
+  ])
+}
+
 // check whether any of the source files contains non-ascii characters
 gulp.task('validate:ascii', validateAscii)
 
@@ -254,13 +261,6 @@ gulp.task('watch', function watch () {
 })
 
 gulp.task('compile', compile)
-
-function clean () {
-  return del([
-    'dist/**/*',
-    'lib/**/*'
-  ])
-}
 
 // The default task (called when you run `gulp`)
 gulp.task('default', gulp.series(
