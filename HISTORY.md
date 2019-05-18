@@ -1,6 +1,11 @@
 # History
 
 
+# 2019-05-18, version 5.10.3
+
+- Fixed dependency `del` being a dependency instead of devDependency.
+
+
 # 2019-05-18, version 5.10.2
 
 - Fix #1515, #1516, #1517: broken package due to a naming conflict in
