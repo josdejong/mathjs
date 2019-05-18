@@ -12,7 +12,7 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html) (cl
 <head>
   <title>math.js | pretty printing with MathJax</title>
 
-  <script src="https://unpkg.com/mathjs@5.10.1/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@5.10.2/dist/math.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
 
   <style>

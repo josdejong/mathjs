@@ -5,6 +5,13 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20190518-version-5102">2019-05-18, version 5.10.2 <a href="#20190518-version-5102" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1515">#1515</a>, <a href="https://github.com/josdejong/mathjs/issues/1516">#1516</a>, <a href="https://github.com/josdejong/mathjs/issues/1517">#1517</a>: broken package due to a naming conflict in
+  the build folder of a util file `typeOf.js` and `typeof.js`.
+  Solved by properly cleaning all build folders before building.
+
+
 <h1 id="20190517-version-5101">2019-05-17, version 5.10.1 <a href="#20190517-version-5101" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1512">#1512</a>: format using notation `engineering` can give wrong results
