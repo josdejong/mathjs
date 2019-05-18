@@ -6,7 +6,7 @@
     "url": "https://github.com/josdejong/mathjs.git"
   },
   "dependencies": {
-    "mathjs": "5.10.2"
+    "mathjs": "5.10.3"
   },
   "devDependencies": {
     "glob": "^7.1.2",

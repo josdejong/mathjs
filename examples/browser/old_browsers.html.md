@@ -16,7 +16,7 @@ File: [old_browsers.html](old_browsers.html) (click for a live demo)
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-sham.min.js"></script>
 
-  <script src="https://unpkg.com/mathjs@5.10.2/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@5.10.3/dist/math.min.js"></script>
 </head>
 <body>
 

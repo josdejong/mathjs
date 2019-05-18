@@ -5,6 +5,11 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20190518-version-5103">2019-05-18, version 5.10.3 <a href="#20190518-version-5103" title="Permalink">#</a></h1>
+
+- Fixed dependency `del` being a dependency instead of devDependency.
+
+
 <h1 id="20190518-version-5102">2019-05-18, version 5.10.2 <a href="#20190518-version-5102" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1515">#1515</a>, <a href="https://github.com/josdejong/mathjs/issues/1516">#1516</a>, <a href="https://github.com/josdejong/mathjs/issues/1517">#1517</a>: broken package due to a naming conflict in

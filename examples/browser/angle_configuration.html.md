@@ -23,7 +23,7 @@ File: [angle_configuration.html](angle_configuration.html) (click for a live dem
     }
   </style>
 
-  <script src="https://unpkg.com/mathjs@5.10.2/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@5.10.3/dist/math.min.js"></script>
 </head>
 <body>
 
