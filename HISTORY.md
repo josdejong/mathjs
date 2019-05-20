@@ -114,6 +114,8 @@
 
 ### Non breaking changes
 
+- Implemented units `t`, `tonne`, `bel`, `decibel`, `dB`, and prefixes
+  for `candela`. Thanks @mcvladthegoat.
 - Fixed `epsilon` setting being applied globally to Complex numbers.
 - Fix `math.simplify('add(2, 3)')` throwing an error.
 
