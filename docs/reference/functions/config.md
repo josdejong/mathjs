@@ -5,6 +5,8 @@
 Set configuration options for math.js, and get current options.
 Will emit a 'config' event, with arguments (curr, prev, changes).
 
+This function is only available on a mathjs instance created using `create`.
+
 
 ## Syntax
 
@@ -28,6 +30,11 @@ Object | Returns the current configuration
 ## Examples
 
 ```js
+import { create, all } from 'mathjs'
+
+// create a mathjs instance
+const math = create(all)
+
 math.config().number                // outputs 'number'
 math.evaluate('0.4')                // outputs number 0.4
 math.config({number: 'Fraction'})

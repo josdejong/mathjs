@@ -9,17 +9,19 @@ import { warnOnce } from '../../utils/log'
 
 export function importFactory (typed, load, math, importedFactories) {
   /**
-   * Import functions from an object or a module
+   * Import functions from an object or a module.
+   *
+   * This function is only available on a mathjs instance created using `create`.
    *
    * Syntax:
    *
-   *    math.import(object)
-   *    math.import(object, options)
+   *    math.import(functions)
+   *    math.import(functions, options)
    *
    * Where:
    *
-   * - `object: Object`
-   *   An object with functions to be imported.
+   * - `functions: Object`
+   *   An object with functions or factories to be imported.
    * - `options: Object` An object with import options. Available options:
    *   - `override: boolean`
    *     If true, existing functions will be overwritten. False by default.
@@ -33,6 +35,12 @@ export function importFactory (typed, load, math, importedFactories) {
    *     support these data type. False by default.
    *
    * Examples:
+   *
+   *    import { create, all } from 'mathjs'
+   *    import * as numbers from 'numbers'
+   *
+   *    // create a mathjs instance
+   *    const math = create(all)
    *
    *    // define new functions and variables
    *    math.import({
@@ -48,14 +56,14 @@ export function importFactory (typed, load, math, importedFactories) {
    *
    *    // import the npm module 'numbers'
    *    // (must be installed first with `npm install numbers`)
-   *    math.import(require('numbers'), {wrap: true})
+   *    math.import(numbers, {wrap: true})
    *
    *    math.fibonacci(7) // returns 13
    *
-   * @param {Object | Array} object   Object with functions to be imported.
-   * @param {Object} [options]        Import options.
+   * @param {Object | Array} functions  Object with functions to be imported.
+   * @param {Object} [options]          Import options.
    */
-  function mathImport (object, options) {
+  function mathImport (functions, options) {
     const num = arguments.length
     if (num !== 1 && num !== 2) {
       throw new ArgumentsError('import', num, 1, 2)
@@ -66,23 +74,23 @@ export function importFactory (typed, load, math, importedFactories) {
     }
 
     // TODO: allow a typed-function with name too
-    if (isFactory(object)) {
-      _importFactory(object, options)
-    } else if (isLegacyFactory(object)) {
-      _importLegacyFactory(object, options)
-    } else if (Array.isArray(object)) {
-      object.forEach((entry) => mathImport(entry, options))
-    } else if (typeof object === 'object') {
+    if (isFactory(functions)) {
+      _importFactory(functions, options)
+    } else if (isLegacyFactory(functions)) {
+      _importLegacyFactory(functions, options)
+    } else if (Array.isArray(functions)) {
+      functions.forEach((entry) => mathImport(entry, options))
+    } else if (typeof functions === 'object') {
       // a map with functions
-      for (const name in object) {
-        if (object.hasOwnProperty(name)) {
-          const value = object[name]
+      for (const name in functions) {
+        if (functions.hasOwnProperty(name)) {
+          const value = functions[name]
           if (isFactory(value)) {
             _importFactory(value, options, name)
           } else if (isSupportedType(value)) {
             _import(name, value, options)
-          } else if (isLegacyFactory(object)) {
-            _importLegacyFactory(object, options)
+          } else if (isLegacyFactory(functions)) {
+            _importLegacyFactory(functions, options)
           } else {
             mathImport(value, options)
           }

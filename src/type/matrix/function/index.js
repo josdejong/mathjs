@@ -27,8 +27,6 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * Examples:
    *
-   *    const math = require('mathjs')
-   *
    *    const b = [1, 2, 3, 4, 5]
    *    math.subset(b, math.index([1, 2, 3]))     // returns [2, 3, 4]
    *

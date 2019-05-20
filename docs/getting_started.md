@@ -23,26 +23,38 @@ configuration options as described in
 
 ### ES6 modules
 
-Load math.js using ES6 import:
+Load the functions you need and use them:
 
 ```js
-// load math.js
-import * as math from 'mathjs'
+import { sqrt } from 'mathjs'
 
-// use math.js
+sqrt(-4) // 2i
+```
+
+You can create a mathjs instance allowing [configuration](core/configuration.md) and importing of external functions as follows:
+
+```js
+import { create, all } from 'mathjs'
+
+const config = { /* ... */ }
+const math = create(all, config)
+math.import(/* ... */)
+
 math.sqrt(-4) // 2i
 ```
 
+How to optimize your bundle size using tree-shaking is described on the page
+[Custom bundling](custom_bundling.md).
+
+
 ### Node.js
 
-Load math.js in [node.js](https://nodejs.org/):
+Load math.js in [node.js](https://nodejs.org/) (CommonJS module system):
 
 ```js
-// load math.js
-const math = require('mathjs')
+const { sqrt } = require('mathjs')
 
-// use math.js
-math.sqrt(-4) // 2i
+sqrt(-4) // 2i
 ```
 
 
@@ -59,32 +71,10 @@ variable `math` to access the libary once loaded:
 </head>
 <body>
   <script type="text/javascript">
-    // use the math.js libary
     math.sqrt(-4) // 2i
   </script>
 </body>
 </html>
-```
-
-If support for old browsers (Internet Explorer 8 and older) is required,
-the [es5-shim](https://github.com/kriskowal/es5-shim) library must be loaded
-as well.
-
-
-### Require.js
-
-Load math.js in the browser using [require.js](https://requirejs.org/):
-
-```js
-require.config({
-  paths: {
-    mathjs: 'path/to/mathjs',
-  }
-})
-require(['mathjs'], function (math) {
-  // use math.js
-  math.sqrt(-4) // 2i
-})
 ```
 
 ## Use

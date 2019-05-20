@@ -42,7 +42,8 @@ To create a transform for a function, the transform function must be attached
 to the function as property `transform`:
 
 ```js
-const math = require('../index')
+import { create, all } from 'mathjs'
+const math = create(all)
 
 // create a function
 function addIt(a, b) {
@@ -213,7 +214,7 @@ The `parenthesis` option changes the way parentheses are used in the output. The
 
 There's two ways of passing callbacks:
 
-1. Pass an object that maps function names to callbacks. Those callbacks will be used for FunctionNodes with 
+1. Pass an object that maps function names to callbacks. Those callbacks will be used for FunctionNodes with
 functions of that name.
 2. Pass a function to `toTex`. This function will then be used for every node.
 

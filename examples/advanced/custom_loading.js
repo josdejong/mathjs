@@ -7,10 +7,10 @@ import {
 } from '../..'
 
 const config = {
-  // specify configuration if needed
+  // optionally, you can specify configuration
 }
 
-// Create a math.js instance just loading the functions we want
+// Create just the functions we need
 const { fraction, add, divide, format } = create({
   fractionDependencies,
   addDependencies,

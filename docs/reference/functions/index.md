@@ -36,8 +36,6 @@ Index | Returns the created index
 ## Examples
 
 ```js
-const math = require('mathjs')
-
 const b = [1, 2, 3, 4, 5]
 math.subset(b, math.index([1, 2, 3]))     // returns [2, 3, 4]
 

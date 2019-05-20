@@ -47,7 +47,9 @@ To make the expression parser less vulnerable whilst still supporting
 most functionality, these functions can be disabled:
 
 ```js
-const math = require('mathjs')
+import { create, all } from 'mathjs'
+
+const math = create(all)
 const limitedEvaluate = math.evaluate
 
 math.import({
@@ -57,7 +59,7 @@ math.import({
   'parse':      function () { throw new Error('Function parse is disabled') },
   'simplify':   function () { throw new Error('Function simplify is disabled') },
   'derivative': function () { throw new Error('Function derivative is disabled') }
-}, {override: true})
+}, { override: true })
 
 console.log(limitedEvaluate('sqrt(16)'))     // Ok, 4
 console.log(limitedEvaluate('parse("2+3")')) // Error: Function parse is disabled

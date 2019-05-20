@@ -1,13 +1,30 @@
 # Configuration
 
-Math.js contains a number of configuration options. There are two ways to
-configure math.js:
+Math.js contains a number of configuration options.
+These options can be applied on a created mathjs instance and changed afterwards.
 
-- Configure an existing instance of math.js using `math.config(options)`,
-  for example `math.config({number: 'BigNumber'})` to change to BigNumbers.
-- Create and configure a new instance of math.js using `math.create([options])`,
-  for example `const bigmath = math.create({number: 'BigNumber'})` to create a new
-  instance configured to use BigNumbers.
+```js
+import { create, all } from 'mathjs'
+
+// create a mathjs instance with configuration
+const config = {
+  epsilon: 1e-12,
+  matrix: 'Matrix',
+  number: 'number',
+  precision: 64,
+  predictable: false,
+  randomSeed: null
+}
+const math = create(all, config)
+
+// read the applied configuration
+console.log(math.config())
+
+// change the configuration
+math.config({
+  number: 'BigNumber'
+})
+```
 
 The following configuration options are available:
 
@@ -61,34 +78,28 @@ This section shows a number of configuration examples.
 ### node.js
 
 ```js
-// load the default instance of math.js
-const math = require('mathjs')
+import { create, all } from 'mathjs'
 
-// range will output a Matrix
-math.range(0, 4)          // Matrix [0, 1, 2, 3]
-
-
-// create a new instance configured to use Arrays
-const math2 = math.create({
-  matrix: 'Array'         // Choose 'Matrix' (default) or 'Array'
-})
+const config = {
+  matrix: 'Array' // Choose 'Matrix' (default) or 'Array'
+}
+const math = create(all, config)
 
 // range will output an Array
-math2.range(0, 4)         // Array [0, 1, 2, 3]
+math.range(0, 4) // Array [0, 1, 2, 3]
 
-// change the configuration of math2 from Arrays to Matrices
-math2.config({
-  matrix: 'Matrix'        // Choose 'Matrix' (default) or 'Array'
+// change the configuration from Arrays to Matrices
+math.config({
+  matrix: 'Matrix' // Choose 'Matrix' (default) or 'Array'
 })
 
 // range will output a Matrix
-math2.range(0, 4)         // Matrix [0, 1, 2, 3]
-
+math.range(0, 4) // Matrix [0, 1, 2, 3]
 
 // create an instance of math.js with BigNumber configuration
-const bigmath = math.create({
-  number: 'BigNumber',    // Choose 'number' (default), 'BigNumber', or 'Fraction'
-  precision: 32           // 64 by default, only applicable for BigNumbers
+const bigmath = create(all, {
+  number: 'BigNumber', // Choose 'number' (default), 'BigNumber', or 'Fraction'
+  precision: 32        // 64 by default, only applicable for BigNumbers
 })
 
 // parser will parse numbers as BigNumber now:
