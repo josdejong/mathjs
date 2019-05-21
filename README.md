@@ -46,7 +46,9 @@ and supports
 [chained operations](https://mathjs.org/docs/core/chaining.html).
 
 ```js
-import { atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt } from 'mathjs'
+import {
+  atan2, chain, derivative, e, evaluate, log, pi, pow, round, sqrt
+} from 'mathjs'
 
 // functions and constants
 round(e, 3)                    // 2.718
