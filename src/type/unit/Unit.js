@@ -1983,10 +1983,17 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       value: 907.18474,
       offset: 0
     },
+    t: {
+      name: 't',
+      base: BASE_UNITS.MASS,
+      prefixes: PREFIXES.SHORT,
+      value: 1000,
+      offset: 0
+    },
     tonne: {
       name: 'tonne',
       base: BASE_UNITS.MASS,
-      prefixes: PREFIXES.SHORT,
+      prefixes: PREFIXES.LONG,
       value: 1000,
       offset: 0
     },
@@ -2362,14 +2369,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     cd: {
       name: 'cd',
       base: BASE_UNITS.LUMINOUS_INTENSITY,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1,
       offset: 0
     },
     candela: {
       name: 'candela',
       base: BASE_UNITS.LUMINOUS_INTENSITY,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1,
       offset: 0
     },
@@ -2827,7 +2834,6 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     teslas: 'tesla',
     electronvolts: 'electronvolt',
     moles: 'mole'
-
   }
 
   /**
