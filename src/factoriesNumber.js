@@ -72,7 +72,7 @@ import {
 } from './plain/number'
 
 import { factory } from './utils/factory'
-import { noSubset } from './utils/noop'
+import { noIndexClass, noMatrix, noSubset } from './utils/noop'
 
 // ----------------------------------------------------------------------------
 // classes and functions
@@ -206,7 +206,10 @@ export { createFilter } from './function/matrix/filter'
 export { createForEach } from './function/matrix/forEach'
 export { createMap } from './function/matrix/map'
 export { createRange } from './function/matrix/range'
+export { createSize } from './function/matrix/size'
 // FIXME: create a lightweight "number" implementation of subset only supporting plain objects/arrays
+export const createIndexClass = /* #__PURE__ */ factory('Index', [], () => noIndexClass, { isClass: true })
+export const createMatrix = /* #__PURE__ */ factory('matrix', [], () => noMatrix) // FIXME: needed now because subset transform needs it. Remove the need for it in subset
 export const createSubset = /* #__PURE__ */ factory('subset', [], () => noSubset)
 // TODO: provide number+array implementations for map, filter, forEach, zeros, ...?
 // TODO: create range implementation for range?

@@ -99,6 +99,28 @@ describe('mainAny', function () {
     assert.strictEqual(chain('x + 2 * x').simplify().done().toString(), '3 * x')
   })
 
+  it('should get/set scope variables', () => {
+    const math = create(all)
+    const evaluate = math.evaluate
+
+    assert.strictEqual(evaluate('b + 2', { b: 3 }), 5)
+
+    const scope = {}
+    assert.strictEqual(evaluate('b = 2', scope), 2)
+    assert.deepStrictEqual(scope, { b: 2 })
+  })
+
+  it('should evaluate assignement and access', () => {
+    const math = create(all)
+    const evaluate = math.evaluate
+
+    assert.strictEqual(evaluate('A[2]', { A: [10, 20, 30] }), 20)
+
+    const scope = { A: [10, 20, 30] }
+    assert.strictEqual(evaluate('A[2] = 200', scope), 200)
+    assert.deepStrictEqual(scope, { A: [10, 200, 30] })
+  })
+
   it('should export evaluate having help and embedded docs', () => {
     const h = evaluate('help(simplify)')
 
@@ -118,6 +140,4 @@ describe('mainAny', function () {
   // TODO: test export of create and core
   // TODO: test export of errors
   // TODO: test export of classes
-  // TODO: test export of default instance
-  // TODO: test snapshot of all exported things
 })

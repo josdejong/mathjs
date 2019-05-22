@@ -1,6 +1,7 @@
 'use strict'
 
 import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '../../utils/is'
+import { createIndexTransform } from '../transform/index.transform'
 import { map } from '../../utils/array'
 import { escape } from '../../utils/string'
 import { factory } from '../../utils/factory'
@@ -8,10 +9,14 @@ import { factory } from '../../utils/factory'
 const name = 'IndexNode'
 const dependencies = [
   'Range',
-  'Node'
+  'Node',
+  'Index',
+  'size'
 ]
 
-export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, Node }) => {
+export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, Node, Index, size }) => {
+  const index = createIndexTransform({ Index })
+
   /**
    * @constructor IndexNode
    * @extends Node
@@ -91,9 +96,9 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
             : function () { return 1 }
 
           return function evalDimension (scope, args, context) {
-            const size = math.size(context).valueOf()
+            const s = size(context).valueOf()
             const childArgs = Object.create(args)
-            childArgs['end'] = size[i]
+            childArgs['end'] = s[i]
 
             return createRange(
               evalStart(scope, childArgs, context),
@@ -125,9 +130,9 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
         const evalRange = range._compile(math, childArgNames)
 
         return function evalDimension (scope, args, context) {
-          const size = math.size(context).valueOf()
+          const s = size(context).valueOf()
           const childArgs = Object.create(args)
-          childArgs['end'] = size[i]
+          childArgs['end'] = s[i]
 
           return evalRange(scope, childArgs, context)
         }
@@ -144,7 +149,8 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
       const dimensions = map(evalDimensions, function (evalDimension) {
         return evalDimension(scope, args, context)
       })
-      return math.index.apply(math, dimensions)
+
+      return index(...dimensions)
     }
   }
 
