@@ -160,7 +160,7 @@
     "sylvester": "0.0.21",
     "uglify-js": "3.5.15",
     "underscore": "1.9.1",
-    "webpack": "4.32.1",
+    "webpack": "4.32.2",
     "zeros": "1.0.0"
   },
   "main": "./es5",
