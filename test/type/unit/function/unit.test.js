@@ -20,8 +20,6 @@ describe('unit', function () {
     assert.deepStrictEqual(unit('3mt').toString(), '3 mt')
     assert.deepStrictEqual(unit('6 tonne').toString(), '6 tonne')
     assert.deepStrictEqual(unit('4 megatonne').toString(), '4 megatonne')
-    assert.deepStrictEqual(unit('1 bel').toString(), '1 bel')
-    assert.deepStrictEqual(unit('4dB').toString(), '4 dB')
   })
 
   it('should clone a unit', function () {
