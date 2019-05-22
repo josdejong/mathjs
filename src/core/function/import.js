@@ -305,14 +305,10 @@ export function importFactory (typed, load, math, importedFactories) {
       ? math.expression.transform
       : math
 
-    // console.log('importFactory', name)
-
     const existingTransform = name in math.expression.transform
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
     const resolver = function () {
-      console.log('resolve', name)
-
       // collect all dependencies, handle finding both functions and classes and other special cases
       const dependencies = {}
       factory.dependencies

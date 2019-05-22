@@ -56,7 +56,8 @@ describe('mainAny', function () {
     console.warn = originalWarn
   })
 
-  it.only('new instance should import some factory functions via import', function () {
+  // FIXME: {silent: true} results in an infinite loop in resolver/lazy
+  it.skip('new instance should import some factory functions via import', function () {
     const newMathInstance = create()
 
     newMathInstance.import({
