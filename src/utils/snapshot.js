@@ -7,7 +7,7 @@
  */
 import assert from 'assert'
 import * as allIsFunctions from './is'
-import { create } from '../entry/instance'
+import { create } from '../core/create'
 import { endsWith } from './string'
 
 export function validateBundle (expectedBundleStructure, bundle) {
@@ -180,7 +180,6 @@ export function createSnapshotFromFactories (factories) {
     'eval': 'Function',
     'typeof': 'Function',
     config: 'Function',
-    core: 'Function',
     create: 'Function',
 
     ...allTypeChecks,
@@ -234,7 +233,6 @@ export function createSnapshotFromFactories (factories) {
       'PI',
       'true'
     ]),
-    core: 'Function',
     create: 'Function',
     config: 'Function',
     factory: 'Function',

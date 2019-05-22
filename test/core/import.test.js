@@ -2,7 +2,7 @@ import assert from 'assert'
 import mathjs from '../../src/bundleAny'
 import approx from '../../tools/approx'
 import { factory } from '../../src/utils/factory'
-import { core } from '../../src/entry/instance'
+import { create } from '../../src/core/create'
 
 const multiplyTestFactory = factory('multiplyTest', [], () => {
   return function multiply (a, b) {
@@ -308,7 +308,7 @@ describe('import', function () {
 
   describe('factory', () => {
     it('should import a factory function', () => {
-      const math2 = core()
+      const math2 = create()
 
       assert.strictEqual(math2.multiplyTest, undefined)
       assert.strictEqual(math2.cubeTest, undefined)
@@ -321,7 +321,7 @@ describe('import', function () {
     })
 
     it('should import an array with factory functions', () => {
-      const math2 = core()
+      const math2 = create()
 
       assert.strictEqual(math2.multiplyTest, undefined)
       assert.strictEqual(math2.cubeTest, undefined)
@@ -333,7 +333,7 @@ describe('import', function () {
     })
 
     it('should not allow nested nested paths in a factory', () => {
-      const math2 = core()
+      const math2 = create()
 
       assert.strictEqual(math2.tools, undefined)
 
@@ -343,7 +343,7 @@ describe('import', function () {
     })
 
     it('should import an array with factory functions in the correct order, resolving dependencies', () => {
-      const math2 = core()
+      const math2 = create()
 
       assert.strictEqual(math2.multiplyTest, undefined)
       assert.strictEqual(math2.cubeTest, undefined)
@@ -357,7 +357,7 @@ describe('import', function () {
 
     it('should NOT import factory functions with custom name', () => {
       // changed since v6
-      const math2 = core()
+      const math2 = create()
 
       assert.strictEqual(math2.multiplyTest, undefined)
       assert.strictEqual(math2.cubeTest, undefined)
@@ -376,7 +376,7 @@ describe('import', function () {
     })
 
     it('should throw an error when a dependency is missing with import factory', () => {
-      const math2 = core()
+      const math2 = create()
 
       assert.throws(() => {
         math2.import(cubeTestFactory)

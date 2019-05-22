@@ -18,4 +18,5 @@ export * from './dependenciesNumber.generated'
 export * from '../factoriesNumber'
 
 // core
-export { core, create, factory } from './instance'
+export { create } from '../core/create'
+export { factory } from '../utils/factory'

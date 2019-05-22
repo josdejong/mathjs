@@ -18,7 +18,8 @@ export * from './dependenciesAny.generated'
 export * from '../factoriesAny'
 
 // core
-export { core, create, factory } from './instance'
+export { create } from '../core/create'
+export { factory } from '../utils/factory'
 
 // backward compatibility stuff for v5
 export * from './deprecatedAny'

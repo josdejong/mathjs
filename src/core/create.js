@@ -1,11 +1,11 @@
 'use strict'
 
 import './../utils/polyfills'
-import { isLegacyFactory, values } from './../utils/object'
+import { deepFlatten, isLegacyFactory, lazy, traverse, values } from './../utils/object'
 import * as emitter from './../utils/emitter'
 import { importFactory } from './function/import'
 import { configFactory } from './function/config'
-import { factory, isFactory } from '../utils/factory'
+import { isFactory } from '../utils/factory'
 import {
   isAccessorNode,
   isArray,
@@ -46,12 +46,26 @@ import {
   isUndefined,
   isUnit
 } from '../utils/is'
-
-const dependencies = [ 'config' ]
+import { initial, last } from '../utils/array'
+import { warnOnce } from '../utils/log'
+import { ArgumentsError } from '../error/ArgumentsError'
+import { DimensionError } from '../error/DimensionError'
+import { IndexError } from '../error/IndexError'
+import { DEFAULT_CONFIG } from './config'
 
 /**
- * Math.js core. Creates a new, empty math.js instance
- * @param {Object} config     Available options:
+ * Create a mathjs instance from given factory functions and optionally config
+ *
+ * Usage:
+ *
+ *     const mathjs1 = create({ createAdd, createMultiply, ...})
+ *     const config = { number: 'BigNumber' }
+ *     const mathjs2 = create(all, config)
+ *
+ * @param {Object} [factories] An object with factory functions
+ *                             The object can contain nested objects,
+ *                             all nested objects will be flattened.
+ * @param {Object} [config]    Available options:
  *                            {number} epsilon
  *                              Minimum relative difference between two
  *                              compared values, used by all comparison functions.
@@ -78,11 +92,13 @@ const dependencies = [ 'config' ]
  *                   - `config` to change configuration
  *                   - `on`, `off`, `once`, `emit` for events
  */
-export const createCore = factory('core', dependencies, ({ config }) => {
+export function create (factories, config) {
+  const configInternal = Object.assign({}, DEFAULT_CONFIG, config)
+
   // simple test for ES5 support
   if (typeof Object.create !== 'function') {
     throw new Error('ES5 not supported by this JavaScript engine. ' +
-    'Please load the es5-shim and es5-sham library for compatibility.')
+      'Please load the es5-shim and es5-sham library for compatibility.')
   }
 
   // create the mathjs instance
@@ -131,8 +147,7 @@ export const createCore = factory('core', dependencies, ({ config }) => {
   })
 
   // load config function and apply provided config
-  const _config = config // keep internal _config private
-  math.config = configFactory(_config, math.emit)
+  math.config = configFactory(configInternal, math.emit)
 
   math.expression = {
     transform: {},
@@ -173,9 +188,9 @@ export const createCore = factory('core', dependencies, ({ config }) => {
       // doesn't yet exist
       if (factory.math === true) {
         // pass with math namespace
-        instance = factory.factory(math.type, _config, load, math.typed, math)
+        instance = factory.factory(math.type, configInternal, load, math.typed, math)
       } else {
-        instance = factory.factory(math.type, _config, load, math.typed)
+        instance = factory.factory(math.type, configInternal, load, math.typed)
       }
 
       // append to the cache
@@ -208,5 +223,114 @@ export const createCore = factory('core', dependencies, ({ config }) => {
     })
   })
 
+  // the create function exposed on the mathjs instance is bound to
+  // the factory functions passed before
+  math.create = create.bind(null, factories)
+
+  // import the factory functions like createAdd as an array instead of object,
+  // else they will get a different naming (`createAdd` instead of `add`).
+  math['import'](values(deepFlatten(factories)))
+
+  // TODO: deprecated since v6.0.0. Clean up some day
+  const movedNames = [
+    'type.isNumber',
+    'type.isComplex',
+    'type.isBigNumber',
+    'type.isFraction',
+    'type.isUnit',
+    'type.isString',
+    'type.isArray',
+    'type.isMatrix',
+    'type.isDenseMatrix',
+    'type.isSparseMatrix',
+    'type.isCollection',
+    'type.isRange',
+    'type.isIndex',
+    'type.isBoolean',
+    'type.isResultSet',
+    'type.isHelp',
+    'type.isFunction',
+    'type.isDate',
+    'type.isRegExp',
+    'type.isObject',
+    'type.isNull',
+    'type.isUndefined',
+    'type.isAccessorNode',
+    'type.isArrayNode',
+    'type.isAssignmentNode',
+    'type.isBlockNode',
+    'type.isConditionalNode',
+    'type.isConstantNode',
+    'type.isFunctionAssignmentNode',
+    'type.isFunctionNode',
+    'type.isIndexNode',
+    'type.isNode',
+    'type.isObjectNode',
+    'type.isOperatorNode',
+    'type.isParenthesisNode',
+    'type.isRangeNode',
+    'type.isSymbolNode',
+    'type.isChain',
+    'type.BigNumber',
+    'type.Chain',
+    'type.Complex',
+    'type.Fraction',
+    'type.Matrix',
+    'type.DenseMatrix',
+    'type.SparseMatrix',
+    'type.Spa',
+    'type.FibonacciHeap',
+    'type.ImmutableDenseMatrix',
+    'type.Index',
+    'type.Range',
+    'type.ResultSet',
+    'type.Unit',
+    'type.Help',
+    'type.Parser',
+    'expression.parse',
+    'expression.Parser',
+    'expression.node.AccessorNode',
+    'expression.node.ArrayNode',
+    'expression.node.AssignmentNode',
+    'expression.node.BlockNode',
+    'expression.node.ConditionalNode',
+    'expression.node.ConstantNode',
+    'expression.node.IndexNode',
+    'expression.node.FunctionAssignmentNode',
+    'expression.node.FunctionNode',
+    'expression.node.Node',
+    'expression.node.ObjectNode',
+    'expression.node.OperatorNode',
+    'expression.node.ParenthesisNode',
+    'expression.node.RangeNode',
+    'expression.node.RelationalNode',
+    'expression.node.SymbolNode',
+    'json.reviver',
+    'error.ArgumentsError',
+    'error.DimensionError',
+    'error.IndexError'
+  ]
+  movedNames.forEach(fullName => {
+    const parts = fullName.split('.')
+
+    const path = initial(parts)
+    const name = last(parts)
+    const obj = traverse(math, path)
+
+    lazy(obj, name, () => {
+      warnOnce(`math.${fullName} is moved to math.${name} in v6.0.0. ` +
+        'Please use the new location instead.')
+      return math[name]
+    })
+  })
+  lazy(math.expression, 'docs', () => {
+    throw new Error('math.expression.docs has been moved. ' +
+      'Please import via "import { docs } from \'mathjs\'"')
+  })
+
+  math.ArgumentsError = ArgumentsError
+  math.DimensionError = DimensionError
+  math.IndexError = IndexError
+
   return math
-})
+}
