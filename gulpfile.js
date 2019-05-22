@@ -207,6 +207,7 @@ function generateDocs (done) {
   const functionNames = Object.keys(all)
     .filter(key => typeof all[key] === 'function')
 
+  docgenerator.cleanup(REF_DEST, REF_ROOT)
   docgenerator.iteratePath(functionNames, REF_SRC, REF_DEST, REF_ROOT)
 
   done()

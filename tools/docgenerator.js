@@ -8,6 +8,7 @@
 const fs = require('fs')
 const glob = require('glob')
 const mkdirp = require('mkdirp')
+const del = require('del')
 const log = require('fancy-log')
 
 // special cases for function syntax
@@ -459,6 +460,19 @@ function generateMarkdown (doc, functions) {
 }
 
 /**
+ * Delete all generated function docs (*.md)
+ * @param {String} outputPath       Path to /docs/reference/functions
+ * @param {String} outputRoot       Path to /docs/reference
+ */
+function cleanup (outputPath, outputRoot) {
+  // cleanup previous docs
+  del.sync([
+    outputPath + '/*.md',
+    outputRoot + '/functions.md'
+  ])
+}
+
+/**
  * Iterate over all source files and generate markdown documents for each of them
  * @param {String[]} functionNames  List with all functions exported from the main instance of mathjs
  * @param {String} inputPath        Path to /lib/
@@ -620,6 +634,7 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
 }
 
 // exports
+exports.cleanup = cleanup
 exports.iteratePath = iteratePath
 exports.generateDoc = generateDoc
 exports.validateDoc = validateDoc
