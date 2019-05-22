@@ -355,7 +355,8 @@ describe('import', function () {
       assert.strictEqual(math2.cubeTest(3), 27)
     })
 
-    it('should import factory functions with custom name', () => {
+    it('should NOT import factory functions with custom name', () => {
+      // changed since v6
       const math2 = core()
 
       assert.strictEqual(math2.multiplyTest, undefined)
@@ -368,10 +369,10 @@ describe('import', function () {
         cubeTest3: cubeTestFactory
       })
 
-      assert.strictEqual(math2.cubeTest, undefined)
+      assert.strictEqual(math2.cubeTest3, undefined)
 
       assert.strictEqual(math2.multiplyTest(2, 3), 6)
-      assert.strictEqual(math2.cubeTest3(3), 27)
+      assert.strictEqual(math2.cubeTest(3), 27)
     })
 
     it('should throw an error when a dependency is missing with import factory', () => {

@@ -122,7 +122,7 @@ Object.assign(math, {
 {{else}}
   {{name}},
 {{/if}}
-{{/math}}  
+{{/math}}
   config
 })
 
@@ -221,7 +221,7 @@ function generateDependenciesFiles ({ suffix, factories, entryFolder }) {
           .filter(dependency => {
             if (!exists[dependency]) {
               if (factory.dependencies.indexOf(dependency) !== -1) {
-                throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
+                throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}" (suffix: ${suffix})`)
               }
 
               return false
@@ -348,7 +348,7 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
             // TODO: this code is duplicated. extract it in a separate function
             if (!pureExists[dependency]) {
               if (factory.dependencies.indexOf(dependency) !== -1) {
-                throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
+                throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}" (suffix: ${suffix})`)
               }
 
               return false

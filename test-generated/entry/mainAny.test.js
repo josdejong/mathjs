@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainAny from '../../src/entry/mainAny'
 import * as factoriesAny from '../../src/factoriesAny'
 import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../src/utils/snapshot'
-const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate, chain, reviver, Complex } = mainAny
+const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate, chain, reviver, Complex, addDependencies } = mainAny
 
 const {
   expectedInstanceStructure,
@@ -24,7 +24,7 @@ describe('mainAny', function () {
     // snapshot testing
     const newMathInstance = create(all)
 
-    // don't output all warnings "math.foo.bar is move to math.bar, ..."
+    // don't output all deprecation warnings "math.foo.bar is move to math.bar, ..."
     const originalWarn = console.warn
     console.warn = (...args) => {
       if (args.join(' ').indexOf('is moved to') === -1) {
@@ -35,6 +35,36 @@ describe('mainAny', function () {
     validateBundle(expectedInstanceStructure, newMathInstance)
 
     console.warn = originalWarn
+  })
+
+  it('new instance should import all factory functions via import', function () {
+    // snapshot testing
+    const newMathInstance = create()
+
+    newMathInstance.import(all)
+
+    // don't output all deprecation warnings "math.foo.bar is move to math.bar, ..."
+    const originalWarn = console.warn
+    console.warn = (...args) => {
+      if (args.join(' ').indexOf('is moved to') === -1) {
+        originalWarn.apply(console, args)
+      }
+    }
+
+    validateBundle(expectedInstanceStructure, newMathInstance)
+
+    console.warn = originalWarn
+  })
+
+  // FIXME: {silent: true} results in an infinite loop in resolver/lazy
+  it.skip('new instance should import some factory functions via import', function () {
+    const newMathInstance = create()
+
+    newMathInstance.import({
+      addDependencies
+    }, { silent: true })
+
+    assert.strictEqual(newMathInstance.add(2, 3), 5)
   })
 
   it('evaluate should contain all functions from mathWithTransform', function () {
@@ -99,6 +129,28 @@ describe('mainAny', function () {
     assert.strictEqual(chain('x + 2 * x').simplify().done().toString(), '3 * x')
   })
 
+  it('should get/set scope variables', () => {
+    const math = create(all)
+    const evaluate = math.evaluate
+
+    assert.strictEqual(evaluate('b + 2', { b: 3 }), 5)
+
+    const scope = {}
+    assert.strictEqual(evaluate('b = 2', scope), 2)
+    assert.deepStrictEqual(scope, { b: 2 })
+  })
+
+  it('should evaluate assignement and access', () => {
+    const math = create(all)
+    const evaluate = math.evaluate
+
+    assert.strictEqual(evaluate('A[2]', { A: [10, 20, 30] }), 20)
+
+    const scope = { A: [10, 20, 30] }
+    assert.strictEqual(evaluate('A[2] = 200', scope), 200)
+    assert.deepStrictEqual(scope, { A: [10, 200, 30] })
+  })
+
   it('should export evaluate having help and embedded docs', () => {
     const h = evaluate('help(simplify)')
 
@@ -115,9 +167,6 @@ describe('mainAny', function () {
     assert.deepStrictEqual(obj, c)
   })
 
-  // TODO: test export of create and core
   // TODO: test export of errors
   // TODO: test export of classes
-  // TODO: test export of default instance
-  // TODO: test snapshot of all exported things
 })

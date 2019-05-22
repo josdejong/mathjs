@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainNumber from '../../src/entry/mainNumber'
 import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../src/utils/snapshot'
 import * as factoriesNumber from '../../src/factoriesNumber'
-const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain, Range, reviver, derivative, simplify } = mainNumber
+const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain, Range, reviver, derivative, simplify, addDependencies } = mainNumber
 
 const {
   expectedInstanceStructure,
@@ -37,7 +37,7 @@ describe('mainNumber', function () {
     // snapshot testing
     const newMathInstance = create(all)
 
-    // don't output all warnings "math.foo.bar is move to math.bar, ..."
+    // don't output all deprecation warnings "math.foo.bar is move to math.bar, ..."
     const originalWarn = console.warn
     console.warn = (...args) => {
       if (args.join(' ').indexOf('is moved to') === -1) {
@@ -48,6 +48,35 @@ describe('mainNumber', function () {
     validateBundle(expectedInstanceStructure, newMathInstance)
 
     console.warn = originalWarn
+  })
+
+  it('new instance should import all factory functions via import', function () {
+    // snapshot testing
+    const newMathInstance = create()
+
+    newMathInstance.import(all)
+
+    // don't output all deprecation warnings "math.foo.bar is move to math.bar, ..."
+    const originalWarn = console.warn
+    console.warn = (...args) => {
+      if (args.join(' ').indexOf('is moved to') === -1) {
+        originalWarn.apply(console, args)
+      }
+    }
+
+    validateBundle(expectedInstanceStructure, newMathInstance)
+
+    console.warn = originalWarn
+  })
+
+  it('new instance should import some factory functions via import', function () {
+    const newMathInstance = create()
+
+    newMathInstance.import({
+      addDependencies
+    }, { silent: true })
+
+    assert.strictEqual(newMathInstance.add(2, 3), 5)
   })
 
   it('evaluate should contain all functions from mathWithTransform', function () {
@@ -119,6 +148,29 @@ describe('mainNumber', function () {
     assert(h.toString().indexOf('Name: simplify') >= 0, true)
   })
 
+  it('should get/set scope variables', () => {
+    const math = create(all)
+    const evaluate = math.evaluate
+
+    assert.strictEqual(evaluate('b + 2', { b: 3 }), 5)
+
+    const scope = {}
+    assert.strictEqual(evaluate('b = 2', scope), 2)
+    assert.deepStrictEqual(scope, { b: 2 })
+  })
+
+  it('doe not support assignement and access right now', () => {
+    // TODO: implement support for subset in number implementation
+    assert.throws(function () {
+      evaluate('A[2]', { A: [10, 20, 30] })
+    }, /No "Index" implementation available/)
+
+    assert.throws(function () {
+      const scope = { A: [10, 20, 30] }
+      evaluate('A[2] = 200', scope)
+    }, /No "Index" implementation available/)
+  })
+
   it('should export reviver', () => {
     const json = '{"mathjs":"Range","start":2,"end":10}'
     const r = new Range(2, 10)
@@ -131,6 +183,4 @@ describe('mainNumber', function () {
 
   // TODO: test export of errors
   // TODO: test export of classes
-  // TODO: test export of default instance
-  // TODO: test snapshot of all exported things
 })

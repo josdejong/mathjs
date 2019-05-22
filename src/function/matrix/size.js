@@ -2,9 +2,10 @@
 
 import { arraySize } from '../../utils/array'
 import { factory } from '../../utils/factory'
+import { noMatrix } from '../../utils/noop'
 
 const name = 'size'
-const dependencies = ['typed', 'config', 'matrix']
+const dependencies = ['typed', 'config', '?matrix']
 
 export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix }) => {
   /**
@@ -32,8 +33,7 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   return typed(name, {
     'Matrix': function (x) {
-      // TODO: return the same matrix type as the input
-      return matrix(x.size())
+      return x.create(x.size())
     },
 
     'Array': arraySize,
@@ -44,7 +44,9 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     'number | Complex | BigNumber | Unit | boolean | null': function (x) {
       // scalar
-      return (config.matrix === 'Array') ? [] : matrix([])
+      return (config.matrix === 'Array')
+        ? []
+        : matrix ? matrix([]) : noMatrix()
     }
   })
 })

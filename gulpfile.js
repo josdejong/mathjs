@@ -10,7 +10,6 @@ const uglify = require('uglify-js')
 const docgenerator = require('./tools/docgenerator')
 const entryGenerator = require('./tools/entryGenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
-const { validateEmbeddedDocs } = require('./tools/validateEmbeddedDocs')
 
 const ENTRY = './src/bundleAny.js'
 const HEADER = './src/header.js'
@@ -207,6 +206,7 @@ function generateDocs (done) {
   const functionNames = Object.keys(all)
     .filter(key => typeof all[key] === 'function')
 
+  docgenerator.cleanup(REF_DEST, REF_ROOT)
   docgenerator.iteratePath(functionNames, REF_SRC, REF_DEST, REF_ROOT)
 
   done()
@@ -273,6 +273,5 @@ gulp.task('default', gulp.series(
   addDeprecatedFunctions,
   bundle,
   minify,
-  validateEmbeddedDocs,
   generateDocs
 ))
