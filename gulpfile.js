@@ -10,7 +10,6 @@ const uglify = require('uglify-js')
 const docgenerator = require('./tools/docgenerator')
 const entryGenerator = require('./tools/entryGenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
-const { validateEmbeddedDocs } = require('./tools/validateEmbeddedDocs')
 
 const ENTRY = './src/bundleAny.js'
 const HEADER = './src/header.js'
@@ -274,6 +273,5 @@ gulp.task('default', gulp.series(
   addDeprecatedFunctions,
   bundle,
   minify,
-  validateEmbeddedDocs,
   generateDocs
 ))
