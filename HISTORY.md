@@ -85,6 +85,7 @@
   `math.Unit` and `math.Parser` respectively.
 - Fixed #1428: transform iterating over replaced nodes. New behavior
   is that it stops iterating when a node is replaced.
+- Dropped support for renaming factory functions when importing them.
 - Dropped fake BigNumber support of function `erf`.
 - Removed all index.js files used to load specific functions instead of all, like:
 

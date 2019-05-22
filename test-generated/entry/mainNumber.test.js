@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainNumber from '../../src/entry/mainNumber'
 import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../src/utils/snapshot'
 import * as factoriesNumber from '../../src/factoriesNumber'
-const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain, Range, reviver, derivative, simplify } = mainNumber
+const { create, all, add, isObject, isNumber, pi, sqrt, evaluate, chain, Range, reviver, derivative, simplify, addDependencies } = mainNumber
 
 const {
   expectedInstanceStructure,
@@ -37,7 +37,7 @@ describe('mainNumber', function () {
     // snapshot testing
     const newMathInstance = create(all)
 
-    // don't output all warnings "math.foo.bar is move to math.bar, ..."
+    // don't output all deprecation warnings "math.foo.bar is move to math.bar, ..."
     const originalWarn = console.warn
     console.warn = (...args) => {
       if (args.join(' ').indexOf('is moved to') === -1) {
@@ -48,6 +48,35 @@ describe('mainNumber', function () {
     validateBundle(expectedInstanceStructure, newMathInstance)
 
     console.warn = originalWarn
+  })
+
+  it('new instance should import all factory functions via import', function () {
+    // snapshot testing
+    const newMathInstance = create()
+
+    newMathInstance.import(all)
+
+    // don't output all deprecation warnings "math.foo.bar is move to math.bar, ..."
+    const originalWarn = console.warn
+    console.warn = (...args) => {
+      if (args.join(' ').indexOf('is moved to') === -1) {
+        originalWarn.apply(console, args)
+      }
+    }
+
+    validateBundle(expectedInstanceStructure, newMathInstance)
+
+    console.warn = originalWarn
+  })
+
+  it('new instance should import some factory functions via import', function () {
+    const newMathInstance = create()
+
+    newMathInstance.import({
+      addDependencies
+    }, { silent: true })
+
+    assert.strictEqual(newMathInstance.add(2, 3), 5)
   })
 
   it('evaluate should contain all functions from mathWithTransform', function () {

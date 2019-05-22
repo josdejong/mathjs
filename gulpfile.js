@@ -263,6 +263,21 @@ gulp.task('watch', function watch () {
 gulp.task('compile', compile)
 
 // The default task (called when you run `gulp`)
+gulp.task('compile-and-test', gulp.series(
+  clean,
+  updateVersionFile,
+  compile,
+  generateEntryFiles,
+  compileEntryFiles,
+  writeCompiledHeader,
+  addDeprecatedFunctions,
+  // bundle,
+  // minify,
+  // validateEmbeddedDocs,
+  // generateDocs
+))
+
+// The default task (called when you run `gulp`)
 gulp.task('default', gulp.series(
   clean,
   updateVersionFile,

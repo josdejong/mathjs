@@ -81,12 +81,14 @@ export function importFactory (typed, load, math, importedFactories) {
     } else if (Array.isArray(functions)) {
       functions.forEach((entry) => mathImport(entry, options))
     } else if (typeof functions === 'object') {
-      // a map with functions
       for (const name in functions) {
         if (functions.hasOwnProperty(name)) {
           const value = functions[name]
           if (isFactory(value)) {
-            _importFactory(value, options, name)
+            // we ignore name here and enforce the name of the factory
+            // maybe at some point we do want to allow overriding it
+            // in that case we can implement an option overrideFactoryNames: true
+            _importFactory(value, options)
           } else if (isSupportedType(value)) {
             _import(name, value, options)
           } else if (isLegacyFactory(functions)) {
@@ -303,10 +305,14 @@ export function importFactory (typed, load, math, importedFactories) {
       ? math.expression.transform
       : math
 
+    // console.log('importFactory', name)
+
     const existingTransform = name in math.expression.transform
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
     const resolver = function () {
+      console.log('resolve', name)
+
       // collect all dependencies, handle finding both functions and classes and other special cases
       const dependencies = {}
       factory.dependencies
