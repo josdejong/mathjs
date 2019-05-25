@@ -65,7 +65,9 @@ describe('physical constants', function () {
     assert.strictEqual(createSpeedOfLight(dependencies).toString(), '2.99792458e+8 m / s')
     assert.strictEqual(createGravitationConstant(dependencies).toString(), '6.6743e-11 m^3 / (kg s^2)')
     assert.strictEqual(createPlanckConstant(dependencies).toString(), '6.62607015e-34 J s')
-    assert.strictEqual(createReducedPlanckConstant(dependencies).toString(), '1.0545718176461565e-34 J s')
+    // round-off errors on IE and Edge
+    const reducedPlanck = createReducedPlanckConstant(dependencies).toString()
+    assert(reducedPlanck === '1.0545718176461565e-34 J s' || reducedPlanck === '1.0545718176461564e-34 J s')
 
     // Electromagnetic constants
     assert.strictEqual(createMagneticConstant(dependencies).toString(), '1.25663706212e-6 N / A^2')
