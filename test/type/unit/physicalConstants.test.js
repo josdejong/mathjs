@@ -67,7 +67,9 @@ describe('physical constants', function () {
     assert.strictEqual(createPlanckConstant(dependencies).toString(), '6.62607015e-34 J s')
     // round-off errors on IE and Edge
     const reducedPlanck = createReducedPlanckConstant(dependencies).toString()
-    assert(reducedPlanck === '1.0545718176461565e-34 J s' || reducedPlanck === '1.0545718176461564e-34 J s')
+    assert(
+      reducedPlanck === '1.0545718176461565e-34 J s' ||
+      reducedPlanck === '1.0545718176461564e-34 J s')
 
     // Electromagnetic constants
     assert.strictEqual(createMagneticConstant(dependencies).toString(), '1.25663706212e-6 N / A^2')
@@ -77,7 +79,11 @@ describe('physical constants', function () {
     assert.strictEqual(createElementaryCharge(dependencies).toString(), '1.602176634e-19 C')
     assert.strictEqual(createBohrMagneton(dependencies).toString(), '9.2740100783e-24 J / T')
     assert.strictEqual(createConductanceQuantum(dependencies).toString(), '7.748091729863649e-5 S')
-    assert.strictEqual(createInverseConductanceQuantum(dependencies).toString(), '12906.403729652257 ohm')
+    // round-off errors on IE and Edge
+    const inverseConductanceQuantum = createInverseConductanceQuantum(dependencies).toString()
+    assert(
+      inverseConductanceQuantum === '12906.403729652257 ohm' ||
+      inverseConductanceQuantum === '12906.403729652256 ohm')
     assert.strictEqual(createMagneticFluxQuantum(dependencies).toString(), '2.0678338484619295e-15 Wb')
     assert.strictEqual(createNuclearMagneton(dependencies).toString(), '5.0507837461e-27 J / T')
     assert.strictEqual(createKlitzing(dependencies).toString(), '25812.807459304513 ohm')
