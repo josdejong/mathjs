@@ -88,6 +88,8 @@
 - Dropped support for renaming factory functions when importing them.
 - Dropped fake BigNumber support of function `erf`.
 - Removed all index.js files used to load specific functions instead of all, like:
+- Updated the values of all physical units to their latest official values.
+  See #1529. Thanks @ericman314.
 
   ```
   // v5
