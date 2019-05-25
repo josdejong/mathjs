@@ -121,6 +121,8 @@
   for `candela`. Thanks @mcvladthegoat.
 - Fixed `epsilon` setting being applied globally to Complex numbers.
 - Fix `math.simplify('add(2, 3)')` throwing an error.
+- Fix #1530: number formatting first applied `lowerExp` and `upperExp`
+  and after that rounded the value instead of the other way around.
 
 
 # 2019-05-18, version 5.10.3

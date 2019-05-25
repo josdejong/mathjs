@@ -288,6 +288,16 @@ describe('number', function () {
       })
 
       it('auto notation with very small custom lower bound', function () {
+        assert.strictEqual(format(1, { lowerExp: -2 }), '1')
+        assert.strictEqual(format(0.1, { lowerExp: -2 }), '0.1')
+        assert.strictEqual(format(0.01, { lowerExp: -2 }), '0.01')
+        assert.strictEqual(format(0.001, { lowerExp: -2 }), '1e-3')
+
+        assert.strictEqual(format(0.009, { lowerExp: -2, precision: 1 }), '9e-3')
+        assert.strictEqual(format(0.0096, { lowerExp: -2, precision: 1 }), '0.01')
+        assert.strictEqual(format(0.01, { lowerExp: -2, precision: 1 }), '0.01')
+        assert.strictEqual(format(0.001, { lowerExp: -2, precision: 1 }), '1e-3')
+
         assert.strictEqual(format(1e-18, { lowerExp: -30 }), '0.000000000000000001')
         assert.strictEqual(format(1e-19, { lowerExp: -30 }), '0.0000000000000000001')
         assert.strictEqual(format(1e-20, { lowerExp: -30 }), '0.00000000000000000001')
@@ -331,7 +341,7 @@ describe('number', function () {
         assert.strictEqual(format(1234567, options), '1235000')
         assert.strictEqual(format(1e+9, options), '1e+9')
         assert.strictEqual(format(1.1e+9, options), '1.1e+9')
-        assert.strictEqual(format(1e+9 - 1, options), '1000000000')
+        assert.strictEqual(format(1e+9 - 1, options), '1e+9')
         assert.strictEqual(format(1e-6, options), '0.000001')
         assert.strictEqual(format(0.999e-6, options), '9.99e-7')
         assert.strictEqual(format(123456789123, options), '1.235e+11')
@@ -451,8 +461,8 @@ describe('number', function () {
         assert.strictEqual(toPrecision(0.004, 3), '0.00400')
         assert.strictEqual(toPrecision(0.00123456, 5), '0.0012346')
         assert.strictEqual(toPrecision(999, 2), '1000')
-        assert.strictEqual(toPrecision(99900, 2), '100000')
-        assert.strictEqual(toPrecision(99999, 2), '100000')
+        assert.strictEqual(toPrecision(99900, 2), '1.0e+5')
+        assert.strictEqual(toPrecision(99999, 2), '1.0e+5')
         assert.strictEqual(toPrecision(999e7, 2), '1.0e+10')
         assert.strictEqual(toPrecision(0.00999, 2), '0.010')
         assert.strictEqual(toPrecision(-0.00999, 2), '-0.010')

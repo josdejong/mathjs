@@ -114,6 +114,18 @@ describe('format', function () {
         assert.strictEqual(format(new B(0.999e-6), options), '9.99e-7')
         assert.strictEqual(format(new B(123456789123), options), '1.23456789123e+11')
       })
+
+      it('auto notation with custom lower and upper bound (2)', function () {
+        assert.strictEqual(format(new B(1), { lowerExp: -2 }), '1')
+        assert.strictEqual(format(new B(0.1), { lowerExp: -2 }), '0.1')
+        assert.strictEqual(format(new B(0.01), { lowerExp: -2 }), '0.01')
+        assert.strictEqual(format(new B(0.001), { lowerExp: -2 }), '1e-3')
+
+        assert.strictEqual(format(new B(0.009), { lowerExp: -2, precision: 1 }), '9e-3')
+        assert.strictEqual(format(new B(0.0096), { lowerExp: -2, precision: 1 }), '0.01')
+        assert.strictEqual(format(new B(0.01), { lowerExp: -2, precision: 1 }), '0.01')
+        assert.strictEqual(format(new B(0.001), { lowerExp: -2, precision: 1 }), '1e-3')
+      })
     })
 
     it('should format bignumbers with a custom formatting function', function () {

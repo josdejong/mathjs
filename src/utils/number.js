@@ -444,11 +444,11 @@ export function toPrecision (value, precision, options) {
   const upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5
 
   const split = splitNumber(value)
-  if (split.exponent < lowerExp || split.exponent >= upperExp) {
+  const rounded = precision ? roundDigits(split, precision) : split
+  if (rounded.exponent < lowerExp || rounded.exponent >= upperExp) {
     // exponential notation
     return toExponential(value, precision)
   } else {
-    const rounded = precision ? roundDigits(split, precision) : split
     let c = rounded.coefficients
     const e = rounded.exponent
 

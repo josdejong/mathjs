@@ -141,10 +141,11 @@ export function format (value, options) {
 
       // determine whether or not to output exponential notation
       let str
-      const exp = value.e
+      const rounded = value.toSignificantDigits(precision)
+      const exp = rounded.e
       if (exp >= lowerExp && exp < upperExp) {
         // normal number notation
-        str = value.toSignificantDigits(precision).toFixed()
+        str = rounded.toFixed()
       } else {
         // exponential notation
         str = toExponential(value, precision)
