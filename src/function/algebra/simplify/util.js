@@ -1,5 +1,3 @@
-'use strict'
-
 import { isOperatorNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
 

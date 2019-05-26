@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../../utils/factory'
 import { csEreach } from './csEreach'
 import { createCsSymperm } from './csSymperm'

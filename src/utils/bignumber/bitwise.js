@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Bitwise and for Bignumbers
  *

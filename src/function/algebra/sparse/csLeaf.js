@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * This function determines if j is a leaf of the ith row subtree.
  * Consider A(i,j), node j in ith row subtree and return lca(jprev,j)

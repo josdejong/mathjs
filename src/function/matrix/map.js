@@ -1,5 +1,3 @@
-'use strict'
-
 import { maxArgumentCount } from '../../utils/function'
 import { factory } from '../../utils/factory'
 

@@ -1,5 +1,3 @@
-'use strict'
-
 // list of identifiers of nodes in order of their precedence
 // also contains information about left/right associativity
 // and which other operator the operator is associative with

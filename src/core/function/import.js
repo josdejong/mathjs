@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
 import { isFactory, stripOptionalNotation } from '../../utils/factory'
 import { isLegacyFactory, lazy, traverse } from '../../utils/object'

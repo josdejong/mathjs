@@ -1,5 +1,3 @@
-'use strict'
-
 import escapeLatexLib from 'escape-latex'
 
 export const latexSymbols = {

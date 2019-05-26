@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * This function "flips" its input about the integer -1.
  *

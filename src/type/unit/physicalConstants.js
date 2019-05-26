@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 
 // Source: https://en.wikipedia.org/wiki/Physical_constant

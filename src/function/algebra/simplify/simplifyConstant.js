@@ -1,5 +1,3 @@
-'use strict'
-
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
 import { isFraction, isNode, isOperatorNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'

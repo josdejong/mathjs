@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepForEach } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 

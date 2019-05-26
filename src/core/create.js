@@ -1,5 +1,3 @@
-'use strict'
-
 import './../utils/polyfills'
 import { deepFlatten, isLegacyFactory, lazy, traverse, values } from './../utils/object'
 import * as emitter from './../utils/emitter'

@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { isMatrix } from '../../utils/is'
 import { extend } from '../../utils/object'

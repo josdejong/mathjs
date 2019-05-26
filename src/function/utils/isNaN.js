@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 import { isNaNNumber } from '../../plain/number'

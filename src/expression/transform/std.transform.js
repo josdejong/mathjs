@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { createStd } from '../../function/statistics/std'
 import { isBigNumber, isNumber, isCollection } from '../../utils/is'

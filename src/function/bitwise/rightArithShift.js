@@ -1,5 +1,3 @@
-'use strict'
-
 import { rightArithShiftBigNumber } from '../../utils/bignumber/bitwise'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'

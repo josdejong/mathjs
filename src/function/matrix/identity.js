@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber } from '../../utils/is'
 import { resize } from '../../utils/array'
 import { isInteger } from '../../utils/number'

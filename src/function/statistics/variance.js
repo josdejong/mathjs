@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepForEach } from '../../utils/collection'
 import { isBigNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'

@@ -1,5 +1,3 @@
-'use strict'
-
 import { maxArgumentCount } from '../../utils/function'
 import { forEach as forEachArray } from '../../utils/array'
 import { factory } from '../../utils/factory'

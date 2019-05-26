@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Create a range error with the message:
  *     'Dimension mismatch (<actual size> != <expected size>)'

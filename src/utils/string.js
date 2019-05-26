@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber, isString, typeOf } from './is'
 import { format as formatNumber } from './number'
 import { format as formatBigNumber } from './bignumber/formatter'

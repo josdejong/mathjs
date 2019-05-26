@@ -1,4 +1,3 @@
-'use strict'
 import { factory } from '../../../utils/factory'
 
 const name = 'matrix'

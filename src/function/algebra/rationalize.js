@@ -1,5 +1,3 @@
-'use strict'
-
 import { isInteger } from '../../utils/number'
 import { factory } from '../../utils/factory'
 import { createSimplifyConstant } from './simplify/simplifyConstant'

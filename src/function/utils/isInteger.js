@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepMap } from '../../utils/collection'
 import { isInteger as isIntegerNumber } from '../../utils/number'
 import { factory } from '../../utils/factory'

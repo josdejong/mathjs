@@ -1,5 +1,3 @@
-'use strict'
-
 import { containsCollections, deepForEach, reduce } from '../../utils/collection'
 import { arraySize } from '../../utils/array'
 import { factory } from '../../utils/factory'

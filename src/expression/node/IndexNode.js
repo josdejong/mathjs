@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '../../utils/is'
 import { createIndexTransform } from '../transform/index.transform'
 import { map } from '../../utils/array'

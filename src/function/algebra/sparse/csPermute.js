@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Permutes a sparse matrix C = P * A * Q
  *

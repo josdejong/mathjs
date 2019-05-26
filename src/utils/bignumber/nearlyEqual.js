@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Compares two BigNumbers.
  * @param {BigNumber} x       First value to compare

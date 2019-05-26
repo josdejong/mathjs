@@ -1,5 +1,3 @@
-'use strict'
-
 import Complex from 'complex.js'
 import { format } from '../../utils/number'
 import { isNumber, isUnit } from '../../utils/is'

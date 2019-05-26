@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber, isMatrix } from '../../utils/is'
 import { DimensionError } from '../../error/DimensionError'
 import { ArgumentsError } from '../../error/ArgumentsError'

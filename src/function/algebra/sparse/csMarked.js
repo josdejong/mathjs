@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Checks if the node at w[j] is marked
  *

@@ -1,5 +1,3 @@
-'use strict'
-
 import { isConstantNode, isParenthesisNode } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { createUtil } from './simplify/util'

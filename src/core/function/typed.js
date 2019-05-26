@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Create a typed-function which checks the types of the arguments and
  * can match them against multiple provided signatures. The typed-function

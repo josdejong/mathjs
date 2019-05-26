@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { getArrayDataType } from '../../utils/array'
 import { typeOf } from '../../utils/is'

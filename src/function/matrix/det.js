@@ -1,5 +1,3 @@
-'use strict'
-
 import { isMatrix } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { format } from '../../utils/string'

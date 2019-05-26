@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { typeOf as _typeOf } from '../../utils/is'
 import { warnOnce } from '../../utils/log'

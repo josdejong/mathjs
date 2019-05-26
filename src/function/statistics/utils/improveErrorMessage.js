@@ -1,5 +1,3 @@
-'use strict'
-
 import { typeOf } from '../../../utils/is'
 
 /**

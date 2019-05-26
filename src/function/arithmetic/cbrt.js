@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { isBigNumber, isComplex, isFraction } from '../../utils/is'
 import { deepMap } from '../../utils/collection'

@@ -1,5 +1,3 @@
-'use strict'
-
 import Fraction from 'fraction.js'
 import { factory } from '../../utils/factory'
 

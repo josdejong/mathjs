@@ -1,5 +1,3 @@
-'use strict'
-
 import { typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { noBignumber, noFraction } from '../../utils/noop'

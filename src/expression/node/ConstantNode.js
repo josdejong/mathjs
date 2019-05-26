@@ -1,5 +1,3 @@
-'use strict'
-
 import { format } from '../../utils/string'
 import { typeOf } from '../../utils/is'
 import { escapeLatex } from '../../utils/latex'

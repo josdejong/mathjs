@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { getSafeProperty } from '../../utils/customs'
 import { embeddedDocs } from '../embeddedDocs/embeddedDocs'

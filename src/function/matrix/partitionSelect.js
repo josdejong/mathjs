@@ -1,5 +1,3 @@
-'use strict'
-
 import { isMatrix } from '../../utils/is'
 import { isInteger } from '../../utils/number'
 import { factory } from '../../utils/factory'

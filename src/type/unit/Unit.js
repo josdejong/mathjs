@@ -1,5 +1,3 @@
-'use strict'
-
 import { isComplex, isUnit, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { endsWith } from '../../utils/string'

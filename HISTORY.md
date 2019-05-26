@@ -123,6 +123,7 @@
 - Fix `math.simplify('add(2, 3)')` throwing an error.
 - Fix #1530: number formatting first applied `lowerExp` and `upperExp`
   and after that rounded the value instead of the other way around.
+- Fix #1473: remove `'use strict'` in every file, not needed anymore.
 
 
 # 2019-05-18, version 5.10.3

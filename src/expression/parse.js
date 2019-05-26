@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../utils/factory'
 import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is'
 import { deepMap } from '../utils/collection'

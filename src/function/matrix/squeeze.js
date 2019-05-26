@@ -1,5 +1,3 @@
-'use strict'
-
 import { clone } from '../../utils/object'
 import { squeeze as arraySqueeze } from '../../utils/array'
 import { factory } from '../../utils/factory'

@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../../utils/factory'
 import { csFkeep } from './csFkeep'
 import { csFlip } from './csFlip'

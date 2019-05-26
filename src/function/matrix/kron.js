@@ -1,5 +1,3 @@
-'use strict'
-
 import { arraySize as size } from '../../utils/array'
 import { factory } from '../../utils/factory'
 

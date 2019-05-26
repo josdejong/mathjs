@@ -1,5 +1,3 @@
-'use strict'
-
 import { isArray, isBigNumber, isMatrix, isNumber, isRange } from '../../utils/is'
 import { factory } from '../../utils/factory'
 

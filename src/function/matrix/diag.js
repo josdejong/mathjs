@@ -1,5 +1,3 @@
-'use strict'
-
 import { isMatrix } from '../../utils/is'
 import { arraySize } from '../../utils/array'
 import { isInteger } from '../../utils/number'

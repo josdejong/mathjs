@@ -1,5 +1,3 @@
-'use strict'
-
 import { isNode } from '../../utils/is'
 import { map } from '../../utils/array'
 import { escape } from '../../utils/string'

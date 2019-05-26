@@ -1,5 +1,3 @@
-'use strict'
-
 import { isCollection, isMatrix } from './is'
 import { IndexError } from '../error/IndexError'
 import { arraySize } from './array'

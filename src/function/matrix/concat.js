@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber, isMatrix, isNumber } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { arraySize } from '../../utils/array'

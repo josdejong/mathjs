@@ -1,5 +1,3 @@
-'use strict'
-
 import naturalSort from 'javascript-natural-sort'
 import { isDenseMatrix, isSparseMatrix, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'

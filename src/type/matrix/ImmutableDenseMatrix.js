@@ -1,5 +1,3 @@
-'use strict'
-
 import { isArray, isMatrix, isString, typeOf } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { factory } from '../../utils/factory'

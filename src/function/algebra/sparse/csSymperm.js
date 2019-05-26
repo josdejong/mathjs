@@ -1,5 +1,3 @@
-'use strict'
-
 import { csCumsum } from './csCumsum'
 import { factory } from '../../../utils/factory'
 

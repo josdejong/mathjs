@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { isInteger } from '../../utils/number'
 import { flatten } from '../../utils/array'

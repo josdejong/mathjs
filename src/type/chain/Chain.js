@@ -1,5 +1,3 @@
-'use strict'
-
 import { isChain } from '../../utils/is'
 import { format } from '../../utils/string'
 import { lazy } from '../../utils/object'

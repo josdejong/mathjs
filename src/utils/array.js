@@ -1,5 +1,3 @@
-'use strict'
-
 import { isInteger } from './number'
 import { isNumber } from './is'
 import { format } from './string'

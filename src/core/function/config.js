@@ -1,5 +1,3 @@
-'use strict'
-
 import { clone, mapObject, deepExtend } from '../../utils/object'
 import { DEFAULT_CONFIG } from '../config'
 

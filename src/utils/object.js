@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber } from './is'
 
 /**

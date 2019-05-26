@@ -1,5 +1,3 @@
-'use strict'
-
 import { format as formatString } from '../../utils/string'
 import { factory } from '../../utils/factory'
 

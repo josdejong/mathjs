@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepMap } from '../../utils/collection'
 import { sign } from '../../utils/number'
 import { factory } from '../../utils/factory'

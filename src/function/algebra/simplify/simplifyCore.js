@@ -1,5 +1,3 @@
-'use strict'
-
 import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
 

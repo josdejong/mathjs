@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepForEach, reduce, containsCollections } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'

@@ -1,5 +1,3 @@
-'use strict'
-
 import { clone } from '../../../utils/object'
 import { factory } from '../../../utils/factory'
 

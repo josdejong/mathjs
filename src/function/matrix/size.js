@@ -1,5 +1,3 @@
-'use strict'
-
 import { arraySize } from '../../utils/array'
 import { factory } from '../../utils/factory'
 import { noMatrix } from '../../utils/noop'

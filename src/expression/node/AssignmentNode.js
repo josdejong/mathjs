@@ -1,5 +1,3 @@
-'use strict'
-
 import { isAccessorNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs'
 import { factory } from '../../utils/factory'

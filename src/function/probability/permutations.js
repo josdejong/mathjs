@@ -1,5 +1,3 @@
-'use strict'
-
 import { isInteger } from '../../utils/number'
 import { product } from '../../utils/product'
 import { factory } from '../../utils/factory'

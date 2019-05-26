@@ -1,5 +1,3 @@
-'use strict'
-
 import { csMark } from './csMark'
 import { csMarked } from './csMarked'
 

@@ -1,5 +1,3 @@
-'use strict'
-
 import { bitNotBigNumber } from '../../utils/bignumber/bitwise'
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'

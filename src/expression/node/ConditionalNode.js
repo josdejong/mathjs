@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber, isComplex, isNode, isUnit, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { getPrecedence } from '../operators'

@@ -1,5 +1,3 @@
-'use strict'
-
 import { escape } from '../../utils/string'
 import { hasOwnProperty } from '../../utils/object'
 import { getSafeProperty } from '../../utils/customs'

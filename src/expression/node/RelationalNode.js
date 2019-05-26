@@ -1,5 +1,3 @@
-'use strict'
-
 import { getPrecedence } from '../operators'
 import { escape } from '../../utils/string'
 import { getSafeProperty } from '../../utils/customs'

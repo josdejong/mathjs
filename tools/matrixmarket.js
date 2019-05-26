@@ -1,5 +1,3 @@
-'use strict'
-
 const fs = require('fs')
 const typed = require('typed-function')
 const math = require('../lib/bundleAny')

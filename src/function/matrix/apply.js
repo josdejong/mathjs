@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { arraySize } from '../../utils/array'
 import { isMatrix } from '../../utils/is'

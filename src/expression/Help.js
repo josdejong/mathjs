@@ -1,5 +1,3 @@
-'use strict'
-
 import { isHelp } from '../utils/is'
 import { clone } from '../utils/object'
 import { format } from '../utils/string'

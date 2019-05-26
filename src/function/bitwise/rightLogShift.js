@@ -1,5 +1,3 @@
-'use strict'
-
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'

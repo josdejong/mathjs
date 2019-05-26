@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { randomMatrix } from './util/randomMatrix'
 import { createRng } from './util/seededRNG'

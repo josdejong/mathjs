@@ -1,5 +1,3 @@
-'use strict'
-
 import { flatten } from '../../utils/array'
 import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'

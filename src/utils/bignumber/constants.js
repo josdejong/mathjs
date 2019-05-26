@@ -1,5 +1,3 @@
-'use strict'
-
 import { memoize } from '../function'
 
 /**

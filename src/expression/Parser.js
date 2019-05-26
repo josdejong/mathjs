@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../utils/factory'
 import { extend } from '../utils/object'
 import { getSafeProperty, setSafeProperty } from '../utils/customs'
