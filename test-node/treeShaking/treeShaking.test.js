@@ -32,7 +32,7 @@ describe('tree shaking', function () {
 
   it('should apply tree-shaking when bundling', function (done) {
     // This test takes a few seconds
-    this.timeout(10000)
+    this.timeout(60 * 1000)
 
     const webpackConfig = {
       entry: path.join(__dirname, appName),
