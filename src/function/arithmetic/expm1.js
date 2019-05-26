@@ -1,10 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { expm1Number } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'expm1'
+const dependencies = [ 'typed', 'Complex' ]
 
+export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex }) => {
   /**
    * Calculate the value of subtracting 1 from the exponential value.
    * For matrices, the function is evaluated element wise.
@@ -33,12 +36,12 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Array | Matrix} x  A number or matrix to apply expm1
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
-  const expm1 = typed('expm1', {
-    'number': Math.expm1 || _expm1,
+  const expm1 = typed(name, {
+    'number': expm1Number,
 
     'Complex': function (x) {
       const r = Math.exp(x.re)
-      return new type.Complex(
+      return new Complex(
         r * Math.cos(x.im) - 1,
         r * Math.sin(x.im)
       )
@@ -53,22 +56,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  /**
-   * Calculates exponentiation minus 1.
-   * @param {number} x
-   * @return {number} res
-   * @private
-   */
-  function _expm1 (x) {
-    return (x >= 2e-4 || x <= -2e-4)
-      ? Math.exp(x) - 1
-      : x + x * x / 2 + x * x * x / 6
-  }
-
-  expm1.toTex = `\\left(e${latex.operators['pow']}{\${args[0]}}-1\\right)`
-
   return expm1
-}
-
-exports.name = 'expm1'
-exports.factory = factory
+})

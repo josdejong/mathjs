@@ -1,8 +1,14 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const equal = load(require('./equal'))
+import { factory } from '../../utils/factory'
 
+const name = 'deepEqual'
+const dependencies = [
+  'typed',
+  'equal'
+]
+
+export const createDeepEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed, equal }) => {
   /**
    * Test element wise whether two matrices are equal.
    * The function accepts both matrices and scalar values.
@@ -32,15 +38,11 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Returns true when the input matrices have the same size and each of their elements is equal.
    */
-  const deepEqual = typed('deepEqual', {
+  return typed(name, {
     'any, any': function (x, y) {
       return _deepEqual(x.valueOf(), y.valueOf())
     }
   })
-
-  deepEqual.toTex = undefined // use default template
-
-  return deepEqual
 
   /**
    * Test whether two arrays have the same size and all elements are equal
@@ -74,7 +76,4 @@ function factory (type, config, load, typed) {
       }
     }
   }
-}
-
-exports.name = 'deepEqual'
-exports.factory = factory
+})

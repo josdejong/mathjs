@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../src/main')
-const approx = require('../../tools/approx')
+import assert from 'assert'
+import math from '../../src/bundleAny'
+import approx from '../../tools/approx'
 const number = math.number
 
 describe('number', function () {

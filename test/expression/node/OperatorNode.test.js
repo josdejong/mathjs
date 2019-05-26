@@ -1,11 +1,12 @@
 // test OperatorNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const OperatorNode = math.expression.node.OperatorNode
-const ConditionalNode = math.expression.node.ConditionalNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const OperatorNode = math.OperatorNode
+const ConditionalNode = math.ConditionalNode
 
 describe('OperatorNode', function () {
   it('should create an OperatorNode', function () {
@@ -33,7 +34,7 @@ describe('OperatorNode', function () {
 
     const expr = n.compile()
 
-    assert.strictEqual(expr.eval(), 5)
+    assert.strictEqual(expr.evaluate(), 5)
   })
 
   it('should test whether a unary or binary operator', function () {
@@ -385,7 +386,7 @@ describe('OperatorNode', function () {
           node.args[0].toString(options) +
           ', ' + node.args[1].toString(options) + ')'
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -407,7 +408,7 @@ describe('OperatorNode', function () {
           node.op + node.fn + node.op +
           node.args[1].toString(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -605,7 +606,7 @@ describe('OperatorNode', function () {
           node.args[0].toTex(options) +
           ', ' + node.args[1].toTex(options) + ')'
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 
@@ -627,7 +628,7 @@ describe('OperatorNode', function () {
           node.op + node.fn + node.op +
           node.args[1].toTex(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 
@@ -764,6 +765,29 @@ describe('OperatorNode', function () {
     assert.strictEqual(h.toTex(), h.toTex({ implicit: 'hide' }))
     assert.strictEqual(h.toTex({ implicit: 'hide' }), '2~\\left(3+4\\right)')
     assert.strictEqual(h.toTex({ implicit: 'show' }), '2\\cdot\\left(3+4\\right)')
+  })
+
+  it('should HTML operators', function () {
+    assert.strictEqual(math.parse('2 + 3').toHTML(),
+      '<span class="math-number">2</span>' +
+      '<span class="math-operator math-binary-operator math-explicit-binary-operator">+</span>' +
+      '<span class="math-number">3</span>'
+    )
+
+    assert.strictEqual(math.parse('not 5').toHTML(),
+      '<span class="math-operator math-unary-operator math-lefthand-unary-operator">not</span>' +
+      '<span class="math-number">5</span>'
+    )
+
+    assert.strictEqual(math.parse('5!').toHTML(),
+      '<span class="math-number">5</span>' +
+      '<span class="math-operator math-unary-operator math-righthand-unary-operator">!</span>'
+    )
+
+    assert.strictEqual(math.parse('5\'').toHTML(),
+      '<span class="math-number">5</span>' +
+      '<span class="math-operator math-unary-operator math-righthand-unary-operator">&#39;</span>'
+    )
   })
 
   it('should stringify implicit multiplications between ConstantNodes with parentheses', function () {

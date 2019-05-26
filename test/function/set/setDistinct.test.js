@@ -1,6 +1,7 @@
 // test setDistinct
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 
 describe('setDistinct', function () {
   it('should return the elements of a set', function () {
@@ -15,8 +16,8 @@ describe('setDistinct', function () {
   })
 
   it('should return the same type of output as the inputs', function () {
-    assert.strictEqual(math.typeof(math.setDistinct([1, 2, 3])), 'Array')
-    assert.strictEqual(math.typeof(math.setDistinct(math.matrix([1, 2, 3]))), 'Matrix')
+    assert.strictEqual(math.typeOf(math.setDistinct([1, 2, 3])), 'Array')
+    assert.strictEqual(math.typeOf(math.setDistinct(math.matrix([1, 2, 3]))), 'Matrix')
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

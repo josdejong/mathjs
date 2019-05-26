@@ -1,4 +1,4 @@
-module.exports = {
+export const sumDocs = {
   'name': 'sum',
   'category': 'Statistics',
   'syntax': [
@@ -19,6 +19,6 @@ module.exports = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

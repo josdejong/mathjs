@@ -276,7 +276,7 @@ const groups = [
     'clone': true,
     'cloneDeep': true,
     'compile': true,
-    'eval': true,
+    'evaluate': true,
     'equals': true,
     'filter': true,
     'forEach': true,

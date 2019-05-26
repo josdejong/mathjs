@@ -1,25 +1,21 @@
 'use strict'
 
-const util = require('../../utils/index')
-const DimensionError = require('../../error/DimensionError')
+import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
+import { isInteger } from '../../utils/number'
+import { format } from '../../utils/string'
+import { clone, deepStrictEqual } from '../../utils/object'
+import { arraySize, getArrayDataType, unsqueeze, validateIndex } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { DimensionError } from '../../error/DimensionError'
 
-const array = util.array
-const object = util.object
-const string = util.string
-const number = util.number
+const name = 'SparseMatrix'
+const dependencies = [
+  'typed',
+  'equalScalar',
+  'Matrix'
+]
 
-const isArray = Array.isArray
-const isNumber = number.isNumber
-const isInteger = number.isInteger
-const isString = string.isString
-
-const validateIndex = array.validateIndex
-
-function factory (type, config, load, typed) {
-  const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
-  const equalScalar = load(require('../../function/relational/equalScalar'))
-  const getArrayDataType = load(require('./utils/getArrayDataType'))
-
+export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, Matrix }) => {
   /**
    * Sparse Matrix implementation. This type implements a Compressed Column Storage format
    * for sparse matrices.
@@ -29,7 +25,7 @@ function factory (type, config, load, typed) {
     if (!(this instanceof SparseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
     if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }
 
-    if (type.isMatrix(data)) {
+    if (isMatrix(data)) {
       // create from matrix
       _createFromMatrix(this, data, datatype)
     } else if (data && isArray(data.index) && isArray(data.ptr) && isArray(data.size)) {
@@ -44,7 +40,7 @@ function factory (type, config, load, typed) {
       _createFromArray(this, data, datatype)
     } else if (data) {
       // unsupported type
-      throw new TypeError('Unsupported type of data (' + util.types.type(data) + ')')
+      throw new TypeError('Unsupported type of data (' + typeOf(data) + ')')
     } else {
       // nothing provided
       this._values = []
@@ -59,10 +55,10 @@ function factory (type, config, load, typed) {
     // check matrix type
     if (source.type === 'SparseMatrix') {
       // clone arrays
-      matrix._values = source._values ? object.clone(source._values) : undefined
-      matrix._index = object.clone(source._index)
-      matrix._ptr = object.clone(source._ptr)
-      matrix._size = object.clone(source._size)
+      matrix._values = source._values ? clone(source._values) : undefined
+      matrix._index = clone(source._index)
+      matrix._ptr = clone(source._ptr)
+      matrix._size = clone(source._size)
       matrix._datatype = datatype || source._datatype
     } else {
       // build from matrix data
@@ -145,6 +141,13 @@ function factory (type, config, load, typed) {
   SparseMatrix.prototype = new Matrix()
 
   /**
+   * Create a new SparseMatrix
+   */
+  SparseMatrix.prototype.createSparseMatrix = function (data, datatype) {
+    return new SparseMatrix(data, datatype)
+  }
+
+  /**
    * Attach type information
    */
   SparseMatrix.prototype.type = 'SparseMatrix'
@@ -160,7 +163,7 @@ function factory (type, config, load, typed) {
    * @return {string}   type information; if multiple types are found from the Matrix, it will return "mixed"
    */
   SparseMatrix.prototype.getDataType = function () {
-    return getArrayDataType(this._values)
+    return getArrayDataType(this._values, typeOf)
   }
 
   /**
@@ -225,7 +228,7 @@ function factory (type, config, load, typed) {
    *
    * @memberof SparseMatrix
    * @param {Index} index
-   * @param {Array | Maytrix | *} [replacement]
+   * @param {Array | Matrix | *} [replacement]
    * @param {*} [defaultValue=0]      Default value, filled in on new entries when
    *                                  the matrix is resized. If not provided,
    *                                  new matrix elements will be filled with zeros.
@@ -250,7 +253,7 @@ function factory (type, config, load, typed) {
 
   function _getsubset (matrix, idx) {
     // check idx
-    if (!type.isIndex(idx)) {
+    if (!isIndex(idx)) {
       throw new TypeError('Invalid index')
     }
 
@@ -344,14 +347,14 @@ function factory (type, config, load, typed) {
 
     // calculate the size of the submatrix, and convert it into an Array if needed
     let sSize
-    if (type.isMatrix(submatrix)) {
+    if (isMatrix(submatrix)) {
       // submatrix size
       sSize = submatrix.size()
       // use array representation
       submatrix = submatrix.toArray()
     } else {
       // get submatrix size (array, scalar)
-      sSize = array.size(submatrix)
+      sSize = arraySize(submatrix)
     }
 
     // check index is a scalar
@@ -381,11 +384,11 @@ function factory (type, config, load, typed) {
           i++
         }
         // unsqueeze both outer and inner dimensions
-        submatrix = array.unsqueeze(submatrix, iSize.length, outer, sSize)
+        submatrix = unsqueeze(submatrix, iSize.length, outer, sSize)
       }
 
       // check whether the size of the submatrix matches the index size
-      if (!object.deepEqual(iSize, sSize)) {
+      if (!deepStrictEqual(iSize, sSize)) {
         throw new DimensionError(iSize, sSize, '>')
       }
 
@@ -444,7 +447,7 @@ function factory (type, config, load, typed) {
    * Replace a single element in the matrix.
    * @memberof SparseMatrix
    * @param {number[]} index   Zero-based index
-   * @param {*} value
+   * @param {*} v
    * @param {*} [defaultValue]        Default value, filled in on new entries when
    *                                  the matrix is resized. If not provided,
    *                                  new matrix elements will be set to zero.
@@ -559,9 +562,9 @@ function factory (type, config, load, typed) {
 
     // check sizes
     size.forEach(function (value) {
-      if (!number.isNumber(value) || !number.isInteger(value) || value < 0) {
+      if (!isNumber(value) || !isInteger(value) || value < 0) {
         throw new TypeError('Invalid size, must contain positive integers ' +
-                            '(size: ' + string.format(size) + ')')
+                            '(size: ' + format(size) + ')')
       }
     })
 
@@ -710,9 +713,9 @@ function factory (type, config, load, typed) {
 
     // check sizes
     size.forEach(function (value) {
-      if (!number.isNumber(value) || !number.isInteger(value) || value < 0) {
+      if (!isNumber(value) || !isInteger(value) || value < 0) {
         throw new TypeError('Invalid size, must contain positive integers ' +
-                            '(size: ' + string.format(size) + ')')
+                            '(size: ' + format(size) + ')')
       }
     })
 
@@ -789,10 +792,10 @@ function factory (type, config, load, typed) {
    */
   SparseMatrix.prototype.clone = function () {
     const m = new SparseMatrix({
-      values: this._values ? object.clone(this._values) : undefined,
-      index: object.clone(this._index),
-      ptr: object.clone(this._ptr),
-      size: object.clone(this._size),
+      values: this._values ? clone(this._values) : undefined,
+      index: clone(this._index),
+      ptr: clone(this._ptr),
+      size: clone(this._size),
       datatype: this._datatype
     })
     return m
@@ -1007,7 +1010,7 @@ function factory (type, config, load, typed) {
         // row index
         i = index[k]
         // set value (use one for pattern matrix)
-        a[i][j] = values ? (copy ? object.clone(values[k]) : values[k]) : 1
+        a[i][j] = values ? (copy ? clone(values[k]) : values[k]) : 1
       }
     }
     return a
@@ -1029,7 +1032,7 @@ function factory (type, config, load, typed) {
     // density
     const density = this.density()
     // rows & columns
-    let str = 'Sparse Matrix [' + string.format(rows, options) + ' x ' + string.format(columns, options) + '] density: ' + string.format(density, options) + '\n'
+    let str = 'Sparse Matrix [' + format(rows, options) + ' x ' + format(columns, options) + '] density: ' + format(density, options) + '\n'
     // loop columns
     for (let j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
@@ -1040,7 +1043,7 @@ function factory (type, config, load, typed) {
         // row index
         const i = this._index[k]
         // append value
-        str += '\n    (' + string.format(i, options) + ', ' + string.format(j, options) + ') ==> ' + (this._values ? string.format(this._values[k], options) : 'X')
+        str += '\n    (' + format(i, options) + ', ' + format(j, options) + ') ==> ' + (this._values ? format(this._values[k], options) : 'X')
       }
     }
     return str
@@ -1052,7 +1055,7 @@ function factory (type, config, load, typed) {
    * @returns {string} str
    */
   SparseMatrix.prototype.toString = function () {
-    return string.format(this.toArray())
+    return format(this.toArray())
   }
 
   /**
@@ -1083,7 +1086,7 @@ function factory (type, config, load, typed) {
     // validate k if any
     if (k) {
       // convert BigNumber to a number
-      if (type.isBigNumber(k)) { k = k.toNumber() }
+      if (isBigNumber(k)) { k = k.toNumber() }
       // is must be an integer
       if (!isNumber(k) || !isInteger(k)) {
         throw new TypeError('The parameter k must be an integer number')
@@ -1159,6 +1162,7 @@ function factory (type, config, load, typed) {
    * @param {Array} size                       The matrix size.
    * @param {number | Array | Matrix } value   The values for the diagonal.
    * @param {number | BigNumber} [k=0]         The kth diagonal where the vector will be filled in.
+   * @param {number} [defaultValue]            The default value for non-diagonal
    * @param {string} [datatype]                The Matrix datatype, values must be of this datatype.
    *
    * @returns {SparseMatrix}
@@ -1170,7 +1174,7 @@ function factory (type, config, load, typed) {
     // map size & validate
     size = size.map(function (s) {
       // check it is a big number
-      if (type.isBigNumber(s)) {
+      if (isBigNumber(s)) {
         // convert it
         s = s.toNumber()
       }
@@ -1184,7 +1188,7 @@ function factory (type, config, load, typed) {
     // validate k if any
     if (k) {
       // convert BigNumber to a number
-      if (type.isBigNumber(k)) { k = k.toNumber() }
+      if (isBigNumber(k)) { k = k.toNumber() }
       // is must be an integer
       if (!isNumber(k) || !isInteger(k)) {
         throw new TypeError('The parameter k must be an integer number')
@@ -1231,7 +1235,7 @@ function factory (type, config, load, typed) {
         // return value @ i
         return value[i]
       }
-    } else if (type.isMatrix(value)) {
+    } else if (isMatrix(value)) {
       // matrix size
       const ms = value.size()
       // validate matrix
@@ -1393,13 +1397,5 @@ function factory (type, config, load, typed) {
     }
   }
 
-  // register this type in the base class Matrix
-  type.Matrix._storage.sparse = SparseMatrix
-
   return SparseMatrix
-}
-
-exports.name = 'SparseMatrix'
-exports.path = 'type'
-exports.factory = factory
-exports.lazy = false // no lazy loading, as we alter type.Matrix._storage
+}, { isClass: true })

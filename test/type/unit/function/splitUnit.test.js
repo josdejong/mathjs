@@ -1,7 +1,7 @@
-const assert = require('assert')
-const math = require('../../../../src/main')
+import assert from 'assert'
+import math from '../../../../src/bundleAny'
 const splitUnit = math.splitUnit
-const Unit = math.type.Unit
+const Unit = math.Unit
 
 describe('splitUnit', function () {
   it('should split a unit into parts', function () {
@@ -9,6 +9,6 @@ describe('splitUnit', function () {
     assert.strictEqual(splitUnit(new Unit(-1, 'm'), ['ft', 'in']).toString(), '-3 ft,-3.3700787401574765 in')
     assert.strictEqual(splitUnit(new Unit(1, 'm/s'), ['m/s']).toString(), '1 m / s')
 
-    assert.strictEqual(math.eval('splitUnit(1 m, [ft, in])').toString(), '3 ft,3.3700787401574765 in')
+    assert.strictEqual(math.evaluate('splitUnit(1 m, [ft, in])').toString(), '3 ft,3.3700787401574765 in')
   })
 })

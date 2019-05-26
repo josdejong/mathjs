@@ -1,4 +1,4 @@
-module.exports = {
+export const secDocs = {
   'name': 'sec',
   'category': 'Trigonometry',
   'syntax': [

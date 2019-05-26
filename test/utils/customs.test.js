@@ -1,7 +1,8 @@
 // test boolean utils
-const assert = require('assert')
-const customs = require('../../src/utils/customs')
-const math = require('../../src/main')
+import assert from 'assert'
+
+import { isPlainObject, isSafeMethod, isSafeProperty } from '../../src/utils/customs'
+import math from '../../src/bundleAny'
 
 describe('customs', function () {
   describe('isSafeMethod', function () {
@@ -9,81 +10,81 @@ describe('customs', function () {
       let object = {
         fn: function () {}
       }
-      assert.strictEqual(customs.isSafeMethod(object, 'fn'), true)
-      assert.strictEqual(customs.isSafeMethod(object, 'toString'), true)
-      assert.strictEqual(customs.isSafeMethod(object, 'toLocaleString'), true)
-      assert.strictEqual(customs.isSafeMethod(object, 'valueOf'), true)
+      assert.strictEqual(isSafeMethod(object, 'fn'), true)
+      assert.strictEqual(isSafeMethod(object, 'toString'), true)
+      assert.strictEqual(isSafeMethod(object, 'toLocaleString'), true)
+      assert.strictEqual(isSafeMethod(object, 'valueOf'), true)
 
-      assert.strictEqual(customs.isSafeMethod(object, 'constructor'), false)
-      assert.strictEqual(customs.isSafeMethod(object, 'hasOwnProperty'), false)
-      assert.strictEqual(customs.isSafeMethod(object, 'isPrototypeOf'), false)
-      assert.strictEqual(customs.isSafeMethod(object, 'propertyIsEnumerable'), false)
-      assert.strictEqual(customs.isSafeMethod(object, '__defineGetter__'), false)
-      assert.strictEqual(customs.isSafeMethod(object, '__defineSetter__'), false)
-      assert.strictEqual(customs.isSafeMethod(object, '__lookupGetter__'), false)
-      assert.strictEqual(customs.isSafeMethod(object, '__lookupSetter__'), false)
+      assert.strictEqual(isSafeMethod(object, 'constructor'), false)
+      assert.strictEqual(isSafeMethod(object, 'hasOwnProperty'), false)
+      assert.strictEqual(isSafeMethod(object, 'isPrototypeOf'), false)
+      assert.strictEqual(isSafeMethod(object, 'propertyIsEnumerable'), false)
+      assert.strictEqual(isSafeMethod(object, '__defineGetter__'), false)
+      assert.strictEqual(isSafeMethod(object, '__defineSetter__'), false)
+      assert.strictEqual(isSafeMethod(object, '__lookupGetter__'), false)
+      assert.strictEqual(isSafeMethod(object, '__lookupSetter__'), false)
 
       // non existing method
-      assert.strictEqual(customs.isSafeMethod(object, 'foo'), false)
+      assert.strictEqual(isSafeMethod(object, 'foo'), false)
 
       // custom inherited method
       let object1 = {
         foo: function () {}
       }
       const object2 = Object.create(object1)
-      assert.strictEqual(customs.isSafeMethod(object2, 'foo'), true)
+      assert.strictEqual(isSafeMethod(object2, 'foo'), true)
 
       // ghosted native method
       const object3 = {}
       object3.toString = function () {}
-      assert.strictEqual(customs.isSafeMethod(object3, 'toString'), false)
+      assert.strictEqual(isSafeMethod(object3, 'toString'), false)
     })
 
     it('function objects', function () {
       const f = function () {}
 
-      assert.strictEqual(customs.isSafeMethod(f, 'call'), false)
-      assert.strictEqual(customs.isSafeMethod(f, 'bind'), false)
+      assert.strictEqual(isSafeMethod(f, 'call'), false)
+      assert.strictEqual(isSafeMethod(f, 'bind'), false)
     })
 
     it('classes', function () {
       const matrix = math.matrix()
-      assert.strictEqual(customs.isSafeMethod(matrix, 'get'), true)
-      assert.strictEqual(customs.isSafeMethod(matrix, 'toString'), true)
+      assert.strictEqual(isSafeMethod(matrix, 'get'), true)
+      assert.strictEqual(isSafeMethod(matrix, 'toString'), true)
 
       const complex = math.complex()
-      assert.strictEqual(customs.isSafeMethod(complex, 'sqrt'), true)
-      assert.strictEqual(customs.isSafeMethod(complex, 'toString'), true)
+      assert.strictEqual(isSafeMethod(complex, 'sqrt'), true)
+      assert.strictEqual(isSafeMethod(complex, 'toString'), true)
 
       const unit = math.unit('5cm')
-      assert.strictEqual(customs.isSafeMethod(unit, 'toNumeric'), true)
-      assert.strictEqual(customs.isSafeMethod(unit, 'toString'), true)
+      assert.strictEqual(isSafeMethod(unit, 'toNumeric'), true)
+      assert.strictEqual(isSafeMethod(unit, 'toString'), true)
 
       // extend the class instance with a custom method
       let object = math.matrix()
       object.foo = function () {}
-      assert.strictEqual(customs.isSafeMethod(object, 'foo'), true)
+      assert.strictEqual(isSafeMethod(object, 'foo'), true)
 
       // extend the class instance with a ghosted method
       let object2 = math.matrix()
       object2.toJSON = function () {}
-      assert.strictEqual(customs.isSafeMethod(object2, 'toJSON'), false)
+      assert.strictEqual(isSafeMethod(object2, 'toJSON'), false)
 
       // unsafe native methods
-      assert.strictEqual(customs.isSafeMethod(matrix, 'constructor'), false)
-      assert.strictEqual(customs.isSafeMethod(matrix, 'hasOwnProperty'), false)
-      assert.strictEqual(customs.isSafeMethod(matrix, 'isPrototypeOf'), false)
-      assert.strictEqual(customs.isSafeMethod(matrix, 'propertyIsEnumerable'), false)
-      assert.strictEqual(customs.isSafeMethod(matrix, '__defineGetter__'), false)
-      assert.strictEqual(customs.isSafeMethod(matrix, '__defineSetter__'), false)
-      assert.strictEqual(customs.isSafeMethod(matrix, '__lookupGetter__'), false)
-      assert.strictEqual(customs.isSafeMethod(matrix, '__lookupSetter__'), false)
+      assert.strictEqual(isSafeMethod(matrix, 'constructor'), false)
+      assert.strictEqual(isSafeMethod(matrix, 'hasOwnProperty'), false)
+      assert.strictEqual(isSafeMethod(matrix, 'isPrototypeOf'), false)
+      assert.strictEqual(isSafeMethod(matrix, 'propertyIsEnumerable'), false)
+      assert.strictEqual(isSafeMethod(matrix, '__defineGetter__'), false)
+      assert.strictEqual(isSafeMethod(matrix, '__defineSetter__'), false)
+      assert.strictEqual(isSafeMethod(matrix, '__lookupGetter__'), false)
+      assert.strictEqual(isSafeMethod(matrix, '__lookupSetter__'), false)
 
       // non existing method
-      assert.strictEqual(customs.isSafeMethod(matrix, 'nonExistingMethod'), false)
+      assert.strictEqual(isSafeMethod(matrix, 'nonExistingMethod'), false)
 
       // method with unicode chars
-      assert.strictEqual(customs.isSafeMethod(matrix, 'co\u006Estructor'), false)
+      assert.strictEqual(isSafeMethod(matrix, 'co\u006Estructor'), false)
     })
   })
 
@@ -95,23 +96,23 @@ describe('customs', function () {
         Object.getOwnPropertyNames(Object.prototype).forEach(
           key => typeof ({})[key] !== 'function' && console.log(key))
       */
-      assert.strictEqual(customs.isSafeProperty(object, '__proto__'), false)
-      assert.strictEqual(customs.isSafeProperty(object, 'constructor'), false)
+      assert.strictEqual(isSafeProperty(object, '__proto__'), false)
+      assert.strictEqual(isSafeProperty(object, 'constructor'), false)
 
       /* From Function.prototype:
         Object.getOwnPropertyNames(Function.prototype).forEach(
           key => typeof (function () {})[key] !== 'function' && console.log(key))
       */
-      assert.strictEqual(customs.isSafeProperty(object, 'length'), true)
-      assert.strictEqual(customs.isSafeProperty(object, 'name'), true)
-      assert.strictEqual(customs.isSafeProperty(object, 'arguments'), false)
-      assert.strictEqual(customs.isSafeProperty(object, 'caller'), false)
+      assert.strictEqual(isSafeProperty(object, 'length'), true)
+      assert.strictEqual(isSafeProperty(object, 'name'), true)
+      assert.strictEqual(isSafeProperty(object, 'arguments'), false)
+      assert.strictEqual(isSafeProperty(object, 'caller'), false)
 
       // non existing property
-      assert.strictEqual(customs.isSafeProperty(object, 'bar'), true)
+      assert.strictEqual(isSafeProperty(object, 'bar'), true)
 
       // property with unicode chars
-      assert.strictEqual(customs.isSafeProperty(object, 'co\u006Estructor'), false)
+      assert.strictEqual(isSafeProperty(object, 'co\u006Estructor'), false)
     })
 
     it('should test inherited properties on plain objects ', function () {
@@ -119,34 +120,34 @@ describe('customs', function () {
       const object2 = Object.create(object1)
       object1.foo = true
       object2.bar = true
-      assert.strictEqual(customs.isSafeProperty(object2, 'foo'), true)
-      assert.strictEqual(customs.isSafeProperty(object2, 'bar'), true)
-      assert.strictEqual(customs.isSafeProperty(object2, '__proto__'), false)
-      assert.strictEqual(customs.isSafeProperty(object2, 'constructor'), false)
+      assert.strictEqual(isSafeProperty(object2, 'foo'), true)
+      assert.strictEqual(isSafeProperty(object2, 'bar'), true)
+      assert.strictEqual(isSafeProperty(object2, '__proto__'), false)
+      assert.strictEqual(isSafeProperty(object2, 'constructor'), false)
 
       object2.foo = true // override "foo" of object1
-      assert.strictEqual(customs.isSafeProperty(object2, 'foo'), true)
-      assert.strictEqual(customs.isSafeProperty(object2, 'constructor'), false)
+      assert.strictEqual(isSafeProperty(object2, 'foo'), true)
+      assert.strictEqual(isSafeProperty(object2, 'constructor'), false)
     })
 
     it('should test for ghosted native property', function () {
       const array1 = []
       const array2 = Object.create(array1)
       array2.length = Infinity
-      assert.strictEqual(customs.isSafeProperty(array2, 'length'), true)
+      assert.strictEqual(isSafeProperty(array2, 'length'), true)
     })
   })
 
   it('should distinguish plain objects', function () {
     const a = {}
     const b = Object.create(a)
-    assert.strictEqual(customs.isPlainObject(a), true)
-    assert.strictEqual(customs.isPlainObject(b), true)
+    assert.strictEqual(isPlainObject(a), true)
+    assert.strictEqual(isPlainObject(b), true)
 
-    assert.strictEqual(customs.isPlainObject(math.unit('5cm')), false)
-    assert.strictEqual(customs.isPlainObject(math.unit('5cm')), false)
-    assert.strictEqual(customs.isPlainObject([]), false)
-    // assert.strictEqual(customs.isPlainObject (math.complex()), false); // FIXME: shouldn't treat Complex as a plain object (it is a plain object which has __proto__ overridden)
-    assert.strictEqual(customs.isPlainObject(math.matrix()), false)
+    assert.strictEqual(isPlainObject(math.unit('5cm')), false)
+    assert.strictEqual(isPlainObject(math.unit('5cm')), false)
+    assert.strictEqual(isPlainObject([]), false)
+    // assert.strictEqual(isPlainObject (math.complex()), false); // FIXME: shouldn't treat Complex as a plain object (it is a plain object which has __proto__ overridden)
+    assert.strictEqual(isPlainObject(math.matrix()), false)
   })
 })

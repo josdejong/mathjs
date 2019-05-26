@@ -1,15 +1,26 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const multiplyScalar = load(require('./multiplyScalar'))
-  const latex = require('../../utils/latex')
+import { factory } from '../../utils/factory'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm09 } from '../../type/matrix/utils/algorithm09'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm09 = load(require('../../type/matrix/utils/algorithm09'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+const name = 'dotMultiply'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'multiplyScalar'
+]
+
+export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm09 = createAlgorithm09({ typed, equalScalar })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Multiply two matrices element wise. The function accepts both matrices and
@@ -37,7 +48,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Right hand value
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Multiplication of `x` and `y`
    */
-  const dotMultiply = typed('dotMultiply', {
+  const dotMultiply = typed(name, {
 
     'any, any': multiplyScalar,
 
@@ -99,12 +110,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  dotMultiply.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['dotMultiply']}\${args[1]}\\right)`
-  }
-
   return dotMultiply
-}
-
-exports.name = 'dotMultiply'
-exports.factory = factory
+})

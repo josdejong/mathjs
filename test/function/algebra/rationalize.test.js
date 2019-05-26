@@ -1,7 +1,7 @@
 'use strict'
 
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
 
 /**
    * Transform node, array and single type value in a string with no spaces inside.

@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { deepMap } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { isPositiveNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'isPositive'
+const dependencies = ['typed']
+
+export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is positive: larger than zero.
    * The function supports types `number`, `BigNumber`, `Fraction`, and `Unit`.
@@ -34,10 +39,8 @@ function factory (type, config, load, typed) {
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
-  const isPositive = typed('isPositive', {
-    'number': function (x) {
-      return x > 0
-    },
+  const isPositive = typed(name, {
+    'number': isPositiveNumber,
 
     'BigNumber': function (x) {
       return !x.isNeg() && !x.isZero() && !x.isNaN()
@@ -57,7 +60,4 @@ function factory (type, config, load, typed) {
   })
 
   return isPositive
-}
-
-exports.name = 'isPositive'
-exports.factory = factory
+})

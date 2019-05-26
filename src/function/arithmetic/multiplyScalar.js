@@ -1,24 +1,27 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+import { factory } from '../../utils/factory'
+import { multiplyNumber } from '../../plain/number'
+
+const name = 'multiplyScalar'
+const dependencies = ['typed']
+
+export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Multiply two scalar values, `x * y`.
    * This function is meant for internal use: it is used by the public function
    * `multiply`
    *
-   * This function does not support collections (Array or Matrix), and does
-   * not validate the number of of inputs.
+   * This function does not support collections (Array or Matrix).
    *
    * @param  {number | BigNumber | Fraction | Complex | Unit} x   First value to multiply
    * @param  {number | BigNumber | Fraction | Complex} y          Second value to multiply
-   * @return {number | BigNumber | Fraction | Complex | Unit}                      Multiplication of `x` and `y`
+   * @return {number | BigNumber | Fraction | Complex | Unit}     Multiplication of `x` and `y`
    * @private
    */
   const multiplyScalar = typed('multiplyScalar', {
 
-    'number, number': function (x, y) {
-      return x * y
-    },
+    'number, number': multiplyNumber,
 
     'Complex, Complex': function (x, y) {
       return x.mul(y)
@@ -51,6 +54,4 @@ function factory (type, config, load, typed) {
   })
 
   return multiplyScalar
-}
-
-exports.factory = factory
+})

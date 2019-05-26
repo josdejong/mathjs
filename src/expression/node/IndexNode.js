@@ -1,13 +1,21 @@
 'use strict'
 
-const map = require('../../utils/array').map
-const escape = require('../../utils/string').escape
+import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '../../utils/is'
+import { createIndexTransform } from '../transform/index.transform'
+import { map } from '../../utils/array'
+import { escape } from '../../utils/string'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const Range = load(require('../../type/matrix/Range'))
+const name = 'IndexNode'
+const dependencies = [
+  'Range',
+  'Node',
+  'Index',
+  'size'
+]
 
-  const isArray = Array.isArray
+export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, Node, Index, size }) => {
+  const index = createIndexTransform({ Index })
 
   /**
    * @constructor IndexNode
@@ -33,7 +41,7 @@ function factory (type, config, load, typed) {
     this.dotNotation = dotNotation || false
 
     // validate input
-    if (!isArray(dimensions) || !dimensions.every(type.isNode)) {
+    if (!Array.isArray(dimensions) || !dimensions.every(isNode)) {
       throw new TypeError('Array containing Nodes expected for parameter "dimensions"')
     }
     if (this.dotNotation && !this.isObjectProperty()) {
@@ -75,7 +83,7 @@ function factory (type, config, load, typed) {
 
     // optimization for a simple object property
     const evalDimensions = map(this.dimensions, function (range, i) {
-      if (type.isRangeNode(range)) {
+      if (isRangeNode(range)) {
         if (range.needsEnd()) {
           // create a range containing end (like '4:end')
           const childArgNames = Object.create(argNames)
@@ -88,9 +96,9 @@ function factory (type, config, load, typed) {
             : function () { return 1 }
 
           return function evalDimension (scope, args, context) {
-            const size = math.size(context).valueOf()
+            const s = size(context).valueOf()
             const childArgs = Object.create(args)
-            childArgs['end'] = size[i]
+            childArgs['end'] = s[i]
 
             return createRange(
               evalStart(scope, childArgs, context),
@@ -114,7 +122,7 @@ function factory (type, config, load, typed) {
             )
           }
         }
-      } else if (type.isSymbolNode(range) && range.name === 'end') {
+      } else if (isSymbolNode(range) && range.name === 'end') {
         // SymbolNode 'end'
         const childArgNames = Object.create(argNames)
         childArgNames['end'] = true
@@ -122,9 +130,9 @@ function factory (type, config, load, typed) {
         const evalRange = range._compile(math, childArgNames)
 
         return function evalDimension (scope, args, context) {
-          const size = math.size(context).valueOf()
+          const s = size(context).valueOf()
           const childArgs = Object.create(args)
-          childArgs['end'] = size[i]
+          childArgs['end'] = s[i]
 
           return evalRange(scope, childArgs, context)
         }
@@ -141,7 +149,8 @@ function factory (type, config, load, typed) {
       const dimensions = map(evalDimensions, function (evalDimension) {
         return evalDimension(scope, args, context)
       })
-      return math.index.apply(math, dimensions)
+
+      return index(...dimensions)
     }
   }
 
@@ -184,7 +193,7 @@ function factory (type, config, load, typed) {
    */
   IndexNode.prototype.isObjectProperty = function () {
     return this.dimensions.length === 1 &&
-        type.isConstantNode(this.dimensions[0]) &&
+        isConstantNode(this.dimensions[0]) &&
         typeof this.dimensions[0].value === 'string'
   }
 
@@ -268,15 +277,11 @@ function factory (type, config, load, typed) {
   // helper function to create a Range from start, step and end
   function createRange (start, end, step) {
     return new Range(
-      type.isBigNumber(start) ? start.toNumber() : start,
-      type.isBigNumber(end) ? end.toNumber() : end,
-      type.isBigNumber(step) ? step.toNumber() : step
+      isBigNumber(start) ? start.toNumber() : start,
+      isBigNumber(end) ? end.toNumber() : end,
+      isBigNumber(step) ? step.toNumber() : step
     )
   }
 
   return IndexNode
-}
-
-exports.name = 'IndexNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

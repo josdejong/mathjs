@@ -1,20 +1,14 @@
 'use strict'
 
-const array = require('../../utils/array')
-const latex = require('../../utils/latex')
-const string = require('../../utils/string')
+import { isMatrix } from '../../utils/is'
+import { format } from '../../utils/string'
+import { arraySize } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const abs = load(require('../arithmetic/abs'))
-  const add = load(require('../arithmetic/add'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const sqrt = load(require('../arithmetic/sqrt'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const inv = load(require('../matrix/inv'))
-  const size = load(require('../matrix/size'))
-  const max = load(require('../statistics/max'))
-  const identity = load(require('./identity'))
+const name = 'sqrtm'
+const dependencies = ['typed', 'abs', 'add', 'multiply', 'sqrt', 'subtract', 'inv', 'size', 'max', 'identity']
 
+export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, add, multiply, sqrt, subtract, inv, size, max, identity }) => {
   /**
    * Calculate the principal square root of a square matrix.
    * The principal square root matrix `X` of another matrix `A` is such that `X * X = A`.
@@ -36,9 +30,9 @@ function factory (type, config, load, typed) {
    * @param  {Array | Matrix} A   The square matrix `A`
    * @return {Array | Matrix}     The principal square root of matrix `A`
    */
-  const sqrtm = typed('sqrtm', {
+  const sqrtm = typed(name, {
     'Array | Matrix': function (A) {
-      const size = type.isMatrix(A) ? A.size() : array.size(A)
+      const size = isMatrix(A) ? A.size() : arraySize(A)
       switch (size.length) {
         case 1:
           // Single element Array | Matrix
@@ -46,7 +40,7 @@ function factory (type, config, load, typed) {
             return sqrt(A)
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
 
         case 2:
@@ -57,7 +51,7 @@ function factory (type, config, load, typed) {
             return _denmanBeavers(A)
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
       }
     }
@@ -97,10 +91,5 @@ function factory (type, config, load, typed) {
     return Y
   }
 
-  sqrtm.toTex = { 1: `{\${args[0]}}${latex.operators['pow']}{\\frac{1}{2}}` }
-
   return sqrtm
-}
-
-exports.name = 'sqrtm'
-exports.factory = factory
+})

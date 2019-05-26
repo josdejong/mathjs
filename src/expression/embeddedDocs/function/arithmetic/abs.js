@@ -1,4 +1,4 @@
-module.exports = {
+export const absDocs = {
   'name': 'abs',
   'category': 'Arithmetic',
   'syntax': [

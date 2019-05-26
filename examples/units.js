@@ -1,7 +1,7 @@
 // units
 
 // load math.js (using node.js)
-const math = require('../index')
+const math = require('..')
 
 // units can be created by providing a value and unit name, or by providing
 // a string with a valued unit.
@@ -30,20 +30,20 @@ console.log()
 
 // the expression parser supports units too
 console.log('parse expressions')
-print(math.eval('2 inch to cm')) // 5.08 cm
-print(math.eval('cos(45 deg)')) // 0.70710678118655
-print(math.eval('90 km/h to m/s')) // 25 m / s
+print(math.evaluate('2 inch to cm')) // 5.08 cm
+print(math.evaluate('cos(45 deg)')) // 0.70710678118655
+print(math.evaluate('90 km/h to m/s')) // 25 m / s
 console.log()
 
 // convert a unit to a number
 // A second parameter with the unit for the exported number must be provided
-print(math.eval('number(5 cm, mm)')) // number, 50
+print(math.evaluate('number(5 cm, mm)')) // number, 50
 console.log()
 
 // simplify units
 console.log('simplify units')
-print(math.eval('100000 N / m^2')) // 100 kPa
-print(math.eval('9.81 m/s^2 * 100 kg * 40 m')) // 39.24 kJ
+print(math.evaluate('100000 N / m^2')) // 100 kPa
+print(math.evaluate('9.81 m/s^2 * 100 kg * 40 m')) // 39.24 kJ
 console.log()
 
 // example engineering calculations
@@ -71,18 +71,18 @@ console.log()
 
 console.log('electrical power consumption:')
 const expr1 = '460 V * 20 A * 30 days to kWh'
-console.log(expr1 + ' = ' + math.eval(expr1)) // 6624 kWh
+console.log(expr1 + ' = ' + math.evaluate(expr1)) // 6624 kWh
 console.log()
 
 console.log('circuit design:')
 const expr2 = '24 V / (6 mA)'
-console.log(expr2 + ' = ' + math.eval(expr2)) // 4 kohm
+console.log(expr2 + ' = ' + math.evaluate(expr2)) // 4 kohm
 console.log()
 
 console.log('operations on arrays:')
-const B = math.eval('[1, 0, 0] T')
-const v3 = math.eval('[0, 1, 0] m/s')
-const q = math.eval('1 C')
+const B = math.evaluate('[1, 0, 0] T')
+const v3 = math.evaluate('[0, 1, 0] m/s')
+const q = math.evaluate('1 C')
 const F = math.multiply(q, math.cross(v3, B))
 console.log('B (magnetic field strength) = ' + format(B)) // [1 T, 0 T, 0 T]
 console.log('v (particle velocity) = ' + format(v3)) // [0 m / s, 1 m / s, 0 m / s]

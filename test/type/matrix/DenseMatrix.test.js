@@ -1,10 +1,10 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const Matrix = math.type.Matrix
-const DenseMatrix = math.type.DenseMatrix
-const SparseMatrix = math.type.SparseMatrix
-const Complex = math.type.Complex
-const Range = math.type.Range
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+const Matrix = math.Matrix
+const DenseMatrix = math.DenseMatrix
+const SparseMatrix = math.SparseMatrix
+const Complex = math.Complex
+const Range = math.Range
 
 const index = math.index
 

@@ -1,4 +1,4 @@
-module.exports = {
+export const setIntersectDocs = {
   'name': 'setIntersect',
   'category': 'Set',
   'syntax': [

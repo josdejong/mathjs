@@ -1,10 +1,12 @@
 'use strict'
 
-const size = require('../../utils/array').size
+import { arraySize as size } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const multiplyScalar = load(require('../arithmetic/multiplyScalar'))
+const name = 'kron'
+const dependencies = ['typed', 'matrix', 'multiplyScalar']
+
+export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiplyScalar }) => {
   /**
      * Calculates the kronecker product of 2 matrices or vectors.
      *
@@ -32,7 +34,7 @@ function factory (type, config, load, typed) {
      * @param  {Array | Matrix} y     Second vector
      * @return {Array | Matrix}       Returns the kronecker product of `x` and `y`
      */
-  const kron = typed('kron', {
+  return typed(name, {
     'Matrix, Matrix': function (x, y) {
       return matrix(_kron(x.toArray(), y.toArray()))
     },
@@ -47,8 +49,6 @@ function factory (type, config, load, typed) {
 
     'Array, Array': _kron
   })
-
-  return kron
 
   /**
      * Calculate the kronecker product of two matrices / vectors
@@ -86,7 +86,4 @@ function factory (type, config, load, typed) {
       })
     }) && t
   }
-}
-
-exports.name = 'kron'
-exports.factory = factory
+})

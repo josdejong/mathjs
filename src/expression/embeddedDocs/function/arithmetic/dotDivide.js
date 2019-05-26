@@ -1,4 +1,4 @@
-module.exports = {
+export const dotDivideDocs = {
   'name': 'dotDivide',
   'category': 'Operators',
   'syntax': [

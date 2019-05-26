@@ -1,11 +1,19 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const _typeof = load(require('../utils/typeof'))
+import { compareText as _compareText } from '../../utils/string'
+import { factory } from '../../utils/factory'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+const name = 'compareText'
+const dependencies = [
+  'typed',
+  'matrix'
+]
+
+export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Compare two strings lexically. Comparison is case sensitive.
@@ -35,7 +43,7 @@ function factory (type, config, load, typed) {
    * @return {number | Array | DenseMatrix} Returns the result of the comparison:
    *                                        1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  const compareText = typed('compareText', {
+  const compareText = typed(name, {
 
     'any, any': _compareText,
 
@@ -77,33 +85,11 @@ function factory (type, config, load, typed) {
     }
   })
 
-  /**
-   * Compare two strings
-   * @param {string} x
-   * @param {string} y
-   * @returns {number}
-   * @private
-   */
-  function _compareText (x, y) {
-    // we don't want to convert numbers to string, only accept string input
-    if (!type.isString(x)) {
-      throw new TypeError('Unexpected type of argument in function compareText ' +
-          '(expected: string or Array or Matrix, actual: ' + _typeof(x) + ', index: 0)')
-    }
-    if (!type.isString(y)) {
-      throw new TypeError('Unexpected type of argument in function compareText ' +
-          '(expected: string or Array or Matrix, actual: ' + _typeof(y) + ', index: 1)')
-    }
-
-    return (x === y)
-      ? 0
-      : (x > y ? 1 : -1)
-  }
-
-  compareText.toTex = undefined // use default template
-
   return compareText
-}
+})
 
-exports.name = 'compareText'
-exports.factory = factory
+export const createCompareTextNumber = /* #__PURE__ */ factory(name, ['typed'], ({ typed }) => {
+  return typed(name, {
+    'any, any': _compareText
+  })
+})

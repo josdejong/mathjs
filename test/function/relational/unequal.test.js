@@ -1,6 +1,7 @@
 // test unequal
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const complex = math.complex
 const matrix = math.matrix
@@ -134,11 +135,13 @@ describe('unequal', function () {
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.unequal(1, 0.991), true)
-    assert.strictEqual(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), true)
+    assert.strictEqual(mymath.unequal(mymath.bignumber(1), mymath.bignumber(0.991)), true)
+    assert.strictEqual(mymath.unequal(mymath.complex(1, 0), mymath.complex(0.991, 0)), true)
 
     mymath.config({ epsilon: 1e-2 })
     assert.strictEqual(mymath.unequal(1, 0.991), false)
-    assert.strictEqual(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), false)
+    assert.strictEqual(mymath.unequal(mymath.bignumber(1), mymath.bignumber(0.991)), false)
+    assert.strictEqual(mymath.unequal(mymath.complex(1, 0), mymath.complex(0.991, 0)), false)
   })
 
   it('should throw an error when comparing numbers and units', function () {

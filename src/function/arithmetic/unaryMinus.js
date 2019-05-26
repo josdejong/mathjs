@@ -1,10 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { unaryMinusNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'unaryMinus'
+const dependencies = ['typed']
 
+export const createUnaryMinus = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Inverse the sign of a value, apply a unary minus operation.
    *
@@ -28,10 +31,8 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Number to be inverted.
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
    */
-  const unaryMinus = typed('unaryMinus', {
-    'number': function (x) {
-      return -x
-    },
+  const unaryMinus = typed(name, {
+    'number': unaryMinusNumber,
 
     'Complex': function (x) {
       return x.neg()
@@ -59,12 +60,5 @@ function factory (type, config, load, typed) {
     // TODO: add support for string
   })
 
-  unaryMinus.toTex = {
-    1: `${latex.operators['unaryMinus']}\\left(\${args[0]}\\right)`
-  }
-
   return unaryMinus
-}
-
-exports.name = 'unaryMinus'
-exports.factory = factory
+})

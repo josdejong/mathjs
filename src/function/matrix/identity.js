@@ -1,11 +1,21 @@
 'use strict'
 
-const array = require('../../utils/array')
-const isInteger = require('../../utils/number').isInteger
+import { isBigNumber } from '../../utils/is'
+import { resize } from '../../utils/array'
+import { isInteger } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'identity'
+const dependencies = [
+  'typed',
+  'config',
+  'matrix',
+  'BigNumber',
+  'DenseMatrix',
+  'SparseMatrix'
+]
 
+export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber, DenseMatrix, SparseMatrix }) => {
   /**
    * Create a 2-dimensional identity matrix with size m x n or n x n.
    * The matrix has ones on the diagonal and zeros elsewhere.
@@ -36,7 +46,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Matrix | Array | number} A matrix with ones on the diagonal.
    */
-  const identity = typed('identity', {
+  return typed(name, {
     '': function () {
       return (config.matrix === 'Matrix') ? matrix([]) : []
     },
@@ -46,7 +56,7 @@ function factory (type, config, load, typed) {
     },
 
     'number | BigNumber': function (rows) {
-      return _identity(rows, rows, config.matrix === 'Matrix' ? 'default' : undefined)
+      return _identity(rows, rows, config.matrix === 'Matrix' ? 'dense' : undefined)
     },
 
     'number | BigNumber, string': function (rows, format) {
@@ -54,7 +64,7 @@ function factory (type, config, load, typed) {
     },
 
     'number | BigNumber, number | BigNumber': function (rows, cols) {
-      return _identity(rows, cols, config.matrix === 'Matrix' ? 'default' : undefined)
+      return _identity(rows, cols, config.matrix === 'Matrix' ? 'dense' : undefined)
     },
 
     'number | BigNumber, number | BigNumber, string': function (rows, cols, format) {
@@ -78,10 +88,6 @@ function factory (type, config, load, typed) {
     }
   })
 
-  identity.toTex = undefined // use default template
-
-  return identity
-
   function _identityVector (size, format) {
     switch (size.length) {
       case 0: return format ? matrix(format) : []
@@ -101,12 +107,12 @@ function factory (type, config, load, typed) {
    */
   function _identity (rows, cols, format) {
     // BigNumber constructor with the right precision
-    const Big = (type.isBigNumber(rows) || type.isBigNumber(cols))
-      ? type.BigNumber
+    const Big = (isBigNumber(rows) || isBigNumber(cols))
+      ? BigNumber
       : null
 
-    if (type.isBigNumber(rows)) rows = rows.toNumber()
-    if (type.isBigNumber(cols)) cols = cols.toNumber()
+    if (isBigNumber(rows)) rows = rows.toNumber()
+    if (isBigNumber(cols)) cols = cols.toNumber()
 
     if (!isInteger(rows) || rows < 1) {
       throw new Error('Parameters in function identity must be positive integers')
@@ -115,20 +121,24 @@ function factory (type, config, load, typed) {
       throw new Error('Parameters in function identity must be positive integers')
     }
 
-    const one = Big ? new type.BigNumber(1) : 1
+    const one = Big ? new BigNumber(1) : 1
     const defaultValue = Big ? new Big(0) : 0
     const size = [rows, cols]
 
     // check we need to return a matrix
     if (format) {
-      // get matrix storage constructor
-      const F = type.Matrix.storage(format)
       // create diagonal matrix (use optimized implementation for storage format)
-      return F.diagonal(size, one, 0, defaultValue)
+      if (format === 'sparse') {
+        return SparseMatrix.diagonal(size, one, 0, defaultValue)
+      }
+      if (format === 'dense') {
+        return DenseMatrix.diagonal(size, one, 0, defaultValue)
+      }
+      throw new TypeError(`Unknown matrix type "${format}"`)
     }
 
     // create and resize array
-    const res = array.resize([], size, defaultValue)
+    const res = resize([], size, defaultValue)
     // fill in ones on the diagonal
     const minimum = rows < cols ? rows : cols
     // fill diagonal
@@ -137,7 +147,4 @@ function factory (type, config, load, typed) {
     }
     return res
   }
-}
-
-exports.name = 'identity'
-exports.factory = factory
+})

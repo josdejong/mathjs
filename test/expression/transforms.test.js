@@ -1,7 +1,8 @@
 // test transforms
-const assert = require('assert')
-const math = require('../../src/main')
-const parse = math.expression.parse
+import assert from 'assert'
+import math from '../../src/bundleAny'
+
+const parse = math.parse
 
 describe('transforms', function () {
   describe('filter', function () {
@@ -16,7 +17,7 @@ describe('transforms', function () {
           return value > 1
         }
       }
-      const res = math.eval('filter(A, callback)', scope)
+      const res = math.evaluate('filter(A, callback)', scope)
       assert.deepStrictEqual(res, [2, 3])
 
       assert.deepStrictEqual(logs, [[1, [1]], [2, [2]], [3, [3]]])
@@ -62,7 +63,7 @@ describe('transforms', function () {
           return value + 1
         }
       }
-      const res = math.eval('map(A, callback)', scope)
+      const res = math.evaluate('map(A, callback)', scope)
       assert.deepStrictEqual(res, [2, 3, 4])
 
       assert.deepStrictEqual(logs, [[1, [1]], [2, [2]], [3, [3]]])
@@ -79,7 +80,7 @@ describe('transforms', function () {
           return value + 1
         }
       }
-      const res = math.eval('map(A, callback)', scope)
+      const res = math.evaluate('map(A, callback)', scope)
       assert.deepStrictEqual(res, math.matrix([2, 3, 4]))
 
       assert.deepStrictEqual(logs, [[1, [1]], [2, [2]], [3, [3]]])
@@ -127,7 +128,7 @@ describe('transforms', function () {
           logs.push([value, index])
         }
       }
-      math.eval('forEach(A, callback)', scope)
+      math.evaluate('forEach(A, callback)', scope)
 
       assert.deepStrictEqual(logs, [[1, [1]], [2, [2]], [3, [3]]])
     })
@@ -142,7 +143,7 @@ describe('transforms', function () {
           logs.push([value, index])
         }
       }
-      math.eval('forEach(A, callback)', scope)
+      math.evaluate('forEach(A, callback)', scope)
 
       assert.deepStrictEqual(logs, [[1, [1]], [2, [2]], [3, [3]]])
     })
@@ -183,5 +184,5 @@ describe('transforms', function () {
  * @return {*} result
  */
 function parseAndEval (expr, scope) {
-  return parse(expr).eval(scope)
+  return parse(expr).evaluate(scope)
 }

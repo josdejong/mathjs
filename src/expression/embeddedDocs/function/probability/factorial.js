@@ -1,4 +1,4 @@
-module.exports = {
+export const factorialDocs = {
   'name': 'factorial',
   'category': 'Probability',
   'syntax': [

@@ -1,8 +1,12 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'tan'
+const dependencies = ['typed']
+
+export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the tangent of a value. `tan(x)` is equal to `sin(x) / cos(x)`.
    *
@@ -26,7 +30,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Tangent of x
    */
-  const tan = typed('tan', {
+  const tan = typed(name, {
     'number': Math.tan,
 
     'Complex': function (x) {
@@ -38,7 +42,7 @@ function factory (type, config, load, typed) {
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function tan is no angle')
       }
       return tan(x.value)
@@ -50,10 +54,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  tan.toTex = { 1: `\\tan\\left(\${args[0]}\\right)` }
-
   return tan
-}
-
-exports.name = 'tan'
-exports.factory = factory
+})

@@ -1,20 +1,5 @@
 'use strict'
-module.exports = [
-  require('./derivative'),
 
-  // simplify
-  require('./simplify'),
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
 
-  // polynomial
-  require('./rationalize'),
-
-  // decomposition
-  require('./decomposition/qr'),
-  require('./decomposition/lup'),
-  require('./decomposition/slu'),
-
-  // solver
-  require('./solver/lsolve'),
-  require('./solver/lusolve'),
-  require('./solver/usolve')
-]
+deprecatedIndexFileError(__filename)

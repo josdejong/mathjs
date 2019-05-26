@@ -1,4 +1,4 @@
-module.exports = {
+export const zerosDocs = {
   'name': 'zeros',
   'category': 'Matrix',
   'syntax': [

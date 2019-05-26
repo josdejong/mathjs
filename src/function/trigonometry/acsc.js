@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { acscNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'acsc'
+const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
+
+export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex, BigNumber }) => {
   /**
    * Calculate the inverse cosecant of a value, defined as `acsc(x) = asin(1/x)`.
    *
@@ -26,12 +31,12 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x   Function input
    * @return {number | Complex | Array | Matrix} The arc cosecant of x
    */
-  const acsc = typed('acsc', {
+  const acsc = typed(name, {
     'number': function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
-        return Math.asin(1 / x)
+        return acscNumber(x)
       }
-      return new type.Complex(x, 0).acsc()
+      return new Complex(x, 0).acsc()
     },
 
     'Complex': function (x) {
@@ -39,7 +44,7 @@ function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).asin()
+      return new BigNumber(1).div(x).asin()
     },
 
     'Array | Matrix': function (x) {
@@ -47,10 +52,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  acsc.toTex = { 1: `\\csc^{-1}\\left(\${args[0]}\\right)` }
-
   return acsc
-}
-
-exports.name = 'acsc'
-exports.factory = factory
+})

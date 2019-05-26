@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { squareNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'square'
+const dependencies = ['typed']
+
+export const createSquare = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the square of a value, `x * x`.
    * For matrices, the function is evaluated element wise.
@@ -29,10 +34,8 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
    *            Squared value
    */
-  const square = typed('square', {
-    'number': function (x) {
-      return x * x
-    },
+  const square = typed(name, {
+    'number': squareNumber,
 
     'Complex': function (x) {
       return x.mul(x)
@@ -56,10 +59,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  square.toTex = { 1: `\\left(\${args[0]}\\right)^2` }
-
   return square
-}
-
-exports.name = 'square'
-exports.factory = factory
+})

@@ -1,82 +1,114 @@
 'use strict'
 
-const ArgumentsError = require('../error/ArgumentsError')
-const deepMap = require('../utils/collection/deepMap')
+import { factory } from '../utils/factory'
+import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is'
+import { deepMap } from '../utils/collection'
 
-function factory (type, config, load, typed) {
-  const numeric = load(require('../type/numeric'))
+const name = 'parse'
+const dependencies = [
+  'typed',
+  'numeric',
+  'config',
+  'AccessorNode',
+  'ArrayNode',
+  'AssignmentNode',
+  'BlockNode',
+  'ConditionalNode',
+  'ConstantNode',
+  'FunctionAssignmentNode',
+  'FunctionNode',
+  'IndexNode',
+  'ObjectNode',
+  'OperatorNode',
+  'ParenthesisNode',
+  'RangeNode',
+  'RelationalNode',
+  'SymbolNode'
+]
 
-  const AccessorNode = load(require('./node/AccessorNode'))
-  const ArrayNode = load(require('./node/ArrayNode'))
-  const AssignmentNode = load(require('./node/AssignmentNode'))
-  const BlockNode = load(require('./node/BlockNode'))
-  const ConditionalNode = load(require('./node/ConditionalNode'))
-  const ConstantNode = load(require('./node/ConstantNode'))
-  const FunctionAssignmentNode = load(require('./node/FunctionAssignmentNode'))
-  const IndexNode = load(require('./node/IndexNode'))
-  const ObjectNode = load(require('./node/ObjectNode'))
-  const OperatorNode = load(require('./node/OperatorNode'))
-  const ParenthesisNode = load(require('./node/ParenthesisNode'))
-  const FunctionNode = load(require('./node/FunctionNode'))
-  const RangeNode = load(require('./node/RangeNode'))
-  const RelationalNode = load(require('./node/RelationalNode'))
-  const SymbolNode = load(require('./node/SymbolNode'))
-
+export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
+  typed,
+  numeric,
+  config,
+  AccessorNode,
+  ArrayNode,
+  AssignmentNode,
+  BlockNode,
+  ConditionalNode,
+  ConstantNode,
+  FunctionAssignmentNode,
+  FunctionNode,
+  IndexNode,
+  ObjectNode,
+  OperatorNode,
+  ParenthesisNode,
+  RangeNode,
+  RelationalNode,
+  SymbolNode
+}) => {
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
-   * invoking node.eval().
+   * invoking node.evaluate().
+   *
+   * Note the evaluating arbitrary expressions may involve security risks,
+   * see [https://mathjs.org/docs/expressions/security.html](https://mathjs.org/docs/expressions/security.html) for more information.
    *
    * Syntax:
    *
-   *     parse(expr)
-   *     parse(expr, options)
-   *     parse([expr1, expr2, expr3, ...])
-   *     parse([expr1, expr2, expr3, ...], options)
+   *     math.parse(expr)
+   *     math.parse(expr, options)
+   *     math.parse([expr1, expr2, expr3, ...])
+   *     math.parse([expr1, expr2, expr3, ...], options)
    *
    * Example:
    *
-   *     const node = parse('sqrt(3^2 + 4^2)')
-   *     node.compile(math).eval() // 5
+   *     const node1 = math.parse('sqrt(3^2 + 4^2)')
+   *     node1.compile().evaluate() // 5
    *
    *     let scope = {a:3, b:4}
-   *     const node = parse('a * b') // 12
-   *     const code = node.compile(math)
-   *     code.eval(scope) // 12
+   *     const node2 = math.parse('a * b') // 12
+   *     const code2 = node2.compile()
+   *     code2.evaluate(scope) // 12
    *     scope.a = 5
-   *     code.eval(scope) // 20
+   *     code2.evaluate(scope) // 20
    *
    *     const nodes = math.parse(['a = 3', 'b = 4', 'a * b'])
-   *     nodes[2].compile(math).eval() // 12
+   *     nodes[2].compile().evaluate() // 12
    *
-   * @param {string | string[] | Matrix} expr
+   * See also:
+   *
+   *     evaluate, compile
+   *
+   * @param {string | string[] | Matrix} expr          Expression to be parsed
    * @param {{nodes: Object<string, Node>}} [options]  Available options:
    *                                                   - `nodes` a set of custom nodes
    * @return {Node | Node[]} node
    * @throws {Error}
    */
-  function parse (expr, options) {
-    if (arguments.length !== 1 && arguments.length !== 2) {
-      throw new ArgumentsError('parse', arguments.length, 1, 2)
-    }
+  const parse = typed(name, {
+    'string': function (expression) {
+      return parseStart(expression, {})
+    },
+    'Array | Matrix': function (expressions) {
+      return parseMultiple(expressions, {})
+    },
+    'string, Object': function (expression, options) {
+      const extraNodes = options.nodes !== undefined ? options.nodes : {}
 
-    // pass extra nodes
-    let extraNodes = (options && options.nodes) ? options.nodes : {}
+      return parseStart(expression, extraNodes)
+    },
+    'Array | Matrix, Object': parseMultiple
+  })
 
-    if (typeof expr === 'string') {
-      // parse a single expression
+  function parseMultiple (expressions, options = {}) {
+    const extraNodes = options.nodes !== undefined ? options.nodes : {}
 
-      return parseStart(expr, extraNodes)
-    } else if (Array.isArray(expr) || expr instanceof type.Matrix) {
-      // parse an array or matrix with expressions
-      return deepMap(expr, function (elem) {
-        if (typeof elem !== 'string') throw new TypeError('String expected')
+    // parse an array or matrix with expressions
+    return deepMap(expressions, function (elem) {
+      if (typeof elem !== 'string') throw new TypeError('String expected')
 
-        return parseStart(elem, extraNodes)
-      })
-    } else {
-      // oops
-      throw new TypeError('String or matrix expected')
-    }
+      return parseStart(elem, extraNodes)
+    })
   }
 
   // token types enumeration
@@ -585,25 +617,25 @@ function factory (type, config, load, typed) {
     const node = parseConditional(state)
 
     if (state.token === '=') {
-      if (type.isSymbolNode(node)) {
+      if (isSymbolNode(node)) {
         // parse a variable assignment like 'a = 2/3'
         name = node.name
         getTokenSkipNewline(state)
         value = parseAssignment(state)
         return new AssignmentNode(new SymbolNode(name), value)
-      } else if (type.isAccessorNode(node)) {
+      } else if (isAccessorNode(node)) {
         // parse a matrix subset assignment like 'A[1,2] = 4'
         getTokenSkipNewline(state)
         value = parseAssignment(state)
         return new AssignmentNode(node.object, node.index, value)
-      } else if (type.isFunctionNode(node) && type.isSymbolNode(node.fn)) {
+      } else if (isFunctionNode(node) && isSymbolNode(node.fn)) {
         // parse function assignment like 'f(x) = x^2'
         valid = true
         args = []
 
         name = node.name
         node.args.forEach(function (arg, index) {
-          if (type.isSymbolNode(arg)) {
+          if (isSymbolNode(arg)) {
             args[index] = arg.name
           } else {
             valid = false
@@ -976,10 +1008,10 @@ function factory (type, config, load, typed) {
 
     while (true) {
       if ((state.tokenType === TOKENTYPE.SYMBOL) ||
-          (state.token === 'in' && type.isConstantNode(node)) ||
+          (state.token === 'in' && isConstantNode(node)) ||
           (state.tokenType === TOKENTYPE.NUMBER &&
-              !type.isConstantNode(last) &&
-              (!type.isOperatorNode(last) || last.op === '!')) ||
+              !isConstantNode(last) &&
+              (!isOperatorNode(last) || last.op === '!')) ||
           (state.token === '(')) {
         // parse implicit multiplication
         //
@@ -1010,7 +1042,7 @@ function factory (type, config, load, typed) {
 
     while (true) {
       // Match the "number /" part of the pattern "number / number symbol"
-      if (state.token === '/' && type.isConstantNode(last)) {
+      if (state.token === '/' && isConstantNode(last)) {
         // Look ahead to see if the next token is a number
         tokenStates.push(Object.assign({}, state))
         getTokenSkipNewline(state)
@@ -1246,7 +1278,7 @@ function factory (type, config, load, typed) {
       params = []
 
       if (state.token === '(') {
-        if (type.isSymbolNode(node) || type.isAccessorNode(node)) {
+        if (isSymbolNode(node) || isAccessorNode(node)) {
           // function invocation like fn(2, 3) or obj.fn(2, 3)
           openParams(state)
           getToken(state)
@@ -1672,8 +1704,4 @@ function factory (type, config, load, typed) {
   }
 
   return parse
-}
-
-exports.name = 'parse'
-exports.path = 'expression'
-exports.factory = factory
+})

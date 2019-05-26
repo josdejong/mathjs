@@ -1,7 +1,24 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const distribution = load(require('./distribution'))
+import { factory } from '../../utils/factory'
+import { isMatrix } from '../../utils/is'
+import { createRng } from './util/seededRNG'
+import { randomMatrix } from './util/randomMatrix'
+
+const name = 'random'
+const dependencies = ['typed', 'config', '?on']
+
+export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, on }) => {
+  // seeded pseudo random number generator
+  let rng = createRng(config.randomSeed)
+
+  if (on) {
+    on('config', function (curr, prev) {
+      if (curr.randomSeed !== prev.randomSeed) {
+        rng = createRng(curr.randomSeed)
+      }
+    })
+  }
 
   /**
    * Return a random number larger or equal to `min` and smaller than `max`
@@ -33,13 +50,46 @@ function factory (type, config, load, typed) {
    * @param {number} [max]  Maximum boundary for the random value, excluded
    * @return {number | Array | Matrix} A random number
    */
-  // TODO: rework random to a typed-function
-  const random = distribution('uniform').random
+  return typed(name, {
+    '': () => _random(0, 1),
+    'number': (max) => _random(0, max),
+    'number, number': (min, max) => _random(min, max),
+    'Array | Matrix': (size) => _randomMatrix(size, 0, 1),
+    'Array | Matrix, number': (size, max) => _randomMatrix(size, 0, max),
+    'Array | Matrix, number, number': (size, min, max) => _randomMatrix(size, min, max)
+  })
 
-  random.toTex = undefined // use default template
+  function _randomMatrix (size, min, max) {
+    const res = randomMatrix(size.valueOf(), () => _random(min, max))
+    return isMatrix(size) ? size.create(res) : res
+  }
 
-  return random
-}
+  function _random (min, max) {
+    return min + rng() * (max - min)
+  }
+})
 
-exports.name = 'random'
-exports.factory = factory
+// number only implementation of random, no matrix support
+// TODO: there is quite some duplicate code in both createRandom and createRandomNumber, can we improve that?
+export const createRandomNumber = /* #__PURE__ */ factory(name, ['typed', 'config', '?on'], ({ typed, config, on, matrix }) => {
+  // seeded pseudo random number generator1
+  let rng = createRng(config.randomSeed)
+
+  if (on) {
+    on('config', function (curr, prev) {
+      if (curr.randomSeed !== prev.randomSeed) {
+        rng = createRng(curr.randomSeed)
+      }
+    })
+  }
+
+  return typed(name, {
+    '': () => _random(0, 1),
+    'number': (max) => _random(0, max),
+    'number, number': (min, max) => _random(min, max)
+  })
+
+  function _random (min, max) {
+    return min + rng() * (max - min)
+  }
+})

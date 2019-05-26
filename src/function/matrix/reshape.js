@@ -1,11 +1,12 @@
 'use strict'
 
-const array = require('../../utils/array')
+import { reshape as arrayReshape } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const isInteger = load(require('../utils/isInteger'))
+const name = 'reshape'
+const dependencies = ['typed', 'isInteger', 'matrix']
 
+export const createReshape = /* #__PURE__ */ factory(name, dependencies, ({ typed, isInteger, matrix }) => {
   /**
    * Reshape a multi dimensional array to fit the specified dimensions
    *
@@ -42,13 +43,13 @@ function factory (type, config, load, typed) {
    * @throws {DimensionError}       If the product of the new dimension sizes does
    *                                not equal that of the old ones
    */
-  const reshape = typed('reshape', {
+  return typed(name, {
 
     'Matrix, Array': function (x, sizes) {
       if (x.reshape) {
         return x.reshape(sizes)
       } else {
-        return matrix(array.reshape(x.valueOf(), sizes))
+        return matrix(arrayReshape(x.valueOf(), sizes))
       }
     },
 
@@ -58,15 +59,8 @@ function factory (type, config, load, typed) {
           throw new TypeError('Invalid size for dimension: ' + size)
         }
       })
-      return array.reshape(x, sizes)
+      return arrayReshape(x, sizes)
     }
 
   })
-
-  reshape.toTex = undefined // use default template
-
-  return reshape
-}
-
-exports.name = 'reshape'
-exports.factory = factory
+})

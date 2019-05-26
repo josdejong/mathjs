@@ -1,4 +1,4 @@
-module.exports = {
+export const importDocs = {
   'name': 'import',
   'category': 'Core',
   'syntax': [

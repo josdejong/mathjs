@@ -1,11 +1,13 @@
 'use strict'
 
-const deepForEach = require('../../utils/collection/deepForEach')
+import { deepForEach } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
-function factory (type, config, load, typed) {
-  const multiply = load(require('../arithmetic/multiplyScalar'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'prod'
+const dependencies = ['typed', 'multiply']
 
+export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, multiply }) => {
   /**
    * Compute the product of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all
@@ -26,12 +28,12 @@ function factory (type, config, load, typed) {
    *
    * See also:
    *
-   *    mean, median, min, max, sum, std, var
+   *    mean, median, min, max, sum, std, variance
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The product of all values
    */
-  const prod = typed('prod', {
+  return typed(name, {
     // prod([a, b, c, d, ...])
     'Array | Matrix': _prod,
 
@@ -47,10 +49,6 @@ function factory (type, config, load, typed) {
       return _prod(args)
     }
   })
-
-  prod.toTex = undefined // use default template
-
-  return prod
 
   /**
    * Recursively calculate the product of an n-dimensional array
@@ -75,7 +73,4 @@ function factory (type, config, load, typed) {
 
     return prod
   }
-}
-
-exports.name = 'prod'
-exports.factory = factory
+})

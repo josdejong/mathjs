@@ -1,9 +1,15 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const compareText = load(require('./compareText'))
-  const isZero = load(require('../utils/isZero'))
+import { factory } from '../../utils/factory'
 
+const name = 'equalText'
+const dependencies = [
+  'typed',
+  'compareText',
+  'isZero'
+]
+
+export const createEqualText = /* #__PURE__ */ factory(name, dependencies, ({ typed, compareText, isZero }) => {
   /**
    * Check equality of two strings. Comparison is case sensitive.
    *
@@ -30,18 +36,9 @@ function factory (type, config, load, typed) {
    * @param  {string | Array | DenseMatrix} y Second string to compare
    * @return {number | Array | DenseMatrix} Returns true if the values are equal, and false if not.
    */
-  const equalText = typed('equalText', {
-
+  return typed(name, {
     'any, any': function (x, y) {
       return isZero(compareText(x, y))
     }
-
   })
-
-  equalText.toTex = undefined // use default template
-
-  return equalText
-}
-
-exports.name = 'equalText'
-exports.factory = factory
+})

@@ -1,12 +1,29 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const combinations = load(require('../probability/combinations'))
-  const add = load(require('../arithmetic/addScalar'))
-  const isPositive = load(require('../utils/isPositive'))
-  const isInteger = load(require('../utils/isInteger'))
-  const larger = load(require('../relational/larger'))
+import { factory } from '../../utils/factory'
 
+const name = 'composition'
+const dependencies = [
+  'typed',
+  'addScalar',
+  'combinations',
+  'isNegative',
+  'isPositive',
+  'isInteger',
+  'larger'
+]
+
+export const createComposition = /* #__PURE__ */ factory(name, dependencies, (
+  {
+    typed,
+    addScalar,
+    combinations,
+    isPositive,
+    isNegative,
+    isInteger,
+    larger
+  }
+) => {
   /**
    * The composition counts of n into k parts.
    *
@@ -29,7 +46,7 @@ function factory (type, config, load, typed) {
    * @param {Number | BigNumber} k    Number of objects in the subset
    * @return {Number | BigNumber}     Returns the composition counts of n into k parts.
    */
-  const composition = typed('composition', {
+  return typed(name, {
     'number | BigNumber, number | BigNumber': function (n, k) {
       if (!isInteger(n) || !isPositive(n) || !isInteger(k) || !isPositive(k)) {
         throw new TypeError('Positive integer value expected in function composition')
@@ -37,14 +54,7 @@ function factory (type, config, load, typed) {
         throw new TypeError('k must be less than or equal to n in function composition')
       }
 
-      return combinations(add(n, -1), add(k, -1))
+      return combinations(addScalar(n, -1), addScalar(k, -1))
     }
   })
-
-  composition.toTex = undefined // use default template
-
-  return composition
-}
-
-exports.name = 'composition'
-exports.factory = factory
+})

@@ -1,12 +1,16 @@
 'use strict'
 
-const forEach = require('../../utils/array').forEach
-const map = require('../../utils/array').map
+import { isNode } from '../../utils/is'
+import { forEach, map } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const ResultSet = load(require('../../type/resultset/ResultSet'))
+const name = 'BlockNode'
+const dependencies = [
+  'ResultSet',
+  'Node'
+]
 
+export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ ResultSet, Node }) => {
   /**
    * @constructor BlockNode
    * @extends {Node}
@@ -27,7 +31,7 @@ function factory (type, config, load, typed) {
       const node = block && block.node
       const visible = block && block.visible !== undefined ? block.visible : true
 
-      if (!type.isNode(node)) throw new TypeError('Property "node" must be a Node')
+      if (!isNode(node)) throw new TypeError('Property "node" must be a Node')
       if (typeof visible !== 'boolean') throw new TypeError('Property "visible" must be a boolean')
 
       return {
@@ -59,7 +63,7 @@ function factory (type, config, load, typed) {
   BlockNode.prototype._compile = function (math, argNames) {
     const evalBlocks = map(this.blocks, function (block) {
       return {
-        eval: block.node._compile(math, argNames),
+        evaluate: block.node._compile(math, argNames),
         visible: block.visible
       }
     })
@@ -68,7 +72,7 @@ function factory (type, config, load, typed) {
       const results = []
 
       forEach(evalBlocks, function evalBlockNode (block) {
-        const result = block.eval(scope, args, context)
+        const result = block.evaluate(scope, args, context)
         if (block.visible) {
           results.push(result)
         }
@@ -180,8 +184,4 @@ function factory (type, config, load, typed) {
   }
 
   return BlockNode
-}
-
-exports.name = 'BlockNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

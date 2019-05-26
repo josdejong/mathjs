@@ -1,11 +1,13 @@
 'use strict'
 
-const clone = require('../../utils/object').clone
-const _flatten = require('../../utils/array').flatten
+import { clone } from '../../utils/object'
+import { flatten as flattenArray } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'flatten'
+const dependencies = ['typed', 'matrix']
 
+export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Flatten a multi dimensional matrix into a single dimensional matrix.
    *
@@ -24,22 +26,15 @@ function factory (type, config, load, typed) {
    * @param {Matrix | Array} x   Matrix to be flattened
    * @return {Matrix | Array} Returns the flattened matrix
    */
-  const flatten = typed('flatten', {
+  return typed(name, {
     'Array': function (x) {
-      return _flatten(clone(x))
+      return flattenArray(clone(x))
     },
 
     'Matrix': function (x) {
-      const flat = _flatten(clone(x.toArray()))
+      const flat = flattenArray(clone(x.toArray()))
       // TODO: return the same matrix type as x
       return matrix(flat)
     }
   })
-
-  flatten.toTex = undefined // use default template
-
-  return flatten
-}
-
-exports.name = 'flatten'
-exports.factory = factory
+})

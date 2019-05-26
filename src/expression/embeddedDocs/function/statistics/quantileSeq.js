@@ -1,4 +1,4 @@
-module.exports = {
+export const quantileSeqDocs = {
   'name': 'quantileSeq',
   'category': 'Statistics',
   'syntax': [
@@ -21,6 +21,6 @@ module.exports = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

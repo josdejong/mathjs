@@ -1,23 +1,43 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../../type/matrix/function/matrix'))
-  const zeros = load(require('../../matrix/zeros'))
-  const identity = load(require('../../matrix/identity'))
+import { factory } from '../../../utils/factory'
 
-  const isZero = load(require('../../utils/isZero'))
-  const unequal = load(require('../../relational/unequal'))
+const name = 'qr'
+const dependencies = [
+  'typed',
+  'matrix',
+  'zeros',
+  'identity',
+  'isZero',
+  'unequal',
+  'sign',
+  'sqrt',
+  'conj',
+  'unaryMinus',
+  'addScalar',
+  'divideScalar',
+  'multiplyScalar',
+  'subtract'
+]
 
-  const sign = load(require('../../arithmetic/sign'))
-  const sqrt = load(require('../../arithmetic/sqrt'))
-  const conj = load(require('../../complex/conj'))
-
-  const unaryMinus = load(require('../../arithmetic/unaryMinus'))
-  const addScalar = load(require('../../arithmetic/addScalar'))
-  const divideScalar = load(require('../../arithmetic/divideScalar'))
-  const multiplyScalar = load(require('../../arithmetic/multiplyScalar'))
-  const subtract = load(require('../../arithmetic/subtract'))
-
+export const createQr = /* #__PURE__ */ factory(name, dependencies, (
+  {
+    typed,
+    matrix,
+    zeros,
+    identity,
+    isZero,
+    unequal,
+    sign,
+    sqrt,
+    conj,
+    unaryMinus,
+    addScalar,
+    divideScalar,
+    multiplyScalar,
+    subtract
+  }
+) => {
   /**
    * Calculate the Matrix QR decomposition. Matrix `A` is decomposed in
    * two matrices (`Q`, `R`) where `Q` is an
@@ -61,7 +81,7 @@ function factory (type, config, load, typed) {
    * @return {{Q: Array | Matrix, R: Array | Matrix}} Q: the orthogonal
    * matrix and R: the upper triangular matrix
    */
-  const qr = typed('qr', {
+  return typed(name, {
 
     'DenseMatrix': function (m) {
       return _denseQR(m)
@@ -238,9 +258,4 @@ function factory (type, config, load, typed) {
   function _sparseQR (m) {
     throw new Error('qr not implemented for sparse matrices yet')
   }
-
-  return qr
-}
-
-exports.name = 'qr'
-exports.factory = factory
+})

@@ -1,16 +1,21 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { factory } from '../../utils/factory'
+import { flatten } from '../../utils/array'
 
-function factory (type, config, load, typed) {
-  const abs = load(require('./abs'))
-  const add = load(require('./addScalar'))
-  const divide = load(require('./divideScalar'))
-  const multiply = load(require('./multiplyScalar'))
-  const sqrt = load(require('./sqrt'))
-  const smaller = load(require('../relational/smaller'))
-  const isPositive = load(require('../utils/isPositive'))
+const name = 'hypot'
+const dependencies = [
+  'typed',
+  'abs',
+  'addScalar',
+  'divideScalar',
+  'multiplyScalar',
+  'sqrt',
+  'smaller',
+  'isPositive'
+]
 
+export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, addScalar, divideScalar, multiplyScalar, sqrt, smaller, isPositive }) => {
   /**
    * Calculate the hypotenusa of a list with values. The hypotenusa is defined as:
    *
@@ -39,7 +44,7 @@ function factory (type, config, load, typed) {
    *                                                          single number for the whole matrix.
    * @return {number | BigNumber} Returns the hypothenusa of the input values.
    */
-  const hypot = typed('hypot', {
+  const hypot = typed(name, {
     '... number | BigNumber': _hypot,
 
     'Array': function (x) {
@@ -66,21 +71,21 @@ function factory (type, config, load, typed) {
     for (let i = 0; i < args.length; i++) {
       const value = abs(args[i])
       if (smaller(largest, value)) {
-        result = multiply(result, multiply(divide(largest, value), divide(largest, value)))
-        result = add(result, 1)
+        result = multiplyScalar(result,
+          multiplyScalar(divideScalar(largest, value), divideScalar(largest, value)))
+        result = addScalar(result, 1)
         largest = value
       } else {
-        result = add(result, isPositive(value) ? multiply(divide(value, largest), divide(value, largest)) : value)
+        result = addScalar(result, isPositive(value)
+          ? multiplyScalar(divideScalar(value, largest), divideScalar(value, largest))
+          : value)
       }
     }
 
-    return multiply(largest, sqrt(result))
+    return multiplyScalar(largest, sqrt(result))
   }
 
-  hypot.toTex = `\\hypot\\left(\${args}\\right)`
-
   return hypot
-}
+})
 
-exports.name = 'hypot'
-exports.factory = factory
+createHypot.factory = { name, dependencies }

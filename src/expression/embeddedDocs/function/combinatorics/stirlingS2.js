@@ -1,4 +1,4 @@
-module.exports = {
+export const stirlingS2Docs = {
   'name': 'stirlingS2',
   'category': 'Combinatorics',
   'syntax': [

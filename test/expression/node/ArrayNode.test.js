@@ -1,10 +1,11 @@
 // test ArrayNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RangeNode = math.expression.node.RangeNode
-const ArrayNode = math.expression.node.ArrayNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RangeNode = math.RangeNode
+const ArrayNode = math.ArrayNode
 
 describe('ArrayNode', function () {
   it('should create an ArrayNode', function () {
@@ -37,8 +38,8 @@ describe('ArrayNode', function () {
     const a = new ArrayNode([c])
     const b = new ArrayNode()
 
-    assert.deepStrictEqual(a.compile().eval(), math.matrix([1]))
-    assert.deepStrictEqual(b.compile().eval(), math.matrix([]))
+    assert.deepStrictEqual(a.compile().evaluate(), math.matrix([1]))
+    assert.deepStrictEqual(b.compile().evaluate(), math.matrix([]))
   })
 
   it('should compile an ArrayNode and evaluate as Matrix', function () {
@@ -49,18 +50,18 @@ describe('ArrayNode', function () {
     const n = new ArrayNode([a, b, c, d])
 
     const expr = n.compile()
-    assert.deepStrictEqual(expr.eval(), math.matrix([1, 2, 3, 4]))
+    assert.deepStrictEqual(expr.evaluate(), math.matrix([1, 2, 3, 4]))
   })
 
   it('should compile an ArrayNode and evaluate as Array', function () {
     const mathArray = math.create({ matrix: 'Array' })
-    const a = new mathArray.expression.node.ConstantNode(1)
-    const b = new mathArray.expression.node.ConstantNode(2)
-    const c = new mathArray.expression.node.ConstantNode(3)
-    const d = new mathArray.expression.node.ConstantNode(4)
-    const n = new mathArray.expression.node.ArrayNode([a, b, c, d])
+    const a = new mathArray.ConstantNode(1)
+    const b = new mathArray.ConstantNode(2)
+    const c = new mathArray.ConstantNode(3)
+    const d = new mathArray.ConstantNode(4)
+    const n = new mathArray.ArrayNode([a, b, c, d])
     const expr = n.compile()
-    assert.deepStrictEqual(expr.eval(), [1, 2, 3, 4])
+    assert.deepStrictEqual(expr.evaluate(), [1, 2, 3, 4])
   })
 
   it('should compile nested ArrayNodes', function () {
@@ -74,7 +75,7 @@ describe('ArrayNode', function () {
     const n4 = new ArrayNode([n2, n3])
 
     const expr = n4.compile()
-    assert.deepStrictEqual(expr.eval(), math.matrix([[1, 2], [3, 4]]))
+    assert.deepStrictEqual(expr.evaluate(), math.matrix([[1, 2], [3, 4]]))
   })
 
   it('should find an ArrayNode', function () {
@@ -261,7 +262,7 @@ describe('ArrayNode', function () {
         string += ']'
         return string
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -314,7 +315,7 @@ describe('ArrayNode', function () {
         latex += '\\right]'
         return latex
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

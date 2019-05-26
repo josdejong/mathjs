@@ -1,14 +1,12 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
-  const DenseMatrix = load(require('../../type/matrix/DenseMatrix'))
-  const size = load(require('../matrix/size'))
-  const subset = load(require('../matrix/subset'))
-  const compareNatural = load(require('../relational/compareNatural'))
+const name = 'setDistinct'
+const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix']
 
+export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index, DenseMatrix }) => {
   /**
    * Collect the distinct elements of a multiset.
    * A multi-dimension array will be converted to a single-dimension array before the operation.
@@ -28,10 +26,10 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a  A multiset
    * @return {Array | Matrix}    A set containing the distinc elements of the multiset
    */
-  const setDistinct = typed('setDistinct', {
+  return typed(name, {
     'Array | Matrix': function (a) {
       let result
-      if (subset(size(a), new MatrixIndex(0)) === 0) { // if empty, return empty
+      if (subset(size(a), new Index(0)) === 0) { // if empty, return empty
         result = []
       } else {
         const b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
@@ -51,9 +49,4 @@ function factory (type, config, load, typed) {
       return new DenseMatrix(result)
     }
   })
-
-  return setDistinct
-}
-
-exports.name = 'setDistinct'
-exports.factory = factory
+})

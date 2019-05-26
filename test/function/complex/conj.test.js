@@ -1,5 +1,5 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
 const conj = math.conj
 
 describe('conj', function () {

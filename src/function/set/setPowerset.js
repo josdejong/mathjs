@@ -1,13 +1,12 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
-  const size = load(require('../matrix/size'))
-  const subset = load(require('../matrix/subset'))
-  const compareNatural = load(require('../relational/compareNatural'))
+const name = 'setPowerset'
+const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index']
 
+export const createSetPowerset = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index }) => {
   /**
    * Create the powerset of a (multi)set. (The powerset contains very possible subsets of a (multi)set.)
    * A multi-dimension array will be converted to a single-dimension array before the operation.
@@ -27,9 +26,9 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a  A (multi)set
    * @return {Array}    The powerset of the (multi)set
    */
-  const setPowerset = typed('setPowerset', {
+  return typed(name, {
     'Array | Matrix': function (a) {
-      if (subset(size(a), new MatrixIndex(0)) === 0) { // if empty, return empty
+      if (subset(size(a), new Index(0)) === 0) { // if empty, return empty
         return []
       }
       const b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
@@ -43,8 +42,6 @@ function factory (type, config, load, typed) {
       return _sort(result)
     }
   })
-
-  return setPowerset
 
   // create subset
   function _subset (array, bitarray) {
@@ -71,7 +68,4 @@ function factory (type, config, load, typed) {
     }
     return array
   }
-}
-
-exports.name = 'setPowerset'
-exports.factory = factory
+})

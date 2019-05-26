@@ -1,7 +1,13 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const getArrayDataType = load(require('../../type/matrix/utils/getArrayDataType'))
+import { factory } from '../../utils/factory'
+import { getArrayDataType } from '../../utils/array'
+import { typeOf } from '../../utils/is'
+
+const name = 'getMatrixDataType'
+const dependencies = ['typed']
+
+export const createGetMatrixDataType = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Find the data type of all elements in a matrix or array,
    * for example 'number' if all items are a number and 'Complex' if all values
@@ -36,16 +42,12 @@ function factory (type, config, load, typed) {
    *
    * @return {string} A string representation of the matrix type
    */
-  const getMatrixDataType = typed('getMatrixDataType', {
+  return typed(name, {
     'Array': function (x) {
-      return getArrayDataType(x)
+      return getArrayDataType(x, typeOf)
     },
     'Matrix': function (x) {
       return x.getDataType()
     }
   })
-  return getMatrixDataType
-}
-
-exports.name = 'getMatrixDataType'
-exports.factory = factory
+})

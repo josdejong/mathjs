@@ -1,8 +1,12 @@
 'use strict'
 
-const deepMap = require('./../utils/collection/deepMap')
+import { factory } from '../utils/factory'
+import { deepMap } from '../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'boolean'
+const dependencies = ['typed']
+
+export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Create a boolean or convert a string or number to a boolean.
    * In case of a number, `true` is returned for non-zero numbers, and `false` in
@@ -30,7 +34,7 @@ function factory (type, config, load, typed) {
    * @param {string | number | boolean | Array | Matrix | null} value  A value of any type
    * @return {boolean | Array | Matrix} The boolean value
    */
-  const bool = typed('bool', {
+  const bool = typed(name, {
     '': function () {
       return false
     },
@@ -75,7 +79,4 @@ function factory (type, config, load, typed) {
   })
 
   return bool
-}
-
-exports.name = 'boolean'
-exports.factory = factory
+})

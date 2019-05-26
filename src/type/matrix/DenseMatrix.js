@@ -1,24 +1,19 @@
 'use strict'
 
-const util = require('../../utils/index')
-const DimensionError = require('../../error/DimensionError')
+import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
+import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array'
+import { format } from '../../utils/string'
+import { isInteger } from '../../utils/number'
+import { clone, deepStrictEqual } from '../../utils/object'
+import { DimensionError } from '../../error/DimensionError'
+import { factory } from '../../utils/factory'
 
-const string = util.string
-const array = util.array
-const object = util.object
-const number = util.number
+const name = 'DenseMatrix'
+const dependencies = [
+  'Matrix'
+]
 
-const isArray = Array.isArray
-const isNumber = number.isNumber
-const isInteger = number.isInteger
-const isString = string.isString
-
-const validateIndex = array.validateIndex
-
-function factory (type, config, load, typed) {
-  const getArrayDataType = load(require('./utils/getArrayDataType'))
-  const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
-
+export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ Matrix }) => {
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
    * @class DenseMatrix
@@ -27,12 +22,12 @@ function factory (type, config, load, typed) {
     if (!(this instanceof DenseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
     if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }
 
-    if (type.isMatrix(data)) {
+    if (isMatrix(data)) {
       // check data is a DenseMatrix
       if (data.type === 'DenseMatrix') {
         // clone data & size
-        this._data = object.clone(data._data)
-        this._size = object.clone(data._size)
+        this._data = clone(data._data)
+        this._size = clone(data._size)
         this._datatype = datatype || data._datatype
       } else {
         // build data from existing matrix
@@ -49,14 +44,14 @@ function factory (type, config, load, typed) {
       // replace nested Matrices with Arrays
       this._data = preprocess(data)
       // get the dimensions of the array
-      this._size = array.size(this._data)
+      this._size = arraySize(this._data)
       // verify the dimensions of the array, TODO: compute size while processing array
-      array.validate(this._data, this._size)
+      validate(this._data, this._size)
       // data type unknown
       this._datatype = datatype
     } else if (data) {
       // unsupported type
-      throw new TypeError('Unsupported type of data (' + util.types.type(data) + ')')
+      throw new TypeError('Unsupported type of data (' + typeOf(data) + ')')
     } else {
       // nothing provided
       this._data = []
@@ -66,6 +61,13 @@ function factory (type, config, load, typed) {
   }
 
   DenseMatrix.prototype = new Matrix()
+
+  /**
+   * Create a new DenseMatrix
+   */
+  DenseMatrix.prototype.createDenseMatrix = function (data, datatype) {
+    return new DenseMatrix(data, datatype)
+  }
 
   /**
    * Attach type information
@@ -83,7 +85,7 @@ function factory (type, config, load, typed) {
    * @return {string}   type information; if multiple types are found from the Matrix, it will return "mixed"
    */
   DenseMatrix.prototype.getDataType = function () {
-    return getArrayDataType(this._data)
+    return getArrayDataType(this._data, typeOf)
   }
 
   /**
@@ -131,7 +133,7 @@ function factory (type, config, load, typed) {
    *
    * @memberof DenseMatrix
    * @param {Index} index
-   * @param {Array | DenseMatrix | *} [replacement]
+   * @param {Array | Matrix | *} [replacement]
    * @param {*} [defaultValue=0]      Default value, filled in on new entries when
    *                                  the matrix is resized. If not provided,
    *                                  new matrix elements will be filled with zeros.
@@ -220,7 +222,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _get (matrix, index) {
-    if (!type.isIndex(index)) {
+    if (!isIndex(index)) {
       throw new TypeError('Invalid index')
     }
 
@@ -301,11 +303,11 @@ function factory (type, config, load, typed) {
 
     // calculate the size of the submatrix, and convert it into an Array if needed
     let sSize
-    if (type.isMatrix(submatrix)) {
+    if (isMatrix(submatrix)) {
       sSize = submatrix.size()
       submatrix = submatrix.valueOf()
     } else {
-      sSize = array.size(submatrix)
+      sSize = arraySize(submatrix)
     }
 
     if (isScalar) {
@@ -338,11 +340,11 @@ function factory (type, config, load, typed) {
         }
 
         // unsqueeze both outer and inner dimensions
-        submatrix = array.unsqueeze(submatrix, iSize.length, outer, sSize)
+        submatrix = unsqueeze(submatrix, iSize.length, outer, sSize)
       }
 
       // check whether the size of the submatrix matches the index size
-      if (!object.deepEqual(iSize, sSize)) {
+      if (!deepStrictEqual(iSize, sSize)) {
         throw new DimensionError(iSize, sSize, '>')
       }
 
@@ -424,7 +426,7 @@ function factory (type, config, load, typed) {
     }
     // resize matrix
     matrix._size = size.slice(0) // copy the array
-    matrix._data = array.resize(matrix._data, matrix._size, defaultValue)
+    matrix._data = resize(matrix._data, matrix._size, defaultValue)
     // return matrix
     return matrix
   }
@@ -446,7 +448,7 @@ function factory (type, config, load, typed) {
   DenseMatrix.prototype.reshape = function (size, copy) {
     const m = copy ? this.clone() : this
 
-    m._data = array.reshape(m._data, size)
+    m._data = reshape(m._data, size)
     m._size = size.slice(0)
     return m
   }
@@ -493,8 +495,8 @@ function factory (type, config, load, typed) {
    */
   DenseMatrix.prototype.clone = function () {
     const m = new DenseMatrix({
-      data: object.clone(this._data),
-      size: object.clone(this._size),
+      data: clone(this._data),
+      size: clone(this._size),
       datatype: this._datatype
     })
     return m
@@ -534,7 +536,7 @@ function factory (type, config, load, typed) {
     // return dense format
     return new DenseMatrix({
       data: recurse(this._data, []),
-      size: object.clone(this._size),
+      size: clone(this._size),
       datatype: this._datatype
     })
   }
@@ -567,7 +569,7 @@ function factory (type, config, load, typed) {
    * @returns {Array} array
    */
   DenseMatrix.prototype.toArray = function () {
-    return object.clone(this._data)
+    return clone(this._data)
   }
 
   /**
@@ -589,7 +591,7 @@ function factory (type, config, load, typed) {
    * @returns {string} str
    */
   DenseMatrix.prototype.format = function (options) {
-    return string.format(this._data, options)
+    return format(this._data, options)
   }
 
   /**
@@ -598,7 +600,7 @@ function factory (type, config, load, typed) {
    * @returns {string} str
    */
   DenseMatrix.prototype.toString = function () {
-    return string.format(this._data)
+    return format(this._data)
   }
 
   /**
@@ -621,13 +623,13 @@ function factory (type, config, load, typed) {
    * @memberof DenseMatrix
    * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will retrieved.
    *
-   * @returns {Array}                      The array vector with the diagonal values.
+   * @returns {Matrix}                     The matrix with the diagonal values.
    */
   DenseMatrix.prototype.diagonal = function (k) {
     // validate k if any
     if (k) {
       // convert BigNumber to a number
-      if (type.isBigNumber(k)) { k = k.toNumber() }
+      if (isBigNumber(k)) { k = k.toNumber() }
       // is must be an integer
       if (!isNumber(k) || !isInteger(k)) {
         throw new TypeError('The parameter k must be an integer number')
@@ -667,21 +669,22 @@ function factory (type, config, load, typed) {
    * Create a diagonal matrix.
    *
    * @memberof DenseMatrix
-   * @param {Array} size                   The matrix size.
-   * @param {number | Array} value          The values for the diagonal.
-   * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will be filled in.
-   * @param {number} [defaultValue]        The default value for non-diagonal
+   * @param {Array} size                     The matrix size.
+   * @param {number | Matrix | Array } value The values for the diagonal.
+   * @param {number | BigNumber} [k=0]       The kth diagonal where the vector will be filled in.
+   * @param {number} [defaultValue]          The default value for non-diagonal
+   * @param {string} [datatype]              The datatype for the diagonal
    *
    * @returns {DenseMatrix}
    */
-  DenseMatrix.diagonal = function (size, value, k, defaultValue, datatype) {
+  DenseMatrix.diagonal = function (size, value, k, defaultValue) {
     if (!isArray(size)) { throw new TypeError('Array expected, size parameter') }
     if (size.length !== 2) { throw new Error('Only two dimensions matrix are supported') }
 
     // map size & validate
     size = size.map(function (s) {
       // check it is a big number
-      if (type.isBigNumber(s)) {
+      if (isBigNumber(s)) {
         // convert it
         s = s.toNumber()
       }
@@ -695,7 +698,7 @@ function factory (type, config, load, typed) {
     // validate k if any
     if (k) {
       // convert BigNumber to a number
-      if (type.isBigNumber(k)) { k = k.toNumber() }
+      if (isBigNumber(k)) { k = k.toNumber() }
       // is must be an integer
       if (!isNumber(k) || !isInteger(k)) {
         throw new TypeError('The parameter k must be an integer number')
@@ -703,11 +706,6 @@ function factory (type, config, load, typed) {
     } else {
       // default value
       k = 0
-    }
-
-    if (defaultValue && isString(datatype)) {
-      // convert defaultValue to the same datatype
-      defaultValue = typed.convert(defaultValue, datatype)
     }
 
     const kSuper = k > 0 ? k : 0
@@ -735,7 +733,7 @@ function factory (type, config, load, typed) {
         // return value @ i
         return value[i]
       }
-    } else if (type.isMatrix(value)) {
+    } else if (isMatrix(value)) {
       // matrix size
       const ms = value.size()
       // validate matrix
@@ -759,7 +757,9 @@ function factory (type, config, load, typed) {
     // discover default value if needed
     if (!defaultValue) {
       // check first value in array
-      defaultValue = type.isBigNumber(_value(0)) ? new type.BigNumber(0) : 0
+      defaultValue = isBigNumber(_value(0))
+        ? _value(0).mul(0) // trick to create a BigNumber with value zero
+        : 0
     }
 
     // empty array
@@ -768,7 +768,7 @@ function factory (type, config, load, typed) {
     // check we need to resize array
     if (size.length > 0) {
       // resize array
-      data = array.resize(data, size, defaultValue)
+      data = resize(data, size, defaultValue)
       // fill diagonal
       for (let d = 0; d < n; d++) {
         data[d + kSub][d + kSuper] = _value(d)
@@ -827,6 +827,7 @@ function factory (type, config, load, typed) {
    *
    * @param {number} i       Matrix row index 1
    * @param {number} j       Matrix row index 2
+   * @param {Array} data     Matrix data
    */
   DenseMatrix._swapRows = function (i, j, data) {
     // swap values i <-> j
@@ -855,15 +856,5 @@ function factory (type, config, load, typed) {
     return data
   }
 
-  // register this type in the base class Matrix
-  type.Matrix._storage.dense = DenseMatrix
-  type.Matrix._storage['default'] = DenseMatrix
-
-  // exports
   return DenseMatrix
-}
-
-exports.name = 'DenseMatrix'
-exports.path = 'type'
-exports.factory = factory
-exports.lazy = false // no lazy loading, as we alter type.Matrix._storage
+}, { isClass: true })

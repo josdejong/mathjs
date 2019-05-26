@@ -1,4 +1,4 @@
-module.exports = {
+export const splitUnitDocs = {
   'name': 'splitUnit',
   'category': 'Construction',
   'syntax': [

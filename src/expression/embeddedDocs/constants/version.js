@@ -1,4 +1,4 @@
-module.exports = {
+export const versionDocs = {
   'name': 'version',
   'category': 'Constants',
   'syntax': [

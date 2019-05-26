@@ -1,6 +1,7 @@
 // test unary plus
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const fraction = math.fraction
 
@@ -31,11 +32,11 @@ describe('unaryPlus', function () {
   it('should return bignumber unary plus on a string', function () {
     const bigmath = math.create({ number: 'BigNumber' })
     const a = bigmath.unaryPlus('2')
-    assert(a instanceof math.type.BigNumber)
+    assert(a instanceof math.BigNumber)
     assert.deepStrictEqual(a.toString(), '2')
 
     const b = bigmath.unaryPlus('-2')
-    assert(b instanceof math.type.BigNumber)
+    assert(b instanceof math.BigNumber)
     assert.deepStrictEqual(b.toString(), '-2')
   })
 
@@ -53,7 +54,7 @@ describe('unaryPlus', function () {
 
   it('should perform unary plus of a fraction', function () {
     const a = fraction(0.5)
-    assert(math.unaryPlus(a) instanceof math.type.Fraction)
+    assert(math.unaryPlus(a) instanceof math.Fraction)
     assert.strictEqual(a.toString(), '0.5')
 
     assert.strictEqual(math.unaryPlus(fraction(0.5)).toString(), '0.5')
@@ -74,7 +75,7 @@ describe('unaryPlus', function () {
   it('should perform element-wise unary plus on a matrix', function () {
     const a2 = math.matrix([[1, 2], [3, 4]])
     const a7 = math.unaryPlus(a2)
-    assert.ok(a7 instanceof math.type.Matrix)
+    assert.ok(a7 instanceof math.Matrix)
     assert.deepStrictEqual(a7.size(), [2, 2])
     assert.deepStrictEqual(a7.valueOf(), [[1, 2], [3, 4]])
     assert.deepStrictEqual(math.unaryPlus([[1, 2], [3, 4]]), [[1, 2], [3, 4]])

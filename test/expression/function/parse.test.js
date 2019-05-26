@@ -1,13 +1,14 @@
 // test parse
-const assert = require('assert')
-const math = require('../../../src/main')
-const Node = math.expression.node.Node
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
 
 describe('parse', function () {
   it('should parse an expression', function () {
     const node = math.parse('(5+3)/4')
     assert.ok(node instanceof Node)
-    assert.strictEqual(node.compile().eval(), 2)
+    assert.strictEqual(node.compile().evaluate(), 2)
   })
 
   it('should parse multiple expressions', function () {
@@ -17,8 +18,8 @@ describe('parse', function () {
 
     assert.ok(nodes[0] instanceof Node)
     assert.ok(nodes[1] instanceof Node)
-    assert.strictEqual(nodes[0].compile().eval(), 5)
-    assert.strictEqual(nodes[1].compile().eval(), 9)
+    assert.strictEqual(nodes[0].compile().evaluate(), 5)
+    assert.strictEqual(nodes[1].compile().evaluate(), 9)
   })
 
   it('should LaTeX parse', function () {

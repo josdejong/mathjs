@@ -1,8 +1,8 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const BigNumber = math.type.BigNumber
-const DenseMatrix = math.type.DenseMatrix
-const Complex = math.type.Complex
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+const BigNumber = math.BigNumber
+const DenseMatrix = math.DenseMatrix
+const Complex = math.Complex
 const mad = math.mad
 
 describe('mad', function () {

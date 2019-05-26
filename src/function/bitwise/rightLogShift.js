@@ -1,21 +1,32 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
+import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
+import { createAlgorithm08 } from '../../type/matrix/utils/algorithm08'
+import { factory } from '../../utils/factory'
+import { rightLogShiftNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'rightLogShift'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'zeros',
+  'DenseMatrix'
+]
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const equalScalar = load(require('../relational/equalScalar'))
-  const zeros = load(require('../matrix/zeros'))
-
-  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm08 = load(require('../../type/matrix/utils/algorithm08'))
-  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
+  const algorithm01 = createAlgorithm01({ typed })
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm08 = createAlgorithm08({ typed, equalScalar })
+  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Bitwise right logical shift of value x by y number of bits, `x >>> y`.
@@ -41,15 +52,9 @@ function factory (type, config, load, typed) {
    * @return {number | Array | Matrix} `x` zero-filled shifted right `y` times
    */
 
-  const rightLogShift = typed('rightLogShift', {
+  const rightLogShift = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function rightLogShift')
-      }
-
-      return x >>> y
-    },
+    'number, number': rightLogShiftNumber,
 
     // 'BigNumber, BigNumber': ..., // TODO: implement BigNumber support for rightLogShift
 
@@ -127,12 +132,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  rightLogShift.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['rightLogShift']}\${args[1]}\\right)`
-  }
-
   return rightLogShift
-}
-
-exports.name = 'rightLogShift'
-exports.factory = factory
+})

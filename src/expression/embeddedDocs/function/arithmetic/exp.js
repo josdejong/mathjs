@@ -1,4 +1,4 @@
-module.exports = {
+export const expDocs = {
   'name': 'exp',
   'category': 'Arithmetic',
   'syntax': [

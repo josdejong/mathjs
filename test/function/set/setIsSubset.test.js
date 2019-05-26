@@ -1,6 +1,7 @@
 // test setIsSubset
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 
 describe('setIsSubset', function () {
   it('should return true or false', function () {
@@ -19,7 +20,7 @@ describe('setIsSubset', function () {
   })
 
   it('should return boolean', function () {
-    assert.strictEqual(math.typeof(math.setIsSubset([1, 2, 3], [3, 4, 5])), 'boolean')
+    assert.strictEqual(math.typeOf(math.setIsSubset([1, 2, 3], [3, 4, 5])), 'boolean')
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

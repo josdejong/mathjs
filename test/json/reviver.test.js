@@ -1,7 +1,7 @@
-const assert = require('assert')
-const math = require('../../src/main')
-const reviver = math.json.reviver
-const Range = math.type.Range
+import assert from 'assert'
+import math from '../../src/bundleAny'
+const reviver = math.reviver
+const Range = math.Range
 
 describe('reviver', function () {
   it('should parse generic JSON', function () {
@@ -12,31 +12,31 @@ describe('reviver', function () {
 
   it('should parse a stringified complex number', function () {
     const json = '{"mathjs":"Complex","re":2,"im":4}'
-    const c = new math.type.Complex(2, 4)
+    const c = new math.Complex(2, 4)
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Complex)
+    assert(obj instanceof math.Complex)
     assert.deepStrictEqual(obj, c)
   })
 
   it('should parse a stringified BigNumber', function () {
     const json = '{"mathjs":"BigNumber","value":"0.2"}'
-    const b = new math.type.BigNumber(0.2)
+    const b = new math.BigNumber(0.2)
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.BigNumber)
+    assert(obj instanceof math.BigNumber)
     assert.deepStrictEqual(obj, b)
   })
 
   it('should parse a stringified Fraction', function () {
     const json = '{"mathjs":"Fraction","n":3,"d":8}'
-    const b = new math.type.Fraction(0.375)
+    const b = new math.Fraction(0.375)
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Fraction)
+    assert(obj instanceof math.Fraction)
     assert.strictEqual(obj.s, b.s)
     assert.strictEqual(obj.n, b.n)
     assert.strictEqual(obj.d, b.d)
@@ -44,41 +44,41 @@ describe('reviver', function () {
 
   it('should parse a stringified Range', function () {
     const json = '{"mathjs":"Range","start":2,"end":10}'
-    const r = new math.type.Range(2, 10)
+    const r = new math.Range(2, 10)
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Range)
+    assert(obj instanceof math.Range)
     assert.deepStrictEqual(obj, r)
   })
 
   it('should parse a stringified Unit', function () {
     const json = '{"mathjs":"Unit","value":5,"unit":"cm","fixPrefix":false}'
-    const u = new math.type.Unit(5, 'cm')
+    const u = new math.Unit(5, 'cm')
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Unit)
+    assert(obj instanceof math.Unit)
     assert.deepStrictEqual(obj, u)
   })
 
   it('should parse a stringified Range (2)', function () {
     const json = '{"mathjs":"Range","start":2,"end":10,"step":2}'
-    const r = new math.type.Range(2, 10, 2)
+    const r = new math.Range(2, 10, 2)
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Range)
+    assert(obj instanceof math.Range)
     assert.deepStrictEqual(obj, r)
   })
 
   it('should parse a stringified ResultSet', function () {
     const json = '{"mathjs":"ResultSet","entries":[1,2,{"mathjs":"Complex","re":3,"im":4}]}'
-    const r = new math.type.ResultSet([1, 2, new math.type.Complex(3, 4)])
+    const r = new math.ResultSet([1, 2, new math.Complex(3, 4)])
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.ResultSet)
+    assert(obj instanceof math.ResultSet)
     assert.deepStrictEqual(obj, r)
   })
 
@@ -87,21 +87,21 @@ describe('reviver', function () {
         '{"mathjs":"Range","start":0,"end":10,"step":1},' +
         '{"mathjs":"Range","start":2,"end":3,"step":1}' +
         ']}'
-    const i = new math.type.Index(new Range(0, 10), new Range(2, 3))
+    const i = new math.Index(new Range(0, 10), new Range(2, 3))
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Index)
+    assert(obj instanceof math.Index)
     assert.deepStrictEqual(obj, i)
   })
 
   it('should parse a stringified Index (2)', function () {
     const json = '{"mathjs":"Index","dimensions":[[0, 10],2]}'
-    const i = new math.type.Index([0, 10], 2)
+    const i = new math.Index([0, 10], 2)
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Index)
+    assert(obj instanceof math.Index)
     assert.deepStrictEqual(obj, i)
   })
 
@@ -111,19 +111,19 @@ describe('reviver', function () {
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Matrix)
+    assert(obj instanceof math.Matrix)
     assert.deepStrictEqual(obj, m)
   })
 
   it('should parse a stringified Matrix containing a complex number, dense storage format', function () {
     const json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}'
-    const c = new math.type.Complex(4, 5)
+    const c = new math.Complex(4, 5)
     const m = math.matrix([[1, 2], [3, c]], 'dense')
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Matrix)
-    assert(obj._data[1][1] instanceof math.type.Complex)
+    assert(obj instanceof math.Matrix)
+    assert(obj._data[1][1] instanceof math.Complex)
     assert.deepStrictEqual(obj, m)
   })
 
@@ -133,17 +133,17 @@ describe('reviver', function () {
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.SparseMatrix)
-    assert(obj instanceof math.type.Matrix)
+    assert(obj instanceof math.SparseMatrix)
+    assert(obj instanceof math.Matrix)
     assert.deepStrictEqual(obj, m)
   })
 
   it('should parse a stringified Help', function () {
     const json = '{"mathjs":"Help","name":"foo","description":"bar"}'
-    const h = new math.type.Help({ name: 'foo', description: 'bar' })
+    const h = new math.Help({ name: 'foo', description: 'bar' })
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Help)
+    assert(obj instanceof math.Help)
     assert.deepStrictEqual(obj, h)
   })
 
@@ -152,7 +152,7 @@ describe('reviver', function () {
     const c = math.chain(2.3)
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.type.Chain)
+    assert(obj instanceof math.Chain)
     assert.deepStrictEqual(obj, c)
   })
 

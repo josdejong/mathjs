@@ -1,7 +1,8 @@
 // test inv
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
 const inv = math.inv
 
 describe('inv', function () {

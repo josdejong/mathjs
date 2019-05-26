@@ -1,14 +1,21 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/addScalar'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const multiply = load(require('../arithmetic/multiplyScalar'))
-  const divide = load(require('../arithmetic/divideScalar'))
-  const negate = load(require('../arithmetic/unaryMinus'))
-  const sqrt = load(require('../arithmetic/sqrt'))
-  const abs = load(require('../arithmetic/abs'))
+import { isBigNumber } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
+const name = 'distance'
+const dependencies = [
+  'typed',
+  'addScalar',
+  'subtract',
+  'divideScalar',
+  'multiplyScalar',
+  'unaryMinus',
+  'sqrt',
+  'abs'
+]
+
+export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typed, addScalar, subtract, multiplyScalar, divideScalar, unaryMinus, sqrt, abs }) => {
   /**
     * Calculates:
     *    The eucledian distance between two points in 2 and 3 dimensional spaces.
@@ -60,17 +67,16 @@ function factory (type, config, load, typed) {
     * @param {Array | Matrix | Object} y    Co-ordinates of second point
     * @return {Number | BigNumber} Returns the distance from two/three points
   */
-
-  const distance = typed('distance', {
+  return typed(name, {
     'Array, Array, Array': function (x, y, z) {
       // Point to Line 2D (x=Point, y=LinePoint1, z=LinePoint2)
       if (x.length === 2 && y.length === 2 && z.length === 2) {
         if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
         if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
         if (!_2d(z)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for third argument') }
-        const m = divide(subtract(z[1], z[0]), subtract(y[1], y[0]))
-        const xCoeff = multiply(multiply(m, m), y[0])
-        const yCoeff = negate(multiply(m, y[0]))
+        const m = divideScalar(subtract(z[1], z[0]), subtract(y[1], y[0]))
+        const xCoeff = multiplyScalar(multiplyScalar(m, m), y[0])
+        const yCoeff = unaryMinus(multiplyScalar(m, y[0]))
         const constant = x[1]
 
         return _distancePointLine2D(x[0], x[1], xCoeff, yCoeff, constant)
@@ -85,9 +91,9 @@ function factory (type, config, load, typed) {
         if (!_2d(z)) { throw new TypeError('Values of lineTwoPtX and lineTwoPtY should be numbers or BigNumbers') }
         if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('lineOnePtX') &&
           y.hasOwnProperty('lineOnePtY') && z.hasOwnProperty('lineTwoPtX') && z.hasOwnProperty('lineTwoPtY')) {
-          const m = divide(subtract(z.lineTwoPtY, z.lineTwoPtX), subtract(y.lineOnePtY, y.lineOnePtX))
-          const xCoeff = multiply(multiply(m, m), y.lineOnePtX)
-          const yCoeff = negate(multiply(m, y.lineOnePtX))
+          const m = divideScalar(subtract(z.lineTwoPtY, z.lineTwoPtX), subtract(y.lineOnePtY, y.lineOnePtX))
+          const xCoeff = multiplyScalar(multiplyScalar(m, m), y.lineOnePtX)
+          const yCoeff = unaryMinus(multiplyScalar(m, y.lineOnePtX))
           const constant = x.pointX
 
           return _distancePointLine2D(x.pointX, x.pointY, xCoeff, yCoeff, constant)
@@ -213,7 +219,7 @@ function factory (type, config, load, typed) {
 
   function _isNumber (a) {
     // distance supports numbers and bignumbers
-    return (typeof a === 'number' || type.isBigNumber(a))
+    return (typeof a === 'number' || isBigNumber(a))
   }
 
   function _2d (a) {
@@ -252,16 +258,12 @@ function factory (type, config, load, typed) {
   function _pairwise (a) {
     // checks for valid arguments passed to _distancePairwise(Array)
     if (a[0].length === 2 && _isNumber(a[0][0]) && _isNumber(a[0][1])) {
-      for (let i in a) {
-        if (a[i].length !== 2 || !_isNumber(a[i][0]) || !_isNumber(a[i][1])) {
-          return false
-        }
+      if (a.some(aI => aI.length !== 2 || !_isNumber(aI[0]) || !_isNumber(aI[1]))) {
+        return false
       }
     } else if (a[0].length === 3 && _isNumber(a[0][0]) && _isNumber(a[0][1]) && _isNumber(a[0][2])) {
-      for (let i in a) {
-        if (a[i].length !== 3 || !_isNumber(a[i][0]) || !_isNumber(a[i][1]) || !_isNumber(a[i][2])) {
-          return false
-        }
+      if (a.some(aI => aI.length !== 3 || !_isNumber(aI[0]) || !_isNumber(aI[1]) || !_isNumber(aI[2]))) {
+        return false
       }
     } else {
       return false
@@ -270,37 +272,33 @@ function factory (type, config, load, typed) {
   }
 
   function _distancePointLine2D (x, y, a, b, c) {
-    const num = abs(add(add(multiply(a, x), multiply(b, y)), c))
-    const den = sqrt(add(multiply(a, a), multiply(b, b)))
-    const result = divide(num, den)
-    return result
+    const num = abs(addScalar(addScalar(multiplyScalar(a, x), multiplyScalar(b, y)), c))
+    const den = sqrt(addScalar(multiplyScalar(a, a), multiplyScalar(b, b)))
+    return divideScalar(num, den)
   }
 
   function _distancePointLine3D (x, y, z, x0, y0, z0, a, b, c) {
-    let num = [ subtract(multiply(subtract(y0, y), c), multiply(subtract(z0, z), b)),
-      subtract(multiply(subtract(z0, z), a), multiply(subtract(x0, x), c)),
-      subtract(multiply(subtract(x0, x), b), multiply(subtract(y0, y), a)) ]
-    num = sqrt(add(add(multiply(num[0], num[0]), multiply(num[1], num[1])), multiply(num[2], num[2])))
-    const den = sqrt(add(add(multiply(a, a), multiply(b, b)), multiply(c, c)))
-    const result = divide(num, den)
-    return result
+    let num = [ subtract(multiplyScalar(subtract(y0, y), c), multiplyScalar(subtract(z0, z), b)),
+      subtract(multiplyScalar(subtract(z0, z), a), multiplyScalar(subtract(x0, x), c)),
+      subtract(multiplyScalar(subtract(x0, x), b), multiplyScalar(subtract(y0, y), a)) ]
+    num = sqrt(addScalar(addScalar(multiplyScalar(num[0], num[0]), multiplyScalar(num[1], num[1])), multiplyScalar(num[2], num[2])))
+    const den = sqrt(addScalar(addScalar(multiplyScalar(a, a), multiplyScalar(b, b)), multiplyScalar(c, c)))
+    return divideScalar(num, den)
   }
 
   function _distance2d (x1, y1, x2, y2) {
     const yDiff = subtract(y2, y1)
     const xDiff = subtract(x2, x1)
-    const radicant = add(multiply(yDiff, yDiff), multiply(xDiff, xDiff))
-    const result = sqrt(radicant)
-    return result
+    const radicant = addScalar(multiplyScalar(yDiff, yDiff), multiplyScalar(xDiff, xDiff))
+    return sqrt(radicant)
   }
 
   function _distance3d (x1, y1, z1, x2, y2, z2) {
     const zDiff = subtract(z2, z1)
     const yDiff = subtract(y2, y1)
     const xDiff = subtract(x2, x1)
-    const radicant = add(add(multiply(zDiff, zDiff), multiply(yDiff, yDiff)), multiply(xDiff, xDiff))
-    const result = sqrt(radicant)
-    return result
+    const radicant = addScalar(addScalar(multiplyScalar(zDiff, zDiff), multiplyScalar(yDiff, yDiff)), multiplyScalar(xDiff, xDiff))
+    return sqrt(radicant)
   }
 
   function _distancePairwise (a) {
@@ -316,9 +314,4 @@ function factory (type, config, load, typed) {
     }
     return result
   }
-
-  return distance
-}
-
-exports.name = 'distance'
-exports.factory = factory
+})

@@ -1,11 +1,14 @@
 'use strict'
 
-const array = require('../../utils/array')
-const isInteger = require('../../utils/number').isInteger
+import { isMatrix } from '../../utils/is'
+import { arraySize } from '../../utils/array'
+import { isInteger } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'diag'
+const dependencies = ['typed', 'matrix', 'DenseMatrix', 'SparseMatrix']
 
+export const createDiag = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix, SparseMatrix }) => {
   /**
    * Create a diagonal matrix or retrieve the diagonal of a matrix
    *
@@ -43,31 +46,31 @@ function factory (type, config, load, typed) {
    *
    * @returns {Matrix | Array} Diagonal matrix from input vector, or diagonal from input matrix.
    */
-  const diag = typed('diag', {
+  return typed(name, {
     // FIXME: simplify this huge amount of signatures as soon as typed-function supports optional arguments
 
     'Array': function (x) {
-      return _diag(x, 0, array.size(x), null)
+      return _diag(x, 0, arraySize(x), null)
     },
 
     'Array, number': function (x, k) {
-      return _diag(x, k, array.size(x), null)
+      return _diag(x, k, arraySize(x), null)
     },
 
     'Array, BigNumber': function (x, k) {
-      return _diag(x, k.toNumber(), array.size(x), null)
+      return _diag(x, k.toNumber(), arraySize(x), null)
     },
 
     'Array, string': function (x, format) {
-      return _diag(x, 0, array.size(x), format)
+      return _diag(x, 0, arraySize(x), format)
     },
 
     'Array, number, string': function (x, k, format) {
-      return _diag(x, k, array.size(x), format)
+      return _diag(x, k, arraySize(x), format)
     },
 
     'Array, BigNumber, string': function (x, k, format) {
-      return _diag(x, k.toNumber(), array.size(x), format)
+      return _diag(x, k.toNumber(), arraySize(x), format)
     },
 
     'Matrix': function (x) {
@@ -94,10 +97,6 @@ function factory (type, config, load, typed) {
       return _diag(x, k.toNumber(), x.size(), format)
     }
   })
-
-  diag.toTex = undefined // use default template
-
-  return diag
 
   /**
    * Creeate diagonal matrix from a vector or vice versa
@@ -129,17 +128,22 @@ function factory (type, config, load, typed) {
   function _createDiagonalMatrix (x, k, format, l, kSub, kSuper) {
     // matrix size
     const ms = [l + kSub, l + kSuper]
-    // get matrix constructor
-    const F = type.Matrix.storage(format || 'dense')
+
+    if (format && format !== 'sparse' && format !== 'dense') {
+      throw new TypeError(`Unknown matrix type ${format}"`)
+    }
+
     // create diagonal matrix
-    const m = F.diagonal(ms, x, k)
+    const m = format === 'sparse'
+      ? SparseMatrix.diagonal(ms, x, k)
+      : DenseMatrix.diagonal(ms, x, k)
     // check we need to return a matrix
     return format !== null ? m : m.valueOf()
   }
 
   function _getDiagonal (x, k, format, s, kSub, kSuper) {
     // check x is a Matrix
-    if (type.isMatrix(x)) {
+    if (isMatrix(x)) {
       // get diagonal matrix
       const dm = x.diagonal(k)
       // check we need to return a matrix
@@ -161,7 +165,4 @@ function factory (type, config, load, typed) {
     // check we need to return a matrix
     return format !== null ? matrix(vector) : vector
   }
-}
-
-exports.name = 'diag'
-exports.factory = factory
+})

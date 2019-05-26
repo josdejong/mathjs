@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -47,8 +47,9 @@ describe('atan', function () {
     assert.deepStrictEqual(arg7.toString(), 'Infinity')
 
     // Hit Newton's method case
-    bigmath.config({ precision: 61 })
-    assert.deepStrictEqual(atanBig(Big(0.9)), Big('0.7328151017865065916407920727342802519857556793582560863105069'))
+    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+    assert.deepStrictEqual(bigmath61.atan(bigmath61.bignumber(0.9)),
+      bigmath61.bignumber('0.7328151017865065916407920727342802519857556793582560863105069'))
   })
 
   it('should be the inverse function of tan', function () {

@@ -1,19 +1,19 @@
+// Only use native node.js API's and references to ./lib here, this file is not transpiled!
+const math = require('../../../../lib/bundleAny')
+const { createCsAmd } = require('../../../../lib/function/algebra/sparse/csAmd')
+
 const assert = require('assert')
 const approx = require('../../../../tools/approx')
 const market = require('../../../../tools/matrixmarket')
-const math = require('../../../../src/main').create()
-math.import(require('../../../../src/function/algebra/sparse/csAmd'))
 
-const csAmd = math.algebra.sparse.csAmd
+const { add, multiply, transpose } = math
+const csAmd = createCsAmd({ add, multiply, transpose })
 
 describe('csAmd', function () {
   it('should approximate minimum degree ordering, 48 x 48, natural ordering (order=0), matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 0
         const q = csAmd(0, m)
 
@@ -23,7 +23,7 @@ describe('csAmd', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -31,11 +31,8 @@ describe('csAmd', function () {
 
   it('should approximate minimum degree ordering, 48 x 48, amd(A+A\') (order=1), matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 1
         const q = csAmd(1, m)
 
@@ -45,7 +42,7 @@ describe('csAmd', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -53,11 +50,8 @@ describe('csAmd', function () {
 
   it('should approximate minimum degree ordering, 48 x 48, amd(A\'*A) (order=2), matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 2
         const q = csAmd(2, m, false)
 
@@ -67,7 +61,7 @@ describe('csAmd', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -75,11 +69,8 @@ describe('csAmd', function () {
 
   it('should approximate minimum degree ordering, 48 x 48, amd(A\'*A) (order=3), matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 3
         const q = csAmd(3, m, false)
 
@@ -89,7 +80,7 @@ describe('csAmd', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })

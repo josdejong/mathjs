@@ -1,4 +1,4 @@
-module.exports = {
+export const reshapeDocs = {
   'name': 'reshape',
   'category': 'Matrix',
   'syntax': [

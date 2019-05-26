@@ -24,7 +24,7 @@ const compiled = math.parse(expr).compile(math, {})
 const sin = getSafeProperty(math, 'sin')
 const pi = getSafeProperty(math, 'pi')
 const compiledPlainJs = {
-  eval: function (scope) {
+  evaluate: function (scope) {
     return 2 + 3 * ('sin' in scope ? getSafeProperty(scope, 'sin') : sin)(('pi' in scope ? getSafeProperty(scope, 'pi') : pi) / 4) - 4 * scope['x']
   }
 }
@@ -35,8 +35,8 @@ console.log('expression:', expr)
 console.log('scope:', scope)
 console.log('result:', correctResult)
 
-assertApproxEqual(compiled.eval(scope), correctResult, 1e-7)
-assertApproxEqual(compiledPlainJs.eval(scope), correctResult, 1e-7)
+assertApproxEqual(compiled.evaluate(scope), correctResult, 1e-7)
+assertApproxEqual(compiledPlainJs.evaluate(scope), correctResult, 1e-7)
 
 let total = 0
 let nodes = []
@@ -44,14 +44,14 @@ let nodes = []
 const suite = new Benchmark.Suite()
 suite
   .add(pad('(plain js) evaluate'), function () {
-    total += compiledPlainJs.eval(scope)
+    total += compiledPlainJs.evaluate(scope)
   })
 
   .add(pad('(mathjs) evaluate'), function () {
-    total += compiled.eval(scope)
+    total += compiled.evaluate(scope)
   })
   .add(pad('(mathjs) parse, compile, evaluate'), function () {
-    total += math.parse(expr).compile().eval(scope)
+    total += math.parse(expr).compile().evaluate(scope)
   })
   .add(pad('(mathjs) parse, compile'), function () {
     const node = math.parse(expr).compile()

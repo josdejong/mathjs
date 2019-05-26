@@ -1,13 +1,16 @@
 'use strict'
 
-const getSafeProperty = require('../../utils/customs').getSafeProperty
+import { factory } from '../../utils/factory'
+import { getSafeProperty } from '../../utils/customs'
+import { embeddedDocs } from '../embeddedDocs/embeddedDocs'
 
-function factory (type, config, load, typed, math) {
-  const docs = load(require('../embeddedDocs'))
+const name = 'help'
+const dependencies = ['typed', 'mathWithTransform', 'Help']
 
+export const createHelp = /* #__PURE__ */ factory(name, dependencies, ({ typed, mathWithTransform, Help }) => {
   /**
    * Retrieve help on a function or data type.
-   * Help files are retrieved from the documentation in math.expression.docs.
+   * Help files are retrieved from the embedded documentation in math.docs.
    *
    * Syntax:
    *
@@ -23,16 +26,16 @@ function factory (type, config, load, typed, math) {
    *                                              for which to get help
    * @return {Help} A help object
    */
-  return typed('help', {
+  return typed(name, {
     'any': function (search) {
       let prop
-      let name = search
+      let searchName = search
 
       if (typeof search !== 'string') {
-        for (prop in math) {
+        for (prop in mathWithTransform) {
           // search in functions and constants
-          if (math.hasOwnProperty(prop) && (search === math[prop])) {
-            name = prop
+          if (mathWithTransform.hasOwnProperty(prop) && (search === mathWithTransform[prop])) {
+            searchName = prop
             break
           }
         }
@@ -41,7 +44,7 @@ function factory (type, config, load, typed, math) {
          if (!text) {
          // search data type
          for (prop in math.type) {
-         if (math.type.hasOwnProperty(prop)) {
+         if (math.hasOwnProperty(prop)) {
          if (search === math.type[prop]) {
          text = prop
          break
@@ -52,15 +55,12 @@ function factory (type, config, load, typed, math) {
          */
       }
 
-      const doc = getSafeProperty(docs, name)
+      const doc = getSafeProperty(embeddedDocs, searchName)
       if (!doc) {
-        throw new Error('No documentation found on "' + name + '"')
+        const searchText = typeof searchName === 'function' ? searchName.name : searchName
+        throw new Error('No documentation found on "' + searchText + '"')
       }
-      return new type.Help(doc)
+      return new Help(doc)
     }
   })
-}
-
-exports.math = true // request access to the math namespace as 5th argument of the factory function
-exports.name = 'help'
-exports.factory = factory
+})

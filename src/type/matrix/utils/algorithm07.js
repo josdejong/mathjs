@@ -1,10 +1,12 @@
 'use strict'
 
-const DimensionError = require('../../../error/DimensionError')
+import { factory } from '../../../utils/factory'
+import { DimensionError } from '../../../error/DimensionError'
 
-function factory (type, config, load, typed) {
-  const DenseMatrix = type.DenseMatrix
+const name = 'algorithm07'
+const dependencies = ['typed', 'DenseMatrix']
 
+export const createAlgorithm07 = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix }) => {
   /**
    * Iterates over SparseMatrix A and SparseMatrix B items (zero and nonzero) and invokes the callback function f(Aij, Bij).
    * Callback function invoked MxN times.
@@ -19,7 +21,7 @@ function factory (type, config, load, typed) {
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
    */
-  const algorithm07 = function (a, b, callback) {
+  return function algorithm07 (a, b, callback) {
     // sparse matrix arrays
     const asize = a._size
     const adt = a._datatype
@@ -112,9 +114,4 @@ function factory (type, config, load, typed) {
       x[i] = values[k]
     }
   }
-
-  return algorithm07
-}
-
-exports.name = 'algorithm07'
-exports.factory = factory
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const setDifferenceDocs = {
   'name': 'setDifference',
   'category': 'Set',
   'syntax': [

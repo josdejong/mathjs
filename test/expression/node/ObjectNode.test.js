@@ -1,10 +1,11 @@
 // test ObjectNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RangeNode = math.expression.node.RangeNode
-const ObjectNode = math.expression.node.ObjectNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RangeNode = math.RangeNode
+const ObjectNode = math.ObjectNode
 
 // FIXME: a lot of tests depend on order of object keys, whilst the order is officially undeterministic
 
@@ -39,8 +40,8 @@ describe('ObjectNode', function () {
     const a = new ObjectNode({ c: c })
     const b = new ObjectNode()
 
-    assert.deepStrictEqual(a.compile().eval(), { c: 1 })
-    assert.deepStrictEqual(b.compile().eval(), {})
+    assert.deepStrictEqual(a.compile().evaluate(), { c: 1 })
+    assert.deepStrictEqual(b.compile().evaluate(), {})
   })
 
   it('should compile nested ObjectNodes', function () {
@@ -54,7 +55,7 @@ describe('ObjectNode', function () {
     const n4 = new ObjectNode({ n2: n2, n3: n3 })
 
     const expr = n4.compile()
-    assert.deepStrictEqual(expr.eval(), { n2: { a: 1, b: 2 }, n3: { c: 3, d: 4 } })
+    assert.deepStrictEqual(expr.evaluate(), { n2: { a: 1, b: 2 }, n3: { c: 3, d: 4 } })
   })
 
   it('should filter an ObjectNode', function () {
@@ -244,7 +245,7 @@ describe('ObjectNode', function () {
   it('should stringify an ObjectNode with custom toString', function () {
     const customFunction = function (node, options) {
       if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -285,7 +286,7 @@ describe('ObjectNode', function () {
   it('should LaTeX an ObjectNode with custom toTex', function () {
     const customFunction = function (node, options) {
       if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

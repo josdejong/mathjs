@@ -1,4 +1,4 @@
-module.exports = {
+export const ceilDocs = {
   'name': 'ceil',
   'category': 'Arithmetic',
   'syntax': [

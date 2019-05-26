@@ -1,7 +1,5 @@
 'use strict'
-module.exports = [
-  require('./and'),
-  require('./not'),
-  require('./or'),
-  require('./xor')
-]
+
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
+
+deprecatedIndexFileError(__filename)

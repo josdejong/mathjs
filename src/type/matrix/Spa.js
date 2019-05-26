@@ -1,9 +1,11 @@
 'use strict'
 
-function factory (type, config, load) {
-  const add = load(require('../../function/arithmetic/add'))
-  const equalScalar = load(require('../../function/relational/equalScalar'))
+import { factory } from '../../utils/factory'
 
+const name = 'Spa'
+const dependencies = ['addScalar', 'equalScalar', 'FibonacciHeap']
+
+export const createSpaClass = /* #__PURE__ */ factory(name, dependencies, ({ addScalar, equalScalar, FibonacciHeap }) => {
   /**
    * An ordered Sparse Accumulator is a representation for a sparse vector that includes a dense array
    * of the vector elements and an ordered list of non-zero elements.
@@ -13,7 +15,7 @@ function factory (type, config, load) {
 
     // allocate vector, TODO use typed arrays
     this._values = []
-    this._heap = new type.FibonacciHeap()
+    this._heap = new FibonacciHeap()
   }
 
   /**
@@ -57,7 +59,7 @@ function factory (type, config, load) {
       this._values[i] = node
     } else {
       // accumulate value
-      node.value = add(node.value, v)
+      node.value = addScalar(node.value, v)
     }
   }
 
@@ -125,8 +127,4 @@ function factory (type, config, load) {
   }
 
   return Spa
-}
-
-exports.name = 'Spa'
-exports.path = 'type'
-exports.factory = factory
+}, { isClass: true })

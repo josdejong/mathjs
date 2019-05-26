@@ -1,10 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const transpose = load(require('./transpose'))
-  const conj = load(require('../complex/conj'))
-  const latex = require('../../utils/latex')
+import { factory } from '../../utils/factory'
 
+const name = 'ctranspose'
+const dependencies = ['typed', 'transpose', 'conj']
+
+export const createCtranspose = /* #__PURE__ */ factory(name, dependencies, ({ typed, transpose, conj }) => {
   /**
    * Transpose and complex conjugate a matrix. All values of the matrix are
    * reflected over its main diagonal and then the complex conjugate is
@@ -27,17 +28,9 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix} x  Matrix to be ctransposed
    * @return {Array | Matrix}   The ctransposed matrix
    */
-  const ctranspose = typed('ctranspose', {
-
+  return typed(name, {
     'any': function (x) {
       return conj(transpose(x))
     }
   })
-
-  ctranspose.toTex = { 1: `\\left(\${args[0]}\\right)${latex.operators['ctranspose']}` }
-
-  return ctranspose
-}
-
-exports.name = 'ctranspose'
-exports.factory = factory
+})

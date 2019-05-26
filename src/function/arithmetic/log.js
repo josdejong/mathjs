@@ -1,10 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { logNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const divideScalar = load(require('./divideScalar'))
+const name = 'log'
+const dependencies = ['config', 'typed', 'divideScalar', 'Complex']
 
+export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, Complex }) => {
   /**
    * Calculate the logarithm of a value.
    *
@@ -39,13 +42,13 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the logarithm of `x`
    */
-  const log = typed('log', {
+  const log = typed(name, {
     'number': function (x) {
       if (x >= 0 || config.predictable) {
-        return Math.log(x)
+        return logNumber(x)
       } else {
         // negative value -> complex value computation
-        return new type.Complex(x, 0).log()
+        return new Complex(x, 0).log()
       }
     },
 
@@ -58,7 +61,7 @@ function factory (type, config, load, typed) {
         return x.ln()
       } else {
         // downgrade to number, return Complex valued result
-        return new type.Complex(x.toNumber(), 0).log()
+        return new Complex(x.toNumber(), 0).log()
       }
     },
 
@@ -72,13 +75,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  log.toTex = {
-    1: `\\ln\\left(\${args[0]}\\right)`,
-    2: `\\log_{\${args[1]}}\\left(\${args[0]}\\right)`
-  }
-
   return log
-}
-
-exports.name = 'log'
-exports.factory = factory
+})

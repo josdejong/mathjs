@@ -1,12 +1,14 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
-const bigBitNot = require('../../utils/bignumber/bitNot')
-const isInteger = require('../../utils/number').isInteger
+import { bitNotBigNumber } from '../../utils/bignumber/bitwise'
+import { deepMap } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { bitNotNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'bitNot'
+const dependencies = ['typed']
 
+export const createBitNot = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Bitwise NOT value, `~x`.
    * For matrices, the function is evaluated element wise.
@@ -29,28 +31,15 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array | Matrix} x Value to not
    * @return {number | BigNumber | Array | Matrix} NOT of `x`
    */
-  const bitNot = typed('bitNot', {
-    'number': function (x) {
-      if (!isInteger(x)) {
-        throw new Error('Integer expected in function bitNot')
-      }
+  const bitNot = typed(name, {
+    'number': bitNotNumber,
 
-      return ~x
-    },
-
-    'BigNumber': bigBitNot,
+    'BigNumber': bitNotBigNumber,
 
     'Array | Matrix': function (x) {
       return deepMap(x, bitNot)
     }
   })
 
-  bitNot.toTex = {
-    1: latex.operators['bitNot'] + `\\left(\${args[0]}\\right)`
-  }
-
   return bitNot
-}
-
-exports.name = 'bitNot'
-exports.factory = factory
+})

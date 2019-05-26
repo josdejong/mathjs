@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { cubeNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'cube'
+const dependencies = ['typed']
+
+export const createCube = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the cube of a value, `x * x * x`.
    * For matrices, the function is evaluated element wise.
@@ -27,10 +32,8 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} x  Number for which to calculate the cube
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} Cube of x
    */
-  const cube = typed('cube', {
-    'number': function (x) {
-      return x * x * x
-    },
+  const cube = typed(name, {
+    'number': cubeNumber,
 
     'Complex': function (x) {
       return x.mul(x).mul(x) // Is faster than pow(x, 3)
@@ -54,10 +57,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  cube.toTex = { 1: `\\left(\${args[0]}\\right)^3` }
-
   return cube
-}
-
-exports.name = 'cube'
-exports.factory = factory
+})

@@ -1,6 +1,7 @@
 // test resize
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 
 describe('resize', function () {
   it('should resize an array', function () {

@@ -1,10 +1,11 @@
 // test ConstantNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const bigmath = require('../../../src/main').create({ number: 'BigNumber' })
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const bigmath = math.create({ number: 'BigNumber' })
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
 
 describe('ConstantNode', function () {
   it('should create a ConstantNode', function () {
@@ -32,29 +33,29 @@ describe('ConstantNode', function () {
 
   it('should compile a ConstantNode', function () {
     let expr = new ConstantNode(2.3).compile()
-    assert.strictEqual(expr.eval(), 2.3)
+    assert.strictEqual(expr.evaluate(), 2.3)
 
     expr = new ConstantNode(2.3).compile()
-    assert.strictEqual(expr.eval(), 2.3)
+    assert.strictEqual(expr.evaluate(), 2.3)
 
     expr = new ConstantNode('hello').compile()
-    assert.strictEqual(expr.eval(), 'hello')
+    assert.strictEqual(expr.evaluate(), 'hello')
 
     expr = new ConstantNode(true).compile()
-    assert.strictEqual(expr.eval(), true)
+    assert.strictEqual(expr.evaluate(), true)
 
     expr = new ConstantNode(undefined).compile()
-    assert.strictEqual(expr.eval(), undefined)
+    assert.strictEqual(expr.evaluate(), undefined)
 
     expr = new ConstantNode(null).compile()
-    assert.strictEqual(expr.eval(), null)
+    assert.strictEqual(expr.evaluate(), null)
   })
 
   it('should compile a ConstantNode with bigmath', function () {
     const constantNode = bigmath.parse('2.3')
     assert.ok(constantNode.isConstantNode)
     const expr = constantNode.compile()
-    assert.deepStrictEqual(expr.eval(), new bigmath.type.BigNumber(2.3))
+    assert.deepStrictEqual(expr.evaluate(), new bigmath.BigNumber(2.3))
   })
 
   it('should find a ConstantNode', function () {
@@ -64,8 +65,8 @@ describe('ConstantNode', function () {
   })
 
   it('should leave quotes in strings as is (no escaping)', function () {
-    assert.strictEqual(new ConstantNode('"+foo+"').compile().eval(), '"+foo+"')
-    assert.strictEqual(new ConstantNode('\\"escaped\\"').compile().eval(), '\\"escaped\\"')
+    assert.strictEqual(new ConstantNode('"+foo+"').compile().evaluate(), '"+foo+"')
+    assert.strictEqual(new ConstantNode('\\"escaped\\"').compile().evaluate(), '\\"escaped\\"')
   })
 
   it('should find a ConstantNode', function () {
@@ -199,8 +200,8 @@ describe('ConstantNode', function () {
   })
 
   it('should LaTeX a ConstantNode with a fraction', function () {
-    const positive = new ConstantNode(new math.type.Fraction(1.5))
-    const negative = new ConstantNode(new math.type.Fraction(-1.5))
+    const positive = new ConstantNode(new math.Fraction(1.5))
+    const negative = new ConstantNode(new math.Fraction(-1.5))
 
     assert.strictEqual(positive.toTex(), '\\frac{3}{2}')
     assert.strictEqual(negative.toTex(), '-\\frac{3}{2}')

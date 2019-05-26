@@ -15,19 +15,19 @@ math.bignumber('2.3e+500') // BigNumber, 2.3e+500
 Most functions can determine the type of output from the type of input:
 a number as input will return a number as output, a BigNumber as input returns
 a BigNumber as output. Functions which cannot determine the type of output
-from the input (for example `math.eval`) use the default number type `number`,
+from the input (for example `math.evaluate`) use the default number type `number`,
 which can be configured when instantiating math.js. To configure the use of
 BigNumbers instead of [numbers](numbers.md) by default, configure math.js like:
 
 ```js
 math.config({
-  number: 'BigNumber', // Default type of number:
-                       // 'number' (default), 'BigNumber', or 'Fraction'
-  precision: 64        // Number of significant digits for BigNumbers
+  number: 'BigNumber',      // Default type of number:
+                            // 'number' (default), 'BigNumber', or 'Fraction'
+  precision: 64             // Number of significant digits for BigNumbers
 })
 
 // use math
-math.eval('0.1 + 0.2') // BigNumber, 0.3
+math.evaluate('0.1 + 0.2')  // BigNumber, 0.3
 ```
 
 The default precision for BigNumber is 64 digits, and can be configured with

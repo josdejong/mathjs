@@ -1,4 +1,4 @@
-module.exports = {
+export const stringDocs = {
   'name': 'string',
   'category': 'Construction',
   'syntax': [

@@ -1,5 +1,5 @@
-const assert = require('assert')
-const ArgumentsError = require('../../src/error/ArgumentsError')
+import assert from 'assert'
+import { ArgumentsError } from '../../src/error/ArgumentsError'
 
 describe('ArgumentsError', function () {
   it('should construct an ArgumentsError without max', function () {

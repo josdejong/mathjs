@@ -1,14 +1,15 @@
 // test BlockNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RangeNode = math.expression.node.RangeNode
-const AssignmentNode = math.expression.node.AssignmentNode
-const OperatorNode = math.expression.node.OperatorNode
-const BlockNode = math.expression.node.BlockNode
-const ResultSet = math.type.ResultSet
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RangeNode = math.RangeNode
+const AssignmentNode = math.AssignmentNode
+const OperatorNode = math.OperatorNode
+const BlockNode = math.BlockNode
+const ResultSet = math.ResultSet
 
 describe('BlockNode', function () {
   it('should create a BlockNode', function () {
@@ -51,7 +52,7 @@ describe('BlockNode', function () {
     ])
 
     let scope = {}
-    assert.deepStrictEqual(n.compile().eval(scope), new ResultSet([5, 3]))
+    assert.deepStrictEqual(n.compile().evaluate(scope), new ResultSet([5, 3]))
     assert.deepStrictEqual(scope, { foo: 3 })
   })
 
@@ -60,7 +61,7 @@ describe('BlockNode', function () {
       { node: new ConstantNode(5) }
     ])
 
-    assert.deepStrictEqual(n.compile().eval(), new ResultSet([5]))
+    assert.deepStrictEqual(n.compile().evaluate(), new ResultSet([5]))
   })
 
   it('should filter a BlockNode', function () {
@@ -278,7 +279,7 @@ describe('BlockNode', function () {
 
         return string
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -331,7 +332,7 @@ describe('BlockNode', function () {
 
         return latex
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

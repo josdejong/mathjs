@@ -1,4 +1,4 @@
-module.exports = {
+export const meanDocs = {
   'name': 'mean',
   'category': 'Statistics',
   'syntax': [
@@ -22,6 +22,6 @@ module.exports = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

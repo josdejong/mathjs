@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -54,11 +54,12 @@ describe('asin', function () {
     assert.deepStrictEqual(arg3, Big(-0.5))
 
     // Hit Newton's method case
-    bigmath.config({ precision: 61 })
+    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
 
-    const arg4 = Big(0.00000001)
-    assert.deepStrictEqual(asinBig(arg4), Big('1.00000000000000001666666666666666741666666666666671130952381e-8'))
-    assert.deepStrictEqual(arg4, Big(0.00000001))
+    const arg4 = bigmath61.bignumber(0.00000001)
+    assert.deepStrictEqual(bigmath61.asin(arg4),
+      bigmath61.bignumber('1.00000000000000001666666666666666741666666666666671130952381e-8'))
+    assert.deepStrictEqual(arg4, bigmath61.bignumber(0.00000001))
   })
 
   it('should be the inverse function of sin', function () {
@@ -71,16 +72,18 @@ describe('asin', function () {
 
   it('should be the inverse function of bignumber sin', function () {
     // More Newton's method test cases
-    assert.deepStrictEqual(asinBig(bigmath.sin(Big(-2))), Big('-1.141592653589793238462643383279502884197169399375105820974945'))
-    // Wolfram:                                         - 1.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132
-    assert.deepStrictEqual(asinBig(bigmath.sin(Big(-0.5))), Big('-0.5'))
-    assert.deepStrictEqual(asinBig(bigmath.sin(Big(-0.1))), Big('-0.1'))
-    assert.deepStrictEqual(asinBig(bigmath.sin(Big(0.1))), Big('0.1'))
-    assert.deepStrictEqual(asinBig(bigmath.sin(Big(0.5))), Big('0.5'))
-    assert.deepStrictEqual(asinBig(bigmath.sin(Big(2))), Big('1.141592653589793238462643383279502884197169399375105820974945'))
+    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+    assert.deepStrictEqual(asinBig(bigmath61.sin(bigmath61.bignumber(-2))),
+      bigmath61.bignumber('-1.141592653589793238462643383279502884197169399375105820974945'))
+    // Wolfram:            -1.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132
+    assert.deepStrictEqual(asinBig(bigmath61.sin(bigmath61.bignumber(-0.5))), bigmath61.bignumber('-0.5'))
+    assert.deepStrictEqual(asinBig(bigmath61.sin(bigmath61.bignumber(-0.1))), bigmath61.bignumber('-0.1'))
+    assert.deepStrictEqual(asinBig(bigmath61.sin(bigmath61.bignumber(0.1))), bigmath61.bignumber('0.1'))
+    assert.deepStrictEqual(asinBig(bigmath61.sin(bigmath61.bignumber(0.5))), bigmath61.bignumber('0.5'))
+    assert.deepStrictEqual(asinBig(bigmath61.sin(bigmath61.bignumber(2))),
+      bigmath61.bignumber('1.141592653589793238462643383279502884197169399375105820974945'))
 
     // Full decimal Taylor test cases
-    bigmath.config({ precision: 20 })
     assert.deepStrictEqual(asinBig(bigmath.sin(Big(0))), Big(0))
     assert.deepStrictEqual(asinBig(bigmath.sin(Big(0.1))), Big(0.1))
     assert.deepStrictEqual(asinBig(bigmath.sin(Big(0.5))), Big(0.5))

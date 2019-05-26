@@ -1,19 +1,29 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const toFixed = require('../../utils/number').toFixed
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { isInteger } from '../../utils/number'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { roundNumber } from '../../plain/number'
 
 const NO_INT = 'Number of decimals in function round must be an integer'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const equalScalar = load(require('../relational/equalScalar'))
-  const zeros = load(require('../matrix/zeros'))
+const name = 'round'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'zeros',
+  'BigNumber',
+  'DenseMatrix'
+]
 
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, BigNumber, DenseMatrix }) => {
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Round a value towards the nearest integer.
@@ -46,18 +56,8 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  const round = typed('round', {
-
-    'number': function (x) {
-      return _round(x, 0)
-    },
-
-    'number, number': function (x, n) {
-      if (!isInteger(n)) { throw new TypeError(NO_INT) }
-      if (n < 0 || n > 15) { throw new Error('Number of decimals in function round must be in te range of 0-15') }
-
-      return _round(x, n)
-    },
+  const round = typed(name, {
+    ...roundNumberSignatures,
 
     'Complex': function (x) {
       return x.round()
@@ -79,7 +79,7 @@ function factory (type, config, load, typed) {
     'number, BigNumber': function (x, n) {
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
-      return new type.BigNumber(x).toDecimalPlaces(n.toNumber())
+      return new BigNumber(x).toDecimalPlaces(n.toNumber())
     },
 
     'BigNumber': function (x) {
@@ -143,25 +143,20 @@ function factory (type, config, load, typed) {
     }
   })
 
-  round.toTex = {
-    1: `\\left\\lfloor\${args[0]}\\right\\rceil`,
-    2: undefined // use default template
-  }
-
   return round
+})
+
+const roundNumberSignatures = {
+  'number': roundNumber,
+
+  'number, number': function (x, n) {
+    if (!isInteger(n)) { throw new TypeError(NO_INT) }
+    if (n < 0 || n > 15) { throw new Error('Number of decimals in function round must be in te range of 0-15') }
+
+    return roundNumber(x, n)
+  }
 }
 
-/**
- * round a number to the given number of decimals, or to zero if decimals is
- * not provided
- * @param {number} value
- * @param {number} decimals       number of decimals, between 0 and 15 (0 by default)
- * @return {number} roundedValue
- * @private
- */
-function _round (value, decimals) {
-  return parseFloat(toFixed(value, decimals))
-}
-
-exports.name = 'round'
-exports.factory = factory
+export const createRoundNumber = /* #__PURE__ */ factory(name, ['typed'], ({ typed }) => {
+  return typed(name, roundNumberSignatures)
+})

@@ -1,5 +1,5 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
 const range = math.range
 const matrix = math.matrix
 const bignumber = math.bignumber
@@ -82,6 +82,18 @@ describe('range', function () {
   it('should throw an error when parsing a an invalid string to a bignumber range', function () {
     const bigmath = math.create({ number: 'BigNumber' })
     assert.throws(function () { bigmath.range('1:a') }, /is no valid range/)
+  })
+
+  it('should gracefully handle round-off errors', function () {
+    assert.deepStrictEqual(range(1, 2, 0.1, true)._size, [11])
+    assert.deepStrictEqual(range(0.1, 0.2, 0.01, true)._size, [11])
+    assert.deepStrictEqual(range(1, 5, 0.1)._size, [40])
+    assert.deepStrictEqual(range(2, 1, -0.1, true)._size, [11])
+    assert.deepStrictEqual(range(5, 1, -0.1)._size, [40])
+    assert.deepStrictEqual(range(-3.2909135802469143, 3.2909135802469143, (3.2909135802469143 + 3.2909135802469143) / 10, true)._size, [11])
+    assert.deepStrictEqual(range(-3.2909135802469143, 3.2909135802469143, (3.2909135802469143 + 3.2909135802469143) / 9, true)._size, [10])
+    assert.deepStrictEqual(range(-3.2909135802469143, 3.2909135802469143, (3.2909135802469143 + 3.2909135802469143) / 10)._size, [10])
+    assert.deepStrictEqual(range(-3.2909135802469143, 3.2909135802469143, (3.2909135802469143 + 3.2909135802469143) / 9)._size, [9])
   })
 
   describe('option includeEnd', function () {

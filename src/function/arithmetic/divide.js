@@ -1,15 +1,23 @@
 'use strict'
 
-const extend = require('../../utils/object').extend
+import { factory } from '../../utils/factory'
+import { extend } from '../../utils/object'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
-function factory (type, config, load, typed) {
-  const divideScalar = load(require('./divideScalar'))
-  const multiply = load(require('./multiply'))
-  const inv = load(require('../matrix/inv'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'divide'
+const dependencies = [
+  'typed',
+  'matrix',
+  'multiply',
+  'equalScalar',
+  'divideScalar',
+  'inv'
+]
 
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv }) => {
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Divide two values, `x / y`.
@@ -42,7 +50,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} y          Denominator
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                      Quotient, `x / y`
    */
-  const divide = typed('divide', extend({
+  return typed('divide', extend({
     // we extend the signatures of divideScalar with signatures dealing with matrices
 
     'Array | Matrix, Array | Matrix': function (x, y) {
@@ -70,11 +78,4 @@ function factory (type, config, load, typed) {
       return multiply(x, inv(y))
     }
   }, divideScalar.signatures))
-
-  divide.toTex = { 2: `\\frac{\${args[0]}}{\${args[1]}}` }
-
-  return divide
-}
-
-exports.name = 'divide'
-exports.factory = factory
+})

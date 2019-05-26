@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { absNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'abs'
+const dependencies = ['typed']
+
+export const createAbs = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the absolute value of a number. For matrices, the function is
    * evaluated element wise.
@@ -27,8 +32,8 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
    *            Absolute value of `x`
    */
-  const abs = typed('abs', {
-    'number': Math.abs,
+  const abs = typed(name, {
+    'number': absNumber,
 
     'Complex': function (x) {
       return x.abs()
@@ -52,10 +57,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  abs.toTex = { 1: `\\left|\${args[0]}\\right|` }
-
   return abs
-}
-
-exports.name = 'abs'
-exports.factory = factory
+})

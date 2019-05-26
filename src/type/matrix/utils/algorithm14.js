@@ -1,10 +1,12 @@
 'use strict'
 
-const clone = require('../../../utils/object').clone
+import { factory } from '../../../utils/factory'
+import { clone } from '../../../utils/object'
 
-function factory (type, config, load, typed) {
-  const DenseMatrix = type.DenseMatrix
+const name = 'algorithm14'
+const dependencies = ['typed']
 
+export const createAlgorithm14 = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, b).
    * Callback function invoked MxN times.
@@ -20,7 +22,7 @@ function factory (type, config, load, typed) {
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
    */
-  const algorithm14 = function (a, b, callback, inverse) {
+  return function algorithm14 (a, b, callback, inverse) {
     // a arrays
     const adata = a._data
     const asize = a._size
@@ -45,7 +47,7 @@ function factory (type, config, load, typed) {
     const cdata = asize.length > 0 ? _iterate(cf, 0, asize, asize[0], adata, b, inverse) : []
 
     // c matrix
-    return new DenseMatrix({
+    return a.createDenseMatrix({
       data: cdata,
       size: clone(asize),
       datatype: dt
@@ -72,9 +74,4 @@ function factory (type, config, load, typed) {
     }
     return cv
   }
-
-  return algorithm14
-}
-
-exports.name = 'algorithm14'
-exports.factory = factory
+})

@@ -1,14 +1,12 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
-  const DenseMatrix = load(require('../../type/matrix/DenseMatrix'))
-  const size = load(require('../matrix/size'))
-  const subset = load(require('../matrix/subset'))
-  const compareNatural = load(require('../relational/compareNatural'))
+const name = 'setCartesian'
+const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix']
 
+export const createSetCartesian = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index, DenseMatrix }) => {
   /**
    * Create the cartesian product of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -29,11 +27,11 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a2  A (multi)set
    * @return {Array | Matrix}    The cartesian product of two (multi)sets
    */
-  const setCartesian = typed('setCartesian', {
+  return typed(name, {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
       let result = []
 
-      if (subset(size(a1), new MatrixIndex(0)) !== 0 && subset(size(a2), new MatrixIndex(0)) !== 0) { // if any of them is empty, return empty
+      if (subset(size(a1), new Index(0)) !== 0 && subset(size(a2), new Index(0)) !== 0) { // if any of them is empty, return empty
         const b1 = flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural)
         const b2 = flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural)
         result = []
@@ -51,9 +49,4 @@ function factory (type, config, load, typed) {
       return new DenseMatrix(result)
     }
   })
-
-  return setCartesian
-}
-
-exports.name = 'setCartesian'
-exports.factory = factory
+})

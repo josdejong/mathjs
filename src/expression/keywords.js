@@ -1,6 +1,6 @@
 'use strict'
 
 // Reserved keywords not allowed to use in the parser
-module.exports = {
+export const keywords = {
   end: true
 }

@@ -1,10 +1,28 @@
 'use strict'
 
-const getSafeProperty = require('../../utils/customs').getSafeProperty
+import {
+  isAccessorNode,
+  isArrayNode,
+  isConstantNode,
+  isFunctionNode,
+  isIndexNode,
+  isNode,
+  isObjectNode,
+  isParenthesisNode,
+  isSymbolNode
+} from '../../utils/is'
+import { getSafeProperty } from '../../utils/customs'
+import { factory } from '../../utils/factory'
+import { accessFactory } from './utils/access'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const access = load(require('./utils/access'))
+const name = 'AccessorNode'
+const dependencies = [
+  'subset',
+  'Node'
+]
+
+export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, Node }) => {
+  const access = accessFactory({ subset })
 
   /**
    * @constructor AccessorNode
@@ -20,10 +38,10 @@ function factory (type, config, load, typed) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
 
-    if (!type.isNode(object)) {
+    if (!isNode(object)) {
       throw new TypeError('Node expected for parameter "object"')
     }
-    if (!type.isIndexNode(index)) {
+    if (!isIndexNode(index)) {
       throw new TypeError('IndexNode expected for parameter "index"')
     }
 
@@ -186,18 +204,14 @@ function factory (type, config, load, typed) {
   function needParenthesis (node) {
     // TODO: maybe make a method on the nodes which tells whether they need parenthesis?
     return !(
-      type.isAccessorNode(node) ||
-        type.isArrayNode(node) ||
-        type.isConstantNode(node) ||
-        type.isFunctionNode(node) ||
-        type.isObjectNode(node) ||
-        type.isParenthesisNode(node) ||
-        type.isSymbolNode(node))
+      isAccessorNode(node) ||
+        isArrayNode(node) ||
+        isConstantNode(node) ||
+        isFunctionNode(node) ||
+        isObjectNode(node) ||
+        isParenthesisNode(node) ||
+        isSymbolNode(node))
   }
 
   return AccessorNode
-}
-
-exports.name = 'AccessorNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

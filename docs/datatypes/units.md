@@ -80,9 +80,9 @@ Operations with arrays are supported too:
 
 ```js
 // Force on a charged particle moving through a magnetic field
-const B = math.eval('[1, 0, 0] T')             // [1 T, 0 T, 0 T]
-const v = math.eval('[0, 1, 0] m/s')           // [0 m / s, 1 m / s, 0 m / s]
-const q = math.eval('1 C')                     // 1 C
+const B = math.evaluate('[1, 0, 0] T')         // [1 T, 0 T, 0 T]
+const v = math.evaluate('[0, 1, 0] m/s')       // [0 m / s, 1 m / s, 0 m / s]
+const q = math.evaluate('1 C')                 // 1 C
 
 const F = math.multiply(q, math.cross(v, B))   // [0 N, 0 N, -1 N]
 ```
@@ -93,14 +93,14 @@ In general you should avoid calculations using `celsius` and `fahrenheit`. Rathe
 This example highlights some problems when using `celsius` and `fahrenheit` in calculations:
 
 ```js
-const T_14F = math.unit('14 degF')           // Unit 14 degF (263.15 K)
-const T_28F = math.multiply(T1, 2)           // Unit 487.67 degF (526.3 K), not 28 degF
+const T_14F = math.unit('14 degF')            // Unit 14 degF (263.15 K)
+const T_28F = math.multiply(T1, 2)            // Unit 487.67 degF (526.3 K), not 28 degF
 
-const Tnegative = math.unit(-13, 'degF')     // Unit -13 degF (248.15 K)
-const Tpositive = math.abs(T1)               // Unit -13 degF (248.15 K), not 13 degF
+const Tnegative = math.unit(-13, 'degF')      // Unit -13 degF (248.15 K)
+const Tpositive = math.abs(T1)                // Unit -13 degF (248.15 K), not 13 degF
 
-const Trate1 = math.eval('5 (degC/hour)')    // Unit 5 degC/hour
-const Trate2 = math.eval('(5 degC)/hour')    // Unit 278.15 degC/hour
+const Trate1 = math.evaluate('5 (degC/hour)') // Unit 5 degC/hour
+const Trate2 = math.evaluate('(5 degC)/hour') // Unit 278.15 degC/hour
 ```
 
 The expression parser supports units too. This is described in the section about
@@ -111,16 +111,16 @@ units on the page [Syntax](../expressions/syntax.md#units).
 You can add your own units to Math.js using the `math.createUnit` function. The following example defines a new unit `furlong`, then uses the user-defined unit in a calculation:
 
 ```js
-math.createUnit('furlong', '220 yards')
-math.eval('1 mile to furlong')             // 8 furlong
+math.createUnit('furlong', '220 yards') 
+math.evaluate('1 mile to furlong')            // 8 furlong
 ```
 
 If you cannot express the new unit in terms of any existing unit, then the second argument can be omitted. In this case, a new base unit is created:
 
 ```js
 // A 'foo' cannot be expressed in terms of any other unit.
-math.createUnit('foo')
-math.eval('8 foo * 4 feet')                // 32 foo feet
+math.createUnit('foo') 
+math.evaluate('8 foo * 4 feet')               // 32 foo feet
 ```
 
 The second argument to `createUnit` can also be a configuration object consisting of the following properties:
@@ -156,14 +156,14 @@ math.createUnit( {
 {
   override: true
 })
-math.eval('50000 kilofoo/s')   // 4.5 gigabaz
+math.evaluate('50000 kilofoo/s')  // 4.5 gigabaz
 ```
 
 ### Return Value
 `createUnit` returns the created unit, or, when multiple units are created, the last unit created. Since `createUnit` is also compatible with the expression parser, this allows you to do things like this:
 
 ```js
-math.eval('45 mile/hour to createUnit("knot", "0.514444m/s")')
+math.evaluate('45 mile/hour to createUnit("knot", "0.514444m/s")')
 // 39.103964668651976 knot
 ```
 
@@ -229,7 +229,7 @@ determine the best fitting prefix for the unit.
 
 ## Unit reference
 
-This section lists all available units, prefixes, and physical constants. These can be used via the Unit object, or via `math.eval()`.
+This section lists all available units, prefixes, and physical constants. These can be used via the Unit object, or via `math.evaluate()`.
 
 ## Reference
 

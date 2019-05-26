@@ -1,5 +1,5 @@
-const approx = require('../../../../tools/approx')
-const math = require('../../../../src/main')
+import approx from '../../../../tools/approx'
+import math from '../../../../src/bundleAny'
 
 describe('slu', function () {
   it('should decompose matrix, 4 x 4, natural ordering (order=0), partial pivoting', function () {
@@ -94,7 +94,7 @@ describe('slu', function () {
     }
     cptr[n] = cindex.length
     // return matrix
-    return new math.type.SparseMatrix({
+    return new math.SparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,

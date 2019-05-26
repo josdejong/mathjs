@@ -1,4 +1,4 @@
-module.exports = {
+export const maxDocs = {
   'name': 'max',
   'category': 'Statistics',
   'syntax': [
@@ -23,6 +23,6 @@ module.exports = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

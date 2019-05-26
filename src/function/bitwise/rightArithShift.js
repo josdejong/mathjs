@@ -1,22 +1,33 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const bigRightArithShift = require('../../utils/bignumber/rightArithShift')
+import { rightArithShiftBigNumber } from '../../utils/bignumber/bitwise'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
+import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
+import { createAlgorithm08 } from '../../type/matrix/utils/algorithm08'
+import { factory } from '../../utils/factory'
+import { rightArithShiftNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'rightArithShift'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'zeros',
+  'DenseMatrix'
+]
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const equalScalar = load(require('../relational/equalScalar'))
-  const zeros = load(require('../matrix/zeros'))
-
-  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm08 = load(require('../../type/matrix/utils/algorithm08'))
-  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
+  const algorithm01 = createAlgorithm01({ typed })
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm08 = createAlgorithm08({ typed, equalScalar })
+  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Bitwise right arithmetic shift of a value x by y number of bits, `x >> y`.
@@ -41,17 +52,11 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber} y Amount of shifts
    * @return {number | BigNumber | Array | Matrix} `x` sign-filled shifted right `y` times
    */
-  const rightArithShift = typed('rightArithShift', {
+  const rightArithShift = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function rightArithShift')
-      }
+    'number, number': rightArithShiftNumber,
 
-      return x >> y
-    },
-
-    'BigNumber, BigNumber': bigRightArithShift,
+    'BigNumber, BigNumber': rightArithShiftBigNumber,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       return algorithm08(x, y, rightArithShift, false)
@@ -127,12 +132,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  rightArithShift.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['rightArithShift']}\${args[1]}\\right)`
-  }
-
   return rightArithShift
-}
-
-exports.name = 'rightArithShift'
-exports.factory = factory
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const bitNotDocs = {
   'name': 'bitNot',
   'category': 'Bitwise',
   'syntax': [

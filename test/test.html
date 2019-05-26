@@ -6,6 +6,7 @@
   <script>
     console.time('load')
   </script>
+  <!--<script src="../dist/math.min.js" type="text/javascript"></script>-->
   <script src="../dist/math.js" type="text/javascript"></script>
   <script>
     console.timeEnd('load')
@@ -16,6 +17,15 @@
   Use the mathjs library from the console...
 </p>
 <script>
+  // force loading all functions
+  console.time('load-lazy')
+  var math2 = {}
+  Object.keys(math).forEach(function (key) {
+    // console.log('key', key)
+    math2[key] = math[key]
+  })
+  console.timeEnd('load-lazy')
+
   function print (args) {
     for (var i = 0; i < arguments.length; i++) {
       document.write(arguments[i] + '');
@@ -41,13 +51,13 @@
   print(math.unit('1000m').toString());
   print(math.unit('1100m').toString());
 
-  print(parser.eval('a=[1,2,3;4,5,6]'));
+  print(parser.evaluate('a=[1,2,3;4,5,6]'));
   print(parser.get('a'));
-  //print(parser.eval('a[1,1]'));
-  print(parser.eval('a[2,1:2]'));
-  print(parser.eval('b=2.3'));
-  print(parser.eval('b + 2'));
-  print(parser.eval('0.1 + 0.2'));
+  //print(parser.evaluate('a[1,1]'));
+  print(parser.evaluate('a[2,1:2]'));
+  print(parser.evaluate('b=2.3'));
+  print(parser.evaluate('b + 2'));
+  print(parser.evaluate('0.1 + 0.2'));
 
 </script>
 </body>

@@ -1,24 +1,89 @@
 'use strict'
 
-function factory (type, config, load, typed, math) {
-  const parse = load(require('../../expression/parse'))
-  const equal = load(require('../relational/equal'))
-  const ConstantNode = load(require('../../expression/node/ConstantNode'))
-  const FunctionNode = load(require('../../expression/node/FunctionNode'))
-  const OperatorNode = load(require('../../expression/node/OperatorNode'))
-  const ParenthesisNode = load(require('../../expression/node/ParenthesisNode'))
-  const SymbolNode = load(require('../../expression/node/SymbolNode'))
-  const simplifyConstant = load(require('./simplify/simplifyConstant'))
-  const simplifyCore = load(require('./simplify/simplifyCore'))
-  const resolve = load(require('./simplify/resolve'))
+import { isConstantNode, isParenthesisNode } from '../../utils/is'
+import { factory } from '../../utils/factory'
+import { createUtil } from './simplify/util'
+import { createSimplifyCore } from './simplify/simplifyCore'
+import { createSimplifyConstant } from './simplify/simplifyConstant'
+import { createResolve } from './simplify/resolve'
 
-  const util = load(require('./simplify/util'))
-  const isCommutative = util.isCommutative
-  const isAssociative = util.isAssociative
-  const flatten = util.flatten
-  const unflattenr = util.unflattenr
-  const unflattenl = util.unflattenl
-  const createMakeNodeFunction = util.createMakeNodeFunction
+const name = 'simplify'
+const dependencies = [
+  'config',
+  'typed',
+  'parse',
+  'add',
+  'subtract',
+  'multiply',
+  'divide',
+  'pow',
+  'isZero',
+  'equal',
+  '?fraction',
+  '?bignumber',
+  'mathWithTransform',
+  'ConstantNode',
+  'FunctionNode',
+  'OperatorNode',
+  'ParenthesisNode',
+  'SymbolNode'
+]
+
+export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
+  {
+    config,
+    typed,
+    parse,
+    add,
+    subtract,
+    multiply,
+    divide,
+    pow,
+    isZero,
+    equal,
+    fraction,
+    bignumber,
+    mathWithTransform,
+    ConstantNode,
+    FunctionNode,
+    OperatorNode,
+    ParenthesisNode,
+    SymbolNode
+  }
+) => {
+  const simplifyConstant = createSimplifyConstant({
+    typed,
+    config,
+    mathWithTransform,
+    fraction,
+    bignumber,
+    ConstantNode,
+    OperatorNode,
+    FunctionNode,
+    SymbolNode
+  })
+  const simplifyCore = createSimplifyCore({
+    equal,
+    isZero,
+    add,
+    subtract,
+    multiply,
+    divide,
+    pow,
+    ConstantNode,
+    OperatorNode,
+    FunctionNode,
+    ParenthesisNode
+  })
+  const resolve = createResolve({
+    parse,
+    FunctionNode,
+    OperatorNode,
+    ParenthesisNode
+  })
+
+  const { isCommutative, isAssociative, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
+    createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
   /**
    * Simplify an expression tree.
@@ -80,7 +145,7 @@ function factory (type, config, load, typed, math) {
    *
    * See also:
    *
-   *     derivative, parse, eval, rationalize
+   *     derivative, parse, evaluate, rationalize
    *
    * @param {Node | string} expr
    *            The expression to be simplified
@@ -161,8 +226,8 @@ function factory (type, config, load, typed, math) {
 
   function removeParens (node) {
     return node.transform(function (node, path, parent) {
-      return type.isParenthesisNode(node)
-        ? node.content
+      return isParenthesisNode(node)
+        ? removeParens(node.content)
         : node
     })
   }
@@ -382,15 +447,13 @@ function factory (type, config, load, typed, math) {
         }
 
         // Replace placeholders with their respective nodes without traversing deeper into the replaced nodes
-        const _transform = function (node) {
+        res = res.transform(function (node) {
           if (node.isSymbolNode && matches.placeholders.hasOwnProperty(node.name)) {
             return matches.placeholders[node.name].clone()
           } else {
-            return node.map(_transform)
+            return node
           }
-        }
-
-        res = _transform(res)
+        })
 
         // const after = res.toString({parenthesis: 'all'})
         // console.log('Simplified ' + before + ' to ' + after)
@@ -571,11 +634,7 @@ function factory (type, config, load, typed, math) {
       if (rule.name.length === 0) {
         throw new Error('Symbol in rule has 0 length...!?')
       }
-      if (math.hasOwnProperty(rule.name)) {
-        if (!SUPPORTED_CONSTANTS[rule.name]) {
-          throw new Error('Built in constant: ' + rule.name + ' is not supported by simplify.')
-        }
-
+      if (SUPPORTED_CONSTANTS[rule.name]) {
         // built-in constant must match exactly
         if (rule.name !== node.name) {
           return []
@@ -587,7 +646,7 @@ function factory (type, config, load, typed, math) {
         res[0].placeholders[rule.name] = node
       } else if (rule.name[0] === 'v') {
         // rule matches any variable thing (not a ConstantNode)
-        if (!type.isConstantNode(node)) {
+        if (!isConstantNode(node)) {
           res[0].placeholders[rule.name] = node
         } else {
           // Mis-match: rule was expecting something other than a ConstantNode
@@ -665,8 +724,4 @@ function factory (type, config, load, typed, math) {
   }
 
   return simplify
-}
-
-exports.math = true
-exports.name = 'simplify'
-exports.factory = factory
+})

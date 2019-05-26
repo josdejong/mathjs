@@ -1,7 +1,5 @@
 'use strict'
-module.exports = [
-  require('./arg'),
-  require('./conj'),
-  require('./im'),
-  require('./re')
-]
+
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
+
+deprecatedIndexFileError(__filename)

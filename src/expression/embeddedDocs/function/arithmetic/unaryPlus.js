@@ -1,4 +1,4 @@
-module.exports = {
+export const unaryPlusDocs = {
   'name': 'unaryPlus',
   'category': 'Operators',
   'syntax': [

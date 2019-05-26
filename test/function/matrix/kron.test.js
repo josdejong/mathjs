@@ -1,6 +1,7 @@
 // test kronecker product
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 
 describe('kron', function () {
   it('should calculate the kronecker product of two arrays', function () {

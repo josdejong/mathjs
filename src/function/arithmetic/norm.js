@@ -1,17 +1,23 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const abs = load(require('../arithmetic/abs'))
-  const add = load(require('../arithmetic/add'))
-  const pow = load(require('../arithmetic/pow'))
-  const conj = load(require('../complex/conj'))
-  const sqrt = load(require('../arithmetic/sqrt'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const equalScalar = load(require('../relational/equalScalar'))
-  const larger = load(require('../relational/larger'))
-  const smaller = load(require('../relational/smaller'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
+import { factory } from '../../utils/factory'
 
+const name = 'norm'
+const dependencies = [
+  'typed',
+  'abs',
+  'add',
+  'pow',
+  'conj',
+  'sqrt',
+  'multiply',
+  'equalScalar',
+  'larger',
+  'smaller',
+  'matrix'
+]
+
+export const createNorm = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, add, pow, conj, sqrt, multiply, equalScalar, larger, smaller, matrix }) => {
   /**
    * Calculate the norm of a number, vector or matrix.
    *
@@ -50,7 +56,7 @@ function factory (type, config, load, typed) {
    *            Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm)
    * @return {number | BigNumber} the p-norm
    */
-  const norm = typed('norm', {
+  const norm = typed(name, {
     'number': Math.abs,
 
     'Complex': function (x) {
@@ -201,13 +207,5 @@ function factory (type, config, load, typed) {
     }
   }
 
-  norm.toTex = {
-    1: `\\left\\|\${args[0]}\\right\\|`,
-    2: undefined // use default template
-  }
-
   return norm
-}
-
-exports.name = 'norm'
-exports.factory = factory
+})

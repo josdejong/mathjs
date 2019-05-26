@@ -1,4 +1,4 @@
-module.exports = {
+export const InfinityDocs = {
   'name': 'Infinity',
   'category': 'Constants',
   'syntax': [

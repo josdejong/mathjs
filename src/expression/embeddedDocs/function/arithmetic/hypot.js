@@ -1,4 +1,4 @@
-module.exports = {
+export const hypotDocs = {
   'name': 'hypot',
   'category': 'Arithmetic',
   'syntax': [

@@ -1,8 +1,15 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { nearlyEqual } from '../../utils/number'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
+import { ceilNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'ceil'
+const dependencies = ['typed', 'config', 'round']
+
+export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round }) => {
   /**
    * Round a value towards plus infinity
    * If `x` is complex, both real and imaginary part are rounded towards plus infinity.
@@ -32,14 +39,24 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   const ceil = typed('ceil', {
-    'number': Math.ceil,
+    'number': function (x) {
+      if (nearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return ceilNumber(x)
+      }
+    },
 
     'Complex': function (x) {
       return x.ceil()
     },
 
     'BigNumber': function (x) {
-      return x.ceil()
+      if (bigNearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return x.ceil()
+      }
     },
 
     'Fraction': function (x) {
@@ -52,10 +69,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  ceil.toTex = { 1: `\\left\\lceil\${args[0]}\\right\\rceil` }
-
   return ceil
-}
-
-exports.name = 'ceil'
-exports.factory = factory
+})

@@ -1,16 +1,14 @@
 'use strict'
 
-const util = require('../../utils/index')
-const object = util.object
-const string = util.string
+import { isMatrix } from '../../utils/is'
+import { clone } from '../../utils/object'
+import { format } from '../../utils/string'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const unaryMinus = load(require('../arithmetic/unaryMinus'))
-  const lup = load(require('../algebra/decomposition/lup'))
+const name = 'det'
+const dependencies = ['typed', 'matrix', 'subtract', 'multiply', 'unaryMinus', 'lup']
 
+export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract, multiply, unaryMinus, lup }) => {
   /**
    * Calculate the determinant of a matrix.
    *
@@ -36,14 +34,14 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix} x  A matrix
    * @return {number} The determinant of `x`
    */
-  const det = typed('det', {
+  return typed(name, {
     'any': function (x) {
-      return object.clone(x)
+      return clone(x)
     },
 
     'Array | Matrix': function det (x) {
       let size
-      if (type.isMatrix(x)) {
+      if (isMatrix(x)) {
         size = x.size()
       } else if (Array.isArray(x)) {
         x = matrix(x)
@@ -56,15 +54,15 @@ function factory (type, config, load, typed) {
       switch (size.length) {
         case 0:
           // scalar
-          return object.clone(x)
+          return clone(x)
 
         case 1:
           // vector
           if (size[0] === 1) {
-            return object.clone(x.valueOf()[0])
+            return clone(x.valueOf()[0])
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
 
         case 2:
@@ -75,20 +73,16 @@ function factory (type, config, load, typed) {
             return _det(x.clone().valueOf(), rows, cols)
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
 
         default:
           // multi dimensional array
           throw new RangeError('Matrix must be two dimensional ' +
-          '(size: ' + string.format(size) + ')')
+          '(size: ' + format(size) + ')')
       }
     }
   })
-
-  det.toTex = { 1: `\\det\\left(\${args[0]}\\right)` }
-
-  return det
 
   /**
    * Calculate the determinant of a matrix
@@ -101,7 +95,7 @@ function factory (type, config, load, typed) {
   function _det (matrix, rows, cols) {
     if (rows === 1) {
       // this is a 1 x 1 matrix
-      return object.clone(matrix[0][0])
+      return clone(matrix[0][0])
     } else if (rows === 2) {
       // this is a 2 x 2 matrix
       // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12
@@ -144,7 +138,4 @@ function factory (type, config, load, typed) {
       return evenCycles % 2 === 0 ? det : unaryMinus(det)
     }
   }
-}
-
-exports.name = 'det'
-exports.factory = factory
+})

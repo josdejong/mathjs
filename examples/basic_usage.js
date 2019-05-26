@@ -1,7 +1,7 @@
 // basic usage
 
 // load math.js (using node.js)
-const math = require('../index')
+const math = require('..')
 
 // functions and constants
 console.log('functions and constants')
@@ -15,11 +15,11 @@ console.log()
 
 // expressions
 console.log('expressions')
-print(math.eval('1.2 * (2 + 4.5)')) // 7.8
-print(math.eval('12.7 cm to inch')) // 5 inch
-print(math.eval('sin(45 deg) ^ 2')) // 0.5
-print(math.eval('9 / 3 + 2i')) // 3 + 2i
-print(math.eval('det([-1, 2; 3, 1])')) // -7
+print(math.evaluate('1.2 * (2 + 4.5)')) // 7.8
+print(math.evaluate('12.7 cm to inch')) // 5 inch
+print(math.evaluate('sin(45 deg) ^ 2')) // 0.5
+print(math.evaluate('9 / 3 + 2i')) // 3 + 2i
+print(math.evaluate('det([-1, 2; 3, 1])')) // -7
 console.log()
 
 // chained operations

@@ -1,7 +1,24 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const distribution = load(require('./distribution'))
+import { factory } from '../../utils/factory'
+import { randomMatrix } from './util/randomMatrix'
+import { createRng } from './util/seededRNG'
+import { isMatrix } from '../../utils/is'
+
+const name = 'randomInt'
+const dependencies = ['typed', 'config', '?on']
+
+export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, on }) => {
+  // seeded pseudo random number generator
+  let rng = createRng(config.randomSeed)
+
+  if (on) {
+    on('config', function (curr, prev) {
+      if (curr.randomSeed !== prev.randomSeed) {
+        rng = createRng(curr.randomSeed)
+      }
+    })
+  }
 
   /**
    * Return a random integer number larger or equal to `min` and smaller than `max`
@@ -9,6 +26,7 @@ function factory (type, config, load, typed) {
    *
    * Syntax:
    *
+   *     math.randomInt()                // generate a random integer between 0 and 1
    *     math.randomInt(max)             // generate a random integer between 0 and max
    *     math.randomInt(min, max)        // generate a random integer between min and max
    *     math.randomInt(size)            // generate a matrix with random integer between 0 and 1
@@ -31,13 +49,21 @@ function factory (type, config, load, typed) {
    * @param {number} [max]  Maximum boundary for the random value, excluded
    * @return {number | Array | Matrix} A random integer value
    */
-  // TODO: rework randomInt to a typed-function
-  const randomInt = distribution('uniform').randomInt
+  return typed(name, {
+    '': () => _randomInt(0, 1),
+    'number': (max) => _randomInt(0, max),
+    'number, number': (min, max) => _randomInt(min, max),
+    'Array | Matrix': (size) => _randomIntMatrix(size, 0, 1),
+    'Array | Matrix, number': (size, max) => _randomIntMatrix(size, 0, max),
+    'Array | Matrix, number, number': (size, min, max) => _randomIntMatrix(size, min, max)
+  })
 
-  randomInt.toTex = undefined // use default template
+  function _randomIntMatrix (size, min, max) {
+    const res = randomMatrix(size.valueOf(), () => _randomInt(min, max))
+    return isMatrix(size) ? size.create(res) : res
+  }
 
-  return randomInt
-}
-
-exports.name = 'randomInt'
-exports.factory = factory
+  function _randomInt (min, max) {
+    return Math.floor(min + rng() * (max - min))
+  }
+})

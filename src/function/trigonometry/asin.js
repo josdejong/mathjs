@@ -1,8 +1,12 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'asin'
+const dependencies = ['typed', 'config', 'Complex']
+
+export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
   /**
    * Calculate the inverse sine of a value.
    *
@@ -26,12 +30,12 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Array | Matrix} x   Function input
    * @return {number | BigNumber | Complex | Array | Matrix} The arc sine of x
    */
-  const asin = typed('asin', {
+  const asin = typed(name, {
     'number': function (x) {
       if ((x >= -1 && x <= 1) || config.predictable) {
         return Math.asin(x)
       } else {
-        return new type.Complex(x, 0).asin()
+        return new Complex(x, 0).asin()
       }
     },
 
@@ -49,10 +53,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  asin.toTex = { 1: `\\sin^{-1}\\left(\${args[0]}\\right)` }
-
   return asin
-}
-
-exports.name = 'asin'
-exports.factory = factory
+})

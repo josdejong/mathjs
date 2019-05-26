@@ -1,4 +1,4 @@
-module.exports = {
+export const madDocs = {
   'name': 'mad',
   'category': 'Statistics',
   'syntax': [

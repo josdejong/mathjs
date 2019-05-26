@@ -1,7 +1,8 @@
 // test exp
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
 const mathPredictable = math.create({ predictable: true })
 const bignumber = math.bignumber
 const fraction = math.fraction

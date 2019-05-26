@@ -1,6 +1,7 @@
 // test print
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 
 describe('print', function () {
   it('should interpolate values in a template (object template)', function () {

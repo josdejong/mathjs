@@ -1,4 +1,4 @@
-module.exports = {
+export const iDocs = {
   'name': 'i',
   'category': 'Constants',
   'syntax': [

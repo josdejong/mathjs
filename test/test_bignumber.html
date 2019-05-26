@@ -40,13 +40,13 @@
   print(math.unit('1000m').toString());
   print(math.unit('1100m').toString());
 
-  print(parser.eval('a=[1,2,3;4,5,6]'));
+  print(parser.evaluate('a=[1,2,3;4,5,6]'));
   var a = parser.get('a');
-  //print(parser.eval('a[1,1]'));
-  print(parser.eval('a[2,1:2]'));
-  print(parser.eval('b=2.3'));
-  print(parser.eval('b + 2'));
-  print(parser.eval('0.1 + 0.2'));
+  //print(parser.evaluate('a[1,1]'));
+  print(parser.evaluate('a[2,1:2]'));
+  print(parser.evaluate('b=2.3'));
+  print(parser.evaluate('b + 2'));
+  print(parser.evaluate('0.1 + 0.2'));
 
 </script>
 </body>

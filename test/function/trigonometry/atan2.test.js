@@ -1,7 +1,8 @@
 // test atan2
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix

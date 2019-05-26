@@ -1,4 +1,5 @@
 'use strict'
-module.exports = [
-  require('./erf')
-]
+
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
+
+deprecatedIndexFileError(__filename)

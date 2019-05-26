@@ -1,4 +1,4 @@
-module.exports = {
+export const signDocs = {
   'name': 'sign',
   'category': 'Arithmetic',
   'syntax': [

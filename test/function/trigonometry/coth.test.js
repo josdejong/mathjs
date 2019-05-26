@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -45,7 +45,7 @@ describe('coth', function () {
     approx.equal(coth(unit('90deg')), 1.0903314107274)
     approx.equal(coth(unit('-45deg')), -1.5248686188221)
 
-    assert(math.type.isBigNumber(coth(unit(math.bignumber(90), 'deg'))))
+    assert(math.isBigNumber(coth(unit(math.bignumber(90), 'deg'))))
     approx.equal(coth(unit(math.bignumber(90), 'deg')).toNumber(), 1.0903314107274)
 
     approx.deepEqual(coth(math.unit(complex('2 + i'), 'rad')), complex(0.98432922645819, -0.032797755533753))

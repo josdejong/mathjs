@@ -1,13 +1,27 @@
 'use strict'
 
-const util = require('../../../utils/index')
+import { isInteger } from '../../../utils/number'
+import { factory } from '../../../utils/factory'
+import { createCsSqr } from '../sparse/csSqr'
+import { createCsLu } from '../sparse/csLu'
 
-const number = util.number
-const isInteger = number.isInteger
+const name = 'slu'
+const dependencies = [
+  'typed',
+  'abs',
+  'add',
+  'multiply',
+  'transpose',
+  'divideScalar',
+  'subtract',
+  'larger',
+  'largerEq',
+  'SparseMatrix'
+]
 
-function factory (type, config, load, typed) {
-  const csSqr = load(require('../../algebra/sparse/csSqr'))
-  const csLu = load(require('../../algebra/sparse/csLu'))
+export const createSlu = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, add, multiply, transpose, divideScalar, subtract, larger, largerEq, SparseMatrix }) => {
+  const csSqr = createCsSqr({ add, multiply, transpose })
+  const csLu = createCsLu({ abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })
 
   /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting. Sparse Matrix `A` is decomposed in two matrices (`L`, `U`) and two permutation vectors (`pinv`, `q`) where
@@ -46,7 +60,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Object} The lower triangular matrix, the upper triangular matrix and the permutation vectors.
    */
-  const slu = typed('slu', {
+  return typed(name, {
 
     'SparseMatrix, number, number': function (a, order, threshold) {
       // verify order
@@ -72,9 +86,4 @@ function factory (type, config, load, typed) {
       }
     }
   })
-
-  return slu
-}
-
-exports.name = 'slu'
-exports.factory = factory
+})

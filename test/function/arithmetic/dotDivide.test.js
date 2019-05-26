@@ -1,7 +1,8 @@
 // test dotDivide (element-wise divide)
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const dotDivide = math.dotDivide
 const complex = math.complex
 

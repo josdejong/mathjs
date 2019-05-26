@@ -1,4 +1,4 @@
-module.exports = {
+export const tanDocs = {
   'name': 'tan',
   'category': 'Trigonometry',
   'syntax': [

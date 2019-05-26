@@ -1,4 +1,4 @@
-module.exports = {
+export const gcdDocs = {
   'name': 'gcd',
   'category': 'Arithmetic',
   'syntax': [

@@ -1,7 +1,8 @@
 // test mod
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const matrix = math.matrix
 const sparse = math.sparse
@@ -99,7 +100,7 @@ describe('mod', function () {
     const a = mod(b, math.fraction(3))
     assert.strictEqual(a.toString(), '2')
     assert.strictEqual(b.toString(), '8')
-    assert(a instanceof math.type.Fraction)
+    assert(a instanceof math.Fraction)
 
     assert.strictEqual(mod(math.fraction(4.55), math.fraction(0.05)).toString(), '0')
   })

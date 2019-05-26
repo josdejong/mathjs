@@ -112,7 +112,7 @@
     const result = document.getElementById('result')
 
     try {
-      const resultStr = math.format(math.eval(expr.value), {notation: 'fixed', precision: 2})
+      const resultStr = math.format(math.evaluate(expr.value), {notation: 'fixed', precision: 2})
       result.innerHTML = '<span style="color: dodgerblue;">' + resultStr + '</span>'
     }
     catch (err) {

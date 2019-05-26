@@ -1,18 +1,28 @@
 'use strict'
 
-const nearlyEqual = require('../../utils/number').nearlyEqual
-const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
+import { nearlyEqual } from '../../utils/number'
+import { factory } from '../../utils/factory'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'smallerEq'
+const dependencies = [
+  'typed',
+  'config',
+  'matrix',
+  'DenseMatrix'
+]
 
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
-  const latex = require('../../utils/latex')
+export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, DenseMatrix }) => {
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Test whether value x is smaller or equal to y.
@@ -41,7 +51,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
    */
-  const smallerEq = typed('smallerEq', {
+  const smallerEq = typed(name, {
 
     'boolean, boolean': function (x, y) {
       return x <= y
@@ -128,12 +138,13 @@ function factory (type, config, load, typed) {
     }
   })
 
-  smallerEq.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['smallerEq']}\${args[1]}\\right)`
-  }
-
   return smallerEq
-}
+})
 
-exports.name = 'smallerEq'
-exports.factory = factory
+export const createSmallerEqNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
+  return typed(name, {
+    'number, number': function (x, y) {
+      return x <= y || nearlyEqual(x, y, config.epsilon)
+    }
+  })
+})

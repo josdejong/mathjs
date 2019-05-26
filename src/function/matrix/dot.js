@@ -1,11 +1,12 @@
 'use strict'
 
-const size = require('../../utils/array').size
+import { arraySize as size } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/add'))
-  const multiply = load(require('../arithmetic/multiply'))
+const name = 'dot'
+const dependencies = ['typed', 'add', 'multiply']
 
+export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply }) => {
   /**
    * Calculate the dot product of two vectors. The dot product of
    * `A = [a1, a2, a3, ..., an]` and `B = [b1, b2, b3, ..., bn]` is defined as:
@@ -29,7 +30,7 @@ function factory (type, config, load, typed) {
    * @param  {Array | Matrix} y     Second vector
    * @return {number}               Returns the dot product of `x` and `y`
    */
-  const dot = typed('dot', {
+  return typed(name, {
     'Matrix, Matrix': function (x, y) {
       return _dot(x.toArray(), y.toArray())
     },
@@ -44,10 +45,6 @@ function factory (type, config, load, typed) {
 
     'Array, Array': _dot
   })
-
-  dot.toTex = { 2: `\\left(\${args[0]}\\cdot\${args[1]}\\right)` }
-
-  return dot
 
   /**
    * Calculate the dot product for two arrays
@@ -73,7 +70,4 @@ function factory (type, config, load, typed) {
 
     return prod
   }
-}
-
-exports.name = 'dot'
-exports.factory = factory
+})

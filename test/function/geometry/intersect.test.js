@@ -1,5 +1,5 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
 
 describe('intersect', function () {
   it('should calculate the intersection point of two 2D lines', function () {
@@ -50,7 +50,7 @@ describe('intersect', function () {
     const bigintersect = bigmath.intersect
     const bignumber = bigmath.bignumber
 
-    assert.deepStrictEqual(bigmath.eval('intersect([0, 0], [10, 10], [10, 0], [0, 10])'), bigmath.matrix([bignumber(5), bignumber(5)]))
+    assert.deepStrictEqual(bigmath.evaluate('intersect([0, 0], [10, 10], [10, 0], [0, 10])'), bigmath.matrix([bignumber(5), bignumber(5)]))
     assert.deepStrictEqual(bigintersect([bignumber(0), bignumber(0)], [bignumber(10), bignumber(10)], [bignumber(10), bignumber(0)], [bignumber(0), bignumber(10)]),
       [bignumber(5), bignumber(5)])
     assert.deepStrictEqual(bigintersect([bignumber(0), 0], [10, bignumber(10)], [10, bignumber(0)], [0, bignumber(10)]), [bignumber(5), bignumber(5)])

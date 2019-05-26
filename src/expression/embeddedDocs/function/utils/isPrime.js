@@ -1,4 +1,4 @@
-module.exports = {
+export const isPrimeDocs = {
   'name': 'isPrime',
   'category': 'Utils',
   'syntax': [

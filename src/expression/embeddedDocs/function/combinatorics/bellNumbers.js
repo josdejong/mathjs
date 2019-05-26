@@ -1,4 +1,4 @@
-module.exports = {
+export const bellNumbersDocs = {
   'name': 'bellNumbers',
   'category': 'Combinatorics',
   'syntax': [

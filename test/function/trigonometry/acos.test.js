@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const pi = math.pi
 const acos = math.acos
 const cos = math.cos
@@ -44,9 +44,10 @@ describe('acos', function () {
     assert.deepStrictEqual(acosBig(Big(1)), Big(0))
 
     // Hit Newton's method case
-    bigmath.config({ precision: 61 })
-    assert.deepStrictEqual(acosBig(Big(0.00000001)), Big('1.570796316794896619231321524973084775431910533020886243820359'))
-    // Wolfram:                                     1.5707963167948966192313215249730847754319105330208862438203592009158129650174844596314777278941600852176250962802
+    const bigmath61 = math.create({ number: 'BigNumber', precision: 61 })
+    assert.deepStrictEqual(bigmath61.acos(bigmath61.bignumber(0.00000001)),
+      bigmath61.bignumber('1.570796316794896619231321524973084775431910533020886243820359'))
+    // Wolfram:            1.5707963167948966192313215249730847754319105330208862438203592009158129650174844596314777278941600852176250962802
     // Make sure arg was not changed
     assert.deepStrictEqual(arg, Big(-1))
   })

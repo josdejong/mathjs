@@ -1,4 +1,4 @@
-module.exports = {
+export const floorDocs = {
   'name': 'floor',
   'category': 'Arithmetic',
   'syntax': [

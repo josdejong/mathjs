@@ -1,15 +1,21 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../../type/matrix/function/matrix'))
-  const divideScalar = load(require('../../arithmetic/divideScalar'))
-  const multiplyScalar = load(require('../../arithmetic/multiplyScalar'))
-  const subtract = load(require('../../arithmetic/subtract'))
-  const equalScalar = load(require('../../relational/equalScalar'))
+import { factory } from '../../../utils/factory'
+import { createSolveValidation } from './utils/solveValidation'
 
-  const solveValidation = load(require('./utils/solveValidation'))
+const name = 'usolve'
+const dependencies = [
+  'typed',
+  'matrix',
+  'divideScalar',
+  'multiplyScalar',
+  'subtract',
+  'equalScalar',
+  'DenseMatrix'
+]
 
-  const DenseMatrix = type.DenseMatrix
+export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtract, equalScalar, DenseMatrix }) => {
+  const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**
    * Solves the linear equation system by backward substitution. Matrix must be an upper triangular matrix.
@@ -35,7 +41,7 @@ function factory (type, config, load, typed) {
    *
    * @return {DenseMatrix | Array}  A column vector with the linear system solution (x)
    */
-  const usolve = typed('usolve', {
+  return typed(name, {
 
     'SparseMatrix, Array | Matrix': function (m, b) {
       // process matrix
@@ -176,9 +182,4 @@ function factory (type, config, load, typed) {
       size: [rows, 1]
     })
   }
-
-  return usolve
-}
-
-exports.name = 'usolve'
-exports.factory = factory
+})

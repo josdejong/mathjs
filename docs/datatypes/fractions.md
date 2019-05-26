@@ -31,7 +31,7 @@ will convert the input to numbers and return a number as result.
 Most functions will determine the type of output from the type of input:
 a number as input will return a number as output, a Fraction as input returns
 a Fraction as output. Functions which cannot determine the type of output
-from the input (for example `math.eval`) use the default number type `number`,
+from the input (for example `math.evaluate`) use the default number type `number`,
 which can be configured when instantiating math.js. To configure the use of
 fractions instead of [numbers](numbers.md) by default, configure math.js like:
 
@@ -42,7 +42,7 @@ math.config({
 })
 
 // use the expression parser
-math.eval('0.32 + 0.08')   // Fraction, 2/5
+math.evaluate('0.32 + 0.08') // Fraction, 2/5
 ```
 
 ## Support

@@ -1,15 +1,26 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { factory } from '../../utils/factory'
+import { xorNumber } from '../../plain/number'
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'xor'
+const dependencies = [
+  'typed',
+  'matrix',
+  'DenseMatrix'
+]
 
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix }) => {
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Logical `xor`. Test whether one and only one value is defined with a nonzero/nonempty value.
@@ -39,11 +50,9 @@ function factory (type, config, load, typed) {
    * @return {boolean | Array | Matrix}
    *            Returns true when one and only one input is defined with a nonzero/nonempty value.
    */
-  const xor = typed('xor', {
+  const xor = typed(name, {
 
-    'number, number': function (x, y) {
-      return !!x !== !!y
-    },
+    'number, number': xorNumber,
 
     'Complex, Complex': function (x, y) {
       return ((x.re !== 0 || x.im !== 0) !== (y.re !== 0 || y.im !== 0))
@@ -115,12 +124,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  xor.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['xor']}\${args[1]}\\right)`
-  }
-
   return xor
-}
-
-exports.name = 'xor'
-exports.factory = factory
+})

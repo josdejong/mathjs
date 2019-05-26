@@ -1,5 +1,5 @@
 'use strict'
-module.exports = [
-  require('./format'),
-  require('./print')
-]
+
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
+
+deprecatedIndexFileError(__filename)

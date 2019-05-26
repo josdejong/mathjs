@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { asinhNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'asinh'
+const dependencies = ['typed']
+
+export const createAsinh = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the hyperbolic arcsine of a value,
    * defined as `asinh(x) = ln(x + sqrt(x^2 + 1))`.
@@ -25,9 +30,7 @@ function factory (type, config, load, typed) {
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsine of x
    */
   const asinh = typed('asinh', {
-    'number': Math.asinh || function (x) {
-      return Math.log(Math.sqrt(x * x + 1) + x)
-    },
+    'number': asinhNumber,
 
     'Complex': function (x) {
       return x.asinh()
@@ -43,10 +46,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  asinh.toTex = { 1: `\\sinh^{-1}\\left(\${args[0]}\\right)` }
-
   return asinh
-}
-
-exports.name = 'asinh'
-exports.factory = factory
+})

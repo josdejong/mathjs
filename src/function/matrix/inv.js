@@ -1,17 +1,24 @@
 'use strict'
 
-const util = require('../../utils/index')
+import { isMatrix } from '../../utils/is'
+import { arraySize } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { format } from '../../utils/string'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const divideScalar = load(require('../arithmetic/divideScalar'))
-  const addScalar = load(require('../arithmetic/addScalar'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const unaryMinus = load(require('../arithmetic/unaryMinus'))
-  const det = load(require('../matrix/det'))
-  const identity = load(require('./identity'))
-  const abs = load(require('../arithmetic/abs'))
+const name = 'inv'
+const dependencies = [
+  'typed',
+  'matrix',
+  'divideScalar',
+  'addScalar',
+  'multiply',
+  'unaryMinus',
+  'det',
+  'identity',
+  'abs'
+]
 
+export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, addScalar, multiply, unaryMinus, det, identity, abs }) => {
   /**
    * Calculate the inverse of a square matrix.
    *
@@ -32,14 +39,14 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x     Matrix to be inversed
    * @return {number | Complex | Array | Matrix} The inverse of `x`.
    */
-  const inv = typed('inv', {
+  return typed(name, {
     'Array | Matrix': function (x) {
-      const size = type.isMatrix(x) ? x.size() : util.array.size(x)
+      const size = isMatrix(x) ? x.size() : arraySize(x)
       switch (size.length) {
         case 1:
           // vector
           if (size[0] === 1) {
-            if (type.isMatrix(x)) {
+            if (isMatrix(x)) {
               return matrix([
                 divideScalar(1, x.valueOf()[0])
               ])
@@ -50,7 +57,7 @@ function factory (type, config, load, typed) {
             }
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + util.string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
 
         case 2:
@@ -58,7 +65,7 @@ function factory (type, config, load, typed) {
           const rows = size[0]
           const cols = size[1]
           if (rows === cols) {
-            if (type.isMatrix(x)) {
+            if (isMatrix(x)) {
               return matrix(
                 _inv(x.valueOf(), rows, cols),
                 x.storage()
@@ -69,13 +76,13 @@ function factory (type, config, load, typed) {
             }
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + util.string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
 
         default:
           // multi dimensional array
           throw new RangeError('Matrix must be two dimensional ' +
-          '(size: ' + util.string.format(size) + ')')
+          '(size: ' + format(size) + ')')
       }
     },
 
@@ -196,11 +203,4 @@ function factory (type, config, load, typed) {
       return B
     }
   }
-
-  inv.toTex = { 1: `\\left(\${args[0]}\\right)^{-1}` }
-
-  return inv
-}
-
-exports.name = 'inv'
-exports.factory = factory
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const coshDocs = {
   'name': 'cosh',
   'category': 'Trigonometry',
   'syntax': [

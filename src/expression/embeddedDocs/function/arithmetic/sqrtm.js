@@ -1,4 +1,4 @@
-module.exports = {
+export const sqrtmDocs = {
   'name': 'sqrtm',
   'category': 'Arithmetic',
   'syntax': [

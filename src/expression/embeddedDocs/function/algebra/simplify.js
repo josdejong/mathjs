@@ -1,4 +1,4 @@
-module.exports = {
+export const simplifyDocs = {
   'name': 'simplify',
   'category': 'Algebra',
   'syntax': [
@@ -11,9 +11,9 @@ module.exports = {
     'simplify("2x + x")',
     'f = parse("x * (x + 2 + x)")',
     'simplified = simplify(f)',
-    'simplified.eval({x: 2})'
+    'simplified.evaluate({x: 2})'
   ],
   'seealso': [
-    'derivative', 'parse', 'eval'
+    'derivative', 'parse', 'evaluate'
   ]
 }

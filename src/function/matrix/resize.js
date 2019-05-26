@@ -1,16 +1,18 @@
 'use strict'
 
-const DimensionError = require('../../error/DimensionError')
-const ArgumentsError = require('../../error/ArgumentsError')
+import { isBigNumber, isMatrix } from '../../utils/is'
+import { DimensionError } from '../../error/DimensionError'
+import { ArgumentsError } from '../../error/ArgumentsError'
+import { isInteger } from '../../utils/number'
+import { format } from '../../utils/string'
+import { clone } from '../../utils/object'
+import { resize as arrayResize } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-const isInteger = require('../../utils/number').isInteger
-const format = require('../../utils/string').format
-const clone = require('../../utils/object').clone
-const array = require('../../utils/array')
+const name = 'resize'
+const dependencies = ['config', 'matrix']
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-
+export const createResize = /* #__PURE__ */ factory(name, dependencies, ({ config, matrix }) => {
   /**
    * Resize a matrix
    *
@@ -38,24 +40,24 @@ function factory (type, config, load, typed) {
    * @return {* | Array | Matrix} A resized clone of matrix `x`
    */
   // TODO: rework resize to a typed-function
-  const resize = function resize (x, size, defaultValue) {
+  return function resize (x, size, defaultValue) {
     if (arguments.length !== 2 && arguments.length !== 3) {
       throw new ArgumentsError('resize', arguments.length, 2, 3)
     }
 
-    if (type.isMatrix(size)) {
+    if (isMatrix(size)) {
       size = size.valueOf() // get Array
     }
 
-    if (type.isBigNumber(size[0])) {
+    if (isBigNumber(size[0])) {
       // convert bignumbers to numbers
       size = size.map(function (value) {
-        return type.isBigNumber(value) ? value.toNumber() : value
+        return !isBigNumber(value) ? value : value.toNumber()
       })
     }
 
     // check x is a Matrix
-    if (type.isMatrix(x)) {
+    if (isMatrix(x)) {
       // use optimized matrix implementation, return copy
       return x.resize(size, defaultValue, true)
     }
@@ -82,14 +84,10 @@ function factory (type, config, load, typed) {
       }
       x = clone(x)
 
-      const res = array.resize(x, size, defaultValue)
+      const res = arrayResize(x, size, defaultValue)
       return asMatrix ? matrix(res) : res
     }
   }
-
-  resize.toTex = undefined // use default template
-
-  return resize
 
   /**
    * Resize a string
@@ -128,7 +126,4 @@ function factory (type, config, load, typed) {
       return str
     }
   }
-}
-
-exports.name = 'resize'
-exports.factory = factory
+})

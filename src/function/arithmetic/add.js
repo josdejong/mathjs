@@ -1,17 +1,29 @@
 'use strict'
 
-const extend = require('../../utils/object').extend
+import { factory } from '../../utils/factory'
+import { extend } from '../../utils/object'
+import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
+import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04'
+import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const addScalar = load(require('./addScalar'))
-  const latex = require('../../utils/latex.js')
+const name = 'add'
+const dependencies = [
+  'typed',
+  'matrix',
+  'addScalar',
+  'equalScalar',
+  'DenseMatrix',
+  'SparseMatrix'
+]
 
-  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  const algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
-  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, equalScalar, DenseMatrix, SparseMatrix }) => {
+  const algorithm01 = createAlgorithm01({ typed })
+  const algorithm04 = createAlgorithm04({ typed, equalScalar })
+  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Add two or more values, `x + y`.
@@ -47,7 +59,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to add
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
    */
-  const add = typed('add', extend({
+  const add = typed(name, extend({
     // we extend the signatures of addScalar with signatures dealing with matrices
 
     'DenseMatrix, DenseMatrix': function (x, y) {
@@ -120,12 +132,5 @@ function factory (type, config, load, typed) {
     }
   }, addScalar.signatures))
 
-  add.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['add']}\${args[1]}\\right)`
-  }
-
   return add
-}
-
-exports.name = 'add'
-exports.factory = factory
+})

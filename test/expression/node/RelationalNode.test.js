@@ -1,10 +1,11 @@
 // test RelationalNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RelationalNode = math.expression.node.RelationalNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RelationalNode = math.RelationalNode
 
 describe('RelationalNode', function () {
   const one = new ConstantNode(1)
@@ -40,11 +41,11 @@ describe('RelationalNode', function () {
     let n = new RelationalNode(['smaller', 'smaller'], [one, two, three])
     let expr = n.compile()
     let scope = {}
-    assert.strictEqual(expr.eval(scope), true)
+    assert.strictEqual(expr.evaluate(scope), true)
 
     n = new RelationalNode(['smaller', 'smaller'], [three, two, one])
     expr = n.compile()
-    assert.strictEqual(expr.eval(scope), false)
+    assert.strictEqual(expr.evaluate(scope), false)
   })
 
   it('should filter a RelationalNode', function () {
@@ -163,7 +164,7 @@ describe('RelationalNode', function () {
   it('should perform short-circuit evaluation', function () {
     const n = math.parse('(a = a+1) > (b = b+1) > (c = c+1) > (d = d+1)')
     const scope = { a: 0, b: 0, c: 0, d: 0 }
-    let result = n.eval(scope)
+    let result = n.evaluate(scope)
     assert.strictEqual(scope.a, 1)
     assert.strictEqual(scope.b, 1)
     assert.strictEqual(scope.c, 0)
@@ -174,7 +175,7 @@ describe('RelationalNode', function () {
   it('should not evaluate params more than once', function () {
     const n = math.parse('(a = a+1) >= (b = b+1) >= (c = c+1) >= (d = d+1)')
     const scope = { a: 0, b: 0, c: 0, d: 0 }
-    let result = n.eval(scope)
+    let result = n.evaluate(scope)
     assert.strictEqual(scope.a, 1)
     assert.strictEqual(scope.b, 1)
     assert.strictEqual(scope.c, 1)

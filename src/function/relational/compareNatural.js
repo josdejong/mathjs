@@ -1,11 +1,16 @@
 'use strict'
 
-const naturalSort = require('javascript-natural-sort')
+import naturalSort from 'javascript-natural-sort'
+import { isDenseMatrix, isSparseMatrix, typeOf } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const getTypeOf = load(require('../utils/typeof'))
-  const compare = load(require('./compare'))
+const name = 'compareNatural'
+const dependencies = [
+  'typed',
+  'compare'
+]
 
+export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, ({ typed, compare }) => {
   const compareBooleans = compare.signatures['boolean,boolean']
 
   /**
@@ -76,10 +81,10 @@ function factory (type, config, load, typed) {
    * @return {number} Returns the result of the comparison:
    *                  1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  const compareNatural = typed('compareNatural', {
+  const compareNatural = typed(name, {
     'any, any': function (x, y) {
-      const typeX = getTypeOf(x)
-      const typeY = getTypeOf(y)
+      const typeX = typeOf(x)
+      const typeY = typeOf(y)
       let c
 
       // numeric types
@@ -148,8 +153,6 @@ function factory (type, config, load, typed) {
     }
   })
 
-  compareNatural.toTex = undefined // use default template
-
   /**
    * Compare mixed matrix/array types, by converting to same-shaped array.
    * This comparator is non-deterministic regarding input types.
@@ -158,23 +161,23 @@ function factory (type, config, load, typed) {
    * @returns {number} Returns the comparison result: -1, 0, or 1
    */
   function compareMatricesAndArrays (x, y) {
-    if (type.isSparseMatrix(x) && type.isSparseMatrix(y)) {
+    if (isSparseMatrix(x) && isSparseMatrix(y)) {
       return compareArrays(x.toJSON().values, y.toJSON().values)
     }
-    if (type.isSparseMatrix(x)) {
+    if (isSparseMatrix(x)) {
       // note: convert to array is expensive
       return compareMatricesAndArrays(x.toArray(), y)
     }
-    if (type.isSparseMatrix(y)) {
+    if (isSparseMatrix(y)) {
       // note: convert to array is expensive
       return compareMatricesAndArrays(x, y.toArray())
     }
 
     // convert DenseArray into Array
-    if (type.isDenseMatrix(x)) {
+    if (isDenseMatrix(x)) {
       return compareMatricesAndArrays(x.toJSON().data, y)
     }
-    if (type.isDenseMatrix(y)) {
+    if (isDenseMatrix(y)) {
       return compareMatricesAndArrays(x, y.toJSON().data)
     }
 
@@ -251,7 +254,7 @@ function factory (type, config, load, typed) {
   }
 
   return compareNatural
-}
+})
 
 /**
  * Compare two complex numbers, `x` and `y`:
@@ -272,6 +275,3 @@ function compareComplexNumbers (x, y) {
 
   return 0
 }
-
-exports.name = 'compareNatural'
-exports.factory = factory

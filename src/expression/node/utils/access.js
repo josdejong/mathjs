@@ -1,11 +1,9 @@
 'use strict'
 
-const errorTransform = require('../../transform/error.transform').transform
-const getSafeProperty = require('../../../utils/customs').getSafeProperty
+import { errorTransform } from '../../transform/utils/errorTransform'
+import { getSafeProperty } from '../../../utils/customs'
 
-function factory (type, config, load, typed) {
-  const subset = load(require('../../../function/matrix/subset'))
-
+export function accessFactory ({ subset }) {
   /**
    * Retrieve part of an object:
    *
@@ -40,5 +38,3 @@ function factory (type, config, load, typed) {
     }
   }
 }
-
-exports.factory = factory

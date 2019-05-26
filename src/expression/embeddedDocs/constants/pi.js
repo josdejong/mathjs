@@ -1,4 +1,4 @@
-module.exports = {
+export const piDocs = {
   'name': 'pi',
   'category': 'Constants',
   'syntax': [

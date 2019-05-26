@@ -1,17 +1,14 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const abs = load(require('../arithmetic/abs'))
-  const add = load(require('../arithmetic/add'))
-  const addScalar = load(require('../arithmetic/addScalar'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const multiplyScalar = load(require('../arithmetic/multiplyScalar'))
-  const divideScalar = load(require('../arithmetic/divideScalar'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const smaller = load(require('../relational/smaller'))
-  const equalScalar = load(require('../relational/equalScalar'))
+import { isBigNumber } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
+const name = 'intersect'
+const dependencies = [
+  'typed', 'config', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar'
+]
+
+export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar }) => {
   /**
    * Calculates the point of intersection of two lines in two or three dimensions
    * and of a line and a plane in three dimensions. The inputs are in the form of
@@ -78,21 +75,21 @@ function factory (type, config, load, typed) {
     }
   })
 
-  function _isNumber (a) {
+  function _isNumeric (a) {
     // intersect supports numbers and bignumbers
-    return (typeof a === 'number' || type.isBigNumber(a))
+    return (typeof a === 'number' || isBigNumber(a))
   }
 
   function _2d (x) {
-    return x.length === 2 && _isNumber(x[0]) && _isNumber(x[1])
+    return x.length === 2 && _isNumeric(x[0]) && _isNumeric(x[1])
   }
 
   function _3d (x) {
-    return x.length === 3 && _isNumber(x[0]) && _isNumber(x[1]) && _isNumber(x[2])
+    return x.length === 3 && _isNumeric(x[0]) && _isNumeric(x[1]) && _isNumeric(x[2])
   }
 
   function _4d (x) {
-    return x.length === 4 && _isNumber(x[0]) && _isNumber(x[1]) && _isNumber(x[2]) && _isNumber(x[3])
+    return x.length === 4 && _isNumeric(x[0]) && _isNumeric(x[1]) && _isNumeric(x[2]) && _isNumeric(x[3])
   }
 
   function _intersect2d (p1a, p1b, p2a, p2b) {
@@ -164,7 +161,4 @@ function factory (type, config, load, typed) {
   }
 
   return intersect
-}
-
-exports.name = 'intersect'
-exports.factory = factory
+})

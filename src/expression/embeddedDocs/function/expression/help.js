@@ -1,4 +1,4 @@
-module.exports = {
+export const helpDocs = {
   'name': 'help',
   'category': 'Expression',
   'syntax': [

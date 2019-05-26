@@ -1,17 +1,37 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/add'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const divide = load(require('../arithmetic/divide'))
-  const pow = load(require('../arithmetic/pow'))
-  const factorial = load(require('../probability/factorial'))
-  const combinations = load(require('../probability/combinations'))
-  const isNegative = load(require('../utils/isNegative'))
-  const isInteger = load(require('../utils/isInteger'))
-  const larger = load(require('../relational/larger'))
+import { factory } from '../../utils/factory'
 
+const name = 'stirlingS2'
+const dependencies = [
+  'typed',
+  'addScalar',
+  'subtract',
+  'multiplyScalar',
+  'divideScalar',
+  'pow',
+  'factorial',
+  'combinations',
+  'isNegative',
+  'isInteger',
+  'larger'
+]
+
+export const createStirlingS2 = /* #__PURE__ */ factory(name, dependencies, (
+  {
+    typed,
+    addScalar,
+    subtract,
+    multiplyScalar,
+    divideScalar,
+    pow,
+    factorial,
+    combinations,
+    isNegative,
+    isInteger,
+    larger
+  }
+) => {
   /**
    * The Stirling numbers of the second kind, counts the number of ways to partition
    * a set of n labelled objects into k nonempty unlabelled subsets.
@@ -36,7 +56,7 @@ function factory (type, config, load, typed) {
    * @param {Number | BigNumber} k    Number of objects in the subset
    * @return {Number | BigNumber}     S(n,k)
    */
-  const stirlingS2 = typed('stirlingS2', {
+  return typed(name, {
     'number | BigNumber, number | BigNumber': function (n, k) {
       if (!isInteger(n) || isNegative(n) || !isInteger(k) || isNegative(k)) {
         throw new TypeError('Non-negative integer value expected in function stirlingS2')
@@ -52,17 +72,10 @@ function factory (type, config, load, typed) {
         const kChooseI = combinations(k, i)
         const iPower = pow(i, n)
 
-        result = add(result, multiply(multiply(kChooseI, iPower), negativeOne))
+        result = addScalar(result, multiplyScalar(multiplyScalar(kChooseI, iPower), negativeOne))
       }
 
-      return divide(result, kFactorial)
+      return divideScalar(result, kFactorial)
     }
   })
-
-  stirlingS2.toTex = { 2: `\\mathrm{S}\\left(\${args}\\right)` }
-
-  return stirlingS2
-}
-
-exports.name = 'stirlingS2'
-exports.factory = factory
+})

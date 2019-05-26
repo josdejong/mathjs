@@ -1,11 +1,14 @@
 'use strict'
 
-const object = require('../utils/object')
-const string = require('../utils/string')
+import { isHelp } from '../utils/is'
+import { clone } from '../utils/object'
+import { format } from '../utils/string'
+import { factory } from '../utils/factory'
 
-function factory (type, config, load, typed) {
-  const parser = load(require('./function/parser'))()
+const name = 'Help'
+const dependencies = ['parse']
 
+export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ parse }) => {
   /**
    * Documentation object
    * @param {Object} doc  Object containing properties:
@@ -56,6 +59,8 @@ function factory (type, config, load, typed) {
     }
     if (doc.examples) {
       desc += 'Examples:\n'
+
+      let scope = {}
       for (let i = 0; i < doc.examples.length; i++) {
         const expr = doc.examples[i]
         desc += '    ' + expr + '\n'
@@ -63,12 +68,12 @@ function factory (type, config, load, typed) {
         let res
         try {
           // note: res can be undefined when `expr` is an empty string
-          res = parser.eval(expr)
+          res = parse(expr).compile().evaluate(scope)
         } catch (e) {
           res = e
         }
-        if (res !== undefined && !type.isHelp(res)) {
-          desc += '        ' + string.format(res, { precision: 14 }) + '\n'
+        if (res !== undefined && !isHelp(res)) {
+          desc += '        ' + format(res, { precision: 14 }) + '\n'
         }
       }
       desc += '\n'
@@ -84,7 +89,7 @@ function factory (type, config, load, typed) {
    * Export the help object to JSON
    */
   Help.prototype.toJSON = function () {
-    const obj = object.clone(this.doc)
+    const obj = clone(this.doc)
     obj.mathjs = 'Help'
     return obj
   }
@@ -110,8 +115,4 @@ function factory (type, config, load, typed) {
   Help.prototype.valueOf = Help.prototype.toString
 
   return Help
-}
-
-exports.name = 'Help'
-exports.path = 'type'
-exports.factory = factory
+}, { isClass: true })

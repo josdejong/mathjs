@@ -3,54 +3,41 @@
 // have to defined more functions and define conversions from and to
 // other data types.
 
-const math = require('../../index')
+const { create, all, factory } = require('../..')
+const math = create(all)
 
-math.import({
-  name: 'BigInt',
-  path: 'type', // will be imported into math.type.BigInt
-  factory: (type, config, load, typed) => {
+// we can also add conversions here from number or string to BigInt
+// and vice versa using math.typed.addConversion(...)
+
+math.import([
+  factory('BigInt', ['typed'], function createBigInt ({ typed }) {
     typed.addType({
       name: 'BigInt',
       test: (x) => typeof x === 'bigint' // eslint-disable-line
     })
 
-    // we can also add conversions here from number or string to BigInt
-    // and vice versa using typed.addConversion(...)
-
     return BigInt // eslint-disable-line
-  },
+  }, { lazy: false }),
 
-  // disable lazy loading as this factory has side
-  // effects: it adds a type and a conversion.
-  lazy: false
-})
-
-math.import({
-  name: 'bigint',
-  factory: (type, config, load, typed) => {
+  factory('bigint', ['typed', 'BigInt'], function createBigint ({ typed, BigInt }) {
     return typed('bigint', {
       'number | string ': (x) => BigInt(x) // eslint-disable-line
     })
-  }
-})
+  }),
 
-math.import({
-  name: 'add',
-  factory: (type, config, load, typed) => {
+  factory('add', ['typed'], function createBigIntAdd ({ typed }) {
     return typed('add', {
       'BigInt, BigInt': (a, b) => a + b
     })
-  }
-})
+  }),
 
-math.import({
-  name: 'pow',
-  factory: (type, config, load, typed) => {
+  factory('pow', ['typed'], function createBigIntPow ({ typed }) {
     return typed('pow', {
       'BigInt, BigInt': (a, b) => a ** b
     })
-  }
-})
+  })
+])
 
-console.log(math.eval('bigint(4349) + bigint(5249)'))
-console.log(math.eval('bigint(4349) ^ bigint(5249)'))
+console.log(math.evaluate('4349 + 5249'))
+console.log(math.evaluate('bigint(4349) + bigint(5249)'))
+console.log(math.evaluate('bigint(4349) ^ bigint(5249)'))

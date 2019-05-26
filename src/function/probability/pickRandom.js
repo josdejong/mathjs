@@ -1,7 +1,24 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const distribution = load(require('./distribution'))
+import { factory } from '../../utils/factory'
+import { isNumber } from '../../utils/is'
+import { arraySize } from '../../utils/array'
+import { createRng } from './util/seededRNG'
+
+const name = 'pickRandom'
+const dependencies = ['typed', 'config', '?on']
+
+export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, on }) => {
+  // seeded pseudo random number generator
+  let rng = createRng(config.randomSeed)
+
+  if (on) {
+    on('config', function (curr, prev) {
+      if (curr.randomSeed !== prev.randomSeed) {
+        rng = createRng(curr.randomSeed)
+      }
+    })
+  }
 
   /**
    * Random pick one or more values from a one dimensional array.
@@ -27,19 +44,100 @@ function factory (type, config, load, typed) {
    *
    *     random, randomInt
    *
-   * @param {Array} array     A one dimensional array
-   * @param {Int} number      An int or float
-   * @param {Array} weights   An array of ints or floats
-   * @return {number | Array} Returns a single random value from array when number is 1 or undefined.
-   *                          Returns an array with the configured number of elements when number is > 1.
+   * @param {Array | Matrix} array     A one dimensional array
+   * @param {Int} number               An int or float
+   * @param {Array | Matrix} weights   An array of ints or floats
+   * @return {number | Array}          Returns a single random value from array when number is 1 or undefined.
+   *                                   Returns an array with the configured number of elements when number is > 1.
    */
-  // TODO: rework pickRandom to a typed-function
-  const pickRandom = distribution('uniform').pickRandom
+  return typed({
+    'Array | Matrix': function (possibles) {
+      return _pickRandom(possibles)
+    },
 
-  pickRandom.toTex = undefined // use default template
+    'Array | Matrix, number': function (possibles, number) {
+      return _pickRandom(possibles, number, undefined)
+    },
 
-  return pickRandom
-}
+    'Array | Matrix, Array': function (possibles, weights) {
+      return _pickRandom(possibles, undefined, weights)
+    },
 
-exports.name = 'pickRandom'
-exports.factory = factory
+    'Array | Matrix, Array | Matrix, number': function (possibles, weights, number) {
+      return _pickRandom(possibles, number, weights)
+    },
+
+    'Array | Matrix, number, Array | Matrix': function (possibles, number, weights) {
+      return _pickRandom(possibles, number, weights)
+    }
+  })
+
+  function _pickRandom (possibles, number, weights) {
+    const single = (typeof number === 'undefined')
+    if (single) {
+      number = 1
+    }
+
+    possibles = possibles.valueOf() // get Array
+    if (weights) {
+      weights = weights.valueOf() // get Array
+    }
+
+    if (arraySize(possibles).length > 1) {
+      throw new Error('Only one dimensional vectors supported')
+    }
+
+    let totalWeights = 0
+
+    if (typeof weights !== 'undefined') {
+      if (weights.length !== possibles.length) {
+        throw new Error('Weights must have the same length as possibles')
+      }
+
+      for (let i = 0, len = weights.length; i < len; i++) {
+        if (!isNumber(weights[i]) || weights[i] < 0) {
+          throw new Error('Weights must be an array of positive numbers')
+        }
+
+        totalWeights += weights[i]
+      }
+    }
+
+    const length = possibles.length
+
+    if (length === 0) {
+      return []
+    } else if (number >= length) {
+      return number > 1 ? possibles : possibles[0]
+    }
+
+    const result = []
+    let pick
+
+    while (result.length < number) {
+      if (typeof weights === 'undefined') {
+        pick = possibles[Math.floor(rng() * length)]
+      } else {
+        let randKey = rng() * totalWeights
+
+        for (let i = 0, len = possibles.length; i < len; i++) {
+          randKey -= weights[i]
+
+          if (randKey < 0) {
+            pick = possibles[i]
+            break
+          }
+        }
+      }
+
+      if (result.indexOf(pick) === -1) {
+        result.push(pick)
+      }
+    }
+
+    return single ? result[0] : result
+
+    // TODO: return matrix when input was a matrix
+    // TODO: add support for multi dimensional matrices
+  }
+})

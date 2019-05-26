@@ -1,4 +1,4 @@
-module.exports = {
+export const randomIntDocs = {
   'name': 'randomInt',
   'category': 'Probability',
   'syntax': [

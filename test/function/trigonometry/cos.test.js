@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -47,8 +47,8 @@ describe('cos', function () {
     assert.strictEqual(cosVal.constructor.precision, 238)
     assert.deepStrictEqual(cosVal.toString(), resultVal)
 
-    biggermath.config({ precision: 16 })
-    const bigPi = biggermath.pi
+    const biggermath2 = math.create({ number: 'BigNumber', precision: 16 })
+    const bigPi = biggermath2.pi
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau
     assert.deepStrictEqual(bigmath.cos(bigmath.bignumber(6)).toString(), '0.960170286650366')
@@ -85,7 +85,7 @@ describe('cos', function () {
     approx.equal(cos(unit('45deg')), 0.707106781186548)
     approx.equal(cos(unit('-135deg')), -0.707106781186548)
 
-    assert(math.type.isBigNumber(cos(unit(math.bignumber(45), 'deg'))))
+    assert(math.isBigNumber(cos(unit(math.bignumber(45), 'deg'))))
     approx.equal(cos(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548)
 
     approx.deepEqual(cos(unit(complex(1, 1), 'rad')), complex(0.833730025131149, -0.988897705762865))

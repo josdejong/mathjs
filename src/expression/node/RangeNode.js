@@ -1,10 +1,15 @@
 'use strict'
 
-const operators = require('../operators')
+import { isNode, isSymbolNode } from '../../utils/is'
+import { factory } from '../../utils/factory'
+import { getPrecedence } from '../operators'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
+const name = 'RangeNode'
+const dependencies = [
+  'Node'
+]
 
+export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * @constructor RangeNode
    * @extends {Node}
@@ -19,9 +24,9 @@ function factory (type, config, load, typed) {
     }
 
     // validate inputs
-    if (!type.isNode(start)) throw new TypeError('Node expected')
-    if (!type.isNode(end)) throw new TypeError('Node expected')
-    if (step && !type.isNode(step)) throw new TypeError('Node expected')
+    if (!isNode(start)) throw new TypeError('Node expected')
+    if (!isNode(end)) throw new TypeError('Node expected')
+    if (step && !isNode(step)) throw new TypeError('Node expected')
     if (arguments.length > 3) throw new Error('Too many arguments')
 
     this.start = start // included lower-bound
@@ -43,7 +48,7 @@ function factory (type, config, load, typed) {
   RangeNode.prototype.needsEnd = function () {
     // find all `end` symbols in this RangeNode
     const endSymbols = this.filter(function (node) {
-      return type.isSymbolNode(node) && (node.name === 'end')
+      return isSymbolNode(node) && (node.name === 'end')
     })
 
     return endSymbols.length > 0
@@ -129,20 +134,20 @@ function factory (type, config, load, typed) {
    * @private
    */
   function calculateNecessaryParentheses (node, parenthesis) {
-    const precedence = operators.getPrecedence(node, parenthesis)
+    const precedence = getPrecedence(node, parenthesis)
     const parens = {}
 
-    const startPrecedence = operators.getPrecedence(node.start, parenthesis)
+    const startPrecedence = getPrecedence(node.start, parenthesis)
     parens.start = ((startPrecedence !== null) && (startPrecedence <= precedence)) ||
       (parenthesis === 'all')
 
     if (node.step) {
-      const stepPrecedence = operators.getPrecedence(node.step, parenthesis)
+      const stepPrecedence = getPrecedence(node.step, parenthesis)
       parens.step = ((stepPrecedence !== null) && (stepPrecedence <= precedence)) ||
         (parenthesis === 'all')
     }
 
-    const endPrecedence = operators.getPrecedence(node.end, parenthesis)
+    const endPrecedence = getPrecedence(node.end, parenthesis)
     parens.end = ((endPrecedence !== null) && (endPrecedence <= precedence)) ||
       (parenthesis === 'all')
 
@@ -275,8 +280,4 @@ function factory (type, config, load, typed) {
   }
 
   return RangeNode
-}
-
-exports.name = 'RangeNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

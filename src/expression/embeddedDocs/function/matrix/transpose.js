@@ -1,4 +1,4 @@
-module.exports = {
+export const transposeDocs = {
   'name': 'transpose',
   'category': 'Matrix',
   'syntax': [

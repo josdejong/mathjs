@@ -1,13 +1,13 @@
 'use strict'
 
-const deepForEach = require('../../utils/collection/deepForEach')
-const reduce = require('../../utils/collection/reduce')
-const containsCollections = require('../../utils/collection/containsCollections')
+import { containsCollections, deepForEach, reduce } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
-function factory (type, config, load, typed) {
-  const smaller = load(require('../relational/smaller'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'min'
+const dependencies = ['typed', 'smaller']
 
+export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, smaller }) => {
   /**
    * Compute the minimum value of a matrix or a  list of values.
    * In case of a multi dimensional array, the minimum of the flattened array
@@ -34,12 +34,12 @@ function factory (type, config, load, typed) {
    *
    * See also:
    *
-   *    mean, median, max, prod, std, sum, var
+   *    mean, median, max, prod, std, sum, variance
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The minimum value
    */
-  const min = typed('min', {
+  return typed(name, {
     // min([a, b, c, d, ...])
     'Array | Matrix': _min,
 
@@ -57,10 +57,6 @@ function factory (type, config, load, typed) {
       return _min(args)
     }
   })
-
-  min.toTex = `\\min\\left(\${args}\\right)`
-
-  return min
 
   /**
    * Return the smallest of two values
@@ -104,7 +100,4 @@ function factory (type, config, load, typed) {
 
     return min
   }
-}
-
-exports.name = 'min'
-exports.factory = factory
+})

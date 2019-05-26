@@ -1,15 +1,16 @@
 // test FunctionNode
-const assert = require('assert')
-const math = require('../../../src/main').create()
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const FunctionNode = math.expression.node.FunctionNode
-const OperatorNode = math.expression.node.OperatorNode
-const RangeNode = math.expression.node.RangeNode
-const IndexNode = math.expression.node.IndexNode
-const AccessorNode = math.expression.node.AccessorNode
-const FunctionAssignmentNode = math.expression.node.FunctionAssignmentNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const FunctionNode = math.FunctionNode
+const OperatorNode = math.OperatorNode
+const RangeNode = math.RangeNode
+const IndexNode = math.IndexNode
+const AccessorNode = math.AccessorNode
+const FunctionAssignmentNode = math.FunctionAssignmentNode
 
 describe('FunctionNode', function () {
   it('should create a FunctionNode', function () {
@@ -58,7 +59,7 @@ describe('FunctionNode', function () {
     const n = new FunctionNode(s, [c])
 
     let scope = {}
-    assert.strictEqual(n.compile().eval(scope), 2)
+    assert.strictEqual(n.compile().evaluate(scope), 2)
   })
 
   it('should compile a FunctionNode containing an index', function () {
@@ -76,7 +77,7 @@ describe('FunctionNode', function () {
         }
       }
     }
-    assert.strictEqual(n.compile().eval(scope), 16)
+    assert.strictEqual(n.compile().evaluate(scope), 16)
   })
 
   it('should execute a FunctionNode with the right context', function () {
@@ -94,15 +95,15 @@ describe('FunctionNode', function () {
         }
       }
     }
-    assert.strictEqual(n.compile().eval(scope), 42)
+    assert.strictEqual(n.compile().evaluate(scope), 42)
   })
 
   it('should compile a FunctionNode with a raw function', function () {
     const mymath = math.create()
     function myFunction (args, _math, _scope) {
       assert.strictEqual(args.length, 2)
-      assert(args[0] instanceof mymath.expression.node.Node)
-      assert(args[1] instanceof mymath.expression.node.Node)
+      assert(args[0] instanceof mymath.Node)
+      assert(args[1] instanceof mymath.Node)
       assert.deepStrictEqual(_scope, scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
@@ -110,14 +111,14 @@ describe('FunctionNode', function () {
     mymath.import({ myFunction: myFunction })
 
     const s = new SymbolNode('myFunction')
-    const a = new mymath.expression.node.ConstantNode(4)
-    const b = new mymath.expression.node.ConstantNode(5)
-    const n = new mymath.expression.node.FunctionNode(s, [a, b])
+    const a = new mymath.ConstantNode(4)
+    const b = new mymath.ConstantNode(5)
+    const n = new mymath.FunctionNode(s, [a, b])
 
     let scope = {
       foo: 'bar'
     }
-    assert.strictEqual(n.compile().eval(scope), 'myFunction(4, 5)')
+    assert.strictEqual(n.compile().evaluate(scope), 'myFunction(4, 5)')
   })
 
   it('should compile a FunctionNode containing an index resolving to a function with rawArgs', function () {
@@ -128,8 +129,8 @@ describe('FunctionNode', function () {
     const mymath = math.create()
     function myFunction (args, _math, _scope) {
       assert.strictEqual(args.length, 2)
-      assert(args[0] instanceof mymath.expression.node.Node)
-      assert(args[1] instanceof mymath.expression.node.Node)
+      assert(args[0] instanceof mymath.Node)
+      assert(args[1] instanceof mymath.Node)
       assert.deepStrictEqual(_scope, scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
@@ -139,13 +140,13 @@ describe('FunctionNode', function () {
     const prop = new ConstantNode('myFunction')
     const i = new IndexNode([prop])
     const a = new AccessorNode(obj, i)
-    const b = new mymath.expression.node.ConstantNode(4)
-    const c = new mymath.expression.node.ConstantNode(5)
-    const n = new mymath.expression.node.FunctionNode(a, [b, c])
+    const b = new mymath.ConstantNode(4)
+    const c = new mymath.ConstantNode(5)
+    const n = new mymath.FunctionNode(a, [b, c])
 
     scope.obj.myFunction = myFunction
 
-    assert.strictEqual(n.compile().eval(scope), 'myFunction(4, 5)')
+    assert.strictEqual(n.compile().evaluate(scope), 'myFunction(4, 5)')
   })
 
   it('should compile a FunctionNode with overloaded a raw function', function () {
@@ -156,17 +157,17 @@ describe('FunctionNode', function () {
     myFunction.rawArgs = true
     mymath.import({ myFunction: myFunction })
 
-    const s = new mymath.expression.node.SymbolNode('myFunction')
-    const a = new mymath.expression.node.ConstantNode(4)
-    const b = new mymath.expression.node.ConstantNode(5)
-    const n = new mymath.expression.node.FunctionNode(s, [a, b])
+    const s = new mymath.SymbolNode('myFunction')
+    const a = new mymath.ConstantNode(4)
+    const b = new mymath.ConstantNode(5)
+    const n = new mymath.FunctionNode(s, [a, b])
 
     let scope = {
       myFunction: function () {
         return 42
       }
     }
-    assert.strictEqual(n.compile().eval(scope), 42)
+    assert.strictEqual(n.compile().evaluate(scope), 42)
   })
 
   it('should filter a FunctionNode', function () {
@@ -416,7 +417,7 @@ describe('FunctionNode', function () {
         string += ')'
         return string
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -501,7 +502,7 @@ describe('FunctionNode', function () {
         latex += '\\right)'
         return latex
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 
@@ -610,5 +611,12 @@ describe('FunctionNode', function () {
     tree.some_property = [1, 2]
 
     assert.throws(function () { tree.toTex() }, TypeError)
+  })
+
+  // FIXME: custom instances should have there own function, not return the same function?
+  after(() => {
+    const customMath = math.create()
+    delete customMath.add.toTex
+    delete customMath.sum.toTex
   })
 })

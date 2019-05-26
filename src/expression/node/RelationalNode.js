@@ -1,13 +1,17 @@
 'use strict'
 
-const operators = require('../operators')
-const latex = require('../../utils/latex')
-const escape = require('../../utils/string').escape
+import { getPrecedence } from '../operators'
+import { escape } from '../../utils/string'
+import { getSafeProperty } from '../../utils/customs'
+import { latexOperators } from '../../utils/latex'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const getSafeProperty = require('../../utils/customs').getSafeProperty
+const name = 'RelationalNode'
+const dependencies = [
+  'Node'
+]
 
+export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * A node representing a chained conditional expression, such as 'x > y > z'
    *
@@ -102,10 +106,10 @@ function factory (type, config, load, typed) {
    */
   RelationalNode.prototype._toString = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const precedence = operators.getPrecedence(this, parenthesis)
+    const precedence = getPrecedence(this, parenthesis)
 
     const paramStrings = this.params.map(function (p, index) {
-      const paramPrecedence = operators.getPrecedence(p, parenthesis)
+      const paramPrecedence = getPrecedence(p, parenthesis)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
         ? '(' + p.toString(options) + ')'
         : p.toString(options)
@@ -158,10 +162,10 @@ function factory (type, config, load, typed) {
    */
   RelationalNode.prototype.toHTML = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const precedence = operators.getPrecedence(this, parenthesis)
+    const precedence = getPrecedence(this, parenthesis)
 
     const paramStrings = this.params.map(function (p, index) {
-      const paramPrecedence = operators.getPrecedence(p, parenthesis)
+      const paramPrecedence = getPrecedence(p, parenthesis)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
         ? '<span class="math-parenthesis math-round-parenthesis">(</span>' + p.toHTML(options) + '<span class="math-parenthesis math-round-parenthesis">)</span>'
         : p.toHTML(options)
@@ -191,10 +195,10 @@ function factory (type, config, load, typed) {
    */
   RelationalNode.prototype._toTex = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const precedence = operators.getPrecedence(this, parenthesis)
+    const precedence = getPrecedence(this, parenthesis)
 
     const paramStrings = this.params.map(function (p, index) {
-      const paramPrecedence = operators.getPrecedence(p, parenthesis)
+      const paramPrecedence = getPrecedence(p, parenthesis)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
         ? '\\left(' + p.toTex(options) + '\right)'
         : p.toTex(options)
@@ -202,15 +206,11 @@ function factory (type, config, load, typed) {
 
     let ret = paramStrings[0]
     for (let i = 0; i < this.conditionals.length; i++) {
-      ret += latex.operators[this.conditionals[i]] + paramStrings[i + 1]
+      ret += latexOperators[this.conditionals[i]] + paramStrings[i + 1]
     }
 
     return ret
   }
 
   return RelationalNode
-}
-
-exports.name = 'RelationalNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

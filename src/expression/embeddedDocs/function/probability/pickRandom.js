@@ -1,4 +1,4 @@
-module.exports = {
+export const pickRandomDocs = {
   'name': 'pickRandom',
   'category': 'Probability',
   'syntax': [

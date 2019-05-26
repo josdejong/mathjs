@@ -1,4 +1,4 @@
-module.exports = {
+export const crossDocs = {
   'name': 'cross',
   'category': 'Matrix',
   'syntax': [

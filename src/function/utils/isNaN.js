@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { deepMap } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { isNaNNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'isNaN'
+const dependencies = ['typed']
+
+export const createIsNaN = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is NaN (not a number).
    * The function supports types `number`, `BigNumber`, `Fraction`, `Unit` and `Complex`.
@@ -32,10 +37,8 @@ function factory (type, config, load, typed) {
    * @return {boolean}  Returns true when `x` is NaN.
    *                    Throws an error in case of an unknown data type.
    */
-  const isNaN = typed('isNaN', {
-    'number': function (x) {
-      return Number.isNaN(x)
-    },
+  return typed(name, {
+    'number': isNaNNumber,
 
     'BigNumber': function (x) {
       return x.isNaN()
@@ -57,9 +60,4 @@ function factory (type, config, load, typed) {
       return deepMap(x, Number.isNaN)
     }
   })
-
-  return isNaN
-}
-
-exports.name = 'isNaN'
-exports.factory = factory
+})

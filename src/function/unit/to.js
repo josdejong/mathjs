@@ -1,12 +1,18 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+import { factory } from '../../utils/factory'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'to'
+const dependencies = [
+  'typed',
+  'matrix'
+]
 
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Change the unit of a value.
@@ -32,7 +38,7 @@ function factory (type, config, load, typed) {
    *                                      or a unit without value.
    * @return {Unit | Array | Matrix} value with changed, fixed unit.
    */
-  const to = typed('to', {
+  const to = typed(name, {
 
     'Unit, Unit | string': function (x, unit) {
       return x.to(unit)
@@ -79,12 +85,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  to.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['to']}\${args[1]}\\right)`
-  }
-
   return to
-}
-
-exports.name = 'to'
-exports.factory = factory
+})

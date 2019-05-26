@@ -1,23 +1,21 @@
 'use strict'
 
-const util = require('../../utils/index')
+import { isArray, isMatrix, isString, typeOf } from '../../utils/is'
+import { clone } from '../../utils/object'
+import { factory } from '../../utils/factory'
 
-const string = util.string
-const object = util.object
+const name = 'ImmutableDenseMatrix'
+const dependencies = [
+  'smaller',
+  'DenseMatrix'
+]
 
-const isArray = Array.isArray
-const isString = string.isString
-
-function factory (type, config, load) {
-  const DenseMatrix = load(require('./DenseMatrix'))
-
-  const smaller = load(require('../../function/relational/smaller'))
-
+export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ smaller, DenseMatrix }) => {
   function ImmutableDenseMatrix (data, datatype) {
     if (!(this instanceof ImmutableDenseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
     if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }
 
-    if (type.isMatrix(data) || isArray(data)) {
+    if (isMatrix(data) || isArray(data)) {
       // use DenseMatrix implementation
       const matrix = new DenseMatrix(data, datatype)
       // internal structures
@@ -35,7 +33,7 @@ function factory (type, config, load) {
       this._max = typeof data.max !== 'undefined' ? data.max : null
     } else if (data) {
       // unsupported type
-      throw new TypeError('Unsupported type of data (' + util.types.type(data) + ')')
+      throw new TypeError('Unsupported type of data (' + typeOf(data) + ')')
     } else {
       // nothing provided
       this._data = []
@@ -73,7 +71,7 @@ function factory (type, config, load) {
         // use base implementation
         const m = DenseMatrix.prototype.subset.call(this, index)
         // check result is a matrix
-        if (type.isMatrix(m)) {
+        if (isMatrix(m)) {
           // return immutable matrix
           return new ImmutableDenseMatrix({
             data: m._data,
@@ -136,12 +134,11 @@ function factory (type, config, load) {
    * @return {ImmutableDenseMatrix} clone
    */
   ImmutableDenseMatrix.prototype.clone = function () {
-    const m = new ImmutableDenseMatrix({
-      data: object.clone(this._data),
-      size: object.clone(this._size),
+    return new ImmutableDenseMatrix({
+      data: clone(this._data),
+      size: clone(this._size),
       datatype: this._datatype
     })
-    return m
   }
 
   /**
@@ -216,10 +213,5 @@ function factory (type, config, load) {
     return this._max
   }
 
-  // exports
   return ImmutableDenseMatrix
-}
-
-exports.name = 'ImmutableDenseMatrix'
-exports.path = 'type'
-exports.factory = factory
+}, { isClass: true })

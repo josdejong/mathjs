@@ -1,11 +1,12 @@
 // test IndexNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const IndexNode = math.expression.node.IndexNode
-const RangeNode = math.expression.node.RangeNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const IndexNode = math.IndexNode
+const RangeNode = math.RangeNode
 
 describe('IndexNode', function () {
   it('should create a IndexNode', function () {
@@ -193,7 +194,7 @@ describe('IndexNode', function () {
           return range.toString(options)
         }).join(', ')
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -249,7 +250,7 @@ describe('IndexNode', function () {
           return range.toTex(options)
         }).join(', ')
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

@@ -1,14 +1,15 @@
 // test AccessorNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const bigmath = require('../../../src/main').create({ number: 'BigNumber' })
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const OperatorNode = math.expression.node.OperatorNode
-const SymbolNode = math.expression.node.SymbolNode
-const AccessorNode = math.expression.node.AccessorNode
-const IndexNode = math.expression.node.IndexNode
-const RangeNode = math.expression.node.RangeNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const bigmath = math.create({ number: 'BigNumber' })
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const OperatorNode = math.OperatorNode
+const SymbolNode = math.SymbolNode
+const AccessorNode = math.AccessorNode
+const IndexNode = math.IndexNode
+const RangeNode = math.RangeNode
 
 describe('AccessorNode', function () {
   it('should create a AccessorNode', function () {
@@ -43,18 +44,18 @@ describe('AccessorNode', function () {
   })
 
   it('should compile a AccessorNode', function () {
-    const a = new bigmath.expression.node.SymbolNode('a')
-    const index = new bigmath.expression.node.IndexNode([
-      new bigmath.expression.node.ConstantNode(2),
-      new bigmath.expression.node.ConstantNode(1)
+    const a = new bigmath.SymbolNode('a')
+    const index = new bigmath.IndexNode([
+      new bigmath.ConstantNode(2),
+      new bigmath.ConstantNode(1)
     ])
-    const n = new bigmath.expression.node.AccessorNode(a, index)
+    const n = new bigmath.AccessorNode(a, index)
     const expr = n.compile()
 
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.strictEqual(expr.eval(scope), 3)
+    assert.strictEqual(expr.evaluate(scope), 3)
   })
 
   it('should compile a AccessorNode with range and context parameters', function () {
@@ -72,7 +73,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.eval(scope), [[3, 4]])
+    assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
   })
 
   it('should compile a AccessorNode with a property', function () {
@@ -84,7 +85,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: { b: 42 }
     }
-    assert.deepStrictEqual(expr.eval(scope), 42)
+    assert.deepStrictEqual(expr.evaluate(scope), 42)
   })
 
   it('should throw a one-based index error when out of range (Array)', function () {
@@ -96,7 +97,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [1, 2, 3]
     }
-    assert.throws(function () { expr.eval(scope) }, /Index out of range \(4 > 3\)/)
+    assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
   })
 
   it('should throw a one-based index error when out of range (Matrix)', function () {
@@ -108,7 +109,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: math.matrix([1, 2, 3])
     }
-    assert.throws(function () { expr.eval(scope) }, /Index out of range \(4 > 3\)/)
+    assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
   })
 
   it('should throw a one-based index error when out of range (string)', function () {
@@ -120,7 +121,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: 'hey'
     }
-    assert.throws(function () { expr.eval(scope) }, /Index out of range \(4 > 3\)/)
+    assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
   })
 
   it('should throw an error when applying a matrix index onto an object', function () {
@@ -132,7 +133,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: {}
     }
-    assert.throws(function () { expr.eval(scope) }, /Cannot apply a numeric index as object property/)
+    assert.throws(function () { expr.evaluate(scope) }, /Cannot apply a numeric index as object property/)
   })
 
   it('should throw an error when applying an index onto a scalar', function () {
@@ -144,7 +145,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: 42
     }
-    assert.throws(function () { expr.eval(scope) }, /Cannot apply index: unsupported type of object/)
+    assert.throws(function () { expr.evaluate(scope) }, /Cannot apply index: unsupported type of object/)
   })
 
   it('should compile a AccessorNode with negative step range and context parameters', function () {
@@ -163,7 +164,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.eval(scope), [[4, 3]])
+    assert.deepStrictEqual(expr.evaluate(scope), [[4, 3]])
   })
 
   it('should compile a AccessorNode with "end" both as value and in a range', function () {
@@ -181,21 +182,21 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.eval(scope), [[3, 4]])
+    assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
   })
 
   it('should compile a AccessorNode with bignumber setting', function () {
-    const a = new bigmath.expression.node.SymbolNode('a')
-    const b = new bigmath.expression.node.ConstantNode(2)
-    const c = new bigmath.expression.node.ConstantNode(1)
-    const n = new bigmath.expression.node.AccessorNode(a,
-      new bigmath.expression.node.IndexNode([b, c]))
+    const a = new bigmath.SymbolNode('a')
+    const b = new bigmath.ConstantNode(2)
+    const c = new bigmath.ConstantNode(1)
+    const n = new bigmath.AccessorNode(a,
+      new bigmath.IndexNode([b, c]))
     const expr = n.compile()
 
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.eval(scope), 3)
+    assert.deepStrictEqual(expr.evaluate(scope), 3)
   })
 
   it('should filter an AccessorNode', function () {
@@ -402,7 +403,7 @@ describe('AccessorNode', function () {
 
         return string
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -440,7 +441,7 @@ describe('AccessorNode', function () {
 
         return latex
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

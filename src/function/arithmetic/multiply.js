@@ -1,21 +1,24 @@
 'use strict'
 
-const extend = require('../../utils/object').extend
-const array = require('../../utils/array')
+import { factory } from '../../utils/factory'
+import { isMatrix } from '../../utils/is'
+import { extend } from '../../utils/object'
+import { arraySize } from '../../utils/array'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'multiply'
+const dependencies = [
+  'typed',
+  'matrix',
+  'addScalar',
+  'multiplyScalar',
+  'equalScalar'
+]
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const addScalar = load(require('./addScalar'))
-  const multiplyScalar = load(require('./multiplyScalar'))
-  const equalScalar = load(require('../relational/equalScalar'))
-
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
-  const DenseMatrix = type.DenseMatrix
-  const SparseMatrix = type.SparseMatrix
+export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar }) => {
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Multiply two or more values, `x * y`.
@@ -50,17 +53,17 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
    */
-  const multiply = typed('multiply', extend({
+  const multiply = typed(name, extend({
     // we extend the signatures of multiplyScalar with signatures dealing with matrices
 
     'Array, Array': function (x, y) {
       // check dimensions
-      _validateMatrixDimensions(array.size(x), array.size(y))
+      _validateMatrixDimensions(arraySize(x), arraySize(y))
 
       // use dense matrix implementation
       const m = multiply(matrix(x), matrix(y))
       // return array or scalar
-      return type.isMatrix(m) ? m.valueOf() : m
+      return isMatrix(m) ? m.valueOf() : m
     },
 
     'Matrix, Matrix': function (x, y) {
@@ -303,7 +306,7 @@ function factory (type, config, load, typed) {
     }
 
     // return matrix
-    return new DenseMatrix({
+    return a.createDenseMatrix({
       data: c,
       size: [bcolumns],
       datatype: dt
@@ -392,7 +395,7 @@ function factory (type, config, load, typed) {
     }
 
     // return matrix
-    return new DenseMatrix({
+    return a.createDenseMatrix({
       data: c,
       size: [arows],
       datatype: dt
@@ -460,7 +463,7 @@ function factory (type, config, load, typed) {
     }
 
     // return matrix
-    return new DenseMatrix({
+    return a.createDenseMatrix({
       data: c,
       size: [arows, bcolumns],
       datatype: dt
@@ -520,7 +523,7 @@ function factory (type, config, load, typed) {
     const cindex = []
     const cptr = []
     // c matrix
-    const c = new SparseMatrix({
+    const c = b.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -669,7 +672,7 @@ function factory (type, config, load, typed) {
     cptr[1] = cindex.length
 
     // return sparse matrix
-    return new SparseMatrix({
+    return a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -730,7 +733,7 @@ function factory (type, config, load, typed) {
     const cindex = []
     const cptr = []
     // c matrix
-    const c = new SparseMatrix({
+    const c = a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -836,7 +839,7 @@ function factory (type, config, load, typed) {
     const cindex = []
     const cptr = []
     // c matrix
-    const c = new SparseMatrix({
+    const c = a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -912,12 +915,5 @@ function factory (type, config, load, typed) {
     return c
   }
 
-  multiply.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['multiply']}\${args[1]}\\right)`
-  }
-
   return multiply
-}
-
-exports.name = 'multiply'
-exports.factory = factory
+})

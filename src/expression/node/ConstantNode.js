@@ -1,12 +1,16 @@
 'use strict'
 
-const format = require('../../utils/string').format
-const escapeLatex = require('../../utils/latex').escape
+import { format } from '../../utils/string'
+import { typeOf } from '../../utils/is'
+import { escapeLatex } from '../../utils/latex'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const getType = load(require('../../function/utils/typeof'))
+const name = 'ConstantNode'
+const dependencies = [
+  'Node'
+]
 
+export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * A ConstantNode holds a constant value like a number or string.
    *
@@ -102,7 +106,7 @@ function factory (type, config, load, typed) {
   ConstantNode.prototype.toHTML = function (options) {
     const value = this._toString(options)
 
-    switch (getType(this.value)) {
+    switch (typeOf(this.value)) {
       case 'number':
       case 'BigNumber':
       case 'Fraction':
@@ -151,7 +155,7 @@ function factory (type, config, load, typed) {
   ConstantNode.prototype._toTex = function (options) {
     const value = this._toString(options)
 
-    switch (getType(this.value)) {
+    switch (typeOf(this.value)) {
       case 'string':
         return '\\mathtt{' + escapeLatex(value) + '}'
 
@@ -173,8 +177,4 @@ function factory (type, config, load, typed) {
   }
 
   return ConstantNode
-}
-
-exports.name = 'ConstantNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

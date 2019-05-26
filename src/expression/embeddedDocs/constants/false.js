@@ -1,4 +1,4 @@
-module.exports = {
+export const falseDocs = {
   'name': 'false',
   'category': 'Constants',
   'syntax': [

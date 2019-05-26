@@ -1,4 +1,4 @@
-module.exports = {
+export const permutationsDocs = {
   'name': 'permutations',
   'category': 'Probability',
   'syntax': [

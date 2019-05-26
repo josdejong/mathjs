@@ -1,6 +1,7 @@
 // test largerEq
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const complex = math.complex
 const matrix = math.matrix
@@ -94,11 +95,11 @@ describe('largerEq', function () {
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.largerEq(1, 1.01), false)
-    assert.strictEqual(mymath.largerEq(math.bignumber(1), math.bignumber(1.01)), false)
+    assert.strictEqual(mymath.largerEq(mymath.bignumber(1), mymath.bignumber(1.01)), false)
 
     mymath.config({ epsilon: 1e-2 })
     assert.strictEqual(mymath.largerEq(1, 1.01), true)
-    assert.strictEqual(mymath.largerEq(math.bignumber(1), math.bignumber(1.01)), true)
+    assert.strictEqual(mymath.largerEq(mymath.bignumber(1), mymath.bignumber(1.01)), true)
   })
 
   it('should throw an error if comparing a unit with a number', function () {

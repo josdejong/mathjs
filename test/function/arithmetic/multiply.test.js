@@ -1,7 +1,8 @@
 // test multiply
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const multiply = math.multiply
 const divide = math.divide
 const matrix = math.matrix
@@ -766,14 +767,14 @@ describe('multiply', function () {
     })
 
     it('should multiply two pattern matrices correctly', function () {
-      const a = new math.type.SparseMatrix({
+      const a = new math.SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
         size: [3, 3]
       })
 
-      const b = new math.type.SparseMatrix({
+      const b = new math.SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 1],
         ptr: [0, 3, 3, 4],
@@ -792,14 +793,14 @@ describe('multiply', function () {
     })
 
     it('should multiply pattern and value matrices correctly', function () {
-      const a = new math.type.SparseMatrix({
+      const a = new math.SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
         size: [3, 3]
       })
 
-      const b = new math.type.SparseMatrix({
+      const b = new math.SparseMatrix({
         values: [1, 2, 3, 4],
         index: [0, 1, 2, 1],
         ptr: [0, 3, 3, 4],
@@ -818,14 +819,14 @@ describe('multiply', function () {
     })
 
     it('should multiply value and pattern matrices correctly', function () {
-      const a = new math.type.SparseMatrix({
+      const a = new math.SparseMatrix({
         values: [1, 2, 3, 4],
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
         size: [3, 3]
       })
 
-      const b = new math.type.SparseMatrix({
+      const b = new math.SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 1],
         ptr: [0, 3, 3, 4],

@@ -17,7 +17,7 @@ The supported data types are:
 - [Unit](units.md)
 - String
 
-Function [`math.typeof(x)`](../reference/functions/typeof.md) can be used to get
+Function [`math.typeOf(x)`](../reference/functions/typeOf.md) can be used to get
 the type of a variable.
 
 Example usage:
@@ -61,7 +61,7 @@ const b = math.unit('0.1m')      // 100 mm
 math.add(a, b)                   // 0.65 m
 
 // check the type of a variable
-math.typeof(2)                   // 'number'
-math.typeof(math.unit('2 inch')) // 'Unit'
-math.typeof(math.sqrt(-4))       // 'Complex'
+math.typeOf(2)                   // 'number'
+math.typeOf(math.unit('2 inch')) // 'Unit'
+math.typeOf(math.sqrt(-4))       // 'Complex'
 ```

@@ -1,5 +1,5 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
 
 describe('filter', function () {
   it('should filter an array with a filter function', function () {

@@ -2,5 +2,9 @@
   "presets": [
     ["@babel/preset-env"]
   ],
-  "plugins": ["@babel/plugin-transform-object-assign"]
+  "plugins": ["@babel/plugin-transform-object-assign"],
+  "ignore": [
+    "dist/*.js",
+    "lib/**/*.js"
+  ]
 }

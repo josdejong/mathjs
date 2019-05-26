@@ -1,13 +1,17 @@
 // Fractions
 
 // load math.js (using node.js)
-const math = require('../index')
+const { create, all } = require('..')
 
 // configure the default type of numbers as Fractions
-math.config({
-  number: 'Fraction' // Default type of number:
-  // 'number' (default), 'BigNumber', or 'Fraction'
-})
+const config = {
+  // Default type of number
+  // Available options: 'number' (default), 'BigNumber', or 'Fraction'
+  number: 'Fraction'
+}
+
+// create a mathjs instance with everything included
+const math = create(all, config)
 
 console.log('basic usage')
 printRatio(math.fraction(0.125)) // Fraction, 1/8
@@ -37,9 +41,9 @@ console.log()
 // one can work conveniently with fractions using the expression parser.
 // note though that Fractions are only supported by basic arithmetic functions
 console.log('use fractions in the expression parser')
-printRatio(math.eval('0.1 + 0.2')) // Fraction,  3/10
-printRatio(math.eval('0.3 / 0.2')) // Fraction,  3/2
-printRatio(math.eval('23 / 11')) // Fraction, 23/11
+printRatio(math.evaluate('0.1 + 0.2')) // Fraction,  3/10
+printRatio(math.evaluate('0.3 / 0.2')) // Fraction,  3/2
+printRatio(math.evaluate('23 / 11')) // Fraction, 23/11
 console.log()
 
 // output formatting

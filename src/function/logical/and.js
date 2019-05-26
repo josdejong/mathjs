@@ -1,17 +1,28 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
+import { factory } from '../../utils/factory'
+import { andNumber } from '../../plain/number'
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const zeros = load(require('../matrix/zeros'))
-  const not = load(require('./not'))
+const name = 'and'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'zeros',
+  'not'
+]
 
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm06 = createAlgorithm06({ typed, equalScalar })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Logical `and`. Test whether two values are both defined with a nonzero/nonempty value.
@@ -41,11 +52,9 @@ function factory (type, config, load, typed) {
    * @return {boolean | Array | Matrix}
    *            Returns true when both inputs are defined with a nonzero/nonempty value.
    */
-  const and = typed('and', {
+  const and = typed(name, {
 
-    'number, number': function (x, y) {
-      return !!(x && y)
-    },
+    'number, number': andNumber,
 
     'Complex, Complex': function (x, y) {
       return (x.re !== 0 || x.im !== 0) && (y.re !== 0 || y.im !== 0)
@@ -137,12 +146,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  and.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['and']}\${args[1]}\\right)`
-  }
-
   return and
-}
-
-exports.name = 'and'
-exports.factory = factory
+})

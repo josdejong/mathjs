@@ -1,4 +1,4 @@
-module.exports = {
+export const onesDocs = {
   'name': 'ones',
   'category': 'Matrix',
   'syntax': [

@@ -1,23 +1,27 @@
 'use strict'
 
-const lazy = require('../../utils/object').lazy
-const isFactory = require('../../utils/object').isFactory
-const traverse = require('../../utils/object').traverse
-const ArgumentsError = require('../../error/ArgumentsError')
+import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
+import { isFactory, stripOptionalNotation } from '../../utils/factory'
+import { isLegacyFactory, lazy, traverse } from '../../utils/object'
+import { contains } from '../../utils/array'
+import { ArgumentsError } from '../../error/ArgumentsError'
+import { warnOnce } from '../../utils/log'
 
-function factory (type, config, load, typed, math) {
+export function importFactory (typed, load, math, importedFactories) {
   /**
-   * Import functions from an object or a module
+   * Import functions from an object or a module.
+   *
+   * This function is only available on a mathjs instance created using `create`.
    *
    * Syntax:
    *
-   *    math.import(object)
-   *    math.import(object, options)
+   *    math.import(functions)
+   *    math.import(functions, options)
    *
    * Where:
    *
-   * - `object: Object`
-   *   An object with functions to be imported.
+   * - `functions: Object`
+   *   An object with functions or factories to be imported.
    * - `options: Object` An object with import options. Available options:
    *   - `override: boolean`
    *     If true, existing functions will be overwritten. False by default.
@@ -31,6 +35,12 @@ function factory (type, config, load, typed, math) {
    *     support these data type. False by default.
    *
    * Examples:
+   *
+   *    import { create, all } from 'mathjs'
+   *    import * as numbers from 'numbers'
+   *
+   *    // create a mathjs instance
+   *    const math = create(all)
    *
    *    // define new functions and variables
    *    math.import({
@@ -46,14 +56,14 @@ function factory (type, config, load, typed, math) {
    *
    *    // import the npm module 'numbers'
    *    // (must be installed first with `npm install numbers`)
-   *    math.import(require('numbers'), {wrap: true})
+   *    math.import(numbers, {wrap: true})
    *
    *    math.fibonacci(7) // returns 13
    *
-   * @param {Object | Array} object   Object with functions to be imported.
-   * @param {Object} [options]        Import options.
+   * @param {Object | Array} functions  Object with functions to be imported.
+   * @param {Object} [options]          Import options.
    */
-  function mathImport (object, options) {
+  function mathImport (functions, options) {
     const num = arguments.length
     if (num !== 1 && num !== 2) {
       throw new ArgumentsError('import', num, 1, 2)
@@ -64,21 +74,25 @@ function factory (type, config, load, typed, math) {
     }
 
     // TODO: allow a typed-function with name too
-    if (isFactory(object)) {
-      _importFactory(object, options)
-    } else if (Array.isArray(object)) {
-      object.forEach(function (entry) {
-        mathImport(entry, options)
-      })
-    } else if (typeof object === 'object') {
-      // a map with functions
-      for (const name in object) {
-        if (object.hasOwnProperty(name)) {
-          const value = object[name]
-          if (isSupportedType(value)) {
+    if (isFactory(functions)) {
+      _importFactory(functions, options)
+    } else if (isLegacyFactory(functions)) {
+      _importLegacyFactory(functions, options)
+    } else if (Array.isArray(functions)) {
+      functions.forEach((entry) => mathImport(entry, options))
+    } else if (typeof functions === 'object') {
+      for (const name in functions) {
+        if (functions.hasOwnProperty(name)) {
+          const value = functions[name]
+          if (isFactory(value)) {
+            // we ignore name here and enforce the name of the factory
+            // maybe at some point we do want to allow overriding it
+            // in that case we can implement an option overrideFactoryNames: true
+            _importFactory(value, options)
+          } else if (isSupportedType(value)) {
             _import(name, value, options)
-          } else if (isFactory(object)) {
-            _importFactory(object, options)
+          } else if (isLegacyFactory(functions)) {
+            _importLegacyFactory(functions, options)
           } else {
             mathImport(value, options)
           }
@@ -92,7 +106,7 @@ function factory (type, config, load, typed, math) {
   }
 
   /**
-   * Add a property to the math namespace and create a chain proxy for it.
+   * Add a property to the math namespace
    * @param {string} name
    * @param {*} value
    * @param {Object} options  See import for a description of the options
@@ -105,6 +119,13 @@ function factory (type, config, load, typed, math) {
       value = _wrap(value)
     }
 
+    // turn a plain function with a typed-function signature into a typed-function
+    if (hasTypedFunctionSignature(value)) {
+      value = typed(name, {
+        [value.signature]: value
+      })
+    }
+
     if (isTypedFunction(math[name]) && isTypedFunction(value)) {
       if (options.override) {
         // give the typed function the right name
@@ -115,6 +136,8 @@ function factory (type, config, load, typed, math) {
       }
 
       math[name] = value
+      delete importedFactories[name]
+
       _importTransform(name, value)
       math.emit('import', name, function resolver () {
         return value
@@ -124,6 +147,8 @@ function factory (type, config, load, typed, math) {
 
     if (math[name] === undefined || options.override) {
       math[name] = value
+      delete importedFactories[name]
+
       _importTransform(name, value)
       math.emit('import', name, function resolver () {
         return value
@@ -190,7 +215,11 @@ function factory (type, config, load, typed, math) {
    * @param {Object} options  See import for a description of the options
    * @private
    */
-  function _importFactory (factory, options) {
+  // TODO: _importLegacyFactory is deprecated since v6.0.0, clean up some day
+  function _importLegacyFactory (factory, options) {
+    warnOnce('Factories of type { name, factory } are deprecated since v6. ' +
+      'Please create your factory functions using the math.factory function.')
+
     if (typeof factory.name === 'string') {
       const name = factory.name
       const existingTransform = name in math.expression.transform
@@ -219,7 +248,9 @@ function factory (type, config, load, typed, math) {
           return instance
         }
 
-        if (!options.silent) {
+        if (options.silent) {
+          return existing
+        } else {
           throw new Error('Cannot import "' + name + '": already exists')
         }
       }
@@ -230,7 +261,7 @@ function factory (type, config, load, typed, math) {
         if (existingTransform) {
           _deleteTransform(name)
         } else {
-          if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+          if (factory.path === 'expression.transform' || legacyFactoryAllowedInExpressions(factory)) {
             lazy(math.expression.mathWithTransform, name, resolver)
           }
         }
@@ -240,11 +271,14 @@ function factory (type, config, load, typed, math) {
         if (existingTransform) {
           _deleteTransform(name)
         } else {
-          if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+          if (factory.path === 'expression.transform' || legacyFactoryAllowedInExpressions(factory)) {
             math.expression.mathWithTransform[name] = resolver()
           }
         }
       }
+
+      const key = factory.path ? (factory.path + '.' + factory.name) : factory.name
+      importedFactories[key] = factory
 
       math.emit('import', name, resolver, factory.path)
     } else {
@@ -252,6 +286,108 @@ function factory (type, config, load, typed, math) {
       // no lazy loading
       load(factory)
     }
+  }
+
+  /**
+   * Import an instance of a factory into math.js
+   * @param {function(scope: object)} factory
+   * @param {Object} options  See import for a description of the options
+   * @param {string} [name=factory.name] Optional custom name
+   * @private
+   */
+  function _importFactory (factory, options, name = factory.fn) {
+    if (contains(name, '.')) {
+      throw new Error('Factory name should not contain a nested path. ' +
+        'Name: ' + JSON.stringify(name))
+    }
+
+    const namespace = isTransformFunctionFactory(factory)
+      ? math.expression.transform
+      : math
+
+    const existingTransform = name in math.expression.transform
+    const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
+
+    const resolver = function () {
+      // collect all dependencies, handle finding both functions and classes and other special cases
+      const dependencies = {}
+      factory.dependencies
+        .map(stripOptionalNotation)
+        .forEach(dependency => {
+          if (contains(dependency, '.')) {
+            throw new Error('Factory dependency should not contain a nested path. ' +
+              'Name: ' + JSON.stringify(dependency))
+          }
+
+          if (dependency === 'math') {
+            dependencies.math = math
+          } else if (dependency === 'mathWithTransform') {
+            dependencies.mathWithTransform = math.expression.mathWithTransform
+          } else if (dependency === 'classes') { // special case for json reviver
+            dependencies.classes = math
+          } else {
+            dependencies[dependency] = math[dependency]
+          }
+        })
+
+      let instance = /* #__PURE__ */ factory(dependencies)
+
+      if (instance && typeof instance.transform === 'function') {
+        throw new Error('Transforms cannot be attached to factory functions. ' +
+            'Please create a separate function for it with exports.path="expression.transform"')
+      }
+
+      if (isTypedFunction(existing) && isTypedFunction(instance)) {
+        if (options.override) {
+          // replace the existing typed function (nothing to do)
+        } else {
+          // merge the existing and new typed function
+          instance = typed(existing, instance)
+        }
+
+        return instance
+      }
+
+      if (existing === undefined || options.override) {
+        return instance
+      }
+
+      if (options.silent) {
+        return existing
+      } else {
+        throw new Error('Cannot import "' + name + '": already exists')
+      }
+    }
+
+    // TODO: add unit test with non-lazy factory
+    if (!factory.meta || factory.meta.lazy !== false) {
+      lazy(namespace, name, resolver)
+
+      // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
+      if (existing && existingTransform) {
+        _deleteTransform(name)
+      } else {
+        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
+          lazy(math.expression.mathWithTransform, name, () => namespace[name])
+        }
+      }
+    } else {
+      namespace[name] = resolver()
+
+      // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
+      if (existing && existingTransform) {
+        _deleteTransform(name)
+      } else {
+        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
+          lazy(math.expression.mathWithTransform, name, () => namespace[name])
+        }
+      }
+    }
+
+    // TODO: improve factories, store a list with imports instead which can be re-played
+    importedFactories[name] = factory
+
+    math.emit('import', name, resolver)
   }
 
   /**
@@ -266,12 +402,12 @@ function factory (type, config, load, typed, math) {
         typeof object === 'string' ||
         typeof object === 'boolean' ||
         object === null ||
-        (object && type.isUnit(object)) ||
-        (object && type.isComplex(object)) ||
-        (object && type.isBigNumber(object)) ||
-        (object && type.isFraction(object)) ||
-        (object && type.isMatrix(object)) ||
-        (object && Array.isArray(object))
+        isUnit(object) ||
+        isComplex(object) ||
+        isBigNumber(object) ||
+        isFraction(object) ||
+        isMatrix(object) ||
+        Array.isArray(object)
   }
 
   /**
@@ -283,12 +419,28 @@ function factory (type, config, load, typed, math) {
     return typeof fn === 'function' && typeof fn.signatures === 'object'
   }
 
+  function hasTypedFunctionSignature (fn) {
+    return typeof fn === 'function' && typeof fn.signature === 'string'
+  }
+
   function allowedInExpressions (name) {
     return !unsafe.hasOwnProperty(name)
   }
 
-  function factoryAllowedInExpressions (factory) {
+  function legacyFactoryAllowedInExpressions (factory) {
     return factory.path === undefined && !unsafe.hasOwnProperty(factory.name)
+  }
+
+  function factoryAllowedInExpressions (factory) {
+    return factory.fn.indexOf('.') === -1 && // FIXME: make checking on path redundant, check on meta data instead
+      !unsafe.hasOwnProperty(factory.fn) &&
+      (!factory.meta || !factory.meta.isClass)
+  }
+
+  function isTransformFunctionFactory (factory) {
+    return (factory !== undefined &&
+      factory.meta !== undefined &&
+      factory.meta.isTransformFunction === true) || false
   }
 
   // namespaces and functions not available in the parser for safety reasons
@@ -303,8 +455,3 @@ function factory (type, config, load, typed, math) {
 
   return mathImport
 }
-
-exports.math = true // request access to the math namespace as 5th argument of the factory function
-exports.name = 'import'
-exports.factory = factory
-exports.lazy = true

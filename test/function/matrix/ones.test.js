@@ -1,6 +1,7 @@
 // test ones
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const ones = math.ones
 const matrix = math.matrix
 

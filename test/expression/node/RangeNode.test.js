@@ -1,11 +1,12 @@
 // test RangeNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RangeNode = math.expression.node.RangeNode
-const OperatorNode = math.expression.node.OperatorNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RangeNode = math.RangeNode
+const OperatorNode = math.OperatorNode
 
 describe('RangeNode', function () {
   it('should create a RangeNode', function () {
@@ -49,7 +50,7 @@ describe('RangeNode', function () {
     const n = new RangeNode(start, end, step)
 
     const expr = n.compile()
-    assert.deepStrictEqual(expr.eval(), math.matrix([0, 2, 4, 6, 8, 10]))
+    assert.deepStrictEqual(expr.evaluate(), math.matrix([0, 2, 4, 6, 8, 10]))
   })
 
   it('should filter a RangeNode', function () {
@@ -298,7 +299,7 @@ describe('RangeNode', function () {
           ' to ' + node.end.toString(options) +
           ' with steps of ' + node.step.toString(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -360,7 +361,7 @@ describe('RangeNode', function () {
           ' to ' + node.end.toTex(options) +
           ' with steps of ' + node.step.toTex(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

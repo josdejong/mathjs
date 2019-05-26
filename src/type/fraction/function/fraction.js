@@ -1,8 +1,12 @@
 'use strict'
 
-const deepMap = require('../../../utils/collection/deepMap')
+import { factory } from '../../../utils/factory'
+import { deepMap } from '../../../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'fraction'
+const dependencies = ['typed', 'Fraction']
+
+export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typed, Fraction }) => {
   /**
    * Create a fraction convert a value to a fraction.
    *
@@ -34,23 +38,23 @@ function factory (type, config, load, typed) {
         throw new Error(x + ' cannot be represented as a fraction')
       }
 
-      return new type.Fraction(x)
+      return new Fraction(x)
     },
 
     'string': function (x) {
-      return new type.Fraction(x)
+      return new Fraction(x)
     },
 
     'number, number': function (numerator, denominator) {
-      return new type.Fraction(numerator, denominator)
+      return new Fraction(numerator, denominator)
     },
 
     'null': function (x) {
-      return new type.Fraction(0)
+      return new Fraction(0)
     },
 
     'BigNumber': function (x) {
-      return new type.Fraction(x.toString())
+      return new Fraction(x.toString())
     },
 
     'Fraction': function (x) {
@@ -58,7 +62,7 @@ function factory (type, config, load, typed) {
     },
 
     'Object': function (x) {
-      return new type.Fraction(x)
+      return new Fraction(x)
     },
 
     'Array | Matrix': function (x) {
@@ -67,7 +71,4 @@ function factory (type, config, load, typed) {
   })
 
   return fraction
-}
-
-exports.name = 'fraction'
-exports.factory = factory
+})

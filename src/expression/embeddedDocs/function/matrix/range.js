@@ -1,4 +1,4 @@
-module.exports = {
+export const rangeDocs = {
   'name': 'range',
   'category': 'Type',
   'syntax': [

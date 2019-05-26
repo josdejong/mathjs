@@ -1,11 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/add'))
-  const stirlingS2 = load(require('./stirlingS2'))
-  const isNegative = load(require('../utils/isNegative'))
-  const isInteger = load(require('../utils/isInteger'))
+import { factory } from '../../utils/factory'
 
+const name = 'bellNumbers'
+const dependencies = ['typed', 'addScalar', 'isNegative', 'isInteger', 'stirlingS2']
+
+export const createBellNumbers = /* #__PURE__ */ factory(name, dependencies, ({ typed, addScalar, isNegative, isInteger, stirlingS2 }) => {
   /**
    * The Bell Numbers count the number of partitions of a set. A partition is a pairwise disjoint subset of S whose union is S.
    * bellNumbers only takes integer arguments.
@@ -27,7 +27,7 @@ function factory (type, config, load, typed) {
    * @param {Number | BigNumber} n    Total number of objects in the set
    * @return {Number | BigNumber}     B(n)
    */
-  const bellNumbers = typed('bellNumbers', {
+  return typed(name, {
     'number | BigNumber': function (n) {
       if (!isInteger(n) || isNegative(n)) {
         throw new TypeError('Non-negative integer value expected in function bellNumbers')
@@ -36,17 +36,10 @@ function factory (type, config, load, typed) {
       // Sum (k=0, n) S(n,k).
       let result = 0
       for (let i = 0; i <= n; i++) {
-        result = add(result, stirlingS2(n, i))
+        result = addScalar(result, stirlingS2(n, i))
       }
 
       return result
     }
   })
-
-  bellNumbers.toTex = { 1: `\\mathrm{B}_{\${args[0]}}` }
-
-  return bellNumbers
-}
-
-exports.name = 'bellNumbers'
-exports.factory = factory
+})

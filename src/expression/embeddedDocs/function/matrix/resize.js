@@ -1,4 +1,4 @@
-module.exports = {
+export const resizeDocs = {
   'name': 'resize',
   'category': 'Matrix',
   'syntax': [

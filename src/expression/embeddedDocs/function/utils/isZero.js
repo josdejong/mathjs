@@ -1,4 +1,4 @@
-module.exports = {
+export const isZeroDocs = {
   'name': 'isZero',
   'category': 'Utils',
   'syntax': [

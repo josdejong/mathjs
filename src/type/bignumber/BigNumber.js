@@ -1,8 +1,12 @@
 'use strict'
 
 import Decimal from 'decimal.js'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed, math) {
+const name = 'BigNumber'
+const dependencies = ['?on', 'config']
+
+export const createBigNumberClass = /* #__PURE__ */ factory(name, dependencies, ({ on, config }) => {
   const BigNumber = Decimal.clone({ precision: config.precision })
 
   /**
@@ -34,16 +38,14 @@ export function factory (type, config, load, typed, math) {
     return new BigNumber(json.value)
   }
 
-  // listen for changed in the configuration, automatically apply changed precision
-  math.on('config', function (curr, prev) {
-    if (curr.precision !== prev.precision) {
-      BigNumber.config({ precision: curr.precision })
-    }
-  })
+  if (on) {
+    // listen for changed in the configuration, automatically apply changed precision
+    on('config', function (curr, prev) {
+      if (curr.precision !== prev.precision) {
+        BigNumber.config({ precision: curr.precision })
+      }
+    })
+  }
 
   return BigNumber
-}
-
-export const name = 'BigNumber'
-export const path = 'type'
-export const math = true // request access to the math namespace
+}, { isClass: true })

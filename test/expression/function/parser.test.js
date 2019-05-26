@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const Parser = math.expression.Parser
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+const Parser = math.Parser
 
 describe('parser', function () {
   it('should create a parser', function () {

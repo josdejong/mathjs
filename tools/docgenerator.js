@@ -8,7 +8,8 @@
 const fs = require('fs')
 const glob = require('glob')
 const mkdirp = require('mkdirp')
-const gutil = require('gulp-util')
+const del = require('del')
+const log = require('fancy-log')
 
 // special cases for function syntax
 const SYNTAX = {
@@ -23,7 +24,7 @@ const SYNTAX = {
   matrix: 'math.matrix(x)',
   sparse: 'math.sparse(x)',
   unit: 'math.unit(x)',
-  eval: 'math.eval(expr [, scope])',
+  evaluate: 'math.evaluate(expr [, scope])',
   parse: 'math.parse(expr [, scope])',
   concat: 'math.concat(a, b, c, ... [, dim])',
   ones: 'math.ones(m, n, p, ...)',
@@ -41,11 +42,15 @@ const SYNTAX = {
 }
 
 const IGNORE_FUNCTIONS = {
-  distribution: true
+  addScalar: true,
+  divideScalar: true,
+  multiplyScalar: true,
+  equalScalar: true,
+  evaluate: true
 }
 
 const IGNORE_WARNINGS = {
-  seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain', 'import', 'config', 'typed',
+  seeAlso: ['help', 'intersect', 'clone', 'typeOf', 'chain', 'import', 'config', 'typed',
     'distance', 'kldivergence', 'erf'],
   parameters: ['parser'],
   returns: ['forEach', 'import']
@@ -60,7 +65,7 @@ const IGNORE_WARNINGS = {
  */
 function generateDoc (name, code) {
   // get block comment from code
-  const match = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//.exec(code)
+  const match = /\/\*\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//.exec(code)
 
   if (!match) {
     return null
@@ -455,12 +460,26 @@ function generateMarkdown (doc, functions) {
 }
 
 /**
- * Iterate over all source files and generate markdown documents for each of them
- * @param {String} inputPath   Path to /lib/
- * @param {String} outputPath  Path to /docs/reference/functions
- * @param {String} outputRoot  Path to /docs/reference
+ * Delete all generated function docs (*.md)
+ * @param {String} outputPath       Path to /docs/reference/functions
+ * @param {String} outputRoot       Path to /docs/reference
  */
-function iteratePath (inputPath, outputPath, outputRoot) {
+function cleanup (outputPath, outputRoot) {
+  // cleanup previous docs
+  del.sync([
+    outputPath + '/*.md',
+    outputRoot + '/functions.md'
+  ])
+}
+
+/**
+ * Iterate over all source files and generate markdown documents for each of them
+ * @param {String[]} functionNames  List with all functions exported from the main instance of mathjs
+ * @param {String} inputPath        Path to /lib/
+ * @param {String} outputPath       Path to /docs/reference/functions
+ * @param {String} outputRoot       Path to /docs/reference
+ */
+function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
   if (!fs.existsSync(outputPath)) {
     mkdirp.sync(outputPath)
   }
@@ -498,7 +517,7 @@ function iteratePath (inputPath, outputPath, outputRoot) {
         category = 'construction'
       }
 
-      if (IGNORE_FUNCTIONS[name]) {
+      if (functionNames.indexOf(name) === -1 || IGNORE_FUNCTIONS[name]) {
         category = null
       }
 
@@ -519,10 +538,8 @@ function iteratePath (inputPath, outputPath, outputRoot) {
         const fn = functions[name]
         const code = String(fs.readFileSync(fn.fullPath))
 
-        const isFunction = /\nexports.name/g.test(code) &&
-            /\nexports.factory/g.test(code) &&
-            !/\nexports.path/g.test(code)
-        const doc = isFunction && generateDoc(name, code)
+        const isFunction = (functionNames.indexOf(name) !== -1) && !IGNORE_FUNCTIONS[name]
+        const doc = isFunction ? generateDoc(name, code) : null
 
         if (isFunction && doc) {
           fn.doc = doc
@@ -530,7 +547,7 @@ function iteratePath (inputPath, outputPath, outputRoot) {
           const markdown = generateMarkdown(doc, functions)
           fs.writeFileSync(outputPath + '/' + fn.name + '.md', markdown)
         } else {
-          // gutil.log('Ignoring', fn.fullPath)
+          // log('Ignoring', fn.fullPath)
           delete functions[name]
         }
       }
@@ -609,14 +626,15 @@ function iteratePath (inputPath, outputPath, outputRoot) {
     // output all issues
     if (issues.length) {
       issues.forEach(function (issue) {
-        gutil.log('Warning: ' + issue)
+        log('Warning: ' + issue)
       })
-      gutil.log(issues.length + ' warnings')
+      log(issues.length + ' warnings')
     }
   })
 }
 
 // exports
+exports.cleanup = cleanup
 exports.iteratePath = iteratePath
 exports.generateDoc = generateDoc
 exports.validateDoc = validateDoc

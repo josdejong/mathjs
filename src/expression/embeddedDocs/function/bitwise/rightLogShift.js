@@ -1,4 +1,4 @@
-module.exports = {
+export const rightLogShiftDocs = {
   'name': 'rightLogShift',
   'category': 'Bitwise',
   'syntax': [

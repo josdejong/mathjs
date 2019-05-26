@@ -1,11 +1,12 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+import { factory } from '../../utils/factory'
+import { noBignumber, noMatrix } from '../../utils/noop'
 
-  const ZERO = new type.BigNumber(0)
-  const ONE = new type.BigNumber(1)
+const name = 'range'
+const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq']
 
+export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq }) => {
   /**
    * Create an array from a range.
    * By default, the range end is excluded. This can be customized by providing
@@ -49,7 +50,7 @@ function factory (type, config, load, typed) {
    * @param {*} args   Parameters describing the ranges `start`, `end`, and optional `step`.
    * @return {Array | Matrix} range
    */
-  const range = typed('range', {
+  return typed(name, {
     // TODO: simplify signatures when typed-function supports default values and optional arguments
 
     // TODO: a number or boolean should not be converted to string here
@@ -74,15 +75,19 @@ function factory (type, config, load, typed) {
     },
 
     'BigNumber, BigNumber': function (start, end) {
-      return _out(_bigRangeEx(start, end, ONE))
+      const BigNumber = start.constructor
+
+      return _out(_bigRangeEx(start, end, new BigNumber(1)))
     },
     'BigNumber, BigNumber, BigNumber': function (start, end, step) {
       return _out(_bigRangeEx(start, end, step))
     },
     'BigNumber, BigNumber, boolean': function (start, end, includeEnd) {
+      const BigNumber = start.constructor
+
       return includeEnd
-        ? _out(_bigRangeInc(start, end, ONE))
-        : _out(_bigRangeEx(start, end, ONE))
+        ? _out(_bigRangeInc(start, end, new BigNumber(1)))
+        : _out(_bigRangeEx(start, end, new BigNumber(1)))
     },
     'BigNumber, BigNumber, BigNumber, boolean': function (start, end, step, includeEnd) {
       return includeEnd
@@ -92,12 +97,12 @@ function factory (type, config, load, typed) {
 
   })
 
-  range.toTex = undefined // use default template
-
-  return range
-
   function _out (arr) {
-    return config.matrix === 'Array' ? arr : matrix(arr)
+    if (config.matrix === 'Matrix') {
+      return matrix ? matrix(arr) : noMatrix()
+    }
+
+    return arr
   }
 
   function _strRange (str, includeEnd) {
@@ -108,11 +113,15 @@ function factory (type, config, load, typed) {
 
     let fn
     if (config.number === 'BigNumber') {
+      if (bignumber === undefined) {
+        noBignumber()
+      }
+
       fn = includeEnd ? _bigRangeInc : _bigRangeEx
       return _out(fn(
-        new type.BigNumber(r.start),
-        new type.BigNumber(r.end),
-        new type.BigNumber(r.step)))
+        bignumber(r.start),
+        bignumber(r.end),
+        bignumber(r.step)))
     } else {
       fn = includeEnd ? _rangeInc : _rangeEx
       return _out(fn(r.start, r.end, r.step))
@@ -131,12 +140,12 @@ function factory (type, config, load, typed) {
     const array = []
     let x = start
     if (step > 0) {
-      while (x < end) {
+      while (smaller(x, end)) {
         array.push(x)
         x += step
       }
     } else if (step < 0) {
-      while (x > end) {
+      while (larger(x, end)) {
         array.push(x)
         x += step
       }
@@ -157,12 +166,12 @@ function factory (type, config, load, typed) {
     const array = []
     let x = start
     if (step > 0) {
-      while (x <= end) {
+      while (smallerEq(x, end)) {
         array.push(x)
         x += step
       }
     } else if (step < 0) {
-      while (x >= end) {
+      while (largerEq(x, end)) {
         array.push(x)
         x += step
       }
@@ -180,15 +189,16 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _bigRangeEx (start, end, step) {
+    const zero = bignumber(0)
     const array = []
     let x = start
-    if (step.gt(ZERO)) {
-      while (x.lt(end)) {
+    if (step.gt(zero)) {
+      while (smaller(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
-    } else if (step.lt(ZERO)) {
-      while (x.gt(end)) {
+    } else if (step.lt(zero)) {
+      while (larger(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
@@ -206,15 +216,16 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _bigRangeInc (start, end, step) {
+    const zero = bignumber(0)
     const array = []
     let x = start
-    if (step.gt(ZERO)) {
-      while (x.lte(end)) {
+    if (step.gt(zero)) {
+      while (smallerEq(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
-    } else if (step.lt(ZERO)) {
-      while (x.gte(end)) {
+    } else if (step.lt(zero)) {
+      while (largerEq(x, end)) {
         array.push(x)
         x = x.plus(step)
       }
@@ -267,7 +278,4 @@ function factory (type, config, load, typed) {
         return null
     }
   }
-}
-
-exports.name = 'range'
-exports.factory = factory
+})

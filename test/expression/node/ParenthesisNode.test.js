@@ -1,9 +1,10 @@
 // test SymbolNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const ParenthesisNode = math.expression.node.ParenthesisNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const ParenthesisNode = math.ParenthesisNode
 
 describe('ParenthesisNode', function () {
   it('should create a ParenthesisNode', function () {
@@ -29,7 +30,7 @@ describe('ParenthesisNode', function () {
     const a = new ConstantNode(1)
     const n = new ParenthesisNode(a)
 
-    assert.strictEqual(n.compile().eval.toString(), a.compile().eval.toString())
+    assert.strictEqual(n.compile().evaluate.toString(), a.compile().evaluate.toString())
   })
 
   it('should filter a ParenthesisNode', function () {
@@ -123,9 +124,9 @@ describe('ParenthesisNode', function () {
   })
 
   it('should get the content of a ParenthesisNode', function () {
-    const c = new math.expression.node.ConstantNode(1)
-    const p1 = new math.expression.node.ParenthesisNode(c)
-    const p2 = new math.expression.node.ParenthesisNode(p1)
+    const c = new math.ConstantNode(1)
+    const p1 = new math.ParenthesisNode(c)
+    const p2 = new math.ParenthesisNode(p1)
 
     assert.strictEqual(p1.content, c)
     assert.strictEqual(p1.getContent(), c)
@@ -143,9 +144,9 @@ describe('ParenthesisNode', function () {
   })
 
   it('should stringify a ParenthesisNode when not in keep mode', function () {
-    const c = new math.expression.node.ConstantNode(1)
+    const c = new math.ConstantNode(1)
 
-    const p = new math.expression.node.ParenthesisNode(c)
+    const p = new math.ParenthesisNode(c)
 
     assert.strictEqual(p.toString({ parenthesis: 'all' }), '1')
     assert.strictEqual(p.toString({ parenthesis: 'auto' }), '1')
@@ -158,8 +159,8 @@ describe('ParenthesisNode', function () {
       }
     }
 
-    const c = new math.expression.node.ConstantNode(1)
-    const n = new math.expression.node.ParenthesisNode(c)
+    const c = new math.ConstantNode(1)
+    const n = new math.ParenthesisNode(c)
 
     assert.strictEqual(n.toString({ handler: customFunction }), '[1]')
   })
@@ -188,9 +189,9 @@ describe('ParenthesisNode', function () {
   })
 
   it('should LaTeX a ParenthesisNode when not in keep mode', function () {
-    const c = new math.expression.node.ConstantNode(1)
+    const c = new math.ConstantNode(1)
 
-    const p = new math.expression.node.ParenthesisNode(c)
+    const p = new math.ParenthesisNode(c)
 
     assert.strictEqual(p.toTex({ parenthesis: 'all' }), '1')
     assert.strictEqual(p.toTex({ parenthesis: 'auto' }), '1')
@@ -203,8 +204,8 @@ describe('ParenthesisNode', function () {
       }
     }
 
-    const c = new math.expression.node.ConstantNode(1)
-    const n = new math.expression.node.ParenthesisNode(c)
+    const c = new math.ConstantNode(1)
+    const n = new math.ParenthesisNode(c)
 
     assert.strictEqual(n.toTex({ handler: customFunction }), '\\left[1\\right]')
   })

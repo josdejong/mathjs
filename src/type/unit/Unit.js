@@ -1,25 +1,52 @@
 'use strict'
 
-const endsWith = require('../../utils/string').endsWith
-const clone = require('../../utils/object').clone
-const constants = require('../../utils/bignumber/constants')
+import { isComplex, isUnit, typeOf } from '../../utils/is'
+import { factory } from '../../utils/factory'
+import { endsWith } from '../../utils/string'
+import { clone } from '../../utils/object'
+import { createBigNumberPi as createPi } from '../../utils/bignumber/constants'
 
-function factory (type, config, load, typed, math) {
-  const add = load(require('../../function/arithmetic/addScalar'))
-  const subtract = load(require('../../function/arithmetic/subtract'))
-  const multiply = load(require('../../function/arithmetic/multiplyScalar'))
-  const divide = load(require('../../function/arithmetic/divideScalar'))
-  const pow = load(require('../../function/arithmetic/pow'))
-  const abs = load(require('../../function/arithmetic/abs'))
-  const fix = load(require('../../function/arithmetic/fix'))
-  const round = load(require('../../function/arithmetic/round'))
-  const equal = load(require('../../function/relational/equal'))
-  const isNumeric = load(require('../../function/utils/isNumeric'))
-  const format = load(require('../../function/string/format'))
-  const getTypeOf = load(require('../../function/utils/typeof'))
-  const toNumber = load(require('../../type/number'))
-  const Complex = load(require('../../type/complex/Complex'))
+const name = 'Unit'
+const dependencies = [
+  '?on',
+  'config',
+  'addScalar',
+  'subtract',
+  'multiplyScalar',
+  'divideScalar',
+  'pow',
+  'abs',
+  'fix',
+  'round',
+  'equal',
+  'isNumeric',
+  'format',
+  'number',
+  'Complex',
+  'BigNumber',
+  'Fraction'
+]
 
+export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
+  on,
+  config,
+  addScalar,
+  subtract,
+  multiplyScalar,
+  divideScalar,
+  pow,
+  abs,
+  fix,
+  round,
+  equal,
+  isNumeric,
+  format,
+  number,
+  Complex,
+  BigNumber,
+  Fraction
+}) => {
+  const toNumber = number
   /**
    * A unit can be constructed in the following ways:
    *
@@ -44,7 +71,7 @@ function factory (type, config, load, typed, math) {
       throw new Error('Constructor must be called with the new operator')
     }
 
-    if (!(value === null || value === undefined || isNumeric(value) || type.isComplex(value))) {
+    if (!(value === null || value === undefined || isNumeric(value) || isComplex(value))) {
       throw new TypeError('First parameter in Unit constructor must be number, BigNumber, Fraction, Complex, or undefined')
     }
     if (name !== undefined && (typeof name !== 'string' || name === '')) {
@@ -268,9 +295,14 @@ function factory (type, config, load, typed, math) {
     let value = null
     if (valueStr) {
       if (config.number === 'BigNumber') {
-        value = new type.BigNumber(valueStr)
+        value = new BigNumber(valueStr)
       } else if (config.number === 'Fraction') {
-        value = new type.Fraction(valueStr)
+        try {
+          // not all numbers can be turned in Fractions, for example very small numbers not
+          value = new Fraction(valueStr)
+        } catch (err) {
+          value = parseFloat(valueStr)
+        }
       } else { // number
         value = parseFloat(valueStr)
       }
@@ -468,25 +500,25 @@ function factory (type, config, load, typed, math) {
       // This is a derived unit, so do not apply offsets.
       // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
       let res = value
-      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
+      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
 
       for (let i = 0; i < this.units.length; i++) {
         unitValue = convert(this.units[i].unit.value)
         unitPrefixValue = convert(this.units[i].prefix.value)
         unitPower = convert(this.units[i].power)
-        res = multiply(res, pow(multiply(unitValue, unitPrefixValue), unitPower))
+        res = multiplyScalar(res, pow(multiplyScalar(unitValue, unitPrefixValue), unitPower))
       }
 
       return res
     } else {
       // This is a single unit of power 1, like kg or degC
-      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
+      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
 
       unitValue = convert(this.units[0].unit.value)
       unitOffset = convert(this.units[0].unit.offset)
       unitPrefixValue = convert(this.units[0].prefix.value)
 
-      return multiply(add(value, unitOffset), multiply(unitValue, unitPrefixValue))
+      return multiplyScalar(addScalar(value, unitOffset), multiplyScalar(unitValue, unitPrefixValue))
     }
   }
 
@@ -509,28 +541,28 @@ function factory (type, config, load, typed, math) {
       // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
       // Also, prefixValue is ignored--but we will still use the prefix value stored in each unit, since kg is usually preferable to g unless the user decides otherwise.
       let res = value
-      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
+      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
 
       for (let i = 0; i < this.units.length; i++) {
         unitValue = convert(this.units[i].unit.value)
         unitPrefixValue = convert(this.units[i].prefix.value)
         unitPower = convert(this.units[i].power)
-        res = divide(res, pow(multiply(unitValue, unitPrefixValue), unitPower))
+        res = divideScalar(res, pow(multiplyScalar(unitValue, unitPrefixValue), unitPower))
       }
 
       return res
     } else {
       // This is a single unit of power 1, like kg or degC
-      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
+      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
 
       unitValue = convert(this.units[0].unit.value)
       unitPrefixValue = convert(this.units[0].prefix.value)
       unitOffset = convert(this.units[0].unit.offset)
 
       if (prefixValue === undefined || prefixValue === null) {
-        return subtract(divide(divide(value, unitValue), unitPrefixValue), unitOffset)
+        return subtract(divideScalar(divideScalar(value, unitValue), unitPrefixValue), unitOffset)
       } else {
-        return subtract(divide(divide(value, unitValue), prefixValue), unitOffset)
+        return subtract(divideScalar(divideScalar(value, unitValue), prefixValue), unitOffset)
       }
     }
   }
@@ -666,7 +698,7 @@ function factory (type, config, load, typed, math) {
     if (this.value !== null || other.value !== null) {
       const valThis = this.value === null ? this._normalize(1) : this.value
       const valOther = other.value === null ? other._normalize(1) : other.value
-      res.value = multiply(valThis, valOther)
+      res.value = multiplyScalar(valThis, valOther)
     } else {
       res.value = null
     }
@@ -705,7 +737,7 @@ function factory (type, config, load, typed, math) {
     if (this.value !== null || other.value !== null) {
       const valThis = this.value === null ? this._normalize(1) : this.value
       const valOther = other.value === null ? other._normalize(1) : other.value
-      res.value = divide(valThis, valOther)
+      res.value = divideScalar(valThis, valOther)
     } else {
       res.value = null
     }
@@ -808,7 +840,7 @@ function factory (type, config, load, typed, math) {
       other.fixPrefix = true
       other.skipAutomaticSimplification = true
       return other
-    } else if (type.isUnit(valuelessUnit)) {
+    } else if (isUnit(valuelessUnit)) {
       if (!this.equalBase(valuelessUnit)) {
         throw new Error(`Units do not match ('${valuelessUnit.toString()}' != '${this.toString()}')`)
       }
@@ -1044,7 +1076,7 @@ function factory (type, config, load, typed, math) {
     strNum = strNum.substr(1)
     strDen = strDen.substr(1)
 
-    // Add parans for better copy/paste back into the eval, for example, or for better pretty print formatting
+    // Add parans for better copy/paste back into evaluate, for example, or for better pretty print formatting
     if (nNum > 1 && nDen > 0) {
       strNum = '(' + strNum + ')'
     }
@@ -1078,7 +1110,7 @@ function factory (type, config, load, typed, math) {
 
     // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
     let isImaginary = false
-    if (typeof (simp.value) !== 'undefined' && simp.value !== null && type.isComplex(simp.value)) {
+    if (typeof (simp.value) !== 'undefined' && simp.value !== null && isComplex(simp.value)) {
       // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
       isImaginary = Math.abs(simp.value.re) < 1e-14
     }
@@ -1107,7 +1139,7 @@ function factory (type, config, load, typed, math) {
     const value = simp._denormalize(simp.value)
     let str = (simp.value !== null) ? format(value, options || {}) : ''
     const unitStr = simp.formatUnits()
-    if (simp.value && type.isComplex(simp.value)) {
+    if (simp.value && isComplex(simp.value)) {
       str = '(' + str + ')' // Surround complex values with ( ) to enable better parsing
     }
     if (unitStr.length > 0 && str.length > 0) {
@@ -1218,7 +1250,7 @@ function factory (type, config, load, typed, math) {
     // we set the remainder to 0.
     let testSum = 0
     for (let i = 0; i < ret.length; i++) {
-      testSum = add(testSum, ret[i].value)
+      testSum = addScalar(testSum, ret[i].value)
     }
     if (equal(testSum, this.value)) {
       x.value = 0
@@ -1951,10 +1983,17 @@ function factory (type, config, load, typed, math) {
       value: 907.18474,
       offset: 0
     },
+    t: {
+      name: 't',
+      base: BASE_UNITS.MASS,
+      prefixes: PREFIXES.SHORT,
+      value: 1000,
+      offset: 0
+    },
     tonne: {
       name: 'tonne',
       base: BASE_UNITS.MASS,
-      prefixes: PREFIXES.SHORT,
+      prefixes: PREFIXES.LONG,
       value: 1000,
       offset: 0
     },
@@ -2330,14 +2369,14 @@ function factory (type, config, load, typed, math) {
     cd: {
       name: 'cd',
       base: BASE_UNITS.LUMINOUS_INTENSITY,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1,
       offset: 0
     },
     candela: {
       name: 'candela',
       base: BASE_UNITS.LUMINOUS_INTENSITY,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1,
       offset: 0
     },
@@ -2795,7 +2834,6 @@ function factory (type, config, load, typed, math) {
     teslas: 'tesla',
     electronvolts: 'electronvolt',
     moles: 'mole'
-
   }
 
   /**
@@ -2805,8 +2843,8 @@ function factory (type, config, load, typed, math) {
    */
   function calculateAngleValues (config) {
     if (config.number === 'BigNumber') {
-      const pi = constants.pi(type.BigNumber)
-      UNITS.rad.value = new type.BigNumber(1)
+      const pi = createPi(BigNumber)
+      UNITS.rad.value = new BigNumber(1)
       UNITS.deg.value = pi.div(180) // 2 * pi / 360
       UNITS.grad.value = pi.div(200) // 2 * pi / 400
       UNITS.cycle.value = pi.times(2) // 2 * pi
@@ -2830,12 +2868,14 @@ function factory (type, config, load, typed, math) {
   // apply the angle values now
   calculateAngleValues(config)
 
-  // recalculate the values on change of configuration
-  math.on('config', function (curr, prev) {
-    if (curr.number !== prev.number) {
-      calculateAngleValues(curr)
-    }
-  })
+  if (on) {
+    // recalculate the values on change of configuration
+    on('config', function (curr, prev) {
+      if (curr.number !== prev.number) {
+        calculateAngleValues(curr)
+      }
+    })
+  }
 
   /**
    * A unit system is a set of dimensionally independent base units plus a set of derived units, formed by multiplication and division of the base units, that are by convention used with the unit system.
@@ -2929,11 +2969,11 @@ function factory (type, config, load, typed, math) {
    */
   Unit.typeConverters = {
     BigNumber: function (x) {
-      return new type.BigNumber(x + '') // stringify to prevent constructor error
+      return new BigNumber(x + '') // stringify to prevent constructor error
     },
 
     Fraction: function (x) {
-      return new type.Fraction(x)
+      return new Fraction(x)
     },
 
     Complex: function (x) {
@@ -3238,9 +3278,4 @@ function factory (type, config, load, typed, math) {
   Unit.UNITS = UNITS
 
   return Unit
-}
-
-exports.name = 'Unit'
-exports.path = 'type'
-exports.factory = factory
-exports.math = true // request access to the math namespace
+}, { isClass: true })

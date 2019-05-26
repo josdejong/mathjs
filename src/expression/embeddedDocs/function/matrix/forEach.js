@@ -1,4 +1,4 @@
-module.exports = {
+export const forEachDocs = {
   'name': 'forEach',
   'category': 'Matrix',
   'syntax': [

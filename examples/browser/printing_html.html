@@ -137,7 +137,7 @@
       parsed = math.parse(expr.value)
 
       // evaluate the result of the expression
-      result.innerHTML = math.format(parsed.compile().eval())
+      result.innerHTML = math.format(parsed.compile().evaluate())
 
       // print the HTML output
       const html = math.parse(expr.value).toHTML(options)

@@ -1,4 +1,4 @@
-module.exports = {
+export const isNumericDocs = {
   'name': 'isNumeric',
   'category': 'Utils',
   'syntax': [

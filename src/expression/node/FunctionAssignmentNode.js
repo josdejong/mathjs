@@ -1,16 +1,22 @@
 'use strict'
 
-const keywords = require('../keywords')
-const escape = require('../../utils/string').escape
-const forEach = require('../../utils/array').forEach
-const join = require('../../utils/array').join
-const latex = require('../../utils/latex')
-const operators = require('../operators')
-const setSafeProperty = require('../../utils/customs').setSafeProperty
+import { isNode } from '../../utils/is'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
+import { keywords } from '../keywords'
+import { escape } from '../../utils/string'
+import { forEach, join } from '../../utils/array'
+import { toSymbol } from '../../utils/latex'
+import { getPrecedence } from '../operators'
+import { setSafeProperty } from '../../utils/customs'
+import { factory } from '../../utils/factory'
 
+const name = 'FunctionAssignmentNode'
+const dependencies = [
+  'typed',
+  'Node'
+]
+
+export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ typed, Node }) => {
   /**
    * @constructor FunctionAssignmentNode
    * @extends {Node}
@@ -31,7 +37,7 @@ function factory (type, config, load, typed) {
     // validate input
     if (typeof name !== 'string') throw new TypeError('String expected for parameter "name"')
     if (!Array.isArray(params)) throw new TypeError('Array containing strings or objects expected for parameter "params"')
-    if (!type.isNode(expr)) throw new TypeError('Node expected for parameter "expr"')
+    if (!isNode(expr)) throw new TypeError('Node expected for parameter "expr"')
     if (name in keywords) throw new Error('Illegal function name, "' + name + '" is a reserved keyword')
 
     this.name = name
@@ -131,8 +137,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function needParenthesis (node, parenthesis) {
-    const precedence = operators.getPrecedence(node, parenthesis)
-    const exprPrecedence = operators.getPrecedence(node.expr, parenthesis)
+    const precedence = getPrecedence(node, parenthesis)
+    const exprPrecedence = getPrecedence(node.expr, parenthesis)
 
     return (parenthesis === 'all') ||
       ((exprPrecedence !== null) && (exprPrecedence <= precedence))
@@ -214,11 +220,8 @@ function factory (type, config, load, typed) {
     }
 
     return '\\mathrm{' + this.name +
-        '}\\left(' + this.params.map(latex.toSymbol).join(',') + '\\right):=' + expr
+        '}\\left(' + this.params.map(toSymbol).join(',') + '\\right):=' + expr
   }
 
   return FunctionAssignmentNode
-}
-exports.name = 'FunctionAssignmentNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

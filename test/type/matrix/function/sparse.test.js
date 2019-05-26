@@ -1,17 +1,18 @@
 // test matrix construction
-const assert = require('assert')
-const math = require('../../../../src/main')
+import assert from 'assert'
+
+import math from '../../../../src/bundleAny'
 const sparse = math.sparse
 
 describe('sparse', function () {
   it('should create empty matrix', function () {
     const a = sparse()
-    assert.ok(a instanceof math.type.Matrix)
+    assert.ok(a instanceof math.Matrix)
   })
 
   it('should create empty matrix, number datatype', function () {
     const a = sparse('number')
-    assert.ok(a instanceof math.type.Matrix)
+    assert.ok(a instanceof math.Matrix)
     assert.ok(a.datatype() === 'number')
   })
 

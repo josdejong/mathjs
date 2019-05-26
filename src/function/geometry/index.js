@@ -1,5 +1,5 @@
 'use strict'
-module.exports = [
-  require('./intersect'),
-  require('./distance')
-]
+
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
+
+deprecatedIndexFileError(__filename)

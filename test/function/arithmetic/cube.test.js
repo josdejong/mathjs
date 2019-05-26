@@ -1,6 +1,7 @@
 // test cube
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const fraction = math.fraction
 const matrix = math.matrix
@@ -26,7 +27,7 @@ describe('cube', function () {
 
   it('should return the cube of a fraction', function () {
     const a = fraction(0.5)
-    assert(cube(a) instanceof math.type.Fraction)
+    assert(cube(a) instanceof math.Fraction)
     assert.strictEqual(cube(a).toString(), '0.125')
     assert.strictEqual(a.toString(), '0.5')
   })

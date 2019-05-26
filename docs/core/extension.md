@@ -1,18 +1,25 @@
 # Extension
 
 The library can easily be extended with functions and variables using the
-[`import`](../reference/functions/import.md) function. The function `import`
-accepts an object with functions and variables.
-
-Function `import` has the following syntax:
+[`import`](../reference/functions/import.md) function. The `import` function is available on a mathjs instance, which can be created using the `create` function.
 
 ```js
-math.import(object: Object [, options: Object])
+import { create, all } from 'mathjs'
+
+const math = create(all)
+
+math.import(/* ... */)
+```
+
+The function `import` accepts an object with functions and variables, or an array with factory functions. It has the following syntax:
+
+```js
+math.import(functions: Object [, options: Object])
 ```
 
 Where:
 
-- `object` is an object or array containing the functions and/or values to be
+- `functions` is an object or array containing the functions and/or values to be
   imported. `import` support regular values and functions, typed functions
   (see section [Typed functions](#typed-functions)), and factory functions
   (see section [Factory functions](#factory-functions)).
@@ -44,12 +51,12 @@ math.import({
 })
 
 // defined functions can be used in both JavaScript as well as the parser
-math.myvalue * 2               // 84
-math.hello('user')             // 'hello, user!'
+math.myvalue * 2                 // 84
+math.hello('user')               // 'hello, user!'
 
 const parser = math.parser()
-parser.eval('myvalue + 10')    // 52
-parser.eval('hello("user")')   // 'hello, user!'
+parser.evaluate('myvalue + 10')  // 52
+parser.evaluate('hello("user")') // 'hello, user!'
 ```
 
 ## Import external libraries
@@ -67,16 +74,21 @@ In order to convert math.js specific data types like `Matrix` to primitive types
 like `Array`, the imported functions can be wrapped by enabling `{wrap: true}`.
 
 ```js
-// import the numbers.js and numeric.js libraries into math.js
-math.import(require('numbers'), {wrap: true, silent: true})
-math.import(require('numeric'), {wrap: true, silent: true})
+import { create, all } from 'mathjs'
+import * as numbers from 'numbers'
+import * as numeric from 'numeric'
+
+// create a mathjs instance and import the numbers.js and numeric.js libraries
+const math = create(all)
+math.import(numbers, {wrap: true, silent: true})
+math.import(numeric, {wrap: true, silent: true})
 
 // use functions from numbers.js
-math.fibonacci(7)                          // 13
-math.eval('fibonacci(7)')                  // 13
+math.fibonacci(7)                           // 13
+math.evaluate('fibonacci(7)')               // 13
 
 // use functions from numeric.js
-math.eval('eig([1, 2; 4, 3])').lambda.x    // [5, -1]
+math.evaluate('eig([1, 2; 4, 3])').lambda.x // [5, -1]
 ```
 
 
@@ -159,7 +171,7 @@ math.import({
 The function can be stored in a separate file:
 
 ```js
-exports.myFunction = function (a, b) {
+export function myFunction (a, b) {
   // ...
 }
 ```
@@ -167,70 +179,85 @@ exports.myFunction = function (a, b) {
 Which can be imported like:
 
 ```js
-math.import(require('./myFunction.js'))
+import { myFunction } from './myFunction.js'
+
+math.import({
+  myFunction
+})
 ```
 
 An issue arises when `myFunction` needs functionality from math.js:
 it doesn't have access to the current instance of math.js when in a separate file.
-Factory functions can be used to solve this issue. A file exporting a factory function
-looks like:
+Factory functions can be used to solve this issue. A factory function allows to inject dependencies into a function when creating it.
+
+A syntax of factory function is:
 
 ```js
-exports.name = 'myFunction'
-exports.factory = function (type, config, load, typed) {
-  return function myFunction (a, b) {
-    // ...
-  }
-}
+factory(name: string, dependencies: string[], create: function, meta?: Object): function
 ```
 
-The file exports a name and a factory function. When running `math.import`, the factory
-function is invoked by math.js with four arguments:
+where:
 
--   `type: Object`: Object containing the data types of math.js,
-    like `type.BigNumber` and `type.Unit`.
--   `config: Object`: object with the configuration of math.js.
--   `load: function`: loader function to access functions from math.js. For example to
-    load the function `add`:
+-   `name` is the name of the created function.
+-   `dependencies` is an array with names of the dependent functions.
+-   `create` is a function which creates the function.
+    An object with the dependencies is passed as first argument.
+-   `meta` An optional object which can contain any meta data you want.
+    This will be attached as a property `meta` on the created function.
+    Known meta data properties used by the mathjs instance are:
+    -   `isClass: boolean`  If true, the created function is supposed to be a
+        class, and for example will not be exposed in the expression parser
+        for security reasons.
+    -   `lazy: boolean`.  By default, everything is imported lazily by `import`.
+        only as soon as the imported function or constant is actually used, it
+        will be constructed. A function can be forced to be created immediately
+        by setting `lazy: false` in the meta data.
+    -   `isTransformFunction: boolean`. If true, the created function is imported
+        as a transform function. It will not be imported in `math` itself, only
+        in the internal `mathWithTransform` namespace that is used by the
+        expression parser.
+    -   `recreateOnConfigChange: boolean`. If true, the imported factory will be
+        created again when there is a change in the configuration. This is for
+        example used for the constants like `pi`, which is different depending
+        on the configsetting `number` which can be numbers or BigNumbers.
 
-    ```js
-    exports.factory = function (type, config, load, typed) {
-      const add = load(require('mathjs/lib/function/arithmetic/add'))
-
-      return myFunction (a, b) {
-        // ...
-      }
-    }
-    ```
-
--   `typed: function`:  function to create typed-functions.
-
-The result returned by a factory function will be imported into the `math`
-namespace under the given `name`, `math.myFunction` in the above example.
-
-A factory can contain the following properties:
-
-- `name: string`. The name of the exported function or value. Required.
-- `factory: function (type, config, load, typed) `. The factory function,
-  must return the function or value to be imported in math.js. Required.
-- `path: string`. An optional path to where the function or value will be
-  imported. By default, imported functions have no path and are imported in
-  the 'flat' namespace `math`. Data types have `type` as path, and will be
-  located under `math.type.*`. Optional.
-- `lazy: boolean`. If true (default), the factory function will be lazy loaded:
-  it is executed as soon as the function is about to be used.
-- `math: boolean`. False by default. If true, the `math` namespace is passed
-  to the factory function as fifth argument. Should not be used unless there
-  is a very good reason for it.
-
-To import a set of factory functions, the function `math.import` accepts an
-array containing factory functions:
+Here an example of a factory function which depends on `multiply`:
 
 ```js
-math.import([
-  require('./myFactoryFunction1.js'),
-  require('./myFactoryFunction2.js'),
-  require('./myFactoryFunction3.js'),
-  // ...
-])
+import { factory, create, all } from 'mathjs'
+
+// create a factory function
+const name = 'negativeSquare'
+const dependencies = ['multiply', 'unaryMinus']
+const createNegativeSquare = factory(name, dependencies, function ({ multiply, unaryMinus }) {
+    return function negativeSquare (x) {
+      return unaryMinus(multiply(x, x))
+    }
+  })
+
+// create an instance of the function yourself:
+const multiply = (a, b) => a * b
+const unaryMinus = (a) => -a
+const negativeSquare = createNegativeSquare({ multiply, unaryMinus })
+console.log(negativeSquare(3)) // -9
+
+// or import the factory in a mathjs instance and use it there
+const math = create(all)
+math.import(createNegativeSquare)
+console.log(math.negativeSquare(4)) // -16
+console.log(math.evaluate('negativeSquare(5)')) // -25
+```
+
+You may wonder why you would inject functions `multiply` and `unaryMinus`
+instead of just doing these calculations inside the function itself. The
+reason is that this makes the factory function `negativeSquare` work for
+different implementations: numbers, BigNumbers, units, etc.
+
+```js
+import { Decimal } from 'decimal.js'
+
+// create an instance of our negativeSquare supporting BigNumbers instead of numbers
+const multiply = (a, b) => a.mul(b)
+const unaryMinus = (a) => new Decimal(0).minus(a)
+const negativeSquare = createNegativeSquare({ multiply, unaryMinus })
 ```

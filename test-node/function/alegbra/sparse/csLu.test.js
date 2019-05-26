@@ -1,23 +1,21 @@
+// Only use native node.js API's and references to ./lib here, this file is not transpiled!
 const approx = require('../../../../tools/approx')
+const math = require('../../../../lib/bundleAny')
+const { csPermute } = require('../../../../lib/function/algebra/sparse/csPermute')
+const { createCsLu } = require('../../../../lib/function/algebra/sparse/csLu')
+const { createCsSqr } = require('../../../../lib/function/algebra/sparse/csSqr')
 const market = require('../../../../tools/matrixmarket')
-const math = require('../../../../src/main').create()
 
-math.import(require('../../../../src/function/algebra/sparse/csPermute'))
-math.import(require('../../../../src/function/algebra/sparse/csLu'))
-math.import(require('../../../../src/function/algebra/sparse/csSqr'))
+const { abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, SparseMatrix } = math
 
-const csPermute = math.algebra.sparse.csPermute
-const csLu = math.algebra.sparse.csLu
-const csSqr = math.algebra.sparse.csSqr
+const csLu = createCsLu({ abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })
+const csSqr = createCsSqr({ add, multiply, transpose })
 
 describe('csLu', function () {
   it('should decompose matrix, 48 x 48, natural ordering (order=0), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 0
         const s = csSqr(0, m, false)
 
@@ -30,7 +28,7 @@ describe('csLu', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -38,11 +36,8 @@ describe('csLu', function () {
 
   it('should decompose matrix, 48 x 48, amd(A+A\') (order=1), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 1
         const s = csSqr(1, m, false)
 
@@ -55,7 +50,7 @@ describe('csLu', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -63,11 +58,8 @@ describe('csLu', function () {
 
   it('should decompose matrix, 48 x 48, amd(A\'*A) (order=2), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 2
         const s = csSqr(2, m, false)
 
@@ -80,7 +72,7 @@ describe('csLu', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -88,11 +80,8 @@ describe('csLu', function () {
 
   it('should decompose matrix, 48 x 48, amd(A\'*A) (order=3), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 3
         const s = csSqr(3, m, false)
 
@@ -105,7 +94,7 @@ describe('csLu', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })

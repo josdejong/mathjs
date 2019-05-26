@@ -1,14 +1,14 @@
-const assert = require('assert')
-const approx = require('../../../../tools/approx')
-const math = require('../../../../src/main').create()
+import assert from 'assert'
+import approx from '../../../../tools/approx'
+import math from '../../../../src/bundleAny'
+import { csPermute } from '../../../../src/function/algebra/sparse/csPermute'
+import { createCsLu } from '../../../../src/function/algebra/sparse/csLu'
+import { createCsSqr } from '../../../../src/function/algebra/sparse/csSqr'
 
-math.import(require('../../../../src/function/algebra/sparse/csPermute'))
-math.import(require('../../../../src/function/algebra/sparse/csLu'))
-math.import(require('../../../../src/function/algebra/sparse/csSqr'))
+const { abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, SparseMatrix } = math
 
-const csPermute = math.algebra.sparse.csPermute
-const csLu = math.algebra.sparse.csLu
-const csSqr = math.algebra.sparse.csSqr
+const csLu = createCsLu({ abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })
+const csSqr = createCsSqr({ add, multiply, transpose })
 
 describe('csLu', function () {
   it('should decompose matrix, 2 x 2, no symbolic ordering and analysis, partial pivoting', function () {

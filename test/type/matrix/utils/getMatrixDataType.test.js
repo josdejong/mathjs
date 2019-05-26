@@ -1,7 +1,7 @@
-const assert = require('assert')
-const math = require('../../../../src/main')
-const DenseMatrix = math.type.DenseMatrix
-const SparseMatrix = math.type.SparseMatrix
+import assert from 'assert'
+import math from '../../../../src/bundleAny'
+const DenseMatrix = math.DenseMatrix
+const SparseMatrix = math.SparseMatrix
 const getMatrixDataType = math.getMatrixDataType
 
 describe('getMatrixDataType', function () {

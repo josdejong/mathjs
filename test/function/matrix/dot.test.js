@@ -1,5 +1,5 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
 
 describe('dot', function () {
   it('should calculate dot product for two arrays', function () {

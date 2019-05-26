@@ -1,4 +1,4 @@
-module.exports = {
+export const equalDocs = {
   'name': 'equal',
   'category': 'Relational',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const lupDocs = {
   'name': 'lup',
   'category': 'Algebra',
   'syntax': [

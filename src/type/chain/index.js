@@ -1,8 +1,5 @@
 'use strict'
-module.exports = [
-  // type
-  require('./Chain'),
 
-  // construction function
-  require('./function/chain')
-]
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
+
+deprecatedIndexFileError(__filename)

@@ -1,18 +1,27 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const bigBitXor = require('../../utils/bignumber/bitXor')
+import { bitXor as bigBitXor } from '../../utils/bignumber/bitwise'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { factory } from '../../utils/factory'
+import { bitXorNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'bitXor'
+const dependencies = [
+  'typed',
+  'matrix',
+  'DenseMatrix'
+]
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createBitXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix }) => {
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Bitwise XOR two values, `x ^ y`.
@@ -36,15 +45,9 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array | Matrix} y Second value to xor
    * @return {number | BigNumber | Array | Matrix} XOR of `x` and `y`
    */
-  const bitXor = typed('bitXor', {
+  const bitXor = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function bitXor')
-      }
-
-      return x ^ y
-    },
+    'number, number': bitXorNumber,
 
     'BigNumber, BigNumber': bigBitXor,
 
@@ -106,12 +109,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  bitXor.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['bitXor']}\${args[1]}\\right)`
-  }
-
   return bitXor
-}
-
-exports.name = 'bitXor'
-exports.factory = factory
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const cbrtDocs = {
   'name': 'cbrt',
   'category': 'Arithmetic',
   'syntax': [

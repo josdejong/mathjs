@@ -1,17 +1,31 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const divideScalar = load(require('./divideScalar'))
-  const latex = require('../../utils/latex')
+import { factory } from '../../utils/factory'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+const name = 'dotDivide'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'divideScalar',
+  'DenseMatrix'
+]
+
+export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, DenseMatrix }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Divide two matrices element wise. The function accepts both matrices and
@@ -39,7 +53,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Denominator
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
    */
-  const dotDivide = typed('dotDivide', {
+  const dotDivide = typed(name, {
 
     'any, any': divideScalar,
 
@@ -101,12 +115,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  dotDivide.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['dotDivide']}\${args[1]}\\right)`
-  }
-
   return dotDivide
-}
-
-exports.name = 'dotDivide'
-exports.factory = factory
+})

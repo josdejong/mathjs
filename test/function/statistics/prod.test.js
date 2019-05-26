@@ -1,8 +1,8 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const BigNumber = math.type.BigNumber
-const Complex = math.type.Complex
-const DenseMatrix = math.type.DenseMatrix
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+const BigNumber = math.BigNumber
+const Complex = math.Complex
+const DenseMatrix = math.DenseMatrix
 const prod = math.prod
 
 describe('prod', function () {

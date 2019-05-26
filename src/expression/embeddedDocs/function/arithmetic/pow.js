@@ -1,4 +1,4 @@
-module.exports = {
+export const powDocs = {
   'name': 'pow',
   'category': 'Operators',
   'syntax': [

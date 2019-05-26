@@ -1,15 +1,31 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+import { factory } from '../../utils/factory'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm09 } from '../../type/matrix/utils/algorithm09'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm09 = load(require('../../type/matrix/utils/algorithm09'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+const name = 'atan2'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'BigNumber',
+  'DenseMatrix'
+]
+
+export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm09 = createAlgorithm09({ typed, equalScalar })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Calculate the inverse tangent function with two arguments, y/x.
@@ -40,7 +56,7 @@ function factory (type, config, load, typed) {
    * @param {number | Array | Matrix} x  First dimension
    * @return {number | Array | Matrix} Four-quadrant inverse tangent
    */
-  const atan2 = typed('atan2', {
+  const atan2 = typed(name, {
 
     'number, number': Math.atan2,
 
@@ -49,7 +65,7 @@ function factory (type, config, load, typed) {
     // the atan only on base of the real part of the numbers and ignored the imaginary.
 
     'BigNumber, BigNumber': function (y, x) {
-      return type.BigNumber.atan2(y, x)
+      return BigNumber.atan2(y, x)
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
@@ -108,10 +124,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  atan2.toTex = { 2: `\\mathrm{atan2}\\left(\${args}\\right)` }
-
   return atan2
-}
-
-exports.name = 'atan2'
-exports.factory = factory
+})

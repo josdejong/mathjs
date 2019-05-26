@@ -1,16 +1,12 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
-const identify = require('../../utils/array').identify
-const generalize = require('../../utils/array').generalize
+import { flatten, generalize, identify } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
-  const DenseMatrix = load(require('../../type/matrix/DenseMatrix'))
-  const size = load(require('../matrix/size'))
-  const subset = load(require('../matrix/subset'))
-  const compareNatural = load(require('../relational/compareNatural'))
+const name = 'setIntersect'
+const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix']
 
+export const createSetIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index, DenseMatrix }) => {
   /**
    * Create the intersection of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -32,10 +28,10 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a2  A (multi)set
    * @return {Array | Matrix}    The intersection of two (multi)sets
    */
-  const setIntersect = typed('setIntersect', {
+  return typed(name, {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
       let result
-      if (subset(size(a1), new MatrixIndex(0)) === 0 || subset(size(a2), new MatrixIndex(0)) === 0) { // of any of them is empty, return empty
+      if (subset(size(a1), new Index(0)) === 0 || subset(size(a2), new Index(0)) === 0) { // of any of them is empty, return empty
         result = []
       } else {
         const b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))
@@ -58,9 +54,4 @@ function factory (type, config, load, typed) {
       return new DenseMatrix(generalize(result))
     }
   })
-
-  return setIntersect
-}
-
-exports.name = 'setIntersect'
-exports.factory = factory
+})

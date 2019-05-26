@@ -1,17 +1,23 @@
 'use strict'
 
-const isArray = Array.isArray
+import { isArray, isMatrix } from '../../../utils/is'
+import { factory } from '../../../utils/factory'
+import { createSolveValidation } from './utils/solveValidation'
+import { csIpvec } from '../sparse/csIpvec'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../../type/matrix/function/matrix'))
-  const lup = load(require('../decomposition/lup'))
-  const slu = load(require('../decomposition/slu'))
-  const csIpvec = load(require('../sparse/csIpvec'))
+const name = 'lusolve'
+const dependencies = [
+  'typed',
+  'matrix',
+  'lup',
+  'slu',
+  'usolve',
+  'lsolve',
+  'DenseMatrix'
+]
 
-  const solveValidation = load(require('./utils/solveValidation'))
-
-  const usolve = load(require('./usolve'))
-  const lsolve = load(require('./lsolve'))
+export const createLusolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, lup, slu, usolve, lsolve, DenseMatrix }) => {
+  const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**
    * Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
@@ -46,7 +52,7 @@ function factory (type, config, load, typed) {
    *
    * @return {DenseMatrix | Array}           Column vector with the solution to the linear system A * x = b
    */
-  const lusolve = typed('lusolve', {
+  return typed(name, {
 
     'Array, Array | Matrix': function (a, b) {
       // convert a to matrix
@@ -86,9 +92,9 @@ function factory (type, config, load, typed) {
     }
   })
 
-  const _toMatrix = function (a) {
+  function _toMatrix (a) {
     // check it is a matrix
-    if (type.isMatrix(a)) { return a }
+    if (isMatrix(a)) { return a }
     // check array
     if (isArray(a)) { return matrix(a) }
     // throw
@@ -112,9 +118,4 @@ function factory (type, config, load, typed) {
     // return solution
     return x
   }
-
-  return lusolve
-}
-
-exports.name = 'lusolve'
-exports.factory = factory
+})

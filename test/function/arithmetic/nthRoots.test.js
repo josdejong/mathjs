@@ -1,6 +1,7 @@
 // test nthRoots
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const complex = math.complex
 const nthRoots = math.nthRoots
 

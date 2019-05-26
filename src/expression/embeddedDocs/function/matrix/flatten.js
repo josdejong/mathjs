@@ -1,4 +1,4 @@
-module.exports = {
+export const flattenDocs = {
   'name': 'flatten',
   'category': 'Matrix',
   'syntax': [

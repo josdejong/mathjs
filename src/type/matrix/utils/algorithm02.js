@@ -1,12 +1,12 @@
 'use strict'
 
-const DimensionError = require('../../../error/DimensionError')
+import { factory } from '../../../utils/factory'
+import { DimensionError } from '../../../error/DimensionError'
 
-function factory (type, config, load, typed) {
-  const equalScalar = load(require('../../../function/relational/equalScalar'))
+const name = 'algorithm02'
+const dependencies = ['typed', 'equalScalar']
 
-  const SparseMatrix = type.SparseMatrix
-
+export const createAlgorithm02 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
    * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij).
    * Callback function invoked NNZ times (number of nonzero items in SparseMatrix).
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97477571
    */
-  const algorithm02 = function (denseMatrix, sparseMatrix, callback, inverse) {
+  return function algorithm02 (denseMatrix, sparseMatrix, callback, inverse) {
     // dense matrix arrays
     const adata = denseMatrix._data
     const asize = denseMatrix._size
@@ -99,7 +99,7 @@ function factory (type, config, load, typed) {
     cptr[columns] = cindex.length
 
     // return sparse matrix
-    return new SparseMatrix({
+    return sparseMatrix.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -107,9 +107,4 @@ function factory (type, config, load, typed) {
       datatype: dt
     })
   }
-
-  return algorithm02
-}
-
-exports.name = 'algorithm02'
-exports.factory = factory
+})

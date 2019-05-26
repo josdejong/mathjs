@@ -1,6 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+import { factory } from '../../../utils/factory'
+
+const name = 'chain'
+const dependencies = ['typed', 'Chain']
+
+export const createChain = /* #__PURE__ */ factory(name, dependencies, ({ typed, Chain }) => {
   /**
    * Wrap any value in a chain, allowing to perform chained operations on
    * the value.
@@ -34,18 +39,15 @@ function factory (type, config, load, typed) {
    *         .done()     // [[24, 6], [9, 12]]
    *
    * @param {*} [value]   A value of any type on which to start a chained operation.
-   * @return {math.type.Chain} The created chain
+   * @return {math.Chain} The created chain
    */
-  return typed('chain', {
+  return typed(name, {
     '': function () {
-      return new type.Chain()
+      return new Chain()
     },
 
     'any': function (value) {
-      return new type.Chain(value)
+      return new Chain(value)
     }
   })
-}
-
-exports.name = 'chain'
-exports.factory = factory
+})

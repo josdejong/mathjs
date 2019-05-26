@@ -1,6 +1,7 @@
 // test bitXor
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const matrix = math.matrix
 const sparse = math.sparse
 const bignumber = math.bignumber

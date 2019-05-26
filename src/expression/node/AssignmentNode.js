@@ -1,14 +1,22 @@
 'use strict'
 
-const getSafeProperty = require('../../utils/customs').getSafeProperty
-const setSafeProperty = require('../../utils/customs').setSafeProperty
+import { isAccessorNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
+import { getSafeProperty, setSafeProperty } from '../../utils/customs'
+import { factory } from '../../utils/factory'
+import { accessFactory } from './utils/access'
+import { assignFactory } from './utils/assign'
+import { getPrecedence } from '../operators'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const assign = load(require('./utils/assign'))
-  const access = load(require('./utils/access'))
+const name = 'AssignmentNode'
+const dependencies = [
+  'subset',
+  '?matrix', // FIXME: should not be needed at all, should be handled by subset
+  'Node'
+]
 
-  const operators = require('../operators')
+export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, Node }) => {
+  const access = accessFactory({ subset })
+  const assign = assignFactory({ subset, matrix })
 
   /**
    * @constructor AssignmentNode
@@ -46,16 +54,16 @@ function factory (type, config, load, typed) {
     this.value = value || index
 
     // validate input
-    if (!type.isSymbolNode(object) && !type.isAccessorNode(object)) {
+    if (!isSymbolNode(object) && !isAccessorNode(object)) {
       throw new TypeError('SymbolNode or AccessorNode expected as "object"')
     }
-    if (type.isSymbolNode(object) && object.name === 'end') {
+    if (isSymbolNode(object) && object.name === 'end') {
       throw new Error('Cannot assign to symbol "end"')
     }
-    if (this.index && !type.isIndexNode(this.index)) { // index is optional
+    if (this.index && !isIndexNode(this.index)) { // index is optional
       throw new TypeError('IndexNode expected as "index"')
     }
-    if (!type.isNode(this.value)) {
+    if (!isNode(this.value)) {
       throw new TypeError('Node expected as "value"')
     }
 
@@ -103,7 +111,7 @@ function factory (type, config, load, typed) {
 
     if (!this.index) {
       // apply a variable to the scope, for example `a=2`
-      if (!type.isSymbolNode(this.object)) {
+      if (!isSymbolNode(this.object)) {
         throw new TypeError('SymbolNode expected as object')
       }
 
@@ -119,7 +127,7 @@ function factory (type, config, load, typed) {
         const value = evalValue(scope, args, context)
         return setSafeProperty(object, prop, value)
       }
-    } else if (type.isSymbolNode(this.object)) {
+    } else if (isSymbolNode(this.object)) {
       // update a matrix subset, for example `a[2]=3`
       return function evalAssignmentNode (scope, args, context) {
         const childObject = evalObject(scope, args, context)
@@ -128,7 +136,7 @@ function factory (type, config, load, typed) {
         setSafeProperty(scope, name, assign(childObject, index, value))
         return value
       }
-    } else { // type.isAccessorNode(node.object) === true
+    } else { // isAccessorNode(node.object) === true
       // update a matrix subset, for example `a.b[2]=3`
 
       // we will not use the compile function of the AccessorNode, but compile it
@@ -213,8 +221,8 @@ function factory (type, config, load, typed) {
       parenthesis = 'keep'
     }
 
-    const precedence = operators.getPrecedence(node, parenthesis)
-    const exprPrecedence = operators.getPrecedence(node.value, parenthesis)
+    const precedence = getPrecedence(node, parenthesis)
+    const exprPrecedence = getPrecedence(node.value, parenthesis)
     return (parenthesis === 'all') ||
       ((exprPrecedence !== null) && (exprPrecedence <= precedence))
   }
@@ -292,8 +300,4 @@ function factory (type, config, load, typed) {
   }
 
   return AssignmentNode
-}
-
-exports.name = 'AssignmentNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

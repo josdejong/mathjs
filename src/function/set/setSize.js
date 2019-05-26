@@ -1,10 +1,12 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const compareNatural = load(require('../relational/compareNatural'))
+const name = 'setSize'
+const dependencies = ['typed', 'compareNatural']
 
+export const createSetSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, compareNatural }) => {
   /**
    * Count the number of elements of a (multi)set. When a second parameter is 'true', count only the unique values.
    * A multi-dimension array will be converted to a single-dimension array before the operation.
@@ -26,7 +28,7 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a  A multiset
    * @return {number}            The number of elements of the (multi)set
    */
-  const setSize = typed('setSize', {
+  return typed(name, {
     'Array | Matrix': function (a) {
       return Array.isArray(a) ? flatten(a).length : flatten(a.toArray()).length
     },
@@ -45,9 +47,4 @@ function factory (type, config, load, typed) {
       }
     }
   })
-
-  return setSize
-}
-
-exports.name = 'setSize'
-exports.factory = factory
+})

@@ -1,24 +1,15 @@
 'use strict'
 
-const formatNumber = require('./number').format
-const formatBigNumber = require('./bignumber/formatter').format
-const isBigNumber = require('./bignumber/isBigNumber')
-
-/**
- * Test whether value is a string
- * @param {*} value
- * @return {boolean} isString
- */
-exports.isString = function (value) {
-  return typeof value === 'string'
-}
+import { isBigNumber, isString, typeOf } from './is'
+import { format as formatNumber } from './number'
+import { format as formatBigNumber } from './bignumber/formatter'
 
 /**
  * Check if a text ends with a certain string.
  * @param {string} text
  * @param {string} search
  */
-exports.endsWith = function (text, search) {
+export function endsWith (text, search) {
   const start = text.length - search.length
   const end = text.length
   return (text.substring(start, end) === search)
@@ -59,7 +50,7 @@ exports.endsWith = function (text, search) {
  *                                                options.
  * @return {string} str
  */
-exports.format = function (value, options) {
+export function format (value, options) {
   if (typeof value === 'number') {
     return formatNumber(value, options)
   }
@@ -84,7 +75,7 @@ exports.format = function (value, options) {
     return formatArray(value, options)
   }
 
-  if (exports.isString(value)) {
+  if (isString(value)) {
     return '"' + value + '"'
   }
 
@@ -103,7 +94,7 @@ exports.format = function (value, options) {
 
       for (const key in value) {
         if (value.hasOwnProperty(key)) {
-          entries.push('"' + key + '": ' + exports.format(value[key], options))
+          entries.push('"' + key + '": ' + format(value[key], options))
         }
       }
 
@@ -120,7 +111,7 @@ exports.format = function (value, options) {
  * @param {*} value
  * @return {string}
  */
-exports.stringify = function (value) {
+export function stringify (value) {
   const text = String(value)
   let escaped = ''
   let i = 0
@@ -152,7 +143,7 @@ exports.stringify = function (value) {
  * @param {*} value
  * @return {string}
  */
-exports.escape = function (value) {
+export function escape (value) {
   let text = String(value)
   text = text.replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
@@ -186,7 +177,7 @@ function formatArray (array, options) {
     str += ']'
     return str
   } else {
-    return exports.format(array, options)
+    return format(array, options)
   }
 }
 
@@ -201,4 +192,26 @@ function looksLikeFraction (value) {
       typeof value.s === 'number' &&
       typeof value.n === 'number' &&
       typeof value.d === 'number') || false
+}
+
+/**
+ * Compare two strings
+ * @param {string} x
+ * @param {string} y
+ * @returns {number}
+ */
+export function compareText (x, y) {
+  // we don't want to convert numbers to string, only accept string input
+  if (!isString(x)) {
+    throw new TypeError('Unexpected type of argument in function compareText ' +
+      '(expected: string or Array or Matrix, actual: ' + typeOf(x) + ', index: 0)')
+  }
+  if (!isString(y)) {
+    throw new TypeError('Unexpected type of argument in function compareText ' +
+      '(expected: string or Array or Matrix, actual: ' + typeOf(y) + ', index: 1)')
+  }
+
+  return (x === y)
+    ? 0
+    : (x > y ? 1 : -1)
 }

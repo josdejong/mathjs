@@ -1,9 +1,14 @@
 'use strict'
 
-const format = require('../../utils/string').format
-const lazy = require('../../utils/object').lazy
+import { isChain } from '../../utils/is'
+import { format } from '../../utils/string'
+import { lazy } from '../../utils/object'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed, math) {
+const name = 'Chain'
+const dependencies = ['?on', 'math']
+
+export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ on, math }) => {
   /**
    * @constructor Chain
    * Wrap any value in a chain, allowing to perform chained operations on
@@ -27,7 +32,7 @@ function factory (type, config, load, typed, math) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
 
-    if (type.isChain(value)) {
+    if (isChain(value)) {
       this.value = value.value
     } else {
       this.value = value
@@ -156,30 +161,36 @@ function factory (type, config, load, typed, math) {
       createProxy(arg0, arg1)
     } else {
       // createProxy(values)
-      for (const prop in arg0) {
-        if (arg0.hasOwnProperty(prop)) {
-          createProxy(prop, arg0[prop])
+      for (const name in arg0) {
+        if (arg0.hasOwnProperty(name) && excludedNames[name] === undefined) {
+          createLazyProxy(name, () => arg0[name])
         }
       }
     }
+  }
+
+  const excludedNames = {
+    expression: true,
+    docs: true,
+    type: true,
+    classes: true,
+    json: true,
+    error: true,
+    isChain: true // conflicts with the property isChain of a Chain instance
   }
 
   // create proxy for everything that is in math.js
   Chain.createProxy(math)
 
   // register on the import event, automatically add a proxy for every imported function.
-  math.on('import', function (name, resolver, path) {
-    if (path === undefined) {
-      // an imported function (not a data type or something special)
-      createLazyProxy(name, resolver)
-    }
-  })
+  if (on) {
+    on('import', function (name, resolver, path) {
+      if (!path) {
+        // an imported function (not a data type or something special)
+        createLazyProxy(name, resolver)
+      }
+    })
+  }
 
   return Chain
-}
-
-exports.name = 'Chain'
-exports.path = 'type'
-exports.factory = factory
-exports.math = true // require providing the math namespace as 5th argument
-exports.lazy = false // we need to register a listener on the import events, so no lazy loading
+}, { isClass: true })

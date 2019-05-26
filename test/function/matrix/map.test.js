@@ -1,12 +1,12 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
 
 describe('map', function () {
   it('should apply map to all elements of the matrix', function () {
     const m = math.matrix([[1, 2, 3], [4, 5, 6]])
     const m2 = math.map(m, function (value) { return value * 2 })
     assert.deepStrictEqual(m2.valueOf(), [[2, 4, 6], [8, 10, 12]])
-    assert.ok(m2 instanceof math.type.Matrix)
+    assert.ok(m2 instanceof math.Matrix)
   })
 
   it('should apply deep-map to all elements in the array', function () {

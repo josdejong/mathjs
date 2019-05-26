@@ -1,12 +1,13 @@
 'use strict'
 
-const filter = require('../../utils/array').filter
-const filterRegExp = require('../../utils/array').filterRegExp
-const maxArgumentCount = require('../../utils/function').maxArgumentCount
+import { filter, filterRegExp } from '../../utils/array'
+import { maxArgumentCount } from '../../utils/function'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'filter'
+const dependencies = ['typed']
 
+export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Filter the items in an array or one dimensional matrix.
    *
@@ -36,24 +37,20 @@ function factory (type, config, load, typed) {
    *        matrix/array being traversed. The function must return a boolean.
    * @return {Matrix | Array} Returns the filtered matrix.
    */
-  const filter = typed('filter', {
+  return typed('filter', {
     'Array, function': _filterCallback,
 
     'Matrix, function': function (x, test) {
-      return matrix(_filterCallback(x.toArray(), test))
+      return x.create(_filterCallback(x.toArray(), test))
     },
 
     'Array, RegExp': filterRegExp,
 
     'Matrix, RegExp': function (x, test) {
-      return matrix(filterRegExp(x.toArray(), test))
+      return x.create(filterRegExp(x.toArray(), test))
     }
   })
-
-  filter.toTex = undefined // use default template
-
-  return filter
-}
+})
 
 /**
  * Filter values in a callback given a callback function
@@ -77,6 +74,3 @@ function _filterCallback (x, callback) {
     }
   })
 }
-
-exports.name = 'filter'
-exports.factory = factory

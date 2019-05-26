@@ -1,16 +1,13 @@
 'use strict'
 
-const format = require('../../utils/string').format
+import { isSparseMatrix } from '../../utils/is'
+import { format } from '../../utils/string'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const abs = load(require('../arithmetic/abs'))
-  const add = load(require('../arithmetic/add'))
-  const identity = load(require('./identity'))
-  const inv = load(require('./inv'))
-  const multiply = load(require('../arithmetic/multiply'))
+const name = 'expm'
+const dependencies = ['typed', 'abs', 'add', 'identity', 'inv', 'multiply']
 
-  const SparseMatrix = type.SparseMatrix
-
+export const createExpm = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, add, identity, inv, multiply }) => {
   /**
    * Compute the matrix exponential, expm(A) = e^A. The matrix must be square.
    * Not to be confused with exp(a), which performs element-wise
@@ -36,7 +33,7 @@ function factory (type, config, load, typed) {
    * @param {Matrix} x  A square Matrix
    * @return {Matrix}   The exponential of x
    */
-  const expm = typed('expm', {
+  return typed(name, {
 
     'Matrix': function (A) {
       // Check matrix size
@@ -105,8 +102,8 @@ function factory (type, config, load, typed) {
         R = multiply(R, R)
       }
 
-      return type.isSparseMatrix(A)
-        ? new SparseMatrix(R)
+      return isSparseMatrix(A)
+        ? A.createSparseMatrix(R)
         : R
     }
 
@@ -162,11 +159,4 @@ function factory (type, config, load, typed) {
       Math.pow(infNorm / Math.pow(2, j), 2 * q) *
       qfac * qfac / (twoqfac * twoqp1fac)
   }
-
-  expm.toTex = { 1: `\\exp\\left(\${args[0]}\\right)` }
-
-  return expm
-}
-
-exports.name = 'expm'
-exports.factory = factory
+})

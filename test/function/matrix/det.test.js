@@ -1,10 +1,10 @@
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
-const BigNumber = math.type.BigNumber
-const Complex = math.type.Complex
-const DenseMatrix = math.type.DenseMatrix
-const SparseMatrix = math.type.SparseMatrix
+import assert from 'assert'
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
+const BigNumber = math.BigNumber
+const Complex = math.Complex
+const DenseMatrix = math.DenseMatrix
+const SparseMatrix = math.SparseMatrix
 const det = math.det
 const diag = math.diag
 const identity = math.identity
@@ -116,7 +116,7 @@ describe('det', function () {
       [new BigNumber(-2), new BigNumber(2), new BigNumber(3)],
       [new BigNumber(-1), new BigNumber(1), new BigNumber(3)],
       [new BigNumber(2), new BigNumber(0), new BigNumber(-1)]
-    ]), new math.type.BigNumber(6))
+    ]), new math.BigNumber(6))
 
     // the following would fail with regular Numbers due to a precision overflow
     assert.deepStrictEqual(det([
@@ -129,7 +129,7 @@ describe('det', function () {
     assert.deepStrictEqual(det([
       [1, new BigNumber(2)],
       [new BigNumber(3), 4]
-    ]), new math.type.BigNumber(-2))
+    ]), new math.BigNumber(-2))
   })
 
   it('should not change the value of the initial matrix', function () {

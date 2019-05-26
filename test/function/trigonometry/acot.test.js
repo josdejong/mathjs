@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -52,8 +52,9 @@ describe('acot', function () {
     assert.deepStrictEqual(arg8.toString(), 'Infinity')
 
     // Hit Newton's method case
-    bigmath.config({ precision: 61 })
-    assert.deepStrictEqual(acotBig(Big(1.1)), Big('0.7378150601204649138136281298033902035827333552504444896340492'))
+    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+    assert.deepStrictEqual(bigmath61.acot(bigmath61.bignumber(1.1)),
+      bigmath61.bignumber('0.7378150601204649138136281298033902035827333552504444896340492'))
   })
 
   it('should be the inverse function of cot', function () {

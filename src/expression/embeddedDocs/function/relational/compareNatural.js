@@ -1,4 +1,4 @@
-module.exports = {
+export const compareNaturalDocs = {
   'name': 'compareNatural',
   'category': 'Relational',
   'syntax': [

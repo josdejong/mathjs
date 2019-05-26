@@ -1,8 +1,14 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
+import { isNode } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
+const name = 'ParenthesisNode'
+const dependencies = [
+  'Node'
+]
+
+export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * @constructor ParenthesisNode
    * @extends {Node}
@@ -16,7 +22,7 @@ function factory (type, config, load, typed) {
     }
 
     // validate input
-    if (!type.isNode(content)) {
+    if (!isNode(content)) {
       throw new TypeError('Node expected for parameter "content"')
     }
 
@@ -144,8 +150,4 @@ function factory (type, config, load, typed) {
   }
 
   return ParenthesisNode
-}
-
-exports.name = 'ParenthesisNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

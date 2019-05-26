@@ -1,6 +1,7 @@
 // test size
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const size = math.size
 const matrix = math.matrix
 

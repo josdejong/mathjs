@@ -1,4 +1,4 @@
-module.exports = {
+export const medianDocs = {
   'name': 'median',
   'category': 'Statistics',
   'syntax': [
@@ -17,7 +17,7 @@ module.exports = {
     'prod',
     'std',
     'sum',
-    'var',
+    'variance',
     'quantileSeq'
   ]
 }

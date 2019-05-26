@@ -1,15 +1,16 @@
 // test FunctionAssignmentNode
-const assert = require('assert')
-const math = require('../../../src/main').create()
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const AssignmentNode = math.expression.node.AssignmentNode
-const ConditionalNode = math.expression.node.ConditionalNode
-const OperatorNode = math.expression.node.OperatorNode
-const FunctionNode = math.expression.node.FunctionNode
-const FunctionAssignmentNode = math.expression.node.FunctionAssignmentNode
-const RangeNode = math.expression.node.RangeNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const AssignmentNode = math.AssignmentNode
+const ConditionalNode = math.ConditionalNode
+const OperatorNode = math.OperatorNode
+const FunctionNode = math.FunctionNode
+const FunctionAssignmentNode = math.FunctionAssignmentNode
+const RangeNode = math.RangeNode
 
 describe('FunctionAssignmentNode', function () {
   it('should create a FunctionAssignmentNode', function () {
@@ -43,7 +44,7 @@ describe('FunctionAssignmentNode', function () {
 
     const expr = n.compile()
     let scope = {}
-    expr.eval(scope)
+    expr.evaluate(scope)
     assert.strictEqual(typeof scope.f, 'function')
     assert.strictEqual(scope.f(3), 5)
     assert.strictEqual(scope.f(5), 7)
@@ -57,7 +58,7 @@ describe('FunctionAssignmentNode', function () {
 
     const expr = n.compile()
     let scope = {}
-    expr.eval(scope)
+    expr.evaluate(scope)
     assert.strictEqual(typeof scope.f, 'function')
     assert.strictEqual(scope.f(3), 5)
     assert.strictEqual(scope.f(5), 7)
@@ -66,7 +67,7 @@ describe('FunctionAssignmentNode', function () {
     assert.throws(function () { scope.f() }, /Too few arguments in function f/)
   })
 
-  it('should eval a recursive FunctionAssignmentNode', function () {
+  it('should evaluate a recursive FunctionAssignmentNode', function () {
     const x = new SymbolNode('x')
     const one = new ConstantNode(1)
     const condition = new OperatorNode('<=', 'smallerEq', [x, one])
@@ -86,13 +87,13 @@ describe('FunctionAssignmentNode', function () {
 
     const expr = n2.compile()
     let scope = {}
-    const factorial = expr.eval(scope)
+    const factorial = expr.evaluate(scope)
     assert.strictEqual(typeof scope.factorial, 'function')
     assert.strictEqual(factorial(3), 6)
     assert.strictEqual(factorial(5), 120)
   })
 
-  it('should eval a recursive FunctionAssignmentNode with two recursive calls', function () {
+  it('should evaluate a recursive FunctionAssignmentNode with two recursive calls', function () {
     const x = new SymbolNode('x')
     const zero = new ConstantNode(0)
     const one = new ConstantNode(1)
@@ -120,7 +121,7 @@ describe('FunctionAssignmentNode', function () {
 
     const expr = n2.compile()
     let scope = {}
-    const fib = expr.eval(scope)
+    const fib = expr.evaluate(scope)
 
     assert.strictEqual(typeof fib, 'function')
     assert.strictEqual(fib(0), 0)
@@ -147,7 +148,7 @@ describe('FunctionAssignmentNode', function () {
     const n = new FunctionAssignmentNode('f', ['x'], o)
 
     let scope = { a: 2 }
-    const f = n.eval(scope)
+    const f = n.evaluate(scope)
     assert.deepStrictEqual(f(3), { a: 2, f: f, x: 3 })
   })
 
@@ -172,7 +173,7 @@ describe('FunctionAssignmentNode', function () {
     const n = new FunctionAssignmentNode('f', ['x', 'y'], b)
 
     let scope = { a: 2 }
-    const f = n.eval(scope)
+    const f = n.evaluate(scope)
     assert.deepStrictEqual(f(3, 4), { a: 2, f, x: 3, y: 4 })
   })
 
@@ -192,20 +193,20 @@ describe('FunctionAssignmentNode', function () {
     const n = new FunctionAssignmentNode('f', ['x'], o)
 
     let scope = { a: 2 }
-    const f = n.eval(scope)
+    const f = n.evaluate(scope)
     assert.deepStrictEqual(f(3), { a: 2, f, x: 3 })
   })
 
   it('should pass function arguments via scope to rawArgs function', function () {
     const math2 = math.create()
     const f = function (args, _math, _scope) {
-      return args[0].compile().eval(_scope)
+      return args[0].compile().evaluate(_scope)
     }
     f.rawArgs = true
 
     math2.import({ f })
 
-    const g = math2.eval('g(arr) = f(arr)')
+    const g = math2.evaluate('g(arr) = f(arr)')
     assert.deepStrictEqual(g([1, 2, 3]), [1, 2, 3])
   })
 
@@ -390,7 +391,7 @@ describe('FunctionAssignmentNode', function () {
         string += ')=' + node.expr.toString(options)
         return string
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -455,7 +456,7 @@ describe('FunctionAssignmentNode', function () {
         latex += '\\right)=' + node.expr.toTex(options)
         return latex
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

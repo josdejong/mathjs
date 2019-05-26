@@ -1,4 +1,4 @@
-module.exports = {
+export const lcmDocs = {
   'name': 'lcm',
   'category': 'Arithmetic',
   'syntax': [

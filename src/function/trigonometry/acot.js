@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { acotNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'acot'
+const dependencies = ['typed', 'BigNumber']
+
+export const createAcot = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Calculate the inverse cotangent of a value, defined as `acot(x) = atan(1/x)`.
    *
@@ -26,17 +31,15 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x   Function input
    * @return {number | Complex | Array | Matrix} The arc cotangent of x
    */
-  const acot = typed('acot', {
-    'number': function (x) {
-      return Math.atan(1 / x)
-    },
+  const acot = typed(name, {
+    'number': acotNumber,
 
     'Complex': function (x) {
       return x.acot()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).atan()
+      return new BigNumber(1).div(x).atan()
     },
 
     'Array | Matrix': function (x) {
@@ -44,10 +47,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  acot.toTex = { 1: `\\cot^{-1}\\left(\${args[0]}\\right)` }
-
   return acot
-}
-
-exports.name = 'acot'
-exports.factory = factory
+})

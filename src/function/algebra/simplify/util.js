@@ -1,10 +1,16 @@
 'use strict'
 
-function factory (type, config, load, typed, math) {
-  const FunctionNode = math.expression.node.FunctionNode
-  const OperatorNode = math.expression.node.OperatorNode
-  const SymbolNode = math.expression.node.SymbolNode
+import { isOperatorNode } from '../../../utils/is'
+import { factory } from '../../../utils/factory'
 
+const name = 'simplifyUtil'
+const dependencies = [
+  'FunctionNode',
+  'OperatorNode',
+  'SymbolNode'
+]
+
+export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ FunctionNode, OperatorNode, SymbolNode }) => {
   // TODO commutative/associative properties rely on the arguments
   // e.g. multiply is not commutative for matrices
   // The properties should be calculated from an argument to simplify, or possibly something in math.config
@@ -19,7 +25,7 @@ function factory (type, config, load, typed, math) {
   }
 
   function isCommutative (node, context) {
-    if (!type.isOperatorNode(node)) {
+    if (!isOperatorNode(node)) {
       return true
     }
     const name = node.fn.toString()
@@ -30,7 +36,7 @@ function factory (type, config, load, typed, math) {
   }
 
   function isAssociative (node, context) {
-    if (!type.isOperatorNode(node)) {
+    if (!isOperatorNode(node)) {
       return false
     }
     const name = node.fn.toString()
@@ -64,7 +70,7 @@ function factory (type, config, load, typed, math) {
     const findChildren = function (node) {
       for (let i = 0; i < node.args.length; i++) {
         const child = node.args[i]
-        if (type.isOperatorNode(child) && op === child.op) {
+        if (isOperatorNode(child) && op === child.op) {
           findChildren(child)
         } else {
           children.push(child)
@@ -124,7 +130,7 @@ function factory (type, config, load, typed, math) {
   }
 
   function createMakeNodeFunction (node) {
-    if (type.isOperatorNode(node)) {
+    if (isOperatorNode(node)) {
       return function (args) {
         try {
           return new OperatorNode(node.op, node.fn, args, node.implicit)
@@ -139,16 +145,14 @@ function factory (type, config, load, typed, math) {
       }
     }
   }
-  return {
-    createMakeNodeFunction: createMakeNodeFunction,
-    isCommutative: isCommutative,
-    isAssociative: isAssociative,
-    flatten: flatten,
-    allChildren: allChildren,
-    unflattenr: unflattenr,
-    unflattenl: unflattenl
-  }
-}
 
-exports.factory = factory
-exports.math = true
+  return {
+    createMakeNodeFunction,
+    isCommutative,
+    isAssociative,
+    flatten,
+    allChildren,
+    unflattenr,
+    unflattenl
+  }
+})

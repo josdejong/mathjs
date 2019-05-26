@@ -1,8 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const DenseMatrix = type.DenseMatrix
+import { factory } from '../../../utils/factory'
 
+const name = 'algorithm12'
+const dependencies = ['typed', 'DenseMatrix']
+
+export const createAlgorithm12 = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix }) => {
   /**
    * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
    * Callback function invoked MxN times.
@@ -22,7 +25,7 @@ function factory (type, config, load, typed) {
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
    */
-  const algorithm12 = function (s, b, callback, inverse) {
+  return function algorithm12 (s, b, callback, inverse) {
     // sparse matrix arrays
     const avalues = s._values
     const aindex = s._index
@@ -99,9 +102,4 @@ function factory (type, config, load, typed) {
     // return sparse matrix
     return c
   }
-
-  return algorithm12
-}
-
-exports.name = 'algorithm12'
-exports.factory = factory
+})

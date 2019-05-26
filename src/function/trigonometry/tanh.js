@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { tanh as _tanh } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+const name = 'tanh'
+const dependencies = ['typed']
+
+export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the hyperbolic tangent of a value,
    * defined as `tanh(x) = (exp(2 * x) - 1) / (exp(2 * x) + 1)`.
@@ -39,7 +44,7 @@ function factory (type, config, load, typed) {
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function tanh is no angle')
       }
       return tanh(x.value)
@@ -51,21 +56,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  tanh.toTex = { 1: `\\tanh\\left(\${args[0]}\\right)` }
-
   return tanh
-}
-
-/**
- * Calculate the hyperbolic tangent of a number
- * @param {number} x
- * @returns {number}
- * @private
- */
-const _tanh = Math.tanh || function (x) {
-  const e = Math.exp(2 * x)
-  return (e - 1) / (e + 1)
-}
-
-exports.name = 'tanh'
-exports.factory = factory
+})

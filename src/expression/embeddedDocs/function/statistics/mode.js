@@ -1,4 +1,4 @@
-module.exports = {
+export const modeDocs = {
   'name': 'mode',
   'category': 'Statistics',
   'syntax': [
@@ -20,6 +20,6 @@ module.exports = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

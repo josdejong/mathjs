@@ -1,9 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const smaller = load(require('../../function/relational/smaller'))
-  const larger = load(require('../../function/relational/larger'))
+import { factory } from '../../utils/factory'
 
+const name = 'FibonacciHeap'
+const dependencies = ['smaller', 'larger']
+
+export const createFibonacciHeapClass = /* #__PURE__ */ factory(name, dependencies, ({ smaller, larger }) => {
   const oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0)
 
   /**
@@ -326,8 +328,4 @@ function factory (type, config, load, typed) {
   }
 
   return FibonacciHeap
-}
-
-exports.name = 'FibonacciHeap'
-exports.path = 'type'
-exports.factory = factory
+}, { isClass: true })

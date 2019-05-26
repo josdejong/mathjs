@@ -1,7 +1,7 @@
-const assert = require('assert')
-const math = require('../../../../src/main')
+import assert from 'assert'
+import math from '../../../../src/bundleAny'
 const bignumber = math.bignumber
-const BigNumber = math.type.BigNumber
+const BigNumber = math.BigNumber
 
 describe('bignumber', function () {
   it('should create a bignumber', function () {
@@ -53,7 +53,7 @@ describe('bignumber', function () {
 
     // from matrix
     const e = bignumber(math.matrix([0.1, 0.2]))
-    assert.ok(e instanceof math.type.Matrix)
+    assert.ok(e instanceof math.Matrix)
     assert.deepStrictEqual(e.size(), [2])
     assert.ok(e.get([0]) instanceof BigNumber)
     assert.ok(e.get([1]) instanceof BigNumber)

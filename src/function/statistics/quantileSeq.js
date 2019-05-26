@@ -1,16 +1,14 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const isNumber = require('../../utils/number').isNumber
-const flatten = require('../../utils/array').flatten
-const isCollection = require('../../utils/collection/isCollection')
+import { isBigNumber, isCollection, isNumber } from '../../utils/is'
+import { isInteger } from '../../utils/number'
+import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/add'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const partitionSelect = load(require('../matrix/partitionSelect'))
-  const compare = load(require('../relational/compare'))
+const name = 'quantileSeq'
+const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare']
 
+export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned.
@@ -35,7 +33,7 @@ function factory (type, config, load, typed) {
    *
    * See also:
    *
-   *     median, mean, min, max, sum, prod, std, var
+   *     median, mean, min, max, sum, prod, std, variance
    *
    * @param {Array, Matrix} data                A single matrix or Array
    * @param {Number, BigNumber, Array} probOrN  prob is the order of the quantile, while N is
@@ -81,16 +79,18 @@ function factory (type, config, load, typed) {
           }
         }
 
-        if (type.isBigNumber(probOrN)) {
+        if (isBigNumber(probOrN)) {
+          const BigNumber = probOrN.constructor
+
           if (probOrN.isNegative()) {
             throw new Error('N/prob must be non-negative')
           }
 
-          one = new probOrN.constructor(1)
+          one = new BigNumber(1)
 
           if (probOrN.lte(one)) {
             // quantileSeq([a, b, c, d, ...], prob[,sorted])
-            return new type.BigNumber(_quantileSeq(dataArr, probOrN, sorted))
+            return new BigNumber(_quantileSeq(dataArr, probOrN, sorted))
           }
 
           if (probOrN.gt(one)) {
@@ -106,10 +106,10 @@ function factory (type, config, load, typed) {
               throw new Error('N must be less than or equal to 2^32-1, as that is the maximum length of an Array')
             }
 
-            const nPlusOne = new type.BigNumber(intN + 1)
+            const nPlusOne = new BigNumber(intN + 1)
             probArr = new Array(intN)
             for (let i = 0; i < intN;) {
-              probArr[i] = new type.BigNumber(_quantileSeq(dataArr, new type.BigNumber(++i).div(nPlusOne), sorted))
+              probArr[i] = new BigNumber(_quantileSeq(dataArr, new BigNumber(++i).div(nPlusOne), sorted))
             }
             return probArr
           }
@@ -124,7 +124,7 @@ function factory (type, config, load, typed) {
               if (currProb < 0 || currProb > 1) {
                 throw new Error('Probability must be between 0 and 1, inclusive')
               }
-            } else if (type.isBigNumber(currProb)) {
+            } else if (isBigNumber(currProb)) {
               one = new currProb.constructor(1)
               if (currProb.isNegative() || currProb.gt(one)) {
                 throw new Error('Probability must be between 0 and 1, inclusive')
@@ -253,7 +253,4 @@ function factory (type, config, load, typed) {
   })
 
   return quantileSeq
-}
-
-exports.name = 'quantileSeq'
-exports.factory = factory
+})

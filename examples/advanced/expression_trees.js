@@ -1,8 +1,8 @@
-const math = require('../../index')
+const { parse, ConstantNode } = require('../..')
 
 // Filter an expression tree
 console.log('Filter all symbol nodes "x" in the expression "x^2 + x/4 + 3*y"')
-const node = math.parse('x^2 + x/4 + 3*y')
+const node = parse('x^2 + x/4 + 3*y')
 const filtered = node.filter(function (node) {
   return node.isSymbolNode && node.name === 'x'
 })
@@ -18,7 +18,7 @@ filtered.forEach(function (node) {
 // Traverse an expression tree
 console.log()
 console.log('Traverse the expression tree of expression "3 * x + 2"')
-const node1 = math.parse('3 * x + 2')
+const node1 = parse('3 * x + 2')
 node1.traverse(function (node, path, parent) {
   switch (node.type) {
     case 'OperatorNode':
@@ -43,10 +43,10 @@ node1.traverse(function (node, path, parent) {
 // transform an expression tree
 console.log()
 console.log('Replace all symbol nodes "x" in expression "x^2 + 5*x" with a constant 3')
-const node2 = math.parse('x^2 + 5*x')
+const node2 = parse('x^2 + 5*x')
 const transformed = node2.transform(function (node, path, parent) {
   if (node.isSymbolNode && node.name === 'x') {
-    return new math.expression.node.ConstantNode(3)
+    return new ConstantNode(3)
   } else {
     return node
   }

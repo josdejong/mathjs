@@ -1,14 +1,17 @@
 'use strict'
 
-const object = require('../../utils/object')
+import { clone, mapObject, deepExtend } from '../../utils/object'
+import { DEFAULT_CONFIG } from '../config'
 
-function factory (type, config, load, typed, math) {
-  const MATRIX = ['Matrix', 'Array'] // valid values for option matrix
-  const NUMBER = ['number', 'BigNumber', 'Fraction'] // valid values for option number
+export const MATRIX_OPTIONS = ['Matrix', 'Array'] // valid values for option matrix
+export const NUMBER_OPTIONS = ['number', 'BigNumber', 'Fraction'] // valid values for option number
 
+export function configFactory (config, emit) {
   /**
    * Set configuration options for math.js, and get current options.
    * Will emit a 'config' event, with arguments (curr, prev, changes).
+   *
+   * This function is only available on a mathjs instance created using `create`.
    *
    * Syntax:
    *
@@ -16,10 +19,16 @@ function factory (type, config, load, typed, math) {
    *
    * Examples:
    *
+   *
+   *     import { create, all } from 'mathjs'
+   *
+   *     // create a mathjs instance
+   *     const math = create(all)
+   *
    *     math.config().number                // outputs 'number'
-   *     math.eval('0.4')                    // outputs number 0.4
+   *     math.evaluate('0.4')                // outputs number 0.4
    *     math.config({number: 'Fraction'})
-   *     math.eval('0.4')                    // outputs Fraction 2/5
+   *     math.evaluate('0.4')                // outputs Fraction 2/5
    *
    * @param {Object} [options] Available options:
    *                            {number} epsilon
@@ -42,31 +51,40 @@ function factory (type, config, load, typed, math) {
    */
   function _config (options) {
     if (options) {
-      const prev = object.map(config, object.clone)
+      const prev = mapObject(config, clone)
 
       // validate some of the options
-      validateOption(options, 'matrix', MATRIX)
-      validateOption(options, 'number', NUMBER)
+      validateOption(options, 'matrix', MATRIX_OPTIONS)
+      validateOption(options, 'number', NUMBER_OPTIONS)
 
       // merge options
-      object.deepExtend(config, options)
+      deepExtend(config, options)
 
-      const curr = object.map(config, object.clone)
+      const curr = mapObject(config, clone)
 
-      const changes = object.map(options, object.clone)
+      const changes = mapObject(options, clone)
 
       // emit 'config' event
-      math.emit('config', curr, prev, changes)
+      emit('config', curr, prev, changes)
 
       return curr
     } else {
-      return object.map(config, object.clone)
+      return mapObject(config, clone)
     }
   }
 
   // attach the valid options to the function so they can be extended
-  _config.MATRIX = MATRIX
-  _config.NUMBER = NUMBER
+  _config.MATRIX_OPTIONS = MATRIX_OPTIONS
+  _config.NUMBER_OPTIONS = NUMBER_OPTIONS
+
+  // attach the config properties as readonly properties to the config function
+  Object.keys(DEFAULT_CONFIG).forEach(key => {
+    Object.defineProperty(_config, key, {
+      get: () => config[key],
+      enumerable: true,
+      configurable: true
+    })
+  })
 
   return _config
 }
@@ -116,7 +134,3 @@ function validateOption (options, name, values) {
     }
   }
 }
-
-exports.name = 'config'
-exports.math = true // request the math namespace as fifth argument
-exports.factory = factory

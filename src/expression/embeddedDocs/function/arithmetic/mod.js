@@ -1,4 +1,4 @@
-module.exports = {
+export const modDocs = {
   'name': 'mod',
   'category': 'Operators',
   'syntax': [

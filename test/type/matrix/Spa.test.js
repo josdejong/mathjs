@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const Spa = math.type.Spa
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+const Spa = math.Spa
 
 describe('Spa', function () {
   describe('constructor', function () {

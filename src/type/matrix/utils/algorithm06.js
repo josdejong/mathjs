@@ -1,13 +1,13 @@
 'use strict'
 
-const scatter = require('./../../../utils/collection/scatter')
-const DimensionError = require('../../../error/DimensionError')
+import { factory } from '../../../utils/factory'
+import { DimensionError } from '../../../error/DimensionError'
+import { scatter } from '../../../utils/collection'
 
-function factory (type, config, load, typed) {
-  const equalScalar = load(require('../../../function/relational/equalScalar'))
+const name = 'algorithm06'
+const dependencies = ['typed', 'equalScalar']
 
-  const SparseMatrix = type.SparseMatrix
-
+export const createAlgorithm06 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
    * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij).
    * Callback function invoked (Anz U Bnz) times, where Anz and Bnz are the nonzero elements in both matrices.
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
    */
-  const algorithm06 = function (a, b, callback) {
+  return function algorithm06 (a, b, callback) {
     // sparse matrix arrays
     const avalues = a._values
     const asize = a._size
@@ -72,7 +72,7 @@ function factory (type, config, load, typed) {
     const cindex = []
     const cptr = []
     // matrix
-    const c = new SparseMatrix({
+    const c = a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -148,9 +148,4 @@ function factory (type, config, load, typed) {
     // return sparse matrix
     return c
   }
-
-  return algorithm06
-}
-
-exports.name = 'algorithm06'
-exports.factory = factory
+})

@@ -1,7 +1,5 @@
 'use strict'
-module.exports = [
-  require('./bellNumbers'),
-  require('./composition'),
-  require('./stirlingS2'),
-  require('./catalan')
-]
+
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
+
+deprecatedIndexFileError(__filename)

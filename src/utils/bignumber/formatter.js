@@ -1,6 +1,6 @@
 'use strict'
 
-const objectUtils = require('../object')
+import { mapObject } from '../object'
 
 /**
  * Convert a BigNumber to a formatted string representation.
@@ -69,7 +69,7 @@ const objectUtils = require('../object')
  * @param {Object | Function | number} [options]
  * @return {string} str The formatted value
  */
-exports.format = function (value, options) {
+export function format (value, options) {
   if (typeof options === 'function') {
     // handle format(value, fn)
     return options(value)
@@ -101,16 +101,19 @@ exports.format = function (value, options) {
   // handle the various notations
   switch (notation) {
     case 'fixed':
-      return exports.toFixed(value, precision)
+      return toFixed(value, precision)
 
     case 'exponential':
-      return exports.toExponential(value, precision)
+      return toExponential(value, precision)
+
+    case 'engineering':
+      return toEngineering(value, precision)
 
     case 'auto':
       // TODO: clean up some day. Deprecated since: 2018-01-24
       // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
       if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
-        const fixedOptions = objectUtils.map(options, function (x) { return x })
+        const fixedOptions = mapObject(options, function (x) { return x })
         fixedOptions.exponential = undefined
         if (options.exponential.lower !== undefined) {
           fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10)
@@ -125,7 +128,7 @@ exports.format = function (value, options) {
             '(minimum and maximum exponent) since version 4.0.0. ' +
             'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions))
 
-        return exports.format(value, fixedOptions)
+        return format(value, fixedOptions)
       }
 
       // determine lower and upper bound for exponential notation.
@@ -138,13 +141,14 @@ exports.format = function (value, options) {
 
       // determine whether or not to output exponential notation
       let str
-      const exp = value.e
+      const rounded = value.toSignificantDigits(precision)
+      const exp = rounded.e
       if (exp >= lowerExp && exp < upperExp) {
         // normal number notation
-        str = value.toSignificantDigits(precision).toFixed()
+        str = rounded.toFixed()
       } else {
         // exponential notation
-        str = exports.toExponential(value, precision)
+        str = toExponential(value, precision)
       }
 
       // remove trailing zeros after the decimal point
@@ -161,6 +165,27 @@ exports.format = function (value, options) {
 }
 
 /**
+ * Format a BigNumber in engineering notation. Like '1.23e+6', '2.3e+0', '3.500e-3'
+ * @param {BigNumber | string} value
+ * @param {number} [precision]        Optional number of significant figures to return.
+ */
+export function toEngineering (value, precision) {
+  // find nearest lower multiple of 3 for exponent
+  const e = value.e
+  const newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))
+
+  // find difference in exponents, and calculate the value without exponent
+  const valueWithoutExp = value.mul(Math.pow(10, -newExp))
+
+  let valueStr = valueWithoutExp.toPrecision(precision)
+  if (valueStr.indexOf('e') !== -1) {
+    valueStr = valueWithoutExp.toString()
+  }
+
+  return valueStr + 'e' + (e >= 0 ? '+' : '') + newExp.toString()
+}
+
+/**
  * Format a number in exponential notation. Like '1.23e+5', '2.3e+0', '3.500e-3'
  * @param {BigNumber} value
  * @param {number} [precision]  Number of digits in formatted output.
@@ -168,7 +193,7 @@ exports.format = function (value, options) {
  *                              is used.
  * @returns {string} str
  */
-exports.toExponential = function (value, precision) {
+export function toExponential (value, precision) {
   if (precision !== undefined) {
     return value.toExponential(precision - 1) // Note the offset of one
   } else {
@@ -182,6 +207,6 @@ exports.toExponential = function (value, precision) {
  * @param {number} [precision=undefined] Optional number of decimals after the
  *                                       decimal point. Undefined by default.
  */
-exports.toFixed = function (value, precision) {
+export function toFixed (value, precision) {
   return value.toFixed(precision)
 }

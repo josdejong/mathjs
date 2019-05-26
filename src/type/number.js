@@ -1,8 +1,12 @@
 'use strict'
 
-const deepMap = require('./../utils/collection/deepMap')
+import { factory } from '../utils/factory'
+import { deepMap } from '../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'number'
+const dependencies = ['typed']
+
+export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Create a number or convert a string, boolean, or unit to a number.
    * When value is a matrix, all elements will be converted to number.
@@ -71,14 +75,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  number.toTex = {
-    0: `0`,
-    1: `\\left(\${args[0]}\\right)`,
-    2: `\\left(\\left(\${args[0]}\\right)\${args[1]}\\right)`
-  }
-
   return number
-}
-
-exports.name = 'number'
-exports.factory = factory
+})

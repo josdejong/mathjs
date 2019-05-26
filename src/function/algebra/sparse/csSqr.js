@@ -1,11 +1,22 @@
 'use strict'
 
-function factory (type, config, load) {
-  const csAmd = load(require('./csAmd'))
-  const csPermute = load(require('./csPermute'))
-  const csEtree = load(require('./csEtree'))
-  const csPost = load(require('./csPost'))
-  const csCounts = load(require('./csCounts'))
+import { csPermute } from './csPermute'
+import { csPost } from './csPost'
+import { csEtree } from './csEtree'
+import { createCsAmd } from './csAmd'
+import { createCsCounts } from './csCounts'
+import { factory } from '../../../utils/factory'
+
+const name = 'csSqr'
+const dependencies = [
+  'add',
+  'multiply',
+  'transpose'
+]
+
+export const createCsSqr = /* #__PURE__ */ factory(name, dependencies, ({ add, multiply, transpose }) => {
+  const csAmd = createCsAmd({ add, multiply, transpose })
+  const csCounts = createCsCounts({ transpose })
 
   /**
    * Symbolic ordering and analysis for QR and LU decompositions.
@@ -19,7 +30,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const csSqr = function (order, a, qr) {
+  return function csSqr (order, a, qr) {
     // a arrays
     const aptr = a._ptr
     const asize = a._size
@@ -143,10 +154,4 @@ function factory (type, config, load) {
     }
     return true
   }
-
-  return csSqr
-}
-
-exports.name = 'csSqr'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+})

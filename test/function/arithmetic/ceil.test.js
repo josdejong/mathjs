@@ -1,13 +1,9 @@
 // test ceil
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
-const bignumber = math.bignumber
-const complex = math.complex
-const fraction = math.fraction
-const matrix = math.matrix
-const unit = math.unit
-const ceil = math.ceil
+import assert from 'assert'
+
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
+const { bignumber, ceil, complex, fraction, i, isFraction, matrix, pi, unit, parse } = math
 
 describe('ceil', function () {
   it('should return the ceil of a boolean', function () {
@@ -26,7 +22,7 @@ describe('ceil', function () {
     approx.equal(ceil(-1.8), -1)
     approx.equal(ceil(-2), -2)
     approx.equal(ceil(-2.1), -2)
-    approx.equal(ceil(math.pi), 4)
+    approx.equal(ceil(pi), 4)
   })
 
   it('should return the ceil of a big number', function () {
@@ -45,13 +41,13 @@ describe('ceil', function () {
   it('should return the ceil of real and imag part of a complex', function () {
     approx.deepEqual(ceil(complex(0, 0)), complex(0, 0))
     approx.deepEqual(ceil(complex(1.3, 1.8)), complex(2, 2))
-    approx.deepEqual(ceil(math.i), complex(0, 1))
+    approx.deepEqual(ceil(i), complex(0, 1))
     approx.deepEqual(ceil(complex(-1.3, -1.8)), complex(-1, -1))
   })
 
-  it('should return the ceil of a number', function () {
+  it('should return the ceil of a fraction', function () {
     const a = fraction('2/3')
-    assert(ceil(a) instanceof math.type.Fraction)
+    assert(isFraction(ceil(a)))
     assert.strictEqual(a.toString(), '0.(6)')
 
     assert.strictEqual(ceil(fraction(0)).toString(), '0')
@@ -64,6 +60,28 @@ describe('ceil', function () {
     assert.strictEqual(ceil(fraction(-1.8)).toString(), '-1')
     assert.strictEqual(ceil(fraction(-2)).toString(), '-2')
     assert.strictEqual(ceil(fraction(-2.1)).toString(), '-2')
+  })
+
+  it('should gracefully handle round-off errors', function () {
+    assert.strictEqual(ceil(3.0000000000000004), 3)
+    assert.strictEqual(ceil(7.999999999999999), 8)
+    assert.strictEqual(ceil(-3.0000000000000004), -3)
+    assert.strictEqual(ceil(-7.999999999999999), -8)
+    assert.strictEqual(ceil(30000.000000000004), 30000)
+    assert.strictEqual(ceil(799999.9999999999), 800000)
+    assert.strictEqual(ceil(-30000.000000000004), -30000)
+    assert.strictEqual(ceil(-799999.9999999999), -800000)
+  })
+
+  it('should gracefully handle round-off errors with bignumbers', function () {
+    assert.deepStrictEqual(ceil(bignumber(3.0000000000000004)), bignumber(3))
+    assert.deepStrictEqual(ceil(bignumber(7.999999999999999)), bignumber(8))
+    assert.deepStrictEqual(ceil(bignumber(-3.0000000000000004)), bignumber(-3))
+    assert.deepStrictEqual(ceil(bignumber(-7.999999999999999)), bignumber(-8))
+    assert.deepStrictEqual(ceil(bignumber(30000.000000000004)), bignumber(30000))
+    assert.deepStrictEqual(ceil(bignumber(799999.9999999999)), bignumber(800000))
+    assert.deepStrictEqual(ceil(bignumber(-30000.000000000004)), bignumber(-30000))
+    assert.deepStrictEqual(ceil(bignumber(-799999.9999999999)), bignumber(-800000))
   })
 
   it('should throw an error for units', function () {
@@ -89,7 +107,7 @@ describe('ceil', function () {
   })
 
   it('should LaTeX ceil', function () {
-    const expression = math.parse('ceil(0.5)')
+    const expression = parse('ceil(0.5)')
     assert.strictEqual(expression.toTex(), '\\left\\lceil0.5\\right\\rceil')
   })
 })

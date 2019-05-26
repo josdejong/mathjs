@@ -1,10 +1,13 @@
 'use strict'
 
-const array = require('../../utils/array')
+import { arraySize } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { noMatrix } from '../../utils/noop'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'size'
+const dependencies = ['typed', 'config', '?matrix']
 
+export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix }) => {
   /**
    * Calculate the size of a matrix or scalar.
    *
@@ -28,13 +31,12 @@ function factory (type, config, load, typed) {
    * @param {boolean | number | Complex | Unit | string | Array | Matrix} x  A matrix
    * @return {Array | Matrix} A vector with size of `x`.
    */
-  const size = typed('size', {
+  return typed(name, {
     'Matrix': function (x) {
-      // TODO: return the same matrix type as the input
-      return matrix(x.size())
+      return x.create(x.size())
     },
 
-    'Array': array.size,
+    'Array': arraySize,
 
     'string': function (x) {
       return (config.matrix === 'Array') ? [x.length] : matrix([x.length])
@@ -42,14 +44,9 @@ function factory (type, config, load, typed) {
 
     'number | Complex | BigNumber | Unit | boolean | null': function (x) {
       // scalar
-      return (config.matrix === 'Array') ? [] : matrix([])
+      return (config.matrix === 'Array')
+        ? []
+        : matrix ? matrix([]) : noMatrix()
     }
   })
-
-  size.toTex = undefined // use default template
-
-  return size
-}
-
-exports.name = 'size'
-exports.factory = factory
+})

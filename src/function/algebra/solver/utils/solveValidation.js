@@ -1,15 +1,10 @@
 'use strict'
 
-const util = require('../../../../utils/index')
+import { isArray, isDenseMatrix, isMatrix } from '../../../../utils/is'
+import { arraySize } from '../../../../utils/array'
+import { format } from '../../../../utils/string'
 
-const string = util.string
-const array = util.array
-
-const isArray = Array.isArray
-
-function factory (type) {
-  const DenseMatrix = type.DenseMatrix
-
+export function createSolveValidation ({ DenseMatrix }) {
   /**
    * Validates matrix and column vector b for backward/forward substitution algorithms.
    *
@@ -19,20 +14,20 @@ function factory (type) {
    *
    * @return {DenseMatrix}        Dense column vector b
    */
-  const solveValidation = function (m, b, copy) {
+  return function solveValidation (m, b, copy) {
     // matrix size
     const size = m.size()
     // validate matrix dimensions
-    if (size.length !== 2) { throw new RangeError('Matrix must be two dimensional (size: ' + string.format(size) + ')') }
+    if (size.length !== 2) { throw new RangeError('Matrix must be two dimensional (size: ' + format(size) + ')') }
     // rows & columns
     const rows = size[0]
     const columns = size[1]
     // validate rows & columns
-    if (rows !== columns) { throw new RangeError('Matrix must be square (size: ' + string.format(size) + ')') }
+    if (rows !== columns) { throw new RangeError('Matrix must be square (size: ' + format(size) + ')') }
     // vars
     let data, i, bdata
     // check b is matrix
-    if (type.isMatrix(b)) {
+    if (isMatrix(b)) {
       // matrix size
       const msize = b.size()
       // vector
@@ -60,7 +55,7 @@ function factory (type) {
         // array must be a column vector
         if (msize[0] !== rows || msize[1] !== 1) { throw new RangeError('Dimension mismatch. Matrix columns must match vector length.') }
         // check matrix type
-        if (type.isDenseMatrix(b)) {
+        if (isDenseMatrix(b)) {
           // check a copy is needed
           if (copy) {
             // create data array
@@ -109,7 +104,7 @@ function factory (type) {
     // check b is array
     if (isArray(b)) {
       // size
-      const asize = array.size(b)
+      const asize = arraySize(b)
       // check matrix dimensions, vector
       if (asize.length === 1) {
         // check vector length
@@ -147,8 +142,4 @@ function factory (type) {
       throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
     }
   }
-
-  return solveValidation
 }
-
-exports.factory = factory

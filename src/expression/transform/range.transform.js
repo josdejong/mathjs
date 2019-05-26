@@ -1,14 +1,20 @@
 'use strict'
 
-/**
- * Attach a transform function to math.range
- * Adds a property transform containing the transform function.
- *
- * This transform creates a range which includes the end value
- */
-function factory (type, config, load, typed) {
-  const range = load(require('../../function/matrix/range'))
+import { factory } from '../../utils/factory'
+import { createRange } from '../../function/matrix/range'
 
+const name = 'range'
+const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq']
+
+export const createRangeTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq }) => {
+  const range = createRange({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq })
+
+  /**
+   * Attach a transform function to math.range
+   * Adds a property transform containing the transform function.
+   *
+   * This transform creates a range which includes the end value
+   */
   return typed('range', {
     '...any': function (args) {
       const lastIndex = args.length - 1
@@ -21,8 +27,4 @@ function factory (type, config, load, typed) {
       return range.apply(null, args)
     }
   })
-}
-
-exports.name = 'range'
-exports.path = 'expression.transform'
-exports.factory = factory
+}, { isTransformFunction: true })

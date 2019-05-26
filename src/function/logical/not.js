@@ -1,10 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { deepMap } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { notNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'not'
+const dependencies = ['typed']
 
+export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Logical `not`. Flips boolean value of a given parameter.
    * For matrices, the function is evaluated element wise.
@@ -30,10 +33,8 @@ function factory (type, config, load, typed) {
    * @return {boolean | Array | Matrix}
    *            Returns true when input is a zero or empty value.
    */
-  const not = typed('not', {
-    'number': function (x) {
-      return !x
-    },
+  const not = typed(name, {
+    'number': notNumber,
 
     'Complex': function (x) {
       return x.re === 0 && x.im === 0
@@ -52,12 +53,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  not.toTex = {
-    1: latex.operators['not'] + `\\left(\${args[0]}\\right)`
-  }
-
   return not
-}
-
-exports.name = 'not'
-exports.factory = factory
+})

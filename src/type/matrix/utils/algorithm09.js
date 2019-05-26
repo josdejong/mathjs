@@ -1,12 +1,12 @@
 'use strict'
 
-const DimensionError = require('../../../error/DimensionError')
+import { factory } from '../../../utils/factory'
+import { DimensionError } from '../../../error/DimensionError'
 
-function factory (type, config, load, typed) {
-  const equalScalar = load(require('../../../function/relational/equalScalar'))
+const name = 'algorithm09'
+const dependencies = ['typed', 'equalScalar']
 
-  const SparseMatrix = type.SparseMatrix
-
+export const createAlgorithm09 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
    * Iterates over SparseMatrix A and invokes the callback function f(Aij, Bij).
    * Callback function invoked NZA times, number of nonzero elements in A.
@@ -25,7 +25,7 @@ function factory (type, config, load, typed) {
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
    */
-  const algorithm09 = function (a, b, callback) {
+  return function algorithm09 (a, b, callback) {
     // sparse matrix arrays
     const avalues = a._values
     const aindex = a._index
@@ -75,7 +75,7 @@ function factory (type, config, load, typed) {
     const cindex = []
     const cptr = []
     // matrix
-    const c = new SparseMatrix({
+    const c = a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -137,9 +137,4 @@ function factory (type, config, load, typed) {
     // return sparse matrix
     return c
   }
-
-  return algorithm09
-}
-
-exports.name = 'algorithm09'
-exports.factory = factory
+})

@@ -1,6 +1,7 @@
 // test simplify
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 
 describe('simplify', function () {
   function simplifyAndCompare (left, right, rules, scope, opt) {
@@ -36,7 +37,7 @@ describe('simplify', function () {
 
   function simplifyAndCompareEval (left, right, scope) {
     scope = scope || {}
-    assert.strictEqual(math.simplify(left).eval(scope), math.parse(right).eval(scope))
+    assert.strictEqual(math.simplify(left).evaluate(scope), math.parse(right).evaluate(scope))
   }
 
   it('should not change the value of the function', function () {
@@ -80,13 +81,12 @@ describe('simplify', function () {
   })
 
   it('should handle function assignments', function () {
-    const node = math.expression.node
-    const f = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
+    const f = new math.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
     assert.strictEqual(f.toString(), 'sigma(x) = 1 / (1 + exp(-x))')
-    assert.strictEqual(f.eval()(5), 0.9933071490757153)
+    assert.strictEqual(f.evaluate()(5), 0.9933071490757153)
     const fsimplified = math.simplify.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), 'sigma(x) = 1 / (1 + exp(-x))')
-    assert.strictEqual(fsimplified.eval()(5), 0.9933071490757153)
+    assert.strictEqual(fsimplified.evaluate()(5), 0.9933071490757153)
   })
 
   it('simplifyCore should handle different node types', function () {
@@ -142,24 +142,22 @@ describe('simplify', function () {
 
   it('should handle custom functions', function () {
     function doubleIt (x) { return x + x }
-    const node = math.expression.node
-    const f = new node.FunctionNode(new node.SymbolNode('doubleIt'), [new node.SymbolNode('value')])
+    const f = new math.FunctionNode(new math.SymbolNode('doubleIt'), [new math.SymbolNode('value')])
     assert.strictEqual(f.toString(), 'doubleIt(value)')
-    assert.strictEqual(f.eval({ doubleIt: doubleIt, value: 4 }), 8)
+    assert.strictEqual(f.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
     const fsimplified = math.simplify.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), 'doubleIt(value)')
-    assert.strictEqual(fsimplified.eval({ doubleIt: doubleIt, value: 4 }), 8)
+    assert.strictEqual(fsimplified.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
   })
 
   it('should handle immediately invoked function assignments', function () {
-    const node = math.expression.node
-    const s = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
-    const f = new node.FunctionNode(s, [new node.SymbolNode('x')])
+    const s = new math.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
+    const f = new math.FunctionNode(s, [new math.SymbolNode('x')])
     assert.strictEqual(f.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)')
-    assert.strictEqual(f.eval({ x: 5 }), 0.9933071490757153)
+    assert.strictEqual(f.evaluate({ x: 5 }), 0.9933071490757153)
     const fsimplified = math.simplify.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)')
-    assert.strictEqual(fsimplified.eval({ x: 5 }), 0.9933071490757153)
+    assert.strictEqual(fsimplified.evaluate({ x: 5 }), 0.9933071490757153)
   })
 
   it('should simplify (n- -n1)', function () {
@@ -177,11 +175,11 @@ describe('simplify', function () {
 
   it('should preserve the value of BigNumbers', function () {
     const bigmath = math.create({ number: 'BigNumber', precision: 64 })
-    assert.deepStrictEqual(bigmath.simplify('111111111111111111 + 111111111111111111').eval(), bigmath.eval('222222222222222222'))
-    assert.deepStrictEqual(bigmath.simplify('1 + 111111111111111111').eval(), bigmath.eval('111111111111111112'))
-    assert.deepStrictEqual(bigmath.simplify('1/2 + 11111111111111111111').eval(), bigmath.eval('11111111111111111111.5'))
-    assert.deepStrictEqual(bigmath.simplify('1/3 + 11111111111111111111').eval(), bigmath.eval('11111111111111111111.33333333333333333333333333333333333333333333'))
-    assert.deepStrictEqual(bigmath.simplify('3 + 1 / 11111111111111111111').eval(), bigmath.eval('3 + 1 / 11111111111111111111'))
+    assert.deepStrictEqual(bigmath.simplify('111111111111111111 + 111111111111111111').evaluate(), bigmath.evaluate('222222222222222222'))
+    assert.deepStrictEqual(bigmath.simplify('1 + 111111111111111111').evaluate(), bigmath.evaluate('111111111111111112'))
+    assert.deepStrictEqual(bigmath.simplify('1/2 + 11111111111111111111').evaluate(), bigmath.evaluate('11111111111111111111.5'))
+    assert.deepStrictEqual(bigmath.simplify('1/3 + 11111111111111111111').evaluate(), bigmath.evaluate('11111111111111111111.33333333333333333333333333333333333333333333'))
+    assert.deepStrictEqual(bigmath.simplify('3 + 1 / 11111111111111111111').evaluate(), bigmath.evaluate('3 + 1 / 11111111111111111111'))
   })
 
   it('should not change the value of numbers when converting to fractions (1)', function () {
@@ -282,10 +280,6 @@ describe('simplify', function () {
     // note that NaN is a special case, we can't compare two values both NaN.
   })
 
-  it('should throw an error for invalid built-in constant symbols in rules', function () {
-    assert.throws(function () { math.simplify('version', ['version -> 1']).toString() })
-  })
-
   it('should remove addition of 0', function () {
     simplifyAndCompare('x+0', 'x')
     simplifyAndCompare('x-0', 'x')
@@ -331,27 +325,27 @@ describe('simplify', function () {
 
   describe('expression parser', function () {
     it('should evaluate simplify containing string value', function () {
-      const res = math.eval('simplify("2x + 3x")')
+      const res = math.evaluate('simplify("2x + 3x")')
       assert.ok(res && res.isNode)
       assert.strictEqual(res.toString(), '5 * x')
     })
 
     it('should evaluate simplify containing nodes', function () {
-      const res = math.eval('simplify(parse("2x + 3x"))')
+      const res = math.evaluate('simplify(parse("2x + 3x"))')
       assert.ok(res && res.isNode)
       assert.strictEqual(res.toString(), '5 * x')
     })
 
     it('should compute and simplify derivatives', function () {
-      const res = math.eval('derivative("5x*3x", "x")')
+      const res = math.evaluate('derivative("5x*3x", "x")')
       assert.ok(res && res.isNode)
       assert.strictEqual(res.toString(), '30 * x')
     })
 
     it('should compute and simplify derivatives (2)', function () {
       let scope = {}
-      math.eval('a = derivative("5x*3x", "x")', scope)
-      const res = math.eval('simplify(a)', scope)
+      math.evaluate('a = derivative("5x*3x", "x")', scope)
+      const res = math.evaluate('simplify(a)', scope)
       assert.ok(res && res.isNode)
       assert.strictEqual(res.toString(), '30 * x')
     })
@@ -359,7 +353,7 @@ describe('simplify', function () {
     it.skip('should compute and simplify derivatives (3)', function () {
       // TODO: this requires the + operator to support Nodes,
       //       i.e.   math.add(5, math.parse('2')) => return an OperatorNode
-      const res = math.eval('simplify(5+derivative(5/(3x), x))')
+      const res = math.evaluate('simplify(5+derivative(5/(3x), x))')
       assert.ok(res && res.isNode)
       assert.strictEqual(res.toString(), '5 - 15 / (3 * x) ^ 2')
     })

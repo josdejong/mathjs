@@ -1,4 +1,4 @@
-module.exports = {
+export const partitionSelectDocs = {
   'name': 'partitionSelect',
   'category': 'Matrix',
   'syntax': [

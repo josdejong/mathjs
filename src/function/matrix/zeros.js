@@ -1,11 +1,14 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const resize = require('../../utils/array').resize
+import { isBigNumber } from '../../utils/is'
+import { isInteger } from '../../utils/number'
+import { resize } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'zeros'
+const dependencies = ['typed', 'config', 'matrix', 'BigNumber']
 
+export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber }) => {
   /**
    * Create a matrix filled with zeros. The created matrix can have one or
    * multiple dimensions.
@@ -37,7 +40,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Array | Matrix}           A matrix filled with zeros
    */
-  const zeros = typed('zeros', {
+  return typed(name, {
     '': function () {
       return (config.matrix === 'Array')
         ? _zeros([])
@@ -70,10 +73,6 @@ function factory (type, config, load, typed) {
     }
   })
 
-  zeros.toTex = undefined // use default template
-
-  return zeros
-
   /**
    * Create an Array or Matrix with zeros
    * @param {Array} size
@@ -83,7 +82,7 @@ function factory (type, config, load, typed) {
    */
   function _zeros (size, format) {
     const hasBigNumbers = _normalize(size)
-    const defaultValue = hasBigNumbers ? new type.BigNumber(0) : 0
+    const defaultValue = hasBigNumbers ? new BigNumber(0) : 0
     _validate(size)
 
     if (format) {
@@ -107,7 +106,7 @@ function factory (type, config, load, typed) {
   function _normalize (size) {
     let hasBigNumbers = false
     size.forEach(function (value, index, arr) {
-      if (type.isBigNumber(value)) {
+      if (isBigNumber(value)) {
         hasBigNumbers = true
         arr[index] = value.toNumber()
       }
@@ -123,9 +122,6 @@ function factory (type, config, load, typed) {
       }
     })
   }
-}
+})
 
 // TODO: zeros contains almost the same code as ones. Reuse this?
-
-exports.name = 'zeros'
-exports.factory = factory

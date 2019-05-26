@@ -1,4 +1,4 @@
-module.exports = {
+export const atanhDocs = {
   'name': 'atanh',
   'category': 'Trigonometry',
   'syntax': [

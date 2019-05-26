@@ -1,4 +1,4 @@
-module.exports = {
+export const orDocs = {
   'name': 'or',
   'category': 'Logical',
   'syntax': [

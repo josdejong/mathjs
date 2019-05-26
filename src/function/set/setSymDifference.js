@@ -1,14 +1,12 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
-  const concat = load(require('../matrix/concat'))
-  const size = load(require('../matrix/size'))
-  const subset = load(require('../matrix/subset'))
-  const setDifference = load(require('../set/setDifference'))
+const name = 'setSymDifference'
+const dependencies = ['typed', 'size', 'concat', 'subset', 'setDifference', 'Index']
 
+export const createSetSymDifference = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, concat, subset, setDifference, Index }) => {
   /**
    * Create the symmetric difference of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -30,11 +28,11 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a2  A (multi)set
    * @return {Array | Matrix}    The symmetric difference of two (multi)sets
    */
-  const setSymDifference = typed('setSymDifference', {
+  return typed(name, {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
-      if (subset(size(a1), new MatrixIndex(0)) === 0) { // if any of them is empty, return the other one
+      if (subset(size(a1), new Index(0)) === 0) { // if any of them is empty, return the other one
         return flatten(a2)
-      } else if (subset(size(a2), new MatrixIndex(0)) === 0) {
+      } else if (subset(size(a2), new Index(0)) === 0) {
         return flatten(a1)
       }
       const b1 = flatten(a1)
@@ -42,9 +40,4 @@ function factory (type, config, load, typed) {
       return concat(setDifference(b1, b2), setDifference(b2, b1))
     }
   })
-
-  return setSymDifference
-}
-
-exports.name = 'setSymDifference'
-exports.factory = factory
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const bignumberDocs = {
   'name': 'bignumber',
   'category': 'Construction',
   'syntax': [

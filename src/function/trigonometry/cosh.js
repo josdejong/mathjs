@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { cosh as coshNumber } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+const name = 'cosh'
+const dependencies = ['typed']
+
+export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the hyperbolic cosine of a value,
    * defined as `cosh(x) = 1/2 * (exp(x) + exp(-x))`.
@@ -24,8 +29,8 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic cosine of x
    */
-  const cosh = typed('cosh', {
-    'number': _cosh,
+  const cosh = typed(name, {
+    'number': coshNumber,
 
     'Complex': function (x) {
       return x.cosh()
@@ -36,7 +41,7 @@ function factory (type, config, load, typed) {
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cosh is no angle')
       }
       return cosh(x.value)
@@ -47,20 +52,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  cosh.toTex = { 1: `\\cosh\\left(\${args[0]}\\right)` }
-
   return cosh
-}
-
-/**
- * Calculate the hyperbolic cosine of a number
- * @param {number} x
- * @returns {number}
- * @private
- */
-const _cosh = Math.cosh || function (x) {
-  return (Math.exp(x) + Math.exp(-x)) / 2
-}
-
-exports.name = 'cosh'
-exports.factory = factory
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const acosDocs = {
   'name': 'acos',
   'category': 'Trigonometry',
   'syntax': [

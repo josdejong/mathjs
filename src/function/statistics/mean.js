@@ -1,15 +1,14 @@
 'use strict'
 
-const size = require('../../utils/array').size
-const deepForEach = require('../../utils/collection/deepForEach')
-const reduce = require('../../utils/collection/reduce')
-const containsCollections = require('../../utils/collection/containsCollections')
+import { containsCollections, deepForEach, reduce } from '../../utils/collection'
+import { arraySize } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
-function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/add'))
-  const divide = load(require('../arithmetic/divide'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'mean'
+const dependencies = ['typed', 'add', 'divide']
 
+export const createMean = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide }) => {
   /**
    * Compute the mean value of matrix or a list with values.
    * In case of a multi dimensional array, the mean of the flattened array
@@ -32,12 +31,12 @@ function factory (type, config, load, typed) {
    *
    * See also:
    *
-   *     median, min, max, sum, prod, std, var
+   *     median, min, max, sum, prod, std, variance
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The mean of all values
    */
-  const mean = typed('mean', {
+  return typed(name, {
     // mean([a, b, c, d, ...])
     'Array | Matrix': _mean,
 
@@ -54,10 +53,6 @@ function factory (type, config, load, typed) {
     }
   })
 
-  mean.toTex = undefined // use default template
-
-  return mean
-
   /**
    * Calculate the mean value in an n-dimensional array, returning a
    * n-1 dimensional array
@@ -69,7 +64,7 @@ function factory (type, config, load, typed) {
   function _nmeanDim (array, dim) {
     try {
       const sum = reduce(array, dim, add)
-      const s = Array.isArray(array) ? size(array) : array.size()
+      const s = Array.isArray(array) ? arraySize(array) : array.size()
       return divide(sum, s[dim])
     } catch (err) {
       throw improveErrorMessage(err, 'mean')
@@ -101,7 +96,4 @@ function factory (type, config, load, typed) {
 
     return divide(sum, num)
   }
-}
-
-exports.name = 'mean'
-exports.factory = factory
+})

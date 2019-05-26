@@ -1,25 +1,30 @@
 'use strict'
 
-const nearlyEqual = require('../../utils/number').nearlyEqual
-const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
+import { nearlyEqual } from '../../utils/number'
+import { factory } from '../../utils/factory'
+import { complexEquals } from '../../utils/complex'
 
-function factory (type, config, load, typed) {
+const name = 'equalScalar'
+const dependencies = ['typed', 'config']
+
+export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed, config }) => {
   /**
-   * Test whether two values are equal.
+   * Test whether two scalar values are nearly equal.
    *
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit} x   First value to compare
    * @param  {number | BigNumber | Fraction | boolean | Complex} y          Second value to compare
    * @return {boolean}                                                  Returns true when the compared values are equal, else returns false
    * @private
    */
-  const equalScalar = typed('equalScalar', {
+  const equalScalar = typed(name, {
 
     'boolean, boolean': function (x, y) {
       return x === y
     },
 
     'number, number': function (x, y) {
-      return x === y || nearlyEqual(x, y, config.epsilon)
+      return nearlyEqual(x, y, config.epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
@@ -31,7 +36,7 @@ function factory (type, config, load, typed) {
     },
 
     'Complex, Complex': function (x, y) {
-      return x.equals(y)
+      return complexEquals(x, y, config.epsilon)
     },
 
     'Unit, Unit': function (x, y) {
@@ -43,6 +48,12 @@ function factory (type, config, load, typed) {
   })
 
   return equalScalar
-}
+})
 
-exports.factory = factory
+export const createEqualScalarNumber = factory(name, ['typed', 'config'], ({ typed, config }) => {
+  return typed(name, {
+    'number, number': function (x, y) {
+      return nearlyEqual(x, y, config.epsilon)
+    }
+  })
+})

@@ -1,9 +1,10 @@
 // test derivative
-const assert = require('assert')
-const math = require('../../../src/main')
-const OperatorNode = math.expression.node.OperatorNode
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const OperatorNode = math.OperatorNode
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
 const derivative = math.derivative
 
 describe('derivative', function () {
@@ -186,7 +187,7 @@ describe('derivative', function () {
     compareString(derivativeWithoutSimplify('x^2 + x*y + y^2', 'x'), '2 * 1 * x ^ (2 - 1) + y * 1 + 0')
   })
 
-  it('should function properly even without being called within an eval', function () {
+  it('should function properly even without being called within an evaluate', function () {
     const f = math.parse('2x^3')
 
     // 2*3*1*x^(3-1) = 6x^2
@@ -203,14 +204,14 @@ describe('derivative', function () {
 
   describe('expression parser', function () {
     it('should evaluate a derivative containing string value', function () {
-      const res = math.eval('derivative("x^2", "x")')
+      const res = math.evaluate('derivative("x^2", "x")')
       assert.ok(res && res.isNode)
 
       assert.strictEqual(res.toString(), '2 * x')
     })
 
     it('should evaluate a derivative containing nodes', function () {
-      const res = math.eval('derivative(parse("x^2"), parse("x"))')
+      const res = math.evaluate('derivative(parse("x^2"), parse("x"))')
       assert.ok(res && res.isNode)
 
       assert.strictEqual(res.toString(), '2 * x')
@@ -257,11 +258,11 @@ describe('derivative', function () {
 
     assert.throws(function () {
       derivative('[1, 2; 3, 4]', 'x')
-    }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode or FunctionAssignmentNode, actual: ArrayNode, index: 1\)/)
+    }, /TypeError: Unexpected type of argument in function constTag \(expected: ConstantNode or FunctionNode or FunctionAssignmentNode or OperatorNode or ParenthesisNode or SymbolNode, actual: ArrayNode, index: 1\)/)
 
     assert.throws(function () {
       derivative('x + [1, 2; 3, 4]', 'x')
-    }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode or FunctionAssignmentNode, actual: ArrayNode, index: 1\)/)
+    }, /TypeError: Unexpected type of argument in function constTag \(expected: ConstantNode or FunctionNode or FunctionAssignmentNode or OperatorNode or ParenthesisNode or SymbolNode, actual: ArrayNode, index: 1\)/)
   })
 
   it('should throw error if incorrect number of arguments', function () {
@@ -279,5 +280,8 @@ describe('derivative', function () {
     compareString(math.parse('derivative("x*y",x)').toTex(), '{d\\over dx}\\left[x * y\\right]')
     compareString(math.parse('derivative(x*y,"x")').toTex(), '{d\\over dx}\\left[x * y\\right]')
     compareString(math.parse('derivative("x*y","x")').toTex(), '{d\\over dx}\\left[x * y\\right]')
+
+    // FIXME: handle toTex of derivative with options as third argument
+    // compareString(math.parse('derivative("x*y","x", { simplify: false })').toTex(), '{d\\over dx}\\left[x * y\\right]')
   })
 })

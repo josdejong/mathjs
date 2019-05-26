@@ -1,5 +1,5 @@
-const assert = require('assert')
-const DimensionError = require('../../src/error/DimensionError')
+import assert from 'assert'
+import { DimensionError } from '../../src/error/DimensionError'
 
 describe('DimensionError', function () {
   it('should construct a DimensionError with numbers', function () {

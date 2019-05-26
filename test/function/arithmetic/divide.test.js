@@ -1,7 +1,8 @@
 // test divide
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const divide = math.divide
 const bignumber = math.bignumber
 const complex = math.complex
@@ -157,7 +158,7 @@ describe('divide', function () {
     assert.strictEqual(divide(math.unit('day'), bignumber(81)).format({ precision: 50 }), '0.012345679012345679012345679012345679012345679012346 day')
     assert.strictEqual(divide(math.unit('1 day'), bignumber(81)).format({ precision: 50 }), '0.012345679012345679012345679012345679012345679012346 day')
 
-    assert.strictEqual(math.create({ number: 'BigNumber' }).eval('round(80 / day * 5 days, 30)').toString(), '400')
+    assert.strictEqual(math.create({ number: 'BigNumber' }).evaluate('round(80 / day * 5 days, 30)').toString(), '400')
   })
 
   it('should divide each elements in a matrix by a number', function () {

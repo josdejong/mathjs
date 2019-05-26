@@ -1,11 +1,16 @@
 'use strict'
 
-const deepMap = require('../../../utils/collection/deepMap')
+import { factory } from '../../../utils/factory'
+import { deepMap } from '../../../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'unit'
+const dependencies = ['typed', 'Unit']
+
+// This function is named createUnitFunction to prevent a naming conflict with createUnit
+export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
   /**
    * Create a unit. Depending on the passed arguments, the function
-   * will create and return a new math.type.Unit object.
+   * will create and return a new math.Unit object.
    * When a matrix is provided, all elements will be converted to units.
    *
    * Syntax:
@@ -27,21 +32,21 @@ function factory (type, config, load, typed) {
    * @return {Unit | Array | Matrix}    The created unit
    */
 
-  const unit = typed('unit', {
+  const unit = typed(name, {
     'Unit': function (x) {
       return x.clone()
     },
 
     'string': function (x) {
-      if (type.Unit.isValuelessUnit(x)) {
-        return new type.Unit(null, x) // a pure unit
+      if (Unit.isValuelessUnit(x)) {
+        return new Unit(null, x) // a pure unit
       }
 
-      return type.Unit.parse(x, { allowNoUnits: true }) // a unit with value, like '5cm'
+      return Unit.parse(x, { allowNoUnits: true }) // a unit with value, like '5cm'
     },
 
     'number | BigNumber | Fraction | Complex, string': function (value, unit) {
-      return new type.Unit(value, unit)
+      return new Unit(value, unit)
     },
 
     'Array | Matrix': function (x) {
@@ -49,13 +54,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  unit.toTex = {
-    1: `\\left(\${args[0]}\\right)`,
-    2: `\\left(\\left(\${args[0]}\\right)\${args[1]}\\right)`
-  }
-
   return unit
-}
-
-exports.name = 'unit'
-exports.factory = factory
+})

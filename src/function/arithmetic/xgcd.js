@@ -1,10 +1,12 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
+import { factory } from '../../utils/factory'
+import { xgcdNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'xgcd'
+const dependencies = ['typed', 'config', 'matrix', 'BigNumber']
 
+export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber }) => {
   /**
    * Calculate the extended greatest common divisor for two values.
    * See https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
@@ -28,61 +30,17 @@ function factory (type, config, load, typed) {
    * @return {Array}              Returns an array containing 3 integers `[div, m, n]`
    *                              where `div = gcd(a, b)` and `a*m + b*n = div`
    */
-  const xgcd = typed('xgcd', {
-    'number, number': _xgcd,
+  return typed(name, {
+    'number, number': function (a, b) {
+      const res = xgcdNumber(a, b)
+
+      return (config.matrix === 'Array')
+        ? res
+        : matrix(res)
+    },
     'BigNumber, BigNumber': _xgcdBigNumber
     // TODO: implement support for Fraction
   })
-
-  xgcd.toTex = undefined // use default template
-
-  return xgcd
-
-  /**
-   * Calculate xgcd for two numbers
-   * @param {number} a
-   * @param {number} b
-   * @return {number} result
-   * @private
-   */
-  function _xgcd (a, b) {
-    // source: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-    let t // used to swap two variables
-    let q // quotient
-    let r // remainder
-    let x = 0
-    let lastx = 1
-    let y = 1
-    let lasty = 0
-
-    if (!isInteger(a) || !isInteger(b)) {
-      throw new Error('Parameters in function xgcd must be integer numbers')
-    }
-
-    while (b) {
-      q = Math.floor(a / b)
-      r = a - q * b
-
-      t = x
-      x = lastx - q * x
-      lastx = t
-
-      t = y
-      y = lasty - q * y
-      lasty = t
-
-      a = b
-      b = r
-    }
-
-    let res
-    if (a < 0) {
-      res = [-a, -lastx, -lasty]
-    } else {
-      res = [a, a ? lastx : 0, lasty]
-    }
-    return (config.matrix === 'Array') ? res : matrix(res)
-  }
 
   /**
    * Calculate xgcd for two BigNumbers
@@ -102,8 +60,8 @@ function factory (type, config, load, typed) {
     let // remainder
       r
 
-    const zero = new type.BigNumber(0)
-    const one = new type.BigNumber(1)
+    const zero = new BigNumber(0)
+    const one = new BigNumber(1)
     let x = zero
     let lastx = one
     let y = one
@@ -137,7 +95,4 @@ function factory (type, config, load, typed) {
     }
     return (config.matrix === 'Array') ? res : matrix(res)
   }
-}
-
-exports.name = 'xgcd'
-exports.factory = factory
+})

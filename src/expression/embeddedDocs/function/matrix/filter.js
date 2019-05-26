@@ -1,4 +1,4 @@
-module.exports = {
+export const filterDocs = {
   'name': 'filter',
   'category': 'Matrix',
   'syntax': [

@@ -1,8 +1,5 @@
 'use strict'
-module.exports = [
-  // type
-  require('./Fraction'),
 
-  // construction function
-  require('./function/fraction')
-]
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
+
+deprecatedIndexFileError(__filename)

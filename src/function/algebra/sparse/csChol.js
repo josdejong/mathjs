@@ -1,20 +1,38 @@
 'use strict'
 
-function factory (type, config, load) {
-  const divideScalar = load(require('../../arithmetic/divideScalar'))
-  const sqrt = load(require('../../arithmetic/sqrt'))
-  const subtract = load(require('../../arithmetic/subtract'))
-  const multiply = load(require('../../arithmetic/multiply'))
-  const im = load(require('../../complex/im'))
-  const re = load(require('../../complex/re'))
-  const conj = load(require('../../complex/conj'))
-  const equal = load(require('../../relational/equal'))
-  const smallerEq = load(require('../../relational/smallerEq'))
+import { factory } from '../../../utils/factory'
+import { csEreach } from './csEreach'
+import { createCsSymperm } from './csSymperm'
 
-  const csSymperm = load(require('./csSymperm'))
-  const csEreach = load(require('./csEreach'))
+const name = 'csChol'
+const dependencies = [
+  'divideScalar',
+  'sqrt',
+  'subtract',
+  'multiply',
+  'im',
+  're',
+  'conj',
+  'equal',
+  'smallerEq',
+  'SparseMatrix'
+]
 
-  const SparseMatrix = type.SparseMatrix
+export const createCsChol = /* #__PURE__ */ factory(name, dependencies, (
+  {
+    divideScalar,
+    sqrt,
+    subtract,
+    multiply,
+    im,
+    re,
+    conj,
+    equal,
+    smallerEq,
+    SparseMatrix
+  }
+) => {
+  const csSymperm = createCsSymperm({ conj, SparseMatrix })
 
   /**
    * Computes the Cholesky factorization of matrix A. It computes L and P so
@@ -27,7 +45,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const csChol = function (m, s) {
+  return function csChol (m, s) {
     // validate input
     if (!m) { return null }
     // m arrays
@@ -142,10 +160,4 @@ function factory (type, config, load) {
       P: P
     }
   }
-
-  return csChol
-}
-
-exports.name = 'csChol'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+})

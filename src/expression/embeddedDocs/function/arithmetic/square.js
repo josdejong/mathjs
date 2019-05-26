@@ -1,4 +1,4 @@
-module.exports = {
+export const squareDocs = {
   'name': 'square',
   'category': 'Arithmetic',
   'syntax': [

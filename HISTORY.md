@@ -1,8 +1,176 @@
 # History
 
-# not yet released, version 5.7.0
+# 2019-05-21, version 6.0.0-beta.2
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+### Most notable changes
+
+1.  Full support for **ES6 modules**. Support for tree-shaking out of the box.
+
+    Load all functions:
+
+    ```js
+    import * as math from 'mathjs'
+    ```
+
+    Use a few functions:
+
+    ```js
+    import { add, multiply } from 'mathjs'
+    ```
+
+    Load all functions with custom configuration:
+
+    ```js
+    import { create, all } from 'mathjs'
+    const config = { number: 'BigNumber' }
+    const math = create(all, config)
+    ```
+
+    Load a few functions with custom configuration:
+
+    ```js
+    import { create, addDependencies, multiplyDependencies } from 'mathjs'
+    const config = { number: 'BigNumber' }
+    const { add, multiply } = create({
+      addDependencies,
+      multiplyDependencies
+    }, config)
+    ```
+
+2.  Support for **lightweight, number-only** implementations of all functions:
+
+    ```
+    import { add, multiply } from 'mathjs/number'
+    ```
+
+3.  New **dependency injection** solution used under the hood.
+
+
+### Breaking changes
+
+- Node 6 is no longer supported.
+
+- Functions `config` and `import` are not available anymore in the global
+  context:
+
+  ```js
+  // v5
+  import * as mathjs from 'mathjs'
+  mathjs.config(...) // error in v6.0.0
+  mathjs.import(...) // error in v6.0.0
+  ```
+
+  Instead, create your own mathjs instance and pass config and imports
+  there:
+
+  ```js
+  // v6
+  import { create, all } from 'mathjs'
+  const config = { number: 'BigNumber' }
+  const mathjs = create(all, config)
+  mathjs.import(...)
+  ```
+
+- Renamed function `typeof` to `typeOf`, `var` to `variance`,
+  and `eval` to `evaluate`. (the old function names are reserved keywords
+  which can not be used as a variable name).
+- Deprecated the `Matrix.storage` function. Use `math.matrix` instead to create
+  a matrix.
+- Deprecated function `math.expression.parse`, use `math.parse` instead.
+  Was used before for example to customize supported characters by replacing
+  `math.parse.isAlpha`.
+- Moved all classes like `math.type.Unit` and `math.expression.Parser` to
+  `math.Unit` and `math.Parser` respectively.
+- Fixed #1428: transform iterating over replaced nodes. New behavior
+  is that it stops iterating when a node is replaced.
+- Dropped support for renaming factory functions when importing them.
+- Dropped fake BigNumber support of function `erf`.
+- Removed all index.js files used to load specific functions instead of all, like:
+- Updated the values of all physical units to their latest official values.
+  See #1529. Thanks @ericman314.
+
+  ```
+  // v5
+  // ... set up empty instance of mathjs, then load a set of functions:
+  math.import(require('mathjs/lib/function/arithmetic'))
+  ```
+
+  Individual functions are now loaded simply like:
+
+  ```js
+  // v6
+  import { add, multiply } from 'mathjs'
+  ```
+
+  To set a specific configuration on the functions:
+
+  ```js
+  // v6
+  import { create, addDependencies, multiplyDependencies } from 'mathjs'
+  const config = { number: 'BigNumber' }
+  const math = create({ addDependencies, multiplyDependencies }, config)
+  ```
+
+  See example `advanced/custom_loading.js`.
+
+### Non breaking changes
+
+- Implemented units `t`, `tonne`, `bel`, `decibel`, `dB`, and prefixes
+  for `candela`. Thanks @mcvladthegoat.
+- Fixed `epsilon` setting being applied globally to Complex numbers.
+- Fix `math.simplify('add(2, 3)')` throwing an error.
+- Fix #1530: number formatting first applied `lowerExp` and `upperExp`
+  and after that rounded the value instead of the other way around.
+
+
+# 2019-05-18, version 5.10.3
+
+- Fixed dependency `del` being a dependency instead of devDependency.
+
+
+# 2019-05-18, version 5.10.2
+
+- Fix #1515, #1516, #1517: broken package due to a naming conflict in
+  the build folder of a util file `typeOf.js` and `typeof.js`.
+  Solved by properly cleaning all build folders before building.
+
+
+# 2019-05-17, version 5.10.1
+
+- Fix #1512: format using notation `engineering` can give wrong results
+  when the value has less significant digits than the number of digits in
+  the output.
+
+
+# 2019-05-08, version 5.10.0
+
+- Fix `lib/header.js` not having filled in date and version. Thanks @kevjin.
+- Upgraded dependency `decimal.js@10.2.0`, fixing an issue on node.js 12.
+
+
+# 2019-04-08, version 5.9.0
+
+- Implemented functions `row` and `column` (see #1413). Thanks @SzechuanSage.
+- Fixed #1459: `engineering` notation of function `format` not available
+  for `BigNumber`.
+- Fixed #1465: `node.toHTML()` not correct for unary operators like
+  `factorial`.
+
+
+# 2019-03-20, version 5.8.0
+
+- Implemented new function `apply`. Thanks @bnlcas.
+- Implemented passing an optional `dimension` argument to `std` and `var`.
+  Thanks @bnlcas.
+
+
+# 2019-03-10, version 5.7.0
 
 - Implemented support for `pow()` in `derivative`. Thanks @sam-19.
+- Gracefully handle round-off errors in fix, ceil, floor, and range
+  (Fixes #1429, see also #1434, #1432). Thanks @ericman314.
 
 
 # 2019-03-02, version 5.6.0

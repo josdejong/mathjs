@@ -1,7 +1,8 @@
 // test usolve
-const assert = require('assert')
-const approx = require('../../../../tools/approx')
-const math = require('../../../../src/main')
+import assert from 'assert'
+
+import approx from '../../../../tools/approx'
+import math from '../../../../src/bundleAny'
 
 describe('usolve', function () {
   it('should solve linear system 4 x 4, arrays', function () {
@@ -50,7 +51,7 @@ describe('usolve', function () {
 
     const x = math.usolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[-1], [-1], [-1], [4]]))
   })
 
@@ -66,7 +67,7 @@ describe('usolve', function () {
 
     const x = math.usolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[-1], [-1], [-1], [4]]))
   })
 
@@ -87,7 +88,7 @@ describe('usolve', function () {
 
     const x = math.usolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[-1], [-1], [-1], [4]]))
   })
 
@@ -108,7 +109,7 @@ describe('usolve', function () {
 
     const x = math.usolve(m, b)
 
-    assert(x instanceof math.type.Matrix)
+    assert(x instanceof math.Matrix)
     approx.deepEqual(x, math.matrix([[-1], [-1], [-1], [4]]))
   })
 

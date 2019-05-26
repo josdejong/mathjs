@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const pi = math.pi
 const asec = math.asec
 const sec = math.sec
@@ -47,13 +47,15 @@ describe('asec', function () {
     assert.deepStrictEqual(arg2, Big(-1))
 
     // Hit Newton's method case
-    bigmath.config({ precision: 64 })
-    const arg = Big('3.00000001')
-    assert.deepStrictEqual(asecBig(Big(3)), bigmath.bignumber('1.230959417340774682134929178247987375710340009355094839055548334'))
-    // wolfram:                  asec(3) = 1.2309594173407746821349291782479873757103400093550948390555483336639923144782560878532516201708609211389442794492
-    assert.deepStrictEqual(asecBig(arg), Big('1.230959418519285979938614206185297709155969929825366328254265441'))
-    // wolfram:                         1.2309594185192859799386142061852977091559699298253663282542654408321080017053701257305273449373991752616248450522
-    assert.deepStrictEqual(arg, Big(3.00000001))
+    const bigmath64 = bigmath.create({ number: 'BigNumber', precision: 64 })
+    const arg = bigmath64.bignumber('3.00000001')
+    assert.deepStrictEqual(bigmath64.asec(bigmath64.bignumber(3)),
+      bigmath64.bignumber('1.230959417340774682134929178247987375710340009355094839055548334'))
+    // wolfram:  asec(3) = 1.2309594173407746821349291782479873757103400093550948390555483336639923144782560878532516201708609211389442794492
+    assert.deepStrictEqual(bigmath64.asec(arg),
+      bigmath64.bignumber('1.230959418519285979938614206185297709155969929825366328254265441'))
+    // wolfram:            1.2309594185192859799386142061852977091559699298253663282542654408321080017053701257305273449373991752616248450522
+    assert.deepStrictEqual(arg, bigmath64.bignumber(3.00000001))
 
     // out of range
     assert.ok(asec(Big(0.5)).isNaN())

@@ -1,4 +1,4 @@
-module.exports = {
+export const phiDocs = {
   'name': 'phi',
   'category': 'Constants',
   'syntax': [

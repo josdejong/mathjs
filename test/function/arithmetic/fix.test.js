@@ -1,7 +1,8 @@
 // test fix
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const complex = math.complex
 const fraction = math.fraction
@@ -52,7 +53,7 @@ describe('fix', function () {
 
   it('should round fractions correctly', function () {
     const a = fraction('2/3')
-    assert(fix(a) instanceof math.type.Fraction)
+    assert(fix(a) instanceof math.Fraction)
     assert.strictEqual(a.toString(), '0.(6)')
 
     assert.strictEqual(fix(fraction(0)).toString(), '0')
@@ -65,6 +66,28 @@ describe('fix', function () {
     assert.strictEqual(fix(fraction(-1.8)).toString(), '-1')
     assert.strictEqual(fix(fraction(-2)).toString(), '-2')
     assert.strictEqual(fix(fraction(-2.1)).toString(), '-2')
+  })
+
+  it('should gracefully handle round-off errors', function () {
+    assert.strictEqual(fix(3.0000000000000004), 3)
+    assert.strictEqual(fix(7.999999999999999), 8)
+    assert.strictEqual(fix(-3.0000000000000004), -3)
+    assert.strictEqual(fix(-7.999999999999999), -8)
+    assert.strictEqual(fix(30000.000000000004), 30000)
+    assert.strictEqual(fix(799999.9999999999), 800000)
+    assert.strictEqual(fix(-30000.000000000004), -30000)
+    assert.strictEqual(fix(-799999.9999999999), -800000)
+  })
+
+  it('should gracefully handle round-off errors with bignumbers', function () {
+    assert.deepStrictEqual(fix(bignumber(3.0000000000000004)), bignumber(3))
+    assert.deepStrictEqual(fix(bignumber(7.999999999999999)), bignumber(8))
+    assert.deepStrictEqual(fix(bignumber(-3.0000000000000004)), bignumber(-3))
+    assert.deepStrictEqual(fix(bignumber(-7.999999999999999)), bignumber(-8))
+    assert.deepStrictEqual(fix(bignumber(30000.000000000004)), bignumber(30000))
+    assert.deepStrictEqual(fix(bignumber(799999.9999999999)), bignumber(800000))
+    assert.deepStrictEqual(fix(bignumber(-30000.000000000004)), bignumber(-30000))
+    assert.deepStrictEqual(fix(bignumber(-799999.9999999999)), bignumber(-800000))
   })
 
   it('should throw an error on unit as parameter', function () {

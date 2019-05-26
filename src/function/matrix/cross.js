@@ -1,12 +1,12 @@
 'use strict'
 
-const array = require('../../utils/array')
+import { arraySize, squeeze } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const multiply = load(require('../arithmetic/multiply'))
+const name = 'cross'
+const dependencies = ['typed', 'matrix', 'subtract', 'multiply']
 
+export const createCross = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract, multiply }) => {
   /**
    * Calculate the cross product for two vectors in three dimensional space.
    * The cross product of `A = [a1, a2, a3]` and `B = [b1, b2, b3]` is defined
@@ -40,7 +40,7 @@ function factory (type, config, load, typed) {
    * @param  {Array | Matrix} y   Second vector
    * @return {Array | Matrix}     Returns the cross product of `x` and `y`
    */
-  const cross = typed('cross', {
+  return typed(name, {
     'Matrix, Matrix': function (x, y) {
       return matrix(_cross(x.toArray(), y.toArray()))
     },
@@ -56,12 +56,6 @@ function factory (type, config, load, typed) {
     'Array, Array': _cross
   })
 
-  cross.toTex = {
-    2: `\\left(\${args[0]}\\right)\\times\\left(\${args[1]}\\right)`
-  }
-
-  return cross
-
   /**
    * Calculate the cross product for two arrays
    * @param {Array} x  First vector
@@ -70,13 +64,13 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _cross (x, y) {
-    const highestDimension = Math.max(array.size(x).length, array.size(y).length)
+    const highestDimension = Math.max(arraySize(x).length, arraySize(y).length)
 
-    x = array.squeeze(x)
-    y = array.squeeze(y)
+    x = squeeze(x)
+    y = squeeze(y)
 
-    const xSize = array.size(x)
-    const ySize = array.size(y)
+    const xSize = arraySize(x)
+    const ySize = arraySize(y)
 
     if (xSize.length !== 1 || ySize.length !== 1 || xSize[0] !== 3 || ySize[0] !== 3) {
       throw new RangeError('Vectors with length 3 expected ' +
@@ -95,7 +89,4 @@ function factory (type, config, load, typed) {
       return product
     }
   }
-}
-
-exports.name = 'cross'
-exports.factory = factory
+})

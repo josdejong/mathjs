@@ -1,8 +1,12 @@
 'use strict'
 
-const deepMap = require('../../../utils/collection/deepMap')
+import { factory } from '../../../utils/factory'
+import { deepMap } from '../../../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'bignumber'
+const dependencies = ['typed', 'BigNumber']
+
+export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Create a BigNumber, which can store numbers with arbitrary precision.
    * When a matrix is provided, all elements will be converted to BigNumber.
@@ -30,16 +34,16 @@ function factory (type, config, load, typed) {
    */
   const bignumber = typed('bignumber', {
     '': function () {
-      return new type.BigNumber(0)
+      return new BigNumber(0)
     },
 
     'number': function (x) {
       // convert to string to prevent errors in case of >15 digits
-      return new type.BigNumber(x + '')
+      return new BigNumber(x + '')
     },
 
     'string': function (x) {
-      return new type.BigNumber(x)
+      return new BigNumber(x)
     },
 
     'BigNumber': function (x) {
@@ -48,11 +52,11 @@ function factory (type, config, load, typed) {
     },
 
     'Fraction': function (x) {
-      return new type.BigNumber(x.n).div(x.d).times(x.s)
+      return new BigNumber(x.n).div(x.d).times(x.s)
     },
 
     'null': function (x) {
-      return new type.BigNumber(0)
+      return new BigNumber(0)
     },
 
     'Array | Matrix': function (x) {
@@ -60,13 +64,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  bignumber.toTex = {
-    0: '0',
-    1: `\\left(\${args[0]}\\right)`
-  }
-
   return bignumber
-}
-
-exports.name = 'bignumber'
-exports.factory = factory
+})

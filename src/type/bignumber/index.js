@@ -1,8 +1,5 @@
 'use strict'
-module.exports = [
-  // type
-  require('./BigNumber'),
 
-  // construction function
-  require('./function/bignumber')
-]
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
+
+deprecatedIndexFileError(__filename)

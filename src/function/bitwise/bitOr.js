@@ -1,18 +1,28 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const bigBitOr = require('../../utils/bignumber/bitOr')
+import { bitOrBigNumber } from '../../utils/bignumber/bitwise'
+import { factory } from '../../utils/factory'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
+import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04'
+import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
+import { bitOrNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'bitOr'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'DenseMatrix'
+]
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-
-  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  const algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
-  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
+  const algorithm01 = createAlgorithm01({ typed })
+  const algorithm04 = createAlgorithm04({ typed, equalScalar })
+  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Bitwise OR two values, `x | y`.
@@ -37,17 +47,11 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array | Matrix} y Second value to or
    * @return {number | BigNumber | Array | Matrix} OR of `x` and `y`
    */
-  const bitOr = typed('bitOr', {
+  const bitOr = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function bitOr')
-      }
+    'number, number': bitOrNumber,
 
-      return x | y
-    },
-
-    'BigNumber, BigNumber': bigBitOr,
+    'BigNumber, BigNumber': bitOrBigNumber,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       return algorithm04(x, y, bitOr)
@@ -107,12 +111,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  bitOr.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['bitOr']}\${args[1]}\\right)`
-  }
-
   return bitOr
-}
-
-exports.name = 'bitOr'
-exports.factory = factory
+})

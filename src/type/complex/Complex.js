@@ -1,9 +1,14 @@
 'use strict'
-const Complex = require('complex.js')
-const format = require('../../utils/number').format
-const isNumber = require('../../utils/number').isNumber
 
-function factory (type, config, load, typed, math) {
+import Complex from 'complex.js'
+import { format } from '../../utils/number'
+import { isNumber, isUnit } from '../../utils/is'
+import { factory } from '../../utils/factory'
+
+const name = 'Complex'
+const dependencies = []
+
+export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
    * Attach type information
    */
@@ -118,7 +123,7 @@ function factory (type, config, load, typed, math) {
         const r = arguments[0]
         let phi = arguments[1]
         if (isNumber(r)) {
-          if (type.isUnit(phi) && phi.hasBase('ANGLE')) {
+          if (isUnit(phi) && phi.hasBase('ANGLE')) {
             // convert unit to a number in radians
             phi = phi.toNumber('rad')
           }
@@ -151,16 +156,6 @@ function factory (type, config, load, typed, math) {
     return new Complex(json)
   }
 
-  // apply the current epsilon
-  Complex.EPSILON = config.epsilon
-
-  // listen for changed in the configuration, automatically apply changed epsilon
-  math.on('config', function (curr, prev) {
-    if (curr.epsilon !== prev.epsilon) {
-      Complex.EPSILON = curr.epsilon
-    }
-  })
-
   /**
    * Compare two complex numbers, `a` and `b`:
    *
@@ -187,9 +182,4 @@ function factory (type, config, load, typed, math) {
   }
 
   return Complex
-}
-
-exports.name = 'Complex'
-exports.path = 'type'
-exports.factory = factory
-exports.math = true // request access to the math namespace
+}, { isClass: true })

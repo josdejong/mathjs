@@ -1,4 +1,4 @@
-module.exports = {
+export const compareDocs = {
   'name': 'compare',
   'category': 'Relational',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const reDocs = {
   'name': 're',
   'category': 'Complex',
   'syntax': [

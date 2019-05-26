@@ -1,18 +1,27 @@
 'use strict'
 
-const nearlyEqual = require('../../utils/number').nearlyEqual
-const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
+import { factory } from '../../utils/factory'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'unequal'
+const dependencies = [
+  'typed',
+  'config',
+  'equalScalar',
+  'matrix',
+  'DenseMatrix'
+]
 
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
-  const latex = require('../../utils/latex')
+export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, equalScalar, matrix, DenseMatrix }) => {
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Test whether two values are unequal.
@@ -127,42 +136,23 @@ function factory (type, config, load, typed) {
     }
   })
 
-  let _unequal = typed('_unequal', {
-
-    'boolean, boolean': function (x, y) {
-      return x !== y
-    },
-
-    'number, number': function (x, y) {
-      return !nearlyEqual(x, y, config.epsilon)
-    },
-
-    'BigNumber, BigNumber': function (x, y) {
-      return !bigNearlyEqual(x, y, config.epsilon)
-    },
-
-    'Fraction, Fraction': function (x, y) {
-      return !x.equals(y)
-    },
-
-    'Complex, Complex': function (x, y) {
-      return !x.equals(y)
-    },
-
-    'Unit, Unit': function (x, y) {
-      if (!x.equalBase(y)) {
-        throw new Error('Cannot compare units with different base')
-      }
-      return unequal(x.value, y.value)
-    }
-  })
-
-  unequal.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['unequal']}\${args[1]}\\right)`
+  function _unequal (x, y) {
+    return !equalScalar(x, y)
   }
 
   return unequal
-}
+})
 
-exports.name = 'unequal'
-exports.factory = factory
+export const createUnequalNumber = factory(name, ['typed', 'equalScalar'], ({ typed, equalScalar }) => {
+  return typed(name, {
+    'any, any': function (x, y) {
+      // strict equality for null and undefined?
+      if (x === null) { return y !== null }
+      if (y === null) { return x !== null }
+      if (x === undefined) { return y !== undefined }
+      if (y === undefined) { return x !== undefined }
+
+      return !equalScalar(x, y)
+    }
+  })
+})

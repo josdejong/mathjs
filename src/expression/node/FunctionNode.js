@@ -1,16 +1,22 @@
 'use strict'
 
-const latex = require('../../utils/latex')
-const escape = require('../../utils/string').escape
-const hasOwnProperty = require('../../utils/object').hasOwnProperty
-const map = require('../../utils/array').map
-const validateSafeMethod = require('../../utils/customs').validateSafeMethod
-const getSafeProperty = require('../../utils/customs').getSafeProperty
+import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
 
-function factory (type, config, load, typed, math) {
-  const Node = load(require('./Node'))
-  const SymbolNode = load(require('./SymbolNode'))
+import { escape } from '../../utils/string'
+import { hasOwnProperty } from '../../utils/object'
+import { map } from '../../utils/array'
+import { getSafeProperty, validateSafeMethod } from '../../utils/customs'
+import { factory } from '../../utils/factory'
+import { defaultTemplate, latexFunctions } from '../../utils/latex'
 
+const name = 'FunctionNode'
+const dependencies = [
+  'math',
+  'Node',
+  'SymbolNode'
+]
+
+export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({ math, Node, SymbolNode }) => {
   /**
    * @constructor FunctionNode
    * @extends {./Node}
@@ -29,8 +35,8 @@ function factory (type, config, load, typed, math) {
     }
 
     // validate input
-    if (!type.isNode(fn)) throw new TypeError('Node expected as parameter "fn"')
-    if (!Array.isArray(args) || !args.every(type.isNode)) {
+    if (!isNode(fn)) throw new TypeError('Node expected as parameter "fn"')
+    if (!Array.isArray(args) || !args.every(isNode)) {
       throw new TypeError('Array containing Nodes expected for parameter "args"')
     }
 
@@ -83,7 +89,7 @@ function factory (type, config, load, typed, math) {
       return arg._compile(math, argNames)
     })
 
-    if (type.isSymbolNode(this.fn)) {
+    if (isSymbolNode(this.fn)) {
       // we can statically determine whether the function has an rawArgs property
       const name = this.fn.name
       const fn = name in math ? getSafeProperty(math, name) : undefined
@@ -117,8 +123,8 @@ function factory (type, config, load, typed, math) {
           }
         }
       }
-    } else if (type.isAccessorNode(this.fn) &&
-        type.isIndexNode(this.fn.index) && this.fn.index.isObjectProperty()) {
+    } else if (isAccessorNode(this.fn) &&
+        isIndexNode(this.fn.index) && this.fn.index.isObjectProperty()) {
       // execute the function with the right context: the object of the AccessorNode
 
       const evalObject = this.fn.object._compile(math, argNames)
@@ -231,7 +237,7 @@ function factory (type, config, load, typed, math) {
       return arg.toString(options)
     })
 
-    const fn = type.isFunctionAssignmentNode(this.fn)
+    const fn = isFunctionAssignmentNode(this.fn)
       ? ('(' + this.fn.toString(options) + ')')
       : this.fn.toString(options)
 
@@ -313,12 +319,12 @@ function factory (type, config, load, typed, math) {
               latex += property
               break
             case 'object':
-              if (type.isNode(property)) {
+              if (isNode(property)) {
                 latex += property.toTex(options)
               } else if (Array.isArray(property)) {
                 // make array of Nodes into comma separated list
                 latex += property.map(function (arg, index) {
-                  if (type.isNode(arg)) {
+                  if (isNode(arg)) {
                     return arg.toTex(options)
                   }
                   throw new TypeError('Template: ' + match[1] + '[' + index + '] is not a Node.')
@@ -331,7 +337,7 @@ function factory (type, config, load, typed, math) {
               throw new TypeError('Template: ' + match[1] + ' has to be a Node, String or array of Nodes')
           }
         } else { // with square brackets
-          if (type.isNode(property[match[2]] && property[match[2]])) {
+          if (isNode(property[match[2]] && property[match[2]])) {
             latex += property[match[2]].toTex(options)
           } else {
             throw new TypeError('Template: ' + match[1] + '[' + match[2] + '] is not a Node.')
@@ -386,7 +392,16 @@ function factory (type, config, load, typed, math) {
 
     let latexConverter
 
-    if (math[this.name] && ((typeof math[this.name].toTex === 'function') || (typeof math[this.name].toTex === 'object') || (typeof math[this.name].toTex === 'string'))) {
+    if (latexFunctions[this.name]) {
+      latexConverter = latexFunctions[this.name]
+    }
+
+    // toTex property on the function itself
+    if (math[this.name] &&
+      ((typeof math[this.name].toTex === 'function') ||
+        (typeof math[this.name].toTex === 'object') ||
+        (typeof math[this.name].toTex === 'string'))
+    ) {
       // .toTex is a callback function
       latexConverter = math[this.name].toTex
     }
@@ -414,7 +429,7 @@ function factory (type, config, load, typed, math) {
       return customToTex
     }
 
-    return expandTemplate(latex.defaultTemplate, this, options)
+    return expandTemplate(defaultTemplate, this, options)
   }
 
   /**
@@ -426,9 +441,4 @@ function factory (type, config, load, typed, math) {
   }
 
   return FunctionNode
-}
-
-exports.name = 'FunctionNode'
-exports.path = 'expression.node'
-exports.math = true // request access to the math namespace as 5th argument of the factory function
-exports.factory = factory
+}, { isClass: true, isNode: true })

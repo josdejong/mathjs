@@ -1,4 +1,4 @@
-module.exports = {
+export const setMultiplicityDocs = {
   'name': 'setMultiplicity',
   'category': 'Set',
   'syntax': [

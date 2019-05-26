@@ -1,14 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const divide = load(require('../arithmetic/divide'))
-  const sum = load(require('../statistics/sum'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const dotDivide = load(require('../arithmetic/dotDivide'))
-  const log = load(require('../arithmetic/log'))
-  const isNumeric = load(require('../utils/isNumeric'))
+import { factory } from '../../utils/factory'
 
+const name = 'kldivergence'
+const dependencies = ['typed', 'matrix', 'divide', 'sum', 'multiply', 'dotDivide', 'log', 'isNumeric']
+
+export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divide, sum, multiply, dotDivide, log, isNumeric }) => {
   /**
      * Calculate the Kullback-Leibler (KL) divergence  between two distributions
      *
@@ -25,7 +22,7 @@ function factory (type, config, load, typed) {
      * @param  {Array | Matrix} p    Second vector
      * @return {number}              Returns distance between q and p
      */
-  const kldivergence = typed('kldivergence', {
+  return typed(name, {
     'Array, Array': function (q, p) {
       return _kldiv(matrix(q), matrix(p))
     },
@@ -79,9 +76,4 @@ function factory (type, config, load, typed) {
       return Number.NaN
     }
   }
-
-  return kldivergence
-}
-
-exports.name = 'kldivergence'
-exports.factory = factory
+})

@@ -1,10 +1,10 @@
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
-const BigNumber = math.type.BigNumber
-const Complex = math.type.Complex
-const DenseMatrix = math.type.DenseMatrix
-const Unit = math.type.Unit
+import assert from 'assert'
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
+const BigNumber = math.BigNumber
+const Complex = math.Complex
+const DenseMatrix = math.DenseMatrix
+const Unit = math.Unit
 const median = math.median
 
 describe('median', function () {

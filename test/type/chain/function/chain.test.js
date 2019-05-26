@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../../src/main')
-const Chain = math.type.Chain
+import assert from 'assert'
+import math from '../../../../src/bundleAny'
+const Chain = math.Chain
 
 describe('chain', function () {
   it('should construct a chain', function () {

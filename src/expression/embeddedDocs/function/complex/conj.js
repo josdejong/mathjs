@@ -1,4 +1,4 @@
-module.exports = {
+export const conjDocs = {
   'name': 'conj',
   'category': 'Complex',
   'syntax': [

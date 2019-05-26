@@ -1,12 +1,23 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { isBigNumber, isComplex, isFraction } from '../../utils/is'
+import { deepMap } from '../../utils/collection'
+import { cbrtNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const unaryMinus = load(require('./unaryMinus'))
-  const isNegative = load(require('../utils/isNegative'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'cbrt'
+const dependencies = [
+  'config',
+  'typed',
+  'isNegative',
+  'unaryMinus',
+  'matrix',
+  'Complex',
+  'BigNumber',
+  'Fraction'
+]
 
+export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, isNegative, unaryMinus, matrix, Complex, BigNumber, Fraction }) => {
   /**
    * Calculate the cubic root of a value.
    *
@@ -46,8 +57,8 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Unit | Array | Matrix}
    *            Returns the cubic root of `x`
    */
-  const cbrt = typed('cbrt', {
-    'number': _cbrtNumber,
+  const cbrt = typed(name, {
+    'number': cbrtNumber,
     // note: signature 'number, boolean' is also supported,
     //       created by typed as it knows how to convert number to Complex
 
@@ -83,16 +94,13 @@ function factory (type, config, load, typed) {
     const abs = x.abs()
 
     // principal root:
-    const principal = new type.Complex(_cbrtNumber(abs), 0).mul(
-      new type.Complex(0, arg3).exp())
+    const principal = new Complex(cbrtNumber(abs), 0).mul(new Complex(0, arg3).exp())
 
     if (allRoots) {
       const all = [
         principal,
-        new type.Complex(_cbrtNumber(abs), 0).mul(
-          new type.Complex(0, arg3 + Math.PI * 2 / 3).exp()),
-        new type.Complex(_cbrtNumber(abs), 0).mul(
-          new type.Complex(0, arg3 - Math.PI * 2 / 3).exp())
+        new Complex(cbrtNumber(abs), 0).mul(new Complex(0, arg3 + Math.PI * 2 / 3).exp()),
+        new Complex(cbrtNumber(abs), 0).mul(new Complex(0, arg3 - Math.PI * 2 / 3).exp())
       ]
 
       return (config.matrix === 'Array') ? all : matrix(all)
@@ -108,7 +116,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _cbrtUnit (x) {
-    if (x.value && type.isComplex(x.value)) {
+    if (x.value && isComplex(x.value)) {
       let result = x.clone()
       result.value = 1.0
       result = result.pow(1.0 / 3) // Compute the units
@@ -122,10 +130,10 @@ function factory (type, config, load, typed) {
 
       // TODO: create a helper function for this
       let third
-      if (type.isBigNumber(x.value)) {
-        third = new type.BigNumber(1).div(3)
-      } else if (type.isFraction(x.value)) {
-        third = new type.Fraction(1, 3)
+      if (isBigNumber(x.value)) {
+        third = new BigNumber(1).div(3)
+      } else if (isFraction(x.value)) {
+        third = new Fraction(1, 3)
       } else {
         third = 1 / 3
       }
@@ -140,42 +148,5 @@ function factory (type, config, load, typed) {
     }
   }
 
-  cbrt.toTex = { 1: `\\sqrt[3]{\${args[0]}}` }
-
   return cbrt
-}
-
-/**
- * Calculate cbrt for a number
- *
- * Code from es6-shim.js:
- *   https://github.com/paulmillr/es6-shim/blob/master/es6-shim.js#L1564-L1577
- *
- * @param {number} x
- * @returns {number | Complex} Returns the cubic root of x
- * @private
- */
-const _cbrtNumber = Math.cbrt || function (x) {
-  if (x === 0) {
-    return x
-  }
-
-  const negate = x < 0
-  let result
-  if (negate) {
-    x = -x
-  }
-
-  if (isFinite(x)) {
-    result = Math.exp(Math.log(x) / 3)
-    // from https://en.wikipedia.org/wiki/Cube_root#Numerical_methods
-    result = (x / (result * result) + (2 * result)) / 3
-  } else {
-    result = x
-  }
-
-  return negate ? -result : result
-}
-
-exports.name = 'cbrt'
-exports.factory = factory
+})

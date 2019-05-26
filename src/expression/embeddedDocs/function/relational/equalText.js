@@ -1,4 +1,4 @@
-module.exports = {
+export const equalTextDocs = {
   'name': 'equalText',
   'category': 'Relational',
   'syntax': [

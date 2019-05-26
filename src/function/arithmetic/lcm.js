@@ -1,15 +1,26 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
+import { factory } from '../../utils/factory'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { lcmNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'lcm'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar'
+]
 
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm06 = createAlgorithm06({ typed, equalScalar })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Calculate the least common multiple for two or more values or arrays.
@@ -40,8 +51,8 @@ function factory (type, config, load, typed) {
    * @param {... number | BigNumber | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Array | Matrix}                           The least common multiple
    */
-  const lcm = typed('lcm', {
-    'number, number': _lcm,
+  const lcm = typed(name, {
+    'number, number': lcmNumber,
 
     'BigNumber, BigNumber': _lcmBigNumber,
 
@@ -116,8 +127,6 @@ function factory (type, config, load, typed) {
     }
   })
 
-  lcm.toTex = undefined // use default template
-
   return lcm
 
   /**
@@ -132,8 +141,11 @@ function factory (type, config, load, typed) {
       throw new Error('Parameters in function lcm must be integer numbers')
     }
 
-    if (a.isZero() || b.isZero()) {
-      return new type.BigNumber(0)
+    if (a.isZero()) {
+      return a
+    }
+    if (b.isZero()) {
+      return b
     }
 
     // https://en.wikipedia.org/wiki/Euclidean_algorithm
@@ -146,35 +158,4 @@ function factory (type, config, load, typed) {
     }
     return prod.div(a).abs()
   }
-}
-
-/**
- * Calculate lcm for two numbers
- * @param {number} a
- * @param {number} b
- * @returns {number} Returns the least common multiple of a and b
- * @private
- */
-function _lcm (a, b) {
-  if (!isInteger(a) || !isInteger(b)) {
-    throw new Error('Parameters in function lcm must be integer numbers')
-  }
-
-  if (a === 0 || b === 0) {
-    return 0
-  }
-
-  // https://en.wikipedia.org/wiki/Euclidean_algorithm
-  // evaluate lcm here inline to reduce overhead
-  let t
-  const prod = a * b
-  while (b !== 0) {
-    t = b
-    b = a % t
-    a = t
-  }
-  return Math.abs(prod / a)
-}
-
-exports.name = 'lcm'
-exports.factory = factory
+})

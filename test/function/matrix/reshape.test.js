@@ -1,6 +1,6 @@
-const assert = require('assert')
-const error = require('../../../src/error/index')
-const math = require('../../../src/main')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+import { DimensionError } from '../../../src/error/DimensionError'
 
 describe('reshape', function () {
   it('should reshape an array', function () {
@@ -50,10 +50,10 @@ describe('reshape', function () {
     assert.throws(function () { math.reshape([], ['no number']) }, /Cannot convert/)
     assert.throws(function () { math.reshape([], [2.3]) }, /Invalid size/)
 
-    assert.throws(function () { math.reshape([1, 2], []) }, error.DimensionError)
-    assert.throws(function () { math.reshape([1, 2], [0]) }, error.DimensionError)
-    assert.throws(function () { math.reshape([1, 2], [0, 0]) }, error.DimensionError)
-    assert.throws(function () { math.reshape([[1, 2]], [0]) }, error.DimensionError)
+    assert.throws(function () { math.reshape([1, 2], []) }, DimensionError)
+    assert.throws(function () { math.reshape([1, 2], [0]) }, DimensionError)
+    assert.throws(function () { math.reshape([1, 2], [0, 0]) }, DimensionError)
+    assert.throws(function () { math.reshape([[1, 2]], [0]) }, DimensionError)
     assert.doesNotThrow(function () { math.reshape([[1, 2]], [2, 1]) })
     assert.doesNotThrow(function () { math.reshape([[1, 2]], [2]) })
   })
@@ -89,13 +89,13 @@ describe('reshape', function () {
   })
 
   it('should throw on attempting to reshape an ImmutableDenseMatrix', function () {
-    const immutableMatrix = new math.type.ImmutableDenseMatrix([[1, 2], [3, 4]])
+    const immutableMatrix = new math.ImmutableDenseMatrix([[1, 2], [3, 4]])
     assert.throws(function () { math.reshape(immutableMatrix, [1, 4]) },
       /Cannot invoke reshape on an Immutable Matrix instance/)
   })
 
   it('should throw on attempting to reshape a Matrix (abstract type)', function () {
-    const matrix = new math.type.Matrix([[1, 2], [3, 4]])
+    const matrix = new math.Matrix([[1, 2], [3, 4]])
     assert.throws(function () { math.reshape(matrix, [1, 4]) },
       /Cannot invoke reshape on a Matrix interface/)
   })

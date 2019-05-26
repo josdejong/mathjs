@@ -5,7 +5,7 @@
 The core of math.js is the `math` namespace containing all functions and constants. There are three ways to do calculations in math.js:
 
 - Doing regular function calls like `math.add(math.sqrt(4), 2)`.
-- Evaluating expressions like `math.eval('sqrt(4) + 2')`
+- Evaluating expressions like `math.evaluate('sqrt(4) + 2')`
 - Chaining operations like `math.chain(4).sqrt().add(2)`.
 
 ## Configuration

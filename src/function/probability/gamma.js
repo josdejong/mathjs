@@ -1,12 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
-const isInteger = require('../../utils/number').isInteger
+import { deepMap } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { gammaG, gammaNumber, gammaP } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const multiply = load(require('../arithmetic/multiply'))
-  const pow = load(require('../arithmetic/pow'))
-  const product = require('./product')
+const name = 'gamma'
+const dependencies = ['typed', 'config', 'multiplyScalar', 'pow', 'BigNumber', 'Complex']
+
+export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, pow, BigNumber, Complex }) => {
   /**
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.
@@ -31,51 +32,9 @@ function factory (type, config, load, typed) {
    * @return {number | Array | Matrix}    The gamma of `n`
    */
 
-  const gamma = typed('gamma', {
+  const gamma = typed(name, {
 
-    'number': function (n) {
-      let t, x
-
-      if (isInteger(n)) {
-        if (n <= 0) {
-          return isFinite(n) ? Infinity : NaN
-        }
-
-        if (n > 171) {
-          return Infinity // Will overflow
-        }
-
-        return product(1, n - 1)
-      }
-
-      if (n < 0.5) {
-        return Math.PI / (Math.sin(Math.PI * n) * gamma(1 - n))
-      }
-
-      if (n >= 171.35) {
-        return Infinity // will overflow
-      }
-
-      if (n > 85.0) { // Extended Stirling Approx
-        const twoN = n * n
-        const threeN = twoN * n
-        const fourN = threeN * n
-        const fiveN = fourN * n
-        return Math.sqrt(2 * Math.PI / n) * Math.pow((n / Math.E), n) *
-            (1 + 1 / (12 * n) + 1 / (288 * twoN) - 139 / (51840 * threeN) -
-            571 / (2488320 * fourN) + 163879 / (209018880 * fiveN) +
-            5246819 / (75246796800 * fiveN * n))
-      }
-
-      --n
-      x = p[0]
-      for (let i = 1; i < p.length; ++i) {
-        x += p[i] / (n + i)
-      }
-
-      t = n + g + 0.5
-      return Math.sqrt(2 * Math.PI) * Math.pow(t, n + 0.5) * Math.exp(-t) * x
-    },
+    'number': gammaNumber,
 
     'Complex': function (n) {
       let t, x
@@ -84,22 +43,22 @@ function factory (type, config, load, typed) {
         return gamma(n.re)
       }
 
-      n = new type.Complex(n.re - 1, n.im)
-      x = new type.Complex(p[0], 0)
-      for (let i = 1; i < p.length; ++i) {
+      n = new Complex(n.re - 1, n.im)
+      x = new Complex(gammaP[0], 0)
+      for (let i = 1; i < gammaP.length; ++i) {
         const real = n.re + i // x += p[i]/(n+i)
         const den = real * real + n.im * n.im
         if (den !== 0) {
-          x.re += p[i] * real / den
-          x.im += -(p[i] * n.im) / den
+          x.re += gammaP[i] * real / den
+          x.im += -(gammaP[i] * n.im) / den
         } else {
-          x.re = p[i] < 0
+          x.re = gammaP[i] < 0
             ? -Infinity
             : Infinity
         }
       }
 
-      t = new type.Complex(n.re + g + 0.5, n.im)
+      t = new Complex(n.re + gammaG + 0.5, n.im)
       const twoPiSqrt = Math.sqrt(2 * Math.PI)
 
       n.re += 0.5
@@ -117,18 +76,18 @@ function factory (type, config, load, typed) {
       t.re = r * Math.cos(-t.im)
       t.im = r * Math.sin(-t.im)
 
-      return multiply(multiply(result, t), x)
+      return multiplyScalar(multiplyScalar(result, t), x)
     },
 
     'BigNumber': function (n) {
       if (n.isInteger()) {
         return (n.isNegative() || n.isZero())
-          ? new type.BigNumber(Infinity)
+          ? new BigNumber(Infinity)
           : bigFactorial(n.minus(1))
       }
 
       if (!n.isFinite()) {
-        return new type.BigNumber(n.isNegative() ? NaN : Infinity)
+        return new BigNumber(n.isNegative() ? NaN : Infinity)
       }
 
       throw new Error('Integer BigNumber expected')
@@ -147,11 +106,11 @@ function factory (type, config, load, typed) {
 
   function bigFactorial (n) {
     if (n.isZero()) {
-      return new type.BigNumber(1) // 0! is per definition 1
+      return new BigNumber(1) // 0! is per definition 1
     }
 
     const precision = config.precision + (Math.log(n.toNumber()) | 0)
-    const Big = type.BigNumber.clone({ precision: precision })
+    const Big = BigNumber.clone({ precision: precision })
 
     let res = new Big(n)
     let value = n.toNumber() - 1 // number
@@ -160,35 +119,8 @@ function factory (type, config, load, typed) {
       value--
     }
 
-    return new type.BigNumber(res.toPrecision(type.BigNumber.precision))
+    return new BigNumber(res.toPrecision(BigNumber.precision))
   }
 
-  gamma.toTex = { 1: `\\Gamma\\left(\${args[0]}\\right)` }
-
   return gamma
-}
-
-// TODO: comment on the variables g and p
-
-const g = 4.7421875
-
-const p = [
-  0.99999999999999709182,
-  57.156235665862923517,
-  -59.597960355475491248,
-  14.136097974741747174,
-  -0.49191381609762019978,
-  0.33994649984811888699e-4,
-  0.46523628927048575665e-4,
-  -0.98374475304879564677e-4,
-  0.15808870322491248884e-3,
-  -0.21026444172410488319e-3,
-  0.21743961811521264320e-3,
-  -0.16431810653676389022e-3,
-  0.84418223983852743293e-4,
-  -0.26190838401581408670e-4,
-  0.36899182659531622704e-5
-]
-
-exports.name = 'gamma'
-exports.factory = factory
+})

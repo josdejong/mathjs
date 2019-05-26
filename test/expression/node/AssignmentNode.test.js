@@ -1,14 +1,15 @@
 // test AssignmentNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const Node = math.expression.node.Node
-const AccessorNode = math.expression.node.AccessorNode
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const RangeNode = math.expression.node.RangeNode
-const AssignmentNode = math.expression.node.AssignmentNode
-const OperatorNode = math.expression.node.OperatorNode
-const IndexNode = math.expression.node.IndexNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
+const AccessorNode = math.AccessorNode
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const RangeNode = math.RangeNode
+const AssignmentNode = math.AssignmentNode
+const OperatorNode = math.OperatorNode
+const IndexNode = math.IndexNode
 
 describe('AssignmentNode', function () {
   it('should create an AssignmentNode', function () {
@@ -62,7 +63,7 @@ describe('AssignmentNode', function () {
     const expr = n.compile()
 
     let scope = {}
-    assert.strictEqual(expr.eval(scope), 3)
+    assert.strictEqual(expr.evaluate(scope), 3)
     assert.strictEqual(scope.b, 3)
   })
 
@@ -77,7 +78,7 @@ describe('AssignmentNode', function () {
     let scope = {
       a: {}
     }
-    assert.strictEqual(expr.eval(scope), 3)
+    assert.strictEqual(expr.evaluate(scope), 3)
     assert.deepStrictEqual(scope, { a: { b: 3 } })
   })
 
@@ -95,7 +96,7 @@ describe('AssignmentNode', function () {
         b: {}
       }
     }
-    assert.strictEqual(expr.eval(scope), 3)
+    assert.strictEqual(expr.evaluate(scope), 3)
     assert.deepStrictEqual(scope, { a: { b: { c: 3 } } })
   })
 
@@ -112,7 +113,7 @@ describe('AssignmentNode', function () {
     let scope = {
       a: [[0, 0], [0, 0]]
     }
-    assert.strictEqual(expr.eval(scope), 5)
+    assert.strictEqual(expr.evaluate(scope), 5)
     assert.deepStrictEqual(scope, {
       a: [[0, 0], [5, 0]]
     })
@@ -135,7 +136,7 @@ describe('AssignmentNode', function () {
       a: [[0, 0], [0, 0]],
       b: [5, 6]
     }
-    assert.deepStrictEqual(expr.eval(scope), [5, 6])
+    assert.deepStrictEqual(expr.evaluate(scope), [5, 6])
     assert.deepStrictEqual(scope, {
       a: [[0, 0], [5, 6]],
       b: [5, 6]
@@ -145,19 +146,19 @@ describe('AssignmentNode', function () {
   it('should compile an AssignmentNode with bignumber setting', function () {
     const bigmath = math.create({ number: 'BigNumber' })
 
-    const object = new bigmath.expression.node.SymbolNode('a')
-    const index = new bigmath.expression.node.IndexNode([
-      new bigmath.expression.node.ConstantNode(2),
-      new bigmath.expression.node.ConstantNode(1)
+    const object = new bigmath.SymbolNode('a')
+    const index = new bigmath.IndexNode([
+      new bigmath.ConstantNode(2),
+      new bigmath.ConstantNode(1)
     ])
-    const value = new bigmath.expression.node.ConstantNode(bigmath.bignumber(5))
-    const n = new bigmath.expression.node.AssignmentNode(object, index, value)
+    const value = new bigmath.ConstantNode(bigmath.bignumber(5))
+    const n = new bigmath.AssignmentNode(object, index, value)
     const expr = n.compile()
 
     let scope = {
       a: [[0, 0], [0, 0]]
     }
-    assert.deepStrictEqual(expr.eval(scope), bigmath.bignumber(5))
+    assert.deepStrictEqual(expr.evaluate(scope), bigmath.bignumber(5))
     assert.deepStrictEqual(scope, {
       a: [[0, 0], [bigmath.bignumber(5), 0]]
     })
@@ -173,7 +174,7 @@ describe('AssignmentNode', function () {
     let scope = {
       a: 42
     }
-    assert.throws(function () { expr.eval(scope) }, /Cannot apply index: unsupported type of object/)
+    assert.throws(function () { expr.evaluate(scope) }, /Cannot apply index: unsupported type of object/)
   })
 
   it('should filter an AssignmentNode', function () {
@@ -494,7 +495,7 @@ describe('AssignmentNode', function () {
             (node.index ? node.index.toString(options) : '') +
             ' equals ' + node.value.toString(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -549,7 +550,7 @@ describe('AssignmentNode', function () {
             (node.index ? node.index.toTex(options) : '') +
             '\\mbox{equals}' + node.value.toTex(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

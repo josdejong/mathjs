@@ -1,8 +1,12 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'sin'
+const dependencies = ['typed']
+
+export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the sine of a value.
    *
@@ -29,7 +33,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Sine of x
    */
-  const sin = typed('sin', {
+  const sin = typed(name, {
     'number': Math.sin,
 
     'Complex': function (x) {
@@ -41,7 +45,7 @@ function factory (type, config, load, typed) {
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sin is no angle')
       }
       return sin(x.value)
@@ -53,10 +57,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  sin.toTex = { 1: `\\sin\\left(\${args[0]}\\right)` }
-
   return sin
-}
-
-exports.name = 'sin'
-exports.factory = factory
+})

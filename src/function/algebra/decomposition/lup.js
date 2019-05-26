@@ -1,24 +1,42 @@
 'use strict'
 
-const util = require('../../../utils/index')
+import { clone } from '../../../utils/object'
+import { factory } from '../../../utils/factory'
 
-const object = util.object
+const name = 'lup'
+const dependencies = [
+  'typed',
+  'matrix',
+  'abs',
+  'addScalar',
+  'divideScalar',
+  'multiplyScalar',
+  'subtract',
+  'larger',
+  'equalScalar',
+  'unaryMinus',
+  'DenseMatrix',
+  'SparseMatrix',
+  'Spa'
+]
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../../type/matrix/function/matrix'))
-  const abs = load(require('../../arithmetic/abs'))
-  const addScalar = load(require('../../arithmetic/addScalar'))
-  const divideScalar = load(require('../../arithmetic/divideScalar'))
-  const multiplyScalar = load(require('../../arithmetic/multiplyScalar'))
-  const subtract = load(require('../../arithmetic/subtract'))
-  const larger = load(require('../../relational/larger'))
-  const equalScalar = load(require('../../relational/equalScalar'))
-  const unaryMinus = load(require('../../arithmetic/unaryMinus'))
-
-  const SparseMatrix = type.SparseMatrix
-  const DenseMatrix = type.DenseMatrix
-  const Spa = type.Spa
-
+export const createLup = /* #__PURE__ */ factory(name, dependencies, (
+  {
+    typed,
+    matrix,
+    abs,
+    addScalar,
+    divideScalar,
+    multiplyScalar,
+    subtract,
+    larger,
+    equalScalar,
+    unaryMinus,
+    DenseMatrix,
+    SparseMatrix,
+    Spa
+  }
+) => {
   /**
    * Calculate the Matrix LU decomposition with partial pivoting. Matrix `A` is decomposed in two matrices (`L`, `U`) and a
    * row permutation vector `p` where `A[p,:] = L * U`
@@ -45,7 +63,7 @@ function factory (type, config, load, typed) {
    *
    * @return {{L: Array | Matrix, U: Array | Matrix, P: Array.<number>}} The lower triangular matrix, the upper triangular matrix and the permutation matrix.
    */
-  const lup = typed('lup', {
+  return typed(name, {
 
     'DenseMatrix': function (m) {
       return _denseLUP(m)
@@ -76,7 +94,7 @@ function factory (type, config, load, typed) {
     // minimum rows and columns
     let n = Math.min(rows, columns)
     // matrix array, clone original data
-    const data = object.clone(m._data)
+    const data = clone(m._data)
     // l matrix arrays
     const ldata = []
     const lsize = [rows, n]
@@ -375,9 +393,4 @@ function factory (type, config, load, typed) {
       }
     }
   }
-
-  return lup
-}
-
-exports.name = 'lup'
-exports.factory = factory
+})

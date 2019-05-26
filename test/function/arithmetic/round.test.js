@@ -1,7 +1,8 @@
 // test round
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const fraction = math.fraction
 const matrix = math.matrix
@@ -71,7 +72,7 @@ describe('round', function () {
 
   it('should round fractions', function () {
     const a = fraction('2/3')
-    assert(round(a) instanceof math.type.Fraction)
+    assert(round(a) instanceof math.Fraction)
     assert.strictEqual(a.toString(), '0.(6)')
 
     assert.strictEqual(round(fraction('2/3')).toString(), '1')

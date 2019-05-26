@@ -1,6 +1,7 @@
 // test compare
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const complex = math.complex
 const matrix = math.matrix
@@ -71,7 +72,7 @@ describe('compare', function () {
   it('should compare two fractions', function () {
     const a = math.fraction(1, 3)
     const b = math.fraction(1, 6)
-    assert(compare(a, b) instanceof math.type.Fraction)
+    assert(compare(a, b) instanceof math.Fraction)
     assert.strictEqual(a.toString(), '0.(3)')
     assert.strictEqual(b.toString(), '0.1(6)')
 
@@ -170,13 +171,12 @@ describe('compare', function () {
 
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
-
     assert.strictEqual(mymath.compare(1, 0.991), 1)
-    assert.strictEqual(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), '1')
+    assert.strictEqual(mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), '1')
 
     mymath.config({ epsilon: 1e-2 })
     assert.strictEqual(mymath.compare(1, 0.991), 0)
-    assert.strictEqual(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), '0')
+    assert.strictEqual(mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), '0')
   })
 
   it('should throw an error when comparing complex numbers', function () {

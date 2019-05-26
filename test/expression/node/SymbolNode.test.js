@@ -1,10 +1,11 @@
 // test SymbolNode
-const assert = require('assert')
-const math = require('../../../src/main')
-const Node = math.expression.node.Node
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
-const OperatorNode = math.expression.node.OperatorNode
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
+const OperatorNode = math.OperatorNode
 
 describe('SymbolNode', function () {
   it('should create a SymbolNode', function () {
@@ -31,7 +32,7 @@ describe('SymbolNode', function () {
   it('should throw an error when evaluating an undefined symbol', function () {
     let scope = {}
     const s = new SymbolNode('foo')
-    assert.throws(function () { s.compile().eval(scope) }, Error)
+    assert.throws(function () { s.compile().evaluate(scope) }, Error)
   })
 
   it('should compile a SymbolNode', function () {
@@ -39,13 +40,14 @@ describe('SymbolNode', function () {
 
     const expr = s.compile()
     let scope = { a: 5 }
-    assert.strictEqual(expr.eval(scope), 5)
-    assert.throws(function () { expr.eval({}) }, Error)
+    assert.strictEqual(expr.evaluate(scope), 5)
+    assert.throws(function () { expr.evaluate({}) }, Error)
 
     const s2 = new SymbolNode('sqrt')
     const expr2 = s2.compile()
     let scope2 = {}
-    assert.strictEqual(expr2.eval(scope2), math.sqrt)
+
+    assert.strictEqual(expr2.evaluate(scope2), math.sqrt)
   })
 
   it('should filter a SymbolNode', function () {

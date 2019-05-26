@@ -1,7 +1,8 @@
 // test sign
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const fraction = math.fraction
 const complex = math.complex
@@ -26,7 +27,7 @@ describe('sign', function () {
 
   it('should calculate the sign of a fraction', function () {
     const a = fraction(0.5)
-    assert(math.sign(a) instanceof math.type.Fraction)
+    assert(math.sign(a) instanceof math.Fraction)
     assert.strictEqual(math.sign(a).toString(), '1')
     assert.strictEqual(math.sign(fraction(-0.5)).toString(), '-1')
     assert.strictEqual(a.toString(), '0.5')

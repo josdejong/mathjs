@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { cotNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'cot'
+const dependencies = ['typed', 'BigNumber']
+
+export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Calculate the cotangent of a value. Defined as `cot(x) = 1 / tan(x)`.
    *
@@ -24,21 +29,19 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Cotangent of x
    */
-  const cot = typed('cot', {
-    'number': function (x) {
-      return 1 / Math.tan(x)
-    },
+  const cot = typed(name, {
+    'number': cotNumber,
 
     'Complex': function (x) {
       return x.cot()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x.tan())
+      return new BigNumber(1).div(x.tan())
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cot is no angle')
       }
       return cot(x.value)
@@ -49,10 +52,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  cot.toTex = { 1: `\\cot\\left(\${args[0]}\\right)` }
-
   return cot
-}
-
-exports.name = 'cot'
-exports.factory = factory
+})

@@ -1,11 +1,14 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const resize = require('../../utils/array').resize
+import { isBigNumber } from '../../utils/is'
+import { isInteger } from '../../utils/number'
+import { resize } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'ones'
+const dependencies = ['typed', 'config', 'matrix', 'BigNumber']
 
+export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber }) => {
   /**
    * Create a matrix filled with ones. The created matrix can have one or
    * multiple dimensions.
@@ -39,7 +42,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Array | Matrix | number}  A matrix filled with ones
    */
-  const ones = typed('ones', {
+  return typed('ones', {
     '': function () {
       return (config.matrix === 'Array')
         ? _ones([])
@@ -72,10 +75,6 @@ function factory (type, config, load, typed) {
     }
   })
 
-  ones.toTex = undefined // use default template
-
-  return ones
-
   /**
    * Create an Array or Matrix with ones
    * @param {Array} size
@@ -85,7 +84,7 @@ function factory (type, config, load, typed) {
    */
   function _ones (size, format) {
     const hasBigNumbers = _normalize(size)
-    const defaultValue = hasBigNumbers ? new type.BigNumber(1) : 1
+    const defaultValue = hasBigNumbers ? new BigNumber(1) : 1
     _validate(size)
 
     if (format) {
@@ -109,7 +108,7 @@ function factory (type, config, load, typed) {
   function _normalize (size) {
     let hasBigNumbers = false
     size.forEach(function (value, index, arr) {
-      if (type.isBigNumber(value)) {
+      if (isBigNumber(value)) {
         hasBigNumbers = true
         arr[index] = value.toNumber()
       }
@@ -125,7 +124,4 @@ function factory (type, config, load, typed) {
       }
     })
   }
-}
-
-exports.name = 'ones'
-exports.factory = factory
+})

@@ -1,10 +1,13 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const SparseMatrix = type.SparseMatrix
+import { factory } from '../../../utils/factory'
 
+const name = 'sparse'
+const dependencies = ['typed', 'SparseMatrix']
+
+export const createSparse = /* #__PURE__ */ factory(name, dependencies, ({ typed, SparseMatrix }) => {
   /**
-   * Create a Sparse Matrix. The function creates a new `math.type.Matrix` object from
+   * Create a Sparse Matrix. The function creates a new `math.Matrix` object from
    * an `Array`. A Matrix has utility functions to manipulate the data in the
    * matrix, like getting the size and getting or setting values in the matrix.
    *
@@ -30,7 +33,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Matrix} The created matrix
    */
-  const sparse = typed('sparse', {
+  return typed(name, {
     '': function () {
       return new SparseMatrix([])
     },
@@ -47,14 +50,4 @@ function factory (type, config, load, typed) {
       return new SparseMatrix(data, datatype)
     }
   })
-
-  sparse.toTex = {
-    0: '\\begin{bsparse}\\end{bsparse}',
-    1: `\\left(\${args[0]}\\right)`
-  }
-
-  return sparse
-}
-
-exports.name = 'sparse'
-exports.factory = factory
+})

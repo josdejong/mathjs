@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const FibonacciHeap = math.type.FibonacciHeap
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+const FibonacciHeap = math.FibonacciHeap
 
 describe('FibonacciHeap', function () {
   describe('constructor', function () {

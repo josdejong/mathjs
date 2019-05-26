@@ -1,7 +1,7 @@
-const assert = require('assert')
-const math = require('../../../../src/main')
+import assert from 'assert'
+import math from '../../../../src/bundleAny'
 const unit = math.unit
-const Unit = math.type.Unit
+const Unit = math.Unit
 
 describe('unit', function () {
   it('should construct a unit', function () {
@@ -13,6 +13,13 @@ describe('unit', function () {
     assert.deepStrictEqual(unit('5 cm').toString(), '5 cm')
     assert.deepStrictEqual(unit('5000 cm').toString(), '50 m')
     assert.deepStrictEqual(unit('10 kg').toString(), '10 kg')
+    assert.deepStrictEqual(unit('5Mcd').toString(), '5 Mcd')
+    assert.deepStrictEqual(unit('12mcd').toString(), '12 mcd')
+    assert.deepStrictEqual(unit('10 millicandela').toString(), '10 millicandela')
+    assert.deepStrictEqual(unit('3t').toString(), '3 t')
+    assert.deepStrictEqual(unit('3mt').toString(), '3 mt')
+    assert.deepStrictEqual(unit('6 tonne').toString(), '6 tonne')
+    assert.deepStrictEqual(unit('4 megatonne').toString(), '4 megatonne')
   })
 
   it('should clone a unit', function () {
@@ -64,7 +71,7 @@ describe('unit', function () {
 
   it('should throw an error if called with an invalid argument', function () {
     assert.throws(function () { unit(2, math.complex(2, 3)) }, TypeError)
-    assert.throws(function () { unit(true) }, TypeError)
+    assert.throws(function () { unit(new Date()) }, TypeError)
   })
 
   it('should throw an error if called with no argument', function () {

@@ -1,4 +1,4 @@
-module.exports = {
+export const notDocs = {
   'name': 'not',
   'category': 'Logical',
   'syntax': [

@@ -1,9 +1,13 @@
 'use strict'
 
-const maxArgumentCount = require('../../utils/function').maxArgumentCount
-const forEach = require('../../utils/array').forEach
+import { maxArgumentCount } from '../../utils/function'
+import { forEach as forEachArray } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
+const name = 'forEach'
+const dependencies = ['typed']
+
+export const createForEach = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterate over all elements of a matrix/array, and executes the given callback function.
    *
@@ -27,18 +31,14 @@ function factory (type, config, load, typed) {
    *                              parameters: the value of the element, the index
    *                              of the element, and the Matrix/array being traversed.
    */
-  const forEach = typed('forEach', {
+  return typed(name, {
     'Array, function': _forEach,
 
     'Matrix, function': function (x, callback) {
       return x.forEach(callback)
     }
   })
-
-  forEach.toTex = undefined // use default template
-
-  return forEach
-}
+})
 
 /**
  * forEach for a multi dimensional array
@@ -52,7 +52,7 @@ function _forEach (array, callback) {
 
   const recurse = function (value, index) {
     if (Array.isArray(value)) {
-      forEach(value, function (child, i) {
+      forEachArray(value, function (child, i) {
         // we create a copy of the index array and append the new index value
         recurse(child, index.concat(i))
       })
@@ -69,6 +69,3 @@ function _forEach (array, callback) {
   }
   recurse(array, [])
 }
-
-exports.name = 'forEach'
-exports.factory = factory

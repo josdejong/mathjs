@@ -1,7 +1,8 @@
 // test Node
-const assert = require('assert')
-const math = require('../../../src/main')
-const Node = math.expression.node.Node
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Node = math.Node
 
 describe('Node', function () {
   function MyNode (value) {
@@ -62,6 +63,56 @@ describe('Node', function () {
     assert.deepStrictEqual(c, b)
   })
 
+  it('transform should iterate over unchanged nodes', function () {
+    const logs = []
+
+    function TestNode (value) {
+      this.value = value
+    }
+    TestNode.prototype = new Node()
+    TestNode.prototype.map = function () {
+      logs.push('map ' + this.value)
+      return new TestNode(this.value)
+    }
+
+    const a = new TestNode('a')
+    const t = a.transform(function (node) {
+      logs.push('transform ' + node.value)
+      return node
+    })
+    assert.deepStrictEqual(t, a)
+    assert.deepStrictEqual(logs, [
+      'transform a',
+      'map a'
+    ])
+  })
+
+  it('transform should not iterate over replaced nodes', function () {
+    const logs = []
+
+    function TestNode (value) {
+      this.value = value
+    }
+    TestNode.prototype = new Node()
+    TestNode.prototype.map = function () {
+      logs.push('map ' + this.value)
+      return new TestNode(this.value)
+    }
+
+    const a = new TestNode('a')
+    const b = new TestNode('b')
+
+    const t = a.transform(function (node) {
+      logs.push('transform ' + node.value)
+      return b
+    })
+    assert.deepStrictEqual(t, b)
+    assert.deepStrictEqual(logs, [
+      'transform a'
+      // NO 'map b' here!
+    ])
+  })
+
   it('should throw an error when cloning a Node interface', function () {
     assert.throws(function () {
       const a = new Node()
@@ -70,9 +121,9 @@ describe('Node', function () {
   })
 
   it('should shallow clone the content of a Node', function () {
-    const a = new math.expression.node.ConstantNode(1)
-    const b = new math.expression.node.ConstantNode(2)
-    const c = new math.expression.node.OperatorNode('+', 'add', [a, b])
+    const a = new math.ConstantNode(1)
+    const b = new math.ConstantNode(2)
+    const c = new math.OperatorNode('+', 'add', [a, b])
 
     const clone = c.clone()
 
@@ -83,9 +134,9 @@ describe('Node', function () {
   })
 
   it('should deepClone the content of a Node', function () {
-    const a = new math.expression.node.ConstantNode(1)
-    const b = new math.expression.node.ConstantNode(2)
-    const c = new math.expression.node.OperatorNode('+', 'add', [a, b])
+    const a = new math.ConstantNode(1)
+    const b = new math.ConstantNode(2)
+    const c = new math.OperatorNode('+', 'add', [a, b])
 
     const clone = c.cloneDeep()
 
@@ -129,12 +180,12 @@ describe('Node', function () {
       bla: function (node, callbacks) {}
     }
     const mymath = math.create()
-    mymath.expression.node.Node.prototype._toString = function () {
+    mymath.Node.prototype._toString = function () {
       return 'default'
     }
-    const n1 = new mymath.expression.node.Node()
-    const s = new mymath.expression.node.SymbolNode('bla')
-    const n2 = new mymath.expression.node.FunctionNode(s, [])
+    const n1 = new mymath.Node()
+    const s = new mymath.SymbolNode('bla')
+    const n2 = new mymath.FunctionNode(s, [])
 
     assert.strictEqual(n1.toString(callback1), 'default')
     assert.strictEqual(n2.toString(callback2), 'bla()')
@@ -146,12 +197,12 @@ describe('Node', function () {
       bla: function (node, callbacks) {}
     }
     const mymath = math.create()
-    mymath.expression.node.Node.prototype._toTex = function () {
+    mymath.Node.prototype._toTex = function () {
       return 'default'
     }
-    const n1 = new mymath.expression.node.Node()
-    const s = new mymath.expression.node.SymbolNode('bla')
-    const n2 = new mymath.expression.node.FunctionNode(s, [])
+    const n1 = new mymath.Node()
+    const s = new mymath.SymbolNode('bla')
+    const n2 = new mymath.FunctionNode(s, [])
 
     assert.strictEqual(n1.toTex(callback1), 'default')
     assert.strictEqual(n2.toTex(callback2), '\\mathrm{bla}\\left(\\right)')
@@ -171,7 +222,7 @@ describe('Node', function () {
   })
 
   it('should get the content of a Node', function () {
-    const c = new math.expression.node.ConstantNode(1)
+    const c = new math.ConstantNode(1)
 
     assert.strictEqual(c.getContent(), c)
     assert.deepStrictEqual(c.getContent(), c)

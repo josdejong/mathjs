@@ -1,4 +1,4 @@
-module.exports = {
+export const setPowersetDocs = {
   'name': 'setPowerset',
   'category': 'Set',
   'syntax': [

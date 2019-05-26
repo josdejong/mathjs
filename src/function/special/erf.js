@@ -1,9 +1,15 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
-const sign = require('../../utils/number').sign
+import { deepMap } from '../../utils/collection'
+import { sign } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
+const name = 'erf'
+const dependencies = [
+  'typed'
+]
+
+export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the erf function of a value using a rational Chebyshev
    * approximations for different intervals of x.
@@ -28,7 +34,7 @@ function factory (type, config, load, typed) {
    * @param {number | Array | Matrix} x   A real number
    * @return {number | Array | Matrix}    The erf of `x`
    */
-  const erf = typed('erf', {
+  const erf = typed('name', {
     'number': function (x) {
       const y = Math.abs(x)
 
@@ -42,13 +48,6 @@ function factory (type, config, load, typed) {
         return sign(x) * (1 - erfc2(y))
       }
       return sign(x) * (1 - erfc3(y))
-    },
-
-    // TODO: Not sure if there's a way to guarantee some degree of accuracy here.
-    //  Perhaps it would be best to set the precision of the number to that which
-    //  is guaranteed by erf()
-    'BigNumber': function (n) {
-      return new type.BigNumber(erf(n.toNumber()))
     },
 
     'Array | Matrix': function (n) {
@@ -127,10 +126,8 @@ function factory (type, config, load, typed) {
     return Math.exp(-ysq * ysq) * Math.exp(-del) * result
   }
 
-  erf.toTex = { 1: `erf\\left(\${args[0]}\\right)` }
-
   return erf
-}
+})
 
 /**
  * Upper bound for the first approximation interval, 0 <= x <= THRESH
@@ -190,6 +187,3 @@ const Q = [[
  * return 1
  */
 const MAX_NUM = Math.pow(2, 53)
-
-exports.name = 'erf'
-exports.factory = factory

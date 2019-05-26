@@ -1,28 +1,32 @@
 'use strict'
 
-const maxArgumentCount = require('../../utils/function').maxArgumentCount
-const forEach = require('../../utils/array').forEach
+import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is'
+import { maxArgumentCount } from '../../utils/function'
+import { forEach } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { compileInlineExpression } from './utils/compileInlineExpression'
 
-/**
- * Attach a transform function to math.forEach
- * Adds a property transform containing the transform function.
- *
- * This transform creates a one-based index instead of a zero-based index
- */
-function factory (type, config, load, typed) {
-  const compileInlineExpression = load(require('./utils/compileInlineExpression'))
+const name = 'forEach'
+const dependencies = ['typed']
 
+export const createForEachTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+  /**
+   * Attach a transform function to math.forEach
+   * Adds a property transform containing the transform function.
+   *
+   * This transform creates a one-based index instead of a zero-based index
+   */
   function forEachTransform (args, math, scope) {
     let x, callback
 
     if (args[0]) {
-      x = args[0].compile().eval(scope)
+      x = args[0].compile().evaluate(scope)
     }
 
     if (args[1]) {
-      if (type.isSymbolNode(args[1]) || type.isFunctionAssignmentNode(args[1])) {
+      if (isSymbolNode(args[1]) || isFunctionAssignmentNode(args[1])) {
         // a function pointer, like forEach([3, -2, 5], myTestFunction)
-        callback = args[1].compile().eval(scope)
+        callback = args[1].compile().evaluate(scope)
       } else {
         // an expression like forEach([3, -2, 5], x > 0 ? callback1(x) : callback2(x) )
         callback = compileInlineExpression(args[1], math, scope)
@@ -34,7 +38,7 @@ function factory (type, config, load, typed) {
   forEachTransform.rawArgs = true
 
   // one-based version of forEach
-  let _forEach = typed('forEach', {
+  const _forEach = typed('forEach', {
     'Array | Matrix, function': function (array, callback) {
       // figure out what number of arguments the callback function expects
       const args = maxArgumentCount(callback)
@@ -61,8 +65,4 @@ function factory (type, config, load, typed) {
   })
 
   return forEachTransform
-}
-
-exports.name = 'forEach'
-exports.path = 'expression.transform'
-exports.factory = factory
+}, { isTransformFunction: true })

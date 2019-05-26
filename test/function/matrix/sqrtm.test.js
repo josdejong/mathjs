@@ -1,7 +1,8 @@
 // test sqrtm
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
 
 describe('sqrtm', function () {
   const A = [[5, 2], [4, 7]]
@@ -57,14 +58,14 @@ describe('sqrtm', function () {
   })
 
   it('should return the result in the same format as the input', function () {
-    assert.strictEqual(math.typeof(math.sqrtm(A)), 'Array')
-    assert.strictEqual(math.typeof(math.sqrtm(B)), 'Array')
-    assert.strictEqual(math.typeof(math.sqrtm(AA)), 'Array')
-    assert.strictEqual(math.typeof(math.sqrtm(BB)), 'Array')
+    assert.strictEqual(math.typeOf(math.sqrtm(A)), 'Array')
+    assert.strictEqual(math.typeOf(math.sqrtm(B)), 'Array')
+    assert.strictEqual(math.typeOf(math.sqrtm(AA)), 'Array')
+    assert.strictEqual(math.typeOf(math.sqrtm(BB)), 'Array')
 
-    assert.strictEqual(math.typeof(math.sqrtm(math.matrix(A))), 'Matrix')
-    assert.strictEqual(math.typeof(math.sqrtm(math.matrix(B))), 'Matrix')
-    assert.strictEqual(math.typeof(math.sqrtm(math.matrix(AA))), 'Matrix')
-    assert.strictEqual(math.typeof(math.sqrtm(math.matrix(BB))), 'Matrix')
+    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(A))), 'Matrix')
+    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(B))), 'Matrix')
+    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(AA))), 'Matrix')
+    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(BB))), 'Matrix')
   })
 })

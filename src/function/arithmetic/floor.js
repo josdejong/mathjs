@@ -1,8 +1,14 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { nearlyEqual } from '../../utils/number'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 
-function factory (type, config, load, typed) {
+const name = 'floor'
+const dependencies = ['typed', 'config', 'round']
+
+export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round }) => {
   /**
    * Round a value towards minus infinity.
    * For matrices, the function is evaluated element wise.
@@ -31,14 +37,24 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   const floor = typed('floor', {
-    'number': Math.floor,
+    'number': function (x) {
+      if (nearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return Math.floor(x)
+      }
+    },
 
     'Complex': function (x) {
       return x.floor()
     },
 
     'BigNumber': function (x) {
-      return x.floor()
+      if (bigNearlyEqual(x, round(x), config.epsilon)) {
+        return round(x)
+      } else {
+        return x.floor()
+      }
     },
 
     'Fraction': function (x) {
@@ -51,10 +67,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  floor.toTex = { 1: `\\left\\lfloor\${args[0]}\\right\\rfloor` }
-
   return floor
-}
-
-exports.name = 'floor'
-exports.factory = factory
+})

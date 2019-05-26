@@ -1,14 +1,15 @@
 // test not
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const not = math.not
-const FunctionNode = math.expression.node.FunctionNode
-const ConstantNode = math.expression.node.ConstantNode
-const SymbolNode = math.expression.node.SymbolNode
+const FunctionNode = math.FunctionNode
+const ConstantNode = math.ConstantNode
+const SymbolNode = math.SymbolNode
 
 describe('not', function () {
   it('should not numbers correctly', function () {

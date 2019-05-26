@@ -1,6 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+import { factory } from '../../../utils/factory'
+
+const name = 'splitUnit'
+const dependencies = ['typed']
+
+export const createSplitUnit = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Split a unit in an array of units whose sum is equal to the original unit.
    *
@@ -20,14 +25,9 @@ function factory (type, config, load, typed) {
    * @param {Array} [parts] An array of strings or valueless units.
    * @return {Array} An array of units.
    */
-  const splitUnit = typed('splitUnit', {
+  return typed(name, {
     'Unit, Array': function (unit, parts) {
       return unit.splitUnit(parts)
     }
   })
-
-  return splitUnit
-}
-
-exports.name = 'splitUnit'
-exports.factory = factory
+})

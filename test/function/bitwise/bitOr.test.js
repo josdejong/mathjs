@@ -1,6 +1,7 @@
 // test bitOr
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const bitOr = math.bitOr
 
@@ -137,7 +138,7 @@ describe('bitOr', function () {
 
     // sparse - sparse pattern
     a = math.sparse([[1, 1], [0, 0]])
-    b = new math.type.SparseMatrix({
+    b = new math.SparseMatrix({
       index: [ 0, 1 ],
       ptr: [ 0, 1, 2 ],
       size: [ 2, 2 ]
@@ -145,7 +146,7 @@ describe('bitOr', function () {
     c = bitOr(a, b)
     assert.deepStrictEqual(
       c,
-      new math.type.SparseMatrix({
+      new math.SparseMatrix({
         index: [0, 0, 1],
         ptr: [0, 1, 3],
         size: [2, 2]
@@ -155,7 +156,7 @@ describe('bitOr', function () {
     c = bitOr(b, a)
     assert.deepStrictEqual(
       c,
-      new math.type.SparseMatrix({
+      new math.SparseMatrix({
         index: [0, 1, 0], // row index not in order, not a problem!
         ptr: [0, 1, 3],
         size: [2, 2]
@@ -166,11 +167,11 @@ describe('bitOr', function () {
     const a2 = math.matrix([[1, 2], [3, 4]])
     const a3 = math.matrix([[5, 6], [7, 8]])
     const a4 = bitOr(a2, a3)
-    assert.ok(a4 instanceof math.type.Matrix)
+    assert.ok(a4 instanceof math.Matrix)
     assert.deepStrictEqual(a4.size(), [2, 2])
     assert.deepStrictEqual(a4.valueOf(), [[5, 6], [7, 12]])
     const a5 = math.pow(a2, 2)
-    assert.ok(a5 instanceof math.type.Matrix)
+    assert.ok(a5 instanceof math.Matrix)
     assert.deepStrictEqual(a5.size(), [2, 2])
     assert.deepStrictEqual(a5.valueOf(), [[7, 10], [15, 22]])
   })
@@ -190,7 +191,7 @@ describe('bitOr', function () {
     const b = math.matrix([13, 92, 101])
     const c = bitOr(a, b)
 
-    assert.ok(c instanceof math.type.Matrix)
+    assert.ok(c instanceof math.Matrix)
     assert.deepStrictEqual(c, math.matrix([15, 92, 125]))
   })
 

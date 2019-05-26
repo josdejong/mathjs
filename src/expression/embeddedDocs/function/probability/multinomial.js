@@ -1,4 +1,4 @@
-module.exports = {
+export const multinomialDocs = {
   'name': 'multinomial',
   'category': 'Probability',
   'syntax': [

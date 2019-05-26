@@ -1,7 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const isNumeric = load(require('./isNumeric'))
+import { factory } from '../../utils/factory'
+
+const name = 'hasNumericValue'
+const dependencies = ['typed', 'isNumeric']
+
+export const createHasNumericValue = /* #__PURE__ */ factory(name, dependencies, ({ typed, isNumeric }) => {
   /**
    * Test whether a value is an numeric value.
    *
@@ -31,7 +35,7 @@ function factory (type, config, load, typed) {
    *                    `Fraction`, `Boolean`, or a `String` containing number. Returns false for other types.
    *                    Throws an error in case of unknown types.
    */
-  const hasNumericValue = typed('hasNumericValue', {
+  return typed(name, {
     'string': function (x) {
       return x.trim().length > 0 && !isNaN(Number(x))
     },
@@ -39,9 +43,4 @@ function factory (type, config, load, typed) {
       return isNumeric(x)
     }
   })
-
-  return hasNumericValue
-}
-
-exports.name = 'hasNumericValue'
-exports.factory = factory
+})

@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { sechNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'sech'
+const dependencies = ['typed', 'BigNumber']
+
+export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Calculate the hyperbolic secant of a value,
    * defined as `sech(x) = 1 / cosh(x)`.
@@ -26,19 +31,19 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic secant of x
    */
-  const sech = typed('sech', {
-    'number': _sech,
+  const sech = typed(name, {
+    'number': sechNumber,
 
     'Complex': function (x) {
       return x.sech()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x.cosh())
+      return new BigNumber(1).div(x.cosh())
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sech is no angle')
       }
       return sech(x.value)
@@ -49,20 +54,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  sech.toTex = { 1: `\\mathrm{sech}\\left(\${args[0]}\\right)` }
-
   return sech
-}
-
-/**
- * Calculate the hyperbolic secant of a number
- * @param {number} x
- * @returns {number}
- * @private
- */
-function _sech (x) {
-  return 2 / (Math.exp(x) + Math.exp(-x))
-}
-
-exports.name = 'sech'
-exports.factory = factory
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const qrDocs = {
   'name': 'qr',
   'category': 'Algebra',
   'syntax': [

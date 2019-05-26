@@ -1,4 +1,4 @@
-module.exports = {
+export const cotDocs = {
   'name': 'cot',
   'category': 'Trigonometry',
   'syntax': [

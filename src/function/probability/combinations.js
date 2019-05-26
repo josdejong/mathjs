@@ -1,8 +1,12 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const product = require('./product')
-function factory (type, config, load, typed) {
+import { factory } from '../../utils/factory'
+import { combinationsNumber } from '../../plain/number/combinations'
+
+const name = 'combinations'
+const dependencies = ['typed']
+
+export const createCombinations = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the number of ways of picking `k` unordered outcomes from `n`
    * possibilities.
@@ -26,34 +30,13 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber} k    Number of objects in the subset
    * @return {number | BigNumber}     Number of possible combinations.
    */
-
-  const combinations = typed('combinations', {
-    'number, number': function (n, k) {
-      let prodrange, nMinusk
-
-      if (!isInteger(n) || n < 0) {
-        throw new TypeError('Positive integer value expected in function combinations')
-      }
-      if (!isInteger(k) || k < 0) {
-        throw new TypeError('Positive integer value expected in function combinations')
-      }
-      if (k > n) {
-        throw new TypeError('k must be less than or equal to n')
-      }
-
-      nMinusk = n - k
-
-      if (k < nMinusk) {
-        prodrange = product(nMinusk + 1, n)
-        return prodrange / product(1, k)
-      }
-      prodrange = product(k + 1, n)
-      return prodrange / product(1, nMinusk)
-    },
+  return typed(name, {
+    'number, number': combinationsNumber,
 
     'BigNumber, BigNumber': function (n, k) {
+      const BigNumber = n.constructor
       let max, result, i, ii
-      const one = new type.BigNumber(1)
+      const one = new BigNumber(1)
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
         throw new TypeError('Positive integer value expected in function combinations')
@@ -74,11 +57,7 @@ function factory (type, config, load, typed) {
 
     // TODO: implement support for collection in combinations
   })
-
-  combinations.toTex = { 2: `\\binom{\${args[0]}}{\${args[1]}}` }
-
-  return combinations
-}
+})
 
 /**
  * Test whether BigNumber n is a positive integer
@@ -88,6 +67,3 @@ function factory (type, config, load, typed) {
 function isPositiveInteger (n) {
   return n.isInteger() && n.gte(0)
 }
-
-exports.name = 'combinations'
-exports.factory = factory

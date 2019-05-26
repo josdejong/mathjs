@@ -1,10 +1,12 @@
 'use strict'
 
-const deepMap = require('../../../utils/collection/deepMap')
+import { factory } from '../../../utils/factory'
+import { deepMap } from '../../../utils/collection'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../../utils/latex')
+const name = 'complex'
+const dependencies = ['typed', 'Complex']
 
+export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex }) => {
   /**
    * Create a complex value or convert a value to a complex value.
    *
@@ -45,20 +47,24 @@ function factory (type, config, load, typed) {
    */
   const complex = typed('complex', {
     '': function () {
-      return type.Complex.ZERO
+      return Complex.ZERO
     },
 
     'number': function (x) {
-      return new type.Complex(x, 0)
+      return new Complex(x, 0)
     },
 
     'number, number': function (re, im) {
-      return new type.Complex(re, im)
+      return new Complex(re, im)
     },
 
     // TODO: this signature should be redundant
     'BigNumber, BigNumber': function (re, im) {
-      return new type.Complex(re.toNumber(), im.toNumber())
+      return new Complex(re.toNumber(), im.toNumber())
+    },
+
+    'Fraction': function (x) {
+      return new Complex(x.valueOf(), 0)
     },
 
     'Complex': function (x) {
@@ -66,20 +72,20 @@ function factory (type, config, load, typed) {
     },
 
     'string': function (x) {
-      return type.Complex(x) // for example '2 + 3i'
+      return Complex(x) // for example '2 + 3i'
     },
 
     'null': function (x) {
-      return type.Complex(0)
+      return Complex(0)
     },
 
     'Object': function (x) {
       if ('re' in x && 'im' in x) {
-        return new type.Complex(x.re, x.im)
+        return new Complex(x.re, x.im)
       }
 
       if (('r' in x && 'phi' in x) || ('abs' in x && 'arg' in x)) {
-        return new type.Complex(x)
+        return new Complex(x)
       }
 
       throw new Error('Expected object with properties (re and im) or (r and phi) or (abs and arg)')
@@ -90,14 +96,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  complex.toTex = {
-    0: '0',
-    1: `\\left(\${args[0]}\\right)`,
-    2: `\\left(\\left(\${args[0]}\\right)+${latex.symbols['i']}\\cdot\\left(\${args[1]}\\right)\\right)`
-  }
-
   return complex
-}
-
-exports.name = 'complex'
-exports.factory = factory
+})

@@ -1,10 +1,12 @@
 'use strict'
 
-const DimensionError = require('../../../error/DimensionError')
+import { factory } from '../../../utils/factory'
+import { DimensionError } from '../../../error/DimensionError'
 
-function factory (type, config, load, typed) {
-  const DenseMatrix = type.DenseMatrix
+const name = 'algorithm13'
+const dependencies = ['typed']
 
+export const createAlgorithm13 = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, Bij..z).
    * Callback function invoked MxN times.
@@ -19,7 +21,7 @@ function factory (type, config, load, typed) {
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97658658
    */
-  const algorithm13 = function (a, b, callback) {
+  return function algorithm13 (a, b, callback) {
     // a arrays
     const adata = a._data
     const asize = a._size
@@ -59,7 +61,7 @@ function factory (type, config, load, typed) {
     const cdata = csize.length > 0 ? _iterate(cf, 0, csize, csize[0], adata, bdata) : []
 
     // c matrix
-    return new DenseMatrix({
+    return a.createDenseMatrix({
       data: cdata,
       size: csize,
       datatype: dt
@@ -86,9 +88,4 @@ function factory (type, config, load, typed) {
     }
     return cv
   }
-
-  return algorithm13
-}
-
-exports.name = 'algorithm13'
-exports.factory = factory
+})

@@ -1,10 +1,10 @@
 'use strict'
 
-import number from './number'
-import string from './string'
-
-import DimensionError from '../error/DimensionError'
-import IndexError from '../error/IndexError'
+import { isInteger } from './number'
+import { isNumber } from './is'
+import { format } from './string'
+import { DimensionError } from '../error/DimensionError'
+import { IndexError } from '../error/IndexError'
 
 /**
  * Calculate the size of a multi dimensional array.
@@ -13,7 +13,7 @@ import IndexError from '../error/IndexError'
  * @param {Array} x
  * @Return {Number[]} size
  */
-export function size (x) {
+export function arraySize (x) {
   let s = []
 
   while (Array.isArray(x)) {
@@ -88,7 +88,7 @@ export function validate (array, size) {
  * @param {number} [length] Length of the array
  */
 export function validateIndex (index, length) {
-  if (!number.isNumber(index) || !number.isInteger(index)) {
+  if (!isNumber(index) || !isInteger(index)) {
     throw new TypeError('Index must be an integer (value: ' + index + ')')
   }
   if (index < 0 || (typeof length === 'number' && index >= length)) {
@@ -119,9 +119,9 @@ export function resize (array, size, defaultValue) {
 
   // check whether size contains positive integers
   size.forEach(function (value) {
-    if (!number.isNumber(value) || !number.isInteger(value) || value < 0) {
+    if (!isNumber(value) || !isInteger(value) || value < 0) {
       throw new TypeError('Invalid size, must contain positive integers ' +
-          '(size: ' + string.format(size) + ')')
+          '(size: ' + format(size) + ')')
     }
   })
 
@@ -215,18 +215,18 @@ export function reshape (array, sizes) {
   }
 
   if (sizes.length === 0) {
-    throw new DimensionError(0, product(size(array)), '!=')
+    throw new DimensionError(0, product(arraySize(array)), '!=')
   }
 
-  var totalSize = 1
-  for (var sizeIndex = 0; sizeIndex < sizes.length; sizeIndex++) {
+  let totalSize = 1
+  for (let sizeIndex = 0; sizeIndex < sizes.length; sizeIndex++) {
     totalSize *= sizes[sizeIndex]
   }
 
   if (flatArray.length !== totalSize) {
     throw new DimensionError(
       product(sizes),
-      product(size(array)),
+      product(arraySize(array)),
       '!='
     )
   }
@@ -237,7 +237,7 @@ export function reshape (array, sizes) {
     if (e instanceof DimensionError) {
       throw new DimensionError(
         product(sizes),
-        product(size(array)),
+        product(arraySize(array)),
         '!='
       )
     }
@@ -257,16 +257,16 @@ export function reshape (array, sizes) {
 
 function _reshape (array, sizes) {
   // testing if there are enough elements for the requested shape
-  var tmpArray = array
-  var tmpArray2
+  let tmpArray = array
+  let tmpArray2
   // for each dimensions starting by the last one and ignoring the first one
-  for (var sizeIndex = sizes.length - 1; sizeIndex > 0; sizeIndex--) {
-    var size = sizes[sizeIndex]
+  for (let sizeIndex = sizes.length - 1; sizeIndex > 0; sizeIndex--) {
+    const size = sizes[sizeIndex]
     tmpArray2 = []
 
     // aggregate the elements of the current tmpArray in elements of the requested size
-    var length = tmpArray.length / size
-    for (var i = 0; i < length; i++) {
+    const length = tmpArray.length / size
+    for (let i = 0; i < length; i++) {
       tmpArray2.push(tmpArray.slice(i * size, (i + 1) * size))
     }
     // set it as the new tmpArray for the next loop turn or for return
@@ -279,11 +279,11 @@ function _reshape (array, sizes) {
 /**
  * Squeeze a multi dimensional array
  * @param {Array} array
- * @param {Array} [arraySize]
+ * @param {Array} [size]
  * @returns {Array} returns the array itself
  */
-export function squeeze (array, arraySize) {
-  let s = arraySize || size(array)
+export function squeeze (array, size) {
+  let s = size || arraySize(array)
 
   // squeeze outer dimensions
   while (Array.isArray(array) && array.length === 1) {
@@ -339,12 +339,12 @@ function _squeeze (array, dims, dim) {
  * @param {Array} array
  * @param {number} dims       Desired number of dimensions of the array
  * @param {number} [outer]    Number of outer dimensions to be added
- * @param {Array} [arraySize] Current size of array.
+ * @param {Array} [size] Current size of array.
  * @returns {Array} returns the array itself
  * @private
  */
-export function unsqueeze (array, dims, outer, arraySize) {
-  let s = arraySize || size(array)
+export function unsqueeze (array, dims, outer, size) {
+  let s = size || arraySize(array)
 
   // unsqueeze outer dimensions
   if (outer) {
@@ -435,7 +435,7 @@ export function forEach (array, callback) {
  * @param {function} callback
  */
 export function filter (array, callback) {
-  if (size(array).length !== 1) {
+  if (arraySize(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported')
   }
 
@@ -450,7 +450,7 @@ export function filter (array, callback) {
  * @private
  */
 export function filterRegExp (array, regexp) {
-  if (size(array).length !== 1) {
+  if (arraySize(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported')
   }
 
@@ -513,4 +513,73 @@ export function generalize (a) {
     b.push(a[i].value)
   }
   return b
+}
+
+/**
+ * Check the datatype of a given object
+ * This is a low level implementation that should only be used by
+ * parent Matrix classes such as SparseMatrix or DenseMatrix
+ * This method does not validate Array Matrix shape
+ * @param {Array} array
+ * @param {function} typeOf   Callback function to use to determine the type of a value
+ * @return string
+ */
+export function getArrayDataType (array, typeOf) {
+  let type // to hold type info
+  let length = 0 // to hold length value to ensure it has consistent sizes
+
+  for (let i = 0; i < array.length; i++) {
+    const item = array[i]
+    const isArray = Array.isArray(item)
+
+    // Saving the target matrix row size
+    if (i === 0 && isArray) {
+      length = item.length
+    }
+
+    // If the current item is an array but the length does not equal the targetVectorSize
+    if (isArray && item.length !== length) {
+      return undefined
+    }
+
+    const itemType = isArray
+      ? getArrayDataType(item, typeOf) // recurse into a nested array
+      : typeOf(item)
+
+    if (type === undefined) {
+      type = itemType // first item
+    } else if (type !== itemType) {
+      return 'mixed'
+    } else {
+      // we're good, everything has the same type so far
+    }
+  }
+
+  return type
+}
+
+/**
+ * Return the last item from an array
+ * @param array
+ * @returns {*}
+ */
+export function last (array) {
+  return array[array.length - 1]
+}
+
+/**
+ * Get all but the last element of array.
+ */
+export function initial (array) {
+  return array.slice(0, array.length - 1)
+}
+
+/**
+ * Test whether an array or string contains an item
+ * @param {Array | string} array
+ * @param {*} item
+ * @return {boolean}
+ */
+export function contains (array, item) {
+  return array.indexOf(item) !== -1
 }

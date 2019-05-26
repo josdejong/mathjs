@@ -1,10 +1,15 @@
 'use strict'
 
-const map = require('../../utils/array').map
+import { isNode } from '../../utils/is'
+import { map } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
+const name = 'ArrayNode'
+const dependencies = [
+  'Node'
+]
 
+export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * @constructor ArrayNode
    * @extends {Node}
@@ -19,7 +24,7 @@ function factory (type, config, load, typed) {
     this.items = items || []
 
     // validate input
-    if (!Array.isArray(this.items) || !this.items.every(type.isNode)) {
+    if (!Array.isArray(this.items) || !this.items.every(isNode)) {
       throw new TypeError('Array containing Nodes expected')
     }
 
@@ -54,7 +59,7 @@ function factory (type, config, load, typed) {
       return item._compile(math, argNames)
     })
 
-    const asMatrix = (math.config().matrix !== 'Array')
+    const asMatrix = (math.config.matrix !== 'Array')
     if (asMatrix) {
       const matrix = math.matrix
       return function evalArrayNode (scope, args, context) {
@@ -177,8 +182,4 @@ function factory (type, config, load, typed) {
   }
 
   return ArrayNode
-}
-
-exports.name = 'ArrayNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

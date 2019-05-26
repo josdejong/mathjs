@@ -1,16 +1,23 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const size = require('../../utils/array').size
+import { factory } from '../../utils/factory'
+import { isInteger } from '../../utils/number'
+import { arraySize as size } from '../../utils/array'
+import { powNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
-  const identity = load(require('../matrix/identity'))
-  const multiply = load(require('./multiply'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const fraction = load(require('../../type/fraction/function/fraction'))
-  const number = load(require('../../type/number'))
+const name = 'pow'
+const dependencies = [
+  'typed',
+  'config',
+  'identity',
+  'multiply',
+  'matrix',
+  'fraction',
+  'number',
+  'Complex'
+]
 
+export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, identity, multiply, matrix, number, fraction, Complex }) => {
   /**
    * Calculates the power of x to y, `x ^ y`.
    * Matrix exponentiation is supported for square matrices `x`, and positive
@@ -43,7 +50,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Complex} y                          The exponent
    * @return {number | BigNumber | Complex | Array | Matrix} The value of `x` to the power `y`
    */
-  const pow = typed('pow', {
+  return typed(name, {
     'number, number': _pow,
 
     'Complex, Complex': function (x, y) {
@@ -54,7 +61,7 @@ function factory (type, config, load, typed) {
       if (y.isInteger() || x >= 0 || config.predictable) {
         return x.pow(y)
       } else {
-        return new type.Complex(x.toNumber(), 0).pow(y.toNumber(), 0)
+        return new Complex(x.toNumber(), 0).pow(y.toNumber(), 0)
       }
     },
 
@@ -115,13 +122,6 @@ function factory (type, config, load, typed) {
       // Unable to express y as a fraction, so continue on
     }
 
-    // x^Infinity === 0 if -1 < x < 1
-    // A real number 0 is returned instead of complex(0)
-    if ((x * x < 1 && y === Infinity) ||
-        (x * x > 1 && y === -Infinity)) {
-      return 0
-    }
-
     // **for predictable mode** x^Infinity === NaN if x < -1
     // N.B. this behavour is different from `Math.pow` which gives
     // (-2)^Infinity === Infinity
@@ -132,9 +132,18 @@ function factory (type, config, load, typed) {
     }
 
     if (isInteger(y) || x >= 0 || config.predictable) {
-      return Math.pow(x, y)
+      return powNumber(x, y)
     } else {
-      return new type.Complex(x, 0).pow(y, 0)
+      // TODO: the following infinity checks are duplicated from powNumber. Deduplicate this somehow
+
+      // x^Infinity === 0 if -1 < x < 1
+      // A real number 0 is returned instead of complex(0)
+      if ((x * x < 1 && y === Infinity) ||
+        (x * x > 1 && y === -Infinity)) {
+        return 0
+      }
+
+      return new Complex(x, 0).pow(y, 0)
     }
   }
 
@@ -180,13 +189,4 @@ function factory (type, config, load, typed) {
   function _powMatrix (x, y) {
     return matrix(_powArray(x.valueOf(), y))
   }
-
-  pow.toTex = {
-    2: `\\left(\${args[0]}\\right)${latex.operators['pow']}{\${args[1]}}`
-  }
-
-  return pow
-}
-
-exports.name = 'pow'
-exports.factory = factory
+})

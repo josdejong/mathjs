@@ -1,4 +1,4 @@
-module.exports = {
+export const asinhDocs = {
   'name': 'asinh',
   'category': 'Trigonometry',
   'syntax': [

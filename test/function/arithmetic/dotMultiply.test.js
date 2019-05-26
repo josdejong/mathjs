@@ -1,7 +1,8 @@
 // test dotMultiply (element-wise multiply)
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const dotMultiply = math.dotMultiply
 const divide = math.divide
 const matrix = math.matrix

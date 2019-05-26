@@ -1,8 +1,13 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
+import { log10Number } from '../../plain/number'
 
-function factory (type, config, load, typed) {
+const name = 'log10'
+const dependencies = [ 'typed', 'config', 'Complex' ]
+
+export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
   /**
    * Calculate the 10-base logarithm of a value. This is the same as calculating `log(x, 10)`.
    *
@@ -28,18 +33,18 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the 10-base logarithm of `x`
    */
-  const log10 = typed('log10', {
+  const log10 = typed(name, {
     'number': function (x) {
       if (x >= 0 || config.predictable) {
-        return _log10(x)
+        return log10Number(x)
       } else {
         // negative value -> complex value computation
-        return new type.Complex(x, 0).log().div(Math.LN10)
+        return new Complex(x, 0).log().div(Math.LN10)
       }
     },
 
     'Complex': function (x) {
-      return new type.Complex(x).log().div(Math.LN10)
+      return new Complex(x).log().div(Math.LN10)
     },
 
     'BigNumber': function (x) {
@@ -47,7 +52,7 @@ function factory (type, config, load, typed) {
         return x.log()
       } else {
         // downgrade to number, return Complex valued result
-        return new type.Complex(x.toNumber(), 0).log().div(Math.LN10)
+        return new Complex(x.toNumber(), 0).log().div(Math.LN10)
       }
     },
 
@@ -56,20 +61,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  log10.toTex = { 1: `\\log_{10}\\left(\${args[0]}\\right)` }
-
   return log10
-}
-
-/**
- * Calculate the 10-base logarithm of a number
- * @param {number} x
- * @return {number}
- * @private
- */
-const _log10 = Math.log10 || function (x) {
-  return Math.log(x) / Math.LN10
-}
-
-exports.name = 'log10'
-exports.factory = factory
+})

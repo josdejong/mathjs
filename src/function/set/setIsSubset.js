@@ -1,14 +1,12 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
-const identify = require('../../utils/array').identify
+import { flatten, identify } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
-  const size = load(require('../matrix/size'))
-  const subset = load(require('../matrix/subset'))
-  const compareNatural = load(require('../relational/compareNatural'))
+const name = 'setIsSubset'
+const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index']
 
+export const createSetIsSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index }) => {
   /**
    * Check whether a (multi)set is a subset of another (multi)set. (Every element of set1 is the element of set2.)
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -30,11 +28,11 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a2  A (multi)set
    * @return {boolean}            true | false
    */
-  const setIsSubset = typed('setIsSubset', {
+  return typed(name, {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
-      if (subset(size(a1), new MatrixIndex(0)) === 0) { // empty is a subset of anything
+      if (subset(size(a1), new Index(0)) === 0) { // empty is a subset of anything
         return true
-      } else if (subset(size(a2), new MatrixIndex(0)) === 0) { // anything is not a subset of empty
+      } else if (subset(size(a2), new Index(0)) === 0) { // anything is not a subset of empty
         return false
       }
       const b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))
@@ -55,9 +53,4 @@ function factory (type, config, load, typed) {
       return true
     }
   })
-
-  return setIsSubset
-}
-
-exports.name = 'setIsSubset'
-exports.factory = factory
+})

@@ -1,8 +1,13 @@
 'use strict'
 
-const number = require('../../utils/number')
+import { isBigNumber } from '../../utils/is'
+import { format, sign } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
+const name = 'Range'
+const dependencies = []
+
+export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
    * Create a range. A range has a start, step, and end, and contains functions
    * to iterate over the range.
@@ -44,21 +49,21 @@ function factory (type, config, load, typed) {
     const hasStep = step !== null && step !== undefined
 
     if (hasStart) {
-      if (type.isBigNumber(start)) {
+      if (isBigNumber(start)) {
         start = start.toNumber()
       } else if (typeof start !== 'number') {
         throw new TypeError('Parameter start must be a number')
       }
     }
     if (hasEnd) {
-      if (type.isBigNumber(end)) {
+      if (isBigNumber(end)) {
         end = end.toNumber()
       } else if (typeof end !== 'number') {
         throw new TypeError('Parameter end must be a number')
       }
     }
     if (hasStep) {
-      if (type.isBigNumber(step)) {
+      if (isBigNumber(step)) {
         step = step.toNumber()
       } else if (typeof step !== 'number') {
         throw new TypeError('Parameter step must be a number')
@@ -133,7 +138,7 @@ function factory (type, config, load, typed) {
     const end = this.end
     const diff = end - start
 
-    if (number.sign(step) === number.sign(diff)) {
+    if (sign(step) === sign(diff)) {
       len = Math.ceil((diff) / step)
     } else if (diff === 0) {
       len = 0
@@ -266,12 +271,12 @@ function factory (type, config, load, typed) {
    * @returns {string} str
    */
   Range.prototype.format = function (options) {
-    let str = number.format(this.start, options)
+    let str = format(this.start, options)
 
     if (this.step !== 1) {
-      str += ':' + number.format(this.step, options)
+      str += ':' + format(this.step, options)
     }
-    str += ':' + number.format(this.end, options)
+    str += ':' + format(this.end, options)
     return str
   }
 
@@ -311,8 +316,4 @@ function factory (type, config, load, typed) {
   }
 
   return Range
-}
-
-exports.name = 'Range'
-exports.path = 'type'
-exports.factory = factory
+}, { isClass: true })

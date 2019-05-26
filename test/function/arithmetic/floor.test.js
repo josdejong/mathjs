@@ -1,7 +1,8 @@
 // test floor
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
 const bignumber = math.bignumber
 const complex = math.complex
 const fraction = math.fraction
@@ -51,7 +52,7 @@ describe('floor', function () {
 
   it('should floor fractions correctly', function () {
     const a = fraction('2/3')
-    assert(floor(a) instanceof math.type.Fraction)
+    assert(floor(a) instanceof math.Fraction)
     assert.strictEqual(a.toString(), '0.(6)')
 
     assert.strictEqual(floor(fraction(0)).toString(), '0')
@@ -64,6 +65,26 @@ describe('floor', function () {
     assert.strictEqual(floor(fraction(-1.8)).toString(), '-2')
     assert.strictEqual(floor(fraction(-2)).toString(), '-2')
     assert.strictEqual(floor(fraction(-2.1)).toString(), '-3')
+  })
+
+  it('should gracefully handle round-off errors', function () {
+    assert.strictEqual(floor(3.0000000000000004), 3)
+    assert.strictEqual(floor(7.999999999999999), 8)
+    assert.strictEqual(floor(-3.0000000000000004), -3)
+    assert.strictEqual(floor(-7.999999999999999), -8)
+    assert.strictEqual(floor(30000.000000000004), 30000)
+    assert.strictEqual(floor(799999.9999999999), 800000)
+    assert.strictEqual(floor(-30000.000000000004), -30000)
+  })
+
+  it('should gracefully handle round-off errors with bignumbers', function () {
+    assert.deepStrictEqual(floor(bignumber(3.0000000000000004)), bignumber(3))
+    assert.deepStrictEqual(floor(bignumber(7.999999999999999)), bignumber(8))
+    assert.deepStrictEqual(floor(bignumber(-3.0000000000000004)), bignumber(-3))
+    assert.deepStrictEqual(floor(bignumber(-7.999999999999999)), bignumber(-8))
+    assert.deepStrictEqual(floor(bignumber(30000.000000000004)), bignumber(30000))
+    assert.deepStrictEqual(floor(bignumber(799999.9999999999)), bignumber(800000))
+    assert.deepStrictEqual(floor(bignumber(-30000.000000000004)), bignumber(-30000))
   })
 
   it('should throw an error with a unit', function () {

@@ -1,10 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const equalScalar = load(require('../../../function/relational/equalScalar'))
+import { factory } from '../../../utils/factory'
 
-  const SparseMatrix = type.SparseMatrix
+const name = 'algorithm11'
+const dependencies = ['typed', 'equalScalar']
 
+export const createAlgorithm11 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
    * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
    * Callback function invoked NZ times (number of nonzero items in S).
@@ -24,7 +25,7 @@ function factory (type, config, load, typed) {
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
    */
-  const algorithm11 = function (s, b, callback, inverse) {
+  return function algorithm11 (s, b, callback, inverse) {
     // sparse matrix arrays
     const avalues = s._values
     const aindex = s._index
@@ -67,7 +68,7 @@ function factory (type, config, load, typed) {
     const cindex = []
     const cptr = []
     // matrix
-    const c = new SparseMatrix({
+    const c = s.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -99,9 +100,4 @@ function factory (type, config, load, typed) {
     // return sparse matrix
     return c
   }
-
-  return algorithm11
-}
-
-exports.name = 'algorithm11'
-exports.factory = factory
+})

@@ -1,8 +1,8 @@
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert'
+import approx from '../../../tools/approx'
+import math from '../../../src/bundleAny'
 const matrix = math.matrix
-const Unit = math.type.Unit
+const Unit = math.Unit
 const unit = math.unit
 
 describe('to', function () {

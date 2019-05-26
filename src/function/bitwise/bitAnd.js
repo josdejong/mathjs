@@ -1,18 +1,27 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const bigBitAnd = require('../../utils/bignumber/bitAnd')
+import { bitAndBigNumber } from '../../utils/bignumber/bitwise'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
+import { factory } from '../../utils/factory'
+import { bitAndNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'bitAnd'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar'
+]
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm06 = createAlgorithm06({ typed, equalScalar })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Bitwise AND two values, `x & y`.
@@ -36,17 +45,11 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array | Matrix} y Second value to and
    * @return {number | BigNumber | Array | Matrix} AND of `x` and `y`
    */
-  const bitAnd = typed('bitAnd', {
+  const bitAnd = typed(name, {
 
-    'number, number': function (x, y) {
-      if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function bitAnd')
-      }
+    'number, number': bitAndNumber,
 
-      return x & y
-    },
-
-    'BigNumber, BigNumber': bigBitAnd,
+    'BigNumber, BigNumber': bitAndBigNumber,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       return algorithm06(x, y, bitAnd, false)
@@ -106,12 +109,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  bitAnd.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['bitAnd']}\${args[1]}\\right)`
-  }
-
   return bitAnd
-}
-
-exports.name = 'bitAnd'
-exports.factory = factory
+})

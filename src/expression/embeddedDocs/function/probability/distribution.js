@@ -1,4 +1,4 @@
-module.exports = {
+export const distributionDocs = {
   'name': 'distribution',
   'category': 'Probability',
   'syntax': [

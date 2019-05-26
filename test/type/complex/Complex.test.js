@@ -1,9 +1,10 @@
 // test data type Complex
 
-const assert = require('assert')
-const math = require('../../../src/main')
-const Unit = math.type.Unit
-const Complex = math.type.Complex
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
+const Unit = math.Unit
+const Complex = math.Complex
 
 describe('Complex', function () {
   function assertComplex (complex, re, im) {
@@ -22,12 +23,12 @@ describe('Complex', function () {
     })
 
     it('should have a property isComplex', function () {
-      const a = new math.type.Complex(2, 3)
+      const a = new math.Complex(2, 3)
       assert.strictEqual(a.isComplex, true)
     })
 
     it('should have a property type', function () {
-      const a = new math.type.Complex(2, 3)
+      const a = new math.Complex(2, 3)
       assert.strictEqual(a.type, 'Complex')
     })
 
@@ -190,18 +191,6 @@ describe('Complex', function () {
       assert.strictEqual(new Complex(2, 4).equals(new Complex(2, 0)), false)
       assert.strictEqual(new Complex(2, 4).equals(new Complex(0, 4)), false)
       assert.strictEqual(new Complex(0, 0).equals(new Complex()), true)
-    })
-
-    it('should use the epsilon configured with math.js', function () {
-      const old = math.config()
-
-      assert.strictEqual(Complex.EPSILON, math.config().epsilon)
-      assert.strictEqual(new Complex(1, 0).equals(new Complex(1.01, 0)), false)
-
-      math.config({ epsilon: 0.1 })
-      assert.strictEqual(new Complex(1, 0).equals(new Complex(1.01, 0)), true)
-
-      math.config(old) // restore old config
     })
   })
 

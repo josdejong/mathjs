@@ -1,4 +1,4 @@
-module.exports = {
+export const prodDocs = {
   'name': 'prod',
   'category': 'Statistics',
   'syntax': [
@@ -19,6 +19,6 @@ module.exports = {
     'min',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

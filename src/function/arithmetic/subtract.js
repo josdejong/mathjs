@@ -1,22 +1,33 @@
 'use strict'
 
-const DimensionError = require('../../error/DimensionError')
+import { factory } from '../../utils/factory'
+import { DimensionError } from '../../error/DimensionError'
+import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05'
+import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'subtract'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'addScalar',
+  'unaryMinus',
+  'DenseMatrix'
+]
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const addScalar = load(require('./addScalar'))
-  const unaryMinus = load(require('./unaryMinus'))
-
-  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
-  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, DenseMatrix }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
+
+  const algorithm01 = createAlgorithm01({ typed })
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm05 = createAlgorithm05({ typed, equalScalar })
+  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Subtract two values, `x - y`.
@@ -51,7 +62,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Subtraction of `x` and `y`
    */
-  const subtract = typed('subtract', {
+  const subtract = typed(name, {
 
     'number, number': function (x, y) {
       return x - y
@@ -151,12 +162,8 @@ function factory (type, config, load, typed) {
     }
   })
 
-  subtract.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['subtract']}\${args[1]}\\right)`
-  }
-
   return subtract
-}
+})
 
 /**
  * Check whether matrix x and y have the same number of dimensions.
@@ -172,6 +179,3 @@ function checkEqualDimensions (x, y) {
     throw new DimensionError(xsize.length, ysize.length)
   }
 }
-
-exports.name = 'subtract'
-exports.factory = factory

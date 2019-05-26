@@ -1,33 +1,55 @@
 'use strict'
 
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
-function factory (type, config, load, typed, math) {
-  const util = load(require('./util'))
-  const isCommutative = util.isCommutative
-  const isAssociative = util.isAssociative
-  const allChildren = util.allChildren
-  const createMakeNodeFunction = util.createMakeNodeFunction
-  const ConstantNode = math.expression.node.ConstantNode
-  const OperatorNode = math.expression.node.OperatorNode
-  const FunctionNode = math.expression.node.FunctionNode
+import { isFraction, isNode, isOperatorNode } from '../../../utils/is'
+import { factory } from '../../../utils/factory'
+import { createUtil } from './util'
+import { noBignumber, noFraction } from '../../../utils/noop'
+
+const name = 'simplifyConstant'
+const dependencies = [
+  'typed',
+  'config',
+  'mathWithTransform',
+  '?fraction',
+  '?bignumber',
+  'ConstantNode',
+  'OperatorNode',
+  'FunctionNode',
+  'SymbolNode'
+]
+
+export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies, ({
+  typed,
+  config,
+  mathWithTransform,
+  fraction,
+  bignumber,
+  ConstantNode,
+  OperatorNode,
+  FunctionNode,
+  SymbolNode
+}) => {
+  const { isCommutative, isAssociative, allChildren, createMakeNodeFunction } =
+    createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
   function simplifyConstant (expr, options) {
     const res = foldFraction(expr, options)
-    return type.isNode(res) ? res : _toNode(res)
+    return isNode(res) ? res : _toNode(res)
   }
 
   function _eval (fnname, args, options) {
     try {
-      return _toNumber(math[fnname].apply(null, args), options)
+      return _toNumber(mathWithTransform[fnname].apply(null, args), options)
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
       args = args.map(function (x) {
-        if (type.isFraction(x)) {
+        if (isFraction(x)) {
           return x.valueOf()
         }
         return x
       })
-      return _toNumber(math[fnname].apply(null, args), options)
+      return _toNumber(mathWithTransform[fnname].apply(null, args), options)
     }
   }
 
@@ -53,8 +75,8 @@ function factory (type, config, load, typed, math) {
   // convert a number to a fraction only if it can be expressed exactly
   function _exactFraction (n, options) {
     const exactFractions = (options && options.exactFractions !== false)
-    if (exactFractions && isFinite(n)) {
-      const f = math.fraction(n)
+    if (exactFractions && isFinite(n) && fraction) {
+      const f = fraction(n)
       if (f.valueOf() === n) {
         return f
       }
@@ -67,9 +89,15 @@ function factory (type, config, load, typed, math) {
   const _toNumber = typed({
     'string, Object': function (s, options) {
       if (config.number === 'BigNumber') {
-        return math.bignumber(s)
+        if (bignumber === undefined) {
+          noBignumber()
+        }
+        return bignumber(s)
       } else if (config.number === 'Fraction') {
-        return math.fraction(s)
+        if (fraction === undefined) {
+          noFraction()
+        }
+        return fraction(s)
       } else {
         const n = parseFloat(s)
         return _exactFraction(n, options)
@@ -123,15 +151,15 @@ function factory (type, config, load, typed, math) {
    */
   function foldOp (fn, args, makeNode, options) {
     return args.reduce(function (a, b) {
-      if (!type.isNode(a) && !type.isNode(b)) {
+      if (!isNode(a) && !isNode(b)) {
         try {
           return _eval(fn, [a, b], options)
         } catch (ignoreandcontinue) {}
         a = _toNode(a)
         b = _toNode(b)
-      } else if (!type.isNode(a)) {
+      } else if (!isNode(a)) {
         a = _toNode(a)
-      } else if (!type.isNode(b)) {
+      } else if (!isNode(b)) {
         b = _toNode(b)
       }
 
@@ -150,7 +178,7 @@ function factory (type, config, load, typed, math) {
         }
         return node
       case 'FunctionNode':
-        if (math[node.name] && math[node.name].rawArgs) {
+        if (mathWithTransform[node.name] && mathWithTransform[node.name].rawArgs) {
           return node
         }
 
@@ -160,7 +188,7 @@ function factory (type, config, load, typed, math) {
           let args = node.args.map(arg => foldFraction(arg, options))
 
           // If all args are numbers
-          if (!args.some(type.isNode)) {
+          if (!args.some(isNode)) {
             try {
               return _eval(node.name, args, options)
             } catch (ignoreandcontine) {}
@@ -168,7 +196,7 @@ function factory (type, config, load, typed, math) {
 
           // Convert all args to nodes and construct a symbolic function call
           args = args.map(function (arg) {
-            return type.isNode(arg) ? arg : _toNode(arg)
+            return isNode(arg) ? arg : _toNode(arg)
           })
           return new FunctionNode(node.name, args)
         } else {
@@ -180,9 +208,9 @@ function factory (type, config, load, typed, math) {
         let args
         let res
         const makeNode = createMakeNodeFunction(node)
-        if (node.isUnary()) {
+        if (isOperatorNode(node) && node.isUnary()) {
           args = [foldFraction(node.args[0], options)]
-          if (!type.isNode(args[0])) {
+          if (!isNode(args[0])) {
             res = _eval(fn, args, options)
           } else {
             res = makeNode(args)
@@ -197,7 +225,7 @@ function factory (type, config, load, typed, math) {
             const vars = []
 
             for (let i = 0; i < args.length; i++) {
-              if (!type.isNode(args[i])) {
+              if (!isNode(args[i])) {
                 consts.push(args[i])
               } else {
                 vars.push(args[i])
@@ -241,8 +269,6 @@ function factory (type, config, load, typed, math) {
         /* falls through */
       case 'RangeNode':
         /* falls through */
-      case 'UpdateNode':
-        /* falls through */
       case 'ConditionalNode':
         /* falls through */
       default:
@@ -251,9 +277,4 @@ function factory (type, config, load, typed, math) {
   }
 
   return simplifyConstant
-}
-
-exports.math = true
-exports.name = 'simplifyConstant'
-exports.path = 'algebra.simplify'
-exports.factory = factory
+})

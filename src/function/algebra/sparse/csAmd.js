@@ -1,14 +1,18 @@
 'use strict'
 
-function factory (type, config, load) {
-  const csFlip = load(require('./csFlip'))
-  const csFkeep = load(require('./csFkeep'))
-  const csTdfs = load(require('./csTdfs'))
+import { factory } from '../../../utils/factory'
+import { csFkeep } from './csFkeep'
+import { csFlip } from './csFlip'
+import { csTdfs } from './csTdfs'
 
-  const add = load(require('../../arithmetic/add'))
-  const multiply = load(require('../../arithmetic/multiply'))
-  const transpose = load(require('../../matrix/transpose'))
+const name = 'csAmd'
+const dependencies = [
+  'add',
+  'multiply',
+  'transpose'
+]
 
+export const createCsAmd = /* #__PURE__ */ factory(name, dependencies, ({ add, multiply, transpose }) => {
   /**
    * Approximate minimum degree ordering. The minimum degree algorithm is a widely used
    * heuristic for finding a permutation P so that P*A*P' has fewer nonzeros in its factorization
@@ -20,7 +24,7 @@ function factory (type, config, load) {
    * @param {Number} order    0: Natural, 1: Cholesky, 2: LU, 3: QR
    * @param {Matrix} m        Sparse Matrix
    */
-  const csAmd = function (order, a) {
+  return function csAmd (order, a) {
     // check input parameters
     if (!a || order <= 0 || order > 3) { return null }
     // a matrix arrays
@@ -529,10 +533,4 @@ function factory (type, config, load) {
   function _diag (i, j) {
     return i !== j
   }
-
-  return csAmd
-}
-
-exports.name = 'csAmd'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+})

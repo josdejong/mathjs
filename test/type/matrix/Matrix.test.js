@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const Matrix = math.type.Matrix
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+const Matrix = math.Matrix
 
 describe('matrix', function () {
   describe('constructor', function () {

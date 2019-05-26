@@ -58,7 +58,7 @@ const PRECISION = 14 // decimals
  * @return {*}
  */
 function getMath () {
-  return require('../index')
+  return require('../lib/bundleAny')
 }
 
 /**
@@ -112,8 +112,8 @@ function completer (text) {
 
     // math functions and constants
     const ignore = ['expr', 'type']
-    for (const func in math) {
-      if (math.hasOwnProperty(func)) {
+    for (const func in math.expression.mathWithTransform) {
+      if (math.expression.mathWithTransform.hasOwnProperty(func)) {
         if (func.indexOf(keyword) === 0 && ignore.indexOf(func) === -1) {
           matches.push(func)
         }
@@ -121,7 +121,7 @@ function completer (text) {
     }
 
     // units
-    const Unit = math.type.Unit
+    const Unit = math.Unit
     for (let name in Unit.UNITS) {
       if (Unit.UNITS.hasOwnProperty(name)) {
         if (name.indexOf(keyword) === 0) {
@@ -212,13 +212,13 @@ function runStream (input, output, mode, parenthesis) {
           break
         }
         switch (mode) {
-          case 'eval':
+          case 'evaluate':
             // evaluate expression
             try {
               let node = math.parse(expr)
-              let res = node.eval(scope)
+              let res = node.evaluate(scope)
 
-              if (math.type.isResultSet(res)) {
+              if (math.isResultSet(res)) {
                 // we can have 0 or 1 results in the ResultSet, as the CLI
                 // does not allow multiple expressions separated by a return
                 res = res.entries[0]
@@ -228,7 +228,7 @@ function runStream (input, output, mode, parenthesis) {
               }
 
               if (node) {
-                if (math.type.isAssignmentNode(node)) {
+                if (math.isAssignmentNode(node)) {
                   const name = findSymbolName(node)
                   if (name !== null) {
                     scope.ans = scope[name]
@@ -237,7 +237,7 @@ function runStream (input, output, mode, parenthesis) {
                     scope.ans = res
                     console.log(format(res))
                   }
-                } else if (math.type.isHelp(res)) {
+                } else if (math.isHelp(res)) {
                   console.log(res.toString())
                 } else {
                   scope.ans = res
@@ -292,7 +292,7 @@ function findSymbolName (node) {
   let n = node
 
   while (n) {
-    if (math.type.isSymbolNode(n)) {
+    if (math.isSymbolNode(n)) {
       return n.name
     }
     n = n.object
@@ -356,7 +356,7 @@ function outputHelp () {
  * Process input and output, based on the command line arguments
  */
 const scripts = [] // queue of scripts that need to be processed
-let mode = 'eval' // one of 'eval', 'tex' or 'string'
+let mode = 'evaluate' // one of 'evaluate', 'tex' or 'string'
 let parenthesis = 'keep'
 let version = false
 let help = false
@@ -414,7 +414,7 @@ if (version) {
 } else {
   fs.stat(scripts[0], function (e, f) {
     if (e) {
-      console.log(getMath().eval(scripts.join(' ')).toString())
+      console.log(getMath().evaluate(scripts.join(' ')).toString())
     } else {
     // work through the queue of scripts
       scripts.forEach(function (arg) {

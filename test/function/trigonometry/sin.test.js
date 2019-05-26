@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const approx = require('../../../tools/approx')
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -45,25 +45,29 @@ describe('sin', function () {
                                         '3071480438329880550139583951234188873226108092477936610585549' +
                                         '3575835362891900420559398509489530577719840860106717522689249' +
                                         '60612126026291341865833521451170868744460464214033460336158'))
-    bigmath.config({ number: 'BigNumber', precision: 15 })
+    const bigmath2 = bigmath.create({ number: 'BigNumber', precision: 15 })
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau (like 6, 7)
     for (let x = -20; x < 20; x += 1) {
-      approx.equal(bigmath.sin(bigmath.bignumber(x)).toNumber(), Math.sin(x))
+      approx.equal(bigmath2.sin(bigmath2.bignumber(x)).toNumber(), Math.sin(x))
     }
 
-    const bigPi = bigmath.pi
-    assert.deepStrictEqual(bigmath.sin(bigPi.div(8)).toString(), '0.38268343236509')
-    assert.deepStrictEqual(bigmath.sin(bigPi.div(4)).toString(), '0.707106781186547')
-    assert.deepStrictEqual(bigmath.sin(bigPi.div(2)).toString(), '1')
-    assert.deepStrictEqual(bigmath.sin(bigPi.times(3).div(4)).toString(), '0.707106781186551')
-    assert.ok(bigmath.sin(bigPi).lt(1e-14))
-    assert.deepStrictEqual(bigmath.sin(bigPi.times(5).div(4)).toString(), '-0.707106781186554')
-    assert.deepStrictEqual(bigmath.sin(bigPi.times(3).div(2)).toString(), '-1')
-    assert.deepStrictEqual(bigmath.sin(bigPi.times(7).div(4)).toString(), '-0.707106781186553')
-    assert.ok(bigmath.sin(bigPi.times(2)).lt(1e-13))
-    assert.ok(bigmath.sin(bigmath.tau).lt(1e-14))
-    assert.ok(bigmath.sin(bigmath.tau.times(2)).lt(1e-13))
+    const bigPi = bigmath2.pi
+    assert.deepStrictEqual(bigmath2.sin(bigPi.div(8)).toString(), '0.38268343236509')
+    assert.deepStrictEqual(bigmath2.sin(bigPi.div(4)).toString(), '0.707106781186547')
+    assert.deepStrictEqual(bigmath2.sin(bigPi.div(2)).toString(), '1')
+    assert.deepStrictEqual(bigmath2.sin(bigPi.times(3).div(4)).toString(), '0.707106781186551')
+    assert.ok(bigmath2.sin(bigPi).lt(1e-14))
+    assert.deepStrictEqual(bigmath2.sin(bigPi.times(5).div(4)).toString(), '-0.707106781186554')
+    assert.deepStrictEqual(bigmath2.sin(bigPi.times(3).div(2)).toString(), '-1')
+    assert.deepStrictEqual(bigmath2.sin(bigPi.times(7).div(4)).toString(), '-0.707106781186553')
+    assert.ok(bigmath2.sin(bigPi.times(2)).lt(1e-13))
+    assert.ok(bigmath2.sin(bigmath2.tau).lt(1e-14))
+    assert.ok(bigmath2.sin(bigmath2.tau.times(2)).lt(1e-13))
+
+    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+
+    assert.deepStrictEqual(bigmath61.sin(bigmath61.bignumber(-2)).toString(), '-0.909297426825681695396019865911744842702254971447890268378973')
   })
 
   it('should return the sine of a complex number', function () {
@@ -83,7 +87,7 @@ describe('sin', function () {
     approx.equal(sin(unit('45deg')), 0.707106781186548)
     approx.equal(sin(unit('-45deg')), -0.707106781186548)
 
-    assert(math.type.isBigNumber(sin(unit(math.bignumber(45), 'deg'))))
+    assert(math.isBigNumber(sin(unit(math.bignumber(45), 'deg'))))
     approx.equal(sin(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548)
 
     approx.deepEqual(sin(unit(complex('1+i'), 'rad')), complex(1.298457581415977, 0.634963914784736))

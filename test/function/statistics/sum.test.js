@@ -1,9 +1,9 @@
-const assert = require('assert')
-const math = require('../../../src/main')
-const BigNumber = math.type.BigNumber
-const Complex = math.type.Complex
-const DenseMatrix = math.type.DenseMatrix
-const Unit = math.type.Unit
+import assert from 'assert'
+import math from '../../../src/bundleAny'
+const BigNumber = math.BigNumber
+const Complex = math.Complex
+const DenseMatrix = math.DenseMatrix
+const Unit = math.Unit
 const sum = math.sum
 
 describe('sum', function () {
@@ -107,7 +107,7 @@ describe('sum', function () {
     assert.strictEqual(big.type, 'BigNumber')
     assert.strictEqual(frac.type, 'Fraction')
     assert.strictEqual(math.equal(bigMath.sum([]), new BigNumber(0)).valueOf(), true)
-    assert.strictEqual(math.equal(fracMath.sum([]), new fracMath.type.Fraction(0)), true)
+    assert.strictEqual(math.equal(fracMath.sum([]), new fracMath.Fraction(0)), true)
   })
 
   it('should throw an error if called with invalid type of arguments', function () {

@@ -1,13 +1,17 @@
 'use strict'
 
-const stringify = require('../../utils/string').stringify
-const escape = require('../../utils/string').escape
-const isSafeProperty = require('../../utils/customs').isSafeProperty
-const hasOwnProperty = require('../../utils/object').hasOwnProperty
+import { isNode } from '../../utils/is'
+import { escape, stringify } from '../../utils/string'
+import { isSafeProperty } from '../../utils/customs'
+import { hasOwnProperty } from '../../utils/object'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
+const name = 'ObjectNode'
+const dependencies = [
+  'Node'
+]
 
+export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * @constructor ObjectNode
    * @extends {Node}
@@ -24,7 +28,7 @@ function factory (type, config, load, typed) {
     // validate input
     if (properties) {
       if (!(typeof properties === 'object') || !Object.keys(properties).every(function (key) {
-        return type.isNode(properties[key])
+        return isNode(properties[key])
       })) {
         throw new TypeError('Object containing Nodes expected')
       }
@@ -193,8 +197,4 @@ function factory (type, config, load, typed) {
   }
 
   return ObjectNode
-}
-
-exports.name = 'ObjectNode'
-exports.path = 'expression.node'
-exports.factory = factory
+}, { isClass: true, isNode: true })

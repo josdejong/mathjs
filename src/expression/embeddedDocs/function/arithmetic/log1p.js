@@ -1,4 +1,4 @@
-module.exports = {
+export const log1pDocs = {
   'name': 'log1p',
   'category': 'Arithmetic',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const addDocs = {
   'name': 'add',
   'category': 'Operators',
   'syntax': [

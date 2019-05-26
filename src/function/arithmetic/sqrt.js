@@ -1,8 +1,12 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'sqrt'
+const dependencies = ['config', 'typed', 'Complex']
+
+export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, Complex }) => {
   /**
    * Calculate the square root of a value.
    *
@@ -67,14 +71,9 @@ function factory (type, config, load, typed) {
     } else if (x >= 0 || config.predictable) {
       return Math.sqrt(x)
     } else {
-      return new type.Complex(x, 0).sqrt()
+      return new Complex(x, 0).sqrt()
     }
   }
 
-  sqrt.toTex = { 1: `\\sqrt{\${args[0]}}` }
-
   return sqrt
-}
-
-exports.name = 'sqrt'
-exports.factory = factory
+})

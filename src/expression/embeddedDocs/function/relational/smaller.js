@@ -1,4 +1,4 @@
-module.exports = {
+export const smallerDocs = {
   'name': 'smaller',
   'category': 'Relational',
   'syntax': [

@@ -1,15 +1,28 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
+import { factory } from '../../utils/factory'
+import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
+import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04'
+import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { gcdNumber } from '../../plain/number'
 
-function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'gcd'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'BigNumber',
+  'DenseMatrix'
+]
 
-  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  const algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
-  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix }) => {
+  const algorithm01 = createAlgorithm01({ typed })
+  const algorithm04 = createAlgorithm04({ typed, equalScalar })
+  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.
@@ -36,9 +49,9 @@ function factory (type, config, load, typed) {
    * @param {... number | BigNumber | Fraction | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Fraction | Array | Matrix}                           The greatest common divisor
    */
-  const gcd = typed('gcd', {
+  const gcd = typed(name, {
 
-    'number, number': _gcd,
+    'number, number': gcdNumber,
 
     'BigNumber, BigNumber': _gcdBigNumber,
 
@@ -113,8 +126,6 @@ function factory (type, config, load, typed) {
     }
   })
 
-  gcd.toTex = `\\gcd\\left(\${args}\\right)`
-
   return gcd
 
   /**
@@ -130,7 +141,7 @@ function factory (type, config, load, typed) {
     }
 
     // https://en.wikipedia.org/wiki/Euclidean_algorithm
-    const zero = new type.BigNumber(0)
+    const zero = new BigNumber(0)
     while (!b.isZero()) {
       const r = a.mod(b)
       a = b
@@ -138,29 +149,4 @@ function factory (type, config, load, typed) {
     }
     return a.lt(zero) ? a.neg() : a
   }
-}
-
-/**
- * Calculate gcd for numbers
- * @param {number} a
- * @param {number} b
- * @returns {number} Returns the greatest common denominator of a and b
- * @private
- */
-function _gcd (a, b) {
-  if (!isInteger(a) || !isInteger(b)) {
-    throw new Error('Parameters in function gcd must be integer numbers')
-  }
-
-  // https://en.wikipedia.org/wiki/Euclidean_algorithm
-  let r
-  while (b !== 0) {
-    r = a % b
-    a = b
-    b = r
-  }
-  return (a < 0) ? -a : a
-}
-
-exports.name = 'gcd'
-exports.factory = factory
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const combinationsDocs = {
   'name': 'combinations',
   'category': 'Probability',
   'syntax': [

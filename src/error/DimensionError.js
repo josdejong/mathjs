@@ -9,7 +9,7 @@
  *                                          and expected size: '!=', '<', etc.
  * @extends RangeError
  */
-function DimensionError (actual, expected, relation) {
+export function DimensionError (actual, expected, relation) {
   if (!(this instanceof DimensionError)) {
     throw new SyntaxError('Constructor must be called with the new operator')
   }
@@ -31,5 +31,3 @@ DimensionError.prototype = new RangeError()
 DimensionError.prototype.constructor = RangeError
 DimensionError.prototype.name = 'DimensionError'
 DimensionError.prototype.isDimensionError = true
-
-module.exports = DimensionError

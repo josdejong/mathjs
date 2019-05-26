@@ -1,4 +1,4 @@
-module.exports = {
+export const logDocs = {
   'name': 'log',
   'category': 'Arithmetic',
   'syntax': [

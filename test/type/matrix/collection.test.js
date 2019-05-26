@@ -1,8 +1,8 @@
-const assert = require('assert')
-const isCollection = require('../../../src/utils/collection/isCollection')
-const math = require('../../../src/main')
-const DenseMatrix = math.type.DenseMatrix
-const SparseMatrix = math.type.SparseMatrix
+import assert from 'assert'
+import { isCollection } from '../../../src/utils/is'
+import math from '../../../src/bundleAny'
+const DenseMatrix = math.DenseMatrix
+const SparseMatrix = math.SparseMatrix
 
 describe('isCollection', function () {
   it('should test whether an object is a collection', function () {

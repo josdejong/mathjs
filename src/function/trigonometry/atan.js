@@ -1,8 +1,12 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'atan'
+const dependencies = ['typed']
+
+export const createAtan = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the inverse tangent of a value.
    *
@@ -45,10 +49,5 @@ function factory (type, config, load, typed) {
     }
   })
 
-  atan.toTex = { 1: `\\tan^{-1}\\left(\${args[0]}\\right)` }
-
   return atan
-}
-
-exports.name = 'atan'
-exports.factory = factory
+})

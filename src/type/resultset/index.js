@@ -1,5 +1,5 @@
 'use strict'
-module.exports = [
-  // type
-  require('./ResultSet')
-]
+
+import { deprecatedIndexFileError } from '../../error/deprecatedIndexFileError'
+
+deprecatedIndexFileError(__filename)

@@ -1,6 +1,7 @@
 // test add
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert'
+
+import math from '../../../src/bundleAny'
 const add = math.add
 
 // TODO: make unit tests independent of math
@@ -35,7 +36,7 @@ describe('add', function () {
       const b = math.matrix([3, 2, 1])
       const c = add(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([4, 4, 4]))
     })
 
@@ -44,7 +45,7 @@ describe('add', function () {
       const b = math.sparse([[6, 5, 4], [3, 2, 1]])
       const c = add(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([[7, 7, 7], [7, 7, 7]]))
     })
   })
@@ -59,7 +60,7 @@ describe('add', function () {
       const a2 = math.matrix([[1, 2], [3, 4]])
       const a3 = math.matrix([[5, 6], [7, 8]])
       const a4 = add(a2, a3)
-      assert.ok(a4 instanceof math.type.Matrix)
+      assert.ok(a4 instanceof math.Matrix)
       assert.deepStrictEqual(a4.size(), [2, 2])
       assert.deepStrictEqual(a4.valueOf(), [[6, 8], [10, 12]])
     })
@@ -81,7 +82,7 @@ describe('add', function () {
       const b = [3, 2, 1]
       const c = add(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([4, 4, 4]))
     })
 
@@ -90,7 +91,7 @@ describe('add', function () {
       const b = math.sparse([[3, 2, 1], [0, 0, 1]])
       const c = add(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([[4, 4, 4], [1, 0, 1]]))
     })
 
@@ -98,7 +99,7 @@ describe('add', function () {
       const a2 = math.matrix([[1, 2], [3, 4]], 'dense', 'number')
       const a3 = math.matrix([[5, 6], [7, 8]], 'dense', 'number')
       const a4 = add(a2, a3)
-      assert.ok(a4 instanceof math.type.Matrix)
+      assert.ok(a4 instanceof math.Matrix)
       assert.strictEqual(a4._datatype, 'number')
       assert.deepStrictEqual(a4.size(), [2, 2])
       assert.deepStrictEqual(a4.valueOf(), [[6, 8], [10, 12]])
@@ -108,7 +109,7 @@ describe('add', function () {
       const a2 = math.matrix([math.bignumber(3), math.bignumber(4)], 'dense', 'BigNumber')
       const a3 = math.matrix([math.bignumber(5), math.bignumber(6)], 'dense', 'BigNumber')
       const a4 = add(a2, a3)
-      assert.ok(a4 instanceof math.type.Matrix)
+      assert.ok(a4 instanceof math.Matrix)
       assert.strictEqual(a4._datatype, 'BigNumber')
       assert.deepStrictEqual(a4.size(), [2])
       assert.deepStrictEqual(a4.valueOf(), [math.bignumber(8), math.bignumber(10)])
@@ -120,7 +121,7 @@ describe('add', function () {
       const a2 = math.matrix([[1, 2], [3, 4]], 'sparse')
       const a3 = math.matrix([[5, -2], [7, -4]], 'sparse')
       const a4 = add(a2, a3)
-      assert.ok(a4 instanceof math.type.Matrix)
+      assert.ok(a4 instanceof math.Matrix)
       assert.deepStrictEqual(a4, math.sparse([[6, 0], [10, 0]]))
     })
 
@@ -134,7 +135,7 @@ describe('add', function () {
       const b = [[3, 2, 1], [0, 0, 1]]
       const c = add(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([[4, 4, 4], [1, 0, 1]]))
     })
 
@@ -143,7 +144,7 @@ describe('add', function () {
       const b = math.matrix([[3, 2, 1], [0, 0, 1]])
       const c = add(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.matrix([[4, 4, 4], [1, 0, 1]]))
     })
 
@@ -152,19 +153,19 @@ describe('add', function () {
       const b = math.sparse([[3, 2, 1], [0, 0, 1]])
       const c = add(a, b)
 
-      assert.ok(c instanceof math.type.Matrix)
+      assert.ok(c instanceof math.Matrix)
       assert.deepStrictEqual(c, math.sparse([[4, 4, 4], [1, 0, 1]]))
     })
 
     it('should add two pattern matrices correctly', function () {
-      const a = new math.type.SparseMatrix({
+      const a = new math.SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
         size: [3, 3]
       })
 
-      const b = new math.type.SparseMatrix({
+      const b = new math.SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 1],
         ptr: [0, 3, 3, 4],
@@ -175,7 +176,7 @@ describe('add', function () {
 
       assert.deepStrictEqual(
         c,
-        new math.type.SparseMatrix({
+        new math.SparseMatrix({
           values: undefined,
           index: [0, 1, 2, 2, 0, 1],
           ptr: [0, 3, 4, 6],
@@ -184,14 +185,14 @@ describe('add', function () {
     })
 
     it('should add pattern and value matrices correctly', function () {
-      const a = new math.type.SparseMatrix({
+      const a = new math.SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
         size: [3, 3]
       })
 
-      const b = new math.type.SparseMatrix({
+      const b = new math.SparseMatrix({
         values: [1, 2, 3, 4],
         index: [0, 1, 2, 1],
         ptr: [0, 3, 3, 4],
@@ -202,7 +203,7 @@ describe('add', function () {
 
       assert.deepStrictEqual(
         c,
-        new math.type.SparseMatrix({
+        new math.SparseMatrix({
           values: undefined,
           index: [0, 1, 2, 2, 0, 1],
           ptr: [0, 3, 4, 6],
@@ -211,14 +212,14 @@ describe('add', function () {
     })
 
     it('should add value and pattern matrices correctly', function () {
-      const a = new math.type.SparseMatrix({
+      const a = new math.SparseMatrix({
         values: [1, 2, 3, 4],
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
         size: [3, 3]
       })
 
-      const b = new math.type.SparseMatrix({
+      const b = new math.SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 1],
         ptr: [0, 3, 3, 4],
@@ -229,7 +230,7 @@ describe('add', function () {
 
       assert.deepStrictEqual(
         c,
-        new math.type.SparseMatrix({
+        new math.SparseMatrix({
           values: undefined,
           index: [0, 1, 2, 2, 0, 1],
           ptr: [0, 3, 4, 6],

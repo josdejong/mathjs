@@ -1,16 +1,13 @@
 'use strict'
 
-const clone = require('../../utils/object').clone
-const format = require('../../utils/string').format
+import { clone } from '../../utils/object'
+import { format } from '../../utils/string'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'transpose'
+const dependencies = ['typed', 'matrix']
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-
-  const DenseMatrix = type.DenseMatrix
-  const SparseMatrix = type.SparseMatrix
-
+export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Transpose a matrix. All values of the matrix are reflected over its
    * main diagonal. Only applicable to two dimensional matrices containing
@@ -106,7 +103,7 @@ function factory (type, config, load, typed) {
       }
     }
     // return matrix
-    return new DenseMatrix({
+    return m.createDenseMatrix({
       data: transposed,
       size: [columns, rows],
       datatype: m._datatype
@@ -158,7 +155,7 @@ function factory (type, config, load, typed) {
       }
     }
     // return matrix
-    return new SparseMatrix({
+    return m.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -167,10 +164,5 @@ function factory (type, config, load, typed) {
     })
   }
 
-  transpose.toTex = { 1: `\\left(\${args[0]}\\right)${latex.operators['transpose']}` }
-
   return transpose
-}
-
-exports.name = 'transpose'
-exports.factory = factory
+})
