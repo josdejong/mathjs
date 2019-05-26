@@ -5,7 +5,7 @@ import { deepFlatten, isLegacyFactory, lazy, traverse, values } from './../utils
 import * as emitter from './../utils/emitter'
 import { importFactory } from './function/import'
 import { configFactory } from './function/config'
-import { isFactory } from '../utils/factory'
+import { factory, isFactory } from '../utils/factory'
 import {
   isAccessorNode,
   isArray,
@@ -226,6 +226,9 @@ export function create (factories, config) {
   // the create function exposed on the mathjs instance is bound to
   // the factory functions passed before
   math.create = create.bind(null, factories)
+
+  // export factory function
+  math.factory = factory
 
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).

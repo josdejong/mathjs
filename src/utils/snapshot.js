@@ -181,6 +181,7 @@ export function createSnapshotFromFactories (factories) {
     'typeof': 'Function',
     config: 'Function',
     create: 'Function',
+    factory: 'Function',
 
     ...allTypeChecks,
     ...allErrorClasses,
