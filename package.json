@@ -192,7 +192,7 @@
     "test": "npm run test:src && npm run lint",
     "test:src": "mocha test --recursive --require @babel/register",
     "test:generated": "mocha test-generated --recursive --require @babel/register",
-    "test:node": "mocha test-node --recursive",
+    "test:node": "mocha test-node/*.test.js test-node/**/*.test.js --recursive",
     "test:browser": "karma start ./browser-test-config/local-karma.js",
     "test:browserstack": "karma start ./browser-test-config/browserstack-karma.js",
     "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test --recursive --require @babel/register && echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
