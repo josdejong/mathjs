@@ -7,19 +7,19 @@ const unit = math.unit
 
 describe('to', function () {
   it('should perform the given unit conversion', function () {
-    const a = math.unit('500 cm'); a.fixPrefix = true
+    const a = math.unit('500 cm').to()
     approx.deepEqual(math.to(unit('5m'), unit('cm')), a)
 
-    const b = math.unit('1 foot'); b.fixPrefix = true
+    const b = math.unit('1 foot').to()
     approx.deepEqual(math.to(unit('12 inch'), unit('foot')), b)
 
-    const c = math.unit('1 inch'); c.fixPrefix = true
+    const c = math.unit('1 inch').to()
     approx.deepEqual(math.to(unit('2.54 cm'), unit('inch')), c)
 
-    const d = math.unit('68 fahrenheit'); d.fixPrefix = true
+    const d = math.unit('68 fahrenheit').to()
     approx.deepEqual(math.to(unit('20 celsius'), unit('fahrenheit')), d)
 
-    const e = math.unit('0.002 m3'); e.fixPrefix = true
+    const e = math.unit('0.002 m3').to()
     approx.deepEqual(math.to(unit('2 litre'), unit('m3')), e)
   })
 
@@ -70,7 +70,7 @@ describe('to', function () {
 
   it('should throw an error if called with a number', function () {
     assert.throws(function () { math.to(5, unit('m')) }, TypeError)
-    assert.throws(function () { math.to(unit('5cm'), 2) }, /SyntaxError: "2" contains no units/)
+    assert.throws(function () { math.to(unit('5cm'), 2) }, /Cannot convert 5 cm to 2: dimensions do not match/)
   })
 
   it('should throw an error if called with a string', function () {

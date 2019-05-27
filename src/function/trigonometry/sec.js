@@ -39,10 +39,10 @@ export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
+      if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function sec is no angle')
       }
-      return sec(x.value)
+      return sec(x.to('rad').value)
     },
 
     'Array | Matrix': function (x) {

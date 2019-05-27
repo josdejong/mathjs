@@ -34,19 +34,17 @@ export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, 
     },
 
     'number | Fraction | BigNumber | Complex, Unit': function (x, y) {
-      const res = y.clone()
-      res.value = (res.value === null) ? res._normalize(x) : multiplyScalar(res.value, x)
+      const res = y.setValue((y.value === null) ? x : multiplyScalar(x, y.value))
       return res
     },
 
     'Unit, number | Fraction | BigNumber | Complex': function (x, y) {
-      const res = x.clone()
-      res.value = (res.value === null) ? res._normalize(y) : multiplyScalar(res.value, y)
+      const res = x.setValue((x.value === null) ? y : multiplyScalar(x.value, y))
       return res
     },
 
     'Unit, Unit': function (x, y) {
-      return x.multiply(y)
+      return x.mul(y)
     }
 
   })

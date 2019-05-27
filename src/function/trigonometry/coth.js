@@ -41,10 +41,10 @@ export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
+      if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function coth is no angle')
       }
-      return coth(x.value)
+      return coth(x.to('rad').value)
     },
 
     'Array | Matrix': function (x) {

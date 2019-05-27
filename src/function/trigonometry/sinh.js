@@ -39,10 +39,10 @@ export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
+      if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function sinh is no angle')
       }
-      return sinh(x.value)
+      return sinh(x.to('rad').value)
     },
 
     'Array | Matrix': function (x) {

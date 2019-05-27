@@ -43,10 +43,10 @@ export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
+      if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function cos is no angle')
       }
-      return cos(x.value)
+      return cos(x.to('rad').value)
     },
 
     'Array | Matrix': function (x) {

@@ -39,10 +39,10 @@ export const createCsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
+      if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function csc is no angle')
       }
-      return csc(x.value)
+      return csc(x.to('rad').value)
     },
 
     'Array | Matrix': function (x) {

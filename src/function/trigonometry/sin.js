@@ -43,10 +43,10 @@ export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
+      if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function sin is no angle')
       }
-      return sin(x.value)
+      return sin(x.to('rad').value)
     },
 
     'Array | Matrix': function (x) {

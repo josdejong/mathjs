@@ -121,9 +121,9 @@ export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ()
         const r = arguments[0]
         let phi = arguments[1]
         if (isNumber(r)) {
-          if (isUnit(phi) && phi.hasBase('ANGLE')) {
+          if (isUnit(phi) && phi.hasQuantity('ANGLE')) {
             // convert unit to a number in radians
-            phi = phi.toNumber('rad')
+            phi = phi.to('rad').value
           }
 
           if (isNumber(phi)) {
