@@ -126,7 +126,7 @@ export { createImmutableDenseMatrixClass } from './type/matrix/ImmutableDenseMat
 export { createIndexClass } from './type/matrix/MatrixIndex'
 export { createFibonacciHeapClass } from './type/matrix/FibonacciHeap'
 export { createSpaClass } from './type/matrix/Spa'
-export { createUnitClass } from './type/unit/Unit'
+export { createDeprecatedUnitClass } from './type/unit/Unit'
 export { createUnitFunction } from './type/unit/function/unit'
 export { createSparse } from './type/matrix/function/sparse'
 export { createCreateUnit } from './type/unit/function/createUnit'

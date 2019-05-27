@@ -7,18 +7,18 @@ import { toSymbol } from '../../utils/latex'
 const name = 'SymbolNode'
 const dependencies = [
   'math',
-  '?Unit',
+  '?unit',
   'Node'
 ]
 
-export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ math, Unit, Node }) => {
+export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ math, unit, Node }) => {
   /**
    * Check whether some name is a valueless unit like "inch".
    * @param {string} name
    * @return {boolean}
    */
   function isValuelessUnit (name) {
-    return Unit ? Unit.isValuelessUnit(name) : false
+    return unit ? unit.exists(name) : false
   }
 
   /**
@@ -80,7 +80,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
         return name in scope
           ? getSafeProperty(scope, name)
           : isUnit
-            ? new Unit(null, name)
+            ? unit(name)
             : undef(name)
       }
     }

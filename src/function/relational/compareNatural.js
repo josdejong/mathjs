@@ -118,7 +118,7 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
       }
 
       if (typeX === 'Unit') {
-        if (x.equalBase(y)) {
+        if (x.equalQuantity(y)) {
           return compareNatural(x.value, y.value)
         }
 

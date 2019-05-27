@@ -89,7 +89,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'Unit, Unit': function (x, y) {
-      if (!x.equalBase(y)) {
+      if (!x.equalQuantity(y)) {
         throw new Error('Cannot compare units with different base')
       }
       return compare(x.value, y.value)

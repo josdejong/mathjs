@@ -87,7 +87,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
         throw new Error('Parameter y contains a unit with undefined value')
       }
 
-      if (!x.equalBase(y)) {
+      if (!x.equalQuantity(y)) {
         throw new Error('Units do not match')
       }
 

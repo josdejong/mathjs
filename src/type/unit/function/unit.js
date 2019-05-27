@@ -1,11 +1,81 @@
+import * as UnitMath from 'unitmath'
 import { factory } from '../../../utils/factory'
 import { deepMap } from '../../../utils/collection'
 
 const name = 'unit'
-const dependencies = ['typed', 'Unit']
+const dependencies = [
+  'typed',
+  'config',
+  '?on',
+  'clone',
+  'numeric',
+  'add',
+  'subtract',
+  'multiply',
+  'divide',
+  'pow',
+  'equal',
+  'smaller',
+  'smallerEq',
+  'larger',
+  'largerEq',
+  'abs'
+]
 
 // This function is named createUnitFunction to prevent a naming conflict with createUnit
-export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
+export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
+  typed,
+  config,
+  on,
+  clone,
+  numeric,
+  add,
+  subtract,
+  multiply,
+  divide,
+  pow,
+  equal,
+  smaller,
+  smallerEq,
+  larger,
+  largerEq,
+  abs
+
+}) => {
+  // TODO: allow passing configuration for unitmath
+  const unitmath = UnitMath.config({
+    type: {
+      clone: clone,
+      conv: (value) => numeric(value, config.number),
+      add: add,
+      sub: subtract,
+      mul: multiply,
+      div: divide,
+      pow: pow,
+      eq: equal,
+      lt: smaller,
+      le: smallerEq,
+      gt: larger,
+      ge: largerEq,
+      abs: abs
+    }
+  })
+
+  // TODO: think the way to check whether something is a unit through. Must be secure (checks against the prototype)
+  const u = unitmath()
+  u.constructor.prototype.isUnit = true
+  u.constructor.prototype.type = 'unit'
+
+  // TODO: is listening for config changes still needed?
+  if (on) {
+    // recalculate the values on change of configuration
+    on('config', function (curr, prev) {
+      if (curr.number !== prev.number) {
+        // TODO: do we need to recalculate angle values like before?
+      }
+    })
+  }
+
   /**
    * Create a unit. Depending on the passed arguments, the function
    * will create and return a new math.Unit object.
@@ -35,22 +105,17 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       return x.clone()
     },
 
-    'string': function (x) {
-      if (Unit.isValuelessUnit(x)) {
-        return new Unit(null, x) // a pure unit
-      }
+    'string': unitmath,
 
-      return Unit.parse(x, { allowNoUnits: true }) // a unit with value, like '5cm'
-    },
-
-    'number | BigNumber | Fraction | Complex, string': function (value, unit) {
-      return new Unit(value, unit)
-    },
+    'number | BigNumber | Fraction | Complex, string': unitmath,
 
     'Array | Matrix': function (x) {
       return deepMap(x, unit)
     }
   })
+
+  // expose static exists function
+  unit.exists = (singleUnitString) => unitmath.exists(singleUnitString)
 
   return unit
 })

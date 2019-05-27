@@ -72,7 +72,7 @@ export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     'Unit, Unit': function (x, y) {
-      if (!x.equalBase(y)) {
+      if (!x.equalQuantity(y)) {
         throw new Error('Cannot compare units with different base')
       }
       return smallerEq(x.value, y.value)

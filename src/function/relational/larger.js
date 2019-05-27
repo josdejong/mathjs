@@ -76,7 +76,7 @@ export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'Unit, Unit': function (x, y) {
-      if (!x.equalBase(y)) {
+      if (!x.equalQuantity(y)) {
         throw new Error('Cannot compare units with different base')
       }
       return larger(x.value, y.value)

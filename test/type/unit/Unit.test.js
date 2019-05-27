@@ -126,12 +126,12 @@ describe('Unit', function () {
     })
   })
 
-  describe('equalBase', function () {
+  describe('equalQuantity', function () {
     it('should test whether two units have the same base unit', function () {
-      assert.strictEqual(new Unit(5, 'cm').equalBase(new Unit(10, 'm')), true)
-      assert.strictEqual(new Unit(5, 'cm').equalBase(new Unit(10, 'kg')), false)
-      assert.strictEqual(new Unit(5, 'N').equalBase(new Unit(10, 'kg m / s ^ 2')), true)
-      assert.strictEqual(new Unit(8.314, 'J / mol K').equalBase(new Unit(0.02366, 'ft^3 psi / mol degF')), true)
+      assert.strictEqual(new Unit(5, 'cm').equalQuantity(new Unit(10, 'm')), true)
+      assert.strictEqual(new Unit(5, 'cm').equalQuantity(new Unit(10, 'kg')), false)
+      assert.strictEqual(new Unit(5, 'N').equalQuantity(new Unit(10, 'kg m / s ^ 2')), true)
+      assert.strictEqual(new Unit(8.314, 'J / mol K').equalQuantity(new Unit(0.02366, 'ft^3 psi / mol degF')), true)
     })
   })
 
