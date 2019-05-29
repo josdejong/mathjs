@@ -46,6 +46,7 @@ export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function sin is no angle')
       }
+      console.log(`Computing sin of ${x.value}, that value in rad is ${x.to('rad').value}`)
       return sin(x.to('rad').value)
     },
 

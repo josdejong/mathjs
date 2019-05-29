@@ -36,12 +36,15 @@ export const createAddScalar = /* #__PURE__ */ factory(name, dependencies, ({ ty
     'Unit, Unit': function (x, y) {
       if (x.value === null || x.value === undefined) throw new Error('Parameter x contains a unit with undefined value')
       if (y.value === null || y.value === undefined) throw new Error('Parameter y contains a unit with undefined value')
-      if (!x.equalQuantity(y)) throw new Error('Units do not match')
 
-      const res = x.clone()
-      res.value = addScalar(res.value, y.value)
-      res.fixPrefix = false
-      return res
+      return x.add(y)
+
+      // if (!x.equalQuantity(y)) throw new Error('Units do not match')
+
+      // const res = x.clone()
+      // res.value = addScalar(res.value, y.value)
+      // res.fixPrefix = false
+      // return res
     }
   })
 

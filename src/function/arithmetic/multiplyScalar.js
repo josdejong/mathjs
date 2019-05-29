@@ -34,11 +34,13 @@ export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, 
     },
 
     'number | Fraction | BigNumber | Complex, Unit': function (x, y) {
+      // TODO: Test to see if y.mul(x) will work. UnitMath will implicitly convert parameters to units.
       const res = y.setValue((y.value === null) ? x : multiplyScalar(x, y.value))
       return res
     },
 
     'Unit, number | Fraction | BigNumber | Complex': function (x, y) {
+      // TODO: Test to see if x.mul(y) will work. UnitMath will implicitly convert parameters to units.
       const res = x.setValue((x.value === null) ? y : multiplyScalar(x.value, y))
       return res
     },

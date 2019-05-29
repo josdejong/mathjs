@@ -44,9 +44,10 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
 }) => {
   // TODO: allow passing configuration for unitmath
   const unitmath = UnitMath.config({
+    parentheses: true,
     type: {
       clone: clone,
-      conv: (value) => numeric(value, config.number),
+      conv: (value) => value, // numeric(value, config.number), // TODO: This doesn't always work
       add: add,
       sub: subtract,
       mul: multiply,
@@ -107,7 +108,10 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
 
     'string': unitmath,
 
-    'number | BigNumber | Fraction | Complex, string': unitmath,
+    'number | BigNumber | Fraction | Complex, string': function (...args) {
+      let u = unitmath(...args)
+      return u
+    },
 
     'Array | Matrix': function (x) {
       return deepMap(x, unit)

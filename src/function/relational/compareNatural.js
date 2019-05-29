@@ -123,7 +123,7 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
         }
 
         // compare by units
-        return compareArrays(x.formatUnits(), y.formatUnits())
+        return compareArrays(x.getUnits().format(), y.getUnits().format())
       }
 
       if (typeX === 'boolean') {
