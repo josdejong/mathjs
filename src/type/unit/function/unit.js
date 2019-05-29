@@ -47,7 +47,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     parentheses: true,
     type: {
       clone: clone,
-      conv: (value) => value, // numeric(value, config.number), // TODO: This doesn't always work
+      conv: (value) => typeof value === 'string' ? numeric(value, config.number) : value,
       add: add,
       sub: subtract,
       mul: multiply,
