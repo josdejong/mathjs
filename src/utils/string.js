@@ -62,7 +62,7 @@ export function format (value, options) {
   if (looksLikeFraction(value)) {
     if (!options || options.fraction !== 'decimal') {
       // output as ratio, like '1/3'
-      return (value.s * value.n) + '/' + value.d
+      return (value.s * value.n) + '/' + value.d // TODO: I believe the fraction library has a method toFraction() to do this - @ericman314
     } else {
       // output as decimal, like '0.(3)'
       return value.toString()

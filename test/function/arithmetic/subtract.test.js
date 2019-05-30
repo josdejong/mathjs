@@ -103,10 +103,10 @@ describe('subtract', function () {
   it('should throw an error when one of the two units has undefined value', function () {
     assert.throws(function () {
       subtract(math.unit('km'), math.unit('5gram'))
-    }, /Parameter x contains a unit with undefined value/)
+    }, /Cannot subtract.*both units must have values/)
     assert.throws(function () {
       subtract(math.unit('5 km'), math.unit('gram'))
-    }, /Parameter y contains a unit with undefined value/)
+    }, /Cannot subtract.*both units must have values/)
   })
 
   it('should throw an error if subtracting numbers from units', function () {

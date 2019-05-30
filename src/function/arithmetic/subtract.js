@@ -79,23 +79,25 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'Unit, Unit': function (x, y) {
-      if (x.value === null) {
-        throw new Error('Parameter x contains a unit with undefined value')
-      }
+      return x.sub(y)
 
-      if (y.value === null) {
-        throw new Error('Parameter y contains a unit with undefined value')
-      }
+      // if (x.value === null) {
+      //   throw new Error('Parameter x contains a unit with undefined value')
+      // }
 
-      if (!x.equalQuantity(y)) {
-        throw new Error('Units do not match')
-      }
+      // if (y.value === null) {
+      //   throw new Error('Parameter y contains a unit with undefined value')
+      // }
 
-      const res = x.clone()
-      res.value = subtract(res.value, y.value)
-      res.fixPrefix = false
+      // if (!x.equalQuantity(y)) {
+      //   throw new Error('Units do not match')
+      // }
 
-      return res
+      // const res = x.clone()
+      // res.value = subtract(res.value, y.value)
+      // res.fixPrefix = false
+
+      // return res
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
