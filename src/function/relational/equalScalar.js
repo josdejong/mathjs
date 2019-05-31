@@ -39,9 +39,11 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     'Unit, Unit': function (x, y) {
       if (!x.equalQuantity(y)) {
-        throw new Error('Cannot compare units with different base')
+        throw new Error('Cannot compare units with different dimensions')
       }
-      return equalScalar(x.value, y.value)
+
+      // The next function returns false if the dimensions are different. Maybe we should consider not throwing an exception? 
+      return x.equals(y)
     }
   })
 

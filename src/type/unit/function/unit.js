@@ -20,6 +20,7 @@ const dependencies = [
   'larger',
   'largerEq',
   'abs',
+  'format',
   '?BigNumber',
   '?Complex',
   '?Fraction'
@@ -43,6 +44,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
   larger,
   largerEq,
   abs,
+  format,
   BigNumber,
   Complex,
   Fraction
@@ -90,10 +92,11 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     }
     
     // All valid paths should have returned by now
-    // Throw this error when debugging, or for more consistent error messages, try it anyway and let typed.js throw
+    // Throw this error when debugging, or for more consistent error messages, call fn(...args) anyway and let typed.js throw
     throw new Error('unit.js attempted to perform an operation between the following incompatible types: ' + Object.keys(types).join(', '))
     //return fn(...args)
   }
+
 
   const unitmath = UnitMath.config({
     parentheses: true,
@@ -105,12 +108,13 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       mul: (a, b) => promoteArgs(multiply, a, b),
       div: (a, b) => promoteArgs(divide, a, b),
       pow: (a, b) => promoteArgs(pow, a, b),
-      eq: equal,
-      lt: smaller,
-      le: smallerEq,
-      gt: larger,
-      ge: largerEq,
-      abs: abs
+      eq: (a, b) => promoteArgs(equal, a, b),
+      lt: (a, b) => promoteArgs(smaller, a, b),
+      le: (a, b) => promoteArgs(smallerEq, a, b),
+      gt: (a, b) => promoteArgs(larger, a, b),
+      ge: (a, b) => promoteArgs(largerEq, a, b),
+      abs: abs,
+      format: a => format(a)
     }
   })
 
