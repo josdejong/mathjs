@@ -57,7 +57,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Unit': function (x) {
-      return sign(x.value)
+      return sign(x.getNormalizedValue())
     }
   })
 

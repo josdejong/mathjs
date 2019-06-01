@@ -40,10 +40,10 @@ export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
+      if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function tan is no angle')
       }
-      return tan(x.value)
+      return tan(x.to('rad').value)
     },
 
     'Array | Matrix': function (x) {

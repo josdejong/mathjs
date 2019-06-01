@@ -114,21 +114,20 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
    * @private
    */
   function _cbrtUnit (x) {
-    if (x.value && isComplex(x.value)) {
-      let result = x.clone()
-      result.value = 1.0
+    let xVal = x.getNormalizedValue()
+    if (xVal && isComplex(xVal)) {
       result = result.pow(1.0 / 3) // Compute the units
-      result.value = _cbrtComplex(x.value) // Compute the value
+      result = result.setNormalizedValue(_cbrtComplex(xVal)) // Compute the value
       return result
     } else {
-      const negate = isNegative(x.value)
+      const negate = isNegative(xVal)
       if (negate) {
-        x.value = unaryMinus(x.value)
+        xVal = unaryMinus(xVal)
       }
 
       // TODO: create a helper function for this
       let third
-      if (isBigNumber(x.value)) {
+      if (isBigNumber(xVal)) {
         third = new BigNumber(1).div(3)
       } else if (isFraction(x.value)) {
         third = new Fraction(1, 3)
@@ -139,7 +138,7 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
       let result = x.pow(third)
 
       if (negate) {
-        result.value = unaryMinus(result.value)
+        result = result.setNormalizedValue(unaryMinus(result.getNormalizedValue()))
       }
 
       return result

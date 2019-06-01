@@ -119,11 +119,11 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
 
       if (typeX === 'Unit') {
         if (x.equalQuantity(y)) {
-          return compareNatural(x.value, y.value)
+          return compareNatural(x.getNormalizedValue(), y.getNormalizedValue())
         }
 
         // compare by units
-        return compareArrays(x.formatUnits(), y.formatUnits())
+        return compareArrays(x.getUnits().format(), y.getUnits().format())
       }
 
       if (typeX === 'boolean') {

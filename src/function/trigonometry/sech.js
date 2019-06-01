@@ -41,10 +41,10 @@ export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
+      if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function sech is no angle')
       }
-      return sech(x.value)
+      return sech(x.to('rad').value)
     },
 
     'Array | Matrix': function (x) {

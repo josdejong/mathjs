@@ -207,7 +207,7 @@ describe('pow', function () {
 
   it('should correctly calculate unit ^ BigNumber', function () {
     assert.strictEqual(pow(unit('4 N'), math.bignumber(2)).toString(), '16 N^2')
-    assert.deepStrictEqual(pow(unit(math.bignumber(4), 'N'), math.bignumber(2)).toNumeric('N^2'), math.bignumber(16))
+    assert.deepStrictEqual(pow(unit(math.bignumber(4), 'N'), math.bignumber(2)).to('N^2').value, math.bignumber(16))
   })
 
   it('should return a cloned value and not affect the argument', function () {

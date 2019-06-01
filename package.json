@@ -121,7 +121,7 @@
     "seed-random": "2.2.0",
     "tiny-emitter": "2.1.0",
     "typed-function": "1.1.0",
-    "unitmath": "0.4.0"
+    "unitmath": "0.8.0"
   },
   "devDependencies": {
     "@babel/core": "7.4.5",

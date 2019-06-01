@@ -174,7 +174,7 @@ describe('multiply', function () {
       assert.strictEqual(multiply(unit('ft'), unit('4 ft')).format(5), '4 ft^2')
       assert.strictEqual(multiply(unit('65 mi/h'), unit('h')).to('mi').toString(), '65 mi')
       assert.strictEqual(multiply(unit('2 L'), unit('s^-1')).toString(), '2 L / s')
-      assert.strictEqual(multiply(unit('m/s'), unit('h/m')).toString(), '(m h) / (s m)')
+      assert.strictEqual(multiply(unit('m/s'), unit('h/m')).toString(), 'h / s')
     })
 
     // TODO: cleanup once decided to not downgrade BigNumber to number

@@ -80,8 +80,9 @@ function unitFactory (name, valueStr, unitStr) {
       ? new BigNumber(valueStr)
       : parseFloat(valueStr)
 
-    const unit = new Unit(value, unitStr)
-    unit.fixPrefix = true
+    // const unit = new Unit(value, unitStr)
+    // unit.fixPrefix = true
+    const unit = Unit(value, unitStr).to()
     return unit
   })
 }

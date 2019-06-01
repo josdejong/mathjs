@@ -72,10 +72,7 @@ export const createLargerEq = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'Unit, Unit': function (x, y) {
-      if (!x.equalQuantity(y)) {
-        throw new Error('Cannot compare units with different base')
-      }
-      return largerEq(x.value, y.value)
+      return x.greaterThanOrEqual(y)
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {

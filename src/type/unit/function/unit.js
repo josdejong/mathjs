@@ -19,7 +19,11 @@ const dependencies = [
   'smallerEq',
   'larger',
   'largerEq',
-  'abs'
+  'abs',
+  'format',
+  '?BigNumber',
+  '?Complex',
+  '?Fraction'
 ]
 
 // This function is named createUnitFunction to prevent a naming conflict with createUnit
@@ -39,25 +43,78 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
   smallerEq,
   larger,
   largerEq,
-  abs
+  abs,
+  format,
+  BigNumber,
+  Complex,
+  Fraction
 
 }) => {
   // TODO: allow passing configuration for unitmath
+
+  const conv = (value) => {
+    if (typeof value === 'string') {
+      return numeric(value, config.number)
+    // } else if (typeof value === 'number') {
+    //   return numeric(value.toString(), config.number)
+    } else {
+      return value
+    }
+  }
+
+  const promoteArgs = (fn, ...args) => {
+    let types = {}
+    args.forEach(a => { types[a.type || typeof a] = true })
+    const numTypes = Object.keys(types).length
+    // We expect to have these types:
+    // number
+    // Complex
+    // BigNumber
+    // Fraction
+
+    if (numTypes === 1) {
+      // No alteration is necessary
+      return fn(...args)
+    } else if (numTypes === 2) {
+      // May need to convert one or more of the arguments
+      if (types.hasOwnProperty('number')) {
+        if (types.hasOwnProperty('Complex')) {
+          // Convert all args to Complex
+          return fn(...args.map(a => typeof a === 'number' ? new Complex(a, 0) : a))
+        } else if (types.hasOwnProperty('Fraction')) {
+          // Convert all args to Fraction
+          return fn(...args.map(a => typeof a === 'number' ? new Fraction(a) : a))
+        } else if (types.hasOwnProperty('BigNumber')) {
+          // Convert all args to BigNumber
+          return fn(...args.map(a => typeof a === 'number' ? new BigNumber(a) : a))
+        }
+      }
+    }
+    
+    // All valid paths should have returned by now
+    // Throw this error when debugging, or for more consistent error messages, call fn(...args) anyway and let typed.js throw
+    throw new Error('unit.js attempted to perform an operation between the following incompatible types: ' + Object.keys(types).join(', '))
+    //return fn(...args)
+  }
+
+
   const unitmath = UnitMath.config({
+    parentheses: true,
     type: {
       clone: clone,
-      conv: (value) => numeric(value, config.number),
-      add: add,
-      sub: subtract,
-      mul: multiply,
-      div: divide,
-      pow: pow,
-      eq: equal,
-      lt: smaller,
-      le: smallerEq,
-      gt: larger,
-      ge: largerEq,
-      abs: abs
+      conv: conv,
+      add: (a, b) => promoteArgs(add, a, b),
+      sub: (a, b) => promoteArgs(subtract, a, b),
+      mul: (a, b) => promoteArgs(multiply, a, b),
+      div: (a, b) => promoteArgs(divide, a, b),
+      pow: (a, b) => promoteArgs(pow, a, b),
+      eq: (a, b) => promoteArgs(equal, a, b),
+      lt: (a, b) => promoteArgs(smaller, a, b),
+      le: (a, b) => promoteArgs(smallerEq, a, b),
+      gt: (a, b) => promoteArgs(larger, a, b),
+      ge: (a, b) => promoteArgs(largerEq, a, b),
+      abs: abs,
+      format: a => format(a)
     }
   })
 
@@ -107,7 +164,10 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
 
     'string': unitmath,
 
-    'number | BigNumber | Fraction | Complex, string': unitmath,
+    'number | BigNumber | Fraction | Complex, string': function (...args) {
+      let u = unitmath(...args)
+      return u
+    },
 
     'Array | Matrix': function (x) {
       return deepMap(x, unit)

@@ -41,10 +41,10 @@ export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
+      if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function csch is no angle')
       }
-      return csch(x.value)
+      return csch(x.to('rad').value)
     },
 
     'Array | Matrix': function (x) {

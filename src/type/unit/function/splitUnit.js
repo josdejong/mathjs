@@ -25,7 +25,7 @@ export const createSplitUnit = /* #__PURE__ */ factory(name, dependencies, ({ ty
    */
   return typed(name, {
     'Unit, Array': function (unit, parts) {
-      return unit.splitUnit(parts)
+      return unit.split(parts)
     }
   })
 })

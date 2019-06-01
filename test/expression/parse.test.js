@@ -414,8 +414,7 @@ describe('parse', function () {
     })
 
     it('should parse physical constants', function () {
-      const expected = new Unit(299792458, 'm/s')
-      expected.fixPrefix = true
+      const expected = new Unit(299792458, 'm/s').to()
       assert.deepStrictEqual(parseAndEval('speedOfLight'), expected)
     })
 

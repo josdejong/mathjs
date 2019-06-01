@@ -42,10 +42,10 @@ export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
+      if (!x.hasQuantity('ANGLE')) {
         throw new TypeError('Unit in function tanh is no angle')
       }
-      return tanh(x.value)
+      return tanh(x.to('rad').value)
     },
 
     'Array | Matrix': function (x) {

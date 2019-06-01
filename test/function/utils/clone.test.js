@@ -50,8 +50,7 @@ describe('clone', function () {
   it('should clone a unit', function () {
     const a = math.unit('5mm')
     const b = math.clone(a)
-    a.value = 10
-    assert.strictEqual(a.toString(), '10 m')
+    assert.notStrictEqual(a, b)
     assert.strictEqual(b.toString(), '5 mm')
   })
 

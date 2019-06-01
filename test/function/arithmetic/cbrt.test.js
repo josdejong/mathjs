@@ -95,6 +95,7 @@ describe('cbrt', function () {
   it('should return the cubic root of a unit', function () {
     assert.strictEqual(cbrt(math.unit('27 m^3')).toString(), math.unit('3 m').toString())
     assert.strictEqual(cbrt(math.unit('-27 m^3')).toString(), math.unit('-3 m').toString())
+    assert.strictEqual(cbrt(math.unit('-27 km^3')).toString(), math.unit('-3 km').toString())
 
     assert(math.isBigNumber(cbrt(math.unit(math.bignumber(27), 'm^3')).value))
     assert.deepStrictEqual(cbrt(math.unit(math.bignumber(27), 'm^3')).value, math.bignumber(3))
