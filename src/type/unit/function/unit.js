@@ -21,6 +21,9 @@ const dependencies = [
   'largerEq',
   'abs',
   'format',
+  'isComplex',
+  'isBigNumber',
+  'isFraction',
   '?BigNumber',
   '?Complex',
   '?Fraction'
@@ -45,6 +48,9 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
   largerEq,
   abs,
   format,
+  isComplex,
+  isBigNumber,
+  isFraction,
   BigNumber,
   Complex,
   Fraction
@@ -52,11 +58,16 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
 }) => {
   // TODO: allow passing configuration for unitmath
 
-  const conv = (value) => {
-    if (typeof value === 'string') {
+  const conv = (value, exampleValue) => {
+    // console.log(value, exampleValue, config.number)
+    if (isComplex(exampleValue)) {
+      return Complex(value, 0)
+    } else if (isBigNumber(exampleValue)) {
+      return numeric(value, 'BigNumber')
+    } else if (isFraction(exampleValue)) {
+      return numeric(value, 'Fraction')
+    } else if (typeof value === 'string') {
       return numeric(value, config.number)
-    // } else if (typeof value === 'number') {
-    //   return numeric(value.toString(), config.number)
     } else {
       return value
     }
@@ -72,34 +83,42 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     // BigNumber
     // Fraction
 
+    let result
+
     if (numTypes === 1) {
       // No alteration is necessary
-      return fn(...args)
+      result = fn(...args)
     } else if (numTypes === 2) {
       // May need to convert one or more of the arguments
       if (types.hasOwnProperty('number')) {
         if (types.hasOwnProperty('Complex')) {
           // Convert all args to Complex
-          return fn(...args.map(a => typeof a === 'number' ? new Complex(a, 0) : a))
+          result = fn(...args.map(a => typeof a === 'number' ? new Complex(a, 0) : a))
         } else if (types.hasOwnProperty('Fraction')) {
           // Convert all args to Fraction
-          return fn(...args.map(a => typeof a === 'number' ? new Fraction(a) : a))
+          result = fn(...args.map(a => typeof a === 'number' ? new Fraction(a) : a))
         } else if (types.hasOwnProperty('BigNumber')) {
           // Convert all args to BigNumber
-          return fn(...args.map(a => typeof a === 'number' ? new BigNumber(a) : a))
+          result = fn(...args.map(a => typeof a === 'number' ? new BigNumber(a) : a))
         }
       }
     }
-    
-    // All valid paths should have returned by now
-    // Throw this error when debugging, or for more consistent error messages, call fn(...args) anyway and let typed.js throw
-    throw new Error('unit.js attempted to perform an operation between the following incompatible types: ' + Object.keys(types).join(', '))
-    //return fn(...args)
+
+    // All valid code paths would have set result by now
+    if (typeof result === 'undefined') {
+      // Throw this error when debugging, or for more consistent error messages, call fn(...args) anyway and let typed.js throw
+      throw new Error('unit.js attempted to perform an operation between the following incompatible types: ' + Object.keys(types).join(', '))
+      //return fn(...args)
+    }
+
+    // TODO: If { predictable: false } and result is unitless, convert result to its numeric value
+    return result
   }
 
 
   const unitmath = UnitMath.config({
     parentheses: true,
+    simplifyThreshold: 1,
     type: {
       clone: clone,
       conv: conv,
@@ -114,9 +133,23 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       gt: (a, b) => promoteArgs(larger, a, b),
       ge: (a, b) => promoteArgs(largerEq, a, b),
       abs: abs,
-      format: a => format(a)
+      format: (a, b) => {
+        let result
+        if (typeof b !== 'undefined') {
+          result = format(a, b)
+        } else {
+          result = format(a)
+        }
+
+        if (a && isComplex(a)) {
+          result = '(' + result + ')' // Surround complex values with ( ) to enable better parsing
+        }
+
+        return result
+      }
     }
   })
+
 
   // TODO: think the way to check whether something is a unit through. Must be secure (checks against the prototype)
   const u = unitmath()

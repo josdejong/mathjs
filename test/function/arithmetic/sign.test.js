@@ -50,7 +50,7 @@ describe('sign', function () {
     assert.deepStrictEqual(math.sign(math.unit(fraction(5), 'cm')), fraction(1))
     assert.deepStrictEqual(math.sign(math.unit(fraction(-5), 'cm')), fraction(-1))
 
-    assert.deepStrictEqual(math.sign(math.unit(complex(3, 4), 'mi')), complex(0.6, 0.8))
+    approx.deepEqual(math.sign(math.unit(complex(3, 4), 'mi')), complex(0.6, 0.8))
   })
 
   it('should throw an error when used with a string', function () {

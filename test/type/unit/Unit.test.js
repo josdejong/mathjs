@@ -440,16 +440,17 @@ describe('Unit', function () {
     it('should render with the best prefix', function () {
       assert.strictEqual(new Unit(0.000001, 'm').format(8), '1 um')
       assert.strictEqual(new Unit(0.00001, 'm').format(8), '10 um')
-      assert.strictEqual(new Unit(0.0001, 'm').format(8), '100 um')
-      assert.strictEqual(new Unit(0.0005, 'm').format(8), '500 um')
+      assert.strictEqual(new Unit(0.00009, 'm').format(8), '90 um')
+      assert.strictEqual(new Unit(0.0001, 'm').format(8), '0.1 mm')
+      assert.strictEqual(new Unit(0.0005, 'm').format(8), '0.5 mm')
       assert.strictEqual(new Unit(0.0006, 'm').toString(), '0.6 mm')
-      assert.strictEqual(new Unit(0.001, 'm').toString(), '1 mm')
-      assert.strictEqual(new Unit(0.01, 'm').toString(), '10 mm')
+      assert.strictEqual(new Unit(0.001, 'm').toString(), '0.1 cm')
+      assert.strictEqual(new Unit(0.01, 'm').toString(), '1 cm')
       assert.strictEqual(new Unit(100000, 'm').toString(), '100 km')
       assert.strictEqual(new Unit(300000, 'm').toString(), '300 km')
       assert.strictEqual(new Unit(500000, 'm').toString(), '500 km')
-      assert.strictEqual(new Unit(600000, 'm').toString(), '0.6 Mm')
-      assert.strictEqual(new Unit(1000000, 'm').toString(), '1 Mm')
+      assert.strictEqual(new Unit(600000, 'm').toString(), '600 km')
+      assert.strictEqual(new Unit(1000000, 'm').toString(), '1000 km')
       assert.strictEqual(new Unit(2000, 'ohm').toString(), '2 kohm')
     })
 
@@ -693,7 +694,7 @@ describe('Unit', function () {
 
     it('should format a unit with a bignumber', function () {
       assert.strictEqual(new Unit(math.bignumber(1).plus(1e-24), 'm').format(), '1.000000000000000000000001 m')
-      assert.strictEqual(new Unit(math.bignumber(1e24).plus(1), 'm').format(), '1.000000000000000000000001 Ym')
+      assert.strictEqual(new Unit(math.bignumber(1e24).plus(1), 'm').format(), '1.000000000000000000000001e+21 km')
     })
 
     it('should format a unit with a fraction', function () {
@@ -820,7 +821,7 @@ describe('Unit', function () {
       assert.strictEqual(unit1.units[0].prefix, 'k')
 
       unit1 = Unit('5exabytes')
-      approx.equal(unit1.to('byte').value, 4e19)
+      approx.equal(unit1.to('bit').value, 4e19)
       assert.strictEqual(unit1.units[0].unit.name, 'bytes')
 
       unit1 = Unit('1 / s')
@@ -1073,17 +1074,17 @@ describe('Unit', function () {
     })
 
     it('should have correct long/short prefixes', function () {
-      assert.strictEqual(new Unit(20000, 'rad').toString(), '20 krad')
-      assert.strictEqual(new Unit(20000, 'radian').toString(), '20 kiloradian')
-      assert.strictEqual(new Unit(20000, 'radians').toString(), '20 kiloradians')
+      assert.strictEqual(new Unit(0.02, 'rad').toString(), '20 mrad')
+      assert.strictEqual(new Unit(0.02, 'radian').toString(), '20 milliradian')
+      assert.strictEqual(new Unit(0.02, 'radians').toString(), '20 milliradians')
 
-      assert.strictEqual(new Unit(20000, 'deg').toString(), '20 kdeg')
-      assert.strictEqual(new Unit(20000, 'degree').toString(), '20 kilodegree')
-      assert.strictEqual(new Unit(20000, 'degrees').toString(), '20 kilodegrees')
+      assert.strictEqual(new Unit(0.02, 'deg').toString(), '0.02 deg')
+      assert.strictEqual(new Unit(0.02, 'degree').toString(), '0.02 degree')
+      assert.strictEqual(new Unit(0.02, 'degrees').toString(), '0.02 degrees')
 
-      assert.strictEqual(new Unit(20000, 'grad').toString(), '20 kgrad')
-      assert.strictEqual(new Unit(20000, 'gradian').toString(), '20 kilogradian')
-      assert.strictEqual(new Unit(20000, 'gradians').toString(), '20 kilogradians')
+      assert.strictEqual(new Unit(0.02, 'grad').toString(), '2 cgrad')
+      assert.strictEqual(new Unit(0.02, 'gradian').toString(), '2 centigradian')
+      assert.strictEqual(new Unit(0.02, 'gradians').toString(), '2 centigradians')
     })
   })
 

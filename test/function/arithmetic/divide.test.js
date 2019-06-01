@@ -117,7 +117,7 @@ describe('divide', function () {
   })
 
   it('should divide a number by a unit', function () {
-    assert.strictEqual(divide(20, math.unit('4 N s')).toString(), '5 N^-1 s^-1')
+    assert.strictEqual(divide(20, math.unit('4 N s')).toString(), '5 s / (kg m)')
     assert.strictEqual(divide(4, math.unit('W')).toString(), '4 W^-1')
     assert.strictEqual(divide(2.5, math.unit('1.25 mm')).toString(), '2 mm^-1')
     assert.strictEqual(divide(10, math.unit('4 mg/s')).toString(), '2.5 s / mg')
@@ -129,7 +129,7 @@ describe('divide', function () {
   })
 
   it('should divide two units', function () {
-    assert.strictEqual(divide(math.unit('75 mi/h'), math.unit('40 mi/gal')).to('gal/minute').toString(), '0.03125 gal / minute')
+    assert.strictEqual(divide(math.unit('75 mi/h'), math.unit('40 mi/gal')).to('gal/minute').format(10), '0.03125 gal / minute')
 
     const a = math.unit(math.fraction(75), 'mi/h')
     const b = math.unit(math.fraction(40), 'mi/gal')
@@ -141,8 +141,8 @@ describe('divide', function () {
   })
 
   it('should divide one valued unit by a valueless unit and vice-versa', function () {
-    assert.strictEqual(divide(math.unit('4 gal'), math.unit('L')).toString(), '15.141648')
-    assert.strictEqual(divide(math.unit('gal'), math.unit('4 L')).toString(), '0.946353')
+    assert.strictEqual(divide(math.unit('4 gal'), math.unit('L')).format(10), '15.14164714')
+    assert.strictEqual(divide(math.unit('gal'), math.unit('4 L')).format(10), '0.946352946')
 
     assert.strictEqual(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')).toFraction(), '127/50')
   })
@@ -153,8 +153,8 @@ describe('divide', function () {
 
   it('should divide units by a big number', function () {
     assert.strictEqual(divide(math.unit('5 m'), bignumber(10)).toString(), '0.5 m')
-    assert.strictEqual(divide(bignumber(80), math.unit('day')).format({ precision: 50 }), '0.92592592592592592592592592592592592592592592592593 mHz')
-    assert.strictEqual(divide(bignumber(80), math.unit('1 day')).format({ precision: 50 }), '0.92592592592592592592592592592592592592592592592593 mHz')
+    assert.strictEqual(divide(bignumber(80), math.unit('day')).format({ precision: 50 }), '9.2592592592592592592592592592592592592592592592593e-4 Hz')
+    assert.strictEqual(divide(bignumber(80), math.unit('1 day')).format({ precision: 50 }), '9.2592592592592592592592592592592592592592592592593e-4 Hz')
     assert.strictEqual(divide(math.unit('day'), bignumber(81)).format({ precision: 50 }), '0.012345679012345679012345679012345679012345679012346 day')
     assert.strictEqual(divide(math.unit('1 day'), bignumber(81)).format({ precision: 50 }), '0.012345679012345679012345679012345679012345679012346 day')
 

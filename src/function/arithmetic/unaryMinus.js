@@ -45,9 +45,7 @@ export const createUnaryMinus = /* #__PURE__ */ factory(name, dependencies, ({ t
     },
 
     'Unit': function (x) {
-      const res = x.clone()
-      res.value = unaryMinus(x.value)
-      return res
+      return x.setNormalizedValue(unaryMinus(x.getNormalizedValue()))
     },
 
     'Array | Matrix': function (x) {
