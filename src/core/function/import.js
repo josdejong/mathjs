@@ -335,22 +335,17 @@ export function importFactory (typed, load, math, importedFactories) {
             'Please create a separate function for it with exports.path="expression.transform"')
       }
 
-      if (isTypedFunction(existing) && isTypedFunction(instance)) {
-        if (options.override) {
-          // replace the existing typed function (nothing to do)
-        } else {
-          // merge the existing and new typed function
-          instance = typed(existing, instance)
-        }
-
-        return instance
-      }
-
       if (existing === undefined || options.override) {
         return instance
       }
 
+      if (isTypedFunction(existing) && isTypedFunction(instance)) {
+        // merge the existing and new typed function
+        return typed(existing, instance)
+      }
+
       if (options.silent) {
+        // keep existing, ignore imported function
         return existing
       } else {
         throw new Error('Cannot import "' + name + '": already exists')
