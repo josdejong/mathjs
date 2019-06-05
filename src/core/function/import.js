@@ -1,6 +1,6 @@
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
 import { isFactory, stripOptionalNotation } from '../../utils/factory'
-import { isLegacyFactory, lazy, traverse } from '../../utils/object'
+import { hasOwnProperty, isLegacyFactory, lazy, traverse } from '../../utils/object'
 import { contains } from '../../utils/array'
 import { ArgumentsError } from '../../error/ArgumentsError'
 import { warnOnce } from '../../utils/log'
@@ -71,34 +71,59 @@ export function importFactory (typed, load, math, importedFactories) {
       options = {}
     }
 
-    // TODO: allow a typed-function with name too
-    if (isFactory(functions)) {
-      _importFactory(functions, options)
-    } else if (isLegacyFactory(functions)) {
-      _importLegacyFactory(functions, options)
-    } else if (Array.isArray(functions)) {
-      functions.forEach((entry) => mathImport(entry, options))
-    } else if (typeof functions === 'object') {
-      for (const name in functions) {
-        if (functions.hasOwnProperty(name)) {
-          const value = functions[name]
-          if (isFactory(value)) {
-            // we ignore name here and enforce the name of the factory
-            // maybe at some point we do want to allow overriding it
-            // in that case we can implement an option overrideFactoryNames: true
-            _importFactory(value, options)
-          } else if (isSupportedType(value)) {
-            _import(name, value, options)
-          } else if (isLegacyFactory(functions)) {
-            _importLegacyFactory(functions, options)
-          } else {
-            mathImport(value, options)
+    function flattenImports (flatValues, value, name) {
+      if (isLegacyFactory(value)) {
+        // legacy factories don't always have a name,
+        // let's not handle them via the new flatValues
+        _importLegacyFactory(value, options)
+      } else if (Array.isArray(value)) {
+        value.forEach(item => flattenImports(flatValues, item))
+      } else if (typeof value === 'object') {
+        for (const name in value) {
+          if (value.hasOwnProperty(name)) {
+            flattenImports(flatValues, value[name], name)
           }
         }
+      } else if (isFactory(value) || name !== undefined) {
+        const flatName = isFactory(value)
+          ? isTransformFunctionFactory(value)
+            ? (value.fn + '.transform') // TODO: this is ugly
+            : value.fn
+          : name
+
+        // we allow importing the same function twice if it points to the same implementation
+        if (hasOwnProperty(flatValues, flatName) && flatValues[flatName] !== value && !options.silent) {
+          throw new Error('Cannot import "' + flatName + '" twice')
+        }
+
+        flatValues[flatName] = value
+      } else {
+        if (!options.silent) {
+          throw new TypeError('Factory, Object, or Array expected')
+        }
       }
-    } else {
-      if (!options.silent) {
-        throw new TypeError('Factory, Object, or Array expected')
+    }
+
+    const flatValues = {}
+    flattenImports(flatValues, functions)
+
+    for (const name in flatValues) {
+      if (flatValues.hasOwnProperty(name)) {
+        // console.log('import', name)
+        const value = flatValues[name]
+
+        if (isFactory(value)) {
+          // we ignore name here and enforce the name of the factory
+          // maybe at some point we do want to allow overriding it
+          // in that case we can implement an option overrideFactoryNames: true
+          _importFactory(value, options)
+        } else if (isSupportedType(value)) {
+          _import(name, value, options)
+        } else {
+          if (!options.silent) {
+            throw new TypeError('Factory, Object, or Array expected')
+          }
+        }
       }
     }
   }

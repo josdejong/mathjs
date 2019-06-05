@@ -50,6 +50,37 @@ describe('import', function () {
     assert.strictEqual(math.myvalue, 42)
   })
 
+  it('should allow importing the same function twice if it is strictly equal', function () {
+    function foo () { return 'bar' }
+
+    math.import({
+      object1: {
+        foo
+      },
+      object2: {
+        foo
+      }
+    })
+
+    assert.strictEqual(math.foo(), 'bar')
+  })
+
+  it('should not allow importing the same function twice if it is not strictly equal', function () {
+    function foo1 () { return 'bar' }
+    function foo2 () { return 'bar' }
+
+    assert.throws(function () {
+      math.import({
+        object1: {
+          foo: foo1
+        },
+        object2: {
+          foo: foo2
+        }
+      })
+    }, /Error: Cannot import "foo" twice/)
+  })
+
   it('should throw no errors when silent:true', function () {
     math.import({ myvalue: 10 }, { silent: true })
     assert.strictEqual(math.myvalue, 42)

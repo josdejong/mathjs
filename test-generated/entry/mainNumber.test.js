@@ -50,6 +50,16 @@ describe('mainNumber', function () {
     console.warn = originalWarn
   })
 
+  it('new instance should import some factory functions via import', function () {
+    const newMathInstance = create()
+
+    newMathInstance.import({
+      addDependencies
+    })
+
+    assert.strictEqual(newMathInstance.add(2, 3), 5)
+  })
+
   it('new instance should import all factory functions via import', function () {
     // snapshot testing
     const newMathInstance = create()

@@ -56,13 +56,12 @@ describe('mainAny', function () {
     console.warn = originalWarn
   })
 
-  // FIXME: {silent: true} results in an infinite loop in resolver/lazy
-  it.skip('new instance should import some factory functions via import', function () {
+  it('new instance should import some factory functions via import', function () {
     const newMathInstance = create()
 
     newMathInstance.import({
       addDependencies
-    }, { silent: true })
+    })
 
     assert.strictEqual(newMathInstance.add(2, 3), 5)
   })
