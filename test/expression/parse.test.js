@@ -12,7 +12,7 @@ const RangeNode = math.RangeNode
 const Complex = math.Complex
 const Matrix = math.Matrix
 const Range = math.Range
-const Unit = math.Unit
+const unit = math.unit
 const ResultSet = math.ResultSet
 
 /**
@@ -409,20 +409,20 @@ describe('parse', function () {
 
   describe('unit', function () {
     it('should parse units', function () {
-      assert.deepStrictEqual(parseAndEval('5cm'), new Unit(5, 'cm'))
-      assert.ok(parseAndEval('5cm') instanceof Unit)
+      assert.deepStrictEqual(parseAndEval('5cm'), unit(5, 'cm'))
+      assert.ok(parseAndEval('5cm').isUnit)
     })
 
     it('should parse physical constants', function () {
-      const expected = new Unit(299792458, 'm/s').to()
+      const expected = unit(299792458, 'm/s').to()
       assert.deepStrictEqual(parseAndEval('speedOfLight'), expected)
     })
 
     it('should correctly parse negative temperatures', function () {
-      approx.deepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'))
-      approx.deepEqual(parseAndEval('--6 celsius'), new Unit(6, 'celsius'))
+      approx.deepEqual(parseAndEval('-6 celsius'), unit(-6, 'celsius'))
+      approx.deepEqual(parseAndEval('--6 celsius'), unit(6, 'celsius'))
       approx.deepEqual(parseAndEval('-6 celsius to fahrenheit'),
-        new Unit(21.2, 'fahrenheit').to('fahrenheit'))
+        unit(21.2, 'fahrenheit').to('fahrenheit'))
     })
 
     it('should convert units', function () {
@@ -452,24 +452,24 @@ describe('parse', function () {
 
     it('should evaluate operator "to" with correct precedence ', function () {
       approx.deepEqual(parseAndEval('5.08 cm * 1000 to inch'),
-        new Unit(2000, 'inch').to('inch'))
+        unit(2000, 'inch').to('inch'))
     })
 
     it('should evaluate operator "in" (alias of "to") ', function () {
       approx.deepEqual(parseAndEval('5.08 cm in inch'),
-        new Unit(2, 'inch').to('inch'))
+        unit(2, 'inch').to('inch'))
     })
 
     it('should evaluate unit "in" (should not conflict with operator "in")', function () {
-      approx.deepEqual(parseAndEval('2 in'), new Unit(2, 'in'))
-      approx.deepEqual(parseAndEval('5.08 cm in in'), new Unit(2, 'in').to('in'))
-      approx.deepEqual(parseAndEval('5 in in in'), new Unit(5, 'in').to('in'))
-      approx.deepEqual(parseAndEval('2 in to meter'), new Unit(2, 'inch').to('meter'))
-      approx.deepEqual(parseAndEval('2 in in meter'), new Unit(2, 'inch').to('meter'))
-      approx.deepEqual(parseAndEval('a in inch', { a: new Unit(5.08, 'cm') }), new Unit(2, 'inch').to('inch'))
-      approx.deepEqual(parseAndEval('(2+3) in'), new Unit(5, 'in'))
-      approx.deepEqual(parseAndEval('a in', { a: 5 }), new Unit(5, 'in'))
-      approx.deepEqual(parseAndEval('0.5in + 1.5in to cm'), new Unit(5.08, 'cm').to('cm'))
+      approx.deepEqual(parseAndEval('2 in'), unit(2, 'in'))
+      approx.deepEqual(parseAndEval('5.08 cm in in'), unit(2, 'in').to('in'))
+      approx.deepEqual(parseAndEval('5 in in in'), unit(5, 'in').to('in'))
+      approx.deepEqual(parseAndEval('2 in to meter'), unit(2, 'inch').to('meter'))
+      approx.deepEqual(parseAndEval('2 in in meter'), unit(2, 'inch').to('meter'))
+      approx.deepEqual(parseAndEval('a in inch', { a: unit(5.08, 'cm') }), unit(2, 'inch').to('inch'))
+      approx.deepEqual(parseAndEval('(2+3) in'), unit(5, 'in'))
+      approx.deepEqual(parseAndEval('a in', { a: 5 }), unit(5, 'in'))
+      approx.deepEqual(parseAndEval('0.5in + 1.5in to cm'), unit(5.08, 'cm').to('cm'))
     })
   })
 
@@ -1648,7 +1648,7 @@ describe('parse', function () {
         assert.strictEqual(parseAndEval('2 == 3 ? true : false'), false)
         assert.strictEqual(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6)
         assert.deepStrictEqual(parseAndEval('3 ? true : false; 22'), new ResultSet([22]))
-        assert.deepStrictEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'))
+        assert.deepStrictEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), unit(5, 'cm').to('m'))
         assert.deepStrictEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), math.matrix([1, 2]))
         assert.deepStrictEqual(parseAndEval('false ? 1:2:6'), math.matrix([2, 3, 4, 5, 6]))
       })
@@ -1853,7 +1853,7 @@ describe('parse', function () {
     })
 
     it('should work with units', function () {
-      assert.deepStrictEqual(bigmath.evaluate('2 cm'), new bigmath.Unit(new bigmath.BigNumber(2), 'cm'))
+      assert.deepStrictEqual(bigmath.evaluate('2 cm'), bigmath.unit(new bigmath.BigNumber(2), 'cm'))
     })
   })
 

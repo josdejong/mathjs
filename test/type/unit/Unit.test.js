@@ -208,36 +208,39 @@ describe('Unit', function () {
     })
   })
 
-  describe('toNumber', function () {
+  describe('value', function () {
+    it('should return the unit\'s numeric value', function () {
+      const u = unit(math.fraction(1, 3), 'cm')
+      assert.deepStrictEqual(u.to('mm').value, math.fraction(10, 3))
+    })
+ 
     it('should convert a unit to a number', function () {
       const u = unit(5000, 'cm')
-      approx.equal(u.toNumber('mm'), 50000)
-
-      approx.equal(unit(5.08, 'cm').toNumber('inch'), 2)
-
-      approx.equal(unit(101325, 'N/m^2').toNumber('lbf/in^2'), 14.6959487763741)
+      approx.equal(u.to('mm').value, 50000)
+  
+      approx.equal(unit(5.08, 'cm').to('inch').value, 2)
+  
+      approx.equal(unit(101325, 'N/m^2').to('lbf/in^2').value, 14.6959487763741)
     })
-
+  
     it('should convert a unit with fixed prefix to a number', function () {
       const u1 = unit(5000, 'cm')
       const u2 = u1.to('km')
-      approx.equal(u2.toNumber('mm'), 50000)
-
+      approx.equal(u2.to('mm').value, 50000)
+  
       const u3 = unit(981, 'cm/s^2')
       const u4 = u3.to('km/ms^2')
-      approx.equal(u4.toNumber('m/s^2'), 9.81)
+      approx.equal(u4.to('m/s^2').value, 9.81)
     })
-
+  
     it('should convert a unit with fraction to a number', function () {
       const u = unit(math.fraction(5), 'cm')
-      assert.strictEqual(u.toNumber('mm'), 50)
+      assert.strictEqual(u.to('mm').value, 50)
     })
-  })
 
-  describe('toNumeric', function () {
-    it('should convert a unit to a numeric value', function () {
-      const u = unit(math.fraction(1, 3), 'cm')
-      assert.deepStrictEqual(u.toNumeric('mm'), math.fraction(10, 3))
+    it('should return the value of a unit without needing the \'to\' method', function () {
+      const u = unit('45 deg')
+      assert.strictEqual(u.value, 45)
     })
   })
 
@@ -1012,9 +1015,9 @@ describe('Unit', function () {
       assert.strictEqual(unit4.units[0].unit.name, 'meters')
       assert.strictEqual(unit4.units[0].prefix, '')
 
-      assert.strictEqual(unit(10, 'decades').toNumeric('decade'), 10)
-      assert.strictEqual(unit(10, 'centuries').toNumeric('century'), 10)
-      assert.strictEqual(unit(10, 'millennia').toNumeric('millennium'), 10)
+      assert.strictEqual(unit(10, 'decades').to('decade').value, 10)
+      assert.strictEqual(unit(10, 'centuries').to('century').value, 10)
+      assert.strictEqual(unit(10, 'millennia').to('millennium').value, 10)
     })
   })
 
@@ -1192,13 +1195,13 @@ describe('Unit', function () {
 
   describe('splitUnit', function () {
     it('should split a unit into parts', function () {
-      assert.strictEqual((unit(1, 'm')).split(['ft', 'in']).toString(), '3 ft,3.3700787401574765 in')
-      assert.strictEqual((unit(-1, 'm')).split(['ft', 'in']).toString(), '-3 ft,-3.3700787401574765 in')
+      assert.strictEqual((unit(1, 'm')).split(['ft', 'in']).toString(), '3 ft,3.370078740157485 in')
+      assert.strictEqual((unit(-1, 'm')).split(['ft', 'in']).toString(), '-3 ft,-3.370078740157485 in')
       assert.strictEqual((unit(1, 'm/s')).split(['m/s']).toString(), '1 m / s')
-      assert.strictEqual((unit(1, 'm')).split(['ft', 'ft']).toString(), '3 ft,0.280839895013123 ft')
+      assert.strictEqual((unit(1, 'm')).split(['ft', 'ft']).toString(), '3 ft,0.2808398950131238 ft')
       assert.strictEqual((unit(1.23, 'm/s')).split([]).toString(), '1.23 m / s')
-      assert.strictEqual((unit(1, 'm')).split(['in', 'ft']).toString(), '39 in,0.030839895013123605 ft')
-      assert.strictEqual((unit(1, 'm')).split([ unit('ft'), unit('in') ]).toString(), '3 ft,3.3700787401574765 in')
+      assert.strictEqual((unit(1, 'm')).split(['in', 'ft']).toString(), '39 in,0.03083989501312361 ft')
+      assert.strictEqual((unit(1, 'm')).split([ unit('ft'), unit('in') ]).toString(), '3 ft,3.370078740157485 in')
     })
 
     it('should be resistant to round-off error', function () {

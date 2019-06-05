@@ -57,7 +57,7 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'Unit': function (x) {
-      throw new Error('Second argument with valueless unit expected')
+      return x.value
     },
 
     'null': function (x) {
@@ -65,7 +65,7 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'Unit, string | Unit': function (unit, valuelessUnit) {
-      return unit.toNumber(valuelessUnit)
+      return unit.to(valuelessUnit).value
     },
 
     'Array | Matrix': function (x) {

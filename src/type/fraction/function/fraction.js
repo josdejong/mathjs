@@ -40,6 +40,10 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'string': function (x) {
+      if (x.includes('e')) {
+        x = parseFloat(x)
+        // throw new Error('Cannot parse a fraction from a string in scientific notation: ' + x)
+      }
       return new Fraction(x)
     },
 

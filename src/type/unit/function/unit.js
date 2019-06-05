@@ -20,6 +20,8 @@ const dependencies = [
   'larger',
   'largerEq',
   'abs',
+  'round',
+  'fix',
   'format',
   'isComplex',
   'isBigNumber',
@@ -47,6 +49,8 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
   larger,
   largerEq,
   abs,
+  round,
+  fix,
   format,
   isComplex,
   isBigNumber,
@@ -142,6 +146,8 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       gt: (a, b) => promoteArgs(ifComplexThenAbs(larger), a, b),
       ge: (a, b) => promoteArgs(ifComplexThenAbs(largerEq), a, b),
       abs: abs,
+      round: round,
+      trunc: fix,
       format: (a, b) => {
         let result
         if (typeof b !== 'undefined') {

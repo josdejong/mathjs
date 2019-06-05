@@ -33,6 +33,7 @@ describe('number', function () {
 
   it('should convert a unit to a number', function () {
     approx.equal(number(math.unit('52cm'), 'm'), 0.52)
+    approx.equal(number(math.unit('52cm')), 52)
   })
 
   it('should parse the string if called with a valid string', function () {
