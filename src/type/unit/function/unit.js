@@ -115,6 +115,15 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     return result
   }
 
+  // Converts a comparison function into one that compares the absolute values of complex numbers instead
+  const ifComplexThenAbs = (fn) => {
+    return (a, b) => {
+      let aAbs = a.type === 'Complex' ? abs(a) : a
+      let bAbs = b.type === 'Complex' ? abs(b) : b
+      return fn(aAbs, bAbs)
+    }
+  }
+
 
   const unitmath = UnitMath.config({
     parentheses: true,
@@ -128,10 +137,10 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       div: (a, b) => promoteArgs(divide, a, b),
       pow: (a, b) => promoteArgs(pow, a, b),
       eq: (a, b) => promoteArgs(equal, a, b),
-      lt: (a, b) => promoteArgs(smaller, a, b),
-      le: (a, b) => promoteArgs(smallerEq, a, b),
-      gt: (a, b) => promoteArgs(larger, a, b),
-      ge: (a, b) => promoteArgs(largerEq, a, b),
+      lt: (a, b) => promoteArgs(ifComplexThenAbs(smaller), a, b),
+      le: (a, b) => promoteArgs(ifComplexThenAbs(smallerEq), a, b),
+      gt: (a, b) => promoteArgs(ifComplexThenAbs(larger), a, b),
+      ge: (a, b) => promoteArgs(ifComplexThenAbs(largerEq), a, b),
       abs: abs,
       format: (a, b) => {
         let result
