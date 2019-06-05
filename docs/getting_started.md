@@ -28,7 +28,16 @@ Load the functions you need and use them:
 ```js
 import { sqrt } from 'mathjs'
 
-sqrt(-4) // 2i
+console.log(sqrt(-4).toString()) // 2i
+```
+
+To use lightweight, number only implementations of all functions:
+
+```js
+import { sqrt } from 'mathjs/number'
+
+console.log(sqrt(4).toString()) // 2
+console.log(sqrt(-4).toString()) // NaN
 ```
 
 You can create a mathjs instance allowing [configuration](core/configuration.md) and importing of external functions as follows:
@@ -36,11 +45,10 @@ You can create a mathjs instance allowing [configuration](core/configuration.md)
 ```js
 import { create, all } from 'mathjs'
 
-const config = { /* ... */ }
+const config = { }
 const math = create(all, config)
-math.import(/* ... */)
 
-math.sqrt(-4) // 2i
+console.log(math.sqrt(-4).toString()) // 2i
 ```
 
 How to optimize your bundle size using tree-shaking is described on the page
@@ -54,7 +62,7 @@ Load math.js in [node.js](https://nodejs.org/) (CommonJS module system):
 ```js
 const { sqrt } = require('mathjs')
 
-sqrt(-4) // 2i
+console.log(sqrt(-4).toString()) // 2i
 ```
 
 
@@ -71,7 +79,7 @@ variable `math` to access the libary once loaded:
 </head>
 <body>
   <script type="text/javascript">
-    math.sqrt(-4) // 2i
+    console.log(math.sqrt(-4).toString()) // 2i
   </script>
 </body>
 </html>

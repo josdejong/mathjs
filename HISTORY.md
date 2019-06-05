@@ -1,6 +1,6 @@
 # History
 
-# 2019-05-21, version 6.0.0-beta.2
+# 2019-06-05, version 6.0.0-beta.3
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
