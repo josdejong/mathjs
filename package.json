@@ -163,14 +163,13 @@
     "webpack": "4.33.0",
     "zeros": "1.0.0"
   },
-  "main": "./es5",
-  "module": "./es6",
+  "main": "main/es5",
+  "module": "main/es6",
   "files": [
     "bin",
     "dist",
     "docs",
-    "es5",
-    "es6",
+    "main",
     "lib",
     "src",
     "core.js",
