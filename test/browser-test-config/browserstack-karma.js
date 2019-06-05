@@ -32,30 +32,30 @@ module.exports = function (config) {
         base: 'BrowserStack',
         browser: 'Android Browser',
         real_mobile: true,
-        device: 'Samsung Galaxy S8',
+        device: 'Samsung Galaxy S9',
         os: 'android',
-        os_version: '7.0'
+        os_version: '8.0'
       },
       bs_firefox_windows: {
         base: 'BrowserStack',
         browser: 'firefox',
-        browser_version: '60.0',
+        browser_version: '67',
         os: 'Windows',
         os_version: '10'
       },
       bs_chrome_mac: {
         base: 'BrowserStack',
         browser: 'Chrome',
-        browser_version: '67',
+        browser_version: '74',
         os: 'OS X',
         os_version: 'High Sierra'
       },
       bs_safari_mac: {
         base: 'BrowserStack',
         browser: 'Safari',
-        browser_version: '11.1',
+        browser_version: '12',
         os: 'OS X',
-        os_version: 'High Sierra'
+        os_version: 'Mojave'
       },
       bs_ie_11: {
         base: 'BrowserStack',
@@ -67,7 +67,7 @@ module.exports = function (config) {
       bs_edge: {
         base: 'BrowserStack',
         browser: 'Edge',
-        browser_version: '17',
+        browser_version: '18',
         os: 'Windows',
         os_version: '10'
       }
