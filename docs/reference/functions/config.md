@@ -9,6 +9,8 @@ layout: default
 Set configuration options for math.js, and get current options.
 Will emit a 'config' event, with arguments (curr, prev, changes).
 
+This function is only available on a mathjs instance created using `create`.
+
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
@@ -32,10 +34,15 @@ Object | Returns the current configuration
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
+import { create, all } from 'mathjs'
+
+// create a mathjs instance
+const math = create(all)
+
 math.config().number                // outputs 'number'
-math.eval('0.4')                    // outputs number 0.4
+math.evaluate('0.4')                // outputs number 0.4
 math.config({number: 'Fraction'})
-math.eval('0.4')                    // outputs Fraction 2/5
+math.evaluate('0.4')                // outputs Fraction 2/5
 ```
 
 

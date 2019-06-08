@@ -8,11 +8,12 @@ File: [rocket_trajectory_optimization.html](rocket_trajectory_optimization.html)
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>math.js | rocket trajectory optimization</title>
 
-  <script src="https://unpkg.com/mathjs@5.10.3/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@6.0.0/dist/math.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
   <style>
@@ -61,59 +62,59 @@ File: [rocket_trajectory_optimization.html](rocket_trajectory_optimization.html)
 
     const sim = math.parser()
 
-    sim.eval("G = 6.67408e-11 m^3 kg^-1 s^-2")  // Gravitational constant
-    sim.eval("mbody = 5.972e24 kg")             // Mass of Earth
-    sim.eval("mu = G * mbody")
-    sim.eval("dt = 1.0 s")                      // Simulation timestep
-    sim.eval("tfinal = 162 s")                  // Simulation duration
-    sim.eval("T = 1710000 lbf * 0.9")           // Engine thrust
-    sim.eval("g0 = 9.80665 m/s^2")              // Standard gravity: used for calculating prop consumption (dmdt)
-    sim.eval("isp = 290 s")                     // Specific impulse
-    sim.eval("gamma0 = 89.99883 deg")           // Initial pitch angle (90 deg is vertical)
-    sim.eval("r0 = 6378.1370 km")               // Equatorial radius of Earth
-    sim.eval("v0 = 10 m/s")                     // Initial velocity (must be non-zero because ODE is ill-conditioned)
-    sim.eval("phi0 = 0 deg")                    // Initial orbital reference angle
-    sim.eval("m0 = 1207920 lbm + 30000 lbm")    // Initial mass of rocket and fuel
+    sim.evaluate("G = 6.67408e-11 m^3 kg^-1 s^-2")  // Gravitational constant
+    sim.evaluate("mbody = 5.972e24 kg")             // Mass of Earth
+    sim.evaluate("mu = G * mbody")
+    sim.evaluate("dt = 1.0 s")                      // Simulation timestep
+    sim.evaluate("tfinal = 162 s")                  // Simulation duration
+    sim.evaluate("T = 1710000 lbf * 0.9")           // Engine thrust
+    sim.evaluate("g0 = 9.80665 m/s^2")              // Standard gravity: used for calculating prop consumption (dmdt)
+    sim.evaluate("isp = 290 s")                     // Specific impulse
+    sim.evaluate("gamma0 = 89.99883 deg")           // Initial pitch angle (90 deg is vertical)
+    sim.evaluate("r0 = 6378.1370 km")               // Equatorial radius of Earth
+    sim.evaluate("v0 = 10 m/s")                     // Initial velocity (must be non-zero because ODE is ill-conditioned)
+    sim.evaluate("phi0 = 0 deg")                    // Initial orbital reference angle
+    sim.evaluate("m0 = 1207920 lbm + 30000 lbm")    // Initial mass of rocket and fuel
 
     // Define the equations of motion. It is important to maintain the same argument order for each of these functions.
-    sim.eval("drdt(r, v, m, phi, gamma) = v sin(gamma)")
-    sim.eval("dvdt(r, v, m, phi, gamma) = -mu / r^2 * sin(gamma) + T / m")
-    sim.eval("dmdt(r, v, m, phi, gamma) = -T/g0/isp")
-    sim.eval("dphidt(r, v, m, phi, gamma) = v/r * cos(gamma) * rad")
-    sim.eval("dgammadt(r, v, m, phi, gamma) = (1/r * (v - mu / (r v)) * cos(gamma)) * rad")
+    sim.evaluate("drdt(r, v, m, phi, gamma) = v sin(gamma)")
+    sim.evaluate("dvdt(r, v, m, phi, gamma) = -mu / r^2 * sin(gamma) + T / m")
+    sim.evaluate("dmdt(r, v, m, phi, gamma) = -T/g0/isp")
+    sim.evaluate("dphidt(r, v, m, phi, gamma) = v/r * cos(gamma) * rad")
+    sim.evaluate("dgammadt(r, v, m, phi, gamma) = (1/r * (v - mu / (r v)) * cos(gamma)) * rad")
 
     // Again, remember to maintain the same variable order in the call to ndsolve.
-    sim.eval("result_stage1 = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], [r0, v0, m0, phi0, gamma0], dt, tfinal)")
+    sim.evaluate("result_stage1 = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], [r0, v0, m0, phi0, gamma0], dt, tfinal)")
 
     // Reset initial conditions for interstage flight
-    sim.eval("T = 0 lbf")
-    sim.eval("tfinal = 12 s")
-    sim.eval("x = flatten(result_stage1[result_stage1.size()[1],:])")
-    sim.eval("result_interstage = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], x, dt, tfinal)")
+    sim.evaluate("T = 0 lbf")
+    sim.evaluate("tfinal = 12 s")
+    sim.evaluate("x = flatten(result_stage1[result_stage1.size()[1],:])")
+    sim.evaluate("result_interstage = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], x, dt, tfinal)")
 
-    console.log(sim.eval("result_interstage[result_interstage.size()[1],3]").toString())
+    console.log(sim.evaluate("result_interstage[result_interstage.size()[1],3]").toString())
 
     // Reset initial conditions for stage 2 flight
-    sim.eval("T = 210000 lbf")
-    sim.eval("isp = 348 s")
-    sim.eval("tfinal = 397 s")
-    sim.eval("x = flatten(result_interstage[result_interstage.size()[1],:])")
-    sim.eval("x[3] = 273600 lbm")  // Lighten the rocket a bit since we discarded the first stage
-    sim.eval("result_stage2 = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], x, dt, tfinal)")
+    sim.evaluate("T = 210000 lbf")
+    sim.evaluate("isp = 348 s")
+    sim.evaluate("tfinal = 397 s")
+    sim.evaluate("x = flatten(result_interstage[result_interstage.size()[1],:])")
+    sim.evaluate("x[3] = 273600 lbm")  // Lighten the rocket a bit since we discarded the first stage
+    sim.evaluate("result_stage2 = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], x, dt, tfinal)")
 
     // Reset initial conditions for unpowered flight
-    sim.eval("T = 0 lbf")
-    sim.eval("tfinal = 60 s")
-    sim.eval("x = flatten(result_stage2[result_stage2.size()[1],:])")
-    sim.eval("result_unpowered = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], x, dt, tfinal)")
+    sim.evaluate("T = 0 lbf")
+    sim.evaluate("tfinal = 60 s")
+    sim.evaluate("x = flatten(result_stage2[result_stage2.size()[1],:])")
+    sim.evaluate("result_unpowered = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], x, dt, tfinal)")
 
 
 
     // Extract the useful information from the results so it can be plotted
-    const data_stage1 =     sim.eval("transpose(concat( transpose(    result_stage1[:,4] - phi0) * r0 / rad / km, (    transpose(result_stage1[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
-    const data_interstage = sim.eval("transpose(concat( transpose(result_interstage[:,4] - phi0) * r0 / rad / km, (transpose(result_interstage[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
-    const data_stage2 =     sim.eval("transpose(concat( transpose(    result_stage2[:,4] - phi0) * r0 / rad / km, (    transpose(result_stage2[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
-    const data_unpowered =  sim.eval("transpose(concat( transpose( result_unpowered[:,4] - phi0) * r0 / rad / km, ( transpose(result_unpowered[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
+    const data_stage1 =     sim.evaluate("transpose(concat( transpose(    result_stage1[:,4] - phi0) * r0 / rad / km, (    transpose(result_stage1[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
+    const data_interstage = sim.evaluate("transpose(concat( transpose(result_interstage[:,4] - phi0) * r0 / rad / km, (transpose(result_interstage[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
+    const data_stage2 =     sim.evaluate("transpose(concat( transpose(    result_stage2[:,4] - phi0) * r0 / rad / km, (    transpose(result_stage2[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
+    const data_unpowered =  sim.evaluate("transpose(concat( transpose( result_unpowered[:,4] - phi0) * r0 / rad / km, ( transpose(result_unpowered[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
 
     window['chart'] = new Chart(document.getElementById('canvas1'), {
       type: 'line',

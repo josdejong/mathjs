@@ -1,44 +1,33 @@
-// Load the math.js core
-const core = require('../../core')
+import {
+  create,
+  fractionDependencies,
+  addDependencies,
+  divideDependencies,
+  formatDependencies
+} from '../..'
 
-// Create a new, empty math.js instance
-// It will only contain methods `import` and `config`
-const math = core.create()
+const config = {
+  // optionally, you can specify configuration
+}
 
-// load the data types you need. Let's say you just want to use fractions,
-// but no matrices, complex numbers, bignumbers, and other stuff.
-//
-// To load all data types:
-//
-//     math.import(require('../../lib/type'))
-//
-math.import(require('../../lib/type/fraction'))
+// Create just the functions we need
+const { fraction, add, divide, format } = create({
+  fractionDependencies,
+  addDependencies,
+  divideDependencies,
+  formatDependencies
+}, config)
 
-// Load the functions you need.
-//
-// To load all functions:
-//
-//     math.import(require('../../lib/function'))
-//
-// To load all functions of a specific category:
-//
-//     math.import(require('../../lib/function/arithmetic'))
-//
-math.import(require('../../lib/function/arithmetic/add'))
-math.import(require('../../lib/function/arithmetic/subtract'))
-math.import(require('../../lib/function/arithmetic/multiply'))
-math.import(require('../../lib/function/arithmetic/divide'))
-math.import(require('../../lib/function/string/format'))
-
-// Use the loaded functions
-const a = math.fraction(1, 3)
-const b = math.fraction(3, 7)
-const c = math.add(a, b)
-console.log('result:', math.format(c)) // outputs "result: 16/21"
+// Use the created functions
+const a = fraction(1, 3)
+const b = fraction(3, 7)
+const c = add(a, b)
+const d = divide(a, b)
+console.log('c =', format(c)) // outputs "c = 16/21"
+console.log('d =', format(d)) // outputs "d = 7/9"
 
 // Now, when bundling your application for use in the browser, only the used
-// parts of math.js will be bundled. For example to create a bundle using
-// browserify:
+// parts of math.js will be bundled. For example to create a bundle using Webpack:
 //
-//     browserify custom_loading.js -o custom_loading.bundle.js
+//     npx webpack custom_loading.js -o custom_loading.bundle.js --mode=production
 //

@@ -50,4 +50,4 @@ math.prod([[2, 5], [4, 3]])   // returns 120
 [max](max.html),
 [sum](sum.html),
 [std](std.html),
-[var](var.html)
+[variance](variance.html)

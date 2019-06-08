@@ -56,22 +56,22 @@ All nodes have the following methods:
 -   `compile() : Object`
 
     Compile an expression into optimized JavaScript code. `compile` returns an
-    object with a function `eval([scope])` to evaluate. Example:
+    object with a function `evaluate([scope])` to evaluate. Example:
 
     ```js
-    const node = math.parse('2 + x') // returns the root Node of an expression tree
-    const code = node.compile()      // returns {eval: function (scope) {...}}
-    const eval = code.eval({x: 3})   // returns 5
+    const node = math.parse('2 + x')   // returns the root Node of an expression tree
+    const code = node.compile()        // returns {evaluate: function (scope) {...}}
+    const evaluate = code.evaluate({x: 3}) // returns 5
     ```
 
--   `eval([scope]) : Object`
+-   `evaluate([scope]) : Object`
 
-    Compile and eval an expression, this is the equivalent of doing
-    `node.compile().eval(scope)`. Example:
+    Compile and evaluate an expression, this is the equivalent of doing
+    `node.compile().evaluate(scope)`. Example:
 
     ```js
-    const node = math.parse('2 + x') // returns the root Node of an expression tree
-    const eval = node.eval({x: 3})   // returns 5
+    const node = math.parse('2 + x')   // returns the root Node of an expression tree
+    const evaluate = node.evaluate({x: 3}) // returns 5
     ```
 
 -   `equals(other: Node) : boolean`
@@ -191,6 +191,9 @@ All nodes have the following methods:
     called as `callback(node: Node, path: string, parent: Node)` for every node
     in the tree, and must return a `Node`. Parameter `path` is a string containing
     a relative JSON Path.
+
+    The transform function will stop iterating when a node is replaced by the
+    callback function, it will not iterate over replaced nodes.
 
     For example, to replace all nodes of type `SymbolNode` having name 'x' with a
     ConstantNode with value `3`:

@@ -33,7 +33,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Object &#124; Expression Node | The rational polynomial of `expr` or na object {Object} {Expression Node} expression: node simplified expression {Expression Node} numerator: simplified numerator of expression {Expression Node | boolean} denominator: simplified denominator or false (if there is no denominator) {Array}           variables:  variable names {Array}           coefficients: coefficients of numerator sorted by increased exponent {Expression Node}  node simplified expression
+Object &#124; Node | The rational polynomial of `expr` or na object {Object} {Expression Node} expression: node simplified expression {Expression Node} numerator: simplified numerator of expression {Expression Node | boolean} denominator: simplified denominator or false (if there is no denominator) {Array}           variables:  variable names {Array}           coefficients: coefficients of numerator sorted by increased exponent {Expression Node}  node simplified expression
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

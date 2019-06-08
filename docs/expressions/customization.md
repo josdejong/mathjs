@@ -39,14 +39,15 @@ const a = [[1, 2], [3, 4]] // a 2x2 matrix
 let scope = {
   a: a
 }
-math.eval('subset(a, index(1, 2))', scope) // returns 2
+math.evaluate('subset(a, index(1, 2))', scope) // returns 2
 ```
 
 To create a transform for a function, the transform function must be attached
 to the function as property `transform`:
 
 ```js
-const math = require('../index')
+import { create, all } from 'mathjs'
+const math = create(all)
 
 // create a function
 function addIt(a, b) {
@@ -73,7 +74,7 @@ math.import({
 
 // use the function via the expression parser
 console.log('Using expression parser:')
-console.log('2+4=' + math.eval('addIt(2, 4)'))
+console.log('2+4=' + math.evaluate('addIt(2, 4)'))
 // This will output:
 //
 //     input: a=2, b=4
@@ -134,7 +135,7 @@ function myFunction(args, math, scope) {
 
   // evaluate the arguments
   const res = args.map(function (arg) {
-    return arg.compile().eval(scope)
+    return arg.compile().evaluate(scope)
   })
 
   return 'arguments: ' + str.join(',') + ', evaluated: ' + res.join(',')
@@ -149,7 +150,7 @@ math.import({
 })
 
 // use the function
-math.eval('myFunction(2 + 3, sqrt(4))')
+math.evaluate('myFunction(2 + 3, sqrt(4))')
 // returns 'arguments: 2 + 3, sqrt(4), evaluated: 5, 2'
 ```
 
@@ -217,7 +218,7 @@ The `parenthesis` option changes the way parentheses are used in the output. The
 
 There's two ways of passing callbacks:
 
-1. Pass an object that maps function names to callbacks. Those callbacks will be used for FunctionNodes with 
+1. Pass an object that maps function names to callbacks. Those callbacks will be used for FunctionNodes with
 functions of that name.
 2. Pass a function to `toTex`. This function will then be used for every node.
 
@@ -356,11 +357,11 @@ node.toTex({implicit: 'show'})    // '2\\cdot a'
 It is possible to customize the characters allowed in symbols and digits.
 The `parse` function exposes the following test functions:
 
-- `math.expression.parse.isAlpha(c, cPrev, cNext)`
-- `math.expression.parse.isWhitespace(c, nestingLevel)`
-- `math.expression.parse.isDecimalMark(c, cNext)`
-- `math.expression.parse.isDigitDot(c)`
-- `math.expression.parse.isDigit(c)`
+- `math.parse.isAlpha(c, cPrev, cNext)`
+- `math.parse.isWhitespace(c, nestingLevel)`
+- `math.parse.isDecimalMark(c, cNext)`
+- `math.parse.isDigitDot(c)`
+- `math.parse.isDigit(c)`
 
 The exact signature and implementation of these functions can be looked up in
 the [source code of the parser](https://github.com/josdejong/mathjs/blob/master/lib/expression/parse.js). The allowed alpha characters are described here: [Constants and variables](syntax.html#constants-and-variables).
@@ -369,12 +370,12 @@ For example, the phone character <code>&#9742;</code> is not supported by defaul
 by replacing the `isAlpha` function:
 
 ```js
-const isAlphaOriginal = math.expression.parse.isAlpha
-math.expression.parse.isAlpha = function (c, cPrev, cNext) {
+const isAlphaOriginal = math.parse.isAlpha
+math.parse.isAlpha = function (c, cPrev, cNext) {
   return isAlphaOriginal(c, cPrev, cNext) || (c === '\u260E')
 }
 
 // now we can use the \u260E (phone) character in expressions
-const result = math.eval('\u260Efoo', {'\u260Efoo': 42}) // returns 42
+const result = math.evaluate('\u260Efoo', {'\u260Efoo': 42}) // returns 42
 console.log(result)
 ```

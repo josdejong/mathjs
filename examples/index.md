@@ -24,7 +24,6 @@ layout: default
 - [Basic usage](browser/basic_usage.html.html)
 - [Currency conversion](browser/currency_conversion.html.html)
 - [Custom separators](browser/custom_separators.html.html)
-- [Old browsers](browser/old_browsers.html.html)
 - [Plot](browser/plot.html.html)
 - [Pretty printing with mathjax](browser/pretty_printing_with_mathjax.html.html)
 - [Printing html](browser/printing_html.html.html)
@@ -34,9 +33,9 @@ layout: default
 
 # Advanced examples
 
-- [Add new datatypes](advanced/add_new_datatypes/index.html)
 - [Convert fraction to bignumber](advanced/convert_fraction_to_bignumber.js.html)
 - [Custom argument parsing](advanced/custom_argument_parsing.js.html)
+- [Custom datatype](advanced/custom_datatype.js.html)
 - [Custom loading](advanced/custom_loading.js.html)
 - [Expression trees](advanced/expression_trees.js.html)
 - [Function transform](advanced/function_transform.js.html)

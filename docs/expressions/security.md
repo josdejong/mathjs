@@ -44,27 +44,29 @@ risk in the expression parser:
 
 - `import` and `createUnit` which alter the built-in functionality and
   allow overriding existing functions and units.
-- `eval`, `parse`, `simplify`, and `derivative` which parse arbitrary
+- `evaluate`, `parse`, `simplify`, and `derivative` which parse arbitrary
   input into a manipulable expression tree.
 
 To make the expression parser less vulnerable whilst still supporting
 most functionality, these functions can be disabled:
 
 ```js
-const math = require('mathjs')
-const limitedEval = math.eval
+import { create, all } from 'mathjs'
+
+const math = create(all)
+const limitedEvaluate = math.evaluate
 
 math.import({
   'import':     function () { throw new Error('Function import is disabled') },
   'createUnit': function () { throw new Error('Function createUnit is disabled') },
-  'eval':       function () { throw new Error('Function eval is disabled') },
+  'evaluate':   function () { throw new Error('Function evaluate is disabled') },
   'parse':      function () { throw new Error('Function parse is disabled') },
   'simplify':   function () { throw new Error('Function simplify is disabled') },
   'derivative': function () { throw new Error('Function derivative is disabled') }
-}, {override: true})
+}, { override: true })
 
-console.log(limitedEval('sqrt(16)'))     // Ok, 4
-console.log(limitedEval('parse("2+3")')) // Error: Function parse is disabled
+console.log(limitedEvaluate('sqrt(16)'))     // Ok, 4
+console.log(limitedEvaluate('parse("2+3")')) // Error: Function parse is disabled
 ```
 
 

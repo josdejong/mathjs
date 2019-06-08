@@ -6,7 +6,8 @@
  * *transform* for the function. A transform is a function wrapping around a
  * function to be transformed or completely replaces a function.
  */
-const math = require('../../index')
+const { create, all } = require('../..')
+const math = create(all)
 
 // create a function
 function addIt (a, b) {
@@ -33,7 +34,7 @@ math.import({
 
 // use the function via the expression parser
 console.log('Using expression parser:')
-console.log('2+4=' + math.eval('addIt(2, 4)'))
+console.log('2+4=' + math.evaluate('addIt(2, 4)'))
 // This will output:
 //
 //     input: a=2, b=4

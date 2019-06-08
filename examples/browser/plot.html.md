@@ -8,10 +8,11 @@ File: [plot.html](plot.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>math.js | plot</title>
-  <script src="https://unpkg.com/mathjs@5.10.3/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@6.0.0/dist/math.min.js"></script>
 
   <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
 
@@ -56,7 +57,7 @@ File: [plot.html](plot.html) (click for a live demo)
       // evaluate the expression repeatedly for different values of x
       const xValues = math.range(-10, 10, 0.5).toArray()
       const yValues = xValues.map(function (x) {
-        return expr.eval({x: x})
+        return expr.evaluate({x: x})
       })
 
       // render the plot using plotly

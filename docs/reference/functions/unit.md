@@ -7,7 +7,7 @@ layout: default
 <h1 id="function-unit">Function unit <a href="#function-unit" title="Permalink">#</a></h1>
 
 Create a unit. Depending on the passed arguments, the function
-will create and return a new math.type.Unit object.
+will create and return a new math.Unit object.
 When a matrix is provided, all elements will be converted to units.
 
 

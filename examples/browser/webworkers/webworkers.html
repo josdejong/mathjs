@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>math.js | web workers</title>
 </head>
 <body>
@@ -21,7 +22,7 @@
    *
    *     const worker = new MathWorker()
    *     const expr = '12 / (2.3 + 0.7)'
-   *     worker.eval(expr, function (err, result) {
+   *     worker.evaluate(expr, function (err, result) {
    *       console.log(err, result)
    *     })
    */
@@ -49,7 +50,7 @@
    * @param {string} expr
    * @param {Function} callback   Called as callback(err, result)
    */
-  MathWorker.prototype.eval = function eval (expr, callback) {
+  MathWorker.prototype.evaluate = function evaluate (expr, callback) {
     // build a request,
     // add an id so we can link returned responses to the right callback
     const id = this.seq++
@@ -69,7 +70,7 @@
   const worker = new MathWorker()
 
   // evaluate an expression via the worker
-  worker.eval('12 / (2.3 + 0.7)', function (err, result) {
+  worker.evaluate('12 / (2.3 + 0.7)', function (err, result) {
     document.getElementById('results').innerHTML += 'result: ' + result + '<br>'
   })
 

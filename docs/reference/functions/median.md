@@ -51,5 +51,5 @@ math.median([3, -1, 5, 7])  // returns 4
 [sum](sum.html),
 [prod](prod.html),
 [std](std.html),
-[var](var.html),
+[variance](variance.html),
 [quantileSeq](quantileSeq.html)

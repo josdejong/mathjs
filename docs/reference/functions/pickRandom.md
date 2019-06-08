@@ -24,9 +24,9 @@ math.pickRandom(array, weights, number)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`array` | Array | A one dimensional array
+`array` | Array &#124; Matrix | A one dimensional array
 `number` | Int | An int or float
-`weights` | Array | An array of ints or floats
+`weights` | Array &#124; Matrix | An array of ints or floats
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

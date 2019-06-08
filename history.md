@@ -4,6 +4,132 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20190608-version-600">2019-06-08, version 6.0.0 <a href="#20190608-version-600" title="Permalink">#</a></h1>
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+<h3 id="most-notable-changes">Most notable changes <a href="#most-notable-changes" title="Permalink">#</a></h3>
+
+1.  Full support for **ES6 modules**. Support for tree-shaking out of the box.
+
+    Load all functions:
+
+    ```js
+    import * as math from 'mathjs'
+    ```
+
+    Use a few functions:
+
+    ```js
+    import { add, multiply } from 'mathjs'
+    ```
+
+    Load all functions with custom configuration:
+
+    ```js
+    import { create, all } from 'mathjs'
+    const config = { number: 'BigNumber' }
+    const math = create(all, config)
+    ```
+
+    Load a few functions with custom configuration:
+
+    ```js
+    import { create, addDependencies, multiplyDependencies } from 'mathjs'
+    const config = { number: 'BigNumber' }
+    const { add, multiply } = create({
+      addDependencies,
+      multiplyDependencies
+    }, config)
+    ```
+
+2.  Support for **lightweight, number-only** implementations of all functions:
+
+    ```
+    import { add, multiply } from 'mathjs/number'
+    ```
+
+3.  New **dependency injection** solution used under the hood.
+
+
+<h3 id="breaking-changes">Breaking changes <a href="#breaking-changes" title="Permalink">#</a></h3>
+
+- Node 6 is no longer supported.
+
+- Functions `config` and `import` are not available anymore in the global
+  context:
+
+  ```js
+  // v5
+  import * as mathjs from 'mathjs'
+  mathjs.config(...) // error in v6.0.0
+  mathjs.import(...) // error in v6.0.0
+  ```
+
+  Instead, create your own mathjs instance and pass config and imports
+  there:
+
+  ```js
+  // v6
+  import { create, all } from 'mathjs'
+  const config = { number: 'BigNumber' }
+  const mathjs = create(all, config)
+  mathjs.import(...)
+  ```
+
+- Renamed function `typeof` to `typeOf`, `var` to `variance`,
+  and `eval` to `evaluate`. (the old function names are reserved keywords
+  which can not be used as a variable name).
+- Deprecated the `Matrix.storage` function. Use `math.matrix` instead to create
+  a matrix.
+- Deprecated function `math.expression.parse`, use `math.parse` instead.
+  Was used before for example to customize supported characters by replacing
+  `math.parse.isAlpha`.
+- Moved all classes like `math.type.Unit` and `math.expression.Parser` to
+  `math.Unit` and `math.Parser` respectively.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1428">#1428</a>: transform iterating over replaced nodes. New behavior
+  is that it stops iterating when a node is replaced.
+- Dropped support for renaming factory functions when importing them.
+- Dropped fake BigNumber support of function `erf`.
+- Removed all index.js files used to load specific functions instead of all, like:
+
+  ```
+  // v5
+  // ... set up empty instance of mathjs, then load a set of functions:
+  math.import(require('mathjs/lib/function/arithmetic'))
+  ```
+
+  Individual functions are now loaded simply like:
+
+  ```js
+  // v6
+  import { add, multiply } from 'mathjs'
+  ```
+
+  To set a specific configuration on the functions:
+
+  ```js
+  // v6
+  import { create, addDependencies, multiplyDependencies } from 'mathjs'
+  const config = { number: 'BigNumber' }
+  const math = create({ addDependencies, multiplyDependencies }, config)
+  ```
+
+  See example `advanced/custom_loading.js`.
+
+- Updated the values of all physical units to their latest official values.
+  See <a href="https://github.com/josdejong/mathjs/issues/1529">#1529</a>. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+
+<h3 id="non-breaking-changes">Non breaking changes <a href="#non-breaking-changes" title="Permalink">#</a></h3>
+
+- Implemented units `t`, `tonne`, `bel`, `decibel`, `dB`, and prefixes
+  for `candela`. Thanks <a href="https://github.com/mcvladthegoat">@mcvladthegoat</a>.
+- Fixed `epsilon` setting being applied globally to Complex numbers.
+- Fix `math.simplify('add(2, 3)')` throwing an error.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1530">#1530</a>: number formatting first applied `lowerExp` and `upperExp`
+  and after that rounded the value instead of the other way around.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1473">#1473</a>: remove `'use strict'` in every file, not needed anymore.
+
 
 <h1 id="20190518-version-5103">2019-05-18, version 5.10.3 <a href="#20190518-version-5103" title="Permalink">#</a></h1>
 

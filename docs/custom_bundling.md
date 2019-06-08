@@ -4,73 +4,117 @@ layout: default
 
 <h1 id="custom-bundling">Custom bundling <a href="#custom-bundling" title="Permalink">#</a></h1>
 
-Math.js is a large library containing many data types and functions. 
-It is well possible that you only need a small portion of the library. 
-Math.js allows for creating a custom index file, loading only the data types 
-and functions  that you need. This give faster load times, and allows bundling 
-only the used part of the library with tools like Webpack or browserify.
+Math.js is a large library containing many data types and functions.
+It is well possible that you only need a small portion of the library.
+Math.js allows for picking just the functions and data types you need.
+This gives faster load times and smaller browser bundles. Math.js uses
+ES6 modules, and creating small bundles using tree-shaking works out of
+the box when using Webpack for example.
 
-To load an empty instance of math.js, load `mathjs/core`. This core only
-contains functions `import` and `config`.
+This page describes:
 
-```js
-// Load the math.js core
-const core = require('mathjs/core')
+- How to use just a few functions for faster load times and smaller bundles.
+- How to use light-weight, number only implementations of functions.
+- What to expect from bundle sizes when using tree-shaking.
 
-// Create a new, empty math.js instance
-// It will only contain methods `import` and `config`
-const math = core.create()
-```
+<h2 id="using-just-a-few-functions">Using just a few functions <a href="#using-just-a-few-functions" title="Permalink">#</a></h2>
 
-Then, use `math.import` to load the needed data types and functions. 
-It's important to load the data types first, and after that load functions
-and constants. The functions are dynamically built, depending on the available
-data types.
+Using the function `create`, a mathjs instance can be created.
+The `all` object contains all functionality available in mathjs,
+and a mathjs instance containing everything can be created like:
 
 ```js
-// load the data types you need. Let's say you just want to use fractions,
-// but no matrices, complex numbers, bignumbers, and other stuff.
-//
-// To load all data types:
-//
-//     math.import(require('mathjs/lib/type'))
-//
-math.import(require('mathjs/lib/type/fraction'))
+import { create, all } from 'mathjs'
 
-// Load the functions you need.
-//
-// To load all functions:
-//
-//     math.import(require('mathjs/lib/function'))
-//
-// To load all functions of a specific category:
-//
-//     math.import(require('mathjs/lib/function/arithmetic'))
-//
-math.import(require('mathjs/lib/function/arithmetic/add'))
-math.import(require('mathjs/lib/function/arithmetic/subtract'))
-math.import(require('mathjs/lib/function/arithmetic/multiply'))
-math.import(require('mathjs/lib/function/arithmetic/divide'))
-math.import(require('mathjs/lib/function/string/format'))
+const math = create(all)
 ```
 
-To see which data types and categories are available, explore the `index.js` 
-files in the folder `./lib`.
+To create an instance with just a few functions, you have to pass the
+factory functions of the functions you need, and all their dependencies.
+For example the function `add` depends on the functions `addScalar`,
+`equalScalar`, classes `DenseMatrix` and `SparseMatrix`, and more.
+Because it is hard to figure out what the dependencies of a function are,
+and the dependencies of the dependencies, mathjs provides ready made
+collections of all dependencies for every function. For example all
+factory functions of function `add` and its dependencies are available
+as `addDependencies`.
 
-The imported functions and data types can now be used:
+Here is a full example of loading just a few functions in a mathjs instance:
 
 ```js
-// Use the loaded functions
-const a = math.fraction(1, 3)
-const b = math.fraction(3, 7)
-const c = math.add(a, b)
-console.log('result:', math.format(c)) // outputs "result: 16/21"
+// file: custom_loading.js
+
+import {
+  create,
+  fractionDependencies,
+  addDependencies,
+  divideDependencies,
+  formatDependencies
+} from 'mathjs'
+
+const config = {
+  // optionally, you can specify configuration
+}
+
+// Create just the functions we need
+const { fraction, add, divide, format } = create({
+  fractionDependencies,
+  addDependencies,
+  divideDependencies,
+  formatDependencies
+}, config)
+
+// Use the created functions
+const a = fraction(1, 3)
+const b = fraction(3, 7)
+const c = add(a, b)
+const d = divide(a, b)
+console.log('c =', format(c)) // outputs "c = 16/21"
+console.log('d =', format(d)) // outputs "d = 7/9"
 ```
 
-Suppose the custom loading code (loading `mathjs/core` and doing the imports)
-is located in a file `custom_loading.js`. It's now possible to bundle
-this file using for example browserify:
+This example can be bundled using for example Webpack:
 
-```bash
-$ browserify custom_loading.js -o custom_loading.bundle.js
 ```
+npx webpack custom_loading.js -o custom_loading.bundle.js --mode=production
+```
+
+Only the used parts of mathjs will be bundled thanks to tree-shaking.
+
+
+<h2 id="numbers-only">Numbers only <a href="#numbers-only" title="Permalink">#</a></h2>
+
+The functions of mathjs support multiple data types out of the box, like
+numbers, bignumbers, complex numbers, units, and matrices. Quite commonly however,
+only support for numbers is needed and the other data-types are overkill.
+
+To accomodate for this use case of only numbers only, mathjs offers light-weight,
+number only implementations of all relevant functions. These are available by
+importing from `'mathjs/number'` instead of `'mathjs'`:
+
+```js
+// use light-weight, numbers only implementations of functions
+import { create, all } from 'mathjs/number'
+
+const math = create(all)
+console.log(add(2, 3)) // 5
+```
+
+<h2 id="bundle-size">Bundle size <a href="#bundle-size" title="Permalink">#</a></h2>
+
+When using just a few functions of mathjs instead of the whole library,
+you may expect the size of the bundle to be just a small fraction of the
+complete library. However, to create the function `add` supporting all data
+types, all these data types must be included: Unit, BigNumber, Complex,
+DenseMatrix, SparseMatrix, etc. A rough idea of the size of different parts of
+mathjs:
+
+- About 5% is coming from core functionality like `create`, `import`, `factory`,
+  `typed-function`, etc.
+- About 30% of the bundle size comes from the data classes `Complex`, `BigNumber`, `Fraction`, `Unit`, `SparseMatrix`, `DenseMatrix`.
+- About 25%  of the bundle size comes from the expression parser.
+  Half of this comes from the embedded docs.
+- About 40% comes from the about 200 built-in functions and some constants.
+
+To get a better insight in what is in your JavaScript bundle, you can use
+a tool like [source-map-explorer](https://github.com/danvk/source-map-explorer).

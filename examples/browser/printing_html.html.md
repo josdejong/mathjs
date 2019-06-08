@@ -8,11 +8,12 @@ File: [printing_html.html](printing_html.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+	<meta charset="utf-8">
 	<title>math.js | printing HTML</title>
 
-	<script src="https://unpkg.com/mathjs@5.10.3/dist/math.min.js"></script>
+	<script src="https://unpkg.com/mathjs@6.0.0/dist/math.min.js"></script>
 
 	<style>
 		body {
@@ -146,7 +147,7 @@ File: [printing_html.html](printing_html.html) (click for a live demo)
       parsed = math.parse(expr.value)
 
       // evaluate the result of the expression
-      result.innerHTML = math.format(parsed.compile().eval())
+      result.innerHTML = math.format(parsed.compile().evaluate())
 
       // print the HTML output
       const html = math.parse(expr.value).toHTML(options)

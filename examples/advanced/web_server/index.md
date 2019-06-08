@@ -7,8 +7,9 @@ layout: default
 File: [math_worker.js](math_worker.js) (click for a live demo)
 
 ```js
-const math = require('../../../index')
+const { create, all } = require('../../../index')
 const workerpool = require('workerpool')
+const math = create(all)
 
 // disable the import function so the math.js instance cannot be changed
 function noImport () {
@@ -22,7 +23,7 @@ math.import({ 'import': noImport }, { override: true })
  * @return {string} result
  */
 function evaluate (expr) {
-  const ans = math.eval(expr)
+  const ans = math.evaluate(expr)
   return math.format(ans)
 }
 

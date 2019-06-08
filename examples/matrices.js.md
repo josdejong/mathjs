@@ -10,7 +10,7 @@ File: [matrices.js](matrices.js) (click for a live demo)
 // matrices
 
 // load math.js (using node.js)
-const math = require('mathjs')
+const math = require('..')
 
 // create matrices and arrays. a matrix is just a wrapper around an Array,
 // providing some handy utilities.

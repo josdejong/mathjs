@@ -134,7 +134,7 @@ Get a string representation of the complex number,
   number of digits.
 
 <h2 id="static-methods">Static methods <a href="#static-methods" title="Permalink">#</a></h2>
-The following static methods can be accessed using `math.type.Complex`
+The following static methods can be accessed using `math.Complex`
 
 
 <h3 id="complexfromjsonjson">Complex.fromJSON(json) <a href="#complexfromjsonjson" title="Permalink">#</a></h3>
@@ -165,8 +165,8 @@ Example:
 ```js
 const a = math.complex(2, 3)   // Complex 2 + 3i
 const b = math.complex(2, 1)   // Complex 2 + 1i
-math.type.Complex.compare(a,b) // returns 1
+math.Complex.compare(a,b) // returns 1
 
 //create from json 
-const c = math.type.Complex.fromJSON({mathjs: 'Complex', re: 4, im: 3})  // Complex 4 + 3i
+const c = math.Complex.fromJSON({mathjs: 'Complex', re: 4, im: 3})  // Complex 4 + 3i
 ```

@@ -8,7 +8,7 @@ layout: default
 
 Compute the standard deviation of a matrix or a  list with values.
 The standard deviations is defined as the square root of the variance:
-`std(A) = sqrt(var(A))`.
+`std(A) = sqrt(variance(A))`.
 In case of a (multi dimensional) array or matrix, the standard deviation
 over all elements will be calculated by default, unless an axis is specified
 in which case the standard deviation will be computed along that axis.
@@ -71,4 +71,4 @@ math.std([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.7071067811865476, 1.
 [min](min.html),
 [prod](prod.html),
 [sum](sum.html),
-[var](var.html)
+[variance](variance.html)

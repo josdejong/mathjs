@@ -10,7 +10,7 @@ File: [chaining.js](chaining.js) (click for a live demo)
 // chaining
 
 // load math.js (using node.js)
-const math = require('mathjs')
+const math = require('..')
 
 // create a chained operation using the function `chain(value)`
 // end a chain using done(). Let's calculate (3 + 4) * 2

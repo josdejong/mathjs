@@ -8,8 +8,9 @@ File: [webworkers.html](webworkers.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>math.js | web workers</title>
 </head>
 <body>
@@ -30,7 +31,7 @@ File: [webworkers.html](webworkers.html) (click for a live demo)
    *
    *     const worker = new MathWorker()
    *     const expr = '12 / (2.3 + 0.7)'
-   *     worker.eval(expr, function (err, result) {
+   *     worker.evaluate(expr, function (err, result) {
    *       console.log(err, result)
    *     })
    */
@@ -58,7 +59,7 @@ File: [webworkers.html](webworkers.html) (click for a live demo)
    * @param {string} expr
    * @param {Function} callback   Called as callback(err, result)
    */
-  MathWorker.prototype.eval = function eval (expr, callback) {
+  MathWorker.prototype.evaluate = function evaluate (expr, callback) {
     // build a request,
     // add an id so we can link returned responses to the right callback
     const id = this.seq++
@@ -78,7 +79,7 @@ File: [webworkers.html](webworkers.html) (click for a live demo)
   const worker = new MathWorker()
 
   // evaluate an expression via the worker
-  worker.eval('12 / (2.3 + 0.7)', function (err, result) {
+  worker.evaluate('12 / (2.3 + 0.7)', function (err, result) {
     document.getElementById('results').innerHTML += 'result: ' + result + '<br>'
   })
 
@@ -91,7 +92,7 @@ File: [webworkers.html](webworkers.html) (click for a live demo)
 File: [worker.js](worker.js) (click for a live demo)
 
 ```js
-importScripts('https://unpkg.com/mathjs@5.10.3/dist/math.min.js')
+importScripts('https://unpkg.com/mathjs@6.0.0/dist/math.min.js')
 
 // create a parser
 const parser = self.math.parser()
@@ -103,7 +104,7 @@ self.addEventListener('message', function (event) {
 
   try {
     // evaluate the expression
-    result = parser.eval(request.expr)
+    result = parser.evaluate(request.expr)
   } catch (e) {
     // return the error
     err = e

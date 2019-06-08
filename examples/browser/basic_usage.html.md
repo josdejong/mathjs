@@ -8,10 +8,11 @@ File: [basic_usage.html](basic_usage.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>math.js | basic usage</title>
-  <script src="https://unpkg.com/mathjs@5.10.3/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@6.0.0/dist/math.min.js"></script>
 </head>
 <body>
 
@@ -30,10 +31,10 @@ File: [basic_usage.html](basic_usage.html) (click for a live demo)
   print(math.derivative('x^2 + x', 'x'))  // 2 * x + 1
 
   // expressions
-  print(math.eval('12 / (2.3 + 0.7)'))    // 4
-  print(math.eval('12.7 cm to inch'))     // 5 inch
-  print(math.eval('9 / 3 + 2i'))          // 3 + 2i
-  print(math.eval('det([-1, 2; 3, 1])'))  // -7
+  print(math.evaluate('12 / (2.3 + 0.7)'))    // 4
+  print(math.evaluate('12.7 cm to inch'))     // 5 inch
+  print(math.evaluate('9 / 3 + 2i'))          // 3 + 2i
+  print(math.evaluate('det([-1, 2; 3, 1])'))  // -7
 
   // chained operations
   const a = math.chain(3)

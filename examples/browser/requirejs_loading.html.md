@@ -8,8 +8,9 @@ File: [requirejs_loading.html](requirejs_loading.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>math.js | require.js loading</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.20/require.min.js"></script>
 </head>
@@ -17,9 +18,9 @@ File: [requirejs_loading.html](requirejs_loading.html) (click for a live demo)
 
 <script>
   // load math.js using require.js
-  require(['https://unpkg.com/mathjs@5.10.3/dist/math.min.js'], function (math) {
+  require(['https://unpkg.com/mathjs@6.0.0/dist/math.min.js'], function (math) {
     // evaluate some expression
-    const result = math.eval('1.2 * (2 + 4.5)')
+    const result = math.evaluate('1.2 * (2 + 4.5)')
     document.write(result)
   })
 </script>

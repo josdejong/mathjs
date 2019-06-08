@@ -6,25 +6,25 @@ layout: default
 
 Expressions can be parsed and evaluated in various ways:
 
-- Using the function [`math.eval(expr [,scope])`](#eval).
+- Using the function [`math.evaluate(expr [,scope])`](#evaluate).
 - Using the function [`math.compile(expr)`](#compile).
 - Using the function [`math.parse(expr)`](#parse).
-- By creating a [parser](#parser), `math.parser()`, which contains a function
-  `eval` and keeps a scope with assigned variables in memory.
+- By creating a [parser](#parser), `math.parser()`, which contains a method
+  `evaluate` and keeps a scope with assigned variables in memory.
 
 
-<h2 id="eval">Eval <a href="#eval" title="Permalink">#</a></h2>
+<h2 id="evaluate">Evaluate <a href="#evaluate" title="Permalink">#</a></h2>
 
-Math.js comes with a function `math.eval` to evaluate expressions. Syntax:
+Math.js comes with a function `math.evaluate` to evaluate expressions. Syntax:
 
 ```js
-math.eval(expr)
-math.eval(expr, scope)
-math.eval([expr1, expr2, expr3, ...])
-math.eval([expr1, expr2, expr3, ...], scope)
+math.evaluate(expr)
+math.evaluate(expr, scope)
+math.evaluate([expr1, expr2, expr3, ...])
+math.evaluate([expr1, expr2, expr3, ...], scope)
 ```
 
-Function `eval` accepts a single expression or an array with
+Function `evaluate` accepts a single expression or an array with
 expressions as the first argument and has an optional second argument
 containing a scope with variables and functions. The scope is a regular
 JavaScript Object. The scope will be used to resolve symbols, and to write
@@ -34,18 +34,18 @@ The following code demonstrates how to evaluate expressions.
 
 ```js
 // evaluate expressions
-math.eval('sqrt(3^2 + 4^2)')            // 5
-math.eval('sqrt(-4)')                   // 2i
-math.eval('2 inch to cm')               // 5.08 cm
-math.eval('cos(45 deg)')                // 0.7071067811865476
+math.evaluate('sqrt(3^2 + 4^2)')        // 5
+math.evaluate('sqrt(-4)')               // 2i
+math.evaluate('2 inch to cm')           // 5.08 cm
+math.evaluate('cos(45 deg)')            // 0.7071067811865476
 
 // provide a scope
 let scope = {
     a: 3,
     b: 4
 }
-math.eval('a * b', scope)               // 12
-math.eval('c = 2.3 + 4.5', scope)       // 6.8
+math.evaluate('a * b', scope)           // 12
+math.evaluate('c = 2.3 + 4.5', scope)   // 6.8
 scope.c                                 // 6.8
 ```
 
@@ -63,12 +63,12 @@ math.compile([expr1, expr2, expr3, ...])
 
 Function `compile` accepts a single expression or an array with
 expressions as the argument. Function `compile` returns an object with a function
-`eval([scope])`, which can be executed to evaluate the expression against an
+`evaluate([scope])`, which can be executed to evaluate the expression against an
 (optional) scope:
 
 ```js
-const code = math.compile(expr)     // compile an expression
-const result = code.eval([scope])   // evaluate the code with an optional scope
+const code = math.compile(expr)       // compile an expression
+const result = code.evaluate([scope]) // evaluate the code with an optional scope
 ```
 
 An expression needs to be compiled only once, after which the
@@ -81,7 +81,7 @@ Example usage:
 ```js
 // parse an expression into a node, and evaluate the node
 const code1 = math.compile('sqrt(3^2 + 4^2)')
-code1.eval()  // 5
+code1.evaluate()  // 5
 ```
 
 
@@ -100,9 +100,9 @@ expressions as the argument. Function `parse` returns a the root node of the tre
 which can be successively compiled and evaluated:
 
 ```js
-const node = math.parse(expr)       // parse expression into a node tree
-const code = node.compile()         // compile the node tree
-const result = code.eval([scope])   // evaluate the code with an optional scope
+const node = math.parse(expr)         // parse expression into a node tree
+const code = node.compile()           // compile the node tree
+const result = code.evaluate([scope]) // evaluate the code with an optional scope
 ```
 
 The API of nodes is described in detail on the page
@@ -119,7 +119,7 @@ Example usage:
 // parse an expression into a node, and evaluate the node
 const node1 = math.parse('sqrt(3^2 + 4^2)')
 const code1 = node1.compile()
-code1.eval()  // 5
+code1.evaluate() // 5
 
 // provide a scope
 const node2 = math.parse('x^a')
@@ -128,11 +128,11 @@ let scope = {
     x: 3,
     a: 2
 }
-code2.eval(scope)  // 9
+code2.evaluate(scope) // 9
 
 // change a value in the scope and re-evaluate the node
 scope.a = 3
-code2.eval(scope)  // 27
+code2.evaluate(scope) // 27
 ```
 
 Parsed expressions can be exported to text using `node.toString()`, and can
@@ -150,8 +150,8 @@ node.toTex()      // returns '\sqrt{ {\frac{x}{x} }+{1} }'
 
 <h2 id="parser">Parser <a href="#parser" title="Permalink">#</a></h2>
 
-In addition to the static functions [`math.eval`](#eval) and
-[`math.parse`](#parse), math.js contains a parser with functions `eval` and
+In addition to the static functions [`math.evaluate`](#evaluate) and
+[`math.parse`](#parse), math.js contains a parser with functions `evaluate` and
 `parse`, which automatically keeps a scope with assigned variables in memory.
 The parser also contains some convenience functions to get, set, and remove
 variables from memory.
@@ -166,7 +166,7 @@ The parser contains the following functions:
 
 - `clear()`
   Completely clear the parser's scope.
-- `eval(expr)`
+- `evaluate(expr)`
   Evaluate an expression. Returns the result of the expression.
 - `get(name)`
   Retrieve a variable or function from the parser's scope.
@@ -184,27 +184,27 @@ The following code shows how to create and use a parser.
 const parser = math.parser()
 
 // evaluate expressions
-parser.eval('sqrt(3^2 + 4^2)')          // 5
-parser.eval('sqrt(-4)')                 // 2i
-parser.eval('2 inch to cm')             // 5.08 cm
-parser.eval('cos(45 deg)')              // 0.7071067811865476
+parser.evaluate('sqrt(3^2 + 4^2)')      // 5
+parser.evaluate('sqrt(-4)')             // 2i
+parser.evaluate('2 inch to cm')         // 5.08 cm
+parser.evaluate('cos(45 deg)')          // 0.7071067811865476
 
 // define variables and functions
-parser.eval('x = 7 / 2')                // 3.5
-parser.eval('x + 3')                    // 6.5
-parser.eval('f(x, y) = x^y')            // f(x, y)
-parser.eval('f(2, 3)')                  // 8
+parser.evaluate('x = 7 / 2')            // 3.5
+parser.evaluate('x + 3')                // 6.5
+parser.evaluate('f(x, y) = x^y')        // f(x, y)
+parser.evaluate('f(2, 3)')              // 8
 
 // get and set variables and functions
 const x = parser.get('x')               // x = 7
 const f = parser.get('f')               // function
 const g = f(3, 3)                       // g = 27
 parser.set('h', 500)
-parser.eval('h / 2')                    // 250
+parser.evaluate('h / 2')                // 250
 parser.set('hello', function (name) {
     return 'hello, ' + name + '!'
 })
-parser.eval('hello("user")')            // "hello, user!"
+parser.evaluate('hello("user")')        // "hello, user!"
 
 // clear defined functions and variables
 parser.clear()

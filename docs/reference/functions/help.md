@@ -7,7 +7,7 @@ layout: default
 <h1 id="function-help">Function help <a href="#function-help" title="Permalink">#</a></h1>
 
 Retrieve help on a function or data type.
-Help files are retrieved from the documentation in math.expression.docs.
+Help files are retrieved from the embedded documentation in math.docs.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>

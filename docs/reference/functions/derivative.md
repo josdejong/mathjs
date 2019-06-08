@@ -44,8 +44,8 @@ ConstantNode &#124; SymbolNode &#124; ParenthesisNode &#124; FunctionNode &#124;
 math.derivative('x^2', 'x')                     // Node {2 * x}
 math.derivative('x^2', 'x', {simplify: false})  // Node {2 * 1 * x ^ (2 - 1)
 math.derivative('sin(2x)', 'x'))                // Node {2 * cos(2 * x)}
-math.derivative('2*x', 'x').eval()              // number 2
-math.derivative('x^2', 'x').eval({x: 4})        // number 8
+math.derivative('2*x', 'x').evaluate()          // number 2
+math.derivative('x^2', 'x').evaluate({x: 4})    // number 8
 const f = math.parse('x^2')
 const x = math.parse('x')
 math.derivative(f, x)                           // Node {2 * x}
@@ -56,4 +56,4 @@ math.derivative(f, x)                           // Node {2 * x}
 
 [simplify](simplify.html),
 [parse](parse.html),
-[eval](eval.html)
+[evaluate](evaluate.html)

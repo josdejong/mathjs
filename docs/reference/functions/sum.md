@@ -48,4 +48,4 @@ math.sum([[2, 5], [4, 3], [1, 7]]) // returns 22
 [max](max.html),
 [prod](prod.html),
 [std](std.html),
-[var](var.html)
+[variance](variance.html)

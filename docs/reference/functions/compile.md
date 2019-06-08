@@ -7,7 +7,7 @@ layout: default
 <h1 id="function-compile">Function compile <a href="#function-compile" title="Permalink">#</a></h1>
 
 Parse and compile an expression.
-Returns a an object with a function `eval([scope])` to evaluate the
+Returns a an object with a function `evaluate([scope])` to evaluate the
 compiled expression.
 
 
@@ -28,27 +28,27 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-{eval: Function} &#124; Array.&lt;{eval: Function}&gt; | code An object with the compiled expression
+{evaluate: Function} &#124; Array.&lt;{evaluate: Function}&gt; | code An object with the compiled expression
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 const code1 = math.compile('sqrt(3^2 + 4^2)')
-code1.eval() // 5
+code1.evaluate() // 5
 
 let scope = {a: 3, b: 4}
 const code2 = math.compile('a * b') // 12
-code2.eval(scope) // 12
+code2.evaluate(scope) // 12
 scope.a = 5
-code2.eval(scope) // 20
+code2.evaluate(scope) // 20
 
 const nodes = math.compile(['a = 3', 'b = 4', 'a * b'])
-nodes[2].eval() // 12
+nodes[2].evaluate() // 12
 ```
 
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [parse](parse.html),
-[eval](eval.html)
+[evaluate](evaluate.html)

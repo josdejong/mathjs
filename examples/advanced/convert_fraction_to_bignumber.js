@@ -11,9 +11,17 @@
 // adding an extra conversion to the list of conversions as demonstrated in
 // this example.
 
-// Load the math.js core (contains only `import` and `config`)
-const core = require('../../core')
-const math = core.create()
+// Create an empty math.js instance, with only typed
+// (every instance contains `import` and `config` also out of the box)
+const { create, typedDependencies, all } = require('../..')
+const math = create({
+  typedDependencies
+})
+
+// TODO: this should be much easier
+const allExceptLoaded = Object.keys(all)
+  .map(key => all[key])
+  .filter(factory => math[factory.fn] === undefined)
 
 // Configure to use fractions by default
 math.config({ number: 'Fraction' })
@@ -26,26 +34,26 @@ math.typed.conversions.unshift({
   from: 'Fraction',
   to: 'BigNumber',
   convert: function (fraction) {
-    return new math.type.BigNumber(fraction.n).div(fraction.d)
+    return new math.BigNumber(fraction.n).div(fraction.d)
   }
 })
 
 // Import all data types, functions, constants, the expression parser, etc.
-math.import(require('../../lib'))
+math.import(allExceptLoaded)
 
 // Operators `add` and `divide` do have support for Fractions, so the result
 // will simply be a Fraction (default behavior of math.js).
-const ans1 = math.eval('1/3 + 1/4')
-console.log(math.typeof(ans1), math.format(ans1))
+const ans1 = math.evaluate('1/3 + 1/4')
+console.log(math.typeOf(ans1), math.format(ans1))
 // outputs "Fraction 7/12"
 
 // Function sqrt doesn't have Fraction support, will now fall back to BigNumber
 // instead of number.
-const ans2 = math.eval('sqrt(4)')
-console.log(math.typeof(ans2), math.format(ans2))
+const ans2 = math.evaluate('sqrt(4)')
+console.log(math.typeOf(ans2), math.format(ans2))
 // outputs "BigNumber 2"
 
 // We can now do operations with mixed Fractions and BigNumbers
 const ans3 = math.add(math.fraction(2, 5), math.bignumber(3))
-console.log(math.typeof(ans3), math.format(ans3))
+console.log(math.typeOf(ans3), math.format(ans3))
 // outputs "BigNumber 3.4"

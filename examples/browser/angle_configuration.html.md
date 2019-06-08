@@ -8,8 +8,9 @@ File: [angle_configuration.html](angle_configuration.html) (click for a live dem
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>math.js | angle configuration</title>
   <style>
     body, input, select {
@@ -23,7 +24,7 @@ File: [angle_configuration.html](angle_configuration.html) (click for a live dem
     }
   </style>
 
-  <script src="https://unpkg.com/mathjs@5.10.3/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@6.0.0/dist/math.min.js"></script>
 </head>
 <body>
 
@@ -133,7 +134,7 @@ File: [angle_configuration.html](angle_configuration.html) (click for a live dem
     config.angles = this.value
   }
   evaluate.onclick = function () {
-    result.innerHTML = math.eval(expression.value)
+    result.innerHTML = math.evaluate(expression.value)
   }
 </script>
 

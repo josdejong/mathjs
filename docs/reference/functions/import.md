@@ -6,20 +6,22 @@ layout: default
 
 <h1 id="function-import">Function import <a href="#function-import" title="Permalink">#</a></h1>
 
-Import functions from an object or a module
+Import functions from an object or a module.
+
+This function is only available on a mathjs instance created using `create`.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.import(object)
-math.import(object, options)
+math.import(functions)
+math.import(functions, options)
 ```
 
 <h3 id="where">Where <a href="#where" title="Permalink">#</a></h3>
 
-- `object: Object`
-  An object with functions to be imported.
+- `functions: Object`
+  An object with functions or factories to be imported.
 - `options: Object` An object with import options. Available options:
   - `override: boolean`
     If true, existing functions will be overwritten. False by default.
@@ -36,12 +38,18 @@ math.import(object, options)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`object` | Object &#124; Array | Object with functions to be imported.
+`functions` | Object &#124; Array | Object with functions to be imported.
 `options` | Object | Import options.
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
+import { create, all } from 'mathjs'
+import * as numbers from 'numbers'
+
+// create a mathjs instance
+const math = create(all)
+
 // define new functions and variables
 math.import({
   myvalue: 42,
@@ -56,7 +64,7 @@ math.hello('user')             // 'hello, user!'
 
 // import the npm module 'numbers'
 // (must be installed first with `npm install numbers`)
-math.import(require('numbers'), {wrap: true})
+math.import(numbers, {wrap: true})
 
 math.fibonacci(7) // returns 13
 ```

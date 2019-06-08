@@ -35,9 +35,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.compile(expr)](functions/compile.html) | Parse and compile an expression.
-[math.eval(expr&nbsp;[,&nbsp;scope])](functions/eval.html) | Evaluate an expression.
 [math.help(search)](functions/help.html) | Retrieve help on a function or data type.
-[math.parse(expr&nbsp;[,&nbsp;scope])](functions/parse.html) | Parse an expression.
 [math.parser()](functions/parser.html) | Create a parser.
 
 <h2 id="algebra-functions">Algebra functions <a href="#algebra-functions" title="Permalink">#</a></h2>
@@ -240,7 +238,7 @@ Function | Description
 [math.quantileSeq(A,&nbsp;prob[,&nbsp;sorted])](functions/quantileSeq.html) | Compute the prob order quantile of a matrix or a list with values.
 [math.std(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/std.html) | Compute the standard deviation of a matrix or a  list with values.
 [math.sum(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/sum.html) | Compute the sum of a matrix or a list with values.
-[math.var(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/var.html) | Compute the variance of a matrix or a  list with values.
+[math.variance(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/variance.html) | Compute the variance of a matrix or a  list with values.
 
 <h2 id="string-functions">String functions <a href="#string-functions" title="Permalink">#</a></h2>
 
@@ -298,7 +296,8 @@ Function | Description
 [math.isPositive(x)](functions/isPositive.html) | Test whether a value is positive: larger than zero.
 [math.isPrime(x)](functions/isPrime.html) | Test whether a value is prime: has no divisors other than itself and one.
 [math.isZero(x)](functions/isZero.html) | Test whether a value is zero.
-[math.typeof(x)](functions/typeof.html) | Determine the type of a variable.
+[math.numeric(x)](functions/numeric.html) | Convert a numeric input to a specific numeric type: number, BigNumber, or Fraction.
+[math.typeOf(x)](functions/typeOf.html) | Determine the type of a variable.
 
 
 

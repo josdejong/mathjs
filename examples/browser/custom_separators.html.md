@@ -8,8 +8,9 @@ File: [custom_separators.html](custom_separators.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>math.js | custom separators</title>
   <style>
     body, input, select {
@@ -23,7 +24,7 @@ File: [custom_separators.html](custom_separators.html) (click for a live demo)
     }
   </style>
 
-  <script src="https://unpkg.com/mathjs@5.10.3/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@6.0.0/dist/math.min.js"></script>
 </head>
 <body>
 
@@ -74,7 +75,7 @@ File: [custom_separators.html](custom_separators.html) (click for a live demo)
         })
 
     // do the actual evaluation
-    const res = math.eval(expr)
+    const res = math.evaluate(expr)
 
     // replace the default separators in the output with custom separators
     result.innerHTML = res.toString()

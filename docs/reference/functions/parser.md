@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-parser">Function parser <a href="#function-parser" title="Permalink">#</a></h1>
 
-Create a parser. The function creates a new `math.expression.Parser` object.
+Create a parser. The function creates a new `math.Parser` object.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -34,27 +34,27 @@ Parser | Parser
 const parser = new math.parser()
 
 // evaluate expressions
-const a = parser.eval('sqrt(3^2 + 4^2)') // 5
-const b = parser.eval('sqrt(-4)')        // 2i
-const c = parser.eval('2 inch in cm')    // 5.08 cm
-const d = parser.eval('cos(45 deg)')     // 0.7071067811865476
+const a = parser.evaluate('sqrt(3^2 + 4^2)') // 5
+const b = parser.evaluate('sqrt(-4)')        // 2i
+const c = parser.evaluate('2 inch in cm')    // 5.08 cm
+const d = parser.evaluate('cos(45 deg)')     // 0.7071067811865476
 
 // define variables and functions
-parser.eval('x = 7 / 2')                 // 3.5
-parser.eval('x + 3')                     // 6.5
-parser.eval('function f(x, y) = x^y')    // f(x, y)
-parser.eval('f(2, 3)')                   // 8
+parser.evaluate('x = 7 / 2')                 // 3.5
+parser.evaluate('x + 3')                     // 6.5
+parser.evaluate('function f(x, y) = x^y')    // f(x, y)
+parser.evaluate('f(2, 3)')                   // 8
 
 // get and set variables and functions
 const x = parser.get('x')                // 7
 const f = parser.get('f')                // function
 const g = f(3, 2)                        // 9
 parser.set('h', 500)
-const i = parser.eval('h / 2')           // 250
+const i = parser.evaluate('h / 2')       // 250
 parser.set('hello', function (name) {
   return 'hello, ' + name + '!'
 })
-parser.eval('hello("user")')           // "hello, user!"
+parser.evaluate('hello("user")')         // "hello, user!"
 
 // clear defined functions and variables
 parser.clear()
@@ -63,6 +63,6 @@ parser.clear()
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
-[eval](eval.html),
+[evaluate](evaluate.html),
 [compile](compile.html),
 [parse](parse.html)

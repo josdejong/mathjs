@@ -8,11 +8,12 @@ File: [currency_conversion.html](currency_conversion.html) (click for a live dem
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>math.js | currency conversion</title>
 
-  <script src="https://unpkg.com/mathjs@5.10.3/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@6.0.0/dist/math.min.js"></script>
 
   <style>
     body,
@@ -121,7 +122,7 @@ File: [currency_conversion.html](currency_conversion.html) (click for a live dem
     const result = document.getElementById('result')
 
     try {
-      const resultStr = math.format(math.eval(expr.value), {notation: 'fixed', precision: 2})
+      const resultStr = math.format(math.evaluate(expr.value), {notation: 'fixed', precision: 2})
       result.innerHTML = '<span style="color: dodgerblue;">' + resultStr + '</span>'
     }
     catch (err) {
