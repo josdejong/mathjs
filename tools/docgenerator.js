@@ -46,7 +46,7 @@ const IGNORE_FUNCTIONS = {
   divideScalar: true,
   multiplyScalar: true,
   equalScalar: true,
-  evaluate: true
+  eval: true
 }
 
 const IGNORE_WARNINGS = {
@@ -512,6 +512,9 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
         } else {
           category = path[functionIndex + 1]
         }
+      } else if (fullPath === './lib/expression/parse.js') {
+        // TODO: this is an ugly special case
+        category = 'expression'
       } else if (path.join('/') === './lib/type') {
         // for boolean.js, number.js, string.js
         category = 'construction'

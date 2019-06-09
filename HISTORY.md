@@ -1,5 +1,12 @@
 # History
 
+
+# 2019-06-09, version 6.0.1
+
+- Fix function reference not published in npm library.
+- Fix function `evaluate` and `parse` missing in generated docs.
+
+
 # 2019-06-08, version 6.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
