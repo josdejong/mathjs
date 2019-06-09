@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h1 id="20190609-version-601">2019-06-09, version 6.0.1 <a href="#20190609-version-601" title="Permalink">#</a></h1>
+
+- Fix function reference not published in npm library.
+- Fix function `evaluate` and `parse` missing in generated docs.
+
+
 <h1 id="20190608-version-600">2019-06-08, version 6.0.0 <a href="#20190608-version-600" title="Permalink">#</a></h1>
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
