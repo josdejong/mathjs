@@ -25,9 +25,6 @@ Build the distribution files in folders `dist` and `lib`, and test everything by
 After the build is complete, verify if the files are created and contain the
 correct date and version number in the header.
 
-Check whether there are new markdown files generated in `./docs` and add if
-so add them to git.
-
 
 ## Commit
 
