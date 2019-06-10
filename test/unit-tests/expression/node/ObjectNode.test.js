@@ -280,7 +280,7 @@ describe('ObjectNode', function () {
     const n1 = new ObjectNode({ a: a, b: b })
     const n2 = new ObjectNode({ c: c, n1: n1 })
 
-    assert.strictEqual(n2.toTex(), '\\left\\{\\begin{array}{ll}\\mathbf{c:} & 3\\\\\n\\mathbf{n1:} & \\left\\{\\begin{array}{ll}\\mathbf{a:} & 1\\\\\n\\mathbf{b:} & 2\\\\\\end{array}\\right\\}\\\\\\end{array}\\right\\}')
+    assert.strictEqual(n2.toTex(), '\\begin{Bmatrix}\\mathbf{c:} & 3\\\\\n\\mathbf{n1:} & \\begin{Bmatrix}\\mathbf{a:} & 1\\\\\n\\mathbf{b:} & 2\\\\\\end{Bmatrix}\\\\\\end{Bmatrix}')
   })
 
   it('should LaTeX an ObjectNode with custom toTex', function () {
@@ -294,6 +294,6 @@ describe('ObjectNode', function () {
     const b = new ConstantNode(2)
     const n = new ObjectNode({ a: a, b: b })
 
-    assert.strictEqual(n.toTex({ handler: customFunction }), '\\left\\{\\begin{array}{ll}\\mathbf{a:} & const\\left(1, number\\right)\\\\\n\\mathbf{b:} & const\\left(2, number\\right)\\\\\\end{array}\\right\\}')
+    assert.strictEqual(n.toTex({ handler: customFunction }), '\\begin{Bmatrix}\\mathbf{a:} & const\\left(1, number\\right)\\\\\n\\mathbf{b:} & const\\left(2, number\\right)\\\\\\end{Bmatrix}')
   })
 })

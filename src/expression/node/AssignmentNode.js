@@ -1,5 +1,6 @@
-import { isAccessorNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
+import { isAccessorNode, isArrayNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs'
+import { map } from '../../utils/array'
 import { factory } from '../../utils/factory'
 import { accessFactory } from './utils/access'
 import { assignFactory } from './utils/assign'
@@ -9,10 +10,11 @@ const name = 'AssignmentNode'
 const dependencies = [
   'subset',
   '?matrix', // FIXME: should not be needed at all, should be handled by subset
+  'BlockNode',
   'Node'
 ]
 
-export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, Node }) => {
+export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, BlockNode, Node }) => {
   const access = accessFactory({ subset })
   const assign = assignFactory({ subset, matrix })
 
@@ -20,27 +22,43 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
    * @constructor AssignmentNode
    * @extends {Node}
    *
-   * Define a symbol, like `a=3.2`, update a property like `a.b=3.2`, or
-   * replace a subset of a matrix like `A[2,2]=42`.
+   * Define a symbol, like `a=3.2`, update a property like `a.b=3.2`,
+   * replace a subset of a matrix like `A[2,2]=42`, or
+   * define an array of symbols or nested arrays that eventually end in symbols
+   * like `[a,b]=[1,2]`, `[a;b]=[1;2]`, or `[[a],[b]]=[[1],[2]]`.
    *
    * Syntax:
    *
-   *     new AssignmentNode(symbol, value)
-   *     new AssignmentNode(object, index, value)
+   *   new AssignmentNode(object, value)
+   *   new AssignmentNode(object, index, value)
    *
    * Usage:
    *
-   *    new AssignmentNode(new SymbolNode('a'), new ConstantNode(2))                       // a=2
-   *    new AssignmentNode(new SymbolNode('a'), new IndexNode('b'), new ConstantNode(2))   // a.b=2
-   *    new AssignmentNode(new SymbolNode('a'), new IndexNode(1, 2), new ConstantNode(3))  // a[1,2]=3
+   *   new AssignmentNode(new SymbolNode('a'), new ConstantNode(2))                       // a=2
+   *   new AssignmentNode(new SymbolNode('a'), new IndexNode('b'), new ConstantNode(2))   // a.b=2
+   *   new AssignmentNode(new SymbolNode('a'), new IndexNode(1, 2), new ConstantNode(3))  // a[1,2]=3
+   *   new AssignmentNode(                                                                // [a,b]=[1,2]
+   *     new ArrayNode([new SymbolNode('a'), new SymbolNode('b')]),
+   *     new ArrayNode([new ConstantNode(1), new ConstantNode(2)])
+   *   )
+   *   new AssignmentNode(                                                                // [a;b]=[1;2]
+   *     new ArrayNode([                                                                  // or
+   *       new ArrayNode([new SymbolNode('a')]),                                          // [[a],[b]]=[[1],[2]]
+   *       new ArrayNode([new SymbolNode('b')]),
+   *     ]),
+   *     new ArrayNode([
+   *       new ArrayNode([new ConstantNode(1)]),
+   *       new ArrayNode([new ConstantNode(2)]),
+   *     ])
+   *   )
    *
-   * @param {SymbolNode | AccessorNode} object  Object on which to assign a value
-   * @param {IndexNode} [index=null]            Index, property name or matrix
-   *                                            index. Optional. If not provided
-   *                                            and `object` is a SymbolNode,
-   *                                            the property is assigned to the
-   *                                            global scope.
-   * @param {Node} value                        The value to be assigned
+   * @param {SymbolNode | AccessorNode | ArrayNode} object  Object on which to assign a value
+   * @param {IndexNode} [index=null]                        Index, property name or matrix
+   *                                                        index. Optional. If not provided
+   *                                                        and `object` is a SymbolNode,
+   *                                                        the property is assigned to the
+   *                                                        global scope.
+   * @param {Node} value                                    The value to be assigned
    */
   function AssignmentNode (object, index, value) {
     if (!(this instanceof AssignmentNode)) {
@@ -52,14 +70,25 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     this.value = value || index
 
     // validate input
-    if (!isSymbolNode(object) && !isAccessorNode(object)) {
-      throw new TypeError('SymbolNode or AccessorNode expected as "object"')
+    if (!isSymbolNode(object) && !isAccessorNode(object) && !isArrayNode(object)) {
+      throw new TypeError('SymbolNode, AccessorNode, or ArrayNode expected as "object"')
     }
     if (isSymbolNode(object) && object.name === 'end') {
       throw new Error('Cannot assign to symbol "end"')
     }
     if (this.index && !isIndexNode(this.index)) { // index is optional
       throw new TypeError('IndexNode expected as "index"')
+    }
+    if (isArrayNode(object)) {
+      if (this.index) {
+        throw new TypeError('"index" not expected when "object" is ArrayNode')
+      }
+      if (!isArrayNode(this.value)) {
+        throw new TypeError('ArrayNode expected as "value"')
+      }
+      this.assignments = new BlockNode(map(this.flatten(), function (assignment) {
+        return { node: assignment, visible: true }
+      }))
     }
     if (!isNode(this.value)) {
       throw new TypeError('Node expected as "value"')
@@ -72,6 +101,10 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
           return (this.index.isObjectProperty())
             ? this.index.getObjectProperty()
             : ''
+        } else if (this.assignments && this.assignments.blocks) {
+          return map(this.assignments.blocks, function (block) {
+            return block.node.object.name
+          }).toString()
         } else {
           return this.object.name || ''
         }
@@ -108,13 +141,16 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     const name = this.object.name
 
     if (!this.index) {
-      // apply a variable to the scope, for example `a=2`
-      if (!isSymbolNode(this.object)) {
-        throw new TypeError('SymbolNode expected as object')
-      }
-
-      return function evalAssignmentNode (scope, args, context) {
-        return setSafeProperty(scope, name, evalValue(scope, args, context))
+      if (isSymbolNode(this.object)) {
+        // apply a variable to the scope, for example `a=2`
+        return function evalAssignmentNode (scope, args, context) {
+          return setSafeProperty(scope, name, evalValue(scope, args, context))
+        }
+      } else if (isArrayNode(this.object)) {
+        // apply an array of variables to the scope, for example `[a,b]=[1,2]`
+        return this.assignments._compile(math, argNames)
+      } else {
+        throw new TypeError('SymbolNode or ArrayNode expected as "object"')
       }
     } else if (this.index.isObjectProperty()) {
       // apply an object property for example `a.b=2`
@@ -208,7 +244,41 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     return new AssignmentNode(this.object, this.index, this.value)
   }
 
-  /*
+  /**
+  * Return a flattened (1-dimensional array) representation of the assignment(s)
+  * being made between `object` and `value`
+  * @param {ArrayNode | SymbolNode} [object=this.object]
+  * @param {Node} [value=this.value]
+  * @param {Array} [flattened=[]]
+  * @return {Array}
+  */
+  AssignmentNode.prototype.flatten = function (object, value, flattened) {
+    object = object || this.object
+    value = value || this.value
+    flattened = flattened || []
+    if (!(isArrayNode(object) && isArrayNode(value))) {
+      throw new TypeError('ArrayNode expected for both "object" and "value"')
+    }
+    if (object.items.length !== value.items.length) {
+      throw new TypeError('"object" and "value" must have the same size')
+    }
+    const objectItems = object.items
+    const valueItems = value.items
+    for (let i = 0; i < objectItems.length; i++) {
+      const objectNode = objectItems[i]
+      const valueNode = valueItems[i]
+      if (isArrayNode(objectNode)) {
+        this.flatten(objectNode, valueNode, flattened)
+      } else if (isSymbolNode(objectNode)) {
+        flattened.push(new AssignmentNode(objectNode, valueNode))
+      } else {
+        throw new TypeError('ArrayNode or SymbolNode expected as "object"')
+      }
+    }
+    return flattened
+  }
+
+  /**
    * Is parenthesis needed?
    * @param {node} node
    * @param {string} [parenthesis='keep']

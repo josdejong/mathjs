@@ -15,7 +15,7 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
    * Holds a set with blocks
    * @param {Array.<{node: Node} | {node: Node, visible: boolean}>} blocks
    *            An array with blocks, where a block is constructed as an Object
-   *            with properties block, which is a Node, and visible, which is
+   *            with properties node, which is a Node, and visible, which is
    *            a boolean. The property visible is optional and is true by default
    */
   function BlockNode (blocks) {
@@ -70,8 +70,8 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
       const results = []
 
       forEach(evalBlocks, function evalBlockNode (block) {
-        const result = block.evaluate(scope, args, context)
         if (block.visible) {
+          const result = block.evaluate(scope, args, context)
           results.push(result)
         }
       })

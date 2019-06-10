@@ -4,6 +4,7 @@ import assert from 'assert'
 import math from '../../../../src/bundleAny'
 const Node = math.Node
 const AccessorNode = math.AccessorNode
+const ArrayNode = math.ArrayNode
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
 const RangeNode = math.RangeNode
