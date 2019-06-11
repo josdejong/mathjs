@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 6.0.2
+# 2019-06-11, version 6.0.2
 
 - Fix not being able to set configuration after disabling function `import`
   (regression since v6.0.0).
