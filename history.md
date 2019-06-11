@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20190611-version-602">2019-06-11, version 6.0.2 <a href="#20190611-version-602" title="Permalink">#</a></h1>
+
+- Fix not being able to set configuration after disabling function `import`
+  (regression since v6.0.0).
+
+
 <h1 id="20190609-version-601">2019-06-09, version 6.0.1 <a href="#20190609-version-601" title="Permalink">#</a></h1>
 
 - Fix function reference not published in npm library.
