@@ -165,6 +165,8 @@
   },
   "main": "main/es5",
   "module": "main/es6",
+  "unpkg": "dist/math.min.js",
+  "jsdelivr": "dist/math.min.js",
   "files": [
     "bin",
     "dist",
