@@ -35,6 +35,11 @@ describe('transpose', function () {
     assert.throws(function () { transpose([1, 2], 2) }, /TypeError: Too many arguments/)
   })
 
+  it('should LaTeX transpose', function () {
+    const expression = math.parse('transpose([[1,2],[3,4]])')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}\\right)^\\top')
+  })
+
   describe('DenseMatrix', function () {
     it('should transpose a 2d matrix', function () {
       let m = math.matrix([[1, 2, 3], [4, 5, 6]])
@@ -92,10 +97,5 @@ describe('transpose', function () {
       const m = math.matrix([[]], 'sparse')
       assert.throws(function () { transpose(m) })
     })
-  })
-
-  it('should LaTeX transpose', function () {
-    const expression = math.parse('transpose([[1,2],[3,4]])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)^\\top')
   })
 })

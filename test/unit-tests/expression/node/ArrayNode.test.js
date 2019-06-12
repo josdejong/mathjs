@@ -300,7 +300,45 @@ describe('ArrayNode', function () {
     const v2 = new ArrayNode([c, d])
     const n = new ArrayNode([v1, v2])
 
-    assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}')
+    assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}')
+  })
+
+  it('should LaTeX horizontally nested ArrayNodes', function () {
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const c3 = new ConstantNode(3)
+    const C = new ArrayNode([
+      c1,
+      new ArrayNode([
+        c2,
+        new ArrayNode([c3])
+      ])
+    ])
+
+    const expected = '\\begin{bmatrix}1&\\begin{bmatrix}2&\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}'
+
+    assert.strictEqual(C.toTex(), expected)
+  })
+
+  it('should LaTeX an AssignmentNode containing vertically nested ArrayNodes', function () {
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const c3 = new ConstantNode(3)
+    const C = new ArrayNode([
+      new ArrayNode([c1]),
+      new ArrayNode([
+        new ArrayNode([
+          new ArrayNode([c2]),
+          new ArrayNode([
+            new ArrayNode([c3])
+          ])
+        ])
+      ])
+    ])
+
+    const expected = '\\begin{bmatrix}1\\\\\\begin{bmatrix}2\\\\\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}'
+
+    assert.strictEqual(C.toTex(), expected)
   })
 
   it('should LaTeX an ArrayNode with custom toTex', function () {

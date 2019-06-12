@@ -268,7 +268,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
     })
 
     return this.dotNotation
-      ? ('.' + this.getObjectProperty() + '')
+      ? ('.\\mathbf{' + this.getObjectProperty() + '}')
       : ('_{' + dimensions.join(',') + '}')
   }
 

@@ -239,7 +239,7 @@ describe('IndexNode', function () {
     const dimensions = [new ConstantNode('a')]
 
     const n = new IndexNode(dimensions, true)
-    assert.strictEqual(n.toString(), '.a')
+    assert.strictEqual(n.toTex(), '.\\mathbf{a}')
   })
 
   it('should LaTeX an IndexNode with custom toTex', function () {

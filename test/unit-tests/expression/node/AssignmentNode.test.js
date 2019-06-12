@@ -11,6 +11,7 @@ const RangeNode = math.RangeNode
 const AssignmentNode = math.AssignmentNode
 const OperatorNode = math.OperatorNode
 const IndexNode = math.IndexNode
+const ResultSet = math.ResultSet
 
 describe('AssignmentNode', function () {
   it('should create an AssignmentNode', function () {
@@ -18,6 +19,11 @@ describe('AssignmentNode', function () {
     assert(n instanceof AssignmentNode)
     assert(n instanceof Node)
     assert.strictEqual(n.type, 'AssignmentNode')
+
+    const n1 = new AssignmentNode(new ArrayNode([new SymbolNode('a'), new SymbolNode('b')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
+    assert(n1 instanceof AssignmentNode)
+    assert(n1 instanceof Node)
+    assert.strictEqual(n1.type, 'AssignmentNode')
   })
 
   it('should have property isAssignmentNode', function () {
@@ -41,6 +47,8 @@ describe('AssignmentNode', function () {
     assert.throws(function () { console.log(new AssignmentNode('a', new Node())) }, TypeError)
     assert.throws(function () { console.log(new AssignmentNode(2, new Node())) }, TypeError)
     assert.throws(function () { console.log(new AssignmentNode(new Node(), new Node(), new Node())) }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode(new ArrayNode([new SymbolNode('a')]), new ConstantNode(1))) }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode(new ArrayNode([new ConstantNode(1)]), new ArrayNode([new ConstantNode(1)]))) }, TypeError)
   })
 
   it('should get the name of an AssignmentNode', function () {
@@ -56,6 +64,9 @@ describe('AssignmentNode', function () {
 
     const n5 = new AssignmentNode(new SymbolNode('a'), new IndexNode([new ConstantNode(1)]), new ConstantNode(1))
     assert.strictEqual(n5.name, '')
+
+    const n6 = new AssignmentNode(new ArrayNode([new SymbolNode('a'), new SymbolNode('b')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
+    assert.strictEqual(n6.name, 'a,b')
   })
 
   it('should compile an AssignmentNode without index', function () {
@@ -66,6 +77,13 @@ describe('AssignmentNode', function () {
     let scope = {}
     assert.strictEqual(expr.evaluate(scope), 3)
     assert.strictEqual(scope.b, 3)
+
+    const n1 = new AssignmentNode(new ArrayNode([new SymbolNode('x'), new SymbolNode('y')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
+    const expr1 = n1.compile()
+    let scope1 = {}
+    assert.deepStrictEqual(expr1.evaluate(scope1), new ResultSet([1, 2]))
+    assert.strictEqual(scope1.x, 1)
+    assert.strictEqual(scope1.y, 2)
   })
 
   it('should compile an AssignmentNode with property index', function () {
@@ -204,6 +222,23 @@ describe('AssignmentNode', function () {
     assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode }), [v])
     assert.deepStrictEqual(n.filter(function (node) { return node.value === 2 }), [v])
     assert.deepStrictEqual(n.filter(function (node) { return node.name === 'q' }), [])
+
+    const x = new SymbolNode('x')
+    const y = new SymbolNode('y')
+    const S = new ArrayNode([x, y])
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const C = new ArrayNode([c1, c2])
+    const A = new AssignmentNode(S, C)
+
+    assert.deepStrictEqual(A.filter(function (node) { return node.isAssignmentNode }), [A])
+    assert.deepStrictEqual(A.filter(function (node) { return node.isArrayNode }), [S, C])
+    assert.deepStrictEqual(A.filter(function (node) { return node.isSymbolNode }), [x, y])
+    assert.deepStrictEqual(A.filter(function (node) { return node.isConstantNode }), [c1, c2])
+    assert.deepStrictEqual(A.filter(function (node) { return node.name === 'y' }), [y])
+    assert.deepStrictEqual(A.filter(function (node) { return node.name === 'q' }), [])
+    assert.deepStrictEqual(A.filter(function (node) { return node.value === 2 }), [c2])
+    assert.deepStrictEqual(A.filter(function (node) { return node.value === 3 }), [])
   })
 
   it('should run forEach on an AssignmentNode', function () {
@@ -412,6 +447,18 @@ describe('AssignmentNode', function () {
     assert.strictEqual(b.object, a.object)
     assert.strictEqual(b.index, a.index)
     assert.strictEqual(b.value, a.value)
+
+    const object2 = new ArrayNode(new SymbolNode('a'))
+    const value2 = new ArrayNode(new ConstantNode(2))
+    const a2 = new AssignmentNode(object2, value2)
+
+    const b2 = a2.clone()
+    assert(b2 instanceof AssignmentNode)
+    assert.deepStrictEqual(b2, a2)
+    assert.notStrictEqual(b2, a2)
+    assert.deepStrictEqual(b2.object, a2.object)
+    assert.deepStrictEqual(b2.index, a2.index)
+    assert.deepStrictEqual(b2.value, a2.value)
   })
 
   it('should clone an AssignmentNode', function () {
@@ -488,6 +535,22 @@ describe('AssignmentNode', function () {
     assert.strictEqual(n.toString(), 'b = (a = 2)')
   })
 
+  it('should stringify an AssignmentNode containing nested ArrayNodes', function () {
+    const x = new SymbolNode('x')
+    const y = new SymbolNode('y')
+    const z = new SymbolNode('z')
+    const S = new ArrayNode([x, new ArrayNode([y, new ArrayNode([z])])])
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const c3 = new ConstantNode(3)
+    const C = new ArrayNode([c1, new ArrayNode([c2, new ArrayNode([c3])])])
+    const A = new AssignmentNode(S, C)
+
+    const expected = '[x, [y, [z]]] = [1, [2, [3]]]'
+
+    assert.strictEqual(A.toString(), expected)
+  })
+
   it('should stringify an AssignmentNode with custom toString', function () {
     // Also checks if custom funcions get passed to the children
     const customFunction = function (node, options) {
@@ -528,7 +591,7 @@ describe('AssignmentNode', function () {
     assert.deepStrictEqual(parsed, node)
   })
 
-  it('should LaTeX a AssignmentNode', function () {
+  it('should LaTeX an AssignmentNode', function () {
     const value = new ConstantNode(2)
     const a = new AssignmentNode(new SymbolNode('a'), value)
 
@@ -541,6 +604,70 @@ describe('AssignmentNode', function () {
     const q = new AssignmentNode(new SymbolNode('q'), a)
 
     assert.strictEqual(q.toTex(), ' q:=\\left( a:=2\\right)')
+  })
+
+  it('should LaTeX an AssignmentNode containing horizontally nested ArrayNodes', function () {
+    const x = new SymbolNode('x')
+    const y = new SymbolNode('y')
+    const z = new SymbolNode('z')
+    const S = new ArrayNode([
+      x,
+      new ArrayNode([
+        y,
+        new ArrayNode([z])
+      ])
+    ])
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const c3 = new ConstantNode(3)
+    const C = new ArrayNode([
+      c1,
+      new ArrayNode([
+        c2,
+        new ArrayNode([c3])
+      ])
+    ])
+    const A = new AssignmentNode(S, C)
+
+    const expected = '\\begin{bmatrix} x&\\begin{bmatrix} y&\\begin{bmatrix} z\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}:=\\begin{bmatrix}1&\\begin{bmatrix}2&\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}'
+
+    assert.strictEqual(A.toTex(), expected)
+  })
+
+  it('should LaTeX an AssignmentNode containing vertically nested ArrayNodes', function () {
+    const x = new SymbolNode('x')
+    const y = new SymbolNode('y')
+    const z = new SymbolNode('z')
+    const S = new ArrayNode([ // 'rows' ArrayNode, matrix level 0
+      new ArrayNode([x]), //       'cols' ArrayNode, matrix level 0
+      new ArrayNode([ //           'cols' ArrayNode, matrix level 0
+        new ArrayNode([ //           'rows' ArrayNode, matrix level 1
+          new ArrayNode([y]), //       'cols' ArrayNode, matrix level 1
+          new ArrayNode([ //           'cols' ArrayNode, matrix level 1
+            new ArrayNode([z]) //        'rows' ArrayNode, matrix level 2, should be nested in another 'cols' ArrayNode like:
+          ]) // new ArrayNode([z])         'cols' ArrayNode, matrix level 2
+        ])
+      ])
+    ])
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const c3 = new ConstantNode(3)
+    const C = new ArrayNode([
+      new ArrayNode([c1]),
+      new ArrayNode([
+        new ArrayNode([
+          new ArrayNode([c2]),
+          new ArrayNode([
+            new ArrayNode([c3])
+          ])
+        ])
+      ])
+    ])
+    const A = new AssignmentNode(S, C)
+
+    const expected = '\\begin{bmatrix} x\\\\\\begin{bmatrix} y\\\\\\begin{bmatrix} z\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}:=\\begin{bmatrix}1\\\\\\begin{bmatrix}2\\\\\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}'
+
+    assert.strictEqual(A.toTex(), expected)
   })
 
   it('should LaTeX an AssignmentNode with custom toTex', function () {

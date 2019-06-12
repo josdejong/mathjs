@@ -87,6 +87,11 @@ describe('dotPow', function () {
     assert.throws(function () { dotPow('text') })
   })
 
+  it('should LaTeX dotPow', function () {
+    const expression = math.parse('dotPow([1,2],[3,4])')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\end{bmatrix}.^\\wedge\\begin{bmatrix}3&4\\end{bmatrix}\\right)')
+  })
+
   describe('Array', function () {
     it('should elevate array .^ scalar', function () {
       approx.deepEqual(dotPow([[1, 2], [0, 4]], 2), [[1, 4], [0, 16]])
@@ -163,10 +168,5 @@ describe('dotPow', function () {
     it('should elevate sparse matrix .^ sparse matrix', function () {
       approx.deepEqual(dotPow(sparse([[1, 2, 0], [0, 1, 4]]), sparse([[2, 1, 0], [4, 1, 0]])), matrix([[1, 2, 1], [0, 1, 1]]))
     })
-  })
-
-  it('should LaTeX dotPow', function () {
-    const expression = math.parse('dotPow([1,2],[3,4])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.^\\wedge\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

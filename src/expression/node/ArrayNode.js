@@ -1,4 +1,4 @@
-import { isNode } from '../../utils/is'
+import { isArrayNode, isNode } from '../../utils/is'
 import { map } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
@@ -161,22 +161,21 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    * @return {string} str
    */
   ArrayNode.prototype._toTex = function (options) {
-    let s = '\\begin{bmatrix}'
-
-    this.items.forEach(function (node) {
-      if (node.items) {
-        s += node.items.map(function (childNode) {
-          return childNode.toTex(options)
-        }).join('&')
-      } else {
-        s += node.toTex(options)
-      }
-
-      // new line
-      s += '\\\\'
-    })
-    s += '\\end{bmatrix}'
-    return s
+    let tex = '\\begin{bmatrix}'
+    if (this.items.every(function (node) { return isArrayNode(node) })) {
+      // this is the 'rows' ArrayNode of a matrix
+      // items are 'cols' ArrayNodes, pass through and join with '\\\\'
+      // children of items are cols, join with '&'
+      tex += this.items.map(function (node) {
+        return node.items.map(function (childNode) { return childNode.toTex(options) }).join('&')
+      }).join('\\\\')
+    } else {
+      // this is a normal 'cols' ArrayNode of an array
+      // items are cols, join with '&'
+      tex += this.items.map(function (node) { return node.toTex(options) }).join('&')
+    }
+    tex += '\\end{bmatrix}'
+    return tex
   }
 
   return ArrayNode

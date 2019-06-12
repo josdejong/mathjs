@@ -48,6 +48,6 @@ describe('sparse', function () {
     const expr2 = math.parse('sparse([1])')
 
     assert.strictEqual(expr1.toTex(), '\\begin{bsparse}\\end{bsparse}')
-    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\end{bmatrix}\\right)')
   })
 })

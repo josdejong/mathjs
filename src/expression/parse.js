@@ -1,5 +1,5 @@
 import { factory } from '../utils/factory'
-import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is'
+import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, isArrayNode } from '../utils/is'
 import { deepMap } from '../utils/collection'
 
 const name = 'parse'
@@ -290,6 +290,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     const c1 = currentCharacter(state)
     const c2 = currentString(state, 2)
     const c3 = currentString(state, 3)
+    // check for delimiters consisting of 3 characters
     if (c3.length === 3 && DELIMITERS[c3]) {
       state.tokenType = TOKENTYPE.DELIMITER
       state.token = c3
@@ -617,10 +618,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.token === '=') {
       if (isSymbolNode(node)) {
         // parse a variable assignment like 'a = 2/3'
-        name = node.name
+        name = node.name // why is this needed?
         getTokenSkipNewline(state)
         value = parseAssignment(state)
-        return new AssignmentNode(new SymbolNode(name), value)
+        return new AssignmentNode(new SymbolNode(name), value) // why not new AssignmentNode(node, value)?
       } else if (isAccessorNode(node)) {
         // parse a matrix subset assignment like 'A[1,2] = 4'
         getTokenSkipNewline(state)
@@ -645,6 +646,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           value = parseAssignment(state)
           return new FunctionAssignmentNode(name, args, value)
         }
+      } else if (isArrayNode(node)) {
+        // parse an array of variable assignments like '[a,b]=[1,2]' or '[a;b]=[1;2]'
+        getTokenSkipNewline(state)
+        value = parseAssignment(state)
+        return new AssignmentNode(node, value)
       }
 
       throw createSyntaxError(state, 'Invalid left hand side of assignment operator =')

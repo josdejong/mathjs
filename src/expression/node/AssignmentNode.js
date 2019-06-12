@@ -269,10 +269,13 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       const valueNode = valueItems[i]
       if (isArrayNode(objectNode)) {
         this.flatten(objectNode, valueNode, flattened)
-      } else if (isSymbolNode(objectNode)) {
+      } else if (isSymbolNode(objectNode)) { // example: [a,b]=[1,2]
         flattened.push(new AssignmentNode(objectNode, valueNode))
+      } else if (isAccessorNode(objectNode)) { // example: [X[1,1],X[2,1]]=[1,2]
+        flattened.push(new AssignmentNode(objectNode.object, objectNode.index, valueNode))
       } else {
-        throw new TypeError('ArrayNode or SymbolNode expected as "object"')
+        const type = objectNode.type
+        throw new TypeError('Cannot assign to ' + type)
       }
     }
     return flattened
