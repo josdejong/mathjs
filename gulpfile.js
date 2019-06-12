@@ -4,7 +4,7 @@ var zlib = require('zlib');
 var glob = require('glob');
 var rimraf = require('rimraf');
 var gulp = require('gulp');
-var gutil = require('gulp-util');
+var log = require('fancy-log');
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
 var header = require('gulp-header');
@@ -110,7 +110,7 @@ gulp.task('clean', function (cb) {
  * - Add a markdown header containing the layout page
  * - Replace internal links to other markdown documents with *.html
  */
-gulp.task('docs', ['clean'], function () {
+gulp.task('docs', function () {
   return gulp.src(DOCS_SRC)
       .pipe(replace(/HISTORY.md/g, 'history.html'))         // change links to history.md to lowercase
       .pipe(replace(/(\([\w\./]*).md([)#])/g, '$1.html$2')) // replace urls to *.md with *.html
@@ -122,7 +122,7 @@ gulp.task('docs', ['clean'], function () {
 /**
  * Copy all examples
  */
-gulp.task('copyExamples', ['clean'], function () {
+gulp.task('copyExamples', function () {
   // TODO: make these script replacements more robust
   var script = 'https://unpkg.com/mathjs@' + version() + '/dist/math.min.js';
   return gulp.src(EXAMPLES_SRC)
@@ -136,7 +136,7 @@ gulp.task('copyExamples', ['clean'], function () {
 /**
  * Create markdown pages for every example
  */
-gulp.task('examples', ['copyExamples'], function (cb) {
+gulp.task('markdownExamples', function (cb) {
   var template = handlebars.compile(EXAMPLE_TEMPLATE);
 
   function createPage (files, title, url) {
@@ -237,7 +237,7 @@ gulp.task('history', function () {
 /**
  * Update size and version number on the downloads page
  */
-gulp.task('version', ['copy'], function (cb) {
+gulp.task('version', function (cb) {
   // get development size
   function developmentSize(callback) {
     fs.readFile(MATHJS, function (err, data) {
@@ -273,9 +273,9 @@ gulp.task('version', ['copy'], function (cb) {
 
   // update version and library sizes in index.md
   function updateVersion(developmentSize, productionSize, callback) {
-    gutil.log('development size: ' + developmentSize);
-    gutil.log('production size: ' + productionSize);
-    gutil.log('version: ' + version());
+    log('development size: ' + developmentSize);
+    log('production size: ' + productionSize);
+    log('version: ' + version());
 
     fs.readFile(DOWNLOAD, function (err, data) {
       if (!err) {
@@ -315,4 +315,12 @@ gulp.task('version', ['copy'], function (cb) {
 
 });
 
-gulp.task('default', ['copy', 'docs', 'examples', 'history', 'version']);
+gulp.task('default', gulp.series(
+    'clean',
+    'copy',
+    'docs',
+    'copyExamples',
+    'markdownExamples',
+    'history',
+    'version'
+));
