@@ -1,6 +1,12 @@
 # History
 
 
+# not yet published, version 6.0.3
+
+- Add `unpkg` and `jsdelivr` fields in package.json pointing to UMD build.
+  Thanks @tmcw.
+
+
 # 2019-06-11, version 6.0.2
 
 - Fix not being able to set configuration after disabling function `import`
