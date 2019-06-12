@@ -70,8 +70,8 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
       const results = []
 
       forEach(evalBlocks, function evalBlockNode (block) {
+        const result = block.evaluate(scope, args, context)
         if (block.visible) {
-          const result = block.evaluate(scope, args, context)
           results.push(result)
         }
       })
