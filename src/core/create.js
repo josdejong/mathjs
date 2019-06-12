@@ -208,15 +208,17 @@ export function create (factories, config) {
   function lazyTyped (...args) {
     return math.typed.apply(math.typed, args)
   }
-  math['import'] = importFactory(lazyTyped, load, math, importedFactories)
+  const internalImport = importFactory(lazyTyped, load, math, importedFactories)
+  math['import'] = internalImport
 
   // listen for changes in config, import all functions again when changed
+  // TODO: move this listener into the import function?
   math.on('config', () => {
     values(importedFactories).forEach(factory => {
       if (factory && factory.meta && factory.meta.recreateOnConfigChange) {
         // FIXME: only re-create when the current instance is the same as was initially created
         // FIXME: delete the functions/constants before importing them again?
-        math['import'](factory, { override: true })
+        internalImport(factory, { override: true })
       }
     })
   })
