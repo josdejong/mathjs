@@ -49,6 +49,25 @@ describe('AssignmentNode', function () {
     assert.throws(function () { console.log(new AssignmentNode(new Node(), new Node(), new Node())) }, TypeError)
     assert.throws(function () { console.log(new AssignmentNode(new ArrayNode([new SymbolNode('a')]), new ConstantNode(1))) }, TypeError)
     assert.throws(function () { console.log(new AssignmentNode(new ArrayNode([new ConstantNode(1)]), new ArrayNode([new ConstantNode(1)]))) }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode(new ArrayNode([new ConstantNode(1)]), new Node(), new ArrayNode([new ConstantNode(1)]))) }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode(new ArrayNode([new SymbolNode('a')]), new Node(), 1)) }, TypeError)
+  })
+
+  it('should throw an error if wrong flatten arguments', function () {
+    // object is ArrayNode, but value is not
+    assert.throws(function () {
+      const A = new AssignmentNode(new ArrayNode([new SymbolNode('a')]), new ArrayNode([new ConstantNode(1)]))
+      const o = new ArrayNode([new SymbolNode('a')])
+      const v = new ConstantNode(1)
+      console.log(A.flatten(o, v))
+    }, TypeError)
+    // object ArrayNode and value ArrayNode have different sizes
+    assert.throws(function () {
+      const A = new AssignmentNode(new ArrayNode([new SymbolNode('a')]), new ArrayNode([new ConstantNode(1)]))
+      const o = new ArrayNode([new SymbolNode('a'), new SymbolNode('b')])
+      const v = new ArrayNode([new ConstantNode(1)])
+      console.log(A.flatten(o, v))
+    }, TypeError)
   })
 
   it('should get the name of an AssignmentNode', function () {

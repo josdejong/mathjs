@@ -149,8 +149,6 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       } else if (isArrayNode(this.object)) {
         // apply an array of variables to the scope, for example `[a,b]=[1,2]`
         return this.assignments._compile(math, argNames)
-      } else {
-        throw new TypeError('SymbolNode or ArrayNode expected as "object"')
       }
     } else if (this.index.isObjectProperty()) {
       // apply an object property for example `a.b=2`
