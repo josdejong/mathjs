@@ -266,13 +266,13 @@ describe('AssignmentNode', function () {
   })
 
   it('should run forEach on an AssignmentNode without index', function () {
-    // A[1, x] = 3
+    // A = 3
     const a = new SymbolNode('A')
     const v = new ConstantNode(3)
     const n = new AssignmentNode(a, v)
 
-    const nodes = []
-    const paths = []
+    let nodes = []
+    let paths = []
     n.forEach(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
@@ -282,6 +282,27 @@ describe('AssignmentNode', function () {
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], v)
+    assert.deepStrictEqual(paths, ['object', 'value'])
+
+    const x = new SymbolNode('x')
+    const y = new SymbolNode('y')
+    const S = new ArrayNode([x, y])
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const C = new ArrayNode([c1, c2])
+    const n1 = new AssignmentNode(S, C)
+
+    nodes = []
+    paths = []
+    n1.forEach(function (node, path, parent) {
+      nodes.push(node)
+      paths.push(path)
+      assert.deepStrictEqual(parent, n1)
+    })
+
+    assert.strictEqual(nodes.length, 2)
+    assert.deepStrictEqual(nodes[0], S)
+    assert.deepStrictEqual(nodes[1], C)
     assert.deepStrictEqual(paths, ['object', 'value'])
   })
 
@@ -325,8 +346,8 @@ describe('AssignmentNode', function () {
     const d = new AssignmentNode(a, x)
 
     const e = new ConstantNode(3)
-    const nodes = []
-    const paths = []
+    let nodes = []
+    let paths = []
     const f = d.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
@@ -342,6 +363,38 @@ describe('AssignmentNode', function () {
     assert.notStrictEqual(f, d)
     assert.strictEqual(d.value, x)
     assert.strictEqual(f.value, e)
+
+    // [m,n]=[1,2]
+    const m = new SymbolNode('m')
+    const n = new SymbolNode('n')
+    const S = new ArrayNode([m, n])
+
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const C = new ArrayNode([c1, c2])
+
+    const A = new AssignmentNode(S, C)
+
+    const s = new SymbolNode('s')
+
+    nodes = []
+    paths = []
+    const R = A.map(function (node, path, parent) {
+      nodes.push(node)
+      paths.push(path)
+      assert.strictEqual(parent, A)
+      return node instanceof ArrayNode ? s : node
+    })
+
+    assert.strictEqual(nodes.length, 2)
+    assert.deepStrictEqual(nodes[0], S)
+    assert.deepStrictEqual(nodes[1], C)
+    assert.deepStrictEqual(paths, ['object', 'value'])
+
+    assert.notStrictEqual(R, A)
+    assert.deepStrictEqual(A.object, S)
+    assert.deepStrictEqual(A.value, C)
+    assert.deepStrictEqual(R.value, s)
   })
 
   it('should throw an error when the map callback does not return a node', function () {
@@ -448,8 +501,8 @@ describe('AssignmentNode', function () {
     assert.strictEqual(b.index, a.index)
     assert.strictEqual(b.value, a.value)
 
-    const object2 = new ArrayNode(new SymbolNode('a'))
-    const value2 = new ArrayNode(new ConstantNode(2))
+    const object2 = new ArrayNode([new SymbolNode('a')])
+    const value2 = new ArrayNode([new ConstantNode(2)])
     const a2 = new AssignmentNode(object2, value2)
 
     const b2 = a2.clone()
