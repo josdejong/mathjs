@@ -19,11 +19,13 @@ describe('AssignmentNode', function () {
     assert(n instanceof AssignmentNode)
     assert(n instanceof Node)
     assert.strictEqual(n.type, 'AssignmentNode')
+  })
 
-    const n1 = new AssignmentNode(new ArrayNode([new SymbolNode('a'), new SymbolNode('b')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
-    assert(n1 instanceof AssignmentNode)
-    assert(n1 instanceof Node)
-    assert.strictEqual(n1.type, 'AssignmentNode')
+  it('should create an AssignmentNode with matrix assignment', function () {
+    const n = new AssignmentNode(new ArrayNode([new SymbolNode('a'), new SymbolNode('b')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
+    assert(n instanceof AssignmentNode)
+    assert(n instanceof Node)
+    assert.strictEqual(n.type, 'AssignmentNode')
   })
 
   it('should have property isAssignmentNode', function () {
@@ -83,9 +85,11 @@ describe('AssignmentNode', function () {
 
     const n5 = new AssignmentNode(new SymbolNode('a'), new IndexNode([new ConstantNode(1)]), new ConstantNode(1))
     assert.strictEqual(n5.name, '')
+  })
 
-    const n6 = new AssignmentNode(new ArrayNode([new SymbolNode('a'), new SymbolNode('b')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
-    assert.strictEqual(n6.name, 'a,b')
+  it('should get the name of an AssignmentNode with matrix assignment', function () {
+    const n = new AssignmentNode(new ArrayNode([new SymbolNode('a'), new SymbolNode('b')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
+    assert.strictEqual(n.name, 'a,b')
   })
 
   it('should compile an AssignmentNode without index', function () {
@@ -93,16 +97,18 @@ describe('AssignmentNode', function () {
 
     const expr = n.compile()
 
-    let scope = {}
+    const scope = {}
     assert.strictEqual(expr.evaluate(scope), 3)
     assert.strictEqual(scope.b, 3)
+  })
 
-    const n1 = new AssignmentNode(new ArrayNode([new SymbolNode('x'), new SymbolNode('y')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
-    const expr1 = n1.compile()
-    let scope1 = {}
-    assert.deepStrictEqual(expr1.evaluate(scope1), new ResultSet([1, 2]))
-    assert.strictEqual(scope1.x, 1)
-    assert.strictEqual(scope1.y, 2)
+  it('should compile an AssignmentNode with matrix assignment', function () {
+    const n = new AssignmentNode(new ArrayNode([new SymbolNode('x'), new SymbolNode('y')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
+    const expr = n.compile()
+    const scope = {}
+    assert.deepStrictEqual(expr.evaluate(scope), new ResultSet([1, 2]))
+    assert.strictEqual(scope.x, 1)
+    assert.strictEqual(scope.y, 2)
   })
 
   it('should compile an AssignmentNode with property index', function () {
@@ -241,7 +247,9 @@ describe('AssignmentNode', function () {
     assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode }), [v])
     assert.deepStrictEqual(n.filter(function (node) { return node.value === 2 }), [v])
     assert.deepStrictEqual(n.filter(function (node) { return node.name === 'q' }), [])
+  })
 
+  it('should filter an AssignmentNode with matrix assignment', function () {
     const x = new SymbolNode('x')
     const y = new SymbolNode('y')
     const S = new ArrayNode([x, y])
@@ -290,8 +298,8 @@ describe('AssignmentNode', function () {
     const v = new ConstantNode(3)
     const n = new AssignmentNode(a, v)
 
-    let nodes = []
-    let paths = []
+    const nodes = []
+    const paths = []
     n.forEach(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
@@ -302,21 +310,24 @@ describe('AssignmentNode', function () {
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], v)
     assert.deepStrictEqual(paths, ['object', 'value'])
+  })
 
+  it('should run forEach on an AssignmentNode with matrix assignment', function () {
+    // [x, y] = [1, 2]
     const x = new SymbolNode('x')
     const y = new SymbolNode('y')
     const S = new ArrayNode([x, y])
     const c1 = new ConstantNode(1)
     const c2 = new ConstantNode(2)
     const C = new ArrayNode([c1, c2])
-    const n1 = new AssignmentNode(S, C)
+    const n = new AssignmentNode(S, C)
 
-    nodes = []
-    paths = []
-    n1.forEach(function (node, path, parent) {
+    const nodes = []
+    const paths = []
+    n.forEach(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.deepStrictEqual(parent, n1)
+      assert.deepStrictEqual(parent, n)
     })
 
     assert.strictEqual(nodes.length, 2)
@@ -382,8 +393,10 @@ describe('AssignmentNode', function () {
     assert.notStrictEqual(f, d)
     assert.strictEqual(d.value, x)
     assert.strictEqual(f.value, e)
+  })
 
-    // [m,n]=[1,2]
+  it('should map an AssignmentNode with matrix assignment', function () {
+    // [m, n] = [1, 2]
     const m = new SymbolNode('m')
     const n = new SymbolNode('n')
     const S = new ArrayNode([m, n])
@@ -396,8 +409,8 @@ describe('AssignmentNode', function () {
 
     const s = new SymbolNode('s')
 
-    nodes = []
-    paths = []
+    const nodes = []
+    const paths = []
     const R = A.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
@@ -430,7 +443,7 @@ describe('AssignmentNode', function () {
     }, /Callback function must return a Node/)
   })
 
-  it('should transform an AssignmentNodes (nested) parameters', function () {
+  it('should transform an AssignmentNode\'s (nested) parameters', function () {
     // a = x + 2
     const object = new SymbolNode('a')
     const x = new SymbolNode('x')
@@ -519,18 +532,20 @@ describe('AssignmentNode', function () {
     assert.strictEqual(b.object, a.object)
     assert.strictEqual(b.index, a.index)
     assert.strictEqual(b.value, a.value)
+  })
 
-    const object2 = new ArrayNode([new SymbolNode('a')])
-    const value2 = new ArrayNode([new ConstantNode(2)])
-    const a2 = new AssignmentNode(object2, value2)
+  it('should clone an AssignmentNode with matrix assignment', function () {
+    const object = new ArrayNode([new SymbolNode('a')])
+    const value = new ArrayNode([new ConstantNode(2)])
+    const A = new AssignmentNode(object, value)
 
-    const b2 = a2.clone()
-    assert(b2 instanceof AssignmentNode)
-    assert.deepStrictEqual(b2, a2)
-    assert.notStrictEqual(b2, a2)
-    assert.deepStrictEqual(b2.object, a2.object)
-    assert.deepStrictEqual(b2.index, a2.index)
-    assert.deepStrictEqual(b2.value, a2.value)
+    const B = A.clone()
+    assert(B instanceof AssignmentNode)
+    assert.deepStrictEqual(B, A)
+    assert.notStrictEqual(B, A)
+    assert.deepStrictEqual(B.object, A.object)
+    assert.deepStrictEqual(B.index, A.index)
+    assert.deepStrictEqual(B.value, A.value)
   })
 
   it('should clone an AssignmentNode', function () {
