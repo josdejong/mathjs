@@ -618,10 +618,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.token === '=') {
       if (isSymbolNode(node)) {
         // parse a variable assignment like 'a = 2/3'
-        name = node.name // why is this needed?
         getTokenSkipNewline(state)
         value = parseAssignment(state)
-        return new AssignmentNode(new SymbolNode(name), value) // why not new AssignmentNode(node, value)?
+        return new AssignmentNode(node, value)
       } else if (isAccessorNode(node)) {
         // parse a matrix subset assignment like 'A[1,2] = 4'
         getTokenSkipNewline(state)
