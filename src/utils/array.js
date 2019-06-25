@@ -581,3 +581,17 @@ export function initial (array) {
 export function contains (array, item) {
   return array.indexOf(item) !== -1
 }
+
+/**
+ * Test whether two arrays have the same size
+ * @param array1
+ * @param array2
+ * @returns {boolean}
+ */
+export function sameSize (array1, array2) {
+  const size1 = arraySize(array1)
+  const size2 = arraySize(array2)
+  return size1.every(function (dimension, index) {
+    return dimension === size2[index]
+  })
+}

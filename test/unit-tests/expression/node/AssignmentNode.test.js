@@ -49,10 +49,6 @@ describe('AssignmentNode', function () {
     assert.throws(function () { console.log(new AssignmentNode('a', new Node())) }, TypeError)
     assert.throws(function () { console.log(new AssignmentNode(2, new Node())) }, TypeError)
     assert.throws(function () { console.log(new AssignmentNode(new Node(), new Node(), new Node())) }, TypeError)
-    assert.throws(function () { console.log(new AssignmentNode(new ArrayNode([new SymbolNode('a')]), new ConstantNode(1))) }, TypeError)
-    assert.throws(function () { console.log(new AssignmentNode(new ArrayNode([new ConstantNode(1)]), new ArrayNode([new ConstantNode(1)]))) }, TypeError)
-    assert.throws(function () { console.log(new AssignmentNode(new ArrayNode([new ConstantNode(1)]), new Node(), new ArrayNode([new ConstantNode(1)]))) }, TypeError)
-    assert.throws(function () { console.log(new AssignmentNode(new ArrayNode([new SymbolNode('a')]), new Node(), 1)) }, TypeError)
   })
 
   it('should throw an error if wrong flatten arguments', function () {
@@ -87,10 +83,7 @@ describe('AssignmentNode', function () {
     assert.strictEqual(n5.name, '')
   })
 
-  it('should get the name of an AssignmentNode with matrix assignment', function () {
-    const n = new AssignmentNode(new ArrayNode([new SymbolNode('a'), new SymbolNode('b')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
-    assert.strictEqual(n.name, 'a,b')
-  })
+  it('should get the name of an AssignmentNode with matrix assignment')
 
   it('should compile an AssignmentNode without index', function () {
     const n = new AssignmentNode(new SymbolNode('b'), new ConstantNode(3))

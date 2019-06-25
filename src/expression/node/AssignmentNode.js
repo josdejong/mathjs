@@ -1,6 +1,6 @@
-import { isAccessorNode, isArrayNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
+import { isAccessorNode, isArrayNode, isIndexNode, isNode, isSymbolNode, isArray } from '../../utils/is'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs'
-import { map } from '../../utils/array'
+import { flatten, forEach, map, sameSize } from '../../utils/array'
 import { factory } from '../../utils/factory'
 import { accessFactory } from './utils/access'
 import { assignFactory } from './utils/assign'
@@ -9,12 +9,13 @@ import { getPrecedence } from '../operators'
 const name = 'AssignmentNode'
 const dependencies = [
   'subset',
-  '?matrix', // FIXME: should not be needed at all, should be handled by subset
+  'matrix',
+  'ResultSet',
   'BlockNode',
   'Node'
 ]
 
-export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, BlockNode, Node }) => {
+export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, ResultSet, BlockNode, Node }) => {
   const access = accessFactory({ subset })
   const assign = assignFactory({ subset, matrix })
 
@@ -79,16 +80,8 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     if (this.index && !isIndexNode(this.index)) { // index is optional
       throw new TypeError('IndexNode expected as "index"')
     }
-    if (isArrayNode(object)) {
-      if (this.index) {
-        throw new TypeError('"index" not expected when "object" is ArrayNode')
-      }
-      if (!isArrayNode(this.value)) {
-        throw new TypeError('ArrayNode expected as "value"')
-      }
-      this.assignments = new BlockNode(map(this.flatten(), function (assignment) {
-        return { node: assignment, visible: true }
-      }))
+    if (isArrayNode(object) && this.index) {
+      throw new TypeError('"index" not expected when "object" is ArrayNode')
     }
     if (!isNode(this.value)) {
       throw new TypeError('Node expected as "value"')
@@ -101,10 +94,8 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
           return (this.index.isObjectProperty())
             ? this.index.getObjectProperty()
             : ''
-        } else if (this.assignments && this.assignments.blocks) {
-          return map(this.assignments.blocks, function (block) {
-            return block.node.object.name
-          }).toString()
+        } else if (isArrayNode(this.object)) {
+          return arrayNames(this.object)
         } else {
           return this.object.name || ''
         }
@@ -139,6 +130,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     const evalIndex = this.index ? this.index._compile(math, argNames) : null
     const evalValue = this.value._compile(math, argNames)
     const name = this.object.name
+    const nameArray = this.name
 
     if (!this.index) {
       if (isSymbolNode(this.object)) {
@@ -148,7 +140,27 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
         }
       } else if (isArrayNode(this.object)) {
         // apply an array of variables to the scope, for example `[a,b]=[1,2]`
-        return this.assignments._compile(math, argNames)
+        return function evalAssignmentNode (scope, args, context) {
+          const nameScope = {}
+          forEach(nameArray, function (name) {
+            nameScope[name] = name
+          })
+          const obj = evalObject(nameScope, args, context)
+          const val = evalValue(scope, args, context)
+          const objType = math.config.matrix
+          const asMatrix = objType !== 'Array'
+          const objArray = asMatrix ? obj.toArray() : obj
+          const valArray = asMatrix ? val.toArray() : val
+          if (!sameSize(objArray, valArray)) {
+            throw new TypeError('Does not evaluate to ' + objType + ' of the same size as ' + objType + ' being assigned to')
+          }
+          const names = flatten(objArray)
+          const values = flatten(valArray)
+          const results = map(names, function (name, index) {
+            return setSafeProperty(scope, name, values[index])
+          })
+          return new ResultSet(results)
+        }
       }
     } else if (this.index.isObjectProperty()) {
       // apply an object property for example `a.b=2`
@@ -243,40 +255,26 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
   }
 
   /**
-  * Return a flattened (1-dimensional array) representation of the assignment(s)
-  * being made between `object` and `value`
-  * @param {ArrayNode | SymbolNode} [object=this.object]
-  * @param {Node} [value=this.value]
-  * @param {Array} [flattened=[]]
+  * Return a flattened (1-dimensional array) of all the names in `object`
+  * @param {ArrayNode} [object=this.object]
+  * @param {Array} [names=[]]
   * @return {Array}
   */
-  AssignmentNode.prototype.flatten = function (object, value, flattened) {
-    object = object || this.object
-    value = value || this.value
-    flattened = flattened || []
-    if (!(isArrayNode(object) && isArrayNode(value))) {
-      throw new TypeError('ArrayNode expected for both "object" and "value"')
+  function arrayNames (object, names) {
+    names = names || []
+    if (!isArrayNode(object)) {
+      throw new TypeError('ArrayNode expected for "object"')
     }
-    if (object.items.length !== value.items.length) {
-      throw new TypeError('"object" and "value" must have the same size')
-    }
-    const objectItems = object.items
-    const valueItems = value.items
-    for (let i = 0; i < objectItems.length; i++) {
-      const objectNode = objectItems[i]
-      const valueNode = valueItems[i]
-      if (isArrayNode(objectNode)) {
-        this.flatten(objectNode, valueNode, flattened)
-      } else if (isSymbolNode(objectNode)) { // example: [a,b]=[1,2]
-        flattened.push(new AssignmentNode(objectNode, valueNode))
-      } else if (isAccessorNode(objectNode)) { // example: [X[1,1],X[2,1]]=[1,2]
-        flattened.push(new AssignmentNode(objectNode.object, objectNode.index, valueNode))
+    object.items.forEach(function (item) {
+      if (isArrayNode(item)) {
+        arrayNames(item, names)
+      } else if (isSymbolNode(item) || isAccessorNode(item)) {
+        names.push(item.toString())
       } else {
-        const type = objectNode.type
-        throw new TypeError('Cannot assign to ' + type)
+        throw new TypeError('Cannot assign to ' + item.type)
       }
-    }
-    return flattened
+    })
+    return names
   }
 
   /**
