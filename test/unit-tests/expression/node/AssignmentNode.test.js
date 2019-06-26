@@ -48,23 +48,15 @@ describe('AssignmentNode', function () {
     assert.throws(function () { console.log(new AssignmentNode('a', new Node())) }, TypeError)
     assert.throws(function () { console.log(new AssignmentNode(2, new Node())) }, TypeError)
     assert.throws(function () { console.log(new AssignmentNode(new Node(), new Node(), new Node())) }, TypeError)
-  })
-
-  it('should throw an error if wrong flatten arguments', function () {
-    // object is ArrayNode, but value is not
+    assert.throws(function () { console.log(new AssignmentNode(new SymbolNode('a'), new Node(), new ConstantNode(1))) }, TypeError)
     assert.throws(function () {
-      const A = new AssignmentNode(new ArrayNode([new SymbolNode('a')]), new ArrayNode([new ConstantNode(1)]))
-      const o = new ArrayNode([new SymbolNode('a')])
-      const v = new ConstantNode(1)
-      console.log(A.flatten(o, v))
+      console.log(new AssignmentNode(
+        new ArrayNode([new SymbolNode('a')]),
+        new IndexNode([new ConstantNode(1), new ConstantNode(1)]),
+        new ArrayNode([new ConstantNode(1)])
+      ))
     }, TypeError)
-    // object ArrayNode and value ArrayNode have different sizes
-    assert.throws(function () {
-      const A = new AssignmentNode(new ArrayNode([new SymbolNode('a')]), new ArrayNode([new ConstantNode(1)]))
-      const o = new ArrayNode([new SymbolNode('a'), new SymbolNode('b')])
-      const v = new ArrayNode([new ConstantNode(1)])
-      console.log(A.flatten(o, v))
-    }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode(new SymbolNode('a'), 1)) }, TypeError)
   })
 
   it('should get the name of an AssignmentNode', function () {
@@ -82,7 +74,18 @@ describe('AssignmentNode', function () {
     assert.strictEqual(n5.name, '')
   })
 
-  it('should get the name of an AssignmentNode with matrix assignment')
+  it('should get the name of an AssignmentNode with matrix assignment', function () {
+    const A = new AssignmentNode(
+      new ArrayNode([new SymbolNode('a'), new SymbolNode('b'), new SymbolNode('c')]),
+      new ArrayNode([new ConstantNode(1), new ConstantNode(2), new ConstantNode(3)])
+    )
+    assert.deepStrictEqual(A.name, ['a', 'b', 'c'])
+  })
+
+  it('should throw an error on setting the name of an AssignmentNode', function () {
+    const A = new AssignmentNode(new SymbolNode('a'), new ConstantNode(1))
+    assert.throws(function () { console.log(A.name = 'a') })
+  })
 
   it('should compile an AssignmentNode without index', function () {
     const n = new AssignmentNode(new SymbolNode('b'), new ConstantNode(3))
@@ -101,6 +104,11 @@ describe('AssignmentNode', function () {
     assert.strictEqual(expr.evaluate(scope), 2)
     assert.strictEqual(scope.x, 1)
     assert.strictEqual(scope.y, 2)
+  })
+
+  it('should throw an error on matrix assignment when "object" and "value" evaluate to different sizes', function () {
+    const n = new AssignmentNode(new ArrayNode([new SymbolNode('x')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
+    assert.throws(function () { console.log(n.evaluate()) }, TypeError)
   })
 
   it('should compile an AssignmentNode with property index', function () {
@@ -211,6 +219,12 @@ describe('AssignmentNode', function () {
       a: 42
     }
     assert.throws(function () { expr.evaluate(scope) }, /Cannot apply index: unsupported type of object/)
+  })
+
+  it('should throw an error on invalid matrix assignment', function () {
+    assert.throws(function () {
+      console.log(new AssignmentNode(new ArrayNode([new ConstantNode(1)]), new ArrayNode([new ConstantNode(1)])))
+    }, TypeError)
   })
 
   it('should filter an AssignmentNode', function () {

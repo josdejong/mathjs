@@ -78,8 +78,12 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     if (this.index && !isIndexNode(this.index)) { // index is optional
       throw new TypeError('IndexNode expected as "index"')
     }
-    if (isArrayNode(object) && this.index) {
-      throw new TypeError('"index" not expected when "object" is ArrayNode')
+    if (isArrayNode(object)) {
+      if (this.index) {
+        throw new TypeError('"index" not expected when "object" is ArrayNode')
+      }
+      // validate nested elements
+      arrayNames(object)
     }
     if (!isNode(this.value)) {
       throw new TypeError('Node expected as "value"')
@@ -260,9 +264,6 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
   */
   function arrayNames (object, names) {
     names = names || []
-    if (!isArrayNode(object)) {
-      throw new TypeError('ArrayNode expected for "object"')
-    }
     object.items.forEach(function (item) {
       if (isArrayNode(item)) {
         arrayNames(item, names)
