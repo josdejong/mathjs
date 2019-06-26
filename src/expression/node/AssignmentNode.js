@@ -256,7 +256,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
 
   /**
   * Return a flattened (1-dimensional array) of all the names in `object`
-  * @param {ArrayNode} [object=this.object]
+  * @param {ArrayNode} object
   * @param {Array} [names=[]]
   * @return {Array}
   */
