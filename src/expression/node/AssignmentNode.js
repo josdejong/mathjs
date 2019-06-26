@@ -150,9 +150,9 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
           const obj = evalObject(nameScope, args, context)
           const val = evalValue(scope, args, context)
           const objType = math.config.matrix
-          const asMatrix = objType !== 'Array'
-          const objArray = asMatrix ? obj.toArray() : obj
-          const valArray = asMatrix ? val.toArray() : val
+          const asMatrix = (objType !== 'Array')
+          const objArray = (asMatrix && obj.toArray) ? obj.toArray() : obj
+          const valArray = (asMatrix && val.toArray) ? val.toArray() : val
           if (!sameSize(objArray, valArray)) {
             throw new TypeError('Does not evaluate to ' + objType + ' of the same size as ' + objType + ' being assigned to')
           }
