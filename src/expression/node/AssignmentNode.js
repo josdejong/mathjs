@@ -1,6 +1,6 @@
-import { isAccessorNode, isArrayNode, isIndexNode, isNode, isSymbolNode, isArray } from '../../utils/is'
+import { isAccessorNode, isArrayNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs'
-import { flatten, forEach, map, sameSize } from '../../utils/array'
+import { flatten, forEach, last, map, sameSize } from '../../utils/array'
 import { factory } from '../../utils/factory'
 import { accessFactory } from './utils/access'
 import { assignFactory } from './utils/assign'
@@ -10,12 +10,10 @@ const name = 'AssignmentNode'
 const dependencies = [
   'subset',
   'matrix',
-  'ResultSet',
-  'BlockNode',
   'Node'
 ]
 
-export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, ResultSet, BlockNode, Node }) => {
+export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, Node }) => {
   const access = accessFactory({ subset })
   const assign = assignFactory({ subset, matrix })
 
@@ -159,7 +157,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
           const results = map(names, function (name, index) {
             return setSafeProperty(scope, name, values[index])
           })
-          return new ResultSet(results)
+          return last(results)
         }
       }
     } else if (this.index.isObjectProperty()) {

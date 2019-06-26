@@ -11,7 +11,6 @@ const RangeNode = math.RangeNode
 const AssignmentNode = math.AssignmentNode
 const OperatorNode = math.OperatorNode
 const IndexNode = math.IndexNode
-const ResultSet = math.ResultSet
 
 describe('AssignmentNode', function () {
   it('should create an AssignmentNode', function () {
@@ -99,7 +98,7 @@ describe('AssignmentNode', function () {
     const n = new AssignmentNode(new ArrayNode([new SymbolNode('x'), new SymbolNode('y')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
     const expr = n.compile()
     const scope = {}
-    assert.deepStrictEqual(expr.evaluate(scope), new ResultSet([1, 2]))
+    assert.strictEqual(expr.evaluate(scope), 2)
     assert.strictEqual(scope.x, 1)
     assert.strictEqual(scope.y, 2)
   })
