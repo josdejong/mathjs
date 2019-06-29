@@ -85,5 +85,3 @@ export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
   return hypot
 })
-
-createHypot.factory = { name, dependencies }
