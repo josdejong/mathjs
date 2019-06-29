@@ -1,6 +1,8 @@
 import * as UnitMath from 'unitmath'
 import { factory } from '../../../utils/factory'
 import { deepMap } from '../../../utils/collection'
+// TODO: Should we import this another way, in case the bundle does not include bignumber?
+import { createBigNumberPi as createPi } from '../../../utils/bignumber/constants'
 
 const name = 'unit'
 const dependencies = [
@@ -60,7 +62,6 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
   Fraction
 
 }) => {
-  // TODO: allow passing configuration for unitmath
 
   const conv = (value, exampleValue) => {
     // console.log(value, exampleValue, config.number)
@@ -128,46 +129,96 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     }
   }
 
+  
+  /**
+   * Create an instance of unitmath using the currrent math.config options
+   */
+  function createUnitmathInstance() {
+    console.log('In createUnitmathInstance, config.number = ' + config.number + config.precision)
+    // Override certain units to give higher precision if config.number is BigNumber
+    let overrideUnits = {}
 
-  const unitmath = UnitMath.config({
-    parentheses: true,
-    simplifyThreshold: 1,
-    type: {
-      clone: clone,
-      conv: conv,
-      add: (a, b) => promoteArgs(add, a, b),
-      sub: (a, b) => promoteArgs(subtract, a, b),
-      mul: (a, b) => promoteArgs(multiply, a, b),
-      div: (a, b) => promoteArgs(divide, a, b),
-      pow: (a, b) => promoteArgs(pow, a, b),
-      eq: (a, b) => promoteArgs(equal, a, b),
-      lt: (a, b) => promoteArgs(ifComplexThenAbs(smaller), a, b),
-      le: (a, b) => promoteArgs(ifComplexThenAbs(smallerEq), a, b),
-      gt: (a, b) => promoteArgs(ifComplexThenAbs(larger), a, b),
-      ge: (a, b) => promoteArgs(ifComplexThenAbs(largerEq), a, b),
-      abs: abs,
-      round: round,
-      trunc: fix,
-      format: (a, b) => {
-        let result
-        if (typeof b !== 'undefined') {
-          result = format(a, b)
-        } else {
-          result = format(a)
+    if (config.number === 'BigNumber') {
+      const pi = createPi(BigNumber)
+      console.log(pi.div(180).toString())
+      Object.assign(overrideUnits, {
+        deg: {
+          value: [pi.div(180), 'rad'],
+          aliases: ['degree', 'degrees']
+        },
+        grad: {
+          prefixes: 'SHORT',
+          commonPrefixes: ['c'],
+          value: [pi.div(200), 'rad']
+        },
+        gradian: {
+          prefixes: 'LONG',
+          commonPrefixes: ['centi', ''],
+          value: [pi.div(200), 'rad'],
+          aliases: ['gradians']
+        },
+        cycle: {
+          value: [pi.times(2), 'rad'],
+          aliases: ['cycles']
+        },
+        arcmin: {
+          value: [pi.div(10800), 'rad'],
+          aliases: ['arcminute', 'arcminutes']
+        },
+        arcsec: {
+          value: [pi.div(648000), 'rad'],
+          aliases: ['arcsecond', 'arcseconds']
         }
-
-        if (a && isComplex(a)) {
-          result = '(' + result + ')' // Surround complex values with ( ) to enable better parsing
-        }
-
-        return result
-      }
+      })
     }
-  })
 
+    // TODO: Should this be unitmath.config instead, to keep old configs? Or does it not matter?
+    
+    return UnitMath.config({
+      parentheses: true,
+      simplifyThreshold: 1,
+      definitions: { units: overrideUnits },
+      type: {
+        clone: clone,
+        conv: conv,
+        add: (a, b) => promoteArgs(add, a, b),
+        sub: (a, b) => promoteArgs(subtract, a, b),
+        mul: (a, b) => promoteArgs(multiply, a, b),
+        div: (a, b) => promoteArgs(divide, a, b),
+        pow: (a, b) => promoteArgs(pow, a, b),
+        eq: (a, b) => promoteArgs(equal, a, b),
+        lt: (a, b) => promoteArgs(ifComplexThenAbs(smaller), a, b),
+        le: (a, b) => promoteArgs(ifComplexThenAbs(smallerEq), a, b),
+        gt: (a, b) => promoteArgs(ifComplexThenAbs(larger), a, b),
+        ge: (a, b) => promoteArgs(ifComplexThenAbs(largerEq), a, b),
+        abs: abs,
+        round: round,
+        trunc: fix,
+        format: (a, b) => {
+          let result
+          if (typeof b !== 'undefined') {
+            result = format(a, b)
+          } else {
+            result = format(a)
+          }
+
+          if (a && isComplex(a)) {
+            result = '(' + result + ')' // Surround complex values with ( ) to enable better parsing
+          }
+
+          return result
+        }
+      }
+    })
+  }
+
+  // TODO: After getting it to work like this, see if we can get rid of this devilry
+  let _unitmath = createUnitmathInstance()
+  const unitmath = () => _unitmath
 
   // TODO: think the way to check whether something is a unit through. Must be secure (checks against the prototype)
-  const u = unitmath()
+  // TODO: Have to repeat this in createUnitInstance?
+  const u = unitmath()()
   u.constructor.prototype.isUnit = true
   u.constructor.prototype.type = 'unit'
 
@@ -175,8 +226,20 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
   if (on) {
     // recalculate the values on change of configuration
     on('config', function (curr, prev) {
-      if (curr.number !== prev.number) {
+
+      // Relevant config properties that may change: what needs to be done
+      // number: nothing, the new type is used automatically anywhere config.number appears
+
+      console.log('Configuration changed.')
+      console.log('prev:')
+      console.log(prev)
+      console.log('curr:')
+      console.log(curr)
+      if (curr.number !== prev.number || curr.precision !== prev.precision) {
         // TODO: do we need to recalculate angle values like before?
+        _unitmath = createUnitmathInstance()
+        console.log('New unitmath definitions:')
+        console.log(unitmath().definitions().units.deg.value.toString())
       }
     })
   }
@@ -210,10 +273,17 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       return x.clone()
     },
 
-    'string': unitmath,
+    'string': unitmath(),
 
-    'number | BigNumber | Fraction | Complex, string': function (...args) {
-      let u = unitmath(...args)
+    'number, string': function (...args) {
+      // Upgrade number to configured type
+      args[0] = numeric(args[0], config.number)
+      let u = unitmath()(...args)
+      return u
+    },
+
+    'BigNumber | Fraction | Complex, string': function (...args) {
+      let u = unitmath()(...args)
       return u
     },
 
@@ -223,7 +293,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
   })
 
   // expose static exists function
-  unit.exists = (singleUnitString) => unitmath.exists(singleUnitString)
+  unit.exists = (singleUnitString) => unitmath().exists(singleUnitString)
 
   return unit
 })

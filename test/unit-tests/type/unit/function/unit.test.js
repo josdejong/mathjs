@@ -1,5 +1,7 @@
 import assert from 'assert'
 import math from '../../../../../src/bundleAny'
+import { isBigNumber, isFraction } from '../../../../../src/utils/is'
+
 const unit = math.unit
 const Unit = math.Unit
 
@@ -89,4 +91,57 @@ describe('unit', function () {
     assert.strictEqual(expr1.toTex(), '\\left(\\mathrm{cm}\\right)')
     assert.strictEqual(expr2.toTex(), '\\left(\\left(1\\right)\\mathrm{cm}\\right)')
   })
+
+  describe('config option \'number\'', function () {
+    it('should use original and updated config option \'number\'', function () {
+      const math2 = math.create({ number: 'Fraction' })
+      const unit2 = math2.Unit(5, 'kg')
+      const unit2b = math2.Unit('5 kg')
+      assert(isFraction(unit2.value))
+      assert(isFraction(unit2b.value))
+
+      math2.config({ number: 'BigNumber' })
+      const unit3 = math2.Unit(5, 'kg')
+      const unit3b = math2.Unit('5 kg')
+      assert(isBigNumber(unit3.value))
+      assert(isBigNumber(unit3b.value))
+    })
+
+    it.only('should create angle units to required number of digits', function () {
+      // Original instance
+      assert.strictEqual(math.unit('180 deg').to('rad').toString(), '3.141592653589793 rad')
+      
+      // Create new instance
+      const math2 = math.create({ number: 'BigNumber' })
+      assert.strictEqual(math2.unit('180 deg').to('rad').toString(), '3.141592653589793238462643383279502884197169399375105820974944592 rad')
+
+      // Create another new instance
+      const math3 = math.create({ number: 'BigNumber', precision: 80 })
+      assert.strictEqual(math3.unit('180 deg').to('rad').toString(), '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089 rad')
+
+      // Modify config of existing instance
+      console.log(math2.unit('180 deg').value)
+      math2.config({ precision: 80 })
+      console.log(math2.unit('180 deg').value)
+      assert.strictEqual(math2.unit('180 deg').to('rad').toString(), '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089 rad')
+
+      
+    })
+  })
+
+  it('should use original and updated config option \'precision\'', function () {
+    const math2 = math.create({ number: 'BigNumber', precision: 30 })
+    const unit2 = math2.Unit('3.141592653589793238462643383279502884 C')
+    assert(isBigNumber(unit2.value))
+    assert.strictEqual(unit2.toString(), '3.14159265358979323846264338328 C')
+
+    math2.config({ precision: 20 })
+
+    const unit3 = math2.Unit('3.141592653589793238462643383279502884 C')
+    assert(isBigNumber(unit3.value))
+    assert.strictEqual(unit2.toString(), '3.1415926535897932385 C')
+    assert.strictEqual(unit3.toString(), '3.1415926535897932385 C')
+
+  })
+
 })
