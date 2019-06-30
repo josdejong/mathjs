@@ -1,5 +1,5 @@
 import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
-import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array'
+import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validateIndex } from '../../utils/array'
 import { format } from '../../utils/string'
 import { isInteger } from '../../utils/number'
 import { clone, deepStrictEqual } from '../../utils/object'
@@ -44,7 +44,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       // get the dimensions of the array
       this._size = arraySize(this._data)
       // verify the dimensions of the array, TODO: compute size while processing array
-      validate(this._data, this._size)
+      // validate(this._data, this._size)
       // data type unknown
       this._datatype = datatype
     } else if (data) {

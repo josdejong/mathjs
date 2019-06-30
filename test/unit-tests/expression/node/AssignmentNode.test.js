@@ -98,7 +98,10 @@ describe('AssignmentNode', function () {
   })
 
   it('should compile an AssignmentNode with matrix assignment', function () {
-    const n = new AssignmentNode(new ArrayNode([new SymbolNode('x'), new SymbolNode('y')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
+    const n = new AssignmentNode(
+      new ArrayNode([new SymbolNode('x'), new SymbolNode('y')]),
+      new ArrayNode([new ConstantNode(1), new ConstantNode(2)])
+    )
     const expr = n.compile()
     const scope = {}
     assert.strictEqual(expr.evaluate(scope), 2)

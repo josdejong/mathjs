@@ -1,5 +1,5 @@
 import { isArrayNode, isNode } from '../../utils/is'
-import { map } from '../../utils/array'
+import { forEach, map } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'ArrayNode'
@@ -59,9 +59,8 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
 
     const asMatrix = (math.config.matrix !== 'Array')
     if (asMatrix) {
-      const matrix = math.matrix
       return function evalArrayNode (scope, args, context) {
-        return matrix(map(evalItems, function (evalItem) {
+        return math.matrix(map(evalItems, function (evalItem) {
           return evalItem(scope, args, context)
         }))
       }
@@ -105,6 +104,23 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    */
   ArrayNode.prototype.clone = function () {
     return new ArrayNode(this.items.slice(0))
+  }
+
+  /**
+   * Get an array representation of itself and any nested ArrayNodes,
+   * leaving all other nodes as-is.
+   * @return {Array}
+   */
+  ArrayNode.prototype.toArray = function () {
+    const items = []
+    forEach(this.items, function (item) {
+      if (isArrayNode(item)) {
+        items.push(item.toArray())
+      } else {
+        items.push(item)
+      }
+    })
+    return items
   }
 
   /**
