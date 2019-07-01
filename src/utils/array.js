@@ -423,8 +423,7 @@ export function flatten (array) {
  * @param {Array} [flat=[]]
  * @return {Array}             An array containing each paired key and value.
  */
-export function matchFlatten (keys, values, flat) {
-  flat = flat || []
+export function matchFlatten (keys, values, flat = []) {
   if (!(Array.isArray(keys) && Array.isArray(values))) {
     throw new TypeError('"keys" and "values" must both be arrays')
   }
