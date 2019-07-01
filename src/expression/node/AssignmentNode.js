@@ -9,7 +9,7 @@ import { getPrecedence } from '../operators'
 const name = 'AssignmentNode'
 const dependencies = [
   'subset',
-  'matrix',
+  '?matrix', // FIXME: should not be needed at all, should be handled by subset
   'Node'
 ]
 
@@ -158,7 +158,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
         const asMatrix = (valueType !== 'Array')
         let objects = object.toArray()
         let values = evalValue(scope, args, context)
-        values = asMatrix ? values.toArray() : values
+        values = (asMatrix && values.toArray) ? values.toArray() : values
         let matches
         try {
           matches = matchFlatten(objects, values)
