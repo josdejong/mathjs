@@ -983,6 +983,11 @@ describe('parse', function () {
       assert.strictEqual(scope.b, 8)
       assert.strictEqual(scope.c, 9)
       assert.strictEqual(scope.d, 10)
+      scope.C = [11, 12, 13]
+      parseAndEval('[a, b, c] = C', scope)
+      assert.strictEqual(scope.a, 11)
+      assert.strictEqual(scope.b, 12)
+      assert.strictEqual(scope.c, 13)
     })
 
     it('should throw an error on undefined symbol', function () {
