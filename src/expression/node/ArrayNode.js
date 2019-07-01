@@ -1,5 +1,5 @@
 import { isArrayNode, isNode } from '../../utils/is'
-import { forEach, map } from '../../utils/array'
+import { map } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'ArrayNode'
@@ -112,15 +112,13 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    * @return {Array}
    */
   ArrayNode.prototype.toArray = function () {
-    const items = []
-    forEach(this.items, function (item) {
+    return this.items.map(function (item) {
       if (isArrayNode(item)) {
-        items.push(item.toArray())
+        return item.toArray()
       } else {
-        items.push(item)
+        return item
       }
     })
-    return items
   }
 
   /**
