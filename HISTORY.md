@@ -5,6 +5,8 @@
 
 - Add `unpkg` and `jsdelivr` fields in package.json pointing to UMD build.
   Thanks @tmcw.
+- Fix #1550: nested user defined function not receiving variables of an
+  outer user defined function.
 
 
 # 2019-06-11, version 6.0.2
