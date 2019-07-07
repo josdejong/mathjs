@@ -5,6 +5,14 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20190707-version-603">2019-07-07, version 6.0.3 <a href="#20190707-version-603" title="Permalink">#</a></h1>
+
+- Add `unpkg` and `jsdelivr` fields in package.json pointing to UMD build.
+  Thanks <a href="https://github.com/tmcw">@tmcw</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1550">#1550</a>: nested user defined function not receiving variables of an
+  outer user defined function.
+
+
 <h1 id="20190611-version-602">2019-06-11, version 6.0.2 <a href="#20190611-version-602" title="Permalink">#</a></h1>
 
 - Fix not being able to set configuration after disabling function `import`
