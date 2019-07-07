@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 6.0.3
+# 2019-07-07, version 6.0.3
 
 - Add `unpkg` and `jsdelivr` fields in package.json pointing to UMD build.
   Thanks @tmcw.
