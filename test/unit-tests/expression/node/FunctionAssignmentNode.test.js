@@ -210,6 +210,12 @@ describe('FunctionAssignmentNode', function () {
     assert.deepStrictEqual(g([1, 2, 3]), [1, 2, 3])
   })
 
+  it('should pass function arguments via scope to an inner function', function () {
+    const myFunc = math.evaluate('myFunc(arr, val) = arr.map(f(x,i,a) = x * val)')
+
+    assert.deepStrictEqual(myFunc([1, 2, 3], 10), [10, 20, 30])
+  })
+
   it('should filter a FunctionAssignmentNode', function () {
     const a = new ConstantNode(2)
     const x = new SymbolNode('x')
