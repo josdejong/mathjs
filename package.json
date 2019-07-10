@@ -124,9 +124,9 @@
     "typed-function": "1.1.0"
   },
   "devDependencies": {
-    "@babel/core": "7.4.5",
+    "@babel/core": "7.5.4",
     "@babel/plugin-transform-object-assign": "7.2.0",
-    "@babel/preset-env": "7.4.5",
+    "@babel/preset-env": "7.5.4",
     "@babel/register": "7.4.4",
     "babel-loader": "8.0.6",
     "benchmark": "2.1.4",
@@ -161,7 +161,7 @@
     "sylvester": "0.0.21",
     "uglify-js": "3.6.0",
     "underscore": "1.9.1",
-    "webpack": "4.35.2",
+    "webpack": "4.35.3",
     "zeros": "1.0.0"
   },
   "main": "main/es5",
