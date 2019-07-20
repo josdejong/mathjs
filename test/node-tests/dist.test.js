@@ -3,6 +3,7 @@ const assert = require('assert')
 const { createSnapshotFromFactories, validateBundle } = require('../../lib/utils/snapshot')
 const factoriesAny = require('../../lib/factoriesAny')
 const version = require('../../package.json').version
+const embeddedDocs = require('../../lib/expression/embeddedDocs/embeddedDocs')
 
 const { expectedInstanceStructure } = createSnapshotFromFactories(factoriesAny)
 
@@ -85,8 +86,9 @@ describe('dist', function () {
     })
 
     // test whether there is documentation for non existing functions
-    const redundant = Object.keys(math.docs).filter(function (prop) {
-      return math[prop] === undefined
+    const redundant = Object.keys(embeddedDocs).filter(function (prop) {
+      // TODO: figure out why a property embeddedDocs is exported too
+      return prop !== 'embeddedDocs' && math[prop] === undefined
     })
 
     if (missing.length > 0 || redundant.length > 0) {
