@@ -148,7 +148,7 @@
     "karma-webpack": "4.0.2",
     "math-expression-evaluator": "1.2.17",
     "mkdirp": "0.5.1",
-    "mocha": "6.1.4",
+    "mocha": "6.2.0",
     "ndarray": "1.0.18",
     "ndarray-determinant": "1.0.0",
     "ndarray-gemm": "1.0.0",
@@ -161,7 +161,7 @@
     "sylvester": "0.0.21",
     "uglify-js": "3.6.0",
     "underscore": "1.9.1",
-    "webpack": "4.35.3",
+    "webpack": "4.36.1",
     "zeros": "1.0.0"
   },
   "main": "main/es5",
