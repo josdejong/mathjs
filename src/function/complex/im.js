@@ -33,15 +33,15 @@ export const createIm = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    * @return {number | BigNumber | Array | Matrix} The imaginary part of x
    */
   const im = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       return 0
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.mul(0)
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.im
     },
 

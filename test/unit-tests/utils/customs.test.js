@@ -7,7 +7,7 @@ import math from '../../../src/bundleAny'
 describe('customs', function () {
   describe('isSafeMethod', function () {
     it('plain objects', function () {
-      let object = {
+      const object = {
         fn: function () {}
       }
       assert.strictEqual(isSafeMethod(object, 'fn'), true)
@@ -28,7 +28,7 @@ describe('customs', function () {
       assert.strictEqual(isSafeMethod(object, 'foo'), false)
 
       // custom inherited method
-      let object1 = {
+      const object1 = {
         foo: function () {}
       }
       const object2 = Object.create(object1)
@@ -61,12 +61,12 @@ describe('customs', function () {
       assert.strictEqual(isSafeMethod(unit, 'toString'), true)
 
       // extend the class instance with a custom method
-      let object = math.matrix()
+      const object = math.matrix()
       object.foo = function () {}
       assert.strictEqual(isSafeMethod(object, 'foo'), true)
 
       // extend the class instance with a ghosted method
-      let object2 = math.matrix()
+      const object2 = math.matrix()
       object2.toJSON = function () {}
       assert.strictEqual(isSafeMethod(object2, 'toJSON'), false)
 

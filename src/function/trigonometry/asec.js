@@ -30,18 +30,18 @@ export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | Complex | Array | Matrix} The arc secant of x
    */
   const asec = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
         return asecNumber(x)
       }
       return new Complex(x, 0).asec()
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.asec()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return new BigNumber(1).div(x).acos()
     },
 

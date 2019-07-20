@@ -1,6 +1,6 @@
 import { isChain } from '../../utils/is'
 import { format } from '../../utils/string'
-import { lazy } from '../../utils/object'
+import { hasOwnProperty, lazy } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
 const name = 'Chain'
@@ -160,7 +160,7 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
     } else {
       // createProxy(values)
       for (const name in arg0) {
-        if (arg0.hasOwnProperty(name) && excludedNames[name] === undefined) {
+        if (hasOwnProperty(arg0, name) && excludedNames[name] === undefined) {
           createLazyProxy(name, () => arg0[name])
         }
       }

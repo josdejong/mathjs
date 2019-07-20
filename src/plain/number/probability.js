@@ -2,7 +2,7 @@ import { isInteger } from '../../utils/number'
 import { product } from '../../utils/product'
 
 export function gammaNumber (n) {
-  let t, x
+  let x
 
   if (isInteger(n)) {
     if (n <= 0) {
@@ -41,7 +41,7 @@ export function gammaNumber (n) {
     x += gammaP[i] / (n + i)
   }
 
-  t = n + gammaG + 0.5
+  const t = n + gammaG + 0.5
   return Math.sqrt(2 * Math.PI) * Math.pow(t, n + 0.5) * Math.exp(-t) * x
 }
 gammaNumber.signature = 'number'

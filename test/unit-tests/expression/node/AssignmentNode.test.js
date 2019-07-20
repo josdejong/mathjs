@@ -62,7 +62,7 @@ describe('AssignmentNode', function () {
 
     const expr = n.compile()
 
-    let scope = {}
+    const scope = {}
     assert.strictEqual(expr.evaluate(scope), 3)
     assert.strictEqual(scope.b, 3)
   })
@@ -75,7 +75,7 @@ describe('AssignmentNode', function () {
 
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: {}
     }
     assert.strictEqual(expr.evaluate(scope), 3)
@@ -91,7 +91,7 @@ describe('AssignmentNode', function () {
 
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: {
         b: {}
       }
@@ -110,7 +110,7 @@ describe('AssignmentNode', function () {
     const n = new AssignmentNode(object, index, value)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: [[0, 0], [0, 0]]
     }
     assert.strictEqual(expr.evaluate(scope), 5)
@@ -132,7 +132,7 @@ describe('AssignmentNode', function () {
     const n = new AssignmentNode(object, index, value)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: [[0, 0], [0, 0]],
       b: [5, 6]
     }
@@ -155,7 +155,7 @@ describe('AssignmentNode', function () {
     const n = new bigmath.AssignmentNode(object, index, value)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: [[0, 0], [0, 0]]
     }
     assert.deepStrictEqual(expr.evaluate(scope), bigmath.bignumber(5))
@@ -171,7 +171,7 @@ describe('AssignmentNode', function () {
     const n = new AssignmentNode(a, index, value)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: 42
     }
     assert.throws(function () { expr.evaluate(scope) }, /Cannot apply index: unsupported type of object/)

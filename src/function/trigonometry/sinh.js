@@ -28,17 +28,17 @@ export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic sine of x
    */
   const sinh = typed(name, {
-    'number': sinhNumber,
+    number: sinhNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.sinh()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.sinh()
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sinh is no angle')
       }

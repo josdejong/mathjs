@@ -12,7 +12,7 @@ import { IndexError } from '../error/IndexError'
  * @Return {Number[]} size
  */
 export function arraySize (x) {
-  let s = []
+  const s = []
 
   while (Array.isArray(x)) {
     s.push(x.length)
@@ -281,7 +281,7 @@ function _reshape (array, sizes) {
  * @returns {Array} returns the array itself
  */
 export function squeeze (array, size) {
-  let s = size || arraySize(array)
+  const s = size || arraySize(array)
 
   // squeeze outer dimensions
   while (Array.isArray(array) && array.length === 1) {
@@ -342,7 +342,7 @@ function _squeeze (array, dims, dim) {
  * @private
  */
 export function unsqueeze (array, dims, outer, size) {
-  let s = size || arraySize(array)
+  const s = size || arraySize(array)
 
   // unsqueeze outer dimensions
   if (outer) {
@@ -396,7 +396,7 @@ export function flatten (array) {
     // if not an array, return as is
     return array
   }
-  let flat = []
+  const flat = []
 
   array.forEach(function callback (value) {
     if (Array.isArray(value)) {
@@ -478,7 +478,7 @@ export function identify (a) {
     return a
   }
 
-  let b = []
+  const b = []
   let count = 0
   b[0] = { value: a[0], identifier: 0 }
   for (let i = 1; i < a.length; i++) {
@@ -506,7 +506,7 @@ export function generalize (a) {
     return a
   }
 
-  let b = []
+  const b = []
   for (let i = 0; i < a.length; i++) {
     b.push(a[i].value)
   }

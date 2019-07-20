@@ -2,6 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../../src/bundleAny'
+import { hasOwnProperty } from '../../../../src/utils/object'
 const Chain = math.Chain
 
 describe('Chain', function () {
@@ -94,7 +95,7 @@ describe('Chain', function () {
     const chain = new Chain()
 
     assert.strictEqual(chain.foo, 'bar')
-    assert.strictEqual(chain.hasOwnProperty('foo'), false)
+    assert.strictEqual(hasOwnProperty(chain, 'foo'), false)
 
     delete Object.prototype.foo
   })

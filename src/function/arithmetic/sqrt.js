@@ -30,13 +30,13 @@ export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *            Returns the square root of `x`
    */
   const sqrt = typed('sqrt', {
-    'number': _sqrtNumber,
+    number: _sqrtNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.sqrt()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       if (!x.isNegative() || config.predictable) {
         return x.sqrt()
       } else {
@@ -50,7 +50,7 @@ export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
       return deepMap(x, sqrt, true)
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       // Someday will work for complex units when they are implemented
       return x.pow(0.5)
     }

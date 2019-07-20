@@ -40,7 +40,7 @@ describe('RelationalNode', function () {
   it('should evaluate a RelationalNode', function () {
     let n = new RelationalNode(['smaller', 'smaller'], [one, two, three])
     let expr = n.compile()
-    let scope = {}
+    const scope = {}
     assert.strictEqual(expr.evaluate(scope), true)
 
     n = new RelationalNode(['smaller', 'smaller'], [three, two, one])
@@ -49,7 +49,7 @@ describe('RelationalNode', function () {
   })
 
   it('should filter a RelationalNode', function () {
-    let n = new RelationalNode(['smaller', 'smaller'], [one, two, three])
+    const n = new RelationalNode(['smaller', 'smaller'], [one, two, three])
 
     assert.deepStrictEqual(n.filter(function (node) { return node instanceof RelationalNode }), [n])
     assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [one, two, three])
@@ -164,7 +164,7 @@ describe('RelationalNode', function () {
   it('should perform short-circuit evaluation', function () {
     const n = math.parse('(a = a+1) > (b = b+1) > (c = c+1) > (d = d+1)')
     const scope = { a: 0, b: 0, c: 0, d: 0 }
-    let result = n.evaluate(scope)
+    const result = n.evaluate(scope)
     assert.strictEqual(scope.a, 1)
     assert.strictEqual(scope.b, 1)
     assert.strictEqual(scope.c, 0)
@@ -175,7 +175,7 @@ describe('RelationalNode', function () {
   it('should not evaluate params more than once', function () {
     const n = math.parse('(a = a+1) >= (b = b+1) >= (c = c+1) >= (d = d+1)')
     const scope = { a: 0, b: 0, c: 0, d: 0 }
-    let result = n.evaluate(scope)
+    const result = n.evaluate(scope)
     assert.strictEqual(scope.a, 1)
     assert.strictEqual(scope.b, 1)
     assert.strictEqual(scope.c, 1)

@@ -33,22 +33,22 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
    */
   const fix = typed('fix', {
-    'number': function (x) {
+    number: function (x) {
       return (x > 0) ? floor(x) : ceil(x)
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return new Complex(
         (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
         (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
       )
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.isNegative() ? ceil(x) : floor(x)
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.s < 0 ? x.ceil() : x.floor()
     },
 

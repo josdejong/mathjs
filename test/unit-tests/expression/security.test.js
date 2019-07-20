@@ -84,7 +84,7 @@ describe('security', function () {
   })
 
   it('should not allow disguising forbidden properties with unicode characters', function () {
-    let scope = {
+    const scope = {
       a: {}
     }
 

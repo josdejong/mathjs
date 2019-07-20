@@ -101,41 +101,41 @@ describe('replacer', function () {
   it('should stringify a node tree', function () {
     const node = math.parse('2 + sin(3 x)')
     const json = {
-      'mathjs': 'OperatorNode',
-      'op': '+',
-      'fn': 'add',
-      'args': [
+      mathjs: 'OperatorNode',
+      op: '+',
+      fn: 'add',
+      args: [
         {
-          'mathjs': 'ConstantNode',
-          'value': 2
+          mathjs: 'ConstantNode',
+          value: 2
         },
         {
-          'mathjs': 'FunctionNode',
-          'fn': {
-            'mathjs': 'SymbolNode',
-            'name': 'sin'
+          mathjs: 'FunctionNode',
+          fn: {
+            mathjs: 'SymbolNode',
+            name: 'sin'
           },
-          'args': [
+          args: [
             {
-              'mathjs': 'OperatorNode',
-              'op': '*',
-              'fn': 'multiply',
-              'args': [
+              mathjs: 'OperatorNode',
+              op: '*',
+              fn: 'multiply',
+              args: [
                 {
-                  'mathjs': 'ConstantNode',
-                  'value': 3
+                  mathjs: 'ConstantNode',
+                  value: 3
                 },
                 {
-                  'mathjs': 'SymbolNode',
-                  'name': 'x'
+                  mathjs: 'SymbolNode',
+                  name: 'x'
                 }
               ],
-              'implicit': true
+              implicit: true
             }
           ]
         }
       ],
-      'implicit': false
+      implicit: false
     }
 
     assert.deepStrictEqual(JSON.parse(JSON.stringify(node)), json)

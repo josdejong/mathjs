@@ -44,7 +44,7 @@ describe('evaluate', function () {
   })
 
   it('should handle the given scope', function () {
-    let scope = {
+    const scope = {
       a: 3,
       b: 4
     }

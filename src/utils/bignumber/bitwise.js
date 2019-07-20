@@ -80,7 +80,7 @@ export function bitNotBigNumber (x) {
   const prevPrec = BigNumber.precision
   BigNumber.config({ precision: 1E9 })
 
-  let result = x.plus(new BigNumber(1))
+  const result = x.plus(new BigNumber(1))
   result.s = -result.s || null
 
   BigNumber.config({ precision: prevPrec })

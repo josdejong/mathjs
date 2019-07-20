@@ -55,27 +55,27 @@ export const createNorm = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | BigNumber} the p-norm
    */
   const norm = typed(name, {
-    'number': Math.abs,
+    number: Math.abs,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.abs()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       // norm(x) = abs(x)
       return x.abs()
     },
 
-    'boolean': function (x) {
+    boolean: function (x) {
       // norm(x) = abs(x)
       return Math.abs(x)
     },
 
-    'Array': function (x) {
+    Array: function (x) {
       return _norm(matrix(x), 2)
     },
 
-    'Matrix': function (x) {
+    Matrix: function (x) {
       return _norm(x, 2)
     },
 

@@ -40,12 +40,12 @@ export const createSort = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {Matrix | Array} Returns the sorted matrix.
    */
   return typed(name, {
-    'Array': function (x) {
+    Array: function (x) {
       _arrayIsVector(x)
       return x.sort(compareAsc)
     },
 
-    'Matrix': function (x) {
+    Matrix: function (x) {
       _matrixIsVector(x)
       return matrix(x.toArray().sort(compareAsc), x.storage())
     },

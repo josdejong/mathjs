@@ -79,10 +79,10 @@ describe('std', function () {
   })
 
   const inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
-    [ [10, 200], [30, 40], [50, 60] ],
-    [ [70, 80], [90, 100], [180, 120] ],
-    [ [130, 140], [160, 150], [170, 110] ],
-    [ [190, 20], [210, 220], [230, 240] ]
+    [[10, 200], [30, 40], [50, 60]],
+    [[70, 80], [90, 100], [180, 120]],
+    [[130, 140], [160, 150], [170, 110]],
+    [[190, 20], [210, 220], [230, 240]]
   ]
 
   it('should return the standard deviation value along a dimension on a matrix', function () {

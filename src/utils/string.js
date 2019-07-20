@@ -88,13 +88,9 @@ export function format (value, options) {
       // this object has a non-native toString method, use that one
       return value.toString()
     } else {
-      const entries = []
-
-      for (const key in value) {
-        if (value.hasOwnProperty(key)) {
-          entries.push('"' + key + '": ' + format(value[key], options))
-        }
-      }
+      const entries = Object.keys(value).map(key => {
+        return '"' + key + '": ' + format(value[key], options)
+      })
 
       return '{' + entries.join(', ') + '}'
     }

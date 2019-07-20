@@ -33,7 +33,7 @@ export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {number | Array | Matrix}    The erf of `x`
    */
   const erf = typed('name', {
-    'number': function (x) {
+    number: function (x) {
       const y = Math.abs(x)
 
       if (y >= MAX_NUM) {

@@ -28,13 +28,13 @@ export const createAcsch = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosecant of x
    */
   const acsch = typed(name, {
-    'number': acschNumber,
+    number: acschNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.acsch()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return new BigNumber(1).div(x).asinh()
     },
 

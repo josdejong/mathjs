@@ -30,18 +30,18 @@ export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | Complex | Array | Matrix} The arc cosecant of x
    */
   const acsc = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
         return acscNumber(x)
       }
       return new Complex(x, 0).acsc()
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.acsc()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return new BigNumber(1).div(x).asin()
     },
 

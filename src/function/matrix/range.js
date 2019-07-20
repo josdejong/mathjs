@@ -52,7 +52,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     // TODO: simplify signatures when typed-function supports default values and optional arguments
 
     // TODO: a number or boolean should not be converted to string here
-    'string': _strRange,
+    string: _strRange,
     'string, boolean': _strRange,
 
     'number, number': function (start, end) {

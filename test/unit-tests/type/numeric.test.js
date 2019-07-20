@@ -68,10 +68,10 @@ describe('numeric', function () {
   })
 
   it('should return the same object if input/output types match', function () {
-    let bn1 = math.bignumber(123)
+    const bn1 = math.bignumber(123)
     assert.strictEqual(bn1, numeric(bn1, 'BigNumber'))
 
-    let fr1 = math.fraction(1, 3)
+    const fr1 = math.fraction(1, 3)
     assert.strictEqual(fr1, numeric(fr1, 'Fraction'))
   })
 

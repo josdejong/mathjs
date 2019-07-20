@@ -88,7 +88,7 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
    */
   ObjectNode.prototype.forEach = function (callback) {
     for (const key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (hasOwnProperty(this.properties, key)) {
         callback(this.properties[key], 'properties[' + stringify(key) + ']', this)
       }
     }
@@ -103,7 +103,7 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
   ObjectNode.prototype.map = function (callback) {
     const properties = {}
     for (const key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (hasOwnProperty(this.properties, key)) {
         properties[key] = this._ifNode(callback(this.properties[key],
           'properties[' + stringify(key) + ']', this))
       }
@@ -118,7 +118,7 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
   ObjectNode.prototype.clone = function () {
     const properties = {}
     for (const key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (hasOwnProperty(this.properties, key)) {
         properties[key] = this.properties[key]
       }
     }
@@ -134,7 +134,7 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
   ObjectNode.prototype._toString = function (options) {
     const entries = []
     for (const key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (hasOwnProperty(this.properties, key)) {
         entries.push(stringify(key) + ': ' + this.properties[key].toString(options))
       }
     }
@@ -172,7 +172,7 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
   ObjectNode.prototype.toHTML = function (options) {
     const entries = []
     for (const key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (hasOwnProperty(this.properties, key)) {
         entries.push('<span class="math-symbol math-property">' + escape(key) + '</span>' + '<span class="math-operator math-assignment-operator math-property-assignment-operator math-binary-operator">:</span>' + this.properties[key].toHTML(options))
       }
     }
@@ -187,7 +187,7 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
   ObjectNode.prototype._toTex = function (options) {
     const entries = []
     for (const key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (hasOwnProperty(this.properties, key)) {
         entries.push('\\mathbf{' + key + ':} & ' + this.properties[key].toTex(options) + '\\\\')
       }
     }

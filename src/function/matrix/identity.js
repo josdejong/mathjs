@@ -49,7 +49,7 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return (config.matrix === 'Matrix') ? matrix([]) : []
     },
 
-    'string': function (format) {
+    string: function (format) {
       return matrix(format)
     },
 
@@ -69,7 +69,7 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return _identity(rows, cols, format)
     },
 
-    'Array': function (size) {
+    Array: function (size) {
       return _identityVector(size)
     },
 
@@ -77,7 +77,7 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return _identityVector(size, format)
     },
 
-    'Matrix': function (size) {
+    Matrix: function (size) {
       return _identityVector(size.valueOf(), size.storage())
     },
 

@@ -694,10 +694,10 @@ describe('SparseMatrix', function () {
     it('should get matrix element - Issue #450', function () {
       const m = new SparseMatrix({
         mathjs: 'SparseMatrix',
-        values: [ 3, 10, 3, 9, 7, 4, 8, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, -1, 13 ],
-        index: [ 1, 0, 3, 1, 2, 5, 4, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 5, 4 ],
-        ptr: [ 0, 3, 7, 9, 12, 16, 19 ],
-        size: [ 6, 6 ],
+        values: [3, 10, 3, 9, 7, 4, 8, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, -1, 13],
+        index: [1, 0, 3, 1, 2, 5, 4, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 5, 4],
+        ptr: [0, 3, 7, 9, 12, 16, 19],
+        size: [6, 6],
         datatype: undefined
       })
 
@@ -1446,10 +1446,10 @@ describe('SparseMatrix', function () {
     })
 
     const expectedLogs = [
-      { value: 1, index: [ 0, 0 ] },
-      { value: 3, index: [ 1, 0 ] },
-      { value: 2, index: [ 0, 1 ] },
-      { value: 4, index: [ 1, 1 ] }
+      { value: 1, index: [0, 0] },
+      { value: 3, index: [1, 0] },
+      { value: 2, index: [0, 1] },
+      { value: 4, index: [1, 1] }
     ]
 
     it('should have parsed the two test matrices correctly', () => {

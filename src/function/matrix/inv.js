@@ -84,7 +84,7 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       }
     },
 
-    'any': function (x) {
+    any: function (x) {
       // scalar
       return divideScalar(1, x) // FIXME: create a BigNumber one when configured for bignumbers
     }

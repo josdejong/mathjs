@@ -36,7 +36,7 @@ export const createSparse = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return new SparseMatrix([])
     },
 
-    'string': function (datatype) {
+    string: function (datatype) {
       return new SparseMatrix([], datatype)
     },
 

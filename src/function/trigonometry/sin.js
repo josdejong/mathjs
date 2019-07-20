@@ -32,17 +32,17 @@ export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {number | BigNumber | Complex | Array | Matrix} Sine of x
    */
   const sin = typed(name, {
-    'number': Math.sin,
+    number: Math.sin,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.sin()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.sin()
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sin is no angle')
       }

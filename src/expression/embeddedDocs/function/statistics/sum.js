@@ -1,17 +1,17 @@
 export const sumDocs = {
-  'name': 'sum',
-  'category': 'Statistics',
-  'syntax': [
+  name: 'sum',
+  category: 'Statistics',
+  syntax: [
     'sum(a, b, c, ...)',
     'sum(A)'
   ],
-  'description': 'Compute the sum of all values.',
-  'examples': [
+  description: 'Compute the sum of all values.',
+  examples: [
     'sum(2, 3, 4, 1)',
     'sum([2, 3, 4, 1])',
     'sum([2, 5; 4, 3])'
   ],
-  'seealso': [
+  seealso: [
     'max',
     'mean',
     'median',

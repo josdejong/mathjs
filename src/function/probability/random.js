@@ -50,7 +50,7 @@ export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed
    */
   return typed(name, {
     '': () => _random(0, 1),
-    'number': (max) => _random(0, max),
+    number: (max) => _random(0, max),
     'number, number': (min, max) => _random(min, max),
     'Array | Matrix': (size) => _randomMatrix(size, 0, 1),
     'Array | Matrix, number': (size, max) => _randomMatrix(size, 0, max),
@@ -83,7 +83,7 @@ export const createRandomNumber = /* #__PURE__ */ factory(name, ['typed', 'confi
 
   return typed(name, {
     '': () => _random(0, 1),
-    'number': (max) => _random(0, max),
+    number: (max) => _random(0, max),
     'number, number': (min, max) => _random(min, max)
   })
 

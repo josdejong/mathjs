@@ -1,7 +1,7 @@
 import { isComplex, isUnit, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { endsWith } from '../../utils/string'
-import { clone } from '../../utils/object'
+import { clone, hasOwnProperty } from '../../utils/object'
 import { createBigNumberPi as createPi } from '../../utils/bignumber/constants'
 
 const name = 'Unit'
@@ -140,8 +140,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   function parseNumber () {
     let number = ''
-    let oldIndex
-    oldIndex = index
+    const oldIndex = index
 
     if (c === '+') {
       next()
@@ -460,7 +459,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     for (let i = 0; i < this.units.length; i++) {
       unit.units[i] = { }
       for (const p in this.units[i]) {
-        if (this.units[i].hasOwnProperty(p)) {
+        if (hasOwnProperty(this.units[i], p)) {
           unit.units[i][p] = this.units[i][p]
         }
       }
@@ -575,7 +574,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function _findUnit (str) {
     // First, match units names exactly. For example, a user could define 'mm' as 10^-4 m, which is silly, but then we would want 'mm' to match the user-defined unit.
-    if (UNITS.hasOwnProperty(str)) {
+    if (hasOwnProperty(UNITS, str)) {
       const unit = UNITS[str]
       const prefix = unit.prefixes['']
       return {
@@ -585,12 +584,12 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     for (const name in UNITS) {
-      if (UNITS.hasOwnProperty(name)) {
+      if (hasOwnProperty(UNITS, name)) {
         if (endsWith(str, name)) {
           const unit = UNITS[name]
           const prefixLen = (str.length - name.length)
           const prefixName = str.substring(0, prefixLen)
-          const prefix = unit.prefixes.hasOwnProperty(prefixName)
+          const prefix = hasOwnProperty(unit.prefixes, prefixName)
             ? unit.prefixes[prefixName]
             : undefined
           if (prefix !== undefined) {
@@ -956,7 +955,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       let matchingUnit
       if (matchingBase) {
         // Does the unit system have a matching unit?
-        if (currentUnitSystem.hasOwnProperty(matchingBase)) {
+        if (hasOwnProperty(currentUnitSystem, matchingBase)) {
           matchingUnit = currentUnitSystem[matchingBase]
         }
       }
@@ -974,7 +973,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
           const baseDim = BASE_DIMENSIONS[i]
           if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
-            if (currentUnitSystem.hasOwnProperty(baseDim)) {
+            if (hasOwnProperty(currentUnitSystem, baseDim)) {
               proposedUnitList.push({
                 unit: currentUnitSystem[baseDim].unit,
                 prefix: currentUnitSystem[baseDim].prefix,
@@ -1011,7 +1010,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       const baseDim = BASE_DIMENSIONS[i]
       if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
-        if (UNIT_SYSTEMS['si'].hasOwnProperty(baseDim)) {
+        if (hasOwnProperty(UNIT_SYSTEMS['si'], baseDim)) {
           proposedUnitList.push({
             unit: UNIT_SYSTEMS['si'][baseDim].unit,
             prefix: UNIT_SYSTEMS['si'][baseDim].prefix,
@@ -1182,7 +1181,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     bestDiff = Math.abs(bestDiff)
     const prefixes = this.units[0].unit.prefixes
     for (const p in prefixes) {
-      if (prefixes.hasOwnProperty(p)) {
+      if (hasOwnProperty(prefixes, p)) {
         const prefix = prefixes[p]
         if (prefix.scientific) {
           const diff = Math.abs(
@@ -1266,150 +1265,150 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     SHORT: {
       '': { name: '', value: 1, scientific: true },
 
-      'da': { name: 'da', value: 1e1, scientific: false },
-      'h': { name: 'h', value: 1e2, scientific: false },
-      'k': { name: 'k', value: 1e3, scientific: true },
-      'M': { name: 'M', value: 1e6, scientific: true },
-      'G': { name: 'G', value: 1e9, scientific: true },
-      'T': { name: 'T', value: 1e12, scientific: true },
-      'P': { name: 'P', value: 1e15, scientific: true },
-      'E': { name: 'E', value: 1e18, scientific: true },
-      'Z': { name: 'Z', value: 1e21, scientific: true },
-      'Y': { name: 'Y', value: 1e24, scientific: true },
+      da: { name: 'da', value: 1e1, scientific: false },
+      h: { name: 'h', value: 1e2, scientific: false },
+      k: { name: 'k', value: 1e3, scientific: true },
+      M: { name: 'M', value: 1e6, scientific: true },
+      G: { name: 'G', value: 1e9, scientific: true },
+      T: { name: 'T', value: 1e12, scientific: true },
+      P: { name: 'P', value: 1e15, scientific: true },
+      E: { name: 'E', value: 1e18, scientific: true },
+      Z: { name: 'Z', value: 1e21, scientific: true },
+      Y: { name: 'Y', value: 1e24, scientific: true },
 
-      'd': { name: 'd', value: 1e-1, scientific: false },
-      'c': { name: 'c', value: 1e-2, scientific: false },
-      'm': { name: 'm', value: 1e-3, scientific: true },
-      'u': { name: 'u', value: 1e-6, scientific: true },
-      'n': { name: 'n', value: 1e-9, scientific: true },
-      'p': { name: 'p', value: 1e-12, scientific: true },
-      'f': { name: 'f', value: 1e-15, scientific: true },
-      'a': { name: 'a', value: 1e-18, scientific: true },
-      'z': { name: 'z', value: 1e-21, scientific: true },
-      'y': { name: 'y', value: 1e-24, scientific: true }
+      d: { name: 'd', value: 1e-1, scientific: false },
+      c: { name: 'c', value: 1e-2, scientific: false },
+      m: { name: 'm', value: 1e-3, scientific: true },
+      u: { name: 'u', value: 1e-6, scientific: true },
+      n: { name: 'n', value: 1e-9, scientific: true },
+      p: { name: 'p', value: 1e-12, scientific: true },
+      f: { name: 'f', value: 1e-15, scientific: true },
+      a: { name: 'a', value: 1e-18, scientific: true },
+      z: { name: 'z', value: 1e-21, scientific: true },
+      y: { name: 'y', value: 1e-24, scientific: true }
     },
     LONG: {
       '': { name: '', value: 1, scientific: true },
 
-      'deca': { name: 'deca', value: 1e1, scientific: false },
-      'hecto': { name: 'hecto', value: 1e2, scientific: false },
-      'kilo': { name: 'kilo', value: 1e3, scientific: true },
-      'mega': { name: 'mega', value: 1e6, scientific: true },
-      'giga': { name: 'giga', value: 1e9, scientific: true },
-      'tera': { name: 'tera', value: 1e12, scientific: true },
-      'peta': { name: 'peta', value: 1e15, scientific: true },
-      'exa': { name: 'exa', value: 1e18, scientific: true },
-      'zetta': { name: 'zetta', value: 1e21, scientific: true },
-      'yotta': { name: 'yotta', value: 1e24, scientific: true },
+      deca: { name: 'deca', value: 1e1, scientific: false },
+      hecto: { name: 'hecto', value: 1e2, scientific: false },
+      kilo: { name: 'kilo', value: 1e3, scientific: true },
+      mega: { name: 'mega', value: 1e6, scientific: true },
+      giga: { name: 'giga', value: 1e9, scientific: true },
+      tera: { name: 'tera', value: 1e12, scientific: true },
+      peta: { name: 'peta', value: 1e15, scientific: true },
+      exa: { name: 'exa', value: 1e18, scientific: true },
+      zetta: { name: 'zetta', value: 1e21, scientific: true },
+      yotta: { name: 'yotta', value: 1e24, scientific: true },
 
-      'deci': { name: 'deci', value: 1e-1, scientific: false },
-      'centi': { name: 'centi', value: 1e-2, scientific: false },
-      'milli': { name: 'milli', value: 1e-3, scientific: true },
-      'micro': { name: 'micro', value: 1e-6, scientific: true },
-      'nano': { name: 'nano', value: 1e-9, scientific: true },
-      'pico': { name: 'pico', value: 1e-12, scientific: true },
-      'femto': { name: 'femto', value: 1e-15, scientific: true },
-      'atto': { name: 'atto', value: 1e-18, scientific: true },
-      'zepto': { name: 'zepto', value: 1e-21, scientific: true },
-      'yocto': { name: 'yocto', value: 1e-24, scientific: true }
+      deci: { name: 'deci', value: 1e-1, scientific: false },
+      centi: { name: 'centi', value: 1e-2, scientific: false },
+      milli: { name: 'milli', value: 1e-3, scientific: true },
+      micro: { name: 'micro', value: 1e-6, scientific: true },
+      nano: { name: 'nano', value: 1e-9, scientific: true },
+      pico: { name: 'pico', value: 1e-12, scientific: true },
+      femto: { name: 'femto', value: 1e-15, scientific: true },
+      atto: { name: 'atto', value: 1e-18, scientific: true },
+      zepto: { name: 'zepto', value: 1e-21, scientific: true },
+      yocto: { name: 'yocto', value: 1e-24, scientific: true }
     },
     SQUARED: {
       '': { name: '', value: 1, scientific: true },
 
-      'da': { name: 'da', value: 1e2, scientific: false },
-      'h': { name: 'h', value: 1e4, scientific: false },
-      'k': { name: 'k', value: 1e6, scientific: true },
-      'M': { name: 'M', value: 1e12, scientific: true },
-      'G': { name: 'G', value: 1e18, scientific: true },
-      'T': { name: 'T', value: 1e24, scientific: true },
-      'P': { name: 'P', value: 1e30, scientific: true },
-      'E': { name: 'E', value: 1e36, scientific: true },
-      'Z': { name: 'Z', value: 1e42, scientific: true },
-      'Y': { name: 'Y', value: 1e48, scientific: true },
+      da: { name: 'da', value: 1e2, scientific: false },
+      h: { name: 'h', value: 1e4, scientific: false },
+      k: { name: 'k', value: 1e6, scientific: true },
+      M: { name: 'M', value: 1e12, scientific: true },
+      G: { name: 'G', value: 1e18, scientific: true },
+      T: { name: 'T', value: 1e24, scientific: true },
+      P: { name: 'P', value: 1e30, scientific: true },
+      E: { name: 'E', value: 1e36, scientific: true },
+      Z: { name: 'Z', value: 1e42, scientific: true },
+      Y: { name: 'Y', value: 1e48, scientific: true },
 
-      'd': { name: 'd', value: 1e-2, scientific: false },
-      'c': { name: 'c', value: 1e-4, scientific: false },
-      'm': { name: 'm', value: 1e-6, scientific: true },
-      'u': { name: 'u', value: 1e-12, scientific: true },
-      'n': { name: 'n', value: 1e-18, scientific: true },
-      'p': { name: 'p', value: 1e-24, scientific: true },
-      'f': { name: 'f', value: 1e-30, scientific: true },
-      'a': { name: 'a', value: 1e-36, scientific: true },
-      'z': { name: 'z', value: 1e-42, scientific: true },
-      'y': { name: 'y', value: 1e-48, scientific: true }
+      d: { name: 'd', value: 1e-2, scientific: false },
+      c: { name: 'c', value: 1e-4, scientific: false },
+      m: { name: 'm', value: 1e-6, scientific: true },
+      u: { name: 'u', value: 1e-12, scientific: true },
+      n: { name: 'n', value: 1e-18, scientific: true },
+      p: { name: 'p', value: 1e-24, scientific: true },
+      f: { name: 'f', value: 1e-30, scientific: true },
+      a: { name: 'a', value: 1e-36, scientific: true },
+      z: { name: 'z', value: 1e-42, scientific: true },
+      y: { name: 'y', value: 1e-48, scientific: true }
     },
     CUBIC: {
       '': { name: '', value: 1, scientific: true },
 
-      'da': { name: 'da', value: 1e3, scientific: false },
-      'h': { name: 'h', value: 1e6, scientific: false },
-      'k': { name: 'k', value: 1e9, scientific: true },
-      'M': { name: 'M', value: 1e18, scientific: true },
-      'G': { name: 'G', value: 1e27, scientific: true },
-      'T': { name: 'T', value: 1e36, scientific: true },
-      'P': { name: 'P', value: 1e45, scientific: true },
-      'E': { name: 'E', value: 1e54, scientific: true },
-      'Z': { name: 'Z', value: 1e63, scientific: true },
-      'Y': { name: 'Y', value: 1e72, scientific: true },
+      da: { name: 'da', value: 1e3, scientific: false },
+      h: { name: 'h', value: 1e6, scientific: false },
+      k: { name: 'k', value: 1e9, scientific: true },
+      M: { name: 'M', value: 1e18, scientific: true },
+      G: { name: 'G', value: 1e27, scientific: true },
+      T: { name: 'T', value: 1e36, scientific: true },
+      P: { name: 'P', value: 1e45, scientific: true },
+      E: { name: 'E', value: 1e54, scientific: true },
+      Z: { name: 'Z', value: 1e63, scientific: true },
+      Y: { name: 'Y', value: 1e72, scientific: true },
 
-      'd': { name: 'd', value: 1e-3, scientific: false },
-      'c': { name: 'c', value: 1e-6, scientific: false },
-      'm': { name: 'm', value: 1e-9, scientific: true },
-      'u': { name: 'u', value: 1e-18, scientific: true },
-      'n': { name: 'n', value: 1e-27, scientific: true },
-      'p': { name: 'p', value: 1e-36, scientific: true },
-      'f': { name: 'f', value: 1e-45, scientific: true },
-      'a': { name: 'a', value: 1e-54, scientific: true },
-      'z': { name: 'z', value: 1e-63, scientific: true },
-      'y': { name: 'y', value: 1e-72, scientific: true }
+      d: { name: 'd', value: 1e-3, scientific: false },
+      c: { name: 'c', value: 1e-6, scientific: false },
+      m: { name: 'm', value: 1e-9, scientific: true },
+      u: { name: 'u', value: 1e-18, scientific: true },
+      n: { name: 'n', value: 1e-27, scientific: true },
+      p: { name: 'p', value: 1e-36, scientific: true },
+      f: { name: 'f', value: 1e-45, scientific: true },
+      a: { name: 'a', value: 1e-54, scientific: true },
+      z: { name: 'z', value: 1e-63, scientific: true },
+      y: { name: 'y', value: 1e-72, scientific: true }
     },
     BINARY_SHORT_SI: {
       '': { name: '', value: 1, scientific: true },
-      'k': { name: 'k', value: 1e3, scientific: true },
-      'M': { name: 'M', value: 1e6, scientific: true },
-      'G': { name: 'G', value: 1e9, scientific: true },
-      'T': { name: 'T', value: 1e12, scientific: true },
-      'P': { name: 'P', value: 1e15, scientific: true },
-      'E': { name: 'E', value: 1e18, scientific: true },
-      'Z': { name: 'Z', value: 1e21, scientific: true },
-      'Y': { name: 'Y', value: 1e24, scientific: true }
+      k: { name: 'k', value: 1e3, scientific: true },
+      M: { name: 'M', value: 1e6, scientific: true },
+      G: { name: 'G', value: 1e9, scientific: true },
+      T: { name: 'T', value: 1e12, scientific: true },
+      P: { name: 'P', value: 1e15, scientific: true },
+      E: { name: 'E', value: 1e18, scientific: true },
+      Z: { name: 'Z', value: 1e21, scientific: true },
+      Y: { name: 'Y', value: 1e24, scientific: true }
     },
     BINARY_SHORT_IEC: {
       '': { name: '', value: 1, scientific: true },
-      'Ki': { name: 'Ki', value: 1024, scientific: true },
-      'Mi': { name: 'Mi', value: Math.pow(1024, 2), scientific: true },
-      'Gi': { name: 'Gi', value: Math.pow(1024, 3), scientific: true },
-      'Ti': { name: 'Ti', value: Math.pow(1024, 4), scientific: true },
-      'Pi': { name: 'Pi', value: Math.pow(1024, 5), scientific: true },
-      'Ei': { name: 'Ei', value: Math.pow(1024, 6), scientific: true },
-      'Zi': { name: 'Zi', value: Math.pow(1024, 7), scientific: true },
-      'Yi': { name: 'Yi', value: Math.pow(1024, 8), scientific: true }
+      Ki: { name: 'Ki', value: 1024, scientific: true },
+      Mi: { name: 'Mi', value: Math.pow(1024, 2), scientific: true },
+      Gi: { name: 'Gi', value: Math.pow(1024, 3), scientific: true },
+      Ti: { name: 'Ti', value: Math.pow(1024, 4), scientific: true },
+      Pi: { name: 'Pi', value: Math.pow(1024, 5), scientific: true },
+      Ei: { name: 'Ei', value: Math.pow(1024, 6), scientific: true },
+      Zi: { name: 'Zi', value: Math.pow(1024, 7), scientific: true },
+      Yi: { name: 'Yi', value: Math.pow(1024, 8), scientific: true }
     },
     BINARY_LONG_SI: {
       '': { name: '', value: 1, scientific: true },
-      'kilo': { name: 'kilo', value: 1e3, scientific: true },
-      'mega': { name: 'mega', value: 1e6, scientific: true },
-      'giga': { name: 'giga', value: 1e9, scientific: true },
-      'tera': { name: 'tera', value: 1e12, scientific: true },
-      'peta': { name: 'peta', value: 1e15, scientific: true },
-      'exa': { name: 'exa', value: 1e18, scientific: true },
-      'zetta': { name: 'zetta', value: 1e21, scientific: true },
-      'yotta': { name: 'yotta', value: 1e24, scientific: true }
+      kilo: { name: 'kilo', value: 1e3, scientific: true },
+      mega: { name: 'mega', value: 1e6, scientific: true },
+      giga: { name: 'giga', value: 1e9, scientific: true },
+      tera: { name: 'tera', value: 1e12, scientific: true },
+      peta: { name: 'peta', value: 1e15, scientific: true },
+      exa: { name: 'exa', value: 1e18, scientific: true },
+      zetta: { name: 'zetta', value: 1e21, scientific: true },
+      yotta: { name: 'yotta', value: 1e24, scientific: true }
     },
     BINARY_LONG_IEC: {
       '': { name: '', value: 1, scientific: true },
-      'kibi': { name: 'kibi', value: 1024, scientific: true },
-      'mebi': { name: 'mebi', value: Math.pow(1024, 2), scientific: true },
-      'gibi': { name: 'gibi', value: Math.pow(1024, 3), scientific: true },
-      'tebi': { name: 'tebi', value: Math.pow(1024, 4), scientific: true },
-      'pebi': { name: 'pebi', value: Math.pow(1024, 5), scientific: true },
-      'exi': { name: 'exi', value: Math.pow(1024, 6), scientific: true },
-      'zebi': { name: 'zebi', value: Math.pow(1024, 7), scientific: true },
-      'yobi': { name: 'yobi', value: Math.pow(1024, 8), scientific: true }
+      kibi: { name: 'kibi', value: 1024, scientific: true },
+      mebi: { name: 'mebi', value: Math.pow(1024, 2), scientific: true },
+      gibi: { name: 'gibi', value: Math.pow(1024, 3), scientific: true },
+      tebi: { name: 'tebi', value: Math.pow(1024, 4), scientific: true },
+      pebi: { name: 'pebi', value: Math.pow(1024, 5), scientific: true },
+      exi: { name: 'exi', value: Math.pow(1024, 6), scientific: true },
+      zebi: { name: 'zebi', value: Math.pow(1024, 7), scientific: true },
+      yobi: { name: 'yobi', value: Math.pow(1024, 8), scientific: true }
     },
     BTU: {
       '': { name: '', value: 1, scientific: true },
-      'MM': { name: 'MM', value: 1e6, scientific: true }
+      MM: { name: 'MM', value: 1e6, scientific: true }
     }
   }
 
@@ -1516,7 +1515,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
   }
 
-  for (let key in BASE_UNITS) {
+  for (const key in BASE_UNITS) {
     BASE_UNITS[key].key = key
   }
 
@@ -1597,7 +1596,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       value: 1,
       offset: 0
     },
-    'in': {
+    in: {
       name: 'in',
       base: BASE_UNITS.LENGTH,
       prefixes: PREFIXES.NONE,
@@ -2942,7 +2941,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @param {string} [name] The name of the unit system.
    */
   Unit.setUnitSystem = function (name) {
-    if (UNIT_SYSTEMS.hasOwnProperty(name)) {
+    if (hasOwnProperty(UNIT_SYSTEMS, name)) {
       currentUnitSystem = UNIT_SYSTEMS[name]
     } else {
       throw new Error('Unit system ' + name + ' does not exist. Choices are: ' + Object.keys(UNIT_SYSTEMS).join(', '))
@@ -3000,18 +2999,18 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   // Add dimensions to each built-in unit
-  for (let key in UNITS) {
+  for (const key in UNITS) {
     const unit = UNITS[key]
     unit.dimensions = unit.base.dimensions
   }
 
   // Create aliases
   for (const name in ALIASES) {
-    if (ALIASES.hasOwnProperty(name)) {
+    if (hasOwnProperty(ALIASES, name)) {
       const unit = UNITS[ALIASES[name]]
       const alias = {}
-      for (let key in unit) {
-        if (unit.hasOwnProperty(key)) {
+      for (const key in unit) {
+        if (hasOwnProperty(unit, key)) {
           alias[key] = unit[key]
         }
       }
@@ -3064,8 +3063,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // Remove all units and aliases we are overriding
     if (options && options.override) {
-      for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
+      for (const key in obj) {
+        if (hasOwnProperty(obj, key)) {
           Unit.deleteUnit(key)
         }
         if (obj[key].aliases) {
@@ -3078,8 +3077,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // TODO: traverse multiple times until all units have been added
     let lastUnit
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) {
+    for (const key in obj) {
+      if (hasOwnProperty(obj, key)) {
         lastUnit = Unit.createUnitSingle(key, obj[key])
       }
     }
@@ -3111,7 +3110,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     // Check collisions with existing units
-    if (UNITS.hasOwnProperty(name)) {
+    if (hasOwnProperty(UNITS, name)) {
       throw new Error('Cannot create unit "' + name + '": a unit with that name already exists')
     }
 
@@ -3143,7 +3142,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     if (aliases) {
       for (let i = 0; i < aliases.length; i++) {
-        if (UNITS.hasOwnProperty(aliases[i])) {
+        if (hasOwnProperty(UNITS, aliases[i])) {
           throw new Error('Cannot create alias "' + aliases[i] + '": a unit with that name already exists')
         }
       }
@@ -3177,13 +3176,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
       // Push 0 onto existing base units
       for (const b in BASE_UNITS) {
-        if (BASE_UNITS.hasOwnProperty(b)) {
+        if (hasOwnProperty(BASE_UNITS, b)) {
           BASE_UNITS[b].dimensions[BASE_DIMENSIONS.length - 1] = 0
         }
       }
 
       // Add the new base unit
-      let newBaseUnit = { dimensions: [] }
+      const newBaseUnit = { dimensions: [] }
       for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
         newBaseUnit.dimensions[i] = 0
       }
@@ -3215,8 +3214,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
       // Create a new base if no matching base exists
       let anyMatch = false
-      for (let i in BASE_UNITS) {
-        if (BASE_UNITS.hasOwnProperty(i)) {
+      for (const i in BASE_UNITS) {
+        if (hasOwnProperty(BASE_UNITS, i)) {
           let match = true
           for (let j = 0; j < BASE_DIMENSIONS.length; j++) {
             if (Math.abs((newUnit.dimensions[j] || 0) - (BASE_UNITS[i].dimensions[j] || 0)) > 1e-12) {
@@ -3234,7 +3233,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       if (!anyMatch) {
         const baseName = name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
         // Add the new base unit
-        let newBaseUnit = { dimensions: defUnit.dimensions.slice(0) }
+        const newBaseUnit = { dimensions: defUnit.dimensions.slice(0) }
         newBaseUnit.key = baseName
         BASE_UNITS[baseName] = newBaseUnit
 
@@ -3253,7 +3252,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       const aliasName = aliases[i]
       const alias = {}
       for (const key in newUnit) {
-        if (newUnit.hasOwnProperty(key)) {
+        if (hasOwnProperty(newUnit, key)) {
           alias[key] = newUnit[key]
         }
       }

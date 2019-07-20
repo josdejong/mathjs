@@ -1,17 +1,17 @@
 export const sqrtDocs = {
-  'name': 'sqrt',
-  'category': 'Arithmetic',
-  'syntax': [
+  name: 'sqrt',
+  category: 'Arithmetic',
+  syntax: [
     'sqrt(x)'
   ],
-  'description':
+  description:
       'Compute the square root value. If x = y * y, then y is the square root of x.',
-  'examples': [
+  examples: [
     'sqrt(25)',
     '5 * 5',
     'sqrt(-1)'
   ],
-  'seealso': [
+  seealso: [
     'square',
     'sqrtm',
     'multiply',

@@ -275,11 +275,11 @@ const _importFromStream = function (stream) {
  * Imports a Matrix Market matrix from the filesystem. (https://math.nist.gov/MatrixMarket/)
  */
 const _import = typed('importMatrix', {
-  'Array': function (files) {
+  Array: function (files) {
     return Promise.all(files.map(file => _import(file)))
   },
-  'string': function (file) {
-    let input = fs.createReadStream(file)
+  string: function (file) {
+    const input = fs.createReadStream(file)
     return _importFromStream(input)
   }
 })

@@ -32,17 +32,17 @@ export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {number | BigNumber | Complex | Array | Matrix} Cosine of x
    */
   const cos = typed(name, {
-    'number': Math.cos,
+    number: Math.cos,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.cos()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.cos()
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cos is no angle')
       }

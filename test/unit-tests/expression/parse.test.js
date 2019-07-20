@@ -44,14 +44,14 @@ describe('parse', function () {
   })
 
   it('should parse an array with expressions', function () {
-    let scope = {}
+    const scope = {}
     assert.deepStrictEqual(parse(['a=3', 'b=4', 'a*b']).map(function (node) {
       return node.compile().evaluate(scope)
     }), [3, 4, 12])
   })
 
   it('should parse a matrix with expressions', function () {
-    let scope = {}
+    const scope = {}
     assert.deepStrictEqual(parse(math.matrix(['a=3', 'b=4', 'a*b'])).map(function (node) {
       return node.compile().evaluate(scope)
     }), math.matrix([3, 4, 12]))
@@ -71,7 +71,7 @@ describe('parse', function () {
 
   it('should parse unicode and other special characters', function () {
     // https://unicode-table.com/en
-    let scope = {}
+    const scope = {}
 
     math.evaluate('$ab$c = 2', scope) // dollar sign
     assert.strictEqual(scope['$ab$c'], 2)
@@ -121,19 +121,19 @@ describe('parse', function () {
     })
 
     it('should parse multiple function assignments', function () {
-      let scope = {}
+      const scope = {}
       parse('f(x)=x*2;g(x)=x*3').compile().evaluate(scope)
       assert.strictEqual(scope.f(2), 4)
       assert.strictEqual(scope.g(2), 6)
 
-      let scope2 = {}
+      const scope2 = {}
       parse('a=2;f(x)=x^a;').compile().evaluate(scope2)
       assert.strictEqual(scope2.a, 2)
       assert.strictEqual(scope2.f(3), 9)
     })
 
     it('should correctly scope a function variable if also used outside the function', function () {
-      let scope = {}
+      const scope = {}
       const res = parse('x=2;f(x)=x^2;x').compile().evaluate(scope) // x should be x=2, not x of the function
 
       assert.deepStrictEqual(res.entries, [2])
@@ -169,14 +169,14 @@ describe('parse', function () {
     it('should spread an index over multiple lines', function () {
       assert.deepStrictEqual(parse('a[\n1\n,\n1\n]').compile().evaluate({ a: [[1, 2], [3, 4]] }), 1)
 
-      let scope = { a: [[1, 2], [3, 4]] }
+      const scope = { a: [[1, 2], [3, 4]] }
       assert.deepStrictEqual(parse('a[\n1\n,\n1\n]=\n100').compile().evaluate(scope), 100)
       assert.deepStrictEqual(scope, { a: [[100, 2], [3, 4]] })
     })
   })
 
   it('should throw an error when scope contains a reserved keyword', function () {
-    let scope = {
+    const scope = {
       end: 2
     }
     assert.throws(function () {
@@ -316,7 +316,7 @@ describe('parse', function () {
     })
 
     it('should get a string subset', function () {
-      let scope = {}
+      const scope = {}
       assert.deepStrictEqual(parseAndEval('c="hello"', scope), 'hello')
       assert.deepStrictEqual(parseAndEval('c[2:4]', scope), 'ell')
       assert.deepStrictEqual(parseAndEval('c[5:-1:1]', scope), 'olleh')
@@ -325,7 +325,7 @@ describe('parse', function () {
     })
 
     it('should set a string subset', function () {
-      let scope = {}
+      const scope = {}
       assert.deepStrictEqual(parseAndEval('c="hello"', scope), 'hello')
       assert.deepStrictEqual(parseAndEval('c[1] = "H"', scope), 'H')
       assert.deepStrictEqual(scope.c, 'Hello')
@@ -337,7 +337,7 @@ describe('parse', function () {
     })
 
     it('should set a string subset on an object', function () {
-      let scope = { a: {} }
+      const scope = { a: {} }
       assert.deepStrictEqual(parseAndEval('a.c="hello"', scope), 'hello')
       assert.deepStrictEqual(parseAndEval('a.c[1] = "H"', scope), 'H')
       assert.deepStrictEqual(scope.a, { c: 'Hello' })
@@ -372,7 +372,7 @@ describe('parse', function () {
     })
 
     it('should get a string subset', function () {
-      let scope = {}
+      const scope = {}
       assert.deepStrictEqual(parseAndEval('c=\'hello\'', scope), 'hello')
       assert.deepStrictEqual(parseAndEval('c[2:4]', scope), 'ell')
       assert.deepStrictEqual(parseAndEval('c[5:-1:1]', scope), 'olleh')
@@ -381,7 +381,7 @@ describe('parse', function () {
     })
 
     it('should set a string subset', function () {
-      let scope = {}
+      const scope = {}
       assert.deepStrictEqual(parseAndEval('c=\'hello\'', scope), 'hello')
       assert.deepStrictEqual(parseAndEval('c[1] = \'H\'', scope), 'H')
       assert.deepStrictEqual(scope.c, 'Hello')
@@ -393,7 +393,7 @@ describe('parse', function () {
     })
 
     it('should set a string subset on an object', function () {
-      let scope = { a: {} }
+      const scope = { a: {} }
       assert.deepStrictEqual(parseAndEval('a.c=\'hello\'', scope), 'hello')
       assert.deepStrictEqual(parseAndEval('a.c[1] = \'H\'', scope), 'H')
       assert.deepStrictEqual(scope.a, { c: 'Hello' })
@@ -427,7 +427,7 @@ describe('parse', function () {
     })
 
     it('should convert units', function () {
-      let scope = {}
+      const scope = {}
       approx.deepEqual(parseAndEval('(5.08 cm * 1000) to inch', scope),
         math.unit(2000, 'inch').to('inch'))
       approx.deepEqual(parseAndEval('a = (5.08 cm * 1000) to mm', scope),
@@ -508,7 +508,7 @@ describe('parse', function () {
     })
 
     it('should get a matrix subset', function () {
-      let scope = {
+      const scope = {
         a: math.matrix([
           [1, 2, 3],
           [4, 5, 6],
@@ -530,7 +530,7 @@ describe('parse', function () {
     })
 
     it('should get a matrix subset of a matrix subset', function () {
-      let scope = {
+      const scope = {
         a: math.matrix([
           [1, 2, 3],
           [4, 5, 6],
@@ -546,7 +546,7 @@ describe('parse', function () {
     })
 
     it('should parse matrix resizings', function () {
-      let scope = {}
+      const scope = {}
       assert.deepStrictEqual(parseAndEval('a = []', scope), math.matrix([]))
       assert.deepStrictEqual(parseAndEval('a[1:3,1] = [1;2;3]', scope), math.matrix([[1], [2], [3]]))
       assert.deepStrictEqual(parseAndEval('a[:,2] = [4;5;6]', scope), math.matrix([[4], [5], [6]]))
@@ -572,7 +572,7 @@ describe('parse', function () {
     })
 
     it('should get/set the matrix correctly', function () {
-      let scope = {}
+      const scope = {}
       parseAndEval('a=[1,2;3,4]', scope)
       parseAndEval('a[1,1] = 100', scope)
       assert.deepStrictEqual(scope.a.size(), [2, 2])
@@ -590,7 +590,7 @@ describe('parse', function () {
     })
 
     it('should get/set the matrix correctly for 3d matrices', function () {
-      let scope = {}
+      const scope = {}
       assert.deepStrictEqual(parseAndEval('f=[1,2;3,4]', scope), math.matrix([[1, 2], [3, 4]]))
       assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2]))
 
@@ -625,12 +625,12 @@ describe('parse', function () {
     })
 
     it('should merge nested matrices', function () {
-      let scope = {}
+      const scope = {}
       parseAndEval('a=[1,2;3,4]', scope)
     })
 
     it('should parse matrix concatenations', function () {
-      let scope = {}
+      const scope = {}
       parseAndEval('a=[1,2;3,4]', scope)
       parseAndEval('b=[5,6;7,8]', scope)
       assert.deepStrictEqual(parseAndEval('c=concat(a,b)', scope), math.matrix([[1, 2, 5, 6], [3, 4, 7, 8]]))
@@ -650,7 +650,7 @@ describe('parse', function () {
     })
 
     it('should disable arrays as range in a matrix index', function () {
-      let scope = {
+      const scope = {
         a: [[1, 2, 3], [4, 5, 6]]
       }
 
@@ -669,12 +669,12 @@ describe('parse', function () {
     })
 
     it('should throw an error for invalid matrix subsets', function () {
-      let scope = { a: [1, 2, 3] }
+      const scope = { a: [1, 2, 3] }
       assert.throws(function () { parseAndEval('a[1', scope) }, /Parenthesis ] expected/)
     })
 
     it('should throw an error for invalid matrix concatenations', function () {
-      let scope = {}
+      const scope = {}
       assert.throws(function () { parseAndEval('c=concat(a, [1,2,3])', scope) })
     })
   })
@@ -697,28 +697,28 @@ describe('parse', function () {
     })
 
     it('should set an object property', function () {
-      let scope = { obj: { a: 3 } }
+      const scope = { obj: { a: 3 } }
       const res = parseAndEval('obj["b"] = 2', scope)
       assert.strictEqual(res, 2)
       assert.deepStrictEqual(scope, { obj: { a: 3, b: 2 } })
     })
 
     it('should set a nested object property', function () {
-      let scope = { obj: { foo: {} } }
+      const scope = { obj: { foo: {} } }
       const res = parseAndEval('obj["foo"]["bar"] = 2', scope)
       assert.strictEqual(res, 2)
       assert.deepStrictEqual(scope, { obj: { foo: { bar: 2 } } })
     })
 
     it('should throw an error when trying to apply a matrix index as object property', function () {
-      let scope = { a: {} }
+      const scope = { a: {} }
       assert.throws(function () {
         parseAndEval('a[2] = 6', scope)
       }, /Cannot apply a numeric index as object property/)
     })
 
     it('should set a nested matrix subset from an object property (1)', function () {
-      let scope = { obj: { foo: [1, 2, 3] } }
+      const scope = { obj: { foo: [1, 2, 3] } }
       assert.deepStrictEqual(parseAndEval('obj.foo[2] = 6', scope), 6)
       assert.deepStrictEqual(scope, { obj: { foo: [1, 6, 3] } })
 
@@ -727,19 +727,19 @@ describe('parse', function () {
     })
 
     it('should set a nested matrix subset from an object property (2)', function () {
-      let scope = { obj: { foo: [{ bar: 4 }] } }
+      const scope = { obj: { foo: [{ bar: 4 }] } }
       assert.deepStrictEqual(parseAndEval('obj.foo[1].bar = 6', scope), 6)
       assert.deepStrictEqual(scope, { obj: { foo: [{ bar: 6 }] } })
     })
 
     it('should set a nested matrix subset from an object property (3)', function () {
-      let scope = { obj: { foo: [{ bar: {} }] } }
+      const scope = { obj: { foo: [{ bar: {} }] } }
       assert.deepStrictEqual(parseAndEval('obj.foo[1].bar.baz = 6', scope), 6)
       assert.deepStrictEqual(scope, { obj: { foo: [{ bar: { baz: 6 } }] } })
     })
 
     it('should set a nested matrix subset from an object property (4)', function () {
-      let scope = { obj: { foo: ['hello', 'world'] } }
+      const scope = { obj: { foo: ['hello', 'world'] } }
       assert.deepStrictEqual(parseAndEval('obj.foo[1][end] = "a"', scope), 'a')
       assert.deepStrictEqual(scope, { obj: { foo: ['hella', 'world'] } })
       assert.deepStrictEqual(parseAndEval('obj.foo[end][end] = "!"', scope), '!')
@@ -761,7 +761,7 @@ describe('parse', function () {
     })
 
     it('should invoke a function in an object', function () {
-      let scope = {
+      const scope = {
         obj: {
           fn: function (x) {
             return x * x
@@ -794,13 +794,13 @@ describe('parse', function () {
     })
 
     it('should set an object property with dot notation', function () {
-      let scope = { obj: {} }
+      const scope = { obj: {} }
       parseAndEval('obj.foo = 2', scope)
       assert.deepStrictEqual(scope, { obj: { foo: 2 } })
     })
 
     it('should set a nested object property with dot notation', function () {
-      let scope = { obj: { foo: {} } }
+      const scope = { obj: { foo: {} } }
       parseAndEval('obj.foo.bar = 2', scope)
       assert.deepStrictEqual(scope, { obj: { foo: { bar: 2 } } })
     })
@@ -842,13 +842,13 @@ describe('parse', function () {
 
     it('should not parse a function assignment in an accessor node', function () {
       assert.throws(function () {
-        let scope = {}
+        const scope = {}
         parseAndEval('a["b"](x)=x^2', scope)
       }, /SyntaxError: Invalid left hand side of assignment operator =/)
     })
 
     it('should parse an object containing a variable assignment', function () {
-      let scope = {}
+      const scope = {}
       assert.deepStrictEqual(parseAndEval('{f: a=42}', scope), { f: 42 })
       assert.strictEqual(scope.a, 42)
     })
@@ -913,7 +913,7 @@ describe('parse', function () {
 
   describe('variables', function () {
     it('should parse valid variable assignments', function () {
-      let scope = {}
+      const scope = {}
       assert.strictEqual(parseAndEval('a = 0.75', scope), 0.75)
       assert.strictEqual(parseAndEval('a + 2', scope), 2.75)
       assert.strictEqual(parseAndEval('a = 2', scope), 2)
@@ -931,7 +931,7 @@ describe('parse', function () {
     })
 
     it('should parse nested assignments', function () {
-      let scope = {}
+      const scope = {}
       assert.strictEqual(parseAndEval('c = d = (e = 4.5)', scope), 4.5)
       assert.strictEqual(scope.c, 4.5)
       assert.strictEqual(scope.d, 4.5)
@@ -943,13 +943,13 @@ describe('parse', function () {
     })
 
     it('should parse variable assignment inside a function call', function () {
-      let scope = {}
+      const scope = {}
       assert.deepStrictEqual(parseAndEval('sqrt(x=4)', scope), 2)
       assert.deepStrictEqual(scope, { x: 4 })
     })
 
     it('should parse variable assignment inside an accessor', function () {
-      let scope = { A: [10, 20, 30] }
+      const scope = { A: [10, 20, 30] }
       assert.deepStrictEqual(parseAndEval('A[x=2]', scope), 20)
       assert.deepStrictEqual(scope, { A: [10, 20, 30], x: 2 })
     })
@@ -968,7 +968,7 @@ describe('parse', function () {
     })
 
     it('should get a subset of a matrix returned by a function', function () {
-      let scope = {
+      const scope = {
         test: function () {
           return [1, 2, 3, 4]
         }
@@ -986,7 +986,7 @@ describe('parse', function () {
       ]
       const m = math.matrix(a)
       const c = math.matrix([[2], [1], [0], [4], [0]])
-      let scope = {
+      const scope = {
         test: function () {
           return m
         }
@@ -1004,7 +1004,7 @@ describe('parse', function () {
       ]
       const m = math.matrix(a)
       const r = math.matrix([[0, 1, 0, 2, 4]])
-      let scope = {
+      const scope = {
         test: function () {
           return m
         }
@@ -1017,7 +1017,7 @@ describe('parse', function () {
     })
 
     it('should parse function assignments', function () {
-      let scope = {}
+      const scope = {}
       parseAndEval('x=100', scope) // for testing scoping of the function variables
       assert.strictEqual(parseAndEval('f(x) = x^2', scope).syntax, 'f(x)')
       assert.strictEqual(parseAndEval('f(3)', scope), 9)
@@ -1029,7 +1029,7 @@ describe('parse', function () {
     })
 
     it('should correctly evaluate variables in assigned functions', function () {
-      let scope = {}
+      const scope = {}
       assert.strictEqual(parseAndEval('a = 3', scope), 3)
       assert.strictEqual(parseAndEval('f(x) = a * x', scope).syntax, 'f(x)')
       assert.strictEqual(parseAndEval('f(2)', scope), 6)
@@ -1041,7 +1041,7 @@ describe('parse', function () {
     })
 
     it('should throw an error for undefined variables in an assigned function', function () {
-      let scope = {}
+      const scope = {}
       assert.strictEqual(parseAndEval('g(x) = x^q', scope).syntax, 'g(x)')
       assert.throws(function () {
         parseAndEval('g(3)', scope)
@@ -1052,12 +1052,12 @@ describe('parse', function () {
 
     it('should throw an error on invalid left hand side of a function assignment', function () {
       assert.throws(function () {
-        let scope = {}
+        const scope = {}
         parseAndEval('g(x, 2) = x^2', scope)
       }, SyntaxError)
 
       assert.throws(function () {
-        let scope = {}
+        const scope = {}
         parseAndEval('2(x, 2) = x^2', scope)
       }, SyntaxError)
     })
@@ -1495,7 +1495,7 @@ describe('parse', function () {
     })
 
     it('should lazily evaluate conditional expression a ? b : c', function () {
-      let scope = {}
+      const scope = {}
       math.parse('true ? (a = 2) : (b = 2)').compile().evaluate(scope)
       assert.deepStrictEqual(scope, { a: 2 })
     })
@@ -1775,7 +1775,7 @@ describe('parse', function () {
     })
 
     it('should evaluate function "sort" with a custom sort function', function () {
-      let scope = {}
+      const scope = {}
       parseAndEval('sortByLength(a, b) = size(a)[1] - size(b)[1]', scope)
       assert.deepStrictEqual(parseAndEval('sort(["Langdon", "Tom", "Sara"], sortByLength)', scope),
         math.matrix(['Tom', 'Sara', 'Langdon']))
@@ -1823,7 +1823,7 @@ describe('parse', function () {
     })
 
     it('should get an element from a matrix with bignumbers', function () {
-      let scope = {}
+      const scope = {}
       assert.deepStrictEqual(bigmath.evaluate('a=[0.1, 0.2]', scope),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
 
@@ -1835,7 +1835,7 @@ describe('parse', function () {
     })
 
     it('should replace elements in a matrix with bignumbers', function () {
-      let scope = {}
+      const scope = {}
       assert.deepStrictEqual(bigmath.evaluate('a=[0.1, 0.2]', scope),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
 
@@ -1860,7 +1860,7 @@ describe('parse', function () {
 
   describe('scope', function () {
     it('should use a given scope for assignments', function () {
-      let scope = {
+      const scope = {
         a: 3,
         b: 4
       }
@@ -1884,7 +1884,7 @@ describe('parse', function () {
     })
 
     it('should parse undefined symbols, defining symbols, and removing symbols', function () {
-      let scope = {}
+      const scope = {}
       let n = parse('q')
       assert.throws(function () { n.compile().evaluate(scope) })
       parse('q=33').compile().evaluate(scope)
