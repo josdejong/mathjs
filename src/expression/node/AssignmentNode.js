@@ -128,151 +128,192 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   AssignmentNode.prototype._compile = function (math, argNames) {
-    return delegate(this.object, this.index, this.value)
+    return compileAny(this.object, this.index, this.value)
 
-    function delegate (object, index, value, scope, args, context) {
+    function compileAny (object, index, value) {
       if (!index) {
         if (isSymbolNode(object)) {
           // apply a variable to the scope, for example `a=2`
-          return getEvalSymbolAssignmentNode(object, null, value, scope, args, context)
+          return compileSymbolAssignmentNode(object, null, value)
         } else if (isArrayNode(object)) {
           // apply an array of variables to the scope, for example `[a,b]=[1,2]`
-          return getEvalArrayAssignmentNode(object, null, value)
+          return compileArrayAssignmentNode(object, null, value)
         }
       } else if (index.isObjectProperty()) {
         // apply an object property for example `a.b=2`
-        return getEvalPropertyAssignmentNode(object, index, value, scope, args, context)
+        return compilePropertyAssignmentNode(object, index, value)
       } else if (isSymbolNode(object)) {
         // update a matrix subset, for example `a[2]=3`
-        return getEvalSubsetAssignmentNode(object, index, value, scope, args, context)
+        return compileSubsetAssignmentNode(object, index, value)
       } else { // isAccessorNode(node.object) === true
         // update a matrix property subset, for example `a.b[2]=3`
-        return getEvalPropertySubsetAssignmentNode(object, index, value, scope, args, context)
+        return compilePropertySubsetAssignmentNode(object, index, value)
       }
     }
 
-    function getEvalArrayAssignmentNode (object, index, value) {
+    function compileArrayAssignmentNode (object, index, value) {
       const evalValue = value._compile(math, argNames)
+
       return function evalArrayAssignmentNode (scope, args, context) {
         const valueType = math.config.matrix
         const asMatrix = (valueType !== 'Array')
         let objects = object.toArray()
         let values = evalValue(scope, args, context)
         values = (asMatrix && values.toArray) ? values.toArray() : values
+
         let matches
         try {
           matches = matchFlatten(objects, values)
         } catch (e) {
           throw new TypeError(`Does not evaluate to ${valueType} of the same size as ${valueType} being assigned to`)
         }
+
         const results = map(matches, function (match) {
           const node = match.key
           const value = match.value
+
           if (isSymbolNode(node)) {
-            return delegate(node, null, value, scope, args, context)
-          } else { // isAccessorNode(node) === true
-            return delegate(node.object, node.index, value, scope, args, context)
+            return evalAny(node, null, value, scope, args, context)
+          } else {
+            return evalAny(node.object, node.index, value, scope, args, context)
           }
         })
+
         return last(results)
       }
-    }
 
-    function getEvalSymbolAssignmentNode (object, index, value, scope, args, context) {
-      if (scope) {
-        return setSafeProperty(scope, object.name, value)
-      } else {
-        const evalValue = value._compile(math, argNames)
-        return function evalSymbolAssignmentNode (scope, args, context) {
-          return setSafeProperty(scope, object.name, evalValue(scope, args, context))
+      function evalAny (object, index, value, scope, args, context) {
+        if (!index && isSymbolNode(object)) {
+          return evalSymbolAssignmentNode(object, null, value, scope, args, context)
+        } else if (index.isObjectProperty()) {
+          return evalPropertyAssignmentNode(object, index, value, scope, args, context)
+        } else if (isSymbolNode(object)) {
+          return evalSubsetAssignmentNode(object, index, value, scope, args, context)
+        } else {
+          return evalPropertySubsetAssignmentNode(object, index, value, scope, args, context)
         }
+      }
+
+      function evalSymbolAssignmentNode (object, index, value, scope, args, context) {
+        return setSafeProperty(scope, object.name, value)
+      }
+  
+      function evalPropertyAssignmentNode (object, index, value, scope, args, context) {
+        const evalObject = object._compile(math, argNames)
+        const prop = index.getObjectProperty()
+        object = evalObject(scope, args, context)
+
+        return setSafeProperty(object, prop, value)
+      }
+  
+      function evalSubsetAssignmentNode (object, index, value, scope, args, context) {
+        const evalObject = object._compile(math, argNames)
+        const evalIndex = index ? index._compile(math, argNames) : null
+        const childObject = evalObject(scope, args, context)
+        index = evalIndex(scope, args, childObject)
+
+        setSafeProperty(scope, object.name, assign(childObject, index, value))
+
+        return value
+      }
+  
+      function evalPropertySubsetAssignmentNode (object, index, value, scope, args, context) {
+        const evalIndex = index ? index._compile(math, argNames) : null
+        const evalParentObject = object.object._compile(math, argNames)
+
+        if (object.index.isObjectProperty()) {
+          const parentProp = object.index.getObjectProperty()
+          const parent = evalParentObject(scope, args, context)
+          const childObject = getSafeProperty(parent, parentProp)
+          index = evalIndex(scope, args, childObject)
+
+          setSafeProperty(parent, parentProp, assign(childObject, index, value))
+        } else {
+          const evalParentIndex = object.index._compile(math, argNames)
+          const parent = evalParentObject(scope, args, context)
+          const parentIndex = evalParentIndex(scope, args, parent)
+          const childObject = access(parent, parentIndex)
+          index = evalIndex(scope, args, childObject)
+
+          assign(parent, parentIndex, assign(childObject, index, value))
+        }
+
+        return value
       }
     }
 
-    function getEvalPropertyAssignmentNode (object, index, value, scope, args, context) {
+    function compileSymbolAssignmentNode (object, index, value) {
+      const evalValue = value._compile(math, argNames)
+
+      return function evalSymbolAssignmentNode (scope, args, context) {
+        return setSafeProperty(scope, object.name, evalValue(scope, args, context))
+      }
+    }
+
+    function compilePropertyAssignmentNode (object, index, value) {
       const evalObject = object._compile(math, argNames)
       const prop = index.getObjectProperty()
-      if (scope) {
+      const evalValue = value._compile(math, argNames)
+
+      return function evalPropertyAssignmentNode (scope, args, context) {
         const object = evalObject(scope, args, context)
+        const value = evalValue(scope, args, context)
+
         return setSafeProperty(object, prop, value)
-      } else {
-        const evalValue = value._compile(math, argNames)
-        return function evalPropertyAssignmentNode (scope, args, context) {
-          const object = evalObject(scope, args, context)
-          const value = evalValue(scope, args, context)
-          return setSafeProperty(object, prop, value)
-        }
       }
     }
 
-    function getEvalSubsetAssignmentNode (object, index, value, scope, args, context) {
+    function compileSubsetAssignmentNode (object, index, value) {
       const evalObject = object._compile(math, argNames)
       const evalIndex = index ? index._compile(math, argNames) : null
-      if (scope) {
+      const evalValue = value._compile(math, argNames)
+
+      return function evalSubsetAssignmentNode (scope, args, context) {
         const childObject = evalObject(scope, args, context)
+        const value = evalValue(scope, args, context)
         const index = evalIndex(scope, args, childObject) // Important:  we pass childObject instead of context
+
         setSafeProperty(scope, object.name, assign(childObject, index, value))
+
         return value
-      } else {
-        const evalValue = value._compile(math, argNames)
-        return function evalSubsetAssignmentNode (scope, args, context) {
-          const childObject = evalObject(scope, args, context)
-          const value = evalValue(scope, args, context)
-          const index = evalIndex(scope, args, childObject) // Important:  we pass childObject instead of context
-          setSafeProperty(scope, object.name, assign(childObject, index, value))
-          return value
-        }
       }
     }
 
-    function getEvalPropertySubsetAssignmentNode (object, index, value, scope, args, context) {
+    function compilePropertySubsetAssignmentNode (object, index, value) {
       const evalIndex = index ? index._compile(math, argNames) : null
       // we will not use the compile function of the AccessorNode, but compile it
       // ourselves here as we need the parent object of the AccessorNode:
       // we need to apply the updated object to parent object
       const evalParentObject = object.object._compile(math, argNames)
-      if (scope) {
-        if (object.index.isObjectProperty()) {
-          const parentProp = object.index.getObjectProperty()
+      const evalValue = value._compile(math, argNames)
+
+      if (object.index.isObjectProperty()) {
+        const parentProp = object.index.getObjectProperty()
+
+        return function evalPropertySubsetAssignmentNode (scope, args, context) {
           const parent = evalParentObject(scope, args, context)
           const childObject = getSafeProperty(parent, parentProp)
           const index = evalIndex(scope, args, childObject) // Important: we pass childObject instead of context
+          const value = evalValue(scope, args, context)
+
           setSafeProperty(parent, parentProp, assign(childObject, index, value))
+
           return value
-        } else {
-          // if some parameters use the 'end' parameter, we need to calculate the size
-          const evalParentIndex = object.index._compile(math, argNames)
+        }
+      } else {
+        // if some parameters use the 'end' parameter, we need to calculate the size
+        const evalParentIndex = object.index._compile(math, argNames)
+
+        return function evalPropertySubsetAssignmentNode (scope, args, context) {
           const parent = evalParentObject(scope, args, context)
           const parentIndex = evalParentIndex(scope, args, parent) // Important: we pass parent instead of context
           const childObject = access(parent, parentIndex)
           const index = evalIndex(scope, args, childObject) // Important:  we pass childObject instead of context
+          const value = evalValue(scope, args, context)
+
           assign(parent, parentIndex, assign(childObject, index, value))
+
           return value
-        }
-      } else {
-        const evalValue = value._compile(math, argNames)
-        if (object.index.isObjectProperty()) {
-          const parentProp = object.index.getObjectProperty()
-          return function evalPropertySubsetAssignmentNode (scope, args, context) {
-            const parent = evalParentObject(scope, args, context)
-            const childObject = getSafeProperty(parent, parentProp)
-            const index = evalIndex(scope, args, childObject) // Important: we pass childObject instead of context
-            const value = evalValue(scope, args, context)
-            setSafeProperty(parent, parentProp, assign(childObject, index, value))
-            return value
-          }
-        } else {
-          // if some parameters use the 'end' parameter, we need to calculate the size
-          const evalParentIndex = object.index._compile(math, argNames)
-          return function evalPropertySubsetAssignmentNode (scope, args, context) {
-            const parent = evalParentObject(scope, args, context)
-            const parentIndex = evalParentIndex(scope, args, parent) // Important: we pass parent instead of context
-            const childObject = access(parent, parentIndex)
-            const index = evalIndex(scope, args, childObject) // Important:  we pass childObject instead of context
-            const value = evalValue(scope, args, context)
-            assign(parent, parentIndex, assign(childObject, index, value))
-            return value
-          }
         }
       }
     }
