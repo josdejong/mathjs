@@ -40,21 +40,21 @@ export const createIsZero = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *                    Throws an error in case of an unknown data type.
    */
   const isZero = typed(name, {
-    'number': isZeroNumber,
+    number: isZeroNumber,
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.isZero()
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.re === 0 && x.im === 0
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.d === 1 && x.n === 0
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return isZero(x.value)
     },
 

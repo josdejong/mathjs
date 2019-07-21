@@ -57,7 +57,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const round = typed(name, {
     ...roundNumberSignatures,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.round()
     },
 
@@ -80,7 +80,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return new BigNumber(x).toDecimalPlaces(n.toNumber())
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.toDecimalPlaces(0)
     },
 
@@ -90,7 +90,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return x.toDecimalPlaces(n.toNumber())
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.round()
     },
 
@@ -145,7 +145,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 })
 
 const roundNumberSignatures = {
-  'number': roundNumber,
+  number: roundNumber,
 
   'number, number': function (x, n) {
     if (!isInteger(n)) { throw new TypeError(NO_INT) }

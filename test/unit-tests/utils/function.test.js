@@ -100,28 +100,28 @@ describe('util.function', function () {
       const a = function () {}
       a.signatures = {
         'number, number': function () {},
-        'number': function () {}
+        number: function () {}
       }
       assert.strictEqual(maxArgumentCount(a), 2)
 
       const b = function () {}
       b.signatures = {
-        'number': function () {},
+        number: function () {},
         'number, number': function () {}
       }
       assert.strictEqual(maxArgumentCount(b), 2)
 
       const c = function () {}
       c.signatures = {
-        'number': function () {},
-        'BigNumber': function () {}
+        number: function () {},
+        BigNumber: function () {}
       }
       assert.strictEqual(maxArgumentCount(c), 1)
 
       const d = function () {}
       d.signatures = {
         'number,number': function () {},
-        'number': function () {},
+        number: function () {},
         'number,any,number': function () {}
       }
       assert.strictEqual(maxArgumentCount(d), 3)

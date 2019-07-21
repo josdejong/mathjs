@@ -175,10 +175,10 @@ export function createSnapshotFromFactories (factories) {
     off: 'Function',
     once: 'Function',
     emit: 'Function',
-    'import': 'Function',
-    'var': 'Function',
-    'eval': 'Function',
-    'typeof': 'Function',
+    import: 'Function',
+    var: 'Function',
+    eval: 'Function',
+    typeof: 'Function',
     config: 'Function',
     create: 'Function',
     factory: 'Function',
@@ -196,7 +196,7 @@ export function createSnapshotFromFactories (factories) {
         ...exclude(allFunctionsConstants, [
           'chain'
         ]),
-        'config': 'Function'
+        config: 'Function'
       },
       // deprecated stuff:
       // docs: embeddedDocs,
@@ -241,11 +241,11 @@ export function createSnapshotFromFactories (factories) {
     deprecatedImport: 'Function',
     deprecatedVar: 'Function',
     deprecatedTypeof: 'Function',
-    '_true': 'boolean',
-    '_false': 'boolean',
-    '_null': 'null',
-    '_Infinity': 'number',
-    '_NaN': 'number',
+    _true: 'boolean',
+    _false: 'boolean',
+    _null: 'null',
+    _Infinity: 'number',
+    _NaN: 'number',
 
     ...allTypeChecks,
     ...allErrorClasses,

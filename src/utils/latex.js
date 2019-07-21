@@ -1,4 +1,5 @@
 import escapeLatexLib from 'escape-latex'
+import { hasOwnProperty } from './object'
 
 export const latexSymbols = {
   // GREEK LETTERS
@@ -58,8 +59,8 @@ export const latexSymbols = {
   Omega: '\\Omega',
   omega: '\\omega',
   // logic
-  'true': '\\mathrm{True}',
-  'false': '\\mathrm{False}',
+  true: '\\mathrm{True}',
+  false: '\\mathrm{False}',
   // other
   i: 'i', // TODO use \i ??
   inf: '\\infty',
@@ -68,42 +69,42 @@ export const latexSymbols = {
   Infinity: '\\infty',
   oo: '\\infty',
   lim: '\\lim',
-  'undefined': '\\mathbf{?}'
+  undefined: '\\mathbf{?}'
 }
 
 export const latexOperators = {
-  'transpose': '^\\top',
-  'ctranspose': '^H',
-  'factorial': '!',
-  'pow': '^',
-  'dotPow': '.^\\wedge', // TODO find ideal solution
-  'unaryPlus': '+',
-  'unaryMinus': '-',
-  'bitNot': '\\~', // TODO find ideal solution
-  'not': '\\neg',
-  'multiply': '\\cdot',
-  'divide': '\\frac', // TODO how to handle that properly?
-  'dotMultiply': '.\\cdot', // TODO find ideal solution
-  'dotDivide': '.:', // TODO find ideal solution
-  'mod': '\\mod',
-  'add': '+',
-  'subtract': '-',
-  'to': '\\rightarrow',
-  'leftShift': '<<',
-  'rightArithShift': '>>',
-  'rightLogShift': '>>>',
-  'equal': '=',
-  'unequal': '\\neq',
-  'smaller': '<',
-  'larger': '>',
-  'smallerEq': '\\leq',
-  'largerEq': '\\geq',
-  'bitAnd': '\\&',
-  'bitXor': '\\underline{|}',
-  'bitOr': '|',
-  'and': '\\wedge',
-  'xor': '\\veebar',
-  'or': '\\vee'
+  transpose: '^\\top',
+  ctranspose: '^H',
+  factorial: '!',
+  pow: '^',
+  dotPow: '.^\\wedge', // TODO find ideal solution
+  unaryPlus: '+',
+  unaryMinus: '-',
+  bitNot: '\\~', // TODO find ideal solution
+  not: '\\neg',
+  multiply: '\\cdot',
+  divide: '\\frac', // TODO how to handle that properly?
+  dotMultiply: '.\\cdot', // TODO find ideal solution
+  dotDivide: '.:', // TODO find ideal solution
+  mod: '\\mod',
+  add: '+',
+  subtract: '-',
+  to: '\\rightarrow',
+  leftShift: '<<',
+  rightArithShift: '>>',
+  rightLogShift: '>>>',
+  equal: '=',
+  unequal: '\\neq',
+  smaller: '<',
+  larger: '>',
+  smallerEq: '\\leq',
+  largerEq: '\\geq',
+  bitAnd: '\\&',
+  bitXor: '\\underline{|}',
+  bitOr: '|',
+  and: '\\wedge',
+  xor: '\\veebar',
+  or: '\\vee'
 }
 
 export const latexFunctions = {
@@ -289,7 +290,7 @@ const latexUnits = {
 }
 
 export function escapeLatex (string) {
-  return escapeLatexLib(string, { 'preserveFormatting': true })
+  return escapeLatexLib(string, { preserveFormatting: true })
 }
 
 // @param {string} name
@@ -297,14 +298,14 @@ export function escapeLatex (string) {
 export function toSymbol (name, isUnit) {
   isUnit = typeof isUnit === 'undefined' ? false : isUnit
   if (isUnit) {
-    if (latexUnits.hasOwnProperty(name)) {
+    if (hasOwnProperty(latexUnits, name)) {
       return latexUnits[name]
     }
 
     return '\\mathrm{' + escapeLatex(name) + '}'
   }
 
-  if (latexSymbols.hasOwnProperty(name)) {
+  if (hasOwnProperty(latexSymbols, name)) {
     return latexSymbols[name]
   }
 

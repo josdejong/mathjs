@@ -43,7 +43,7 @@ describe('FunctionAssignmentNode', function () {
     const n = new FunctionAssignmentNode('f', ['x'], o)
 
     const expr = n.compile()
-    let scope = {}
+    const scope = {}
     expr.evaluate(scope)
     assert.strictEqual(typeof scope.f, 'function')
     assert.strictEqual(scope.f(3), 5)
@@ -57,7 +57,7 @@ describe('FunctionAssignmentNode', function () {
     const n = new FunctionAssignmentNode('f', [{ name: 'x', type: 'number' }], o)
 
     const expr = n.compile()
-    let scope = {}
+    const scope = {}
     expr.evaluate(scope)
     assert.strictEqual(typeof scope.f, 'function')
     assert.strictEqual(scope.f(3), 5)
@@ -86,7 +86,7 @@ describe('FunctionAssignmentNode', function () {
     const n2 = new FunctionAssignmentNode('factorial', ['x'], n1)
 
     const expr = n2.compile()
-    let scope = {}
+    const scope = {}
     const factorial = expr.evaluate(scope)
     assert.strictEqual(typeof scope.factorial, 'function')
     assert.strictEqual(factorial(3), 6)
@@ -107,10 +107,10 @@ describe('FunctionAssignmentNode', function () {
         one,
         new OperatorNode('+', 'add', [
           new FunctionNode(new SymbolNode('fib'), [
-            new OperatorNode('-', 'subtract', [ x, one ])
+            new OperatorNode('-', 'subtract', [x, one])
           ]),
           new FunctionNode(new SymbolNode('fib'), [
-            new OperatorNode('-', 'subtract', [ x, two ])
+            new OperatorNode('-', 'subtract', [x, two])
           ])
         ])
       )
@@ -120,7 +120,7 @@ describe('FunctionAssignmentNode', function () {
     // const n2 = math.parse('fib(x) = (x <= 0) ? 0 : ((x <= 2) ? 1 : (fib(x - 1) + f(fib - 2)))');
 
     const expr = n2.compile()
-    let scope = {}
+    const scope = {}
     const fib = expr.evaluate(scope)
 
     assert.strictEqual(typeof fib, 'function')
@@ -147,7 +147,7 @@ describe('FunctionAssignmentNode', function () {
     const o = new FunctionNode('outputScope', [x])
     const n = new FunctionAssignmentNode('f', ['x'], o)
 
-    let scope = { a: 2 }
+    const scope = { a: 2 }
     const f = n.evaluate(scope)
     assert.deepStrictEqual(f(3), { a: 2, f: f, x: 3 })
   })
@@ -172,7 +172,7 @@ describe('FunctionAssignmentNode', function () {
     const b = new FunctionNode(a, [new SymbolNode('y')])
     const n = new FunctionAssignmentNode('f', ['x', 'y'], b)
 
-    let scope = { a: 2 }
+    const scope = { a: 2 }
     const f = n.evaluate(scope)
     assert.deepStrictEqual(f(3, 4), { a: 2, f, x: 3, y: 4 })
   })
@@ -192,7 +192,7 @@ describe('FunctionAssignmentNode', function () {
     const o = new FunctionNode('outputScope', [x])
     const n = new FunctionAssignmentNode('f', ['x'], o)
 
-    let scope = { a: 2 }
+    const scope = { a: 2 }
     const f = n.evaluate(scope)
     assert.deepStrictEqual(f(3), { a: 2, f, x: 3 })
   })

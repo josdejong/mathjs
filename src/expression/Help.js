@@ -58,7 +58,7 @@ export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ pa
     if (doc.examples) {
       desc += 'Examples:\n'
 
-      let scope = {}
+      const scope = {}
       for (let i = 0; i < doc.examples.length; i++) {
         const expr = doc.examples[i]
         desc += '    ' + expr + '\n'

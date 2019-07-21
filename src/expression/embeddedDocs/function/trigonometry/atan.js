@@ -1,15 +1,15 @@
 export const atanDocs = {
-  'name': 'atan',
-  'category': 'Trigonometry',
-  'syntax': [
+  name: 'atan',
+  category: 'Trigonometry',
+  syntax: [
     'atan(x)'
   ],
-  'description': 'Compute the inverse tangent of a value in radians.',
-  'examples': [
+  description: 'Compute the inverse tangent of a value in radians.',
+  examples: [
     'atan(0.5)',
     'atan(tan(0.5))'
   ],
-  'seealso': [
+  seealso: [
     'tan',
     'acos',
     'asin'

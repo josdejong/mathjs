@@ -1,18 +1,18 @@
 export const randomIntDocs = {
-  'name': 'randomInt',
-  'category': 'Probability',
-  'syntax': [
+  name: 'randomInt',
+  category: 'Probability',
+  syntax: [
     'randomInt(max)',
     'randomInt(min, max)',
     'randomInt(size)',
     'randomInt(size, max)',
     'randomInt(size, min, max)'
   ],
-  'description':
+  description:
       'Return a random integer number',
-  'examples': [
+  examples: [
     'randomInt(10, 20)',
     'randomInt([2, 3], 10)'
   ],
-  'seealso': ['pickRandom', 'random']
+  seealso: ['pickRandom', 'random']
 }

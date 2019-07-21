@@ -3,6 +3,7 @@ import mathjs from '../../../src/bundleAny'
 import approx from '../../../tools/approx'
 import { factory } from '../../../src/utils/factory'
 import { create } from '../../../src/core/create'
+import { hasOwnProperty } from '../../../src/utils/object'
 
 const multiplyTestFactory = factory('multiplyTest', [], () => {
   return function multiply (a, b) {
@@ -150,8 +151,8 @@ describe('import', function () {
 
     math.import({ bar: 456 })
 
-    assert(!math.hasOwnProperty('foo'))
-    assert(math.hasOwnProperty('bar'))
+    assert(!hasOwnProperty(math, 'foo'))
+    assert(hasOwnProperty(math, 'bar'))
 
     delete Object.prototype.foo
   })
@@ -171,16 +172,16 @@ describe('import', function () {
 
   it('should merge typed functions with the same name', function () {
     math.import({
-      'foo': math.typed('foo', {
-        'number': function (x) {
+      foo: math.typed('foo', {
+        number: function (x) {
           return 'foo(number)'
         }
       })
     })
 
     math.import({
-      'foo': math.typed('foo', {
-        'string': function (x) {
+      foo: math.typed('foo', {
+        string: function (x) {
           return 'foo(string)'
         }
       })
@@ -196,8 +197,8 @@ describe('import', function () {
 
   it('should override existing typed functions', function () {
     math.import({
-      'foo': math.typed('foo', {
-        'Date': function (x) {
+      foo: math.typed('foo', {
+        Date: function (x) {
           return 'foo(Date)'
         }
       })
@@ -206,8 +207,8 @@ describe('import', function () {
     assert.strictEqual(math.foo(new Date()), 'foo(Date)')
 
     math.import({
-      'foo': math.typed('foo', {
-        'string': function (x) {
+      foo: math.typed('foo', {
+        string: function (x) {
           return 'foo(string)'
         }
       })
@@ -239,9 +240,9 @@ describe('import', function () {
 
     math.import({ foo: foo })
 
-    assert(math.hasOwnProperty('foo'))
+    assert(hasOwnProperty(math, 'foo'))
     assert.strictEqual(math.foo, foo)
-    assert(math.expression.transform.hasOwnProperty('foo'))
+    assert(hasOwnProperty(math.expression.transform, 'foo'))
     assert.strictEqual(math.expression.transform.foo, foo.transform)
   })
 
@@ -252,7 +253,7 @@ describe('import', function () {
 
     math.import({ mean: mean }, { override: true })
 
-    assert(math.hasOwnProperty('mean'))
+    assert(hasOwnProperty(math, 'mean'))
     assert.strictEqual(math.mean, mean)
     assert.strictEqual(math.expression.transform.mean, undefined)
     assert.strictEqual(math.expression.mathWithTransform.mean, mean)
@@ -277,18 +278,18 @@ describe('import', function () {
 
     it('should merge typed functions coming from a legacy factory', function () {
       math.import({
-        'foo': math.typed('foo', {
-          'number': function (x) {
+        foo: math.typed('foo', {
+          number: function (x) {
             return 'foo(number)'
           }
         })
       })
 
       math.import({
-        'name': 'foo',
-        'factory': function () {
+        name: 'foo',
+        factory: function () {
           return math.typed('foo', {
-            'string': function (x) {
+            string: function (x) {
               return 'foo(string)'
             }
           })
@@ -315,7 +316,7 @@ describe('import', function () {
 
       math.import([meanFactory], { override: true })
 
-      assert(math.hasOwnProperty('mean'))
+      assert(hasOwnProperty(math, 'mean'))
       assert.strictEqual(math.mean, mean)
       assert.strictEqual(math.expression.transform.mean, undefined)
       assert.strictEqual(math.expression.mathWithTransform.mean, mean)
@@ -357,7 +358,7 @@ describe('import', function () {
       assert.strictEqual(math2.multiplyTest, undefined)
       assert.strictEqual(math2.cubeTest, undefined)
 
-      math2.import([ multiplyTestFactory, cubeTestFactory ])
+      math2.import([multiplyTestFactory, cubeTestFactory])
 
       assert.strictEqual(math2.multiplyTest(2, 3), 6)
       assert.strictEqual(math2.cubeTest(3), 27)
@@ -369,7 +370,7 @@ describe('import', function () {
       assert.strictEqual(math2.tools, undefined)
 
       assert.throws(() => {
-        math2.import([ nestedFactory ])
+        math2.import([nestedFactory])
       }, /Factory name should not contain a nested path/)
     })
 
@@ -380,7 +381,7 @@ describe('import', function () {
       assert.strictEqual(math2.cubeTest, undefined)
 
       // note that this depends on lazy loading
-      math2.import([ cubeTestFactory, multiplyTestFactory ])
+      math2.import([cubeTestFactory, multiplyTestFactory])
 
       assert.strictEqual(math2.multiplyTest(2, 3), 6)
       assert.strictEqual(math2.cubeTest(3), 27)

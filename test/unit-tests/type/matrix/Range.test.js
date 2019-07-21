@@ -10,19 +10,19 @@ describe('range', function () {
     it('should create a range', function () {
       const r = new Range(2, 6)
       assert.deepStrictEqual(r.toArray(), [2, 3, 4, 5])
-      assert.deepStrictEqual(r.size(), [ 4 ])
+      assert.deepStrictEqual(r.size(), [4])
     })
 
     it('should create a range with custom step', function () {
       const r = new Range(10, 4, -1)
       assert.deepStrictEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
-      assert.deepStrictEqual(r.size(), [ 6 ])
+      assert.deepStrictEqual(r.size(), [6])
     })
 
     it('should create a range with floating points', function () {
       const r = new Range(1, 5.5, 1.5)
       assert.deepStrictEqual(r.toArray(), [1, 2.5, 4])
-      assert.deepStrictEqual(r.size(), [ 3 ])
+      assert.deepStrictEqual(r.size(), [3])
     })
 
     it('should create an empty range', function () {
@@ -33,17 +33,17 @@ describe('range', function () {
     it('should create a range with only one value', function () {
       const r = new Range(0, 1)
       assert.deepStrictEqual(r.toArray(), [0])
-      assert.deepStrictEqual(r.size(), [ 1 ])
+      assert.deepStrictEqual(r.size(), [1])
     })
 
     it('should create an empty range because of wrong step size', function () {
       let r = new Range(0, 10, 0)
       assert.deepStrictEqual(r.toArray(), [])
-      assert.deepStrictEqual(r.size(), [ 0 ])
+      assert.deepStrictEqual(r.size(), [0])
 
       r = new Range(0, 10, -1)
       assert.deepStrictEqual(r.toArray(), [])
-      assert.deepStrictEqual(r.size(), [ 0 ])
+      assert.deepStrictEqual(r.size(), [0])
     })
 
     it('should throw an error when created without new keyword', function () {
@@ -61,11 +61,11 @@ describe('range', function () {
     it('should create a range from a string', function () {
       let r = Range.parse('10:-1:4')
       assert.deepStrictEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
-      assert.deepStrictEqual(r.size(), [ 6 ])
+      assert.deepStrictEqual(r.size(), [6])
 
       r = Range.parse('2 : 6')
       assert.deepStrictEqual(r.toArray(), [2, 3, 4, 5])
-      assert.deepStrictEqual(r.size(), [ 4 ])
+      assert.deepStrictEqual(r.size(), [4])
     })
 
     it('should return null when parsing an invalid string', function () {
@@ -250,8 +250,8 @@ describe('range', function () {
   })
 
   it('toJSON', function () {
-    assert.deepStrictEqual(new Range(2, 4).toJSON(), { 'mathjs': 'Range', start: 2, end: 4, step: 1 })
-    assert.deepStrictEqual(new Range(0, 10, 2).toJSON(), { 'mathjs': 'Range', start: 0, end: 10, step: 2 })
+    assert.deepStrictEqual(new Range(2, 4).toJSON(), { mathjs: 'Range', start: 2, end: 4, step: 1 })
+    assert.deepStrictEqual(new Range(0, 10, 2).toJSON(), { mathjs: 'Range', start: 0, end: 10, step: 2 })
   })
 
   it('fromJSON', function () {

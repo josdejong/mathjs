@@ -58,7 +58,7 @@ describe('FunctionNode', function () {
     const c = new ConstantNode(4)
     const n = new FunctionNode(s, [c])
 
-    let scope = {}
+    const scope = {}
     assert.strictEqual(n.compile().evaluate(scope), 2)
   })
 
@@ -70,7 +70,7 @@ describe('FunctionNode', function () {
     const c = new ConstantNode(4)
     const n = new FunctionNode(a, [c])
 
-    let scope = {
+    const scope = {
       foo: {
         bar: function (x) {
           return x * x
@@ -87,7 +87,7 @@ describe('FunctionNode', function () {
     const c = new ConstantNode(4)
     const n = new FunctionNode(a, [c])
 
-    let scope = {
+    const scope = {
       foo: {
         count: 42,
         getCount: function () {
@@ -115,14 +115,14 @@ describe('FunctionNode', function () {
     const b = new mymath.ConstantNode(5)
     const n = new mymath.FunctionNode(s, [a, b])
 
-    let scope = {
+    const scope = {
       foo: 'bar'
     }
     assert.strictEqual(n.compile().evaluate(scope), 'myFunction(4, 5)')
   })
 
   it('should compile a FunctionNode containing an index resolving to a function with rawArgs', function () {
-    let scope = {
+    const scope = {
       obj: {}
     }
 
@@ -162,7 +162,7 @@ describe('FunctionNode', function () {
     const b = new mymath.ConstantNode(5)
     const n = new mymath.FunctionNode(s, [a, b])
 
-    let scope = {
+    const scope = {
       myFunction: function () {
         return 42
       }
@@ -434,7 +434,7 @@ describe('FunctionNode', function () {
   it('should stringify a FunctionNode with custom toString for a single function', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = {
-      'add': function (node, options) {
+      add: function (node, options) {
         return node.args[0].toString(options) +
           ' ' + node.name + ' ' +
           node.args[1].toString(options)
@@ -519,7 +519,7 @@ describe('FunctionNode', function () {
   it('should LaTeX a FunctionNode with custom toTex for a single function', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = {
-      'add': function (node, options) {
+      add: function (node, options) {
         return node.args[0].toTex(options) +
           ' ' + node.name + ' ' +
           node.args[1].toTex(options)

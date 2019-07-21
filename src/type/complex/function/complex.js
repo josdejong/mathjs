@@ -48,7 +48,7 @@ export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ type
       return Complex.ZERO
     },
 
-    'number': function (x) {
+    number: function (x) {
       return new Complex(x, 0)
     },
 
@@ -61,23 +61,23 @@ export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ type
       return new Complex(re.toNumber(), im.toNumber())
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return new Complex(x.valueOf(), 0)
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.clone()
     },
 
-    'string': function (x) {
+    string: function (x) {
       return Complex(x) // for example '2 + 3i'
     },
 
-    'null': function (x) {
+    null: function (x) {
       return Complex(0)
     },
 
-    'Object': function (x) {
+    Object: function (x) {
       if ('re' in x && 'im' in x) {
         return new Complex(x.re, x.im)
       }

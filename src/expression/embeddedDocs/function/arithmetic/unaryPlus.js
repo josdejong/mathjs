@@ -1,17 +1,17 @@
 export const unaryPlusDocs = {
-  'name': 'unaryPlus',
-  'category': 'Operators',
-  'syntax': [
+  name: 'unaryPlus',
+  category: 'Operators',
+  syntax: [
     '+x',
     'unaryPlus(x)'
   ],
-  'description':
+  description:
       'Converts booleans and strings to numbers.',
-  'examples': [
+  examples: [
     '+true',
     '+"2"'
   ],
-  'seealso': [
+  seealso: [
     'add', 'subtract', 'unaryMinus'
   ]
 }

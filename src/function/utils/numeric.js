@@ -7,19 +7,19 @@ const dependencies = ['number', '?bignumber', '?fraction']
 
 export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ number, bignumber, fraction }) => {
   const validInputTypes = {
-    'string': true,
-    'number': true,
-    'BigNumber': true,
-    'Fraction': true
+    string: true,
+    number: true,
+    BigNumber: true,
+    Fraction: true
   }
 
   // Load the conversion functions for each output type
   const validOutputTypes = {
-    'number': (x) => number(x),
-    'BigNumber': bignumber
+    number: (x) => number(x),
+    BigNumber: bignumber
       ? (x) => bignumber(x)
       : noBignumber,
-    'Fraction': fraction
+    Fraction: fraction
       ? (x) => fraction(x)
       : noFraction
   }

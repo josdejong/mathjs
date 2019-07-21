@@ -3,7 +3,7 @@ import { deepMap } from '../../utils/collection'
 import { expm1Number } from '../../plain/number'
 
 const name = 'expm1'
-const dependencies = [ 'typed', 'Complex' ]
+const dependencies = ['typed', 'Complex']
 
 export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex }) => {
   /**
@@ -35,9 +35,9 @@ export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
   const expm1 = typed(name, {
-    'number': expm1Number,
+    number: expm1Number,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       const r = Math.exp(x.re)
       return new Complex(
         r * Math.cos(x.im) - 1,
@@ -45,7 +45,7 @@ export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       )
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.exp().minus(1)
     },
 

@@ -7,18 +7,18 @@ const Help = math.Help
 
 describe('help', function () {
   const doc = {
-    'name': 'add',
-    'category': 'Operators',
-    'syntax': [
+    name: 'add',
+    category: 'Operators',
+    syntax: [
       'x + y',
       'add(x, y)'
     ],
-    'description': 'Add two values.',
-    'examples': [
+    description: 'Add two values.',
+    examples: [
       'a = 2.1 + 3.6',
       'a - 3.6'
     ],
-    'seealso': [
+    seealso: [
       'subtract'
     ]
   }
@@ -84,8 +84,8 @@ describe('help', function () {
 
   it('should stringify a doc with empty example', function () {
     const help = new Help({
-      'name': 'add',
-      'examples': [
+      name: 'add',
+      examples: [
         '2 + 3',
         ''
       ]
@@ -103,8 +103,8 @@ describe('help', function () {
 
   it('should stringify a doc with example throwing an error', function () {
     const help = new Help({
-      'name': 'add',
-      'examples': [
+      name: 'add',
+      examples: [
         '2 ^^ 3'
       ]
     })
@@ -120,8 +120,8 @@ describe('help', function () {
 
   it('should return string representation on valueOf', function () {
     const help = new Help({
-      'name': 'add',
-      'examples': [
+      name: 'add',
+      examples: [
         '2 ^^ 3'
       ]
     })
@@ -139,19 +139,19 @@ describe('help', function () {
     const help = new Help(doc)
     const json = help.toJSON()
     assert.deepStrictEqual(json, {
-      'mathjs': 'Help',
-      'name': 'add',
-      'category': 'Operators',
-      'syntax': [
+      mathjs: 'Help',
+      name: 'add',
+      category: 'Operators',
+      syntax: [
         'x + y',
         'add(x, y)'
       ],
-      'description': 'Add two values.',
-      'examples': [
+      description: 'Add two values.',
+      examples: [
         'a = 2.1 + 3.6',
         'a - 3.6'
       ],
-      'seealso': [
+      seealso: [
         'subtract'
       ]
     })
@@ -163,18 +163,18 @@ describe('help', function () {
 
   it('should instantiate Help from json using fromJSON', function () {
     const doc = {
-      'name': 'add',
-      'category': 'Operators',
-      'syntax': [
+      name: 'add',
+      category: 'Operators',
+      syntax: [
         'x + y',
         'add(x, y)'
       ],
-      'description': 'Add two values.',
-      'examples': [
+      description: 'Add two values.',
+      examples: [
         'a = 2.1 + 3.6',
         'a - 3.6'
       ],
-      'seealso': [
+      seealso: [
         'subtract'
       ]
     }

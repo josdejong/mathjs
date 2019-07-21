@@ -1,5 +1,6 @@
 import { isOperatorNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
+import { hasOwnProperty } from '../../../utils/object'
 
 const name = 'simplifyUtil'
 const dependencies = [
@@ -14,12 +15,12 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
   // The properties should be calculated from an argument to simplify, or possibly something in math.config
   // the other option is for typed() to specify a return type so that we can evaluate the type of arguments
   const commutative = {
-    'add': true,
-    'multiply': true
+    add: true,
+    multiply: true
   }
   const associative = {
-    'add': true,
-    'multiply': true
+    add: true,
+    multiply: true
   }
 
   function isCommutative (node, context) {
@@ -27,7 +28,7 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
       return true
     }
     const name = node.fn.toString()
-    if (context && context.hasOwnProperty(name) && context[name].hasOwnProperty('commutative')) {
+    if (context && hasOwnProperty(context, name) && hasOwnProperty(context[name], 'commutative')) {
       return context[name].commutative
     }
     return commutative[name] || false
@@ -38,7 +39,7 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
       return false
     }
     const name = node.fn.toString()
-    if (context && context.hasOwnProperty(name) && context[name].hasOwnProperty('associative')) {
+    if (context && hasOwnProperty(context, name) && hasOwnProperty(context[name], 'associative')) {
       return context[name].associative
     }
     return associative[name] || false

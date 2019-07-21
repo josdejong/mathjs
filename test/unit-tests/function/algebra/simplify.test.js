@@ -343,7 +343,7 @@ describe('simplify', function () {
     })
 
     it('should compute and simplify derivatives (2)', function () {
-      let scope = {}
+      const scope = {}
       math.evaluate('a = derivative("5x*3x", "x")', scope)
       const res = math.evaluate('simplify(a)', scope)
       assert.ok(res && res.isNode)

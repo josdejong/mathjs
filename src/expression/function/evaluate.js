@@ -38,8 +38,8 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @throws {Error}
    */
   return typed(name, {
-    'string': function (expr) {
-      let scope = {}
+    string: function (expr) {
+      const scope = {}
       return parse(expr).compile().evaluate(scope)
     },
 
@@ -48,7 +48,7 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'Array | Matrix': function (expr) {
-      let scope = {}
+      const scope = {}
       return deepMap(expr, function (entry) {
         return parse(entry).compile().evaluate(scope)
       })

@@ -1,15 +1,15 @@
 export const cothDocs = {
-  'name': 'coth',
-  'category': 'Trigonometry',
-  'syntax': [
+  name: 'coth',
+  category: 'Trigonometry',
+  syntax: [
     'coth(x)'
   ],
-  'description': 'Compute the hyperbolic cotangent of x in radians.',
-  'examples': [
+  description: 'Compute the hyperbolic cotangent of x in radians.',
+  examples: [
     'coth(2)',
     '1 / tanh(2)'
   ],
-  'seealso': [
+  seealso: [
     'sech',
     'csch',
     'tanh'

@@ -8,7 +8,7 @@ describe('transforms', function () {
   describe('filter', function () {
     it('should execute filter on an array with one based indices', function () {
       const logs = []
-      let scope = {
+      const scope = {
         A: [1, 2, 3],
         callback: function (value, index, matrix) {
           assert.strictEqual(matrix, scope.A)
@@ -24,7 +24,7 @@ describe('transforms', function () {
     })
 
     it('should evaluate filter with a callback function', function () {
-      let scope = {}
+      const scope = {}
       parseAndEval('isPositive(x) = x > 0', scope)
       assert.deepStrictEqual(parseAndEval('filter([6, -2, -1, 4, 3], isPositive)', scope),
         math.matrix([6, 4, 3]))
@@ -54,7 +54,7 @@ describe('transforms', function () {
   describe('map', function () {
     it('should execute map on an array with one based indices', function () {
       const logs = []
-      let scope = {
+      const scope = {
         A: [1, 2, 3],
         callback: function (value, index, matrix) {
           assert.strictEqual(matrix, scope.A)
@@ -71,7 +71,7 @@ describe('transforms', function () {
 
     it('should execute map on a Matrix with one based indices', function () {
       const logs = []
-      let scope = {
+      const scope = {
         A: math.matrix([1, 2, 3]),
         callback: function (value, index, matrix) {
           assert.strictEqual(matrix, scope.A)
@@ -120,7 +120,7 @@ describe('transforms', function () {
   describe('forEach', function () {
     it('should execute forEach on an array with one based indices', function () {
       const logs = []
-      let scope = {
+      const scope = {
         A: [1, 2, 3],
         callback: function (value, index, matrix) {
           assert.strictEqual(matrix, scope.A)
@@ -135,7 +135,7 @@ describe('transforms', function () {
 
     it('should execute forEach on a Matrix with one based indices', function () {
       const logs = []
-      let scope = {
+      const scope = {
         A: math.matrix([1, 2, 3]),
         callback: function (value, index, matrix) {
           assert.strictEqual(matrix, scope.A)
@@ -150,7 +150,7 @@ describe('transforms', function () {
 
     it('should evaluate forEach with an inline expression as callback (1)', function () {
       const logs1 = []
-      let scope = {
+      const scope = {
         callback: function (value) {
           assert.strictEqual(arguments.length, 1)
           logs1.push(value)
@@ -162,7 +162,7 @@ describe('transforms', function () {
 
     it('should evaluate forEach with an inline expression as callback (2)', function () {
       const logs1 = []
-      let scope = {
+      const scope = {
         callback: function (value) {
           assert.strictEqual(arguments.length, 1)
           logs1.push(value)

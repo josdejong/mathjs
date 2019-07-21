@@ -4,6 +4,7 @@ import { createUtil } from './simplify/util'
 import { createSimplifyCore } from './simplify/simplifyCore'
 import { createSimplifyConstant } from './simplify/simplifyConstant'
 import { createResolve } from './simplify/resolve'
+import { hasOwnProperty } from '../../utils/object'
 
 const name = 'simplify'
 const dependencies = [
@@ -152,7 +153,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * @return {Node} Returns the simplified form of `expr`
    */
   const simplify = typed('simplify', {
-    'string': function (expr) {
+    string: function (expr) {
       return simplify(parse(expr), simplify.rules, {}, {})
     },
 
@@ -184,7 +185,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       return simplify(expr, simplify.rules, scope, options)
     },
 
-    'Node': function (expr) {
+    Node: function (expr) {
       return simplify(expr, simplify.rules, {}, {})
     },
 
@@ -200,7 +201,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)
-      let visited = {}
+      const visited = {}
       let str = res.toString({ parenthesis: 'all' })
       while (!visited[str]) {
         visited[str] = true
@@ -301,8 +302,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: '(-n)*n1', r: '-(n*n1)' }, // make factors positive (and undo 'make non-constant terms positive')
 
     // ordering of constants
-    { l: 'c+v', r: 'v+c', context: { 'add': { commutative: false } } },
-    { l: 'v*c', r: 'c*v', context: { 'multiply': { commutative: false } } },
+    { l: 'c+v', r: 'v+c', context: { add: { commutative: false } } },
+    { l: 'v*c', r: 'c*v', context: { multiply: { commutative: false } } },
 
     // undo temporary rules
     // { l: '(-1) * n', r: '-n' }, // #811 added test which proved this is redundant
@@ -446,7 +447,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
         // Replace placeholders with their respective nodes without traversing deeper into the replaced nodes
         res = res.transform(function (node) {
-          if (node.isSymbolNode && matches.placeholders.hasOwnProperty(node.name)) {
+          if (node.isSymbolNode && hasOwnProperty(matches.placeholders, node.name)) {
             return matches.placeholders[node.name].clone()
           } else {
             return node
@@ -504,16 +505,16 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     }
 
     // Placeholders with the same key must match exactly
-    for (let key in match1.placeholders) {
+    for (const key in match1.placeholders) {
       res.placeholders[key] = match1.placeholders[key]
-      if (match2.placeholders.hasOwnProperty(key)) {
+      if (hasOwnProperty(match2.placeholders, key)) {
         if (!_exactMatch(match1.placeholders[key], match2.placeholders[key])) {
           return null
         }
       }
     }
 
-    for (let key in match2.placeholders) {
+    for (const key in match2.placeholders) {
       res.placeholders[key] = match2.placeholders[key]
     }
 

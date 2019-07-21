@@ -584,8 +584,8 @@ describe('Unit', function () {
 
     it('should simplify user-defined units when unit system is "auto"', function () {
       Unit.setUnitSystem('auto')
-      Unit.createUnit({ 'USD': '' })
-      Unit.createUnit({ 'EUR': '1.15 USD' })
+      Unit.createUnit({ USD: '' })
+      Unit.createUnit({ EUR: '1.15 USD' })
       assert.strictEqual(math.evaluate('10 EUR/hour * 2 hours').toString(), '20 EUR')
     })
   })
@@ -604,11 +604,11 @@ describe('Unit', function () {
   describe('json', function () {
     it('toJSON', function () {
       assert.deepStrictEqual(new Unit(5, 'cm').toJSON(),
-        { 'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false })
+        { mathjs: 'Unit', value: 5, unit: 'cm', fixPrefix: false })
       assert.deepStrictEqual(new Unit(5, 'cm').to('mm').toJSON(),
-        { 'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true })
+        { mathjs: 'Unit', value: 50, unit: 'mm', fixPrefix: true })
       assert.deepStrictEqual(new Unit(5, 'kN').to('kg m s ^ -2').toJSON(),
-        { 'mathjs': 'Unit', value: 5000, unit: '(kg m) / s^2', fixPrefix: true })
+        { mathjs: 'Unit', value: 5000, unit: '(kg m) / s^2', fixPrefix: true })
       assert.deepStrictEqual(new Unit(math.fraction(0.375), 'cm').toJSON(),
         {
           mathjs: 'Unit',
@@ -633,17 +633,17 @@ describe('Unit', function () {
 
     it('fromJSON', function () {
       const u1 = new Unit(5, 'cm')
-      const u2 = Unit.fromJSON({ 'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false })
+      const u2 = Unit.fromJSON({ mathjs: 'Unit', value: 5, unit: 'cm', fixPrefix: false })
       assert.ok(u2 instanceof Unit)
       assert.deepStrictEqual(u2, u1)
 
       const u3 = new Unit(5, 'cm').to('mm')
-      const u4 = Unit.fromJSON({ 'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true })
+      const u4 = Unit.fromJSON({ mathjs: 'Unit', value: 50, unit: 'mm', fixPrefix: true })
       assert.ok(u4 instanceof Unit)
       assert.deepStrictEqual(u4, u3)
 
       const u5 = new Unit(5, 'kN').to('kg m/s^2')
-      const u6 = Unit.fromJSON({ 'mathjs': 'Unit', value: 5000, unit: 'kg m s^-2', fixPrefix: true })
+      const u6 = Unit.fromJSON({ mathjs: 'Unit', value: 5000, unit: 'kg m s^-2', fixPrefix: true })
       assert.ok(u6 instanceof Unit)
       assert.deepStrictEqual(u5, u6)
 
@@ -1169,9 +1169,9 @@ describe('Unit', function () {
   describe('createUnit', function () {
     it('should create multiple units', function () {
       Unit.createUnit({
-        'foo1': '',
-        'foo2': '2 foo1',
-        'foo3': {
+        foo1: '',
+        foo2: '2 foo1',
+        foo3: {
           definition: '2 foo2',
           prefixes: 'long'
         }
@@ -1198,7 +1198,7 @@ describe('Unit', function () {
       assert.strictEqual((new Unit(1, 'm')).splitUnit(['ft', 'ft']).toString(), '3 ft,0.280839895013123 ft')
       assert.strictEqual((new Unit(1.23, 'm/s')).splitUnit([]).toString(), '1.23 m / s')
       assert.strictEqual((new Unit(1, 'm')).splitUnit(['in', 'ft']).toString(), '39 in,0.030839895013123605 ft')
-      assert.strictEqual((new Unit(1, 'm')).splitUnit([ new Unit(null, 'ft'), new Unit(null, 'in') ]).toString(), '3 ft,3.3700787401574765 in')
+      assert.strictEqual((new Unit(1, 'm')).splitUnit([new Unit(null, 'ft'), new Unit(null, 'in')]).toString(), '3 ft,3.3700787401574765 in')
     })
 
     it('should be resistant to round-off error', function () {

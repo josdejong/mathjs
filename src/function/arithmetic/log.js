@@ -41,7 +41,7 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *            Returns the logarithm of `x`
    */
   const log = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if (x >= 0 || config.predictable) {
         return logNumber(x)
       } else {
@@ -50,11 +50,11 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
       }
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.log()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       if (!x.isNegative() || config.predictable) {
         return x.ln()
       } else {

@@ -28,17 +28,17 @@ export const createCsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
    * @return {number | Complex | Array | Matrix} Cosecant of x
    */
   const csc = typed(name, {
-    'number': cscNumber,
+    number: cscNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.csc()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return new BigNumber(1).div(x.sin())
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function csc is no angle')
       }

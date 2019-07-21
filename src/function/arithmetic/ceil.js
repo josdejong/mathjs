@@ -37,7 +37,7 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   const ceil = typed('ceil', {
-    'number': function (x) {
+    number: function (x) {
       if (nearlyEqual(x, round(x), config.epsilon)) {
         return round(x)
       } else {
@@ -45,11 +45,11 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.ceil()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       if (bigNearlyEqual(x, round(x), config.epsilon)) {
         return round(x)
       } else {
@@ -57,7 +57,7 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.ceil()
     },
 

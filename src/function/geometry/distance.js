@@ -87,8 +87,8 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_2d(x)) { throw new TypeError('Values of pointX and pointY should be numbers or BigNumbers') }
         if (!_2d(y)) { throw new TypeError('Values of lineOnePtX and lineOnePtY should be numbers or BigNumbers') }
         if (!_2d(z)) { throw new TypeError('Values of lineTwoPtX and lineTwoPtY should be numbers or BigNumbers') }
-        if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('lineOnePtX') &&
-          y.hasOwnProperty('lineOnePtY') && z.hasOwnProperty('lineTwoPtX') && z.hasOwnProperty('lineTwoPtY')) {
+        if ('pointX' in x && 'pointY' in x && 'lineOnePtX' in y &&
+          'lineOnePtY' in y && 'lineTwoPtX' in z && 'lineTwoPtY' in z) {
           const m = divideScalar(subtract(z.lineTwoPtY, z.lineTwoPtX), subtract(y.lineOnePtY, y.lineOnePtX))
           const xCoeff = multiplyScalar(multiplyScalar(m, m), y.lineOnePtX)
           const yCoeff = unaryMinus(multiplyScalar(m, y.lineOnePtX))
@@ -155,8 +155,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_3d(y)) {
           throw new TypeError('Values of xCoeffLine, yCoeffLine and constant should be numbers or BigNumbers')
         }
-        if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('xCoeffLine') &&
-          y.hasOwnProperty('yCoeffLine') && y.hasOwnProperty('constant')) {
+        if ('pointX' in x && 'pointY' in x && 'xCoeffLine' in y && 'yCoeffLine' in y && 'constant' in y) {
           return _distancePointLine2D(x.pointX, x.pointY, y.xCoeffLine, y.yCoeffLine, y.constant)
         } else {
           throw new TypeError('Key names do not match')
@@ -169,9 +168,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_parametricLine(y)) {
           throw new TypeError('Values of x0, y0, z0, a, b and c should be numbers or BigNumbers')
         }
-        if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('x0') &&
-          y.hasOwnProperty('y0') && y.hasOwnProperty('z0') && y.hasOwnProperty('a') &&
-          y.hasOwnProperty('b') && y.hasOwnProperty('c')) {
+        if ('pointX' in x && 'pointY' in x && 'x0' in y && 'y0' in y && 'z0' in y && 'a' in y && 'b' in y && 'c' in y) {
           return _distancePointLine3D(x.pointX, x.pointY, x.pointZ, y.x0, y.y0, y.z0, y.a, y.b, y.c)
         } else {
           throw new TypeError('Key names do not match')
@@ -184,8 +181,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_2d(y)) {
           throw new TypeError('Values of pointTwoX and pointTwoY should be numbers or BigNumbers')
         }
-        if (x.hasOwnProperty('pointOneX') && x.hasOwnProperty('pointOneY') &&
-          y.hasOwnProperty('pointTwoX') && y.hasOwnProperty('pointTwoY')) {
+        if ('pointOneX' in x && 'pointOneY' in x && 'pointTwoX' in y && 'pointTwoY' in y) {
           return _distance2d(x.pointOneX, x.pointOneY, y.pointTwoX, y.pointTwoY)
         } else {
           throw new TypeError('Key names do not match')
@@ -198,8 +194,9 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_3d(y)) {
           throw new TypeError('Values of pointTwoX, pointTwoY and pointTwoZ should be numbers or BigNumbers')
         }
-        if (x.hasOwnProperty('pointOneX') && x.hasOwnProperty('pointOneY') && x.hasOwnProperty('pointOneZ') &&
-          y.hasOwnProperty('pointTwoX') && y.hasOwnProperty('pointTwoY') && y.hasOwnProperty('pointTwoZ')) {
+        if ('pointOneX' in x && 'pointOneY' in x && 'pointOneZ' in x &&
+          'pointTwoX' in y && 'pointTwoY' in y && 'pointTwoZ' in y
+        ) {
           return _distance3d(x.pointOneX, x.pointOneY, x.pointOneZ, y.pointTwoX, y.pointTwoY, y.pointTwoZ)
         } else {
           throw new TypeError('Key names do not match')
@@ -208,7 +205,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         throw new TypeError('Invalid Arguments: Try again')
       }
     },
-    'Array': function (arr) {
+    Array: function (arr) {
       if (!_pairwise(arr)) { throw new TypeError('Incorrect array format entered for pairwise distance calculation') }
 
       return _distancePairwise(arr)
@@ -276,9 +273,9 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
   }
 
   function _distancePointLine3D (x, y, z, x0, y0, z0, a, b, c) {
-    let num = [ subtract(multiplyScalar(subtract(y0, y), c), multiplyScalar(subtract(z0, z), b)),
+    let num = [subtract(multiplyScalar(subtract(y0, y), c), multiplyScalar(subtract(z0, z), b)),
       subtract(multiplyScalar(subtract(z0, z), a), multiplyScalar(subtract(x0, x), c)),
-      subtract(multiplyScalar(subtract(x0, x), b), multiplyScalar(subtract(y0, y), a)) ]
+      subtract(multiplyScalar(subtract(x0, x), b), multiplyScalar(subtract(y0, y), a))]
     num = sqrt(addScalar(addScalar(multiplyScalar(num[0], num[0]), multiplyScalar(num[1], num[1])), multiplyScalar(num[2], num[2])))
     const den = sqrt(addScalar(addScalar(multiplyScalar(a, a), multiplyScalar(b, b)), multiplyScalar(c, c)))
     return divideScalar(num, den)

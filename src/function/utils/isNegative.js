@@ -36,17 +36,17 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
    *                    Throws an error in case of an unknown data type.
    */
   const isNegative = typed(name, {
-    'number': isNegativeNumber,
+    number: isNegativeNumber,
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.isNeg() && !x.isZero() && !x.isNaN()
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.s < 0 // It's enough to decide on the sign
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return isNegative(x.value)
     },
 

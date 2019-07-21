@@ -32,17 +32,17 @@ export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *            Returns true when input is a zero or empty value.
    */
   const not = typed(name, {
-    'number': notNumber,
+    number: notNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.re === 0 && x.im === 0
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.isZero() || x.isNaN()
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return x.value !== null ? not(x.value) : true
     },
 

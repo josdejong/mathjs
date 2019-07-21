@@ -33,7 +33,7 @@ export const createExpm = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   return typed(name, {
 
-    'Matrix': function (A) {
+    Matrix: function (A) {
       // Check matrix size
       const size = A.size()
 

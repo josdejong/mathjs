@@ -3,7 +3,7 @@ import { deepMap } from '../../utils/collection'
 import { log1p as _log1p } from '../../utils/number'
 
 const name = 'log1p'
-const dependencies = [ 'typed', 'config', 'divideScalar', 'log', 'Complex' ]
+const dependencies = ['typed', 'config', 'divideScalar', 'log', 'Complex']
 
 export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, log, Complex }) => {
   /**
@@ -38,7 +38,7 @@ export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *            Returns the logarithm of `x+1`
    */
   const log1p = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if (x >= -1 || config.predictable) {
         return _log1p(x)
       } else {
@@ -47,9 +47,9 @@ export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
     },
 
-    'Complex': _log1pComplex,
+    Complex: _log1pComplex,
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       const y = x.plus(1)
       if (!y.isNegative() || config.predictable) {
         return y.ln()

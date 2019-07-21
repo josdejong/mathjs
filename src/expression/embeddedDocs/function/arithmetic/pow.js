@@ -1,18 +1,18 @@
 export const powDocs = {
-  'name': 'pow',
-  'category': 'Operators',
-  'syntax': [
+  name: 'pow',
+  category: 'Operators',
+  syntax: [
     'x ^ y',
     'pow(x, y)'
   ],
-  'description':
+  description:
       'Calculates the power of x to y, x^y.',
-  'examples': [
+  examples: [
     '2^3',
     '2*2*2',
     '1 + e ^ (pi * i)'
   ],
-  'seealso': [
+  seealso: [
     'multiply',
     'nthRoot',
     'nthRoots',

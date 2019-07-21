@@ -158,41 +158,41 @@ describe('reviver', function () {
 
   it('should parse a stringified node tree', function () {
     const json = JSON.stringify({
-      'mathjs': 'OperatorNode',
-      'op': '+',
-      'fn': 'add',
-      'args': [
+      mathjs: 'OperatorNode',
+      op: '+',
+      fn: 'add',
+      args: [
         {
-          'mathjs': 'ConstantNode',
-          'value': 2
+          mathjs: 'ConstantNode',
+          value: 2
         },
         {
-          'mathjs': 'FunctionNode',
-          'fn': {
-            'mathjs': 'SymbolNode',
-            'name': 'sin'
+          mathjs: 'FunctionNode',
+          fn: {
+            mathjs: 'SymbolNode',
+            name: 'sin'
           },
-          'args': [
+          args: [
             {
-              'mathjs': 'OperatorNode',
-              'op': '*',
-              'fn': 'multiply',
-              'args': [
+              mathjs: 'OperatorNode',
+              op: '*',
+              fn: 'multiply',
+              args: [
                 {
-                  'mathjs': 'ConstantNode',
-                  'value': 3
+                  mathjs: 'ConstantNode',
+                  value: 3
                 },
                 {
-                  'mathjs': 'SymbolNode',
-                  'name': 'x'
+                  mathjs: 'SymbolNode',
+                  name: 'x'
                 }
               ],
-              'implicit': true
+              implicit: true
             }
           ]
         }
       ],
-      'implicit': false
+      implicit: false
     })
 
     const node = JSON.parse(json, reviver)

@@ -169,8 +169,6 @@ function minify (done) {
 
     log('Minified ' + FILE_MIN)
     log('Mapped ' + FILE_MAP)
-  } catch (e) {
-    throw e
   } finally {
     process.chdir(oldCwd)
   }

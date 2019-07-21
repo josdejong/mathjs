@@ -1,7 +1,7 @@
 export const indexDocs = {
-  'name': 'index',
-  'category': 'Construction',
-  'syntax': [
+  name: 'index',
+  category: 'Construction',
+  syntax: [
     '[start]',
     '[start:end]',
     '[start:step:end]',
@@ -9,9 +9,9 @@ export const indexDocs = {
     '[start1:end1, start2:end2, ...]',
     '[start1:step1:end1, start2:step2:end2, ...]'
   ],
-  'description':
+  description:
       'Create an index to get or replace a subset of a matrix',
-  'examples': [
+  examples: [
     '[]',
     '[1, 2, 3]',
     'A = [1, 2, 3; 4, 5, 6]',
@@ -19,7 +19,7 @@ export const indexDocs = {
     'A[1, 2] = 50',
     'A[0:2, 0:2] = ones(2, 2)'
   ],
-  'seealso': [
+  seealso: [
     'bignumber', 'boolean', 'complex', 'matrix,', 'number', 'range', 'string', 'unit'
   ]
 }

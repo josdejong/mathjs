@@ -33,17 +33,17 @@ export const createSquare = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *            Squared value
    */
   const square = typed(name, {
-    'number': squareNumber,
+    number: squareNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.mul(x)
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.times(x)
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.mul(x)
     },
 
@@ -52,7 +52,7 @@ export const createSquare = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return deepMap(x, square, true)
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return x.pow(2)
     }
   })

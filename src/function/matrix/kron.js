@@ -69,7 +69,7 @@ export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       throw new RangeError('Vectors with dimensions greater then 2 are not supported expected ' +
             '(Size x = ' + JSON.stringify(a.length) + ', y = ' + JSON.stringify(b.length) + ')')
     }
-    let t = []
+    const t = []
     let r = []
 
     return a.map(function (a) {

@@ -1,13 +1,13 @@
 export const booleanDocs = {
-  'name': 'boolean',
-  'category': 'Construction',
-  'syntax': [
+  name: 'boolean',
+  category: 'Construction',
+  syntax: [
     'x',
     'boolean(x)'
   ],
-  'description':
+  description:
       'Convert a string or number into a boolean.',
-  'examples': [
+  examples: [
     'boolean(0)',
     'boolean(1)',
     'boolean(3)',
@@ -15,7 +15,7 @@ export const booleanDocs = {
     'boolean("false")',
     'boolean([1, 0, 1, 1])'
   ],
-  'seealso': [
+  seealso: [
     'bignumber', 'complex', 'index', 'matrix', 'number', 'string', 'unit'
   ]
 }

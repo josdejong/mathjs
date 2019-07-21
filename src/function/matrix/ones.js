@@ -61,9 +61,9 @@ export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
 
-    'Array': _ones,
+    Array: _ones,
 
-    'Matrix': function (size) {
+    Matrix: function (size) {
       const format = size.storage()
       return _ones(size.valueOf(), format)
     },

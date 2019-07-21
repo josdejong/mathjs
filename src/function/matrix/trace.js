@@ -34,16 +34,16 @@ export const createTrace = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number} The trace of `x`
    */
   return typed('trace', {
-    'Array': function _arrayTrace (x) {
+    Array: function _arrayTrace (x) {
       // use dense matrix implementation
       return _denseTrace(matrix(x))
     },
 
-    'SparseMatrix': _sparseTrace,
+    SparseMatrix: _sparseTrace,
 
-    'DenseMatrix': _denseTrace,
+    DenseMatrix: _denseTrace,
 
-    'any': clone
+    any: clone
   })
 
   function _denseTrace (m) {

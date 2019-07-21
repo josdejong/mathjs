@@ -54,7 +54,7 @@ describe('distance', function () {
 
   it('should calculate pairwise distance between more than two 2D points accurately', function () {
     assert.deepStrictEqual(math.distance([[1, 2], [1, 2], [1, 3]]), [0, 1, 1])
-    assert.deepStrictEqual(math.distance([[0, 2], [-2, 0], [0, 2]]), [ 2.8284271247461903, 0, 2.8284271247461903 ])
+    assert.deepStrictEqual(math.distance([[0, 2], [-2, 0], [0, 2]]), [2.8284271247461903, 0, 2.8284271247461903])
     assert.deepStrictEqual(math.distance([[1, 2], [2, 3], [2, 4], [3, 0]]),
       [1.4142135623730951, 2.23606797749979, 2.8284271247461903, 1, 3.1622776601683795, 4.123105625617661])
   })
@@ -100,7 +100,7 @@ describe('distance', function () {
     assert.deepStrictEqual(bigmath.evaluate('distance([1, 2, 3], [-2, -3, -4])'), bignumber('9.1104335791442988819456261046887'))
     assert.deepStrictEqual(bigmath.evaluate('distance({pointOneX: 0, pointOneY: 0}, {pointTwoX: 10, pointTwoY: 10})'), bignumber('14.142135623730950488016887242097'))
     assert.deepStrictEqual(bigmath.evaluate('distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 10})'), bignumber('3.4641016151377545870548926830117'))
-    assert.deepStrictEqual(bigmath.evaluate('distance([[0,2],[-2,0],[0,2]])'), [ bignumber('2.8284271247461900976033774484194'), bignumber('0'), bignumber('2.8284271247461900976033774484194') ])
+    assert.deepStrictEqual(bigmath.evaluate('distance([[0,2],[-2,0],[0,2]])'), [bignumber('2.8284271247461900976033774484194'), bignumber('0'), bignumber('2.8284271247461900976033774484194')])
     assert.deepStrictEqual(bigmath.evaluate('distance([[1,2,4],[1,2,6],[8,1,3]])'), [bignumber('2'), bignumber('7.1414284285428499979993998113673'), bignumber('7.6811457478686081757696870217314')])
     assert.deepStrictEqual(bigmath.evaluate('distance([0.23, -0.1240], [-0.232, 13.292], [-0.34, 0.346])'), bignumber('10.658908662088362142660358292758'))
     assert.deepStrictEqual(bigmath.evaluate('distance({pointX: 1, pointY: 4}, {lineOnePtX: 6, lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8})'),

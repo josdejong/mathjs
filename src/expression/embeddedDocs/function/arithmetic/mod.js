@@ -1,14 +1,14 @@
 export const modDocs = {
-  'name': 'mod',
-  'category': 'Operators',
-  'syntax': [
+  name: 'mod',
+  category: 'Operators',
+  syntax: [
     'x % y',
     'x mod y',
     'mod(x, y)'
   ],
-  'description':
+  description:
       'Calculates the modulus, the remainder of an integer division.',
-  'examples': [
+  examples: [
     '7 % 3',
     '11 % 2',
     '10 mod 4',
@@ -16,5 +16,5 @@ export const modDocs = {
     'isOdd(2)',
     'isOdd(3)'
   ],
-  'seealso': ['divide']
+  seealso: ['divide']
 }

@@ -106,7 +106,7 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @return {string} The formatted value
    */
   return typed(name, {
-    'any': formatString,
+    any: formatString,
     'any, Object | function | number': formatString
   })
 })

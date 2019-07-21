@@ -65,7 +65,7 @@ export const createTypeOf = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *                  For example 'number', 'string', 'Array', 'Date'.
    */
   return typed(name, {
-    'any': _typeOf
+    any: _typeOf
   })
 })
 

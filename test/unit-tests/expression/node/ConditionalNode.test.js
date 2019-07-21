@@ -43,7 +43,7 @@ describe('ConditionalNode', function () {
   it('should lazy evaluate a ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
     const expr = n.compile()
-    let scope = {}
+    const scope = {}
     assert.strictEqual(expr.evaluate(scope), 2)
     assert.deepStrictEqual(scope, { a: 2 })
   })
