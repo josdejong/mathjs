@@ -1,13 +1,13 @@
 export const largerDocs = {
-  'name': 'larger',
-  'category': 'Relational',
-  'syntax': [
+  name: 'larger',
+  category: 'Relational',
+  syntax: [
     'x > y',
     'larger(x, y)'
   ],
-  'description':
+  description:
       'Check if value x is larger than y. Returns true if x is larger than y, and false if not.',
-  'examples': [
+  examples: [
     '2 > 3',
     '5 > 2*2',
     'a = 3.3',
@@ -16,7 +16,7 @@ export const largerDocs = {
     '(b < a)',
     '5 cm > 2 inch'
   ],
-  'seealso': [
+  seealso: [
     'equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compare'
   ]
 }

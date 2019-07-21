@@ -28,7 +28,7 @@ export const createAcosh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosine of x
    */
   const acosh = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if (x >= 1 || config.predictable) {
         return acoshNumber(x)
       }
@@ -38,11 +38,11 @@ export const createAcosh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return new Complex(x, 0).acosh()
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.acosh()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.acosh()
     },
 

@@ -13,7 +13,7 @@ describe('BigNumber', function () {
   })
 
   it('toJSON', function () {
-    assert.deepStrictEqual(new math.BigNumber(5).toJSON(), { 'mathjs': 'BigNumber', value: '5' })
+    assert.deepStrictEqual(new math.BigNumber(5).toJSON(), { mathjs: 'BigNumber', value: '5' })
   })
 
   it('fromJSON', function () {

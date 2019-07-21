@@ -15,7 +15,7 @@
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csLeaf (i, j, w, first, maxfirst, prevleaf, ancestor) {
-  let s, sparent, jprev
+  let s, sparent
 
   // our result
   let jleaf = 0
@@ -26,7 +26,7 @@ export function csLeaf (i, j, w, first, maxfirst, prevleaf, ancestor) {
   // update max first[j] seen so far
   w[maxfirst + i] = w[first + j]
   // jprev = previous leaf of ith subtree
-  jprev = w[prevleaf + i]
+  const jprev = w[prevleaf + i]
   w[prevleaf + i] = j
 
   // check j is first or subsequent leaf

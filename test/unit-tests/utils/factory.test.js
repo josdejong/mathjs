@@ -38,16 +38,16 @@ describe('factory', function () {
     function fn4 () { return 4 }
     function fn5 () { return 5 }
 
-    assert.deepStrictEqual(sortFactories([ fn3factory, fn2factory, fn1, fn4, fn5 ])
+    assert.deepStrictEqual(sortFactories([fn3factory, fn2factory, fn1, fn4, fn5])
       .map(f => f.fn || f.name), ['fn1', 'fn2', 'fn3', 'fn4', 'fn5'])
 
-    assert.deepStrictEqual(sortFactories([ fn1, fn2factory, fn3factory, fn4, fn5 ])
+    assert.deepStrictEqual(sortFactories([fn1, fn2factory, fn3factory, fn4, fn5])
       .map(f => f.fn || f.name), ['fn1', 'fn2', 'fn3', 'fn4', 'fn5'])
 
-    assert.deepStrictEqual(sortFactories([ fn4, fn5, fn1, fn2factory, fn3factory ])
+    assert.deepStrictEqual(sortFactories([fn4, fn5, fn1, fn2factory, fn3factory])
       .map(f => f.fn || f.name), ['fn1', 'fn2', 'fn3', 'fn4', 'fn5'])
 
-    assert.deepStrictEqual(sortFactories([ fn5, fn4, fn1, fn2factory, fn3factory ])
+    assert.deepStrictEqual(sortFactories([fn5, fn4, fn1, fn2factory, fn3factory])
       .map(f => f.fn || f.name), ['fn1', 'fn2', 'fn3', 'fn5', 'fn4'])
   })
 
@@ -57,7 +57,7 @@ describe('factory', function () {
     const fn3 = factory('fn3', [], () => {})
     const fn4 = factory('fn4', ['fn3'], () => {})
 
-    assert.deepStrictEqual(sortFactories([ fn1, fn2, fn3, fn4 ])
+    assert.deepStrictEqual(sortFactories([fn1, fn2, fn3, fn4])
       .map(f => f.fn || f.name), ['fn1', 'fn3', 'fn4', 'fn2'])
   })
 
@@ -66,10 +66,10 @@ describe('factory', function () {
     const fn1factory = factory('fn1', ['fn2'], () => {})
     const fn2factory = factory('fn2', ['fn1'], () => {})
 
-    assert.deepStrictEqual(sortFactories([ fn1factory, fn2factory ])
+    assert.deepStrictEqual(sortFactories([fn1factory, fn2factory])
       .map(f => f.fn), ['fn1', 'fn2'])
 
-    assert.deepStrictEqual(sortFactories([ fn2factory, fn1factory ])
+    assert.deepStrictEqual(sortFactories([fn2factory, fn1factory])
       .map(f => f.fn), ['fn2', 'fn1'])
   })
 

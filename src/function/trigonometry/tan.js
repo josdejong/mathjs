@@ -29,17 +29,17 @@ export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {number | BigNumber | Complex | Array | Matrix} Tangent of x
    */
   const tan = typed(name, {
-    'number': Math.tan,
+    number: Math.tan,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.tan()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.tan()
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function tan is no angle')
       }

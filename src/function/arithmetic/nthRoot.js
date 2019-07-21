@@ -58,16 +58,16 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
   )
   const nthRoot = typed(name, {
 
-    'number': function (x) {
+    number: function (x) {
       return nthRootNumber(x, 2)
     },
 
     'number, number': nthRootNumber,
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return _bigNthRoot(x, new BigNumber(2))
     },
-    'Complex': function (x) {
+    Complex: function (x) {
       throw new Error(complexErr)
     },
     'Complex, number': function (x, y) {
@@ -203,7 +203,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
 
 export const createNthRootNumber = /* #__PURE__ */ factory(name, ['typed'], ({ typed }) => {
   return typed(name, {
-    'number': nthRootNumber,
+    number: nthRootNumber,
     'number, number': nthRootNumber
   })
 })

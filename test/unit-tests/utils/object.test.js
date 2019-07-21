@@ -11,7 +11,7 @@ import {
   pick,
   set,
   traverse,
-  deepFlatten
+  deepFlatten, hasOwnProperty
 } from '../../../src/utils/object'
 
 describe('object', function () {
@@ -102,7 +102,7 @@ describe('object', function () {
       const o2 = extend({}, o1)
 
       assert.strictEqual(o2['foo'], 'bar')
-      assert.strictEqual(o2.hasOwnProperty('foo'), false)
+      assert.strictEqual(hasOwnProperty(o2, 'foo'), false)
 
       delete Object.prototype.foo
     })
@@ -137,7 +137,7 @@ describe('object', function () {
       const o2 = deepExtend({}, o1)
 
       assert.strictEqual(o2['foo'], 'bar')
-      assert.strictEqual(o2.hasOwnProperty('foo'), false)
+      assert.strictEqual(hasOwnProperty(o2, 'foo'), false)
 
       delete Object.prototype.foo
     })

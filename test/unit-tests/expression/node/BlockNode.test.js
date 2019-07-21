@@ -51,7 +51,7 @@ describe('BlockNode', function () {
       }
     ])
 
-    let scope = {}
+    const scope = {}
     assert.deepStrictEqual(n.compile().evaluate(scope), new ResultSet([5, 3]))
     assert.deepStrictEqual(scope, { foo: 3 })
   })
@@ -244,11 +244,11 @@ describe('BlockNode', function () {
   })
 
   it('test equality another Node', function () {
-    const a = new BlockNode([ { node: new SymbolNode('x') }, { node: new ConstantNode(2) } ])
-    const b = new BlockNode([ { node: new SymbolNode('x') }, { node: new ConstantNode(2) } ])
-    const c = new BlockNode([ { node: new SymbolNode('x') }, { node: new ConstantNode(4) } ])
-    const d = new BlockNode([ { node: new SymbolNode('x') }, { node: new ConstantNode(2), visible: false } ])
-    const e = new BlockNode([ { node: new SymbolNode('x') }, { node: new ConstantNode(2) }, { node: new ConstantNode(5) } ])
+    const a = new BlockNode([{ node: new SymbolNode('x') }, { node: new ConstantNode(2) }])
+    const b = new BlockNode([{ node: new SymbolNode('x') }, { node: new ConstantNode(2) }])
+    const c = new BlockNode([{ node: new SymbolNode('x') }, { node: new ConstantNode(4) }])
+    const d = new BlockNode([{ node: new SymbolNode('x') }, { node: new ConstantNode(2), visible: false }])
+    const e = new BlockNode([{ node: new SymbolNode('x') }, { node: new ConstantNode(2) }, { node: new ConstantNode(5) }])
 
     assert.strictEqual(a.equals(null), false)
     assert.strictEqual(a.equals(undefined), false)
@@ -304,7 +304,7 @@ describe('BlockNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'BlockNode',
-      blocks: [ bBlock, cBlock ]
+      blocks: [bBlock, cBlock]
     })
 
     const parsed = BlockNode.fromJSON(json)

@@ -139,9 +139,9 @@ describe('bitOr', function () {
     // sparse - sparse pattern
     a = math.sparse([[1, 1], [0, 0]])
     b = new math.SparseMatrix({
-      index: [ 0, 1 ],
-      ptr: [ 0, 1, 2 ],
-      size: [ 2, 2 ]
+      index: [0, 1],
+      ptr: [0, 1, 2],
+      size: [2, 2]
     })
     c = bitOr(a, b)
     assert.deepStrictEqual(

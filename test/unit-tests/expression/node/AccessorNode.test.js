@@ -52,7 +52,7 @@ describe('AccessorNode', function () {
     const n = new bigmath.AccessorNode(a, index)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: [[1, 2], [3, 4]]
     }
     assert.strictEqual(expr.evaluate(scope), 3)
@@ -70,7 +70,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: [[1, 2], [3, 4]]
     }
     assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
@@ -82,7 +82,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: { b: 42 }
     }
     assert.deepStrictEqual(expr.evaluate(scope), 42)
@@ -94,7 +94,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: [1, 2, 3]
     }
     assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
@@ -106,7 +106,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: math.matrix([1, 2, 3])
     }
     assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
@@ -118,7 +118,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: 'hey'
     }
     assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
@@ -130,7 +130,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: {}
     }
     assert.throws(function () { expr.evaluate(scope) }, /Cannot apply a numeric index as object property/)
@@ -142,7 +142,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: 42
     }
     assert.throws(function () { expr.evaluate(scope) }, /Cannot apply index: unsupported type of object/)
@@ -161,7 +161,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: [[1, 2], [3, 4]]
     }
     assert.deepStrictEqual(expr.evaluate(scope), [[4, 3]])
@@ -179,7 +179,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: [[1, 2], [3, 4]]
     }
     assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
@@ -193,7 +193,7 @@ describe('AccessorNode', function () {
       new bigmath.IndexNode([b, c]))
     const expr = n.compile()
 
-    let scope = {
+    const scope = {
       a: [[1, 2], [3, 4]]
     }
     assert.deepStrictEqual(expr.evaluate(scope), 3)

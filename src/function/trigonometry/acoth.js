@@ -28,18 +28,18 @@ export const createAcoth = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | Complex | Array | Matrix} Hyperbolic arccotangent of x
    */
   const acoth = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if (x >= 1 || x <= -1 || config.predictable) {
         return acothNumber(x)
       }
       return new Complex(x, 0).acoth()
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.acoth()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return new BigNumber(1).div(x).atanh()
     },
 

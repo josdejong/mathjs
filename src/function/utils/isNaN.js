@@ -36,21 +36,21 @@ export const createIsNaN = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    *                    Throws an error in case of an unknown data type.
    */
   return typed(name, {
-    'number': isNaNNumber,
+    number: isNaNNumber,
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.isNaN()
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return false
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.isNaN()
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return Number.isNaN(x.value)
     },
 

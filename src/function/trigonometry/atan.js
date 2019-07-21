@@ -29,15 +29,15 @@ export const createAtan = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @return {number | BigNumber | Complex | Array | Matrix} The arc tangent of x
    */
   const atan = typed('atan', {
-    'number': function (x) {
+    number: function (x) {
       return Math.atan(x)
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.atan()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.atan()
     },
 

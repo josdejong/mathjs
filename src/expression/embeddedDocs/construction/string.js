@@ -1,18 +1,18 @@
 export const stringDocs = {
-  'name': 'string',
-  'category': 'Construction',
-  'syntax': [
+  name: 'string',
+  category: 'Construction',
+  syntax: [
     '"text"',
     'string(x)'
   ],
-  'description':
+  description:
       'Create a string or convert a value to a string',
-  'examples': [
+  examples: [
     '"Hello World!"',
     'string(4.2)',
     'string(3 + 2i)'
   ],
-  'seealso': [
+  seealso: [
     'bignumber', 'boolean', 'complex', 'index', 'matrix', 'number', 'unit'
   ]
 }

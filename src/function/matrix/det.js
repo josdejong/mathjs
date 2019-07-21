@@ -33,7 +33,7 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * @return {number} The determinant of `x`
    */
   return typed(name, {
-    'any': function (x) {
+    any: function (x) {
       return clone(x)
     },
 

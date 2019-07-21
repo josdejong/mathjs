@@ -1,16 +1,16 @@
 export const setIntersectDocs = {
-  'name': 'setIntersect',
-  'category': 'Set',
-  'syntax': [
+  name: 'setIntersect',
+  category: 'Set',
+  syntax: [
     'setIntersect(set1, set2)'
   ],
-  'description':
+  description:
       'Create the intersection of two (multi)sets. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
-  'examples': [
+  examples: [
     'setIntersect([1, 2, 3, 4], [3, 4, 5, 6])',
     'setIntersect([[1, 2], [3, 4]], [[3, 4], [5, 6]])'
   ],
-  'seealso': [
+  seealso: [
     'setUnion', 'setDifference'
   ]
 }

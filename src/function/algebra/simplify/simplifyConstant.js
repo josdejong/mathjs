@@ -52,20 +52,20 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   }
 
   const _toNode = typed({
-    'Fraction': _fractionToNode,
-    'number': function (n) {
+    Fraction: _fractionToNode,
+    number: function (n) {
       if (n < 0) {
         return unaryMinusNode(new ConstantNode(-n))
       }
       return new ConstantNode(n)
     },
-    'BigNumber': function (n) {
+    BigNumber: function (n) {
       if (n < 0) {
         return unaryMinusNode(new ConstantNode(-n))
       }
       return new ConstantNode(n) // old parameters: (n.toString(), 'number')
     },
-    'Complex': function (s) {
+    Complex: function (s) {
       throw new Error('Cannot convert Complex number to Node')
     }
   })
@@ -181,7 +181,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         }
 
         // Process operators as OperatorNode
-        const operatorFunctions = [ 'add', 'multiply' ]
+        const operatorFunctions = ['add', 'multiply']
         if (operatorFunctions.indexOf(node.name) === -1) {
           let args = node.args.map(arg => foldFraction(arg, options))
 

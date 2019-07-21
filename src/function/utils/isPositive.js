@@ -38,17 +38,17 @@ export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ t
    *                    Throws an error in case of an unknown data type.
    */
   const isPositive = typed(name, {
-    'number': isPositiveNumber,
+    number: isPositiveNumber,
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return !x.isNeg() && !x.isZero() && !x.isNaN()
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.s > 0 && x.n > 0
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return isPositive(x.value)
     },
 

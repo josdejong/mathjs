@@ -37,17 +37,17 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *            The sign of `x`
    */
   const sign = typed(name, {
-    'number': signNumber,
+    number: signNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.sign()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return new BigNumber(x.cmp(0))
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return new Fraction(x.s, 1)
     },
 
@@ -56,7 +56,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return deepMap(x, sign, true)
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return sign(x.value)
     }
   })

@@ -53,7 +53,7 @@ export const createCreateUnit = /* #__PURE__ */ factory(name, dependencies, ({ t
     },
 
     // Same as above but without the options.
-    'Object': function (obj) {
+    Object: function (obj) {
       return Unit.createUnit(obj, {})
     },
 
@@ -72,7 +72,7 @@ export const createCreateUnit = /* #__PURE__ */ factory(name, dependencies, ({ t
     },
 
     // Without a definition, creates a base unit.
-    'string': function (name) {
+    string: function (name) {
       const obj = {}
       obj[name] = {}
       return Unit.createUnit(obj, {})

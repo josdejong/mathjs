@@ -31,15 +31,15 @@ export const createConj = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *            The complex conjugate of x
    */
   const conj = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       return x
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.conjugate()
     },
 

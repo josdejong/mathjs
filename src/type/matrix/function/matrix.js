@@ -1,7 +1,7 @@
 import { factory } from '../../../utils/factory'
 
 const name = 'matrix'
-const dependencies = [ 'typed', 'Matrix', 'DenseMatrix', 'SparseMatrix' ]
+const dependencies = ['typed', 'Matrix', 'DenseMatrix', 'SparseMatrix']
 
 export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Matrix, DenseMatrix, SparseMatrix }) => {
   /**
@@ -41,7 +41,7 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return _create([])
     },
 
-    'string': function (format) {
+    string: function (format) {
       return _create([], format)
     },
 
@@ -49,11 +49,11 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return _create([], format, datatype)
     },
 
-    'Array': function (data) {
+    Array: function (data) {
       return _create(data)
     },
 
-    'Matrix': function (data) {
+    Matrix: function (data) {
       return _create(data, data.storage())
     },
 

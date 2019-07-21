@@ -38,7 +38,7 @@ describe('map', function () {
 
   it('should invoke a typed function with correct number of arguments (1)', function () {
     const output = math.map([1, 2, 3], math.typed('callback', {
-      'number': function (value) {
+      number: function (value) {
         return value + 2
       }
     }))

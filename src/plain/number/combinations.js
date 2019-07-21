@@ -2,8 +2,6 @@ import { isInteger } from '../../utils/number'
 import { product } from '../../utils/product'
 
 export function combinationsNumber (n, k) {
-  let prodrange, nMinusk
-
   if (!isInteger(n) || n < 0) {
     throw new TypeError('Positive integer value expected in function combinations')
   }
@@ -14,8 +12,9 @@ export function combinationsNumber (n, k) {
     throw new TypeError('k must be less than or equal to n')
   }
 
-  nMinusk = n - k
+  const nMinusk = n - k
 
+  let prodrange
   if (k < nMinusk) {
     prodrange = product(nMinusk + 1, n)
     return prodrange / product(1, k)

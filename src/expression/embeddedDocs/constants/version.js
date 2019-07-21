@@ -1,12 +1,12 @@
 export const versionDocs = {
-  'name': 'version',
-  'category': 'Constants',
-  'syntax': [
+  name: 'version',
+  category: 'Constants',
+  syntax: [
     'version'
   ],
-  'description': 'A string with the version number of math.js',
-  'examples': [
+  description: 'A string with the version number of math.js',
+  examples: [
     'version'
   ],
-  'seealso': []
+  seealso: []
 }

@@ -28,18 +28,18 @@ export const createAtanh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | Complex | Array | Matrix} Hyperbolic arctangent of x
    */
   const atanh = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if ((x <= 1 && x >= -1) || config.predictable) {
         return atanhNumber(x)
       }
       return new Complex(x, 0).atanh()
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.atanh()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.atanh()
     },
 

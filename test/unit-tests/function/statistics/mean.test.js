@@ -51,10 +51,10 @@ describe('mean', function () {
   })
 
   const inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
-    [ [10, 20], [30, 40], [50, 60] ],
-    [ [70, 80], [90, 100], [110, 120] ],
-    [ [130, 140], [150, 160], [170, 180] ],
-    [ [190, 200], [210, 220], [230, 240] ]
+    [[10, 20], [30, 40], [50, 60]],
+    [[70, 80], [90, 100], [110, 120]],
+    [[130, 140], [150, 160], [170, 180]],
+    [[190, 200], [210, 220], [230, 240]]
   ]
 
   it('should return the mean value along a dimension on a matrix', function () {

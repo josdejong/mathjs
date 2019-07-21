@@ -16,7 +16,7 @@ console.log('    ' + math.simplify(simplifyExpr))
 console.log('derivative ' + derivativeExpr)
 console.log('    ' + math.derivative(derivativeExpr, 'x'))
 
-let results = []
+const results = []
 
 const suite = new Benchmark.Suite()
 suite

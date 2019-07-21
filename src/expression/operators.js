@@ -16,13 +16,15 @@
 //                  left argument doesn't need to be enclosed
 //                  in parentheses
 // latexRightParens: the same for the right argument
+import { hasOwnProperty } from '../utils/object'
+
 export const properties = [
   { // assignment
-    'AssignmentNode': {},
-    'FunctionAssignmentNode': {}
+    AssignmentNode: {},
+    FunctionAssignmentNode: {}
   },
   { // conditional expression
-    'ConditionalNode': {
+    ConditionalNode: {
       latexLeftParens: false,
       latexRightParens: false,
       latexParens: false
@@ -92,7 +94,7 @@ export const properties = [
       associativity: 'left',
       associativeWith: []
     },
-    'RelationalNode': {
+    RelationalNode: {
       associativity: 'left',
       associativeWith: []
     }
@@ -118,7 +120,7 @@ export const properties = [
     }
   },
   { // range
-    'RangeNode': {}
+    RangeNode: {}
   },
   { // addition, subtraction
     'OperatorNode:add': {
@@ -213,9 +215,9 @@ export const properties = [
  * Higher number for higher precedence, starting with 0.
  * Returns null if the precedence is undefined.
  *
- * @param {Node}
+ * @param {Node} _node
  * @param {string} parenthesis
- * @return {number|null}
+ * @return {number | null}
  */
 export function getPrecedence (_node, parenthesis) {
   let node = _node
@@ -256,7 +258,7 @@ export function getAssociativity (_node, parenthesis) {
   }
   const property = properties[index][identifier]
 
-  if (property.hasOwnProperty('associativity')) {
+  if (hasOwnProperty(property, 'associativity')) {
     if (property.associativity === 'left') {
       return 'left'
     }
@@ -279,7 +281,7 @@ export function getAssociativity (_node, parenthesis) {
  * @param {Node} nodeA
  * @param {Node} nodeB
  * @param {string} parenthesis
- * @return {bool|null}
+ * @return {boolean | null}
  */
 export function isAssociativeWith (nodeA, nodeB, parenthesis) {
   // ParenthesisNodes are only ignored when not in 'keep' mode
@@ -294,7 +296,7 @@ export function isAssociativeWith (nodeA, nodeB, parenthesis) {
   }
   const property = properties[index][identifierA]
 
-  if (property.hasOwnProperty('associativeWith') &&
+  if (hasOwnProperty(property, 'associativeWith') &&
       (property.associativeWith instanceof Array)) {
     for (let i = 0; i < property.associativeWith.length; i++) {
       if (property.associativeWith[i] === identifierB) {

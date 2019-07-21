@@ -43,13 +43,13 @@ describe('ResultSet', function () {
 
   it('toJSON', function () {
     const r = new ResultSet([1, 2, 3])
-    const json = { 'mathjs': 'ResultSet', 'entries': [1, 2, 3] }
+    const json = { mathjs: 'ResultSet', entries: [1, 2, 3] }
     assert.deepStrictEqual(r.toJSON(), json)
   })
 
   it('fromJSON', function () {
     const r1 = new ResultSet([1, 2, 3])
-    const json = { 'mathjs': 'ResultSet', 'entries': [1, 2, 3] }
+    const json = { mathjs: 'ResultSet', entries: [1, 2, 3] }
     const r2 = ResultSet.fromJSON(json)
     assert(r2 instanceof ResultSet)
     assert.deepStrictEqual(r2, r1)

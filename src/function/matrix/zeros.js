@@ -59,9 +59,9 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
     },
 
-    'Array': _zeros,
+    Array: _zeros,
 
-    'Matrix': function (size) {
+    Matrix: function (size) {
       const format = size.storage()
       return _zeros(size.valueOf(), format)
     },

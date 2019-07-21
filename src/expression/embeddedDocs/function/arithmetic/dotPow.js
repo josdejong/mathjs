@@ -1,17 +1,17 @@
 export const dotPowDocs = {
-  'name': 'dotPow',
-  'category': 'Operators',
-  'syntax': [
+  name: 'dotPow',
+  category: 'Operators',
+  syntax: [
     'x .^ y',
     'dotPow(x, y)'
   ],
-  'description':
+  description:
       'Calculates the power of x to y element wise.',
-  'examples': [
+  examples: [
     'a = [1, 2, 3; 4, 5, 6]',
     'a .^ 2'
   ],
-  'seealso': [
+  seealso: [
     'pow'
   ]
 }

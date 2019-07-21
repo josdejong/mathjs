@@ -33,15 +33,15 @@ export const createRe = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    * @return {number | BigNumber | Array | Matrix} The real part of x
    */
   const re = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       return x
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.re
     },
 

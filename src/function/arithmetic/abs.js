@@ -31,17 +31,17 @@ export const createAbs = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *            Absolute value of `x`
    */
   const abs = typed(name, {
-    'number': absNumber,
+    number: absNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.abs()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.abs()
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.abs()
     },
 
@@ -50,7 +50,7 @@ export const createAbs = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return deepMap(x, abs, true)
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return x.abs()
     }
   })

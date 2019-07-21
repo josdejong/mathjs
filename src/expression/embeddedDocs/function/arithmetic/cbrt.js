@@ -1,13 +1,13 @@
 export const cbrtDocs = {
-  'name': 'cbrt',
-  'category': 'Arithmetic',
-  'syntax': [
+  name: 'cbrt',
+  category: 'Arithmetic',
+  syntax: [
     'cbrt(x)',
     'cbrt(x, allRoots)'
   ],
-  'description':
+  description:
       'Compute the cubic root value. If x = y * y * y, then y is the cubic root of x. When `x` is a number or complex number, an optional second argument `allRoots` can be provided to return all three cubic roots. If not provided, the principal root is returned',
-  'examples': [
+  examples: [
     'cbrt(64)',
     'cube(4)',
     'cbrt(-8)',
@@ -16,7 +16,7 @@ export const cbrtDocs = {
     'cbrt(8i, true)',
     'cbrt(27 m^3)'
   ],
-  'seealso': [
+  seealso: [
     'square',
     'sqrt',
     'cube',

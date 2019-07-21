@@ -45,11 +45,11 @@ export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const hypot = typed(name, {
     '... number | BigNumber': _hypot,
 
-    'Array': function (x) {
+    Array: function (x) {
       return hypot.apply(hypot, flatten(x))
     },
 
-    'Matrix': function (x) {
+    Matrix: function (x) {
       return hypot.apply(hypot, flatten(x.toArray()))
     }
   })

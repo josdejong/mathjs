@@ -30,13 +30,13 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {Array | Matrix} A vector with size of `x`.
    */
   return typed(name, {
-    'Matrix': function (x) {
+    Matrix: function (x) {
       return x.create(x.size())
     },
 
-    'Array': arraySize,
+    Array: arraySize,
 
-    'string': function (x) {
+    string: function (x) {
       return (config.matrix === 'Array') ? [x.length] : matrix([x.length])
     },
 

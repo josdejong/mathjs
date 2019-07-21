@@ -1,12 +1,12 @@
 export const normDocs = {
-  'name': 'norm',
-  'category': 'Arithmetic',
-  'syntax': [
+  name: 'norm',
+  category: 'Arithmetic',
+  syntax: [
     'norm(x)',
     'norm(x, p)'
   ],
-  'description': 'Calculate the norm of a number, vector or matrix.',
-  'examples': [
+  description: 'Calculate the norm of a number, vector or matrix.',
+  examples: [
     'abs(-3.5)',
     'norm(-3.5)',
     'norm(3 - 4i)',

@@ -49,7 +49,7 @@ export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ ty
    */
   return typed(name, {
     '': () => _randomInt(0, 1),
-    'number': (max) => _randomInt(0, max),
+    number: (max) => _randomInt(0, max),
     'number, number': (min, max) => _randomInt(min, max),
     'Array | Matrix': (size) => _randomIntMatrix(size, 0, 1),
     'Array | Matrix, number': (size, max) => _randomIntMatrix(size, 0, max),

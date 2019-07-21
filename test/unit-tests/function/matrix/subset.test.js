@@ -23,13 +23,13 @@ describe('subset', function () {
   })
 
   it('should get the right subset of an object', function () {
-    const obj = { 'foo': 'bar' }
+    const obj = { foo: 'bar' }
     assert.deepStrictEqual(subset(obj, index('foo')), 'bar')
     assert.deepStrictEqual(subset(obj, index('bla')), undefined)
   })
 
   it('should throw an error in case of an invalid subset for an object', function () {
-    const obj = { 'foo': 'bar' }
+    const obj = { foo: 'bar' }
     const i = index('a', 'b')
     assert.throws(function () { subset(obj, i) }, /DimensionError/)
   })

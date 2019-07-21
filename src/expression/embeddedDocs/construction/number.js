@@ -1,14 +1,14 @@
 export const numberDocs = {
-  'name': 'number',
-  'category': 'Construction',
-  'syntax': [
+  name: 'number',
+  category: 'Construction',
+  syntax: [
     'x',
     'number(x)',
     'number(unit, valuelessUnit)'
   ],
-  'description':
+  description:
       'Create a number or convert a string or boolean into a number.',
-  'examples': [
+  examples: [
     '2',
     '2e3',
     '4.05',
@@ -18,7 +18,7 @@ export const numberDocs = {
     'number([true, false, true, true])',
     'number(unit("52cm"), "m")'
   ],
-  'seealso': [
+  seealso: [
     'bignumber', 'boolean', 'complex', 'fraction', 'index', 'matrix', 'string', 'unit'
   ]
 }

@@ -3,7 +3,7 @@ import { deepMap } from '../../utils/collection'
 import { log2Number } from '../../plain/number'
 
 const name = 'log2'
-const dependencies = [ 'typed', 'config', 'Complex' ]
+const dependencies = ['typed', 'config', 'Complex']
 
 export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
   /**
@@ -32,7 +32,7 @@ export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *            Returns the 2-base logarithm of `x`
    */
   const log2 = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if (x >= 0 || config.predictable) {
         return log2Number(x)
       } else {
@@ -41,9 +41,9 @@ export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
 
-    'Complex': _log2Complex,
+    Complex: _log2Complex,
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       if (!x.isNegative() || config.predictable) {
         return x.log(2)
       } else {

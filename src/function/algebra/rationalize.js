@@ -126,7 +126,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
    *
    */
   const rationalize = typed(name, {
-    'string': function (expr) {
+    string: function (expr) {
       return rationalize(parse(expr), {}, false)
     },
 
@@ -142,7 +142,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
       return rationalize(parse(expr), scope, detailed)
     },
 
-    'Node': function (expr) {
+    Node: function (expr) {
       return rationalize(expr, {}, false)
     },
 

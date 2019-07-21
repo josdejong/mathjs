@@ -130,7 +130,7 @@ describe('Index', function () {
 
   it('toJSON', function () {
     assert.deepStrictEqual(new Index(new Range(0, 10), 2, new ImmutableDenseMatrix([1, 2, 3])).toJSON(),
-      { 'mathjs': 'Index',
+      { mathjs: 'Index',
         dimensions: [
           new Range(0, 10, 1),
           new ImmutableDenseMatrix([2]),

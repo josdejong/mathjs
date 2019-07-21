@@ -30,12 +30,12 @@ export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ ty
    */
   const transpose = typed('transpose', {
 
-    'Array': function (x) {
+    Array: function (x) {
       // use dense matrix implementation
       return transpose(matrix(x)).valueOf()
     },
 
-    'Matrix': function (x) {
+    Matrix: function (x) {
       // matrix size
       const size = x.size()
 
@@ -79,7 +79,7 @@ export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     // scalars
-    'any': function (x) {
+    any: function (x) {
       return clone(x)
     }
   })

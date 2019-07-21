@@ -81,15 +81,15 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
    */
   return typed(name, {
 
-    'DenseMatrix': function (m) {
+    DenseMatrix: function (m) {
       return _denseQR(m)
     },
 
-    'SparseMatrix': function (m) {
+    SparseMatrix: function (m) {
       return _sparseQR(m)
     },
 
-    'Array': function (a) {
+    Array: function (a) {
       // create dense matrix from array
       const m = matrix(a)
       // lup, use matrix implementation

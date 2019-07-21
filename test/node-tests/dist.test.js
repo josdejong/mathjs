@@ -3,6 +3,7 @@ const assert = require('assert')
 const { createSnapshotFromFactories, validateBundle } = require('../../lib/utils/snapshot')
 const factoriesAny = require('../../lib/factoriesAny')
 const version = require('../../package.json').version
+const embeddedDocs = require('../../lib/expression/embeddedDocs/embeddedDocs')
 
 const { expectedInstanceStructure } = createSnapshotFromFactories(factoriesAny)
 
@@ -71,31 +72,24 @@ describe('dist', function () {
 
     // test whether all functions are documented
     const missing = []
-    for (let prop in math.expression.mathWithTransform) {
-      if (math.expression.mathWithTransform.hasOwnProperty(prop)) {
-        const obj = math[prop]
-        if (math['typeOf'](obj) !== 'Object') {
-          try {
-            if (ignore.indexOf(prop) === -1) {
-              math.help(prop).toString()
-            }
-          } catch (err) {
-            missing.push(prop)
+    Object.keys(math.expression.mathWithTransform).forEach(function (prop) {
+      const obj = math[prop]
+      if (math['typeOf'](obj) !== 'Object') {
+        try {
+          if (ignore.indexOf(prop) === -1) {
+            math.help(prop).toString()
           }
+        } catch (err) {
+          missing.push(prop)
         }
       }
-    }
+    })
 
     // test whether there is documentation for non existing functions
-    const redundant = []
-    const docs = math.docs
-    for (let prop in docs) {
-      if (docs.hasOwnProperty(prop)) {
-        if (math[prop] === undefined) {
-          redundant.push(prop)
-        }
-      }
-    }
+    const redundant = Object.keys(embeddedDocs).filter(function (prop) {
+      // TODO: figure out why a property embeddedDocs is exported too
+      return prop !== 'embeddedDocs' && math[prop] === undefined
+    })
 
     if (missing.length > 0 || redundant.length > 0) {
       let message = 'Validation failed: not all functions have embedded documentation. '

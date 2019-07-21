@@ -34,7 +34,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
    *                    Throws an error in case of an unknown data type.
    */
   const isPrime = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if (x < 2) {
         return false
       }
@@ -52,7 +52,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
       return true
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       if (x.lt(2)) {
         return false
       }

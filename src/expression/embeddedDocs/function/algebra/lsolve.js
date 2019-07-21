@@ -1,17 +1,17 @@
 export const lsolveDocs = {
-  'name': 'lsolve',
-  'category': 'Algebra',
-  'syntax': [
+  name: 'lsolve',
+  category: 'Algebra',
+  syntax: [
     'x=lsolve(L, b)'
   ],
-  'description':
+  description:
   'Solves the linear system L * x = b where L is an [n x n] lower triangular matrix and b is a [n] column vector.',
-  'examples': [
+  examples: [
     'a = [-2, 3; 2, 1]',
     'b = [11, 9]',
     'x = lsolve(a, b)'
   ],
-  'seealso': [
+  seealso: [
     'lup', 'lusolve', 'usolve', 'matrix', 'sparse'
   ]
 }

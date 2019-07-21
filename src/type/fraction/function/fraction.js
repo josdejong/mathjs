@@ -31,7 +31,7 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @return {Fraction | Array | Matrix} Returns a fraction
    */
   const fraction = typed('fraction', {
-    'number': function (x) {
+    number: function (x) {
       if (!isFinite(x) || isNaN(x)) {
         throw new Error(x + ' cannot be represented as a fraction')
       }
@@ -39,7 +39,7 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return new Fraction(x)
     },
 
-    'string': function (x) {
+    string: function (x) {
       return new Fraction(x)
     },
 
@@ -47,19 +47,19 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return new Fraction(numerator, denominator)
     },
 
-    'null': function (x) {
+    null: function (x) {
       return new Fraction(0)
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return new Fraction(x.toString())
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x // fractions are immutable
     },
 
-    'Object': function (x) {
+    Object: function (x) {
       return new Fraction(x)
     },
 

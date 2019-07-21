@@ -28,17 +28,17 @@ export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
    * @return {number | Complex | Array | Matrix} Cotangent of x
    */
   const cot = typed(name, {
-    'number': cotNumber,
+    number: cotNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.cot()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return new BigNumber(1).div(x.tan())
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cot is no angle')
       }

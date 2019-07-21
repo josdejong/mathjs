@@ -35,13 +35,13 @@ export const createExp = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
   const exp = typed(name, {
-    'number': expNumber,
+    number: expNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.exp()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.exp()
     },
 

@@ -1,15 +1,15 @@
 export const setPowersetDocs = {
-  'name': 'setPowerset',
-  'category': 'Set',
-  'syntax': [
+  name: 'setPowerset',
+  category: 'Set',
+  syntax: [
     'setPowerset(set)'
   ],
-  'description':
+  description:
       'Create the powerset of a (multi)set: the powerset contains very possible subsets of a (multi)set. A multi-dimension array will be converted to a single-dimension array before the operation.',
-  'examples': [
+  examples: [
     'setPowerset([1, 2, 3])'
   ],
-  'seealso': [
+  seealso: [
     'setCartesian'
   ]
 }

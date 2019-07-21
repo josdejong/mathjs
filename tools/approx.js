@@ -1,4 +1,5 @@
 const assert = require('assert')
+const hasOwnProperty = require('./utils').hasOwnProperty
 
 const EPSILON = 0.0001
 
@@ -74,15 +75,15 @@ exports.deepEqual = function deepEqual (a, b) {
     }
   } else if (a instanceof Object && b instanceof Object) {
     for (prop in a) {
-      if (a.hasOwnProperty(prop)) {
-        assert.ok(b.hasOwnProperty(prop), a[prop] + ' ~= ' + b[prop])
+      if (hasOwnProperty(a, prop)) {
+        assert.ok(hasOwnProperty(b, prop), a[prop] + ' ~= ' + b[prop])
         deepEqual(a[prop], b[prop])
       }
     }
 
     for (prop in b) {
-      if (b.hasOwnProperty(prop)) {
-        assert.ok(a.hasOwnProperty(prop), a[prop] + ' ~= ' + b[prop])
+      if (hasOwnProperty(b, prop)) {
+        assert.ok(hasOwnProperty(a, prop), a[prop] + ' ~= ' + b[prop])
         deepEqual(a[prop], b[prop])
       }
     }

@@ -80,7 +80,7 @@ export function importFactory (typed, load, math, importedFactories) {
         value.forEach(item => flattenImports(flatValues, item))
       } else if (typeof value === 'object') {
         for (const name in value) {
-          if (value.hasOwnProperty(name)) {
+          if (hasOwnProperty(value, name)) {
             flattenImports(flatValues, value[name], name)
           }
         }
@@ -108,7 +108,7 @@ export function importFactory (typed, load, math, importedFactories) {
     flattenImports(flatValues, functions)
 
     for (const name in flatValues) {
-      if (flatValues.hasOwnProperty(name)) {
+      if (hasOwnProperty(flatValues, name)) {
         // console.log('import', name)
         const value = flatValues[name]
 
@@ -247,7 +247,7 @@ export function importFactory (typed, load, math, importedFactories) {
       const name = factory.name
       const existingTransform = name in math.expression.transform
       const namespace = factory.path ? traverse(math, factory.path) : math
-      const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
+      const existing = hasOwnProperty(namespace, name) ? namespace[name] : undefined
 
       const resolver = function () {
         let instance = load(factory)
@@ -329,7 +329,7 @@ export function importFactory (typed, load, math, importedFactories) {
       : math
 
     const existingTransform = name in math.expression.transform
-    const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
+    const existing = hasOwnProperty(namespace, name) ? namespace[name] : undefined
 
     const resolver = function () {
       // collect all dependencies, handle finding both functions and classes and other special cases
@@ -353,7 +353,7 @@ export function importFactory (typed, load, math, importedFactories) {
           }
         })
 
-      let instance = /* #__PURE__ */ factory(dependencies)
+      const instance = /* #__PURE__ */ factory(dependencies)
 
       if (instance && typeof instance.transform === 'function') {
         throw new Error('Transforms cannot be attached to factory functions. ' +
@@ -442,16 +442,16 @@ export function importFactory (typed, load, math, importedFactories) {
   }
 
   function allowedInExpressions (name) {
-    return !unsafe.hasOwnProperty(name)
+    return !hasOwnProperty(unsafe, name)
   }
 
   function legacyFactoryAllowedInExpressions (factory) {
-    return factory.path === undefined && !unsafe.hasOwnProperty(factory.name)
+    return factory.path === undefined && !hasOwnProperty(unsafe, factory.name)
   }
 
   function factoryAllowedInExpressions (factory) {
     return factory.fn.indexOf('.') === -1 && // FIXME: make checking on path redundant, check on meta data instead
-      !unsafe.hasOwnProperty(factory.fn) &&
+      !hasOwnProperty(unsafe, factory.fn) &&
       (!factory.meta || !factory.meta.isClass)
   }
 
@@ -463,12 +463,12 @@ export function importFactory (typed, load, math, importedFactories) {
 
   // namespaces and functions not available in the parser for safety reasons
   const unsafe = {
-    'expression': true,
-    'type': true,
-    'docs': true,
-    'error': true,
-    'json': true,
-    'chain': true // chain method not supported. Note that there is a unit chain too.
+    expression: true,
+    type: true,
+    docs: true,
+    error: true,
+    json: true,
+    chain: true // chain method not supported. Note that there is a unit chain too.
   }
 
   return mathImport

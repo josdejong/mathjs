@@ -36,17 +36,17 @@ export const createString = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return ''
     },
 
-    'number': format,
+    number: format,
 
-    'null': function (x) {
+    null: function (x) {
       return 'null'
     },
 
-    'boolean': function (x) {
+    boolean: function (x) {
       return x + ''
     },
 
-    'string': function (x) {
+    string: function (x) {
       return x
     },
 
@@ -54,7 +54,7 @@ export const createString = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return deepMap(x, string)
     },
 
-    'any': function (x) {
+    any: function (x) {
       return String(x)
     }
   })

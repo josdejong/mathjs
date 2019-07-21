@@ -30,7 +30,7 @@ describe('SymbolNode', function () {
   })
 
   it('should throw an error when evaluating an undefined symbol', function () {
-    let scope = {}
+    const scope = {}
     const s = new SymbolNode('foo')
     assert.throws(function () { s.compile().evaluate(scope) }, Error)
   })
@@ -39,13 +39,13 @@ describe('SymbolNode', function () {
     const s = new SymbolNode('a')
 
     const expr = s.compile()
-    let scope = { a: 5 }
+    const scope = { a: 5 }
     assert.strictEqual(expr.evaluate(scope), 5)
     assert.throws(function () { expr.evaluate({}) }, Error)
 
     const s2 = new SymbolNode('sqrt')
     const expr2 = s2.compile()
-    let scope2 = {}
+    const scope2 = {}
 
     assert.strictEqual(expr2.evaluate(scope2), math.sqrt)
   })

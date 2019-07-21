@@ -1,7 +1,7 @@
 export const randomDocs = {
-  'name': 'random',
-  'category': 'Probability',
-  'syntax': [
+  name: 'random',
+  category: 'Probability',
+  syntax: [
     'random()',
     'random(max)',
     'random(min, max)',
@@ -9,12 +9,12 @@ export const randomDocs = {
     'random(size, max)',
     'random(size, min, max)'
   ],
-  'description':
+  description:
       'Return a random number.',
-  'examples': [
+  examples: [
     'random()',
     'random(10, 20)',
     'random([2, 3])'
   ],
-  'seealso': ['pickRandom', 'randomInt']
+  seealso: ['pickRandom', 'randomInt']
 }

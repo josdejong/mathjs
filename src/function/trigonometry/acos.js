@@ -29,7 +29,7 @@ export const createAcos = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | BigNumber | Complex | Array | Matrix} The arc cosine of x
    */
   const acos = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if ((x >= -1 && x <= 1) || config.predictable) {
         return Math.acos(x)
       } else {
@@ -37,11 +37,11 @@ export const createAcos = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.acos()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.acos()
     },
 

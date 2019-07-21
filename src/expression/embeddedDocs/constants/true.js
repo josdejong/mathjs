@@ -1,12 +1,12 @@
 export const trueDocs = {
-  'name': 'true',
-  'category': 'Constants',
-  'syntax': [
+  name: 'true',
+  category: 'Constants',
+  syntax: [
     'true'
   ],
-  'description': 'Boolean value true',
-  'examples': [
+  description: 'Boolean value true',
+  examples: [
     'true'
   ],
-  'seealso': ['false']
+  seealso: ['false']
 }

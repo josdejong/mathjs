@@ -13,10 +13,10 @@ describe('apply', function () {
   })
 
   const inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
-    [ [1, 2], [3, 4], [5, 6] ],
-    [ [7, 8], [9, 10], [11, 12] ],
-    [ [13, 14], [15, 16], [17, 18] ],
-    [ [19, 20], [21, 22], [23, 24] ]
+    [[1, 2], [3, 4], [5, 6]],
+    [[7, 8], [9, 10], [11, 12]],
+    [[13, 14], [15, 16], [17, 18]],
+    [[19, 20], [21, 22], [23, 24]]
   ]
   it('should apply to the rows of a tensor', function () {
     assert.deepStrictEqual(math.apply(inputMatrix, 2, sum), [[3, 7, 11], [15, 19, 23], [27, 31, 35], [39, 43, 47]])

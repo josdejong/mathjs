@@ -1,15 +1,15 @@
 export const setCartesianDocs = {
-  'name': 'setCartesian',
-  'category': 'Set',
-  'syntax': [
+  name: 'setCartesian',
+  category: 'Set',
+  syntax: [
     'setCartesian(set1, set2)'
   ],
-  'description':
+  description:
       'Create the cartesian product of two (multi)sets. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
-  'examples': [
+  examples: [
     'setCartesian([1, 2], [3, 4])'
   ],
-  'seealso': [
+  seealso: [
     'setUnion', 'setIntersect', 'setDifference', 'setPowerset'
   ]
 }

@@ -1,19 +1,19 @@
 export const complexDocs = {
-  'name': 'complex',
-  'category': 'Construction',
-  'syntax': [
+  name: 'complex',
+  category: 'Construction',
+  syntax: [
     'complex()',
     'complex(re, im)',
     'complex(string)'
   ],
-  'description':
+  description:
       'Create a complex number.',
-  'examples': [
+  examples: [
     'complex()',
     'complex(2, 3)',
     'complex("7 - 2i")'
   ],
-  'seealso': [
+  seealso: [
     'bignumber', 'boolean', 'index', 'matrix', 'number', 'string', 'unit'
   ]
 }

@@ -28,13 +28,13 @@ export const createAsinh = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsine of x
    */
   const asinh = typed('asinh', {
-    'number': asinhNumber,
+    number: asinhNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.asinh()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.asinh()
     },
 

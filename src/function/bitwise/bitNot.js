@@ -30,9 +30,9 @@ export const createBitNot = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @return {number | BigNumber | Array | Matrix} NOT of `x`
    */
   const bitNot = typed(name, {
-    'number': bitNotNumber,
+    number: bitNotNumber,
 
-    'BigNumber': bitNotBigNumber,
+    BigNumber: bitNotBigNumber,
 
     'Array | Matrix': function (x) {
       return deepMap(x, bitNot)

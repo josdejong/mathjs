@@ -716,7 +716,7 @@ describe('OperatorNode', function () {
       mathjs: 'OperatorNode',
       op: '+',
       fn: 'add',
-      args: [ b, c ],
+      args: [b, c],
       implicit: true
     })
 

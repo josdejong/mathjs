@@ -31,17 +31,17 @@ export const createCube = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} Cube of x
    */
   const cube = typed(name, {
-    'number': cubeNumber,
+    number: cubeNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.mul(x).mul(x) // Is faster than pow(x, 3)
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.times(x).times(x)
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.pow(3) // Is faster than mul()mul()mul()
     },
 
@@ -50,7 +50,7 @@ export const createCube = /* #__PURE__ */ factory(name, dependencies, ({ typed }
       return deepMap(x, cube, true)
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return x.pow(3)
     }
   })

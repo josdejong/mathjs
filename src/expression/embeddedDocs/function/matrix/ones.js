@@ -1,7 +1,7 @@
 export const onesDocs = {
-  'name': 'ones',
-  'category': 'Matrix',
-  'syntax': [
+  name: 'ones',
+  category: 'Matrix',
+  syntax: [
     'ones(m)',
     'ones(m, n)',
     'ones(m, n, p, ...)',
@@ -9,15 +9,15 @@ export const onesDocs = {
     'ones([m, n])',
     'ones([m, n, p, ...])'
   ],
-  'description': 'Create a matrix containing ones.',
-  'examples': [
+  description: 'Create a matrix containing ones.',
+  examples: [
     'ones(3)',
     'ones(3, 5)',
     'ones([2,3]) * 4.5',
     'a = [1, 2, 3; 4, 5, 6]',
     'ones(size(a))'
   ],
-  'seealso': [
+  seealso: [
     'concat', 'det', 'diag', 'identity', 'inv', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
   ]
 }
