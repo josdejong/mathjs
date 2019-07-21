@@ -107,22 +107,33 @@ describe('unit', function () {
       assert(isBigNumber(unit3b.value))
     })
 
-    it.only('should create angle units to required number of digits', function () {
+    it('should create angle units to required number of digits', function () {
       // Original instance
+      console.log("******** default math")
+      console.log(math.unit.unitmath().definitions().units.deg.value.toString())
+      console.log(math.unit.unitmath()._unitStore.defs.units.deg.value.toString())
       assert.strictEqual(math.unit('180 deg').to('rad').toString(), '3.141592653589793 rad')
       
       // Create new instance
+      console.log("******** math2 = math.create")
       const math2 = math.create({ number: 'BigNumber' })
       assert.strictEqual(math2.unit('180 deg').to('rad').toString(), '3.141592653589793238462643383279502884197169399375105820974944592 rad')
 
       // Create another new instance
+      console.log("******** math3 = math.create")
       const math3 = math.create({ number: 'BigNumber', precision: 80 })
       assert.strictEqual(math3.unit('180 deg').to('rad').toString(), '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089 rad')
 
       // Modify config of existing instance
-      console.log(math2.unit('180 deg').value)
+      console.log("******** math2.config")
+      console.log("Value of deg before modifying config:")
+      console.log(math2.unit.unitmath().definitions().units.deg.value.toString())
+      console.log(math2.unit.unitmath()._unitStore.defs.units.deg.value.toString())
       math2.config({ precision: 80 })
-      console.log(math2.unit('180 deg').value)
+      console.log("Value of deg after modifying config:")
+      console.log(math2.unit.unitmath().definitions().units.deg.value.toString())
+      console.log(math2.unit.unitmath()._unitStore.defs.units.deg.value.toString())
+
       assert.strictEqual(math2.unit('180 deg').to('rad').toString(), '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089 rad')
 
       

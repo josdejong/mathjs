@@ -139,8 +139,12 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     let overrideUnits = {}
 
     if (config.number === 'BigNumber') {
+      console.log("Calling createPi")
       const pi = createPi(BigNumber)
-      console.log(pi.div(180).toString())
+      console.log("Pi is: ")
+      console.log(pi.toString())
+      console.log("pi / 180 = ")
+      console.log(pi.div(180).toString())    // This is correct so far
       Object.assign(overrideUnits, {
         deg: {
           value: [pi.div(180), 'rad'],
@@ -173,8 +177,12 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     // TODO: Should this be unitmath.config instead, to keep old configs? Or does it not matter?
-    
-    return UnitMath.config({
+    if(overrideUnits.deg) {
+      console.log("Providing this value to UnitMath.config:")
+      console.log(overrideUnits.deg.value.toString())
+    }
+
+    let ret = UnitMath.config({
       parentheses: true,
       simplifyThreshold: 1,
       definitions: { units: overrideUnits },
@@ -210,6 +218,15 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
         }
       }
     })
+
+    console.log("Checking to make sure value is correct:")
+    console.log(ret.definitions().units.deg.value.toString())
+
+    console.log("Double-checking to make sure value is correct:")
+    console.log(ret._unitStore.defs.units.deg.value.toString())    // Yes it is correct so far
+
+    return ret
+
   }
 
   // TODO: After getting it to work like this, see if we can get rid of this devilry
@@ -237,8 +254,10 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       console.log(curr)
       if (curr.number !== prev.number || curr.precision !== prev.precision) {
         // TODO: do we need to recalculate angle values like before?
+        console.log("calling createUnitmathInstance")
         _unitmath = createUnitmathInstance()
-        console.log('New unitmath definitions:')
+        
+        console.log('New unitmath definitions after returning from createUnitmathInstance:')
         console.log(unitmath().definitions().units.deg.value.toString())
       }
     })
@@ -273,7 +292,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       return x.clone()
     },
 
-    'string': unitmath(),
+    'string': (...args) => unitmath()(...args),
 
     'number, string': function (...args) {
       // Upgrade number to configured type
@@ -294,6 +313,8 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
 
   // expose static exists function
   unit.exists = (singleUnitString) => unitmath().exists(singleUnitString)
+
+  unit.unitmath = unitmath
 
   return unit
 })
