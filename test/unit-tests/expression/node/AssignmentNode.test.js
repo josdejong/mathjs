@@ -385,8 +385,8 @@ describe('AssignmentNode', function () {
     const d = new AssignmentNode(a, x)
 
     const e = new ConstantNode(3)
-    let nodes = []
-    let paths = []
+    const nodes = []
+    const paths = []
     const f = d.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)

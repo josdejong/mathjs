@@ -922,7 +922,7 @@ describe('parse', function () {
     })
 
     it('should parse valid accessor assignments', function () {
-      let scope = { O: { x: 1, y: [2, 3, 4] } }
+      const scope = { O: { x: 1, y: [2, 3, 4] } }
       parseAndEval('O.x = 5', scope)
       parseAndEval('O.y[1] = 6', scope)
       parseAndEval('O.y[2] = 7', scope)
@@ -931,7 +931,7 @@ describe('parse', function () {
     })
 
     it('should parse valid matrix assignments', function () {
-      let scope = {}
+      const scope = {}
       parseAndEval('[a] = [1]', scope)
       assert.strictEqual(scope.a, 1)
       parseAndEval('[a, b] = [2, 3]', scope)

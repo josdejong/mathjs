@@ -157,7 +157,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       return function evalArrayAssignmentNode (scope, args, context) {
         const valueType = math.config.matrix
         const asMatrix = (valueType !== 'Array')
-        let objects = object.toArray()
+        const objects = object.toArray()
         let values = evalValue(scope, args, context)
         values = (asMatrix && values.toArray) ? values.toArray() : values
 
@@ -197,7 +197,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       function evalSymbolAssignmentNode (object, index, value, scope, args, context) {
         return setSafeProperty(scope, object.name, value)
       }
-  
+
       function evalPropertyAssignmentNode (object, index, value, scope, args, context) {
         const evalObject = object._compile(math, argNames)
         const prop = index.getObjectProperty()
@@ -205,7 +205,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
 
         return setSafeProperty(object, prop, value)
       }
-  
+
       function evalSubsetAssignmentNode (object, index, value, scope, args, context) {
         const evalObject = object._compile(math, argNames)
         const evalIndex = index ? index._compile(math, argNames) : null
@@ -216,7 +216,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
 
         return value
       }
-  
+
       function evalPropertySubsetAssignmentNode (object, index, value, scope, args, context) {
         const evalIndex = index ? index._compile(math, argNames) : null
         const evalParentObject = object.object._compile(math, argNames)
