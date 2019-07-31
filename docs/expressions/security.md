@@ -11,7 +11,7 @@ the code server side.
 A user could try to inject malicious JavaScript code via the expression
 parser. The expression parser of mathjs offers a sandboxed environment
 to execute expressions which should make this impossible. It's possible
-though that there are unknown security vulnerabilties, so it's important
+though that there are unknown security vulnerabilities, so it's important
 to be careful, especially when allowing server side execution of
 arbitrary expressions.
 
