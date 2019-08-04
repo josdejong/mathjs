@@ -251,6 +251,11 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     console.log("Double-checking to make sure value is correct:")
     console.log(retUnit._unitStore.defs.units.deg.value.toString())    // Yes it is correct so far
 
+    // TODO: think the way to check whether something is a unit through. Must be secure (checks against the prototype)
+    const u = retUnit()
+    u.constructor.prototype.isUnit = true
+    u.constructor.prototype.type = 'unit'
+    
     return retUnit
 
   }
@@ -262,11 +267,6 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
   let _unitmath = createUnitmathInstance()
   const unitmath = () => _unitmath
 
-  // TODO: think the way to check whether something is a unit through. Must be secure (checks against the prototype)
-  // TODO: Have to repeat this in createUnitmathInstance?
-  const u = unitmath()()
-  u.constructor.prototype.isUnit = true
-  u.constructor.prototype.type = 'unit'
 
   if (on) {
     // recalculate the values on change of configuration
