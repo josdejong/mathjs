@@ -5,7 +5,7 @@ import { isBigNumber, isFraction } from '../../../../src/utils/is'
 
 const unit = math.unit
 
-describe('Unit', function () {
+describe.only('Unit', function () {
   describe('constructor', function () {
     it('should create unit correctly', function () {
       let unit1 = unit(5000, 'cm')
@@ -1120,13 +1120,13 @@ describe('Unit', function () {
     it('should not override an existing unit', function () {
       assert.throws(function () { unit.createUnitSingle('m', '1 kg') }, /Cannot create unit .*: a unit with that name already exists/)
       assert.throws(function () { unit.createUnitSingle('gadget', '1 kg') }, /Cannot create unit .*: a unit with that name already exists/)
-      assert.throws(function () { unit.createUnitSingle('morogrove', { aliases: 's' }) }, /Cannot create alias .*: a unit with that name already exists/)
+      assert.throws(function () { unit.createUnitSingle('morogrove', { aliases: 's' }) }, /Cannot create unit .*: a unit with that name already exists/)
     })
 
     it('should throw an error for invalid parameters', function () {
-      assert.throws(function () { unit.createUnitSingle() }, /createUnitSingle expects first parameter/)
-      assert.throws(function () { unit.createUnitSingle(42) }, /createUnitSingle expects first parameter/)
-      assert.throws(function () { unit.createUnitSingle('42') }, /Error: Invalid unit name/)
+      assert.throws(function () { unit.createUnitSingle() }, /The first parameter to createUnitSingle must be a string/)
+      assert.throws(function () { unit.createUnitSingle(42) }, /The first parameter to createUnitSingle must be a string/)
+      assert.throws(function () { unit.createUnitSingle('42') }, /Unit name contains non-alphanumeric characters or begins with a number: '42'/)
     })
 
     it('should apply the correct prefixes', function () {
@@ -1134,16 +1134,18 @@ describe('Unit', function () {
       assert.strictEqual(unit(1e-6, 'millizilch').toString(), '1 micromillizilch')
     })
 
-    it('should override prefixed built-in units', function () {
-      unit.createUnitSingle('mm', { definition: '1e-4 m', prefixes: 'short' }) // User is being silly
+    it('should override prefixed built-in units only when explicitly allowed to', function () {
+      assert.throws(() => unit.createUnitSingle('mm', { definition: '1e-4 m', prefixes: 'short' }), /Cannot create unit "mm": a unit with that name already exists/)
+
+      assert.doesNotThrow(() => unit.createUnitSingle('mm', { definition: '1e-4 m', prefixes: 'short' }, { override: true }))
       assert.strictEqual(unit(1e-3, 'mm').toString(), '1 mmm') // Use the user's new definition
       assert.strictEqual(unit(1e-3, 'mm').to('m').format(4), '1e-7 m') // Use the user's new definition
     })
 
     it('should create aliases', function () {
-      unit.createUnitSingle('knot', { definition: '0.51444444 m/s', aliases: ['knots', 'kts', 'kt'] })
+      unit.createUnitSingle('knot', { definition: '0.51444444 m/s', aliases: ['knots', 'kts'] })
       assert.strictEqual(unit(1, 'knot').equals(unit(1, 'kts')), true)
-      assert.strictEqual(unit(1, 'kt').equals(unit(1, 'knots')), true)
+      assert.strictEqual(unit(1, 'kts').equals(unit(1, 'knots')), true)
     })
 
     it('should apply offset correctly', function () {
@@ -1152,8 +1154,9 @@ describe('Unit', function () {
     })
 
     it('should create new base units', function () {
-      const fooBaseUnit = unit.createUnitSingle('fooBase')
-      assert.strictEqual(fooBaseUnit.dimensions.toString(), unit.BASE_UNITS['fooBase_STUFF'].dimensions.toString())
+      unit.createUnitSingle('fooBase')
+      const fooBaseUnit = unit('fooBase')
+      assert.deepStrictEqual(fooBaseUnit.getQuantities(), [ 'fooBase_STUFF' ] )
       const testUnit = unit(5, 'fooBase')
       assert.strictEqual(testUnit.toString(), '5 fooBase')
     })
@@ -1164,8 +1167,8 @@ describe('Unit', function () {
 
     it('should create and use a new base if no matching base exists', function () {
       unit.createUnitSingle('jabberwocky', '1 mile^5/hour')
-      assert.strictEqual('jabberwocky_STUFF' in unit.BASE_UNITS, true)
-      assert.strictEqual(math.evaluate('4 mile^5/minute').format(4), '240 jabberwocky')
+      assert.deepStrictEqual(math.evaluate('4 mile^5/minute').getQuantities(), [ 'jabberwocky_STUFF' ])
+      assert.strictEqual(math.evaluate('4 mile^5/minute to jabberwocky').format(4), '240 jabberwocky')
     })
   })
 
@@ -1188,7 +1191,7 @@ describe('Unit', function () {
       unit.createUnit({ foo3: '' }, { override: true })
     })
 
-    it.only('should not reset custom units when config is mutated', function () {
+    it('should not reset custom units when config is mutated', function () {
       
       // Create a unit
       math.createUnit({
@@ -1231,7 +1234,7 @@ describe('Unit', function () {
     })
 
     it('should throw error when first parameter is not an object', function () {
-      assert.throws(function () { unit.createUnit('not an object') }, /createUnit expects first/)
+      assert.throws(function () { unit.createUnit('not an object') }, /The first parameter to createUnit must be an object/)
     })
   })
 

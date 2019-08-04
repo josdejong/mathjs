@@ -69,7 +69,8 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
    * units will need to be recreated. If math.create is called,
    * they will be reset.
    */
-  const customUnits = {}
+  let customUnits = {}
+  let customBaseQuantities = []
 
   /**
    * Converts the given `value` to the type that matches `exampleValue`.
@@ -157,7 +158,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
    * Create an instance of unitmath using the currrent math.config options and customUnits
    */
   function createUnitmathInstance() {
-    console.log('In createUnitmathInstance, config.number = ' + config.number + config.precision)
+    // console.log('In createUnitmathInstance, config.number = ' + config.number + config.precision)
     // Override certain units to give higher precision if config.number is BigNumber
     let overrideUnits = {}
 
@@ -211,7 +212,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     let retUnit = UnitMath.config({
       parentheses: true,
       simplifyThreshold: 1,
-      definitions: { units: overrideUnits },
+      definitions: { units: overrideUnits, baseQuantities: customBaseQuantities },
       type: {
         clone: clone,
         conv: conv,
@@ -245,17 +246,17 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       }
     })
 
-    console.log("Checking to make sure value is correct:")
-    console.log(retUnit.definitions().units.deg.value.toString())
+    // console.log("Checking to make sure value is correct:")
+    // console.log(retUnit.definitions().units.deg.value.toString())
 
-    console.log("Double-checking to make sure value is correct:")
-    console.log(retUnit._unitStore.defs.units.deg.value.toString())    // Yes it is correct so far
+    // console.log("Double-checking to make sure value is correct:")
+    // console.log(retUnit._unitStore.defs.units.deg.value.toString())    // Yes it is correct so far
 
     // TODO: think the way to check whether something is a unit through. Must be secure (checks against the prototype)
     const u = retUnit()
     u.constructor.prototype.isUnit = true
     u.constructor.prototype.type = 'unit'
-    
+
     return retUnit
 
   }
@@ -343,6 +344,23 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
   unit.exists = (singleUnitString) => unitmath().exists(singleUnitString)
 
   /**
+   * createUnitSingle
+   * Shortcut method for creating a single unit. Mostly here for backwards-compatibility.
+   * @param {string} newUnitName The name of the new unit.
+   * @param {object|string} definition The definition of the new unit.
+   */
+  unit.createUnitSingle = (newUnitName, definition, options) => {
+    if (typeof newUnitName !== 'string') {
+      throw new TypeError('The first parameter to createUnitSingle must be a string.')
+    }
+
+    let obj = { [newUnitName]: definition || {} }
+    console.log('in createUnitSingle, obj = ') 
+    console.log(obj)
+    return unit.createUnit(obj, options)
+  }
+
+  /**
    * createUnit
    * @param {Object} obj The unit definitions
    * @param {Object} options Options
@@ -353,6 +371,14 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     console.log(obj)
     console.log(options)
 
+    let backupCustomUnits = Object.assign({}, customUnits)
+    let backupBaseQuantities = customBaseQuantities.slice()
+
+
+    if (typeof obj !== 'object') {
+      throw new TypeError('The first parameter to createUnit must be an object.')
+    }
+
     /**
      * Here we have a lot of work to do:
      * 1. Convert the definitions in obj to a form UnitMath understands
@@ -361,7 +387,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
      * 4. Call createUnitmathInstance, passing in both the new and old custom units
      */
 
-    if (!options.override) {
+    if (!(options && options.override)) {
       for (let newUnit in obj) {
         if (unitmath().exists(newUnit)) {
           throw new Error(`Cannot create unit "${newUnit}": a unit with that name already exists`)
@@ -370,19 +396,25 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
           for (let newAlias of obj[newUnit].aliases) {
             if (unitmath().exists(newAlias)) {
               throw new Error(`Cannot create unit "${newAlias}": a unit with that name already exists`)
-            }   
+            }
           }
         }
       }
     }
 
     for (let newUnit in obj) {
-     
+
       customUnits[newUnit] = {}
+      for (let i = customBaseQuantities.length - 1; i >= 0; i--) {
+        if (customBaseQuantities[i] === newUnit + "_STUFF") {
+          customBaseQuantities.splice(i, 1)
+        }
+      }
+
 
       // Copy the unit's definition
       let value
-      if (typeof obj[newUnit] === 'string') {
+      if (typeof obj[newUnit] === 'string' && obj[newUnit] !== '') {
         value = obj[newUnit]
       }
       else if (obj[newUnit].definition) {
@@ -405,7 +437,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
           customUnits[newUnit].aliases = obj[newUnit].aliases
         }
         if (obj[newUnit].prefixes) {
-          customUnits[newUnit].prefixes = obj[newUnit].prefixes
+          customUnits[newUnit].prefixes = obj[newUnit].prefixes.toUpperCase()
         }
         if (obj[newUnit].offset) {
           customUnits[newUnit].offset = obj[newUnit].offset
@@ -413,16 +445,36 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       }
       else {
         // TODO: Base unit
+
+        customBaseQuantities.push(newUnit + "_STUFF")
+        customUnits[newUnit] = {
+          value: '1',
+          quantity: newUnit + "_STUFF"
+        }
       }
 
-      
+
 
     }
 
     console.log('customUnits is now:')
     console.log(customUnits)
+    console.log('customBaseQuantities is now:')
+    console.log(customBaseQuantities)
 
+
+    try {
     _unitmath = createUnitmathInstance()
+    }
+    catch (ex) {
+      // Roll back customUnits and customBaseQuantities
+      console.log('Rolling back custom units')
+      console.log(backupCustomUnits)
+      console.log(backupBaseQuantities)
+      customUnits = backupCustomUnits
+      customBaseQuantities = backupBaseQuantities
+      throw new Error('createUnit failed with error: ' + ex.message)
+    }
 
 
   }
