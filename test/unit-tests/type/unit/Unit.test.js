@@ -587,7 +587,7 @@ describe('Unit', function () {
       assert.strictEqual(unit1.simplify().toString(), '300 lbf')
     })
 
-    it.skip('should simplify user-defined units when unit system is "auto"', function () {
+    it('should simplify user-defined units when unit system is "auto"', function () {
       unit.setUnitSystem('auto')
       unit.createUnit({ 'USD': '' })
       unit.createUnit({ 'EUR': '1.15 USD' })
@@ -1091,7 +1091,7 @@ describe('Unit', function () {
     })
   })
 
-  describe.skip('createUnitSingle', function () {
+  describe('createUnitSingle', function () {
     it('should create a custom unit from a string definition', function () {
       unit.createUnitSingle('widget', '5 kg bytes')
       assert.strictEqual(unit(1, 'widget').equals(unit(5, 'kg bytes')), true)
@@ -1169,7 +1169,7 @@ describe('Unit', function () {
     })
   })
 
-  describe.skip('createUnit', function () {
+  describe('createUnit', function () {
     it('should create multiple units', function () {
       unit.createUnit({
         'foo1': '',
@@ -1186,6 +1186,39 @@ describe('Unit', function () {
       assert.throws(function () { unit.createUnit({ foo1: '' }) }, /Cannot/)
       assert.throws(function () { unit.createUnit({ foo1: '', override: true }) }, /Cannot/)
       unit.createUnit({ foo3: '' }, { override: true })
+    })
+
+    it.only('should not reset custom units when config is changed', function () {
+      // Create a unit
+      math.createUnit({
+        'astronomicalUnit': '149597870700 m'
+      })
+      assert.strictEqual(math.evaluate('10 astronomicalUnit to m').toString(), '1495978707000 m')
+
+      // Create another math instance
+      const math2 = math.create({ precision: 6 })
+      assert.strictEqual(math.evaluate('10 astronomicalUnit to m').toString(), '1495978707000 m')
+
+      // Create another unit
+      math2.unit.createUnit({
+        'lightyear': '63241.07708426628 astronomicalUnit'
+      })
+      assert.strictEqual(math.evaluate('10 lightyear to m').toString(), '94607304725808000 m')
+
+      // Reconfigure math instance
+      math2.config({ precision: 8 })
+      assert.strictEqual(math.evaluate('10 lightyear to m').toString(), '94607304725808000 m')
+
+      // Create a third unit
+      math2.unit.createUnit({
+        'parsec': '3.261563777 lightyear'
+      })
+      assert.strictEqual(math.evaluate('10 parsec to m').toString(), '3.085677581e+17 m')
+
+      // Reconfigure math instance again
+      math2.config({ precision: 10 })
+      assert.strictEqual(math.evaluate('10 parsec to m').toString(), '3.085677581e+17 m')
+
     })
 
     it('should throw error when first parameter is not an object', function () {
