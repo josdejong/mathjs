@@ -63,6 +63,20 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
 
 }) => {
 
+  /**
+   * Stateful record of all custom units we've created.
+   * Each time we call createUnitmathInstance, each of these
+   * units will need to be recreated. If math.create is called,
+   * they will be reset.
+   */
+  const customUnits = {}
+
+  /**
+   * Converts the given `value` to the type that matches `exampleValue`.
+   * @param {number|BigNumber|Fraction|Complex|string} value The value to convert.
+   * @param {number|BigNumber|Fraction|Complex} exampleValue An example value having the type that `value` will be converted to. If `exampleValue` is not a Complex, BigNumber, or Fraction, and `value` is a string, then `value` will be converted to the type given by `config.number`.
+   * @returns The converted value.
+   */
   const conv = (value, exampleValue) => {
     // console.log(value, exampleValue, config.number)
     if (isComplex(exampleValue)) {
@@ -78,6 +92,12 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     }
   }
 
+  /**
+   * Given a function `fn`, and arguments `args`, will promote each of the `args` to match the highest type of all of the `args`. It will then call the function `fn` with the promoted `args`. For example, if `fn` is the add function, and `args` is a number and a BigNumber, the number will be promoted to a BigNumber, and then `add` will be called with the two BigNumbers.
+   * @param {Function} fn The function to call.
+   * @param  {...any} args Arguments to promote before passing to the function.
+   * @returns The result of calling `fn` with the promoted arguments.
+   */
   const promoteArgs = (fn, ...args) => {
     let types = {}
     args.forEach(a => { types[a.type || typeof a] = true })
@@ -120,7 +140,11 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     return result
   }
 
-  // Converts a comparison function into one that compares the absolute values of complex numbers instead
+  /**
+   * Given a function that compares two numeric values, this will return a new comparison function that compares the absolute values of those numeric values if they are of type Complex, or otherwise leaves them unchanged.
+   * @param {Function} fn 
+   * @returns The result of comparing the two numbers.
+   */
   const ifComplexThenAbs = (fn) => {
     return (a, b) => {
       let aAbs = a.type === 'Complex' ? abs(a) : a
@@ -129,9 +153,8 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     }
   }
 
-  
   /**
-   * Create an instance of unitmath using the currrent math.config options
+   * Create an instance of unitmath using the currrent math.config options and customUnits
    */
   function createUnitmathInstance() {
     console.log('In createUnitmathInstance, config.number = ' + config.number + config.precision)
@@ -176,12 +199,15 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       })
     }
 
-    // TODO: Should this be unitmath.config instead, to keep old configs? Or does it not matter?
-    if(overrideUnits.deg) {
+    if (overrideUnits.deg) {
       console.log("Providing this value to UnitMath.config:")
       console.log(overrideUnits.deg.value.toString())
     }
 
+    Object.assign(overrideUnits, customUnits)
+
+    // TODO: Should this be unitmath.config instead, to keep old configs? Or does it not matter?
+    // UPDATE: Probably does not matter. We are saving state in config and customUnits.
     let retUnit = UnitMath.config({
       parentheses: true,
       simplifyThreshold: 1,
@@ -229,23 +255,26 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
 
   }
 
-  // TODO: After getting it to work like this, see if we can get rid of this devilry
+  /**
+   * This represents the current unitmath instance. Both changes to the config, as well as creating new units, require a new instance to be created. But the containing factory function is only called once (or whenever math.create is called) So use unitmath() to return the current instance, and take care to avoid using stale instances.
+   */
+  // TODO: Is it necessary to have unitmath() return _unitmath or can we just use _unitmath everywhere? Is there any way to prevent using stale versions of _unitmath? Can we have createUnitmathInstance just set _unitmath instead of having to assign to it each time we call createUnitmathInstance?
   let _unitmath = createUnitmathInstance()
   const unitmath = () => _unitmath
 
   // TODO: think the way to check whether something is a unit through. Must be secure (checks against the prototype)
-  // TODO: Have to repeat this in createUnitInstance?
+  // TODO: Have to repeat this in createUnitmathInstance?
   const u = unitmath()()
   u.constructor.prototype.isUnit = true
   u.constructor.prototype.type = 'unit'
 
-  // TODO: is listening for config changes still needed?
   if (on) {
     // recalculate the values on change of configuration
     on('config', function (curr, prev) {
 
-      // Relevant config properties that may change: what needs to be done
-      // number: nothing, the new type is used automatically anywhere config.number appears
+      // Relevant config properties that may change, and what needs to be done about it
+      // number: Will have to createUnitmathInstance because the angle definitions might change.
+      // precision: Will have to createUnitmathInstance because the angle definitions might change.
 
       console.log('Configuration changed.')
       console.log('prev:')
@@ -253,10 +282,9 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       console.log('curr:')
       console.log(curr)
       if (curr.number !== prev.number || curr.precision !== prev.precision) {
-        // TODO: do we need to recalculate angle values like before?
         console.log("calling createUnitmathInstance")
         _unitmath = createUnitmathInstance()
-        
+
         console.log('New unitmath definitions after returning from createUnitmathInstance:')
         console.log(unitmath().definitions().units.deg.value.toString())
       }
@@ -331,11 +359,75 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
      * 2. Throw errors if any units already exist (except if options.override is given)
      * 3. Make sure custom units created previously are included
      * 4. Call createUnitmathInstance, passing in both the new and old custom units
-     **/
-    
+     */
+
+    if (!options.override) {
+      for (let newUnit in obj) {
+        if (unitmath().exists(newUnit)) {
+          throw new Error(`Cannot create unit "${newUnit}": a unit with that name already exists`)
+        }
+        if (obj[newUnit].aliases) {
+          for (let newAlias of obj[newUnit].aliases) {
+            if (unitmath().exists(newAlias)) {
+              throw new Error(`Cannot create unit "${newAlias}": a unit with that name already exists`)
+            }   
+          }
+        }
+      }
+    }
+
+    for (let newUnit in obj) {
+     
+      customUnits[newUnit] = {}
+
+      // Copy the unit's definition
+      let value
+      if (typeof obj[newUnit] === 'string') {
+        value = obj[newUnit]
+      }
+      else if (obj[newUnit].definition) {
+        value = obj[newUnit].definition
+      }
+
+      if (value) {
+        // Derived unit
+
+        // If value is a unit, convert it to [value, unitStr]
+        if (value.type === 'unit') {
+          value = [
+            value.getValue(),
+            value.getUnits().toString()
+          ]
+        }
+
+        customUnits[newUnit].value = value
+        if (obj[newUnit].aliases) {
+          customUnits[newUnit].aliases = obj[newUnit].aliases
+        }
+        if (obj[newUnit].prefixes) {
+          customUnits[newUnit].prefixes = obj[newUnit].prefixes
+        }
+        if (obj[newUnit].offset) {
+          customUnits[newUnit].offset = obj[newUnit].offset
+        }
+      }
+      else {
+        // TODO: Base unit
+      }
+
+      
+
+    }
+
+    console.log('customUnits is now:')
+    console.log(customUnits)
+
+    _unitmath = createUnitmathInstance()
+
+
   }
 
   unit.unitmath = unitmath
-  
+
   return unit
 })

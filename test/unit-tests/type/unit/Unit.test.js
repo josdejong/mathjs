@@ -1188,36 +1188,45 @@ describe('Unit', function () {
       unit.createUnit({ foo3: '' }, { override: true })
     })
 
-    it.only('should not reset custom units when config is changed', function () {
+    it.only('should not reset custom units when config is mutated', function () {
+      
       // Create a unit
       math.createUnit({
         'astronomicalUnit': '149597870700 m'
       })
       assert.strictEqual(math.evaluate('10 astronomicalUnit to m').toString(), '1495978707000 m')
 
-      // Create another math instance
+      // Create another math instance -- custom units should not be present
       const math2 = math.create({ precision: 6 })
-      assert.strictEqual(math.evaluate('10 astronomicalUnit to m').toString(), '1495978707000 m')
+      assert.throws(() => math2.evaluate('10 astronomicalUnit to m'), /Undefined symbol/)
+
+      // Create a unit
+      math2.createUnit({
+        'astronomicalUnit': '149597870700 m'
+      })
+      assert.strictEqual(math2.evaluate('10 astronomicalUnit to m').toString(), '1495978707000 m')
 
       // Create another unit
       math2.createUnit({
         'lightyear': '63241.07708426628 astronomicalUnit'
       })
-      assert.strictEqual(math.evaluate('10 lightyear to m').toString(), '94607304725808000 m')
+      assert.strictEqual(math2.evaluate('10 lightyear to m').toString(), '94607304725808000 m')
 
-      // Reconfigure math instance
+      // Reconfigure math2 instance
       math2.config({ precision: 8 })
-      assert.strictEqual(math.evaluate('10 lightyear to m').toString(), '94607304725808000 m')
+      assert.strictEqual(math2.evaluate('10 lightyear to m').toString(), '94607304725808000 m')
 
       // Create a third unit
       math2.createUnit({
         'parsec': '3.261563777 lightyear'
       })
-      assert.strictEqual(math.evaluate('10 parsec to m').toString(), '3.085677581e+17 m')
+      assert.strictEqual(math2.evaluate('10 parsec to m').toString(), '3.085677581e+17 m')
 
-      // Reconfigure math instance again
+      // Reconfigure math instance again -- all three units should be present
       math2.config({ precision: 10 })
-      assert.strictEqual(math.evaluate('10 parsec to m').toString(), '3.085677581e+17 m')
+      assert.strictEqual(math2.evaluate('10 parsec to m').toString(), '3.085677581e+17 m')
+      assert.strictEqual(math2.evaluate('10 lightyear to m').toString(), '94607304725808000 m')
+      assert.strictEqual(math2.evaluate('10 astronomicalUnit to m').toString(), '1495978707000 m')
 
     })
 
