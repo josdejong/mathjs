@@ -182,7 +182,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       console.log(overrideUnits.deg.value.toString())
     }
 
-    let ret = UnitMath.config({
+    let retUnit = UnitMath.config({
       parentheses: true,
       simplifyThreshold: 1,
       definitions: { units: overrideUnits },
@@ -220,12 +220,12 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     })
 
     console.log("Checking to make sure value is correct:")
-    console.log(ret.definitions().units.deg.value.toString())
+    console.log(retUnit.definitions().units.deg.value.toString())
 
     console.log("Double-checking to make sure value is correct:")
-    console.log(ret._unitStore.defs.units.deg.value.toString())    // Yes it is correct so far
+    console.log(retUnit._unitStore.defs.units.deg.value.toString())    // Yes it is correct so far
 
-    return ret
+    return retUnit
 
   }
 
@@ -314,7 +314,28 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
   // expose static exists function
   unit.exists = (singleUnitString) => unitmath().exists(singleUnitString)
 
-  unit.unitmath = unitmath
+  /**
+   * createUnit
+   * @param {Object} obj The unit definitions
+   * @param {Object} options Options
+   * @returns {unit} The new unit
+   */
+  unit.createUnit = (obj, options) => {
+    console.log('createUnit was called with')
+    console.log(obj)
+    console.log(options)
 
+    /**
+     * Here we have a lot of work to do:
+     * 1. Convert the definitions in obj to a form UnitMath understands
+     * 2. Throw errors if any units already exist (except if options.override is given)
+     * 3. Make sure custom units created previously are included
+     * 4. Call createUnitmathInstance, passing in both the new and old custom units
+     **/
+    
+  }
+
+  unit.unitmath = unitmath
+  
   return unit
 })

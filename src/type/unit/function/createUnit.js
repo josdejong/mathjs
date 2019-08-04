@@ -1,9 +1,9 @@
 import { factory } from '../../../utils/factory'
 
 const name = 'createUnit'
-const dependencies = ['typed', 'Unit']
+const dependencies = ['typed', 'unit']
 
-export const createCreateUnit = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
+export const createCreateUnit = /* #__PURE__ */ factory(name, dependencies, ({ typed, unit }) => {
   /**
    * Create a user-defined unit and register it with the Unit type.
    *
@@ -47,35 +47,39 @@ export const createCreateUnit = /* #__PURE__ */ factory(name, dependencies, ({ t
    */
   return typed(name, {
 
-    // General function signature. First parameter is an object where each property is the definition of a new unit. The object keys are the unit names and the values are the definitions. The values can be objects, strings, or Units. If a property is an empty object or an empty string, a new base unit is created. The second parameter is the options.
+    // General function signature. First parameter is an object where each
+    // property is the definition of a new unit. The object keys are the unit
+    // names and the values are the definitions. The values can be objects,
+    // strings, or Units. If a property is an empty object or an empty string,
+    // a new base unit is created. The second parameter is the options.
     'Object, Object': function (obj, options) {
-      return Unit.createUnit(obj, options)
+      return unit.createUnit(obj, options)
     },
 
     // Same as above but without the options.
     'Object': function (obj) {
-      return Unit.createUnit(obj, {})
+      return unit.createUnit(obj, {})
     },
 
     // Shortcut method for creating one unit.
     'string, Unit | string | Object, Object': function (name, def, options) {
       const obj = {}
       obj[name] = def
-      return Unit.createUnit(obj, options)
+      return unit.createUnit(obj, options)
     },
 
     // Same as above but without the options.
     'string, Unit | string | Object': function (name, def) {
       const obj = {}
       obj[name] = def
-      return Unit.createUnit(obj, {})
+      return unit.createUnit(obj, {})
     },
 
     // Without a definition, creates a base unit.
     'string': function (name) {
       const obj = {}
       obj[name] = {}
-      return Unit.createUnit(obj, {})
+      return unit.createUnit(obj, {})
     }
   })
 })
