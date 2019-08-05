@@ -1,6 +1,12 @@
 # History
 
 
+# not yet published, version 6.0.4
+
+- Fixed #1554, #1565: es modules where not transpiled to ES5, giving issues on
+  old browsers. Thanks @mockdeep for helping to find a solution.
+
+
 # 2019-07-07, version 6.0.3
 
 - Add `unpkg` and `jsdelivr` fields in package.json pointing to UMD build.

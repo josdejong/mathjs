@@ -165,7 +165,7 @@
     "zeros": "1.0.0"
   },
   "main": "main/es5",
-  "module": "main/es6",
+  "module": "main/esm",
   "unpkg": "dist/math.min.js",
   "jsdelivr": "dist/math.min.js",
   "files": [
@@ -173,6 +173,7 @@
     "dist",
     "docs",
     "main",
+    "es",
     "lib",
     "src",
     "core.js",
@@ -188,6 +189,8 @@
   "scripts": {
     "build": "gulp",
     "build-and-test": "npm run build && npm run test:src && npm run test:generated && npm run test:node && npm run lint",
+    "compile": "gulp compile",
+    "compile:es": "gulp compile:es",
     "watch": "gulp watch",
     "lint": "standard --env=mocha --env=worker",
     "validate:ascii": "gulp validate:ascii",
@@ -212,6 +215,7 @@
   "directories": {
     "doc": "./docs",
     "example": "./examples",
+    "es": "./es",
     "lib": "./lib",
     "src": "./src",
     "test": "./test"

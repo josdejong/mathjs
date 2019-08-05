@@ -1,3 +1,3 @@
-import { abs } from '../../../main/es6'
+import { abs } from '../../../main/esm'
 
 console.log(abs(-3))

@@ -17,6 +17,7 @@ const VERSION = './src/version.js'
 const COMPILE_SRC = './src/**/*.js'
 const COMPILE_ENTRY_SRC = './src/entry/**/*.js'
 const COMPILE_LIB = './lib'
+const COMPILE_ES = './es' // es modules
 const COMPILE_ENTRY_LIB = './lib/entry'
 const COMPILED_MAIN_ANY = './lib/entry/mainAny.js'
 const FILE = 'math.js'
@@ -140,6 +141,21 @@ function compile () {
     .pipe(gulp.dest(COMPILE_LIB))
 }
 
+function compileESModules () {
+  const babelOptions = JSON.parse(String(fs.readFileSync('./.babelrc')))
+
+  return gulp.src(COMPILE_SRC)
+    .pipe(babel({
+      ...babelOptions,
+      presets: [
+        ['@babel/preset-env', {
+          modules: false
+        }]
+      ]
+    }))
+    .pipe(gulp.dest(COMPILE_ES))
+}
+
 function compileEntryFiles () {
   return gulp.src(COMPILE_ENTRY_SRC)
     .pipe(babel())
@@ -237,7 +253,8 @@ function addDeprecatedFunctions (done) {
 function clean () {
   return del([
     'dist/**/*',
-    'lib/**/*'
+    'lib/**/*',
+    'es/**/*'
   ])
 }
 
@@ -265,6 +282,7 @@ gulp.task('default', gulp.series(
   clean,
   updateVersionFile,
   compile,
+  compileESModules,
   generateEntryFiles,
   compileEntryFiles,
   writeCompiledHeader,
