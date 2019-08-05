@@ -1,1 +1,1 @@
-export * from '../../es/entry/mainNumber'
+export * from '../../es/entry/mainNumber' // eslint-disable-line
