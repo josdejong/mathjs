@@ -4,7 +4,7 @@ Math.js is a large library containing many data types and functions.
 It is well possible that you only need a small portion of the library.
 Math.js allows for picking just the functions and data types you need.
 This gives faster load times and smaller browser bundles. Math.js uses
-ES6 modules, and creating small bundles using tree-shaking works out of
+ES modules, and creating small bundles using tree-shaking works out of
 the box when using Webpack for example.
 
 This page describes:
