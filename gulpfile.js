@@ -253,8 +253,9 @@ function addDeprecatedFunctions (done) {
 function clean () {
   return del([
     'dist/**/*',
+    'es/**/*',
     'lib/**/*',
-    'es/**/*'
+    'src/**/*.generated.js'
   ])
 }
 
