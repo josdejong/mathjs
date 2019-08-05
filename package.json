@@ -190,7 +190,6 @@
     "build": "gulp",
     "build-and-test": "npm run build && npm run test:src && npm run test:generated && npm run test:node && npm run lint",
     "compile": "gulp compile",
-    "compile:es": "gulp compile:es",
     "watch": "gulp watch",
     "lint": "standard --env=mocha --env=worker",
     "validate:ascii": "gulp validate:ascii",

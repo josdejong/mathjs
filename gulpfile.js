@@ -275,16 +275,14 @@ gulp.task('watch', function watch () {
   gulp.watch(files, options, gulp.parallel(bundle, compile, addDeprecatedFunctions))
 })
 
-gulp.task('compile', compile)
-
 // The default task (called when you run `gulp`)
 gulp.task('default', gulp.series(
   clean,
   updateVersionFile,
   compile,
-  compileESModules,
   generateEntryFiles,
   compileEntryFiles,
+  compileESModules, // Must be after generateEntryFiles
   writeCompiledHeader,
   addDeprecatedFunctions,
   bundle,
