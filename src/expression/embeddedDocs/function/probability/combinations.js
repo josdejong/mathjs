@@ -8,5 +8,5 @@ export const combinationsDocs = {
   examples: [
     'combinations(7, 5)'
   ],
-  seealso: ['permutations', 'factorial']
+  seealso: ['multicombinations', 'permutations', 'factorial']
 }

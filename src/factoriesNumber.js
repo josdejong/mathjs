@@ -218,6 +218,7 @@ export { createPartitionSelect } from './function/matrix/partitionSelect'
 // probability
 export const createCombinations = createNumberFactory('combinations', combinationsNumber)
 export const createGamma = createNumberFactory('gamma', gammaNumber)
+export { createMulticombinations } from './function/probability/multicombinations'
 export { createFactorial } from './function/probability/factorial'
 export { createMultinomial } from './function/probability/multinomial'
 export { createPermutations } from './function/probability/permutations'
