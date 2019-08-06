@@ -8,6 +8,7 @@ node_modules
 *.log
 dist
 lib
+es
 .nyc_output
 *.bak
 *.generated.js

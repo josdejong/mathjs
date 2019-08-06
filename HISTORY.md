@@ -1,6 +1,12 @@
 # History
 
 
+# 2019-08-05, version 6.0.4
+
+- Fixed #1554, #1565: ES Modules where not transpiled to ES5, giving issues on
+  old browsers. Thanks @mockdeep for helping to find a solution.
+
+
 # 2019-07-07, version 6.0.3
 
 - Add `unpkg` and `jsdelivr` fields in package.json pointing to UMD build.
@@ -27,7 +33,7 @@
 
 ### Most notable changes
 
-1.  Full support for **ES6 modules**. Support for tree-shaking out of the box.
+1.  Full support for **ES modules**. Support for tree-shaking out of the box.
 
     Load all functions:
 
