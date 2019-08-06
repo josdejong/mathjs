@@ -442,18 +442,24 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
         if (obj[newUnit].offset) {
           customUnits[newUnit].offset = obj[newUnit].offset
         }
+        if (obj[newUnit].commonPrefixes) {
+          customUnits[newUnit].commonPrefixes = obj[newUnit].commonPrefixes
+        } else if (customUnits[newUnit].prefixes) {
+          // No commonPrefixes given, so defaulting to all allowed prefixes
+          let commonPrefixes = unitmath().definitions().prefixes[customUnits[newUnit].prefixes]
+          if (commonPrefixes) {
+            customUnits[newUnit].commonPrefixes = Object.keys(commonPrefixes)
+          }
+        }
       }
       else {
-        // TODO: Base unit
-
+        // Base unit
         customBaseQuantities.push(newUnit + "_STUFF")
         customUnits[newUnit] = {
           value: '1',
           quantity: newUnit + "_STUFF"
         }
       }
-
-
 
     }
 

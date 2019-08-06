@@ -1138,7 +1138,7 @@ describe.only('Unit', function () {
       assert.throws(() => unit.createUnitSingle('mm', { definition: '1e-4 m', prefixes: 'short' }), /Cannot create unit "mm": a unit with that name already exists/)
 
       assert.doesNotThrow(() => unit.createUnitSingle('mm', { definition: '1e-4 m', prefixes: 'short' }, { override: true }))
-      assert.strictEqual(unit(1e-3, 'mm').toString(), '1 mmm') // Use the user's new definition
+      assert.strictEqual(unit(1e-4, 'mm').format(4), '0.1 mmm') // Use the user's new definition
       assert.strictEqual(unit(1e-3, 'mm').to('m').format(4), '1e-7 m') // Use the user's new definition
     })
 
