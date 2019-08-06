@@ -53,12 +53,12 @@ describe('reviver', function () {
   })
 
   it('should parse a stringified Unit', function () {
-    const json = '{"mathjs":"Unit","value":5,"unit":"cm","fixPrefix":false}'
-    const u = new math.Unit(5, 'cm')
+    const json = '{"mathjs":"unit","value":5,"unit":"cm"}'
+    const u = new math.unit(5, 'cm')
 
     const obj = JSON.parse(json, reviver)
 
-    assert(obj instanceof math.Unit)
+    assert(obj.type === 'Unit')
     assert.deepStrictEqual(obj, u)
   })
 

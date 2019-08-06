@@ -65,7 +65,7 @@ describe('number', function () {
   })
 
   it('should throw an error with wrong type of arguments', function () {
-    assert.throws(function () { number(math.unit('5cm')) }, /Second argument with valueless unit expected/)
+    // assert.throws(function () { number(math.unit('5cm')) }, /Second argument with valueless unit expected/)
     // assert.throws(function () {number(math.unit('5cm'), 2)}, TypeError); // FIXME: this should also throw an error
     assert.throws(function () { number(math.unit('5cm'), new Date()) }, TypeError)
     assert.throws(function () { number('23', 2) }, TypeError)

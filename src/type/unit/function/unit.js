@@ -257,6 +257,26 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     u.constructor.prototype.isUnit = true
     u.constructor.prototype.type = 'unit'
 
+    /**
+     * Get a JSON representation of the unit
+     * @memberof Unit
+     * @returns {Object} Returns a JSON object structured as:
+     *                   `{"mathjs": "Unit", "value": 2, "unit": "cm", "fixed": false}`
+     */
+    u.constructor.prototype.toJSON = function () {
+      let asJSON = {
+        mathjs: 'unit',
+        value: this.getValue(),
+        unit: this.getUnits().format()
+      }
+      if (this.fixed) {
+        asJSON.fixed = this.fixed
+      }
+      console.log('asJSON:')
+      console.log(asJSON)
+      return asJSON
+    }
+
     return retUnit
 
   }
@@ -483,6 +503,22 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
 
+  }
+
+
+  /**
+   * Instantiate a Unit from a JSON object
+   * @memberof Unit
+   * @param {Object} json  A JSON object structured as:
+   *                       `{"mathjs": "Unit", "value": 2, "unit": "cm", "fixed": false}`
+   * @return {Unit}
+   */
+  unit.fromJSON = function (json) {
+    console.log(json)
+    let unit = unitmath()(json.value, json.unit.replace(/[\(\)]/g, ''))
+    if (json.fixed)
+      unit = unit.to()
+    return unit
   }
 
   unit.unitmath = unitmath

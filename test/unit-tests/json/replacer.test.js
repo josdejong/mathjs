@@ -52,7 +52,7 @@ describe('replacer', function () {
 
   it('should stringify a Unit', function () {
     const u = new math.Unit(5, 'cm')
-    const json = '{"mathjs":"Unit","value":5,"unit":"cm","fixPrefix":false}'
+    const json = '{"mathjs":"unit","value":5,"unit":"cm"}'
     assert.deepStrictEqual(JSON.stringify(u), json)
   })
 
