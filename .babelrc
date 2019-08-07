@@ -5,6 +5,7 @@
   "plugins": ["@babel/plugin-transform-object-assign"],
   "ignore": [
     "dist/*.js",
-    "lib/**/*.js"
+    "lib/**/*.js",
+    "es/**/*.js"
   ]
 }

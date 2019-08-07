@@ -21,7 +21,7 @@ and instantiated. When creating an instance, one can optionally provide
 configuration options as described in
 [Configuration](core/configuration.md).
 
-### ES6 modules
+### ES modules
 
 Load the functions you need and use them:
 

@@ -1,1 +1,1 @@
-export * from './main/es6/number'
+export * from './main/esm/number' // eslint-disable-line

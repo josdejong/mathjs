@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
@@ -161,11 +161,11 @@
     "sylvester": "0.0.21",
     "uglify-js": "3.6.0",
     "underscore": "1.9.1",
-    "webpack": "4.36.1",
+    "webpack": "4.39.1",
     "zeros": "1.0.0"
   },
   "main": "main/es5",
-  "module": "main/es6",
+  "module": "main/esm",
   "unpkg": "dist/math.min.js",
   "jsdelivr": "dist/math.min.js",
   "files": [
@@ -173,6 +173,7 @@
     "dist",
     "docs",
     "main",
+    "es",
     "lib",
     "src",
     "core.js",
@@ -188,6 +189,7 @@
   "scripts": {
     "build": "gulp",
     "build-and-test": "npm run build && npm run test:src && npm run test:generated && npm run test:node && npm run lint",
+    "compile": "gulp compile",
     "watch": "gulp watch",
     "lint": "standard --env=mocha --env=worker",
     "validate:ascii": "gulp validate:ascii",
@@ -212,6 +214,7 @@
   "directories": {
     "doc": "./docs",
     "example": "./examples",
+    "es": "./es",
     "lib": "./lib",
     "src": "./src",
     "test": "./test"
