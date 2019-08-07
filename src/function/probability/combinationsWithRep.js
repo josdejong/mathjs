@@ -2,24 +2,24 @@ import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 import { product } from '../../utils/product'
 
-const name = 'multicombinations'
+const name = 'combinationsWithRep'
 const dependencies = ['typed']
 
-export const createMulticombinations = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createCombinationsWithRep = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the number of ways of picking `k` unordered outcomes from `n`
    * possibilities, allowing individual outcomes to be repeated more than once.
    *
-   * Multicombinations only takes integer arguments.
+   * CombinationsWithRep only takes integer arguments.
    * The following condition must be enforced: k <= n + k -1.
    *
    * Syntax:
    *
-   *     math.multicombinations(n, k)
+   *     math.combinationsWithRep(n, k)
    *
    * Examples:
    *
-   *    math.multicombinations(7, 5) // returns 462
+   *    math.combinationsWithRep(7, 5) // returns 462
    *
    * See also:
    *
@@ -32,10 +32,10 @@ export const createMulticombinations = /* #__PURE__ */ factory(name, dependencie
   return typed(name, {
     'number, number': function (n, k) {
       if (!isInteger(n) || n < 0) {
-        throw new TypeError('Positive integer value expected in function multicombinations')
+        throw new TypeError('Positive integer value expected in function combinationsWithRep')
       }
       if (!isInteger(k) || k < 0) {
-        throw new TypeError('Positive integer value expected in function multicombinations')
+        throw new TypeError('Positive integer value expected in function combinationsWithRep')
       }
       if (n < 1) {
         throw new TypeError('k must be less than or equal to n + k - 1')
@@ -51,10 +51,10 @@ export const createMulticombinations = /* #__PURE__ */ factory(name, dependencie
       const one = new BigNumber(1)
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
-        throw new TypeError('Positive integer value expected in function multicombinations')
+        throw new TypeError('Positive integer value expected in function combinationsWithRep')
       }
       if (n.lt(one)) {
-        throw new TypeError('k must be less than or equal to n + k - 1 in function multicombinations')
+        throw new TypeError('k must be less than or equal to n + k - 1 in function combinationsWithRep')
       }
 
       const max = n.minus(one)

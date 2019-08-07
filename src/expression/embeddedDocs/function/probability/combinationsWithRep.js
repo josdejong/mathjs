@@ -1,12 +1,12 @@
-export const multicombinationsDocs = {
-  name: 'multicombinations',
+export const combinationsWithRepDocs = {
+  name: 'combinationsWithRep',
   category: 'Probability',
   syntax: [
-    'multicombinations(n, k)'
+    'combinationsWithRep(n, k)'
   ],
   description: 'Compute the number of combinations of n items taken k at a time with replacements.',
   examples: [
-    'multicombinations(7, 5)'
+    'combinationsWithRep(7, 5)'
   ],
   seealso: ['combinations', 'permutations', 'factorial']
 }

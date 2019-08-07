@@ -11,5 +11,5 @@ export const factorialDocs = {
     '5 * 4 * 3 * 2 * 1',
     '3!'
   ],
-  seealso: ['combinations', 'permutations', 'gamma']
+  seealso: ['combinations', 'combinationsWithRep', 'permutations', 'gamma']
 }

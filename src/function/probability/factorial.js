@@ -22,7 +22,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * See also:
    *
-   *    combinations, gamma, permutations
+   *    combinations, combinationsWithRep, gamma, permutations
    *
    * @param {number | BigNumber | Array | Matrix} n   An integer number
    * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
