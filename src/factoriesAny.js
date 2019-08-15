@@ -216,6 +216,7 @@ export { createVariance, createDeprecatedVar } from './function/statistics/varia
 export { createQuantileSeq } from './function/statistics/quantileSeq'
 export { createStd } from './function/statistics/std'
 export { createCombinations } from './function/probability/combinations'
+export { createCombinationsWithRep } from './function/probability/combinationsWithRep'
 export { createGamma } from './function/probability/gamma'
 export { createFactorial } from './function/probability/factorial'
 export { createKldivergence } from './function/probability/kldivergence'

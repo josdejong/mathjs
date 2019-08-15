@@ -25,7 +25,7 @@ export const createPermutations = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * See also:
    *
-   *    combinations, factorial
+   *    combinations, combinationsWithRep, factorial
    *
    * @param {number | BigNumber} n   The number of objects in total
    * @param {number | BigNumber} [k] The number of objects in the subset

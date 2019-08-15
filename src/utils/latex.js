@@ -193,6 +193,7 @@ export const latexFunctions = {
 
   // probability
   combinations: { 2: `\\binom{\${args[0]}}{\${args[1]}}` },
+  combinationsWithRep: { 2: `\\left(\\!\\!{\\binom{\${args[0]}}{\${args[1]}}}\\!\\!\\right)` },
   factorial: { 1: `\\left(\${args[0]}\\right)${latexOperators['factorial']}` },
   gamma: { 1: `\\Gamma\\left(\${args[0]}\\right)` },
 

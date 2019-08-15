@@ -10,5 +10,5 @@ export const permutationsDocs = {
     'permutations(5)',
     'permutations(5, 3)'
   ],
-  seealso: ['combinations', 'factorial']
+  seealso: ['combinations', 'combinationsWithRep', 'factorial']
 }
