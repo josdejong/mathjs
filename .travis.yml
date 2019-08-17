@@ -21,3 +21,5 @@ jobs:
     - script: npm run coverage && npx codecov
       node_js: lts/*
       name: Coverage
+git:
+  depth: 5
