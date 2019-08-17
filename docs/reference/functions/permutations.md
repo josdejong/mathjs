@@ -45,4 +45,5 @@ math.permutations(5, 3)  // 60
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [combinations](combinations.html),
+[combinationsWithRep](combinationsWithRep.html),
 [factorial](factorial.html)

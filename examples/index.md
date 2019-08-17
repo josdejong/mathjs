@@ -37,6 +37,7 @@ layout: default
 - [Custom argument parsing](advanced/custom_argument_parsing.js.html)
 - [Custom datatype](advanced/custom_datatype.js.html)
 - [Custom loading](advanced/custom_loading.js.html)
+- [Custom relational functions](advanced/custom_relational_functions.js.html)
 - [Expression trees](advanced/expression_trees.js.html)
 - [Function transform](advanced/function_transform.js.html)
 - [More secure eval](advanced/more_secure_eval.js.html)

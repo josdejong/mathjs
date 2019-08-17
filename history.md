@@ -5,6 +5,17 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20190817-version-610">2019-08-17, version 6.1.0 <a href="#20190817-version-610" title="Permalink">#</a></h1>
+
+- Implemented function `combinationsWithRep` (see <a href="https://github.com/josdejong/mathjs/issues/1329">#1329</a>). Thanks <a href="https://github.com/waseemyusuf">@waseemyusuf</a>.
+
+
+<h1 id="20190805-version-604">2019-08-05, version 6.0.4 <a href="#20190805-version-604" title="Permalink">#</a></h1>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1554">#1554</a>, <a href="https://github.com/josdejong/mathjs/issues/1565">#1565</a>: ES Modules where not transpiled to ES5, giving issues on
+  old browsers. Thanks <a href="https://github.com/mockdeep">@mockdeep</a> for helping to find a solution.
+
+
 <h1 id="20190707-version-603">2019-07-07, version 6.0.3 <a href="#20190707-version-603" title="Permalink">#</a></h1>
 
 - Add `unpkg` and `jsdelivr` fields in package.json pointing to UMD build.
@@ -31,7 +42,7 @@ layout: default
 
 <h3 id="most-notable-changes">Most notable changes <a href="#most-notable-changes" title="Permalink">#</a></h3>
 
-1.  Full support for **ES6 modules**. Support for tree-shaking out of the box.
+1.  Full support for **ES modules**. Support for tree-shaking out of the box.
 
     Load all functions:
 

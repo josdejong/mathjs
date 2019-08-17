@@ -42,5 +42,6 @@ math.factorial(3)    // returns 6
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [combinations](combinations.html),
+[combinationsWithRep](combinationsWithRep.html),
 [gamma](gamma.html),
 [permutations](permutations.html)

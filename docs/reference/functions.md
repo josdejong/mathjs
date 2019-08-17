@@ -180,6 +180,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.combinations(n,&nbsp;k)](functions/combinations.html) | Compute the number of ways of picking `k` unordered outcomes from `n` possibilities.
+[math.combinationsWithRep(n,&nbsp;k)](functions/combinationsWithRep.html) | Compute the number of ways of picking `k` unordered outcomes from `n` possibilities, allowing individual outcomes to be repeated more than once.
 [math.factorial(n)](functions/factorial.html) | Compute the factorial of a value  Factorial only supports an integer value as argument.
 [math.gamma(n)](functions/gamma.html) | Compute the gamma function of a value using Lanczos approximation for small values, and an extended Stirling approximation for large values.
 [math.kldivergence(x,&nbsp;y)](functions/kldivergence.html) | Calculate the Kullback-Leibler (KL) divergence  between two distributions.

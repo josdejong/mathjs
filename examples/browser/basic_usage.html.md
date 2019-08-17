@@ -12,7 +12,7 @@ File: [basic_usage.html](basic_usage.html) (click for a live demo)
 <head>
   <meta charset="utf-8">
   <title>math.js | basic usage</title>
-  <script src="https://unpkg.com/mathjs@6.0.3/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@6.1.0/dist/math.min.js"></script>
 </head>
 <body>
 

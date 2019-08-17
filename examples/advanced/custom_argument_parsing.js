@@ -93,6 +93,6 @@ console.log(math.integrate(f, 0, 1)) // outputs 0.6667254718034714
 console.log(math.evaluate('integrate(x^0.5, x, 0, 1)')) // outputs 0.6667254718034714
 
 // use the function via the expression parser (2)
-let scope = {}
+const scope = {}
 math.evaluate('f(x) = 2 * x', scope)
 console.log(math.evaluate('integrate(f(x), x, 0, 2)', scope)) // outputs 4.000000000000003

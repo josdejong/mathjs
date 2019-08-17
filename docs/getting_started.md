@@ -25,7 +25,7 @@ and instantiated. When creating an instance, one can optionally provide
 configuration options as described in
 [Configuration](core/configuration.html).
 
-<h3 id="es6-modules">ES6 modules <a href="#es6-modules" title="Permalink">#</a></h3>
+<h3 id="es-modules">ES modules <a href="#es-modules" title="Permalink">#</a></h3>
 
 Load the functions you need and use them:
 

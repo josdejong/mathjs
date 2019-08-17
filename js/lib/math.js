@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 6.0.3
- * @date    2019-07-07
+ * @version 6.1.0
+ * @date    2019-08-17
  *
  * @license
  * Copyright (C) 2013-2019 Jos de Jong <wjosdejong@gmail.com>
@@ -134,7 +134,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* unused harmony export isOptionalDependency */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return stripOptionalNotation; });
 /* harmony import */ var _array__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _object__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var _object__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 
 
 /**
@@ -514,7 +514,7 @@ function typeOf(x) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return last; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return initial; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return contains; });
-/* harmony import */ var _number__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _number__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var _is__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 /* harmony import */ var _error_DimensionError__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
@@ -1125,6 +1125,443 @@ function contains(array, item) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clone; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return mapObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return extend; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return deepExtend; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return deepStrictEqual; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return deepFlatten; });
+/* unused harmony export canDefineProperty */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return lazy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return traverse; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return hasOwnProperty; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return isLegacyFactory; });
+/* unused harmony export get */
+/* unused harmony export set */
+/* unused harmony export pick */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return pickShallow; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return values; });
+/* harmony import */ var _is__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+
+/**
+ * Clone an object
+ *
+ *     clone(x)
+ *
+ * Can clone any primitive type, array, and object.
+ * If x has a function clone, this function will be invoked to clone the object.
+ *
+ * @param {*} x
+ * @return {*} clone
+ */
+
+function clone(x) {
+  var type = _typeof(x); // immutable primitive types
+
+
+  if (type === 'number' || type === 'string' || type === 'boolean' || x === null || x === undefined) {
+    return x;
+  } // use clone function of the object when available
+
+
+  if (typeof x.clone === 'function') {
+    return x.clone();
+  } // array
+
+
+  if (Array.isArray(x)) {
+    return x.map(function (value) {
+      return clone(value);
+    });
+  }
+
+  if (x instanceof Date) return new Date(x.valueOf());
+  if (Object(_is__WEBPACK_IMPORTED_MODULE_0__[/* isBigNumber */ "e"])(x)) return x; // bignumbers are immutable
+
+  if (x instanceof RegExp) throw new TypeError('Cannot clone ' + x); // TODO: clone a RegExp
+  // object
+
+  return mapObject(x, clone);
+}
+/**
+ * Apply map to all properties of an object
+ * @param {Object} object
+ * @param {function} callback
+ * @return {Object} Returns a copy of the object with mapped properties
+ */
+
+function mapObject(object, callback) {
+  var clone = {};
+
+  for (var key in object) {
+    if (hasOwnProperty(object, key)) {
+      clone[key] = callback(object[key]);
+    }
+  }
+
+  return clone;
+}
+/**
+ * Extend object a with the properties of object b
+ * @param {Object} a
+ * @param {Object} b
+ * @return {Object} a
+ */
+
+function extend(a, b) {
+  for (var prop in b) {
+    if (hasOwnProperty(b, prop)) {
+      a[prop] = b[prop];
+    }
+  }
+
+  return a;
+}
+/**
+ * Deep extend an object a with the properties of object b
+ * @param {Object} a
+ * @param {Object} b
+ * @returns {Object}
+ */
+
+function deepExtend(a, b) {
+  // TODO: add support for Arrays to deepExtend
+  if (Array.isArray(b)) {
+    throw new TypeError('Arrays are not supported by deepExtend');
+  }
+
+  for (var prop in b) {
+    if (hasOwnProperty(b, prop)) {
+      if (b[prop] && b[prop].constructor === Object) {
+        if (a[prop] === undefined) {
+          a[prop] = {};
+        }
+
+        if (a[prop] && a[prop].constructor === Object) {
+          deepExtend(a[prop], b[prop]);
+        } else {
+          a[prop] = b[prop];
+        }
+      } else if (Array.isArray(b[prop])) {
+        throw new TypeError('Arrays are not supported by deepExtend');
+      } else {
+        a[prop] = b[prop];
+      }
+    }
+  }
+
+  return a;
+}
+/**
+ * Deep test equality of all fields in two pairs of arrays or objects.
+ * Compares values and functions strictly (ie. 2 is not the same as '2').
+ * @param {Array | Object} a
+ * @param {Array | Object} b
+ * @returns {boolean}
+ */
+
+function deepStrictEqual(a, b) {
+  var prop, i, len;
+
+  if (Array.isArray(a)) {
+    if (!Array.isArray(b)) {
+      return false;
+    }
+
+    if (a.length !== b.length) {
+      return false;
+    }
+
+    for (i = 0, len = a.length; i < len; i++) {
+      if (!deepStrictEqual(a[i], b[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  } else if (typeof a === 'function') {
+    return a === b;
+  } else if (a instanceof Object) {
+    if (Array.isArray(b) || !(b instanceof Object)) {
+      return false;
+    }
+
+    for (prop in a) {
+      // noinspection JSUnfilteredForInLoop
+      if (!(prop in b) || !deepStrictEqual(a[prop], b[prop])) {
+        return false;
+      }
+    }
+
+    for (prop in b) {
+      // noinspection JSUnfilteredForInLoop
+      if (!(prop in a) || !deepStrictEqual(a[prop], b[prop])) {
+        return false;
+      }
+    }
+
+    return true;
+  } else {
+    return a === b;
+  }
+}
+/**
+ * Recursively flatten a nested object.
+ * @param {Object} nestedObject
+ * @return {Object} Returns the flattened object
+ */
+
+function deepFlatten(nestedObject) {
+  var flattenedObject = {};
+
+  _deepFlatten(nestedObject, flattenedObject);
+
+  return flattenedObject;
+} // helper function used by deepFlatten
+
+function _deepFlatten(nestedObject, flattenedObject) {
+  for (var prop in nestedObject) {
+    if (hasOwnProperty(nestedObject, prop)) {
+      var value = nestedObject[prop];
+
+      if (_typeof(value) === 'object' && value !== null) {
+        _deepFlatten(value, flattenedObject);
+      } else {
+        flattenedObject[prop] = value;
+      }
+    }
+  }
+}
+/**
+ * Test whether the current JavaScript engine supports Object.defineProperty
+ * @returns {boolean} returns true if supported
+ */
+
+
+function canDefineProperty() {
+  // test needed for broken IE8 implementation
+  try {
+    if (Object.defineProperty) {
+      Object.defineProperty({}, 'x', {
+        get: function get() {}
+      });
+      return true;
+    }
+  } catch (e) {}
+
+  return false;
+}
+/**
+ * Attach a lazy loading property to a constant.
+ * The given function `fn` is called once when the property is first requested.
+ *
+ * @param {Object} object         Object where to add the property
+ * @param {string} prop           Property name
+ * @param {Function} valueResolver Function returning the property value. Called
+ *                                without arguments.
+ */
+
+function lazy(object, prop, valueResolver) {
+  var _uninitialized = true;
+
+  var _value;
+
+  Object.defineProperty(object, prop, {
+    get: function get() {
+      if (_uninitialized) {
+        _value = valueResolver();
+        _uninitialized = false;
+      }
+
+      return _value;
+    },
+    set: function set(value) {
+      _value = value;
+      _uninitialized = false;
+    },
+    configurable: true,
+    enumerable: true
+  });
+}
+/**
+ * Traverse a path into an object.
+ * When a namespace is missing, it will be created
+ * @param {Object} object
+ * @param {string | string[]} path   A dot separated string like 'name.space'
+ * @return {Object} Returns the object at the end of the path
+ */
+
+function traverse(object, path) {
+  if (path && typeof path === 'string') {
+    return traverse(object, path.split('.'));
+  }
+
+  var obj = object;
+
+  if (path) {
+    for (var i = 0; i < path.length; i++) {
+      var key = path[i];
+
+      if (!(key in obj)) {
+        obj[key] = {};
+      }
+
+      obj = obj[key];
+    }
+  }
+
+  return obj;
+}
+/**
+ * A safe hasOwnProperty
+ * @param {Object} object
+ * @param {string} property
+ */
+
+function hasOwnProperty(object, property) {
+  return object && Object.hasOwnProperty.call(object, property);
+}
+/**
+ * Test whether an object is a factory. a factory has fields:
+ *
+ * - factory: function (type: Object, config: Object, load: function, typed: function [, math: Object])   (required)
+ * - name: string (optional)
+ * - path: string    A dot separated path (optional)
+ * - math: boolean   If true (false by default), the math namespace is passed
+ *                   as fifth argument of the factory function
+ *
+ * @param {*} object
+ * @returns {boolean}
+ */
+
+function isLegacyFactory(object) {
+  return object && typeof object.factory === 'function';
+}
+/**
+ * Get a nested property from an object
+ * @param {Object} object
+ * @param {string | string[]} path
+ * @returns {Object}
+ */
+
+function get(object, path) {
+  if (typeof path === 'string') {
+    if (isPath(path)) {
+      return get(object, path.split('.'));
+    } else {
+      return object[path];
+    }
+  }
+
+  var child = object;
+
+  for (var i = 0; i < path.length; i++) {
+    var key = path[i];
+    child = child ? child[key] : undefined;
+  }
+
+  return child;
+}
+/**
+ * Set a nested property in an object
+ * Mutates the object itself
+ * If the path doesn't exist, it will be created
+ * @param {Object} object
+ * @param {string | string[]} path
+ * @param {*} value
+ * @returns {Object}
+ */
+
+function set(object, path, value) {
+  if (typeof path === 'string') {
+    if (isPath(path)) {
+      return set(object, path.split('.'), value);
+    } else {
+      object[path] = value;
+      return object;
+    }
+  }
+
+  var child = object;
+
+  for (var i = 0; i < path.length - 1; i++) {
+    var key = path[i];
+
+    if (child[key] === undefined) {
+      child[key] = {};
+    }
+
+    child = child[key];
+  }
+
+  if (path.length > 0) {
+    var lastKey = path[path.length - 1];
+    child[lastKey] = value;
+  }
+
+  return object;
+}
+/**
+ * Create an object composed of the picked object properties
+ * @param {Object} object
+ * @param {string[]} properties
+ * @param {function} [transform] Optional value to transform a value when picking it
+ * @return {Object}
+ */
+
+function pick(object, properties, transform) {
+  var copy = {};
+
+  for (var i = 0; i < properties.length; i++) {
+    var key = properties[i];
+    var value = get(object, key);
+
+    if (value !== undefined) {
+      set(copy, key, transform ? transform(value, key) : value);
+    }
+  }
+
+  return copy;
+}
+/**
+ * Shallow version of pick, creating an object composed of the picked object properties
+ * but not for nested properties
+ * @param {Object} object
+ * @param {string[]} properties
+ * @return {Object}
+ */
+
+function pickShallow(object, properties) {
+  var copy = {};
+
+  for (var i = 0; i < properties.length; i++) {
+    var key = properties[i];
+    var value = object[key];
+
+    if (value !== undefined) {
+      copy[key] = value;
+    }
+  }
+
+  return copy;
+}
+function values(object) {
+  return Object.keys(object).map(function (key) {
+    return object[key];
+  });
+} // helper function to test whether a string contains a path like 'user.name'
+
+function isPath(str) {
+  return str.indexOf('.') !== -1;
+}
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return isInteger; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return sign; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return log2; });
@@ -1148,7 +1585,7 @@ function contains(array, item) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return cosh; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return sinh; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return tanh; });
-/* harmony import */ var _object__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _object__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _is__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 
 
@@ -1788,443 +2225,6 @@ var tanh = Math.tanh || function (x) {
 };
 
 /***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clone; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return mapObject; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return extend; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return deepExtend; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return deepStrictEqual; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return deepFlatten; });
-/* unused harmony export canDefineProperty */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return lazy; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return traverse; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return hasOwnProperty; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return isLegacyFactory; });
-/* unused harmony export get */
-/* unused harmony export set */
-/* unused harmony export pick */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return pickShallow; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return values; });
-/* harmony import */ var _is__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-
-/**
- * Clone an object
- *
- *     clone(x)
- *
- * Can clone any primitive type, array, and object.
- * If x has a function clone, this function will be invoked to clone the object.
- *
- * @param {*} x
- * @return {*} clone
- */
-
-function clone(x) {
-  var type = _typeof(x); // immutable primitive types
-
-
-  if (type === 'number' || type === 'string' || type === 'boolean' || x === null || x === undefined) {
-    return x;
-  } // use clone function of the object when available
-
-
-  if (typeof x.clone === 'function') {
-    return x.clone();
-  } // array
-
-
-  if (Array.isArray(x)) {
-    return x.map(function (value) {
-      return clone(value);
-    });
-  }
-
-  if (x instanceof Date) return new Date(x.valueOf());
-  if (Object(_is__WEBPACK_IMPORTED_MODULE_0__[/* isBigNumber */ "e"])(x)) return x; // bignumbers are immutable
-
-  if (x instanceof RegExp) throw new TypeError('Cannot clone ' + x); // TODO: clone a RegExp
-  // object
-
-  return mapObject(x, clone);
-}
-/**
- * Apply map to all properties of an object
- * @param {Object} object
- * @param {function} callback
- * @return {Object} Returns a copy of the object with mapped properties
- */
-
-function mapObject(object, callback) {
-  var clone = {};
-
-  for (var key in object) {
-    if (hasOwnProperty(object, key)) {
-      clone[key] = callback(object[key]);
-    }
-  }
-
-  return clone;
-}
-/**
- * Extend object a with the properties of object b
- * @param {Object} a
- * @param {Object} b
- * @return {Object} a
- */
-
-function extend(a, b) {
-  for (var prop in b) {
-    if (hasOwnProperty(b, prop)) {
-      a[prop] = b[prop];
-    }
-  }
-
-  return a;
-}
-/**
- * Deep extend an object a with the properties of object b
- * @param {Object} a
- * @param {Object} b
- * @returns {Object}
- */
-
-function deepExtend(a, b) {
-  // TODO: add support for Arrays to deepExtend
-  if (Array.isArray(b)) {
-    throw new TypeError('Arrays are not supported by deepExtend');
-  }
-
-  for (var prop in b) {
-    if (hasOwnProperty(b, prop)) {
-      if (b[prop] && b[prop].constructor === Object) {
-        if (a[prop] === undefined) {
-          a[prop] = {};
-        }
-
-        if (a[prop] && a[prop].constructor === Object) {
-          deepExtend(a[prop], b[prop]);
-        } else {
-          a[prop] = b[prop];
-        }
-      } else if (Array.isArray(b[prop])) {
-        throw new TypeError('Arrays are not supported by deepExtend');
-      } else {
-        a[prop] = b[prop];
-      }
-    }
-  }
-
-  return a;
-}
-/**
- * Deep test equality of all fields in two pairs of arrays or objects.
- * Compares values and functions strictly (ie. 2 is not the same as '2').
- * @param {Array | Object} a
- * @param {Array | Object} b
- * @returns {boolean}
- */
-
-function deepStrictEqual(a, b) {
-  var prop, i, len;
-
-  if (Array.isArray(a)) {
-    if (!Array.isArray(b)) {
-      return false;
-    }
-
-    if (a.length !== b.length) {
-      return false;
-    }
-
-    for (i = 0, len = a.length; i < len; i++) {
-      if (!deepStrictEqual(a[i], b[i])) {
-        return false;
-      }
-    }
-
-    return true;
-  } else if (typeof a === 'function') {
-    return a === b;
-  } else if (a instanceof Object) {
-    if (Array.isArray(b) || !(b instanceof Object)) {
-      return false;
-    }
-
-    for (prop in a) {
-      // noinspection JSUnfilteredForInLoop
-      if (!(prop in b) || !deepStrictEqual(a[prop], b[prop])) {
-        return false;
-      }
-    }
-
-    for (prop in b) {
-      // noinspection JSUnfilteredForInLoop
-      if (!(prop in a) || !deepStrictEqual(a[prop], b[prop])) {
-        return false;
-      }
-    }
-
-    return true;
-  } else {
-    return a === b;
-  }
-}
-/**
- * Recursively flatten a nested object.
- * @param {Object} nestedObject
- * @return {Object} Returns the flattened object
- */
-
-function deepFlatten(nestedObject) {
-  var flattenedObject = {};
-
-  _deepFlatten(nestedObject, flattenedObject);
-
-  return flattenedObject;
-} // helper function used by deepFlatten
-
-function _deepFlatten(nestedObject, flattenedObject) {
-  for (var prop in nestedObject) {
-    if (nestedObject.hasOwnProperty(prop)) {
-      var value = nestedObject[prop];
-
-      if (_typeof(value) === 'object' && value !== null) {
-        _deepFlatten(value, flattenedObject);
-      } else {
-        flattenedObject[prop] = value;
-      }
-    }
-  }
-}
-/**
- * Test whether the current JavaScript engine supports Object.defineProperty
- * @returns {boolean} returns true if supported
- */
-
-
-function canDefineProperty() {
-  // test needed for broken IE8 implementation
-  try {
-    if (Object.defineProperty) {
-      Object.defineProperty({}, 'x', {
-        get: function get() {}
-      });
-      return true;
-    }
-  } catch (e) {}
-
-  return false;
-}
-/**
- * Attach a lazy loading property to a constant.
- * The given function `fn` is called once when the property is first requested.
- *
- * @param {Object} object         Object where to add the property
- * @param {string} prop           Property name
- * @param {Function} valueResolver Function returning the property value. Called
- *                                without arguments.
- */
-
-function lazy(object, prop, valueResolver) {
-  var _uninitialized = true;
-
-  var _value;
-
-  Object.defineProperty(object, prop, {
-    get: function get() {
-      if (_uninitialized) {
-        _value = valueResolver();
-        _uninitialized = false;
-      }
-
-      return _value;
-    },
-    set: function set(value) {
-      _value = value;
-      _uninitialized = false;
-    },
-    configurable: true,
-    enumerable: true
-  });
-}
-/**
- * Traverse a path into an object.
- * When a namespace is missing, it will be created
- * @param {Object} object
- * @param {string | string[]} path   A dot separated string like 'name.space'
- * @return {Object} Returns the object at the end of the path
- */
-
-function traverse(object, path) {
-  if (path && typeof path === 'string') {
-    return traverse(object, path.split('.'));
-  }
-
-  var obj = object;
-
-  if (path) {
-    for (var i = 0; i < path.length; i++) {
-      var key = path[i];
-
-      if (!(key in obj)) {
-        obj[key] = {};
-      }
-
-      obj = obj[key];
-    }
-  }
-
-  return obj;
-}
-/**
- * A safe hasOwnProperty
- * @param {Object} object
- * @param {string} property
- */
-
-function hasOwnProperty(object, property) {
-  return object && Object.hasOwnProperty.call(object, property);
-}
-/**
- * Test whether an object is a factory. a factory has fields:
- *
- * - factory: function (type: Object, config: Object, load: function, typed: function [, math: Object])   (required)
- * - name: string (optional)
- * - path: string    A dot separated path (optional)
- * - math: boolean   If true (false by default), the math namespace is passed
- *                   as fifth argument of the factory function
- *
- * @param {*} object
- * @returns {boolean}
- */
-
-function isLegacyFactory(object) {
-  return object && typeof object.factory === 'function';
-}
-/**
- * Get a nested property from an object
- * @param {Object} object
- * @param {string | string[]} path
- * @returns {Object}
- */
-
-function get(object, path) {
-  if (typeof path === 'string') {
-    if (isPath(path)) {
-      return get(object, path.split('.'));
-    } else {
-      return object[path];
-    }
-  }
-
-  var child = object;
-
-  for (var i = 0; i < path.length; i++) {
-    var key = path[i];
-    child = child ? child[key] : undefined;
-  }
-
-  return child;
-}
-/**
- * Set a nested property in an object
- * Mutates the object itself
- * If the path doesn't exist, it will be created
- * @param {Object} object
- * @param {string | string[]} path
- * @param {*} value
- * @returns {Object}
- */
-
-function set(object, path, value) {
-  if (typeof path === 'string') {
-    if (isPath(path)) {
-      return set(object, path.split('.'), value);
-    } else {
-      object[path] = value;
-      return object;
-    }
-  }
-
-  var child = object;
-
-  for (var i = 0; i < path.length - 1; i++) {
-    var key = path[i];
-
-    if (child[key] === undefined) {
-      child[key] = {};
-    }
-
-    child = child[key];
-  }
-
-  if (path.length > 0) {
-    var lastKey = path[path.length - 1];
-    child[lastKey] = value;
-  }
-
-  return object;
-}
-/**
- * Create an object composed of the picked object properties
- * @param {Object} object
- * @param {string[]} properties
- * @param {function} [transform] Optional value to transform a value when picking it
- * @return {Object}
- */
-
-function pick(object, properties, transform) {
-  var copy = {};
-
-  for (var i = 0; i < properties.length; i++) {
-    var key = properties[i];
-    var value = get(object, key);
-
-    if (value !== undefined) {
-      set(copy, key, transform ? transform(value, key) : value);
-    }
-  }
-
-  return copy;
-}
-/**
- * Shallow version of pick, creating an object composed of the picked object properties
- * but not for nested properties
- * @param {Object} object
- * @param {string[]} properties
- * @return {Object}
- */
-
-function pickShallow(object, properties) {
-  var copy = {};
-
-  for (var i = 0; i < properties.length; i++) {
-    var key = properties[i];
-    var value = object[key];
-
-    if (value !== undefined) {
-      copy[key] = value;
-    }
-  }
-
-  return copy;
-}
-function values(object) {
-  return Object.keys(object).map(function (key) {
-    return object[key];
-  });
-} // helper function to test whether a string contains a path like 'user.name'
-
-function isPath(str) {
-  return str.indexOf('.') !== -1;
-}
-
-/***/ }),
 /* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2234,10 +2234,10 @@ function isPath(str) {
 var is = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./src/utils/number.js
-var number = __webpack_require__(3);
+var number = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/utils/object.js
-var object = __webpack_require__(4);
+var object = __webpack_require__(3);
 
 // CONCATENATED MODULE: ./src/utils/bignumber/formatter.js
 
@@ -2544,14 +2544,9 @@ function string_format(value, options) {
       // this object has a non-native toString method, use that one
       return value.toString();
     } else {
-      var entries = [];
-
-      for (var key in value) {
-        if (value.hasOwnProperty(key)) {
-          entries.push('"' + key + '": ' + string_format(value[key], options));
-        }
-      }
-
+      var entries = Object.keys(value).map(function (key) {
+        return '"' + key + '": ' + string_format(value[key], options);
+      });
       return '{' + entries.join(', ') + '}';
     }
   }
@@ -11744,7 +11739,7 @@ var typed_function = __webpack_require__(14);
 var typed_function_default = /*#__PURE__*/__webpack_require__.n(typed_function);
 
 // EXTERNAL MODULE: ./src/utils/number.js
-var utils_number = __webpack_require__(3);
+var utils_number = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/utils/factory.js
 var factory = __webpack_require__(0);
@@ -13148,7 +13143,7 @@ var utils_array = __webpack_require__(2);
 var utils_string = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./src/utils/object.js
-var utils_object = __webpack_require__(4);
+var utils_object = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/error/DimensionError.js
 var DimensionError = __webpack_require__(6);
@@ -14111,7 +14106,7 @@ Object(factory["a" /* factory */])(clone_name, clone_dependencies, function (_re
    * @return {*} A clone of object x
    */
   return typed(clone_name, {
-    'any': utils_object["a" /* clone */]
+    any: utils_object["a" /* clone */]
   });
 });
 // EXTERNAL MODULE: ./src/error/IndexError.js
@@ -14373,12 +14368,12 @@ Object(factory["a" /* factory */])(isInteger_name, isInteger_dependencies, funct
    *                    Throws an error in case of an unknown data type.
    */
   var isInteger = typed(isInteger_name, {
-    'number': utils_number["i" /* isInteger */],
+    number: utils_number["i" /* isInteger */],
     // TODO: what to do with isInteger(add(0.1, 0.2))  ?
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.isInt();
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.d === 1 && isFinite(x.n);
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -14451,14 +14446,14 @@ Object(factory["a" /* factory */])(isNegative_name, isNegative_dependencies, fun
    *                    Throws an error in case of an unknown data type.
    */
   var isNegative = typed(isNegative_name, {
-    'number': isNegativeNumber,
-    'BigNumber': function BigNumber(x) {
+    number: isNegativeNumber,
+    BigNumber: function BigNumber(x) {
       return x.isNeg() && !x.isZero() && !x.isNaN();
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.s < 0; // It's enough to decide on the sign
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return isNegative(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -14559,10 +14554,10 @@ Object(factory["a" /* factory */])(hasNumericValue_name, hasNumericValue_depende
    *                    Throws an error in case of unknown types.
    */
   return typed(hasNumericValue_name, {
-    'string': function string(x) {
+    string: function string(x) {
       return x.trim().length > 0 && !isNaN(Number(x));
     },
-    'any': function any(x) {
+    any: function any(x) {
       return isNumeric(x);
     }
   });
@@ -14610,14 +14605,14 @@ Object(factory["a" /* factory */])(isPositive_name, isPositive_dependencies, fun
    *                    Throws an error in case of an unknown data type.
    */
   var isPositive = typed(isPositive_name, {
-    'number': isPositiveNumber,
-    'BigNumber': function BigNumber(x) {
+    number: isPositiveNumber,
+    BigNumber: function BigNumber(x) {
       return !x.isNeg() && !x.isZero() && !x.isNaN();
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.s > 0 && x.n > 0;
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return isPositive(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -14671,17 +14666,17 @@ Object(factory["a" /* factory */])(isZero_name, isZero_dependencies, function (_
    *                    Throws an error in case of an unknown data type.
    */
   var isZero = typed(isZero_name, {
-    'number': isZeroNumber,
-    'BigNumber': function BigNumber(x) {
+    number: isZeroNumber,
+    BigNumber: function BigNumber(x) {
       return x.isZero();
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.re === 0 && x.im === 0;
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.d === 1 && x.n === 0;
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return isZero(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -14731,17 +14726,17 @@ Object(factory["a" /* factory */])(isNaN_name, isNaN_dependencies, function (_re
    *                    Throws an error in case of an unknown data type.
    */
   return typed(isNaN_name, {
-    'number': isNaNNumber,
-    'BigNumber': function BigNumber(x) {
+    number: isNaNNumber,
+    BigNumber: function BigNumber(x) {
       return x.isNaN();
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return false;
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.isNaN();
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return Number.isNaN(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -14822,7 +14817,7 @@ Object(factory["a" /* factory */])(typeOf_name, typeOf_dependencies, function (_
    *                  For example 'number', 'string', 'Array', 'Date'.
    */
   return typed(typeOf_name, {
-    'any': is["M" /* typeOf */]
+    any: is["M" /* typeOf */]
   });
 }); // For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-06
 
@@ -16522,10 +16517,10 @@ Object(factory["a" /* factory */])(number_name, number_dependencies, function (_
     '': function _() {
       return 0;
     },
-    'number': function number(x) {
+    number: function number(x) {
       return x;
     },
-    'string': function string(x) {
+    string: function string(x) {
       if (x === 'NaN') return NaN;
       var num = Number(x);
 
@@ -16535,16 +16530,16 @@ Object(factory["a" /* factory */])(number_name, number_dependencies, function (_
 
       return num;
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.toNumber();
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.valueOf();
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       throw new Error('Second argument with valueless unit expected');
     },
-    'null': function _null(x) {
+    "null": function _null(x) {
       return 0;
     },
     'Unit, string | Unit': function UnitStringUnit(unit, valuelessUnit) {
@@ -16596,20 +16591,20 @@ Object(factory["a" /* factory */])(string_name, string_dependencies, function (_
     '': function _() {
       return '';
     },
-    'number': utils_number["h" /* format */],
-    'null': function _null(x) {
+    number: utils_number["h" /* format */],
+    "null": function _null(x) {
       return 'null';
     },
-    'boolean': function boolean(x) {
+    "boolean": function boolean(x) {
       return x + '';
     },
-    'string': function string(x) {
+    string: function string(x) {
       return x;
     },
     'Array | Matrix': function ArrayMatrix(x) {
       return deepMap(x, string);
     },
-    'any': function any(x) {
+    any: function any(x) {
       return String(x);
     }
   });
@@ -16656,19 +16651,19 @@ Object(factory["a" /* factory */])(boolean_name, boolean_dependencies, function 
     '': function _() {
       return false;
     },
-    'boolean': function boolean(x) {
+    "boolean": function boolean(x) {
       return x;
     },
-    'number': function number(x) {
+    number: function number(x) {
       return !!x;
     },
-    'null': function _null(x) {
+    "null": function _null(x) {
       return false;
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return !x.isZero();
     },
-    'string': function string(x) {
+    string: function string(x) {
       // try case insensitive
       var lcase = x.toLowerCase();
 
@@ -16733,21 +16728,21 @@ Object(factory["a" /* factory */])(bignumber_name, bignumber_dependencies, funct
     '': function _() {
       return new BigNumber(0);
     },
-    'number': function number(x) {
+    number: function number(x) {
       // convert to string to prevent errors in case of >15 digits
       return new BigNumber(x + '');
     },
-    'string': function string(x) {
+    string: function string(x) {
       return new BigNumber(x);
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       // we assume a BigNumber is immutable
       return x;
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return new BigNumber(x.n).div(x.d).times(x.s);
     },
-    'null': function _null(x) {
+    "null": function _null(x) {
       return new BigNumber(0);
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -16809,7 +16804,7 @@ Object(factory["a" /* factory */])(complex_name, complex_dependencies, function 
     '': function _() {
       return Complex.ZERO;
     },
-    'number': function number(x) {
+    number: function number(x) {
       return new Complex(x, 0);
     },
     'number, number': function numberNumber(re, im) {
@@ -16819,19 +16814,19 @@ Object(factory["a" /* factory */])(complex_name, complex_dependencies, function 
     'BigNumber, BigNumber': function BigNumberBigNumber(re, im) {
       return new Complex(re.toNumber(), im.toNumber());
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return new Complex(x.valueOf(), 0);
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.clone();
     },
-    'string': function string(x) {
+    string: function string(x) {
       return Complex(x); // for example '2 + 3i'
     },
-    'null': function _null(x) {
+    "null": function _null(x) {
       return Complex(0);
     },
-    'Object': function Object(x) {
+    Object: function Object(x) {
       if ('re' in x && 'im' in x) {
         return new Complex(x.re, x.im);
       }
@@ -16885,29 +16880,29 @@ Object(factory["a" /* factory */])(fraction_name, fraction_dependencies, functio
    * @return {Fraction | Array | Matrix} Returns a fraction
    */
   var fraction = typed('fraction', {
-    'number': function number(x) {
+    number: function number(x) {
       if (!isFinite(x) || isNaN(x)) {
         throw new Error(x + ' cannot be represented as a fraction');
       }
 
       return new Fraction(x);
     },
-    'string': function string(x) {
+    string: function string(x) {
       return new Fraction(x);
     },
     'number, number': function numberNumber(numerator, denominator) {
       return new Fraction(numerator, denominator);
     },
-    'null': function _null(x) {
+    "null": function _null(x) {
       return new Fraction(0);
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new Fraction(x.toString());
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x; // fractions are immutable
     },
-    'Object': function Object(x) {
+    Object: function Object(x) {
       return new Fraction(x);
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -16964,16 +16959,16 @@ Object(factory["a" /* factory */])(matrix_name, matrix_dependencies, function (_
     '': function _() {
       return _create([]);
     },
-    'string': function string(format) {
+    string: function string(format) {
       return _create([], format);
     },
     'string, string': function stringString(format, datatype) {
       return _create([], format, datatype);
     },
-    'Array': function Array(data) {
+    Array: function Array(data) {
       return _create(data);
     },
-    'Matrix': function Matrix(data) {
+    Matrix: function Matrix(data) {
       return _create(data, data.storage());
     },
     'Array | Matrix, string': _create,
@@ -17407,17 +17402,17 @@ Object(factory["a" /* factory */])(unaryMinus_name, unaryMinus_dependencies, fun
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
    */
   var unaryMinus = typed(unaryMinus_name, {
-    'number': unaryMinusNumber,
-    'Complex': function Complex(x) {
+    number: unaryMinusNumber,
+    Complex: function Complex(x) {
       return x.neg();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.neg();
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.neg();
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       var res = x.clone();
       res.value = unaryMinus(x.value);
       return res;
@@ -17468,17 +17463,17 @@ Object(factory["a" /* factory */])(unaryPlus_name, unaryPlus_dependencies, funct
    *            Returns the input value when numeric, converts to a number when input is non-numeric.
    */
   var unaryPlus = typed(unaryPlus_name, {
-    'number': unaryPlusNumber,
-    'Complex': function Complex(x) {
+    number: unaryPlusNumber,
+    Complex: function Complex(x) {
       return x; // complex numbers are immutable
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x; // bignumbers are immutable
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x; // fractions are immutable
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return x.clone();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -17528,21 +17523,21 @@ Object(factory["a" /* factory */])(abs_name, abs_dependencies, function (_ref) {
    *            Absolute value of `x`
    */
   var abs = typed(abs_name, {
-    'number': absNumber,
-    'Complex': function Complex(x) {
+    number: absNumber,
+    Complex: function Complex(x) {
       return x.abs();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.abs();
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.abs();
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since abs(0) = 0
       return deepMap(x, abs, true);
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return x.abs();
     }
   });
@@ -17779,15 +17774,15 @@ Object(factory["a" /* factory */])(cbrt_name, cbrt_dependencies, function (_ref)
    *            Returns the cubic root of `x`
    */
   var cbrt = typed(cbrt_name, {
-    'number': cbrtNumber,
+    number: cbrtNumber,
     // note: signature 'number, boolean' is also supported,
     //       created by typed as it knows how to convert number to Complex
-    'Complex': _cbrtComplex,
+    Complex: _cbrtComplex,
     'Complex, boolean': _cbrtComplex,
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.cbrt();
     },
-    'Unit': _cbrtUnit,
+    Unit: _cbrtUnit,
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since cbrt(0) = 0
       return deepMap(x, cbrt, true);
@@ -17908,24 +17903,24 @@ Object(factory["a" /* factory */])(ceil_name, ceil_dependencies, function (_ref)
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   var ceil = typed('ceil', {
-    'number': function number(x) {
+    number: function number(x) {
       if (Object(utils_number["m" /* nearlyEqual */])(x, round(x), config.epsilon)) {
         return round(x);
       } else {
         return ceilNumber(x);
       }
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.ceil();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       if (nearlyEqual(x, round(x), config.epsilon)) {
         return round(x);
       } else {
         return x.ceil();
       }
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.ceil();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -17971,21 +17966,21 @@ Object(factory["a" /* factory */])(cube_name, cube_dependencies, function (_ref)
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} Cube of x
    */
   var cube = typed(cube_name, {
-    'number': cubeNumber,
-    'Complex': function Complex(x) {
+    number: cubeNumber,
+    Complex: function Complex(x) {
       return x.mul(x).mul(x); // Is faster than pow(x, 3)
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.times(x).times(x);
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.pow(3); // Is faster than mul()mul()mul()
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since cube(0) = 0
       return deepMap(x, cube, true);
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return x.pow(3);
     }
   });
@@ -18031,11 +18026,11 @@ Object(factory["a" /* factory */])(exp_name, exp_dependencies, function (_ref) {
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
   var exp = typed(exp_name, {
-    'number': expNumber,
-    'Complex': function Complex(x) {
+    number: expNumber,
+    Complex: function Complex(x) {
       return x.exp();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.exp();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -18086,12 +18081,12 @@ Object(factory["a" /* factory */])(expm1_name, expm1_dependencies, function (_re
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
   var expm1 = typed(expm1_name, {
-    'number': expm1Number,
-    'Complex': function Complex(x) {
+    number: expm1Number,
+    Complex: function Complex(x) {
       var r = Math.exp(x.re);
       return new _Complex(r * Math.cos(x.im) - 1, r * Math.sin(x.im));
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.exp().minus(1);
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -18141,16 +18136,16 @@ Object(factory["a" /* factory */])(fix_name, fix_dependencies, function (_ref) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
    */
   var fix = typed('fix', {
-    'number': function number(x) {
+    number: function number(x) {
       return x > 0 ? floor(x) : ceil(x);
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return new _Complex(x.re > 0 ? Math.floor(x.re) : Math.ceil(x.re), x.im > 0 ? Math.floor(x.im) : Math.ceil(x.im));
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.isNegative() ? ceil(x) : floor(x);
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.s < 0 ? x.ceil() : x.floor();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -18202,24 +18197,24 @@ Object(factory["a" /* factory */])(floor_name, floor_dependencies, function (_re
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   var floor = typed('floor', {
-    'number': function number(x) {
+    number: function number(x) {
       if (Object(utils_number["m" /* nearlyEqual */])(x, round(x), config.epsilon)) {
         return round(x);
       } else {
         return Math.floor(x);
       }
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.floor();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       if (nearlyEqual(x, round(x), config.epsilon)) {
         return round(x);
       } else {
         return x.floor();
       }
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.floor();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -19509,7 +19504,7 @@ Object(factory["a" /* factory */])(log10_name, log10_dependencies, function (_re
    *            Returns the 10-base logarithm of `x`
    */
   var log10 = typed(log10_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x >= 0 || config.predictable) {
         return log10Number(x);
       } else {
@@ -19517,10 +19512,10 @@ Object(factory["a" /* factory */])(log10_name, log10_dependencies, function (_re
         return new _Complex(x, 0).log().div(Math.LN10);
       }
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return new _Complex(x).log().div(Math.LN10);
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       if (!x.isNegative() || config.predictable) {
         return x.log();
       } else {
@@ -19573,7 +19568,7 @@ Object(factory["a" /* factory */])(log2_name, log2_dependencies, function (_ref)
    *            Returns the 2-base logarithm of `x`
    */
   var log2 = typed(log2_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x >= 0 || config.predictable) {
         return log2Number(x);
       } else {
@@ -19581,8 +19576,8 @@ Object(factory["a" /* factory */])(log2_name, log2_dependencies, function (_ref)
         return _log2Complex(new Complex(x, 0));
       }
     },
-    'Complex': _log2Complex,
-    'BigNumber': function BigNumber(x) {
+    Complex: _log2Complex,
+    BigNumber: function BigNumber(x) {
       if (!x.isNegative() || config.predictable) {
         return x.log(2);
       } else {
@@ -21191,14 +21186,14 @@ Object(factory["a" /* factory */])(nthRoot_name, nthRoot_dependencies, function 
 
   var complexErr = '' + 'Complex number not supported in function nthRoot. ' + 'Use nthRoots instead.';
   var nthRoot = typed(nthRoot_name, {
-    'number': function number(x) {
+    number: function number(x) {
       return nthRootNumber(x, 2);
     },
     'number, number': nthRootNumber,
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return _bigNthRoot(x, new _BigNumber(2));
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       throw new Error(complexErr);
     },
     'Complex, number': function ComplexNumber(x, y) {
@@ -21327,7 +21322,7 @@ var createNthRootNumber =
 Object(factory["a" /* factory */])(nthRoot_name, ['typed'], function (_ref2) {
   var typed = _ref2.typed;
   return typed(nthRoot_name, {
-    'number': nthRootNumber,
+    number: nthRootNumber,
     'number, number': nthRootNumber
   });
 });
@@ -21375,21 +21370,21 @@ Object(factory["a" /* factory */])(sign_name, sign_dependencies, function (_ref)
    *            The sign of `x`
    */
   var sign = typed(sign_name, {
-    'number': signNumber,
-    'Complex': function Complex(x) {
+    number: signNumber,
+    Complex: function Complex(x) {
       return x.sign();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(x.cmp(0));
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return new _Fraction(x.s, 1);
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since sign(0) = 0
       return deepMap(x, sign, true);
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return sign(x.value);
     }
   });
@@ -21432,11 +21427,11 @@ Object(factory["a" /* factory */])(sqrt_name, sqrt_dependencies, function (_ref)
    *            Returns the square root of `x`
    */
   var sqrt = typed('sqrt', {
-    'number': _sqrtNumber,
-    'Complex': function Complex(x) {
+    number: _sqrtNumber,
+    Complex: function Complex(x) {
       return x.sqrt();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       if (!x.isNegative() || config.predictable) {
         return x.sqrt();
       } else {
@@ -21448,7 +21443,7 @@ Object(factory["a" /* factory */])(sqrt_name, sqrt_dependencies, function (_ref)
       // deep map collection, skip zeros since sqrt(0) = 0
       return deepMap(x, sqrt, true);
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       // Someday will work for complex units when they are implemented
       return x.pow(0.5);
     }
@@ -21510,21 +21505,21 @@ Object(factory["a" /* factory */])(square_name, square_dependencies, function (_
    *            Squared value
    */
   var square = typed(square_name, {
-    'number': squareNumber,
-    'Complex': function Complex(x) {
+    number: squareNumber,
+    Complex: function Complex(x) {
       return x.mul(x);
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.times(x);
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.mul(x);
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since square(0) = 0
       return deepMap(x, square, true);
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return x.pow(2);
     }
   });
@@ -22727,8 +22722,8 @@ Object(factory["a" /* factory */])(bitNot_name, bitNot_dependencies, function (_
    * @return {number | BigNumber | Array | Matrix} NOT of `x`
    */
   var bitNot = typed(bitNot_name, {
-    'number': bitNotNumber,
-    'BigNumber': bitNotBigNumber,
+    number: bitNotNumber,
+    BigNumber: bitNotBigNumber,
     'Array | Matrix': function ArrayMatrix(x) {
       return deepMap(x, bitNot);
     }
@@ -23110,13 +23105,13 @@ Object(factory["a" /* factory */])(arg_name, arg_dependencies, function (_ref) {
    * @return {number | BigNumber | Array | Matrix} The argument of x
    */
   var arg = typed(arg_name, {
-    'number': function number(x) {
+    number: function number(x) {
       return Math.atan2(0, x);
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.constructor.atan2(0, x);
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.arg();
     },
     // TODO: implement BigNumber support for function arg
@@ -23162,13 +23157,13 @@ Object(factory["a" /* factory */])(conj_name, conj_dependencies, function (_ref)
    *            The complex conjugate of x
    */
   var conj = typed(conj_name, {
-    'number': function number(x) {
+    number: function number(x) {
       return x;
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x;
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.conjugate();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -23215,13 +23210,13 @@ Object(factory["a" /* factory */])(im_name, im_dependencies, function (_ref) {
    * @return {number | BigNumber | Array | Matrix} The imaginary part of x
    */
   var im = typed(im_name, {
-    'number': function number(x) {
+    number: function number(x) {
       return 0;
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.mul(0);
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.im;
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -23268,13 +23263,13 @@ Object(factory["a" /* factory */])(re_name, re_dependencies, function (_ref) {
    * @return {number | BigNumber | Array | Matrix} The real part of x
    */
   var re = typed(re_name, {
-    'number': function number(x) {
+    number: function number(x) {
       return x;
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x;
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.re;
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -23339,14 +23334,14 @@ Object(factory["a" /* factory */])(not_name, not_dependencies, function (_ref) {
    *            Returns true when input is a zero or empty value.
    */
   var not = typed(not_name, {
-    'number': notNumber,
-    'Complex': function Complex(x) {
+    number: notNumber,
+    Complex: function Complex(x) {
       return x.re === 0 && x.im === 0;
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.isZero() || x.isNaN();
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return x.value !== null ? not(x.value) : true;
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -23938,7 +23933,7 @@ Object(factory["a" /* factory */])(diag_name, diag_dependencies, function (_ref)
    */
   return typed(diag_name, {
     // FIXME: simplify this huge amount of signatures as soon as typed-function supports optional arguments
-    'Array': function Array(x) {
+    Array: function Array(x) {
       return _diag(x, 0, Object(utils_array["a" /* arraySize */])(x), null);
     },
     'Array, number': function ArrayNumber(x, k) {
@@ -23956,7 +23951,7 @@ Object(factory["a" /* factory */])(diag_name, diag_dependencies, function (_ref)
     'Array, BigNumber, string': function ArrayBigNumberString(x, k, format) {
       return _diag(x, k.toNumber(), Object(utils_array["a" /* arraySize */])(x), format);
     },
-    'Matrix': function Matrix(x) {
+    Matrix: function Matrix(x) {
       return _diag(x, 0, x.size(), x.storage());
     },
     'Matrix, number': function MatrixNumber(x, k) {
@@ -24257,10 +24252,10 @@ Object(factory["a" /* factory */])(flatten_name, flatten_dependencies, function 
    * @return {Matrix | Array} Returns the flattened matrix
    */
   return typed(flatten_name, {
-    'Array': function Array(x) {
+    Array: function Array(x) {
       return Object(utils_array["e" /* flatten */])(Object(utils_object["a" /* clone */])(x));
     },
-    'Matrix': function Matrix(x) {
+    Matrix: function Matrix(x) {
       var flat = Object(utils_array["e" /* flatten */])(Object(utils_object["a" /* clone */])(x.toArray())); // TODO: return the same matrix type as x
 
       return matrix(flat);
@@ -24386,10 +24381,10 @@ Object(factory["a" /* factory */])(getMatrixDataType_name, getMatrixDataType_dep
    * @return {string} A string representation of the matrix type
    */
   return typed(getMatrixDataType_name, {
-    'Array': function Array(x) {
+    Array: function Array(x) {
       return Object(utils_array["h" /* getArrayDataType */])(x, is["M" /* typeOf */]);
     },
-    'Matrix': function Matrix(x) {
+    Matrix: function Matrix(x) {
       return x.getDataType();
     }
   });
@@ -24445,7 +24440,7 @@ Object(factory["a" /* factory */])(identity_name, identity_dependencies, functio
     '': function _() {
       return config.matrix === 'Matrix' ? matrix([]) : [];
     },
-    'string': function string(format) {
+    string: function string(format) {
       return matrix(format);
     },
     'number | BigNumber': function numberBigNumber(rows) {
@@ -24460,13 +24455,13 @@ Object(factory["a" /* factory */])(identity_name, identity_dependencies, functio
     'number | BigNumber, number | BigNumber, string': function numberBigNumberNumberBigNumberString(rows, cols, format) {
       return _identity(rows, cols, format);
     },
-    'Array': function Array(size) {
+    Array: function Array(size) {
       return _identityVector(size);
     },
     'Array, string': function ArrayString(size, format) {
       return _identityVector(size, format);
     },
-    'Matrix': function Matrix(size) {
+    Matrix: function Matrix(size) {
       return _identityVector(size.valueOf(), size.storage());
     },
     'Matrix, string': function MatrixString(size, format) {
@@ -24772,8 +24767,8 @@ Object(factory["a" /* factory */])(ones_name, ones_dependencies, function (_ref)
         return _ones(size, 'default');
       }
     },
-    'Array': _ones,
-    'Matrix': function Matrix(size) {
+    Array: _ones,
+    Matrix: function Matrix(size) {
       var format = size.storage();
       return _ones(size.valueOf(), format);
     },
@@ -24917,7 +24912,7 @@ Object(factory["a" /* factory */])(range_name, range_dependencies, function (_re
   return typed(range_name, {
     // TODO: simplify signatures when typed-function supports default values and optional arguments
     // TODO: a number or boolean should not be converted to string here
-    'string': _strRange,
+    string: _strRange,
     'string, boolean': _strRange,
     'number, number': function numberNumber(start, end) {
       return _out(_rangeEx(start, end, 1));
@@ -25437,11 +25432,11 @@ Object(factory["a" /* factory */])(size_name, size_dependencies, function (_ref)
    * @return {Array | Matrix} A vector with size of `x`.
    */
   return typed(size_name, {
-    'Matrix': function Matrix(x) {
+    Matrix: function Matrix(x) {
       return x.create(x.size());
     },
-    'Array': utils_array["a" /* arraySize */],
-    'string': function string(x) {
+    Array: utils_array["a" /* arraySize */],
+    string: function string(x) {
       return config.matrix === 'Array' ? [x.length] : matrix([x.length]);
     },
     'number | Complex | BigNumber | Unit | boolean | null': function numberComplexBigNumberUnitBooleanNull(x) {
@@ -25492,15 +25487,15 @@ Object(factory["a" /* factory */])(squeeze_name, squeeze_dependencies, function 
    * @return {Matrix | Array} Squeezed matrix
    */
   return typed(squeeze_name, {
-    'Array': function Array(x) {
+    Array: function Array(x) {
       return Object(utils_array["p" /* squeeze */])(Object(utils_object["a" /* clone */])(x));
     },
-    'Matrix': function Matrix(x) {
+    Matrix: function Matrix(x) {
       var res = Object(utils_array["p" /* squeeze */])(x.toArray()); // FIXME: return the same type of matrix as the input
 
       return Array.isArray(res) ? matrix(res) : res;
     },
-    'any': function any(x) {
+    any: function any(x) {
       // scalar
       return Object(utils_object["a" /* clone */])(x);
     }
@@ -25926,11 +25921,11 @@ Object(factory["a" /* factory */])(transpose_name, transpose_dependencies, funct
    * @return {Array | Matrix}   The transposed matrix
    */
   var transpose = typed('transpose', {
-    'Array': function Array(x) {
+    Array: function Array(x) {
       // use dense matrix implementation
       return transpose(matrix(x)).valueOf();
     },
-    'Matrix': function Matrix(x) {
+    Matrix: function Matrix(x) {
       // matrix size
       var size = x.size(); // result
 
@@ -25973,7 +25968,7 @@ Object(factory["a" /* factory */])(transpose_name, transpose_dependencies, funct
       return c;
     },
     // scalars
-    'any': function any(x) {
+    any: function any(x) {
       return Object(utils_object["a" /* clone */])(x);
     }
   });
@@ -26102,7 +26097,7 @@ Object(factory["a" /* factory */])(ctranspose_name, ctranspose_dependencies, fun
    * @return {Array | Matrix}   The ctransposed matrix
    */
   return typed(ctranspose_name, {
-    'any': function any(x) {
+    any: function any(x) {
       return conj(transpose(x));
     }
   });
@@ -26171,8 +26166,8 @@ Object(factory["a" /* factory */])(zeros_name, zeros_dependencies, function (_re
         return _zeros(size, 'default');
       }
     },
-    'Array': _zeros,
-    'Matrix': function Matrix(size) {
+    Array: _zeros,
+    Matrix: function Matrix(size) {
       var format = size.storage();
       return _zeros(size.valueOf(), format);
     },
@@ -26273,7 +26268,7 @@ Object(factory["a" /* factory */])(erf_name, erf_dependencies, function (_ref) {
    * @return {number | Array | Matrix}    The erf of `x`
    */
   var erf = typed('name', {
-    'number': function number(x) {
+    number: function number(x) {
       var y = Math.abs(x);
 
       if (y >= MAX_NUM) {
@@ -26704,7 +26699,7 @@ Object(factory["a" /* factory */])(format_name, format_dependencies, function (_
    * @return {string} The formatted value
    */
   return typed(format_name, {
-    'any': utils_string["d" /* format */],
+    any: utils_string["d" /* format */],
     'any, Object | function | number': utils_string["d" /* format */]
   });
 });
@@ -26919,7 +26914,7 @@ Object(factory["a" /* factory */])(isPrime_name, isPrime_dependencies, function 
    *                    Throws an error in case of an unknown data type.
    */
   var isPrime = typed(isPrime_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x < 2) {
         return false;
       }
@@ -26940,7 +26935,7 @@ Object(factory["a" /* factory */])(isPrime_name, isPrime_dependencies, function 
 
       return true;
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       if (x.lt(2)) {
         return false;
       }
@@ -26980,20 +26975,20 @@ Object(factory["a" /* factory */])(numeric_name, numeric_dependencies, function 
       bignumber = _ref.bignumber,
       fraction = _ref.fraction;
   var validInputTypes = {
-    'string': true,
-    'number': true,
-    'BigNumber': true,
-    'Fraction': true // Load the conversion functions for each output type
+    string: true,
+    number: true,
+    BigNumber: true,
+    Fraction: true // Load the conversion functions for each output type
 
   };
   var validOutputTypes = {
-    'number': function number(x) {
+    number: function number(x) {
       return _number(x);
     },
-    'BigNumber': bignumber ? function (x) {
+    BigNumber: bignumber ? function (x) {
       return bignumber(x);
     } : noBignumber,
-    'Fraction': fraction ? function (x) {
+    Fraction: fraction ? function (x) {
       return fraction(x);
     } : noFraction
     /**
@@ -27287,7 +27282,9 @@ Object(factory["a" /* factory */])(pow_name, pow_dependencies, function (_ref) {
   }
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/round.js
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -27354,7 +27351,7 @@ Object(factory["a" /* factory */])(round_name, round_dependencies, function (_re
    */
 
   var round = typed(round_name, _objectSpread({}, roundNumberSignatures, {
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.round();
     },
     'Complex, number': function ComplexNumber(x, n) {
@@ -27380,7 +27377,7 @@ Object(factory["a" /* factory */])(round_name, round_dependencies, function (_re
 
       return new BigNumber(x).toDecimalPlaces(n.toNumber());
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.toDecimalPlaces(0);
     },
     'BigNumber, BigNumber': function BigNumberBigNumber(x, n) {
@@ -27390,7 +27387,7 @@ Object(factory["a" /* factory */])(round_name, round_dependencies, function (_re
 
       return x.toDecimalPlaces(n.toNumber());
     },
-    'Fraction': function Fraction(x) {
+    Fraction: function Fraction(x) {
       return x.round();
     },
     'Fraction, number': function FractionNumber(x, n) {
@@ -27440,7 +27437,7 @@ Object(factory["a" /* factory */])(round_name, round_dependencies, function (_re
   return round;
 });
 var roundNumberSignatures = {
-  'number': roundNumber,
+  number: roundNumber,
   'number, number': function numberNumber(x, n) {
     if (!Object(utils_number["i" /* isInteger */])(n)) {
       throw new TypeError(NO_INT);
@@ -27508,7 +27505,7 @@ Object(factory["a" /* factory */])(log_name, log_dependencies, function (_ref) {
    *            Returns the logarithm of `x`
    */
   var log = typed(log_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x >= 0 || config.predictable) {
         return logNumber(x);
       } else {
@@ -27516,10 +27513,10 @@ Object(factory["a" /* factory */])(log_name, log_dependencies, function (_ref) {
         return new Complex(x, 0).log();
       }
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.log();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       if (!x.isNegative() || config.predictable) {
         return x.ln();
       } else {
@@ -27584,7 +27581,7 @@ Object(factory["a" /* factory */])(log1p_name, log1p_dependencies, function (_re
    *            Returns the logarithm of `x+1`
    */
   var log1p = typed(log1p_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x >= -1 || config.predictable) {
         return Object(utils_number["k" /* log1p */])(x);
       } else {
@@ -27592,8 +27589,8 @@ Object(factory["a" /* factory */])(log1p_name, log1p_dependencies, function (_re
         return _log1pComplex(new Complex(x, 0));
       }
     },
-    'Complex': _log1pComplex,
-    'BigNumber': function BigNumber(x) {
+    Complex: _log1pComplex,
+    BigNumber: function BigNumber(x) {
       var y = x.plus(1);
 
       if (!y.isNegative() || config.predictable) {
@@ -27670,7 +27667,7 @@ Object(factory["a" /* factory */])(nthRoots_name, nthRoots_dependencies, functio
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
    */
   var nthRoots = typed(nthRoots_name, {
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return _nthComplexRoots(x, 2);
     },
     'Complex, number': _nthComplexRoots
@@ -31056,12 +31053,12 @@ Object(factory["a" /* factory */])(sort_name, sort_dependencies, function (_ref)
 
 
   return typed(sort_name, {
-    'Array': function Array(x) {
+    Array: function Array(x) {
       _arrayIsVector(x);
 
       return x.sort(compareAsc);
     },
-    'Matrix': function Matrix(x) {
+    Matrix: function Matrix(x) {
       _matrixIsVector(x);
 
       return matrix(x.toArray().sort(compareAsc), x.storage());
@@ -32604,8 +32601,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
 
   function parseNumber() {
     var number = '';
-    var oldIndex;
-    oldIndex = index;
+    var oldIndex = index;
 
     if (c === '+') {
       next();
@@ -32931,7 +32927,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
       unit.units[i] = {};
 
       for (var p in this.units[i]) {
-        if (this.units[i].hasOwnProperty(p)) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(this.units[i], p)) {
           unit.units[i][p] = this.units[i][p];
         }
       }
@@ -33050,7 +33046,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
 
   function _findUnit(str) {
     // First, match units names exactly. For example, a user could define 'mm' as 10^-4 m, which is silly, but then we would want 'mm' to match the user-defined unit.
-    if (UNITS.hasOwnProperty(str)) {
+    if (Object(utils_object["f" /* hasOwnProperty */])(UNITS, str)) {
       var unit = UNITS[str];
       var prefix = unit.prefixes[''];
       return {
@@ -33060,13 +33056,13 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
     }
 
     for (var _name in UNITS) {
-      if (UNITS.hasOwnProperty(_name)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(UNITS, _name)) {
         if (Object(utils_string["b" /* endsWith */])(str, _name)) {
           var _unit = UNITS[_name];
           var prefixLen = str.length - _name.length;
           var prefixName = str.substring(0, prefixLen);
 
-          var _prefix = _unit.prefixes.hasOwnProperty(prefixName) ? _unit.prefixes[prefixName] : undefined;
+          var _prefix = Object(utils_object["f" /* hasOwnProperty */])(_unit.prefixes, prefixName) ? _unit.prefixes[prefixName] : undefined;
 
           if (_prefix !== undefined) {
             // store unit, prefix, and value
@@ -33456,7 +33452,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
 
       if (matchingBase) {
         // Does the unit system have a matching unit?
-        if (currentUnitSystem.hasOwnProperty(matchingBase)) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(currentUnitSystem, matchingBase)) {
           matchingUnit = currentUnitSystem[matchingBase];
         }
       }
@@ -33477,7 +33473,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
           var baseDim = BASE_DIMENSIONS[i];
 
           if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
-            if (currentUnitSystem.hasOwnProperty(baseDim)) {
+            if (Object(utils_object["f" /* hasOwnProperty */])(currentUnitSystem, baseDim)) {
               proposedUnitList.push({
                 unit: currentUnitSystem[baseDim].unit,
                 prefix: currentUnitSystem[baseDim].prefix,
@@ -33514,7 +33510,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
       var baseDim = BASE_DIMENSIONS[i];
 
       if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
-        if (UNIT_SYSTEMS['si'].hasOwnProperty(baseDim)) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(UNIT_SYSTEMS['si'], baseDim)) {
           proposedUnitList.push({
             unit: UNIT_SYSTEMS['si'][baseDim].unit,
             prefix: UNIT_SYSTEMS['si'][baseDim].prefix,
@@ -33696,7 +33692,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
     var prefixes = this.units[0].unit.prefixes;
 
     for (var p in prefixes) {
-      if (prefixes.hasOwnProperty(p)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(prefixes, p)) {
         var prefix = prefixes[p];
 
         if (prefix.scientific) {
@@ -33788,102 +33784,102 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
         value: 1,
         scientific: true
       },
-      'da': {
+      da: {
         name: 'da',
         value: 1e1,
         scientific: false
       },
-      'h': {
+      h: {
         name: 'h',
         value: 1e2,
         scientific: false
       },
-      'k': {
+      k: {
         name: 'k',
         value: 1e3,
         scientific: true
       },
-      'M': {
+      M: {
         name: 'M',
         value: 1e6,
         scientific: true
       },
-      'G': {
+      G: {
         name: 'G',
         value: 1e9,
         scientific: true
       },
-      'T': {
+      T: {
         name: 'T',
         value: 1e12,
         scientific: true
       },
-      'P': {
+      P: {
         name: 'P',
         value: 1e15,
         scientific: true
       },
-      'E': {
+      E: {
         name: 'E',
         value: 1e18,
         scientific: true
       },
-      'Z': {
+      Z: {
         name: 'Z',
         value: 1e21,
         scientific: true
       },
-      'Y': {
+      Y: {
         name: 'Y',
         value: 1e24,
         scientific: true
       },
-      'd': {
+      d: {
         name: 'd',
         value: 1e-1,
         scientific: false
       },
-      'c': {
+      c: {
         name: 'c',
         value: 1e-2,
         scientific: false
       },
-      'm': {
+      m: {
         name: 'm',
         value: 1e-3,
         scientific: true
       },
-      'u': {
+      u: {
         name: 'u',
         value: 1e-6,
         scientific: true
       },
-      'n': {
+      n: {
         name: 'n',
         value: 1e-9,
         scientific: true
       },
-      'p': {
+      p: {
         name: 'p',
         value: 1e-12,
         scientific: true
       },
-      'f': {
+      f: {
         name: 'f',
         value: 1e-15,
         scientific: true
       },
-      'a': {
+      a: {
         name: 'a',
         value: 1e-18,
         scientific: true
       },
-      'z': {
+      z: {
         name: 'z',
         value: 1e-21,
         scientific: true
       },
-      'y': {
+      y: {
         name: 'y',
         value: 1e-24,
         scientific: true
@@ -33895,102 +33891,102 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
         value: 1,
         scientific: true
       },
-      'deca': {
+      deca: {
         name: 'deca',
         value: 1e1,
         scientific: false
       },
-      'hecto': {
+      hecto: {
         name: 'hecto',
         value: 1e2,
         scientific: false
       },
-      'kilo': {
+      kilo: {
         name: 'kilo',
         value: 1e3,
         scientific: true
       },
-      'mega': {
+      mega: {
         name: 'mega',
         value: 1e6,
         scientific: true
       },
-      'giga': {
+      giga: {
         name: 'giga',
         value: 1e9,
         scientific: true
       },
-      'tera': {
+      tera: {
         name: 'tera',
         value: 1e12,
         scientific: true
       },
-      'peta': {
+      peta: {
         name: 'peta',
         value: 1e15,
         scientific: true
       },
-      'exa': {
+      exa: {
         name: 'exa',
         value: 1e18,
         scientific: true
       },
-      'zetta': {
+      zetta: {
         name: 'zetta',
         value: 1e21,
         scientific: true
       },
-      'yotta': {
+      yotta: {
         name: 'yotta',
         value: 1e24,
         scientific: true
       },
-      'deci': {
+      deci: {
         name: 'deci',
         value: 1e-1,
         scientific: false
       },
-      'centi': {
+      centi: {
         name: 'centi',
         value: 1e-2,
         scientific: false
       },
-      'milli': {
+      milli: {
         name: 'milli',
         value: 1e-3,
         scientific: true
       },
-      'micro': {
+      micro: {
         name: 'micro',
         value: 1e-6,
         scientific: true
       },
-      'nano': {
+      nano: {
         name: 'nano',
         value: 1e-9,
         scientific: true
       },
-      'pico': {
+      pico: {
         name: 'pico',
         value: 1e-12,
         scientific: true
       },
-      'femto': {
+      femto: {
         name: 'femto',
         value: 1e-15,
         scientific: true
       },
-      'atto': {
+      atto: {
         name: 'atto',
         value: 1e-18,
         scientific: true
       },
-      'zepto': {
+      zepto: {
         name: 'zepto',
         value: 1e-21,
         scientific: true
       },
-      'yocto': {
+      yocto: {
         name: 'yocto',
         value: 1e-24,
         scientific: true
@@ -34002,102 +33998,102 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
         value: 1,
         scientific: true
       },
-      'da': {
+      da: {
         name: 'da',
         value: 1e2,
         scientific: false
       },
-      'h': {
+      h: {
         name: 'h',
         value: 1e4,
         scientific: false
       },
-      'k': {
+      k: {
         name: 'k',
         value: 1e6,
         scientific: true
       },
-      'M': {
+      M: {
         name: 'M',
         value: 1e12,
         scientific: true
       },
-      'G': {
+      G: {
         name: 'G',
         value: 1e18,
         scientific: true
       },
-      'T': {
+      T: {
         name: 'T',
         value: 1e24,
         scientific: true
       },
-      'P': {
+      P: {
         name: 'P',
         value: 1e30,
         scientific: true
       },
-      'E': {
+      E: {
         name: 'E',
         value: 1e36,
         scientific: true
       },
-      'Z': {
+      Z: {
         name: 'Z',
         value: 1e42,
         scientific: true
       },
-      'Y': {
+      Y: {
         name: 'Y',
         value: 1e48,
         scientific: true
       },
-      'd': {
+      d: {
         name: 'd',
         value: 1e-2,
         scientific: false
       },
-      'c': {
+      c: {
         name: 'c',
         value: 1e-4,
         scientific: false
       },
-      'm': {
+      m: {
         name: 'm',
         value: 1e-6,
         scientific: true
       },
-      'u': {
+      u: {
         name: 'u',
         value: 1e-12,
         scientific: true
       },
-      'n': {
+      n: {
         name: 'n',
         value: 1e-18,
         scientific: true
       },
-      'p': {
+      p: {
         name: 'p',
         value: 1e-24,
         scientific: true
       },
-      'f': {
+      f: {
         name: 'f',
         value: 1e-30,
         scientific: true
       },
-      'a': {
+      a: {
         name: 'a',
         value: 1e-36,
         scientific: true
       },
-      'z': {
+      z: {
         name: 'z',
         value: 1e-42,
         scientific: true
       },
-      'y': {
+      y: {
         name: 'y',
         value: 1e-48,
         scientific: true
@@ -34109,102 +34105,102 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
         value: 1,
         scientific: true
       },
-      'da': {
+      da: {
         name: 'da',
         value: 1e3,
         scientific: false
       },
-      'h': {
+      h: {
         name: 'h',
         value: 1e6,
         scientific: false
       },
-      'k': {
+      k: {
         name: 'k',
         value: 1e9,
         scientific: true
       },
-      'M': {
+      M: {
         name: 'M',
         value: 1e18,
         scientific: true
       },
-      'G': {
+      G: {
         name: 'G',
         value: 1e27,
         scientific: true
       },
-      'T': {
+      T: {
         name: 'T',
         value: 1e36,
         scientific: true
       },
-      'P': {
+      P: {
         name: 'P',
         value: 1e45,
         scientific: true
       },
-      'E': {
+      E: {
         name: 'E',
         value: 1e54,
         scientific: true
       },
-      'Z': {
+      Z: {
         name: 'Z',
         value: 1e63,
         scientific: true
       },
-      'Y': {
+      Y: {
         name: 'Y',
         value: 1e72,
         scientific: true
       },
-      'd': {
+      d: {
         name: 'd',
         value: 1e-3,
         scientific: false
       },
-      'c': {
+      c: {
         name: 'c',
         value: 1e-6,
         scientific: false
       },
-      'm': {
+      m: {
         name: 'm',
         value: 1e-9,
         scientific: true
       },
-      'u': {
+      u: {
         name: 'u',
         value: 1e-18,
         scientific: true
       },
-      'n': {
+      n: {
         name: 'n',
         value: 1e-27,
         scientific: true
       },
-      'p': {
+      p: {
         name: 'p',
         value: 1e-36,
         scientific: true
       },
-      'f': {
+      f: {
         name: 'f',
         value: 1e-45,
         scientific: true
       },
-      'a': {
+      a: {
         name: 'a',
         value: 1e-54,
         scientific: true
       },
-      'z': {
+      z: {
         name: 'z',
         value: 1e-63,
         scientific: true
       },
-      'y': {
+      y: {
         name: 'y',
         value: 1e-72,
         scientific: true
@@ -34216,42 +34212,42 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
         value: 1,
         scientific: true
       },
-      'k': {
+      k: {
         name: 'k',
         value: 1e3,
         scientific: true
       },
-      'M': {
+      M: {
         name: 'M',
         value: 1e6,
         scientific: true
       },
-      'G': {
+      G: {
         name: 'G',
         value: 1e9,
         scientific: true
       },
-      'T': {
+      T: {
         name: 'T',
         value: 1e12,
         scientific: true
       },
-      'P': {
+      P: {
         name: 'P',
         value: 1e15,
         scientific: true
       },
-      'E': {
+      E: {
         name: 'E',
         value: 1e18,
         scientific: true
       },
-      'Z': {
+      Z: {
         name: 'Z',
         value: 1e21,
         scientific: true
       },
-      'Y': {
+      Y: {
         name: 'Y',
         value: 1e24,
         scientific: true
@@ -34263,42 +34259,42 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
         value: 1,
         scientific: true
       },
-      'Ki': {
+      Ki: {
         name: 'Ki',
         value: 1024,
         scientific: true
       },
-      'Mi': {
+      Mi: {
         name: 'Mi',
         value: Math.pow(1024, 2),
         scientific: true
       },
-      'Gi': {
+      Gi: {
         name: 'Gi',
         value: Math.pow(1024, 3),
         scientific: true
       },
-      'Ti': {
+      Ti: {
         name: 'Ti',
         value: Math.pow(1024, 4),
         scientific: true
       },
-      'Pi': {
+      Pi: {
         name: 'Pi',
         value: Math.pow(1024, 5),
         scientific: true
       },
-      'Ei': {
+      Ei: {
         name: 'Ei',
         value: Math.pow(1024, 6),
         scientific: true
       },
-      'Zi': {
+      Zi: {
         name: 'Zi',
         value: Math.pow(1024, 7),
         scientific: true
       },
-      'Yi': {
+      Yi: {
         name: 'Yi',
         value: Math.pow(1024, 8),
         scientific: true
@@ -34310,42 +34306,42 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
         value: 1,
         scientific: true
       },
-      'kilo': {
+      kilo: {
         name: 'kilo',
         value: 1e3,
         scientific: true
       },
-      'mega': {
+      mega: {
         name: 'mega',
         value: 1e6,
         scientific: true
       },
-      'giga': {
+      giga: {
         name: 'giga',
         value: 1e9,
         scientific: true
       },
-      'tera': {
+      tera: {
         name: 'tera',
         value: 1e12,
         scientific: true
       },
-      'peta': {
+      peta: {
         name: 'peta',
         value: 1e15,
         scientific: true
       },
-      'exa': {
+      exa: {
         name: 'exa',
         value: 1e18,
         scientific: true
       },
-      'zetta': {
+      zetta: {
         name: 'zetta',
         value: 1e21,
         scientific: true
       },
-      'yotta': {
+      yotta: {
         name: 'yotta',
         value: 1e24,
         scientific: true
@@ -34357,42 +34353,42 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
         value: 1,
         scientific: true
       },
-      'kibi': {
+      kibi: {
         name: 'kibi',
         value: 1024,
         scientific: true
       },
-      'mebi': {
+      mebi: {
         name: 'mebi',
         value: Math.pow(1024, 2),
         scientific: true
       },
-      'gibi': {
+      gibi: {
         name: 'gibi',
         value: Math.pow(1024, 3),
         scientific: true
       },
-      'tebi': {
+      tebi: {
         name: 'tebi',
         value: Math.pow(1024, 4),
         scientific: true
       },
-      'pebi': {
+      pebi: {
         name: 'pebi',
         value: Math.pow(1024, 5),
         scientific: true
       },
-      'exi': {
+      exi: {
         name: 'exi',
         value: Math.pow(1024, 6),
         scientific: true
       },
-      'zebi': {
+      zebi: {
         name: 'zebi',
         value: Math.pow(1024, 7),
         scientific: true
       },
-      'yobi': {
+      yobi: {
         name: 'yobi',
         value: Math.pow(1024, 8),
         scientific: true
@@ -34404,7 +34400,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
         value: 1,
         scientific: true
       },
-      'MM': {
+      MM: {
         name: 'MM',
         value: 1e6,
         scientific: true
@@ -34595,7 +34591,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
       value: 1,
       offset: 0
     },
-    'in': {
+    "in": {
       name: 'in',
       base: BASE_UNITS.LENGTH,
       prefixes: PREFIXES.NONE,
@@ -36067,7 +36063,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
    */
 
   Unit.setUnitSystem = function (name) {
-    if (UNIT_SYSTEMS.hasOwnProperty(name)) {
+    if (Object(utils_object["f" /* hasOwnProperty */])(UNIT_SYSTEMS, name)) {
       currentUnitSystem = UNIT_SYSTEMS[name];
     } else {
       throw new Error('Unit system ' + name + ' does not exist. Choices are: ' + Object.keys(UNIT_SYSTEMS).join(', '));
@@ -36132,12 +36128,12 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
 
 
   for (var _name2 in ALIASES) {
-    if (ALIASES.hasOwnProperty(_name2)) {
+    if (Object(utils_object["f" /* hasOwnProperty */])(ALIASES, _name2)) {
       var _unit2 = UNITS[ALIASES[_name2]];
       var alias = {};
 
       for (var _key3 in _unit2) {
-        if (_unit2.hasOwnProperty(_key3)) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(_unit2, _key3)) {
           alias[_key3] = _unit2[_key3];
         }
       }
@@ -36196,7 +36192,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
 
     if (options && options.override) {
       for (var _key4 in obj) {
-        if (obj.hasOwnProperty(_key4)) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(obj, _key4)) {
           Unit.deleteUnit(_key4);
         }
 
@@ -36212,7 +36208,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
     var lastUnit;
 
     for (var _key5 in obj) {
-      if (obj.hasOwnProperty(_key5)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(obj, _key5)) {
         lastUnit = Unit.createUnitSingle(_key5, obj[_key5]);
       }
     }
@@ -36246,7 +36242,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
     } // Check collisions with existing units
 
 
-    if (UNITS.hasOwnProperty(name)) {
+    if (Object(utils_object["f" /* hasOwnProperty */])(UNITS, name)) {
       throw new Error('Cannot create unit "' + name + '": a unit with that name already exists');
     } // TODO: Validate name for collisions with other built-in functions (like abs or cos, for example), and for acceptable variable names. For example, '42' is probably not a valid unit. Nor is '%', since it is also an operator.
 
@@ -36279,7 +36275,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
 
     if (aliases) {
       for (var i = 0; i < aliases.length; i++) {
-        if (UNITS.hasOwnProperty(aliases[i])) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(UNITS, aliases[i])) {
           throw new Error('Cannot create alias "' + aliases[i] + '": a unit with that name already exists');
         }
       }
@@ -36322,7 +36318,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
       BASE_DIMENSIONS.push(baseName); // Push 0 onto existing base units
 
       for (var b in BASE_UNITS) {
-        if (BASE_UNITS.hasOwnProperty(b)) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(BASE_UNITS, b)) {
           BASE_UNITS[b].dimensions[BASE_DIMENSIONS.length - 1] = 0;
         }
       } // Add the new base unit
@@ -36363,7 +36359,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
       var anyMatch = false;
 
       for (var _i7 in BASE_UNITS) {
-        if (BASE_UNITS.hasOwnProperty(_i7)) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(BASE_UNITS, _i7)) {
           var match = true;
 
           for (var j = 0; j < BASE_DIMENSIONS.length; j++) {
@@ -36406,7 +36402,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
       var _alias = {};
 
       for (var _key6 in newUnit) {
-        if (newUnit.hasOwnProperty(_key6)) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(newUnit, _key6)) {
           _alias[_key6] = newUnit[_key6];
         }
       }
@@ -36468,10 +36464,10 @@ Object(factory["a" /* factory */])(unit_name, unit_dependencies, function (_ref)
    * @return {Unit | Array | Matrix}    The created unit
    */
   var unit = typed(unit_name, {
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       return x.clone();
     },
-    'string': function string(x) {
+    string: function string(x) {
       if (Unit.isValuelessUnit(x)) {
         return new Unit(null, x); // a pure unit
       }
@@ -36530,7 +36526,7 @@ Object(factory["a" /* factory */])(sparse_name, sparse_dependencies, function (_
     '': function _() {
       return new SparseMatrix([]);
     },
-    'string': function string(datatype) {
+    string: function string(datatype) {
       return new SparseMatrix([], datatype);
     },
     'Array | Matrix': function ArrayMatrix(data) {
@@ -36598,7 +36594,7 @@ Object(factory["a" /* factory */])(createUnit_name, createUnit_dependencies, fun
       return Unit.createUnit(obj, options);
     },
     // Same as above but without the options.
-    'Object': function Object(obj) {
+    Object: function Object(obj) {
       return Unit.createUnit(obj, {});
     },
     // Shortcut method for creating one unit.
@@ -36614,7 +36610,7 @@ Object(factory["a" /* factory */])(createUnit_name, createUnit_dependencies, fun
       return Unit.createUnit(obj, {});
     },
     // Without a definition, creates a base unit.
-    'string': function string(name) {
+    string: function string(name) {
       var obj = {};
       obj[name] = {};
       return Unit.createUnit(obj, {});
@@ -36657,17 +36653,17 @@ Object(factory["a" /* factory */])(acos_name, acos_dependencies, function (_ref)
    * @return {number | BigNumber | Complex | Array | Matrix} The arc cosine of x
    */
   var acos = typed(acos_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x >= -1 && x <= 1 || config.predictable) {
         return Math.acos(x);
       } else {
         return new Complex(x, 0).acos();
       }
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.acos();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.acos();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -36824,7 +36820,7 @@ Object(factory["a" /* factory */])(acosh_name, acosh_dependencies, function (_re
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosine of x
    */
   var acosh = typed(acosh_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x >= 1 || config.predictable) {
         return acoshNumber(x);
       }
@@ -36835,10 +36831,10 @@ Object(factory["a" /* factory */])(acosh_name, acosh_dependencies, function (_re
 
       return new Complex(x, 0).acosh();
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.acosh();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.acosh();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -36883,11 +36879,11 @@ Object(factory["a" /* factory */])(acot_name, acot_dependencies, function (_ref)
    * @return {number | Complex | Array | Matrix} The arc cotangent of x
    */
   var acot = typed(acot_name, {
-    'number': acotNumber,
-    'Complex': function Complex(x) {
+    number: acotNumber,
+    Complex: function Complex(x) {
       return x.acot();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x).atan();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -36932,17 +36928,17 @@ Object(factory["a" /* factory */])(acoth_name, acoth_dependencies, function (_re
    * @return {number | Complex | Array | Matrix} Hyperbolic arccotangent of x
    */
   var acoth = typed(acoth_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x >= 1 || x <= -1 || config.predictable) {
         return acothNumber(x);
       }
 
       return new Complex(x, 0).acoth();
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.acoth();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x).atanh();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -36989,17 +36985,17 @@ Object(factory["a" /* factory */])(acsc_name, acsc_dependencies, function (_ref)
    * @return {number | Complex | Array | Matrix} The arc cosecant of x
    */
   var acsc = typed(acsc_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x <= -1 || x >= 1 || config.predictable) {
         return acscNumber(x);
       }
 
       return new Complex(x, 0).acsc();
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.acsc();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x).asin();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -37042,11 +37038,11 @@ Object(factory["a" /* factory */])(acsch_name, acsch_dependencies, function (_re
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosecant of x
    */
   var acsch = typed(acsch_name, {
-    'number': acschNumber,
-    'Complex': function Complex(x) {
+    number: acschNumber,
+    Complex: function Complex(x) {
       return x.acsch();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x).asinh();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -37093,17 +37089,17 @@ Object(factory["a" /* factory */])(asec_name, asec_dependencies, function (_ref)
    * @return {number | Complex | Array | Matrix} The arc secant of x
    */
   var asec = typed(asec_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x <= -1 || x >= 1 || config.predictable) {
         return asecNumber(x);
       }
 
       return new Complex(x, 0).asec();
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.asec();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x).acos();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -37148,7 +37144,7 @@ Object(factory["a" /* factory */])(asech_name, asech_dependencies, function (_re
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsecant of x
    */
   var asech = typed(asech_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x <= 1 && x >= -1 || config.predictable) {
         var xInv = 1 / x;
 
@@ -37162,10 +37158,10 @@ Object(factory["a" /* factory */])(asech_name, asech_dependencies, function (_re
 
       return new Complex(x, 0).asech();
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.asech();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x).acosh();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -37210,17 +37206,17 @@ Object(factory["a" /* factory */])(asin_name, asin_dependencies, function (_ref)
    * @return {number | BigNumber | Complex | Array | Matrix} The arc sine of x
    */
   var asin = typed(asin_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x >= -1 && x <= 1 || config.predictable) {
         return Math.asin(x);
       } else {
         return new Complex(x, 0).asin();
       }
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.asin();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.asin();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -37263,11 +37259,11 @@ Object(factory["a" /* factory */])(asinh_name, asinh_dependencies, function (_re
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsine of x
    */
   var asinh = typed('asinh', {
-    'number': asinhNumber,
-    'Complex': function Complex(x) {
+    number: asinhNumber,
+    Complex: function Complex(x) {
       return x.asinh();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.asinh();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -37311,13 +37307,13 @@ Object(factory["a" /* factory */])(atan_name, atan_dependencies, function (_ref)
    * @return {number | BigNumber | Complex | Array | Matrix} The arc tangent of x
    */
   var atan = typed('atan', {
-    'number': function number(x) {
+    number: function number(x) {
       return Math.atan(x);
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.atan();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.atan();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -37489,17 +37485,17 @@ Object(factory["a" /* factory */])(atanh_name, atanh_dependencies, function (_re
    * @return {number | Complex | Array | Matrix} Hyperbolic arctangent of x
    */
   var atanh = typed(atanh_name, {
-    'number': function number(x) {
+    number: function number(x) {
       if (x <= 1 && x >= -1 || config.predictable) {
         return atanhNumber(x);
       }
 
       return new Complex(x, 0).atanh();
     },
-    'Complex': function Complex(x) {
+    Complex: function Complex(x) {
       return x.atanh();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.atanh();
     },
     'Array | Matrix': function ArrayMatrix(x) {
@@ -37546,14 +37542,14 @@ Object(factory["a" /* factory */])(cos_name, cos_dependencies, function (_ref) {
    * @return {number | BigNumber | Complex | Array | Matrix} Cosine of x
    */
   var cos = typed(cos_name, {
-    'number': Math.cos,
-    'Complex': function Complex(x) {
+    number: Math.cos,
+    Complex: function Complex(x) {
       return x.cos();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.cos();
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cos is no angle');
       }
@@ -37599,14 +37595,14 @@ Object(factory["a" /* factory */])(cosh_name, cosh_dependencies, function (_ref)
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic cosine of x
    */
   var cosh = typed(cosh_name, {
-    'number': utils_number["e" /* cosh */],
-    'Complex': function Complex(x) {
+    number: utils_number["e" /* cosh */],
+    Complex: function Complex(x) {
       return x.cosh();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.cosh();
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cosh is no angle');
       }
@@ -37653,14 +37649,14 @@ Object(factory["a" /* factory */])(cot_name, cot_dependencies, function (_ref) {
    * @return {number | Complex | Array | Matrix} Cotangent of x
    */
   var cot = typed(cot_name, {
-    'number': cotNumber,
-    'Complex': function Complex(x) {
+    number: cotNumber,
+    Complex: function Complex(x) {
       return x.cot();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x.tan());
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cot is no angle');
       }
@@ -37709,14 +37705,14 @@ Object(factory["a" /* factory */])(coth_name, coth_dependencies, function (_ref)
    * @return {number | Complex | Array | Matrix} Hyperbolic cotangent of x
    */
   var coth = typed(coth_name, {
-    'number': cothNumber,
-    'Complex': function Complex(x) {
+    number: cothNumber,
+    Complex: function Complex(x) {
       return x.coth();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x.tanh());
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function coth is no angle');
       }
@@ -37763,14 +37759,14 @@ Object(factory["a" /* factory */])(csc_name, csc_dependencies, function (_ref) {
    * @return {number | Complex | Array | Matrix} Cosecant of x
    */
   var csc = typed(csc_name, {
-    'number': cscNumber,
-    'Complex': function Complex(x) {
+    number: cscNumber,
+    Complex: function Complex(x) {
       return x.csc();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x.sin());
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function csc is no angle');
       }
@@ -37819,14 +37815,14 @@ Object(factory["a" /* factory */])(csch_name, csch_dependencies, function (_ref)
    * @return {number | Complex | Array | Matrix} Hyperbolic cosecant of x
    */
   var csch = typed(csch_name, {
-    'number': cschNumber,
-    'Complex': function Complex(x) {
+    number: cschNumber,
+    Complex: function Complex(x) {
       return x.csch();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x.sinh());
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function csch is no angle');
       }
@@ -37873,14 +37869,14 @@ Object(factory["a" /* factory */])(sec_name, sec_dependencies, function (_ref) {
    * @return {number | Complex | Array | Matrix} Secant of x
    */
   var sec = typed(sec_name, {
-    'number': secNumber,
-    'Complex': function Complex(x) {
+    number: secNumber,
+    Complex: function Complex(x) {
       return x.sec();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x.cos());
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sec is no angle');
       }
@@ -37929,14 +37925,14 @@ Object(factory["a" /* factory */])(sech_name, sech_dependencies, function (_ref)
    * @return {number | Complex | Array | Matrix} Hyperbolic secant of x
    */
   var sech = typed(sech_name, {
-    'number': sechNumber,
-    'Complex': function Complex(x) {
+    number: sechNumber,
+    Complex: function Complex(x) {
       return x.sech();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return new _BigNumber(1).div(x.cosh());
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sech is no angle');
       }
@@ -37986,14 +37982,14 @@ Object(factory["a" /* factory */])(sin_name, sin_dependencies, function (_ref) {
    * @return {number | BigNumber | Complex | Array | Matrix} Sine of x
    */
   var sin = typed(sin_name, {
-    'number': Math.sin,
-    'Complex': function Complex(x) {
+    number: Math.sin,
+    Complex: function Complex(x) {
       return x.sin();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.sin();
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sin is no angle');
       }
@@ -38040,14 +38036,14 @@ Object(factory["a" /* factory */])(sinh_name, sinh_dependencies, function (_ref)
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic sine of x
    */
   var sinh = typed(sinh_name, {
-    'number': sinhNumber,
-    'Complex': function Complex(x) {
+    number: sinhNumber,
+    Complex: function Complex(x) {
       return x.sinh();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.sinh();
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sinh is no angle');
       }
@@ -38095,14 +38091,14 @@ Object(factory["a" /* factory */])(tan_name, tan_dependencies, function (_ref) {
    * @return {number | BigNumber | Complex | Array | Matrix} Tangent of x
    */
   var tan = typed(tan_name, {
-    'number': Math.tan,
-    'Complex': function Complex(x) {
+    number: Math.tan,
+    Complex: function Complex(x) {
       return x.tan();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.tan();
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function tan is no angle');
       }
@@ -38152,14 +38148,14 @@ Object(factory["a" /* factory */])(tanh_name, tanh_dependencies, function (_ref)
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic tangent of x
    */
   var tanh = typed('tanh', {
-    'number': utils_number["p" /* tanh */],
-    'Complex': function Complex(x) {
+    number: utils_number["p" /* tanh */],
+    Complex: function Complex(x) {
       return x.tanh();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       return x.tanh();
     },
-    'Unit': function Unit(x) {
+    Unit: function Unit(x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function tanh is no angle');
       }
@@ -38987,10 +38983,10 @@ Object(factory["a" /* factory */])(hypot_name, hypot_dependencies, function (_re
    */
   var hypot = typed(hypot_name, {
     '... number | BigNumber': _hypot,
-    'Array': function Array(x) {
+    Array: function Array(x) {
       return hypot.apply(hypot, Object(utils_array["e" /* flatten */])(x));
     },
-    'Matrix': function Matrix(x) {
+    Matrix: function Matrix(x) {
       return hypot.apply(hypot, Object(utils_array["e" /* flatten */])(x.toArray()));
     }
   });
@@ -39082,22 +39078,22 @@ Object(factory["a" /* factory */])(norm_name, norm_dependencies, function (_ref)
    * @return {number | BigNumber} the p-norm
    */
   var norm = typed(norm_name, {
-    'number': Math.abs,
-    'Complex': function Complex(x) {
+    number: Math.abs,
+    Complex: function Complex(x) {
       return x.abs();
     },
-    'BigNumber': function BigNumber(x) {
+    BigNumber: function BigNumber(x) {
       // norm(x) = abs(x)
       return x.abs();
     },
-    'boolean': function boolean(x) {
+    "boolean": function boolean(x) {
       // norm(x) = abs(x)
       return Math.abs(x);
     },
-    'Array': function Array(x) {
+    Array: function Array(x) {
       return _norm(matrix(x), 2);
     },
-    'Matrix': function Matrix(x) {
+    Matrix: function Matrix(x) {
       return _norm(x, 2);
     },
     'number | Complex | BigNumber | boolean, number | BigNumber | string': function numberComplexBigNumberBooleanNumberBigNumberString(x) {
@@ -39352,13 +39348,13 @@ Object(factory["a" /* factory */])(trace_name, trace_dependencies, function (_re
    * @return {number} The trace of `x`
    */
   return typed('trace', {
-    'Array': function _arrayTrace(x) {
+    Array: function _arrayTrace(x) {
       // use dense matrix implementation
       return _denseTrace(matrix(x));
     },
-    'SparseMatrix': _sparseTrace,
-    'DenseMatrix': _denseTrace,
-    'any': utils_object["a" /* clone */]
+    SparseMatrix: _sparseTrace,
+    DenseMatrix: _denseTrace,
+    any: utils_object["a" /* clone */]
   });
 
   function _denseTrace(m) {
@@ -40512,13 +40508,14 @@ function assignFactory(_ref) {
 //                  left argument doesn't need to be enclosed
 //                  in parentheses
 // latexRightParens: the same for the right argument
+
 var operators_properties = [{
   // assignment
-  'AssignmentNode': {},
-  'FunctionAssignmentNode': {}
+  AssignmentNode: {},
+  FunctionAssignmentNode: {}
 }, {
   // conditional expression
-  'ConditionalNode': {
+  ConditionalNode: {
     latexLeftParens: false,
     latexRightParens: false,
     latexParens: false // conditionals don't need parentheses in LaTeX because
@@ -40587,7 +40584,7 @@ var operators_properties = [{
     associativity: 'left',
     associativeWith: []
   },
-  'RelationalNode': {
+  RelationalNode: {
     associativity: 'left',
     associativeWith: []
   }
@@ -40613,7 +40610,7 @@ var operators_properties = [{
   }
 }, {
   // range
-  'RangeNode': {}
+  RangeNode: {}
 }, {
   // addition, subtraction
   'OperatorNode:add': {
@@ -40696,9 +40693,9 @@ var operators_properties = [{
  * Higher number for higher precedence, starting with 0.
  * Returns null if the precedence is undefined.
  *
- * @param {Node}
+ * @param {Node} _node
  * @param {string} parenthesis
- * @return {number|null}
+ * @return {number | null}
  */
 
 function getPrecedence(_node, parenthesis) {
@@ -40748,7 +40745,7 @@ function getAssociativity(_node, parenthesis) {
 
   var property = operators_properties[index][identifier];
 
-  if (property.hasOwnProperty('associativity')) {
+  if (Object(utils_object["f" /* hasOwnProperty */])(property, 'associativity')) {
     if (property.associativity === 'left') {
       return 'left';
     }
@@ -40771,7 +40768,7 @@ function getAssociativity(_node, parenthesis) {
  * @param {Node} nodeA
  * @param {Node} nodeB
  * @param {string} parenthesis
- * @return {bool|null}
+ * @return {boolean | null}
  */
 
 function isAssociativeWith(nodeA, nodeB, parenthesis) {
@@ -40789,7 +40786,7 @@ function isAssociativeWith(nodeA, nodeB, parenthesis) {
 
   var property = operators_properties[index][identifierA];
 
-  if (property.hasOwnProperty('associativeWith') && property.associativeWith instanceof Array) {
+  if (Object(utils_object["f" /* hasOwnProperty */])(property, 'associativeWith') && property.associativeWith instanceof Array) {
     for (var i = 0; i < property.associativeWith.length; i++) {
       if (property.associativeWith[i] === identifierB) {
         return true;
@@ -41568,6 +41565,7 @@ var dist_default = /*#__PURE__*/__webpack_require__.n(dist);
 
 // CONCATENATED MODULE: ./src/utils/latex.js
 
+
 var latexSymbols = {
   // GREEK LETTERS
   Alpha: 'A',
@@ -41626,8 +41624,8 @@ var latexSymbols = {
   Omega: '\\Omega',
   omega: '\\omega',
   // logic
-  'true': '\\mathrm{True}',
-  'false': '\\mathrm{False}',
+  "true": '\\mathrm{True}',
+  "false": '\\mathrm{False}',
   // other
   i: 'i',
   // TODO use \i ??
@@ -41637,46 +41635,46 @@ var latexSymbols = {
   Infinity: '\\infty',
   oo: '\\infty',
   lim: '\\lim',
-  'undefined': '\\mathbf{?}'
+  undefined: '\\mathbf{?}'
 };
 var latexOperators = {
-  'transpose': '^\\top',
-  'ctranspose': '^H',
-  'factorial': '!',
-  'pow': '^',
-  'dotPow': '.^\\wedge',
+  transpose: '^\\top',
+  ctranspose: '^H',
+  factorial: '!',
+  pow: '^',
+  dotPow: '.^\\wedge',
   // TODO find ideal solution
-  'unaryPlus': '+',
-  'unaryMinus': '-',
-  'bitNot': '\\~',
+  unaryPlus: '+',
+  unaryMinus: '-',
+  bitNot: '\\~',
   // TODO find ideal solution
-  'not': '\\neg',
-  'multiply': '\\cdot',
-  'divide': '\\frac',
+  not: '\\neg',
+  multiply: '\\cdot',
+  divide: '\\frac',
   // TODO how to handle that properly?
-  'dotMultiply': '.\\cdot',
+  dotMultiply: '.\\cdot',
   // TODO find ideal solution
-  'dotDivide': '.:',
+  dotDivide: '.:',
   // TODO find ideal solution
-  'mod': '\\mod',
-  'add': '+',
-  'subtract': '-',
-  'to': '\\rightarrow',
-  'leftShift': '<<',
-  'rightArithShift': '>>',
-  'rightLogShift': '>>>',
-  'equal': '=',
-  'unequal': '\\neq',
-  'smaller': '<',
-  'larger': '>',
-  'smallerEq': '\\leq',
-  'largerEq': '\\geq',
-  'bitAnd': '\\&',
-  'bitXor': "\\underline{|}",
-  'bitOr': '|',
-  'and': '\\wedge',
-  'xor': '\\veebar',
-  'or': '\\vee'
+  mod: '\\mod',
+  add: '+',
+  subtract: '-',
+  to: '\\rightarrow',
+  leftShift: '<<',
+  rightArithShift: '>>',
+  rightLogShift: '>>>',
+  equal: '=',
+  unequal: '\\neq',
+  smaller: '<',
+  larger: '>',
+  smallerEq: '\\leq',
+  largerEq: '\\geq',
+  bitAnd: '\\&',
+  bitXor: "\\underline{|}",
+  bitOr: '|',
+  and: '\\wedge',
+  xor: '\\veebar',
+  or: '\\vee'
 };
 var latexFunctions = {
   // arithmetic
@@ -41864,6 +41862,9 @@ var latexFunctions = {
   combinations: {
     2: "\\binom{${args[0]}}{${args[1]}}"
   },
+  combinationsWithRep: {
+    2: "\\left(\\!\\!{\\binom{${args[0]}}{${args[1]}}}\\!\\!\\right)"
+  },
   factorial: {
     1: "\\left(${args[0]}\\right)".concat(latexOperators['factorial'])
   },
@@ -42021,7 +42022,7 @@ var latexUnits = {
 };
 function escapeLatex(string) {
   return dist_default()(string, {
-    'preserveFormatting': true
+    preserveFormatting: true
   });
 } // @param {string} name
 // @param {boolean} isUnit
@@ -42030,14 +42031,14 @@ function toSymbol(name, isUnit) {
   isUnit = typeof isUnit === 'undefined' ? false : isUnit;
 
   if (isUnit) {
-    if (latexUnits.hasOwnProperty(name)) {
+    if (Object(utils_object["f" /* hasOwnProperty */])(latexUnits, name)) {
       return latexUnits[name];
     }
 
     return '\\mathrm{' + escapeLatex(name) + '}';
   }
 
-  if (latexSymbols.hasOwnProperty(name)) {
+  if (Object(utils_object["f" /* hasOwnProperty */])(latexSymbols, name)) {
     return latexSymbols[name];
   }
 
@@ -42907,7 +42908,7 @@ Object(factory["a" /* factory */])(ObjectNode_name, ObjectNode_dependencies, fun
 
   ObjectNode.prototype.forEach = function (callback) {
     for (var key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(this.properties, key)) {
         callback(this.properties[key], 'properties[' + Object(utils_string["e" /* stringify */])(key) + ']', this);
       }
     }
@@ -42924,7 +42925,7 @@ Object(factory["a" /* factory */])(ObjectNode_name, ObjectNode_dependencies, fun
     var properties = {};
 
     for (var key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(this.properties, key)) {
         properties[key] = this._ifNode(callback(this.properties[key], 'properties[' + Object(utils_string["e" /* stringify */])(key) + ']', this));
       }
     }
@@ -42941,7 +42942,7 @@ Object(factory["a" /* factory */])(ObjectNode_name, ObjectNode_dependencies, fun
     var properties = {};
 
     for (var key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(this.properties, key)) {
         properties[key] = this.properties[key];
       }
     }
@@ -42960,7 +42961,7 @@ Object(factory["a" /* factory */])(ObjectNode_name, ObjectNode_dependencies, fun
     var entries = [];
 
     for (var key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(this.properties, key)) {
         entries.push(Object(utils_string["e" /* stringify */])(key) + ': ' + this.properties[key].toString(options));
       }
     }
@@ -43003,7 +43004,7 @@ Object(factory["a" /* factory */])(ObjectNode_name, ObjectNode_dependencies, fun
     var entries = [];
 
     for (var key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(this.properties, key)) {
         entries.push('<span class="math-symbol math-property">' + Object(utils_string["c" /* escape */])(key) + '</span>' + '<span class="math-operator math-assignment-operator math-property-assignment-operator math-binary-operator">:</span>' + this.properties[key].toHTML(options));
       }
     }
@@ -43021,7 +43022,7 @@ Object(factory["a" /* factory */])(ObjectNode_name, ObjectNode_dependencies, fun
     var entries = [];
 
     for (var key in this.properties) {
-      if (this.properties.hasOwnProperty(key)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(this.properties, key)) {
         entries.push('\\mathbf{' + key + ':} & ' + this.properties[key].toTex(options) + '\\\\');
       }
     }
@@ -44295,12 +44296,12 @@ Object(factory["a" /* factory */])(RelationalNode_name, RelationalNode_dependenc
       return parenthesis === 'all' || paramPrecedence !== null && paramPrecedence <= precedence ? '(' + p.toString(options) + ')' : p.toString(options);
     });
     var operatorMap = {
-      'equal': '==',
-      'unequal': '!=',
-      'smaller': '<',
-      'larger': '>',
-      'smallerEq': '<=',
-      'largerEq': '>='
+      equal: '==',
+      unequal: '!=',
+      smaller: '<',
+      larger: '>',
+      smallerEq: '<=',
+      largerEq: '>='
     };
     var ret = paramStrings[0];
 
@@ -44350,12 +44351,12 @@ Object(factory["a" /* factory */])(RelationalNode_name, RelationalNode_dependenc
       return parenthesis === 'all' || paramPrecedence !== null && paramPrecedence <= precedence ? '<span class="math-parenthesis math-round-parenthesis">(</span>' + p.toHTML(options) + '<span class="math-parenthesis math-round-parenthesis">)</span>' : p.toHTML(options);
     });
     var operatorMap = {
-      'equal': '==',
-      'unequal': '!=',
-      'smaller': '<',
-      'larger': '>',
-      'smallerEq': '<=',
-      'largerEq': '>='
+      equal: '==',
+      unequal: '!=',
+      smaller: '<',
+      larger: '>',
+      smallerEq: '<=',
+      largerEq: '>='
     };
     var ret = paramStrings[0];
 
@@ -45080,6 +45081,7 @@ function parse_extends() { parse_extends = Object.assign || function (target) { 
 
 
 
+
 var parse_name = 'parse';
 var parse_dependencies = ['typed', 'numeric', 'config', 'AccessorNode', 'ArrayNode', 'AssignmentNode', 'BlockNode', 'ConditionalNode', 'ConstantNode', 'FunctionAssignmentNode', 'FunctionNode', 'IndexNode', 'ObjectNode', 'OperatorNode', 'ParenthesisNode', 'RangeNode', 'RelationalNode', 'SymbolNode'];
 var createParse =
@@ -45144,7 +45146,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
    * @throws {Error}
    */
   var parse = typed(parse_name, {
-    'string': function string(expression) {
+    string: function string(expression) {
       return parseStart(expression, {});
     },
     'Array | Matrix': function ArrayMatrix(expressions) {
@@ -45216,19 +45218,19 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
 
   };
   var NAMED_DELIMITERS = {
-    'mod': true,
-    'to': true,
-    'in': true,
-    'and': true,
-    'xor': true,
-    'or': true,
-    'not': true
+    mod: true,
+    to: true,
+    "in": true,
+    and: true,
+    xor: true,
+    or: true,
+    not: true
   };
   var CONSTANTS = {
-    'true': true,
-    'false': false,
-    'null': null,
-    'undefined': undefined
+    "true": true,
+    "false": false,
+    "null": null,
+    undefined: undefined
   };
   var NUMERIC_CONSTANTS = ['NaN', 'Infinity'];
 
@@ -45255,7 +45257,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
   /**
    * View upto `length` characters of the expression starting at the current character.
    *
-   * @param {State} state
+   * @param {Object} state
    * @param {number} [length=1] Number of characters to view
    * @returns {string}
    * @private
@@ -45268,7 +45270,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
   /**
    * View the current character. Returns '' if end of expression is reached.
    *
-   * @param {State} state
+   * @param {Object} state
    * @returns {string}
    * @private
    */
@@ -45447,7 +45449,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
         next(state);
       }
 
-      if (NAMED_DELIMITERS.hasOwnProperty(state.token)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(NAMED_DELIMITERS, state.token)) {
         state.tokenType = TOKENTYPE.DELIMITER;
       } else {
         state.tokenType = TOKENTYPE.SYMBOL;
@@ -45890,7 +45892,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
       '>=': 'largerEq'
     };
 
-    while (operators.hasOwnProperty(state.token)) {
+    while (Object(utils_object["f" /* hasOwnProperty */])(operators, state.token)) {
       // eslint-disable-line no-unmodified-loop-condition
       var cond = {
         name: state.token,
@@ -45919,15 +45921,15 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
 
 
   function parseShift(state) {
-    var node, operators, name, fn, params;
+    var node, name, fn, params;
     node = parseConversion(state);
-    operators = {
+    var operators = {
       '<<': 'leftShift',
       '>>': 'rightArithShift',
       '>>>': 'rightLogShift'
     };
 
-    while (operators.hasOwnProperty(state.token)) {
+    while (Object(utils_object["f" /* hasOwnProperty */])(operators, state.token)) {
       name = state.token;
       fn = operators[name];
       getTokenSkipNewline(state);
@@ -45945,15 +45947,15 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
 
 
   function parseConversion(state) {
-    var node, operators, name, fn, params;
+    var node, name, fn, params;
     node = parseRange(state);
-    operators = {
-      'to': 'to',
-      'in': 'to' // alias of 'to'
+    var operators = {
+      to: 'to',
+      "in": 'to' // alias of 'to'
 
     };
 
-    while (operators.hasOwnProperty(state.token)) {
+    while (Object(utils_object["f" /* hasOwnProperty */])(operators, state.token)) {
       name = state.token;
       fn = operators[name];
       getTokenSkipNewline(state);
@@ -46026,14 +46028,14 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
 
 
   function parseAddSubtract(state) {
-    var node, operators, name, fn, params;
+    var node, name, fn, params;
     node = parseMultiplyDivide(state);
-    operators = {
+    var operators = {
       '+': 'add',
       '-': 'subtract'
     };
 
-    while (operators.hasOwnProperty(state.token)) {
+    while (Object(utils_object["f" /* hasOwnProperty */])(operators, state.token)) {
       name = state.token;
       fn = operators[name];
       getTokenSkipNewline(state);
@@ -46051,20 +46053,20 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
 
 
   function parseMultiplyDivide(state) {
-    var node, last, operators, name, fn;
+    var node, last, name, fn;
     node = parseImplicitMultiplication(state);
     last = node;
-    operators = {
+    var operators = {
       '*': 'multiply',
       '.*': 'dotMultiply',
       '/': 'divide',
       './': 'dotDivide',
       '%': 'mod',
-      'mod': 'mod'
+      mod: 'mod'
     };
 
     while (true) {
-      if (operators.hasOwnProperty(state.token)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(operators, state.token)) {
         // explicit operators
         name = state.token;
         fn = operators[name];
@@ -46176,10 +46178,10 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
       '-': 'unaryMinus',
       '+': 'unaryPlus',
       '~': 'bitNot',
-      'not': 'not'
+      not: 'not'
     };
 
-    if (operators.hasOwnProperty(state.token)) {
+    if (Object(utils_object["f" /* hasOwnProperty */])(operators, state.token)) {
       fn = operators[state.token];
       name = state.token;
       getTokenSkipNewline(state);
@@ -46220,14 +46222,14 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
 
 
   function parseLeftHandOperators(state) {
-    var node, operators, name, fn, params;
+    var node, name, fn, params;
     node = parseCustomNodes(state);
-    operators = {
+    var operators = {
       '!': 'factorial',
       '\'': 'ctranspose'
     };
 
-    while (operators.hasOwnProperty(state.token)) {
+    while (Object(utils_object["f" /* hasOwnProperty */])(operators, state.token)) {
       name = state.token;
       fn = operators[name];
       getToken(state);
@@ -46271,7 +46273,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
   function parseCustomNodes(state) {
     var params = [];
 
-    if (state.tokenType === TOKENTYPE.SYMBOL && state.extraNodes.hasOwnProperty(state.token)) {
+    if (state.tokenType === TOKENTYPE.SYMBOL && Object(utils_object["f" /* hasOwnProperty */])(state.extraNodes, state.token)) {
       var CustomNode = state.extraNodes[state.token];
       getToken(state); // parse parameters
 
@@ -46319,7 +46321,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
       name = state.token;
       getToken(state);
 
-      if (CONSTANTS.hasOwnProperty(name)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(CONSTANTS, name)) {
         // true, false, null, ...
         node = new ConstantNode(CONSTANTS[name]);
       } else if (NUMERIC_CONSTANTS.indexOf(name) !== -1) {
@@ -46341,6 +46343,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
    * - function invocation in round brackets (...), for example sqrt(2)
    * - index enclosed in square brackets [...], for example A[2,3]
    * - dot notation for properties, like foo.bar
+   * @param {Object} state
    * @param {Node} node    Node on which to apply the parameters. If there
    *                       are no parameters in the expression, the node
    *                       itself is returned
@@ -46759,6 +46762,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
   }
   /**
    * Create an error
+   * @param {Object} state
    * @param {string} message
    * @return {SyntaxError} instantiated error
    * @private
@@ -46773,6 +46777,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
   }
   /**
    * Create an error
+   * @param {Object} state
    * @param {string} message
    * @return {Error} instantiated error
    * @private
@@ -46834,7 +46839,7 @@ Object(factory["a" /* factory */])(compile_name, compile_dependencies, function 
    * @throws {Error}
    */
   return typed(compile_name, {
-    'string': function string(expr) {
+    string: function string(expr) {
       return parse(expr).compile();
     },
     'Array | Matrix': function ArrayMatrix(expr) {
@@ -46888,7 +46893,7 @@ Object(factory["a" /* factory */])(evaluate_name, evaluate_dependencies, functio
    * @throws {Error}
    */
   return typed(evaluate_name, {
-    'string': function string(expr) {
+    string: function string(expr) {
       var scope = {};
       return parse(expr).compile().evaluate(scope);
     },
@@ -47098,7 +47103,7 @@ Object(factory["a" /* factory */])(Parser_name, Parser_dependencies, function (_
 
   Parser.prototype.clear = function () {
     for (var _name in this.scope) {
-      if (this.scope.hasOwnProperty(_name)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(this.scope, _name)) {
         delete this.scope[_name];
       }
     }
@@ -47216,13 +47221,13 @@ Object(factory["a" /* factory */])(lup_name, lup_dependencies, function (_ref) {
    * @return {{L: Array | Matrix, U: Array | Matrix, P: Array.<number>}} The lower triangular matrix, the upper triangular matrix and the permutation matrix.
    */
   return typed(lup_name, {
-    'DenseMatrix': function DenseMatrix(m) {
+    DenseMatrix: function DenseMatrix(m) {
       return _denseLUP(m);
     },
-    'SparseMatrix': function SparseMatrix(m) {
+    SparseMatrix: function SparseMatrix(m) {
       return _sparseLUP(m);
     },
-    'Array': function Array(a) {
+    Array: function Array(a) {
       // create dense matrix from array
       var m = matrix(a); // lup, use matrix implementation
 
@@ -47647,13 +47652,13 @@ Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
    * matrix and R: the upper triangular matrix
    */
   return typed(qr_name, {
-    'DenseMatrix': function DenseMatrix(m) {
+    DenseMatrix: function DenseMatrix(m) {
       return _denseQR(m);
     },
-    'SparseMatrix': function SparseMatrix(m) {
+    SparseMatrix: function SparseMatrix(m) {
       return _sparseQR(m);
     },
-    'Array': function Array(a) {
+    Array: function Array(a) {
       // create dense matrix from array
       var m = matrix(a); // lup, use matrix implementation
 
@@ -48769,7 +48774,7 @@ Object(factory["a" /* factory */])(csAmd_name, csAmd_dependencies, function (_re
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 function csLeaf(i, j, w, first, maxfirst, prevleaf, ancestor) {
-  var s, sparent, jprev; // our result
+  var s, sparent; // our result
 
   var jleaf = 0;
   var q; // check j is a leaf
@@ -48781,7 +48786,7 @@ function csLeaf(i, j, w, first, maxfirst, prevleaf, ancestor) {
 
   w[maxfirst + i] = w[first + j]; // jprev = previous leaf of ith subtree
 
-  jprev = w[prevleaf + i];
+  var jprev = w[prevleaf + i];
   w[prevleaf + i] = j; // check j is first or subsequent leaf
 
   if (jprev === -1) {
@@ -50180,7 +50185,7 @@ Object(factory["a" /* factory */])(Chain_name, Chain_dependencies, function (_re
       createProxy(arg0, arg1);
     } else {
       var _loop = function _loop(_name) {
-        if (arg0.hasOwnProperty(_name) && excludedNames[_name] === undefined) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(arg0, _name) && excludedNames[_name] === undefined) {
           createLazyProxy(_name, function () {
             return arg0[_name];
           });
@@ -50222,1876 +50227,1886 @@ Object(factory["a" /* factory */])(Chain_name, Chain_dependencies, function (_re
 });
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/bignumber.js
 var bignumberDocs = {
-  'name': 'bignumber',
-  'category': 'Construction',
-  'syntax': ['bignumber(x)'],
-  'description': 'Create a big number from a number or string.',
-  'examples': ['0.1 + 0.2', 'bignumber(0.1) + bignumber(0.2)', 'bignumber("7.2")', 'bignumber("7.2e500")', 'bignumber([0.1, 0.2, 0.3])'],
-  'seealso': ['boolean', 'complex', 'fraction', 'index', 'matrix', 'string', 'unit']
+  name: 'bignumber',
+  category: 'Construction',
+  syntax: ['bignumber(x)'],
+  description: 'Create a big number from a number or string.',
+  examples: ['0.1 + 0.2', 'bignumber(0.1) + bignumber(0.2)', 'bignumber("7.2")', 'bignumber("7.2e500")', 'bignumber([0.1, 0.2, 0.3])'],
+  seealso: ['boolean', 'complex', 'fraction', 'index', 'matrix', 'string', 'unit']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/typeOf.js
 var typeOfDocs = {
-  'name': 'typeOf',
-  'category': 'Utils',
-  'syntax': ['typeOf(x)'],
-  'description': 'Get the type of a variable.',
-  'examples': ['typeOf(3.5)', 'typeOf(2 - 4i)', 'typeOf(45 deg)', 'typeOf("hello world")'],
-  'seealso': ['getMatrixDataType']
+  name: 'typeOf',
+  category: 'Utils',
+  syntax: ['typeOf(x)'],
+  description: 'Get the type of a variable.',
+  examples: ['typeOf(3.5)', 'typeOf(2 - 4i)', 'typeOf(45 deg)', 'typeOf("hello world")'],
+  seealso: ['getMatrixDataType']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/isZero.js
 var isZeroDocs = {
-  'name': 'isZero',
-  'category': 'Utils',
-  'syntax': ['isZero(x)'],
-  'description': 'Test whether a value is zero.',
-  'examples': ['isZero(2)', 'isZero(0)', 'isZero(-4)', 'isZero([3, 0, -2, 0])'],
-  'seealso': ['isInteger', 'isNumeric', 'isNegative', 'isPositive']
+  name: 'isZero',
+  category: 'Utils',
+  syntax: ['isZero(x)'],
+  description: 'Test whether a value is zero.',
+  examples: ['isZero(2)', 'isZero(0)', 'isZero(-4)', 'isZero([3, 0, -2, 0])'],
+  seealso: ['isInteger', 'isNumeric', 'isNegative', 'isPositive']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/isPrime.js
 var isPrimeDocs = {
-  'name': 'isPrime',
-  'category': 'Utils',
-  'syntax': ['isPrime(x)'],
-  'description': 'Test whether a value is prime: has no divisors other than itself and one.',
-  'examples': ['isPrime(3)', 'isPrime(-2)', 'isPrime([2, 17, 100])'],
-  'seealso': ['isInteger', 'isNumeric', 'isNegative', 'isZero']
+  name: 'isPrime',
+  category: 'Utils',
+  syntax: ['isPrime(x)'],
+  description: 'Test whether a value is prime: has no divisors other than itself and one.',
+  examples: ['isPrime(3)', 'isPrime(-2)', 'isPrime([2, 17, 100])'],
+  seealso: ['isInteger', 'isNumeric', 'isNegative', 'isZero']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/isPositive.js
 var isPositiveDocs = {
-  'name': 'isPositive',
-  'category': 'Utils',
-  'syntax': ['isPositive(x)'],
-  'description': 'Test whether a value is positive: larger than zero.',
-  'examples': ['isPositive(2)', 'isPositive(0)', 'isPositive(-4)', 'isPositive([3, 0.5, -2])'],
-  'seealso': ['isInteger', 'isNumeric', 'isNegative', 'isZero']
+  name: 'isPositive',
+  category: 'Utils',
+  syntax: ['isPositive(x)'],
+  description: 'Test whether a value is positive: larger than zero.',
+  examples: ['isPositive(2)', 'isPositive(0)', 'isPositive(-4)', 'isPositive([3, 0.5, -2])'],
+  seealso: ['isInteger', 'isNumeric', 'isNegative', 'isZero']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/isNumeric.js
 var isNumericDocs = {
-  'name': 'isNumeric',
-  'category': 'Utils',
-  'syntax': ['isNumeric(x)'],
-  'description': 'Test whether a value is a numeric value. ' + 'Returns true when the input is a number, BigNumber, Fraction, or boolean.',
-  'examples': ['isNumeric(2)', 'isNumeric("2")', 'hasNumericValue("2")', 'isNumeric(0)', 'isNumeric(bignumber(500))', 'isNumeric(fraction(0.125))', 'isNumeric(2 + 3i)', 'isNumeric([2.3, "foo", false])'],
-  'seealso': ['isInteger', 'isZero', 'isNegative', 'isPositive', 'isNaN', 'hasNumericValue']
+  name: 'isNumeric',
+  category: 'Utils',
+  syntax: ['isNumeric(x)'],
+  description: 'Test whether a value is a numeric value. ' + 'Returns true when the input is a number, BigNumber, Fraction, or boolean.',
+  examples: ['isNumeric(2)', 'isNumeric("2")', 'hasNumericValue("2")', 'isNumeric(0)', 'isNumeric(bignumber(500))', 'isNumeric(fraction(0.125))', 'isNumeric(2 + 3i)', 'isNumeric([2.3, "foo", false])'],
+  seealso: ['isInteger', 'isZero', 'isNegative', 'isPositive', 'isNaN', 'hasNumericValue']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/hasNumericValue.js
 var hasNumericValueDocs = {
-  'name': 'hasNumericValue',
-  'category': 'Utils',
-  'syntax': ['hasNumericValue(x)'],
-  'description': 'Test whether a value is an numeric value. ' + 'In case of a string, true is returned if the string contains a numeric value.',
-  'examples': ['hasNumericValue(2)', 'hasNumericValue("2")', 'isNumeric("2")', 'hasNumericValue(0)', 'hasNumericValue(bignumber(500))', 'hasNumericValue(fraction(0.125))', 'hasNumericValue(2 + 3i)', 'hasNumericValue([2.3, "foo", false])'],
-  'seealso': ['isInteger', 'isZero', 'isNegative', 'isPositive', 'isNaN', 'isNumeric']
+  name: 'hasNumericValue',
+  category: 'Utils',
+  syntax: ['hasNumericValue(x)'],
+  description: 'Test whether a value is an numeric value. ' + 'In case of a string, true is returned if the string contains a numeric value.',
+  examples: ['hasNumericValue(2)', 'hasNumericValue("2")', 'isNumeric("2")', 'hasNumericValue(0)', 'hasNumericValue(bignumber(500))', 'hasNumericValue(fraction(0.125))', 'hasNumericValue(2 + 3i)', 'hasNumericValue([2.3, "foo", false])'],
+  seealso: ['isInteger', 'isZero', 'isNegative', 'isPositive', 'isNaN', 'isNumeric']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/isNegative.js
 var isNegativeDocs = {
-  'name': 'isNegative',
-  'category': 'Utils',
-  'syntax': ['isNegative(x)'],
-  'description': 'Test whether a value is negative: smaller than zero.',
-  'examples': ['isNegative(2)', 'isNegative(0)', 'isNegative(-4)', 'isNegative([3, 0.5, -2])'],
-  'seealso': ['isInteger', 'isNumeric', 'isPositive', 'isZero']
+  name: 'isNegative',
+  category: 'Utils',
+  syntax: ['isNegative(x)'],
+  description: 'Test whether a value is negative: smaller than zero.',
+  examples: ['isNegative(2)', 'isNegative(0)', 'isNegative(-4)', 'isNegative([3, 0.5, -2])'],
+  seealso: ['isInteger', 'isNumeric', 'isPositive', 'isZero']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/isInteger.js
 var isIntegerDocs = {
-  'name': 'isInteger',
-  'category': 'Utils',
-  'syntax': ['isInteger(x)'],
-  'description': 'Test whether a value is an integer number.',
-  'examples': ['isInteger(2)', 'isInteger(3.5)', 'isInteger([3, 0.5, -2])'],
-  'seealso': ['isNegative', 'isNumeric', 'isPositive', 'isZero']
+  name: 'isInteger',
+  category: 'Utils',
+  syntax: ['isInteger(x)'],
+  description: 'Test whether a value is an integer number.',
+  examples: ['isInteger(2)', 'isInteger(3.5)', 'isInteger([3, 0.5, -2])'],
+  seealso: ['isNegative', 'isNumeric', 'isPositive', 'isZero']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/isNaN.js
 var isNaNDocs = {
-  'name': 'isNaN',
-  'category': 'Utils',
-  'syntax': ['isNaN(x)'],
-  'description': 'Test whether a value is NaN (not a number)',
-  'examples': ['isNaN(2)', 'isNaN(0 / 0)', 'isNaN(NaN)', 'isNaN(Infinity)'],
-  'seealso': ['isNegative', 'isNumeric', 'isPositive', 'isZero']
+  name: 'isNaN',
+  category: 'Utils',
+  syntax: ['isNaN(x)'],
+  description: 'Test whether a value is NaN (not a number)',
+  examples: ['isNaN(2)', 'isNaN(0 / 0)', 'isNaN(NaN)', 'isNaN(Infinity)'],
+  seealso: ['isNegative', 'isNumeric', 'isPositive', 'isZero']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/format.js
 var formatDocs = {
-  'name': 'format',
-  'category': 'Utils',
-  'syntax': ['format(value)', 'format(value, precision)'],
-  'description': 'Format a value of any type as string.',
-  'examples': ['format(2.3)', 'format(3 - 4i)', 'format([])', 'format(pi, 3)'],
-  'seealso': ['print']
+  name: 'format',
+  category: 'Utils',
+  syntax: ['format(value)', 'format(value, precision)'],
+  description: 'Format a value of any type as string.',
+  examples: ['format(2.3)', 'format(3 - 4i)', 'format([])', 'format(pi, 3)'],
+  seealso: ['print']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/clone.js
 var cloneDocs = {
-  'name': 'clone',
-  'category': 'Utils',
-  'syntax': ['clone(x)'],
-  'description': 'Clone a variable. Creates a copy of primitive variables,and a deep copy of matrices',
-  'examples': ['clone(3.5)', 'clone(2 - 4i)', 'clone(45 deg)', 'clone([1, 2; 3, 4])', 'clone("hello world")'],
-  'seealso': []
+  name: 'clone',
+  category: 'Utils',
+  syntax: ['clone(x)'],
+  description: 'Clone a variable. Creates a copy of primitive variables,and a deep copy of matrices',
+  examples: ['clone(3.5)', 'clone(2 - 4i)', 'clone(45 deg)', 'clone([1, 2; 3, 4])', 'clone("hello world")'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/units/to.js
 var toDocs = {
-  'name': 'to',
-  'category': 'Units',
-  'syntax': ['x to unit', 'to(x, unit)'],
-  'description': 'Change the unit of a value.',
-  'examples': ['5 inch to cm', '3.2kg to g', '16 bytes in bits'],
-  'seealso': []
+  name: 'to',
+  category: 'Units',
+  syntax: ['x to unit', 'to(x, unit)'],
+  description: 'Change the unit of a value.',
+  examples: ['5 inch to cm', '3.2kg to g', '16 bytes in bits'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/tanh.js
 var tanhDocs = {
-  'name': 'tanh',
-  'category': 'Trigonometry',
-  'syntax': ['tanh(x)'],
-  'description': 'Compute the hyperbolic tangent of x in radians.',
-  'examples': ['tanh(0.5)', 'sinh(0.5) / cosh(0.5)'],
-  'seealso': ['sinh', 'cosh']
+  name: 'tanh',
+  category: 'Trigonometry',
+  syntax: ['tanh(x)'],
+  description: 'Compute the hyperbolic tangent of x in radians.',
+  examples: ['tanh(0.5)', 'sinh(0.5) / cosh(0.5)'],
+  seealso: ['sinh', 'cosh']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/tan.js
 var tanDocs = {
-  'name': 'tan',
-  'category': 'Trigonometry',
-  'syntax': ['tan(x)'],
-  'description': 'Compute the tangent of x in radians.',
-  'examples': ['tan(0.5)', 'sin(0.5) / cos(0.5)', 'tan(pi / 4)', 'tan(45 deg)'],
-  'seealso': ['atan', 'sin', 'cos']
+  name: 'tan',
+  category: 'Trigonometry',
+  syntax: ['tan(x)'],
+  description: 'Compute the tangent of x in radians.',
+  examples: ['tan(0.5)', 'sin(0.5) / cos(0.5)', 'tan(pi / 4)', 'tan(45 deg)'],
+  seealso: ['atan', 'sin', 'cos']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/sinh.js
 var sinhDocs = {
-  'name': 'sinh',
-  'category': 'Trigonometry',
-  'syntax': ['sinh(x)'],
-  'description': 'Compute the hyperbolic sine of x in radians.',
-  'examples': ['sinh(0.5)'],
-  'seealso': ['cosh', 'tanh']
+  name: 'sinh',
+  category: 'Trigonometry',
+  syntax: ['sinh(x)'],
+  description: 'Compute the hyperbolic sine of x in radians.',
+  examples: ['sinh(0.5)'],
+  seealso: ['cosh', 'tanh']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/sech.js
 var sechDocs = {
-  'name': 'sech',
-  'category': 'Trigonometry',
-  'syntax': ['sech(x)'],
-  'description': 'Compute the hyperbolic secant of x in radians. Defined as 1/cosh(x)',
-  'examples': ['sech(2)', '1 / cosh(2)'],
-  'seealso': ['coth', 'csch', 'cosh']
+  name: 'sech',
+  category: 'Trigonometry',
+  syntax: ['sech(x)'],
+  description: 'Compute the hyperbolic secant of x in radians. Defined as 1/cosh(x)',
+  examples: ['sech(2)', '1 / cosh(2)'],
+  seealso: ['coth', 'csch', 'cosh']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/sec.js
 var secDocs = {
-  'name': 'sec',
-  'category': 'Trigonometry',
-  'syntax': ['sec(x)'],
-  'description': 'Compute the secant of x in radians. Defined as 1/cos(x)',
-  'examples': ['sec(2)', '1 / cos(2)'],
-  'seealso': ['cot', 'csc', 'cos']
+  name: 'sec',
+  category: 'Trigonometry',
+  syntax: ['sec(x)'],
+  description: 'Compute the secant of x in radians. Defined as 1/cos(x)',
+  examples: ['sec(2)', '1 / cos(2)'],
+  seealso: ['cot', 'csc', 'cos']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/csch.js
 var cschDocs = {
-  'name': 'csch',
-  'category': 'Trigonometry',
-  'syntax': ['csch(x)'],
-  'description': 'Compute the hyperbolic cosecant of x in radians. Defined as 1/sinh(x)',
-  'examples': ['csch(2)', '1 / sinh(2)'],
-  'seealso': ['sech', 'coth', 'sinh']
+  name: 'csch',
+  category: 'Trigonometry',
+  syntax: ['csch(x)'],
+  description: 'Compute the hyperbolic cosecant of x in radians. Defined as 1/sinh(x)',
+  examples: ['csch(2)', '1 / sinh(2)'],
+  seealso: ['sech', 'coth', 'sinh']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/csc.js
 var cscDocs = {
-  'name': 'csc',
-  'category': 'Trigonometry',
-  'syntax': ['csc(x)'],
-  'description': 'Compute the cosecant of x in radians. Defined as 1/sin(x)',
-  'examples': ['csc(2)', '1 / sin(2)'],
-  'seealso': ['sec', 'cot', 'sin']
+  name: 'csc',
+  category: 'Trigonometry',
+  syntax: ['csc(x)'],
+  description: 'Compute the cosecant of x in radians. Defined as 1/sin(x)',
+  examples: ['csc(2)', '1 / sin(2)'],
+  seealso: ['sec', 'cot', 'sin']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/coth.js
 var cothDocs = {
-  'name': 'coth',
-  'category': 'Trigonometry',
-  'syntax': ['coth(x)'],
-  'description': 'Compute the hyperbolic cotangent of x in radians.',
-  'examples': ['coth(2)', '1 / tanh(2)'],
-  'seealso': ['sech', 'csch', 'tanh']
+  name: 'coth',
+  category: 'Trigonometry',
+  syntax: ['coth(x)'],
+  description: 'Compute the hyperbolic cotangent of x in radians.',
+  examples: ['coth(2)', '1 / tanh(2)'],
+  seealso: ['sech', 'csch', 'tanh']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/cot.js
 var cotDocs = {
-  'name': 'cot',
-  'category': 'Trigonometry',
-  'syntax': ['cot(x)'],
-  'description': 'Compute the cotangent of x in radians. Defined as 1/tan(x)',
-  'examples': ['cot(2)', '1 / tan(2)'],
-  'seealso': ['sec', 'csc', 'tan']
+  name: 'cot',
+  category: 'Trigonometry',
+  syntax: ['cot(x)'],
+  description: 'Compute the cotangent of x in radians. Defined as 1/tan(x)',
+  examples: ['cot(2)', '1 / tan(2)'],
+  seealso: ['sec', 'csc', 'tan']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/cosh.js
 var coshDocs = {
-  'name': 'cosh',
-  'category': 'Trigonometry',
-  'syntax': ['cosh(x)'],
-  'description': 'Compute the hyperbolic cosine of x in radians.',
-  'examples': ['cosh(0.5)'],
-  'seealso': ['sinh', 'tanh', 'coth']
+  name: 'cosh',
+  category: 'Trigonometry',
+  syntax: ['cosh(x)'],
+  description: 'Compute the hyperbolic cosine of x in radians.',
+  examples: ['cosh(0.5)'],
+  seealso: ['sinh', 'tanh', 'coth']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/cos.js
 var cosDocs = {
-  'name': 'cos',
-  'category': 'Trigonometry',
-  'syntax': ['cos(x)'],
-  'description': 'Compute the cosine of x in radians.',
-  'examples': ['cos(2)', 'cos(pi / 4) ^ 2', 'cos(180 deg)', 'cos(60 deg)', 'sin(0.2)^2 + cos(0.2)^2'],
-  'seealso': ['acos', 'sin', 'tan']
+  name: 'cos',
+  category: 'Trigonometry',
+  syntax: ['cos(x)'],
+  description: 'Compute the cosine of x in radians.',
+  examples: ['cos(2)', 'cos(pi / 4) ^ 2', 'cos(180 deg)', 'cos(60 deg)', 'sin(0.2)^2 + cos(0.2)^2'],
+  seealso: ['acos', 'sin', 'tan']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/atan2.js
 var atan2Docs = {
-  'name': 'atan2',
-  'category': 'Trigonometry',
-  'syntax': ['atan2(y, x)'],
-  'description': 'Computes the principal value of the arc tangent of y/x in radians.',
-  'examples': ['atan2(2, 2) / pi', 'angle = 60 deg in rad', 'x = cos(angle)', 'y = sin(angle)', 'atan2(y, x)'],
-  'seealso': ['sin', 'cos', 'tan']
+  name: 'atan2',
+  category: 'Trigonometry',
+  syntax: ['atan2(y, x)'],
+  description: 'Computes the principal value of the arc tangent of y/x in radians.',
+  examples: ['atan2(2, 2) / pi', 'angle = 60 deg in rad', 'x = cos(angle)', 'y = sin(angle)', 'atan2(y, x)'],
+  seealso: ['sin', 'cos', 'tan']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/atanh.js
 var atanhDocs = {
-  'name': 'atanh',
-  'category': 'Trigonometry',
-  'syntax': ['atanh(x)'],
-  'description': 'Calculate the hyperbolic arctangent of a value, defined as `atanh(x) = ln((1 + x)/(1 - x)) / 2`.',
-  'examples': ['atanh(0.5)'],
-  'seealso': ['acosh', 'asinh']
+  name: 'atanh',
+  category: 'Trigonometry',
+  syntax: ['atanh(x)'],
+  description: 'Calculate the hyperbolic arctangent of a value, defined as `atanh(x) = ln((1 + x)/(1 - x)) / 2`.',
+  examples: ['atanh(0.5)'],
+  seealso: ['acosh', 'asinh']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/atan.js
 var atanDocs = {
-  'name': 'atan',
-  'category': 'Trigonometry',
-  'syntax': ['atan(x)'],
-  'description': 'Compute the inverse tangent of a value in radians.',
-  'examples': ['atan(0.5)', 'atan(tan(0.5))'],
-  'seealso': ['tan', 'acos', 'asin']
+  name: 'atan',
+  category: 'Trigonometry',
+  syntax: ['atan(x)'],
+  description: 'Compute the inverse tangent of a value in radians.',
+  examples: ['atan(0.5)', 'atan(tan(0.5))'],
+  seealso: ['tan', 'acos', 'asin']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/asinh.js
 var asinhDocs = {
-  'name': 'asinh',
-  'category': 'Trigonometry',
-  'syntax': ['asinh(x)'],
-  'description': 'Calculate the hyperbolic arcsine of a value, defined as `asinh(x) = ln(x + sqrt(x^2 + 1))`.',
-  'examples': ['asinh(0.5)'],
-  'seealso': ['acosh', 'atanh']
+  name: 'asinh',
+  category: 'Trigonometry',
+  syntax: ['asinh(x)'],
+  description: 'Calculate the hyperbolic arcsine of a value, defined as `asinh(x) = ln(x + sqrt(x^2 + 1))`.',
+  examples: ['asinh(0.5)'],
+  seealso: ['acosh', 'atanh']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/asin.js
 var asinDocs = {
-  'name': 'asin',
-  'category': 'Trigonometry',
-  'syntax': ['asin(x)'],
-  'description': 'Compute the inverse sine of a value in radians.',
-  'examples': ['asin(0.5)', 'asin(sin(0.5))'],
-  'seealso': ['sin', 'acos', 'atan']
+  name: 'asin',
+  category: 'Trigonometry',
+  syntax: ['asin(x)'],
+  description: 'Compute the inverse sine of a value in radians.',
+  examples: ['asin(0.5)', 'asin(sin(0.5))'],
+  seealso: ['sin', 'acos', 'atan']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/asech.js
 var asechDocs = {
-  'name': 'asech',
-  'category': 'Trigonometry',
-  'syntax': ['asech(x)'],
-  'description': 'Calculate the inverse secant of a value.',
-  'examples': ['asech(0.5)'],
-  'seealso': ['acsch', 'acoth']
+  name: 'asech',
+  category: 'Trigonometry',
+  syntax: ['asech(x)'],
+  description: 'Calculate the inverse secant of a value.',
+  examples: ['asech(0.5)'],
+  seealso: ['acsch', 'acoth']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/asec.js
 var asecDocs = {
-  'name': 'asec',
-  'category': 'Trigonometry',
-  'syntax': ['asec(x)'],
-  'description': 'Calculate the inverse secant of a value.',
-  'examples': ['asec(0.5)', 'asec(sec(0.5))', 'asec(2)'],
-  'seealso': ['acos', 'acot', 'acsc']
+  name: 'asec',
+  category: 'Trigonometry',
+  syntax: ['asec(x)'],
+  description: 'Calculate the inverse secant of a value.',
+  examples: ['asec(0.5)', 'asec(sec(0.5))', 'asec(2)'],
+  seealso: ['acos', 'acot', 'acsc']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/acsch.js
 var acschDocs = {
-  'name': 'acsch',
-  'category': 'Trigonometry',
-  'syntax': ['acsch(x)'],
-  'description': 'Calculate the hyperbolic arccosecant of a value, defined as `acsch(x) = ln(1/x + sqrt(1/x^2 + 1))`.',
-  'examples': ['acsch(0.5)'],
-  'seealso': ['asech', 'acoth']
+  name: 'acsch',
+  category: 'Trigonometry',
+  syntax: ['acsch(x)'],
+  description: 'Calculate the hyperbolic arccosecant of a value, defined as `acsch(x) = ln(1/x + sqrt(1/x^2 + 1))`.',
+  examples: ['acsch(0.5)'],
+  seealso: ['asech', 'acoth']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/acsc.js
 var acscDocs = {
-  'name': 'acsc',
-  'category': 'Trigonometry',
-  'syntax': ['acsc(x)'],
-  'description': 'Calculate the inverse cotangent of a value.',
-  'examples': ['acsc(2)', 'acsc(csc(0.5))', 'acsc(0.5)'],
-  'seealso': ['csc', 'asin', 'asec']
+  name: 'acsc',
+  category: 'Trigonometry',
+  syntax: ['acsc(x)'],
+  description: 'Calculate the inverse cotangent of a value.',
+  examples: ['acsc(2)', 'acsc(csc(0.5))', 'acsc(0.5)'],
+  seealso: ['csc', 'asin', 'asec']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/acoth.js
 var acothDocs = {
-  'name': 'acoth',
-  'category': 'Trigonometry',
-  'syntax': ['acoth(x)'],
-  'description': 'Calculate the hyperbolic arccotangent of a value, defined as `acoth(x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.',
-  'examples': ['acoth(2)', 'acoth(0.5)'],
-  'seealso': ['acsch', 'asech']
+  name: 'acoth',
+  category: 'Trigonometry',
+  syntax: ['acoth(x)'],
+  description: 'Calculate the hyperbolic arccotangent of a value, defined as `acoth(x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.',
+  examples: ['acoth(2)', 'acoth(0.5)'],
+  seealso: ['acsch', 'asech']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/acot.js
 var acotDocs = {
-  'name': 'acot',
-  'category': 'Trigonometry',
-  'syntax': ['acot(x)'],
-  'description': 'Calculate the inverse cotangent of a value.',
-  'examples': ['acot(0.5)', 'acot(cot(0.5))', 'acot(2)'],
-  'seealso': ['cot', 'atan']
+  name: 'acot',
+  category: 'Trigonometry',
+  syntax: ['acot(x)'],
+  description: 'Calculate the inverse cotangent of a value.',
+  examples: ['acot(0.5)', 'acot(cot(0.5))', 'acot(2)'],
+  seealso: ['cot', 'atan']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/acosh.js
 var acoshDocs = {
-  'name': 'acosh',
-  'category': 'Trigonometry',
-  'syntax': ['acosh(x)'],
-  'description': 'Calculate the hyperbolic arccos of a value, defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.',
-  'examples': ['acosh(1.5)'],
-  'seealso': ['cosh', 'asinh', 'atanh']
+  name: 'acosh',
+  category: 'Trigonometry',
+  syntax: ['acosh(x)'],
+  description: 'Calculate the hyperbolic arccos of a value, defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.',
+  examples: ['acosh(1.5)'],
+  seealso: ['cosh', 'asinh', 'atanh']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/acos.js
 var acosDocs = {
-  'name': 'acos',
-  'category': 'Trigonometry',
-  'syntax': ['acos(x)'],
-  'description': 'Compute the inverse cosine of a value in radians.',
-  'examples': ['acos(0.5)', 'acos(cos(2.3))'],
-  'seealso': ['cos', 'atan', 'asin']
+  name: 'acos',
+  category: 'Trigonometry',
+  syntax: ['acos(x)'],
+  description: 'Compute the inverse cosine of a value in radians.',
+  examples: ['acos(0.5)', 'acos(cos(2.3))'],
+  seealso: ['cos', 'atan', 'asin']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/sum.js
 var sumDocs = {
-  'name': 'sum',
-  'category': 'Statistics',
-  'syntax': ['sum(a, b, c, ...)', 'sum(A)'],
-  'description': 'Compute the sum of all values.',
-  'examples': ['sum(2, 3, 4, 1)', 'sum([2, 3, 4, 1])', 'sum([2, 5; 4, 3])'],
-  'seealso': ['max', 'mean', 'median', 'min', 'prod', 'std', 'sum', 'variance']
+  name: 'sum',
+  category: 'Statistics',
+  syntax: ['sum(a, b, c, ...)', 'sum(A)'],
+  description: 'Compute the sum of all values.',
+  examples: ['sum(2, 3, 4, 1)', 'sum([2, 3, 4, 1])', 'sum([2, 5; 4, 3])'],
+  seealso: ['max', 'mean', 'median', 'min', 'prod', 'std', 'sum', 'variance']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/std.js
 var stdDocs = {
-  'name': 'std',
-  'category': 'Statistics',
-  'syntax': ['std(a, b, c, ...)', 'std(A)', 'std(A, normalization)'],
-  'description': 'Compute the standard deviation of all values, defined as std(A) = sqrt(variance(A)). Optional parameter normalization can be "unbiased" (default), "uncorrected", or "biased".',
-  'examples': ['std(2, 4, 6)', 'std([2, 4, 6, 8])', 'std([2, 4, 6, 8], "uncorrected")', 'std([2, 4, 6, 8], "biased")', 'std([1, 2, 3; 4, 5, 6])'],
-  'seealso': ['max', 'mean', 'min', 'median', 'min', 'prod', 'sum', 'variance']
+  name: 'std',
+  category: 'Statistics',
+  syntax: ['std(a, b, c, ...)', 'std(A)', 'std(A, normalization)'],
+  description: 'Compute the standard deviation of all values, defined as std(A) = sqrt(variance(A)). Optional parameter normalization can be "unbiased" (default), "uncorrected", or "biased".',
+  examples: ['std(2, 4, 6)', 'std([2, 4, 6, 8])', 'std([2, 4, 6, 8], "uncorrected")', 'std([2, 4, 6, 8], "biased")', 'std([1, 2, 3; 4, 5, 6])'],
+  seealso: ['max', 'mean', 'min', 'median', 'min', 'prod', 'sum', 'variance']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/quantileSeq.js
 var quantileSeqDocs = {
-  'name': 'quantileSeq',
-  'category': 'Statistics',
-  'syntax': ['quantileSeq(A, prob[, sorted])', 'quantileSeq(A, [prob1, prob2, ...][, sorted])', 'quantileSeq(A, N[, sorted])'],
-  'description': 'Compute the prob order quantile of a matrix or a list with values. The sequence is sorted and the middle value is returned. Supported types of sequence values are: Number, BigNumber, Unit Supported types of probablity are: Number, BigNumber. \n\nIn case of a (multi dimensional) array or matrix, the prob order quantile of all elements will be calculated.',
-  'examples': ['quantileSeq([3, -1, 5, 7], 0.5)', 'quantileSeq([3, -1, 5, 7], [1/3, 2/3])', 'quantileSeq([3, -1, 5, 7], 2)', 'quantileSeq([-1, 3, 5, 7], 0.5, true)'],
-  'seealso': ['mean', 'median', 'min', 'max', 'prod', 'std', 'sum', 'variance']
+  name: 'quantileSeq',
+  category: 'Statistics',
+  syntax: ['quantileSeq(A, prob[, sorted])', 'quantileSeq(A, [prob1, prob2, ...][, sorted])', 'quantileSeq(A, N[, sorted])'],
+  description: 'Compute the prob order quantile of a matrix or a list with values. The sequence is sorted and the middle value is returned. Supported types of sequence values are: Number, BigNumber, Unit Supported types of probablity are: Number, BigNumber. \n\nIn case of a (multi dimensional) array or matrix, the prob order quantile of all elements will be calculated.',
+  examples: ['quantileSeq([3, -1, 5, 7], 0.5)', 'quantileSeq([3, -1, 5, 7], [1/3, 2/3])', 'quantileSeq([3, -1, 5, 7], 2)', 'quantileSeq([-1, 3, 5, 7], 0.5, true)'],
+  seealso: ['mean', 'median', 'min', 'max', 'prod', 'std', 'sum', 'variance']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/prod.js
 var prodDocs = {
-  'name': 'prod',
-  'category': 'Statistics',
-  'syntax': ['prod(a, b, c, ...)', 'prod(A)'],
-  'description': 'Compute the product of all values.',
-  'examples': ['prod(2, 3, 4)', 'prod([2, 3, 4])', 'prod([2, 5; 4, 3])'],
-  'seealso': ['max', 'mean', 'min', 'median', 'min', 'std', 'sum', 'variance']
+  name: 'prod',
+  category: 'Statistics',
+  syntax: ['prod(a, b, c, ...)', 'prod(A)'],
+  description: 'Compute the product of all values.',
+  examples: ['prod(2, 3, 4)', 'prod([2, 3, 4])', 'prod([2, 5; 4, 3])'],
+  seealso: ['max', 'mean', 'min', 'median', 'min', 'std', 'sum', 'variance']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/mode.js
 var modeDocs = {
-  'name': 'mode',
-  'category': 'Statistics',
-  'syntax': ['mode(a, b, c, ...)', 'mode(A)', 'mode(A, a, b, B, c, ...)'],
-  'description': 'Computes the mode of all values as an array. In case mode being more than one, multiple values are returned in an array.',
-  'examples': ['mode(2, 1, 4, 3, 1)', 'mode([1, 2.7, 3.2, 4, 2.7])', 'mode(1, 4, 6, 1, 6)'],
-  'seealso': ['max', 'mean', 'min', 'median', 'prod', 'std', 'sum', 'variance']
+  name: 'mode',
+  category: 'Statistics',
+  syntax: ['mode(a, b, c, ...)', 'mode(A)', 'mode(A, a, b, B, c, ...)'],
+  description: 'Computes the mode of all values as an array. In case mode being more than one, multiple values are returned in an array.',
+  examples: ['mode(2, 1, 4, 3, 1)', 'mode([1, 2.7, 3.2, 4, 2.7])', 'mode(1, 4, 6, 1, 6)'],
+  seealso: ['max', 'mean', 'min', 'median', 'prod', 'std', 'sum', 'variance']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/min.js
 var minDocs = {
-  'name': 'min',
-  'category': 'Statistics',
-  'syntax': ['min(a, b, c, ...)', 'min(A)', 'min(A, dim)'],
-  'description': 'Compute the minimum value of a list of values.',
-  'examples': ['min(2, 3, 4, 1)', 'min([2, 3, 4, 1])', 'min([2, 5; 4, 3])', 'min([2, 5; 4, 3], 1)', 'min([2, 5; 4, 3], 2)', 'min(2.7, 7.1, -4.5, 2.0, 4.1)', 'max(2.7, 7.1, -4.5, 2.0, 4.1)'],
-  'seealso': ['max', 'mean', 'median', 'prod', 'std', 'sum', 'variance']
+  name: 'min',
+  category: 'Statistics',
+  syntax: ['min(a, b, c, ...)', 'min(A)', 'min(A, dim)'],
+  description: 'Compute the minimum value of a list of values.',
+  examples: ['min(2, 3, 4, 1)', 'min([2, 3, 4, 1])', 'min([2, 5; 4, 3])', 'min([2, 5; 4, 3], 1)', 'min([2, 5; 4, 3], 2)', 'min(2.7, 7.1, -4.5, 2.0, 4.1)', 'max(2.7, 7.1, -4.5, 2.0, 4.1)'],
+  seealso: ['max', 'mean', 'median', 'prod', 'std', 'sum', 'variance']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/median.js
 var medianDocs = {
-  'name': 'median',
-  'category': 'Statistics',
-  'syntax': ['median(a, b, c, ...)', 'median(A)'],
-  'description': 'Compute the median of all values. The values are sorted and the middle value is returned. In case of an even number of values, the average of the two middle values is returned.',
-  'examples': ['median(5, 2, 7)', 'median([3, -1, 5, 7])'],
-  'seealso': ['max', 'mean', 'min', 'prod', 'std', 'sum', 'variance', 'quantileSeq']
+  name: 'median',
+  category: 'Statistics',
+  syntax: ['median(a, b, c, ...)', 'median(A)'],
+  description: 'Compute the median of all values. The values are sorted and the middle value is returned. In case of an even number of values, the average of the two middle values is returned.',
+  examples: ['median(5, 2, 7)', 'median([3, -1, 5, 7])'],
+  seealso: ['max', 'mean', 'min', 'prod', 'std', 'sum', 'variance', 'quantileSeq']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/mean.js
 var meanDocs = {
-  'name': 'mean',
-  'category': 'Statistics',
-  'syntax': ['mean(a, b, c, ...)', 'mean(A)', 'mean(A, dim)'],
-  'description': 'Compute the arithmetic mean of a list of values.',
-  'examples': ['mean(2, 3, 4, 1)', 'mean([2, 3, 4, 1])', 'mean([2, 5; 4, 3])', 'mean([2, 5; 4, 3], 1)', 'mean([2, 5; 4, 3], 2)', 'mean([1.0, 2.7, 3.2, 4.0])'],
-  'seealso': ['max', 'median', 'min', 'prod', 'std', 'sum', 'variance']
+  name: 'mean',
+  category: 'Statistics',
+  syntax: ['mean(a, b, c, ...)', 'mean(A)', 'mean(A, dim)'],
+  description: 'Compute the arithmetic mean of a list of values.',
+  examples: ['mean(2, 3, 4, 1)', 'mean([2, 3, 4, 1])', 'mean([2, 5; 4, 3])', 'mean([2, 5; 4, 3], 1)', 'mean([2, 5; 4, 3], 2)', 'mean([1.0, 2.7, 3.2, 4.0])'],
+  seealso: ['max', 'median', 'min', 'prod', 'std', 'sum', 'variance']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/max.js
 var maxDocs = {
-  'name': 'max',
-  'category': 'Statistics',
-  'syntax': ['max(a, b, c, ...)', 'max(A)', 'max(A, dim)'],
-  'description': 'Compute the maximum value of a list of values.',
-  'examples': ['max(2, 3, 4, 1)', 'max([2, 3, 4, 1])', 'max([2, 5; 4, 3])', 'max([2, 5; 4, 3], 1)', 'max([2, 5; 4, 3], 2)', 'max(2.7, 7.1, -4.5, 2.0, 4.1)', 'min(2.7, 7.1, -4.5, 2.0, 4.1)'],
-  'seealso': ['mean', 'median', 'min', 'prod', 'std', 'sum', 'variance']
+  name: 'max',
+  category: 'Statistics',
+  syntax: ['max(a, b, c, ...)', 'max(A)', 'max(A, dim)'],
+  description: 'Compute the maximum value of a list of values.',
+  examples: ['max(2, 3, 4, 1)', 'max([2, 3, 4, 1])', 'max([2, 5; 4, 3])', 'max([2, 5; 4, 3], 1)', 'max([2, 5; 4, 3], 2)', 'max(2.7, 7.1, -4.5, 2.0, 4.1)', 'min(2.7, 7.1, -4.5, 2.0, 4.1)'],
+  seealso: ['mean', 'median', 'min', 'prod', 'std', 'sum', 'variance']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/mad.js
 var madDocs = {
-  'name': 'mad',
-  'category': 'Statistics',
-  'syntax': ['mad(a, b, c, ...)', 'mad(A)'],
-  'description': 'Compute the median absolute deviation of a matrix or a list with values. The median absolute deviation is defined as the median of the absolute deviations from the median.',
-  'examples': ['mad(10, 20, 30)', 'mad([1, 2, 3])'],
-  'seealso': ['mean', 'median', 'std', 'abs']
+  name: 'mad',
+  category: 'Statistics',
+  syntax: ['mad(a, b, c, ...)', 'mad(A)'],
+  description: 'Compute the median absolute deviation of a matrix or a list with values. The median absolute deviation is defined as the median of the absolute deviations from the median.',
+  examples: ['mad(10, 20, 30)', 'mad([1, 2, 3])'],
+  seealso: ['mean', 'median', 'std', 'abs']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/special/erf.js
 var erfDocs = {
-  'name': 'erf',
-  'category': 'Special',
-  'syntax': ['erf(x)'],
-  'description': 'Compute the erf function of a value using a rational Chebyshev approximations for different intervals of x',
-  'examples': ['erf(0.2)', 'erf(-0.5)', 'erf(4)'],
-  'seealso': []
+  name: 'erf',
+  category: 'Special',
+  syntax: ['erf(x)'],
+  description: 'Compute the erf function of a value using a rational Chebyshev approximations for different intervals of x',
+  examples: ['erf(0.2)', 'erf(-0.5)', 'erf(4)'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/set/setUnion.js
 var setUnionDocs = {
-  'name': 'setUnion',
-  'category': 'Set',
-  'syntax': ['setUnion(set1, set2)'],
-  'description': 'Create the union of two (multi)sets. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
-  'examples': ['setUnion([1, 2, 3, 4], [3, 4, 5, 6])', 'setUnion([[1, 2], [3, 4]], [[3, 4], [5, 6]])'],
-  'seealso': ['setIntersect', 'setDifference']
+  name: 'setUnion',
+  category: 'Set',
+  syntax: ['setUnion(set1, set2)'],
+  description: 'Create the union of two (multi)sets. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
+  examples: ['setUnion([1, 2, 3, 4], [3, 4, 5, 6])', 'setUnion([[1, 2], [3, 4]], [[3, 4], [5, 6]])'],
+  seealso: ['setIntersect', 'setDifference']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/set/setSymDifference.js
 var setSymDifferenceDocs = {
-  'name': 'setSymDifference',
-  'category': 'Set',
-  'syntax': ['setSymDifference(set1, set2)'],
-  'description': 'Create the symmetric difference of two (multi)sets. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
-  'examples': ['setSymDifference([1, 2, 3, 4], [3, 4, 5, 6])', 'setSymDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]])'],
-  'seealso': ['setUnion', 'setIntersect', 'setDifference']
+  name: 'setSymDifference',
+  category: 'Set',
+  syntax: ['setSymDifference(set1, set2)'],
+  description: 'Create the symmetric difference of two (multi)sets. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
+  examples: ['setSymDifference([1, 2, 3, 4], [3, 4, 5, 6])', 'setSymDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]])'],
+  seealso: ['setUnion', 'setIntersect', 'setDifference']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/set/setSize.js
 var setSizeDocs = {
-  'name': 'setSize',
-  'category': 'Set',
-  'syntax': ['setSize(set)', 'setSize(set, unique)'],
-  'description': 'Count the number of elements of a (multi)set. When the second parameter "unique" is true, count only the unique values. A multi-dimension array will be converted to a single-dimension array before the operation.',
-  'examples': ['setSize([1, 2, 2, 4])', 'setSize([1, 2, 2, 4], true)'],
-  'seealso': ['setUnion', 'setIntersect', 'setDifference']
+  name: 'setSize',
+  category: 'Set',
+  syntax: ['setSize(set)', 'setSize(set, unique)'],
+  description: 'Count the number of elements of a (multi)set. When the second parameter "unique" is true, count only the unique values. A multi-dimension array will be converted to a single-dimension array before the operation.',
+  examples: ['setSize([1, 2, 2, 4])', 'setSize([1, 2, 2, 4], true)'],
+  seealso: ['setUnion', 'setIntersect', 'setDifference']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/set/setPowerset.js
 var setPowersetDocs = {
-  'name': 'setPowerset',
-  'category': 'Set',
-  'syntax': ['setPowerset(set)'],
-  'description': 'Create the powerset of a (multi)set: the powerset contains very possible subsets of a (multi)set. A multi-dimension array will be converted to a single-dimension array before the operation.',
-  'examples': ['setPowerset([1, 2, 3])'],
-  'seealso': ['setCartesian']
+  name: 'setPowerset',
+  category: 'Set',
+  syntax: ['setPowerset(set)'],
+  description: 'Create the powerset of a (multi)set: the powerset contains very possible subsets of a (multi)set. A multi-dimension array will be converted to a single-dimension array before the operation.',
+  examples: ['setPowerset([1, 2, 3])'],
+  seealso: ['setCartesian']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/set/setMultiplicity.js
 var setMultiplicityDocs = {
-  'name': 'setMultiplicity',
-  'category': 'Set',
-  'syntax': ['setMultiplicity(element, set)'],
-  'description': 'Count the multiplicity of an element in a multiset. A multi-dimension array will be converted to a single-dimension array before the operation.',
-  'examples': ['setMultiplicity(1, [1, 2, 2, 4])', 'setMultiplicity(2, [1, 2, 2, 4])'],
-  'seealso': ['setDistinct', 'setSize']
+  name: 'setMultiplicity',
+  category: 'Set',
+  syntax: ['setMultiplicity(element, set)'],
+  description: 'Count the multiplicity of an element in a multiset. A multi-dimension array will be converted to a single-dimension array before the operation.',
+  examples: ['setMultiplicity(1, [1, 2, 2, 4])', 'setMultiplicity(2, [1, 2, 2, 4])'],
+  seealso: ['setDistinct', 'setSize']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/set/setIsSubset.js
 var setIsSubsetDocs = {
-  'name': 'setIsSubset',
-  'category': 'Set',
-  'syntax': ['setIsSubset(set1, set2)'],
-  'description': 'Check whether a (multi)set is a subset of another (multi)set: every element of set1 is the element of set2. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
-  'examples': ['setIsSubset([1, 2], [3, 4, 5, 6])', 'setIsSubset([3, 4], [3, 4, 5, 6])'],
-  'seealso': ['setUnion', 'setIntersect', 'setDifference']
+  name: 'setIsSubset',
+  category: 'Set',
+  syntax: ['setIsSubset(set1, set2)'],
+  description: 'Check whether a (multi)set is a subset of another (multi)set: every element of set1 is the element of set2. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
+  examples: ['setIsSubset([1, 2], [3, 4, 5, 6])', 'setIsSubset([3, 4], [3, 4, 5, 6])'],
+  seealso: ['setUnion', 'setIntersect', 'setDifference']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/set/setIntersect.js
 var setIntersectDocs = {
-  'name': 'setIntersect',
-  'category': 'Set',
-  'syntax': ['setIntersect(set1, set2)'],
-  'description': 'Create the intersection of two (multi)sets. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
-  'examples': ['setIntersect([1, 2, 3, 4], [3, 4, 5, 6])', 'setIntersect([[1, 2], [3, 4]], [[3, 4], [5, 6]])'],
-  'seealso': ['setUnion', 'setDifference']
+  name: 'setIntersect',
+  category: 'Set',
+  syntax: ['setIntersect(set1, set2)'],
+  description: 'Create the intersection of two (multi)sets. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
+  examples: ['setIntersect([1, 2, 3, 4], [3, 4, 5, 6])', 'setIntersect([[1, 2], [3, 4]], [[3, 4], [5, 6]])'],
+  seealso: ['setUnion', 'setDifference']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/set/setDistinct.js
 var setDistinctDocs = {
-  'name': 'setDistinct',
-  'category': 'Set',
-  'syntax': ['setDistinct(set)'],
-  'description': 'Collect the distinct elements of a multiset. A multi-dimension array will be converted to a single-dimension array before the operation.',
-  'examples': ['setDistinct([1, 1, 1, 2, 2, 3])'],
-  'seealso': ['setMultiplicity']
+  name: 'setDistinct',
+  category: 'Set',
+  syntax: ['setDistinct(set)'],
+  description: 'Collect the distinct elements of a multiset. A multi-dimension array will be converted to a single-dimension array before the operation.',
+  examples: ['setDistinct([1, 1, 1, 2, 2, 3])'],
+  seealso: ['setMultiplicity']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/set/setDifference.js
 var setDifferenceDocs = {
-  'name': 'setDifference',
-  'category': 'Set',
-  'syntax': ['setDifference(set1, set2)'],
-  'description': 'Create the difference of two (multi)sets: every element of set1, that is not the element of set2. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
-  'examples': ['setDifference([1, 2, 3, 4], [3, 4, 5, 6])', 'setDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]])'],
-  'seealso': ['setUnion', 'setIntersect', 'setSymDifference']
+  name: 'setDifference',
+  category: 'Set',
+  syntax: ['setDifference(set1, set2)'],
+  description: 'Create the difference of two (multi)sets: every element of set1, that is not the element of set2. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
+  examples: ['setDifference([1, 2, 3, 4], [3, 4, 5, 6])', 'setDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]])'],
+  seealso: ['setUnion', 'setIntersect', 'setSymDifference']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/set/setCartesian.js
 var setCartesianDocs = {
-  'name': 'setCartesian',
-  'category': 'Set',
-  'syntax': ['setCartesian(set1, set2)'],
-  'description': 'Create the cartesian product of two (multi)sets. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
-  'examples': ['setCartesian([1, 2], [3, 4])'],
-  'seealso': ['setUnion', 'setIntersect', 'setDifference', 'setPowerset']
+  name: 'setCartesian',
+  category: 'Set',
+  syntax: ['setCartesian(set1, set2)'],
+  description: 'Create the cartesian product of two (multi)sets. Multi-dimension arrays will be converted to single-dimension arrays before the operation.',
+  examples: ['setCartesian([1, 2], [3, 4])'],
+  seealso: ['setUnion', 'setIntersect', 'setDifference', 'setPowerset']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/unequal.js
 var unequalDocs = {
-  'name': 'unequal',
-  'category': 'Relational',
-  'syntax': ['x != y', 'unequal(x, y)'],
-  'description': 'Check unequality of two values. Returns true if the values are unequal, and false if they are equal.',
-  'examples': ['2+2 != 3', '2+2 != 4', 'a = 3.2', 'b = 6-2.8', 'a != b', '50cm != 0.5m', '5 cm != 2 inch'],
-  'seealso': ['equal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual']
+  name: 'unequal',
+  category: 'Relational',
+  syntax: ['x != y', 'unequal(x, y)'],
+  description: 'Check unequality of two values. Returns true if the values are unequal, and false if they are equal.',
+  examples: ['2+2 != 3', '2+2 != 4', 'a = 3.2', 'b = 6-2.8', 'a != b', '50cm != 0.5m', '5 cm != 2 inch'],
+  seealso: ['equal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/smallerEq.js
 var smallerEqDocs = {
-  'name': 'smallerEq',
-  'category': 'Relational',
-  'syntax': ['x <= y', 'smallerEq(x, y)'],
-  'description': 'Check if value x is smaller or equal to value y. Returns true if x is smaller than y, and false if not.',
-  'examples': ['2 <= 1+1', '2 < 1+1', 'a = 3.2', 'b = 6-2.8', '(a <= b)'],
-  'seealso': ['equal', 'unequal', 'larger', 'smaller', 'largerEq', 'compare']
+  name: 'smallerEq',
+  category: 'Relational',
+  syntax: ['x <= y', 'smallerEq(x, y)'],
+  description: 'Check if value x is smaller or equal to value y. Returns true if x is smaller than y, and false if not.',
+  examples: ['2 <= 1+1', '2 < 1+1', 'a = 3.2', 'b = 6-2.8', '(a <= b)'],
+  seealso: ['equal', 'unequal', 'larger', 'smaller', 'largerEq', 'compare']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/smaller.js
 var smallerDocs = {
-  'name': 'smaller',
-  'category': 'Relational',
-  'syntax': ['x < y', 'smaller(x, y)'],
-  'description': 'Check if value x is smaller than value y. Returns true if x is smaller than y, and false if not.',
-  'examples': ['2 < 3', '5 < 2*2', 'a = 3.3', 'b = 6-2.8', '(a < b)', '5 cm < 2 inch'],
-  'seealso': ['equal', 'unequal', 'larger', 'smallerEq', 'largerEq', 'compare']
+  name: 'smaller',
+  category: 'Relational',
+  syntax: ['x < y', 'smaller(x, y)'],
+  description: 'Check if value x is smaller than value y. Returns true if x is smaller than y, and false if not.',
+  examples: ['2 < 3', '5 < 2*2', 'a = 3.3', 'b = 6-2.8', '(a < b)', '5 cm < 2 inch'],
+  seealso: ['equal', 'unequal', 'larger', 'smallerEq', 'largerEq', 'compare']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/largerEq.js
 var largerEqDocs = {
-  'name': 'largerEq',
-  'category': 'Relational',
-  'syntax': ['x >= y', 'largerEq(x, y)'],
-  'description': 'Check if value x is larger or equal to y. Returns true if x is larger or equal to y, and false if not.',
-  'examples': ['2 >= 1+1', '2 > 1+1', 'a = 3.2', 'b = 6-2.8', '(a >= b)'],
-  'seealso': ['equal', 'unequal', 'smallerEq', 'smaller', 'compare']
+  name: 'largerEq',
+  category: 'Relational',
+  syntax: ['x >= y', 'largerEq(x, y)'],
+  description: 'Check if value x is larger or equal to y. Returns true if x is larger or equal to y, and false if not.',
+  examples: ['2 >= 1+1', '2 > 1+1', 'a = 3.2', 'b = 6-2.8', '(a >= b)'],
+  seealso: ['equal', 'unequal', 'smallerEq', 'smaller', 'compare']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/larger.js
 var largerDocs = {
-  'name': 'larger',
-  'category': 'Relational',
-  'syntax': ['x > y', 'larger(x, y)'],
-  'description': 'Check if value x is larger than y. Returns true if x is larger than y, and false if not.',
-  'examples': ['2 > 3', '5 > 2*2', 'a = 3.3', 'b = 6-2.8', '(a > b)', '(b < a)', '5 cm > 2 inch'],
-  'seealso': ['equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compare']
+  name: 'larger',
+  category: 'Relational',
+  syntax: ['x > y', 'larger(x, y)'],
+  description: 'Check if value x is larger than y. Returns true if x is larger than y, and false if not.',
+  examples: ['2 > 3', '5 > 2*2', 'a = 3.3', 'b = 6-2.8', '(a > b)', '(b < a)', '5 cm > 2 inch'],
+  seealso: ['equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compare']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/equalText.js
 var equalTextDocs = {
-  'name': 'equalText',
-  'category': 'Relational',
-  'syntax': ['equalText(x, y)'],
-  'description': 'Check equality of two strings. Comparison is case sensitive. Returns true if the values are equal, and false if not.',
-  'examples': ['equalText("Hello", "Hello")', 'equalText("a", "A")', 'equal("2e3", "2000")', 'equalText("2e3", "2000")', 'equalText("B", ["A", "B", "C"])'],
-  'seealso': ['compare', 'compareNatural', 'compareText', 'equal']
+  name: 'equalText',
+  category: 'Relational',
+  syntax: ['equalText(x, y)'],
+  description: 'Check equality of two strings. Comparison is case sensitive. Returns true if the values are equal, and false if not.',
+  examples: ['equalText("Hello", "Hello")', 'equalText("a", "A")', 'equal("2e3", "2000")', 'equalText("2e3", "2000")', 'equalText("B", ["A", "B", "C"])'],
+  seealso: ['compare', 'compareNatural', 'compareText', 'equal']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/equal.js
 var equalDocs = {
-  'name': 'equal',
-  'category': 'Relational',
-  'syntax': ['x == y', 'equal(x, y)'],
-  'description': 'Check equality of two values. Returns true if the values are equal, and false if not.',
-  'examples': ['2+2 == 3', '2+2 == 4', 'a = 3.2', 'b = 6-2.8', 'a == b', '50cm == 0.5m'],
-  'seealso': ['unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual', 'equalText']
+  name: 'equal',
+  category: 'Relational',
+  syntax: ['x == y', 'equal(x, y)'],
+  description: 'Check equality of two values. Returns true if the values are equal, and false if not.',
+  examples: ['2+2 == 3', '2+2 == 4', 'a = 3.2', 'b = 6-2.8', 'a == b', '50cm == 0.5m'],
+  seealso: ['unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual', 'equalText']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/deepEqual.js
 var deepEqualDocs = {
-  'name': 'deepEqual',
-  'category': 'Relational',
-  'syntax': ['deepEqual(x, y)'],
-  'description': 'Check equality of two matrices element wise. Returns true if the size of both matrices is equal and when and each of the elements are equal.',
-  'examples': ['deepEqual([1,3,4], [1,3,4])', 'deepEqual([1,3,4], [1,3])'],
-  'seealso': ['equal', 'unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare']
+  name: 'deepEqual',
+  category: 'Relational',
+  syntax: ['deepEqual(x, y)'],
+  description: 'Check equality of two matrices element wise. Returns true if the size of both matrices is equal and when and each of the elements are equal.',
+  examples: ['deepEqual([1,3,4], [1,3,4])', 'deepEqual([1,3,4], [1,3])'],
+  seealso: ['equal', 'unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/compareText.js
 var compareTextDocs = {
-  'name': 'compareText',
-  'category': 'Relational',
-  'syntax': ['compareText(x, y)'],
-  'description': 'Compare two strings lexically. Comparison is case sensitive. ' + 'Returns 1 when x > y, -1 when x < y, and 0 when x == y.',
-  'examples': ['compareText("B", "A")', 'compareText("A", "B")', 'compareText("A", "A")', 'compareText("2", "10")', 'compare("2", "10")', 'compare(2, 10)', 'compareNatural("2", "10")', 'compareText("B", ["A", "B", "C"])'],
-  'seealso': ['compare', 'compareNatural']
+  name: 'compareText',
+  category: 'Relational',
+  syntax: ['compareText(x, y)'],
+  description: 'Compare two strings lexically. Comparison is case sensitive. ' + 'Returns 1 when x > y, -1 when x < y, and 0 when x == y.',
+  examples: ['compareText("B", "A")', 'compareText("A", "B")', 'compareText("A", "A")', 'compareText("2", "10")', 'compare("2", "10")', 'compare(2, 10)', 'compareNatural("2", "10")', 'compareText("B", ["A", "B", "C"])'],
+  seealso: ['compare', 'compareNatural']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/compareNatural.js
 var compareNaturalDocs = {
-  'name': 'compareNatural',
-  'category': 'Relational',
-  'syntax': ['compareNatural(x, y)'],
-  'description': 'Compare two values of any type in a deterministic, natural way. ' + 'Returns 1 when x > y, -1 when x < y, and 0 when x == y.',
-  'examples': ['compareNatural(2, 3)', 'compareNatural(3, 2)', 'compareNatural(2, 2)', 'compareNatural(5cm, 40mm)', 'compareNatural("2", "10")', 'compareNatural(2 + 3i, 2 + 4i)', 'compareNatural([1, 2, 4], [1, 2, 3])', 'compareNatural([1, 5], [1, 2, 3])', 'compareNatural([1, 2], [1, 2])', 'compareNatural({a: 2}, {a: 4})'],
-  'seealso': ['equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compare', 'compareText']
+  name: 'compareNatural',
+  category: 'Relational',
+  syntax: ['compareNatural(x, y)'],
+  description: 'Compare two values of any type in a deterministic, natural way. ' + 'Returns 1 when x > y, -1 when x < y, and 0 when x == y.',
+  examples: ['compareNatural(2, 3)', 'compareNatural(3, 2)', 'compareNatural(2, 2)', 'compareNatural(5cm, 40mm)', 'compareNatural("2", "10")', 'compareNatural(2 + 3i, 2 + 4i)', 'compareNatural([1, 2, 4], [1, 2, 3])', 'compareNatural([1, 5], [1, 2, 3])', 'compareNatural([1, 2], [1, 2])', 'compareNatural({a: 2}, {a: 4})'],
+  seealso: ['equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compare', 'compareText']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/relational/compare.js
 var compareDocs = {
-  'name': 'compare',
-  'category': 'Relational',
-  'syntax': ['compare(x, y)'],
-  'description': 'Compare two values. ' + 'Returns 1 when x > y, -1 when x < y, and 0 when x == y.',
-  'examples': ['compare(2, 3)', 'compare(3, 2)', 'compare(2, 2)', 'compare(5cm, 40mm)', 'compare(2, [1, 2, 3])'],
-  'seealso': ['equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compareNatural', 'compareText']
+  name: 'compare',
+  category: 'Relational',
+  syntax: ['compare(x, y)'],
+  description: 'Compare two values. ' + 'Returns 1 when x > y, -1 when x < y, and 0 when x == y.',
+  examples: ['compare(2, 3)', 'compare(3, 2)', 'compare(2, 2)', 'compare(5cm, 40mm)', 'compare(2, [1, 2, 3])'],
+  seealso: ['equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compareNatural', 'compareText']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/probability/randomInt.js
 var randomIntDocs = {
-  'name': 'randomInt',
-  'category': 'Probability',
-  'syntax': ['randomInt(max)', 'randomInt(min, max)', 'randomInt(size)', 'randomInt(size, max)', 'randomInt(size, min, max)'],
-  'description': 'Return a random integer number',
-  'examples': ['randomInt(10, 20)', 'randomInt([2, 3], 10)'],
-  'seealso': ['pickRandom', 'random']
+  name: 'randomInt',
+  category: 'Probability',
+  syntax: ['randomInt(max)', 'randomInt(min, max)', 'randomInt(size)', 'randomInt(size, max)', 'randomInt(size, min, max)'],
+  description: 'Return a random integer number',
+  examples: ['randomInt(10, 20)', 'randomInt([2, 3], 10)'],
+  seealso: ['pickRandom', 'random']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/probability/random.js
 var randomDocs = {
-  'name': 'random',
-  'category': 'Probability',
-  'syntax': ['random()', 'random(max)', 'random(min, max)', 'random(size)', 'random(size, max)', 'random(size, min, max)'],
-  'description': 'Return a random number.',
-  'examples': ['random()', 'random(10, 20)', 'random([2, 3])'],
-  'seealso': ['pickRandom', 'randomInt']
+  name: 'random',
+  category: 'Probability',
+  syntax: ['random()', 'random(max)', 'random(min, max)', 'random(size)', 'random(size, max)', 'random(size, min, max)'],
+  description: 'Return a random number.',
+  examples: ['random()', 'random(10, 20)', 'random([2, 3])'],
+  seealso: ['pickRandom', 'randomInt']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/probability/pickRandom.js
 var pickRandomDocs = {
-  'name': 'pickRandom',
-  'category': 'Probability',
-  'syntax': ['pickRandom(array)', 'pickRandom(array, number)', 'pickRandom(array, weights)', 'pickRandom(array, number, weights)', 'pickRandom(array, weights, number)'],
-  'description': 'Pick a random entry from a given array.',
-  'examples': ['pickRandom(0:10)', 'pickRandom([1, 3, 1, 6])', 'pickRandom([1, 3, 1, 6], 2)', 'pickRandom([1, 3, 1, 6], [2, 3, 2, 1])', 'pickRandom([1, 3, 1, 6], 2, [2, 3, 2, 1])', 'pickRandom([1, 3, 1, 6], [2, 3, 2, 1], 2)'],
-  'seealso': ['random', 'randomInt']
+  name: 'pickRandom',
+  category: 'Probability',
+  syntax: ['pickRandom(array)', 'pickRandom(array, number)', 'pickRandom(array, weights)', 'pickRandom(array, number, weights)', 'pickRandom(array, weights, number)'],
+  description: 'Pick a random entry from a given array.',
+  examples: ['pickRandom(0:10)', 'pickRandom([1, 3, 1, 6])', 'pickRandom([1, 3, 1, 6], 2)', 'pickRandom([1, 3, 1, 6], [2, 3, 2, 1])', 'pickRandom([1, 3, 1, 6], 2, [2, 3, 2, 1])', 'pickRandom([1, 3, 1, 6], [2, 3, 2, 1], 2)'],
+  seealso: ['random', 'randomInt']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/probability/permutations.js
 var permutationsDocs = {
-  'name': 'permutations',
-  'category': 'Probability',
-  'syntax': ['permutations(n)', 'permutations(n, k)'],
-  'description': 'Compute the number of permutations of n items taken k at a time',
-  'examples': ['permutations(5)', 'permutations(5, 3)'],
-  'seealso': ['combinations', 'factorial']
+  name: 'permutations',
+  category: 'Probability',
+  syntax: ['permutations(n)', 'permutations(n, k)'],
+  description: 'Compute the number of permutations of n items taken k at a time',
+  examples: ['permutations(5)', 'permutations(5, 3)'],
+  seealso: ['combinations', 'combinationsWithRep', 'factorial']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/probability/multinomial.js
 var multinomialDocs = {
-  'name': 'multinomial',
-  'category': 'Probability',
-  'syntax': ['multinomial(A)'],
-  'description': 'Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities. multinomial takes one array of integers as an argument. The following condition must be enforced: every ai > 0.',
-  'examples': ['multinomial([1, 2, 1])'],
-  'seealso': ['combinations', 'factorial']
+  name: 'multinomial',
+  category: 'Probability',
+  syntax: ['multinomial(A)'],
+  description: 'Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities. multinomial takes one array of integers as an argument. The following condition must be enforced: every ai > 0.',
+  examples: ['multinomial([1, 2, 1])'],
+  seealso: ['combinations', 'factorial']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/probability/kldivergence.js
 var kldivergenceDocs = {
-  'name': 'kldivergence',
-  'category': 'Probability',
-  'syntax': ['kldivergence(x, y)'],
-  'description': 'Calculate the Kullback-Leibler (KL) divergence  between two distributions.',
-  'examples': ['kldivergence([0.7,0.5,0.4], [0.2,0.9,0.5])'],
-  'seealso': []
+  name: 'kldivergence',
+  category: 'Probability',
+  syntax: ['kldivergence(x, y)'],
+  description: 'Calculate the Kullback-Leibler (KL) divergence  between two distributions.',
+  examples: ['kldivergence([0.7,0.5,0.4], [0.2,0.9,0.5])'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/probability/gamma.js
 var gammaDocs = {
-  'name': 'gamma',
-  'category': 'Probability',
-  'syntax': ['gamma(n)'],
-  'description': 'Compute the gamma function. For small values, the Lanczos approximation is used, and for large values the extended Stirling approximation.',
-  'examples': ['gamma(4)', '3!', 'gamma(1/2)', 'sqrt(pi)'],
-  'seealso': ['factorial']
+  name: 'gamma',
+  category: 'Probability',
+  syntax: ['gamma(n)'],
+  description: 'Compute the gamma function. For small values, the Lanczos approximation is used, and for large values the extended Stirling approximation.',
+  examples: ['gamma(4)', '3!', 'gamma(1/2)', 'sqrt(pi)'],
+  seealso: ['factorial']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/probability/factorial.js
 var factorialDocs = {
-  'name': 'factorial',
-  'category': 'Probability',
-  'syntax': ['n!', 'factorial(n)'],
-  'description': 'Compute the factorial of a value',
-  'examples': ['5!', '5 * 4 * 3 * 2 * 1', '3!'],
-  'seealso': ['combinations', 'permutations', 'gamma']
+  name: 'factorial',
+  category: 'Probability',
+  syntax: ['n!', 'factorial(n)'],
+  description: 'Compute the factorial of a value',
+  examples: ['5!', '5 * 4 * 3 * 2 * 1', '3!'],
+  seealso: ['combinations', 'combinationsWithRep', 'permutations', 'gamma']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/probability/combinations.js
 var combinationsDocs = {
-  'name': 'combinations',
-  'category': 'Probability',
-  'syntax': ['combinations(n, k)'],
-  'description': 'Compute the number of combinations of n items taken k at a time',
-  'examples': ['combinations(7, 5)'],
-  'seealso': ['permutations', 'factorial']
+  name: 'combinations',
+  category: 'Probability',
+  syntax: ['combinations(n, k)'],
+  description: 'Compute the number of combinations of n items taken k at a time',
+  examples: ['combinations(7, 5)'],
+  seealso: ['combinationsWithRep', 'permutations', 'factorial']
+};
+// CONCATENATED MODULE: ./src/expression/embeddedDocs/function/probability/combinationsWithRep.js
+var combinationsWithRepDocs = {
+  name: 'combinationsWithRep',
+  category: 'Probability',
+  syntax: ['combinationsWithRep(n, k)'],
+  description: 'Compute the number of combinations of n items taken k at a time with replacements.',
+  examples: ['combinationsWithRep(7, 5)'],
+  seealso: ['combinations', 'permutations', 'factorial']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/zeros.js
 var zerosDocs = {
-  'name': 'zeros',
-  'category': 'Matrix',
-  'syntax': ['zeros(m)', 'zeros(m, n)', 'zeros(m, n, p, ...)', 'zeros([m])', 'zeros([m, n])', 'zeros([m, n, p, ...])'],
-  'description': 'Create a matrix containing zeros.',
-  'examples': ['zeros(3)', 'zeros(3, 5)', 'a = [1, 2, 3; 4, 5, 6]', 'zeros(size(a))'],
-  'seealso': ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose']
+  name: 'zeros',
+  category: 'Matrix',
+  syntax: ['zeros(m)', 'zeros(m, n)', 'zeros(m, n, p, ...)', 'zeros([m])', 'zeros([m, n])', 'zeros([m, n, p, ...])'],
+  description: 'Create a matrix containing zeros.',
+  examples: ['zeros(3)', 'zeros(3, 5)', 'a = [1, 2, 3; 4, 5, 6]', 'zeros(size(a))'],
+  seealso: ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/transpose.js
 var transposeDocs = {
-  'name': 'transpose',
-  'category': 'Matrix',
-  'syntax': ['x\'', 'transpose(x)'],
-  'description': 'Transpose a matrix',
-  'examples': ['a = [1, 2, 3; 4, 5, 6]', 'a\'', 'transpose(a)'],
-  'seealso': ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'zeros']
+  name: 'transpose',
+  category: 'Matrix',
+  syntax: ['x\'', 'transpose(x)'],
+  description: 'Transpose a matrix',
+  examples: ['a = [1, 2, 3; 4, 5, 6]', 'a\'', 'transpose(a)'],
+  seealso: ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/trace.js
 var traceDocs = {
-  'name': 'trace',
-  'category': 'Matrix',
-  'syntax': ['trace(A)'],
-  'description': 'Calculate the trace of a matrix: the sum of the elements on the main diagonal of a square matrix.',
-  'examples': ['A = [1, 2, 3; -1, 2, 3; 2, 0, 3]', 'trace(A)'],
-  'seealso': ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros']
+  name: 'trace',
+  category: 'Matrix',
+  syntax: ['trace(A)'],
+  description: 'Calculate the trace of a matrix: the sum of the elements on the main diagonal of a square matrix.',
+  examples: ['A = [1, 2, 3; -1, 2, 3; 2, 0, 3]', 'trace(A)'],
+  seealso: ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/subset.js
 var subsetDocs = {
-  'name': 'subset',
-  'category': 'Matrix',
-  'syntax': ['value(index)', 'value(index) = replacement', 'subset(value, [index])', 'subset(value, [index], replacement)'],
-  'description': 'Get or set a subset of a matrix or string. ' + 'Indexes are one-based. ' + 'Both the ranges lower-bound and upper-bound are included.',
-  'examples': ['d = [1, 2; 3, 4]', 'e = []', 'e[1, 1:2] = [5, 6]', 'e[2, :] = [7, 8]', 'f = d * e', 'f[2, 1]', 'f[:, 1]'],
-  'seealso': ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'trace', 'transpose', 'zeros']
+  name: 'subset',
+  category: 'Matrix',
+  syntax: ['value(index)', 'value(index) = replacement', 'subset(value, [index])', 'subset(value, [index], replacement)'],
+  description: 'Get or set a subset of a matrix or string. ' + 'Indexes are one-based. ' + 'Both the ranges lower-bound and upper-bound are included.',
+  examples: ['d = [1, 2; 3, 4]', 'e = []', 'e[1, 1:2] = [5, 6]', 'e[2, :] = [7, 8]', 'f = d * e', 'f[2, 1]', 'f[:, 1]'],
+  seealso: ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'trace', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/squeeze.js
 var squeezeDocs = {
-  'name': 'squeeze',
-  'category': 'Matrix',
-  'syntax': ['squeeze(x)'],
-  'description': 'Remove inner and outer singleton dimensions from a matrix.',
-  'examples': ['a = zeros(3,2,1)', 'size(squeeze(a))', 'b = zeros(1,1,3)', 'size(squeeze(b))'],
-  'seealso': ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'subset', 'trace', 'transpose', 'zeros']
+  name: 'squeeze',
+  category: 'Matrix',
+  syntax: ['squeeze(x)'],
+  description: 'Remove inner and outer singleton dimensions from a matrix.',
+  examples: ['a = zeros(3,2,1)', 'size(squeeze(a))', 'b = zeros(1,1,3)', 'size(squeeze(b))'],
+  seealso: ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'subset', 'trace', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/sort.js
 var sortDocs = {
-  'name': 'sort',
-  'category': 'Matrix',
-  'syntax': ['sort(x)', 'sort(x, compare)'],
-  'description': 'Sort the items in a matrix. Compare can be a string "asc", "desc", "natural", or a custom sort function.',
-  'examples': ['sort([5, 10, 1])', 'sort(["C", "B", "A", "D"])', 'sortByLength(a, b) = size(a)[1] - size(b)[1]', 'sort(["Langdon", "Tom", "Sara"], sortByLength)', 'sort(["10", "1", "2"], "natural")'],
-  'seealso': ['map', 'filter', 'forEach']
+  name: 'sort',
+  category: 'Matrix',
+  syntax: ['sort(x)', 'sort(x, compare)'],
+  description: 'Sort the items in a matrix. Compare can be a string "asc", "desc", "natural", or a custom sort function.',
+  examples: ['sort([5, 10, 1])', 'sort(["C", "B", "A", "D"])', 'sortByLength(a, b) = size(a)[1] - size(b)[1]', 'sort(["Langdon", "Tom", "Sara"], sortByLength)', 'sort(["10", "1", "2"], "natural")'],
+  seealso: ['map', 'filter', 'forEach']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/size.js
 var sizeDocs = {
-  'name': 'size',
-  'category': 'Matrix',
-  'syntax': ['size(x)'],
-  'description': 'Calculate the size of a matrix.',
-  'examples': ['size(2.3)', 'size("hello world")', 'a = [1, 2; 3, 4; 5, 6]', 'size(a)', 'size(1:6)'],
-  'seealso': ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
+  name: 'size',
+  category: 'Matrix',
+  syntax: ['size(x)'],
+  description: 'Calculate the size of a matrix.',
+  examples: ['size(2.3)', 'size("hello world")', 'a = [1, 2; 3, 4; 5, 6]', 'size(a)', 'size(1:6)'],
+  seealso: ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/reshape.js
 var reshapeDocs = {
-  'name': 'reshape',
-  'category': 'Matrix',
-  'syntax': ['reshape(x, sizes)'],
-  'description': 'Reshape a multi dimensional array to fit the specified dimensions.',
-  'examples': ['reshape([1, 2, 3, 4, 5, 6], [2, 3])', 'reshape([[1, 2], [3, 4]], [1, 4])', 'reshape([[1, 2], [3, 4]], [4])'],
-  'seealso': ['size', 'squeeze', 'resize']
+  name: 'reshape',
+  category: 'Matrix',
+  syntax: ['reshape(x, sizes)'],
+  description: 'Reshape a multi dimensional array to fit the specified dimensions.',
+  examples: ['reshape([1, 2, 3, 4, 5, 6], [2, 3])', 'reshape([[1, 2], [3, 4]], [1, 4])', 'reshape([[1, 2], [3, 4]], [4])'],
+  seealso: ['size', 'squeeze', 'resize']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/resize.js
 var resizeDocs = {
-  'name': 'resize',
-  'category': 'Matrix',
-  'syntax': ['resize(x, size)', 'resize(x, size, defaultValue)'],
-  'description': 'Resize a matrix.',
-  'examples': ['resize([1,2,3,4,5], [3])', 'resize([1,2,3], [5])', 'resize([1,2,3], [5], -1)', 'resize(2, [2, 3])', 'resize("hello", [8], "!")'],
-  'seealso': ['size', 'subset', 'squeeze', 'reshape']
+  name: 'resize',
+  category: 'Matrix',
+  syntax: ['resize(x, size)', 'resize(x, size, defaultValue)'],
+  description: 'Resize a matrix.',
+  examples: ['resize([1,2,3,4,5], [3])', 'resize([1,2,3], [5])', 'resize([1,2,3], [5], -1)', 'resize(2, [2, 3])', 'resize("hello", [8], "!")'],
+  seealso: ['size', 'subset', 'squeeze', 'reshape']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/range.js
 var rangeDocs = {
-  'name': 'range',
-  'category': 'Type',
-  'syntax': ['start:end', 'start:step:end', 'range(start, end)', 'range(start, end, step)', 'range(string)'],
-  'description': 'Create a range. Lower bound of the range is included, upper bound is excluded.',
-  'examples': ['1:5', '3:-1:-3', 'range(3, 7)', 'range(0, 12, 2)', 'range("4:10")', 'a = [1, 2, 3, 4; 5, 6, 7, 8]', 'a[1:2, 1:2]'],
-  'seealso': ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
+  name: 'range',
+  category: 'Type',
+  syntax: ['start:end', 'start:step:end', 'range(start, end)', 'range(start, end, step)', 'range(string)'],
+  description: 'Create a range. Lower bound of the range is included, upper bound is excluded.',
+  examples: ['1:5', '3:-1:-3', 'range(3, 7)', 'range(0, 12, 2)', 'range("4:10")', 'a = [1, 2, 3, 4; 5, 6, 7, 8]', 'a[1:2, 1:2]'],
+  seealso: ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/partitionSelect.js
 var partitionSelectDocs = {
-  'name': 'partitionSelect',
-  'category': 'Matrix',
-  'syntax': ['partitionSelect(x, k)', 'partitionSelect(x, k, compare)'],
-  'description': 'Partition-based selection of an array or 1D matrix. Will find the kth smallest value, and mutates the input array. Uses Quickselect.',
-  'examples': ['partitionSelect([5, 10, 1], 2)', 'partitionSelect(["C", "B", "A", "D"], 1)'],
-  'seealso': ['sort']
+  name: 'partitionSelect',
+  category: 'Matrix',
+  syntax: ['partitionSelect(x, k)', 'partitionSelect(x, k, compare)'],
+  description: 'Partition-based selection of an array or 1D matrix. Will find the kth smallest value, and mutates the input array. Uses Quickselect.',
+  examples: ['partitionSelect([5, 10, 1], 2)', 'partitionSelect(["C", "B", "A", "D"], 1)'],
+  seealso: ['sort']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/ones.js
 var onesDocs = {
-  'name': 'ones',
-  'category': 'Matrix',
-  'syntax': ['ones(m)', 'ones(m, n)', 'ones(m, n, p, ...)', 'ones([m])', 'ones([m, n])', 'ones([m, n, p, ...])'],
-  'description': 'Create a matrix containing ones.',
-  'examples': ['ones(3)', 'ones(3, 5)', 'ones([2,3]) * 4.5', 'a = [1, 2, 3; 4, 5, 6]', 'ones(size(a))'],
-  'seealso': ['concat', 'det', 'diag', 'identity', 'inv', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
+  name: 'ones',
+  category: 'Matrix',
+  syntax: ['ones(m)', 'ones(m, n)', 'ones(m, n, p, ...)', 'ones([m])', 'ones([m, n])', 'ones([m, n, p, ...])'],
+  description: 'Create a matrix containing ones.',
+  examples: ['ones(3)', 'ones(3, 5)', 'ones([2,3]) * 4.5', 'a = [1, 2, 3; 4, 5, 6]', 'ones(size(a))'],
+  seealso: ['concat', 'det', 'diag', 'identity', 'inv', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/map.js
 var mapDocs = {
-  'name': 'map',
-  'category': 'Matrix',
-  'syntax': ['map(x, callback)'],
-  'description': 'Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.',
-  'examples': ['map([1, 2, 3], square)'],
-  'seealso': ['filter', 'forEach']
+  name: 'map',
+  category: 'Matrix',
+  syntax: ['map(x, callback)'],
+  description: 'Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.',
+  examples: ['map([1, 2, 3], square)'],
+  seealso: ['filter', 'forEach']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/kron.js
 var kronDocs = {
-  'name': 'kron',
-  'category': 'Matrix',
-  'syntax': ['kron(x, y)'],
-  'description': 'Calculates the kronecker product of 2 matrices or vectors.',
-  'examples': ['kron([[1, 0], [0, 1]], [[1, 2], [3, 4]])', 'kron([1,1], [2,3,4])'],
-  'seealso': ['multiply', 'dot', 'cross']
+  name: 'kron',
+  category: 'Matrix',
+  syntax: ['kron(x, y)'],
+  description: 'Calculates the kronecker product of 2 matrices or vectors.',
+  examples: ['kron([[1, 0], [0, 1]], [[1, 2], [3, 4]])', 'kron([1,1], [2,3,4])'],
+  seealso: ['multiply', 'dot', 'cross']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/inv.js
 var invDocs = {
-  'name': 'inv',
-  'category': 'Matrix',
-  'syntax': ['inv(x)'],
-  'description': 'Calculate the inverse of a matrix',
-  'examples': ['inv([1, 2; 3, 4])', 'inv(4)', '1 / 4'],
-  'seealso': ['concat', 'det', 'diag', 'identity', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
+  name: 'inv',
+  category: 'Matrix',
+  syntax: ['inv(x)'],
+  description: 'Calculate the inverse of a matrix',
+  examples: ['inv([1, 2; 3, 4])', 'inv(4)', '1 / 4'],
+  seealso: ['concat', 'det', 'diag', 'identity', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/forEach.js
 var forEachDocs = {
-  'name': 'forEach',
-  'category': 'Matrix',
-  'syntax': ['forEach(x, callback)'],
-  'description': 'Iterates over all elements of a matrix/array, and executes the given callback function.',
-  'examples': ['forEach([1, 2, 3], function(val) { console.log(val) })'],
-  'seealso': ['map', 'sort', 'filter']
+  name: 'forEach',
+  category: 'Matrix',
+  syntax: ['forEach(x, callback)'],
+  description: 'Iterates over all elements of a matrix/array, and executes the given callback function.',
+  examples: ['forEach([1, 2, 3], function(val) { console.log(val) })'],
+  seealso: ['map', 'sort', 'filter']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/flatten.js
 var flattenDocs = {
-  'name': 'flatten',
-  'category': 'Matrix',
-  'syntax': ['flatten(x)'],
-  'description': 'Flatten a multi dimensional matrix into a single dimensional matrix.',
-  'examples': ['a = [1, 2, 3; 4, 5, 6]', 'size(a)', 'b = flatten(a)', 'size(b)'],
-  'seealso': ['concat', 'resize', 'size', 'squeeze']
+  name: 'flatten',
+  category: 'Matrix',
+  syntax: ['flatten(x)'],
+  description: 'Flatten a multi dimensional matrix into a single dimensional matrix.',
+  examples: ['a = [1, 2, 3; 4, 5, 6]', 'size(a)', 'b = flatten(a)', 'size(b)'],
+  seealso: ['concat', 'resize', 'size', 'squeeze']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/filter.js
 var filterDocs = {
-  'name': 'filter',
-  'category': 'Matrix',
-  'syntax': ['filter(x, test)'],
-  'description': 'Filter items in a matrix.',
-  'examples': ['isPositive(x) = x > 0', 'filter([6, -2, -1, 4, 3], isPositive)', 'filter([6, -2, 0, 1, 0], x != 0)'],
-  'seealso': ['sort', 'map', 'forEach']
+  name: 'filter',
+  category: 'Matrix',
+  syntax: ['filter(x, test)'],
+  description: 'Filter items in a matrix.',
+  examples: ['isPositive(x) = x > 0', 'filter([6, -2, -1, 4, 3], isPositive)', 'filter([6, -2, 0, 1, 0], x != 0)'],
+  seealso: ['sort', 'map', 'forEach']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/identity.js
 var identityDocs = {
-  'name': 'identity',
-  'category': 'Matrix',
-  'syntax': ['identity(n)', 'identity(m, n)', 'identity([m, n])'],
-  'description': 'Returns the identity matrix with size m-by-n. The matrix has ones on the diagonal and zeros elsewhere.',
-  'examples': ['identity(3)', 'identity(3, 5)', 'a = [1, 2, 3; 4, 5, 6]', 'identity(size(a))'],
-  'seealso': ['concat', 'det', 'diag', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
+  name: 'identity',
+  category: 'Matrix',
+  syntax: ['identity(n)', 'identity(m, n)', 'identity([m, n])'],
+  description: 'Returns the identity matrix with size m-by-n. The matrix has ones on the diagonal and zeros elsewhere.',
+  examples: ['identity(3)', 'identity(3, 5)', 'a = [1, 2, 3; 4, 5, 6]', 'identity(size(a))'],
+  seealso: ['concat', 'det', 'diag', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/getMatrixDataType.js
 var getMatrixDataTypeDocs = {
-  'name': 'getMatrixDataType',
-  'category': 'Matrix',
-  'syntax': ['getMatrixDataType(x)'],
-  'description': 'Find the data type of all elements in a matrix or array, ' + 'for example "number" if all items are a number ' + 'and "Complex" if all values are complex numbers. ' + 'If a matrix contains more than one data type, it will return "mixed".',
-  'examples': ['getMatrixDataType([1, 2, 3])', 'getMatrixDataType([[5 cm], [2 inch]])', 'getMatrixDataType([1, "text"])', 'getMatrixDataType([1, bignumber(4)])'],
-  'seealso': ['matrix', 'sparse', 'typeOf']
+  name: 'getMatrixDataType',
+  category: 'Matrix',
+  syntax: ['getMatrixDataType(x)'],
+  description: 'Find the data type of all elements in a matrix or array, ' + 'for example "number" if all items are a number ' + 'and "Complex" if all values are complex numbers. ' + 'If a matrix contains more than one data type, it will return "mixed".',
+  examples: ['getMatrixDataType([1, 2, 3])', 'getMatrixDataType([[5 cm], [2 inch]])', 'getMatrixDataType([1, "text"])', 'getMatrixDataType([1, bignumber(4)])'],
+  seealso: ['matrix', 'sparse', 'typeOf']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/dot.js
 var dotDocs = {
-  'name': 'dot',
-  'category': 'Matrix',
-  'syntax': ['dot(A, B)', 'A * B'],
-  'description': 'Calculate the dot product of two vectors. ' + 'The dot product of A = [a1, a2, a3, ..., an] and B = [b1, b2, b3, ..., bn] ' + 'is defined as dot(A, B) = a1 * b1 + a2 * b2 + a3 * b3 + ... + an * bn',
-  'examples': ['dot([2, 4, 1], [2, 2, 3])', '[2, 4, 1] * [2, 2, 3]'],
-  'seealso': ['multiply', 'cross']
+  name: 'dot',
+  category: 'Matrix',
+  syntax: ['dot(A, B)', 'A * B'],
+  description: 'Calculate the dot product of two vectors. ' + 'The dot product of A = [a1, a2, a3, ..., an] and B = [b1, b2, b3, ..., bn] ' + 'is defined as dot(A, B) = a1 * b1 + a2 * b2 + a3 * b3 + ... + an * bn',
+  examples: ['dot([2, 4, 1], [2, 2, 3])', '[2, 4, 1] * [2, 2, 3]'],
+  seealso: ['multiply', 'cross']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/diag.js
 var diagDocs = {
-  'name': 'diag',
-  'category': 'Matrix',
-  'syntax': ['diag(x)', 'diag(x, k)'],
-  'description': 'Create a diagonal matrix or retrieve the diagonal of a matrix. When x is a vector, a matrix with the vector values on the diagonal will be returned. When x is a matrix, a vector with the diagonal values of the matrix is returned. When k is provided, the k-th diagonal will be filled in or retrieved, if k is positive, the values are placed on the super diagonal. When k is negative, the values are placed on the sub diagonal.',
-  'examples': ['diag(1:3)', 'diag(1:3, 1)', 'a = [1, 2, 3; 4, 5, 6; 7, 8, 9]', 'diag(a)'],
-  'seealso': ['concat', 'det', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
+  name: 'diag',
+  category: 'Matrix',
+  syntax: ['diag(x)', 'diag(x, k)'],
+  description: 'Create a diagonal matrix or retrieve the diagonal of a matrix. When x is a vector, a matrix with the vector values on the diagonal will be returned. When x is a matrix, a vector with the diagonal values of the matrix is returned. When k is provided, the k-th diagonal will be filled in or retrieved, if k is positive, the values are placed on the super diagonal. When k is negative, the values are placed on the sub diagonal.',
+  examples: ['diag(1:3)', 'diag(1:3, 1)', 'a = [1, 2, 3; 4, 5, 6; 7, 8, 9]', 'diag(a)'],
+  seealso: ['concat', 'det', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/det.js
 var detDocs = {
-  'name': 'det',
-  'category': 'Matrix',
-  'syntax': ['det(x)'],
-  'description': 'Calculate the determinant of a matrix',
-  'examples': ['det([1, 2; 3, 4])', 'det([-2, 2, 3; -1, 1, 3; 2, 0, -1])'],
-  'seealso': ['concat', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
+  name: 'det',
+  category: 'Matrix',
+  syntax: ['det(x)'],
+  description: 'Calculate the determinant of a matrix',
+  examples: ['det([1, 2; 3, 4])', 'det([-2, 2, 3; -1, 1, 3; 2, 0, -1])'],
+  seealso: ['concat', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/ctranspose.js
 var ctransposeDocs = {
-  'name': 'ctranspose',
-  'category': 'Matrix',
-  'syntax': ['x\'', 'ctranspose(x)'],
-  'description': 'Complex Conjugate and Transpose a matrix',
-  'examples': ['a = [1, 2, 3; 4, 5, 6]', 'a\'', 'ctranspose(a)'],
-  'seealso': ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'zeros']
+  name: 'ctranspose',
+  category: 'Matrix',
+  syntax: ['x\'', 'ctranspose(x)'],
+  description: 'Complex Conjugate and Transpose a matrix',
+  examples: ['a = [1, 2, 3; 4, 5, 6]', 'a\'', 'ctranspose(a)'],
+  seealso: ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/cross.js
 var crossDocs = {
-  'name': 'cross',
-  'category': 'Matrix',
-  'syntax': ['cross(A, B)'],
-  'description': 'Calculate the cross product for two vectors in three dimensional space.',
-  'examples': ['cross([1, 1, 0],  [0, 1, 1])', 'cross([3, -3, 1], [4, 9, 2])', 'cross([2, 3, 4],  [5, 6, 7])'],
-  'seealso': ['multiply', 'dot']
+  name: 'cross',
+  category: 'Matrix',
+  syntax: ['cross(A, B)'],
+  description: 'Calculate the cross product for two vectors in three dimensional space.',
+  examples: ['cross([1, 1, 0],  [0, 1, 1])', 'cross([3, -3, 1], [4, 9, 2])', 'cross([2, 3, 4],  [5, 6, 7])'],
+  seealso: ['multiply', 'dot']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/concat.js
 var concatDocs = {
-  'name': 'concat',
-  'category': 'Matrix',
-  'syntax': ['concat(A, B, C, ...)', 'concat(A, B, C, ..., dim)'],
-  'description': 'Concatenate matrices. By default, the matrices are concatenated by the last dimension. The dimension on which to concatenate can be provided as last argument.',
-  'examples': ['A = [1, 2; 5, 6]', 'B = [3, 4; 7, 8]', 'concat(A, B)', 'concat(A, B, 1)', 'concat(A, B, 2)'],
-  'seealso': ['det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
+  name: 'concat',
+  category: 'Matrix',
+  syntax: ['concat(A, B, C, ...)', 'concat(A, B, C, ..., dim)'],
+  description: 'Concatenate matrices. By default, the matrices are concatenated by the last dimension. The dimension on which to concatenate can be provided as last argument.',
+  examples: ['A = [1, 2; 5, 6]', 'B = [3, 4; 7, 8]', 'concat(A, B)', 'concat(A, B, 1)', 'concat(A, B, 2)'],
+  seealso: ['det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/logical/xor.js
 var xorDocs = {
-  'name': 'xor',
-  'category': 'Logical',
-  'syntax': ['x xor y', 'xor(x, y)'],
-  'description': 'Logical exclusive or, xor. Test whether one and only one value is defined with a nonzero/nonempty value.',
-  'examples': ['true xor false', 'false xor false', 'true xor true', '0 xor 4'],
-  'seealso': ['not', 'and', 'or']
+  name: 'xor',
+  category: 'Logical',
+  syntax: ['x xor y', 'xor(x, y)'],
+  description: 'Logical exclusive or, xor. Test whether one and only one value is defined with a nonzero/nonempty value.',
+  examples: ['true xor false', 'false xor false', 'true xor true', '0 xor 4'],
+  seealso: ['not', 'and', 'or']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/logical/or.js
 var orDocs = {
-  'name': 'or',
-  'category': 'Logical',
-  'syntax': ['x or y', 'or(x, y)'],
-  'description': 'Logical or. Test if at least one value is defined with a nonzero/nonempty value.',
-  'examples': ['true or false', 'false or false', '0 or 4'],
-  'seealso': ['not', 'and', 'xor']
+  name: 'or',
+  category: 'Logical',
+  syntax: ['x or y', 'or(x, y)'],
+  description: 'Logical or. Test if at least one value is defined with a nonzero/nonempty value.',
+  examples: ['true or false', 'false or false', '0 or 4'],
+  seealso: ['not', 'and', 'xor']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/logical/not.js
 var notDocs = {
-  'name': 'not',
-  'category': 'Logical',
-  'syntax': ['not x', 'not(x)'],
-  'description': 'Logical not. Flips the boolean value of given argument.',
-  'examples': ['not true', 'not false', 'not 2', 'not 0'],
-  'seealso': ['and', 'or', 'xor']
+  name: 'not',
+  category: 'Logical',
+  syntax: ['not x', 'not(x)'],
+  description: 'Logical not. Flips the boolean value of given argument.',
+  examples: ['not true', 'not false', 'not 2', 'not 0'],
+  seealso: ['and', 'or', 'xor']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/logical/and.js
 var andDocs = {
-  'name': 'and',
-  'category': 'Logical',
-  'syntax': ['x and y', 'and(x, y)'],
-  'description': 'Logical and. Test whether two values are both defined with a nonzero/nonempty value.',
-  'examples': ['true and false', 'true and true', '2 and 4'],
-  'seealso': ['not', 'or', 'xor']
+  name: 'and',
+  category: 'Logical',
+  syntax: ['x and y', 'and(x, y)'],
+  description: 'Logical and. Test whether two values are both defined with a nonzero/nonempty value.',
+  examples: ['true and false', 'true and true', '2 and 4'],
+  seealso: ['not', 'or', 'xor']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/geometry/intersect.js
 var intersectDocs = {
-  'name': 'intersect',
-  'category': 'Geometry',
-  'syntax': ['intersect(expr1, expr2, expr3, expr4)', 'intersect(expr1, expr2, expr3)'],
-  'description': 'Computes the intersection point of lines and/or planes.',
-  'examples': ['intersect([0, 0], [10, 10], [10, 0], [0, 10])', 'intersect([1, 0, 1],  [4, -2, 2], [1, 1, 1, 6])'],
-  'seealso': []
+  name: 'intersect',
+  category: 'Geometry',
+  syntax: ['intersect(expr1, expr2, expr3, expr4)', 'intersect(expr1, expr2, expr3)'],
+  description: 'Computes the intersection point of lines and/or planes.',
+  examples: ['intersect([0, 0], [10, 10], [10, 0], [0, 10])', 'intersect([1, 0, 1],  [4, -2, 2], [1, 1, 1, 6])'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/geometry/distance.js
 var distanceDocs = {
-  'name': 'distance',
-  'category': 'Geometry',
-  'syntax': ['distance([x1, y1], [x2, y2])', 'distance([[x1, y1], [x2, y2])'],
-  'description': 'Calculates the Euclidean distance between two points.',
-  'examples': ['distance([0,0], [4,4])', 'distance([[0,0], [4,4]])'],
-  'seealso': []
+  name: 'distance',
+  category: 'Geometry',
+  syntax: ['distance([x1, y1], [x2, y2])', 'distance([[x1, y1], [x2, y2])'],
+  description: 'Calculates the Euclidean distance between two points.',
+  examples: ['distance([0,0], [4,4])', 'distance([[0,0], [4,4]])'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/expression/help.js
 var helpDocs = {
-  'name': 'help',
-  'category': 'Expression',
-  'syntax': ['help(object)', 'help(string)'],
-  'description': 'Display documentation on a function or data type.',
-  'examples': ['help(sqrt)', 'help("complex")'],
-  'seealso': []
+  name: 'help',
+  category: 'Expression',
+  syntax: ['help(object)', 'help(string)'],
+  description: 'Display documentation on a function or data type.',
+  examples: ['help(sqrt)', 'help("complex")'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/expression/evaluate.js
 var evaluateDocs = {
-  'name': 'evaluate',
-  'category': 'Expression',
-  'syntax': ['evaluate(expression)', 'evaluate([expr1, expr2, expr3, ...])'],
-  'description': 'Evaluate an expression or an array with expressions.',
-  'examples': ['evaluate("2 + 3")', 'evaluate("sqrt(" + 4 + ")")'],
-  'seealso': []
+  name: 'evaluate',
+  category: 'Expression',
+  syntax: ['evaluate(expression)', 'evaluate([expr1, expr2, expr3, ...])'],
+  description: 'Evaluate an expression or an array with expressions.',
+  examples: ['evaluate("2 + 3")', 'evaluate("sqrt(" + 4 + ")")'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/complex/im.js
 var imDocs = {
-  'name': 'im',
-  'category': 'Complex',
-  'syntax': ['im(x)'],
-  'description': 'Get the imaginary part of a complex number.',
-  'examples': ['im(2 + 3i)', 're(2 + 3i)', 'im(-5.2i)', 'im(2.4)'],
-  'seealso': ['re', 'conj', 'abs', 'arg']
+  name: 'im',
+  category: 'Complex',
+  syntax: ['im(x)'],
+  description: 'Get the imaginary part of a complex number.',
+  examples: ['im(2 + 3i)', 're(2 + 3i)', 'im(-5.2i)', 'im(2.4)'],
+  seealso: ['re', 'conj', 'abs', 'arg']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/complex/re.js
 var reDocs = {
-  'name': 're',
-  'category': 'Complex',
-  'syntax': ['re(x)'],
-  'description': 'Get the real part of a complex number.',
-  'examples': ['re(2 + 3i)', 'im(2 + 3i)', 're(-5.2i)', 're(2.4)'],
-  'seealso': ['im', 'conj', 'abs', 'arg']
+  name: 're',
+  category: 'Complex',
+  syntax: ['re(x)'],
+  description: 'Get the real part of a complex number.',
+  examples: ['re(2 + 3i)', 'im(2 + 3i)', 're(-5.2i)', 're(2.4)'],
+  seealso: ['im', 'conj', 'abs', 'arg']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/complex/conj.js
 var conjDocs = {
-  'name': 'conj',
-  'category': 'Complex',
-  'syntax': ['conj(x)'],
-  'description': 'Compute the complex conjugate of a complex value. If x = a+bi, the complex conjugate is a-bi.',
-  'examples': ['conj(2 + 3i)', 'conj(2 - 3i)', 'conj(-5.2i)'],
-  'seealso': ['re', 'im', 'abs', 'arg']
+  name: 'conj',
+  category: 'Complex',
+  syntax: ['conj(x)'],
+  description: 'Compute the complex conjugate of a complex value. If x = a+bi, the complex conjugate is a-bi.',
+  examples: ['conj(2 + 3i)', 'conj(2 - 3i)', 'conj(-5.2i)'],
+  seealso: ['re', 'im', 'abs', 'arg']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/complex/arg.js
 var argDocs = {
-  'name': 'arg',
-  'category': 'Complex',
-  'syntax': ['arg(x)'],
-  'description': 'Compute the argument of a complex value. If x = a+bi, the argument is computed as atan2(b, a).',
-  'examples': ['arg(2 + 2i)', 'atan2(3, 2)', 'arg(2 + 3i)'],
-  'seealso': ['re', 'im', 'conj', 'abs']
+  name: 'arg',
+  category: 'Complex',
+  syntax: ['arg(x)'],
+  description: 'Compute the argument of a complex value. If x = a+bi, the argument is computed as atan2(b, a).',
+  examples: ['arg(2 + 2i)', 'atan2(3, 2)', 'arg(2 + 3i)'],
+  seealso: ['re', 'im', 'conj', 'abs']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/core/typed.js
 var typedDocs = {
-  'name': 'typed',
-  'category': 'Core',
-  'syntax': ['typed(signatures)', 'typed(name, signatures)'],
-  'description': 'Create a typed function.',
-  'examples': ['double = typed({ "number, number": f(x)=x+x })', 'double(2)', 'double("hello")'],
-  'seealso': []
+  name: 'typed',
+  category: 'Core',
+  syntax: ['typed(signatures)', 'typed(name, signatures)'],
+  description: 'Create a typed function.',
+  examples: ['double = typed({ "number, number": f(x)=x+x })', 'double(2)', 'double("hello")'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/core/import.js
 var importDocs = {
-  'name': 'import',
-  'category': 'Core',
-  'syntax': ['import(functions)', 'import(functions, options)'],
-  'description': 'Import functions or constants from an object.',
-  'examples': ['import({myFn: f(x)=x^2, myConstant: 32 })', 'myFn(2)', 'myConstant'],
-  'seealso': []
+  name: 'import',
+  category: 'Core',
+  syntax: ['import(functions)', 'import(functions, options)'],
+  description: 'Import functions or constants from an object.',
+  examples: ['import({myFn: f(x)=x^2, myConstant: 32 })', 'myFn(2)', 'myConstant'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/core/config.js
 var configDocs = {
-  'name': 'config',
-  'category': 'Core',
-  'syntax': ['config()', 'config(options)'],
-  'description': 'Get configuration or change configuration.',
-  'examples': ['config()', '1/3 + 1/4', 'config({number: "Fraction"})', '1/3 + 1/4'],
-  'seealso': []
+  name: 'config',
+  category: 'Core',
+  syntax: ['config()', 'config(options)'],
+  description: 'Get configuration or change configuration.',
+  examples: ['config()', '1/3 + 1/4', 'config({number: "Fraction"})', '1/3 + 1/4'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/combinatorics/stirlingS2.js
 var stirlingS2Docs = {
-  'name': 'stirlingS2',
-  'category': 'Combinatorics',
-  'syntax': ['stirlingS2(n, k)'],
-  'description': 'he Stirling numbers of the second kind, counts the number of ways to partition a set of n labelled objects into k nonempty unlabelled subsets. `stirlingS2` only takes integer arguments. The following condition must be enforced: k <= n. If n = k or k = 1, then s(n,k) = 1.',
-  'examples': ['stirlingS2(5, 3)'],
-  'seealso': ['bellNumbers']
+  name: 'stirlingS2',
+  category: 'Combinatorics',
+  syntax: ['stirlingS2(n, k)'],
+  description: 'he Stirling numbers of the second kind, counts the number of ways to partition a set of n labelled objects into k nonempty unlabelled subsets. `stirlingS2` only takes integer arguments. The following condition must be enforced: k <= n. If n = k or k = 1, then s(n,k) = 1.',
+  examples: ['stirlingS2(5, 3)'],
+  seealso: ['bellNumbers']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/combinatorics/composition.js
 var compositionDocs = {
-  'name': 'composition',
-  'category': 'Combinatorics',
-  'syntax': ['composition(n, k)'],
-  'description': 'The composition counts of n into k parts. composition only takes integer arguments. The following condition must be enforced: k <= n.',
-  'examples': ['composition(5, 3)'],
-  'seealso': ['combinations']
+  name: 'composition',
+  category: 'Combinatorics',
+  syntax: ['composition(n, k)'],
+  description: 'The composition counts of n into k parts. composition only takes integer arguments. The following condition must be enforced: k <= n.',
+  examples: ['composition(5, 3)'],
+  seealso: ['combinations']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/combinatorics/catalan.js
 var catalanDocs = {
-  'name': 'catalan',
-  'category': 'Combinatorics',
-  'syntax': ['catalan(n)'],
-  'description': 'The Catalan Numbers enumerate combinatorial structures of many different types. catalan only takes integer arguments. The following condition must be enforced: n >= 0.',
-  'examples': ['catalan(3)', 'catalan(8)'],
-  'seealso': ['bellNumbers']
+  name: 'catalan',
+  category: 'Combinatorics',
+  syntax: ['catalan(n)'],
+  description: 'The Catalan Numbers enumerate combinatorial structures of many different types. catalan only takes integer arguments. The following condition must be enforced: n >= 0.',
+  examples: ['catalan(3)', 'catalan(8)'],
+  seealso: ['bellNumbers']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/combinatorics/bellNumbers.js
 var bellNumbersDocs = {
-  'name': 'bellNumbers',
-  'category': 'Combinatorics',
-  'syntax': ['bellNumbers(n)'],
-  'description': 'The Bell Numbers count the number of partitions of a set. A partition is a pairwise disjoint subset of S whose union is S. `bellNumbers` only takes integer arguments. The following condition must be enforced: n >= 0.',
-  'examples': ['bellNumbers(3)', 'bellNumbers(8)'],
-  'seealso': ['stirlingS2']
+  name: 'bellNumbers',
+  category: 'Combinatorics',
+  syntax: ['bellNumbers(n)'],
+  description: 'The Bell Numbers count the number of partitions of a set. A partition is a pairwise disjoint subset of S whose union is S. `bellNumbers` only takes integer arguments. The following condition must be enforced: n >= 0.',
+  examples: ['bellNumbers(3)', 'bellNumbers(8)'],
+  seealso: ['stirlingS2']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/bitwise/rightLogShift.js
 var rightLogShiftDocs = {
-  'name': 'rightLogShift',
-  'category': 'Bitwise',
-  'syntax': ['x >>> y', 'rightLogShift(x, y)'],
-  'description': 'Bitwise right logical shift of a value x by y number of bits.',
-  'examples': ['8 >>> 1', '4 << 1', '-12 >>> 2'],
-  'seealso': ['bitAnd', 'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift']
+  name: 'rightLogShift',
+  category: 'Bitwise',
+  syntax: ['x >>> y', 'rightLogShift(x, y)'],
+  description: 'Bitwise right logical shift of a value x by y number of bits.',
+  examples: ['8 >>> 1', '4 << 1', '-12 >>> 2'],
+  seealso: ['bitAnd', 'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/bitwise/rightArithShift.js
 var rightArithShiftDocs = {
-  'name': 'rightArithShift',
-  'category': 'Bitwise',
-  'syntax': ['x >> y', 'rightArithShift(x, y)'],
-  'description': 'Bitwise right arithmetic shift of a value x by y number of bits.',
-  'examples': ['8 >> 1', '4 << 1', '-12 >> 2'],
-  'seealso': ['bitAnd', 'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightLogShift']
+  name: 'rightArithShift',
+  category: 'Bitwise',
+  syntax: ['x >> y', 'rightArithShift(x, y)'],
+  description: 'Bitwise right arithmetic shift of a value x by y number of bits.',
+  examples: ['8 >> 1', '4 << 1', '-12 >> 2'],
+  seealso: ['bitAnd', 'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightLogShift']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/bitwise/leftShift.js
 var leftShiftDocs = {
-  'name': 'leftShift',
-  'category': 'Bitwise',
-  'syntax': ['x << y', 'leftShift(x, y)'],
-  'description': 'Bitwise left logical shift of a value x by y number of bits.',
-  'examples': ['4 << 1', '8 >> 1'],
-  'seealso': ['bitAnd', 'bitNot', 'bitOr', 'bitXor', 'rightArithShift', 'rightLogShift']
+  name: 'leftShift',
+  category: 'Bitwise',
+  syntax: ['x << y', 'leftShift(x, y)'],
+  description: 'Bitwise left logical shift of a value x by y number of bits.',
+  examples: ['4 << 1', '8 >> 1'],
+  seealso: ['bitAnd', 'bitNot', 'bitOr', 'bitXor', 'rightArithShift', 'rightLogShift']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/bitwise/bitXor.js
 var bitXorDocs = {
-  'name': 'bitXor',
-  'category': 'Bitwise',
-  'syntax': ['bitXor(x, y)'],
-  'description': 'Bitwise XOR operation, exclusive OR. Performs the logical exclusive OR operation on each pair of corresponding bits of the two given values. The result in each position is 1 if only the first bit is 1 or only the second bit is 1, but will be 0 if both are 0 or both are 1.',
-  'examples': ['bitOr(1, 2)', 'bitXor([2, 3, 4], 4)'],
-  'seealso': ['bitAnd', 'bitNot', 'bitOr', 'leftShift', 'rightArithShift', 'rightLogShift']
+  name: 'bitXor',
+  category: 'Bitwise',
+  syntax: ['bitXor(x, y)'],
+  description: 'Bitwise XOR operation, exclusive OR. Performs the logical exclusive OR operation on each pair of corresponding bits of the two given values. The result in each position is 1 if only the first bit is 1 or only the second bit is 1, but will be 0 if both are 0 or both are 1.',
+  examples: ['bitOr(1, 2)', 'bitXor([2, 3, 4], 4)'],
+  seealso: ['bitAnd', 'bitNot', 'bitOr', 'leftShift', 'rightArithShift', 'rightLogShift']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/bitwise/bitOr.js
 var bitOrDocs = {
-  'name': 'bitOr',
-  'category': 'Bitwise',
-  'syntax': ['x | y', 'bitOr(x, y)'],
-  'description': 'Bitwise OR operation. Performs the logical inclusive OR operation on each pair of corresponding bits of the two given values. The result in each position is 1 if the first bit is 1 or the second bit is 1 or both bits are 1, otherwise, the result is 0.',
-  'examples': ['5 | 3', 'bitOr([1, 2, 3], 4)'],
-  'seealso': ['bitAnd', 'bitNot', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift']
+  name: 'bitOr',
+  category: 'Bitwise',
+  syntax: ['x | y', 'bitOr(x, y)'],
+  description: 'Bitwise OR operation. Performs the logical inclusive OR operation on each pair of corresponding bits of the two given values. The result in each position is 1 if the first bit is 1 or the second bit is 1 or both bits are 1, otherwise, the result is 0.',
+  examples: ['5 | 3', 'bitOr([1, 2, 3], 4)'],
+  seealso: ['bitAnd', 'bitNot', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/bitwise/bitNot.js
 var bitNotDocs = {
-  'name': 'bitNot',
-  'category': 'Bitwise',
-  'syntax': ['~x', 'bitNot(x)'],
-  'description': 'Bitwise NOT operation. Performs a logical negation on each bit of the given value. Bits that are 0 become 1, and those that are 1 become 0.',
-  'examples': ['~1', '~2', 'bitNot([2, -3, 4])'],
-  'seealso': ['bitAnd', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift']
+  name: 'bitNot',
+  category: 'Bitwise',
+  syntax: ['~x', 'bitNot(x)'],
+  description: 'Bitwise NOT operation. Performs a logical negation on each bit of the given value. Bits that are 0 become 1, and those that are 1 become 0.',
+  examples: ['~1', '~2', 'bitNot([2, -3, 4])'],
+  seealso: ['bitAnd', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/bitwise/bitAnd.js
 var bitAndDocs = {
-  'name': 'bitAnd',
-  'category': 'Bitwise',
-  'syntax': ['x & y', 'bitAnd(x, y)'],
-  'description': 'Bitwise AND operation. Performs the logical AND operation on each pair of the corresponding bits of the two given values by multiplying them. If both bits in the compared position are 1, the bit in the resulting binary representation is 1, otherwise, the result is 0',
-  'examples': ['5 & 3', 'bitAnd(53, 131)', '[1, 12, 31] & 42'],
-  'seealso': ['bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift']
+  name: 'bitAnd',
+  category: 'Bitwise',
+  syntax: ['x & y', 'bitAnd(x, y)'],
+  description: 'Bitwise AND operation. Performs the logical AND operation on each pair of the corresponding bits of the two given values by multiplying them. If both bits in the compared position are 1, the bit in the resulting binary representation is 1, otherwise, the result is 0',
+  examples: ['5 & 3', 'bitAnd(53, 131)', '[1, 12, 31] & 42'],
+  seealso: ['bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/xgcd.js
 var xgcdDocs = {
-  'name': 'xgcd',
-  'category': 'Arithmetic',
-  'syntax': ['xgcd(a, b)'],
-  'description': 'Calculate the extended greatest common divisor for two values. The result is an array [d, x, y] with 3 entries, where d is the greatest common divisor, and d = x * a + y * b.',
-  'examples': ['xgcd(8, 12)', 'gcd(8, 12)', 'xgcd(36163, 21199)'],
-  'seealso': ['gcd', 'lcm']
+  name: 'xgcd',
+  category: 'Arithmetic',
+  syntax: ['xgcd(a, b)'],
+  description: 'Calculate the extended greatest common divisor for two values. The result is an array [d, x, y] with 3 entries, where d is the greatest common divisor, and d = x * a + y * b.',
+  examples: ['xgcd(8, 12)', 'gcd(8, 12)', 'xgcd(36163, 21199)'],
+  seealso: ['gcd', 'lcm']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/unaryPlus.js
 var unaryPlusDocs = {
-  'name': 'unaryPlus',
-  'category': 'Operators',
-  'syntax': ['+x', 'unaryPlus(x)'],
-  'description': 'Converts booleans and strings to numbers.',
-  'examples': ['+true', '+"2"'],
-  'seealso': ['add', 'subtract', 'unaryMinus']
+  name: 'unaryPlus',
+  category: 'Operators',
+  syntax: ['+x', 'unaryPlus(x)'],
+  description: 'Converts booleans and strings to numbers.',
+  examples: ['+true', '+"2"'],
+  seealso: ['add', 'subtract', 'unaryMinus']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/unaryMinus.js
 var unaryMinusDocs = {
-  'name': 'unaryMinus',
-  'category': 'Operators',
-  'syntax': ['-x', 'unaryMinus(x)'],
-  'description': 'Inverse the sign of a value. Converts booleans and strings to numbers.',
-  'examples': ['-4.5', '-(-5.6)', '-"22"'],
-  'seealso': ['add', 'subtract', 'unaryPlus']
+  name: 'unaryMinus',
+  category: 'Operators',
+  syntax: ['-x', 'unaryMinus(x)'],
+  description: 'Inverse the sign of a value. Converts booleans and strings to numbers.',
+  examples: ['-4.5', '-(-5.6)', '-"22"'],
+  seealso: ['add', 'subtract', 'unaryPlus']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/square.js
 var squareDocs = {
-  'name': 'square',
-  'category': 'Arithmetic',
-  'syntax': ['square(x)'],
-  'description': 'Compute the square of a value. The square of x is x * x.',
-  'examples': ['square(3)', 'sqrt(9)', '3^2', '3 * 3'],
-  'seealso': ['multiply', 'pow', 'sqrt', 'cube']
+  name: 'square',
+  category: 'Arithmetic',
+  syntax: ['square(x)'],
+  description: 'Compute the square of a value. The square of x is x * x.',
+  examples: ['square(3)', 'sqrt(9)', '3^2', '3 * 3'],
+  seealso: ['multiply', 'pow', 'sqrt', 'cube']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/sqrtm.js
 var sqrtmDocs = {
-  'name': 'sqrtm',
-  'category': 'Arithmetic',
-  'syntax': ['sqrtm(x)'],
-  'description': 'Calculate the principal square root of a square matrix. The principal square root matrix `X` of another matrix `A` is such that `X * X = A`.',
-  'examples': ['sqrtm([[1, 2], [3, 4]])'],
-  'seealso': ['sqrt', 'abs', 'square', 'multiply']
+  name: 'sqrtm',
+  category: 'Arithmetic',
+  syntax: ['sqrtm(x)'],
+  description: 'Calculate the principal square root of a square matrix. The principal square root matrix `X` of another matrix `A` is such that `X * X = A`.',
+  examples: ['sqrtm([[1, 2], [3, 4]])'],
+  seealso: ['sqrt', 'abs', 'square', 'multiply']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/sqrt.js
 var sqrtDocs = {
-  'name': 'sqrt',
-  'category': 'Arithmetic',
-  'syntax': ['sqrt(x)'],
-  'description': 'Compute the square root value. If x = y * y, then y is the square root of x.',
-  'examples': ['sqrt(25)', '5 * 5', 'sqrt(-1)'],
-  'seealso': ['square', 'sqrtm', 'multiply', 'nthRoot', 'nthRoots', 'pow']
+  name: 'sqrt',
+  category: 'Arithmetic',
+  syntax: ['sqrt(x)'],
+  description: 'Compute the square root value. If x = y * y, then y is the square root of x.',
+  examples: ['sqrt(25)', '5 * 5', 'sqrt(-1)'],
+  seealso: ['square', 'sqrtm', 'multiply', 'nthRoot', 'nthRoots', 'pow']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/sign.js
 var signDocs = {
-  'name': 'sign',
-  'category': 'Arithmetic',
-  'syntax': ['sign(x)'],
-  'description': 'Compute the sign of a value. The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.',
-  'examples': ['sign(3.5)', 'sign(-4.2)', 'sign(0)'],
-  'seealso': ['abs']
+  name: 'sign',
+  category: 'Arithmetic',
+  syntax: ['sign(x)'],
+  description: 'Compute the sign of a value. The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.',
+  examples: ['sign(3.5)', 'sign(-4.2)', 'sign(0)'],
+  seealso: ['abs']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/round.js
 var roundDocs = {
-  'name': 'round',
-  'category': 'Arithmetic',
-  'syntax': ['round(x)', 'round(x, n)'],
-  'description': 'round a value towards the nearest integer.If x is complex, both real and imaginary part are rounded towards the nearest integer. When n is specified, the value is rounded to n decimals.',
-  'examples': ['round(3.2)', 'round(3.8)', 'round(-4.2)', 'round(-4.8)', 'round(pi, 3)', 'round(123.45678, 2)'],
-  'seealso': ['ceil', 'floor', 'fix']
+  name: 'round',
+  category: 'Arithmetic',
+  syntax: ['round(x)', 'round(x, n)'],
+  description: 'round a value towards the nearest integer.If x is complex, both real and imaginary part are rounded towards the nearest integer. When n is specified, the value is rounded to n decimals.',
+  examples: ['round(3.2)', 'round(3.8)', 'round(-4.2)', 'round(-4.8)', 'round(pi, 3)', 'round(123.45678, 2)'],
+  seealso: ['ceil', 'floor', 'fix']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/pow.js
 var powDocs = {
-  'name': 'pow',
-  'category': 'Operators',
-  'syntax': ['x ^ y', 'pow(x, y)'],
-  'description': 'Calculates the power of x to y, x^y.',
-  'examples': ['2^3', '2*2*2', '1 + e ^ (pi * i)'],
-  'seealso': ['multiply', 'nthRoot', 'nthRoots', 'sqrt']
+  name: 'pow',
+  category: 'Operators',
+  syntax: ['x ^ y', 'pow(x, y)'],
+  description: 'Calculates the power of x to y, x^y.',
+  examples: ['2^3', '2*2*2', '1 + e ^ (pi * i)'],
+  seealso: ['multiply', 'nthRoot', 'nthRoots', 'sqrt']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/nthRoots.js
 var nthRootsDocs = {
-  'name': 'nthRoots',
-  'category': 'Arithmetic',
-  'syntax': ['nthRoots(A)', 'nthRoots(A, root)'],
-  'description': '' + 'Calculate the nth roots of a value. ' + 'An nth root of a positive real number A, ' + 'is a positive real solution of the equation "x^root = A". ' + 'This function returns an array of complex values.',
-  'examples': ['nthRoots(1)', 'nthRoots(1, 3)'],
-  'seealso': ['sqrt', 'pow', 'nthRoot']
+  name: 'nthRoots',
+  category: 'Arithmetic',
+  syntax: ['nthRoots(A)', 'nthRoots(A, root)'],
+  description: '' + 'Calculate the nth roots of a value. ' + 'An nth root of a positive real number A, ' + 'is a positive real solution of the equation "x^root = A". ' + 'This function returns an array of complex values.',
+  examples: ['nthRoots(1)', 'nthRoots(1, 3)'],
+  seealso: ['sqrt', 'pow', 'nthRoot']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/nthRoot.js
 var nthRootDocs = {
-  'name': 'nthRoot',
-  'category': 'Arithmetic',
-  'syntax': ['nthRoot(a)', 'nthRoot(a, root)'],
-  'description': 'Calculate the nth root of a value. ' + 'The principal nth root of a positive real number A, ' + 'is the positive real solution of the equation "x^root = A".',
-  'examples': ['4 ^ 3', 'nthRoot(64, 3)', 'nthRoot(9, 2)', 'sqrt(9)'],
-  'seealso': ['nthRoots', 'pow', 'sqrt']
+  name: 'nthRoot',
+  category: 'Arithmetic',
+  syntax: ['nthRoot(a)', 'nthRoot(a, root)'],
+  description: 'Calculate the nth root of a value. ' + 'The principal nth root of a positive real number A, ' + 'is the positive real solution of the equation "x^root = A".',
+  examples: ['4 ^ 3', 'nthRoot(64, 3)', 'nthRoot(9, 2)', 'sqrt(9)'],
+  seealso: ['nthRoots', 'pow', 'sqrt']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/norm.js
 var normDocs = {
-  'name': 'norm',
-  'category': 'Arithmetic',
-  'syntax': ['norm(x)', 'norm(x, p)'],
-  'description': 'Calculate the norm of a number, vector or matrix.',
-  'examples': ['abs(-3.5)', 'norm(-3.5)', 'norm(3 - 4i)', 'norm([1, 2, -3], Infinity)', 'norm([1, 2, -3], -Infinity)', 'norm([3, 4], 2)', 'norm([[1, 2], [3, 4]], 1)', 'norm([[1, 2], [3, 4]], "inf")', 'norm([[1, 2], [3, 4]], "fro")']
+  name: 'norm',
+  category: 'Arithmetic',
+  syntax: ['norm(x)', 'norm(x, p)'],
+  description: 'Calculate the norm of a number, vector or matrix.',
+  examples: ['abs(-3.5)', 'norm(-3.5)', 'norm(3 - 4i)', 'norm([1, 2, -3], Infinity)', 'norm([1, 2, -3], -Infinity)', 'norm([3, 4], 2)', 'norm([[1, 2], [3, 4]], 1)', 'norm([[1, 2], [3, 4]], "inf")', 'norm([[1, 2], [3, 4]], "fro")']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/multiply.js
 var multiplyDocs = {
-  'name': 'multiply',
-  'category': 'Operators',
-  'syntax': ['x * y', 'multiply(x, y)'],
-  'description': 'multiply two values.',
-  'examples': ['a = 2.1 * 3.4', 'a / 3.4', '2 * 3 + 4', '2 * (3 + 4)', '3 * 2.1 km'],
-  'seealso': ['divide']
+  name: 'multiply',
+  category: 'Operators',
+  syntax: ['x * y', 'multiply(x, y)'],
+  description: 'multiply two values.',
+  examples: ['a = 2.1 * 3.4', 'a / 3.4', '2 * 3 + 4', '2 * (3 + 4)', '3 * 2.1 km'],
+  seealso: ['divide']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/mod.js
 var modDocs = {
-  'name': 'mod',
-  'category': 'Operators',
-  'syntax': ['x % y', 'x mod y', 'mod(x, y)'],
-  'description': 'Calculates the modulus, the remainder of an integer division.',
-  'examples': ['7 % 3', '11 % 2', '10 mod 4', 'isOdd(x) = x % 2', 'isOdd(2)', 'isOdd(3)'],
-  'seealso': ['divide']
+  name: 'mod',
+  category: 'Operators',
+  syntax: ['x % y', 'x mod y', 'mod(x, y)'],
+  description: 'Calculates the modulus, the remainder of an integer division.',
+  examples: ['7 % 3', '11 % 2', '10 mod 4', 'isOdd(x) = x % 2', 'isOdd(2)', 'isOdd(3)'],
+  seealso: ['divide']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/log10.js
 var log10Docs = {
-  'name': 'log10',
-  'category': 'Arithmetic',
-  'syntax': ['log10(x)'],
-  'description': 'Compute the 10-base logarithm of a value.',
-  'examples': ['log10(0.00001)', 'log10(10000)', '10 ^ 4', 'log(10000) / log(10)', 'log(10000, 10)'],
-  'seealso': ['exp', 'log']
+  name: 'log10',
+  category: 'Arithmetic',
+  syntax: ['log10(x)'],
+  description: 'Compute the 10-base logarithm of a value.',
+  examples: ['log10(0.00001)', 'log10(10000)', '10 ^ 4', 'log(10000) / log(10)', 'log(10000, 10)'],
+  seealso: ['exp', 'log']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/log1p.js
 var log1pDocs = {
-  'name': 'log1p',
-  'category': 'Arithmetic',
-  'syntax': ['log1p(x)', 'log1p(x, base)'],
-  'description': 'Calculate the logarithm of a `value+1`',
-  'examples': ['log1p(2.5)', 'exp(log1p(1.4))', 'pow(10, 4)', 'log1p(9999, 10)', 'log1p(9999) / log(10)'],
-  'seealso': ['exp', 'log', 'log2', 'log10']
+  name: 'log1p',
+  category: 'Arithmetic',
+  syntax: ['log1p(x)', 'log1p(x, base)'],
+  description: 'Calculate the logarithm of a `value+1`',
+  examples: ['log1p(2.5)', 'exp(log1p(1.4))', 'pow(10, 4)', 'log1p(9999, 10)', 'log1p(9999) / log(10)'],
+  seealso: ['exp', 'log', 'log2', 'log10']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/log2.js
 var log2Docs = {
-  'name': 'log2',
-  'category': 'Arithmetic',
-  'syntax': ['log2(x)'],
-  'description': 'Calculate the 2-base of a value. This is the same as calculating `log(x, 2)`.',
-  'examples': ['log2(0.03125)', 'log2(16)', 'log2(16) / log2(2)', 'pow(2, 4)'],
-  'seealso': ['exp', 'log1p', 'log', 'log10']
+  name: 'log2',
+  category: 'Arithmetic',
+  syntax: ['log2(x)'],
+  description: 'Calculate the 2-base of a value. This is the same as calculating `log(x, 2)`.',
+  examples: ['log2(0.03125)', 'log2(16)', 'log2(16) / log2(2)', 'pow(2, 4)'],
+  seealso: ['exp', 'log1p', 'log', 'log10']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/log.js
 var logDocs = {
-  'name': 'log',
-  'category': 'Arithmetic',
-  'syntax': ['log(x)', 'log(x, base)'],
-  'description': 'Compute the logarithm of a value. If no base is provided, the natural logarithm of x is calculated. If base if provided, the logarithm is calculated for the specified base. log(x, base) is defined as log(x) / log(base).',
-  'examples': ['log(3.5)', 'a = log(2.4)', 'exp(a)', '10 ^ 4', 'log(10000, 10)', 'log(10000) / log(10)', 'b = log(1024, 2)', '2 ^ b'],
-  'seealso': ['exp', 'log1p', 'log2', 'log10']
+  name: 'log',
+  category: 'Arithmetic',
+  syntax: ['log(x)', 'log(x, base)'],
+  description: 'Compute the logarithm of a value. If no base is provided, the natural logarithm of x is calculated. If base if provided, the logarithm is calculated for the specified base. log(x, base) is defined as log(x) / log(base).',
+  examples: ['log(3.5)', 'a = log(2.4)', 'exp(a)', '10 ^ 4', 'log(10000, 10)', 'log(10000) / log(10)', 'b = log(1024, 2)', '2 ^ b'],
+  seealso: ['exp', 'log1p', 'log2', 'log10']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/lcm.js
 var lcmDocs = {
-  'name': 'lcm',
-  'category': 'Arithmetic',
-  'syntax': ['lcm(x, y)'],
-  'description': 'Compute the least common multiple.',
-  'examples': ['lcm(4, 6)', 'lcm(6, 21)', 'lcm(6, 21, 5)'],
-  'seealso': ['gcd']
+  name: 'lcm',
+  category: 'Arithmetic',
+  syntax: ['lcm(x, y)'],
+  description: 'Compute the least common multiple.',
+  examples: ['lcm(4, 6)', 'lcm(6, 21)', 'lcm(6, 21, 5)'],
+  seealso: ['gcd']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/hypot.js
 var hypotDocs = {
-  'name': 'hypot',
-  'category': 'Arithmetic',
-  'syntax': ['hypot(a, b, c, ...)', 'hypot([a, b, c, ...])'],
-  'description': 'Calculate the hypotenusa of a list with values. ',
-  'examples': ['hypot(3, 4)', 'sqrt(3^2 + 4^2)', 'hypot(-2)', 'hypot([3, 4, 5])'],
-  'seealso': ['abs', 'norm']
+  name: 'hypot',
+  category: 'Arithmetic',
+  syntax: ['hypot(a, b, c, ...)', 'hypot([a, b, c, ...])'],
+  description: 'Calculate the hypotenusa of a list with values. ',
+  examples: ['hypot(3, 4)', 'sqrt(3^2 + 4^2)', 'hypot(-2)', 'hypot([3, 4, 5])'],
+  seealso: ['abs', 'norm']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/gcd.js
 var gcdDocs = {
-  'name': 'gcd',
-  'category': 'Arithmetic',
-  'syntax': ['gcd(a, b)', 'gcd(a, b, c, ...)'],
-  'description': 'Compute the greatest common divisor.',
-  'examples': ['gcd(8, 12)', 'gcd(-4, 6)', 'gcd(25, 15, -10)'],
-  'seealso': ['lcm', 'xgcd']
+  name: 'gcd',
+  category: 'Arithmetic',
+  syntax: ['gcd(a, b)', 'gcd(a, b, c, ...)'],
+  description: 'Compute the greatest common divisor.',
+  examples: ['gcd(8, 12)', 'gcd(-4, 6)', 'gcd(25, 15, -10)'],
+  seealso: ['lcm', 'xgcd']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/floor.js
 var floorDocs = {
-  'name': 'floor',
-  'category': 'Arithmetic',
-  'syntax': ['floor(x)'],
-  'description': 'Round a value towards minus infinity.If x is complex, both real and imaginary part are rounded towards minus infinity.',
-  'examples': ['floor(3.2)', 'floor(3.8)', 'floor(-4.2)'],
-  'seealso': ['ceil', 'fix', 'round']
+  name: 'floor',
+  category: 'Arithmetic',
+  syntax: ['floor(x)'],
+  description: 'Round a value towards minus infinity.If x is complex, both real and imaginary part are rounded towards minus infinity.',
+  examples: ['floor(3.2)', 'floor(3.8)', 'floor(-4.2)'],
+  seealso: ['ceil', 'fix', 'round']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/fix.js
 var fixDocs = {
-  'name': 'fix',
-  'category': 'Arithmetic',
-  'syntax': ['fix(x)'],
-  'description': 'Round a value towards zero. If x is complex, both real and imaginary part are rounded towards zero.',
-  'examples': ['fix(3.2)', 'fix(3.8)', 'fix(-4.2)', 'fix(-4.8)'],
-  'seealso': ['ceil', 'floor', 'round']
+  name: 'fix',
+  category: 'Arithmetic',
+  syntax: ['fix(x)'],
+  description: 'Round a value towards zero. If x is complex, both real and imaginary part are rounded towards zero.',
+  examples: ['fix(3.2)', 'fix(3.8)', 'fix(-4.2)', 'fix(-4.8)'],
+  seealso: ['ceil', 'floor', 'round']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/expm1.js
 var expm1Docs = {
-  'name': 'expm1',
-  'category': 'Arithmetic',
-  'syntax': ['expm1(x)'],
-  'description': 'Calculate the value of subtracting 1 from the exponential value.',
-  'examples': ['expm1(2)', 'pow(e, 2) - 1', 'log(expm1(2) + 1)'],
-  'seealso': ['exp', 'pow', 'log']
+  name: 'expm1',
+  category: 'Arithmetic',
+  syntax: ['expm1(x)'],
+  description: 'Calculate the value of subtracting 1 from the exponential value.',
+  examples: ['expm1(2)', 'pow(e, 2) - 1', 'log(expm1(2) + 1)'],
+  seealso: ['exp', 'pow', 'log']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/expm.js
 var expmDocs = {
-  'name': 'expm',
-  'category': 'Arithmetic',
-  'syntax': ['exp(x)'],
-  'description': 'Compute the matrix exponential, expm(A) = e^A. ' + 'The matrix must be square. ' + 'Not to be confused with exp(a), which performs element-wise exponentiation.',
-  'examples': ['expm([[0,2],[0,0]])'],
-  'seealso': ['exp']
+  name: 'expm',
+  category: 'Arithmetic',
+  syntax: ['exp(x)'],
+  description: 'Compute the matrix exponential, expm(A) = e^A. ' + 'The matrix must be square. ' + 'Not to be confused with exp(a), which performs element-wise exponentiation.',
+  examples: ['expm([[0,2],[0,0]])'],
+  seealso: ['exp']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/exp.js
 var expDocs = {
-  'name': 'exp',
-  'category': 'Arithmetic',
-  'syntax': ['exp(x)'],
-  'description': 'Calculate the exponent of a value.',
-  'examples': ['exp(1.3)', 'e ^ 1.3', 'log(exp(1.3))', 'x = 2.4', '(exp(i*x) == cos(x) + i*sin(x))   # Euler\'s formula'],
-  'seealso': ['expm', 'expm1', 'pow', 'log']
+  name: 'exp',
+  category: 'Arithmetic',
+  syntax: ['exp(x)'],
+  description: 'Calculate the exponent of a value.',
+  examples: ['exp(1.3)', 'e ^ 1.3', 'log(exp(1.3))', 'x = 2.4', '(exp(i*x) == cos(x) + i*sin(x))   # Euler\'s formula'],
+  seealso: ['expm', 'expm1', 'pow', 'log']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/dotMultiply.js
 var dotMultiplyDocs = {
-  'name': 'dotMultiply',
-  'category': 'Operators',
-  'syntax': ['x .* y', 'dotMultiply(x, y)'],
-  'description': 'Multiply two values element wise.',
-  'examples': ['a = [1, 2, 3; 4, 5, 6]', 'b = [2, 1, 1; 3, 2, 5]', 'a .* b'],
-  'seealso': ['multiply', 'divide', 'dotDivide']
+  name: 'dotMultiply',
+  category: 'Operators',
+  syntax: ['x .* y', 'dotMultiply(x, y)'],
+  description: 'Multiply two values element wise.',
+  examples: ['a = [1, 2, 3; 4, 5, 6]', 'b = [2, 1, 1; 3, 2, 5]', 'a .* b'],
+  seealso: ['multiply', 'divide', 'dotDivide']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/dotDivide.js
 var dotDivideDocs = {
-  'name': 'dotDivide',
-  'category': 'Operators',
-  'syntax': ['x ./ y', 'dotDivide(x, y)'],
-  'description': 'Divide two values element wise.',
-  'examples': ['a = [1, 2, 3; 4, 5, 6]', 'b = [2, 1, 1; 3, 2, 5]', 'a ./ b'],
-  'seealso': ['multiply', 'dotMultiply', 'divide']
+  name: 'dotDivide',
+  category: 'Operators',
+  syntax: ['x ./ y', 'dotDivide(x, y)'],
+  description: 'Divide two values element wise.',
+  examples: ['a = [1, 2, 3; 4, 5, 6]', 'b = [2, 1, 1; 3, 2, 5]', 'a ./ b'],
+  seealso: ['multiply', 'dotMultiply', 'divide']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/divide.js
 var divideDocs = {
-  'name': 'divide',
-  'category': 'Operators',
-  'syntax': ['x / y', 'divide(x, y)'],
-  'description': 'Divide two values.',
-  'examples': ['a = 2 / 3', 'a * 3', '4.5 / 2', '3 + 4 / 2', '(3 + 4) / 2', '18 km / 4.5'],
-  'seealso': ['multiply']
+  name: 'divide',
+  category: 'Operators',
+  syntax: ['x / y', 'divide(x, y)'],
+  description: 'Divide two values.',
+  examples: ['a = 2 / 3', 'a * 3', '4.5 / 2', '3 + 4 / 2', '(3 + 4) / 2', '18 km / 4.5'],
+  seealso: ['multiply']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/cube.js
 var cubeDocs = {
-  'name': 'cube',
-  'category': 'Arithmetic',
-  'syntax': ['cube(x)'],
-  'description': 'Compute the cube of a value. The cube of x is x * x * x.',
-  'examples': ['cube(2)', '2^3', '2 * 2 * 2'],
-  'seealso': ['multiply', 'square', 'pow']
+  name: 'cube',
+  category: 'Arithmetic',
+  syntax: ['cube(x)'],
+  description: 'Compute the cube of a value. The cube of x is x * x * x.',
+  examples: ['cube(2)', '2^3', '2 * 2 * 2'],
+  seealso: ['multiply', 'square', 'pow']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/ceil.js
 var ceilDocs = {
-  'name': 'ceil',
-  'category': 'Arithmetic',
-  'syntax': ['ceil(x)'],
-  'description': 'Round a value towards plus infinity. If x is complex, both real and imaginary part are rounded towards plus infinity.',
-  'examples': ['ceil(3.2)', 'ceil(3.8)', 'ceil(-4.2)'],
-  'seealso': ['floor', 'fix', 'round']
+  name: 'ceil',
+  category: 'Arithmetic',
+  syntax: ['ceil(x)'],
+  description: 'Round a value towards plus infinity. If x is complex, both real and imaginary part are rounded towards plus infinity.',
+  examples: ['ceil(3.2)', 'ceil(3.8)', 'ceil(-4.2)'],
+  seealso: ['floor', 'fix', 'round']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/cbrt.js
 var cbrtDocs = {
-  'name': 'cbrt',
-  'category': 'Arithmetic',
-  'syntax': ['cbrt(x)', 'cbrt(x, allRoots)'],
-  'description': 'Compute the cubic root value. If x = y * y * y, then y is the cubic root of x. When `x` is a number or complex number, an optional second argument `allRoots` can be provided to return all three cubic roots. If not provided, the principal root is returned',
-  'examples': ['cbrt(64)', 'cube(4)', 'cbrt(-8)', 'cbrt(2 + 3i)', 'cbrt(8i)', 'cbrt(8i, true)', 'cbrt(27 m^3)'],
-  'seealso': ['square', 'sqrt', 'cube', 'multiply']
+  name: 'cbrt',
+  category: 'Arithmetic',
+  syntax: ['cbrt(x)', 'cbrt(x, allRoots)'],
+  description: 'Compute the cubic root value. If x = y * y * y, then y is the cubic root of x. When `x` is a number or complex number, an optional second argument `allRoots` can be provided to return all three cubic roots. If not provided, the principal root is returned',
+  examples: ['cbrt(64)', 'cube(4)', 'cbrt(-8)', 'cbrt(2 + 3i)', 'cbrt(8i)', 'cbrt(8i, true)', 'cbrt(27 m^3)'],
+  seealso: ['square', 'sqrt', 'cube', 'multiply']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/add.js
 var addDocs = {
-  'name': 'add',
-  'category': 'Operators',
-  'syntax': ['x + y', 'add(x, y)'],
-  'description': 'Add two values.',
-  'examples': ['a = 2.1 + 3.6', 'a - 3.6', '3 + 2i', '3 cm + 2 inch', '"2.3" + "4"'],
-  'seealso': ['subtract']
+  name: 'add',
+  category: 'Operators',
+  syntax: ['x + y', 'add(x, y)'],
+  description: 'Add two values.',
+  examples: ['a = 2.1 + 3.6', 'a - 3.6', '3 + 2i', '3 cm + 2 inch', '"2.3" + "4"'],
+  seealso: ['subtract']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/abs.js
 var absDocs = {
-  'name': 'abs',
-  'category': 'Arithmetic',
-  'syntax': ['abs(x)'],
-  'description': 'Compute the absolute value.',
-  'examples': ['abs(3.5)', 'abs(-4.2)'],
-  'seealso': ['sign']
+  name: 'abs',
+  category: 'Arithmetic',
+  syntax: ['abs(x)'],
+  description: 'Compute the absolute value.',
+  examples: ['abs(3.5)', 'abs(-4.2)'],
+  seealso: ['sign']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/qr.js
 var qrDocs = {
-  'name': 'qr',
-  'category': 'Algebra',
-  'syntax': ['qr(A)'],
-  'description': 'Calculates the Matrix QR decomposition. Matrix `A` is decomposed in two matrices (`Q`, `R`) where `Q` is an orthogonal matrix and `R` is an upper triangular matrix.',
-  'examples': ['qr([[1, -1,  4], [1,  4, -2], [1,  4,  2], [1,  -1, 0]])'],
-  'seealso': ['lup', 'slu', 'matrix']
+  name: 'qr',
+  category: 'Algebra',
+  syntax: ['qr(A)'],
+  description: 'Calculates the Matrix QR decomposition. Matrix `A` is decomposed in two matrices (`Q`, `R`) where `Q` is an orthogonal matrix and `R` is an upper triangular matrix.',
+  examples: ['qr([[1, -1,  4], [1,  4, -2], [1,  4,  2], [1,  -1, 0]])'],
+  seealso: ['lup', 'slu', 'matrix']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/usolve.js
 var usolveDocs = {
-  'name': 'usolve',
-  'category': 'Algebra',
-  'syntax': ['x=usolve(U, b)'],
-  'description': 'Solves the linear system U * x = b where U is an [n x n] upper triangular matrix and b is a [n] column vector.',
-  'examples': ['x=usolve(sparse([1, 1, 1, 1; 0, 1, 1, 1; 0, 0, 1, 1; 0, 0, 0, 1]), [1; 2; 3; 4])'],
-  'seealso': ['lup', 'lusolve', 'lsolve', 'matrix', 'sparse']
+  name: 'usolve',
+  category: 'Algebra',
+  syntax: ['x=usolve(U, b)'],
+  description: 'Solves the linear system U * x = b where U is an [n x n] upper triangular matrix and b is a [n] column vector.',
+  examples: ['x=usolve(sparse([1, 1, 1, 1; 0, 1, 1, 1; 0, 0, 1, 1; 0, 0, 0, 1]), [1; 2; 3; 4])'],
+  seealso: ['lup', 'lusolve', 'lsolve', 'matrix', 'sparse']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/slu.js
 var sluDocs = {
-  'name': 'slu',
-  'category': 'Algebra',
-  'syntax': ['slu(A, order, threshold)'],
-  'description': 'Calculate the Matrix LU decomposition with full pivoting. Matrix A is decomposed in two matrices (L, U) and two permutation vectors (pinv, q) where P * A * Q = L * U',
-  'examples': ['slu(sparse([4.5, 0, 3.2, 0; 3.1, 2.9, 0, 0.9; 0, 1.7, 3, 0; 3.5, 0.4, 0, 1]), 1, 0.001)'],
-  'seealso': ['lusolve', 'lsolve', 'usolve', 'matrix', 'sparse', 'lup', 'qr']
+  name: 'slu',
+  category: 'Algebra',
+  syntax: ['slu(A, order, threshold)'],
+  description: 'Calculate the Matrix LU decomposition with full pivoting. Matrix A is decomposed in two matrices (L, U) and two permutation vectors (pinv, q) where P * A * Q = L * U',
+  examples: ['slu(sparse([4.5, 0, 3.2, 0; 3.1, 2.9, 0, 0.9; 0, 1.7, 3, 0; 3.5, 0.4, 0, 1]), 1, 0.001)'],
+  seealso: ['lusolve', 'lsolve', 'usolve', 'matrix', 'sparse', 'lup', 'qr']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/rationalize.js
 var rationalizeDocs = {
-  'name': 'rationalize',
-  'category': 'Algebra',
-  'syntax': ['rationalize(expr)', 'rationalize(expr, scope)', 'rationalize(expr, scope, detailed)'],
-  'description': 'Transform a rationalizable expression in a rational fraction. If rational fraction is one variable polynomial then converts the numerator and denominator in canonical form, with decreasing exponents, returning the coefficients of numerator.',
-  'examples': ['rationalize("2x/y - y/(x+1)")', 'rationalize("2x/y - y/(x+1)", true)'],
-  'seealso': ['simplify']
+  name: 'rationalize',
+  category: 'Algebra',
+  syntax: ['rationalize(expr)', 'rationalize(expr, scope)', 'rationalize(expr, scope, detailed)'],
+  description: 'Transform a rationalizable expression in a rational fraction. If rational fraction is one variable polynomial then converts the numerator and denominator in canonical form, with decreasing exponents, returning the coefficients of numerator.',
+  examples: ['rationalize("2x/y - y/(x+1)")', 'rationalize("2x/y - y/(x+1)", true)'],
+  seealso: ['simplify']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/simplify.js
 var simplifyDocs = {
-  'name': 'simplify',
-  'category': 'Algebra',
-  'syntax': ['simplify(expr)', 'simplify(expr, rules)'],
-  'description': 'Simplify an expression tree.',
-  'examples': ['simplify("3 + 2 / 4")', 'simplify("2x + x")', 'f = parse("x * (x + 2 + x)")', 'simplified = simplify(f)', 'simplified.evaluate({x: 2})'],
-  'seealso': ['derivative', 'parse', 'evaluate']
+  name: 'simplify',
+  category: 'Algebra',
+  syntax: ['simplify(expr)', 'simplify(expr, rules)'],
+  description: 'Simplify an expression tree.',
+  examples: ['simplify("3 + 2 / 4")', 'simplify("2x + x")', 'f = parse("x * (x + 2 + x)")', 'simplified = simplify(f)', 'simplified.evaluate({x: 2})'],
+  seealso: ['derivative', 'parse', 'evaluate']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/lup.js
 var lupDocs = {
-  'name': 'lup',
-  'category': 'Algebra',
-  'syntax': ['lup(m)'],
-  'description': 'Calculate the Matrix LU decomposition with partial pivoting. Matrix A is decomposed in three matrices (L, U, P) where P * A = L * U',
-  'examples': ['lup([[2, 1], [1, 4]])', 'lup(matrix([[2, 1], [1, 4]]))', 'lup(sparse([[2, 1], [1, 4]]))'],
-  'seealso': ['lusolve', 'lsolve', 'usolve', 'matrix', 'sparse', 'slu', 'qr']
+  name: 'lup',
+  category: 'Algebra',
+  syntax: ['lup(m)'],
+  description: 'Calculate the Matrix LU decomposition with partial pivoting. Matrix A is decomposed in three matrices (L, U, P) where P * A = L * U',
+  examples: ['lup([[2, 1], [1, 4]])', 'lup(matrix([[2, 1], [1, 4]]))', 'lup(sparse([[2, 1], [1, 4]]))'],
+  seealso: ['lusolve', 'lsolve', 'usolve', 'matrix', 'sparse', 'slu', 'qr']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/lsolve.js
 var lsolveDocs = {
-  'name': 'lsolve',
-  'category': 'Algebra',
-  'syntax': ['x=lsolve(L, b)'],
-  'description': 'Solves the linear system L * x = b where L is an [n x n] lower triangular matrix and b is a [n] column vector.',
-  'examples': ['a = [-2, 3; 2, 1]', 'b = [11, 9]', 'x = lsolve(a, b)'],
-  'seealso': ['lup', 'lusolve', 'usolve', 'matrix', 'sparse']
+  name: 'lsolve',
+  category: 'Algebra',
+  syntax: ['x=lsolve(L, b)'],
+  description: 'Solves the linear system L * x = b where L is an [n x n] lower triangular matrix and b is a [n] column vector.',
+  examples: ['a = [-2, 3; 2, 1]', 'b = [11, 9]', 'x = lsolve(a, b)'],
+  seealso: ['lup', 'lusolve', 'usolve', 'matrix', 'sparse']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/derivative.js
 var derivativeDocs = {
-  'name': 'derivative',
-  'category': 'Algebra',
-  'syntax': ['derivative(expr, variable)', 'derivative(expr, variable, {simplify: boolean})'],
-  'description': 'Takes the derivative of an expression expressed in parser Nodes. The derivative will be taken over the supplied variable in the second parameter. If there are multiple variables in the expression, it will return a partial derivative.',
-  'examples': ['derivative("2x^3", "x")', 'derivative("2x^3", "x", {simplify: false})', 'derivative("2x^2 + 3x + 4", "x")', 'derivative("sin(2x)", "x")', 'f = parse("x^2 + x")', 'x = parse("x")', 'df = derivative(f, x)', 'df.evaluate({x: 3})'],
-  'seealso': ['simplify', 'parse', 'evaluate']
+  name: 'derivative',
+  category: 'Algebra',
+  syntax: ['derivative(expr, variable)', 'derivative(expr, variable, {simplify: boolean})'],
+  description: 'Takes the derivative of an expression expressed in parser Nodes. The derivative will be taken over the supplied variable in the second parameter. If there are multiple variables in the expression, it will return a partial derivative.',
+  examples: ['derivative("2x^3", "x")', 'derivative("2x^3", "x", {simplify: false})', 'derivative("2x^2 + 3x + 4", "x")', 'derivative("sin(2x)", "x")', 'f = parse("x^2 + x")', 'x = parse("x")', 'df = derivative(f, x)', 'df.evaluate({x: 3})'],
+  seealso: ['simplify', 'parse', 'evaluate']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/version.js
 var versionDocs = {
-  'name': 'version',
-  'category': 'Constants',
-  'syntax': ['version'],
-  'description': 'A string with the version number of math.js',
-  'examples': ['version'],
-  'seealso': []
+  name: 'version',
+  category: 'Constants',
+  syntax: ['version'],
+  description: 'A string with the version number of math.js',
+  examples: ['version'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/true.js
 var trueDocs = {
-  'name': 'true',
-  'category': 'Constants',
-  'syntax': ['true'],
-  'description': 'Boolean value true',
-  'examples': ['true'],
-  'seealso': ['false']
+  name: 'true',
+  category: 'Constants',
+  syntax: ['true'],
+  description: 'Boolean value true',
+  examples: ['true'],
+  seealso: ['false']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/tau.js
 var tauDocs = {
-  'name': 'tau',
-  'category': 'Constants',
-  'syntax': ['tau'],
-  'description': 'Tau is the ratio constant of a circle\'s circumference to radius, equal to 2 * pi, approximately 6.2832.',
-  'examples': ['tau', '2 * pi'],
-  'seealso': ['pi']
+  name: 'tau',
+  category: 'Constants',
+  syntax: ['tau'],
+  description: 'Tau is the ratio constant of a circle\'s circumference to radius, equal to 2 * pi, approximately 6.2832.',
+  examples: ['tau', '2 * pi'],
+  seealso: ['pi']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/SQRT2.js
 var SQRT2Docs = {
-  'name': 'SQRT2',
-  'category': 'Constants',
-  'syntax': ['SQRT2'],
-  'description': 'Returns the square root of 2, approximately equal to 1.414',
-  'examples': ['SQRT2', 'sqrt(2)'],
-  'seealso': []
+  name: 'SQRT2',
+  category: 'Constants',
+  syntax: ['SQRT2'],
+  description: 'Returns the square root of 2, approximately equal to 1.414',
+  examples: ['SQRT2', 'sqrt(2)'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/SQRT1_2.js
 var SQRT12Docs = {
-  'name': 'SQRT1_2',
-  'category': 'Constants',
-  'syntax': ['SQRT1_2'],
-  'description': 'Returns the square root of 1/2, approximately equal to 0.707',
-  'examples': ['SQRT1_2', 'sqrt(1/2)'],
-  'seealso': []
+  name: 'SQRT1_2',
+  category: 'Constants',
+  syntax: ['SQRT1_2'],
+  description: 'Returns the square root of 1/2, approximately equal to 0.707',
+  examples: ['SQRT1_2', 'sqrt(1/2)'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/phi.js
 var phiDocs = {
-  'name': 'phi',
-  'category': 'Constants',
-  'syntax': ['phi'],
-  'description': 'Phi is the golden ratio. Two quantities are in the golden ratio if their ratio is the same as the ratio of their sum to the larger of the two quantities. Phi is defined as `(1 + sqrt(5)) / 2` and is approximately 1.618034...',
-  'examples': ['phi'],
-  'seealso': []
+  name: 'phi',
+  category: 'Constants',
+  syntax: ['phi'],
+  description: 'Phi is the golden ratio. Two quantities are in the golden ratio if their ratio is the same as the ratio of their sum to the larger of the two quantities. Phi is defined as `(1 + sqrt(5)) / 2` and is approximately 1.618034...',
+  examples: ['phi'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/pi.js
 var piDocs = {
-  'name': 'pi',
-  'category': 'Constants',
-  'syntax': ['pi'],
-  'description': 'The number pi is a mathematical constant that is the ratio of a circle\'s circumference to its diameter, and is approximately equal to 3.14159',
-  'examples': ['pi', 'sin(pi/2)'],
-  'seealso': ['tau']
+  name: 'pi',
+  category: 'Constants',
+  syntax: ['pi'],
+  description: 'The number pi is a mathematical constant that is the ratio of a circle\'s circumference to its diameter, and is approximately equal to 3.14159',
+  examples: ['pi', 'sin(pi/2)'],
+  seealso: ['tau']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/null.js
 var nullDocs = {
-  'name': 'null',
-  'category': 'Constants',
-  'syntax': ['null'],
-  'description': 'Value null',
-  'examples': ['null'],
-  'seealso': ['true', 'false']
+  name: 'null',
+  category: 'Constants',
+  syntax: ['null'],
+  description: 'Value null',
+  examples: ['null'],
+  seealso: ['true', 'false']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/NaN.js
 var NaNDocs = {
-  'name': 'NaN',
-  'category': 'Constants',
-  'syntax': ['NaN'],
-  'description': 'Not a number',
-  'examples': ['NaN', '0 / 0'],
-  'seealso': []
+  name: 'NaN',
+  category: 'Constants',
+  syntax: ['NaN'],
+  description: 'Not a number',
+  examples: ['NaN', '0 / 0'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/LOG10E.js
 var LOG10EDocs = {
-  'name': 'LOG10E',
-  'category': 'Constants',
-  'syntax': ['LOG10E'],
-  'description': 'Returns the base-10 logarithm of E, approximately equal to 0.434',
-  'examples': ['LOG10E', 'log(e, 10)'],
-  'seealso': []
+  name: 'LOG10E',
+  category: 'Constants',
+  syntax: ['LOG10E'],
+  description: 'Returns the base-10 logarithm of E, approximately equal to 0.434',
+  examples: ['LOG10E', 'log(e, 10)'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/LOG2E.js
 var LOG2EDocs = {
-  'name': 'LOG2E',
-  'category': 'Constants',
-  'syntax': ['LOG2E'],
-  'description': 'Returns the base-2 logarithm of E, approximately equal to 1.442',
-  'examples': ['LOG2E', 'log(e, 2)'],
-  'seealso': []
+  name: 'LOG2E',
+  category: 'Constants',
+  syntax: ['LOG2E'],
+  description: 'Returns the base-2 logarithm of E, approximately equal to 1.442',
+  examples: ['LOG2E', 'log(e, 2)'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/LN10.js
 var LN10Docs = {
-  'name': 'LN10',
-  'category': 'Constants',
-  'syntax': ['LN10'],
-  'description': 'Returns the natural logarithm of 10, approximately equal to 2.302',
-  'examples': ['LN10', 'log(10)'],
-  'seealso': []
+  name: 'LN10',
+  category: 'Constants',
+  syntax: ['LN10'],
+  description: 'Returns the natural logarithm of 10, approximately equal to 2.302',
+  examples: ['LN10', 'log(10)'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/LN2.js
 var LN2Docs = {
-  'name': 'LN2',
-  'category': 'Constants',
-  'syntax': ['LN2'],
-  'description': 'Returns the natural logarithm of 2, approximately equal to 0.693',
-  'examples': ['LN2', 'log(2)'],
-  'seealso': []
+  name: 'LN2',
+  category: 'Constants',
+  syntax: ['LN2'],
+  description: 'Returns the natural logarithm of 2, approximately equal to 0.693',
+  examples: ['LN2', 'log(2)'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/Infinity.js
 var InfinityDocs = {
-  'name': 'Infinity',
-  'category': 'Constants',
-  'syntax': ['Infinity'],
-  'description': 'Infinity, a number which is larger than the maximum number that can be handled by a floating point number.',
-  'examples': ['Infinity', '1 / 0'],
-  'seealso': []
+  name: 'Infinity',
+  category: 'Constants',
+  syntax: ['Infinity'],
+  description: 'Infinity, a number which is larger than the maximum number that can be handled by a floating point number.',
+  examples: ['Infinity', '1 / 0'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/i.js
 var iDocs = {
-  'name': 'i',
-  'category': 'Constants',
-  'syntax': ['i'],
-  'description': 'Imaginary unit, defined as i*i=-1. A complex number is described as a + b*i, where a is the real part, and b is the imaginary part.',
-  'examples': ['i', 'i * i', 'sqrt(-1)'],
-  'seealso': []
+  name: 'i',
+  category: 'Constants',
+  syntax: ['i'],
+  description: 'Imaginary unit, defined as i*i=-1. A complex number is described as a + b*i, where a is the real part, and b is the imaginary part.',
+  examples: ['i', 'i * i', 'sqrt(-1)'],
+  seealso: []
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/false.js
 var falseDocs = {
-  'name': 'false',
-  'category': 'Constants',
-  'syntax': ['false'],
-  'description': 'Boolean value false',
-  'examples': ['false'],
-  'seealso': ['true']
+  name: 'false',
+  category: 'Constants',
+  syntax: ['false'],
+  description: 'Boolean value false',
+  examples: ['false'],
+  seealso: ['true']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/constants/e.js
 var eDocs = {
-  'name': 'e',
-  'category': 'Constants',
-  'syntax': ['e'],
-  'description': 'Euler\'s number, the base of the natural logarithm. Approximately equal to 2.71828',
-  'examples': ['e', 'e ^ 2', 'exp(2)', 'log(e)'],
-  'seealso': ['exp']
+  name: 'e',
+  category: 'Constants',
+  syntax: ['e'],
+  description: 'Euler\'s number, the base of the natural logarithm. Approximately equal to 2.71828',
+  examples: ['e', 'e ^ 2', 'exp(2)', 'log(e)'],
+  seealso: ['exp']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/unit.js
 var unitDocs = {
-  'name': 'unit',
-  'category': 'Construction',
-  'syntax': ['value unit', 'unit(value, unit)', 'unit(string)'],
-  'description': 'Create a unit.',
-  'examples': ['5.5 mm', '3 inch', 'unit(7.1, "kilogram")', 'unit("23 deg")'],
-  'seealso': ['bignumber', 'boolean', 'complex', 'index', 'matrix', 'number', 'string']
+  name: 'unit',
+  category: 'Construction',
+  syntax: ['value unit', 'unit(value, unit)', 'unit(string)'],
+  description: 'Create a unit.',
+  examples: ['5.5 mm', '3 inch', 'unit(7.1, "kilogram")', 'unit("23 deg")'],
+  seealso: ['bignumber', 'boolean', 'complex', 'index', 'matrix', 'number', 'string']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/string.js
 var stringDocs = {
-  'name': 'string',
-  'category': 'Construction',
-  'syntax': ['"text"', 'string(x)'],
-  'description': 'Create a string or convert a value to a string',
-  'examples': ['"Hello World!"', 'string(4.2)', 'string(3 + 2i)'],
-  'seealso': ['bignumber', 'boolean', 'complex', 'index', 'matrix', 'number', 'unit']
+  name: 'string',
+  category: 'Construction',
+  syntax: ['"text"', 'string(x)'],
+  description: 'Create a string or convert a value to a string',
+  examples: ['"Hello World!"', 'string(4.2)', 'string(3 + 2i)'],
+  seealso: ['bignumber', 'boolean', 'complex', 'index', 'matrix', 'number', 'unit']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/splitUnit.js
 var splitUnitDocs = {
-  'name': 'splitUnit',
-  'category': 'Construction',
-  'syntax': ['splitUnit(unit: Unit, parts: Unit[])'],
-  'description': 'Split a unit in an array of units whose sum is equal to the original unit.',
-  'examples': ['splitUnit(1 m, ["feet", "inch"])'],
-  'seealso': ['unit', 'createUnit']
+  name: 'splitUnit',
+  category: 'Construction',
+  syntax: ['splitUnit(unit: Unit, parts: Unit[])'],
+  description: 'Split a unit in an array of units whose sum is equal to the original unit.',
+  examples: ['splitUnit(1 m, ["feet", "inch"])'],
+  seealso: ['unit', 'createUnit']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/sparse.js
 var sparseDocs = {
-  'name': 'sparse',
-  'category': 'Construction',
-  'syntax': ['sparse()', 'sparse([a1, b1, ...; a1, b2, ...])', 'sparse([a1, b1, ...; a1, b2, ...], "number")'],
-  'description': 'Create a sparse matrix.',
-  'examples': ['sparse()', 'sparse([3, 4; 5, 6])', 'sparse([3, 0; 5, 0], "number")'],
-  'seealso': ['bignumber', 'boolean', 'complex', 'index', 'number', 'string', 'unit', 'matrix']
+  name: 'sparse',
+  category: 'Construction',
+  syntax: ['sparse()', 'sparse([a1, b1, ...; a1, b2, ...])', 'sparse([a1, b1, ...; a1, b2, ...], "number")'],
+  description: 'Create a sparse matrix.',
+  examples: ['sparse()', 'sparse([3, 4; 5, 6])', 'sparse([3, 0; 5, 0], "number")'],
+  seealso: ['bignumber', 'boolean', 'complex', 'index', 'number', 'string', 'unit', 'matrix']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/number.js
 var numberDocs = {
-  'name': 'number',
-  'category': 'Construction',
-  'syntax': ['x', 'number(x)', 'number(unit, valuelessUnit)'],
-  'description': 'Create a number or convert a string or boolean into a number.',
-  'examples': ['2', '2e3', '4.05', 'number(2)', 'number("7.2")', 'number(true)', 'number([true, false, true, true])', 'number(unit("52cm"), "m")'],
-  'seealso': ['bignumber', 'boolean', 'complex', 'fraction', 'index', 'matrix', 'string', 'unit']
+  name: 'number',
+  category: 'Construction',
+  syntax: ['x', 'number(x)', 'number(unit, valuelessUnit)'],
+  description: 'Create a number or convert a string or boolean into a number.',
+  examples: ['2', '2e3', '4.05', 'number(2)', 'number("7.2")', 'number(true)', 'number([true, false, true, true])', 'number(unit("52cm"), "m")'],
+  seealso: ['bignumber', 'boolean', 'complex', 'fraction', 'index', 'matrix', 'string', 'unit']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/matrix.js
 var matrixDocs = {
-  'name': 'matrix',
-  'category': 'Construction',
-  'syntax': ['[]', '[a1, b1, ...; a2, b2, ...]', 'matrix()', 'matrix("dense")', 'matrix([...])'],
-  'description': 'Create a matrix.',
-  'examples': ['[]', '[1, 2, 3]', '[1, 2, 3; 4, 5, 6]', 'matrix()', 'matrix([3, 4])', 'matrix([3, 4; 5, 6], "sparse")', 'matrix([3, 4; 5, 6], "sparse", "number")'],
-  'seealso': ['bignumber', 'boolean', 'complex', 'index', 'number', 'string', 'unit', 'sparse']
+  name: 'matrix',
+  category: 'Construction',
+  syntax: ['[]', '[a1, b1, ...; a2, b2, ...]', 'matrix()', 'matrix("dense")', 'matrix([...])'],
+  description: 'Create a matrix.',
+  examples: ['[]', '[1, 2, 3]', '[1, 2, 3; 4, 5, 6]', 'matrix()', 'matrix([3, 4])', 'matrix([3, 4; 5, 6], "sparse")', 'matrix([3, 4; 5, 6], "sparse", "number")'],
+  seealso: ['bignumber', 'boolean', 'complex', 'index', 'number', 'string', 'unit', 'sparse']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/index.js
 var indexDocs = {
-  'name': 'index',
-  'category': 'Construction',
-  'syntax': ['[start]', '[start:end]', '[start:step:end]', '[start1, start 2, ...]', '[start1:end1, start2:end2, ...]', '[start1:step1:end1, start2:step2:end2, ...]'],
-  'description': 'Create an index to get or replace a subset of a matrix',
-  'examples': ['[]', '[1, 2, 3]', 'A = [1, 2, 3; 4, 5, 6]', 'A[1, :]', 'A[1, 2] = 50', 'A[0:2, 0:2] = ones(2, 2)'],
-  'seealso': ['bignumber', 'boolean', 'complex', 'matrix,', 'number', 'range', 'string', 'unit']
+  name: 'index',
+  category: 'Construction',
+  syntax: ['[start]', '[start:end]', '[start:step:end]', '[start1, start 2, ...]', '[start1:end1, start2:end2, ...]', '[start1:step1:end1, start2:step2:end2, ...]'],
+  description: 'Create an index to get or replace a subset of a matrix',
+  examples: ['[]', '[1, 2, 3]', 'A = [1, 2, 3; 4, 5, 6]', 'A[1, :]', 'A[1, 2] = 50', 'A[0:2, 0:2] = ones(2, 2)'],
+  seealso: ['bignumber', 'boolean', 'complex', 'matrix,', 'number', 'range', 'string', 'unit']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/fraction.js
 var fractionDocs = {
-  'name': 'fraction',
-  'category': 'Construction',
-  'syntax': ['fraction(num)', 'fraction(num,den)'],
-  'description': 'Create a fraction from a number or from a numerator and denominator.',
-  'examples': ['fraction(0.125)', 'fraction(1, 3) + fraction(2, 5)'],
-  'seealso': ['bignumber', 'boolean', 'complex', 'index', 'matrix', 'string', 'unit']
+  name: 'fraction',
+  category: 'Construction',
+  syntax: ['fraction(num)', 'fraction(num,den)'],
+  description: 'Create a fraction from a number or from a numerator and denominator.',
+  examples: ['fraction(0.125)', 'fraction(1, 3) + fraction(2, 5)'],
+  seealso: ['bignumber', 'boolean', 'complex', 'index', 'matrix', 'string', 'unit']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/createUnit.js
 var createUnitDocs = {
-  'name': 'createUnit',
-  'category': 'Construction',
-  'syntax': ['createUnit(definitions)', 'createUnit(name, definition)'],
-  'description': 'Create a user-defined unit and register it with the Unit type.',
-  'examples': ['createUnit("foo")', 'createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})', 'createUnit("mph", "1 mile/hour")'],
-  'seealso': ['unit', 'splitUnit']
+  name: 'createUnit',
+  category: 'Construction',
+  syntax: ['createUnit(definitions)', 'createUnit(name, definition)'],
+  description: 'Create a user-defined unit and register it with the Unit type.',
+  examples: ['createUnit("foo")', 'createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})', 'createUnit("mph", "1 mile/hour")'],
+  seealso: ['unit', 'splitUnit']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/complex.js
 var complexDocs = {
-  'name': 'complex',
-  'category': 'Construction',
-  'syntax': ['complex()', 'complex(re, im)', 'complex(string)'],
-  'description': 'Create a complex number.',
-  'examples': ['complex()', 'complex(2, 3)', 'complex("7 - 2i")'],
-  'seealso': ['bignumber', 'boolean', 'index', 'matrix', 'number', 'string', 'unit']
+  name: 'complex',
+  category: 'Construction',
+  syntax: ['complex()', 'complex(re, im)', 'complex(string)'],
+  description: 'Create a complex number.',
+  examples: ['complex()', 'complex(2, 3)', 'complex("7 - 2i")'],
+  seealso: ['bignumber', 'boolean', 'index', 'matrix', 'number', 'string', 'unit']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/construction/boolean.js
 var booleanDocs = {
-  'name': 'boolean',
-  'category': 'Construction',
-  'syntax': ['x', 'boolean(x)'],
-  'description': 'Convert a string or number into a boolean.',
-  'examples': ['boolean(0)', 'boolean(1)', 'boolean(3)', 'boolean("true")', 'boolean("false")', 'boolean([1, 0, 1, 1])'],
-  'seealso': ['bignumber', 'complex', 'index', 'matrix', 'number', 'string', 'unit']
+  name: 'boolean',
+  category: 'Construction',
+  syntax: ['x', 'boolean(x)'],
+  description: 'Convert a string or number into a boolean.',
+  examples: ['boolean(0)', 'boolean(1)', 'boolean(3)', 'boolean("true")', 'boolean("false")', 'boolean([1, 0, 1, 1])'],
+  seealso: ['bignumber', 'complex', 'index', 'matrix', 'number', 'string', 'unit']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/dotPow.js
 var dotPowDocs = {
-  'name': 'dotPow',
-  'category': 'Operators',
-  'syntax': ['x .^ y', 'dotPow(x, y)'],
-  'description': 'Calculates the power of x to y element wise.',
-  'examples': ['a = [1, 2, 3; 4, 5, 6]', 'a .^ 2'],
-  'seealso': ['pow']
+  name: 'dotPow',
+  category: 'Operators',
+  syntax: ['x .^ y', 'dotPow(x, y)'],
+  description: 'Calculates the power of x to y element wise.',
+  examples: ['a = [1, 2, 3; 4, 5, 6]', 'a .^ 2'],
+  seealso: ['pow']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/lusolve.js
 var lusolveDocs = {
-  'name': 'lusolve',
-  'category': 'Algebra',
-  'syntax': ['x=lusolve(A, b)', 'x=lusolve(lu, b)'],
-  'description': 'Solves the linear system A * x = b where A is an [n x n] matrix and b is a [n] column vector.',
-  'examples': ['a = [-2, 3; 2, 1]', 'b = [11, 9]', 'x = lusolve(a, b)'],
-  'seealso': ['lup', 'slu', 'lsolve', 'usolve', 'matrix', 'sparse']
+  name: 'lusolve',
+  category: 'Algebra',
+  syntax: ['x=lusolve(A, b)', 'x=lusolve(lu, b)'],
+  description: 'Solves the linear system A * x = b where A is an [n x n] matrix and b is a [n] column vector.',
+  examples: ['a = [-2, 3; 2, 1]', 'b = [11, 9]', 'x = lusolve(a, b)'],
+  seealso: ['lup', 'slu', 'lsolve', 'usolve', 'matrix', 'sparse']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/subtract.js
 var subtractDocs = {
-  'name': 'subtract',
-  'category': 'Operators',
-  'syntax': ['x - y', 'subtract(x, y)'],
-  'description': 'subtract two values.',
-  'examples': ['a = 5.3 - 2', 'a + 2', '2/3 - 1/6', '2 * 3 - 3', '2.1 km - 500m'],
-  'seealso': ['add']
+  name: 'subtract',
+  category: 'Operators',
+  syntax: ['x - y', 'subtract(x, y)'],
+  description: 'subtract two values.',
+  examples: ['a = 5.3 - 2', 'a + 2', '2/3 - 1/6', '2 * 3 - 3', '2.1 km - 500m'],
+  seealso: ['add']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/statistics/variance.js
 var varianceDocs = {
-  'name': 'variance',
-  'category': 'Statistics',
-  'syntax': ['variance(a, b, c, ...)', 'variance(A)', 'variance(A, normalization)'],
-  'description': 'Compute the variance of all values. Optional parameter normalization can be "unbiased" (default), "uncorrected", or "biased".',
-  'examples': ['variance(2, 4, 6)', 'variance([2, 4, 6, 8])', 'variance([2, 4, 6, 8], "uncorrected")', 'variance([2, 4, 6, 8], "biased")', 'variance([1, 2, 3; 4, 5, 6])'],
-  'seealso': ['max', 'mean', 'min', 'median', 'min', 'prod', 'std', 'sum']
+  name: 'variance',
+  category: 'Statistics',
+  syntax: ['variance(a, b, c, ...)', 'variance(A)', 'variance(A, normalization)'],
+  description: 'Compute the variance of all values. Optional parameter normalization can be "unbiased" (default), "uncorrected", or "biased".',
+  examples: ['variance(2, 4, 6)', 'variance([2, 4, 6, 8])', 'variance([2, 4, 6, 8], "uncorrected")', 'variance([2, 4, 6, 8], "biased")', 'variance([1, 2, 3; 4, 5, 6])'],
+  seealso: ['max', 'mean', 'min', 'median', 'min', 'prod', 'std', 'sum']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/trigonometry/sin.js
 var sinDocs = {
-  'name': 'sin',
-  'category': 'Trigonometry',
-  'syntax': ['sin(x)'],
-  'description': 'Compute the sine of x in radians.',
-  'examples': ['sin(2)', 'sin(pi / 4) ^ 2', 'sin(90 deg)', 'sin(30 deg)', 'sin(0.2)^2 + cos(0.2)^2'],
-  'seealso': ['asin', 'cos', 'tan']
+  name: 'sin',
+  category: 'Trigonometry',
+  syntax: ['sin(x)'],
+  description: 'Compute the sine of x in radians.',
+  examples: ['sin(2)', 'sin(pi / 4) ^ 2', 'sin(90 deg)', 'sin(30 deg)', 'sin(0.2)^2 + cos(0.2)^2'],
+  seealso: ['asin', 'cos', 'tan']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/numeric.js
 var numericDocs = {
-  'name': 'numeric',
-  'category': 'Utils',
-  'syntax': ['numeric(x)'],
-  'description': 'Convert a numeric input to a specific numeric type: number, BigNumber, or Fraction.',
-  'examples': ['numeric("4")', 'numeric("4", "number")', 'numeric("4", "BigNumber")', 'numeric("4", "Fraction)', 'numeric(4, "Fraction")', 'numeric(fraction(2, 5), "number)'],
-  'seealso': ['number', 'fraction', 'bignumber', 'string', 'format']
+  name: 'numeric',
+  category: 'Utils',
+  syntax: ['numeric(x)'],
+  description: 'Convert a numeric input to a specific numeric type: number, BigNumber, or Fraction.',
+  examples: ['numeric("4")', 'numeric("4", "number")', 'numeric("4", "BigNumber")', 'numeric("4", "Fraction)', 'numeric(4, "Fraction")', 'numeric(fraction(2, 5), "number)'],
+  seealso: ['number', 'fraction', 'bignumber', 'string', 'format']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/column.js
 var columnDocs = {
-  'name': 'column',
-  'category': 'Matrix',
-  'syntax': ['column(x, index)'],
-  'description': 'Return a column from a matrix or array.',
-  'examples': ['A = [[1, 2], [3, 4]]', 'column(A, 1)', 'column(A, 2)'],
-  'seealso': ['row']
+  name: 'column',
+  category: 'Matrix',
+  syntax: ['column(x, index)'],
+  description: 'Return a column from a matrix or array.',
+  examples: ['A = [[1, 2], [3, 4]]', 'column(A, 1)', 'column(A, 2)'],
+  seealso: ['row']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/row.js
 var rowDocs = {
-  'name': 'row',
-  'category': 'Matrix',
-  'syntax': ['row(x, index)'],
-  'description': 'Return a row from a matrix or array.',
-  'examples': ['A = [[1, 2], [3, 4]]', 'row(A, 1)', 'row(A, 2)'],
-  'seealso': ['column']
+  name: 'row',
+  category: 'Matrix',
+  syntax: ['row(x, index)'],
+  description: 'Return a row from a matrix or array.',
+  examples: ['A = [[1, 2], [3, 4]]', 'row(A, 1)', 'row(A, 2)'],
+  seealso: ['column']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/embeddedDocs.js
+
 
 
 
@@ -52303,7 +52318,7 @@ var rowDocs = {
 var embeddedDocs = {
   // construction functions
   bignumber: bignumberDocs,
-  'boolean': booleanDocs,
+  "boolean": booleanDocs,
   complex: complexDocs,
   createUnit: createUnitDocs,
   fraction: fractionDocs,
@@ -52317,22 +52332,22 @@ var embeddedDocs = {
   // constants
   e: eDocs,
   E: eDocs,
-  'false': falseDocs,
+  "false": falseDocs,
   i: iDocs,
-  'Infinity': InfinityDocs,
+  Infinity: InfinityDocs,
   LN2: LN2Docs,
   LN10: LN10Docs,
   LOG2E: LOG2EDocs,
   LOG10E: LOG10EDocs,
   NaN: NaNDocs,
-  'null': nullDocs,
+  "null": nullDocs,
   pi: piDocs,
   PI: piDocs,
   phi: phiDocs,
   SQRT1_2: SQRT12Docs,
   SQRT2: SQRT2Docs,
   tau: tauDocs,
-  'true': trueDocs,
+  "true": trueDocs,
   version: versionDocs,
   // physical constants
   // TODO: more detailed docs for physical constants
@@ -52599,29 +52614,29 @@ var embeddedDocs = {
   composition: compositionDocs,
   stirlingS2: stirlingS2Docs,
   // functions - core
-  'config': configDocs,
-  'import': importDocs,
-  'typed': typedDocs,
+  config: configDocs,
+  "import": importDocs,
+  typed: typedDocs,
   // functions - complex
   arg: argDocs,
   conj: conjDocs,
   re: reDocs,
   im: imDocs,
   // functions - expression
-  'evaluate': evaluateDocs,
-  'eval': evaluateDocs,
+  evaluate: evaluateDocs,
+  eval: evaluateDocs,
   // TODO: deprecated, cleanup in v7
   help: helpDocs,
   // functions - geometry
   distance: distanceDocs,
   intersect: intersectDocs,
   // functions - logical
-  'and': andDocs,
-  'not': notDocs,
-  'or': orDocs,
-  'xor': xorDocs,
+  and: andDocs,
+  not: notDocs,
+  or: orDocs,
+  xor: xorDocs,
   // functions - matrix
-  'concat': concatDocs,
+  concat: concatDocs,
   cross: crossDocs,
   column: columnDocs,
   ctranspose: ctransposeDocs,
@@ -52651,6 +52666,7 @@ var embeddedDocs = {
   zeros: zerosDocs,
   // functions - probability
   combinations: combinationsDocs,
+  combinationsWithRep: combinationsWithRepDocs,
   // distribution: distributionDocs,
   factorial: factorialDocs,
   gamma: gammaDocs,
@@ -52665,7 +52681,7 @@ var embeddedDocs = {
   compareNatural: compareNaturalDocs,
   compareText: compareTextDocs,
   deepEqual: deepEqualDocs,
-  'equal': equalDocs,
+  equal: equalDocs,
   equalText: equalTextDocs,
   larger: largerDocs,
   largerEq: largerEqDocs,
@@ -52696,8 +52712,8 @@ var embeddedDocs = {
   quantileSeq: quantileSeqDocs,
   std: stdDocs,
   sum: sumDocs,
-  'variance': varianceDocs,
-  'var': varianceDocs,
+  variance: varianceDocs,
+  "var": varianceDocs,
   // TODO: deprecated, cleanup in v7
   // functions - trigonometry
   acos: acosDocs,
@@ -52739,12 +52755,13 @@ var embeddedDocs = {
   isPrime: isPrimeDocs,
   isZero: isZeroDocs,
   // print: printDocs // TODO: add documentation for print as soon as the parser supports objects.
-  'typeOf': typeOfDocs,
-  'typeof': typeOfDocs,
+  typeOf: typeOfDocs,
+  "typeof": typeOfDocs,
   // TODO: deprecated, cleanup in v7
-  'numeric': numericDocs
+  numeric: numericDocs
 };
 // CONCATENATED MODULE: ./src/expression/function/help.js
+
 
 
 
@@ -52776,14 +52793,14 @@ Object(factory["a" /* factory */])(help_name, help_dependencies, function (_ref)
    * @return {Help} A help object
    */
   return typed(help_name, {
-    'any': function any(search) {
+    any: function any(search) {
       var prop;
       var searchName = search;
 
       if (typeof search !== 'string') {
         for (prop in mathWithTransform) {
           // search in functions and constants
-          if (mathWithTransform.hasOwnProperty(prop) && search === mathWithTransform[prop]) {
+          if (Object(utils_object["f" /* hasOwnProperty */])(mathWithTransform, prop) && search === mathWithTransform[prop]) {
             searchName = prop;
             break;
           }
@@ -52792,7 +52809,7 @@ Object(factory["a" /* factory */])(help_name, help_dependencies, function (_ref)
          if (!text) {
          // search data type
          for (prop in math.type) {
-         if (math.hasOwnProperty(prop)) {
+         if (hasOwnProperty(math, prop)) {
          if (search === math.type[prop]) {
          text = prop
          break
@@ -52864,7 +52881,7 @@ Object(factory["a" /* factory */])(chain_name, chain_dependencies, function (_re
     '': function _() {
       return new Chain();
     },
-    'any': function any(value) {
+    any: function any(value) {
       return new Chain(value);
     }
   });
@@ -52912,7 +52929,7 @@ Object(factory["a" /* factory */])(det_name, det_dependencies, function (_ref) {
    * @return {number} The determinant of `x`
    */
   return typed(det_name, {
-    'any': function any(x) {
+    any: function any(x) {
       return Object(utils_object["a" /* clone */])(x);
     },
     'Array | Matrix': function det(x) {
@@ -53093,7 +53110,7 @@ Object(factory["a" /* factory */])(inv_name, inv_dependencies, function (_ref) {
           throw new RangeError('Matrix must be two dimensional ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
       }
     },
-    'any': function any(x) {
+    any: function any(x) {
       // scalar
       return divideScalar(1, x); // FIXME: create a BigNumber one when configured for bignumbers
     }
@@ -53259,7 +53276,7 @@ Object(factory["a" /* factory */])(expm_name, expm_dependencies, function (_ref)
    * @return {Matrix}   The exponential of x
    */
   return typed(expm_name, {
-    'Matrix': function Matrix(A) {
+    Matrix: function Matrix(A) {
       // Check matrix size
       var size = A.size();
 
@@ -53673,7 +53690,7 @@ Object(factory["a" /* factory */])(distance_name, distance_dependencies, functio
           throw new TypeError('Values of lineTwoPtX and lineTwoPtY should be numbers or BigNumbers');
         }
 
-        if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('lineOnePtX') && y.hasOwnProperty('lineOnePtY') && z.hasOwnProperty('lineTwoPtX') && z.hasOwnProperty('lineTwoPtY')) {
+        if ('pointX' in x && 'pointY' in x && 'lineOnePtX' in y && 'lineOnePtY' in y && 'lineTwoPtX' in z && 'lineTwoPtY' in z) {
           var m = divideScalar(subtract(z.lineTwoPtY, z.lineTwoPtX), subtract(y.lineOnePtY, y.lineOnePtX));
           var xCoeff = multiplyScalar(multiplyScalar(m, m), y.lineOnePtX);
           var yCoeff = unaryMinus(multiplyScalar(m, y.lineOnePtX));
@@ -53745,7 +53762,7 @@ Object(factory["a" /* factory */])(distance_name, distance_dependencies, functio
           throw new TypeError('Values of xCoeffLine, yCoeffLine and constant should be numbers or BigNumbers');
         }
 
-        if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('xCoeffLine') && y.hasOwnProperty('yCoeffLine') && y.hasOwnProperty('constant')) {
+        if ('pointX' in x && 'pointY' in x && 'xCoeffLine' in y && 'yCoeffLine' in y && 'constant' in y) {
           return _distancePointLine2D(x.pointX, x.pointY, y.xCoeffLine, y.yCoeffLine, y.constant);
         } else {
           throw new TypeError('Key names do not match');
@@ -53760,7 +53777,7 @@ Object(factory["a" /* factory */])(distance_name, distance_dependencies, functio
           throw new TypeError('Values of x0, y0, z0, a, b and c should be numbers or BigNumbers');
         }
 
-        if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('x0') && y.hasOwnProperty('y0') && y.hasOwnProperty('z0') && y.hasOwnProperty('a') && y.hasOwnProperty('b') && y.hasOwnProperty('c')) {
+        if ('pointX' in x && 'pointY' in x && 'x0' in y && 'y0' in y && 'z0' in y && 'a' in y && 'b' in y && 'c' in y) {
           return _distancePointLine3D(x.pointX, x.pointY, x.pointZ, y.x0, y.y0, y.z0, y.a, y.b, y.c);
         } else {
           throw new TypeError('Key names do not match');
@@ -53775,7 +53792,7 @@ Object(factory["a" /* factory */])(distance_name, distance_dependencies, functio
           throw new TypeError('Values of pointTwoX and pointTwoY should be numbers or BigNumbers');
         }
 
-        if (x.hasOwnProperty('pointOneX') && x.hasOwnProperty('pointOneY') && y.hasOwnProperty('pointTwoX') && y.hasOwnProperty('pointTwoY')) {
+        if ('pointOneX' in x && 'pointOneY' in x && 'pointTwoX' in y && 'pointTwoY' in y) {
           return _distance2d(x.pointOneX, x.pointOneY, y.pointTwoX, y.pointTwoY);
         } else {
           throw new TypeError('Key names do not match');
@@ -53790,7 +53807,7 @@ Object(factory["a" /* factory */])(distance_name, distance_dependencies, functio
           throw new TypeError('Values of pointTwoX, pointTwoY and pointTwoZ should be numbers or BigNumbers');
         }
 
-        if (x.hasOwnProperty('pointOneX') && x.hasOwnProperty('pointOneY') && x.hasOwnProperty('pointOneZ') && y.hasOwnProperty('pointTwoX') && y.hasOwnProperty('pointTwoY') && y.hasOwnProperty('pointTwoZ')) {
+        if ('pointOneX' in x && 'pointOneY' in x && 'pointOneZ' in x && 'pointTwoX' in y && 'pointTwoY' in y && 'pointTwoZ' in y) {
           return _distance3d(x.pointOneX, x.pointOneY, x.pointOneZ, y.pointTwoX, y.pointTwoY, y.pointTwoZ);
         } else {
           throw new TypeError('Key names do not match');
@@ -53799,7 +53816,7 @@ Object(factory["a" /* factory */])(distance_name, distance_dependencies, functio
         throw new TypeError('Invalid Arguments: Try again');
       }
     },
-    'Array': function Array(arr) {
+    Array: function Array(arr) {
       if (!_pairwise(arr)) {
         throw new TypeError('Incorrect array format entered for pairwise distance calculation');
       }
@@ -55052,8 +55069,6 @@ Object(factory["a" /* factory */])(std_name, std_dependencies, function (_ref) {
  *  @returns {number} product of i to n
  */
 function product_product(i, n) {
-  var half;
-
   if (n < i) {
     return 1;
   }
@@ -55062,7 +55077,7 @@ function product_product(i, n) {
     return n;
   }
 
-  half = n + i >> 1; // divide (n + i) by 2 and truncate to integer
+  var half = n + i >> 1; // divide (n + i) by 2 and truncate to integer
 
   return product_product(i, half) * product_product(half + 1, n);
 }
@@ -55070,8 +55085,6 @@ function product_product(i, n) {
 
 
 function combinationsNumber(n, k) {
-  var prodrange, nMinusk;
-
   if (!Object(utils_number["i" /* isInteger */])(n) || n < 0) {
     throw new TypeError('Positive integer value expected in function combinations');
   }
@@ -55084,7 +55097,8 @@ function combinationsNumber(n, k) {
     throw new TypeError('k must be less than or equal to n');
   }
 
-  nMinusk = n - k;
+  var nMinusk = n - k;
+  var prodrange;
 
   if (k < nMinusk) {
     prodrange = product_product(nMinusk + 1, n);
@@ -55122,7 +55136,7 @@ Object(factory["a" /* factory */])(combinations_name, combinations_dependencies,
    *
    * See also:
    *
-   *    permutations, factorial
+   *    combinationsWithRep, permutations, factorial
    *
    * @param {number | BigNumber} n    Total number of objects in the set
    * @param {number | BigNumber} k    Number of objects in the subset
@@ -55165,11 +55179,95 @@ Object(factory["a" /* factory */])(combinations_name, combinations_dependencies,
 function isPositiveInteger(n) {
   return n.isInteger() && n.gte(0);
 }
+// CONCATENATED MODULE: ./src/function/probability/combinationsWithRep.js
+
+
+
+var combinationsWithRep_name = 'combinationsWithRep';
+var combinationsWithRep_dependencies = ['typed'];
+var createCombinationsWithRep =
+/* #__PURE__ */
+Object(factory["a" /* factory */])(combinationsWithRep_name, combinationsWithRep_dependencies, function (_ref) {
+  var typed = _ref.typed;
+
+  /**
+   * Compute the number of ways of picking `k` unordered outcomes from `n`
+   * possibilities, allowing individual outcomes to be repeated more than once.
+   *
+   * CombinationsWithRep only takes integer arguments.
+   * The following condition must be enforced: k <= n + k -1.
+   *
+   * Syntax:
+   *
+   *     math.combinationsWithRep(n, k)
+   *
+   * Examples:
+   *
+   *    math.combinationsWithRep(7, 5) // returns 462
+   *
+   * See also:
+   *
+   *    combinations, permutations, factorial
+   *
+   * @param {number | BigNumber} n    Total number of objects in the set
+   * @param {number | BigNumber} k    Number of objects in the subset
+   * @return {number | BigNumber}     Number of possible combinations with replacement.
+   */
+  return typed(combinationsWithRep_name, {
+    'number, number': function numberNumber(n, k) {
+      if (!Object(utils_number["i" /* isInteger */])(n) || n < 0) {
+        throw new TypeError('Positive integer value expected in function combinationsWithRep');
+      }
+
+      if (!Object(utils_number["i" /* isInteger */])(k) || k < 0) {
+        throw new TypeError('Positive integer value expected in function combinationsWithRep');
+      }
+
+      if (n < 1) {
+        throw new TypeError('k must be less than or equal to n + k - 1');
+      }
+
+      var prodrange = product_product(n, n + k - 1);
+      return prodrange / product_product(1, k);
+    },
+    'BigNumber, BigNumber': function BigNumberBigNumber(n, k) {
+      var BigNumber = n.constructor;
+      var result, i;
+      var one = new BigNumber(1);
+
+      if (!combinationsWithRep_isPositiveInteger(n) || !combinationsWithRep_isPositiveInteger(k)) {
+        throw new TypeError('Positive integer value expected in function combinationsWithRep');
+      }
+
+      if (n.lt(one)) {
+        throw new TypeError('k must be less than or equal to n + k - 1 in function combinationsWithRep');
+      }
+
+      var max = n.minus(one);
+      result = one;
+
+      for (i = one; i.lte(k); i = i.plus(1)) {
+        result = result.times(max.plus(i)).dividedBy(i);
+      }
+
+      return result;
+    }
+  });
+});
+/**
+ * Test whether BigNumber n is a positive integer
+ * @param {BigNumber} n
+ * @returns {boolean} isPositiveInteger
+ */
+
+function combinationsWithRep_isPositiveInteger(n) {
+  return n.isInteger() && n.gte(0);
+}
 // CONCATENATED MODULE: ./src/plain/number/probability.js
 
 
 function gammaNumber(n) {
-  var t, x;
+  var x;
 
   if (Object(utils_number["i" /* isInteger */])(n)) {
     if (n <= 0) {
@@ -55207,7 +55305,7 @@ function gammaNumber(n) {
     x += gammaP[i] / (n + i);
   }
 
-  t = n + gammaG + 0.5;
+  var t = n + gammaG + 0.5;
   return Math.sqrt(2 * Math.PI) * Math.pow(t, n + 0.5) * Math.exp(-t) * x;
 }
 gammaNumber.signature = 'number'; // TODO: comment on the variables g and p
@@ -55254,16 +55352,14 @@ Object(factory["a" /* factory */])(gamma_name, gamma_dependencies, function (_re
    * @return {number | Array | Matrix}    The gamma of `n`
    */
   var gamma = typed(gamma_name, {
-    'number': gammaNumber,
-    'Complex': function Complex(n) {
-      var t, x;
-
+    number: gammaNumber,
+    Complex: function Complex(n) {
       if (n.im === 0) {
         return gamma(n.re);
       }
 
       n = new _Complex(n.re - 1, n.im);
-      x = new _Complex(gammaP[0], 0);
+      var x = new _Complex(gammaP[0], 0);
 
       for (var i = 1; i < gammaP.length; ++i) {
         var real = n.re + i; // x += p[i]/(n+i)
@@ -55278,7 +55374,7 @@ Object(factory["a" /* factory */])(gamma_name, gamma_dependencies, function (_re
         }
       }
 
-      t = new _Complex(n.re + gammaG + 0.5, n.im);
+      var t = new _Complex(n.re + gammaG + 0.5, n.im);
       var twoPiSqrt = Math.sqrt(2 * Math.PI);
       n.re += 0.5;
       var result = pow(t, n);
@@ -55299,7 +55395,7 @@ Object(factory["a" /* factory */])(gamma_name, gamma_dependencies, function (_re
       t.im = r * Math.sin(-t.im);
       return multiplyScalar(multiplyScalar(result, t), x);
     },
-    'BigNumber': function BigNumber(n) {
+    BigNumber: function BigNumber(n) {
       if (n.isInteger()) {
         return n.isNegative() || n.isZero() ? new _BigNumber(Infinity) : bigFactorial(n.minus(1));
       }
@@ -55372,20 +55468,20 @@ Object(factory["a" /* factory */])(factorial_name, factorial_dependencies, funct
    *
    * See also:
    *
-   *    combinations, gamma, permutations
+   *    combinations, combinationsWithRep, gamma, permutations
    *
    * @param {number | BigNumber | Array | Matrix} n   An integer number
    * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
    */
   var factorial = typed(factorial_name, {
-    'number': function number(n) {
+    number: function number(n) {
       if (n < 0) {
         throw new Error('Value must be non-negative');
       }
 
       return gamma(n + 1);
     },
-    'BigNumber': function BigNumber(n) {
+    BigNumber: function BigNumber(n) {
       if (n.isNegative()) {
         throw new Error('Value must be non-negative');
       }
@@ -55569,7 +55665,7 @@ Object(factory["a" /* factory */])(permutations_name, permutations_dependencies,
    *
    * See also:
    *
-   *    combinations, factorial
+   *    combinations, combinationsWithRep, factorial
    *
    * @param {number | BigNumber} n   The number of objects in total
    * @param {number | BigNumber} [k] The number of objects in the subset
@@ -55880,7 +55976,7 @@ Object(factory["a" /* factory */])(random_name, random_dependencies, function (_
     '': function _() {
       return _random(0, 1);
     },
-    'number': function number(max) {
+    number: function number(max) {
       return _random(0, max);
     },
     'number, number': function numberNumber(min, max) {
@@ -55932,7 +56028,7 @@ Object(factory["a" /* factory */])(random_name, ['typed', 'config', '?on'], func
     '': function _() {
       return _random(0, 1);
     },
-    'number': function number(max) {
+    number: function number(max) {
       return _random(0, max);
     },
     'number, number': function numberNumber(min, max) {
@@ -56002,7 +56098,7 @@ Object(factory["a" /* factory */])(randomInt_name, randomInt_dependencies, funct
     '': function _() {
       return _randomInt(0, 1);
     },
-    'number': function number(max) {
+    number: function number(max) {
       return _randomInt(0, max);
     },
     'number, number': function numberNumber(min, max) {
@@ -56245,6 +56341,7 @@ Object(factory["a" /* factory */])(composition_name, composition_dependencies, f
 // CONCATENATED MODULE: ./src/function/algebra/simplify/util.js
 
 
+
 var util_name = 'simplifyUtil';
 var util_dependencies = ['FunctionNode', 'OperatorNode', 'SymbolNode'];
 var createUtil =
@@ -56258,12 +56355,12 @@ Object(factory["a" /* factory */])(util_name, util_dependencies, function (_ref)
   // The properties should be calculated from an argument to simplify, or possibly something in math.config
   // the other option is for typed() to specify a return type so that we can evaluate the type of arguments
   var commutative = {
-    'add': true,
-    'multiply': true
+    add: true,
+    multiply: true
   };
   var associative = {
-    'add': true,
-    'multiply': true
+    add: true,
+    multiply: true
   };
 
   function isCommutative(node, context) {
@@ -56273,7 +56370,7 @@ Object(factory["a" /* factory */])(util_name, util_dependencies, function (_ref)
 
     var name = node.fn.toString();
 
-    if (context && context.hasOwnProperty(name) && context[name].hasOwnProperty('commutative')) {
+    if (context && Object(utils_object["f" /* hasOwnProperty */])(context, name) && Object(utils_object["f" /* hasOwnProperty */])(context[name], 'commutative')) {
       return context[name].commutative;
     }
 
@@ -56287,7 +56384,7 @@ Object(factory["a" /* factory */])(util_name, util_dependencies, function (_ref)
 
     var name = node.fn.toString();
 
-    if (context && context.hasOwnProperty(name) && context[name].hasOwnProperty('associative')) {
+    if (context && Object(utils_object["f" /* hasOwnProperty */])(context, name) && Object(utils_object["f" /* hasOwnProperty */])(context[name], 'associative')) {
       return context[name].associative;
     }
 
@@ -56667,22 +56764,22 @@ Object(factory["a" /* factory */])(simplifyConstant_name, simplifyConstant_depen
   }
 
   var _toNode = typed({
-    'Fraction': _fractionToNode,
-    'number': function number(n) {
+    Fraction: _fractionToNode,
+    number: function number(n) {
       if (n < 0) {
         return unaryMinusNode(new ConstantNode(-n));
       }
 
       return new ConstantNode(n);
     },
-    'BigNumber': function BigNumber(n) {
+    BigNumber: function BigNumber(n) {
       if (n < 0) {
         return unaryMinusNode(new ConstantNode(-n));
       }
 
       return new ConstantNode(n); // old parameters: (n.toString(), 'number')
     },
-    'Complex': function Complex(s) {
+    Complex: function Complex(s) {
       throw new Error('Cannot convert Complex number to Node');
     }
   }); // convert a number to a fraction only if it can be expressed exactly
@@ -57002,6 +57099,7 @@ function simplify_typeof(obj) { if (typeof Symbol === "function" && typeof Symbo
 
 
 
+
 var simplify_name = 'simplify';
 var simplify_dependencies = ['config', 'typed', 'parse', 'add', 'subtract', 'multiply', 'divide', 'pow', 'isZero', 'equal', '?fraction', '?bignumber', 'mathWithTransform', 'ConstantNode', 'FunctionNode', 'OperatorNode', 'ParenthesisNode', 'SymbolNode'];
 var createSimplify =
@@ -57138,7 +57236,7 @@ Object(factory["a" /* factory */])(simplify_name, simplify_dependencies, functio
 
 
   var simplify = typed('simplify', {
-    'string': function string(expr) {
+    string: function string(expr) {
       return simplify(parse(expr), simplify.rules, {}, {});
     },
     'string, Object': function stringObject(expr, scope) {
@@ -57162,7 +57260,7 @@ Object(factory["a" /* factory */])(simplify_name, simplify_dependencies, functio
     'Node, Object, Object': function NodeObjectObject(expr, scope, options) {
       return simplify(expr, simplify.rules, scope, options);
     },
-    'Node': function Node(expr) {
+    Node: function Node(expr) {
       return simplify(expr, simplify.rules, {}, {});
     },
     'Node, Array': function NodeArray(expr, rules) {
@@ -57311,7 +57409,7 @@ Object(factory["a" /* factory */])(simplify_name, simplify_dependencies, functio
     l: 'c+v',
     r: 'v+c',
     context: {
-      'add': {
+      add: {
         commutative: false
       }
     }
@@ -57319,7 +57417,7 @@ Object(factory["a" /* factory */])(simplify_name, simplify_dependencies, functio
     l: 'v*c',
     r: 'c*v',
     context: {
-      'multiply': {
+      multiply: {
         commutative: false
       }
     }
@@ -57500,7 +57598,7 @@ Object(factory["a" /* factory */])(simplify_name, simplify_dependencies, functio
 
 
         res = res.transform(function (node) {
-          if (node.isSymbolNode && matches.placeholders.hasOwnProperty(node.name)) {
+          if (node.isSymbolNode && Object(utils_object["f" /* hasOwnProperty */])(matches.placeholders, node.name)) {
             return matches.placeholders[node.name].clone();
           } else {
             return node;
@@ -57564,7 +57662,7 @@ Object(factory["a" /* factory */])(simplify_name, simplify_dependencies, functio
     for (var key in match1.placeholders) {
       res.placeholders[key] = match1.placeholders[key];
 
-      if (match2.placeholders.hasOwnProperty(key)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(match2.placeholders, key)) {
         if (!_exactMatch(match1.placeholders[key], match2.placeholders[key])) {
           return null;
         }
@@ -58528,7 +58626,7 @@ Object(factory["a" /* factory */])(rationalize_name, rationalize_dependencies, f
    */
 
   var rationalize = typed(rationalize_name, {
-    'string': function string(expr) {
+    string: function string(expr) {
       return rationalize(parse(expr), {}, false);
     },
     'string, boolean': function stringBoolean(expr, detailed) {
@@ -58540,7 +58638,7 @@ Object(factory["a" /* factory */])(rationalize_name, rationalize_dependencies, f
     'string, Object, boolean': function stringObjectBoolean(expr, scope, detailed) {
       return rationalize(parse(expr), scope, detailed);
     },
-    'Node': function Node(expr) {
+    Node: function Node(expr) {
       return rationalize(expr, {}, false);
     },
     'Node, boolean': function NodeBoolean(expr, detailed) {
@@ -59323,7 +59421,7 @@ Object(factory["a" /* factory */])(reviver_name, reviver_dependencies, function 
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '6.0.3'; // Note: This file is automatically generated when building math.js.
+var version = '6.1.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
@@ -60723,6 +60821,7 @@ Object(factory["a" /* factory */])(variance_transform_name, variance_transform_d
 /* concated harmony reexport createQuantileSeq */__webpack_require__.d(__webpack_exports__, "createQuantileSeq", function() { return createQuantileSeq; });
 /* concated harmony reexport createStd */__webpack_require__.d(__webpack_exports__, "createStd", function() { return createStd; });
 /* concated harmony reexport createCombinations */__webpack_require__.d(__webpack_exports__, "createCombinations", function() { return createCombinations; });
+/* concated harmony reexport createCombinationsWithRep */__webpack_require__.d(__webpack_exports__, "createCombinationsWithRep", function() { return createCombinationsWithRep; });
 /* concated harmony reexport createGamma */__webpack_require__.d(__webpack_exports__, "createGamma", function() { return createGamma; });
 /* concated harmony reexport createFactorial */__webpack_require__.d(__webpack_exports__, "createFactorial", function() { return createFactorial; });
 /* concated harmony reexport createKldivergence */__webpack_require__.d(__webpack_exports__, "createKldivergence", function() { return createKldivergence; });
@@ -61077,6 +61176,7 @@ Object(factory["a" /* factory */])(variance_transform_name, variance_transform_d
 
 
 
+
 /***/ }),
 /* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -61085,7 +61185,7 @@ Object(factory["a" /* factory */])(variance_transform_name, variance_transform_d
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/utils/object.js
-var utils_object = __webpack_require__(4);
+var utils_object = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./node_modules/tiny-emitter/index.js
 var tiny_emitter = __webpack_require__(18);
@@ -61213,7 +61313,7 @@ function importFactory(typed, load, math, importedFactories) {
         });
       } else if (_typeof(value) === 'object') {
         for (var _name in value) {
-          if (value.hasOwnProperty(_name)) {
+          if (Object(utils_object["f" /* hasOwnProperty */])(value, _name)) {
             flattenImports(flatValues, value[_name], _name);
           }
         }
@@ -61237,7 +61337,7 @@ function importFactory(typed, load, math, importedFactories) {
     flattenImports(flatValues, functions);
 
     for (var name in flatValues) {
-      if (flatValues.hasOwnProperty(name)) {
+      if (Object(utils_object["f" /* hasOwnProperty */])(flatValues, name)) {
         // console.log('import', name)
         var value = flatValues[name];
 
@@ -61383,7 +61483,7 @@ function importFactory(typed, load, math, importedFactories) {
       var name = factory.name;
       var existingTransform = name in math.expression.transform;
       var namespace = factory.path ? Object(utils_object["k" /* traverse */])(math, factory.path) : math;
-      var existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined;
+      var existing = Object(utils_object["f" /* hasOwnProperty */])(namespace, name) ? namespace[name] : undefined;
 
       var resolver = function resolver() {
         var instance = load(factory);
@@ -61462,7 +61562,7 @@ function importFactory(typed, load, math, importedFactories) {
 
     var namespace = isTransformFunctionFactory(factory) ? math.expression.transform : math;
     var existingTransform = name in math.expression.transform;
-    var existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined;
+    var existing = Object(utils_object["f" /* hasOwnProperty */])(namespace, name) ? namespace[name] : undefined;
 
     var resolver = function resolver() {
       // collect all dependencies, handle finding both functions and classes and other special cases
@@ -61566,16 +61666,16 @@ function importFactory(typed, load, math, importedFactories) {
   }
 
   function allowedInExpressions(name) {
-    return !unsafe.hasOwnProperty(name);
+    return !Object(utils_object["f" /* hasOwnProperty */])(unsafe, name);
   }
 
   function legacyFactoryAllowedInExpressions(factory) {
-    return factory.path === undefined && !unsafe.hasOwnProperty(factory.name);
+    return factory.path === undefined && !Object(utils_object["f" /* hasOwnProperty */])(unsafe, factory.name);
   }
 
   function factoryAllowedInExpressions(factory) {
     return factory.fn.indexOf('.') === -1 && // FIXME: make checking on path redundant, check on meta data instead
-    !unsafe.hasOwnProperty(factory.fn) && (!factory.meta || !factory.meta.isClass);
+    !Object(utils_object["f" /* hasOwnProperty */])(unsafe, factory.fn) && (!factory.meta || !factory.meta.isClass);
   }
 
   function isTransformFunctionFactory(factory) {
@@ -61584,12 +61684,12 @@ function importFactory(typed, load, math, importedFactories) {
 
 
   var unsafe = {
-    'expression': true,
-    'type': true,
-    'docs': true,
-    'error': true,
-    'json': true,
-    'chain': true // chain method not supported. Note that there is a unit chain too.
+    expression: true,
+    type: true,
+    docs: true,
+    error: true,
+    json: true,
+    chain: true // chain method not supported. Note that there is a unit chain too.
 
   };
   return mathImport;
