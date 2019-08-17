@@ -12,12 +12,9 @@ jobs:
       script: npm run lint
       node_js: lts/*
       name: Lint
-    - script: npm run test:browser
+    - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else npm run test:browser; fi'
       node_js: lts/*
-      name: Local Browser Test
-    - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
-      node_js: lts/*
-      name: Browserstack Test
+      name: Browser Test
     - script: npm run build-and-test
       node_js: lts/*
       name: Build Test
