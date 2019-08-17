@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 6.1.0
+# 2019-08-17, version 6.1.0
 
 - Implemented function `combinationsWithRep` (see #1329). Thanks @waseemyusuf.
 
