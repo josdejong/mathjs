@@ -62,7 +62,7 @@ describe('Unit', function () {
     })
 
     it('should ignore properties on Object.prototype', function () {
-      Object.prototype.foo = Unit.UNITS['meter'] // eslint-disable-line no-extend-native
+      Object.prototype.foo = Unit.UNITS.meter // eslint-disable-line no-extend-native
 
       assert.throws(function () { console.log(new Unit(1, 'foo')) }, /Unit "foo" not found/)
 
@@ -1150,7 +1150,7 @@ describe('Unit', function () {
 
     it('should create new base units', function () {
       const fooBaseUnit = Unit.createUnitSingle('fooBase')
-      assert.strictEqual(fooBaseUnit.dimensions.toString(), Unit.BASE_UNITS['fooBase_STUFF'].dimensions.toString())
+      assert.strictEqual(fooBaseUnit.dimensions.toString(), Unit.BASE_UNITS.fooBase_STUFF.dimensions.toString())
       const testUnit = new Unit(5, 'fooBase')
       assert.strictEqual(testUnit.toString(), '5 fooBase')
     })

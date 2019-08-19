@@ -807,7 +807,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     for (const i in ret.units) {
       if (ret.units[i].unit.name === 'VA' || ret.units[i].unit.name === 'VAR') {
-        ret.units[i].unit = UNITS['W']
+        ret.units[i].unit = UNITS.W
       }
     }
 
@@ -1010,10 +1010,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       const baseDim = BASE_DIMENSIONS[i]
       if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
-        if (hasOwnProperty(UNIT_SYSTEMS['si'], baseDim)) {
+        if (hasOwnProperty(UNIT_SYSTEMS.si, baseDim)) {
           proposedUnitList.push({
-            unit: UNIT_SYSTEMS['si'][baseDim].unit,
-            prefix: UNIT_SYSTEMS['si'][baseDim].prefix,
+            unit: UNIT_SYSTEMS.si[baseDim].unit,
+            prefix: UNIT_SYSTEMS.si[baseDim].prefix,
             power: ret.dimensions[i] || 0
           })
         } else {
@@ -1115,9 +1115,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     for (const i in simp.units) {
       if (simp.units[i].unit) {
         if (simp.units[i].unit.name === 'VA' && isImaginary) {
-          simp.units[i].unit = UNITS['VAR']
+          simp.units[i].unit = UNITS.VAR
         } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
-          simp.units[i].unit = UNITS['VA']
+          simp.units[i].unit = UNITS.VA
         }
       }
     }
@@ -2884,7 +2884,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       // Base units
       NONE: { unit: UNIT_NONE, prefix: PREFIXES.NONE[''] },
       LENGTH: { unit: UNITS.m, prefix: PREFIXES.SHORT[''] },
-      MASS: { unit: UNITS.g, prefix: PREFIXES.SHORT['k'] },
+      MASS: { unit: UNITS.g, prefix: PREFIXES.SHORT.k },
       TIME: { unit: UNITS.s, prefix: PREFIXES.SHORT[''] },
       CURRENT: { unit: UNITS.A, prefix: PREFIXES.SHORT[''] },
       TEMPERATURE: { unit: UNITS.K, prefix: PREFIXES.SHORT[''] },
@@ -2912,7 +2912,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   // Clone to create the other unit systems
   UNIT_SYSTEMS.cgs = JSON.parse(JSON.stringify(UNIT_SYSTEMS.si))
-  UNIT_SYSTEMS.cgs.LENGTH = { unit: UNITS.m, prefix: PREFIXES.SHORT['c'] }
+  UNIT_SYSTEMS.cgs.LENGTH = { unit: UNITS.m, prefix: PREFIXES.SHORT.c }
   UNIT_SYSTEMS.cgs.MASS = { unit: UNITS.g, prefix: PREFIXES.SHORT[''] }
   UNIT_SYSTEMS.cgs.FORCE = { unit: UNITS.dyn, prefix: PREFIXES.SHORT[''] }
   UNIT_SYSTEMS.cgs.ENERGY = { unit: UNITS.erg, prefix: PREFIXES.NONE[''] }

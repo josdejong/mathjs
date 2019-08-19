@@ -32,9 +32,9 @@ export function validateBundle (expectedBundleStructure, bundle) {
       const actualType = validateTypeOf(actualValue)
 
       const message = (actualType === 'undefined')
-        ? `Missing entry in bundle. ` +
+        ? 'Missing entry in bundle. ' +
         `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
-        : `Unexpected entry type in bundle. ` +
+        : 'Unexpected entry type in bundle. ' +
         `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
 
       if (actualType !== expectedType) {
@@ -60,10 +60,10 @@ export function validateBundle (expectedBundleStructure, bundle) {
       }
 
       const message = (expectedType === 'undefined')
-        ? `Unknown entry in bundle. ` +
+        ? 'Unknown entry in bundle. ' +
         'Is there a new function added which is missing in this snapshot test? ' +
         `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
-        : `Unexpected entry type in bundle. ` +
+        : 'Unexpected entry type in bundle. ' +
         `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
 
       if (actualType !== expectedType) {
