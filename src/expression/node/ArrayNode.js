@@ -79,8 +79,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   ArrayNode.prototype.forEach = function (callback) {
-    for (let i = 0; i < this.items.length; i++) {
-      const node = this.items[i]
+    for (let node of this.items) {
       callback(node, 'items[' + i + ']', this)
     }
   }
