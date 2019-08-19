@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/bundleAny'
-const bool = math['boolean']
+const bool = math.boolean
 
 describe('boolean', function () {
   it('should convert a boolean to a boolean', function () {

@@ -10,7 +10,7 @@ const getSafeProperty = require('../../lib/utils/customs').getSafeProperty
 
 // expose on window when using bundled in a browser
 if (typeof window !== 'undefined') {
-  window['Benchmark'] = Benchmark
+  window.Benchmark = Benchmark
 }
 
 function pad (text) {
@@ -25,7 +25,7 @@ const sin = getSafeProperty(math, 'sin')
 const pi = getSafeProperty(math, 'pi')
 const compiledPlainJs = {
   evaluate: function (scope) {
-    return 2 + 3 * ('sin' in scope ? getSafeProperty(scope, 'sin') : sin)(('pi' in scope ? getSafeProperty(scope, 'pi') : pi) / 4) - 4 * scope['x']
+    return 2 + 3 * ('sin' in scope ? getSafeProperty(scope, 'sin') : sin)(('pi' in scope ? getSafeProperty(scope, 'pi') : pi) / 4) - 4 * scope.x
   }
 }
 
