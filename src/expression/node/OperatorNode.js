@@ -187,131 +187,134 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         break
 
       case 1: // unary operators
-        // precedence of the operand
-        const operandPrecedence = getPrecedence(args[0], parenthesis)
+        {
+          // precedence of the operand
+          const operandPrecedence = getPrecedence(args[0], parenthesis)
 
-        // handle special cases for LaTeX, where some of the parentheses aren't needed
-        if (latex && (operandPrecedence !== null)) {
-          let operandIdentifier
-          let rootIdentifier
-          if (parenthesis === 'keep') {
-            operandIdentifier = args[0].getIdentifier()
-            rootIdentifier = root.getIdentifier()
-          } else {
-            // Ignore Parenthesis Nodes when not in 'keep' mode
-            operandIdentifier = args[0].getContent().getIdentifier()
-            rootIdentifier = root.getContent().getIdentifier()
-          }
-          if (properties[precedence][rootIdentifier].latexLeftParens === false) {
-            result = [false]
-            break
-          }
-
-          if (properties[operandPrecedence][operandIdentifier].latexParens === false) {
-            result = [false]
-            break
-          }
-        }
-
-        if (operandPrecedence === null) {
-          // if the operand has no defined precedence, no parens are needed
-          result = [false]
-          break
-        }
-
-        if (operandPrecedence <= precedence) {
-          // if the operands precedence is lower, parens are needed
-          result = [true]
-          break
-        }
-
-        // otherwise, no parens needed
-        result = [false]
-        break
-
-      case 2: // binary operators
-        let lhsParens // left hand side needs parenthesis?
-        // precedence of the left hand side
-        const lhsPrecedence = getPrecedence(args[0], parenthesis)
-        // is the root node associative with the left hand side
-        const assocWithLhs = isAssociativeWith(root, args[0], parenthesis)
-
-        if (lhsPrecedence === null) {
-          // if the left hand side has no defined precedence, no parens are needed
-          // FunctionNode for example
-          lhsParens = false
-        } else if ((lhsPrecedence === precedence) && (associativity === 'right') && !assocWithLhs) {
-          // In case of equal precedence, if the root node is left associative
-          // parens are **never** necessary for the left hand side.
-          // If it is right associative however, parens are necessary
-          // if the root node isn't associative with the left hand side
-          lhsParens = true
-        } else if (lhsPrecedence < precedence) {
-          lhsParens = true
-        } else {
-          lhsParens = false
-        }
-
-        let rhsParens // right hand side needs parenthesis?
-        // precedence of the right hand side
-        const rhsPrecedence = getPrecedence(args[1], parenthesis)
-        // is the root node associative with the right hand side?
-        const assocWithRhs = isAssociativeWith(root, args[1], parenthesis)
-
-        if (rhsPrecedence === null) {
-          // if the right hand side has no defined precedence, no parens are needed
-          // FunctionNode for example
-          rhsParens = false
-        } else if ((rhsPrecedence === precedence) && (associativity === 'left') && !assocWithRhs) {
-          // In case of equal precedence, if the root node is right associative
-          // parens are **never** necessary for the right hand side.
-          // If it is left associative however, parens are necessary
-          // if the root node isn't associative with the right hand side
-          rhsParens = true
-        } else if (rhsPrecedence < precedence) {
-          rhsParens = true
-        } else {
-          rhsParens = false
-        }
-
-        // handle special cases for LaTeX, where some of the parentheses aren't needed
-        if (latex) {
-          let rootIdentifier
-          let lhsIdentifier
-          let rhsIdentifier
-          if (parenthesis === 'keep') {
-            rootIdentifier = root.getIdentifier()
-            lhsIdentifier = root.args[0].getIdentifier()
-            rhsIdentifier = root.args[1].getIdentifier()
-          } else {
-            // Ignore ParenthesisNodes when not in 'keep' mode
-            rootIdentifier = root.getContent().getIdentifier()
-            lhsIdentifier = root.args[0].getContent().getIdentifier()
-            rhsIdentifier = root.args[1].getContent().getIdentifier()
-          }
-
-          if (lhsPrecedence !== null) {
+          // handle special cases for LaTeX, where some of the parentheses aren't needed
+          if (latex && (operandPrecedence !== null)) {
+            let operandIdentifier
+            let rootIdentifier
+            if (parenthesis === 'keep') {
+              operandIdentifier = args[0].getIdentifier()
+              rootIdentifier = root.getIdentifier()
+            } else {
+              // Ignore Parenthesis Nodes when not in 'keep' mode
+              operandIdentifier = args[0].getContent().getIdentifier()
+              rootIdentifier = root.getContent().getIdentifier()
+            }
             if (properties[precedence][rootIdentifier].latexLeftParens === false) {
-              lhsParens = false
+              result = [false]
+              break
             }
 
-            if (properties[lhsPrecedence][lhsIdentifier].latexParens === false) {
-              lhsParens = false
+            if (properties[operandPrecedence][operandIdentifier].latexParens === false) {
+              result = [false]
+              break
             }
           }
 
-          if (rhsPrecedence !== null) {
-            if (properties[precedence][rootIdentifier].latexRightParens === false) {
-              rhsParens = false
-            }
-
-            if (properties[rhsPrecedence][rhsIdentifier].latexParens === false) {
-              rhsParens = false
-            }
+          if (operandPrecedence === null) {
+            // if the operand has no defined precedence, no parens are needed
+            result = [false]
+            break
           }
+
+          if (operandPrecedence <= precedence) {
+            // if the operands precedence is lower, parens are needed
+            result = [true]
+            break
+          }
+
+          // otherwise, no parens needed
+          result = [false]
         }
+        break
+      case 2: // binary operators
+        {
+          let lhsParens // left hand side needs parenthesis?
+          // precedence of the left hand side
+          const lhsPrecedence = getPrecedence(args[0], parenthesis)
+          // is the root node associative with the left hand side
+          const assocWithLhs = isAssociativeWith(root, args[0], parenthesis)
 
-        result = [lhsParens, rhsParens]
+          if (lhsPrecedence === null) {
+            // if the left hand side has no defined precedence, no parens are needed
+            // FunctionNode for example
+            lhsParens = false
+          } else if ((lhsPrecedence === precedence) && (associativity === 'right') && !assocWithLhs) {
+            // In case of equal precedence, if the root node is left associative
+            // parens are **never** necessary for the left hand side.
+            // If it is right associative however, parens are necessary
+            // if the root node isn't associative with the left hand side
+            lhsParens = true
+          } else if (lhsPrecedence < precedence) {
+            lhsParens = true
+          } else {
+            lhsParens = false
+          }
+
+          let rhsParens // right hand side needs parenthesis?
+          // precedence of the right hand side
+          const rhsPrecedence = getPrecedence(args[1], parenthesis)
+          // is the root node associative with the right hand side?
+          const assocWithRhs = isAssociativeWith(root, args[1], parenthesis)
+
+          if (rhsPrecedence === null) {
+            // if the right hand side has no defined precedence, no parens are needed
+            // FunctionNode for example
+            rhsParens = false
+          } else if ((rhsPrecedence === precedence) && (associativity === 'left') && !assocWithRhs) {
+            // In case of equal precedence, if the root node is right associative
+            // parens are **never** necessary for the right hand side.
+            // If it is left associative however, parens are necessary
+            // if the root node isn't associative with the right hand side
+            rhsParens = true
+          } else if (rhsPrecedence < precedence) {
+            rhsParens = true
+          } else {
+            rhsParens = false
+          }
+
+          // handle special cases for LaTeX, where some of the parentheses aren't needed
+          if (latex) {
+            let rootIdentifier
+            let lhsIdentifier
+            let rhsIdentifier
+            if (parenthesis === 'keep') {
+              rootIdentifier = root.getIdentifier()
+              lhsIdentifier = root.args[0].getIdentifier()
+              rhsIdentifier = root.args[1].getIdentifier()
+            } else {
+              // Ignore ParenthesisNodes when not in 'keep' mode
+              rootIdentifier = root.getContent().getIdentifier()
+              lhsIdentifier = root.args[0].getContent().getIdentifier()
+              rhsIdentifier = root.args[1].getContent().getIdentifier()
+            }
+
+            if (lhsPrecedence !== null) {
+              if (properties[precedence][rootIdentifier].latexLeftParens === false) {
+                lhsParens = false
+              }
+
+              if (properties[lhsPrecedence][lhsIdentifier].latexParens === false) {
+                lhsParens = false
+              }
+            }
+
+            if (rhsPrecedence !== null) {
+              if (properties[precedence][rootIdentifier].latexRightParens === false) {
+                rhsParens = false
+              }
+
+              if (properties[rhsPrecedence][rhsIdentifier].latexParens === false) {
+                rhsParens = false
+              }
+            }
+          }
+
+          result = [lhsParens, rhsParens]
+        }
         break
 
       default:

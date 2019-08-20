@@ -64,6 +64,7 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
           }
 
         case 2:
+        {
           // two dimensional array
           const rows = size[0]
           const cols = size[1]
@@ -71,8 +72,9 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
             return _det(x.clone().valueOf(), rows, cols)
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + format(size) + ')')
+              '(size: ' + format(size) + ')')
           }
+        }
 
         default:
           // multi dimensional array
