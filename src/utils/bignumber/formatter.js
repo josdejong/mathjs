@@ -108,6 +108,7 @@ export function format (value, options) {
       return toEngineering(value, precision)
 
     case 'auto':
+    {
       // TODO: clean up some day. Deprecated since: 2018-01-24
       // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
       if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
@@ -121,10 +122,10 @@ export function format (value, options) {
         }
 
         console.warn('Deprecation warning: Formatting options exponential.lower and exponential.upper ' +
-            '(minimum and maximum value) ' +
-            'are replaced with exponential.lowerExp and exponential.upperExp ' +
-            '(minimum and maximum exponent) since version 4.0.0. ' +
-            'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions))
+              '(minimum and maximum value) ' +
+              'are replaced with exponential.lowerExp and exponential.upperExp ' +
+              '(minimum and maximum exponent) since version 4.0.0. ' +
+              'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions))
 
         return format(value, fixedOptions)
       }
@@ -155,7 +156,7 @@ export function format (value, options) {
         const e = arguments[4]
         return (digits !== '.') ? digits + e : e
       })
-
+    }
     default:
       throw new Error('Unknown notation "' + notation + '". ' +
           'Choose "auto", "exponential", or "fixed".')
