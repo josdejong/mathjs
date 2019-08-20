@@ -1,3 +1,5 @@
+/* eslint no-template-curly-in-string: "off" */
+
 import escapeLatexLib from 'escape-latex'
 import { hasOwnProperty } from './object'
 
