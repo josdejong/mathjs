@@ -74,7 +74,7 @@ describe('parse', function () {
     const scope = {}
 
     math.evaluate('$ab$c = 2', scope) // dollar sign
-    assert.strictEqual(scope['$ab$c'], 2)
+    assert.strictEqual(scope.$ab$c, 2)
 
     math.evaluate('\u00E9 = 2', scope) // Latin Small Letter E with Acute
     assert.strictEqual(scope['\u00E9'], 2)

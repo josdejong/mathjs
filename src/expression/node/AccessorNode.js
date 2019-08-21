@@ -166,7 +166,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
   AccessorNode.prototype._toTex = function (options) {
     let object = this.object.toTex(options)
     if (needParenthesis(this.object)) {
-      object = `\\left(' + object + '\\right)`
+      object = '\\left(\' + object + \'\\right)'
     }
 
     return object + this.index.toTex(options)

@@ -209,7 +209,7 @@ export function create (factories, config) {
     return math.typed.apply(math.typed, args)
   }
   const internalImport = importFactory(lazyTyped, load, math, importedFactories)
-  math['import'] = internalImport
+  math.import = internalImport
 
   // listen for changes in config, import all functions again when changed
   // TODO: move this listener into the import function?
@@ -232,7 +232,7 @@ export function create (factories, config) {
 
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
-  math['import'](values(deepFlatten(factories)))
+  math.import(values(deepFlatten(factories)))
 
   // TODO: deprecated since v6.0.0. Clean up some day
   const movedNames = [

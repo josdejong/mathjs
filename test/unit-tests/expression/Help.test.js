@@ -180,7 +180,7 @@ describe('help', function () {
     }
 
     const json = Object.create(doc)
-    json['mathjs'] = 'Help'
+    json.mathjs = 'Help'
 
     const help = Help.fromJSON(json)
     assert(help instanceof Help)

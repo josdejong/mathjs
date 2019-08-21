@@ -346,13 +346,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       const ruleType = typeof rule
       switch (ruleType) {
         case 'string':
+        {
           const lr = rule.split('->')
           if (lr.length === 2) {
             rule = { l: lr[0], r: lr[1] }
           } else {
             throw SyntaxError('Could not parse rule: ' + rule)
           }
-          /* falls through */
+        }
+        /* falls through */
         case 'object':
           newRule = {
             l: removeParens(parse(rule.l)),

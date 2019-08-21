@@ -159,13 +159,14 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
 
       case 'number':
       case 'BigNumber':
-        const index = value.toLowerCase().indexOf('e')
-        if (index !== -1) {
-          return value.substring(0, index) + '\\cdot10^{' +
-              value.substring(index + 1) + '}'
+        {
+          const index = value.toLowerCase().indexOf('e')
+          if (index !== -1) {
+            return value.substring(0, index) + '\\cdot10^{' +
+                value.substring(index + 1) + '}'
+          }
         }
         return value
-
       case 'Fraction':
         return this.value.toLatex()
 

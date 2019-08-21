@@ -4,7 +4,7 @@ const BigNumber = math.BigNumber
 const Complex = math.Complex
 const DenseMatrix = math.DenseMatrix
 const Unit = math.Unit
-const variance = math['variance']
+const variance = math.variance
 
 describe('variance', function () {
   it('should return the variance of numbers', function () {
@@ -128,7 +128,7 @@ describe('variance', function () {
     const logs = []
     console.warn = (...args) => logs.push(args)
 
-    assert.strictEqual(math['var'](2, 4, 6), 4)
+    assert.strictEqual(math.var(2, 4, 6), 4)
 
     // Note that the following assertion will fail if math.var is already used in a previous unit test
     assert.deepStrictEqual(logs, [
