@@ -101,7 +101,7 @@ describe('object', function () {
       const o1 = { a: 2, b: 3 }
       const o2 = extend({}, o1)
 
-      assert.strictEqual(o2['foo'], 'bar')
+      assert.strictEqual(o2.foo, 'bar')
       assert.strictEqual(hasOwnProperty(o2, 'foo'), false)
 
       delete Object.prototype.foo
@@ -136,7 +136,7 @@ describe('object', function () {
       const o1 = { a: 2, b: 3 }
       const o2 = deepExtend({}, o1)
 
-      assert.strictEqual(o2['foo'], 'bar')
+      assert.strictEqual(o2.foo, 'bar')
       assert.strictEqual(hasOwnProperty(o2, 'foo'), false)
 
       delete Object.prototype.foo

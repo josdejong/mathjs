@@ -1,6 +1,16 @@
 # History
 
 
+# not yet published, version 6.1.1
+
+- Updated dependency `typed-function@1.1.1`.
+
+
+# 2019-08-17, version 6.1.0
+
+- Implemented function `combinationsWithRep` (see #1329). Thanks @waseemyusuf.
+
+
 # 2019-08-05, version 6.0.4
 
 - Fixed #1554, #1565: ES Modules where not transpiled to ES5, giving issues on

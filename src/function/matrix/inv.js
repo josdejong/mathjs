@@ -59,7 +59,8 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
           }
 
         case 2:
-          // two dimensional array
+        // two dimensional array
+        {
           const rows = size[0]
           const cols = size[1]
           if (rows === cols) {
@@ -74,8 +75,9 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
             }
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + format(size) + ')')
+              '(size: ' + format(size) + ')')
           }
+        }
 
         default:
           // multi dimensional array
