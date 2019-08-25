@@ -5,6 +5,7 @@ const combinationsWithRep = math.combinationsWithRep
 describe('combinations', function () {
   it('should calculate the combinations of a number taking k at a time', function () {
     assert.strictEqual(combinationsWithRep(7, 5), 462)
+    assert.strictEqual(combinationsWithRep(3, 10), 66)
     assert.strictEqual(combinationsWithRep(8, 33), 18643560)
     assert.strictEqual(combinationsWithRep(63, 7), 1078897248)
     assert.strictEqual(combinationsWithRep(25, 6), 593775)
@@ -12,6 +13,7 @@ describe('combinations', function () {
 
   it('should calculate the combinations of n items taken k at a time with BigNumbers', function () {
     assert.deepStrictEqual(combinationsWithRep(math.bignumber(7), math.bignumber(5)), math.bignumber(462))
+    assert.deepStrictEqual(combinationsWithRep(math.bignumber(3), math.bignumber(10)), math.bignumber(66))
     assert.deepStrictEqual(combinationsWithRep(math.bignumber(8), math.bignumber(33)), math.bignumber(18643560))
     assert.deepStrictEqual(combinationsWithRep(math.bignumber(63), math.bignumber(7)), math.bignumber(1078897248))
     assert.deepStrictEqual(combinationsWithRep(math.bignumber(25), math.bignumber(6)), math.bignumber(593775))
