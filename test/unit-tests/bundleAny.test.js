@@ -8,6 +8,7 @@ describe('bundleAny', function () {
       matrix: 'Matrix',
       number: 'number',
       precision: 64,
+      unitSystem: 'auto',
       predictable: false,
       epsilon: 1e-12,
       randomSeed: null
@@ -25,6 +26,7 @@ describe('bundleAny', function () {
       matrix: 'Array',
       number: 'BigNumber',
       precision: 64,
+      unitSystem: 'auto',
       predictable: false,
       epsilon: 1e-12,
       randomSeed: null
@@ -52,10 +54,9 @@ describe('bundleAny', function () {
 
   it('should apply configuration using the config function', function () {
     const math1 = math.create()
-
     assert.deepStrictEqual(math1.sqrt(-4), math1.complex(0, 2))
     assert.strictEqual(math1.typeOf(math1.pi), 'number')
-    assert.strictEqual(math1.typeOf(math1.Unit.UNITS.rad.value), 'number') // TODO: find a better way to unit test this
+    assert.strictEqual(math1.typeOf(math1.unit.unitmath().definitions().units.deg.value[0]), 'number') // TODO: find a better way to unit test this
     assert.strictEqual(math1.bignumber(1).div(3).toString(), '0.3333333333333333333333333333333333333333333333333333333333333333')
 
     const config = math1.config({
@@ -67,6 +68,7 @@ describe('bundleAny', function () {
     assert.deepStrictEqual(config, {
       matrix: 'Matrix',
       number: 'BigNumber',
+      unitSystem: 'auto',
       precision: 4,
       predictable: true,
       epsilon: 1e-12,
@@ -75,7 +77,8 @@ describe('bundleAny', function () {
 
     assert.ok(math1.isNaN(math1.sqrt(-4)))
     assert.strictEqual(math1.typeOf(math1.pi), 'BigNumber')
-    assert.strictEqual(math1.typeOf(math1.Unit.UNITS.rad.value), 'BigNumber') // TODO: find a better way to unit test this
+    assert.strictEqual(math1.typeOf(math1.unit('3 deg').getValue()), 'BigNumber')
+    assert.strictEqual(math1.typeOf(math1.unit.unitmath().definitions().units.deg.value[0]), 'BigNumber') // TODO: find a better way to unit test this
     assert.strictEqual(math1.bignumber(1).div(3).toString(), '0.3333')
 
     const config2 = math1.config({
@@ -87,6 +90,7 @@ describe('bundleAny', function () {
     assert.deepStrictEqual(config2, {
       matrix: 'Matrix',
       number: 'number',
+      unitSystem: 'auto',
       precision: 64,
       predictable: false,
       epsilon: 1e-12,
@@ -95,7 +99,7 @@ describe('bundleAny', function () {
 
     assert.deepStrictEqual(math1.sqrt(-4), math1.complex(0, 2))
     assert.strictEqual(math1.typeOf(math1.pi), 'number')
-    assert.strictEqual(math1.typeOf(math1.Unit.UNITS.rad.value), 'number') // TODO: find a better way to unit test this
+    assert.strictEqual(math1.typeOf(math1.unit.unitmath().definitions().units.deg.value[0]), 'number') // TODO: find a better way to unit test this
     assert.strictEqual(math1.bignumber(1).div(3).toString(), '0.3333333333333333333333333333333333333333333333333333333333333333')
   })
 

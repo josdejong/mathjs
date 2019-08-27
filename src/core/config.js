@@ -12,6 +12,9 @@ export const DEFAULT_CONFIG = {
   // number of significant digits in BigNumbers
   precision: 64,
 
+  // unit system for units. Choose 'auto' (default), 'si', 'cgs', or 'us'
+  unitSystem: 'auto',
+
   // predictable output type of functions. When true, output type depends only
   // on the input types. When false (default), output type can vary depending
   // on input values. For example `math.sqrt(-4)` returns `complex('2i')` when

@@ -57,7 +57,6 @@ describe('customs', function () {
       assert.strictEqual(isSafeMethod(complex, 'toString'), true)
 
       const unit = math.unit('5cm')
-      assert.strictEqual(isSafeMethod(unit, 'toNumeric'), true)
       assert.strictEqual(isSafeMethod(unit, 'toString'), true)
 
       // extend the class instance with a custom method

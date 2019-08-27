@@ -3,6 +3,7 @@ import { factory } from '../../../utils/factory'
 import { deepMap } from '../../../utils/collection'
 // TODO: Should we import this another way, in case the bundle does not include bignumber?
 import { createBigNumberPi as createPi } from '../../../utils/bignumber/constants'
+import { warnOnce } from '../../../utils/log';
 
 const name = 'unit'
 const dependencies = [
@@ -163,12 +164,12 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     let overrideUnits = {}
 
     if (config.number === 'BigNumber') {
-      console.log("Calling createPi")
+      // console.log("Calling createPi")
       const pi = createPi(BigNumber)
-      console.log("Pi is: ")
-      console.log(pi.toString())
-      console.log("pi / 180 = ")
-      console.log(pi.div(180).toString())    // This is correct so far
+      // console.log("Pi is: ")
+      // console.log(pi.toString())
+      // console.log("pi / 180 = ")
+      // console.log(pi.div(180).toString())    // This is correct so far
       Object.assign(overrideUnits, {
         deg: {
           value: [pi.div(180), 'rad'],
@@ -201,8 +202,8 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     if (overrideUnits.deg) {
-      console.log("Providing this value to UnitMath.config:")
-      console.log(overrideUnits.deg.value.toString())
+      // console.log("Providing this value to UnitMath.config:")
+      // console.log(overrideUnits.deg.value.toString())
     }
 
     Object.assign(overrideUnits, customUnits)
@@ -213,6 +214,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       parentheses: true,
       simplifyThreshold: 1,
       definitions: { units: overrideUnits, baseQuantities: customBaseQuantities },
+      system: config.unitSystem,
       type: {
         clone: clone,
         conv: conv,
@@ -272,8 +274,8 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       if (this.fixed) {
         asJSON.fixed = this.fixed
       }
-      console.log('asJSON:')
-      console.log(asJSON)
+      // console.log('asJSON:')
+      // console.log(asJSON)
       return asJSON
     }
 
@@ -297,17 +299,19 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       // number: Will have to createUnitmathInstance because the angle definitions might change.
       // precision: Will have to createUnitmathInstance because the angle definitions might change.
 
-      console.log('Configuration changed.')
-      console.log('prev:')
-      console.log(prev)
-      console.log('curr:')
-      console.log(curr)
-      if (curr.number !== prev.number || curr.precision !== prev.precision) {
-        console.log("calling createUnitmathInstance")
+      // console.log('Configuration changed.')
+      // console.log('prev:')
+      // console.log(prev)
+      // console.log('curr:')
+      // console.log(curr)
+      if (curr.number !== prev.number
+        || curr.precision !== prev.precision
+        || curr.unitSystem !== prev.unitSystem) {
+        // console.log("calling createUnitmathInstance")
         _unitmath = createUnitmathInstance()
 
-        console.log('New unitmath definitions after returning from createUnitmathInstance:')
-        console.log(unitmath().definitions().units.deg.value.toString())
+        // console.log('New unitmath definitions after returning from createUnitmathInstance:')
+        // console.log(unitmath().definitions().units.deg.value.toString())
       }
     })
   }
@@ -375,8 +379,8 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     let obj = { [newUnitName]: definition || {} }
-    console.log('in createUnitSingle, obj = ') 
-    console.log(obj)
+    // console.log('in createUnitSingle, obj = ')
+    // console.log(obj)
     return unit.createUnit(obj, options)
   }
 
@@ -387,9 +391,9 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
    * @returns {unit} The new unit
    */
   unit.createUnit = (obj, options) => {
-    console.log('createUnit was called with')
-    console.log(obj)
-    console.log(options)
+    // console.log('createUnit was called with')
+    // console.log(obj)
+    // console.log(options)
 
     let backupCustomUnits = Object.assign({}, customUnits)
     let backupBaseQuantities = customBaseQuantities.slice()
@@ -410,12 +414,15 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     if (!(options && options.override)) {
       for (let newUnit in obj) {
         if (unitmath().exists(newUnit)) {
-          throw new Error(`Cannot create unit "${newUnit}": a unit with that name already exists`)
+          throw new Error(`Cannot create unit "${newUnit}": a unit with that name already exists. To override, use { override: true }`)
         }
-        if (obj[newUnit].aliases) {
-          for (let newAlias of obj[newUnit].aliases) {
+        let aliases = obj[newUnit].aliases
+        if (aliases) {
+          aliases = aliases.valueOf() // aliases could be a Matrix, so convert to Array
+          for (let i = 0; i < aliases.length; i++) {
+            let newAlias = aliases[i]
             if (unitmath().exists(newAlias)) {
-              throw new Error(`Cannot create unit "${newAlias}": a unit with that name already exists`)
+              throw new Error(`Cannot create unit "${newAlias}": a unit with that name already exists. To override, use { override: true }`)
             }
           }
         }
@@ -437,6 +444,9 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       if (typeof obj[newUnit] === 'string' && obj[newUnit] !== '') {
         value = obj[newUnit]
       }
+      else if (obj[newUnit].type === 'Unit') {
+        value = obj[newUnit]
+      }
       else if (obj[newUnit].definition) {
         value = obj[newUnit].definition
       }
@@ -445,16 +455,17 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
         // Derived unit
 
         // If value is a unit, convert it to [value, unitStr]
-        if (value.type === 'unit') {
+        if (value.type === 'Unit') {
           value = [
             value.getValue(),
             value.getUnits().toString()
           ]
         }
 
+
         customUnits[newUnit].value = value
         if (obj[newUnit].aliases) {
-          customUnits[newUnit].aliases = obj[newUnit].aliases
+          customUnits[newUnit].aliases = obj[newUnit].aliases.valueOf() // aliases could be a Matrix, so convert to Array
         }
         if (obj[newUnit].prefixes) {
           customUnits[newUnit].prefixes = obj[newUnit].prefixes.toUpperCase()
@@ -483,20 +494,20 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
 
     }
 
-    console.log('customUnits is now:')
-    console.log(customUnits)
-    console.log('customBaseQuantities is now:')
-    console.log(customBaseQuantities)
+    // console.log('customUnits is now:')
+    // console.log(customUnits)
+    // console.log('customBaseQuantities is now:')
+    // console.log(customBaseQuantities)
 
 
     try {
-    _unitmath = createUnitmathInstance()
+      _unitmath = createUnitmathInstance()
     }
     catch (ex) {
       // Roll back customUnits and customBaseQuantities
-      console.log('Rolling back custom units')
-      console.log(backupCustomUnits)
-      console.log(backupBaseQuantities)
+      // console.log('Rolling back custom units')
+      // console.log(backupCustomUnits)
+      // console.log(backupBaseQuantities)
       customUnits = backupCustomUnits
       customBaseQuantities = backupBaseQuantities
       throw new Error('createUnit failed with error: ' + ex.message)
@@ -505,6 +516,9 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
 
   }
 
+  unit.setUnitSystem = function () {
+    throw new Error('Cannot call setUnitSystem directly. Please use math.create({ unitSystem: ... }) instead.')
+  }
 
   /**
    * Instantiate a Unit from a JSON object
@@ -514,7 +528,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Unit}
    */
   unit.fromJSON = function (json) {
-    console.log(json)
+    // console.log(json)
     let unit = unitmath()(json.value, json.unit.replace(/[\(\)]/g, ''))
     if (json.fixed)
       unit = unit.to()

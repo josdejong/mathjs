@@ -143,8 +143,7 @@ describe('divide', function () {
   it('should divide one valued unit by a valueless unit and vice-versa', function () {
     assert.strictEqual(divide(math.unit('4 gal'), math.unit('L')).format(10), '15.14164714')
     assert.strictEqual(divide(math.unit('gal'), math.unit('4 L')).format(10), '0.946352946')
-
-    assert.strictEqual(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')).toFraction(), '127/50')
+    assert.strictEqual(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')).simplify().getValue().toFraction(), '127/50')
   })
 
   it('should divide (but not simplify) two valueless units', function () {
@@ -158,6 +157,7 @@ describe('divide', function () {
     assert.strictEqual(divide(math.unit('day'), bignumber(81)).format({ precision: 50 }), '0.012345679012345679012345679012345679012345679012346 day')
     assert.strictEqual(divide(math.unit('1 day'), bignumber(81)).format({ precision: 50 }), '0.012345679012345679012345679012345679012345679012346 day')
 
+    // This is failing because currently, unitless units are not automatically converted to numeric types.
     assert.strictEqual(math.create({ number: 'BigNumber' }).evaluate('round(80 / day * 5 days, 30)').toString(), '400')
   })
 

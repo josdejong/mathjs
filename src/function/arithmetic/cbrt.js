@@ -116,6 +116,7 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
   function _cbrtUnit (x) {
     let xVal = x.getNormalizedValue()
     if (xVal && isComplex(xVal)) {
+      let result = x.clone()
       result = result.pow(1.0 / 3) // Compute the units
       result = result.setNormalizedValue(_cbrtComplex(xVal)) // Compute the value
       return result
@@ -135,7 +136,7 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
         third = 1 / 3
       }
 
-      let result = x.pow(third)
+      let result = x.setNormalizedValue(xVal).pow(third)
 
       if (negate) {
         result = result.setNormalizedValue(unaryMinus(result.getNormalizedValue()))

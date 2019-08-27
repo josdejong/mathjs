@@ -62,7 +62,7 @@ describe('Unit', function () {
     })
 
     it('should ignore properties on Object.prototype', function () {
-      Object.prototype.foo = unit(0).constructor.prototype.definitions().units['meter'] // eslint-disable-line no-extend-native
+      Object.prototype.foo = unit.unitmath().definitions().units['meter'] // eslint-disable-line no-extend-native
 
       assert.throws(function () { console.log(unit(1, 'foo')) }, /Unit "foo" not found/)
 
@@ -214,29 +214,24 @@ describe('Unit', function () {
       const u = unit(math.fraction(1, 3), 'cm')
       assert.deepStrictEqual(u.to('mm').value, math.fraction(10, 3))
     })
- 
+
     it('should convert a unit to a number', function () {
       const u = unit(5000, 'cm')
       approx.equal(u.to('mm').value, 50000)
-  
+
       approx.equal(unit(5.08, 'cm').to('inch').value, 2)
-  
+
       approx.equal(unit(101325, 'N/m^2').to('lbf/in^2').value, 14.6959487763741)
     })
-  
+
     it('should convert a unit with fixed prefix to a number', function () {
       const u1 = unit(5000, 'cm')
       const u2 = u1.to('km')
       approx.equal(u2.to('mm').value, 50000)
-  
+
       const u3 = unit(981, 'cm/s^2')
       const u4 = u3.to('km/ms^2')
       approx.equal(u4.to('m/s^2').value, 9.81)
-    })
-  
-    it('should convert a unit with fraction to a number', function () {
-      const u = unit(math.fraction(5), 'cm')
-      assert.strictEqual(u.to('mm').value, 50)
     })
 
     it('should return the value of a unit without needing the \'to\' method', function () {
@@ -572,27 +567,28 @@ describe('Unit', function () {
     })
 
     it('should simplify units according to chosen unit system', function () {
-      const unit1 = unit(10, 'N')
-      unit.setUnitSystem('us')
+      const mathUs = math.create({ unitSystem: 'us' })
+      const unit1 = mathUs.unit(10, 'N')
       assert.strictEqual(unit1.simplify().toString(), '2.248089430997105 lbf')
       assert.strictEqual(unit1.simplify().units[0].unit.name, 'lbf')
 
-      unitsetUnitSystem('cgs')
-      assert.strictEqual(unit1.simplify().format(2), '1 Mdyn')
-      assert.strictEqual(unit1.simplify().units[0].unit.name, 'dyn')
+      const mathCgs = math.create({ unitSystem: 'cgs' })
+      const unit2 = mathCgs.unit(10, 'N')
+      assert.strictEqual(unit2.simplify().format(2), '1000 kdyn')
+      assert.strictEqual(unit2.simplify().units[0].unit.name, 'dyn')
     })
 
     it('should correctly simplify units when unit system is "auto"', function () {
-      unitsetUnitSystem('auto')
-      const unit1 = unit(5, 'lbf min / s')
+      const mathAuto = math.create({ unitSystem: 'auto' })
+      const unit1 = mathAuto.unit(5, 'lbf min / s')
       assert.strictEqual(unit1.simplify().toString(), '300 lbf')
     })
 
     it('should simplify user-defined units when unit system is "auto"', function () {
-      unit.setUnitSystem('auto')
-      unit.createUnit({ 'USD': '' })
-      unit.createUnit({ 'EUR': '1.15 USD' })
-      assert.strictEqual(math.evaluate('10 EUR/hour * 2 hours').toString(), '20 EUR')
+      const mathAuto = math.create({ unitSystem: 'auto' })
+      mathAuto.unit.createUnit({ 'USD': '' })
+      mathAuto.unit.createUnit({ 'EUR': '1.15 USD' })
+      assert.strictEqual(mathAuto.evaluate('10 EUR/hour * 2 hours').toString(), '20 EUR')
     })
   })
 
@@ -1100,6 +1096,8 @@ describe('Unit', function () {
     it('should create a custom unit from a Unit definition', function () {
       const Unit1 = unit(5, 'N/woggle')
       unit.createUnitSingle('gadget', Unit1)
+      console.log(Unit1)
+      console.log(unit(1, 'gadget'))
       assert.strictEqual(unit(1, 'gadget').equals(unit(5, 'N/woggle')), true)
     })
 
@@ -1153,19 +1151,14 @@ describe('Unit', function () {
     it('should create new base units', function () {
       unit.createUnitSingle('fooBase')
       const fooBaseUnit = unit('fooBase')
-      assert.deepStrictEqual(fooBaseUnit.getQuantities(), [ 'fooBase_STUFF' ] )
+      assert.deepStrictEqual(fooBaseUnit.getQuantities(), ['fooBase_STUFF'])
       const testUnit = unit(5, 'fooBase')
       assert.strictEqual(testUnit.toString(), '5 fooBase')
     })
 
-    it('should not override base units', function () {
-      // TODO: This might be need to throw an error any more
-      assert.throws(function () { unit.createUnitSingle('fooBase', '', { override: true }) }, /Cannot create/)
-    })
-
     it('should create and use a new base if no matching base exists', function () {
       unit.createUnitSingle('jabberwocky', '1 mile^5/hour')
-      assert.deepStrictEqual(math.evaluate('4 mile^5/minute').getQuantities(), [ 'jabberwocky_STUFF' ])
+      assert.deepStrictEqual(math.evaluate('4 mile^5/minute').getQuantities(), ['jabberwocky_STUFF'])
       assert.strictEqual(math.evaluate('4 mile^5/minute to jabberwocky').format(4), '240 jabberwocky')
     })
   })
@@ -1190,7 +1183,7 @@ describe('Unit', function () {
     })
 
     it('should not reset custom units when config is mutated', function () {
-      
+
       // Create a unit
       math.createUnit({
         'astronomicalUnit': '149597870700 m'
@@ -1244,7 +1237,7 @@ describe('Unit', function () {
       assert.strictEqual((unit(1, 'm')).split(['ft', 'ft']).toString(), '3 ft,0.2808398950131238 ft')
       assert.strictEqual((unit(1.23, 'm/s')).split([]).toString(), '1.23 m / s')
       assert.strictEqual((unit(1, 'm')).split(['in', 'ft']).toString(), '39 in,0.03083989501312361 ft')
-      assert.strictEqual((unit(1, 'm')).split([ unit('ft'), unit('in') ]).toString(), '3 ft,3.370078740157485 in')
+      assert.strictEqual((unit(1, 'm')).split([unit('ft'), unit('in')]).toString(), '3 ft,3.370078740157485 in')
     })
 
     it('should be resistant to round-off error', function () {
@@ -1277,11 +1270,13 @@ describe('Unit', function () {
     it('should return SI units for custom units defined from other units', function () {
       unit.createUnit({ foo: '3 kW' }, { override: true })
       assert.strictEqual(unit('42 foo').toSI().toString(), '1.26e+5 (kg m^2) / s^3')
+
+      assert.strictEqual(unit('42 foo/km').toSI().toString(), '126 (kg m) / s^3')
     })
 
     it('should throw if custom unit not defined from existing units', function () {
       unit.createUnit({ baz: '' }, { override: true })
-      assert.throws(function () { unit('10 baz').toSI() }, /Cannot express custom unit/)
+      assert.throws(function () { unit('10 baz').toSI() }, /Cannot express unit/)
     })
   })
 })

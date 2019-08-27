@@ -444,7 +444,7 @@ describe('parse', function () {
 
     it('should create units and aliases', function () {
       const myMath = math.create()
-      myMath.evaluate('createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})')
+      myMath.evaluate('createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]}, {override: true})') // override required because kt also means kilotonne
       assert.strictEqual(myMath.evaluate('5 knot').toString(), '5 knot')
       assert.strictEqual(myMath.evaluate('5 knots').toString(), '5 knots')
       assert.strictEqual(myMath.evaluate('5 kt').toString(), '5 kt')
@@ -777,7 +777,6 @@ describe('parse', function () {
     })
 
     it('should invoke a function on an object with the right context', function () {
-      approx.equal(parseAndEval('(2.54 cm).toNumeric("inch")'), 1)
       assert.deepStrictEqual(parseAndEval('bignumber(2).plus(3)'), math.bignumber(5))
       assert.deepStrictEqual(parseAndEval('bignumber(2)["plus"](3)'), math.bignumber(5))
     })
