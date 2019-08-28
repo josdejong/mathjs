@@ -41,14 +41,19 @@ export const createCombinationsWithRep = /* #__PURE__ */ factory(name, dependenc
         throw new TypeError('k must be less than or equal to n + k - 1')
       }
 
-      const prodrange = product(n, n + k - 1)
-      return prodrange / product(1, k)
+      if (k < n - 1) {
+        const prodrange = product(n, n + k - 1)
+        return prodrange / product(1, k)
+      }
+      const prodrange = product(k + 1, n + k - 1)
+      return prodrange / product(1, n - 1)
     },
 
     'BigNumber, BigNumber': function (n, k) {
       const BigNumber = n.constructor
       let result, i
       const one = new BigNumber(1)
+      const nMinusOne = n.minus(one)
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
         throw new TypeError('Positive integer value expected in function combinationsWithRep')
@@ -57,10 +62,15 @@ export const createCombinationsWithRep = /* #__PURE__ */ factory(name, dependenc
         throw new TypeError('k must be less than or equal to n + k - 1 in function combinationsWithRep')
       }
 
-      const max = n.minus(one)
       result = one
-      for (i = one; i.lte(k); i = i.plus(1)) {
-        result = result.times(max.plus(i)).dividedBy(i)
+      if (k.lt(nMinusOne)) {
+        for (i = one; i.lte(nMinusOne); i = i.plus(one)) {
+          result = result.times(k.plus(i)).dividedBy(i)
+        }
+      } else {
+        for (i = one; i.lte(k); i = i.plus(one)) {
+          result = result.times(nMinusOne.plus(i)).dividedBy(i)
+        }
       }
 
       return result
