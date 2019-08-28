@@ -1,8 +1,9 @@
 # History
 
 
-# not yet published, version 6.1.1
+# not yet published, version 6.2.0
 
+- Improved performance of `combinationsWithRep`. Thanks @waseemyusuf.
 - Updated dependency `typed-function@1.1.1`.
 
 
