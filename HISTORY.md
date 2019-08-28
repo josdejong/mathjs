@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 6.2.0
+# 2019-08-28, version 6.2.0
 
 - Improved performance of `combinationsWithRep`. Thanks @waseemyusuf.
 - Add unit aliases `bit` and `byte`.
