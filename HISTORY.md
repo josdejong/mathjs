@@ -4,6 +4,8 @@
 # not yet published, version 6.2.0
 
 - Improved performance of `combinationsWithRep`. Thanks @waseemyusuf.
+- Add unit aliases `bit` and `byte`.
+- Fix docs referring to `bit` and `byte` instead of `bits` and `bytes`.
 - Updated dependency `typed-function@1.1.1`.
 
 

@@ -1412,9 +1412,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
   }
 
-  PREFIXES.SHORTLONG = Object.assign(PREFIXES.SHORT, PREFIXES.LONG)
-  PREFIXES.BINARY_SHORT = Object.assign(PREFIXES.BINARY_SHORT_SI, PREFIXES.BINARY_SHORT_IEC)
-  PREFIXES.BINARY_LONG = Object.assign(PREFIXES.BINARY_LONG_SI, PREFIXES.BINARY_LONG_IEC)
+  PREFIXES.SHORTLONG = Object.assign({}, PREFIXES.SHORT, PREFIXES.LONG)
+  PREFIXES.BINARY_SHORT = Object.assign({}, PREFIXES.BINARY_SHORT_SI, PREFIXES.BINARY_SHORT_IEC)
+  PREFIXES.BINARY_LONG = Object.assign({}, PREFIXES.BINARY_LONG_SI, PREFIXES.BINARY_LONG_IEC)
 
   /* Internally, each unit is represented by a value and a dimension array. The elements of the dimensions array have the following meaning:
    * Index  Dimension
@@ -2830,7 +2830,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     webers: 'weber',
     teslas: 'tesla',
     electronvolts: 'electronvolt',
-    moles: 'mole'
+    moles: 'mole',
+
+    bit: 'bits',
+    byte: 'bytes'
   }
 
   /**
@@ -2891,7 +2894,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       LUMINOUS_INTENSITY: { unit: UNITS.cd, prefix: PREFIXES.SHORT[''] },
       AMOUNT_OF_SUBSTANCE: { unit: UNITS.mol, prefix: PREFIXES.SHORT[''] },
       ANGLE: { unit: UNITS.rad, prefix: PREFIXES.SHORT[''] },
-      BIT: { unit: UNITS.bit, prefix: PREFIXES.SHORT[''] },
+      BIT: { unit: UNITS.bits, prefix: PREFIXES.SHORT[''] },
 
       // Derived units
       FORCE: { unit: UNITS.N, prefix: PREFIXES.SHORT[''] },
