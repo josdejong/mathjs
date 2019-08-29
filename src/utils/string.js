@@ -84,9 +84,9 @@ export function format (value, options) {
   if (value && typeof value === 'object') {
     if (typeof value.format === 'function') {
       return value.format(options)
-    } else if (value && value.toString() !== {}.toString()) {
+    } else if (value && value.toString(options) !== {}.toString()) {
       // this object has a non-native toString method, use that one
-      return value.toString()
+      return value.toString(options)
     } else {
       const entries = Object.keys(value).map(key => {
         return '"' + key + '": ' + format(value[key], options)

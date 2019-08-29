@@ -1,6 +1,11 @@
 # History
 
 
+# not yet published, version 6.2.1
+
+- Fixed #1606: function `format` not working for expressions.
+
+
 # 2019-08-28, version 6.2.0
 
 - Improved performance of `combinationsWithRep`. Thanks @waseemyusuf.
