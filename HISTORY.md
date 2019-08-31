@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 6.2.1
+# 2019-08-31, version 6.2.1
 
 - Fixed #1606: function `format` not working for expressions.
 
