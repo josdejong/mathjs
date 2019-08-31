@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 6.1.0
- * @date    2019-08-17
+ * @version 6.2.1
+ * @date    2019-08-31
  *
  * @license
  * Copyright (C) 2013-2019 Jos de Jong <wjosdejong@gmail.com>
@@ -2350,51 +2350,53 @@ function format(value, options) {
       return toEngineering(value, precision);
 
     case 'auto':
-      // TODO: clean up some day. Deprecated since: 2018-01-24
-      // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
-      if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
-        var fixedOptions = Object(object["i" /* mapObject */])(options, function (x) {
-          return x;
+      {
+        // TODO: clean up some day. Deprecated since: 2018-01-24
+        // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
+        if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
+          var fixedOptions = Object(object["i" /* mapObject */])(options, function (x) {
+            return x;
+          });
+          fixedOptions.exponential = undefined;
+
+          if (options.exponential.lower !== undefined) {
+            fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10);
+          }
+
+          if (options.exponential.upper !== undefined) {
+            fixedOptions.upperExp = Math.round(Math.log(options.exponential.upper) / Math.LN10);
+          }
+
+          console.warn('Deprecation warning: Formatting options exponential.lower and exponential.upper ' + '(minimum and maximum value) ' + 'are replaced with exponential.lowerExp and exponential.upperExp ' + '(minimum and maximum exponent) since version 4.0.0. ' + 'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions));
+          return format(value, fixedOptions);
+        } // determine lower and upper bound for exponential notation.
+        // TODO: implement support for upper and lower to be BigNumbers themselves
+
+
+        var lowerExp = options && options.lowerExp !== undefined ? options.lowerExp : -3;
+        var upperExp = options && options.upperExp !== undefined ? options.upperExp : 5; // handle special case zero
+
+        if (value.isZero()) return '0'; // determine whether or not to output exponential notation
+
+        var str;
+        var rounded = value.toSignificantDigits(precision);
+        var exp = rounded.e;
+
+        if (exp >= lowerExp && exp < upperExp) {
+          // normal number notation
+          str = rounded.toFixed();
+        } else {
+          // exponential notation
+          str = toExponential(value, precision);
+        } // remove trailing zeros after the decimal point
+
+
+        return str.replace(/((\.\d*?)(0+))($|e)/, function () {
+          var digits = arguments[2];
+          var e = arguments[4];
+          return digits !== '.' ? digits + e : e;
         });
-        fixedOptions.exponential = undefined;
-
-        if (options.exponential.lower !== undefined) {
-          fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10);
-        }
-
-        if (options.exponential.upper !== undefined) {
-          fixedOptions.upperExp = Math.round(Math.log(options.exponential.upper) / Math.LN10);
-        }
-
-        console.warn('Deprecation warning: Formatting options exponential.lower and exponential.upper ' + '(minimum and maximum value) ' + 'are replaced with exponential.lowerExp and exponential.upperExp ' + '(minimum and maximum exponent) since version 4.0.0. ' + 'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions));
-        return format(value, fixedOptions);
-      } // determine lower and upper bound for exponential notation.
-      // TODO: implement support for upper and lower to be BigNumbers themselves
-
-
-      var lowerExp = options && options.lowerExp !== undefined ? options.lowerExp : -3;
-      var upperExp = options && options.upperExp !== undefined ? options.upperExp : 5; // handle special case zero
-
-      if (value.isZero()) return '0'; // determine whether or not to output exponential notation
-
-      var str;
-      var rounded = value.toSignificantDigits(precision);
-      var exp = rounded.e;
-
-      if (exp >= lowerExp && exp < upperExp) {
-        // normal number notation
-        str = rounded.toFixed();
-      } else {
-        // exponential notation
-        str = toExponential(value, precision);
-      } // remove trailing zeros after the decimal point
-
-
-      return str.replace(/((\.\d*?)(0+))($|e)/, function () {
-        var digits = arguments[2];
-        var e = arguments[4];
-        return digits !== '.' ? digits + e : e;
-      });
+      }
 
     default:
       throw new Error('Unknown notation "' + notation + '". ' + 'Choose "auto", "exponential", or "fixed".');
@@ -2540,9 +2542,9 @@ function string_format(value, options) {
   if (value && _typeof(value) === 'object') {
     if (typeof value.format === 'function') {
       return value.format(options);
-    } else if (value && value.toString() !== {}.toString()) {
+    } else if (value && value.toString(options) !== {}.toString()) {
       // this object has a non-native toString method, use that one
-      return value.toString();
+      return value.toString(options);
     } else {
       var entries = Object.keys(value).map(function (key) {
         return '"' + key + '": ' + string_format(value[key], options);
@@ -5167,7 +5169,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       { name: 'Date',      test: function (x) { return x instanceof Date } },
       { name: 'RegExp',    test: function (x) { return x instanceof RegExp } },
       { name: 'Object',    test: function (x) {
-        return typeof x === 'object' && x.constructor === Object
+        return typeof x === 'object' && x !== null && x.constructor === Object
       }},
       { name: 'null',      test: function (x) { return x === null } },
       { name: 'undefined', test: function (x) { return x === undefined } }
@@ -12124,7 +12126,7 @@ function throwNoComplex(x) {
 }
 
 function throwNoMatrix() {
-  throw new Error("Cannot convert array into a Matrix: no class 'DenseMatrix' provided");
+  throw new Error('Cannot convert array into a Matrix: no class \'DenseMatrix\' provided');
 }
 
 function throwNoFraction(x) {
@@ -12396,34 +12398,38 @@ Object(factory["a" /* factory */])(Complex_name, Complex_dependencies, function 
   complex_default.a.fromPolar = function (args) {
     switch (arguments.length) {
       case 1:
-        var arg = arguments[0];
+        {
+          var arg = arguments[0];
 
-        if (_typeof(arg) === 'object') {
-          return complex_default()(arg);
+          if (_typeof(arg) === 'object') {
+            return complex_default()(arg);
+          } else {
+            throw new TypeError('Input has to be an object with r and phi keys.');
+          }
         }
 
-        throw new TypeError('Input has to be an object with r and phi keys.');
-
       case 2:
-        var r = arguments[0];
-        var phi = arguments[1];
+        {
+          var r = arguments[0];
+          var phi = arguments[1];
 
-        if (Object(is["y" /* isNumber */])(r)) {
-          if (Object(is["L" /* isUnit */])(phi) && phi.hasBase('ANGLE')) {
-            // convert unit to a number in radians
-            phi = phi.toNumber('rad');
+          if (Object(is["y" /* isNumber */])(r)) {
+            if (Object(is["L" /* isUnit */])(phi) && phi.hasBase('ANGLE')) {
+              // convert unit to a number in radians
+              phi = phi.toNumber('rad');
+            }
+
+            if (Object(is["y" /* isNumber */])(phi)) {
+              return new complex_default.a({
+                r: r,
+                phi: phi
+              });
+            }
+
+            throw new TypeError('Phi is not a number nor an angle unit.');
+          } else {
+            throw new TypeError('Radius r is not a number.');
           }
-
-          if (Object(is["y" /* isNumber */])(phi)) {
-            return new complex_default.a({
-              r: r,
-              phi: phi
-            });
-          }
-
-          throw new TypeError('Phi is not a number nor an angle unit.');
-        } else {
-          throw new TypeError('Radius r is not a number.');
         }
 
       default:
@@ -25938,26 +25944,27 @@ Object(factory["a" /* factory */])(transpose_name, transpose_dependencies, funct
           break;
 
         case 2:
-          // rows and columns
-          var rows = size[0];
-          var columns = size[1]; // check columns
+          {
+            // rows and columns
+            var rows = size[0];
+            var columns = size[1]; // check columns
 
-          if (columns === 0) {
-            // throw exception
-            throw new RangeError('Cannot transpose a 2D matrix with no columns (size: ' + Object(utils_string["d" /* format */])(size) + ')');
-          } // process storage format
+            if (columns === 0) {
+              // throw exception
+              throw new RangeError('Cannot transpose a 2D matrix with no columns (size: ' + Object(utils_string["d" /* format */])(size) + ')');
+            } // process storage format
 
 
-          switch (x.storage()) {
-            case 'dense':
-              c = _denseTranspose(x, rows, columns);
-              break;
+            switch (x.storage()) {
+              case 'dense':
+                c = _denseTranspose(x, rows, columns);
+                break;
 
-            case 'sparse':
-              c = _sparseTranspose(x, rows, columns);
-              break;
+              case 'sparse':
+                c = _sparseTranspose(x, rows, columns);
+                break;
+            }
           }
-
           break;
 
         default:
@@ -31408,19 +31415,21 @@ Object(factory["a" /* factory */])(ImmutableDenseMatrix_name, ImmutableDenseMatr
   ImmutableDenseMatrix.prototype.subset = function (index) {
     switch (arguments.length) {
       case 1:
-        // use base implementation
-        var m = DenseMatrix.prototype.subset.call(this, index); // check result is a matrix
+        {
+          // use base implementation
+          var m = DenseMatrix.prototype.subset.call(this, index); // check result is a matrix
 
-        if (Object(is["v" /* isMatrix */])(m)) {
-          // return immutable matrix
-          return new ImmutableDenseMatrix({
-            data: m._data,
-            size: m._size,
-            datatype: m._datatype
-          });
+          if (Object(is["v" /* isMatrix */])(m)) {
+            // return immutable matrix
+            return new ImmutableDenseMatrix({
+              data: m._data,
+              size: m._size,
+              datatype: m._datatype
+            });
+          }
+
+          return m;
         }
-
-        return m;
       // intentional fall through
 
       case 2:
@@ -33291,7 +33300,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
 
     for (var i in ret.units) {
       if (ret.units[i].unit.name === 'VA' || ret.units[i].unit.name === 'VAR') {
-        ret.units[i].unit = UNITS['W'];
+        ret.units[i].unit = UNITS.W;
       }
     }
 
@@ -33510,10 +33519,10 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
       var baseDim = BASE_DIMENSIONS[i];
 
       if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
-        if (Object(utils_object["f" /* hasOwnProperty */])(UNIT_SYSTEMS['si'], baseDim)) {
+        if (Object(utils_object["f" /* hasOwnProperty */])(UNIT_SYSTEMS.si, baseDim)) {
           proposedUnitList.push({
-            unit: UNIT_SYSTEMS['si'][baseDim].unit,
-            prefix: UNIT_SYSTEMS['si'][baseDim].prefix,
+            unit: UNIT_SYSTEMS.si[baseDim].unit,
+            prefix: UNIT_SYSTEMS.si[baseDim].prefix,
             power: ret.dimensions[i] || 0
           });
         } else {
@@ -33618,9 +33627,9 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
     for (var i in simp.units) {
       if (simp.units[i].unit) {
         if (simp.units[i].unit.name === 'VA' && isImaginary) {
-          simp.units[i].unit = UNITS['VAR'];
+          simp.units[i].unit = UNITS.VAR;
         } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
-          simp.units[i].unit = UNITS['VA'];
+          simp.units[i].unit = UNITS.VA;
         }
       }
     } // Now apply the best prefix
@@ -34407,9 +34416,9 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
       }
     }
   };
-  PREFIXES.SHORTLONG = _extends(PREFIXES.SHORT, PREFIXES.LONG);
-  PREFIXES.BINARY_SHORT = _extends(PREFIXES.BINARY_SHORT_SI, PREFIXES.BINARY_SHORT_IEC);
-  PREFIXES.BINARY_LONG = _extends(PREFIXES.BINARY_LONG_SI, PREFIXES.BINARY_LONG_IEC);
+  PREFIXES.SHORTLONG = _extends({}, PREFIXES.SHORT, PREFIXES.LONG);
+  PREFIXES.BINARY_SHORT = _extends({}, PREFIXES.BINARY_SHORT_SI, PREFIXES.BINARY_SHORT_IEC);
+  PREFIXES.BINARY_LONG = _extends({}, PREFIXES.BINARY_LONG_SI, PREFIXES.BINARY_LONG_IEC);
   /* Internally, each unit is represented by a value and a dimension array. The elements of the dimensions array have the following meaning:
    * Index  Dimension
    * -----  ---------
@@ -35845,7 +35854,9 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
     webers: 'weber',
     teslas: 'tesla',
     electronvolts: 'electronvolt',
-    moles: 'mole'
+    moles: 'mole',
+    bit: 'bits',
+    "byte": 'bytes'
     /**
      * Calculate the values for the angle units.
      * Value is calculated as number or BigNumber depending on the configuration
@@ -35918,7 +35929,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
       },
       MASS: {
         unit: UNITS.g,
-        prefix: PREFIXES.SHORT['k']
+        prefix: PREFIXES.SHORT.k
       },
       TIME: {
         unit: UNITS.s,
@@ -35945,7 +35956,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
         prefix: PREFIXES.SHORT['']
       },
       BIT: {
-        unit: UNITS.bit,
+        unit: UNITS.bits,
         prefix: PREFIXES.SHORT['']
       },
       // Derived units
@@ -36007,7 +36018,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
   UNIT_SYSTEMS.cgs = JSON.parse(JSON.stringify(UNIT_SYSTEMS.si));
   UNIT_SYSTEMS.cgs.LENGTH = {
     unit: UNITS.m,
-    prefix: PREFIXES.SHORT['c']
+    prefix: PREFIXES.SHORT.c
   };
   UNIT_SYSTEMS.cgs.MASS = {
     unit: UNITS.g,
@@ -39373,23 +39384,25 @@ Object(factory["a" /* factory */])(trace_name, trace_dependencies, function (_re
         throw new RangeError('Matrix must be square (size: ' + Object(utils_string["d" /* format */])(size) + ')');
 
       case 2:
-        // two dimensional
-        var rows = size[0];
-        var cols = size[1];
+        {
+          // two dimensional
+          var rows = size[0];
+          var cols = size[1];
 
-        if (rows === cols) {
-          // calulate sum
-          var sum = 0; // loop diagonal
+          if (rows === cols) {
+            // calulate sum
+            var sum = 0; // loop diagonal
 
-          for (var i = 0; i < rows; i++) {
-            sum = add(sum, data[i][i]);
-          } // return trace
+            for (var i = 0; i < rows; i++) {
+              sum = add(sum, data[i][i]);
+            } // return trace
 
 
-          return sum;
+            return sum;
+          } else {
+            throw new RangeError('Matrix must be square (size: ' + Object(utils_string["d" /* format */])(size) + ')');
+          }
         }
-
-        throw new RangeError('Matrix must be square (size: ' + Object(utils_string["d" /* format */])(size) + ')');
 
       default:
         // multi dimensional
@@ -40197,7 +40210,7 @@ Object(factory["a" /* factory */])(AccessorNode_name, AccessorNode_dependencies,
     var object = this.object.toTex(options);
 
     if (needParenthesis(this.object)) {
-      object = "\\left(' + object + '\\right)";
+      object = '\\left(\' + object + \'\\right)';
     }
 
     return object + this.index.toTex(options);
@@ -41564,6 +41577,7 @@ var dist = __webpack_require__(17);
 var dist_default = /*#__PURE__*/__webpack_require__.n(dist);
 
 // CONCATENATED MODULE: ./src/utils/latex.js
+/* eslint no-template-curly-in-string: "off" */
 
 
 var latexSymbols = {
@@ -41679,304 +41693,304 @@ var latexOperators = {
 var latexFunctions = {
   // arithmetic
   abs: {
-    1: "\\left|${args[0]}\\right|"
+    1: '\\left|${args[0]}\\right|'
   },
   add: {
-    2: "\\left(${args[0]}".concat(latexOperators['add'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.add, "${args[1]}\\right)")
   },
   cbrt: {
-    1: "\\sqrt[3]{${args[0]}}"
+    1: '\\sqrt[3]{${args[0]}}'
   },
   ceil: {
-    1: "\\left\\lceil${args[0]}\\right\\rceil"
+    1: '\\left\\lceil${args[0]}\\right\\rceil'
   },
   cube: {
-    1: "\\left(${args[0]}\\right)^3"
+    1: '\\left(${args[0]}\\right)^3'
   },
   divide: {
-    2: "\\frac{${args[0]}}{${args[1]}}"
+    2: '\\frac{${args[0]}}{${args[1]}}'
   },
   dotDivide: {
-    2: "\\left(${args[0]}".concat(latexOperators['dotDivide'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.dotDivide, "${args[1]}\\right)")
   },
   dotMultiply: {
-    2: "\\left(${args[0]}".concat(latexOperators['dotMultiply'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.dotMultiply, "${args[1]}\\right)")
   },
   dotPow: {
-    2: "\\left(${args[0]}".concat(latexOperators['dotPow'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.dotPow, "${args[1]}\\right)")
   },
   exp: {
-    1: "\\exp\\left(${args[0]}\\right)"
+    1: '\\exp\\left(${args[0]}\\right)'
   },
-  expm1: "\\left(e".concat(latexOperators['pow'], "{${args[0]}}-1\\right)"),
+  expm1: "\\left(e".concat(latexOperators.pow, "{${args[0]}}-1\\right)"),
   fix: {
-    1: "\\mathrm{${name}}\\left(${args[0]}\\right)"
+    1: '\\mathrm{${name}}\\left(${args[0]}\\right)'
   },
   floor: {
-    1: "\\left\\lfloor${args[0]}\\right\\rfloor"
+    1: '\\left\\lfloor${args[0]}\\right\\rfloor'
   },
-  gcd: "\\gcd\\left(${args}\\right)",
-  hypot: "\\hypot\\left(${args}\\right)",
+  gcd: '\\gcd\\left(${args}\\right)',
+  hypot: '\\hypot\\left(${args}\\right)',
   log: {
-    1: "\\ln\\left(${args[0]}\\right)",
-    2: "\\log_{${args[1]}}\\left(${args[0]}\\right)"
+    1: '\\ln\\left(${args[0]}\\right)',
+    2: '\\log_{${args[1]}}\\left(${args[0]}\\right)'
   },
   log10: {
-    1: "\\log_{10}\\left(${args[0]}\\right)"
+    1: '\\log_{10}\\left(${args[0]}\\right)'
   },
   log1p: {
-    1: "\\ln\\left(${args[0]}+1\\right)",
-    2: "\\log_{${args[1]}}\\left(${args[0]}+1\\right)"
+    1: '\\ln\\left(${args[0]}+1\\right)',
+    2: '\\log_{${args[1]}}\\left(${args[0]}+1\\right)'
   },
-  log2: "\\log_{2}\\left(${args[0]}\\right)",
+  log2: '\\log_{2}\\left(${args[0]}\\right)',
   mod: {
-    2: "\\left(${args[0]}".concat(latexOperators['mod'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.mod, "${args[1]}\\right)")
   },
   multiply: {
-    2: "\\left(${args[0]}".concat(latexOperators['multiply'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.multiply, "${args[1]}\\right)")
   },
   norm: {
-    1: "\\left\\|${args[0]}\\right\\|",
+    1: '\\left\\|${args[0]}\\right\\|',
     2: undefined // use default template
 
   },
   nthRoot: {
-    2: "\\sqrt[${args[1]}]{${args[0]}}"
+    2: '\\sqrt[${args[1]}]{${args[0]}}'
   },
   nthRoots: {
-    2: "\\{y : $y^{args[1]} = {${args[0]}}\\}"
+    2: '\\{y : $y^{args[1]} = {${args[0]}}\\}'
   },
   pow: {
-    2: "\\left(${args[0]}\\right)".concat(latexOperators['pow'], "{${args[1]}}")
+    2: "\\left(${args[0]}\\right)".concat(latexOperators.pow, "{${args[1]}}")
   },
   round: {
-    1: "\\left\\lfloor${args[0]}\\right\\rceil",
+    1: '\\left\\lfloor${args[0]}\\right\\rceil',
     2: undefined // use default template
 
   },
   sign: {
-    1: "\\mathrm{${name}}\\left(${args[0]}\\right)"
+    1: '\\mathrm{${name}}\\left(${args[0]}\\right)'
   },
   sqrt: {
-    1: "\\sqrt{${args[0]}}"
+    1: '\\sqrt{${args[0]}}'
   },
   square: {
-    1: "\\left(${args[0]}\\right)^2"
+    1: '\\left(${args[0]}\\right)^2'
   },
   subtract: {
-    2: "\\left(${args[0]}".concat(latexOperators['subtract'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.subtract, "${args[1]}\\right)")
   },
   unaryMinus: {
-    1: "".concat(latexOperators['unaryMinus'], "\\left(${args[0]}\\right)")
+    1: "".concat(latexOperators.unaryMinus, "\\left(${args[0]}\\right)")
   },
   unaryPlus: {
-    1: "".concat(latexOperators['unaryPlus'], "\\left(${args[0]}\\right)")
+    1: "".concat(latexOperators.unaryPlus, "\\left(${args[0]}\\right)")
   },
   // bitwise
   bitAnd: {
-    2: "\\left(${args[0]}".concat(latexOperators['bitAnd'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.bitAnd, "${args[1]}\\right)")
   },
   bitNot: {
-    1: latexOperators['bitNot'] + "\\left(${args[0]}\\right)"
+    1: latexOperators.bitNot + '\\left(${args[0]}\\right)'
   },
   bitOr: {
-    2: "\\left(${args[0]}".concat(latexOperators['bitOr'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.bitOr, "${args[1]}\\right)")
   },
   bitXor: {
-    2: "\\left(${args[0]}".concat(latexOperators['bitXor'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.bitXor, "${args[1]}\\right)")
   },
   leftShift: {
-    2: "\\left(${args[0]}".concat(latexOperators['leftShift'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.leftShift, "${args[1]}\\right)")
   },
   rightArithShift: {
-    2: "\\left(${args[0]}".concat(latexOperators['rightArithShift'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.rightArithShift, "${args[1]}\\right)")
   },
   rightLogShift: {
-    2: "\\left(${args[0]}".concat(latexOperators['rightLogShift'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.rightLogShift, "${args[1]}\\right)")
   },
   // combinatorics
   bellNumbers: {
-    1: "\\mathrm{B}_{${args[0]}}"
+    1: '\\mathrm{B}_{${args[0]}}'
   },
   catalan: {
-    1: "\\mathrm{C}_{${args[0]}}"
+    1: '\\mathrm{C}_{${args[0]}}'
   },
   stirlingS2: {
-    2: "\\mathrm{S}\\left(${args}\\right)"
+    2: '\\mathrm{S}\\left(${args}\\right)'
   },
   // complex
   arg: {
-    1: "\\arg\\left(${args[0]}\\right)"
+    1: '\\arg\\left(${args[0]}\\right)'
   },
   conj: {
-    1: "\\left(${args[0]}\\right)^*"
+    1: '\\left(${args[0]}\\right)^*'
   },
   im: {
-    1: "\\Im\\left\\lbrace${args[0]}\\right\\rbrace"
+    1: '\\Im\\left\\lbrace${args[0]}\\right\\rbrace'
   },
   re: {
-    1: "\\Re\\left\\lbrace${args[0]}\\right\\rbrace"
+    1: '\\Re\\left\\lbrace${args[0]}\\right\\rbrace'
   },
   // logical
   and: {
-    2: "\\left(${args[0]}".concat(latexOperators['and'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.and, "${args[1]}\\right)")
   },
   not: {
-    1: latexOperators['not'] + "\\left(${args[0]}\\right)"
+    1: latexOperators.not + '\\left(${args[0]}\\right)'
   },
   or: {
-    2: "\\left(${args[0]}".concat(latexOperators['or'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.or, "${args[1]}\\right)")
   },
   xor: {
-    2: "\\left(${args[0]}".concat(latexOperators['xor'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.xor, "${args[1]}\\right)")
   },
   // matrix
   cross: {
-    2: "\\left(${args[0]}\\right)\\times\\left(${args[1]}\\right)"
+    2: '\\left(${args[0]}\\right)\\times\\left(${args[1]}\\right)'
   },
   ctranspose: {
-    1: "\\left(${args[0]}\\right)".concat(latexOperators['ctranspose'])
+    1: "\\left(${args[0]}\\right)".concat(latexOperators.ctranspose)
   },
   det: {
-    1: "\\det\\left(${args[0]}\\right)"
+    1: '\\det\\left(${args[0]}\\right)'
   },
   dot: {
-    2: "\\left(${args[0]}\\cdot${args[1]}\\right)"
+    2: '\\left(${args[0]}\\cdot${args[1]}\\right)'
   },
   expm: {
-    1: "\\exp\\left(${args[0]}\\right)"
+    1: '\\exp\\left(${args[0]}\\right)'
   },
   inv: {
-    1: "\\left(${args[0]}\\right)^{-1}"
+    1: '\\left(${args[0]}\\right)^{-1}'
   },
   sqrtm: {
-    1: "{${args[0]}}".concat(latexOperators['pow'], "{\\frac{1}{2}}")
+    1: "{${args[0]}}".concat(latexOperators.pow, "{\\frac{1}{2}}")
   },
   trace: {
-    1: "\\mathrm{tr}\\left(${args[0]}\\right)"
+    1: '\\mathrm{tr}\\left(${args[0]}\\right)'
   },
   transpose: {
-    1: "\\left(${args[0]}\\right)".concat(latexOperators['transpose'])
+    1: "\\left(${args[0]}\\right)".concat(latexOperators.transpose)
   },
   // probability
   combinations: {
-    2: "\\binom{${args[0]}}{${args[1]}}"
+    2: '\\binom{${args[0]}}{${args[1]}}'
   },
   combinationsWithRep: {
-    2: "\\left(\\!\\!{\\binom{${args[0]}}{${args[1]}}}\\!\\!\\right)"
+    2: '\\left(\\!\\!{\\binom{${args[0]}}{${args[1]}}}\\!\\!\\right)'
   },
   factorial: {
-    1: "\\left(${args[0]}\\right)".concat(latexOperators['factorial'])
+    1: "\\left(${args[0]}\\right)".concat(latexOperators.factorial)
   },
   gamma: {
-    1: "\\Gamma\\left(${args[0]}\\right)"
+    1: '\\Gamma\\left(${args[0]}\\right)'
   },
   // relational
   equal: {
-    2: "\\left(${args[0]}".concat(latexOperators['equal'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.equal, "${args[1]}\\right)")
   },
   larger: {
-    2: "\\left(${args[0]}".concat(latexOperators['larger'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.larger, "${args[1]}\\right)")
   },
   largerEq: {
-    2: "\\left(${args[0]}".concat(latexOperators['largerEq'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.largerEq, "${args[1]}\\right)")
   },
   smaller: {
-    2: "\\left(${args[0]}".concat(latexOperators['smaller'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.smaller, "${args[1]}\\right)")
   },
   smallerEq: {
-    2: "\\left(${args[0]}".concat(latexOperators['smallerEq'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.smallerEq, "${args[1]}\\right)")
   },
   unequal: {
-    2: "\\left(${args[0]}".concat(latexOperators['unequal'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.unequal, "${args[1]}\\right)")
   },
   // special
   erf: {
-    1: "erf\\left(${args[0]}\\right)"
+    1: 'erf\\left(${args[0]}\\right)'
   },
   // statistics
-  max: "\\max\\left(${args}\\right)",
-  min: "\\min\\left(${args}\\right)",
-  variance: "\\mathrm{Var}\\left(${args}\\right)",
+  max: '\\max\\left(${args}\\right)',
+  min: '\\min\\left(${args}\\right)',
+  variance: '\\mathrm{Var}\\left(${args}\\right)',
   // trigonometry
   acos: {
-    1: "\\cos^{-1}\\left(${args[0]}\\right)"
+    1: '\\cos^{-1}\\left(${args[0]}\\right)'
   },
   acosh: {
-    1: "\\cosh^{-1}\\left(${args[0]}\\right)"
+    1: '\\cosh^{-1}\\left(${args[0]}\\right)'
   },
   acot: {
-    1: "\\cot^{-1}\\left(${args[0]}\\right)"
+    1: '\\cot^{-1}\\left(${args[0]}\\right)'
   },
   acoth: {
-    1: "\\coth^{-1}\\left(${args[0]}\\right)"
+    1: '\\coth^{-1}\\left(${args[0]}\\right)'
   },
   acsc: {
-    1: "\\csc^{-1}\\left(${args[0]}\\right)"
+    1: '\\csc^{-1}\\left(${args[0]}\\right)'
   },
   acsch: {
-    1: "\\mathrm{csch}^{-1}\\left(${args[0]}\\right)"
+    1: '\\mathrm{csch}^{-1}\\left(${args[0]}\\right)'
   },
   asec: {
-    1: "\\sec^{-1}\\left(${args[0]}\\right)"
+    1: '\\sec^{-1}\\left(${args[0]}\\right)'
   },
   asech: {
-    1: "\\mathrm{sech}^{-1}\\left(${args[0]}\\right)"
+    1: '\\mathrm{sech}^{-1}\\left(${args[0]}\\right)'
   },
   asin: {
-    1: "\\sin^{-1}\\left(${args[0]}\\right)"
+    1: '\\sin^{-1}\\left(${args[0]}\\right)'
   },
   asinh: {
-    1: "\\sinh^{-1}\\left(${args[0]}\\right)"
+    1: '\\sinh^{-1}\\left(${args[0]}\\right)'
   },
   atan: {
-    1: "\\tan^{-1}\\left(${args[0]}\\right)"
+    1: '\\tan^{-1}\\left(${args[0]}\\right)'
   },
   atan2: {
-    2: "\\mathrm{atan2}\\left(${args}\\right)"
+    2: '\\mathrm{atan2}\\left(${args}\\right)'
   },
   atanh: {
-    1: "\\tanh^{-1}\\left(${args[0]}\\right)"
+    1: '\\tanh^{-1}\\left(${args[0]}\\right)'
   },
   cos: {
-    1: "\\cos\\left(${args[0]}\\right)"
+    1: '\\cos\\left(${args[0]}\\right)'
   },
   cosh: {
-    1: "\\cosh\\left(${args[0]}\\right)"
+    1: '\\cosh\\left(${args[0]}\\right)'
   },
   cot: {
-    1: "\\cot\\left(${args[0]}\\right)"
+    1: '\\cot\\left(${args[0]}\\right)'
   },
   coth: {
-    1: "\\coth\\left(${args[0]}\\right)"
+    1: '\\coth\\left(${args[0]}\\right)'
   },
   csc: {
-    1: "\\csc\\left(${args[0]}\\right)"
+    1: '\\csc\\left(${args[0]}\\right)'
   },
   csch: {
-    1: "\\mathrm{csch}\\left(${args[0]}\\right)"
+    1: '\\mathrm{csch}\\left(${args[0]}\\right)'
   },
   sec: {
-    1: "\\sec\\left(${args[0]}\\right)"
+    1: '\\sec\\left(${args[0]}\\right)'
   },
   sech: {
-    1: "\\mathrm{sech}\\left(${args[0]}\\right)"
+    1: '\\mathrm{sech}\\left(${args[0]}\\right)'
   },
   sin: {
-    1: "\\sin\\left(${args[0]}\\right)"
+    1: '\\sin\\left(${args[0]}\\right)'
   },
   sinh: {
-    1: "\\sinh\\left(${args[0]}\\right)"
+    1: '\\sinh\\left(${args[0]}\\right)'
   },
   tan: {
-    1: "\\tan\\left(${args[0]}\\right)"
+    1: '\\tan\\left(${args[0]}\\right)'
   },
   tanh: {
-    1: "\\tanh\\left(${args[0]}\\right)"
+    1: '\\tanh\\left(${args[0]}\\right)'
   },
   // unit
   to: {
-    2: "\\left(${args[0]}".concat(latexOperators['to'], "${args[1]}\\right)")
+    2: "\\left(${args[0]}".concat(latexOperators.to, "${args[1]}\\right)")
   },
   // utils
   numeric: function numeric(node, options) {
@@ -41985,38 +41999,38 @@ var latexFunctions = {
   },
   // type
   number: {
-    0: "0",
-    1: "\\left(${args[0]}\\right)",
-    2: "\\left(\\left(${args[0]}\\right)${args[1]}\\right)"
+    0: '0',
+    1: '\\left(${args[0]}\\right)',
+    2: '\\left(\\left(${args[0]}\\right)${args[1]}\\right)'
   },
   string: {
     0: '\\mathtt{""}',
-    1: "\\mathrm{string}\\left(${args[0]}\\right)"
+    1: '\\mathrm{string}\\left(${args[0]}\\right)'
   },
   bignumber: {
     0: '0',
-    1: "\\left(${args[0]}\\right)"
+    1: '\\left(${args[0]}\\right)'
   },
   complex: {
     0: '0',
-    1: "\\left(${args[0]}\\right)",
-    2: "\\left(\\left(${args[0]}\\right)+".concat(latexSymbols['i'], "\\cdot\\left(${args[1]}\\right)\\right)")
+    1: '\\left(${args[0]}\\right)',
+    2: "\\left(\\left(${args[0]}\\right)+".concat(latexSymbols.i, "\\cdot\\left(${args[1]}\\right)\\right)")
   },
   matrix: {
     0: '\\begin{bmatrix}\\end{bmatrix}',
-    1: "\\left(${args[0]}\\right)",
-    2: "\\left(${args[0]}\\right)"
+    1: '\\left(${args[0]}\\right)',
+    2: '\\left(${args[0]}\\right)'
   },
   sparse: {
     0: '\\begin{bsparse}\\end{bsparse}',
-    1: "\\left(${args[0]}\\right)"
+    1: '\\left(${args[0]}\\right)'
   },
   unit: {
-    1: "\\left(${args[0]}\\right)",
-    2: "\\left(\\left(${args[0]}\\right)${args[1]}\\right)"
+    1: '\\left(${args[0]}\\right)',
+    2: '\\left(\\left(${args[0]}\\right)${args[1]}\\right)'
   }
 };
-var defaultTemplate = "\\mathrm{${name}}\\left(${args}\\right)";
+var defaultTemplate = '\\mathrm{${name}}\\left(${args}\\right)';
 var latexUnits = {
   deg: '^\\circ'
 };
@@ -42214,12 +42228,13 @@ Object(factory["a" /* factory */])(ConstantNode_name, ConstantNode_dependencies,
 
       case 'number':
       case 'BigNumber':
-        var index = value.toLowerCase().indexOf('e');
+        {
+          var index = value.toLowerCase().indexOf('e');
 
-        if (index !== -1) {
-          return value.substring(0, index) + '\\cdot10^{' + value.substring(index + 1) + '}';
+          if (index !== -1) {
+            return value.substring(0, index) + '\\cdot10^{' + value.substring(index + 1) + '}';
+          }
         }
-
         return value;
 
       case 'Fraction':
@@ -42620,7 +42635,7 @@ Object(factory["a" /* factory */])(IndexNode_name, IndexNode_dependencies, funct
         if (range.needsEnd()) {
           // create a range containing end (like '4:end')
           var childArgNames = Object.create(argNames);
-          childArgNames['end'] = true;
+          childArgNames.end = true;
 
           var evalStart = range.start._compile(math, childArgNames);
 
@@ -42632,7 +42647,7 @@ Object(factory["a" /* factory */])(IndexNode_name, IndexNode_dependencies, funct
           return function evalDimension(scope, args, context) {
             var s = size(context).valueOf();
             var childArgs = Object.create(args);
-            childArgs['end'] = s[i];
+            childArgs.end = s[i];
             return createRange(evalStart(scope, childArgs, context), evalEnd(scope, childArgs, context), evalStep(scope, childArgs, context));
           };
         } else {
@@ -42653,14 +42668,14 @@ Object(factory["a" /* factory */])(IndexNode_name, IndexNode_dependencies, funct
         // SymbolNode 'end'
         var _childArgNames = Object.create(argNames);
 
-        _childArgNames['end'] = true;
+        _childArgNames.end = true;
 
         var evalRange = range._compile(math, _childArgNames);
 
         return function evalDimension(scope, args, context) {
           var s = size(context).valueOf();
           var childArgs = Object.create(args);
-          childArgs['end'] = s[i];
+          childArgs.end = s[i];
           return evalRange(scope, childArgs, context);
         };
       } else {
@@ -43237,137 +43252,141 @@ Object(factory["a" /* factory */])(OperatorNode_name, OperatorNode_dependencies,
 
       case 1:
         // unary operators
-        // precedence of the operand
-        var operandPrecedence = getPrecedence(args[0], parenthesis); // handle special cases for LaTeX, where some of the parentheses aren't needed
+        {
+          // precedence of the operand
+          var operandPrecedence = getPrecedence(args[0], parenthesis); // handle special cases for LaTeX, where some of the parentheses aren't needed
 
-        if (latex && operandPrecedence !== null) {
-          var operandIdentifier;
-          var rootIdentifier;
+          if (latex && operandPrecedence !== null) {
+            var operandIdentifier;
+            var rootIdentifier;
 
-          if (parenthesis === 'keep') {
-            operandIdentifier = args[0].getIdentifier();
-            rootIdentifier = root.getIdentifier();
-          } else {
-            // Ignore Parenthesis Nodes when not in 'keep' mode
-            operandIdentifier = args[0].getContent().getIdentifier();
-            rootIdentifier = root.getContent().getIdentifier();
+            if (parenthesis === 'keep') {
+              operandIdentifier = args[0].getIdentifier();
+              rootIdentifier = root.getIdentifier();
+            } else {
+              // Ignore Parenthesis Nodes when not in 'keep' mode
+              operandIdentifier = args[0].getContent().getIdentifier();
+              rootIdentifier = root.getContent().getIdentifier();
+            }
+
+            if (operators_properties[precedence][rootIdentifier].latexLeftParens === false) {
+              result = [false];
+              break;
+            }
+
+            if (operators_properties[operandPrecedence][operandIdentifier].latexParens === false) {
+              result = [false];
+              break;
+            }
           }
 
-          if (operators_properties[precedence][rootIdentifier].latexLeftParens === false) {
+          if (operandPrecedence === null) {
+            // if the operand has no defined precedence, no parens are needed
             result = [false];
             break;
           }
 
-          if (operators_properties[operandPrecedence][operandIdentifier].latexParens === false) {
-            result = [false];
+          if (operandPrecedence <= precedence) {
+            // if the operands precedence is lower, parens are needed
+            result = [true];
             break;
-          }
-        }
+          } // otherwise, no parens needed
 
-        if (operandPrecedence === null) {
-          // if the operand has no defined precedence, no parens are needed
+
           result = [false];
-          break;
         }
-
-        if (operandPrecedence <= precedence) {
-          // if the operands precedence is lower, parens are needed
-          result = [true];
-          break;
-        } // otherwise, no parens needed
-
-
-        result = [false];
         break;
 
       case 2:
         // binary operators
-        var lhsParens; // left hand side needs parenthesis?
-        // precedence of the left hand side
+        {
+          var lhsParens; // left hand side needs parenthesis?
+          // precedence of the left hand side
 
-        var lhsPrecedence = getPrecedence(args[0], parenthesis); // is the root node associative with the left hand side
+          var lhsPrecedence = getPrecedence(args[0], parenthesis); // is the root node associative with the left hand side
 
-        var assocWithLhs = isAssociativeWith(root, args[0], parenthesis);
+          var assocWithLhs = isAssociativeWith(root, args[0], parenthesis);
 
-        if (lhsPrecedence === null) {
-          // if the left hand side has no defined precedence, no parens are needed
-          // FunctionNode for example
-          lhsParens = false;
-        } else if (lhsPrecedence === precedence && associativity === 'right' && !assocWithLhs) {
-          // In case of equal precedence, if the root node is left associative
-          // parens are **never** necessary for the left hand side.
-          // If it is right associative however, parens are necessary
-          // if the root node isn't associative with the left hand side
-          lhsParens = true;
-        } else if (lhsPrecedence < precedence) {
-          lhsParens = true;
-        } else {
-          lhsParens = false;
-        }
-
-        var rhsParens; // right hand side needs parenthesis?
-        // precedence of the right hand side
-
-        var rhsPrecedence = getPrecedence(args[1], parenthesis); // is the root node associative with the right hand side?
-
-        var assocWithRhs = isAssociativeWith(root, args[1], parenthesis);
-
-        if (rhsPrecedence === null) {
-          // if the right hand side has no defined precedence, no parens are needed
-          // FunctionNode for example
-          rhsParens = false;
-        } else if (rhsPrecedence === precedence && associativity === 'left' && !assocWithRhs) {
-          // In case of equal precedence, if the root node is right associative
-          // parens are **never** necessary for the right hand side.
-          // If it is left associative however, parens are necessary
-          // if the root node isn't associative with the right hand side
-          rhsParens = true;
-        } else if (rhsPrecedence < precedence) {
-          rhsParens = true;
-        } else {
-          rhsParens = false;
-        } // handle special cases for LaTeX, where some of the parentheses aren't needed
-
-
-        if (latex) {
-          var _rootIdentifier;
-
-          var lhsIdentifier;
-          var rhsIdentifier;
-
-          if (parenthesis === 'keep') {
-            _rootIdentifier = root.getIdentifier();
-            lhsIdentifier = root.args[0].getIdentifier();
-            rhsIdentifier = root.args[1].getIdentifier();
+          if (lhsPrecedence === null) {
+            // if the left hand side has no defined precedence, no parens are needed
+            // FunctionNode for example
+            lhsParens = false;
+          } else if (lhsPrecedence === precedence && associativity === 'right' && !assocWithLhs) {
+            // In case of equal precedence, if the root node is left associative
+            // parens are **never** necessary for the left hand side.
+            // If it is right associative however, parens are necessary
+            // if the root node isn't associative with the left hand side
+            lhsParens = true;
+          } else if (lhsPrecedence < precedence) {
+            lhsParens = true;
           } else {
-            // Ignore ParenthesisNodes when not in 'keep' mode
-            _rootIdentifier = root.getContent().getIdentifier();
-            lhsIdentifier = root.args[0].getContent().getIdentifier();
-            rhsIdentifier = root.args[1].getContent().getIdentifier();
+            lhsParens = false;
           }
 
-          if (lhsPrecedence !== null) {
-            if (operators_properties[precedence][_rootIdentifier].latexLeftParens === false) {
-              lhsParens = false;
+          var rhsParens; // right hand side needs parenthesis?
+          // precedence of the right hand side
+
+          var rhsPrecedence = getPrecedence(args[1], parenthesis); // is the root node associative with the right hand side?
+
+          var assocWithRhs = isAssociativeWith(root, args[1], parenthesis);
+
+          if (rhsPrecedence === null) {
+            // if the right hand side has no defined precedence, no parens are needed
+            // FunctionNode for example
+            rhsParens = false;
+          } else if (rhsPrecedence === precedence && associativity === 'left' && !assocWithRhs) {
+            // In case of equal precedence, if the root node is right associative
+            // parens are **never** necessary for the right hand side.
+            // If it is left associative however, parens are necessary
+            // if the root node isn't associative with the right hand side
+            rhsParens = true;
+          } else if (rhsPrecedence < precedence) {
+            rhsParens = true;
+          } else {
+            rhsParens = false;
+          } // handle special cases for LaTeX, where some of the parentheses aren't needed
+
+
+          if (latex) {
+            var _rootIdentifier;
+
+            var lhsIdentifier;
+            var rhsIdentifier;
+
+            if (parenthesis === 'keep') {
+              _rootIdentifier = root.getIdentifier();
+              lhsIdentifier = root.args[0].getIdentifier();
+              rhsIdentifier = root.args[1].getIdentifier();
+            } else {
+              // Ignore ParenthesisNodes when not in 'keep' mode
+              _rootIdentifier = root.getContent().getIdentifier();
+              lhsIdentifier = root.args[0].getContent().getIdentifier();
+              rhsIdentifier = root.args[1].getContent().getIdentifier();
             }
 
-            if (operators_properties[lhsPrecedence][lhsIdentifier].latexParens === false) {
-              lhsParens = false;
+            if (lhsPrecedence !== null) {
+              if (operators_properties[precedence][_rootIdentifier].latexLeftParens === false) {
+                lhsParens = false;
+              }
+
+              if (operators_properties[lhsPrecedence][lhsIdentifier].latexParens === false) {
+                lhsParens = false;
+              }
+            }
+
+            if (rhsPrecedence !== null) {
+              if (operators_properties[precedence][_rootIdentifier].latexRightParens === false) {
+                rhsParens = false;
+              }
+
+              if (operators_properties[rhsPrecedence][rhsIdentifier].latexParens === false) {
+                rhsParens = false;
+              }
             }
           }
 
-          if (rhsPrecedence !== null) {
-            if (operators_properties[precedence][_rootIdentifier].latexRightParens === false) {
-              rhsParens = false;
-            }
-
-            if (operators_properties[rhsPrecedence][rhsIdentifier].latexParens === false) {
-              rhsParens = false;
-            }
-          }
+          result = [lhsParens, rhsParens];
         }
-
-        result = [lhsParens, rhsParens];
         break;
 
       default:
@@ -46772,7 +46791,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
   function createSyntaxError(state, message) {
     var c = col(state);
     var error = new SyntaxError(message + ' (char ' + c + ')');
-    error['char'] = c;
+    error["char"] = c;
     return error;
   }
   /**
@@ -46787,7 +46806,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
   function createError(state, message) {
     var c = col(state);
     var error = new SyntaxError(message + ' (char ' + c + ')');
-    error['char'] = c;
+    error["char"] = c;
     return error;
   }
 
@@ -52959,14 +52978,16 @@ Object(factory["a" /* factory */])(det_name, det_dependencies, function (_ref) {
           }
 
         case 2:
-          // two dimensional array
-          var rows = size[0];
-          var cols = size[1];
+          {
+            // two dimensional array
+            var rows = size[0];
+            var cols = size[1];
 
-          if (rows === cols) {
-            return _det(x.clone().valueOf(), rows, cols);
-          } else {
-            throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
+            if (rows === cols) {
+              return _det(x.clone().valueOf(), rows, cols);
+            } else {
+              throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
+            }
           }
 
         default:
@@ -53091,18 +53112,20 @@ Object(factory["a" /* factory */])(inv_name, inv_dependencies, function (_ref) {
 
         case 2:
           // two dimensional array
-          var rows = size[0];
-          var cols = size[1];
+          {
+            var rows = size[0];
+            var cols = size[1];
 
-          if (rows === cols) {
-            if (Object(is["v" /* isMatrix */])(x)) {
-              return matrix(_inv(x.valueOf(), rows, cols), x.storage());
+            if (rows === cols) {
+              if (Object(is["v" /* isMatrix */])(x)) {
+                return matrix(_inv(x.valueOf(), rows, cols), x.storage());
+              } else {
+                // return an Array
+                return _inv(x, rows, cols);
+              }
             } else {
-              // return an Array
-              return _inv(x, rows, cols);
+              throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
             }
-          } else {
-            throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
           }
 
         default:
@@ -53457,16 +53480,17 @@ Object(factory["a" /* factory */])(sqrtm_name, sqrtm_dependencies, function (_re
           }
 
         case 2:
-          // Two-dimensional Array | Matrix
-          var rows = size[0];
-          var cols = size[1];
+          {
+            // Two-dimensional Array | Matrix
+            var rows = size[0];
+            var cols = size[1];
 
-          if (rows === cols) {
-            return _denmanBeavers(A);
-          } else {
-            throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
+            if (rows === cols) {
+              return _denmanBeavers(A);
+            } else {
+              throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
+            }
           }
-
       }
     }
   });
@@ -54656,8 +54680,10 @@ Object(factory["a" /* factory */])(variance_name, variance_dependencies, functio
         return divide(sum, num + 1);
 
       case 'unbiased':
-        var zero = Object(is["e" /* isBigNumber */])(sum) ? sum.mul(0) : 0;
-        return num === 1 ? zero : divide(sum, num - 1);
+        {
+          var zero = Object(is["e" /* isBigNumber */])(sum) ? sum.mul(0) : 0;
+          return num === 1 ? zero : divide(sum, num - 1);
+        }
 
       default:
         throw new Error('Unknown normalization "' + normalization + '". ' + 'Choose "unbiased" (default), "uncorrected", or "biased".');
@@ -55146,7 +55172,8 @@ Object(factory["a" /* factory */])(combinations_name, combinations_dependencies,
     'number, number': combinationsNumber,
     'BigNumber, BigNumber': function BigNumberBigNumber(n, k) {
       var BigNumber = n.constructor;
-      var max, result, i, ii;
+      var result, i;
+      var nMinusk = n.minus(k);
       var one = new BigNumber(1);
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
@@ -55157,12 +55184,16 @@ Object(factory["a" /* factory */])(combinations_name, combinations_dependencies,
         throw new TypeError('k must be less than n in function combinations');
       }
 
-      max = n.minus(k);
-      if (k.lt(max)) max = k;
       result = one;
 
-      for (i = one, ii = n.minus(max); i.lte(ii); i = i.plus(1)) {
-        result = result.times(max.plus(i)).dividedBy(i);
+      if (k.lt(nMinusk)) {
+        for (i = one; i.lte(nMinusk); i = i.plus(one)) {
+          result = result.times(k.plus(i)).dividedBy(i);
+        }
+      } else {
+        for (i = one; i.lte(k); i = i.plus(one)) {
+          result = result.times(nMinusk.plus(i)).dividedBy(i);
+        }
       }
 
       return result;
@@ -55227,13 +55258,20 @@ Object(factory["a" /* factory */])(combinationsWithRep_name, combinationsWithRep
         throw new TypeError('k must be less than or equal to n + k - 1');
       }
 
-      var prodrange = product_product(n, n + k - 1);
-      return prodrange / product_product(1, k);
+      if (k < n - 1) {
+        var _prodrange = product_product(n, n + k - 1);
+
+        return _prodrange / product_product(1, k);
+      }
+
+      var prodrange = product_product(k + 1, n + k - 1);
+      return prodrange / product_product(1, n - 1);
     },
     'BigNumber, BigNumber': function BigNumberBigNumber(n, k) {
       var BigNumber = n.constructor;
       var result, i;
       var one = new BigNumber(1);
+      var nMinusOne = n.minus(one);
 
       if (!combinationsWithRep_isPositiveInteger(n) || !combinationsWithRep_isPositiveInteger(k)) {
         throw new TypeError('Positive integer value expected in function combinationsWithRep');
@@ -55243,11 +55281,16 @@ Object(factory["a" /* factory */])(combinationsWithRep_name, combinationsWithRep
         throw new TypeError('k must be less than or equal to n + k - 1 in function combinationsWithRep');
       }
 
-      var max = n.minus(one);
       result = one;
 
-      for (i = one; i.lte(k); i = i.plus(1)) {
-        result = result.times(max.plus(i)).dividedBy(i);
+      if (k.lt(nMinusOne)) {
+        for (i = one; i.lte(nMinusOne); i = i.plus(one)) {
+          result = result.times(k.plus(i)).dividedBy(i);
+        }
+      } else {
+        for (i = one; i.lte(k); i = i.plus(one)) {
+          result = result.times(nMinusOne.plus(i)).dividedBy(i);
+        }
       }
 
       return result;
@@ -56907,87 +56950,92 @@ Object(factory["a" /* factory */])(simplifyConstant_name, simplifyConstant_depen
       case 'FunctionNode':
         if (mathWithTransform[node.name] && mathWithTransform[node.name].rawArgs) {
           return node;
-        } // Process operators as OperatorNode
-
-
-        var operatorFunctions = ['add', 'multiply'];
-
-        if (operatorFunctions.indexOf(node.name) === -1) {
-          var _args = node.args.map(function (arg) {
-            return foldFraction(arg, options);
-          }); // If all args are numbers
-
-
-          if (!_args.some(is["w" /* isNode */])) {
-            try {
-              return _eval(node.name, _args, options);
-            } catch (ignoreandcontine) {}
-          } // Convert all args to nodes and construct a symbolic function call
-
-
-          _args = _args.map(function (arg) {
-            return Object(is["w" /* isNode */])(arg) ? arg : _toNode(arg);
-          });
-          return new FunctionNode(node.name, _args);
-        } else {} // treat as operator
-
-        /* falls through */
-
-
-      case 'OperatorNode':
-        var fn = node.fn.toString();
-        var args;
-        var res;
-        var makeNode = createMakeNodeFunction(node);
-
-        if (Object(is["B" /* isOperatorNode */])(node) && node.isUnary()) {
-          args = [foldFraction(node.args[0], options)];
-
-          if (!Object(is["w" /* isNode */])(args[0])) {
-            res = _eval(fn, args, options);
-          } else {
-            res = makeNode(args);
-          }
-        } else if (isAssociative(node)) {
-          args = allChildren(node);
-          args = args.map(function (arg) {
-            return foldFraction(arg, options);
-          });
-
-          if (isCommutative(fn)) {
-            // commutative binary operator
-            var consts = [];
-            var vars = [];
-
-            for (var i = 0; i < args.length; i++) {
-              if (!Object(is["w" /* isNode */])(args[i])) {
-                consts.push(args[i]);
-              } else {
-                vars.push(args[i]);
-              }
-            }
-
-            if (consts.length > 1) {
-              res = foldOp(fn, consts, makeNode, options);
-              vars.unshift(res);
-              res = foldOp(fn, vars, makeNode, options);
-            } else {
-              // we won't change the children order since it's not neccessary
-              res = foldOp(fn, args, makeNode, options);
-            }
-          } else {
-            // non-commutative binary operator
-            res = foldOp(fn, args, makeNode, options);
-          }
-        } else {
-          // non-associative binary operator
-          args = node.args.map(function (arg) {
-            return foldFraction(arg, options);
-          });
-          res = foldOp(fn, args, makeNode, options);
         }
 
-        return res;
+        {
+          // Process operators as OperatorNode
+          var operatorFunctions = ['add', 'multiply'];
+
+          if (operatorFunctions.indexOf(node.name) === -1) {
+            var args = node.args.map(function (arg) {
+              return foldFraction(arg, options);
+            }); // If all args are numbers
+
+            if (!args.some(is["w" /* isNode */])) {
+              try {
+                return _eval(node.name, args, options);
+              } catch (ignoreandcontine) {}
+            } // Convert all args to nodes and construct a symbolic function call
+
+
+            args = args.map(function (arg) {
+              return Object(is["w" /* isNode */])(arg) ? arg : _toNode(arg);
+            });
+            return new FunctionNode(node.name, args);
+          } else {// treat as operator
+          }
+        }
+
+      /* falls through */
+
+      case 'OperatorNode':
+        {
+          var fn = node.fn.toString();
+
+          var _args;
+
+          var res;
+          var makeNode = createMakeNodeFunction(node);
+
+          if (Object(is["B" /* isOperatorNode */])(node) && node.isUnary()) {
+            _args = [foldFraction(node.args[0], options)];
+
+            if (!Object(is["w" /* isNode */])(_args[0])) {
+              res = _eval(fn, _args, options);
+            } else {
+              res = makeNode(_args);
+            }
+          } else if (isAssociative(node)) {
+            _args = allChildren(node);
+            _args = _args.map(function (arg) {
+              return foldFraction(arg, options);
+            });
+
+            if (isCommutative(fn)) {
+              // commutative binary operator
+              var consts = [];
+              var vars = [];
+
+              for (var i = 0; i < _args.length; i++) {
+                if (!Object(is["w" /* isNode */])(_args[i])) {
+                  consts.push(_args[i]);
+                } else {
+                  vars.push(_args[i]);
+                }
+              }
+
+              if (consts.length > 1) {
+                res = foldOp(fn, consts, makeNode, options);
+                vars.unshift(res);
+                res = foldOp(fn, vars, makeNode, options);
+              } else {
+                // we won't change the children order since it's not neccessary
+                res = foldOp(fn, _args, makeNode, options);
+              }
+            } else {
+              // non-commutative binary operator
+              res = foldOp(fn, _args, makeNode, options);
+            }
+          } else {
+            // non-associative binary operator
+            _args = node.args.map(function (arg) {
+              return foldFraction(arg, options);
+            });
+            res = foldOp(fn, _args, makeNode, options);
+          }
+
+          return res;
+        }
 
       case 'ParenthesisNode':
         // remove the uneccessary parenthesis
@@ -57481,15 +57529,17 @@ Object(factory["a" /* factory */])(simplify_name, simplify_dependencies, functio
 
       switch (ruleType) {
         case 'string':
-          var lr = rule.split('->');
+          {
+            var lr = rule.split('->');
 
-          if (lr.length === 2) {
-            rule = {
-              l: lr[0],
-              r: lr[1]
-            };
-          } else {
-            throw SyntaxError('Could not parse rule: ' + rule);
+            if (lr.length === 2) {
+              rule = {
+                l: lr[0],
+                r: lr[1]
+              };
+            } else {
+              throw SyntaxError('Could not parse rule: ' + rule);
+            }
           }
 
         /* falls through */
@@ -59421,7 +59471,7 @@ Object(factory["a" /* factory */])(reviver_name, reviver_dependencies, function 
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '6.1.0'; // Note: This file is automatically generated when building math.js.
+var version = '6.2.1'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
@@ -62025,7 +62075,7 @@ function create(factories, config) {
   }
 
   var internalImport = importFactory(lazyTyped, load, math, importedFactories);
-  math['import'] = internalImport; // listen for changes in config, import all functions again when changed
+  math["import"] = internalImport; // listen for changes in config, import all functions again when changed
   // TODO: move this listener into the import function?
 
   math.on('config', function () {
@@ -62046,7 +62096,7 @@ function create(factories, config) {
   math.factory = utils_factory["a" /* factory */]; // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
 
-  math['import'](Object(utils_object["l" /* values */])(Object(utils_object["c" /* deepFlatten */])(factories))); // TODO: deprecated since v6.0.0. Clean up some day
+  math["import"](Object(utils_object["l" /* values */])(Object(utils_object["c" /* deepFlatten */])(factories))); // TODO: deprecated since v6.0.0. Clean up some day
 
   var movedNames = ['type.isNumber', 'type.isComplex', 'type.isBigNumber', 'type.isFraction', 'type.isUnit', 'type.isString', 'type.isArray', 'type.isMatrix', 'type.isDenseMatrix', 'type.isSparseMatrix', 'type.isCollection', 'type.isRange', 'type.isIndex', 'type.isBoolean', 'type.isResultSet', 'type.isHelp', 'type.isFunction', 'type.isDate', 'type.isRegExp', 'type.isObject', 'type.isNull', 'type.isUndefined', 'type.isAccessorNode', 'type.isArrayNode', 'type.isAssignmentNode', 'type.isBlockNode', 'type.isConditionalNode', 'type.isConstantNode', 'type.isFunctionAssignmentNode', 'type.isFunctionNode', 'type.isIndexNode', 'type.isNode', 'type.isObjectNode', 'type.isOperatorNode', 'type.isParenthesisNode', 'type.isRangeNode', 'type.isSymbolNode', 'type.isChain', 'type.BigNumber', 'type.Chain', 'type.Complex', 'type.Fraction', 'type.Matrix', 'type.DenseMatrix', 'type.SparseMatrix', 'type.Spa', 'type.FibonacciHeap', 'type.ImmutableDenseMatrix', 'type.Index', 'type.Range', 'type.ResultSet', 'type.Unit', 'type.Help', 'type.Parser', 'expression.parse', 'expression.Parser', 'expression.node.AccessorNode', 'expression.node.ArrayNode', 'expression.node.AssignmentNode', 'expression.node.BlockNode', 'expression.node.ConditionalNode', 'expression.node.ConstantNode', 'expression.node.IndexNode', 'expression.node.FunctionAssignmentNode', 'expression.node.FunctionNode', 'expression.node.Node', 'expression.node.ObjectNode', 'expression.node.OperatorNode', 'expression.node.ParenthesisNode', 'expression.node.RangeNode', 'expression.node.RelationalNode', 'expression.node.SymbolNode', 'json.reviver', 'error.ArgumentsError', 'error.DimensionError', 'error.IndexError'];
   movedNames.forEach(function (fullName) {

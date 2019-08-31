@@ -258,7 +258,7 @@ Energy              | joule (J), erg, Wh, BTU, electronvolt (eV)
 Power               | watt (W), hp
 Pressure            | Pa, psi, atm, torr, bar, mmHg, mmH2O, cmH2O
 Electricity and magnetism | ampere (A), coulomb (C), watt (W), volt (V), ohm, farad (F), weber (Wb), tesla (T), henry (H), siemens (S), electronvolt (eV)
-Binary              | bit (b), byte (B)
+Binary              | bits (b), bytes (B)
 
 Note: all time units are based on the Julian year, with one month being 1/12th of a Julian year, a year being one Julian year, a decade being 10 Julian years, a century being 100, and a millennium being 1000.
 
@@ -297,7 +297,7 @@ zepto   | z             | 1e-21
 yocto   | y             | 1e-24
 
 The following binary prefixes are available.
-They can be used with units `bit` (`b`) and `byte` (`B`).
+They can be used with units `bits` (`b`) and `bytes` (`B`).
 
 Name | Abbreviation | Value
 ---- | ------------ | -----

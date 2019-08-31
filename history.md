@@ -5,6 +5,19 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20190831-version-621">2019-08-31, version 6.2.1 <a href="#20190831-version-621" title="Permalink">#</a></h1>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1606">#1606</a>: function `format` not working for expressions.
+
+
+<h1 id="20190828-version-620">2019-08-28, version 6.2.0 <a href="#20190828-version-620" title="Permalink">#</a></h1>
+
+- Improved performance of `combinationsWithRep`. Thanks <a href="https://github.com/waseemyusuf">@waseemyusuf</a>.
+- Add unit aliases `bit` and `byte`.
+- Fix docs referring to `bit` and `byte` instead of `bits` and `bytes`.
+- Updated dependency `typed-function@1.1.1`.
+
+
 <h1 id="20190817-version-610">2019-08-17, version 6.1.0 <a href="#20190817-version-610" title="Permalink">#</a></h1>
 
 - Implemented function `combinationsWithRep` (see <a href="https://github.com/josdejong/mathjs/issues/1329">#1329</a>). Thanks <a href="https://github.com/waseemyusuf">@waseemyusuf</a>.
