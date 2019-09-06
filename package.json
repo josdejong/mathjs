@@ -125,7 +125,7 @@
     "typed-function": "1.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.5.5",
+    "@babel/core": "7.6.0",
     "@babel/plugin-transform-object-assign": "7.2.0",
     "@babel/preset-env": "7.5.5",
     "@babel/register": "7.5.5",
