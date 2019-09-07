@@ -348,7 +348,7 @@ function throwNoComplex (x) {
 }
 
 function throwNoMatrix () {
-  throw new Error(`Cannot convert array into a Matrix: no class 'DenseMatrix' provided`)
+  throw new Error('Cannot convert array into a Matrix: no class \'DenseMatrix\' provided')
 }
 
 function throwNoFraction (x) {

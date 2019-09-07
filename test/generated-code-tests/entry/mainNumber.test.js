@@ -10,17 +10,17 @@ const {
 } = createSnapshotFromFactories(factoriesNumber)
 
 // number exports don't have all deprecated stuff that the any exports have
-delete expectedES6Structure['deprecatedEval']
-delete expectedES6Structure['deprecatedImport']
-delete expectedES6Structure['deprecatedVar']
-delete expectedES6Structure['deprecatedTypeof']
-delete expectedES6Structure['expression']
-delete expectedES6Structure['type']
-delete expectedES6Structure['json']
-delete expectedES6Structure['error']
-delete expectedInstanceStructure['var']
-delete expectedInstanceStructure['eval']
-delete expectedInstanceStructure['typeof']
+delete expectedES6Structure.deprecatedEval
+delete expectedES6Structure.deprecatedImport
+delete expectedES6Structure.deprecatedVar
+delete expectedES6Structure.deprecatedTypeof
+delete expectedES6Structure.expression
+delete expectedES6Structure.type
+delete expectedES6Structure.json
+delete expectedES6Structure.error
+delete expectedInstanceStructure.var
+delete expectedInstanceStructure.eval
+delete expectedInstanceStructure.typeof
 
 describe('mainNumber', function () {
   it('should export functions', () => {

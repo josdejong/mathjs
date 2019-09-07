@@ -74,7 +74,7 @@ describe('dist', function () {
     const missing = []
     Object.keys(math.expression.mathWithTransform).forEach(function (prop) {
       const obj = math[prop]
-      if (math['typeOf'](obj) !== 'Object') {
+      if (math.typeOf(obj) !== 'Object') {
         try {
           if (ignore.indexOf(prop) === -1) {
             math.help(prop).toString()

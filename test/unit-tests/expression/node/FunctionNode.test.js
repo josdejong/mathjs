@@ -545,7 +545,7 @@ describe('FunctionNode', function () {
 
   it('should LaTeX a FunctionNode with template string attached to the function', function () {
     const customMath = math.create()
-    customMath.add.toTex = `\${args[0]} plus \${args[1]}`
+    customMath.add.toTex = '${args[0]} plus ${args[1]}' /* eslint-disable-line no-template-curly-in-string */
 
     assert.strictEqual(customMath.parse('add(1,2)').toTex(), '1 plus 2')
   })
@@ -553,7 +553,7 @@ describe('FunctionNode', function () {
   it('should LaTeX a FunctionNode with object of callbacks attached to the function', function () {
     const customMath = math.create()
     customMath.sum.toTex = {
-      2: `\${args[0]}+\${args[1]}`,
+      2: '${args[0]}+${args[1]}', /* eslint-disable-line no-template-curly-in-string */
       3: function (node, options) {
         return node.args[0] + '+' + node.args[1] + '+' + node.args[2]
       }
@@ -565,35 +565,35 @@ describe('FunctionNode', function () {
 
   it('should LaTeX templates with string properties', function () {
     const customMath = math.create()
-    customMath.add.toTex = `\${name}`
+    customMath.add.toTex = '${name}' /* eslint-disable-line no-template-curly-in-string */
 
     assert.strictEqual(customMath.parse('add(1,2)').toTex(), 'add')
   })
 
   it('should LaTeX templates with node properties', function () {
     const customMath = math.create()
-    customMath.add.toTex = `\${args[0]} plus \${args[1]}`
+    customMath.add.toTex = '${args[0]} plus ${args[1]}' /* eslint-disable-line no-template-curly-in-string */
 
     assert.strictEqual(customMath.parse('add(1,2)').toTex(), '1 plus 2')
   })
 
   it('should LaTeX templates with properties that are arrays of Nodes', function () {
     const customMath = math.create()
-    customMath.add.toTex = `\${args}`
+    customMath.add.toTex = '${args}' /* eslint-disable-line no-template-curly-in-string */
 
     assert.strictEqual(customMath.parse('add(1,2)').toTex(), '1,2')
   })
 
   it('should throw an Error for templates with properties that don\'t exist', function () {
     const customMath = math.create()
-    customMath.add.toTex = `\${some_property}`
+    customMath.add.toTex = '${some_property}' /* eslint-disable-line no-template-curly-in-string */
 
     assert.throws(function () { customMath.parse('add(1,2)').toTex() }, ReferenceError)
   })
 
   it('should throw an Error for templates with properties that aren\'t Nodes or Strings or Arrays of Nodes', function () {
     const customMath = math.create()
-    customMath.add.toTex = `\${some_property}`
+    customMath.add.toTex = '${some_property}' /* eslint-disable-line no-template-curly-in-string */
     const tree = customMath.parse('add(1,2)')
 
     tree.some_property = {}
@@ -606,7 +606,7 @@ describe('FunctionNode', function () {
 
   it('should throw an Error for templates with properties that are arrays of non Nodes', function () {
     const customMath = math.create()
-    customMath.add.toTex = `\${some_property}`
+    customMath.add.toTex = '${some_property}' /* eslint-disable-line no-template-curly-in-string */
     const tree = customMath.parse('add(1,2)')
     tree.some_property = [1, 2]
 

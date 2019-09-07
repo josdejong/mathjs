@@ -440,7 +440,7 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
 
 function getDependenciesName (factoryName, factories) {
   if (!factories) {
-    throw new Error(`Cannot create dependencies name: factories is undefined`)
+    throw new Error('Cannot create dependencies name: factories is undefined')
   }
 
   const factory = factories[factoryName]

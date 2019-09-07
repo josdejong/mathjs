@@ -22,7 +22,7 @@ export const createCombinations = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * See also:
    *
-   *    permutations, factorial
+   *    combinationsWithRep, permutations, factorial
    *
    * @param {number | BigNumber} n    Total number of objects in the set
    * @param {number | BigNumber} k    Number of objects in the subset
@@ -33,7 +33,8 @@ export const createCombinations = /* #__PURE__ */ factory(name, dependencies, ({
 
     'BigNumber, BigNumber': function (n, k) {
       const BigNumber = n.constructor
-      let max, result, i, ii
+      let result, i
+      const nMinusk = n.minus(k)
       const one = new BigNumber(1)
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
@@ -43,11 +44,15 @@ export const createCombinations = /* #__PURE__ */ factory(name, dependencies, ({
         throw new TypeError('k must be less than n in function combinations')
       }
 
-      max = n.minus(k)
-      if (k.lt(max)) max = k
       result = one
-      for (i = one, ii = n.minus(max); i.lte(ii); i = i.plus(1)) {
-        result = result.times(max.plus(i)).dividedBy(i)
+      if (k.lt(nMinusk)) {
+        for (i = one; i.lte(nMinusk); i = i.plus(one)) {
+          result = result.times(k.plus(i)).dividedBy(i)
+        }
+      } else {
+        for (i = one; i.lte(k); i = i.plus(one)) {
+          result = result.times(nMinusk.plus(i)).dividedBy(i)
+        }
       }
 
       return result

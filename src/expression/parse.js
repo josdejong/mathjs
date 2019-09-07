@@ -1690,7 +1690,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function createSyntaxError (state, message) {
     const c = col(state)
     const error = new SyntaxError(message + ' (char ' + c + ')')
-    error['char'] = c
+    error.char = c
 
     return error
   }
@@ -1705,7 +1705,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function createError (state, message) {
     const c = col(state)
     const error = new SyntaxError(message + ' (char ' + c + ')')
-    error['char'] = c
+    error.char = c
 
     return error
   }

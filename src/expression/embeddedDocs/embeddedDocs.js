@@ -76,6 +76,7 @@ import { kldivergenceDocs } from './function/probability/kldivergence'
 import { gammaDocs } from './function/probability/gamma'
 import { factorialDocs } from './function/probability/factorial'
 import { combinationsDocs } from './function/probability/combinations'
+import { combinationsWithRepDocs } from './function/probability/combinationsWithRep'
 import { zerosDocs } from './function/matrix/zeros'
 import { transposeDocs } from './function/matrix/transpose'
 import { traceDocs } from './function/matrix/trace'
@@ -426,6 +427,7 @@ export const embeddedDocs = {
 
   // functions - probability
   combinations: combinationsDocs,
+  combinationsWithRep: combinationsWithRepDocs,
   // distribution: distributionDocs,
   factorial: factorialDocs,
   gamma: gammaDocs,

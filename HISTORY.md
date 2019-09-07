@@ -1,6 +1,24 @@
 # History
 
 
+# 2019-08-31, version 6.2.1
+
+- Fixed #1606: function `format` not working for expressions.
+
+
+# 2019-08-28, version 6.2.0
+
+- Improved performance of `combinationsWithRep`. Thanks @waseemyusuf.
+- Add unit aliases `bit` and `byte`.
+- Fix docs referring to `bit` and `byte` instead of `bits` and `bytes`.
+- Updated dependency `typed-function@1.1.1`.
+
+
+# 2019-08-17, version 6.1.0
+
+- Implemented function `combinationsWithRep` (see #1329). Thanks @waseemyusuf.
+
+
 # 2019-08-05, version 6.0.4
 
 - Fixed #1554, #1565: ES Modules where not transpiled to ES5, giving issues on

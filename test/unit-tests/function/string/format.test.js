@@ -296,6 +296,14 @@ describe('format', function () {
     })
   })
 
+  it('should format expressions', () => {
+    assert.strictEqual(math.format(math.parse('0.3333'), { precision: 1 }), '0.3')
+    assert.strictEqual(math.format(math.parse('0.3333 + [0.4444]'), { precision: 1 }), '0.3 + [0.4]')
+
+    const bigmath = math.create({ number: 'BigNumber' })
+    assert.strictEqual(bigmath.format(bigmath.parse('0.3333 + [0.4444]'), { precision: 1 }), '0.3 + [0.4]')
+  })
+
   it('should throw an error on wrong number of arguments', function () {
     assert.throws(function () { math.format() }, /TypeError: Too few arguments/)
     assert.throws(function () { math.format(1, 2, 3) }, /TypeError: Too many arguments/)

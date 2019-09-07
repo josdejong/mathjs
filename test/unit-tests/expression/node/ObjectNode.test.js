@@ -112,8 +112,8 @@ describe('ObjectNode', function () {
     assert.strictEqual(nodes[1], b)
 
     assert.notStrictEqual(e, c)
-    assert.deepStrictEqual(e.properties['a'], d)
-    assert.deepStrictEqual(e.properties['b'], b)
+    assert.deepStrictEqual(e.properties.a, d)
+    assert.deepStrictEqual(e.properties.b, b)
   })
 
   it('should throw an error when the map callback does not return a node', function () {
@@ -137,8 +137,8 @@ describe('ObjectNode', function () {
     })
 
     assert.notStrictEqual(e, c)
-    assert.deepStrictEqual(e.properties['a'], d)
-    assert.deepStrictEqual(e.properties['b'], b)
+    assert.deepStrictEqual(e.properties.a, d)
+    assert.deepStrictEqual(e.properties.b, b)
   })
 
   it('should transform an ObjectNode itself', function () {
@@ -211,8 +211,8 @@ describe('ObjectNode', function () {
     assert(d instanceof ObjectNode)
     assert.deepStrictEqual(c, d)
     assert.notStrictEqual(c, d)
-    assert.strictEqual(c.properties['a'], d.properties['a'])
-    assert.strictEqual(c.properties['b'], d.properties['b'])
+    assert.strictEqual(c.properties.a, d.properties.a)
+    assert.strictEqual(c.properties.b, d.properties.b)
   })
 
   it('test equality another Node', function () {
