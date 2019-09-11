@@ -125,10 +125,10 @@
     "typed-function": "1.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.5.5",
+    "@babel/core": "7.6.0",
     "@babel/plugin-transform-object-assign": "7.2.0",
-    "@babel/preset-env": "7.5.5",
-    "@babel/register": "7.5.5",
+    "@babel/preset-env": "7.6.0",
+    "@babel/register": "7.6.0",
     "babel-loader": "8.0.6",
     "benchmark": "2.1.4",
     "codecov": "3.5.0",
@@ -138,7 +138,7 @@
     "glob": "7.1.4",
     "gulp": "4.0.2",
     "gulp-babel": "8.0.0",
-    "handlebars": "4.1.2",
+    "handlebars": "4.2.0",
     "istanbul": "0.4.5",
     "jsep": "0.3.4",
     "karma": "4.3.0",
