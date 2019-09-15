@@ -17,7 +17,7 @@ export const createIsNumeric = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * Examples:
    *
    *    math.isNumeric(2)                     // returns true
-   *    math.isNumeric('2')                   // returns true
+   *    math.isNumeric('2')                   // returns false
    *    math.hasNumericValue('2')             // returns true
    *    math.isNumeric(0)                     // returns true
    *    math.isNumeric(math.bignumber(500))   // returns true
