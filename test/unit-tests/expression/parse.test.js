@@ -407,6 +407,38 @@ describe('parse', function () {
     })
   })
 
+  describe('symbol', function () {
+    it('should parse bare symbols', function () {
+      const scope = { foo: 3, b_a_r: 4 }
+      assert.deepStrictEqual(parseAndEval('foo*b_a_r', scope), 12)
+    })
+
+    it('should parse quoted symbols', function () {
+      const scope = { foo: 3, b_a_r: 4 }
+      assert.deepStrictEqual(parseAndEval('`foo`*`b_a_r`', scope), 12)
+    })
+
+    it('should parse quoted symbols containing arbitrary characters', function () {
+      const scope = { '-f o o-': 3, '/b a r/': 4 }
+      assert.deepStrictEqual(parseAndEval('`-f o o-`*`/b a r/`', scope), 12)
+    })
+
+    it('should allow closing backquote to be escaped', function () {
+      const scope = { 'foo`': 3, 'b`ar': 4 }
+      assert.deepStrictEqual(parseAndEval('`foo\\``*`b\\`ar`', scope), 12)
+    })
+
+    it('should allow quoted symbols to be used as function names', function () {
+      const scope = { '-f o o-': () => 3, bar: 4 }
+      assert.deepStrictEqual(parseAndEval('`-f o o-`()*bar', scope), 12)
+    })
+
+    it('should allow quoted symbol to be indexed', function () {
+      const scope = { '-f o o-': [1, 2] }
+      assert.deepStrictEqual(parseAndEval('`-f o o-`[2]', scope), 2)
+    })
+  })
+
   describe('unit', function () {
     it('should parse units', function () {
       assert.deepStrictEqual(parseAndEval('5cm'), new Unit(5, 'cm'))
