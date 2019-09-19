@@ -126,7 +126,14 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
    * @override
    */
   SymbolNode.prototype._toString = function (options) {
-    return this.name
+    // This is a conservative approximation of the characters that can be used
+    // without quoting - we err on the side of quoting. Based on
+    // isValidLatinOrGreek from parse.js.
+    if (/^[a-zA-Z_$\u00C0-\u02AF\u0370-\u03FF\u2100-\u214F]*$/.test(this.name)) {
+      return this.name
+    } else {
+      return '`' + this.name.replace(/`/g, '\\`') + '`'
+    }
   }
 
   /**

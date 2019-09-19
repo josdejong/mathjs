@@ -122,6 +122,12 @@ describe('SymbolNode', function () {
     assert.strictEqual(s.toString(), 'foo')
   })
 
+  it('should quote stringified SymbolNodes if needed', function () {
+    assert.strictEqual(new SymbolNode('foo bar').toString(), '`foo bar`')
+    assert.strictEqual(new SymbolNode('foo_bar').toString(), 'foo_bar')
+    assert.strictEqual(new SymbolNode('foo`').toString(), '`foo\\``')
+  })
+
   it('should stringigy a SymbolNode with custom toString', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {
