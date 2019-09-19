@@ -159,6 +159,14 @@ describe('IndexNode', function () {
     assert.strictEqual(d.dimensions[1], n.dimensions[1])
   })
 
+  it('should clone an IndexNode with dotNotation property', function () {
+    const b = new ConstantNode('objprop')
+    const n = new IndexNode([b], true)
+    const f = n.clone()
+
+    assert.strictEqual(n.dotNotation, f.dotNotation)
+  })
+
   it('test equality another Node', function () {
     const a = new IndexNode([new ConstantNode(2), new ConstantNode(1)])
     const b = new IndexNode([new ConstantNode(2), new ConstantNode(1)])
