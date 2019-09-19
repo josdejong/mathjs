@@ -174,7 +174,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
       dimensions[i] = this._ifNode(callback(this.dimensions[i], 'dimensions[' + i + ']', this))
     }
 
-    return new IndexNode(dimensions)
+    return new IndexNode(dimensions, this.dotNotation)
   }
 
   /**
