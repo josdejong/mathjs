@@ -1,6 +1,12 @@
 # History
 
 
+# not yet published, version 6.2.3
+
+- Fixed methods `map` and `clone` not copying the `dotNotation` property of
+  `IndexNode`. Thanks @rianmcguire.
+
+
 # not yet published, version 6.2.2
 
 - Fixed #1615: error in the docs of `isNumeric`.
