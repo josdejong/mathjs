@@ -5,7 +5,7 @@
 
 - Fixed methods `map` and `clone` not copying the `dotNotation` property of
   `IndexNode`. Thanks @rianmcguire.
-
+- Fixed a typo in the documentation of `toHTML`. Thanks @maytanthegeek.
 
 # not yet published, version 6.2.2
 
