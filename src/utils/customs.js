@@ -96,7 +96,7 @@ function validateSafeMethod (object, method) {
  * @return {boolean} Returns true when safe, false otherwise
  */
 function isSafeMethod (object, method) {
-  if (!object || typeof object[method] !== 'function') {
+  if (object === null || object === undefined || typeof object[method] !== 'function') {
     return false
   }
   // UNSAFE: ghosted
