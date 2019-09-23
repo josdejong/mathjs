@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20190923-version-622">2019-09-23, version 6.2.2 <a href="#20190923-version-622" title="Permalink">#</a></h1>
+
+- Fixed methods `map` and `clone` not copying the `dotNotation` property of
+  `IndexNode`. Thanks <a href="https://github.com/rianmcguire">@rianmcguire</a>.
+- Fixed a typo in the documentation of `toHTML`. Thanks <a href="https://github.com/maytanthegeek">@maytanthegeek</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1615">#1615</a>: error in the docs of `isNumeric`.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1628">#1628</a>: Cannot call methods on empty strings or numbers with value `0`.
+
+
 <h1 id="20190831-version-621">2019-08-31, version 6.2.1 <a href="#20190831-version-621" title="Permalink">#</a></h1>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1606">#1606</a>: function `format` not working for expressions.
