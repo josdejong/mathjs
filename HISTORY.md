@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 6.2.2
+# 2019-09-23, version 6.2.2
 
 - Fixed methods `map` and `clone` not copying the `dotNotation` property of
   `IndexNode`. Thanks @rianmcguire.
