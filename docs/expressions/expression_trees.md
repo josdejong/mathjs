@@ -141,7 +141,7 @@ All nodes have the following methods:
 
     ```js
     const node = math.parse('sqrt(2/3)')
-    node.toString()
+    node.toHTML()
 	// returns
 	// <span class="math-function">sqrt</span>
 	// <span class="math-paranthesis math-round-parenthesis">(</span>
