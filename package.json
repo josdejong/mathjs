@@ -134,7 +134,7 @@
     "benchmark": "2.1.4",
     "codecov": "3.6.1",
     "del": "5.1.0",
-    "expr-eval": "2.0.1",
+    "expr-eval": "2.0.2",
     "fancy-log": "1.3.3",
     "glob": "7.1.4",
     "gulp": "4.0.2",
