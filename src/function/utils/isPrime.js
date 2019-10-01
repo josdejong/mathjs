@@ -45,14 +45,14 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
         return false
       }
       for (let i = 5; i * i <= x; i += 6) {
-        if (x % i === 0 || n % (i + 2) == 0) {
+        if (x % i === 0 || x % (i + 2) == 0) {
           return false
         }
       }
       return true
     },
 
-    BigNumber: function (x) {
+    BigNumber: function (n) {
       if (n.toNumber() * 0 !== 0) {
         return false;
       }
