@@ -41,11 +41,11 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
       if (x <= 3) {
         return x > 1
       }
-      if (x % 2 === 0 || x % 3 == 0) {
+      if (x % 2 === 0 || x % 3 === 0) {
         return false
       }
       for (let i = 5; i * i <= x; i += 6) {
-        if (x % i === 0 || x % (i + 2) == 0) {
+        if (x % i === 0 || x % (i + 2) === 0) {
           return false
         }
       }
@@ -54,10 +54,10 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
 
     BigNumber: function (n) {
       if (n.toNumber() * 0 !== 0) {
-        return false;
+        return false
       }
-      if (n.lte(3)) return n.gt(1);
-      if (n.mod(2).eq(0) || n.mod(3).eq(0)) return false;
+      if (n.lte(3)) return n.gt(1)
+      if (n.mod(2).eq(0) || n.mod(3).eq(0)) return false
 
       for (let i = 5; n.gte(i * i); i += 6) {
         if (n.mod(i).eq(0) || n.mod(i + 2).eq(0)) {
@@ -65,7 +65,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
         }
       }
 
-      return true;
+      return true
     },
 
     'Array | Matrix': function (x) {
