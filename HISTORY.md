@@ -1,6 +1,12 @@
 # History
 
 
+# not yet published, version 6.2.3dependencies
+
+- Fixed #1639: function `min` listed twice in the "See also" section of the
+  embedded docs of function `std`.
+
+
 # 2019-09-23, version 6.2.2
 
 - Fixed methods `map` and `clone` not copying the `dotNotation` property of
