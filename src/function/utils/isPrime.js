@@ -39,7 +39,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
         return false
       }
       if (x <= 3) {
-        return n > 1
+        return x > 1
       }
       if (x % 2 === 0 || x % 3 == 0) {
         return false
