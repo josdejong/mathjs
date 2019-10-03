@@ -62,7 +62,7 @@ describe('mean', function () {
     const a = math.unit(1, 'm')
     const b = math.unit(50, 'cm')
     const c = math.unit(0.75, 'm')
-    approx.equal(mean(a.toNumber('cm'), b.toNumber('cm')), c.toNumber('cm'))
+    approx.equal(mean(a, b).toNumber('cm'), c.toNumber('cm'))
   })
 
   it('should not compute the mean of quantities with incompatible units', function () {
