@@ -76,12 +76,12 @@ export const createMean = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @private
    */
   function _mean (array) {
-    let sum = 0
+    let sum
     let num = 0
 
     deepForEach(array, function (value) {
       try {
-        sum = add(sum, value)
+        sum = sum === undefined ? value : add(sum, value)
         num++
       } catch (err) {
         throw improveErrorMessage(err, 'mean', value)
@@ -89,9 +89,8 @@ export const createMean = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     })
 
     if (num === 0) {
-      throw new Error('Cannot calculate mean of an empty array')
+      throw new Error('Cannot calculate the mean of an empty array')
     }
-
     return divide(sum, num)
   }
 })

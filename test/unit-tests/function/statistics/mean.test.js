@@ -1,4 +1,5 @@
 import assert from 'assert'
+import approx from '../../../../tools/approx'
 import math from '../../../../src/bundleAny'
 const BigNumber = math.BigNumber
 const Complex = math.Complex
@@ -48,6 +49,26 @@ describe('mean', function () {
       [2, 4],
       [6, 8]
     ])), 5)
+  })
+
+  it('should compute the mean of quantities with units', function () {
+    const a = math.unit(10, 'cm')
+    const b = math.unit(20, 'cm')
+    const c = math.unit(15, 'cm')
+    approx.equal(mean(a, b).toNumber('cm'), c.toNumber('cm'))
+  })
+
+  it('should compute the mean of quantities with compatible units', function () {
+    const a = math.unit(1, 'm')
+    const b = math.unit(50, 'cm')
+    const c = math.unit(0.75, 'm')
+    approx.equal(mean(a, b).toNumber('cm'), c.toNumber('cm'))
+  })
+
+  it('should not compute the mean of quantities with incompatible units', function () {
+    const a = math.unit(1, 'm')
+    const b = math.unit(50, 'kg')
+    assert.throws(function () { mean(a, b) }, /Units do not match/)
   })
 
   const inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
