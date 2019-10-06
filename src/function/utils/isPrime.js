@@ -35,38 +35,36 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
    */
   const isPrime = typed(name, {
     number: function (x) {
-      if (x < 2) {
+      if (x * 0 !== 0) {
         return false
       }
-      if (x === 2) {
-        return true
+      if (x <= 3) {
+        return x > 1
       }
-      if (x % 2 === 0) {
+      if (x % 2 === 0 || x % 3 === 0) {
         return false
       }
-      for (let i = 3; i * i <= x; i += 2) {
-        if (x % i === 0) {
+      for (let i = 5; i * i <= x; i += 6) {
+        if (x % i === 0 || x % (i + 2) === 0) {
           return false
         }
       }
       return true
     },
 
-    BigNumber: function (x) {
-      if (x.lt(2)) {
+    BigNumber: function (n) {
+      if (n.toNumber() * 0 !== 0) {
         return false
       }
-      if (x.equals(2)) {
-        return true
-      }
-      if (x.mod(2).isZero()) {
-        return false
-      }
-      for (let i = new x.constructor(3); i.times(i).lte(x); i = i.plus(1)) {
-        if (x.mod(i).isZero()) {
+      if (n.lte(3)) return n.gt(1)
+      if (n.mod(2).eq(0) || n.mod(3).eq(0)) return false
+
+      for (let i = 5; n.gte(i * i); i += 6) {
+        if (n.mod(i).eq(0) || n.mod(i + 2).eq(0)) {
           return false
         }
       }
+
       return true
     },
 
