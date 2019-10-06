@@ -6,6 +6,7 @@
 - Fixed #1640: function `mean` not working for units. Thanks @clintonc.
 - Fixed #1639: function `min` listed twice in the "See also" section of the
   embedded docs of function `std`.
+- Improved performance of `isPrime`, see #1641. Thanks @arguiot.
 
 
 # 2019-09-23, version 6.2.2
