@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 6.2.3
+# 2019-10-06, version 6.2.3
 
 - Fixed #1640: function `mean` not working for units. Thanks @clintonc.
 - Fixed #1639: function `min` listed twice in the "See also" section of the
