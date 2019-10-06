@@ -5,6 +5,14 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20191006-version-623">2019-10-06, version 6.2.3 <a href="#20191006-version-623" title="Permalink">#</a></h1>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1640">#1640</a>: function `mean` not working for units. Thanks <a href="https://github.com/clintonc">@clintonc</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1639">#1639</a>: function `min` listed twice in the "See also" section of the
+  embedded docs of function `std`.
+- Improved performance of `isPrime`, see <a href="https://github.com/josdejong/mathjs/issues/1641">#1641</a>. Thanks <a href="https://github.com/arguiot">@arguiot</a>.
+
+
 <h1 id="20190923-version-622">2019-09-23, version 6.2.2 <a href="#20190923-version-622" title="Permalink">#</a></h1>
 
 - Fixed methods `map` and `clone` not copying the `dotNotation` property of
