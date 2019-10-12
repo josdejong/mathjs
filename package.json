@@ -128,9 +128,9 @@
     "typed-function": "1.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.6.2",
+    "@babel/core": "7.6.4",
     "@babel/plugin-transform-object-assign": "7.2.0",
-    "@babel/preset-env": "7.6.2",
+    "@babel/preset-env": "7.6.3",
     "@babel/register": "7.6.2",
     "babel-loader": "8.0.6",
     "benchmark": "2.1.4",
@@ -141,7 +141,7 @@
     "glob": "7.1.4",
     "gulp": "4.0.2",
     "gulp-babel": "8.0.0",
-    "handlebars": "4.4.1",
+    "handlebars": "4.4.3",
     "istanbul": "0.4.5",
     "jsep": "0.3.4",
     "karma": "4.3.0",
@@ -165,7 +165,7 @@
     "sylvester": "0.0.21",
     "uglify-js": "3.6.1",
     "underscore": "1.9.1",
-    "webpack": "4.41.0",
+    "webpack": "4.41.1",
     "zeros": "1.0.0"
   },
   "main": "main/es5",
