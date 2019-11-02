@@ -141,7 +141,7 @@
     "glob": "7.1.5",
     "gulp": "4.0.2",
     "gulp-babel": "8.0.0",
-    "handlebars": "4.5.0",
+    "handlebars": "4.5.1",
     "istanbul": "0.4.5",
     "jsep": "0.3.4",
     "karma": "4.4.1",
@@ -163,7 +163,7 @@
     "pad-right": "0.2.2",
     "standard": "14.3.1",
     "sylvester": "0.0.21",
-    "uglify-js": "3.6.4",
+    "uglify-js": "3.6.7",
     "underscore": "1.9.1",
     "webpack": "4.41.2",
     "zeros": "1.0.0"
