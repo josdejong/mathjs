@@ -97,7 +97,8 @@ function assertValidQRDecomposition (A, Q, R) {
     }
   }
 }
-describe('qr', function () {
+
+describe.only('qr', function () {
   it('should decompose matrix, n x n, no permutations, array', function () {
     const m = [[15, 42], [20, 81]]
 
@@ -242,42 +243,7 @@ describe('qr', function () {
     // verify
     assertValidQRDecomposition(m, r.Q, r.R)
   })
-  /*
-  it('should decompose matrix, n x n, dense format', function () {
-    const m = math.matrix(
-      [
-        [16, -120, 240, -140],
-        [-120, 1200, -2700, 1680],
-        [240, -2700, 6480, -4200],
-        [-140, 1680, -4200, 2800]
-      ]
-    )
 
-    const r = math.lup(m)
-    // L
-    approx.deepEqual(
-      r.L.valueOf(),
-      [
-        [1, 0, 0, 0],
-        [-0.5, 1, 0, 0],
-        [-0.5833333333333334, -0.7, 1, 0],
-        [0.06666666666666667, -0.4, -0.5714285714285776, 1]
-      ])
-    // U
-    approx.deepEqual(
-      r.U.valueOf(),
-      [
-        [240, -2700, 6480, -4200],
-        [0, -150, 540, -420],
-        [0, 0, -42, 56],
-        [0, 0, 0, 4]
-      ])
-    // P
-    assert.deepStrictEqual(r.p, [3, 1, 0, 2])
-    // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
-  })
-/*
   it('should decompose matrix, 3 x 3, zero pivote value, dense format', function () {
     const m = math.matrix(
       [
@@ -286,30 +252,31 @@ describe('qr', function () {
         [4, 8, 9]
       ])
 
-    const r = math.lup(m)
-    // L
+    const r = math.qr(m)
+
+    // Q
     approx.deepEqual(
-      r.L.valueOf(),
-      [
-        [1, 0, 0],
-        [0.5, 1, 0],
-        [0.25, 0, 1.0]
+      r.Q.valueOf(),
+      [[0.21821789023599236, 0.9759000729485332, 1.1102230246251565e-16],
+        [0.4364357804719848, -0.09759000729485323, 0.8944271909999157],
+        [0.8728715609439696, -0.19518001458970657, -0.447213595499958]
       ])
-    // U
+
+    // R
     approx.deepEqual(
-      r.U.valueOf(),
+      r.R.valueOf(),
       [
-        [4, 8, 9],
-        [0, 0, 1.5],
-        [0, 0, 0.75]
-      ])
-    // P
-    assert.deepStrictEqual(r.p, [2, 1, 0])
+        [4.582575694955841, 9.165151389911681, 11.129112402035613],
+        [0, 1.9860273225978185e-15, 0.5855400437691207],
+        [0, 0, 1.3416407864998738]
+      ]
+    )
+
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    assertValidQRDecomposition(m, r.Q, r.R)
   })
-*/
-  it('should decompose matrix, n x n, complex numbers, dense format', function () {
+
+  it('should decompose matrix, n x n, dense format', function () {
     const m = math.matrix(
       [
         [math.complex(24, 3), math.complex(10)],
