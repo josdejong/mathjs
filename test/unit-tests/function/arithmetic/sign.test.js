@@ -79,10 +79,10 @@ describe('sign', function () {
       assert.strictEqual(math.sign(0), 0)
     })
     it('bignumber', function () {
-      assert.strictEqual(math.sign(math.bignumber(0)), math.bignumber(0))
+      assert.deepStrictEqual(math.sign(math.bignumber(0)), math.bignumber(0))
     })
     it('complex', function () {
-      assert.strictEqual(math.sign(math.complex(0)), math.complex(0))
+      assert.deepStrictEqual(math.sign(math.complex(0)), math.complex(0))
     })
   })
 

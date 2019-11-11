@@ -156,8 +156,8 @@ describe('qr', function () {
       r.R.valueOf(),
       [
         [223.0582883463423, -0, 34.912399165855504],
-        [-0, -0, 14.305351889173245],
-        [-0, -0, 18.781141919779493]
+        [0, -0, 14.305351889173245],
+        [0, 0, 18.781141919779493]
       ])
     // verify
     assertValidQRDecomposition(m, r.Q, r.R)
@@ -234,9 +234,9 @@ describe('qr', function () {
       math.matrix(
         [
           [12.24744871391589, 6.858571279792898],
-          [-0, 94.62008243496727],
-          [-0, -0],
-          [-0, -0]
+          [0, 94.62008243496727],
+          [0, 0],
+          [0, 0]
         ]
       ))
     // verify
@@ -333,8 +333,8 @@ describe('qr', function () {
       r.R,
       math.matrix([
         [math.complex(241.44175128417413, 0), math.complex(3.3948782289740067, -0.8870876675671249)],
-        [math.complex(0, -0), math.complex(14.254103875042043, -4.440892098500626e-16)],
-        [math.complex(0, -0), math.complex(0, 0)]
+        [math.complex(0, 0), math.complex(14.254103875042043, -4.440892098500626e-16)],
+        [math.complex(0, 0), math.complex(0, 0)]
       ]))
 
     // verify
@@ -385,8 +385,8 @@ describe('qr', function () {
           math.complex(33.83280850600839, 2.9469680307519037)
         ],
         [
-          math.complex(-0, 0),
-          math.complex(-0, 0),
+          math.complex(0, 0),
+          math.complex(0, 0),
           math.complex(25.372653909655675, 5.329070518200751e-15),
           math.complex(46.75701662904174, -52.038112884483404),
           math.complex(-25.7821433027293, -35.64391269354021),
@@ -410,7 +410,7 @@ describe('qr', function () {
     assertValidQRDecomposition(m, r.Q, r.R)
   })
 
-  it.only('Prevent regression: #1669', function () {
+  it('Prevent regression: #1669', function () {
     const m = math.evaluate(`[
       [0, 1],
       [1, 0]
@@ -431,8 +431,37 @@ describe('qr', function () {
       r.R,
       math.evaluate(`[
         [1, -0],
-        [-0, 1]
+        [0, 1]
       ]`)
+    )
+
+    assertValidQRDecomposition(m, r.Q, r.R)
+  })
+
+  it('Prevent regression for complex matricies: #1669', function () {
+    const m = math.evaluate(`[
+      [0, 1],
+      [i, 0]
+    ]`)
+
+    const r = math.qr(m)
+
+    // Q
+    approx.deepEqual(
+      r.Q,
+      math.evaluate(`complex([
+        [0, 1],
+        [i, 0]
+      ])`)
+    )
+
+    // R
+    assert.deepStrictEqual(
+      r.R,
+      math.evaluate(`complex([
+        [1, -0],
+        [0, 1]
+      ])`)
     )
 
     assertValidQRDecomposition(m, r.Q, r.R)

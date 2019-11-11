@@ -15,7 +15,8 @@ const dependencies = [
   'addScalar',
   'divideScalar',
   'multiplyScalar',
-  'subtract'
+  'subtract',
+  'complex'
 ]
 
 export const createQr = /* #__PURE__ */ factory(name, dependencies, (
@@ -33,7 +34,8 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
     addScalar,
     divideScalar,
     multiplyScalar,
-    subtract
+    subtract,
+    complex
   }
 ) => {
   /**
@@ -242,10 +244,13 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
   function _denseQR (m) {
     const ret = _denseQRimpl(m)
     const Rdata = ret.R._data
+    if (m._data.length > 0) {
+      const zero = Rdata[0][0].type === 'Complex' ? complex(0) : 0
 
-    for (let i = 0; i < Rdata.length; ++i) {
-      for (let j = 0; j < i && j < (Rdata[0] || []).length; ++j) {
-        Rdata[i][j] = multiplyScalar(Rdata[i][j], 0)
+      for (let i = 0; i < Rdata.length; ++i) {
+        for (let j = 0; j < i && j < (Rdata[0] || []).length; ++j) {
+          Rdata[i][j] = zero
+        }
       }
     }
 
