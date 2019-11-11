@@ -74,6 +74,22 @@ describe('sign', function () {
     assert.throws(function () { math.sign(null) }, /TypeError: Unexpected type of argument/)
   })
 
+  describe('sign(0) should return 0', function () {
+    it('number', function () {
+      assert.strictEqual(math.sign(0), 0)
+    })
+    it('bignumber', function () {
+      assert.strictEqual(math.sign(math.bignumber(0)), math.bignumber(0))
+    })
+    it('complex', function () {
+      assert.strictEqual(math.sign(math.complex(0)), math.complex(0))
+    })
+  })
+
+  it('should throw an in case of wrong type of arguments', function () {
+    assert.throws(function () { math.sign(null) }, /TypeError: Unexpected type of argument/)
+  })
+
   it('should LaTeX sign', function () {
     const expression = math.parse('sign(-4)')
     assert.strictEqual(expression.toTex(), '\\mathrm{sign}\\left(-4\\right)')

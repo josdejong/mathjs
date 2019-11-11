@@ -40,19 +40,19 @@ exports.equal = function equal (a, b, epsilon) {
       assert.ok(diff <= maxDiff, (a + ' ~= ' + b))
     }
   } else if (a && a.isBigNumber) {
-    return exports.equal(a.toNumber(), b)
+    return exports.equal(a.toNumber(), b, epsilon)
   } else if (b && b.isBigNumber) {
-    return exports.equal(a, b.toNumber())
+    return exports.equal(a, b.toNumber(), epsilon)
   } else if ((a && a.isComplex) || (b && b.isComplex)) {
     if (a && a.isComplex && b && b.isComplex) {
-      exports.equal(a.re, b.re, (a + ' ~= ' + b))
-      exports.equal(a.im, b.im, (a + ' ~= ' + b))
+      exports.equal(a.re, b.re, epsilon)
+      exports.equal(a.im, b.im, epsilon)
     } else if (a && a.isComplex) {
-      exports.equal(a.re, b, (a + ' ~= ' + b))
-      exports.equal(a.im, 0, (a + ' ~= ' + b))
+      exports.equal(a.re, b, epsilon)
+      exports.equal(a.im, 0, epsilon)
     } else if (b && b.isComplex) {
-      exports.equal(a, b.re, (a + ' ~= ' + b))
-      exports.equal(0, b.im, (a + ' ~= ' + b))
+      exports.equal(a, b.re, epsilon)
+      exports.equal(0, b.im, epsilon)
     }
   } else {
     assert.strictEqual(a, b)

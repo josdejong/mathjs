@@ -40,7 +40,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     number: signNumber,
 
     Complex: function (x) {
-      return x.sign()
+      return x.im === 0 ? signNumber(x.re) : x.sign()
     },
 
     BigNumber: function (x) {

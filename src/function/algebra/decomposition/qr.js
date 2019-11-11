@@ -7,7 +7,7 @@ const dependencies = [
   'zeros',
   'identity',
   'isZero',
-  'unequal',
+  'equal',
   'sign',
   'sqrt',
   'conj',
@@ -25,7 +25,7 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
     zeros,
     identity,
     isZero,
-    unequal,
+    equal,
     sign,
     sqrt,
     conj,
@@ -79,7 +79,7 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
    * @return {{Q: Array | Matrix, R: Array | Matrix}} Q: the orthogonal
    * matrix and R: the upper triangular matrix
    */
-  return typed(name, {
+  return Object.assign(typed(name, {
 
     DenseMatrix: function (m) {
       return _denseQR(m)
@@ -100,9 +100,9 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
         R: r.R.valueOf()
       }
     }
-  })
+  }), { _denseQRimpl })
 
-  function _denseQR (m) {
+  function _denseQRimpl (m) {
     // rows & columns (m x n)
     const rows = m._size[0] // m
     const cols = m._size[1] // n
@@ -144,7 +144,7 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
        */
 
       const pivot = Rdata[k][k]
-      const sgn = unaryMinus(sign(pivot))
+      const sgn = unaryMinus(equal(pivot, 0) ? 1 : sign(pivot))
       const conjSgn = conj(sgn)
 
       let alphaSquared = 0
@@ -229,20 +229,6 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
       }
     }
 
-    // coerse almost zero elements to zero
-    // TODO I feel uneasy just zeroing these values
-    for (i = 0; i < rows; ++i) {
-      for (j = 0; j < i && j < cols; ++j) {
-        if (unequal(0, divideScalar(Rdata[i][j], 1e5))) {
-          throw new Error('math.qr(): unknown error - ' +
-           'R is not lower triangular (element (' +
-            i + ', ' + j + ')  = ' + Rdata[i][j] + ')'
-          )
-        }
-        Rdata[i][j] = multiplyScalar(Rdata[i][j], 0)
-      }
-    }
-
     // return matrices
     return {
       Q: Q,
@@ -251,6 +237,19 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
         return 'Q: ' + this.Q.toString() + '\nR: ' + this.R.toString()
       }
     }
+  }
+
+  function _denseQR (m) {
+    const ret = _denseQRimpl(m)
+    const Rdata = ret.R._data
+
+    for (let i = 0; i < Rdata.length; ++i) {
+      for (let j = 0; j < i && j < (Rdata[0] || []).length; ++j) {
+        Rdata[i][j] = multiplyScalar(Rdata[i][j], 0)
+      }
+    }
+
+    return ret
   }
 
   function _sparseQR (m) {

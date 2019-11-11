@@ -88,6 +88,14 @@ function assertValidQRDecomposition (A, Q, R) {
     assert(!math.isNegative(math.re(diagonalElement)),
       'R has elements on the leading diagonal with a negative real part (R[' + i + '][' + i + '] = ' + diagonalElement + ')')
   }
+
+  const raw = math.qr._denseQRimpl(Array.isArray(A) ? math.matrix(A) : A)
+
+  for (let i = 0; i < raw.R._data.length; ++i) {
+    for (let j = 0; j < i && j < (raw.R._data[0] || []).length; ++j) {
+      approx.equal(raw.R._data[i][j], 0, 1e-10)
+    }
+  }
 }
 describe('qr', function () {
   it('should decompose matrix, n x n, no permutations, array', function () {
@@ -399,6 +407,34 @@ describe('qr', function () {
       ]))
 
     // verify
+    assertValidQRDecomposition(m, r.Q, r.R)
+  })
+
+  it.only('Prevent regression: #1669', function () {
+    const m = math.evaluate(`[
+      [0, 1],
+      [1, 0]
+    ]`)
+
+    const r = math.qr(m)
+
+    // Q
+    assert.deepStrictEqual(
+      r.Q,
+      math.evaluate(`[
+        [-0, 1],
+        [1, 0]
+      ]`))
+
+    // R
+    assert.deepStrictEqual(
+      r.R,
+      math.evaluate(`[
+        [1, -0],
+        [-0, 1]
+      ]`)
+    )
+
     assertValidQRDecomposition(m, r.Q, r.R)
   })
 })
