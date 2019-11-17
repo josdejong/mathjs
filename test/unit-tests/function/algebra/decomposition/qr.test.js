@@ -98,7 +98,7 @@ function assertValidQRDecomposition (A, Q, R) {
   }
 }
 
-describe.only('qr', function () {
+describe('qr', function () {
   it('should decompose matrix, n x n, no permutations, array', function () {
     const m = [[15, 42], [20, 81]]
 
