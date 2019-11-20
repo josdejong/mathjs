@@ -4,7 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
-<h1 id="20191006-version-624">2019-10-06, version 6.2.4 <a href="#20191006-version-624" title="Permalink">#</a></h1>
+<h1 id="20191120-version-625">2019-11-20, version 6.2.5 <a href="#20191120-version-625" title="Permalink">#</a></h1>
+
+- Fixed `IndexNode` using a hardcoded, one-based implementation of `index`,
+  making it impossible to instantiate a zero-based version of the expression
+  parser. See <a href="https://github.com/josdejong/mathjs/issues/782">#782</a>.
+
+
+<h1 id="20191120-version-624">2019-11-20, version 6.2.4 <a href="#20191120-version-624" title="Permalink">#</a></h1>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1669">#1669</a>: function 'qr' threw an error if the pivot was zero,
   thanks <a href="https://github.com/kevinkelleher12">@kevinkelleher12</a> and <a href="https://github.com/harrysarson">@harrysarson</a>.
