@@ -1,10 +1,13 @@
 # History
 
-# unreleased
+# 2019-10-06, version 6.2.4
 
-- Fixed #1669: function 'qr' threw an error if the pivot was zero. Thanks @kevinkelleher12 for spotting this and suggesting a fix.
-- Resolves #942: remove misleading assert in 'qr'.
+- Fixed #1669: function 'qr' threw an error if the pivot was zero,
+  thanks @kevinkelleher12 and @harrysarson.
+- Resolves #942: remove misleading assert in 'qr'. Thanks @harrysarson.
 - Work around a bug in complex.js where `sign(0)` returns complex NaN.
+  Thanks @harrysarson.
+
 
 # 2019-10-06, version 6.2.3
 
