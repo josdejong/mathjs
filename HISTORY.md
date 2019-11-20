@@ -1,5 +1,12 @@
 # History
 
+# not yet published, version 6.2.5
+
+- Fixed `IndexNode` using a hardcoded, one-based implementation of `index`,
+  making it impossible to instantiate a zero-based version of the expression
+  parser. See #782.
+
+
 # 2019-10-06, version 6.2.4
 
 - Fixed #1669: function 'qr' threw an error if the pivot was zero,
