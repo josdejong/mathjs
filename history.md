@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20191006-version-624">2019-10-06, version 6.2.4 <a href="#20191006-version-624" title="Permalink">#</a></h1>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1669">#1669</a>: function 'qr' threw an error if the pivot was zero,
+  thanks <a href="https://github.com/kevinkelleher12">@kevinkelleher12</a> and <a href="https://github.com/harrysarson">@harrysarson</a>.
+- Resolves <a href="https://github.com/josdejong/mathjs/issues/942">#942</a>: remove misleading assert in 'qr'. Thanks <a href="https://github.com/harrysarson">@harrysarson</a>.
+- Work around a bug in complex.js where `sign(0)` returns complex NaN.
+  Thanks <a href="https://github.com/harrysarson">@harrysarson</a>.
+
 
 <h1 id="20191006-version-623">2019-10-06, version 6.2.3 <a href="#20191006-version-623" title="Permalink">#</a></h1>
 

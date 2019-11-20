@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 6.2.3
- * @date    2019-10-06
+ * @version 6.2.4
+ * @date    2019-11-20
  *
  * @license
  * Copyright (C) 2013-2019 Jos de Jong <wjosdejong@gmail.com>
@@ -21337,12 +21337,13 @@ Object(factory["a" /* factory */])(nthRoot_name, ['typed'], function (_ref2) {
 
 
 var sign_name = 'sign';
-var sign_dependencies = ['typed', 'BigNumber', 'Fraction'];
+var sign_dependencies = ['typed', 'BigNumber', 'Fraction', 'complex'];
 var createSign =
 /* #__PURE__ */
 Object(factory["a" /* factory */])(sign_name, sign_dependencies, function (_ref) {
   var typed = _ref.typed,
       _BigNumber = _ref.BigNumber,
+      complex = _ref.complex,
       _Fraction = _ref.Fraction;
 
   /**
@@ -21378,7 +21379,7 @@ Object(factory["a" /* factory */])(sign_name, sign_dependencies, function (_ref)
   var sign = typed(sign_name, {
     number: signNumber,
     Complex: function Complex(x) {
-      return x.sign();
+      return x.im === 0 ? complex(signNumber(x.re)) : x.sign();
     },
     BigNumber: function BigNumber(x) {
       return new _BigNumber(x.cmp(0));
@@ -47598,9 +47599,11 @@ Object(factory["a" /* factory */])(lup_name, lup_dependencies, function (_ref) {
   }
 });
 // CONCATENATED MODULE: ./src/function/algebra/decomposition/qr.js
+function qr_extends() { qr_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return qr_extends.apply(this, arguments); }
+
 
 var qr_name = 'qr';
-var qr_dependencies = ['typed', 'matrix', 'zeros', 'identity', 'isZero', 'unequal', 'sign', 'sqrt', 'conj', 'unaryMinus', 'addScalar', 'divideScalar', 'multiplyScalar', 'subtract'];
+var qr_dependencies = ['typed', 'matrix', 'zeros', 'identity', 'isZero', 'equal', 'sign', 'sqrt', 'conj', 'unaryMinus', 'addScalar', 'divideScalar', 'multiplyScalar', 'subtract', 'complex'];
 var createQr =
 /* #__PURE__ */
 Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
@@ -47609,7 +47612,7 @@ Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
       zeros = _ref.zeros,
       identity = _ref.identity,
       isZero = _ref.isZero,
-      unequal = _ref.unequal,
+      equal = _ref.equal,
       sign = _ref.sign,
       sqrt = _ref.sqrt,
       conj = _ref.conj,
@@ -47617,7 +47620,8 @@ Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
       addScalar = _ref.addScalar,
       divideScalar = _ref.divideScalar,
       multiplyScalar = _ref.multiplyScalar,
-      subtract = _ref.subtract;
+      subtract = _ref.subtract,
+      complex = _ref.complex;
 
   /**
    * Calculate the Matrix QR decomposition. Matrix `A` is decomposed in
@@ -47662,7 +47666,7 @@ Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
    * @return {{Q: Array | Matrix, R: Array | Matrix}} Q: the orthogonal
    * matrix and R: the upper triangular matrix
    */
-  return typed(qr_name, {
+  return qr_extends(typed(qr_name, {
     DenseMatrix: function DenseMatrix(m) {
       return _denseQR(m);
     },
@@ -47681,9 +47685,11 @@ Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
         R: r.R.valueOf()
       };
     }
+  }), {
+    _denseQRimpl: _denseQRimpl
   });
 
-  function _denseQR(m) {
+  function _denseQRimpl(m) {
     // rows & columns (m x n)
     var rows = m._size[0]; // m
 
@@ -47722,7 +47728,7 @@ Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
        *
        */
       var pivot = Rdata[k][k];
-      var sgn = unaryMinus(sign(pivot));
+      var sgn = unaryMinus(equal(pivot, 0) ? 1 : sign(pivot));
       var conjSgn = conj(sgn);
       var alphaSquared = 0;
 
@@ -47796,18 +47802,6 @@ Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
           }
         }
       }
-    } // coerse almost zero elements to zero
-    // TODO I feel uneasy just zeroing these values
-
-
-    for (i = 0; i < rows; ++i) {
-      for (j = 0; j < i && j < cols; ++j) {
-        if (unequal(0, divideScalar(Rdata[i][j], 1e5))) {
-          throw new Error('math.qr(): unknown error - ' + 'R is not lower triangular (element (' + i + ', ' + j + ')  = ' + Rdata[i][j] + ')');
-        }
-
-        Rdata[i][j] = multiplyScalar(Rdata[i][j], 0);
-      }
     } // return matrices
 
 
@@ -47818,6 +47812,24 @@ Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
         return 'Q: ' + this.Q.toString() + '\nR: ' + this.R.toString();
       }
     };
+  }
+
+  function _denseQR(m) {
+    var ret = _denseQRimpl(m);
+
+    var Rdata = ret.R._data;
+
+    if (m._data.length > 0) {
+      var zero = Rdata[0][0].type === 'Complex' ? complex(0) : 0;
+
+      for (var i = 0; i < Rdata.length; ++i) {
+        for (var j = 0; j < i && j < (Rdata[0] || []).length; ++j) {
+          Rdata[i][j] = zero;
+        }
+      }
+    }
+
+    return ret;
   }
 
   function _sparseQR(m) {
@@ -59462,7 +59474,7 @@ Object(factory["a" /* factory */])(reviver_name, reviver_dependencies, function 
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '6.2.3'; // Note: This file is automatically generated when building math.js.
+var version = '6.2.4'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
