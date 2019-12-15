@@ -23,6 +23,9 @@ function bigFactorial (n) {
 }
 
 function betterFactorial (n) {
+  if (n < 8) {
+    return new BigNumber([1, 1, 2, 6, 24, 120, 720, 5040][n])
+  }
   if (n % 2 === 1) {
     return n.times(betterFactorial(new BigNumber(n - 1)))
   }
@@ -40,8 +43,52 @@ function betterFactorial (n) {
   return prod
 }
 
-console.log('factorial(5) = ' + bigFactorial(new BigNumber(5)))
-console.log('new factorial(5) = ' + betterFactorial(new BigNumber(5)))
+function initializeFactorial(n) {
+  n = n.toNumber()
+
+  let loop = Math.floor(n / 2)
+  const f = [loop]
+
+  if(n % 2 === 1) {
+    f[loop] = n
+  }
+
+  let i = 1
+  let s = loop
+
+  for(let inc = loop - 1; inc > 0; inc--) {
+    s += inc
+    f[i] = s
+    while(f[i] % 2 === 0) {
+      loop++;
+      f[i] = Math.floor(f[i] / 2)
+    }
+    i++
+  }
+
+  return SynchronizedBinaryTree(f, f.length - 1).times(new BigNumber(2).pow(loop))
+}
+
+function SynchronizedBinaryTree(f, len) {
+  const k = Math.floor(len / 2);
+  return recursiveBinaryTree(f, k + 1, len).times(recursiveBinaryTree(f, 0, k))
+}
+
+function recursiveBinaryTree(f, n, m) {
+  if(m === n + 1) {
+    return new BigNumber(f[n]).times(f[m])
+  } else if(m === n + 2) {
+    return new BigNumber(f[n]).times(f[n + 1]).times(f[m])
+  }
+
+  const k = Math.floor((n + m) / 2)
+
+  return recursiveBinaryTree(f, n, k).times(recursiveBinaryTree(f, k + 1, m))
+}
+
+console.log('factorial(5) = ' + bigFactorial(new BigNumber(15)))
+console.log('new factorial(5) = ' + betterFactorial(new BigNumber(15)))
+console.log('initialize factorial(5) = ' + initializeFactorial(new BigNumber(15)))
 
 const suite = new Benchmark.Suite()
 suite
@@ -59,6 +106,22 @@ suite
   })
   .add(pad('new bigFactorial for big numbers'), function () {
     const res = betterFactorial(new BigNumber(600))
+    results.push(res)
+  })
+  .add(pad('new bigFactorial for HUGE numbers'), function () {
+    const res = bigFactorial(new BigNumber(1500))
+    results.push(res)
+  })
+  .add(pad('new HugeFactorial for HUGE numbers'), function () {
+    const res = initializeFactorial(new BigNumber(1500))
+    results.push(res)
+  })
+  .add(pad('new bigFactorial for "HUGER" numbers'), function () {
+    const res = bigFactorial(new BigNumber(10000))
+    results.push(res)
+  })
+  .add(pad('new HugeFactorial for "HUGER" numbers'), function () {
+    const res = initializeFactorial(new BigNumber(10000))
     results.push(res)
   })
   .on('cycle', function (event) {
