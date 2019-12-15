@@ -71,19 +71,19 @@ function initializeFactorial (n) {
 
 function SynchronizedBinaryTree (f, len) {
   const k = Math.floor(len / 2)
-  return recursiveBinaryTree(f, k + 1, len).times(recursiveBinaryTree(f, 0, k))
+  return new BigNumber(recursiveBinaryTree(f, k + 1, len)).times(recursiveBinaryTree(f, 0, k))
 }
 
 function recursiveBinaryTree (f, n, m) {
   if (m === n + 1) {
-    return new BigNumber(f[n]).times(f[m])
+    return f[n] * f[m]
   } else if (m === n + 2) {
-    return new BigNumber(f[n]).times(f[n + 1]).times(f[m])
+    return f[n] * f[m] * f[n + 1]
   }
 
   const k = Math.floor((n + m) / 2)
 
-  return recursiveBinaryTree(f, n, k).times(recursiveBinaryTree(f, k + 1, m))
+  return new BigNumber(recursiveBinaryTree(f, n, k)).times(recursiveBinaryTree(f, k + 1, m))
 }
 
 console.log('factorial(5) = ' + bigFactorial(new BigNumber(15)))
