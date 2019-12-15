@@ -39,14 +39,14 @@ module.exports = function (config) {
       bs_firefox_windows: {
         base: 'BrowserStack',
         browser: 'firefox',
-        browser_version: '67',
+        browser_version: '71',
         os: 'Windows',
         os_version: '10'
       },
       bs_chrome_mac: {
         base: 'BrowserStack',
         browser: 'Chrome',
-        browser_version: '74',
+        browser_version: '78',
         os: 'OS X',
         os_version: 'High Sierra'
       },
