@@ -22,22 +22,22 @@ function bigFactorial (n) {
   return new BigNumber(res)
 }
 
-function betterFactorial(n) {
-  if(n % 2 === 1) {
-    return n.times(betterFactorial(new BigNumber(n - 1)));
+function betterFactorial (n) {
+  if (n % 2 === 1) {
+    return n.times(betterFactorial(new BigNumber(n - 1)))
   }
 
-  let p = n;
-  let prod = n;
-  let sum = n.toNumber();
+  let p = n
+  let prod = n
+  let sum = n.toNumber()
 
-  while(p > 2) {
-    p -= 2;
-    sum += p;
-    prod = prod.times(sum);
+  while (p > 2) {
+    p -= 2
+    sum += p
+    prod = prod.times(sum)
   }
 
-  return prod;
+  return prod
 }
 
 console.log('factorial 5 ' + bigFactorial(new BigNumber(6)))
@@ -50,7 +50,7 @@ suite
     results.push(res)
   })
   .add(pad('new bigFactorial'), function () {
-    const res = betterFactorial(new BigNumber(8));
+    const res = betterFactorial(new BigNumber(8))
     results.push(res)
   })
   .add(pad('bigFactorial for big numbers'), function () {
@@ -58,7 +58,7 @@ suite
     results.push(res)
   })
   .add(pad('new bigFactorial for big numbers'), function () {
-    const res = betterFactorial(new BigNumber(600));
+    const res = betterFactorial(new BigNumber(600))
     results.push(res)
   })
   .on('cycle', function (event) {
