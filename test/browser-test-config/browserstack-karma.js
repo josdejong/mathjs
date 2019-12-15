@@ -53,9 +53,9 @@ module.exports = function (config) {
       bs_safari_mac: {
         base: 'BrowserStack',
         browser: 'Safari',
-        browser_version: '12',
+        browser_version: '13',
         os: 'OS X',
-        os_version: 'Mojave'
+        os_version: 'Catalina'
       },
       bs_ie_11: {
         base: 'BrowserStack',
