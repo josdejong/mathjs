@@ -40,8 +40,8 @@ function betterFactorial (n) {
   return prod
 }
 
-console.log('factorial 5 ' + bigFactorial(new BigNumber(6)))
-console.log('new factorial 5 ' + betterFactorial(new BigNumber(6)))
+console.log('factorial(5) = ' + bigFactorial(new BigNumber(5)))
+console.log('new factorial(5) = ' + betterFactorial(new BigNumber(5)))
 
 const suite = new Benchmark.Suite()
 suite
