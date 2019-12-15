@@ -96,10 +96,11 @@ suite
     const res = bigFactorial(new BigNumber(8))
     results.push(res)
   })
-  .add(pad('new bigFactorial'), function () {
+  .add(pad('new bigFactorial for small numbers'), function () {
     const res = betterFactorial(new BigNumber(8))
     results.push(res)
   })
+
   .add(pad('bigFactorial for big numbers'), function () {
     const res = bigFactorial(new BigNumber(600))
     results.push(res)
@@ -108,16 +109,26 @@ suite
     const res = betterFactorial(new BigNumber(600))
     results.push(res)
   })
-  .add(pad('new bigFactorial for HUGE numbers'), function () {
+
+  .add(pad('bigFactorial for HUGE numbers'), function () {
     const res = bigFactorial(new BigNumber(1500))
+    results.push(res)
+  })
+  .add(pad('new bigFactorial for HUGE numbers'), function () {
+    const res = betterFactorial(new BigNumber(1500))
     results.push(res)
   })
   .add(pad('new HugeFactorial for HUGE numbers'), function () {
     const res = initializeFactorial(new BigNumber(1500))
     results.push(res)
   })
-  .add(pad('new bigFactorial for "HUGER" numbers'), function () {
+
+  .add(pad('bigFactorial for "HUGER" numbers'), function () {
     const res = bigFactorial(new BigNumber(10000))
+    results.push(res)
+  })
+  .add(pad('new bigFactorial for "HUGER" numbers'), function () {
+    const res = betterFactorial(new BigNumber(10000))
     results.push(res)
   })
   .add(pad('new HugeFactorial for "HUGER" numbers'), function () {
