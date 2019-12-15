@@ -43,24 +43,24 @@ function betterFactorial (n) {
   return prod
 }
 
-function initializeFactorial(n) {
+function initializeFactorial (n) {
   n = n.toNumber()
 
   let loop = Math.floor(n / 2)
   const f = [loop]
 
-  if(n % 2 === 1) {
+  if (n % 2 === 1) {
     f[loop] = n
   }
 
   let i = 1
   let s = loop
 
-  for(let inc = loop - 1; inc > 0; inc--) {
+  for (let inc = loop - 1; inc > 0; inc--) {
     s += inc
     f[i] = s
-    while(f[i] % 2 === 0) {
-      loop++;
+    while (f[i] % 2 === 0) {
+      loop++
       f[i] = Math.floor(f[i] / 2)
     }
     i++
@@ -69,15 +69,15 @@ function initializeFactorial(n) {
   return SynchronizedBinaryTree(f, f.length - 1).times(new BigNumber(2).pow(loop))
 }
 
-function SynchronizedBinaryTree(f, len) {
-  const k = Math.floor(len / 2);
+function SynchronizedBinaryTree (f, len) {
+  const k = Math.floor(len / 2)
   return recursiveBinaryTree(f, k + 1, len).times(recursiveBinaryTree(f, 0, k))
 }
 
-function recursiveBinaryTree(f, n, m) {
-  if(m === n + 1) {
+function recursiveBinaryTree (f, n, m) {
+  if (m === n + 1) {
     return new BigNumber(f[n]).times(f[m])
-  } else if(m === n + 2) {
+  } else if (m === n + 2) {
     return new BigNumber(f[n]).times(f[n + 1]).times(f[m])
   }
 
