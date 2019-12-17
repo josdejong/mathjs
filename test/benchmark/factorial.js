@@ -26,6 +26,9 @@ function betterFactorial (n) {
   if (n < 8) {
     return new BigNumber([1, 1, 2, 6, 24, 120, 720, 5040][n])
   }
+  if (n > 30) {
+    return initializeFactorial(n);
+  }
   if (n % 2 === 1) {
     return n.times(betterFactorial(new BigNumber(n - 1)))
   }
@@ -71,24 +74,20 @@ function initializeFactorial (n) {
 
 function SynchronizedBinaryTree (f, len) {
   const k = Math.floor(len / 2)
-  return new BigNumber(recursiveBinaryTree(f, k + 1, len)).times(recursiveBinaryTree(f, 0, k))
+  return recursiveBinaryTree(f, k + 1, len).times(recursiveBinaryTree(f, 0, k))
 }
 
 function recursiveBinaryTree (f, n, m) {
   if (m === n + 1) {
-    return f[n] * f[m]
+    return new BigNumber(f[n]).times(f[m])
   } else if (m === n + 2) {
-    return f[n] * f[m] * f[n + 1]
+    return new BigNumber(f[n]).times(f[m]).times(f[n + 1])
   }
 
   const k = Math.floor((n + m) / 2)
 
-  return new BigNumber(recursiveBinaryTree(f, n, k)).times(recursiveBinaryTree(f, k + 1, m))
+  return recursiveBinaryTree(f, n, k).times(recursiveBinaryTree(f, k + 1, m))
 }
-
-console.log('factorial(5) = ' + bigFactorial(new BigNumber(15)))
-console.log('new factorial(5) = ' + betterFactorial(new BigNumber(15)))
-console.log('initialize factorial(5) = ' + initializeFactorial(new BigNumber(15)))
 
 const suite = new Benchmark.Suite()
 suite
@@ -98,6 +97,15 @@ suite
   })
   .add(pad('new bigFactorial for small numbers'), function () {
     const res = betterFactorial(new BigNumber(8))
+    results.push(res)
+  })
+
+  .add(pad('bigFactorial for small numbers 2'), function () {
+    const res = bigFactorial(new BigNumber(20))
+    results.push(res)
+  })
+  .add(pad('new bigFactorial for small numbers 2'), function () {
+    const res = betterFactorial(new BigNumber(20))
     results.push(res)
   })
 
@@ -118,10 +126,6 @@ suite
     const res = betterFactorial(new BigNumber(1500))
     results.push(res)
   })
-  .add(pad('new HugeFactorial for HUGE numbers'), function () {
-    const res = initializeFactorial(new BigNumber(1500))
-    results.push(res)
-  })
 
   .add(pad('bigFactorial for "HUGER" numbers'), function () {
     const res = bigFactorial(new BigNumber(10000))
@@ -129,10 +133,6 @@ suite
   })
   .add(pad('new bigFactorial for "HUGER" numbers'), function () {
     const res = betterFactorial(new BigNumber(10000))
-    results.push(res)
-  })
-  .add(pad('new HugeFactorial for "HUGER" numbers'), function () {
-    const res = initializeFactorial(new BigNumber(10000))
     results.push(res)
   })
   .on('cycle', function (event) {
