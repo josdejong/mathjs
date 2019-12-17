@@ -27,7 +27,7 @@ function betterFactorial (n) {
     return new BigNumber([1, 1, 2, 6, 24, 120, 720, 5040][n])
   }
   if (n > 30) {
-    return initializeFactorial(n);
+    return initializeFactorial(n)
   }
   if (n % 2 === 1) {
     return n.times(betterFactorial(new BigNumber(n - 1)))
