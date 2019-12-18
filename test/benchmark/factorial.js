@@ -52,21 +52,20 @@ function initializeFactorial (n) {
   let loop = Math.floor(n / 2)
   const f = [loop]
 
-  if (n % 2 === 1) {
-    f[loop] = n
-  }
-
-  let i = 1
   let s = loop
 
   for (let inc = loop - 1; inc > 0; inc--) {
     s += inc
-    f[i] = s
-    while (f[i] % 2 === 0) {
+    let temp = s
+    while (temp % 2 === 0) {
       loop++
-      f[i] = Math.floor(f[i] / 2)
+      temp /= 2
     }
-    i++
+    f.push(temp)
+  }
+
+  if (n % 2 === 1) {
+    f.push(n)
   }
 
   return SynchronizedBinaryTree(f, f.length - 1).times(new BigNumber(2).pow(loop))
