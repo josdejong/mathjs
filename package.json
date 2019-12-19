@@ -165,7 +165,7 @@
     "sylvester": "0.0.21",
     "uglify-js": "3.7.2",
     "underscore": "1.9.1",
-    "webpack": "4.41.3",
+    "webpack": "4.41.4",
     "zeros": "1.0.0"
   },
   "main": "main/es5",
