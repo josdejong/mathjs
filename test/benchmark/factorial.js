@@ -1,6 +1,7 @@
 const Benchmark = require('benchmark')
 const BigNumber = require('decimal.js')
 const padRight = require('pad-right')
+
 function pad (text) {
   return padRight(text, 40, ' ')
 }
@@ -26,9 +27,7 @@ function betterFactorial (n) {
   if (n < 8) {
     return new BigNumber([1, 1, 2, 6, 24, 120, 720, 5040][n])
   }
-  if (n > 30) {
-    return initializeFactorial(n)
-  }
+
   if (n % 2 === 1) {
     return n.times(betterFactorial(new BigNumber(n - 1)))
   }
@@ -44,48 +43,6 @@ function betterFactorial (n) {
   }
 
   return prod
-}
-
-function initializeFactorial (n) {
-  n = n.toNumber()
-
-  let loop = Math.floor(n / 2)
-  const f = [loop]
-
-  let s = loop
-
-  for (let inc = loop - 1; inc > 0; inc--) {
-    s += inc
-    let temp = s
-    while (temp % 2 === 0) {
-      loop++
-      temp /= 2
-    }
-    f.push(temp)
-  }
-
-  if (n % 2 === 1) {
-    f.push(n)
-  }
-
-  return SynchronizedBinaryTree(f, f.length - 1).times(new BigNumber(2).pow(loop))
-}
-
-function SynchronizedBinaryTree (f, len) {
-  const k = Math.floor(len / 2)
-  return recursiveBinaryTree(f, k + 1, len).times(recursiveBinaryTree(f, 0, k))
-}
-
-function recursiveBinaryTree (f, n, m) {
-  if (m === n + 1) {
-    return new BigNumber(f[n]).times(f[m])
-  } else if (m === n + 2) {
-    return new BigNumber(f[n]).times(f[m]).times(f[n + 1])
-  }
-
-  const k = Math.floor((n + m) / 2)
-
-  return recursiveBinaryTree(f, n, k).times(recursiveBinaryTree(f, k + 1, m))
 }
 
 const suite = new Benchmark.Suite()
