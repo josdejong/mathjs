@@ -16,17 +16,19 @@ describe('cos', function () {
   })
 
   it('should return the cosine of a number', function () {
-    approx.equal(cos(0), 1)
+    assert.deepStrictEqual(cos(0), 1)
     approx.equal(cos(pi * 1 / 4), 0.707106781186548)
     approx.equal(cos(pi * 1 / 8), 0.923879532511287)
-    approx.equal(cos(pi * 2 / 4), 0)
+    assert.deepStrictEqual(cos(pi * 2 / 4), 0)
     approx.equal(cos(pi * 3 / 4), -0.707106781186548)
-    approx.equal(cos(pi * 4 / 4), -1)
+    assert.deepStrictEqual(cos(pi * 4 / 4), -1)
     approx.equal(cos(pi * 5 / 4), -0.707106781186548)
-    approx.equal(cos(pi * 6 / 4), 0)
+    assert.deepStrictEqual(cos(pi * 6 / 4), 0)
     approx.equal(cos(pi * 7 / 4), 0.707106781186548)
-    approx.equal(cos(pi * 8 / 4), 1)
+    assert.deepStrictEqual(cos(pi * 8 / 4), 1)
     approx.equal(cos(pi / 4), Math.SQRT1_2)
+
+    approx.equal(cos(10), -0.839071529076452)
   })
 
   it('should return the cosine of a bignumber', function () {

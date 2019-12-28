@@ -18,16 +18,21 @@ describe('tan', function () {
   })
 
   it('should return the tangent of a number', function () {
-    approx.equal(tan(0), 0)
-    approx.equal(tan(pi * 1 / 4), 1)
+    assert.deepStrictEqual(tan(0), 0)
     approx.equal(tan(pi * 1 / 8), 0.414213562373095)
-    assert.ok(tan(pi * 2 / 4) > 1e10)
-    approx.equal(tan(pi * 3 / 4), -1)
-    approx.equal(tan(pi * 4 / 4), 0)
-    approx.equal(tan(pi * 5 / 4), 1)
-    assert.ok(tan(pi * 6 / 4) > 1e10)
-    approx.equal(tan(pi * 7 / 4), -1)
-    approx.equal(tan(pi * 8 / 4), 0)
+    assert.deepStrictEqual(tan(pi * 2 / 8), 1)
+    approx.equal(tan(pi * 3 / 8), 2.414213562373095)
+    assert.deepStrictEqual(tan(pi * 4 / 8), NaN)
+    approx.equal(tan(pi * 5 / 8), -2.414213562373095)
+    assert.deepStrictEqual(tan(pi * 6 / 8), -1)
+    approx.equal(tan(pi * 7 / 8), -0.414213562373095)
+    assert.deepStrictEqual(tan(pi * 8 / 8), 0)
+    assert.deepStrictEqual(tan(pi * 5 / 4), 1)
+    assert.deepStrictEqual(tan(pi * 6 / 4), NaN)
+    assert.deepStrictEqual(tan(pi * 7 / 4), -1)
+    assert.deepStrictEqual(tan(pi * 8 / 4), 0)
+
+    approx.equal(tan(10), 0.648360827459087)
   })
 
   it('should return the tangent of a bignumber', function () {
