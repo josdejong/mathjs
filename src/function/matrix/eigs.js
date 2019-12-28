@@ -1,4 +1,4 @@
-import { clone } from '../../utils/object'
+//  import { clone } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
 const name = 'eigs'
@@ -6,8 +6,8 @@ const dependencies = ['typed', 'matrix']
 
 export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
-   * Compute eigenvalue and eigenvector of a real symmetric matrix. 
-   * Only applicable to two dimensional symmetric matrices. Uses Jacobi  
+   * Compute eigenvalue and eigenvector of a real symmetric matrix.
+   * Only applicable to two dimensional symmetric matrices. Uses Jacobi
    * Algorithm.
    *
    * Syntax:
@@ -30,7 +30,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     Array: function (x) {
       // use dense matrix implementation
-      return transpose(matrix(x)).valueOf()
+      return eigs(matrix(x)).valueOf()
     },
 
     Matrix: function (x) {
@@ -44,7 +44,9 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       // process dimensions
       switch (size.length) {
         case 1:   
-          return {eigval:[1],eigvec:[1]}
+          eigval = [1];
+          eigvec = [1]
+          return {'eigval':eigval,'eigvec':eigvec}
 
         default:
           // multi dimensional
@@ -52,5 +54,6 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     }
   })
+  return eigs
 })
 
