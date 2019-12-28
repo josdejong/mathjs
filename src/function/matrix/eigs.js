@@ -38,15 +38,15 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       const size = x.size()
 
       // result
-      let eigval 
+      let eigval
       let eigvec
 
       // process dimensions
       switch (size.length) {
-        case 1:   
-          eigval = [1];
+        case 1:
+          eigval = [1]
           eigvec = [1]
-          return {'eigval':eigval,'eigvec':eigvec}
+          return { 'eigval': eigval, 'eigvec': eigvec }
 
         default:
           // multi dimensional
