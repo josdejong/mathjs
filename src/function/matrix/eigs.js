@@ -46,7 +46,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         case 1:
           eigval = [1]
           eigvec = [1]
-          return { 'eigval': eigval, 'eigvec': eigvec }
+          return { eigval: eigval, eigvec: eigvec }
 
         default:
           // multi dimensional
@@ -56,4 +56,3 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   })
   return eigs
 })
-
