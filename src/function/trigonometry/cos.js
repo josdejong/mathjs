@@ -32,7 +32,14 @@ export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {number | BigNumber | Complex | Array | Matrix} Cosine of x
    */
   const cos = typed(name, {
-    number: Math.cos,
+    number: function (x) {
+      // Return exactly 0 for cos(pi/2), cos(3pi/2), cos(5pi/2), etc for better simplification
+      if ((2 * x / Math.PI) % 2 === 1) {
+        return 0
+      }
+      // If not root of cos(x) then calculate normally
+      return Math.cos(x)
+    },
 
     Complex: function (x) {
       return x.cos()

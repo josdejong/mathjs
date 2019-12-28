@@ -29,7 +29,26 @@ export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {number | BigNumber | Complex | Array | Matrix} Tangent of x
    */
   const tan = typed(name, {
-    number: Math.tan,
+    number: function (x) {
+      // Simple exact values of tan(x) for better simplification
+      switch ((4 * x / Math.PI) % 4) {
+        // tan(0), tan(pi), tan(2pi), etc = 0
+        case 0:
+          return 0
+        // tan(pi/4), tan(5pi/4), tan(9pi/4), etc = 1
+        case 1:
+          return 1
+        // tan(pi/2), tan(3pi/2), tan(5pi/2), etc = NaN/+ and - Infinity
+        case 2:
+          return NaN
+        // tan(3pi/4), tan(7pi/4), tan(11pi/4), etc = -1
+        case 3:
+          return -1
+        // If not easy exact value then calculate normally
+        default:
+          return Math.tan(x)
+      }
+    },
 
     Complex: function (x) {
       return x.tan()
