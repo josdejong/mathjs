@@ -322,7 +322,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
   }
 
   function _distanceNd (x, y) {
-    const vectorSize = Object.keys(x).length
+    const vectorSize = x.length
     let result = 0
     let diff = 0
     for (let i = 0; i < vectorSize; i++) {
