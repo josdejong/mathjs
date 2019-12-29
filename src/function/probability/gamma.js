@@ -106,21 +106,21 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     const precision = config.precision + (Math.log(n.toNumber()) | 0)
     const Big = BigNumber.clone({ precision: precision })
-  
+
     if (n % 2 === 1) {
       return n.times(bigFactorial(new BigNumber(n - 1)))
     }
-  
+
     let p = n
-    let prod = new Big(n);
+    let prod = new Big(n)
     let sum = n.toNumber()
-  
+
     while (p > 2) {
       p -= 2
       sum += p
       prod = prod.times(sum)
     }
-  
+
     return new BigNumber(prod.toPrecision(BigNumber.precision))
   }
 
