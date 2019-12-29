@@ -31,13 +31,12 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     Array: function (x) {
       // check array size
-      let mat = matrix(x)
-      let size = mat.size()
+      const mat = matrix(x)
+      const size = mat.size()
       if (size.length !== 2 || size[0] !== size[1]) {
         throw new RangeError('Matrix must be square ' +
           '(size: ' + format(size) + ')')
       }
-
 
       // use dense 2D matrix implementation
       return diag(x)
@@ -46,7 +45,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     Matrix: function (x) {
       // use dense 2D array implementation
       // dense matrix
-      let size = x.size()
+      const size = x.size()
       if (size.length !== 2 || size[0] !== size[1]) {
         throw new RangeError('Matrix must be square ' +
           '(size: ' + format(size) + ')')
@@ -57,10 +56,9 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   })
 
   // dense matrix implementation
-  function diag(x,precision=1E-12){
+  function diag (x, precision = 1E-12) {
     return x
   }
-
 
   return eigs
 })
