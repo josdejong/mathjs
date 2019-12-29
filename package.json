@@ -163,9 +163,9 @@
     "pad-right": "0.2.2",
     "standard": "14.3.1",
     "sylvester": "0.0.21",
-    "uglify-js": "3.7.2",
+    "uglify-js": "3.7.3",
     "underscore": "1.9.1",
-    "webpack": "4.41.4",
+    "webpack": "4.41.5",
     "zeros": "1.0.0"
   },
   "main": "main/es5",
