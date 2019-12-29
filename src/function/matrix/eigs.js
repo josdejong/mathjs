@@ -1,5 +1,6 @@
 //  import { clone } from '../../utils/object'
 import { factory } from '../../utils/factory'
+import { format } from '../../utils/string'
 
 const name = 'eigs'
 const dependencies = ['typed', 'matrix']
@@ -24,35 +25,42 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *     inv
    *
    * @param {Array | Matrix} x  Matrix to be diagonalized
-   * @return {Object}   The obtect containing eigenvalues and eigenvectors
+   * @return {Array | Matrix}   The obtect containing eigenvalues and eigenvectors
    */
   const eigs = typed('eigs', {
 
     Array: function (x) {
-      // use dense matrix implementation
-      return eigs(matrix(x)).valueOf()
+      // check array size
+      let mat = matrix(x)
+      let size = mat.size()
+      if (size.length !== 2 || size[0] !== size[1]) {
+        throw new RangeError('Matrix must be square ' +
+          '(size: ' + format(size) + ')')
+      }
+
+
+      // use dense 2D matrix implementation
+      return diag(x)
     },
 
     Matrix: function (x) {
-      // matrix size
-      const size = x.size()
-
-      // result
-      let eigval
-      let eigvec
-
-      // process dimensions
-      switch (size.length) {
-        case 1:
-          eigval = [1]
-          eigvec = [1]
-          return { eigval: eigval, eigvec: eigvec }
-
-        default:
-          // multi dimensional
-          throw new RangeError('Matrix must be a two dimensional array')
+      // use dense 2D array implementation
+      // dense matrix
+      let size = x.size()
+      if (size.length !== 2 || size[0] !== size[1]) {
+        throw new RangeError('Matrix must be square ' +
+          '(size: ' + format(size) + ')')
       }
+
+      return diag(x.toArray())
     }
   })
+
+  // dense matrix implementation
+  function diag(x,precision=1E-12){
+    return x
+  }
+
+
   return eigs
 })

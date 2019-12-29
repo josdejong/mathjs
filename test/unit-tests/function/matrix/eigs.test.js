@@ -3,7 +3,8 @@ import math from '../../../../src/bundleAny'
 const eigs = math.eigs
 
 describe('eigs', function () {
-  it('eigenvalue test', function () {
-    assert.strictEqual(eigs([1]), 0, eigs)
+  it('should only accept a square matrix', function () {
+    assert.throws(function () { eigs(math.matrix([[1, 2, 3], [4, 5, 6]])) }, /Matrix must be square/)
+    assert.throws(function () { eigs([[1, 2, 3], [4, 5, 6]]) }, /Matrix must be square/)
   })
 })
