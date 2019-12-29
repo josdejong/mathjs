@@ -55,9 +55,30 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
   })
 
-  // dense matrix implementation
+  // diagonalization implementation
   function diag (x, precision = 1E-12) {
     return x
+  }
+
+  // Rotation Matrix
+  function Rot (theta) {
+    let s = Math.sin(theta);
+    let c = Math.cos(theta);
+    let Mat = [[c,s],[-s,c]];
+    return Mat
+  }
+
+  // get angle
+  function getTheta (aii, ajj, aij) {
+    let  th = 0.0 
+    let denom = (ajj - aii);
+    if (Math.abs(denom) <= 1E-14){
+      th = Math.PI/4.0
+    }
+    else {
+      th = 0.5 * Math.atan(2.0 * aij / (ajj - aii) ) 
+    }
+    return th 
   }
 
   return eigs
