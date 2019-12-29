@@ -32,14 +32,7 @@ export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {number | BigNumber | Complex | Array | Matrix} Sine of x
    */
   const sin = typed(name, {
-    number: function (x) {
-      // Return exactly 0 for sin(0), sin(pi), sin(2pi), etc for better simplification
-      if ((x / Math.PI) % 1 === 0) {
-        return 0
-      }
-      // If not a root of sin(x) then calculate normally
-      return Math.sin(x)
-    },
+    number: Math.sin,
 
     Complex: function (x) {
       return x.sin()
