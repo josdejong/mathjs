@@ -143,6 +143,16 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         }
 
         return _distance3d(x[0], x[1], x[2], y[0], y[1], y[2])
+      } else if (x.length === y.length && x.length > 3) {
+        // Point to Point N-dimensions
+        if (!_Nd(x)) {
+          throw new TypeError('All values of an array should be numbers or BigNumbers')
+        }
+        if (!_Nd(y)) {
+          throw new TypeError('All values of an array should be numbers or BigNumbers')
+        }
+
+        return _distanceNd(x, y)
       } else {
         throw new TypeError('Invalid Arguments: Try again')
       }
@@ -233,6 +243,21 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return _isNumber(a[0]) && _isNumber(a[1]) && _isNumber(a[2])
   }
 
+  function _Nd (a) {
+    // checks if the number of arguments are correct in count and are valid (should be numbers)
+    if (a.constructor !== Array) {
+      a = _objectToArray(a)
+    }
+    // If element is not a number return false
+    for (let i = 0; i < a.length; i++) {
+      if (!_isNumber(a[i])) {
+        return false
+      }
+    }
+    // If all elements are numbers return true
+    return true
+  }
+
   function _parametricLine (a) {
     if (a.constructor !== Array) {
       a = _objectToArray(a)
@@ -294,6 +319,17 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const xDiff = subtract(x2, x1)
     const radicant = addScalar(addScalar(multiplyScalar(zDiff, zDiff), multiplyScalar(yDiff, yDiff)), multiplyScalar(xDiff, xDiff))
     return sqrt(radicant)
+  }
+
+  function _distanceNd (x, y) {
+    const vectorSize = Object.keys(x).length
+    let result = 0
+    let diff = 0
+    for (let i = 0; i < vectorSize; i++) {
+      diff = subtract(x[i], y[i])
+      result += multiplyScalar(diff, diff)
+    }
+    return sqrt(result)
   }
 
   function _distancePairwise (a) {

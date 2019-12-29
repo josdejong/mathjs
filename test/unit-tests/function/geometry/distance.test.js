@@ -18,6 +18,10 @@ describe('distance', function () {
     assert.strictEqual(math.distance({ pointOneX: 4, pointOneY: 5, pointOneZ: 8 }, { pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9 }), 3)
   })
 
+  it('should calculate distance between two N dimensional points', function () {
+    assert.strictEqual(math.distance([10, 2, -5, 13, -6, 12, 0, 16, 8], [1, 11, 4, 4, 3, 3, -9, 7, 17]), 27)
+  })
+
   it('should calculate distance for inputs passed as objects', function () {
     assert.deepStrictEqual(math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 6, lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }), 2.720549372624744)
     assert.deepStrictEqual(math.distance({ pointX: 10, pointY: 10 }, { xCoeffLine: 8, yCoeffLine: 1, constant: 3 }), 11.535230316796387)
