@@ -15,18 +15,16 @@ describe('sin', function () {
   })
 
   it('should return the sine of a number', function () {
-    assert.deepStrictEqual(sin(0), 0)
+    approx.equal(sin(0), 0)
     approx.equal(sin(pi / 8), 0.382683432365090)
     approx.equal(sin(pi / 4), Math.SQRT1_2)
-    assert.deepStrictEqual(sin(pi / 2), 1)
+    approx.equal(sin(pi / 2), 1)
     approx.equal(sin(pi * 3 / 4), 0.707106781186548)
-    assert.deepStrictEqual(sin(pi), 0)
+    approx.equal(sin(pi), 0)
     approx.equal(sin(pi * 5 / 4), -0.707106781186548)
-    assert.deepStrictEqual(sin(pi * 3 / 2), -1)
+    approx.equal(sin(pi * 3 / 2), -1)
     approx.equal(sin(pi * 7 / 4), -0.707106781186548)
-    assert.deepStrictEqual(sin(pi * 2), 0)
-
-    approx.equal(sin(10), -0.544021110889370)
+    approx.equal(sin(pi * 2), 0)
   })
 
   it('should return the sine of a bignumber', function () {

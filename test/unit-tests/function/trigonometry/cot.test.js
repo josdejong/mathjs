@@ -11,25 +11,20 @@ const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 describe('cot', function () {
   it('should return the cotan of a boolean', function () {
     approx.equal(cot(true), 0.642092615934331)
-    approx.equal(cot(false), NaN)
+    approx.equal(cot(false), Infinity)
   })
 
   it('should return the cotan of a number', function () {
-    assert.deepStrictEqual(cot(0), NaN)
-    approx.equal(cot(pi * 1 / 8), 2.414213562373095)
-    assert.deepStrictEqual(cot(pi * 2 / 8), 1)
-    approx.equal(cot(pi * 3 / 8), 0.414213562373095)
-    assert.deepStrictEqual(cot(pi * 4 / 8), 0)
-    approx.equal(cot(pi * 5 / 8), -0.414213562373095)
-    assert.deepStrictEqual(cot(pi * 6 / 8), -1)
-    approx.equal(cot(pi * 7 / 8), -2.414213562373095)
-    assert.deepStrictEqual(cot(pi * 8 / 8), NaN)
-    assert.deepStrictEqual(cot(pi * 5 / 4), 1)
-    assert.deepStrictEqual(cot(pi * 6 / 4), 0)
-    assert.deepStrictEqual(cot(pi * 7 / 4), -1)
-    assert.deepStrictEqual(cot(pi * 8 / 4), NaN)
-
-    approx.equal(cot(10), 1.542351045356920)
+    approx.equal(cot(0), Infinity)
+    approx.equal(1 / cot(pi * 1 / 8), 0.414213562373095)
+    approx.equal(1 / cot(pi * 1 / 4), 1)
+    approx.equal(cot(pi * 2 / 4), 0)
+    approx.equal(1 / cot(pi * 3 / 4), -1)
+    approx.equal(1 / cot(pi * 4 / 4), 0)
+    approx.equal(1 / cot(pi * 5 / 4), 1)
+    approx.equal(cot(pi * 6 / 4), 0)
+    approx.equal(1 / cot(pi * 7 / 4), -1)
+    approx.equal(1 / cot(pi * 8 / 4), 0)
   })
 
   it('should return the cotan of a bignumber', function () {
