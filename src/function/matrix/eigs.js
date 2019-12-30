@@ -58,26 +58,26 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // diagonalization implementation
   function diag (x, precision = 1E-12) {
     const N = x.length
-    let Ei = Array(N) // eigenvalues
-    const e0 =  Math.abs(precision/N)
-    let Sij = new Array(N);
+    let Ei = Array(N).fill(0) // eigenvalues
+    const e0 = Math.abs(precision / N)
+    let Sij = new Array(N)
     // Sij is Identity Matrix
-    for (let i = 0; i<N;i++){
+    for (let i = 0; i < N; i++) {
       Sij[i] = Array(N).fill(0)
-      Sij[i][i] = 1.0;
+      Sij[i][i] = 1.0
     }
     // initial error 
-    let Vab = getAij(x); 
-    while (Math.abs(Vab[1]) >= Math.abs(e0)){
-      let i =  Vab[0][0];
-      let j =  Vab[0][1];
+    let Vab = getAij(x)
+    while (Math.abs(Vab[1]) >= Math.abs(e0)) {
+      let i =  Vab[0][0]
+      let j =  Vab[0][1]
       let psi = getTheta(x[i][i], x[j][j], x[i][j]); 
-      x = x1(x,psi,i,j);
-      Sij = Sij1(Sij,psi,i,j);
-      Vab = getAij(x); 
+      x = x1(x, psi, i, j)
+      Sij = Sij1(Sij, psi, i, j)
+      Vab = getAij(x)
     }
-    for (let i = 0; i<N;i++){
-      Ei[i] = Hij[i][i]; 
+    for (let i = 0; i<N; i++){
+      Ei[i] = Hij[i][i]
     }
     return [Ei,Sij]
   }
