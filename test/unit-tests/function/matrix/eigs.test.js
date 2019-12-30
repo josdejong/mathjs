@@ -57,9 +57,11 @@ describe('eigs', function () {
       [4.24, -4.68, -3.33, 1.67, 2.80, 2.73],
       [4.14, 4.27, 3.05, 2.24, 2.73, -4.47]]
     var [E, V] = eigs(H)
-    var Vt = math.transpose(V)
-    var VtH = math.multiply(Vt, H)
-    var VtHV = math.multiply(VtH, V)
-    approx.equal(VtHV[0][0], E[0])
+    var VtHV = math.multiply(math.transpose(V), H, V)
+    var Ei = Array(H.length)
+    for (let i = 0; i < H.length; i++) {
+      Ei[i] = VtHV[i][i]
+    }
+    approx.deepEqual(Ei, E)
   })
 })
