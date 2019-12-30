@@ -17,8 +17,12 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Examples:
    *
-   *     const A = [[1, 1], [1, 1]]
-   *     math.eigs(A)               // returns {eigval: [0, 2],eigvec:[[0.5, -0.5],[0.5, 0.5]]}
+   *     var A = [[5, 2.3], [2.3, 1]]
+   *     var B = math.eigs(A)
+   *     var E = B[0]
+   *     console.log(E) // returns [-0.04795013082563382, 6.047950130825635] (sorted eigenvalues)
+   *     var V = B[1]
+   *     console.log(V) // returns [[-0.41462108308382806,0.9099941524330766],[0.9099941524330766,0.41462108308382806]] (corresponding eigenvector)
    *
    * See also:
    *

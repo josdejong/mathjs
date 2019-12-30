@@ -18,13 +18,19 @@ describe('eigs', function () {
       [[1, 0], [0, 1]])[0], [1, 1]
     )
     approx.deepEqual(eigs(
-      [[2, 0, 0], [0, 1, 0], [0, 0, 5]])[0], [2, 1, 5]
+      [[2, 0, 0], [0, 1, 0], [0, 0, 5]])[0], [1, 2, 5]
     )
   })
-  it('eigenvalue check', function () {
+  it('eigenvalue check for 2x2 simple matrix', function () {
     // 2x2 test
     approx.deepEqual(eigs(
       [[1, 0.1], [0.1, 1]])[0], [0.9, 1.1]
+    )
+    approx.deepEqual(eigs(
+      math.matrix([[1, 0.1], [0.1, 1]]))[0], [0.9, 1.1]
+    )
+    approx.deepEqual(eigs(
+      [[5, 2.3], [2.3, 1]])[0], [-0.04795013082563382, 6.047950130825635]
     )
   })
 })
