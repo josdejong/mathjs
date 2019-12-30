@@ -75,11 +75,11 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       x = x1(x,psi,i,j);
       Sij = Sij1(Sij,psi,i,j);
       Vab = getAij(x); 
-      
-
-
     }
-    return x
+    for (let i = 0; i<N;i++){
+      Ei[i] = Hij[i][i]; 
+    }
+    return Ei
   }
 
   // Rotation Matrix
