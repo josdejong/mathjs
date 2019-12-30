@@ -57,7 +57,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
   // diagonalization implementation
   function diag (x, precision = 1E-12) {
-    const N = len(x)
+    const N = x.length
     let Ei = Array(N) // eigenvalues
     const e0 =  Math.abs(precision/N)
     let Sij = new Array(N);
