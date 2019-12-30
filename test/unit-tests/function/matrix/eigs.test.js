@@ -33,4 +33,13 @@ describe('eigs', function () {
       [[5, 2.3], [2.3, 1]])[0], [-0.04795013082563382, 6.047950130825635]
     )
   })
+  it('eigenvalue check for 3x3 matrix', function () {
+    // 3x3 test
+    approx.deepEqual(eigs(
+      [[1.0, 1.0, 1.0],
+        [1.0, 1.0, 1.0],
+        [1.0, 1.0, 1.0]])[0],
+    [0, 0, 3]
+    )
+  })
 })
