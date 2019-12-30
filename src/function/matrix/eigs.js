@@ -17,12 +17,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Examples:
    *
-   *     var A = [[5, 2.3], [2.3, 1]]
-   *     var B = math.eigs(A)
-   *     var E = B[0]
-   *     console.log(E) // returns [-0.04795013082563382, 6.047950130825635] (sorted eigenvalues)
-   *     var V = B[1]
-   *     console.log(V) // returns [[-0.41462108308382806,0.9099941524330766],[0.9099941524330766,0.41462108308382806]] (corresponding eigenvector)
+   *     var H = [[5, 2.3], [2.3, 1]]
+   *     var [E, U] = math.eigs(H) // E  is an array of sorted eigenvalues and U is the corresponding eigenvectors
    *
    * See also:
    *
@@ -43,7 +39,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
 
       // use dense 2D matrix implementation
-      return diag(x)
+      return diag(clone(x))
     },
 
     Matrix: function (x) {
