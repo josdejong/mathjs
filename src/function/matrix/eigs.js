@@ -1,4 +1,4 @@
-//  import { clone } from '../../utils/object'
+import { clone } from '../../utils/object'
 import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
 
@@ -64,7 +64,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const N = x.length
     const e0 = Math.abs(precision / N)
     let psi
-    let Sij = new Array(N)
+    var Sij = new Array(N)
     // Sij is Identity Matrix
     for (let i = 0; i < N; i++) {
       Sij[i] = Array(N).fill(0)
@@ -87,14 +87,6 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     return sorting(Ei, Sij)
   }
 
-  // Rotation Matrix
-  function Rot (theta) {
-    const s = Math.sin(theta)
-    const c = Math.cos(theta)
-    const Mat = [[c, s], [-s, c]]
-    return Mat
-  }
-
   // get angle
   function getTheta (aii, ajj, aij) {
     let th = 0.0
@@ -110,8 +102,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // update eigvec
   function Sij1 (Sij, theta, i, j) {
     const N = Sij.length
-    const c = Rot(theta)[0][0]
-    const s = Rot(theta)[0][1]
+    const c = Math.cos(theta)
+    const s = Math.sin(theta)
     var Ski = new Array(N).fill(0)
     var Skj = new Array(N).fill(0)
     for (let k = 0; k < N; k++) {
@@ -198,7 +190,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         S[k].splice(minID, 1)
       }
     }
-    return [Ef, Sf]
+    return [clone(Ef), clone(Sf)]
   }
 
   return eigs
