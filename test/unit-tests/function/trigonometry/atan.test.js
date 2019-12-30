@@ -58,7 +58,7 @@ describe('atan', function () {
     approx.equal(atan(tan(0.1)), 0.1)
     approx.equal(atan(tan(0.5)), 0.5)
     approx.equal(atan(tan(2)), -1.14159265358979)
-    assert.deepStrictEqual(atan(tan(pi / 2)), NaN)
+    assert.deepStrictEqual(isNaN(atan(tan(pi / 2))), true)
   })
 
   it('should be the inverse function of bignumber tan', function () {

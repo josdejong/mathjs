@@ -59,7 +59,7 @@ describe('acot', function () {
 
   it('should be the inverse function of cot', function () {
     approx.equal(acot(cot(-1)), -1)
-    approx.equal(acot(cot(0)), NaN) // cot(x) is undefined at 0 so it does not make sense for the inverse to be 0 so instead should remain undefined. NaN or +- Infinity this could be better implemented
+    assert.deepStrictEqual(isNaN(acot(cot(0))), true) // cot(x) is undefined at 0 so it does not make sense for the inverse to be 0 so instead should remain undefined. NaN or +- Infinity this could be better implemented
     approx.equal(acot(cot(0.1)), 0.1)
     approx.equal(acot(cot(0.5)), 0.5)
     approx.equal(acot(cot(2)), -1.14159265358979)

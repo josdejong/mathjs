@@ -15,7 +15,7 @@ describe('cot', function () {
   })
 
   it('should return the cotan of a number', function () {
-    assert.deepStrictEqual(cot(0), NaN)
+    assert.deepStrictEqual(isNaN(cot(0)), true)
     approx.equal(cot(pi * 1 / 8), 2.414213562373095)
     assert.deepStrictEqual(cot(pi * 2 / 8), 1)
     approx.equal(cot(pi * 3 / 8), 0.414213562373095)
@@ -23,11 +23,11 @@ describe('cot', function () {
     approx.equal(cot(pi * 5 / 8), -0.414213562373095)
     assert.deepStrictEqual(cot(pi * 6 / 8), -1)
     approx.equal(cot(pi * 7 / 8), -2.414213562373095)
-    assert.deepStrictEqual(cot(pi * 8 / 8), NaN)
+    assert.deepStrictEqual(isNaN(cot(pi * 8 / 8)), true)
     assert.deepStrictEqual(cot(pi * 5 / 4), 1)
     assert.deepStrictEqual(cot(pi * 6 / 4), 0)
     assert.deepStrictEqual(cot(pi * 7 / 4), -1)
-    assert.deepStrictEqual(cot(pi * 8 / 4), NaN)
+    assert.deepStrictEqual(isNaN(cot(pi * 8 / 4)), true)
 
     approx.equal(cot(10), 1.542351045356920)
   })
