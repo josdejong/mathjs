@@ -102,6 +102,22 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
     return th 
   }
-
+  
+  function Sij1 (Sij, theta,i,j) {
+    let N = Sij.length;
+    let c = Math.cos(theta);
+    let s = Math.sin(theta);
+    let Ski =  new Array(N).fill(0);
+    let Skj =  new Array(N).fill(0);
+    for (var k=0; k<N; k++){
+        Ski[k] = c * Sij[k][i] - s * Sij[k][j];
+        Skj[k] = s * Sij[k][i] + c * Sij[k][j];
+    }
+    for (var k=0; k<N; k++){
+        Sij[k][i] =  Ski[k] ;
+        Sij[k][j] =  Skj[k] ;
+    }
+    return Sij;
+  }
   return eigs
 })
