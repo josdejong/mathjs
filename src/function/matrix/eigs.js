@@ -84,7 +84,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     for (let i = 0; i < N; i++) {
       Ei[i] = x[i][i]
     }
-    return sorting(Ei, Sij)
+    return sorting(clone(Ei), clone(Sij))
   }
 
   // get angle
