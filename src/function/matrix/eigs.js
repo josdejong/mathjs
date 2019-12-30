@@ -173,30 +173,29 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   }
   // sort results
   function sorting (E, S) {
-    var N = E.length 
+    var N = E.length
     var Ef = Array(N)
     var Sf = Array(N)
     for (let k = 0; k < N; k++) {
-        Sf[k] = Array(N)
+      Sf[k] = Array(N)
     }
-    for (var i = 0; i<N;i++){
+    for (var i = 0; i < N; i++) {
       var minID = 0
-      var minE  = E[0]
+      var minE = E[0]
       for (var j = 0; j < E.length; j++) {
         if (E[j] < minE) {
-          minID = j 
-          minE  = E[minID];
+          minID = j
+          minE = E[minID]
         }
       }
-      Ef[i] = E.splice(minID,1)[0];
+      Ef[i] = E.splice(minID, 1)[0]
       for (var k = 0; k < N; k++) {
-        Sf[k][i]  = S[k][minID]
+        Sf[k][i] = S[k][minID]
         S[k].splice(minID, 1)
       }
     }
-
-    return [Ef,Sf]
-}
+    return [Ef, Sf]
+  }
 
   return eigs
 })
