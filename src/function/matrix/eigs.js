@@ -103,10 +103,11 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     return th 
   }
   
+  // update eigvec  
   function Sij1 (Sij, theta,i,j) {
     let N = Sij.length;
-    let c = Math.cos(theta);
-    let s = Math.sin(theta);
+    let c = Rot(theta)[0][0];
+    let s = Rot(theta)[0][1];
     let Ski =  new Array(N).fill(0);
     let Skj =  new Array(N).fill(0);
     for (var k=0; k<N; k++){
@@ -119,5 +120,43 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
     return Sij;
   }
+
+  // update matrix 
+  function x1 (Hij, theta,i,j){
+    let N = Hij.length;
+    let c = Math.cos(theta);
+    let s = Math.sin(theta);
+    let c2 = c * c ; 
+    let s2 = s * s ; 
+    //var Ans = new Array(N).fill(Array(N).fill(0)); 
+    let Aki =  new Array(N).fill(0);
+    let Akj =  new Array(N).fill(0);
+    // Aii
+    let Aii = c2 * Hij[i][i] - 2 * c * s * Hij[i][j] + s2 * Hij[j][j];
+    let Ajj = s2 * Hij[i][i] + 2 * c * s * Hij[i][j] + c2 * Hij[j][j];
+    // 0  to i
+    for (var k=0; k<N; k++){
+        Aki[k] =  c * Hij[i][k] - s * Hij[j][k] ;
+        //Ans[i][k] =  Ans[k][i] ; 
+        Akj[k] =  s * Hij[i][k] + c * Hij[j][k] ;
+        //Ans[j][k] =  Ans[k][j] ; 
+    }
+    // Modify Hij
+    Hij[i][i] = Aii;
+    Hij[j][j] = Ajj;
+    Hij[i][j] = 0;
+    Hij[j][i] = 0;
+    // 0  to i
+    for (var k=0; k<N; k++){
+        if (k!==i && k!==j){
+            Hij[i][k] = Aki[k];
+            Hij[k][i] = Aki[k];
+            Hij[j][k] = Akj[k];
+            Hij[k][j] = Akj[k];
+        }
+    }
+    return Hij;
+ }
+
   return eigs
 })
