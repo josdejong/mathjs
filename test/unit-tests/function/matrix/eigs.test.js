@@ -12,10 +12,19 @@ describe('eigs', function () {
     assert.throws(function () { eigs(1.0) }, /TypeError: Unexpected type of argument/)
     assert.throws(function () { eigs('random') }, /TypeError: Unexpected type of argument/)
   })
-  it('eigenvalue check', function () {
+  it('eigenvalue check for diagonal matrix', function () {
     // trivial test
     approx.deepEqual(eigs(
       [[1, 0], [0, 1]])[0], [1, 1]
+    )
+    approx.deepEqual(eigs(
+      [[2, 0, 0], [0, 1, 0], [0, 0, 5]])[0], [2, 1, 5]
+    )
+  })
+  it('eigenvalue check', function () {
+    // 2x2 test
+    approx.deepEqual(eigs(
+      [[1, 0.1], [0.1, 1]])[0], [0.9, 1.1]
     )
   })
 })

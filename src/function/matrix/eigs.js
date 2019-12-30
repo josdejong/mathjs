@@ -25,7 +25,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *     inv
    *
    * @param {Array | Matrix} x  Matrix to be diagonalized
-   * @return {Array} [eigenvalues,eigenvectors] Array containing eigenvalues (Array) and eigenvectors (2D Array).
+   * @return {Array | Array} Array containing eigenvalues (Array) and eigenvectors (2D Array).
    */
   const eigs = typed('eigs', {
 
