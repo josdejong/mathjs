@@ -1,10 +1,10 @@
 # History
 
 
-# not yet published, version 6.3.0
+# 2019-12-31, version 6.3.0
 
-- Improved performance of `factorial` for `BigNumber` up to a factor 2.
-  Thanks @kmdrGroch.
+- Improved performance of `factorial` for `BigNumber` up to a factor two,
+  see #1687. Thanks @kmdrGroch.
 
 
 # 2019-11-20, version 6.2.5
