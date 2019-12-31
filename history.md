@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h1 id="20191231-version-630">2019-12-31, version 6.3.0 <a href="#20191231-version-630" title="Permalink">#</a></h1>
+
+- Improved performance of `factorial` for `BigNumber` up to a factor two,
+  see <a href="https://github.com/josdejong/mathjs/issues/1687">#1687</a>. Thanks <a href="https://github.com/kmdrGroch">@kmdrGroch</a>.
+
+
 <h1 id="20191120-version-625">2019-11-20, version 6.2.5 <a href="#20191120-version-625" title="Permalink">#</a></h1>
 
 - Fixed `IndexNode` using a hardcoded, one-based implementation of `index`,
