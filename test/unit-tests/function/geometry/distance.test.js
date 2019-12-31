@@ -2,6 +2,10 @@ import assert from 'assert'
 import math from '../../../../src/bundleAny'
 
 describe('distance', function () {
+  it('should calculate the distance of two 1D points', function () {
+    assert.strictEqual(math.distance([1], [2]), 1)
+  })
+
   it('should calculate the distance of two 2D points', function () {
     assert.strictEqual(math.distance([0, 0], [10, 10]), 14.142135623730951)
     assert.strictEqual(math.distance(math.matrix([0, 0]), math.matrix([10, 10])), 14.142135623730951)
