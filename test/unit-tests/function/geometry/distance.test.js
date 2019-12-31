@@ -120,6 +120,8 @@ describe('distance', function () {
     assert.deepStrictEqual(bigmath.evaluate('distance([1, 2], [4, 6])'), bignumber(5))
     assert.deepStrictEqual(bigdistance([bignumber(1), bignumber(2)], [bignumber(4), bignumber(6)]), bignumber(5))
     assert.deepStrictEqual(bigdistance([bignumber(1), 2], [4, bignumber(6)]), bignumber(5))
+    assert.deepStrictEqual(bigdistance([bignumber(10), bignumber(2), bignumber(-5), bignumber(13), bignumber(-6), bignumber(12), bignumber(0), bignumber(16), bignumber(8)],
+      [bignumber(1), bignumber(11), bignumber(4), bignumber(4), bignumber(3), bignumber(3), bignumber(-9), bignumber(7), bignumber(17)]), bignumber(27))
     assert.deepStrictEqual(bigmath.evaluate('distance([3, 5], [10, 1])'), bignumber('8.0622577482985496523666132303038'))
     assert.deepStrictEqual(bigmath.evaluate('distance([1, 2, 3], [-2, -3, -4])'), bignumber('9.1104335791442988819456261046887'))
     assert.deepStrictEqual(bigmath.evaluate('distance({pointOneX: 0, pointOneY: 0}, {pointTwoX: 10, pointTwoY: 10})'), bignumber('14.142135623730950488016887242097'))
@@ -134,5 +136,6 @@ describe('distance', function () {
     assert.deepStrictEqual(bigmath.evaluate('distance([2, 3, 1], [1, 1, 2, 5, 0, 1])'), bignumber('2.3204774044612855517320588018918'))
     assert.deepStrictEqual(bigmath.evaluate('distance({pointX: 2, pointY: 3, pointZ: 1}, {x0: 1, y0: 1, z0: 2, a: 5, b: 0, c: 1})'),
       bignumber('2.3204774044612855517320588018918'))
+    assert.deepStrictEqual(bigmath.evaluate('distance([10, 2, -5, 13, -6, 12, 0, 16, 8], [1, 11, 4, 4, 3, 3, -9, 7, 17])'), bignumber(27))
   })
 })
