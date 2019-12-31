@@ -327,7 +327,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let diff = 0
     for (let i = 0; i < vectorSize; i++) {
       diff = subtract(x[i], y[i])
-      result += multiplyScalar(diff, diff)
+      result = addScalar(multiplyScalar(diff, diff), result)
     }
     return sqrt(result)
   }
