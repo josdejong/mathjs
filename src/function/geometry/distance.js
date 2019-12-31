@@ -123,27 +123,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         }
 
         return _distancePointLine3D(x[0], x[1], x[2], y[0], y[1], y[2], y[3], y[4], y[5])
-      } else if (x.length === 2 && y.length === 2) {
-        // Point to Point 2D
-        if (!_2d(x)) {
-          throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument')
-        }
-        if (!_2d(y)) {
-          throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument')
-        }
-
-        return _distance2d(x[0], x[1], y[0], y[1])
-      } else if (x.length === 3 && y.length === 3) {
-        // Point to Point 3D
-        if (!_3d(x)) {
-          throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument')
-        }
-        if (!_3d(y)) {
-          throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument')
-        }
-
-        return _distance3d(x[0], x[1], x[2], y[0], y[1], y[2])
-      } else if (x.length === y.length && x.length > 3) {
+      } else if (x.length === y.length && x.length > 0) {
         // Point to Point N-dimensions
         if (!_Nd(x)) {
           throw new TypeError('All values of an array should be numbers or BigNumbers')
