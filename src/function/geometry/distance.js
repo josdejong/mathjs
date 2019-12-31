@@ -132,7 +132,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
           throw new TypeError('All values of an array should be numbers or BigNumbers')
         }
 
-        return _distanceNd(x, y)
+        return _distanceNdim(x, y)
       } else {
         throw new TypeError('Invalid Arguments: Try again')
       }
@@ -301,7 +301,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return sqrt(radicant)
   }
 
-  function _distanceNd (x, y) {
+  function _distanceNdim (x, y) {
     const vectorSize = x.length
     let result = 0
     let diff = 0
