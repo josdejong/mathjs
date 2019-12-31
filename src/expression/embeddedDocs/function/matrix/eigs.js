@@ -4,9 +4,9 @@ export const eigsDocs = {
   syntax: [
     'eigs(x)'
   ],
-  description: 'Calculate the inverse of a matrix',
+  description: 'Calculate the eigenvalues and eigenvectors of a real symmetric matrix',
   examples: [
-    'inv([[5, 2.3], [2.3, 1]])'
+    'eigs([[5, 2.3], [2.3, 1]])'
   ],
   seealso: [
     'inv'
