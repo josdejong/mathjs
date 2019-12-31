@@ -125,10 +125,10 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         return _distancePointLine3D(x[0], x[1], x[2], y[0], y[1], y[2], y[3], y[4], y[5])
       } else if (x.length === y.length && x.length > 0) {
         // Point to Point N-dimensions
-        if (!_Nd(x)) {
+        if (!_isNdim(x)) {
           throw new TypeError('All values of an array should be numbers or BigNumbers')
         }
-        if (!_Nd(y)) {
+        if (!_isNdim(y)) {
           throw new TypeError('All values of an array should be numbers or BigNumbers')
         }
 
@@ -223,7 +223,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return _isNumber(a[0]) && _isNumber(a[1]) && _isNumber(a[2])
   }
 
-  function _Nd (a) {
+  function _isNdim (a) {
     // checks if the number of arguments are correct in count and are valid (should be numbers)
     if (a.constructor !== Array) {
       a = _objectToArray(a)
