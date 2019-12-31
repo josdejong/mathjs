@@ -1,6 +1,7 @@
 const Benchmark = require('benchmark')
 const BigNumber = require('decimal.js')
 const padRight = require('pad-right')
+
 function pad (text) {
   return padRight(text, 40, ' ')
 }
@@ -23,6 +24,10 @@ function bigFactorial (n) {
 }
 
 function betterFactorial (n) {
+  if (n < 8) {
+    return new BigNumber([1, 1, 2, 6, 24, 120, 720, 5040][n])
+  }
+
   if (n % 2 === 1) {
     return n.times(betterFactorial(new BigNumber(n - 1)))
   }
@@ -40,25 +45,50 @@ function betterFactorial (n) {
   return prod
 }
 
-console.log('factorial(5) = ' + bigFactorial(new BigNumber(5)))
-console.log('new factorial(5) = ' + betterFactorial(new BigNumber(5)))
-
 const suite = new Benchmark.Suite()
 suite
   .add(pad('bigFactorial for small numbers'), function () {
     const res = bigFactorial(new BigNumber(8))
     results.push(res)
   })
-  .add(pad('new bigFactorial'), function () {
+  .add(pad('new bigFactorial for small numbers'), function () {
     const res = betterFactorial(new BigNumber(8))
     results.push(res)
   })
+
+  .add(pad('bigFactorial for small numbers 2'), function () {
+    const res = bigFactorial(new BigNumber(20))
+    results.push(res)
+  })
+  .add(pad('new bigFactorial for small numbers 2'), function () {
+    const res = betterFactorial(new BigNumber(20))
+    results.push(res)
+  })
+
   .add(pad('bigFactorial for big numbers'), function () {
     const res = bigFactorial(new BigNumber(600))
     results.push(res)
   })
   .add(pad('new bigFactorial for big numbers'), function () {
     const res = betterFactorial(new BigNumber(600))
+    results.push(res)
+  })
+
+  .add(pad('bigFactorial for HUGE numbers'), function () {
+    const res = bigFactorial(new BigNumber(1500))
+    results.push(res)
+  })
+  .add(pad('new bigFactorial for HUGE numbers'), function () {
+    const res = betterFactorial(new BigNumber(1500))
+    results.push(res)
+  })
+
+  .add(pad('bigFactorial for "HUGER" numbers'), function () {
+    const res = bigFactorial(new BigNumber(10000))
+    results.push(res)
+  })
+  .add(pad('new bigFactorial for "HUGER" numbers'), function () {
+    const res = betterFactorial(new BigNumber(10000))
     results.push(res)
   })
   .on('cycle', function (event) {
