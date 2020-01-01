@@ -16,7 +16,7 @@ const dependencies = [
 export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typed, addScalar, subtract, multiplyScalar, divideScalar, unaryMinus, sqrt, abs }) => {
   /**
     * Calculates:
-    *    The eucledian distance between two points in 2 and 3 dimensional spaces.
+    *    The eucledian distance between two points in N-dimensional spaces.
     *    Distance between point and a line in 2 and 3 dimensional spaces.
     *    Pairwise distance between a set of 2D or 3D points
     * NOTE:
@@ -28,6 +28,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *-   math.distance({pointOneX: 4, pointOneY: 5}, {pointTwoX: 2, pointTwoY: 7})
     *    math.distance([x1, y1, z1], [x2, y2, z2])
     *    math.distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})
+    *    math.distance([x1, y1, ... , N1], [x2, y2, ... , N2])
     *    math.distance([[A], [B], [C]...])
     *    math.distance([x1, y1], [LinePtX1, LinePtY1], [LinePtX2, LinePtY2])
     *    math.distance({pointX: 1, pointY: 4}, {lineOnePtX: 6, lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8})
@@ -48,6 +49,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *    math.distance(
     *     {pointOneX: 4, pointOneY: 5, pointOneZ: 8},
     *     {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})    // Returns 3
+    *    math.distance([1, 0, 1, 0], [0, -1, 0, -1])     // Returns 2
     *    math.distance([[1, 2], [1, 2], [1, 3]])         // Returns [0, 1, 1]
     *    math.distance([[1,2,4], [1,2,6], [8,1,3]])      // Returns [2, 7.14142842854285, 7.681145747868608]
     *    math.distance([10, 10], [8, 1, 3])              // Returns 11.535230316796387
