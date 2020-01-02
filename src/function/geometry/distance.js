@@ -227,17 +227,10 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
   function _containsOnlyNumbers (a) {
     // checks if the number of arguments are correct in count and are valid (should be numbers)
-    if (a.constructor !== Array) {
+    if (!Array.isArray(a)) {
       a = _objectToArray(a)
     }
-    // If element is not a number return false
-    for (let i = 0; i < a.length; i++) {
-      if (!_isNumber(a[i])) {
-        return false
-      }
-    }
-    // If all elements are numbers return true
-    return true
+    return a.every(_isNumber)
   }
 
   function _parametricLine (a) {
