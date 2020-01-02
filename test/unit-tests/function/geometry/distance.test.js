@@ -91,7 +91,7 @@ describe('distance', function () {
     assert.deepStrictEqual(math.distance([[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]]), [1, 1, 1, 1.4142135623730951, 1.4142135623730951, 1.4142135623730951])
     assert.deepStrictEqual(math.distance([[1, 2, 4], [1, 2, 6], [8, 1, 3]]), [2, 7.14142842854285, 7.681145747868608])
     assert.deepStrictEqual(math.distance([[-41, 52, 24], [61, -28, 60], [-38, 11, 53]]), [134.5362404707371, 50.309044912421065, 106.63489110042735])
-    assert.deepStrictEqual(math.distance([[3.1, 5.2, 4.5], [4.1, 0.2, 6.4], [-5.8, -4.1, 3021]]), [5.441507144165116, 3016.527465480797, 3014.6193225679426])
+    assert.deepStrictEqual(math.distance([[3.1, 5.2, 4.5], [4.1, 0.2, 6.4], [-5.8, -4.1, 3021]]), [5.441507144165116, 3016.5274654807968, 3014.6193225679426])
   })
 
   it('should calculate distance between a point and a line segment given by an equation in 2D accurately', function () {

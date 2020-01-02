@@ -127,14 +127,14 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         return _distancePointLine3D(x[0], x[1], x[2], y[0], y[1], y[2], y[3], y[4], y[5])
       } else if (x.length === y.length && x.length > 0) {
         // Point to Point N-dimensions
-        if (!_isNdim(x)) {
+        if (!_containsOnlyNumbers(x)) {
           throw new TypeError('All values of an array should be numbers or BigNumbers')
         }
-        if (!_isNdim(y)) {
+        if (!_containsOnlyNumbers(y)) {
           throw new TypeError('All values of an array should be numbers or BigNumbers')
         }
 
-        return _distanceNdim(x, y)
+        return _euclideanDistance(x, y)
       } else {
         throw new TypeError('Invalid Arguments: Try again')
       }
@@ -174,7 +174,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
           throw new TypeError('Values of pointTwoX and pointTwoY should be numbers or BigNumbers')
         }
         if ('pointOneX' in x && 'pointOneY' in x && 'pointTwoX' in y && 'pointTwoY' in y) {
-          return _distance2d(x.pointOneX, x.pointOneY, y.pointTwoX, y.pointTwoY)
+          return _euclideanDistance([x.pointOneX, x.pointOneY], [y.pointTwoX, y.pointTwoY])
         } else {
           throw new TypeError('Key names do not match')
         }
@@ -189,7 +189,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if ('pointOneX' in x && 'pointOneY' in x && 'pointOneZ' in x &&
           'pointTwoX' in y && 'pointTwoY' in y && 'pointTwoZ' in y
         ) {
-          return _distance3d(x.pointOneX, x.pointOneY, x.pointOneZ, y.pointTwoX, y.pointTwoY, y.pointTwoZ)
+          return _euclideanDistance([x.pointOneX, x.pointOneY, x.pointOneZ], [y.pointTwoX, y.pointTwoY, y.pointTwoZ])
         } else {
           throw new TypeError('Key names do not match')
         }
@@ -225,7 +225,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return _isNumber(a[0]) && _isNumber(a[1]) && _isNumber(a[2])
   }
 
-  function _isNdim (a) {
+  function _containsOnlyNumbers (a) {
     // checks if the number of arguments are correct in count and are valid (should be numbers)
     if (a.constructor !== Array) {
       a = _objectToArray(a)
@@ -288,22 +288,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return divideScalar(num, den)
   }
 
-  function _distance2d (x1, y1, x2, y2) {
-    const yDiff = subtract(y2, y1)
-    const xDiff = subtract(x2, x1)
-    const radicant = addScalar(multiplyScalar(yDiff, yDiff), multiplyScalar(xDiff, xDiff))
-    return sqrt(radicant)
-  }
-
-  function _distance3d (x1, y1, z1, x2, y2, z2) {
-    const zDiff = subtract(z2, z1)
-    const yDiff = subtract(y2, y1)
-    const xDiff = subtract(x2, x1)
-    const radicant = addScalar(addScalar(multiplyScalar(zDiff, zDiff), multiplyScalar(yDiff, yDiff)), multiplyScalar(xDiff, xDiff))
-    return sqrt(radicant)
-  }
-
-  function _distanceNdim (x, y) {
+  function _euclideanDistance (x, y) {
     const vectorSize = x.length
     let result = 0
     let diff = 0
@@ -316,13 +301,18 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
   function _distancePairwise (a) {
     const result = []
+    let pointA = []
+    let pointB = []
     for (let i = 0; i < a.length - 1; i++) {
       for (let j = i + 1; j < a.length; j++) {
         if (a[0].length === 2) {
-          result.push(_distance2d(a[i][0], a[i][1], a[j][0], a[j][1]))
+          pointA = [a[i][0], a[i][1]]
+          pointB = [a[j][0], a[j][1]]
         } else if (a[0].length === 3) {
-          result.push(_distance3d(a[i][0], a[i][1], a[i][2], a[j][0], a[j][1], a[j][2]))
+          pointA = [a[i][0], a[i][1], a[i][2]]
+          pointB = [a[j][0], a[j][1], a[j][2]]
         }
+        result.push(_euclideanDistance(pointA, pointB))
       }
     }
     return result
