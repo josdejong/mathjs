@@ -17,9 +17,9 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Examples:
    *
-   *     var H = [[5, 2.3], [2.3, 1]]
-   *     var [E, U] = math.eigs(H) // E  is an array of sorted eigenvalues and U is the corresponding eigenvectors
-   *     var UTxHxU = math.multiply(math.transpose(U), H, U) // rotates H to the eigen-representation
+   *     const H = [[5, 2.3], [2.3, 1]]
+   *     const [E, U] = math.eigs(H) // E  is an array of sorted eigenvalues and U is the corresponding eigenvectors
+   *     const UTxHxU = math.multiply(math.transpose(U), H, U) // rotates H to the eigen-representation
    *     E[0] == UTxHxU[0][0]  // returns true
    * See also:
    *
