@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
 
 const name = 'eigs'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed', 'matrix', 'typeOf']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf}) => {
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
@@ -55,6 +55,15 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return diag(x.toArray())
     }
   })
+
+  // check input for possible problems
+  // and perform diagonalization efficiently for 
+  // specific type of number
+  function checkInput(x) {
+    let type = typeOf(x[0][0])
+    for 
+  }
+  
 
   // diagonalization implementation
   function diag (x, precision = 1E-12) {
