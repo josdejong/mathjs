@@ -1,7 +1,7 @@
 import { clone } from '../../utils/object'
 import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
-
+import { approx } from '../../../tools/approx'
 const name = 'eigs'
 const dependencies = ['typed', 'matrix', 'typeOf']
 
@@ -59,9 +59,29 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // check input for possible problems
   // and perform diagonalization efficiently for 
   // specific type of number
-  function checkInput(x) {
+  function checkInput(x, n) {
     let type = typeOf(x[0][0])
-    for 
+    if (type == 'number') {
+      pass
+    }
+    else if (type == 'bigNumber') {
+      pass 
+    }
+    else if (type == 'fraction') {
+      pass
+    }
+    else {
+      TypeError('Matrix element of type '+ type + 'is not supported')
+    }
+    for (let i = 0; i < n; i++ ) { 
+      for (let j = i; j < n; j++ ) { 
+        // not symmtric 
+        approx.equal( x[i][j],  x[j][i], TypeError('Input matrix is not symmetric'))
+        if (type !== typeOf(x[i][j])) {
+          console.warn("Mixed type ")
+        }
+      }    
+    }
   }
   
 
