@@ -12,6 +12,9 @@ describe('eigs', function () {
     assert.throws(function () { eigs(1.0) }, /TypeError: Unexpected type of argument/)
     assert.throws(function () { eigs('random') }, /TypeError: Unexpected type of argument/)
   })
+  it('should only accept a matrix with valid element type', function () {
+    assert.throws(function () { eigs([["x", 2], [4, 5]]) }, /Matrix element type not supported/)
+  })
   it('eigenvalue check for diagonal matrix', function () {
     // trivial test
     approx.deepEqual(eigs(
