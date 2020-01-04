@@ -5,7 +5,7 @@ import { format } from '../../utils/string'
 const name = 'eigs'
 const dependencies = ['typed', 'matrix', 'typeOf']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf}) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf }) => {
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
@@ -57,35 +57,34 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   })
 
   // check input for possible problems
-  // and perform diagonalization efficiently for 
+  // and perform diagonalization efficiently for
   // specific type of number
-  function checkAndSubmit(x, n) {
+  function checkAndSubmit (x, n) {
     let type = typeOf(x[0][0])
-    if (type !== 'number' && type !== 'fraction' && type !== 'BigNumber')  {
-      throw new TypeError('Matrix element type not supported ('+ type + ')')
+    if (type !== 'number' && type !== 'fraction' && type !== 'BigNumber') {
+      throw new TypeError('Matrix element type not supported (' + type + ')')
     }
     // check if matrix is symmetric and what is the type of elements
-    for (let i = 0; i < n; i++ ) { 
-      for (let j = i; j < n; j++ ) { 
-        // not symmtric 
+    for (let i = 0; i < n; i++) {
+      for (let j = i; j < n; j++) {
+        // not symmtric
         if (x[i][j] !== x[j][i]) {
           throw new TypeError('Input matrix is not symmetric')
         }
         // not same type
-        let thisType = typeOf(x[i][j])
+        const thisType = typeOf(x[i][j])
         if (type !== thisType) {
           type = 'mixed'
           if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'BigNumber') {
-            throw new TypeError('Matrix element type not supported ('+ type + ')')
+            throw new TypeError('Matrix element type not supported (' + type + ')')
           }
         }
-      }    
+      }
     }
     // perform efficient calculation for 'numbers'
     if (type === 'number') {
       return diag(x)
-    }
-    else {
+    } else {
       throw new TypeError('Elements type not supported')
     }
   }
