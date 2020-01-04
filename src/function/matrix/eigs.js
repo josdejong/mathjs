@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
 
 const name = 'eigs'
-const dependencies = ['typed', 'matrix', 'typeOf']
+const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, equal }) => {
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
@@ -61,28 +61,37 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // specific type of number
   function checkAndSubmit (x, n) {
     let type = typeOf(x[0][0])
-    if (type !== 'number' && type !== 'fraction' && type !== 'BigNumber') {
+    if (type !== 'number' && type !== 'Fraction' && type !== 'BigNumber') {
       throw new TypeError('Matrix element type not supported (' + type + ')')
     }
     // check if matrix is symmetric and what is the type of elements
     for (let i = 0; i < n; i++) {
       for (let j = i; j < n; j++) {
         // not symmtric
-        if (x[i][j] !== x[j][i]) {
+        if (!equal(x[i][j], x[j][i])) {
           throw new TypeError('Input matrix is not symmetric')
         }
         // not same type
         const thisType = typeOf(x[i][j])
         if (type !== thisType) {
           type = 'mixed'
-          if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'BigNumber') {
-            throw new TypeError('Matrix element type not supported (' + type + ')')
+          if (thisType !== 'number' && thisType !== 'Fraction' && thisType !== 'BigNumber') {
+            throw new TypeError('Matrix element type not supported')
           }
         }
       }
     }
     // perform efficient calculation for 'numbers'
     if (type === 'number') {
+      return diag(x)
+    } else if (type === 'Fraction') {
+      // convert fraction to numbers
+      for (let i = 0; i < n; i++) {
+        for (let j = i; j < n; j++) {
+          x[i][j] = x[i][j].valueOf()
+          x[j][i] = x[i][j]
+        }
+      }
       return diag(x)
     } else {
       throw new TypeError('Elements type not supported')

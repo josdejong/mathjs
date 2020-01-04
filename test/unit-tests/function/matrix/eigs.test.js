@@ -69,4 +69,13 @@ describe('eigs', function () {
     }
     approx.deepEqual(Ei, E)
   })
+  it('fractions are supported', function () {
+    const aij = math.fraction('1/2')
+    approx.deepEqual(eigs(
+      [[aij, aij, aij],
+        [aij, aij, aij],
+        [aij, aij, aij]])[0],
+    [0, 0, 1.5]
+    )
+  })
 })
