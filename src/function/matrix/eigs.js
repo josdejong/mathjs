@@ -78,7 +78,11 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         // not symmtric 
         approx.equal( x[i][j],  x[j][i], TypeError('Input matrix is not symmetric'))
         if (type !== typeOf(x[i][j])) {
+          let thisType = typeOf(x[i][j])
           console.warn("Mixed type ")
+          if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'bigNumber') {
+            TypeError('Matrix element of type '+ type + 'is not supported')
+          }
         }
       }    
     }
