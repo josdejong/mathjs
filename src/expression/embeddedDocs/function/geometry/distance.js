@@ -3,7 +3,7 @@ export const distanceDocs = {
   category: 'Geometry',
   syntax: [
     'distance([x1, y1], [x2, y2])',
-    'distance([[x1, y1], [x2, y2])'
+    'distance([[x1, y1], [x2, y2]])'
   ],
   description: 'Calculates the Euclidean distance between two points.',
   examples: [

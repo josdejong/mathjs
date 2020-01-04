@@ -1,6 +1,12 @@
 # History
 
 
+# not yet published, version 6.4.0
+
+- Extended function `dimension` with support for n-dimensional points.
+  Thanks @Veeloxfire.
+
+
 # 2019-12-31, version 6.3.0
 
 - Improved performance of `factorial` for `BigNumber` up to a factor two,
