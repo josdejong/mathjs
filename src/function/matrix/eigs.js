@@ -59,27 +59,20 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // check input for possible problems
   // and perform diagonalization efficiently for 
   // specific type of number
-  function checkInput(x, n) {
+  function checkAndSubmit(x, n) {
     let type = typeOf(x[0][0])
-    if (type == 'number') {
-      pass
-    }
-    else if (type == 'bigNumber') {
-      pass 
-    }
-    else if (type == 'fraction') {
-      pass
-    }
-    else {
+    if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'bigNumber')  {
       TypeError('Matrix element of type '+ type + 'is not supported')
     }
     for (let i = 0; i < n; i++ ) { 
       for (let j = i; j < n; j++ ) { 
         // not symmtric 
         approx.equal( x[i][j],  x[j][i], TypeError('Input matrix is not symmetric'))
-        if (type !== typeOf(x[i][j])) {
-          let thisType = typeOf(x[i][j])
-          console.warn("Mixed type ")
+        let thisType = typeOf(x[i][j])
+        if (type !== thisType) {
+          if (thisType === 'number') {
+            type = thisType
+          }
           if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'bigNumber') {
             TypeError('Matrix element of type '+ type + 'is not supported')
           }
@@ -87,9 +80,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }    
     }
   }
-  
 
-  // diagonalization implementation
+  // diagonalization implementation for number (efficient)
   function diag (x, precision = 1E-12) {
     const N = x.length
     const e0 = Math.abs(precision / N)
