@@ -40,7 +40,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
 
       // use dense 2D matrix implementation
-      return diag(clone(x))
+      return checkAndSubmit(clone(x), size[0])
     },
 
     Matrix: function (x) {
@@ -64,20 +64,26 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'bigNumber')  {
       TypeError('Matrix element of type '+ type + 'is not supported')
     }
+    // check if matrix is symmetric and what is the type of elements
     for (let i = 0; i < n; i++ ) { 
       for (let j = i; j < n; j++ ) { 
         // not symmtric 
         approx.equal( x[i][j],  x[j][i], TypeError('Input matrix is not symmetric'))
         let thisType = typeOf(x[i][j])
         if (type !== thisType) {
-          if (thisType === 'number') {
-            type = thisType
-          }
+          type = 'mixed'
           if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'bigNumber') {
             TypeError('Matrix element of type '+ type + 'is not supported')
           }
         }
       }    
+    }
+    // perform efficient calculation for 'numbers'
+    if (type = 'number') {
+      diag(x)
+    }
+    else {
+      TypeError('Elements type not supported')
     }
   }
 
