@@ -52,7 +52,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
           '(size: ' + format(size) + ')')
       }
 
-      return diag(x.toArray())
+      return checkAndSubmit(x.toArray(), size[0])
     }
   })
 

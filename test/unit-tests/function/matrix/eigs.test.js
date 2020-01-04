@@ -11,9 +11,11 @@ describe('eigs', function () {
     assert.throws(function () { eigs([4, 5, 6]) }, /Matrix must be square/)
     assert.throws(function () { eigs(1.0) }, /TypeError: Unexpected type of argument/)
     assert.throws(function () { eigs('random') }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () { eigs(math.matrix([[1, 2], [2.1, 3]])) }, /Input matrix is not symmetric/)
   })
   it('should only accept a matrix with valid element type', function () {
     assert.throws(function () { eigs([['x', 2], [4, 5]]) }, /Matrix element type not supported/)
+    assert.throws(function () { eigs([[1, 2], [2, '5']]) }, /Matrix element type not supported/)
   })
   it('eigenvalue check for diagonal matrix', function () {
     // trivial test
