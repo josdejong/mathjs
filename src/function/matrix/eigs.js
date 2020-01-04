@@ -1,7 +1,7 @@
 import { clone } from '../../utils/object'
 import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
-import { approx } from '../../../tools/approx'
+
 const name = 'eigs'
 const dependencies = ['typed', 'matrix', 'typeOf']
 
@@ -61,29 +61,32 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // specific type of number
   function checkAndSubmit(x, n) {
     let type = typeOf(x[0][0])
-    if (type !== 'number' && type !== 'fraction' && type !== 'bigNumber')  {
-      TypeError('Matrix element type not supported ('+ type + ')')
+    if (type !== 'number' && type !== 'fraction' && type !== 'BigNumber')  {
+      throw new TypeError('Matrix element type not supported ('+ type + ')')
     }
     // check if matrix is symmetric and what is the type of elements
     for (let i = 0; i < n; i++ ) { 
       for (let j = i; j < n; j++ ) { 
         // not symmtric 
-        approx.equal( x[i][j],  x[j][i], TypeError('Input matrix is not symmetric'))
+        if (x[i][j] !== x[j][i]) {
+          throw new TypeError('Input matrix is not symmetric')
+        }
+        // not same type
         let thisType = typeOf(x[i][j])
         if (type !== thisType) {
           type = 'mixed'
-          if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'bigNumber') {
-            TypeError('Matrix element type not supported ('+ type + ')')
+          if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'BigNumber') {
+            throw new TypeError('Matrix element type not supported ('+ type + ')')
           }
         }
       }    
     }
     // perform efficient calculation for 'numbers'
-    if (type = 'number') {
-      diag(x)
+    if (type === 'number') {
+      return diag(x)
     }
     else {
-      TypeError('Elements type not supported')
+      throw new TypeError('Elements type not supported')
     }
   }
 
