@@ -62,7 +62,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   function checkAndSubmit(x, n) {
     let type = typeOf(x[0][0])
     if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'bigNumber')  {
-      TypeError('Matrix element of type not supported ('+ type + ')')
+      TypeError('Matrix element type not supported ('+ type + ')')
     }
     // check if matrix is symmetric and what is the type of elements
     for (let i = 0; i < n; i++ ) { 
@@ -73,7 +73,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         if (type !== thisType) {
           type = 'mixed'
           if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'bigNumber') {
-            TypeError('Matrix element of type not supported ('+ type + ')')
+            TypeError('Matrix element type not supported ('+ type + ')')
           }
         }
       }    
