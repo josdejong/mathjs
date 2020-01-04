@@ -61,7 +61,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // specific type of number
   function checkAndSubmit(x, n) {
     let type = typeOf(x[0][0])
-    if (thisType !== 'number' && thisType !== 'fraction' && thisType !== 'bigNumber')  {
+    if (type !== 'number' && type !== 'fraction' && type !== 'bigNumber')  {
       TypeError('Matrix element type not supported ('+ type + ')')
     }
     // check if matrix is symmetric and what is the type of elements
