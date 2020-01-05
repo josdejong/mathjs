@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
 
 const name = 'eigs'
-const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal']
+const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, equal }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal }) => {
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
@@ -75,9 +75,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         const thisType = typeOf(x[i][j])
         if (type !== thisType) {
           type = 'mixed'
-          if (thisType !== 'number' && thisType !== 'Fraction' && thisType !== 'BigNumber') {
-            throw new TypeError('Matrix element type not supported')
-          }
+          throw new TypeError('Mixed matrix element type is not supported')
         }
       }
     }
@@ -130,6 +128,18 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   function getTheta (aii, ajj, aij) {
     let th = 0.0
     const denom = (ajj - aii)
+    if (Math.abs(denom) <= 1E-14) {
+      th = Math.PI / 4.0
+    } else {
+      th = 0.5 * Math.atan(2.0 * aij / (ajj - aii))
+    }
+    return th
+  }
+
+  // get angle
+  function getThetaBig (aii, ajj, aij) {
+    let th = 0.0
+    const denom = subtract(ajj , aii)
     if (Math.abs(denom) <= 1E-14) {
       th = Math.PI / 4.0
     } else {
