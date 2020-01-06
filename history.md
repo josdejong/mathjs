@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20200106-version-640">2020-01-06, version 6.4.0 <a href="#20200106-version-640" title="Permalink">#</a></h1>
+
+- Extended function `dimension` with support for n-dimensional points.
+  Thanks <a href="https://github.com/Veeloxfire">@Veeloxfire</a>.
+
+
 <h1 id="20191231-version-630">2019-12-31, version 6.3.0 <a href="#20191231-version-630" title="Permalink">#</a></h1>
 
 - Improved performance of `factorial` for `BigNumber` up to a factor two,

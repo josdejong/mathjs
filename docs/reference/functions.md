@@ -127,7 +127,7 @@ Function | Description
 
 Function | Description
 ---- | -----------
-[math.distance([x1,&nbsp;y1],&nbsp;[x2,&nbsp;y2])](functions/distance.html) | Calculates:    The eucledian distance between two points in 2 and 3 dimensional spaces.
+[math.distance([x1,&nbsp;y1],&nbsp;[x2,&nbsp;y2])](functions/distance.html) | Calculates:    The eucledian distance between two points in N-dimensional spaces.
 [math.intersect(endPoint1Line1, endPoint2Line1, endPoint1Line2, endPoint2Line2)](functions/intersect.html) | Calculates the point of intersection of two lines in two or three dimensions and of a line and a plane in three dimensions.
 
 <h2 id="logical-functions">Logical functions <a href="#logical-functions" title="Permalink">#</a></h2>
