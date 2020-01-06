@@ -4,7 +4,7 @@ layout: default
 
 # Units
 
-File: [units.js](units.js) (click for a live demo)
+File: [units.js](units.js)
 
 ```js
 // units

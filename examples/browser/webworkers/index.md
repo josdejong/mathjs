@@ -89,7 +89,7 @@ File: [webworkers.html](webworkers.html) (click for a live demo)
 </html>
 ```
 
-File: [worker.js](worker.js) (click for a live demo)
+File: [worker.js](worker.js)
 
 ```js
 importScripts('https://unpkg.com/mathjs@6.4.0/dist/math.min.js')

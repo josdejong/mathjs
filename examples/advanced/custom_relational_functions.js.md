@@ -4,7 +4,7 @@ layout: default
 
 # Custom relational functions
 
-File: [custom_relational_functions.js](custom_relational_functions.js) (click for a live demo)
+File: [custom_relational_functions.js](custom_relational_functions.js)
 
 ```js
 const { create, all, factory } = require('../..')

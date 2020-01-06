@@ -4,7 +4,7 @@ layout: default
 
 # Serialization
 
-File: [serialization.js](serialization.js) (click for a live demo)
+File: [serialization.js](serialization.js)
 
 ```js
 // load math.js (using node.js)

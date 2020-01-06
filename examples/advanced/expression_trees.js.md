@@ -4,7 +4,7 @@ layout: default
 
 # Expression trees
 
-File: [expression_trees.js](expression_trees.js) (click for a live demo)
+File: [expression_trees.js](expression_trees.js)
 
 ```js
 const { parse, ConstantNode } = require('../..')

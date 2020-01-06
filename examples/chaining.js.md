@@ -4,7 +4,7 @@ layout: default
 
 # Chaining
 
-File: [chaining.js](chaining.js) (click for a live demo)
+File: [chaining.js](chaining.js)
 
 ```js
 // chaining

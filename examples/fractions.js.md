@@ -4,7 +4,7 @@ layout: default
 
 # Fractions
 
-File: [fractions.js](fractions.js) (click for a live demo)
+File: [fractions.js](fractions.js)
 
 ```js
 // Fractions

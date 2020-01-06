@@ -4,7 +4,7 @@ layout: default
 
 # Use bigint
 
-File: [use_bigint.js](use_bigint.js) (click for a live demo)
+File: [use_bigint.js](use_bigint.js)
 
 ```js
 // This example demonstrates how you could integrate support for BigInt

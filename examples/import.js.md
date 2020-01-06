@@ -4,7 +4,7 @@ layout: default
 
 # Import
 
-File: [import.js](import.js) (click for a live demo)
+File: [import.js](import.js)
 
 ```js
 /**

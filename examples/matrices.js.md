@@ -4,7 +4,7 @@ layout: default
 
 # Matrices
 
-File: [matrices.js](matrices.js) (click for a live demo)
+File: [matrices.js](matrices.js)
 
 ```js
 // matrices

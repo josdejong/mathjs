@@ -4,7 +4,7 @@ layout: default
 
 # Custom datatype
 
-File: [custom_datatype.js](custom_datatype.js) (click for a live demo)
+File: [custom_datatype.js](custom_datatype.js)
 
 ```js
 // This example demonstrates importing a custom data type,

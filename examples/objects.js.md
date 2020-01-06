@@ -4,7 +4,7 @@ layout: default
 
 # Objects
 
-File: [objects.js](objects.js) (click for a live demo)
+File: [objects.js](objects.js)
 
 ```js
 // objects

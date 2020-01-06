@@ -4,7 +4,7 @@ layout: default
 
 # Function transform
 
-File: [function_transform.js](function_transform.js) (click for a live demo)
+File: [function_transform.js](function_transform.js)
 
 ```js
 /**

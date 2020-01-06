@@ -4,7 +4,7 @@ layout: default
 
 # Bignumbers
 
-File: [bignumbers.js](bignumbers.js) (click for a live demo)
+File: [bignumbers.js](bignumbers.js)
 
 ```js
 // BigNumbers

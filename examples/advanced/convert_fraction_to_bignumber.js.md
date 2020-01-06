@@ -4,7 +4,7 @@ layout: default
 
 # Convert fraction to bignumber
 
-File: [convert_fraction_to_bignumber.js](convert_fraction_to_bignumber.js) (click for a live demo)
+File: [convert_fraction_to_bignumber.js](convert_fraction_to_bignumber.js)
 
 ```js
 // Convert from Fraction to BigNumber

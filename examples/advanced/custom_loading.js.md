@@ -4,7 +4,7 @@ layout: default
 
 # Custom loading
 
-File: [custom_loading.js](custom_loading.js) (click for a live demo)
+File: [custom_loading.js](custom_loading.js)
 
 ```js
 import {

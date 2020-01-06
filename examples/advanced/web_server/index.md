@@ -4,7 +4,7 @@ layout: default
 
 # Web server
 
-File: [math_worker.js](math_worker.js) (click for a live demo)
+File: [math_worker.js](math_worker.js)
 
 ```js
 const { create, all } = require('../../../index')
@@ -34,7 +34,7 @@ workerpool.worker({
 
 ```
 
-File: [server.js](server.js) (click for a live demo)
+File: [server.js](server.js)
 
 ```js
 /**
