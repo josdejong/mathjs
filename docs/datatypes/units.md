@@ -115,7 +115,7 @@ math.createUnit('furlong', '220 yards')
 math.evaluate('1 mile to furlong')            // 8 furlong
 ```
 
-If you cannot express the new unit in terms of any existing unit, then the second argument can be omitted. 
+If you cannot express the new unit in terms of any existing unit, then the second argument can be omitted. In this case, a new *base unit* is created:
 
 ```js
 // A 'foo' cannot be expressed in terms of any other unit.
