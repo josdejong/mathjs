@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
 
 const name = 'eigs'
-const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract', 'abs', 'atan']
+const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal, abs, atan }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal, abs, atan, cos, sin }) => {
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
@@ -165,6 +165,24 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
     return Sij
   }
+  // update eigvec for overlap
+  function Sij1Big (Sij, theta, i, j) {
+    const N = Sij.length
+    const c = cos(theta)
+    const s = sin(theta)
+    var Ski = new Array(N).fill(0)
+    var Skj = new Array(N).fill(0)
+    for (let k = 0; k < N; k++) {
+      Ski[k] = subtract(multiply(c, Sij[k][i]), multiply( s, Sij[k][j]))
+      Skj[k] = add(multiply( s, Sij[k][i]), multiply(c, Sij[k][j]))
+    }
+    for (let k = 0; k < N; k++) {
+      Sij[k][i] = Ski[k]
+      Sij[k][j] = Skj[k]
+    }
+    return Sij
+  }
+
 
   // update matrix
   function x1 (Hij, theta, i, j) {
