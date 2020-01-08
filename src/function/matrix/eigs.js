@@ -174,7 +174,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     var Skj = new Array(N).fill(0)
     for (let k = 0; k < N; k++) {
       Ski[k] = subtract(multiply(c, Sij[k][i]), multiply( s, Sij[k][j]))
-      Skj[k] = add(multiply( s, Sij[k][i]), multiply(c, Sij[k][j]))
+      Skj[k] = add(multiply(s, Sij[k][i]), multiply(c, Sij[k][j]))
     }
     for (let k = 0; k < N; k++) {
       Sij[k][i] = Ski[k]
@@ -182,6 +182,42 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
     return Sij
   }
+
+  // update matrix
+  function x1Big (Hij, theta, i, j) {
+    const N = Hij.length
+    const c = cos(theta)
+    const s = sin(theta)
+    const c2 = multiply(c, c)
+    const s2 = multiply(s, s)
+    //  var Ans = new Array(N).fill(Array(N).fill(0));
+    var Aki = new Array(N).fill(0)
+    var Akj = new Array(N).fill(0)
+    //  Aii
+    const Aii = add(subtract(multiply(c2, Hij[i][i]), multiply(2 , c , s , Hij[i][j])) , multiply(s2 , Hij[j][j]))
+    const Ajj = add(multiply(s2, Hij[i][i]), multiply(2, c, s, Hij[i][j]), multiply(c2, Hij[j][j]))
+    // 0  to i
+    for (let k = 0; k < N; k++) {
+      Aki[k] = subtract(multiply(c, Hij[i][k]), multiply(s, Hij[j][k]))
+      Akj[k] = add(multiply(s, Hij[i][k]), multiply(c, Hij[j][k]))
+    }
+    // Modify Hij
+    Hij[i][i] = Aii
+    Hij[j][j] = Ajj
+    Hij[i][j] = 0
+    Hij[j][i] = 0
+    // 0  to i
+    for (let k = 0; k < N; k++) {
+      if (k !== i && k !== j) {
+        Hij[i][k] = Aki[k]
+        Hij[k][i] = Aki[k]
+        Hij[j][k] = Akj[k]
+        Hij[k][j] = Akj[k]
+      }
+    }
+    return Hij
+  }
+
 
 
   // update matrix
