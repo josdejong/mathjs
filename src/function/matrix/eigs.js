@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
 
 const name = 'eigs'
-const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiply', 'inv']
+const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiply', 'inv', 'bignumber']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal, abs, atan, cos, sin, multiply, inv }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal, abs, atan, cos, sin, multiply, inv, bignumber }) => {
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
@@ -221,8 +221,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // update matrix
   function x1Big (Hij, theta, i, j) {
     const N = Hij.length
-    const c = cos(theta)
-    const s = sin(theta)
+    const c = bignumber(cos(theta))
+    const s = bignumber(sin(theta))
     const c2 = multiply(c, c)
     const s2 = multiply(s, s)
     //  var Ans = new Array(N).fill(Array(N).fill(0));

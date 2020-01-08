@@ -80,7 +80,11 @@ describe('eigs', function () {
   })
   it('bigNumber diagonalization is supported', function () {
     var x = [[math.bignumber(1), math.bignumber(0)], [math.bignumber(0), math.bignumber(1)]]
-    approx.deepEqual(eigs(x)[0], [math.bignumber(1), math.bignumber(1)], eigs(x)[1])
+    approx.deepEqual(eigs(x)[0], [math.bignumber(1), math.bignumber(1)])
+    var y = [[math.bignumber(1), math.bignumber(1.0)], [math.bignumber(1.0), math.bignumber(1)]]
+    var E1 = eigs(y)[0]
+    approx.equal(E1[0].toNumber(), 0.0)
+    approx.equal(E1[1].toNumber(), 2.0)
     var H = [[-4.78, -1.0, -2.59, -3.26, 4.24, 4.14],
       [-1.0, -2.45, -0.92, -2.33, -4.68, 4.27],
       [-2.59, -0.92, -2.45, 4.17, -3.33, 3.05],
