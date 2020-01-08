@@ -3095,11 +3095,24 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    *  createUnitSingle('acre', new Unit(43560, 'ft^2'))
    *
    * @param {string} name      The name of the new unit. Must be unique. Example: 'knot'
-   * @param {string, Unit} definition      Definition of the unit in terms of existing units. For example, '0.514444444 m / s'.
-   * @param {Object} options   (optional) An object containing any of the following properties:
-   *     prefixes {string} "none", "short", "long", "binary_short", or "binary_long". The default is "none".
-   *     aliases {Array} Array of strings. Example: ['knots', 'kt', 'kts']
-   *     offset {Numeric} An offset to apply when converting from the unit. For example, the offset for celsius is 273.15 and the offset for farhenheit is 459.67. Default is 0.
+   * @param {string, Unit, Object} definition      Definition of the unit in terms
+   * of existing units. For example, '0.514444444 m / s'. Can be a Unit, a string,
+   * or an Object. If an Object, may have the following properties:
+   *   - definition {string|Unit} The definition of this unit.
+   *   - prefixes {string} "none", "short", "long", "binary_short", or "binary_long".
+   *     The default is "none".
+   *   - aliases {Array} Array of strings. Example: ['knots', 'kt', 'kts']
+   *   - offset {Numeric} An offset to apply when converting from the unit. For
+   *     example, the offset for celsius is 273.15 and the offset for farhenheit
+   *     is 459.67. Default is 0.
+   *   - baseName {string} If the unit's dimension does not match that of any other
+   *     base unit, the name of the newly create base unit. Otherwise, this property
+   *     has no effect.
+   *
+   * @param {Object} options   (optional) An object containing any of the following
+   * properties:
+   *   - override {boolean} Whether this unit should be allowed to override existing
+   *     units.
    *
    * @return {Unit}
    */
@@ -3126,6 +3139,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     let offset = 0
     let definition
     let prefixes
+    let baseName
     if (obj && obj.type === 'Unit') {
       defUnit = obj.clone()
     } else if (typeof (obj) === 'string') {
@@ -3136,6 +3150,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       definition = obj.definition
       prefixes = obj.prefixes
       offset = obj.offset
+      baseName = obj.baseName
       if (obj.aliases) {
         aliases = obj.aliases.valueOf() // aliases could be a Matrix, so convert to Array
       }
@@ -3171,7 +3186,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     let newUnit = {}
     if (!defUnit) {
       // Add a new base dimension
-      const baseName = name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
+      baseName = baseName || name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
       if (BASE_DIMENSIONS.indexOf(baseName) >= 0) {
         throw new Error('Cannot create new base unit "' + name + '": a base unit with that name already exists (and cannot be overridden)')
       }
@@ -3234,7 +3249,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         }
       }
       if (!anyMatch) {
-        const baseName = name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
+        baseName = baseName || name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
         // Add the new base unit
         const newBaseUnit = { dimensions: defUnit.dimensions.slice(0) }
         newBaseUnit.key = baseName
