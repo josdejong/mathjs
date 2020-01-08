@@ -89,8 +89,10 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
           x[i][j] = x[i][j].valueOf()
           x[j][i] = x[i][j]
         }
-      }
+      } 
       return diag(x)
+    } else if (type === 'BigNumber') {
+      return diagBig(x)
     } else {
       throw new TypeError('Elements type not supported')
     }
