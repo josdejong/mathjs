@@ -124,6 +124,36 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     return sorting(clone(Ei), clone(Sij))
   }
 
+    // diagonalization implementation for bigNumber
+    function diagBig (x, precision = 1E-12) {
+      const N = x.length
+      const e0 = abs(precision / N)
+      let psi
+      var Sij = new Array(N)
+      // Sij is Identity Matrix
+      for (let i = 0; i < N; i++) {
+        Sij[i] = Array(N).fill(0)
+        Sij[i][i] = 1.0
+      }
+      // initial error
+      let Vab = getAijBig(x)
+      while (abs(Vab[1]) >= abs(e0)) {
+        const i = Vab[0][0]
+        const j = Vab[0][1]
+        psi = getThetaBig(x[i][i], x[j][j], x[i][j])
+        x = x1Big(x, psi, i, j)
+        Sij = Sij1Big(Sij, psi, i, j)
+        Vab = getAijBig(x)
+      }
+      var Ei = Array(N).fill(0) // eigenvalues
+      for (let i = 0; i < N; i++) {
+        Ei[i] = x[i][i]
+      }
+      return sorting(clone(Ei), clone(Sij))
+    }
+
+  
+
   // get angle
   function getTheta (aii, ajj, aij) {
     let th = 0.0
