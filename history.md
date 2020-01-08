@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20200108-version-650">2020-01-08, version 6.5.0 <a href="#20200108-version-650" title="Permalink">#</a></h1>
+
+- Implemented `baseName` option for `createUnit`, see <a href="https://github.com/josdejong/mathjs/issues/1707">#1707</a>. 
+  Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+
+
 <h1 id="20200106-version-640">2020-01-06, version 6.4.0 <a href="#20200106-version-640" title="Permalink">#</a></h1>
 
 - Extended function `dimension` with support for n-dimensional points.

@@ -133,6 +133,7 @@ gulp.task('docs', function () {
 gulp.task('copyExamples', function () {
   // TODO: make these script replacements more robust
   var script = 'https://unpkg.com/mathjs@' + version() + '/dist/math.min.js';
+  console.log('copy examples', version(), { url: script })
   return gulp.src(EXAMPLES_SRC)
       .pipe(replace(/src=".*dist\/math.js"/, 'src="' + script + '"'))
       .pipe(replace(/src=".*dist\/math.min.js"/, 'src="' + script + '"'))
