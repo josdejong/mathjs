@@ -1,7 +1,13 @@
 # History
 
 
-# not yet published, version 6.4.0
+# 2020-01-08, version 6.5.0
+
+- Implemented `baseName` option for `createUnit`, see #1707. 
+  Thanks @ericman314.
+
+
+# 2020-01-06, version 6.4.0
 
 - Extended function `dimension` with support for n-dimensional points.
   Thanks @Veeloxfire.
