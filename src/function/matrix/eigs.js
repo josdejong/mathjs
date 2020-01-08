@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
 
 const name = 'eigs'
-const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract']
+const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract', 'abs', 'atan']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal, abs, atan }) => {
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
@@ -140,10 +140,10 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   function getThetaBig (aii, ajj, aij) {
     let th = 0.0
     const denom = subtract(ajj , aii)
-    if (Math.abs(denom) <= 1E-14) {
+    if (abs(denom) <= 1E-14) {
       th = Math.PI / 4.0
     } else {
-      th = 0.5 * Math.atan(2.0 * aij / (ajj - aii))
+      th = multiply(0.5, atan( multiply(2.0, aij, inv(denom))))
     }
     return th
   }
