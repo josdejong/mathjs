@@ -270,6 +270,23 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
     return [maxIJ, maxMij]
   }
+ 
+    // get max off-diagonal value from Upper Diagonal
+    function getAijBig (Mij) {
+      var N = Mij.length
+      var maxMij = 0.0
+      var maxIJ = [0, 1]
+      for (var i = 0; i < N; i++) {
+        for (var j = i + 1; j < N; j++) {
+          if (abs(maxMij) < abs(Mij[i][j])) {
+            maxMij = abs(Mij[i][j])
+            maxIJ = [i, j]
+          }
+        }
+      }
+      return [maxIJ, maxMij]
+    }
+
   // sort results
   function sorting (E, S) {
     var N = E.length
