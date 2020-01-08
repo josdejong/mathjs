@@ -9,8 +9,12 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
-   * Algorithm.
-   *
+   * Algorithm. Matrix containing mixed type ('number', 'bignumber', 'fraction')
+   * of elements are not supported. Input matrix or 2D array should contain all elements
+   * of either 'number', 'bignumber' or 'fraction' type. For 'number' and 'fraction', the
+   * eigenvalues are of 'number' type. For 'bignumber' the eigenvalues are of ''bignumber' type.
+   * Eigenvectors are always of 'number' type.
+   * 
    * Syntax:
    *
    *     math.eigs(x)
@@ -151,6 +155,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       for (let i = 0; i < N; i++) {
         Ei[i] = x[i][i]
       }
+      // return [clone(Ei), clone(Sij)]
       return sorting(clone(Ei), clone(Sij))
     }
 
