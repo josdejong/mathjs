@@ -3095,7 +3095,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    *  createUnitSingle('acre', new Unit(43560, 'ft^2'))
    *
    * @param {string} name      The name of the new unit. Must be unique. Example: 'knot'
-   * @param {string, Unit, Object} definition      Definition of the unit in terms 
+   * @param {string, Unit, Object} definition      Definition of the unit in terms
    * of existing units. For example, '0.514444444 m / s'. Can be a Unit, a string,
    * or an Object. If an Object, may have the following properties:
    *   - definition {string|Unit} The definition of this unit.
@@ -3108,7 +3108,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    *   - baseName {string} If the unit's dimension does not match that of any other
    *     base unit, the name of the newly create base unit. Otherwise, this property
    *     has no effect.
-   * 
+   *
    * @param {Object} options   (optional) An object containing any of the following
    * properties:
    *   - override {boolean} Whether this unit should be allowed to override existing
