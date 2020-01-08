@@ -115,7 +115,7 @@ math.createUnit('furlong', '220 yards')
 math.evaluate('1 mile to furlong')            // 8 furlong
 ```
 
-If you cannot express the new unit in terms of any existing unit, then the second argument can be omitted. In this case, a new base unit is created:
+If you cannot express the new unit in terms of any existing unit, then the second argument can be omitted. In this case, a new *base unit* is created:
 
 ```js
 // A 'foo' cannot be expressed in terms of any other unit.
@@ -129,6 +129,7 @@ The second argument to `createUnit` can also be a configuration object consistin
 * **prefixes** A `string` indicating which prefixes math.js should use with the new unit. Possible values are `'none'`, `'short'`, `'long'`, `'binary_short'`, or `'binary_long'`. Default is `'none'`.
 * **offset** A value applied when converting to the unit. This is very helpful for temperature scales that do not share a zero with the absolute temperature scale. For example, if we were defining fahrenheit for the first time, we would use: `math.createUnit('fahrenheit', {definition: '0.555556 kelvin', offset: 459.67})`
 * **aliases** An array of strings to alias the new unit. Example: `math.createUnit('knot', {definition: '0.514444 m/s', aliases: ['knots', 'kt', 'kts']})`
+* **baseName** A `string` that specifies the name of the new dimension in case one needs to be created. Every unit in math.js has a dimension: length, time, velocity, etc. If the unit's `definition` doesn't match any existing dimension, or it is a new base unit, then `createUnit` will create a new dimension with the name `baseName` and assign it to the new unit. The default is to append `'_STUFF'` to the unit's name. If the unit already matches an existing dimension, this option has no effect.
 
 An optional `options` object can also be supplied as the last argument to `createUnits`. Currently only the `override` option is supported:
 
@@ -145,7 +146,8 @@ For example:
 ```js
 math.createUnit( {
   foo: {
-    prefixes: 'long'
+    prefixes: 'long',
+    baseName: 'essence-of-foo'
   },
   bar: '40 foo',
   baz: {
