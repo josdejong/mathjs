@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
 
 const name = 'eigs'
-const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin']
+const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiply', 'inv']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal, abs, atan, cos, sin }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal, abs, atan, cos, sin, multiply, inv}) => {
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
