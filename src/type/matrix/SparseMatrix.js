@@ -1,5 +1,3 @@
-'use strict'
-
 import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
 import { isInteger } from '../../utils/number'
 import { format } from '../../utils/string'

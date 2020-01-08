@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 
@@ -24,13 +22,13 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * See also:
    *
-   *    combinations, gamma, permutations
+   *    combinations, combinationsWithRep, gamma, permutations
    *
    * @param {number | BigNumber | Array | Matrix} n   An integer number
    * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
    */
   const factorial = typed(name, {
-    'number': function (n) {
+    number: function (n) {
       if (n < 0) {
         throw new Error('Value must be non-negative')
       }
@@ -38,7 +36,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({ ty
       return gamma(n + 1)
     },
 
-    'BigNumber': function (n) {
+    BigNumber: function (n) {
       if (n.isNegative()) {
         throw new Error('Value must be non-negative')
       }

@@ -1,5 +1,3 @@
-'use strict'
-
 import { compareText as _compareText } from '../../utils/string'
 import { factory } from '../../utils/factory'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'

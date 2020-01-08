@@ -1,35 +1,36 @@
 const fs = require('fs')
 const path = require('path')
 const Handlebars = require('handlebars')
+const hasOwnProperty = require('./utils').hasOwnProperty
 
 const ENTRY_FOLDER = path.join(__dirname, '../src/entry')
 
 const IGNORED_DEPENDENCIES = {
-  'on': true,
-  'config': true,
-  'math': true,
-  'mathWithTransform': true,
-  'classes': true
+  on: true,
+  config: true,
+  math: true,
+  mathWithTransform: true,
+  classes: true
 }
 
 const DEPRECATED_FACTORIES = {
-  'typeof': 'typeOf',
-  'var': 'variance',
-  'eval': 'evaluate',
-  'E': 'e',
-  'PI': 'pi'
+  typeof: 'typeOf',
+  var: 'variance',
+  eval: 'evaluate',
+  E: 'e',
+  PI: 'pi'
 }
 
 const FACTORY_NAMES_ES6_MAPPING = {
-  'true': '_true',
-  'false': '_false',
-  'NaN': '_NaN',
-  'null': '_null',
-  'Infinity': '_Infinity'
+  true: '_true',
+  false: '_false',
+  NaN: '_NaN',
+  null: '_null',
+  Infinity: '_Infinity'
 }
 
 const IGNORED_DEPENDENCIES_ES6 = {
-  'on': true
+  on: true
 }
 
 const dependenciesIndexTemplate = Handlebars.compile(`/**
@@ -439,7 +440,7 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
 
 function getDependenciesName (factoryName, factories) {
   if (!factories) {
-    throw new Error(`Cannot create dependencies name: factories is undefined`)
+    throw new Error('Cannot create dependencies name: factories is undefined')
   }
 
   const factory = factories[factoryName]
@@ -458,7 +459,7 @@ function getDependenciesFileName (factoryName) {
 
 function findFactoryName (factories, name) {
   for (const factoryName in factories) {
-    if (factories.hasOwnProperty(factoryName)) {
+    if (hasOwnProperty(factories, factoryName)) {
       if (factories[factoryName].fn === name) {
         return factoryName
       }
@@ -470,7 +471,7 @@ function findFactoryName (factories, name) {
 
 function findKey (object, value) {
   for (const key in object) {
-    if (object.hasOwnProperty(key)) {
+    if (hasOwnProperty(object, key)) {
       if (object[key] === value) {
         return key
       }

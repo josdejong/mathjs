@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../../utils/factory'
 
 const name = 'sparse'
@@ -38,7 +36,7 @@ export const createSparse = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return new SparseMatrix([])
     },
 
-    'string': function (datatype) {
+    string: function (datatype) {
       return new SparseMatrix([], datatype)
     },
 

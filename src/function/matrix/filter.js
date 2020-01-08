@@ -1,5 +1,3 @@
-'use strict'
-
 import { filter, filterRegExp } from '../../utils/array'
 import { maxArgumentCount } from '../../utils/function'
 import { factory } from '../../utils/factory'

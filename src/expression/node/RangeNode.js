@@ -1,5 +1,3 @@
-'use strict'
-
 import { isNode, isSymbolNode } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { getPrecedence } from '../operators'

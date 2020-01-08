@@ -1,15 +1,15 @@
 export const sqrtmDocs = {
-  'name': 'sqrtm',
-  'category': 'Arithmetic',
-  'syntax': [
+  name: 'sqrtm',
+  category: 'Arithmetic',
+  syntax: [
     'sqrtm(x)'
   ],
-  'description':
+  description:
       'Calculate the principal square root of a square matrix. The principal square root matrix `X` of another matrix `A` is such that `X * X = A`.',
-  'examples': [
+  examples: [
     'sqrtm([[1, 2], [3, 4]])'
   ],
-  'seealso': [
+  seealso: [
     'sqrt',
     'abs',
     'square',

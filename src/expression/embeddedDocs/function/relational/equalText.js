@@ -1,19 +1,19 @@
 export const equalTextDocs = {
-  'name': 'equalText',
-  'category': 'Relational',
-  'syntax': [
+  name: 'equalText',
+  category: 'Relational',
+  syntax: [
     'equalText(x, y)'
   ],
-  'description':
+  description:
       'Check equality of two strings. Comparison is case sensitive. Returns true if the values are equal, and false if not.',
-  'examples': [
+  examples: [
     'equalText("Hello", "Hello")',
     'equalText("a", "A")',
     'equal("2e3", "2000")',
     'equalText("2e3", "2000")',
     'equalText("B", ["A", "B", "C"])'
   ],
-  'seealso': [
+  seealso: [
     'compare', 'compareNatural', 'compareText', 'equal'
   ]
 }

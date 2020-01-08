@@ -1,5 +1,3 @@
-'use strict'
-
 const fs = require('fs')
 const typed = require('typed-function')
 const math = require('../lib/bundleAny')
@@ -127,21 +125,23 @@ const _importFromStream = function (stream) {
       // check matrix format
       switch (mm.format) {
         case 'coordinate':
-          // regex to use
-          const rx = mm.datatype !== 'pattern' ? coordinateDataRegex : coordinatePatternRegex
-          // check data line is correct
-          matches = line.match(rx)
-          if (matches !== null) {
-            // row, columns, value
-            const r = parseInt(matches[1]) - 1
-            const c = parseInt(matches[2]) - 1
-            const v = readValue(matches.length === 4 ? matches[3] : null)
-            // insert entry
-            mm.data.insert(c, { i: r, j: c, v: v })
-            // check matrix is simmetric
-            if (mm.qualifier === 'symmetric' && c !== r) {
+          {
+            // regex to use
+            const rx = mm.datatype !== 'pattern' ? coordinateDataRegex : coordinatePatternRegex
+            // check data line is correct
+            matches = line.match(rx)
+            if (matches !== null) {
+              // row, columns, value
+              const r = parseInt(matches[1]) - 1
+              const c = parseInt(matches[2]) - 1
+              const v = readValue(matches.length === 4 ? matches[3] : null)
               // insert entry
-              mm.data.insert(r, { i: c, j: r, v: v })
+              mm.data.insert(c, { i: r, j: c, v: v })
+              // check matrix is simmetric
+              if (mm.qualifier === 'symmetric' && c !== r) {
+                // insert entry
+                mm.data.insert(r, { i: c, j: r, v: v })
+              }
             }
           }
           break
@@ -203,57 +203,59 @@ const _importFromStream = function (stream) {
         // process matrix format
         switch (mm.format) {
           case 'coordinate':
-            // CCS structure
-            const values = mm.datatype !== 'pattern' ? [] : undefined
-            const index = []
-            const ptr = []
-            const datatype = mm.datatype === 'real' ? 'number' : undefined
-            // mm data & pointer
-            const d = mm.data
-            let p = -1
-            let spa = new Spa(mm.rows)
-            // push value
-            const pushValue = function (i, v) {
-              // push row
-              index.push(i)
-              // check there is a value (pattern matrix)
-              if (values) { values.push(v) }
-            }
-            // extract node (column sorted)
-            let n = d.extractMinimum()
-            // loop all nodes
-            while (n !== null) {
-              // check column changed
-              if (p !== n.key) {
-                // process sparse accumulator
-                spa.forEach(0, mm.rows, pushValue)
-                // process columns from p + 1 to n.j
-                for (let j = p + 1; j <= n.key; j++) {
-                  // ptr update
-                  ptr.push(index.length)
-                }
-                // create sparse accumulator
-                spa = new Spa(mm.rows)
-                // reset p
-                p = n.key
+            {
+              // CCS structure
+              const values = mm.datatype !== 'pattern' ? [] : undefined
+              const index = []
+              const ptr = []
+              const datatype = mm.datatype === 'real' ? 'number' : undefined
+              // mm data & pointer
+              const d = mm.data
+              let p = -1
+              let spa = new Spa(mm.rows)
+              // push value
+              const pushValue = function (i, v) {
+                // push row
+                index.push(i)
+                // check there is a value (pattern matrix)
+                if (values) { values.push(v) }
               }
-              // store value in spa
-              spa.set(n.value.i, n.value.v)
-              // extract node
-              n = d.extractMinimum()
+              // extract node (column sorted)
+              let n = d.extractMinimum()
+              // loop all nodes
+              while (n !== null) {
+                // check column changed
+                if (p !== n.key) {
+                  // process sparse accumulator
+                  spa.forEach(0, mm.rows, pushValue)
+                  // process columns from p + 1 to n.j
+                  for (let j = p + 1; j <= n.key; j++) {
+                    // ptr update
+                    ptr.push(index.length)
+                  }
+                  // create sparse accumulator
+                  spa = new Spa(mm.rows)
+                  // reset p
+                  p = n.key
+                }
+                // store value in spa
+                spa.set(n.value.i, n.value.v)
+                // extract node
+                n = d.extractMinimum()
+              }
+              // process sparse accumulator
+              spa.forEach(0, mm.rows, pushValue)
+              // ptr update
+              ptr.push(index.length)
+              // resolve promise
+              resolve(new SparseMatrix({
+                values: values,
+                index: index,
+                ptr: ptr,
+                size: [mm.rows, mm.columns],
+                datatype: datatype
+              }))
             }
-            // process sparse accumulator
-            spa.forEach(0, mm.rows, pushValue)
-            // ptr update
-            ptr.push(index.length)
-            // resolve promise
-            resolve(new SparseMatrix({
-              values: values,
-              index: index,
-              ptr: ptr,
-              size: [mm.rows, mm.columns],
-              datatype: datatype
-            }))
             break
           case 'array':
             // resolve promise
@@ -277,11 +279,11 @@ const _importFromStream = function (stream) {
  * Imports a Matrix Market matrix from the filesystem. (https://math.nist.gov/MatrixMarket/)
  */
 const _import = typed('importMatrix', {
-  'Array': function (files) {
+  Array: function (files) {
     return Promise.all(files.map(file => _import(file)))
   },
-  'string': function (file) {
-    let input = fs.createReadStream(file)
+  string: function (file) {
+    const input = fs.createReadStream(file)
     return _importFromStream(input)
   }
 })

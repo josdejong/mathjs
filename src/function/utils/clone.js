@@ -1,5 +1,3 @@
-'use strict'
-
 import { clone as objectClone } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
@@ -26,6 +24,6 @@ export const createClone = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    * @return {*} A clone of object x
    */
   return typed(name, {
-    'any': objectClone
+    any: objectClone
   })
 })

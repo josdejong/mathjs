@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../../utils/factory'
 import { deepMap } from '../../../utils/collection'
 
@@ -33,11 +31,11 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
    */
 
   const unit = typed(name, {
-    'Unit': function (x) {
+    Unit: function (x) {
       return x.clone()
     },
 
-    'string': function (x) {
+    string: function (x) {
       if (Unit.isValuelessUnit(x)) {
         return new Unit(null, x) // a pure unit
       }

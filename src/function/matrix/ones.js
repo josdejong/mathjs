@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber } from '../../utils/is'
 import { isInteger } from '../../utils/number'
 import { resize } from '../../utils/array'
@@ -63,9 +61,9 @@ export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
 
-    'Array': _ones,
+    Array: _ones,
 
-    'Matrix': function (size) {
+    Matrix: function (size) {
       const format = size.storage()
       return _ones(size.valueOf(), format)
     },

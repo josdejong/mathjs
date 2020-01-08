@@ -1,11 +1,9 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 import { log10Number } from '../../plain/number'
 
 const name = 'log10'
-const dependencies = [ 'typed', 'config', 'Complex' ]
+const dependencies = ['typed', 'config', 'Complex']
 
 export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
   /**
@@ -34,7 +32,7 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *            Returns the 10-base logarithm of `x`
    */
   const log10 = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if (x >= 0 || config.predictable) {
         return log10Number(x)
       } else {
@@ -43,11 +41,11 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return new Complex(x).log().div(Math.LN10)
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       if (!x.isNegative() || config.predictable) {
         return x.log()
       } else {

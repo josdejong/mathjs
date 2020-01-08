@@ -1,5 +1,3 @@
-'use strict'
-
 import { clone } from '../../utils/object'
 import { flatten as flattenArray } from '../../utils/array'
 import { factory } from '../../utils/factory'
@@ -27,11 +25,11 @@ export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @return {Matrix | Array} Returns the flattened matrix
    */
   return typed(name, {
-    'Array': function (x) {
+    Array: function (x) {
       return flattenArray(clone(x))
     },
 
-    'Matrix': function (x) {
+    Matrix: function (x) {
       const flat = flattenArray(clone(x.toArray()))
       // TODO: return the same matrix type as x
       return matrix(flat)

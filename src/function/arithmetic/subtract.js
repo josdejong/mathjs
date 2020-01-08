@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { DimensionError } from '../../error/DimensionError'
 import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'

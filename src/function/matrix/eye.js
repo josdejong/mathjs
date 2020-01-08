@@ -1,5 +1,3 @@
-'use strict'
-
 // TODO: function eye is removed since v5.0.0 (June 2018). Remove it some day.
 
 import { factory } from '../../utils/factory'

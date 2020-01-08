@@ -1,13 +1,13 @@
 export const equalDocs = {
-  'name': 'equal',
-  'category': 'Relational',
-  'syntax': [
+  name: 'equal',
+  category: 'Relational',
+  syntax: [
     'x == y',
     'equal(x, y)'
   ],
-  'description':
+  description:
       'Check equality of two values. Returns true if the values are equal, and false if not.',
-  'examples': [
+  examples: [
     '2+2 == 3',
     '2+2 == 4',
     'a = 3.2',
@@ -15,7 +15,7 @@ export const equalDocs = {
     'a == b',
     '50cm == 0.5m'
   ],
-  'seealso': [
+  seealso: [
     'unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual', 'equalText'
   ]
 }

@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { errorTransform } from './utils/errorTransform'

@@ -1,13 +1,11 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 import { signNumber } from '../../plain/number'
 
 const name = 'sign'
-const dependencies = ['typed', 'BigNumber', 'Fraction']
+const dependencies = ['typed', 'BigNumber', 'Fraction', 'complex']
 
-export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Fraction }) => {
+export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, complex, Fraction }) => {
   /**
    * Compute the sign of a value. The sign of a value x is:
    *
@@ -39,17 +37,17 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *            The sign of `x`
    */
   const sign = typed(name, {
-    'number': signNumber,
+    number: signNumber,
 
-    'Complex': function (x) {
-      return x.sign()
+    Complex: function (x) {
+      return x.im === 0 ? complex(signNumber(x.re)) : x.sign()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return new BigNumber(x.cmp(0))
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return new Fraction(x.s, 1)
     },
 
@@ -58,7 +56,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return deepMap(x, sign, true)
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return sign(x.value)
     }
   })

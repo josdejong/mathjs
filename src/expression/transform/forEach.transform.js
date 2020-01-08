@@ -1,5 +1,3 @@
-'use strict'
-
 import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is'
 import { maxArgumentCount } from '../../utils/function'
 import { forEach } from '../../utils/array'

@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Computes the elimination tree of Matrix A (using triu(A)) or the
  * elimination tree of A'A without forming A'A.

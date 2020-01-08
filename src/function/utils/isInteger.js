@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepMap } from '../../utils/collection'
 import { isInteger as isIntegerNumber } from '../../utils/number'
 import { factory } from '../../utils/factory'
@@ -38,13 +36,13 @@ export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *                    Throws an error in case of an unknown data type.
    */
   const isInteger = typed(name, {
-    'number': isIntegerNumber, // TODO: what to do with isInteger(add(0.1, 0.2))  ?
+    number: isIntegerNumber, // TODO: what to do with isInteger(add(0.1, 0.2))  ?
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.isInt()
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.d === 1 && isFinite(x.n)
     },
 

@@ -1,5 +1,3 @@
-'use strict'
-
 import { clone } from '../../../utils/object'
 import { factory } from '../../../utils/factory'
 
@@ -65,15 +63,15 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
    */
   return typed(name, {
 
-    'DenseMatrix': function (m) {
+    DenseMatrix: function (m) {
       return _denseLUP(m)
     },
 
-    'SparseMatrix': function (m) {
+    SparseMatrix: function (m) {
       return _sparseLUP(m)
     },
 
-    'Array': function (a) {
+    Array: function (a) {
       // create dense matrix from array
       const m = matrix(a)
       // lup, use matrix implementation

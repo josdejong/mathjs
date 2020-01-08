@@ -1,5 +1,3 @@
-'use strict'
-
 import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
 import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array'
 import { format } from '../../utils/string'

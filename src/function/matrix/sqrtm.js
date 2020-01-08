@@ -1,5 +1,3 @@
-'use strict'
-
 import { isMatrix } from '../../utils/is'
 import { format } from '../../utils/string'
 import { arraySize } from '../../utils/array'
@@ -44,6 +42,7 @@ export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed,
           }
 
         case 2:
+        {
           // Two-dimensional Array | Matrix
           const rows = size[0]
           const cols = size[1]
@@ -51,8 +50,9 @@ export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed,
             return _denmanBeavers(A)
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + format(size) + ')')
+              '(size: ' + format(size) + ')')
           }
+        }
       }
     }
   })

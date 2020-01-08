@@ -1,5 +1,3 @@
-'use strict'
-
 import { isMatrix, isRange } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { isInteger } from '../../utils/number'

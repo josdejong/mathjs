@@ -1,5 +1,3 @@
-'use strict'
-
 import { errorTransform } from './utils/errorTransform'
 import { factory } from '../../utils/factory'
 import { createApply } from '../../function/matrix/apply'

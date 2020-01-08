@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
@@ -35,15 +33,15 @@ export const createArg = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {number | BigNumber | Array | Matrix} The argument of x
    */
   const arg = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       return Math.atan2(0, x)
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.constructor.atan2(0, x)
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.arg()
     },
 

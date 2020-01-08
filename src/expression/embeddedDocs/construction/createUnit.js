@@ -1,18 +1,18 @@
 export const createUnitDocs = {
-  'name': 'createUnit',
-  'category': 'Construction',
-  'syntax': [
+  name: 'createUnit',
+  category: 'Construction',
+  syntax: [
     'createUnit(definitions)',
     'createUnit(name, definition)'
   ],
-  'description':
+  description:
       'Create a user-defined unit and register it with the Unit type.',
-  'examples': [
+  examples: [
     'createUnit("foo")',
     'createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})',
     'createUnit("mph", "1 mile/hour")'
   ],
-  'seealso': [
+  seealso: [
     'unit', 'splitUnit'
   ]
 }

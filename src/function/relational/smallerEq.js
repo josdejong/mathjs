@@ -1,5 +1,3 @@
-'use strict'
-
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { nearlyEqual } from '../../utils/number'
 import { factory } from '../../utils/factory'

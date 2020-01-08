@@ -1,5 +1,3 @@
-'use strict'
-
 import { clone } from '../../utils/object'
 import { format } from '../../utils/string'
 import { factory } from '../../utils/factory'
@@ -36,16 +34,16 @@ export const createTrace = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number} The trace of `x`
    */
   return typed('trace', {
-    'Array': function _arrayTrace (x) {
+    Array: function _arrayTrace (x) {
       // use dense matrix implementation
       return _denseTrace(matrix(x))
     },
 
-    'SparseMatrix': _sparseTrace,
+    SparseMatrix: _sparseTrace,
 
-    'DenseMatrix': _denseTrace,
+    DenseMatrix: _denseTrace,
 
-    'any': clone
+    any: clone
   })
 
   function _denseTrace (m) {
@@ -63,6 +61,7 @@ export const createTrace = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         }
         throw new RangeError('Matrix must be square (size: ' + format(size) + ')')
       case 2:
+      {
         // two dimensional
         const rows = size[0]
         const cols = size[1]
@@ -73,8 +72,10 @@ export const createTrace = /* #__PURE__ */ factory(name, dependencies, ({ typed,
           for (let i = 0; i < rows; i++) { sum = add(sum, data[i][i]) }
           // return trace
           return sum
+        } else {
+          throw new RangeError('Matrix must be square (size: ' + format(size) + ')')
         }
-        throw new RangeError('Matrix must be square (size: ' + format(size) + ')')
+      }
       default:
         // multi dimensional
         throw new RangeError('Matrix must be two dimensional (size: ' + format(size) + ')')

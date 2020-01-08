@@ -1,4 +1,3 @@
-'use strict'
 import { IndexError } from '../../../error/IndexError'
 
 /**

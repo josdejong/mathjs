@@ -1,5 +1,3 @@
-'use strict'
-
 import { isArray, isDenseMatrix, isMatrix } from '../../../../utils/is'
 import { arraySize } from '../../../../utils/array'
 import { format } from '../../../../utils/string'

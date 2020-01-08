@@ -1,5 +1,3 @@
-'use strict'
-
 import { isSparseMatrix } from '../../utils/is'
 import { format } from '../../utils/string'
 import { factory } from '../../utils/factory'
@@ -35,7 +33,7 @@ export const createExpm = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   return typed(name, {
 
-    'Matrix': function (A) {
+    Matrix: function (A) {
       // Check matrix size
       const size = A.size()
 

@@ -1,16 +1,16 @@
 export const asecDocs = {
-  'name': 'asec',
-  'category': 'Trigonometry',
-  'syntax': [
+  name: 'asec',
+  category: 'Trigonometry',
+  syntax: [
     'asec(x)'
   ],
-  'description': 'Calculate the inverse secant of a value.',
-  'examples': [
+  description: 'Calculate the inverse secant of a value.',
+  examples: [
     'asec(0.5)',
     'asec(sec(0.5))',
     'asec(2)'
   ],
-  'seealso': [
+  seealso: [
     'acos',
     'acot',
     'acsc'

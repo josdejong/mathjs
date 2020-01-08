@@ -1,17 +1,17 @@
 export const conjDocs = {
-  'name': 'conj',
-  'category': 'Complex',
-  'syntax': [
+  name: 'conj',
+  category: 'Complex',
+  syntax: [
     'conj(x)'
   ],
-  'description':
+  description:
       'Compute the complex conjugate of a complex value. If x = a+bi, the complex conjugate is a-bi.',
-  'examples': [
+  examples: [
     'conj(2 + 3i)',
     'conj(2 - 3i)',
     'conj(-5.2i)'
   ],
-  'seealso': [
+  seealso: [
     're',
     'im',
     'abs',

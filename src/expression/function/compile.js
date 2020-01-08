@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 
@@ -42,7 +40,7 @@ export const createCompile = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @throws {Error}
    */
   return typed(name, {
-    'string': function (expr) {
+    string: function (expr) {
       return parse(expr).compile()
     },
 

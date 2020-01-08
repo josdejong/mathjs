@@ -1,5 +1,3 @@
-'use strict'
-
 import { clone } from '../../utils/object'
 import { squeeze as arraySqueeze } from '../../utils/array'
 import { factory } from '../../utils/factory'
@@ -38,17 +36,17 @@ export const createSqueeze = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @return {Matrix | Array} Squeezed matrix
    */
   return typed(name, {
-    'Array': function (x) {
+    Array: function (x) {
       return arraySqueeze(clone(x))
     },
 
-    'Matrix': function (x) {
+    Matrix: function (x) {
       const res = arraySqueeze(x.toArray())
       // FIXME: return the same type of matrix as the input
       return Array.isArray(res) ? matrix(res) : res
     },
 
-    'any': function (x) {
+    any: function (x) {
       // scalar
       return clone(x)
     }

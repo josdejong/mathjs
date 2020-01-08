@@ -1,5 +1,3 @@
-'use strict'
-
 import { clone } from '../../utils/object'
 import { format } from '../../utils/string'
 import { factory } from '../../utils/factory'
@@ -32,12 +30,12 @@ export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ ty
    */
   const transpose = typed('transpose', {
 
-    'Array': function (x) {
+    Array: function (x) {
       // use dense matrix implementation
       return transpose(matrix(x)).valueOf()
     },
 
-    'Matrix': function (x) {
+    Matrix: function (x) {
       // matrix size
       const size = x.size()
 
@@ -52,24 +50,26 @@ export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ ty
           break
 
         case 2:
-          // rows and columns
-          const rows = size[0]
-          const columns = size[1]
+          {
+            // rows and columns
+            const rows = size[0]
+            const columns = size[1]
 
-          // check columns
-          if (columns === 0) {
-            // throw exception
-            throw new RangeError('Cannot transpose a 2D matrix with no columns (size: ' + format(size) + ')')
-          }
+            // check columns
+            if (columns === 0) {
+              // throw exception
+              throw new RangeError('Cannot transpose a 2D matrix with no columns (size: ' + format(size) + ')')
+            }
 
-          // process storage format
-          switch (x.storage()) {
-            case 'dense':
-              c = _denseTranspose(x, rows, columns)
-              break
-            case 'sparse':
-              c = _sparseTranspose(x, rows, columns)
-              break
+            // process storage format
+            switch (x.storage()) {
+              case 'dense':
+                c = _denseTranspose(x, rows, columns)
+                break
+              case 'sparse':
+                c = _sparseTranspose(x, rows, columns)
+                break
+            }
           }
           break
 
@@ -81,7 +81,7 @@ export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     // scalars
-    'any': function (x) {
+    any: function (x) {
       return clone(x)
     }
   })

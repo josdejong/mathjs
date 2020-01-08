@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'

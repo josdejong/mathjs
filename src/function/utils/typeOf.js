@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { typeOf as _typeOf } from '../../utils/is'
 import { warnOnce } from '../../utils/log'
@@ -67,7 +65,7 @@ export const createTypeOf = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *                  For example 'number', 'string', 'Array', 'Date'.
    */
   return typed(name, {
-    'any': _typeOf
+    any: _typeOf
   })
 })
 

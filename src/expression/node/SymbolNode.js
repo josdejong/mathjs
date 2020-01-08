@@ -1,7 +1,4 @@
-'use strict'
-
 import { escape } from '../../utils/string'
-import { hasOwnProperty } from '../../utils/object'
 import { getSafeProperty } from '../../utils/customs'
 import { factory } from '../../utils/factory'
 import { toSymbol } from '../../utils/latex'
@@ -63,7 +60,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
   SymbolNode.prototype._compile = function (math, argNames) {
     const name = this.name
 
-    if (hasOwnProperty(argNames, name)) {
+    if (argNames[name] === true) {
       // this is a FunctionAssignment argument
       // (like an x when inside the expression of a function assignment `f(x) = ...`)
       return function (scope, args, context) {

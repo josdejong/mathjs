@@ -1,7 +1,5 @@
-'use strict'
-
 import { factory } from '../utils/factory'
-import { extend } from '../utils/object'
+import { extend, hasOwnProperty } from '../utils/object'
 import { getSafeProperty, setSafeProperty } from '../utils/customs'
 import { warnOnce } from '../utils/log'
 
@@ -165,7 +163,7 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   Parser.prototype.clear = function () {
     for (const name in this.scope) {
-      if (this.scope.hasOwnProperty(name)) {
+      if (hasOwnProperty(this.scope, name)) {
         delete this.scope[name]
       }
     }

@@ -72,7 +72,7 @@ import {
 } from './plain/number'
 
 import { factory } from './utils/factory'
-import { noIndexClass, noMatrix, noSubset } from './utils/noop'
+import { noIndex, noMatrix, noSubset } from './utils/noop'
 
 // ----------------------------------------------------------------------------
 // classes and functions
@@ -208,7 +208,7 @@ export { createMap } from './function/matrix/map'
 export { createRange } from './function/matrix/range'
 export { createSize } from './function/matrix/size'
 // FIXME: create a lightweight "number" implementation of subset only supporting plain objects/arrays
-export const createIndexClass = /* #__PURE__ */ factory('Index', [], () => noIndexClass, { isClass: true })
+export const createIndex = /* #__PURE__ */ factory('index', [], () => noIndex)
 export const createMatrix = /* #__PURE__ */ factory('matrix', [], () => noMatrix) // FIXME: needed now because subset transform needs it. Remove the need for it in subset
 export const createSubset = /* #__PURE__ */ factory('subset', [], () => noSubset)
 // TODO: provide number+array implementations for map, filter, forEach, zeros, ...?
@@ -218,6 +218,7 @@ export { createPartitionSelect } from './function/matrix/partitionSelect'
 // probability
 export const createCombinations = createNumberFactory('combinations', combinationsNumber)
 export const createGamma = createNumberFactory('gamma', gammaNumber)
+export { createCombinationsWithRep } from './function/probability/combinationsWithRep'
 export { createFactorial } from './function/probability/factorial'
 export { createMultinomial } from './function/probability/multinomial'
 export { createPermutations } from './function/probability/permutations'

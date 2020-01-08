@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../../utils/factory'
 import { csLeaf } from './csLeaf'
 

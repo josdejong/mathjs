@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Create a range error with the message:
  *     'Index out of range (index < min)'

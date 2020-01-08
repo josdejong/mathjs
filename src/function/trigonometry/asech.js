@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 import { asechNumber } from '../../plain/number'
@@ -30,7 +28,7 @@ export const createAsech = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsecant of x
    */
   const asech = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       if ((x <= 1 && x >= -1) || config.predictable) {
         const xInv = 1 / x
         if (xInv > 0 || config.predictable) {
@@ -44,11 +42,11 @@ export const createAsech = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return new Complex(x, 0).asech()
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.asech()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return new BigNumber(1).div(x).acosh()
     },
 

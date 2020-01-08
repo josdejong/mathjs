@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { errorTransform } from './utils/errorTransform'
 import { createSubset } from '../../function/matrix/subset'

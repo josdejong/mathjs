@@ -1,5 +1,3 @@
-'use strict'
-
 import './../utils/polyfills'
 import { deepFlatten, isLegacyFactory, lazy, traverse, values } from './../utils/object'
 import * as emitter from './../utils/emitter'
@@ -210,15 +208,17 @@ export function create (factories, config) {
   function lazyTyped (...args) {
     return math.typed.apply(math.typed, args)
   }
-  math['import'] = importFactory(lazyTyped, load, math, importedFactories)
+  const internalImport = importFactory(lazyTyped, load, math, importedFactories)
+  math.import = internalImport
 
   // listen for changes in config, import all functions again when changed
+  // TODO: move this listener into the import function?
   math.on('config', () => {
     values(importedFactories).forEach(factory => {
       if (factory && factory.meta && factory.meta.recreateOnConfigChange) {
         // FIXME: only re-create when the current instance is the same as was initially created
         // FIXME: delete the functions/constants before importing them again?
-        math['import'](factory, { override: true })
+        internalImport(factory, { override: true })
       }
     })
   })
@@ -232,7 +232,7 @@ export function create (factories, config) {
 
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
-  math['import'](values(deepFlatten(factories)))
+  math.import(values(deepFlatten(factories)))
 
   // TODO: deprecated since v6.0.0. Clean up some day
   const movedNames = [

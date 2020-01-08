@@ -1,22 +1,17 @@
-'use strict'
-
 import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '../../utils/is'
-import { createIndexTransform } from '../transform/index.transform'
 import { map } from '../../utils/array'
 import { escape } from '../../utils/string'
 import { factory } from '../../utils/factory'
+import { getSafeProperty } from '../../utils/customs'
 
 const name = 'IndexNode'
 const dependencies = [
   'Range',
   'Node',
-  'Index',
   'size'
 ]
 
-export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, Node, Index, size }) => {
-  const index = createIndexTransform({ Index })
-
+export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, Node, size }) => {
   /**
    * @constructor IndexNode
    * @extends Node
@@ -87,7 +82,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
         if (range.needsEnd()) {
           // create a range containing end (like '4:end')
           const childArgNames = Object.create(argNames)
-          childArgNames['end'] = true
+          childArgNames.end = true
 
           const evalStart = range.start._compile(math, childArgNames)
           const evalEnd = range.end._compile(math, childArgNames)
@@ -98,7 +93,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
           return function evalDimension (scope, args, context) {
             const s = size(context).valueOf()
             const childArgs = Object.create(args)
-            childArgs['end'] = s[i]
+            childArgs.end = s[i]
 
             return createRange(
               evalStart(scope, childArgs, context),
@@ -125,14 +120,14 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
       } else if (isSymbolNode(range) && range.name === 'end') {
         // SymbolNode 'end'
         const childArgNames = Object.create(argNames)
-        childArgNames['end'] = true
+        childArgNames.end = true
 
         const evalRange = range._compile(math, childArgNames)
 
         return function evalDimension (scope, args, context) {
           const s = size(context).valueOf()
           const childArgs = Object.create(args)
-          childArgs['end'] = s[i]
+          childArgs.end = s[i]
 
           return evalRange(scope, childArgs, context)
         }
@@ -144,6 +139,8 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
         }
       }
     })
+
+    const index = getSafeProperty(math, 'index')
 
     return function evalIndexNode (scope, args, context) {
       const dimensions = map(evalDimensions, function (evalDimension) {
@@ -176,7 +173,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
       dimensions[i] = this._ifNode(callback(this.dimensions[i], 'dimensions[' + i + ']', this))
     }
 
-    return new IndexNode(dimensions)
+    return new IndexNode(dimensions, this.dotNotation)
   }
 
   /**
@@ -184,7 +181,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
    * @return {IndexNode}
    */
   IndexNode.prototype.clone = function () {
-    return new IndexNode(this.dimensions.slice(0))
+    return new IndexNode(this.dimensions.slice(0), this.dotNotation)
   }
 
   /**

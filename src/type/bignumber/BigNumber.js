@@ -1,5 +1,3 @@
-'use strict'
-
 import Decimal from 'decimal.js'
 import { factory } from '../../utils/factory'
 

@@ -1,5 +1,3 @@
-'use strict'
-
 import { mapObject } from './object'
 import { isNumber } from './is'
 
@@ -315,7 +313,7 @@ export function toEngineering (value, precision) {
   const rounded = roundDigits(splitNumber(value), precision)
 
   const e = rounded.exponent
-  let c = rounded.coefficients
+  const c = rounded.coefficients
 
   // find nearest lower multiple of 3 for exponent
   const newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))

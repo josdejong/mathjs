@@ -36,7 +36,7 @@ print(math.evaluate([
 
 // provide a scope (just a regular JavaScript Object)
 console.log('\nevaluate expressions providing a scope with variables and functions')
-let scope = {
+const scope = {
   a: 3,
   b: 4
 }
@@ -84,7 +84,7 @@ console.log('\nprovide a scope')
 const node2 = math.parse('x^a')
 const code2 = node2.compile()
 print(node2.toString()) // "x ^ a"
-let scope2 = {
+const scope2 = {
   x: 3,
   a: 2
 }
@@ -115,7 +115,7 @@ print(code3.evaluate()) // 5
 // provide a scope for the variable assignment
 console.log('\nprovide a scope')
 const code4 = math.compile('a = a + 3')
-let scope3 = {
+const scope3 = {
   a: 7
 }
 code4.evaluate(scope3)

@@ -1,7 +1,7 @@
 export const zerosDocs = {
-  'name': 'zeros',
-  'category': 'Matrix',
-  'syntax': [
+  name: 'zeros',
+  category: 'Matrix',
+  syntax: [
     'zeros(m)',
     'zeros(m, n)',
     'zeros(m, n, p, ...)',
@@ -9,14 +9,14 @@ export const zerosDocs = {
     'zeros([m, n])',
     'zeros([m, n, p, ...])'
   ],
-  'description': 'Create a matrix containing zeros.',
-  'examples': [
+  description: 'Create a matrix containing zeros.',
+  examples: [
     'zeros(3)',
     'zeros(3, 5)',
     'a = [1, 2, 3; 4, 5, 6]',
     'zeros(size(a))'
   ],
-  'seealso': [
+  seealso: [
     'concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose'
   ]
 }

@@ -1,14 +1,14 @@
 export const coshDocs = {
-  'name': 'cosh',
-  'category': 'Trigonometry',
-  'syntax': [
+  name: 'cosh',
+  category: 'Trigonometry',
+  syntax: [
     'cosh(x)'
   ],
-  'description': 'Compute the hyperbolic cosine of x in radians.',
-  'examples': [
+  description: 'Compute the hyperbolic cosine of x in radians.',
+  examples: [
     'cosh(0.5)'
   ],
-  'seealso': [
+  seealso: [
     'sinh',
     'tanh',
     'coth'

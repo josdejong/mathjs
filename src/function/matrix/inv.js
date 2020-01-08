@@ -1,5 +1,3 @@
-'use strict'
-
 import { isMatrix } from '../../utils/is'
 import { arraySize } from '../../utils/array'
 import { factory } from '../../utils/factory'
@@ -61,7 +59,8 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
           }
 
         case 2:
-          // two dimensional array
+        // two dimensional array
+        {
           const rows = size[0]
           const cols = size[1]
           if (rows === cols) {
@@ -76,8 +75,9 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
             }
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + format(size) + ')')
+              '(size: ' + format(size) + ')')
           }
+        }
 
         default:
           // multi dimensional array
@@ -86,7 +86,7 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       }
     },
 
-    'any': function (x) {
+    any: function (x) {
       // scalar
       return divideScalar(1, x) // FIXME: create a BigNumber one when configured for bignumbers
     }

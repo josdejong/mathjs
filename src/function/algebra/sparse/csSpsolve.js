@@ -1,5 +1,3 @@
-'use strict'
-
 import { csReach } from './csReach'
 import { factory } from '../../../utils/factory'
 

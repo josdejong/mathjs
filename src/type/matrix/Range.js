@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber } from '../../utils/is'
 import { format, sign } from '../../utils/number'
 import { factory } from '../../utils/factory'

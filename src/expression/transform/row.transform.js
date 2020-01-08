@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { createRow } from '../../function/matrix/row'
 import { errorTransform } from './utils/errorTransform'

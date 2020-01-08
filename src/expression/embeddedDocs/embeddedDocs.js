@@ -76,6 +76,7 @@ import { kldivergenceDocs } from './function/probability/kldivergence'
 import { gammaDocs } from './function/probability/gamma'
 import { factorialDocs } from './function/probability/factorial'
 import { combinationsDocs } from './function/probability/combinations'
+import { combinationsWithRepDocs } from './function/probability/combinationsWithRep'
 import { zerosDocs } from './function/matrix/zeros'
 import { transposeDocs } from './function/matrix/transpose'
 import { traceDocs } from './function/matrix/trace'
@@ -211,7 +212,7 @@ export const embeddedDocs = {
 
   // construction functions
   bignumber: bignumberDocs,
-  'boolean': booleanDocs,
+  boolean: booleanDocs,
   complex: complexDocs,
   createUnit: createUnitDocs,
   fraction: fractionDocs,
@@ -226,22 +227,22 @@ export const embeddedDocs = {
   // constants
   e: eDocs,
   E: eDocs,
-  'false': falseDocs,
+  false: falseDocs,
   i: iDocs,
-  'Infinity': InfinityDocs,
+  Infinity: InfinityDocs,
   LN2: LN2Docs,
   LN10: LN10Docs,
   LOG2E: LOG2EDocs,
   LOG10E: LOG10EDocs,
   NaN: NaNDocs,
-  'null': nullDocs,
+  null: nullDocs,
   pi: piDocs,
   PI: piDocs,
   phi: phiDocs,
   SQRT1_2: SQRT12Docs,
   SQRT2: SQRT2Docs,
   tau: tauDocs,
-  'true': trueDocs,
+  true: trueDocs,
   version: versionDocs,
 
   // physical constants
@@ -369,9 +370,9 @@ export const embeddedDocs = {
   stirlingS2: stirlingS2Docs,
 
   // functions - core
-  'config': configDocs,
-  'import': importDocs,
-  'typed': typedDocs,
+  config: configDocs,
+  import: importDocs,
+  typed: typedDocs,
 
   // functions - complex
   arg: argDocs,
@@ -380,8 +381,8 @@ export const embeddedDocs = {
   im: imDocs,
 
   // functions - expression
-  'evaluate': evaluateDocs,
-  'eval': evaluateDocs, // TODO: deprecated, cleanup in v7
+  evaluate: evaluateDocs,
+  eval: evaluateDocs, // TODO: deprecated, cleanup in v7
   help: helpDocs,
 
   // functions - geometry
@@ -389,13 +390,13 @@ export const embeddedDocs = {
   intersect: intersectDocs,
 
   // functions - logical
-  'and': andDocs,
-  'not': notDocs,
-  'or': orDocs,
-  'xor': xorDocs,
+  and: andDocs,
+  not: notDocs,
+  or: orDocs,
+  xor: xorDocs,
 
   // functions - matrix
-  'concat': concatDocs,
+  concat: concatDocs,
   cross: crossDocs,
   column: columnDocs,
   ctranspose: ctransposeDocs,
@@ -426,6 +427,7 @@ export const embeddedDocs = {
 
   // functions - probability
   combinations: combinationsDocs,
+  combinationsWithRep: combinationsWithRepDocs,
   // distribution: distributionDocs,
   factorial: factorialDocs,
   gamma: gammaDocs,
@@ -441,7 +443,7 @@ export const embeddedDocs = {
   compareNatural: compareNaturalDocs,
   compareText: compareTextDocs,
   deepEqual: deepEqualDocs,
-  'equal': equalDocs,
+  equal: equalDocs,
   equalText: equalTextDocs,
   larger: largerDocs,
   largerEq: largerEqDocs,
@@ -475,8 +477,8 @@ export const embeddedDocs = {
   quantileSeq: quantileSeqDocs,
   std: stdDocs,
   sum: sumDocs,
-  'variance': varianceDocs,
-  'var': varianceDocs, // TODO: deprecated, cleanup in v7
+  variance: varianceDocs,
+  var: varianceDocs, // TODO: deprecated, cleanup in v7
 
   // functions - trigonometry
   acos: acosDocs,
@@ -520,7 +522,7 @@ export const embeddedDocs = {
   isPrime: isPrimeDocs,
   isZero: isZeroDocs,
   // print: printDocs // TODO: add documentation for print as soon as the parser supports objects.
-  'typeOf': typeOfDocs,
-  'typeof': typeOfDocs, // TODO: deprecated, cleanup in v7
-  'numeric': numericDocs
+  typeOf: typeOfDocs,
+  typeof: typeOfDocs, // TODO: deprecated, cleanup in v7
+  numeric: numericDocs
 }

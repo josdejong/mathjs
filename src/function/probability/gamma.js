@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 import { gammaG, gammaNumber, gammaP } from '../../plain/number'
@@ -34,17 +32,15 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
   const gamma = typed(name, {
 
-    'number': gammaNumber,
+    number: gammaNumber,
 
-    'Complex': function (n) {
-      let t, x
-
+    Complex: function (n) {
       if (n.im === 0) {
         return gamma(n.re)
       }
 
       n = new Complex(n.re - 1, n.im)
-      x = new Complex(gammaP[0], 0)
+      const x = new Complex(gammaP[0], 0)
       for (let i = 1; i < gammaP.length; ++i) {
         const real = n.re + i // x += p[i]/(n+i)
         const den = real * real + n.im * n.im
@@ -58,7 +54,7 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         }
       }
 
-      t = new Complex(n.re + gammaG + 0.5, n.im)
+      const t = new Complex(n.re + gammaG + 0.5, n.im)
       const twoPiSqrt = Math.sqrt(2 * Math.PI)
 
       n.re += 0.5
@@ -79,7 +75,7 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return multiplyScalar(multiplyScalar(result, t), x)
     },
 
-    'BigNumber': function (n) {
+    BigNumber: function (n) {
       if (n.isInteger()) {
         return (n.isNegative() || n.isZero())
           ? new BigNumber(Infinity)
@@ -103,23 +99,29 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param {BigNumber} n
    * @returns {BigNumber} Returns the factorial of n
    */
-
   function bigFactorial (n) {
-    if (n.isZero()) {
-      return new BigNumber(1) // 0! is per definition 1
+    if (n < 8) {
+      return new BigNumber([1, 1, 2, 6, 24, 120, 720, 5040][n])
     }
 
     const precision = config.precision + (Math.log(n.toNumber()) | 0)
     const Big = BigNumber.clone({ precision: precision })
 
-    let res = new Big(n)
-    let value = n.toNumber() - 1 // number
-    while (value > 1) {
-      res = res.times(value)
-      value--
+    if (n % 2 === 1) {
+      return n.times(bigFactorial(new BigNumber(n - 1)))
     }
 
-    return new BigNumber(res.toPrecision(BigNumber.precision))
+    let p = n
+    let prod = new Big(n)
+    let sum = n.toNumber()
+
+    while (p > 2) {
+      p -= 2
+      sum += p
+      prod = prod.times(sum)
+    }
+
+    return new BigNumber(prod.toPrecision(BigNumber.precision))
   }
 
   return gamma

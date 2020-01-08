@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { getArrayDataType } from '../../utils/array'
 import { typeOf } from '../../utils/is'
@@ -43,10 +41,10 @@ export const createGetMatrixDataType = /* #__PURE__ */ factory(name, dependencie
    * @return {string} A string representation of the matrix type
    */
   return typed(name, {
-    'Array': function (x) {
+    Array: function (x) {
       return getArrayDataType(x, typeOf)
     },
-    'Matrix': function (x) {
+    Matrix: function (x) {
       return x.getDataType()
     }
   })

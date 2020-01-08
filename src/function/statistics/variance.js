@@ -1,5 +1,3 @@
-'use strict'
-
 import { deepForEach } from '../../utils/collection'
 import { isBigNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
@@ -139,8 +137,10 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         return divide(sum, num + 1)
 
       case 'unbiased':
+      {
         const zero = isBigNumber(sum) ? sum.mul(0) : 0
         return (num === 1) ? zero : divide(sum, num - 1)
+      }
 
       default:
         throw new Error('Unknown normalization "' + normalization + '". ' +

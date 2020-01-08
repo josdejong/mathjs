@@ -4,7 +4,7 @@ Math.js is a large library containing many data types and functions.
 It is well possible that you only need a small portion of the library.
 Math.js allows for picking just the functions and data types you need.
 This gives faster load times and smaller browser bundles. Math.js uses
-ES6 modules, and creating small bundles using tree-shaking works out of
+ES modules, and creating small bundles using tree-shaking works out of
 the box when using Webpack for example.
 
 This page describes:
@@ -105,12 +105,12 @@ types, all these data types must be included: Unit, BigNumber, Complex,
 DenseMatrix, SparseMatrix, etc. A rough idea of the size of different parts of
 mathjs:
 
+- About 5% is coming from core functionality like `create`, `import`, `factory`,
+  `typed-function`, etc.
 - About 30% of the bundle size comes from the data classes `Complex`, `BigNumber`, `Fraction`, `Unit`, `SparseMatrix`, `DenseMatrix`.
 - About 25%  of the bundle size comes from the expression parser.
   Half of this comes from the embedded docs.
-- About 5% is coming from core functionality like `create`, `import`, `factory`,
-  `typed-function`, etc.
 - About 40% comes from the about 200 built-in functions and some constants.
 
 To get a better insight in what is in your JavaScript bundle, you can use
-a library like [source-map-explorer](https://github.com/danvk/source-map-explorer).
+a tool like [source-map-explorer](https://github.com/danvk/source-map-explorer).

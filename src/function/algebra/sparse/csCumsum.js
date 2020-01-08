@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * It sets the p[i] equal to the sum of c[0] through c[i-1].
  *

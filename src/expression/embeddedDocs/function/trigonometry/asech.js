@@ -1,14 +1,14 @@
 export const asechDocs = {
-  'name': 'asech',
-  'category': 'Trigonometry',
-  'syntax': [
+  name: 'asech',
+  category: 'Trigonometry',
+  syntax: [
     'asech(x)'
   ],
-  'description': 'Calculate the inverse secant of a value.',
-  'examples': [
+  description: 'Calculate the inverse secant of a value.',
+  examples: [
     'asech(0.5)'
   ],
-  'seealso': [
+  seealso: [
     'acsch',
     'acoth'
   ]

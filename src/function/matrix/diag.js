@@ -1,5 +1,3 @@
-'use strict'
-
 import { isMatrix } from '../../utils/is'
 import { arraySize } from '../../utils/array'
 import { isInteger } from '../../utils/number'
@@ -49,7 +47,7 @@ export const createDiag = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   return typed(name, {
     // FIXME: simplify this huge amount of signatures as soon as typed-function supports optional arguments
 
-    'Array': function (x) {
+    Array: function (x) {
       return _diag(x, 0, arraySize(x), null)
     },
 
@@ -73,7 +71,7 @@ export const createDiag = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return _diag(x, k.toNumber(), arraySize(x), format)
     },
 
-    'Matrix': function (x) {
+    Matrix: function (x) {
       return _diag(x, 0, x.size(), x.storage())
     },
 

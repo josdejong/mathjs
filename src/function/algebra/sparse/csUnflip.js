@@ -1,5 +1,3 @@
-'use strict'
-
 import { csFlip } from './csFlip'
 
 /**

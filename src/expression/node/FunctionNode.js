@@ -1,5 +1,3 @@
-'use strict'
-
 import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
 
 import { escape } from '../../utils/string'

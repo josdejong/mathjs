@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 
 const name = 'hasNumericValue'
@@ -36,10 +34,10 @@ export const createHasNumericValue = /* #__PURE__ */ factory(name, dependencies,
    *                    Throws an error in case of unknown types.
    */
   return typed(name, {
-    'string': function (x) {
+    string: function (x) {
       return x.trim().length > 0 && !isNaN(Number(x))
     },
-    'any': function (x) {
+    any: function (x) {
       return isNumeric(x)
     }
   })

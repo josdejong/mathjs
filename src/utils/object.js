@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber } from './is'
 
 /**
@@ -173,7 +171,7 @@ export function deepFlatten (nestedObject) {
 // helper function used by deepFlatten
 function _deepFlatten (nestedObject, flattenedObject) {
   for (const prop in nestedObject) {
-    if (nestedObject.hasOwnProperty(prop)) {
+    if (hasOwnProperty(nestedObject, prop)) {
       const value = nestedObject[prop]
       if (typeof value === 'object' && value !== null) {
         _deepFlatten(value, flattenedObject)

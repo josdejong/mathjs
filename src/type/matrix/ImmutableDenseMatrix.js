@@ -1,5 +1,3 @@
-'use strict'
-
 import { isArray, isMatrix, isString, typeOf } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { factory } from '../../utils/factory'
@@ -68,6 +66,7 @@ export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dep
   ImmutableDenseMatrix.prototype.subset = function (index) {
     switch (arguments.length) {
       case 1:
+      {
         // use base implementation
         const m = DenseMatrix.prototype.subset.call(this, index)
         // check result is a matrix
@@ -80,8 +79,8 @@ export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dep
           })
         }
         return m
-
-        // intentional fall through
+      }
+      // intentional fall through
       case 2:
       case 3:
         throw new Error('Cannot invoke set subset on an Immutable Matrix instance')

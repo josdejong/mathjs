@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Create a syntax error with the message:
  *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'

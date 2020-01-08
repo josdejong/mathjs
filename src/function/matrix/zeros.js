@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber } from '../../utils/is'
 import { isInteger } from '../../utils/number'
 import { resize } from '../../utils/array'
@@ -61,9 +59,9 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
     },
 
-    'Array': _zeros,
+    Array: _zeros,
 
-    'Matrix': function (size) {
+    Matrix: function (size) {
       const format = size.storage()
       return _zeros(size.valueOf(), format)
     },

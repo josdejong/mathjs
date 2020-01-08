@@ -1,8 +1,7 @@
-'use strict'
-
 import { factory } from '../utils/factory'
 import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is'
 import { deepMap } from '../utils/collection'
+import { hasOwnProperty } from '../utils/object'
 
 const name = 'parse'
 const dependencies = [
@@ -86,7 +85,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @throws {Error}
    */
   const parse = typed(name, {
-    'string': function (expression) {
+    string: function (expression) {
       return parseStart(expression, {})
     },
     'Array | Matrix': function (expressions) {
@@ -165,20 +164,20 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
   // map with all named delimiters
   const NAMED_DELIMITERS = {
-    'mod': true,
-    'to': true,
-    'in': true,
-    'and': true,
-    'xor': true,
-    'or': true,
-    'not': true
+    mod: true,
+    to: true,
+    in: true,
+    and: true,
+    xor: true,
+    or: true,
+    not: true
   }
 
   const CONSTANTS = {
-    'true': true,
-    'false': false,
-    'null': null,
-    'undefined': undefined
+    true: true,
+    false: false,
+    null: null,
+    undefined: undefined
   }
 
   const NUMERIC_CONSTANTS = [
@@ -202,7 +201,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * View upto `length` characters of the expression starting at the current character.
    *
-   * @param {State} state
+   * @param {Object} state
    * @param {number} [length=1] Number of characters to view
    * @returns {string}
    * @private
@@ -214,7 +213,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * View the current character. Returns '' if end of expression is reached.
    *
-   * @param {State} state
+   * @param {Object} state
    * @returns {string}
    * @private
    */
@@ -385,7 +384,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         next(state)
       }
 
-      if (NAMED_DELIMITERS.hasOwnProperty(state.token)) {
+      if (hasOwnProperty(NAMED_DELIMITERS, state.token)) {
         state.tokenType = TOKENTYPE.DELIMITER
       } else {
         state.tokenType = TOKENTYPE.SYMBOL
@@ -807,7 +806,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       '>=': 'largerEq'
     }
 
-    while (operators.hasOwnProperty(state.token)) { // eslint-disable-line no-unmodified-loop-condition
+    while (hasOwnProperty(operators, state.token)) { // eslint-disable-line no-unmodified-loop-condition
       const cond = { name: state.token, fn: operators[state.token] }
       conditionals.push(cond)
       getTokenSkipNewline(state)
@@ -829,17 +828,17 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseShift (state) {
-    let node, operators, name, fn, params
+    let node, name, fn, params
 
     node = parseConversion(state)
 
-    operators = {
+    const operators = {
       '<<': 'leftShift',
       '>>': 'rightArithShift',
       '>>>': 'rightLogShift'
     }
 
-    while (operators.hasOwnProperty(state.token)) {
+    while (hasOwnProperty(operators, state.token)) {
       name = state.token
       fn = operators[name]
 
@@ -857,16 +856,16 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseConversion (state) {
-    let node, operators, name, fn, params
+    let node, name, fn, params
 
     node = parseRange(state)
 
-    operators = {
-      'to': 'to',
-      'in': 'to' // alias of 'to'
+    const operators = {
+      to: 'to',
+      in: 'to' // alias of 'to'
     }
 
-    while (operators.hasOwnProperty(state.token)) {
+    while (hasOwnProperty(operators, state.token)) {
       name = state.token
       fn = operators[name]
 
@@ -937,15 +936,15 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseAddSubtract (state) {
-    let node, operators, name, fn, params
+    let node, name, fn, params
 
     node = parseMultiplyDivide(state)
 
-    operators = {
+    const operators = {
       '+': 'add',
       '-': 'subtract'
     }
-    while (operators.hasOwnProperty(state.token)) {
+    while (hasOwnProperty(operators, state.token)) {
       name = state.token
       fn = operators[name]
 
@@ -963,22 +962,22 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseMultiplyDivide (state) {
-    let node, last, operators, name, fn
+    let node, last, name, fn
 
     node = parseImplicitMultiplication(state)
     last = node
 
-    operators = {
+    const operators = {
       '*': 'multiply',
       '.*': 'dotMultiply',
       '/': 'divide',
       './': 'dotDivide',
       '%': 'mod',
-      'mod': 'mod'
+      mod: 'mod'
     }
 
     while (true) {
-      if (operators.hasOwnProperty(state.token)) {
+      if (hasOwnProperty(operators, state.token)) {
         // explicit operators
         name = state.token
         fn = operators[name]
@@ -1038,7 +1037,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseRule2 (state) {
     let node = parseUnary(state)
     let last = node
-    let tokenStates = []
+    const tokenStates = []
 
     while (true) {
       // Match the "number /" part of the pattern "number / number symbol"
@@ -1091,10 +1090,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       '-': 'unaryMinus',
       '+': 'unaryPlus',
       '~': 'bitNot',
-      'not': 'not'
+      not: 'not'
     }
 
-    if (operators.hasOwnProperty(state.token)) {
+    if (hasOwnProperty(operators, state.token)) {
       fn = operators[state.token]
       name = state.token
 
@@ -1136,16 +1135,16 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseLeftHandOperators (state) {
-    let node, operators, name, fn, params
+    let node, name, fn, params
 
     node = parseCustomNodes(state)
 
-    operators = {
+    const operators = {
       '!': 'factorial',
       '\'': 'ctranspose'
     }
 
-    while (operators.hasOwnProperty(state.token)) {
+    while (hasOwnProperty(operators, state.token)) {
       name = state.token
       fn = operators[name]
 
@@ -1190,7 +1189,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseCustomNodes (state) {
     let params = []
 
-    if (state.tokenType === TOKENTYPE.SYMBOL && state.extraNodes.hasOwnProperty(state.token)) {
+    if (state.tokenType === TOKENTYPE.SYMBOL && hasOwnProperty(state.extraNodes, state.token)) {
       const CustomNode = state.extraNodes[state.token]
 
       getToken(state)
@@ -1241,7 +1240,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       getToken(state)
 
-      if (CONSTANTS.hasOwnProperty(name)) { // true, false, null, ...
+      if (hasOwnProperty(CONSTANTS, name)) { // true, false, null, ...
         node = new ConstantNode(CONSTANTS[name])
       } else if (NUMERIC_CONSTANTS.indexOf(name) !== -1) { // NaN, Infinity
         node = new ConstantNode(numeric(name, 'number'))
@@ -1262,6 +1261,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * - function invocation in round brackets (...), for example sqrt(2)
    * - index enclosed in square brackets [...], for example A[2,3]
    * - dot notation for properties, like foo.bar
+   * @param {Object} state
    * @param {Node} node    Node on which to apply the parameters. If there
    *                       are no parameters in the expression, the node
    *                       itself is returned
@@ -1677,6 +1677,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * Create an error
+   * @param {Object} state
    * @param {string} message
    * @return {SyntaxError} instantiated error
    * @private
@@ -1684,13 +1685,14 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function createSyntaxError (state, message) {
     const c = col(state)
     const error = new SyntaxError(message + ' (char ' + c + ')')
-    error['char'] = c
+    error.char = c
 
     return error
   }
 
   /**
    * Create an error
+   * @param {Object} state
    * @param {string} message
    * @return {Error} instantiated error
    * @private
@@ -1698,7 +1700,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function createError (state, message) {
     const c = col(state)
     const error = new SyntaxError(message + ' (char ' + c + ')')
-    error['char'] = c
+    error.char = c
 
     return error
   }

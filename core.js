@@ -1,4 +1,4 @@
-const create = require('./lib/entry/mainInstance').create
+const create = require('./lib/entry/mainAny').create
 const typedDependencies = require('./lib/entry/dependenciesAny.generated').typedDependencies
 
 console.warn('Warning: ' +

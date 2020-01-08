@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
@@ -18,7 +16,7 @@ const dependencies = [
 export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typed, addScalar, subtract, multiplyScalar, divideScalar, unaryMinus, sqrt, abs }) => {
   /**
     * Calculates:
-    *    The eucledian distance between two points in 2 and 3 dimensional spaces.
+    *    The eucledian distance between two points in N-dimensional spaces.
     *    Distance between point and a line in 2 and 3 dimensional spaces.
     *    Pairwise distance between a set of 2D or 3D points
     * NOTE:
@@ -30,6 +28,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *-   math.distance({pointOneX: 4, pointOneY: 5}, {pointTwoX: 2, pointTwoY: 7})
     *    math.distance([x1, y1, z1], [x2, y2, z2])
     *    math.distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})
+    *    math.distance([x1, y1, ... , N1], [x2, y2, ... , N2])
     *    math.distance([[A], [B], [C]...])
     *    math.distance([x1, y1], [LinePtX1, LinePtY1], [LinePtX2, LinePtY2])
     *    math.distance({pointX: 1, pointY: 4}, {lineOnePtX: 6, lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8})
@@ -50,6 +49,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *    math.distance(
     *     {pointOneX: 4, pointOneY: 5, pointOneZ: 8},
     *     {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})    // Returns 3
+    *    math.distance([1, 0, 1, 0], [0, -1, 0, -1])     // Returns 2
     *    math.distance([[1, 2], [1, 2], [1, 3]])         // Returns [0, 1, 1]
     *    math.distance([[1,2,4], [1,2,6], [8,1,3]])      // Returns [2, 7.14142842854285, 7.681145747868608]
     *    math.distance([10, 10], [8, 1, 3])              // Returns 11.535230316796387
@@ -89,8 +89,8 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_2d(x)) { throw new TypeError('Values of pointX and pointY should be numbers or BigNumbers') }
         if (!_2d(y)) { throw new TypeError('Values of lineOnePtX and lineOnePtY should be numbers or BigNumbers') }
         if (!_2d(z)) { throw new TypeError('Values of lineTwoPtX and lineTwoPtY should be numbers or BigNumbers') }
-        if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('lineOnePtX') &&
-          y.hasOwnProperty('lineOnePtY') && z.hasOwnProperty('lineTwoPtX') && z.hasOwnProperty('lineTwoPtY')) {
+        if ('pointX' in x && 'pointY' in x && 'lineOnePtX' in y &&
+          'lineOnePtY' in y && 'lineTwoPtX' in z && 'lineTwoPtY' in z) {
           const m = divideScalar(subtract(z.lineTwoPtY, z.lineTwoPtX), subtract(y.lineOnePtY, y.lineOnePtX))
           const xCoeff = multiplyScalar(multiplyScalar(m, m), y.lineOnePtX)
           const yCoeff = unaryMinus(multiplyScalar(m, y.lineOnePtX))
@@ -125,26 +125,16 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         }
 
         return _distancePointLine3D(x[0], x[1], x[2], y[0], y[1], y[2], y[3], y[4], y[5])
-      } else if (x.length === 2 && y.length === 2) {
-        // Point to Point 2D
-        if (!_2d(x)) {
-          throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument')
+      } else if (x.length === y.length && x.length > 0) {
+        // Point to Point N-dimensions
+        if (!_containsOnlyNumbers(x)) {
+          throw new TypeError('All values of an array should be numbers or BigNumbers')
         }
-        if (!_2d(y)) {
-          throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument')
-        }
-
-        return _distance2d(x[0], x[1], y[0], y[1])
-      } else if (x.length === 3 && y.length === 3) {
-        // Point to Point 3D
-        if (!_3d(x)) {
-          throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument')
-        }
-        if (!_3d(y)) {
-          throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument')
+        if (!_containsOnlyNumbers(y)) {
+          throw new TypeError('All values of an array should be numbers or BigNumbers')
         }
 
-        return _distance3d(x[0], x[1], x[2], y[0], y[1], y[2])
+        return _euclideanDistance(x, y)
       } else {
         throw new TypeError('Invalid Arguments: Try again')
       }
@@ -157,8 +147,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_3d(y)) {
           throw new TypeError('Values of xCoeffLine, yCoeffLine and constant should be numbers or BigNumbers')
         }
-        if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('xCoeffLine') &&
-          y.hasOwnProperty('yCoeffLine') && y.hasOwnProperty('constant')) {
+        if ('pointX' in x && 'pointY' in x && 'xCoeffLine' in y && 'yCoeffLine' in y && 'constant' in y) {
           return _distancePointLine2D(x.pointX, x.pointY, y.xCoeffLine, y.yCoeffLine, y.constant)
         } else {
           throw new TypeError('Key names do not match')
@@ -171,9 +160,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_parametricLine(y)) {
           throw new TypeError('Values of x0, y0, z0, a, b and c should be numbers or BigNumbers')
         }
-        if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('x0') &&
-          y.hasOwnProperty('y0') && y.hasOwnProperty('z0') && y.hasOwnProperty('a') &&
-          y.hasOwnProperty('b') && y.hasOwnProperty('c')) {
+        if ('pointX' in x && 'pointY' in x && 'x0' in y && 'y0' in y && 'z0' in y && 'a' in y && 'b' in y && 'c' in y) {
           return _distancePointLine3D(x.pointX, x.pointY, x.pointZ, y.x0, y.y0, y.z0, y.a, y.b, y.c)
         } else {
           throw new TypeError('Key names do not match')
@@ -186,9 +173,8 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_2d(y)) {
           throw new TypeError('Values of pointTwoX and pointTwoY should be numbers or BigNumbers')
         }
-        if (x.hasOwnProperty('pointOneX') && x.hasOwnProperty('pointOneY') &&
-          y.hasOwnProperty('pointTwoX') && y.hasOwnProperty('pointTwoY')) {
-          return _distance2d(x.pointOneX, x.pointOneY, y.pointTwoX, y.pointTwoY)
+        if ('pointOneX' in x && 'pointOneY' in x && 'pointTwoX' in y && 'pointTwoY' in y) {
+          return _euclideanDistance([x.pointOneX, x.pointOneY], [y.pointTwoX, y.pointTwoY])
         } else {
           throw new TypeError('Key names do not match')
         }
@@ -200,9 +186,10 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_3d(y)) {
           throw new TypeError('Values of pointTwoX, pointTwoY and pointTwoZ should be numbers or BigNumbers')
         }
-        if (x.hasOwnProperty('pointOneX') && x.hasOwnProperty('pointOneY') && x.hasOwnProperty('pointOneZ') &&
-          y.hasOwnProperty('pointTwoX') && y.hasOwnProperty('pointTwoY') && y.hasOwnProperty('pointTwoZ')) {
-          return _distance3d(x.pointOneX, x.pointOneY, x.pointOneZ, y.pointTwoX, y.pointTwoY, y.pointTwoZ)
+        if ('pointOneX' in x && 'pointOneY' in x && 'pointOneZ' in x &&
+          'pointTwoX' in y && 'pointTwoY' in y && 'pointTwoZ' in y
+        ) {
+          return _euclideanDistance([x.pointOneX, x.pointOneY, x.pointOneZ], [y.pointTwoX, y.pointTwoY, y.pointTwoZ])
         } else {
           throw new TypeError('Key names do not match')
         }
@@ -210,7 +197,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         throw new TypeError('Invalid Arguments: Try again')
       }
     },
-    'Array': function (arr) {
+    Array: function (arr) {
       if (!_pairwise(arr)) { throw new TypeError('Incorrect array format entered for pairwise distance calculation') }
 
       return _distancePairwise(arr)
@@ -236,6 +223,14 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
       a = _objectToArray(a)
     }
     return _isNumber(a[0]) && _isNumber(a[1]) && _isNumber(a[2])
+  }
+
+  function _containsOnlyNumbers (a) {
+    // checks if the number of arguments are correct in count and are valid (should be numbers)
+    if (!Array.isArray(a)) {
+      a = _objectToArray(a)
+    }
+    return a.every(_isNumber)
   }
 
   function _parametricLine (a) {
@@ -278,38 +273,39 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
   }
 
   function _distancePointLine3D (x, y, z, x0, y0, z0, a, b, c) {
-    let num = [ subtract(multiplyScalar(subtract(y0, y), c), multiplyScalar(subtract(z0, z), b)),
+    let num = [subtract(multiplyScalar(subtract(y0, y), c), multiplyScalar(subtract(z0, z), b)),
       subtract(multiplyScalar(subtract(z0, z), a), multiplyScalar(subtract(x0, x), c)),
-      subtract(multiplyScalar(subtract(x0, x), b), multiplyScalar(subtract(y0, y), a)) ]
+      subtract(multiplyScalar(subtract(x0, x), b), multiplyScalar(subtract(y0, y), a))]
     num = sqrt(addScalar(addScalar(multiplyScalar(num[0], num[0]), multiplyScalar(num[1], num[1])), multiplyScalar(num[2], num[2])))
     const den = sqrt(addScalar(addScalar(multiplyScalar(a, a), multiplyScalar(b, b)), multiplyScalar(c, c)))
     return divideScalar(num, den)
   }
 
-  function _distance2d (x1, y1, x2, y2) {
-    const yDiff = subtract(y2, y1)
-    const xDiff = subtract(x2, x1)
-    const radicant = addScalar(multiplyScalar(yDiff, yDiff), multiplyScalar(xDiff, xDiff))
-    return sqrt(radicant)
-  }
-
-  function _distance3d (x1, y1, z1, x2, y2, z2) {
-    const zDiff = subtract(z2, z1)
-    const yDiff = subtract(y2, y1)
-    const xDiff = subtract(x2, x1)
-    const radicant = addScalar(addScalar(multiplyScalar(zDiff, zDiff), multiplyScalar(yDiff, yDiff)), multiplyScalar(xDiff, xDiff))
-    return sqrt(radicant)
+  function _euclideanDistance (x, y) {
+    const vectorSize = x.length
+    let result = 0
+    let diff = 0
+    for (let i = 0; i < vectorSize; i++) {
+      diff = subtract(x[i], y[i])
+      result = addScalar(multiplyScalar(diff, diff), result)
+    }
+    return sqrt(result)
   }
 
   function _distancePairwise (a) {
     const result = []
+    let pointA = []
+    let pointB = []
     for (let i = 0; i < a.length - 1; i++) {
       for (let j = i + 1; j < a.length; j++) {
         if (a[0].length === 2) {
-          result.push(_distance2d(a[i][0], a[i][1], a[j][0], a[j][1]))
+          pointA = [a[i][0], a[i][1]]
+          pointB = [a[j][0], a[j][1]]
         } else if (a[0].length === 3) {
-          result.push(_distance3d(a[i][0], a[i][1], a[i][2], a[j][0], a[j][1], a[j][2]))
+          pointA = [a[i][0], a[i][1], a[i][2]]
+          pointB = [a[j][0], a[j][1], a[j][2]]
         }
+        result.push(_euclideanDistance(pointA, pointB))
       }
     }
     return result

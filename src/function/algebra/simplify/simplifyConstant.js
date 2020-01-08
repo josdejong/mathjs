@@ -1,5 +1,3 @@
-'use strict'
-
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
 import { isFraction, isNode, isOperatorNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
@@ -54,20 +52,20 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   }
 
   const _toNode = typed({
-    'Fraction': _fractionToNode,
-    'number': function (n) {
+    Fraction: _fractionToNode,
+    number: function (n) {
       if (n < 0) {
         return unaryMinusNode(new ConstantNode(-n))
       }
       return new ConstantNode(n)
     },
-    'BigNumber': function (n) {
+    BigNumber: function (n) {
       if (n < 0) {
         return unaryMinusNode(new ConstantNode(-n))
       }
       return new ConstantNode(n) // old parameters: (n.toString(), 'number')
     },
-    'Complex': function (s) {
+    Complex: function (s) {
       throw new Error('Cannot convert Complex number to Node')
     }
   })
@@ -181,29 +179,31 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         if (mathWithTransform[node.name] && mathWithTransform[node.name].rawArgs) {
           return node
         }
+        {
+          // Process operators as OperatorNode
+          const operatorFunctions = ['add', 'multiply']
+          if (operatorFunctions.indexOf(node.name) === -1) {
+            let args = node.args.map(arg => foldFraction(arg, options))
 
-        // Process operators as OperatorNode
-        const operatorFunctions = [ 'add', 'multiply' ]
-        if (operatorFunctions.indexOf(node.name) === -1) {
-          let args = node.args.map(arg => foldFraction(arg, options))
+            // If all args are numbers
+            if (!args.some(isNode)) {
+              try {
+                return _eval(node.name, args, options)
+              } catch (ignoreandcontine) {}
+            }
 
-          // If all args are numbers
-          if (!args.some(isNode)) {
-            try {
-              return _eval(node.name, args, options)
-            } catch (ignoreandcontine) {}
+            // Convert all args to nodes and construct a symbolic function call
+            args = args.map(function (arg) {
+              return isNode(arg) ? arg : _toNode(arg)
+            })
+            return new FunctionNode(node.name, args)
+          } else {
+            // treat as operator
           }
-
-          // Convert all args to nodes and construct a symbolic function call
-          args = args.map(function (arg) {
-            return isNode(arg) ? arg : _toNode(arg)
-          })
-          return new FunctionNode(node.name, args)
-        } else {
-          // treat as operator
         }
         /* falls through */
       case 'OperatorNode':
+      {
         const fn = node.fn.toString()
         let args
         let res
@@ -250,6 +250,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           res = foldOp(fn, args, makeNode, options)
         }
         return res
+      }
       case 'ParenthesisNode':
         // remove the uneccessary parenthesis
         return foldFraction(node.content, options)

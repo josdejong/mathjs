@@ -1,5 +1,3 @@
-'use strict'
-
 import { reshape as arrayReshape } from '../../utils/array'
 import { factory } from '../../utils/factory'
 

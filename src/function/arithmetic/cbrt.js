@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { isBigNumber, isComplex, isFraction } from '../../utils/is'
 import { deepMap } from '../../utils/collection'
@@ -58,19 +56,19 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *            Returns the cubic root of `x`
    */
   const cbrt = typed(name, {
-    'number': cbrtNumber,
+    number: cbrtNumber,
     // note: signature 'number, boolean' is also supported,
     //       created by typed as it knows how to convert number to Complex
 
-    'Complex': _cbrtComplex,
+    Complex: _cbrtComplex,
 
     'Complex, boolean': _cbrtComplex,
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.cbrt()
     },
 
-    'Unit': _cbrtUnit,
+    Unit: _cbrtUnit,
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since cbrt(0) = 0
@@ -138,7 +136,7 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
         third = 1 / 3
       }
 
-      let result = x.pow(third)
+      const result = x.pow(third)
 
       if (negate) {
         result.value = unaryMinus(result.value)

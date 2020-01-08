@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
@@ -33,15 +31,15 @@ export const createConj = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *            The complex conjugate of x
    */
   const conj = typed(name, {
-    'number': function (x) {
+    number: function (x) {
       return x
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x
     },
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.conjugate()
     },
 

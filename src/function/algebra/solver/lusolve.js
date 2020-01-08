@@ -1,5 +1,3 @@
-'use strict'
-
 import { isArray, isMatrix } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
 import { createSolveValidation } from './utils/solveValidation'

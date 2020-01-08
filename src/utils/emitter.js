@@ -1,4 +1,3 @@
-'use strict'
 import Emitter from 'tiny-emitter'
 
 /**

@@ -1,5 +1,3 @@
-'use strict'
-
 import { bitOrBigNumber } from '../../utils/bignumber/bitwise'
 import { factory } from '../../utils/factory'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'

@@ -1,5 +1,3 @@
-'use strict'
-
 import { isIndex } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { validateIndex } from '../../utils/array'

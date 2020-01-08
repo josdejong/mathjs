@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Depth-first search and postorder of a tree rooted at node j
  *

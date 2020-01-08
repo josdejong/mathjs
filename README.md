@@ -1,4 +1,4 @@
-![math.js](https://raw.github.com/josdejong/mathjs/master/img/mathjs.png)
+![math.js](https://raw.github.com/josdejong/mathjs/master/misc/img/mathjs.png)
 
 [https://mathjs.org](https://mathjs.org)
 
@@ -6,9 +6,9 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 
 [![Version](https://img.shields.io/npm/v/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Downloads](https://img.shields.io/npm/dm/mathjs.svg)](https://www.npmjs.com/package/mathjs)
-[![Build Status](https://img.shields.io/travis/josdejong/mathjs.svg)](https://travis-ci.org/josdejong/mathjs)
+[![Build Status](https://img.shields.io/travis/josdejong/mathjs/master.svg)](https://travis-ci.org/josdejong/mathjs)
 [![Greenkeeper badge](https://badges.greenkeeper.io/josdejong/mathjs.svg)](https://greenkeeper.io/)
-[![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
 [![Slack](https://slack.bri.im/badge.svg)](https://slack.bri.im)
@@ -79,9 +79,6 @@ See the [Getting Started](https://mathjs.org/docs/getting_started.html) for a mo
 
 Math.js works on any ES5 compatible JavaScript engine: node.js, Chrome, Firefox, Safari, Edge, and IE11.
 
-Though there is no official support for older browsers, math.js should still work on older browsers
-when using the [es5-shim](https://github.com/kriskowal/es5-shim).
-
 
 ## Documentation
 
@@ -149,7 +146,7 @@ Thanks Travis CI and BrowserStack for the generous free hosting of this open sou
 
 ## License
 
-Copyright (C) 2013-2019 Jos de Jong <wjosdejong@gmail.com>
+Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

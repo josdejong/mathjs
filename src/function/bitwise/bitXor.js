@@ -1,5 +1,3 @@
-'use strict'
-
 import { bitXor as bigBitXor } from '../../utils/bignumber/bitwise'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'

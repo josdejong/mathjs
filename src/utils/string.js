@@ -1,5 +1,3 @@
-'use strict'
-
 import { isBigNumber, isString, typeOf } from './is'
 import { format as formatNumber } from './number'
 import { format as formatBigNumber } from './bignumber/formatter'
@@ -86,17 +84,13 @@ export function format (value, options) {
   if (value && typeof value === 'object') {
     if (typeof value.format === 'function') {
       return value.format(options)
-    } else if (value && value.toString() !== {}.toString()) {
+    } else if (value && value.toString(options) !== {}.toString()) {
       // this object has a non-native toString method, use that one
-      return value.toString()
+      return value.toString(options)
     } else {
-      const entries = []
-
-      for (const key in value) {
-        if (value.hasOwnProperty(key)) {
-          entries.push('"' + key + '": ' + format(value[key], options))
-        }
-      }
+      const entries = Object.keys(value).map(key => {
+        return '"' + key + '": ' + format(value[key], options)
+      })
 
       return '{' + entries.join(', ') + '}'
     }

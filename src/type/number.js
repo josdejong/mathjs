@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../utils/factory'
 import { deepMap } from '../utils/collection'
 
@@ -37,11 +35,11 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return 0
     },
 
-    'number': function (x) {
+    number: function (x) {
       return x
     },
 
-    'string': function (x) {
+    string: function (x) {
       if (x === 'NaN') return NaN
       const num = Number(x)
       if (isNaN(num)) {
@@ -50,19 +48,19 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return num
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.toNumber()
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x.valueOf()
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       throw new Error('Second argument with valueless unit expected')
     },
 
-    'null': function (x) {
+    null: function (x) {
       return 0
     },
 

@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 import { cosh as coshNumber } from '../../utils/number'
@@ -30,17 +28,17 @@ export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic cosine of x
    */
   const cosh = typed(name, {
-    'number': coshNumber,
+    number: coshNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x.cosh()
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x.cosh()
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cosh is no angle')
       }

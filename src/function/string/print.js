@@ -1,5 +1,3 @@
-'use strict'
-
 import { format } from '../../utils/string'
 import { isString } from '../../utils/is'
 import { factory } from '../../utils/factory'

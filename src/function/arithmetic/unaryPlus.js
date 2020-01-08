@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 import { unaryPlusNumber } from '../../plain/number'
@@ -33,21 +31,21 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *            Returns the input value when numeric, converts to a number when input is non-numeric.
    */
   const unaryPlus = typed(name, {
-    'number': unaryPlusNumber,
+    number: unaryPlusNumber,
 
-    'Complex': function (x) {
+    Complex: function (x) {
       return x // complex numbers are immutable
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return x // bignumbers are immutable
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return x // fractions are immutable
     },
 
-    'Unit': function (x) {
+    Unit: function (x) {
       return x.clone()
     },
 

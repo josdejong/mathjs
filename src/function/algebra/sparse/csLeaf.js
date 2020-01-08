@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * This function determines if j is a leaf of the ith row subtree.
  * Consider A(i,j), node j in ith row subtree and return lca(jprev,j)
@@ -17,7 +15,7 @@
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csLeaf (i, j, w, first, maxfirst, prevleaf, ancestor) {
-  let s, sparent, jprev
+  let s, sparent
 
   // our result
   let jleaf = 0
@@ -28,7 +26,7 @@ export function csLeaf (i, j, w, first, maxfirst, prevleaf, ancestor) {
   // update max first[j] seen so far
   w[maxfirst + i] = w[first + j]
   // jprev = previous leaf of ith subtree
-  jprev = w[prevleaf + i]
+  const jprev = w[prevleaf + i]
   w[prevleaf + i] = j
 
   // check j is first or subsequent leaf

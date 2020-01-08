@@ -1,5 +1,3 @@
-'use strict'
-
 import { errorTransform } from '../../transform/utils/errorTransform'
 import { getSafeProperty } from '../../../utils/customs'
 

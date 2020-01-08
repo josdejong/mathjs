@@ -1,5 +1,3 @@
-'use strict'
-
 import { getPrecedence } from '../operators'
 import { escape } from '../../utils/string'
 import { getSafeProperty } from '../../utils/customs'
@@ -116,12 +114,12 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
     })
 
     const operatorMap = {
-      'equal': '==',
-      'unequal': '!=',
-      'smaller': '<',
-      'larger': '>',
-      'smallerEq': '<=',
-      'largerEq': '>='
+      equal: '==',
+      unequal: '!=',
+      smaller: '<',
+      larger: '>',
+      smallerEq: '<=',
+      largerEq: '>='
     }
 
     let ret = paramStrings[0]
@@ -172,12 +170,12 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
     })
 
     const operatorMap = {
-      'equal': '==',
-      'unequal': '!=',
-      'smaller': '<',
-      'larger': '>',
-      'smallerEq': '<=',
-      'largerEq': '>='
+      equal: '==',
+      unequal: '!=',
+      smaller: '<',
+      larger: '>',
+      smallerEq: '<=',
+      largerEq: '>='
     }
 
     let ret = paramStrings[0]

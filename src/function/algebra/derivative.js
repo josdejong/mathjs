@@ -1,5 +1,3 @@
-'use strict'
-
 import { isConstantNode, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 

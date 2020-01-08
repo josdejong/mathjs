@@ -1,5 +1,3 @@
-'use strict'
-
 import Complex from 'complex.js'
 import { format } from '../../utils/number'
 import { isNumber, isUnit } from '../../utils/is'
@@ -113,13 +111,16 @@ export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ()
   Complex.fromPolar = function (args) {
     switch (arguments.length) {
       case 1:
+      {
         const arg = arguments[0]
         if (typeof arg === 'object') {
           return Complex(arg)
+        } else {
+          throw new TypeError('Input has to be an object with r and phi keys.')
         }
-        throw new TypeError('Input has to be an object with r and phi keys.')
-
+      }
       case 2:
+      {
         const r = arguments[0]
         let phi = arguments[1]
         if (isNumber(r)) {
@@ -136,6 +137,7 @@ export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ()
         } else {
           throw new TypeError('Radius r is not a number.')
         }
+      }
 
       default:
         throw new SyntaxError('Wrong number of arguments in function fromPolar')

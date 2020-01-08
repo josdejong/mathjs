@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 
 const name = 'ctranspose'
@@ -29,7 +27,7 @@ export const createCtranspose = /* #__PURE__ */ factory(name, dependencies, ({ t
    * @return {Array | Matrix}   The ctransposed matrix
    */
   return typed(name, {
-    'any': function (x) {
+    any: function (x) {
       return conj(transpose(x))
     }
   })

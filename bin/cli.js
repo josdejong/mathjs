@@ -30,7 +30,7 @@
  *     cat script.txt | mathjs > results.txt  Run input stream, output to file
  *
  * @license
- * Copyright (C) 2013-2019 Jos de Jong <wjosdejong@gmail.com>
+ * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy
@@ -96,7 +96,7 @@ function completer (text) {
 
     // scope variables
     for (const def in scope) {
-      if (scope.hasOwnProperty(def)) {
+      if (hasOwnProperty(scope, def)) {
         if (def.indexOf(keyword) === 0) {
           matches.push(def)
         }
@@ -113,7 +113,7 @@ function completer (text) {
     // math functions and constants
     const ignore = ['expr', 'type']
     for (const func in math.expression.mathWithTransform) {
-      if (math.expression.mathWithTransform.hasOwnProperty(func)) {
+      if (hasOwnProperty(math.expression.mathWithTransform, func)) {
         if (func.indexOf(keyword) === 0 && ignore.indexOf(func) === -1) {
           matches.push(func)
         }
@@ -122,24 +122,24 @@ function completer (text) {
 
     // units
     const Unit = math.Unit
-    for (let name in Unit.UNITS) {
-      if (Unit.UNITS.hasOwnProperty(name)) {
+    for (const name in Unit.UNITS) {
+      if (hasOwnProperty(Unit.UNITS, name)) {
         if (name.indexOf(keyword) === 0) {
           matches.push(name)
         }
       }
     }
-    for (let name in Unit.PREFIXES) {
-      if (Unit.PREFIXES.hasOwnProperty(name)) {
+    for (const name in Unit.PREFIXES) {
+      if (hasOwnProperty(Unit.PREFIXES, name)) {
         const prefixes = Unit.PREFIXES[name]
         for (const prefix in prefixes) {
-          if (prefixes.hasOwnProperty(prefix)) {
+          if (hasOwnProperty(prefixes, prefix)) {
             if (prefix.indexOf(keyword) === 0) {
               matches.push(prefix)
             } else if (keyword.indexOf(prefix) === 0) {
               const unitKeyword = keyword.substring(prefix.length)
               for (const n in Unit.UNITS) {
-                if (Unit.UNITS.hasOwnProperty(n)) {
+                if (hasOwnProperty(Unit.UNITS, n)) {
                   if (n.indexOf(unitKeyword) === 0 &&
                       Unit.isValuelessUnit(prefix + n)) {
                     matches.push(prefix + n)
@@ -423,4 +423,10 @@ if (version) {
       })
     }
   })
+}
+
+// helper function to safely check whether an object as a property
+// copy from the function in object.js which is ES6
+function hasOwnProperty (object, property) {
+  return object && Object.hasOwnProperty.call(object, property)
 }

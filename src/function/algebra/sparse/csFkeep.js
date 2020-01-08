@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Keeps entries in the matrix when the callback function returns true, removes the entry otherwise
  *

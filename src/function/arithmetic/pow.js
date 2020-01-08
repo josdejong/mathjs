@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 import { arraySize as size } from '../../utils/array'

@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../utils/factory'
 import { deepMap } from '../utils/collection'
 
@@ -39,23 +37,23 @@ export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ type
       return false
     },
 
-    'boolean': function (x) {
+    boolean: function (x) {
       return x
     },
 
-    'number': function (x) {
+    number: function (x) {
       return !!x
     },
 
-    'null': function (x) {
+    null: function (x) {
       return false
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return !x.isZero()
     },
 
-    'string': function (x) {
+    string: function (x) {
       // try case insensitive
       const lcase = x.toLowerCase()
       if (lcase === 'true') {

@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Create a typed-function which checks the types of the arguments and
  * can match them against multiple provided signatures. The typed-function
@@ -350,7 +348,7 @@ function throwNoComplex (x) {
 }
 
 function throwNoMatrix () {
-  throw new Error(`Cannot convert array into a Matrix: no class 'DenseMatrix' provided`)
+  throw new Error('Cannot convert array into a Matrix: no class \'DenseMatrix\' provided')
 }
 
 function throwNoFraction (x) {

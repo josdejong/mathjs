@@ -1,5 +1,3 @@
-'use strict'
-
 import { csPermute } from './csPermute'
 import { csPost } from './csPost'
 import { csEtree } from './csEtree'

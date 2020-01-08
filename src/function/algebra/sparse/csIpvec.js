@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Permutes a vector; x = P'b. In MATLAB notation, x(p)=b.
  *

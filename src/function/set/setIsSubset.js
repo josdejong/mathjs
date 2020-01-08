@@ -1,5 +1,3 @@
-'use strict'
-
 import { flatten, identify } from '../../utils/array'
 import { factory } from '../../utils/factory'
 

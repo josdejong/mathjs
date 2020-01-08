@@ -17,6 +17,7 @@ const VERSION = './src/version.js'
 const COMPILE_SRC = './src/**/*.js'
 const COMPILE_ENTRY_SRC = './src/entry/**/*.js'
 const COMPILE_LIB = './lib'
+const COMPILE_ES = './es' // es modules
 const COMPILE_ENTRY_LIB = './lib/entry'
 const COMPILED_MAIN_ANY = './lib/entry/mainAny.js'
 const FILE = 'math.js'
@@ -140,6 +141,21 @@ function compile () {
     .pipe(gulp.dest(COMPILE_LIB))
 }
 
+function compileESModules () {
+  const babelOptions = JSON.parse(String(fs.readFileSync('./.babelrc')))
+
+  return gulp.src(COMPILE_SRC)
+    .pipe(babel({
+      ...babelOptions,
+      presets: [
+        ['@babel/preset-env', {
+          modules: false
+        }]
+      ]
+    }))
+    .pipe(gulp.dest(COMPILE_ES))
+}
+
 function compileEntryFiles () {
   return gulp.src(COMPILE_ENTRY_SRC)
     .pipe(babel())
@@ -169,8 +185,6 @@ function minify (done) {
 
     log('Minified ' + FILE_MIN)
     log('Mapped ' + FILE_MAP)
-  } catch (e) {
-    throw e
   } finally {
     process.chdir(oldCwd)
   }
@@ -239,7 +253,9 @@ function addDeprecatedFunctions (done) {
 function clean () {
   return del([
     'dist/**/*',
-    'lib/**/*'
+    'es/**/*',
+    'lib/**/*',
+    'src/**/*.generated.js'
   ])
 }
 
@@ -260,8 +276,6 @@ gulp.task('watch', function watch () {
   gulp.watch(files, options, gulp.parallel(bundle, compile, addDeprecatedFunctions))
 })
 
-gulp.task('compile', compile)
-
 // The default task (called when you run `gulp`)
 gulp.task('default', gulp.series(
   clean,
@@ -269,6 +283,7 @@ gulp.task('default', gulp.series(
   compile,
   generateEntryFiles,
   compileEntryFiles,
+  compileESModules, // Must be after generateEntryFiles
   writeCompiledHeader,
   addDeprecatedFunctions,
   bundle,

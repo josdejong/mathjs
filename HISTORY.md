@@ -1,12 +1,102 @@
 # History
 
-# 2019-05-21, version 6.0.0-beta.2
+
+# 2020-01-06, version 6.4.0
+
+- Extended function `dimension` with support for n-dimensional points.
+  Thanks @Veeloxfire.
+
+
+# 2019-12-31, version 6.3.0
+
+- Improved performance of `factorial` for `BigNumber` up to a factor two,
+  see #1687. Thanks @kmdrGroch.
+
+
+# 2019-11-20, version 6.2.5
+
+- Fixed `IndexNode` using a hardcoded, one-based implementation of `index`,
+  making it impossible to instantiate a zero-based version of the expression
+  parser. See #782.
+
+
+# 2019-11-20, version 6.2.4
+
+- Fixed #1669: function 'qr' threw an error if the pivot was zero,
+  thanks @kevinkelleher12 and @harrysarson.
+- Resolves #942: remove misleading assert in 'qr'. Thanks @harrysarson.
+- Work around a bug in complex.js where `sign(0)` returns complex NaN.
+  Thanks @harrysarson.
+
+
+# 2019-10-06, version 6.2.3
+
+- Fixed #1640: function `mean` not working for units. Thanks @clintonc.
+- Fixed #1639: function `min` listed twice in the "See also" section of the
+  embedded docs of function `std`.
+- Improved performance of `isPrime`, see #1641. Thanks @arguiot.
+
+
+# 2019-09-23, version 6.2.2
+
+- Fixed methods `map` and `clone` not copying the `dotNotation` property of
+  `IndexNode`. Thanks @rianmcguire.
+- Fixed a typo in the documentation of `toHTML`. Thanks @maytanthegeek.
+- Fixed #1615: error in the docs of `isNumeric`.
+- Fixed #1628: Cannot call methods on empty strings or numbers with value `0`.
+
+
+# 2019-08-31, version 6.2.1
+
+- Fixed #1606: function `format` not working for expressions.
+
+
+# 2019-08-28, version 6.2.0
+
+- Improved performance of `combinationsWithRep`. Thanks @waseemyusuf.
+- Add unit aliases `bit` and `byte`.
+- Fix docs referring to `bit` and `byte` instead of `bits` and `bytes`.
+- Updated dependency `typed-function@1.1.1`.
+
+
+# 2019-08-17, version 6.1.0
+
+- Implemented function `combinationsWithRep` (see #1329). Thanks @waseemyusuf.
+
+
+# 2019-08-05, version 6.0.4
+
+- Fixed #1554, #1565: ES Modules where not transpiled to ES5, giving issues on
+  old browsers. Thanks @mockdeep for helping to find a solution.
+
+
+# 2019-07-07, version 6.0.3
+
+- Add `unpkg` and `jsdelivr` fields in package.json pointing to UMD build.
+  Thanks @tmcw.
+- Fix #1550: nested user defined function not receiving variables of an
+  outer user defined function.
+
+
+# 2019-06-11, version 6.0.2
+
+- Fix not being able to set configuration after disabling function `import`
+  (regression since v6.0.0).
+
+
+# 2019-06-09, version 6.0.1
+
+- Fix function reference not published in npm library.
+- Fix function `evaluate` and `parse` missing in generated docs.
+
+
+# 2019-06-08, version 6.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
 ### Most notable changes
 
-1.  Full support for **ES6 modules**. Support for tree-shaking out of the box.
+1.  Full support for **ES modules**. Support for tree-shaking out of the box.
 
     Load all functions:
 
@@ -88,8 +178,6 @@
 - Dropped support for renaming factory functions when importing them.
 - Dropped fake BigNumber support of function `erf`.
 - Removed all index.js files used to load specific functions instead of all, like:
-- Updated the values of all physical units to their latest official values.
-  See #1529. Thanks @ericman314.
 
   ```
   // v5
@@ -115,6 +203,9 @@
 
   See example `advanced/custom_loading.js`.
 
+- Updated the values of all physical units to their latest official values.
+  See #1529. Thanks @ericman314.
+
 ### Non breaking changes
 
 - Implemented units `t`, `tonne`, `bel`, `decibel`, `dB`, and prefixes
@@ -123,6 +214,7 @@
 - Fix `math.simplify('add(2, 3)')` throwing an error.
 - Fix #1530: number formatting first applied `lowerExp` and `upperExp`
   and after that rounded the value instead of the other way around.
+- Fix #1473: remove `'use strict'` in every file, not needed anymore.
 
 
 # 2019-05-18, version 5.10.3

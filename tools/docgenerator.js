@@ -37,7 +37,7 @@ const SYNTAX = {
   random: 'math.random([min, max])',
   randomInt: 'math.randomInt([min, max])',
   format: 'math.format(value [, precision])',
-  'import': 'math.import(object, override)',
+  import: 'math.import(object, override)',
   print: 'math.print(template, values [, precision])'
 }
 
@@ -46,7 +46,7 @@ const IGNORE_FUNCTIONS = {
   divideScalar: true,
   multiplyScalar: true,
   equalScalar: true,
-  evaluate: true
+  eval: true
 }
 
 const IGNORE_WARNINGS = {
@@ -292,7 +292,7 @@ function generateDoc (name, code) {
   }
 
   // initialize doc
-  let doc = {
+  const doc = {
     name: name,
     description: '',
     syntax: [],
@@ -332,7 +332,7 @@ function generateDoc (name, code) {
  * @return {String[]} issues
  */
 function validateDoc (doc) {
-  let issues = []
+  const issues = []
 
   function ignore (field) {
     return IGNORE_WARNINGS[field].indexOf(doc.name) !== -1
@@ -491,7 +491,7 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
     }
 
     // generate path information for each of the files
-    let functions = {} // TODO: change to array
+    const functions = {} // TODO: change to array
 
     files.forEach(function (fullPath) {
       const path = fullPath.split('/')
@@ -512,6 +512,9 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
         } else {
           category = path[functionIndex + 1]
         }
+      } else if (fullPath === './lib/expression/parse.js') {
+        // TODO: this is an ugly special case
+        category = 'expression'
       } else if (path.join('/') === './lib/type') {
         // for boolean.js, number.js, string.js
         category = 'construction'
@@ -533,25 +536,23 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
 
     // loop over all files, generate a doc for each of them
     let issues = []
-    for (const name in functions) {
-      if (functions.hasOwnProperty(name)) {
-        const fn = functions[name]
-        const code = String(fs.readFileSync(fn.fullPath))
+    Object.keys(functions).forEach(name => {
+      const fn = functions[name]
+      const code = String(fs.readFileSync(fn.fullPath))
 
-        const isFunction = (functionNames.indexOf(name) !== -1) && !IGNORE_FUNCTIONS[name]
-        const doc = isFunction ? generateDoc(name, code) : null
+      const isFunction = (functionNames.indexOf(name) !== -1) && !IGNORE_FUNCTIONS[name]
+      const doc = isFunction ? generateDoc(name, code) : null
 
-        if (isFunction && doc) {
-          fn.doc = doc
-          issues = issues.concat(validateDoc(doc))
-          const markdown = generateMarkdown(doc, functions)
-          fs.writeFileSync(outputPath + '/' + fn.name + '.md', markdown)
-        } else {
-          // log('Ignoring', fn.fullPath)
-          delete functions[name]
-        }
+      if (isFunction && doc) {
+        fn.doc = doc
+        issues = issues.concat(validateDoc(doc))
+        const markdown = generateMarkdown(doc, functions)
+        fs.writeFileSync(outputPath + '/' + fn.name + '.md', markdown)
+      } else {
+        // log('Ignoring', fn.fullPath)
+        delete functions[name]
       }
-    }
+    })
 
     /**
      * Helper function to generate a markdown list entry for a function.
@@ -601,7 +602,7 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
     }
 
     // generate categorical page with all functions
-    let categories = {}
+    const categories = {}
     Object.keys(functions).forEach(function (name) {
       const fn = functions[name]
       const category = categories[fn.category]

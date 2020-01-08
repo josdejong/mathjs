@@ -1,5 +1,3 @@
-'use strict'
-
 const all = require('./factoriesAny')
 const { create } = require('./core/create')
 

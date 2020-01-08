@@ -1,5 +1,3 @@
-'use strict'
-
 import { factory } from '../../../utils/factory'
 
 const name = 'chain'
@@ -46,7 +44,7 @@ export const createChain = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return new Chain()
     },
 
-    'any': function (value) {
+    any: function (value) {
       return new Chain(value)
     }
   })

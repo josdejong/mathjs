@@ -1,4 +1,3 @@
-'use strict'
 import { isSymbolNode } from '../../../utils/is'
 
 /**
