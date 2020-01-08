@@ -79,16 +79,16 @@ describe('eigs', function () {
     )
   })
   it('bigNumber diagonalization is supported', function () {
-    let x = [[math.bignumber(1), math.bignumber(0)], [math.bignumber(0), math.bignumber(1)]]
-    assert.deepEqual(eigs(x)[0], [math.bignumber(1), math.bignumber(1)],eigs(x)[1])
+    var x = [[math.bignumber(1), math.bignumber(0)], [math.bignumber(0), math.bignumber(1)]]
+    approx.deepEqual(eigs(x)[0], [math.bignumber(1), math.bignumber(1)], eigs(x)[1])
     var H = [[-4.78, -1.0, -2.59, -3.26, 4.24, 4.14],
       [-1.0, -2.45, -0.92, -2.33, -4.68, 4.27],
       [-2.59, -0.92, -2.45, 4.17, -3.33, 3.05],
       [-3.26, -2.33, 4.17, 2.51, 1.67, 2.24],
       [4.24, -4.68, -3.33, 1.67, 2.80, 2.73],
       [4.14, 4.27, 3.05, 2.24, 2.73, -4.47]]
-    for (let i = 0; i < H.length; i++ ){
-      for (let j = 0; j < H.length; j++ ){
+    for (let i = 0; i < H.length; i++) {
+      for (let j = 0; j < H.length; j++) {
         H[i][j] = math.bignumber(H[i][j])
       }
     }

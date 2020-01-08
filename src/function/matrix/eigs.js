@@ -5,7 +5,7 @@ import { format } from '../../utils/string'
 const name = 'eigs'
 const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiply', 'inv']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal, abs, atan, cos, sin, multiply, inv}) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal, abs, atan, cos, sin, multiply, inv }) => {
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
@@ -14,7 +14,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * of either 'number', 'bignumber' or 'fraction' type. For 'number' and 'fraction', the
    * eigenvalues are of 'number' type. For 'bignumber' the eigenvalues are of ''bignumber' type.
    * Eigenvectors are always of 'number' type.
-   * 
+   *
    * Syntax:
    *
    *     math.eigs(x)
@@ -93,7 +93,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
           x[i][j] = x[i][j].valueOf()
           x[j][i] = x[i][j]
         }
-      } 
+      }
       return diag(x)
     } else if (type === 'BigNumber') {
       return diagBig(x)
@@ -130,36 +130,34 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     return sorting(clone(Ei), clone(Sij))
   }
 
-    // diagonalization implementation for bigNumber
-    function diagBig (x, precision = 1E-12) {
-      const N = x.length
-      const e0 = abs(precision / N)
-      let psi
-      var Sij = new Array(N)
-      // Sij is Identity Matrix
-      for (let i = 0; i < N; i++) {
-        Sij[i] = Array(N).fill(0)
-        Sij[i][i] = 1.0
-      }
-      // initial error
-      let Vab = getAijBig(x)
-      while (abs(Vab[1]) >= abs(e0)) {
-        const i = Vab[0][0]
-        const j = Vab[0][1]
-        psi = getThetaBig(x[i][i], x[j][j], x[i][j])
-        x = x1Big(x, psi, i, j)
-        Sij = Sij1Big(Sij, psi, i, j)
-        Vab = getAijBig(x)
-      }
-      var Ei = Array(N).fill(0) // eigenvalues
-      for (let i = 0; i < N; i++) {
-        Ei[i] = x[i][i]
-      }
-      // return [clone(Ei), clone(Sij)]
-      return sorting(clone(Ei), clone(Sij))
+  // diagonalization implementation for bigNumber
+  function diagBig (x, precision = 1E-12) {
+    const N = x.length
+    const e0 = abs(precision / N)
+    let psi
+    var Sij = new Array(N)
+    // Sij is Identity Matrix
+    for (let i = 0; i < N; i++) {
+      Sij[i] = Array(N).fill(0)
+      Sij[i][i] = 1.0
     }
-
-  
+    // initial error
+    let Vab = getAijBig(x)
+    while (abs(Vab[1]) >= abs(e0)) {
+      const i = Vab[0][0]
+      const j = Vab[0][1]
+      psi = getThetaBig(x[i][i], x[j][j], x[i][j])
+      x = x1Big(x, psi, i, j)
+      Sij = Sij1Big(Sij, psi, i, j)
+      Vab = getAijBig(x)
+    }
+    var Ei = Array(N).fill(0) // eigenvalues
+    for (let i = 0; i < N; i++) {
+      Ei[i] = x[i][i]
+    }
+    // return [clone(Ei), clone(Sij)]
+    return sorting(clone(Ei), clone(Sij))
+  }
 
   // get angle
   function getTheta (aii, ajj, aij) {
@@ -176,11 +174,11 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // get angle
   function getThetaBig (aii, ajj, aij) {
     let th = 0.0
-    const denom = subtract(ajj , aii)
+    const denom = subtract(ajj, aii)
     if (abs(denom) <= 1E-14) {
       th = Math.PI / 4.0
     } else {
-      th = multiply(0.5, atan( multiply(2.0, aij, inv(denom))))
+      th = multiply(0.5, atan(multiply(2.0, aij, inv(denom))))
     }
     return th
   }
@@ -210,7 +208,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     var Ski = new Array(N).fill(0)
     var Skj = new Array(N).fill(0)
     for (let k = 0; k < N; k++) {
-      Ski[k] = subtract(multiply(c, Sij[k][i]), multiply( s, Sij[k][j]))
+      Ski[k] = subtract(multiply(c, Sij[k][i]), multiply(s, Sij[k][j]))
       Skj[k] = add(multiply(s, Sij[k][i]), multiply(c, Sij[k][j]))
     }
     for (let k = 0; k < N; k++) {
@@ -231,7 +229,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     var Aki = new Array(N).fill(0)
     var Akj = new Array(N).fill(0)
     //  Aii
-    const Aii = add(subtract(multiply(c2, Hij[i][i]), multiply(2 , c , s , Hij[i][j])) , multiply(s2 , Hij[j][j]))
+    const Aii = add(subtract(multiply(c2, Hij[i][i]), multiply(2, c, s, Hij[i][j])), multiply(s2, Hij[j][j]))
     const Ajj = add(multiply(s2, Hij[i][i]), multiply(2, c, s, Hij[i][j]), multiply(c2, Hij[j][j]))
     // 0  to i
     for (let k = 0; k < N; k++) {
@@ -254,8 +252,6 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
     return Hij
   }
-
-
 
   // update matrix
   function x1 (Hij, theta, i, j) {
@@ -307,22 +303,22 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
     return [maxIJ, maxMij]
   }
- 
-    // get max off-diagonal value from Upper Diagonal
-    function getAijBig (Mij) {
-      var N = Mij.length
-      var maxMij = 0.0
-      var maxIJ = [0, 1]
-      for (var i = 0; i < N; i++) {
-        for (var j = i + 1; j < N; j++) {
-          if (abs(maxMij) < abs(Mij[i][j])) {
-            maxMij = abs(Mij[i][j])
-            maxIJ = [i, j]
-          }
+
+  // get max off-diagonal value from Upper Diagonal
+  function getAijBig (Mij) {
+    var N = Mij.length
+    var maxMij = 0.0
+    var maxIJ = [0, 1]
+    for (var i = 0; i < N; i++) {
+      for (var j = i + 1; j < N; j++) {
+        if (abs(maxMij) < abs(Mij[i][j])) {
+          maxMij = abs(Mij[i][j])
+          maxIJ = [i, j]
         }
       }
-      return [maxIJ, maxMij]
     }
+    return [maxIJ, maxMij]
+  }
 
   // sort results
   function sorting (E, S) {
