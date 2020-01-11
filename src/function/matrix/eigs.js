@@ -98,7 +98,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     } else if (type === 'BigNumber') {
       return diagBig(x)
     } else {
-      throw new TypeError('Elements type not supported')
+      throw new TypeError('Matrix element type not supported (' + type + ')')
     }
   }
 
