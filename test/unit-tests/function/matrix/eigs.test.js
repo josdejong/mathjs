@@ -16,7 +16,7 @@ describe('eigs', function () {
   it('should only accept a matrix with valid element type', function () {
     assert.throws(function () { eigs([['x', 2], [4, 5]]) }, /Matrix element type not supported/)
     assert.throws(function () { eigs([[1, 2], [2, '5']]) }, /Mixed matrix element type is not supported/)
-    assert.throws(function () { eigs([['1', '2'], ['2', '5']]) }, /Mixed matrix element type is not supported/)
+    assert.throws(function () { eigs([['1', '2'], ['2', '5']]) }, /Matrix element type not supported/)
   })
   it('eigenvalue check for diagonal matrix', function () {
     // trivial test
