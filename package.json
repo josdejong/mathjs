@@ -130,10 +130,10 @@
     "typed-function": "1.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.7.7",
-    "@babel/plugin-transform-object-assign": "7.7.4",
-    "@babel/preset-env": "7.7.7",
-    "@babel/register": "7.7.7",
+    "@babel/core": "7.8.0",
+    "@babel/plugin-transform-object-assign": "7.8.0",
+    "@babel/preset-env": "7.8.2",
+    "@babel/register": "7.8.0",
     "babel-loader": "8.0.6",
     "benchmark": "2.1.4",
     "codecov": "3.6.1",
@@ -143,7 +143,7 @@
     "glob": "7.1.6",
     "gulp": "4.0.2",
     "gulp-babel": "8.0.0",
-    "handlebars": "4.7.0",
+    "handlebars": "4.7.1",
     "istanbul": "0.4.5",
     "jsep": "0.3.4",
     "karma": "4.4.1",
@@ -165,7 +165,7 @@
     "pad-right": "0.2.2",
     "standard": "14.3.1",
     "sylvester": "0.0.21",
-    "uglify-js": "3.7.4",
+    "uglify-js": "3.7.5",
     "underscore": "1.9.2",
     "webpack": "4.41.5",
     "zeros": "1.0.0"
