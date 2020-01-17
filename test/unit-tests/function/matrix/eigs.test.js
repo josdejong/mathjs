@@ -92,11 +92,7 @@ describe('eigs', function () {
       [-3.26, -2.33, 4.17, 2.51, 1.67, 2.24],
       [4.24, -4.68, -3.33, 1.67, 2.80, 2.73],
       [4.14, 4.27, 3.05, 2.24, 2.73, -4.47]]
-    for (let i = 0; i < H.length; i++) {
-      for (let j = 0; j < H.length; j++) {
-        H[i][j] = math.bignumber(H[i][j])
-      }
-    }
+    H = math.bignumber(H)
     var [E, V] = eigs(H)
     var VtHV = math.multiply(math.transpose(V), H, V)
     var Ei = Array(H.length)
