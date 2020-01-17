@@ -173,12 +173,12 @@ describe('mainNumber', function () {
     // TODO: implement support for subset in number implementation
     assert.throws(function () {
       evaluate('A[2]', { A: [10, 20, 30] })
-    }, /No "Index" implementation available/)
+    }, /No "index" implementation available/)
 
     assert.throws(function () {
       const scope = { A: [10, 20, 30] }
       evaluate('A[2] = 200', scope)
-    }, /No "Index" implementation available/)
+    }, /No "index" implementation available/)
   })
 
   it('should export reviver', () => {

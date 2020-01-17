@@ -1,20 +1,17 @@
 import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '../../utils/is'
-import { createIndexTransform } from '../transform/index.transform'
 import { map } from '../../utils/array'
 import { escape } from '../../utils/string'
 import { factory } from '../../utils/factory'
+import { getSafeProperty } from '../../utils/customs'
 
 const name = 'IndexNode'
 const dependencies = [
   'Range',
   'Node',
-  'Index',
   'size'
 ]
 
-export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, Node, Index, size }) => {
-  const index = createIndexTransform({ Index })
-
+export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, Node, size }) => {
   /**
    * @constructor IndexNode
    * @extends Node
@@ -143,6 +140,8 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
       }
     })
 
+    const index = getSafeProperty(math, 'index')
+
     return function evalIndexNode (scope, args, context) {
       const dimensions = map(evalDimensions, function (evalDimension) {
         return evalDimension(scope, args, context)
@@ -174,7 +173,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
       dimensions[i] = this._ifNode(callback(this.dimensions[i], 'dimensions[' + i + ']', this))
     }
 
-    return new IndexNode(dimensions)
+    return new IndexNode(dimensions, this.dotNotation)
   }
 
   /**
@@ -182,7 +181,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
    * @return {IndexNode}
    */
   IndexNode.prototype.clone = function () {
-    return new IndexNode(this.dimensions.slice(0))
+    return new IndexNode(this.dimensions.slice(0), this.dotNotation)
   }
 
   /**

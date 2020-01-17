@@ -99,23 +99,29 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param {BigNumber} n
    * @returns {BigNumber} Returns the factorial of n
    */
-
   function bigFactorial (n) {
-    if (n.isZero()) {
-      return new BigNumber(1) // 0! is per definition 1
+    if (n < 8) {
+      return new BigNumber([1, 1, 2, 6, 24, 120, 720, 5040][n])
     }
 
     const precision = config.precision + (Math.log(n.toNumber()) | 0)
     const Big = BigNumber.clone({ precision: precision })
 
-    let res = new Big(n)
-    let value = n.toNumber() - 1 // number
-    while (value > 1) {
-      res = res.times(value)
-      value--
+    if (n % 2 === 1) {
+      return n.times(bigFactorial(new BigNumber(n - 1)))
     }
 
-    return new BigNumber(res.toPrecision(BigNumber.precision))
+    let p = n
+    let prod = new Big(n)
+    let sum = n.toNumber()
+
+    while (p > 2) {
+      p -= 2
+      sum += p
+      prod = prod.times(sum)
+    }
+
+    return new BigNumber(prod.toPrecision(BigNumber.precision))
   }
 
   return gamma

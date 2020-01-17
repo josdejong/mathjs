@@ -1164,6 +1164,16 @@ describe('Unit', function () {
       assert.strictEqual('jabberwocky_STUFF' in Unit.BASE_UNITS, true)
       assert.strictEqual(math.evaluate('4 mile^5/minute').format(4), '240 jabberwocky')
     })
+
+    it('should use baseName', function () {
+      Unit.createUnitSingle('truck', { baseName: 'VEHICLE' })
+      Unit.createUnitSingle('speedy', { definition: '1 truck/day', baseName: 'VEHICLE_PRODUCTION_RATE' })
+      assert('VEHICLE' in Unit.BASE_UNITS)
+      assert('VEHICLE_PRODUCTION_RATE' in Unit.BASE_UNITS)
+      assert(new Unit(1, 'truck').hasBase('VEHICLE'))
+      assert(new Unit(1, 'truck/day').hasBase('VEHICLE_PRODUCTION_RATE'))
+      assert.strictEqual(math.evaluate('10 truck/hr').format(4), '240 speedy')
+    })
   })
 
   describe('createUnit', function () {

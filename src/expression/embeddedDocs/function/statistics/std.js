@@ -19,7 +19,6 @@ export const stdDocs = {
     'mean',
     'min',
     'median',
-    'min',
     'prod',
     'sum',
     'variance'

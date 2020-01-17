@@ -16,7 +16,7 @@ const dependencies = [
 export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typed, addScalar, subtract, multiplyScalar, divideScalar, unaryMinus, sqrt, abs }) => {
   /**
     * Calculates:
-    *    The eucledian distance between two points in 2 and 3 dimensional spaces.
+    *    The eucledian distance between two points in N-dimensional spaces.
     *    Distance between point and a line in 2 and 3 dimensional spaces.
     *    Pairwise distance between a set of 2D or 3D points
     * NOTE:
@@ -28,6 +28,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *-   math.distance({pointOneX: 4, pointOneY: 5}, {pointTwoX: 2, pointTwoY: 7})
     *    math.distance([x1, y1, z1], [x2, y2, z2])
     *    math.distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})
+    *    math.distance([x1, y1, ... , N1], [x2, y2, ... , N2])
     *    math.distance([[A], [B], [C]...])
     *    math.distance([x1, y1], [LinePtX1, LinePtY1], [LinePtX2, LinePtY2])
     *    math.distance({pointX: 1, pointY: 4}, {lineOnePtX: 6, lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8})
@@ -48,6 +49,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *    math.distance(
     *     {pointOneX: 4, pointOneY: 5, pointOneZ: 8},
     *     {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})    // Returns 3
+    *    math.distance([1, 0, 1, 0], [0, -1, 0, -1])     // Returns 2
     *    math.distance([[1, 2], [1, 2], [1, 3]])         // Returns [0, 1, 1]
     *    math.distance([[1,2,4], [1,2,6], [8,1,3]])      // Returns [2, 7.14142842854285, 7.681145747868608]
     *    math.distance([10, 10], [8, 1, 3])              // Returns 11.535230316796387
@@ -123,26 +125,16 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         }
 
         return _distancePointLine3D(x[0], x[1], x[2], y[0], y[1], y[2], y[3], y[4], y[5])
-      } else if (x.length === 2 && y.length === 2) {
-        // Point to Point 2D
-        if (!_2d(x)) {
-          throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument')
+      } else if (x.length === y.length && x.length > 0) {
+        // Point to Point N-dimensions
+        if (!_containsOnlyNumbers(x)) {
+          throw new TypeError('All values of an array should be numbers or BigNumbers')
         }
-        if (!_2d(y)) {
-          throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument')
-        }
-
-        return _distance2d(x[0], x[1], y[0], y[1])
-      } else if (x.length === 3 && y.length === 3) {
-        // Point to Point 3D
-        if (!_3d(x)) {
-          throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument')
-        }
-        if (!_3d(y)) {
-          throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument')
+        if (!_containsOnlyNumbers(y)) {
+          throw new TypeError('All values of an array should be numbers or BigNumbers')
         }
 
-        return _distance3d(x[0], x[1], x[2], y[0], y[1], y[2])
+        return _euclideanDistance(x, y)
       } else {
         throw new TypeError('Invalid Arguments: Try again')
       }
@@ -182,7 +174,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
           throw new TypeError('Values of pointTwoX and pointTwoY should be numbers or BigNumbers')
         }
         if ('pointOneX' in x && 'pointOneY' in x && 'pointTwoX' in y && 'pointTwoY' in y) {
-          return _distance2d(x.pointOneX, x.pointOneY, y.pointTwoX, y.pointTwoY)
+          return _euclideanDistance([x.pointOneX, x.pointOneY], [y.pointTwoX, y.pointTwoY])
         } else {
           throw new TypeError('Key names do not match')
         }
@@ -197,7 +189,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if ('pointOneX' in x && 'pointOneY' in x && 'pointOneZ' in x &&
           'pointTwoX' in y && 'pointTwoY' in y && 'pointTwoZ' in y
         ) {
-          return _distance3d(x.pointOneX, x.pointOneY, x.pointOneZ, y.pointTwoX, y.pointTwoY, y.pointTwoZ)
+          return _euclideanDistance([x.pointOneX, x.pointOneY, x.pointOneZ], [y.pointTwoX, y.pointTwoY, y.pointTwoZ])
         } else {
           throw new TypeError('Key names do not match')
         }
@@ -231,6 +223,14 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
       a = _objectToArray(a)
     }
     return _isNumber(a[0]) && _isNumber(a[1]) && _isNumber(a[2])
+  }
+
+  function _containsOnlyNumbers (a) {
+    // checks if the number of arguments are correct in count and are valid (should be numbers)
+    if (!Array.isArray(a)) {
+      a = _objectToArray(a)
+    }
+    return a.every(_isNumber)
   }
 
   function _parametricLine (a) {
@@ -281,30 +281,31 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return divideScalar(num, den)
   }
 
-  function _distance2d (x1, y1, x2, y2) {
-    const yDiff = subtract(y2, y1)
-    const xDiff = subtract(x2, x1)
-    const radicant = addScalar(multiplyScalar(yDiff, yDiff), multiplyScalar(xDiff, xDiff))
-    return sqrt(radicant)
-  }
-
-  function _distance3d (x1, y1, z1, x2, y2, z2) {
-    const zDiff = subtract(z2, z1)
-    const yDiff = subtract(y2, y1)
-    const xDiff = subtract(x2, x1)
-    const radicant = addScalar(addScalar(multiplyScalar(zDiff, zDiff), multiplyScalar(yDiff, yDiff)), multiplyScalar(xDiff, xDiff))
-    return sqrt(radicant)
+  function _euclideanDistance (x, y) {
+    const vectorSize = x.length
+    let result = 0
+    let diff = 0
+    for (let i = 0; i < vectorSize; i++) {
+      diff = subtract(x[i], y[i])
+      result = addScalar(multiplyScalar(diff, diff), result)
+    }
+    return sqrt(result)
   }
 
   function _distancePairwise (a) {
     const result = []
+    let pointA = []
+    let pointB = []
     for (let i = 0; i < a.length - 1; i++) {
       for (let j = i + 1; j < a.length; j++) {
         if (a[0].length === 2) {
-          result.push(_distance2d(a[i][0], a[i][1], a[j][0], a[j][1]))
+          pointA = [a[i][0], a[i][1]]
+          pointB = [a[j][0], a[j][1]]
         } else if (a[0].length === 3) {
-          result.push(_distance3d(a[i][0], a[i][1], a[i][2], a[j][0], a[j][1], a[j][2]))
+          pointA = [a[i][0], a[i][1], a[i][2]]
+          pointB = [a[j][0], a[j][1], a[j][2]]
         }
+        result.push(_euclideanDistance(pointA, pointB))
       }
     }
     return result

@@ -96,6 +96,16 @@ describe('IndexNode', function () {
     assert.deepStrictEqual(f.dimensions[1], e)
   })
 
+  it('should copy dotNotation property when mapping an IndexNode', function () {
+    const b = new ConstantNode('objprop')
+    const n = new IndexNode([b], true)
+    const f = n.map(function (node, path, parent) {
+      return node
+    })
+
+    assert.strictEqual(n.dotNotation, f.dotNotation)
+  })
+
   it('should throw an error when the map callback does not return a node', function () {
     const b = new ConstantNode(2)
     const c = new ConstantNode(1)
@@ -147,6 +157,14 @@ describe('IndexNode', function () {
     assert.notStrictEqual(d.dimensions, n.dimensions)
     assert.strictEqual(d.dimensions[0], n.dimensions[0])
     assert.strictEqual(d.dimensions[1], n.dimensions[1])
+  })
+
+  it('should clone an IndexNode with dotNotation property', function () {
+    const b = new ConstantNode('objprop')
+    const n = new IndexNode([b], true)
+    const f = n.clone()
+
+    assert.strictEqual(n.dotNotation, f.dotNotation)
   })
 
   it('test equality another Node', function () {

@@ -3,9 +3,9 @@ import { deepMap } from '../../utils/collection'
 import { signNumber } from '../../plain/number'
 
 const name = 'sign'
-const dependencies = ['typed', 'BigNumber', 'Fraction']
+const dependencies = ['typed', 'BigNumber', 'Fraction', 'complex']
 
-export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Fraction }) => {
+export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, complex, Fraction }) => {
   /**
    * Compute the sign of a value. The sign of a value x is:
    *
@@ -40,7 +40,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     number: signNumber,
 
     Complex: function (x) {
-      return x.sign()
+      return x.im === 0 ? complex(signNumber(x.re)) : x.sign()
     },
 
     BigNumber: function (x) {

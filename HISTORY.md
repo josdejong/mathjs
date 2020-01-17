@@ -1,9 +1,55 @@
 # History
 
 
-# not yet published, version 6.2.2
+# 2020-01-08, version 6.5.0
 
+- Implemented `baseName` option for `createUnit`, see #1707. 
+  Thanks @ericman314.
+
+
+# 2020-01-06, version 6.4.0
+
+- Extended function `dimension` with support for n-dimensional points.
+  Thanks @Veeloxfire.
+
+
+# 2019-12-31, version 6.3.0
+
+- Improved performance of `factorial` for `BigNumber` up to a factor two,
+  see #1687. Thanks @kmdrGroch.
+
+
+# 2019-11-20, version 6.2.5
+
+- Fixed `IndexNode` using a hardcoded, one-based implementation of `index`,
+  making it impossible to instantiate a zero-based version of the expression
+  parser. See #782.
+
+
+# 2019-11-20, version 6.2.4
+
+- Fixed #1669: function 'qr' threw an error if the pivot was zero,
+  thanks @kevinkelleher12 and @harrysarson.
+- Resolves #942: remove misleading assert in 'qr'. Thanks @harrysarson.
+- Work around a bug in complex.js where `sign(0)` returns complex NaN.
+  Thanks @harrysarson.
+
+
+# 2019-10-06, version 6.2.3
+
+- Fixed #1640: function `mean` not working for units. Thanks @clintonc.
+- Fixed #1639: function `min` listed twice in the "See also" section of the
+  embedded docs of function `std`.
+- Improved performance of `isPrime`, see #1641. Thanks @arguiot.
+
+
+# 2019-09-23, version 6.2.2
+
+- Fixed methods `map` and `clone` not copying the `dotNotation` property of
+  `IndexNode`. Thanks @rianmcguire.
+- Fixed a typo in the documentation of `toHTML`. Thanks @maytanthegeek.
 - Fixed #1615: error in the docs of `isNumeric`.
+- Fixed #1628: Cannot call methods on empty strings or numbers with value `0`.
 
 
 # 2019-08-31, version 6.2.1

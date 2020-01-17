@@ -40,11 +40,12 @@ describe('customs', function () {
       assert.strictEqual(isSafeMethod(object3, 'toString'), false)
     })
 
-    it('function objects', function () {
+    it('functions', function () {
       const f = function () {}
 
       assert.strictEqual(isSafeMethod(f, 'call'), false)
       assert.strictEqual(isSafeMethod(f, 'bind'), false)
+      assert.strictEqual(isSafeMethod(f, 'constructor'), false)
     })
 
     it('classes', function () {
@@ -85,6 +86,27 @@ describe('customs', function () {
 
       // method with unicode chars
       assert.strictEqual(isSafeMethod(matrix, 'co\u006Estructor'), false)
+    })
+
+    it('strings', function () {
+      assert.strictEqual(isSafeMethod('abc', 'toUpperCase'), true)
+      assert.strictEqual(isSafeMethod('', 'toUpperCase'), true)
+      assert.strictEqual(isSafeMethod('abc', 'constructor'), false)
+      assert.strictEqual(isSafeMethod('abc', '__proto__'), false)
+    })
+
+    it('numbers', function () {
+      assert.strictEqual(isSafeMethod(3.14, 'toFixed'), true)
+      assert.strictEqual(isSafeMethod(0, 'toFixed'), true)
+      assert.strictEqual(isSafeMethod(3.14, 'constructor'), false)
+      assert.strictEqual(isSafeMethod(3.14, '__proto__'), false)
+    })
+
+    it('dates', function () {
+      assert.strictEqual(isSafeMethod(new Date(), 'getTime'), true)
+      assert.strictEqual(isSafeMethod(new Date(0), 'getTime'), true)
+      assert.strictEqual(isSafeMethod(new Date(), 'constructor'), false)
+      assert.strictEqual(isSafeMethod(new Date(), '__proto__'), false)
     })
   })
 
