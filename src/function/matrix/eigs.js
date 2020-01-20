@@ -76,32 +76,37 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // and perform diagonalization efficiently for
   // specific type of number
   function checkAndSubmit (x, n) {
-    // see if all elements are acceptable
-    isSymmetric(x.toArray(), n)
     let type = x.datatype();
     // type check
     if (type === undefined){
       type = x.getDataType()
     }
+    if (type !== 'number' && type !== 'BigNumber' && type !== 'Fraction') {
+      if (type === 'mixed') {
+        throw new TypeError('Mixed matrix element type is not supported')
+      } else {
+        throw new TypeError('Matrix element type not supported (' + type + ')')
+      }
+    } else {
+      isSymmetric(x.toArray(), n)
+    }
+    
     // perform efficient calculation for 'numbers'
     if (type === 'number') {
       return diag(x.toArray())
     } else if (type === 'Fraction') {
+      let xArr = x.toArray()
       // convert fraction to numbers
       for (let i = 0; i < n; i++) {
         for (let j = i; j < n; j++) {
-          x[i][j] = x[i][j].valueOf()
-          x[j][i] = x[i][j]
+          xArr[i][j] = xArr[i][j].valueOf()
+          xArr[j][i] = xArr[i][j]
         }
       }
       return diag(x.toArray())
     } else if (type === 'BigNumber') {
       return diagBig(x.toArray())
-    } else if (type === 'mixed') {
-      throw new TypeError('Mixed matrix element type is not supported')
-    } else {
-      throw new TypeError('Matrix element type not supported (' + type + ')')
-    }
+    } 
   }
 
   // diagonalization implementation for number (efficient)

@@ -14,7 +14,7 @@ describe('eigs', function () {
     assert.throws(function () { eigs(math.matrix([[1, 2], [2.1, 3]])) }, /Input matrix is not symmetric/)
   })
   it('should only accept a matrix with valid element type', function () {
-    assert.throws(function () { eigs([['x', 2], [4, 5]]) }, /Matrix element type not supported/)
+    assert.throws(function () { eigs([['x', 2], [4, 5]]) }, /Mixed matrix element type is not supported/)
     assert.throws(function () { eigs([[1, 2], [2, '5']]) }, /Mixed matrix element type is not supported/)
     assert.throws(function () { eigs([['1', '2'], ['2', '5']]) }, /Matrix element type not supported/)
   })
