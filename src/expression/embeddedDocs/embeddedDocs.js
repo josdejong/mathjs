@@ -154,6 +154,7 @@ import { floorDocs } from './function/arithmetic/floor'
 import { fixDocs } from './function/arithmetic/fix'
 import { expm1Docs } from './function/arithmetic/expm1'
 import { expmDocs } from './function/arithmetic/expm'
+import { eigsDocs } from './function/matrix/eigs'
 import { expDocs } from './function/arithmetic/exp'
 import { dotMultiplyDocs } from './function/arithmetic/dotMultiply'
 import { dotDivideDocs } from './function/arithmetic/dotDivide'
@@ -409,6 +410,7 @@ export const embeddedDocs = {
   flatten: flattenDocs,
   forEach: forEachDocs,
   inv: invDocs,
+  eigs: eigsDocs,
   kron: kronDocs,
   map: mapDocs,
   ones: onesDocs,
