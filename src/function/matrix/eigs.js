@@ -44,7 +44,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
 
       // use dense 2D matrix implementation
-      return checkAndSubmit(clone(x), size[0])
+      return checkAndSubmit(mat, size[0])
     },
 
     Matrix: function (x) {
@@ -55,12 +55,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         throw new RangeError('Matrix must be square ' +
           '(size: ' + format(size) + ')')
       }
-      let type = x.datatype();
-      // type check
-      if (type === undefined){
-        type = x.getDataType()
-      }
-      return checkAndSubmit(x.toArray(), size[0])
+      return checkAndSubmit(x, size[0])
     }
   })
 
@@ -82,6 +77,11 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // and perform diagonalization efficiently for
   // specific type of number
   function checkAndSubmit (x, n) {
+    let type = x.datatype();
+    // type check
+    if (type === undefined){
+      type = x.getDataType()
+    }
     let type = typeOf(x[0][0])
     if (type !== 'number' && type !== 'Fraction' && type !== 'BigNumber') {
       throw new TypeError('Matrix element type not supported (' + type + ')')
@@ -112,9 +112,9 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
           x[j][i] = x[i][j]
         }
       }
-      return diag(x)
+      return diag(x.toArray())
     } else if (type === 'BigNumber') {
-      return diagBig(x)
+      return diagBig(x.toArray())
     } else {
       throw new TypeError('Matrix element type not supported (' + type + ')')
     }
