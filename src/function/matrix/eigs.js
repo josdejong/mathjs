@@ -44,7 +44,9 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
 
       // use dense 2D matrix implementation
-      return checkAndSubmit(mat, size[0])
+      const ans = checkAndSubmit(mat, size[0])
+      const ans = checkAndSubmit(x, size[0])
+      return {values: ans[0], vectors: ans[1]}
     },
 
     Matrix: function (x) {
@@ -55,7 +57,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         throw new RangeError('Matrix must be square ' +
           '(size: ' + format(size) + ')')
       }
-      return checkAndSubmit(x, size[0])
+      const ans = checkAndSubmit(x, size[0])
+      return {values: ans[0], vectors: matrix(ans[1])}
     }
   })
 
