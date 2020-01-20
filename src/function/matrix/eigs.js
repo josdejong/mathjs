@@ -55,10 +55,28 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         throw new RangeError('Matrix must be square ' +
           '(size: ' + format(size) + ')')
       }
-
+      let type = x.datatype();
+      // type check
+      if (type === undefined){
+        type = x.getDataType()
+      }
       return checkAndSubmit(x.toArray(), size[0])
     }
   })
+
+  // Is the matrix
+  // symmetric ?
+  function isSymmetric(x, n) {
+    for (let i = 0; i < n; i++) {
+      for (let j = i; j < n; j++) {
+        // not symmtric
+        if (!equal(x[i][j], x[j][i])) {
+          throw new TypeError('Input matrix is not symmetric')
+        }
+      }
+    }
+    return True
+  }
 
   // check input for possible problems
   // and perform diagonalization efficiently for
