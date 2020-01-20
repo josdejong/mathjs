@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
 
 const name = 'eigs'
-const dependencies = ['typed', 'matrix', 'typeOf', 'add', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiply', 'inv', 'bignumber']
+const dependencies = ['typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'inv', 'bignumber', 'multiply', 'add']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, typeOf, add, subtract, equal, abs, atan, cos, sin, multiply, inv, bignumber }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) => {
   /**
    * Compute eigenvalue and eigenvector of a real symmetric matrix.
    * Only applicable to two dimensional symmetric matrices. Uses Jacobi
@@ -106,7 +106,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return diag(x.toArray())
     } else if (type === 'BigNumber') {
       return diagBig(x.toArray())
-    } 
+    }
   }
 
   // diagonalization implementation for number (efficient)
@@ -185,7 +185,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     if (abs(denom) <= 1E-14) {
       th = Math.PI / 4.0
     } else {
-      th = multiply(0.5, atan(multiply(2.0, aij, inv(denom))))
+      th = multiplyScalar(0.5, atan(multiply(2.0, aij, inv(denom))))
     }
     return th
   }
@@ -215,8 +215,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     var Ski = new Array(N).fill(0)
     var Skj = new Array(N).fill(0)
     for (let k = 0; k < N; k++) {
-      Ski[k] = subtract(multiply(c, Sij[k][i]), multiply(s, Sij[k][j]))
-      Skj[k] = add(multiply(s, Sij[k][i]), multiply(c, Sij[k][j]))
+      Ski[k] = subtract(multiplyScalar(c, Sij[k][i]), multiplyScalar(s, Sij[k][j]))
+      Skj[k] = addScalar(multiplyScalar(s, Sij[k][i]), multiplyScalar(c, Sij[k][j]))
     }
     for (let k = 0; k < N; k++) {
       Sij[k][i] = Ski[k]
@@ -230,18 +230,20 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const N = Hij.length
     const c = bignumber(cos(theta))
     const s = bignumber(sin(theta))
-    const c2 = multiply(c, c)
-    const s2 = multiply(s, s)
+    const c2 = multiplyScalar(c, c)
+    const s2 = multiplyScalar(s, s)
     //  var Ans = new Array(N).fill(Array(N).fill(0));
     var Aki = new Array(N).fill(0)
     var Akj = new Array(N).fill(0)
+    // 2cs Hij
+    const csHij = multiply(2, c, s, Hij[i][j])
     //  Aii
-    const Aii = add(subtract(multiply(c2, Hij[i][i]), multiply(2, c, s, Hij[i][j])), multiply(s2, Hij[j][j]))
-    const Ajj = add(multiply(s2, Hij[i][i]), multiply(2, c, s, Hij[i][j]), multiply(c2, Hij[j][j]))
+    const Aii = addScalar(subtract(multiplyScalar(c2, Hij[i][i]), csHij), multiplyScalar(s2, Hij[j][j]))
+    const Ajj = add(multiplyScalar(s2, Hij[i][i]), csHij, multiplyScalar(c2, Hij[j][j]))
     // 0  to i
     for (let k = 0; k < N; k++) {
-      Aki[k] = subtract(multiply(c, Hij[i][k]), multiply(s, Hij[j][k]))
-      Akj[k] = add(multiply(s, Hij[i][k]), multiply(c, Hij[j][k]))
+      Aki[k] = subtract(multiplyScalar(c, Hij[i][k]), multiplyScalar(s, Hij[j][k]))
+      Akj[k] = addScalar(multiplyScalar(s, Hij[i][k]), multiplyScalar(c, Hij[j][k]))
     }
     // Modify Hij
     Hij[i][i] = Aii
