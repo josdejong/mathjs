@@ -77,33 +77,16 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // and perform diagonalization efficiently for
   // specific type of number
   function checkAndSubmit (x, n) {
+    // see if all elements are acceptable
+    isSymmetric(x, n)
     let type = x.datatype();
     // type check
     if (type === undefined){
       type = x.getDataType()
     }
-    let type = typeOf(x[0][0])
-    if (type !== 'number' && type !== 'Fraction' && type !== 'BigNumber') {
-      throw new TypeError('Matrix element type not supported (' + type + ')')
-    }
-    // check if matrix is symmetric and what is the type of elements
-    for (let i = 0; i < n; i++) {
-      for (let j = i; j < n; j++) {
-        // not symmtric
-        if (!equal(x[i][j], x[j][i])) {
-          throw new TypeError('Input matrix is not symmetric')
-        }
-        // not same type
-        const thisType = typeOf(x[i][j])
-        if (type !== thisType) {
-          type = 'mixed'
-          throw new TypeError('Mixed matrix element type is not supported')
-        }
-      }
-    }
     // perform efficient calculation for 'numbers'
     if (type === 'number') {
-      return diag(x)
+      return diag(x.toArray())
     } else if (type === 'Fraction') {
       // convert fraction to numbers
       for (let i = 0; i < n; i++) {
@@ -115,6 +98,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return diag(x.toArray())
     } else if (type === 'BigNumber') {
       return diagBig(x.toArray())
+    } else if (type === 'mixed') {
+      throw new TypeError('Mixed matrix element type is not supported')
     } else {
       throw new TypeError('Matrix element type not supported (' + type + ')')
     }
