@@ -22,7 +22,9 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * Examples:
    *
    *     const H = [[5, 2.3], [2.3, 1]]
-   *     const [E, U] = math.eigs(H) // E  is an array of sorted eigenvalues and U is the corresponding eigenvectors
+   *     const ans = math.eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors]}
+   *     const E = ans.values
+   *     const U = ans.vectors
    *     const UTxHxU = math.multiply(math.transpose(U), H, U) // rotates H to the eigen-representation
    *     E[0] == UTxHxU[0][0]  // returns true
    * See also:
@@ -30,7 +32,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *     inv
    *
    * @param {Array | Matrix} x  Matrix to be diagonalized
-   * @return {Array | Array} Array containing eigenvalues (Array) and eigenvectors (2D Array).
+   * @return {{values: Array, vectors: Array} | {values: Array, vectors: Matrix}} Object containing eigenvalues (Array) and eigenvectors (2D Array/Matrix).
    */
   const eigs = typed('eigs', {
 
