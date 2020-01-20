@@ -33,7 +33,7 @@ describe('eigs', function () {
       [[1, 0.1], [0.1, 1]]).values, [0.9, 1.1]
     )
     approx.deepEqual(eigs(
-      math.matrix([[1, 0.1], [0.1, 1]])).values, [0.9, 1.1]
+      math.matrix([[1, 0.1], [0.1, 1]])).values, math.matrix([0.9, 1.1])
     )
     approx.deepEqual(eigs(
       [[5, 2.3], [2.3, 1]]).values, [-0.04795013082563382, 6.047950130825635]

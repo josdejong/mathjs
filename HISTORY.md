@@ -1,6 +1,11 @@
 # History
 
 
+# not yet published, version 6.6.0
+
+- Implemented function `eigs`, see #1705, #542 #1175. Thanks @arkajitmandal.
+
+
 # 2020-01-08, version 6.5.0
 
 - Implemented `baseName` option for `createUnit`, see #1707. 

@@ -32,7 +32,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *     inv
    *
    * @param {Array | Matrix} x  Matrix to be diagonalized
-   * @return {{values: Array, vectors: Array} | {values: Array, vectors: Matrix}} Object containing eigenvalues (Array) and eigenvectors (2D Array/Matrix).
+   * @return {{values: Array, vectors: Array} | {values: Matrix, vectors: Matrix}} Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix).
    */
   const eigs = typed('eigs', {
 
@@ -59,7 +59,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
           '(size: ' + format(size) + ')')
       }
       const ans = checkAndSubmit(x, size[0])
-      return { values: ans[0], vectors: matrix(ans[1]) }
+      return { values: matrix(ans[0]), vectors: matrix(ans[1]) }
     }
   })
 
@@ -118,10 +118,10 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const N = x.length
     const e0 = Math.abs(precision / N)
     let psi
-    var Sij = new Array(N)
+    let Sij = new Array(N)
     // Sij is Identity Matrix
     for (let i = 0; i < N; i++) {
-      Sij[i] = Array(N).fill(0)
+      Sij[i] = createArray(N, 0)
       Sij[i][i] = 1.0
     }
     // initial error
@@ -134,7 +134,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       Sij = Sij1(Sij, psi, i, j)
       Vab = getAij(x)
     }
-    var Ei = Array(N).fill(0) // eigenvalues
+    const Ei = createArray(N, 0) // eigenvalues
     for (let i = 0; i < N; i++) {
       Ei[i] = x[i][i]
     }
@@ -146,10 +146,10 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const N = x.length
     const e0 = abs(precision / N)
     let psi
-    var Sij = new Array(N)
+    let Sij = new Array(N)
     // Sij is Identity Matrix
     for (let i = 0; i < N; i++) {
-      Sij[i] = Array(N).fill(0)
+      Sij[i] = createArray(N, 0)
       Sij[i][i] = 1.0
     }
     // initial error
@@ -162,7 +162,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       Sij = Sij1Big(Sij, psi, i, j)
       Vab = getAijBig(x)
     }
-    var Ei = Array(N).fill(0) // eigenvalues
+    const Ei = createArray(N, 0) // eigenvalues
     for (let i = 0; i < N; i++) {
       Ei[i] = x[i][i]
     }
@@ -172,7 +172,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
   // get angle
   function getTheta (aii, ajj, aij) {
-    let th = 0.0
+    let th = 0
     const denom = (ajj - aii)
     if (Math.abs(denom) <= 1E-14) {
       th = Math.PI / 4.0
@@ -184,7 +184,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
   // get angle
   function getThetaBig (aii, ajj, aij) {
-    let th = 0.0
+    let th = 0
     const denom = subtract(ajj, aii)
     if (abs(denom) <= 1E-14) {
       th = Math.PI / 4.0
@@ -199,8 +199,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const N = Sij.length
     const c = Math.cos(theta)
     const s = Math.sin(theta)
-    var Ski = new Array(N).fill(0)
-    var Skj = new Array(N).fill(0)
+    const Ski = createArray(N, 0)
+    const Skj = createArray(N, 0)
     for (let k = 0; k < N; k++) {
       Ski[k] = c * Sij[k][i] - s * Sij[k][j]
       Skj[k] = s * Sij[k][i] + c * Sij[k][j]
@@ -216,8 +216,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const N = Sij.length
     const c = cos(theta)
     const s = sin(theta)
-    var Ski = new Array(N).fill(0)
-    var Skj = new Array(N).fill(0)
+    const Ski = createArray(N, 0)
+    const Skj = createArray(N, 0)
     for (let k = 0; k < N; k++) {
       Ski[k] = subtract(multiplyScalar(c, Sij[k][i]), multiplyScalar(s, Sij[k][j]))
       Skj[k] = addScalar(multiplyScalar(s, Sij[k][i]), multiplyScalar(c, Sij[k][j]))
@@ -236,9 +236,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const s = bignumber(sin(theta))
     const c2 = multiplyScalar(c, c)
     const s2 = multiplyScalar(s, s)
-    //  var Ans = new Array(N).fill(Array(N).fill(0));
-    var Aki = new Array(N).fill(0)
-    var Akj = new Array(N).fill(0)
+    const Aki = createArray(N, 0)
+    const Akj = createArray(N, 0)
     // 2cs Hij
     const csHij = multiply(2, c, s, Hij[i][j])
     //  Aii
@@ -273,9 +272,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const s = Math.sin(theta)
     const c2 = c * c
     const s2 = s * s
-    //  var Ans = new Array(N).fill(Array(N).fill(0));
-    var Aki = new Array(N).fill(0)
-    var Akj = new Array(N).fill(0)
+    const Aki = createArray(N, 0)
+    const Akj = createArray(N, 0)
     //  Aii
     const Aii = c2 * Hij[i][i] - 2 * c * s * Hij[i][j] + s2 * Hij[j][j]
     const Ajj = s2 * Hij[i][i] + 2 * c * s * Hij[i][j] + c2 * Hij[j][j]
@@ -303,11 +301,11 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
   // get max off-diagonal value from Upper Diagonal
   function getAij (Mij) {
-    var N = Mij.length
-    var maxMij = 0.0
-    var maxIJ = [0, 1]
-    for (var i = 0; i < N; i++) {
-      for (var j = i + 1; j < N; j++) {
+    const N = Mij.length
+    let maxMij = 0
+    let maxIJ = [0, 1]
+    for (let i = 0; i < N; i++) {
+      for (let j = i + 1; j < N; j++) {
         if (Math.abs(maxMij) < Math.abs(Mij[i][j])) {
           maxMij = Math.abs(Mij[i][j])
           maxIJ = [i, j]
@@ -319,11 +317,11 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
   // get max off-diagonal value from Upper Diagonal
   function getAijBig (Mij) {
-    var N = Mij.length
-    var maxMij = 0.0
-    var maxIJ = [0, 1]
-    for (var i = 0; i < N; i++) {
-      for (var j = i + 1; j < N; j++) {
+    const N = Mij.length
+    let maxMij = 0
+    let maxIJ = [0, 1]
+    for (let i = 0; i < N; i++) {
+      for (let j = i + 1; j < N; j++) {
         if (abs(maxMij) < abs(Mij[i][j])) {
           maxMij = abs(Mij[i][j])
           maxIJ = [i, j]
@@ -335,28 +333,45 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
   // sort results
   function sorting (E, S) {
-    var N = E.length
-    var Ef = Array(N)
-    var Sf = Array(N)
+    const N = E.length
+    const Ef = Array(N)
+    const Sf = Array(N)
     for (let k = 0; k < N; k++) {
       Sf[k] = Array(N)
     }
-    for (var i = 0; i < N; i++) {
-      var minID = 0
-      var minE = E[0]
-      for (var j = 0; j < E.length; j++) {
+    for (let i = 0; i < N; i++) {
+      let minID = 0
+      let minE = E[0]
+      for (let j = 0; j < E.length; j++) {
         if (E[j] < minE) {
           minID = j
           minE = E[minID]
         }
       }
       Ef[i] = E.splice(minID, 1)[0]
-      for (var k = 0; k < N; k++) {
+      for (let k = 0; k < N; k++) {
         Sf[k][i] = S[k][minID]
         S[k].splice(minID, 1)
       }
     }
     return [clone(Ef), clone(Sf)]
+  }
+
+  /**
+   * Create an array of a certain size and fill all items with an initial value
+   * @param {number} size
+   * @param {number} value
+   * @return {number[]}
+   */
+  function createArray (size, value) {
+    // TODO: as soon as all browsers support Array.fill, use that instead (IE doesn't support it)
+    const array = new Array(size)
+
+    for (let i = 0; i < size; i++) {
+      array[i] = value
+    }
+
+    return array
   }
 
   return eigs
