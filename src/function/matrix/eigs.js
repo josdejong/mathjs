@@ -45,8 +45,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
       // use dense 2D matrix implementation
       const ans = checkAndSubmit(mat, size[0])
-      const ans = checkAndSubmit(x, size[0])
-      return {values: ans[0], vectors: ans[1]}
+      return { values: ans[0], vectors: ans[1] }
     },
 
     Matrix: function (x) {
@@ -58,7 +57,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
           '(size: ' + format(size) + ')')
       }
       const ans = checkAndSubmit(x, size[0])
-      return {values: ans[0], vectors: matrix(ans[1])}
+      return { values: ans[0], vectors: matrix(ans[1]) }
     }
   })
 
