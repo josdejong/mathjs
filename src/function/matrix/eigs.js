@@ -78,7 +78,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // specific type of number
   function checkAndSubmit (x, n) {
     // see if all elements are acceptable
-    isSymmetric(x, n)
+    isSymmetric(x.toArray(), n)
     let type = x.datatype();
     // type check
     if (type === undefined){
