@@ -70,7 +70,6 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         }
       }
     }
-    return True
   }
 
   // check input for possible problems
