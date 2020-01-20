@@ -61,7 +61,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
   // Is the matrix
   // symmetric ?
-  function isSymmetric(x, n) {
+  function isSymmetric (x, n) {
     for (let i = 0; i < n; i++) {
       for (let j = i; j < n; j++) {
         // not symmtric
@@ -76,9 +76,9 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   // and perform diagonalization efficiently for
   // specific type of number
   function checkAndSubmit (x, n) {
-    let type = x.datatype();
+    let type = x.datatype()
     // type check
-    if (type === undefined){
+    if (type === undefined) {
       type = x.getDataType()
     }
     if (type !== 'number' && type !== 'BigNumber' && type !== 'Fraction') {
@@ -90,12 +90,12 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     } else {
       isSymmetric(x.toArray(), n)
     }
-    
+
     // perform efficient calculation for 'numbers'
     if (type === 'number') {
       return diag(x.toArray())
     } else if (type === 'Fraction') {
-      let xArr = x.toArray()
+      const xArr = x.toArray()
       // convert fraction to numbers
       for (let i = 0; i < n; i++) {
         for (let j = i; j < n; j++) {
