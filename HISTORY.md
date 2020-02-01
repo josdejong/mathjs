@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 6.6.0
+# 2020-02-01, version 6.6.0
 
 - Implemented function `eigs`, see #1705, #542 #1175. Thanks @arkajitmandal.
 - Fixed #1727: validate matrix size when creating a `DenseMatrix` using 
