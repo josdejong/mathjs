@@ -151,6 +151,7 @@ Function | Description
 [math.det(x)](functions/det.html) | Calculate the determinant of a matrix.
 [math.diag(X)](functions/diag.html) | Create a diagonal matrix or retrieve the diagonal of a matrix  When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
 [math.dot(x,&nbsp;y)](functions/dot.html) | Calculate the dot product of two vectors.
+[math.eigs(x)](functions/eigs.html) | Compute eigenvalue and eigenvector of a real symmetric matrix.
 [math.expm(x)](functions/expm.html) | Compute the matrix exponential, expm(A) = e^A.
 [math.filter(x,&nbsp;test)](functions/filter.html) | Filter the items in an array or one dimensional matrix.
 [math.flatten(x)](functions/flatten.html) | Flatten a multi dimensional matrix into a single dimensional matrix.

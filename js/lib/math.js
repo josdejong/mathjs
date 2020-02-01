@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 6.5.0
- * @date    2020-01-08
+ * @version 6.6.0
+ * @date    2020-02-01
  *
  * @license
  * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
@@ -329,7 +329,7 @@ function stripOptionalNotation(dependency) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "J", function() { return isSymbolNode; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return isChain; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "M", function() { return typeOf; });
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // type checks for all known types
 //
@@ -1142,7 +1142,7 @@ function contains(array, item) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return pickShallow; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return values; });
 /* harmony import */ var _is__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
 /**
@@ -2454,7 +2454,7 @@ function toFixed(value, precision) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return stringify; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return string_escape; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return compareText; });
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
 
@@ -12277,7 +12277,7 @@ var complex_js_complex = __webpack_require__(9);
 var complex_default = /*#__PURE__*/__webpack_require__.n(complex_js_complex);
 
 // CONCATENATED MODULE: ./src/type/complex/Complex.js
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
 
@@ -13198,7 +13198,9 @@ Object(factory["a" /* factory */])(DenseMatrix_name, DenseMatrix_dependencies, f
     } else if (data && Object(is["b" /* isArray */])(data.data) && Object(is["b" /* isArray */])(data.size)) {
       // initialize fields from JSON representation
       this._data = data.data;
-      this._size = data.size;
+      this._size = data.size; // verify the dimensions of the array
+
+      Object(utils_array["r" /* validate */])(this._data, this._size);
       this._datatype = datatype || data.datatype;
     } else if (Object(is["b" /* isArray */])(data)) {
       // replace nested Matrices with Arrays
@@ -13732,14 +13734,13 @@ Object(factory["a" /* factory */])(DenseMatrix_name, DenseMatrix_dependencies, f
       } else {
         return callback(value, index, me);
       }
-    }; // return dense format
+    }; // determine the new datatype when the original matrix has datatype defined
+    // TODO: should be done in matrix constructor instead
 
 
-    return new DenseMatrix({
-      data: recurse(this._data, []),
-      size: Object(utils_object["a" /* clone */])(this._size),
-      datatype: this._datatype
-    });
+    var data = recurse(this._data, []);
+    var datatype = this._datatype !== undefined ? Object(utils_array["h" /* getArrayDataType */])(data, is["M" /* typeOf */]) : undefined;
+    return new DenseMatrix(data, datatype);
   };
   /**
    * Execute a callback function on each entry of the matrix.
@@ -14277,13 +14278,11 @@ function _switch(mat) {
 } // TODO: document function scatter
 
 
-function scatter(a, j, w, x, u, mark, c, f, inverse, update, value) {
+function scatter(a, j, w, x, u, mark, cindex, f, inverse, update, value) {
   // a arrays
   var avalues = a._values;
   var aindex = a._index;
-  var aptr = a._ptr; // c arrays
-
-  var cindex = c._index; // vars
+  var aptr = a._ptr; // vars
 
   var k, k0, k1, i; // check we need to process values (pattern matrix)
 
@@ -18418,15 +18417,7 @@ Object(factory["a" /* factory */])(algorithm04_name, algorithm04_dependencies, f
 
     var cvalues = avalues && bvalues ? [] : undefined;
     var cindex = [];
-    var cptr = []; // matrix
-
-    var c = a.createSparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    }); // workspace
+    var cptr = []; // workspace
 
     var xa = avalues && bvalues ? [] : undefined;
     var xb = avalues && bvalues ? [] : undefined; // marks indicating we have a value in x for a given column
@@ -18516,7 +18507,13 @@ Object(factory["a" /* factory */])(algorithm04_name, algorithm04_dependencies, f
 
     cptr[columns] = cindex.length; // return sparse matrix
 
-    return c;
+    return a.createSparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    });
   };
 });
 // CONCATENATED MODULE: ./src/type/matrix/utils/algorithm10.js
@@ -18578,13 +18575,7 @@ Object(factory["a" /* factory */])(algorithm10_name, algorithm10_dependencies, f
     } // result arrays
 
 
-    var cdata = []; // matrix
-
-    var c = new DenseMatrix({
-      data: cdata,
-      size: [rows, columns],
-      datatype: dt
-    }); // workspaces
+    var cdata = []; // workspaces
 
     var x = []; // marks indicating we have a value in x for a given column
 
@@ -18619,10 +18610,14 @@ Object(factory["a" /* factory */])(algorithm10_name, algorithm10_dependencies, f
           cdata[i][j] = b;
         }
       }
-    } // return sparse matrix
+    } // return dense matrix
 
 
-    return c;
+    return new DenseMatrix({
+      data: cdata,
+      size: [rows, columns],
+      datatype: dt
+    });
   };
 });
 // CONCATENATED MODULE: ./src/type/matrix/utils/algorithm13.js
@@ -19131,15 +19126,7 @@ Object(factory["a" /* factory */])(algorithm06_name, algorithm06_dependencies, f
 
     var cvalues = avalues && bvalues ? [] : undefined;
     var cindex = [];
-    var cptr = []; // matrix
-
-    var c = a.createSparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    }); // workspaces
+    var cptr = []; // workspaces
 
     var x = cvalues ? [] : undefined; // marks indicating we have a value in x for a given column
 
@@ -19153,9 +19140,9 @@ Object(factory["a" /* factory */])(algorithm06_name, algorithm06_dependencies, f
 
       var mark = j + 1; // scatter the values of A(:,j) into workspace
 
-      scatter(a, j, w, x, u, mark, c, cf); // scatter the values of B(:,j) into workspace
+      scatter(a, j, w, x, u, mark, cindex, cf); // scatter the values of B(:,j) into workspace
 
-      scatter(b, j, w, x, u, mark, c, cf); // check we need to process values (non pattern matrix)
+      scatter(b, j, w, x, u, mark, cindex, cf); // check we need to process values (non pattern matrix)
 
       if (x) {
         // initialize first index in j
@@ -19205,7 +19192,13 @@ Object(factory["a" /* factory */])(algorithm06_name, algorithm06_dependencies, f
 
     cptr[columns] = cindex.length; // return sparse matrix
 
-    return c;
+    return a.createSparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    });
   };
 });
 // CONCATENATED MODULE: ./src/type/matrix/utils/algorithm11.js
@@ -19277,15 +19270,7 @@ Object(factory["a" /* factory */])(algorithm11_name, algorithm11_dependencies, f
 
     var cvalues = [];
     var cindex = [];
-    var cptr = []; // matrix
-
-    var c = s.createSparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    }); // loop columns
+    var cptr = []; // loop columns
 
     for (var j = 0; j < columns; j++) {
       // initialize ptr
@@ -19308,7 +19293,13 @@ Object(factory["a" /* factory */])(algorithm11_name, algorithm11_dependencies, f
 
     cptr[columns] = cindex.length; // return sparse matrix
 
-    return c;
+    return s.createSparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    });
   };
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/lcm.js
@@ -19807,15 +19798,7 @@ Object(factory["a" /* factory */])(algorithm05_name, algorithm05_dependencies, f
 
     var cvalues = avalues && bvalues ? [] : undefined;
     var cindex = [];
-    var cptr = []; // matrix
-
-    var c = a.createSparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    }); // workspaces
+    var cptr = []; // workspaces
 
     var xa = cvalues ? [] : undefined;
     var xb = cvalues ? [] : undefined; // marks indicating we have a value in x for a given column
@@ -19898,7 +19881,13 @@ Object(factory["a" /* factory */])(algorithm05_name, algorithm05_dependencies, f
 
     cptr[columns] = cindex.length; // return sparse matrix
 
-    return c;
+    return a.createSparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    });
   };
 });
 // CONCATENATED MODULE: ./src/type/matrix/utils/algorithm12.js
@@ -19960,13 +19949,7 @@ Object(factory["a" /* factory */])(algorithm12_name, algorithm12_dependencies, f
     } // result arrays
 
 
-    var cdata = []; // matrix
-
-    var c = new DenseMatrix({
-      data: cdata,
-      size: [rows, columns],
-      datatype: dt
-    }); // workspaces
+    var cdata = []; // workspaces
 
     var x = []; // marks indicating we have a value in x for a given column
 
@@ -20001,10 +19984,14 @@ Object(factory["a" /* factory */])(algorithm12_name, algorithm12_dependencies, f
           cdata[i][j] = inverse ? cf(b, 0) : cf(0, b);
         }
       }
-    } // return sparse matrix
+    } // return dense matrix
 
 
-    return c;
+    return new DenseMatrix({
+      data: cdata,
+      size: [rows, columns],
+      datatype: dt
+    });
   };
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/mod.js
@@ -21877,15 +21864,7 @@ Object(factory["a" /* factory */])(algorithm09_name, algorithm09_dependencies, f
 
     var cvalues = avalues && bvalues ? [] : undefined;
     var cindex = [];
-    var cptr = []; // matrix
-
-    var c = a.createSparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    }); // workspaces
+    var cptr = []; // workspaces
 
     var x = cvalues ? [] : undefined; // marks indicating we have a value in x for a given column
 
@@ -21937,7 +21916,13 @@ Object(factory["a" /* factory */])(algorithm09_name, algorithm09_dependencies, f
 
     cptr[columns] = cindex.length; // return sparse matrix
 
-    return c;
+    return a.createSparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    });
   };
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/dotMultiply.js
@@ -22914,14 +22899,8 @@ Object(factory["a" /* factory */])(algorithm07_name, algorithm07_dependencies, f
 
     for (i = 0; i < rows; i++) {
       cdata[i] = [];
-    } // matrix
+    } // workspaces
 
-
-    var c = new DenseMatrix({
-      data: cdata,
-      size: [rows, columns],
-      datatype: dt
-    }); // workspaces
 
     var xa = [];
     var xb = []; // marks indicating we have a value in x for a given column
@@ -22946,10 +22925,14 @@ Object(factory["a" /* factory */])(algorithm07_name, algorithm07_dependencies, f
 
         cdata[i][j] = cf(va, vb);
       }
-    } // return sparse matrix
+    } // return dense matrix
 
 
-    return c;
+    return new DenseMatrix({
+      data: cdata,
+      size: [rows, columns],
+      datatype: dt
+    });
   };
 
   function _scatter(m, j, w, x, mark) {
@@ -24062,7 +24045,7 @@ Object(factory["a" /* factory */])('eye', [], function () {
   };
 });
 // CONCATENATED MODULE: ./src/utils/function.js
-function function_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { function_typeof = function _typeof(obj) { return typeof obj; }; } else { function_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return function_typeof(obj); }
+function function_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { function_typeof = function _typeof(obj) { return typeof obj; }; } else { function_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return function_typeof(obj); }
 
 // function utils
 
@@ -25509,7 +25492,7 @@ Object(factory["a" /* factory */])(squeeze_name, squeeze_dependencies, function 
   });
 });
 // CONCATENATED MODULE: ./src/utils/customs.js
-function customs_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { customs_typeof = function _typeof(obj) { return typeof obj; }; } else { customs_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return customs_typeof(obj); }
+function customs_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { customs_typeof = function _typeof(obj) { return typeof obj; }; } else { customs_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return customs_typeof(obj); }
 
 
 /**
@@ -28617,15 +28600,7 @@ Object(factory["a" /* factory */])(algorithm08_name, algorithm08_dependencies, f
 
     var cvalues = [];
     var cindex = [];
-    var cptr = []; // matrix
-
-    var c = a.createSparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    }); // workspace
+    var cptr = []; // workspace
 
     var x = []; // marks indicating we have a value in x for a given column
 
@@ -28685,7 +28660,13 @@ Object(factory["a" /* factory */])(algorithm08_name, algorithm08_dependencies, f
 
     cptr[columns] = cindex.length; // return sparse matrix
 
-    return c;
+    return a.createSparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    });
   };
 });
 // CONCATENATED MODULE: ./src/function/bitwise/leftShift.js
@@ -32477,7 +32458,7 @@ function hasher(args) {
   return args[0].precision;
 }
 // CONCATENATED MODULE: ./src/type/unit/Unit.js
-function Unit_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Unit_typeof = function _typeof(obj) { return typeof obj; }; } else { Unit_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Unit_typeof(obj); }
+function Unit_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Unit_typeof = function _typeof(obj) { return typeof obj; }; } else { Unit_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Unit_typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -39534,7 +39515,7 @@ var keywords = {
   end: true
 };
 // CONCATENATED MODULE: ./src/expression/node/Node.js
-function Node_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Node_typeof = function _typeof(obj) { return typeof obj; }; } else { Node_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Node_typeof(obj); }
+function Node_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Node_typeof = function _typeof(obj) { return typeof obj; }; } else { Node_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Node_typeof(obj); }
 
 
 
@@ -40011,7 +39992,7 @@ function errorTransform(err) {
   return err;
 }
 // CONCATENATED MODULE: ./src/expression/node/utils/access.js
-function access_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { access_typeof = function _typeof(obj) { return typeof obj; }; } else { access_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return access_typeof(obj); }
+function access_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { access_typeof = function _typeof(obj) { return typeof obj; }; } else { access_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return access_typeof(obj); }
 
 
 
@@ -40461,7 +40442,7 @@ Object(factory["a" /* factory */])(ArrayNode_name, ArrayNode_dependencies, funct
   isNode: true
 });
 // CONCATENATED MODULE: ./src/expression/node/utils/assign.js
-function assign_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { assign_typeof = function _typeof(obj) { return typeof obj; }; } else { assign_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return assign_typeof(obj); }
+function assign_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { assign_typeof = function _typeof(obj) { return typeof obj; }; } else { assign_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return assign_typeof(obj); }
 
 
 
@@ -42784,7 +42765,7 @@ Object(factory["a" /* factory */])(IndexNode_name, IndexNode_dependencies, funct
   isNode: true
 });
 // CONCATENATED MODULE: ./src/expression/node/ObjectNode.js
-function ObjectNode_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ObjectNode_typeof = function _typeof(obj) { return typeof obj; }; } else { ObjectNode_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ObjectNode_typeof(obj); }
+function ObjectNode_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ObjectNode_typeof = function _typeof(obj) { return typeof obj; }; } else { ObjectNode_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ObjectNode_typeof(obj); }
 
 
 
@@ -44574,7 +44555,7 @@ Object(factory["a" /* factory */])(SymbolNode_name, SymbolNode_dependencies, fun
   isNode: true
 });
 // CONCATENATED MODULE: ./src/expression/node/FunctionNode.js
-function FunctionNode_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { FunctionNode_typeof = function _typeof(obj) { return typeof obj; }; } else { FunctionNode_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return FunctionNode_typeof(obj); }
+function FunctionNode_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { FunctionNode_typeof = function _typeof(obj) { return typeof obj; }; } else { FunctionNode_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return FunctionNode_typeof(obj); }
 
 function FunctionNode_extends() { FunctionNode_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return FunctionNode_extends.apply(this, arguments); }
 
@@ -51610,6 +51591,15 @@ var expmDocs = {
   examples: ['expm([[0,2],[0,0]])'],
   seealso: ['exp']
 };
+// CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/eigs.js
+var eigsDocs = {
+  name: 'eigs',
+  category: 'Matrix',
+  syntax: ['eigs(x)'],
+  description: 'Calculate the eigenvalues and eigenvectors of a real symmetric matrix',
+  examples: ['eigs([[5, 2.3], [2.3, 1]])'],
+  seealso: ['inv']
+};
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/arithmetic/exp.js
 var expDocs = {
   name: 'exp',
@@ -52297,6 +52287,7 @@ var rowDocs = {
 
 
 
+
 var embeddedDocs = {
   // construction functions
   bignumber: bignumberDocs,
@@ -52631,6 +52622,7 @@ var embeddedDocs = {
   flatten: flattenDocs,
   forEach: forEachDocs,
   inv: invDocs,
+  eigs: eigsDocs,
   kron: kronDocs,
   map: mapDocs,
   ones: onesDocs,
@@ -53219,6 +53211,445 @@ Object(factory["a" /* factory */])(inv_name, inv_dependencies, function (_ref) {
       return B;
     }
   }
+});
+// CONCATENATED MODULE: ./src/function/matrix/eigs.js
+
+
+
+var eigs_name = 'eigs';
+var eigs_dependencies = ['typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'inv', 'bignumber', 'multiply', 'add'];
+var createEigs =
+/* #__PURE__ */
+Object(factory["a" /* factory */])(eigs_name, eigs_dependencies, function (_ref) {
+  var typed = _ref.typed,
+      matrix = _ref.matrix,
+      addScalar = _ref.addScalar,
+      subtract = _ref.subtract,
+      equal = _ref.equal,
+      abs = _ref.abs,
+      atan = _ref.atan,
+      cos = _ref.cos,
+      sin = _ref.sin,
+      multiplyScalar = _ref.multiplyScalar,
+      inv = _ref.inv,
+      bignumber = _ref.bignumber,
+      multiply = _ref.multiply,
+      add = _ref.add;
+
+  /**
+   * Compute eigenvalue and eigenvector of a real symmetric matrix.
+   * Only applicable to two dimensional symmetric matrices. Uses Jacobi
+   * Algorithm. Matrix containing mixed type ('number', 'bignumber', 'fraction')
+   * of elements are not supported. Input matrix or 2D array should contain all elements
+   * of either 'number', 'bignumber' or 'fraction' type. For 'number' and 'fraction', the
+   * eigenvalues are of 'number' type. For 'bignumber' the eigenvalues are of ''bignumber' type.
+   * Eigenvectors are always of 'number' type.
+   *
+   * Syntax:
+   *
+   *     math.eigs(x)
+   *
+   * Examples:
+   *
+   *     const H = [[5, 2.3], [2.3, 1]]
+   *     const ans = math.eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors]}
+   *     const E = ans.values
+   *     const U = ans.vectors
+   *     const UTxHxU = math.multiply(math.transpose(U), H, U) // rotates H to the eigen-representation
+   *     E[0] == UTxHxU[0][0]  // returns true
+   * See also:
+   *
+   *     inv
+   *
+   * @param {Array | Matrix} x  Matrix to be diagonalized
+   * @return {{values: Array, vectors: Array} | {values: Matrix, vectors: Matrix}} Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix).
+   */
+  var eigs = typed('eigs', {
+    Array: function Array(x) {
+      // check array size
+      var mat = matrix(x);
+      var size = mat.size();
+
+      if (size.length !== 2 || size[0] !== size[1]) {
+        throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
+      } // use dense 2D matrix implementation
+
+
+      var ans = checkAndSubmit(mat, size[0]);
+      return {
+        values: ans[0],
+        vectors: ans[1]
+      };
+    },
+    Matrix: function Matrix(x) {
+      // use dense 2D array implementation
+      // dense matrix
+      var size = x.size();
+
+      if (size.length !== 2 || size[0] !== size[1]) {
+        throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
+      }
+
+      var ans = checkAndSubmit(x, size[0]);
+      return {
+        values: matrix(ans[0]),
+        vectors: matrix(ans[1])
+      };
+    }
+  }); // Is the matrix
+  // symmetric ?
+
+  function isSymmetric(x, n) {
+    for (var i = 0; i < n; i++) {
+      for (var j = i; j < n; j++) {
+        // not symmtric
+        if (!equal(x[i][j], x[j][i])) {
+          throw new TypeError('Input matrix is not symmetric');
+        }
+      }
+    }
+  } // check input for possible problems
+  // and perform diagonalization efficiently for
+  // specific type of number
+
+
+  function checkAndSubmit(x, n) {
+    var type = x.datatype(); // type check
+
+    if (type === undefined) {
+      type = x.getDataType();
+    }
+
+    if (type !== 'number' && type !== 'BigNumber' && type !== 'Fraction') {
+      if (type === 'mixed') {
+        throw new TypeError('Mixed matrix element type is not supported');
+      } else {
+        throw new TypeError('Matrix element type not supported (' + type + ')');
+      }
+    } else {
+      isSymmetric(x.toArray(), n);
+    } // perform efficient calculation for 'numbers'
+
+
+    if (type === 'number') {
+      return diag(x.toArray());
+    } else if (type === 'Fraction') {
+      var xArr = x.toArray(); // convert fraction to numbers
+
+      for (var i = 0; i < n; i++) {
+        for (var j = i; j < n; j++) {
+          xArr[i][j] = xArr[i][j].valueOf();
+          xArr[j][i] = xArr[i][j];
+        }
+      }
+
+      return diag(x.toArray());
+    } else if (type === 'BigNumber') {
+      return diagBig(x.toArray());
+    }
+  } // diagonalization implementation for number (efficient)
+
+
+  function diag(x) {
+    var precision = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1E-12;
+    var N = x.length;
+    var e0 = Math.abs(precision / N);
+    var psi;
+    var Sij = new Array(N); // Sij is Identity Matrix
+
+    for (var i = 0; i < N; i++) {
+      Sij[i] = createArray(N, 0);
+      Sij[i][i] = 1.0;
+    } // initial error
+
+
+    var Vab = getAij(x);
+
+    while (Math.abs(Vab[1]) >= Math.abs(e0)) {
+      var _i = Vab[0][0];
+      var j = Vab[0][1];
+      psi = getTheta(x[_i][_i], x[j][j], x[_i][j]);
+      x = x1(x, psi, _i, j);
+      Sij = Sij1(Sij, psi, _i, j);
+      Vab = getAij(x);
+    }
+
+    var Ei = createArray(N, 0); // eigenvalues
+
+    for (var _i2 = 0; _i2 < N; _i2++) {
+      Ei[_i2] = x[_i2][_i2];
+    }
+
+    return sorting(Object(utils_object["a" /* clone */])(Ei), Object(utils_object["a" /* clone */])(Sij));
+  } // diagonalization implementation for bigNumber
+
+
+  function diagBig(x) {
+    var precision = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1E-12;
+    var N = x.length;
+    var e0 = abs(precision / N);
+    var psi;
+    var Sij = new Array(N); // Sij is Identity Matrix
+
+    for (var i = 0; i < N; i++) {
+      Sij[i] = createArray(N, 0);
+      Sij[i][i] = 1.0;
+    } // initial error
+
+
+    var Vab = getAijBig(x);
+
+    while (abs(Vab[1]) >= abs(e0)) {
+      var _i3 = Vab[0][0];
+      var j = Vab[0][1];
+      psi = getThetaBig(x[_i3][_i3], x[j][j], x[_i3][j]);
+      x = x1Big(x, psi, _i3, j);
+      Sij = Sij1Big(Sij, psi, _i3, j);
+      Vab = getAijBig(x);
+    }
+
+    var Ei = createArray(N, 0); // eigenvalues
+
+    for (var _i4 = 0; _i4 < N; _i4++) {
+      Ei[_i4] = x[_i4][_i4];
+    } // return [clone(Ei), clone(Sij)]
+
+
+    return sorting(Object(utils_object["a" /* clone */])(Ei), Object(utils_object["a" /* clone */])(Sij));
+  } // get angle
+
+
+  function getTheta(aii, ajj, aij) {
+    var th = 0;
+    var denom = ajj - aii;
+
+    if (Math.abs(denom) <= 1E-14) {
+      th = Math.PI / 4.0;
+    } else {
+      th = 0.5 * Math.atan(2.0 * aij / (ajj - aii));
+    }
+
+    return th;
+  } // get angle
+
+
+  function getThetaBig(aii, ajj, aij) {
+    var th = 0;
+    var denom = subtract(ajj, aii);
+
+    if (abs(denom) <= 1E-14) {
+      th = Math.PI / 4.0;
+    } else {
+      th = multiplyScalar(0.5, atan(multiply(2.0, aij, inv(denom))));
+    }
+
+    return th;
+  } // update eigvec
+
+
+  function Sij1(Sij, theta, i, j) {
+    var N = Sij.length;
+    var c = Math.cos(theta);
+    var s = Math.sin(theta);
+    var Ski = createArray(N, 0);
+    var Skj = createArray(N, 0);
+
+    for (var k = 0; k < N; k++) {
+      Ski[k] = c * Sij[k][i] - s * Sij[k][j];
+      Skj[k] = s * Sij[k][i] + c * Sij[k][j];
+    }
+
+    for (var _k = 0; _k < N; _k++) {
+      Sij[_k][i] = Ski[_k];
+      Sij[_k][j] = Skj[_k];
+    }
+
+    return Sij;
+  } // update eigvec for overlap
+
+
+  function Sij1Big(Sij, theta, i, j) {
+    var N = Sij.length;
+    var c = cos(theta);
+    var s = sin(theta);
+    var Ski = createArray(N, 0);
+    var Skj = createArray(N, 0);
+
+    for (var k = 0; k < N; k++) {
+      Ski[k] = subtract(multiplyScalar(c, Sij[k][i]), multiplyScalar(s, Sij[k][j]));
+      Skj[k] = addScalar(multiplyScalar(s, Sij[k][i]), multiplyScalar(c, Sij[k][j]));
+    }
+
+    for (var _k2 = 0; _k2 < N; _k2++) {
+      Sij[_k2][i] = Ski[_k2];
+      Sij[_k2][j] = Skj[_k2];
+    }
+
+    return Sij;
+  } // update matrix
+
+
+  function x1Big(Hij, theta, i, j) {
+    var N = Hij.length;
+    var c = bignumber(cos(theta));
+    var s = bignumber(sin(theta));
+    var c2 = multiplyScalar(c, c);
+    var s2 = multiplyScalar(s, s);
+    var Aki = createArray(N, 0);
+    var Akj = createArray(N, 0); // 2cs Hij
+
+    var csHij = multiply(2, c, s, Hij[i][j]); //  Aii
+
+    var Aii = addScalar(subtract(multiplyScalar(c2, Hij[i][i]), csHij), multiplyScalar(s2, Hij[j][j]));
+    var Ajj = add(multiplyScalar(s2, Hij[i][i]), csHij, multiplyScalar(c2, Hij[j][j])); // 0  to i
+
+    for (var k = 0; k < N; k++) {
+      Aki[k] = subtract(multiplyScalar(c, Hij[i][k]), multiplyScalar(s, Hij[j][k]));
+      Akj[k] = addScalar(multiplyScalar(s, Hij[i][k]), multiplyScalar(c, Hij[j][k]));
+    } // Modify Hij
+
+
+    Hij[i][i] = Aii;
+    Hij[j][j] = Ajj;
+    Hij[i][j] = 0;
+    Hij[j][i] = 0; // 0  to i
+
+    for (var _k3 = 0; _k3 < N; _k3++) {
+      if (_k3 !== i && _k3 !== j) {
+        Hij[i][_k3] = Aki[_k3];
+        Hij[_k3][i] = Aki[_k3];
+        Hij[j][_k3] = Akj[_k3];
+        Hij[_k3][j] = Akj[_k3];
+      }
+    }
+
+    return Hij;
+  } // update matrix
+
+
+  function x1(Hij, theta, i, j) {
+    var N = Hij.length;
+    var c = Math.cos(theta);
+    var s = Math.sin(theta);
+    var c2 = c * c;
+    var s2 = s * s;
+    var Aki = createArray(N, 0);
+    var Akj = createArray(N, 0); //  Aii
+
+    var Aii = c2 * Hij[i][i] - 2 * c * s * Hij[i][j] + s2 * Hij[j][j];
+    var Ajj = s2 * Hij[i][i] + 2 * c * s * Hij[i][j] + c2 * Hij[j][j]; // 0  to i
+
+    for (var k = 0; k < N; k++) {
+      Aki[k] = c * Hij[i][k] - s * Hij[j][k];
+      Akj[k] = s * Hij[i][k] + c * Hij[j][k];
+    } // Modify Hij
+
+
+    Hij[i][i] = Aii;
+    Hij[j][j] = Ajj;
+    Hij[i][j] = 0;
+    Hij[j][i] = 0; // 0  to i
+
+    for (var _k4 = 0; _k4 < N; _k4++) {
+      if (_k4 !== i && _k4 !== j) {
+        Hij[i][_k4] = Aki[_k4];
+        Hij[_k4][i] = Aki[_k4];
+        Hij[j][_k4] = Akj[_k4];
+        Hij[_k4][j] = Akj[_k4];
+      }
+    }
+
+    return Hij;
+  } // get max off-diagonal value from Upper Diagonal
+
+
+  function getAij(Mij) {
+    var N = Mij.length;
+    var maxMij = 0;
+    var maxIJ = [0, 1];
+
+    for (var i = 0; i < N; i++) {
+      for (var j = i + 1; j < N; j++) {
+        if (Math.abs(maxMij) < Math.abs(Mij[i][j])) {
+          maxMij = Math.abs(Mij[i][j]);
+          maxIJ = [i, j];
+        }
+      }
+    }
+
+    return [maxIJ, maxMij];
+  } // get max off-diagonal value from Upper Diagonal
+
+
+  function getAijBig(Mij) {
+    var N = Mij.length;
+    var maxMij = 0;
+    var maxIJ = [0, 1];
+
+    for (var i = 0; i < N; i++) {
+      for (var j = i + 1; j < N; j++) {
+        if (abs(maxMij) < abs(Mij[i][j])) {
+          maxMij = abs(Mij[i][j]);
+          maxIJ = [i, j];
+        }
+      }
+    }
+
+    return [maxIJ, maxMij];
+  } // sort results
+
+
+  function sorting(E, S) {
+    var N = E.length;
+    var Ef = Array(N);
+    var Sf = Array(N);
+
+    for (var k = 0; k < N; k++) {
+      Sf[k] = Array(N);
+    }
+
+    for (var i = 0; i < N; i++) {
+      var minID = 0;
+      var minE = E[0];
+
+      for (var j = 0; j < E.length; j++) {
+        if (E[j] < minE) {
+          minID = j;
+          minE = E[minID];
+        }
+      }
+
+      Ef[i] = E.splice(minID, 1)[0];
+
+      for (var _k5 = 0; _k5 < N; _k5++) {
+        Sf[_k5][i] = S[_k5][minID];
+
+        S[_k5].splice(minID, 1);
+      }
+    }
+
+    return [Object(utils_object["a" /* clone */])(Ef), Object(utils_object["a" /* clone */])(Sf)];
+  }
+  /**
+   * Create an array of a certain size and fill all items with an initial value
+   * @param {number} size
+   * @param {number} value
+   * @return {number[]}
+   */
+
+
+  function createArray(size, value) {
+    // TODO: as soon as all browsers support Array.fill, use that instead (IE doesn't support it)
+    var array = new Array(size);
+
+    for (var i = 0; i < size; i++) {
+      array[i] = value;
+    }
+
+    return array;
+  }
+
+  return eigs;
 });
 // CONCATENATED MODULE: ./src/function/matrix/expm.js
 
@@ -57112,7 +57543,7 @@ Object(factory["a" /* factory */])(resolve_name, resolve_dependencies, function 
   return resolve;
 });
 // CONCATENATED MODULE: ./src/function/algebra/simplify.js
-function simplify_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { simplify_typeof = function _typeof(obj) { return typeof obj; }; } else { simplify_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return simplify_typeof(obj); }
+function simplify_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { simplify_typeof = function _typeof(obj) { return typeof obj; }; } else { simplify_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return simplify_typeof(obj); }
 
 
 
@@ -59443,7 +59874,7 @@ Object(factory["a" /* factory */])(reviver_name, reviver_dependencies, function 
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '6.5.0'; // Note: This file is automatically generated when building math.js.
+var version = '6.6.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
@@ -60881,6 +61312,7 @@ Object(factory["a" /* factory */])(variance_transform_name, variance_transform_d
 /* concated harmony reexport createChain */__webpack_require__.d(__webpack_exports__, "createChain", function() { return createChain; });
 /* concated harmony reexport createDet */__webpack_require__.d(__webpack_exports__, "createDet", function() { return createDet; });
 /* concated harmony reexport createInv */__webpack_require__.d(__webpack_exports__, "createInv", function() { return createInv; });
+/* concated harmony reexport createEigs */__webpack_require__.d(__webpack_exports__, "createEigs", function() { return createEigs; });
 /* concated harmony reexport createExpm */__webpack_require__.d(__webpack_exports__, "createExpm", function() { return createExpm; });
 /* concated harmony reexport createSqrtm */__webpack_require__.d(__webpack_exports__, "createSqrtm", function() { return createSqrtm; });
 /* concated harmony reexport createDivide */__webpack_require__.d(__webpack_exports__, "createDivide", function() { return createDivide; });
@@ -61251,6 +61683,7 @@ Object(factory["a" /* factory */])(variance_transform_name, variance_transform_d
 
 
 
+
 /***/ }),
 /* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -61301,7 +61734,7 @@ var log = __webpack_require__(8);
 // CONCATENATED MODULE: ./src/core/function/import.js
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
 
