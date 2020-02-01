@@ -72,14 +72,6 @@ export const createAlgorithm05 = /* #__PURE__ */ factory(name, dependencies, ({ 
     const cvalues = avalues && bvalues ? [] : undefined
     const cindex = []
     const cptr = []
-    // matrix
-    const c = a.createSparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    })
 
     // workspaces
     const xa = cvalues ? [] : undefined
@@ -158,6 +150,12 @@ export const createAlgorithm05 = /* #__PURE__ */ factory(name, dependencies, ({ 
     cptr[columns] = cindex.length
 
     // return sparse matrix
-    return c
+    return a.createSparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    })
   }
 })

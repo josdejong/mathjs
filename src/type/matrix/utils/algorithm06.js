@@ -69,14 +69,6 @@ export const createAlgorithm06 = /* #__PURE__ */ factory(name, dependencies, ({ 
     const cvalues = avalues && bvalues ? [] : undefined
     const cindex = []
     const cptr = []
-    // matrix
-    const c = a.createSparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    })
 
     // workspaces
     const x = cvalues ? [] : undefined
@@ -92,9 +84,9 @@ export const createAlgorithm06 = /* #__PURE__ */ factory(name, dependencies, ({ 
       // columns mark
       const mark = j + 1
       // scatter the values of A(:,j) into workspace
-      scatter(a, j, w, x, u, mark, c, cf)
+      scatter(a, j, w, x, u, mark, cindex, cf)
       // scatter the values of B(:,j) into workspace
-      scatter(b, j, w, x, u, mark, c, cf)
+      scatter(b, j, w, x, u, mark, cindex, cf)
       // check we need to process values (non pattern matrix)
       if (x) {
         // initialize first index in j
@@ -144,6 +136,12 @@ export const createAlgorithm06 = /* #__PURE__ */ factory(name, dependencies, ({ 
     cptr[columns] = cindex.length
 
     // return sparse matrix
-    return c
+    return a.createSparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    })
   }
 })

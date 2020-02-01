@@ -99,10 +99,10 @@ describe('ctranspose', function () {
       t = ctranspose(m)
       assert.deepStrictEqual(t.valueOf(), [[aH], [bH], [cH], [dH]])
 
-      m = math.matrix([[a, b], [c, d]], 'dense', 'number')
+      m = math.matrix([[a, b], [c, d]], 'dense', 'Complex')
       t = ctranspose(m)
       assert.deepStrictEqual(t.valueOf(), [[aH, cH], [bH, dH]])
-      assert.ok(t.datatype() === 'number')
+      assert.strictEqual(t.datatype(), 'Complex')
     })
 
     it('should throw an error for invalid matrix transpose', function () {

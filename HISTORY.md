@@ -4,6 +4,10 @@
 # not yet published, version 6.6.0
 
 - Implemented function `eigs`, see #1705, #542 #1175. Thanks @arkajitmandal.
+- Fixed #1727: validate matrix size when creating a `DenseMatrix` using 
+  `fromJSON`.
+- Fixed `DenseMatrix.map` copying the size and datatype from the original 
+  matrix instead of checking the returned dimensions and type of the callback.
 
 
 # 2020-01-08, version 6.5.0

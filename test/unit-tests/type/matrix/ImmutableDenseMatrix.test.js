@@ -349,7 +349,7 @@ describe('ImmutableDenseMatrix', function () {
       const m = new ImmutableDenseMatrix([[1, 2, 3], [4, 5, 6]])
       const m2 = m.map(
         function (value, index, obj) {
-          return math.clone([value, index, obj === m])
+          return JSON.stringify([value, index, obj === m])
         }
       )
 
@@ -357,14 +357,14 @@ describe('ImmutableDenseMatrix', function () {
         m2.toArray(),
         [
           [
-            [1, [0, 0], true],
-            [2, [0, 1], true],
-            [3, [0, 2], true]
+            '[1,[0,0],true]',
+            '[2,[0,1],true]',
+            '[3,[0,2],true]'
           ],
           [
-            [4, [1, 0], true],
-            [5, [1, 1], true],
-            [6, [1, 2], true]
+            '[4,[1,0],true]',
+            '[5,[1,1],true]',
+            '[6,[1,2],true]'
           ]
         ])
     })

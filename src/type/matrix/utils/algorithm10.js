@@ -55,12 +55,6 @@ export const createAlgorithm10 = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     // result arrays
     const cdata = []
-    // matrix
-    const c = new DenseMatrix({
-      data: cdata,
-      size: [rows, columns],
-      datatype: dt
-    })
 
     // workspaces
     const x = []
@@ -97,7 +91,11 @@ export const createAlgorithm10 = /* #__PURE__ */ factory(name, dependencies, ({ 
       }
     }
 
-    // return sparse matrix
-    return c
+    // return dense matrix
+    return new DenseMatrix({
+      data: cdata,
+      size: [rows, columns],
+      datatype: dt
+    })
   }
 })

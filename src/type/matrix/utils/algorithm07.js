@@ -62,13 +62,6 @@ export const createAlgorithm07 = /* #__PURE__ */ factory(name, dependencies, ({ 
     // initialize c
     for (i = 0; i < rows; i++) { cdata[i] = [] }
 
-    // matrix
-    const c = new DenseMatrix({
-      data: cdata,
-      size: [rows, columns],
-      datatype: dt
-    })
-
     // workspaces
     const xa = []
     const xb = []
@@ -94,8 +87,12 @@ export const createAlgorithm07 = /* #__PURE__ */ factory(name, dependencies, ({ 
       }
     }
 
-    // return sparse matrix
-    return c
+    // return dense matrix
+    return new DenseMatrix({
+      data: cdata,
+      size: [rows, columns],
+      datatype: dt
+    })
   }
 
   function _scatter (m, j, w, x, mark) {

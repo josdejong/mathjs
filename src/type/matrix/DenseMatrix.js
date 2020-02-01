@@ -37,6 +37,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       // initialize fields from JSON representation
       this._data = data.data
       this._size = data.size
+      // verify the dimensions of the array
+      validate(this._data, this._size)
       this._datatype = datatype || data.datatype
     } else if (isArray(data)) {
       // replace nested Matrices with Arrays
@@ -531,12 +533,14 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         return callback(value, index, me)
       }
     }
-    // return dense format
-    return new DenseMatrix({
-      data: recurse(this._data, []),
-      size: clone(this._size),
-      datatype: this._datatype
-    })
+
+    // determine the new datatype when the original matrix has datatype defined
+    // TODO: should be done in matrix constructor instead
+    const data = recurse(this._data, [])
+    const datatype = this._datatype !== undefined
+      ? getArrayDataType(data, typeOf)
+      : undefined
+    return new DenseMatrix(data, datatype)
   }
 
   /**
