@@ -8,6 +8,8 @@
   `fromJSON`.
 - Fixed `DenseMatrix.map` copying the size and datatype from the original 
   matrix instead of checking the returned dimensions and type of the callback.
+- Add a caret to dependencies (like) `^1.2.3`) to allow downstream updates
+  without having to await a new release of mathjs.
 
 
 # 2020-01-08, version 6.5.0
