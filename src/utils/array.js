@@ -523,7 +523,7 @@ export function generalize (a) {
  * @return string
  */
 export function getArrayDataType (array, typeOf) {
-  let type = undefined // to hold type info
+  let type // to hold type info
   let length = 0 // to hold length value to ensure it has consistent sizes
 
   for (let i = 0; i < array.length; i++) {
