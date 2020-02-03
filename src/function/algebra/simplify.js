@@ -317,7 +317,9 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // { l: '(n1/n2)/n3', r: 'n1/(n2*n3)' },
     // { l: '(n*n1)/(n*n2)', r: 'n1/n2' },
 
-    { l: '1*n', r: 'n' } // this pattern can be produced by simplifyConstant
+    { l: '1*n', r: 'n' }, // this pattern can be produced by simplifyConstant
+
+    { l: 'n1/(n2/n3)', r: '(n1*n3)/n2' }
 
   ]
 
