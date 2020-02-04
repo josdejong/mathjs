@@ -255,6 +255,13 @@ describe('simplify', function () {
     simplifyAndCompare('myMultiArg(x, y, z, w)', 'myMultiArg(x, y, z, w)')
   })
 
+  it('should simplify a/(b/c)', function () {
+    simplifyAndCompare('x/(x/y)', 'y')
+    simplifyAndCompare('x/(y/z)', 'x * z/y')
+    simplifyAndCompare('(x + 1)/((x + 1)/(z + 3))', 'z + 3')
+    simplifyAndCompare('(x + 1)/((y + 2)/(z + 3))', '(x + 1) * (z + 3)/(y + 2)')
+  })
+
   it('should support custom rules', function () {
     const node = math.simplify('y+x', [{ l: 'n1-n2', r: '-n2+n1' }], { x: 5 })
     assert.strictEqual(node.toString(), 'y + 5')
