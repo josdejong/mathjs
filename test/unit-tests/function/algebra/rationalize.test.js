@@ -48,6 +48,7 @@ describe('rationalize', function () {
     assert.throws(function () { math.rationalize('x^2.5 - 2*x + 3') }, /There is a non-integer exponent/)
     assert.throws(function () { math.rationalize('x^x') }, /There is a non-integer exponent/)
     assert.throws(function () { math.rationalize('x^2.5') }, /There is a non-integer exponent/)
+    assert.throws(function () { math.rationalize('1/(x^(-2))') }, /There is a non-integer exponent/)
   })
 
   it('calling error', function () {
