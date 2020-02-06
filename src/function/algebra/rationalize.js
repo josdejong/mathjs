@@ -275,9 +275,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
         throw new Error('There is an unsolved function call')
       } else if (tp === 'OperatorNode') {
         if (node.op === '^') {
-          if (node.args[1].fn === 'unaryMinus') {
-            node = node.args[0]
-          }
+          // TODO: handle negative exponents like in '1/x^(-2)'
           if (node.args[1].type !== 'ConstantNode' || !isInteger(parseFloat(node.args[1].value))) {
             throw new Error('There is a non-integer exponent')
           } else {

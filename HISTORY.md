@@ -1,6 +1,11 @@
 # History
 
 
+# not yet published, version 6.6.1
+
+- Fix #1725: simplify `a/(b/c)`. Thanks @dbramwell.
+
+
 # 2020-02-01, version 6.6.0
 
 - Implemented function `eigs`, see #1705, #542 #1175. Thanks @arkajitmandal.
