@@ -8,6 +8,7 @@ const name = 'eigs'
 const dependencies = [
   'typed',
   'matrix',
+  'column',
   'number',
   'bignumber',
   'complex',
@@ -27,7 +28,7 @@ const dependencies = [
   'inv'
 ]
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, re, im, matrix, addScalar, subtract, equal, abs, larger, atan, cos, sin, multiplyScalar, inv, number, bignumber, multiply, add }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, re, im, matrix, column, addScalar, subtract, equal, abs, larger, atan, cos, sin, multiplyScalar, inv, complex, number, bignumber, multiply, add }) => {
   /**
    * Compute eigenvalues and eigenvectors of a matrix.
    *
@@ -50,7 +51,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * @param {Array | Matrix} x  Matrix to be diagonalized
    * @param {number | BigNumber} [prec] Precision, default value: 1e-15
-   * @return {{values: Array, vectors: Array} | {values: Matrix, vectors: Matrix}} Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix).
+   * @return {{values: Array, vectors: Matrix[]}} Object containing an array of eigenvalues and an array of eigenvectors.
    */
   const eigs = typed('eigs', {
 
@@ -73,14 +74,16 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
   })
 
-  const doRealSymetric = createRealSymmetric({ addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add });
-  const doComplex = createComplex();
+  const doRealSymetric = createRealSymmetric({ addScalar, subtract, column, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
+  const doComplex = createComplex()
 
 
   function computeValuesAndVectors(/**@type {Matrix}*/ mat, prec)
   {
     if (prec === undefined)
       prec = 1e-14;
+
+    prec = bignumber(prec)
 
     const size = mat.size()
 
@@ -99,7 +102,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       if (isSymmetric(arr, N, prec))
       {
         let type = coerceTypes(mat, arr, N)
-        return doRealSymetric(mat, N, prec, type)
+        return doRealSymetric(arr, N, prec, type)
       }
     }
 
@@ -115,7 +118,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     for (let i = 0; i < N; i++)
     for (let j = i; j < N; j++)
-      if ( larger( subtract(arr[i][j], arr[j][i]), prec) )
+      // FIXME do proper comparison of bignum and frac
+      if ( larger( bignumber(abs(subtract(arr[i][j], arr[j][i]))), prec) )
         return false
 
     return true
@@ -125,7 +129,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   function isReal(arr, N, prec) {
     for (let i = 0; i < N; i++)
     for (let j = 0; j < N; j++)
-      if ( larger( im(arr[i][j]), prec) )
+      // FIXME do proper comparison of bignum and frac
+      if ( larger( bignumber(abs(im(arr[i][j]))), prec) )
         return false
 
     return true
@@ -156,7 +161,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     for (let i = 0; i < N; i++)
     for (let j = 0; j < N; j++)
     {
-      el = arr[i][j]
+      const el = arr[i][j]
 
       if (isNumber(el) || isFraction(el))
         hasNumber = true

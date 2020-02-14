@@ -1,7 +1,7 @@
 import { clone } from '../../../utils/object'
 
 
-export function createRealSymmetric({ addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
+export function createRealSymmetric({ addScalar, subtract, column, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
 
 
 
@@ -263,7 +263,15 @@ export function createRealSymmetric({ addScalar, subtract, equal, abs, atan, cos
         S[k].splice(minID, 1)
       }
     }
-    return [clone(Ef), clone(Sf)]
+
+    const values = clone(Ef)
+    const vectors = []
+
+    for (let i = 0; i < Sf.length; i++)
+      vectors[i] = column(Sf, i)
+
+    // FIXME vectors are always Array[], never Matrix[]
+    return { values, vectors }
   }
 
   /**

@@ -41,6 +41,10 @@ export const createIm = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
       return x.mul(0)
     },
 
+    Fraction: function (x) {
+      return x.mul(0)
+    },
+
     Complex: function (x) {
       return x.im
     },
