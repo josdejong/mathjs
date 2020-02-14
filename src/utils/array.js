@@ -520,7 +520,7 @@ export function generalize (a) {
  * This method does not validate Array Matrix shape
  * @param {Array} array
  * @param {function} typeOf   Callback function to use to determine the type of a value
- * @return string
+ * @return {string}
  */
 export function getArrayDataType (array, typeOf) {
   let type // to hold type info

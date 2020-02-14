@@ -5,39 +5,21 @@ export function createRealSymmetric({ addScalar, subtract, equal, abs, atan, cos
 
 
 
-  // check input for possible problems
-  // and perform diagonalization efficiently for
-  // specific type of number
-  function checkAndSubmit (x, n, precision = 1E-12) {
-    let type = x.datatype()
-    // vibe check
-    if (type === undefined) {
-      type = x.getDataType()
-    }
-    if (type !== 'number' && type !== 'BigNumber' && type !== 'Fraction') {
-      if (type === 'mixed') {
-        throw new TypeError('Mixed matrix element type is not supported')
-      } else {
-        throw new TypeError('Matrix element type not supported (' + type + ')')
-      }
-    }
+  /**
+   * @param {number[] | BigNumber[]} arr
+   * @param {number} N
+   * @param {number} prec
+   * @param {'number' | 'BigNumber'} type
+   */
+  function main (arr, N, prec = 1E-12, type) {
 
-    // perform efficient calculation for 'numbers'
-    if (type === 'number') {
-      return diag(x.toArray())
-    } else if (type === 'Fraction') {
-      const xArr = x.toArray()
-      // convert fraction to numbers
-      for (let i = 0; i < n; i++) {
-        for (let j = i; j < n; j++) {
-          xArr[i][j] = xArr[i][j].valueOf()
-          xArr[j][i] = xArr[i][j]
-        }
-      }
-      return diag(x.toArray(), precision)
-    } else if (type === 'BigNumber') {
-      return diagBig(x.toArray(), precision)
-    }
+    if (type === 'number')
+      return diag(arr, prec)
+
+    if (type === 'BigNumber')
+      return diagBig(arr, prec)
+
+    throw TypeError('Unsupported data type: ' + type)
   }
 
   // diagonalization implementation for number (efficient)
@@ -301,6 +283,6 @@ export function createRealSymmetric({ addScalar, subtract, equal, abs, atan, cos
     return array
   }
 
-  return checkAndSubmit;
+  return main;
 
 }
