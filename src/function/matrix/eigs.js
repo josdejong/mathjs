@@ -9,6 +9,7 @@ const dependencies = [
   'typed',
   'matrix',
   'column',
+  'diag',
   'number',
   'bignumber',
   'complex',
@@ -28,7 +29,7 @@ const dependencies = [
   'inv'
 ]
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, re, im, matrix, column, addScalar, subtract, equal, abs, larger, atan, cos, sin, multiplyScalar, inv, complex, number, bignumber, multiply, add }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, re, im, matrix, column, diag, addScalar, subtract, equal, abs, larger, atan, cos, sin, multiplyScalar, inv, complex, number, bignumber, multiply, add }) => {
   /**
    * Compute eigenvalues and eigenvectors of a matrix.
    *
@@ -75,7 +76,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   })
 
   const doRealSymetric = createRealSymmetric({ addScalar, subtract, column, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
-  const doComplex = createComplex()
+  const doComplex = createComplex({ add, multiply, abs, bignumber, diag })
 
 
   function computeValuesAndVectors(/**@type {Matrix}*/ mat, prec)
@@ -108,7 +109,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
 
     let type = coerceTypes(mat, arr, N)
-    return doComplex(mat, prec, type)
+    return doComplex(arr, N, prec, type)
   }
 
 
@@ -118,7 +119,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     for (let i = 0; i < N; i++)
     for (let j = i; j < N; j++)
-      // FIXME do proper comparison of bignum and frac
+      // TODO proper comparison of bignum and frac
       if ( larger( bignumber(abs(subtract(arr[i][j], arr[j][i]))), prec) )
         return false
 
@@ -129,7 +130,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   function isReal(arr, N, prec) {
     for (let i = 0; i < N; i++)
     for (let j = 0; j < N; j++)
-      // FIXME do proper comparison of bignum and frac
+      // TODO proper comparison of bignum and frac
       if ( larger( bignumber(abs(im(arr[i][j]))), prec) )
         return false
 

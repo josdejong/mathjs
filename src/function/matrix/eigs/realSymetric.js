@@ -270,7 +270,7 @@ export function createRealSymmetric({ addScalar, subtract, column, abs, atan, co
     for (let i = 0; i < Sf.length; i++)
       vectors[i] = column(Sf, i)
 
-    // FIXME vectors are always Array[], never Matrix[]
+    // !FIXME vectors are always Array[], never Matrix[]
     return { values, vectors }
   }
 
