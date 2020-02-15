@@ -11,6 +11,12 @@ export function createComplex({add, multiply, abs, bignumber, diag}) {
 
         let R = balance(arr, N, prec, type)
 
+        // TODO if magnitudes of elements vary over many orders,
+        // move greatest elements to the top left corner
+
+        R = reduceToHessenberg(arg, N, prec, type).mul(R)
+
+
         console.log(arr, R)
 
         throw new Error('Not implemented yet.')
@@ -115,6 +121,72 @@ export function createComplex({add, multiply, abs, bignumber, diag}) {
 
         // return the diagonal transformation matrix
         return diag(Rdiag);
+    }
+
+
+    function reduceToHessenberg()
+    {
+        const big  = type === 'BigNumber'
+        const cplx = type === 'Complex'
+
+        const bigZero = bignumber(0)
+        const bigOne  = bignumber(1)
+
+        for (let i = 0; i < N-2; i++)
+        {
+            // Find the largest subdiag element in the i-th col
+
+            let maxIndex = 0
+            let max = big ? bigZero : 0
+
+            for (let j = i + 1; j < N; j++)
+            {
+                let el = abs(arr[j][i])
+                if (big ? max.abs().lessThan(el) : Math.abs(max) < el) {
+                    max = el
+                    maxIndex = i
+                }
+            }
+
+            // This col is pivoted, no need to do anything
+            if (big ? max.equals(bigZero) : max === 0)
+                continue
+
+
+            // Interchange maxIndex-th and (i+1)-th row
+            const tmp1 = arr[maxIndex]
+            arr[maxIndex] = arr[i+1]
+            arr[i+1] = tmp1
+
+            // Interchange maxIndex-th and (i+1)-th column
+            for (let j = 0; j < N; j++)
+            {
+                const tmp2 = arr[j][maxIndex]
+                arr[j][maxIndex] = arr[j][i+1]
+                arr[j][i+1] = tmp2
+            }
+
+            // TODO keep track of transformations
+
+            // Reduce following rows and columns
+            for (let j = i + 2; j < N; j++)
+            {
+                let n = !big ? arr[j][i] / div[i+1][i] : arr[j][i].div(arr[i+1][i])
+
+                // row
+                for (let k = 0; k < N; k++)
+                    arr[j][k] = !big ? arr[j][k] - n*arr[j][i+1] : arr[j][k].sub(n.mul(arr[j][i+1]))
+
+                // column
+                for (let k = 0; k < N; k++)
+                    arr[k][j] = !big ? arr[k][j] + n*arr[i+1][j] : arr[k][j].add(n.mul(arr[i+1][j]))
+
+                // TODO keep track of transformations
+            }
+        }
+
+        // !FIXME
+        return diag(Array(N).fill(1))
     }
 
 
