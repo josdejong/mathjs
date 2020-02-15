@@ -99,12 +99,13 @@ export function createComplex({add, multiply, abs, bignumber, diag}) {
                         last = false
 
                         let g = big ? bigOne.div(f) : 1/f
-                        R[i] = big ? R[i].mul(f) : R[i]*f
+                        Rdiag[i] = big ? R[i].mul(f) : Rdiag[i]*f
 
                         for (let j = 0; j < N; j++)
                         {
-                            arr[i][j] = multiply(arr[i][j], g)
-                            arr[j][i] = multiply(arr[j][i], f)
+                            if (i === j) continue;
+                            arr[i][j] = multiply(arr[i][j], f)
+                            arr[j][i] = multiply(arr[j][i], g)
                         }
                     }
 
