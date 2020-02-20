@@ -1,4 +1,4 @@
-export function createComplex({add, subtract, multiply, abs, bignumber, diag}) {
+export function createComplex({addScalar, subtract, multiply, sqrt, abs, bignumber, diag, qr}) {
     /**
      * @param {number[][]} arr
      * @param {number} N
@@ -7,6 +7,11 @@ export function createComplex({add, subtract, multiply, abs, bignumber, diag}) {
      */
     function main(arr, N, prec, type)
     {
+        // TODO implement QR for complex matrices
+        if (type === 'Complex')
+            throw new TypeError('Complex matrices not yet supported')
+
+
         // TODO check if any row/col are zero except the diagonal
 
         let R = balance(arr, N, prec, type)
@@ -15,9 +20,12 @@ export function createComplex({add, subtract, multiply, abs, bignumber, diag}) {
         // move greatest elements to the top left corner
 
         reduceToHessenberg(arr, N, prec, type, R)
-        console.log(arr, R)
 
-        throw new Error('Not implemented yet.')
+        let values = iterateUntilDiagonal(arr, N, prec, type, R)
+
+        // TODO find vectors
+
+        return { values }
     }
 
     /**
@@ -208,6 +216,99 @@ export function createComplex({add, subtract, multiply, abs, bignumber, diag}) {
         }
 
         return R
+    }
+
+    function iterateUntilDiagonal(arr, N, prec, type, R)
+    {
+        const big = type === 'BigNumber'
+        const lambdas = []
+        let lastConvergenceBefore = 0;
+
+        while (lastConvergenceBefore <= 30)
+        {
+            lastConvergenceBefore += 1
+
+            // check the dimensions of matrix before factoring
+            if (N == 1) {
+                lambdas.push(arr[0][0])
+                break;
+            }
+            if (N == 2) {
+                let ll = eigenvalues2x2(
+                    arr[0][0], arr[0][1],
+                    arr[1][0], arr[1][1]
+                )
+                lambdas.push(...ll)
+                break;
+            }
+
+
+            // perform the factorization
+
+            let k = 0; // TODO set close to an eigenvalue
+
+            for (let i = 0; i < N; i++)
+                arr[i][i] -= k
+
+            // TODO do an implicit QR transformation
+            let {Q, R} = qr(arr)
+            arr = multiply(R, Q)
+
+            for (let i = 0; i < N; i++)
+                arr[i][i] += k
+
+
+            // The last element converged to an eigenvalue
+            if (big ? abs(arr[N-1][N-2]).lessThan(prec) : abs(arr[N-1][N-2]) < prec)
+            {
+                lastConvergenceBefore = 0
+                lambdas.push(arr[N-1][N-1])
+
+                // reduce the matrix size
+                N -= 1
+                arr.pop()
+                for (let i = 0; i < N; i++)
+                    arr[i].pop()
+            }
+
+            // The last 2x2 block matrix converged
+            else if (big ? abs(arr[N-2][N-3]).lessThan(prec) : abs(arr[N-2][N-3]) < prec)
+            {
+                lastConvergenceBefore = 0
+                let ll = eigenvalues2x2(
+                    arr[N-2][N-2], arr[N-2][N-1],
+                    arr[N-1][N-2], arr[N-1][N-1]
+                )
+                lambdas.push(...ll)
+
+                // reduce the matrix size
+                N -= 2
+                arr.pop()
+                arr.pop()
+                for (let i = 0; i < N; i++){
+                    arr[i].pop()
+                    arr[i].pop()
+                }
+            }
+        }
+
+        return lambdas
+    }
+
+
+    /**
+     * Compute the eigenvalues of an 2x2 matrix
+     * @return {[number,number]}
+     */
+    function eigenvalues2x2(a,b,c,d)
+    {
+        // λ± = ½ trA ± √( tr²A - 4 detA )
+        const trA = addScalar(a, d)
+        const detA = subtract(multiply(a, d), multiply(b, c))
+        const x = multiply(trA, 0.5)
+        const y = multiply(sqrt( subtract(multiply(trA, trA), multiply(4, detA)) ), 0.5)
+
+        return [addScalar(x, y), subtract(x, y)]
     }
 
 
