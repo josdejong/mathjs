@@ -1,4 +1,4 @@
-export function createComplex({add, multiply, abs, bignumber, diag}) {
+export function createComplex({add, subtract, multiply, abs, bignumber, diag}) {
     /**
      * @param {number[][]} arr
      * @param {number} N
@@ -141,9 +141,9 @@ export function createComplex({add, multiply, abs, bignumber, diag}) {
     {
         const big  = type === 'BigNumber'
         const cplx = type === 'Complex'
+        const num = !big && !cplx
 
         const bigZero = bignumber(0)
-        const bigOne  = bignumber(1)
 
         for (let i = 0; i < N-2; i++)
         {
@@ -154,15 +154,15 @@ export function createComplex({add, multiply, abs, bignumber, diag}) {
 
             for (let j = i + 1; j < N; j++)
             {
-                let el = abs(arr[j][i])
-                if (big ? max.abs().lessThan(el) : Math.abs(max) < el) {
+                let el = arr[j][i]
+                if (big ? abs(max).lessThan(abs(el)) : abs(max) < abs(el)) {
                     max = el
                     maxIndex = j
                 }
             }
 
             // This col is pivoted, no need to do anything
-            if (big ? max.equals(bigZero) : max === 0)
+            if (big ? abs(max).lessThan(prec) : abs(max) < prec)
                 continue
 
             if (maxIndex !== i+1)
@@ -189,21 +189,21 @@ export function createComplex({add, multiply, abs, bignumber, diag}) {
             // Reduce following rows and columns
             for (let j = i + 2; j < N; j++)
             {
-                let n = !big ? arr[j][i] / max : arr[j][i].div(max)
+                let n = num ? arr[j][i] / max : arr[j][i].div(max)
 
                 if (n == 0) continue;
 
                 // from j-th row subtract n-times (i+1)th row
                 for (let k = 0; k < N; k++)
-                    arr[j][k] = !big ? arr[j][k] - n*arr[i+1][k] : arr[j][k].sub(n.mul(arr[i+1][k]))
+                    arr[j][k] = num ? arr[j][k] - n*arr[i+1][k] : arr[j][k].sub(n.mul(arr[i+1][k]))
 
                 // to (i+1)th column add n-times j-th column
                 for (let k = 0; k < N; k++)
-                    arr[k][i+1] = !big ? arr[k][i+1] + n*arr[k][j] : arr[k][i+1].add(n.mul(arr[k][j]))
+                    arr[k][i+1] = num ? arr[k][i+1] + n*arr[k][j] : arr[k][i+1].add(n.mul(arr[k][j]))
 
                 // keep track of transformations
                 for (let k = 0; k < N; k++)
-                    R[j][k] = !big ? R[j][k] - n*R[i+1][k] : R[j][k].sub(n.mul(R[i+1][k]))
+                    R[j][k] = num ? R[j][k] - n*R[i+1][k] : subtract(R[j][k], n.mul(R[i+1][k]))
             }
         }
 

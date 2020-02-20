@@ -76,7 +76,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   })
 
   const doRealSymetric = createRealSymmetric({ addScalar, subtract, column, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
-  const doComplex = createComplex({ add, multiply, abs, bignumber, diag })
+  const doComplex = createComplex({ add, subtract, multiply, abs, bignumber, diag })
 
 
   function computeValuesAndVectors(/**@type {Matrix}*/ mat, prec)
