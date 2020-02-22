@@ -59,7 +59,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   const eigs = typed('eigs', {
 
-    'Array': function (x) {
+    Array: function (x) {
       const mat = matrix(x)
       return computeValuesAndVectors(mat)
     },
@@ -69,7 +69,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return computeValuesAndVectors(mat, prec)
     },
 
-    'Matrix': function (mat) {
+    Matrix: function (mat) {
       return computeValuesAndVectors(mat)
     },
 
@@ -81,11 +81,10 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   const doRealSymetric = createRealSymmetric({ addScalar, subtract, column, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
   const doComplex = createComplex({ addScalar, subtract, multiply, sqrt, abs, bignumber, diag, qr, inv, usolve })
 
-
-  function computeValuesAndVectors(/**@type {Matrix}*/ mat, prec)
-  {
-    if (prec === undefined)
-      prec = 1e-14;
+  function computeValuesAndVectors (mat, prec) {
+    if (prec === undefined) {
+      prec = 1e-14
+    }
 
     prec = bignumber(prec)
 
@@ -98,119 +97,119 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const arr = mat.toArray()
     const N = size[0]
 
-
-    if (isReal(arr, N, prec))
-    {
+    if (isReal(arr, N, prec)) {
       coerceReal(arr, N)
 
-      if (isSymmetric(arr, N, prec))
-      {
-        let type = coerceTypes(mat, arr, N)
+      if (isSymmetric(arr, N, prec)) {
+        const type = coerceTypes(mat, arr, N)
         return doRealSymetric(arr, N, prec, type)
       }
     }
 
-
-    let type = coerceTypes(mat, arr, N)
+    const type = coerceTypes(mat, arr, N)
     return doComplex(arr, N, prec, type)
   }
 
-
-
   /** @return {boolean} */
-  function isSymmetric(arr, N, prec) {
-
-    for (let i = 0; i < N; i++)
-    for (let j = i; j < N; j++)
-      // TODO proper comparison of bignum and frac
-      if ( larger( bignumber(abs(subtract(arr[i][j], arr[j][i]))), prec) )
-        return false
+  function isSymmetric (arr, N, prec) {
+    for (let i = 0; i < N; i++) {
+      for (let j = i; j < N; j++) {
+        // TODO proper comparison of bignum and frac
+        if (larger(bignumber(abs(subtract(arr[i][j], arr[j][i]))), prec)) {
+          return false
+        }
+      }
+    }
 
     return true
   }
 
   /** @return {boolean} */
-  function isReal(arr, N, prec) {
-    for (let i = 0; i < N; i++)
-    for (let j = 0; j < N; j++)
-      // TODO proper comparison of bignum and frac
-      if ( larger( bignumber(abs(im(arr[i][j]))), prec) )
-        return false
+  function isReal (arr, N, prec) {
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N; j++) {
+        // TODO proper comparison of bignum and frac
+        if (larger(bignumber(abs(im(arr[i][j]))), prec)) {
+          return false
+        }
+      }
+    }
 
     return true
   }
 
-
-  function coerceReal(arr, N) {
-    for (let i = 0; i < N; i++)
-    for (let j = 0; j < N; j++)
-      arr[i][j] = re(arr[i][j])
+  function coerceReal (arr, N) {
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N; j++) {
+        arr[i][j] = re(arr[i][j])
+      }
+    }
   }
-
 
   /** @return {'number' | 'BigNumber' | 'Complex'} */
-  function coerceTypes(mat, arr, N) {
-
+  function coerceTypes (mat, arr, N) {
     /** @type {string} */
-    let type = mat.datatype()
+    const type = mat.datatype()
 
-    if (type == 'number' || type == 'BigNumber' || type == 'Complex') {
+    if (type === 'number' || type === 'BigNumber' || type === 'Complex') {
       return type
     }
 
-    let hasNumber  = false
-    let hasBig     = false
+    let hasNumber = false
+    let hasBig = false
     let hasComplex = false
 
-    for (let i = 0; i < N; i++)
-    for (let j = 0; j < N; j++)
-    {
-      const el = arr[i][j]
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N; j++) {
+        const el = arr[i][j]
 
-      if (isNumber(el) || isFraction(el))
-        hasNumber = true
-
-      else if (isBigNumber(el))
-        hasBig = true
-
-      else if (isComplex(el))
-        hasComplex = true
-
-      else
-        throw TypeError("Unsupported type in Matrix: " + typeOf(el))
+        if (isNumber(el) || isFraction(el)) {
+          hasNumber = true
+        } else if (isBigNumber(el)) {
+          hasBig = true
+        } else if (isComplex(el)) {
+          hasComplex = true
+        } else {
+          throw TypeError('Unsupported type in Matrix: ' + typeOf(el))
+        }
+      }
     }
 
-    if (hasBig && hasComplex)
-      console.warn("Complex BigNumbers not supported, this operation will lose precission.");
+    if (hasBig && hasComplex) {
+      console.warn('Complex BigNumbers not supported, this operation will lose precission.')
+    }
 
-    if (hasComplex)
-    {
-      for (let i = 0; i < N; i++)
-      for (let j = 0; j < N; j++)
-        arr[i][j] = complex(arr[i][j])
+    if (hasComplex) {
+      for (let i = 0; i < N; i++) {
+        for (let j = 0; j < N; j++) {
+          arr[i][j] = complex(arr[i][j])
+        }
+      }
 
       return 'Complex'
     }
 
-    if (hasBig)
-    {
-      for (let i = 0; i < N; i++)
-      for (let j = 0; j < N; j++)
-        arr[i][j] = bignumber(arr[i][j])
+    if (hasBig) {
+      for (let i = 0; i < N; i++) {
+        for (let j = 0; j < N; j++) {
+          arr[i][j] = bignumber(arr[i][j])
+        }
+      }
 
       return 'BigNumber'
     }
 
-    if (hasNumber)
-    {
-      for (let i = 0; i < N; i++)
-      for (let j = 0; j < N; j++)
-        arr[i][j] = number(arr[i][j])
+    if (hasNumber) {
+      for (let i = 0; i < N; i++) {
+        for (let j = 0; j < N; j++) {
+          arr[i][j] = number(arr[i][j])
+        }
+      }
 
       return 'number'
+    } else {
+      throw TypeError('Matrix contains unsupported types only.')
     }
-
-    else throw TypeError('Matrix contains unsupported types only.')
   }
 
   return eigs

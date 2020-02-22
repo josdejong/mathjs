@@ -1,10 +1,6 @@
 import { clone } from '../../../utils/object'
 
-
-export function createRealSymmetric({ addScalar, subtract, column, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
-
-
-
+export function createRealSymmetric ({ addScalar, subtract, column, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
   /**
    * @param {number[] | BigNumber[]} arr
    * @param {number} N
@@ -12,12 +8,13 @@ export function createRealSymmetric({ addScalar, subtract, column, abs, atan, co
    * @param {'number' | 'BigNumber'} type
    */
   function main (arr, N, prec = 1E-12, type) {
-
-    if (type === 'number')
+    if (type === 'number') {
       return diag(arr, prec)
+    }
 
-    if (type === 'BigNumber')
+    if (type === 'BigNumber') {
       return diagBig(arr, prec)
+    }
 
     throw TypeError('Unsupported data type: ' + type)
   }
@@ -267,8 +264,9 @@ export function createRealSymmetric({ addScalar, subtract, column, abs, atan, co
     const values = clone(Ef)
     const vectors = []
 
-    for (let i = 0; i < Sf.length; i++)
+    for (let i = 0; i < Sf.length; i++) {
       vectors[i] = column(Sf, i)
+    }
 
     // !FIXME vectors are always Array[], never Matrix[]
     return { values, vectors }
@@ -291,6 +289,5 @@ export function createRealSymmetric({ addScalar, subtract, column, abs, atan, co
     return array
   }
 
-  return main;
-
+  return main
 }
