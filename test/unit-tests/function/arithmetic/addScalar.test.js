@@ -116,6 +116,17 @@ describe('addScalar', function () {
     approx.deepEqual(add(math.unit(math.complex(-3, 2), 'g'), math.unit(math.complex(5, -6), 'g')).toString(), '(2 - 4i) g')
   })
 
+  it('should parse two expression nodes', function () {
+    const a = new math.ConstantNode(2)
+    const b = new math.ConstantNode(3)
+    const expr = math.parse('4 * 5')
+
+    assert.deepStrictEqual(math.add(a, b), new math.OperatorNode('+', 'addScalar', [a, b]))
+    assert.deepStrictEqual(math.add(a, 3), new math.OperatorNode('+', 'addScalar', [a, b]))
+    assert.deepStrictEqual(math.add(2, b), new math.OperatorNode('+', 'addScalar', [a, b]))
+    assert.deepStrictEqual(math.add(2, expr), new math.OperatorNode('+', 'addScalar', [a, expr]))
+  })
+
   it('should throw an error for two measures of different units', function () {
     assert.throws(function () {
       add(math.unit(5, 'km'), math.unit(100, 'gram'))

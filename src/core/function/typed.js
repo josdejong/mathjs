@@ -91,7 +91,8 @@ const dependencies = [
   '?BigNumber',
   '?Complex',
   '?DenseMatrix',
-  '?Fraction'
+  '?Fraction',
+  '?ConstantNode'
 ]
 
 /**
@@ -99,7 +100,7 @@ const dependencies = [
  * @param {Object} dependencies   Object with data types like Complex and BigNumber
  * @returns {Function}
  */
-export const createTyped = /* #__PURE__ */ factory('typed', dependencies, function createTyped ({ BigNumber, Complex, DenseMatrix, Fraction }) {
+export const createTyped = /* #__PURE__ */ factory('typed', dependencies, function createTyped ({ BigNumber, Complex, DenseMatrix, Fraction, ConstantNode }) {
   // TODO: typed-function must be able to silently ignore signatures with unknown data types
 
   // get a new instance of typed-function
@@ -333,6 +334,16 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       convert: function (matrix) {
         return matrix.valueOf()
       }
+    }, {
+      from: 'number',
+      to: 'Node',
+      convert: function (x) {
+        if (!ConstantNode) {
+          throwNoConstantNode()
+        }
+
+        return new ConstantNode(x)
+      }
     }
   ]
 
@@ -353,4 +364,8 @@ function throwNoMatrix () {
 
 function throwNoFraction (x) {
   throw new Error(`Cannot convert value ${x} into a Fraction, no class 'Fraction' provided.`)
+}
+
+function throwNoConstantNode (x) {
+  throw new Error(`Cannot convert value ${x} into a ConstantNode, no class 'ConstantNode' provided.`)
 }

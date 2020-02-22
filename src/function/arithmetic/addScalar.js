@@ -2,9 +2,9 @@ import { factory } from '../../utils/factory'
 import { addNumber } from '../../plain/number'
 
 const name = 'addScalar'
-const dependencies = ['typed']
+const dependencies = ['typed', 'OperatorNode']
 
-export const createAddScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createAddScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed, OperatorNode }) => {
   /**
    * Add two scalar values, `x + y`.
    * This function is meant for internal use: it is used by the public function
@@ -42,6 +42,10 @@ export const createAddScalar = /* #__PURE__ */ factory(name, dependencies, ({ ty
       res.value = addScalar(res.value, y.value)
       res.fixPrefix = false
       return res
+    },
+
+    'Node, Node': function (x, y) {
+      return new OperatorNode('+', name, [x, y])
     }
   })
 
