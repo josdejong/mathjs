@@ -345,3 +345,22 @@ export function normNumber (x) {
   return Math.abs(x)
 }
 normNumber.signature = n1
+
+/**
+ * Calculates the modular multiplicative inverse of a mod b
+ * @param {number} a
+ * @param {number} b
+ * @return {number|null}
+ */
+export function modMultiplicativeInverseNumber (a, b) {
+  // source: https://en.wikipedia.org/wiki/Modular_multiplicative_inverse#Extended_Euclidean_algorithm
+  if (b === 0) {
+    throw new Error('divisor must be an integer')
+  }
+  const [div, m] = xgcdNumber(a, b)
+  if (div !== 1) {
+    return null
+  }
+  return modNumber(m, b)
+}
+modMultiplicativeInverseNumber.signature = n2
