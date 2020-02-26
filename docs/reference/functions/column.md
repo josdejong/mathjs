@@ -34,7 +34,7 @@ Array &#124; Matrix | The retrieved column
 ```js
 // get a column
 const d = [[1, 2], [3, 4]]
-math.column(d, 1) // returns [2, 4]
+math.column(d, 1) // returns [[2], [4]]
 ```
 
 

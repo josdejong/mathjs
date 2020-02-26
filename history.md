@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20200226-version-661">2020-02-26, version 6.6.1 <a href="#20200226-version-661" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1725">#1725</a>: simplify `a/(b/c)`. Thanks <a href="https://github.com/dbramwell">@dbramwell</a>.
+- Fix examples in documentation of `row` and `column`. 
+
+
 <h1 id="20200201-version-660">2020-02-01, version 6.6.0 <a href="#20200201-version-660" title="Permalink">#</a></h1>
 
 - Implemented function `eigs`, see <a href="https://github.com/josdejong/mathjs/issues/1705">#1705</a>, <a href="https://github.com/josdejong/mathjs/issues/542">#542</a> <a href="https://github.com/josdejong/mathjs/issues/1175">#1175</a>. Thanks <a href="https://github.com/arkajitmandal">@arkajitmandal</a>.
