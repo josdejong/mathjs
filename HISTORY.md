@@ -1,9 +1,10 @@
 # History
 
 
-# not yet published, version 6.6.1
+# 2020-02-26, version 6.6.1
 
 - Fix #1725: simplify `a/(b/c)`. Thanks @dbramwell.
+- Fix examples in documentation of `row` and `column`. 
 
 
 # 2020-02-01, version 6.6.0

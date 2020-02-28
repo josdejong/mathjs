@@ -17,7 +17,7 @@ export const createRow = /* #__PURE__ */ factory(name, dependencies, ({ typed, I
    *
    *     // get a row
    *     const d = [[1, 2], [3, 4]]
-   *     math.row(d, 1) // returns [3, 4]
+   *     math.row(d, 1) // returns [[3, 4]]
    *
    * See also:
    *
