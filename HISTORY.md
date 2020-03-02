@@ -1,6 +1,12 @@
 # History
 
 
+# not yet published, version 6.6.2
+
+- Run the build script during npm `prepare`, so you can use the library 
+  directly when installing directly from git. Thanks @cinderblock.
+
+
 # 2020-02-26, version 6.6.1
 
 - Fix #1725: simplify `a/(b/c)`. Thanks @dbramwell.
