@@ -196,7 +196,7 @@
   ],
   "scripts": {
     "build": "gulp",
-    "build-and-test": "npm run build && npm run test:src && npm run test:generated && npm run test:node && npm run lint",
+    "build-and-test": "npm run build && npm run test:all && npm run lint",
     "compile": "gulp compile",
     "watch": "gulp watch",
     "lint": "standard --env=mocha --env=worker",
@@ -205,10 +205,11 @@
     "test:src": "mocha test/unit-tests --recursive --require @babel/register --forbid-only",
     "test:generated": "mocha test/generated-code-tests --recursive --require @babel/register --forbid-only",
     "test:node": "mocha test/node-tests/*.test.js test/node-tests/**/*.test.js --recursive --forbid-only",
+    "test:all": "npm run test:src && npm run test:generated && npm run test:node",
     "test:browser": "karma start test/browser-test-config/local-karma.js",
     "test:browserstack": "karma start test/browser-test-config/browserstack-karma.js",
     "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test/unit-tests --recursive --require @babel/register && echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
-    "prepublishOnly": "npm run test:src && npm run test:generated && npm run test:node && npm run lint",
+    "prepublishOnly": "npm run test:all && npm run lint",
     "prepare": "npm run build"
   },
   "bin": {
