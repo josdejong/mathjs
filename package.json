@@ -133,9 +133,9 @@
     "typed-function": "^1.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.8.6",
+    "@babel/core": "7.8.7",
     "@babel/plugin-transform-object-assign": "7.8.3",
-    "@babel/preset-env": "7.8.6",
+    "@babel/preset-env": "7.8.7",
     "@babel/register": "7.8.6",
     "babel-loader": "8.0.6",
     "benchmark": "2.1.4",
