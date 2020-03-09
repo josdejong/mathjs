@@ -54,7 +54,7 @@ export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed
      * @private
      */
     function _cumsum(array) {
-        return array && array.map((sum => value => sum = add(sum, value))(0)) || []
+        return array ? array.map((sum => value => sum = add(sum, value))(0)) : []
     }
 
     function _ncumSumDim(array, dim) {
