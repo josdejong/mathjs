@@ -55,13 +55,13 @@ export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed
      * @private
      */
   function _cumsum (array) {
-    try {return array ? _cumsummapRENAME(array) : [] // eslint-disable-line
+    try {return array ? _cumsummap(array) : [] // eslint-disable-line
     } catch (err) {
       throw improveErrorMessage(err, name)
     }
   }
 
-  function _cumsummapRENAME (array) {
+  function _cumsummap (array) {
     const arrayIsMatrix = isMatrix(array)
     const tempArray = arrayIsMatrix ? array.valueOf() : array
     const cumsumArray = tempArray.map((sum => value => sum = add(sum, value))(_initialCumsumValue(tempArray[0]))) // eslint-disable-line
@@ -74,32 +74,32 @@ export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
   function _ncumSumDim (array, dim) {
     try {
-      return _cumsummap(array, dim)
+      return _cumsumDimensional(array, dim)
     } catch (err) {
       throw improveErrorMessage(err, name)
     }
   }
 
   /* Possible TODO: Refactor _reduce in collection.js to be able to work here as well */
-  function _cumsummap (mat, dim) {
+  function _cumsumDimensional (mat, dim) {
     let i, ret, tran
 
     if (dim <= 0) {
       const initialValue = mat[0][0]
       if (!Array.isArray(initialValue)) {
-        return _cumsummapRENAME(mat) // eslint-disable-line
+        return _cumsummap(mat) // eslint-disable-line
       } else {
         tran = _switch(mat)
         ret = []
         for (i = 0; i < tran.length; i++) {
-          ret[i] = _cumsummap(tran[i], dim - 1)
+          ret[i] = _cumsumDimensional(tran[i], dim - 1)
         }
         return ret
       }
     } else {
       ret = []
       for (i = 0; i < mat.length; i++) {
-        ret[i] = _cumsummap(mat[i], dim - 1)
+        ret[i] = _cumsumDimensional(mat[i], dim - 1)
       }
       return ret
     }
