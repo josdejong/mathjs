@@ -2,7 +2,7 @@ import assert from 'assert'
 import math from '../../../../src/bundleAny'
 const BigNumber = math.BigNumber
 const Complex = math.Complex
-// const DenseMatrix = math.DenseMatrix
+const DenseMatrix = math.DenseMatrix
 const Unit = math.Unit
 const cumsum = math.cumsum
 
@@ -53,9 +53,9 @@ describe('cumsum', function () {
     assert.deepStrictEqual(cumsum([new Unit(5, 'm'), new Unit(10, 'm'), new Unit(15, 'm')]), [new Unit(5, 'm'), new Unit(15, 'm'), new Unit(30, 'm')])
   })
 
-  //   it('should return the cumulative sum from a 1d matrix', function () {
-  //     assert.deepStrictEqual(cumsum(new DenseMatrix([1, 3, 5, 2, -5])), new DenseMatrix([1, 4, 9, 11, 6]))
-  //   })
+  it('should return the cumulative sum from a 1d matrix', function () {
+    assert.deepStrictEqual(cumsum(new DenseMatrix([1, 3, 5, 2, -5])), new DenseMatrix([1, 4, 9, 11, 6]))
+  })
 
   it('should return the cumulative sum element from a 2d array', function () {
     assert.deepStrictEqual(cumsum([
@@ -70,17 +70,17 @@ describe('cumsum', function () {
   })
 
   //   TODO: make a dense matrix return a dense matrix, I had issues depending on it in cumsum.js
-  //   it('should return the cumulative sum element from a 2d matrix', function () {
-  //     assert.deepStrictEqual(cumsum(new DenseMatrix([
-  //       [1, 4, 7],
-  //       [3, 0, 5],
-  //       [-1, 11, 9]
-  //     ])), new DenseMatrix([
-  //       [1, 4, 7],
-  //       [4, 4, 12],
-  //       [3, 15, 21]
-  //     ]))
-  //   })
+  it('should return the cumulative sum element from a 2d matrix', function () {
+    assert.deepStrictEqual(cumsum(new DenseMatrix([
+      [1, 4, 7],
+      [3, 0, 5],
+      [-1, 11, 9]
+    ])), new DenseMatrix([
+      [1, 4, 7],
+      [4, 4, 12],
+      [3, 15, 21]
+    ]))
+  })
 
   it('should return NaN for all values after a NaN', function () {
     assert(isNaN(cumsum([NaN])[0]))
@@ -197,7 +197,7 @@ describe('cumsum', function () {
   })
 
   it('should return zero if called with an empty array', function () {
-    assert.strictEqual(cumsum([]), [])
+    assert.deepStrictEqual(cumsum([]), [])
   })
 
   it('should throw an error if called with invalid type of arguments', function () {
