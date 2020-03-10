@@ -5,9 +5,9 @@ import { improveErrorMessage } from './utils/improveErrorMessage'
 import { isUnit, isMatrix } from '../../utils/is'
 
 const name = 'cumsum'
-const dependencies = ['typed', 'add', '?Unit']
+const dependencies = ['typed', 'add', '?Unit', '?DenseMatrix']
 
-export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, Unit }) => {
+export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, Unit, DenseMatrix }) => {
   /**
      * Compute the cumulative sum of a matrix or a list with values.
      * In case of a (multi dimensional) array or matrix, the cumulative sum of
@@ -65,7 +65,7 @@ export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed
     const arrayIsMatrix = isMatrix(array)
     const tempArray = arrayIsMatrix ? array.valueOf() : array
     const cumsumArray = tempArray.map((sum => value => sum = add(sum, value))(_initialCumsumValue(tempArray[0]))) // eslint-disable-line
-    return cumsumArray
+    return isMatrix(array) ? new DenseMatrix(cumsumArray) : cumsumArray
   }
 
   function _initialCumsumValue (value) {
