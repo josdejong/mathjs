@@ -29,10 +29,11 @@ const dependencies = [
   'sin',
   'inv',
   'qr',
-  'usolve'
+  'usolve',
+  'flatten'
 ]
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, re, im, qr, usolve, sqrt, matrix, column, diag, addScalar, subtract, equal, abs, larger, atan, cos, sin, multiplyScalar, inv, complex, number, bignumber, multiply, add }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, re, im, qr, usolve, flatten, sqrt, matrix, column, diag, addScalar, subtract, equal, abs, larger, atan, cos, sin, multiplyScalar, inv, complex, number, bignumber, multiply, add }) => {
   /**
    * Compute eigenvalues and eigenvectors of a matrix.
    *
@@ -78,7 +79,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
   })
 
-  const doRealSymetric = createRealSymmetric({ addScalar, subtract, column, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
+  const doRealSymetric = createRealSymmetric({ addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
   const doComplex = createComplex({ addScalar, subtract, multiply, sqrt, abs, bignumber, diag, qr, inv, usolve })
 
   function computeValuesAndVectors (mat, prec) {

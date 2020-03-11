@@ -1,6 +1,6 @@
 import { clone } from '../../../utils/object'
 
-export function createRealSymmetric ({ addScalar, subtract, column, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
+export function createRealSymmetric ({ addScalar, subtract, column, flatten, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
   /**
    * @param {number[] | BigNumber[]} arr
    * @param {number} N
@@ -265,7 +265,7 @@ export function createRealSymmetric ({ addScalar, subtract, column, abs, atan, c
     const vectors = []
 
     for (let i = 0; i < Sf.length; i++) {
-      vectors[i] = column(Sf, i)
+      vectors[i] = flatten(column(Sf, i))
     }
 
     // !FIXME vectors are always Array[], never Matrix[]
