@@ -4,6 +4,7 @@ import assert from 'assert'
 import math from '../../../../src/bundleAny'
 const ones = math.ones
 const matrix = math.matrix
+const size = math.size
 
 describe('ones', function () {
   it('should create an empty matrix', function () {
@@ -65,7 +66,7 @@ describe('ones', function () {
 
   it('should create a matrix with ones with the same size as original matrix', function () {
     const a = matrix([[1, 2, 3], [4, 5, 6]])
-    assert.deepStrictEqual(ones(math.size(a)).size(), a.size())
+    assert.deepStrictEqual(size(ones(math.size(a))), size(a))
   })
 
   // TODO: test with invalid input

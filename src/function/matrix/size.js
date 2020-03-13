@@ -1,6 +1,5 @@
 import { arraySize } from '../../utils/array'
 import { factory } from '../../utils/factory'
-import { noMatrix } from '../../utils/noop'
 
 const name = 'size'
 const dependencies = ['typed', 'config', '?matrix']
@@ -26,25 +25,23 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *     resize, squeeze, subset
    *
-   * @param {boolean | number | Complex | Unit | string | Array | Matrix} x  A matrix
-   * @return {Array | Matrix} A vector with size of `x`.
+   * @param {boolean | number | Complex | Unit | string | Array | Matrix} x  A matrix or scalar
+   * @return {Array} Array with the size of `x`.
    */
   return typed(name, {
     Matrix: function (x) {
-      return x.create(x.size())
+      return x.size()
     },
 
     Array: arraySize,
 
     string: function (x) {
-      return (config.matrix === 'Array') ? [x.length] : matrix([x.length])
+      return [x.length]
     },
 
     'number | Complex | BigNumber | Unit | boolean | null': function (x) {
       // scalar
-      return (config.matrix === 'Array')
-        ? []
-        : matrix ? matrix([]) : noMatrix()
+      return []
     }
   })
 })

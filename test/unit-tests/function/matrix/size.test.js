@@ -21,21 +21,21 @@ describe('size', function () {
   })
 
   it('should calculate the size of a matrix', function () {
-    assert.deepStrictEqual(size(matrix()), matrix([0]))
-    assert.deepStrictEqual(size(matrix([[1, 2, 3], [4, 5, 6]])), matrix([2, 3]))
-    assert.deepStrictEqual(size(matrix([[], []])), matrix([2, 0]))
+    assert.deepStrictEqual(size(matrix()), [0])
+    assert.deepStrictEqual(size(matrix([[1, 2, 3], [4, 5, 6]])), [2, 3])
+    assert.deepStrictEqual(size(matrix([[], []])), [2, 0])
   })
 
   it('should calculate the size of a range', function () {
-    assert.deepStrictEqual(size(math.range(2, 6)), matrix([4]))
+    assert.deepStrictEqual(size(math.range(2, 6)), [4])
   })
 
   it('should calculate the size of a scalar', function () {
-    assert.deepStrictEqual(size(2), matrix([]))
-    assert.deepStrictEqual(size(math.bignumber(2)), matrix([]))
-    assert.deepStrictEqual(size(math.complex(2, 3)), matrix([]))
-    assert.deepStrictEqual(size(true), matrix([]))
-    assert.deepStrictEqual(size(null), matrix([]))
+    assert.deepStrictEqual(size(2), [])
+    assert.deepStrictEqual(size(math.bignumber(2)), [])
+    assert.deepStrictEqual(size(math.complex(2, 3)), [])
+    assert.deepStrictEqual(size(true), [])
+    assert.deepStrictEqual(size(null), [])
   })
 
   it('should calculate the size of a scalar with setting matrix=="array"', function () {
@@ -47,8 +47,8 @@ describe('size', function () {
   })
 
   it('should calculate the size of a string', function () {
-    assert.deepStrictEqual(size('hello'), matrix([5]))
-    assert.deepStrictEqual(size(''), matrix([0]))
+    assert.deepStrictEqual(size('hello'), [5])
+    assert.deepStrictEqual(size(''), [0])
   })
 
   it('should throw an error if called with an invalid number of arguments', function () {
