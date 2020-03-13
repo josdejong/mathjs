@@ -34,32 +34,24 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
   })
 
   function _validateDim (x, y) {
-    let xSize = size(x)
-    let ySize = size(y)
+    const xSize = _size(x)
+    const ySize = _size(y)
     let xLen, yLen
-
-    // TODO remove this once #1771 is fixed
-    if (isMatrix(xSize)) {
-      xSize = xSize._data
-    }
-    if (isMatrix(ySize)) {
-      ySize = ySize._data
-    }
 
     if (xSize.length === 1) {
       xLen = xSize[0]
-    } else if (xSize.length === 2 && xSize[0] !== 1) {
-      xLen = xSize[1]
+    } else if (xSize.length === 2 && xSize[1] === 1) {
+      xLen = xSize[0]
     } else {
-      throw new RangeError('Expected a vector, instead got a matrix of size (' + xSize.join(', ') + ')')
+      throw new RangeError('Expected a column vector, instead got a matrix of size (' + xSize.join(', ') + ')')
     }
 
     if (ySize.length === 1) {
       yLen = ySize[0]
-    } else if (ySize.length === 2 && ySize[0] === 1) {
-      yLen = ySize[1]
+    } else if (ySize.length === 2 && ySize[1] === 1) {
+      yLen = ySize[0]
     } else {
-      throw new RangeError('Expected a vector, instead got a matrix of size (' + ySize.join(', ') + ')')
+      throw new RangeError('Expected a column vector, instead got a matrix of size (' + ySize.join(', ') + ')')
     }
 
     if (xLen !== yLen) throw new RangeError('Vectors must have equal length (' + xLen + ' != ' + yLen + ')')
@@ -78,8 +70,8 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     const bdt = isMatrix(b) ? b._datatype : undefined
 
     // are these 2-dimensional column vectors? (as opposed to 1-dimensional vectors)
-    const acolumn = size(a) === 2
-    const bcolumn = size(b) === 2
+    const aIsColumn = _size(a).length === 2
+    const bIsColumn = _size(b).length === 2
 
     let add = addScalar
     let mul = multiplyScalar
@@ -93,7 +85,7 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     }
 
     // both vectors 1-dimensional
-    if (!acolumn && !bcolumn) {
+    if (!aIsColumn && !bIsColumn) {
       let c = mul(conj(adata[0]), bdata[0])
       for (let i = 1; i < N; i++) {
         c = add(c, mul(conj(adata[i]), bdata[i]))
@@ -102,16 +94,7 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     }
 
     // a is 1-dim, b is column
-    if (!acolumn && bcolumn) {
-      let c = mul(conj(adata[0][0]), bdata[0])
-      for (let i = 1; i < N; i++) {
-        c = add(c, mul(conj(adata[i][0]), bdata[i]))
-      }
-      return c
-    }
-
-    // a is column, b is 1-dim
-    if (acolumn && !bcolumn) {
+    if (!aIsColumn && bIsColumn) {
       let c = mul(conj(adata[0]), bdata[0][0])
       for (let i = 1; i < N; i++) {
         c = add(c, mul(conj(adata[i]), bdata[i][0]))
@@ -119,8 +102,17 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
       return c
     }
 
+    // a is column, b is 1-dim
+    if (aIsColumn && !bIsColumn) {
+      let c = mul(conj(adata[0][0]), bdata[0])
+      for (let i = 1; i < N; i++) {
+        c = add(c, mul(conj(adata[i][0]), bdata[i]))
+      }
+      return c
+    }
+
     // both vectors are column
-    if (acolumn && bcolumn) {
+    if (aIsColumn && bIsColumn) {
       let c = mul(conj(adata[0][0]), bdata[0][0])
       for (let i = 1; i < N; i++) {
         c = add(c, mul(conj(adata[i][0]), bdata[i][0]))
@@ -132,5 +124,11 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
   function _sparseDot (x, y) {
     // TODO
     throw Error()
+  }
+
+  // TODO remove this once #1771 is fixed
+  function _size (x) {
+    const s = size(x)
+    return isMatrix(s) ? s._data : s
   }
 })
