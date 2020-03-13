@@ -1,23 +1,25 @@
 #!/usr/bin/env node
 
-// Attribution: 
+// Attribution:
 //  This file is based on https://github.com/nodejs/node/blob/master/tools/update-authors.js.
 //  It is licensed according to https://github.com/nodejs/node/blob/master/LICENSE
 
 // Usage: tools/update-author.js [--dry]
 // Passing --dry will redirect output to stdout rather than write to 'AUTHORS'.
 
-'use strict';
-const { spawn } = require('child_process');
-const path = require('path');
-const fs = require('fs');
-const readline = require('readline');
+'use strict'
+const { spawn } = require('child_process')
+const path = require('path')
+const fs = require('fs')
+const readline = require('readline')
 
 class CaseIndifferentMap {
-  _map = new Map();
+  constructor () {
+    this._map = new Map()
+  }
 
-  get(key) { return this._map.get(key.toLowerCase()); }
-  set(key, value) { return this._map.set(key.toLowerCase(), value); }
+  get (key) { return this._map.get(key.toLowerCase()) }
+  set (key, value) { return this._map.set(key.toLowerCase(), value) }
 }
 
 const log = spawn(
@@ -25,74 +27,79 @@ const log = spawn(
   // Inspect author name/email and body.
   ['log', '--reverse', '--format=Author: %aN <%aE>\n%b'], {
     stdio: ['inherit', 'pipe', 'inherit']
-  });
-const rl = readline.createInterface({ input: log.stdout });
+  })
+const rl = readline.createInterface({ input: log.stdout })
 
-let output;
-if (process.argv.includes('--dry'))
-  output = process.stdout;
-else
-  output = fs.createWriteStream('AUTHORS');
+let output
+if (process.argv.includes('--dry')) { output = process.stdout } else { output = fs.createWriteStream('AUTHORS') }
 
-output.write('# Authors ordered by first contribution.\n\n');
+output.write('# Authors ordered by first contribution.\n\n')
 
-const mailmap = new CaseIndifferentMap();
+const mailmap = new CaseIndifferentMap()
 {
   const lines = fs.readFileSync(path.resolve(__dirname, '../', '.mailmap'),
-                                { encoding: 'utf8' }).split('\n');
+    { encoding: 'utf8' }).split('\n')
   for (let line of lines) {
-    line = line.trim();
-    if (line.startsWith('#') || line === '') continue;
+    line = line.trim()
+    if (line.startsWith('#') || line === '') continue
 
-    let match;
     // Replaced Name <original@example.com>
-    if (match = line.match(/^([^<]+)\s+(<[^>]+>)$/)) {
-      mailmap.set(match[2], { author: match[1] });
-    // <replaced@example.com> <original@example.com>
-    } else if (match = line.match(/^<([^>]+)>\s+(<[^>]+>)$/)) {
-      mailmap.set(match[2], { email: match[1] });
-    // Replaced Name <replaced@example.com> <original@example.com>
-    } else if (match = line.match(/^([^<]+)\s+(<[^>]+>)\s+(<[^>]+>)$/)) {
-      mailmap.set(match[3], {
-        author: match[1], email: match[2]
-      });
-    // Replaced Name <replaced@example.com> Original Name <original@example.com>
-    } else if (match =
-        line.match(/^([^<]+)\s+(<[^>]+>)\s+([^<]+)\s+(<[^>]+>)$/)) {
-      mailmap.set(match[3] + '\0' + match[4], {
-        author: match[1], email: match[2]
-      });
-    } else {
-      console.warn('Unknown .mailmap format:', line);
+    const match1 = line.match(/^([^<]+)\s+(<[^>]+>)$/)
+    if (match1) {
+      mailmap.set(match1[2], { author: match1[1] })
+      continue
     }
+    // <replaced@example.com> <original@example.com>
+    const match2 = line.match(/^<([^>]+)>\s+(<[^>]+>)$/)
+    if (match2) {
+      mailmap.set(match2[2], { email: match2[1] })
+      continue
+    }
+    // Replaced Name <replaced@example.com> <original@example.com>
+    const match3 = line.match(/^([^<]+)\s+(<[^>]+>)\s+(<[^>]+>)$/)
+    if (match3) {
+      mailmap.set(match3[3], {
+        author: match3[1], email: match3[2]
+      })
+      continue
+    }
+    // Replaced Name <replaced@example.com> Original Name <original@example.com>
+    const match4 = line.match(/^([^<]+)\s+(<[^>]+>)\s+([^<]+)\s+(<[^>]+>)$/)
+    if (match4) {
+      mailmap.set(match4[3] + '\0' + match4[4], {
+        author: match4[1], email: match4[2]
+      })
+      continue
+    }
+    console.warn('Unknown .mailmap format:', line)
   }
 }
 
-const seen = new Set();
+const seen = new Set()
 
 // Support regular git author metadata, as well as `Author:` and
 // `Co-authored-by:` in the message body. Both have been used in the past
 // to indicate multiple authors per commit, with the latter standardized
 // by GitHub now.
 const authorRe =
-  /(^Author:|^Co-authored-by:)\s+(?<author>[^<]+)\s+(?<email><[^>]+>)/i;
+  /(^Author:|^Co-authored-by:)\s+(?<author>[^<]+)\s+(?<email><[^>]+>)/i
 rl.on('line', (line) => {
-  const match = line.match(authorRe);
-  if (!match) return;
+  const match = line.match(authorRe)
+  if (!match) return
 
-  let { author, email } = match.groups;
+  const { author, email } = match.groups
 
   if (seen.has(email) ||
       /@chromium\.org/.test(email) ||
       /greenkeeper\[bot\]/.test(email) ||
       email === '<erik.corry@gmail.com>') {
-    return;
+    return
   }
 
-  seen.add(email);
-  output.write(`${author} ${email}\n`);
-});
+  seen.add(email)
+  output.write(`${author} ${email}\n`)
+})
 
 rl.on('close', () => {
-  output.end('\n# Generated by tools/update-authors.js\n');
-});
+  output.end('\n# Generated by tools/update-authors.js\n')
+})
