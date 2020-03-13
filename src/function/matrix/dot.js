@@ -122,13 +122,45 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
   }
 
   function _sparseDot (x, y) {
-    // TODO
-    throw Error()
+    _validateDim(x, y)
+
+    const xindex = x._index
+    const xvalues = x._values
+
+    const yindex = y._index
+    const yvalues = y._values
+
+    // TODO optimize add & mul using datatype
+    let c = 0
+    const add = addScalar
+    const mul = multiplyScalar
+
+    let i = 0
+    let j = 0
+    while (i < xindex.length && j < yindex.length) {
+      const I = xindex[i]
+      const J = yindex[j]
+
+      if (I < J) {
+        i++
+        continue
+      }
+      if (I > J) {
+        j++
+        continue
+      }
+      if (I === J) {
+        c = add(c, mul(xvalues[i], yvalues[j]))
+        i++
+        j++
+      }
+    }
+
+    return c
   }
 
   // TODO remove this once #1771 is fixed
   function _size (x) {
-    const s = size(x)
-    return isMatrix(s) ? s._data : s
+    return isMatrix(x) ? x.size() : size(x)
   }
 })
