@@ -1,4 +1,3 @@
-import { arraySize as size } from '../../utils/array'
 import { factory } from '../../utils/factory'
 import { isMatrix } from '../../utils/is'
 
@@ -34,10 +33,18 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     'SparseMatrix, SparseMatrix': _sparseDot
   })
 
-  function _validateDim(x, y) {
-    const xSize = size(x)
-    const ySize = size(y)
+  function _validateDim (x, y) {
+    let xSize = size(x)
+    let ySize = size(y)
     let xLen, yLen
+
+    // TODO remove this once #1771 is fixed
+    if (isMatrix(xSize)) {
+      xSize = xSize._data
+    }
+    if (isMatrix(ySize)) {
+      ySize = ySize._data
+    }
 
     if (xSize.length === 1) {
       xLen = xSize[0]
@@ -61,7 +68,7 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     return xLen
   }
 
-  function _denseDot(a, b) {
+  function _denseDot (a, b) {
     const N = _validateDim(a, b)
 
     const adata = isMatrix(a) ? a._data : a
@@ -79,7 +86,7 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
 
     // process data types
     if (adt && bdt && adt === bdt && typeof adt === 'string') {
-      let dt = adt
+      const dt = adt
       // find signatures that matches (dt, dt)
       add = typed.find(addScalar, [dt, dt])
       mul = typed.find(multiplyScalar, [dt, dt])
@@ -120,12 +127,10 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
       }
       return c
     }
-
   }
 
-  function _sparseDot(x, y) {
+  function _sparseDot (x, y) {
     // TODO
     throw Error()
   }
-
 })

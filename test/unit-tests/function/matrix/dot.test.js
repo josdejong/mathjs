@@ -22,7 +22,7 @@ describe('dot', function () {
   })
 
   it('should throw an error for multi dimensional matrix input', function () {
-    assert.throws(function () { math.dot([[1, 2], [3, 4]], [[1, 2], [3, 4]]) }, /Vector expected/)
+    assert.throws(function () { math.dot([[1, 2], [3, 4]], [[1, 2], [3, 4]]) }, /Expected a vector, instead got a matrix of size \(2, 2\)/)
   })
 
   it('should throw an error in case of vectors with unequal length', function () {

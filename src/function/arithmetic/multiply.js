@@ -217,12 +217,11 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // process data types
     if (adt && bdt && adt === bdt && typeof adt === 'string') {
       // datatype
-      let dt = adt
+      const dt = adt
       // find signatures that matches (dt, dt)
       add = typed.find(addScalar, [dt, dt])
       mul = typed.find(multiplyScalar, [dt, dt])
     }
-
 
     let c = mul(conj(adata[0]), bdata[0])
 
