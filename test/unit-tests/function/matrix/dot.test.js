@@ -4,6 +4,7 @@ import math from '../../../../src/bundleAny'
 const dot = math.dot
 const matrix = math.matrix
 const sparse = math.sparse
+const complex = math.complex
 
 describe('dot', function () {
   it('should calculate dot product for two 1-dim arrays', function () {
@@ -80,5 +81,13 @@ describe('dot', function () {
   it('should LaTeX dot', function () {
     const expression = math.parse('dot([1,2],[3,4])')
     assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
+  })
+
+  it('should be antilinear in the first argument', function () {
+    const I = complex(0, 1)
+    assert.deepStrictEqual(dot([I, 2], [1, I]), I)
+
+    const v = matrix([2, I, 1])
+    assert.deepStrictEqual(dot(v, v).sqrt(), complex(math.norm(v)))
   })
 })
