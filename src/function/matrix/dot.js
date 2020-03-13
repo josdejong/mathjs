@@ -1,15 +1,16 @@
 import { arraySize as size } from '../../utils/array'
 import { factory } from '../../utils/factory'
+import { isMatrix } from '../../utils/is'
 
 const name = 'dot'
-const dependencies = ['typed', 'add', 'multiply']
+const dependencies = ['typed', 'addScalar', 'multiplyScalar', 'conj', 'size']
 
-export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply }) => {
+export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, addScalar, multiplyScalar, conj, size }) => {
   /**
    * Calculate the dot product of two vectors. The dot product of
-   * `A = [a1, a2, a3, ..., an]` and `B = [b1, b2, b3, ..., bn]` is defined as:
+   * `A = [a1, a2, ..., an]` and `B = [b1, b2, ..., bn]` is defined as:
    *
-   *    dot(A, B) = a1 * b1 + a2 * b2 + a3 * b3 + ... + an * bn
+   *    dot(A, B) = conj(a1) * b1 + conj(a2) * b2 + ... + conj(an) * bn
    *
    * Syntax:
    *
@@ -29,43 +30,102 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
    * @return {number}               Returns the dot product of `x` and `y`
    */
   return typed(name, {
-    'Matrix, Matrix': function (x, y) {
-      return _dot(x.toArray(), y.toArray())
-    },
-
-    'Matrix, Array': function (x, y) {
-      return _dot(x.toArray(), y)
-    },
-
-    'Array, Matrix': function (x, y) {
-      return _dot(x, y.toArray())
-    },
-
-    'Array, Array': _dot
+    'Array | DenseMatrix, Array | DenseMatrix': _denseDot,
+    'SparseMatrix, SparseMatrix': _sparseDot
   })
 
-  /**
-   * Calculate the dot product for two arrays
-   * @param {Array} x  First vector
-   * @param {Array} y  Second vector
-   * @returns {number} Returns the dot product of x and y
-   * @private
-   */
-  // TODO: double code with math.multiply
-  function _dot (x, y) {
+  function _validateDim(x, y) {
     const xSize = size(x)
     const ySize = size(y)
-    const len = xSize[0]
+    let xLen, yLen
 
-    if (xSize.length !== 1 || ySize.length !== 1) throw new RangeError('Vector expected') // TODO: better error message
-    if (xSize[0] !== ySize[0]) throw new RangeError('Vectors must have equal length (' + xSize[0] + ' != ' + ySize[0] + ')')
-    if (len === 0) throw new RangeError('Cannot calculate the dot product of empty vectors')
-
-    let prod = 0
-    for (let i = 0; i < len; i++) {
-      prod = add(prod, multiply(x[i], y[i]))
+    if (xSize.length === 1) {
+      xLen = xSize[0]
+    } else if (xSize.length === 2 && xSize[0] !== 1) {
+      xLen = xSize[1]
+    } else {
+      throw new RangeError('Expected a vector, instead got a matrix of size (' + xSize.join(', ') + ')')
     }
 
-    return prod
+    if (ySize.length === 1) {
+      yLen = ySize[0]
+    } else if (ySize.length === 2 && ySize[0] === 1) {
+      yLen = ySize[1]
+    } else {
+      throw new RangeError('Expected a vector, instead got a matrix of size (' + ySize.join(', ') + ')')
+    }
+
+    if (xLen !== yLen) throw new RangeError('Vectors must have equal length (' + xLen + ' != ' + yLen + ')')
+    if (xLen === 0) throw new RangeError('Cannot calculate the dot product of empty vectors')
+
+    return xLen
   }
+
+  function _denseDot(a, b) {
+    const N = _validateDim(a, b)
+
+    const adata = isMatrix(a) ? a._data : a
+    const adt = isMatrix(a) ? a._datatype : undefined
+
+    const bdata = isMatrix(b) ? b._data : b
+    const bdt = isMatrix(b) ? b._datatype : undefined
+
+    // are these 2-dimensional column vectors? (as opposed to 1-dimensional vectors)
+    const acolumn = size(a) === 2
+    const bcolumn = size(b) === 2
+
+    let add = addScalar
+    let mul = multiplyScalar
+
+    // process data types
+    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+      let dt = adt
+      // find signatures that matches (dt, dt)
+      add = typed.find(addScalar, [dt, dt])
+      mul = typed.find(multiplyScalar, [dt, dt])
+    }
+
+    // both vectors 1-dimensional
+    if (!acolumn && !bcolumn) {
+      let c = mul(conj(adata[0]), bdata[0])
+      for (let i = 1; i < N; i++) {
+        c = add(c, mul(conj(adata[i]), bdata[i]))
+      }
+      return c
+    }
+
+    // a is 1-dim, b is column
+    if (!acolumn && bcolumn) {
+      let c = mul(conj(adata[0][0]), bdata[0])
+      for (let i = 1; i < N; i++) {
+        c = add(c, mul(conj(adata[i][0]), bdata[i]))
+      }
+      return c
+    }
+
+    // a is column, b is 1-dim
+    if (acolumn && !bcolumn) {
+      let c = mul(conj(adata[0]), bdata[0][0])
+      for (let i = 1; i < N; i++) {
+        c = add(c, mul(conj(adata[i]), bdata[i][0]))
+      }
+      return c
+    }
+
+    // both vectors are column
+    if (acolumn && bcolumn) {
+      let c = mul(conj(adata[0][0]), bdata[0][0])
+      for (let i = 1; i < N; i++) {
+        c = add(c, mul(conj(adata[i][0]), bdata[i][0]))
+      }
+      return c
+    }
+
+  }
+
+  function _sparseDot(x, y) {
+    // TODO
+    throw Error()
+  }
+
 })
