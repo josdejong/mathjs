@@ -5,7 +5,7 @@ export const cumSumDocs = {
     'cumsum(a, b, c, ...)',
     'cumsum(A)'
   ],
-  description: 'Compute the sum of all values.',
+  description: 'Compute the cumulative sum of all values.',
   examples: [
     'cumsum(2, 3, 4, 1)',
     'cumsum([2, 3, 4, 1])',
