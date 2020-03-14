@@ -182,6 +182,7 @@ import { modeDocs } from './function/statistics/mode.js'
 import { prodDocs } from './function/statistics/prod.js'
 import { quantileSeqDocs } from './function/statistics/quantileSeq.js'
 import { stdDocs } from './function/statistics/std.js'
+import { cumsumDocs } from './function/statistics/cumsum.js'
 import { sumDocs } from './function/statistics/sum.js'
 import { varianceDocs } from './function/statistics/variance.js'
 import { acosDocs } from './function/trigonometry/acos.js'
@@ -500,6 +501,7 @@ export const embeddedDocs = {
   erf: erfDocs,
 
   // functions - statistics
+  cumsum: cumSumDocs,
   mad: madDocs,
   max: maxDocs,
   mean: meanDocs,

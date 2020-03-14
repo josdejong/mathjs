@@ -69,7 +69,6 @@ describe('cumsum', function () {
     ])
   })
 
-  //   TODO: make a dense matrix return a dense matrix, I had issues depending on it in cumsum.js
   it('should return the cumulative sum element from a 2d matrix', function () {
     assert.deepStrictEqual(cumsum(new DenseMatrix([
       [1, 4, 7],
