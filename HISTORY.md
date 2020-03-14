@@ -1,17 +1,24 @@
 # History
 
 
-# not yet published, version 6.6.1
+# not yet published, version 6.6.2
+
+- Run the build script during npm `prepare`, so you can use the library
+  directly when installing directly from git. Thanks @cinderblock.
+
+
+# 2020-02-26, version 6.6.1
 
 - Fix #1725: simplify `a/(b/c)`. Thanks @dbramwell.
+- Fix examples in documentation of `row` and `column`.
 
 
 # 2020-02-01, version 6.6.0
 
 - Implemented function `eigs`, see #1705, #542 #1175. Thanks @arkajitmandal.
-- Fixed #1727: validate matrix size when creating a `DenseMatrix` using 
+- Fixed #1727: validate matrix size when creating a `DenseMatrix` using
   `fromJSON`.
-- Fixed `DenseMatrix.map` copying the size and datatype from the original 
+- Fixed `DenseMatrix.map` copying the size and datatype from the original
   matrix instead of checking the returned dimensions and type of the callback.
 - Add a caret to dependencies (like) `^1.2.3`) to allow downstream updates
   without having to await a new release of mathjs.
@@ -19,7 +26,7 @@
 
 # 2020-01-08, version 6.5.0
 
-- Implemented `baseName` option for `createUnit`, see #1707. 
+- Implemented `baseName` option for `createUnit`, see #1707.
   Thanks @ericman314.
 
 

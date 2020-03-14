@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "6.6.0",
+  "version": "6.6.1",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
@@ -16,6 +16,7 @@
     "Benjamin Lucas (https://github.com/bnlcas)",
     "Brett Jurgens (https://github.com/brettjurgens)",
     "Bryan Cuccioli (https://github.com/bcuccioli)",
+    "Cameron Tacklind (https://github.com/cinderblock)",
     "Chris Chudzicki (https://github.com/ChristopherChudzicki)",
     "Chris Hadgis (https://github.com/SzechuanSage)",
     "Clinton Curry (https://github.com/clintonc)",
@@ -132,10 +133,10 @@
     "typed-function": "^1.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.8.4",
+    "@babel/core": "7.8.7",
     "@babel/plugin-transform-object-assign": "7.8.3",
-    "@babel/preset-env": "7.8.4",
-    "@babel/register": "7.8.3",
+    "@babel/preset-env": "7.8.7",
+    "@babel/register": "7.8.6",
     "babel-loader": "8.0.6",
     "benchmark": "2.1.4",
     "codecov": "3.6.5",
@@ -156,7 +157,7 @@
     "karma-webpack": "4.0.2",
     "math-expression-evaluator": "1.2.22",
     "mkdirp": "1.0.3",
-    "mocha": "7.0.1",
+    "mocha": "7.1.0",
     "ndarray": "1.0.19",
     "ndarray-determinant": "1.0.0",
     "ndarray-gemm": "1.0.0",
@@ -169,7 +170,7 @@
     "sylvester": "0.0.21",
     "uglify-js": "3.8.0",
     "underscore": "1.9.2",
-    "webpack": "4.41.6",
+    "webpack": "4.42.0",
     "zeros": "1.0.0"
   },
   "main": "main/es5",
@@ -196,7 +197,7 @@
   ],
   "scripts": {
     "build": "gulp",
-    "build-and-test": "npm run build && npm run test:src && npm run test:generated && npm run test:node && npm run lint",
+    "build-and-test": "npm run build && npm run test:all && npm run lint",
     "compile": "gulp compile",
     "watch": "gulp watch",
     "lint": "standard --env=mocha --env=worker",
@@ -205,10 +206,12 @@
     "test:src": "mocha test/unit-tests --recursive --require @babel/register --forbid-only",
     "test:generated": "mocha test/generated-code-tests --recursive --require @babel/register --forbid-only",
     "test:node": "mocha test/node-tests/*.test.js test/node-tests/**/*.test.js --recursive --forbid-only",
+    "test:all": "npm run test:src && npm run test:generated && npm run test:node",
     "test:browser": "karma start test/browser-test-config/local-karma.js",
     "test:browserstack": "karma start test/browser-test-config/browserstack-karma.js",
     "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test/unit-tests --recursive --require @babel/register && echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
-    "prepublishOnly": "npm run build-and-test"
+    "prepublishOnly": "npm run test:all && npm run lint",
+    "prepare": "npm run build"
   },
   "bin": {
     "mathjs": "./bin/cli.js"
