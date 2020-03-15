@@ -193,7 +193,6 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
   /**
    * C = A * B
-   * TODO unify implementation with dot(a, b)
    *
    * @param {Matrix} a            Dense Vector   (N)
    * @param {Matrix} b            Dense Vector   (N)
