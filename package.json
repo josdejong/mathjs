@@ -137,7 +137,7 @@
     "@babel/plugin-transform-object-assign": "7.8.3",
     "@babel/preset-env": "7.8.7",
     "@babel/register": "7.8.6",
-    "babel-loader": "8.0.6",
+    "babel-loader": "8.1.0",
     "benchmark": "2.1.4",
     "codecov": "3.6.5",
     "del": "5.1.0",
