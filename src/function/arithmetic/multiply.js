@@ -11,10 +11,11 @@ const dependencies = [
   'matrix',
   'addScalar',
   'multiplyScalar',
-  'equalScalar'
+  'equalScalar',
+  'dot'
 ]
 
-export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar }) => {
+export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar, dot }) => {
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
   const algorithm14 = createAlgorithm14({ typed })
 
@@ -201,38 +202,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
   function _multiplyVectorVector (a, b, n) {
     // check empty vector
     if (n === 0) { throw new Error('Cannot multiply two empty vectors') }
-
-    // a dense
-    const adata = a._data
-    const adt = a._datatype
-    // b dense
-    const bdata = b._data
-    const bdt = b._datatype
-
-    // datatype
-    let dt
-    // addScalar signature to use
-    let af = addScalar
-    // multiplyScalar signature to use
-    let mf = multiplyScalar
-
-    // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
-      // datatype
-      dt = adt
-      // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt])
-      mf = typed.find(multiplyScalar, [dt, dt])
-    }
-
-    // result (do not initialize it with zero)
-    let c = mf(adata[0], bdata[0])
-    // loop data
-    for (let i = 1; i < n; i++) {
-      // multiply and accumulate
-      c = af(c, mf(adata[i], bdata[i]))
-    }
-    return c
+    return dot(a, b)
   }
 
   /**

@@ -285,6 +285,14 @@ describe('multiply', function () {
       approx.deepEqual(multiply(matrix(a), matrix(b)), 32)
     })
 
+    it('should conjugate the first argument in dot product', function () {
+      const a = [complex(1, 2), complex(3, 4)]
+      const b = [complex(5, 6), complex(7, 8)]
+
+      approx.deepEqual(multiply(a, b), complex(70, -8))
+      approx.deepEqual(multiply(matrix(a), matrix(b)), complex(70, -8))
+    })
+
     it('should multiply row vector x column vector', function () {
       const v = [[1, 2, 3, 0, 0, 5, 6]]
 
