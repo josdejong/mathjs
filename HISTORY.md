@@ -1,6 +1,14 @@
 # History
 
 
+# Not yet published, version 7.0.0
+
+Breaking changes:
+
+- Improvements in calculation of the `dot` product of complex values. 
+  The first argument is now conjugated. See #1761. Thanks @m93a.  
+
+
 # 2020-03-29, version 6.6.2
 
 - Fix #1789: Function `eigs` not calculating with BigNumber precision 
