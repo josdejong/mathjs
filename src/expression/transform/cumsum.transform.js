@@ -1,7 +1,7 @@
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { errorTransform } from './utils/errorTransform'
-import { createSum } from '../../function/statistics/sum'
+import { createCumSum } from '../../function/statistics/cumsum'
 
 /**
  * Attach a transform function to math.sum
@@ -10,11 +10,11 @@ import { createSum } from '../../function/statistics/sum'
  * This transform changed the last `dim` parameter of function sum
  * from one-based to zero based
  */
-const name = 'sum'
-const dependencies = ['typed', 'config', 'add', '?bignumber', '?fraction']
+const name = 'cumsum'
+const dependencies = ['typed', 'add', '?Unit', '?DenseMatrix']
 
-export const createSumTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, bignumber, fraction }) => {
-  const sum = createSum({ typed, config, add, bignumber, fraction })
+export const createCumSumTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, Unit, DenseMatrix }) => {
+  const cumsum = createCumSum({ typed, add, Unit, DenseMatrix })
 
   return typed(name, {
     '...any': function (args) {
@@ -29,7 +29,7 @@ export const createSumTransform = /* #__PURE__ */ factory(name, dependencies, ({
       }
 
       try {
-        return sum.apply(null, args)
+        return cumsum.apply(null, args)
       } catch (err) {
         throw errorTransform(err)
       }

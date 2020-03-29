@@ -300,6 +300,7 @@ export { createRangeTransform } from './expression/transform/range.transform'
 export { createSubsetTransform } from './expression/transform/subset.transform'
 export { createStdTransform } from './expression/transform/std.transform'
 export { createSumTransform } from './expression/transform/sum.transform'
+export { createCumSumTransform } from './expression/transform/cumsum.transform'
 export { createVarianceTransform } from './expression/transform/variance.transform'
 
 // utils
