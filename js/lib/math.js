@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 6.6.1
- * @date    2020-02-26
+ * @version 6.6.2
+ * @date    2020-03-29
  *
  * @license
  * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
@@ -1612,9 +1612,7 @@ function isInteger(value) {
  * @returns {number}
  */
 
-var sign =
-/* #__PURE__ */
-Math.sign || function (x) {
+var sign = /* #__PURE__ */Math.sign || function (x) {
   if (x > 0) {
     return 1;
   } else if (x < 0) {
@@ -1629,9 +1627,7 @@ Math.sign || function (x) {
  * @returns {number}
  */
 
-var log2 =
-/* #__PURE__ */
-Math.log2 || function log2(x) {
+var log2 = /* #__PURE__ */Math.log2 || function log2(x) {
   return Math.log(x) / Math.LN2;
 };
 /**
@@ -1640,9 +1636,7 @@ Math.log2 || function log2(x) {
  * @returns {number}
  */
 
-var log10 =
-/* #__PURE__ */
-Math.log10 || function log10(x) {
+var log10 = /* #__PURE__ */Math.log10 || function log10(x) {
   return Math.log(x) / Math.LN10;
 };
 /**
@@ -1651,9 +1645,7 @@ Math.log10 || function log10(x) {
  * @returns {number}
  */
 
-var log1p =
-/* #__PURE__ */
-Math.log1p || function (x) {
+var log1p = /* #__PURE__ */Math.log1p || function (x) {
   return Math.log(x + 1);
 };
 /**
@@ -1666,9 +1658,7 @@ Math.log1p || function (x) {
  * @returns {number} Returns the cubic root of x
  */
 
-var cbrt =
-/* #__PURE__ */
-Math.cbrt || function cbrt(x) {
+var cbrt = /* #__PURE__ */Math.cbrt || function cbrt(x) {
   if (x === 0) {
     return x;
   }
@@ -1696,9 +1686,7 @@ Math.cbrt || function cbrt(x) {
  * @return {number} res
  */
 
-var expm1 =
-/* #__PURE__ */
-Math.expm1 || function expm1(x) {
+var expm1 = /* #__PURE__ */Math.expm1 || function expm1(x) {
   return x >= 2e-4 || x <= -2e-4 ? Math.exp(x) - 1 : x + x * x / 2 + x * x * x / 6;
 };
 /**
@@ -2230,6 +2218,13 @@ var tanh = Math.tanh || function (x) {
 
 "use strict";
 
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ endsWith; });
+__webpack_require__.d(__webpack_exports__, "d", function() { return /* binding */ string_format; });
+__webpack_require__.d(__webpack_exports__, "e", function() { return /* binding */ stringify; });
+__webpack_require__.d(__webpack_exports__, "c", function() { return /* binding */ string_escape; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ compareText; });
+
 // EXTERNAL MODULE: ./src/utils/is.js
 var is = __webpack_require__(1);
 
@@ -2449,11 +2444,6 @@ function toFixed(value, precision) {
   return value.toFixed(precision);
 }
 // CONCATENATED MODULE: ./src/utils/string.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return endsWith; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return string_format; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return stringify; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return string_escape; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return compareText; });
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -11696,9 +11686,7 @@ var _require = __webpack_require__(22),
 
 var defaultInstance = create(all); // TODO: not nice having to revert to CommonJS, find an ES6 solution
 
-module.exports =
-/* #__PURE__ */
-defaultInstance;
+module.exports = /* #__PURE__ */defaultInstance;
 
 /***/ }),
 /* 20 */
@@ -11731,7 +11719,333 @@ module.exports = g;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "createTyped", function() { return /* reexport */ typed_createTyped; });
+__webpack_require__.d(__webpack_exports__, "createResultSet", function() { return /* reexport */ createResultSet; });
+__webpack_require__.d(__webpack_exports__, "createBigNumberClass", function() { return /* reexport */ createBigNumberClass; });
+__webpack_require__.d(__webpack_exports__, "createComplexClass", function() { return /* reexport */ createComplexClass; });
+__webpack_require__.d(__webpack_exports__, "createFractionClass", function() { return /* reexport */ createFractionClass; });
+__webpack_require__.d(__webpack_exports__, "createRangeClass", function() { return /* reexport */ createRangeClass; });
+__webpack_require__.d(__webpack_exports__, "createMatrixClass", function() { return /* reexport */ createMatrixClass; });
+__webpack_require__.d(__webpack_exports__, "createDenseMatrixClass", function() { return /* reexport */ createDenseMatrixClass; });
+__webpack_require__.d(__webpack_exports__, "createClone", function() { return /* reexport */ createClone; });
+__webpack_require__.d(__webpack_exports__, "createIsInteger", function() { return /* reexport */ createIsInteger; });
+__webpack_require__.d(__webpack_exports__, "createIsNegative", function() { return /* reexport */ createIsNegative; });
+__webpack_require__.d(__webpack_exports__, "createIsNumeric", function() { return /* reexport */ createIsNumeric; });
+__webpack_require__.d(__webpack_exports__, "createHasNumericValue", function() { return /* reexport */ createHasNumericValue; });
+__webpack_require__.d(__webpack_exports__, "createIsPositive", function() { return /* reexport */ createIsPositive; });
+__webpack_require__.d(__webpack_exports__, "createIsZero", function() { return /* reexport */ createIsZero; });
+__webpack_require__.d(__webpack_exports__, "createIsNaN", function() { return /* reexport */ createIsNaN; });
+__webpack_require__.d(__webpack_exports__, "createTypeOf", function() { return /* reexport */ createTypeOf; });
+__webpack_require__.d(__webpack_exports__, "createDeprecatedTypeof", function() { return /* reexport */ createDeprecatedTypeof; });
+__webpack_require__.d(__webpack_exports__, "createEqualScalar", function() { return /* reexport */ createEqualScalar; });
+__webpack_require__.d(__webpack_exports__, "createSparseMatrixClass", function() { return /* reexport */ createSparseMatrixClass; });
+__webpack_require__.d(__webpack_exports__, "createNumber", function() { return /* reexport */ createNumber; });
+__webpack_require__.d(__webpack_exports__, "createString", function() { return /* reexport */ createString; });
+__webpack_require__.d(__webpack_exports__, "createBoolean", function() { return /* reexport */ createBoolean; });
+__webpack_require__.d(__webpack_exports__, "createBignumber", function() { return /* reexport */ createBignumber; });
+__webpack_require__.d(__webpack_exports__, "createComplex", function() { return /* reexport */ createComplex; });
+__webpack_require__.d(__webpack_exports__, "createFraction", function() { return /* reexport */ createFraction; });
+__webpack_require__.d(__webpack_exports__, "createMatrix", function() { return /* reexport */ createMatrix; });
+__webpack_require__.d(__webpack_exports__, "createSplitUnit", function() { return /* reexport */ createSplitUnit; });
+__webpack_require__.d(__webpack_exports__, "createUnaryMinus", function() { return /* reexport */ createUnaryMinus; });
+__webpack_require__.d(__webpack_exports__, "createUnaryPlus", function() { return /* reexport */ createUnaryPlus; });
+__webpack_require__.d(__webpack_exports__, "createAbs", function() { return /* reexport */ createAbs; });
+__webpack_require__.d(__webpack_exports__, "createApply", function() { return /* reexport */ createApply; });
+__webpack_require__.d(__webpack_exports__, "createAddScalar", function() { return /* reexport */ createAddScalar; });
+__webpack_require__.d(__webpack_exports__, "createCbrt", function() { return /* reexport */ createCbrt; });
+__webpack_require__.d(__webpack_exports__, "createCeil", function() { return /* reexport */ createCeil; });
+__webpack_require__.d(__webpack_exports__, "createCube", function() { return /* reexport */ createCube; });
+__webpack_require__.d(__webpack_exports__, "createExp", function() { return /* reexport */ createExp; });
+__webpack_require__.d(__webpack_exports__, "createExpm1", function() { return /* reexport */ createExpm1; });
+__webpack_require__.d(__webpack_exports__, "createFix", function() { return /* reexport */ createFix; });
+__webpack_require__.d(__webpack_exports__, "createFloor", function() { return /* reexport */ createFloor; });
+__webpack_require__.d(__webpack_exports__, "createGcd", function() { return /* reexport */ createGcd; });
+__webpack_require__.d(__webpack_exports__, "createLcm", function() { return /* reexport */ createLcm; });
+__webpack_require__.d(__webpack_exports__, "createLog10", function() { return /* reexport */ createLog10; });
+__webpack_require__.d(__webpack_exports__, "createLog2", function() { return /* reexport */ createLog2; });
+__webpack_require__.d(__webpack_exports__, "createMod", function() { return /* reexport */ createMod; });
+__webpack_require__.d(__webpack_exports__, "createMultiplyScalar", function() { return /* reexport */ createMultiplyScalar; });
+__webpack_require__.d(__webpack_exports__, "createMultiply", function() { return /* reexport */ createMultiply; });
+__webpack_require__.d(__webpack_exports__, "createNthRoot", function() { return /* reexport */ createNthRoot; });
+__webpack_require__.d(__webpack_exports__, "createSign", function() { return /* reexport */ createSign; });
+__webpack_require__.d(__webpack_exports__, "createSqrt", function() { return /* reexport */ createSqrt; });
+__webpack_require__.d(__webpack_exports__, "createSquare", function() { return /* reexport */ createSquare; });
+__webpack_require__.d(__webpack_exports__, "createSubtract", function() { return /* reexport */ createSubtract; });
+__webpack_require__.d(__webpack_exports__, "createXgcd", function() { return /* reexport */ createXgcd; });
+__webpack_require__.d(__webpack_exports__, "createDotMultiply", function() { return /* reexport */ createDotMultiply; });
+__webpack_require__.d(__webpack_exports__, "createBitAnd", function() { return /* reexport */ createBitAnd; });
+__webpack_require__.d(__webpack_exports__, "createBitNot", function() { return /* reexport */ createBitNot; });
+__webpack_require__.d(__webpack_exports__, "createBitOr", function() { return /* reexport */ createBitOr; });
+__webpack_require__.d(__webpack_exports__, "createBitXor", function() { return /* reexport */ createBitXor; });
+__webpack_require__.d(__webpack_exports__, "createArg", function() { return /* reexport */ createArg; });
+__webpack_require__.d(__webpack_exports__, "createConj", function() { return /* reexport */ createConj; });
+__webpack_require__.d(__webpack_exports__, "createIm", function() { return /* reexport */ createIm; });
+__webpack_require__.d(__webpack_exports__, "createRe", function() { return /* reexport */ createRe; });
+__webpack_require__.d(__webpack_exports__, "createNot", function() { return /* reexport */ createNot; });
+__webpack_require__.d(__webpack_exports__, "createOr", function() { return /* reexport */ createOr; });
+__webpack_require__.d(__webpack_exports__, "createXor", function() { return /* reexport */ createXor; });
+__webpack_require__.d(__webpack_exports__, "createConcat", function() { return /* reexport */ createConcat; });
+__webpack_require__.d(__webpack_exports__, "createColumn", function() { return /* reexport */ createColumn; });
+__webpack_require__.d(__webpack_exports__, "createCross", function() { return /* reexport */ createCross; });
+__webpack_require__.d(__webpack_exports__, "createDiag", function() { return /* reexport */ createDiag; });
+__webpack_require__.d(__webpack_exports__, "createEye", function() { return /* reexport */ createEye; });
+__webpack_require__.d(__webpack_exports__, "createFilter", function() { return /* reexport */ createFilter; });
+__webpack_require__.d(__webpack_exports__, "createFlatten", function() { return /* reexport */ createFlatten; });
+__webpack_require__.d(__webpack_exports__, "createForEach", function() { return /* reexport */ createForEach; });
+__webpack_require__.d(__webpack_exports__, "createGetMatrixDataType", function() { return /* reexport */ createGetMatrixDataType; });
+__webpack_require__.d(__webpack_exports__, "createIdentity", function() { return /* reexport */ createIdentity; });
+__webpack_require__.d(__webpack_exports__, "createKron", function() { return /* reexport */ createKron; });
+__webpack_require__.d(__webpack_exports__, "createMap", function() { return /* reexport */ createMap; });
+__webpack_require__.d(__webpack_exports__, "createOnes", function() { return /* reexport */ createOnes; });
+__webpack_require__.d(__webpack_exports__, "createRange", function() { return /* reexport */ range_createRange; });
+__webpack_require__.d(__webpack_exports__, "createReshape", function() { return /* reexport */ createReshape; });
+__webpack_require__.d(__webpack_exports__, "createResize", function() { return /* reexport */ createResize; });
+__webpack_require__.d(__webpack_exports__, "createRow", function() { return /* reexport */ createRow; });
+__webpack_require__.d(__webpack_exports__, "createSize", function() { return /* reexport */ createSize; });
+__webpack_require__.d(__webpack_exports__, "createSqueeze", function() { return /* reexport */ createSqueeze; });
+__webpack_require__.d(__webpack_exports__, "createSubset", function() { return /* reexport */ createSubset; });
+__webpack_require__.d(__webpack_exports__, "createTranspose", function() { return /* reexport */ createTranspose; });
+__webpack_require__.d(__webpack_exports__, "createCtranspose", function() { return /* reexport */ createCtranspose; });
+__webpack_require__.d(__webpack_exports__, "createZeros", function() { return /* reexport */ createZeros; });
+__webpack_require__.d(__webpack_exports__, "createErf", function() { return /* reexport */ createErf; });
+__webpack_require__.d(__webpack_exports__, "createMode", function() { return /* reexport */ createMode; });
+__webpack_require__.d(__webpack_exports__, "createProd", function() { return /* reexport */ createProd; });
+__webpack_require__.d(__webpack_exports__, "createFormat", function() { return /* reexport */ createFormat; });
+__webpack_require__.d(__webpack_exports__, "createPrint", function() { return /* reexport */ createPrint; });
+__webpack_require__.d(__webpack_exports__, "createTo", function() { return /* reexport */ createTo; });
+__webpack_require__.d(__webpack_exports__, "createIsPrime", function() { return /* reexport */ createIsPrime; });
+__webpack_require__.d(__webpack_exports__, "createNumeric", function() { return /* reexport */ createNumeric; });
+__webpack_require__.d(__webpack_exports__, "createDivideScalar", function() { return /* reexport */ createDivideScalar; });
+__webpack_require__.d(__webpack_exports__, "createPow", function() { return /* reexport */ createPow; });
+__webpack_require__.d(__webpack_exports__, "createRound", function() { return /* reexport */ createRound; });
+__webpack_require__.d(__webpack_exports__, "createLog", function() { return /* reexport */ createLog; });
+__webpack_require__.d(__webpack_exports__, "createLog1p", function() { return /* reexport */ createLog1p; });
+__webpack_require__.d(__webpack_exports__, "createNthRoots", function() { return /* reexport */ createNthRoots; });
+__webpack_require__.d(__webpack_exports__, "createDotPow", function() { return /* reexport */ createDotPow; });
+__webpack_require__.d(__webpack_exports__, "createDotDivide", function() { return /* reexport */ createDotDivide; });
+__webpack_require__.d(__webpack_exports__, "createLsolve", function() { return /* reexport */ createLsolve; });
+__webpack_require__.d(__webpack_exports__, "createUsolve", function() { return /* reexport */ createUsolve; });
+__webpack_require__.d(__webpack_exports__, "createLeftShift", function() { return /* reexport */ createLeftShift; });
+__webpack_require__.d(__webpack_exports__, "createRightArithShift", function() { return /* reexport */ createRightArithShift; });
+__webpack_require__.d(__webpack_exports__, "createRightLogShift", function() { return /* reexport */ createRightLogShift; });
+__webpack_require__.d(__webpack_exports__, "createAnd", function() { return /* reexport */ createAnd; });
+__webpack_require__.d(__webpack_exports__, "createCompare", function() { return /* reexport */ createCompare; });
+__webpack_require__.d(__webpack_exports__, "createCompareNatural", function() { return /* reexport */ createCompareNatural; });
+__webpack_require__.d(__webpack_exports__, "createCompareText", function() { return /* reexport */ createCompareText; });
+__webpack_require__.d(__webpack_exports__, "createEqual", function() { return /* reexport */ createEqual; });
+__webpack_require__.d(__webpack_exports__, "createEqualText", function() { return /* reexport */ createEqualText; });
+__webpack_require__.d(__webpack_exports__, "createSmaller", function() { return /* reexport */ createSmaller; });
+__webpack_require__.d(__webpack_exports__, "createSmallerEq", function() { return /* reexport */ createSmallerEq; });
+__webpack_require__.d(__webpack_exports__, "createLarger", function() { return /* reexport */ createLarger; });
+__webpack_require__.d(__webpack_exports__, "createLargerEq", function() { return /* reexport */ createLargerEq; });
+__webpack_require__.d(__webpack_exports__, "createDeepEqual", function() { return /* reexport */ createDeepEqual; });
+__webpack_require__.d(__webpack_exports__, "createUnequal", function() { return /* reexport */ createUnequal; });
+__webpack_require__.d(__webpack_exports__, "createPartitionSelect", function() { return /* reexport */ createPartitionSelect; });
+__webpack_require__.d(__webpack_exports__, "createSort", function() { return /* reexport */ createSort; });
+__webpack_require__.d(__webpack_exports__, "createMax", function() { return /* reexport */ createMax; });
+__webpack_require__.d(__webpack_exports__, "createMin", function() { return /* reexport */ createMin; });
+__webpack_require__.d(__webpack_exports__, "createImmutableDenseMatrixClass", function() { return /* reexport */ createImmutableDenseMatrixClass; });
+__webpack_require__.d(__webpack_exports__, "createIndexClass", function() { return /* reexport */ createIndexClass; });
+__webpack_require__.d(__webpack_exports__, "createFibonacciHeapClass", function() { return /* reexport */ createFibonacciHeapClass; });
+__webpack_require__.d(__webpack_exports__, "createSpaClass", function() { return /* reexport */ createSpaClass; });
+__webpack_require__.d(__webpack_exports__, "createUnitClass", function() { return /* reexport */ createUnitClass; });
+__webpack_require__.d(__webpack_exports__, "createUnitFunction", function() { return /* reexport */ createUnitFunction; });
+__webpack_require__.d(__webpack_exports__, "createSparse", function() { return /* reexport */ createSparse; });
+__webpack_require__.d(__webpack_exports__, "createCreateUnit", function() { return /* reexport */ createCreateUnit; });
+__webpack_require__.d(__webpack_exports__, "createAcos", function() { return /* reexport */ createAcos; });
+__webpack_require__.d(__webpack_exports__, "createAcosh", function() { return /* reexport */ createAcosh; });
+__webpack_require__.d(__webpack_exports__, "createAcot", function() { return /* reexport */ createAcot; });
+__webpack_require__.d(__webpack_exports__, "createAcoth", function() { return /* reexport */ createAcoth; });
+__webpack_require__.d(__webpack_exports__, "createAcsc", function() { return /* reexport */ createAcsc; });
+__webpack_require__.d(__webpack_exports__, "createAcsch", function() { return /* reexport */ createAcsch; });
+__webpack_require__.d(__webpack_exports__, "createAsec", function() { return /* reexport */ createAsec; });
+__webpack_require__.d(__webpack_exports__, "createAsech", function() { return /* reexport */ createAsech; });
+__webpack_require__.d(__webpack_exports__, "createAsin", function() { return /* reexport */ createAsin; });
+__webpack_require__.d(__webpack_exports__, "createAsinh", function() { return /* reexport */ createAsinh; });
+__webpack_require__.d(__webpack_exports__, "createAtan", function() { return /* reexport */ createAtan; });
+__webpack_require__.d(__webpack_exports__, "createAtan2", function() { return /* reexport */ createAtan2; });
+__webpack_require__.d(__webpack_exports__, "createAtanh", function() { return /* reexport */ createAtanh; });
+__webpack_require__.d(__webpack_exports__, "createCos", function() { return /* reexport */ createCos; });
+__webpack_require__.d(__webpack_exports__, "createCosh", function() { return /* reexport */ createCosh; });
+__webpack_require__.d(__webpack_exports__, "createCot", function() { return /* reexport */ createCot; });
+__webpack_require__.d(__webpack_exports__, "createCoth", function() { return /* reexport */ createCoth; });
+__webpack_require__.d(__webpack_exports__, "createCsc", function() { return /* reexport */ createCsc; });
+__webpack_require__.d(__webpack_exports__, "createCsch", function() { return /* reexport */ createCsch; });
+__webpack_require__.d(__webpack_exports__, "createSec", function() { return /* reexport */ createSec; });
+__webpack_require__.d(__webpack_exports__, "createSech", function() { return /* reexport */ createSech; });
+__webpack_require__.d(__webpack_exports__, "createSin", function() { return /* reexport */ createSin; });
+__webpack_require__.d(__webpack_exports__, "createSinh", function() { return /* reexport */ createSinh; });
+__webpack_require__.d(__webpack_exports__, "createTan", function() { return /* reexport */ createTan; });
+__webpack_require__.d(__webpack_exports__, "createTanh", function() { return /* reexport */ createTanh; });
+__webpack_require__.d(__webpack_exports__, "createSetCartesian", function() { return /* reexport */ createSetCartesian; });
+__webpack_require__.d(__webpack_exports__, "createSetDifference", function() { return /* reexport */ createSetDifference; });
+__webpack_require__.d(__webpack_exports__, "createSetDistinct", function() { return /* reexport */ createSetDistinct; });
+__webpack_require__.d(__webpack_exports__, "createSetIntersect", function() { return /* reexport */ createSetIntersect; });
+__webpack_require__.d(__webpack_exports__, "createSetIsSubset", function() { return /* reexport */ createSetIsSubset; });
+__webpack_require__.d(__webpack_exports__, "createSetMultiplicity", function() { return /* reexport */ createSetMultiplicity; });
+__webpack_require__.d(__webpack_exports__, "createSetPowerset", function() { return /* reexport */ createSetPowerset; });
+__webpack_require__.d(__webpack_exports__, "createSetSize", function() { return /* reexport */ createSetSize; });
+__webpack_require__.d(__webpack_exports__, "createSetSymDifference", function() { return /* reexport */ createSetSymDifference; });
+__webpack_require__.d(__webpack_exports__, "createSetUnion", function() { return /* reexport */ createSetUnion; });
+__webpack_require__.d(__webpack_exports__, "createAdd", function() { return /* reexport */ createAdd; });
+__webpack_require__.d(__webpack_exports__, "createHypot", function() { return /* reexport */ createHypot; });
+__webpack_require__.d(__webpack_exports__, "createNorm", function() { return /* reexport */ createNorm; });
+__webpack_require__.d(__webpack_exports__, "createDot", function() { return /* reexport */ createDot; });
+__webpack_require__.d(__webpack_exports__, "createTrace", function() { return /* reexport */ createTrace; });
+__webpack_require__.d(__webpack_exports__, "createIndex", function() { return /* reexport */ createIndex; });
+__webpack_require__.d(__webpack_exports__, "createNode", function() { return /* reexport */ createNode; });
+__webpack_require__.d(__webpack_exports__, "createAccessorNode", function() { return /* reexport */ createAccessorNode; });
+__webpack_require__.d(__webpack_exports__, "createArrayNode", function() { return /* reexport */ createArrayNode; });
+__webpack_require__.d(__webpack_exports__, "createAssignmentNode", function() { return /* reexport */ createAssignmentNode; });
+__webpack_require__.d(__webpack_exports__, "createBlockNode", function() { return /* reexport */ createBlockNode; });
+__webpack_require__.d(__webpack_exports__, "createConditionalNode", function() { return /* reexport */ createConditionalNode; });
+__webpack_require__.d(__webpack_exports__, "createConstantNode", function() { return /* reexport */ ConstantNode_createConstantNode; });
+__webpack_require__.d(__webpack_exports__, "createFunctionAssignmentNode", function() { return /* reexport */ createFunctionAssignmentNode; });
+__webpack_require__.d(__webpack_exports__, "createIndexNode", function() { return /* reexport */ createIndexNode; });
+__webpack_require__.d(__webpack_exports__, "createObjectNode", function() { return /* reexport */ createObjectNode; });
+__webpack_require__.d(__webpack_exports__, "createOperatorNode", function() { return /* reexport */ createOperatorNode; });
+__webpack_require__.d(__webpack_exports__, "createParenthesisNode", function() { return /* reexport */ createParenthesisNode; });
+__webpack_require__.d(__webpack_exports__, "createRangeNode", function() { return /* reexport */ createRangeNode; });
+__webpack_require__.d(__webpack_exports__, "createRelationalNode", function() { return /* reexport */ createRelationalNode; });
+__webpack_require__.d(__webpack_exports__, "createSymbolNode", function() { return /* reexport */ createSymbolNode; });
+__webpack_require__.d(__webpack_exports__, "createFunctionNode", function() { return /* reexport */ createFunctionNode; });
+__webpack_require__.d(__webpack_exports__, "createParse", function() { return /* reexport */ createParse; });
+__webpack_require__.d(__webpack_exports__, "createCompile", function() { return /* reexport */ createCompile; });
+__webpack_require__.d(__webpack_exports__, "createEvaluate", function() { return /* reexport */ createEvaluate; });
+__webpack_require__.d(__webpack_exports__, "createDeprecatedEval", function() { return /* reexport */ createDeprecatedEval; });
+__webpack_require__.d(__webpack_exports__, "createParserClass", function() { return /* reexport */ createParserClass; });
+__webpack_require__.d(__webpack_exports__, "createParser", function() { return /* reexport */ createParser; });
+__webpack_require__.d(__webpack_exports__, "createLup", function() { return /* reexport */ createLup; });
+__webpack_require__.d(__webpack_exports__, "createQr", function() { return /* reexport */ createQr; });
+__webpack_require__.d(__webpack_exports__, "createSlu", function() { return /* reexport */ createSlu; });
+__webpack_require__.d(__webpack_exports__, "createLusolve", function() { return /* reexport */ createLusolve; });
+__webpack_require__.d(__webpack_exports__, "createHelpClass", function() { return /* reexport */ createHelpClass; });
+__webpack_require__.d(__webpack_exports__, "createChainClass", function() { return /* reexport */ createChainClass; });
+__webpack_require__.d(__webpack_exports__, "createHelp", function() { return /* reexport */ createHelp; });
+__webpack_require__.d(__webpack_exports__, "createChain", function() { return /* reexport */ createChain; });
+__webpack_require__.d(__webpack_exports__, "createDet", function() { return /* reexport */ createDet; });
+__webpack_require__.d(__webpack_exports__, "createInv", function() { return /* reexport */ createInv; });
+__webpack_require__.d(__webpack_exports__, "createEigs", function() { return /* reexport */ createEigs; });
+__webpack_require__.d(__webpack_exports__, "createExpm", function() { return /* reexport */ createExpm; });
+__webpack_require__.d(__webpack_exports__, "createSqrtm", function() { return /* reexport */ createSqrtm; });
+__webpack_require__.d(__webpack_exports__, "createDivide", function() { return /* reexport */ createDivide; });
+__webpack_require__.d(__webpack_exports__, "createDistance", function() { return /* reexport */ createDistance; });
+__webpack_require__.d(__webpack_exports__, "createIntersect", function() { return /* reexport */ createIntersect; });
+__webpack_require__.d(__webpack_exports__, "createSum", function() { return /* reexport */ createSum; });
+__webpack_require__.d(__webpack_exports__, "createMean", function() { return /* reexport */ createMean; });
+__webpack_require__.d(__webpack_exports__, "createMedian", function() { return /* reexport */ createMedian; });
+__webpack_require__.d(__webpack_exports__, "createMad", function() { return /* reexport */ createMad; });
+__webpack_require__.d(__webpack_exports__, "createVariance", function() { return /* reexport */ createVariance; });
+__webpack_require__.d(__webpack_exports__, "createDeprecatedVar", function() { return /* reexport */ createDeprecatedVar; });
+__webpack_require__.d(__webpack_exports__, "createQuantileSeq", function() { return /* reexport */ createQuantileSeq; });
+__webpack_require__.d(__webpack_exports__, "createStd", function() { return /* reexport */ createStd; });
+__webpack_require__.d(__webpack_exports__, "createCombinations", function() { return /* reexport */ createCombinations; });
+__webpack_require__.d(__webpack_exports__, "createCombinationsWithRep", function() { return /* reexport */ createCombinationsWithRep; });
+__webpack_require__.d(__webpack_exports__, "createGamma", function() { return /* reexport */ createGamma; });
+__webpack_require__.d(__webpack_exports__, "createFactorial", function() { return /* reexport */ createFactorial; });
+__webpack_require__.d(__webpack_exports__, "createKldivergence", function() { return /* reexport */ createKldivergence; });
+__webpack_require__.d(__webpack_exports__, "createMultinomial", function() { return /* reexport */ createMultinomial; });
+__webpack_require__.d(__webpack_exports__, "createPermutations", function() { return /* reexport */ createPermutations; });
+__webpack_require__.d(__webpack_exports__, "createPickRandom", function() { return /* reexport */ createPickRandom; });
+__webpack_require__.d(__webpack_exports__, "createRandom", function() { return /* reexport */ createRandom; });
+__webpack_require__.d(__webpack_exports__, "createRandomInt", function() { return /* reexport */ createRandomInt; });
+__webpack_require__.d(__webpack_exports__, "createStirlingS2", function() { return /* reexport */ createStirlingS2; });
+__webpack_require__.d(__webpack_exports__, "createBellNumbers", function() { return /* reexport */ createBellNumbers; });
+__webpack_require__.d(__webpack_exports__, "createCatalan", function() { return /* reexport */ createCatalan; });
+__webpack_require__.d(__webpack_exports__, "createComposition", function() { return /* reexport */ createComposition; });
+__webpack_require__.d(__webpack_exports__, "createSimplify", function() { return /* reexport */ createSimplify; });
+__webpack_require__.d(__webpack_exports__, "createDerivative", function() { return /* reexport */ createDerivative; });
+__webpack_require__.d(__webpack_exports__, "createRationalize", function() { return /* reexport */ createRationalize; });
+__webpack_require__.d(__webpack_exports__, "createReviver", function() { return /* reexport */ createReviver; });
+__webpack_require__.d(__webpack_exports__, "createE", function() { return /* reexport */ createE; });
+__webpack_require__.d(__webpack_exports__, "createUppercaseE", function() { return /* reexport */ createUppercaseE; });
+__webpack_require__.d(__webpack_exports__, "createFalse", function() { return /* reexport */ createFalse; });
+__webpack_require__.d(__webpack_exports__, "createI", function() { return /* reexport */ createI; });
+__webpack_require__.d(__webpack_exports__, "createInfinity", function() { return /* reexport */ createInfinity; });
+__webpack_require__.d(__webpack_exports__, "createLN10", function() { return /* reexport */ createLN10; });
+__webpack_require__.d(__webpack_exports__, "createLN2", function() { return /* reexport */ createLN2; });
+__webpack_require__.d(__webpack_exports__, "createLOG10E", function() { return /* reexport */ createLOG10E; });
+__webpack_require__.d(__webpack_exports__, "createLOG2E", function() { return /* reexport */ createLOG2E; });
+__webpack_require__.d(__webpack_exports__, "createNaN", function() { return /* reexport */ createNaN; });
+__webpack_require__.d(__webpack_exports__, "createNull", function() { return /* reexport */ createNull; });
+__webpack_require__.d(__webpack_exports__, "createPhi", function() { return /* reexport */ createPhi; });
+__webpack_require__.d(__webpack_exports__, "createPi", function() { return /* reexport */ createPi; });
+__webpack_require__.d(__webpack_exports__, "createUppercasePi", function() { return /* reexport */ createUppercasePi; });
+__webpack_require__.d(__webpack_exports__, "createSQRT1_2", function() { return /* reexport */ createSQRT1_2; });
+__webpack_require__.d(__webpack_exports__, "createSQRT2", function() { return /* reexport */ createSQRT2; });
+__webpack_require__.d(__webpack_exports__, "createTau", function() { return /* reexport */ createTau; });
+__webpack_require__.d(__webpack_exports__, "createTrue", function() { return /* reexport */ createTrue; });
+__webpack_require__.d(__webpack_exports__, "createVersion", function() { return /* reexport */ createVersion; });
+__webpack_require__.d(__webpack_exports__, "createAtomicMass", function() { return /* reexport */ createAtomicMass; });
+__webpack_require__.d(__webpack_exports__, "createAvogadro", function() { return /* reexport */ createAvogadro; });
+__webpack_require__.d(__webpack_exports__, "createBohrMagneton", function() { return /* reexport */ createBohrMagneton; });
+__webpack_require__.d(__webpack_exports__, "createBohrRadius", function() { return /* reexport */ createBohrRadius; });
+__webpack_require__.d(__webpack_exports__, "createBoltzmann", function() { return /* reexport */ createBoltzmann; });
+__webpack_require__.d(__webpack_exports__, "createClassicalElectronRadius", function() { return /* reexport */ createClassicalElectronRadius; });
+__webpack_require__.d(__webpack_exports__, "createConductanceQuantum", function() { return /* reexport */ createConductanceQuantum; });
+__webpack_require__.d(__webpack_exports__, "createCoulomb", function() { return /* reexport */ createCoulomb; });
+__webpack_require__.d(__webpack_exports__, "createDeuteronMass", function() { return /* reexport */ createDeuteronMass; });
+__webpack_require__.d(__webpack_exports__, "createEfimovFactor", function() { return /* reexport */ createEfimovFactor; });
+__webpack_require__.d(__webpack_exports__, "createElectricConstant", function() { return /* reexport */ createElectricConstant; });
+__webpack_require__.d(__webpack_exports__, "createElectronMass", function() { return /* reexport */ createElectronMass; });
+__webpack_require__.d(__webpack_exports__, "createElementaryCharge", function() { return /* reexport */ createElementaryCharge; });
+__webpack_require__.d(__webpack_exports__, "createFaraday", function() { return /* reexport */ createFaraday; });
+__webpack_require__.d(__webpack_exports__, "createFermiCoupling", function() { return /* reexport */ createFermiCoupling; });
+__webpack_require__.d(__webpack_exports__, "createFineStructure", function() { return /* reexport */ createFineStructure; });
+__webpack_require__.d(__webpack_exports__, "createFirstRadiation", function() { return /* reexport */ createFirstRadiation; });
+__webpack_require__.d(__webpack_exports__, "createGasConstant", function() { return /* reexport */ createGasConstant; });
+__webpack_require__.d(__webpack_exports__, "createGravitationConstant", function() { return /* reexport */ createGravitationConstant; });
+__webpack_require__.d(__webpack_exports__, "createGravity", function() { return /* reexport */ createGravity; });
+__webpack_require__.d(__webpack_exports__, "createHartreeEnergy", function() { return /* reexport */ createHartreeEnergy; });
+__webpack_require__.d(__webpack_exports__, "createInverseConductanceQuantum", function() { return /* reexport */ createInverseConductanceQuantum; });
+__webpack_require__.d(__webpack_exports__, "createKlitzing", function() { return /* reexport */ createKlitzing; });
+__webpack_require__.d(__webpack_exports__, "createLoschmidt", function() { return /* reexport */ createLoschmidt; });
+__webpack_require__.d(__webpack_exports__, "createMagneticConstant", function() { return /* reexport */ createMagneticConstant; });
+__webpack_require__.d(__webpack_exports__, "createMagneticFluxQuantum", function() { return /* reexport */ createMagneticFluxQuantum; });
+__webpack_require__.d(__webpack_exports__, "createMolarMass", function() { return /* reexport */ createMolarMass; });
+__webpack_require__.d(__webpack_exports__, "createMolarMassC12", function() { return /* reexport */ createMolarMassC12; });
+__webpack_require__.d(__webpack_exports__, "createMolarPlanckConstant", function() { return /* reexport */ createMolarPlanckConstant; });
+__webpack_require__.d(__webpack_exports__, "createMolarVolume", function() { return /* reexport */ createMolarVolume; });
+__webpack_require__.d(__webpack_exports__, "createNeutronMass", function() { return /* reexport */ createNeutronMass; });
+__webpack_require__.d(__webpack_exports__, "createNuclearMagneton", function() { return /* reexport */ createNuclearMagneton; });
+__webpack_require__.d(__webpack_exports__, "createPlanckCharge", function() { return /* reexport */ createPlanckCharge; });
+__webpack_require__.d(__webpack_exports__, "createPlanckConstant", function() { return /* reexport */ createPlanckConstant; });
+__webpack_require__.d(__webpack_exports__, "createPlanckLength", function() { return /* reexport */ createPlanckLength; });
+__webpack_require__.d(__webpack_exports__, "createPlanckMass", function() { return /* reexport */ createPlanckMass; });
+__webpack_require__.d(__webpack_exports__, "createPlanckTemperature", function() { return /* reexport */ createPlanckTemperature; });
+__webpack_require__.d(__webpack_exports__, "createPlanckTime", function() { return /* reexport */ createPlanckTime; });
+__webpack_require__.d(__webpack_exports__, "createProtonMass", function() { return /* reexport */ createProtonMass; });
+__webpack_require__.d(__webpack_exports__, "createQuantumOfCirculation", function() { return /* reexport */ createQuantumOfCirculation; });
+__webpack_require__.d(__webpack_exports__, "createReducedPlanckConstant", function() { return /* reexport */ createReducedPlanckConstant; });
+__webpack_require__.d(__webpack_exports__, "createRydberg", function() { return /* reexport */ createRydberg; });
+__webpack_require__.d(__webpack_exports__, "createSackurTetrode", function() { return /* reexport */ createSackurTetrode; });
+__webpack_require__.d(__webpack_exports__, "createSecondRadiation", function() { return /* reexport */ createSecondRadiation; });
+__webpack_require__.d(__webpack_exports__, "createSpeedOfLight", function() { return /* reexport */ createSpeedOfLight; });
+__webpack_require__.d(__webpack_exports__, "createStefanBoltzmann", function() { return /* reexport */ createStefanBoltzmann; });
+__webpack_require__.d(__webpack_exports__, "createThomsonCrossSection", function() { return /* reexport */ createThomsonCrossSection; });
+__webpack_require__.d(__webpack_exports__, "createVacuumImpedance", function() { return /* reexport */ createVacuumImpedance; });
+__webpack_require__.d(__webpack_exports__, "createWeakMixingAngle", function() { return /* reexport */ createWeakMixingAngle; });
+__webpack_require__.d(__webpack_exports__, "createWienDisplacement", function() { return /* reexport */ createWienDisplacement; });
+__webpack_require__.d(__webpack_exports__, "createApplyTransform", function() { return /* reexport */ createApplyTransform; });
+__webpack_require__.d(__webpack_exports__, "createColumnTransform", function() { return /* reexport */ createColumnTransform; });
+__webpack_require__.d(__webpack_exports__, "createFilterTransform", function() { return /* reexport */ createFilterTransform; });
+__webpack_require__.d(__webpack_exports__, "createForEachTransform", function() { return /* reexport */ createForEachTransform; });
+__webpack_require__.d(__webpack_exports__, "createIndexTransform", function() { return /* reexport */ createIndexTransform; });
+__webpack_require__.d(__webpack_exports__, "createMapTransform", function() { return /* reexport */ createMapTransform; });
+__webpack_require__.d(__webpack_exports__, "createMaxTransform", function() { return /* reexport */ createMaxTransform; });
+__webpack_require__.d(__webpack_exports__, "createMeanTransform", function() { return /* reexport */ createMeanTransform; });
+__webpack_require__.d(__webpack_exports__, "createMinTransform", function() { return /* reexport */ createMinTransform; });
+__webpack_require__.d(__webpack_exports__, "createRangeTransform", function() { return /* reexport */ createRangeTransform; });
+__webpack_require__.d(__webpack_exports__, "createRowTransform", function() { return /* reexport */ createRowTransform; });
+__webpack_require__.d(__webpack_exports__, "createSubsetTransform", function() { return /* reexport */ createSubsetTransform; });
+__webpack_require__.d(__webpack_exports__, "createConcatTransform", function() { return /* reexport */ createConcatTransform; });
+__webpack_require__.d(__webpack_exports__, "createStdTransform", function() { return /* reexport */ createStdTransform; });
+__webpack_require__.d(__webpack_exports__, "createSumTransform", function() { return /* reexport */ createSumTransform; });
+__webpack_require__.d(__webpack_exports__, "createVarianceTransform", function() { return /* reexport */ createVarianceTransform; });
 
 // EXTERNAL MODULE: ./src/utils/is.js
 var is = __webpack_require__(1);
@@ -11803,9 +12117,7 @@ var typed_dependencies = ['?BigNumber', '?Complex', '?DenseMatrix', '?Fraction']
  * @returns {Function}
  */
 
-var typed_createTyped =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('typed', typed_dependencies, function createTyped(_ref) {
+var typed_createTyped = /* #__PURE__ */Object(factory["a" /* factory */])('typed', typed_dependencies, function createTyped(_ref) {
   var BigNumber = _ref.BigNumber,
       Complex = _ref.Complex,
       DenseMatrix = _ref.DenseMatrix,
@@ -12136,9 +12448,7 @@ function throwNoFraction(x) {
 
 var ResultSet_name = 'ResultSet';
 var ResultSet_dependencies = [];
-var createResultSet =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(ResultSet_name, ResultSet_dependencies, function () {
+var createResultSet = /* #__PURE__ */Object(factory["a" /* factory */])(ResultSet_name, ResultSet_dependencies, function () {
   /**
    * A ResultSet contains a list or results
    * @class ResultSet
@@ -12218,9 +12528,7 @@ var decimal_default = /*#__PURE__*/__webpack_require__.n(decimal);
 
 var BigNumber_name = 'BigNumber';
 var BigNumber_dependencies = ['?on', 'config'];
-var createBigNumberClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(BigNumber_name, BigNumber_dependencies, function (_ref) {
+var createBigNumberClass = /* #__PURE__ */Object(factory["a" /* factory */])(BigNumber_name, BigNumber_dependencies, function (_ref) {
   var on = _ref.on,
       config = _ref.config;
   var BigNumber = decimal_default.a.clone({
@@ -12285,9 +12593,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 var Complex_name = 'Complex';
 var Complex_dependencies = [];
-var createComplexClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(Complex_name, Complex_dependencies, function () {
+var createComplexClass = /* #__PURE__ */Object(factory["a" /* factory */])(Complex_name, Complex_dependencies, function () {
   /**
    * Attach type information
    */
@@ -12500,9 +12806,7 @@ var fraction_default = /*#__PURE__*/__webpack_require__.n(fraction_js_fraction);
 
 var Fraction_name = 'Fraction';
 var Fraction_dependencies = [];
-var createFractionClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(Fraction_name, Fraction_dependencies, function () {
+var createFractionClass = /* #__PURE__ */Object(factory["a" /* factory */])(Fraction_name, Fraction_dependencies, function () {
   /**
    * Attach type information
    */
@@ -12543,9 +12847,7 @@ Object(factory["a" /* factory */])(Fraction_name, Fraction_dependencies, functio
 
 var Range_name = 'Range';
 var Range_dependencies = [];
-var createRangeClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(Range_name, Range_dependencies, function () {
+var createRangeClass = /* #__PURE__ */Object(factory["a" /* factory */])(Range_name, Range_dependencies, function () {
   /**
    * Create a range. A range has a start, step, and end, and contains functions
    * to iterate over the range.
@@ -12880,9 +13182,7 @@ Object(factory["a" /* factory */])(Range_name, Range_dependencies, function () {
 
 var Matrix_name = 'Matrix';
 var Matrix_dependencies = [];
-var createMatrixClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(Matrix_name, Matrix_dependencies, function () {
+var createMatrixClass = /* #__PURE__ */Object(factory["a" /* factory */])(Matrix_name, Matrix_dependencies, function () {
   /**
    * @constructor Matrix
    *
@@ -13164,9 +13464,7 @@ var DimensionError = __webpack_require__(6);
 
 var DenseMatrix_name = 'DenseMatrix';
 var DenseMatrix_dependencies = ['Matrix'];
-var createDenseMatrixClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(DenseMatrix_name, DenseMatrix_dependencies, function (_ref) {
+var createDenseMatrixClass = /* #__PURE__ */Object(factory["a" /* factory */])(DenseMatrix_name, DenseMatrix_dependencies, function (_ref) {
   var Matrix = _ref.Matrix;
 
   /**
@@ -14089,9 +14387,7 @@ Object(factory["a" /* factory */])(DenseMatrix_name, DenseMatrix_dependencies, f
 
 var clone_name = 'clone';
 var clone_dependencies = ['typed'];
-var createClone =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(clone_name, clone_dependencies, function (_ref) {
+var createClone = /* #__PURE__ */Object(factory["a" /* factory */])(clone_name, clone_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -14338,9 +14634,7 @@ function scatter(a, j, w, x, u, mark, cindex, f, inverse, update, value) {
 
 var isInteger_name = 'isInteger';
 var isInteger_dependencies = ['typed'];
-var createIsInteger =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(isInteger_name, isInteger_dependencies, function (_ref) {
+var createIsInteger = /* #__PURE__ */Object(factory["a" /* factory */])(isInteger_name, isInteger_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -14416,9 +14710,7 @@ isNaNNumber.signature = utils_n1;
 
 var isNegative_name = 'isNegative';
 var isNegative_dependencies = ['typed'];
-var createIsNegative =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(isNegative_name, isNegative_dependencies, function (_ref) {
+var createIsNegative = /* #__PURE__ */Object(factory["a" /* factory */])(isNegative_name, isNegative_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -14472,9 +14764,7 @@ Object(factory["a" /* factory */])(isNegative_name, isNegative_dependencies, fun
 
 var isNumeric_name = 'isNumeric';
 var isNumeric_dependencies = ['typed'];
-var createIsNumeric =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(isNumeric_name, isNumeric_dependencies, function (_ref) {
+var createIsNumeric = /* #__PURE__ */Object(factory["a" /* factory */])(isNumeric_name, isNumeric_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -14523,9 +14813,7 @@ Object(factory["a" /* factory */])(isNumeric_name, isNumeric_dependencies, funct
 
 var hasNumericValue_name = 'hasNumericValue';
 var hasNumericValue_dependencies = ['typed', 'isNumeric'];
-var createHasNumericValue =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(hasNumericValue_name, hasNumericValue_dependencies, function (_ref) {
+var createHasNumericValue = /* #__PURE__ */Object(factory["a" /* factory */])(hasNumericValue_name, hasNumericValue_dependencies, function (_ref) {
   var typed = _ref.typed,
       isNumeric = _ref.isNumeric;
 
@@ -14573,9 +14861,7 @@ Object(factory["a" /* factory */])(hasNumericValue_name, hasNumericValue_depende
 
 var isPositive_name = 'isPositive';
 var isPositive_dependencies = ['typed'];
-var createIsPositive =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(isPositive_name, isPositive_dependencies, function (_ref) {
+var createIsPositive = /* #__PURE__ */Object(factory["a" /* factory */])(isPositive_name, isPositive_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -14632,9 +14918,7 @@ Object(factory["a" /* factory */])(isPositive_name, isPositive_dependencies, fun
 
 var isZero_name = 'isZero';
 var isZero_dependencies = ['typed'];
-var createIsZero =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(isZero_name, isZero_dependencies, function (_ref) {
+var createIsZero = /* #__PURE__ */Object(factory["a" /* factory */])(isZero_name, isZero_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -14696,9 +14980,7 @@ Object(factory["a" /* factory */])(isZero_name, isZero_dependencies, function (_
 
 var isNaN_name = 'isNaN';
 var isNaN_dependencies = ['typed'];
-var createIsNaN =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(isNaN_name, isNaN_dependencies, function (_ref) {
+var createIsNaN = /* #__PURE__ */Object(factory["a" /* factory */])(isNaN_name, isNaN_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -14758,9 +15040,7 @@ var utils_log = __webpack_require__(8);
 
 var typeOf_name = 'typeOf';
 var typeOf_dependencies = ['typed'];
-var createTypeOf =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(typeOf_name, typeOf_dependencies, function (_ref) {
+var createTypeOf = /* #__PURE__ */Object(factory["a" /* factory */])(typeOf_name, typeOf_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -14826,9 +15106,7 @@ Object(factory["a" /* factory */])(typeOf_name, typeOf_dependencies, function (_
   });
 }); // For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-06
 
-var createDeprecatedTypeof =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('typeof', [], function () {
+var createDeprecatedTypeof = /* #__PURE__ */Object(factory["a" /* factory */])('typeof', [], function () {
   return function () {
     Object(utils_log["a" /* warnOnce */])('Function "typeof" has been renamed to "typeOf" in v6.0.0, please use the new function instead.');
 
@@ -14903,9 +15181,7 @@ function complexEquals(x, y, epsilon) {
 
 var equalScalar_name = 'equalScalar';
 var equalScalar_dependencies = ['typed', 'config'];
-var createEqualScalar =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(equalScalar_name, equalScalar_dependencies, function (_ref) {
+var createEqualScalar = /* #__PURE__ */Object(factory["a" /* factory */])(equalScalar_name, equalScalar_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config;
 
@@ -14962,9 +15238,7 @@ var createEqualScalarNumber = Object(factory["a" /* factory */])(equalScalar_nam
 
 var SparseMatrix_name = 'SparseMatrix';
 var SparseMatrix_dependencies = ['typed', 'equalScalar', 'Matrix'];
-var createSparseMatrixClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(SparseMatrix_name, SparseMatrix_dependencies, function (_ref) {
+var createSparseMatrixClass = /* #__PURE__ */Object(factory["a" /* factory */])(SparseMatrix_name, SparseMatrix_dependencies, function (_ref) {
   var typed = _ref.typed,
       equalScalar = _ref.equalScalar,
       Matrix = _ref.Matrix;
@@ -16488,9 +16762,7 @@ Object(factory["a" /* factory */])(SparseMatrix_name, SparseMatrix_dependencies,
 
 var number_name = 'number';
 var number_dependencies = ['typed'];
-var createNumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(number_name, number_dependencies, function (_ref) {
+var createNumber = /* #__PURE__ */Object(factory["a" /* factory */])(number_name, number_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -16562,9 +16834,7 @@ Object(factory["a" /* factory */])(number_name, number_dependencies, function (_
 
 var string_name = 'string';
 var string_dependencies = ['typed'];
-var createString =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(string_name, string_dependencies, function (_ref) {
+var createString = /* #__PURE__ */Object(factory["a" /* factory */])(string_name, string_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -16620,9 +16890,7 @@ Object(factory["a" /* factory */])(string_name, string_dependencies, function (_
 
 var boolean_name = 'boolean';
 var boolean_dependencies = ['typed'];
-var createBoolean =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(boolean_name, boolean_dependencies, function (_ref) {
+var createBoolean = /* #__PURE__ */Object(factory["a" /* factory */])(boolean_name, boolean_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -16698,9 +16966,7 @@ Object(factory["a" /* factory */])(boolean_name, boolean_dependencies, function 
 
 var bignumber_name = 'bignumber';
 var bignumber_dependencies = ['typed', 'BigNumber'];
-var createBignumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(bignumber_name, bignumber_dependencies, function (_ref) {
+var createBignumber = /* #__PURE__ */Object(factory["a" /* factory */])(bignumber_name, bignumber_dependencies, function (_ref) {
   var typed = _ref.typed,
       BigNumber = _ref.BigNumber;
 
@@ -16761,9 +17027,7 @@ Object(factory["a" /* factory */])(bignumber_name, bignumber_dependencies, funct
 
 var complex_name = 'complex';
 var complex_dependencies = ['typed', 'Complex'];
-var createComplex =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(complex_name, complex_dependencies, function (_ref) {
+var createComplex = /* #__PURE__ */Object(factory["a" /* factory */])(complex_name, complex_dependencies, function (_ref) {
   var typed = _ref.typed,
       Complex = _ref.Complex;
 
@@ -16853,9 +17117,7 @@ Object(factory["a" /* factory */])(complex_name, complex_dependencies, function 
 
 var fraction_name = 'fraction';
 var fraction_dependencies = ['typed', 'Fraction'];
-var createFraction =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(fraction_name, fraction_dependencies, function (_ref) {
+var createFraction = /* #__PURE__ */Object(factory["a" /* factory */])(fraction_name, fraction_dependencies, function (_ref) {
   var typed = _ref.typed,
       Fraction = _ref.Fraction;
 
@@ -16920,9 +17182,7 @@ Object(factory["a" /* factory */])(fraction_name, fraction_dependencies, functio
 
 var matrix_name = 'matrix';
 var matrix_dependencies = ['typed', 'Matrix', 'DenseMatrix', 'SparseMatrix'];
-var createMatrix =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(matrix_name, matrix_dependencies, function (_ref) {
+var createMatrix = /* #__PURE__ */Object(factory["a" /* factory */])(matrix_name, matrix_dependencies, function (_ref) {
   var typed = _ref.typed,
       Matrix = _ref.Matrix,
       DenseMatrix = _ref.DenseMatrix,
@@ -17005,9 +17265,7 @@ Object(factory["a" /* factory */])(matrix_name, matrix_dependencies, function (_
 
 var splitUnit_name = 'splitUnit';
 var splitUnit_dependencies = ['typed'];
-var createSplitUnit =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(splitUnit_name, splitUnit_dependencies, function (_ref) {
+var createSplitUnit = /* #__PURE__ */Object(factory["a" /* factory */])(splitUnit_name, splitUnit_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -17378,9 +17636,7 @@ normNumber.signature = arithmetic_n1;
 
 var unaryMinus_name = 'unaryMinus';
 var unaryMinus_dependencies = ['typed'];
-var createUnaryMinus =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(unaryMinus_name, unaryMinus_dependencies, function (_ref) {
+var createUnaryMinus = /* #__PURE__ */Object(factory["a" /* factory */])(unaryMinus_name, unaryMinus_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -17436,9 +17692,7 @@ Object(factory["a" /* factory */])(unaryMinus_name, unaryMinus_dependencies, fun
 
 var unaryPlus_name = 'unaryPlus';
 var unaryPlus_dependencies = ['typed', 'config', 'BigNumber'];
-var createUnaryPlus =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(unaryPlus_name, unaryPlus_dependencies, function (_ref) {
+var createUnaryPlus = /* #__PURE__ */Object(factory["a" /* factory */])(unaryPlus_name, unaryPlus_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       BigNumber = _ref.BigNumber;
@@ -17498,9 +17752,7 @@ Object(factory["a" /* factory */])(unaryPlus_name, unaryPlus_dependencies, funct
 
 var abs_name = 'abs';
 var abs_dependencies = ['typed'];
-var createAbs =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(abs_name, abs_dependencies, function (_ref) {
+var createAbs = /* #__PURE__ */Object(factory["a" /* factory */])(abs_name, abs_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -17555,9 +17807,7 @@ Object(factory["a" /* factory */])(abs_name, abs_dependencies, function (_ref) {
 
 var apply_name = 'apply';
 var apply_dependencies = ['typed', 'isInteger'];
-var createApply =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(apply_name, apply_dependencies, function (_ref) {
+var createApply = /* #__PURE__ */Object(factory["a" /* factory */])(apply_name, apply_dependencies, function (_ref) {
   var typed = _ref.typed,
       isInteger = _ref.isInteger;
 
@@ -17680,9 +17930,7 @@ function apply_switch(mat) {
 
 var addScalar_name = 'addScalar';
 var addScalar_dependencies = ['typed'];
-var createAddScalar =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(addScalar_name, addScalar_dependencies, function (_ref) {
+var createAddScalar = /* #__PURE__ */Object(factory["a" /* factory */])(addScalar_name, addScalar_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -17727,9 +17975,7 @@ Object(factory["a" /* factory */])(addScalar_name, addScalar_dependencies, funct
 
 var cbrt_name = 'cbrt';
 var cbrt_dependencies = ['config', 'typed', 'isNegative', 'unaryMinus', 'matrix', 'Complex', 'BigNumber', 'Fraction'];
-var createCbrt =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(cbrt_name, cbrt_dependencies, function (_ref) {
+var createCbrt = /* #__PURE__ */Object(factory["a" /* factory */])(cbrt_name, cbrt_dependencies, function (_ref) {
   var config = _ref.config,
       typed = _ref.typed,
       isNegative = _ref.isNegative,
@@ -17872,9 +18118,7 @@ Object(factory["a" /* factory */])(cbrt_name, cbrt_dependencies, function (_ref)
 
 var ceil_name = 'ceil';
 var ceil_dependencies = ['typed', 'config', 'round'];
-var createCeil =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(ceil_name, ceil_dependencies, function (_ref) {
+var createCeil = /* #__PURE__ */Object(factory["a" /* factory */])(ceil_name, ceil_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       round = _ref.round;
@@ -17941,9 +18185,7 @@ Object(factory["a" /* factory */])(ceil_name, ceil_dependencies, function (_ref)
 
 var cube_name = 'cube';
 var cube_dependencies = ['typed'];
-var createCube =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(cube_name, cube_dependencies, function (_ref) {
+var createCube = /* #__PURE__ */Object(factory["a" /* factory */])(cube_name, cube_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -17997,9 +18239,7 @@ Object(factory["a" /* factory */])(cube_name, cube_dependencies, function (_ref)
 
 var exp_name = 'exp';
 var exp_dependencies = ['typed'];
-var createExp =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(exp_name, exp_dependencies, function (_ref) {
+var createExp = /* #__PURE__ */Object(factory["a" /* factory */])(exp_name, exp_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -18051,9 +18291,7 @@ Object(factory["a" /* factory */])(exp_name, exp_dependencies, function (_ref) {
 
 var expm1_name = 'expm1';
 var expm1_dependencies = ['typed', 'Complex'];
-var createExpm1 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(expm1_name, expm1_dependencies, function (_ref) {
+var createExpm1 = /* #__PURE__ */Object(factory["a" /* factory */])(expm1_name, expm1_dependencies, function (_ref) {
   var typed = _ref.typed,
       _Complex = _ref.Complex;
 
@@ -18105,9 +18343,7 @@ Object(factory["a" /* factory */])(expm1_name, expm1_dependencies, function (_re
 
 var fix_name = 'fix';
 var fix_dependencies = ['typed', 'Complex', 'ceil', 'floor'];
-var createFix =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(fix_name, fix_dependencies, function (_ref) {
+var createFix = /* #__PURE__ */Object(factory["a" /* factory */])(fix_name, fix_dependencies, function (_ref) {
   var typed = _ref.typed,
       _Complex = _ref.Complex,
       ceil = _ref.ceil,
@@ -18167,9 +18403,7 @@ Object(factory["a" /* factory */])(fix_name, fix_dependencies, function (_ref) {
 
 var floor_name = 'floor';
 var floor_dependencies = ['typed', 'config', 'round'];
-var createFloor =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(floor_name, floor_dependencies, function (_ref) {
+var createFloor = /* #__PURE__ */Object(factory["a" /* factory */])(floor_name, floor_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       round = _ref.round;
@@ -18234,9 +18468,7 @@ Object(factory["a" /* factory */])(floor_name, floor_dependencies, function (_re
 
 var algorithm01_name = 'algorithm01';
 var algorithm01_dependencies = ['typed'];
-var createAlgorithm01 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm01_name, algorithm01_dependencies, function (_ref) {
+var createAlgorithm01 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm01_name, algorithm01_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -18344,9 +18576,7 @@ Object(factory["a" /* factory */])(algorithm01_name, algorithm01_dependencies, f
 
 var algorithm04_name = 'algorithm04';
 var algorithm04_dependencies = ['typed', 'equalScalar'];
-var createAlgorithm04 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm04_name, algorithm04_dependencies, function (_ref) {
+var createAlgorithm04 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm04_name, algorithm04_dependencies, function (_ref) {
   var typed = _ref.typed,
       equalScalar = _ref.equalScalar;
 
@@ -18520,9 +18750,7 @@ Object(factory["a" /* factory */])(algorithm04_name, algorithm04_dependencies, f
 
 var algorithm10_name = 'algorithm10';
 var algorithm10_dependencies = ['typed', 'DenseMatrix'];
-var createAlgorithm10 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm10_name, algorithm10_dependencies, function (_ref) {
+var createAlgorithm10 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm10_name, algorithm10_dependencies, function (_ref) {
   var typed = _ref.typed,
       DenseMatrix = _ref.DenseMatrix;
 
@@ -18625,9 +18853,7 @@ Object(factory["a" /* factory */])(algorithm10_name, algorithm10_dependencies, f
 
 var algorithm13_name = 'algorithm13';
 var algorithm13_dependencies = ['typed'];
-var createAlgorithm13 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm13_name, algorithm13_dependencies, function (_ref) {
+var createAlgorithm13 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm13_name, algorithm13_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -18719,9 +18945,7 @@ Object(factory["a" /* factory */])(algorithm13_name, algorithm13_dependencies, f
 
 var algorithm14_name = 'algorithm14';
 var algorithm14_dependencies = ['typed'];
-var createAlgorithm14 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm14_name, algorithm14_dependencies, function (_ref) {
+var createAlgorithm14 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm14_name, algorithm14_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -18799,9 +19023,7 @@ Object(factory["a" /* factory */])(algorithm14_name, algorithm14_dependencies, f
 
 var gcd_name = 'gcd';
 var gcd_dependencies = ['typed', 'matrix', 'equalScalar', 'BigNumber', 'DenseMatrix'];
-var createGcd =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(gcd_name, gcd_dependencies, function (_ref) {
+var createGcd = /* #__PURE__ */Object(factory["a" /* factory */])(gcd_name, gcd_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -18942,9 +19164,7 @@ Object(factory["a" /* factory */])(gcd_name, gcd_dependencies, function (_ref) {
 
 var algorithm02_name = 'algorithm02';
 var algorithm02_dependencies = ['typed', 'equalScalar'];
-var createAlgorithm02 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm02_name, algorithm02_dependencies, function (_ref) {
+var createAlgorithm02 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm02_name, algorithm02_dependencies, function (_ref) {
   var typed = _ref.typed,
       equalScalar = _ref.equalScalar;
 
@@ -19057,9 +19277,7 @@ Object(factory["a" /* factory */])(algorithm02_name, algorithm02_dependencies, f
 
 var algorithm06_name = 'algorithm06';
 var algorithm06_dependencies = ['typed', 'equalScalar'];
-var createAlgorithm06 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm06_name, algorithm06_dependencies, function (_ref) {
+var createAlgorithm06 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm06_name, algorithm06_dependencies, function (_ref) {
   var typed = _ref.typed,
       equalScalar = _ref.equalScalar;
 
@@ -19205,9 +19423,7 @@ Object(factory["a" /* factory */])(algorithm06_name, algorithm06_dependencies, f
 
 var algorithm11_name = 'algorithm11';
 var algorithm11_dependencies = ['typed', 'equalScalar'];
-var createAlgorithm11 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm11_name, algorithm11_dependencies, function (_ref) {
+var createAlgorithm11 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm11_name, algorithm11_dependencies, function (_ref) {
   var typed = _ref.typed,
       equalScalar = _ref.equalScalar;
 
@@ -19312,9 +19528,7 @@ Object(factory["a" /* factory */])(algorithm11_name, algorithm11_dependencies, f
 
 var lcm_name = 'lcm';
 var lcm_dependencies = ['typed', 'matrix', 'equalScalar'];
-var createLcm =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(lcm_name, lcm_dependencies, function (_ref) {
+var createLcm = /* #__PURE__ */Object(factory["a" /* factory */])(lcm_name, lcm_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar;
@@ -19468,9 +19682,7 @@ Object(factory["a" /* factory */])(lcm_name, lcm_dependencies, function (_ref) {
 
 var log10_name = 'log10';
 var log10_dependencies = ['typed', 'config', 'Complex'];
-var createLog10 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(log10_name, log10_dependencies, function (_ref) {
+var createLog10 = /* #__PURE__ */Object(factory["a" /* factory */])(log10_name, log10_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       _Complex = _ref.Complex;
@@ -19532,9 +19744,7 @@ Object(factory["a" /* factory */])(log10_name, log10_dependencies, function (_re
 
 var log2_name = 'log2';
 var log2_dependencies = ['typed', 'config', 'Complex'];
-var createLog2 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(log2_name, log2_dependencies, function (_ref) {
+var createLog2 = /* #__PURE__ */Object(factory["a" /* factory */])(log2_name, log2_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       Complex = _ref.Complex;
@@ -19605,9 +19815,7 @@ Object(factory["a" /* factory */])(log2_name, log2_dependencies, function (_ref)
 
 var algorithm03_name = 'algorithm03';
 var algorithm03_dependencies = ['typed'];
-var createAlgorithm03 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm03_name, algorithm03_dependencies, function (_ref) {
+var createAlgorithm03 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm03_name, algorithm03_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -19725,9 +19933,7 @@ Object(factory["a" /* factory */])(algorithm03_name, algorithm03_dependencies, f
 
 var algorithm05_name = 'algorithm05';
 var algorithm05_dependencies = ['typed', 'equalScalar'];
-var createAlgorithm05 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm05_name, algorithm05_dependencies, function (_ref) {
+var createAlgorithm05 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm05_name, algorithm05_dependencies, function (_ref) {
   var typed = _ref.typed,
       equalScalar = _ref.equalScalar;
 
@@ -19894,9 +20100,7 @@ Object(factory["a" /* factory */])(algorithm05_name, algorithm05_dependencies, f
 
 var algorithm12_name = 'algorithm12';
 var algorithm12_dependencies = ['typed', 'DenseMatrix'];
-var createAlgorithm12 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm12_name, algorithm12_dependencies, function (_ref) {
+var createAlgorithm12 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm12_name, algorithm12_dependencies, function (_ref) {
   var typed = _ref.typed,
       DenseMatrix = _ref.DenseMatrix;
 
@@ -20006,9 +20210,7 @@ Object(factory["a" /* factory */])(algorithm12_name, algorithm12_dependencies, f
 
 var mod_name = 'mod';
 var mod_dependencies = ['typed', 'matrix', 'equalScalar', 'DenseMatrix'];
-var createMod =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(mod_name, mod_dependencies, function (_ref) {
+var createMod = /* #__PURE__ */Object(factory["a" /* factory */])(mod_name, mod_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -20134,9 +20336,7 @@ Object(factory["a" /* factory */])(mod_name, mod_dependencies, function (_ref) {
 
 var multiplyScalar_name = 'multiplyScalar';
 var multiplyScalar_dependencies = ['typed'];
-var createMultiplyScalar =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(multiplyScalar_name, multiplyScalar_dependencies, function (_ref) {
+var createMultiplyScalar = /* #__PURE__ */Object(factory["a" /* factory */])(multiplyScalar_name, multiplyScalar_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -20187,9 +20387,7 @@ Object(factory["a" /* factory */])(multiplyScalar_name, multiplyScalar_dependenc
 
 var multiply_name = 'multiply';
 var multiply_dependencies = ['typed', 'matrix', 'addScalar', 'multiplyScalar', 'equalScalar'];
-var createMultiply =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(multiply_name, multiply_dependencies, function (_ref) {
+var createMultiply = /* #__PURE__ */Object(factory["a" /* factory */])(multiply_name, multiply_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       addScalar = _ref.addScalar,
@@ -21119,9 +21317,7 @@ Object(factory["a" /* factory */])(multiply_name, multiply_dependencies, functio
 
 var nthRoot_name = 'nthRoot';
 var nthRoot_dependencies = ['typed', 'matrix', 'equalScalar', 'BigNumber'];
-var createNthRoot =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(nthRoot_name, nthRoot_dependencies, function (_ref) {
+var createNthRoot = /* #__PURE__ */Object(factory["a" /* factory */])(nthRoot_name, nthRoot_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -21310,9 +21506,7 @@ Object(factory["a" /* factory */])(nthRoot_name, nthRoot_dependencies, function 
     return new _BigNumber((inv ? one.div(x) : x).toPrecision(precision));
   }
 });
-var createNthRootNumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(nthRoot_name, ['typed'], function (_ref2) {
+var createNthRootNumber = /* #__PURE__ */Object(factory["a" /* factory */])(nthRoot_name, ['typed'], function (_ref2) {
   var typed = _ref2.typed;
   return typed(nthRoot_name, {
     number: nthRootNumber,
@@ -21325,9 +21519,7 @@ Object(factory["a" /* factory */])(nthRoot_name, ['typed'], function (_ref2) {
 
 var sign_name = 'sign';
 var sign_dependencies = ['typed', 'BigNumber', 'Fraction', 'complex'];
-var createSign =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sign_name, sign_dependencies, function (_ref) {
+var createSign = /* #__PURE__ */Object(factory["a" /* factory */])(sign_name, sign_dependencies, function (_ref) {
   var typed = _ref.typed,
       _BigNumber = _ref.BigNumber,
       complex = _ref.complex,
@@ -21389,9 +21581,7 @@ Object(factory["a" /* factory */])(sign_name, sign_dependencies, function (_ref)
 
 var sqrt_name = 'sqrt';
 var sqrt_dependencies = ['config', 'typed', 'Complex'];
-var createSqrt =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sqrt_name, sqrt_dependencies, function (_ref) {
+var createSqrt = /* #__PURE__ */Object(factory["a" /* factory */])(sqrt_name, sqrt_dependencies, function (_ref) {
   var config = _ref.config,
       typed = _ref.typed,
       Complex = _ref.Complex;
@@ -21467,9 +21657,7 @@ Object(factory["a" /* factory */])(sqrt_name, sqrt_dependencies, function (_ref)
 
 var square_name = 'square';
 var square_dependencies = ['typed'];
-var createSquare =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(square_name, square_dependencies, function (_ref) {
+var createSquare = /* #__PURE__ */Object(factory["a" /* factory */])(square_name, square_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -21530,9 +21718,7 @@ Object(factory["a" /* factory */])(square_name, square_dependencies, function (_
 
 var subtract_name = 'subtract';
 var subtract_dependencies = ['typed', 'matrix', 'equalScalar', 'addScalar', 'unaryMinus', 'DenseMatrix'];
-var createSubtract =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(subtract_name, subtract_dependencies, function (_ref) {
+var createSubtract = /* #__PURE__ */Object(factory["a" /* factory */])(subtract_name, subtract_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -21696,9 +21882,7 @@ function checkEqualDimensions(x, y) {
 
 var xgcd_name = 'xgcd';
 var xgcd_dependencies = ['typed', 'config', 'matrix', 'BigNumber'];
-var createXgcd =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(xgcd_name, xgcd_dependencies, function (_ref) {
+var createXgcd = /* #__PURE__ */Object(factory["a" /* factory */])(xgcd_name, xgcd_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix,
@@ -21791,9 +21975,7 @@ Object(factory["a" /* factory */])(xgcd_name, xgcd_dependencies, function (_ref)
 
 var algorithm09_name = 'algorithm09';
 var algorithm09_dependencies = ['typed', 'equalScalar'];
-var createAlgorithm09 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm09_name, algorithm09_dependencies, function (_ref) {
+var createAlgorithm09 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm09_name, algorithm09_dependencies, function (_ref) {
   var typed = _ref.typed,
       equalScalar = _ref.equalScalar;
 
@@ -21934,9 +22116,7 @@ Object(factory["a" /* factory */])(algorithm09_name, algorithm09_dependencies, f
 
 var dotMultiply_name = 'dotMultiply';
 var dotMultiply_dependencies = ['typed', 'matrix', 'equalScalar', 'multiplyScalar'];
-var createDotMultiply =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(dotMultiply_name, dotMultiply_dependencies, function (_ref) {
+var createDotMultiply = /* #__PURE__ */Object(factory["a" /* factory */])(dotMultiply_name, dotMultiply_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -22582,9 +22762,7 @@ rightLogShiftNumber.signature = bitwise_n2;
 
 var bitAnd_name = 'bitAnd';
 var bitAnd_dependencies = ['typed', 'matrix', 'equalScalar'];
-var createBitAnd =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(bitAnd_name, bitAnd_dependencies, function (_ref) {
+var createBitAnd = /* #__PURE__ */Object(factory["a" /* factory */])(bitAnd_name, bitAnd_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar;
@@ -22686,9 +22864,7 @@ Object(factory["a" /* factory */])(bitAnd_name, bitAnd_dependencies, function (_
 
 var bitNot_name = 'bitNot';
 var bitNot_dependencies = ['typed'];
-var createBitNot =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(bitNot_name, bitNot_dependencies, function (_ref) {
+var createBitNot = /* #__PURE__ */Object(factory["a" /* factory */])(bitNot_name, bitNot_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -22733,9 +22909,7 @@ Object(factory["a" /* factory */])(bitNot_name, bitNot_dependencies, function (_
 
 var bitOr_name = 'bitOr';
 var bitOr_dependencies = ['typed', 'matrix', 'equalScalar', 'DenseMatrix'];
-var createBitOr =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(bitOr_name, bitOr_dependencies, function (_ref) {
+var createBitOr = /* #__PURE__ */Object(factory["a" /* factory */])(bitOr_name, bitOr_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -22836,9 +23010,7 @@ Object(factory["a" /* factory */])(bitOr_name, bitOr_dependencies, function (_re
 
 var algorithm07_name = 'algorithm07';
 var algorithm07_dependencies = ['typed', 'DenseMatrix'];
-var createAlgorithm07 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm07_name, algorithm07_dependencies, function (_ref) {
+var createAlgorithm07 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm07_name, algorithm07_dependencies, function (_ref) {
   var typed = _ref.typed,
       DenseMatrix = _ref.DenseMatrix;
 
@@ -22961,9 +23133,7 @@ Object(factory["a" /* factory */])(algorithm07_name, algorithm07_dependencies, f
 
 var bitXor_name = 'bitXor';
 var bitXor_dependencies = ['typed', 'matrix', 'DenseMatrix'];
-var createBitXor =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(bitXor_name, bitXor_dependencies, function (_ref) {
+var createBitXor = /* #__PURE__ */Object(factory["a" /* factory */])(bitXor_name, bitXor_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       DenseMatrix = _ref.DenseMatrix;
@@ -23062,9 +23232,7 @@ Object(factory["a" /* factory */])(bitXor_name, bitXor_dependencies, function (_
 
 var arg_name = 'arg';
 var arg_dependencies = ['typed'];
-var createArg =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(arg_name, arg_dependencies, function (_ref) {
+var createArg = /* #__PURE__ */Object(factory["a" /* factory */])(arg_name, arg_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -23116,9 +23284,7 @@ Object(factory["a" /* factory */])(arg_name, arg_dependencies, function (_ref) {
 
 var conj_name = 'conj';
 var conj_dependencies = ['typed'];
-var createConj =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(conj_name, conj_dependencies, function (_ref) {
+var createConj = /* #__PURE__ */Object(factory["a" /* factory */])(conj_name, conj_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -23167,9 +23333,7 @@ Object(factory["a" /* factory */])(conj_name, conj_dependencies, function (_ref)
 
 var im_name = 'im';
 var im_dependencies = ['typed'];
-var createIm =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(im_name, im_dependencies, function (_ref) {
+var createIm = /* #__PURE__ */Object(factory["a" /* factory */])(im_name, im_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -23220,9 +23384,7 @@ Object(factory["a" /* factory */])(im_name, im_dependencies, function (_ref) {
 
 var re_name = 're';
 var re_dependencies = ['typed'];
-var createRe =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(re_name, re_dependencies, function (_ref) {
+var createRe = /* #__PURE__ */Object(factory["a" /* factory */])(re_name, re_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -23293,9 +23455,7 @@ andNumber.signature = logical_n2;
 
 var not_name = 'not';
 var not_dependencies = ['typed'];
-var createNot =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(not_name, not_dependencies, function (_ref) {
+var createNot = /* #__PURE__ */Object(factory["a" /* factory */])(not_name, not_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -23350,9 +23510,7 @@ Object(factory["a" /* factory */])(not_name, not_dependencies, function (_ref) {
 
 var or_name = 'or';
 var or_dependencies = ['typed', 'matrix', 'equalScalar', 'DenseMatrix'];
-var createOr =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(or_name, or_dependencies, function (_ref) {
+var createOr = /* #__PURE__ */Object(factory["a" /* factory */])(or_name, or_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -23471,9 +23629,7 @@ Object(factory["a" /* factory */])(or_name, or_dependencies, function (_ref) {
 
 var xor_name = 'xor';
 var xor_dependencies = ['typed', 'matrix', 'DenseMatrix'];
-var createXor =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(xor_name, xor_dependencies, function (_ref) {
+var createXor = /* #__PURE__ */Object(factory["a" /* factory */])(xor_name, xor_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       DenseMatrix = _ref.DenseMatrix;
@@ -23590,9 +23746,7 @@ Object(factory["a" /* factory */])(xor_name, xor_dependencies, function (_ref) {
 
 var concat_name = 'concat';
 var concat_dependencies = ['typed', 'matrix', 'isInteger'];
-var createConcat =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(concat_name, concat_dependencies, function (_ref) {
+var createConcat = /* #__PURE__ */Object(factory["a" /* factory */])(concat_name, concat_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       isInteger = _ref.isInteger;
@@ -23728,9 +23882,7 @@ function _concat(a, b, concatDim, dim) {
 
 var column_name = 'column';
 var column_dependencies = ['typed', 'Index', 'matrix', 'range'];
-var createColumn =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(column_name, column_dependencies, function (_ref) {
+var createColumn = /* #__PURE__ */Object(factory["a" /* factory */])(column_name, column_dependencies, function (_ref) {
   var typed = _ref.typed,
       Index = _ref.Index,
       matrix = _ref.matrix,
@@ -23788,9 +23940,7 @@ Object(factory["a" /* factory */])(column_name, column_dependencies, function (_
 
 var cross_name = 'cross';
 var cross_dependencies = ['typed', 'matrix', 'subtract', 'multiply'];
-var createCross =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(cross_name, cross_dependencies, function (_ref) {
+var createCross = /* #__PURE__ */Object(factory["a" /* factory */])(cross_name, cross_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       subtract = _ref.subtract,
@@ -23876,9 +24026,7 @@ Object(factory["a" /* factory */])(cross_name, cross_dependencies, function (_re
 
 var diag_name = 'diag';
 var diag_dependencies = ['typed', 'matrix', 'DenseMatrix', 'SparseMatrix'];
-var createDiag =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(diag_name, diag_dependencies, function (_ref) {
+var createDiag = /* #__PURE__ */Object(factory["a" /* factory */])(diag_name, diag_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       DenseMatrix = _ref.DenseMatrix,
@@ -24037,9 +24185,7 @@ Object(factory["a" /* factory */])(diag_name, diag_dependencies, function (_ref)
 // CONCATENATED MODULE: ./src/function/matrix/eye.js
 // TODO: function eye is removed since v5.0.0 (June 2018). Remove it some day.
 
-var createEye =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('eye', [], function () {
+var createEye = /* #__PURE__ */Object(factory["a" /* factory */])('eye', [], function () {
   return function eye() {
     throw new Error('Function "eye" is renamed to "identity" since mathjs version 5.0.0. ' + 'To keep eye working, create an alias for it using "math.import({eye: math.identity}, {override: true})"');
   };
@@ -24143,9 +24289,7 @@ function maxArgumentCount(fn) {
 
 var filter_name = 'filter';
 var filter_dependencies = ['typed'];
-var createFilter =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(filter_name, filter_dependencies, function (_ref) {
+var createFilter = /* #__PURE__ */Object(factory["a" /* factory */])(filter_name, filter_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -24217,9 +24361,7 @@ function _filterCallback(x, callback) {
 
 var flatten_name = 'flatten';
 var flatten_dependencies = ['typed', 'matrix'];
-var createFlatten =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(flatten_name, flatten_dependencies, function (_ref) {
+var createFlatten = /* #__PURE__ */Object(factory["a" /* factory */])(flatten_name, flatten_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix;
 
@@ -24258,9 +24400,7 @@ Object(factory["a" /* factory */])(flatten_name, flatten_dependencies, function 
 
 var forEach_name = 'forEach';
 var forEach_dependencies = ['typed'];
-var createForEach =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(forEach_name, forEach_dependencies, function (_ref) {
+var createForEach = /* #__PURE__ */Object(factory["a" /* factory */])(forEach_name, forEach_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -24331,9 +24471,7 @@ function forEach_forEach(array, callback) {
 
 var getMatrixDataType_name = 'getMatrixDataType';
 var getMatrixDataType_dependencies = ['typed'];
-var createGetMatrixDataType =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(getMatrixDataType_name, getMatrixDataType_dependencies, function (_ref) {
+var createGetMatrixDataType = /* #__PURE__ */Object(factory["a" /* factory */])(getMatrixDataType_name, getMatrixDataType_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -24386,9 +24524,7 @@ Object(factory["a" /* factory */])(getMatrixDataType_name, getMatrixDataType_dep
 
 var identity_name = 'identity';
 var identity_dependencies = ['typed', 'config', 'matrix', 'BigNumber', 'DenseMatrix', 'SparseMatrix'];
-var createIdentity =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(identity_name, identity_dependencies, function (_ref) {
+var createIdentity = /* #__PURE__ */Object(factory["a" /* factory */])(identity_name, identity_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix,
@@ -24532,9 +24668,7 @@ Object(factory["a" /* factory */])(identity_name, identity_dependencies, functio
 
 var kron_name = 'kron';
 var kron_dependencies = ['typed', 'matrix', 'multiplyScalar'];
-var createKron =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(kron_name, kron_dependencies, function (_ref) {
+var createKron = /* #__PURE__ */Object(factory["a" /* factory */])(kron_name, kron_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       multiplyScalar = _ref.multiplyScalar;
@@ -24622,9 +24756,7 @@ Object(factory["a" /* factory */])(kron_name, kron_dependencies, function (_ref)
 
 var map_name = 'map';
 var map_dependencies = ['typed'];
-var createMap =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(map_name, map_dependencies, function (_ref) {
+var createMap = /* #__PURE__ */Object(factory["a" /* factory */])(map_name, map_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -24698,9 +24830,7 @@ function map_map(array, callback) {
 
 var ones_name = 'ones';
 var ones_dependencies = ['typed', 'config', 'matrix', 'BigNumber'];
-var createOnes =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(ones_name, ones_dependencies, function (_ref) {
+var createOnes = /* #__PURE__ */Object(factory["a" /* factory */])(ones_name, ones_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix,
@@ -24844,9 +24974,7 @@ function noSubset() {
 
 var range_name = 'range';
 var range_dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq'];
-var range_createRange =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(range_name, range_dependencies, function (_ref) {
+var range_createRange = /* #__PURE__ */Object(factory["a" /* factory */])(range_name, range_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix,
@@ -25126,9 +25254,7 @@ Object(factory["a" /* factory */])(range_name, range_dependencies, function (_re
 
 var reshape_name = 'reshape';
 var reshape_dependencies = ['typed', 'isInteger', 'matrix'];
-var createReshape =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(reshape_name, reshape_dependencies, function (_ref) {
+var createReshape = /* #__PURE__ */Object(factory["a" /* factory */])(reshape_name, reshape_dependencies, function (_ref) {
   var typed = _ref.typed,
       isInteger = _ref.isInteger,
       matrix = _ref.matrix;
@@ -25201,9 +25327,7 @@ var ArgumentsError = __webpack_require__(13);
 
 var resize_name = 'resize';
 var resize_dependencies = ['config', 'matrix'];
-var createResize =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(resize_name, resize_dependencies, function (_ref) {
+var createResize = /* #__PURE__ */Object(factory["a" /* factory */])(resize_name, resize_dependencies, function (_ref) {
   var config = _ref.config,
       matrix = _ref.matrix;
 
@@ -25330,9 +25454,7 @@ Object(factory["a" /* factory */])(resize_name, resize_dependencies, function (_
 
 var row_name = 'row';
 var row_dependencies = ['typed', 'Index', 'matrix', 'range'];
-var createRow =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(row_name, row_dependencies, function (_ref) {
+var createRow = /* #__PURE__ */Object(factory["a" /* factory */])(row_name, row_dependencies, function (_ref) {
   var typed = _ref.typed,
       Index = _ref.Index,
       matrix = _ref.matrix,
@@ -25391,9 +25513,7 @@ Object(factory["a" /* factory */])(row_name, row_dependencies, function (_ref) {
 
 var size_name = 'size';
 var size_dependencies = ['typed', 'config', '?matrix'];
-var createSize =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(size_name, size_dependencies, function (_ref) {
+var createSize = /* #__PURE__ */Object(factory["a" /* factory */])(size_name, size_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix;
@@ -25441,9 +25561,7 @@ Object(factory["a" /* factory */])(size_name, size_dependencies, function (_ref)
 
 var squeeze_name = 'squeeze';
 var squeeze_dependencies = ['typed', 'matrix'];
-var createSqueeze =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(squeeze_name, squeeze_dependencies, function (_ref) {
+var createSqueeze = /* #__PURE__ */Object(factory["a" /* factory */])(squeeze_name, squeeze_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix;
 
@@ -25666,9 +25784,7 @@ var safeNativeMethods = {
 
 var subset_name = 'subset';
 var subset_dependencies = ['typed', 'matrix'];
-var createSubset =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(subset_name, subset_dependencies, function (_ref) {
+var createSubset = /* #__PURE__ */Object(factory["a" /* factory */])(subset_name, subset_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix;
 
@@ -25882,9 +25998,7 @@ function _setObjectProperty(object, index, replacement) {
 
 var transpose_name = 'transpose';
 var transpose_dependencies = ['typed', 'matrix'];
-var createTranspose =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(transpose_name, transpose_dependencies, function (_ref) {
+var createTranspose = /* #__PURE__ */Object(factory["a" /* factory */])(transpose_name, transpose_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix;
 
@@ -26058,9 +26172,7 @@ Object(factory["a" /* factory */])(transpose_name, transpose_dependencies, funct
 
 var ctranspose_name = 'ctranspose';
 var ctranspose_dependencies = ['typed', 'transpose', 'conj'];
-var createCtranspose =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(ctranspose_name, ctranspose_dependencies, function (_ref) {
+var createCtranspose = /* #__PURE__ */Object(factory["a" /* factory */])(ctranspose_name, ctranspose_dependencies, function (_ref) {
   var typed = _ref.typed,
       transpose = _ref.transpose,
       conj = _ref.conj;
@@ -26100,9 +26212,7 @@ Object(factory["a" /* factory */])(ctranspose_name, ctranspose_dependencies, fun
 
 var zeros_name = 'zeros';
 var zeros_dependencies = ['typed', 'config', 'matrix', 'BigNumber'];
-var createZeros =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(zeros_name, zeros_dependencies, function (_ref) {
+var createZeros = /* #__PURE__ */Object(factory["a" /* factory */])(zeros_name, zeros_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix,
@@ -26229,9 +26339,7 @@ Object(factory["a" /* factory */])(zeros_name, zeros_dependencies, function (_re
 
 var erf_name = 'erf';
 var erf_dependencies = ['typed'];
-var createErf =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(erf_name, erf_dependencies, function (_ref) {
+var createErf = /* #__PURE__ */Object(factory["a" /* factory */])(erf_name, erf_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -26395,9 +26503,7 @@ var MAX_NUM = Math.pow(2, 53);
 
 var mode_name = 'mode';
 var mode_dependencies = ['typed', 'isNaN', 'isNumeric'];
-var createMode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(mode_name, mode_dependencies, function (_ref) {
+var createMode = /* #__PURE__ */Object(factory["a" /* factory */])(mode_name, mode_dependencies, function (_ref) {
   var typed = _ref.typed,
       isNaN = _ref.isNaN,
       isNumeric = _ref.isNumeric;
@@ -26511,9 +26617,7 @@ function improveErrorMessage(err, fnName, value) {
 
 var prod_name = 'prod';
 var prod_dependencies = ['typed', 'multiply'];
-var createProd =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(prod_name, prod_dependencies, function (_ref) {
+var createProd = /* #__PURE__ */Object(factory["a" /* factory */])(prod_name, prod_dependencies, function (_ref) {
   var typed = _ref.typed,
       multiply = _ref.multiply;
 
@@ -26584,9 +26688,7 @@ Object(factory["a" /* factory */])(prod_name, prod_dependencies, function (_ref)
 
 var format_name = 'format';
 var format_dependencies = ['typed'];
-var createFormat =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(format_name, format_dependencies, function (_ref) {
+var createFormat = /* #__PURE__ */Object(factory["a" /* factory */])(format_name, format_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -26700,9 +26802,7 @@ Object(factory["a" /* factory */])(format_name, format_dependencies, function (_
 
 var print_name = 'print';
 var print_dependencies = ['typed'];
-var createPrint =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(print_name, print_dependencies, function (_ref) {
+var createPrint = /* #__PURE__ */Object(factory["a" /* factory */])(print_name, print_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -26791,9 +26891,7 @@ function _print(template, values, options) {
 
 var to_name = 'to';
 var to_dependencies = ['typed', 'matrix'];
-var createTo =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(to_name, to_dependencies, function (_ref) {
+var createTo = /* #__PURE__ */Object(factory["a" /* factory */])(to_name, to_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix;
   var algorithm13 = createAlgorithm13({
@@ -26871,9 +26969,7 @@ Object(factory["a" /* factory */])(to_name, to_dependencies, function (_ref) {
 
 var isPrime_name = 'isPrime';
 var isPrime_dependencies = ['typed'];
-var createIsPrime =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(isPrime_name, isPrime_dependencies, function (_ref) {
+var createIsPrime = /* #__PURE__ */Object(factory["a" /* factory */])(isPrime_name, isPrime_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -26954,9 +27050,7 @@ Object(factory["a" /* factory */])(isPrime_name, isPrime_dependencies, function 
 
 var numeric_name = 'numeric';
 var numeric_dependencies = ['number', '?bignumber', '?fraction'];
-var createNumeric =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(numeric_name, numeric_dependencies, function (_ref) {
+var createNumeric = /* #__PURE__ */Object(factory["a" /* factory */])(numeric_name, numeric_dependencies, function (_ref) {
   var _number = _ref.number,
       bignumber = _ref.bignumber,
       fraction = _ref.fraction;
@@ -27030,9 +27124,7 @@ Object(factory["a" /* factory */])(numeric_name, numeric_dependencies, function 
 
 var divideScalar_name = 'divideScalar';
 var divideScalar_dependencies = ['typed', 'numeric'];
-var createDivideScalar =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(divideScalar_name, divideScalar_dependencies, function (_ref) {
+var createDivideScalar = /* #__PURE__ */Object(factory["a" /* factory */])(divideScalar_name, divideScalar_dependencies, function (_ref) {
   var typed = _ref.typed,
       numeric = _ref.numeric;
 
@@ -27089,9 +27181,7 @@ Object(factory["a" /* factory */])(divideScalar_name, divideScalar_dependencies,
 
 var pow_name = 'pow';
 var pow_dependencies = ['typed', 'config', 'identity', 'multiply', 'matrix', 'fraction', 'number', 'Complex'];
-var createPow =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(pow_name, pow_dependencies, function (_ref) {
+var createPow = /* #__PURE__ */Object(factory["a" /* factory */])(pow_name, pow_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       identity = _ref.identity,
@@ -27284,9 +27374,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var NO_INT = 'Number of decimals in function round must be an integer';
 var round_name = 'round';
 var round_dependencies = ['typed', 'matrix', 'equalScalar', 'zeros', 'BigNumber', 'DenseMatrix'];
-var createRound =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(round_name, round_dependencies, function (_ref) {
+var createRound = /* #__PURE__ */Object(factory["a" /* factory */])(round_name, round_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -27436,9 +27524,7 @@ var roundNumberSignatures = {
     return roundNumber(x, n);
   }
 };
-var createRoundNumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(round_name, ['typed'], function (_ref2) {
+var createRoundNumber = /* #__PURE__ */Object(factory["a" /* factory */])(round_name, ['typed'], function (_ref2) {
   var typed = _ref2.typed;
   return typed(round_name, roundNumberSignatures);
 });
@@ -27448,9 +27534,7 @@ Object(factory["a" /* factory */])(round_name, ['typed'], function (_ref2) {
 
 var log_name = 'log';
 var log_dependencies = ['config', 'typed', 'divideScalar', 'Complex'];
-var createLog =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(log_name, log_dependencies, function (_ref) {
+var createLog = /* #__PURE__ */Object(factory["a" /* factory */])(log_name, log_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       divideScalar = _ref.divideScalar,
@@ -27526,9 +27610,7 @@ Object(factory["a" /* factory */])(log_name, log_dependencies, function (_ref) {
 
 var log1p_name = 'log1p';
 var log1p_dependencies = ['typed', 'config', 'divideScalar', 'log', 'Complex'];
-var createLog1p =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(log1p_name, log1p_dependencies, function (_ref) {
+var createLog1p = /* #__PURE__ */Object(factory["a" /* factory */])(log1p_name, log1p_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       divideScalar = _ref.divideScalar,
@@ -27612,9 +27694,7 @@ Object(factory["a" /* factory */])(log1p_name, log1p_dependencies, function (_re
 
 var nthRoots_name = 'nthRoots';
 var nthRoots_dependencies = ['config', 'typed', 'divideScalar', 'Complex'];
-var createNthRoots =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(nthRoots_name, nthRoots_dependencies, function (_ref) {
+var createNthRoots = /* #__PURE__ */Object(factory["a" /* factory */])(nthRoots_name, nthRoots_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       divideScalar = _ref.divideScalar,
@@ -27737,9 +27817,7 @@ Object(factory["a" /* factory */])(nthRoots_name, nthRoots_dependencies, functio
 
 var dotPow_name = 'dotPow';
 var dotPow_dependencies = ['typed', 'equalScalar', 'matrix', 'pow', 'DenseMatrix'];
-var createDotPow =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(dotPow_name, dotPow_dependencies, function (_ref) {
+var createDotPow = /* #__PURE__ */Object(factory["a" /* factory */])(dotPow_name, dotPow_dependencies, function (_ref) {
   var typed = _ref.typed,
       equalScalar = _ref.equalScalar,
       matrix = _ref.matrix,
@@ -27850,9 +27928,7 @@ Object(factory["a" /* factory */])(dotPow_name, dotPow_dependencies, function (_
 
 var dotDivide_name = 'dotDivide';
 var dotDivide_dependencies = ['typed', 'matrix', 'equalScalar', 'divideScalar', 'DenseMatrix'];
-var createDotDivide =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(dotDivide_name, dotDivide_dependencies, function (_ref) {
+var createDotDivide = /* #__PURE__ */Object(factory["a" /* factory */])(dotDivide_name, dotDivide_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -28143,9 +28219,7 @@ function createSolveValidation(_ref) {
 
 var lsolve_name = 'lsolve';
 var lsolve_dependencies = ['typed', 'matrix', 'divideScalar', 'multiplyScalar', 'subtract', 'equalScalar', 'DenseMatrix'];
-var createLsolve =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(lsolve_name, lsolve_dependencies, function (_ref) {
+var createLsolve = /* #__PURE__ */Object(factory["a" /* factory */])(lsolve_name, lsolve_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       divideScalar = _ref.divideScalar,
@@ -28332,9 +28406,7 @@ Object(factory["a" /* factory */])(lsolve_name, lsolve_dependencies, function (_
 
 var usolve_name = 'usolve';
 var usolve_dependencies = ['typed', 'matrix', 'divideScalar', 'multiplyScalar', 'subtract', 'equalScalar', 'DenseMatrix'];
-var createUsolve =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(usolve_name, usolve_dependencies, function (_ref) {
+var createUsolve = /* #__PURE__ */Object(factory["a" /* factory */])(usolve_name, usolve_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       divideScalar = _ref.divideScalar,
@@ -28522,9 +28594,7 @@ Object(factory["a" /* factory */])(usolve_name, usolve_dependencies, function (_
 
 var algorithm08_name = 'algorithm08';
 var algorithm08_dependencies = ['typed', 'equalScalar'];
-var createAlgorithm08 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(algorithm08_name, algorithm08_dependencies, function (_ref) {
+var createAlgorithm08 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm08_name, algorithm08_dependencies, function (_ref) {
   var typed = _ref.typed,
       equalScalar = _ref.equalScalar;
 
@@ -28682,9 +28752,7 @@ Object(factory["a" /* factory */])(algorithm08_name, algorithm08_dependencies, f
 
 var leftShift_name = 'leftShift';
 var leftShift_dependencies = ['typed', 'matrix', 'equalScalar', 'zeros', 'DenseMatrix'];
-var createLeftShift =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(leftShift_name, leftShift_dependencies, function (_ref) {
+var createLeftShift = /* #__PURE__ */Object(factory["a" /* factory */])(leftShift_name, leftShift_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -28822,9 +28890,7 @@ Object(factory["a" /* factory */])(leftShift_name, leftShift_dependencies, funct
 
 var rightArithShift_name = 'rightArithShift';
 var rightArithShift_dependencies = ['typed', 'matrix', 'equalScalar', 'zeros', 'DenseMatrix'];
-var createRightArithShift =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(rightArithShift_name, rightArithShift_dependencies, function (_ref) {
+var createRightArithShift = /* #__PURE__ */Object(factory["a" /* factory */])(rightArithShift_name, rightArithShift_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -28961,9 +29027,7 @@ Object(factory["a" /* factory */])(rightArithShift_name, rightArithShift_depende
 
 var rightLogShift_name = 'rightLogShift';
 var rightLogShift_dependencies = ['typed', 'matrix', 'equalScalar', 'zeros', 'DenseMatrix'];
-var createRightLogShift =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(rightLogShift_name, rightLogShift_dependencies, function (_ref) {
+var createRightLogShift = /* #__PURE__ */Object(factory["a" /* factory */])(rightLogShift_name, rightLogShift_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -29098,9 +29162,7 @@ Object(factory["a" /* factory */])(rightLogShift_name, rightLogShift_dependencie
 
 var and_name = 'and';
 var and_dependencies = ['typed', 'matrix', 'equalScalar', 'zeros', 'not'];
-var createAnd =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(and_name, and_dependencies, function (_ref) {
+var createAnd = /* #__PURE__ */Object(factory["a" /* factory */])(and_name, and_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -29246,9 +29308,7 @@ Object(factory["a" /* factory */])(and_name, and_dependencies, function (_ref) {
 
 var compare_name = 'compare';
 var compare_dependencies = ['typed', 'config', 'matrix', 'equalScalar', 'BigNumber', 'Fraction', 'DenseMatrix'];
-var createCompare =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(compare_name, compare_dependencies, function (_ref) {
+var createCompare = /* #__PURE__ */Object(factory["a" /* factory */])(compare_name, compare_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       equalScalar = _ref.equalScalar,
@@ -29381,9 +29441,7 @@ Object(factory["a" /* factory */])(compare_name, compare_dependencies, function 
   });
   return compare;
 });
-var createCompareNumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(compare_name, ['typed', 'config'], function (_ref2) {
+var createCompareNumber = /* #__PURE__ */Object(factory["a" /* factory */])(compare_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
       config = _ref2.config;
   return typed(compare_name, {
@@ -29402,9 +29460,7 @@ var naturalSort_default = /*#__PURE__*/__webpack_require__.n(naturalSort);
 
 var compareNatural_name = 'compareNatural';
 var compareNatural_dependencies = ['typed', 'compare'];
-var createCompareNatural =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(compareNatural_name, compareNatural_dependencies, function (_ref) {
+var createCompareNatural = /* #__PURE__ */Object(factory["a" /* factory */])(compareNatural_name, compareNatural_dependencies, function (_ref) {
   var typed = _ref.typed,
       compare = _ref.compare;
   var compareBooleans = compare.signatures['boolean,boolean'];
@@ -29700,9 +29756,7 @@ function compareComplexNumbers(x, y) {
 
 var compareText_name = 'compareText';
 var compareText_dependencies = ['typed', 'matrix'];
-var createCompareText =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(compareText_name, compareText_dependencies, function (_ref) {
+var createCompareText = /* #__PURE__ */Object(factory["a" /* factory */])(compareText_name, compareText_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix;
   var algorithm13 = createAlgorithm13({
@@ -29774,9 +29828,7 @@ Object(factory["a" /* factory */])(compareText_name, compareText_dependencies, f
   });
   return compareText;
 });
-var createCompareTextNumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(compareText_name, ['typed'], function (_ref2) {
+var createCompareTextNumber = /* #__PURE__ */Object(factory["a" /* factory */])(compareText_name, ['typed'], function (_ref2) {
   var typed = _ref2.typed;
   return typed(compareText_name, {
     'any, any': utils_string["a" /* compareText */]
@@ -29791,9 +29843,7 @@ Object(factory["a" /* factory */])(compareText_name, ['typed'], function (_ref2)
 
 var equal_name = 'equal';
 var equal_dependencies = ['typed', 'matrix', 'equalScalar', 'DenseMatrix'];
-var createEqual =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(equal_name, equal_dependencies, function (_ref) {
+var createEqual = /* #__PURE__ */Object(factory["a" /* factory */])(equal_name, equal_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -29958,9 +30008,7 @@ var createEqualNumber = Object(factory["a" /* factory */])(equal_name, ['typed',
 
 var equalText_name = 'equalText';
 var equalText_dependencies = ['typed', 'compareText', 'isZero'];
-var createEqualText =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(equalText_name, equalText_dependencies, function (_ref) {
+var createEqualText = /* #__PURE__ */Object(factory["a" /* factory */])(equalText_name, equalText_dependencies, function (_ref) {
   var typed = _ref.typed,
       compareText = _ref.compareText,
       isZero = _ref.isZero;
@@ -30008,9 +30056,7 @@ Object(factory["a" /* factory */])(equalText_name, equalText_dependencies, funct
 
 var smaller_name = 'smaller';
 var smaller_dependencies = ['typed', 'config', 'matrix', 'DenseMatrix'];
-var createSmaller =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(smaller_name, smaller_dependencies, function (_ref) {
+var createSmaller = /* #__PURE__ */Object(factory["a" /* factory */])(smaller_name, smaller_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix,
@@ -30134,9 +30180,7 @@ Object(factory["a" /* factory */])(smaller_name, smaller_dependencies, function 
   });
   return smaller;
 });
-var createSmallerNumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(smaller_name, ['typed', 'config'], function (_ref2) {
+var createSmallerNumber = /* #__PURE__ */Object(factory["a" /* factory */])(smaller_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
       config = _ref2.config;
   return typed(smaller_name, {
@@ -30156,9 +30200,7 @@ Object(factory["a" /* factory */])(smaller_name, ['typed', 'config'], function (
 
 var smallerEq_name = 'smallerEq';
 var smallerEq_dependencies = ['typed', 'config', 'matrix', 'DenseMatrix'];
-var createSmallerEq =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(smallerEq_name, smallerEq_dependencies, function (_ref) {
+var createSmallerEq = /* #__PURE__ */Object(factory["a" /* factory */])(smallerEq_name, smallerEq_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix,
@@ -30278,9 +30320,7 @@ Object(factory["a" /* factory */])(smallerEq_name, smallerEq_dependencies, funct
   });
   return smallerEq;
 });
-var createSmallerEqNumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(smallerEq_name, ['typed', 'config'], function (_ref2) {
+var createSmallerEqNumber = /* #__PURE__ */Object(factory["a" /* factory */])(smallerEq_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
       config = _ref2.config;
   return typed(smallerEq_name, {
@@ -30300,9 +30340,7 @@ Object(factory["a" /* factory */])(smallerEq_name, ['typed', 'config'], function
 
 var larger_name = 'larger';
 var larger_dependencies = ['typed', 'config', 'matrix', 'DenseMatrix'];
-var createLarger =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(larger_name, larger_dependencies, function (_ref) {
+var createLarger = /* #__PURE__ */Object(factory["a" /* factory */])(larger_name, larger_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix,
@@ -30426,9 +30464,7 @@ Object(factory["a" /* factory */])(larger_name, larger_dependencies, function (_
   });
   return larger;
 });
-var createLargerNumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(larger_name, ['typed', 'config'], function (_ref2) {
+var createLargerNumber = /* #__PURE__ */Object(factory["a" /* factory */])(larger_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
       config = _ref2.config;
   return typed(larger_name, {
@@ -30448,9 +30484,7 @@ Object(factory["a" /* factory */])(larger_name, ['typed', 'config'], function (_
 
 var largerEq_name = 'largerEq';
 var largerEq_dependencies = ['typed', 'config', 'matrix', 'DenseMatrix'];
-var createLargerEq =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(largerEq_name, largerEq_dependencies, function (_ref) {
+var createLargerEq = /* #__PURE__ */Object(factory["a" /* factory */])(largerEq_name, largerEq_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix,
@@ -30570,9 +30604,7 @@ Object(factory["a" /* factory */])(largerEq_name, largerEq_dependencies, functio
   });
   return largerEq;
 });
-var createLargerEqNumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(largerEq_name, ['typed', 'config'], function (_ref2) {
+var createLargerEqNumber = /* #__PURE__ */Object(factory["a" /* factory */])(largerEq_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
       config = _ref2.config;
   return typed(largerEq_name, {
@@ -30585,9 +30617,7 @@ Object(factory["a" /* factory */])(largerEq_name, ['typed', 'config'], function 
 
 var deepEqual_name = 'deepEqual';
 var deepEqual_dependencies = ['typed', 'equal'];
-var createDeepEqual =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(deepEqual_name, deepEqual_dependencies, function (_ref) {
+var createDeepEqual = /* #__PURE__ */Object(factory["a" /* factory */])(deepEqual_name, deepEqual_dependencies, function (_ref) {
   var typed = _ref.typed,
       equal = _ref.equal;
 
@@ -30669,9 +30699,7 @@ Object(factory["a" /* factory */])(deepEqual_name, deepEqual_dependencies, funct
 
 var unequal_name = 'unequal';
 var unequal_dependencies = ['typed', 'config', 'equalScalar', 'matrix', 'DenseMatrix'];
-var createUnequal =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(unequal_name, unequal_dependencies, function (_ref) {
+var createUnequal = /* #__PURE__ */Object(factory["a" /* factory */])(unequal_name, unequal_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       equalScalar = _ref.equalScalar,
@@ -30843,9 +30871,7 @@ var createUnequalNumber = Object(factory["a" /* factory */])(unequal_name, ['typ
 
 var partitionSelect_name = 'partitionSelect';
 var partitionSelect_dependencies = ['typed', 'isNumeric', 'isNaN', 'compare'];
-var createPartitionSelect =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(partitionSelect_name, partitionSelect_dependencies, function (_ref) {
+var createPartitionSelect = /* #__PURE__ */Object(factory["a" /* factory */])(partitionSelect_name, partitionSelect_dependencies, function (_ref) {
   var typed = _ref.typed,
       isNumeric = _ref.isNumeric,
       isNaN = _ref.isNaN,
@@ -30991,9 +31017,7 @@ Object(factory["a" /* factory */])(partitionSelect_name, partitionSelect_depende
 
 var sort_name = 'sort';
 var sort_dependencies = ['typed', 'matrix', 'compare', 'compareNatural'];
-var createSort =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sort_name, sort_dependencies, function (_ref) {
+var createSort = /* #__PURE__ */Object(factory["a" /* factory */])(sort_name, sort_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       compare = _ref.compare,
@@ -31118,9 +31142,7 @@ Object(factory["a" /* factory */])(sort_name, sort_dependencies, function (_ref)
 
 var max_name = 'max';
 var max_dependencies = ['typed', 'larger'];
-var createMax =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(max_name, max_dependencies, function (_ref) {
+var createMax = /* #__PURE__ */Object(factory["a" /* factory */])(max_name, max_dependencies, function (_ref) {
   var typed = _ref.typed,
       larger = _ref.larger;
 
@@ -31221,9 +31243,7 @@ Object(factory["a" /* factory */])(max_name, max_dependencies, function (_ref) {
 
 var min_name = 'min';
 var min_dependencies = ['typed', 'smaller'];
-var createMin =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(min_name, min_dependencies, function (_ref) {
+var createMin = /* #__PURE__ */Object(factory["a" /* factory */])(min_name, min_dependencies, function (_ref) {
   var typed = _ref.typed,
       smaller = _ref.smaller;
 
@@ -31324,9 +31344,7 @@ Object(factory["a" /* factory */])(min_name, min_dependencies, function (_ref) {
 
 var ImmutableDenseMatrix_name = 'ImmutableDenseMatrix';
 var ImmutableDenseMatrix_dependencies = ['smaller', 'DenseMatrix'];
-var createImmutableDenseMatrixClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(ImmutableDenseMatrix_name, ImmutableDenseMatrix_dependencies, function (_ref) {
+var createImmutableDenseMatrixClass = /* #__PURE__ */Object(factory["a" /* factory */])(ImmutableDenseMatrix_name, ImmutableDenseMatrix_dependencies, function (_ref) {
   var smaller = _ref.smaller,
       DenseMatrix = _ref.DenseMatrix;
 
@@ -31566,9 +31584,7 @@ Object(factory["a" /* factory */])(ImmutableDenseMatrix_name, ImmutableDenseMatr
 
 var MatrixIndex_name = 'Index';
 var MatrixIndex_dependencies = ['ImmutableDenseMatrix'];
-var createIndexClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(MatrixIndex_name, MatrixIndex_dependencies, function (_ref) {
+var createIndexClass = /* #__PURE__ */Object(factory["a" /* factory */])(MatrixIndex_name, MatrixIndex_dependencies, function (_ref) {
   var ImmutableDenseMatrix = _ref.ImmutableDenseMatrix;
 
   /**
@@ -31866,9 +31882,7 @@ Object(factory["a" /* factory */])(MatrixIndex_name, MatrixIndex_dependencies, f
 
 var FibonacciHeap_name = 'FibonacciHeap';
 var FibonacciHeap_dependencies = ['smaller', 'larger'];
-var createFibonacciHeapClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(FibonacciHeap_name, FibonacciHeap_dependencies, function (_ref) {
+var createFibonacciHeapClass = /* #__PURE__ */Object(factory["a" /* factory */])(FibonacciHeap_name, FibonacciHeap_dependencies, function (_ref) {
   var smaller = _ref.smaller,
       larger = _ref.larger;
   var oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0);
@@ -32256,9 +32270,7 @@ Object(factory["a" /* factory */])(FibonacciHeap_name, FibonacciHeap_dependencie
 
 var Spa_name = 'Spa';
 var Spa_dependencies = ['addScalar', 'equalScalar', 'FibonacciHeap'];
-var createSpaClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(Spa_name, Spa_dependencies, function (_ref) {
+var createSpaClass = /* #__PURE__ */Object(factory["a" /* factory */])(Spa_name, Spa_dependencies, function (_ref) {
   var addScalar = _ref.addScalar,
       equalScalar = _ref.equalScalar,
       FibonacciHeap = _ref.FibonacciHeap;
@@ -32469,9 +32481,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 var Unit_name = 'Unit';
 var Unit_dependencies = ['?on', 'config', 'addScalar', 'subtract', 'multiplyScalar', 'divideScalar', 'pow', 'abs', 'fix', 'round', 'equal', 'isNumeric', 'format', 'number', 'Complex', 'BigNumber', 'Fraction'];
-var createUnitClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref) {
+var createUnitClass = /* #__PURE__ */Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref) {
   var on = _ref.on,
       config = _ref.config,
       addScalar = _ref.addScalar,
@@ -36433,9 +36443,7 @@ Object(factory["a" /* factory */])(Unit_name, Unit_dependencies, function (_ref)
 var unit_name = 'unit';
 var unit_dependencies = ['typed', 'Unit']; // This function is named createUnitFunction to prevent a naming conflict with createUnit
 
-var createUnitFunction =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(unit_name, unit_dependencies, function (_ref) {
+var createUnitFunction = /* #__PURE__ */Object(factory["a" /* factory */])(unit_name, unit_dependencies, function (_ref) {
   var typed = _ref.typed,
       Unit = _ref.Unit;
 
@@ -36488,9 +36496,7 @@ Object(factory["a" /* factory */])(unit_name, unit_dependencies, function (_ref)
 
 var sparse_name = 'sparse';
 var sparse_dependencies = ['typed', 'SparseMatrix'];
-var createSparse =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sparse_name, sparse_dependencies, function (_ref) {
+var createSparse = /* #__PURE__ */Object(factory["a" /* factory */])(sparse_name, sparse_dependencies, function (_ref) {
   var typed = _ref.typed,
       SparseMatrix = _ref.SparseMatrix;
 
@@ -36540,9 +36546,7 @@ Object(factory["a" /* factory */])(sparse_name, sparse_dependencies, function (_
 
 var createUnit_name = 'createUnit';
 var createUnit_dependencies = ['typed', 'Unit'];
-var createCreateUnit =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(createUnit_name, createUnit_dependencies, function (_ref) {
+var createCreateUnit = /* #__PURE__ */Object(factory["a" /* factory */])(createUnit_name, createUnit_dependencies, function (_ref) {
   var typed = _ref.typed,
       Unit = _ref.Unit;
 
@@ -36621,9 +36625,7 @@ Object(factory["a" /* factory */])(createUnit_name, createUnit_dependencies, fun
 
 var acos_name = 'acos';
 var acos_dependencies = ['typed', 'config', 'Complex'];
-var createAcos =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(acos_name, acos_dependencies, function (_ref) {
+var createAcos = /* #__PURE__ */Object(factory["a" /* factory */])(acos_name, acos_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       Complex = _ref.Complex;
@@ -36790,9 +36792,7 @@ tanhNumber.signature = trigonometry_n1;
 
 var acosh_name = 'acosh';
 var acosh_dependencies = ['typed', 'config', 'Complex'];
-var createAcosh =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(acosh_name, acosh_dependencies, function (_ref) {
+var createAcosh = /* #__PURE__ */Object(factory["a" /* factory */])(acosh_name, acosh_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       Complex = _ref.Complex;
@@ -36848,9 +36848,7 @@ Object(factory["a" /* factory */])(acosh_name, acosh_dependencies, function (_re
 
 var acot_name = 'acot';
 var acot_dependencies = ['typed', 'BigNumber'];
-var createAcot =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(acot_name, acot_dependencies, function (_ref) {
+var createAcot = /* #__PURE__ */Object(factory["a" /* factory */])(acot_name, acot_dependencies, function (_ref) {
   var typed = _ref.typed,
       _BigNumber = _ref.BigNumber;
 
@@ -36897,9 +36895,7 @@ Object(factory["a" /* factory */])(acot_name, acot_dependencies, function (_ref)
 
 var acoth_name = 'acoth';
 var acoth_dependencies = ['typed', 'config', 'Complex', 'BigNumber'];
-var createAcoth =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(acoth_name, acoth_dependencies, function (_ref) {
+var createAcoth = /* #__PURE__ */Object(factory["a" /* factory */])(acoth_name, acoth_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       Complex = _ref.Complex,
@@ -36952,9 +36948,7 @@ Object(factory["a" /* factory */])(acoth_name, acoth_dependencies, function (_re
 
 var acsc_name = 'acsc';
 var acsc_dependencies = ['typed', 'config', 'Complex', 'BigNumber'];
-var createAcsc =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(acsc_name, acsc_dependencies, function (_ref) {
+var createAcsc = /* #__PURE__ */Object(factory["a" /* factory */])(acsc_name, acsc_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       Complex = _ref.Complex,
@@ -37009,9 +37003,7 @@ Object(factory["a" /* factory */])(acsc_name, acsc_dependencies, function (_ref)
 
 var acsch_name = 'acsch';
 var acsch_dependencies = ['typed', 'BigNumber'];
-var createAcsch =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(acsch_name, acsch_dependencies, function (_ref) {
+var createAcsch = /* #__PURE__ */Object(factory["a" /* factory */])(acsch_name, acsch_dependencies, function (_ref) {
   var typed = _ref.typed,
       _BigNumber = _ref.BigNumber;
 
@@ -37056,9 +37048,7 @@ Object(factory["a" /* factory */])(acsch_name, acsch_dependencies, function (_re
 
 var asec_name = 'asec';
 var asec_dependencies = ['typed', 'config', 'Complex', 'BigNumber'];
-var createAsec =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(asec_name, asec_dependencies, function (_ref) {
+var createAsec = /* #__PURE__ */Object(factory["a" /* factory */])(asec_name, asec_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       Complex = _ref.Complex,
@@ -37113,9 +37103,7 @@ Object(factory["a" /* factory */])(asec_name, asec_dependencies, function (_ref)
 
 var asech_name = 'asech';
 var asech_dependencies = ['typed', 'config', 'Complex', 'BigNumber'];
-var createAsech =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(asech_name, asech_dependencies, function (_ref) {
+var createAsech = /* #__PURE__ */Object(factory["a" /* factory */])(asech_name, asech_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       Complex = _ref.Complex,
@@ -37174,9 +37162,7 @@ Object(factory["a" /* factory */])(asech_name, asech_dependencies, function (_re
 
 var asin_name = 'asin';
 var asin_dependencies = ['typed', 'config', 'Complex'];
-var createAsin =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(asin_name, asin_dependencies, function (_ref) {
+var createAsin = /* #__PURE__ */Object(factory["a" /* factory */])(asin_name, asin_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       Complex = _ref.Complex;
@@ -37231,9 +37217,7 @@ Object(factory["a" /* factory */])(asin_name, asin_dependencies, function (_ref)
 
 var asinh_name = 'asinh';
 var asinh_dependencies = ['typed'];
-var createAsinh =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(asinh_name, asinh_dependencies, function (_ref) {
+var createAsinh = /* #__PURE__ */Object(factory["a" /* factory */])(asinh_name, asinh_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -37277,9 +37261,7 @@ Object(factory["a" /* factory */])(asinh_name, asinh_dependencies, function (_re
 
 var atan_name = 'atan';
 var atan_dependencies = ['typed'];
-var createAtan =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(atan_name, atan_dependencies, function (_ref) {
+var createAtan = /* #__PURE__ */Object(factory["a" /* factory */])(atan_name, atan_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -37333,9 +37315,7 @@ Object(factory["a" /* factory */])(atan_name, atan_dependencies, function (_ref)
 
 var atan2_name = 'atan2';
 var atan2_dependencies = ['typed', 'matrix', 'equalScalar', 'BigNumber', 'DenseMatrix'];
-var createAtan2 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(atan2_name, atan2_dependencies, function (_ref) {
+var createAtan2 = /* #__PURE__ */Object(factory["a" /* factory */])(atan2_name, atan2_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       equalScalar = _ref.equalScalar,
@@ -37455,9 +37435,7 @@ Object(factory["a" /* factory */])(atan2_name, atan2_dependencies, function (_re
 
 var atanh_name = 'atanh';
 var atanh_dependencies = ['typed', 'config', 'Complex'];
-var createAtanh =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(atanh_name, atanh_dependencies, function (_ref) {
+var createAtanh = /* #__PURE__ */Object(factory["a" /* factory */])(atanh_name, atanh_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       Complex = _ref.Complex;
@@ -37509,9 +37487,7 @@ Object(factory["a" /* factory */])(atanh_name, atanh_dependencies, function (_re
 
 var cos_name = 'cos';
 var cos_dependencies = ['typed'];
-var createCos =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(cos_name, cos_dependencies, function (_ref) {
+var createCos = /* #__PURE__ */Object(factory["a" /* factory */])(cos_name, cos_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -37567,9 +37543,7 @@ Object(factory["a" /* factory */])(cos_name, cos_dependencies, function (_ref) {
 
 var cosh_name = 'cosh';
 var cosh_dependencies = ['typed'];
-var createCosh =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(cosh_name, cosh_dependencies, function (_ref) {
+var createCosh = /* #__PURE__ */Object(factory["a" /* factory */])(cosh_name, cosh_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -37620,9 +37594,7 @@ Object(factory["a" /* factory */])(cosh_name, cosh_dependencies, function (_ref)
 
 var cot_name = 'cot';
 var cot_dependencies = ['typed', 'BigNumber'];
-var createCot =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(cot_name, cot_dependencies, function (_ref) {
+var createCot = /* #__PURE__ */Object(factory["a" /* factory */])(cot_name, cot_dependencies, function (_ref) {
   var typed = _ref.typed,
       _BigNumber = _ref.BigNumber;
 
@@ -37674,9 +37646,7 @@ Object(factory["a" /* factory */])(cot_name, cot_dependencies, function (_ref) {
 
 var coth_name = 'coth';
 var coth_dependencies = ['typed', 'BigNumber'];
-var createCoth =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(coth_name, coth_dependencies, function (_ref) {
+var createCoth = /* #__PURE__ */Object(factory["a" /* factory */])(coth_name, coth_dependencies, function (_ref) {
   var typed = _ref.typed,
       _BigNumber = _ref.BigNumber;
 
@@ -37730,9 +37700,7 @@ Object(factory["a" /* factory */])(coth_name, coth_dependencies, function (_ref)
 
 var csc_name = 'csc';
 var csc_dependencies = ['typed', 'BigNumber'];
-var createCsc =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(csc_name, csc_dependencies, function (_ref) {
+var createCsc = /* #__PURE__ */Object(factory["a" /* factory */])(csc_name, csc_dependencies, function (_ref) {
   var typed = _ref.typed,
       _BigNumber = _ref.BigNumber;
 
@@ -37784,9 +37752,7 @@ Object(factory["a" /* factory */])(csc_name, csc_dependencies, function (_ref) {
 
 var csch_name = 'csch';
 var csch_dependencies = ['typed', 'BigNumber'];
-var createCsch =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(csch_name, csch_dependencies, function (_ref) {
+var createCsch = /* #__PURE__ */Object(factory["a" /* factory */])(csch_name, csch_dependencies, function (_ref) {
   var typed = _ref.typed,
       _BigNumber = _ref.BigNumber;
 
@@ -37840,9 +37806,7 @@ Object(factory["a" /* factory */])(csch_name, csch_dependencies, function (_ref)
 
 var sec_name = 'sec';
 var sec_dependencies = ['typed', 'BigNumber'];
-var createSec =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sec_name, sec_dependencies, function (_ref) {
+var createSec = /* #__PURE__ */Object(factory["a" /* factory */])(sec_name, sec_dependencies, function (_ref) {
   var typed = _ref.typed,
       _BigNumber = _ref.BigNumber;
 
@@ -37894,9 +37858,7 @@ Object(factory["a" /* factory */])(sec_name, sec_dependencies, function (_ref) {
 
 var sech_name = 'sech';
 var sech_dependencies = ['typed', 'BigNumber'];
-var createSech =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sech_name, sech_dependencies, function (_ref) {
+var createSech = /* #__PURE__ */Object(factory["a" /* factory */])(sech_name, sech_dependencies, function (_ref) {
   var typed = _ref.typed,
       _BigNumber = _ref.BigNumber;
 
@@ -37949,9 +37911,7 @@ Object(factory["a" /* factory */])(sech_name, sech_dependencies, function (_ref)
 
 var sin_name = 'sin';
 var sin_dependencies = ['typed'];
-var createSin =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sin_name, sin_dependencies, function (_ref) {
+var createSin = /* #__PURE__ */Object(factory["a" /* factory */])(sin_name, sin_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -38008,9 +37968,7 @@ Object(factory["a" /* factory */])(sin_name, sin_dependencies, function (_ref) {
 
 var sinh_name = 'sinh';
 var sinh_dependencies = ['typed'];
-var createSinh =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sinh_name, sinh_dependencies, function (_ref) {
+var createSinh = /* #__PURE__ */Object(factory["a" /* factory */])(sinh_name, sinh_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -38061,9 +38019,7 @@ Object(factory["a" /* factory */])(sinh_name, sinh_dependencies, function (_ref)
 
 var tan_name = 'tan';
 var tan_dependencies = ['typed'];
-var createTan =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(tan_name, tan_dependencies, function (_ref) {
+var createTan = /* #__PURE__ */Object(factory["a" /* factory */])(tan_name, tan_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -38117,9 +38073,7 @@ Object(factory["a" /* factory */])(tan_name, tan_dependencies, function (_ref) {
 
 var tanh_name = 'tanh';
 var tanh_dependencies = ['typed'];
-var createTanh =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(tanh_name, tanh_dependencies, function (_ref) {
+var createTanh = /* #__PURE__ */Object(factory["a" /* factory */])(tanh_name, tanh_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -38173,9 +38127,7 @@ Object(factory["a" /* factory */])(tanh_name, tanh_dependencies, function (_ref)
 
 var setCartesian_name = 'setCartesian';
 var setCartesian_dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix'];
-var createSetCartesian =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(setCartesian_name, setCartesian_dependencies, function (_ref) {
+var createSetCartesian = /* #__PURE__ */Object(factory["a" /* factory */])(setCartesian_name, setCartesian_dependencies, function (_ref) {
   var typed = _ref.typed,
       size = _ref.size,
       subset = _ref.subset,
@@ -38235,9 +38187,7 @@ Object(factory["a" /* factory */])(setCartesian_name, setCartesian_dependencies,
 
 var setDifference_name = 'setDifference';
 var setDifference_dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix'];
-var createSetDifference =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(setDifference_name, setDifference_dependencies, function (_ref) {
+var createSetDifference = /* #__PURE__ */Object(factory["a" /* factory */])(setDifference_name, setDifference_dependencies, function (_ref) {
   var typed = _ref.typed,
       size = _ref.size,
       subset = _ref.subset,
@@ -38314,9 +38264,7 @@ Object(factory["a" /* factory */])(setDifference_name, setDifference_dependencie
 
 var setDistinct_name = 'setDistinct';
 var setDistinct_dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix'];
-var createSetDistinct =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(setDistinct_name, setDistinct_dependencies, function (_ref) {
+var createSetDistinct = /* #__PURE__ */Object(factory["a" /* factory */])(setDistinct_name, setDistinct_dependencies, function (_ref) {
   var typed = _ref.typed,
       size = _ref.size,
       subset = _ref.subset,
@@ -38377,9 +38325,7 @@ Object(factory["a" /* factory */])(setDistinct_name, setDistinct_dependencies, f
 
 var setIntersect_name = 'setIntersect';
 var setIntersect_dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix'];
-var createSetIntersect =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(setIntersect_name, setIntersect_dependencies, function (_ref) {
+var createSetIntersect = /* #__PURE__ */Object(factory["a" /* factory */])(setIntersect_name, setIntersect_dependencies, function (_ref) {
   var typed = _ref.typed,
       size = _ref.size,
       subset = _ref.subset,
@@ -38446,9 +38392,7 @@ Object(factory["a" /* factory */])(setIntersect_name, setIntersect_dependencies,
 
 var setIsSubset_name = 'setIsSubset';
 var setIsSubset_dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index'];
-var createSetIsSubset =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(setIsSubset_name, setIsSubset_dependencies, function (_ref) {
+var createSetIsSubset = /* #__PURE__ */Object(factory["a" /* factory */])(setIsSubset_name, setIsSubset_dependencies, function (_ref) {
   var typed = _ref.typed,
       size = _ref.size,
       subset = _ref.subset,
@@ -38515,9 +38459,7 @@ Object(factory["a" /* factory */])(setIsSubset_name, setIsSubset_dependencies, f
 
 var setMultiplicity_name = 'setMultiplicity';
 var setMultiplicity_dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index'];
-var createSetMultiplicity =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(setMultiplicity_name, setMultiplicity_dependencies, function (_ref) {
+var createSetMultiplicity = /* #__PURE__ */Object(factory["a" /* factory */])(setMultiplicity_name, setMultiplicity_dependencies, function (_ref) {
   var typed = _ref.typed,
       size = _ref.size,
       subset = _ref.subset,
@@ -38570,9 +38512,7 @@ Object(factory["a" /* factory */])(setMultiplicity_name, setMultiplicity_depende
 
 var setPowerset_name = 'setPowerset';
 var setPowerset_dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index'];
-var createSetPowerset =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(setPowerset_name, setPowerset_dependencies, function (_ref) {
+var createSetPowerset = /* #__PURE__ */Object(factory["a" /* factory */])(setPowerset_name, setPowerset_dependencies, function (_ref) {
   var typed = _ref.typed,
       size = _ref.size,
       subset = _ref.subset,
@@ -38653,9 +38593,7 @@ Object(factory["a" /* factory */])(setPowerset_name, setPowerset_dependencies, f
 
 var setSize_name = 'setSize';
 var setSize_dependencies = ['typed', 'compareNatural'];
-var createSetSize =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(setSize_name, setSize_dependencies, function (_ref) {
+var createSetSize = /* #__PURE__ */Object(factory["a" /* factory */])(setSize_name, setSize_dependencies, function (_ref) {
   var typed = _ref.typed,
       compareNatural = _ref.compareNatural;
 
@@ -38707,9 +38645,7 @@ Object(factory["a" /* factory */])(setSize_name, setSize_dependencies, function 
 
 var setSymDifference_name = 'setSymDifference';
 var setSymDifference_dependencies = ['typed', 'size', 'concat', 'subset', 'setDifference', 'Index'];
-var createSetSymDifference =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(setSymDifference_name, setSymDifference_dependencies, function (_ref) {
+var createSetSymDifference = /* #__PURE__ */Object(factory["a" /* factory */])(setSymDifference_name, setSymDifference_dependencies, function (_ref) {
   var typed = _ref.typed,
       size = _ref.size,
       concat = _ref.concat,
@@ -38758,9 +38694,7 @@ Object(factory["a" /* factory */])(setSymDifference_name, setSymDifference_depen
 
 var setUnion_name = 'setUnion';
 var setUnion_dependencies = ['typed', 'size', 'concat', 'subset', 'setIntersect', 'setSymDifference', 'Index'];
-var createSetUnion =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(setUnion_name, setUnion_dependencies, function (_ref) {
+var createSetUnion = /* #__PURE__ */Object(factory["a" /* factory */])(setUnion_name, setUnion_dependencies, function (_ref) {
   var typed = _ref.typed,
       size = _ref.size,
       concat = _ref.concat,
@@ -38815,9 +38749,7 @@ Object(factory["a" /* factory */])(setUnion_name, setUnion_dependencies, functio
 
 var add_name = 'add';
 var add_dependencies = ['typed', 'matrix', 'addScalar', 'equalScalar', 'DenseMatrix', 'SparseMatrix'];
-var createAdd =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(add_name, add_dependencies, function (_ref) {
+var createAdd = /* #__PURE__ */Object(factory["a" /* factory */])(add_name, add_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       addScalar = _ref.addScalar,
@@ -38940,9 +38872,7 @@ Object(factory["a" /* factory */])(add_name, add_dependencies, function (_ref) {
 
 var hypot_name = 'hypot';
 var hypot_dependencies = ['typed', 'abs', 'addScalar', 'divideScalar', 'multiplyScalar', 'sqrt', 'smaller', 'isPositive'];
-var createHypot =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(hypot_name, hypot_dependencies, function (_ref) {
+var createHypot = /* #__PURE__ */Object(factory["a" /* factory */])(hypot_name, hypot_dependencies, function (_ref) {
   var typed = _ref.typed,
       abs = _ref.abs,
       addScalar = _ref.addScalar,
@@ -39023,9 +38953,7 @@ Object(factory["a" /* factory */])(hypot_name, hypot_dependencies, function (_re
 
 var norm_name = 'norm';
 var norm_dependencies = ['typed', 'abs', 'add', 'pow', 'conj', 'sqrt', 'multiply', 'equalScalar', 'larger', 'smaller', 'matrix'];
-var createNorm =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(norm_name, norm_dependencies, function (_ref) {
+var createNorm = /* #__PURE__ */Object(factory["a" /* factory */])(norm_name, norm_dependencies, function (_ref) {
   var typed = _ref.typed,
       abs = _ref.abs,
       add = _ref.add,
@@ -39238,9 +39166,7 @@ Object(factory["a" /* factory */])(norm_name, norm_dependencies, function (_ref)
 
 var dot_name = 'dot';
 var dot_dependencies = ['typed', 'add', 'multiply'];
-var createDot =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(dot_name, dot_dependencies, function (_ref) {
+var createDot = /* #__PURE__ */Object(factory["a" /* factory */])(dot_name, dot_dependencies, function (_ref) {
   var typed = _ref.typed,
       add = _ref.add,
       multiply = _ref.multiply;
@@ -39312,9 +39238,7 @@ Object(factory["a" /* factory */])(dot_name, dot_dependencies, function (_ref) {
 
 var trace_name = 'trace';
 var trace_dependencies = ['typed', 'matrix', 'add'];
-var createTrace =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(trace_name, trace_dependencies, function (_ref) {
+var createTrace = /* #__PURE__ */Object(factory["a" /* factory */])(trace_name, trace_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       add = _ref.add;
@@ -39450,9 +39374,7 @@ Object(factory["a" /* factory */])(trace_name, trace_dependencies, function (_re
 
 var function_name = 'index';
 var function_dependencies = ['typed', 'Index'];
-var createIndex =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(function_name, function_dependencies, function (_ref) {
+var createIndex = /* #__PURE__ */Object(factory["a" /* factory */])(function_name, function_dependencies, function (_ref) {
   var typed = _ref.typed,
       Index = _ref.Index;
 
@@ -39524,9 +39446,7 @@ function Node_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "fu
 
 var Node_name = 'Node';
 var Node_dependencies = ['mathWithTransform'];
-var createNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(Node_name, Node_dependencies, function (_ref) {
+var createNode = /* #__PURE__ */Object(factory["a" /* factory */])(Node_name, Node_dependencies, function (_ref) {
   var mathWithTransform = _ref.mathWithTransform;
 
   /**
@@ -40041,9 +39961,7 @@ function accessFactory(_ref) {
 
 var AccessorNode_name = 'AccessorNode';
 var AccessorNode_dependencies = ['subset', 'Node'];
-var createAccessorNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(AccessorNode_name, AccessorNode_dependencies, function (_ref) {
+var createAccessorNode = /* #__PURE__ */Object(factory["a" /* factory */])(AccessorNode_name, AccessorNode_dependencies, function (_ref) {
   var subset = _ref.subset,
       Node = _ref.Node;
   var access = accessFactory({
@@ -40250,9 +40168,7 @@ Object(factory["a" /* factory */])(AccessorNode_name, AccessorNode_dependencies,
 
 var ArrayNode_name = 'ArrayNode';
 var ArrayNode_dependencies = ['Node'];
-var createArrayNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(ArrayNode_name, ArrayNode_dependencies, function (_ref) {
+var createArrayNode = /* #__PURE__ */Object(factory["a" /* factory */])(ArrayNode_name, ArrayNode_dependencies, function (_ref) {
   var Node = _ref.Node;
 
   /**
@@ -40810,9 +40726,7 @@ function isAssociativeWith(nodeA, nodeB, parenthesis) {
 var AssignmentNode_name = 'AssignmentNode';
 var AssignmentNode_dependencies = ['subset', '?matrix', // FIXME: should not be needed at all, should be handled by subset
 'Node'];
-var createAssignmentNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(AssignmentNode_name, AssignmentNode_dependencies, function (_ref) {
+var createAssignmentNode = /* #__PURE__ */Object(factory["a" /* factory */])(AssignmentNode_name, AssignmentNode_dependencies, function (_ref) {
   var subset = _ref.subset,
       matrix = _ref.matrix,
       Node = _ref.Node;
@@ -41131,9 +41045,7 @@ Object(factory["a" /* factory */])(AssignmentNode_name, AssignmentNode_dependenc
 
 var BlockNode_name = 'BlockNode';
 var BlockNode_dependencies = ['ResultSet', 'Node'];
-var createBlockNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(BlockNode_name, BlockNode_dependencies, function (_ref) {
+var createBlockNode = /* #__PURE__ */Object(factory["a" /* factory */])(BlockNode_name, BlockNode_dependencies, function (_ref) {
   var ResultSet = _ref.ResultSet,
       Node = _ref.Node;
 
@@ -41325,9 +41237,7 @@ Object(factory["a" /* factory */])(BlockNode_name, BlockNode_dependencies, funct
 
 var ConditionalNode_name = 'ConditionalNode';
 var ConditionalNode_dependencies = ['Node'];
-var createConditionalNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(ConditionalNode_name, ConditionalNode_dependencies, function (_ref) {
+var createConditionalNode = /* #__PURE__ */Object(factory["a" /* factory */])(ConditionalNode_name, ConditionalNode_dependencies, function (_ref) {
   var Node = _ref.Node;
 
   /**
@@ -42053,9 +41963,7 @@ function toSymbol(name, isUnit) {
 
 var ConstantNode_name = 'ConstantNode';
 var ConstantNode_dependencies = ['Node'];
-var ConstantNode_createConstantNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(ConstantNode_name, ConstantNode_dependencies, function (_ref) {
+var ConstantNode_createConstantNode = /* #__PURE__ */Object(factory["a" /* factory */])(ConstantNode_name, ConstantNode_dependencies, function (_ref) {
   var Node = _ref.Node;
 
   /**
@@ -42249,9 +42157,7 @@ Object(factory["a" /* factory */])(ConstantNode_name, ConstantNode_dependencies,
 
 var FunctionAssignmentNode_name = 'FunctionAssignmentNode';
 var FunctionAssignmentNode_dependencies = ['typed', 'Node'];
-var createFunctionAssignmentNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(FunctionAssignmentNode_name, FunctionAssignmentNode_dependencies, function (_ref) {
+var createFunctionAssignmentNode = /* #__PURE__ */Object(factory["a" /* factory */])(FunctionAssignmentNode_name, FunctionAssignmentNode_dependencies, function (_ref) {
   var typed = _ref.typed,
       Node = _ref.Node;
 
@@ -42475,13 +42381,17 @@ Object(factory["a" /* factory */])(FunctionAssignmentNode_name, FunctionAssignme
   isNode: true
 });
 // CONCATENATED MODULE: ./src/expression/node/IndexNode.js
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -42490,9 +42400,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var IndexNode_name = 'IndexNode';
 var IndexNode_dependencies = ['Range', 'Node', 'size'];
-var createIndexNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(IndexNode_name, IndexNode_dependencies, function (_ref) {
+var createIndexNode = /* #__PURE__ */Object(factory["a" /* factory */])(IndexNode_name, IndexNode_dependencies, function (_ref) {
   var Range = _ref.Range,
       Node = _ref.Node,
       size = _ref.size;
@@ -42774,9 +42682,7 @@ function ObjectNode_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol =
 
 var ObjectNode_name = 'ObjectNode';
 var ObjectNode_dependencies = ['Node'];
-var createObjectNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(ObjectNode_name, ObjectNode_dependencies, function (_ref) {
+var createObjectNode = /* #__PURE__ */Object(factory["a" /* factory */])(ObjectNode_name, ObjectNode_dependencies, function (_ref) {
   var Node = _ref.Node;
 
   /**
@@ -42993,9 +42899,7 @@ Object(factory["a" /* factory */])(ObjectNode_name, ObjectNode_dependencies, fun
 
 var OperatorNode_name = 'OperatorNode';
 var OperatorNode_dependencies = ['Node'];
-var createOperatorNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(OperatorNode_name, OperatorNode_dependencies, function (_ref) {
+var createOperatorNode = /* #__PURE__ */Object(factory["a" /* factory */])(OperatorNode_name, OperatorNode_dependencies, function (_ref) {
   var Node = _ref.Node;
 
   /**
@@ -43674,9 +43578,7 @@ Object(factory["a" /* factory */])(OperatorNode_name, OperatorNode_dependencies,
 
 var ParenthesisNode_name = 'ParenthesisNode';
 var ParenthesisNode_dependencies = ['Node'];
-var createParenthesisNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(ParenthesisNode_name, ParenthesisNode_dependencies, function (_ref) {
+var createParenthesisNode = /* #__PURE__ */Object(factory["a" /* factory */])(ParenthesisNode_name, ParenthesisNode_dependencies, function (_ref) {
   var Node = _ref.Node;
 
   /**
@@ -43840,9 +43742,7 @@ Object(factory["a" /* factory */])(ParenthesisNode_name, ParenthesisNode_depende
 
 var RangeNode_name = 'RangeNode';
 var RangeNode_dependencies = ['Node'];
-var createRangeNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(RangeNode_name, RangeNode_dependencies, function (_ref) {
+var createRangeNode = /* #__PURE__ */Object(factory["a" /* factory */])(RangeNode_name, RangeNode_dependencies, function (_ref) {
   var Node = _ref.Node;
 
   /**
@@ -44131,9 +44031,7 @@ Object(factory["a" /* factory */])(RangeNode_name, RangeNode_dependencies, funct
 
 var RelationalNode_name = 'RelationalNode';
 var RelationalNode_dependencies = ['Node'];
-var createRelationalNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(RelationalNode_name, RelationalNode_dependencies, function (_ref) {
+var createRelationalNode = /* #__PURE__ */Object(factory["a" /* factory */])(RelationalNode_name, RelationalNode_dependencies, function (_ref) {
   var Node = _ref.Node;
 
   /**
@@ -44353,9 +44251,7 @@ Object(factory["a" /* factory */])(RelationalNode_name, RelationalNode_dependenc
 
 var SymbolNode_name = 'SymbolNode';
 var SymbolNode_dependencies = ['math', '?Unit', 'Node'];
-var createSymbolNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(SymbolNode_name, SymbolNode_dependencies, function (_ref) {
+var createSymbolNode = /* #__PURE__ */Object(factory["a" /* factory */])(SymbolNode_name, SymbolNode_dependencies, function (_ref) {
   var math = _ref.math,
       Unit = _ref.Unit,
       Node = _ref.Node;
@@ -44568,9 +44464,7 @@ function FunctionNode_extends() { FunctionNode_extends = Object.assign || functi
 
 var FunctionNode_name = 'FunctionNode';
 var FunctionNode_dependencies = ['math', 'Node', 'SymbolNode'];
-var createFunctionNode =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(FunctionNode_name, FunctionNode_dependencies, function (_ref) {
+var createFunctionNode = /* #__PURE__ */Object(factory["a" /* factory */])(FunctionNode_name, FunctionNode_dependencies, function (_ref) {
   var math = _ref.math,
       Node = _ref.Node,
       SymbolNode = _ref.SymbolNode;
@@ -45036,9 +44930,7 @@ function parse_extends() { parse_extends = Object.assign || function (target) { 
 
 var parse_name = 'parse';
 var parse_dependencies = ['typed', 'numeric', 'config', 'AccessorNode', 'ArrayNode', 'AssignmentNode', 'BlockNode', 'ConditionalNode', 'ConstantNode', 'FunctionAssignmentNode', 'FunctionNode', 'IndexNode', 'ObjectNode', 'OperatorNode', 'ParenthesisNode', 'RangeNode', 'RelationalNode', 'SymbolNode'];
-var createParse =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_ref) {
+var createParse = /* #__PURE__ */Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_ref) {
   var typed = _ref.typed,
       numeric = _ref.numeric,
       config = _ref.config,
@@ -46750,9 +46642,7 @@ Object(factory["a" /* factory */])(parse_name, parse_dependencies, function (_re
 
 var compile_name = 'compile';
 var compile_dependencies = ['typed', 'parse'];
-var createCompile =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(compile_name, compile_dependencies, function (_ref) {
+var createCompile = /* #__PURE__ */Object(factory["a" /* factory */])(compile_name, compile_dependencies, function (_ref) {
   var typed = _ref.typed,
       parse = _ref.parse;
 
@@ -46806,9 +46696,7 @@ Object(factory["a" /* factory */])(compile_name, compile_dependencies, function 
 
 var evaluate_name = 'evaluate';
 var evaluate_dependencies = ['typed', 'parse'];
-var createEvaluate =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(evaluate_name, evaluate_dependencies, function (_ref) {
+var createEvaluate = /* #__PURE__ */Object(factory["a" /* factory */])(evaluate_name, evaluate_dependencies, function (_ref) {
   var typed = _ref.typed,
       parse = _ref.parse;
 
@@ -46869,9 +46757,7 @@ Object(factory["a" /* factory */])(evaluate_name, evaluate_dependencies, functio
 // For backward compatibility, deprecated since version 6.0.0. Date: 2018-12-05
 
 
-var createDeprecatedEval =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('eval', ['evaluate'], function (_ref) {
+var createDeprecatedEval = /* #__PURE__ */Object(factory["a" /* factory */])('eval', ['evaluate'], function (_ref) {
   var evaluate = _ref.evaluate;
   return function () {
     Object(utils_log["a" /* warnOnce */])('Function "eval" has been renamed to "evaluate" in v6.0.0, please use the new function instead.');
@@ -46890,9 +46776,7 @@ Object(factory["a" /* factory */])('eval', ['evaluate'], function (_ref) {
 
 var Parser_name = 'Parser';
 var Parser_dependencies = ['parse'];
-var createParserClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(Parser_name, Parser_dependencies, function (_ref) {
+var createParserClass = /* #__PURE__ */Object(factory["a" /* factory */])(Parser_name, Parser_dependencies, function (_ref) {
   var parse = _ref.parse;
 
   /**
@@ -47069,9 +46953,7 @@ Object(factory["a" /* factory */])(Parser_name, Parser_dependencies, function (_
 
 var parser_name = 'parser';
 var parser_dependencies = ['typed', 'Parser'];
-var createParser =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(parser_name, parser_dependencies, function (_ref) {
+var createParser = /* #__PURE__ */Object(factory["a" /* factory */])(parser_name, parser_dependencies, function (_ref) {
   var typed = _ref.typed,
       Parser = _ref.Parser;
 
@@ -47129,9 +47011,7 @@ Object(factory["a" /* factory */])(parser_name, parser_dependencies, function (_
 
 var lup_name = 'lup';
 var lup_dependencies = ['typed', 'matrix', 'abs', 'addScalar', 'divideScalar', 'multiplyScalar', 'subtract', 'larger', 'equalScalar', 'unaryMinus', 'DenseMatrix', 'SparseMatrix', 'Spa'];
-var createLup =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(lup_name, lup_dependencies, function (_ref) {
+var createLup = /* #__PURE__ */Object(factory["a" /* factory */])(lup_name, lup_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       abs = _ref.abs,
@@ -47544,9 +47424,7 @@ function qr_extends() { qr_extends = Object.assign || function (target) { for (v
 
 var qr_name = 'qr';
 var qr_dependencies = ['typed', 'matrix', 'zeros', 'identity', 'isZero', 'equal', 'sign', 'sqrt', 'conj', 'unaryMinus', 'addScalar', 'divideScalar', 'multiplyScalar', 'subtract', 'complex'];
-var createQr =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
+var createQr = /* #__PURE__ */Object(factory["a" /* factory */])(qr_name, qr_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       zeros = _ref.zeros,
@@ -48097,9 +47975,7 @@ function csFlip(i) {
 
 var csAmd_name = 'csAmd';
 var csAmd_dependencies = ['add', 'multiply', 'transpose'];
-var createCsAmd =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(csAmd_name, csAmd_dependencies, function (_ref) {
+var createCsAmd = /* #__PURE__ */Object(factory["a" /* factory */])(csAmd_name, csAmd_dependencies, function (_ref) {
   var add = _ref.add,
       multiply = _ref.multiply,
       transpose = _ref.transpose;
@@ -48781,9 +48657,7 @@ function csLeaf(i, j, w, first, maxfirst, prevleaf, ancestor) {
 
 var csCounts_name = 'csCounts';
 var csCounts_dependencies = ['transpose'];
-var createCsCounts =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(csCounts_name, csCounts_dependencies, function (_ref) {
+var createCsCounts = /* #__PURE__ */Object(factory["a" /* factory */])(csCounts_name, csCounts_dependencies, function (_ref) {
   var transpose = _ref.transpose;
 
   /**
@@ -48926,9 +48800,7 @@ Object(factory["a" /* factory */])(csCounts_name, csCounts_dependencies, functio
 
 var csSqr_name = 'csSqr';
 var csSqr_dependencies = ['add', 'multiply', 'transpose'];
-var createCsSqr =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(csSqr_name, csSqr_dependencies, function (_ref) {
+var createCsSqr = /* #__PURE__ */Object(factory["a" /* factory */])(csSqr_name, csSqr_dependencies, function (_ref) {
   var add = _ref.add,
       multiply = _ref.multiply,
       transpose = _ref.transpose;
@@ -49293,9 +49165,7 @@ function csReach(g, b, k, xi, pinv) {
 
 var csSpsolve_name = 'csSpsolve';
 var csSpsolve_dependencies = ['divideScalar', 'multiply', 'subtract'];
-var createCsSpsolve =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(csSpsolve_name, csSpsolve_dependencies, function (_ref) {
+var createCsSpsolve = /* #__PURE__ */Object(factory["a" /* factory */])(csSpsolve_name, csSpsolve_dependencies, function (_ref) {
   var divideScalar = _ref.divideScalar,
       multiply = _ref.multiply,
       subtract = _ref.subtract;
@@ -49382,9 +49252,7 @@ Object(factory["a" /* factory */])(csSpsolve_name, csSpsolve_dependencies, funct
 
 var csLu_name = 'csLu';
 var csLu_dependencies = ['abs', 'divideScalar', 'multiply', 'subtract', 'larger', 'largerEq', 'SparseMatrix'];
-var createCsLu =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(csLu_name, csLu_dependencies, function (_ref) {
+var createCsLu = /* #__PURE__ */Object(factory["a" /* factory */])(csLu_name, csLu_dependencies, function (_ref) {
   var abs = _ref.abs,
       divideScalar = _ref.divideScalar,
       multiply = _ref.multiply,
@@ -49583,9 +49451,7 @@ Object(factory["a" /* factory */])(csLu_name, csLu_dependencies, function (_ref)
 
 var slu_name = 'slu';
 var slu_dependencies = ['typed', 'abs', 'add', 'multiply', 'transpose', 'divideScalar', 'subtract', 'larger', 'largerEq', 'SparseMatrix'];
-var createSlu =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(slu_name, slu_dependencies, function (_ref) {
+var createSlu = /* #__PURE__ */Object(factory["a" /* factory */])(slu_name, slu_dependencies, function (_ref) {
   var typed = _ref.typed,
       abs = _ref.abs,
       add = _ref.add,
@@ -49715,9 +49581,7 @@ function csIpvec(p, b) {
 
 var lusolve_name = 'lusolve';
 var lusolve_dependencies = ['typed', 'matrix', 'lup', 'slu', 'usolve', 'lsolve', 'DenseMatrix'];
-var createLusolve =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(lusolve_name, lusolve_dependencies, function (_ref) {
+var createLusolve = /* #__PURE__ */Object(factory["a" /* factory */])(lusolve_name, lusolve_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       lup = _ref.lup,
@@ -49844,9 +49708,7 @@ Object(factory["a" /* factory */])(lusolve_name, lusolve_dependencies, function 
 
 var Help_name = 'Help';
 var Help_dependencies = ['parse'];
-var createHelpClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(Help_name, Help_dependencies, function (_ref) {
+var createHelpClass = /* #__PURE__ */Object(factory["a" /* factory */])(Help_name, Help_dependencies, function (_ref) {
   var parse = _ref.parse;
 
   /**
@@ -49979,9 +49841,7 @@ Object(factory["a" /* factory */])(Help_name, Help_dependencies, function (_ref)
 
 var Chain_name = 'Chain';
 var Chain_dependencies = ['?on', 'math'];
-var createChainClass =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(Chain_name, Chain_dependencies, function (_ref) {
+var createChainClass = /* #__PURE__ */Object(factory["a" /* factory */])(Chain_name, Chain_dependencies, function (_ref) {
   var on = _ref.on,
       math = _ref.math;
 
@@ -52741,9 +52601,7 @@ var embeddedDocs = {
 
 var help_name = 'help';
 var help_dependencies = ['typed', 'mathWithTransform', 'Help'];
-var createHelp =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(help_name, help_dependencies, function (_ref) {
+var createHelp = /* #__PURE__ */Object(factory["a" /* factory */])(help_name, help_dependencies, function (_ref) {
   var typed = _ref.typed,
       mathWithTransform = _ref.mathWithTransform,
       Help = _ref.Help;
@@ -52810,9 +52668,7 @@ Object(factory["a" /* factory */])(help_name, help_dependencies, function (_ref)
 
 var chain_name = 'chain';
 var chain_dependencies = ['typed', 'Chain'];
-var createChain =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(chain_name, chain_dependencies, function (_ref) {
+var createChain = /* #__PURE__ */Object(factory["a" /* factory */])(chain_name, chain_dependencies, function (_ref) {
   var typed = _ref.typed,
       Chain = _ref.Chain;
 
@@ -52867,9 +52723,7 @@ Object(factory["a" /* factory */])(chain_name, chain_dependencies, function (_re
 
 var det_name = 'det';
 var det_dependencies = ['typed', 'matrix', 'subtract', 'multiply', 'unaryMinus', 'lup'];
-var createDet =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(det_name, det_dependencies, function (_ref) {
+var createDet = /* #__PURE__ */Object(factory["a" /* factory */])(det_name, det_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       subtract = _ref.subtract,
@@ -53015,9 +52869,7 @@ Object(factory["a" /* factory */])(det_name, det_dependencies, function (_ref) {
 
 var inv_name = 'inv';
 var inv_dependencies = ['typed', 'matrix', 'divideScalar', 'addScalar', 'multiply', 'unaryMinus', 'det', 'identity', 'abs'];
-var createInv =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(inv_name, inv_dependencies, function (_ref) {
+var createInv = /* #__PURE__ */Object(factory["a" /* factory */])(inv_name, inv_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       divideScalar = _ref.divideScalar,
@@ -53217,11 +53069,10 @@ Object(factory["a" /* factory */])(inv_name, inv_dependencies, function (_ref) {
 
 
 var eigs_name = 'eigs';
-var eigs_dependencies = ['typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'inv', 'bignumber', 'multiply', 'add'];
-var createEigs =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(eigs_name, eigs_dependencies, function (_ref) {
-  var typed = _ref.typed,
+var eigs_dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'inv', 'bignumber', 'multiply', 'add'];
+var createEigs = /* #__PURE__ */Object(factory["a" /* factory */])(eigs_name, eigs_dependencies, function (_ref) {
+  var config = _ref.config,
+      typed = _ref.typed,
       matrix = _ref.matrix,
       addScalar = _ref.addScalar,
       subtract = _ref.subtract,
@@ -53420,30 +53271,24 @@ Object(factory["a" /* factory */])(eigs_name, eigs_dependencies, function (_ref)
 
 
   function getTheta(aii, ajj, aij) {
-    var th = 0;
     var denom = ajj - aii;
 
-    if (Math.abs(denom) <= 1E-14) {
-      th = Math.PI / 4.0;
+    if (Math.abs(denom) <= config.epsilon) {
+      return Math.PI / 4;
     } else {
-      th = 0.5 * Math.atan(2.0 * aij / (ajj - aii));
+      return 0.5 * Math.atan(2 * aij / (ajj - aii));
     }
-
-    return th;
   } // get angle
 
 
   function getThetaBig(aii, ajj, aij) {
-    var th = 0;
     var denom = subtract(ajj, aii);
 
-    if (abs(denom) <= 1E-14) {
-      th = Math.PI / 4.0;
+    if (abs(denom) <= config.epsilon) {
+      return bignumber(-1).acos().div(4);
     } else {
-      th = multiplyScalar(0.5, atan(multiply(2.0, aij, inv(denom))));
+      return multiplyScalar(0.5, atan(multiply(2, aij, inv(denom))));
     }
-
-    return th;
   } // update eigvec
 
 
@@ -53472,8 +53317,8 @@ Object(factory["a" /* factory */])(eigs_name, eigs_dependencies, function (_ref)
     var N = Sij.length;
     var c = cos(theta);
     var s = sin(theta);
-    var Ski = createArray(N, 0);
-    var Skj = createArray(N, 0);
+    var Ski = createArray(N, bignumber(0));
+    var Skj = createArray(N, bignumber(0));
 
     for (var k = 0; k < N; k++) {
       Ski[k] = subtract(multiplyScalar(c, Sij[k][i]), multiplyScalar(s, Sij[k][j]));
@@ -53495,10 +53340,10 @@ Object(factory["a" /* factory */])(eigs_name, eigs_dependencies, function (_ref)
     var s = bignumber(sin(theta));
     var c2 = multiplyScalar(c, c);
     var s2 = multiplyScalar(s, s);
-    var Aki = createArray(N, 0);
-    var Akj = createArray(N, 0); // 2cs Hij
+    var Aki = createArray(N, bignumber(0));
+    var Akj = createArray(N, bignumber(0)); // 2cs Hij
 
-    var csHij = multiply(2, c, s, Hij[i][j]); //  Aii
+    var csHij = multiply(bignumber(2), c, s, Hij[i][j]); //  Aii
 
     var Aii = addScalar(subtract(multiplyScalar(c2, Hij[i][i]), csHij), multiplyScalar(s2, Hij[j][j]));
     var Ajj = add(multiplyScalar(s2, Hij[i][i]), csHij, multiplyScalar(c2, Hij[j][j])); // 0  to i
@@ -53511,8 +53356,8 @@ Object(factory["a" /* factory */])(eigs_name, eigs_dependencies, function (_ref)
 
     Hij[i][i] = Aii;
     Hij[j][j] = Ajj;
-    Hij[i][j] = 0;
-    Hij[j][i] = 0; // 0  to i
+    Hij[i][j] = bignumber(0);
+    Hij[j][i] = bignumber(0); // 0  to i
 
     for (var _k3 = 0; _k3 < N; _k3++) {
       if (_k3 !== i && _k3 !== j) {
@@ -53657,9 +53502,7 @@ Object(factory["a" /* factory */])(eigs_name, eigs_dependencies, function (_ref)
 
 var expm_name = 'expm';
 var expm_dependencies = ['typed', 'abs', 'add', 'identity', 'inv', 'multiply'];
-var createExpm =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(expm_name, expm_dependencies, function (_ref) {
+var createExpm = /* #__PURE__ */Object(factory["a" /* factory */])(expm_name, expm_dependencies, function (_ref) {
   var typed = _ref.typed,
       abs = _ref.abs,
       add = _ref.add,
@@ -53825,9 +53668,7 @@ Object(factory["a" /* factory */])(expm_name, expm_dependencies, function (_ref)
 
 var sqrtm_name = 'sqrtm';
 var sqrtm_dependencies = ['typed', 'abs', 'add', 'multiply', 'sqrt', 'subtract', 'inv', 'size', 'max', 'identity'];
-var createSqrtm =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sqrtm_name, sqrtm_dependencies, function (_ref) {
+var createSqrtm = /* #__PURE__ */Object(factory["a" /* factory */])(sqrtm_name, sqrtm_dependencies, function (_ref) {
   var typed = _ref.typed,
       abs = _ref.abs,
       add = _ref.add,
@@ -53929,9 +53770,7 @@ Object(factory["a" /* factory */])(sqrtm_name, sqrtm_dependencies, function (_re
 
 var divide_name = 'divide';
 var divide_dependencies = ['typed', 'matrix', 'multiply', 'equalScalar', 'divideScalar', 'inv'];
-var createDivide =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(divide_name, divide_dependencies, function (_ref) {
+var createDivide = /* #__PURE__ */Object(factory["a" /* factory */])(divide_name, divide_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       multiply = _ref.multiply,
@@ -54006,9 +53845,7 @@ Object(factory["a" /* factory */])(divide_name, divide_dependencies, function (_
 
 var distance_name = 'distance';
 var distance_dependencies = ['typed', 'addScalar', 'subtract', 'divideScalar', 'multiplyScalar', 'unaryMinus', 'sqrt', 'abs'];
-var createDistance =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(distance_name, distance_dependencies, function (_ref) {
+var createDistance = /* #__PURE__ */Object(factory["a" /* factory */])(distance_name, distance_dependencies, function (_ref) {
   var typed = _ref.typed,
       addScalar = _ref.addScalar,
       subtract = _ref.subtract,
@@ -54359,9 +54196,7 @@ Object(factory["a" /* factory */])(distance_name, distance_dependencies, functio
 
 var intersect_name = 'intersect';
 var intersect_dependencies = ['typed', 'config', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar'];
-var createIntersect =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(intersect_name, intersect_dependencies, function (_ref) {
+var createIntersect = /* #__PURE__ */Object(factory["a" /* factory */])(intersect_name, intersect_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       abs = _ref.abs,
@@ -54564,9 +54399,7 @@ Object(factory["a" /* factory */])(intersect_name, intersect_dependencies, funct
 
 var sum_name = 'sum';
 var sum_dependencies = ['typed', 'config', 'add', '?bignumber', '?fraction'];
-var createSum =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sum_name, sum_dependencies, function (_ref) {
+var createSum = /* #__PURE__ */Object(factory["a" /* factory */])(sum_name, sum_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       add = _ref.add,
@@ -54662,9 +54495,7 @@ Object(factory["a" /* factory */])(sum_name, sum_dependencies, function (_ref) {
 
 var mean_name = 'mean';
 var mean_dependencies = ['typed', 'add', 'divide'];
-var createMean =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(mean_name, mean_dependencies, function (_ref) {
+var createMean = /* #__PURE__ */Object(factory["a" /* factory */])(mean_name, mean_dependencies, function (_ref) {
   var typed = _ref.typed,
       add = _ref.add,
       divide = _ref.divide;
@@ -54762,9 +54593,7 @@ Object(factory["a" /* factory */])(mean_name, mean_dependencies, function (_ref)
 
 var median_name = 'median';
 var median_dependencies = ['typed', 'add', 'divide', 'compare', 'partitionSelect'];
-var createMedian =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(median_name, median_dependencies, function (_ref) {
+var createMedian = /* #__PURE__ */Object(factory["a" /* factory */])(median_name, median_dependencies, function (_ref) {
   var typed = _ref.typed,
       add = _ref.add,
       divide = _ref.divide,
@@ -54874,9 +54703,7 @@ Object(factory["a" /* factory */])(median_name, median_dependencies, function (_
 
 var mad_name = 'mad';
 var mad_dependencies = ['typed', 'abs', 'map', 'median', 'subtract'];
-var createMad =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(mad_name, mad_dependencies, function (_ref) {
+var createMad = /* #__PURE__ */Object(factory["a" /* factory */])(mad_name, mad_dependencies, function (_ref) {
   var typed = _ref.typed,
       abs = _ref.abs,
       map = _ref.map,
@@ -54946,9 +54773,7 @@ Object(factory["a" /* factory */])(mad_name, mad_dependencies, function (_ref) {
 var DEFAULT_NORMALIZATION = 'unbiased';
 var variance_name = 'variance';
 var variance_dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'apply', 'isNaN'];
-var createVariance =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(variance_name, variance_dependencies, function (_ref) {
+var createVariance = /* #__PURE__ */Object(factory["a" /* factory */])(variance_name, variance_dependencies, function (_ref) {
   var typed = _ref.typed,
       add = _ref.add,
       subtract = _ref.subtract,
@@ -55103,9 +54928,7 @@ Object(factory["a" /* factory */])(variance_name, variance_dependencies, functio
   }
 }); // For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-09
 
-var createDeprecatedVar =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('var', ['variance'], function (_ref2) {
+var createDeprecatedVar = /* #__PURE__ */Object(factory["a" /* factory */])('var', ['variance'], function (_ref2) {
   var variance = _ref2.variance;
   return function () {
     Object(utils_log["a" /* warnOnce */])('Function "var" has been renamed to "variance" in v6.0.0, please use the new function instead.');
@@ -55124,9 +54947,7 @@ Object(factory["a" /* factory */])('var', ['variance'], function (_ref2) {
 
 var quantileSeq_name = 'quantileSeq';
 var quantileSeq_dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare'];
-var createQuantileSeq =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(quantileSeq_name, quantileSeq_dependencies, function (_ref) {
+var createQuantileSeq = /* #__PURE__ */Object(factory["a" /* factory */])(quantileSeq_name, quantileSeq_dependencies, function (_ref) {
   var typed = _ref.typed,
       add = _ref.add,
       multiply = _ref.multiply,
@@ -55397,9 +55218,7 @@ Object(factory["a" /* factory */])(quantileSeq_name, quantileSeq_dependencies, f
 
 var std_name = 'std';
 var std_dependencies = ['typed', 'sqrt', 'variance'];
-var createStd =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(std_name, std_dependencies, function (_ref) {
+var createStd = /* #__PURE__ */Object(factory["a" /* factory */])(std_name, std_dependencies, function (_ref) {
   var typed = _ref.typed,
       sqrt = _ref.sqrt,
       variance = _ref.variance;
@@ -55538,9 +55357,7 @@ combinationsNumber.signature = 'number, number';
 
 var combinations_name = 'combinations';
 var combinations_dependencies = ['typed'];
-var createCombinations =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(combinations_name, combinations_dependencies, function (_ref) {
+var createCombinations = /* #__PURE__ */Object(factory["a" /* factory */])(combinations_name, combinations_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -55614,9 +55431,7 @@ function isPositiveInteger(n) {
 
 var combinationsWithRep_name = 'combinationsWithRep';
 var combinationsWithRep_dependencies = ['typed'];
-var createCombinationsWithRep =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(combinationsWithRep_name, combinationsWithRep_dependencies, function (_ref) {
+var createCombinationsWithRep = /* #__PURE__ */Object(factory["a" /* factory */])(combinationsWithRep_name, combinationsWithRep_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -55759,9 +55574,7 @@ var gammaP = [0.99999999999999709182, 57.156235665862923517, -59.597960355475491
 
 var gamma_name = 'gamma';
 var gamma_dependencies = ['typed', 'config', 'multiplyScalar', 'pow', 'BigNumber', 'Complex'];
-var createGamma =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(gamma_name, gamma_dependencies, function (_ref) {
+var createGamma = /* #__PURE__ */Object(factory["a" /* factory */])(gamma_name, gamma_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       multiplyScalar = _ref.multiplyScalar,
@@ -55892,9 +55705,7 @@ Object(factory["a" /* factory */])(gamma_name, gamma_dependencies, function (_re
 
 var factorial_name = 'factorial';
 var factorial_dependencies = ['typed', 'gamma'];
-var createFactorial =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(factorial_name, factorial_dependencies, function (_ref) {
+var createFactorial = /* #__PURE__ */Object(factory["a" /* factory */])(factorial_name, factorial_dependencies, function (_ref) {
   var typed = _ref.typed,
       gamma = _ref.gamma;
 
@@ -55945,9 +55756,7 @@ Object(factory["a" /* factory */])(factorial_name, factorial_dependencies, funct
 
 var kldivergence_name = 'kldivergence';
 var kldivergence_dependencies = ['typed', 'matrix', 'divide', 'sum', 'multiply', 'dotDivide', 'log', 'isNumeric'];
-var createKldivergence =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(kldivergence_name, kldivergence_dependencies, function (_ref) {
+var createKldivergence = /* #__PURE__ */Object(factory["a" /* factory */])(kldivergence_name, kldivergence_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       divide = _ref.divide,
@@ -56033,9 +55842,7 @@ Object(factory["a" /* factory */])(kldivergence_name, kldivergence_dependencies,
 
 var multinomial_name = 'multinomial';
 var multinomial_dependencies = ['typed', 'add', 'divide', 'multiply', 'factorial', 'isInteger', 'isPositive'];
-var createMultinomial =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(multinomial_name, multinomial_dependencies, function (_ref) {
+var createMultinomial = /* #__PURE__ */Object(factory["a" /* factory */])(multinomial_name, multinomial_dependencies, function (_ref) {
   var typed = _ref.typed,
       add = _ref.add,
       divide = _ref.divide,
@@ -56087,9 +55894,7 @@ Object(factory["a" /* factory */])(multinomial_name, multinomial_dependencies, f
 
 var permutations_name = 'permutations';
 var permutations_dependencies = ['typed', 'factorial'];
-var createPermutations =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(permutations_name, permutations_dependencies, function (_ref) {
+var createPermutations = /* #__PURE__ */Object(factory["a" /* factory */])(permutations_name, permutations_dependencies, function (_ref) {
   var typed = _ref.typed,
       factorial = _ref.factorial;
 
@@ -56180,9 +55985,7 @@ var seed_random_default = /*#__PURE__*/__webpack_require__.n(seed_random);
 // math.random, it tries to get math.random, etc... an infinite loop.
 // See https://github.com/ForbesLindesay/seed-random/issues/6
 
-var singletonRandom =
-/* #__PURE__ */
-seed_random_default()();
+var singletonRandom = /* #__PURE__ */seed_random_default()();
 function createRng(randomSeed) {
   var random; // create a new random generator with given seed
 
@@ -56206,9 +56009,7 @@ function createRng(randomSeed) {
 
 var pickRandom_name = 'pickRandom';
 var pickRandom_dependencies = ['typed', 'config', '?on'];
-var createPickRandom =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(pickRandom_name, pickRandom_dependencies, function (_ref) {
+var createPickRandom = /* #__PURE__ */Object(factory["a" /* factory */])(pickRandom_name, pickRandom_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       on = _ref.on;
@@ -56371,9 +56172,7 @@ function randomMatrix(size, random) {
 
 var random_name = 'random';
 var random_dependencies = ['typed', 'config', '?on'];
-var createRandom =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(random_name, random_dependencies, function (_ref) {
+var createRandom = /* #__PURE__ */Object(factory["a" /* factory */])(random_name, random_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       on = _ref.on;
@@ -56453,9 +56252,7 @@ Object(factory["a" /* factory */])(random_name, random_dependencies, function (_
 }); // number only implementation of random, no matrix support
 // TODO: there is quite some duplicate code in both createRandom and createRandomNumber, can we improve that?
 
-var createRandomNumber =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(random_name, ['typed', 'config', '?on'], function (_ref2) {
+var createRandomNumber = /* #__PURE__ */Object(factory["a" /* factory */])(random_name, ['typed', 'config', '?on'], function (_ref2) {
   var typed = _ref2.typed,
       config = _ref2.config,
       on = _ref2.on,
@@ -56494,9 +56291,7 @@ Object(factory["a" /* factory */])(random_name, ['typed', 'config', '?on'], func
 
 var randomInt_name = 'randomInt';
 var randomInt_dependencies = ['typed', 'config', '?on'];
-var createRandomInt =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(randomInt_name, randomInt_dependencies, function (_ref) {
+var createRandomInt = /* #__PURE__ */Object(factory["a" /* factory */])(randomInt_name, randomInt_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       on = _ref.on;
@@ -56577,9 +56372,7 @@ Object(factory["a" /* factory */])(randomInt_name, randomInt_dependencies, funct
 
 var stirlingS2_name = 'stirlingS2';
 var stirlingS2_dependencies = ['typed', 'addScalar', 'subtract', 'multiplyScalar', 'divideScalar', 'pow', 'factorial', 'combinations', 'isNegative', 'isInteger', 'larger'];
-var createStirlingS2 =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(stirlingS2_name, stirlingS2_dependencies, function (_ref) {
+var createStirlingS2 = /* #__PURE__ */Object(factory["a" /* factory */])(stirlingS2_name, stirlingS2_dependencies, function (_ref) {
   var typed = _ref.typed,
       addScalar = _ref.addScalar,
       subtract = _ref.subtract,
@@ -56643,9 +56436,7 @@ Object(factory["a" /* factory */])(stirlingS2_name, stirlingS2_dependencies, fun
 
 var bellNumbers_name = 'bellNumbers';
 var bellNumbers_dependencies = ['typed', 'addScalar', 'isNegative', 'isInteger', 'stirlingS2'];
-var createBellNumbers =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(bellNumbers_name, bellNumbers_dependencies, function (_ref) {
+var createBellNumbers = /* #__PURE__ */Object(factory["a" /* factory */])(bellNumbers_name, bellNumbers_dependencies, function (_ref) {
   var typed = _ref.typed,
       addScalar = _ref.addScalar,
       isNegative = _ref.isNegative,
@@ -56694,9 +56485,7 @@ Object(factory["a" /* factory */])(bellNumbers_name, bellNumbers_dependencies, f
 
 var catalan_name = 'catalan';
 var catalan_dependencies = ['typed', 'addScalar', 'divideScalar', 'multiplyScalar', 'combinations', 'isNegative', 'isInteger'];
-var createCatalan =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(catalan_name, catalan_dependencies, function (_ref) {
+var createCatalan = /* #__PURE__ */Object(factory["a" /* factory */])(catalan_name, catalan_dependencies, function (_ref) {
   var typed = _ref.typed,
       addScalar = _ref.addScalar,
       divideScalar = _ref.divideScalar,
@@ -56740,9 +56529,7 @@ Object(factory["a" /* factory */])(catalan_name, catalan_dependencies, function 
 
 var composition_name = 'composition';
 var composition_dependencies = ['typed', 'addScalar', 'combinations', 'isNegative', 'isPositive', 'isInteger', 'larger'];
-var createComposition =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(composition_name, composition_dependencies, function (_ref) {
+var createComposition = /* #__PURE__ */Object(factory["a" /* factory */])(composition_name, composition_dependencies, function (_ref) {
   var typed = _ref.typed,
       addScalar = _ref.addScalar,
       combinations = _ref.combinations,
@@ -56791,9 +56578,7 @@ Object(factory["a" /* factory */])(composition_name, composition_dependencies, f
 
 var util_name = 'simplifyUtil';
 var util_dependencies = ['FunctionNode', 'OperatorNode', 'SymbolNode'];
-var createUtil =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(util_name, util_dependencies, function (_ref) {
+var createUtil = /* #__PURE__ */Object(factory["a" /* factory */])(util_name, util_dependencies, function (_ref) {
   var FunctionNode = _ref.FunctionNode,
       OperatorNode = _ref.OperatorNode,
       SymbolNode = _ref.SymbolNode;
@@ -56971,9 +56756,7 @@ Object(factory["a" /* factory */])(util_name, util_dependencies, function (_ref)
 
 var simplifyCore_name = 'simplifyCore';
 var simplifyCore_dependencies = ['equal', 'isZero', 'add', 'subtract', 'multiply', 'divide', 'pow', 'ConstantNode', 'OperatorNode', 'FunctionNode', 'ParenthesisNode'];
-var createSimplifyCore =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(simplifyCore_name, simplifyCore_dependencies, function (_ref) {
+var createSimplifyCore = /* #__PURE__ */Object(factory["a" /* factory */])(simplifyCore_name, simplifyCore_dependencies, function (_ref) {
   var equal = _ref.equal,
       isZero = _ref.isZero,
       add = _ref.add,
@@ -57166,9 +56949,7 @@ Object(factory["a" /* factory */])(simplifyCore_name, simplifyCore_dependencies,
 
 var simplifyConstant_name = 'simplifyConstant';
 var simplifyConstant_dependencies = ['typed', 'config', 'mathWithTransform', '?fraction', '?bignumber', 'ConstantNode', 'OperatorNode', 'FunctionNode', 'SymbolNode'];
-var createSimplifyConstant =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(simplifyConstant_name, simplifyConstant_dependencies, function (_ref) {
+var createSimplifyConstant = /* #__PURE__ */Object(factory["a" /* factory */])(simplifyConstant_name, simplifyConstant_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       mathWithTransform = _ref.mathWithTransform,
@@ -57484,9 +57265,7 @@ Object(factory["a" /* factory */])(simplifyConstant_name, simplifyConstant_depen
 
 var resolve_name = 'resolve';
 var resolve_dependencies = ['parse', 'FunctionNode', 'OperatorNode', 'ParenthesisNode'];
-var createResolve =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(resolve_name, resolve_dependencies, function (_ref) {
+var createResolve = /* #__PURE__ */Object(factory["a" /* factory */])(resolve_name, resolve_dependencies, function (_ref) {
   var parse = _ref.parse,
       FunctionNode = _ref.FunctionNode,
       OperatorNode = _ref.OperatorNode,
@@ -57554,9 +57333,7 @@ function simplify_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol ===
 
 var simplify_name = 'simplify';
 var simplify_dependencies = ['config', 'typed', 'parse', 'add', 'subtract', 'multiply', 'divide', 'pow', 'isZero', 'equal', '?fraction', '?bignumber', 'mathWithTransform', 'ConstantNode', 'FunctionNode', 'OperatorNode', 'ParenthesisNode', 'SymbolNode'];
-var createSimplify =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(simplify_name, simplify_dependencies, function (_ref) {
+var createSimplify = /* #__PURE__ */Object(factory["a" /* factory */])(simplify_name, simplify_dependencies, function (_ref) {
   var config = _ref.config,
       typed = _ref.typed,
       parse = _ref.parse,
@@ -58358,9 +58135,7 @@ Object(factory["a" /* factory */])(simplify_name, simplify_dependencies, functio
 
 var derivative_name = 'derivative';
 var derivative_dependencies = ['typed', 'config', 'parse', 'simplify', 'equal', 'isZero', 'numeric', 'ConstantNode', 'FunctionNode', 'OperatorNode', 'ParenthesisNode', 'SymbolNode'];
-var createDerivative =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(derivative_name, derivative_dependencies, function (_ref) {
+var createDerivative = /* #__PURE__ */Object(factory["a" /* factory */])(derivative_name, derivative_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       parse = _ref.parse,
@@ -58981,9 +58756,7 @@ Object(factory["a" /* factory */])(derivative_name, derivative_dependencies, fun
 
 var rationalize_name = 'rationalize';
 var rationalize_dependencies = ['config', 'typed', 'equal', 'isZero', 'add', 'subtract', 'multiply', 'divide', 'pow', 'parse', 'simplify', '?bignumber', '?fraction', 'mathWithTransform', 'ConstantNode', 'OperatorNode', 'FunctionNode', 'SymbolNode', 'ParenthesisNode'];
-var createRationalize =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(rationalize_name, rationalize_dependencies, function (_ref) {
+var createRationalize = /* #__PURE__ */Object(factory["a" /* factory */])(rationalize_name, rationalize_dependencies, function (_ref) {
   var config = _ref.config,
       typed = _ref.typed,
       equal = _ref.equal,
@@ -59852,9 +59625,7 @@ Object(factory["a" /* factory */])(rationalize_name, rationalize_dependencies, f
 
 var reviver_name = 'reviver';
 var reviver_dependencies = ['classes'];
-var createReviver =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(reviver_name, reviver_dependencies, function (_ref) {
+var createReviver = /* #__PURE__ */Object(factory["a" /* factory */])(reviver_name, reviver_dependencies, function (_ref) {
   var classes = _ref.classes;
 
   /**
@@ -59874,7 +59645,7 @@ Object(factory["a" /* factory */])(reviver_name, reviver_dependencies, function 
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '6.6.1'; // Note: This file is automatically generated when building math.js.
+var version = '6.6.2'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
@@ -59886,129 +59657,91 @@ var constants_phi = 1.6180339887498948482045868343656381177203091798057628621354
 
 
 
-var createTrue =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('true', [], function () {
+var createTrue = /* #__PURE__ */Object(factory["a" /* factory */])('true', [], function () {
   return true;
 });
-var createFalse =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('false', [], function () {
+var createFalse = /* #__PURE__ */Object(factory["a" /* factory */])('false', [], function () {
   return false;
 });
-var createNull =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('null', [], function () {
+var createNull = /* #__PURE__ */Object(factory["a" /* factory */])('null', [], function () {
   return null;
 });
-var createInfinity =
-/* #__PURE__ */
-recreateFactory('Infinity', ['config', '?BigNumber'], function (_ref) {
+var createInfinity = /* #__PURE__ */recreateFactory('Infinity', ['config', '?BigNumber'], function (_ref) {
   var config = _ref.config,
       BigNumber = _ref.BigNumber;
   return config.number === 'BigNumber' ? new BigNumber(Infinity) : Infinity;
 });
-var createNaN =
-/* #__PURE__ */
-recreateFactory('NaN', ['config', '?BigNumber'], function (_ref2) {
+var createNaN = /* #__PURE__ */recreateFactory('NaN', ['config', '?BigNumber'], function (_ref2) {
   var config = _ref2.config,
       BigNumber = _ref2.BigNumber;
   return config.number === 'BigNumber' ? new BigNumber(NaN) : NaN;
 });
-var createPi =
-/* #__PURE__ */
-recreateFactory('pi', ['config', '?BigNumber'], function (_ref3) {
+var createPi = /* #__PURE__ */recreateFactory('pi', ['config', '?BigNumber'], function (_ref3) {
   var config = _ref3.config,
       BigNumber = _ref3.BigNumber;
   return config.number === 'BigNumber' ? createBigNumberPi(BigNumber) : constants_pi;
 });
-var createTau =
-/* #__PURE__ */
-recreateFactory('tau', ['config', '?BigNumber'], function (_ref4) {
+var createTau = /* #__PURE__ */recreateFactory('tau', ['config', '?BigNumber'], function (_ref4) {
   var config = _ref4.config,
       BigNumber = _ref4.BigNumber;
   return config.number === 'BigNumber' ? createBigNumberTau(BigNumber) : tau;
 });
-var createE =
-/* #__PURE__ */
-recreateFactory('e', ['config', '?BigNumber'], function (_ref5) {
+var createE = /* #__PURE__ */recreateFactory('e', ['config', '?BigNumber'], function (_ref5) {
   var config = _ref5.config,
       BigNumber = _ref5.BigNumber;
   return config.number === 'BigNumber' ? createBigNumberE(BigNumber) : constants_e;
 }); // golden ratio, (1+sqrt(5))/2
 
-var createPhi =
-/* #__PURE__ */
-recreateFactory('phi', ['config', '?BigNumber'], function (_ref6) {
+var createPhi = /* #__PURE__ */recreateFactory('phi', ['config', '?BigNumber'], function (_ref6) {
   var config = _ref6.config,
       BigNumber = _ref6.BigNumber;
   return config.number === 'BigNumber' ? createBigNumberPhi(BigNumber) : constants_phi;
 });
-var createLN2 =
-/* #__PURE__ */
-recreateFactory('LN2', ['config', '?BigNumber'], function (_ref7) {
+var createLN2 = /* #__PURE__ */recreateFactory('LN2', ['config', '?BigNumber'], function (_ref7) {
   var config = _ref7.config,
       BigNumber = _ref7.BigNumber;
   return config.number === 'BigNumber' ? new BigNumber(2).ln() : Math.LN2;
 });
-var createLN10 =
-/* #__PURE__ */
-recreateFactory('LN10', ['config', '?BigNumber'], function (_ref8) {
+var createLN10 = /* #__PURE__ */recreateFactory('LN10', ['config', '?BigNumber'], function (_ref8) {
   var config = _ref8.config,
       BigNumber = _ref8.BigNumber;
   return config.number === 'BigNumber' ? new BigNumber(10).ln() : Math.LN10;
 });
-var createLOG2E =
-/* #__PURE__ */
-recreateFactory('LOG2E', ['config', '?BigNumber'], function (_ref9) {
+var createLOG2E = /* #__PURE__ */recreateFactory('LOG2E', ['config', '?BigNumber'], function (_ref9) {
   var config = _ref9.config,
       BigNumber = _ref9.BigNumber;
   return config.number === 'BigNumber' ? new BigNumber(1).div(new BigNumber(2).ln()) : Math.LOG2E;
 });
-var createLOG10E =
-/* #__PURE__ */
-recreateFactory('LOG10E', ['config', '?BigNumber'], function (_ref10) {
+var createLOG10E = /* #__PURE__ */recreateFactory('LOG10E', ['config', '?BigNumber'], function (_ref10) {
   var config = _ref10.config,
       BigNumber = _ref10.BigNumber;
   return config.number === 'BigNumber' ? new BigNumber(1).div(new BigNumber(10).ln()) : Math.LOG10E;
 });
-var createSQRT1_2 =
-/* #__PURE__ */
-recreateFactory( // eslint-disable-line camelcase
+var createSQRT1_2 = /* #__PURE__ */recreateFactory( // eslint-disable-line camelcase
 'SQRT1_2', ['config', '?BigNumber'], function (_ref11) {
   var config = _ref11.config,
       BigNumber = _ref11.BigNumber;
   return config.number === 'BigNumber' ? new BigNumber('0.5').sqrt() : Math.SQRT1_2;
 });
-var createSQRT2 =
-/* #__PURE__ */
-recreateFactory('SQRT2', ['config', '?BigNumber'], function (_ref12) {
+var createSQRT2 = /* #__PURE__ */recreateFactory('SQRT2', ['config', '?BigNumber'], function (_ref12) {
   var config = _ref12.config,
       BigNumber = _ref12.BigNumber;
   return config.number === 'BigNumber' ? new BigNumber(2).sqrt() : Math.SQRT2;
 });
-var createI =
-/* #__PURE__ */
-recreateFactory('i', ['Complex'], function (_ref13) {
+var createI = /* #__PURE__ */recreateFactory('i', ['Complex'], function (_ref13) {
   var Complex = _ref13.Complex;
   return Complex.I;
 }); // for backward compatibility with v5
 
-var createUppercasePi =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('PI', ['pi'], function (_ref14) {
+var createUppercasePi = /* #__PURE__ */Object(factory["a" /* factory */])('PI', ['pi'], function (_ref14) {
   var pi = _ref14.pi;
   return pi;
 });
-var createUppercaseE =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('E', ['e'], function (_ref15) {
+var createUppercaseE = /* #__PURE__ */Object(factory["a" /* factory */])('E', ['e'], function (_ref15) {
   var e = _ref15.e;
   return e;
 });
-var createVersion =
-/* #__PURE__ */
-Object(factory["a" /* factory */])('version', [], function () {
+var createVersion = /* #__PURE__ */Object(factory["a" /* factory */])('version', [], function () {
   return version;
 }); // helper function to create a factory with a flag recreateOnConfigChange
 // idea: allow passing optional properties to be attached to the factory function as 4th argument?
@@ -60022,159 +59755,65 @@ function recreateFactory(name, dependencies, create) {
  // Source: https://en.wikipedia.org/wiki/Physical_constant
 // Universal constants
 
-var createSpeedOfLight =
-/* #__PURE__ */
-unitFactory('speedOfLight', '299792458', 'm s^-1');
-var createGravitationConstant =
-/* #__PURE__ */
-unitFactory('gravitationConstant', '6.67430e-11', 'm^3 kg^-1 s^-2');
-var createPlanckConstant =
-/* #__PURE__ */
-unitFactory('planckConstant', '6.62607015e-34', 'J s');
-var createReducedPlanckConstant =
-/* #__PURE__ */
-unitFactory('reducedPlanckConstant', '1.0545718176461565e-34', 'J s'); // Electromagnetic constants
+var createSpeedOfLight = /* #__PURE__ */unitFactory('speedOfLight', '299792458', 'm s^-1');
+var createGravitationConstant = /* #__PURE__ */unitFactory('gravitationConstant', '6.67430e-11', 'm^3 kg^-1 s^-2');
+var createPlanckConstant = /* #__PURE__ */unitFactory('planckConstant', '6.62607015e-34', 'J s');
+var createReducedPlanckConstant = /* #__PURE__ */unitFactory('reducedPlanckConstant', '1.0545718176461565e-34', 'J s'); // Electromagnetic constants
 
-var createMagneticConstant =
-/* #__PURE__ */
-unitFactory('magneticConstant', '1.25663706212e-6', 'N A^-2');
-var createElectricConstant =
-/* #__PURE__ */
-unitFactory('electricConstant', '8.8541878128e-12', 'F m^-1');
-var createVacuumImpedance =
-/* #__PURE__ */
-unitFactory('vacuumImpedance', '376.730313667', 'ohm');
-var createCoulomb =
-/* #__PURE__ */
-unitFactory('coulomb', '8.987551792261171e9', 'N m^2 C^-2');
-var createElementaryCharge =
-/* #__PURE__ */
-unitFactory('elementaryCharge', '1.602176634e-19', 'C');
-var createBohrMagneton =
-/* #__PURE__ */
-unitFactory('bohrMagneton', '9.2740100783e-24', 'J T^-1');
-var createConductanceQuantum =
-/* #__PURE__ */
-unitFactory('conductanceQuantum', '7.748091729863649e-5', 'S');
-var createInverseConductanceQuantum =
-/* #__PURE__ */
-unitFactory('inverseConductanceQuantum', '12906.403729652257', 'ohm');
-var createMagneticFluxQuantum =
-/* #__PURE__ */
-unitFactory('magneticFluxQuantum', '2.0678338484619295e-15', 'Wb');
-var createNuclearMagneton =
-/* #__PURE__ */
-unitFactory('nuclearMagneton', '5.0507837461e-27', 'J T^-1');
-var createKlitzing =
-/* #__PURE__ */
-unitFactory('klitzing', '25812.807459304513', 'ohm');
-var createJosephson =
-/* #__PURE__ */
-unitFactory('josephson', '4.835978484169836e14 Hz V', 'Hz V^-1'); // TODO: support for Hz needed
+var createMagneticConstant = /* #__PURE__ */unitFactory('magneticConstant', '1.25663706212e-6', 'N A^-2');
+var createElectricConstant = /* #__PURE__ */unitFactory('electricConstant', '8.8541878128e-12', 'F m^-1');
+var createVacuumImpedance = /* #__PURE__ */unitFactory('vacuumImpedance', '376.730313667', 'ohm');
+var createCoulomb = /* #__PURE__ */unitFactory('coulomb', '8.987551792261171e9', 'N m^2 C^-2');
+var createElementaryCharge = /* #__PURE__ */unitFactory('elementaryCharge', '1.602176634e-19', 'C');
+var createBohrMagneton = /* #__PURE__ */unitFactory('bohrMagneton', '9.2740100783e-24', 'J T^-1');
+var createConductanceQuantum = /* #__PURE__ */unitFactory('conductanceQuantum', '7.748091729863649e-5', 'S');
+var createInverseConductanceQuantum = /* #__PURE__ */unitFactory('inverseConductanceQuantum', '12906.403729652257', 'ohm');
+var createMagneticFluxQuantum = /* #__PURE__ */unitFactory('magneticFluxQuantum', '2.0678338484619295e-15', 'Wb');
+var createNuclearMagneton = /* #__PURE__ */unitFactory('nuclearMagneton', '5.0507837461e-27', 'J T^-1');
+var createKlitzing = /* #__PURE__ */unitFactory('klitzing', '25812.807459304513', 'ohm');
+var createJosephson = /* #__PURE__ */unitFactory('josephson', '4.835978484169836e14 Hz V', 'Hz V^-1'); // TODO: support for Hz needed
 // Atomic and nuclear constants
 
-var createBohrRadius =
-/* #__PURE__ */
-unitFactory('bohrRadius', '5.29177210903e-11', 'm');
-var createClassicalElectronRadius =
-/* #__PURE__ */
-unitFactory('classicalElectronRadius', '2.8179403262e-15', 'm');
-var createElectronMass =
-/* #__PURE__ */
-unitFactory('electronMass', '9.1093837015e-31', 'kg');
-var createFermiCoupling =
-/* #__PURE__ */
-unitFactory('fermiCoupling', '1.1663787e-5', 'GeV^-2');
+var createBohrRadius = /* #__PURE__ */unitFactory('bohrRadius', '5.29177210903e-11', 'm');
+var createClassicalElectronRadius = /* #__PURE__ */unitFactory('classicalElectronRadius', '2.8179403262e-15', 'm');
+var createElectronMass = /* #__PURE__ */unitFactory('electronMass', '9.1093837015e-31', 'kg');
+var createFermiCoupling = /* #__PURE__ */unitFactory('fermiCoupling', '1.1663787e-5', 'GeV^-2');
 var createFineStructure = numberFactory('fineStructure', 7.2973525693e-3);
-var createHartreeEnergy =
-/* #__PURE__ */
-unitFactory('hartreeEnergy', '4.3597447222071e-18', 'J');
-var createProtonMass =
-/* #__PURE__ */
-unitFactory('protonMass', '1.67262192369e-27', 'kg');
-var createDeuteronMass =
-/* #__PURE__ */
-unitFactory('deuteronMass', '3.3435830926e-27', 'kg');
-var createNeutronMass =
-/* #__PURE__ */
-unitFactory('neutronMass', '1.6749271613e-27', 'kg');
-var createQuantumOfCirculation =
-/* #__PURE__ */
-unitFactory('quantumOfCirculation', '3.6369475516e-4', 'm^2 s^-1');
-var createRydberg =
-/* #__PURE__ */
-unitFactory('rydberg', '10973731.568160', 'm^-1');
-var createThomsonCrossSection =
-/* #__PURE__ */
-unitFactory('thomsonCrossSection', '6.6524587321e-29', 'm^2');
+var createHartreeEnergy = /* #__PURE__ */unitFactory('hartreeEnergy', '4.3597447222071e-18', 'J');
+var createProtonMass = /* #__PURE__ */unitFactory('protonMass', '1.67262192369e-27', 'kg');
+var createDeuteronMass = /* #__PURE__ */unitFactory('deuteronMass', '3.3435830926e-27', 'kg');
+var createNeutronMass = /* #__PURE__ */unitFactory('neutronMass', '1.6749271613e-27', 'kg');
+var createQuantumOfCirculation = /* #__PURE__ */unitFactory('quantumOfCirculation', '3.6369475516e-4', 'm^2 s^-1');
+var createRydberg = /* #__PURE__ */unitFactory('rydberg', '10973731.568160', 'm^-1');
+var createThomsonCrossSection = /* #__PURE__ */unitFactory('thomsonCrossSection', '6.6524587321e-29', 'm^2');
 var createWeakMixingAngle = numberFactory('weakMixingAngle', 0.22290);
 var createEfimovFactor = numberFactory('efimovFactor', 22.7); // Physico-chemical constants
 
-var createAtomicMass =
-/* #__PURE__ */
-unitFactory('atomicMass', '1.66053906660e-27', 'kg');
-var createAvogadro =
-/* #__PURE__ */
-unitFactory('avogadro', '6.02214076e23', 'mol^-1');
-var createBoltzmann =
-/* #__PURE__ */
-unitFactory('boltzmann', '1.380649e-23', 'J K^-1');
-var createFaraday =
-/* #__PURE__ */
-unitFactory('faraday', '96485.33212331001', 'C mol^-1');
-var createFirstRadiation =
-/* #__PURE__ */
-unitFactory('firstRadiation', '3.7417718521927573e-16', 'W m^2'); // export const createSpectralRadiance = /* #__PURE__ */ unitFactory('spectralRadiance', '1.1910429723971881e-16', 'W m^2 sr^-1') // TODO spectralRadiance
+var createAtomicMass = /* #__PURE__ */unitFactory('atomicMass', '1.66053906660e-27', 'kg');
+var createAvogadro = /* #__PURE__ */unitFactory('avogadro', '6.02214076e23', 'mol^-1');
+var createBoltzmann = /* #__PURE__ */unitFactory('boltzmann', '1.380649e-23', 'J K^-1');
+var createFaraday = /* #__PURE__ */unitFactory('faraday', '96485.33212331001', 'C mol^-1');
+var createFirstRadiation = /* #__PURE__ */unitFactory('firstRadiation', '3.7417718521927573e-16', 'W m^2'); // export const createSpectralRadiance = /* #__PURE__ */ unitFactory('spectralRadiance', '1.1910429723971881e-16', 'W m^2 sr^-1') // TODO spectralRadiance
 
-var createLoschmidt =
-/* #__PURE__ */
-unitFactory('loschmidt', '2.686780111798444e25', 'm^-3');
-var createGasConstant =
-/* #__PURE__ */
-unitFactory('gasConstant', '8.31446261815324', 'J K^-1 mol^-1');
-var createMolarPlanckConstant =
-/* #__PURE__ */
-unitFactory('molarPlanckConstant', '3.990312712893431e-10', 'J s mol^-1');
-var createMolarVolume =
-/* #__PURE__ */
-unitFactory('molarVolume', '0.022413969545014137', 'm^3 mol^-1');
+var createLoschmidt = /* #__PURE__ */unitFactory('loschmidt', '2.686780111798444e25', 'm^-3');
+var createGasConstant = /* #__PURE__ */unitFactory('gasConstant', '8.31446261815324', 'J K^-1 mol^-1');
+var createMolarPlanckConstant = /* #__PURE__ */unitFactory('molarPlanckConstant', '3.990312712893431e-10', 'J s mol^-1');
+var createMolarVolume = /* #__PURE__ */unitFactory('molarVolume', '0.022413969545014137', 'm^3 mol^-1');
 var createSackurTetrode = numberFactory('sackurTetrode', -1.16487052358);
-var createSecondRadiation =
-/* #__PURE__ */
-unitFactory('secondRadiation', '0.014387768775039337', 'm K');
-var createStefanBoltzmann =
-/* #__PURE__ */
-unitFactory('stefanBoltzmann', '5.67037441918443e-8', 'W m^-2 K^-4');
-var createWienDisplacement =
-/* #__PURE__ */
-unitFactory('wienDisplacement', '2.897771955e-3', 'm K'); // Adopted values
+var createSecondRadiation = /* #__PURE__ */unitFactory('secondRadiation', '0.014387768775039337', 'm K');
+var createStefanBoltzmann = /* #__PURE__ */unitFactory('stefanBoltzmann', '5.67037441918443e-8', 'W m^-2 K^-4');
+var createWienDisplacement = /* #__PURE__ */unitFactory('wienDisplacement', '2.897771955e-3', 'm K'); // Adopted values
 
-var createMolarMass =
-/* #__PURE__ */
-unitFactory('molarMass', '0.99999999965e-3', 'kg mol^-1');
-var createMolarMassC12 =
-/* #__PURE__ */
-unitFactory('molarMassC12', '11.9999999958e-3', 'kg mol^-1');
-var createGravity =
-/* #__PURE__ */
-unitFactory('gravity', '9.80665', 'm s^-2'); // atm is defined in Unit.js
+var createMolarMass = /* #__PURE__ */unitFactory('molarMass', '0.99999999965e-3', 'kg mol^-1');
+var createMolarMassC12 = /* #__PURE__ */unitFactory('molarMassC12', '11.9999999958e-3', 'kg mol^-1');
+var createGravity = /* #__PURE__ */unitFactory('gravity', '9.80665', 'm s^-2'); // atm is defined in Unit.js
 // Natural units
 
-var createPlanckLength =
-/* #__PURE__ */
-unitFactory('planckLength', '1.616255e-35', 'm');
-var createPlanckMass =
-/* #__PURE__ */
-unitFactory('planckMass', '2.176435e-8', 'kg');
-var createPlanckTime =
-/* #__PURE__ */
-unitFactory('planckTime', '5.391245e-44', 's');
-var createPlanckCharge =
-/* #__PURE__ */
-unitFactory('planckCharge', '1.87554603778e-18', 'C');
-var createPlanckTemperature =
-/* #__PURE__ */
-unitFactory('planckTemperature', '1.416785e+32', 'K'); // helper function to create a factory function which creates a physical constant,
+var createPlanckLength = /* #__PURE__ */unitFactory('planckLength', '1.616255e-35', 'm');
+var createPlanckMass = /* #__PURE__ */unitFactory('planckMass', '2.176435e-8', 'kg');
+var createPlanckTime = /* #__PURE__ */unitFactory('planckTime', '5.391245e-44', 's');
+var createPlanckCharge = /* #__PURE__ */unitFactory('planckCharge', '1.87554603778e-18', 'C');
+var createPlanckTemperature = /* #__PURE__ */unitFactory('planckTemperature', '1.416785e+32', 'K'); // helper function to create a factory function which creates a physical constant,
 // a Unit with either a number value or a BigNumber value depending on the configuration
 
 function unitFactory(name, valueStr, unitStr) {
@@ -60218,9 +59857,7 @@ var apply_transform_dependencies = ['typed', 'isInteger'];
  * from one-based to zero based
  */
 
-var createApplyTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(apply_transform_name, apply_transform_dependencies, function (_ref) {
+var createApplyTransform = /* #__PURE__ */Object(factory["a" /* factory */])(apply_transform_name, apply_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       isInteger = _ref.isInteger;
   var apply = createApply({
@@ -60264,9 +59901,7 @@ var column_transform_dependencies = ['typed', 'Index', 'matrix', 'range'];
  * from zero-based to one-based
  */
 
-var createColumnTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(column_transform_name, column_transform_dependencies, function (_ref) {
+var createColumnTransform = /* #__PURE__ */Object(factory["a" /* factory */])(column_transform_name, column_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       Index = _ref.Index,
       matrix = _ref.matrix,
@@ -60337,9 +59972,7 @@ function compileInlineExpression(expression, math, scope) {
 
 var filter_transform_name = 'filter';
 var filter_transform_dependencies = ['typed'];
-var createFilterTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(filter_transform_name, filter_transform_dependencies, function (_ref) {
+var createFilterTransform = /* #__PURE__ */Object(factory["a" /* factory */])(filter_transform_name, filter_transform_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -60419,9 +60052,7 @@ function _filter(x, callback) {
 
 var forEach_transform_name = 'forEach';
 var forEach_transform_dependencies = ['typed'];
-var createForEachTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(forEach_transform_name, forEach_transform_dependencies, function (_ref) {
+var createForEachTransform = /* #__PURE__ */Object(factory["a" /* factory */])(forEach_transform_name, forEach_transform_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -60489,9 +60120,7 @@ Object(factory["a" /* factory */])(forEach_transform_name, forEach_transform_dep
 
 var index_transform_name = 'index';
 var index_transform_dependencies = ['Index'];
-var createIndexTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(index_transform_name, index_transform_dependencies, function (_ref) {
+var createIndexTransform = /* #__PURE__ */Object(factory["a" /* factory */])(index_transform_name, index_transform_dependencies, function (_ref) {
   var Index = _ref.Index;
 
   /**
@@ -60544,9 +60173,7 @@ Object(factory["a" /* factory */])(index_transform_name, index_transform_depende
 
 var map_transform_name = 'map';
 var map_transform_dependencies = ['typed'];
-var createMapTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(map_transform_name, map_transform_dependencies, function (_ref) {
+var createMapTransform = /* #__PURE__ */Object(factory["a" /* factory */])(map_transform_name, map_transform_dependencies, function (_ref) {
   var typed = _ref.typed;
 
   /**
@@ -60630,9 +60257,7 @@ function map_transform_map(array, callback, orig) {
 
 var max_transform_name = 'max';
 var max_transform_dependencies = ['typed', 'larger'];
-var createMaxTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(max_transform_name, max_transform_dependencies, function (_ref) {
+var createMaxTransform = /* #__PURE__ */Object(factory["a" /* factory */])(max_transform_name, max_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       larger = _ref.larger;
   var max = createMax({
@@ -60677,9 +60302,7 @@ Object(factory["a" /* factory */])(max_transform_name, max_transform_dependencie
 
 var mean_transform_name = 'mean';
 var mean_transform_dependencies = ['typed', 'add', 'divide'];
-var createMeanTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(mean_transform_name, mean_transform_dependencies, function (_ref) {
+var createMeanTransform = /* #__PURE__ */Object(factory["a" /* factory */])(mean_transform_name, mean_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       add = _ref.add,
       divide = _ref.divide;
@@ -60726,9 +60349,7 @@ Object(factory["a" /* factory */])(mean_transform_name, mean_transform_dependenc
 
 var min_transform_name = 'min';
 var min_transform_dependencies = ['typed', 'smaller'];
-var createMinTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(min_transform_name, min_transform_dependencies, function (_ref) {
+var createMinTransform = /* #__PURE__ */Object(factory["a" /* factory */])(min_transform_name, min_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       smaller = _ref.smaller;
   var min = createMin({
@@ -60771,9 +60392,7 @@ Object(factory["a" /* factory */])(min_transform_name, min_transform_dependencie
 
 var range_transform_name = 'range';
 var range_transform_dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq'];
-var createRangeTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(range_transform_name, range_transform_dependencies, function (_ref) {
+var createRangeTransform = /* #__PURE__ */Object(factory["a" /* factory */])(range_transform_name, range_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       matrix = _ref.matrix,
@@ -60830,9 +60449,7 @@ var row_transform_dependencies = ['typed', 'Index', 'matrix', 'range'];
  * from zero-based to one-based
  */
 
-var createRowTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(row_transform_name, row_transform_dependencies, function (_ref) {
+var createRowTransform = /* #__PURE__ */Object(factory["a" /* factory */])(row_transform_name, row_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       Index = _ref.Index,
       matrix = _ref.matrix,
@@ -60870,9 +60487,7 @@ Object(factory["a" /* factory */])(row_transform_name, row_transform_dependencie
 
 var subset_transform_name = 'subset';
 var subset_transform_dependencies = ['typed', 'matrix'];
-var createSubsetTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(subset_transform_name, subset_transform_dependencies, function (_ref) {
+var createSubsetTransform = /* #__PURE__ */Object(factory["a" /* factory */])(subset_transform_name, subset_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix;
   var subset = createSubset({
@@ -60905,9 +60520,7 @@ Object(factory["a" /* factory */])(subset_transform_name, subset_transform_depen
 
 var concat_transform_name = 'concat';
 var concat_transform_dependencies = ['typed', 'matrix', 'isInteger'];
-var createConcatTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(concat_transform_name, concat_transform_dependencies, function (_ref) {
+var createConcatTransform = /* #__PURE__ */Object(factory["a" /* factory */])(concat_transform_name, concat_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       matrix = _ref.matrix,
       isInteger = _ref.isInteger;
@@ -60961,9 +60574,7 @@ var std_transform_dependencies = ['typed', 'sqrt', 'variance'];
  * from one-based to zero based
  */
 
-var createStdTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(std_transform_name, std_transform_dependencies, function (_ref) {
+var createStdTransform = /* #__PURE__ */Object(factory["a" /* factory */])(std_transform_name, std_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       sqrt = _ref.sqrt,
       variance = _ref.variance;
@@ -61010,9 +60621,7 @@ Object(factory["a" /* factory */])(std_transform_name, std_transform_dependencie
 
 var sum_transform_name = 'sum';
 var sum_transform_dependencies = ['typed', 'config', 'add', '?bignumber', '?fraction'];
-var createSumTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(sum_transform_name, sum_transform_dependencies, function (_ref) {
+var createSumTransform = /* #__PURE__ */Object(factory["a" /* factory */])(sum_transform_name, sum_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       add = _ref.add,
@@ -61063,9 +60672,7 @@ var variance_transform_dependencies = ['typed', 'add', 'subtract', 'multiply', '
  * from one-based to zero based
  */
 
-var createVarianceTransform =
-/* #__PURE__ */
-Object(factory["a" /* factory */])(variance_transform_name, variance_transform_dependencies, function (_ref) {
+var createVarianceTransform = /* #__PURE__ */Object(factory["a" /* factory */])(variance_transform_name, variance_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       add = _ref.add,
       subtract = _ref.subtract,
@@ -61106,329 +60713,6 @@ Object(factory["a" /* factory */])(variance_transform_name, variance_transform_d
   isTransformFunction: true
 });
 // CONCATENATED MODULE: ./src/factoriesAny.js
-/* concated harmony reexport createTyped */__webpack_require__.d(__webpack_exports__, "createTyped", function() { return typed_createTyped; });
-/* concated harmony reexport createResultSet */__webpack_require__.d(__webpack_exports__, "createResultSet", function() { return createResultSet; });
-/* concated harmony reexport createBigNumberClass */__webpack_require__.d(__webpack_exports__, "createBigNumberClass", function() { return createBigNumberClass; });
-/* concated harmony reexport createComplexClass */__webpack_require__.d(__webpack_exports__, "createComplexClass", function() { return createComplexClass; });
-/* concated harmony reexport createFractionClass */__webpack_require__.d(__webpack_exports__, "createFractionClass", function() { return createFractionClass; });
-/* concated harmony reexport createRangeClass */__webpack_require__.d(__webpack_exports__, "createRangeClass", function() { return createRangeClass; });
-/* concated harmony reexport createMatrixClass */__webpack_require__.d(__webpack_exports__, "createMatrixClass", function() { return createMatrixClass; });
-/* concated harmony reexport createDenseMatrixClass */__webpack_require__.d(__webpack_exports__, "createDenseMatrixClass", function() { return createDenseMatrixClass; });
-/* concated harmony reexport createClone */__webpack_require__.d(__webpack_exports__, "createClone", function() { return createClone; });
-/* concated harmony reexport createIsInteger */__webpack_require__.d(__webpack_exports__, "createIsInteger", function() { return createIsInteger; });
-/* concated harmony reexport createIsNegative */__webpack_require__.d(__webpack_exports__, "createIsNegative", function() { return createIsNegative; });
-/* concated harmony reexport createIsNumeric */__webpack_require__.d(__webpack_exports__, "createIsNumeric", function() { return createIsNumeric; });
-/* concated harmony reexport createHasNumericValue */__webpack_require__.d(__webpack_exports__, "createHasNumericValue", function() { return createHasNumericValue; });
-/* concated harmony reexport createIsPositive */__webpack_require__.d(__webpack_exports__, "createIsPositive", function() { return createIsPositive; });
-/* concated harmony reexport createIsZero */__webpack_require__.d(__webpack_exports__, "createIsZero", function() { return createIsZero; });
-/* concated harmony reexport createIsNaN */__webpack_require__.d(__webpack_exports__, "createIsNaN", function() { return createIsNaN; });
-/* concated harmony reexport createTypeOf */__webpack_require__.d(__webpack_exports__, "createTypeOf", function() { return createTypeOf; });
-/* concated harmony reexport createDeprecatedTypeof */__webpack_require__.d(__webpack_exports__, "createDeprecatedTypeof", function() { return createDeprecatedTypeof; });
-/* concated harmony reexport createEqualScalar */__webpack_require__.d(__webpack_exports__, "createEqualScalar", function() { return createEqualScalar; });
-/* concated harmony reexport createSparseMatrixClass */__webpack_require__.d(__webpack_exports__, "createSparseMatrixClass", function() { return createSparseMatrixClass; });
-/* concated harmony reexport createNumber */__webpack_require__.d(__webpack_exports__, "createNumber", function() { return createNumber; });
-/* concated harmony reexport createString */__webpack_require__.d(__webpack_exports__, "createString", function() { return createString; });
-/* concated harmony reexport createBoolean */__webpack_require__.d(__webpack_exports__, "createBoolean", function() { return createBoolean; });
-/* concated harmony reexport createBignumber */__webpack_require__.d(__webpack_exports__, "createBignumber", function() { return createBignumber; });
-/* concated harmony reexport createComplex */__webpack_require__.d(__webpack_exports__, "createComplex", function() { return createComplex; });
-/* concated harmony reexport createFraction */__webpack_require__.d(__webpack_exports__, "createFraction", function() { return createFraction; });
-/* concated harmony reexport createMatrix */__webpack_require__.d(__webpack_exports__, "createMatrix", function() { return createMatrix; });
-/* concated harmony reexport createSplitUnit */__webpack_require__.d(__webpack_exports__, "createSplitUnit", function() { return createSplitUnit; });
-/* concated harmony reexport createUnaryMinus */__webpack_require__.d(__webpack_exports__, "createUnaryMinus", function() { return createUnaryMinus; });
-/* concated harmony reexport createUnaryPlus */__webpack_require__.d(__webpack_exports__, "createUnaryPlus", function() { return createUnaryPlus; });
-/* concated harmony reexport createAbs */__webpack_require__.d(__webpack_exports__, "createAbs", function() { return createAbs; });
-/* concated harmony reexport createApply */__webpack_require__.d(__webpack_exports__, "createApply", function() { return createApply; });
-/* concated harmony reexport createAddScalar */__webpack_require__.d(__webpack_exports__, "createAddScalar", function() { return createAddScalar; });
-/* concated harmony reexport createCbrt */__webpack_require__.d(__webpack_exports__, "createCbrt", function() { return createCbrt; });
-/* concated harmony reexport createCeil */__webpack_require__.d(__webpack_exports__, "createCeil", function() { return createCeil; });
-/* concated harmony reexport createCube */__webpack_require__.d(__webpack_exports__, "createCube", function() { return createCube; });
-/* concated harmony reexport createExp */__webpack_require__.d(__webpack_exports__, "createExp", function() { return createExp; });
-/* concated harmony reexport createExpm1 */__webpack_require__.d(__webpack_exports__, "createExpm1", function() { return createExpm1; });
-/* concated harmony reexport createFix */__webpack_require__.d(__webpack_exports__, "createFix", function() { return createFix; });
-/* concated harmony reexport createFloor */__webpack_require__.d(__webpack_exports__, "createFloor", function() { return createFloor; });
-/* concated harmony reexport createGcd */__webpack_require__.d(__webpack_exports__, "createGcd", function() { return createGcd; });
-/* concated harmony reexport createLcm */__webpack_require__.d(__webpack_exports__, "createLcm", function() { return createLcm; });
-/* concated harmony reexport createLog10 */__webpack_require__.d(__webpack_exports__, "createLog10", function() { return createLog10; });
-/* concated harmony reexport createLog2 */__webpack_require__.d(__webpack_exports__, "createLog2", function() { return createLog2; });
-/* concated harmony reexport createMod */__webpack_require__.d(__webpack_exports__, "createMod", function() { return createMod; });
-/* concated harmony reexport createMultiplyScalar */__webpack_require__.d(__webpack_exports__, "createMultiplyScalar", function() { return createMultiplyScalar; });
-/* concated harmony reexport createMultiply */__webpack_require__.d(__webpack_exports__, "createMultiply", function() { return createMultiply; });
-/* concated harmony reexport createNthRoot */__webpack_require__.d(__webpack_exports__, "createNthRoot", function() { return createNthRoot; });
-/* concated harmony reexport createSign */__webpack_require__.d(__webpack_exports__, "createSign", function() { return createSign; });
-/* concated harmony reexport createSqrt */__webpack_require__.d(__webpack_exports__, "createSqrt", function() { return createSqrt; });
-/* concated harmony reexport createSquare */__webpack_require__.d(__webpack_exports__, "createSquare", function() { return createSquare; });
-/* concated harmony reexport createSubtract */__webpack_require__.d(__webpack_exports__, "createSubtract", function() { return createSubtract; });
-/* concated harmony reexport createXgcd */__webpack_require__.d(__webpack_exports__, "createXgcd", function() { return createXgcd; });
-/* concated harmony reexport createDotMultiply */__webpack_require__.d(__webpack_exports__, "createDotMultiply", function() { return createDotMultiply; });
-/* concated harmony reexport createBitAnd */__webpack_require__.d(__webpack_exports__, "createBitAnd", function() { return createBitAnd; });
-/* concated harmony reexport createBitNot */__webpack_require__.d(__webpack_exports__, "createBitNot", function() { return createBitNot; });
-/* concated harmony reexport createBitOr */__webpack_require__.d(__webpack_exports__, "createBitOr", function() { return createBitOr; });
-/* concated harmony reexport createBitXor */__webpack_require__.d(__webpack_exports__, "createBitXor", function() { return createBitXor; });
-/* concated harmony reexport createArg */__webpack_require__.d(__webpack_exports__, "createArg", function() { return createArg; });
-/* concated harmony reexport createConj */__webpack_require__.d(__webpack_exports__, "createConj", function() { return createConj; });
-/* concated harmony reexport createIm */__webpack_require__.d(__webpack_exports__, "createIm", function() { return createIm; });
-/* concated harmony reexport createRe */__webpack_require__.d(__webpack_exports__, "createRe", function() { return createRe; });
-/* concated harmony reexport createNot */__webpack_require__.d(__webpack_exports__, "createNot", function() { return createNot; });
-/* concated harmony reexport createOr */__webpack_require__.d(__webpack_exports__, "createOr", function() { return createOr; });
-/* concated harmony reexport createXor */__webpack_require__.d(__webpack_exports__, "createXor", function() { return createXor; });
-/* concated harmony reexport createConcat */__webpack_require__.d(__webpack_exports__, "createConcat", function() { return createConcat; });
-/* concated harmony reexport createColumn */__webpack_require__.d(__webpack_exports__, "createColumn", function() { return createColumn; });
-/* concated harmony reexport createCross */__webpack_require__.d(__webpack_exports__, "createCross", function() { return createCross; });
-/* concated harmony reexport createDiag */__webpack_require__.d(__webpack_exports__, "createDiag", function() { return createDiag; });
-/* concated harmony reexport createEye */__webpack_require__.d(__webpack_exports__, "createEye", function() { return createEye; });
-/* concated harmony reexport createFilter */__webpack_require__.d(__webpack_exports__, "createFilter", function() { return createFilter; });
-/* concated harmony reexport createFlatten */__webpack_require__.d(__webpack_exports__, "createFlatten", function() { return createFlatten; });
-/* concated harmony reexport createForEach */__webpack_require__.d(__webpack_exports__, "createForEach", function() { return createForEach; });
-/* concated harmony reexport createGetMatrixDataType */__webpack_require__.d(__webpack_exports__, "createGetMatrixDataType", function() { return createGetMatrixDataType; });
-/* concated harmony reexport createIdentity */__webpack_require__.d(__webpack_exports__, "createIdentity", function() { return createIdentity; });
-/* concated harmony reexport createKron */__webpack_require__.d(__webpack_exports__, "createKron", function() { return createKron; });
-/* concated harmony reexport createMap */__webpack_require__.d(__webpack_exports__, "createMap", function() { return createMap; });
-/* concated harmony reexport createOnes */__webpack_require__.d(__webpack_exports__, "createOnes", function() { return createOnes; });
-/* concated harmony reexport createRange */__webpack_require__.d(__webpack_exports__, "createRange", function() { return range_createRange; });
-/* concated harmony reexport createReshape */__webpack_require__.d(__webpack_exports__, "createReshape", function() { return createReshape; });
-/* concated harmony reexport createResize */__webpack_require__.d(__webpack_exports__, "createResize", function() { return createResize; });
-/* concated harmony reexport createRow */__webpack_require__.d(__webpack_exports__, "createRow", function() { return createRow; });
-/* concated harmony reexport createSize */__webpack_require__.d(__webpack_exports__, "createSize", function() { return createSize; });
-/* concated harmony reexport createSqueeze */__webpack_require__.d(__webpack_exports__, "createSqueeze", function() { return createSqueeze; });
-/* concated harmony reexport createSubset */__webpack_require__.d(__webpack_exports__, "createSubset", function() { return createSubset; });
-/* concated harmony reexport createTranspose */__webpack_require__.d(__webpack_exports__, "createTranspose", function() { return createTranspose; });
-/* concated harmony reexport createCtranspose */__webpack_require__.d(__webpack_exports__, "createCtranspose", function() { return createCtranspose; });
-/* concated harmony reexport createZeros */__webpack_require__.d(__webpack_exports__, "createZeros", function() { return createZeros; });
-/* concated harmony reexport createErf */__webpack_require__.d(__webpack_exports__, "createErf", function() { return createErf; });
-/* concated harmony reexport createMode */__webpack_require__.d(__webpack_exports__, "createMode", function() { return createMode; });
-/* concated harmony reexport createProd */__webpack_require__.d(__webpack_exports__, "createProd", function() { return createProd; });
-/* concated harmony reexport createFormat */__webpack_require__.d(__webpack_exports__, "createFormat", function() { return createFormat; });
-/* concated harmony reexport createPrint */__webpack_require__.d(__webpack_exports__, "createPrint", function() { return createPrint; });
-/* concated harmony reexport createTo */__webpack_require__.d(__webpack_exports__, "createTo", function() { return createTo; });
-/* concated harmony reexport createIsPrime */__webpack_require__.d(__webpack_exports__, "createIsPrime", function() { return createIsPrime; });
-/* concated harmony reexport createNumeric */__webpack_require__.d(__webpack_exports__, "createNumeric", function() { return createNumeric; });
-/* concated harmony reexport createDivideScalar */__webpack_require__.d(__webpack_exports__, "createDivideScalar", function() { return createDivideScalar; });
-/* concated harmony reexport createPow */__webpack_require__.d(__webpack_exports__, "createPow", function() { return createPow; });
-/* concated harmony reexport createRound */__webpack_require__.d(__webpack_exports__, "createRound", function() { return createRound; });
-/* concated harmony reexport createLog */__webpack_require__.d(__webpack_exports__, "createLog", function() { return createLog; });
-/* concated harmony reexport createLog1p */__webpack_require__.d(__webpack_exports__, "createLog1p", function() { return createLog1p; });
-/* concated harmony reexport createNthRoots */__webpack_require__.d(__webpack_exports__, "createNthRoots", function() { return createNthRoots; });
-/* concated harmony reexport createDotPow */__webpack_require__.d(__webpack_exports__, "createDotPow", function() { return createDotPow; });
-/* concated harmony reexport createDotDivide */__webpack_require__.d(__webpack_exports__, "createDotDivide", function() { return createDotDivide; });
-/* concated harmony reexport createLsolve */__webpack_require__.d(__webpack_exports__, "createLsolve", function() { return createLsolve; });
-/* concated harmony reexport createUsolve */__webpack_require__.d(__webpack_exports__, "createUsolve", function() { return createUsolve; });
-/* concated harmony reexport createLeftShift */__webpack_require__.d(__webpack_exports__, "createLeftShift", function() { return createLeftShift; });
-/* concated harmony reexport createRightArithShift */__webpack_require__.d(__webpack_exports__, "createRightArithShift", function() { return createRightArithShift; });
-/* concated harmony reexport createRightLogShift */__webpack_require__.d(__webpack_exports__, "createRightLogShift", function() { return createRightLogShift; });
-/* concated harmony reexport createAnd */__webpack_require__.d(__webpack_exports__, "createAnd", function() { return createAnd; });
-/* concated harmony reexport createCompare */__webpack_require__.d(__webpack_exports__, "createCompare", function() { return createCompare; });
-/* concated harmony reexport createCompareNatural */__webpack_require__.d(__webpack_exports__, "createCompareNatural", function() { return createCompareNatural; });
-/* concated harmony reexport createCompareText */__webpack_require__.d(__webpack_exports__, "createCompareText", function() { return createCompareText; });
-/* concated harmony reexport createEqual */__webpack_require__.d(__webpack_exports__, "createEqual", function() { return createEqual; });
-/* concated harmony reexport createEqualText */__webpack_require__.d(__webpack_exports__, "createEqualText", function() { return createEqualText; });
-/* concated harmony reexport createSmaller */__webpack_require__.d(__webpack_exports__, "createSmaller", function() { return createSmaller; });
-/* concated harmony reexport createSmallerEq */__webpack_require__.d(__webpack_exports__, "createSmallerEq", function() { return createSmallerEq; });
-/* concated harmony reexport createLarger */__webpack_require__.d(__webpack_exports__, "createLarger", function() { return createLarger; });
-/* concated harmony reexport createLargerEq */__webpack_require__.d(__webpack_exports__, "createLargerEq", function() { return createLargerEq; });
-/* concated harmony reexport createDeepEqual */__webpack_require__.d(__webpack_exports__, "createDeepEqual", function() { return createDeepEqual; });
-/* concated harmony reexport createUnequal */__webpack_require__.d(__webpack_exports__, "createUnequal", function() { return createUnequal; });
-/* concated harmony reexport createPartitionSelect */__webpack_require__.d(__webpack_exports__, "createPartitionSelect", function() { return createPartitionSelect; });
-/* concated harmony reexport createSort */__webpack_require__.d(__webpack_exports__, "createSort", function() { return createSort; });
-/* concated harmony reexport createMax */__webpack_require__.d(__webpack_exports__, "createMax", function() { return createMax; });
-/* concated harmony reexport createMin */__webpack_require__.d(__webpack_exports__, "createMin", function() { return createMin; });
-/* concated harmony reexport createImmutableDenseMatrixClass */__webpack_require__.d(__webpack_exports__, "createImmutableDenseMatrixClass", function() { return createImmutableDenseMatrixClass; });
-/* concated harmony reexport createIndexClass */__webpack_require__.d(__webpack_exports__, "createIndexClass", function() { return createIndexClass; });
-/* concated harmony reexport createFibonacciHeapClass */__webpack_require__.d(__webpack_exports__, "createFibonacciHeapClass", function() { return createFibonacciHeapClass; });
-/* concated harmony reexport createSpaClass */__webpack_require__.d(__webpack_exports__, "createSpaClass", function() { return createSpaClass; });
-/* concated harmony reexport createUnitClass */__webpack_require__.d(__webpack_exports__, "createUnitClass", function() { return createUnitClass; });
-/* concated harmony reexport createUnitFunction */__webpack_require__.d(__webpack_exports__, "createUnitFunction", function() { return createUnitFunction; });
-/* concated harmony reexport createSparse */__webpack_require__.d(__webpack_exports__, "createSparse", function() { return createSparse; });
-/* concated harmony reexport createCreateUnit */__webpack_require__.d(__webpack_exports__, "createCreateUnit", function() { return createCreateUnit; });
-/* concated harmony reexport createAcos */__webpack_require__.d(__webpack_exports__, "createAcos", function() { return createAcos; });
-/* concated harmony reexport createAcosh */__webpack_require__.d(__webpack_exports__, "createAcosh", function() { return createAcosh; });
-/* concated harmony reexport createAcot */__webpack_require__.d(__webpack_exports__, "createAcot", function() { return createAcot; });
-/* concated harmony reexport createAcoth */__webpack_require__.d(__webpack_exports__, "createAcoth", function() { return createAcoth; });
-/* concated harmony reexport createAcsc */__webpack_require__.d(__webpack_exports__, "createAcsc", function() { return createAcsc; });
-/* concated harmony reexport createAcsch */__webpack_require__.d(__webpack_exports__, "createAcsch", function() { return createAcsch; });
-/* concated harmony reexport createAsec */__webpack_require__.d(__webpack_exports__, "createAsec", function() { return createAsec; });
-/* concated harmony reexport createAsech */__webpack_require__.d(__webpack_exports__, "createAsech", function() { return createAsech; });
-/* concated harmony reexport createAsin */__webpack_require__.d(__webpack_exports__, "createAsin", function() { return createAsin; });
-/* concated harmony reexport createAsinh */__webpack_require__.d(__webpack_exports__, "createAsinh", function() { return createAsinh; });
-/* concated harmony reexport createAtan */__webpack_require__.d(__webpack_exports__, "createAtan", function() { return createAtan; });
-/* concated harmony reexport createAtan2 */__webpack_require__.d(__webpack_exports__, "createAtan2", function() { return createAtan2; });
-/* concated harmony reexport createAtanh */__webpack_require__.d(__webpack_exports__, "createAtanh", function() { return createAtanh; });
-/* concated harmony reexport createCos */__webpack_require__.d(__webpack_exports__, "createCos", function() { return createCos; });
-/* concated harmony reexport createCosh */__webpack_require__.d(__webpack_exports__, "createCosh", function() { return createCosh; });
-/* concated harmony reexport createCot */__webpack_require__.d(__webpack_exports__, "createCot", function() { return createCot; });
-/* concated harmony reexport createCoth */__webpack_require__.d(__webpack_exports__, "createCoth", function() { return createCoth; });
-/* concated harmony reexport createCsc */__webpack_require__.d(__webpack_exports__, "createCsc", function() { return createCsc; });
-/* concated harmony reexport createCsch */__webpack_require__.d(__webpack_exports__, "createCsch", function() { return createCsch; });
-/* concated harmony reexport createSec */__webpack_require__.d(__webpack_exports__, "createSec", function() { return createSec; });
-/* concated harmony reexport createSech */__webpack_require__.d(__webpack_exports__, "createSech", function() { return createSech; });
-/* concated harmony reexport createSin */__webpack_require__.d(__webpack_exports__, "createSin", function() { return createSin; });
-/* concated harmony reexport createSinh */__webpack_require__.d(__webpack_exports__, "createSinh", function() { return createSinh; });
-/* concated harmony reexport createTan */__webpack_require__.d(__webpack_exports__, "createTan", function() { return createTan; });
-/* concated harmony reexport createTanh */__webpack_require__.d(__webpack_exports__, "createTanh", function() { return createTanh; });
-/* concated harmony reexport createSetCartesian */__webpack_require__.d(__webpack_exports__, "createSetCartesian", function() { return createSetCartesian; });
-/* concated harmony reexport createSetDifference */__webpack_require__.d(__webpack_exports__, "createSetDifference", function() { return createSetDifference; });
-/* concated harmony reexport createSetDistinct */__webpack_require__.d(__webpack_exports__, "createSetDistinct", function() { return createSetDistinct; });
-/* concated harmony reexport createSetIntersect */__webpack_require__.d(__webpack_exports__, "createSetIntersect", function() { return createSetIntersect; });
-/* concated harmony reexport createSetIsSubset */__webpack_require__.d(__webpack_exports__, "createSetIsSubset", function() { return createSetIsSubset; });
-/* concated harmony reexport createSetMultiplicity */__webpack_require__.d(__webpack_exports__, "createSetMultiplicity", function() { return createSetMultiplicity; });
-/* concated harmony reexport createSetPowerset */__webpack_require__.d(__webpack_exports__, "createSetPowerset", function() { return createSetPowerset; });
-/* concated harmony reexport createSetSize */__webpack_require__.d(__webpack_exports__, "createSetSize", function() { return createSetSize; });
-/* concated harmony reexport createSetSymDifference */__webpack_require__.d(__webpack_exports__, "createSetSymDifference", function() { return createSetSymDifference; });
-/* concated harmony reexport createSetUnion */__webpack_require__.d(__webpack_exports__, "createSetUnion", function() { return createSetUnion; });
-/* concated harmony reexport createAdd */__webpack_require__.d(__webpack_exports__, "createAdd", function() { return createAdd; });
-/* concated harmony reexport createHypot */__webpack_require__.d(__webpack_exports__, "createHypot", function() { return createHypot; });
-/* concated harmony reexport createNorm */__webpack_require__.d(__webpack_exports__, "createNorm", function() { return createNorm; });
-/* concated harmony reexport createDot */__webpack_require__.d(__webpack_exports__, "createDot", function() { return createDot; });
-/* concated harmony reexport createTrace */__webpack_require__.d(__webpack_exports__, "createTrace", function() { return createTrace; });
-/* concated harmony reexport createIndex */__webpack_require__.d(__webpack_exports__, "createIndex", function() { return createIndex; });
-/* concated harmony reexport createNode */__webpack_require__.d(__webpack_exports__, "createNode", function() { return createNode; });
-/* concated harmony reexport createAccessorNode */__webpack_require__.d(__webpack_exports__, "createAccessorNode", function() { return createAccessorNode; });
-/* concated harmony reexport createArrayNode */__webpack_require__.d(__webpack_exports__, "createArrayNode", function() { return createArrayNode; });
-/* concated harmony reexport createAssignmentNode */__webpack_require__.d(__webpack_exports__, "createAssignmentNode", function() { return createAssignmentNode; });
-/* concated harmony reexport createBlockNode */__webpack_require__.d(__webpack_exports__, "createBlockNode", function() { return createBlockNode; });
-/* concated harmony reexport createConditionalNode */__webpack_require__.d(__webpack_exports__, "createConditionalNode", function() { return createConditionalNode; });
-/* concated harmony reexport createConstantNode */__webpack_require__.d(__webpack_exports__, "createConstantNode", function() { return ConstantNode_createConstantNode; });
-/* concated harmony reexport createFunctionAssignmentNode */__webpack_require__.d(__webpack_exports__, "createFunctionAssignmentNode", function() { return createFunctionAssignmentNode; });
-/* concated harmony reexport createIndexNode */__webpack_require__.d(__webpack_exports__, "createIndexNode", function() { return createIndexNode; });
-/* concated harmony reexport createObjectNode */__webpack_require__.d(__webpack_exports__, "createObjectNode", function() { return createObjectNode; });
-/* concated harmony reexport createOperatorNode */__webpack_require__.d(__webpack_exports__, "createOperatorNode", function() { return createOperatorNode; });
-/* concated harmony reexport createParenthesisNode */__webpack_require__.d(__webpack_exports__, "createParenthesisNode", function() { return createParenthesisNode; });
-/* concated harmony reexport createRangeNode */__webpack_require__.d(__webpack_exports__, "createRangeNode", function() { return createRangeNode; });
-/* concated harmony reexport createRelationalNode */__webpack_require__.d(__webpack_exports__, "createRelationalNode", function() { return createRelationalNode; });
-/* concated harmony reexport createSymbolNode */__webpack_require__.d(__webpack_exports__, "createSymbolNode", function() { return createSymbolNode; });
-/* concated harmony reexport createFunctionNode */__webpack_require__.d(__webpack_exports__, "createFunctionNode", function() { return createFunctionNode; });
-/* concated harmony reexport createParse */__webpack_require__.d(__webpack_exports__, "createParse", function() { return createParse; });
-/* concated harmony reexport createCompile */__webpack_require__.d(__webpack_exports__, "createCompile", function() { return createCompile; });
-/* concated harmony reexport createEvaluate */__webpack_require__.d(__webpack_exports__, "createEvaluate", function() { return createEvaluate; });
-/* concated harmony reexport createDeprecatedEval */__webpack_require__.d(__webpack_exports__, "createDeprecatedEval", function() { return createDeprecatedEval; });
-/* concated harmony reexport createParserClass */__webpack_require__.d(__webpack_exports__, "createParserClass", function() { return createParserClass; });
-/* concated harmony reexport createParser */__webpack_require__.d(__webpack_exports__, "createParser", function() { return createParser; });
-/* concated harmony reexport createLup */__webpack_require__.d(__webpack_exports__, "createLup", function() { return createLup; });
-/* concated harmony reexport createQr */__webpack_require__.d(__webpack_exports__, "createQr", function() { return createQr; });
-/* concated harmony reexport createSlu */__webpack_require__.d(__webpack_exports__, "createSlu", function() { return createSlu; });
-/* concated harmony reexport createLusolve */__webpack_require__.d(__webpack_exports__, "createLusolve", function() { return createLusolve; });
-/* concated harmony reexport createHelpClass */__webpack_require__.d(__webpack_exports__, "createHelpClass", function() { return createHelpClass; });
-/* concated harmony reexport createChainClass */__webpack_require__.d(__webpack_exports__, "createChainClass", function() { return createChainClass; });
-/* concated harmony reexport createHelp */__webpack_require__.d(__webpack_exports__, "createHelp", function() { return createHelp; });
-/* concated harmony reexport createChain */__webpack_require__.d(__webpack_exports__, "createChain", function() { return createChain; });
-/* concated harmony reexport createDet */__webpack_require__.d(__webpack_exports__, "createDet", function() { return createDet; });
-/* concated harmony reexport createInv */__webpack_require__.d(__webpack_exports__, "createInv", function() { return createInv; });
-/* concated harmony reexport createEigs */__webpack_require__.d(__webpack_exports__, "createEigs", function() { return createEigs; });
-/* concated harmony reexport createExpm */__webpack_require__.d(__webpack_exports__, "createExpm", function() { return createExpm; });
-/* concated harmony reexport createSqrtm */__webpack_require__.d(__webpack_exports__, "createSqrtm", function() { return createSqrtm; });
-/* concated harmony reexport createDivide */__webpack_require__.d(__webpack_exports__, "createDivide", function() { return createDivide; });
-/* concated harmony reexport createDistance */__webpack_require__.d(__webpack_exports__, "createDistance", function() { return createDistance; });
-/* concated harmony reexport createIntersect */__webpack_require__.d(__webpack_exports__, "createIntersect", function() { return createIntersect; });
-/* concated harmony reexport createSum */__webpack_require__.d(__webpack_exports__, "createSum", function() { return createSum; });
-/* concated harmony reexport createMean */__webpack_require__.d(__webpack_exports__, "createMean", function() { return createMean; });
-/* concated harmony reexport createMedian */__webpack_require__.d(__webpack_exports__, "createMedian", function() { return createMedian; });
-/* concated harmony reexport createMad */__webpack_require__.d(__webpack_exports__, "createMad", function() { return createMad; });
-/* concated harmony reexport createVariance */__webpack_require__.d(__webpack_exports__, "createVariance", function() { return createVariance; });
-/* concated harmony reexport createDeprecatedVar */__webpack_require__.d(__webpack_exports__, "createDeprecatedVar", function() { return createDeprecatedVar; });
-/* concated harmony reexport createQuantileSeq */__webpack_require__.d(__webpack_exports__, "createQuantileSeq", function() { return createQuantileSeq; });
-/* concated harmony reexport createStd */__webpack_require__.d(__webpack_exports__, "createStd", function() { return createStd; });
-/* concated harmony reexport createCombinations */__webpack_require__.d(__webpack_exports__, "createCombinations", function() { return createCombinations; });
-/* concated harmony reexport createCombinationsWithRep */__webpack_require__.d(__webpack_exports__, "createCombinationsWithRep", function() { return createCombinationsWithRep; });
-/* concated harmony reexport createGamma */__webpack_require__.d(__webpack_exports__, "createGamma", function() { return createGamma; });
-/* concated harmony reexport createFactorial */__webpack_require__.d(__webpack_exports__, "createFactorial", function() { return createFactorial; });
-/* concated harmony reexport createKldivergence */__webpack_require__.d(__webpack_exports__, "createKldivergence", function() { return createKldivergence; });
-/* concated harmony reexport createMultinomial */__webpack_require__.d(__webpack_exports__, "createMultinomial", function() { return createMultinomial; });
-/* concated harmony reexport createPermutations */__webpack_require__.d(__webpack_exports__, "createPermutations", function() { return createPermutations; });
-/* concated harmony reexport createPickRandom */__webpack_require__.d(__webpack_exports__, "createPickRandom", function() { return createPickRandom; });
-/* concated harmony reexport createRandom */__webpack_require__.d(__webpack_exports__, "createRandom", function() { return createRandom; });
-/* concated harmony reexport createRandomInt */__webpack_require__.d(__webpack_exports__, "createRandomInt", function() { return createRandomInt; });
-/* concated harmony reexport createStirlingS2 */__webpack_require__.d(__webpack_exports__, "createStirlingS2", function() { return createStirlingS2; });
-/* concated harmony reexport createBellNumbers */__webpack_require__.d(__webpack_exports__, "createBellNumbers", function() { return createBellNumbers; });
-/* concated harmony reexport createCatalan */__webpack_require__.d(__webpack_exports__, "createCatalan", function() { return createCatalan; });
-/* concated harmony reexport createComposition */__webpack_require__.d(__webpack_exports__, "createComposition", function() { return createComposition; });
-/* concated harmony reexport createSimplify */__webpack_require__.d(__webpack_exports__, "createSimplify", function() { return createSimplify; });
-/* concated harmony reexport createDerivative */__webpack_require__.d(__webpack_exports__, "createDerivative", function() { return createDerivative; });
-/* concated harmony reexport createRationalize */__webpack_require__.d(__webpack_exports__, "createRationalize", function() { return createRationalize; });
-/* concated harmony reexport createReviver */__webpack_require__.d(__webpack_exports__, "createReviver", function() { return createReviver; });
-/* concated harmony reexport createE */__webpack_require__.d(__webpack_exports__, "createE", function() { return createE; });
-/* concated harmony reexport createUppercaseE */__webpack_require__.d(__webpack_exports__, "createUppercaseE", function() { return createUppercaseE; });
-/* concated harmony reexport createFalse */__webpack_require__.d(__webpack_exports__, "createFalse", function() { return createFalse; });
-/* concated harmony reexport createI */__webpack_require__.d(__webpack_exports__, "createI", function() { return createI; });
-/* concated harmony reexport createInfinity */__webpack_require__.d(__webpack_exports__, "createInfinity", function() { return createInfinity; });
-/* concated harmony reexport createLN10 */__webpack_require__.d(__webpack_exports__, "createLN10", function() { return createLN10; });
-/* concated harmony reexport createLN2 */__webpack_require__.d(__webpack_exports__, "createLN2", function() { return createLN2; });
-/* concated harmony reexport createLOG10E */__webpack_require__.d(__webpack_exports__, "createLOG10E", function() { return createLOG10E; });
-/* concated harmony reexport createLOG2E */__webpack_require__.d(__webpack_exports__, "createLOG2E", function() { return createLOG2E; });
-/* concated harmony reexport createNaN */__webpack_require__.d(__webpack_exports__, "createNaN", function() { return createNaN; });
-/* concated harmony reexport createNull */__webpack_require__.d(__webpack_exports__, "createNull", function() { return createNull; });
-/* concated harmony reexport createPhi */__webpack_require__.d(__webpack_exports__, "createPhi", function() { return createPhi; });
-/* concated harmony reexport createPi */__webpack_require__.d(__webpack_exports__, "createPi", function() { return createPi; });
-/* concated harmony reexport createUppercasePi */__webpack_require__.d(__webpack_exports__, "createUppercasePi", function() { return createUppercasePi; });
-/* concated harmony reexport createSQRT1_2 */__webpack_require__.d(__webpack_exports__, "createSQRT1_2", function() { return createSQRT1_2; });
-/* concated harmony reexport createSQRT2 */__webpack_require__.d(__webpack_exports__, "createSQRT2", function() { return createSQRT2; });
-/* concated harmony reexport createTau */__webpack_require__.d(__webpack_exports__, "createTau", function() { return createTau; });
-/* concated harmony reexport createTrue */__webpack_require__.d(__webpack_exports__, "createTrue", function() { return createTrue; });
-/* concated harmony reexport createVersion */__webpack_require__.d(__webpack_exports__, "createVersion", function() { return createVersion; });
-/* concated harmony reexport createAtomicMass */__webpack_require__.d(__webpack_exports__, "createAtomicMass", function() { return createAtomicMass; });
-/* concated harmony reexport createAvogadro */__webpack_require__.d(__webpack_exports__, "createAvogadro", function() { return createAvogadro; });
-/* concated harmony reexport createBohrMagneton */__webpack_require__.d(__webpack_exports__, "createBohrMagneton", function() { return createBohrMagneton; });
-/* concated harmony reexport createBohrRadius */__webpack_require__.d(__webpack_exports__, "createBohrRadius", function() { return createBohrRadius; });
-/* concated harmony reexport createBoltzmann */__webpack_require__.d(__webpack_exports__, "createBoltzmann", function() { return createBoltzmann; });
-/* concated harmony reexport createClassicalElectronRadius */__webpack_require__.d(__webpack_exports__, "createClassicalElectronRadius", function() { return createClassicalElectronRadius; });
-/* concated harmony reexport createConductanceQuantum */__webpack_require__.d(__webpack_exports__, "createConductanceQuantum", function() { return createConductanceQuantum; });
-/* concated harmony reexport createCoulomb */__webpack_require__.d(__webpack_exports__, "createCoulomb", function() { return createCoulomb; });
-/* concated harmony reexport createDeuteronMass */__webpack_require__.d(__webpack_exports__, "createDeuteronMass", function() { return createDeuteronMass; });
-/* concated harmony reexport createEfimovFactor */__webpack_require__.d(__webpack_exports__, "createEfimovFactor", function() { return createEfimovFactor; });
-/* concated harmony reexport createElectricConstant */__webpack_require__.d(__webpack_exports__, "createElectricConstant", function() { return createElectricConstant; });
-/* concated harmony reexport createElectronMass */__webpack_require__.d(__webpack_exports__, "createElectronMass", function() { return createElectronMass; });
-/* concated harmony reexport createElementaryCharge */__webpack_require__.d(__webpack_exports__, "createElementaryCharge", function() { return createElementaryCharge; });
-/* concated harmony reexport createFaraday */__webpack_require__.d(__webpack_exports__, "createFaraday", function() { return createFaraday; });
-/* concated harmony reexport createFermiCoupling */__webpack_require__.d(__webpack_exports__, "createFermiCoupling", function() { return createFermiCoupling; });
-/* concated harmony reexport createFineStructure */__webpack_require__.d(__webpack_exports__, "createFineStructure", function() { return createFineStructure; });
-/* concated harmony reexport createFirstRadiation */__webpack_require__.d(__webpack_exports__, "createFirstRadiation", function() { return createFirstRadiation; });
-/* concated harmony reexport createGasConstant */__webpack_require__.d(__webpack_exports__, "createGasConstant", function() { return createGasConstant; });
-/* concated harmony reexport createGravitationConstant */__webpack_require__.d(__webpack_exports__, "createGravitationConstant", function() { return createGravitationConstant; });
-/* concated harmony reexport createGravity */__webpack_require__.d(__webpack_exports__, "createGravity", function() { return createGravity; });
-/* concated harmony reexport createHartreeEnergy */__webpack_require__.d(__webpack_exports__, "createHartreeEnergy", function() { return createHartreeEnergy; });
-/* concated harmony reexport createInverseConductanceQuantum */__webpack_require__.d(__webpack_exports__, "createInverseConductanceQuantum", function() { return createInverseConductanceQuantum; });
-/* concated harmony reexport createKlitzing */__webpack_require__.d(__webpack_exports__, "createKlitzing", function() { return createKlitzing; });
-/* concated harmony reexport createLoschmidt */__webpack_require__.d(__webpack_exports__, "createLoschmidt", function() { return createLoschmidt; });
-/* concated harmony reexport createMagneticConstant */__webpack_require__.d(__webpack_exports__, "createMagneticConstant", function() { return createMagneticConstant; });
-/* concated harmony reexport createMagneticFluxQuantum */__webpack_require__.d(__webpack_exports__, "createMagneticFluxQuantum", function() { return createMagneticFluxQuantum; });
-/* concated harmony reexport createMolarMass */__webpack_require__.d(__webpack_exports__, "createMolarMass", function() { return createMolarMass; });
-/* concated harmony reexport createMolarMassC12 */__webpack_require__.d(__webpack_exports__, "createMolarMassC12", function() { return createMolarMassC12; });
-/* concated harmony reexport createMolarPlanckConstant */__webpack_require__.d(__webpack_exports__, "createMolarPlanckConstant", function() { return createMolarPlanckConstant; });
-/* concated harmony reexport createMolarVolume */__webpack_require__.d(__webpack_exports__, "createMolarVolume", function() { return createMolarVolume; });
-/* concated harmony reexport createNeutronMass */__webpack_require__.d(__webpack_exports__, "createNeutronMass", function() { return createNeutronMass; });
-/* concated harmony reexport createNuclearMagneton */__webpack_require__.d(__webpack_exports__, "createNuclearMagneton", function() { return createNuclearMagneton; });
-/* concated harmony reexport createPlanckCharge */__webpack_require__.d(__webpack_exports__, "createPlanckCharge", function() { return createPlanckCharge; });
-/* concated harmony reexport createPlanckConstant */__webpack_require__.d(__webpack_exports__, "createPlanckConstant", function() { return createPlanckConstant; });
-/* concated harmony reexport createPlanckLength */__webpack_require__.d(__webpack_exports__, "createPlanckLength", function() { return createPlanckLength; });
-/* concated harmony reexport createPlanckMass */__webpack_require__.d(__webpack_exports__, "createPlanckMass", function() { return createPlanckMass; });
-/* concated harmony reexport createPlanckTemperature */__webpack_require__.d(__webpack_exports__, "createPlanckTemperature", function() { return createPlanckTemperature; });
-/* concated harmony reexport createPlanckTime */__webpack_require__.d(__webpack_exports__, "createPlanckTime", function() { return createPlanckTime; });
-/* concated harmony reexport createProtonMass */__webpack_require__.d(__webpack_exports__, "createProtonMass", function() { return createProtonMass; });
-/* concated harmony reexport createQuantumOfCirculation */__webpack_require__.d(__webpack_exports__, "createQuantumOfCirculation", function() { return createQuantumOfCirculation; });
-/* concated harmony reexport createReducedPlanckConstant */__webpack_require__.d(__webpack_exports__, "createReducedPlanckConstant", function() { return createReducedPlanckConstant; });
-/* concated harmony reexport createRydberg */__webpack_require__.d(__webpack_exports__, "createRydberg", function() { return createRydberg; });
-/* concated harmony reexport createSackurTetrode */__webpack_require__.d(__webpack_exports__, "createSackurTetrode", function() { return createSackurTetrode; });
-/* concated harmony reexport createSecondRadiation */__webpack_require__.d(__webpack_exports__, "createSecondRadiation", function() { return createSecondRadiation; });
-/* concated harmony reexport createSpeedOfLight */__webpack_require__.d(__webpack_exports__, "createSpeedOfLight", function() { return createSpeedOfLight; });
-/* concated harmony reexport createStefanBoltzmann */__webpack_require__.d(__webpack_exports__, "createStefanBoltzmann", function() { return createStefanBoltzmann; });
-/* concated harmony reexport createThomsonCrossSection */__webpack_require__.d(__webpack_exports__, "createThomsonCrossSection", function() { return createThomsonCrossSection; });
-/* concated harmony reexport createVacuumImpedance */__webpack_require__.d(__webpack_exports__, "createVacuumImpedance", function() { return createVacuumImpedance; });
-/* concated harmony reexport createWeakMixingAngle */__webpack_require__.d(__webpack_exports__, "createWeakMixingAngle", function() { return createWeakMixingAngle; });
-/* concated harmony reexport createWienDisplacement */__webpack_require__.d(__webpack_exports__, "createWienDisplacement", function() { return createWienDisplacement; });
-/* concated harmony reexport createApplyTransform */__webpack_require__.d(__webpack_exports__, "createApplyTransform", function() { return createApplyTransform; });
-/* concated harmony reexport createColumnTransform */__webpack_require__.d(__webpack_exports__, "createColumnTransform", function() { return createColumnTransform; });
-/* concated harmony reexport createFilterTransform */__webpack_require__.d(__webpack_exports__, "createFilterTransform", function() { return createFilterTransform; });
-/* concated harmony reexport createForEachTransform */__webpack_require__.d(__webpack_exports__, "createForEachTransform", function() { return createForEachTransform; });
-/* concated harmony reexport createIndexTransform */__webpack_require__.d(__webpack_exports__, "createIndexTransform", function() { return createIndexTransform; });
-/* concated harmony reexport createMapTransform */__webpack_require__.d(__webpack_exports__, "createMapTransform", function() { return createMapTransform; });
-/* concated harmony reexport createMaxTransform */__webpack_require__.d(__webpack_exports__, "createMaxTransform", function() { return createMaxTransform; });
-/* concated harmony reexport createMeanTransform */__webpack_require__.d(__webpack_exports__, "createMeanTransform", function() { return createMeanTransform; });
-/* concated harmony reexport createMinTransform */__webpack_require__.d(__webpack_exports__, "createMinTransform", function() { return createMinTransform; });
-/* concated harmony reexport createRangeTransform */__webpack_require__.d(__webpack_exports__, "createRangeTransform", function() { return createRangeTransform; });
-/* concated harmony reexport createRowTransform */__webpack_require__.d(__webpack_exports__, "createRowTransform", function() { return createRowTransform; });
-/* concated harmony reexport createSubsetTransform */__webpack_require__.d(__webpack_exports__, "createSubsetTransform", function() { return createSubsetTransform; });
-/* concated harmony reexport createConcatTransform */__webpack_require__.d(__webpack_exports__, "createConcatTransform", function() { return createConcatTransform; });
-/* concated harmony reexport createStdTransform */__webpack_require__.d(__webpack_exports__, "createStdTransform", function() { return createStdTransform; });
-/* concated harmony reexport createSumTransform */__webpack_require__.d(__webpack_exports__, "createSumTransform", function() { return createSumTransform; });
-/* concated harmony reexport createVarianceTransform */__webpack_require__.d(__webpack_exports__, "createVarianceTransform", function() { return createVarianceTransform; });
 
 
 
@@ -61689,7 +60973,11 @@ Object(factory["a" /* factory */])(variance_transform_name, variance_transform_d
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "create", function() { return /* binding */ create; });
 
 // EXTERNAL MODULE: ./src/utils/object.js
 var utils_object = __webpack_require__(3);
@@ -61988,7 +61276,7 @@ function importFactory(typed, load, math, importedFactories) {
 
     if (typeof factory.name === 'string') {
       var name = factory.name;
-      var existingTransform = name in math.expression.transform;
+      var existingTransform = (name in math.expression.transform);
       var namespace = factory.path ? Object(utils_object["k" /* traverse */])(math, factory.path) : math;
       var existing = Object(utils_object["f" /* hasOwnProperty */])(namespace, name) ? namespace[name] : undefined;
 
@@ -62068,7 +61356,7 @@ function importFactory(typed, load, math, importedFactories) {
     }
 
     var namespace = isTransformFunctionFactory(factory) ? math.expression.transform : math;
-    var existingTransform = name in math.expression.transform;
+    var existingTransform = (name in math.expression.transform);
     var existing = Object(utils_object["f" /* hasOwnProperty */])(namespace, name) ? namespace[name] : undefined;
 
     var resolver = function resolver() {
@@ -62090,9 +61378,7 @@ function importFactory(typed, load, math, importedFactories) {
           dependencies[dependency] = math[dependency];
         }
       });
-      var instance =
-      /* #__PURE__ */
-      factory(dependencies);
+      var instance = /* #__PURE__ */factory(dependencies);
 
       if (instance && typeof instance.transform === 'function') {
         throw new Error('Transforms cannot be attached to factory functions. ' + 'Please create a separate function for it with exports.path="expression.transform"');
@@ -62357,7 +61643,6 @@ var DimensionError = __webpack_require__(6);
 var IndexError = __webpack_require__(10);
 
 // CONCATENATED MODULE: ./src/core/create.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create", function() { return create; });
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 

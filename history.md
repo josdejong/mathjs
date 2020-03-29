@@ -5,18 +5,26 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20200329-version-662">2020-03-29, version 6.6.2 <a href="#20200329-version-662" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1789">#1789</a>: Function `eigs` not calculating with BigNumber precision 
+  when input contains BigNumbers.
+- Run the build script during npm `prepare`, so you can use the library
+  directly when installing directly from git. See <a href="https://github.com/josdejong/mathjs/issues/1751">#1751</a>. Thanks <a href="https://github.com/cinderblock">@cinderblock</a>.
+
+
 <h1 id="20200226-version-661">2020-02-26, version 6.6.1 <a href="#20200226-version-661" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1725">#1725</a>: simplify `a/(b/c)`. Thanks <a href="https://github.com/dbramwell">@dbramwell</a>.
-- Fix examples in documentation of `row` and `column`. 
+- Fix examples in documentation of `row` and `column`.
 
 
 <h1 id="20200201-version-660">2020-02-01, version 6.6.0 <a href="#20200201-version-660" title="Permalink">#</a></h1>
 
 - Implemented function `eigs`, see <a href="https://github.com/josdejong/mathjs/issues/1705">#1705</a>, <a href="https://github.com/josdejong/mathjs/issues/542">#542</a> <a href="https://github.com/josdejong/mathjs/issues/1175">#1175</a>. Thanks <a href="https://github.com/arkajitmandal">@arkajitmandal</a>.
-- Fixed <a href="https://github.com/josdejong/mathjs/issues/1727">#1727</a>: validate matrix size when creating a `DenseMatrix` using 
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1727">#1727</a>: validate matrix size when creating a `DenseMatrix` using
   `fromJSON`.
-- Fixed `DenseMatrix.map` copying the size and datatype from the original 
+- Fixed `DenseMatrix.map` copying the size and datatype from the original
   matrix instead of checking the returned dimensions and type of the callback.
 - Add a caret to dependencies (like) `^1.2.3`) to allow downstream updates
   without having to await a new release of mathjs.
@@ -24,7 +32,7 @@ layout: default
 
 <h1 id="20200108-version-650">2020-01-08, version 6.5.0 <a href="#20200108-version-650" title="Permalink">#</a></h1>
 
-- Implemented `baseName` option for `createUnit`, see <a href="https://github.com/josdejong/mathjs/issues/1707">#1707</a>. 
+- Implemented `baseName` option for `createUnit`, see <a href="https://github.com/josdejong/mathjs/issues/1707">#1707</a>.
   Thanks <a href="https://github.com/ericman314">@ericman314</a>.
 
 
