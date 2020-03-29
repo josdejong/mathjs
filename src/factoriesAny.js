@@ -340,4 +340,5 @@ export { createConcatTransform } from './expression/transform/concat.transform.j
 export { createDiffTransform } from './expression/transform/diff.transform.js'
 export { createStdTransform } from './expression/transform/std.transform.js'
 export { createSumTransform } from './expression/transform/sum.transform.js'
+export { createCumSumTransform } from './expression/transform/cumsum.transform.js'
 export { createVarianceTransform } from './expression/transform/variance.transform.js'

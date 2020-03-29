@@ -302,6 +302,7 @@ export { createRangeTransform } from './expression/transform/range.transform.js'
 export const createSubsetTransform = /* #__PURE__ */ factory('subset', [], () => noSubset, { isTransformFunction: true })
 export { createStdTransform } from './expression/transform/std.transform.js'
 export { createSumTransform } from './expression/transform/sum.transform.js'
+export { createCumSumTransform } from './expression/transform/cumsum.transform.js'
 export { createVarianceTransform } from './expression/transform/variance.transform.js'
 
 // utils
