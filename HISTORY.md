@@ -3,6 +3,8 @@
 
 # not yet published, version 6.6.2
 
+- Fix #1789: Function `eigs` not calculating with BigNumber precision 
+  when input contains BigNumbers.
 - Run the build script during npm `prepare`, so you can use the library
   directly when installing directly from git. Thanks @cinderblock.
 
