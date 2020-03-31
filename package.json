@@ -71,7 +71,7 @@
     "standard": "14.3.3",
     "sylvester": "0.0.21",
     "uglify-js": "3.8.1",
-    "underscore": "1.9.2",
+    "underscore": "1.10.2",
     "webpack": "4.42.1",
     "zeros": "1.0.0"
   },
