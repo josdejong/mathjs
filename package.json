@@ -66,7 +66,7 @@
     "ndarray-ops": "1.2.2",
     "ndarray-pack": "1.2.1",
     "numericjs": "1.2.6",
-    "nyc": "15.0.0",
+    "nyc": "15.0.1",
     "pad-right": "0.2.2",
     "standard": "14.3.3",
     "sylvester": "0.0.21",
