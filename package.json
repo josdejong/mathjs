@@ -58,7 +58,7 @@
     "karma-mocha-reporter": "2.2.5",
     "karma-webpack": "4.0.2",
     "math-expression-evaluator": "1.2.22",
-    "mkdirp": "1.0.3",
+    "mkdirp": "1.0.4",
     "mocha": "7.1.1",
     "ndarray": "1.0.19",
     "ndarray-determinant": "1.0.0",
