@@ -114,9 +114,9 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
   }
 
   // diagonalization implementation for number (efficient)
-  function diag (x, precision = 1E-12) {
+  function diag (x) {
     const N = x.length
-    const e0 = Math.abs(precision / N)
+    const e0 = Math.abs(config.epsilon / N)
     let psi
     let Sij = new Array(N)
     // Sij is Identity Matrix
@@ -142,9 +142,9 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
   }
 
   // diagonalization implementation for bigNumber
-  function diagBig (x, precision = 1E-12) {
+  function diagBig (x) {
     const N = x.length
-    const e0 = abs(precision / N)
+    const e0 = abs(config.epsilon / N)
     let psi
     let Sij = new Array(N)
     // Sij is Identity Matrix

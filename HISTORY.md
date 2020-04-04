@@ -1,6 +1,11 @@
 # History
 
 
+# not yet published, version 6.6.3
+
+- Fixed `eigs` not using `config.epsilon`.
+
+
 # 2020-03-29, version 6.6.2
 
 - Fix #1789: Function `eigs` not calculating with BigNumber precision 
