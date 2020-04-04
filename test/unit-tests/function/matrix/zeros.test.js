@@ -66,7 +66,7 @@ describe('zeros', function () {
 
   it('should create a matrix with zeros with the same size as original matrix', function () {
     const a = matrix([[1, 2, 3], [4, 5, 6]])
-    assert.deepStrictEqual(zeros(math.size(a)).size(), a.size())
+    assert.deepStrictEqual(math.size(zeros(math.size(a))), a.size())
   })
 
   // TODO: test with invalid input

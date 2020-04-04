@@ -155,8 +155,8 @@ Math.js uses geometric dimensions:
 - A vector is one-dimensional.
 - A matrix is two or multi-dimensional.
 
-The size of a matrix can be calculated with the function `size`. Function `size`
-returns a `Matrix` or `Array`, depending on the configuration option `matrix`.
+The size of a matrix can be calculated with the function `size`. 
+Function `size` always returns an `Array`.
 Furthermore, matrices have a function `size` as well, which always returns
 an Array.
 

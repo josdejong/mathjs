@@ -408,7 +408,7 @@ parser.evaluate('"hello"')                        // String, "hello"
 
 // string manipulation
 parser.evaluate('a = concat("hello", " world")')  // String, "hello world"
-parser.evaluate('size(a)')                        // Matrix [11]
+parser.evaluate('size(a)')                        // Array [11]
 parser.evaluate('a[1:5]')                         // String, "hello"
 parser.evaluate('a[1] = "H"')                     // String, "H"
 parser.evaluate('a[7:12] = "there!"')             // String, "there!"

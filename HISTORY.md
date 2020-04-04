@@ -7,7 +7,9 @@ Breaking changes:
 
 - Improvements in calculation of the `dot` product of complex values. 
   The first argument is now conjugated. See #1761. Thanks @m93a.  
-
+- Change function `size` to always return an `Array` as output instead
+  of returning a `Matrix` when the input is a matrix or 
+  `config.matrix == 'Array'`. See #1771.
 
 # 2020-03-29, version 6.6.2
 
