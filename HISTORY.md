@@ -3,7 +3,9 @@
 
 # not yet published, version 6.6.3
 
-- Fixed `eigs` not using `config.epsilon`.
+- Fix #1645: not being able to use named operators `mod`, `and`, `not`, `or`,
+  `xor`, `to`, `in` as object keys. Thanks @Veeloxfire.
+- Fix `eigs` not using `config.epsilon`.
 
 
 # 2020-03-29, version 6.6.2
