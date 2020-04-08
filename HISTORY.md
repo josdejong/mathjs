@@ -3,6 +3,8 @@
 
 # not yet published, version 6.6.3
 
+- Fix #1808: methods `.toNumber()` and `.toNumeric()` not working on a 
+  unitless unit.
 - Fix #1645: not being able to use named operators `mod`, `and`, `not`, `or`,
   `xor`, `to`, `in` as object keys. Thanks @Veeloxfire.
 - Fix `eigs` not using `config.epsilon`.
