@@ -19,6 +19,11 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * @param {Array | Matrix } x     An array or matrix
    * @return {Array | Matrix}       Difference between array elements
+   * 
+   * See Also:
+   *
+   *      Subtract 
+   * 
    */
   return typed(name, {
     'Array | Matrix, function': function (x) {
