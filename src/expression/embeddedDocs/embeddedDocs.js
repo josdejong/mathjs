@@ -404,6 +404,7 @@ export const embeddedDocs = {
   ctranspose: ctransposeDocs,
   det: detDocs,
   diag: diagDocs,
+  diff: diffDocs,
   dot: dotDocs,
   getMatrixDataType: getMatrixDataTypeDocs,
   identity: identityDocs,
