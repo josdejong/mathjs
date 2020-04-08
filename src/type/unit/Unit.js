@@ -880,7 +880,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       other = this.clone()
     }
 
-    if (other._isDerived()) {
+    if (other._isDerived() || other.units.length === 0) {
       return other._denormalize(other.value)
     } else {
       return other._denormalize(other.value, other.units[0].prefix.value)
