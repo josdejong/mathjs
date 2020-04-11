@@ -5,6 +5,17 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20200410-version-663">2020-04-10, version 6.6.3 <a href="#20200410-version-663" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1813">#1813</a>: bug in engineering notation for numbers of function `format`,
+  sometimes resulting in needless trailing zeros.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1808">#1808</a>: methods `.toNumber()` and `.toNumeric()` not working on a 
+  unitless unit.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1645">#1645</a>: not being able to use named operators `mod`, `and`, `not`, `or`,
+  `xor`, `to`, `in` as object keys. Thanks <a href="https://github.com/Veeloxfire">@Veeloxfire</a>.
+- Fix `eigs` not using `config.epsilon`.
+
+
 <h1 id="20200329-version-662">2020-03-29, version 6.6.2 <a href="#20200329-version-662" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1789">#1789</a>: Function `eigs` not calculating with BigNumber precision 

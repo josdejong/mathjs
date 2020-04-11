@@ -33,7 +33,8 @@ math.format(value, callback)
        Always use exponential notation.
        For example '1.234e+2' and '1.4e+7'
      - 'engineering'
-       Always use engineering notation.
+       Always use engineering notation: always have exponential notation,
+       and select the exponent to be a multiple of 3.
        For example '123.4e+0' and '14.0e+6'
      - 'auto' (default)
        Regular number notation for numbers having an absolute value between
