@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 6.6.3
+# 2020-04-10, version 6.6.3
 
 - Fix #1813: bug in engineering notation for numbers of function `format`,
   sometimes resulting in needless trailing zeros.
