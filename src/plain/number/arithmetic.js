@@ -359,7 +359,7 @@ export function modMultiplicativeInverseNumber (a, b) {
   }
   const [div, m] = xgcdNumber(a, b)
   if (div !== 1) {
-    return null
+    return NaN
   }
   return modNumber(m, b)
 }
