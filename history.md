@@ -5,6 +5,11 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20200415-version-664">2020-04-15, version 6.6.4 <a href="#20200415-version-664" title="Permalink">#</a></h1>
+
+- Fix published files containing Windows line endings (CRLF instead of LF).  
+
+
 <h1 id="20200410-version-663">2020-04-10, version 6.6.3 <a href="#20200410-version-663" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1813">#1813</a>: bug in engineering notation for numbers of function `format`,
