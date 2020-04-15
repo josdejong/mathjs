@@ -1,6 +1,11 @@
 # History
 
 
+# 2020-04-15, version 6.6.4
+
+- Fix published files containing Windows line endings (CRLF instead of LF).  
+
+
 # 2020-04-10, version 6.6.3
 
 - Fix #1813: bug in engineering notation for numbers of function `format`,
