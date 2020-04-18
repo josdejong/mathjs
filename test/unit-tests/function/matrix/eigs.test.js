@@ -105,4 +105,17 @@ describe('eigs', function () {
     }
     approx.deepEqual(Ei, E)
   })
+
+  it('make sure BigNumbers input is actually calculated with BigNumber precision', function () {
+    const B = math.bignumber([
+      [0, 1],
+      [1, 0]
+    ])
+    const eig = math.eigs(B)
+
+    assert.strictEqual(eig.values[0].toString(),
+      '-0.9999999999999999999999999999999999999999999999999999999999999999')
+    assert.strictEqual(eig.values[1].toString(),
+      '0.9999999999999999999999999999999999999999999999999999999999999999')
+  })
 })

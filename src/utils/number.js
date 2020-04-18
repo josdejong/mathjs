@@ -310,7 +310,8 @@ export function toEngineering (value, precision) {
     return String(value)
   }
 
-  const rounded = roundDigits(splitNumber(value), precision)
+  const split = splitNumber(value)
+  const rounded = roundDigits(split, precision)
 
   const e = rounded.exponent
   const c = rounded.coefficients
@@ -325,17 +326,15 @@ export function toEngineering (value, precision) {
     }
   } else {
     // concatenate coefficients with necessary zeros
-    const significandsDiff = e >= 0 ? e : Math.abs(newExp)
-
-    // add zeros if necessary (for ex: 1e+8)
-    while (c.length - 1 < significandsDiff) {
+    // add zeros if necessary (for example: 1e+8 -> 100e+6)
+    const missingZeros = Math.abs(e - newExp) - (c.length - 1)
+    for (let i = 0; i < missingZeros; i++) {
       c.push(0)
     }
   }
 
   // find difference in exponents
   let expDiff = Math.abs(e - newExp)
-
   let decimalIdx = 1
 
   // push decimal index over by expDiff times

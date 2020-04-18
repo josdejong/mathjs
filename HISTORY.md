@@ -1,17 +1,42 @@
 # History
 
 
-# not yet published, version 6.6.1
+# 2020-04-15, version 6.6.4
+
+- Fix published files containing Windows line endings (CRLF instead of LF).  
+
+
+# 2020-04-10, version 6.6.3
+
+- Fix #1813: bug in engineering notation for numbers of function `format`,
+  sometimes resulting in needless trailing zeros.
+- Fix #1808: methods `.toNumber()` and `.toNumeric()` not working on a 
+  unitless unit.
+- Fix #1645: not being able to use named operators `mod`, `and`, `not`, `or`,
+  `xor`, `to`, `in` as object keys. Thanks @Veeloxfire.
+- Fix `eigs` not using `config.epsilon`.
+
+
+# 2020-03-29, version 6.6.2
+
+- Fix #1789: Function `eigs` not calculating with BigNumber precision 
+  when input contains BigNumbers.
+- Run the build script during npm `prepare`, so you can use the library
+  directly when installing directly from git. See #1751. Thanks @cinderblock.
+
+
+# 2020-02-26, version 6.6.1
 
 - Fix #1725: simplify `a/(b/c)`. Thanks @dbramwell.
+- Fix examples in documentation of `row` and `column`.
 
 
 # 2020-02-01, version 6.6.0
 
 - Implemented function `eigs`, see #1705, #542 #1175. Thanks @arkajitmandal.
-- Fixed #1727: validate matrix size when creating a `DenseMatrix` using 
+- Fixed #1727: validate matrix size when creating a `DenseMatrix` using
   `fromJSON`.
-- Fixed `DenseMatrix.map` copying the size and datatype from the original 
+- Fixed `DenseMatrix.map` copying the size and datatype from the original
   matrix instead of checking the returned dimensions and type of the callback.
 - Add a caret to dependencies (like) `^1.2.3`) to allow downstream updates
   without having to await a new release of mathjs.
@@ -19,7 +44,7 @@
 
 # 2020-01-08, version 6.5.0
 
-- Implemented `baseName` option for `createUnit`, see #1707. 
+- Implemented `baseName` option for `createUnit`, see #1707.
   Thanks @ericman314.
 
 

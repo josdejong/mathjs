@@ -114,7 +114,9 @@ Where :
 
 - `args` is an Array with nodes of the parsed arguments.
 - `math` is the math namespace against which the expression was compiled.
-- `scope` is the scope provided when evaluating the expression.
+- `scope` is a shallow _copy_ of the `scope` object provided when evaluating 
+  the expression, optionally extended with nested variables like a function 
+  parameter `x` of in a custom defined function like `f(x) = x^2`.
 
 Raw functions must be imported in the `math` namespace, as they need to be
 processed at compile time. They are not supported when passed via a scope
