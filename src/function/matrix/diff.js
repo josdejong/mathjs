@@ -7,52 +7,126 @@ const dependencies = ['typed', 'matrix', 'subtract']
 export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract }) => {
   /**
    * Create a new matrix or array of the difference between elements of the given array
-   * If array or matrix has less than 2 elements then the original value will be returned
+   * The optional dim parameter lets you specify the dimension to evaluate the difference of
+   * If no dimension parameter is passed it is assumed as dimension 0
    *
    * Syntax:
    *
-   *     math.diff(x)
+   *     math.diff(arr)
+   *     math.diff(arr, dim)
    *
    * Examples:
    *
    *     const arr = [1, 2, 4, 7, 0]
-   *     math.diff(arr) // returns [1, 2, 3, -7]
+   *     math.diff(arr) // returns [1, 2, 3, -7] (no dimension passed so 0 is assumed)
+   *     math.diff(math.matrix(arr)) // returns [1, 2, 3, -7] as matrix
    *
    *     const arr = [1]
    *     math.diff(arr) // returns [1]
    *
-   * @param {Array | Matrix } x     An array or matrix
-   * @return {Array | Matrix}       Difference between array elements
+   *     const arr = [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [9, 8, 7, 6, 4]]
+   *     math.diff(arr) // returns [[0, 0, 0, 0, 0], [8, 6, 4, 2, -1]]
+   *     math.diff(arr) // returns [[1, 1, 1, 1], [1, 1, 1, 1], [-1, -1, -1, -2]]
    *
    * See Also:
    *
    *      Subtract
+   *
+   * @param {Array | Matrix} arr    An array or matrix
+   * @param {number} dim            Dimension
+   * @return {Array | Matrix}       Difference between array elements in given dimension
    */
   return typed(name, {
-    'Array | Matrix': function (x) {
-      if (isMatrix(x)) {
-        return matrix(_ArrayDiff(x.toArray()))
+    'Array | Matrix': function (arr) { // No dimension specified => assume dimension 1
+      if (isMatrix(arr)) {
+        return matrix(_diff(arr.toArray()))
       } else {
-        return _ArrayDiff(x)
+        return _diff(arr)
+      }
+    },
+    'Array | Matrix, number': function (arr, dim) {
+      if (isMatrix(arr)) {
+        return matrix(_recursive(arr.toArray(), dim))
+      } else {
+        return _recursive(arr, dim)
       }
     }
   })
 
   /**
-   * Difference of elements in the array
+   * Recursively find the correct dimension in the array/matrix
+   * Then Apply _diff to that dimension
+   *
+   * @param {Array} arr      The array
+   * @param {number} dim     Dimension
+   * @return {Array}         resulting array
+   */
+  function _recursive (arr, dim) {
+    if (!Array.isArray(arr)) {
+      throw RangeError('Array/Matrix does not have that many dimensions')
+    }
+    if (dim > 0) {
+      const result = []
+      arr.forEach(element => {
+        result.push(_recursive(element, dim - 1))
+      })
+      return result
+    }
+    return _diff(arr)
+  }
+
+  /**
+   * Difference between elements in the array
    *
    * @param {Array} arr      An array
    * @return {Array}         resulting array
    */
-  function _ArrayDiff (arr) {
-    if (arr.length < 2) {
-      return arr
-    }
-
+  function _diff (arr) {
     const result = []
     const size = arr.length
+    if (size < 2) {
+      return arr
+    }
     for (let i = 1; i < size; i++) {
-      result.push(subtract(arr[i], arr[i - 1]))
+      result.push(_ElementDiff(arr[i - 1], arr[i]))
+    }
+    return result
+  }
+
+  /**
+   * Difference between 2 objects
+   *
+   * @param {Object} obj1    First object
+   * @param {Object} obj2    Second object
+   * @return {Array}         resulting array
+   */
+  function _ElementDiff (obj1, obj2) {
+    const obj1IsArray = Array.isArray(obj1)
+    const obj2IsArray = Array.isArray(obj2)
+    if (obj1IsArray && obj2IsArray) {
+      return _ArrayDiff(obj1, obj2)
+    }
+    if (!obj1IsArray && !obj2IsArray) {
+      return subtract(obj2, obj1) // Difference is (second - first) NOT (first - second)
+    }
+    throw Error('Cannot calculate difference between 1 array and 1 non-array')
+  }
+
+  /**
+   * Difference of elements in 2 arrays
+   *
+   * @param {Array} arr1     Array 1
+   * @param {Array} arr2     Array 2
+   * @return {Array}         resulting array
+   */
+  function _ArrayDiff (arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+      throw RangeError('Not all arrays have the same length')
+    }
+    const result = []
+    const size = arr1.length
+    for (let i = 0; i < size; i++) {
+      result.push(_ElementDiff(arr1[i], arr2[i]))
     }
     return result
   }
