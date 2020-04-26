@@ -17,6 +17,10 @@ describe('dot', function () {
     assert.strictEqual(math.dot(math.matrix([7, 3]), [2, 4]), 26)
   })
 
+  it('should handle mixed arrays and matrices up to 409600 elements in length', function () {
+    assert.strictEqual(typeof math.dot(new Array(409600).fill(0).map(o => ~~(Math.random() * 10)), math.matrix(new Array(409600).fill(0).map(o => ~~(Math.random() * 10)))), 'number')
+  })
+
   it('should throw an error for unsupported types of arguments', function () {
     assert.throws(function () { math.dot([2, 4, 1], 2) }, TypeError)
   })

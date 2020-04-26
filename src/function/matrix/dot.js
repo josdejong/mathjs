@@ -66,7 +66,7 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     const wasmInst = new WebAssembly.Instance(wasmModule)
     const { memory, dot } = wasmInst.exports
 
-    while (len * Float64Array.BYTES_PER_ELEMENT > memory.buffer.byteLength) memory.grow(1)
+    while ((len * 2) * Float64Array.BYTES_PER_ELEMENT > memory.buffer.byteLength) memory.grow(1)
 
     const float64array = new Float64Array(memory.buffer, 0, len * 2)
 
