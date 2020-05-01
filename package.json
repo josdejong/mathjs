@@ -59,7 +59,7 @@
     "karma-webpack": "4.0.2",
     "math-expression-evaluator": "1.2.22",
     "mkdirp": "1.0.4",
-    "mocha": "7.1.1",
+    "mocha": "7.1.2",
     "ndarray": "1.0.19",
     "ndarray-determinant": "1.0.0",
     "ndarray-gemm": "1.0.0",
