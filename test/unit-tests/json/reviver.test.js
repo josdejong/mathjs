@@ -11,7 +11,7 @@ describe('reviver', function () {
   })
 
   it('should parse a stringified numbers', function () {
-    assert.strictEqual(JSON.parse('2.3' , reviver), 2.3)
+    assert.strictEqual(JSON.parse('2.3', reviver), 2.3)
     assert.strictEqual(JSON.parse('{"mathjs":"number","value":"2.3"}', reviver), 2.3)
     assert.strictEqual(JSON.parse('{"mathjs":"number","value":"Infinity"}', reviver), Infinity)
     assert.strictEqual(JSON.parse('{"mathjs":"number","value":"-Infinity"}', reviver), -Infinity)

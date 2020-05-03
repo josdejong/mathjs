@@ -3,7 +3,7 @@ import { factory } from '../utils/factory'
 const name = 'replacer'
 const dependencies = []
 
-export const createReplacer = /* #__PURE__ */ factory(name, dependencies, ({ }) => {
+export const createReplacer = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
    * Stringify data types into their JSON representation.
    * Most data types can be serialized using their `.toJSON` method,

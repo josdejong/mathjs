@@ -152,7 +152,8 @@ export function createSnapshotFromFactories (factories) {
     'compile',
     'parser',
     'chain',
-    'reviver'
+    'reviver',
+    'replacer'
   ])
 
   const allTypeChecks = {}
