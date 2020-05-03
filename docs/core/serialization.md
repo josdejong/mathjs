@@ -14,10 +14,22 @@ function:
 
 ```js
 const x = math.complex('2 + 3i')
-const str = JSON.stringify(x)
+const str = JSON.stringify(x, math.json.replacer)
 console.log(str)
 // outputs a string '{"mathjs":"Complex","re":2,"im":3}'
 ```
+
+> IMPORTANT: in most cases works, serialization correctly without
+> passing the `math.json.replacer` function as second argument. This is because
+> in most cases we can rely on the default behavior of JSON.stringify, which 
+> uses the `.toJSON` method on classes like `Unit` and `Complex` to correctly 
+> serialize them. However, there are a few special cases like the 
+> number `Infinity` which does require the replacer function in order to be 
+> serialized without losing information: without it, `Infinity` will be 
+> serialized as `"null"` and cannot be deserialized correctly.
+>
+> So, it's best to always pass the `math.json.replacer` function to prevent 
+> weird edge cases.
 
 In order to deserialize a string, containing math.js data types, `JSON.parse`
 can be used. In order to recognize the data types of math.js, `JSON.parse` must

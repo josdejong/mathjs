@@ -73,5 +73,14 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
     }
   })
 
+  // reviver function to parse a JSON object like:
+  //
+  //     {"mathjs":"number","value":"2.3"}
+  //
+  // into a number 2.3
+  number.fromJSON = function (json) {
+    return parseFloat(json.value)
+  }
+
   return number
 })

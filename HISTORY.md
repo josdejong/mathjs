@@ -1,6 +1,13 @@
 # History
 
 
+# not yet published, version 6.6.5
+
+- Fix #1834: value `Infinity` cannot be serialized and deserialized. 
+  This is solved now with a new `math.replacer` function used as 
+  `JSON.stringify(value, math.replacer)`.
+
+
 # 2020-04-15, version 6.6.4
 
 - Fix published files containing Windows line endings (CRLF instead of LF).  

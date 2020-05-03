@@ -316,6 +316,7 @@ export { createNumeric } from './function/utils/numeric'
 
 // json
 export { createReviver } from './json/reviver'
+export { createReplacer } from './json/replacer'
 
 // helper function to create a factory function for a function which only needs typed-function
 function createNumberFactory (name, fn) {
