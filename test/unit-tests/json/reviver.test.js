@@ -15,7 +15,7 @@ describe('reviver', function () {
     assert.strictEqual(JSON.parse('{"mathjs":"number","value":"2.3"}', reviver), 2.3)
     assert.strictEqual(JSON.parse('{"mathjs":"number","value":"Infinity"}', reviver), Infinity)
     assert.strictEqual(JSON.parse('{"mathjs":"number","value":"-Infinity"}', reviver), -Infinity)
-    assert.strictEqual(JSON.parse('{"mathjs":"number","value":"NaN"}', reviver), NaN)
+    assert(isNaN(JSON.parse('{"mathjs":"number","value":"NaN"}', reviver)))
   })
 
   it('should parse a stringified complex number', function () {
