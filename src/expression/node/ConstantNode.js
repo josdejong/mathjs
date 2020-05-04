@@ -160,6 +160,12 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
       case 'number':
       case 'BigNumber':
         {
+          if (!isFinite(this.value)) {
+            return (this.value.valueOf() < 0)
+              ? '-\\infty'
+              : '\\infty'
+          }
+
           const index = value.toLowerCase().indexOf('e')
           if (index !== -1) {
             return value.substring(0, index) + '\\cdot10^{' +
