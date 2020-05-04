@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, version 6.6.5
+# 2020-05-04, version 6.6.5
 
 - Fix #1834: value `Infinity` cannot be serialized and deserialized. 
   This is solved now with a new `math.replacer` function used as 
