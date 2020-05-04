@@ -181,6 +181,13 @@ describe('ConstantNode', function () {
     assert.strictEqual(new ConstantNode(null).toTex(), 'null')
   })
 
+  it('should LaTeX a ConstantNode with value Infinity', function () {
+    assert.strictEqual(new ConstantNode(Infinity).toTex(), '\\infty')
+    assert.strictEqual(new ConstantNode(-Infinity).toTex(), '-\\infty')
+    assert.strictEqual(new ConstantNode(math.bignumber('Infinity')).toTex(), '\\infty')
+    assert.strictEqual(new ConstantNode(math.bignumber('-Infinity')).toTex(), '-\\infty')
+  })
+
   it('should LaTeX a ConstantNode in exponential notation', function () {
     const n = new ConstantNode(1e10)
     assert.strictEqual(n.toTex(), '1\\cdot10^{+10}')

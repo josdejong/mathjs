@@ -150,9 +150,8 @@ describe('SymbolNode', function () {
   })
 
   it('should LaTeX a SymbolNode', function () {
-    const s = new SymbolNode('foo')
-
-    assert.strictEqual(s.toTex(), ' foo')
+    assert.strictEqual(new SymbolNode('foo').toTex(), ' foo')
+    assert.strictEqual(new SymbolNode('Infinity').toTex(), '\\infty')
   })
 
   it('should LaTeX a SymbolNode with custom toTex', function () {
