@@ -35,6 +35,7 @@ import { acothDocs } from './function/trigonometry/acoth'
 import { acotDocs } from './function/trigonometry/acot'
 import { acoshDocs } from './function/trigonometry/acosh'
 import { acosDocs } from './function/trigonometry/acos'
+import { cumSumDocs } from './function/statistics/cumsum'
 import { sumDocs } from './function/statistics/sum'
 import { stdDocs } from './function/statistics/std'
 import { quantileSeqDocs } from './function/statistics/quantileSeq'
@@ -469,6 +470,7 @@ export const embeddedDocs = {
   erf: erfDocs,
 
   // functions - statistics
+  cumsum: cumSumDocs,
   mad: madDocs,
   max: maxDocs,
   mean: meanDocs,
