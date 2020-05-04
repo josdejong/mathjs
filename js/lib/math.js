@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 6.6.4
- * @date    2020-04-15
+ * @version 6.6.5
+ * @date    2020-05-04
  *
  * @license
  * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
@@ -11963,6 +11963,7 @@ __webpack_require__.d(__webpack_exports__, "createSimplify", function() { return
 __webpack_require__.d(__webpack_exports__, "createDerivative", function() { return /* reexport */ createDerivative; });
 __webpack_require__.d(__webpack_exports__, "createRationalize", function() { return /* reexport */ createRationalize; });
 __webpack_require__.d(__webpack_exports__, "createReviver", function() { return /* reexport */ createReviver; });
+__webpack_require__.d(__webpack_exports__, "createReplacer", function() { return /* reexport */ createReplacer; });
 __webpack_require__.d(__webpack_exports__, "createE", function() { return /* reexport */ createE; });
 __webpack_require__.d(__webpack_exports__, "createUppercaseE", function() { return /* reexport */ createUppercaseE; });
 __webpack_require__.d(__webpack_exports__, "createFalse", function() { return /* reexport */ createFalse; });
@@ -16827,7 +16828,16 @@ var createNumber = /* #__PURE__ */Object(factory["a" /* factory */])(number_name
     'Array | Matrix': function ArrayMatrix(x) {
       return deepMap(x, number);
     }
-  });
+  }); // reviver function to parse a JSON object like:
+  //
+  //     {"mathjs":"number","value":"2.3"}
+  //
+  // into a number 2.3
+
+  number.fromJSON = function (json) {
+    return parseFloat(json.value);
+  };
+
   return number;
 });
 // CONCATENATED MODULE: ./src/type/string.js
@@ -27427,7 +27437,7 @@ var createRound = /* #__PURE__ */Object(factory["a" /* factory */])(round_name, 
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
 
-  var round = typed(round_name, _objectSpread({}, roundNumberSignatures, {
+  var round = typed(round_name, _objectSpread(_objectSpread({}, roundNumberSignatures), {}, {
     Complex: function Complex(x) {
       return x.round();
     },
@@ -42128,6 +42138,10 @@ var ConstantNode_createConstantNode = /* #__PURE__ */Object(factory["a" /* facto
       case 'number':
       case 'BigNumber':
         {
+          if (!isFinite(this.value)) {
+            return this.value.valueOf() < 0 ? '-\\infty' : '\\infty';
+          }
+
           var index = value.toLowerCase().indexOf('e');
 
           if (index !== -1) {
@@ -42388,7 +42402,7 @@ function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableTo
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
@@ -59645,8 +59659,37 @@ var createReviver = /* #__PURE__ */Object(factory["a" /* factory */])(reviver_na
     return value;
   };
 });
+// CONCATENATED MODULE: ./src/json/replacer.js
+
+var replacer_name = 'replacer';
+var replacer_dependencies = [];
+var createReplacer = /* #__PURE__ */Object(factory["a" /* factory */])(replacer_name, replacer_dependencies, function () {
+  /**
+   * Stringify data types into their JSON representation.
+   * Most data types can be serialized using their `.toJSON` method,
+   * but not all, for example the number `Infinity`. For these cases you have
+   * to use the replacer. Example usage:
+   *
+   *     JSON.stringify([2, Infinity], math.replacer)
+   *
+   * @param {string} key
+   * @param {*} value
+   * @returns {*} Returns the replaced object
+   */
+  return function replacer(key, value) {
+    // the numeric values Infinitiy, -Infinity, and NaN cannot be serialized to JSON
+    if (typeof value === 'number' && (!isFinite(value) || isNaN(value))) {
+      return {
+        mathjs: 'number',
+        value: String(value)
+      };
+    }
+
+    return value;
+  };
+});
 // CONCATENATED MODULE: ./src/version.js
-var version = '6.6.4'; // Note: This file is automatically generated when building math.js.
+var version = '6.6.5'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
@@ -60714,6 +60757,7 @@ var createVarianceTransform = /* #__PURE__ */Object(factory["a" /* factory */])(
   isTransformFunction: true
 });
 // CONCATENATED MODULE: ./src/factoriesAny.js
+
 
 
 

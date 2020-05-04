@@ -92,7 +92,7 @@ File: [webworkers.html](webworkers.html) (click for a live demo)
 File: [worker.js](worker.js)
 
 ```js
-importScripts('https://unpkg.com/mathjs@6.6.4/dist/math.min.js')
+importScripts('https://unpkg.com/mathjs@6.6.5/dist/math.min.js')
 
 // create a parser
 const parser = self.math.parser()
@@ -113,7 +113,7 @@ self.addEventListener('message', function (event) {
   // build a response
   const response = {
     id: request.id,
-    result: result,
+    result: self.math.format(result),
     err: err
   }
 

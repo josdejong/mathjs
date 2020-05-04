@@ -5,6 +5,14 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20200504-version-665">2020-05-04, version 6.6.5 <a href="#20200504-version-665" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1834">#1834</a>: value `Infinity` cannot be serialized and deserialized. 
+  This is solved now with a new `math.replacer` function used as 
+  `JSON.stringify(value, math.replacer)`.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1842">#1842</a>: value `Infinity` not turned into the latex symbol `\\infty`.
+
+
 <h1 id="20200415-version-664">2020-04-15, version 6.6.4 <a href="#20200415-version-664" title="Permalink">#</a></h1>
 
 - Fix published files containing Windows line endings (CRLF instead of LF).  
