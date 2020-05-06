@@ -74,20 +74,4 @@ describe('evaluate', function () {
     assert.strictEqual(expr1.toTex(), '\\mathrm{evaluate}\\left( expr\\right)')
     assert.strictEqual(expr2.toTex(), '\\mathrm{evaluate}\\left( expr, scope\\right)')
   })
-
-  it('should still allow using the deprecated function math.evaluate', () => {
-    // deprecated in v6.0.0. Clean up some day
-    const warnOriginal = console.warn
-    const logs = []
-    console.warn = (...args) => logs.push(args)
-
-    assert.strictEqual(math.eval('2+3'), 5)
-
-    // Note that the following assertion will fail if math.evaluate is already used in a previous unit test
-    assert.deepStrictEqual(logs, [
-      ['Warning:', 'Function "eval" has been renamed to "evaluate" in v6.0.0, please use the new function instead.']
-    ])
-
-    console.warn = warnOriginal
-  })
 })

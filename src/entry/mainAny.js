@@ -20,6 +20,3 @@ export * from '../factoriesAny'
 // core
 export { create } from '../core/create'
 export { factory } from '../utils/factory'
-
-// backward compatibility stuff for v5
-export * from './deprecatedAny'

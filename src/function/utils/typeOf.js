@@ -1,6 +1,5 @@
 import { factory } from '../../utils/factory'
 import { typeOf as _typeOf } from '../../utils/is'
-import { warnOnce } from '../../utils/log'
 
 const name = 'typeOf'
 const dependencies = ['typed']
@@ -67,13 +66,4 @@ export const createTypeOf = /* #__PURE__ */ factory(name, dependencies, ({ typed
   return typed(name, {
     any: _typeOf
   })
-})
-
-// For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-06
-export const createDeprecatedTypeof = /* #__PURE__ */ factory('typeof', [], () => {
-  return function (...args) {
-    warnOnce('Function "typeof" has been renamed to "typeOf" in v6.0.0, please use the new function instead.')
-
-    return _typeOf.apply(_typeOf, args)
-  }
 })

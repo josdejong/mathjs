@@ -8,6 +8,9 @@ Breaking changes:
 - Improvements in calculation of the `dot` product of complex values. 
   The first argument is now conjugated. See #1761. Thanks @m93a.  
 - Dropped official support for Node.js v8 which has reached end of life.
+- Removed all deprecation warnings introduced in v6. 
+  To upgrade smoothly from v5 to v7 or higher, upgrade to v6 first
+  and resolve all deprecation warnings.
 
 
 # 2020-05-04, version 6.6.5

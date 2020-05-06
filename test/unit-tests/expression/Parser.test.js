@@ -22,18 +22,6 @@ describe('parser', function () {
     assert.strictEqual(a.type, 'Parser')
   })
 
-  it('should throw an error when using deprecated function parse', function () {
-    const parser = new Parser()
-
-    assert.throws(function () { parser.parse('2 + 3') }, /is deprecated/)
-  })
-
-  it('should throw an error when using deprecated function compile', function () {
-    const parser = new Parser()
-
-    assert.throws(function () { parser.compile('2 + 3') }, /is deprecated/)
-  })
-
   it('should evaluate an expression', function () {
     const parser = new Parser()
 

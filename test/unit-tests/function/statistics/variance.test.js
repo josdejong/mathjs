@@ -121,20 +121,4 @@ describe('variance', function () {
     const expression = math.parse('variance(1,2,3)')
     assert.strictEqual(expression.toTex(), '\\mathrm{Var}\\left(1,2,3\\right)')
   })
-
-  it('should still allow using the deprecated function math.var', () => {
-    // deprecated in v6.0.0. Clean up some day
-    const warnOriginal = console.warn
-    const logs = []
-    console.warn = (...args) => logs.push(args)
-
-    assert.strictEqual(math.var(2, 4, 6), 4)
-
-    // Note that the following assertion will fail if math.var is already used in a previous unit test
-    assert.deepStrictEqual(logs, [
-      ['Warning:', 'Function "var" has been renamed to "variance" in v6.0.0, please use the new function instead.']
-    ])
-
-    console.warn = warnOriginal
-  })
 })

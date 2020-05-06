@@ -24,17 +24,7 @@ describe('mainAny', function () {
     // snapshot testing
     const newMathInstance = create(all)
 
-    // don't output all deprecation warnings "math.foo.bar is move to math.bar, ..."
-    const originalWarn = console.warn
-    console.warn = (...args) => {
-      if (args.join(' ').indexOf('is moved to') === -1) {
-        originalWarn.apply(console, args)
-      }
-    }
-
     validateBundle(expectedInstanceStructure, newMathInstance)
-
-    console.warn = originalWarn
   })
 
   it('new instance should import all factory functions via import', function () {
@@ -43,17 +33,7 @@ describe('mainAny', function () {
 
     newMathInstance.import(all)
 
-    // don't output all deprecation warnings "math.foo.bar is move to math.bar, ..."
-    const originalWarn = console.warn
-    console.warn = (...args) => {
-      if (args.join(' ').indexOf('is moved to') === -1) {
-        originalWarn.apply(console, args)
-      }
-    }
-
     validateBundle(expectedInstanceStructure, newMathInstance)
-
-    console.warn = originalWarn
   })
 
   it('new instance should import some factory functions via import', function () {

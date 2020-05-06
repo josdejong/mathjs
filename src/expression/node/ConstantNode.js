@@ -26,11 +26,6 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
       throw new SyntaxError('Constructor must be called with the new operator')
     }
 
-    if (arguments.length === 2) {
-      // TODO: remove deprecation error some day (created 2018-01-23)
-      throw new SyntaxError('new ConstantNode(valueStr, valueType) is not supported anymore since math v4.0.0. Use new ConstantNode(value) instead, where value is a non-stringified value.')
-    }
-
     this.value = value
   }
 

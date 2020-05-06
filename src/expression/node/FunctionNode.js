@@ -50,12 +50,6 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         throw new Error('Cannot assign a new name, name is read-only')
       }
     })
-
-    // TODO: deprecated since v3, remove some day
-    const deprecated = function () {
-      throw new Error('Property `FunctionNode.object` is deprecated, use `FunctionNode.fn` instead')
-    }
-    Object.defineProperty(this, 'object', { get: deprecated, set: deprecated })
   }
 
   FunctionNode.prototype = new Node()

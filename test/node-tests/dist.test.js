@@ -66,7 +66,6 @@ describe('dist', function () {
       'compile', 'parse', 'parser', // TODO: add embedded docs for compile, parse, and parser?
       'reviver', 'replacer', // TODO: add embedded docs for reviver and replacer?
       'apply', // FIXME: apply is not supported right now because of security concerns
-      'eye', 'var', 'eval', 'typeof', // deprecated functions
       'addScalar', 'divideScalar', 'multiplyScalar', 'equalScalar'
     ]
 

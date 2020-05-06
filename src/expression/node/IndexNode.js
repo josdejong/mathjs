@@ -42,12 +42,6 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
     if (this.dotNotation && !this.isObjectProperty()) {
       throw new Error('dotNotation only applicable for object properties')
     }
-
-    // TODO: deprecated since v3, remove some day
-    const deprecated = function () {
-      throw new Error('Property `IndexNode.object` is deprecated, use `IndexNode.fn` instead')
-    }
-    Object.defineProperty(this, 'object', { get: deprecated, set: deprecated })
   }
 
   IndexNode.prototype = new Node()

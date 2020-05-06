@@ -19,7 +19,6 @@ const COMPILE_ENTRY_SRC = './src/entry/**/*.js'
 const COMPILE_LIB = './lib'
 const COMPILE_ES = './es' // es modules
 const COMPILE_ENTRY_LIB = './lib/entry'
-const COMPILED_MAIN_ANY = './lib/entry/mainAny.js'
 const FILE = 'math.js'
 const FILE_MIN = 'math.min.js'
 const FILE_MAP = 'math.min.map'
@@ -232,24 +231,6 @@ function generateEntryFiles (done) {
   done()
 }
 
-// Add links to deprecated functions in the node.js transpiled code mainAny.js
-// These names are not valid in ES6 where we use them as functions instead of properties.
-function addDeprecatedFunctions (done) {
-  const code = String(fs.readFileSync(COMPILED_MAIN_ANY))
-
-  const updatedCode = code + '\n\n' +
-    'exports[\'var\'] = exports.deprecatedVar;\n' +
-    'exports[\'typeof\'] = exports.deprecatedTypeof;\n' +
-    'exports[\'eval\'] = exports.deprecatedEval;\n' +
-    'exports[\'import\'] = exports.deprecatedImport;\n'
-
-  fs.writeFileSync(COMPILED_MAIN_ANY, updatedCode)
-
-  log('Added deprecated functions to ' + COMPILED_MAIN_ANY)
-
-  done()
-}
-
 function clean () {
   return del([
     'dist/**/*',
@@ -273,7 +254,7 @@ gulp.task('watch', function watch () {
     delay: 100
   }
 
-  gulp.watch(files, options, gulp.parallel(bundle, compile, addDeprecatedFunctions))
+  gulp.watch(files, options, gulp.parallel(bundle, compile))
 })
 
 // The default task (called when you run `gulp`)
@@ -285,7 +266,6 @@ gulp.task('default', gulp.series(
   compileEntryFiles,
   compileESModules, // Must be after generateEntryFiles
   writeCompiledHeader,
-  addDeprecatedFunctions,
   bundle,
   minify,
   generateDocs

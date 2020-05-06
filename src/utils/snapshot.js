@@ -145,7 +145,6 @@ export function createSnapshotFromFactories (factories) {
     'apply',
     'addScalar',
     'multiplyScalar',
-    'eye',
     'print',
     'divideScalar',
     'parse',
@@ -177,9 +176,6 @@ export function createSnapshotFromFactories (factories) {
     once: 'Function',
     emit: 'Function',
     import: 'Function',
-    var: 'Function',
-    eval: 'Function',
-    typeof: 'Function',
     config: 'Function',
     create: 'Function',
     factory: 'Function',
@@ -198,35 +194,13 @@ export function createSnapshotFromFactories (factories) {
           'chain'
         ]),
         config: 'Function'
-      },
-      // deprecated stuff:
-      // docs: embeddedDocs,
-      node: {
-        ...allNodeClasses
-      },
-      parse: 'Function',
-      Parser: 'Function'
-    },
-
-    // deprecated stuff:
-    type: {
-      ...allTypeChecks,
-      ...allClasses
-    },
-    json: {
-      reviver: 'Function'
-    },
-    error: {
-      ...allErrorClasses
+      }
     }
   }
 
   const expectedES6Structure = {
     // functions
     ...exclude(allFunctionsConstantsClasses, [
-      'typeof',
-      'eval',
-      'var',
       'E',
       'false',
       'Infinity',
@@ -238,10 +212,6 @@ export function createSnapshotFromFactories (factories) {
     create: 'Function',
     config: 'Function',
     factory: 'Function',
-    deprecatedEval: 'Function',
-    deprecatedImport: 'Function',
-    deprecatedVar: 'Function',
-    deprecatedTypeof: 'Function',
     _true: 'boolean',
     _false: 'boolean',
     _null: 'null',
@@ -253,26 +223,7 @@ export function createSnapshotFromFactories (factories) {
     ...allDependencyCollections,
     ...allFactoryFunctions,
 
-    docs: embeddedDocs,
-
-    // deprecated stuff:
-    expression: {
-      node: {
-        ...allNodeClasses
-      },
-      parse: 'Function',
-      Parser: 'Function'
-    },
-    type: {
-      ...allTypeChecks,
-      ...allClasses
-    },
-    json: {
-      reviver: 'Function'
-    },
-    error: {
-      ...allErrorClasses
-    }
+    docs: embeddedDocs
   }
 
   return {
