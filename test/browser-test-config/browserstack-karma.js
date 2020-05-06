@@ -32,9 +32,9 @@ module.exports = function (config) {
         base: 'BrowserStack',
         browser: 'Android Browser',
         real_mobile: true,
-        device: 'Samsung Galaxy S20',
+        device: 'Samsung Galaxy S10',
         os: 'android',
-        os_version: '10'
+        os_version: '9.0'
       },
       bs_firefox_windows: {
         base: 'BrowserStack',
