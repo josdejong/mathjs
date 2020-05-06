@@ -10,6 +10,14 @@ describe('reviver', function () {
     assert.deepStrictEqual(JSON.parse(json, reviver), data)
   })
 
+  it('should parse a stringified numbers', function () {
+    assert.strictEqual(JSON.parse('2.3', reviver), 2.3)
+    assert.strictEqual(JSON.parse('{"mathjs":"number","value":"2.3"}', reviver), 2.3)
+    assert.strictEqual(JSON.parse('{"mathjs":"number","value":"Infinity"}', reviver), Infinity)
+    assert.strictEqual(JSON.parse('{"mathjs":"number","value":"-Infinity"}', reviver), -Infinity)
+    assert(isNaN(JSON.parse('{"mathjs":"number","value":"NaN"}', reviver)))
+  })
+
   it('should parse a stringified complex number', function () {
     const json = '{"mathjs":"Complex","re":2,"im":4}'
     const c = new math.Complex(2, 4)

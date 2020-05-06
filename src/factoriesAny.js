@@ -234,6 +234,7 @@ export { createSimplify } from './function/algebra/simplify'
 export { createDerivative } from './function/algebra/derivative'
 export { createRationalize } from './function/algebra/rationalize'
 export { createReviver } from './json/reviver'
+export { createReplacer } from './json/replacer'
 export {
   createE,
   createUppercaseE,

@@ -1,9 +1,10 @@
 // load math.js (using node.js)
-const { complex, reviver, typeOf } = require('..')
+const { complex, replacer, reviver, typeOf } = require('..')
 
 // serialize a math.js data type into a JSON string
+// the replacer function is needed to correctly stringify a value like Infinity
 const x = complex('2+3i')
-const str1 = JSON.stringify(x)
+const str1 = JSON.stringify(x, replacer)
 console.log(str1)
 // outputs {"mathjs":"Complex","re":2,"im":3}
 

@@ -9,6 +9,30 @@ Breaking changes:
   The first argument is now conjugated. See #1761. Thanks @m93a.  
 
 
+# 2020-05-04, version 6.6.5
+
+- Fix #1834: value `Infinity` cannot be serialized and deserialized. 
+  This is solved now with a new `math.replacer` function used as 
+  `JSON.stringify(value, math.replacer)`.
+- Fix #1842: value `Infinity` not turned into the latex symbol `\\infty`.
+
+
+# 2020-04-15, version 6.6.4
+
+- Fix published files containing Windows line endings (CRLF instead of LF).  
+
+
+# 2020-04-10, version 6.6.3
+
+- Fix #1813: bug in engineering notation for numbers of function `format`,
+  sometimes resulting in needless trailing zeros.
+- Fix #1808: methods `.toNumber()` and `.toNumeric()` not working on a 
+  unitless unit.
+- Fix #1645: not being able to use named operators `mod`, `and`, `not`, `or`,
+  `xor`, `to`, `in` as object keys. Thanks @Veeloxfire.
+- Fix `eigs` not using `config.epsilon`.
+
+
 # 2020-03-29, version 6.6.2
 
 - Fix #1789: Function `eigs` not calculating with BigNumber precision 

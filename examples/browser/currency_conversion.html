@@ -83,7 +83,7 @@
 
   function fetchAndImportCurrencies (accessKey) {
     // fetch actual currency conversion rates
-    return fetch('https://data.fixer.io/api/latest?access_key=' + accessKey)
+    return fetch('http://data.fixer.io/api/latest?access_key=' + accessKey)
       .then(function (response) {
         return response.json()
       })

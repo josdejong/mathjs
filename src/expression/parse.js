@@ -1556,7 +1556,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             key = parseDoubleQuotesStringToken(state)
           } else if (state.token === '\'') {
             key = parseSingleQuotesStringToken(state)
-          } else if (state.tokenType === TOKENTYPE.SYMBOL) {
+          } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
             key = state.token
             getToken(state)
           } else {
