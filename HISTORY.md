@@ -1,7 +1,7 @@
 # History
 
 
-# 2020-05-06, version 7.0.0
+# 2020-05-07, version 7.0.0
 
 Breaking changes:
 
