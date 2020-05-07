@@ -5,6 +5,18 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20200507-version-700">2020-05-07, version 7.0.0 <a href="#20200507-version-700" title="Permalink">#</a></h1>
+
+Breaking changes:
+
+- Improvements in calculation of the `dot` product of complex values. 
+  The first argument is now conjugated. See <a href="https://github.com/josdejong/mathjs/issues/1761">#1761</a>. Thanks <a href="https://github.com/m93a">@m93a</a>.  
+- Dropped official support for Node.js v8 which has reached end of life.
+- Removed all deprecation warnings introduced in v6. 
+  To upgrade smoothly from v5 to v7 or higher, upgrade to v6 first
+  and resolve all deprecation warnings.
+
+
 <h1 id="20200504-version-665">2020-05-04, version 6.6.5 <a href="#20200504-version-665" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1834">#1834</a>: value `Infinity` cannot be serialized and deserialized. 

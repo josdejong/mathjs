@@ -7,9 +7,9 @@ layout: default
 <h1 id="function-dot">Function dot <a href="#function-dot" title="Permalink">#</a></h1>
 
 Calculate the dot product of two vectors. The dot product of
-`A = [a1, a2, a3, ..., an]` and `B = [b1, b2, b3, ..., bn]` is defined as:
+`A = [a1, a2, ..., an]` and `B = [b1, b2, ..., bn]` is defined as:
 
-   dot(A, B) = a1 * b1 + a2 * b2 + a3 * b3 + ... + an * bn
+   dot(A, B) = conj(a1) * b1 + conj(a2) * b2 + ... + conj(an) * bn
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>

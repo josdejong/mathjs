@@ -13,7 +13,7 @@ File: [currency_conversion.html](currency_conversion.html) (click for a live dem
   <meta charset="utf-8">
   <title>math.js | currency conversion</title>
 
-  <script src="https://unpkg.com/mathjs@6.6.5/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@7.0.0/dist/math.min.js"></script>
 
   <style>
     body,
@@ -92,7 +92,7 @@ File: [currency_conversion.html](currency_conversion.html) (click for a live dem
 
   function fetchAndImportCurrencies (accessKey) {
     // fetch actual currency conversion rates
-    return fetch('https://data.fixer.io/api/latest?access_key=' + accessKey)
+    return fetch('http://data.fixer.io/api/latest?access_key=' + accessKey)
       .then(function (response) {
         return response.json()
       })
