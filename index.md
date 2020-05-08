@@ -37,11 +37,11 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
      <span class="c1">// [[7, 0], [0, 7]]</span>
 
 <span class="c1">// expressions</span>
-<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'1.2 * (2 + 4.5)'</span><span class="p">)</span>     <span class="c1">// 7.8</span>
-<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'12.7 cm to inch'</span><span class="p">)</span>     <span class="c1">// 5 inch</span>
-<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'sin(45 deg) ^ 2'</span><span class="p">)</span>     <span class="c1">// 0.5</span>
-<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'9 / 3 + 2i'</span><span class="p">)</span>          <span class="c1">// 3 + 2i</span>
-<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'det([-1, 2; 3, 1])'</span><span class="p">)</span>  <span class="c1">// -7</span>
+<span class="nx">math</span><span class="p">.</span><span class="nb">evaluate</span><span class="p">(</span><span class="s1">'1.2 * (2 + 4.5)'</span><span class="p">)</span>     <span class="c1">// 7.8</span>
+<span class="nx">math</span><span class="p">.</span><span class="nb">evaluate</span><span class="p">(</span><span class="s1">'12.7 cm to inch'</span><span class="p">)</span>     <span class="c1">// 5 inch</span>
+<span class="nx">math</span><span class="p">.</span><span class="nb">evaluate</span><span class="p">(</span><span class="s1">'sin(45 deg) ^ 2'</span><span class="p">)</span>     <span class="c1">// 0.5</span>
+<span class="nx">math</span><span class="p">.</span><span class="nb">evaluate</span><span class="p">(</span><span class="s1">'9 / 3 + 2i'</span><span class="p">)</span>          <span class="c1">// 3 + 2i</span>
+<span class="nx">math</span><span class="p">.</span><span class="nb">evaluate</span><span class="p">(</span><span class="s1">'det([-1, 2; 3, 1])'</span><span class="p">)</span>  <span class="c1">// -7</span>
 
 <span class="c1">// chaining</span>
 <span class="nx">math</span><span class="p">.</span><span class="nx">chain</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>

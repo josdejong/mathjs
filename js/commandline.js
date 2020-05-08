@@ -504,7 +504,7 @@ function CommandLineEditor (params) {
 
       var res, resStr, info;
       try {
-        res = parser.eval(expr);
+        res = parser.evaluate(expr);
         resStr = math.format(res, { precision: 14 });
         var unRoundedStr = math.format(res);
         if (unRoundedStr.length - resStr.length > 4) {
