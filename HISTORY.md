@@ -1,5 +1,9 @@
 # History
 
+# Not yet published, version 7.0.1
+
+- Fix #1844: clarify the documentation of function `eigs`. Thanks @Lazersmoke.
+
 
 # 2020-05-07, version 7.0.0
 
