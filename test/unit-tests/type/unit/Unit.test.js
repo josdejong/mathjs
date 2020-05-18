@@ -2,6 +2,7 @@ import assert from 'assert'
 import approx from '../../../../tools/approx'
 import math from '../../../../src/bundleAny'
 import { isBigNumber, isFraction } from '../../../../src/utils/is'
+import { hasOwnProperty } from '../../../../src/utils/object'
 
 const Unit = math.Unit
 
@@ -1060,7 +1061,9 @@ describe('Unit', function () {
 
     it("For each built-in unit, 'name' should match key", function () {
       for (const key in Unit.UNITS) {
-        assert.strictEqual(key, Unit.UNITS[key].name)
+        if (hasOwnProperty(Unit.UNITS, key)) {
+          assert.strictEqual(key, Unit.UNITS[key].name)
+        }
       }
     })
   })

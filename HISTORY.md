@@ -3,6 +3,7 @@
 # Not yet published, version 7.0.1
 
 - Fix #1844: clarify the documentation of function `eigs`. Thanks @Lazersmoke.
+- Fix #1856: make the library robust against Object prototype pollution.
 
 
 # 2020-05-07, version 7.0.0
