@@ -218,8 +218,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Alphanumeric characters only; matches [a-zA-Z0-9]
     let code = text.charCodeAt(index)
     while ((code >= 48 && code <= 57) ||
-            (code >= 65 && code <= 90) ||
-            (code >= 97 && code <= 122)) {
+    (code >= 65 && code <= 90) ||
+    (code >= 97 && code <= 122)) {
       unitName += c
       next()
       code = text.charCodeAt(index)
@@ -228,7 +228,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Must begin with [a-zA-Z]
     code = unitName.charCodeAt(0)
     if ((code >= 65 && code <= 90) ||
-        (code >= 97 && code <= 122)) {
+      (code >= 97 && code <= 122)) {
       return unitName || null
     } else {
       return null
@@ -683,10 +683,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // Append other's units list onto res
     for (let i = 0; i < other.units.length; i++) {
-      // Make a deep copy
-      const inverted = {}
-      for (const key in other.units[i]) {
-        inverted[key] = other.units[i][key]
+      // Make a shallow copy of every unit
+      const inverted = {
+        ...other.units[i]
       }
       res.units.push(inverted)
     }
@@ -721,12 +720,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // Invert and append other's units list onto res
     for (let i = 0; i < other.units.length; i++) {
-      // Make a deep copy
-      const inverted = {}
-      for (const key in other.units[i]) {
-        inverted[key] = other.units[i][key]
+      // Make a shallow copy of every unit
+      const inverted = {
+        ...other.units[i],
+        power: -other.units[i].power
       }
-      inverted.power = -inverted.power
       res.units.push(inverted)
     }
 
@@ -943,9 +941,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Search for a matching base
     let matchingBase
     for (const key in currentUnitSystem) {
-      if (ret.hasBase(BASE_UNITS[key])) {
-        matchingBase = key
-        break
+      if (hasOwnProperty(currentUnitSystem, key)) {
+        if (ret.hasBase(BASE_UNITS[key])) {
+          matchingBase = key
+          break
+        }
       }
     }
 
@@ -1113,11 +1113,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     for (const i in simp.units) {
-      if (simp.units[i].unit) {
-        if (simp.units[i].unit.name === 'VA' && isImaginary) {
-          simp.units[i].unit = UNITS.VAR
-        } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
-          simp.units[i].unit = UNITS.VA
+      if (hasOwnProperty(simp.units, i)) {
+        if (simp.units[i].unit) {
+          if (simp.units[i].unit.name === 'VA' && isImaginary) {
+            simp.units[i].unit = UNITS.VAR
+          } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
+            simp.units[i].unit = UNITS.VA
+          }
         }
       }
     }
@@ -1188,7 +1190,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
             Math.log(absValue / Math.pow(prefix.value * absUnitValue, power)) / Math.LN10 - 1.2)
 
           if (diff < bestDiff ||
-              (diff === bestDiff && prefix.name.length < bestPrefix.name.length)) {
+            (diff === bestDiff && prefix.name.length < bestPrefix.name.length)) {
             // choose the prefix with the smallest diff, or if equal, choose the one
             // with the shortest name (can happen with SHORTLONG for example)
             bestPrefix = prefix
@@ -1516,7 +1518,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   for (const key in BASE_UNITS) {
-    BASE_UNITS[key].key = key
+    if (hasOwnProperty(BASE_UNITS, key)) {
+      BASE_UNITS[key].key = key
+    }
   }
 
   const BASE_UNIT_NONE = {}
@@ -2957,8 +2961,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   Unit.getUnitSystem = function () {
     for (const key in UNIT_SYSTEMS) {
-      if (UNIT_SYSTEMS[key] === currentUnitSystem) {
-        return key
+      if (hasOwnProperty(UNIT_SYSTEMS, key)) {
+        if (UNIT_SYSTEMS[key] === currentUnitSystem) {
+          return key
+        }
       }
     }
   }
@@ -3003,8 +3009,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   // Add dimensions to each built-in unit
   for (const key in UNITS) {
-    const unit = UNITS[key]
-    unit.dimensions = unit.base.dimensions
+    if (hasOwnProperty(UNITS, key)) {
+      const unit = UNITS[key]
+      unit.dimensions = unit.base.dimensions
+    }
   }
 
   // Create aliases
@@ -3037,7 +3045,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       if (i === 0 && !isValidAlpha(c)) { throw new Error('Invalid unit name (must begin with alpha character): "' + name + '"') }
 
       if (i > 0 && !(isValidAlpha(c) ||
-                  isDigit(c))) { throw new Error('Invalid unit name (only alphanumeric characters are allowed): "' + name + '"') }
+        isDigit(c))) { throw new Error('Invalid unit name (only alphanumeric characters are allowed): "' + name + '"') }
     }
   }
 

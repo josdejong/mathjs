@@ -510,16 +510,21 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     // Placeholders with the same key must match exactly
     for (const key in match1.placeholders) {
-      res.placeholders[key] = match1.placeholders[key]
-      if (hasOwnProperty(match2.placeholders, key)) {
-        if (!_exactMatch(match1.placeholders[key], match2.placeholders[key])) {
-          return null
+      if (hasOwnProperty(match1.placeholders, key)) {
+        res.placeholders[key] = match1.placeholders[key]
+
+        if (hasOwnProperty(match2.placeholders, key)) {
+          if (!_exactMatch(match1.placeholders[key], match2.placeholders[key])) {
+            return null
+          }
         }
       }
     }
 
     for (const key in match2.placeholders) {
-      res.placeholders[key] = match2.placeholders[key]
+      if (hasOwnProperty(match2.placeholders, key)) {
+        res.placeholders[key] = match2.placeholders[key]
+      }
     }
 
     return res
