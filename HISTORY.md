@@ -3,6 +3,7 @@
 # Not yet published, version 7.0.1
 
 - Fix #1844: clarify the documentation of function `eigs`. Thanks @Lazersmoke.
+- Fix #1855: Fix error in the documentation for `math.nthRoots(x)`.  
 - Fix #1856: make the library robust against Object prototype pollution.
 
 
