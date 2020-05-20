@@ -54,7 +54,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
     <h1 id="demo">Demo <a href="#demo" title="Permalink">#</a></h1>
     <p>
       Try the expression parser below.<br>
-      See <a href="http://mathnotepad.com/">Math Notepad</a> for a full application.
+      See <a href="https://mathnotepad.com/">Math Notepad</a> for a full application.
     </p>
     <div id="commandline">loading...</div>
     <div class="tips">
