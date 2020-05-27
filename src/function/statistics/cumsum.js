@@ -6,9 +6,9 @@ import { arraySize } from '../../utils/array'
 import { IndexError } from '../../error/IndexError'
 
 const name = 'cumsum'
-const dependencies = ['typed', 'add', 'subtract']
+const dependencies = ['typed', 'add', 'unaryMinus']
 
-export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract }) => {
+export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, unaryMinus }) => {
   /**
    * Compute the cumulative sum of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the cumulative sum of
@@ -77,8 +77,11 @@ export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return []
     }
 
+    // initialize the sum with zero but having the right data type:
+    // can be Unit, number, BigNumber, Fraction, etc
+    // we use add and unaryMinus and not subtract because unaryMinus is more lightweight
     const first = array[0]
-    let sum = subtract(first, first) // will be zero, can be Unit, number, BigNumber, Fraction, etc
+    let sum = add(first, unaryMinus(first))
 
     return array.map(value => {
       sum = add(sum, value)
