@@ -2,14 +2,13 @@ import { containsCollections } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 import { _switch } from '../../utils/switch'
 import { improveErrorMessage } from './utils/improveErrorMessage'
-import { isUnit } from '../../utils/is'
 import { arraySize } from '../../utils/array'
 import { IndexError } from '../../error/IndexError'
 
 const name = 'cumsum'
-const dependencies = ['typed', 'add', '?Unit']
+const dependencies = ['typed', 'add', 'subtract']
 
-export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, Unit }) => {
+export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract }) => {
   /**
    * Compute the cumulative sum of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the cumulative sum of
@@ -74,12 +73,17 @@ export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed
   }
 
   function _cumsummap (array) {
-    // TODO: rewrite this logic, it's hard to understand
-    return array.map((sum => value => sum = add(sum, value))(_initialCumsumValue(array[0]))) // eslint-disable-line
-  }
+    if (array.length === 0) {
+      return []
+    }
 
-  function _initialCumsumValue (value) {
-    return isUnit(value) ? new Unit(0, value.units[0].unit.name) : 0
+    const first = array[0]
+    let sum = subtract(first, first) // will be zero, can be Unit, number, BigNumber, Fraction, etc
+
+    return array.map(value => {
+      sum = add(sum, value)
+      return sum
+    })
   }
 
   function _ncumSumDim (array, dim) {
