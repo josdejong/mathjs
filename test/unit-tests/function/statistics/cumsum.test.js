@@ -55,6 +55,7 @@ describe('cumsum', function () {
 
   it('should return the cumulative sum from a 1d matrix', function () {
     assert.deepStrictEqual(cumsum(new DenseMatrix([1, 3, 5, 2, -5])), new DenseMatrix([1, 4, 9, 11, 6]))
+    assert.deepStrictEqual(cumsum(math.matrix([1, 3, 5, 2, -5])), math.matrix([1, 4, 9, 11, 6]))
   })
 
   it('should return the cumulative sum element from a 2d array', function () {
@@ -197,6 +198,11 @@ describe('cumsum', function () {
 
   it('should return zero if called with an empty array', function () {
     assert.deepStrictEqual(cumsum([]), [])
+  })
+
+  it('should throw an error if called with invalid dimension', function () {
+    assert.throws(function () { cumsum([1,2,3], 1) }, /IndexError: Index out of range \(1 > 0\)/)
+    assert.throws(function () { cumsum([1,2,3], -1) }, /IndexError: Index out of range \(-1 < 0\)/)
   })
 
   it('should throw an error if called with invalid type of arguments', function () {

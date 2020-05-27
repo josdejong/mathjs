@@ -9,7 +9,9 @@ export const cumSumDocs = {
   examples: [
     'cumsum(2, 3, 4, 1)',
     'cumsum([2, 3, 4, 1])',
-    'cumsum([2, 5; 4, 3])'
+    'cumsum([1, 2; 3, 4])',
+    'cumsum([1, 2; 3, 4], 1)',
+    'cumsum([1, 2; 3, 4], 2)'
   ],
   seealso: [
     'max',

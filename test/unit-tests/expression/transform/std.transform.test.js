@@ -5,7 +5,7 @@ import math from '../../../../src/defaultInstance.js'
 const Unit = math.Unit
 const std = math.expression.transform.std
 
-describe('std', function () {
+describe('std.transform', function () {
   const inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
     [[10, 200], [30, 40], [50, 60]],
     [[70, 80], [90, 100], [180, 120]],

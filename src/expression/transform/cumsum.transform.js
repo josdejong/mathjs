@@ -11,10 +11,10 @@ import { createCumSum } from '../../function/statistics/cumsum'
  * from one-based to zero based
  */
 const name = 'cumsum'
-const dependencies = ['typed', 'add', '?Unit', '?DenseMatrix']
+const dependencies = ['typed', 'add', '?Unit']
 
-export const createCumSumTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, Unit, DenseMatrix }) => {
-  const cumsum = createCumSum({ typed, add, Unit, DenseMatrix })
+export const createCumSumTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, Unit }) => {
+  const cumsum = createCumSum({ typed, add, Unit })
 
   return typed(name, {
     '...any': function (args) {
