@@ -201,8 +201,8 @@ describe('cumsum', function () {
   })
 
   it('should throw an error if called with invalid dimension', function () {
-    assert.throws(function () { cumsum([1,2,3], 1) }, /IndexError: Index out of range \(1 > 0\)/)
-    assert.throws(function () { cumsum([1,2,3], -1) }, /IndexError: Index out of range \(-1 < 0\)/)
+    assert.throws(function () { cumsum([1, 2, 3], 1) }, /IndexError: Index out of range \(1 > 0\)/)
+    assert.throws(function () { cumsum([1, 2, 3], -1) }, /IndexError: Index out of range \(-1 < 0\)/)
   })
 
   it('should throw an error if called with invalid type of arguments', function () {

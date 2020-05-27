@@ -75,7 +75,7 @@ export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
   function _cumsummap (array) {
     // TODO: rewrite this logic, it's hard to understand
-    return array.map((sum => value => sum = add(sum, value))(_initialCumsumValue(array[0])))
+    return array.map((sum => value => sum = add(sum, value))(_initialCumsumValue(array[0]))) // eslint-disable-line
   }
 
   function _initialCumsumValue (value) {
