@@ -75,5 +75,5 @@ export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed
     'any, Array | Matrix': function (x, y) {
       return multiply(x, inv(y))
     }
-  }, divideScalar.signatures))
+  }, divideScalar.signatures), { createAsync: true })
 })

@@ -128,7 +128,7 @@ export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
 
       return result
     }
-  }, addScalar.signatures))
+  }, addScalar.signatures), { createAsync: true })
 
   return add
 })

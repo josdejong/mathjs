@@ -54,7 +54,7 @@ export const createDivideScalar = /* #__PURE__ */ factory(name, dependencies, ({
     'Unit, Unit': function (x, y) {
       return x.divide(y)
     }
-  })
+  }, { createAsync: true })
 
   return divideScalar
 })

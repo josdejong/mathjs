@@ -143,6 +143,19 @@ export function isIndexNode (x) {
   return (x && x.isIndexNode === true && x.constructor.prototype.isNode === true) || false
 }
 
+export function isPromise (x) {
+  if (x instanceof Promise) {
+    return true
+  }
+
+  return x
+    ? (x.constructor &&
+      x.constructor.prototype &&
+      typeof x.constructor.prototype.then === 'function' &&
+      typeof x.constructor.prototype.catch === 'function')
+    : false
+}
+
 export function isNode (x) {
   return (x && x.isNode === true && x.constructor.prototype.isNode === true) || false
 }
@@ -190,6 +203,7 @@ export function typeOf (x) {
     if (isIndex(x)) return 'Index'
     if (isRange(x)) return 'Range'
     if (isResultSet(x)) return 'ResultSet'
+    if (isPromise(x)) return 'Promise'
     if (isNode(x)) return x.type
     if (isChain(x)) return 'Chain'
     if (isHelp(x)) return 'Help'

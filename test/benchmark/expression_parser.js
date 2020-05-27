@@ -33,7 +33,9 @@ const correctResult = -3.878679656440358
 
 console.log('expression:', expr)
 console.log('scope:', scope)
-console.log('result:', correctResult)
+console.log('expected result:', correctResult)
+console.log('actual result:', compiled.evaluate(scope))
+console.log('actual result (plain js):', compiledPlainJs.evaluate(scope))
 
 assertApproxEqual(compiled.evaluate(scope), correctResult, 1e-7)
 assertApproxEqual(compiledPlainJs.evaluate(scope), correctResult, 1e-7)

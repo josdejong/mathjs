@@ -139,7 +139,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
       return result
     }
-  }, multiplyScalar.signatures))
+  }, multiplyScalar.signatures), { createAsync: true })
 
   function _validateMatrixDimensions (size1, size2) {
     // check left operand dimensions

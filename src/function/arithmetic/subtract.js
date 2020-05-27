@@ -158,7 +158,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
       // use matrix implementation
       return algorithm14(matrix(y), x, subtract, true).valueOf()
     }
-  })
+  }, { createAsync: true })
 
   return subtract
 })

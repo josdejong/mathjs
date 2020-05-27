@@ -4,6 +4,7 @@ const { abs, bignumber, complex, fraction, matrix, Matrix, unit, parse } = math
 
 describe('abs', function () {
   it('should return the abs value of a boolean', function () {
+    console.log('abs.signatures', abs.signatures)
     assert.strictEqual(abs(true), 1)
     assert.strictEqual(abs(false), 0)
   })
@@ -84,6 +85,17 @@ describe('abs', function () {
 
     u = abs(unit(complex(-4, 3), 'in'))
     assert.strictEqual(u.toString(), '5 in')
+  })
+
+  it('should have async support', function (done) {
+    const promise = abs(new Promise(resolve => {
+      setTimeout(() => resolve(-3), 100)
+    }))
+
+    promise.then(result => {
+      assert.strictEqual(result, 3)
+      done()
+    })
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

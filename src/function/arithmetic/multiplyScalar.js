@@ -49,7 +49,7 @@ export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, 
       return x.multiply(y)
     }
 
-  })
+  }, { createAsync: true })
 
   return multiplyScalar
 })

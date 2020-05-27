@@ -53,7 +53,7 @@ export const createAbs = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     Unit: function (x) {
       return x.abs()
     }
-  })
+  }, { createAsync: true })
 
   return abs
 })

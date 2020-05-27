@@ -53,7 +53,7 @@ export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       // deep map collection, skip zeros since sin(0) = 0
       return deepMap(x, sin, true)
     }
-  })
+  }, { createAsync: true })
 
   return sin
 })
