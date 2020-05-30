@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 7.0.0
- * @date    2020-05-07
+ * @version 7.0.1
+ * @date    2020-05-30
  *
  * @license
  * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
@@ -27598,8 +27598,8 @@ var createNthRoots = /* #__PURE__ */Object(factory["a" /* factory */])(nthRoots_
    *
    *    nthRoot, pow, sqrt
    *
-   * @param {number | BigNumber | Fraction | Complex | Array | Matrix} x Number to be rounded
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
+   * @param {number | BigNumber | Fraction | Complex} x Number to be rounded
+   * @return {number | BigNumber | Fraction | Complex}            Rounded value
    */
   var nthRoots = typed(nthRoots_name, {
     Complex: function Complex(x) {
@@ -32343,6 +32343,12 @@ function Unit_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "fu
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
+function Unit_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function Unit_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { Unit_ownKeys(Object(source), true).forEach(function (key) { Unit_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { Unit_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function Unit_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -33028,12 +33034,8 @@ var createUnitClass = /* #__PURE__ */Object(factory["a" /* factory */])(Unit_nam
 
 
     for (var _i = 0; _i < other.units.length; _i++) {
-      // Make a deep copy
-      var inverted = {};
-
-      for (var key in other.units[_i]) {
-        inverted[key] = other.units[_i][key];
-      }
+      // Make a shallow copy of every unit
+      var inverted = Unit_objectSpread({}, other.units[_i]);
 
       res.units.push(inverted);
     } // If at least one operand has a value, then the result should also have a value
@@ -33068,14 +33070,11 @@ var createUnitClass = /* #__PURE__ */Object(factory["a" /* factory */])(Unit_nam
 
 
     for (var _i2 = 0; _i2 < other.units.length; _i2++) {
-      // Make a deep copy
-      var inverted = {};
+      // Make a shallow copy of every unit
+      var inverted = Unit_objectSpread(Unit_objectSpread({}, other.units[_i2]), {}, {
+        power: -other.units[_i2].power
+      });
 
-      for (var key in other.units[_i2]) {
-        inverted[key] = other.units[_i2][key];
-      }
-
-      inverted.power = -inverted.power;
       res.units.push(inverted);
     } // If at least one operand has a value, the result should have a value
 
@@ -33303,9 +33302,11 @@ var createUnitClass = /* #__PURE__ */Object(factory["a" /* factory */])(Unit_nam
     var matchingBase;
 
     for (var key in currentUnitSystem) {
-      if (ret.hasBase(BASE_UNITS[key])) {
-        matchingBase = key;
-        break;
+      if (Object(utils_object["f" /* hasOwnProperty */])(currentUnitSystem, key)) {
+        if (ret.hasBase(BASE_UNITS[key])) {
+          matchingBase = key;
+          break;
+        }
       }
     }
 
@@ -33480,11 +33481,13 @@ var createUnitClass = /* #__PURE__ */Object(factory["a" /* factory */])(Unit_nam
     }
 
     for (var i in simp.units) {
-      if (simp.units[i].unit) {
-        if (simp.units[i].unit.name === 'VA' && isImaginary) {
-          simp.units[i].unit = UNITS.VAR;
-        } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
-          simp.units[i].unit = UNITS.VA;
+      if (Object(utils_object["f" /* hasOwnProperty */])(simp.units, i)) {
+        if (simp.units[i].unit) {
+          if (simp.units[i].unit.name === 'VA' && isImaginary) {
+            simp.units[i].unit = UNITS.VAR;
+          } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
+            simp.units[i].unit = UNITS.VA;
+          }
         }
       }
     } // Now apply the best prefix
@@ -34370,7 +34373,9 @@ var createUnitClass = /* #__PURE__ */Object(factory["a" /* factory */])(Unit_nam
   };
 
   for (var key in BASE_UNITS) {
-    BASE_UNITS[key].key = key;
+    if (Object(utils_object["f" /* hasOwnProperty */])(BASE_UNITS, key)) {
+      BASE_UNITS[key].key = key;
+    }
   }
 
   var BASE_UNIT_NONE = {};
@@ -35942,8 +35947,10 @@ var createUnitClass = /* #__PURE__ */Object(factory["a" /* factory */])(Unit_nam
 
   Unit.getUnitSystem = function () {
     for (var _key in UNIT_SYSTEMS) {
-      if (UNIT_SYSTEMS[_key] === currentUnitSystem) {
-        return _key;
+      if (Object(utils_object["f" /* hasOwnProperty */])(UNIT_SYSTEMS, _key)) {
+        if (UNIT_SYSTEMS[_key] === currentUnitSystem) {
+          return _key;
+        }
       }
     }
   };
@@ -35986,8 +35993,10 @@ var createUnitClass = /* #__PURE__ */Object(factory["a" /* factory */])(Unit_nam
 
 
   for (var _key2 in UNITS) {
-    var unit = UNITS[_key2];
-    unit.dimensions = unit.base.dimensions;
+    if (Object(utils_object["f" /* hasOwnProperty */])(UNITS, _key2)) {
+      var unit = UNITS[_key2];
+      unit.dimensions = unit.base.dimensions;
+    }
   } // Create aliases
 
 
@@ -49675,14 +49684,11 @@ var createHelpClass = /* #__PURE__ */Object(factory["a" /* factory */])(Help_nam
 
   Help.fromJSON = function (json) {
     var doc = {};
-
-    for (var prop in json) {
-      if (prop !== 'mathjs') {
-        // ignore mathjs field
-        doc[prop] = json[prop];
-      }
-    }
-
+    Object.keys(json).filter(function (prop) {
+      return prop !== 'mathjs';
+    }).forEach(function (prop) {
+      doc[prop] = json[prop];
+    });
     return new Help(doc);
   };
   /**
@@ -52958,9 +52964,10 @@ var createEigs = /* #__PURE__ */Object(factory["a" /* factory */])(eigs_name, ei
    * Examples:
    *
    *     const H = [[5, 2.3], [2.3, 1]]
-   *     const ans = math.eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors]}
+   *     const ans = math.eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors as columns]}
    *     const E = ans.values
    *     const U = ans.vectors
+   *     math.multiply(H, math.column(U, 0)) // returns math.multiply(E[0], math.column(U, 0))
    *     const UTxHxU = math.multiply(math.transpose(U), H, U) // rotates H to the eigen-representation
    *     E[0] == UTxHxU[0][0]  // returns true
    * See also:
@@ -52968,7 +52975,7 @@ var createEigs = /* #__PURE__ */Object(factory["a" /* factory */])(eigs_name, ei
    *     inv
    *
    * @param {Array | Matrix} x  Matrix to be diagonalized
-   * @return {{values: Array, vectors: Array} | {values: Matrix, vectors: Matrix}} Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix).
+   * @return {{values: Array, vectors: Array} | {values: Matrix, vectors: Matrix}} Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix with eigenvectors as columns).
    */
   var eigs = typed('eigs', {
     Array: function Array(x) {
@@ -57732,17 +57739,21 @@ var createSimplify = /* #__PURE__ */Object(factory["a" /* factory */])(simplify_
 
 
     for (var key in match1.placeholders) {
-      res.placeholders[key] = match1.placeholders[key];
+      if (Object(utils_object["f" /* hasOwnProperty */])(match1.placeholders, key)) {
+        res.placeholders[key] = match1.placeholders[key];
 
-      if (Object(utils_object["f" /* hasOwnProperty */])(match2.placeholders, key)) {
-        if (!_exactMatch(match1.placeholders[key], match2.placeholders[key])) {
-          return null;
+        if (Object(utils_object["f" /* hasOwnProperty */])(match2.placeholders, key)) {
+          if (!_exactMatch(match1.placeholders[key], match2.placeholders[key])) {
+            return null;
+          }
         }
       }
     }
 
     for (var _key in match2.placeholders) {
-      res.placeholders[_key] = match2.placeholders[_key];
+      if (Object(utils_object["f" /* hasOwnProperty */])(match2.placeholders, _key)) {
+        res.placeholders[_key] = match2.placeholders[_key];
+      }
     }
 
     return res;
@@ -59513,7 +59524,7 @@ var createReplacer = /* #__PURE__ */Object(factory["a" /* factory */])(replacer_
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '7.0.0'; // Note: This file is automatically generated when building math.js.
+var version = '7.0.1'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;

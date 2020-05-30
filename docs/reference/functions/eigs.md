@@ -31,16 +31,17 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-{values: Array, vectors: Array} &#124; {values: Matrix, vectors: Matrix} | Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix).
+{values: Array, vectors: Array} &#124; {values: Matrix, vectors: Matrix} | Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix with eigenvectors as columns).
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 const H = [[5, 2.3], [2.3, 1]]
-const ans = math.eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors]}
+const ans = math.eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors as columns]}
 const E = ans.values
 const U = ans.vectors
+math.multiply(H, math.column(U, 0)) // returns math.multiply(E[0], math.column(U, 0))
 const UTxHxU = math.multiply(math.transpose(U), H, U) // rotates H to the eigen-representation
 E[0] == UTxHxU[0][0]  // returns true
 ```

@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20200530-version-701">2020-05-30, version 7.0.1 <a href="#20200530-version-701" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1844">#1844</a>: clarify the documentation of function `eigs`. Thanks <a href="https://github.com/Lazersmoke">@Lazersmoke</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1855">#1855</a>: Fix error in the documentation for `math.nthRoots(x)`.  
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1856">#1856</a>: make the library robust against Object prototype pollution.
+
 
 <h1 id="20200507-version-700">2020-05-07, version 7.0.0 <a href="#20200507-version-700" title="Permalink">#</a></h1>
 
