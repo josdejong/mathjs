@@ -33,6 +33,6 @@ describe('squeeze', function () {
 
   it('should LaTeX squeeze', function () {
     const expression = math.parse('squeeze([[0],[0]])')
-    assert.strictEqual(expression.toTex(), '\\mathrm{squeeze}\\left(\\begin{bmatrix}0\\\\0\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{squeeze}\\left(\\begin{bmatrix}0\\\\0\\end{bmatrix}\\right)')
   })
 })

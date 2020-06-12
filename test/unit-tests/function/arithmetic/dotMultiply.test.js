@@ -58,8 +58,18 @@ describe('dotMultiply', function () {
     assert.throws(function () { dotMultiply('hello', 2) })
   })
 
-  it('should throw an in case of wrong type of arguments', function () {
+  it('should throw an error in case of wrong type of arguments', function () {
     assert.throws(function () { dotMultiply(null, 1) }, /TypeError: Unexpected type of argument/)
+  })
+
+  it('should throw an error in case of invalid number of arguments', function () {
+    assert.throws(function () { dotMultiply(1) }, /TypeError: Too few arguments/)
+    assert.throws(function () { dotMultiply(1, 2, 3) }, /TypeError: Too many arguments/)
+  })
+
+  it('should LaTeX dotMultiply', function () {
+    const expression = math.parse('dotMultiply([1,2],[3,4])')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\end{bmatrix}.\\cdot\\begin{bmatrix}3&4\\end{bmatrix}\\right)')
   })
 
   describe('Array', function () {
@@ -168,15 +178,5 @@ describe('dotMultiply', function () {
       assert.throws(function () { dotMultiply(d, c) })
       assert.throws(function () { dotMultiply(c, b) })
     })
-  })
-
-  it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { dotMultiply(1) }, /TypeError: Too few arguments/)
-    assert.throws(function () { dotMultiply(1, 2, 3) }, /TypeError: Too many arguments/)
-  })
-
-  it('should LaTeX dotMultiply', function () {
-    const expression = math.parse('dotMultiply([1,2],[3,4])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

@@ -4,6 +4,7 @@ import assert from 'assert'
 import math from '../../../../src/bundleAny'
 const Node = math.Node
 const AccessorNode = math.AccessorNode
+const ArrayNode = math.ArrayNode
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
 const RangeNode = math.RangeNode
@@ -14,6 +15,13 @@ const IndexNode = math.IndexNode
 describe('AssignmentNode', function () {
   it('should create an AssignmentNode', function () {
     const n = new AssignmentNode(new SymbolNode('a'), new Node())
+    assert(n instanceof AssignmentNode)
+    assert(n instanceof Node)
+    assert.strictEqual(n.type, 'AssignmentNode')
+  })
+
+  it('should create an AssignmentNode with matrix assignment', function () {
+    const n = new AssignmentNode(new ArrayNode([new SymbolNode('a'), new SymbolNode('b')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
     assert(n instanceof AssignmentNode)
     assert(n instanceof Node)
     assert.strictEqual(n.type, 'AssignmentNode')
@@ -40,6 +48,15 @@ describe('AssignmentNode', function () {
     assert.throws(function () { console.log(new AssignmentNode('a', new Node())) }, TypeError)
     assert.throws(function () { console.log(new AssignmentNode(2, new Node())) }, TypeError)
     assert.throws(function () { console.log(new AssignmentNode(new Node(), new Node(), new Node())) }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode(new SymbolNode('a'), new Node(), new ConstantNode(1))) }, TypeError)
+    assert.throws(function () {
+      console.log(new AssignmentNode(
+        new ArrayNode([new SymbolNode('a')]),
+        new IndexNode([new ConstantNode(1), new ConstantNode(1)]),
+        new ArrayNode([new ConstantNode(1)])
+      ))
+    }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode(new SymbolNode('a'), 1)) }, TypeError)
   })
 
   it('should get the name of an AssignmentNode', function () {
@@ -57,6 +74,19 @@ describe('AssignmentNode', function () {
     assert.strictEqual(n5.name, '')
   })
 
+  it('should get the name of an AssignmentNode with matrix assignment', function () {
+    const A = new AssignmentNode(
+      new ArrayNode([new SymbolNode('a'), new SymbolNode('b'), new SymbolNode('c')]),
+      new ArrayNode([new ConstantNode(1), new ConstantNode(2), new ConstantNode(3)])
+    )
+    assert.deepStrictEqual(A.name, ['a', 'b', 'c'])
+  })
+
+  it('should throw an error on setting the name of an AssignmentNode', function () {
+    const A = new AssignmentNode(new SymbolNode('a'), new ConstantNode(1))
+    assert.throws(function () { console.log(A.name = 'a') })
+  })
+
   it('should compile an AssignmentNode without index', function () {
     const n = new AssignmentNode(new SymbolNode('b'), new ConstantNode(3))
 
@@ -65,6 +95,23 @@ describe('AssignmentNode', function () {
     const scope = {}
     assert.strictEqual(expr.evaluate(scope), 3)
     assert.strictEqual(scope.b, 3)
+  })
+
+  it('should compile an AssignmentNode with matrix assignment', function () {
+    const n = new AssignmentNode(
+      new ArrayNode([new SymbolNode('x'), new SymbolNode('y')]),
+      new ArrayNode([new ConstantNode(1), new ConstantNode(2)])
+    )
+    const expr = n.compile()
+    const scope = {}
+    assert.strictEqual(expr.evaluate(scope), 2)
+    assert.strictEqual(scope.x, 1)
+    assert.strictEqual(scope.y, 2)
+  })
+
+  it('should throw an error on matrix assignment when "object" and "value" evaluate to different sizes', function () {
+    const n = new AssignmentNode(new ArrayNode([new SymbolNode('x')]), new ArrayNode([new ConstantNode(1), new ConstantNode(2)]))
+    assert.throws(function () { console.log(n.evaluate()) }, TypeError)
   })
 
   it('should compile an AssignmentNode with property index', function () {
@@ -177,6 +224,12 @@ describe('AssignmentNode', function () {
     assert.throws(function () { expr.evaluate(scope) }, /Cannot apply index: unsupported type of object/)
   })
 
+  it('should throw an error on invalid matrix assignment', function () {
+    assert.throws(function () {
+      console.log(new AssignmentNode(new ArrayNode([new ConstantNode(1)]), new ArrayNode([new ConstantNode(1)])))
+    }, TypeError)
+  })
+
   it('should filter an AssignmentNode', function () {
     const a = new SymbolNode('a')
     const b = new ConstantNode(2)
@@ -205,6 +258,25 @@ describe('AssignmentNode', function () {
     assert.deepStrictEqual(n.filter(function (node) { return node.name === 'q' }), [])
   })
 
+  it('should filter an AssignmentNode with matrix assignment', function () {
+    const x = new SymbolNode('x')
+    const y = new SymbolNode('y')
+    const S = new ArrayNode([x, y])
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const C = new ArrayNode([c1, c2])
+    const A = new AssignmentNode(S, C)
+
+    assert.deepStrictEqual(A.filter(function (node) { return node.isAssignmentNode }), [A])
+    assert.deepStrictEqual(A.filter(function (node) { return node.isArrayNode }), [S, C])
+    assert.deepStrictEqual(A.filter(function (node) { return node.isSymbolNode }), [x, y])
+    assert.deepStrictEqual(A.filter(function (node) { return node.isConstantNode }), [c1, c2])
+    assert.deepStrictEqual(A.filter(function (node) { return node.name === 'y' }), [y])
+    assert.deepStrictEqual(A.filter(function (node) { return node.name === 'q' }), [])
+    assert.deepStrictEqual(A.filter(function (node) { return node.value === 2 }), [c2])
+    assert.deepStrictEqual(A.filter(function (node) { return node.value === 3 }), [])
+  })
+
   it('should run forEach on an AssignmentNode', function () {
     // A[1, x] = 3
     const a = new SymbolNode('A')
@@ -230,7 +302,7 @@ describe('AssignmentNode', function () {
   })
 
   it('should run forEach on an AssignmentNode without index', function () {
-    // A[1, x] = 3
+    // A = 3
     const a = new SymbolNode('A')
     const v = new ConstantNode(3)
     const n = new AssignmentNode(a, v)
@@ -246,6 +318,30 @@ describe('AssignmentNode', function () {
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], v)
+    assert.deepStrictEqual(paths, ['object', 'value'])
+  })
+
+  it('should run forEach on an AssignmentNode with matrix assignment', function () {
+    // [x, y] = [1, 2]
+    const x = new SymbolNode('x')
+    const y = new SymbolNode('y')
+    const S = new ArrayNode([x, y])
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const C = new ArrayNode([c1, c2])
+    const n = new AssignmentNode(S, C)
+
+    const nodes = []
+    const paths = []
+    n.forEach(function (node, path, parent) {
+      nodes.push(node)
+      paths.push(path)
+      assert.deepStrictEqual(parent, n)
+    })
+
+    assert.strictEqual(nodes.length, 2)
+    assert.deepStrictEqual(nodes[0], S)
+    assert.deepStrictEqual(nodes[1], C)
     assert.deepStrictEqual(paths, ['object', 'value'])
   })
 
@@ -308,6 +404,40 @@ describe('AssignmentNode', function () {
     assert.strictEqual(f.value, e)
   })
 
+  it('should map an AssignmentNode with matrix assignment', function () {
+    // [m, n] = [1, 2]
+    const m = new SymbolNode('m')
+    const n = new SymbolNode('n')
+    const S = new ArrayNode([m, n])
+
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const C = new ArrayNode([c1, c2])
+
+    const A = new AssignmentNode(S, C)
+
+    const s = new SymbolNode('s')
+
+    const nodes = []
+    const paths = []
+    const R = A.map(function (node, path, parent) {
+      nodes.push(node)
+      paths.push(path)
+      assert.strictEqual(parent, A)
+      return node instanceof ArrayNode ? s : node
+    })
+
+    assert.strictEqual(nodes.length, 2)
+    assert.deepStrictEqual(nodes[0], S)
+    assert.deepStrictEqual(nodes[1], C)
+    assert.deepStrictEqual(paths, ['object', 'value'])
+
+    assert.notStrictEqual(R, A)
+    assert.deepStrictEqual(A.object, S)
+    assert.deepStrictEqual(A.value, C)
+    assert.deepStrictEqual(R.value, s)
+  })
+
   it('should throw an error when the map callback does not return a node', function () {
     // A[1, x] = 3
     const a = new SymbolNode('A')
@@ -322,7 +452,7 @@ describe('AssignmentNode', function () {
     }, /Callback function must return a Node/)
   })
 
-  it('should transform an AssignmentNodes (nested) parameters', function () {
+  it('should transform an AssignmentNode\'s (nested) parameters', function () {
     // a = x + 2
     const object = new SymbolNode('a')
     const x = new SymbolNode('x')
@@ -413,6 +543,20 @@ describe('AssignmentNode', function () {
     assert.strictEqual(b.value, a.value)
   })
 
+  it('should clone an AssignmentNode with matrix assignment', function () {
+    const object = new ArrayNode([new SymbolNode('a')])
+    const value = new ArrayNode([new ConstantNode(2)])
+    const A = new AssignmentNode(object, value)
+
+    const B = A.clone()
+    assert(B instanceof AssignmentNode)
+    assert.deepStrictEqual(B, A)
+    assert.notStrictEqual(B, A)
+    assert.deepStrictEqual(B.object, A.object)
+    assert.deepStrictEqual(B.index, A.index)
+    assert.deepStrictEqual(B.value, A.value)
+  })
+
   it('should clone an AssignmentNode', function () {
     // A[1, x] = 3
     const a = new SymbolNode('A')
@@ -487,6 +631,22 @@ describe('AssignmentNode', function () {
     assert.strictEqual(n.toString(), 'b = (a = 2)')
   })
 
+  it('should stringify an AssignmentNode containing nested ArrayNodes', function () {
+    const x = new SymbolNode('x')
+    const y = new SymbolNode('y')
+    const z = new SymbolNode('z')
+    const S = new ArrayNode([x, new ArrayNode([y, new ArrayNode([z])])])
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const c3 = new ConstantNode(3)
+    const C = new ArrayNode([c1, new ArrayNode([c2, new ArrayNode([c3])])])
+    const A = new AssignmentNode(S, C)
+
+    const expected = '[x, [y, [z]]] = [1, [2, [3]]]'
+
+    assert.strictEqual(A.toString(), expected)
+  })
+
   it('should stringify an AssignmentNode with custom toString', function () {
     // Also checks if custom funcions get passed to the children
     const customFunction = function (node, options) {
@@ -527,7 +687,7 @@ describe('AssignmentNode', function () {
     assert.deepStrictEqual(parsed, node)
   })
 
-  it('should LaTeX a AssignmentNode', function () {
+  it('should LaTeX an AssignmentNode', function () {
     const value = new ConstantNode(2)
     const a = new AssignmentNode(new SymbolNode('a'), value)
 
@@ -540,6 +700,70 @@ describe('AssignmentNode', function () {
     const q = new AssignmentNode(new SymbolNode('q'), a)
 
     assert.strictEqual(q.toTex(), ' q:=\\left( a:=2\\right)')
+  })
+
+  it('should LaTeX an AssignmentNode containing horizontally nested ArrayNodes', function () {
+    const x = new SymbolNode('x')
+    const y = new SymbolNode('y')
+    const z = new SymbolNode('z')
+    const S = new ArrayNode([
+      x,
+      new ArrayNode([
+        y,
+        new ArrayNode([z])
+      ])
+    ])
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const c3 = new ConstantNode(3)
+    const C = new ArrayNode([
+      c1,
+      new ArrayNode([
+        c2,
+        new ArrayNode([c3])
+      ])
+    ])
+    const A = new AssignmentNode(S, C)
+
+    const expected = '\\begin{bmatrix} x&\\begin{bmatrix} y&\\begin{bmatrix} z\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}:=\\begin{bmatrix}1&\\begin{bmatrix}2&\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}'
+
+    assert.strictEqual(A.toTex(), expected)
+  })
+
+  it('should LaTeX an AssignmentNode containing vertically nested ArrayNodes', function () {
+    const x = new SymbolNode('x')
+    const y = new SymbolNode('y')
+    const z = new SymbolNode('z')
+    const S = new ArrayNode([ // 'rows' ArrayNode, matrix level 0
+      new ArrayNode([x]), //       'cols' ArrayNode, matrix level 0
+      new ArrayNode([ //           'cols' ArrayNode, matrix level 0
+        new ArrayNode([ //           'rows' ArrayNode, matrix level 1
+          new ArrayNode([y]), //       'cols' ArrayNode, matrix level 1
+          new ArrayNode([ //           'cols' ArrayNode, matrix level 1
+            new ArrayNode([z]) //        'rows' ArrayNode, matrix level 2, should be nested in another 'cols' ArrayNode like:
+          ]) // new ArrayNode([z])         'cols' ArrayNode, matrix level 2
+        ])
+      ])
+    ])
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
+    const c3 = new ConstantNode(3)
+    const C = new ArrayNode([
+      new ArrayNode([c1]),
+      new ArrayNode([
+        new ArrayNode([
+          new ArrayNode([c2]),
+          new ArrayNode([
+            new ArrayNode([c3])
+          ])
+        ])
+      ])
+    ])
+    const A = new AssignmentNode(S, C)
+
+    const expected = '\\begin{bmatrix} x\\\\\\begin{bmatrix} y\\\\\\begin{bmatrix} z\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}:=\\begin{bmatrix}1\\\\\\begin{bmatrix}2\\\\\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}'
+
+    assert.strictEqual(A.toTex(), expected)
   })
 
   it('should LaTeX an AssignmentNode with custom toTex', function () {

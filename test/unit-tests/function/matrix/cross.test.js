@@ -44,6 +44,6 @@ describe('cross', function () {
 
   it('should LaTeX cross', function () {
     const expression = math.parse('cross([1],[2])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)\\times\\left(\\begin{bmatrix}2\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\end{bmatrix}\\right)\\times\\left(\\begin{bmatrix}2\\end{bmatrix}\\right)')
   })
 })

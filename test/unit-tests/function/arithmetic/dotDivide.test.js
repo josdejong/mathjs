@@ -55,6 +55,11 @@ describe('dotDivide', function () {
     assert.strictEqual(dotDivide(10, math.unit('5 m')).toString(), '2 m^-1')
   })
 
+  it('should LaTeX dotDivide', function () {
+    const expression = math.parse('dotDivide([1,2],[3,4])')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\end{bmatrix}.:\\begin{bmatrix}3&4\\end{bmatrix}\\right)')
+  })
+
   /*
   // This is supported not --ericman314
   it('should throw an error if dividing a number by a unit', function() {
@@ -165,10 +170,5 @@ describe('dotDivide', function () {
     it('should throw an error when dividing element-wise with differing size', function () {
       assert.throws(function () { dotDivide(math.sparse([[1, 2], [3, 4]]), math.sparse([[1]])) })
     })
-  })
-
-  it('should LaTeX dotDivide', function () {
-    const expression = math.parse('dotDivide([1,2],[3,4])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.:\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

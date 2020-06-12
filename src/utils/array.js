@@ -385,11 +385,11 @@ function _unsqueeze (array, dims, dim) {
 
   return array
 }
+
 /**
- * Flatten a multi dimensional array, put all elements in a one dimensional
- * array
- * @param {Array} array   A multi dimensional array
- * @return {Array}        The flattened array (1 dimensional)
+ * Flatten a multi-dimensional array, put all elements in a 1-dimensional array
+ * @param {Array} array   A multi-dimensional array
+ * @return {Array}        The flattened array (1-dimensional)
  */
 export function flatten (array) {
   if (!Array.isArray(array)) {
@@ -406,6 +406,38 @@ export function flatten (array) {
     }
   })
 
+  return flat
+}
+
+/**
+ * Flatten two arrays concurrently to match elements from the first (keys) to
+ * elements from the second (values). If an element in keys is not an array,
+ * but is matched with an array in values, the array in values is not
+ * flattend, but rather matched as-is to the element in keys.
+ * @param {Array} keys         An array of elements ('keys') that should match
+ *                             with elements in values when flattened. A key
+ *                             does not have to be a string; it can be any
+ *                             non-array type.
+ * @param {Array} values       An array of elements (values) to be matched
+ *                             with elements in keys after flattening.
+ * @param {Array} [flat=[]]
+ * @return {Array}             An array containing each paired key and value.
+ */
+export function matchFlatten (keys, values, flat = []) {
+  if (!(Array.isArray(keys) && Array.isArray(values))) {
+    throw new TypeError('"keys" and "values" must both be arrays')
+  }
+  if (keys.length !== values.length) {
+    throw new DimensionError(values.length, keys.length)
+  }
+  keys.forEach(function (key, i) {
+    const value = values[i]
+    if (Array.isArray(key)) {
+      matchFlatten(key, value, flat)
+    } else {
+      flat.push({ key, value })
+    }
+  })
   return flat
 }
 

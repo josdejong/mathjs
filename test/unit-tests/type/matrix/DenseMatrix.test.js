@@ -141,16 +141,6 @@ describe('DenseMatrix', function () {
       assert.strictEqual(a.type, 'DenseMatrix')
     })
 
-    it('should throw an error when the dimensions of the input array are invalid', function () {
-      assert.throws(function () {
-        console.log(new DenseMatrix(
-          [
-            [1, 2],
-            [4, 5, 6]
-          ]))
-      }, /DimensionError: Dimension mismatch \(3 != 2\)/)
-    })
-
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { DenseMatrix() }, /Constructor must be called with the new operator/)
     })

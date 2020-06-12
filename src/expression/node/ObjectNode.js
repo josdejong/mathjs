@@ -188,10 +188,10 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
     const entries = []
     for (const key in this.properties) {
       if (hasOwnProperty(this.properties, key)) {
-        entries.push('\\mathbf{' + key + ':} & ' + this.properties[key].toTex(options) + '\\\\')
+        entries.push(`\\mathbf{${key}:}&${this.properties[key].toTex(options)}`)
       }
     }
-    return `\\left\\{\\begin{array}{ll}${entries.join('\n')}\\end{array}\\right\\}`
+    return `\\begin{Bmatrix}${entries.join('\\\\')}\\end{Bmatrix}`
   }
 
   return ObjectNode

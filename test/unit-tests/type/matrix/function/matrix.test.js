@@ -101,6 +101,6 @@ describe('matrix', function () {
     const expr2 = math.parse('matrix([1])')
 
     assert.strictEqual(expr1.toTex(), '\\begin{bmatrix}\\end{bmatrix}')
-    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\end{bmatrix}\\right)')
   })
 })

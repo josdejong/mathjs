@@ -42,6 +42,29 @@ describe('diag', function () {
     assert.throws(function () { math.diag([[1, 2, 3], [4, 5, 6]], 2.4) }, /Second parameter in function diag must be an integer/)
   })
 
+  it('should throw an error if the input matrix is not valid', function () {
+    assert.throws(function () { math.diag([[[1], [2]], [[3], [4]]]) })
+    // TODO: test diag for all types of input (also scalar)
+  })
+
+  it('should throw an error in case of wrong number of arguments', function () {
+    assert.throws(function () { math.diag() }, /TypeError: Too few arguments/)
+    assert.throws(function () { math.diag([], 2, 3, 4) }, /TypeError: Too many arguments/)
+  })
+
+  it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () { math.diag(2) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () { math.diag([], new Date()) }, /TypeError: Unexpected type of argument/)
+  })
+
+  it('should LaTeX diag', function () {
+    const expr1 = math.parse('diag([1,2,3])')
+    const expr2 = math.parse('diag([1,2,3],1)')
+
+    assert.strictEqual(expr1.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1&2&3\\end{bmatrix}\\right)')
+    assert.strictEqual(expr2.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1&2&3\\end{bmatrix},1\\right)')
+  })
+
   describe('bignumber', function () {
     const array123 = [bignumber(1), bignumber(2), bignumber(3)]
     const array123456 = [
@@ -99,28 +122,5 @@ describe('diag', function () {
       assert.deepStrictEqual(math.diag(array123456, bignumber(-1)), [bignumber(4)])
       assert.deepStrictEqual(math.diag(array123456, bignumber(-2)), [])
     })
-  })
-
-  it('should throw an error of the input matrix is not valid', function () {
-    assert.throws(function () { math.diag([[[1], [2]], [[3], [4]]]) })
-    // TODO: test diag for all types of input (also scalar)
-  })
-
-  it('should throw an error in case of wrong number of arguments', function () {
-    assert.throws(function () { math.diag() }, /TypeError: Too few arguments/)
-    assert.throws(function () { math.diag([], 2, 3, 4) }, /TypeError: Too many arguments/)
-  })
-
-  it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () { math.diag(2) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { math.diag([], new Date()) }, /TypeError: Unexpected type of argument/)
-  })
-
-  it('should LaTeX diag', function () {
-    const expr1 = math.parse('diag([1,2,3])')
-    const expr2 = math.parse('diag([1,2,3],1)')
-
-    assert.strictEqual(expr1.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}\\right)')
-    assert.strictEqual(expr2.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix},1\\right)')
   })
 })
