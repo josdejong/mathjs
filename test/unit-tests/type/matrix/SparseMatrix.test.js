@@ -367,6 +367,26 @@ describe('SparseMatrix', function () {
         ])
     })
 
+    it('should resize using SparseMatrix input', function () {
+      const m = new SparseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6]
+        ])
+      m.resize(new SparseMatrix([2, 4]))
+      assert.deepStrictEqual(m._size, [2, 4])
+    })
+
+    it('should resize using DenseMatrix input', function () {
+      const m = new SparseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6]
+        ])
+      m.resize(new DenseMatrix([2, 4]))
+      assert.deepStrictEqual(m._size, [2, 4])
+    })
+
     it('should increase columns as needed, non zero value', function () {
       const m = new SparseMatrix(
         [

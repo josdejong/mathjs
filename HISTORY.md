@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 7.0.2
+
+- Fix #1882: have `DenseMatrix.resize` and `SparseMatrix.resize` accept 
+  `DenseMatrix` and `SparseMatrix` as inputs too, not only `Array`.
+
+
 # 2020-05-30, version 7.0.1
 
 - Fix #1844: clarify the documentation of function `eigs`. Thanks @Lazersmoke.

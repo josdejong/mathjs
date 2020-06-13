@@ -49,7 +49,7 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
   /**
    * Recursively calculate the sum of an n-dimensional array
-   * @param {Array} array
+   * @param {Array | Matrix} array
    * @return {number} sum
    * @private
    */

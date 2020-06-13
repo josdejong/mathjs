@@ -20,10 +20,16 @@ describe('size', function () {
     assert.deepStrictEqual(size([[[], []]]), [1, 2, 0])
   })
 
-  it('should calculate the size of a matrix', function () {
+  it('should calculate the size of a DenseMatrix', function () {
     assert.deepStrictEqual(size(matrix()), matrix([0]))
     assert.deepStrictEqual(size(matrix([[1, 2, 3], [4, 5, 6]])), matrix([2, 3]))
     assert.deepStrictEqual(size(matrix([[], []])), matrix([2, 0]))
+  })
+
+  it('should calculate the size of a SparseMatrix', function () {
+    assert.deepStrictEqual(size(matrix('sparse')), matrix([0, 0], 'sparse'))
+    assert.deepStrictEqual(size(matrix([[1, 2, 3], [4, 5, 6]], 'sparse')), matrix([2, 3], 'sparse'))
+    assert.deepStrictEqual(size(matrix([[], []], 'sparse')), matrix([2, 0], 'sparse'))
   })
 
   it('should calculate the size of a range', function () {
