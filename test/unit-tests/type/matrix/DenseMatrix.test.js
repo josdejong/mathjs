@@ -302,13 +302,13 @@ describe('DenseMatrix', function () {
     })
 
     it('should resize the matrix with DenseMatrix as input', function () {
-      let m = new DenseMatrix([[1, 2, 3], [4, 5, 6]])
+      const m = new DenseMatrix([[1, 2, 3], [4, 5, 6]])
       m.resize(new DenseMatrix([2, 4]))
       assert.deepStrictEqual(m.valueOf(), [[1, 2, 3, 0], [4, 5, 6, 0]])
     })
 
     it('should resize the matrix with SparseMatrix as input', function () {
-      let m = new DenseMatrix([[1, 2, 3], [4, 5, 6]])
+      const m = new DenseMatrix([[1, 2, 3], [4, 5, 6]])
       m.resize(new SparseMatrix([2, 4]))
       assert.deepStrictEqual(m.valueOf(), [[1, 2, 3, 0], [4, 5, 6, 0]])
     })
