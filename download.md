@@ -34,10 +34,14 @@ Math.js can be downloaded or linked from various content delivery networks:
     <tr>
       <td>cdnjs</td>
       <td><a href="https://cdnjs.com/libraries/mathjs">https://cdnjs.com/libraries/mathjs</a></td>
-    </tr>
+    </tr>    
     <tr>
       <td>jsDelivr</td>
       <td><a href="https://www.jsdelivr.com/package/npm/mathjs">https://www.jsdelivr.com/package/npm/mathjs</a></td>
+    </tr>
+    <tr>
+      <td>PageCDN </td>
+      <td><a href="https://pagecdn.com/lib/mathjs">https://pagecdn.com/lib/mathjs</a></td>
     </tr>
   </tbody>
 </table>
