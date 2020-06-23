@@ -64,20 +64,29 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
       }
     })
 
+    if (typeof sum === 'string') {
+      // enforce parsing the string into a numeric value. Invalid strings throw an exception
+      sum = add(sum, _zero())
+    }
+
     if (sum === undefined) {
-      switch (config.number) {
-        case 'number':
-          return 0
-        case 'BigNumber':
-          return bignumber ? bignumber(0) : noBignumber()
-        case 'Fraction':
-          return fraction ? fraction(0) : noFraction()
-        default:
-          return 0
-      }
+      return _zero()
     }
 
     return sum
+  }
+
+  function _zero () {
+    switch (config.number) {
+      case 'number':
+        return 0
+      case 'BigNumber':
+        return bignumber ? bignumber(0) : noBignumber()
+      case 'Fraction':
+        return fraction ? fraction(0) : noFraction()
+      default:
+        return 0
+    }
   }
 
   function _nsumDim (array, dim) {
