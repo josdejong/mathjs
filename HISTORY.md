@@ -4,7 +4,7 @@
 
 - Fix #1882: have `DenseMatrix.resize` and `SparseMatrix.resize` accept 
   `DenseMatrix` and `SparseMatrix` as inputs too, not only `Array`.
-- Fix `sum("abc")` not throwing a conversion error.
+- Fix `sum("abc")` and `prod("abc")` not throwing a conversion error.
 
 
 # 2020-05-30, version 7.0.1

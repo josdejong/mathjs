@@ -19,6 +19,12 @@ describe('prod', function () {
       new BigNumber(30))
   })
 
+  it('should return the product of strings (convert them to numbers)', function () {
+    assert.strictEqual(prod('2', '3'), 6)
+    assert.strictEqual(prod('2'), 2)
+    assert.strictEqual(prod([['1', '3'], ['5', '2']]), 30)
+  })
+
   it('should return the product of complex numbers', function () {
     assert.deepStrictEqual(prod(new Complex(2, 3), new Complex(-1, 2)), new Complex(-8, 1))
   })
@@ -74,6 +80,8 @@ describe('prod', function () {
     assert.throws(function () { prod([[2, undefined, 4]]) }, /TypeError: Cannot calculate prod, unexpected type of argument/)
     assert.throws(function () { prod([[2, new Date(), 4]]) }, /TypeError: Cannot calculate prod, unexpected type of argument/)
     assert.throws(function () { prod([2, null, 4]) }, /TypeError: Cannot calculate prod, unexpected type of argument/)
+    assert.throws(function () { prod('a', 'b') }, /Error: Cannot convert "a" to a number/)
+    assert.throws(function () { prod('a') }, /Error: Cannot convert "a" to a number/)
   })
 
   it('should LaTeX prod', function () {
