@@ -13,7 +13,7 @@ const { evaluate } = create({
   createAdd: factory('add', [], () => add),
   createSubtract: factory('subtract', [], () => subtract),
   createMultiply: factory('multiply', [], () => multiply),
-  createDivide: factory('divide', [], () => divide),
+  createDivide: factory('divide', [], () => divide)
 })
 
 console.log(evaluate('2 + 3 * 4')) // 14

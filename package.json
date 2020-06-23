@@ -35,10 +35,10 @@
     "typed-function": "^1.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.10.2",
-    "@babel/plugin-transform-object-assign": "7.10.1",
-    "@babel/preset-env": "7.10.2",
-    "@babel/register": "7.10.1",
+    "@babel/core": "7.10.3",
+    "@babel/plugin-transform-object-assign": "7.10.3",
+    "@babel/preset-env": "7.10.3",
+    "@babel/register": "7.10.3",
     "babel-loader": "8.1.0",
     "benchmark": "2.1.4",
     "codecov": "3.7.0",
@@ -70,7 +70,7 @@
     "pad-right": "0.2.2",
     "standard": "14.3.4",
     "sylvester": "0.0.21",
-    "uglify-js": "3.9.4",
+    "uglify-js": "3.10.0",
     "underscore": "1.10.2",
     "webpack": "4.43.0",
     "zeros": "1.0.0"
