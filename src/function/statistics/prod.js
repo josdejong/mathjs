@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const name = 'prod'
-const dependencies = ['typed', 'multiplyScalar']
+const dependencies = ['typed', 'config', 'multiplyScalar', 'numeric']
 
-export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, multiplyScalar }) => {
+export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, numeric }) => {
   /**
    * Compute the product of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all
@@ -65,9 +65,9 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     })
 
+    // make sure returning numeric value: parse a string into a numeric value
     if (typeof prod === 'string') {
-      // enforce parsing the string into a numeric value. Invalid strings throw an exception
-      prod = multiplyScalar(prod, 1)
+      prod = numeric(prod, config.number)
     }
 
     if (prod === undefined) {

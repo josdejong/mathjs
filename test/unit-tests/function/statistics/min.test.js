@@ -15,7 +15,8 @@ describe('min', function () {
   })
 
   it('should return the min of strings by their numerical value', function () {
-    assert.strictEqual(min('10', '3', '4', '2'), '2')
+    assert.strictEqual(min('10', '3', '4', '2'), 2)
+    assert.strictEqual(min('10'), 10)
   })
 
   it('should return the min element from a vector', function () {
@@ -111,6 +112,8 @@ describe('min', function () {
     assert.throws(function () { min([[2, new Date(), 4]]) }, /TypeError: Cannot calculate min, unexpected type of argument/)
     assert.throws(function () { min([2, null, 4]) }, /TypeError: Cannot calculate min, unexpected type of argument/)
     assert.throws(function () { min([[2, 5], [4, null], [1, 7]], 0) }, /TypeError: Cannot calculate min, unexpected type of argument/)
+    assert.throws(function () { min('a', 'b') }, /Error: Cannot convert "b" to a number/)
+    assert.throws(function () { min('a') }, /SyntaxError: String "a" is no valid number/)
   })
 
   it('should LaTeX min', function () {

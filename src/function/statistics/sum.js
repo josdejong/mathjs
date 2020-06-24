@@ -1,12 +1,11 @@
 import { containsCollections, deepForEach, reduce } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
-import { noBignumber, noFraction } from '../../utils/noop'
 
 const name = 'sum'
-const dependencies = ['typed', 'config', 'add', '?bignumber', '?fraction']
+const dependencies = ['typed', 'config', 'add', 'numeric']
 
-export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, bignumber, fraction }) => {
+export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, numeric }) => {
   /**
    * Compute the sum of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all
@@ -64,29 +63,15 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
       }
     })
 
-    if (typeof sum === 'string') {
-      // enforce parsing the string into a numeric value. Invalid strings throw an exception
-      sum = add(sum, _zero())
-    }
-
+    // make sure returning numeric value: parse a string into a numeric value
     if (sum === undefined) {
-      return _zero()
+      sum = numeric(0, config.number)
+    }
+    if (typeof sum === 'string') {
+      sum = numeric(sum, config.number)
     }
 
     return sum
-  }
-
-  function _zero () {
-    switch (config.number) {
-      case 'number':
-        return 0
-      case 'BigNumber':
-        return bignumber ? bignumber(0) : noBignumber()
-      case 'Fraction':
-        return fraction ? fraction(0) : noFraction()
-      default:
-        return 0
-    }
   }
 
   function _nsumDim (array, dim) {

@@ -4,7 +4,8 @@
 
 - Fix #1882: have `DenseMatrix.resize` and `SparseMatrix.resize` accept 
   `DenseMatrix` and `SparseMatrix` as inputs too, not only `Array`.
-- Fix `sum("abc")` and `prod("abc")` not throwing a conversion error.
+- Fix functions `sum`, `prod`, `min`, and `max` not throwing a conversion error
+  when passing a single string, like `sum("abc")`.
 
 
 # 2020-05-30, version 7.0.1
