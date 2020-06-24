@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 7.0.2
+# 2020-06-24, version 7.0.2
 
 - Fix #1882: have `DenseMatrix.resize` and `SparseMatrix.resize` accept 
   `DenseMatrix` and `SparseMatrix` as inputs too, not only `Array`.
