@@ -18,7 +18,7 @@ File: [requirejs_loading.html](requirejs_loading.html) (click for a live demo)
 
 <script>
   // load math.js using require.js
-  require(['https://unpkg.com/mathjs@7.0.1/dist/math.min.js'], function (math) {
+  require(['https://unpkg.com/mathjs@7.0.2/dist/math.min.js'], function (math) {
     // evaluate some expression
     const result = math.evaluate('1.2 * (2 + 4.5)')
     document.write(result)

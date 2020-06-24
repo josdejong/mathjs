@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 7.0.1
- * @date    2020-05-30
+ * @version 7.0.2
+ * @date    2020-06-24
  *
  * @license
  * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
@@ -13795,7 +13795,7 @@ var createDenseMatrixClass = /* #__PURE__ */Object(factory["a" /* factory */])(D
    * `copy=true`, otherwise return the matrix itself (resize in place).
    *
    * @memberof DenseMatrix
-   * @param {number[]} size           The new size the matrix should have.
+   * @param {number[] || Matrix} size The new size the matrix should have.
    * @param {*} [defaultValue=0]      Default value, filled in on new entries.
    *                                  If not provided, the matrix elements will
    *                                  be filled with zeros.
@@ -13807,14 +13807,18 @@ var createDenseMatrixClass = /* #__PURE__ */Object(factory["a" /* factory */])(D
 
   DenseMatrix.prototype.resize = function (size, defaultValue, copy) {
     // validate arguments
-    if (!Object(is["b" /* isArray */])(size)) {
-      throw new TypeError('Array expected');
-    } // matrix to resize
+    if (!Object(is["i" /* isCollection */])(size)) {
+      throw new TypeError('Array or Matrix expected');
+    } // SparseMatrix input is always 2d, flatten this into 1d if it's indeed a vector
 
+
+    var sizeArray = size.valueOf().map(function (value) {
+      return Array.isArray(value) && value.length === 1 ? value[0] : value;
+    }); // matrix to resize
 
     var m = copy ? this.clone() : this; // resize matrix
 
-    return _resize(m, size, defaultValue);
+    return _resize(m, sizeArray, defaultValue);
   };
 
   function _resize(matrix, size, defaultValue) {
@@ -15721,7 +15725,7 @@ var createSparseMatrixClass = /* #__PURE__ */Object(factory["a" /* factory */])(
    * `copy=true`, otherwise return the matrix itself (resize in place).
    *
    * @memberof SparseMatrix
-   * @param {number[]} size           The new size the matrix should have.
+   * @param {number[] | Matrix} size  The new size the matrix should have.
    * @param {*} [defaultValue=0]      Default value, filled in on new entries.
    *                                  If not provided, the matrix elements will
    *                                  be filled with zeros.
@@ -15733,24 +15737,29 @@ var createSparseMatrixClass = /* #__PURE__ */Object(factory["a" /* factory */])(
 
   SparseMatrix.prototype.resize = function (size, defaultValue, copy) {
     // validate arguments
-    if (!Object(is["b" /* isArray */])(size)) {
-      throw new TypeError('Array expected');
-    }
+    if (!Object(is["i" /* isCollection */])(size)) {
+      throw new TypeError('Array or Matrix expected');
+    } // SparseMatrix input is always 2d, flatten this into 1d if it's indeed a vector
 
-    if (size.length !== 2) {
+
+    var sizeArray = size.valueOf().map(function (value) {
+      return Array.isArray(value) && value.length === 1 ? value[0] : value;
+    });
+
+    if (sizeArray.length !== 2) {
       throw new Error('Only two dimensions matrix are supported');
     } // check sizes
 
 
-    size.forEach(function (value) {
+    sizeArray.forEach(function (value) {
       if (!Object(is["y" /* isNumber */])(value) || !Object(utils_number["i" /* isInteger */])(value) || value < 0) {
-        throw new TypeError('Invalid size, must contain positive integers ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
+        throw new TypeError('Invalid size, must contain positive integers ' + '(size: ' + Object(utils_string["d" /* format */])(sizeArray) + ')');
       }
     }); // matrix to resize
 
     var m = copy ? this.clone() : this; // resize matrix
 
-    return _resize(m, size[0], size[1], defaultValue);
+    return _resize(m, sizeArray[0], sizeArray[1], defaultValue);
   };
 
   function _resize(matrix, rows, columns, defaultValue) {
@@ -26484,10 +26493,12 @@ function improveErrorMessage(err, fnName, value) {
 
 
 var prod_name = 'prod';
-var prod_dependencies = ['typed', 'multiply'];
+var prod_dependencies = ['typed', 'config', 'multiplyScalar', 'numeric'];
 var createProd = /* #__PURE__ */Object(factory["a" /* factory */])(prod_name, prod_dependencies, function (_ref) {
   var typed = _ref.typed,
-      multiply = _ref.multiply;
+      config = _ref.config,
+      multiplyScalar = _ref.multiplyScalar,
+      numeric = _ref.numeric;
 
   /**
    * Compute the product of a matrix or a list with values.
@@ -26538,11 +26549,15 @@ var createProd = /* #__PURE__ */Object(factory["a" /* factory */])(prod_name, pr
     var prod;
     deepForEach(array, function (value) {
       try {
-        prod = prod === undefined ? value : multiply(prod, value);
+        prod = prod === undefined ? value : multiplyScalar(prod, value);
       } catch (err) {
         throw improveErrorMessage(err, 'prod', value);
       }
-    });
+    }); // make sure returning numeric value: parse a string into a numeric value
+
+    if (typeof prod === 'string') {
+      prod = numeric(prod, config.number);
+    }
 
     if (prod === undefined) {
       throw new Error('Cannot calculate prod of an empty array');
@@ -27149,8 +27164,8 @@ var createPow = /* #__PURE__ */Object(factory["a" /* factory */])(pow_name, pow_
             return (yFrac.n % 2 === 0 ? 1 : -1) * Math.pow(-x, y);
           }
         }
-      } catch (ex) {} // fraction() throws an error if y is Infinity, etc.
-      // Unable to express y as a fraction, so continue on
+      } catch (ex) {// fraction() throws an error if y is Infinity, etc.
+      } // Unable to express y as a fraction, so continue on
 
     } // **for predictable mode** x^Infinity === NaN if x < -1
     // N.B. this behavour is different from `Math.pow` which gives
@@ -31010,9 +31025,11 @@ var createSort = /* #__PURE__ */Object(factory["a" /* factory */])(sort_name, so
 
 
 var max_name = 'max';
-var max_dependencies = ['typed', 'larger'];
+var max_dependencies = ['typed', 'config', 'numeric', 'larger'];
 var createMax = /* #__PURE__ */Object(factory["a" /* factory */])(max_name, max_dependencies, function (_ref) {
   var typed = _ref.typed,
+      config = _ref.config,
+      numeric = _ref.numeric,
       larger = _ref.larger;
 
   /**
@@ -31101,6 +31118,11 @@ var createMax = /* #__PURE__ */Object(factory["a" /* factory */])(max_name, max_
 
     if (res === undefined) {
       throw new Error('Cannot calculate max of an empty array');
+    } // make sure returning numeric value: parse a string into a numeric value
+
+
+    if (typeof res === 'string') {
+      res = numeric(res, config.number);
     }
 
     return res;
@@ -31111,9 +31133,11 @@ var createMax = /* #__PURE__ */Object(factory["a" /* factory */])(max_name, max_
 
 
 var min_name = 'min';
-var min_dependencies = ['typed', 'smaller'];
+var min_dependencies = ['typed', 'config', 'numeric', 'smaller'];
 var createMin = /* #__PURE__ */Object(factory["a" /* factory */])(min_name, min_dependencies, function (_ref) {
   var typed = _ref.typed,
+      config = _ref.config,
+      numeric = _ref.numeric,
       smaller = _ref.smaller;
 
   /**
@@ -31202,6 +31226,11 @@ var createMin = /* #__PURE__ */Object(factory["a" /* factory */])(min_name, min_
 
     if (min === undefined) {
       throw new Error('Cannot calculate min of an empty array');
+    } // make sure returning numeric value: parse a string into a numeric value
+
+
+    if (typeof min === 'string') {
+      min = numeric(min, config.number);
     }
 
     return min;
@@ -41960,15 +41989,15 @@ var ConstantNode_createConstantNode = /* #__PURE__ */Object(factory["a" /* facto
    */
 
 
-  ConstantNode.prototype.forEach = function (callback) {} // nothing to do, we don't have childs
-
+  ConstantNode.prototype.forEach = function (callback) {// nothing to do, we don't have childs
+  };
   /**
    * Create a new ConstantNode having it's childs be the results of calling
    * the provided callback function for each of the childs of the original node.
    * @param {function(child: Node, path: string, parent: Node) : Node} callback
    * @returns {ConstantNode} Returns a clone of the node
    */
-  ;
+
 
   ConstantNode.prototype.map = function (callback) {
     return this.clone();
@@ -44260,15 +44289,15 @@ var createSymbolNode = /* #__PURE__ */Object(factory["a" /* factory */])(SymbolN
    */
 
 
-  SymbolNode.prototype.forEach = function (callback) {} // nothing to do, we don't have childs
-
+  SymbolNode.prototype.forEach = function (callback) {// nothing to do, we don't have childs
+  };
   /**
    * Create a new SymbolNode having it's childs be the results of calling
    * the provided callback function for each of the childs of the original node.
    * @param {function(child: Node, path: string, parent: Node) : Node} callback
    * @returns {SymbolNode} Returns a clone of the node
    */
-  ;
+
 
   SymbolNode.prototype.map = function (callback) {
     return this.clone();
@@ -54256,15 +54285,13 @@ var createIntersect = /* #__PURE__ */Object(factory["a" /* factory */])(intersec
 
 
 
-
 var sum_name = 'sum';
-var sum_dependencies = ['typed', 'config', 'add', '?bignumber', '?fraction'];
+var sum_dependencies = ['typed', 'config', 'add', 'numeric'];
 var createSum = /* #__PURE__ */Object(factory["a" /* factory */])(sum_name, sum_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       add = _ref.add,
-      bignumber = _ref.bignumber,
-      fraction = _ref.fraction;
+      numeric = _ref.numeric;
 
   /**
    * Compute the sum of a matrix or a list with values.
@@ -54305,7 +54332,7 @@ var createSum = /* #__PURE__ */Object(factory["a" /* factory */])(sum_name, sum_
   });
   /**
    * Recursively calculate the sum of an n-dimensional array
-   * @param {Array} array
+   * @param {Array | Matrix} array
    * @return {number} sum
    * @private
    */
@@ -54318,22 +54345,14 @@ var createSum = /* #__PURE__ */Object(factory["a" /* factory */])(sum_name, sum_
       } catch (err) {
         throw improveErrorMessage(err, 'sum', value);
       }
-    });
+    }); // make sure returning numeric value: parse a string into a numeric value
 
     if (sum === undefined) {
-      switch (config.number) {
-        case 'number':
-          return 0;
+      sum = numeric(0, config.number);
+    }
 
-        case 'BigNumber':
-          return bignumber ? bignumber(0) : noBignumber();
-
-        case 'Fraction':
-          return fraction ? fraction(0) : noFraction();
-
-        default:
-          return 0;
-      }
+    if (typeof sum === 'string') {
+      sum = numeric(sum, config.number);
     }
 
     return sum;
@@ -59524,7 +59543,7 @@ var createReplacer = /* #__PURE__ */Object(factory["a" /* factory */])(replacer_
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '7.0.1'; // Note: This file is automatically generated when building math.js.
+var version = '7.0.2'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
@@ -60135,12 +60154,16 @@ function map_transform_map(array, callback, orig) {
 
 
 var max_transform_name = 'max';
-var max_transform_dependencies = ['typed', 'larger'];
+var max_transform_dependencies = ['typed', 'config', 'numeric', 'larger'];
 var createMaxTransform = /* #__PURE__ */Object(factory["a" /* factory */])(max_transform_name, max_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
+      config = _ref.config,
+      numeric = _ref.numeric,
       larger = _ref.larger;
   var max = createMax({
     typed: typed,
+    config: config,
+    numeric: numeric,
     larger: larger
   });
   /**
@@ -60227,12 +60250,16 @@ var createMeanTransform = /* #__PURE__ */Object(factory["a" /* factory */])(mean
 
 
 var min_transform_name = 'min';
-var min_transform_dependencies = ['typed', 'smaller'];
+var min_transform_dependencies = ['typed', 'config', 'numeric', 'smaller'];
 var createMinTransform = /* #__PURE__ */Object(factory["a" /* factory */])(min_transform_name, min_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
+      config = _ref.config,
+      numeric = _ref.numeric,
       smaller = _ref.smaller;
   var min = createMin({
     typed: typed,
+    config: config,
+    numeric: numeric,
     smaller: smaller
   });
   /**
@@ -60499,19 +60526,17 @@ var createStdTransform = /* #__PURE__ */Object(factory["a" /* factory */])(std_t
  */
 
 var sum_transform_name = 'sum';
-var sum_transform_dependencies = ['typed', 'config', 'add', '?bignumber', '?fraction'];
+var sum_transform_dependencies = ['typed', 'config', 'add', 'numeric'];
 var createSumTransform = /* #__PURE__ */Object(factory["a" /* factory */])(sum_transform_name, sum_transform_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
       add = _ref.add,
-      bignumber = _ref.bignumber,
-      fraction = _ref.fraction;
+      numeric = _ref.numeric;
   var sum = createSum({
     typed: typed,
     config: config,
     add: add,
-    bignumber: bignumber,
-    fraction: fraction
+    numeric: numeric
   });
   return typed(sum_transform_name, {
     '...any': function any(args) {

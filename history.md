@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20200624-version-702">2020-06-24, version 7.0.2 <a href="#20200624-version-702" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1882">#1882</a>: have `DenseMatrix.resize` and `SparseMatrix.resize` accept 
+  `DenseMatrix` and `SparseMatrix` as inputs too, not only `Array`.
+- Fix functions `sum`, `prod`, `min`, and `max` not throwing a conversion error
+  when passing a single string, like `sum("abc")`.
+
+
 <h1 id="20200530-version-701">2020-05-30, version 7.0.1 <a href="#20200530-version-701" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1844">#1844</a>: clarify the documentation of function `eigs`. Thanks <a href="https://github.com/Lazersmoke">@Lazersmoke</a>.

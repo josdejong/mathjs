@@ -36,6 +36,8 @@ layout: default
 - [Convert fraction to bignumber](advanced\convert_fraction_to_bignumber.js.html)
 - [Custom argument parsing](advanced\custom_argument_parsing.js.html)
 - [Custom datatype](advanced\custom_datatype.js.html)
+- [Custom evaluate using factories](advanced\custom_evaluate_using_factories.js.html)
+- [Custom evaluate using import](advanced\custom_evaluate_using_import.js.html)
 - [Custom loading](advanced\custom_loading.js.html)
 - [Custom relational functions](advanced\custom_relational_functions.js.html)
 - [Expression trees](advanced\expression_trees.js.html)
