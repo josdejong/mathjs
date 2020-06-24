@@ -81,7 +81,7 @@ describe('prod', function () {
     assert.throws(function () { prod([[2, new Date(), 4]]) }, /TypeError: Cannot calculate prod, unexpected type of argument/)
     assert.throws(function () { prod([2, null, 4]) }, /TypeError: Cannot calculate prod, unexpected type of argument/)
     assert.throws(function () { prod('a', 'b') }, /Error: Cannot convert "a" to a number/)
-    assert.throws(function () { prod('a') }, /Error: Cannot convert "a" to a number/)
+    assert.throws(function () { prod('a') }, /SyntaxError: String "a" is no valid number/)
   })
 
   it('should LaTeX prod', function () {
