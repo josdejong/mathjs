@@ -166,7 +166,7 @@ console.log('x =', x) // x = 3.5
 const f2 = parser.get('f2')
 console.log('f2 =', math.format(f2)) // f2 = f2(x, y)
 const h = f2(3, 3)
-console.log('h =', h) // g = 27
+console.log('h =', h) // h = 27
 
 parser.set('i', 500)
 print(parser.evaluate('i / 2')) // 250
