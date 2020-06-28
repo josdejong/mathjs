@@ -268,7 +268,7 @@ Each `Node` has the following properties:
 ## Nodes
 
 math.js has the following types of nodes. All nodes are available at the
-namespace `math`.d
+namespace `math`.
 
 
 ### AccessorNode
