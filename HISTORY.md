@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 7.0.3
+
+- Fix #1899: documentation on expression trees still using old namespace 
+  `math.expression.node.*` instead of `math.*`.
+
+
 # 2020-06-24, version 7.0.2
 
 - Fix #1882: have `DenseMatrix.resize` and `SparseMatrix.resize` accept 
