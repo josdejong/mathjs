@@ -258,6 +258,8 @@ Breaking changes:
 - Deprecated function `math.expression.parse`, use `math.parse` instead.
   Was used before for example to customize supported characters by replacing
   `math.parse.isAlpha`.
+- Deprecated having a `.toTex` property attached to functions.
+  Use a custom toTex handler instead.
 - Moved all classes like `math.type.Unit` and `math.expression.Parser` to
   `math.Unit` and `math.Parser` respectively.
 - Fixed #1428: transform iterating over replaced nodes. New behavior
