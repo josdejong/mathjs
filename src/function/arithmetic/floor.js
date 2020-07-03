@@ -34,7 +34,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  const floor = typed('floor', {
+  return typed('floor', {
     number: function (x) {
       if (nearlyEqual(x, round(x), config.epsilon)) {
         return round(x)
@@ -61,9 +61,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since floor(0) = 0
-      return deepMap(x, floor, true)
+      return deepMap(x, this, true)
     }
   })
-
-  return floor
 })

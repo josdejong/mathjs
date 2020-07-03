@@ -60,7 +60,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       _validateMatrixDimensions(arraySize(x), arraySize(y))
 
       // use dense matrix implementation
-      const m = multiply(matrix(x), matrix(y))
+      const m = this(matrix(x), matrix(y))
       // return array or scalar
       return isMatrix(m) ? m.valueOf() : m
     },
@@ -94,12 +94,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
     'Matrix, Array': function (x, y) {
       // use Matrix * Matrix implementation
-      return multiply(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'Array, Matrix': function (x, y) {
       // use Matrix * Matrix implementation
-      return multiply(matrix(x, y.storage()), y)
+      return this(matrix(x, y.storage()), y)
     },
 
     'SparseMatrix, any': function (x, y) {
@@ -131,10 +131,10 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     'any, any': multiplyScalar,
 
     'any, any, ...any': function (x, y, rest) {
-      let result = multiply(x, y)
+      let result = this(x, y)
 
       for (let i = 0; i < rest.length; i++) {
-        result = multiply(result, rest[i])
+        result = this(result, rest[i])
       }
 
       return result

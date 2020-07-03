@@ -49,7 +49,7 @@ export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     },
 
     'Array | Matrix': function (n) {
-      return deepMap(n, erf)
+      return deepMap(n, this)
     }
 
     // TODO: For complex numbers, use the approximation for the Faddeeva function

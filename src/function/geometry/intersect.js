@@ -64,12 +64,12 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     'Matrix, Matrix, Matrix': function (x, y, plane) {
-      return matrix(intersect(x.valueOf(), y.valueOf(), plane.valueOf()))
+      return matrix(this(x.valueOf(), y.valueOf(), plane.valueOf()))
     },
 
     'Matrix, Matrix, Matrix, Matrix': function (w, x, y, z) {
       // TODO: output matrix type should match input matrix type
-      return matrix(intersect(w.valueOf(), x.valueOf(), y.valueOf(), z.valueOf()))
+      return matrix(this(w.valueOf(), x.valueOf(), y.valueOf(), z.valueOf()))
     }
   })
 

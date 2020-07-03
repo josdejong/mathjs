@@ -46,7 +46,7 @@ export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Right hand value
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Multiplication of `x` and `y`
    */
-  const dotMultiply = typed(name, {
+  return typed(name, {
 
     'any, any': multiplyScalar,
 
@@ -68,17 +68,17 @@ export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return dotMultiply(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return dotMultiply(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return dotMultiply(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
@@ -107,6 +107,4 @@ export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ 
       return algorithm14(matrix(y), x, multiplyScalar, true).valueOf()
     }
   })
-
-  return dotMultiply
 })

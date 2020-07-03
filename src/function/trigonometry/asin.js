@@ -28,7 +28,7 @@ export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @param {number | BigNumber | Complex | Array | Matrix} x   Function input
    * @return {number | BigNumber | Complex | Array | Matrix} The arc sine of x
    */
-  const asin = typed(name, {
+  return typed(name, {
     number: function (x) {
       if ((x >= -1 && x <= 1) || config.predictable) {
         return Math.asin(x)
@@ -47,9 +47,7 @@ export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since asin(0) = 0
-      return deepMap(x, asin, true)
+      return deepMap(x, this, true)
     }
   })
-
-  return asin
 })

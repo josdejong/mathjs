@@ -64,7 +64,7 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param  {number | BigNumber | boolean | Complex | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the compared values are equal, else returns false
    */
-  const equal = typed(name, {
+  return typed(name, {
 
     'any, any': function (x, y) {
       // strict equality for null and undefined?
@@ -94,17 +94,17 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return equal(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return equal(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return equal(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
@@ -133,8 +133,6 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return algorithm14(matrix(y), x, equalScalar, true).valueOf()
     }
   })
-
-  return equal
 })
 
 export const createEqualNumber = factory(name, ['typed', 'equalScalar'], ({ typed, equalScalar }) => {

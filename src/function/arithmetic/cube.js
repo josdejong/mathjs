@@ -30,7 +30,7 @@ export const createCube = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} x  Number for which to calculate the cube
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} Cube of x
    */
-  const cube = typed(name, {
+  return typed(name, {
     number: cubeNumber,
 
     Complex: function (x) {
@@ -47,13 +47,11 @@ export const createCube = /* #__PURE__ */ factory(name, dependencies, ({ typed }
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since cube(0) = 0
-      return deepMap(x, cube, true)
+      return deepMap(x, this, true)
     },
 
     Unit: function (x) {
       return x.pow(3)
     }
   })
-
-  return cube
 })

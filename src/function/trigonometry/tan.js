@@ -28,7 +28,7 @@ export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Tangent of x
    */
-  const tan = typed(name, {
+  return typed(name, {
     number: Math.tan,
 
     Complex: function (x) {
@@ -43,14 +43,12 @@ export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function tan is no angle')
       }
-      return tan(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since tan(0) = 0
-      return deepMap(x, tan, true)
+      return deepMap(x, this, true)
     }
   })
-
-  return tan
 })

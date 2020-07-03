@@ -36,7 +36,7 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     Complex: function (n) {
       if (n.im === 0) {
-        return gamma(n.re)
+        return this(n.re)
       }
 
       n = new Complex(n.re - 1, n.im)
@@ -90,7 +90,7 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'Array | Matrix': function (n) {
-      return deepMap(n, gamma)
+      return deepMap(n, this)
     }
   })
 

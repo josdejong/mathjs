@@ -35,7 +35,7 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
-  const isNegative = typed(name, {
+  return typed(name, {
     number: isNegativeNumber,
 
     BigNumber: function (x) {
@@ -47,13 +47,11 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
     },
 
     Unit: function (x) {
-      return isNegative(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, isNegative)
+      return deepMap(x, this)
     }
   })
-
-  return isNegative
 })

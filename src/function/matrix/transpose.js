@@ -32,7 +32,7 @@ export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
     Array: function (x) {
       // use dense matrix implementation
-      return transpose(matrix(x)).valueOf()
+      return this(matrix(x)).valueOf()
     },
 
     Matrix: function (x) {

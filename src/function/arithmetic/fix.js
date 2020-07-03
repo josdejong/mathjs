@@ -32,7 +32,7 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    * @param {number | BigNumber | Fraction | Complex | Array | Matrix} x Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
    */
-  const fix = typed('fix', {
+  return typed('fix', {
     number: function (x) {
       return (x > 0) ? floor(x) : ceil(x)
     },
@@ -54,9 +54,7 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since fix(0) = 0
-      return deepMap(x, fix, true)
+      return deepMap(x, this, true)
     }
   })
-
-  return fix
 })

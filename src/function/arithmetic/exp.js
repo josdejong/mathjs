@@ -34,7 +34,7 @@ export const createExp = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @param {number | BigNumber | Complex | Array | Matrix} x  A number or matrix to exponentiate
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
-  const exp = typed(name, {
+  return typed(name, {
     number: expNumber,
 
     Complex: function (x) {
@@ -47,9 +47,7 @@ export const createExp = /* #__PURE__ */ factory(name, dependencies, ({ typed })
 
     'Array | Matrix': function (x) {
       // TODO: exp(sparse) should return a dense matrix since exp(0)==1
-      return deepMap(x, exp)
+      return deepMap(x, this)
     }
   })
-
-  return exp
 })
