@@ -65,7 +65,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `./`        | Element-wise divide     | `x ./ y`    | Left to right | `[9,6,4] ./ [3,2,2]`  | `[3,3,2]`
 `%`, `mod`  | Modulus                 | `x % y`     | Left to right | `8 % 3`               | `2`
 `^`         | Power                   | `x ^ y`     | Right to left | `2 ^ 3`               | `8`
-`.^`        | Element-wise power      | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[9,27]`
+`.^`        | Element-wise power      | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[8,27]`
 `'`         | Transpose               | `y'`        | Left to right | `[[1,2],[3,4]]'`      | `[[1,3],[2,4]]`
 `!`         | Factorial               | `y!`        | Left to right | `5!`                  | `120`
 `&`         | Bitwise and             | `x & y`     | Left to right | `5 & 3`               | `1`
