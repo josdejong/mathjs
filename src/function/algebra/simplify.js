@@ -154,15 +154,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    */
   const simplify = typed('simplify', {
     string: function (expr) {
-      return this(parse(expr), simplify.rules, {}, {})
+      return this(parse(expr), this.rules, {}, {})
     },
 
     'string, Object': function (expr, scope) {
-      return this(parse(expr), simplify.rules, scope, {})
+      return this(parse(expr), this.rules, scope, {})
     },
 
     'string, Object, Object': function (expr, scope, options) {
-      return this(parse(expr), simplify.rules, scope, options)
+      return this(parse(expr), this.rules, scope, options)
     },
 
     'string, Array': function (expr, rules) {
@@ -178,15 +178,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     },
 
     'Node, Object': function (expr, scope) {
-      return this(expr, simplify.rules, scope, {})
+      return this(expr, this.rules, scope, {})
     },
 
     'Node, Object, Object': function (expr, scope, options) {
-      return this(expr, simplify.rules, scope, options)
+      return this(expr, this.rules, scope, options)
     },
 
     Node: function (expr) {
-      return this(expr, simplify.rules, {}, {})
+      return this(expr, this.rules, {}, {})
     },
 
     'Node, Array': function (expr, rules) {

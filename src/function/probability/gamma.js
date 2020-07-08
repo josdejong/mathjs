@@ -30,7 +30,7 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | Array | Matrix}    The gamma of `n`
    */
 
-  const gamma = typed(name, {
+  return typed(name, {
 
     number: gammaNumber,
 
@@ -123,6 +123,4 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     return new BigNumber(prod.toPrecision(BigNumber.precision))
   }
-
-  return gamma
 })

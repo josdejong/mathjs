@@ -125,7 +125,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
    *           {Expression Node}  node simplified expression
    *
    */
-  const rationalize = typed(name, {
+  return typed(name, {
     string: function (expr) {
       return this(parse(expr), {}, false)
     },
@@ -643,6 +643,4 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
       } else { throw new Error('Type ' + tp + ' is not allowed') }
     } // End of recurPol
   } // End of polyToCanonical
-
-  return rationalize
 })
