@@ -1,4 +1,4 @@
-import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode, isUnit } from '../../../utils/is'
+import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode } from '../../../utils/is'
 export { isConstantNode, isSymbolNode as isVariableNode } from '../../../utils/is'
 
 export function isNumericNode (x) {
@@ -6,7 +6,7 @@ export function isNumericNode (x) {
 }
 
 export function isConstantExpression (x) {
-  if (isConstantNode(x) || isUnit(x)) { // Basic Constant types
+  if (isConstantNode(x)) { // Basic Constant types
     return true
   }
   if ((isFunctionNode(x) || isOperatorNode(x)) && x.args.every(isConstantExpression)) { // Can be constant depending on arguments
