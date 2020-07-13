@@ -646,7 +646,7 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
   })
 }
 
-function findAll(text, regex) {
+function findAll (text, regex) {
   const matches = []
   let match
 

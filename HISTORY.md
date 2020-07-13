@@ -1,7 +1,10 @@
 # History
 
-# not yet published, version 7.0.3
+# 2020-07-13, version 7.1.0
 
+- Implement support for recursion (self-referencing) of typed-functions, 
+  new in `typed-function@2.0.0`. This fixes #1885: functions which where 
+  extended with a new data type did not always work. Thanks @nickewing.
 - Fix #1899: documentation on expression trees still using old namespace 
   `math.expression.node.*` instead of `math.*`.
 
