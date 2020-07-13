@@ -1,4 +1,4 @@
-import { isArray, isDenseMatrix, isMatrix } from '../../../../utils/is'
+import { isArray, isMatrix, isDenseMatrix, isSparseMatrix } from '../../../../utils/is'
 import { arraySize } from '../../../../utils/array'
 import { format } from '../../../../utils/string'
 
@@ -13,131 +13,123 @@ export function createSolveValidation ({ DenseMatrix }) {
    * @return {DenseMatrix}        Dense column vector b
    */
   return function solveValidation (m, b, copy) {
-    // matrix size
-    const size = m.size()
-    // validate matrix dimensions
-    if (size.length !== 2) { throw new RangeError('Matrix must be two dimensional (size: ' + format(size) + ')') }
-    // rows & columns
-    const rows = size[0]
-    const columns = size[1]
-    // validate rows & columns
-    if (rows !== columns) { throw new RangeError('Matrix must be square (size: ' + format(size) + ')') }
-    // vars
-    let data, i, bdata
-    // check b is matrix
+    const mSize = m.size()
+
+    if (mSize.length !== 2) {
+      throw new RangeError('Matrix must be two dimensional (size: ' + format(mSize) + ')')
+    }
+
+    const rows = mSize[0]
+    const columns = mSize[1]
+
+    if (rows !== columns) {
+      throw new RangeError('Matrix must be square (size: ' + format(mSize) + ')')
+    }
+
+    let data = []
+
     if (isMatrix(b)) {
-      // matrix size
-      const msize = b.size()
-      // vector
-      if (msize.length === 1) {
-        // check vector length
-        if (msize[0] !== rows) { throw new RangeError('Dimension mismatch. Matrix columns must match vector length.') }
-        // create data array
-        data = []
-        // matrix data (DenseMatrix)
-        bdata = b._data
-        // loop b data
-        for (i = 0; i < rows; i++) {
-          // row array
+      const bSize = b.size()
+      const bdata = b._data
+
+      // 1-dim vector
+      if (bSize.length === 1) {
+        if (bSize[0] !== rows) {
+          throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
+        }
+
+        for (let i = 0; i < rows; i++) {
           data[i] = [bdata[i]]
         }
-        // return Dense Matrix
+
         return new DenseMatrix({
           data: data,
           size: [rows, 1],
           datatype: b._datatype
         })
       }
-      // two dimensions
-      if (msize.length === 2) {
-        // array must be a column vector
-        if (msize[0] !== rows || msize[1] !== 1) { throw new RangeError('Dimension mismatch. Matrix columns must match vector length.') }
-        // check matrix type
+
+      // 2-dim column
+      if (bSize.length === 2) {
+        if (bSize[0] !== rows || bSize[1] !== 1) {
+          throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
+        }
+
         if (isDenseMatrix(b)) {
-          // check a copy is needed
           if (copy) {
-            // create data array
             data = []
-            // matrix data (DenseMatrix)
-            bdata = b._data
-            // loop b data
-            for (i = 0; i < rows; i++) {
-              // row array
+
+            for (let i = 0; i < rows; i++) {
               data[i] = [bdata[i][0]]
             }
-            // return Dense Matrix
+
             return new DenseMatrix({
               data: data,
               size: [rows, 1],
               datatype: b._datatype
             })
           }
-          // b is already a column vector
+
           return b
         }
-        // create data array
-        data = []
-        for (i = 0; i < rows; i++) { data[i] = [0] }
-        // sparse matrix arrays
-        const values = b._values
-        const index = b._index
-        const ptr = b._ptr
-        // loop values in column 0
-        for (let k1 = ptr[1], k = ptr[0]; k < k1; k++) {
-          // row
-          i = index[k]
-          // add to data
-          data[i][0] = values[k]
+
+        if (isSparseMatrix(b)) {
+          for (let i = 0; i < rows; i++) { data[i] = [0] }
+
+          const values = b._values
+          const index = b._index
+          const ptr = b._ptr
+
+          for (let k1 = ptr[1], k = ptr[0]; k < k1; k++) {
+            const i = index[k]
+            data[i][0] = values[k]
+          }
+
+          return new DenseMatrix({
+            data: data,
+            size: [rows, 1],
+            datatype: b._datatype
+          })
         }
-        // return Dense Matrix
-        return new DenseMatrix({
-          data: data,
-          size: [rows, 1],
-          datatype: b._datatype
-        })
       }
-      // throw error
-      throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
+
+      throw new RangeError('Dimension mismatch. The right side has to be either 1- or 2-dimensional vector.')
     }
-    // check b is array
+
     if (isArray(b)) {
-      // size
-      const asize = arraySize(b)
-      // check matrix dimensions, vector
-      if (asize.length === 1) {
-        // check vector length
-        if (asize[0] !== rows) { throw new RangeError('Dimension mismatch. Matrix columns must match vector length.') }
-        // create data array
-        data = []
-        // loop b
-        for (i = 0; i < rows; i++) {
-          // row array
+      const bsize = arraySize(b)
+
+      if (bsize.length === 1) {
+        if (bsize[0] !== rows) {
+          throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
+        }
+
+        for (let i = 0; i < rows; i++) {
           data[i] = [b[i]]
         }
-        // return Dense Matrix
+
         return new DenseMatrix({
           data: data,
           size: [rows, 1]
         })
       }
-      if (asize.length === 2) {
-        // array must be a column vector
-        if (asize[0] !== rows || asize[1] !== 1) { throw new RangeError('Dimension mismatch. Matrix columns must match vector length.') }
-        // create data array
-        data = []
-        // loop b data
-        for (i = 0; i < rows; i++) {
-          // row array
+
+      if (bsize.length === 2) {
+        if (bsize[0] !== rows || bsize[1] !== 1) {
+          throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
+        }
+
+        for (let i = 0; i < rows; i++) {
           data[i] = [b[i][0]]
         }
-        // return Dense Matrix
+
         return new DenseMatrix({
           data: data,
           size: [rows, 1]
         })
       }
-      // throw error
-      throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
+
+      throw new RangeError('Dimension mismatch. The right side has to be either 1- or 2-dimensional vector.')
     }
   }
 }
