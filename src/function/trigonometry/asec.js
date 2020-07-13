@@ -29,7 +29,7 @@ export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} The arc secant of x
    */
-  const asec = typed(name, {
+  return typed(name, {
     number: function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
         return asecNumber(x)
@@ -46,9 +46,7 @@ export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, asec)
+      return deepMap(x, this)
     }
   })
-
-  return asec
 })

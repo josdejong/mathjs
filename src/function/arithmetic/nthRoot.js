@@ -56,7 +56,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
     'Complex number not supported in function nthRoot. ' +
     'Use nthRoots instead.'
   )
-  const nthRoot = typed(name, {
+  return typed(name, {
 
     number: function (x) {
       return nthRootNumber(x, 2)
@@ -76,14 +76,14 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
     'BigNumber, BigNumber': _bigNthRoot,
 
     'Array | Matrix': function (x) {
-      return nthRoot(x, 2)
+      return this(x, 2)
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // sparse + sparse
-        return algorithm06(x, y, nthRoot)
+        return algorithm06(x, y, this)
       } else {
         // throw exception
         throw new Error('Root must be non-zero')
@@ -91,14 +91,14 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, nthRoot, true)
+      return algorithm02(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // dense + sparse
-        return algorithm01(x, y, nthRoot, false)
+        return algorithm01(x, y, this, false)
       } else {
         // throw exception
         throw new Error('Root must be non-zero')
@@ -106,37 +106,37 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, nthRoot)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return nthRoot(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return nthRoot(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return nthRoot(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, nthRoot, false)
+      return algorithm11(x, y, this, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, nthRoot, false)
+      return algorithm14(x, y, this, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // sparse - scalar
-        return algorithm11(y, x, nthRoot, true)
+        return algorithm11(y, x, this, true)
       } else {
         // throw exception
         throw new Error('Root must be non-zero')
@@ -144,21 +144,19 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, nthRoot, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
       // use matrix implementation
-      return nthRoot(matrix(x), y).valueOf()
+      return this(matrix(x), y).valueOf()
     },
 
     'number | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return nthRoot(x, matrix(y)).valueOf()
+      return this(x, matrix(y)).valueOf()
     }
   })
-
-  return nthRoot
 
   /**
    * Calculate the nth root of a for BigNumbers, solve x^root == a

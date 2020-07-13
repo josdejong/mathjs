@@ -49,7 +49,7 @@ export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * @param {... number | BigNumber | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Array | Matrix}                           The least common multiple
    */
-  const lcm = typed(name, {
+  return typed(name, {
     'number, number': lcmNumber,
 
     'BigNumber, BigNumber': _lcmBigNumber,
@@ -59,73 +59,71 @@ export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm06(x, y, lcm)
+      return algorithm06(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, lcm, true)
+      return algorithm02(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm02(x, y, lcm, false)
+      return algorithm02(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, lcm)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return lcm(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return lcm(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return lcm(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, lcm, false)
+      return algorithm11(x, y, this, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, lcm, false)
+      return algorithm14(x, y, this, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
-      return algorithm11(y, x, lcm, true)
+      return algorithm11(y, x, this, true)
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, lcm, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, lcm, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'number | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, lcm, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     },
 
     // TODO: need a smarter notation here
     'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function (a, b, args) {
-      let res = lcm(a, b)
+      let res = this(a, b)
       for (let i = 0; i < args.length; i++) {
-        res = lcm(res, args[i])
+        res = this(res, args[i])
       }
       return res
     }
   })
-
-  return lcm
 
   /**
    * Calculate lcm for two BigNumbers

@@ -50,41 +50,41 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
    * @param  {number | BigNumber} y Amount of shifts
    * @return {number | BigNumber | Array | Matrix} `x` sign-filled shifted right `y` times
    */
-  const rightArithShift = typed(name, {
+  return typed(name, {
 
     'number, number': rightArithShiftNumber,
 
     'BigNumber, BigNumber': rightArithShiftBigNumber,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm08(x, y, rightArithShift, false)
+      return algorithm08(x, y, this, false)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, rightArithShift, true)
+      return algorithm02(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm01(x, y, rightArithShift, false)
+      return algorithm01(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, rightArithShift)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return rightArithShift(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return rightArithShift(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return rightArithShift(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, number | BigNumber': function (x, y) {
@@ -92,7 +92,7 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
       if (equalScalar(y, 0)) {
         return x.clone()
       }
-      return algorithm11(x, y, rightArithShift, false)
+      return algorithm11(x, y, this, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
@@ -100,7 +100,7 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
       if (equalScalar(y, 0)) {
         return x.clone()
       }
-      return algorithm14(x, y, rightArithShift, false)
+      return algorithm14(x, y, this, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
@@ -108,7 +108,7 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
       if (equalScalar(x, 0)) {
         return zeros(y.size(), y.storage())
       }
-      return algorithm10(y, x, rightArithShift, true)
+      return algorithm10(y, x, this, true)
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
@@ -116,19 +116,17 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
       if (equalScalar(x, 0)) {
         return zeros(y.size(), y.storage())
       }
-      return algorithm14(y, x, rightArithShift, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
       // use matrix implementation
-      return rightArithShift(matrix(x), y).valueOf()
+      return this(matrix(x), y).valueOf()
     },
 
     'number | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return rightArithShift(x, matrix(y)).valueOf()
+      return this(x, matrix(y)).valueOf()
     }
   })
-
-  return rightArithShift
 })

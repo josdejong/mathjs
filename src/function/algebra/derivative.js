@@ -77,28 +77,28 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
       return options.simplify ? simplify(res) : res
     },
     'Node, SymbolNode': function (expr, variable) {
-      return derivative(expr, variable, { simplify: true })
+      return this(expr, variable, { simplify: true })
     },
 
     'string, SymbolNode': function (expr, variable) {
-      return derivative(parse(expr), variable)
+      return this(parse(expr), variable)
     },
     'string, SymbolNode, Object': function (expr, variable, options) {
-      return derivative(parse(expr), variable, options)
+      return this(parse(expr), variable, options)
     },
 
     'string, string': function (expr, variable) {
-      return derivative(parse(expr), parse(variable))
+      return this(parse(expr), parse(variable))
     },
     'string, string, Object': function (expr, variable, options) {
-      return derivative(parse(expr), parse(variable), options)
+      return this(parse(expr), parse(variable), options)
     },
 
     'Node, string': function (expr, variable) {
-      return derivative(expr, parse(variable))
+      return this(expr, parse(variable))
     },
     'Node, string, Object': function (expr, variable, options) {
-      return derivative(expr, parse(variable), options)
+      return this(expr, parse(variable), options)
     }
 
     // TODO: replace the 8 signatures above with 4 as soon as typed-function supports optional arguments

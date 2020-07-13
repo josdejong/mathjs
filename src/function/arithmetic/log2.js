@@ -31,7 +31,7 @@ export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the 2-base logarithm of `x`
    */
-  const log2 = typed(name, {
+  return typed(name, {
     number: function (x) {
       if (x >= 0 || config.predictable) {
         return log2Number(x)
@@ -53,7 +53,7 @@ export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, log2)
+      return deepMap(x, this)
     }
   })
 
@@ -70,6 +70,4 @@ export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       Math.atan2(x.im, x.re) / Math.LN2
     )
   }
-
-  return log2
 })

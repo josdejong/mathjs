@@ -31,7 +31,7 @@ export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @return {boolean | Array | Matrix}
    *            Returns true when input is a zero or empty value.
    */
-  const not = typed(name, {
+  return typed(name, {
     number: notNumber,
 
     Complex: function (x) {
@@ -43,13 +43,11 @@ export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     },
 
     Unit: function (x) {
-      return x.value !== null ? not(x.value) : true
+      return x.value !== null ? this(x.value) : true
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, not)
+      return deepMap(x, this)
     }
   })
-
-  return not
 })

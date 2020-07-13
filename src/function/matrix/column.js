@@ -27,15 +27,13 @@ export const createColumn = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @param {number} column           The index of the column
    * @return {Array | Matrix}         The retrieved column
    */
-  const column = typed(name, {
+  return typed(name, {
     'Matrix, number': _column,
 
     'Array, number': function (value, column) {
       return _column(matrix(clone(value)), column).valueOf()
     }
   })
-
-  return column
 
   /**
    * Retrieve a column of a matrix

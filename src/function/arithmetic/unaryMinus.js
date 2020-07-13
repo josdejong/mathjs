@@ -29,7 +29,7 @@ export const createUnaryMinus = /* #__PURE__ */ factory(name, dependencies, ({ t
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Number to be inverted.
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
    */
-  const unaryMinus = typed(name, {
+  return typed(name, {
     number: unaryMinusNumber,
 
     Complex: function (x) {
@@ -46,17 +46,15 @@ export const createUnaryMinus = /* #__PURE__ */ factory(name, dependencies, ({ t
 
     Unit: function (x) {
       const res = x.clone()
-      res.value = unaryMinus(x.value)
+      res.value = this(x.value)
       return res
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since unaryMinus(0) = 0
-      return deepMap(x, unaryMinus, true)
+      return deepMap(x, this, true)
     }
 
     // TODO: add support for string
   })
-
-  return unaryMinus
 })

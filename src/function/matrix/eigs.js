@@ -35,7 +35,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
    * @param {Array | Matrix} x  Matrix to be diagonalized
    * @return {{values: Array, vectors: Array} | {values: Matrix, vectors: Matrix}} Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix with eigenvectors as columns).
    */
-  const eigs = typed('eigs', {
+  return typed('eigs', {
 
     Array: function (x) {
       // check array size
@@ -370,6 +370,4 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
 
     return array
   }
-
-  return eigs
 })

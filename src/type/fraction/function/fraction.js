@@ -30,7 +30,7 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *            the fraction
    * @return {Fraction | Array | Matrix} Returns a fraction
    */
-  const fraction = typed('fraction', {
+  return typed('fraction', {
     number: function (x) {
       if (!isFinite(x) || isNaN(x)) {
         throw new Error(x + ' cannot be represented as a fraction')
@@ -64,9 +64,7 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, fraction)
+      return deepMap(x, this)
     }
   })
-
-  return fraction
 })

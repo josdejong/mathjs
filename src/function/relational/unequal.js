@@ -64,7 +64,7 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the compared values are unequal, else returns false
    */
-  const unequal = typed('unequal', {
+  return typed('unequal', {
 
     'any, any': function (x, y) {
       // strict equality for null and undefined?
@@ -94,17 +94,17 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return unequal(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return unequal(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return unequal(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
@@ -137,8 +137,6 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
   function _unequal (x, y) {
     return !equalScalar(x, y)
   }
-
-  return unequal
 })
 
 export const createUnequalNumber = factory(name, ['typed', 'equalScalar'], ({ typed, equalScalar }) => {

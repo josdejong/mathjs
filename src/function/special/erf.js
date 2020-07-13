@@ -32,7 +32,7 @@ export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @param {number | Array | Matrix} x   A real number
    * @return {number | Array | Matrix}    The erf of `x`
    */
-  const erf = typed('name', {
+  return typed('name', {
     number: function (x) {
       const y = Math.abs(x)
 
@@ -49,7 +49,7 @@ export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     },
 
     'Array | Matrix': function (n) {
-      return deepMap(n, erf)
+      return deepMap(n, this)
     }
 
     // TODO: For complex numbers, use the approximation for the Faddeeva function
@@ -123,8 +123,6 @@ export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     const del = (y - ysq) * (y + ysq)
     return Math.exp(-ysq * ysq) * Math.exp(-del) * result
   }
-
-  return erf
 })
 
 /**

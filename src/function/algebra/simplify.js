@@ -154,47 +154,47 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    */
   const simplify = typed('simplify', {
     string: function (expr) {
-      return simplify(parse(expr), simplify.rules, {}, {})
+      return this(parse(expr), this.rules, {}, {})
     },
 
     'string, Object': function (expr, scope) {
-      return simplify(parse(expr), simplify.rules, scope, {})
+      return this(parse(expr), this.rules, scope, {})
     },
 
     'string, Object, Object': function (expr, scope, options) {
-      return simplify(parse(expr), simplify.rules, scope, options)
+      return this(parse(expr), this.rules, scope, options)
     },
 
     'string, Array': function (expr, rules) {
-      return simplify(parse(expr), rules, {}, {})
+      return this(parse(expr), rules, {}, {})
     },
 
     'string, Array, Object': function (expr, rules, scope) {
-      return simplify(parse(expr), rules, scope, {})
+      return this(parse(expr), rules, scope, {})
     },
 
     'string, Array, Object, Object': function (expr, rules, scope, options) {
-      return simplify(parse(expr), rules, scope, options)
+      return this(parse(expr), rules, scope, options)
     },
 
     'Node, Object': function (expr, scope) {
-      return simplify(expr, simplify.rules, scope, {})
+      return this(expr, this.rules, scope, {})
     },
 
     'Node, Object, Object': function (expr, scope, options) {
-      return simplify(expr, simplify.rules, scope, options)
+      return this(expr, this.rules, scope, options)
     },
 
     Node: function (expr) {
-      return simplify(expr, simplify.rules, {}, {})
+      return this(expr, this.rules, {}, {})
     },
 
     'Node, Array': function (expr, rules) {
-      return simplify(expr, rules, {}, {})
+      return this(expr, rules, {}, {})
     },
 
     'Node, Array, Object': function (expr, rules, scope) {
-      return simplify(expr, rules, scope, {})
+      return this(expr, rules, scope, {})
     },
 
     'Node, Array, Object, Object': function (expr, rules, scope, options) {

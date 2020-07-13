@@ -39,7 +39,7 @@ export const createApply = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *                                 return a number.
    * @return {Array | Matrix} res    The residual matrix with the function applied over some dimension.
    */
-  const apply = typed(name, {
+  return typed(name, {
     'Array | Matrix, number | BigNumber, function': function (mat, dim, callback) {
       if (!isInteger(dim)) {
         throw new TypeError('Integer number expected for dimension')
@@ -57,8 +57,6 @@ export const createApply = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
     }
   })
-
-  return apply
 })
 
 /**

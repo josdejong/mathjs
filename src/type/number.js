@@ -69,7 +69,7 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, number)
+      return deepMap(x, this)
     }
   })
 

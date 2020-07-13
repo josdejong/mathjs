@@ -31,7 +31,7 @@ export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Cosine of x
    */
-  const cos = typed(name, {
+  return typed(name, {
     number: Math.cos,
 
     Complex: function (x) {
@@ -46,13 +46,11 @@ export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cos is no angle')
       }
-      return cos(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, cos)
+      return deepMap(x, this)
     }
   })
-
-  return cos
 })

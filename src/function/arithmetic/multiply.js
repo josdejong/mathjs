@@ -19,128 +19,6 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
   const algorithm14 = createAlgorithm14({ typed })
 
-  /**
-   * Multiply two or more values, `x * y`.
-   * For matrices, the matrix product is calculated.
-   *
-   * Syntax:
-   *
-   *    math.multiply(x, y)
-   *    math.multiply(x, y, z, ...)
-   *
-   * Examples:
-   *
-   *    math.multiply(4, 5.2)        // returns number 20.8
-   *    math.multiply(2, 3, 4)       // returns number 24
-   *
-   *    const a = math.complex(2, 3)
-   *    const b = math.complex(4, 1)
-   *    math.multiply(a, b)          // returns Complex 5 + 14i
-   *
-   *    const c = [[1, 2], [4, 3]]
-   *    const d = [[1, 2, 3], [3, -4, 7]]
-   *    math.multiply(c, d)          // returns Array [[7, -6, 17], [13, -4, 33]]
-   *
-   *    const e = math.unit('2.1 km')
-   *    math.multiply(3, e)          // returns Unit 6.3 km
-   *
-   * See also:
-   *
-   *    divide, prod, cross, dot
-   *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First value to multiply
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
-   */
-  const multiply = typed(name, extend({
-    // we extend the signatures of multiplyScalar with signatures dealing with matrices
-
-    'Array, Array': function (x, y) {
-      // check dimensions
-      _validateMatrixDimensions(arraySize(x), arraySize(y))
-
-      // use dense matrix implementation
-      const m = multiply(matrix(x), matrix(y))
-      // return array or scalar
-      return isMatrix(m) ? m.valueOf() : m
-    },
-
-    'Matrix, Matrix': function (x, y) {
-      // dimensions
-      const xsize = x.size()
-      const ysize = y.size()
-
-      // check dimensions
-      _validateMatrixDimensions(xsize, ysize)
-
-      // process dimensions
-      if (xsize.length === 1) {
-        // process y dimensions
-        if (ysize.length === 1) {
-          // Vector * Vector
-          return _multiplyVectorVector(x, y, xsize[0])
-        }
-        // Vector * Matrix
-        return _multiplyVectorMatrix(x, y)
-      }
-      // process y dimensions
-      if (ysize.length === 1) {
-        // Matrix * Vector
-        return _multiplyMatrixVector(x, y)
-      }
-      // Matrix * Matrix
-      return _multiplyMatrixMatrix(x, y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use Matrix * Matrix implementation
-      return multiply(x, matrix(y))
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use Matrix * Matrix implementation
-      return multiply(matrix(x, y.storage()), y)
-    },
-
-    'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, multiplyScalar, false)
-    },
-
-    'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, multiplyScalar, false)
-    },
-
-    'any, SparseMatrix': function (x, y) {
-      return algorithm11(y, x, multiplyScalar, true)
-    },
-
-    'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, multiplyScalar, true)
-    },
-
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, multiplyScalar, false).valueOf()
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, multiplyScalar, true).valueOf()
-    },
-
-    'any, any': multiplyScalar,
-
-    'any, any, ...any': function (x, y, rest) {
-      let result = multiply(x, y)
-
-      for (let i = 0; i < rest.length; i++) {
-        result = multiply(result, rest[i])
-      }
-
-      return result
-    }
-  }, multiplyScalar.signatures))
-
   function _validateMatrixDimensions (size1, size2) {
     // check left operand dimensions
     switch (size1.length) {
@@ -883,5 +761,125 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return c
   }
 
-  return multiply
+  /**
+   * Multiply two or more values, `x * y`.
+   * For matrices, the matrix product is calculated.
+   *
+   * Syntax:
+   *
+   *    math.multiply(x, y)
+   *    math.multiply(x, y, z, ...)
+   *
+   * Examples:
+   *
+   *    math.multiply(4, 5.2)        // returns number 20.8
+   *    math.multiply(2, 3, 4)       // returns number 24
+   *
+   *    const a = math.complex(2, 3)
+   *    const b = math.complex(4, 1)
+   *    math.multiply(a, b)          // returns Complex 5 + 14i
+   *
+   *    const c = [[1, 2], [4, 3]]
+   *    const d = [[1, 2, 3], [3, -4, 7]]
+   *    math.multiply(c, d)          // returns Array [[7, -6, 17], [13, -4, 33]]
+   *
+   *    const e = math.unit('2.1 km')
+   *    math.multiply(3, e)          // returns Unit 6.3 km
+   *
+   * See also:
+   *
+   *    divide, prod, cross, dot
+   *
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First value to multiply
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
+   */
+  return typed(name, extend({
+    // we extend the signatures of multiplyScalar with signatures dealing with matrices
+
+    'Array, Array': function (x, y) {
+      // check dimensions
+      _validateMatrixDimensions(arraySize(x), arraySize(y))
+
+      // use dense matrix implementation
+      const m = this(matrix(x), matrix(y))
+      // return array or scalar
+      return isMatrix(m) ? m.valueOf() : m
+    },
+
+    'Matrix, Matrix': function (x, y) {
+      // dimensions
+      const xsize = x.size()
+      const ysize = y.size()
+
+      // check dimensions
+      _validateMatrixDimensions(xsize, ysize)
+
+      // process dimensions
+      if (xsize.length === 1) {
+        // process y dimensions
+        if (ysize.length === 1) {
+          // Vector * Vector
+          return _multiplyVectorVector(x, y, xsize[0])
+        }
+        // Vector * Matrix
+        return _multiplyVectorMatrix(x, y)
+      }
+      // process y dimensions
+      if (ysize.length === 1) {
+        // Matrix * Vector
+        return _multiplyMatrixVector(x, y)
+      }
+      // Matrix * Matrix
+      return _multiplyMatrixMatrix(x, y)
+    },
+
+    'Matrix, Array': function (x, y) {
+      // use Matrix * Matrix implementation
+      return this(x, matrix(y))
+    },
+
+    'Array, Matrix': function (x, y) {
+      // use Matrix * Matrix implementation
+      return this(matrix(x, y.storage()), y)
+    },
+
+    'SparseMatrix, any': function (x, y) {
+      return algorithm11(x, y, multiplyScalar, false)
+    },
+
+    'DenseMatrix, any': function (x, y) {
+      return algorithm14(x, y, multiplyScalar, false)
+    },
+
+    'any, SparseMatrix': function (x, y) {
+      return algorithm11(y, x, multiplyScalar, true)
+    },
+
+    'any, DenseMatrix': function (x, y) {
+      return algorithm14(y, x, multiplyScalar, true)
+    },
+
+    'Array, any': function (x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(x), y, multiplyScalar, false).valueOf()
+    },
+
+    'any, Array': function (x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(y), x, multiplyScalar, true).valueOf()
+    },
+
+    'any, any': multiplyScalar,
+
+    'any, any, ...any': function (x, y, rest) {
+      let result = this(x, y)
+
+      for (let i = 0; i < rest.length; i++) {
+        result = this(result, rest[i])
+      }
+
+      return result
+    }
+  }, multiplyScalar.signatures))
 })

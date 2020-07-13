@@ -79,7 +79,7 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
    * @return {number} Returns the result of the comparison:
    *                  1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  const compareNatural = typed(name, {
+  return typed(name, {
     'any, any': function (x, y) {
       const typeX = typeOf(x)
       const typeY = typeOf(y)
@@ -100,7 +100,7 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
       // matrix types
       if (typeX === 'Array' || typeX === 'Matrix' ||
           typeY === 'Array' || typeY === 'Matrix') {
-        c = compareMatricesAndArrays(x, y)
+        c = compareMatricesAndArrays(this, x, y)
         if (c !== 0) {
           return c
         } else {
@@ -119,11 +119,11 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
 
       if (typeX === 'Unit') {
         if (x.equalBase(y)) {
-          return compareNatural(x.value, y.value)
+          return this(x.value, y.value)
         }
 
         // compare by units
-        return compareArrays(x.formatUnits(), y.formatUnits())
+        return compareArrays(this, x.formatUnits(), y.formatUnits())
       }
 
       if (typeX === 'boolean') {
@@ -135,7 +135,7 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
       }
 
       if (typeX === 'Object') {
-        return compareObjects(x, y)
+        return compareObjects(this, x, y)
       }
 
       if (typeX === 'null') {
@@ -158,36 +158,36 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
    * @param {Array | SparseMatrix | DenseMatrix | *} y
    * @returns {number} Returns the comparison result: -1, 0, or 1
    */
-  function compareMatricesAndArrays (x, y) {
+  function compareMatricesAndArrays (compareNatural, x, y) {
     if (isSparseMatrix(x) && isSparseMatrix(y)) {
-      return compareArrays(x.toJSON().values, y.toJSON().values)
+      return compareArrays(compareNatural, x.toJSON().values, y.toJSON().values)
     }
     if (isSparseMatrix(x)) {
       // note: convert to array is expensive
-      return compareMatricesAndArrays(x.toArray(), y)
+      return compareMatricesAndArrays(compareNatural, x.toArray(), y)
     }
     if (isSparseMatrix(y)) {
       // note: convert to array is expensive
-      return compareMatricesAndArrays(x, y.toArray())
+      return compareMatricesAndArrays(compareNatural, x, y.toArray())
     }
 
     // convert DenseArray into Array
     if (isDenseMatrix(x)) {
-      return compareMatricesAndArrays(x.toJSON().data, y)
+      return compareMatricesAndArrays(compareNatural, x.toJSON().data, y)
     }
     if (isDenseMatrix(y)) {
-      return compareMatricesAndArrays(x, y.toJSON().data)
+      return compareMatricesAndArrays(compareNatural, x, y.toJSON().data)
     }
 
     // convert scalars to array
     if (!Array.isArray(x)) {
-      return compareMatricesAndArrays([x], y)
+      return compareMatricesAndArrays(compareNatural, [x], y)
     }
     if (!Array.isArray(y)) {
-      return compareMatricesAndArrays(x, [y])
+      return compareMatricesAndArrays(compareNatural, x, [y])
     }
 
-    return compareArrays(x, y)
+    return compareArrays(compareNatural, x, y)
   }
 
   /**
@@ -201,7 +201,7 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
    * @param {Array} y
    * @returns {number} Returns the comparison result: -1, 0, or 1
    */
-  function compareArrays (x, y) {
+  function compareArrays (compareNatural, x, y) {
     // compare each value
     for (let i = 0, ii = Math.min(x.length, y.length); i < ii; i++) {
       const v = compareNatural(x[i], y[i])
@@ -228,14 +228,14 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
    * @param {Object} y
    * @returns {number} Returns the comparison result: -1, 0, or 1
    */
-  function compareObjects (x, y) {
+  function compareObjects (compareNatural, x, y) {
     const keysX = Object.keys(x)
     const keysY = Object.keys(y)
 
     // compare keys
     keysX.sort(naturalSort)
     keysY.sort(naturalSort)
-    const c = compareArrays(keysX, keysY)
+    const c = compareArrays(compareNatural, keysX, keysY)
     if (c !== 0) {
       return c
     }
@@ -250,8 +250,6 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
 
     return 0
   }
-
-  return compareNatural
 })
 
 /**
