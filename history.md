@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20200713-version-710">2020-07-13, version 7.1.0 <a href="#20200713-version-710" title="Permalink">#</a></h1>
+
+- Implement support for recursion (self-referencing) of typed-functions, 
+  new in `typed-function@2.0.0`. This fixes <a href="https://github.com/josdejong/mathjs/issues/1885">#1885</a>: functions which where 
+  extended with a new data type did not always work. Thanks <a href="https://github.com/nickewing">@nickewing</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1899">#1899</a>: documentation on expression trees still using old namespace 
+  `math.expression.node.*` instead of `math.*`.
+
+
 <h1 id="20200624-version-702">2020-06-24, version 7.0.2 <a href="#20200624-version-702" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1882">#1882</a>: have `DenseMatrix.resize` and `SparseMatrix.resize` accept 

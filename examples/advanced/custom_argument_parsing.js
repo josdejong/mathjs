@@ -40,7 +40,7 @@ function integrate (f, start, end, step) {
  *     math.evaluate('integrate(2*x, x, 0, 2)')
  *     math.evaluate('integrate(2*x, x, 0, 2, 0.01)')
  *
- * @param {Array.<math.expression.node.Node>} args
+ * @param {Array.<math.Node>} args
  *            Expects the following arguments: [f, x, start, end, step]
  * @param {Object} math
  * @param {Object} [scope]

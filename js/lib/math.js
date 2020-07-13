@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 7.0.2
- * @date    2020-06-24
+ * @version 7.1.0
+ * @date    2020-07-13
  *
  * @license
  * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
@@ -5778,7 +5778,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             args[last] = arguments[last].map(compiledConversions[last]);
           }
 
-          return fn.apply(null, args);
+          return fn.apply(this, args);
         }
       }
 
@@ -5787,7 +5787,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var offset = params.length - 1;
 
         fnPreprocess = function preprocessRestParams () {
-          return fnConvert.apply(null,
+          return fnConvert.apply(this,
               slice(arguments, 0, offset).concat([slice(arguments, offset)]));
         }
       }
@@ -6054,7 +6054,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       // compile the functions
       var fns = signatures.map(function(signature) {
-        return compileArgsPreprocessing(signature.params, signature.fn)
+        return compileArgsPreprocessing(signature.params, signature.fn);
       });
 
       var fn0 = ok0 ? fns[0] : undef;
@@ -6079,7 +6079,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         for (var i = iStart; i < iEnd; i++) {
           if (tests[i](arguments)) {
-            return fns[i].apply(null, arguments);
+            return fns[i].apply(this, arguments);
           }
         }
 
@@ -6091,14 +6091,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       var fn = function fn(arg0, arg1) {
         'use strict';
 
-        if (arguments.length === len0 && test00(arg0) && test01(arg1)) { return fn0.apply(null, arguments); }
-        if (arguments.length === len1 && test10(arg0) && test11(arg1)) { return fn1.apply(null, arguments); }
-        if (arguments.length === len2 && test20(arg0) && test21(arg1)) { return fn2.apply(null, arguments); }
-        if (arguments.length === len3 && test30(arg0) && test31(arg1)) { return fn3.apply(null, arguments); }
-        if (arguments.length === len4 && test40(arg0) && test41(arg1)) { return fn4.apply(null, arguments); }
-        if (arguments.length === len5 && test50(arg0) && test51(arg1)) { return fn5.apply(null, arguments); }
+        if (arguments.length === len0 && test00(arg0) && test01(arg1)) { return fn0.apply(fn, arguments); }
+        if (arguments.length === len1 && test10(arg0) && test11(arg1)) { return fn1.apply(fn, arguments); }
+        if (arguments.length === len2 && test20(arg0) && test21(arg1)) { return fn2.apply(fn, arguments); }
+        if (arguments.length === len3 && test30(arg0) && test31(arg1)) { return fn3.apply(fn, arguments); }
+        if (arguments.length === len4 && test40(arg0) && test41(arg1)) { return fn4.apply(fn, arguments); }
+        if (arguments.length === len5 && test50(arg0) && test51(arg1)) { return fn5.apply(fn, arguments); }
 
-        return generic.apply(null, arguments);
+        return generic.apply(fn, arguments);
       }
 
       // attach name the typed function
@@ -6398,6 +6398,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   return create();
 }));
+
 
 /***/ }),
 /* 14 */
@@ -14581,7 +14582,7 @@ var createIsInteger = /* #__PURE__ */Object(factory["a" /* factory */])(isIntege
    * @return {boolean}  Returns true when `x` contains a numeric, integer value.
    *                    Throws an error in case of an unknown data type.
    */
-  var isInteger = typed(isInteger_name, {
+  return typed(isInteger_name, {
     number: utils_number["i" /* isInteger */],
     // TODO: what to do with isInteger(add(0.1, 0.2))  ?
     BigNumber: function BigNumber(x) {
@@ -14591,10 +14592,9 @@ var createIsInteger = /* #__PURE__ */Object(factory["a" /* factory */])(isIntege
       return x.d === 1 && isFinite(x.n);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, isInteger);
+      return deepMap(x, this);
     }
   });
-  return isInteger;
 });
 // CONCATENATED MODULE: ./src/plain/number/utils.js
 
@@ -14657,7 +14657,7 @@ var createIsNegative = /* #__PURE__ */Object(factory["a" /* factory */])(isNegat
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
-  var isNegative = typed(isNegative_name, {
+  return typed(isNegative_name, {
     number: isNegativeNumber,
     BigNumber: function BigNumber(x) {
       return x.isNeg() && !x.isZero() && !x.isNaN();
@@ -14666,13 +14666,12 @@ var createIsNegative = /* #__PURE__ */Object(factory["a" /* factory */])(isNegat
       return x.s < 0; // It's enough to decide on the sign
     },
     Unit: function Unit(x) {
-      return isNegative(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, isNegative);
+      return deepMap(x, this);
     }
   });
-  return isNegative;
 });
 // CONCATENATED MODULE: ./src/function/utils/isNumeric.js
 
@@ -14711,7 +14710,7 @@ var createIsNumeric = /* #__PURE__ */Object(factory["a" /* factory */])(isNumeri
    *                    `Fraction`, or `boolean`. Returns false for other types.
    *                    Throws an error in case of unknown types.
    */
-  var isNumeric = typed(isNumeric_name, {
+  return typed(isNumeric_name, {
     'number | BigNumber | Fraction | boolean': function numberBigNumberFractionBoolean() {
       return true;
     },
@@ -14719,10 +14718,9 @@ var createIsNumeric = /* #__PURE__ */Object(factory["a" /* factory */])(isNumeri
       return false;
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, isNumeric);
+      return deepMap(x, this);
     }
   });
-  return isNumeric;
 });
 // CONCATENATED MODULE: ./src/function/utils/hasNumericValue.js
 
@@ -14810,7 +14808,7 @@ var createIsPositive = /* #__PURE__ */Object(factory["a" /* factory */])(isPosit
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
-  var isPositive = typed(isPositive_name, {
+  return typed(isPositive_name, {
     number: isPositiveNumber,
     BigNumber: function BigNumber(x) {
       return !x.isNeg() && !x.isZero() && !x.isNaN();
@@ -14819,13 +14817,12 @@ var createIsPositive = /* #__PURE__ */Object(factory["a" /* factory */])(isPosit
       return x.s > 0 && x.n > 0;
     },
     Unit: function Unit(x) {
-      return isPositive(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, isPositive);
+      return deepMap(x, this);
     }
   });
-  return isPositive;
 });
 // CONCATENATED MODULE: ./src/function/utils/isZero.js
 
@@ -14869,7 +14866,7 @@ var createIsZero = /* #__PURE__ */Object(factory["a" /* factory */])(isZero_name
    * @return {boolean}  Returns true when `x` is zero.
    *                    Throws an error in case of an unknown data type.
    */
-  var isZero = typed(isZero_name, {
+  return typed(isZero_name, {
     number: isZeroNumber,
     BigNumber: function BigNumber(x) {
       return x.isZero();
@@ -14881,13 +14878,12 @@ var createIsZero = /* #__PURE__ */Object(factory["a" /* factory */])(isZero_name
       return x.d === 1 && x.n === 0;
     },
     Unit: function Unit(x) {
-      return isZero(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, isZero);
+      return deepMap(x, this);
     }
   });
-  return isZero;
 });
 // CONCATENATED MODULE: ./src/function/utils/isNaN.js
 
@@ -15092,7 +15088,7 @@ var createEqualScalar = /* #__PURE__ */Object(factory["a" /* factory */])(equalS
    * @return {boolean}                                                  Returns true when the compared values are equal, else returns false
    * @private
    */
-  var equalScalar = typed(equalScalar_name, {
+  return typed(equalScalar_name, {
     'boolean, boolean': function booleanBoolean(x, y) {
       return x === y;
     },
@@ -15113,10 +15109,9 @@ var createEqualScalar = /* #__PURE__ */Object(factory["a" /* factory */])(equalS
         throw new Error('Cannot compare units with different base');
       }
 
-      return equalScalar(x.value, y.value);
+      return this(x.value, y.value);
     }
   });
-  return equalScalar;
 });
 var createEqualScalarNumber = Object(factory["a" /* factory */])(equalScalar_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
@@ -16727,7 +16722,7 @@ var createNumber = /* #__PURE__ */Object(factory["a" /* factory */])(number_name
       return unit.toNumber(valuelessUnit);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, number);
+      return deepMap(x, this);
     }
   }); // reviver function to parse a JSON object like:
   //
@@ -16775,7 +16770,7 @@ var createString = /* #__PURE__ */Object(factory["a" /* factory */])(string_name
    * @param {* | Array | Matrix | null} [value]  A value to convert to a string
    * @return {string | Array | Matrix} The created string
    */
-  var string = typed(string_name, {
+  return typed(string_name, {
     '': function _() {
       return '';
     },
@@ -16790,13 +16785,12 @@ var createString = /* #__PURE__ */Object(factory["a" /* factory */])(string_name
       return x;
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, string);
+      return deepMap(x, this);
     },
     any: function any(x) {
       return String(x);
     }
   });
-  return string;
 });
 // CONCATENATED MODULE: ./src/type/boolean.js
 
@@ -16833,7 +16827,7 @@ var createBoolean = /* #__PURE__ */Object(factory["a" /* factory */])(boolean_na
    * @param {string | number | boolean | Array | Matrix | null} value  A value of any type
    * @return {boolean | Array | Matrix} The boolean value
    */
-  var bool = typed(boolean_name, {
+  return typed(boolean_name, {
     '': function _() {
       return false;
     },
@@ -16869,10 +16863,9 @@ var createBoolean = /* #__PURE__ */Object(factory["a" /* factory */])(boolean_na
       throw new Error('Cannot convert "' + x + '" to a boolean');
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, bool);
+      return deepMap(x, this);
     }
   });
-  return bool;
 });
 // CONCATENATED MODULE: ./src/type/bignumber/function/bignumber.js
 
@@ -16908,7 +16901,7 @@ var createBignumber = /* #__PURE__ */Object(factory["a" /* factory */])(bignumbe
    *                                                    0 by default.
    * @returns {BigNumber} The created bignumber
    */
-  var bignumber = typed('bignumber', {
+  return typed('bignumber', {
     '': function _() {
       return new BigNumber(0);
     },
@@ -16930,10 +16923,9 @@ var createBignumber = /* #__PURE__ */Object(factory["a" /* factory */])(bignumbe
       return new BigNumber(0);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, bignumber);
+      return deepMap(x, this);
     }
   });
-  return bignumber;
 });
 // CONCATENATED MODULE: ./src/type/complex/function/complex.js
 
@@ -16982,7 +16974,7 @@ var createComplex = /* #__PURE__ */Object(factory["a" /* factory */])(complex_na
    *            Arguments specifying the real and imaginary part of the complex number
    * @return {Complex | Array | Matrix} Returns a complex value
    */
-  var complex = typed('complex', {
+  return typed('complex', {
     '': function _() {
       return Complex.ZERO;
     },
@@ -17020,10 +17012,9 @@ var createComplex = /* #__PURE__ */Object(factory["a" /* factory */])(complex_na
       throw new Error('Expected object with properties (re and im) or (r and phi) or (abs and arg)');
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, complex);
+      return deepMap(x, this);
     }
   });
-  return complex;
 });
 // CONCATENATED MODULE: ./src/type/fraction/function/fraction.js
 
@@ -17059,7 +17050,7 @@ var createFraction = /* #__PURE__ */Object(factory["a" /* factory */])(fraction_
    *            the fraction
    * @return {Fraction | Array | Matrix} Returns a fraction
    */
-  var fraction = typed('fraction', {
+  return typed('fraction', {
     number: function number(x) {
       if (!isFinite(x) || isNaN(x)) {
         throw new Error(x + ' cannot be represented as a fraction');
@@ -17086,10 +17077,9 @@ var createFraction = /* #__PURE__ */Object(factory["a" /* factory */])(fraction_
       return new Fraction(x);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, fraction);
+      return deepMap(x, this);
     }
   });
-  return fraction;
 });
 // CONCATENATED MODULE: ./src/type/matrix/function/matrix.js
 
@@ -17575,7 +17565,7 @@ var createUnaryMinus = /* #__PURE__ */Object(factory["a" /* factory */])(unaryMi
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Number to be inverted.
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
    */
-  var unaryMinus = typed(unaryMinus_name, {
+  return typed(unaryMinus_name, {
     number: unaryMinusNumber,
     Complex: function Complex(x) {
       return x.neg();
@@ -17588,16 +17578,15 @@ var createUnaryMinus = /* #__PURE__ */Object(factory["a" /* factory */])(unaryMi
     },
     Unit: function Unit(x) {
       var res = x.clone();
-      res.value = unaryMinus(x.value);
+      res.value = this(x.value);
       return res;
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since unaryMinus(0) = 0
-      return deepMap(x, unaryMinus, true);
+      return deepMap(x, this, true);
     } // TODO: add support for string
 
   });
-  return unaryMinus;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/unaryPlus.js
 
@@ -17634,7 +17623,7 @@ var createUnaryPlus = /* #__PURE__ */Object(factory["a" /* factory */])(unaryPlu
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Returns the input value when numeric, converts to a number when input is non-numeric.
    */
-  var unaryPlus = typed(unaryPlus_name, {
+  return typed(unaryPlus_name, {
     number: unaryPlusNumber,
     Complex: function Complex(x) {
       return x; // complex numbers are immutable
@@ -17650,14 +17639,13 @@ var createUnaryPlus = /* #__PURE__ */Object(factory["a" /* factory */])(unaryPlu
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since unaryPlus(0) = 0
-      return deepMap(x, unaryPlus, true);
+      return deepMap(x, this, true);
     },
     'boolean | string': function booleanString(x) {
       // convert to a number or bignumber
       return config.number === 'BigNumber' ? new BigNumber(+x) : +x;
     }
   });
-  return unaryPlus;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/abs.js
 
@@ -17692,7 +17680,7 @@ var createAbs = /* #__PURE__ */Object(factory["a" /* factory */])(abs_name, abs_
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
    *            Absolute value of `x`
    */
-  var abs = typed(abs_name, {
+  return typed(abs_name, {
     number: absNumber,
     Complex: function Complex(x) {
       return x.abs();
@@ -17705,13 +17693,12 @@ var createAbs = /* #__PURE__ */Object(factory["a" /* factory */])(abs_name, abs_
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since abs(0) = 0
-      return deepMap(x, abs, true);
+      return deepMap(x, this, true);
     },
     Unit: function Unit(x) {
       return x.abs();
     }
   });
-  return abs;
 });
 // CONCATENATED MODULE: ./src/function/matrix/apply.js
 
@@ -17756,7 +17743,7 @@ var createApply = /* #__PURE__ */Object(factory["a" /* factory */])(apply_name, 
    *                                 return a number.
    * @return {Array | Matrix} res    The residual matrix with the function applied over some dimension.
    */
-  var apply = typed(apply_name, {
+  return typed(apply_name, {
     'Array | Matrix, number | BigNumber, function': function ArrayMatrixNumberBigNumberFunction(mat, dim, callback) {
       if (!isInteger(dim)) {
         throw new TypeError('Integer number expected for dimension');
@@ -17775,7 +17762,6 @@ var createApply = /* #__PURE__ */Object(factory["a" /* factory */])(apply_name, 
       }
     }
   });
-  return apply;
 });
 /**
  * Recursively reduce a matrix
@@ -17858,7 +17844,7 @@ var createAddScalar = /* #__PURE__ */Object(factory["a" /* factory */])(addScala
    * @return {number | BigNumber | Fraction | Complex | Unit}     Sum of `x` and `y`
    * @private
    */
-  var addScalar = typed(addScalar_name, {
+  return typed(addScalar_name, {
     'number, number': addNumber,
     'Complex, Complex': function ComplexComplex(x, y) {
       return x.add(y);
@@ -17874,12 +17860,11 @@ var createAddScalar = /* #__PURE__ */Object(factory["a" /* factory */])(addScala
       if (y.value === null || y.value === undefined) throw new Error('Parameter y contains a unit with undefined value');
       if (!x.equalBase(y)) throw new Error('Units do not match');
       var res = x.clone();
-      res.value = addScalar(res.value, y.value);
+      res.value = this(res.value, y.value);
       res.fixPrefix = false;
       return res;
     }
   });
-  return addScalar;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/cbrt.js
 
@@ -17937,7 +17922,7 @@ var createCbrt = /* #__PURE__ */Object(factory["a" /* factory */])(cbrt_name, cb
    * @return {number | BigNumber | Complex | Unit | Array | Matrix}
    *            Returns the cubic root of `x`
    */
-  var cbrt = typed(cbrt_name, {
+  return typed(cbrt_name, {
     number: cbrtNumber,
     // note: signature 'number, boolean' is also supported,
     //       created by typed as it knows how to convert number to Complex
@@ -17949,7 +17934,7 @@ var createCbrt = /* #__PURE__ */Object(factory["a" /* factory */])(cbrt_name, cb
     Unit: _cbrtUnit,
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since cbrt(0) = 0
-      return deepMap(x, cbrt, true);
+      return deepMap(x, this, true);
     }
   });
   /**
@@ -18020,8 +18005,6 @@ var createCbrt = /* #__PURE__ */Object(factory["a" /* factory */])(cbrt_name, cb
       return _result;
     }
   }
-
-  return cbrt;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/ceil.js
 
@@ -18064,7 +18047,7 @@ var createCeil = /* #__PURE__ */Object(factory["a" /* factory */])(ceil_name, ce
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  var ceil = typed('ceil', {
+  return typed('ceil', {
     number: function number(x) {
       if (Object(utils_number["m" /* nearlyEqual */])(x, round(x), config.epsilon)) {
         return round(x);
@@ -18087,10 +18070,9 @@ var createCeil = /* #__PURE__ */Object(factory["a" /* factory */])(ceil_name, ce
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since ceil(0) = 0
-      return deepMap(x, ceil, true);
+      return deepMap(x, this, true);
     }
   });
-  return ceil;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/cube.js
 
@@ -18125,7 +18107,7 @@ var createCube = /* #__PURE__ */Object(factory["a" /* factory */])(cube_name, cu
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} x  Number for which to calculate the cube
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} Cube of x
    */
-  var cube = typed(cube_name, {
+  return typed(cube_name, {
     number: cubeNumber,
     Complex: function Complex(x) {
       return x.mul(x).mul(x); // Is faster than pow(x, 3)
@@ -18138,13 +18120,12 @@ var createCube = /* #__PURE__ */Object(factory["a" /* factory */])(cube_name, cu
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since cube(0) = 0
-      return deepMap(x, cube, true);
+      return deepMap(x, this, true);
     },
     Unit: function Unit(x) {
       return x.pow(3);
     }
   });
-  return cube;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/exp.js
 
@@ -18183,7 +18164,7 @@ var createExp = /* #__PURE__ */Object(factory["a" /* factory */])(exp_name, exp_
    * @param {number | BigNumber | Complex | Array | Matrix} x  A number or matrix to exponentiate
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
-  var exp = typed(exp_name, {
+  return typed(exp_name, {
     number: expNumber,
     Complex: function Complex(x) {
       return x.exp();
@@ -18193,10 +18174,9 @@ var createExp = /* #__PURE__ */Object(factory["a" /* factory */])(exp_name, exp_
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // TODO: exp(sparse) should return a dense matrix since exp(0)==1
-      return deepMap(x, exp);
+      return deepMap(x, this);
     }
   });
-  return exp;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/expm1.js
 
@@ -18236,7 +18216,7 @@ var createExpm1 = /* #__PURE__ */Object(factory["a" /* factory */])(expm1_name, 
    * @param {number | BigNumber | Complex | Array | Matrix} x  A number or matrix to apply expm1
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
-  var expm1 = typed(expm1_name, {
+  return typed(expm1_name, {
     number: expm1Number,
     Complex: function Complex(x) {
       var r = Math.exp(x.re);
@@ -18246,10 +18226,9 @@ var createExpm1 = /* #__PURE__ */Object(factory["a" /* factory */])(expm1_name, 
       return x.exp().minus(1);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, expm1);
+      return deepMap(x, this);
     }
   });
-  return expm1;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/fix.js
 
@@ -18289,7 +18268,7 @@ var createFix = /* #__PURE__ */Object(factory["a" /* factory */])(fix_name, fix_
    * @param {number | BigNumber | Fraction | Complex | Array | Matrix} x Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
    */
-  var fix = typed('fix', {
+  return typed('fix', {
     number: function number(x) {
       return x > 0 ? floor(x) : ceil(x);
     },
@@ -18304,10 +18283,9 @@ var createFix = /* #__PURE__ */Object(factory["a" /* factory */])(fix_name, fix_
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since fix(0) = 0
-      return deepMap(x, fix, true);
+      return deepMap(x, this, true);
     }
   });
-  return fix;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/floor.js
 
@@ -18348,7 +18326,7 @@ var createFloor = /* #__PURE__ */Object(factory["a" /* factory */])(floor_name, 
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  var floor = typed('floor', {
+  return typed('floor', {
     number: function number(x) {
       if (Object(utils_number["m" /* nearlyEqual */])(x, round(x), config.epsilon)) {
         return round(x);
@@ -18371,10 +18349,9 @@ var createFloor = /* #__PURE__ */Object(factory["a" /* factory */])(floor_name, 
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since floor(0) = 0
-      return deepMap(x, floor, true);
+      return deepMap(x, this, true);
     }
   });
-  return floor;
 });
 // CONCATENATED MODULE: ./src/type/matrix/utils/algorithm01.js
 
@@ -18985,68 +18962,67 @@ var createGcd = /* #__PURE__ */Object(factory["a" /* factory */])(gcd_name, gcd_
    * @return {number | BigNumber | Fraction | Array | Matrix}                           The greatest common divisor
    */
 
-  var gcd = typed(gcd_name, {
+  return typed(gcd_name, {
     'number, number': gcdNumber,
     'BigNumber, BigNumber': _gcdBigNumber,
     'Fraction, Fraction': function FractionFraction(x, y) {
       return x.gcd(y);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm04(x, y, gcd);
+      return algorithm04(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm01(y, x, gcd, true);
+      return algorithm01(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm01(x, y, gcd, false);
+      return algorithm01(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, gcd);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return gcd(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return gcd(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return gcd(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, number | BigNumber': function SparseMatrixNumberBigNumber(x, y) {
-      return algorithm10(x, y, gcd, false);
+      return algorithm10(x, y, this, false);
     },
     'DenseMatrix, number | BigNumber': function DenseMatrixNumberBigNumber(x, y) {
-      return algorithm14(x, y, gcd, false);
+      return algorithm14(x, y, this, false);
     },
     'number | BigNumber, SparseMatrix': function numberBigNumberSparseMatrix(x, y) {
-      return algorithm10(y, x, gcd, true);
+      return algorithm10(y, x, this, true);
     },
     'number | BigNumber, DenseMatrix': function numberBigNumberDenseMatrix(x, y) {
-      return algorithm14(y, x, gcd, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, number | BigNumber': function ArrayNumberBigNumber(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, gcd, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'number | BigNumber, Array': function numberBigNumberArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, gcd, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     },
     // TODO: need a smarter notation here
     'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function ArrayMatrixNumberBigNumberArrayMatrixNumberBigNumberArrayMatrixNumberBigNumber(a, b, args) {
-      var res = gcd(a, b);
+      var res = this(a, b);
 
       for (var i = 0; i < args.length; i++) {
-        res = gcd(res, args[i]);
+        res = this(res, args[i]);
       }
 
       return res;
     }
   });
-  return gcd;
   /**
    * Calculate gcd for BigNumbers
    * @param {BigNumber} a
@@ -19493,68 +19469,67 @@ var createLcm = /* #__PURE__ */Object(factory["a" /* factory */])(lcm_name, lcm_
    * @return {number | BigNumber | Array | Matrix}                           The least common multiple
    */
 
-  var lcm = typed(lcm_name, {
+  return typed(lcm_name, {
     'number, number': lcmNumber,
     'BigNumber, BigNumber': _lcmBigNumber,
     'Fraction, Fraction': function FractionFraction(x, y) {
       return x.lcm(y);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm06(x, y, lcm);
+      return algorithm06(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm02(y, x, lcm, true);
+      return algorithm02(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm02(x, y, lcm, false);
+      return algorithm02(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, lcm);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return lcm(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return lcm(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return lcm(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, number | BigNumber': function SparseMatrixNumberBigNumber(x, y) {
-      return algorithm11(x, y, lcm, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, number | BigNumber': function DenseMatrixNumberBigNumber(x, y) {
-      return algorithm14(x, y, lcm, false);
+      return algorithm14(x, y, this, false);
     },
     'number | BigNumber, SparseMatrix': function numberBigNumberSparseMatrix(x, y) {
-      return algorithm11(y, x, lcm, true);
+      return algorithm11(y, x, this, true);
     },
     'number | BigNumber, DenseMatrix': function numberBigNumberDenseMatrix(x, y) {
-      return algorithm14(y, x, lcm, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, number | BigNumber': function ArrayNumberBigNumber(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, lcm, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'number | BigNumber, Array': function numberBigNumberArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, lcm, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     },
     // TODO: need a smarter notation here
     'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function ArrayMatrixNumberBigNumberArrayMatrixNumberBigNumberArrayMatrixNumberBigNumber(a, b, args) {
-      var res = lcm(a, b);
+      var res = this(a, b);
 
       for (var i = 0; i < args.length; i++) {
-        res = lcm(res, args[i]);
+        res = this(res, args[i]);
       }
 
       return res;
     }
   });
-  return lcm;
   /**
    * Calculate lcm for two BigNumbers
    * @param {BigNumber} a
@@ -19625,7 +19600,7 @@ var createLog10 = /* #__PURE__ */Object(factory["a" /* factory */])(log10_name, 
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the 10-base logarithm of `x`
    */
-  var log10 = typed(log10_name, {
+  return typed(log10_name, {
     number: function number(x) {
       if (x >= 0 || config.predictable) {
         return log10Number(x);
@@ -19646,10 +19621,9 @@ var createLog10 = /* #__PURE__ */Object(factory["a" /* factory */])(log10_name, 
       }
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, log10);
+      return deepMap(x, this);
     }
   });
-  return log10;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/log2.js
 
@@ -19687,7 +19661,7 @@ var createLog2 = /* #__PURE__ */Object(factory["a" /* factory */])(log2_name, lo
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the 2-base logarithm of `x`
    */
-  var log2 = typed(log2_name, {
+  return typed(log2_name, {
     number: function number(x) {
       if (x >= 0 || config.predictable) {
         return log2Number(x);
@@ -19706,7 +19680,7 @@ var createLog2 = /* #__PURE__ */Object(factory["a" /* factory */])(log2_name, lo
       }
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, log2);
+      return deepMap(x, this);
     }
   });
   /**
@@ -19720,8 +19694,6 @@ var createLog2 = /* #__PURE__ */Object(factory["a" /* factory */])(log2_name, lo
     var newX = Math.sqrt(x.re * x.re + x.im * x.im);
     return new Complex(Math.log2 ? Math.log2(newX) : Math.log(newX) / Math.LN2, Math.atan2(x.im, x.re) / Math.LN2);
   }
-
-  return log2;
 });
 // CONCATENATED MODULE: ./src/type/matrix/utils/algorithm03.js
 
@@ -20189,7 +20161,7 @@ var createMod = /* #__PURE__ */Object(factory["a" /* factory */])(mod_name, mod_
    * @return {number | BigNumber | Fraction | Array | Matrix} Returns the remainder of `x` divided by `y`.
    */
 
-  var mod = typed(mod_name, {
+  return typed(mod_name, {
     'number, number': modNumber,
     'BigNumber, BigNumber': function BigNumberBigNumber(x, y) {
       return y.isZero() ? x : x.mod(y);
@@ -20198,51 +20170,50 @@ var createMod = /* #__PURE__ */Object(factory["a" /* factory */])(mod_name, mod_
       return x.mod(y);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm05(x, y, mod, false);
+      return algorithm05(x, y, this, false);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm02(y, x, mod, true);
+      return algorithm02(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm03(x, y, mod, false);
+      return algorithm03(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, mod);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return mod(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return mod(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return mod(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm11(x, y, mod, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, mod, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm12(y, x, mod, true);
+      return algorithm12(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, mod, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, mod, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, mod, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return mod;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/multiplyScalar.js
 
@@ -20264,7 +20235,7 @@ var createMultiplyScalar = /* #__PURE__ */Object(factory["a" /* factory */])(mul
    * @return {number | BigNumber | Fraction | Complex | Unit}     Multiplication of `x` and `y`
    * @private
    */
-  var multiplyScalar = typed('multiplyScalar', {
+  return typed('multiplyScalar', {
     'number, number': multiplyNumber,
     'Complex, Complex': function ComplexComplex(x, y) {
       return x.mul(y);
@@ -20277,19 +20248,18 @@ var createMultiplyScalar = /* #__PURE__ */Object(factory["a" /* factory */])(mul
     },
     'number | Fraction | BigNumber | Complex, Unit': function numberFractionBigNumberComplexUnit(x, y) {
       var res = y.clone();
-      res.value = res.value === null ? res._normalize(x) : multiplyScalar(res.value, x);
+      res.value = res.value === null ? res._normalize(x) : this(res.value, x);
       return res;
     },
     'Unit, number | Fraction | BigNumber | Complex': function UnitNumberFractionBigNumberComplex(x, y) {
       var res = x.clone();
-      res.value = res.value === null ? res._normalize(y) : multiplyScalar(res.value, y);
+      res.value = res.value === null ? res._normalize(y) : this(res.value, y);
       return res;
     },
     'Unit, Unit': function UnitUnit(x, y) {
       return x.multiply(y);
     }
   });
-  return multiplyScalar;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/multiply.js
 
@@ -20314,118 +20284,6 @@ var createMultiply = /* #__PURE__ */Object(factory["a" /* factory */])(multiply_
   var algorithm14 = createAlgorithm14({
     typed: typed
   });
-  /**
-   * Multiply two or more values, `x * y`.
-   * For matrices, the matrix product is calculated.
-   *
-   * Syntax:
-   *
-   *    math.multiply(x, y)
-   *    math.multiply(x, y, z, ...)
-   *
-   * Examples:
-   *
-   *    math.multiply(4, 5.2)        // returns number 20.8
-   *    math.multiply(2, 3, 4)       // returns number 24
-   *
-   *    const a = math.complex(2, 3)
-   *    const b = math.complex(4, 1)
-   *    math.multiply(a, b)          // returns Complex 5 + 14i
-   *
-   *    const c = [[1, 2], [4, 3]]
-   *    const d = [[1, 2, 3], [3, -4, 7]]
-   *    math.multiply(c, d)          // returns Array [[7, -6, 17], [13, -4, 33]]
-   *
-   *    const e = math.unit('2.1 km')
-   *    math.multiply(3, e)          // returns Unit 6.3 km
-   *
-   * See also:
-   *
-   *    divide, prod, cross, dot
-   *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First value to multiply
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
-   */
-
-  var multiply = typed(multiply_name, Object(utils_object["e" /* extend */])({
-    // we extend the signatures of multiplyScalar with signatures dealing with matrices
-    'Array, Array': function ArrayArray(x, y) {
-      // check dimensions
-      _validateMatrixDimensions(Object(utils_array["a" /* arraySize */])(x), Object(utils_array["a" /* arraySize */])(y)); // use dense matrix implementation
-
-
-      var m = multiply(matrix(x), matrix(y)); // return array or scalar
-
-      return Object(is["v" /* isMatrix */])(m) ? m.valueOf() : m;
-    },
-    'Matrix, Matrix': function MatrixMatrix(x, y) {
-      // dimensions
-      var xsize = x.size();
-      var ysize = y.size(); // check dimensions
-
-      _validateMatrixDimensions(xsize, ysize); // process dimensions
-
-
-      if (xsize.length === 1) {
-        // process y dimensions
-        if (ysize.length === 1) {
-          // Vector * Vector
-          return _multiplyVectorVector(x, y, xsize[0]);
-        } // Vector * Matrix
-
-
-        return _multiplyVectorMatrix(x, y);
-      } // process y dimensions
-
-
-      if (ysize.length === 1) {
-        // Matrix * Vector
-        return _multiplyMatrixVector(x, y);
-      } // Matrix * Matrix
-
-
-      return _multiplyMatrixMatrix(x, y);
-    },
-    'Matrix, Array': function MatrixArray(x, y) {
-      // use Matrix * Matrix implementation
-      return multiply(x, matrix(y));
-    },
-    'Array, Matrix': function ArrayMatrix(x, y) {
-      // use Matrix * Matrix implementation
-      return multiply(matrix(x, y.storage()), y);
-    },
-    'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm11(x, y, multiplyScalar, false);
-    },
-    'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, multiplyScalar, false);
-    },
-    'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm11(y, x, multiplyScalar, true);
-    },
-    'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, multiplyScalar, true);
-    },
-    'Array, any': function ArrayAny(x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, multiplyScalar, false).valueOf();
-    },
-    'any, Array': function anyArray(x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, multiplyScalar, true).valueOf();
-    },
-    'any, any': multiplyScalar,
-    'any, any, ...any': function anyAnyAny(x, y, rest) {
-      var result = multiply(x, y);
-
-      for (var i = 0; i < rest.length; i++) {
-        result = multiply(result, rest[i]);
-      }
-
-      return result;
-    }
-  }, multiplyScalar.signatures));
 
   function _validateMatrixDimensions(size1, size2) {
     // check left operand dimensions
@@ -21188,8 +21046,119 @@ var createMultiply = /* #__PURE__ */Object(factory["a" /* factory */])(multiply_
 
     return c;
   }
+  /**
+   * Multiply two or more values, `x * y`.
+   * For matrices, the matrix product is calculated.
+   *
+   * Syntax:
+   *
+   *    math.multiply(x, y)
+   *    math.multiply(x, y, z, ...)
+   *
+   * Examples:
+   *
+   *    math.multiply(4, 5.2)        // returns number 20.8
+   *    math.multiply(2, 3, 4)       // returns number 24
+   *
+   *    const a = math.complex(2, 3)
+   *    const b = math.complex(4, 1)
+   *    math.multiply(a, b)          // returns Complex 5 + 14i
+   *
+   *    const c = [[1, 2], [4, 3]]
+   *    const d = [[1, 2, 3], [3, -4, 7]]
+   *    math.multiply(c, d)          // returns Array [[7, -6, 17], [13, -4, 33]]
+   *
+   *    const e = math.unit('2.1 km')
+   *    math.multiply(3, e)          // returns Unit 6.3 km
+   *
+   * See also:
+   *
+   *    divide, prod, cross, dot
+   *
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First value to multiply
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
+   */
 
-  return multiply;
+
+  return typed(multiply_name, Object(utils_object["e" /* extend */])({
+    // we extend the signatures of multiplyScalar with signatures dealing with matrices
+    'Array, Array': function ArrayArray(x, y) {
+      // check dimensions
+      _validateMatrixDimensions(Object(utils_array["a" /* arraySize */])(x), Object(utils_array["a" /* arraySize */])(y)); // use dense matrix implementation
+
+
+      var m = this(matrix(x), matrix(y)); // return array or scalar
+
+      return Object(is["v" /* isMatrix */])(m) ? m.valueOf() : m;
+    },
+    'Matrix, Matrix': function MatrixMatrix(x, y) {
+      // dimensions
+      var xsize = x.size();
+      var ysize = y.size(); // check dimensions
+
+      _validateMatrixDimensions(xsize, ysize); // process dimensions
+
+
+      if (xsize.length === 1) {
+        // process y dimensions
+        if (ysize.length === 1) {
+          // Vector * Vector
+          return _multiplyVectorVector(x, y, xsize[0]);
+        } // Vector * Matrix
+
+
+        return _multiplyVectorMatrix(x, y);
+      } // process y dimensions
+
+
+      if (ysize.length === 1) {
+        // Matrix * Vector
+        return _multiplyMatrixVector(x, y);
+      } // Matrix * Matrix
+
+
+      return _multiplyMatrixMatrix(x, y);
+    },
+    'Matrix, Array': function MatrixArray(x, y) {
+      // use Matrix * Matrix implementation
+      return this(x, matrix(y));
+    },
+    'Array, Matrix': function ArrayMatrix(x, y) {
+      // use Matrix * Matrix implementation
+      return this(matrix(x, y.storage()), y);
+    },
+    'SparseMatrix, any': function SparseMatrixAny(x, y) {
+      return algorithm11(x, y, multiplyScalar, false);
+    },
+    'DenseMatrix, any': function DenseMatrixAny(x, y) {
+      return algorithm14(x, y, multiplyScalar, false);
+    },
+    'any, SparseMatrix': function anySparseMatrix(x, y) {
+      return algorithm11(y, x, multiplyScalar, true);
+    },
+    'any, DenseMatrix': function anyDenseMatrix(x, y) {
+      return algorithm14(y, x, multiplyScalar, true);
+    },
+    'Array, any': function ArrayAny(x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(x), y, multiplyScalar, false).valueOf();
+    },
+    'any, Array': function anyArray(x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(y), x, multiplyScalar, true).valueOf();
+    },
+    'any, any': multiplyScalar,
+    'any, any, ...any': function anyAnyAny(x, y, rest) {
+      var result = this(x, y);
+
+      for (var i = 0; i < rest.length; i++) {
+        result = this(result, rest[i]);
+      }
+
+      return result;
+    }
+  }, multiplyScalar.signatures));
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/nthRoot.js
 
@@ -21259,7 +21228,7 @@ var createNthRoot = /* #__PURE__ */Object(factory["a" /* factory */])(nthRoot_na
    */
 
   var complexErr = '' + 'Complex number not supported in function nthRoot. ' + 'Use nthRoots instead.';
-  var nthRoot = typed(nthRoot_name, {
+  return typed(nthRoot_name, {
     number: function number(x) {
       return nthRootNumber(x, 2);
     },
@@ -21275,75 +21244,74 @@ var createNthRoot = /* #__PURE__ */Object(factory["a" /* factory */])(nthRoot_na
     },
     'BigNumber, BigNumber': _bigNthRoot,
     'Array | Matrix': function ArrayMatrix(x) {
-      return nthRoot(x, 2);
+      return this(x, 2);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // sparse + sparse
-        return algorithm06(x, y, nthRoot);
+        return algorithm06(x, y, this);
       } else {
         // throw exception
         throw new Error('Root must be non-zero');
       }
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm02(y, x, nthRoot, true);
+      return algorithm02(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // dense + sparse
-        return algorithm01(x, y, nthRoot, false);
+        return algorithm01(x, y, this, false);
       } else {
         // throw exception
         throw new Error('Root must be non-zero');
       }
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, nthRoot);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return nthRoot(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return nthRoot(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return nthRoot(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, number | BigNumber': function SparseMatrixNumberBigNumber(x, y) {
-      return algorithm11(x, y, nthRoot, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, number | BigNumber': function DenseMatrixNumberBigNumber(x, y) {
-      return algorithm14(x, y, nthRoot, false);
+      return algorithm14(x, y, this, false);
     },
     'number | BigNumber, SparseMatrix': function numberBigNumberSparseMatrix(x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // sparse - scalar
-        return algorithm11(y, x, nthRoot, true);
+        return algorithm11(y, x, this, true);
       } else {
         // throw exception
         throw new Error('Root must be non-zero');
       }
     },
     'number | BigNumber, DenseMatrix': function numberBigNumberDenseMatrix(x, y) {
-      return algorithm14(y, x, nthRoot, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, number | BigNumber': function ArrayNumberBigNumber(x, y) {
       // use matrix implementation
-      return nthRoot(matrix(x), y).valueOf();
+      return this(matrix(x), y).valueOf();
     },
     'number | BigNumber, Array': function numberBigNumberArray(x, y) {
       // use matrix implementation
-      return nthRoot(x, matrix(y)).valueOf();
+      return this(x, matrix(y)).valueOf();
     }
   });
-  return nthRoot;
   /**
    * Calculate the nth root of a for BigNumbers, solve x^root == a
    * https://rosettacode.org/wiki/Nth_root#JavaScript
@@ -21440,7 +21408,7 @@ var createSign = /* #__PURE__ */Object(factory["a" /* factory */])(sign_name, si
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}e
    *            The sign of `x`
    */
-  var sign = typed(sign_name, {
+  return typed(sign_name, {
     number: signNumber,
     Complex: function Complex(x) {
       return x.im === 0 ? complex(signNumber(x.re)) : x.sign();
@@ -21453,13 +21421,12 @@ var createSign = /* #__PURE__ */Object(factory["a" /* factory */])(sign_name, si
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since sign(0) = 0
-      return deepMap(x, sign, true);
+      return deepMap(x, this, true);
     },
     Unit: function Unit(x) {
-      return sign(x.value);
+      return this(x.value);
     }
   });
-  return sign;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/sqrt.js
 
@@ -21495,7 +21462,7 @@ var createSqrt = /* #__PURE__ */Object(factory["a" /* factory */])(sqrt_name, sq
    * @return {number | BigNumber | Complex | Array | Matrix | Unit}
    *            Returns the square root of `x`
    */
-  var sqrt = typed('sqrt', {
+  return typed('sqrt', {
     number: _sqrtNumber,
     Complex: function Complex(x) {
       return x.sqrt();
@@ -21510,7 +21477,7 @@ var createSqrt = /* #__PURE__ */Object(factory["a" /* factory */])(sqrt_name, sq
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since sqrt(0) = 0
-      return deepMap(x, sqrt, true);
+      return deepMap(x, this, true);
     },
     Unit: function Unit(x) {
       // Someday will work for complex units when they are implemented
@@ -21533,8 +21500,6 @@ var createSqrt = /* #__PURE__ */Object(factory["a" /* factory */])(sqrt_name, sq
       return new Complex(x, 0).sqrt();
     }
   }
-
-  return sqrt;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/square.js
 
@@ -21571,7 +21536,7 @@ var createSquare = /* #__PURE__ */Object(factory["a" /* factory */])(square_name
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
    *            Squared value
    */
-  var square = typed(square_name, {
+  return typed(square_name, {
     number: squareNumber,
     Complex: function Complex(x) {
       return x.mul(x);
@@ -21584,13 +21549,12 @@ var createSquare = /* #__PURE__ */Object(factory["a" /* factory */])(square_name
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since square(0) = 0
-      return deepMap(x, square, true);
+      return deepMap(x, this, true);
     },
     Unit: function Unit(x) {
       return x.pow(2);
     }
   });
-  return square;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/subtract.js
 
@@ -21665,7 +21629,7 @@ var createSubtract = /* #__PURE__ */Object(factory["a" /* factory */])(subtract_
    *            Subtraction of `x` and `y`
    */
 
-  var subtract = typed(subtract_name, {
+  return typed(subtract_name, {
     'number, number': function numberNumber(x, y) {
       return x - y;
     },
@@ -21692,60 +21656,59 @@ var createSubtract = /* #__PURE__ */Object(factory["a" /* factory */])(subtract_
       }
 
       var res = x.clone();
-      res.value = subtract(res.value, y.value);
+      res.value = this(res.value, y.value);
       res.fixPrefix = false;
       return res;
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
       checkEqualDimensions(x, y);
-      return algorithm05(x, y, subtract);
+      return algorithm05(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
       checkEqualDimensions(x, y);
-      return algorithm03(y, x, subtract, true);
+      return algorithm03(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
       checkEqualDimensions(x, y);
-      return algorithm01(x, y, subtract, false);
+      return algorithm01(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
       checkEqualDimensions(x, y);
-      return algorithm13(x, y, subtract);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return subtract(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return subtract(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return subtract(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
       return algorithm10(x, unaryMinus(y), addScalar);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, subtract);
+      return algorithm14(x, y, this);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm10(y, x, subtract, true);
+      return algorithm10(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, subtract, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, subtract, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, subtract, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return subtract;
 });
 /**
  * Check whether matrix x and y have the same number of dimensions.
@@ -22051,7 +22014,7 @@ var createDotMultiply = /* #__PURE__ */Object(factory["a" /* factory */])(dotMul
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Multiplication of `x` and `y`
    */
 
-  var dotMultiply = typed(dotMultiply_name, {
+  return typed(dotMultiply_name, {
     'any, any': multiplyScalar,
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
       return algorithm09(x, y, multiplyScalar, false);
@@ -22067,15 +22030,15 @@ var createDotMultiply = /* #__PURE__ */Object(factory["a" /* factory */])(dotMul
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return dotMultiply(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return dotMultiply(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return dotMultiply(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
       return algorithm11(x, y, multiplyScalar, false);
@@ -22098,7 +22061,6 @@ var createDotMultiply = /* #__PURE__ */Object(factory["a" /* factory */])(dotMul
       return algorithm14(matrix(y), x, multiplyScalar, true).valueOf();
     }
   });
-  return dotMultiply;
 });
 // CONCATENATED MODULE: ./src/utils/bignumber/bitwise.js
 /**
@@ -22432,7 +22394,7 @@ function decCoefficientToBinaryString(x) {
  */
 
 
-function bitwise_bitXor(x, y) {
+function bitXor(x, y) {
   if (x.isFinite() && !x.isInteger() || y.isFinite() && !y.isInteger()) {
     throw new Error('Integers expected in function bitXor');
   }
@@ -22692,55 +22654,54 @@ var createBitAnd = /* #__PURE__ */Object(factory["a" /* factory */])(bitAnd_name
    * @return {number | BigNumber | Array | Matrix} AND of `x` and `y`
    */
 
-  var bitAnd = typed(bitAnd_name, {
+  return typed(bitAnd_name, {
     'number, number': bitAndNumber,
     'BigNumber, BigNumber': bitAndBigNumber,
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm06(x, y, bitAnd, false);
+      return algorithm06(x, y, this, false);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm02(y, x, bitAnd, true);
+      return algorithm02(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm02(x, y, bitAnd, false);
+      return algorithm02(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, bitAnd);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return bitAnd(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return bitAnd(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return bitAnd(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm11(x, y, bitAnd, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, bitAnd, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm11(y, x, bitAnd, true);
+      return algorithm11(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, bitAnd, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, bitAnd, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, bitAnd, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return bitAnd;
 });
 // CONCATENATED MODULE: ./src/function/bitwise/bitNot.js
 
@@ -22774,14 +22735,13 @@ var createBitNot = /* #__PURE__ */Object(factory["a" /* factory */])(bitNot_name
    * @param  {number | BigNumber | Array | Matrix} x Value to not
    * @return {number | BigNumber | Array | Matrix} NOT of `x`
    */
-  var bitNot = typed(bitNot_name, {
+  return typed(bitNot_name, {
     number: bitNotNumber,
     BigNumber: bitNotBigNumber,
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, bitNot);
+      return deepMap(x, this);
     }
   });
-  return bitNot;
 });
 // CONCATENATED MODULE: ./src/function/bitwise/bitOr.js
 
@@ -22840,55 +22800,54 @@ var createBitOr = /* #__PURE__ */Object(factory["a" /* factory */])(bitOr_name, 
    * @return {number | BigNumber | Array | Matrix} OR of `x` and `y`
    */
 
-  var bitOr = typed(bitOr_name, {
+  return typed(bitOr_name, {
     'number, number': bitOrNumber,
     'BigNumber, BigNumber': bitOrBigNumber,
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm04(x, y, bitOr);
+      return algorithm04(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm01(y, x, bitOr, true);
+      return algorithm01(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm01(x, y, bitOr, false);
+      return algorithm01(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, bitOr);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return bitOr(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return bitOr(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return bitOr(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm10(x, y, bitOr, false);
+      return algorithm10(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, bitOr, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm10(y, x, bitOr, true);
+      return algorithm10(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, bitOr, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, bitOr, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, bitOr, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return bitOr;
 });
 // CONCATENATED MODULE: ./src/type/matrix/utils/algorithm07.js
 
@@ -23062,55 +23021,54 @@ var createBitXor = /* #__PURE__ */Object(factory["a" /* factory */])(bitXor_name
    * @return {number | BigNumber | Array | Matrix} XOR of `x` and `y`
    */
 
-  var bitXor = typed(bitXor_name, {
+  return typed(bitXor_name, {
     'number, number': bitXorNumber,
-    'BigNumber, BigNumber': bitwise_bitXor,
+    'BigNumber, BigNumber': bitXor,
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm07(x, y, bitXor);
+      return algorithm07(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm03(y, x, bitXor, true);
+      return algorithm03(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm03(x, y, bitXor, false);
+      return algorithm03(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, bitXor);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return bitXor(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return bitXor(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return bitXor(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm12(x, y, bitXor, false);
+      return algorithm12(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, bitXor, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm12(y, x, bitXor, true);
+      return algorithm12(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, bitXor, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, bitXor, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, bitXor, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return bitXor;
 });
 // CONCATENATED MODULE: ./src/function/complex/arg.js
 
@@ -23147,7 +23105,7 @@ var createArg = /* #__PURE__ */Object(factory["a" /* factory */])(arg_name, arg_
    *            A complex number or array with complex numbers
    * @return {number | BigNumber | Array | Matrix} The argument of x
    */
-  var arg = typed(arg_name, {
+  return typed(arg_name, {
     number: function number(x) {
       return Math.atan2(0, x);
     },
@@ -23159,10 +23117,9 @@ var createArg = /* #__PURE__ */Object(factory["a" /* factory */])(arg_name, arg_
     },
     // TODO: implement BigNumber support for function arg
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, arg);
+      return deepMap(x, this);
     }
   });
-  return arg;
 });
 // CONCATENATED MODULE: ./src/function/complex/conj.js
 
@@ -23197,7 +23154,7 @@ var createConj = /* #__PURE__ */Object(factory["a" /* factory */])(conj_name, co
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            The complex conjugate of x
    */
-  var conj = typed(conj_name, {
+  return typed(conj_name, {
     number: function number(x) {
       return x;
     },
@@ -23208,10 +23165,9 @@ var createConj = /* #__PURE__ */Object(factory["a" /* factory */])(conj_name, co
       return x.conjugate();
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, conj);
+      return deepMap(x, this);
     }
   });
-  return conj;
 });
 // CONCATENATED MODULE: ./src/function/complex/im.js
 
@@ -23248,7 +23204,7 @@ var createIm = /* #__PURE__ */Object(factory["a" /* factory */])(im_name, im_dep
    *            A complex number or array with complex numbers
    * @return {number | BigNumber | Array | Matrix} The imaginary part of x
    */
-  var im = typed(im_name, {
+  return typed(im_name, {
     number: function number(x) {
       return 0;
     },
@@ -23259,10 +23215,9 @@ var createIm = /* #__PURE__ */Object(factory["a" /* factory */])(im_name, im_dep
       return x.im;
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, im);
+      return deepMap(x, this);
     }
   });
-  return im;
 });
 // CONCATENATED MODULE: ./src/function/complex/re.js
 
@@ -23299,7 +23254,7 @@ var createRe = /* #__PURE__ */Object(factory["a" /* factory */])(re_name, re_dep
    *            A complex number or array with complex numbers
    * @return {number | BigNumber | Array | Matrix} The real part of x
    */
-  var re = typed(re_name, {
+  return typed(re_name, {
     number: function number(x) {
       return x;
     },
@@ -23310,10 +23265,9 @@ var createRe = /* #__PURE__ */Object(factory["a" /* factory */])(re_name, re_dep
       return x.re;
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, re);
+      return deepMap(x, this);
     }
   });
-  return re;
 });
 // CONCATENATED MODULE: ./src/plain/number/logical.js
 var logical_n1 = 'number';
@@ -23368,7 +23322,7 @@ var createNot = /* #__PURE__ */Object(factory["a" /* factory */])(not_name, not_
    * @return {boolean | Array | Matrix}
    *            Returns true when input is a zero or empty value.
    */
-  var not = typed(not_name, {
+  return typed(not_name, {
     number: notNumber,
     Complex: function Complex(x) {
       return x.re === 0 && x.im === 0;
@@ -23377,13 +23331,12 @@ var createNot = /* #__PURE__ */Object(factory["a" /* factory */])(not_name, not_
       return x.isZero() || x.isNaN();
     },
     Unit: function Unit(x) {
-      return x.value !== null ? not(x.value) : true;
+      return x.value !== null ? this(x.value) : true;
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, not);
+      return deepMap(x, this);
     }
   });
-  return not;
 });
 // CONCATENATED MODULE: ./src/function/logical/or.js
 
@@ -23446,7 +23399,7 @@ var createOr = /* #__PURE__ */Object(factory["a" /* factory */])(or_name, or_dep
    *            Returns true when one of the inputs is defined with a nonzero/nonempty value.
    */
 
-  var or = typed(or_name, {
+  return typed(or_name, {
     'number, number': orNumber,
     'Complex, Complex': function ComplexComplex(x, y) {
       return x.re !== 0 || x.im !== 0 || y.re !== 0 || y.im !== 0;
@@ -23455,54 +23408,53 @@ var createOr = /* #__PURE__ */Object(factory["a" /* factory */])(or_name, or_dep
       return !x.isZero() && !x.isNaN() || !y.isZero() && !y.isNaN();
     },
     'Unit, Unit': function UnitUnit(x, y) {
-      return or(x.value || 0, y.value || 0);
+      return this(x.value || 0, y.value || 0);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm05(x, y, or);
+      return algorithm05(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm03(y, x, or, true);
+      return algorithm03(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm03(x, y, or, false);
+      return algorithm03(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, or);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return or(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return or(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return or(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm12(x, y, or, false);
+      return algorithm12(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, or, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm12(y, x, or, true);
+      return algorithm12(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, or, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, or, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, or, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return or;
 });
 // CONCATENATED MODULE: ./src/function/logical/xor.js
 
@@ -23564,7 +23516,7 @@ var createXor = /* #__PURE__ */Object(factory["a" /* factory */])(xor_name, xor_
    *            Returns true when one and only one input is defined with a nonzero/nonempty value.
    */
 
-  var xor = typed(xor_name, {
+  return typed(xor_name, {
     'number, number': xorNumber,
     'Complex, Complex': function ComplexComplex(x, y) {
       return (x.re !== 0 || x.im !== 0) !== (y.re !== 0 || y.im !== 0);
@@ -23573,54 +23525,53 @@ var createXor = /* #__PURE__ */Object(factory["a" /* factory */])(xor_name, xor_
       return (!x.isZero() && !x.isNaN()) !== (!y.isZero() && !y.isNaN());
     },
     'Unit, Unit': function UnitUnit(x, y) {
-      return xor(x.value || 0, y.value || 0);
+      return this(x.value || 0, y.value || 0);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm07(x, y, xor);
+      return algorithm07(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm03(y, x, xor, true);
+      return algorithm03(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm03(x, y, xor, false);
+      return algorithm03(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, xor);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return xor(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return xor(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return xor(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm12(x, y, xor, false);
+      return algorithm12(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, xor, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm12(y, x, xor, true);
+      return algorithm12(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, xor, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, xor, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, xor, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return xor;
 });
 // CONCATENATED MODULE: ./src/function/matrix/concat.js
 
@@ -23794,13 +23745,12 @@ var createColumn = /* #__PURE__ */Object(factory["a" /* factory */])(column_name
    * @param {number} column           The index of the column
    * @return {Array | Matrix}         The retrieved column
    */
-  var column = typed(column_name, {
+  return typed(column_name, {
     'Matrix, number': _column,
     'Array, number': function ArrayNumber(value, column) {
       return _column(matrix(Object(utils_object["a" /* clone */])(value)), column).valueOf();
     }
   });
-  return column;
   /**
    * Retrieve a column of a matrix
    * @param {Matrix } value  A matrix
@@ -25358,13 +25308,12 @@ var createRow = /* #__PURE__ */Object(factory["a" /* factory */])(row_name, row_
    * @param {number} row              The index of the row
    * @return {Array | Matrix}         The retrieved row
    */
-  var row = typed(row_name, {
+  return typed(row_name, {
     'Matrix, number': _row,
     'Array, number': function ArrayNumber(value, row) {
       return _row(matrix(Object(utils_object["a" /* clone */])(value)), row).valueOf();
     }
   });
-  return row;
   /**
    * Retrieve a row of a matrix
    * @param {Matrix } value  A matrix
@@ -25901,10 +25850,10 @@ var createTranspose = /* #__PURE__ */Object(factory["a" /* factory */])(transpos
    * @param {Array | Matrix} x  Matrix to be transposed
    * @return {Array | Matrix}   The transposed matrix
    */
-  var transpose = typed('transpose', {
+  return typed('transpose', {
     Array: function Array(x) {
       // use dense matrix implementation
-      return transpose(matrix(x)).valueOf();
+      return this(matrix(x)).valueOf();
     },
     Matrix: function Matrix(x) {
       // matrix size
@@ -26042,8 +25991,6 @@ var createTranspose = /* #__PURE__ */Object(factory["a" /* factory */])(transpos
       datatype: m._datatype
     });
   }
-
-  return transpose;
 });
 // CONCATENATED MODULE: ./src/function/matrix/ctranspose.js
 
@@ -26243,7 +26190,7 @@ var createErf = /* #__PURE__ */Object(factory["a" /* factory */])(erf_name, erf_
    * @param {number | Array | Matrix} x   A real number
    * @return {number | Array | Matrix}    The erf of `x`
    */
-  var erf = typed('name', {
+  return typed('name', {
     number: function number(x) {
       var y = Math.abs(x);
 
@@ -26262,7 +26209,7 @@ var createErf = /* #__PURE__ */Object(factory["a" /* factory */])(erf_name, erf_
       return Object(utils_number["n" /* sign */])(x) * (1 - erfc3(y));
     },
     'Array | Matrix': function ArrayMatrix(n) {
-      return deepMap(n, erf);
+      return deepMap(n, this);
     } // TODO: For complex numbers, use the approximation for the Faddeeva function
     //  from "More Efficient Computation of the Complex Error Function" (AMS)
 
@@ -26339,8 +26286,6 @@ var createErf = /* #__PURE__ */Object(factory["a" /* factory */])(erf_name, erf_
     var del = (y - ysq) * (y + ysq);
     return Math.exp(-ysq * ysq) * Math.exp(-del) * result;
   }
-
-  return erf;
 });
 /**
  * Upper bound for the first approximation interval, 0 <= x <= THRESH
@@ -26809,44 +26754,43 @@ var createTo = /* #__PURE__ */Object(factory["a" /* factory */])(to_name, to_dep
    * @return {Unit | Array | Matrix} value with changed, fixed unit.
    */
 
-  var to = typed(to_name, {
+  return typed(to_name, {
     'Unit, Unit | string': function UnitUnitString(x, unit) {
       return x.to(unit);
     },
     'Matrix, Matrix': function MatrixMatrix(x, y) {
       // SparseMatrix does not support Units
-      return algorithm13(x, y, to);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return to(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return to(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return to(x, matrix(y));
+      return this(x, matrix(y));
     },
     'Matrix, any': function MatrixAny(x, y) {
       // SparseMatrix does not support Units
-      return algorithm14(x, y, to, false);
+      return algorithm14(x, y, this, false);
     },
     'any, Matrix': function anyMatrix(x, y) {
       // SparseMatrix does not support Units
-      return algorithm14(y, x, to, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, to, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, to, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return to;
 });
 // CONCATENATED MODULE: ./src/function/utils/isPrime.js
 
@@ -26884,7 +26828,7 @@ var createIsPrime = /* #__PURE__ */Object(factory["a" /* factory */])(isPrime_na
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
-  var isPrime = typed(isPrime_name, {
+  return typed(isPrime_name, {
     number: function number(x) {
       if (x * 0 !== 0) {
         return false;
@@ -26923,10 +26867,9 @@ var createIsPrime = /* #__PURE__ */Object(factory["a" /* factory */])(isPrime_na
       return true;
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, isPrime);
+      return deepMap(x, this);
     }
   });
-  return isPrime;
 });
 // CONCATENATED MODULE: ./src/function/utils/numeric.js
 
@@ -27024,7 +26967,7 @@ var createDivideScalar = /* #__PURE__ */Object(factory["a" /* factory */])(divid
    * @return {number | BigNumber | Fraction | Complex | Unit}     Quotient, `x / y`
    * @private
    */
-  var divideScalar = typed(divideScalar_name, {
+  return typed(divideScalar_name, {
     'number, number': function numberNumber(x, y) {
       return x / y;
     },
@@ -27041,7 +26984,7 @@ var createDivideScalar = /* #__PURE__ */Object(factory["a" /* factory */])(divid
       var res = x.clone(); // TODO: move the divide function to Unit.js, it uses internals of Unit
 
       var one = numeric(1, Object(is["M" /* typeOf */])(y));
-      res.value = divideScalar(res.value === null ? res._normalize(one) : res.value, y);
+      res.value = this(res.value === null ? res._normalize(one) : res.value, y);
       return res;
     },
     'number | Fraction | BigNumber, Unit': function numberFractionBigNumberUnit(x, y) {
@@ -27049,14 +26992,13 @@ var createDivideScalar = /* #__PURE__ */Object(factory["a" /* factory */])(divid
       res = res.pow(-1); // TODO: move the divide function to Unit.js, it uses internals of Unit
 
       var one = numeric(1, Object(is["M" /* typeOf */])(x));
-      res.value = divideScalar(x, y.value === null ? y._normalize(one) : y.value);
+      res.value = this(x, y.value === null ? y._normalize(one) : y.value);
       return res;
     },
     'Unit, Unit': function UnitUnit(x, y) {
       return x.divide(y);
     }
   });
-  return divideScalar;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/pow.js
 
@@ -27308,7 +27250,7 @@ var createRound = /* #__PURE__ */Object(factory["a" /* factory */])(round_name, 
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
 
-  var round = typed(round_name, _objectSpread(_objectSpread({}, roundNumberSignatures), {}, {
+  return typed(round_name, _objectSpread(_objectSpread({}, roundNumberSignatures), {}, {
     Complex: function Complex(x) {
       return x.round();
     },
@@ -27357,13 +27299,13 @@ var createRound = /* #__PURE__ */Object(factory["a" /* factory */])(round_name, 
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since round(0) = 0
-      return deepMap(x, round, true);
+      return deepMap(x, this, true);
     },
     'SparseMatrix, number | BigNumber': function SparseMatrixNumberBigNumber(x, y) {
-      return algorithm11(x, y, round, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, number | BigNumber': function DenseMatrixNumberBigNumber(x, y) {
-      return algorithm14(x, y, round, false);
+      return algorithm14(x, y, this, false);
     },
     'number | Complex | BigNumber, SparseMatrix': function numberComplexBigNumberSparseMatrix(x, y) {
       // check scalar is zero
@@ -27372,7 +27314,7 @@ var createRound = /* #__PURE__ */Object(factory["a" /* factory */])(round_name, 
         return zeros(y.size(), y.storage());
       }
 
-      return algorithm12(y, x, round, true);
+      return algorithm12(y, x, this, true);
     },
     'number | Complex | BigNumber, DenseMatrix': function numberComplexBigNumberDenseMatrix(x, y) {
       // check scalar is zero
@@ -27381,18 +27323,17 @@ var createRound = /* #__PURE__ */Object(factory["a" /* factory */])(round_name, 
         return zeros(y.size(), y.storage());
       }
 
-      return algorithm14(y, x, round, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, number | BigNumber': function ArrayNumberBigNumber(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, round, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'number | Complex | BigNumber, Array': function numberComplexBigNumberArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, round, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   }));
-  return round;
 });
 var roundNumberSignatures = {
   number: roundNumber,
@@ -27458,7 +27399,7 @@ var createLog = /* #__PURE__ */Object(factory["a" /* factory */])(log_name, log_
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the logarithm of `x`
    */
-  var log = typed(log_name, {
+  return typed(log_name, {
     number: function number(x) {
       if (x >= 0 || config.predictable) {
         return logNumber(x);
@@ -27479,14 +27420,13 @@ var createLog = /* #__PURE__ */Object(factory["a" /* factory */])(log_name, log_
       }
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, log);
+      return deepMap(x, this);
     },
     'any, any': function anyAny(x, base) {
       // calculate logarithm for a specified base, log(x, base)
-      return divideScalar(log(x), log(base));
+      return divideScalar(this(x), this(base));
     }
   });
-  return log;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/log1p.js
 
@@ -27532,7 +27472,7 @@ var createLog1p = /* #__PURE__ */Object(factory["a" /* factory */])(log1p_name, 
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the logarithm of `x+1`
    */
-  var log1p = typed(log1p_name, {
+  return typed(log1p_name, {
     number: function number(x) {
       if (x >= -1 || config.predictable) {
         return Object(utils_number["k" /* log1p */])(x);
@@ -27553,11 +27493,11 @@ var createLog1p = /* #__PURE__ */Object(factory["a" /* factory */])(log1p_name, 
       }
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, log1p);
+      return deepMap(x, this);
     },
     'any, any': function anyAny(x, base) {
       // calculate logarithm for a specified base, log1p(x, base)
-      return divideScalar(log1p(x), log(base));
+      return divideScalar(this(x), log(base));
     }
   });
   /**
@@ -27571,8 +27511,6 @@ var createLog1p = /* #__PURE__ */Object(factory["a" /* factory */])(log1p_name, 
     var xRe1p = x.re + 1;
     return new Complex(Math.log(Math.sqrt(xRe1p * xRe1p + x.im * x.im)), Math.atan2(x.im, xRe1p));
   }
-
-  return log1p;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/nthRoots.js
 
@@ -27585,50 +27523,11 @@ var createNthRoots = /* #__PURE__ */Object(factory["a" /* factory */])(nthRoots_
       Complex = _ref.Complex;
 
   /**
-   * Calculate the nth roots of a value.
-   * An nth root of a positive real number A,
-   * is a positive real solution of the equation "x^root = A".
-   * This function returns an array of complex values.
-   *
-   * Syntax:
-   *
-   *    math.nthRoots(x)
-   *    math.nthRoots(x, root)
-   *
-   * Examples:
-   *
-   *    math.nthRoots(1)
-   *    // returns [
-   *    //   {re: 1, im: 0},
-   *    //   {re: -1, im: 0}
-   *    // ]
-   *    nthRoots(1, 3)
-   *    // returns [
-   *    //   { re: 1, im: 0 },
-   *    //   { re: -0.4999999999999998, im: 0.8660254037844387 },
-   *    //   { re: -0.5000000000000004, im: -0.8660254037844385 }
-   *    ]
-   *
-   * See also:
-   *
-   *    nthRoot, pow, sqrt
-   *
-   * @param {number | BigNumber | Fraction | Complex} x Number to be rounded
-   * @return {number | BigNumber | Fraction | Complex}            Rounded value
-   */
-  var nthRoots = typed(nthRoots_name, {
-    Complex: function Complex(x) {
-      return _nthComplexRoots(x, 2);
-    },
-    'Complex, number': _nthComplexRoots
-  });
-  /**
    * Each function here returns a real multiple of i as a Complex value.
    * @param  {number} val
    * @return {Complex} val, i*val, -val or -i*val for index 0, 1, 2, 3
    */
   // This is used to fix float artifacts for zero-valued components.
-
   var _calculateExactResult = [function realPos(val) {
     return new Complex(val, 0);
   }, function imagPos(val) {
@@ -27688,8 +27587,46 @@ var createNthRoots = /* #__PURE__ */Object(factory["a" /* factory */])(nthRoots_
 
     return roots;
   }
+  /**
+   * Calculate the nth roots of a value.
+   * An nth root of a positive real number A,
+   * is a positive real solution of the equation "x^root = A".
+   * This function returns an array of complex values.
+   *
+   * Syntax:
+   *
+   *    math.nthRoots(x)
+   *    math.nthRoots(x, root)
+   *
+   * Examples:
+   *
+   *    math.nthRoots(1)
+   *    // returns [
+   *    //   {re: 1, im: 0},
+   *    //   {re: -1, im: 0}
+   *    // ]
+   *    nthRoots(1, 3)
+   *    // returns [
+   *    //   { re: 1, im: 0 },
+   *    //   { re: -0.4999999999999998, im: 0.8660254037844387 },
+   *    //   { re: -0.5000000000000004, im: -0.8660254037844385 }
+   *    ]
+   *
+   * See also:
+   *
+   *    nthRoot, pow, sqrt
+   *
+   * @param {number | BigNumber | Fraction | Complex} x Number to be rounded
+   * @return {number | BigNumber | Fraction | Complex}            Rounded value
+   */
 
-  return nthRoots;
+
+  return typed(nthRoots_name, {
+    Complex: function Complex(x) {
+      return _nthComplexRoots(x, 2);
+    },
+    'Complex, number': _nthComplexRoots
+  });
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/dotPow.js
 
@@ -27752,7 +27689,7 @@ var createDotPow = /* #__PURE__ */Object(factory["a" /* factory */])(dotPow_name
    * @return {number | BigNumber | Complex | Unit | Array | Matrix}                     The value of `x` to the power `y`
    */
 
-  var dotPow = typed(dotPow_name, {
+  return typed(dotPow_name, {
     'any, any': pow,
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
       return algorithm07(x, y, pow, false);
@@ -27768,38 +27705,37 @@ var createDotPow = /* #__PURE__ */Object(factory["a" /* factory */])(dotPow_name
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return dotPow(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return dotPow(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return dotPow(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm11(x, y, dotPow, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, dotPow, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm12(y, x, dotPow, true);
+      return algorithm12(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, dotPow, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, dotPow, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, dotPow, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return dotPow;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/dotDivide.js
 
@@ -27870,7 +27806,7 @@ var createDotDivide = /* #__PURE__ */Object(factory["a" /* factory */])(dotDivid
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
    */
 
-  var dotDivide = typed(dotDivide_name, {
+  return typed(dotDivide_name, {
     'any, any': divideScalar,
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
       return algorithm07(x, y, divideScalar, false);
@@ -27886,15 +27822,15 @@ var createDotDivide = /* #__PURE__ */Object(factory["a" /* factory */])(dotDivid
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return dotDivide(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return dotDivide(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return dotDivide(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
       return algorithm11(x, y, divideScalar, false);
@@ -27917,7 +27853,6 @@ var createDotDivide = /* #__PURE__ */Object(factory["a" /* factory */])(dotDivid
       return algorithm14(matrix(y), x, divideScalar, true).valueOf();
     }
   });
-  return dotDivide;
 });
 // CONCATENATED MODULE: ./src/function/algebra/solver/utils/solveValidation.js
 
@@ -28691,32 +28626,32 @@ var createLeftShift = /* #__PURE__ */Object(factory["a" /* factory */])(leftShif
    * @return {number | BigNumber | Array | Matrix} `x` shifted left `y` times
    */
 
-  var leftShift = typed(leftShift_name, {
+  return typed(leftShift_name, {
     'number, number': leftShiftNumber,
     'BigNumber, BigNumber': leftShiftBigNumber,
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm08(x, y, leftShift, false);
+      return algorithm08(x, y, this, false);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm02(y, x, leftShift, true);
+      return algorithm02(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm01(x, y, leftShift, false);
+      return algorithm01(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, leftShift);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return leftShift(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return leftShift(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return leftShift(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, number | BigNumber': function SparseMatrixNumberBigNumber(x, y) {
       // check scalar
@@ -28724,7 +28659,7 @@ var createLeftShift = /* #__PURE__ */Object(factory["a" /* factory */])(leftShif
         return x.clone();
       }
 
-      return algorithm11(x, y, leftShift, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, number | BigNumber': function DenseMatrixNumberBigNumber(x, y) {
       // check scalar
@@ -28732,7 +28667,7 @@ var createLeftShift = /* #__PURE__ */Object(factory["a" /* factory */])(leftShif
         return x.clone();
       }
 
-      return algorithm14(x, y, leftShift, false);
+      return algorithm14(x, y, this, false);
     },
     'number | BigNumber, SparseMatrix': function numberBigNumberSparseMatrix(x, y) {
       // check scalar
@@ -28740,7 +28675,7 @@ var createLeftShift = /* #__PURE__ */Object(factory["a" /* factory */])(leftShif
         return zeros(y.size(), y.storage());
       }
 
-      return algorithm10(y, x, leftShift, true);
+      return algorithm10(y, x, this, true);
     },
     'number | BigNumber, DenseMatrix': function numberBigNumberDenseMatrix(x, y) {
       // check scalar
@@ -28748,18 +28683,17 @@ var createLeftShift = /* #__PURE__ */Object(factory["a" /* factory */])(leftShif
         return zeros(y.size(), y.storage());
       }
 
-      return algorithm14(y, x, leftShift, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, number | BigNumber': function ArrayNumberBigNumber(x, y) {
       // use matrix implementation
-      return leftShift(matrix(x), y).valueOf();
+      return this(matrix(x), y).valueOf();
     },
     'number | BigNumber, Array': function numberBigNumberArray(x, y) {
       // use matrix implementation
-      return leftShift(x, matrix(y)).valueOf();
+      return this(x, matrix(y)).valueOf();
     }
   });
-  return leftShift;
 });
 // CONCATENATED MODULE: ./src/function/bitwise/rightArithShift.js
 
@@ -28829,32 +28763,32 @@ var createRightArithShift = /* #__PURE__ */Object(factory["a" /* factory */])(ri
    * @return {number | BigNumber | Array | Matrix} `x` sign-filled shifted right `y` times
    */
 
-  var rightArithShift = typed(rightArithShift_name, {
+  return typed(rightArithShift_name, {
     'number, number': rightArithShiftNumber,
     'BigNumber, BigNumber': rightArithShiftBigNumber,
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm08(x, y, rightArithShift, false);
+      return algorithm08(x, y, this, false);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm02(y, x, rightArithShift, true);
+      return algorithm02(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm01(x, y, rightArithShift, false);
+      return algorithm01(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, rightArithShift);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return rightArithShift(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return rightArithShift(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return rightArithShift(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, number | BigNumber': function SparseMatrixNumberBigNumber(x, y) {
       // check scalar
@@ -28862,7 +28796,7 @@ var createRightArithShift = /* #__PURE__ */Object(factory["a" /* factory */])(ri
         return x.clone();
       }
 
-      return algorithm11(x, y, rightArithShift, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, number | BigNumber': function DenseMatrixNumberBigNumber(x, y) {
       // check scalar
@@ -28870,7 +28804,7 @@ var createRightArithShift = /* #__PURE__ */Object(factory["a" /* factory */])(ri
         return x.clone();
       }
 
-      return algorithm14(x, y, rightArithShift, false);
+      return algorithm14(x, y, this, false);
     },
     'number | BigNumber, SparseMatrix': function numberBigNumberSparseMatrix(x, y) {
       // check scalar
@@ -28878,7 +28812,7 @@ var createRightArithShift = /* #__PURE__ */Object(factory["a" /* factory */])(ri
         return zeros(y.size(), y.storage());
       }
 
-      return algorithm10(y, x, rightArithShift, true);
+      return algorithm10(y, x, this, true);
     },
     'number | BigNumber, DenseMatrix': function numberBigNumberDenseMatrix(x, y) {
       // check scalar
@@ -28886,18 +28820,17 @@ var createRightArithShift = /* #__PURE__ */Object(factory["a" /* factory */])(ri
         return zeros(y.size(), y.storage());
       }
 
-      return algorithm14(y, x, rightArithShift, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, number | BigNumber': function ArrayNumberBigNumber(x, y) {
       // use matrix implementation
-      return rightArithShift(matrix(x), y).valueOf();
+      return this(matrix(x), y).valueOf();
     },
     'number | BigNumber, Array': function numberBigNumberArray(x, y) {
       // use matrix implementation
-      return rightArithShift(x, matrix(y)).valueOf();
+      return this(x, matrix(y)).valueOf();
     }
   });
-  return rightArithShift;
 });
 // CONCATENATED MODULE: ./src/function/bitwise/rightLogShift.js
 
@@ -28966,32 +28899,32 @@ var createRightLogShift = /* #__PURE__ */Object(factory["a" /* factory */])(righ
    * @return {number | Array | Matrix} `x` zero-filled shifted right `y` times
    */
 
-  var rightLogShift = typed(rightLogShift_name, {
+  return typed(rightLogShift_name, {
     'number, number': rightLogShiftNumber,
     // 'BigNumber, BigNumber': ..., // TODO: implement BigNumber support for rightLogShift
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm08(x, y, rightLogShift, false);
+      return algorithm08(x, y, this, false);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm02(y, x, rightLogShift, true);
+      return algorithm02(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm01(x, y, rightLogShift, false);
+      return algorithm01(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, rightLogShift);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return rightLogShift(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return rightLogShift(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return rightLogShift(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, number | BigNumber': function SparseMatrixNumberBigNumber(x, y) {
       // check scalar
@@ -28999,7 +28932,7 @@ var createRightLogShift = /* #__PURE__ */Object(factory["a" /* factory */])(righ
         return x.clone();
       }
 
-      return algorithm11(x, y, rightLogShift, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, number | BigNumber': function DenseMatrixNumberBigNumber(x, y) {
       // check scalar
@@ -29007,7 +28940,7 @@ var createRightLogShift = /* #__PURE__ */Object(factory["a" /* factory */])(righ
         return x.clone();
       }
 
-      return algorithm14(x, y, rightLogShift, false);
+      return algorithm14(x, y, this, false);
     },
     'number | BigNumber, SparseMatrix': function numberBigNumberSparseMatrix(x, y) {
       // check scalar
@@ -29015,7 +28948,7 @@ var createRightLogShift = /* #__PURE__ */Object(factory["a" /* factory */])(righ
         return zeros(y.size(), y.storage());
       }
 
-      return algorithm10(y, x, rightLogShift, true);
+      return algorithm10(y, x, this, true);
     },
     'number | BigNumber, DenseMatrix': function numberBigNumberDenseMatrix(x, y) {
       // check scalar
@@ -29023,18 +28956,17 @@ var createRightLogShift = /* #__PURE__ */Object(factory["a" /* factory */])(righ
         return zeros(y.size(), y.storage());
       }
 
-      return algorithm14(y, x, rightLogShift, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, number | BigNumber': function ArrayNumberBigNumber(x, y) {
       // use matrix implementation
-      return rightLogShift(matrix(x), y).valueOf();
+      return this(matrix(x), y).valueOf();
     },
     'number | BigNumber, Array': function numberBigNumberArray(x, y) {
       // use matrix implementation
-      return rightLogShift(x, matrix(y)).valueOf();
+      return this(x, matrix(y)).valueOf();
     }
   });
-  return rightLogShift;
 });
 // CONCATENATED MODULE: ./src/function/logical/and.js
 
@@ -29099,7 +29031,7 @@ var createAnd = /* #__PURE__ */Object(factory["a" /* factory */])(and_name, and_
    *            Returns true when both inputs are defined with a nonzero/nonempty value.
    */
 
-  var and = typed(and_name, {
+  return typed(and_name, {
     'number, number': andNumber,
     'Complex, Complex': function ComplexComplex(x, y) {
       return (x.re !== 0 || x.im !== 0) && (y.re !== 0 || y.im !== 0);
@@ -29108,31 +29040,31 @@ var createAnd = /* #__PURE__ */Object(factory["a" /* factory */])(and_name, and_
       return !x.isZero() && !y.isZero() && !x.isNaN() && !y.isNaN();
     },
     'Unit, Unit': function UnitUnit(x, y) {
-      return and(x.value || 0, y.value || 0);
+      return this(x.value || 0, y.value || 0);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm06(x, y, and, false);
+      return algorithm06(x, y, this, false);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm02(y, x, and, true);
+      return algorithm02(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm02(x, y, and, false);
+      return algorithm02(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, and);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return and(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return and(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return and(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
       // check scalar
@@ -29141,7 +29073,7 @@ var createAnd = /* #__PURE__ */Object(factory["a" /* factory */])(and_name, and_
         return zeros(x.size(), x.storage());
       }
 
-      return algorithm11(x, y, and, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
       // check scalar
@@ -29150,7 +29082,7 @@ var createAnd = /* #__PURE__ */Object(factory["a" /* factory */])(and_name, and_
         return zeros(x.size(), x.storage());
       }
 
-      return algorithm14(x, y, and, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
       // check scalar
@@ -29159,7 +29091,7 @@ var createAnd = /* #__PURE__ */Object(factory["a" /* factory */])(and_name, and_
         return zeros(x.size(), x.storage());
       }
 
-      return algorithm11(y, x, and, true);
+      return algorithm11(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
       // check scalar
@@ -29168,18 +29100,17 @@ var createAnd = /* #__PURE__ */Object(factory["a" /* factory */])(and_name, and_
         return zeros(x.size(), x.storage());
       }
 
-      return algorithm14(y, x, and, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return and(matrix(x), y).valueOf();
+      return this(matrix(x), y).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return and(x, matrix(y)).valueOf();
+      return this(x, matrix(y)).valueOf();
     }
   });
-  return and;
 });
 // CONCATENATED MODULE: ./src/function/relational/compare.js
 
@@ -29255,7 +29186,7 @@ var createCompare = /* #__PURE__ */Object(factory["a" /* factory */])(compare_na
    *                                                          1 when x > y, -1 when x < y, and 0 when x == y.
    */
 
-  var compare = typed(compare_name, {
+  return typed(compare_name, {
     'boolean, boolean': function booleanBoolean(x, y) {
       return x === y ? 0 : x > y ? 1 : -1;
     },
@@ -29276,54 +29207,53 @@ var createCompare = /* #__PURE__ */Object(factory["a" /* factory */])(compare_na
         throw new Error('Cannot compare units with different base');
       }
 
-      return compare(x.value, y.value);
+      return this(x.value, y.value);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm05(x, y, compare);
+      return algorithm05(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm03(y, x, compare, true);
+      return algorithm03(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm03(x, y, compare, false);
+      return algorithm03(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, compare);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return compare(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return compare(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return compare(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm12(x, y, compare, false);
+      return algorithm12(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, compare, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm12(y, x, compare, true);
+      return algorithm12(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, compare, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, compare, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, compare, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return compare;
 });
 var createCompareNumber = /* #__PURE__ */Object(factory["a" /* factory */])(compare_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
@@ -29417,7 +29347,7 @@ var createCompareNatural = /* #__PURE__ */Object(factory["a" /* factory */])(com
    *                  1 when x > y, -1 when x < y, and 0 when x == y.
    */
 
-  var compareNatural = typed(compareNatural_name, {
+  return typed(compareNatural_name, {
     'any, any': function anyAny(x, y) {
       var typeX = Object(is["M" /* typeOf */])(x);
       var typeY = Object(is["M" /* typeOf */])(y);
@@ -29436,7 +29366,7 @@ var createCompareNatural = /* #__PURE__ */Object(factory["a" /* factory */])(com
 
 
       if (typeX === 'Array' || typeX === 'Matrix' || typeY === 'Array' || typeY === 'Matrix') {
-        c = compareMatricesAndArrays(x, y);
+        c = compareMatricesAndArrays(this, x, y);
 
         if (c !== 0) {
           return c;
@@ -29456,11 +29386,11 @@ var createCompareNatural = /* #__PURE__ */Object(factory["a" /* factory */])(com
 
       if (typeX === 'Unit') {
         if (x.equalBase(y)) {
-          return compareNatural(x.value, y.value);
+          return this(x.value, y.value);
         } // compare by units
 
 
-        return compareArrays(x.formatUnits(), y.formatUnits());
+        return compareArrays(this, x.formatUnits(), y.formatUnits());
       }
 
       if (typeX === 'boolean') {
@@ -29472,7 +29402,7 @@ var createCompareNatural = /* #__PURE__ */Object(factory["a" /* factory */])(com
       }
 
       if (typeX === 'Object') {
-        return compareObjects(x, y);
+        return compareObjects(this, x, y);
       }
 
       if (typeX === 'null') {
@@ -29495,40 +29425,40 @@ var createCompareNatural = /* #__PURE__ */Object(factory["a" /* factory */])(com
    * @returns {number} Returns the comparison result: -1, 0, or 1
    */
 
-  function compareMatricesAndArrays(x, y) {
+  function compareMatricesAndArrays(compareNatural, x, y) {
     if (Object(is["H" /* isSparseMatrix */])(x) && Object(is["H" /* isSparseMatrix */])(y)) {
-      return compareArrays(x.toJSON().values, y.toJSON().values);
+      return compareArrays(compareNatural, x.toJSON().values, y.toJSON().values);
     }
 
     if (Object(is["H" /* isSparseMatrix */])(x)) {
       // note: convert to array is expensive
-      return compareMatricesAndArrays(x.toArray(), y);
+      return compareMatricesAndArrays(compareNatural, x.toArray(), y);
     }
 
     if (Object(is["H" /* isSparseMatrix */])(y)) {
       // note: convert to array is expensive
-      return compareMatricesAndArrays(x, y.toArray());
+      return compareMatricesAndArrays(compareNatural, x, y.toArray());
     } // convert DenseArray into Array
 
 
     if (Object(is["n" /* isDenseMatrix */])(x)) {
-      return compareMatricesAndArrays(x.toJSON().data, y);
+      return compareMatricesAndArrays(compareNatural, x.toJSON().data, y);
     }
 
     if (Object(is["n" /* isDenseMatrix */])(y)) {
-      return compareMatricesAndArrays(x, y.toJSON().data);
+      return compareMatricesAndArrays(compareNatural, x, y.toJSON().data);
     } // convert scalars to array
 
 
     if (!Array.isArray(x)) {
-      return compareMatricesAndArrays([x], y);
+      return compareMatricesAndArrays(compareNatural, [x], y);
     }
 
     if (!Array.isArray(y)) {
-      return compareMatricesAndArrays(x, [y]);
+      return compareMatricesAndArrays(compareNatural, x, [y]);
     }
 
-    return compareArrays(x, y);
+    return compareArrays(compareNatural, x, y);
   }
   /**
    * Compare two Arrays
@@ -29543,7 +29473,7 @@ var createCompareNatural = /* #__PURE__ */Object(factory["a" /* factory */])(com
    */
 
 
-  function compareArrays(x, y) {
+  function compareArrays(compareNatural, x, y) {
     // compare each value
     for (var i = 0, ii = Math.min(x.length, y.length); i < ii; i++) {
       var v = compareNatural(x[i], y[i]);
@@ -29577,13 +29507,13 @@ var createCompareNatural = /* #__PURE__ */Object(factory["a" /* factory */])(com
    */
 
 
-  function compareObjects(x, y) {
+  function compareObjects(compareNatural, x, y) {
     var keysX = Object.keys(x);
     var keysY = Object.keys(y); // compare keys
 
     keysX.sort(naturalSort_default.a);
     keysY.sort(naturalSort_default.a);
-    var c = compareArrays(keysX, keysY);
+    var c = compareArrays(compareNatural, keysX, keysY);
 
     if (c !== 0) {
       return c;
@@ -29600,8 +29530,6 @@ var createCompareNatural = /* #__PURE__ */Object(factory["a" /* factory */])(com
 
     return 0;
   }
-
-  return compareNatural;
 });
 /**
  * Compare two complex numbers, `x` and `y`:
@@ -29678,22 +29606,22 @@ var createCompareText = /* #__PURE__ */Object(factory["a" /* factory */])(compar
    *                                        1 when x > y, -1 when x < y, and 0 when x == y.
    */
 
-  var compareText = typed(compareText_name, {
+  return typed(compareText_name, {
     'any, any': utils_string["a" /* compareText */],
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
       return algorithm13(x, y, utils_string["a" /* compareText */]);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return compareText(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return compareText(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return compareText(x, matrix(y));
+      return this(x, matrix(y));
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
       return algorithm14(x, y, utils_string["a" /* compareText */], false);
@@ -29710,7 +29638,6 @@ var createCompareText = /* #__PURE__ */Object(factory["a" /* factory */])(compar
       return algorithm14(matrix(y), x, utils_string["a" /* compareText */], true).valueOf();
     }
   });
-  return compareText;
 });
 var createCompareTextNumber = /* #__PURE__ */Object(factory["a" /* factory */])(compareText_name, ['typed'], function (_ref2) {
   var typed = _ref2.typed;
@@ -29794,7 +29721,7 @@ var createEqual = /* #__PURE__ */Object(factory["a" /* factory */])(equal_name, 
    * @return {boolean | Array | Matrix} Returns true when the compared values are equal, else returns false
    */
 
-  var equal = typed(equal_name, {
+  return typed(equal_name, {
     'any, any': function anyAny(x, y) {
       // strict equality for null and undefined?
       if (x === null) {
@@ -29829,15 +29756,15 @@ var createEqual = /* #__PURE__ */Object(factory["a" /* factory */])(equal_name, 
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return equal(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return equal(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return equal(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
       return algorithm12(x, y, equalScalar, false);
@@ -29860,7 +29787,6 @@ var createEqual = /* #__PURE__ */Object(factory["a" /* factory */])(equal_name, 
       return algorithm14(matrix(y), x, equalScalar, true).valueOf();
     }
   });
-  return equal;
 });
 var createEqualNumber = Object(factory["a" /* factory */])(equal_name, ['typed', 'equalScalar'], function (_ref2) {
   var typed = _ref2.typed,
@@ -29994,7 +29920,7 @@ var createSmaller = /* #__PURE__ */Object(factory["a" /* factory */])(smaller_na
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
    */
 
-  var smaller = typed(smaller_name, {
+  return typed(smaller_name, {
     'boolean, boolean': function booleanBoolean(x, y) {
       return x < y;
     },
@@ -30015,54 +29941,53 @@ var createSmaller = /* #__PURE__ */Object(factory["a" /* factory */])(smaller_na
         throw new Error('Cannot compare units with different base');
       }
 
-      return smaller(x.value, y.value);
+      return this(x.value, y.value);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm07(x, y, smaller);
+      return algorithm07(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm03(y, x, smaller, true);
+      return algorithm03(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm03(x, y, smaller, false);
+      return algorithm03(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, smaller);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return smaller(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return smaller(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return smaller(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm12(x, y, smaller, false);
+      return algorithm12(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, smaller, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm12(y, x, smaller, true);
+      return algorithm12(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, smaller, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, smaller, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, smaller, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return smaller;
 });
 var createSmallerNumber = /* #__PURE__ */Object(factory["a" /* factory */])(smaller_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
@@ -30134,7 +30059,7 @@ var createSmallerEq = /* #__PURE__ */Object(factory["a" /* factory */])(smallerE
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
    */
 
-  var smallerEq = typed(smallerEq_name, {
+  return typed(smallerEq_name, {
     'boolean, boolean': function booleanBoolean(x, y) {
       return x <= y;
     },
@@ -30155,54 +30080,53 @@ var createSmallerEq = /* #__PURE__ */Object(factory["a" /* factory */])(smallerE
         throw new Error('Cannot compare units with different base');
       }
 
-      return smallerEq(x.value, y.value);
+      return this(x.value, y.value);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm07(x, y, smallerEq);
+      return algorithm07(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm03(y, x, smallerEq, true);
+      return algorithm03(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm03(x, y, smallerEq, false);
+      return algorithm03(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, smallerEq);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return smallerEq(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return smallerEq(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return smallerEq(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm12(x, y, smallerEq, false);
+      return algorithm12(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, smallerEq, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm12(y, x, smallerEq, true);
+      return algorithm12(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, smallerEq, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, smallerEq, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, smallerEq, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return smallerEq;
 });
 var createSmallerEqNumber = /* #__PURE__ */Object(factory["a" /* factory */])(smallerEq_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
@@ -30278,7 +30202,7 @@ var createLarger = /* #__PURE__ */Object(factory["a" /* factory */])(larger_name
    * @return {boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
    */
 
-  var larger = typed(larger_name, {
+  return typed(larger_name, {
     'boolean, boolean': function booleanBoolean(x, y) {
       return x > y;
     },
@@ -30299,54 +30223,53 @@ var createLarger = /* #__PURE__ */Object(factory["a" /* factory */])(larger_name
         throw new Error('Cannot compare units with different base');
       }
 
-      return larger(x.value, y.value);
+      return this(x.value, y.value);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm07(x, y, larger);
+      return algorithm07(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm03(y, x, larger, true);
+      return algorithm03(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm03(x, y, larger, false);
+      return algorithm03(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, larger);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return larger(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return larger(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return larger(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm12(x, y, larger, false);
+      return algorithm12(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, larger, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm12(y, x, larger, true);
+      return algorithm12(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, larger, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, larger, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, larger, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return larger;
 });
 var createLargerNumber = /* #__PURE__ */Object(factory["a" /* factory */])(larger_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
@@ -30418,7 +30341,7 @@ var createLargerEq = /* #__PURE__ */Object(factory["a" /* factory */])(largerEq_
    * @return {boolean | Array | Matrix} Returns true when the x is larger or equal to y, else returns false
    */
 
-  var largerEq = typed(largerEq_name, {
+  return typed(largerEq_name, {
     'boolean, boolean': function booleanBoolean(x, y) {
       return x >= y;
     },
@@ -30439,54 +30362,53 @@ var createLargerEq = /* #__PURE__ */Object(factory["a" /* factory */])(largerEq_
         throw new Error('Cannot compare units with different base');
       }
 
-      return largerEq(x.value, y.value);
+      return this(x.value, y.value);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm07(x, y, largerEq);
+      return algorithm07(x, y, this);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
-      return algorithm03(y, x, largerEq, true);
+      return algorithm03(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm03(x, y, largerEq, false);
+      return algorithm03(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, largerEq);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return largerEq(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return largerEq(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return largerEq(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
-      return algorithm12(x, y, largerEq, false);
+      return algorithm12(x, y, this, false);
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
-      return algorithm14(x, y, largerEq, false);
+      return algorithm14(x, y, this, false);
     },
     'any, SparseMatrix': function anySparseMatrix(x, y) {
-      return algorithm12(y, x, largerEq, true);
+      return algorithm12(y, x, this, true);
     },
     'any, DenseMatrix': function anyDenseMatrix(x, y) {
-      return algorithm14(y, x, largerEq, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, largerEq, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, largerEq, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return largerEq;
 });
 var createLargerEqNumber = /* #__PURE__ */Object(factory["a" /* factory */])(largerEq_name, ['typed', 'config'], function (_ref2) {
   var typed = _ref2.typed,
@@ -30650,7 +30572,7 @@ var createUnequal = /* #__PURE__ */Object(factory["a" /* factory */])(unequal_na
    * @return {boolean | Array | Matrix} Returns true when the compared values are unequal, else returns false
    */
 
-  var unequal = typed('unequal', {
+  return typed('unequal', {
     'any, any': function anyAny(x, y) {
       // strict equality for null and undefined?
       if (x === null) {
@@ -30685,15 +30607,15 @@ var createUnequal = /* #__PURE__ */Object(factory["a" /* factory */])(unequal_na
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return unequal(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return unequal(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return unequal(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, any': function SparseMatrixAny(x, y) {
       return algorithm12(x, y, _unequal, false);
@@ -30720,8 +30642,6 @@ var createUnequal = /* #__PURE__ */Object(factory["a" /* factory */])(unequal_na
   function _unequal(x, y) {
     return !equalScalar(x, y);
   }
-
-  return unequal;
 });
 var createUnequalNumber = Object(factory["a" /* factory */])(unequal_name, ['typed', 'equalScalar'], function (_ref2) {
   var typed = _ref2.typed,
@@ -36377,7 +36297,7 @@ var createUnitFunction = /* #__PURE__ */Object(factory["a" /* factory */])(unit_
    * @param {* | Array | Matrix} args   A number and unit.
    * @return {Unit | Array | Matrix}    The created unit
    */
-  var unit = typed(unit_name, {
+  return typed(unit_name, {
     Unit: function Unit(x) {
       return x.clone();
     },
@@ -36394,10 +36314,9 @@ var createUnitFunction = /* #__PURE__ */Object(factory["a" /* factory */])(unit_
       return new Unit(value, unit);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, unit);
+      return deepMap(x, this);
     }
   });
-  return unit;
 });
 // CONCATENATED MODULE: ./src/type/matrix/function/sparse.js
 
@@ -36560,7 +36479,7 @@ var createAcos = /* #__PURE__ */Object(factory["a" /* factory */])(acos_name, ac
    * @param {number | BigNumber | Complex | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} The arc cosine of x
    */
-  var acos = typed(acos_name, {
+  return typed(acos_name, {
     number: function number(x) {
       if (x >= -1 && x <= 1 || config.predictable) {
         return Math.acos(x);
@@ -36575,10 +36494,9 @@ var createAcos = /* #__PURE__ */Object(factory["a" /* factory */])(acos_name, ac
       return x.acos();
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, acos);
+      return deepMap(x, this);
     }
   });
-  return acos;
 });
 // CONCATENATED MODULE: ./src/plain/number/trigonometry.js
 
@@ -36725,7 +36643,7 @@ var createAcosh = /* #__PURE__ */Object(factory["a" /* factory */])(acosh_name, 
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosine of x
    */
-  var acosh = typed(acosh_name, {
+  return typed(acosh_name, {
     number: function number(x) {
       if (x >= 1 || config.predictable) {
         return acoshNumber(x);
@@ -36744,10 +36662,9 @@ var createAcosh = /* #__PURE__ */Object(factory["a" /* factory */])(acosh_name, 
       return x.acosh();
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, acosh);
+      return deepMap(x, this);
     }
   });
-  return acosh;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/acot.js
 
@@ -36782,7 +36699,7 @@ var createAcot = /* #__PURE__ */Object(factory["a" /* factory */])(acot_name, ac
    * @param {number | Complex | Array | Matrix} x   Function input
    * @return {number | Complex | Array | Matrix} The arc cotangent of x
    */
-  var acot = typed(acot_name, {
+  return typed(acot_name, {
     number: acotNumber,
     Complex: function Complex(x) {
       return x.acot();
@@ -36791,10 +36708,9 @@ var createAcot = /* #__PURE__ */Object(factory["a" /* factory */])(acot_name, ac
       return new _BigNumber(1).div(x).atan();
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, acot);
+      return deepMap(x, this);
     }
   });
-  return acot;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/acoth.js
 
@@ -36829,7 +36745,7 @@ var createAcoth = /* #__PURE__ */Object(factory["a" /* factory */])(acoth_name, 
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arccotangent of x
    */
-  var acoth = typed(acoth_name, {
+  return typed(acoth_name, {
     number: function number(x) {
       if (x >= 1 || x <= -1 || config.predictable) {
         return acothNumber(x);
@@ -36844,10 +36760,9 @@ var createAcoth = /* #__PURE__ */Object(factory["a" /* factory */])(acoth_name, 
       return new _BigNumber(1).div(x).atanh();
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, acoth);
+      return deepMap(x, this);
     }
   });
-  return acoth;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/acsc.js
 
@@ -36884,7 +36799,7 @@ var createAcsc = /* #__PURE__ */Object(factory["a" /* factory */])(acsc_name, ac
    * @param {number | Complex | Array | Matrix} x   Function input
    * @return {number | Complex | Array | Matrix} The arc cosecant of x
    */
-  var acsc = typed(acsc_name, {
+  return typed(acsc_name, {
     number: function number(x) {
       if (x <= -1 || x >= 1 || config.predictable) {
         return acscNumber(x);
@@ -36899,10 +36814,9 @@ var createAcsc = /* #__PURE__ */Object(factory["a" /* factory */])(acsc_name, ac
       return new _BigNumber(1).div(x).asin();
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, acsc);
+      return deepMap(x, this);
     }
   });
-  return acsc;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/acsch.js
 
@@ -36935,7 +36849,7 @@ var createAcsch = /* #__PURE__ */Object(factory["a" /* factory */])(acsch_name, 
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosecant of x
    */
-  var acsch = typed(acsch_name, {
+  return typed(acsch_name, {
     number: acschNumber,
     Complex: function Complex(x) {
       return x.acsch();
@@ -36944,10 +36858,9 @@ var createAcsch = /* #__PURE__ */Object(factory["a" /* factory */])(acsch_name, 
       return new _BigNumber(1).div(x).asinh();
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, acsch);
+      return deepMap(x, this);
     }
   });
-  return acsch;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/asec.js
 
@@ -36984,7 +36897,7 @@ var createAsec = /* #__PURE__ */Object(factory["a" /* factory */])(asec_name, as
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} The arc secant of x
    */
-  var asec = typed(asec_name, {
+  return typed(asec_name, {
     number: function number(x) {
       if (x <= -1 || x >= 1 || config.predictable) {
         return asecNumber(x);
@@ -36999,10 +36912,9 @@ var createAsec = /* #__PURE__ */Object(factory["a" /* factory */])(asec_name, as
       return new _BigNumber(1).div(x).acos();
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, asec);
+      return deepMap(x, this);
     }
   });
-  return asec;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/asech.js
 
@@ -37037,7 +36949,7 @@ var createAsech = /* #__PURE__ */Object(factory["a" /* factory */])(asech_name, 
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsecant of x
    */
-  var asech = typed(asech_name, {
+  return typed(asech_name, {
     number: function number(x) {
       if (x <= 1 && x >= -1 || config.predictable) {
         var xInv = 1 / x;
@@ -37059,10 +36971,9 @@ var createAsech = /* #__PURE__ */Object(factory["a" /* factory */])(asech_name, 
       return new _BigNumber(1).div(x).acosh();
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, asech);
+      return deepMap(x, this);
     }
   });
-  return asech;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/asin.js
 
@@ -37097,7 +37008,7 @@ var createAsin = /* #__PURE__ */Object(factory["a" /* factory */])(asin_name, as
    * @param {number | BigNumber | Complex | Array | Matrix} x   Function input
    * @return {number | BigNumber | Complex | Array | Matrix} The arc sine of x
    */
-  var asin = typed(asin_name, {
+  return typed(asin_name, {
     number: function number(x) {
       if (x >= -1 && x <= 1 || config.predictable) {
         return Math.asin(x);
@@ -37113,10 +37024,9 @@ var createAsin = /* #__PURE__ */Object(factory["a" /* factory */])(asin_name, as
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since asin(0) = 0
-      return deepMap(x, asin, true);
+      return deepMap(x, this, true);
     }
   });
-  return asin;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/asinh.js
 
@@ -37148,7 +37058,7 @@ var createAsinh = /* #__PURE__ */Object(factory["a" /* factory */])(asinh_name, 
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsine of x
    */
-  var asinh = typed('asinh', {
+  return typed('asinh', {
     number: asinhNumber,
     Complex: function Complex(x) {
       return x.asinh();
@@ -37158,10 +37068,9 @@ var createAsinh = /* #__PURE__ */Object(factory["a" /* factory */])(asinh_name, 
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since asinh(0) = 0
-      return deepMap(x, asinh, true);
+      return deepMap(x, this, true);
     }
   });
-  return asinh;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/atan.js
 
@@ -37194,7 +37103,7 @@ var createAtan = /* #__PURE__ */Object(factory["a" /* factory */])(atan_name, at
    * @param {number | BigNumber | Complex | Array | Matrix} x   Function input
    * @return {number | BigNumber | Complex | Array | Matrix} The arc tangent of x
    */
-  var atan = typed('atan', {
+  return typed('atan', {
     number: function number(x) {
       return Math.atan(x);
     },
@@ -37206,10 +37115,9 @@ var createAtan = /* #__PURE__ */Object(factory["a" /* factory */])(atan_name, at
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since atan(0) = 0
-      return deepMap(x, atan, true);
+      return deepMap(x, this, true);
     }
   });
-  return atan;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/atan2.js
 
@@ -37283,7 +37191,7 @@ var createAtan2 = /* #__PURE__ */Object(factory["a" /* factory */])(atan2_name, 
    * @return {number | Array | Matrix} Four-quadrant inverse tangent
    */
 
-  var atan2 = typed(atan2_name, {
+  return typed(atan2_name, {
     'number, number': Math.atan2,
     // Complex numbers doesn't seem to have a reasonable implementation of
     // atan2(). Even Matlab removed the support, after they only calculated
@@ -37292,49 +37200,48 @@ var createAtan2 = /* #__PURE__ */Object(factory["a" /* factory */])(atan2_name, 
       return BigNumber.atan2(y, x);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
-      return algorithm09(x, y, atan2, false);
+      return algorithm09(x, y, this, false);
     },
     'SparseMatrix, DenseMatrix': function SparseMatrixDenseMatrix(x, y) {
       // mind the order of y and x!
-      return algorithm02(y, x, atan2, true);
+      return algorithm02(y, x, this, true);
     },
     'DenseMatrix, SparseMatrix': function DenseMatrixSparseMatrix(x, y) {
-      return algorithm03(x, y, atan2, false);
+      return algorithm03(x, y, this, false);
     },
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
-      return algorithm13(x, y, atan2);
+      return algorithm13(x, y, this);
     },
     'Array, Array': function ArrayArray(x, y) {
-      return atan2(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
-      return atan2(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
-      return atan2(x, matrix(y));
+      return this(x, matrix(y));
     },
     'SparseMatrix, number | BigNumber': function SparseMatrixNumberBigNumber(x, y) {
-      return algorithm11(x, y, atan2, false);
+      return algorithm11(x, y, this, false);
     },
     'DenseMatrix, number | BigNumber': function DenseMatrixNumberBigNumber(x, y) {
-      return algorithm14(x, y, atan2, false);
+      return algorithm14(x, y, this, false);
     },
     'number | BigNumber, SparseMatrix': function numberBigNumberSparseMatrix(x, y) {
       // mind the order of y and x
-      return algorithm12(y, x, atan2, true);
+      return algorithm12(y, x, this, true);
     },
     'number | BigNumber, DenseMatrix': function numberBigNumberDenseMatrix(x, y) {
       // mind the order of y and x
-      return algorithm14(y, x, atan2, true);
+      return algorithm14(y, x, this, true);
     },
     'Array, number | BigNumber': function ArrayNumberBigNumber(x, y) {
-      return algorithm14(matrix(x), y, atan2, false).valueOf();
+      return algorithm14(matrix(x), y, this, false).valueOf();
     },
     'number | BigNumber, Array': function numberBigNumberArray(x, y) {
-      return algorithm14(matrix(y), x, atan2, true).valueOf();
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
-  return atan2;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/atanh.js
 
@@ -37368,7 +37275,7 @@ var createAtanh = /* #__PURE__ */Object(factory["a" /* factory */])(atanh_name, 
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arctangent of x
    */
-  var atanh = typed(atanh_name, {
+  return typed(atanh_name, {
     number: function number(x) {
       if (x <= 1 && x >= -1 || config.predictable) {
         return atanhNumber(x);
@@ -37384,10 +37291,9 @@ var createAtanh = /* #__PURE__ */Object(factory["a" /* factory */])(atanh_name, 
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since atanh(0) = 0
-      return deepMap(x, atanh, true);
+      return deepMap(x, this, true);
     }
   });
-  return atanh;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/cos.js
 
@@ -37423,7 +37329,7 @@ var createCos = /* #__PURE__ */Object(factory["a" /* factory */])(cos_name, cos_
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Cosine of x
    */
-  var cos = typed(cos_name, {
+  return typed(cos_name, {
     number: Math.cos,
     Complex: function Complex(x) {
       return x.cos();
@@ -37436,13 +37342,12 @@ var createCos = /* #__PURE__ */Object(factory["a" /* factory */])(cos_name, cos_
         throw new TypeError('Unit in function cos is no angle');
       }
 
-      return cos(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, cos);
+      return deepMap(x, this);
     }
   });
-  return cos;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/cosh.js
 
@@ -37474,7 +37379,7 @@ var createCosh = /* #__PURE__ */Object(factory["a" /* factory */])(cosh_name, co
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic cosine of x
    */
-  var cosh = typed(cosh_name, {
+  return typed(cosh_name, {
     number: utils_number["e" /* cosh */],
     Complex: function Complex(x) {
       return x.cosh();
@@ -37487,13 +37392,12 @@ var createCosh = /* #__PURE__ */Object(factory["a" /* factory */])(cosh_name, co
         throw new TypeError('Unit in function cosh is no angle');
       }
 
-      return cosh(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, cosh);
+      return deepMap(x, this);
     }
   });
-  return cosh;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/cot.js
 
@@ -37526,7 +37430,7 @@ var createCot = /* #__PURE__ */Object(factory["a" /* factory */])(cot_name, cot_
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Cotangent of x
    */
-  var cot = typed(cot_name, {
+  return typed(cot_name, {
     number: cotNumber,
     Complex: function Complex(x) {
       return x.cot();
@@ -37539,13 +37443,12 @@ var createCot = /* #__PURE__ */Object(factory["a" /* factory */])(cot_name, cot_
         throw new TypeError('Unit in function cot is no angle');
       }
 
-      return cot(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, cot);
+      return deepMap(x, this);
     }
   });
-  return cot;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/coth.js
 
@@ -37580,7 +37483,7 @@ var createCoth = /* #__PURE__ */Object(factory["a" /* factory */])(coth_name, co
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic cotangent of x
    */
-  var coth = typed(coth_name, {
+  return typed(coth_name, {
     number: cothNumber,
     Complex: function Complex(x) {
       return x.coth();
@@ -37593,13 +37496,12 @@ var createCoth = /* #__PURE__ */Object(factory["a" /* factory */])(coth_name, co
         throw new TypeError('Unit in function coth is no angle');
       }
 
-      return coth(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, coth);
+      return deepMap(x, this);
     }
   });
-  return coth;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/csc.js
 
@@ -37632,7 +37534,7 @@ var createCsc = /* #__PURE__ */Object(factory["a" /* factory */])(csc_name, csc_
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Cosecant of x
    */
-  var csc = typed(csc_name, {
+  return typed(csc_name, {
     number: cscNumber,
     Complex: function Complex(x) {
       return x.csc();
@@ -37645,13 +37547,12 @@ var createCsc = /* #__PURE__ */Object(factory["a" /* factory */])(csc_name, csc_
         throw new TypeError('Unit in function csc is no angle');
       }
 
-      return csc(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, csc);
+      return deepMap(x, this);
     }
   });
-  return csc;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/csch.js
 
@@ -37686,7 +37587,7 @@ var createCsch = /* #__PURE__ */Object(factory["a" /* factory */])(csch_name, cs
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic cosecant of x
    */
-  var csch = typed(csch_name, {
+  return typed(csch_name, {
     number: cschNumber,
     Complex: function Complex(x) {
       return x.csch();
@@ -37699,13 +37600,12 @@ var createCsch = /* #__PURE__ */Object(factory["a" /* factory */])(csch_name, cs
         throw new TypeError('Unit in function csch is no angle');
       }
 
-      return csch(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, csch);
+      return deepMap(x, this);
     }
   });
-  return csch;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/sec.js
 
@@ -37738,7 +37638,7 @@ var createSec = /* #__PURE__ */Object(factory["a" /* factory */])(sec_name, sec_
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Secant of x
    */
-  var sec = typed(sec_name, {
+  return typed(sec_name, {
     number: secNumber,
     Complex: function Complex(x) {
       return x.sec();
@@ -37751,13 +37651,12 @@ var createSec = /* #__PURE__ */Object(factory["a" /* factory */])(sec_name, sec_
         throw new TypeError('Unit in function sec is no angle');
       }
 
-      return sec(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, sec);
+      return deepMap(x, this);
     }
   });
-  return sec;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/sech.js
 
@@ -37792,7 +37691,7 @@ var createSech = /* #__PURE__ */Object(factory["a" /* factory */])(sech_name, se
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic secant of x
    */
-  var sech = typed(sech_name, {
+  return typed(sech_name, {
     number: sechNumber,
     Complex: function Complex(x) {
       return x.sech();
@@ -37805,13 +37704,12 @@ var createSech = /* #__PURE__ */Object(factory["a" /* factory */])(sech_name, se
         throw new TypeError('Unit in function sech is no angle');
       }
 
-      return sech(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
-      return deepMap(x, sech);
+      return deepMap(x, this);
     }
   });
-  return sech;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/sin.js
 
@@ -37847,7 +37745,7 @@ var createSin = /* #__PURE__ */Object(factory["a" /* factory */])(sin_name, sin_
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Sine of x
    */
-  var sin = typed(sin_name, {
+  return typed(sin_name, {
     number: Math.sin,
     Complex: function Complex(x) {
       return x.sin();
@@ -37860,14 +37758,13 @@ var createSin = /* #__PURE__ */Object(factory["a" /* factory */])(sin_name, sin_
         throw new TypeError('Unit in function sin is no angle');
       }
 
-      return sin(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since sin(0) = 0
-      return deepMap(x, sin, true);
+      return deepMap(x, this, true);
     }
   });
-  return sin;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/sinh.js
 
@@ -37899,7 +37796,7 @@ var createSinh = /* #__PURE__ */Object(factory["a" /* factory */])(sinh_name, si
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic sine of x
    */
-  var sinh = typed(sinh_name, {
+  return typed(sinh_name, {
     number: sinhNumber,
     Complex: function Complex(x) {
       return x.sinh();
@@ -37912,14 +37809,13 @@ var createSinh = /* #__PURE__ */Object(factory["a" /* factory */])(sinh_name, si
         throw new TypeError('Unit in function sinh is no angle');
       }
 
-      return sinh(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since sinh(0) = 0
-      return deepMap(x, sinh, true);
+      return deepMap(x, this, true);
     }
   });
-  return sinh;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/tan.js
 
@@ -37952,7 +37848,7 @@ var createTan = /* #__PURE__ */Object(factory["a" /* factory */])(tan_name, tan_
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Tangent of x
    */
-  var tan = typed(tan_name, {
+  return typed(tan_name, {
     number: Math.tan,
     Complex: function Complex(x) {
       return x.tan();
@@ -37965,14 +37861,13 @@ var createTan = /* #__PURE__ */Object(factory["a" /* factory */])(tan_name, tan_
         throw new TypeError('Unit in function tan is no angle');
       }
 
-      return tan(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since tan(0) = 0
-      return deepMap(x, tan, true);
+      return deepMap(x, this, true);
     }
   });
-  return tan;
 });
 // CONCATENATED MODULE: ./src/function/trigonometry/tanh.js
 
@@ -38007,7 +37902,7 @@ var createTanh = /* #__PURE__ */Object(factory["a" /* factory */])(tanh_name, ta
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic tangent of x
    */
-  var tanh = typed('tanh', {
+  return typed('tanh', {
     number: utils_number["p" /* tanh */],
     Complex: function Complex(x) {
       return x.tanh();
@@ -38020,14 +37915,13 @@ var createTanh = /* #__PURE__ */Object(factory["a" /* factory */])(tanh_name, ta
         throw new TypeError('Unit in function tanh is no angle');
       }
 
-      return tanh(x.value);
+      return this(x.value);
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since tanh(0) = 0
-      return deepMap(x, tanh, true);
+      return deepMap(x, this, true);
     }
   });
-  return tanh;
 });
 // CONCATENATED MODULE: ./src/function/set/setCartesian.js
 
@@ -38715,7 +38609,7 @@ var createAdd = /* #__PURE__ */Object(factory["a" /* factory */])(add_name, add_
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
    */
 
-  var add = typed(add_name, Object(utils_object["e" /* extend */])({
+  return typed(add_name, Object(utils_object["e" /* extend */])({
     // we extend the signatures of addScalar with signatures dealing with matrices
     'DenseMatrix, DenseMatrix': function DenseMatrixDenseMatrix(x, y) {
       return algorithm13(x, y, addScalar);
@@ -38731,15 +38625,15 @@ var createAdd = /* #__PURE__ */Object(factory["a" /* factory */])(add_name, add_
     },
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
-      return add(matrix(x), matrix(y)).valueOf();
+      return this(matrix(x), matrix(y)).valueOf();
     },
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
-      return add(matrix(x), y);
+      return this(matrix(x), y);
     },
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
-      return add(x, matrix(y));
+      return this(x, matrix(y));
     },
     'DenseMatrix, any': function DenseMatrixAny(x, y) {
       return algorithm14(x, y, addScalar, false);
@@ -38763,16 +38657,15 @@ var createAdd = /* #__PURE__ */Object(factory["a" /* factory */])(add_name, add_
     },
     'any, any': addScalar,
     'any, any, ...any': function anyAnyAny(x, y, rest) {
-      var result = add(x, y);
+      var result = this(x, y);
 
       for (var i = 0; i < rest.length; i++) {
-        result = add(result, rest[i]);
+        result = this(result, rest[i]);
       }
 
       return result;
     }
   }, addScalar.signatures));
-  return add;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/hypot.js
 
@@ -38817,13 +38710,13 @@ var createHypot = /* #__PURE__ */Object(factory["a" /* factory */])(hypot_name, 
    *                                                          single number for the whole matrix.
    * @return {number | BigNumber} Returns the hypothenusa of the input values.
    */
-  var hypot = typed(hypot_name, {
+  return typed(hypot_name, {
     '... number | BigNumber': _hypot,
     Array: function Array(x) {
-      return hypot.apply(hypot, Object(utils_array["e" /* flatten */])(x));
+      return this.apply(this, Object(utils_array["e" /* flatten */])(x));
     },
     Matrix: function Matrix(x) {
-      return hypot.apply(hypot, Object(utils_array["e" /* flatten */])(x.toArray()));
+      return this.apply(this, Object(utils_array["e" /* flatten */])(x.toArray()));
     }
   });
   /**
@@ -38853,8 +38746,6 @@ var createHypot = /* #__PURE__ */Object(factory["a" /* factory */])(hypot_name, 
 
     return multiplyScalar(largest, sqrt(result));
   }
-
-  return hypot;
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/norm.js
 
@@ -38911,7 +38802,7 @@ var createNorm = /* #__PURE__ */Object(factory["a" /* factory */])(norm_name, no
    *            Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm)
    * @return {number | BigNumber} the p-norm
    */
-  var norm = typed(norm_name, {
+  return typed(norm_name, {
     number: Math.abs,
     Complex: function Complex(x) {
       return x.abs();
@@ -38932,7 +38823,7 @@ var createNorm = /* #__PURE__ */Object(factory["a" /* factory */])(norm_name, no
     },
     'number | Complex | BigNumber | boolean, number | BigNumber | string': function numberComplexBigNumberBooleanNumberBigNumberString(x) {
       // ignore second parameter, TODO: remove the option of second parameter for these types
-      return norm(x);
+      return this(x);
     },
     'Array, number | BigNumber | string': function ArrayNumberBigNumberString(x, p) {
       return _norm(matrix(x), p);
@@ -39065,8 +38956,6 @@ var createNorm = /* #__PURE__ */Object(factory["a" /* factory */])(norm_name, no
       throw new Error('Unsupported parameter value');
     }
   }
-
-  return norm;
 });
 // CONCATENATED MODULE: ./src/function/matrix/dot.js
 
@@ -46043,7 +45932,7 @@ var createParse = /* #__PURE__ */Object(factory["a" /* factory */])(parse_name, 
    * nodes in a custom way, for example for handling a plot.
    *
    * A handler must be passed as second argument of the parse function.
-   * - must extend math.expression.node.Node
+   * - must extend math.Node
    * - must contain a function _compile(defs: Object) : string
    * - must contain a function find(filter: Object) : Node[]
    * - must contain a function toString() : string
@@ -53006,7 +52895,7 @@ var createEigs = /* #__PURE__ */Object(factory["a" /* factory */])(eigs_name, ei
    * @param {Array | Matrix} x  Matrix to be diagonalized
    * @return {{values: Array, vectors: Array} | {values: Matrix, vectors: Matrix}} Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix with eigenvectors as columns).
    */
-  var eigs = typed('eigs', {
+  return typed('eigs', {
     Array: function Array(x) {
       // check array size
       var mat = matrix(x);
@@ -53382,8 +53271,6 @@ var createEigs = /* #__PURE__ */Object(factory["a" /* factory */])(eigs_name, ei
 
     return array;
   }
-
-  return eigs;
 });
 // CONCATENATED MODULE: ./src/function/matrix/expm.js
 
@@ -53568,56 +53455,6 @@ var createSqrtm = /* #__PURE__ */Object(factory["a" /* factory */])(sqrtm_name, 
       size = _ref.size,
       max = _ref.max,
       identity = _ref.identity;
-
-  /**
-   * Calculate the principal square root of a square matrix.
-   * The principal square root matrix `X` of another matrix `A` is such that `X * X = A`.
-   *
-   * https://en.wikipedia.org/wiki/Square_root_of_a_matrix
-   *
-   * Syntax:
-   *
-   *     X = math.sqrtm(A)
-   *
-   * Examples:
-   *
-   *     math.sqrtm([[1, 2], [3, 4]]) // returns [[-2, 1], [1.5, -0.5]]
-   *
-   * See also:
-   *
-   *     sqrt, pow
-   *
-   * @param  {Array | Matrix} A   The square matrix `A`
-   * @return {Array | Matrix}     The principal square root of matrix `A`
-   */
-  var sqrtm = typed(sqrtm_name, {
-    'Array | Matrix': function ArrayMatrix(A) {
-      var size = Object(is["v" /* isMatrix */])(A) ? A.size() : Object(utils_array["a" /* arraySize */])(A);
-
-      switch (size.length) {
-        case 1:
-          // Single element Array | Matrix
-          if (size[0] === 1) {
-            return sqrt(A);
-          } else {
-            throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
-          }
-
-        case 2:
-          {
-            // Two-dimensional Array | Matrix
-            var rows = size[0];
-            var cols = size[1];
-
-            if (rows === cols) {
-              return _denmanBeavers(A);
-            } else {
-              throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
-            }
-          }
-      }
-    }
-  });
   var _maxIterations = 1e3;
   var _tolerance = 1e-6;
   /**
@@ -53649,8 +53486,57 @@ var createSqrtm = /* #__PURE__ */Object(factory["a" /* factory */])(sqrtm_name, 
 
     return Y;
   }
+  /**
+   * Calculate the principal square root of a square matrix.
+   * The principal square root matrix `X` of another matrix `A` is such that `X * X = A`.
+   *
+   * https://en.wikipedia.org/wiki/Square_root_of_a_matrix
+   *
+   * Syntax:
+   *
+   *     X = math.sqrtm(A)
+   *
+   * Examples:
+   *
+   *     math.sqrtm([[1, 2], [3, 4]]) // returns [[-2, 1], [1.5, -0.5]]
+   *
+   * See also:
+   *
+   *     sqrt, pow
+   *
+   * @param  {Array | Matrix} A   The square matrix `A`
+   * @return {Array | Matrix}     The principal square root of matrix `A`
+   */
 
-  return sqrtm;
+
+  return typed(sqrtm_name, {
+    'Array | Matrix': function ArrayMatrix(A) {
+      var size = Object(is["v" /* isMatrix */])(A) ? A.size() : Object(utils_array["a" /* arraySize */])(A);
+
+      switch (size.length) {
+        case 1:
+          // Single element Array | Matrix
+          if (size[0] === 1) {
+            return sqrt(A);
+          } else {
+            throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
+          }
+
+        case 2:
+          {
+            // Two-dimensional Array | Matrix
+            var rows = size[0];
+            var cols = size[1];
+
+            if (rows === cols) {
+              return _denmanBeavers(A);
+            } else {
+              throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
+            }
+          }
+      }
+    }
+  });
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/divide.js
 
@@ -54126,7 +54012,7 @@ var createIntersect = /* #__PURE__ */Object(factory["a" /* factory */])(intersec
    *                              OR null if the calculation is for line and plane
    * @return {Array}              Returns the point of intersection of lines/lines-planes
    */
-  var intersect = typed('intersect', {
+  return typed('intersect', {
     'Array, Array, Array': function ArrayArrayArray(x, y, plane) {
       if (!_3d(x)) {
         throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument');
@@ -54184,11 +54070,11 @@ var createIntersect = /* #__PURE__ */Object(factory["a" /* factory */])(intersec
       }
     },
     'Matrix, Matrix, Matrix': function MatrixMatrixMatrix(x, y, plane) {
-      return matrix(intersect(x.valueOf(), y.valueOf(), plane.valueOf()));
+      return matrix(this(x.valueOf(), y.valueOf(), plane.valueOf()));
     },
     'Matrix, Matrix, Matrix, Matrix': function MatrixMatrixMatrixMatrix(w, x, y, z) {
       // TODO: output matrix type should match input matrix type
-      return matrix(intersect(w.valueOf(), x.valueOf(), y.valueOf(), z.valueOf()));
+      return matrix(this(w.valueOf(), x.valueOf(), y.valueOf(), z.valueOf()));
     }
   });
 
@@ -54278,8 +54164,6 @@ var createIntersect = /* #__PURE__ */Object(factory["a" /* factory */])(intersec
     //       (a) no intersection,
     //       (b) line contained in plane
   }
-
-  return intersect;
 });
 // CONCATENATED MODULE: ./src/function/statistics/sum.js
 
@@ -54480,55 +54364,11 @@ var createMedian = /* #__PURE__ */Object(factory["a" /* factory */])(median_name
       partitionSelect = _ref.partitionSelect;
 
   /**
-   * Compute the median of a matrix or a list with values. The values are
-   * sorted and the middle value is returned. In case of an even number of
-   * values, the average of the two middle values is returned.
-   * Supported types of values are: Number, BigNumber, Unit
-   *
-   * In case of a (multi dimensional) array or matrix, the median of all
-   * elements will be calculated.
-   *
-   * Syntax:
-   *
-   *     math.median(a, b, c, ...)
-   *     math.median(A)
-   *
-   * Examples:
-   *
-   *     math.median(5, 2, 7)        // returns 5
-   *     math.median([3, -1, 5, 7])  // returns 4
-   *
-   * See also:
-   *
-   *     mean, min, max, sum, prod, std, variance, quantileSeq
-   *
-   * @param {... *} args  A single matrix or or multiple scalar values
-   * @return {*} The median
-   */
-  var median = typed(median_name, {
-    // median([a, b, c, d, ...])
-    'Array | Matrix': _median,
-    // median([a, b, c, d, ...], dim)
-    'Array | Matrix, number | BigNumber': function ArrayMatrixNumberBigNumber(array, dim) {
-      // TODO: implement median(A, dim)
-      throw new Error('median(A, dim) is not yet supported'); // return reduce(arguments[0], arguments[1], ...)
-    },
-    // median(a, b, c, d, ...)
-    '...': function _(args) {
-      if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function median');
-      }
-
-      return _median(args);
-    }
-  });
-  /**
    * Recursively calculate the median of an n-dimensional array
    * @param {Array} array
    * @return {Number} median
    * @private
    */
-
   function _median(array) {
     try {
       array = Object(utils_array["e" /* flatten */])(array.valueOf());
@@ -54574,7 +54414,50 @@ var createMedian = /* #__PURE__ */Object(factory["a" /* factory */])(median_name
       return divide(add(left, right), 2);
     }
   });
-  return median;
+  /**
+   * Compute the median of a matrix or a list with values. The values are
+   * sorted and the middle value is returned. In case of an even number of
+   * values, the average of the two middle values is returned.
+   * Supported types of values are: Number, BigNumber, Unit
+   *
+   * In case of a (multi dimensional) array or matrix, the median of all
+   * elements will be calculated.
+   *
+   * Syntax:
+   *
+   *     math.median(a, b, c, ...)
+   *     math.median(A)
+   *
+   * Examples:
+   *
+   *     math.median(5, 2, 7)        // returns 5
+   *     math.median([3, -1, 5, 7])  // returns 4
+   *
+   * See also:
+   *
+   *     mean, min, max, sum, prod, std, variance, quantileSeq
+   *
+   * @param {... *} args  A single matrix or or multiple scalar values
+   * @return {*} The median
+   */
+
+  return typed(median_name, {
+    // median([a, b, c, d, ...])
+    'Array | Matrix': _median,
+    // median([a, b, c, d, ...], dim)
+    'Array | Matrix, number | BigNumber': function ArrayMatrixNumberBigNumber(array, dim) {
+      // TODO: implement median(A, dim)
+      throw new Error('median(A, dim) is not yet supported'); // return reduce(arguments[0], arguments[1], ...)
+    },
+    // median(a, b, c, d, ...)
+    '...': function _(args) {
+      if (containsCollections(args)) {
+        throw new TypeError('Scalar values expected in function median');
+      }
+
+      return _median(args);
+    }
+  });
 });
 // CONCATENATED MODULE: ./src/function/statistics/mad.js
 
@@ -55470,11 +55353,11 @@ var createGamma = /* #__PURE__ */Object(factory["a" /* factory */])(gamma_name, 
    * @param {number | Array | Matrix} n   A real or complex number
    * @return {number | Array | Matrix}    The gamma of `n`
    */
-  var gamma = typed(gamma_name, {
+  return typed(gamma_name, {
     number: gammaNumber,
     Complex: function Complex(n) {
       if (n.im === 0) {
-        return gamma(n.re);
+        return this(n.re);
       }
 
       n = new _Complex(n.re - 1, n.im);
@@ -55526,7 +55409,7 @@ var createGamma = /* #__PURE__ */Object(factory["a" /* factory */])(gamma_name, 
       throw new Error('Integer BigNumber expected');
     },
     'Array | Matrix': function ArrayMatrix(n) {
-      return deepMap(n, gamma);
+      return deepMap(n, this);
     }
   });
   /**
@@ -55562,8 +55445,6 @@ var createGamma = /* #__PURE__ */Object(factory["a" /* factory */])(gamma_name, 
 
     return new _BigNumber(prod.toPrecision(_BigNumber.precision));
   }
-
-  return gamma;
 });
 // CONCATENATED MODULE: ./src/function/probability/factorial.js
 
@@ -55596,7 +55477,7 @@ var createFactorial = /* #__PURE__ */Object(factory["a" /* factory */])(factoria
    * @param {number | BigNumber | Array | Matrix} n   An integer number
    * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
    */
-  var factorial = typed(factorial_name, {
+  return typed(factorial_name, {
     number: function number(n) {
       if (n < 0) {
         throw new Error('Value must be non-negative');
@@ -55612,10 +55493,9 @@ var createFactorial = /* #__PURE__ */Object(factory["a" /* factory */])(factoria
       return gamma(n.plus(1));
     },
     'Array | Matrix': function ArrayMatrix(n) {
-      return deepMap(n, factorial);
+      return deepMap(n, this);
     }
   });
-  return factorial;
 });
 // CONCATENATED MODULE: ./src/function/probability/kldivergence.js
 
@@ -57331,37 +57211,37 @@ var createSimplify = /* #__PURE__ */Object(factory["a" /* factory */])(simplify_
 
   var simplify = typed('simplify', {
     string: function string(expr) {
-      return simplify(parse(expr), simplify.rules, {}, {});
+      return this(parse(expr), this.rules, {}, {});
     },
     'string, Object': function stringObject(expr, scope) {
-      return simplify(parse(expr), simplify.rules, scope, {});
+      return this(parse(expr), this.rules, scope, {});
     },
     'string, Object, Object': function stringObjectObject(expr, scope, options) {
-      return simplify(parse(expr), simplify.rules, scope, options);
+      return this(parse(expr), this.rules, scope, options);
     },
     'string, Array': function stringArray(expr, rules) {
-      return simplify(parse(expr), rules, {}, {});
+      return this(parse(expr), rules, {}, {});
     },
     'string, Array, Object': function stringArrayObject(expr, rules, scope) {
-      return simplify(parse(expr), rules, scope, {});
+      return this(parse(expr), rules, scope, {});
     },
     'string, Array, Object, Object': function stringArrayObjectObject(expr, rules, scope, options) {
-      return simplify(parse(expr), rules, scope, options);
+      return this(parse(expr), rules, scope, options);
     },
     'Node, Object': function NodeObject(expr, scope) {
-      return simplify(expr, simplify.rules, scope, {});
+      return this(expr, this.rules, scope, {});
     },
     'Node, Object, Object': function NodeObjectObject(expr, scope, options) {
-      return simplify(expr, simplify.rules, scope, options);
+      return this(expr, this.rules, scope, options);
     },
     Node: function Node(expr) {
-      return simplify(expr, simplify.rules, {}, {});
+      return this(expr, this.rules, {}, {});
     },
     'Node, Array': function NodeArray(expr, rules) {
-      return simplify(expr, rules, {}, {});
+      return this(expr, rules, {}, {});
     },
     'Node, Array, Object': function NodeArrayObject(expr, rules, scope) {
-      return simplify(expr, rules, scope, {});
+      return this(expr, rules, scope, {});
     },
     'Node, Array, Object, Object': function NodeArrayObjectObject(expr, rules, scope, options) {
       rules = _buildRules(rules);
@@ -58066,27 +57946,27 @@ var createDerivative = /* #__PURE__ */Object(factory["a" /* factory */])(derivat
       return options.simplify ? simplify(res) : res;
     },
     'Node, SymbolNode': function NodeSymbolNode(expr, variable) {
-      return derivative(expr, variable, {
+      return this(expr, variable, {
         simplify: true
       });
     },
     'string, SymbolNode': function stringSymbolNode(expr, variable) {
-      return derivative(parse(expr), variable);
+      return this(parse(expr), variable);
     },
     'string, SymbolNode, Object': function stringSymbolNodeObject(expr, variable, options) {
-      return derivative(parse(expr), variable, options);
+      return this(parse(expr), variable, options);
     },
     'string, string': function stringString(expr, variable) {
-      return derivative(parse(expr), parse(variable));
+      return this(parse(expr), parse(variable));
     },
     'string, string, Object': function stringStringObject(expr, variable, options) {
-      return derivative(parse(expr), parse(variable), options);
+      return this(parse(expr), parse(variable), options);
     },
     'Node, string': function NodeString(expr, variable) {
-      return derivative(expr, parse(variable));
+      return this(expr, parse(variable));
     },
     'Node, string, Object': function NodeStringObject(expr, variable, options) {
-      return derivative(expr, parse(variable), options);
+      return this(expr, parse(variable), options);
     } // TODO: replace the 8 signatures above with 4 as soon as typed-function supports optional arguments
 
     /* TODO: implement and test syntax with order of derivatives -> implement as an option {order: number}
@@ -58723,27 +58603,27 @@ var createRationalize = /* #__PURE__ */Object(factory["a" /* factory */])(ration
    *
    */
 
-  var rationalize = typed(rationalize_name, {
+  return typed(rationalize_name, {
     string: function string(expr) {
-      return rationalize(parse(expr), {}, false);
+      return this(parse(expr), {}, false);
     },
     'string, boolean': function stringBoolean(expr, detailed) {
-      return rationalize(parse(expr), {}, detailed);
+      return this(parse(expr), {}, detailed);
     },
     'string, Object': function stringObject(expr, scope) {
-      return rationalize(parse(expr), scope, false);
+      return this(parse(expr), scope, false);
     },
     'string, Object, boolean': function stringObjectBoolean(expr, scope, detailed) {
-      return rationalize(parse(expr), scope, detailed);
+      return this(parse(expr), scope, detailed);
     },
     Node: function Node(expr) {
-      return rationalize(expr, {}, false);
+      return this(expr, {}, false);
     },
     'Node, boolean': function NodeBoolean(expr, detailed) {
-      return rationalize(expr, {}, detailed);
+      return this(expr, {}, detailed);
     },
     'Node, Object': function NodeObject(expr, scope) {
-      return rationalize(expr, scope, false);
+      return this(expr, scope, false);
     },
     'Node, Object, boolean': function NodeObjectBoolean(expr, scope, detailed) {
       var setRules = rulesRationalize(); // Rules for change polynomial in near canonical form
@@ -59487,8 +59367,6 @@ var createRationalize = /* #__PURE__ */Object(factory["a" /* factory */])(ration
 
   } // End of polyToCanonical
 
-
-  return rationalize;
 });
 // CONCATENATED MODULE: ./src/json/reviver.js
 
@@ -59543,7 +59421,7 @@ var createReplacer = /* #__PURE__ */Object(factory["a" /* factory */])(replacer_
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '7.0.2'; // Note: This file is automatically generated when building math.js.
+var version = '7.1.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;

@@ -24,7 +24,7 @@ File: [custom_separators.html](custom_separators.html) (click for a live demo)
     }
   </style>
 
-  <script src="https://unpkg.com/mathjs@7.0.2/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@7.1.0/dist/math.min.js"></script>
 </head>
 <body>
 
