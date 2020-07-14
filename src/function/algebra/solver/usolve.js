@@ -37,7 +37,7 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @param {Matrix, Array} U       A N x N matrix or array (U)
    * @param {Matrix, Array} b       A column vector with the b values
    *
-   * @return {DenseMatrix | Array}  A column vector with the linear system solution (x)
+   * @return {DenseMatrix[] | Array[]}  An array of affine-independent column vectors (x) that solve the linear system
    */
   return typed(name, {
 
@@ -51,8 +51,8 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     'Array, Array | Matrix': function (a, b) {
       const m = matrix(a)
-      const r = _denseBackwardSubstitution(m, b)
-      return r.valueOf()
+      const R = _denseBackwardSubstitution(m, b)
+      return R.map(r => r.valueOf())
     }
   })
 
@@ -114,7 +114,7 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     }
 
-    return B
+    return B.map(x => new DenseMatrix({ data: x.map(e=>[e]), size: [rows, 1] }))
   }
 
   function _sparseBackwardSubstitution (m, b) {
@@ -188,9 +188,9 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
       }
     }
     // return vector
-    return new DenseMatrix({
+    return [new DenseMatrix({
       data: x,
       size: [rows, 1]
-    })
+    })]
   }
 })

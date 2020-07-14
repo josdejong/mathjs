@@ -37,76 +37,84 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @param {Matrix, Array} L       A N x N matrix or array (L)
    * @param {Matrix, Array} b       A column vector with the b values
    *
-   * @return {DenseMatrix | Array}  A column vector with the linear system solution (x)
+   * @return {DenseMatrix[] | Array[]}  An array of affine-independent column vectors (x) that solve the linear system
    */
   return typed(name, {
 
     'SparseMatrix, Array | Matrix': function (m, b) {
-      // process matrix
       return _sparseForwardSubstitution(m, b)
     },
 
     'DenseMatrix, Array | Matrix': function (m, b) {
-      // process matrix
       return _denseForwardSubstitution(m, b)
     },
 
     'Array, Array | Matrix': function (a, b) {
-      // create dense matrix from array
       const m = matrix(a)
-      // use matrix implementation
-      const r = _denseForwardSubstitution(m, b)
-      // result
-      return r.valueOf()
+      const R = _denseForwardSubstitution(m, b)
+      return R.map(r => r.valueOf())
     }
   })
 
-  function _denseForwardSubstitution (m, b) {
-    // validate matrix and vector, return copy of column vector b
-    b = solveValidation(m, b, true)
-    // column vector data
-    const bdata = b._data
-    // rows & columns
+  function _denseForwardSubstitution (m, b_) {
+    // the algorithm is derived from
+    // https://www.overleaf.com/project/5e6c87c554a3190001a3fc93
+
+    // array of right-hand sides
+    const B = [solveValidation(m, b_, true)._data.map(e => e[0])]
+
+    const M = m._data
     const rows = m._size[0]
     const columns = m._size[1]
-    // result
-    const x = []
-    // data
-    const data = m._data
-    // forward solve m * x = b, loop columns
-    for (let j = 0; j < columns; j++) {
-      // b[j]
-      const bj = bdata[j][0] || 0
-      // x[j]
-      let xj
-      // forward substitution (outer product) avoids inner looping when bj === 0
-      if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
-        const vjj = data[j][j]
-        // check vjj
-        if (equalScalar(vjj, 0)) {
-          // system cannot be solved
-          throw new Error('Linear system cannot be solved since matrix is singular')
+
+    // loop columns
+    for (let i = 0; i < columns; i++) {
+      let L = B.length
+
+      // loop right-hand sides
+      for (let k = 0; k < L; k++) {
+        const b = B[k]
+
+        if (!equalScalar(M[i][i], 0)) {
+          // non-singular row
+
+          b[i] = divideScalar(b[i], M[i][i])
+
+          for (let j = i + 1; j < columns; j++) {
+            // b[j] -= b[i] * M[j,i]
+            b[j] = subtract(b[j], multiplyScalar(b[i], M[j][i]))
+          }
+
+        } else if (!equalScalar(b[i], 0)) {
+          // singular row, nonzero RHS
+
+          if (k === 0) {
+            // There is no valid solution
+            throw new Error('Linear system cannot be solved since matrix is singular')
+          } else {
+            // This RHS is invalid but other solutions may still exist
+            B.splice(k, 1)
+            k -= 1
+            L -= 1
+          }
+        } else if (k === 0) {
+          // singular row, RHS is zero
+
+          const bNew = [...b]
+          bNew[i] = 1
+
+          for (let j = i + 1; j < columns; j++) {
+            bNew[j] = subtract(bNew[j], M[j][i])
+          }
+
+          B.push(bNew)
         }
-        // calculate xj
-        xj = divideScalar(bj, vjj)
-        // loop rows
-        for (let i = j + 1; i < rows; i++) {
-          // update copy of b
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, data[i][j]))]
-        }
-      } else {
-        // zero @ j
-        xj = 0
+
       }
-      // update x
-      x[j] = [xj]
+
     }
-    // return vector
-    return new DenseMatrix({
-      data: x,
-      size: [rows, 1]
-    })
+
+    return B.map(x => new DenseMatrix({ data: x.map(e=>[e]), size: [rows, 1] }))
   }
 
   function _sparseForwardSubstitution (m, b) {
@@ -174,9 +182,9 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
       }
     }
     // return vector
-    return new DenseMatrix({
+    return [new DenseMatrix({
       data: x,
       size: [rows, 1]
-    })
+    })]
   }
 })
