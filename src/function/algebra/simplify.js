@@ -1,10 +1,11 @@
-import { isConstantNode, isParenthesisNode } from '../../utils/is'
+import { isParenthesisNode } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { createUtil } from './simplify/util'
 import { createSimplifyCore } from './simplify/simplifyCore'
 import { createSimplifyConstant } from './simplify/simplifyConstant'
 import { createResolve } from './simplify/resolve'
 import { hasOwnProperty } from '../../utils/object'
+import * as wildcards from './simplify/wildcards'
 
 const name = 'simplify'
 const dependencies = [
@@ -647,29 +648,83 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         if (rule.name !== node.name) {
           return []
         }
-      } else if (rule.name[0] === 'n' || rule.name.substring(0, 2) === '_p') {
-        // rule matches _anything_, so assign this node to the rule.name placeholder
-        // Assign node to the rule.name placeholder.
-        // Our parent will check for matches among placeholders.
-        res[0].placeholders[rule.name] = node
-      } else if (rule.name[0] === 'v') {
-        // rule matches any variable thing (not a ConstantNode)
-        if (!isConstantNode(node)) {
-          res[0].placeholders[rule.name] = node
-        } else {
-          // Mis-match: rule was expecting something other than a ConstantNode
-          return []
-        }
-      } else if (rule.name[0] === 'c') {
-        // rule matches any ConstantNode
-        if (node instanceof ConstantNode) {
-          res[0].placeholders[rule.name] = node
-        } else {
-          // Mis-match: rule was expecting a ConstantNode
-          return []
-        }
       } else {
-        throw new Error('Invalid symbol in rule: ' + rule.name)
+        // wildcards are composed of up to two alphabetic or underscore characters
+        switch (rule.name[1] >= 'a' && rule.name[1] <= 'z' ? rule.name.substring(0, 2) : rule.name[0]) {
+          case 'n':
+          case '_p':
+            // rule matches _anything_, so assign this node to the rule.name placeholder
+            // Assign node to the rule.name placeholder.
+            // Our parent will check for matches among placeholders.
+            res[0].placeholders[rule.name] = node
+            break
+          case 'c':
+          case 'cl':
+            // rule matches a ConstantNode
+            if (wildcards.isConstantNode(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 'v':
+            // rule matches anything other than a ConstantNode
+            if (!wildcards.isConstantNode(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 'vl':
+            // rule matches VariableNode
+            if (wildcards.isVariableNode(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 'ci':
+            // rule matches a ConstantNode or unaryMinus-wrapped ConstantNode
+            if (wildcards.isNumericNode(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 'vi':
+            // rule matches anything other than a ConstantNode or unaryMinus-wrapped ConstantNode
+            if (!wildcards.isNumericNode(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 'ce':
+            // rule matches expressions that have a constant value
+            if (wildcards.isConstantExpression(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 've':
+            // rule matches expressions that do not have a constant value
+            if (!wildcards.isConstantExpression(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          default:
+            throw new Error('Invalid symbol in rule: ' + rule.name)
+        }
       }
     } else if (rule instanceof ConstantNode) {
       // Literal constant must match exactly
