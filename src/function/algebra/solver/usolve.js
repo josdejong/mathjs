@@ -28,7 +28,7 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    const a = [[-2, 3], [2, 1]]
    *    const b = [11, 9]
-   *    const x = usolve(a, b)  // [[8], [9]]
+   *    const x = usolve(a, b)  // [ [[8], [9]] ]
    *
    * See also:
    *
@@ -84,7 +84,6 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
             // b[j] -= b[i] * M[j,i]
             b[j] = subtract(b[j], multiplyScalar(b[i], M[j][i]))
           }
-
         } else if (!equalScalar(b[i], 0)) {
           // singular row, nonzero RHS
 
@@ -109,12 +108,10 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
           B.push(bNew)
         }
-
       }
-
     }
 
-    return B.map(x => new DenseMatrix({ data: x.map(e=>[e]), size: [rows, 1] }))
+    return B.map(x => new DenseMatrix({ data: x.map(e => [e]), size: [rows, 1] }))
   }
 
   function _sparseBackwardSubstitution (m, b) {
