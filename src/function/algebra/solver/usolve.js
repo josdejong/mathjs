@@ -56,54 +56,65 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
     }
   })
 
-  function _denseBackwardSubstitution (m, b) {
-    // make b into a column vector
-    b = solveValidation(m, b, true)
+  function _denseBackwardSubstitution (m, b_) {
+    // the algorithm is derived from
+    // https://www.overleaf.com/project/5e6c87c554a3190001a3fc93
 
-    const bdata = b._data
+    // array of right-hand sides
+    const B = [solveValidation(m, b_, true)._data.map(e => e[0])]
 
+    const M = m._data
     const rows = m._size[0]
     const columns = m._size[1]
 
-    // result
-    const x = []
-
-    const mdata = m._data
     // loop columns backwards
-    for (let j = columns - 1; j >= 0; j--) {
-      // b[j]
-      const bj = bdata[j][0] || 0
-      // x[j]
-      let xj
+    for (let i = columns - 1; i >= 0; i--) {
+      let L = B.length
 
-      if (!equalScalar(bj, 0)) {
-        // value at [j, j]
-        const vjj = mdata[j][j]
+      // loop right-hand sides
+      for (let k = 0; k < L; k++) {
+        const b = B[k]
 
-        if (equalScalar(vjj, 0)) {
-          // system cannot be solved
-          throw new Error('Linear system cannot be solved since matrix is singular')
+        if (!equalScalar(M[i][i], 0)) {
+          // non-singular row
+
+          b[i] = divideScalar(b[i], M[i][i])
+
+          for (let j = i - 1; j >= 0; j--) {
+            // b[j] -= b[i] * M[j,i]
+            b[j] = subtract(b[j], multiplyScalar(b[i], M[j][i]))
+          }
+
+        } else if (!equalScalar(b[i], 0)) {
+          // singular row, nonzero RHS
+
+          if (k === 0) {
+            // There is no valid solution
+            throw new Error('Linear system cannot be solved since matrix is singular')
+          } else {
+            // This RHS is invalid but other solutions may still exist
+            B.splice(k, 1)
+            k -= 1
+            L -= 1
+          }
+        } else if (k === 0) {
+          // singular row, RHS is zero
+
+          const bNew = [...b]
+          bNew[i] = 1
+
+          for (let j = i - 1; j >= 0; j--) {
+            bNew[j] = subtract(bNew[j], M[j][i])
+          }
+
+          B.push(bNew)
         }
 
-        xj = divideScalar(bj, vjj)
-
-        // loop rows
-        for (let i = j - 1; i >= 0; i--) {
-          // update copy of b
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, mdata[i][j]))]
-        }
-      } else {
-        // zero value at j
-        xj = 0
       }
-      // update x
-      x[j] = [xj]
+
     }
 
-    return new DenseMatrix({
-      data: x,
-      size: [rows, 1]
-    })
+    return B
   }
 
   function _sparseBackwardSubstitution (m, b) {
