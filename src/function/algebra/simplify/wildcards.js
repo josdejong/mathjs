@@ -15,5 +15,5 @@ export function isConstantExpression (x) {
   if (isParenthesisNode(x) && isConstantExpression(x.content)) { // Parenthesis are transparent
     return true
   }
-  return false // Probably missing some edge cases; Also, I don't know if a Unit will ever be encountered
+  return false // Probably missing some edge cases
 }
