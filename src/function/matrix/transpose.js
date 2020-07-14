@@ -28,11 +28,11 @@ export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @param {Array | Matrix} x  Matrix to be transposed
    * @return {Array | Matrix}   The transposed matrix
    */
-  const transpose = typed('transpose', {
+  return typed('transpose', {
 
     Array: function (x) {
       // use dense matrix implementation
-      return transpose(matrix(x)).valueOf()
+      return this(matrix(x)).valueOf()
     },
 
     Matrix: function (x) {
@@ -163,6 +163,4 @@ export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ ty
       datatype: m._datatype
     })
   }
-
-  return transpose
 })

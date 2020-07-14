@@ -17,7 +17,7 @@ export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, 
    * @return {number | BigNumber | Fraction | Complex | Unit}     Multiplication of `x` and `y`
    * @private
    */
-  const multiplyScalar = typed('multiplyScalar', {
+  return typed('multiplyScalar', {
 
     'number, number': multiplyNumber,
 
@@ -35,13 +35,13 @@ export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, 
 
     'number | Fraction | BigNumber | Complex, Unit': function (x, y) {
       const res = y.clone()
-      res.value = (res.value === null) ? res._normalize(x) : multiplyScalar(res.value, x)
+      res.value = (res.value === null) ? res._normalize(x) : this(res.value, x)
       return res
     },
 
     'Unit, number | Fraction | BigNumber | Complex': function (x, y) {
       const res = x.clone()
-      res.value = (res.value === null) ? res._normalize(y) : multiplyScalar(res.value, y)
+      res.value = (res.value === null) ? res._normalize(y) : this(res.value, y)
       return res
     },
 
@@ -50,6 +50,4 @@ export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, 
     }
 
   })
-
-  return multiplyScalar
 })

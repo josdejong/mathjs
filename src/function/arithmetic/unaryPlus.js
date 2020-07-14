@@ -30,7 +30,7 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Returns the input value when numeric, converts to a number when input is non-numeric.
    */
-  const unaryPlus = typed(name, {
+  return typed(name, {
     number: unaryPlusNumber,
 
     Complex: function (x) {
@@ -51,7 +51,7 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since unaryPlus(0) = 0
-      return deepMap(x, unaryPlus, true)
+      return deepMap(x, this, true)
     },
 
     'boolean | string': function (x) {
@@ -59,6 +59,4 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
       return (config.number === 'BigNumber') ? new BigNumber(+x) : +x
     }
   })
-
-  return unaryPlus
 })

@@ -36,7 +36,7 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  const ceil = typed('ceil', {
+  return typed('ceil', {
     number: function (x) {
       if (nearlyEqual(x, round(x), config.epsilon)) {
         return round(x)
@@ -63,9 +63,7 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since ceil(0) = 0
-      return deepMap(x, ceil, true)
+      return deepMap(x, this, true)
     }
   })
-
-  return ceil
 })

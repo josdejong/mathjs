@@ -17,7 +17,7 @@ export const createAddScalar = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @return {number | BigNumber | Fraction | Complex | Unit}     Sum of `x` and `y`
    * @private
    */
-  const addScalar = typed(name, {
+  return typed(name, {
 
     'number, number': addNumber,
 
@@ -39,11 +39,9 @@ export const createAddScalar = /* #__PURE__ */ factory(name, dependencies, ({ ty
       if (!x.equalBase(y)) throw new Error('Units do not match')
 
       const res = x.clone()
-      res.value = addScalar(res.value, y.value)
+      res.value = this(res.value, y.value)
       res.fixPrefix = false
       return res
     }
   })
-
-  return addScalar
 })

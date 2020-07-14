@@ -30,7 +30,7 @@ export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic tangent of x
    */
-  const tanh = typed('tanh', {
+  return typed('tanh', {
     number: _tanh,
 
     Complex: function (x) {
@@ -45,14 +45,12 @@ export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function tanh is no angle')
       }
-      return tanh(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since tanh(0) = 0
-      return deepMap(x, tanh, true)
+      return deepMap(x, this, true)
     }
   })
-
-  return tanh
 })

@@ -31,7 +31,7 @@ export const createString = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @param {* | Array | Matrix | null} [value]  A value to convert to a string
    * @return {string | Array | Matrix} The created string
    */
-  const string = typed(name, {
+  return typed(name, {
     '': function () {
       return ''
     },
@@ -51,13 +51,11 @@ export const createString = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, string)
+      return deepMap(x, this)
     },
 
     any: function (x) {
       return String(x)
     }
   })
-
-  return string
 })

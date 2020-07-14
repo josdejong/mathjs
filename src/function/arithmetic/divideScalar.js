@@ -17,7 +17,7 @@ export const createDivideScalar = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {number | BigNumber | Fraction | Complex | Unit}     Quotient, `x / y`
    * @private
    */
-  const divideScalar = typed(name, {
+  return typed(name, {
     'number, number': function (x, y) {
       return x / y
     },
@@ -38,7 +38,7 @@ export const createDivideScalar = /* #__PURE__ */ factory(name, dependencies, ({
       const res = x.clone()
       // TODO: move the divide function to Unit.js, it uses internals of Unit
       const one = numeric(1, typeOf(y))
-      res.value = divideScalar(((res.value === null) ? res._normalize(one) : res.value), y)
+      res.value = this(((res.value === null) ? res._normalize(one) : res.value), y)
       return res
     },
 
@@ -47,7 +47,7 @@ export const createDivideScalar = /* #__PURE__ */ factory(name, dependencies, ({
       res = res.pow(-1)
       // TODO: move the divide function to Unit.js, it uses internals of Unit
       const one = numeric(1, typeOf(x))
-      res.value = divideScalar(x, ((y.value === null) ? y._normalize(one) : y.value))
+      res.value = this(x, ((y.value === null) ? y._normalize(one) : y.value))
       return res
     },
 
@@ -55,6 +55,4 @@ export const createDivideScalar = /* #__PURE__ */ factory(name, dependencies, ({
       return x.divide(y)
     }
   })
-
-  return divideScalar
 })

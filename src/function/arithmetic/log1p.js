@@ -37,7 +37,7 @@ export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the logarithm of `x+1`
    */
-  const log1p = typed(name, {
+  return typed(name, {
     number: function (x) {
       if (x >= -1 || config.predictable) {
         return _log1p(x)
@@ -60,12 +60,12 @@ export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, log1p)
+      return deepMap(x, this)
     },
 
     'any, any': function (x, base) {
       // calculate logarithm for a specified base, log1p(x, base)
-      return divideScalar(log1p(x), log(base))
+      return divideScalar(this(x), log(base))
     }
   })
 
@@ -82,6 +82,4 @@ export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       Math.atan2(x.im, xRe1p)
     )
   }
-
-  return log1p
 })

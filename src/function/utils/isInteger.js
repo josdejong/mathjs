@@ -35,7 +35,7 @@ export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @return {boolean}  Returns true when `x` contains a numeric, integer value.
    *                    Throws an error in case of an unknown data type.
    */
-  const isInteger = typed(name, {
+  return typed(name, {
     number: isIntegerNumber, // TODO: what to do with isInteger(add(0.1, 0.2))  ?
 
     BigNumber: function (x) {
@@ -47,9 +47,7 @@ export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, isInteger)
+      return deepMap(x, this)
     }
   })
-
-  return isInteger
 })

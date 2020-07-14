@@ -57,7 +57,7 @@ export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to add
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
    */
-  const add = typed(name, extend({
+  return typed(name, extend({
     // we extend the signatures of addScalar with signatures dealing with matrices
 
     'DenseMatrix, DenseMatrix': function (x, y) {
@@ -78,17 +78,17 @@ export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return add(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return add(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return add(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'DenseMatrix, any': function (x, y) {
@@ -120,15 +120,13 @@ export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     'any, any': addScalar,
 
     'any, any, ...any': function (x, y, rest) {
-      let result = add(x, y)
+      let result = this(x, y)
 
       for (let i = 0; i < rest.length; i++) {
-        result = add(result, rest[i])
+        result = this(result, rest[i])
       }
 
       return result
     }
   }, addScalar.signatures))
-
-  return add
 })

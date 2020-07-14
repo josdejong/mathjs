@@ -27,7 +27,7 @@ export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Secant of x
    */
-  const sec = typed(name, {
+  return typed(name, {
     number: secNumber,
 
     Complex: function (x) {
@@ -42,13 +42,11 @@ export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sec is no angle')
       }
-      return sec(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, sec)
+      return deepMap(x, this)
     }
   })
-
-  return sec
 })

@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const name = 'max'
-const dependencies = ['typed', 'larger']
+const dependencies = ['typed', 'config', 'numeric', 'larger']
 
-export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, larger }) => {
+export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, larger }) => {
   /**
    * Compute the maximum value of a matrix or a  list with values.
    * In case of a multi dimensional array, the maximum of the flattened array
@@ -94,6 +94,11 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, l
 
     if (res === undefined) {
       throw new Error('Cannot calculate max of an empty array')
+    }
+
+    // make sure returning numeric value: parse a string into a numeric value
+    if (typeof res === 'string') {
+      res = numeric(res, config.number)
     }
 
     return res

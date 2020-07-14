@@ -29,7 +29,7 @@ export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic cosecant of x
    */
-  const csch = typed(name, {
+  return typed(name, {
     number: cschNumber,
 
     Complex: function (x) {
@@ -44,13 +44,11 @@ export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function csch is no angle')
       }
-      return csch(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, csch)
+      return deepMap(x, this)
     }
   })
-
-  return csch
 })

@@ -60,7 +60,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Subtraction of `x` and `y`
    */
-  const subtract = typed(name, {
+  return typed(name, {
 
     'number, number': function (x, y) {
       return x - y
@@ -92,7 +92,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
       }
 
       const res = x.clone()
-      res.value = subtract(res.value, y.value)
+      res.value = this(res.value, y.value)
       res.fixPrefix = false
 
       return res
@@ -100,37 +100,37 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       checkEqualDimensions(x, y)
-      return algorithm05(x, y, subtract)
+      return algorithm05(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
       checkEqualDimensions(x, y)
-      return algorithm03(y, x, subtract, true)
+      return algorithm03(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
       checkEqualDimensions(x, y)
-      return algorithm01(x, y, subtract, false)
+      return algorithm01(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
       checkEqualDimensions(x, y)
-      return algorithm13(x, y, subtract)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return subtract(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return subtract(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return subtract(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
@@ -138,29 +138,27 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, subtract)
+      return algorithm14(x, y, this)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm10(y, x, subtract, true)
+      return algorithm10(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, subtract, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, subtract, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, subtract, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
-
-  return subtract
 })
 
 /**

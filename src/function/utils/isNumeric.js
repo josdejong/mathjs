@@ -34,7 +34,7 @@ export const createIsNumeric = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *                    `Fraction`, or `boolean`. Returns false for other types.
    *                    Throws an error in case of unknown types.
    */
-  const isNumeric = typed(name, {
+  return typed(name, {
     'number | BigNumber | Fraction | boolean': function () {
       return true
     },
@@ -44,9 +44,7 @@ export const createIsNumeric = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, isNumeric)
+      return deepMap(x, this)
     }
   })
-
-  return isNumeric
 })

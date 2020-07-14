@@ -8,53 +8,6 @@ const dependencies = ['typed', 'add', 'divide', 'compare', 'partitionSelect']
 
 export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide, compare, partitionSelect }) => {
   /**
-   * Compute the median of a matrix or a list with values. The values are
-   * sorted and the middle value is returned. In case of an even number of
-   * values, the average of the two middle values is returned.
-   * Supported types of values are: Number, BigNumber, Unit
-   *
-   * In case of a (multi dimensional) array or matrix, the median of all
-   * elements will be calculated.
-   *
-   * Syntax:
-   *
-   *     math.median(a, b, c, ...)
-   *     math.median(A)
-   *
-   * Examples:
-   *
-   *     math.median(5, 2, 7)        // returns 5
-   *     math.median([3, -1, 5, 7])  // returns 4
-   *
-   * See also:
-   *
-   *     mean, min, max, sum, prod, std, variance, quantileSeq
-   *
-   * @param {... *} args  A single matrix or or multiple scalar values
-   * @return {*} The median
-   */
-  const median = typed(name, {
-    // median([a, b, c, d, ...])
-    'Array | Matrix': _median,
-
-    // median([a, b, c, d, ...], dim)
-    'Array | Matrix, number | BigNumber': function (array, dim) {
-      // TODO: implement median(A, dim)
-      throw new Error('median(A, dim) is not yet supported')
-      // return reduce(arguments[0], arguments[1], ...)
-    },
-
-    // median(a, b, c, d, ...)
-    '...': function (args) {
-      if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function median')
-      }
-
-      return _median(args)
-    }
-  })
-
-  /**
    * Recursively calculate the median of an n-dimensional array
    * @param {Array} array
    * @return {Number} median
@@ -108,5 +61,50 @@ export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed
     }
   })
 
-  return median
+  /**
+   * Compute the median of a matrix or a list with values. The values are
+   * sorted and the middle value is returned. In case of an even number of
+   * values, the average of the two middle values is returned.
+   * Supported types of values are: Number, BigNumber, Unit
+   *
+   * In case of a (multi dimensional) array or matrix, the median of all
+   * elements will be calculated.
+   *
+   * Syntax:
+   *
+   *     math.median(a, b, c, ...)
+   *     math.median(A)
+   *
+   * Examples:
+   *
+   *     math.median(5, 2, 7)        // returns 5
+   *     math.median([3, -1, 5, 7])  // returns 4
+   *
+   * See also:
+   *
+   *     mean, min, max, sum, prod, std, variance, quantileSeq
+   *
+   * @param {... *} args  A single matrix or or multiple scalar values
+   * @return {*} The median
+   */
+  return typed(name, {
+    // median([a, b, c, d, ...])
+    'Array | Matrix': _median,
+
+    // median([a, b, c, d, ...], dim)
+    'Array | Matrix, number | BigNumber': function (array, dim) {
+      // TODO: implement median(A, dim)
+      throw new Error('median(A, dim) is not yet supported')
+      // return reduce(arguments[0], arguments[1], ...)
+    },
+
+    // median(a, b, c, d, ...)
+    '...': function (args) {
+      if (containsCollections(args)) {
+        throw new TypeError('Scalar values expected in function median')
+      }
+
+      return _median(args)
+    }
+  })
 })

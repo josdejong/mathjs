@@ -42,15 +42,15 @@ export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *                                                          single number for the whole matrix.
    * @return {number | BigNumber} Returns the hypothenusa of the input values.
    */
-  const hypot = typed(name, {
+  return typed(name, {
     '... number | BigNumber': _hypot,
 
     Array: function (x) {
-      return hypot.apply(hypot, flatten(x))
+      return this.apply(this, flatten(x))
     },
 
     Matrix: function (x) {
-      return hypot.apply(hypot, flatten(x.toArray()))
+      return this.apply(this, flatten(x.toArray()))
     }
   })
 
@@ -82,6 +82,4 @@ export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     return multiplyScalar(largest, sqrt(result))
   }
-
-  return hypot
 })

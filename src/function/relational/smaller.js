@@ -53,7 +53,7 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
    */
-  const smaller = typed(name, {
+  return typed(name, {
 
     'boolean, boolean': function (x, y) {
       return x < y
@@ -79,68 +79,66 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
       if (!x.equalBase(y)) {
         throw new Error('Cannot compare units with different base')
       }
-      return smaller(x.value, y.value)
+      return this(x.value, y.value)
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm07(x, y, smaller)
+      return algorithm07(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm03(y, x, smaller, true)
+      return algorithm03(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, smaller, false)
+      return algorithm03(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, smaller)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return smaller(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return smaller(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return smaller(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, smaller, false)
+      return algorithm12(x, y, this, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, smaller, false)
+      return algorithm14(x, y, this, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, smaller, true)
+      return algorithm12(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, smaller, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, smaller, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, smaller, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
-
-  return smaller
 })
 
 export const createSmallerNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {

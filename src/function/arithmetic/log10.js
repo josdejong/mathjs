@@ -31,7 +31,7 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the 10-base logarithm of `x`
    */
-  const log10 = typed(name, {
+  return typed(name, {
     number: function (x) {
       if (x >= 0 || config.predictable) {
         return log10Number(x)
@@ -55,9 +55,7 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, log10)
+      return deepMap(x, this)
     }
   })
-
-  return log10
 })

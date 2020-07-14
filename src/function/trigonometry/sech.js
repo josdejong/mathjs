@@ -29,7 +29,7 @@ export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic secant of x
    */
-  const sech = typed(name, {
+  return typed(name, {
     number: sechNumber,
 
     Complex: function (x) {
@@ -44,13 +44,11 @@ export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sech is no angle')
       }
-      return sech(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, sech)
+      return deepMap(x, this)
     }
   })
-
-  return sech
 })
