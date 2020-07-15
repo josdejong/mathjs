@@ -118,4 +118,21 @@ describe('lsolve', function () {
     assert.throws(function () { math.lsolve(math.matrix([[1, 1], [0, 0]], 'dense'), [1, 1]) }, /Error: Linear system cannot be solved since matrix is singular/)
     assert.throws(function () { math.lsolve(math.matrix([[1, 1], [0, 0]], 'sparse'), [1, 1]) }, /Error: Linear system cannot be solved since matrix is singular/)
   })
+
+  it('should solve systems with singular matrices', function () {
+    approx.deepEqual(
+      math.lsolve([[2, 0, 0], [1, 0, 0], [-1, 1, 1]], [4, 2, 1]),
+      [[[2], [0], [3]], [[2], [1], [2]]]
+    )
+
+    approx.deepEqual(
+      math.lsolve([[0, 0, 0], [1, 1, 0], [2, 1, 0]], [0, 2, 2]),
+      [[[0], [2], [0]], [[0], [2], [1]]]
+    )
+
+    approx.deepEqual(
+      math.lsolve([[0, 0, 0], [1, 1, 0], [1, 1, 0]], [0, 2, 2]),
+      [[[0], [2], [0]], [[1], [1], [0]], [[0], [2], [1]]]
+    )
+  })
 })

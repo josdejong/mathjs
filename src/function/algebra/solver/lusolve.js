@@ -103,7 +103,12 @@ export const createLusolve = /* #__PURE__ */ factory(name, dependencies, ({ type
 
     // use backward substitution to resolve U * x = y
     for (const y of ys) {
-      xs.push(...usolve(u, y))
+      try {
+        xs.push(...usolve(u, y))
+      } catch(e) {
+        // no solution found
+        // not a big deal
+      }
     }
 
     // apply column permutations if needed (x is a DenseMatrix)
