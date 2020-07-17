@@ -1,18 +1,19 @@
 import { factory } from '../../utils/factory'
+import { isInteger } from '../../utils/number'
 import { isMatrix } from '../../utils/is'
 
 const name = 'diff'
-const dependencies = ['typed', 'matrix', 'subtract']
+const dependencies = ['typed', 'matrix', 'subtract', 'number', 'bignumber']
 
-export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract }) => {
+export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract, number, bignumber }) => {
   /**
    * Create a new matrix or array of the difference between elements of the given array
    * The optional dim parameter lets you specify the dimension to evaluate the difference of
    * If no dimension parameter is passed it is assumed as dimension 0
    *
-   * Dimension is zero-based in javascript and one-based in the parser
+   * Dimension is zero-based in javascript and one-based in the parser and can be a number or bignumber
    * Arrays must be 'rectangular' meaning arrays like [1, 2]
-   * All matrices passed in (either as arr or inside and array e.g. [matirix(...)]) will be treated as arrays
+   * If something is passed as a matrix it will be returned as a matrix but other than that all matrices are converted to arrays
    *
    * Syntax:
    *
@@ -29,20 +30,22 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *     math.diff(arr) // returns [[0, 0, 0, 0, 0], [8, 6, 4, 2, -1]]
    *     math.diff(arr, 0) // returns [[0, 0, 0, 0, 0], [8, 6, 4, 2, -1]]
    *     math.diff(arr, 1) // returns [[1, 1, 1, 1], [1, 1, 1, 1], [-1, -1, -1, -2]]
+   *     math.diff(arr, math.bignumber(1)) // returns [[1, 1, 1, 1], [1, 1, 1, 1], [-1, -1, -1, -2]]
    *
    *     math.diff(arr, 2) // throws RangeError as arr is 2 dimensional not 3
    *     math.diff(arr, -1) // throws RangeError as negative dimensions are not allowed
    *
-   *     // These Will all produce the same result
+   *     // These will all produce the same result
    *     math.diff([[1, 2], [3, 4]])
-   *     math.diff(math.matrix([[1, 2], [3, 4]]))
    *     math.diff([math.matrix([1, 2]), math.matrix([3, 4])])
    *     math.diff([[1, 2], math.matrix([3, 4])])
    *     math.diff([math.matrix([1, 2]), [3, 4]])
+   *     // They do not produce the same result as  math.diff(math.matrix([[1, 2], [3, 4]])) as this returns a matrix
    *
    * See Also:
    *
    *      Subtract
+   *      PartitionSelect
    *
    * @param {Array | Matrix} arr    An array or matrix
    * @param {number} dim            Dimension
@@ -57,10 +60,22 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
     'Array | Matrix, number': function (arr, dim) {
+      if (!isInteger(dim)) throw RangeError('Dimension must be a whole number')
       if (isMatrix(arr)) {
         return matrix(_recursive(arr.toArray(), dim))
       } else {
         return _recursive(arr, dim)
+      }
+    },
+    'Array | Matrix, BigNumber': function (arr, dim) {
+      const maxInt = bignumber(Number.MAX_SAFE_INTEGER)
+      const minInt = bignumber(Number.MIN_SAFE_INTEGER)
+      if (dim > maxInt || dim < minInt) throw RangeError('The array does not have more than 2^53 dimensions')
+      if (!dim.isInt()) throw RangeError('Dimension must be a whole number')
+      if (isMatrix(arr)) {
+        return matrix(_recursive(arr.toArray(), number(dim)))
+      } else {
+        return _recursive(arr, number(dim))
       }
     }
   })

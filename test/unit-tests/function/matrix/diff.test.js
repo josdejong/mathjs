@@ -2,6 +2,8 @@ import assert from 'assert'
 import approx from '../../../../tools/approx'
 import math from '../../../../src/bundleAny'
 
+// Parsing tests are inside diff.transform.test
+
 const matrix = math.matrix
 const diff = math.diff
 
@@ -53,6 +55,7 @@ describe('diff', function () {
     // With Dim specified
     assert.deepStrictEqual(diff(smallTestArray, 0), smallTestArrayDimension0)
     assert.deepStrictEqual(diff(smallTestArray, 1), smallTestArrayDimension1)
+    assert.deepStrictEqual(diff(smallTestArray, math.bignumber(1)), smallTestArrayDimension1)
 
     // Without Dim specified
     assert.deepStrictEqual(diff(smallTestArray), smallTestArrayDimension0)
@@ -73,6 +76,9 @@ describe('diff', function () {
     assert.deepStrictEqual(diff(largeTestArray, 1), largeTestArrayDimension1)
     assert.deepStrictEqual(diff(largeTestArray, 2), largeTestArrayDimension2)
     assert.deepStrictEqual(diff(largeTestArray, 3), largeTestArrayDimension3)
+    assert.deepStrictEqual(diff(largeTestArray, math.bignumber(1)), largeTestArrayDimension1)
+    assert.deepStrictEqual(diff(largeTestArray, math.bignumber(2)), largeTestArrayDimension2)
+    assert.deepStrictEqual(diff(largeTestArray, math.bignumber(3)), largeTestArrayDimension3)
 
     // Without Dim specified
     assert.deepStrictEqual(diff(largeTestArray), largeTestArrayDimension0)
@@ -141,17 +147,43 @@ describe('diff', function () {
     approx.deepEqual(diff(smallUnitsArray), smallUnitsArrayDimension0)
   })
 
-  it('should throw and error with invalid inputs', function () {
-    // Should throw if input is not an array or matrix
+  it('should throw if input is not an array or matrix', function () {
     assert.throws(function () { diff(1, 0) }, TypeError)
+  })
 
-    // Should throw if dimension is larger that the number of dimensions in the array/matrix or if negative
+  it('should throw if dimension is too large, negative or not an integer', function () {
+    // Not enough dimensions in the array
     assert.throws(function () { diff([1, 2, 3, 4], 1) }, RangeError)
-    assert.throws(function () { diff([1, 2, 3, 4], -1) }, RangeError)
     assert.throws(function () { diff(matrix([1, 2, 3, 4]), 1) }, RangeError)
+
+    // No negative dimensions
+    assert.throws(function () { diff([1, 2, 3, 4], -1) }, RangeError)
     assert.throws(function () { diff(matrix([1, 2, 3, 4]), -1) }, RangeError)
 
-    // Should throw not a 'rectangular' array/matrix.
+    // No decimal dimensions
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), 0.5) }, RangeError)
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), -0.5) }, RangeError)
+  })
+
+  it('should throw if bignumber is not a valid index', function () {
+    // Not enough dimensions in the array
+    assert.throws(function () { diff([1, 2, 3, 4], math.bignumber(1)) }, RangeError)
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber(1)) }, RangeError)
+
+    // No negative dimensions
+    assert.throws(function () { diff([1, 2, 3, 4], math.bignumber(-1)) }, RangeError)
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber(-1)) }, RangeError)
+
+    // No decimal dimensions
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber(0.5)) }, RangeError)
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber(-0.5)) }, RangeError)
+
+    // Unfortunately we will never know if these work properly
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber(Number.MAX_SAFE_INTEGER).plus(1)) }, RangeError)
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber(Number.MIN_SAFE_INTEGER).minus(1)) }, RangeError)
+  })
+
+  it('should throw if array is not \'rectangular\'', function () {
     // Matrices are already 'rectangular' so this error doesnt apply to them
     // The first one throws TypeError for trying to do 2 - [3,4] whereas the second one throws RangeError as [1,2].length != [3,4,3].length
     assert.throws(function () { diff([1, 2, [3, 4]], 0) }, TypeError)
