@@ -1,4 +1,5 @@
 import assert from 'assert'
+import approx from '../../../../tools/approx'
 import math from '../../../../src/bundleAny'
 
 const matrix = math.matrix
@@ -85,5 +86,42 @@ describe('diff', function () {
 
     // Without Dim specified
     assert.deepStrictEqual(math.diff(matrix(largeTestArray)), matrix(largeTestArrayDimension0))
+  })
+
+  it('should be consistent with bignumber', function () {
+    // 4-dim array but done with bignumber
+    assert.deepStrictEqual(math.diff(math.bignumber(largeTestArray), 0), math.bignumber(largeTestArrayDimension0))
+    assert.deepStrictEqual(math.diff(math.bignumber(largeTestArray), 1), math.bignumber(largeTestArrayDimension1))
+    assert.deepStrictEqual(math.diff(math.bignumber(largeTestArray), 2), math.bignumber(largeTestArrayDimension2))
+    assert.deepStrictEqual(math.diff(math.bignumber(largeTestArray), 3), math.bignumber(largeTestArrayDimension3))
+
+    // Without Dim specified
+    assert.deepStrictEqual(math.diff(math.bignumber(largeTestArray)), math.bignumber(largeTestArrayDimension0))
+  })
+
+  it('should be consistent with fraction', function () {
+    // 4-dim array but done with bignumber
+    assert.deepStrictEqual(math.diff(math.fraction(largeTestArray), 0), math.fraction(largeTestArrayDimension0))
+    assert.deepStrictEqual(math.diff(math.fraction(largeTestArray), 1), math.fraction(largeTestArrayDimension1))
+    assert.deepStrictEqual(math.diff(math.fraction(largeTestArray), 2), math.fraction(largeTestArrayDimension2))
+    assert.deepStrictEqual(math.diff(math.fraction(largeTestArray), 3), math.fraction(largeTestArrayDimension3))
+
+    // Without Dim specified
+    assert.deepStrictEqual(math.diff(math.fraction(largeTestArray)), math.fraction(largeTestArrayDimension0))
+  })
+
+  it('should be consistent with units', function () {
+    // Derived from previous smallTestArray
+    const smallUnitsArray = [[math.unit('1 cm'), math.unit('2 cm'), math.unit('3 cm'), math.unit('4 cm'), math.unit('5 cm')], [math.unit('1 cm'), math.unit('2 cm'), math.unit('3 cm'), math.unit('4 cm'), math.unit('5 cm')], [math.unit('9 cm'), math.unit('8 cm'), math.unit('7 cm'), math.unit('6 cm'), math.unit('4 cm')]]
+
+    const smallUnitsArrayDimension0 = [[math.unit('0 cm'), math.unit('0 cm'), math.unit('0 cm'), math.unit('0 cm'), math.unit('0 cm')], [math.unit('8 cm'), math.unit('6 cm'), math.unit('4 cm'), math.unit('2 cm'), math.unit('-1 cm')]]
+    const smallUnitsArrayDimension1 = [[math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm')], [math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm')], [math.unit('-1 cm'), math.unit('-1 cm'), math.unit('-1 cm'), math.unit('-2 cm')]]
+
+    // With Dim specified
+    approx.deepEqual(math.diff(smallUnitsArray, 0), smallUnitsArrayDimension0)
+    approx.deepEqual(math.diff(smallUnitsArray, 1), smallUnitsArrayDimension1)
+
+    // Without Dim specified
+    approx.deepEqual(math.diff(smallUnitsArray), smallUnitsArrayDimension0)
   })
 })
