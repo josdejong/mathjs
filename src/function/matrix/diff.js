@@ -10,6 +10,10 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * The optional dim parameter lets you specify the dimension to evaluate the difference of
    * If no dimension parameter is passed it is assumed as dimension 0
    *
+   * Dimension is zero-based in javascript and one-based in the parser
+   * Arrays must be 'rectangular' meaning arrays like [1, 2]
+   * All matrices passed in (either as arr or inside and array e.g. [matirix(...)]) will be treated as arrays
+   *
    * Syntax:
    *
    *     math.diff(arr)
@@ -19,14 +23,22 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *     const arr = [1, 2, 4, 7, 0]
    *     math.diff(arr) // returns [1, 2, 3, -7] (no dimension passed so 0 is assumed)
-   *     math.diff(math.matrix(arr)) // returns [1, 2, 3, -7] as matrix
-   *
-   *     const arr = [1]
-   *     math.diff(arr) // returns [1]
+   *     math.diff(math.matrix(arr)) // returns math.matrix([1, 2, 3, -7])
    *
    *     const arr = [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [9, 8, 7, 6, 4]]
    *     math.diff(arr) // returns [[0, 0, 0, 0, 0], [8, 6, 4, 2, -1]]
-   *     math.diff(arr) // returns [[1, 1, 1, 1], [1, 1, 1, 1], [-1, -1, -1, -2]]
+   *     math.diff(arr, 0) // returns [[0, 0, 0, 0, 0], [8, 6, 4, 2, -1]]
+   *     math.diff(arr, 1) // returns [[1, 1, 1, 1], [1, 1, 1, 1], [-1, -1, -1, -2]]
+   *
+   *     math.diff(arr, 2) // throws RangeError as arr is 2 dimensional not 3
+   *     math.diff(arr, -1) // throws RangeError as negative dimensions are not allowed
+   *
+   *     // These Will all produce the same result
+   *     math.diff([[1, 2], [3, 4]])
+   *     math.diff(math.matrix([[1, 2], [3, 4]]))
+   *     math.diff([math.matrix([1, 2]), math.matrix([3, 4])])
+   *     math.diff([[1, 2], math.matrix([3, 4])])
+   *     math.diff([math.matrix([1, 2]), [3, 4]])
    *
    * See Also:
    *
@@ -62,6 +74,9 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {Array}         resulting array
    */
   function _recursive (arr, dim) {
+    if (isMatrix(arr)) {
+      arr = arr.toArray() // Makes sure arrays like [ matrix([0, 1]), matrix([1, 0]) ] are processed properly
+    }
     if (!Array.isArray(arr)) {
       throw RangeError('Array/Matrix does not have that many dimensions')
     }
@@ -104,6 +119,10 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {Array}         resulting array
    */
   function _ElementDiff (obj1, obj2) {
+    // Convert matrices to arrays
+    if (isMatrix(obj1)) obj1 = obj1.toArray()
+    if (isMatrix(obj2)) obj2 = obj2.toArray()
+
     const obj1IsArray = Array.isArray(obj1)
     const obj2IsArray = Array.isArray(obj2)
     if (obj1IsArray && obj2IsArray) {

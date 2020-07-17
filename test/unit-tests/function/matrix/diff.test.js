@@ -89,6 +89,21 @@ describe('diff', function () {
     assert.deepStrictEqual(diff(matrix(largeTestArray)), matrix(largeTestArrayDimension0))
   })
 
+  it('should treat an array of matricies as an array of arrays', function () {
+    // With Dim = 0
+    assert.deepStrictEqual(diff([matrix([1, 2]), matrix([3, 4])], 0), [[2, 2]])
+    assert.deepStrictEqual(diff([matrix([1, 2]), matrix([3, 4])], 1), [[1], [1]])
+    assert.deepStrictEqual(diff([[1, 2], matrix([3, 4])], 0), [[2, 2]])
+    assert.deepStrictEqual(diff([[1, 2], matrix([3, 4])], 1), [[1], [1]])
+    assert.deepStrictEqual(diff([matrix([1, 2]), [3, 4]], 0), [[2, 2]])
+    assert.deepStrictEqual(diff([matrix([1, 2]), [3, 4]], 1), [[1], [1]])
+
+    // Without Dim = 0
+    assert.deepStrictEqual(diff([matrix([1, 2]), matrix([3, 4])]), [[2, 2]])
+    assert.deepStrictEqual(diff([[1, 2], matrix([3, 4])]), [[2, 2]])
+    assert.deepStrictEqual(diff([matrix([1, 2]), [3, 4]]), [[2, 2]])
+  })
+
   it('should be consistent with bignumber', function () {
     // 4-dim array but done with bignumber
     assert.deepStrictEqual(diff(math.bignumber(largeTestArray), 0), math.bignumber(largeTestArrayDimension0))
