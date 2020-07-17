@@ -89,7 +89,7 @@ describe('diff', function () {
     assert.deepStrictEqual(diff(matrix(largeTestArray)), matrix(largeTestArrayDimension0))
   })
 
-  it('should treat an array of matricies as an array of arrays', function () {
+  it('should treat an array of matrices as an array of arrays', function () {
     // With Dim = 0
     assert.deepStrictEqual(diff([matrix([1, 2]), matrix([3, 4])], 0), [[2, 2]])
     assert.deepStrictEqual(diff([matrix([1, 2]), matrix([3, 4])], 1), [[1], [1]])
@@ -152,7 +152,7 @@ describe('diff', function () {
     assert.throws(function () { diff(matrix([1, 2, 3, 4]), -1) }, RangeError)
 
     // Should throw not a 'rectangular' array/matrix.
-    // Matricies are already 'rectangular' so this error doesnt apply to them
+    // Matrices are already 'rectangular' so this error doesnt apply to them
     // The first one throws TypeError for trying to do 2 - [3,4] whereas the second one throws RangeError as [1,2].length != [3,4,3].length
     assert.throws(function () { diff([1, 2, [3, 4]], 0) }, TypeError)
     assert.throws(function () { diff([[1, 2], [3, 4, 3]], 0) }, RangeError)
