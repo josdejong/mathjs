@@ -37,7 +37,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {Array | Matrix}       Difference between array elements in given dimension
    */
   return typed(name, {
-    'Array | Matrix': function (arr) { // No dimension specified => assume dimension 1
+    'Array | Matrix': function (arr) { // No dimension specified => assume dimension 0
       if (isMatrix(arr)) {
         return matrix(_diff(arr.toArray()))
       } else {
@@ -71,8 +71,11 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         result.push(_recursive(element, dim - 1))
       })
       return result
+    } else if (dim === 0) {
+      return _diff(arr)
+    } else {
+      throw RangeError('Cannot have negative dimension')
     }
-    return _diff(arr)
   }
 
   /**
@@ -109,7 +112,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     if (!obj1IsArray && !obj2IsArray) {
       return subtract(obj2, obj1) // Difference is (second - first) NOT (first - second)
     }
-    throw Error('Cannot calculate difference between 1 array and 1 non-array')
+    throw TypeError('Cannot calculate difference between 1 array and 1 non-array')
   }
 
   /**
@@ -121,7 +124,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   function _ArrayDiff (arr1, arr2) {
     if (arr1.length !== arr2.length) {
-      throw RangeError('Not all arrays have the same length')
+      throw RangeError('Not all sub-arrays have the same length')
     }
     const result = []
     const size = arr1.length

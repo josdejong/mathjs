@@ -3,6 +3,7 @@ import approx from '../../../../tools/approx'
 import math from '../../../../src/bundleAny'
 
 const matrix = math.matrix
+const diff = math.diff
 
 const smallTestArray = [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [9, 8, 7, 6, 4]]
 
@@ -20,94 +21,94 @@ const largeTestArrayDimension3 = [[[[1, 1], [1, 1], [1, 1]], [[-1, -1], [1, 1], 
 describe('diff', function () {
   it('should return original array/matrix for less than 2 elements, with and without specified dimension', function () {
     // With Dim = 0 specified
-    assert.deepStrictEqual(math.diff([], 0), [])
-    assert.deepStrictEqual(math.diff(matrix([]), 0), matrix([]))
-    assert.deepStrictEqual(math.diff([2], 0), [2])
-    assert.deepStrictEqual(math.diff(matrix([2]), 0), matrix([2]))
+    assert.deepStrictEqual(diff([], 0), [])
+    assert.deepStrictEqual(diff(matrix([]), 0), matrix([]))
+    assert.deepStrictEqual(diff([2], 0), [2])
+    assert.deepStrictEqual(diff(matrix([2]), 0), matrix([2]))
 
     // Without Dim = 0 specified
-    assert.deepStrictEqual(math.diff([]), [])
-    assert.deepStrictEqual(math.diff(matrix([])), matrix([]))
-    assert.deepStrictEqual(math.diff([2]), [2])
-    assert.deepStrictEqual(math.diff(matrix([2])), matrix([2]))
+    assert.deepStrictEqual(diff([]), [])
+    assert.deepStrictEqual(diff(matrix([])), matrix([]))
+    assert.deepStrictEqual(diff([2]), [2])
+    assert.deepStrictEqual(diff(matrix([2])), matrix([2]))
   })
 
   it('should return difference between elements of a 1-dimensional array, with and without specified dimension', function () {
     // With Dim = 0
-    assert.deepStrictEqual(math.diff([1, 2, 4, 7, 0], 0), [1, 2, 3, -7])
+    assert.deepStrictEqual(diff([1, 2, 4, 7, 0], 0), [1, 2, 3, -7])
 
     // Without Dim = 0
-    assert.deepStrictEqual(math.diff([1, 2, 4, 7, 0]), [1, 2, 3, -7])
+    assert.deepStrictEqual(diff([1, 2, 4, 7, 0]), [1, 2, 3, -7])
   })
 
   it('should return difference between elements of a 1-dimensional matrix, with and without specified dimension', function () {
     // With Dim = 0
-    assert.deepStrictEqual(math.diff(matrix([1, 2, 4, 7, 0]), 0), matrix([1, 2, 3, -7]))
+    assert.deepStrictEqual(diff(matrix([1, 2, 4, 7, 0]), 0), matrix([1, 2, 3, -7]))
 
     // Without Dim = 0
-    assert.deepStrictEqual(math.diff(matrix([1, 2, 4, 7, 0])), matrix([1, 2, 3, -7]))
+    assert.deepStrictEqual(diff(matrix([1, 2, 4, 7, 0])), matrix([1, 2, 3, -7]))
   })
 
   it('should return difference between elements of a 2-dimensional array, with and without specified dimension', function () {
     // With Dim specified
-    assert.deepStrictEqual(math.diff(smallTestArray, 0), smallTestArrayDimension0)
-    assert.deepStrictEqual(math.diff(smallTestArray, 1), smallTestArrayDimension1)
+    assert.deepStrictEqual(diff(smallTestArray, 0), smallTestArrayDimension0)
+    assert.deepStrictEqual(diff(smallTestArray, 1), smallTestArrayDimension1)
 
     // Without Dim specified
-    assert.deepStrictEqual(math.diff(smallTestArray), smallTestArrayDimension0)
+    assert.deepStrictEqual(diff(smallTestArray), smallTestArrayDimension0)
   })
 
   it('should return difference between elements of a 2-dimensional matrix, with and without specified dimension', function () {
     // With Dim specified
-    assert.deepStrictEqual(math.diff(matrix(smallTestArray), 0), matrix(smallTestArrayDimension0))
-    assert.deepStrictEqual(math.diff(matrix(smallTestArray), 1), matrix(smallTestArrayDimension1))
+    assert.deepStrictEqual(diff(matrix(smallTestArray), 0), matrix(smallTestArrayDimension0))
+    assert.deepStrictEqual(diff(matrix(smallTestArray), 1), matrix(smallTestArrayDimension1))
 
     // Without Dim specified
-    assert.deepStrictEqual(math.diff(matrix(smallTestArray)), matrix(smallTestArrayDimension0))
+    assert.deepStrictEqual(diff(matrix(smallTestArray)), matrix(smallTestArrayDimension0))
   })
 
   it('should return difference between elements of a 4-dimensional array, with and without specified dimension', function () {
     // With Dim specified
-    assert.deepStrictEqual(math.diff(largeTestArray, 0), largeTestArrayDimension0)
-    assert.deepStrictEqual(math.diff(largeTestArray, 1), largeTestArrayDimension1)
-    assert.deepStrictEqual(math.diff(largeTestArray, 2), largeTestArrayDimension2)
-    assert.deepStrictEqual(math.diff(largeTestArray, 3), largeTestArrayDimension3)
+    assert.deepStrictEqual(diff(largeTestArray, 0), largeTestArrayDimension0)
+    assert.deepStrictEqual(diff(largeTestArray, 1), largeTestArrayDimension1)
+    assert.deepStrictEqual(diff(largeTestArray, 2), largeTestArrayDimension2)
+    assert.deepStrictEqual(diff(largeTestArray, 3), largeTestArrayDimension3)
 
     // Without Dim specified
-    assert.deepStrictEqual(math.diff(largeTestArray), largeTestArrayDimension0)
+    assert.deepStrictEqual(diff(largeTestArray), largeTestArrayDimension0)
   })
 
   it('should return difference between elements of a 4-dimensional matrix, with and without specified dimension', function () {
     // With Dim specified
-    assert.deepStrictEqual(math.diff(matrix(largeTestArray), 0), matrix(largeTestArrayDimension0))
-    assert.deepStrictEqual(math.diff(matrix(largeTestArray), 1), matrix(largeTestArrayDimension1))
-    assert.deepStrictEqual(math.diff(matrix(largeTestArray), 2), matrix(largeTestArrayDimension2))
-    assert.deepStrictEqual(math.diff(matrix(largeTestArray), 3), matrix(largeTestArrayDimension3))
+    assert.deepStrictEqual(diff(matrix(largeTestArray), 0), matrix(largeTestArrayDimension0))
+    assert.deepStrictEqual(diff(matrix(largeTestArray), 1), matrix(largeTestArrayDimension1))
+    assert.deepStrictEqual(diff(matrix(largeTestArray), 2), matrix(largeTestArrayDimension2))
+    assert.deepStrictEqual(diff(matrix(largeTestArray), 3), matrix(largeTestArrayDimension3))
 
     // Without Dim specified
-    assert.deepStrictEqual(math.diff(matrix(largeTestArray)), matrix(largeTestArrayDimension0))
+    assert.deepStrictEqual(diff(matrix(largeTestArray)), matrix(largeTestArrayDimension0))
   })
 
   it('should be consistent with bignumber', function () {
     // 4-dim array but done with bignumber
-    assert.deepStrictEqual(math.diff(math.bignumber(largeTestArray), 0), math.bignumber(largeTestArrayDimension0))
-    assert.deepStrictEqual(math.diff(math.bignumber(largeTestArray), 1), math.bignumber(largeTestArrayDimension1))
-    assert.deepStrictEqual(math.diff(math.bignumber(largeTestArray), 2), math.bignumber(largeTestArrayDimension2))
-    assert.deepStrictEqual(math.diff(math.bignumber(largeTestArray), 3), math.bignumber(largeTestArrayDimension3))
+    assert.deepStrictEqual(diff(math.bignumber(largeTestArray), 0), math.bignumber(largeTestArrayDimension0))
+    assert.deepStrictEqual(diff(math.bignumber(largeTestArray), 1), math.bignumber(largeTestArrayDimension1))
+    assert.deepStrictEqual(diff(math.bignumber(largeTestArray), 2), math.bignumber(largeTestArrayDimension2))
+    assert.deepStrictEqual(diff(math.bignumber(largeTestArray), 3), math.bignumber(largeTestArrayDimension3))
 
     // Without Dim specified
-    assert.deepStrictEqual(math.diff(math.bignumber(largeTestArray)), math.bignumber(largeTestArrayDimension0))
+    assert.deepStrictEqual(diff(math.bignumber(largeTestArray)), math.bignumber(largeTestArrayDimension0))
   })
 
   it('should be consistent with fraction', function () {
     // 4-dim array but done with bignumber
-    assert.deepStrictEqual(math.diff(math.fraction(largeTestArray), 0), math.fraction(largeTestArrayDimension0))
-    assert.deepStrictEqual(math.diff(math.fraction(largeTestArray), 1), math.fraction(largeTestArrayDimension1))
-    assert.deepStrictEqual(math.diff(math.fraction(largeTestArray), 2), math.fraction(largeTestArrayDimension2))
-    assert.deepStrictEqual(math.diff(math.fraction(largeTestArray), 3), math.fraction(largeTestArrayDimension3))
+    assert.deepStrictEqual(diff(math.fraction(largeTestArray), 0), math.fraction(largeTestArrayDimension0))
+    assert.deepStrictEqual(diff(math.fraction(largeTestArray), 1), math.fraction(largeTestArrayDimension1))
+    assert.deepStrictEqual(diff(math.fraction(largeTestArray), 2), math.fraction(largeTestArrayDimension2))
+    assert.deepStrictEqual(diff(math.fraction(largeTestArray), 3), math.fraction(largeTestArrayDimension3))
 
     // Without Dim specified
-    assert.deepStrictEqual(math.diff(math.fraction(largeTestArray)), math.fraction(largeTestArrayDimension0))
+    assert.deepStrictEqual(diff(math.fraction(largeTestArray)), math.fraction(largeTestArrayDimension0))
   })
 
   it('should be consistent with units', function () {
@@ -118,10 +119,27 @@ describe('diff', function () {
     const smallUnitsArrayDimension1 = [[math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm')], [math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm')], [math.unit('-1 cm'), math.unit('-1 cm'), math.unit('-1 cm'), math.unit('-2 cm')]]
 
     // With Dim specified
-    approx.deepEqual(math.diff(smallUnitsArray, 0), smallUnitsArrayDimension0)
-    approx.deepEqual(math.diff(smallUnitsArray, 1), smallUnitsArrayDimension1)
+    approx.deepEqual(diff(smallUnitsArray, 0), smallUnitsArrayDimension0)
+    approx.deepEqual(diff(smallUnitsArray, 1), smallUnitsArrayDimension1)
 
     // Without Dim specified
-    approx.deepEqual(math.diff(smallUnitsArray), smallUnitsArrayDimension0)
+    approx.deepEqual(diff(smallUnitsArray), smallUnitsArrayDimension0)
+  })
+
+  it('should throw and error with invalid inputs', function () {
+    // Should throw if input is not an array or matrix
+    assert.throws(function () { diff(1, 0) }, TypeError)
+
+    // Should throw if dimension is larger that the number of dimensions in the array/matrix or if negative
+    assert.throws(function () { diff([1, 2, 3, 4], 1) }, RangeError)
+    assert.throws(function () { diff([1, 2, 3, 4], -1) }, RangeError)
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), 1) }, RangeError)
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), -1) }, RangeError)
+
+    // Should throw not a 'rectangular' array/matrix.
+    // Matricies are already 'rectangular' so this error doesnt apply to them
+    // The first one throws TypeError for trying to do 2 - [3,4] whereas the second one throws RangeError as [1,2].length != [3,4,3].length
+    assert.throws(function () { diff([1, 2, [3, 4]], 0) }, TypeError)
+    assert.throws(function () { diff([[1, 2], [3, 4, 3]], 0) }, RangeError)
   })
 })
