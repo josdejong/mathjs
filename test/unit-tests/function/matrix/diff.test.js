@@ -178,9 +178,11 @@ describe('diff', function () {
     assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber(0.5)) }, RangeError)
     assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber(-0.5)) }, RangeError)
 
-    // Unfortunately we will never know if these work properly
-    assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber(Number.MAX_SAFE_INTEGER).plus(1)) }, RangeError)
-    assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber(Number.MIN_SAFE_INTEGER).minus(1)) }, RangeError)
+    // Infinity
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), Infinity) }, RangeError)
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), -Infinity) }, RangeError)
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber('Infinity')) }, RangeError)
+    assert.throws(function () { diff(matrix([1, 2, 3, 4]), math.bignumber('-Infinity')) }, RangeError)
   })
 
   it('should throw if array is not \'rectangular\'', function () {
