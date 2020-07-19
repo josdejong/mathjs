@@ -15,9 +15,9 @@ describe('lusolve', function () {
       ]
     const b = [-1, -1, -1, -1]
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    approx.deepEqual(xs, [[[-1], [-0.5], [-1 / 3], [-0.25]]])
+    approx.deepEqual(x, [[-1], [-0.5], [-1 / 3], [-0.25]])
   })
 
   it('should solve linear system 4 x 4, array and column array', function () {
@@ -34,9 +34,9 @@ describe('lusolve', function () {
       [-1],
       [-1]
     ]
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    approx.deepEqual(xs, [[[-1], [-0.5], [-1 / 3], [-0.25]]])
+    approx.deepEqual(x, [[-1], [-0.5], [-1 / 3], [-0.25]])
   })
 
   it('should solve linear system 4 x 4, matrices', function () {
@@ -49,10 +49,10 @@ describe('lusolve', function () {
       ])
     const b = math.matrix([-1, -1, -1, -1])
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    assert(xs[0] instanceof math.Matrix)
-    approx.deepEqual(xs, [math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]])])
+    assert(x instanceof math.Matrix)
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
   })
 
   it('should solve linear system 4 x 4, sparse matrices', function () {
@@ -65,10 +65,10 @@ describe('lusolve', function () {
       ], 'sparse')
     const b = math.matrix([[-1], [-1], [-1], [-1]], 'sparse')
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    assert(xs[0] instanceof math.Matrix)
-    approx.deepEqual(xs, [math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]])])
+    assert(x instanceof math.Matrix)
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
   })
 
   it('should solve linear system 4 x 4, matrix and column matrix', function () {
@@ -86,10 +86,10 @@ describe('lusolve', function () {
       [-1]
     ])
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    assert(xs[0] instanceof math.Matrix)
-    approx.deepEqual(xs, [math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]])])
+    assert(x instanceof math.Matrix)
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
   })
 
   it('should solve linear system 4 x 4, sparse matrix and column matrix', function () {
@@ -107,10 +107,10 @@ describe('lusolve', function () {
       [-1]
     ], 'sparse')
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    assert(xs[0] instanceof math.Matrix)
-    approx.deepEqual(xs, [math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]])])
+    assert(x instanceof math.Matrix)
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
   })
 
   it('should solve linear system 4 x 4, LUP decomposition (array)', function () {
@@ -123,11 +123,11 @@ describe('lusolve', function () {
         ]
     const lup = math.lup(m)
 
-    const xs = math.lusolve(lup, [-1, -1, -1, -1])
-    approx.deepEqual(xs, [math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]])])
+    const x = math.lusolve(lup, [-1, -1, -1, -1])
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
 
-    const ys = math.lusolve(lup, [1, 2, 1, -1])
-    approx.deepEqual(ys, [math.matrix([[1], [1], [1 / 3], [-0.25]])])
+    const y = math.lusolve(lup, [1, 2, 1, -1])
+    approx.deepEqual(y, math.matrix([[1], [1], [1 / 3], [-0.25]]))
   })
 
   it('should solve linear system 4 x 4, LUP decomposition (matrix)', function () {
@@ -140,11 +140,11 @@ describe('lusolve', function () {
       ])
     const lup = math.lup(m)
 
-    const xs = math.lusolve(lup, [-1, -1, -1, -1])
-    approx.deepEqual(xs, [math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]])])
+    const x = math.lusolve(lup, [-1, -1, -1, -1])
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
 
-    const ys = math.lusolve(lup, [1, 2, 1, -1])
-    approx.deepEqual(ys, [math.matrix([[1], [1], [1 / 3], [-0.25]])])
+    const y = math.lusolve(lup, [1, 2, 1, -1])
+    approx.deepEqual(y, math.matrix([[1], [1], [1 / 3], [-0.25]]))
   })
 
   it('should solve linear system 4 x 4, LUP decomposition (sparse matrix)', function () {
@@ -157,11 +157,11 @@ describe('lusolve', function () {
       ], 'sparse')
     const lup = math.lup(m)
 
-    const xs = math.lusolve(lup, [-1, -1, -1, -1])
-    approx.deepEqual(xs, [math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]])])
+    const x = math.lusolve(lup, [-1, -1, -1, -1])
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1 / 3], [-0.25]]))
 
-    const ys = math.lusolve(lup, [1, 2, 1, -1])
-    approx.deepEqual(ys, [math.matrix([[1], [1], [1 / 3], [-0.25]])])
+    const y = math.lusolve(lup, [1, 2, 1, -1])
+    approx.deepEqual(y, math.matrix([[1], [1], [1 / 3], [-0.25]]))
   })
 
   it('should solve linear system 3 x 3, no permutations, arrays', function () {
@@ -173,9 +173,9 @@ describe('lusolve', function () {
         ]
     const b = [-2, 4, 2]
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    approx.deepEqual(xs, [[[-5 / 3], [7 / 3], [-1]]])
+    approx.deepEqual(x, [[-5 / 3], [7 / 3], [-1]])
   })
 
   it('should solve linear system 3 x 3, no permutations, matrix', function () {
@@ -187,9 +187,9 @@ describe('lusolve', function () {
       ])
     const b = [-2, 4, 2]
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    approx.deepEqual(xs, [math.matrix([[-5 / 3], [7 / 3], [-1]])])
+    approx.deepEqual(x, math.matrix([[-5 / 3], [7 / 3], [-1]]))
   })
 
   it('should solve linear system 3 x 3, no permutations, sparse matrix', function () {
@@ -201,9 +201,9 @@ describe('lusolve', function () {
       ], 'sparse')
     const b = [-2, 4, 2]
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    approx.deepEqual(xs, [math.matrix([[-5 / 3], [7 / 3], [-1]])])
+    approx.deepEqual(x, math.matrix([[-5 / 3], [7 / 3], [-1]]))
   })
 
   it('should solve linear system 3 x 3, permutations, arrays', function () {
@@ -215,9 +215,9 @@ describe('lusolve', function () {
         ]
     const b = [4, -2, 2]
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    approx.deepEqual(xs, [[[-5 / 3], [7 / 3], [-1]]])
+    approx.deepEqual(x, [[-5 / 3], [7 / 3], [-1]])
   })
 
   it('should solve linear system 4 x 4, permutations, matrix - Issue 437', function () {
@@ -231,9 +231,9 @@ describe('lusolve', function () {
 
     const b = [0.1, 0.2, 0.15, 0.1]
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    approx.deepEqual(xs, [math.matrix([[0.025], [-0.075], [0], [0.2]])])
+    approx.deepEqual(x, math.matrix([[0.025], [-0.075], [0], [0.2]]))
   })
 
   it('should solve linear system 4 x 4, permutations, sparse - Issue 437', function () {
@@ -247,9 +247,9 @@ describe('lusolve', function () {
 
     const b = [0.1, 0.2, 0.15, 0.1]
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    approx.deepEqual(xs, [math.matrix([[0.025], [-0.075], [0], [0.2]])])
+    approx.deepEqual(x, math.matrix([[0.025], [-0.075], [0], [0.2]]))
   })
 
   it('should solve linear system 3 x 3, permutations, sparse matrix', function () {
@@ -261,9 +261,9 @@ describe('lusolve', function () {
       ], 'sparse')
     const b = [4, -2, 2]
 
-    const xs = math.lusolve(m, b)
+    const x = math.lusolve(m, b)
 
-    approx.deepEqual(xs, [math.matrix([[-5 / 3], [7 / 3], [-1]])])
+    approx.deepEqual(x, math.matrix([[-5 / 3], [7 / 3], [-1]]))
   })
 
   it('should solve linear system 4 x 4, natural ordering (order=0), partial pivoting, sparse matrix', function () {
@@ -277,9 +277,9 @@ describe('lusolve', function () {
 
     const b = [1.000000, 1.250000, 1.500000, 1.750000]
 
-    const xs = math.lusolve(m, b, 0, 1)
+    const x = math.lusolve(m, b, 0, 1)
 
-    approx.deepEqual(xs, [math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]])])
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]))
   })
 
   it('should solve linear system 4 x 4, amd(A+A\') (order=1), partial pivoting, sparse matrix', function () {
@@ -293,9 +293,9 @@ describe('lusolve', function () {
 
     const b = [1.000000, 1.250000, 1.500000, 1.750000]
 
-    const xs = math.lusolve(m, b, 1, 1)
+    const x = math.lusolve(m, b, 1, 1)
 
-    approx.deepEqual(xs, [math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]])])
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]))
   })
 
   it('should solve linear system 4 x 4, amd(A\'*A) (order=2), partial pivoting, sparse matrix', function () {
@@ -309,9 +309,9 @@ describe('lusolve', function () {
 
     const b = [1.000000, 1.250000, 1.500000, 1.750000]
 
-    const xs = math.lusolve(m, b, 2, 1)
+    const x = math.lusolve(m, b, 2, 1)
 
-    approx.deepEqual(xs, [math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]])])
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]))
   })
 
   it('should solve linear system 4 x 4, amd(A\'*A) (order=3), partial pivoting, sparse matrix', function () {
@@ -325,9 +325,9 @@ describe('lusolve', function () {
 
     const b = [1.000000, 1.250000, 1.500000, 1.750000]
 
-    const xs = math.lusolve(m, b, 3, 1)
+    const x = math.lusolve(m, b, 3, 1)
 
-    approx.deepEqual(xs, [math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]])])
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]))
   })
 
   it('should throw exception when matrix is singular', function () {
