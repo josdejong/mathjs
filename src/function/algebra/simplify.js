@@ -1,11 +1,11 @@
 import { isParenthesisNode } from '../../utils/is'
+import { isConstantNode, isVariableNode, isNumericNode, isConstantExpression } from './simplify/wildcards'
 import { factory } from '../../utils/factory'
 import { createUtil } from './simplify/util'
 import { createSimplifyCore } from './simplify/simplifyCore'
 import { createSimplifyConstant } from './simplify/simplifyConstant'
 import { createResolve } from './simplify/resolve'
 import { hasOwnProperty } from '../../utils/object'
-import * as wildcards from './simplify/wildcards'
 
 const name = 'simplify'
 const dependencies = [
@@ -661,7 +661,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           case 'c':
           case 'cl':
             // rule matches a ConstantNode
-            if (wildcards.isConstantNode(node)) {
+            if (isConstantNode(node)) {
               res[0].placeholders[rule.name] = node
             } else {
               // mis-match: rule does not encompass current node
@@ -670,7 +670,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             break
           case 'v':
             // rule matches anything other than a ConstantNode
-            if (!wildcards.isConstantNode(node)) {
+            if (!isConstantNode(node)) {
               res[0].placeholders[rule.name] = node
             } else {
               // mis-match: rule does not encompass current node
@@ -679,7 +679,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             break
           case 'vl':
             // rule matches VariableNode
-            if (wildcards.isVariableNode(node)) {
+            if (isVariableNode(node)) {
               res[0].placeholders[rule.name] = node
             } else {
               // mis-match: rule does not encompass current node
@@ -688,7 +688,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             break
           case 'ci':
             // rule matches a ConstantNode or unaryMinus-wrapped ConstantNode
-            if (wildcards.isNumericNode(node)) {
+            if (isNumericNode(node)) {
               res[0].placeholders[rule.name] = node
             } else {
               // mis-match: rule does not encompass current node
@@ -697,7 +697,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             break
           case 'vi':
             // rule matches anything other than a ConstantNode or unaryMinus-wrapped ConstantNode
-            if (!wildcards.isNumericNode(node)) {
+            if (!isNumericNode(node)) {
               res[0].placeholders[rule.name] = node
             } else {
               // mis-match: rule does not encompass current node
@@ -706,7 +706,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             break
           case 'ce':
             // rule matches expressions that have a constant value
-            if (wildcards.isConstantExpression(node)) {
+            if (isConstantExpression(node)) {
               res[0].placeholders[rule.name] = node
             } else {
               // mis-match: rule does not encompass current node
@@ -715,7 +715,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             break
           case 've':
             // rule matches expressions that do not have a constant value
-            if (!wildcards.isConstantExpression(node)) {
+            if (!isConstantExpression(node)) {
               res[0].placeholders[rule.name] = node
             } else {
               // mis-match: rule does not encompass current node
