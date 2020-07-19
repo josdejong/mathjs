@@ -84,6 +84,7 @@ import { subsetDocs } from './function/matrix/subset'
 import { squeezeDocs } from './function/matrix/squeeze'
 import { sortDocs } from './function/matrix/sort'
 import { sizeDocs } from './function/matrix/size'
+import { diffDocs } from './function/matrix/diff'
 import { reshapeDocs } from './function/matrix/reshape'
 import { resizeDocs } from './function/matrix/resize'
 import { rangeDocs } from './function/matrix/range'
@@ -402,6 +403,7 @@ export const embeddedDocs = {
   ctranspose: ctransposeDocs,
   det: detDocs,
   diag: diagDocs,
+  diff: diffDocs,
   dot: dotDocs,
   getMatrixDataType: getMatrixDataTypeDocs,
   identity: identityDocs,
