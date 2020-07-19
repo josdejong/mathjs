@@ -27,7 +27,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @param {number | BigNumber | Array | Matrix} n   An integer number
    * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
    */
-  const factorial = typed(name, {
+  return typed(name, {
     number: function (n) {
       if (n < 0) {
         throw new Error('Value must be non-negative')
@@ -45,9 +45,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     'Array | Matrix': function (n) {
-      return deepMap(n, factorial)
+      return deepMap(n, this)
     }
   })
-
-  return factorial
 })

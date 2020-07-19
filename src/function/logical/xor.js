@@ -48,7 +48,7 @@ export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * @return {boolean | Array | Matrix}
    *            Returns true when one and only one input is defined with a nonzero/nonempty value.
    */
-  const xor = typed(name, {
+  return typed(name, {
 
     'number, number': xorNumber,
 
@@ -61,66 +61,64 @@ export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     },
 
     'Unit, Unit': function (x, y) {
-      return xor(x.value || 0, y.value || 0)
+      return this(x.value || 0, y.value || 0)
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm07(x, y, xor)
+      return algorithm07(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm03(y, x, xor, true)
+      return algorithm03(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, xor, false)
+      return algorithm03(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, xor)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return xor(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return xor(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return xor(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, xor, false)
+      return algorithm12(x, y, this, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, xor, false)
+      return algorithm14(x, y, this, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, xor, true)
+      return algorithm12(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, xor, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, xor, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, xor, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
-
-  return xor
 })

@@ -7,56 +7,6 @@ const name = 'sqrtm'
 const dependencies = ['typed', 'abs', 'add', 'multiply', 'sqrt', 'subtract', 'inv', 'size', 'max', 'identity']
 
 export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, add, multiply, sqrt, subtract, inv, size, max, identity }) => {
-  /**
-   * Calculate the principal square root of a square matrix.
-   * The principal square root matrix `X` of another matrix `A` is such that `X * X = A`.
-   *
-   * https://en.wikipedia.org/wiki/Square_root_of_a_matrix
-   *
-   * Syntax:
-   *
-   *     X = math.sqrtm(A)
-   *
-   * Examples:
-   *
-   *     math.sqrtm([[1, 2], [3, 4]]) // returns [[-2, 1], [1.5, -0.5]]
-   *
-   * See also:
-   *
-   *     sqrt, pow
-   *
-   * @param  {Array | Matrix} A   The square matrix `A`
-   * @return {Array | Matrix}     The principal square root of matrix `A`
-   */
-  const sqrtm = typed(name, {
-    'Array | Matrix': function (A) {
-      const size = isMatrix(A) ? A.size() : arraySize(A)
-      switch (size.length) {
-        case 1:
-          // Single element Array | Matrix
-          if (size[0] === 1) {
-            return sqrt(A)
-          } else {
-            throw new RangeError('Matrix must be square ' +
-            '(size: ' + format(size) + ')')
-          }
-
-        case 2:
-        {
-          // Two-dimensional Array | Matrix
-          const rows = size[0]
-          const cols = size[1]
-          if (rows === cols) {
-            return _denmanBeavers(A)
-          } else {
-            throw new RangeError('Matrix must be square ' +
-              '(size: ' + format(size) + ')')
-          }
-        }
-      }
-    }
-  })
-
   const _maxIterations = 1e3
   const _tolerance = 1e-6
 
@@ -91,5 +41,53 @@ export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     return Y
   }
 
-  return sqrtm
+  /**
+   * Calculate the principal square root of a square matrix.
+   * The principal square root matrix `X` of another matrix `A` is such that `X * X = A`.
+   *
+   * https://en.wikipedia.org/wiki/Square_root_of_a_matrix
+   *
+   * Syntax:
+   *
+   *     X = math.sqrtm(A)
+   *
+   * Examples:
+   *
+   *     math.sqrtm([[1, 2], [3, 4]]) // returns [[-2, 1], [1.5, -0.5]]
+   *
+   * See also:
+   *
+   *     sqrt, pow
+   *
+   * @param  {Array | Matrix} A   The square matrix `A`
+   * @return {Array | Matrix}     The principal square root of matrix `A`
+   */
+  return typed(name, {
+    'Array | Matrix': function (A) {
+      const size = isMatrix(A) ? A.size() : arraySize(A)
+      switch (size.length) {
+        case 1:
+          // Single element Array | Matrix
+          if (size[0] === 1) {
+            return sqrt(A)
+          } else {
+            throw new RangeError('Matrix must be square ' +
+            '(size: ' + format(size) + ')')
+          }
+
+        case 2:
+        {
+          // Two-dimensional Array | Matrix
+          const rows = size[0]
+          const cols = size[1]
+          if (rows === cols) {
+            return _denmanBeavers(A)
+          } else {
+            throw new RangeError('Matrix must be square ' +
+              '(size: ' + format(size) + ')')
+          }
+        }
+      }
+    }
+  })
 })

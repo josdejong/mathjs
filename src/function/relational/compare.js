@@ -62,7 +62,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @return {number | BigNumber | Fraction | Array | Matrix} Returns the result of the comparison:
    *                                                          1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  const compare = typed(name, {
+  return typed(name, {
 
     'boolean, boolean': function (x, y) {
       return x === y ? 0 : (x > y ? 1 : -1)
@@ -92,68 +92,66 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
       if (!x.equalBase(y)) {
         throw new Error('Cannot compare units with different base')
       }
-      return compare(x.value, y.value)
+      return this(x.value, y.value)
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm05(x, y, compare)
+      return algorithm05(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm03(y, x, compare, true)
+      return algorithm03(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, compare, false)
+      return algorithm03(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, compare)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return compare(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return compare(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return compare(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, compare, false)
+      return algorithm12(x, y, this, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, compare, false)
+      return algorithm14(x, y, this, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, compare, true)
+      return algorithm12(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, compare, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, compare, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, compare, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
-
-  return compare
 })
 
 export const createCompareNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {

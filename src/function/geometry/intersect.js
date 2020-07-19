@@ -34,7 +34,7 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *                              OR null if the calculation is for line and plane
    * @return {Array}              Returns the point of intersection of lines/lines-planes
    */
-  const intersect = typed('intersect', {
+  return typed('intersect', {
     'Array, Array, Array': function (x, y, plane) {
       if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
       if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
@@ -64,12 +64,12 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     'Matrix, Matrix, Matrix': function (x, y, plane) {
-      return matrix(intersect(x.valueOf(), y.valueOf(), plane.valueOf()))
+      return matrix(this(x.valueOf(), y.valueOf(), plane.valueOf()))
     },
 
     'Matrix, Matrix, Matrix, Matrix': function (w, x, y, z) {
       // TODO: output matrix type should match input matrix type
-      return matrix(intersect(w.valueOf(), x.valueOf(), y.valueOf(), z.valueOf()))
+      return matrix(this(w.valueOf(), x.valueOf(), y.valueOf(), z.valueOf()))
     }
   })
 
@@ -157,6 +157,4 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     //       (a) no intersection,
     //       (b) line contained in plane
   }
-
-  return intersect
 })

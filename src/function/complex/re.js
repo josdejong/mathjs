@@ -32,7 +32,7 @@ export const createRe = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    *            A complex number or array with complex numbers
    * @return {number | BigNumber | Array | Matrix} The real part of x
    */
-  const re = typed(name, {
+  return typed(name, {
     number: function (x) {
       return x
     },
@@ -46,9 +46,7 @@ export const createRe = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, re)
+      return deepMap(x, this)
     }
   })
-
-  return re
 })

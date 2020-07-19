@@ -27,7 +27,7 @@ export const createAtanh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arctangent of x
    */
-  const atanh = typed(name, {
+  return typed(name, {
     number: function (x) {
       if ((x <= 1 && x >= -1) || config.predictable) {
         return atanhNumber(x)
@@ -45,9 +45,7 @@ export const createAtanh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since atanh(0) = 0
-      return deepMap(x, atanh, true)
+      return deepMap(x, this, true)
     }
   })
-
-  return atanh
 })

@@ -54,7 +54,7 @@ export const createNorm = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *            Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm)
    * @return {number | BigNumber} the p-norm
    */
-  const norm = typed(name, {
+  return typed(name, {
     number: Math.abs,
 
     Complex: function (x) {
@@ -81,7 +81,7 @@ export const createNorm = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     'number | Complex | BigNumber | boolean, number | BigNumber | string': function (x) {
       // ignore second parameter, TODO: remove the option of second parameter for these types
-      return norm(x)
+      return this(x)
     },
 
     'Array, number | BigNumber | string': function (x, p) {
@@ -204,6 +204,4 @@ export const createNorm = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       throw new Error('Unsupported parameter value')
     }
   }
-
-  return norm
 })

@@ -27,7 +27,7 @@ export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Cotangent of x
    */
-  const cot = typed(name, {
+  return typed(name, {
     number: cotNumber,
 
     Complex: function (x) {
@@ -42,13 +42,11 @@ export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cot is no angle')
       }
-      return cot(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, cot)
+      return deepMap(x, this)
     }
   })
-
-  return cot
 })
