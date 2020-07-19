@@ -3,9 +3,9 @@ import { isInteger } from '../../utils/number'
 import { isMatrix } from '../../utils/is'
 
 const name = 'diff'
-const dependencies = ['typed', 'matrix', 'subtract', 'number', 'bignumber']
+const dependencies = ['typed', 'matrix', 'subtract', 'number']
 
-export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract, number, bignumber }) => {
+export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract, number }) => {
   /**
    * Create a new matrix or array of the difference between elements of the given array
    * The optional dim parameter lets you specify the dimension to evaluate the difference of
@@ -44,8 +44,9 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * See Also:
    *
-   *      Subtract
-   *      PartitionSelect
+   *      sum
+   *      subtract
+   *      partitionSelect
    *
    * @param {Array | Matrix} arr    An array or matrix
    * @param {number} dim            Dimension
@@ -60,7 +61,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
     'Array | Matrix, number': function (arr, dim) {
-      if (!isInteger(dim)) throw RangeError('Dimension must be a whole number')
+      if (!isInteger(dim)) throw new RangeError('Dimension must be a whole number')
       if (isMatrix(arr)) {
         return matrix(_recursive(arr.toArray(), dim))
       } else {
@@ -68,15 +69,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
     'Array | Matrix, BigNumber': function (arr, dim) {
-      const maxInt = bignumber(Number.MAX_SAFE_INTEGER)
-      const minInt = bignumber(Number.MIN_SAFE_INTEGER)
-      if (dim > maxInt || dim < minInt) throw RangeError('The array does not have more than 2^53 dimensions')
-      if (!dim.isInt()) throw RangeError('Dimension must be a whole number')
-      if (isMatrix(arr)) {
-        return matrix(_recursive(arr.toArray(), number(dim)))
-      } else {
-        return _recursive(arr, number(dim))
-      }
+      return this(arr, number(dim))
     }
   })
 
