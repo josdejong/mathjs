@@ -1,5 +1,10 @@
 # History
 
+# not yet published, version 7.2.0
+
+- Implemented new function `diff`, see #1634, #1920. Thanks @Veeloxfire. 
+
+
 # 2020-07-13, version 7.1.0
 
 - Implement support for recursion (self-referencing) of typed-functions, 
