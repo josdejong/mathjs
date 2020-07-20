@@ -40,62 +40,78 @@ describe('simplify', function () {
     assert.strictEqual(math.simplify(left).evaluate(scope), math.parse(right).evaluate(scope))
   }
 
-  it('should correctly match different node types', function () {
-    // c, cl - ConstantNode
-    simplifyAndCompare('1', '5', [{ l: 'c', r: '5' }])
-    simplifyAndCompare('-1', '-5', [{ l: 'c', r: '5' }])
-    simplifyAndCompare('a', 'a', [{ l: 'c', r: '5' }])
-    simplifyAndCompare('2 * a', '5 * a', [{ l: 'c', r: '5' }])
+  describe('wildcard types', function () {
+    it('should match constants (\'c\' and \'cl\') correctly', function () {
+      // c, cl - ConstantNode
+      simplifyAndCompare('1', '5', [{ l: 'c', r: '5' }])
+      simplifyAndCompare('-1', '-5', [{ l: 'c', r: '5' }])
+      simplifyAndCompare('a', 'a', [{ l: 'c', r: '5' }])
+      simplifyAndCompare('2 * a', '5 * a', [{ l: 'c', r: '5' }])
 
-    simplifyAndCompare('1', '5', [{ l: 'cl', r: '5' }])
-    simplifyAndCompare('-1', '-5', [{ l: 'cl', r: '5' }])
-    simplifyAndCompare('a', 'a', [{ l: 'cl', r: '5' }])
-    simplifyAndCompare('2 * a', '5 * a', [{ l: 'cl', r: '5' }])
+      simplifyAndCompare('1', '5', [{ l: 'cl', r: '5' }])
+      simplifyAndCompare('-1', '-5', [{ l: 'cl', r: '5' }])
+      simplifyAndCompare('a', 'a', [{ l: 'cl', r: '5' }])
+      simplifyAndCompare('2 * a', '5 * a', [{ l: 'cl', r: '5' }])
+    })
 
-    // v - Non-ConstantNode
-    simplifyAndCompare('1', '1', [{ l: 'v', r: '5' }])
-    simplifyAndCompare('-1', '5', [{ l: 'v', r: '5' }])
-    simplifyAndCompare('a', '5', [{ l: 'v', r: '5' }])
-    simplifyAndCompare('2 * a', '5', [{ l: 'v', r: '5' }])
+    it('should match variables (\'v\') correctly', function () {
+      // v - Non-ConstantNode
+      simplifyAndCompare('1', '1', [{ l: 'v', r: '5' }])
+      simplifyAndCompare('-1', '5', [{ l: 'v', r: '5' }])
+      simplifyAndCompare('a', '5', [{ l: 'v', r: '5' }])
+      simplifyAndCompare('2 * a', '5', [{ l: 'v', r: '5' }])
+    })
 
-    // vl - Variable
-    simplifyAndCompare('1', '1', [{ l: 'vl', r: '5' }])
-    simplifyAndCompare('-1', '-1', [{ l: 'vl', r: '5' }])
-    simplifyAndCompare('a', '5', [{ l: 'vl', r: '5' }])
-    simplifyAndCompare('2 * a', '2 * 5', [{ l: 'vl', r: '5' }])
+    it('should match variable literals (\'vl\') correctly', function () {
+      // vl - Variable
+      simplifyAndCompare('1', '1', [{ l: 'vl', r: '5' }])
+      simplifyAndCompare('-1', '-1', [{ l: 'vl', r: '5' }])
+      simplifyAndCompare('a', '5', [{ l: 'vl', r: '5' }])
+      simplifyAndCompare('2 * a', '2 * 5', [{ l: 'vl', r: '5' }])
+    })
 
-    // cd - Number
-    simplifyAndCompare('1', '5', [{ l: 'cd', r: '5' }])
-    simplifyAndCompare('-1', '5', [{ l: 'cd', r: '5' }])
-    simplifyAndCompare('a', 'a', [{ l: 'cd', r: '5' }])
-    simplifyAndCompare('2 * a', '5 * a', [{ l: 'cd', r: '5' }])
+    it('should match decimal literals (\'cd\') correctly', function () {
+      // cd - Number
+      simplifyAndCompare('1', '5', [{ l: 'cd', r: '5' }])
+      simplifyAndCompare('-1', '5', [{ l: 'cd', r: '5' }])
+      simplifyAndCompare('a', 'a', [{ l: 'cd', r: '5' }])
+      simplifyAndCompare('2 * a', '5 * a', [{ l: 'cd', r: '5' }])
+    })
 
-    // vd - Non-number
-    simplifyAndCompare('1', '1', [{ l: 'vd', r: '5' }])
-    simplifyAndCompare('-1', '-1', [{ l: 'vd', r: '5' }])
-    simplifyAndCompare('a', '5', [{ l: 'vd', r: '5' }])
-    simplifyAndCompare('2 * a', '5', [{ l: 'vd', r: '5' }])
+    it('should match non-decimals (\'vd\') correctly', function () {
+      // vd - Non-number
+      simplifyAndCompare('1', '1', [{ l: 'vd', r: '5' }])
+      simplifyAndCompare('-1', '-1', [{ l: 'vd', r: '5' }])
+      simplifyAndCompare('a', '5', [{ l: 'vd', r: '5' }])
+      simplifyAndCompare('2 * a', '5', [{ l: 'vd', r: '5' }])
+    })
 
-    // ce - Constant Expression
-    simplifyAndCompare('1', '5', [{ l: 'ce', r: '5' }])
-    simplifyAndCompare('-1', '5', [{ l: 'ce', r: '5' }])
-    simplifyAndCompare('a', 'a', [{ l: 'ce', r: '5' }])
-    simplifyAndCompare('2 * a', '5 * a', [{ l: 'ce', r: '5' }])
-    simplifyAndCompare('2 ^ 32 + 3', '5', [{ l: 'ce', r: '5' }])
-    simplifyAndCompare('2 ^ 32 + x', '5 + x', [{ l: 'ce', r: '5' }])
-    simplifyAndCompare('2 ^ 32 + pi', '5', [{ l: 'ce', r: '5' }], { pi: math.pi })
+    it('should match constant expressions (\'ce\') correctly', function () {
+      // ce - Constant Expression
+      simplifyAndCompare('1', '5', [{ l: 'ce', r: '5' }])
+      simplifyAndCompare('-1', '5', [{ l: 'ce', r: '5' }])
+      simplifyAndCompare('a', 'a', [{ l: 'ce', r: '5' }])
+      simplifyAndCompare('2 * a', '5 * a', [{ l: 'ce', r: '5' }])
+      simplifyAndCompare('2 ^ 32 + 3', '5', [{ l: 'ce', r: '5' }])
+      simplifyAndCompare('2 ^ 32 + x', '5 + x', [{ l: 'ce', r: '5' }])
+      simplifyAndCompare('2 ^ 32 + pi', '5', [{ l: 'ce', r: '5' }], { pi: math.pi })
+    })
 
-    // ve - Variable Expression
-    simplifyAndCompare('1', '1', [{ l: 've', r: '5' }])
-    simplifyAndCompare('-1', '-1', [{ l: 've', r: '5' }])
-    simplifyAndCompare('a', '5', [{ l: 've', r: '5' }])
-    simplifyAndCompare('2 * a', '2 * 5', [{ l: 've', r: '5' }])
-    simplifyAndCompare('2 ^ 32 + 3', '2 ^ 32 + 3', [{ l: 've', r: '5' }])
-    simplifyAndCompare('2 ^ 32 + x', '2 ^ 32 + 5', [{ l: 've', r: '5' }])
-    simplifyAndCompare('2 ^ 32 + pi', '2 ^ 32 + 3.141592653589793', [{ l: 've', r: '5' }], { pi: math.pi })
+    it('should match variable expressions (\'ve\') correctly', function () {
+      // ve - Variable Expression
+      simplifyAndCompare('1', '1', [{ l: 've', r: '5' }])
+      simplifyAndCompare('-1', '-1', [{ l: 've', r: '5' }])
+      simplifyAndCompare('a', '5', [{ l: 've', r: '5' }])
+      simplifyAndCompare('2 * a', '2 * 5', [{ l: 've', r: '5' }])
+      simplifyAndCompare('2 ^ 32 + 3', '2 ^ 32 + 3', [{ l: 've', r: '5' }])
+      simplifyAndCompare('2 ^ 32 + x', '2 ^ 32 + 5', [{ l: 've', r: '5' }])
+      simplifyAndCompare('2 ^ 32 + pi', '2 ^ 32 + 3.141592653589793', [{ l: 've', r: '5' }], { pi: math.pi })
+    })
 
-    simplifyAndCompare('2 * a ^ 5 * 8', '5', [{ l: 'ce * ve', r: '5' }])
-    simplifyAndCompare('2 * a ^ 5 * 8 + 3', '5 + 3', [{ l: 'ce * ve', r: '5' }])
+    it('should correctly separate constant and variable expressions', function () {
+      simplifyAndCompare('2 * a ^ 5 * 8', '5', [{ l: 'ce * ve', r: '5' }])
+      simplifyAndCompare('2 * a ^ 5 * 8 + 3', '5 + 3', [{ l: 'ce * ve', r: '5' }])
+    })
   })
 
   it('should not change the value of the function', function () {
