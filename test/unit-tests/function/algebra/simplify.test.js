@@ -64,17 +64,17 @@ describe('simplify', function () {
     simplifyAndCompare('a', '5', [{ l: 'vl', r: '5' }])
     simplifyAndCompare('2 * a', '2 * 5', [{ l: 'vl', r: '5' }])
 
-    // ci - Number
-    simplifyAndCompare('1', '5', [{ l: 'ci', r: '5' }])
-    simplifyAndCompare('-1', '5', [{ l: 'ci', r: '5' }])
-    simplifyAndCompare('a', 'a', [{ l: 'ci', r: '5' }])
-    simplifyAndCompare('2 * a', '5 * a', [{ l: 'ci', r: '5' }])
+    // cd - Number
+    simplifyAndCompare('1', '5', [{ l: 'cd', r: '5' }])
+    simplifyAndCompare('-1', '5', [{ l: 'cd', r: '5' }])
+    simplifyAndCompare('a', 'a', [{ l: 'cd', r: '5' }])
+    simplifyAndCompare('2 * a', '5 * a', [{ l: 'cd', r: '5' }])
 
-    // vi - Non-number
-    simplifyAndCompare('1', '1', [{ l: 'vi', r: '5' }])
-    simplifyAndCompare('-1', '-1', [{ l: 'vi', r: '5' }])
-    simplifyAndCompare('a', '5', [{ l: 'vi', r: '5' }])
-    simplifyAndCompare('2 * a', '5', [{ l: 'vi', r: '5' }])
+    // vd - Non-number
+    simplifyAndCompare('1', '1', [{ l: 'vd', r: '5' }])
+    simplifyAndCompare('-1', '-1', [{ l: 'vd', r: '5' }])
+    simplifyAndCompare('a', '5', [{ l: 'vd', r: '5' }])
+    simplifyAndCompare('2 * a', '5', [{ l: 'vd', r: '5' }])
 
     // ce - Constant Expression
     simplifyAndCompare('1', '5', [{ l: 'ce', r: '5' }])
