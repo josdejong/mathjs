@@ -108,9 +108,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * expression is that variables starting with the following characters are
    * interpreted as wildcards:
    *
-   * - 'n' - matches any Node
-   * - 'c' - matches any ConstantNode
-   * - 'v' - matches any Node that is not a ConstantNode
+   * - 'n' - Matches any node [Node]
+   * - 'c' - Matches a constant literal (5 or 3.2) [ConstantNode]
+   * - 'cl' - Matches a constant literal; same as c [ConstantNode]
+   * - 'cd' - Matches a decimal literal (5 or -3.2) [ConstantNode or unaryMinus wrapping a ConstantNode]
+   * - 'ce' - Matches a constant expression (-5 or √3) [Expressions consisting of only ConstantNodes, functions, and operators]
+   * - 'v' - Matches a variable; anything not matched by c (-5 or x) [Node that is not a ConstantNode]
+   * - 'vl' - Matches a variable literal (x or y) [SymbolNode]
+   * - 'vd' - Matches a non-decimal expression; anything not matched by ci (x or √3) [Node that is not a ConstantNode or unaryMinus that is wrapping a Constant\Node]
+   * - 've' - Matches a variable expression; anything not matched by ce (x or 2x) [Expressions that contain a SymbolNode or other non-constant term]
    *
    * The default list of rules is exposed on the function as `simplify.rules`
    * and can be used as a basis to built a set of custom rules.
