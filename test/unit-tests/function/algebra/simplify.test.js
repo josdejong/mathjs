@@ -404,6 +404,25 @@ describe('simplify', function () {
     assert.strictEqual(simplified.toString({ implicit: 'hide' }), '2 x')
   })
 
+  it('should offer differentiation for constants of either sign', function () {
+    // Mostly just an alternative formatting preference
+    // Allows for basic constant fractions to be kept separate from a variable expressions
+    // see https://github.com/josdejong/mathjs/issues/1406
+    const rules = math.simplify.rules.slice()
+    const index = rules.findIndex(rule => rule.l === 'n*(n1/n2)')
+    rules.splice(
+      index, 1,
+      { l: 'cd*(cd1/cd2)', r: '(cd*cd1)/cd2' },
+      { l: 'n*(n1/vd2)', r: '(n*n1)/vd2' },
+      { l: 'n*(vd1/n2)', r: '(n*vd1)/n2' }
+    )
+    assert.strictEqual(math.simplify('(1 / 2) * a', rules).toString({ parenthesis: 'all' }), '(1 / 2) * a')
+    assert.strictEqual(math.simplify('-(1 / 2) * a', rules).toString({ parenthesis: 'all' }), '((-1) / 2) * a')
+    assert.strictEqual(math.simplify('(1 / 2) * 3', rules).toString({ parenthesis: 'all' }), '3 / 2')
+    assert.strictEqual(math.simplify('(1 / x) * a', rules).toString({ parenthesis: 'all' }), 'a / x')
+    assert.strictEqual(math.simplify('-(1 / x) * a', rules).toString({ parenthesis: 'all' }), '-(a / x)')
+  })
+
   describe('expression parser', function () {
     it('should evaluate simplify containing string value', function () {
       const res = math.evaluate('simplify("2x + 3x")')
