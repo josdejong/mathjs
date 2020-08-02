@@ -104,8 +104,8 @@ Extension | Description
 [decimal.js](https://github.com/MikeMcl/decimal.js/) | An arbitrary-precision Decimal type for JavaScript. Used by mathjs for BigNumber support.
 [ndarray](https://github.com/scijs/ndarray) | Multidimensional arrays for JavaScript
 [Algebrite](https://github.com/davidedc/Algebrite) | Computer Algebra System in Javascript (Coffeescript)
-[algebra.js](https://github.com/nicolewhite/algebra.js) | Build, display, and solve algebraic equations.
-[Nerdamer](https://nerdamer.com) | Symbolic Math for Javascript.
+[algebra.js](https://github.com/nicolewhite/algebra.js) | Build, display, and solve algebraic equations
+[Nerdamer](https://nerdamer.com) | Symbolic Math for Javascript
 [numeral-js](https://github.com/adamwdraper/Numeral-js) | A javascript library for formatting and manipulating numbers
 
 
