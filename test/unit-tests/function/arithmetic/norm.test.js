@@ -85,10 +85,13 @@ describe('norm', function () {
     assert.strictEqual(math.norm([[1, 2], [-3, -4]], 'fro'), math.sqrt(30))
     assert.strictEqual(math.norm(math.matrix([[1, 2], [-3, -4]]), 'fro'), math.sqrt(30))
     assert.strictEqual(math.norm(math.matrix([[1, 2], [-3, -4]], 'sparse'), 'fro'), math.sqrt(30))
-    // p - not implemented yet!
-    assert.throws(function () {
-      math.norm(math.norm([[1, 2], [3, 4]], 2), 6)
-    })
+    // p = '2'
+    assert.strictEqual(math.norm([[2, 0], [0, 3]], 2), 3)
+    assert.strictEqual(math.round(math.norm([
+      [53 / 360, -13 / 90, 23 / 360],
+      [-11 / 180, 1 / 45, 19 / 180],
+      [-7 / 360, 17 / 90, -37 / 360]
+    ], 2), 10), 0.2886751346)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
