@@ -75,10 +75,21 @@
     "webpack": "4.44.0",
     "zeros": "1.0.0"
   },
+  "type": "commonjs",
   "main": "main/es5",
   "module": "main/esm",
   "unpkg": "dist/math.min.js",
   "jsdelivr": "dist/math.min.js",
+  "exports": {
+    ".": {
+      "import": "./main/esm/index.js",
+      "require": "./main/es5/index.js"
+    },
+    "./number": {
+      "import": "./main/esm/number.js",
+      "require": "./main/es5/number.js"
+    }
+  },
   "files": [
     "bin",
     "dist",

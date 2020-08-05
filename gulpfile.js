@@ -148,7 +148,10 @@ function compileESModules () {
       ...babelOptions,
       presets: [
         ['@babel/preset-env', {
-          modules: false
+          modules: false,
+          targets: {
+            esmodules: true
+          }
         }]
       ]
     }))
