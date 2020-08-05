@@ -1,5 +1,5 @@
-import { csCumsum } from './csCumsum'
-import { factory } from '../../../utils/factory'
+import { csCumsum } from './csCumsum.js'
+import { factory } from '../../../utils/factory.js'
 
 const name = 'csSymperm'
 const dependencies = ['conj', 'SparseMatrix']

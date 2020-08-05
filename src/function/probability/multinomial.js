@@ -1,5 +1,5 @@
-import { deepForEach } from '../../utils/collection'
-import { factory } from '../../utils/factory'
+import { deepForEach } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'multinomial'
 const dependencies = ['typed', 'add', 'divide', 'multiply', 'factorial', 'isInteger', 'isPositive']

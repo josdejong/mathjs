@@ -1,7 +1,7 @@
-import { isInteger } from '../../../utils/number'
-import { factory } from '../../../utils/factory'
-import { createCsSqr } from '../sparse/csSqr'
-import { createCsLu } from '../sparse/csLu'
+import { isInteger } from '../../../utils/number.js'
+import { factory } from '../../../utils/factory.js'
+import { createCsSqr } from '../sparse/csSqr.js'
+import { createCsLu } from '../sparse/csLu.js'
 
 const name = 'slu'
 const dependencies = [

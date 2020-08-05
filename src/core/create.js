@@ -1,9 +1,9 @@
-import './../utils/polyfills'
-import { deepFlatten, isLegacyFactory, values } from '../utils/object'
-import * as emitter from './../utils/emitter'
-import { importFactory } from './function/import'
-import { configFactory } from './function/config'
-import { factory, isFactory } from '../utils/factory'
+import './../utils/polyfills.js'
+import { deepFlatten, isLegacyFactory, values } from '../utils/object.js'
+import * as emitter from './../utils/emitter.js'
+import { importFactory } from './function/import.js'
+import { configFactory } from './function/config.js'
+import { factory, isFactory } from '../utils/factory.js'
 import {
   isAccessorNode,
   isArray,
@@ -43,11 +43,11 @@ import {
   isSymbolNode,
   isUndefined,
   isUnit
-} from '../utils/is'
-import { ArgumentsError } from '../error/ArgumentsError'
-import { DimensionError } from '../error/DimensionError'
-import { IndexError } from '../error/IndexError'
-import { DEFAULT_CONFIG } from './config'
+} from '../utils/is.js'
+import { ArgumentsError } from '../error/ArgumentsError.js'
+import { DimensionError } from '../error/DimensionError.js'
+import { IndexError } from '../error/IndexError.js'
+import { DEFAULT_CONFIG } from './config.js'
 
 /**
  * Create a mathjs instance from given factory functions and optionally config

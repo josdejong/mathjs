@@ -1,7 +1,7 @@
-import { isArray, isMatrix } from '../../../utils/is'
-import { factory } from '../../../utils/factory'
-import { createSolveValidation } from './utils/solveValidation'
-import { csIpvec } from '../sparse/csIpvec'
+import { isArray, isMatrix } from '../../../utils/is.js'
+import { factory } from '../../../utils/factory.js'
+import { createSolveValidation } from './utils/solveValidation.js'
+import { csIpvec } from '../sparse/csIpvec.js'
 
 const name = 'lusolve'
 const dependencies = [

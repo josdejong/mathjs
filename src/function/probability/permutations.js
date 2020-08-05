@@ -1,6 +1,6 @@
-import { isInteger } from '../../utils/number'
-import { product } from '../../utils/product'
-import { factory } from '../../utils/factory'
+import { isInteger } from '../../utils/number.js'
+import { product } from '../../utils/product.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'permutations'
 const dependencies = ['typed', 'factorial']

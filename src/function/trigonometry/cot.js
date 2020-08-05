@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { cotNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { cotNumber } from '../../plain/number/index.js'
 
 const name = 'cot'
 const dependencies = ['typed', 'BigNumber']

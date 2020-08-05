@@ -1,4 +1,4 @@
-import { memoize } from '../function'
+import { memoize } from '../function.js'
 
 /**
  * Calculate BigNumber e

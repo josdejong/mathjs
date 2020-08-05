@@ -1,7 +1,7 @@
-import { compareText as _compareText } from '../../utils/string'
-import { factory } from '../../utils/factory'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { compareText as _compareText } from '../../utils/string.js'
+import { factory } from '../../utils/factory.js'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
 
 const name = 'compareText'
 const dependencies = [

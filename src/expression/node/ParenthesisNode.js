@@ -1,5 +1,5 @@
-import { isNode } from '../../utils/is'
-import { factory } from '../../utils/factory'
+import { isNode } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'ParenthesisNode'
 const dependencies = [

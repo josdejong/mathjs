@@ -1,6 +1,6 @@
-import { isMatrix } from '../../utils/is'
-import { isInteger } from '../../utils/number'
-import { factory } from '../../utils/factory'
+import { isMatrix } from '../../utils/is.js'
+import { isInteger } from '../../utils/number.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'partitionSelect'
 const dependencies = ['typed', 'isNumeric', 'isNaN', 'compare']

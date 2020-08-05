@@ -1,5 +1,5 @@
-import { clone, mapObject, deepExtend } from '../../utils/object'
-import { DEFAULT_CONFIG } from '../config'
+import { clone, mapObject, deepExtend } from '../../utils/object.js'
+import { DEFAULT_CONFIG } from '../config.js'
 
 export const MATRIX_OPTIONS = ['Matrix', 'Array'] // valid values for option matrix
 export const NUMBER_OPTIONS = ['number', 'BigNumber', 'Fraction'] // valid values for option number

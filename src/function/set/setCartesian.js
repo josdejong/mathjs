@@ -1,5 +1,5 @@
-import { flatten } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { flatten } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'setCartesian'
 const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix']

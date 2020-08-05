@@ -1,12 +1,12 @@
-import { isNode } from '../../utils/is'
+import { isNode } from '../../utils/is.js'
 
-import { keywords } from '../keywords'
-import { escape } from '../../utils/string'
-import { forEach, join } from '../../utils/array'
-import { toSymbol } from '../../utils/latex'
-import { getPrecedence } from '../operators'
-import { setSafeProperty } from '../../utils/customs'
-import { factory } from '../../utils/factory'
+import { keywords } from '../keywords.js'
+import { escape } from '../../utils/string.js'
+import { forEach, join } from '../../utils/array.js'
+import { toSymbol } from '../../utils/latex.js'
+import { getPrecedence } from '../operators.js'
+import { setSafeProperty } from '../../utils/customs.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'FunctionAssignmentNode'
 const dependencies = [

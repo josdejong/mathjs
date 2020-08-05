@@ -1,8 +1,8 @@
-import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is'
-import { filter, filterRegExp } from '../../utils/array'
-import { maxArgumentCount } from '../../utils/function'
-import { compileInlineExpression } from './utils/compileInlineExpression'
-import { factory } from '../../utils/factory'
+import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
+import { filter, filterRegExp } from '../../utils/array.js'
+import { maxArgumentCount } from '../../utils/function.js'
+import { compileInlineExpression } from './utils/compileInlineExpression.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'filter'
 const dependencies = ['typed']

@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js'
-import { factory } from '../../utils/factory'
+import { factory } from '../../utils/factory.js'
 
 const name = 'BigNumber'
 const dependencies = ['?on', 'config']

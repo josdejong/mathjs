@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { isBigNumber, isCollection, isNumber } from '../../utils/is'
-import { errorTransform } from './utils/errorTransform'
-import { createVariance } from '../../function/statistics/variance'
+import { factory } from '../../utils/factory.js'
+import { isBigNumber, isCollection, isNumber } from '../../utils/is.js'
+import { errorTransform } from './utils/errorTransform.js'
+import { createVariance } from '../../function/statistics/variance.js'
 
 const name = 'variance'
 const dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'apply', 'isNaN']

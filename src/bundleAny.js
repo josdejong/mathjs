@@ -1,5 +1,5 @@
-const all = require('./factoriesAny')
-const { create } = require('./core/create')
+const all = require('./factoriesAny.js')
+const { create } = require('./core/create.js')
 
 const defaultInstance = create(all)
 

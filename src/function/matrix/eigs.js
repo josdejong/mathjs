@@ -1,6 +1,6 @@
-import { clone } from '../../utils/object'
-import { factory } from '../../utils/factory'
-import { format } from '../../utils/string'
+import { clone } from '../../utils/object.js'
+import { factory } from '../../utils/factory.js'
+import { format } from '../../utils/string.js'
 
 const name = 'eigs'
 const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'inv', 'bignumber', 'multiply', 'add']

@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { extend } from '../../utils/object'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { factory } from '../../utils/factory.js'
+import { extend } from '../../utils/object.js'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
 
 const name = 'divide'
 const dependencies = [

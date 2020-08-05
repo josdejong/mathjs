@@ -1,4 +1,4 @@
-import { acosh, asinh, atanh, cosh, sign, sinh, tanh } from '../../utils/number'
+import { acosh, asinh, atanh, cosh, sign, sinh, tanh } from '../../utils/number.js'
 
 const n1 = 'number'
 const n2 = 'number, number'

@@ -1,7 +1,7 @@
-import { deepForEach } from '../../utils/collection'
-import { isBigNumber } from '../../utils/is'
-import { factory } from '../../utils/factory'
-import { improveErrorMessage } from './utils/improveErrorMessage'
+import { deepForEach } from '../../utils/collection.js'
+import { isBigNumber } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const DEFAULT_NORMALIZATION = 'unbiased'
 

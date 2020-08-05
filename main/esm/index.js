@@ -1,1 +1,1 @@
-export * from '../../es/entry/mainAny'
+export * from '../../es/entry/mainAny.js'

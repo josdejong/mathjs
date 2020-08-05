@@ -38,7 +38,7 @@ const dependenciesIndexTemplate = Handlebars.compile(`/**
  * DON'T MAKE CHANGES HERE
  */
 {{#factories}}
-export { {{name}} } from '{{fileName}}'{{eslintComment}}
+export { {{name}} } from '{{fileName}}.js'{{eslintComment}}
 {{/factories}}
 
 export { all } from './allFactories{{suffix}}.js'
@@ -49,7 +49,7 @@ const dependenciesFileTemplate = Handlebars.compile(`/**
  * DON'T MAKE CHANGES HERE
  */
 {{#dependencies}}
-import { {{name}} } from '{{fileName}}'
+import { {{name}} } from '{{fileName}}.js'
 {{/dependencies}}
 import { {{factoryName}} } from '../../factories{{suffix}}.js'{{eslintComment}}
 
@@ -65,12 +65,12 @@ const pureFunctionsTemplate = Handlebars.compile(`/**
  * THIS FILE IS AUTO-GENERATED
  * DON'T MAKE CHANGES HERE
  */
-import { config } from './configReadonly'
+import { config } from './configReadonly.js'
 import {
   {{#pureFactories}}
   {{factoryName}}{{#unless @last}},{{/unless}}{{eslintComment}}
   {{/pureFactories}}
-} from '../factories{{suffix}}'
+} from '../factories{{suffix}}.js'
 
 {{#pureFactories}}
 export const {{name}} = /* #__PURE__ */ {{factoryName ~}}
@@ -86,7 +86,7 @@ const impureFunctionsTemplate = Handlebars.compile(`/**
  * THIS FILE IS AUTO-GENERATED
  * DON'T MAKE CHANGES HERE
  */
-import { config } from './configReadonly'
+import { config } from './configReadonly.js'
 import {
   {{#impureFactories}}
   {{factoryName}},{{eslintComment}}
@@ -94,12 +94,12 @@ import {
   {{#transformFactories}}
   {{factoryName}}{{#unless @last}},{{/unless}}{{eslintComment}}
   {{/transformFactories}}
-} from '../factories{{suffix}}'
+} from '../factories{{suffix}}.js'
 import {
   {{#pureFactories}}
   {{name}}{{#unless @last}},{{/unless}}{{eslintComment}}
   {{/pureFactories}}
-} from './pureFunctions{{suffix}}.generated'
+} from './pureFunctions{{suffix}}.generated.js'
 
 const math = {} // NOT pure!
 const mathWithTransform = {} // NOT pure!
@@ -146,7 +146,7 @@ Object.assign(classes, {
 
 Chain.createProxy(math)
 
-export { embeddedDocs as docs } from '../expression/embeddedDocs/embeddedDocs'
+export { embeddedDocs as docs } from '../expression/embeddedDocs/embeddedDocs.js'
 `)
 
 exports.generateEntryFiles = function () {

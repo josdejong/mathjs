@@ -1,7 +1,7 @@
-import { errorTransform } from './utils/errorTransform'
-import { factory } from '../../utils/factory'
-import { createApply } from '../../function/matrix/apply'
-import { isBigNumber, isNumber } from '../../utils/is'
+import { errorTransform } from './utils/errorTransform.js'
+import { factory } from '../../utils/factory.js'
+import { createApply } from '../../function/matrix/apply.js'
+import { isBigNumber, isNumber } from '../../utils/is.js'
 
 const name = 'apply'
 const dependencies = ['typed', 'isInteger']

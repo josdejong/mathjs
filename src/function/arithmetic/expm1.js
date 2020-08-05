@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { expm1Number } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { expm1Number } from '../../plain/number/index.js'
 
 const name = 'expm1'
 const dependencies = ['typed', 'Complex']
