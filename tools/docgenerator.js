@@ -524,10 +524,10 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
         } else {
           category = path[functionIndex + 1]
         }
-      } else if (fullPath === './lib/expression/parse.js') {
+      } else if (fullPath === './lib/cjs/expression/parse.js') {
         // TODO: this is an ugly special case
         category = 'expression'
-      } else if (path.join('/') === './lib/type') {
+      } else if (path.join('/') === './lib/cjs/type') {
         // for boolean.js, number.js, string.js
         category = 'construction'
       }

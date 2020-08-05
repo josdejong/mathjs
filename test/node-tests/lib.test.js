@@ -6,19 +6,19 @@ const version = require('../../package.json').version
 
 describe('lib', function () {
   it('should load lib/mainAny.js', function () {
-    const math = require('../../lib/entry/mainAny')
+    const math = require('../../lib/cjs/entry/mainAny')
 
     assert.strictEqual(math.add(2, 3), 5)
   })
 
   it('should load lib/mainNumber.js', function () {
-    const math = require('../../lib/entry/mainNumber')
+    const math = require('../../lib/cjs/entry/mainNumber')
 
     assert.strictEqual(math.add(2, 3), 5)
   })
 
   it('should have the correct version number', function () {
-    const math = require('../../lib/entry/mainAny')
+    const math = require('../../lib/cjs/entry/mainAny')
 
     assert.strictEqual(math.version, version)
   })

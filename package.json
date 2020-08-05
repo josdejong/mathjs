@@ -76,31 +76,24 @@
     "zeros": "1.0.0"
   },
   "type": "commonjs",
-  "main": "main/es5",
-  "module": "main/esm",
-  "unpkg": "dist/math.min.js",
-  "jsdelivr": "dist/math.min.js",
+  "main": "./lib/cjs",
+  "module": "./lib/esm",
+  "unpkg": "./lib/browser/math.min.js",
+  "jsdelivr": "./lib/browser/math.min.js",
   "exports": {
     ".": {
-      "import": "./main/esm/index.js",
-      "require": "./main/es5/index.js"
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
     },
     "./number": {
-      "import": "./main/esm/number.js",
-      "require": "./main/es5/number.js"
+      "import": "./lib/esm/number.js",
+      "require": "./lib/cjs/number.js"
     }
   },
   "files": [
     "bin",
-    "dist",
     "docs",
-    "main",
-    "es",
     "lib",
-    "src",
-    "core.js",
-    "index.js",
-    "number.js",
     "examples",
     "LICENSE",
     "NOTICE",
@@ -139,7 +132,6 @@
   "directories": {
     "doc": "./docs",
     "example": "./examples",
-    "es": "./es",
     "lib": "./lib",
     "src": "./src",
     "test": "./test"

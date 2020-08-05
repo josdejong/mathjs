@@ -150,8 +150,8 @@ export { embeddedDocs as docs } from '../expression/embeddedDocs/embeddedDocs.js
 `)
 
 exports.generateEntryFiles = function () {
-  const factoriesAny = require('../lib/factoriesAny')
-  const factoriesNumber = require('../lib/factoriesNumber')
+  const factoriesAny = require('../lib/cjs/factoriesAny')
+  const factoriesNumber = require('../lib/cjs/factoriesNumber')
 
   generateDependenciesFiles({
     suffix: 'Any',
