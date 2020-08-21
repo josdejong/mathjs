@@ -92,8 +92,9 @@ describe('norm', function () {
       [-11 / 180, 1 / 45, 19 / 180],
       [-7 / 360, 17 / 90, -37 / 360]
     ], 2), 10), 0.2886751346)
+  })
 
-    // Matrix zero
+  it('should not fail in case of a zero matrix', function () {
     assert.strictEqual(math.norm([[0, 0, 0], [0, 0, 0], [0, 0, 0]], 'fro'), 0)
     assert.strictEqual(math.norm([[0, 0, 0], [0, 0, 0], [0, 0, 0]], 1), 0)
     assert.strictEqual(math.norm([[0, 0, 0], [0, 0, 0], [0, 0, 0]], 2), 0)
