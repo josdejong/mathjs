@@ -233,6 +233,10 @@ export const createNorm = /* #__PURE__ */ factory(
      */
     function _matrixNormTwo (x) {
       // norm(x) = sqrt( max eigenvalue of A*.A)
+      const sizeX = x.size()
+      if (sizeX[0] !== sizeX[1]) {
+        throw new RangeError('Invalid matrix dimensions')
+      }
       const tx = ctranspose(x)
       const squaredX = multiply(tx, x)
       const eigenVals = eigs(squaredX).values
@@ -305,7 +309,11 @@ export const createNorm = /* #__PURE__ */ factory(
       }
       // MxN matrix
       if (sizeX.length === 2) {
-        return _matrixNorm(x, p)
+        if (sizeX[0] && sizeX[1]) {
+          return _matrixNorm(x, p)
+        } else {
+          throw new RangeError('Invalid matrix dimensions')
+        }
       }
     }
   }
