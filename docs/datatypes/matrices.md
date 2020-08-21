@@ -213,12 +213,12 @@ or unsqueezed.
 ```js
 // squeeze a matrix
 const a = [[[0, 1, 2]]]
-math.squeeze(a)         // [0, 1, 2]
-math.squeeze([[3]])     // 3
+math.squeeze(a)             // [0, 1, 2]
+math.squeeze([[3]])         // 3
 
 // subsets are automatically squeezed
 const b = math.matrix([[0, 1], [2, 3]])
-b.subset([1, 0])        // 2
+b.subset(math.index(1, 0))  // 2
 ```
 
 
