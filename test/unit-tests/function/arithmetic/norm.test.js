@@ -85,10 +85,20 @@ describe('norm', function () {
     assert.strictEqual(math.norm([[1, 2], [-3, -4]], 'fro'), math.sqrt(30))
     assert.strictEqual(math.norm(math.matrix([[1, 2], [-3, -4]]), 'fro'), math.sqrt(30))
     assert.strictEqual(math.norm(math.matrix([[1, 2], [-3, -4]], 'sparse'), 'fro'), math.sqrt(30))
-    // p - not implemented yet!
-    assert.throws(function () {
-      math.norm(math.norm([[1, 2], [3, 4]], 2), 6)
-    })
+    // p = '2'
+    assert.strictEqual(math.norm([[2, 0], [0, 3]], 2), 3)
+    assert.strictEqual(math.round(math.norm([
+      [53 / 360, -13 / 90, 23 / 360],
+      [-11 / 180, 1 / 45, 19 / 180],
+      [-7 / 360, 17 / 90, -37 / 360]
+    ], 2), 10), 0.2886751346)
+  })
+
+  it('should not fail in case of a zero matrix', function () {
+    assert.strictEqual(math.norm([[0, 0, 0], [0, 0, 0], [0, 0, 0]], 'fro'), 0)
+    assert.strictEqual(math.norm([[0, 0, 0], [0, 0, 0], [0, 0, 0]], 1), 0)
+    assert.strictEqual(math.norm([[0, 0, 0], [0, 0, 0], [0, 0, 0]], 2), 0)
+    assert.strictEqual(math.norm([[0, 0, 0], [0, 0, 0], [0, 0, 0]], 'inf'), 0)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
@@ -98,6 +108,13 @@ describe('norm', function () {
 
   it('should throw an in case of wrong type of arguments', function () {
     assert.throws(function () { math.norm(null) }, /Unexpected type of argument in function norm/)
+
+    assert.throws(function () { math.norm([[], []], 'fro') }, /RangeError: Invalid matrix dimensions/)
+    assert.throws(function () { math.norm([[], []], 1) }, /RangeError: Invalid matrix dimensions/)
+    assert.throws(function () { math.norm([[], []], 2) }, /RangeError: Invalid matrix dimensions/)
+    assert.throws(function () { math.norm([[], []], 'inf') }, /RangeError: Invalid matrix dimensions/)
+
+    assert.throws(function () { math.norm([[1, 2, 3], [2, 1, 3]], 2) }, /RangeError: Invalid matrix dimensions/)
   })
 
   it('should throw an error with a string', function () {
