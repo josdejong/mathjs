@@ -3,6 +3,8 @@
 # not yet published, version 7.2.0
 
 - Implemented new function `diff`, see #1634, #1920. Thanks @Veeloxfire. 
+- Implemented support for norm 2 for matrices in function `norm`. 
+  Thanks @rnd-debug. 
 
 
 # 2020-07-13, version 7.1.0
