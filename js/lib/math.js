@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 7.1.0
- * @date    2020-07-13
+ * @version 7.2.0
+ * @date    2020-08-24
  *
  * @license
  * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
@@ -11726,6 +11726,7 @@ __webpack_require__.d(__webpack_exports__, "createGetMatrixDataType", function()
 __webpack_require__.d(__webpack_exports__, "createIdentity", function() { return /* reexport */ createIdentity; });
 __webpack_require__.d(__webpack_exports__, "createKron", function() { return /* reexport */ createKron; });
 __webpack_require__.d(__webpack_exports__, "createMap", function() { return /* reexport */ createMap; });
+__webpack_require__.d(__webpack_exports__, "createDiff", function() { return /* reexport */ createDiff; });
 __webpack_require__.d(__webpack_exports__, "createOnes", function() { return /* reexport */ createOnes; });
 __webpack_require__.d(__webpack_exports__, "createRange", function() { return /* reexport */ range_createRange; });
 __webpack_require__.d(__webpack_exports__, "createReshape", function() { return /* reexport */ createReshape; });
@@ -11968,6 +11969,7 @@ __webpack_require__.d(__webpack_exports__, "createRangeTransform", function() { 
 __webpack_require__.d(__webpack_exports__, "createRowTransform", function() { return /* reexport */ createRowTransform; });
 __webpack_require__.d(__webpack_exports__, "createSubsetTransform", function() { return /* reexport */ createSubsetTransform; });
 __webpack_require__.d(__webpack_exports__, "createConcatTransform", function() { return /* reexport */ createConcatTransform; });
+__webpack_require__.d(__webpack_exports__, "createDiffTransform", function() { return /* reexport */ createDiffTransform; });
 __webpack_require__.d(__webpack_exports__, "createStdTransform", function() { return /* reexport */ createStdTransform; });
 __webpack_require__.d(__webpack_exports__, "createSumTransform", function() { return /* reexport */ createSumTransform; });
 __webpack_require__.d(__webpack_exports__, "createVarianceTransform", function() { return /* reexport */ createVarianceTransform; });
@@ -24650,6 +24652,188 @@ function map_map(array, callback) {
 
   return recurse(array, []);
 }
+// CONCATENATED MODULE: ./src/function/matrix/diff.js
+
+
+
+var diff_name = 'diff';
+var diff_dependencies = ['typed', 'matrix', 'subtract', 'number'];
+var createDiff = /* #__PURE__ */Object(factory["a" /* factory */])(diff_name, diff_dependencies, function (_ref) {
+  var typed = _ref.typed,
+      matrix = _ref.matrix,
+      subtract = _ref.subtract,
+      number = _ref.number;
+
+  /**
+   * Create a new matrix or array of the difference between elements of the given array
+   * The optional dim parameter lets you specify the dimension to evaluate the difference of
+   * If no dimension parameter is passed it is assumed as dimension 0
+   *
+   * Dimension is zero-based in javascript and one-based in the parser and can be a number or bignumber
+   * Arrays must be 'rectangular' meaning arrays like [1, 2]
+   * If something is passed as a matrix it will be returned as a matrix but other than that all matrices are converted to arrays
+   *
+   * Syntax:
+   *
+   *     math.diff(arr)
+   *     math.diff(arr, dim)
+   *
+   * Examples:
+   *
+   *     const arr = [1, 2, 4, 7, 0]
+   *     math.diff(arr) // returns [1, 2, 3, -7] (no dimension passed so 0 is assumed)
+   *     math.diff(math.matrix(arr)) // returns math.matrix([1, 2, 3, -7])
+   *
+   *     const arr = [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [9, 8, 7, 6, 4]]
+   *     math.diff(arr) // returns [[0, 0, 0, 0, 0], [8, 6, 4, 2, -1]]
+   *     math.diff(arr, 0) // returns [[0, 0, 0, 0, 0], [8, 6, 4, 2, -1]]
+   *     math.diff(arr, 1) // returns [[1, 1, 1, 1], [1, 1, 1, 1], [-1, -1, -1, -2]]
+   *     math.diff(arr, math.bignumber(1)) // returns [[1, 1, 1, 1], [1, 1, 1, 1], [-1, -1, -1, -2]]
+   *
+   *     math.diff(arr, 2) // throws RangeError as arr is 2 dimensional not 3
+   *     math.diff(arr, -1) // throws RangeError as negative dimensions are not allowed
+   *
+   *     // These will all produce the same result
+   *     math.diff([[1, 2], [3, 4]])
+   *     math.diff([math.matrix([1, 2]), math.matrix([3, 4])])
+   *     math.diff([[1, 2], math.matrix([3, 4])])
+   *     math.diff([math.matrix([1, 2]), [3, 4]])
+   *     // They do not produce the same result as  math.diff(math.matrix([[1, 2], [3, 4]])) as this returns a matrix
+   *
+   * See Also:
+   *
+   *      sum
+   *      subtract
+   *      partitionSelect
+   *
+   * @param {Array | Matrix} arr    An array or matrix
+   * @param {number} dim            Dimension
+   * @return {Array | Matrix}       Difference between array elements in given dimension
+   */
+  return typed(diff_name, {
+    'Array | Matrix': function ArrayMatrix(arr) {
+      // No dimension specified => assume dimension 0
+      if (Object(is["v" /* isMatrix */])(arr)) {
+        return matrix(_diff(arr.toArray()));
+      } else {
+        return _diff(arr);
+      }
+    },
+    'Array | Matrix, number': function ArrayMatrixNumber(arr, dim) {
+      if (!Object(utils_number["i" /* isInteger */])(dim)) throw new RangeError('Dimension must be a whole number');
+
+      if (Object(is["v" /* isMatrix */])(arr)) {
+        return matrix(_recursive(arr.toArray(), dim));
+      } else {
+        return _recursive(arr, dim);
+      }
+    },
+    'Array | Matrix, BigNumber': function ArrayMatrixBigNumber(arr, dim) {
+      return this(arr, number(dim));
+    }
+  });
+  /**
+   * Recursively find the correct dimension in the array/matrix
+   * Then Apply _diff to that dimension
+   *
+   * @param {Array} arr      The array
+   * @param {number} dim     Dimension
+   * @return {Array}         resulting array
+   */
+
+  function _recursive(arr, dim) {
+    if (Object(is["v" /* isMatrix */])(arr)) {
+      arr = arr.toArray(); // Makes sure arrays like [ matrix([0, 1]), matrix([1, 0]) ] are processed properly
+    }
+
+    if (!Array.isArray(arr)) {
+      throw RangeError('Array/Matrix does not have that many dimensions');
+    }
+
+    if (dim > 0) {
+      var result = [];
+      arr.forEach(function (element) {
+        result.push(_recursive(element, dim - 1));
+      });
+      return result;
+    } else if (dim === 0) {
+      return _diff(arr);
+    } else {
+      throw RangeError('Cannot have negative dimension');
+    }
+  }
+  /**
+   * Difference between elements in the array
+   *
+   * @param {Array} arr      An array
+   * @return {Array}         resulting array
+   */
+
+
+  function _diff(arr) {
+    var result = [];
+    var size = arr.length;
+
+    if (size < 2) {
+      return arr;
+    }
+
+    for (var i = 1; i < size; i++) {
+      result.push(_ElementDiff(arr[i - 1], arr[i]));
+    }
+
+    return result;
+  }
+  /**
+   * Difference between 2 objects
+   *
+   * @param {Object} obj1    First object
+   * @param {Object} obj2    Second object
+   * @return {Array}         resulting array
+   */
+
+
+  function _ElementDiff(obj1, obj2) {
+    // Convert matrices to arrays
+    if (Object(is["v" /* isMatrix */])(obj1)) obj1 = obj1.toArray();
+    if (Object(is["v" /* isMatrix */])(obj2)) obj2 = obj2.toArray();
+    var obj1IsArray = Array.isArray(obj1);
+    var obj2IsArray = Array.isArray(obj2);
+
+    if (obj1IsArray && obj2IsArray) {
+      return _ArrayDiff(obj1, obj2);
+    }
+
+    if (!obj1IsArray && !obj2IsArray) {
+      return subtract(obj2, obj1); // Difference is (second - first) NOT (first - second)
+    }
+
+    throw TypeError('Cannot calculate difference between 1 array and 1 non-array');
+  }
+  /**
+   * Difference of elements in 2 arrays
+   *
+   * @param {Array} arr1     Array 1
+   * @param {Array} arr2     Array 2
+   * @return {Array}         resulting array
+   */
+
+
+  function _ArrayDiff(arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+      throw RangeError('Not all sub-arrays have the same length');
+    }
+
+    var result = [];
+    var size = arr1.length;
+
+    for (var i = 0; i < size; i++) {
+      result.push(_ElementDiff(arr1[i], arr2[i]));
+    }
+
+    return result;
+  }
+});
 // CONCATENATED MODULE: ./src/function/matrix/ones.js
 
 
@@ -38750,7 +38934,7 @@ var createHypot = /* #__PURE__ */Object(factory["a" /* factory */])(hypot_name, 
 // CONCATENATED MODULE: ./src/function/arithmetic/norm.js
 
 var norm_name = 'norm';
-var norm_dependencies = ['typed', 'abs', 'add', 'pow', 'conj', 'sqrt', 'multiply', 'equalScalar', 'larger', 'smaller', 'matrix'];
+var norm_dependencies = ['typed', 'abs', 'add', 'pow', 'conj', 'sqrt', 'multiply', 'equalScalar', 'larger', 'smaller', 'matrix', 'ctranspose', 'eigs'];
 var createNorm = /* #__PURE__ */Object(factory["a" /* factory */])(norm_name, norm_dependencies, function (_ref) {
   var typed = _ref.typed,
       abs = _ref.abs,
@@ -38762,7 +38946,9 @@ var createNorm = /* #__PURE__ */Object(factory["a" /* factory */])(norm_name, no
       equalScalar = _ref.equalScalar,
       larger = _ref.larger,
       smaller = _ref.smaller,
-      matrix = _ref.matrix;
+      matrix = _ref.matrix,
+      ctranspose = _ref.ctranspose,
+      eigs = _ref.eigs;
 
   /**
    * Calculate the norm of a number, vector or matrix.
@@ -38833,6 +39019,208 @@ var createNorm = /* #__PURE__ */Object(factory["a" /* factory */])(norm_name, no
     }
   });
   /**
+   * Calculate the plus infinity norm for a vector
+   * @param {Matrix} x
+   * @returns {number} Returns the norm
+   * @private
+   */
+
+  function _vectorNormPlusInfinity(x) {
+    // norm(x, Infinity) = max(abs(x))
+    var pinf = 0; // skip zeros since abs(0) === 0
+
+    x.forEach(function (value) {
+      var v = abs(value);
+
+      if (larger(v, pinf)) {
+        pinf = v;
+      }
+    }, true);
+    return pinf;
+  }
+  /**
+   * Calculate the minus infinity norm for a vector
+   * @param {Matrix} x
+   * @returns {number} Returns the norm
+   * @private
+   */
+
+
+  function _vectorNormMinusInfinity(x) {
+    // norm(x, -Infinity) = min(abs(x))
+    var ninf; // skip zeros since abs(0) === 0
+
+    x.forEach(function (value) {
+      var v = abs(value);
+
+      if (!ninf || smaller(v, ninf)) {
+        ninf = v;
+      }
+    }, true);
+    return ninf || 0;
+  }
+  /**
+   * Calculate the norm for a vector
+   * @param {Matrix} x
+   * @param {number | string} p
+   * @returns {number} Returns the norm
+   * @private
+   */
+
+
+  function _vectorNorm(x, p) {
+    // check p
+    if (p === Number.POSITIVE_INFINITY || p === 'inf') {
+      return _vectorNormPlusInfinity(x);
+    }
+
+    if (p === Number.NEGATIVE_INFINITY || p === '-inf') {
+      return _vectorNormMinusInfinity(x);
+    }
+
+    if (p === 'fro') {
+      return _norm(x, 2);
+    }
+
+    if (typeof p === 'number' && !isNaN(p)) {
+      // check p != 0
+      if (!equalScalar(p, 0)) {
+        // norm(x, p) = sum(abs(xi) ^ p) ^ 1/p
+        var n = 0; // skip zeros since abs(0) === 0
+
+        x.forEach(function (value) {
+          n = add(pow(abs(value), p), n);
+        }, true);
+        return pow(n, 1 / p);
+      }
+
+      return Number.POSITIVE_INFINITY;
+    } // invalid parameter value
+
+
+    throw new Error('Unsupported parameter value');
+  }
+  /**
+   * Calculate the Frobenius norm for a matrix
+   * @param {Matrix} x
+   * @returns {number} Returns the norm
+   * @private
+   */
+
+
+  function _matrixNormFrobenius(x) {
+    // norm(x) = sqrt(sum(diag(x'x)))
+    var fro = 0;
+    x.forEach(function (value, index) {
+      fro = add(fro, multiply(value, conj(value)));
+    });
+    return abs(sqrt(fro));
+  }
+  /**
+   * Calculate the norm L1 for a matrix
+   * @param {Matrix} x
+   * @returns {number} Returns the norm
+   * @private
+   */
+
+
+  function _matrixNormOne(x) {
+    // norm(x) = the largest column sum
+    var c = []; // result
+
+    var maxc = 0; // skip zeros since abs(0) == 0
+
+    x.forEach(function (value, index) {
+      var j = index[1];
+      var cj = add(c[j] || 0, abs(value));
+
+      if (larger(cj, maxc)) {
+        maxc = cj;
+      }
+
+      c[j] = cj;
+    }, true);
+    return maxc;
+  }
+  /**
+   * Calculate the norm L2 for a matrix
+   * @param {Matrix} x
+   * @returns {number} Returns the norm
+   * @private
+   */
+
+
+  function _matrixNormTwo(x) {
+    // norm(x) = sqrt( max eigenvalue of A*.A)
+    var sizeX = x.size();
+
+    if (sizeX[0] !== sizeX[1]) {
+      throw new RangeError('Invalid matrix dimensions');
+    }
+
+    var tx = ctranspose(x);
+    var squaredX = multiply(tx, x);
+    var eigenVals = eigs(squaredX).values;
+    var rho = eigenVals.get([eigenVals.size()[0] - 1]);
+    return abs(sqrt(rho));
+  }
+  /**
+   * Calculate the infinity norm for a matrix
+   * @param {Matrix} x
+   * @returns {number} Returns the norm
+   * @private
+   */
+
+
+  function _matrixNormInfinity(x) {
+    // norm(x) = the largest row sum
+    var r = []; // result
+
+    var maxr = 0; // skip zeros since abs(0) == 0
+
+    x.forEach(function (value, index) {
+      var i = index[0];
+      var ri = add(r[i] || 0, abs(value));
+
+      if (larger(ri, maxr)) {
+        maxr = ri;
+      }
+
+      r[i] = ri;
+    }, true);
+    return maxr;
+  }
+  /**
+   * Calculate the norm for a 2D Matrix (M*N)
+   * @param {Matrix} x
+   * @param {number | string} p
+   * @returns {number} Returns the norm
+   * @private
+   */
+
+
+  function _matrixNorm(x, p) {
+    // check p
+    if (p === 1) {
+      return _matrixNormOne(x);
+    }
+
+    if (p === Number.POSITIVE_INFINITY || p === 'inf') {
+      return _matrixNormInfinity(x);
+    }
+
+    if (p === 'fro') {
+      return _matrixNormFrobenius(x);
+    }
+
+    if (p === 2) {
+      return _matrixNormTwo(x);
+    } // invalid parameter value
+
+
+    throw new Error('Unsupported parameter value ' + p);
+  }
+  /**
    * Calculate the norm for an array
    * @param {Matrix} x
    * @param {number | string} p
@@ -38840,120 +39228,22 @@ var createNorm = /* #__PURE__ */Object(factory["a" /* factory */])(norm_name, no
    * @private
    */
 
+
   function _norm(x, p) {
     // size
     var sizeX = x.size(); // check if it is a vector
 
     if (sizeX.length === 1) {
-      // check p
-      if (p === Number.POSITIVE_INFINITY || p === 'inf') {
-        // norm(x, Infinity) = max(abs(x))
-        var pinf = 0; // skip zeros since abs(0) === 0
-
-        x.forEach(function (value) {
-          var v = abs(value);
-
-          if (larger(v, pinf)) {
-            pinf = v;
-          }
-        }, true);
-        return pinf;
-      }
-
-      if (p === Number.NEGATIVE_INFINITY || p === '-inf') {
-        // norm(x, -Infinity) = min(abs(x))
-        var ninf; // skip zeros since abs(0) === 0
-
-        x.forEach(function (value) {
-          var v = abs(value);
-
-          if (!ninf || smaller(v, ninf)) {
-            ninf = v;
-          }
-        }, true);
-        return ninf || 0;
-      }
-
-      if (p === 'fro') {
-        return _norm(x, 2);
-      }
-
-      if (typeof p === 'number' && !isNaN(p)) {
-        // check p != 0
-        if (!equalScalar(p, 0)) {
-          // norm(x, p) = sum(abs(xi) ^ p) ^ 1/p
-          var n = 0; // skip zeros since abs(0) === 0
-
-          x.forEach(function (value) {
-            n = add(pow(abs(value), p), n);
-          }, true);
-          return pow(n, 1 / p);
-        }
-
-        return Number.POSITIVE_INFINITY;
-      } // invalid parameter value
-
-
-      throw new Error('Unsupported parameter value');
+      return _vectorNorm(x, p);
     } // MxN matrix
 
 
     if (sizeX.length === 2) {
-      // check p
-      if (p === 1) {
-        // norm(x) = the largest column sum
-        var c = []; // result
-
-        var maxc = 0; // skip zeros since abs(0) == 0
-
-        x.forEach(function (value, index) {
-          var j = index[1];
-          var cj = add(c[j] || 0, abs(value));
-
-          if (larger(cj, maxc)) {
-            maxc = cj;
-          }
-
-          c[j] = cj;
-        }, true);
-        return maxc;
+      if (sizeX[0] && sizeX[1]) {
+        return _matrixNorm(x, p);
+      } else {
+        throw new RangeError('Invalid matrix dimensions');
       }
-
-      if (p === Number.POSITIVE_INFINITY || p === 'inf') {
-        // norm(x) = the largest row sum
-        var r = []; // result
-
-        var maxr = 0; // skip zeros since abs(0) == 0
-
-        x.forEach(function (value, index) {
-          var i = index[0];
-          var ri = add(r[i] || 0, abs(value));
-
-          if (larger(ri, maxr)) {
-            maxr = ri;
-          }
-
-          r[i] = ri;
-        }, true);
-        return maxr;
-      }
-
-      if (p === 'fro') {
-        // norm(x) = sqrt(sum(diag(x'x)))
-        var fro = 0;
-        x.forEach(function (value, index) {
-          fro = add(fro, multiply(value, conj(value)));
-        });
-        return abs(sqrt(fro));
-      }
-
-      if (p === 2) {
-        // not implemented
-        throw new Error('Unsupported parameter value, missing implementation of matrix singular value decomposition');
-      } // invalid parameter value
-
-
-      throw new Error('Unsupported parameter value');
     }
   }
 });
@@ -50607,6 +50897,15 @@ var sizeDocs = {
   examples: ['size(2.3)', 'size("hello world")', 'a = [1, 2; 3, 4; 5, 6]', 'size(a)', 'size(1:6)'],
   seealso: ['concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'squeeze', 'subset', 'trace', 'transpose', 'zeros']
 };
+// CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/diff.js
+var diffDocs = {
+  name: 'diff',
+  category: 'Matrix',
+  syntax: ['diff(arr)', 'diff(arr, dim)'],
+  description: ['Create a new matrix or array with the difference of the passed matrix or array.', 'Dim parameter is optional and used to indicant the dimension of the array/matrix to apply the difference', 'If no dimension parameter is passed it is assumed as dimension 0', 'Dimension is zero-based in javascript and one-based in the parser', 'Arrays must be \'rectangular\' meaning arrays like [1, 2]', 'If something is passed as a matrix it will be returned as a matrix but other than that all matrices are converted to arrays'],
+  examples: ['diff([1, 2, 4, 7, 0])', 'diff([1, 2, 4, 7, 0], 0)', 'diff(matrix([1, 2, 4, 7, 0]))', 'diff([[1, 2], [3, 4]])', 'diff([[1, 2], [3, 4]], 0)', 'diff([[1, 2], [3, 4]], 1)', 'diff([[1, 2], [3, 4]], bignumber(1))', 'diff(matrix([[1, 2], [3, 4]]), 1)', 'diff([[1, 2], matrix([3, 4])], 1)'],
+  seealso: ['subtract', 'partitionSelect']
+};
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/reshape.js
 var reshapeDocs = {
   name: 'reshape',
@@ -51933,6 +52232,7 @@ var rowDocs = {
 
 
 
+
 var embeddedDocs = {
   // construction functions
   bignumber: bignumberDocs,
@@ -52258,6 +52558,7 @@ var embeddedDocs = {
   ctranspose: ctransposeDocs,
   det: detDocs,
   diag: diagDocs,
+  diff: diffDocs,
   dot: dotDocs,
   getMatrixDataType: getMatrixDataTypeDocs,
   identity: identityDocs,
@@ -59421,7 +59722,7 @@ var createReplacer = /* #__PURE__ */Object(factory["a" /* factory */])(replacer_
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '7.1.0'; // Note: This file is automatically generated when building math.js.
+var version = '7.2.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
@@ -60343,6 +60644,56 @@ var createConcatTransform = /* #__PURE__ */Object(factory["a" /* factory */])(co
 }, {
   isTransformFunction: true
 });
+// CONCATENATED MODULE: ./src/expression/transform/diff.transform.js
+
+
+
+
+var diff_transform_name = 'diff';
+var diff_transform_dependencies = ['typed', 'matrix', 'subtract', 'number', 'bignumber'];
+var createDiffTransform = /* #__PURE__ */Object(factory["a" /* factory */])(diff_transform_name, diff_transform_dependencies, function (_ref) {
+  var typed = _ref.typed,
+      matrix = _ref.matrix,
+      subtract = _ref.subtract,
+      number = _ref.number,
+      bignumber = _ref.bignumber;
+  var diff = createDiff({
+    typed: typed,
+    matrix: matrix,
+    subtract: subtract,
+    number: number,
+    bignumber: bignumber
+  });
+  /**
+   * Attach a transform function to math.diff
+   * Adds a property transform containing the transform function.
+   *
+   * This transform creates a range which includes the end value
+   */
+
+  return typed(diff_transform_name, {
+    '...any': function any(args) {
+      // change last argument dim from one-based to zero-based
+      if (args.length === 2 && Object(is["i" /* isCollection */])(args[0])) {
+        var dim = args[1];
+
+        if (Object(is["y" /* isNumber */])(dim)) {
+          args[1] = dim - 1;
+        } else if (Object(is["e" /* isBigNumber */])(dim)) {
+          args[1] = dim.minus(1);
+        }
+      }
+
+      try {
+        return diff.apply(null, args);
+      } catch (err) {
+        throw errorTransform(err);
+      }
+    }
+  });
+}, {
+  isTransformFunction: true
+});
 // CONCATENATED MODULE: ./src/expression/transform/std.transform.js
 
 
@@ -60495,6 +60846,8 @@ var createVarianceTransform = /* #__PURE__ */Object(factory["a" /* factory */])(
   isTransformFunction: true
 });
 // CONCATENATED MODULE: ./src/factoriesAny.js
+
+
 
 
 

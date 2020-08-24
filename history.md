@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20200824-version-720">2020-08-24, version 7.2.0 <a href="#20200824-version-720" title="Permalink">#</a></h1>
+
+- Implemented new function `diff`, see <a href="https://github.com/josdejong/mathjs/issues/1634">#1634</a>, <a href="https://github.com/josdejong/mathjs/issues/1920">#1920</a>. Thanks <a href="https://github.com/Veeloxfire">@Veeloxfire</a>. 
+- Implemented support for norm 2 for matrices in function `norm`. 
+  Thanks <a href="https://github.com/rnd-debug">@rnd-debug</a>. 
+
+
 <h1 id="20200713-version-710">2020-07-13, version 7.1.0 <a href="#20200713-version-710" title="Permalink">#</a></h1>
 
 - Implement support for recursion (self-referencing) of typed-functions, 
