@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 7.2.0
+# 2020-08-24, version 7.2.0
 
 - Implemented new function `diff`, see #1634, #1920. Thanks @Veeloxfire. 
 - Implemented support for norm 2 for matrices in function `norm`. 
