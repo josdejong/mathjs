@@ -43,69 +43,67 @@ export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @param  {number | BigNumber | Array | Matrix} y Second value to and
    * @return {number | BigNumber | Array | Matrix} AND of `x` and `y`
    */
-  const bitAnd = typed(name, {
+  return typed(name, {
 
     'number, number': bitAndNumber,
 
     'BigNumber, BigNumber': bitAndBigNumber,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm06(x, y, bitAnd, false)
+      return algorithm06(x, y, this, false)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, bitAnd, true)
+      return algorithm02(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm02(x, y, bitAnd, false)
+      return algorithm02(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, bitAnd)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return bitAnd(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return bitAnd(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return bitAnd(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, bitAnd, false)
+      return algorithm11(x, y, this, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, bitAnd, false)
+      return algorithm14(x, y, this, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm11(y, x, bitAnd, true)
+      return algorithm11(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, bitAnd, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, bitAnd, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, bitAnd, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
-
-  return bitAnd
 })

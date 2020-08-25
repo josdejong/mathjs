@@ -1,9 +1,8 @@
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
 import { isFactory, stripOptionalNotation } from '../../utils/factory'
-import { hasOwnProperty, isLegacyFactory, lazy, traverse } from '../../utils/object'
+import { hasOwnProperty, lazy } from '../../utils/object'
 import { contains } from '../../utils/array'
 import { ArgumentsError } from '../../error/ArgumentsError'
-import { warnOnce } from '../../utils/log'
 
 export function importFactory (typed, load, math, importedFactories) {
   /**
@@ -72,11 +71,7 @@ export function importFactory (typed, load, math, importedFactories) {
     }
 
     function flattenImports (flatValues, value, name) {
-      if (isLegacyFactory(value)) {
-        // legacy factories don't always have a name,
-        // let's not handle them via the new flatValues
-        _importLegacyFactory(value, options)
-      } else if (Array.isArray(value)) {
+      if (Array.isArray(value)) {
         value.forEach(item => flattenImports(flatValues, item))
       } else if (typeof value === 'object') {
         for (const name in value) {
@@ -234,85 +229,6 @@ export function importFactory (typed, load, math, importedFactories) {
 
   /**
    * Import an instance of a factory into math.js
-   * @param {{factory: Function, name: string, path: string, math: boolean}} factory
-   * @param {Object} options  See import for a description of the options
-   * @private
-   */
-  // TODO: _importLegacyFactory is deprecated since v6.0.0, clean up some day
-  function _importLegacyFactory (factory, options) {
-    warnOnce('Factories of type { name, factory } are deprecated since v6. ' +
-      'Please create your factory functions using the math.factory function.')
-
-    if (typeof factory.name === 'string') {
-      const name = factory.name
-      const existingTransform = name in math.expression.transform
-      const namespace = factory.path ? traverse(math, factory.path) : math
-      const existing = hasOwnProperty(namespace, name) ? namespace[name] : undefined
-
-      const resolver = function () {
-        let instance = load(factory)
-        if (instance && typeof instance.transform === 'function') {
-          throw new Error('Transforms cannot be attached to factory functions. ' +
-              'Please create a separate function for it with exports.path="expression.transform"')
-        }
-
-        if (isTypedFunction(existing) && isTypedFunction(instance)) {
-          if (options.override) {
-            // replace the existing typed function (nothing to do)
-          } else {
-            // merge the existing and new typed function
-            instance = typed(existing, instance)
-          }
-
-          return instance
-        }
-
-        if (existing === undefined || options.override) {
-          return instance
-        }
-
-        if (options.silent) {
-          return existing
-        } else {
-          throw new Error('Cannot import "' + name + '": already exists')
-        }
-      }
-
-      if (factory.lazy !== false) {
-        lazy(namespace, name, resolver)
-
-        if (existingTransform) {
-          _deleteTransform(name)
-        } else {
-          if (factory.path === 'expression.transform' || legacyFactoryAllowedInExpressions(factory)) {
-            lazy(math.expression.mathWithTransform, name, resolver)
-          }
-        }
-      } else {
-        namespace[name] = resolver()
-
-        if (existingTransform) {
-          _deleteTransform(name)
-        } else {
-          if (factory.path === 'expression.transform' || legacyFactoryAllowedInExpressions(factory)) {
-            math.expression.mathWithTransform[name] = resolver()
-          }
-        }
-      }
-
-      const key = factory.path ? (factory.path + '.' + factory.name) : factory.name
-      importedFactories[key] = factory
-
-      math.emit('import', name, resolver, factory.path)
-    } else {
-      // unnamed factory.
-      // no lazy loading
-      load(factory)
-    }
-  }
-
-  /**
-   * Import an instance of a factory into math.js
    * @param {function(scope: object)} factory
    * @param {Object} options  See import for a description of the options
    * @param {string} [name=factory.name] Optional custom name
@@ -443,10 +359,6 @@ export function importFactory (typed, load, math, importedFactories) {
 
   function allowedInExpressions (name) {
     return !hasOwnProperty(unsafe, name)
-  }
-
-  function legacyFactoryAllowedInExpressions (factory) {
-    return factory.path === undefined && !hasOwnProperty(unsafe, factory.name)
   }
 
   function factoryAllowedInExpressions (factory) {

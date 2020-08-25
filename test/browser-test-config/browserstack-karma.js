@@ -39,14 +39,14 @@ module.exports = function (config) {
       bs_firefox_windows: {
         base: 'BrowserStack',
         browser: 'firefox',
-        browser_version: '71',
+        browser_version: '75',
         os: 'Windows',
         os_version: '10'
       },
       bs_chrome_mac: {
         base: 'BrowserStack',
         browser: 'Chrome',
-        browser_version: '78',
+        browser_version: '81',
         os: 'OS X',
         os_version: 'High Sierra'
       },
@@ -67,7 +67,7 @@ module.exports = function (config) {
       bs_edge: {
         base: 'BrowserStack',
         browser: 'Edge',
-        browser_version: '18',
+        browser_version: '81',
         os: 'Windows',
         os_version: '10'
       }

@@ -84,6 +84,7 @@ import { subsetDocs } from './function/matrix/subset'
 import { squeezeDocs } from './function/matrix/squeeze'
 import { sortDocs } from './function/matrix/sort'
 import { sizeDocs } from './function/matrix/size'
+import { diffDocs } from './function/matrix/diff'
 import { reshapeDocs } from './function/matrix/reshape'
 import { resizeDocs } from './function/matrix/resize'
 import { rangeDocs } from './function/matrix/range'
@@ -383,7 +384,6 @@ export const embeddedDocs = {
 
   // functions - expression
   evaluate: evaluateDocs,
-  eval: evaluateDocs, // TODO: deprecated, cleanup in v7
   help: helpDocs,
 
   // functions - geometry
@@ -403,6 +403,7 @@ export const embeddedDocs = {
   ctranspose: ctransposeDocs,
   det: detDocs,
   diag: diagDocs,
+  diff: diffDocs,
   dot: dotDocs,
   getMatrixDataType: getMatrixDataTypeDocs,
   identity: identityDocs,
@@ -480,7 +481,6 @@ export const embeddedDocs = {
   std: stdDocs,
   sum: sumDocs,
   variance: varianceDocs,
-  var: varianceDocs, // TODO: deprecated, cleanup in v7
 
   // functions - trigonometry
   acos: acosDocs,
@@ -525,6 +525,5 @@ export const embeddedDocs = {
   isZero: isZeroDocs,
   // print: printDocs // TODO: add documentation for print as soon as the parser supports objects.
   typeOf: typeOfDocs,
-  typeof: typeOfDocs, // TODO: deprecated, cleanup in v7
   numeric: numericDocs
 }

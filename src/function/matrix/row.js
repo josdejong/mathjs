@@ -27,15 +27,13 @@ export const createRow = /* #__PURE__ */ factory(name, dependencies, ({ typed, I
    * @param {number} row              The index of the row
    * @return {Array | Matrix}         The retrieved row
    */
-  const row = typed(name, {
+  return typed(name, {
     'Matrix, number': _row,
 
     'Array, number': function (value, row) {
       return _row(matrix(clone(value)), row).valueOf()
     }
   })
-
-  return row
 
   /**
    * Retrieve a row of a matrix

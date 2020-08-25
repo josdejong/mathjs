@@ -27,7 +27,7 @@ export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic cosine of x
    */
-  const cosh = typed(name, {
+  return typed(name, {
     number: coshNumber,
 
     Complex: function (x) {
@@ -42,13 +42,11 @@ export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cosh is no angle')
       }
-      return cosh(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, cosh)
+      return deepMap(x, this)
     }
   })
-
-  return cosh
 })

@@ -5,45 +5,6 @@ const dependencies = ['config', 'typed', 'divideScalar', 'Complex']
 
 export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, Complex }) => {
   /**
-   * Calculate the nth roots of a value.
-   * An nth root of a positive real number A,
-   * is a positive real solution of the equation "x^root = A".
-   * This function returns an array of complex values.
-   *
-   * Syntax:
-   *
-   *    math.nthRoots(x)
-   *    math.nthRoots(x, root)
-   *
-   * Examples:
-   *
-   *    math.nthRoots(1)
-   *    // returns [
-   *    //   {re: 1, im: 0},
-   *    //   {re: -1, im: 0}
-   *    // ]
-   *    nthRoots(1, 3)
-   *    // returns [
-   *    //   { re: 1, im: 0 },
-   *    //   { re: -0.4999999999999998, im: 0.8660254037844387 },
-   *    //   { re: -0.5000000000000004, im: -0.8660254037844385 }
-   *    ]
-   *
-   * See also:
-   *
-   *    nthRoot, pow, sqrt
-   *
-   * @param {number | BigNumber | Fraction | Complex | Array | Matrix} x Number to be rounded
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
-   */
-  const nthRoots = typed(name, {
-    Complex: function (x) {
-      return _nthComplexRoots(x, 2)
-    },
-    'Complex, number': _nthComplexRoots
-  })
-
-  /**
    * Each function here returns a real multiple of i as a Complex value.
    * @param  {number} val
    * @return {Complex} val, i*val, -val or -i*val for index 0, 1, 2, 3
@@ -98,5 +59,42 @@ export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return roots
   }
 
-  return nthRoots
+  /**
+   * Calculate the nth roots of a value.
+   * An nth root of a positive real number A,
+   * is a positive real solution of the equation "x^root = A".
+   * This function returns an array of complex values.
+   *
+   * Syntax:
+   *
+   *    math.nthRoots(x)
+   *    math.nthRoots(x, root)
+   *
+   * Examples:
+   *
+   *    math.nthRoots(1)
+   *    // returns [
+   *    //   {re: 1, im: 0},
+   *    //   {re: -1, im: 0}
+   *    // ]
+   *    nthRoots(1, 3)
+   *    // returns [
+   *    //   { re: 1, im: 0 },
+   *    //   { re: -0.4999999999999998, im: 0.8660254037844387 },
+   *    //   { re: -0.5000000000000004, im: -0.8660254037844385 }
+   *    ]
+   *
+   * See also:
+   *
+   *    nthRoot, pow, sqrt
+   *
+   * @param {number | BigNumber | Fraction | Complex} x Number to be rounded
+   * @return {number | BigNumber | Fraction | Complex}            Rounded value
+   */
+  return typed(name, {
+    Complex: function (x) {
+      return _nthComplexRoots(x, 2)
+    },
+    'Complex, number': _nthComplexRoots
+  })
 })

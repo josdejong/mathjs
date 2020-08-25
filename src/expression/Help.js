@@ -99,11 +99,13 @@ export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ pa
    */
   Help.fromJSON = function (json) {
     const doc = {}
-    for (const prop in json) {
-      if (prop !== 'mathjs') { // ignore mathjs field
+
+    Object.keys(json)
+      .filter(prop => prop !== 'mathjs')
+      .forEach(prop => {
         doc[prop] = json[prop]
-      }
-    }
+      })
+
     return new Help(doc)
   }
 

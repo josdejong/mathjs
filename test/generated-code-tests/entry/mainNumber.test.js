@@ -9,19 +9,6 @@ const {
   expectedES6Structure
 } = createSnapshotFromFactories(factoriesNumber)
 
-// number exports don't have all deprecated stuff that the any exports have
-delete expectedES6Structure.deprecatedEval
-delete expectedES6Structure.deprecatedImport
-delete expectedES6Structure.deprecatedVar
-delete expectedES6Structure.deprecatedTypeof
-delete expectedES6Structure.expression
-delete expectedES6Structure.type
-delete expectedES6Structure.json
-delete expectedES6Structure.error
-delete expectedInstanceStructure.var
-delete expectedInstanceStructure.eval
-delete expectedInstanceStructure.typeof
-
 describe('mainNumber', function () {
   it('should export functions', () => {
     assert.strictEqual(add(2, 3), 5)
@@ -37,17 +24,7 @@ describe('mainNumber', function () {
     // snapshot testing
     const newMathInstance = create(all)
 
-    // don't output all deprecation warnings "math.foo.bar is move to math.bar, ..."
-    const originalWarn = console.warn
-    console.warn = (...args) => {
-      if (args.join(' ').indexOf('is moved to') === -1) {
-        originalWarn.apply(console, args)
-      }
-    }
-
     validateBundle(expectedInstanceStructure, newMathInstance)
-
-    console.warn = originalWarn
   })
 
   it('new instance should import some factory functions via import', function () {
@@ -66,17 +43,7 @@ describe('mainNumber', function () {
 
     newMathInstance.import(all)
 
-    // don't output all deprecation warnings "math.foo.bar is move to math.bar, ..."
-    const originalWarn = console.warn
-    console.warn = (...args) => {
-      if (args.join(' ').indexOf('is moved to') === -1) {
-        originalWarn.apply(console, args)
-      }
-    }
-
     validateBundle(expectedInstanceStructure, newMathInstance)
-
-    console.warn = originalWarn
   })
 
   it('new instance should import some factory functions via import', function () {

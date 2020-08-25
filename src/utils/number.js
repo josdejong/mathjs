@@ -1,4 +1,3 @@
-import { mapObject } from './object'
 import { isNumber } from './is'
 
 /**
@@ -220,27 +219,6 @@ export function format (value, options) {
       return toEngineering(value, precision)
 
     case 'auto':
-      // TODO: clean up some day. Deprecated since: 2018-01-24
-      // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
-      if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
-        const fixedOptions = mapObject(options, function (x) { return x })
-        fixedOptions.exponential = undefined
-        if (options.exponential.lower !== undefined) {
-          fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10)
-        }
-        if (options.exponential.upper !== undefined) {
-          fixedOptions.upperExp = Math.round(Math.log(options.exponential.upper) / Math.LN10)
-        }
-
-        console.warn('Deprecation warning: Formatting options exponential.lower and exponential.upper ' +
-            '(minimum and maximum value) ' +
-            'are replaced with exponential.lowerExp and exponential.upperExp ' +
-            '(minimum and maximum exponent) since version 4.0.0. ' +
-            'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions))
-
-        return toPrecision(value, precision, fixedOptions)
-      }
-
       // remove trailing zeros after the decimal point
       return toPrecision(value, precision, options && options)
         .replace(/((\.\d*?)(0+))($|e)/, function () {
@@ -310,7 +288,8 @@ export function toEngineering (value, precision) {
     return String(value)
   }
 
-  const rounded = roundDigits(splitNumber(value), precision)
+  const split = splitNumber(value)
+  const rounded = roundDigits(split, precision)
 
   const e = rounded.exponent
   const c = rounded.coefficients
@@ -325,17 +304,15 @@ export function toEngineering (value, precision) {
     }
   } else {
     // concatenate coefficients with necessary zeros
-    const significandsDiff = e >= 0 ? e : Math.abs(newExp)
-
-    // add zeros if necessary (for ex: 1e+8)
-    while (c.length - 1 < significandsDiff) {
+    // add zeros if necessary (for example: 1e+8 -> 100e+6)
+    const missingZeros = Math.abs(e - newExp) - (c.length - 1)
+    for (let i = 0; i < missingZeros; i++) {
       c.push(0)
     }
   }
 
   // find difference in exponents
   let expDiff = Math.abs(e - newExp)
-
   let decimalIdx = 1
 
   // push decimal index over by expDiff times

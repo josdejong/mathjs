@@ -1163,7 +1163,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * nodes in a custom way, for example for handling a plot.
    *
    * A handler must be passed as second argument of the parse function.
-   * - must extend math.expression.node.Node
+   * - must extend math.Node
    * - must contain a function _compile(defs: Object) : string
    * - must contain a function find(filter: Object) : Node[]
    * - must contain a function toString() : string
@@ -1556,7 +1556,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             key = parseDoubleQuotesStringToken(state)
           } else if (state.token === '\'') {
             key = parseSingleQuotesStringToken(state)
-          } else if (state.tokenType === TOKENTYPE.SYMBOL) {
+          } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
             key = state.token
             getToken(state)
           } else {

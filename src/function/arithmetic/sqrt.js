@@ -29,7 +29,7 @@ export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
    * @return {number | BigNumber | Complex | Array | Matrix | Unit}
    *            Returns the square root of `x`
    */
-  const sqrt = typed('sqrt', {
+  return typed('sqrt', {
     number: _sqrtNumber,
 
     Complex: function (x) {
@@ -47,7 +47,7 @@ export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since sqrt(0) = 0
-      return deepMap(x, sqrt, true)
+      return deepMap(x, this, true)
     },
 
     Unit: function (x) {
@@ -72,6 +72,4 @@ export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
       return new Complex(x, 0).sqrt()
     }
   }
-
-  return sqrt
 })

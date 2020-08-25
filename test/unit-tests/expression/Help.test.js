@@ -162,7 +162,8 @@ describe('help', function () {
   })
 
   it('should instantiate Help from json using fromJSON', function () {
-    const doc = {
+    const json = {
+      mathjs: 'Help',
       name: 'add',
       category: 'Operators',
       syntax: [
@@ -178,9 +179,6 @@ describe('help', function () {
         'subtract'
       ]
     }
-
-    const json = Object.create(doc)
-    json.mathjs = 'Help'
 
     const help = Help.fromJSON(json)
     assert(help instanceof Help)

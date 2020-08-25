@@ -36,7 +36,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}e
    *            The sign of `x`
    */
-  const sign = typed(name, {
+  return typed(name, {
     number: signNumber,
 
     Complex: function (x) {
@@ -53,13 +53,11 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since sign(0) = 0
-      return deepMap(x, sign, true)
+      return deepMap(x, this, true)
     },
 
     Unit: function (x) {
-      return sign(x.value)
+      return this(x.value)
     }
   })
-
-  return sign
 })

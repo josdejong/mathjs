@@ -49,7 +49,7 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
    * @return {boolean | Array | Matrix}
    *            Returns true when one of the inputs is defined with a nonzero/nonempty value.
    */
-  const or = typed(name, {
+  return typed(name, {
 
     'number, number': orNumber,
 
@@ -62,66 +62,64 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
     },
 
     'Unit, Unit': function (x, y) {
-      return or(x.value || 0, y.value || 0)
+      return this(x.value || 0, y.value || 0)
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm05(x, y, or)
+      return algorithm05(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm03(y, x, or, true)
+      return algorithm03(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, or, false)
+      return algorithm03(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, or)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return or(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return or(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return or(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, or, false)
+      return algorithm12(x, y, this, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, or, false)
+      return algorithm14(x, y, this, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, or, true)
+      return algorithm12(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, or, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, or, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, or, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
-
-  return or
 })

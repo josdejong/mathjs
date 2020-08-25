@@ -33,7 +33,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
-  const isPrime = typed(name, {
+  return typed(name, {
     number: function (x) {
       if (x * 0 !== 0) {
         return false
@@ -69,9 +69,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, isPrime)
+      return deepMap(x, this)
     }
   })
-
-  return isPrime
 })

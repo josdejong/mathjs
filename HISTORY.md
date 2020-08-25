@@ -1,10 +1,78 @@
 # History
 
+# 2020-08-24, version 7.2.0
 
-# not yet published, version 6.6.2
+- Implemented new function `diff`, see #1634, #1920. Thanks @Veeloxfire. 
+- Implemented support for norm 2 for matrices in function `norm`. 
+  Thanks @rnd-debug. 
 
+
+# 2020-07-13, version 7.1.0
+
+- Implement support for recursion (self-referencing) of typed-functions, 
+  new in `typed-function@2.0.0`. This fixes #1885: functions which where 
+  extended with a new data type did not always work. Thanks @nickewing.
+- Fix #1899: documentation on expression trees still using old namespace 
+  `math.expression.node.*` instead of `math.*`.
+
+
+# 2020-06-24, version 7.0.2
+
+- Fix #1882: have `DenseMatrix.resize` and `SparseMatrix.resize` accept 
+  `DenseMatrix` and `SparseMatrix` as inputs too, not only `Array`.
+- Fix functions `sum`, `prod`, `min`, and `max` not throwing a conversion error
+  when passing a single string, like `sum("abc")`.
+
+
+# 2020-05-30, version 7.0.1
+
+- Fix #1844: clarify the documentation of function `eigs`. Thanks @Lazersmoke.
+- Fix #1855: Fix error in the documentation for `math.nthRoots(x)`.  
+- Fix #1856: make the library robust against Object prototype pollution.
+
+
+# 2020-05-07, version 7.0.0
+
+Breaking changes:
+
+- Improvements in calculation of the `dot` product of complex values. 
+  The first argument is now conjugated. See #1761. Thanks @m93a.  
+- Dropped official support for Node.js v8 which has reached end of life.
+- Removed all deprecation warnings introduced in v6. 
+  To upgrade smoothly from v5 to v7 or higher, upgrade to v6 first
+  and resolve all deprecation warnings.
+
+
+# 2020-05-04, version 6.6.5
+
+- Fix #1834: value `Infinity` cannot be serialized and deserialized. 
+  This is solved now with a new `math.replacer` function used as 
+  `JSON.stringify(value, math.replacer)`.
+- Fix #1842: value `Infinity` not turned into the latex symbol `\\infty`.
+
+
+# 2020-04-15, version 6.6.4
+
+- Fix published files containing Windows line endings (CRLF instead of LF).  
+
+
+# 2020-04-10, version 6.6.3
+
+- Fix #1813: bug in engineering notation for numbers of function `format`,
+  sometimes resulting in needless trailing zeros.
+- Fix #1808: methods `.toNumber()` and `.toNumeric()` not working on a 
+  unitless unit.
+- Fix #1645: not being able to use named operators `mod`, `and`, `not`, `or`,
+  `xor`, `to`, `in` as object keys. Thanks @Veeloxfire.
+- Fix `eigs` not using `config.epsilon`.
+
+
+# 2020-03-29, version 6.6.2
+
+- Fix #1789: Function `eigs` not calculating with BigNumber precision 
+  when input contains BigNumbers.
 - Run the build script during npm `prepare`, so you can use the library
-  directly when installing directly from git. Thanks @cinderblock.
+  directly when installing directly from git. See #1751. Thanks @cinderblock.
 
 
 # 2020-02-26, version 6.6.1

@@ -47,7 +47,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * @param {... number | BigNumber | Fraction | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Fraction | Array | Matrix}                           The greatest common divisor
    */
-  const gcd = typed(name, {
+  return typed(name, {
 
     'number, number': gcdNumber,
 
@@ -58,73 +58,71 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm04(x, y, gcd)
+      return algorithm04(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm01(y, x, gcd, true)
+      return algorithm01(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm01(x, y, gcd, false)
+      return algorithm01(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, gcd)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return gcd(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return gcd(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return gcd(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm10(x, y, gcd, false)
+      return algorithm10(x, y, this, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, gcd, false)
+      return algorithm14(x, y, this, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
-      return algorithm10(y, x, gcd, true)
+      return algorithm10(y, x, this, true)
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, gcd, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, gcd, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'number | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, gcd, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     },
 
     // TODO: need a smarter notation here
     'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function (a, b, args) {
-      let res = gcd(a, b)
+      let res = this(a, b)
       for (let i = 0; i < args.length; i++) {
-        res = gcd(res, args[i])
+        res = this(res, args[i])
       }
       return res
     }
   })
-
-  return gcd
 
   /**
    * Calculate gcd for BigNumbers

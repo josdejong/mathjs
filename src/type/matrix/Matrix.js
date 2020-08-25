@@ -39,19 +39,6 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
   Matrix.prototype.isMatrix = true
 
   /**
-   * Get the Matrix storage constructor for the given format.
-   *
-   * @param {string} format       The Matrix storage format.
-   *
-   * @return {Function}           The Matrix storage constructor.
-   */
-  Matrix.storage = function (format) {
-    // TODO: deprecated since v6.0.0. Clean up some day
-    throw new Error('Matrix.storage is deprecated since v6.0.0. ' +
-      'Use the factory function math.matrix instead.')
-  }
-
-  /**
    * Get the storage format used by the matrix.
    *
    * Usage:

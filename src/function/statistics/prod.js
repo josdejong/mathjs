@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const name = 'prod'
-const dependencies = ['typed', 'multiply']
+const dependencies = ['typed', 'config', 'multiplyScalar', 'numeric']
 
-export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, multiply }) => {
+export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, numeric }) => {
   /**
    * Compute the product of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all
@@ -59,11 +59,16 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     deepForEach(array, function (value) {
       try {
-        prod = (prod === undefined) ? value : multiply(prod, value)
+        prod = (prod === undefined) ? value : multiplyScalar(prod, value)
       } catch (err) {
         throw improveErrorMessage(err, 'prod', value)
       }
     })
+
+    // make sure returning numeric value: parse a string into a numeric value
+    if (typeof prod === 'string') {
+      prod = numeric(prod, config.number)
+    }
 
     if (prod === undefined) {
       throw new Error('Cannot calculate prod of an empty array')

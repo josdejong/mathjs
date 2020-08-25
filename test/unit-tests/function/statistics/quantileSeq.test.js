@@ -151,11 +151,11 @@ describe('quantileSeq', function () {
   })
 
   it('should throw an error if called with unsupported type of arguments', function () {
-    assert.throws(function () { quantileSeq([2, 4, 6, 8, 10, 12, 14], 0.25, 10) }, math.error.UnsupportedTypeError)
-    assert.throws(function () { quantileSeq([2, 4, 6, 8, 10, 12, 14], [0.25, 2]) }, math.error.UnsuppoError)
-    assert.throws(function () { quantileSeq('A', 'C', 'B') }, math.error.UnsupportedTypeError)
-    assert.throws(function () { quantileSeq(true, false, true) }, math.error.UnsupportedTypeError)
-    assert.throws(function () { quantileSeq(0, 'B') }, math.error.UnsupportedTypeError)
+    assert.throws(function () { quantileSeq([2, 4, 6, 8, 10, 12, 14], 0.25, 10) }, math.UnsupportedTypeError)
+    assert.throws(function () { quantileSeq([2, 4, 6, 8, 10, 12, 14], [0.25, 2]) }, math.UnsuppoError)
+    assert.throws(function () { quantileSeq('A', 'C', 'B') }, math.UnsupportedTypeError)
+    assert.throws(function () { quantileSeq(true, false, true) }, math.UnsupportedTypeError)
+    assert.throws(function () { quantileSeq(0, 'B') }, math.UnsupportedTypeError)
 
     assert.throws(function () { quantileSeq(math.complex(2, 3), math.complex(-1, 2)) }, /TypeError: Unexpected type of argument in function quantileSeq/)
     assert.throws(function () { quantileSeq(2, null) }, /TypeError: Unexpected type of argument in function quantileSeq/)

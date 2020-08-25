@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const name = 'min'
-const dependencies = ['typed', 'smaller']
+const dependencies = ['typed', 'config', 'numeric', 'smaller']
 
-export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, smaller }) => {
+export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, smaller }) => {
   /**
    * Compute the minimum value of a matrix or a  list of values.
    * In case of a multi dimensional array, the minimum of the flattened array
@@ -94,6 +94,11 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
 
     if (min === undefined) {
       throw new Error('Cannot calculate min of an empty array')
+    }
+
+    // make sure returning numeric value: parse a string into a numeric value
+    if (typeof min === 'string') {
+      min = numeric(min, config.number)
     }
 
     return min

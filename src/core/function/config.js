@@ -98,20 +98,6 @@ function contains (array, item) {
 }
 
 /**
- * Find a string in an array. Case insensitive search
- * @param {Array.<string>} array
- * @param {string} item
- * @return {number} Returns the index when found. Returns -1 when not found
- */
-function findIndex (array, item) {
-  return array
-    .map(function (i) {
-      return i.toLowerCase()
-    })
-    .indexOf(item.toLowerCase())
-}
-
-/**
  * Validate an option
  * @param {Object} options         Object with options
  * @param {string} name            Name of the option to validate
@@ -119,16 +105,8 @@ function findIndex (array, item) {
  */
 function validateOption (options, name, values) {
   if (options[name] !== undefined && !contains(values, options[name])) {
-    const index = findIndex(values, options[name])
-    if (index !== -1) {
-      // right value, wrong casing
-      // TODO: lower case values are deprecated since v3, remove this warning some day.
-      console.warn('Warning: Wrong casing for configuration option "' + name + '", should be "' + values[index] + '" instead of "' + options[name] + '".')
-
-      options[name] = values[index] // change the option to the right casing
-    } else {
-      // unknown value
-      console.warn('Warning: Unknown value "' + options[name] + '" for configuration option "' + name + '". Available options: ' + values.map(JSON.stringify).join(', ') + '.')
-    }
+    // unknown value
+    console.warn('Warning: Unknown value "' + options[name] + '" for configuration option "' + name + '". ' +
+      'Available options: ' + values.map(value => JSON.stringify(value)).join(', ') + '.')
   }
 }

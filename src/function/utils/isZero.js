@@ -39,7 +39,7 @@ export const createIsZero = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @return {boolean}  Returns true when `x` is zero.
    *                    Throws an error in case of an unknown data type.
    */
-  const isZero = typed(name, {
+  return typed(name, {
     number: isZeroNumber,
 
     BigNumber: function (x) {
@@ -55,13 +55,11 @@ export const createIsZero = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     Unit: function (x) {
-      return isZero(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, isZero)
+      return deepMap(x, this)
     }
   })
-
-  return isZero
 })

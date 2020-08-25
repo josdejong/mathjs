@@ -22,6 +22,7 @@ describe('sum', function () {
 
   it('should return the sum of strings (convert them to numbers)', function () {
     assert.strictEqual(sum('2', '3', '4', '5'), 14)
+    assert.strictEqual(sum('2'), 2)
     assert.strictEqual(sum([['2', '3'], ['4', '5']]), 14)
   })
 
@@ -114,6 +115,8 @@ describe('sum', function () {
     assert.throws(function () { sum(new Date(), 2) }, /Cannot calculate sum, unexpected type of argument/)
     assert.throws(function () { sum(2, 3, null) }, /Cannot calculate sum, unexpected type of argument/)
     assert.throws(function () { sum([2, 3, null]) }, /Cannot calculate sum, unexpected type of argument/)
+    assert.throws(function () { sum('a', 'b') }, /Error: Cannot convert "a" to a number/)
+    assert.throws(function () { sum('a') }, /SyntaxError: String "a" is no valid number/)
   })
 
   it('should LaTeX sum', function () {

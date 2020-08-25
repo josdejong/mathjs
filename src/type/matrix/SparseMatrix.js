@@ -1,4 +1,4 @@
-import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
+import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
 import { isInteger } from '../../utils/number'
 import { format } from '../../utils/string'
 import { clone, deepStrictEqual } from '../../utils/object'
@@ -545,7 +545,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * `copy=true`, otherwise return the matrix itself (resize in place).
    *
    * @memberof SparseMatrix
-   * @param {number[]} size           The new size the matrix should have.
+   * @param {number[] | Matrix} size  The new size the matrix should have.
    * @param {*} [defaultValue=0]      Default value, filled in on new entries.
    *                                  If not provided, the matrix elements will
    *                                  be filled with zeros.
@@ -555,21 +555,31 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    */
   SparseMatrix.prototype.resize = function (size, defaultValue, copy) {
     // validate arguments
-    if (!isArray(size)) { throw new TypeError('Array expected') }
-    if (size.length !== 2) { throw new Error('Only two dimensions matrix are supported') }
+    if (!isCollection(size)) {
+      throw new TypeError('Array or Matrix expected')
+    }
+
+    // SparseMatrix input is always 2d, flatten this into 1d if it's indeed a vector
+    const sizeArray = size.valueOf().map(value => {
+      return Array.isArray(value) && value.length === 1
+        ? value[0]
+        : value
+    })
+
+    if (sizeArray.length !== 2) { throw new Error('Only two dimensions matrix are supported') }
 
     // check sizes
-    size.forEach(function (value) {
+    sizeArray.forEach(function (value) {
       if (!isNumber(value) || !isInteger(value) || value < 0) {
         throw new TypeError('Invalid size, must contain positive integers ' +
-                            '(size: ' + format(size) + ')')
+                            '(size: ' + format(sizeArray) + ')')
       }
     })
 
     // matrix to resize
     const m = copy ? this.clone() : this
     // resize matrix
-    return _resize(m, size[0], size[1], defaultValue)
+    return _resize(m, sizeArray[0], sizeArray[1], defaultValue)
   }
 
   function _resize (matrix, rows, columns, defaultValue) {

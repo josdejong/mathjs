@@ -1,5 +1,3 @@
-import { mapObject } from '../object'
-
 /**
  * Convert a BigNumber to a formatted string representation.
  *
@@ -109,27 +107,6 @@ export function format (value, options) {
 
     case 'auto':
     {
-      // TODO: clean up some day. Deprecated since: 2018-01-24
-      // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
-      if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
-        const fixedOptions = mapObject(options, function (x) { return x })
-        fixedOptions.exponential = undefined
-        if (options.exponential.lower !== undefined) {
-          fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10)
-        }
-        if (options.exponential.upper !== undefined) {
-          fixedOptions.upperExp = Math.round(Math.log(options.exponential.upper) / Math.LN10)
-        }
-
-        console.warn('Deprecation warning: Formatting options exponential.lower and exponential.upper ' +
-              '(minimum and maximum value) ' +
-              'are replaced with exponential.lowerExp and exponential.upperExp ' +
-              '(minimum and maximum exponent) since version 4.0.0. ' +
-              'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions))
-
-        return format(value, fixedOptions)
-      }
-
       // determine lower and upper bound for exponential notation.
       // TODO: implement support for upper and lower to be BigNumbers themselves
       const lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3

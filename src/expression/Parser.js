@@ -1,7 +1,6 @@
 import { factory } from '../utils/factory'
 import { extend, hasOwnProperty } from '../utils/object'
 import { getSafeProperty, setSafeProperty } from '../utils/customs'
-import { warnOnce } from '../utils/log'
 
 const name = 'Parser'
 const dependencies = ['parse']
@@ -70,29 +69,6 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
   Parser.prototype.isParser = true
 
   /**
-   * Parse an expression and return the parsed function node.
-   * The node tree can be compiled via `code = node.compile(math)`,
-   * and the compiled code can be executed as `code.evaluate([scope])`
-   * @param {string} expr
-   * @return {Node} node
-   * @throws {Error}
-   */
-  Parser.prototype.parse = function (expr) {
-    throw new Error('Parser.parse is deprecated. Use math.parse instead.')
-  }
-
-  /**
-   * Parse and compile an expression, return the compiled javascript code.
-   * The node can be evaluated via code.evaluate([scope])
-   * @param {string} expr
-   * @return {{evaluate: function}} code
-   * @throws {Error}
-   */
-  Parser.prototype.compile = function (expr) {
-    throw new Error('Parser.compile is deprecated. Use math.compile instead.')
-  }
-
-  /**
    * Parse and evaluate the given expression
    * @param {string} expr   A string containing an expression, for example "2+3"
    * @return {*} result     The result, or undefined when the expression was empty
@@ -103,19 +79,6 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
     return parse(expr)
       .compile()
       .evaluate(this.scope)
-  }
-
-  /**
-   * Parse and evaluate the given expression
-   * @param {string} expr   A string containing an expression, for example "2+3"
-   * @return {*} result     The result, or undefined when the expression was empty
-   * @throws {Error}
-   */
-  // TODO: Deprecated since v6.0.0. Clean up some day
-  Parser.prototype.eval = function (expr) {
-    warnOnce('Method Parser.eval is renamed to Parser.evaluate. Please use the new method name.')
-
-    return this.evaluate(expr)
   }
 
   /**

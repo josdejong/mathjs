@@ -2,6 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../../src/bundleAny'
+
 const Index = math.Index
 const Range = math.Range
 const Help = math.Help
@@ -140,21 +141,5 @@ describe('typeOf', function () {
   it('should throw an error in case of wrong number of arguments', function () {
     assert.throws(function () { math.typeOf() }, /Too few arguments in function typeOf/)
     assert.throws(function () { math.typeOf(1, 2, 3) }, /Too many arguments in function typeOf/)
-  })
-
-  it('should still allow using the deprecated function math.typeof', () => {
-    // deprecated in v6.0.0. Clean up some day
-    const warnOriginal = console.warn
-    const logs = []
-    console.warn = (...args) => logs.push(args)
-
-    assert.strictEqual(math.typeof(true), 'boolean')
-
-    // Note that the following assertion will fail if math.typeof is already used in a previous unit test
-    assert.deepStrictEqual(logs, [
-      ['Warning:', 'Function "typeof" has been renamed to "typeOf" in v6.0.0, please use the new function instead.']
-    ])
-
-    console.warn = warnOriginal
   })
 })

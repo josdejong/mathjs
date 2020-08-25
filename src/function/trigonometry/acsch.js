@@ -27,7 +27,7 @@ export const createAcsch = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosecant of x
    */
-  const acsch = typed(name, {
+  return typed(name, {
     number: acschNumber,
 
     Complex: function (x) {
@@ -39,9 +39,7 @@ export const createAcsch = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, acsch)
+      return deepMap(x, this)
     }
   })
-
-  return acsch
 })

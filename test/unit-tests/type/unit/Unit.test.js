@@ -2,6 +2,7 @@ import assert from 'assert'
 import approx from '../../../../tools/approx'
 import math from '../../../../src/bundleAny'
 import { isBigNumber, isFraction } from '../../../../src/utils/is'
+import { hasOwnProperty } from '../../../../src/utils/object'
 
 const Unit = math.Unit
 
@@ -231,6 +232,11 @@ describe('Unit', function () {
       const u = new Unit(math.fraction(5), 'cm')
       assert.strictEqual(u.toNumber('mm'), 50)
     })
+
+    it('should convert a unit with value only to a number', function () {
+      const u = Unit.parse('5', { allowNoUnits: true })
+      assert.strictEqual(u.toNumber(), 5)
+    })
   })
 
   describe('toNumeric', function () {
@@ -347,6 +353,11 @@ describe('Unit', function () {
       assert.strictEqual(u4.units[1].unit.name, 's')
       assert.strictEqual(u4.units[0].prefix.name, 'c')
       assert.strictEqual(u4.fixPrefix, true)
+    })
+
+    it('should convert a unitless quantity', function () {
+      const u = Unit.parse('5', { allowNoUnits: true })
+      assert.strictEqual(u.toNumeric(), 5)
     })
 
     it('should convert a binary prefixes (1)', function () {
@@ -1050,7 +1061,9 @@ describe('Unit', function () {
 
     it("For each built-in unit, 'name' should match key", function () {
       for (const key in Unit.UNITS) {
-        assert.strictEqual(key, Unit.UNITS[key].name)
+        if (hasOwnProperty(Unit.UNITS, key)) {
+          assert.strictEqual(key, Unit.UNITS[key].name)
+        }
       }
     })
   })

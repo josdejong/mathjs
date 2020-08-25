@@ -12,6 +12,11 @@ describe('variance', function () {
     assert.strictEqual(variance(2, 4, 6), 4)
   })
 
+  it('should return the variance of strings by their numerical values', function () {
+    assert.strictEqual(variance('2', '4', '6'), 4)
+    assert.strictEqual(variance('5'), 0)
+  })
+
   it('should return the variance of big numbers', function () {
     assert.deepStrictEqual(variance(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
       new math.BigNumber(4))
@@ -109,6 +114,8 @@ describe('variance', function () {
     assert.throws(function () { variance([2, 3, null]) }, /Cannot calculate variance, unexpected type of argument/)
     assert.throws(function () { variance([[2, 4, 6], [1, 3, 5]], 'biased', 0) }, /Cannot convert "biased" to a number/)
     assert.throws(function () { variance([[2, 4, 6], [1, 3, 5]], 0, new Date()) }, /Cannot calculate variance, unexpected type of argument/)
+    assert.throws(function () { variance('a', 'b') }, /Error: Cannot convert "a" to a number/)
+    assert.throws(function () { variance('a') }, /Error: Cannot convert "a" to a number/)
   })
 
   it('should throw an error if the axis exceeds the dimension of the matrix')
@@ -120,21 +127,5 @@ describe('variance', function () {
   it('should LaTeX var', function () {
     const expression = math.parse('variance(1,2,3)')
     assert.strictEqual(expression.toTex(), '\\mathrm{Var}\\left(1,2,3\\right)')
-  })
-
-  it('should still allow using the deprecated function math.var', () => {
-    // deprecated in v6.0.0. Clean up some day
-    const warnOriginal = console.warn
-    const logs = []
-    console.warn = (...args) => logs.push(args)
-
-    assert.strictEqual(math.var(2, 4, 6), 4)
-
-    // Note that the following assertion will fail if math.var is already used in a previous unit test
-    assert.deepStrictEqual(logs, [
-      ['Warning:', 'Function "var" has been renamed to "variance" in v6.0.0, please use the new function instead.']
-    ])
-
-    console.warn = warnOriginal
   })
 })

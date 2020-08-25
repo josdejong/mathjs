@@ -27,7 +27,7 @@ export const createAcoth = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arccotangent of x
    */
-  const acoth = typed(name, {
+  return typed(name, {
     number: function (x) {
       if (x >= 1 || x <= -1 || config.predictable) {
         return acothNumber(x)
@@ -44,9 +44,7 @@ export const createAcoth = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, acoth)
+      return deepMap(x, this)
     }
   })
-
-  return acoth
 })

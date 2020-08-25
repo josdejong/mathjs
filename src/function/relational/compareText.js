@@ -41,7 +41,7 @@ export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @return {number | Array | DenseMatrix} Returns the result of the comparison:
    *                                        1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  const compareText = typed(name, {
+  return typed(name, {
 
     'any, any': _compareText,
 
@@ -51,17 +51,17 @@ export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return compareText(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return compareText(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return compareText(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'DenseMatrix, any': function (x, y) {
@@ -82,8 +82,6 @@ export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ 
       return algorithm14(matrix(y), x, _compareText, true).valueOf()
     }
   })
-
-  return compareText
 })
 
 export const createCompareTextNumber = /* #__PURE__ */ factory(name, ['typed'], ({ typed }) => {

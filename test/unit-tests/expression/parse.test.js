@@ -826,6 +826,10 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('{a:2+3,b:"foo"}'), { a: 5, b: 'foo' })
     })
 
+    it('should create an object with unquoted keys that are keywords', function () {
+      assert.deepStrictEqual(parseAndEval('{ mod: 1, and: 1, not: 1, or: 1, xor: 1, to: 1, in: 1 }'), { mod: 1, and: 1, not: 1, or: 1, xor: 1, to: 1, in: 1 })
+    })
+
     it('should create an object with child object', function () {
       assert.deepStrictEqual(parseAndEval('{a:{b:2}}'), { a: { b: 2 } })
     })

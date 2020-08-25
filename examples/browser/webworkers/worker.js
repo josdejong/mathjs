@@ -19,7 +19,7 @@ self.addEventListener('message', function (event) {
   // build a response
   const response = {
     id: request.id,
-    result: result,
+    result: self.math.format(result),
     err: err
   }
 

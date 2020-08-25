@@ -154,47 +154,47 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    */
   const simplify = typed('simplify', {
     string: function (expr) {
-      return simplify(parse(expr), simplify.rules, {}, {})
+      return this(parse(expr), this.rules, {}, {})
     },
 
     'string, Object': function (expr, scope) {
-      return simplify(parse(expr), simplify.rules, scope, {})
+      return this(parse(expr), this.rules, scope, {})
     },
 
     'string, Object, Object': function (expr, scope, options) {
-      return simplify(parse(expr), simplify.rules, scope, options)
+      return this(parse(expr), this.rules, scope, options)
     },
 
     'string, Array': function (expr, rules) {
-      return simplify(parse(expr), rules, {}, {})
+      return this(parse(expr), rules, {}, {})
     },
 
     'string, Array, Object': function (expr, rules, scope) {
-      return simplify(parse(expr), rules, scope, {})
+      return this(parse(expr), rules, scope, {})
     },
 
     'string, Array, Object, Object': function (expr, rules, scope, options) {
-      return simplify(parse(expr), rules, scope, options)
+      return this(parse(expr), rules, scope, options)
     },
 
     'Node, Object': function (expr, scope) {
-      return simplify(expr, simplify.rules, scope, {})
+      return this(expr, this.rules, scope, {})
     },
 
     'Node, Object, Object': function (expr, scope, options) {
-      return simplify(expr, simplify.rules, scope, options)
+      return this(expr, this.rules, scope, options)
     },
 
     Node: function (expr) {
-      return simplify(expr, simplify.rules, {}, {})
+      return this(expr, this.rules, {}, {})
     },
 
     'Node, Array': function (expr, rules) {
-      return simplify(expr, rules, {}, {})
+      return this(expr, rules, {}, {})
     },
 
     'Node, Array, Object': function (expr, rules, scope) {
-      return simplify(expr, rules, scope, {})
+      return this(expr, rules, scope, {})
     },
 
     'Node, Array, Object, Object': function (expr, rules, scope, options) {
@@ -510,16 +510,21 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     // Placeholders with the same key must match exactly
     for (const key in match1.placeholders) {
-      res.placeholders[key] = match1.placeholders[key]
-      if (hasOwnProperty(match2.placeholders, key)) {
-        if (!_exactMatch(match1.placeholders[key], match2.placeholders[key])) {
-          return null
+      if (hasOwnProperty(match1.placeholders, key)) {
+        res.placeholders[key] = match1.placeholders[key]
+
+        if (hasOwnProperty(match2.placeholders, key)) {
+          if (!_exactMatch(match1.placeholders[key], match2.placeholders[key])) {
+            return null
+          }
         }
       }
     }
 
     for (const key in match2.placeholders) {
-      res.placeholders[key] = match2.placeholders[key]
+      if (hasOwnProperty(match2.placeholders, key)) {
+        res.placeholders[key] = match2.placeholders[key]
+      }
     }
 
     return res
