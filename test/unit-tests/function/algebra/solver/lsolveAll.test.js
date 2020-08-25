@@ -113,13 +113,13 @@ describe('lsolveAll', function () {
     approx.deepEqual(x, [math.matrix([[1], [1], [1], [1]])])
   })
 
-  it('should throw exception when matrix is singular', function () {
-    assert.throws(function () { math.lsolveAll([[1, 1], [0, 0]], [1, 1]) }, /Error: Linear system cannot be solved since matrix is singular/)
-    assert.throws(function () { math.lsolveAll(math.matrix([[1, 1], [0, 0]], 'dense'), [1, 1]) }, /Error: Linear system cannot be solved since matrix is singular/)
-    assert.throws(function () { math.lsolveAll(math.matrix([[1, 1], [0, 0]], 'sparse'), [1, 1]) }, /Error: Linear system cannot be solved since matrix is singular/)
+  it('should return an empty array when there is no solution', function () {
+    assert.deepStrictEqual([], math.lsolveAll([[1, 1], [0, 0]], [1, 1]))
+    assert.deepStrictEqual([], math.lsolveAll(math.matrix([[1, 1], [0, 0]], 'dense'), [1, 1]))
+    assert.deepStrictEqual([], math.lsolveAll(math.matrix([[1, 1], [0, 0]], 'sparse'), [1, 1]))
   })
 
-  it('should solve systems with singular matrices', function () {
+  it('should solve systems with singular dense matrices', function () {
     approx.deepEqual(
       math.lsolveAll([[2, 0, 0], [1, 0, 0], [-1, 1, 1]], [4, 2, 1]),
       [[[2], [0], [3]], [[2], [1], [2]]]
@@ -133,6 +133,23 @@ describe('lsolveAll', function () {
     approx.deepEqual(
       math.lsolveAll([[0, 0, 0], [1, 1, 0], [1, 1, 0]], [0, 2, 2]),
       [[[0], [2], [0]], [[1], [1], [0]], [[0], [2], [1]]]
+    )
+  })
+
+  it('should solve systems with singular sparse matrices', function () {
+    approx.deepEqual(
+      math.lsolveAll(math.matrix([[2, 0, 0], [1, 0, 0], [-1, 1, 1]], 'sparse'), [4, 2, 1]),
+      [math.matrix([[2], [0], [3]]), math.matrix([[2], [1], [2]])]
+    )
+
+    approx.deepEqual(
+      math.lsolveAll(math.matrix([[0, 0, 0], [1, 1, 0], [2, 1, 0]], 'sparse'), [0, 2, 2]),
+      [math.matrix([[0], [2], [0]]), math.matrix([[0], [2], [1]])]
+    )
+
+    approx.deepEqual(
+      math.lsolveAll(math.matrix([[0, 0, 0], [1, 1, 0], [1, 1, 0]], 'sparse'), [0, 2, 2]),
+      [math.matrix([[0], [2], [0]]), math.matrix([[1], [1], [0]]), math.matrix([[0], [2], [1]])]
     )
   })
 })
