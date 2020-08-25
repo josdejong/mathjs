@@ -16,7 +16,7 @@ export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
   const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**
-   * Solves the linear equation system by forwards substitution. Matrix must be a lower triangular matrix.
+   * Finds all solutions of a linear equation system by forwards substitution. Matrix must be a lower triangular matrix.
    *
    * `L * x = b`
    *
@@ -32,7 +32,7 @@ export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * See also:
    *
-   *    lup, slu, usolve, lusolve
+   *    lsolve, lup, slu, usolve, lusolve
    *
    * @param {Matrix, Array} L       A N x N matrix or array (L)
    * @param {Matrix, Array} b       A column vector with the b values

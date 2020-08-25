@@ -16,7 +16,7 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
   const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**
-   * Solves the linear equation system by backward substitution. Matrix must be an upper triangular matrix.
+   * Finds one solution of a linear equation system by backward substitution. Matrix must be an upper triangular matrix. Throws an error if there's no solution.
    *
    * `U * x = b`
    *
@@ -32,7 +32,7 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * See also:
    *
-   *    lup, slu, usolve, lusolve
+   *    usolveAll, lup, slu, usolve, lusolve
    *
    * @param {Matrix, Array} U       A N x N matrix or array (U)
    * @param {Matrix, Array} b       A column vector with the b values
