@@ -16,7 +16,7 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
   const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**
-   * Solves the linear equation system by forwards substitution. Matrix must be a lower triangular matrix.
+   * Finds one solution of a linear equation system by forwards substitution. Matrix must be a lower triangular matrix. Throws an error if there's no solution.
    *
    * `L * x = b`
    *
@@ -32,7 +32,7 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * See also:
    *
-   *    lup, slu, usolve, lusolve
+   *    lsolveAll, lup, slu, usolve, lusolve
    *
    * @param {Matrix, Array} L       A N x N matrix or array (L)
    * @param {Matrix, Array} b       A column vector with the b values
@@ -42,21 +42,16 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
   return typed(name, {
 
     'SparseMatrix, Array | Matrix': function (m, b) {
-      // process matrix
       return _sparseForwardSubstitution(m, b)
     },
 
     'DenseMatrix, Array | Matrix': function (m, b) {
-      // process matrix
       return _denseForwardSubstitution(m, b)
     },
 
     'Array, Array | Matrix': function (a, b) {
-      // create dense matrix from array
       const m = matrix(a)
-      // use matrix implementation
       const r = _denseForwardSubstitution(m, b)
-      // result
       return r.valueOf()
     }
   })
@@ -64,45 +59,44 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
   function _denseForwardSubstitution (m, b) {
     // validate matrix and vector, return copy of column vector b
     b = solveValidation(m, b, true)
-    // column vector data
     const bdata = b._data
-    // rows & columns
+
     const rows = m._size[0]
     const columns = m._size[1]
+
     // result
     const x = []
-    // data
-    const data = m._data
-    // forward solve m * x = b, loop columns
+
+    const mdata = m._data
+
+    // loop columns
     for (let j = 0; j < columns; j++) {
-      // b[j]
       const bj = bdata[j][0] || 0
-      // x[j]
       let xj
-      // forward substitution (outer product) avoids inner looping when bj === 0
+
       if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
-        const vjj = data[j][j]
-        // check vjj
+        // non-degenerate row, find solution
+
+        const vjj = mdata[j][j]
+
         if (equalScalar(vjj, 0)) {
-          // system cannot be solved
           throw new Error('Linear system cannot be solved since matrix is singular')
         }
-        // calculate xj
+
         xj = divideScalar(bj, vjj)
+
         // loop rows
         for (let i = j + 1; i < rows; i++) {
-          // update copy of b
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, data[i][j]))]
+          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, mdata[i][j]))]
         }
       } else {
-        // zero @ j
+        // degenerate row, we can choose any value
         xj = 0
       }
-      // update x
+
       x[j] = [xj]
     }
-    // return vector
+
     return new DenseMatrix({
       data: x,
       size: [rows, 1]
@@ -112,68 +106,68 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
   function _sparseForwardSubstitution (m, b) {
     // validate matrix and vector, return copy of column vector b
     b = solveValidation(m, b, true)
-    // column vector data
+
     const bdata = b._data
-    // rows & columns
+
     const rows = m._size[0]
     const columns = m._size[1]
-    // matrix arrays
+
     const values = m._values
     const index = m._index
     const ptr = m._ptr
-    // vars
-    let i, k
+
     // result
     const x = []
-    // forward solve m * x = b, loop columns
+
+    // loop columns
     for (let j = 0; j < columns; j++) {
-      // b[j]
       const bj = bdata[j][0] || 0
-      // forward substitution (outer product) avoids inner looping when bj === 0
+
       if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
+        // non-degenerate row, find solution
+
         let vjj = 0
-        // lower triangular matrix values & index (column j)
-        const jvalues = []
-        const jindex = []
-        // last index in column
-        let l = ptr[j + 1]
-        // values in column, find value @ [j, j]
-        for (k = ptr[j]; k < l; k++) {
-          // row
-          i = index[k]
+        // matrix values & indices (column j)
+        const jValues = []
+        const jIndices = []
+
+        // first and last index in the column
+        const firstIndex = ptr[j]
+        const lastIndex = ptr[j + 1]
+
+        // values in column, find value at [j, j]
+        for (let k = firstIndex; k < lastIndex; k++) {
+          const i = index[k]
+
           // check row (rows are not sorted!)
           if (i === j) {
-            // update vjj
             vjj = values[k]
           } else if (i > j) {
             // store lower triangular
-            jvalues.push(values[k])
-            jindex.push(i)
+            jValues.push(values[k])
+            jIndices.push(i)
           }
         }
-        // at this point we must have a value @ [j, j]
+
+        // at this point we must have a value in vjj
         if (equalScalar(vjj, 0)) {
-          // system cannot be solved, there is no value @ [j, j]
           throw new Error('Linear system cannot be solved since matrix is singular')
         }
-        // calculate xj
+
         const xj = divideScalar(bj, vjj)
-        // loop lower triangular
-        for (k = 0, l = jindex.length; k < l; k++) {
-          // row
-          i = jindex[k]
-          // update copy of b
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, jvalues[k]))]
+
+        for (let k = 0, l = jIndices.length; k < l; k++) {
+          const i = jIndices[k]
+          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, jValues[k]))]
         }
-        // update x
+
         x[j] = [xj]
       } else {
-        // update x
+        // degenerate row, we can choose any value
         x[j] = [0]
       }
     }
-    // return vector
+
     return new DenseMatrix({
       data: x,
       size: [rows, 1]

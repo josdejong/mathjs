@@ -167,11 +167,13 @@ import { addDocs } from './function/arithmetic/add'
 import { absDocs } from './function/arithmetic/abs'
 import { qrDocs } from './function/algebra/qr'
 import { usolveDocs } from './function/algebra/usolve'
+import { usolveAllDocs } from './function/algebra/usolveAll'
 import { sluDocs } from './function/algebra/slu'
 import { rationalizeDocs } from './function/algebra/rationalize'
 import { simplifyDocs } from './function/algebra/simplify'
 import { lupDocs } from './function/algebra/lup'
 import { lsolveDocs } from './function/algebra/lsolve'
+import { lsolveAllDocs } from './function/algebra/lsolveAll'
 import { derivativeDocs } from './function/algebra/derivative'
 import { versionDocs } from './constants/version'
 import { trueDocs } from './constants/true'
@@ -310,12 +312,14 @@ export const embeddedDocs = {
   // functions - algebra
   derivative: derivativeDocs,
   lsolve: lsolveDocs,
+  lsolveAll: lsolveAllDocs,
   lup: lupDocs,
   lusolve: lusolveDocs,
   simplify: simplifyDocs,
   rationalize: rationalizeDocs,
   slu: sluDocs,
   usolve: usolveDocs,
+  usolveAll: usolveAllDocs,
   qr: qrDocs,
 
   // functions - arithmetic
