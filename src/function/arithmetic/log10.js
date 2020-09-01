@@ -12,7 +12,7 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * For matrices, the function is evaluated element wise.
    *
    * Syntax:
-   *
+   * 
    *    math.log10(x)
    *
    * Examples:
