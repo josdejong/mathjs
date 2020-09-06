@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 8.0.0
+
+- Replaced random library `seed-random` with `seedrandom`, see #1955. 
+  Thanks @poppinlp.
+
+
 # not yet published, version 7.3.0
 
 - Implemented functions `usolveAll` and `lsolveAll`, see #1916. Thanks @m93a.
