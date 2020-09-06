@@ -1,7 +1,7 @@
 // test approx itself...
 import assert from 'assert'
 
-import approx from '../../tools/approx'
+import approx from '../../tools/approx.js'
 
 describe('approx', function () {
   it('should test equality of positive values', function () {

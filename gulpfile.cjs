@@ -12,16 +12,16 @@ const entryGenerator = require('./tools/entryGenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
 
 const SRC_DIR = path.join(__dirname, '/src')
-const ENTRY = `${SRC_DIR}/bundleAny.js`
+const ENTRY = `${SRC_DIR}/bundleAny.cjs`
 const HEADER = `${SRC_DIR}/header.js`
 const VERSION = `${SRC_DIR}/version.js`
-const COMPILE_SRC = `${SRC_DIR}/**/*.js`
+const COMPILE_SRC = `${SRC_DIR}/**/*.?(c)js`
 const COMPILE_ENTRY_SRC = `${SRC_DIR}/entry/**/*.js`
 
 const COMPILE_DIR = path.join(__dirname, '/lib')
-const COMPILE_UMD = `${COMPILE_DIR}/cjs`
+const COMPILE_CJS = `${COMPILE_DIR}/cjs`
 const COMPILE_ESM = `${COMPILE_DIR}/esm` // es modules
-const COMPILE_ENTRY_LIB = `${COMPILE_UMD}/entry`
+const COMPILE_ENTRY_LIB = `${COMPILE_CJS}/entry`
 
 const FILE = 'math.js'
 const FILE_MIN = 'math.min.js'
@@ -29,13 +29,13 @@ const FILE_MAP = 'math.min.map'
 
 const DIST = `${COMPILE_DIR}/browser`
 
-const REF_SRC = `${COMPILE_UMD}/`
+const REF_SRC = `${COMPILE_CJS}/`
 const REF_DIR = path.join(__dirname, '/docs')
 const REF_DEST = `${REF_DIR}/reference/functions`
 const REF_ROOT = `${REF_DIR}/reference`
 
 const MATH_JS = `${DIST}/${FILE}`
-const COMPILED_HEADER = `${COMPILE_UMD}/header.js`
+const COMPILED_HEADER = `${COMPILE_CJS}/header.js`
 
 // read the version number from package.json
 function getVersion () {
@@ -146,7 +146,7 @@ function bundle (done) {
 function compile () {
   return gulp.src(COMPILE_SRC)
     .pipe(babel())
-    .pipe(gulp.dest(COMPILE_UMD))
+    .pipe(gulp.dest(COMPILE_CJS))
 }
 
 function compileESModules () {
@@ -254,14 +254,20 @@ function clean () {
     './dist/',
     './es/',
 
-    // everything in the lib directory, except the `esm/package.json` file
-    './lib/!(esm)/',
-    './lib/esm/!(package.json)',
+    // everything in the lib directory, except the `cjs/package.json` file
+    './lib/!(cjs)',
+    './lib/cjs/!(package.json)',
 
     // generated source files
     'src/**/*.generated.js'
   ])
 }
+
+gulp.task('browser', gulp.series(bundle, minify))
+
+gulp.task('cjs', clean)
+
+gulp.task('docs', generateDocs)
 
 // check whether any of the source files contains non-ascii characters
 gulp.task('validate:ascii', validateAscii)
@@ -282,14 +288,13 @@ gulp.task('watch', function watch () {
 
 // The default task (called when you run `gulp`)
 gulp.task('default', gulp.series(
-  clean,
+  'clean',
   updateVersionFile,
   compile,
   generateEntryFiles,
   compileEntryFiles,
   compileESModules, // Must be after generateEntryFiles
   writeCompiledHeader,
-  bundle,
-  minify,
-  generateDocs
+  'browser',
+  'docs'
 ))
