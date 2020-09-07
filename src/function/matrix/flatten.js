@@ -1,6 +1,6 @@
-import { clone } from '../../utils/object'
-import { flatten as flattenArray } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { clone } from '../../utils/object.js'
+import { flatten as flattenArray } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'flatten'
 const dependencies = ['typed', 'matrix']

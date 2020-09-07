@@ -1,6 +1,6 @@
-import { deepMap } from '../../utils/collection'
-import { isInteger as isIntegerNumber } from '../../utils/number'
-import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection.js'
+import { isInteger as isIntegerNumber } from '../../utils/number.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'isInteger'
 const dependencies = ['typed']

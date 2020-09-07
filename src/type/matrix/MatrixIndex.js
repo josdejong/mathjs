@@ -1,7 +1,7 @@
-import { isMatrix, isRange } from '../../utils/is'
-import { clone } from '../../utils/object'
-import { isInteger } from '../../utils/number'
-import { factory } from '../../utils/factory'
+import { isMatrix, isRange } from '../../utils/is.js'
+import { clone } from '../../utils/object.js'
+import { isInteger } from '../../utils/number.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Index'
 const dependencies = ['ImmutableDenseMatrix']

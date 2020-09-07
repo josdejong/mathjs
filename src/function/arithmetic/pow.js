@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { isInteger } from '../../utils/number'
-import { arraySize as size } from '../../utils/array'
-import { powNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { isInteger } from '../../utils/number.js'
+import { arraySize as size } from '../../utils/array.js'
+import { powNumber } from '../../plain/number/index.js'
 
 const name = 'pow'
 const dependencies = [

@@ -1,5 +1,5 @@
-import { maxArgumentCount } from '../../utils/function'
-import { factory } from '../../utils/factory'
+import { maxArgumentCount } from '../../utils/function.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'map'
 const dependencies = ['typed']

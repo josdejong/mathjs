@@ -1,30 +1,30 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
 const assert = require('assert')
-const { createSnapshotFromFactories, validateBundle } = require('../../lib/utils/snapshot')
-const factoriesAny = require('../../lib/factoriesAny')
+const { createSnapshotFromFactories, validateBundle } = require('../../lib/cjs/utils/snapshot')
+const factoriesAny = require('../../lib/cjs/factoriesAny')
 const version = require('../../package.json').version
-const embeddedDocs = require('../../lib/expression/embeddedDocs/embeddedDocs')
+const embeddedDocs = require('../../lib/cjs/expression/embeddedDocs/embeddedDocs')
 
 const { expectedInstanceStructure } = createSnapshotFromFactories(factoriesAny)
 
 describe('dist', function () {
-  it('should load dist/math.js', function () {
-    const math = require('../../dist/math.js')
+  it('should load lib/browser/math.js', function () {
+    const math = require('../../lib/browser/math.js')
 
     assert.strictEqual(math.add(2, 3), 5)
     assert.strictEqual(math.version, version)
   })
 
-  it('should load dist/math.min.js', function () {
-    const math = require('../../dist/math.min.js')
+  it('should load lib/browser/math.min.js', function () {
+    const math = require('../../lib/browser/math.min.js')
 
     assert.strictEqual(math.add(2, 3), 5)
     assert.strictEqual(math.version, version)
   })
 
-  it('should have all expected functions in dist/main.js', function () {
+  it('should have all expected functions in lib/browser/main.js', function () {
     // snapshot testing
-    const math = require('../../dist/math.js')
+    const math = require('../../lib/browser/math.js')
 
     // don't output all warnings "math.foo.bar is move to math.bar, ..."
     const originalWarn = console.warn
@@ -39,9 +39,9 @@ describe('dist', function () {
     console.warn = originalWarn
   })
 
-  it('should have all expected functions in dist/main.min.js', function () {
+  it('should have all expected functions in lib/browser/main.min.js', function () {
     // snapshot testing
-    const math = require('../../dist/math.js')
+    const math = require('../../lib/browser/math.js')
 
     // don't output all warnings "math.foo.bar is move to math.bar, ..."
     const originalWarn = console.warn
@@ -57,7 +57,7 @@ describe('dist', function () {
   })
 
   it('should contain embedded docs for every function', function () {
-    const math = require('../../dist/math.js')
+    const math = require('../../lib/browser/math.js')
 
     // names to ignore
     const ignore = [

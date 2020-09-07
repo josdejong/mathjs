@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { createRow } from '../../function/matrix/row'
-import { errorTransform } from './utils/errorTransform'
-import { isNumber } from '../../utils/is'
+import { factory } from '../../utils/factory.js'
+import { createRow } from '../../function/matrix/row.js'
+import { errorTransform } from './utils/errorTransform.js'
+import { isNumber } from '../../utils/is.js'
 
 const name = 'row'
 const dependencies = ['typed', 'Index', 'matrix', 'range']

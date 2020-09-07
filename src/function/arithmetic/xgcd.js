@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { xgcdNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { xgcdNumber } from '../../plain/number/index.js'
 
 const name = 'xgcd'
 const dependencies = ['typed', 'config', 'matrix', 'BigNumber']

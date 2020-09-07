@@ -1,6 +1,6 @@
 const fs = require('fs')
 const typed = require('typed-function')
-const math = require('../lib/bundleAny')
+const math = require('../lib/cjs/bundleAny')
 const Spa = math.Spa
 const DenseMatrix = math.DenseMatrix
 const SparseMatrix = math.SparseMatrix

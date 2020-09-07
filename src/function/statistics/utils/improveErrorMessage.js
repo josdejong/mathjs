@@ -1,4 +1,4 @@
-import { typeOf } from '../../../utils/is'
+import { typeOf } from '../../../utils/is.js'
 
 /**
  * Improve error messages for statistics functions. Errors are typically

@@ -1,9 +1,9 @@
-import { factory } from '../../utils/factory'
-import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
-import { createAlgorithm09 } from '../../type/matrix/utils/algorithm09'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { factory } from '../../utils/factory.js'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02.js'
+import { createAlgorithm09 } from '../../type/matrix/utils/algorithm09.js'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
 
 const name = 'dotMultiply'
 const dependencies = [

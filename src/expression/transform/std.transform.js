@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { createStd } from '../../function/statistics/std'
-import { isBigNumber, isNumber, isCollection } from '../../utils/is'
-import { errorTransform } from './utils/errorTransform'
+import { factory } from '../../utils/factory.js'
+import { createStd } from '../../function/statistics/std.js'
+import { isBigNumber, isNumber, isCollection } from '../../utils/is.js'
+import { errorTransform } from './utils/errorTransform.js'
 
 const name = 'std'
 const dependencies = ['typed', 'sqrt', 'variance']

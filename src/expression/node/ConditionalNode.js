@@ -1,6 +1,6 @@
-import { isBigNumber, isComplex, isNode, isUnit, typeOf } from '../../utils/is'
-import { factory } from '../../utils/factory'
-import { getPrecedence } from '../operators'
+import { isBigNumber, isComplex, isNode, isUnit, typeOf } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { getPrecedence } from '../operators.js'
 
 const name = 'ConditionalNode'
 const dependencies = [

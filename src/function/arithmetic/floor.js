@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { nearlyEqual } from '../../utils/number'
-import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { nearlyEqual } from '../../utils/number.js'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
 
 const name = 'floor'
 const dependencies = ['typed', 'config', 'round']

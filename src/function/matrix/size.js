@@ -1,6 +1,6 @@
-import { arraySize } from '../../utils/array'
-import { factory } from '../../utils/factory'
-import { noMatrix } from '../../utils/noop'
+import { arraySize } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
+import { noMatrix } from '../../utils/noop.js'
 
 const name = 'size'
 const dependencies = ['typed', 'config', '?matrix']

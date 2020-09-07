@@ -1,10 +1,10 @@
-import { isConstantNode, isParenthesisNode } from '../../utils/is'
-import { factory } from '../../utils/factory'
-import { createUtil } from './simplify/util'
-import { createSimplifyCore } from './simplify/simplifyCore'
-import { createSimplifyConstant } from './simplify/simplifyConstant'
-import { createResolve } from './simplify/resolve'
-import { hasOwnProperty } from '../../utils/object'
+import { isConstantNode, isParenthesisNode } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { createUtil } from './simplify/util.js'
+import { createSimplifyCore } from './simplify/simplifyCore.js'
+import { createSimplifyConstant } from './simplify/simplifyConstant.js'
+import { createResolve } from './simplify/resolve.js'
+import { hasOwnProperty } from '../../utils/object.js'
 
 const name = 'simplify'
 const dependencies = [

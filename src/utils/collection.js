@@ -1,6 +1,6 @@
-import { isCollection, isMatrix } from './is'
-import { IndexError } from '../error/IndexError'
-import { arraySize } from './array'
+import { isCollection, isMatrix } from './is.js'
+import { IndexError } from '../error/IndexError.js'
+import { arraySize } from './array.js'
 
 /**
  * Test whether an array contains collections

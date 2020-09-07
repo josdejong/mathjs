@@ -1,6 +1,6 @@
-import { isNode, isSymbolNode } from '../../utils/is'
-import { factory } from '../../utils/factory'
-import { getPrecedence } from '../operators'
+import { isNode, isSymbolNode } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { getPrecedence } from '../operators.js'
 
 const name = 'RangeNode'
 const dependencies = [

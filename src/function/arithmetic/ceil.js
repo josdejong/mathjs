@@ -1,8 +1,8 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { nearlyEqual } from '../../utils/number'
-import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
-import { ceilNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { nearlyEqual } from '../../utils/number.js'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
+import { ceilNumber } from '../../plain/number/index.js'
 
 const name = 'ceil'
 const dependencies = ['typed', 'config', 'round']

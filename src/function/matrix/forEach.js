@@ -1,6 +1,6 @@
-import { maxArgumentCount } from '../../utils/function'
-import { forEach as forEachArray } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { maxArgumentCount } from '../../utils/function.js'
+import { forEach as forEachArray } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'forEach'
 const dependencies = ['typed']

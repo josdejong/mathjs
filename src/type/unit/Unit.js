@@ -1,8 +1,8 @@
-import { isComplex, isUnit, typeOf } from '../../utils/is'
-import { factory } from '../../utils/factory'
-import { endsWith } from '../../utils/string'
-import { clone, hasOwnProperty } from '../../utils/object'
-import { createBigNumberPi as createPi } from '../../utils/bignumber/constants'
+import { isComplex, isUnit, typeOf } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { endsWith } from '../../utils/string.js'
+import { clone, hasOwnProperty } from '../../utils/object.js'
+import { createBigNumberPi as createPi } from '../../utils/bignumber/constants.js'
 
 const name = 'Unit'
 const dependencies = [

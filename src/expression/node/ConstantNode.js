@@ -1,7 +1,7 @@
-import { format } from '../../utils/string'
-import { typeOf } from '../../utils/is'
-import { escapeLatex } from '../../utils/latex'
-import { factory } from '../../utils/factory'
+import { format } from '../../utils/string.js'
+import { typeOf } from '../../utils/is.js'
+import { escapeLatex } from '../../utils/latex.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'ConstantNode'
 const dependencies = [

@@ -1,5 +1,5 @@
-import { clone } from '../../../utils/object'
-import { factory } from '../../../utils/factory'
+import { clone } from '../../../utils/object.js'
+import { factory } from '../../../utils/factory.js'
 
 const name = 'lup'
 const dependencies = [

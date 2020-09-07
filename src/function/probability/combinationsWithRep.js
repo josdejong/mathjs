@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { isInteger } from '../../utils/number'
-import { product } from '../../utils/product'
+import { factory } from '../../utils/factory.js'
+import { isInteger } from '../../utils/number.js'
+import { product } from '../../utils/product.js'
 
 const name = 'combinationsWithRep'
 const dependencies = ['typed']

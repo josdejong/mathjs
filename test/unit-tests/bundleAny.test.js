@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../src/bundleAny'
+import math from '../../src/bundleAny.cjs'
 
 describe('bundleAny', function () {
   it('should get a default instance of mathjs', function () {

@@ -1,6 +1,6 @@
-import { deepMap } from '../../utils/collection'
-import { factory } from '../../utils/factory'
-import { isNegativeNumber } from '../../plain/number'
+import { deepMap } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
+import { isNegativeNumber } from '../../plain/number/index.js'
 
 const name = 'isNegative'
 const dependencies = ['typed']

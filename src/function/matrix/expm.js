@@ -1,6 +1,6 @@
-import { isSparseMatrix } from '../../utils/is'
-import { format } from '../../utils/string'
-import { factory } from '../../utils/factory'
+import { isSparseMatrix } from '../../utils/is.js'
+import { format } from '../../utils/string.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'expm'
 const dependencies = ['typed', 'abs', 'add', 'identity', 'inv', 'multiply']

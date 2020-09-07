@@ -1,6 +1,6 @@
-import { factory } from '../../../utils/factory'
-import { DimensionError } from '../../../error/DimensionError'
-import { scatter } from '../../../utils/collection'
+import { factory } from '../../../utils/factory.js'
+import { DimensionError } from '../../../error/DimensionError.js'
+import { scatter } from '../../../utils/collection.js'
 
 const name = 'algorithm06'
 const dependencies = ['typed', 'equalScalar']

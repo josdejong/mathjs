@@ -1,10 +1,10 @@
-import { factory } from '../../utils/factory'
-import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
-import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
-import { lcmNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02.js'
+import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06.js'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { lcmNumber } from '../../plain/number/index.js'
 
 const name = 'lcm'
 const dependencies = [

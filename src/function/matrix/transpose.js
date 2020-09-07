@@ -1,6 +1,6 @@
-import { clone } from '../../utils/object'
-import { format } from '../../utils/string'
-import { factory } from '../../utils/factory'
+import { clone } from '../../utils/object.js'
+import { format } from '../../utils/string.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'transpose'
 const dependencies = ['typed', 'matrix']

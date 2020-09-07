@@ -1,5 +1,5 @@
-import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
-import { factory } from '../../../utils/factory'
+import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is.js'
+import { factory } from '../../../utils/factory.js'
 
 const name = 'simplifyCore'
 const dependencies = [

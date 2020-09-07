@@ -1,5 +1,5 @@
-import { contains } from './array'
-import { pickShallow } from './object'
+import { contains } from './array.js'
+import { pickShallow } from './object.js'
 
 /**
  * Create a factory function, which can be used to inject dependencies.

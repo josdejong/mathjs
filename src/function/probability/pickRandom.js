@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { isNumber } from '../../utils/is'
-import { arraySize } from '../../utils/array'
-import { createRng } from './util/seededRNG'
+import { factory } from '../../utils/factory.js'
+import { isNumber } from '../../utils/is.js'
+import { arraySize } from '../../utils/array.js'
+import { createRng } from './util/seededRNG.js'
 
 const name = 'pickRandom'
 const dependencies = ['typed', 'config', '?on']

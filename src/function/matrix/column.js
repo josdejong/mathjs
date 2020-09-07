@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { clone } from '../../utils/object'
-import { validateIndex } from '../../utils/array'
+import { factory } from '../../utils/factory.js'
+import { clone } from '../../utils/object.js'
+import { validateIndex } from '../../utils/array.js'
 
 const name = 'column'
 const dependencies = ['typed', 'Index', 'matrix', 'range']

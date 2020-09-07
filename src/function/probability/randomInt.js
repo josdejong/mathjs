@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { randomMatrix } from './util/randomMatrix'
-import { createRng } from './util/seededRNG'
-import { isMatrix } from '../../utils/is'
+import { factory } from '../../utils/factory.js'
+import { randomMatrix } from './util/randomMatrix.js'
+import { createRng } from './util/seededRNG.js'
+import { isMatrix } from '../../utils/is.js'
 
 const name = 'randomInt'
 const dependencies = ['typed', 'config', '?on']

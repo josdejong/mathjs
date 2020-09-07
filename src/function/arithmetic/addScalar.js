@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { addNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { addNumber } from '../../plain/number/index.js'
 
 const name = 'addScalar'
 const dependencies = ['typed']

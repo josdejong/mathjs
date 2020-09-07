@@ -1,4 +1,4 @@
-import { isInteger, log2, log10, cbrt, expm1, sign, toFixed, log1p } from '../../utils/number'
+import { isInteger, log2, log10, cbrt, expm1, sign, toFixed, log1p } from '../../utils/number.js'
 
 const n1 = 'number'
 const n2 = 'number, number'
