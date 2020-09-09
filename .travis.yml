@@ -1,6 +1,5 @@
 language: node_js
 node_js:
-  - 10
   - 12
   - 14
 
@@ -12,6 +11,9 @@ jobs:
       script: npm run lint
       node_js: lts/*
       name: Lint
+    - script: npm run test:src:transpile
+      node_js: 10
+      name: Node 10
     - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else npm run test:browser; fi'
       node_js: lts/*
       name: Browser Test

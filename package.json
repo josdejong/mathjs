@@ -112,6 +112,7 @@
     "validate:ascii": "gulp --gulpfile gulpfile.cjs validate:ascii",
     "test": "npm run test:src && npm run lint",
     "test:src": "mocha test/unit-tests --recursive --forbid-only",
+    "test:src:transpile": "mocha test/unit-tests --require @babel/register --recursive --forbid-only",
     "test:generated": "mocha test/generated-code-tests --recursive --forbid-only",
     "test:node": "mocha test/node-tests/*.test.js test/node-tests/**/*.test.js --recursive --forbid-only",
     "test:all": "npm run test:src && npm run test:generated && npm run test:node",
