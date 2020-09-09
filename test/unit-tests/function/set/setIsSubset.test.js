@@ -1,7 +1,7 @@
 // test setIsSubset
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 
 describe('setIsSubset', function () {
   it('should return true or false', function () {

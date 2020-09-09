@@ -12,7 +12,7 @@ import {
   set,
   traverse,
   deepFlatten, hasOwnProperty
-} from '../../../src/utils/object'
+} from '../../../src/utils/object.js'
 
 describe('object', function () {
   describe('clone', function () {

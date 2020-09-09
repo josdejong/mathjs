@@ -1,8 +1,8 @@
 // test ceil
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const { bignumber, ceil, complex, fraction, i, isFraction, matrix, pi, unit, parse } = math
 
 describe('ceil', function () {

@@ -4,7 +4,7 @@ const cp = require('child_process')
 const path = require('path')
 const version = require('../../package.json').version
 
-describe('lib', function () {
+describe('lib/commonjs', function () {
   it('should load lib/mainAny.js', function () {
     const math = require('../../lib/cjs/entry/mainAny')
 

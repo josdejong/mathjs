@@ -1,6 +1,14 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
-import actualErfValues from './erf.values.json'
+import { join, dirname } from 'path'
+import { readFileSync } from 'fs'
+import math from '../../../../src/defaultInstance.js'
+import { fileURLToPath } from 'url'
+
+// https://stackoverflow.com/questions/8817423/why-is-dirname-not-defined-in-node-repl#8817507
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+const actualErfValues = JSON.parse(String(readFileSync(join(__dirname, './erf.values.json'))))
+
 const erf = math.erf
 
 const DIFF_THRESH = 5e-16

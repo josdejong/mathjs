@@ -1,6 +1,5 @@
 import assert from 'assert'
-import { filter, includes, range, times } from 'lodash'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 
 const math2 = math.create({ randomSeed: 'test' })
 const randomInt = math2.randomInt
@@ -65,11 +64,11 @@ const assertUniformDistributionInt = function (values, min, max) {
   let count
 
   values.forEach(function (val) {
-    assert.ok(includes(valuesRange, val))
+    assert.ok(valuesRange.includes(val))
   })
 
   valuesRange.forEach(function (val) {
-    count = filter(values, function (testVal) { return testVal === val }).length
+    count = values.filter(function (testVal) { return testVal === val }).length
     assertApproxEqual(count / values.length, 1 / valuesRange.length, 0.03)
   })
 }
@@ -78,4 +77,20 @@ const assertApproxEqual = function (testVal, val, tolerance) {
   const diff = Math.abs(val - testVal)
   if (diff > tolerance) assert.strictEqual(testVal, val)
   else assert.ok(diff <= tolerance)
+}
+
+function times (n, callback) {
+  for (let i = 0; i < n; i++) {
+    callback()
+  }
+}
+
+function range (start, end) {
+  const array = []
+
+  for (let i = start; i < end; i++) {
+    array.push(i)
+  }
+
+  return array
 }

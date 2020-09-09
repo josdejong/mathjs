@@ -1,7 +1,7 @@
 // test xgcd
 import assert from 'assert'
 
-import defaultMath from '../../../../src/bundleAny'
+import defaultMath from '../../../../src/defaultInstance.js'
 const math = defaultMath.create({ matrix: 'Array' })
 const gcd = math.gcd
 const xgcd = math.xgcd

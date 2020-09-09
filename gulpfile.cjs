@@ -7,18 +7,20 @@ const log = require('fancy-log')
 const webpack = require('webpack')
 const babel = require('gulp-babel')
 const uglify = require('uglify-js')
+const mkdirp = require('mkdirp')
 const docgenerator = require('./tools/docgenerator')
 const entryGenerator = require('./tools/entryGenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
 
 const SRC_DIR = path.join(__dirname, '/src')
-const ENTRY = `${SRC_DIR}/bundleAny.cjs`
+const ENTRY = `${SRC_DIR}/browserBundle.cjs`
 const HEADER = `${SRC_DIR}/header.js`
 const VERSION = `${SRC_DIR}/version.js`
 const COMPILE_SRC = `${SRC_DIR}/**/*.?(c)js`
 const COMPILE_ENTRY_SRC = `${SRC_DIR}/entry/**/*.js`
 
 const COMPILE_DIR = path.join(__dirname, '/lib')
+const COMPILE_BROWSER = `${COMPILE_DIR}/browser`
 const COMPILE_CJS = `${COMPILE_DIR}/cjs`
 const COMPILE_ESM = `${COMPILE_DIR}/esm` // es modules
 const COMPILE_ENTRY_LIB = `${COMPILE_CJS}/entry`
@@ -27,15 +29,15 @@ const FILE = 'math.js'
 const FILE_MIN = 'math.min.js'
 const FILE_MAP = 'math.min.map'
 
-const DIST = `${COMPILE_DIR}/browser`
-
 const REF_SRC = `${COMPILE_CJS}/`
 const REF_DIR = path.join(__dirname, '/docs')
 const REF_DEST = `${REF_DIR}/reference/functions`
 const REF_ROOT = `${REF_DIR}/reference`
 
-const MATH_JS = `${DIST}/${FILE}`
+const MATH_JS = `${COMPILE_BROWSER}/${FILE}`
 const COMPILED_HEADER = `${COMPILE_CJS}/header.js`
+
+const PACKAGE_JSON_COMMONJS = '{\n  "type": "commonjs"\n}\n'
 
 // read the version number from package.json
 function getVersion () {
@@ -77,7 +79,7 @@ const webpackConfig = {
   output: {
     library: 'math',
     libraryTarget: 'umd',
-    path: DIST,
+    path: COMPILE_BROWSER,
     globalObject: 'this',
     filename: FILE
   },
@@ -137,13 +139,20 @@ function bundle (done) {
       done(new Error('Compile failed'))
     }
 
+    // create commonjs package.json file
+    fs.writeFileSync(path.join(COMPILE_BROWSER, 'package.json'), PACKAGE_JSON_COMMONJS)
+
     log(`bundled ${MATH_JS}`)
 
     done()
   })
 }
 
-function compile () {
+function compileCommonJs () {
+  // create a package.json file in the commonjs folder
+  mkdirp.sync(COMPILE_CJS)
+  fs.writeFileSync(path.join(COMPILE_CJS, 'package.json'), PACKAGE_JSON_COMMONJS)
+
   return gulp.src(COMPILE_SRC)
     .pipe(babel())
     .pipe(gulp.dest(COMPILE_CJS))
@@ -180,7 +189,7 @@ function writeCompiledHeader (cb) {
 
 function minify (done) {
   const oldCwd = process.cwd()
-  process.chdir(DIST)
+  process.chdir(COMPILE_BROWSER)
 
   try {
     const result = uglify.minify({
@@ -227,7 +236,7 @@ function validateAscii (done) {
 }
 
 function generateDocs (done) {
-  const all = require(REF_SRC + 'bundleAny')
+  const all = require(REF_SRC + 'browserBundle')
   const functionNames = Object.keys(all)
     .filter(key => typeof all[key] === 'function')
 
@@ -254,9 +263,8 @@ function clean () {
     './dist/',
     './es/',
 
-    // everything in the lib directory, except the `cjs/package.json` file
-    './lib/!(cjs)',
-    './lib/cjs/!(package.json)',
+    // generated browser bundle, esm code, and commonjs code
+    './lib/',
 
     // generated source files
     'src/**/*.generated.js'
@@ -265,7 +273,7 @@ function clean () {
 
 gulp.task('browser', gulp.series(bundle, minify))
 
-gulp.task('cjs', clean)
+gulp.task('clean', clean)
 
 gulp.task('docs', generateDocs)
 
@@ -283,14 +291,14 @@ gulp.task('watch', function watch () {
     delay: 100
   }
 
-  gulp.watch(files, options, gulp.parallel(bundle, compile))
+  gulp.watch(files, options, gulp.parallel(bundle, compileCommonJs))
 })
 
 // The default task (called when you run `gulp`)
 gulp.task('default', gulp.series(
   'clean',
   updateVersionFile,
-  compile,
+  compileCommonJs,
   generateEntryFiles,
   compileEntryFiles,
   compileESModules, // Must be after generateEntryFiles

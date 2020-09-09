@@ -7,7 +7,7 @@ const embeddedDocs = require('../../lib/cjs/expression/embeddedDocs/embeddedDocs
 
 const { expectedInstanceStructure } = createSnapshotFromFactories(factoriesAny)
 
-describe('dist', function () {
+describe('lib/browser', function () {
   it('should load lib/browser/math.js', function () {
     const math = require('../../lib/browser/math.js')
 

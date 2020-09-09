@@ -58,7 +58,7 @@ const PRECISION = 14 // decimals
  * @return {*}
  */
 function getMath () {
-  return require('../lib/cjs/bundleAny')
+  return require('../lib/cjs/defaultInstance.js').default
 }
 
 /**

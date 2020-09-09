@@ -1,8 +1,8 @@
 // test nthRoot
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const matrix = math.matrix
 const sparse = math.sparse
 const unit = math.unit

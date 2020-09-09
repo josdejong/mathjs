@@ -1,6 +1,6 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
 const approx = require('../../../../../tools/approx')
-const math = require('../../../../../lib/cjs/bundleAny')
+const math = require('../../../../../lib/cjs/browserBundle')
 const { csPermute } = require('../../../../../lib/cjs/function/algebra/sparse/csPermute')
 const { createCsLu } = require('../../../../../lib/cjs/function/algebra/sparse/csLu')
 const { createCsSqr } = require('../../../../../lib/cjs/function/algebra/sparse/csSqr')

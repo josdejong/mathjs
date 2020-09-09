@@ -1,7 +1,7 @@
-import assert from 'assert'
-import math from '../../src/bundleAny.cjs'
+const assert = require('assert')
+const math = require('../../lib/cjs/defaultInstance.js').default
 
-describe('bundleAny', function () {
+describe('defaultInstance', function () {
   it('should get a default instance of mathjs', function () {
     assert.strictEqual(typeof math, 'object')
     assert.deepStrictEqual(math.config(), {

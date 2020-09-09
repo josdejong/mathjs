@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { maxArgumentCount, memoize, memoizeCompare } from '../../../src/utils/function'
-import { deepStrictEqual } from '../../../src/utils/object'
+import { maxArgumentCount, memoize, memoizeCompare } from '../../../src/utils/function.js'
+import { deepStrictEqual } from '../../../src/utils/object.js'
 
 describe('util.function', function () {
   describe('memoize', function () {

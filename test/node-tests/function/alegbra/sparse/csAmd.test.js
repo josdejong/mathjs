@@ -1,5 +1,5 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
-const math = require('../../../../../lib/cjs/bundleAny')
+const math = require('../../../../../lib/cjs/browserBundle.js')
 const { createCsAmd } = require('../../../../../lib/cjs/function/algebra/sparse/csAmd')
 
 const assert = require('assert')
