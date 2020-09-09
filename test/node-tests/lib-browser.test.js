@@ -15,31 +15,7 @@ describe('lib/browser', function () {
     assert.strictEqual(math.version, version)
   })
 
-  it('should load lib/browser/math.min.js', function () {
-    const math = require('../../lib/browser/math.min.js')
-
-    assert.strictEqual(math.add(2, 3), 5)
-    assert.strictEqual(math.version, version)
-  })
-
   it('should have all expected functions in lib/browser/main.js', function () {
-    // snapshot testing
-    const math = require('../../lib/browser/math.js')
-
-    // don't output all warnings "math.foo.bar is move to math.bar, ..."
-    const originalWarn = console.warn
-    console.warn = (...args) => {
-      if (args.join(' ').indexOf('is moved to') === -1) {
-        originalWarn.apply(console, args)
-      }
-    }
-
-    validateBundle(expectedInstanceStructure, math)
-
-    console.warn = originalWarn
-  })
-
-  it('should have all expected functions in lib/browser/main.min.js', function () {
     // snapshot testing
     const math = require('../../lib/browser/math.js')
 

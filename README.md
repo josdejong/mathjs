@@ -102,8 +102,8 @@ Then, the project can be build by executing the build script via npm:
 
     npm run build
 
-This will build the library math.js and math.min.js from the source files and
-put them in the folder dist.
+This will build ESM output, CommonJS output, and the bundle math.js 
+from the source files and put them in the folder lib.
 
 
 ## Test

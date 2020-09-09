@@ -6,7 +6,6 @@ const del = require('del')
 const log = require('fancy-log')
 const webpack = require('webpack')
 const babel = require('gulp-babel')
-const uglify = require('uglify-js')
 const mkdirp = require('mkdirp')
 const docgenerator = require('./tools/docgenerator')
 const entryGenerator = require('./tools/entryGenerator')
@@ -26,8 +25,6 @@ const COMPILE_ESM = `${COMPILE_DIR}/esm` // es modules
 const COMPILE_ENTRY_LIB = `${COMPILE_CJS}/entry`
 
 const FILE = 'math.js'
-const FILE_MIN = 'math.min.js'
-const FILE_MAP = 'math.min.map'
 
 const REF_SRC = `${COMPILE_CJS}/`
 const REF_DIR = path.join(__dirname, '/docs')
@@ -101,20 +98,8 @@ const webpackConfig = {
       }
     ]
   },
-  optimization: {
-    minimize: false
-  },
+  devtool: 'source-map',
   cache: true
-}
-
-const uglifyConfig = {
-  sourceMap: {
-    filename: FILE,
-    url: FILE_MAP
-  },
-  output: {
-    comments: /@license/
-  }
 }
 
 // create a single instance of the compiler to allow caching
@@ -188,31 +173,6 @@ function writeCompiledHeader (cb) {
   cb()
 }
 
-function minify (done) {
-  const oldCwd = process.cwd()
-  process.chdir(COMPILE_BROWSER)
-
-  try {
-    const result = uglify.minify({
-      'math.js': fs.readFileSync(FILE, 'utf8')
-    }, uglifyConfig)
-
-    if (result.error) {
-      throw result.error
-    }
-
-    fs.writeFileSync(FILE_MIN, result.code)
-    fs.writeFileSync(FILE_MAP, result.map)
-
-    log(`Minified ${FILE_MIN}`)
-    log(`Mapped ${FILE_MAP}`)
-  } finally {
-    process.chdir(oldCwd)
-  }
-
-  done()
-}
-
 function validateAscii (done) {
   const Reset = '\x1b[0m'
   const BgRed = '\x1b[41m'
@@ -272,7 +232,7 @@ function clean () {
   ])
 }
 
-gulp.task('browser', gulp.series(bundle, minify))
+gulp.task('browser', bundle)
 
 gulp.task('clean', clean)
 
@@ -282,9 +242,8 @@ gulp.task('docs', generateDocs)
 gulp.task('validate:ascii', validateAscii)
 
 // The watch task (to automatically rebuild when the source code changes)
-// Does only generate math.js, not the minified math.min.js
 gulp.task('watch', function watch () {
-  const files = ['package.json', 'number.js.js', 'src/**/*.js']
+  const files = ['package.json', 'src/**/*.js']
   const options = {
     // ignore version.js else we get an infinite loop since it's updated during bundle
     ignored: /version\.js/,
@@ -297,13 +256,13 @@ gulp.task('watch', function watch () {
 
 // The default task (called when you run `gulp`)
 gulp.task('default', gulp.series(
-  'clean',
+  clean,
   updateVersionFile,
   compileCommonJs,
   generateEntryFiles,
   compileEntryFiles,
   compileESModules, // Must be after generateEntryFiles
   writeCompiledHeader,
-  'browser',
-  'docs'
+  bundle,
+  generateDocs
 ))
