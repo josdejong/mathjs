@@ -1,5 +1,5 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
-const math = require('../../../../../lib/cjs/browserBundle.js')
+const math = require('../../../../../lib/cjs/defaultInstance').default
 const approx = require('../../../../../tools/approx')
 const market = require('../../../../../tools/matrixmarket')
 

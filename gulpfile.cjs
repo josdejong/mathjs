@@ -13,7 +13,7 @@ const entryGenerator = require('./tools/entryGenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
 
 const SRC_DIR = path.join(__dirname, '/src')
-const BUNDLE_ENTRY = `${SRC_DIR}/browserBundle.js`
+const BUNDLE_ENTRY = `${SRC_DIR}/defaultInstance.js`
 const HEADER = `${SRC_DIR}/header.js`
 const VERSION = `${SRC_DIR}/version.js`
 const COMPILE_SRC = `${SRC_DIR}/**/*.?(c)js`
@@ -79,6 +79,7 @@ const webpackConfig = {
   output: {
     library: 'math',
     libraryTarget: 'umd',
+    libraryExport: 'default',
     path: COMPILE_BROWSER,
     globalObject: 'this',
     filename: FILE
@@ -236,7 +237,7 @@ function validateAscii (done) {
 }
 
 function generateDocs (done) {
-  const all = require(REF_SRC + 'browserBundle')
+  const all = require(REF_SRC + 'defaultInstance').default
   const functionNames = Object.keys(all)
     .filter(key => typeof all[key] === 'function')
 
