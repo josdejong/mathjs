@@ -13,7 +13,7 @@ const entryGenerator = require('./tools/entryGenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
 
 const SRC_DIR = path.join(__dirname, '/src')
-const ENTRY = `${SRC_DIR}/browserBundle.cjs`
+const BUNDLE_ENTRY = `${SRC_DIR}/browserBundle.js`
 const HEADER = `${SRC_DIR}/header.js`
 const VERSION = `${SRC_DIR}/version.js`
 const COMPILE_SRC = `${SRC_DIR}/**/*.?(c)js`
@@ -73,7 +73,7 @@ const bannerPlugin = new webpack.BannerPlugin({
 })
 
 const webpackConfig = {
-  entry: ENTRY,
+  entry: BUNDLE_ENTRY,
   mode: 'production',
   performance: { hints: false }, // to hide the "asset size limit" warning
   output: {
