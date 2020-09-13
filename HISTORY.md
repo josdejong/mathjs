@@ -2,6 +2,16 @@
 
 # not yet published, version 8.0.0
 
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- You can now use mathjs directly in node.js using ES modules without need for 
+  a transpiler (see #1928, #1941, #1962). 
+  Automatically loading either commonjs code or ES modules code is improved.
+  All generated code is moved under `/lib`: the browser bundle is moved from 
+  `/dist` to `/lib/browser`, ES module files are moved to `/lib/esm`, 
+  and commonjs files are moved to `/lib/cjs`. Thanks @GreenImp.
+- Non-minified bundle `dist/math.js` is no longer provided. Either use the
+  minified bundle, or create a bundle yourself.
 - Replaced random library `seed-random` with `seedrandom`, see #1955. 
   Thanks @poppinlp.
 
