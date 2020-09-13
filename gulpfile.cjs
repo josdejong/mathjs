@@ -221,7 +221,6 @@ function generateEntryFiles (done) {
 function clean () {
   return del([
     // legacy compiled files
-    './dist/',
     './es/',
 
     // generated browser bundle, esm code, and commonjs code
