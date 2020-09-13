@@ -1,5 +1,8 @@
 const assert = require('assert')
+const cp = require('child_process')
+const path = require('path')
 const math = require('../../lib/cjs/defaultInstance.js').default
+const version = require('../../package.json').version
 
 describe('defaultInstance', function () {
   it('should get a default instance of mathjs', function () {
@@ -128,5 +131,20 @@ describe('defaultInstance', function () {
 
     // restore Object.create
     Object.create = create
+  })
+
+  it('should have the correct version number', function () {
+    const math = require('../..')
+
+    assert.strictEqual(math.version, version)
+  })
+
+  it('should be robust against pollution of the Object prototype', function (done) {
+    const filename = path.join(__dirname, 'pollutedObjectPrototype.js')
+    cp.exec('node ' + filename, function (error, result) {
+      assert.strictEqual(error, null)
+      assert.strictEqual(result, '2i\n')
+      done()
+    })
   })
 })
