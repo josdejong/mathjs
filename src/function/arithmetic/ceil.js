@@ -64,7 +64,10 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       if (nearlyEqual(x, round(x, n), config.epsilon)) {
         return round(x, n)
       } else {
-        return ceilNumber(x * Math.pow(10, n)) * Math.pow(10, -n)
+        let [number, exponent] = `${x}e`.split('e')
+        const result = Math.ceil(`${number}e${Number(exponent) + n}`);
+        [number, exponent] = `${result}e`.split('e')
+        return Number(`${number}e${Number(exponent) - n}`)
       }
     },
 

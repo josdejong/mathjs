@@ -157,16 +157,14 @@ describe('ceil', function () {
     approx.deepEqual(ceil(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([2, 4, 6, 8, 10]))
   })
 
-  it('should ceil each element in a matrix, array or range with a given number of decimals', function () {
+  it('should ceil each element in a matrix with a given number of decimals', function () {
     approx.deepEqual(ceil([1.282, 3.415, -5.121, -10.128], 2), [1.29, 3.42, -5.12, -10.12])
     approx.deepEqual(ceil(matrix([1.282, 3.415, -5.121, -10.128]), 2), matrix([1.29, 3.42, -5.12, -10.12]))
   })
 
-
   it('should ceil when number of decimals is provided in an array', function () {
     assert.deepStrictEqual(ceil(3.12385, [2, 3]), [3.13, 3.124])
   })
-
 
   it('should ceil dense matrix', function () {
     assert.deepStrictEqual(ceil(matrix([[1.712, 2.345], [8.987, -3.565]]), 2), matrix([[1.72, 2.35], [8.99, -3.56]]))
@@ -177,7 +175,7 @@ describe('ceil', function () {
   })
 
   it('should ceil sparse matrix', function () {
-    assert.deepStrictEqual(ceil(sparse([[1.7, 0], [8.987, -3.565]]),2), sparse([[1.7, 0], [8.99, -3.56]]))
+    assert.deepStrictEqual(ceil(sparse([[1.7, 0], [8.987, -3.565]]), 2), sparse([[1.7, 0], [8.99, -3.56]]))
   })
 
   it('should ceil sparse matrix and scalar', function () {
