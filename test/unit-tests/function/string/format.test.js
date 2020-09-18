@@ -172,6 +172,15 @@ describe('format', function () {
     })
   })
 
+  describe('base formatting', function () {
+    it('should format in binary, octal, and hexadecimal', function () {
+      assert.strictEqual(math.bin(0b10), '0b10')
+      assert.strictEqual(math.bin(-0b10), '-0b10')
+      assert.strictEqual(math.oct(0o70), '0o70')
+      assert.strictEqual(math.hex(0xf0), '0xf0')
+    })
+  })
+
   describe('bignumber', function () {
     const bigmath = math.create({ precision: 20 }) // ensure the precision is 20 digits
 
