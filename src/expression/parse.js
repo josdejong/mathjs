@@ -321,7 +321,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (parse.isDigitDot(c1)) {
       state.tokenType = TOKENTYPE.NUMBER
 
-      //check for binary, octal, or hex
+      // check for binary, octal, or hex
       const c2 = currentString(state, 2)
       if (c2 === '0b' || c2 === '0o' || c2 === '0x') {
         state.token += currentCharacter(state)
@@ -334,7 +334,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
         return
       }
-            
+
       // get number, can have a single dot
       if (currentCharacter(state) === '.') {
         state.token += currentCharacter(state)
@@ -542,9 +542,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {boolean}
    */
   parse.isHexDigit = function isHexDigit (c) {
-    return (c >= '0' && c <= '9' 
-            || c >= 'a' && c <= 'f' 
-            || c >= 'A' && c <= 'F')
+    return ((c >= '0' && c <= '9') ||
+            (c >= 'a' && c <= 'f') ||
+            (c >= 'A' && c <= 'F'))
   }
 
   /**
