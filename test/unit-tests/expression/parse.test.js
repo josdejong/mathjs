@@ -274,6 +274,9 @@ describe('parse', function () {
 
       assert.throws(function () { parseAndEval('2e+a') }, /Digit expected, got "a"/)
 
+      assert.throws(function () { parseAndEval('0b') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0o') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0x') }, SyntaxError)
       assert.throws(function () { parseAndEval('0b2') }, SyntaxError)
       assert.throws(function () { parseAndEval('0o8') }, SyntaxError)
       assert.throws(function () { parseAndEval('0xg') }, SyntaxError)
