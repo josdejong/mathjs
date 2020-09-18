@@ -209,6 +209,12 @@ export function format (value, options) {
 
   // handle the various notations
   switch (notation) {
+    case 'bin':
+      return `0b${value.toString(2)}`
+    case 'oct':
+      return `0o${value.toString(8)}`
+    case 'hex':
+      return `0x${value.toString(16)}`
     case 'fixed':
       return toFixed(value, precision)
 

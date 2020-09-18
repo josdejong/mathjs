@@ -347,6 +347,12 @@ describe('number', function () {
         assert.strictEqual(format(123456789123, options), '1.235e+11')
       })
 
+      it('should format in binary, octal, and hexadecimal', function () {
+        assert.strictEqual(format(0b10, { notation: 'bin' }), '0b10')
+        assert.strictEqual(format(0o7654321, { notation: 'oct' }), '0o7654321')
+        assert.strictEqual(format(0xfedcba6543210, { notation: 'hex' }), '0xfedcba6543210')
+      })
+
       it('should throw an error on unknown notation', function () {
         assert.throws(function () {
           format(123, { notation: 'non existing' })
