@@ -149,7 +149,9 @@ describe('ceil', function () {
 
   it('should convert a string to a number', function () {
     assert.strictEqual(ceil('1.8'), 2)
-    assert.strictEqual(ceil('1.815', 2), 1.82)
+    assert.strictEqual(ceil('1.815', '2'), 1.82)
+    assert.strictEqual(ceil('1.815', 2).toString(),'1.82')
+    assert.strictEqual(ceil(1.815, '2').toString(),'1.82')
   })
 
   it('should ceil each element in a matrix, array or range', function () {
