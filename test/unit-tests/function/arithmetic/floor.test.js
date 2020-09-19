@@ -142,7 +142,7 @@ describe('floor', function () {
 
   it('should convert a string to a number', function () {
     assert.strictEqual(floor('1.8'), 1)
-    assert.strictEqual(floor('1.812', '2').toString(), '1.81')
+    assert.strictEqual(floor('1.812', '2'), '1.81')
     assert.strictEqual(floor('1.812', 2).toString(), '1.81')
     assert.strictEqual(floor(1.812, '2').toString(), '1.81')
   })
