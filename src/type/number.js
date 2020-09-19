@@ -82,5 +82,12 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
     return parseFloat(json.value)
   }
 
+  // Implements toSI() for scalars. For example:
+  //      math.evaluate('2 m / 1 m').toSI() => return 2
+  //
+  Number.prototype.toSI = function () { // eslint-disable-line no-extend-native
+    return this
+  }
+
   return number
 })

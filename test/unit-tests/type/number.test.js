@@ -42,6 +42,12 @@ describe('number', function () {
     approx.equal(number(' '), 0)
   })
 
+  it('should convert to SI', function () {
+    approx.equal(number(42.422).toSI(), 42.422)
+    approx.equal(number('2.1e3').toSI(), 2100)
+    approx.equal(number('').toSI(), 0)
+  })
+
   it('should throw an error if called with an invalid string', function () {
     assert.throws(function () { number('2.3.4') }, SyntaxError)
     assert.throws(function () { number('23a') }, SyntaxError)
