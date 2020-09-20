@@ -1,7 +1,7 @@
-import { isInteger } from '../../utils/number'
-import { factory } from '../../utils/factory'
-import { createSimplifyConstant } from './simplify/simplifyConstant'
-import { createSimplifyCore } from './simplify/simplifyCore'
+import { isInteger } from '../../utils/number.js'
+import { factory } from '../../utils/factory.js'
+import { createSimplifyConstant } from './simplify/simplifyConstant.js'
+import { createSimplifyCore } from './simplify/simplifyCore.js'
 
 const name = 'rationalize'
 const dependencies = [

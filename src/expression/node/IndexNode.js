@@ -1,8 +1,8 @@
-import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '../../utils/is'
-import { map } from '../../utils/array'
-import { escape } from '../../utils/string'
-import { factory } from '../../utils/factory'
-import { getSafeProperty } from '../../utils/customs'
+import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '../../utils/is.js'
+import { map } from '../../utils/array.js'
+import { escape } from '../../utils/string.js'
+import { factory } from '../../utils/factory.js'
+import { getSafeProperty } from '../../utils/customs.js'
 
 const name = 'IndexNode'
 const dependencies = [

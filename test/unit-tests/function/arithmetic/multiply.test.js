@@ -1,8 +1,8 @@
 // test multiply
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
-import approx from '../../../../tools/approx'
+import math from '../../../../src/defaultInstance.js'
+import approx from '../../../../tools/approx.js'
 const multiply = math.multiply
 const divide = math.divide
 const matrix = math.matrix

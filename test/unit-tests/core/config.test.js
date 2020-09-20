@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/bundleAny'
+import math from '../../../src/defaultInstance.js'
 
 describe('config', function () {
   it('should allow setting config after having overwritten import', () => {

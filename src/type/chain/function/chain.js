@@ -1,4 +1,4 @@
-import { factory } from '../../../utils/factory'
+import { factory } from '../../../utils/factory.js'
 
 const name = 'chain'
 const dependencies = ['typed', 'Chain']

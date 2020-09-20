@@ -1,7 +1,7 @@
 import assert from 'assert'
-import approx from '../../tools/approx'
-import { createBigNumberClass } from '../../src/type/bignumber/BigNumber'
-import { createComplexClass } from '../../src/type/complex/Complex'
+import approx from '../../tools/approx.js'
+import { createBigNumberClass } from '../../src/type/bignumber/BigNumber.js'
+import { createComplexClass } from '../../src/type/complex/Complex.js'
 import {
   createE,
   createFalse,
@@ -19,7 +19,7 @@ import {
   createSQRT1_2, // eslint-disable-line camelcase
   createTau,
   createTrue
-} from '../../src/constants'
+} from '../../src/constants.js'
 
 describe('constants', function () {
   describe('number', function () {

@@ -1,4 +1,4 @@
-import { hasOwnProperty } from './object'
+import { hasOwnProperty } from './object.js'
 
 /**
  * Get a property of a plain object

@@ -1,22 +1,22 @@
 // configuration
-export { config } from './configReadonly'
+export { config } from './configReadonly.js'
 
 // functions and constants
-export * from './pureFunctionsAny.generated'
-export * from './impureFunctionsAny.generated'
-export * from './typeChecks'
+export * from './pureFunctionsAny.generated.js'
+export * from './impureFunctionsAny.generated.js'
+export * from './typeChecks.js'
 
 // error classes
-export { IndexError } from '../error/IndexError'
-export { DimensionError } from '../error/DimensionError'
-export { ArgumentsError } from '../error/ArgumentsError'
+export { IndexError } from '../error/IndexError.js'
+export { DimensionError } from '../error/DimensionError.js'
+export { ArgumentsError } from '../error/ArgumentsError.js'
 
 // dependency groups
-export * from './dependenciesAny.generated'
+export * from './dependenciesAny.generated.js'
 
 // factory functions
-export * from '../factoriesAny'
+export * from '../factoriesAny.js'
 
 // core
-export { create } from '../core/create'
-export { factory } from '../utils/factory'
+export { create } from '../core/create.js'
+export { factory } from '../utils/factory.js'

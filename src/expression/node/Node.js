@@ -1,8 +1,8 @@
-import { isNode } from '../../utils/is'
+import { isNode } from '../../utils/is.js'
 
-import { keywords } from '../keywords'
-import { deepStrictEqual, hasOwnProperty } from '../../utils/object'
-import { factory } from '../../utils/factory'
+import { keywords } from '../keywords.js'
+import { deepStrictEqual, hasOwnProperty } from '../../utils/object.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Node'
 const dependencies = ['mathWithTransform']

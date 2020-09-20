@@ -1,8 +1,8 @@
 // test expm1
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const complex = math.complex
 const matrix = math.matrix
 const sparse = math.sparse

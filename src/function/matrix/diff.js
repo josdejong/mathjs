@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { isInteger } from '../../utils/number'
-import { isMatrix } from '../../utils/is'
+import { factory } from '../../utils/factory.js'
+import { isInteger } from '../../utils/number.js'
+import { isMatrix } from '../../utils/is.js'
 
 const name = 'diff'
 const dependencies = ['typed', 'matrix', 'subtract', 'number']

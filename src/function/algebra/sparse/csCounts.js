@@ -1,5 +1,5 @@
-import { factory } from '../../../utils/factory'
-import { csLeaf } from './csLeaf'
+import { factory } from '../../../utils/factory.js'
+import { csLeaf } from './csLeaf.js'
 
 const name = 'csCounts'
 const dependencies = [

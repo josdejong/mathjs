@@ -1,5 +1,5 @@
-import { factory } from '../../../utils/factory'
-import { DimensionError } from '../../../error/DimensionError'
+import { factory } from '../../../utils/factory.js'
+import { DimensionError } from '../../../error/DimensionError.js'
 
 const name = 'algorithm04'
 const dependencies = ['typed', 'equalScalar']

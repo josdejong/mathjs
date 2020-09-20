@@ -1,6 +1,6 @@
-import { isNode } from '../../utils/is'
-import { forEach, map } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { isNode } from '../../utils/is.js'
+import { forEach, map } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'BlockNode'
 const dependencies = [

@@ -1,8 +1,8 @@
 // test lsolveAll
 import assert from 'assert'
 
-import approx from '../../../../../tools/approx'
-import math from '../../../../../src/bundleAny'
+import approx from '../../../../../tools/approx.js'
+import math from '../../../../../src/defaultInstance.js'
 
 describe('lsolveAll', function () {
   it('should solve linear system 4 x 4, arrays', function () {

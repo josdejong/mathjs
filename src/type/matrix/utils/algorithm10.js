@@ -1,4 +1,4 @@
-import { factory } from '../../../utils/factory'
+import { factory } from '../../../utils/factory.js'
 
 const name = 'algorithm10'
 const dependencies = ['typed', 'DenseMatrix']

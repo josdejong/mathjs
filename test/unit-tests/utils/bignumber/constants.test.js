@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import BigNumber from 'decimal.js'
-import { createBigNumberE, createBigNumberPhi, createBigNumberPi, createBigNumberTau } from '../../../../src/utils/bignumber/constants'
+import { createBigNumberE, createBigNumberPhi, createBigNumberPi, createBigNumberTau } from '../../../../src/utils/bignumber/constants.js'
 
 const Big32 = BigNumber.clone({ precision: 32 })
 const Big64 = BigNumber.clone({ precision: 64 })

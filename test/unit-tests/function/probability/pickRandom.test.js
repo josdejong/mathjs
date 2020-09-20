@@ -1,6 +1,5 @@
 import assert from 'assert'
-import { filter, times } from 'lodash'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 
 const math2 = math.create({ randomSeed: 'test2' })
 const pickRandom = math2.pickRandom
@@ -126,19 +125,19 @@ describe('pickRandom', function () {
       picked.push(pickRandom(possibles))
     })
 
-    count = filter(picked, function (val) { return val === 11 }).length
+    count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 22 }).length
+    count = picked.filter(function (val) { return val === 22 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 33 }).length
+    count = picked.filter(function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 44 }).length
+    count = picked.filter(function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 55 }).length
+    count = picked.filter(function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
@@ -151,19 +150,19 @@ describe('pickRandom', function () {
       picked.push(pickRandom(possibles))
     })
 
-    count = filter(picked, function (val) { return val === 11 }).length
+    count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 22 }).length
+    count = picked.filter(function (val) { return val === 22 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 33 }).length
+    count = picked.filter(function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 44 }).length
+    count = picked.filter(function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 55 }).length
+    count = picked.filter(function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
@@ -179,19 +178,19 @@ describe('pickRandom', function () {
 
     assert.strictEqual(picked.length, 2000)
 
-    count = filter(picked, function (val) { return val === 11 }).length
+    count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 22 }).length
+    count = picked.filter(function (val) { return val === 22 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 33 }).length
+    count = picked.filter(function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 44 }).length
+    count = picked.filter(function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 55 }).length
+    count = picked.filter(function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
@@ -207,19 +206,19 @@ describe('pickRandom', function () {
 
     assert.strictEqual(picked.length, 3000)
 
-    count = filter(picked, function (val) { return val === 11 }).length
+    count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 22 }).length
+    count = picked.filter(function (val) { return val === 22 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 33 }).length
+    count = picked.filter(function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 44 }).length
+    count = picked.filter(function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 55 }).length
+    count = picked.filter(function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
@@ -233,19 +232,19 @@ describe('pickRandom', function () {
       picked.push(pickRandom(possibles, weights))
     })
 
-    count = filter(picked, function (val) { return val === 11 }).length
+    count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = filter(picked, function (val) { return val === 22 }).length
+    count = picked.filter(function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = filter(picked, function (val) { return val === 33 }).length
+    count = picked.filter(function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = filter(picked, function (val) { return val === 44 }).length
+    count = picked.filter(function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 55 }).length
+    count = picked.filter(function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
@@ -259,19 +258,19 @@ describe('pickRandom', function () {
       picked.push(pickRandom(possibles, weights))
     })
 
-    count = filter(picked, function (val) { return val === 11 }).length
+    count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = filter(picked, function (val) { return val === 22 }).length
+    count = picked.filter(function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = filter(picked, function (val) { return val === 33 }).length
+    count = picked.filter(function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = filter(picked, function (val) { return val === 44 }).length
+    count = picked.filter(function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 55 }).length
+    count = picked.filter(function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
@@ -286,38 +285,38 @@ describe('pickRandom', function () {
       picked.push.apply(picked, pickRandom(possibles, number, weights))
     })
 
-    count = filter(picked, function (val) { return val === 11 }).length
+    count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = filter(picked, function (val) { return val === 22 }).length
+    count = picked.filter(function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = filter(picked, function (val) { return val === 33 }).length
+    count = picked.filter(function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = filter(picked, function (val) { return val === 44 }).length
+    count = picked.filter(function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 55 }).length
+    count = picked.filter(function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
 
     times(1000, function () {
       picked.push.apply(picked, pickRandom(possibles, weights, number))
     })
 
-    count = filter(picked, function (val) { return val === 11 }).length
+    count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = filter(picked, function (val) { return val === 22 }).length
+    count = picked.filter(function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = filter(picked, function (val) { return val === 33 }).length
+    count = picked.filter(function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = filter(picked, function (val) { return val === 44 }).length
+    count = picked.filter(function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 55 }).length
+    count = picked.filter(function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
@@ -332,38 +331,38 @@ describe('pickRandom', function () {
       picked.push.apply(picked, pickRandom(possibles, number, weights))
     })
 
-    count = filter(picked, function (val) { return val === 11 }).length
+    count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = filter(picked, function (val) { return val === 22 }).length
+    count = picked.filter(function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = filter(picked, function (val) { return val === 33 }).length
+    count = picked.filter(function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = filter(picked, function (val) { return val === 44 }).length
+    count = picked.filter(function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 55 }).length
+    count = picked.filter(function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
 
     times(1000, function () {
       picked.push.apply(picked, pickRandom(possibles, weights, number))
     })
 
-    count = filter(picked, function (val) { return val === 11 }).length
+    count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = filter(picked, function (val) { return val === 22 }).length
+    count = picked.filter(function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = filter(picked, function (val) { return val === 33 }).length
+    count = picked.filter(function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = filter(picked, function (val) { return val === 44 }).length
+    count = picked.filter(function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = filter(picked, function (val) { return val === 55 }).length
+    count = picked.filter(function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
@@ -380,3 +379,9 @@ describe('pickRandom', function () {
     assert.strictEqual(expression.toTex(), '\\mathrm{pickRandom}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}\\right)')
   })
 })
+
+function times (n, callback) {
+  for (let i = 0; i < n; i++) {
+    callback()
+  }
+}

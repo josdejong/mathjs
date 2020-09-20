@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const bellNumbers = math.bellNumbers
 
 describe('bellNumbers', function () {

@@ -1,8 +1,8 @@
 // test Help
 import assert from 'assert'
 
-import math from '../../../src/bundleAny'
-import { embeddedDocs } from '../../../src/expression/embeddedDocs/embeddedDocs'
+import math from '../../../src/defaultInstance.js'
+import { embeddedDocs } from '../../../src/expression/embeddedDocs/embeddedDocs.js'
 const Help = math.Help
 
 describe('help', function () {

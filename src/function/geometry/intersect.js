@@ -1,5 +1,5 @@
-import { isBigNumber } from '../../utils/is'
-import { factory } from '../../utils/factory'
+import { isBigNumber } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'intersect'
 const dependencies = [

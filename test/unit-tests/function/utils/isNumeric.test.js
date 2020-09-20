@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const isNumeric = math.isNumeric
 const bignumber = math.bignumber
 const fraction = math.fraction

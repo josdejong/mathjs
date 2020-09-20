@@ -1,9 +1,9 @@
 import assert from 'assert'
-import mathjs from '../../../src/bundleAny'
-import approx from '../../../tools/approx'
-import { factory } from '../../../src/utils/factory'
-import { create } from '../../../src/core/create'
-import { hasOwnProperty } from '../../../src/utils/object'
+import mathjs from '../../../src/defaultInstance.js'
+import approx from '../../../tools/approx.js'
+import { factory } from '../../../src/utils/factory.js'
+import { create } from '../../../src/core/create.js'
+import { hasOwnProperty } from '../../../src/utils/object.js'
 
 const multiplyTestFactory = factory('multiplyTest', [], () => {
   return function multiply (a, b) {

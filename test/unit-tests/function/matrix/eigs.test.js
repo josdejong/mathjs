@@ -1,6 +1,6 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
-import approx from '../../../../tools/approx'
+import math from '../../../../src/defaultInstance.js'
+import approx from '../../../../tools/approx.js'
 const eigs = math.eigs
 
 describe('eigs', function () {

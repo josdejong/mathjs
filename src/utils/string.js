@@ -1,6 +1,6 @@
-import { isBigNumber, isString, typeOf } from './is'
-import { format as formatNumber } from './number'
-import { format as formatBigNumber } from './bignumber/formatter'
+import { isBigNumber, isString, typeOf } from './is.js'
+import { format as formatNumber } from './number.js'
+import { format as formatBigNumber } from './bignumber/formatter.js'
 
 /**
  * Check if a text ends with a certain string.

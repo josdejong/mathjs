@@ -1,10 +1,10 @@
-import { factory } from '../../utils/factory'
-import { extend } from '../../utils/object'
-import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
-import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04'
-import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { factory } from '../../utils/factory.js'
+import { extend } from '../../utils/object.js'
+import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01.js'
+import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04.js'
+import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10.js'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
 
 const name = 'add'
 const dependencies = [

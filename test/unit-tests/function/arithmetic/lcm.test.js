@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const matrix = math.matrix
 const sparse = math.sparse
 const lcm = math.lcm

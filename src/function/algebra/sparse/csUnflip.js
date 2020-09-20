@@ -1,4 +1,4 @@
-import { csFlip } from './csFlip'
+import { csFlip } from './csFlip.js'
 
 /**
  * Flips the value if it is negative of returns the same value otherwise.

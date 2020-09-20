@@ -1,9 +1,9 @@
 import assert from 'assert'
-import approx from '../../../../../tools/approx'
-import math from '../../../../../src/bundleAny'
-import { csPermute } from '../../../../../src/function/algebra/sparse/csPermute'
-import { createCsLu } from '../../../../../src/function/algebra/sparse/csLu'
-import { createCsSqr } from '../../../../../src/function/algebra/sparse/csSqr'
+import approx from '../../../../../tools/approx.js'
+import math from '../../../../../src/defaultInstance.js'
+import { csPermute } from '../../../../../src/function/algebra/sparse/csPermute.js'
+import { createCsLu } from '../../../../../src/function/algebra/sparse/csLu.js'
+import { createCsSqr } from '../../../../../src/function/algebra/sparse/csSqr.js'
 
 const { abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, SparseMatrix } = math
 

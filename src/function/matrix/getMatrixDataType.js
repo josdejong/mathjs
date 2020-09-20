@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { getArrayDataType } from '../../utils/array'
-import { typeOf } from '../../utils/is'
+import { factory } from '../../utils/factory.js'
+import { getArrayDataType } from '../../utils/array.js'
+import { typeOf } from '../../utils/is.js'
 
 const name = 'getMatrixDataType'
 const dependencies = ['typed']

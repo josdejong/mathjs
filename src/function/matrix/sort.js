@@ -1,5 +1,5 @@
-import { arraySize as size } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { arraySize as size } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'sort'
 const dependencies = ['typed', 'matrix', 'compare', 'compareNatural']

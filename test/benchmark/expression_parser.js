@@ -6,7 +6,7 @@ const assert = require('assert')
 const Benchmark = require('benchmark')
 const padRight = require('pad-right')
 const math = require('../..')
-const getSafeProperty = require('../../lib/utils/customs').getSafeProperty
+const getSafeProperty = require('../../lib/cjs/utils/customs').getSafeProperty
 
 // expose on window when using bundled in a browser
 if (typeof window !== 'undefined') {
