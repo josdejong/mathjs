@@ -71,7 +71,7 @@
     "pad-right": "0.2.2",
     "standard": "14.3.4",
     "sylvester": "0.0.21",
-    "uglify-js": "3.10.3",
+    "uglify-js": "3.10.4",
     "webpack": "4.44.1",
     "zeros": "1.0.0"
   },
