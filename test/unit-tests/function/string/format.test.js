@@ -175,9 +175,17 @@ describe('format', function () {
   describe('base formatting', function () {
     it('should format in binary, octal, and hexadecimal', function () {
       assert.strictEqual(math.bin(0b10), '0b10')
-      assert.strictEqual(math.bin(-0b10), '-0b10')
+      assert.strictEqual(math.hex(-1), '0xffffffff')
       assert.strictEqual(math.oct(0o70), '0o70')
       assert.strictEqual(math.hex(0xf0), '0xf0')
+      assert.strictEqual(math.hex(0x7fffffff), '0x7fffffff')
+    })
+    it('should throw an error for invalid values', function () {
+      assert.throws(function () { math.bin(1.5) }, Error, 'Value must be an integer')
+      assert.throws(function () { math.oct(1.5) }, Error, 'Value must be an integer')
+      assert.throws(function () { math.hex(1.5) }, Error, 'Value must be an integer')
+      assert.throws(function () { math.hex(-(2 ** 31 + 1)) }, Error, 'Value must be in range [-2^31, 2^31-1]')
+      assert.throws(function () { math.hex(2 ** 31) }, Error, 'Value must be in range [-2^31, 2^31-1]')
     })
   })
 

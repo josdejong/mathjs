@@ -249,9 +249,15 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('0x0'), 0)
       assert.strictEqual(parseAndEval('0b01'), 0b1)
       assert.strictEqual(parseAndEval('0o01234567'), 0o01234567)
-      assert.strictEqual(parseAndEval('0x0123abcdef'), 0x0123abcdef)
-      assert.strictEqual(parseAndEval('0x0123456789'), 0x0123456789)
-      assert.strictEqual(parseAndEval('0x0123ABCDEF'), 0x0123abcdef)
+      assert.strictEqual(parseAndEval('0xabcdef'), 0xabcdef)
+      assert.strictEqual(parseAndEval('0x3456789'), 0x3456789)
+      assert.strictEqual(parseAndEval('0xABCDEF'), 0xabcdef)
+      assert.strictEqual(parseAndEval('0xffffffff'), -1)
+      assert.strictEqual(parseAndEval('0xfffffffe'), -2)
+      assert.strictEqual(parseAndEval('0o37777777777'), -1)
+      assert.strictEqual(parseAndEval('0b11111111111111111111111111111111'), -1)
+      assert.strictEqual(parseAndEval('0b11111111111111111111111111111110'), -2)
+      assert.strictEqual(parseAndEval('0x7fffffff'), 2 ** 31 - 1)
     })
 
     it('should parse a number followed by e', function () {
@@ -281,6 +287,7 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('0o8') }, SyntaxError)
       assert.throws(function () { parseAndEval('0xg') }, SyntaxError)
       assert.throws(function () { parseAndEval('0x12.3') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0x100000000') }, SyntaxError)
     })
   })
 
