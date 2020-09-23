@@ -283,7 +283,7 @@ const ans = math.evaluate('0.1 + 0.2')  //  0.30000000000000004
 math.format(ans, {precision: 14})       // "0.3"
 ```
 
-Numbers can be expressed as binary, octacl, and hexadecimal literals:
+Numbers can be expressed as binary, octal, and hexadecimal literals:
 
 ```js
 math.evaluate('0b11')  //  3
