@@ -65,11 +65,18 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     'number, number': modNumber,
 
     'BigNumber, BigNumber': function (x, y) {
+      if (y.isNeg()) {
+        throw new Error('Cannot calculate mod for a negative divisor')
+      }
       return y.isZero() ? x : x.mod(y)
     },
 
     'Fraction, Fraction': function (x, y) {
-      return x.mod(y)
+      if (y.compare(0) < 0) {
+        throw new Error('Cannot calculate mod for a negative divisor')
+      }
+      // Workaround suggested in Fraction.js library to calculate correct modulo for negative dividend
+      return x.compare(0) >= 0 ? x.mod(y) : x.mod(y).add(y).mod(y)
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
