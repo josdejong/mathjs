@@ -1,6 +1,5 @@
 import { factory } from '../../utils/factory'
 import { isNumber } from '../../utils/is'
-import { arraySize } from '../../utils/array'
 import { createRng } from './util/seededRNG'
 
 const name = 'pickRandom'
@@ -79,10 +78,6 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
     possibles = possibles.valueOf() // get Array
     if (weights) {
       weights = weights.valueOf() // get Array
-    }
-
-    if (arraySize(possibles).length > 1) {
-      throw new Error('Only one dimensional vectors supported')
     }
 
     let totalWeights = 0
