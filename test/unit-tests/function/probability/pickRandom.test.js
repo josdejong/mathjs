@@ -1,6 +1,6 @@
 import assert from 'assert'
+import { filter, times } from 'lodash'
 import math from '../../../../src/bundleAny'
-import _ from 'underscore'
 
 const math2 = math.create({ randomSeed: 'test2' })
 const pickRandom = math2.pickRandom
@@ -122,23 +122,23 @@ describe('pickRandom', function () {
     const picked = []
     let count
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push(pickRandom(possibles))
     })
 
-    count = _.filter(picked, function (val) { return val === 11 }).length
+    count = filter(picked, function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 22 }).length
+    count = filter(picked, function (val) { return val === 22 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 33 }).length
+    count = filter(picked, function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 44 }).length
+    count = filter(picked, function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 55 }).length
+    count = filter(picked, function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
@@ -147,23 +147,23 @@ describe('pickRandom', function () {
     const picked = []
     let count
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push(pickRandom(possibles))
     })
 
-    count = _.filter(picked, function (val) { return val === 11 }).length
+    count = filter(picked, function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 22 }).length
+    count = filter(picked, function (val) { return val === 22 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 33 }).length
+    count = filter(picked, function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 44 }).length
+    count = filter(picked, function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 55 }).length
+    count = filter(picked, function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
@@ -173,25 +173,25 @@ describe('pickRandom', function () {
     const picked = []
     let count
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push.apply(picked, pickRandom(possibles, number))
     })
 
     assert.strictEqual(picked.length, 2000)
 
-    count = _.filter(picked, function (val) { return val === 11 }).length
+    count = filter(picked, function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 22 }).length
+    count = filter(picked, function (val) { return val === 22 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 33 }).length
+    count = filter(picked, function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 44 }).length
+    count = filter(picked, function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 55 }).length
+    count = filter(picked, function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
@@ -201,25 +201,25 @@ describe('pickRandom', function () {
     const picked = []
     let count
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push.apply(picked, pickRandom(possibles, number))
     })
 
     assert.strictEqual(picked.length, 3000)
 
-    count = _.filter(picked, function (val) { return val === 11 }).length
+    count = filter(picked, function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 22 }).length
+    count = filter(picked, function (val) { return val === 22 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 33 }).length
+    count = filter(picked, function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 44 }).length
+    count = filter(picked, function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 55 }).length
+    count = filter(picked, function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
@@ -229,23 +229,23 @@ describe('pickRandom', function () {
     const picked = []
     let count
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push(pickRandom(possibles, weights))
     })
 
-    count = _.filter(picked, function (val) { return val === 11 }).length
+    count = filter(picked, function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = _.filter(picked, function (val) { return val === 22 }).length
+    count = filter(picked, function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = _.filter(picked, function (val) { return val === 33 }).length
+    count = filter(picked, function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = _.filter(picked, function (val) { return val === 44 }).length
+    count = filter(picked, function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 55 }).length
+    count = filter(picked, function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
@@ -255,23 +255,23 @@ describe('pickRandom', function () {
     const picked = []
     let count
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push(pickRandom(possibles, weights))
     })
 
-    count = _.filter(picked, function (val) { return val === 11 }).length
+    count = filter(picked, function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = _.filter(picked, function (val) { return val === 22 }).length
+    count = filter(picked, function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = _.filter(picked, function (val) { return val === 33 }).length
+    count = filter(picked, function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = _.filter(picked, function (val) { return val === 44 }).length
+    count = filter(picked, function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 55 }).length
+    count = filter(picked, function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
@@ -282,42 +282,42 @@ describe('pickRandom', function () {
     const picked = []
     let count
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push.apply(picked, pickRandom(possibles, number, weights))
     })
 
-    count = _.filter(picked, function (val) { return val === 11 }).length
+    count = filter(picked, function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = _.filter(picked, function (val) { return val === 22 }).length
+    count = filter(picked, function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = _.filter(picked, function (val) { return val === 33 }).length
+    count = filter(picked, function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = _.filter(picked, function (val) { return val === 44 }).length
+    count = filter(picked, function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 55 }).length
+    count = filter(picked, function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push.apply(picked, pickRandom(possibles, weights, number))
     })
 
-    count = _.filter(picked, function (val) { return val === 11 }).length
+    count = filter(picked, function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = _.filter(picked, function (val) { return val === 22 }).length
+    count = filter(picked, function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = _.filter(picked, function (val) { return val === 33 }).length
+    count = filter(picked, function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = _.filter(picked, function (val) { return val === 44 }).length
+    count = filter(picked, function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 55 }).length
+    count = filter(picked, function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
@@ -328,42 +328,42 @@ describe('pickRandom', function () {
     const picked = []
     let count
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push.apply(picked, pickRandom(possibles, number, weights))
     })
 
-    count = _.filter(picked, function (val) { return val === 11 }).length
+    count = filter(picked, function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = _.filter(picked, function (val) { return val === 22 }).length
+    count = filter(picked, function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = _.filter(picked, function (val) { return val === 33 }).length
+    count = filter(picked, function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = _.filter(picked, function (val) { return val === 44 }).length
+    count = filter(picked, function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 55 }).length
+    count = filter(picked, function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push.apply(picked, pickRandom(possibles, weights, number))
     })
 
-    count = _.filter(picked, function (val) { return val === 11 }).length
+    count = filter(picked, function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = _.filter(picked, function (val) { return val === 22 }).length
+    count = filter(picked, function (val) { return val === 22 }).length
     assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
-    count = _.filter(picked, function (val) { return val === 33 }).length
+    count = filter(picked, function (val) { return val === 33 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = _.filter(picked, function (val) { return val === 44 }).length
+    count = filter(picked, function (val) { return val === 44 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = _.filter(picked, function (val) { return val === 55 }).length
+    count = filter(picked, function (val) { return val === 55 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
