@@ -6,9 +6,12 @@ import { createComplex } from './eigs/complex'
 
 const name = 'eigs'
 
-const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'inv', 'bignumber', 'multiply', 'add']
+const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'complex', 'sqrt', 'diag', 'qr', 'usolveAll', 'im', 're']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add, larger, column, flatten, complex, sqrt, diag, qr, usolveAll, im, re }) => {
+
+  const doRealSymetric = createRealSymmetric({ addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
+  const doComplex = createComplex({ addScalar, subtract, multiply, sqrt, abs, bignumber, diag, qr, inv, usolveAll })
 
   /**
    * Compute eigenvalues and eigenvectors of a matrix.
@@ -57,9 +60,6 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
       return computeValuesAndVectors(mat, prec)
     }
   })
-
-  const doRealSymetric = createRealSymmetric({ addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
-  const doComplex = createComplex({ addScalar, subtract, multiply, sqrt, abs, bignumber, diag, qr, inv, usolve })
 
   function computeValuesAndVectors (mat, prec) {
     if (prec === undefined) {

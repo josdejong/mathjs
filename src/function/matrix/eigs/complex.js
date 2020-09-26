@@ -1,6 +1,6 @@
 import { clone } from '../../../utils/object'
 
-export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignumber, diag, inv, qr, usolve }) {
+export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignumber, diag, inv, qr, usolveAll }) {
   /**
    * @param {number[][]} arr the matrix to find eigenvalues of
    * @param {number} N size of the matrix
@@ -405,9 +405,9 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
     const vectors = []
 
     for (const l of values) {
-      // !FIXME this is a mock implementation
-      const v = usolve(subtract(U, multiply(l, E)), b)
-      vectors.push(multiply(C, v))
+      // ! FIXME might fail for imprecise eigenvalues, replace with an iterative eigenvector algorithm
+      const V = usolveAll(subtract(U, multiply(l, E)), b)
+      for (const v of V) { vectors.push(multiply(C, v)) }
     }
 
     return vectors
