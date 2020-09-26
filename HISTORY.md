@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 7.3.0
+# 2020-09-26, version 7.3.0
 
 - Implemented functions `usolveAll` and `lsolveAll`, see #1916. Thanks @m93a.
 - Implemented support for units in functions `std` and `variance`, see #1950. 
