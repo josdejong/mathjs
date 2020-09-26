@@ -6,12 +6,12 @@ import { createComplex } from './eigs/complex'
 
 const name = 'eigs'
 
-const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'complex', 'sqrt', 'diag', 'qr', 'usolveAll', 'im', 're']
+const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number', 'complex', 'sqrt', 'diag', 'qr', 'usolveAll', 'im', 're', 'smaller']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add, larger, column, flatten, complex, sqrt, diag, qr, usolveAll, im, re }) => {
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, qr, usolveAll, im, re, smaller }) => {
 
-  const doRealSymetric = createRealSymmetric({ addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
-  const doComplex = createComplex({ addScalar, subtract, multiply, sqrt, abs, bignumber, diag, qr, inv, usolveAll })
+  const doRealSymetric = createRealSymmetric({ config, addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
+  const doComplex = createComplex({ config, addScalar, subtract, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolveAll, equal, complex, larger, smaller })
 
   /**
    * Compute eigenvalues and eigenvectors of a matrix.

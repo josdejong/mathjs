@@ -1,13 +1,13 @@
 import { clone } from '../../../utils/object'
 
-export function createRealSymmetric ({ addScalar, subtract, column, flatten, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
+export function createRealSymmetric ({ config, addScalar, subtract, column, flatten, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
   /**
    * @param {number[] | BigNumber[]} arr
    * @param {number} N
    * @param {number} prec
    * @param {'number' | 'BigNumber'} type
    */
-  function main (arr, N, prec = 1E-12, type) {
+  function main (arr, N, prec = config.epsilon, type) {
     if (type === 'number') {
       return diag(arr, prec)
     }
@@ -78,26 +78,22 @@ export function createRealSymmetric ({ addScalar, subtract, column, flatten, abs
 
   // get angle
   function getTheta (aii, ajj, aij) {
-    let th = 0
     const denom = (ajj - aii)
-    if (Math.abs(denom) <= 1E-14) {
-      th = Math.PI / 4.0
+    if (Math.abs(denom) <= config.epsilon) {
+      return Math.PI / 4.0
     } else {
-      th = 0.5 * Math.atan(2.0 * aij / (ajj - aii))
+      return 0.5 * Math.atan(2.0 * aij / (ajj - aii))
     }
-    return th
   }
 
   // get angle
   function getThetaBig (aii, ajj, aij) {
-    let th = 0
     const denom = subtract(ajj, aii)
-    if (abs(denom) <= 1E-14) {
-      th = Math.PI / 4.0
+    if (abs(denom) <= config.epsilon) {
+      return bignumber(-1).acos().div(4)
     } else {
-      th = multiplyScalar(0.5, atan(multiply(2.0, aij, inv(denom))))
+      return multiplyScalar(0.5, atan(multiply(2.0, aij, inv(denom))))
     }
-    return th
   }
 
   // update eigvec
@@ -122,8 +118,8 @@ export function createRealSymmetric ({ addScalar, subtract, column, flatten, abs
     const N = Sij.length
     const c = cos(theta)
     const s = sin(theta)
-    const Ski = createArray(N, 0)
-    const Skj = createArray(N, 0)
+    const Ski = createArray(N, bignumber(0))
+    const Skj = createArray(N, bignumber(0))
     for (let k = 0; k < N; k++) {
       Ski[k] = subtract(multiplyScalar(c, Sij[k][i]), multiplyScalar(s, Sij[k][j]))
       Skj[k] = addScalar(multiplyScalar(s, Sij[k][i]), multiplyScalar(c, Sij[k][j]))
@@ -142,10 +138,10 @@ export function createRealSymmetric ({ addScalar, subtract, column, flatten, abs
     const s = bignumber(sin(theta))
     const c2 = multiplyScalar(c, c)
     const s2 = multiplyScalar(s, s)
-    const Aki = createArray(N, 0)
-    const Akj = createArray(N, 0)
+    const Aki = createArray(N, bignumber(0))
+    const Akj = createArray(N, bignumber(0))
     // 2cs Hij
-    const csHij = multiply(2, c, s, Hij[i][j])
+    const csHij = multiply(bignumber(2), c, s, Hij[i][j])
     //  Aii
     const Aii = addScalar(subtract(multiplyScalar(c2, Hij[i][i]), csHij), multiplyScalar(s2, Hij[j][j]))
     const Ajj = add(multiplyScalar(s2, Hij[i][i]), csHij, multiplyScalar(c2, Hij[j][j]))
@@ -157,8 +153,8 @@ export function createRealSymmetric ({ addScalar, subtract, column, flatten, abs
     // Modify Hij
     Hij[i][i] = Aii
     Hij[j][j] = Ajj
-    Hij[i][j] = 0
-    Hij[j][i] = 0
+    Hij[i][j] = bignumber(0)
+    Hij[j][i] = bignumber(0)
     // 0  to i
     for (let k = 0; k < N; k++) {
       if (k !== i && k !== j) {

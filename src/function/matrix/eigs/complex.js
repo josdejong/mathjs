@@ -1,6 +1,6 @@
 import { clone } from '../../../utils/object'
 
-export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignumber, diag, inv, qr, usolveAll }) {
+export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolveAll, equal, complex, larger, smaller }) {
   /**
    * @param {number[][]} arr the matrix to find eigenvalues of
    * @param {number} N size of the matrix
@@ -15,7 +15,7 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
 
     // TODO implement QR for complex matrices
     if (type === 'Complex') {
-      throw new TypeError('Complex matrices not yet supported')
+      //throw new TypeError('Complex matrices not yet supported')
     }
 
     // TODO check if any row/col are zero except the diagonal
@@ -66,17 +66,17 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
     const big = type === 'BigNumber'
     const cplx = type === 'Complex'
 
-    const bigZero = bignumber(0)
-    const bigOne = bignumber(1)
+    const zero = big ? bignumber(0) : cplx ? complex(0) : 0
+    const one  = big ? bignumber(1) : cplx ? complex(1) : 1
 
     // base of the floating-point arithmetic
     const radix = big ? bignumber(10) : 2
-    const radixSq = multiply(radix, radix)
+    const radixSq = multiplyScalar(radix, radix)
 
     // the diagonal transformation matrix R
     let Rdiag
     if (findVectors) {
-      Rdiag = Array(N).fill(big ? bigOne : 1)
+      Rdiag = Array(N).fill(one)
     }
 
     // this isn't the only time we loop thru the matrix...
@@ -89,18 +89,18 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
       for (let i = 0; i < N; i++) {
         // compute the taxicab norm of i-th column and row
         // TODO optimize for complex numbers
-        let colNorm = big ? bigZero : 0
-        let rowNorm = big ? bigZero : 0
+        let colNorm = zero
+        let rowNorm = zero
 
         for (let j = 0; j < N; j++) {
           if (i === j) continue
-          const c = (big || cplx) ? arr[i][j].abs() : Math.abs(arr[i][j])
-          const r = (big || cplx) ? arr[j][i].abs() : Math.abs(arr[j][i])
-          colNorm = big ? colNorm.add(c) : colNorm + c
-          rowNorm = big ? rowNorm.add(c) : rowNorm + r
+          const c = abs(arr[i][j])
+          const r = abs(arr[j][i])
+          colNorm = addScalar(colNorm, c)
+          rowNorm = addScalar(rowNorm, c)
         }
 
-        if (!big ? (colNorm !== 0 && rowNorm !== 0) : (!colNorm.equals(0) && !rowNorm.equals(0))) {
+        if (!equal(colNorm, 0) && !equal(rowNorm, 0)) {
           // find integer power closest to balancing the matrix
           // (we want to scale only by integer powers of radix,
           // so that we don't lose any precision due to round-off)
@@ -108,33 +108,21 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
           let f = big ? bigOne : 1
           let c = colNorm
 
-          const rowDivRadix = big ? rowNorm.div(radix) : rowNorm / radix
-          const rowMulRadix = big ? rowNorm.mul(radix) : rowNorm * radix
+          const rowDivRadix = divideScalar(rowNorm, radix)
+          const rowMulRadix = multiplyScalar(rowNorm, radix)
 
-          if (!big) {
-            while (c < rowDivRadix) {
-              c *= radixSq
-              f *= radix
-            }
-            while (c > rowMulRadix) {
-              c /= radixSq
-              f /= radix
-            }
-          } else {
-            while (c.lessThan(rowDivRadix)) {
-              c = c.mul(radixSq)
-              f = f.mul(radix)
-            }
-            while (c.greaterThan(rowMulRadix)) {
-              c = c.div(radixSq)
-              f = f.div(radix)
-            }
+          while (smaller(c, rowDivRadix)) {
+            c = multiplyScalar(c, radixSq)
+            f = multiplyScalar(f, radix)
+          }
+          while (larger(c, rowMulRadix)) {
+            c = divideScalar(c, radixSq)
+            f = divideScalar(f, radix)
           }
 
           // check whether balancing is needed
-          const condition = !big
-            ? (c + rowNorm) / f < 0.95 * (colNorm + rowNorm)
-            : c.add(rowNorm).div(f).lessThan(colNorm.add(rowNorm).mul(0.95))
+          // condition = (c + rowNorm) / f < 0.95 * (colNorm + rowNorm)
+          const condition = smaller( divideScalar(addScalar(c, rowNorm), f), multiplyScalar(addScalar(colNorm, rowNorm), 0.95))
 
           // apply balancing similarity transformation
           if (condition) {
@@ -142,19 +130,19 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
             // another rebalancing is needed
             last = false
 
-            const g = big ? bigOne.div(f) : 1 / f
+            const g = divideScalar(1, f)
 
             for (let j = 0; j < N; j++) {
               if (i === j) {
                 continue
               }
-              arr[i][j] = multiply(arr[i][j], f)
-              arr[j][i] = multiply(arr[j][i], g)
+              arr[i][j] = multiplyScalar(arr[i][j], f)
+              arr[j][i] = multiplyScalar(arr[j][i], g)
             }
 
             // keep track of transformations
             if (findVectors) {
-              Rdiag[i] = big ? Rdiag[i].mul(f) : Rdiag[i] * f
+              Rdiag[i] = multiplyScalar(Rdiag[i], f)
             }
           }
         }
@@ -176,26 +164,25 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
   function reduceToHessenberg (arr, N, prec, type, findVectors, R) {
     const big = type === 'BigNumber'
     const cplx = type === 'Complex'
-    const num = !big && !cplx
 
-    const bigZero = bignumber(0)
+    const zero = big ? bignumber(0) : cplx ? complex(0) : 0
 
     for (let i = 0; i < N - 2; i++) {
       // Find the largest subdiag element in the i-th col
 
       let maxIndex = 0
-      let max = big ? bigZero : 0
+      let max = zero
 
       for (let j = i + 1; j < N; j++) {
         const el = arr[j][i]
-        if (big ? abs(max).lessThan(abs(el)) : abs(max) < abs(el)) {
+        if (smaller(abs(max), abs(el))) {
           max = el
           maxIndex = j
         }
       }
 
       // This col is pivoted, no need to do anything
-      if (big ? abs(max).lessThan(prec) : abs(max) < prec) {
+      if (smaller(abs(max), prec)) {
         continue
       }
 
@@ -222,7 +209,7 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
 
       // Reduce following rows and columns
       for (let j = i + 2; j < N; j++) {
-        const n = num ? arr[j][i] / max : arr[j][i].div(max)
+        const n = divideScalar(arr[j][i], max)
 
         if (n === 0) {
           continue
@@ -230,18 +217,18 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
 
         // from j-th row subtract n-times (i+1)th row
         for (let k = 0; k < N; k++) {
-          arr[j][k] = num ? arr[j][k] - n * arr[i + 1][k] : arr[j][k].sub(n.mul(arr[i + 1][k]))
+          arr[j][k] = subtract(arr[j][k], multiplyScalar(n, arr[i + 1][k]))
         }
 
         // to (i+1)th column add n-times j-th column
         for (let k = 0; k < N; k++) {
-          arr[k][i + 1] = num ? arr[k][i + 1] + n * arr[k][j] : arr[k][i + 1].add(n.mul(arr[k][j]))
+          arr[k][i + 1] = addScalar(arr[k][i + 1], multiplyScalar(n, arr[k][j]))
         }
 
         // keep track of transformations
         if (findVectors) {
           for (let k = 0; k < N; k++) {
-            R[j][k] = num ? R[j][k] - n * R[i + 1][k] : subtract(R[j][k], n.mul(R[i + 1][k]))
+            R[j][k] = subtract(R[j][k], multiplyScalar(n, R[i + 1][k]))
           }
         }
       }
@@ -257,6 +244,9 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
    */
   function iterateUntilTriangular (A, N, prec, type, findVectors) {
     const big = type === 'BigNumber'
+    const cplx = type === 'Complex'
+
+    const one = big ? bignumber(1) : cplx ? complex(1) : 1
 
     // The Francis Algorithm
     // The core idea of this algorithm is that doing successive
@@ -280,10 +270,10 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
     const Sdiag = []
 
     // N×N matrix describing the overall transformation done during the QR algorithm
-    let Qtotal = findVectors ? diag(Array(N).fill(1)) : undefined
+    let Qtotal = findVectors ? diag(Array(N).fill(one)) : undefined
 
     // n×n matrix describing the QR transformations done since last convergence
-    let Qpartial = findVectors ? diag(Array(n).fill(1)) : undefined
+    let Qpartial = findVectors ? diag(Array(n).fill(one)) : undefined
 
     // last eigenvalue converged before this many steps
     let lastConvergenceBefore = 0
@@ -298,7 +288,7 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
       const k = 0 // TODO set close to an eigenvalue
 
       for (let i = 0; i < n; i++) {
-        arr[i][i] -= k
+        arr[i][i] = subtract(arr[i][i], k)
       }
 
       // TODO do an implicit QR transformation
@@ -306,7 +296,7 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
       arr = multiply(R, Q)
 
       for (let i = 0; i < n; i++) {
-        arr[i][i] += k
+        arr[i][i] = addScalar(arr[i][i], k)
       }
 
       // keep track of transformations
@@ -315,7 +305,7 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
       }
 
       // The rightmost diagonal element converged to an eigenvalue
-      if (n === 1 || (big ? abs(arr[n - 1][n - 2]).lessThan(prec) : abs(arr[n - 1][n - 2]) < prec)) {
+      if (n === 1 || smaller(abs(arr[n - 1][n - 2]), prec)) {
         lastConvergenceBefore = 0
         lambdas.push(arr[n - 1][n - 1])
 
@@ -326,7 +316,7 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
           Qtotal = multiply(Qtotal, Qpartial)
 
           if (n > 1) {
-            Qpartial = diag(Array(n - 1).fill(1))
+            Qpartial = diag(Array(n - 1).fill(one))
           }
         }
 
@@ -338,7 +328,7 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
         }
 
       // The rightmost diagonal 2x2 block converged
-      } else if (n === 2 || (big ? abs(arr[n - 2][n - 3]).lessThan(prec) : abs(arr[n - 2][n - 3]) < prec)) {
+      } else if (n === 2 || smaller(abs(arr[n - 2][n - 3]), prec)) {
         lastConvergenceBefore = 0
         const ll = eigenvalues2x2(
           arr[n - 2][n - 2], arr[n - 2][n - 1],
@@ -357,7 +347,7 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
           Qtotal = multiply(Qtotal, Qpartial)
 
           if (n > 2) {
-            Qpartial = diag(Array(n - 2).fill(1))
+            Qpartial = diag(Array(n - 2).fill(one))
           }
         }
 
@@ -405,7 +395,8 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
     const vectors = []
 
     for (const l of values) {
-      // ! FIXME might fail for imprecise eigenvalues, replace with an iterative eigenvector algorithm
+      // TODO replace with an iterative eigenvector algorithm
+      // (this one might fail for imprecise eigenvalues)
       const V = usolveAll(subtract(U, multiply(l, E)), b)
       for (const v of V) { vectors.push(multiply(C, v)) }
     }
@@ -420,9 +411,9 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
   function eigenvalues2x2 (a, b, c, d) {
     // λ± = ½ trA ± ½ √( tr²A - 4 detA )
     const trA = addScalar(a, d)
-    const detA = subtract(multiply(a, d), multiply(b, c))
-    const x = multiply(trA, 0.5)
-    const y = multiply(sqrt(subtract(multiply(trA, trA), multiply(4, detA))), 0.5)
+    const detA = subtract(multiplyScalar(a, d), multiplyScalar(b, c))
+    const x = multiplyScalar(trA, 0.5)
+    const y = multiplyScalar(sqrt(subtract(multiplyScalar(trA, trA), multiplyScalar(4, detA))), 0.5)
 
     return [addScalar(x, y), subtract(x, y)]
   }
@@ -436,19 +427,20 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
    */
   function jordanBase2x2 (a, b, c, d, l1, l2, prec, type) {
     const big = type === 'BigNumber'
+    const cplx = type === 'Complex'
 
-    const b0 = big ? 0 : bignumber(0)
-    const b1 = big ? 1 : bignumber(1)
+    const zero = big ?  bignumber(0) : cplx ? complex(0) : 0
+    const one = big ?  bignumber(1) : cplx ? complex(1) : 1
 
     // matrix is already upper triangular
     // return an identity matrix
-    if (big ? abs(c).lessThan(prec) : abs(c) < prec) {
-      return [[b1, b0], [b0, b1]]
+    if (smaller(abs(c), prec)) {
+      return [[one, zero], [zero, one]]
     }
 
     // matrix is diagonalizable
     // return its eigenvectors as columns
-    if (big ? abs(l1.sub(l2)).greaterThan(prec) : abs(subtract(l1, l2)) > prec) {
+    if (larger(abs(subtract(l1, l2)), prec)) {
       return [[subtract(l1, d), subtract(l2, d)], [c, c]]
     }
 
@@ -462,10 +454,10 @@ export function createComplex ({ addScalar, subtract, multiply, sqrt, abs, bignu
     const nc = subtract(c, l1)
     const nd = subtract(d, l1)
 
-    if (big ? abs(nb).lessThan(prec) : abs(nb) < prec) {
-      return [[na, b1], [nc, b0]]
+    if (smaller(abs(nb), prec)) {
+      return [[na, one], [nc, zero]]
     } else {
-      return [[nb, b0], [nd, b1]]
+      return [[nb, zero], [nd, one]]
     }
   }
 
