@@ -1,4 +1,4 @@
-const { create, all } = require('../../../index')
+const { create, all } = require('../../../main/es5/index.js')
 const workerpool = require('workerpool')
 const math = create(all)
 
