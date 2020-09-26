@@ -9,6 +9,9 @@ import { isNegativeDocs } from './function/utils/isNegative'
 import { isIntegerDocs } from './function/utils/isInteger'
 import { isNaNDocs } from './function/utils/isNaN'
 import { formatDocs } from './function/utils/format'
+import { binDocs } from './function/utils/bin'
+import { octDocs } from './function/utils/oct'
+import { hexDocs } from './function/utils/hex'
 import { cloneDocs } from './function/utils/clone'
 import { toDocs } from './function/units/to'
 import { tanhDocs } from './function/trigonometry/tanh'
@@ -519,6 +522,9 @@ export const embeddedDocs = {
   // functions - utils
   clone: cloneDocs,
   format: formatDocs,
+  bin: binDocs,
+  oct: octDocs,
+  hex: hexDocs,
   isNaN: isNaNDocs,
   isInteger: isIntegerDocs,
   isNegative: isNegativeDocs,
