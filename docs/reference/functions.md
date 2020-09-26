@@ -45,14 +45,16 @@ Function | Description
 Function | Description
 ---- | -----------
 [derivative(expr,&nbsp;variable)](functions/derivative.html) | Takes the derivative of an expression expressed in parser Nodes.
-[math.lsolve(L,&nbsp;b)](functions/lsolve.html) | Solves the linear equation system by forwards substitution.
+[math.lsolve(L,&nbsp;b)](functions/lsolve.html) | Finds one solution of a linear equation system by forwards substitution.
+[math.lsolve(L,&nbsp;b)](functions/lsolveAll.html) | Finds all solutions of a linear equation system by forwards substitution.
 [math.lup(A)](functions/lup.html) | Calculate the Matrix LU decomposition with partial pivoting.
 [math.lusolve(A,&nbsp;b)](functions/lusolve.html) | Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
 [math.qr(A)](functions/qr.html) | Calculate the Matrix QR decomposition.
 [rationalize(expr)](functions/rationalize.html) | Transform a rationalizable expression in a rational fraction.
 [simplify(expr)](functions/simplify.html) | Simplify an expression tree.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.html) | Calculate the Sparse Matrix LU decomposition with full pivoting.
-[math.usolve(U,&nbsp;b)](functions/usolve.html) | Solves the linear equation system by backward substitution.
+[math.usolve(U,&nbsp;b)](functions/usolve.html) | Finds one solution of a linear equation system by backward substitution.
+[math.usolve(U,&nbsp;b)](functions/usolveAll.html) | Finds all solutions of a linear equation system by backward substitution.
 
 <h2 id="arithmetic-functions">Arithmetic functions <a href="#arithmetic-functions" title="Permalink">#</a></h2>
 
@@ -249,7 +251,10 @@ Function | Description
 
 Function | Description
 ---- | -----------
+[math.bin(value)](functions/bin.html) | Format a number as binary.
 [math.format(value&nbsp;[,&nbsp;precision])](functions/format.html) | Format a value of any type into a string.
+[math.hex(value)](functions/hex.html) | Format a number as hexadecimal.
+[math.oct(value)](functions/oct.html) | Format a number as octal.
 [math.print(template, values [, precision])](functions/print.html) | Interpolate values into a string template.
 
 <h2 id="trigonometry-functions">Trigonometry functions <a href="#trigonometry-functions" title="Permalink">#</a></h2>

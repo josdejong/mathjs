@@ -4,6 +4,18 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20200926-version-730">2020-09-26, version 7.3.0 <a href="#20200926-version-730" title="Permalink">#</a></h1>
+
+- Implemented functions `usolveAll` and `lsolveAll`, see <a href="https://github.com/josdejong/mathjs/issues/1916">#1916</a>. Thanks <a href="https://github.com/m93a">@m93a</a>.
+- Implemented support for units in functions `std` and `variance`, see <a href="https://github.com/josdejong/mathjs/issues/1950">#1950</a>. 
+  Thanks <a href="https://github.com/rnd-debug">@rnd-debug</a>.
+- Implemented support for binary, octal, and hexadecimal notation in the 
+  expression parser, and implemented functions `bin`, `oct`, and `hex` for 
+  formatting. Thanks <a href="https://github.com/clnhlzmn">@clnhlzmn</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1964">#1964</a>: inconsistent calculation of negative dividend modulo for 
+  `BigNumber` and `Fraction`. Thanks <a href="https://github.com/ovk">@ovk</a>.
+
+
 <h1 id="20200824-version-720">2020-08-24, version 7.2.0 <a href="#20200824-version-720" title="Permalink">#</a></h1>
 
 - Implemented new function `diff`, see <a href="https://github.com/josdejong/mathjs/issues/1634">#1634</a>, <a href="https://github.com/josdejong/mathjs/issues/1920">#1920</a>. Thanks <a href="https://github.com/Veeloxfire">@Veeloxfire</a>. 

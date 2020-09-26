@@ -7,7 +7,7 @@ layout: default
 File: [math_worker.js](math_worker.js)
 
 ```js
-const { create, all } = require('../../../index')
+const { create, all } = require('../../..')
 const workerpool = require('workerpool')
 const math = create(all)
 

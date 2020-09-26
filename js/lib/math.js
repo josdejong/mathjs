@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 7.2.0
- * @date    2020-08-24
+ * @version 7.3.0
+ * @date    2020-09-26
  *
  * @license
  * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
@@ -11742,6 +11742,9 @@ __webpack_require__.d(__webpack_exports__, "createErf", function() { return /* r
 __webpack_require__.d(__webpack_exports__, "createMode", function() { return /* reexport */ createMode; });
 __webpack_require__.d(__webpack_exports__, "createProd", function() { return /* reexport */ createProd; });
 __webpack_require__.d(__webpack_exports__, "createFormat", function() { return /* reexport */ createFormat; });
+__webpack_require__.d(__webpack_exports__, "createBin", function() { return /* reexport */ createBin; });
+__webpack_require__.d(__webpack_exports__, "createOct", function() { return /* reexport */ createOct; });
+__webpack_require__.d(__webpack_exports__, "createHex", function() { return /* reexport */ createHex; });
 __webpack_require__.d(__webpack_exports__, "createPrint", function() { return /* reexport */ createPrint; });
 __webpack_require__.d(__webpack_exports__, "createTo", function() { return /* reexport */ createTo; });
 __webpack_require__.d(__webpack_exports__, "createIsPrime", function() { return /* reexport */ createIsPrime; });
@@ -11756,6 +11759,8 @@ __webpack_require__.d(__webpack_exports__, "createDotPow", function() { return /
 __webpack_require__.d(__webpack_exports__, "createDotDivide", function() { return /* reexport */ createDotDivide; });
 __webpack_require__.d(__webpack_exports__, "createLsolve", function() { return /* reexport */ createLsolve; });
 __webpack_require__.d(__webpack_exports__, "createUsolve", function() { return /* reexport */ createUsolve; });
+__webpack_require__.d(__webpack_exports__, "createLsolveAll", function() { return /* reexport */ createLsolveAll; });
+__webpack_require__.d(__webpack_exports__, "createUsolveAll", function() { return /* reexport */ createUsolveAll; });
 __webpack_require__.d(__webpack_exports__, "createLeftShift", function() { return /* reexport */ createLeftShift; });
 __webpack_require__.d(__webpack_exports__, "createRightArithShift", function() { return /* reexport */ createRightArithShift; });
 __webpack_require__.d(__webpack_exports__, "createRightLogShift", function() { return /* reexport */ createRightLogShift; });
@@ -12458,8 +12463,11 @@ var BigNumber_dependencies = ['?on', 'config'];
 var createBigNumberClass = /* #__PURE__ */Object(factory["a" /* factory */])(BigNumber_name, BigNumber_dependencies, function (_ref) {
   var on = _ref.on,
       config = _ref.config;
+  var EUCLID = 9; // Use euclidian division for mod calculation
+
   var BigNumber = decimal_default.a.clone({
-    precision: config.precision
+    precision: config.precision,
+    modulo: EUCLID
   });
   /**
    * Attach type information
@@ -16706,6 +16714,16 @@ var createNumber = /* #__PURE__ */Object(factory["a" /* factory */])(number_name
         throw new SyntaxError('String "' + x + '" is no valid number');
       }
 
+      if (['0b', '0o', '0x'].includes(x.substring(0, 2))) {
+        if (num > Math.pow(2, 32) - 1) {
+          throw new SyntaxError("String \"".concat(x, "\" is out of range"));
+        }
+
+        if (num & 0x80000000) {
+          num = -1 * ~(num - 1);
+        }
+      }
+
       return num;
     },
     BigNumber: function BigNumber(x) {
@@ -20166,10 +20184,19 @@ var createMod = /* #__PURE__ */Object(factory["a" /* factory */])(mod_name, mod_
   return typed(mod_name, {
     'number, number': modNumber,
     'BigNumber, BigNumber': function BigNumberBigNumber(x, y) {
+      if (y.isNeg()) {
+        throw new Error('Cannot calculate mod for a negative divisor');
+      }
+
       return y.isZero() ? x : x.mod(y);
     },
     'Fraction, Fraction': function FractionFraction(x, y) {
-      return x.mod(y);
+      if (y.compare(0) < 0) {
+        throw new Error('Cannot calculate mod for a negative divisor');
+      } // Workaround suggested in Fraction.js library to calculate correct modulo for negative dividend
+
+
+      return x.compare(0) >= 0 ? x.mod(y) : x.mod(y).add(y).mod(y);
     },
     'SparseMatrix, SparseMatrix': function SparseMatrixSparseMatrix(x, y) {
       return algorithm05(x, y, this, false);
@@ -26809,6 +26836,115 @@ var createFormat = /* #__PURE__ */Object(factory["a" /* factory */])(format_name
     'any, Object | function | number': utils_string["d" /* format */]
   });
 });
+// CONCATENATED MODULE: ./src/function/string/baseUtils.js
+
+
+
+function baseFormatter(base) {
+  var prefixes = {
+    2: '0b',
+    8: '0o',
+    16: '0x'
+  };
+  var prefix = prefixes[base];
+  return function (n) {
+    if (n > Math.pow(2, 31) - 1 || n < -Math.pow(2, 31)) {
+      throw new Error('Value must be in range [-2^31, 2^31-1]');
+    }
+
+    if (!Object(utils_number["i" /* isInteger */])(n)) {
+      throw new Error('Value must be an integer');
+    }
+
+    if (n < 0) {
+      n = n + Math.pow(2, 32);
+    }
+
+    return "".concat(prefix).concat(n.toString(base));
+  };
+}
+
+var baseUtils_dependencies = ['typed'];
+function createBaseFormatterFactory(name, base) {
+  return Object(factory["a" /* factory */])(name, baseUtils_dependencies, function (_ref) {
+    var typed = _ref.typed;
+    return typed(name, {
+      number: baseFormatter(base)
+    });
+  });
+}
+// CONCATENATED MODULE: ./src/function/string/bin.js
+
+/**
+ * Format a number as binary.
+ *
+ * Syntax:
+ *
+ *    math.bin(value)
+ *
+ * Examples:
+ *
+ *    //the following outputs "0b10"
+ *    math.bin(2)
+ *
+ * See also:
+ *
+ *    oct
+ *    hex
+ *
+ * @param {number} value    Value to be stringified
+ * @return {string}         The formatted value
+ */
+
+var createBin = createBaseFormatterFactory('bin', 2);
+// CONCATENATED MODULE: ./src/function/string/oct.js
+
+/**
+ * Format a number as octal.
+ *
+ * Syntax:
+ *
+ *    math.oct(value)
+ *
+ * Examples:
+ *
+ *    //the following outputs "0o70"
+ *    math.oct(56)
+ *
+ * See also:
+ *
+ *    bin
+ *    hex
+ *
+ * @param {number} value  Value to be stringified
+ * @return {string}       The formatted value
+ */
+
+var createOct = createBaseFormatterFactory('oct', 8);
+// CONCATENATED MODULE: ./src/function/string/hex.js
+
+/**
+ * Format a number as hexadecimal.
+ *
+ * Syntax:
+ *
+ *    math.hex(value)
+ *
+ * Examples:
+ *
+ *    //the following outputs "0xF0"
+ *    math.hex(240)
+ *
+ * See also:
+ *
+ *    oct
+ *    bin
+ *
+ * @param {number} value    Value to be stringified
+ * @return {string}         The formatted value
+ */
+
+var createHex = createBaseFormatterFactory('hex', 16);
 // CONCATENATED MODULE: ./src/function/string/print.js
 
 
@@ -28055,135 +28191,101 @@ function createSolveValidation(_ref) {
    * @return {DenseMatrix}        Dense column vector b
    */
   return function solveValidation(m, b, copy) {
-    // matrix size
-    var size = m.size(); // validate matrix dimensions
+    var mSize = m.size();
 
-    if (size.length !== 2) {
-      throw new RangeError('Matrix must be two dimensional (size: ' + Object(utils_string["d" /* format */])(size) + ')');
-    } // rows & columns
+    if (mSize.length !== 2) {
+      throw new RangeError('Matrix must be two dimensional (size: ' + Object(utils_string["d" /* format */])(mSize) + ')');
+    }
 
-
-    var rows = size[0];
-    var columns = size[1]; // validate rows & columns
+    var rows = mSize[0];
+    var columns = mSize[1];
 
     if (rows !== columns) {
-      throw new RangeError('Matrix must be square (size: ' + Object(utils_string["d" /* format */])(size) + ')');
-    } // vars
+      throw new RangeError('Matrix must be square (size: ' + Object(utils_string["d" /* format */])(mSize) + ')');
+    }
 
-
-    var data, i, bdata; // check b is matrix
+    var data = [];
 
     if (Object(is["v" /* isMatrix */])(b)) {
-      // matrix size
-      var msize = b.size(); // vector
+      var bSize = b.size();
+      var bdata = b._data; // 1-dim vector
 
-      if (msize.length === 1) {
-        // check vector length
-        if (msize[0] !== rows) {
+      if (bSize.length === 1) {
+        if (bSize[0] !== rows) {
           throw new RangeError('Dimension mismatch. Matrix columns must match vector length.');
-        } // create data array
+        }
 
-
-        data = []; // matrix data (DenseMatrix)
-
-        bdata = b._data; // loop b data
-
-        for (i = 0; i < rows; i++) {
-          // row array
+        for (var i = 0; i < rows; i++) {
           data[i] = [bdata[i]];
-        } // return Dense Matrix
-
+        }
 
         return new DenseMatrix({
           data: data,
           size: [rows, 1],
           datatype: b._datatype
         });
-      } // two dimensions
+      } // 2-dim column
 
 
-      if (msize.length === 2) {
-        // array must be a column vector
-        if (msize[0] !== rows || msize[1] !== 1) {
+      if (bSize.length === 2) {
+        if (bSize[0] !== rows || bSize[1] !== 1) {
           throw new RangeError('Dimension mismatch. Matrix columns must match vector length.');
-        } // check matrix type
-
+        }
 
         if (Object(is["n" /* isDenseMatrix */])(b)) {
-          // check a copy is needed
           if (copy) {
-            // create data array
-            data = []; // matrix data (DenseMatrix)
+            data = [];
 
-            bdata = b._data; // loop b data
-
-            for (i = 0; i < rows; i++) {
-              // row array
-              data[i] = [bdata[i][0]];
-            } // return Dense Matrix
-
+            for (var _i = 0; _i < rows; _i++) {
+              data[_i] = [bdata[_i][0]];
+            }
 
             return new DenseMatrix({
               data: data,
               size: [rows, 1],
               datatype: b._datatype
             });
-          } // b is already a column vector
-
+          }
 
           return b;
-        } // create data array
+        }
 
+        if (Object(is["H" /* isSparseMatrix */])(b)) {
+          for (var _i2 = 0; _i2 < rows; _i2++) {
+            data[_i2] = [0];
+          }
 
-        data = [];
+          var values = b._values;
+          var index = b._index;
+          var ptr = b._ptr;
 
-        for (i = 0; i < rows; i++) {
-          data[i] = [0];
-        } // sparse matrix arrays
+          for (var k1 = ptr[1], k = ptr[0]; k < k1; k++) {
+            var _i3 = index[k];
+            data[_i3][0] = values[k];
+          }
 
+          return new DenseMatrix({
+            data: data,
+            size: [rows, 1],
+            datatype: b._datatype
+          });
+        }
+      }
 
-        var values = b._values;
-        var index = b._index;
-        var ptr = b._ptr; // loop values in column 0
-
-        for (var k1 = ptr[1], k = ptr[0]; k < k1; k++) {
-          // row
-          i = index[k]; // add to data
-
-          data[i][0] = values[k];
-        } // return Dense Matrix
-
-
-        return new DenseMatrix({
-          data: data,
-          size: [rows, 1],
-          datatype: b._datatype
-        });
-      } // throw error
-
-
-      throw new RangeError('Dimension mismatch. Matrix columns must match vector length.');
-    } // check b is array
-
+      throw new RangeError('Dimension mismatch. The right side has to be either 1- or 2-dimensional vector.');
+    }
 
     if (Object(is["b" /* isArray */])(b)) {
-      // size
-      var asize = Object(utils_array["a" /* arraySize */])(b); // check matrix dimensions, vector
+      var bsize = Object(utils_array["a" /* arraySize */])(b);
 
-      if (asize.length === 1) {
-        // check vector length
-        if (asize[0] !== rows) {
+      if (bsize.length === 1) {
+        if (bsize[0] !== rows) {
           throw new RangeError('Dimension mismatch. Matrix columns must match vector length.');
-        } // create data array
+        }
 
-
-        data = []; // loop b
-
-        for (i = 0; i < rows; i++) {
-          // row array
-          data[i] = [b[i]];
-        } // return Dense Matrix
-
+        for (var _i4 = 0; _i4 < rows; _i4++) {
+          data[_i4] = [b[_i4]];
+        }
 
         return new DenseMatrix({
           data: data,
@@ -28191,29 +28293,22 @@ function createSolveValidation(_ref) {
         });
       }
 
-      if (asize.length === 2) {
-        // array must be a column vector
-        if (asize[0] !== rows || asize[1] !== 1) {
+      if (bsize.length === 2) {
+        if (bsize[0] !== rows || bsize[1] !== 1) {
           throw new RangeError('Dimension mismatch. Matrix columns must match vector length.');
-        } // create data array
+        }
 
-
-        data = []; // loop b data
-
-        for (i = 0; i < rows; i++) {
-          // row array
-          data[i] = [b[i][0]];
-        } // return Dense Matrix
-
+        for (var _i5 = 0; _i5 < rows; _i5++) {
+          data[_i5] = [b[_i5][0]];
+        }
 
         return new DenseMatrix({
           data: data,
           size: [rows, 1]
         });
-      } // throw error
+      }
 
-
-      throw new RangeError('Dimension mismatch. Matrix columns must match vector length.');
+      throw new RangeError('Dimension mismatch. The right side has to be either 1- or 2-dimensional vector.');
     }
   };
 }
@@ -28234,7 +28329,7 @@ var createLsolve = /* #__PURE__ */Object(factory["a" /* factory */])(lsolve_name
     DenseMatrix: DenseMatrix
   });
   /**
-   * Solves the linear equation system by forwards substitution. Matrix must be a lower triangular matrix.
+   * Finds one solution of a linear equation system by forwards substitution. Matrix must be a lower triangular matrix. Throws an error if there's no solution.
    *
    * `L * x = b`
    *
@@ -28250,7 +28345,7 @@ var createLsolve = /* #__PURE__ */Object(factory["a" /* factory */])(lsolve_name
    *
    * See also:
    *
-   *    lup, slu, usolve, lusolve
+   *    lsolveAll, lup, slu, usolve, lusolve
    *
    * @param {Matrix, Array} L       A N x N matrix or array (L)
    * @param {Matrix, Array} b       A column vector with the b values
@@ -28260,19 +28355,15 @@ var createLsolve = /* #__PURE__ */Object(factory["a" /* factory */])(lsolve_name
 
   return typed(lsolve_name, {
     'SparseMatrix, Array | Matrix': function SparseMatrixArrayMatrix(m, b) {
-      // process matrix
       return _sparseForwardSubstitution(m, b);
     },
     'DenseMatrix, Array | Matrix': function DenseMatrixArrayMatrix(m, b) {
-      // process matrix
       return _denseForwardSubstitution(m, b);
     },
     'Array, Array | Matrix': function ArrayArrayMatrix(a, b) {
-      // create dense matrix from array
-      var m = matrix(a); // use matrix implementation
+      var m = matrix(a);
 
-      var r = _denseForwardSubstitution(m, b); // result
-
+      var r = _denseForwardSubstitution(m, b);
 
       return r.valueOf();
     }
@@ -28280,48 +28371,38 @@ var createLsolve = /* #__PURE__ */Object(factory["a" /* factory */])(lsolve_name
 
   function _denseForwardSubstitution(m, b) {
     // validate matrix and vector, return copy of column vector b
-    b = solveValidation(m, b, true); // column vector data
-
-    var bdata = b._data; // rows & columns
-
+    b = solveValidation(m, b, true);
+    var bdata = b._data;
     var rows = m._size[0];
     var columns = m._size[1]; // result
 
-    var x = []; // data
-
-    var data = m._data; // forward solve m * x = b, loop columns
+    var x = [];
+    var mdata = m._data; // loop columns
 
     for (var j = 0; j < columns; j++) {
-      // b[j]
-      var bj = bdata[j][0] || 0; // x[j]
-
-      var xj = void 0; // forward substitution (outer product) avoids inner looping when bj === 0
+      var bj = bdata[j][0] || 0;
+      var xj = void 0;
 
       if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
-        var vjj = data[j][j]; // check vjj
+        // non-degenerate row, find solution
+        var vjj = mdata[j][j];
 
         if (equalScalar(vjj, 0)) {
-          // system cannot be solved
           throw new Error('Linear system cannot be solved since matrix is singular');
-        } // calculate xj
-
+        }
 
         xj = divideScalar(bj, vjj); // loop rows
 
         for (var i = j + 1; i < rows; i++) {
-          // update copy of b
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, data[i][j]))];
+          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, mdata[i][j]))];
         }
       } else {
-        // zero @ j
+        // degenerate row, we can choose any value
         xj = 0;
-      } // update x
-
+      }
 
       x[j] = [xj];
-    } // return vector
-
+    }
 
     return new DenseMatrix({
       data: x,
@@ -28331,72 +28412,59 @@ var createLsolve = /* #__PURE__ */Object(factory["a" /* factory */])(lsolve_name
 
   function _sparseForwardSubstitution(m, b) {
     // validate matrix and vector, return copy of column vector b
-    b = solveValidation(m, b, true); // column vector data
-
-    var bdata = b._data; // rows & columns
-
+    b = solveValidation(m, b, true);
+    var bdata = b._data;
     var rows = m._size[0];
-    var columns = m._size[1]; // matrix arrays
-
+    var columns = m._size[1];
     var values = m._values;
     var index = m._index;
-    var ptr = m._ptr; // vars
+    var ptr = m._ptr; // result
 
-    var i, k; // result
-
-    var x = []; // forward solve m * x = b, loop columns
+    var x = []; // loop columns
 
     for (var j = 0; j < columns; j++) {
-      // b[j]
-      var bj = bdata[j][0] || 0; // forward substitution (outer product) avoids inner looping when bj === 0
+      var bj = bdata[j][0] || 0;
 
       if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
-        var vjj = 0; // lower triangular matrix values & index (column j)
+        // non-degenerate row, find solution
+        var vjj = 0; // matrix values & indices (column j)
 
-        var jvalues = [];
-        var jindex = []; // last index in column
+        var jValues = [];
+        var jIndices = []; // first and last index in the column
 
-        var l = ptr[j + 1]; // values in column, find value @ [j, j]
+        var firstIndex = ptr[j];
+        var lastIndex = ptr[j + 1]; // values in column, find value at [j, j]
 
-        for (k = ptr[j]; k < l; k++) {
-          // row
-          i = index[k]; // check row (rows are not sorted!)
+        for (var k = firstIndex; k < lastIndex; k++) {
+          var i = index[k]; // check row (rows are not sorted!)
 
           if (i === j) {
-            // update vjj
             vjj = values[k];
           } else if (i > j) {
             // store lower triangular
-            jvalues.push(values[k]);
-            jindex.push(i);
+            jValues.push(values[k]);
+            jIndices.push(i);
           }
-        } // at this point we must have a value @ [j, j]
+        } // at this point we must have a value in vjj
 
 
         if (equalScalar(vjj, 0)) {
-          // system cannot be solved, there is no value @ [j, j]
           throw new Error('Linear system cannot be solved since matrix is singular');
-        } // calculate xj
+        }
 
+        var xj = divideScalar(bj, vjj);
 
-        var xj = divideScalar(bj, vjj); // loop lower triangular
-
-        for (k = 0, l = jindex.length; k < l; k++) {
-          // row
-          i = jindex[k]; // update copy of b
-
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, jvalues[k]))];
-        } // update x
-
+        for (var _k = 0, l = jIndices.length; _k < l; _k++) {
+          var _i = jIndices[_k];
+          bdata[_i] = [subtract(bdata[_i][0] || 0, multiplyScalar(xj, jValues[_k]))];
+        }
 
         x[j] = [xj];
       } else {
-        // update x
+        // degenerate row, we can choose any value
         x[j] = [0];
       }
-    } // return vector
-
+    }
 
     return new DenseMatrix({
       data: x,
@@ -28421,7 +28489,7 @@ var createUsolve = /* #__PURE__ */Object(factory["a" /* factory */])(usolve_name
     DenseMatrix: DenseMatrix
   });
   /**
-   * Solves the linear equation system by backward substitution. Matrix must be an upper triangular matrix.
+   * Finds one solution of a linear equation system by backward substitution. Matrix must be an upper triangular matrix. Throws an error if there's no solution.
    *
    * `U * x = b`
    *
@@ -28437,7 +28505,7 @@ var createUsolve = /* #__PURE__ */Object(factory["a" /* factory */])(usolve_name
    *
    * See also:
    *
-   *    lup, slu, usolve, lusolve
+   *    usolveAll, lup, slu, usolve, lusolve
    *
    * @param {Matrix, Array} U       A N x N matrix or array (U)
    * @param {Matrix, Array} b       A column vector with the b values
@@ -28447,68 +28515,59 @@ var createUsolve = /* #__PURE__ */Object(factory["a" /* factory */])(usolve_name
 
   return typed(usolve_name, {
     'SparseMatrix, Array | Matrix': function SparseMatrixArrayMatrix(m, b) {
-      // process matrix
       return _sparseBackwardSubstitution(m, b);
     },
     'DenseMatrix, Array | Matrix': function DenseMatrixArrayMatrix(m, b) {
-      // process matrix
       return _denseBackwardSubstitution(m, b);
     },
     'Array, Array | Matrix': function ArrayArrayMatrix(a, b) {
-      // create dense matrix from array
-      var m = matrix(a); // use matrix implementation
+      var m = matrix(a);
 
-      var r = _denseBackwardSubstitution(m, b); // result
-
+      var r = _denseBackwardSubstitution(m, b);
 
       return r.valueOf();
     }
   });
 
   function _denseBackwardSubstitution(m, b) {
-    // validate matrix and vector, return copy of column vector b
-    b = solveValidation(m, b, true); // column vector data
-
-    var bdata = b._data; // rows & columns
-
+    // make b into a column vector
+    b = solveValidation(m, b, true);
+    var bdata = b._data;
     var rows = m._size[0];
     var columns = m._size[1]; // result
 
-    var x = []; // arrays
-
-    var data = m._data; // backward solve m * x = b, loop columns (backwards)
+    var x = [];
+    var mdata = m._data; // loop columns backwards
 
     for (var j = columns - 1; j >= 0; j--) {
       // b[j]
       var bj = bdata[j][0] || 0; // x[j]
 
-      var xj = void 0; // backward substitution (outer product) avoids inner looping when bj === 0
+      var xj = void 0;
 
       if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
-        var vjj = data[j][j]; // check vjj
+        // value at [j, j]
+        var vjj = mdata[j][j];
 
         if (equalScalar(vjj, 0)) {
           // system cannot be solved
           throw new Error('Linear system cannot be solved since matrix is singular');
-        } // calculate xj
-
+        }
 
         xj = divideScalar(bj, vjj); // loop rows
 
         for (var i = j - 1; i >= 0; i--) {
           // update copy of b
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, data[i][j]))];
+          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, mdata[i][j]))];
         }
       } else {
-        // zero value @ j
+        // zero value at j
         xj = 0;
       } // update x
 
 
       x[j] = [xj];
-    } // return column vector
-
+    }
 
     return new DenseMatrix({
       data: x,
@@ -28517,78 +28576,492 @@ var createUsolve = /* #__PURE__ */Object(factory["a" /* factory */])(usolve_name
   }
 
   function _sparseBackwardSubstitution(m, b) {
-    // validate matrix and vector, return copy of column vector b
-    b = solveValidation(m, b, true); // column vector data
-
-    var bdata = b._data; // rows & columns
-
+    // make b into a column vector
+    b = solveValidation(m, b, true);
+    var bdata = b._data;
     var rows = m._size[0];
-    var columns = m._size[1]; // matrix arrays
-
+    var columns = m._size[1];
     var values = m._values;
     var index = m._index;
-    var ptr = m._ptr; // vars
+    var ptr = m._ptr; // result
 
-    var i, k; // result
-
-    var x = []; // backward solve m * x = b, loop columns (backwards)
+    var x = []; // loop columns backwards
 
     for (var j = columns - 1; j >= 0; j--) {
-      // b[j]
-      var bj = bdata[j][0] || 0; // backward substitution (outer product) avoids inner looping when bj === 0
+      var bj = bdata[j][0] || 0;
 
       if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
+        // non-degenerate row, find solution
         var vjj = 0; // upper triangular matrix values & index (column j)
 
-        var jvalues = [];
-        var jindex = []; // first & last indeces in column
+        var jValues = [];
+        var jIndices = []; // first & last indeces in column
 
-        var f = ptr[j];
-        var l = ptr[j + 1]; // values in column, find value @ [j, j], loop backwards
+        var firstIndex = ptr[j];
+        var lastIndex = ptr[j + 1]; // values in column, find value at [j, j], loop backwards
 
-        for (k = l - 1; k >= f; k--) {
-          // row
-          i = index[k]; // check row
+        for (var k = lastIndex - 1; k >= firstIndex; k--) {
+          var i = index[k]; // check row (rows are not sorted!)
 
           if (i === j) {
-            // update vjj
             vjj = values[k];
           } else if (i < j) {
             // store upper triangular
-            jvalues.push(values[k]);
-            jindex.push(i);
+            jValues.push(values[k]);
+            jIndices.push(i);
           }
-        } // at this point we must have a value @ [j, j]
+        } // at this point we must have a value in vjj
 
 
         if (equalScalar(vjj, 0)) {
-          // system cannot be solved, there is no value @ [j, j]
           throw new Error('Linear system cannot be solved since matrix is singular');
-        } // calculate xj
+        }
 
+        var xj = divideScalar(bj, vjj);
 
-        var xj = divideScalar(bj, vjj); // loop upper triangular
-
-        for (k = 0, l = jindex.length; k < l; k++) {
-          // row
-          i = jindex[k]; // update copy of b
-
-          bdata[i] = [subtract(bdata[i][0], multiplyScalar(xj, jvalues[k]))];
-        } // update x
-
+        for (var _k = 0, _lastIndex = jIndices.length; _k < _lastIndex; _k++) {
+          var _i = jIndices[_k];
+          bdata[_i] = [subtract(bdata[_i][0], multiplyScalar(xj, jValues[_k]))];
+        }
 
         x[j] = [xj];
       } else {
-        // update x
+        // degenerate row, we can choose any value
         x[j] = [0];
       }
-    } // return vector
-
+    }
 
     return new DenseMatrix({
       data: x,
       size: [rows, 1]
+    });
+  }
+});
+// CONCATENATED MODULE: ./src/function/algebra/solver/lsolveAll.js
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
+var lsolveAll_name = 'lsolveAll';
+var lsolveAll_dependencies = ['typed', 'matrix', 'divideScalar', 'multiplyScalar', 'subtract', 'equalScalar', 'DenseMatrix'];
+var createLsolveAll = /* #__PURE__ */Object(factory["a" /* factory */])(lsolveAll_name, lsolveAll_dependencies, function (_ref) {
+  var typed = _ref.typed,
+      matrix = _ref.matrix,
+      divideScalar = _ref.divideScalar,
+      multiplyScalar = _ref.multiplyScalar,
+      subtract = _ref.subtract,
+      equalScalar = _ref.equalScalar,
+      DenseMatrix = _ref.DenseMatrix;
+  var solveValidation = createSolveValidation({
+    DenseMatrix: DenseMatrix
+  });
+  /**
+   * Finds all solutions of a linear equation system by forwards substitution. Matrix must be a lower triangular matrix.
+   *
+   * `L * x = b`
+   *
+   * Syntax:
+   *
+   *    math.lsolve(L, b)
+   *
+   * Examples:
+   *
+   *    const a = [[-2, 3], [2, 1]]
+   *    const b = [11, 9]
+   *    const x = lsolve(a, b)  // [ [[-5.5], [20]] ]
+   *
+   * See also:
+   *
+   *    lsolve, lup, slu, usolve, lusolve
+   *
+   * @param {Matrix, Array} L       A N x N matrix or array (L)
+   * @param {Matrix, Array} b       A column vector with the b values
+   *
+   * @return {DenseMatrix[] | Array[]}  An array of affine-independent column vectors (x) that solve the linear system
+   */
+
+  return typed(lsolveAll_name, {
+    'SparseMatrix, Array | Matrix': function SparseMatrixArrayMatrix(m, b) {
+      return _sparseForwardSubstitution(m, b);
+    },
+    'DenseMatrix, Array | Matrix': function DenseMatrixArrayMatrix(m, b) {
+      return _denseForwardSubstitution(m, b);
+    },
+    'Array, Array | Matrix': function ArrayArrayMatrix(a, b) {
+      var m = matrix(a);
+
+      var R = _denseForwardSubstitution(m, b);
+
+      return R.map(function (r) {
+        return r.valueOf();
+      });
+    }
+  });
+
+  function _denseForwardSubstitution(m, b_) {
+    // the algorithm is derived from
+    // https://www.overleaf.com/project/5e6c87c554a3190001a3fc93
+    // array of right-hand sides
+    var B = [solveValidation(m, b_, true)._data.map(function (e) {
+      return e[0];
+    })];
+    var M = m._data;
+    var rows = m._size[0];
+    var columns = m._size[1]; // loop columns
+
+    for (var i = 0; i < columns; i++) {
+      var L = B.length; // loop right-hand sides
+
+      for (var k = 0; k < L; k++) {
+        var b = B[k];
+
+        if (!equalScalar(M[i][i], 0)) {
+          // non-singular row
+          b[i] = divideScalar(b[i], M[i][i]);
+
+          for (var j = i + 1; j < columns; j++) {
+            // b[j] -= b[i] * M[j,i]
+            b[j] = subtract(b[j], multiplyScalar(b[i], M[j][i]));
+          }
+        } else if (!equalScalar(b[i], 0)) {
+          // singular row, nonzero RHS
+          if (k === 0) {
+            // There is no valid solution
+            return [];
+          } else {
+            // This RHS is invalid but other solutions may still exist
+            B.splice(k, 1);
+            k -= 1;
+            L -= 1;
+          }
+        } else if (k === 0) {
+          // singular row, RHS is zero
+          var bNew = _toConsumableArray(b);
+
+          bNew[i] = 1;
+
+          for (var _j = i + 1; _j < columns; _j++) {
+            bNew[_j] = subtract(bNew[_j], M[_j][i]);
+          }
+
+          B.push(bNew);
+        }
+      }
+    }
+
+    return B.map(function (x) {
+      return new DenseMatrix({
+        data: x.map(function (e) {
+          return [e];
+        }),
+        size: [rows, 1]
+      });
+    });
+  }
+
+  function _sparseForwardSubstitution(m, b_) {
+    // array of right-hand sides
+    var B = [solveValidation(m, b_, true)._data.map(function (e) {
+      return e[0];
+    })];
+    var rows = m._size[0];
+    var columns = m._size[1];
+    var values = m._values;
+    var index = m._index;
+    var ptr = m._ptr; // loop columns
+
+    for (var i = 0; i < columns; i++) {
+      var L = B.length; // loop right-hand sides
+
+      for (var k = 0; k < L; k++) {
+        var b = B[k]; // values & indices (column i)
+
+        var iValues = [];
+        var iIndices = []; // first & last indeces in column
+
+        var firstIndex = ptr[i];
+        var lastIndex = ptr[i + 1]; // find the value at [i, i]
+
+        var Mii = 0;
+
+        for (var j = firstIndex; j < lastIndex; j++) {
+          var J = index[j]; // check row
+
+          if (J === i) {
+            Mii = values[j];
+          } else if (J > i) {
+            // store lower triangular
+            iValues.push(values[j]);
+            iIndices.push(J);
+          }
+        }
+
+        if (!equalScalar(Mii, 0)) {
+          // non-singular row
+          b[i] = divideScalar(b[i], Mii);
+
+          for (var _j2 = 0, _lastIndex = iIndices.length; _j2 < _lastIndex; _j2++) {
+            var _J = iIndices[_j2];
+            b[_J] = subtract(b[_J], multiplyScalar(b[i], iValues[_j2]));
+          }
+        } else if (!equalScalar(b[i], 0)) {
+          // singular row, nonzero RHS
+          if (k === 0) {
+            // There is no valid solution
+            return [];
+          } else {
+            // This RHS is invalid but other solutions may still exist
+            B.splice(k, 1);
+            k -= 1;
+            L -= 1;
+          }
+        } else if (k === 0) {
+          // singular row, RHS is zero
+          var bNew = _toConsumableArray(b);
+
+          bNew[i] = 1;
+
+          for (var _j3 = 0, _lastIndex2 = iIndices.length; _j3 < _lastIndex2; _j3++) {
+            var _J2 = iIndices[_j3];
+            bNew[_J2] = subtract(bNew[_J2], iValues[_j3]);
+          }
+
+          B.push(bNew);
+        }
+      }
+    }
+
+    return B.map(function (x) {
+      return new DenseMatrix({
+        data: x.map(function (e) {
+          return [e];
+        }),
+        size: [rows, 1]
+      });
+    });
+  }
+});
+// CONCATENATED MODULE: ./src/function/algebra/solver/usolveAll.js
+function usolveAll_toConsumableArray(arr) { return usolveAll_arrayWithoutHoles(arr) || usolveAll_iterableToArray(arr) || usolveAll_unsupportedIterableToArray(arr) || usolveAll_nonIterableSpread(); }
+
+function usolveAll_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function usolveAll_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return usolveAll_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return usolveAll_arrayLikeToArray(o, minLen); }
+
+function usolveAll_iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function usolveAll_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return usolveAll_arrayLikeToArray(arr); }
+
+function usolveAll_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
+var usolveAll_name = 'usolveAll';
+var usolveAll_dependencies = ['typed', 'matrix', 'divideScalar', 'multiplyScalar', 'subtract', 'equalScalar', 'DenseMatrix'];
+var createUsolveAll = /* #__PURE__ */Object(factory["a" /* factory */])(usolveAll_name, usolveAll_dependencies, function (_ref) {
+  var typed = _ref.typed,
+      matrix = _ref.matrix,
+      divideScalar = _ref.divideScalar,
+      multiplyScalar = _ref.multiplyScalar,
+      subtract = _ref.subtract,
+      equalScalar = _ref.equalScalar,
+      DenseMatrix = _ref.DenseMatrix;
+  var solveValidation = createSolveValidation({
+    DenseMatrix: DenseMatrix
+  });
+  /**
+   * Finds all solutions of a linear equation system by backward substitution. Matrix must be an upper triangular matrix.
+   *
+   * `U * x = b`
+   *
+   * Syntax:
+   *
+   *    math.usolve(U, b)
+   *
+   * Examples:
+   *
+   *    const a = [[-2, 3], [2, 1]]
+   *    const b = [11, 9]
+   *    const x = usolve(a, b)  // [ [[8], [9]] ]
+   *
+   * See also:
+   *
+   *    usolve, lup, slu, usolve, lusolve
+   *
+   * @param {Matrix, Array} U       A N x N matrix or array (U)
+   * @param {Matrix, Array} b       A column vector with the b values
+   *
+   * @return {DenseMatrix[] | Array[]}  An array of affine-independent column vectors (x) that solve the linear system
+   */
+
+  return typed(usolveAll_name, {
+    'SparseMatrix, Array | Matrix': function SparseMatrixArrayMatrix(m, b) {
+      return _sparseBackwardSubstitution(m, b);
+    },
+    'DenseMatrix, Array | Matrix': function DenseMatrixArrayMatrix(m, b) {
+      return _denseBackwardSubstitution(m, b);
+    },
+    'Array, Array | Matrix': function ArrayArrayMatrix(a, b) {
+      var m = matrix(a);
+
+      var R = _denseBackwardSubstitution(m, b);
+
+      return R.map(function (r) {
+        return r.valueOf();
+      });
+    }
+  });
+
+  function _denseBackwardSubstitution(m, b_) {
+    // the algorithm is derived from
+    // https://www.overleaf.com/project/5e6c87c554a3190001a3fc93
+    // array of right-hand sides
+    var B = [solveValidation(m, b_, true)._data.map(function (e) {
+      return e[0];
+    })];
+    var M = m._data;
+    var rows = m._size[0];
+    var columns = m._size[1]; // loop columns backwards
+
+    for (var i = columns - 1; i >= 0; i--) {
+      var L = B.length; // loop right-hand sides
+
+      for (var k = 0; k < L; k++) {
+        var b = B[k];
+
+        if (!equalScalar(M[i][i], 0)) {
+          // non-singular row
+          b[i] = divideScalar(b[i], M[i][i]);
+
+          for (var j = i - 1; j >= 0; j--) {
+            // b[j] -= b[i] * M[j,i]
+            b[j] = subtract(b[j], multiplyScalar(b[i], M[j][i]));
+          }
+        } else if (!equalScalar(b[i], 0)) {
+          // singular row, nonzero RHS
+          if (k === 0) {
+            // There is no valid solution
+            return [];
+          } else {
+            // This RHS is invalid but other solutions may still exist
+            B.splice(k, 1);
+            k -= 1;
+            L -= 1;
+          }
+        } else if (k === 0) {
+          // singular row, RHS is zero
+          var bNew = usolveAll_toConsumableArray(b);
+
+          bNew[i] = 1;
+
+          for (var _j = i - 1; _j >= 0; _j--) {
+            bNew[_j] = subtract(bNew[_j], M[_j][i]);
+          }
+
+          B.push(bNew);
+        }
+      }
+    }
+
+    return B.map(function (x) {
+      return new DenseMatrix({
+        data: x.map(function (e) {
+          return [e];
+        }),
+        size: [rows, 1]
+      });
+    });
+  }
+
+  function _sparseBackwardSubstitution(m, b_) {
+    // array of right-hand sides
+    var B = [solveValidation(m, b_, true)._data.map(function (e) {
+      return e[0];
+    })];
+    var rows = m._size[0];
+    var columns = m._size[1];
+    var values = m._values;
+    var index = m._index;
+    var ptr = m._ptr; // loop columns backwards
+
+    for (var i = columns - 1; i >= 0; i--) {
+      var L = B.length; // loop right-hand sides
+
+      for (var k = 0; k < L; k++) {
+        var b = B[k]; // values & indices (column i)
+
+        var iValues = [];
+        var iIndices = []; // first & last indeces in column
+
+        var firstIndex = ptr[i];
+        var lastIndex = ptr[i + 1]; // find the value at [i, i]
+
+        var Mii = 0;
+
+        for (var j = lastIndex - 1; j >= firstIndex; j--) {
+          var J = index[j]; // check row
+
+          if (J === i) {
+            Mii = values[j];
+          } else if (J < i) {
+            // store upper triangular
+            iValues.push(values[j]);
+            iIndices.push(J);
+          }
+        }
+
+        if (!equalScalar(Mii, 0)) {
+          // non-singular row
+          b[i] = divideScalar(b[i], Mii); // loop upper triangular
+
+          for (var _j2 = 0, _lastIndex = iIndices.length; _j2 < _lastIndex; _j2++) {
+            var _J = iIndices[_j2];
+            b[_J] = subtract(b[_J], multiplyScalar(b[i], iValues[_j2]));
+          }
+        } else if (!equalScalar(b[i], 0)) {
+          // singular row, nonzero RHS
+          if (k === 0) {
+            // There is no valid solution
+            return [];
+          } else {
+            // This RHS is invalid but other solutions may still exist
+            B.splice(k, 1);
+            k -= 1;
+            L -= 1;
+          }
+        } else if (k === 0) {
+          // singular row, RHS is zero
+          var bNew = usolveAll_toConsumableArray(b);
+
+          bNew[i] = 1; // loop upper triangular
+
+          for (var _j3 = 0, _lastIndex2 = iIndices.length; _j3 < _lastIndex2; _j3++) {
+            var _J2 = iIndices[_j3];
+            bNew[_J2] = subtract(bNew[_J2], iValues[_j3]);
+          }
+
+          B.push(bNew);
+        }
+      }
+    }
+
+    return B.map(function (x) {
+      return new DenseMatrix({
+        data: x.map(function (e) {
+          return [e];
+        }),
+        size: [rows, 1]
+      });
     });
   }
 });
@@ -42533,17 +43006,17 @@ var createFunctionAssignmentNode = /* #__PURE__ */Object(factory["a" /* factory 
   isNode: true
 });
 // CONCATENATED MODULE: ./src/expression/node/IndexNode.js
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function IndexNode_toConsumableArray(arr) { return IndexNode_arrayWithoutHoles(arr) || IndexNode_iterableToArray(arr) || IndexNode_unsupportedIterableToArray(arr) || IndexNode_nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function IndexNode_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function IndexNode_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return IndexNode_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return IndexNode_arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function IndexNode_iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function IndexNode_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return IndexNode_arrayLikeToArray(arr); }
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function IndexNode_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -42674,7 +43147,7 @@ var createIndexNode = /* #__PURE__ */Object(factory["a" /* factory */])(IndexNod
       var dimensions = Object(utils_array["k" /* map */])(evalDimensions, function (evalDimension) {
         return evalDimension(scope, args, context);
       });
-      return index.apply(void 0, _toConsumableArray(dimensions));
+      return index.apply(void 0, IndexNode_toConsumableArray(dimensions));
     };
   };
   /**
@@ -45359,7 +45832,24 @@ var createParse = /* #__PURE__ */Object(factory["a" /* factory */])(parse_name, 
 
 
     if (parse.isDigitDot(c1)) {
-      state.tokenType = TOKENTYPE.NUMBER; // get number, can have a single dot
+      state.tokenType = TOKENTYPE.NUMBER; // check for binary, octal, or hex
+
+      var _c = currentString(state, 2);
+
+      if (_c === '0b' || _c === '0o' || _c === '0x') {
+        state.token += currentCharacter(state);
+        next(state);
+        state.token += currentCharacter(state);
+        next(state);
+
+        while (parse.isHexDigit(currentCharacter(state))) {
+          state.token += currentCharacter(state);
+          next(state);
+        }
+
+        return;
+      } // get number, can have a single dot
+
 
       if (currentCharacter(state) === '.') {
         state.token += currentCharacter(state);
@@ -45570,6 +46060,16 @@ var createParse = /* #__PURE__ */Object(factory["a" /* factory */])(parse_name, 
 
   parse.isDigit = function isDigit(c) {
     return c >= '0' && c <= '9';
+  };
+  /**
+   * checks if the given char c is a hex digit
+   * @param {string} c   a string with one character
+   * @return {boolean}
+   */
+
+
+  parse.isHexDigit = function isHexDigit(c) {
+    return c >= '0' && c <= '9' || c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F';
   };
   /**
    * Start of the parse levels below, in order of precedence
@@ -49706,63 +50206,49 @@ var createLusolve = /* #__PURE__ */Object(factory["a" /* factory */])(lusolve_na
 
   return typed(lusolve_name, {
     'Array, Array | Matrix': function ArrayArrayMatrix(a, b) {
-      // convert a to matrix
-      a = matrix(a); // matrix lup decomposition
+      a = matrix(a);
+      var d = lup(a);
 
-      var d = lup(a); // solve
-
-      var x = _lusolve(d.L, d.U, d.p, null, b); // convert result to array
-
+      var x = _lusolve(d.L, d.U, d.p, null, b);
 
       return x.valueOf();
     },
     'DenseMatrix, Array | Matrix': function DenseMatrixArrayMatrix(a, b) {
-      // matrix lup decomposition
-      var d = lup(a); // solve
-
+      var d = lup(a);
       return _lusolve(d.L, d.U, d.p, null, b);
     },
     'SparseMatrix, Array | Matrix': function SparseMatrixArrayMatrix(a, b) {
-      // matrix lup decomposition
-      var d = lup(a); // solve
-
+      var d = lup(a);
       return _lusolve(d.L, d.U, d.p, null, b);
     },
     'SparseMatrix, Array | Matrix, number, number': function SparseMatrixArrayMatrixNumberNumber(a, b, order, threshold) {
-      // matrix lu decomposition
-      var d = slu(a, order, threshold); // solve
-
+      var d = slu(a, order, threshold);
       return _lusolve(d.L, d.U, d.p, d.q, b);
     },
     'Object, Array | Matrix': function ObjectArrayMatrix(d, b) {
-      // solve
       return _lusolve(d.L, d.U, d.p, d.q, b);
     }
   });
 
   function _toMatrix(a) {
-    // check it is a matrix
     if (Object(is["v" /* isMatrix */])(a)) {
       return a;
-    } // check array
-
+    }
 
     if (Object(is["b" /* isArray */])(a)) {
       return matrix(a);
-    } // throw
-
+    }
 
     throw new TypeError('Invalid Matrix LU decomposition');
   }
 
   function _lusolve(l, u, p, q, b) {
-    // verify L, U, P
+    // verify decomposition
     l = _toMatrix(l);
-    u = _toMatrix(u); // validate matrix and vector
-
-    b = solveValidation(l, b, false); // apply row permutations if needed (b is a DenseMatrix)
+    u = _toMatrix(u); // apply row permutations if needed (b is a DenseMatrix)
 
     if (p) {
+      b = solveValidation(l, b, true);
       b._data = csIpvec(p, b._data);
     } // use forward substitution to resolve L * y = b
 
@@ -49773,8 +50259,7 @@ var createLusolve = /* #__PURE__ */Object(factory["a" /* factory */])(lusolve_na
 
     if (q) {
       x._data = csIpvec(q, x._data);
-    } // return solution
-
+    }
 
     return x;
   }
@@ -50221,6 +50706,33 @@ var formatDocs = {
   description: 'Format a value of any type as string.',
   examples: ['format(2.3)', 'format(3 - 4i)', 'format([])', 'format(pi, 3)'],
   seealso: ['print']
+};
+// CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/bin.js
+var binDocs = {
+  name: 'bin',
+  category: 'Utils',
+  syntax: ['bin(value)'],
+  description: 'Format a number as binary',
+  examples: ['bin(2)'],
+  seealso: ['oct', 'hex']
+};
+// CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/oct.js
+var octDocs = {
+  name: 'oct',
+  category: 'Utils',
+  syntax: ['oct(value)'],
+  description: 'Format a number as octal',
+  examples: ['oct(56)'],
+  seealso: ['bin', 'hex']
+};
+// CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/hex.js
+var hexDocs = {
+  name: 'hex',
+  category: 'Utils',
+  syntax: ['hex(value)'],
+  description: 'Format a number as hexadecimal',
+  examples: ['hex(240)'],
+  seealso: ['bin', 'oct']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/utils/clone.js
 var cloneDocs = {
@@ -51639,9 +52151,18 @@ var usolveDocs = {
   name: 'usolve',
   category: 'Algebra',
   syntax: ['x=usolve(U, b)'],
-  description: 'Solves the linear system U * x = b where U is an [n x n] upper triangular matrix and b is a [n] column vector.',
+  description: 'Finds one solution of the linear system U * x = b where U is an [n x n] upper triangular matrix and b is a [n] column vector.',
   examples: ['x=usolve(sparse([1, 1, 1, 1; 0, 1, 1, 1; 0, 0, 1, 1; 0, 0, 0, 1]), [1; 2; 3; 4])'],
-  seealso: ['lup', 'lusolve', 'lsolve', 'matrix', 'sparse']
+  seealso: ['usolveAll', 'lup', 'lusolve', 'lsolve', 'matrix', 'sparse']
+};
+// CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/usolveAll.js
+var usolveAllDocs = {
+  name: 'usolveAll',
+  category: 'Algebra',
+  syntax: ['x=usolve(U, b)'],
+  description: 'Finds all solutions of the linear system U * x = b where U is an [n x n] upper triangular matrix and b is a [n] column vector.',
+  examples: ['x=usolve(sparse([1, 1, 1, 1; 0, 1, 1, 1; 0, 0, 1, 1; 0, 0, 0, 1]), [1; 2; 3; 4])'],
+  seealso: ['usolve', 'lup', 'lusolve', 'lsolve', 'matrix', 'sparse']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/slu.js
 var sluDocs = {
@@ -51684,9 +52205,18 @@ var lsolveDocs = {
   name: 'lsolve',
   category: 'Algebra',
   syntax: ['x=lsolve(L, b)'],
-  description: 'Solves the linear system L * x = b where L is an [n x n] lower triangular matrix and b is a [n] column vector.',
+  description: 'Finds one solution of the linear system L * x = b where L is an [n x n] lower triangular matrix and b is a [n] column vector.',
   examples: ['a = [-2, 3; 2, 1]', 'b = [11, 9]', 'x = lsolve(a, b)'],
-  seealso: ['lup', 'lusolve', 'usolve', 'matrix', 'sparse']
+  seealso: ['lsolveAll', 'lup', 'lusolve', 'usolve', 'matrix', 'sparse']
+};
+// CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/lsolveAll.js
+var lsolveAllDocs = {
+  name: 'lsolveAll',
+  category: 'Algebra',
+  syntax: ['x=lsolveAll(L, b)'],
+  description: 'Finds all solutions of the linear system L * x = b where L is an [n x n] lower triangular matrix and b is a [n] column vector.',
+  examples: ['a = [-2, 3; 2, 1]', 'b = [11, 9]', 'x = lsolve(a, b)'],
+  seealso: ['lsolve', 'lup', 'lusolve', 'usolve', 'matrix', 'sparse']
 };
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/function/algebra/derivative.js
 var derivativeDocs = {
@@ -52233,6 +52763,11 @@ var rowDocs = {
 
 
 
+
+
+
+
+
 var embeddedDocs = {
   // construction functions
   bignumber: bignumberDocs,
@@ -52474,12 +53009,14 @@ var embeddedDocs = {
   // functions - algebra
   derivative: derivativeDocs,
   lsolve: lsolveDocs,
+  lsolveAll: lsolveAllDocs,
   lup: lupDocs,
   lusolve: lusolveDocs,
   simplify: simplifyDocs,
   rationalize: rationalizeDocs,
   slu: sluDocs,
   usolve: usolveDocs,
+  usolveAll: usolveAllDocs,
   qr: qrDocs,
   // functions - arithmetic
   abs: absDocs,
@@ -52662,6 +53199,9 @@ var embeddedDocs = {
   // functions - utils
   clone: cloneDocs,
   format: formatDocs,
+  bin: binDocs,
+  oct: octDocs,
+  hex: hexDocs,
   isNaN: isNaNDocs,
   isInteger: isIntegerDocs,
   isNegative: isNegativeDocs,
@@ -54928,7 +55468,7 @@ var createVariance = /* #__PURE__ */Object(factory["a" /* factory */])(variance_
    */
 
   function _var(array, normalization) {
-    var sum = 0;
+    var sum;
     var num = 0;
 
     if (array.length === 0) {
@@ -54938,7 +55478,7 @@ var createVariance = /* #__PURE__ */Object(factory["a" /* factory */])(variance_
 
     deepForEach(array, function (value) {
       try {
-        sum = add(sum, value);
+        sum = sum === undefined ? value : add(sum, value);
         num++;
       } catch (err) {
         throw improveErrorMessage(err, 'variance', value);
@@ -54947,10 +55487,10 @@ var createVariance = /* #__PURE__ */Object(factory["a" /* factory */])(variance_
     if (num === 0) throw new Error('Cannot calculate variance of an empty array');
     var mean = divide(sum, num); // calculate the variance
 
-    sum = 0;
+    sum = undefined;
     deepForEach(array, function (value) {
       var diff = subtract(value, mean);
-      sum = add(sum, multiply(diff, diff));
+      sum = sum === undefined ? multiply(diff, diff) : add(sum, multiply(diff, diff));
     });
 
     if (isNaN(sum)) {
@@ -59722,7 +60262,7 @@ var createReplacer = /* #__PURE__ */Object(factory["a" /* factory */])(replacer_
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '7.2.0'; // Note: This file is automatically generated when building math.js.
+var version = '7.3.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
@@ -60846,6 +61386,11 @@ var createVarianceTransform = /* #__PURE__ */Object(factory["a" /* factory */])(
   isTransformFunction: true
 });
 // CONCATENATED MODULE: ./src/factoriesAny.js
+
+
+
+
+
 
 
 

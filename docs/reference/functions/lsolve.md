@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-lsolve">Function lsolve <a href="#function-lsolve" title="Permalink">#</a></h1>
 
-Solves the linear equation system by forwards substitution. Matrix must be a lower triangular matrix.
+Finds one solution of a linear equation system by forwards substitution. Matrix must be a lower triangular matrix. Throws an error if there's no solution.
 
 `L * x = b`
 
@@ -42,6 +42,7 @@ const x = lsolve(a, b)  // [[-5.5], [20]]
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
+[lsolveAll](lsolveAll.html),
 [lup](lup.html),
 [slu](slu.html),
 [usolve](usolve.html),
