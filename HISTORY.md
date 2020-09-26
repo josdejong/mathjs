@@ -5,6 +5,8 @@
 - Implemented functions `usolveAll` and `lsolveAll`, see #1916. Thanks @m93a.
 - Implemented support for units in functions `std` and `variance`, see #1950. 
   Thanks @rnd-debug.
+- Fix #1964: inconsistent calculation of negative dividend modulo for 
+  `BigNumber` and `Fraction`. Thanks @ovk.
 
 
 # 2020-08-24, version 7.2.0
