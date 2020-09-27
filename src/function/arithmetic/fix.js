@@ -20,6 +20,11 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    *    math.fix(-4.2)               // returns number -4
    *    math.fix(-4.7)               // returns number -4
    *
+   *    math.fix(3.12, 1)                // returns number 3.1
+   *    math.fix(3.18, 1)                // returns number 3.1
+   *    math.fix(-4.12, 1)               // returns number -4.1
+   *    math.fix(-4.17, 1)               // returns number -4.1
+   *
    *    const c = math.complex(3.22, -2.78)
    *    math.fix(c)                  // returns Complex 3 - 2i
    *    math.fix(c, 1)               // returns Complex 3.2 - 2.7i
