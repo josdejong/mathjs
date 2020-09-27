@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 7.4.0
+
+- Implemented support for passing a precision in functions `ceil`, `floor`, 
+  and `fix`, similar to `round`, see #1967, #1901. Thanks @rnd-debug.
+
+
 # 2020-09-26, version 7.3.0
 
 - Implemented functions `usolveAll` and `lsolveAll`, see #1916. Thanks @m93a.
