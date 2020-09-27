@@ -1,10 +1,12 @@
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
 const name = 'fix'
-const dependencies = ['typed', 'Complex', 'ceil', 'floor']
+const dependencies = ['typed', 'Complex', 'matrix', 'ceil', 'floor']
 
-export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex, ceil, floor }) => {
+export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex, matrix, ceil, floor }) => {
+  const algorithm14 = createAlgorithm14({ typed })
   /**
    * Round a value towards zero.
    * For matrices, the function is evaluated element wise.
@@ -36,7 +38,7 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    *
    *    ceil, floor, round
    *
-   * @param {number | BigNumber | Fraction | Complex | Array | Matrix} x    Number to be rounded
+   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x    Number to be rounded
    * @param  {number | BigNumber | Array} [n=0]                             Number of decimals
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix}     Rounded value
    */
@@ -45,7 +47,7 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
       return (x > 0) ? floor(x) : ceil(x)
     },
 
-    'number, number': function (x, n) {
+    'number, number | BigNumber': function (x, n) {
       return (x > 0) ? floor(x, n) : ceil(x, n)
     },
 
@@ -56,7 +58,7 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
       )
     },
 
-    'Complex, number': function (x, n) {
+    'Complex, number | BigNumber': function (x, n) {
       return new Complex(
         (x.re > 0) ? floor(x.re, n) : ceil(x.re, n),
         (x.im > 0) ? floor(x.im, n) : ceil(x.im, n)
@@ -67,7 +69,7 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
       return x.isNegative() ? ceil(x) : floor(x)
     },
 
-    'BigNumber, number': function (x, n) {
+    'BigNumber, number | BigNumber': function (x, n) {
       return x.isNegative() ? ceil(x, n) : floor(x, n)
     },
 
@@ -75,7 +77,7 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
       return x.s < 0 ? x.ceil() : x.floor()
     },
 
-    'Fraction, number': function (x, n) {
+    'Fraction, number | BigNumber': function (x, n) {
       return x.s < 0 ? x.ceil(n) : x.floor(n)
     },
 
@@ -84,9 +86,14 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
       return deepMap(x, this, true)
     },
 
-    'Array | Matrix, number': function (x, n) {
+    'Array | Matrix, number | BigNumber': function (x, n) {
       // deep map collection, skip zeros since fix(0) = 0
       return deepMap(x, i => this(i, n), true)
+    },
+
+    'number | Complex | BigNumber, Array': function (x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
 })
