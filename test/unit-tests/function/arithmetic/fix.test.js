@@ -30,6 +30,21 @@ describe('fix', function () {
     approx.equal(fix(math.pi), 3)
   })
 
+  it('should round numbers with a given number of decimals', function () {
+    approx.equal(fix(0, 5), 0)
+    approx.equal(fix(1, 5), 1)
+    approx.equal(fix(1.3, 5), 1.3)
+    approx.equal(fix(1.313, 2), 1.31)
+    approx.equal(fix(1.383, 2), 1.38)
+    approx.equal(fix(2.22, 2), 2.22)
+    approx.equal(fix(-1, 5), -1)
+    approx.equal(fix(-1.3, 5), -1.3)
+    approx.equal(fix(-1.883, 2), -1.88)
+    approx.equal(fix(-1.888, 2), -1.88)
+    approx.equal(fix(-2.22, 2), -2.22)
+    approx.equal(fix(math.pi, 6), 3.141592)
+  })
+
   it('should round big numbers correctly', function () {
     assert.deepStrictEqual(fix(bignumber(0)), bignumber(0))
     assert.deepStrictEqual(fix(bignumber(1)), bignumber(1))
@@ -43,12 +58,32 @@ describe('fix', function () {
     assert.deepStrictEqual(fix(bignumber(-2.1)), bignumber(-2))
   })
 
+  it('should round big numbers with a given number of decimals', function () {
+    assert.deepStrictEqual(fix(bignumber(0), 5), bignumber(0))
+    assert.deepStrictEqual(fix(bignumber(1), 5), bignumber(1))
+    assert.deepStrictEqual(fix(bignumber(1.315), 2), bignumber(1.31))
+    assert.deepStrictEqual(fix(bignumber(1.381), 2), bignumber(1.38))
+    assert.deepStrictEqual(fix(bignumber(2), 2), bignumber(2))
+    assert.deepStrictEqual(fix(bignumber(-1), 2), bignumber(-1))
+    assert.deepStrictEqual(fix(bignumber(-1.31), 1), bignumber(-1.3))
+    assert.deepStrictEqual(fix(bignumber(-1.38), 1), bignumber(-1.3))
+    assert.deepStrictEqual(fix(bignumber(-2.22), 2), bignumber(-2.22))
+  })
+
   it('should round complex numbers correctly', function () {
     // complex
     approx.deepEqual(fix(complex(0, 0)), complex(0, 0))
     approx.deepEqual(fix(complex(1.3, 1.8)), complex(1, 1))
     approx.deepEqual(fix(math.i), complex(0, 1))
     approx.deepEqual(fix(complex(-1.3, -1.8)), complex(-1, -1))
+  })
+
+  it('should round complex numbers with a given number of decimals', function () {
+    // complex
+    approx.deepEqual(fix(complex(0, 0), 5), complex(0, 0))
+    approx.deepEqual(fix(complex(1.335, 2.835), 2), complex(1.33, 2.83))
+    approx.deepEqual(fix(math.i, 5), complex(0, 1))
+    approx.deepEqual(fix(complex(-1.335, -1.835), 2), complex(-1.33, -1.83))
   })
 
   it('should round fractions correctly', function () {
@@ -66,6 +101,25 @@ describe('fix', function () {
     assert.strictEqual(fix(fraction(-1.8)).toString(), '-1')
     assert.strictEqual(fix(fraction(-2)).toString(), '-2')
     assert.strictEqual(fix(fraction(-2.1)).toString(), '-2')
+  })
+
+  it('should round fractions with a given number of decimals', function () {
+    const a = fraction('2/3')
+    assert(fix(a, 3) instanceof math.Fraction)
+    assert.strictEqual(a.toString(), '0.(6)')
+    const b = fraction('-2/3')
+    assert(fix(b, 3) instanceof math.Fraction)
+    assert.strictEqual(b.toString(), '-0.(6)')
+
+    assert.strictEqual(fix(fraction(0), 5).toString(), '0')
+    assert.strictEqual(fix(fraction(1), 5).toString(), '1')
+    assert.strictEqual(fix(fraction(1.33), 1).toString(), '1.3')
+    assert.strictEqual(fix(fraction(1.38), 1).toString(), '1.3')
+    assert.strictEqual(fix(fraction(2), 5).toString(), '2')
+    assert.strictEqual(fix(fraction(-1), 5).toString(), '-1')
+    assert.strictEqual(fix(fraction(-1.33), 1).toString(), '-1.3')
+    assert.strictEqual(fix(fraction(-1.38), 1).toString(), '-1.3')
+    assert.strictEqual(fix(fraction(-2.22), 2).toString(), '-2.22')
   })
 
   it('should gracefully handle round-off errors', function () {
@@ -90,13 +144,27 @@ describe('fix', function () {
     assert.deepStrictEqual(fix(bignumber(-799999.9999999999)), bignumber(-800000))
   })
 
+  it('should gracefully handle round-off errors with given number of decimals', function () {
+    assert.strictEqual(fix(3.0000000000000004, 3), 3)
+    assert.strictEqual(fix(7.999999999999999, 3), 8)
+    assert.strictEqual(fix(-3.0000000000000004, 3), -3)
+    assert.strictEqual(fix(-7.999999999999999, 3), -8)
+    assert.strictEqual(fix(30000.000000000004, 3), 30000)
+    assert.strictEqual(fix(799999.9999999999, 3), 800000)
+    assert.strictEqual(fix(-30000.000000000004, 3), -30000)
+    assert.strictEqual(fix(-799999.9999999999, 3), -800000)
+  })
+
   it('should throw an error on unit as parameter', function () {
     // unit
     assert.throws(function () { fix(unit('5cm')) }, TypeError, 'Function fix(unit) not supported')
   })
 
   it('should convert a string to a number', function () {
-    assert.strictEqual(fix('1.8'), 1)
+    assert.strictEqual(fix('1.81'), 1)
+    assert.strictEqual(fix('1.815', '2'), 1.81)
+    assert.strictEqual(fix('1.815', 2).toString(), '1.81')
+    assert.strictEqual(fix(1.815, '2').toString(), '1.81')
   })
 
   it('should correctly round all values of a matrix element-wise', function () {
@@ -105,13 +173,20 @@ describe('fix', function () {
     approx.deepEqual(fix(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([1, 3, 5, 7, 10]))
   })
 
+  it('should round all values of a matrix element-wise with a given number of decimals', function () {
+    // matrix, array, range
+    approx.deepEqual(fix([1.234, 3.456, 5.678, 7.891, 10.01], 2), [1.23, 3.45, 5.67, 7.89, 10.01])
+    approx.deepEqual(fix(matrix([1.234, 3.456, 5.678, 7.891, 10.01]), 2), matrix([1.23, 3.45, 5.67, 7.89, 10.01]))
+  })
+
   it('should throw an error in case of invalid number of arguments', function () {
     assert.throws(function () { fix() }, /TypeError: Too few arguments/)
-    assert.throws(function () { fix(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () { fix(1, 2, 3) }, /TypeError: Too many arguments/)
   })
 
   it('should throw an in case of wrong type of arguments', function () {
     assert.throws(function () { fix(null) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () { fix(1, null) }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX fix', function () {

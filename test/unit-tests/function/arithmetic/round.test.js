@@ -80,6 +80,26 @@ describe('round', function () {
     assert.strictEqual(round(fraction('1/2')).toString(), '1')
   })
 
+  it('should gracefully handle round-off errors', function () {
+    assert.strictEqual(round(3.0000000000000004), 3)
+    assert.strictEqual(round(7.999999999999999), 8)
+    assert.strictEqual(round(-3.0000000000000004), -3)
+    assert.strictEqual(round(-7.999999999999999), -8)
+    assert.strictEqual(round(30000.000000000004), 30000)
+    assert.strictEqual(round(799999.9999999999), 800000)
+    assert.strictEqual(round(-30000.000000000004), -30000)
+    assert.strictEqual(round(-799999.9999999999), -800000)
+
+    assert.strictEqual(round(3.0000000000000004, 2), 3)
+    assert.strictEqual(round(7.999999999999999, 2), 8)
+    assert.strictEqual(round(-3.0000000000000004, 2), -3)
+    assert.strictEqual(round(-7.999999999999999, 2), -8)
+    assert.strictEqual(round(30000.000000000004, 2), 30000)
+    assert.strictEqual(round(799999.9999999999, 2), 800000)
+    assert.strictEqual(round(-30000.000000000004, 2), -30000)
+    assert.strictEqual(round(-799999.9999999999, 2), -800000)
+  })
+
   it('should round real and imag part of a complex number', function () {
     assert.deepStrictEqual(round(math.complex(2.2, math.pi)), math.complex(2, 3))
   })

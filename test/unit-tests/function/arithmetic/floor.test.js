@@ -124,6 +124,14 @@ describe('floor', function () {
     assert.strictEqual(floor(30000.000000000004), 30000)
     assert.strictEqual(floor(799999.9999999999), 800000)
     assert.strictEqual(floor(-30000.000000000004), -30000)
+
+    assert.strictEqual(floor(3.0000000000000004, 2), 3)
+    assert.strictEqual(floor(7.999999999999999, 2), 8)
+    assert.strictEqual(floor(-3.0000000000000004, 2), -3)
+    assert.strictEqual(floor(-7.999999999999999, 2), -8)
+    assert.strictEqual(floor(30000.000000000004, 2), 30000)
+    assert.strictEqual(floor(799999.9999999999, 2), 800000)
+    assert.strictEqual(floor(-30000.000000000004, 2), -30000)
   })
 
   it('should gracefully handle round-off errors with bignumbers', function () {

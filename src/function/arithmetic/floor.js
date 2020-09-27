@@ -20,6 +20,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * Syntax:
    *
    *    math.floor(x)
+   *    math.floor(x, n)
    *
    * Examples:
    *
@@ -38,7 +39,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *    math.floor(c, 1)              // returns Complex 3.2 - 2.8i
    *
    *    math.floor([3.2, 3.8, -4.7])       // returns Array [3, 3, -5]
-   *    math.ceil([3.21, 3.82, -4.71], 1)  // returns Array [3.2, 3.8, -4.8]
+   *    math.floor([3.21, 3.82, -4.71], 1)  // returns Array [3.2, 3.8, -4.8]
    *
    * See also:
    *
@@ -62,7 +63,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         return round(x, n)
       } else {
         let [number, exponent] = `${x}e`.split('e')
-        const result = Math.floor(`${number}e${Number(exponent) + n}`);
+        const result = Math.floor(Number(`${number}e${Number(exponent) + n}`));
         [number, exponent] = `${result}e`.split('e')
         return Number(`${number}e${Number(exponent) - n}`)
       }

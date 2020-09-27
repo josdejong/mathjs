@@ -65,7 +65,7 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         return round(x, n)
       } else {
         let [number, exponent] = `${x}e`.split('e')
-        const result = Math.ceil(`${number}e${Number(exponent) + n}`);
+        const result = Math.ceil(Number(`${number}e${Number(exponent) + n}`));
         [number, exponent] = `${result}e`.split('e')
         return Number(`${number}e${Number(exponent) - n}`)
       }

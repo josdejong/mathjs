@@ -28,11 +28,10 @@ describe('ceil', function () {
   it('should return the ceil of a number with a given number of decimals', function () {
     approx.equal(ceil(0, 5), 0)
     approx.equal(ceil(2, 3), 2)
-    approx.equal(ceil(1.3216, 2), 1.33)
     approx.equal(ceil(math.pi, 3), 3.142)
     approx.equal(ceil(math.pi, 6), 3.141593)
     approx.equal(ceil(1234.5678, 2), 1234.57)
-    approx.equal(ceil(2.135, 2), 2.14)
+    approx.equal(ceil(2.13, 2), 2.13)
     approx.equal(ceil(-1.8, 0), -1)
     approx.equal(ceil(-1.8, 1), -1.8)
     approx.equal(ceil(-2.178, 2), -2.17)
@@ -124,6 +123,15 @@ describe('ceil', function () {
     assert.strictEqual(ceil(799999.9999999999), 800000)
     assert.strictEqual(ceil(-30000.000000000004), -30000)
     assert.strictEqual(ceil(-799999.9999999999), -800000)
+
+    assert.strictEqual(ceil(3.0000000000000004, 2), 3)
+    assert.strictEqual(ceil(7.999999999999999, 2), 8)
+    assert.strictEqual(ceil(-3.0000000000000004, 2), -3)
+    assert.strictEqual(ceil(-7.999999999999999, 2), -8)
+    assert.strictEqual(ceil(30000.000000000004, 2), 30000)
+    assert.strictEqual(ceil(799999.9999999999, 2), 800000)
+    assert.strictEqual(ceil(-30000.000000000004, 2), -30000)
+    assert.strictEqual(ceil(-799999.9999999999, 2), -800000)
   })
 
   it('should gracefully handle round-off errors with bignumbers', function () {
