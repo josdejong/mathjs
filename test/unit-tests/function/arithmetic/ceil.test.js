@@ -184,12 +184,22 @@ describe('ceil', function () {
     assert.deepStrictEqual(ceil(matrix([[1.7777, 2.3456], [-90.8272, 0]]), 3), matrix([[1.778, 2.346], [-90.827, 0]]))
   })
 
+  it('should ceil dense matrix with given bignumber decimals', function () {
+    const expected = matrix([[1.778, 2.346], [-90.827, 0]])
+    approx.deepEqual(ceil(matrix([[1.7777, 2.3456], [-90.8272, 0]]), bignumber(3)), expected)
+  })
+
   it('should ceil sparse matrix', function () {
     assert.deepStrictEqual(ceil(sparse([[1.7, 0], [8.987, -3.565]]), 2), sparse([[1.7, 0], [8.99, -3.56]]))
   })
 
   it('should ceil sparse matrix and scalar', function () {
     assert.deepStrictEqual(ceil(sparse([[1.7777, 2.3456], [-90.8272, 0]]), 3), sparse([[1.778, 2.346], [-90.827, 0]]))
+  })
+
+  it('should ceil sparse matrix with given bignumber decimals', function () {
+    const expected = bignumber(sparse([[1.778, 2.346], [-90.827, 0]]))
+    assert.deepStrictEqual(ceil(sparse([[1.7777, 2.3456], [-90.8272, 0]]), bignumber(3)), expected)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

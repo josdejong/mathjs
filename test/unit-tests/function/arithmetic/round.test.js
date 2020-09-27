@@ -45,6 +45,12 @@ describe('round', function () {
     assert.throws(function () { round(math.pi, -2) }, /Number of decimals in function round must be in te range of 0-15/)
     assert.throws(function () { round(math.pi, 20) }, /Number of decimals in function round must be in te range of 0-15/)
     assert.throws(function () { round(math.pi, 2.5) }, /Number of decimals in function round must be an integer/)
+    assert.throws(function () { round(1, 1.2) }, /TypeError: Number of decimals in function round must be an integer/)
+    assert.throws(function () { round(1, bignumber(1.2)) }, /TypeError: Number of decimals in function round must be an integer/)
+    assert.throws(function () { round(math.complex(1, 1), 1.2) }, /TypeError: Number of decimals in function round must be an integer/)
+    assert.throws(function () { round(math.complex(1, 1), bignumber(1.2)) }, /TypeError: Number of decimals in function round must be an integer/)
+    assert.throws(function () { round(bignumber(1.2), bignumber(1.2)) }, /TypeError: Number of decimals in function round must be an integer/)
+    assert.throws(function () { round(round(fraction('1/2'), 1.2)) }, /TypeError: Number of decimals in function round must be an integer/)
   })
 
   it('should throw an error if used with wrong number of arguments', function () {
@@ -78,6 +84,8 @@ describe('round', function () {
     assert.strictEqual(round(fraction('2/3')).toString(), '1')
     assert.strictEqual(round(fraction('1/3')).toString(), '0')
     assert.strictEqual(round(fraction('1/2')).toString(), '1')
+
+    assert.strictEqual(round(fraction('1/2'), 1).toString(), '0.5')
   })
 
   it('should gracefully handle round-off errors', function () {
@@ -146,6 +154,7 @@ describe('round', function () {
     it('should round dense matrix and scalar', function () {
       assert.deepStrictEqual(round(matrix([[1.7777, 2.3456], [-90.8272, 0]]), 3), matrix([[1.778, 2.346], [-90.827, 0]]))
       assert.deepStrictEqual(round(3.12385, matrix([[2, 3], [0, 2]])), matrix([[3.12, 3.124], [3, 3.12]]))
+      assert.deepStrictEqual(round(0.0, matrix([2, 3])), matrix([0, 0]))
     })
   })
 
@@ -157,6 +166,7 @@ describe('round', function () {
     it('should round sparse matrix and scalar', function () {
       assert.deepStrictEqual(round(sparse([[1.7777, 2.3456], [-90.8272, 0]]), 3), sparse([[1.778, 2.346], [-90.827, 0]]))
       assert.deepStrictEqual(round(3.12385, sparse([[2, 3], [0, 2]])), matrix([[3.12, 3.124], [3, 3.12]]))
+      assert.deepStrictEqual(round(0.0, sparse([2, 3])), sparse([0, 0]))
     })
   })
 

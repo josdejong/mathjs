@@ -169,20 +169,32 @@ describe('floor', function () {
     assert.deepStrictEqual(floor(3.12385, [2, 3]), [3.12, 3.123])
   })
 
-  it('should ceil dense matrix', function () {
+  it('should floor dense matrix', function () {
     assert.deepStrictEqual(floor(matrix([[1.712, 2.345], [8.987, -3.565]]), 2), matrix([[1.71, 2.34], [8.98, -3.57]]))
   })
 
-  it('should ceil dense matrix and scalar', function () {
+  it('should floor dense matrix and scalar', function () {
     assert.deepStrictEqual(floor(matrix([[1.7777, 2.3456], [-90.8272, 0]]), 3), matrix([[1.777, 2.345], [-90.828, 0]]))
   })
 
-  it('should ceil sparse matrix', function () {
+  it('should floor dense matrix with given bignumber decimals', function () {
+    const expected = bignumber(matrix([[1.777, 2.345], [-90.828, 0]]))
+    const decimals = bignumber(3)
+    approx.deepEqual(floor(matrix([[1.7777, 2.3456], [-90.8272, 0]]), decimals), expected)
+  })
+
+  it('should floor sparse matrix', function () {
     assert.deepStrictEqual(floor(sparse([[1.7, 0], [8.987, -3.565]]), 2), sparse([[1.7, 0], [8.98, -3.57]]))
   })
 
-  it('should ceil sparse matrix and scalar', function () {
+  it('should floor sparse matrix and scalar', function () {
     assert.deepStrictEqual(floor(sparse([[1.7777, 2.3456], [-90.8272, 0]]), 3), sparse([[1.777, 2.345], [-90.828, 0]]))
+  })
+
+  it('should floor sparse matrix with given bignumber decimals', function () {
+    const expected = bignumber(sparse([[1.777, 2.345], [-90.828, 0]]))
+    const decimals = bignumber(3)
+    assert.deepStrictEqual(floor(sparse([[1.7777, 2.3456], [-90.8272, 0]]), decimals), expected)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
