@@ -180,7 +180,7 @@ describe('fix', function () {
 
   it('should convert a string to a number', function () {
     assert.strictEqual(fix('1.81'), 1)
-    assert.strictEqual(fix('1.815', '2'), 1.81)
+    assert.strictEqual(fix('1.815', '2').toString(), '1.81')
     assert.strictEqual(fix('1.815', 2).toString(), '1.81')
     assert.strictEqual(fix(1.815, '2').toString(), '1.81')
   })
