@@ -1,6 +1,7 @@
 import { factory } from '../../utils/factory'
 import { isNumber } from '../../utils/is'
 import { createRng } from './util/seededRNG'
+import { flatten } from '../../utils/array'
 
 const name = 'pickRandom'
 const dependencies = ['typed', 'config', '?on']
@@ -75,7 +76,7 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
       number = 1
     }
 
-    possibles = possibles.valueOf() // get Array
+    possibles = flatten(possibles.valueOf()).valueOf() // get Array
     if (weights) {
       weights = weights.valueOf() // get Array
     }
