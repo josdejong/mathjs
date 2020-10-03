@@ -113,16 +113,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
     const sinTheta = sin(theta)
     const data = [[cosTheta, multiplyScalar(minusOne, sinTheta)], [sinTheta, cosTheta]]
 
-    if (format) {
-      if (format === 'sparse') {
-        return new SparseMatrix(data)
-      }
-      if (format === 'dense') {
-        return new DenseMatrix(data)
-      }
-      throw new TypeError(`Unknown matrix type "${format}"`)
-    }
-    return data
+    return _convertToFormat(data, format)
   }
 
   function _validateVector (v) {

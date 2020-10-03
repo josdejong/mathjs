@@ -13,13 +13,16 @@ const rotationMatrix = math.rotationMatrix
 
 describe('rotationMatrix', function () {
   const sqrtTwoInv = 0.7071067811865476 // = 1 / sqrt(2)
-  const minusSqrtTwoInv = -0.7071067811865475 // = - 1 / sqrt(2)
+  const minusSqrtTwoInv = -0.7071067811865476 // = - 1 / sqrt(2)
 
   it('should create an empty matrix', function () {
     assert.deepStrictEqual(rotationMatrix(), matrix())
     assert.deepStrictEqual(rotationMatrix(1, [0.0, 0.0, 0.0]), matrix())
     assert.deepStrictEqual(rotationMatrix('sparse'), matrix('sparse'))
     assert.deepStrictEqual(rotationMatrix('dense'), matrix('dense'))
+
+    const mathArray = math.create({ matrix: 'Array' })
+    assert.deepStrictEqual(mathArray.rotationMatrix(), [])
   })
 
   it('should create a 2D rotation matrix of given angle', function () {
@@ -212,6 +215,18 @@ describe('rotationMatrix', function () {
       matrix([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'sparse'))
     approx.deepEqual(rotationMatrix(math.pi / 4, [0, 1, 0], 'sparse'),
       matrix([[sqrtTwoInv, 0.0, sqrtTwoInv], [0, 1, 0], [minusSqrtTwoInv, 0.0, sqrtTwoInv]], 'sparse'))
+    approx.deepEqual(rotationMatrix(math.pi / 4, matrix([0, 1, 0]), 'sparse'),
+      matrix([[sqrtTwoInv, 0.0, sqrtTwoInv], [0, 1, 0], [minusSqrtTwoInv, 0.0, sqrtTwoInv]], 'sparse'))
+  })
+
+  it('should return an array when mathjs is configured for this', function () {
+    const mathArray = math.create({ matrix: 'Array' })
+    approx.deepEqual(mathArray.rotationMatrix(mathArray.pi / 4),
+      [[sqrtTwoInv, minusSqrtTwoInv], [sqrtTwoInv, sqrtTwoInv]])
+    approx.deepEqual(mathArray.rotationMatrix(mathArray.pi / 2, [0, 0, 1]),
+      [[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]])
+    approx.deepEqual(mathArray.rotationMatrix(mathArray.pi / 2, matrix([0, 0, 1])),
+      [[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]])
   })
 
   it('should throw an error with an invalid input', function () {
@@ -220,6 +235,7 @@ describe('rotationMatrix', function () {
     assert.throws(function () { rotationMatrix(0, []) }, /RangeError: Vector must be of dimensions 1x3/)
     assert.throws(function () { rotationMatrix(0, [1]) }, /RangeError: Vector must be of dimensions 1x3/)
     assert.throws(function () { rotationMatrix(0, [0, 1]) }, /RangeError: Vector must be of dimensions 1x3/)
+    assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'something') }, /TypeError: Unknown matrix type/)
     assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'sparse', 4) }, /TypeError: Too many arguments/)
   })
 })
