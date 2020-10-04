@@ -35,13 +35,19 @@ describe('rotationMatrix', function () {
   it('should create a 2D rotation matrix of given bignumber angle', function () {
     approx.deepEqual(rotationMatrix(bignumber(0.0)), matrix([[1, 0.0], [0.0, 1]]))
 
-    // const bigmath = math.create({ number: 'BigNumber' }) //precision: 15 ,
-    // const zero = bigmath.bignumber(0)
-    // const one = bigmath.bignumber(1)
-    // const minusOne = bigmath.bignumber(-1)
-  // FIXME  assert.deepStrictEqual(bigmath.rotationMatrix(bigmath.bignumber(bigmath.pi)), bigmath.matrix([[minusOne, zero], [zero, minusOne]]))
-  // FIXME! assert.deepStrictEqual(rotationMatrix(bignumber(math.pi / 2.0)), matrix([[zero, minusOne], [one, zero]]))
-  // FIXME! assert.deepStrictEqual(rotationMatrix(bignumber(math.pi / 4)), matrix([[0.707, -0.707], [0.707, 0.707]]))
+    const bigmath = math.create({ number: 'BigNumber' })
+    const minusOne = bigmath.bignumber(-1)
+    const cos1 = bigmath.cos(bigmath.bignumber(1))
+    const sin1 = bigmath.sin(bigmath.bignumber(1))
+    const minusSin1 = bigmath.multiply(sin1, minusOne)
+    assert.deepStrictEqual(bigmath.rotationMatrix(bigmath.bignumber(1)),
+      bigmath.matrix([[cos1, minusSin1], [sin1, cos1]]))
+
+    const cos25 = bigmath.cos(bigmath.bignumber(2.5))
+    const sin25 = bigmath.sin(bigmath.bignumber(2.5))
+    const minusSin25 = bigmath.multiply(sin25, minusOne)
+    assert.deepStrictEqual(bigmath.rotationMatrix(bigmath.bignumber(2.5)),
+      bigmath.matrix([[cos25, minusSin25], [sin25, cos25]]))
   })
 
   it('should create a 2D rotation matrix of given complex angle', function () {
