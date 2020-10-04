@@ -238,4 +238,9 @@ describe('rotationMatrix', function () {
     assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'something') }, /TypeError: Unknown matrix type/)
     assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'sparse', 4) }, /TypeError: Too many arguments/)
   })
+
+  it('should LaTeX rotationMatrix', function () {
+    const expression = math.parse('rotationMatrix(1)')
+    assert.strictEqual(expression.toTex(), '\\mathrm\{rotationMatrix\}\\left(1\\right)')
+  })
 })
