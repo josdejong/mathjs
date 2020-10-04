@@ -24,8 +24,8 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
     matrix, DenseMatrix, SparseMatrix, cos, sin
   }) => {
   /**
-   * Create a 2-dimensional counter-clockwise rotation matrix of a given angle (expressed in radians).
-   * Create a 3-dimensional counter-clockwise rotation matrix by a given angle (expressed in radians) around a given axis.
+   * Create a 2-dimensional counter-clockwise rotation matrix (2x2) for a given angle (expressed in radians).
+   * Create a 2-dimensional counter-clockwise rotation matrix (3x3) by a given angle (expressed in radians) around a given axis (1x3).
    *
    * Syntax:
    *
