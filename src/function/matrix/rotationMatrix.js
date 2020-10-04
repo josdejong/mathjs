@@ -98,7 +98,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
   })
 
   /**
-   * Returns matrix of 2D rotation of angle theta
+   * Returns 2x2 matrix of 2D rotation of angle theta
    *
    * @param {number | BigNumber | Complex | Unit} theta  The rotation angle
    * @param {string} format                              The result Matrix storage format
@@ -141,7 +141,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
   }
 
   /**
-   * Returns matrix of 3D rotation of angle theta around vector v
+   * Returns a 3x3 matrix of rotation of angle theta around vector v
    *
    * @param {number | BigNumber | Complex | Unit} theta The rotation angle
    * @param {Matrix} v                                  The rotation axis vector
