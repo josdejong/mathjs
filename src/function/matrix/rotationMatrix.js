@@ -66,33 +66,33 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
     },
 
     'number | BigNumber | Complex | Unit': function (theta) {
-      return _rotationMatrix2d(theta, config.matrix === 'Matrix' ? 'dense' : undefined)
+      return _rotationMatrix2x2(theta, config.matrix === 'Matrix' ? 'dense' : undefined)
     },
 
     'number | BigNumber | Complex | Unit, string': function (theta, format) {
-      return _rotationMatrix2d(theta, format)
+      return _rotationMatrix2x2(theta, format)
     },
 
     'number | BigNumber | Complex | Unit, Array': function (theta, v) {
       const matrixV = matrix(v)
       _validateVector(matrixV)
-      return _rotationMatrix3d(theta, matrixV, config.matrix === 'Matrix' ? 'dense' : undefined)
+      return _rotationMatrix3x3(theta, matrixV, config.matrix === 'Matrix' ? 'dense' : undefined)
     },
 
     'number | BigNumber | Complex | Unit, Matrix': function (theta, v) {
       _validateVector(v)
-      return _rotationMatrix3d(theta, v, config.matrix === 'Matrix' ? 'dense' : undefined)
+      return _rotationMatrix3x3(theta, v, config.matrix === 'Matrix' ? 'dense' : undefined)
     },
 
     'number | BigNumber | Complex | Unit, Array, string': function (theta, v, format) {
       const matrixV = matrix(v)
       _validateVector(matrixV)
-      return _rotationMatrix3d(theta, matrixV, format)
+      return _rotationMatrix3x3(theta, matrixV, format)
     },
 
     'number | BigNumber | Complex | Unit, Matrix, string': function (theta, v, format) {
       _validateVector(v)
-      return _rotationMatrix3d(theta, v, format)
+      return _rotationMatrix3x3(theta, v, format)
     }
 
   })
@@ -105,7 +105,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
    * @returns {Matrix}
    * @private
    */
-  function _rotationMatrix2d (theta, format) {
+  function _rotationMatrix2x2 (theta, format) {
     const Big = isBigNumber(theta)
 
     const minusOne = Big ? new BigNumber(-1) : -1
@@ -149,7 +149,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
    * @returns {Matrix}
    * @private
    */
-  function _rotationMatrix3d (theta, v, format) {
+  function _rotationMatrix3x3 (theta, v, format) {
     const normV = norm(v)
     if (normV === 0) {
       return _convertToFormat([], format)
