@@ -1,5 +1,12 @@
 # History
 
+# not yet published, version 7.5.0
+
+- Fixed #1974: function `pickRandom` now allows randomly picking elements 
+  from matrices with 2 or more dimensions instead of only from a vector.
+  Thanks @KonradLinkowski.
+
+
 # 2020-10-07, version 7.4.0
 
 - Implemented support for passing a precision in functions `ceil`, `floor`, 
@@ -7,9 +14,6 @@
 - Implemented function `rotationMatrix`, see #1160, #1984. Thanks @rnd-debug.
 - Implement a clear error message when using `sqrtm` with a matrix having 
   more than two dimensions. Thanks @KonradLinkowski.
-- Fixed #1974: function `pickRandom` now allows randomly picking elements 
-  from matrices with 2 or more dimensions instead of only from a vector.
-  Thanks @KonradLinkowski.
 - Update dependency `decimal.js` to `10.2.1`.
 
 
