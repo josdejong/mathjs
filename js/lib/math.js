@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 7.3.0
- * @date    2020-09-26
+ * @version 7.4.0
+ * @date    2020-10-07
  *
  * @license
  * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
@@ -4977,1612 +4977,6 @@ module.exports = function naturalSort (a, b) {
 
 /***/ }),
 /* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ArgumentsError; });
-/**
- * Create a syntax error with the message:
- *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
- * @param {string} fn     Function name
- * @param {number} count  Actual argument count
- * @param {number} min    Minimum required argument count
- * @param {number} [max]  Maximum required argument count
- * @extends Error
- */
-function ArgumentsError(fn, count, min, max) {
-  if (!(this instanceof ArgumentsError)) {
-    throw new SyntaxError('Constructor must be called with the new operator');
-  }
-
-  this.fn = fn;
-  this.count = count;
-  this.min = min;
-  this.max = max;
-  this.message = 'Wrong number of arguments in function ' + fn + ' (' + count + ' provided, ' + min + (max !== undefined && max !== null ? '-' + max : '') + ' expected)';
-  this.stack = new Error().stack;
-}
-ArgumentsError.prototype = new Error();
-ArgumentsError.prototype.constructor = Error;
-ArgumentsError.prototype.name = 'ArgumentsError';
-ArgumentsError.prototype.isArgumentsError = true;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
- * typed-function
- *
- * Type checking for JavaScript functions
- *
- * https://github.com/josdejong/typed-function
- */
-
-
-(function (root, factory) {
-  if (true) {
-    // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else {}
-}(this, function () {
-
-  function ok () {
-    return true;
-  }
-
-  function notOk () {
-    return false;
-  }
-
-  function undef () {
-    return undefined;
-  }
-
-  /**
-   * @typedef {{
-   *   params: Param[],
-   *   fn: function
-   * }} Signature
-   *
-   * @typedef {{
-   *   types: Type[],
-   *   restParam: boolean
-   * }} Param
-   *
-   * @typedef {{
-   *   name: string,
-   *   typeIndex: number,
-   *   test: function,
-   *   conversion?: ConversionDef,
-   *   conversionIndex: number,
-   * }} Type
-   *
-   * @typedef {{
-   *   from: string,
-   *   to: string,
-   *   convert: function (*) : *
-   * }} ConversionDef
-   *
-   * @typedef {{
-   *   name: string,
-   *   test: function(*) : boolean
-   * }} TypeDef
-   */
-
-  // create a new instance of typed-function
-  function create () {
-    // data type tests
-    var _types = [
-      { name: 'number',    test: function (x) { return typeof x === 'number' } },
-      { name: 'string',    test: function (x) { return typeof x === 'string' } },
-      { name: 'boolean',   test: function (x) { return typeof x === 'boolean' } },
-      { name: 'Function',  test: function (x) { return typeof x === 'function'} },
-      { name: 'Array',     test: Array.isArray },
-      { name: 'Date',      test: function (x) { return x instanceof Date } },
-      { name: 'RegExp',    test: function (x) { return x instanceof RegExp } },
-      { name: 'Object',    test: function (x) {
-        return typeof x === 'object' && x !== null && x.constructor === Object
-      }},
-      { name: 'null',      test: function (x) { return x === null } },
-      { name: 'undefined', test: function (x) { return x === undefined } }
-    ];
-
-    var anyType = {
-      name: 'any',
-      test: ok
-    }
-
-    // types which need to be ignored
-    var _ignore = [];
-
-    // type conversions
-    var _conversions = [];
-
-    // This is a temporary object, will be replaced with a typed function at the end
-    var typed = {
-      types: _types,
-      conversions: _conversions,
-      ignore: _ignore
-    };
-
-    /**
-     * Find the test function for a type
-     * @param {String} typeName
-     * @return {TypeDef} Returns the type definition when found,
-     *                    Throws a TypeError otherwise
-     */
-    function findTypeByName (typeName) {
-      var entry = findInArray(typed.types, function (entry) {
-        return entry.name === typeName;
-      });
-
-      if (entry) {
-        return entry;
-      }
-
-      if (typeName === 'any') { // special baked-in case 'any'
-        return anyType;
-      }
-
-      var hint = findInArray(typed.types, function (entry) {
-        return entry.name.toLowerCase() === typeName.toLowerCase();
-      });
-
-      throw new TypeError('Unknown type "' + typeName + '"' +
-          (hint ? ('. Did you mean "' + hint.name + '"?') : ''));
-    }
-
-    /**
-     * Find the index of a type definition. Handles special case 'any'
-     * @param {TypeDef} type
-     * @return {number}
-     */
-    function findTypeIndex(type) {
-      if (type === anyType) {
-        return 999;
-      }
-
-      return typed.types.indexOf(type);
-    }
-
-    /**
-     * Find a type that matches a value.
-     * @param {*} value
-     * @return {string} Returns the name of the first type for which
-     *                  the type test matches the value.
-     */
-    function findTypeName(value) {
-      var entry = findInArray(typed.types, function (entry) {
-        return entry.test(value);
-      });
-
-      if (entry) {
-        return entry.name;
-      }
-
-      throw new TypeError('Value has unknown type. Value: ' + value);
-    }
-
-    /**
-     * Find a specific signature from a (composed) typed function, for example:
-     *
-     *   typed.find(fn, ['number', 'string'])
-     *   typed.find(fn, 'number, string')
-     *
-     * Function find only only works for exact matches.
-     *
-     * @param {Function} fn                   A typed-function
-     * @param {string | string[]} signature   Signature to be found, can be
-     *                                        an array or a comma separated string.
-     * @return {Function}                     Returns the matching signature, or
-     *                                        throws an error when no signature
-     *                                        is found.
-     */
-    function find (fn, signature) {
-      if (!fn.signatures) {
-        throw new TypeError('Function is no typed-function');
-      }
-
-      // normalize input
-      var arr;
-      if (typeof signature === 'string') {
-        arr = signature.split(',');
-        for (var i = 0; i < arr.length; i++) {
-          arr[i] = arr[i].trim();
-        }
-      }
-      else if (Array.isArray(signature)) {
-        arr = signature;
-      }
-      else {
-        throw new TypeError('String array or a comma separated string expected');
-      }
-
-      var str = arr.join(',');
-
-      // find an exact match
-      var match = fn.signatures[str];
-      if (match) {
-        return match;
-      }
-
-      // TODO: extend find to match non-exact signatures
-
-      throw new TypeError('Signature not found (signature: ' + (fn.name || 'unnamed') + '(' + arr.join(', ') + '))');
-    }
-
-    /**
-     * Convert a given value to another data type.
-     * @param {*} value
-     * @param {string} type
-     */
-    function convert (value, type) {
-      var from = findTypeName(value);
-
-      // check conversion is needed
-      if (type === from) {
-        return value;
-      }
-
-      for (var i = 0; i < typed.conversions.length; i++) {
-        var conversion = typed.conversions[i];
-        if (conversion.from === from && conversion.to === type) {
-          return conversion.convert(value);
-        }
-      }
-
-      throw new Error('Cannot convert from ' + from + ' to ' + type);
-    }
-    
-    /**
-     * Stringify parameters in a normalized way
-     * @param {Param[]} params
-     * @return {string}
-     */
-    function stringifyParams (params) {
-      return params
-          .map(function (param) {
-            var typeNames = param.types.map(getTypeName);
-
-            return (param.restParam ? '...' : '') + typeNames.join('|');
-          })
-          .join(',');
-    }
-
-    /**
-     * Parse a parameter, like "...number | boolean"
-     * @param {string} param
-     * @param {ConversionDef[]} conversions
-     * @return {Param} param
-     */
-    function parseParam (param, conversions) {
-      var restParam = param.indexOf('...') === 0;
-      var types = (!restParam)
-          ? param
-          : (param.length > 3)
-              ? param.slice(3)
-              : 'any';
-
-      var typeNames = types.split('|').map(trim)
-          .filter(notEmpty)
-          .filter(notIgnore);
-
-      var matchingConversions = filterConversions(conversions, typeNames);
-
-      var exactTypes = typeNames.map(function (typeName) {
-        var type = findTypeByName(typeName);
-
-        return {
-          name: typeName,
-          typeIndex: findTypeIndex(type),
-          test: type.test,
-          conversion: null,
-          conversionIndex: -1
-        };
-      });
-
-      var convertibleTypes = matchingConversions.map(function (conversion) {
-        var type = findTypeByName(conversion.from);
-
-        return {
-          name: conversion.from,
-          typeIndex: findTypeIndex(type),
-          test: type.test,
-          conversion: conversion,
-          conversionIndex: conversions.indexOf(conversion)
-        };
-      });
-
-      return {
-        types: exactTypes.concat(convertibleTypes),
-        restParam: restParam
-      };
-    }
-
-    /**
-     * Parse a signature with comma separated parameters,
-     * like "number | boolean, ...string"
-     * @param {string} signature
-     * @param {function} fn
-     * @param {ConversionDef[]} conversions
-     * @return {Signature | null} signature
-     */
-    function parseSignature (signature, fn, conversions) {
-      var params = [];
-
-      if (signature.trim() !== '') {
-        params = signature
-            .split(',')
-            .map(trim)
-            .map(function (param, index, array) {
-              var parsedParam = parseParam(param, conversions);
-
-              if (parsedParam.restParam && (index !== array.length - 1)) {
-                throw new SyntaxError('Unexpected rest parameter "' + param + '": ' +
-                    'only allowed for the last parameter');
-              }
-
-              return parsedParam;
-          });
-      }
-
-      if (params.some(isInvalidParam)) {
-        // invalid signature: at least one parameter has no types
-        // (they may have been filtered)
-        return null;
-      }
-
-      return {
-        params: params,
-        fn: fn
-      };
-    }
-
-    /**
-     * Test whether a set of params contains a restParam
-     * @param {Param[]} params
-     * @return {boolean} Returns true when the last parameter is a restParam
-     */
-    function hasRestParam(params) {
-      var param = last(params)
-      return param ? param.restParam : false;
-    }
-
-    /**
-     * Test whether a parameter contains conversions
-     * @param {Param} param
-     * @return {boolean} Returns true when at least one of the parameters
-     *                   contains a conversion.
-     */
-    function hasConversions(param) {
-      return param.types.some(function (type) {
-        return type.conversion != null;
-      });
-    }
-
-    /**
-     * Create a type test for a single parameter, which can have one or multiple
-     * types.
-     * @param {Param} param
-     * @return {function(x: *) : boolean} Returns a test function
-     */
-    function compileTest(param) {
-      if (!param || param.types.length === 0) {
-        // nothing to do
-        return ok;
-      }
-      else if (param.types.length === 1) {
-        return findTypeByName(param.types[0].name).test;
-      }
-      else if (param.types.length === 2) {
-        var test0 = findTypeByName(param.types[0].name).test;
-        var test1 = findTypeByName(param.types[1].name).test;
-        return function or(x) {
-          return test0(x) || test1(x);
-        }
-      }
-      else { // param.types.length > 2
-        var tests = param.types.map(function (type) {
-          return findTypeByName(type.name).test;
-        })
-        return function or(x) {
-          for (var i = 0; i < tests.length; i++) {
-            if (tests[i](x)) {
-              return true;
-            }
-          }
-          return false;
-        }
-      }
-    }
-
-    /**
-     * Create a test for all parameters of a signature
-     * @param {Param[]} params
-     * @return {function(args: Array<*>) : boolean}
-     */
-    function compileTests(params) {
-      var tests, test0, test1;
-
-      if (hasRestParam(params)) {
-        // variable arguments like '...number'
-        tests = initial(params).map(compileTest);
-        var varIndex = tests.length;
-        var lastTest = compileTest(last(params));
-        var testRestParam = function (args) {
-          for (var i = varIndex; i < args.length; i++) {
-            if (!lastTest(args[i])) {
-              return false;
-            }
-          }
-          return true;
-        }
-
-        return function testArgs(args) {
-          for (var i = 0; i < tests.length; i++) {
-            if (!tests[i](args[i])) {
-              return false;
-            }
-          }
-          return testRestParam(args) && (args.length >= varIndex + 1);
-        };
-      }
-      else {
-        // no variable arguments
-        if (params.length === 0) {
-          return function testArgs(args) {
-            return args.length === 0;
-          };
-        }
-        else if (params.length === 1) {
-          test0 = compileTest(params[0]);
-          return function testArgs(args) {
-            return test0(args[0]) && args.length === 1;
-          };
-        }
-        else if (params.length === 2) {
-          test0 = compileTest(params[0]);
-          test1 = compileTest(params[1]);
-          return function testArgs(args) {
-            return test0(args[0]) && test1(args[1]) && args.length === 2;
-          };
-        }
-        else { // arguments.length > 2
-          tests = params.map(compileTest);
-          return function testArgs(args) {
-            for (var i = 0; i < tests.length; i++) {
-              if (!tests[i](args[i])) {
-                return false;
-              }
-            }
-            return args.length === tests.length;
-          };
-        }
-      }
-    }
-
-    /**
-     * Find the parameter at a specific index of a signature.
-     * Handles rest parameters.
-     * @param {Signature} signature
-     * @param {number} index
-     * @return {Param | null} Returns the matching parameter when found,
-     *                        null otherwise.
-     */
-    function getParamAtIndex(signature, index) {
-      return index < signature.params.length
-          ? signature.params[index]
-          : hasRestParam(signature.params)
-              ? last(signature.params)
-              : null
-    }
-
-    /**
-     * Get all type names of a parameter
-     * @param {Signature} signature
-     * @param {number} index
-     * @param {boolean} excludeConversions
-     * @return {string[]} Returns an array with type names
-     */
-    function getExpectedTypeNames (signature, index, excludeConversions) {
-      var param = getParamAtIndex(signature, index);
-      var types = param
-          ? excludeConversions
-                  ? param.types.filter(isExactType)
-                  : param.types
-          : [];
-
-      return types.map(getTypeName);
-    }
-
-    /**
-     * Returns the name of a type
-     * @param {Type} type
-     * @return {string} Returns the type name
-     */
-    function getTypeName(type) {
-      return type.name;
-    }
-
-    /**
-     * Test whether a type is an exact type or conversion
-     * @param {Type} type
-     * @return {boolean} Returns true when
-     */
-    function isExactType(type) {
-      return type.conversion === null || type.conversion === undefined;
-    }
-
-    /**
-     * Helper function for creating error messages: create an array with
-     * all available types on a specific argument index.
-     * @param {Signature[]} signatures
-     * @param {number} index
-     * @return {string[]} Returns an array with available types
-     */
-    function mergeExpectedParams(signatures, index) {
-      var typeNames = uniq(flatMap(signatures, function (signature) {
-        return getExpectedTypeNames(signature, index, false);
-      }));
-
-      return (typeNames.indexOf('any') !== -1) ? ['any'] : typeNames;
-    }
-
-    /**
-     * Create
-     * @param {string} name             The name of the function
-     * @param {array.<*>} args          The actual arguments passed to the function
-     * @param {Signature[]} signatures  A list with available signatures
-     * @return {TypeError} Returns a type error with additional data
-     *                     attached to it in the property `data`
-     */
-    function createError(name, args, signatures) {
-      var err, expected;
-      var _name = name || 'unnamed';
-
-      // test for wrong type at some index
-      var matchingSignatures = signatures;
-      var index;
-      for (index = 0; index < args.length; index++) {
-        var nextMatchingDefs = matchingSignatures.filter(function (signature) {
-          var test = compileTest(getParamAtIndex(signature, index));
-          return (index < signature.params.length || hasRestParam(signature.params)) &&
-              test(args[index]);
-        });
-
-        if (nextMatchingDefs.length === 0) {
-          // no matching signatures anymore, throw error "wrong type"
-          expected = mergeExpectedParams(matchingSignatures, index);
-          if (expected.length > 0) {
-            var actualType = findTypeName(args[index]);
-
-            err = new TypeError('Unexpected type of argument in function ' + _name +
-                ' (expected: ' + expected.join(' or ') +
-                ', actual: ' + actualType + ', index: ' + index + ')');
-            err.data = {
-              category: 'wrongType',
-              fn: _name,
-              index: index,
-              actual: actualType,
-              expected: expected
-            }
-            return err;
-          }
-        }
-        else {
-          matchingSignatures = nextMatchingDefs;
-        }
-      }
-
-      // test for too few arguments
-      var lengths = matchingSignatures.map(function (signature) {
-        return hasRestParam(signature.params) ? Infinity : signature.params.length;
-      });
-      if (args.length < Math.min.apply(null, lengths)) {
-        expected = mergeExpectedParams(matchingSignatures, index);
-        err = new TypeError('Too few arguments in function ' + _name +
-            ' (expected: ' + expected.join(' or ') +
-            ', index: ' + args.length + ')');
-        err.data = {
-          category: 'tooFewArgs',
-          fn: _name,
-          index: args.length,
-          expected: expected
-        }
-        return err;
-      }
-
-      // test for too many arguments
-      var maxLength = Math.max.apply(null, lengths);
-      if (args.length > maxLength) {
-        err = new TypeError('Too many arguments in function ' + _name +
-            ' (expected: ' + maxLength + ', actual: ' + args.length + ')');
-        err.data = {
-          category: 'tooManyArgs',
-          fn: _name,
-          index: args.length,
-          expectedLength: maxLength
-        }
-        return err;
-      }
-
-      err = new TypeError('Arguments of type "' + args.join(', ') +
-          '" do not match any of the defined signatures of function ' + _name + '.');
-      err.data = {
-        category: 'mismatch',
-        actual: args.map(findTypeName)
-      }
-      return err;
-    }
-
-    /**
-     * Find the lowest index of all exact types of a parameter (no conversions)
-     * @param {Param} param
-     * @return {number} Returns the index of the lowest type in typed.types
-     */
-    function getLowestTypeIndex (param) {
-      var min = 999;
-
-      for (var i = 0; i < param.types.length; i++) {
-        if (isExactType(param.types[i])) {
-          min = Math.min(min, param.types[i].typeIndex);
-        }
-      }
-
-      return min;
-    }
-
-    /**
-     * Find the lowest index of the conversion of all types of the parameter
-     * having a conversion
-     * @param {Param} param
-     * @return {number} Returns the lowest index of the conversions of this type
-     */
-    function getLowestConversionIndex (param) {
-      var min = 999;
-
-      for (var i = 0; i < param.types.length; i++) {
-        if (!isExactType(param.types[i])) {
-          min = Math.min(min, param.types[i].conversionIndex);
-        }
-      }
-
-      return min;
-    }
-
-    /**
-     * Compare two params
-     * @param {Param} param1
-     * @param {Param} param2
-     * @return {number} returns a negative number when param1 must get a lower
-     *                  index than param2, a positive number when the opposite,
-     *                  or zero when both are equal
-     */
-    function compareParams (param1, param2) {
-      var c;
-
-      // compare having a rest parameter or not
-      c = param1.restParam - param2.restParam;
-      if (c !== 0) {
-        return c;
-      }
-
-      // compare having conversions or not
-      c = hasConversions(param1) - hasConversions(param2);
-      if (c !== 0) {
-        return c;
-      }
-
-      // compare the index of the types
-      c = getLowestTypeIndex(param1) - getLowestTypeIndex(param2);
-      if (c !== 0) {
-        return c;
-      }
-
-      // compare the index of any conversion
-      return getLowestConversionIndex(param1) - getLowestConversionIndex(param2);
-    }
-
-    /**
-     * Compare two signatures
-     * @param {Signature} signature1
-     * @param {Signature} signature2
-     * @return {number} returns a negative number when param1 must get a lower
-     *                  index than param2, a positive number when the opposite,
-     *                  or zero when both are equal
-     */
-    function compareSignatures (signature1, signature2) {
-      var len = Math.min(signature1.params.length, signature2.params.length);
-      var i;
-      var c;
-
-      // compare whether the params have conversions at all or not
-      c = signature1.params.some(hasConversions) - signature2.params.some(hasConversions)
-      if (c !== 0) {
-        return c;
-      }
-
-      // next compare whether the params have conversions one by one
-      for (i = 0; i < len; i++) {
-        c = hasConversions(signature1.params[i]) - hasConversions(signature2.params[i]);
-        if (c !== 0) {
-          return c;
-        }
-      }
-
-      // compare the types of the params one by one
-      for (i = 0; i < len; i++) {
-        c = compareParams(signature1.params[i], signature2.params[i]);
-        if (c !== 0) {
-          return c;
-        }
-      }
-
-      // compare the number of params
-      return signature1.params.length - signature2.params.length;
-    }
-
-    /**
-     * Get params containing all types that can be converted to the defined types.
-     *
-     * @param {ConversionDef[]} conversions
-     * @param {string[]} typeNames
-     * @return {ConversionDef[]} Returns the conversions that are available
-     *                        for every type (if any)
-     */
-    function filterConversions(conversions, typeNames) {
-      var matches = {};
-
-      conversions.forEach(function (conversion) {
-        if (typeNames.indexOf(conversion.from) === -1 &&
-            typeNames.indexOf(conversion.to) !== -1 &&
-            !matches[conversion.from]) {
-          matches[conversion.from] = conversion;
-        }
-      });
-
-      return Object.keys(matches).map(function (from) {
-        return matches[from];
-      });
-    }
-
-    /**
-     * Preprocess arguments before calling the original function:
-     * - if needed convert the parameters
-     * - in case of rest parameters, move the rest parameters into an Array
-     * @param {Param[]} params
-     * @param {function} fn
-     * @return {function} Returns a wrapped function
-     */
-    function compileArgsPreprocessing(params, fn) {
-      var fnConvert = fn;
-
-      // TODO: can we make this wrapper function smarter/simpler?
-
-      if (params.some(hasConversions)) {
-        var restParam = hasRestParam(params);
-        var compiledConversions = params.map(compileArgConversion)
-
-        fnConvert = function convertArgs() {
-          var args = [];
-          var last = restParam ? arguments.length - 1 : arguments.length;
-          for (var i = 0; i < last; i++) {
-            args[i] = compiledConversions[i](arguments[i]);
-          }
-          if (restParam) {
-            args[last] = arguments[last].map(compiledConversions[last]);
-          }
-
-          return fn.apply(this, args);
-        }
-      }
-
-      var fnPreprocess = fnConvert;
-      if (hasRestParam(params)) {
-        var offset = params.length - 1;
-
-        fnPreprocess = function preprocessRestParams () {
-          return fnConvert.apply(this,
-              slice(arguments, 0, offset).concat([slice(arguments, offset)]));
-        }
-      }
-
-      return fnPreprocess;
-    }
-
-    /**
-     * Compile conversion for a parameter to the right type
-     * @param {Param} param
-     * @return {function} Returns the wrapped function that will convert arguments
-     *
-     */
-    function compileArgConversion(param) {
-      var test0, test1, conversion0, conversion1;
-      var tests = [];
-      var conversions = [];
-
-      param.types.forEach(function (type) {
-        if (type.conversion) {
-          tests.push(findTypeByName(type.conversion.from).test);
-          conversions.push(type.conversion.convert);
-        }
-      });
-
-      // create optimized conversion functions depending on the number of conversions
-      switch (conversions.length) {
-        case 0:
-          return function convertArg(arg) {
-            return arg;
-          }
-
-        case 1:
-          test0 = tests[0]
-          conversion0 = conversions[0];
-          return function convertArg(arg) {
-            if (test0(arg)) {
-              return conversion0(arg)
-            }
-            return arg;
-          }
-
-        case 2:
-          test0 = tests[0]
-          test1 = tests[1]
-          conversion0 = conversions[0];
-          conversion1 = conversions[1];
-          return function convertArg(arg) {
-            if (test0(arg)) {
-              return conversion0(arg)
-            }
-            if (test1(arg)) {
-              return conversion1(arg)
-            }
-            return arg;
-          }
-
-        default:
-          return function convertArg(arg) {
-            for (var i = 0; i < conversions.length; i++) {
-              if (tests[i](arg)) {
-                return conversions[i](arg);
-              }
-            }
-            return arg;
-          }
-      }
-    }
-
-    /**
-     * Convert an array with signatures into a map with signatures,
-     * where signatures with union types are split into separate signatures
-     *
-     * Throws an error when there are conflicting types
-     *
-     * @param {Signature[]} signatures
-     * @return {Object.<string, function>}  Returns a map with signatures
-     *                                      as key and the original function
-     *                                      of this signature as value.
-     */
-    function createSignaturesMap(signatures) {
-      var signaturesMap = {};
-      signatures.forEach(function (signature) {
-        if (!signature.params.some(hasConversions)) {
-          splitParams(signature.params, true).forEach(function (params) {
-            signaturesMap[stringifyParams(params)] = signature.fn;
-          });
-        }
-      });
-
-      return signaturesMap;
-    }
-
-    /**
-     * Split params with union types in to separate params.
-     *
-     * For example:
-     *
-     *     splitParams([['Array', 'Object'], ['string', 'RegExp'])
-     *     // returns:
-     *     // [
-     *     //   ['Array', 'string'],
-     *     //   ['Array', 'RegExp'],
-     *     //   ['Object', 'string'],
-     *     //   ['Object', 'RegExp']
-     *     // ]
-     *
-     * @param {Param[]} params
-     * @param {boolean} ignoreConversionTypes
-     * @return {Param[]}
-     */
-    function splitParams(params, ignoreConversionTypes) {
-      function _splitParams(params, index, types) {
-        if (index < params.length) {
-          var param = params[index]
-          var filteredTypes = ignoreConversionTypes
-              ? param.types.filter(isExactType)
-              : param.types;
-          var typeGroups
-
-          if (param.restParam) {
-            // split the types of a rest parameter in two:
-            // one with only exact types, and one with exact types and conversions
-            var exactTypes = filteredTypes.filter(isExactType)
-            typeGroups = exactTypes.length < filteredTypes.length
-                ? [exactTypes, filteredTypes]
-                : [filteredTypes]
-
-          }
-          else {
-            // split all the types of a regular parameter into one type per group
-            typeGroups = filteredTypes.map(function (type) {
-              return [type]
-            })
-          }
-
-          // recurse over the groups with types
-          return flatMap(typeGroups, function (typeGroup) {
-            return _splitParams(params, index + 1, types.concat([typeGroup]));
-          });
-
-        }
-        else {
-          // we've reached the end of the parameters. Now build a new Param
-          var splittedParams = types.map(function (type, typeIndex) {
-            return {
-              types: type,
-              restParam: (typeIndex === params.length - 1) && hasRestParam(params)
-            }
-          });
-
-          return [splittedParams];
-        }
-      }
-
-      return _splitParams(params, 0, []);
-    }
-
-    /**
-     * Test whether two signatures have a conflicting signature
-     * @param {Signature} signature1
-     * @param {Signature} signature2
-     * @return {boolean} Returns true when the signatures conflict, false otherwise.
-     */
-    function hasConflictingParams(signature1, signature2) {
-      var ii = Math.max(signature1.params.length, signature2.params.length);
-
-      for (var i = 0; i < ii; i++) {
-        var typesNames1 = getExpectedTypeNames(signature1, i, true);
-        var typesNames2 = getExpectedTypeNames(signature2, i, true);
-
-        if (!hasOverlap(typesNames1, typesNames2)) {
-          return false;
-        }
-      }
-
-      var len1 = signature1.params.length;
-      var len2 = signature2.params.length;
-      var restParam1 = hasRestParam(signature1.params);
-      var restParam2 = hasRestParam(signature2.params);
-
-      return restParam1
-          ? restParam2 ? (len1 === len2) : (len2 >= len1)
-          : restParam2 ? (len1 >= len2)  : (len1 === len2)
-    }
-
-    /**
-     * Create a typed function
-     * @param {String} name               The name for the typed function
-     * @param {Object.<string, function>} signaturesMap
-     *                                    An object with one or
-     *                                    multiple signatures as key, and the
-     *                                    function corresponding to the
-     *                                    signature as value.
-     * @return {function}  Returns the created typed function.
-     */
-    function createTypedFunction(name, signaturesMap) {
-      if (Object.keys(signaturesMap).length === 0) {
-        throw new SyntaxError('No signatures provided');
-      }
-
-      // parse the signatures, and check for conflicts
-      var parsedSignatures = [];
-      Object.keys(signaturesMap)
-          .map(function (signature) {
-            return parseSignature(signature, signaturesMap[signature], typed.conversions);
-          })
-          .filter(notNull)
-          .forEach(function (parsedSignature) {
-            // check whether this parameter conflicts with already parsed signatures
-            var conflictingSignature = findInArray(parsedSignatures, function (s) {
-              return hasConflictingParams(s, parsedSignature)
-            });
-            if (conflictingSignature) {
-              throw new TypeError('Conflicting signatures "' +
-                  stringifyParams(conflictingSignature.params) + '" and "' +
-                  stringifyParams(parsedSignature.params) + '".');
-            }
-
-            parsedSignatures.push(parsedSignature);
-          });
-
-      // split and filter the types of the signatures, and then order them
-      var signatures = flatMap(parsedSignatures, function (parsedSignature) {
-        var params = parsedSignature ? splitParams(parsedSignature.params, false) : []
-
-        return params.map(function (params) {
-          return {
-            params: params,
-            fn: parsedSignature.fn
-          };
-        });
-      }).filter(notNull);
-
-      signatures.sort(compareSignatures);
-
-      // we create a highly optimized checks for the first couple of signatures with max 2 arguments
-      var ok0 = signatures[0] && signatures[0].params.length <= 2 && !hasRestParam(signatures[0].params);
-      var ok1 = signatures[1] && signatures[1].params.length <= 2 && !hasRestParam(signatures[1].params);
-      var ok2 = signatures[2] && signatures[2].params.length <= 2 && !hasRestParam(signatures[2].params);
-      var ok3 = signatures[3] && signatures[3].params.length <= 2 && !hasRestParam(signatures[3].params);
-      var ok4 = signatures[4] && signatures[4].params.length <= 2 && !hasRestParam(signatures[4].params);
-      var ok5 = signatures[5] && signatures[5].params.length <= 2 && !hasRestParam(signatures[5].params);
-      var allOk = ok0 && ok1 && ok2 && ok3 && ok4 && ok5;
-
-      // compile the tests
-      var tests = signatures.map(function (signature) {
-        return compileTests(signature.params);
-      });
-
-      var test00 = ok0 ? compileTest(signatures[0].params[0]) : notOk;
-      var test10 = ok1 ? compileTest(signatures[1].params[0]) : notOk;
-      var test20 = ok2 ? compileTest(signatures[2].params[0]) : notOk;
-      var test30 = ok3 ? compileTest(signatures[3].params[0]) : notOk;
-      var test40 = ok4 ? compileTest(signatures[4].params[0]) : notOk;
-      var test50 = ok5 ? compileTest(signatures[5].params[0]) : notOk;
-
-      var test01 = ok0 ? compileTest(signatures[0].params[1]) : notOk;
-      var test11 = ok1 ? compileTest(signatures[1].params[1]) : notOk;
-      var test21 = ok2 ? compileTest(signatures[2].params[1]) : notOk;
-      var test31 = ok3 ? compileTest(signatures[3].params[1]) : notOk;
-      var test41 = ok4 ? compileTest(signatures[4].params[1]) : notOk;
-      var test51 = ok5 ? compileTest(signatures[5].params[1]) : notOk;
-
-      // compile the functions
-      var fns = signatures.map(function(signature) {
-        return compileArgsPreprocessing(signature.params, signature.fn);
-      });
-
-      var fn0 = ok0 ? fns[0] : undef;
-      var fn1 = ok1 ? fns[1] : undef;
-      var fn2 = ok2 ? fns[2] : undef;
-      var fn3 = ok3 ? fns[3] : undef;
-      var fn4 = ok4 ? fns[4] : undef;
-      var fn5 = ok5 ? fns[5] : undef;
-
-      var len0 = ok0 ? signatures[0].params.length : -1;
-      var len1 = ok1 ? signatures[1].params.length : -1;
-      var len2 = ok2 ? signatures[2].params.length : -1;
-      var len3 = ok3 ? signatures[3].params.length : -1;
-      var len4 = ok4 ? signatures[4].params.length : -1;
-      var len5 = ok5 ? signatures[5].params.length : -1;
-
-      // simple and generic, but also slow
-      var iStart = allOk ? 6 : 0;
-      var iEnd = signatures.length;
-      var generic = function generic() {
-        'use strict';
-
-        for (var i = iStart; i < iEnd; i++) {
-          if (tests[i](arguments)) {
-            return fns[i].apply(this, arguments);
-          }
-        }
-
-        throw createError(name, arguments, signatures);
-      }
-
-      // create the typed function
-      // fast, specialized version. Falls back to the slower, generic one if needed
-      var fn = function fn(arg0, arg1) {
-        'use strict';
-
-        if (arguments.length === len0 && test00(arg0) && test01(arg1)) { return fn0.apply(fn, arguments); }
-        if (arguments.length === len1 && test10(arg0) && test11(arg1)) { return fn1.apply(fn, arguments); }
-        if (arguments.length === len2 && test20(arg0) && test21(arg1)) { return fn2.apply(fn, arguments); }
-        if (arguments.length === len3 && test30(arg0) && test31(arg1)) { return fn3.apply(fn, arguments); }
-        if (arguments.length === len4 && test40(arg0) && test41(arg1)) { return fn4.apply(fn, arguments); }
-        if (arguments.length === len5 && test50(arg0) && test51(arg1)) { return fn5.apply(fn, arguments); }
-
-        return generic.apply(fn, arguments);
-      }
-
-      // attach name the typed function
-      try {
-        Object.defineProperty(fn, 'name', {value: name});
-      }
-      catch (err) {
-        // old browsers do not support Object.defineProperty and some don't support setting the name property
-        // the function name is not essential for the functioning, it's mostly useful for debugging,
-        // so it's fine to have unnamed functions.
-      }
-
-      // attach signatures to the function
-      fn.signatures = createSignaturesMap(signatures);
-
-      return fn;
-    }
-
-    /**
-     * Test whether a type should be NOT be ignored
-     * @param {string} typeName
-     * @return {boolean}
-     */
-    function notIgnore(typeName) {
-      return typed.ignore.indexOf(typeName) === -1;
-    }
-
-    /**
-     * trim a string
-     * @param {string} str
-     * @return {string}
-     */
-    function trim(str) {
-      return str.trim();
-    }
-
-    /**
-     * Test whether a string is not empty
-     * @param {string} str
-     * @return {boolean}
-     */
-    function notEmpty(str) {
-      return !!str;
-    }
-
-    /**
-     * test whether a value is not strict equal to null
-     * @param {*} value
-     * @return {boolean}
-     */
-    function notNull(value) {
-      return value !== null;
-    }
-
-    /**
-     * Test whether a parameter has no types defined
-     * @param {Param} param
-     * @return {boolean}
-     */
-    function isInvalidParam (param) {
-      return param.types.length === 0;
-    }
-
-    /**
-     * Return all but the last items of an array
-     * @param {Array} arr
-     * @return {Array}
-     */
-    function initial(arr) {
-      return arr.slice(0, arr.length - 1);
-    }
-
-    /**
-     * return the last item of an array
-     * @param {Array} arr
-     * @return {*}
-     */
-    function last(arr) {
-      return arr[arr.length - 1];
-    }
-
-    /**
-     * Slice an array or function Arguments
-     * @param {Array | Arguments | IArguments} arr
-     * @param {number} start
-     * @param {number} [end]
-     * @return {Array}
-     */
-    function slice(arr, start, end) {
-      return Array.prototype.slice.call(arr, start, end);
-    }
-
-    /**
-     * Test whether an array contains some item
-     * @param {Array} array
-     * @param {*} item
-     * @return {boolean} Returns true if array contains item, false if not.
-     */
-    function contains(array, item) {
-      return array.indexOf(item) !== -1;
-    }
-
-    /**
-     * Test whether two arrays have overlapping items
-     * @param {Array} array1
-     * @param {Array} array2
-     * @return {boolean} Returns true when at least one item exists in both arrays
-     */
-    function hasOverlap(array1, array2) {
-      for (var i = 0; i < array1.length; i++) {
-        if (contains(array2, array1[i])) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    /**
-     * Return the first item from an array for which test(arr[i]) returns true
-     * @param {Array} arr
-     * @param {function} test
-     * @return {* | undefined} Returns the first matching item
-     *                         or undefined when there is no match
-     */
-    function findInArray(arr, test) {
-      for (var i = 0; i < arr.length; i++) {
-        if (test(arr[i])) {
-          return arr[i];
-        }
-      }
-      return undefined;
-    }
-
-    /**
-     * Filter unique items of an array with strings
-     * @param {string[]} arr
-     * @return {string[]}
-     */
-    function uniq(arr) {
-      var entries = {}
-      for (var i = 0; i < arr.length; i++) {
-        entries[arr[i]] = true;
-      }
-      return Object.keys(entries);
-    }
-
-    /**
-     * Flat map the result invoking a callback for every item in an array.
-     * https://gist.github.com/samgiles/762ee337dff48623e729
-     * @param {Array} arr
-     * @param {function} callback
-     * @return {Array}
-     */
-    function flatMap(arr, callback) {
-      return Array.prototype.concat.apply([], arr.map(callback));
-    }
-
-    /**
-     * Retrieve the function name from a set of typed functions,
-     * and check whether the name of all functions match (if given)
-     * @param {function[]} fns
-     */
-    function getName (fns) {
-      var name = '';
-
-      for (var i = 0; i < fns.length; i++) {
-        var fn = fns[i];
-
-        // check whether the names are the same when defined
-        if ((typeof fn.signatures === 'object' || typeof fn.signature === 'string') && fn.name !== '') {
-          if (name === '') {
-            name = fn.name;
-          }
-          else if (name !== fn.name) {
-            var err = new Error('Function names do not match (expected: ' + name + ', actual: ' + fn.name + ')');
-            err.data = {
-              actual: fn.name,
-              expected: name
-            };
-            throw err;
-          }
-        }
-      }
-
-      return name;
-    }
-
-    // extract and merge all signatures of a list with typed functions
-    function extractSignatures(fns) {
-      var err;
-      var signaturesMap = {};
-
-      function validateUnique(_signature, _fn) {
-        if (signaturesMap.hasOwnProperty(_signature) && _fn !== signaturesMap[_signature]) {
-          err = new Error('Signature "' + _signature + '" is defined twice');
-          err.data = {signature: _signature};
-          throw err;
-          // else: both signatures point to the same function, that's fine
-        }
-      }
-
-      for (var i = 0; i < fns.length; i++) {
-        var fn = fns[i];
-
-        // test whether this is a typed-function
-        if (typeof fn.signatures === 'object') {
-          // merge the signatures
-          for (var signature in fn.signatures) {
-            if (fn.signatures.hasOwnProperty(signature)) {
-              validateUnique(signature, fn.signatures[signature]);
-              signaturesMap[signature] = fn.signatures[signature];
-            }
-          }
-        }
-        else if (typeof fn.signature === 'string') {
-          validateUnique(fn.signature, fn);
-          signaturesMap[fn.signature] = fn;
-        }
-        else {
-          err = new TypeError('Function is no typed-function (index: ' + i + ')');
-          err.data = {index: i};
-          throw err;
-        }
-      }
-
-      return signaturesMap;
-    }
-
-    typed = createTypedFunction('typed', {
-      'string, Object': createTypedFunction,
-      'Object': function (signaturesMap) {
-        // find existing name
-        var fns = [];
-        for (var signature in signaturesMap) {
-          if (signaturesMap.hasOwnProperty(signature)) {
-            fns.push(signaturesMap[signature]);
-          }
-        }
-        var name = getName(fns);
-        return createTypedFunction(name, signaturesMap);
-      },
-      '...Function': function (fns) {
-        return createTypedFunction(getName(fns), extractSignatures(fns));
-      },
-      'string, ...Function': function (name, fns) {
-        return createTypedFunction(name, extractSignatures(fns));
-      }
-    });
-
-    typed.create = create;
-    typed.types = _types;
-    typed.conversions = _conversions;
-    typed.ignore = _ignore;
-    typed.convert = convert;
-    typed.find = find;
-
-    /**
-     * add a type
-     * @param {{name: string, test: function}} type
-     * @param {boolean} [beforeObjectTest=true]
-     *                          If true, the new test will be inserted before
-     *                          the test with name 'Object' (if any), since
-     *                          tests for Object match Array and classes too.
-     */
-    typed.addType = function (type, beforeObjectTest) {
-      if (!type || typeof type.name !== 'string' || typeof type.test !== 'function') {
-        throw new TypeError('Object with properties {name: string, test: function} expected');
-      }
-
-      if (beforeObjectTest !== false) {
-        for (var i = 0; i < typed.types.length; i++) {
-          if (typed.types[i].name === 'Object') {
-            typed.types.splice(i, 0, type);
-            return
-          }
-        }
-      }
-
-      typed.types.push(type);
-    };
-
-    // add a conversion
-    typed.addConversion = function (conversion) {
-      if (!conversion
-          || typeof conversion.from !== 'string'
-          || typeof conversion.to !== 'string'
-          || typeof conversion.convert !== 'function') {
-        throw new TypeError('Object with properties {from: string, to: string, convert: function} expected');
-      }
-
-      typed.conversions.push(conversion);
-    };
-
-    return typed;
-  }
-
-  return create();
-}));
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-var width = 256;// each RC4 output is 0 <= x < 256
-var chunks = 6;// at least six RC4 outputs for each double
-var digits = 52;// there are 52 significant digits in a double
-var pool = [];// pool: entropy pool starts empty
-var GLOBAL = typeof global === 'undefined' ? window : global;
-
-//
-// The following constants are related to IEEE 754 limits.
-//
-var startdenom = Math.pow(width, chunks),
-    significance = Math.pow(2, digits),
-    overflow = significance * 2,
-    mask = width - 1;
-
-
-var oldRandom = Math.random;
-
-//
-// seedrandom()
-// This is the seedrandom function described above.
-//
-module.exports = function(seed, options) {
-  if (options && options.global === true) {
-    options.global = false;
-    Math.random = module.exports(seed, options);
-    options.global = true;
-    return Math.random;
-  }
-  var use_entropy = (options && options.entropy) || false;
-  var key = [];
-
-  // Flatten the seed string or build one from local entropy if needed.
-  var shortseed = mixkey(flatten(
-    use_entropy ? [seed, tostring(pool)] :
-    0 in arguments ? seed : autoseed(), 3), key);
-
-  // Use the seed to initialize an ARC4 generator.
-  var arc4 = new ARC4(key);
-
-  // Mix the randomness into accumulated entropy.
-  mixkey(tostring(arc4.S), pool);
-
-  // Override Math.random
-
-  // This function returns a random double in [0, 1) that contains
-  // randomness in every bit of the mantissa of the IEEE 754 value.
-
-  return function() {         // Closure to return a random double:
-    var n = arc4.g(chunks),             // Start with a numerator n < 2 ^ 48
-        d = startdenom,                 //   and denominator d = 2 ^ 48.
-        x = 0;                          //   and no 'extra last byte'.
-    while (n < significance) {          // Fill up all significant digits by
-      n = (n + x) * width;              //   shifting numerator and
-      d *= width;                       //   denominator and generating a
-      x = arc4.g(1);                    //   new least-significant-byte.
-    }
-    while (n >= overflow) {             // To avoid rounding up, before adding
-      n /= 2;                           //   last byte, shift everything
-      d /= 2;                           //   right using integer Math until
-      x >>>= 1;                         //   we have exactly the desired bits.
-    }
-    return (n + x) / d;                 // Form the number within [0, 1).
-  };
-};
-
-module.exports.resetGlobal = function () {
-  Math.random = oldRandom;
-};
-
-//
-// ARC4
-//
-// An ARC4 implementation.  The constructor takes a key in the form of
-// an array of at most (width) integers that should be 0 <= x < (width).
-//
-// The g(count) method returns a pseudorandom integer that concatenates
-// the next (count) outputs from ARC4.  Its return value is a number x
-// that is in the range 0 <= x < (width ^ count).
-//
-/** @constructor */
-function ARC4(key) {
-  var t, keylen = key.length,
-      me = this, i = 0, j = me.i = me.j = 0, s = me.S = [];
-
-  // The empty key [] is treated as [0].
-  if (!keylen) { key = [keylen++]; }
-
-  // Set up S using the standard key scheduling algorithm.
-  while (i < width) {
-    s[i] = i++;
-  }
-  for (i = 0; i < width; i++) {
-    s[i] = s[j = mask & (j + key[i % keylen] + (t = s[i]))];
-    s[j] = t;
-  }
-
-  // The "g" method returns the next (count) outputs as one number.
-  (me.g = function(count) {
-    // Using instance members instead of closure state nearly doubles speed.
-    var t, r = 0,
-        i = me.i, j = me.j, s = me.S;
-    while (count--) {
-      t = s[i = mask & (i + 1)];
-      r = r * width + s[mask & ((s[i] = s[j = mask & (j + t)]) + (s[j] = t))];
-    }
-    me.i = i; me.j = j;
-    return r;
-    // For robust unpredictability discard an initial batch of values.
-    // See http://www.rsa.com/rsalabs/node.asp?id=2009
-  })(width);
-}
-
-//
-// flatten()
-// Converts an object tree to nested arrays of strings.
-//
-function flatten(obj, depth) {
-  var result = [], typ = (typeof obj)[0], prop;
-  if (depth && typ == 'o') {
-    for (prop in obj) {
-      try { result.push(flatten(obj[prop], depth - 1)); } catch (e) {}
-    }
-  }
-  return (result.length ? result : typ == 's' ? obj : obj + '\0');
-}
-
-//
-// mixkey()
-// Mixes a string seed into a key that is an array of integers, and
-// returns a shortened string seed that is equivalent to the result key.
-//
-function mixkey(seed, key) {
-  var stringseed = seed + '', smear, j = 0;
-  while (j < stringseed.length) {
-    key[mask & j] =
-      mask & ((smear ^= key[mask & j] * 19) + stringseed.charCodeAt(j++));
-  }
-  return tostring(key);
-}
-
-//
-// autoseed()
-// Returns an object for autoseeding, using window.crypto if available.
-//
-/** @param {Uint8Array=} seed */
-function autoseed(seed) {
-  try {
-    GLOBAL.crypto.getRandomValues(seed = new Uint8Array(width));
-    return tostring(seed);
-  } catch (e) {
-    return [+new Date, GLOBAL, GLOBAL.navigator && GLOBAL.navigator.plugins,
-            GLOBAL.screen, tostring(pool)];
-  }
-}
-
-//
-// tostring()
-// Converts an array of charcodes to a string
-//
-function tostring(a) {
-  return String.fromCharCode.apply(0, a);
-}
-
-//
-// When seedrandom.js is loaded, we immediately mix a few bits
-// from the built-in RNG into the entropy pool.  Because we do
-// not want to intefere with determinstic PRNG state later,
-// seedrandom will not call Math.random on its own again after
-// initialization.
-//
-mixkey(Math.random(), pool);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(19)))
-
-/***/ }),
-/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
@@ -6590,10 +4984,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
 
 
   /*
-   *  decimal.js v10.2.0
+   *  decimal.js v10.2.1
    *  An arbitrary-precision Decimal type for JavaScript.
    *  https://github.com/MikeMcl/decimal.js
-   *  Copyright (c) 2019 Michael Mclaughlin <M8ch88l@gmail.com>
+   *  Copyright (c) 2020 Michael Mclaughlin <M8ch88l@gmail.com>
    *  MIT Licence
    */
 
@@ -8315,7 +6709,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
       e = mathfloor((e + 1) / 2) - (e < 0 || e % 2);
 
       if (s == 1 / 0) {
-        n = '1e' + e;
+        n = '5e' + e;
       } else {
         n = s.toExponential();
         n = n.slice(0, n.indexOf('e') + 1) + e;
@@ -11445,6 +9839,1612 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalScope) {
 
 
 /***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ArgumentsError; });
+/**
+ * Create a syntax error with the message:
+ *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
+ * @param {string} fn     Function name
+ * @param {number} count  Actual argument count
+ * @param {number} min    Minimum required argument count
+ * @param {number} [max]  Maximum required argument count
+ * @extends Error
+ */
+function ArgumentsError(fn, count, min, max) {
+  if (!(this instanceof ArgumentsError)) {
+    throw new SyntaxError('Constructor must be called with the new operator');
+  }
+
+  this.fn = fn;
+  this.count = count;
+  this.min = min;
+  this.max = max;
+  this.message = 'Wrong number of arguments in function ' + fn + ' (' + count + ' provided, ' + min + (max !== undefined && max !== null ? '-' + max : '') + ' expected)';
+  this.stack = new Error().stack;
+}
+ArgumentsError.prototype = new Error();
+ArgumentsError.prototype.constructor = Error;
+ArgumentsError.prototype.name = 'ArgumentsError';
+ArgumentsError.prototype.isArgumentsError = true;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * typed-function
+ *
+ * Type checking for JavaScript functions
+ *
+ * https://github.com/josdejong/typed-function
+ */
+
+
+(function (root, factory) {
+  if (true) {
+    // AMD. Register as an anonymous module.
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else {}
+}(this, function () {
+
+  function ok () {
+    return true;
+  }
+
+  function notOk () {
+    return false;
+  }
+
+  function undef () {
+    return undefined;
+  }
+
+  /**
+   * @typedef {{
+   *   params: Param[],
+   *   fn: function
+   * }} Signature
+   *
+   * @typedef {{
+   *   types: Type[],
+   *   restParam: boolean
+   * }} Param
+   *
+   * @typedef {{
+   *   name: string,
+   *   typeIndex: number,
+   *   test: function,
+   *   conversion?: ConversionDef,
+   *   conversionIndex: number,
+   * }} Type
+   *
+   * @typedef {{
+   *   from: string,
+   *   to: string,
+   *   convert: function (*) : *
+   * }} ConversionDef
+   *
+   * @typedef {{
+   *   name: string,
+   *   test: function(*) : boolean
+   * }} TypeDef
+   */
+
+  // create a new instance of typed-function
+  function create () {
+    // data type tests
+    var _types = [
+      { name: 'number',    test: function (x) { return typeof x === 'number' } },
+      { name: 'string',    test: function (x) { return typeof x === 'string' } },
+      { name: 'boolean',   test: function (x) { return typeof x === 'boolean' } },
+      { name: 'Function',  test: function (x) { return typeof x === 'function'} },
+      { name: 'Array',     test: Array.isArray },
+      { name: 'Date',      test: function (x) { return x instanceof Date } },
+      { name: 'RegExp',    test: function (x) { return x instanceof RegExp } },
+      { name: 'Object',    test: function (x) {
+        return typeof x === 'object' && x !== null && x.constructor === Object
+      }},
+      { name: 'null',      test: function (x) { return x === null } },
+      { name: 'undefined', test: function (x) { return x === undefined } }
+    ];
+
+    var anyType = {
+      name: 'any',
+      test: ok
+    }
+
+    // types which need to be ignored
+    var _ignore = [];
+
+    // type conversions
+    var _conversions = [];
+
+    // This is a temporary object, will be replaced with a typed function at the end
+    var typed = {
+      types: _types,
+      conversions: _conversions,
+      ignore: _ignore
+    };
+
+    /**
+     * Find the test function for a type
+     * @param {String} typeName
+     * @return {TypeDef} Returns the type definition when found,
+     *                    Throws a TypeError otherwise
+     */
+    function findTypeByName (typeName) {
+      var entry = findInArray(typed.types, function (entry) {
+        return entry.name === typeName;
+      });
+
+      if (entry) {
+        return entry;
+      }
+
+      if (typeName === 'any') { // special baked-in case 'any'
+        return anyType;
+      }
+
+      var hint = findInArray(typed.types, function (entry) {
+        return entry.name.toLowerCase() === typeName.toLowerCase();
+      });
+
+      throw new TypeError('Unknown type "' + typeName + '"' +
+          (hint ? ('. Did you mean "' + hint.name + '"?') : ''));
+    }
+
+    /**
+     * Find the index of a type definition. Handles special case 'any'
+     * @param {TypeDef} type
+     * @return {number}
+     */
+    function findTypeIndex(type) {
+      if (type === anyType) {
+        return 999;
+      }
+
+      return typed.types.indexOf(type);
+    }
+
+    /**
+     * Find a type that matches a value.
+     * @param {*} value
+     * @return {string} Returns the name of the first type for which
+     *                  the type test matches the value.
+     */
+    function findTypeName(value) {
+      var entry = findInArray(typed.types, function (entry) {
+        return entry.test(value);
+      });
+
+      if (entry) {
+        return entry.name;
+      }
+
+      throw new TypeError('Value has unknown type. Value: ' + value);
+    }
+
+    /**
+     * Find a specific signature from a (composed) typed function, for example:
+     *
+     *   typed.find(fn, ['number', 'string'])
+     *   typed.find(fn, 'number, string')
+     *
+     * Function find only only works for exact matches.
+     *
+     * @param {Function} fn                   A typed-function
+     * @param {string | string[]} signature   Signature to be found, can be
+     *                                        an array or a comma separated string.
+     * @return {Function}                     Returns the matching signature, or
+     *                                        throws an error when no signature
+     *                                        is found.
+     */
+    function find (fn, signature) {
+      if (!fn.signatures) {
+        throw new TypeError('Function is no typed-function');
+      }
+
+      // normalize input
+      var arr;
+      if (typeof signature === 'string') {
+        arr = signature.split(',');
+        for (var i = 0; i < arr.length; i++) {
+          arr[i] = arr[i].trim();
+        }
+      }
+      else if (Array.isArray(signature)) {
+        arr = signature;
+      }
+      else {
+        throw new TypeError('String array or a comma separated string expected');
+      }
+
+      var str = arr.join(',');
+
+      // find an exact match
+      var match = fn.signatures[str];
+      if (match) {
+        return match;
+      }
+
+      // TODO: extend find to match non-exact signatures
+
+      throw new TypeError('Signature not found (signature: ' + (fn.name || 'unnamed') + '(' + arr.join(', ') + '))');
+    }
+
+    /**
+     * Convert a given value to another data type.
+     * @param {*} value
+     * @param {string} type
+     */
+    function convert (value, type) {
+      var from = findTypeName(value);
+
+      // check conversion is needed
+      if (type === from) {
+        return value;
+      }
+
+      for (var i = 0; i < typed.conversions.length; i++) {
+        var conversion = typed.conversions[i];
+        if (conversion.from === from && conversion.to === type) {
+          return conversion.convert(value);
+        }
+      }
+
+      throw new Error('Cannot convert from ' + from + ' to ' + type);
+    }
+    
+    /**
+     * Stringify parameters in a normalized way
+     * @param {Param[]} params
+     * @return {string}
+     */
+    function stringifyParams (params) {
+      return params
+          .map(function (param) {
+            var typeNames = param.types.map(getTypeName);
+
+            return (param.restParam ? '...' : '') + typeNames.join('|');
+          })
+          .join(',');
+    }
+
+    /**
+     * Parse a parameter, like "...number | boolean"
+     * @param {string} param
+     * @param {ConversionDef[]} conversions
+     * @return {Param} param
+     */
+    function parseParam (param, conversions) {
+      var restParam = param.indexOf('...') === 0;
+      var types = (!restParam)
+          ? param
+          : (param.length > 3)
+              ? param.slice(3)
+              : 'any';
+
+      var typeNames = types.split('|').map(trim)
+          .filter(notEmpty)
+          .filter(notIgnore);
+
+      var matchingConversions = filterConversions(conversions, typeNames);
+
+      var exactTypes = typeNames.map(function (typeName) {
+        var type = findTypeByName(typeName);
+
+        return {
+          name: typeName,
+          typeIndex: findTypeIndex(type),
+          test: type.test,
+          conversion: null,
+          conversionIndex: -1
+        };
+      });
+
+      var convertibleTypes = matchingConversions.map(function (conversion) {
+        var type = findTypeByName(conversion.from);
+
+        return {
+          name: conversion.from,
+          typeIndex: findTypeIndex(type),
+          test: type.test,
+          conversion: conversion,
+          conversionIndex: conversions.indexOf(conversion)
+        };
+      });
+
+      return {
+        types: exactTypes.concat(convertibleTypes),
+        restParam: restParam
+      };
+    }
+
+    /**
+     * Parse a signature with comma separated parameters,
+     * like "number | boolean, ...string"
+     * @param {string} signature
+     * @param {function} fn
+     * @param {ConversionDef[]} conversions
+     * @return {Signature | null} signature
+     */
+    function parseSignature (signature, fn, conversions) {
+      var params = [];
+
+      if (signature.trim() !== '') {
+        params = signature
+            .split(',')
+            .map(trim)
+            .map(function (param, index, array) {
+              var parsedParam = parseParam(param, conversions);
+
+              if (parsedParam.restParam && (index !== array.length - 1)) {
+                throw new SyntaxError('Unexpected rest parameter "' + param + '": ' +
+                    'only allowed for the last parameter');
+              }
+
+              return parsedParam;
+          });
+      }
+
+      if (params.some(isInvalidParam)) {
+        // invalid signature: at least one parameter has no types
+        // (they may have been filtered)
+        return null;
+      }
+
+      return {
+        params: params,
+        fn: fn
+      };
+    }
+
+    /**
+     * Test whether a set of params contains a restParam
+     * @param {Param[]} params
+     * @return {boolean} Returns true when the last parameter is a restParam
+     */
+    function hasRestParam(params) {
+      var param = last(params)
+      return param ? param.restParam : false;
+    }
+
+    /**
+     * Test whether a parameter contains conversions
+     * @param {Param} param
+     * @return {boolean} Returns true when at least one of the parameters
+     *                   contains a conversion.
+     */
+    function hasConversions(param) {
+      return param.types.some(function (type) {
+        return type.conversion != null;
+      });
+    }
+
+    /**
+     * Create a type test for a single parameter, which can have one or multiple
+     * types.
+     * @param {Param} param
+     * @return {function(x: *) : boolean} Returns a test function
+     */
+    function compileTest(param) {
+      if (!param || param.types.length === 0) {
+        // nothing to do
+        return ok;
+      }
+      else if (param.types.length === 1) {
+        return findTypeByName(param.types[0].name).test;
+      }
+      else if (param.types.length === 2) {
+        var test0 = findTypeByName(param.types[0].name).test;
+        var test1 = findTypeByName(param.types[1].name).test;
+        return function or(x) {
+          return test0(x) || test1(x);
+        }
+      }
+      else { // param.types.length > 2
+        var tests = param.types.map(function (type) {
+          return findTypeByName(type.name).test;
+        })
+        return function or(x) {
+          for (var i = 0; i < tests.length; i++) {
+            if (tests[i](x)) {
+              return true;
+            }
+          }
+          return false;
+        }
+      }
+    }
+
+    /**
+     * Create a test for all parameters of a signature
+     * @param {Param[]} params
+     * @return {function(args: Array<*>) : boolean}
+     */
+    function compileTests(params) {
+      var tests, test0, test1;
+
+      if (hasRestParam(params)) {
+        // variable arguments like '...number'
+        tests = initial(params).map(compileTest);
+        var varIndex = tests.length;
+        var lastTest = compileTest(last(params));
+        var testRestParam = function (args) {
+          for (var i = varIndex; i < args.length; i++) {
+            if (!lastTest(args[i])) {
+              return false;
+            }
+          }
+          return true;
+        }
+
+        return function testArgs(args) {
+          for (var i = 0; i < tests.length; i++) {
+            if (!tests[i](args[i])) {
+              return false;
+            }
+          }
+          return testRestParam(args) && (args.length >= varIndex + 1);
+        };
+      }
+      else {
+        // no variable arguments
+        if (params.length === 0) {
+          return function testArgs(args) {
+            return args.length === 0;
+          };
+        }
+        else if (params.length === 1) {
+          test0 = compileTest(params[0]);
+          return function testArgs(args) {
+            return test0(args[0]) && args.length === 1;
+          };
+        }
+        else if (params.length === 2) {
+          test0 = compileTest(params[0]);
+          test1 = compileTest(params[1]);
+          return function testArgs(args) {
+            return test0(args[0]) && test1(args[1]) && args.length === 2;
+          };
+        }
+        else { // arguments.length > 2
+          tests = params.map(compileTest);
+          return function testArgs(args) {
+            for (var i = 0; i < tests.length; i++) {
+              if (!tests[i](args[i])) {
+                return false;
+              }
+            }
+            return args.length === tests.length;
+          };
+        }
+      }
+    }
+
+    /**
+     * Find the parameter at a specific index of a signature.
+     * Handles rest parameters.
+     * @param {Signature} signature
+     * @param {number} index
+     * @return {Param | null} Returns the matching parameter when found,
+     *                        null otherwise.
+     */
+    function getParamAtIndex(signature, index) {
+      return index < signature.params.length
+          ? signature.params[index]
+          : hasRestParam(signature.params)
+              ? last(signature.params)
+              : null
+    }
+
+    /**
+     * Get all type names of a parameter
+     * @param {Signature} signature
+     * @param {number} index
+     * @param {boolean} excludeConversions
+     * @return {string[]} Returns an array with type names
+     */
+    function getExpectedTypeNames (signature, index, excludeConversions) {
+      var param = getParamAtIndex(signature, index);
+      var types = param
+          ? excludeConversions
+                  ? param.types.filter(isExactType)
+                  : param.types
+          : [];
+
+      return types.map(getTypeName);
+    }
+
+    /**
+     * Returns the name of a type
+     * @param {Type} type
+     * @return {string} Returns the type name
+     */
+    function getTypeName(type) {
+      return type.name;
+    }
+
+    /**
+     * Test whether a type is an exact type or conversion
+     * @param {Type} type
+     * @return {boolean} Returns true when
+     */
+    function isExactType(type) {
+      return type.conversion === null || type.conversion === undefined;
+    }
+
+    /**
+     * Helper function for creating error messages: create an array with
+     * all available types on a specific argument index.
+     * @param {Signature[]} signatures
+     * @param {number} index
+     * @return {string[]} Returns an array with available types
+     */
+    function mergeExpectedParams(signatures, index) {
+      var typeNames = uniq(flatMap(signatures, function (signature) {
+        return getExpectedTypeNames(signature, index, false);
+      }));
+
+      return (typeNames.indexOf('any') !== -1) ? ['any'] : typeNames;
+    }
+
+    /**
+     * Create
+     * @param {string} name             The name of the function
+     * @param {array.<*>} args          The actual arguments passed to the function
+     * @param {Signature[]} signatures  A list with available signatures
+     * @return {TypeError} Returns a type error with additional data
+     *                     attached to it in the property `data`
+     */
+    function createError(name, args, signatures) {
+      var err, expected;
+      var _name = name || 'unnamed';
+
+      // test for wrong type at some index
+      var matchingSignatures = signatures;
+      var index;
+      for (index = 0; index < args.length; index++) {
+        var nextMatchingDefs = matchingSignatures.filter(function (signature) {
+          var test = compileTest(getParamAtIndex(signature, index));
+          return (index < signature.params.length || hasRestParam(signature.params)) &&
+              test(args[index]);
+        });
+
+        if (nextMatchingDefs.length === 0) {
+          // no matching signatures anymore, throw error "wrong type"
+          expected = mergeExpectedParams(matchingSignatures, index);
+          if (expected.length > 0) {
+            var actualType = findTypeName(args[index]);
+
+            err = new TypeError('Unexpected type of argument in function ' + _name +
+                ' (expected: ' + expected.join(' or ') +
+                ', actual: ' + actualType + ', index: ' + index + ')');
+            err.data = {
+              category: 'wrongType',
+              fn: _name,
+              index: index,
+              actual: actualType,
+              expected: expected
+            }
+            return err;
+          }
+        }
+        else {
+          matchingSignatures = nextMatchingDefs;
+        }
+      }
+
+      // test for too few arguments
+      var lengths = matchingSignatures.map(function (signature) {
+        return hasRestParam(signature.params) ? Infinity : signature.params.length;
+      });
+      if (args.length < Math.min.apply(null, lengths)) {
+        expected = mergeExpectedParams(matchingSignatures, index);
+        err = new TypeError('Too few arguments in function ' + _name +
+            ' (expected: ' + expected.join(' or ') +
+            ', index: ' + args.length + ')');
+        err.data = {
+          category: 'tooFewArgs',
+          fn: _name,
+          index: args.length,
+          expected: expected
+        }
+        return err;
+      }
+
+      // test for too many arguments
+      var maxLength = Math.max.apply(null, lengths);
+      if (args.length > maxLength) {
+        err = new TypeError('Too many arguments in function ' + _name +
+            ' (expected: ' + maxLength + ', actual: ' + args.length + ')');
+        err.data = {
+          category: 'tooManyArgs',
+          fn: _name,
+          index: args.length,
+          expectedLength: maxLength
+        }
+        return err;
+      }
+
+      err = new TypeError('Arguments of type "' + args.join(', ') +
+          '" do not match any of the defined signatures of function ' + _name + '.');
+      err.data = {
+        category: 'mismatch',
+        actual: args.map(findTypeName)
+      }
+      return err;
+    }
+
+    /**
+     * Find the lowest index of all exact types of a parameter (no conversions)
+     * @param {Param} param
+     * @return {number} Returns the index of the lowest type in typed.types
+     */
+    function getLowestTypeIndex (param) {
+      var min = 999;
+
+      for (var i = 0; i < param.types.length; i++) {
+        if (isExactType(param.types[i])) {
+          min = Math.min(min, param.types[i].typeIndex);
+        }
+      }
+
+      return min;
+    }
+
+    /**
+     * Find the lowest index of the conversion of all types of the parameter
+     * having a conversion
+     * @param {Param} param
+     * @return {number} Returns the lowest index of the conversions of this type
+     */
+    function getLowestConversionIndex (param) {
+      var min = 999;
+
+      for (var i = 0; i < param.types.length; i++) {
+        if (!isExactType(param.types[i])) {
+          min = Math.min(min, param.types[i].conversionIndex);
+        }
+      }
+
+      return min;
+    }
+
+    /**
+     * Compare two params
+     * @param {Param} param1
+     * @param {Param} param2
+     * @return {number} returns a negative number when param1 must get a lower
+     *                  index than param2, a positive number when the opposite,
+     *                  or zero when both are equal
+     */
+    function compareParams (param1, param2) {
+      var c;
+
+      // compare having a rest parameter or not
+      c = param1.restParam - param2.restParam;
+      if (c !== 0) {
+        return c;
+      }
+
+      // compare having conversions or not
+      c = hasConversions(param1) - hasConversions(param2);
+      if (c !== 0) {
+        return c;
+      }
+
+      // compare the index of the types
+      c = getLowestTypeIndex(param1) - getLowestTypeIndex(param2);
+      if (c !== 0) {
+        return c;
+      }
+
+      // compare the index of any conversion
+      return getLowestConversionIndex(param1) - getLowestConversionIndex(param2);
+    }
+
+    /**
+     * Compare two signatures
+     * @param {Signature} signature1
+     * @param {Signature} signature2
+     * @return {number} returns a negative number when param1 must get a lower
+     *                  index than param2, a positive number when the opposite,
+     *                  or zero when both are equal
+     */
+    function compareSignatures (signature1, signature2) {
+      var len = Math.min(signature1.params.length, signature2.params.length);
+      var i;
+      var c;
+
+      // compare whether the params have conversions at all or not
+      c = signature1.params.some(hasConversions) - signature2.params.some(hasConversions)
+      if (c !== 0) {
+        return c;
+      }
+
+      // next compare whether the params have conversions one by one
+      for (i = 0; i < len; i++) {
+        c = hasConversions(signature1.params[i]) - hasConversions(signature2.params[i]);
+        if (c !== 0) {
+          return c;
+        }
+      }
+
+      // compare the types of the params one by one
+      for (i = 0; i < len; i++) {
+        c = compareParams(signature1.params[i], signature2.params[i]);
+        if (c !== 0) {
+          return c;
+        }
+      }
+
+      // compare the number of params
+      return signature1.params.length - signature2.params.length;
+    }
+
+    /**
+     * Get params containing all types that can be converted to the defined types.
+     *
+     * @param {ConversionDef[]} conversions
+     * @param {string[]} typeNames
+     * @return {ConversionDef[]} Returns the conversions that are available
+     *                        for every type (if any)
+     */
+    function filterConversions(conversions, typeNames) {
+      var matches = {};
+
+      conversions.forEach(function (conversion) {
+        if (typeNames.indexOf(conversion.from) === -1 &&
+            typeNames.indexOf(conversion.to) !== -1 &&
+            !matches[conversion.from]) {
+          matches[conversion.from] = conversion;
+        }
+      });
+
+      return Object.keys(matches).map(function (from) {
+        return matches[from];
+      });
+    }
+
+    /**
+     * Preprocess arguments before calling the original function:
+     * - if needed convert the parameters
+     * - in case of rest parameters, move the rest parameters into an Array
+     * @param {Param[]} params
+     * @param {function} fn
+     * @return {function} Returns a wrapped function
+     */
+    function compileArgsPreprocessing(params, fn) {
+      var fnConvert = fn;
+
+      // TODO: can we make this wrapper function smarter/simpler?
+
+      if (params.some(hasConversions)) {
+        var restParam = hasRestParam(params);
+        var compiledConversions = params.map(compileArgConversion)
+
+        fnConvert = function convertArgs() {
+          var args = [];
+          var last = restParam ? arguments.length - 1 : arguments.length;
+          for (var i = 0; i < last; i++) {
+            args[i] = compiledConversions[i](arguments[i]);
+          }
+          if (restParam) {
+            args[last] = arguments[last].map(compiledConversions[last]);
+          }
+
+          return fn.apply(this, args);
+        }
+      }
+
+      var fnPreprocess = fnConvert;
+      if (hasRestParam(params)) {
+        var offset = params.length - 1;
+
+        fnPreprocess = function preprocessRestParams () {
+          return fnConvert.apply(this,
+              slice(arguments, 0, offset).concat([slice(arguments, offset)]));
+        }
+      }
+
+      return fnPreprocess;
+    }
+
+    /**
+     * Compile conversion for a parameter to the right type
+     * @param {Param} param
+     * @return {function} Returns the wrapped function that will convert arguments
+     *
+     */
+    function compileArgConversion(param) {
+      var test0, test1, conversion0, conversion1;
+      var tests = [];
+      var conversions = [];
+
+      param.types.forEach(function (type) {
+        if (type.conversion) {
+          tests.push(findTypeByName(type.conversion.from).test);
+          conversions.push(type.conversion.convert);
+        }
+      });
+
+      // create optimized conversion functions depending on the number of conversions
+      switch (conversions.length) {
+        case 0:
+          return function convertArg(arg) {
+            return arg;
+          }
+
+        case 1:
+          test0 = tests[0]
+          conversion0 = conversions[0];
+          return function convertArg(arg) {
+            if (test0(arg)) {
+              return conversion0(arg)
+            }
+            return arg;
+          }
+
+        case 2:
+          test0 = tests[0]
+          test1 = tests[1]
+          conversion0 = conversions[0];
+          conversion1 = conversions[1];
+          return function convertArg(arg) {
+            if (test0(arg)) {
+              return conversion0(arg)
+            }
+            if (test1(arg)) {
+              return conversion1(arg)
+            }
+            return arg;
+          }
+
+        default:
+          return function convertArg(arg) {
+            for (var i = 0; i < conversions.length; i++) {
+              if (tests[i](arg)) {
+                return conversions[i](arg);
+              }
+            }
+            return arg;
+          }
+      }
+    }
+
+    /**
+     * Convert an array with signatures into a map with signatures,
+     * where signatures with union types are split into separate signatures
+     *
+     * Throws an error when there are conflicting types
+     *
+     * @param {Signature[]} signatures
+     * @return {Object.<string, function>}  Returns a map with signatures
+     *                                      as key and the original function
+     *                                      of this signature as value.
+     */
+    function createSignaturesMap(signatures) {
+      var signaturesMap = {};
+      signatures.forEach(function (signature) {
+        if (!signature.params.some(hasConversions)) {
+          splitParams(signature.params, true).forEach(function (params) {
+            signaturesMap[stringifyParams(params)] = signature.fn;
+          });
+        }
+      });
+
+      return signaturesMap;
+    }
+
+    /**
+     * Split params with union types in to separate params.
+     *
+     * For example:
+     *
+     *     splitParams([['Array', 'Object'], ['string', 'RegExp'])
+     *     // returns:
+     *     // [
+     *     //   ['Array', 'string'],
+     *     //   ['Array', 'RegExp'],
+     *     //   ['Object', 'string'],
+     *     //   ['Object', 'RegExp']
+     *     // ]
+     *
+     * @param {Param[]} params
+     * @param {boolean} ignoreConversionTypes
+     * @return {Param[]}
+     */
+    function splitParams(params, ignoreConversionTypes) {
+      function _splitParams(params, index, types) {
+        if (index < params.length) {
+          var param = params[index]
+          var filteredTypes = ignoreConversionTypes
+              ? param.types.filter(isExactType)
+              : param.types;
+          var typeGroups
+
+          if (param.restParam) {
+            // split the types of a rest parameter in two:
+            // one with only exact types, and one with exact types and conversions
+            var exactTypes = filteredTypes.filter(isExactType)
+            typeGroups = exactTypes.length < filteredTypes.length
+                ? [exactTypes, filteredTypes]
+                : [filteredTypes]
+
+          }
+          else {
+            // split all the types of a regular parameter into one type per group
+            typeGroups = filteredTypes.map(function (type) {
+              return [type]
+            })
+          }
+
+          // recurse over the groups with types
+          return flatMap(typeGroups, function (typeGroup) {
+            return _splitParams(params, index + 1, types.concat([typeGroup]));
+          });
+
+        }
+        else {
+          // we've reached the end of the parameters. Now build a new Param
+          var splittedParams = types.map(function (type, typeIndex) {
+            return {
+              types: type,
+              restParam: (typeIndex === params.length - 1) && hasRestParam(params)
+            }
+          });
+
+          return [splittedParams];
+        }
+      }
+
+      return _splitParams(params, 0, []);
+    }
+
+    /**
+     * Test whether two signatures have a conflicting signature
+     * @param {Signature} signature1
+     * @param {Signature} signature2
+     * @return {boolean} Returns true when the signatures conflict, false otherwise.
+     */
+    function hasConflictingParams(signature1, signature2) {
+      var ii = Math.max(signature1.params.length, signature2.params.length);
+
+      for (var i = 0; i < ii; i++) {
+        var typesNames1 = getExpectedTypeNames(signature1, i, true);
+        var typesNames2 = getExpectedTypeNames(signature2, i, true);
+
+        if (!hasOverlap(typesNames1, typesNames2)) {
+          return false;
+        }
+      }
+
+      var len1 = signature1.params.length;
+      var len2 = signature2.params.length;
+      var restParam1 = hasRestParam(signature1.params);
+      var restParam2 = hasRestParam(signature2.params);
+
+      return restParam1
+          ? restParam2 ? (len1 === len2) : (len2 >= len1)
+          : restParam2 ? (len1 >= len2)  : (len1 === len2)
+    }
+
+    /**
+     * Create a typed function
+     * @param {String} name               The name for the typed function
+     * @param {Object.<string, function>} signaturesMap
+     *                                    An object with one or
+     *                                    multiple signatures as key, and the
+     *                                    function corresponding to the
+     *                                    signature as value.
+     * @return {function}  Returns the created typed function.
+     */
+    function createTypedFunction(name, signaturesMap) {
+      if (Object.keys(signaturesMap).length === 0) {
+        throw new SyntaxError('No signatures provided');
+      }
+
+      // parse the signatures, and check for conflicts
+      var parsedSignatures = [];
+      Object.keys(signaturesMap)
+          .map(function (signature) {
+            return parseSignature(signature, signaturesMap[signature], typed.conversions);
+          })
+          .filter(notNull)
+          .forEach(function (parsedSignature) {
+            // check whether this parameter conflicts with already parsed signatures
+            var conflictingSignature = findInArray(parsedSignatures, function (s) {
+              return hasConflictingParams(s, parsedSignature)
+            });
+            if (conflictingSignature) {
+              throw new TypeError('Conflicting signatures "' +
+                  stringifyParams(conflictingSignature.params) + '" and "' +
+                  stringifyParams(parsedSignature.params) + '".');
+            }
+
+            parsedSignatures.push(parsedSignature);
+          });
+
+      // split and filter the types of the signatures, and then order them
+      var signatures = flatMap(parsedSignatures, function (parsedSignature) {
+        var params = parsedSignature ? splitParams(parsedSignature.params, false) : []
+
+        return params.map(function (params) {
+          return {
+            params: params,
+            fn: parsedSignature.fn
+          };
+        });
+      }).filter(notNull);
+
+      signatures.sort(compareSignatures);
+
+      // we create a highly optimized checks for the first couple of signatures with max 2 arguments
+      var ok0 = signatures[0] && signatures[0].params.length <= 2 && !hasRestParam(signatures[0].params);
+      var ok1 = signatures[1] && signatures[1].params.length <= 2 && !hasRestParam(signatures[1].params);
+      var ok2 = signatures[2] && signatures[2].params.length <= 2 && !hasRestParam(signatures[2].params);
+      var ok3 = signatures[3] && signatures[3].params.length <= 2 && !hasRestParam(signatures[3].params);
+      var ok4 = signatures[4] && signatures[4].params.length <= 2 && !hasRestParam(signatures[4].params);
+      var ok5 = signatures[5] && signatures[5].params.length <= 2 && !hasRestParam(signatures[5].params);
+      var allOk = ok0 && ok1 && ok2 && ok3 && ok4 && ok5;
+
+      // compile the tests
+      var tests = signatures.map(function (signature) {
+        return compileTests(signature.params);
+      });
+
+      var test00 = ok0 ? compileTest(signatures[0].params[0]) : notOk;
+      var test10 = ok1 ? compileTest(signatures[1].params[0]) : notOk;
+      var test20 = ok2 ? compileTest(signatures[2].params[0]) : notOk;
+      var test30 = ok3 ? compileTest(signatures[3].params[0]) : notOk;
+      var test40 = ok4 ? compileTest(signatures[4].params[0]) : notOk;
+      var test50 = ok5 ? compileTest(signatures[5].params[0]) : notOk;
+
+      var test01 = ok0 ? compileTest(signatures[0].params[1]) : notOk;
+      var test11 = ok1 ? compileTest(signatures[1].params[1]) : notOk;
+      var test21 = ok2 ? compileTest(signatures[2].params[1]) : notOk;
+      var test31 = ok3 ? compileTest(signatures[3].params[1]) : notOk;
+      var test41 = ok4 ? compileTest(signatures[4].params[1]) : notOk;
+      var test51 = ok5 ? compileTest(signatures[5].params[1]) : notOk;
+
+      // compile the functions
+      var fns = signatures.map(function(signature) {
+        return compileArgsPreprocessing(signature.params, signature.fn);
+      });
+
+      var fn0 = ok0 ? fns[0] : undef;
+      var fn1 = ok1 ? fns[1] : undef;
+      var fn2 = ok2 ? fns[2] : undef;
+      var fn3 = ok3 ? fns[3] : undef;
+      var fn4 = ok4 ? fns[4] : undef;
+      var fn5 = ok5 ? fns[5] : undef;
+
+      var len0 = ok0 ? signatures[0].params.length : -1;
+      var len1 = ok1 ? signatures[1].params.length : -1;
+      var len2 = ok2 ? signatures[2].params.length : -1;
+      var len3 = ok3 ? signatures[3].params.length : -1;
+      var len4 = ok4 ? signatures[4].params.length : -1;
+      var len5 = ok5 ? signatures[5].params.length : -1;
+
+      // simple and generic, but also slow
+      var iStart = allOk ? 6 : 0;
+      var iEnd = signatures.length;
+      var generic = function generic() {
+        'use strict';
+
+        for (var i = iStart; i < iEnd; i++) {
+          if (tests[i](arguments)) {
+            return fns[i].apply(this, arguments);
+          }
+        }
+
+        throw createError(name, arguments, signatures);
+      }
+
+      // create the typed function
+      // fast, specialized version. Falls back to the slower, generic one if needed
+      var fn = function fn(arg0, arg1) {
+        'use strict';
+
+        if (arguments.length === len0 && test00(arg0) && test01(arg1)) { return fn0.apply(fn, arguments); }
+        if (arguments.length === len1 && test10(arg0) && test11(arg1)) { return fn1.apply(fn, arguments); }
+        if (arguments.length === len2 && test20(arg0) && test21(arg1)) { return fn2.apply(fn, arguments); }
+        if (arguments.length === len3 && test30(arg0) && test31(arg1)) { return fn3.apply(fn, arguments); }
+        if (arguments.length === len4 && test40(arg0) && test41(arg1)) { return fn4.apply(fn, arguments); }
+        if (arguments.length === len5 && test50(arg0) && test51(arg1)) { return fn5.apply(fn, arguments); }
+
+        return generic.apply(fn, arguments);
+      }
+
+      // attach name the typed function
+      try {
+        Object.defineProperty(fn, 'name', {value: name});
+      }
+      catch (err) {
+        // old browsers do not support Object.defineProperty and some don't support setting the name property
+        // the function name is not essential for the functioning, it's mostly useful for debugging,
+        // so it's fine to have unnamed functions.
+      }
+
+      // attach signatures to the function
+      fn.signatures = createSignaturesMap(signatures);
+
+      return fn;
+    }
+
+    /**
+     * Test whether a type should be NOT be ignored
+     * @param {string} typeName
+     * @return {boolean}
+     */
+    function notIgnore(typeName) {
+      return typed.ignore.indexOf(typeName) === -1;
+    }
+
+    /**
+     * trim a string
+     * @param {string} str
+     * @return {string}
+     */
+    function trim(str) {
+      return str.trim();
+    }
+
+    /**
+     * Test whether a string is not empty
+     * @param {string} str
+     * @return {boolean}
+     */
+    function notEmpty(str) {
+      return !!str;
+    }
+
+    /**
+     * test whether a value is not strict equal to null
+     * @param {*} value
+     * @return {boolean}
+     */
+    function notNull(value) {
+      return value !== null;
+    }
+
+    /**
+     * Test whether a parameter has no types defined
+     * @param {Param} param
+     * @return {boolean}
+     */
+    function isInvalidParam (param) {
+      return param.types.length === 0;
+    }
+
+    /**
+     * Return all but the last items of an array
+     * @param {Array} arr
+     * @return {Array}
+     */
+    function initial(arr) {
+      return arr.slice(0, arr.length - 1);
+    }
+
+    /**
+     * return the last item of an array
+     * @param {Array} arr
+     * @return {*}
+     */
+    function last(arr) {
+      return arr[arr.length - 1];
+    }
+
+    /**
+     * Slice an array or function Arguments
+     * @param {Array | Arguments | IArguments} arr
+     * @param {number} start
+     * @param {number} [end]
+     * @return {Array}
+     */
+    function slice(arr, start, end) {
+      return Array.prototype.slice.call(arr, start, end);
+    }
+
+    /**
+     * Test whether an array contains some item
+     * @param {Array} array
+     * @param {*} item
+     * @return {boolean} Returns true if array contains item, false if not.
+     */
+    function contains(array, item) {
+      return array.indexOf(item) !== -1;
+    }
+
+    /**
+     * Test whether two arrays have overlapping items
+     * @param {Array} array1
+     * @param {Array} array2
+     * @return {boolean} Returns true when at least one item exists in both arrays
+     */
+    function hasOverlap(array1, array2) {
+      for (var i = 0; i < array1.length; i++) {
+        if (contains(array2, array1[i])) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    /**
+     * Return the first item from an array for which test(arr[i]) returns true
+     * @param {Array} arr
+     * @param {function} test
+     * @return {* | undefined} Returns the first matching item
+     *                         or undefined when there is no match
+     */
+    function findInArray(arr, test) {
+      for (var i = 0; i < arr.length; i++) {
+        if (test(arr[i])) {
+          return arr[i];
+        }
+      }
+      return undefined;
+    }
+
+    /**
+     * Filter unique items of an array with strings
+     * @param {string[]} arr
+     * @return {string[]}
+     */
+    function uniq(arr) {
+      var entries = {}
+      for (var i = 0; i < arr.length; i++) {
+        entries[arr[i]] = true;
+      }
+      return Object.keys(entries);
+    }
+
+    /**
+     * Flat map the result invoking a callback for every item in an array.
+     * https://gist.github.com/samgiles/762ee337dff48623e729
+     * @param {Array} arr
+     * @param {function} callback
+     * @return {Array}
+     */
+    function flatMap(arr, callback) {
+      return Array.prototype.concat.apply([], arr.map(callback));
+    }
+
+    /**
+     * Retrieve the function name from a set of typed functions,
+     * and check whether the name of all functions match (if given)
+     * @param {function[]} fns
+     */
+    function getName (fns) {
+      var name = '';
+
+      for (var i = 0; i < fns.length; i++) {
+        var fn = fns[i];
+
+        // check whether the names are the same when defined
+        if ((typeof fn.signatures === 'object' || typeof fn.signature === 'string') && fn.name !== '') {
+          if (name === '') {
+            name = fn.name;
+          }
+          else if (name !== fn.name) {
+            var err = new Error('Function names do not match (expected: ' + name + ', actual: ' + fn.name + ')');
+            err.data = {
+              actual: fn.name,
+              expected: name
+            };
+            throw err;
+          }
+        }
+      }
+
+      return name;
+    }
+
+    // extract and merge all signatures of a list with typed functions
+    function extractSignatures(fns) {
+      var err;
+      var signaturesMap = {};
+
+      function validateUnique(_signature, _fn) {
+        if (signaturesMap.hasOwnProperty(_signature) && _fn !== signaturesMap[_signature]) {
+          err = new Error('Signature "' + _signature + '" is defined twice');
+          err.data = {signature: _signature};
+          throw err;
+          // else: both signatures point to the same function, that's fine
+        }
+      }
+
+      for (var i = 0; i < fns.length; i++) {
+        var fn = fns[i];
+
+        // test whether this is a typed-function
+        if (typeof fn.signatures === 'object') {
+          // merge the signatures
+          for (var signature in fn.signatures) {
+            if (fn.signatures.hasOwnProperty(signature)) {
+              validateUnique(signature, fn.signatures[signature]);
+              signaturesMap[signature] = fn.signatures[signature];
+            }
+          }
+        }
+        else if (typeof fn.signature === 'string') {
+          validateUnique(fn.signature, fn);
+          signaturesMap[fn.signature] = fn;
+        }
+        else {
+          err = new TypeError('Function is no typed-function (index: ' + i + ')');
+          err.data = {index: i};
+          throw err;
+        }
+      }
+
+      return signaturesMap;
+    }
+
+    typed = createTypedFunction('typed', {
+      'string, Object': createTypedFunction,
+      'Object': function (signaturesMap) {
+        // find existing name
+        var fns = [];
+        for (var signature in signaturesMap) {
+          if (signaturesMap.hasOwnProperty(signature)) {
+            fns.push(signaturesMap[signature]);
+          }
+        }
+        var name = getName(fns);
+        return createTypedFunction(name, signaturesMap);
+      },
+      '...Function': function (fns) {
+        return createTypedFunction(getName(fns), extractSignatures(fns));
+      },
+      'string, ...Function': function (name, fns) {
+        return createTypedFunction(name, extractSignatures(fns));
+      }
+    });
+
+    typed.create = create;
+    typed.types = _types;
+    typed.conversions = _conversions;
+    typed.ignore = _ignore;
+    typed.convert = convert;
+    typed.find = find;
+
+    /**
+     * add a type
+     * @param {{name: string, test: function}} type
+     * @param {boolean} [beforeObjectTest=true]
+     *                          If true, the new test will be inserted before
+     *                          the test with name 'Object' (if any), since
+     *                          tests for Object match Array and classes too.
+     */
+    typed.addType = function (type, beforeObjectTest) {
+      if (!type || typeof type.name !== 'string' || typeof type.test !== 'function') {
+        throw new TypeError('Object with properties {name: string, test: function} expected');
+      }
+
+      if (beforeObjectTest !== false) {
+        for (var i = 0; i < typed.types.length; i++) {
+          if (typed.types[i].name === 'Object') {
+            typed.types.splice(i, 0, type);
+            return
+          }
+        }
+      }
+
+      typed.types.push(type);
+    };
+
+    // add a conversion
+    typed.addConversion = function (conversion) {
+      if (!conversion
+          || typeof conversion.from !== 'string'
+          || typeof conversion.to !== 'string'
+          || typeof conversion.convert !== 'function') {
+        throw new TypeError('Object with properties {from: string, to: string, convert: function} expected');
+      }
+
+      typed.conversions.push(conversion);
+    };
+
+    return typed;
+  }
+
+  return create();
+}));
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+var width = 256;// each RC4 output is 0 <= x < 256
+var chunks = 6;// at least six RC4 outputs for each double
+var digits = 52;// there are 52 significant digits in a double
+var pool = [];// pool: entropy pool starts empty
+var GLOBAL = typeof global === 'undefined' ? window : global;
+
+//
+// The following constants are related to IEEE 754 limits.
+//
+var startdenom = Math.pow(width, chunks),
+    significance = Math.pow(2, digits),
+    overflow = significance * 2,
+    mask = width - 1;
+
+
+var oldRandom = Math.random;
+
+//
+// seedrandom()
+// This is the seedrandom function described above.
+//
+module.exports = function(seed, options) {
+  if (options && options.global === true) {
+    options.global = false;
+    Math.random = module.exports(seed, options);
+    options.global = true;
+    return Math.random;
+  }
+  var use_entropy = (options && options.entropy) || false;
+  var key = [];
+
+  // Flatten the seed string or build one from local entropy if needed.
+  var shortseed = mixkey(flatten(
+    use_entropy ? [seed, tostring(pool)] :
+    0 in arguments ? seed : autoseed(), 3), key);
+
+  // Use the seed to initialize an ARC4 generator.
+  var arc4 = new ARC4(key);
+
+  // Mix the randomness into accumulated entropy.
+  mixkey(tostring(arc4.S), pool);
+
+  // Override Math.random
+
+  // This function returns a random double in [0, 1) that contains
+  // randomness in every bit of the mantissa of the IEEE 754 value.
+
+  return function() {         // Closure to return a random double:
+    var n = arc4.g(chunks),             // Start with a numerator n < 2 ^ 48
+        d = startdenom,                 //   and denominator d = 2 ^ 48.
+        x = 0;                          //   and no 'extra last byte'.
+    while (n < significance) {          // Fill up all significant digits by
+      n = (n + x) * width;              //   shifting numerator and
+      d *= width;                       //   denominator and generating a
+      x = arc4.g(1);                    //   new least-significant-byte.
+    }
+    while (n >= overflow) {             // To avoid rounding up, before adding
+      n /= 2;                           //   last byte, shift everything
+      d /= 2;                           //   right using integer Math until
+      x >>>= 1;                         //   we have exactly the desired bits.
+    }
+    return (n + x) / d;                 // Form the number within [0, 1).
+  };
+};
+
+module.exports.resetGlobal = function () {
+  Math.random = oldRandom;
+};
+
+//
+// ARC4
+//
+// An ARC4 implementation.  The constructor takes a key in the form of
+// an array of at most (width) integers that should be 0 <= x < (width).
+//
+// The g(count) method returns a pseudorandom integer that concatenates
+// the next (count) outputs from ARC4.  Its return value is a number x
+// that is in the range 0 <= x < (width ^ count).
+//
+/** @constructor */
+function ARC4(key) {
+  var t, keylen = key.length,
+      me = this, i = 0, j = me.i = me.j = 0, s = me.S = [];
+
+  // The empty key [] is treated as [0].
+  if (!keylen) { key = [keylen++]; }
+
+  // Set up S using the standard key scheduling algorithm.
+  while (i < width) {
+    s[i] = i++;
+  }
+  for (i = 0; i < width; i++) {
+    s[i] = s[j = mask & (j + key[i % keylen] + (t = s[i]))];
+    s[j] = t;
+  }
+
+  // The "g" method returns the next (count) outputs as one number.
+  (me.g = function(count) {
+    // Using instance members instead of closure state nearly doubles speed.
+    var t, r = 0,
+        i = me.i, j = me.j, s = me.S;
+    while (count--) {
+      t = s[i = mask & (i + 1)];
+      r = r * width + s[mask & ((s[i] = s[j = mask & (j + t)]) + (s[j] = t))];
+    }
+    me.i = i; me.j = j;
+    return r;
+    // For robust unpredictability discard an initial batch of values.
+    // See http://www.rsa.com/rsalabs/node.asp?id=2009
+  })(width);
+}
+
+//
+// flatten()
+// Converts an object tree to nested arrays of strings.
+//
+function flatten(obj, depth) {
+  var result = [], typ = (typeof obj)[0], prop;
+  if (depth && typ == 'o') {
+    for (prop in obj) {
+      try { result.push(flatten(obj[prop], depth - 1)); } catch (e) {}
+    }
+  }
+  return (result.length ? result : typ == 's' ? obj : obj + '\0');
+}
+
+//
+// mixkey()
+// Mixes a string seed into a key that is an array of integers, and
+// returns a shortened string seed that is equivalent to the result key.
+//
+function mixkey(seed, key) {
+  var stringseed = seed + '', smear, j = 0;
+  while (j < stringseed.length) {
+    key[mask & j] =
+      mask & ((smear ^= key[mask & j] * 19) + stringseed.charCodeAt(j++));
+  }
+  return tostring(key);
+}
+
+//
+// autoseed()
+// Returns an object for autoseeding, using window.crypto if available.
+//
+/** @param {Uint8Array=} seed */
+function autoseed(seed) {
+  try {
+    GLOBAL.crypto.getRandomValues(seed = new Uint8Array(width));
+    return tostring(seed);
+  } catch (e) {
+    return [+new Date, GLOBAL, GLOBAL.navigator && GLOBAL.navigator.plugins,
+            GLOBAL.screen, tostring(pool)];
+  }
+}
+
+//
+// tostring()
+// Converts an array of charcodes to a string
+//
+function tostring(a) {
+  return String.fromCharCode.apply(0, a);
+}
+
+//
+// When seedrandom.js is loaded, we immediately mix a few bits
+// from the built-in RNG into the entropy pool.  Because we do
+// not want to intefere with determinstic PRNG state later,
+// seedrandom will not call Math.random on its own again after
+// initialization.
+//
+mixkey(Math.random(), pool);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(19)))
+
+/***/ }),
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11731,6 +11731,7 @@ __webpack_require__.d(__webpack_exports__, "createOnes", function() { return /* 
 __webpack_require__.d(__webpack_exports__, "createRange", function() { return /* reexport */ range_createRange; });
 __webpack_require__.d(__webpack_exports__, "createReshape", function() { return /* reexport */ createReshape; });
 __webpack_require__.d(__webpack_exports__, "createResize", function() { return /* reexport */ createResize; });
+__webpack_require__.d(__webpack_exports__, "createRotationMatrix", function() { return /* reexport */ createRotationMatrix; });
 __webpack_require__.d(__webpack_exports__, "createRow", function() { return /* reexport */ createRow; });
 __webpack_require__.d(__webpack_exports__, "createSize", function() { return /* reexport */ createSize; });
 __webpack_require__.d(__webpack_exports__, "createSqueeze", function() { return /* reexport */ createSqueeze; });
@@ -11983,7 +11984,7 @@ __webpack_require__.d(__webpack_exports__, "createVarianceTransform", function()
 var is = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./node_modules/typed-function/typed-function.js
-var typed_function = __webpack_require__(13);
+var typed_function = __webpack_require__(14);
 var typed_function_default = /*#__PURE__*/__webpack_require__.n(typed_function);
 
 // EXTERNAL MODULE: ./src/utils/number.js
@@ -12452,7 +12453,7 @@ var createResultSet = /* #__PURE__ */Object(factory["a" /* factory */])(ResultSe
   isClass: true
 });
 // EXTERNAL MODULE: ./node_modules/decimal.js/decimal.js
-var decimal = __webpack_require__(15);
+var decimal = __webpack_require__(12);
 var decimal_default = /*#__PURE__*/__webpack_require__.n(decimal);
 
 // CONCATENATED MODULE: ./src/type/bignumber/BigNumber.js
@@ -18026,19 +18027,214 @@ var createCbrt = /* #__PURE__ */Object(factory["a" /* factory */])(cbrt_name, cb
     }
   }
 });
+// CONCATENATED MODULE: ./src/type/matrix/utils/algorithm11.js
+
+var algorithm11_name = 'algorithm11';
+var algorithm11_dependencies = ['typed', 'equalScalar'];
+var createAlgorithm11 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm11_name, algorithm11_dependencies, function (_ref) {
+  var typed = _ref.typed,
+      equalScalar = _ref.equalScalar;
+
+  /**
+   * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
+   * Callback function invoked NZ times (number of nonzero items in S).
+   *
+   *
+   *          ┌  f(Sij, b)  ; S(i,j) !== 0
+   * C(i,j) = ┤
+   *          └  0          ; otherwise
+   *
+   *
+   * @param {Matrix}   s                 The SparseMatrix instance (S)
+   * @param {Scalar}   b                 The Scalar value
+   * @param {Function} callback          The f(Aij,b) operation to invoke
+   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Sij)
+   *
+   * @return {Matrix}                    SparseMatrix (C)
+   *
+   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
+   */
+  return function algorithm11(s, b, callback, inverse) {
+    // sparse matrix arrays
+    var avalues = s._values;
+    var aindex = s._index;
+    var aptr = s._ptr;
+    var asize = s._size;
+    var adt = s._datatype; // sparse matrix cannot be a Pattern matrix
+
+    if (!avalues) {
+      throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value');
+    } // rows & columns
+
+
+    var rows = asize[0];
+    var columns = asize[1]; // datatype
+
+    var dt; // equal signature to use
+
+    var eq = equalScalar; // zero value
+
+    var zero = 0; // callback signature to use
+
+    var cf = callback; // process data types
+
+    if (typeof adt === 'string') {
+      // datatype
+      dt = adt; // find signature that matches (dt, dt)
+
+      eq = typed.find(equalScalar, [dt, dt]); // convert 0 to the same datatype
+
+      zero = typed.convert(0, dt); // convert b to the same datatype
+
+      b = typed.convert(b, dt); // callback
+
+      cf = typed.find(callback, [dt, dt]);
+    } // result arrays
+
+
+    var cvalues = [];
+    var cindex = [];
+    var cptr = []; // loop columns
+
+    for (var j = 0; j < columns; j++) {
+      // initialize ptr
+      cptr[j] = cindex.length; // values in j
+
+      for (var k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+        // row
+        var i = aindex[k]; // invoke callback
+
+        var v = inverse ? cf(b, avalues[k]) : cf(avalues[k], b); // check value is zero
+
+        if (!eq(v, zero)) {
+          // push index & value
+          cindex.push(i);
+          cvalues.push(v);
+        }
+      }
+    } // update ptr
+
+
+    cptr[columns] = cindex.length; // return sparse matrix
+
+    return s.createSparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    });
+  };
+});
+// CONCATENATED MODULE: ./src/type/matrix/utils/algorithm14.js
+
+
+var algorithm14_name = 'algorithm14';
+var algorithm14_dependencies = ['typed'];
+var createAlgorithm14 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm14_name, algorithm14_dependencies, function (_ref) {
+  var typed = _ref.typed;
+
+  /**
+   * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, b).
+   * Callback function invoked MxN times.
+   *
+   * C(i,j,...z) = f(Aij..z, b)
+   *
+   * @param {Matrix}   a                 The DenseMatrix instance (A)
+   * @param {Scalar}   b                 The Scalar value
+   * @param {Function} callback          The f(Aij..z,b) operation to invoke
+   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Aij..z)
+   *
+   * @return {Matrix}                    DenseMatrix (C)
+   *
+   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
+   */
+  return function algorithm14(a, b, callback, inverse) {
+    // a arrays
+    var adata = a._data;
+    var asize = a._size;
+    var adt = a._datatype; // datatype
+
+    var dt; // callback signature to use
+
+    var cf = callback; // process data types
+
+    if (typeof adt === 'string') {
+      // datatype
+      dt = adt; // convert b to the same datatype
+
+      b = typed.convert(b, dt); // callback
+
+      cf = typed.find(callback, [dt, dt]);
+    } // populate cdata, iterate through dimensions
+
+
+    var cdata = asize.length > 0 ? _iterate(cf, 0, asize, asize[0], adata, b, inverse) : []; // c matrix
+
+    return a.createDenseMatrix({
+      data: cdata,
+      size: Object(utils_object["a" /* clone */])(asize),
+      datatype: dt
+    });
+  }; // recursive function
+
+  function _iterate(f, level, s, n, av, bv, inverse) {
+    // initialize array for this level
+    var cv = []; // check we reach the last level
+
+    if (level === s.length - 1) {
+      // loop arrays in last level
+      for (var i = 0; i < n; i++) {
+        // invoke callback and store value
+        cv[i] = inverse ? f(bv, av[i]) : f(av[i], bv);
+      }
+    } else {
+      // iterate current level
+      for (var j = 0; j < n; j++) {
+        // iterate next level
+        cv[j] = _iterate(f, level + 1, s, s[level + 1], av[j], bv, inverse);
+      }
+    }
+
+    return cv;
+  }
+});
 // CONCATENATED MODULE: ./src/function/arithmetic/ceil.js
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
 
 
 
 
 
 var ceil_name = 'ceil';
-var ceil_dependencies = ['typed', 'config', 'round'];
+var ceil_dependencies = ['typed', 'config', 'round', 'matrix', 'equalScalar'];
 var createCeil = /* #__PURE__ */Object(factory["a" /* factory */])(ceil_name, ceil_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
-      round = _ref.round;
-
+      round = _ref.round,
+      matrix = _ref.matrix,
+      equalScalar = _ref.equalScalar;
+  var algorithm11 = createAlgorithm11({
+    typed: typed,
+    equalScalar: equalScalar
+  });
+  var algorithm14 = createAlgorithm14({
+    typed: typed
+  });
   /**
    * Round a value towards plus infinity
    * If `x` is complex, both real and imaginary part are rounded towards plus infinity.
@@ -18047,6 +18243,7 @@ var createCeil = /* #__PURE__ */Object(factory["a" /* factory */])(ceil_name, ce
    * Syntax:
    *
    *    math.ceil(x)
+   *    math.ceil(x, n)
    *
    * Examples:
    *
@@ -18055,18 +18252,27 @@ var createCeil = /* #__PURE__ */Object(factory["a" /* factory */])(ceil_name, ce
    *    math.ceil(-4.2)              // returns number -4
    *    math.ceil(-4.7)              // returns number -4
    *
-   *    const c = math.complex(3.2, -2.7)
+   *    math.ceil(3.212, 2)          // returns number 3.22
+   *    math.ceil(3.288, 2)          // returns number 3.29
+   *    math.ceil(-4.212, 2)         // returns number -4.21
+   *    math.ceil(-4.782, 2)         // returns number -4.78
+   *
+   *    const c = math.complex(3.24, -2.71)
    *    math.ceil(c)                 // returns Complex 4 - 2i
+   *    math.ceil(c, 1)              // returns Complex 3.3 - 2.7i
    *
    *    math.ceil([3.2, 3.8, -4.7])  // returns Array [4, 4, -4]
+   *    math.ceil([3.21, 3.82, -4.71], 1)  // returns Array [3.3, 3.9, -4.7]
    *
    * See also:
    *
    *    floor, fix, round
    *
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
+   * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
+
   return typed('ceil', {
     number: function number(x) {
       if (Object(utils_number["m" /* nearlyEqual */])(x, round(x), config.epsilon)) {
@@ -18075,8 +18281,31 @@ var createCeil = /* #__PURE__ */Object(factory["a" /* factory */])(ceil_name, ce
         return ceilNumber(x);
       }
     },
+    'number, number': function numberNumber(x, n) {
+      if (Object(utils_number["m" /* nearlyEqual */])(x, round(x, n), config.epsilon)) {
+        return round(x, n);
+      } else {
+        var _$split = "".concat(x, "e").split('e'),
+            _$split2 = _slicedToArray(_$split, 2),
+            number = _$split2[0],
+            exponent = _$split2[1];
+
+        var result = Math.ceil(Number("".concat(number, "e").concat(Number(exponent) + n)));
+
+        var _$split3 = "".concat(result, "e").split('e');
+
+        var _$split4 = _slicedToArray(_$split3, 2);
+
+        number = _$split4[0];
+        exponent = _$split4[1];
+        return Number("".concat(number, "e").concat(Number(exponent) - n));
+      }
+    },
     Complex: function Complex(x) {
       return x.ceil();
+    },
+    'Complex, number': function ComplexNumber(x, n) {
+      return x.ceil(n);
     },
     BigNumber: function BigNumber(x) {
       if (nearlyEqual(x, round(x), config.epsilon)) {
@@ -18085,12 +18314,40 @@ var createCeil = /* #__PURE__ */Object(factory["a" /* factory */])(ceil_name, ce
         return x.ceil();
       }
     },
+    'BigNumber, BigNumber': function BigNumberBigNumber(x, n) {
+      if (nearlyEqual(x, round(x, n), config.epsilon)) {
+        return round(x, n);
+      } else {
+        return x.toDecimalPlaces(n.toNumber(), decimal["Decimal"].ROUND_CEIL);
+      }
+    },
     Fraction: function Fraction(x) {
       return x.ceil();
+    },
+    'Fraction, number': function FractionNumber(x, n) {
+      return x.ceil(n);
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since ceil(0) = 0
       return deepMap(x, this, true);
+    },
+    'Array | Matrix, number': function ArrayMatrixNumber(x, n) {
+      var _this = this;
+
+      // deep map collection, skip zeros since ceil(0) = 0
+      return deepMap(x, function (i) {
+        return _this(i, n);
+      }, true);
+    },
+    'SparseMatrix, number | BigNumber': function SparseMatrixNumberBigNumber(x, y) {
+      return algorithm11(x, y, this, false);
+    },
+    'DenseMatrix, number | BigNumber': function DenseMatrixNumberBigNumber(x, y) {
+      return algorithm14(x, y, this, false);
+    },
+    'number | Complex | BigNumber, Array': function numberComplexBigNumberArray(x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
 });
@@ -18253,14 +18510,18 @@ var createExpm1 = /* #__PURE__ */Object(factory["a" /* factory */])(expm1_name, 
 // CONCATENATED MODULE: ./src/function/arithmetic/fix.js
 
 
+
 var fix_name = 'fix';
-var fix_dependencies = ['typed', 'Complex', 'ceil', 'floor'];
+var fix_dependencies = ['typed', 'Complex', 'matrix', 'ceil', 'floor'];
 var createFix = /* #__PURE__ */Object(factory["a" /* factory */])(fix_name, fix_dependencies, function (_ref) {
   var typed = _ref.typed,
       _Complex = _ref.Complex,
+      matrix = _ref.matrix,
       ceil = _ref.ceil,
       floor = _ref.floor;
-
+  var algorithm14 = createAlgorithm14({
+    typed: typed
+  });
   /**
    * Round a value towards zero.
    * For matrices, the function is evaluated element wise.
@@ -18276,49 +18537,105 @@ var createFix = /* #__PURE__ */Object(factory["a" /* factory */])(fix_name, fix_
    *    math.fix(-4.2)               // returns number -4
    *    math.fix(-4.7)               // returns number -4
    *
-   *    const c = math.complex(3.2, -2.7)
-   *    math.fix(c)                  // returns Complex 3 - 2i
+   *    math.fix(3.12, 1)                // returns number 3.1
+   *    math.fix(3.18, 1)                // returns number 3.1
+   *    math.fix(-4.12, 1)               // returns number -4.1
+   *    math.fix(-4.17, 1)               // returns number -4.1
    *
-   *    math.fix([3.2, 3.8, -4.7])   // returns Array [3, 3, -4]
+   *    const c = math.complex(3.22, -2.78)
+   *    math.fix(c)                  // returns Complex 3 - 2i
+   *    math.fix(c, 1)               // returns Complex 3.2 - 2.7i
+   *
+   *    math.fix([3.2, 3.8, -4.7])      // returns Array [3, 3, -4]
+   *    math.fix([3.2, 3.8, -4.7], 1)   // returns Array [3.2, 3.8, -4.7]
    *
    * See also:
    *
    *    ceil, floor, round
    *
-   * @param {number | BigNumber | Fraction | Complex | Array | Matrix} x Number to be rounded
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
+   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x    Number to be rounded
+   * @param  {number | BigNumber | Array} [n=0]                             Number of decimals
+   * @return {number | BigNumber | Fraction | Complex | Array | Matrix}     Rounded value
    */
+
   return typed('fix', {
     number: function number(x) {
       return x > 0 ? floor(x) : ceil(x);
     },
+    'number, number | BigNumber': function numberNumberBigNumber(x, n) {
+      return x > 0 ? floor(x, n) : ceil(x, n);
+    },
     Complex: function Complex(x) {
       return new _Complex(x.re > 0 ? Math.floor(x.re) : Math.ceil(x.re), x.im > 0 ? Math.floor(x.im) : Math.ceil(x.im));
+    },
+    'Complex, number | BigNumber': function ComplexNumberBigNumber(x, n) {
+      return new _Complex(x.re > 0 ? floor(x.re, n) : ceil(x.re, n), x.im > 0 ? floor(x.im, n) : ceil(x.im, n));
     },
     BigNumber: function BigNumber(x) {
       return x.isNegative() ? ceil(x) : floor(x);
     },
+    'BigNumber, number | BigNumber': function BigNumberNumberBigNumber(x, n) {
+      return x.isNegative() ? ceil(x, n) : floor(x, n);
+    },
     Fraction: function Fraction(x) {
       return x.s < 0 ? x.ceil() : x.floor();
+    },
+    'Fraction, number | BigNumber': function FractionNumberBigNumber(x, n) {
+      return x.s < 0 ? x.ceil(n) : x.floor(n);
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since fix(0) = 0
       return deepMap(x, this, true);
+    },
+    'Array | Matrix, number | BigNumber': function ArrayMatrixNumberBigNumber(x, n) {
+      var _this = this;
+
+      // deep map collection, skip zeros since fix(0) = 0
+      return deepMap(x, function (i) {
+        return _this(i, n);
+      }, true);
+    },
+    'number | Complex | BigNumber, Array': function numberComplexBigNumberArray(x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
 });
 // CONCATENATED MODULE: ./src/function/arithmetic/floor.js
+function floor_slicedToArray(arr, i) { return floor_arrayWithHoles(arr) || floor_iterableToArrayLimit(arr, i) || floor_unsupportedIterableToArray(arr, i) || floor_nonIterableRest(); }
+
+function floor_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function floor_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return floor_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return floor_arrayLikeToArray(o, minLen); }
+
+function floor_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function floor_iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function floor_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
 
 
 
 
 var floor_name = 'floor';
-var floor_dependencies = ['typed', 'config', 'round'];
+var floor_dependencies = ['typed', 'config', 'round', 'matrix', 'equalScalar'];
 var createFloor = /* #__PURE__ */Object(factory["a" /* factory */])(floor_name, floor_dependencies, function (_ref) {
   var typed = _ref.typed,
       config = _ref.config,
-      round = _ref.round;
-
+      round = _ref.round,
+      matrix = _ref.matrix,
+      equalScalar = _ref.equalScalar;
+  var algorithm11 = createAlgorithm11({
+    typed: typed,
+    equalScalar: equalScalar
+  });
+  var algorithm14 = createAlgorithm14({
+    typed: typed
+  });
   /**
    * Round a value towards minus infinity.
    * For matrices, the function is evaluated element wise.
@@ -18326,6 +18643,7 @@ var createFloor = /* #__PURE__ */Object(factory["a" /* factory */])(floor_name, 
    * Syntax:
    *
    *    math.floor(x)
+   *    math.floor(x, n)
    *
    * Examples:
    *
@@ -18334,18 +18652,27 @@ var createFloor = /* #__PURE__ */Object(factory["a" /* factory */])(floor_name, 
    *    math.floor(-4.2)             // returns number -5
    *    math.floor(-4.7)             // returns number -5
    *
-   *    const c = math.complex(3.2, -2.7)
-   *    math.floor(c)                // returns Complex 3 - 3i
+   *    math.floor(3.212, 2)          // returns number 3.21
+   *    math.floor(3.288, 2)          // returns number 3.28
+   *    math.floor(-4.212, 2)         // returns number -4.22
+   *    math.floor(-4.782, 2)         // returns number -4.79
    *
-   *    math.floor([3.2, 3.8, -4.7]) // returns Array [3, 3, -5]
+   *    const c = math.complex(3.24, -2.71)
+   *    math.floor(c)                 // returns Complex 3 - 3i
+   *    math.floor(c, 1)              // returns Complex 3.2 - 2.8i
+   *
+   *    math.floor([3.2, 3.8, -4.7])       // returns Array [3, 3, -5]
+   *    math.floor([3.21, 3.82, -4.71], 1)  // returns Array [3.2, 3.8, -4.8]
    *
    * See also:
    *
    *    ceil, fix, round
    *
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
+   * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
+
   return typed('floor', {
     number: function number(x) {
       if (Object(utils_number["m" /* nearlyEqual */])(x, round(x), config.epsilon)) {
@@ -18354,8 +18681,31 @@ var createFloor = /* #__PURE__ */Object(factory["a" /* factory */])(floor_name, 
         return Math.floor(x);
       }
     },
+    'number, number': function numberNumber(x, n) {
+      if (Object(utils_number["m" /* nearlyEqual */])(x, round(x, n), config.epsilon)) {
+        return round(x, n);
+      } else {
+        var _$split = "".concat(x, "e").split('e'),
+            _$split2 = floor_slicedToArray(_$split, 2),
+            number = _$split2[0],
+            exponent = _$split2[1];
+
+        var result = Math.floor(Number("".concat(number, "e").concat(Number(exponent) + n)));
+
+        var _$split3 = "".concat(result, "e").split('e');
+
+        var _$split4 = floor_slicedToArray(_$split3, 2);
+
+        number = _$split4[0];
+        exponent = _$split4[1];
+        return Number("".concat(number, "e").concat(Number(exponent) - n));
+      }
+    },
     Complex: function Complex(x) {
       return x.floor();
+    },
+    'Complex, number': function ComplexNumber(x, n) {
+      return x.floor(n);
     },
     BigNumber: function BigNumber(x) {
       if (nearlyEqual(x, round(x), config.epsilon)) {
@@ -18364,12 +18714,40 @@ var createFloor = /* #__PURE__ */Object(factory["a" /* factory */])(floor_name, 
         return x.floor();
       }
     },
+    'BigNumber, BigNumber': function BigNumberBigNumber(x, n) {
+      if (nearlyEqual(x, round(x, n), config.epsilon)) {
+        return round(x, n);
+      } else {
+        return x.toDecimalPlaces(n.toNumber(), decimal["Decimal"].ROUND_FLOOR);
+      }
+    },
     Fraction: function Fraction(x) {
       return x.floor();
+    },
+    'Fraction, number': function FractionNumber(x, n) {
+      return x.floor(n);
     },
     'Array | Matrix': function ArrayMatrix(x) {
       // deep map collection, skip zeros since floor(0) = 0
       return deepMap(x, this, true);
+    },
+    'Array | Matrix, number': function ArrayMatrixNumber(x, n) {
+      var _this = this;
+
+      // deep map collection, skip zeros since ceil(0) = 0
+      return deepMap(x, function (i) {
+        return _this(i, n);
+      }, true);
+    },
+    'SparseMatrix, number | BigNumber': function SparseMatrixNumberBigNumber(x, y) {
+      return algorithm11(x, y, this, false);
+    },
+    'DenseMatrix, number | BigNumber': function DenseMatrixNumberBigNumber(x, y) {
+      return algorithm14(x, y, this, false);
+    },
+    'number | Complex | BigNumber, Array': function numberComplexBigNumberArray(x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(y), x, this, true).valueOf();
     }
   });
 });
@@ -18850,79 +19228,6 @@ var createAlgorithm13 = /* #__PURE__ */Object(factory["a" /* factory */])(algori
     return cv;
   }
 });
-// CONCATENATED MODULE: ./src/type/matrix/utils/algorithm14.js
-
-
-var algorithm14_name = 'algorithm14';
-var algorithm14_dependencies = ['typed'];
-var createAlgorithm14 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm14_name, algorithm14_dependencies, function (_ref) {
-  var typed = _ref.typed;
-
-  /**
-   * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, b).
-   * Callback function invoked MxN times.
-   *
-   * C(i,j,...z) = f(Aij..z, b)
-   *
-   * @param {Matrix}   a                 The DenseMatrix instance (A)
-   * @param {Scalar}   b                 The Scalar value
-   * @param {Function} callback          The f(Aij..z,b) operation to invoke
-   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Aij..z)
-   *
-   * @return {Matrix}                    DenseMatrix (C)
-   *
-   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
-   */
-  return function algorithm14(a, b, callback, inverse) {
-    // a arrays
-    var adata = a._data;
-    var asize = a._size;
-    var adt = a._datatype; // datatype
-
-    var dt; // callback signature to use
-
-    var cf = callback; // process data types
-
-    if (typeof adt === 'string') {
-      // datatype
-      dt = adt; // convert b to the same datatype
-
-      b = typed.convert(b, dt); // callback
-
-      cf = typed.find(callback, [dt, dt]);
-    } // populate cdata, iterate through dimensions
-
-
-    var cdata = asize.length > 0 ? _iterate(cf, 0, asize, asize[0], adata, b, inverse) : []; // c matrix
-
-    return a.createDenseMatrix({
-      data: cdata,
-      size: Object(utils_object["a" /* clone */])(asize),
-      datatype: dt
-    });
-  }; // recursive function
-
-  function _iterate(f, level, s, n, av, bv, inverse) {
-    // initialize array for this level
-    var cv = []; // check we reach the last level
-
-    if (level === s.length - 1) {
-      // loop arrays in last level
-      for (var i = 0; i < n; i++) {
-        // invoke callback and store value
-        cv[i] = inverse ? f(bv, av[i]) : f(av[i], bv);
-      }
-    } else {
-      // iterate current level
-      for (var j = 0; j < n; j++) {
-        // iterate next level
-        cv[j] = _iterate(f, level + 1, s, s[level + 1], av[j], bv, inverse);
-      }
-    }
-
-    return cv;
-  }
-});
 // CONCATENATED MODULE: ./src/function/arithmetic/gcd.js
 
 
@@ -19320,105 +19625,6 @@ var createAlgorithm06 = /* #__PURE__ */Object(factory["a" /* factory */])(algori
     cptr[columns] = cindex.length; // return sparse matrix
 
     return a.createSparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    });
-  };
-});
-// CONCATENATED MODULE: ./src/type/matrix/utils/algorithm11.js
-
-var algorithm11_name = 'algorithm11';
-var algorithm11_dependencies = ['typed', 'equalScalar'];
-var createAlgorithm11 = /* #__PURE__ */Object(factory["a" /* factory */])(algorithm11_name, algorithm11_dependencies, function (_ref) {
-  var typed = _ref.typed,
-      equalScalar = _ref.equalScalar;
-
-  /**
-   * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
-   * Callback function invoked NZ times (number of nonzero items in S).
-   *
-   *
-   *          ┌  f(Sij, b)  ; S(i,j) !== 0
-   * C(i,j) = ┤
-   *          └  0          ; otherwise
-   *
-   *
-   * @param {Matrix}   s                 The SparseMatrix instance (S)
-   * @param {Scalar}   b                 The Scalar value
-   * @param {Function} callback          The f(Aij,b) operation to invoke
-   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Sij)
-   *
-   * @return {Matrix}                    SparseMatrix (C)
-   *
-   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
-   */
-  return function algorithm11(s, b, callback, inverse) {
-    // sparse matrix arrays
-    var avalues = s._values;
-    var aindex = s._index;
-    var aptr = s._ptr;
-    var asize = s._size;
-    var adt = s._datatype; // sparse matrix cannot be a Pattern matrix
-
-    if (!avalues) {
-      throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value');
-    } // rows & columns
-
-
-    var rows = asize[0];
-    var columns = asize[1]; // datatype
-
-    var dt; // equal signature to use
-
-    var eq = equalScalar; // zero value
-
-    var zero = 0; // callback signature to use
-
-    var cf = callback; // process data types
-
-    if (typeof adt === 'string') {
-      // datatype
-      dt = adt; // find signature that matches (dt, dt)
-
-      eq = typed.find(equalScalar, [dt, dt]); // convert 0 to the same datatype
-
-      zero = typed.convert(0, dt); // convert b to the same datatype
-
-      b = typed.convert(b, dt); // callback
-
-      cf = typed.find(callback, [dt, dt]);
-    } // result arrays
-
-
-    var cvalues = [];
-    var cindex = [];
-    var cptr = []; // loop columns
-
-    for (var j = 0; j < columns; j++) {
-      // initialize ptr
-      cptr[j] = cindex.length; // values in j
-
-      for (var k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
-        // row
-        var i = aindex[k]; // invoke callback
-
-        var v = inverse ? cf(b, avalues[k]) : cf(avalues[k], b); // check value is zero
-
-        if (!eq(v, zero)) {
-          // push index & value
-          cindex.push(i);
-          cvalues.push(v);
-        }
-      }
-    } // update ptr
-
-
-    cptr[columns] = cindex.length; // return sparse matrix
-
-    return s.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -25352,7 +25558,7 @@ var createReshape = /* #__PURE__ */Object(factory["a" /* factory */])(reshape_na
   });
 });
 // EXTERNAL MODULE: ./src/error/ArgumentsError.js
-var ArgumentsError = __webpack_require__(12);
+var ArgumentsError = __webpack_require__(13);
 
 // CONCATENATED MODULE: ./src/function/matrix/resize.js
 
@@ -25484,6 +25690,182 @@ var createResize = /* #__PURE__ */Object(factory["a" /* factory */])(resize_name
     } else {
       return str;
     }
+  }
+});
+// CONCATENATED MODULE: ./src/function/matrix/rotationMatrix.js
+
+
+var rotationMatrix_name = 'rotationMatrix';
+var rotationMatrix_dependencies = ['typed', 'config', 'multiplyScalar', 'addScalar', 'unaryMinus', 'norm', 'matrix', 'BigNumber', 'DenseMatrix', 'SparseMatrix', 'cos', 'sin'];
+var createRotationMatrix = /* #__PURE__ */Object(factory["a" /* factory */])(rotationMatrix_name, rotationMatrix_dependencies, function (_ref) {
+  var typed = _ref.typed,
+      config = _ref.config,
+      multiplyScalar = _ref.multiplyScalar,
+      addScalar = _ref.addScalar,
+      unaryMinus = _ref.unaryMinus,
+      norm = _ref.norm,
+      BigNumber = _ref.BigNumber,
+      matrix = _ref.matrix,
+      DenseMatrix = _ref.DenseMatrix,
+      SparseMatrix = _ref.SparseMatrix,
+      cos = _ref.cos,
+      sin = _ref.sin;
+
+  /**
+   * Create a 2-dimensional counter-clockwise rotation matrix (2x2) for a given angle (expressed in radians).
+   * Create a 2-dimensional counter-clockwise rotation matrix (3x3) by a given angle (expressed in radians) around a given axis (1x3).
+   *
+   * Syntax:
+   *
+   *    math.rotationMatrix(theta)
+   *    math.rotationMatrix(theta, format)
+   *    math.rotationMatrix(theta, [v])
+   *    math.rotationMatrix(theta, [v], format)
+   *
+   * Examples:
+   *
+   *    math.rotationMatrix(math.pi / 2)                      // returns [[0, -1], [1, 0]]
+   *    math.rotationMatrix(math.bignumber(45))               // returns [[ bignumber(1 / sqrt(2)), - bignumber(1 / sqrt(2))], [ bignumber(1 / sqrt(2)),  bignumber(1 / sqrt(2))]]
+   *    math.rotationMatrix(math.complex(1 + i))              // returns [[cos(1 + i), -sin(1 + i)], [sin(1 + i), cos(1 + i)]]
+   *    math.rotationMatrix(math.unit('1rad'))                // returns [[cos(1), -sin(1)], [sin(1), cos(1)]]
+   *
+   *    math.rotationMatrix(math.pi / 2, [0, 1, 0])           // returns [[0, 0, 1], [0, 1, 0], [-1, 0, 0]]
+   *    math.rotationMatrix(math.pi / 2, matrix([0, 1, 0]))   // returns matrix([[0, 0, 1], [0, 1, 0], [-1, 0, 0]])
+   *
+   *
+   * See also:
+   *
+   *    matrix, cos, sin
+   *
+   *
+   * @param {number | BigNumber | Complex | Unit} theta    Rotation angle
+   * @param {Array | Matrix} [v]                           Rotation axis
+   * @param {string} [format]                              Result Matrix storage format
+   * @return {Array | Matrix}                              Rotation matrix
+   */
+  return typed(rotationMatrix_name, {
+    '': function _() {
+      return config.matrix === 'Matrix' ? matrix([]) : [];
+    },
+    string: function string(format) {
+      return matrix(format);
+    },
+    'number | BigNumber | Complex | Unit': function numberBigNumberComplexUnit(theta) {
+      return _rotationMatrix2x2(theta, config.matrix === 'Matrix' ? 'dense' : undefined);
+    },
+    'number | BigNumber | Complex | Unit, string': function numberBigNumberComplexUnitString(theta, format) {
+      return _rotationMatrix2x2(theta, format);
+    },
+    'number | BigNumber | Complex | Unit, Array': function numberBigNumberComplexUnitArray(theta, v) {
+      var matrixV = matrix(v);
+
+      _validateVector(matrixV);
+
+      return _rotationMatrix3x3(theta, matrixV, config.matrix === 'Matrix' ? 'dense' : undefined);
+    },
+    'number | BigNumber | Complex | Unit, Matrix': function numberBigNumberComplexUnitMatrix(theta, v) {
+      _validateVector(v);
+
+      return _rotationMatrix3x3(theta, v, config.matrix === 'Matrix' ? 'dense' : undefined);
+    },
+    'number | BigNumber | Complex | Unit, Array, string': function numberBigNumberComplexUnitArrayString(theta, v, format) {
+      var matrixV = matrix(v);
+
+      _validateVector(matrixV);
+
+      return _rotationMatrix3x3(theta, matrixV, format);
+    },
+    'number | BigNumber | Complex | Unit, Matrix, string': function numberBigNumberComplexUnitMatrixString(theta, v, format) {
+      _validateVector(v);
+
+      return _rotationMatrix3x3(theta, v, format);
+    }
+  });
+  /**
+   * Returns 2x2 matrix of 2D rotation of angle theta
+   *
+   * @param {number | BigNumber | Complex | Unit} theta  The rotation angle
+   * @param {string} format                              The result Matrix storage format
+   * @returns {Matrix}
+   * @private
+   */
+
+  function _rotationMatrix2x2(theta, format) {
+    var Big = Object(is["e" /* isBigNumber */])(theta);
+    var minusOne = Big ? new BigNumber(-1) : -1;
+    var cosTheta = cos(theta);
+    var sinTheta = sin(theta);
+    var data = [[cosTheta, multiplyScalar(minusOne, sinTheta)], [sinTheta, cosTheta]];
+    return _convertToFormat(data, format);
+  }
+
+  function _validateVector(v) {
+    var size = v.size();
+
+    if (size.length < 1 || size[0] !== 3) {
+      throw new RangeError('Vector must be of dimensions 1x3');
+    }
+  }
+
+  function _mul(array) {
+    return array.reduce(function (p, curr) {
+      return multiplyScalar(p, curr);
+    });
+  }
+
+  function _convertToFormat(data, format) {
+    if (format) {
+      if (format === 'sparse') {
+        return new SparseMatrix(data);
+      }
+
+      if (format === 'dense') {
+        return new DenseMatrix(data);
+      }
+
+      throw new TypeError("Unknown matrix type \"".concat(format, "\""));
+    }
+
+    return data;
+  }
+  /**
+   * Returns a 3x3 matrix of rotation of angle theta around vector v
+   *
+   * @param {number | BigNumber | Complex | Unit} theta The rotation angle
+   * @param {Matrix} v                                  The rotation axis vector
+   * @param {string} format                             The storage format of the resulting matrix
+   * @returns {Matrix}
+   * @private
+   */
+
+
+  function _rotationMatrix3x3(theta, v, format) {
+    var normV = norm(v);
+
+    if (normV === 0) {
+      return _convertToFormat([], format);
+    }
+
+    var Big = Object(is["e" /* isBigNumber */])(theta) ? BigNumber : null;
+    var one = Big ? new Big(1) : 1;
+    var minusOne = Big ? new Big(-1) : -1;
+    var vx = Big ? new Big(v.get([0]) / normV) : v.get([0]) / normV;
+    var vy = Big ? new Big(v.get([1]) / normV) : v.get([1]) / normV;
+    var vz = Big ? new Big(v.get([2]) / normV) : v.get([2]) / normV;
+    var c = cos(theta);
+    var oneMinusC = addScalar(one, unaryMinus(c));
+    var s = sin(theta);
+    var r11 = addScalar(c, _mul([vx, vx, oneMinusC]));
+    var r12 = addScalar(_mul([vx, vy, oneMinusC]), _mul([minusOne, vz, s]));
+    var r13 = addScalar(_mul([vx, vz, oneMinusC]), _mul([vy, s]));
+    var r21 = addScalar(_mul([vx, vy, oneMinusC]), _mul([vz, s]));
+    var r22 = addScalar(c, _mul([vy, vy, oneMinusC]));
+    var r23 = addScalar(_mul([vy, vz, oneMinusC]), _mul([minusOne, vx, s]));
+    var r31 = addScalar(_mul([vx, vz, oneMinusC]), _mul([minusOne, vy, s]));
+    var r32 = addScalar(_mul([vy, vz, oneMinusC]), _mul([vx, s]));
+    var r33 = addScalar(c, _mul([vz, vz, oneMinusC]));
+    var data = [[r11, r12, r13], [r21, r22, r23], [r31, r32, r33]];
+    return _convertToFormat(data, format);
   }
 });
 // CONCATENATED MODULE: ./src/function/matrix/row.js
@@ -27549,10 +27931,14 @@ var createRound = /* #__PURE__ */Object(factory["a" /* factory */])(round_name, 
    *
    * Examples:
    *
-   *    math.round(3.2)              // returns number 3
-   *    math.round(3.8)              // returns number 4
+   *    math.round(3.22)             // returns number 3
+   *    math.round(3.82)             // returns number 4
    *    math.round(-4.2)             // returns number -4
    *    math.round(-4.7)             // returns number -5
+   *    math.round(3.22, 1)          // returns number 3.2
+   *    math.round(3.88, 1)          // returns number 3.8
+   *    math.round(-4.21, 1)         // returns number -4.2
+   *    math.round(-4.71, 1)         // returns number -4.7
    *    math.round(math.pi, 3)       // returns number 3.142
    *    math.round(123.45678, 2)     // returns number 123.46
    *
@@ -28638,17 +29024,17 @@ var createUsolve = /* #__PURE__ */Object(factory["a" /* factory */])(usolve_name
   }
 });
 // CONCATENATED MODULE: ./src/function/algebra/solver/lsolveAll.js
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || lsolveAll_unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function lsolveAll_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return lsolveAll_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return lsolveAll_arrayLikeToArray(o, minLen); }
 
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return lsolveAll_arrayLikeToArray(arr); }
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function lsolveAll_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -52551,7 +52937,17 @@ var rowDocs = {
   examples: ['A = [[1, 2], [3, 4]]', 'row(A, 1)', 'row(A, 2)'],
   seealso: ['column']
 };
+// CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/rotationMatrix.js
+var rotationMatrixDocs = {
+  name: 'rotationMatrix',
+  category: 'Matrix',
+  syntax: ['rotationMatrix(theta)', 'rotationMatrix(theta, v)', 'rotationMatrix(theta, v, format)'],
+  description: 'Returns a 2-D rotation matrix (2x2) for a given angle (in radians). ' + 'Returns a 2-D rotation matrix (3x3) of a given angle (in radians) around given axis.',
+  examples: ['rotationMatrix(pi / 2)', 'rotationMatrix(unit("45deg"), [0, 0, 1])', 'rotationMatrix(1, matrix([0, 0, 1]), "sparse")'],
+  seealso: ['cos', 'sin']
+};
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/embeddedDocs.js
+
 
 
 
@@ -53111,6 +53507,7 @@ var embeddedDocs = {
   range: rangeDocs,
   resize: resizeDocs,
   reshape: reshapeDocs,
+  rotationMatrix: rotationMatrixDocs,
   row: rowDocs,
   size: sizeDocs,
   sort: sortDocs,
@@ -54375,6 +54772,10 @@ var createSqrtm = /* #__PURE__ */Object(factory["a" /* factory */])(sqrtm_name, 
               throw new RangeError('Matrix must be square ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
             }
           }
+
+        default:
+          // Multi dimensional array
+          throw new RangeError('Matrix must be at most two dimensional ' + '(size: ' + Object(utils_string["d" /* format */])(size) + ')');
       }
     }
   });
@@ -56560,7 +56961,7 @@ function permutations_isPositiveInteger(n) {
   return n.isInteger() && n.gte(0);
 }
 // EXTERNAL MODULE: ./node_modules/seed-random/index.js
-var seed_random = __webpack_require__(14);
+var seed_random = __webpack_require__(15);
 var seed_random_default = /*#__PURE__*/__webpack_require__.n(seed_random);
 
 // CONCATENATED MODULE: ./src/function/probability/util/seededRNG.js
@@ -60262,7 +60663,7 @@ var createReplacer = /* #__PURE__ */Object(factory["a" /* factory */])(replacer_
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '7.3.0'; // Note: This file is automatically generated when building math.js.
+var version = '7.4.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
@@ -61647,6 +62048,7 @@ var createVarianceTransform = /* #__PURE__ */Object(factory["a" /* factory */])(
 
 
 
+
 /***/ }),
 /* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -61693,7 +62095,7 @@ var utils_factory = __webpack_require__(0);
 var array = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./src/error/ArgumentsError.js
-var ArgumentsError = __webpack_require__(12);
+var ArgumentsError = __webpack_require__(13);
 
 // CONCATENATED MODULE: ./src/core/function/import.js
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }

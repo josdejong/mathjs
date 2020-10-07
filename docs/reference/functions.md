@@ -169,6 +169,7 @@ Function | Description
 [math.range(start,&nbsp;end&nbsp;[,&nbsp;step])](functions/range.html) | Create an array from a range.
 [math.reshape(x,&nbsp;sizes)](functions/reshape.html) | Reshape a multi dimensional array to fit the specified dimensions.
 [math.resize(x,&nbsp;size&nbsp;[,&nbsp;defaultValue])](functions/resize.html) | Resize a matrix.
+[math.rotationMatrix(theta)](functions/rotationMatrix.html) | Create a 2-dimensional counter-clockwise rotation matrix (2x2) for a given angle (expressed in radians).
 [math.row(value,&nbsp;index)](functions/row.html) | Return a row from a Matrix.
 [math.size(x)](functions/size.html) | Calculate the size of a matrix or scalar.
 [math.sort(x)](functions/sort.html) | Sort the items in a matrix.

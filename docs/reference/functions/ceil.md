@@ -15,6 +15,7 @@ For matrices, the function is evaluated element wise.
 
 ```js
 math.ceil(x)
+math.ceil(x, n)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -22,6 +23,7 @@ math.ceil(x)
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
+`n` | number &#124; BigNumber &#124; Array | Number of decimals Default value: 0.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -38,10 +40,17 @@ math.ceil(3.8)               // returns number 4
 math.ceil(-4.2)              // returns number -4
 math.ceil(-4.7)              // returns number -4
 
-const c = math.complex(3.2, -2.7)
+math.ceil(3.212, 2)          // returns number 3.22
+math.ceil(3.288, 2)          // returns number 3.29
+math.ceil(-4.212, 2)         // returns number -4.21
+math.ceil(-4.782, 2)         // returns number -4.78
+
+const c = math.complex(3.24, -2.71)
 math.ceil(c)                 // returns Complex 4 - 2i
+math.ceil(c, 1)              // returns Complex 3.3 - 2.7i
 
 math.ceil([3.2, 3.8, -4.7])  // returns Array [4, 4, -4]
+math.ceil([3.21, 3.82, -4.71], 1)  // returns Array [3.3, 3.9, -4.7]
 ```
 
 

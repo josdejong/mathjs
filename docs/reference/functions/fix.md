@@ -21,6 +21,7 @@ math.fix(x)
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
+`n` | number &#124; BigNumber &#124; Array | Number of decimals Default value: 0.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -37,10 +38,17 @@ math.fix(3.8)                // returns number 3
 math.fix(-4.2)               // returns number -4
 math.fix(-4.7)               // returns number -4
 
-const c = math.complex(3.2, -2.7)
-math.fix(c)                  // returns Complex 3 - 2i
+math.fix(3.12, 1)                // returns number 3.1
+math.fix(3.18, 1)                // returns number 3.1
+math.fix(-4.12, 1)               // returns number -4.1
+math.fix(-4.17, 1)               // returns number -4.1
 
-math.fix([3.2, 3.8, -4.7])   // returns Array [3, 3, -4]
+const c = math.complex(3.22, -2.78)
+math.fix(c)                  // returns Complex 3 - 2i
+math.fix(c, 1)               // returns Complex 3.2 - 2.7i
+
+math.fix([3.2, 3.8, -4.7])      // returns Array [3, 3, -4]
+math.fix([3.2, 3.8, -4.7], 1)   // returns Array [3.2, 3.8, -4.7]
 ```
 
 

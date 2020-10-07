@@ -34,10 +34,14 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matri
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.round(3.2)              // returns number 3
-math.round(3.8)              // returns number 4
+math.round(3.22)             // returns number 3
+math.round(3.82)             // returns number 4
 math.round(-4.2)             // returns number -4
 math.round(-4.7)             // returns number -5
+math.round(3.22, 1)          // returns number 3.2
+math.round(3.88, 1)          // returns number 3.8
+math.round(-4.21, 1)         // returns number -4.2
+math.round(-4.71, 1)         // returns number -4.7
 math.round(math.pi, 3)       // returns number 3.142
 math.round(123.45678, 2)     // returns number 123.46
 
