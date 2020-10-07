@@ -87,6 +87,10 @@ export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed,
               '(size: ' + format(size) + ')')
           }
         }
+        default:
+          // Multi dimensional array
+          throw new RangeError('Matrix must be at most two dimensional ' +
+          '(size: ' + format(size) + ')')
       }
     }
   })

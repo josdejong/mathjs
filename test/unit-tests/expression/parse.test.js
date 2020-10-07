@@ -243,6 +243,21 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('300e-2'), 3)
       assert.strictEqual(parseAndEval('300E-2'), 3)
       assert.strictEqual(parseAndEval('3.2e2'), 320)
+
+      assert.strictEqual(parseAndEval('0b0'), 0)
+      assert.strictEqual(parseAndEval('0o0'), 0)
+      assert.strictEqual(parseAndEval('0x0'), 0)
+      assert.strictEqual(parseAndEval('0b01'), 0b1)
+      assert.strictEqual(parseAndEval('0o01234567'), 0o01234567)
+      assert.strictEqual(parseAndEval('0xabcdef'), 0xabcdef)
+      assert.strictEqual(parseAndEval('0x3456789'), 0x3456789)
+      assert.strictEqual(parseAndEval('0xABCDEF'), 0xabcdef)
+      assert.strictEqual(parseAndEval('0xffffffff'), -1)
+      assert.strictEqual(parseAndEval('0xfffffffe'), -2)
+      assert.strictEqual(parseAndEval('0o37777777777'), -1)
+      assert.strictEqual(parseAndEval('0b11111111111111111111111111111111'), -1)
+      assert.strictEqual(parseAndEval('0b11111111111111111111111111111110'), -2)
+      assert.strictEqual(parseAndEval('0x7fffffff'), 2 ** 31 - 1)
     })
 
     it('should parse a number followed by e', function () {
@@ -264,6 +279,15 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('-3e-.5') }, /Digit expected, got "."/)
 
       assert.throws(function () { parseAndEval('2e+a') }, /Digit expected, got "a"/)
+
+      assert.throws(function () { parseAndEval('0b') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0o') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0x') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0b2') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0o8') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0xg') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0x12.3') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0x100000000') }, SyntaxError)
     })
   })
 
