@@ -6,6 +6,9 @@
   and `fix`, similar to `round`, see #1967, #1901. Thanks @rnd-debug.
 - Implement a clear error message when using `sqrtm` with a matrix having 
   more than two dimensions. Thanks @KonradLinkowski.
+- Fixed #1974: function `pickRandom` now allows randomly picking elements 
+  from matrices with 2 or more dimensions instead of only from a vector.
+  Thanks @KonradLinkowski.
 
 
 # 2020-09-26, version 7.3.0
