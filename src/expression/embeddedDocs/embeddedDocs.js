@@ -214,6 +214,7 @@ import { sinDocs } from './function/trigonometry/sin'
 import { numericDocs } from './function/utils/numeric'
 import { columnDocs } from './function/matrix/column'
 import { rowDocs } from './function/matrix/row'
+import { rotationMatrixDocs } from './function/matrix/rotationMatrix'
 
 export const embeddedDocs = {
 
@@ -426,6 +427,7 @@ export const embeddedDocs = {
   range: rangeDocs,
   resize: resizeDocs,
   reshape: reshapeDocs,
+  rotationMatrix: rotationMatrixDocs,
   row: rowDocs,
   size: sizeDocs,
   sort: sortDocs,
