@@ -1,4 +1,4 @@
-import { Decimal } from 'decimal.js'
+import Decimal from 'decimal.js'
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
 import { nearlyEqual } from '../../utils/number.js'

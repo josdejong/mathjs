@@ -1,6 +1,6 @@
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
 
 const name = 'fix'
 const dependencies = ['typed', 'Complex', 'matrix', 'ceil', 'floor']
