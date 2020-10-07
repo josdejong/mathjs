@@ -1,7 +1,7 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
+import math from '../../../../src/defaultInstance.js'
+import approx from '../../../../tools/approx.js'
 
-import math from '../../../../src/bundleAny'
 const bignumber = math.bignumber
 const complex = math.complex
 const unit = math.unit
