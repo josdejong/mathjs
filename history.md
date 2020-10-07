@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20201007-version-750">2020-10-07, version 7.5.0 <a href="#20201007-version-750" title="Permalink">#</a></h1>
+
+- Function `pickRandom` now allows randomly picking elements from matrices 
+  with 2 or more dimensions instead of only from a vector, see <a href="https://github.com/josdejong/mathjs/issues/1974">#1974</a>.
+  Thanks <a href="https://github.com/KonradLinkowski">@KonradLinkowski</a>.
+
+
 <h1 id="20201007-version-740">2020-10-07, version 7.4.0 <a href="#20201007-version-740" title="Permalink">#</a></h1>
 
 - Implemented support for passing a precision in functions `ceil`, `floor`, 
@@ -11,9 +18,6 @@ layout: default
 - Implemented function `rotationMatrix`, see <a href="https://github.com/josdejong/mathjs/issues/1160">#1160</a>, <a href="https://github.com/josdejong/mathjs/issues/1984">#1984</a>. Thanks <a href="https://github.com/rnd-debug">@rnd-debug</a>.
 - Implement a clear error message when using `sqrtm` with a matrix having 
   more than two dimensions. Thanks <a href="https://github.com/KonradLinkowski">@KonradLinkowski</a>.
-- Fixed <a href="https://github.com/josdejong/mathjs/issues/1974">#1974</a>: function `pickRandom` now allows randomly picking elements 
-  from matrices with 2 or more dimensions instead of only from a vector.
-  Thanks <a href="https://github.com/KonradLinkowski">@KonradLinkowski</a>.
 - Update dependency `decimal.js` to `10.2.1`.
 
 
