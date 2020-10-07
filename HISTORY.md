@@ -9,6 +9,7 @@
 - Fixed #1974: function `pickRandom` now allows randomly picking elements 
   from matrices with 2 or more dimensions instead of only from a vector.
   Thanks @KonradLinkowski.
+- Implemented function `rotationMatrix`, see #1160, #1984. Thanks @rnd-debug.
 
 
 # 2020-09-26, version 7.3.0
