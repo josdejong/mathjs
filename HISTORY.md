@@ -1,9 +1,9 @@
 # History
 
-# not yet published, version 7.5.0
+# 2020-10-07, version 7.5.0
 
-- Fixed #1974: function `pickRandom` now allows randomly picking elements 
-  from matrices with 2 or more dimensions instead of only from a vector.
+- Function `pickRandom` now allows randomly picking elements from matrices 
+  with 2 or more dimensions instead of only from a vector, see #1974.
   Thanks @KonradLinkowski.
 
 
