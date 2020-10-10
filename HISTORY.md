@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 7.5.1
+# 2020-10-10, version 7.5.1
 
 - Fix object pollution vulnerability in `math.config`. Thanks Snyk.
 
