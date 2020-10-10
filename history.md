@@ -4,6 +4,11 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20201010-version-751">2020-10-10, version 7.5.1 <a href="#20201010-version-751" title="Permalink">#</a></h1>
+
+- Fix object pollution vulnerability in `math.config`. Thanks Snyk.
+
+
 <h1 id="20201007-version-750">2020-10-07, version 7.5.0 <a href="#20201007-version-750" title="Permalink">#</a></h1>
 
 - Function `pickRandom` now allows randomly picking elements from matrices 
