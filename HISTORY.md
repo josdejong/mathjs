@@ -1,5 +1,10 @@
 # History
 
+# not yet published, version 7.5.1
+
+- Fix object pollution vulnerability in `math.config`. Thanks Snyk.
+
+
 # 2020-10-07, version 7.5.0
 
 - Function `pickRandom` now allows randomly picking elements from matrices 

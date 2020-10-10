@@ -390,6 +390,34 @@ describe('security', function () {
     assert.strictEqual(math.expression.mathWithTransform.chain, undefined)
     assert.deepStrictEqual(math.evaluate('chain'), math.unit('chain'))
   })
+
+  it('should not allow polluting the Object prototype via config', () => {
+    const obj = {}
+    assert.strictEqual(obj.polluted, undefined)
+
+    // change the configuration
+    const newConfig = JSON.parse('{"__proto__":{"polluted":"yes"}}')
+    math.config(newConfig)
+    assert.strictEqual(obj.polluted, undefined)
+  })
+
+  it('should not allow polluting the Object prototype via config via the expression parser', () => {
+    const obj = {}
+    assert.strictEqual(obj.polluted, undefined)
+
+    // change the configuration
+    math.evaluate('config({"__proto__":{"polluted":"yes"}})')
+    assert.strictEqual(obj.polluted, undefined)
+  })
+
+  it('should not allow polluting the Object prototype by creating an object in the expression parser', () => {
+    const obj = {}
+    assert.strictEqual(obj.polluted, undefined)
+
+    // change the configuration
+    math.evaluate('a = {"__proto__":{"polluted":"yes"}}')
+    assert.strictEqual(obj.polluted, undefined)
+  })
 })
 
 function isPlainObject (object) {
