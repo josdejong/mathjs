@@ -17,7 +17,6 @@ describe('rotationMatrix', function () {
 
   it('should create an empty matrix', function () {
     assert.deepStrictEqual(rotationMatrix(), matrix())
-    assert.deepStrictEqual(rotationMatrix(1, [0.0, 0.0, 0.0]), matrix())
     assert.deepStrictEqual(rotationMatrix('sparse'), matrix('sparse'))
     assert.deepStrictEqual(rotationMatrix('dense'), matrix('dense'))
 
@@ -243,6 +242,7 @@ describe('rotationMatrix', function () {
     assert.throws(function () { rotationMatrix(0, [0, 1]) }, /RangeError: Vector must be of dimensions 1x3/)
     assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'something') }, /TypeError: Unknown matrix type/)
     assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'sparse', 4) }, /TypeError: Too many arguments/)
+    assert.throws(function () { rotationMatrix(1, [0.0, 0.0, 0.0]) }, /Rotation around zero vector/)
   })
 
   it('should LaTeX rotationMatrix', function () {

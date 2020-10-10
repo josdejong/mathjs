@@ -37,7 +37,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
    * Examples:
    *
    *    math.rotationMatrix(math.pi / 2)                      // returns [[0, -1], [1, 0]]
-   *    math.rotationMatrix(math.bignumber(45))               // returns [[ bignumber(1 / sqrt(2)), - bignumber(1 / sqrt(2))], [ bignumber(1 / sqrt(2)),  bignumber(1 / sqrt(2))]]
+   *    math.rotationMatrix(math.bignumber(1))                // returns [[bignumber(cos(1)), bignumber(-sin(1))], [bignumber(sin(1)), bignumber(cos(1))]]
    *    math.rotationMatrix(math.complex(1 + i))              // returns [[cos(1 + i), -sin(1 + i)], [sin(1 + i), cos(1 + i)]]
    *    math.rotationMatrix(math.unit('1rad'))                // returns [[cos(1), -sin(1)], [sin(1), cos(1)]]
    *
@@ -152,7 +152,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
   function _rotationMatrix3x3 (theta, v, format) {
     const normV = norm(v)
     if (normV === 0) {
-      return _convertToFormat([], format)
+      throw new RangeError('Rotation around zero vector')
     }
 
     const Big = isBigNumber(theta) ? BigNumber : null
