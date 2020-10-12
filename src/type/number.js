@@ -46,11 +46,21 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
         throw new SyntaxError('String "' + x + '" is no valid number')
       }
       if (['0b', '0o', '0x'].includes(x.substring(0, 2))) {
-        if (num > 2 ** 32 - 1) {
-          throw new SyntaxError(`String "${x}" is out of range`)
-        }
-        if (num & 0x80000000) {
-          num = -1 * ~(num - 1)
+        //check for size suffix
+        if (x.includes('i')) {
+          const match = x.match(/0[box][0-9a-fA-F]*i([0-9]*)/)
+          const size = Number(match[1])
+          if (size > 53) {
+            throw new SyntaxError(`String "${x}" is out of range`)
+          }
+          if (num > 2 ** size - 1) {
+            throw new SyntaxError(`String "${x}" is out of range`)
+          }
+          //check if the bit at index size - 1 is set and if so do the twos complement
+          //this should work for numbers greater than 32 bits so we can't use the js & operator
+          if (num & 0x80000000) {
+            num = -1 * ~(num - 1)
+          }
         }
       }
       return num
