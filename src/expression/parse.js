@@ -333,7 +333,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           next(state)
         }
         // check for word size suffix
-        let sign = currentCharacter(state)
+        const sign = currentCharacter(state)
         if (sign === 'i') {
           state.token += sign
           next(state)
