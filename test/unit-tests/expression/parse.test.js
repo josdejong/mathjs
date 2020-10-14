@@ -313,6 +313,12 @@ describe('parse', function () {
 
       assert.deepStrictEqual(bigmath.parse('0.1').compile().evaluate(), bigmath.bignumber(0.1))
       assert.deepStrictEqual(bigmath.parse('1.2e5000').compile().evaluate(), bigmath.bignumber('1.2e5000'))
+
+      assert.deepStrictEqual(bigmath.parse('0xffffffff').compile().evaluate(), bigmath.bignumber(0xffffffff))
+      assert.deepStrictEqual(bigmath.parse('0x80000000i32').compile().evaluate(), bigmath.bignumber(-2147483648))
+      assert.deepStrictEqual(bigmath.parse('0xffffffffi32').compile().evaluate(), bigmath.bignumber(-1))
+      assert.deepStrictEqual(bigmath.parse('0xffffffffffffffffffffffffffffffffi128').compile().evaluate(), bigmath.bignumber(-1))
+      assert.deepStrictEqual(bigmath.parse('0xffffffffffffffffffffffffffffffff').compile().evaluate(), bigmath.bignumber('0xffffffffffffffffffffffffffffffff'))
     })
   })
 
