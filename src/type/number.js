@@ -44,8 +44,8 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       let size = 0
       const boxMatch = x.match(/(0[box][0-9a-fA-F]*)i([0-9]*)/)
       if (boxMatch) {
-        //x includes a size suffix like 0xffffi32, so we extract
-        //the suffix and remove it from x
+        // x includes a size suffix like 0xffffi32, so we extract
+        // the suffix and remove it from x
         size = Number(boxMatch[2])
         x = boxMatch[1]
       }
@@ -54,17 +54,17 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
         throw new SyntaxError('String "' + x + '" is no valid number')
       }
       if (boxMatch) {
-        //x is a signed bin, oct, or hex literal
-        //num is the value of string x if x is interpreted as unsigned
+        // x is a signed bin, oct, or hex literal
+        // num is the value of string x if x is interpreted as unsigned
         if (size > 53) {
-          //can't represent integers larger than 53 bits in type Number
+          // can't represent integers larger than 53 bits in type Number
           throw new Error(`String "${x}" is out of range`)
         }
         if (num > 2 ** size - 1) {
-          //literal is too large for size suffix
+          // literal is too large for size suffix
           throw new SyntaxError(`String "${x}" is out of range`)
         }
-        //check if the bit at index size - 1 is set and if so do the twos complement
+        // check if the bit at index size - 1 is set and if so do the twos complement
         if (num >= 2 ** (size - 1)) {
           num = num - 2 ** size
         }
