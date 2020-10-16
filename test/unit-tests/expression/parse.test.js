@@ -263,6 +263,8 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('0b11111111111111111111111111111110'), 4294967294)
       assert.strictEqual(parseAndEval('0x7fffffff'), 2 ** 31 - 1)
       assert.strictEqual(parseAndEval('0x7fffffffi32'), 2 ** 31 - 1)
+      assert.strictEqual(parseAndEval('0x1fffffffffffff'), 2 ** 53 - 1)
+      assert.strictEqual(parseAndEval('0x1fffffffffffffi53'), -1)
     })
 
     it('should parse a number followed by e', function () {
