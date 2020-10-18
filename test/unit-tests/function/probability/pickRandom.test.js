@@ -118,7 +118,7 @@ describe('pickRandom', function () {
     times(1000, () => picked.push(pickRandom(possibles)))
 
     flatten(possibles).forEach(possible => {
-      const count = filter(flatten(picked), val => val === possible).length
+      const count = flatten(picked).filter(val => val === possible).length
       assert.strictEqual(math.round(count / picked.length, 1), 0.1)
     })
   })
@@ -130,7 +130,7 @@ describe('pickRandom', function () {
 
     times(1000, () => picked.push(pickRandom(possibles)))
     flatten(possibles).forEach(possible => {
-      const count = filter(picked, val => val === possible).length
+      const count = picked.filter(val => val === possible).length
       assert.strictEqual(math.round(count / picked.length, 1), 0.1)
     })
   })

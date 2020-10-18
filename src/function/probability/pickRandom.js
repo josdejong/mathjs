@@ -1,3 +1,4 @@
+import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { isNumber } from '../../utils/is.js'
 import { createRng } from './util/seededRNG.js'
