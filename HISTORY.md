@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 8.0.0
+# 2020-10-18, version 8.0.0-beta.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
