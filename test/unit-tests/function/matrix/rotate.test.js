@@ -168,6 +168,8 @@ describe('rotationMatrix', function () {
 
     assert.throws(function () { rotate([1, 0], math.pi / 2, [0, 0, 1]) }, /RangeError: Vector must be of dimensions 1x3/)
     assert.throws(function () { rotate(matrix([1, 0]), math.pi / 2, [0, 0, 1]) }, /RangeError: Vector must be of dimensions 1x3/)
+    assert.throws(function () { rotate(matrix([[[1]], [[0]]]), math.pi / 2, [0, 0, 1]) }, /RangeError: Vector must be of dimensions 1x3/)
+    assert.throws(function () { rotate(matrix([[1, 0], [1, 0]]), math.pi / 2, [0, 0, 1]) }, /RangeError: Vector must be of dimensions 1x3/)
     assert.throws(function () { rotate([1, 0, 0, 0], math.pi / 2, [0, 0, 1]) }, /RangeError: Vector must be of dimensions 1x3/)
     assert.throws(function () { rotate(matrix([1, 0, 0, 0]), math.pi / 2, [0, 0, 1]) }, /RangeError: Vector must be of dimensions 1x3/)
 
