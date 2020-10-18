@@ -86,7 +86,9 @@ export function deepExtend (a, b) {
   }
 
   for (const prop in b) {
-    if (hasOwnProperty(b, prop)) {
+    // We check against prop not being in Object.prototype or Function.prototype
+    // to prevent polluting for example Object.__proto__.
+    if (hasOwnProperty(b, prop) && !(prop in Object.prototype) && !(prop in Function.prototype)) {
       if (b[prop] && b[prop].constructor === Object) {
         if (a[prop] === undefined) {
           a[prop] = {}
