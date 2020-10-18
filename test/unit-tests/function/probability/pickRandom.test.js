@@ -4,6 +4,7 @@ import { flatten } from '../../../../src/utils/array.js'
 
 const math2 = math.create({ randomSeed: 'test2' })
 const pickRandom = math2.pickRandom
+const matrix = math2.matrix
 
 describe('pickRandom', function () {
   it('should have a function pickRandom', function () {
@@ -57,26 +58,6 @@ describe('pickRandom', function () {
     assert.strictEqual(pickRandom(possibles), 5)
   })
 
-  it('should return the given array if the given number is equal its length', function () {
-    const possibles = [11, 22, 33, 44, 55]
-    const weights = [1, 5, 2, 4, 6]
-    const number = 5
-
-    pickRandom(possibles, number).forEach((element, index) => assert.strictEqual(element, possibles[index]))
-    pickRandom(possibles, number, weights).forEach((element, index) => assert.strictEqual(element, possibles[index]))
-    pickRandom(possibles, weights, number).forEach((element, index) => assert.strictEqual(element, possibles[index]))
-  })
-
-  it('should return the given array if the given number is greater than its length', function () {
-    const possibles = [11, 22, 33, 44, 55]
-    const weights = [1, 5, 2, 4, 6]
-    const number = 6
-
-    pickRandom(possibles, number).forEach((element, index) => assert.strictEqual(element, possibles[index]))
-    pickRandom(possibles, number, weights).forEach((element, index) => assert.strictEqual(element, possibles[index]))
-    pickRandom(possibles, weights, number).forEach((element, index) => assert.strictEqual(element, possibles[index]))
-  })
-
   it('should return an empty array if the given number is 0', function () {
     const possibles = [11, 22, 33, 44, 55]
     const weights = [1, 5, 2, 4, 6]
@@ -85,6 +66,7 @@ describe('pickRandom', function () {
     assert.strictEqual(pickRandom(possibles, number).length, 0)
     assert.strictEqual(pickRandom(possibles, number, weights).length, 0)
     assert.strictEqual(pickRandom(possibles, weights, number).length, 0)
+    assert.strictEqual(pickRandom(possibles, { weights, number }).length, 0)
   })
 
   it('should return an array of length 1 if the number passed is 1', function () {
@@ -99,6 +81,7 @@ describe('pickRandom', function () {
     assert.strictEqual(pickRandom(possibles, number).length, 1)
     assert.strictEqual(pickRandom(possibles, number, weights).length, 1)
     assert.strictEqual(pickRandom(possibles, weights, number).length, 1)
+    assert.strictEqual(pickRandom(possibles, { weights, number }).length, 1)
   })
 
   it('should pick the given number of values from the given array', function () {
@@ -109,6 +92,56 @@ describe('pickRandom', function () {
     assert.strictEqual(pickRandom(possibles, number).length, number)
     assert.strictEqual(pickRandom(possibles, number, weights).length, number)
     assert.strictEqual(pickRandom(possibles, weights, number).length, number)
+    assert.strictEqual(pickRandom(possibles, { weights, number }).length, number)
+  })
+
+  it('should pick the given number of values from the given array also when this is more than the number of possibles', function () {
+    const possibles = [11, 22, 33, 44, 55]
+    const weights = [1, 5, 2, 4, 6]
+    const number = 10
+
+    assert.strictEqual(pickRandom(possibles, number).length, number)
+    assert.strictEqual(pickRandom(possibles, number, weights).length, number)
+    assert.strictEqual(pickRandom(possibles, weights, number).length, number)
+    assert.strictEqual(pickRandom(possibles, { weights, number }).length, number)
+  })
+
+  it('should pick the given number of values element-wise', function () {
+    const possibles = [[1, 2], [3, 4]]
+
+    assert.strictEqual(typeof pickRandom(possibles), 'number')
+    assert.strictEqual(typeof pickRandom(possibles, { elementWise: true }), 'number')
+    assert.strictEqual(Array.isArray(pickRandom(possibles, { elementWise: false })), true)
+  })
+
+  it('should return a matrix when input was a matrix', function () {
+    const possibles = [11, 22, 33, 44, 55]
+    const weights = [1, 5, 2, 4, 6]
+    const number = 2
+
+    const result1 = pickRandom(math.matrix(possibles), number)
+    assert.strictEqual(result1.isMatrix, true)
+    assert.strictEqual(result1.size()[0], 2)
+
+    const result2 = pickRandom(matrix(possibles), number, weights)
+    assert.strictEqual(result2.isMatrix, true)
+    assert.strictEqual(result2.size()[0], 2)
+
+    const result3 = pickRandom(matrix(possibles), weights, number)
+    assert.strictEqual(result3.isMatrix, true)
+    assert.strictEqual(result3.size()[0], 2)
+
+    const result4 = pickRandom(possibles, number, matrix(weights))
+    assert.strictEqual(result4.isMatrix, true)
+    assert.strictEqual(result4.size()[0], 2)
+
+    const result5 = pickRandom(possibles, matrix(weights), number)
+    assert.strictEqual(result5.isMatrix, true)
+    assert.strictEqual(result5.size()[0], 2)
+
+    const result6 = pickRandom(possibles, matrix(weights), number)
+    assert.strictEqual(result6.isMatrix, true)
+    assert.strictEqual(result6.size()[0], 2)
   })
 
   it('should pick a number from the given multi dimensional array following an uniform distribution', function () {
@@ -160,31 +193,6 @@ describe('pickRandom', function () {
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
-  it('should pick a value from the given matrix following an uniform distribution', function () {
-    const possibles = math.matrix([11, 22, 33, 44, 55])
-    const picked = []
-    let count
-
-    times(1000, function () {
-      picked.push(pickRandom(possibles))
-    })
-
-    count = picked.filter(function (val) { return val === 11 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 22 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 33 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 44 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 55 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-  })
-
   it('should pick a given number of values from the given array following an uniform distribution if no weights were passed', function () {
     const possibles = [11, 22, 33, 44, 55]
     const number = 2
@@ -196,34 +204,6 @@ describe('pickRandom', function () {
     })
 
     assert.strictEqual(picked.length, 2000)
-
-    count = picked.filter(function (val) { return val === 11 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 22 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 33 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 44 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 55 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-  })
-
-  it('should pick numbers from the given matrix following an uniform distribution', function () {
-    const possibles = math.matrix([11, 22, 33, 44, 55])
-    const number = 3
-    const picked = []
-    let count
-
-    times(1000, function () {
-      picked.push.apply(picked, pickRandom(possibles, number))
-    })
-
-    assert.strictEqual(picked.length, 3000)
 
     count = picked.filter(function (val) { return val === 11 }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
@@ -267,80 +247,8 @@ describe('pickRandom', function () {
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
-  it('should pick a value from the given matrix following a weighted distribution', function () {
-    const possibles = math.matrix([11, 22, 33, 44, 55])
-    const weights = [1, 4, 0, 2, 3]
-    const picked = []
-    let count
-
-    times(1000, function () {
-      picked.push(pickRandom(possibles, weights))
-    })
-
-    count = picked.filter(function (val) { return val === 11 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.1)
-
-    count = picked.filter(function (val) { return val === 22 }).length
-    assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
-
-    count = picked.filter(function (val) { return val === 33 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0)
-
-    count = picked.filter(function (val) { return val === 44 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 55 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.3)
-  })
-
   it('should return an array of values from the given array following a weighted distribution', function () {
     const possibles = [11, 22, 33, 44, 55]
-    const weights = [1, 4, 0, 2, 3]
-    const number = 2
-    const picked = []
-    let count
-
-    times(1000, function () {
-      picked.push.apply(picked, pickRandom(possibles, number, weights))
-    })
-
-    count = picked.filter(function (val) { return val === 11 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.1)
-
-    count = picked.filter(function (val) { return val === 22 }).length
-    assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
-
-    count = picked.filter(function (val) { return val === 33 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0)
-
-    count = picked.filter(function (val) { return val === 44 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 55 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.3)
-
-    times(1000, function () {
-      picked.push.apply(picked, pickRandom(possibles, weights, number))
-    })
-
-    count = picked.filter(function (val) { return val === 11 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.1)
-
-    count = picked.filter(function (val) { return val === 22 }).length
-    assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
-
-    count = picked.filter(function (val) { return val === 33 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0)
-
-    count = picked.filter(function (val) { return val === 44 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.2)
-
-    count = picked.filter(function (val) { return val === 55 }).length
-    assert.strictEqual(math.round(count / picked.length, 1), 0.3)
-  })
-
-  it('should return an array of values from the given matrix following a weighted distribution', function () {
-    const possibles = math.matrix([11, 22, 33, 44, 55])
     const weights = [1, 4, 0, 2, 3]
     const number = 2
     const picked = []

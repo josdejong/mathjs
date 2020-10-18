@@ -14,6 +14,19 @@
   minified bundle, or create a bundle yourself.
 - Replaced random library `seed-random` with `seedrandom`, see #1955. 
   Thanks @poppinlp.
+- Breaking changes in `pickRandom`, see #1990, #1976.
+  - Will no longer return the input matrix when the given number is greater 
+    than the length of the provided possibles. Instead, the function always
+    returns results with the requested number of picks.
+  - Will now return a `Matrix` as output when input was a `Matrix`.
+  - Introduced a new syntax:
+    
+    ```
+    math.pickRandom(array, { weights, number, elementWise })
+    ```
+  - Introduced a new option `elementWise`, which is `true` by default. 
+    When setting `elementWise` to false, an array containing arrays will return
+    random pick of arrays instead of the elements inside of the nested arrays.
 
 
 # 2020-10-10, version 7.5.1
