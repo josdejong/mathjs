@@ -141,6 +141,14 @@ describe('object', function () {
 
       delete Object.prototype.foo
     })
+
+    it('should not pollute Object.__proto__', function () {
+      const obj = {}
+      assert.strictEqual(obj.polluted, undefined)
+
+      deepExtend(obj, JSON.parse('{"__proto__":{"polluted":"yes"}}'))
+      assert.strictEqual(obj.polluted, undefined)
+    })
   })
 
   describe('deepEqual', function () {
