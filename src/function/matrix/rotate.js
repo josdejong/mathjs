@@ -1,17 +1,16 @@
-// import { isBigNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
+import { arraySize } from '../../utils/array'
 
 const name = 'rotate'
 const dependencies = [
   'typed',
-  'config',
   'multiply',
   'rotationMatrix'
 ]
 
 export const createRotate = /* #__PURE__ */ factory(name, dependencies, (
   {
-    typed, config, multiply, rotationMatrix
+    typed, multiply, rotationMatrix
   }) => {
   /**
      * Rotate a vector of size 1x2 counter-clockwise by a given angle
@@ -43,38 +42,32 @@ export const createRotate = /* #__PURE__ */ factory(name, dependencies, (
      */
   return typed(name, {
     'Array , number | BigNumber | Complex | Unit': function (w, theta) {
-      _validateArraySize(w, 2)
+      _validateSize(w, 2)
       const matrixRes = multiply(rotationMatrix(theta), w)
-      return config.predictable ? matrixRes.toArray() : matrixRes
+      return matrixRes.toArray()
     },
 
     'Matrix , number | BigNumber | Complex | Unit': function (w, theta) {
-      _validateVectorSize(w, 2)
+      _validateSize(w, 2)
       return multiply(rotationMatrix(theta), w)
     },
 
-    'Array , number | BigNumber | Complex | Unit, Array | Matrix': function (w, theta, v) {
-      _validateArraySize(w, 3)
+    'Array, number | BigNumber | Complex | Unit, Array | Matrix': function (w, theta, v) {
+      _validateSize(w, 3)
       const matrixRes = multiply(rotationMatrix(theta, v), w)
-      return config.predictable ? matrixRes.toArray() : matrixRes
+      return matrixRes.toArray()
     },
 
     'Matrix, number | BigNumber | Complex | Unit, Array | Matrix': function (w, theta, v) {
-      _validateVectorSize(w, 3)
+      _validateSize(w, 3)
       return multiply(rotationMatrix(theta, v), w)
     }
   })
 
-  function _validateVectorSize (v, vSize) {
-    const size = v.size()
-    if (size.length < 1 || size[0] !== vSize) {
-      throw new RangeError(`Vector must be of dimensions 1x${vSize}`)
-    }
-  }
-
-  function _validateArraySize (v, vSize) {
-    if (v.length !== vSize) {
-      throw new RangeError(`Vector must be of dimensions 1x${vSize}`)
+  function _validateSize (v, expectedSize) {
+    const actualSize = Array.isArray(v) ? arraySize(v) : v.size()
+    if (actualSize[0] !== expectedSize) {
+      throw new RangeError(`Vector must be of dimensions 1x${expectedSize}`)
     }
   }
 })
