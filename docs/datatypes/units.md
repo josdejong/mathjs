@@ -139,6 +139,7 @@ math.createUnit('mile', '1609.347218694', {override: true}})
 ```
 Base units created without specifying a definition cannot be overridden.
 
+### Create several units at once
 Multiple units can defined using a single call to `createUnit` by passing an object map as the first argument, where each key in the object is the name of a new unit and the value is either a string defining the unit, or an object with the configuration properties listed above. If the value is an empty string or an object lacking a definition property, a new base unit is created.
 
 For example:
@@ -167,6 +168,26 @@ math.evaluate('50000 kilofoo/s')  // 4.5 gigabaz
 ```js
 math.evaluate('45 mile/hour to createUnit("knot", "0.514444m/s")')
 // 39.103964668651976 knot
+```
+
+### Support of custom characters in unit names
+Per default, the name of a new unit:
+- should start by a latin (A-Z or a-z) character
+- should contain only numeric (0-9) or latin characters
+
+It is possible to allow the usage of special characters (such as Greek alphabet, cyrillic alphabet, any Unicode symbols, etc.) by overriding the `Unit.isValidAlpha` static method. For example:
+```js
+const isAlphaOriginal = math.Unit.isValidAlpha
+const isGreekLowercaseChar = function (c) {
+  const charCode = c.charCodeAt(0)
+  return charCode > 944 && charCode < 970
+}
+math.Unit.isValidAlpha = function (c) {
+  return isAlphaOriginal(c) || isGreekLowercaseChar(c)
+}
+
+math.createUnit('θ', '1 rad')
+math.evaluate('1θ + 3 deg').toNumber('deg') // 60.29577951308232
 ```
 
 ## API
