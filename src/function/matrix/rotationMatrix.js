@@ -76,12 +76,13 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
     'number | BigNumber | Complex | Unit, Array': function (theta, v) {
       const matrixV = matrix(v)
       _validateVector(matrixV)
-      return _rotationMatrix3x3(theta, matrixV, config.matrix === 'Matrix' ? 'dense' : undefined)
+      return _rotationMatrix3x3(theta, matrixV, undefined)
     },
 
     'number | BigNumber | Complex | Unit, Matrix': function (theta, v) {
       _validateVector(v)
-      return _rotationMatrix3x3(theta, v, config.matrix === 'Matrix' ? 'dense' : undefined)
+      const storageType = v.storage() || (config.matrix === 'Matrix' ? 'dense' : undefined)
+      return _rotationMatrix3x3(theta, v, storageType)
     },
 
     'number | BigNumber | Complex | Unit, Array, string': function (theta, v, format) {

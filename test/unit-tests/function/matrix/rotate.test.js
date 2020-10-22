@@ -139,14 +139,13 @@ describe('rotationMatrix', function () {
   })
 
   it('should return an object of predictable type', function () {
-    const predictableMath = math.create({ predictable: true })
-    assert.deepStrictEqual(predictableMath.rotate([1, 0], 1), [cos(1), sin(1)])
-    assert.deepStrictEqual(predictableMath.rotate([1, 0, 0], -1, [0, 0, 1]), [cos(-1), sin(-1), 0])
+    assert.deepStrictEqual(rotate([1, 0], 1), [cos(1), sin(1)])
+    assert.deepStrictEqual(rotate([1, 0, 0], -1, [0, 0, 1]), [cos(-1), sin(-1), 0])
 
-    assert.deepStrictEqual(predictableMath.rotate(matrix([1, 0]), 1),
-      predictableMath.matrix([cos(1), sin(1)]))
-    assert.deepStrictEqual(predictableMath.rotate(matrix([1, 0, 0]), -1, [0, 0, 1]),
-      predictableMath.matrix([cos(-1), sin(-1), 0]))
+    assert.deepStrictEqual(rotate(matrix([1, 0]), 1),
+      matrix([cos(1), sin(1)]))
+    assert.deepStrictEqual(rotate(matrix([1, 0, 0]), -1, [0, 0, 1]),
+      matrix([cos(-1), sin(-1), 0]))
   })
 
   it('should return a rotated 1x3 vector as sparse matrix', function () {

@@ -55,7 +55,7 @@ export const createRotate = /* #__PURE__ */ factory(name, dependencies, (
     'Array, number | BigNumber | Complex | Unit, Array | Matrix': function (w, theta, v) {
       _validateSize(w, 3)
       const matrixRes = multiply(rotationMatrix(theta, v), w)
-      return matrixRes.toArray()
+      return matrixRes
     },
 
     'Matrix, number | BigNumber | Complex | Unit, Array | Matrix': function (w, theta, v) {
