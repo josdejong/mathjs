@@ -224,7 +224,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Must begin with [a-zA-Z]
     const firstC = unitName.charAt(0)
     if (Unit.isValidAlpha(firstC)) {
-      return unitName || null
+      return unitName
     } else {
       return null
     }
@@ -3025,8 +3025,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
   }
 
-  Unit.isValidAlpha = function isValidAlpha (p) {
-    return /^[a-zA-Z]$/.test(p)
+  /**
+   * Checks if a character is a valid latin letter (upper or lower case).
+   * Note that this function can be overridden, for example to allow support of other alphabets.
+   * @param {string} c Tested character
+   */
+  Unit.isValidAlpha = function isValidAlpha (c) {
+    return /^[a-zA-Z]$/.test(c)
   }
 
   function assertUnitNameIsValid (name) {
