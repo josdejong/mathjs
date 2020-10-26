@@ -69,7 +69,7 @@
     "numericjs": "1.2.6",
     "nyc": "15.1.0",
     "pad-right": "0.2.2",
-    "standard": "14.3.4",
+    "standard": "15.0.0",
     "sylvester": "0.0.21",
     "uglify-js": "3.11.1",
     "webpack": "4.44.2",
