@@ -17,7 +17,6 @@ describe('rotationMatrix', function () {
 
   it('should create an empty matrix', function () {
     assert.deepStrictEqual(rotationMatrix(), matrix())
-    assert.deepStrictEqual(rotationMatrix(1, [0.0, 0.0, 0.0]), matrix())
     assert.deepStrictEqual(rotationMatrix('sparse'), matrix('sparse'))
     assert.deepStrictEqual(rotationMatrix('dense'), matrix('dense'))
 
@@ -30,6 +29,14 @@ describe('rotationMatrix', function () {
     approx.deepEqual(rotationMatrix(math.pi / 2), matrix([[0.0, -1], [1, 0.0]]))
     approx.deepEqual(rotationMatrix(1), matrix([[cos(1), -sin(1)], [sin(1), cos(1)]]))
     approx.deepEqual(rotationMatrix(math.pi / 4), matrix([[sqrtTwoInv, -sqrtTwoInv], [sqrtTwoInv, sqrtTwoInv]]))
+  })
+
+  it('should return a 2D rotation array if requesting results as array', function () {
+    const mathArray = math.create({ matrix: 'Array' })
+    approx.deepEqual(mathArray.rotationMatrix(0.0), [[1, 0.0], [0.0, 1]])
+    approx.deepEqual(mathArray.rotationMatrix(mathArray.pi / 2), [[0.0, -1], [1, 0.0]])
+    approx.deepEqual(mathArray.rotationMatrix(1), [[cos(1), -sin(1)], [sin(1), cos(1)]])
+    approx.deepEqual(mathArray.rotationMatrix(mathArray.pi / 4), [[sqrtTwoInv, -sqrtTwoInv], [sqrtTwoInv, sqrtTwoInv]])
   })
 
   it('should create a 2D rotation matrix of given bignumber angle', function () {
@@ -80,23 +87,23 @@ describe('rotationMatrix', function () {
     approx.deepEqual(rotationMatrix(math.pi / 4, 'sparse'), matrix([[sqrtTwoInv, -sqrtTwoInv], [sqrtTwoInv, sqrtTwoInv]], 'sparse'))
   })
 
-  it('should create a 3D rotation matrix by given angle around given axis', function () {
-    assert.deepStrictEqual(math.rotationMatrix(0.0, [1, 1, 1]), matrix([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]))
-    approx.deepEqual(math.rotationMatrix(math.pi / 2, [1, 0, 0]), matrix([[1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, 1.0, 0.0]]))
-    approx.deepEqual(math.rotationMatrix(math.pi / 2, [0, 1, 0]), matrix([[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]]))
-    approx.deepEqual(math.rotationMatrix(math.pi / 2, [0, 0, 1]), matrix([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]]))
+  it('should create a 3D rotation matrix by given angle around given axis provided as array', function () {
+    assert.deepStrictEqual(math.rotationMatrix(0.0, [1, 1, 1]), [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+    approx.deepEqual(math.rotationMatrix(math.pi / 2, [1, 0, 0]), [[1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, 1.0, 0.0]])
+    approx.deepEqual(math.rotationMatrix(math.pi / 2, [0, 1, 0]), [[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]])
+    approx.deepEqual(math.rotationMatrix(math.pi / 2, [0, 0, 1]), [[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]])
 
     approx.deepEqual(math.rotationMatrix(-math.pi / 4, [1, 0, 0]),
-      matrix([[1.0, 0.0, 0.0], [0.0, sqrtTwoInv, sqrtTwoInv], [0.0, minusSqrtTwoInv, sqrtTwoInv]]))
+      [[1.0, 0.0, 0.0], [0.0, sqrtTwoInv, sqrtTwoInv], [0.0, minusSqrtTwoInv, sqrtTwoInv]])
     approx.deepEqual(math.rotationMatrix(-math.pi / 4, [0, 1, 0]),
-      matrix([[sqrtTwoInv, 0.0, minusSqrtTwoInv], [0.0, 1.0, 0.0], [sqrtTwoInv, 0.0, sqrtTwoInv]]))
+      [[sqrtTwoInv, 0.0, minusSqrtTwoInv], [0.0, 1.0, 0.0], [sqrtTwoInv, 0.0, sqrtTwoInv]])
     approx.deepEqual(math.rotationMatrix(-math.pi / 4, [0, 0, 1]),
-      matrix([[sqrtTwoInv, sqrtTwoInv, 0.0], [minusSqrtTwoInv, sqrtTwoInv, 0.0], [0.0, 0.0, 1.0]]))
+      [[sqrtTwoInv, sqrtTwoInv, 0.0], [minusSqrtTwoInv, sqrtTwoInv, 0.0], [0.0, 0.0, 1.0]])
 
     assert.deepStrictEqual(math.rotationMatrix(1, [1, 0, 0]),
-      matrix([[1, 0, 0],
+      [[1, 0, 0],
         [0, cos(1), -sin(1)],
-        [0, sin(1), cos(1)]]))
+        [0, sin(1), cos(1)]])
   })
 
   it('should create a 3D rotation matrix by given angle around given vector provided as matrix', function () {
@@ -123,17 +130,17 @@ describe('rotationMatrix', function () {
   })
 
   it('should create a unitary 3D rotation matrix around non-unit vector', function () {
-    approx.deepEqual(math.rotationMatrix(math.pi / 2, [1000, 0, 0]),
+    approx.deepEqual(math.rotationMatrix(math.pi / 2, matrix([1000, 0, 0])),
       matrix([[1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, 1.0, 0.0]]))
 
-    approx.deepEqual(math.rotationMatrix(math.pi / 2, [1000, 0, 1000]),
+    approx.deepEqual(math.rotationMatrix(math.pi / 2, matrix([1000, 0, 1000])),
       matrix([[0.5, minusSqrtTwoInv, 0.5], [sqrtTwoInv, 0.0, minusSqrtTwoInv], [0.5, sqrtTwoInv, 0.5]]))
 
-    approx.deepEqual(math.rotationMatrix(math.pi / 2, matrix([0, 0, 1000])),
-      matrix([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]]))
+    approx.deepEqual(math.rotationMatrix(math.pi / 2, [0, 0, 1000]),
+      [[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]])
 
-    approx.deepEqual(math.rotationMatrix(math.pi / 2, matrix([0, 200, 200])),
-      matrix([[0.0, minusSqrtTwoInv, sqrtTwoInv], [sqrtTwoInv, 0.5, 0.5], [minusSqrtTwoInv, 0.5, 0.5]]))
+    approx.deepEqual(math.rotationMatrix(math.pi / 2, [0, 200, 200]),
+      [[0.0, minusSqrtTwoInv, sqrtTwoInv], [sqrtTwoInv, 0.5, 0.5], [minusSqrtTwoInv, 0.5, 0.5]])
   })
 
   it('should create a 3D rotation matrix by given bignumber angle around given axis', function () {
@@ -143,15 +150,15 @@ describe('rotationMatrix', function () {
     const sin2 = sin(bignumber(2))
     const minusSin2 = multiply(bignumber(-1), sin2)
 
-    assert.deepStrictEqual(math.rotationMatrix(bignumber(2), [1, 0, 0]),
+    assert.deepStrictEqual(math.rotationMatrix(bignumber(2), matrix([1, 0, 0])),
       matrix([[one, zero, zero],
         [zero, cos2, minusSin2],
         [zero, sin2, cos2]]))
-    assert.deepStrictEqual(math.rotationMatrix(bignumber(2), [0, 1, 0]),
+    assert.deepStrictEqual(math.rotationMatrix(bignumber(2), matrix([0, 1, 0])),
       matrix([[cos2, zero, sin2],
         [zero, one, zero],
         [minusSin2, zero, cos2]]))
-    assert.deepStrictEqual(math.rotationMatrix(bignumber(2), [0, 0, 1]),
+    assert.deepStrictEqual(math.rotationMatrix(bignumber(2), matrix([0, 0, 1])),
       matrix([[cos2, minusSin2, zero],
         [sin2, cos2, zero],
         [zero, zero, one]]))
@@ -168,41 +175,41 @@ describe('rotationMatrix', function () {
     const sinTheta = math.sin(complex('2+3i'))
     const minusSinTheta = math.multiplyScalar(-1, sinTheta)
 
-    assert.deepStrictEqual(math.rotationMatrix(complex('2+3i'), [1, 0, 0]),
+    assert.deepStrictEqual(math.rotationMatrix(complex('2+3i'), matrix([1, 0, 0])),
       math.complex(matrix([[1, 0, 0],
         [complexZero, cosTheta, minusSinTheta],
         [complexZero, sinTheta, cosTheta]])))
-    assert.deepStrictEqual(math.rotationMatrix(complex('2+3i'), [0, 1, 0]),
-      math.complex(matrix([[cosTheta, 0.0, sinTheta],
-        [0.0, 1.0, 0.0],
-        [minusSinTheta, 0.0, cosTheta]])))
-    assert.deepStrictEqual(math.rotationMatrix(complex('2+3i'), [0, 0, 1]),
-      math.complex(matrix([[cosTheta, minusSinTheta, 0.0],
-        [sinTheta, cosTheta, 0.0],
-        [0.0, 0.0, 1.0]])))
-
     assert.deepStrictEqual(math.rotationMatrix(complex('2+3i'), matrix([0, 1, 0])),
       math.complex(matrix([[cosTheta, 0.0, sinTheta],
         [0.0, 1.0, 0.0],
         [minusSinTheta, 0.0, cosTheta]])))
+    assert.deepStrictEqual(math.rotationMatrix(complex('2+3i'), [0, 0, 1]),
+      math.complex([[cosTheta, minusSinTheta, 0.0],
+        [sinTheta, cosTheta, 0.0],
+        [0.0, 0.0, 1.0]]))
+
+    assert.deepStrictEqual(math.rotationMatrix(complex('2+3i'), [0, 1, 0]),
+      math.complex([[cosTheta, 0.0, sinTheta],
+        [0.0, 1.0, 0.0],
+        [minusSinTheta, 0.0, cosTheta]]))
   })
 
   it('should create a 3D rotation matrix by given unit angle around given axis', function () {
     approx.deepEqual(math.rotationMatrix(unit('45deg'), [1, 0, 0]),
-      matrix([[1.0, 0.0, 0.0], [0.0, sqrtTwoInv, minusSqrtTwoInv], [0.0, sqrtTwoInv, sqrtTwoInv]]))
+      [[1.0, 0.0, 0.0], [0.0, sqrtTwoInv, minusSqrtTwoInv], [0.0, sqrtTwoInv, sqrtTwoInv]])
     approx.deepEqual(math.rotationMatrix(unit('45deg'), [0, 1, 0]),
-      matrix([[sqrtTwoInv, 0.0, sqrtTwoInv], [0.0, 1.0, 0.0], [minusSqrtTwoInv, 0.0, sqrtTwoInv]]))
+      [[sqrtTwoInv, 0.0, sqrtTwoInv], [0.0, 1.0, 0.0], [minusSqrtTwoInv, 0.0, sqrtTwoInv]])
     approx.deepEqual(math.rotationMatrix(unit('45deg'), [0, 0, 1]),
-      matrix([[sqrtTwoInv, minusSqrtTwoInv, 0.0], [sqrtTwoInv, sqrtTwoInv, 0.0], [0.0, 0.0, 1.0]]))
+      [[sqrtTwoInv, minusSqrtTwoInv, 0.0], [sqrtTwoInv, sqrtTwoInv, 0.0], [0.0, 0.0, 1.0]])
 
     approx.deepEqual(math.rotationMatrix(unit('-135deg'), [1, 0, 0]),
-      matrix([[1.0, 0.0, 0.0], [0.0, minusSqrtTwoInv, sqrtTwoInv], [0.0, minusSqrtTwoInv, minusSqrtTwoInv]]))
+      [[1.0, 0.0, 0.0], [0.0, minusSqrtTwoInv, sqrtTwoInv], [0.0, minusSqrtTwoInv, minusSqrtTwoInv]])
     approx.deepEqual(math.rotationMatrix(unit('-135deg'), [0, 1, 0]),
-      matrix([[minusSqrtTwoInv, 0.0, minusSqrtTwoInv], [0.0, 1.0, 0.0], [sqrtTwoInv, 0.0, minusSqrtTwoInv]]))
+      [[minusSqrtTwoInv, 0.0, minusSqrtTwoInv], [0.0, 1.0, 0.0], [sqrtTwoInv, 0.0, minusSqrtTwoInv]])
     approx.deepEqual(math.rotationMatrix(unit('-135deg'), [0, 0, 1]),
-      matrix([[minusSqrtTwoInv, sqrtTwoInv, 0.0], [minusSqrtTwoInv, minusSqrtTwoInv, 0.0], [0.0, 0.0, 1.0]]))
+      [[minusSqrtTwoInv, sqrtTwoInv, 0.0], [minusSqrtTwoInv, minusSqrtTwoInv, 0.0], [0.0, 0.0, 1.0]])
 
-    approx.deepEqual(rotationMatrix(unit(complex(1, 1), 'rad'), [1, 0, 1]),
+    approx.deepEqual(rotationMatrix(unit(complex(1, 1), 'rad'), matrix([1, 0, 1])),
       math.evaluate('matrix([[0.5 * (1 + cos(1+i)), -sin(1+i) / sqrt(2), 0.5 * (1 - cos(1+i))],' +
         '[sin(1+i) / sqrt(2), cos(1+i), -sin(1+i) / sqrt(2)],' +
         '[0.5 * (1 - cos(1+i)), sin(1+i) / sqrt(2), 0.5 * (1 + cos(1+i))]])'))
@@ -232,7 +239,7 @@ describe('rotationMatrix', function () {
     approx.deepEqual(mathArray.rotationMatrix(mathArray.pi / 2, [0, 0, 1]),
       [[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]])
     approx.deepEqual(mathArray.rotationMatrix(mathArray.pi / 2, matrix([0, 0, 1])),
-      [[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]])
+      matrix([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]]))
   })
 
   it('should throw an error with an invalid input', function () {
@@ -243,6 +250,7 @@ describe('rotationMatrix', function () {
     assert.throws(function () { rotationMatrix(0, [0, 1]) }, /RangeError: Vector must be of dimensions 1x3/)
     assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'something') }, /TypeError: Unknown matrix type/)
     assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'sparse', 4) }, /TypeError: Too many arguments/)
+    assert.throws(function () { rotationMatrix(1, [0.0, 0.0, 0.0]) }, /Rotation around zero vector/)
   })
 
   it('should LaTeX rotationMatrix', function () {
