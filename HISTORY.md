@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 7.6.0
+
+- Implemented support for custom characters in Units via `Unit.isValidAlpha`. 
+  See #1663, #2000. Thanks @rnd-debug.
+
+
 # 2020-10-10, version 7.5.1
 
 - Fix object pollution vulnerability in `math.config`. Thanks Snyk.
