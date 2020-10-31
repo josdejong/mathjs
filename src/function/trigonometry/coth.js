@@ -29,7 +29,7 @@ export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic cotangent of x
    */
-  const coth = typed(name, {
+  return typed(name, {
     number: cothNumber,
 
     Complex: function (x) {
@@ -44,13 +44,11 @@ export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function coth is no angle')
       }
-      return coth(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, coth)
+      return deepMap(x, this)
     }
   })
-
-  return coth
 })

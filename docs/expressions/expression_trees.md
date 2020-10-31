@@ -23,10 +23,10 @@ In this case, the expression `sqrt(2 + x)` is parsed as:
 Alternatively, this expression tree can be build by manually creating nodes:
 
 ```js
-const node1 = new math.expression.node.ConstantNode(2)
-const node2 = new math.expression.node.SymbolNode('x')
-const node3 = new math.expression.node.OperatorNode('+', 'add', [node1, node2])
-const node4 = new math.expression.node.FunctionNode('sqrt', [node3])
+const node1 = new math.ConstantNode(2)
+const node2 = new math.SymbolNode('x')
+const node3 = new math.OperatorNode('+', 'add', [node1, node2])
+const node4 = new math.FunctionNode('sqrt', [node3])
 ```
 
 The resulting expression tree with root node `node4` is equal to the expression
@@ -198,7 +198,7 @@ All nodes have the following methods:
     const node = math.parse('x^2 + 5*x')
     const transformed = node.transform(function (node, path, parent) {
       if (node.isSymbolNode && node.name === 'x') {
-        return new math.expression.node.ConstantNode(3)
+        return new math.ConstantNode(3)
       }
       else {
         return node
@@ -268,7 +268,7 @@ Each `Node` has the following properties:
 ## Nodes
 
 math.js has the following types of nodes. All nodes are available at the
-namespace `math.expression.node`.
+namespace `math`.
 
 
 ### AccessorNode
@@ -290,9 +290,9 @@ Examples:
 ```js
 const node1 = math.parse('a[3]')
 
-const object = new math.expression.node.SymbolNode('a')
-const index = new math.expression.node.IndexNode([3])
-const node2 = new math.expression.node.AccessorNode(object, index)
+const object = new math.SymbolNode('a')
+const index = new math.IndexNode([3])
+const node2 = new math.AccessorNode(object, index)
 ```
 
 
@@ -313,10 +313,10 @@ Examples:
 ```js
 const node1 = math.parse('[1, 2, 3]')
 
-const one    = new math.expression.node.ConstantNode(1)
-const two    = new math.expression.node.ConstantNode(2)
-const three  = new math.expression.node.ConstantNode(3)
-const node2  = new math.expression.node.ArrayNode([one, two, three])
+const one    = new math.ConstantNode(1)
+const two    = new math.ConstantNode(2)
+const three  = new math.ConstantNode(3)
+const node2  = new math.ArrayNode([one, two, three])
 ```
 
 
@@ -341,9 +341,9 @@ Examples:
 ```js
 const node1 = math.parse('a = 3')
 
-const object = new math.expression.node.SymbolNode('a')
-const value = new math.expression.node.ConstantNode(3)
-const node2 = new math.expression.node.AssignmentNode(object, value)
+const object = new math.SymbolNode('a')
+const value = new math.ConstantNode(3)
+const node2 = new math.AssignmentNode(object, value)
 ```
 
 
@@ -370,17 +370,17 @@ Examples:
 ```js
 const block1 = math.parse('a=1; b=2; c=3')
 
-const a = new math.expression.node.SymbolNode('a')
-const one = new math.expression.node.ConstantNode(1)
-const ass1 = new math.expression.node.AssignmentNode(a, one)
+const a = new math.SymbolNode('a')
+const one = new math.ConstantNode(1)
+const ass1 = new math.AssignmentNode(a, one)
 
-const b = new math.expression.node.SymbolNode('b')
-const two = new math.expression.node.ConstantNode(2)
-const ass2 = new math.expression.node.AssignmentNode(b, two)
+const b = new math.SymbolNode('b')
+const two = new math.ConstantNode(2)
+const ass2 = new math.AssignmentNode(b, two)
 
-const c = new math.expression.node.SymbolNode('c')
-const three = new math.expression.node.ConstantNode(3)
-const ass3 = new math.expression.node.AssignmentNode(c, three)
+const c = new math.SymbolNode('c')
+const three = new math.ConstantNode(3)
+const ass3 = new math.AssignmentNode(c, three)
 
 const block2 = new BlockNode([
   {node: ass1, visible: false},
@@ -409,12 +409,12 @@ Examples:
 ```js
 const node1 = math.parse('a > 0 ? a : -a')
 
-const a         = new math.expression.node.SymbolNode('a')
-const zero      = new math.expression.node.ConstantNode(0)
-const condition = new math.expression.node.OperatorNode('>', 'larger', [a, zero])
+const a         = new math.SymbolNode('a')
+const zero      = new math.ConstantNode(0)
+const condition = new math.OperatorNode('>', 'larger', [a, zero])
 const trueExpr  = a
-const falseExpr = new math.expression.node.OperatorNode('-', 'unaryMinus', [a])
-const node2     = new math.expression.node.ConditionalNode(condition, trueExpr, falseExpr)
+const falseExpr = new math.OperatorNode('-', 'unaryMinus', [a])
+const node2     = new math.ConditionalNode(condition, trueExpr, falseExpr)
 ```
 
 ### ConstantNode
@@ -434,8 +434,8 @@ Examples:
 ```js
 const node1 = math.parse('2.4')
 
-const node2 = new math.expression.node.ConstantNode(2.4)
-const node3 = new math.expression.node.ConstantNode('foo')
+const node2 = new math.ConstantNode(2.4)
+const node3 = new math.ConstantNode('foo')
 ```
 
 
@@ -458,10 +458,10 @@ Examples:
 ```js
 const node1 = math.parse('f(x) = x^2')
 
-const x      = new math.expression.node.SymbolNode('x')
-const two    = new math.expression.node.ConstantNode(2)
-const expr   = new math.expression.node.OperatorNode('^', 'pow', [x, 2])
-const node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr)
+const x      = new math.SymbolNode('x')
+const two    = new math.ConstantNode(2)
+const expr   = new math.OperatorNode('^', 'pow', [x, 2])
+const node2  = new math.FunctionAssignmentNode('f', ['x'], expr)
 ```
 
 
@@ -483,8 +483,8 @@ Examples:
 ```js
 const node1 = math.parse('sqrt(4)')
 
-const four  = new math.expression.node.ConstantNode(4)
-const node3 = new math.expression.node.FunctionNode(new SymbolNode('sqrt'), [four])
+const four  = new math.ConstantNode(4)
+const node3 = new math.FunctionNode(new SymbolNode('sqrt'), [four])
 ```
 
 
@@ -515,14 +515,14 @@ Examples:
 ```js
 const node1 = math.parse('A[1:3, 2]')
 
-const A     = new math.expression.node.SymbolNode('A')
-const one   = new math.expression.node.ConstantNode(1)
-const two   = new math.expression.node.ConstantNode(2)
-const three = new math.expression.node.ConstantNode(3)
+const A     = new math.SymbolNode('A')
+const one   = new math.ConstantNode(1)
+const two   = new math.ConstantNode(2)
+const three = new math.ConstantNode(3)
 
-const range = new math.expression.node.RangeNode(one, three)
-const index = new math.expression.node.IndexNode([range, two])
-const node2 = new math.expression.node.AccessNode(A, index)
+const range = new math.RangeNode(one, three)
+const index = new math.IndexNode([range, two])
+const node2 = new math.AccessNode(A, index)
 ```
 
 ### ObjectNode
@@ -542,10 +542,10 @@ Examples:
 ```js
 const node1 = math.parse('{a: 1, b: 2, c: 3}')
 
-const a = new math.expression.node.ConstantNode(1)
-const b = new math.expression.node.ConstantNode(2)
-const c = new math.expression.node.ConstantNode(3)
-const node2 = new math.expression.node.ObjectNode({a: a, b: b, c: c})
+const a = new math.ConstantNode(1)
+const b = new math.ConstantNode(2)
+const c = new math.ConstantNode(3)
+const node2 = new math.ObjectNode({a: a, b: b, c: c})
 ```
 
 
@@ -565,8 +565,8 @@ Additional methods:
     like with a unary minus:
 
     ```js
-    const a = new math.expression.node.ConstantNode(2)
-    const b = new math.expression.node.OperatorNode('-', 'unaryMinus', [a])
+    const a = new math.ConstantNode(2)
+    const b = new math.OperatorNode('-', 'unaryMinus', [a])
     b.isUnary() // true
     ```
 
@@ -576,9 +576,9 @@ Additional methods:
     like with most regular operators:
 
     ```js
-    const a = new math.expression.node.ConstantNode(2)
-    const b = new math.expression.node.ConstantNode(3)
-    const c = new math.expression.node.OperatorNode('+', 'add', [a, b])
+    const a = new math.ConstantNode(2)
+    const b = new math.ConstantNode(3)
+    const c = new math.OperatorNode('+', 'add', [a, b])
     c.isBinary() // true
     ```
 
@@ -593,9 +593,9 @@ Examples:
 ```js
 const node1 = math.parse('2.3 + 5')
 
-const a     = new math.expression.node.ConstantNode(2.3)
-const b     = new math.expression.node.ConstantNode(5)
-const node2 = new math.expression.node.OperatorNode('+', 'add', [a, b])
+const a     = new math.ConstantNode(2.3)
+const b     = new math.ConstantNode(5)
+const node2 = new math.OperatorNode('+', 'add', [a, b])
 ```
 
 ### ParenthesisNode
@@ -615,8 +615,8 @@ Examples:
 ```js
 const node1 = math.parse('(1)')
 
-const a     = new math.expression.node.ConstantNode(1)
-const node2 = new math.expression.node.ParenthesisNode(a)
+const a     = new math.ConstantNode(1)
+const node2 = new math.ParenthesisNode(a)
 ```
 
 ### RangeNode
@@ -639,13 +639,13 @@ Examples:
 const node1 = math.parse('1:10')
 const node2 = math.parse('0:2:10')
 
-const zero = new math.expression.node.ConstantNode(0)
-const one = new math.expression.node.ConstantNode(1)
-const two = new math.expression.node.ConstantNode(2)
-const ten = new math.expression.node.ConstantNode(10)
+const zero = new math.ConstantNode(0)
+const one = new math.ConstantNode(1)
+const two = new math.ConstantNode(2)
+const ten = new math.ConstantNode(10)
 
-const node3 = new math.expression.node.RangeNode(one, ten)
-const node4 = new math.expression.node.RangeNode(zero, ten, two)
+const node3 = new math.RangeNode(one, ten)
+const node4 = new math.RangeNode(zero, ten, two)
 ```
 
 ### RelationalNode
@@ -669,11 +669,11 @@ Examples:
 
 ```js
 
-const ten = new Math.expression.node.ConstantNode(10)
-const x = new Math.expression.node.SymbolNode('x')
-const fifty = new Math.expression.node.ConstantNode(50)
+const ten = new math.ConstantNode(10)
+const x = new math.SymbolNode('x')
+const fifty = new math.ConstantNode(50)
 
-const node1 = new math.expression.node.RelationalNode(['smaller', 'smallerEq'], [ten, x, fifty])
+const node1 = new math.RelationalNode(['smaller', 'smallerEq'], [ten, x, fifty])
 const node2 = math.parse('10 < x <= 50')
 ```
 
@@ -695,5 +695,5 @@ Examples:
 ```js
 const node = math.parse('x')
 
-const x = new math.expression.node.SymbolNode('x')
+const x = new math.SymbolNode('x')
 ```

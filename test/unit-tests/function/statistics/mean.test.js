@@ -15,6 +15,11 @@ describe('mean', function () {
     assert.strictEqual(mean(0, 0, 0, 0), 0)
   })
 
+  it('should return the mean value of strings by their numerical value', function () {
+    assert.strictEqual(mean('1', '3', '5', '2', '-5'), 1.2)
+    assert.strictEqual(mean('5'), 5)
+  })
+
   it('should return the mean of big numbers', function () {
     assert.deepStrictEqual(mean(new BigNumber(1), new BigNumber(3), new BigNumber(5), new BigNumber(2), new BigNumber(-5)),
       new BigNumber(1.2))
@@ -126,6 +131,8 @@ describe('mean', function () {
     assert.throws(function () { mean([[2, new Date(), 4]]) }, /TypeError: Cannot calculate mean, unexpected type of argument/)
     assert.throws(function () { mean([2, null, 4]) }, /TypeError: Cannot calculate mean, unexpected type of argument/)
     assert.throws(function () { mean([[2, 5], [4, null], [1, 7]], 0) }, /TypeError: Cannot calculate mean, unexpected type of argument/)
+    assert.throws(function () { mean('a', 'b') }, /Error: Cannot convert "a" to a number/)
+    assert.throws(function () { mean('a') }, /Error: Cannot convert "a" to a number/)
   })
 
   it('should LaTeX mean', function () {

@@ -50,41 +50,41 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
    * @return {number | Array | Matrix} `x` zero-filled shifted right `y` times
    */
 
-  const rightLogShift = typed(name, {
+  return typed(name, {
 
     'number, number': rightLogShiftNumber,
 
     // 'BigNumber, BigNumber': ..., // TODO: implement BigNumber support for rightLogShift
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm08(x, y, rightLogShift, false)
+      return algorithm08(x, y, this, false)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, rightLogShift, true)
+      return algorithm02(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm01(x, y, rightLogShift, false)
+      return algorithm01(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, rightLogShift)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return rightLogShift(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return rightLogShift(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return rightLogShift(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, number | BigNumber': function (x, y) {
@@ -92,7 +92,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
       if (equalScalar(y, 0)) {
         return x.clone()
       }
-      return algorithm11(x, y, rightLogShift, false)
+      return algorithm11(x, y, this, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
@@ -100,7 +100,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
       if (equalScalar(y, 0)) {
         return x.clone()
       }
-      return algorithm14(x, y, rightLogShift, false)
+      return algorithm14(x, y, this, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
@@ -108,7 +108,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
       if (equalScalar(x, 0)) {
         return zeros(y.size(), y.storage())
       }
-      return algorithm10(y, x, rightLogShift, true)
+      return algorithm10(y, x, this, true)
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
@@ -116,19 +116,17 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
       if (equalScalar(x, 0)) {
         return zeros(y.size(), y.storage())
       }
-      return algorithm14(y, x, rightLogShift, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
       // use matrix implementation
-      return rightLogShift(matrix(x), y).valueOf()
+      return this(matrix(x), y).valueOf()
     },
 
     'number | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return rightLogShift(x, matrix(y)).valueOf()
+      return this(x, matrix(y)).valueOf()
     }
   })
-
-  return rightLogShift
 })

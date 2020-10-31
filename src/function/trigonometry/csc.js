@@ -27,7 +27,7 @@ export const createCsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Cosecant of x
    */
-  const csc = typed(name, {
+  return typed(name, {
     number: cscNumber,
 
     Complex: function (x) {
@@ -42,13 +42,11 @@ export const createCsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
       if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function csc is no angle')
       }
-      return csc(x.value)
+      return this(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, csc)
+      return deepMap(x, this)
     }
   })
-
-  return csc
 })

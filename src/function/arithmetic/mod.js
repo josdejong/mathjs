@@ -60,75 +60,80 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * @param  {number | BigNumber | Fraction | Array | Matrix} y Divisor
    * @return {number | BigNumber | Fraction | Array | Matrix} Returns the remainder of `x` divided by `y`.
    */
-  const mod = typed(name, {
+  return typed(name, {
 
     'number, number': modNumber,
 
     'BigNumber, BigNumber': function (x, y) {
+      if (y.isNeg()) {
+        throw new Error('Cannot calculate mod for a negative divisor')
+      }
       return y.isZero() ? x : x.mod(y)
     },
 
     'Fraction, Fraction': function (x, y) {
-      return x.mod(y)
+      if (y.compare(0) < 0) {
+        throw new Error('Cannot calculate mod for a negative divisor')
+      }
+      // Workaround suggested in Fraction.js library to calculate correct modulo for negative dividend
+      return x.compare(0) >= 0 ? x.mod(y) : x.mod(y).add(y).mod(y)
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm05(x, y, mod, false)
+      return algorithm05(x, y, this, false)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, mod, true)
+      return algorithm02(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, mod, false)
+      return algorithm03(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, mod)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return mod(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return mod(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return mod(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, mod, false)
+      return algorithm11(x, y, this, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, mod, false)
+      return algorithm14(x, y, this, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, mod, true)
+      return algorithm12(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, mod, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, mod, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, mod, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
-
-  return mod
 })

@@ -65,7 +65,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `./`        | Element-wise divide     | `x ./ y`    | Left to right | `[9,6,4] ./ [3,2,2]`  | `[3,3,2]`
 `%`, `mod`  | Modulus                 | `x % y`     | Left to right | `8 % 3`               | `2`
 `^`         | Power                   | `x ^ y`     | Right to left | `2 ^ 3`               | `8`
-`.^`        | Element-wise power      | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[9,27]`
+`.^`        | Element-wise power      | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[8,27]`
 `'`         | Transpose               | `y'`        | Left to right | `[[1,2],[3,4]]'`      | `[[1,3],[2,4]]`
 `!`         | Factorial               | `y!`        | Left to right | `5!`                  | `120`
 `&`         | Bitwise and             | `x & y`     | Left to right | `5 & 3`               | `1`
@@ -283,6 +283,32 @@ const ans = math.evaluate('0.1 + 0.2')  //  0.30000000000000004
 math.format(ans, {precision: 14})       // "0.3"
 ```
 
+Numbers can be expressed as binary, octal, and hexadecimal literals:
+
+```js
+math.evaluate('0b11')  //  3
+math.evaluate('0o77')  //  63
+math.evaluate('0xff')  //  255
+```
+
+Non-decimal literals are parsed as 32 bit signed integers:
+
+```js
+math.evaluate('0xffffffff')  //  -1
+math.evaluate('0xfffffffff')  //  SyntaxError: String "0xfffffffff" is out of range
+```
+
+Numbers can be formatted as binary, octal, and hex strings using the functions
+`bin`, `oct`, and `hex`:
+
+```js
+math.evaluate('bin(3)')    //  '0b11'
+math.evaluate('oct(63)')   //  '0o77'
+math.evaluate('hex(255)')  //  '0xff'
+math.evaluate('hex(-1)')   //  '0xffffffff'
+math.evaluate('hex(2.3)')  //  Error: Value must be an integer
+math.evaluate('hex(2^35)') //  Error: Value must be in range [-2^31, 2^31-1]
+```
 
 ### BigNumbers
 
@@ -397,7 +423,7 @@ using function `string`.
 
 When setting the value of a character in a string, the character that has been
 set is returned. Likewise, when a range of characters is set, that range of
-characters is returned. 
+characters is returned.
 
 
 ```js
@@ -499,7 +525,7 @@ parser.evaluate('c[end - 1 : -1 : 2]')    // Matrix, [8, 7, 6]
 ## Objects
 
 Objects in math.js work the same as in languages like JavaScript and Python.
-An object is enclosed by square brackets `{`, `}`, and contains a set of 
+An object is enclosed by square brackets `{`, `}`, and contains a set of
 comma separated key/value pairs. Keys and values are separated by a colon `:`.
 Keys can be a symbol like `prop` or a string like `"prop"`.
 
@@ -514,7 +540,7 @@ Objects can contain objects:
 math.evaluate('{a: 2, b: {c: 3, d: 4}}')  // {a: 2, b: {c: 3, d: 4}}
 ```
 
-Object properties can be retrieved or replaced using dot notation or bracket 
+Object properties can be retrieved or replaced using dot notation or bracket
 notation. Unlike JavaScript, when setting a property value, the whole object
 is returned, not the property value
 
@@ -590,7 +616,7 @@ The behavior of implicit multiplication can be summarized by these operator prec
 
 Implicit multiplication is tricky as there can appear to be ambiguity in how an expression will be evaluated. Experience has shown that the above rules most closely match user intent when entering expressions that could be interpreted different ways. It's also possible that these rules could be tweaked in future major releases.  Use implicit multiplication carefully. If you don't like the uncertainty introduced by implicit multiplication, use explicit `*` operators and parentheses to ensure your expression is evaluated the way you intend.
 
-Here are some more examples using implicit multiplication:  
+Here are some more examples using implicit multiplication:
 
 Expression      | Evaluated as        | Result
 --------------- | ------------------- | ------------------

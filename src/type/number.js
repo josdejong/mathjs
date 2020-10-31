@@ -41,9 +41,17 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     string: function (x) {
       if (x === 'NaN') return NaN
-      const num = Number(x)
+      let num = Number(x)
       if (isNaN(num)) {
         throw new SyntaxError('String "' + x + '" is no valid number')
+      }
+      if (['0b', '0o', '0x'].includes(x.substring(0, 2))) {
+        if (num > 2 ** 32 - 1) {
+          throw new SyntaxError(`String "${x}" is out of range`)
+        }
+        if (num & 0x80000000) {
+          num = -1 * ~(num - 1)
+        }
       }
       return num
     },
@@ -69,7 +77,7 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, number)
+      return deepMap(x, this)
     }
   })
 

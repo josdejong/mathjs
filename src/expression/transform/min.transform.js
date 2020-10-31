@@ -4,10 +4,10 @@ import { errorTransform } from './utils/errorTransform'
 import { createMin } from '../../function/statistics/min'
 
 const name = 'min'
-const dependencies = ['typed', 'smaller']
+const dependencies = ['typed', 'config', 'numeric', 'smaller']
 
-export const createMinTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, smaller }) => {
-  const min = createMin({ typed, smaller })
+export const createMinTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, smaller }) => {
+  const min = createMin({ typed, config, numeric, smaller })
 
   /**
    * Attach a transform function to math.min

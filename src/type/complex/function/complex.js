@@ -43,7 +43,7 @@ export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ type
    *            Arguments specifying the real and imaginary part of the complex number
    * @return {Complex | Array | Matrix} Returns a complex value
    */
-  const complex = typed('complex', {
+  return typed('complex', {
     '': function () {
       return Complex.ZERO
     },
@@ -90,9 +90,7 @@ export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, complex)
+      return deepMap(x, this)
     }
   })
-
-  return complex
 })

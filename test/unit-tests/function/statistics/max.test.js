@@ -20,7 +20,8 @@ describe('max', function () {
   })
 
   it('should return the max of strings by their numerical value', function () {
-    assert.strictEqual(max('10', '3', '4', '2'), '10')
+    assert.strictEqual(max('10', '3', '4', '2'), 10)
+    assert.strictEqual(max('10'), 10)
   })
 
   it('should return the max element from a vector', function () {
@@ -98,6 +99,8 @@ describe('max', function () {
     assert.throws(function () { max([[2, new Date(), 4]]) }, /TypeError: Cannot calculate max, unexpected type of argument/)
     assert.throws(function () { max([2, null, 4]) }, /TypeError: Cannot calculate max, unexpected type of argument/)
     assert.throws(function () { max([[2, 5], [4, null], [1, 7]], 0) }, /TypeError: Cannot calculate max, unexpected type of argument/)
+    assert.throws(function () { max('a', 'b') }, /Error: Cannot convert "b" to a number/)
+    assert.throws(function () { max('a') }, /SyntaxError: String "a" is no valid number/)
   })
 
   it('should return undefined if called with an empty array', function () {

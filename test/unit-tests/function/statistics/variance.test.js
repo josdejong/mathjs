@@ -1,15 +1,20 @@
 import assert from 'assert'
+import approx from '../../../../tools/approx'
 import math from '../../../../src/bundleAny'
 const BigNumber = math.BigNumber
 const Complex = math.Complex
 const DenseMatrix = math.DenseMatrix
-const Unit = math.Unit
 const variance = math.variance
 
 describe('variance', function () {
   it('should return the variance of numbers', function () {
     assert.strictEqual(variance(5), 0)
     assert.strictEqual(variance(2, 4, 6), 4)
+  })
+
+  it('should return the variance of strings by their numerical values', function () {
+    assert.strictEqual(variance('2', '4', '6'), 4)
+    assert.strictEqual(variance('5'), 0)
   })
 
   it('should return the variance of big numbers', function () {
@@ -104,11 +109,12 @@ describe('variance', function () {
 
   it('should throw an error if called with invalid type of arguments', function () {
     assert.throws(function () { variance(new Date(), 2) }, /Cannot calculate variance, unexpected type of argument/)
-    assert.throws(function () { variance(new Unit(5, 'cm'), new Unit(10, 'cm')) }, /Cannot calculate variance, unexpected type of argument/)
     assert.throws(function () { variance(2, 3, null) }, /Cannot calculate variance, unexpected type of argument/)
     assert.throws(function () { variance([2, 3, null]) }, /Cannot calculate variance, unexpected type of argument/)
     assert.throws(function () { variance([[2, 4, 6], [1, 3, 5]], 'biased', 0) }, /Cannot convert "biased" to a number/)
     assert.throws(function () { variance([[2, 4, 6], [1, 3, 5]], 0, new Date()) }, /Cannot calculate variance, unexpected type of argument/)
+    assert.throws(function () { variance('a', 'b') }, /Error: Cannot convert "a" to a number/)
+    assert.throws(function () { variance('a') }, /Error: Cannot convert "a" to a number/)
   })
 
   it('should throw an error if the axis exceeds the dimension of the matrix')
@@ -120,5 +126,25 @@ describe('variance', function () {
   it('should LaTeX var', function () {
     const expression = math.parse('variance(1,2,3)')
     assert.strictEqual(expression.toTex(), '\\mathrm{Var}\\left(1,2,3\\right)')
+  })
+
+  it('should compute the variance of quantities with units', function () {
+    const a = math.unit(10, 'cm')
+    const b = math.unit(20, 'cm')
+    const c = math.unit(50, 'cm^2')
+    approx.equal(variance([a, b]).toNumber('cm^2'), c.toNumber('cm^2'))
+  })
+
+  it('should compute the variance of quantities with compatible units', function () {
+    const a = math.unit(1, 'm')
+    const b = math.unit(50, 'cm')
+    const c = math.unit(1250, 'cm^2')
+    approx.equal(variance([a, b]).toNumber('cm^2'), c.toNumber('cm^2'))
+  })
+
+  it('should not compute the variance of quantities with incompatible units', function () {
+    const a = math.unit(1, 'm')
+    const b = math.unit(50, 'kg')
+    assert.throws(function () { variance([a, b]) }, /Units do not match/)
   })
 })

@@ -97,7 +97,7 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @private
    */
   function _var (array, normalization) {
-    let sum = 0
+    let sum
     let num = 0
 
     if (array.length === 0) {
@@ -107,7 +107,7 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // calculate the mean and number of elements
     deepForEach(array, function (value) {
       try {
-        sum = add(sum, value)
+        sum = sum === undefined ? value : add(sum, value)
         num++
       } catch (err) {
         throw improveErrorMessage(err, 'variance', value)
@@ -118,10 +118,10 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const mean = divide(sum, num)
 
     // calculate the variance
-    sum = 0
+    sum = undefined
     deepForEach(array, function (value) {
       const diff = subtract(value, mean)
-      sum = add(sum, multiply(diff, diff))
+      sum = sum === undefined ? multiply(diff, diff) : add(sum, multiply(diff, diff))
     })
 
     if (isNaN(sum)) {

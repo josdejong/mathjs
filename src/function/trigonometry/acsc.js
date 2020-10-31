@@ -29,7 +29,7 @@ export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @param {number | Complex | Array | Matrix} x   Function input
    * @return {number | Complex | Array | Matrix} The arc cosecant of x
    */
-  const acsc = typed(name, {
+  return typed(name, {
     number: function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
         return acscNumber(x)
@@ -46,9 +46,7 @@ export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, acsc)
+      return deepMap(x, this)
     }
   })
-
-  return acsc
 })

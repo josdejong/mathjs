@@ -27,7 +27,7 @@ export const createAsinh = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsine of x
    */
-  const asinh = typed('asinh', {
+  return typed('asinh', {
     number: asinhNumber,
 
     Complex: function (x) {
@@ -40,9 +40,7 @@ export const createAsinh = /* #__PURE__ */ factory(name, dependencies, ({ typed 
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since asinh(0) = 0
-      return deepMap(x, asinh, true)
+      return deepMap(x, this, true)
     }
   })
-
-  return asinh
 })

@@ -30,7 +30,7 @@ export const createConj = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            The complex conjugate of x
    */
-  const conj = typed(name, {
+  return typed(name, {
     number: function (x) {
       return x
     },
@@ -44,9 +44,7 @@ export const createConj = /* #__PURE__ */ factory(name, dependencies, ({ typed }
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, conj)
+      return deepMap(x, this)
     }
   })
-
-  return conj
 })

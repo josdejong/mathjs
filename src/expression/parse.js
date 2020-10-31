@@ -321,6 +321,20 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (parse.isDigitDot(c1)) {
       state.tokenType = TOKENTYPE.NUMBER
 
+      // check for binary, octal, or hex
+      const c2 = currentString(state, 2)
+      if (c2 === '0b' || c2 === '0o' || c2 === '0x') {
+        state.token += currentCharacter(state)
+        next(state)
+        state.token += currentCharacter(state)
+        next(state)
+        while (parse.isHexDigit(currentCharacter(state))) {
+          state.token += currentCharacter(state)
+          next(state)
+        }
+        return
+      }
+
       // get number, can have a single dot
       if (currentCharacter(state) === '.') {
         state.token += currentCharacter(state)
@@ -520,6 +534,17 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   parse.isDigit = function isDigit (c) {
     return (c >= '0' && c <= '9')
+  }
+
+  /**
+   * checks if the given char c is a hex digit
+   * @param {string} c   a string with one character
+   * @return {boolean}
+   */
+  parse.isHexDigit = function isHexDigit (c) {
+    return ((c >= '0' && c <= '9') ||
+            (c >= 'a' && c <= 'f') ||
+            (c >= 'A' && c <= 'F'))
   }
 
   /**
@@ -1163,7 +1188,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * nodes in a custom way, for example for handling a plot.
    *
    * A handler must be passed as second argument of the parse function.
-   * - must extend math.expression.node.Node
+   * - must extend math.Node
    * - must contain a function _compile(defs: Object) : string
    * - must contain a function find(filter: Object) : Node[]
    * - must contain a function toString() : string

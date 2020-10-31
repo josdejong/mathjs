@@ -32,7 +32,7 @@ export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @param {string | number | boolean | Array | Matrix | null} value  A value of any type
    * @return {boolean | Array | Matrix} The boolean value
    */
-  const bool = typed(name, {
+  return typed(name, {
     '': function () {
       return false
     },
@@ -72,9 +72,7 @@ export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, bool)
+      return deepMap(x, this)
     }
   })
-
-  return bool
 })

@@ -28,7 +28,7 @@ export const createAtan = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * @param {number | BigNumber | Complex | Array | Matrix} x   Function input
    * @return {number | BigNumber | Complex | Array | Matrix} The arc tangent of x
    */
-  const atan = typed('atan', {
+  return typed('atan', {
     number: function (x) {
       return Math.atan(x)
     },
@@ -43,9 +43,7 @@ export const createAtan = /* #__PURE__ */ factory(name, dependencies, ({ typed }
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since atan(0) = 0
-      return deepMap(x, atan, true)
+      return deepMap(x, this, true)
     }
   })
-
-  return atan
 })

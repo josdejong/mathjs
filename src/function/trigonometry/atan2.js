@@ -54,7 +54,7 @@ export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param {number | Array | Matrix} x  First dimension
    * @return {number | Array | Matrix} Four-quadrant inverse tangent
    */
-  const atan2 = typed(name, {
+  return typed(name, {
 
     'number, number': Math.atan2,
 
@@ -67,60 +67,58 @@ export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm09(x, y, atan2, false)
+      return algorithm09(x, y, this, false)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
       // mind the order of y and x!
-      return algorithm02(y, x, atan2, true)
+      return algorithm02(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, atan2, false)
+      return algorithm03(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, atan2)
+      return algorithm13(x, y, this)
     },
 
     'Array, Array': function (x, y) {
-      return atan2(matrix(x), matrix(y)).valueOf()
+      return this(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
-      return atan2(matrix(x), y)
+      return this(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
-      return atan2(x, matrix(y))
+      return this(x, matrix(y))
     },
 
     'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, atan2, false)
+      return algorithm11(x, y, this, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, atan2, false)
+      return algorithm14(x, y, this, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
       // mind the order of y and x
-      return algorithm12(y, x, atan2, true)
+      return algorithm12(y, x, this, true)
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
       // mind the order of y and x
-      return algorithm14(y, x, atan2, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
-      return algorithm14(matrix(x), y, atan2, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'number | BigNumber, Array': function (x, y) {
-      return algorithm14(matrix(y), x, atan2, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
-
-  return atan2
 })

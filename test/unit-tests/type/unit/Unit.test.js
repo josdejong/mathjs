@@ -916,6 +916,8 @@ describe('Unit', function () {
     })
 
     it('should parse the value of the unit as Fraction or BigNumber when math.js is configured so', function () {
+      this.timeout(10000) // For IE tests
+
       const math2 = math.create({ number: 'Fraction' })
       const unit2 = math2.Unit.parse('5kg')
       assert(isFraction(unit2.value))
@@ -1137,6 +1139,8 @@ describe('Unit', function () {
       assert.throws(function () { Unit.createUnitSingle() }, /createUnitSingle expects first parameter/)
       assert.throws(function () { Unit.createUnitSingle(42) }, /createUnitSingle expects first parameter/)
       assert.throws(function () { Unit.createUnitSingle('42') }, /Error: Invalid unit name/)
+      assert.throws(function () { Unit.createUnitSingle('toto', 5) }, /TypeError: Cannot create unit/)
+      assert.throws(function () { Unit.createUnitSingle('foo', { definition: '1 vteřiny', prefixes: 'long' }) }, /Error: Could not create unit/)
     })
 
     it('should apply the correct prefixes', function () {
@@ -1259,6 +1263,38 @@ describe('Unit', function () {
     it('should throw if custom unit not defined from existing units', function () {
       Unit.createUnit({ baz: '' }, { override: true })
       assert.throws(function () { Unit.parse('10 baz').toSI() }, /Cannot express custom unit/)
+    })
+  })
+
+  describe('isValidAlpha', function () {
+    it('per default refuse to parse non-latin unit names', function () {
+      assert.throws(function () { Unit.createUnit({ чекушки: '0.25 L' }) }, /Error: Invalid unit name/)
+    })
+
+    it('should support cyrillic when Unit.isValidAlpha is overridden', function () {
+      const isValidCyrillic = function (c) {
+        const charCode = c.charCodeAt(0)
+        return charCode > 1039 && charCode < 1103
+      }
+      const isAlphaOriginal = math.Unit.isValidAlpha
+      Unit.isValidAlpha = function (c) {
+        return isAlphaOriginal(c) || isValidCyrillic(c)
+      }
+
+      Unit.createUnit({ чекушки: '0.25 L' })
+
+      assert.strictEqual(Unit.parse('2 чекушки').toSI().toString(), '5e-4 m^3')
+    })
+
+    it('should support wide range of european alphabets when Unit.isValidAlpha is overridden', function () {
+      const isAlphaOriginal = math.Unit.isValidAlpha
+      Unit.isValidAlpha = function (c) {
+        return isAlphaOriginal(c) || ((c).toUpperCase() !== (c).toLowerCase())
+      }
+
+      Unit.createUnit({ vteřiny: '1 s' })
+
+      assert.strictEqual(Unit.parse('21 vteřiny').toSI().toString(), '21 s')
     })
   })
 })

@@ -30,7 +30,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Unit | Array | Matrix}    The created unit
    */
 
-  const unit = typed(name, {
+  return typed(name, {
     Unit: function (x) {
       return x.clone()
     },
@@ -48,9 +48,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, unit)
+      return deepMap(x, this)
     }
   })
-
-  return unit
 })

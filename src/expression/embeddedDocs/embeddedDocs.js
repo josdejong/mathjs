@@ -9,6 +9,9 @@ import { isNegativeDocs } from './function/utils/isNegative'
 import { isIntegerDocs } from './function/utils/isInteger'
 import { isNaNDocs } from './function/utils/isNaN'
 import { formatDocs } from './function/utils/format'
+import { binDocs } from './function/utils/bin'
+import { octDocs } from './function/utils/oct'
+import { hexDocs } from './function/utils/hex'
 import { cloneDocs } from './function/utils/clone'
 import { toDocs } from './function/units/to'
 import { tanhDocs } from './function/trigonometry/tanh'
@@ -84,6 +87,7 @@ import { subsetDocs } from './function/matrix/subset'
 import { squeezeDocs } from './function/matrix/squeeze'
 import { sortDocs } from './function/matrix/sort'
 import { sizeDocs } from './function/matrix/size'
+import { diffDocs } from './function/matrix/diff'
 import { reshapeDocs } from './function/matrix/reshape'
 import { resizeDocs } from './function/matrix/resize'
 import { rangeDocs } from './function/matrix/range'
@@ -166,11 +170,13 @@ import { addDocs } from './function/arithmetic/add'
 import { absDocs } from './function/arithmetic/abs'
 import { qrDocs } from './function/algebra/qr'
 import { usolveDocs } from './function/algebra/usolve'
+import { usolveAllDocs } from './function/algebra/usolveAll'
 import { sluDocs } from './function/algebra/slu'
 import { rationalizeDocs } from './function/algebra/rationalize'
 import { simplifyDocs } from './function/algebra/simplify'
 import { lupDocs } from './function/algebra/lup'
 import { lsolveDocs } from './function/algebra/lsolve'
+import { lsolveAllDocs } from './function/algebra/lsolveAll'
 import { derivativeDocs } from './function/algebra/derivative'
 import { versionDocs } from './constants/version'
 import { trueDocs } from './constants/true'
@@ -208,6 +214,8 @@ import { sinDocs } from './function/trigonometry/sin'
 import { numericDocs } from './function/utils/numeric'
 import { columnDocs } from './function/matrix/column'
 import { rowDocs } from './function/matrix/row'
+import { rotationMatrixDocs } from './function/matrix/rotationMatrix'
+import { rotateDocs } from './function/matrix/rotate'
 
 export const embeddedDocs = {
 
@@ -309,12 +317,14 @@ export const embeddedDocs = {
   // functions - algebra
   derivative: derivativeDocs,
   lsolve: lsolveDocs,
+  lsolveAll: lsolveAllDocs,
   lup: lupDocs,
   lusolve: lusolveDocs,
   simplify: simplifyDocs,
   rationalize: rationalizeDocs,
   slu: sluDocs,
   usolve: usolveDocs,
+  usolveAll: usolveAllDocs,
   qr: qrDocs,
 
   // functions - arithmetic
@@ -402,6 +412,7 @@ export const embeddedDocs = {
   ctranspose: ctransposeDocs,
   det: detDocs,
   diag: diagDocs,
+  diff: diffDocs,
   dot: dotDocs,
   getMatrixDataType: getMatrixDataTypeDocs,
   identity: identityDocs,
@@ -417,6 +428,8 @@ export const embeddedDocs = {
   range: rangeDocs,
   resize: resizeDocs,
   reshape: reshapeDocs,
+  rotate: rotateDocs,
+  rotationMatrix: rotationMatrixDocs,
   row: rowDocs,
   size: sizeDocs,
   sort: sortDocs,
@@ -513,6 +526,9 @@ export const embeddedDocs = {
   // functions - utils
   clone: cloneDocs,
   format: formatDocs,
+  bin: binDocs,
+  oct: octDocs,
+  hex: hexDocs,
   isNaN: isNaNDocs,
   isInteger: isIntegerDocs,
   isNegative: isNegativeDocs,

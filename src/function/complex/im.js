@@ -32,7 +32,7 @@ export const createIm = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    *            A complex number or array with complex numbers
    * @return {number | BigNumber | Array | Matrix} The imaginary part of x
    */
-  const im = typed(name, {
+  return typed(name, {
     number: function (x) {
       return 0
     },
@@ -46,9 +46,7 @@ export const createIm = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, im)
+      return deepMap(x, this)
     }
   })
-
-  return im
 })

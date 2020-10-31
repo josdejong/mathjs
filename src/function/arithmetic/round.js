@@ -34,10 +34,14 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * Examples:
    *
-   *    math.round(3.2)              // returns number 3
-   *    math.round(3.8)              // returns number 4
+   *    math.round(3.22)             // returns number 3
+   *    math.round(3.82)             // returns number 4
    *    math.round(-4.2)             // returns number -4
    *    math.round(-4.7)             // returns number -5
+   *    math.round(3.22, 1)          // returns number 3.2
+   *    math.round(3.88, 1)          // returns number 3.8
+   *    math.round(-4.21, 1)         // returns number -4.2
+   *    math.round(-4.71, 1)         // returns number -4.7
    *    math.round(math.pi, 3)       // returns number 3.142
    *    math.round(123.45678, 2)     // returns number 123.46
    *
@@ -54,7 +58,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  const round = typed(name, {
+  return typed(name, {
     ...roundNumberSignatures,
 
     Complex: function (x) {
@@ -101,15 +105,15 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since round(0) = 0
-      return deepMap(x, round, true)
+      return deepMap(x, this, true)
     },
 
     'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, round, false)
+      return algorithm11(x, y, this, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, round, false)
+      return algorithm14(x, y, this, false)
     },
 
     'number | Complex | BigNumber, SparseMatrix': function (x, y) {
@@ -118,7 +122,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         // do not execute algorithm, result will be a zero matrix
         return zeros(y.size(), y.storage())
       }
-      return algorithm12(y, x, round, true)
+      return algorithm12(y, x, this, true)
     },
 
     'number | Complex | BigNumber, DenseMatrix': function (x, y) {
@@ -127,21 +131,19 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         // do not execute algorithm, result will be a zero matrix
         return zeros(y.size(), y.storage())
       }
-      return algorithm14(y, x, round, true)
+      return algorithm14(y, x, this, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, round, false).valueOf()
+      return algorithm14(matrix(x), y, this, false).valueOf()
     },
 
     'number | Complex | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, round, true).valueOf()
+      return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
-
-  return round
 })
 
 const roundNumberSignatures = {
