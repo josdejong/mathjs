@@ -26,6 +26,7 @@ export {
   isNode,
   isNull,
   isNumber,
+  isPromise,
   isString,
   isUndefined,
   isObject,
