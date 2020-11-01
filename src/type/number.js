@@ -56,10 +56,6 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       if (boxMatch) {
         // x is a signed bin, oct, or hex literal
         // num is the value of string x if x is interpreted as unsigned
-        if (size > 53) {
-          // can't represent integers larger than 53 bits in type Number
-          throw new Error(`String "${x}" is out of range`)
-        }
         if (num > 2 ** size - 1) {
           // literal is too large for size suffix
           throw new SyntaxError(`String "${x}" is out of range`)

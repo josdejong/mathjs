@@ -6,8 +6,8 @@ function baseFormatter (base) {
   const prefix = prefixes[base]
   return function (n, size) {
     if (size) {
-      if (size > 53 || size < 1) {
-        throw new Error('size must be in range [1, 53]')
+      if (size < 1) {
+        throw new Error('size must be in greater than 0')
       }
       if (!isInteger(size)) {
         throw new Error('size must be an integer')
@@ -20,10 +20,6 @@ function baseFormatter (base) {
       }
       if (n < 0) {
         n = n + 2 ** size
-      }
-    } else {
-      if (n > 2 ** 53 - 1 || n < 0) {
-        throw new Error('Value must be in range [0, 2^53 - 1]')
       }
     }
     return `${prefix}${n.toString(base)}`
