@@ -278,7 +278,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, new IndexNode([b, c]))
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

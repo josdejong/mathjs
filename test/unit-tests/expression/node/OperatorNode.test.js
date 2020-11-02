@@ -157,7 +157,7 @@ describe('OperatorNode', function () {
     const c = new OperatorNode('^', 'pow', [a, b])
 
     assert.throws(function () {
-      c.map(function () {})
+      c.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

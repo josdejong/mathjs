@@ -40,7 +40,7 @@ describe('numeric', function () {
 
   it('should convert a BigNumber to a number', function () {
     assert.deepStrictEqual(numeric(math.bignumber(-0.125), 'number'), -0.125)
-    assert.deepStrictEqual(numeric(math.bignumber(1e500), 'number'), Infinity)
+    assert.deepStrictEqual(numeric(math.bignumber(1e500), 'number'), Infinity) // eslint-disable-line no-loss-of-precision
   })
 
   it('should convert a number to a BigNumber', function () {

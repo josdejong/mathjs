@@ -82,8 +82,8 @@ export function importFactory (typed, load, math, importedFactories) {
       } else if (isFactory(value) || name !== undefined) {
         const flatName = isFactory(value)
           ? isTransformFunctionFactory(value)
-            ? (value.fn + '.transform') // TODO: this is ugly
-            : value.fn
+              ? (value.fn + '.transform') // TODO: this is ugly
+              : value.fn
           : name
 
         // we allow importing the same function twice if it points to the same implementation

@@ -223,7 +223,7 @@ describe('number', function () {
         assert.strictEqual(format(1234567), '1.234567e+6')
         assert.strictEqual(format(123456789123456), '1.23456789123456e+14')
         assert.strictEqual(format(123456789123456e-14), '1.23456789123456')
-        assert.strictEqual(format(123456789123456789), '1.2345678912345678e+17')
+        assert.strictEqual(format(123456789123456789), '1.2345678912345678e+17') // eslint-disable-line no-loss-of-precision
 
         assert.strictEqual(format(0.1111e+6), '1.111e+5')
         assert.strictEqual(format(0.3333e+6), '3.333e+5')

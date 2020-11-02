@@ -168,7 +168,7 @@ describe('ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

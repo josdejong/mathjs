@@ -57,7 +57,7 @@ describe('pow', function () {
 
     assert(isNaN(mathPredictable.pow(-1, 49 / 100)))
     assert(isNaN(mathPredictable.pow(-17, 29 / 138)))
-    assert(isNaN(mathPredictable.pow(-17, 3.14159265358979323)))
+    assert(isNaN(mathPredictable.pow(-17, 3.14159265358979)))
   })
 
   it('should exponentiate booleans to the given power', function () {

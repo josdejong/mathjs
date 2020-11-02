@@ -1098,7 +1098,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Simplfy the unit list, unless it is valueless or was created directly in the
     // constructor or as the result of to or toSI
     const simp = this.skipAutomaticSimplification || this.value === null
-      ? this.clone() : this.simplify()
+      ? this.clone()
+      : this.simplify()
 
     // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
     let isImaginary = false

@@ -115,7 +115,8 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    */
   Node.prototype.traverse = function (callback) {
     // execute callback for itself
-    callback(this, null, null) // eslint-disable-line standard/no-callback-literal
+    // eslint-disable-next-line
+    callback(this, null, null)
 
     // recursively traverse over all childs of a node
     function _traverse (node, callback) {

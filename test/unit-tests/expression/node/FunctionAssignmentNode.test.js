@@ -288,7 +288,7 @@ describe('FunctionAssignmentNode', function () {
     const n = new FunctionAssignmentNode('f', ['x'], a)
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

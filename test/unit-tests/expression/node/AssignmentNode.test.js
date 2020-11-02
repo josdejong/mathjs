@@ -318,7 +318,7 @@ describe('AssignmentNode', function () {
     const n = new AssignmentNode(a, i, v)
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

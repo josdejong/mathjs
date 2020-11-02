@@ -1,3 +1,5 @@
+/* eslint-disable no-loss-of-precision */
+
 // BigNumbers
 
 const { create, all } = require('..')
