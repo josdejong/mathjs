@@ -1,4 +1,5 @@
-import { isConstantNode, isParenthesisNode } from '../../utils/is'
+import { isParenthesisNode } from '../../utils/is'
+import { isConstantNode, isVariableNode, isNumericNode, isConstantExpression } from './simplify/wildcards'
 import { factory } from '../../utils/factory'
 import { createUtil } from './simplify/util'
 import { createSimplifyCore } from './simplify/simplifyCore'
@@ -107,9 +108,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * expression is that variables starting with the following characters are
    * interpreted as wildcards:
    *
-   * - 'n' - matches any Node
-   * - 'c' - matches any ConstantNode
-   * - 'v' - matches any Node that is not a ConstantNode
+   * - 'n' - Matches any node [Node]
+   * - 'c' - Matches a constant literal (5 or 3.2) [ConstantNode]
+   * - 'cl' - Matches a constant literal; same as c [ConstantNode]
+   * - 'cd' - Matches a decimal literal (5 or -3.2) [ConstantNode or unaryMinus wrapping a ConstantNode]
+   * - 'ce' - Matches a constant expression (-5 or √3) [Expressions consisting of only ConstantNodes, functions, and operators]
+   * - 'v' - Matches a variable; anything not matched by c (-5 or x) [Node that is not a ConstantNode]
+   * - 'vl' - Matches a variable literal (x or y) [SymbolNode]
+   * - 'vd' - Matches a non-decimal expression; anything not matched by ci (x or √3) [Node that is not a ConstantNode or unaryMinus that is wrapping a Constant\Node]
+   * - 've' - Matches a variable expression; anything not matched by ce (x or 2x) [Expressions that contain a SymbolNode or other non-constant term]
    *
    * The default list of rules is exposed on the function as `simplify.rules`
    * and can be used as a basis to built a set of custom rules.
@@ -636,9 +643,16 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       }
     } else if (rule instanceof SymbolNode) {
       // If the rule is a SymbolNode, then it carries a special meaning
-      // according to the first character of the symbol node name.
-      // c.* matches a ConstantNode
-      // n.* matches any node
+      // according to the first character or two of the symbol node name.
+      // n.*  - Matches any node
+      // c.*  - Matches a constant literal (5 or 3.2)
+      // cl.* - Matches a constant literal; same as c
+      // cd.* - Matches a decimal literal (5 or -3.2)
+      // ce.* - Matches a constant expression (-5 or √3)
+      // v.*  - Matches a variable; anything not matched by c (-5 or x)
+      // vl.* - Matches a variable literal (x or y)
+      // vd.* - Matches a non-decimal expression; anything not matched by ci (x or √3)
+      // ve.* - Matches a variable expression; anything not matched by ce (x or 2x)
       if (rule.name.length === 0) {
         throw new Error('Symbol in rule has 0 length...!?')
       }
@@ -647,29 +661,83 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         if (rule.name !== node.name) {
           return []
         }
-      } else if (rule.name[0] === 'n' || rule.name.substring(0, 2) === '_p') {
-        // rule matches _anything_, so assign this node to the rule.name placeholder
-        // Assign node to the rule.name placeholder.
-        // Our parent will check for matches among placeholders.
-        res[0].placeholders[rule.name] = node
-      } else if (rule.name[0] === 'v') {
-        // rule matches any variable thing (not a ConstantNode)
-        if (!isConstantNode(node)) {
-          res[0].placeholders[rule.name] = node
-        } else {
-          // Mis-match: rule was expecting something other than a ConstantNode
-          return []
-        }
-      } else if (rule.name[0] === 'c') {
-        // rule matches any ConstantNode
-        if (node instanceof ConstantNode) {
-          res[0].placeholders[rule.name] = node
-        } else {
-          // Mis-match: rule was expecting a ConstantNode
-          return []
-        }
       } else {
-        throw new Error('Invalid symbol in rule: ' + rule.name)
+        // wildcards are composed of up to two alphabetic or underscore characters
+        switch (rule.name[1] >= 'a' && rule.name[1] <= 'z' ? rule.name.substring(0, 2) : rule.name[0]) {
+          case 'n':
+          case '_p':
+            // rule matches _anything_, so assign this node to the rule.name placeholder
+            // Assign node to the rule.name placeholder.
+            // Our parent will check for matches among placeholders.
+            res[0].placeholders[rule.name] = node
+            break
+          case 'c':
+          case 'cl':
+            // rule matches a ConstantNode
+            if (isConstantNode(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 'v':
+            // rule matches anything other than a ConstantNode
+            if (!isConstantNode(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 'vl':
+            // rule matches VariableNode
+            if (isVariableNode(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 'cd':
+            // rule matches a ConstantNode or unaryMinus-wrapped ConstantNode
+            if (isNumericNode(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 'vd':
+            // rule matches anything other than a ConstantNode or unaryMinus-wrapped ConstantNode
+            if (!isNumericNode(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 'ce':
+            // rule matches expressions that have a constant value
+            if (isConstantExpression(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          case 've':
+            // rule matches expressions that do not have a constant value
+            if (!isConstantExpression(node)) {
+              res[0].placeholders[rule.name] = node
+            } else {
+              // mis-match: rule does not encompass current node
+              return []
+            }
+            break
+          default:
+            throw new Error('Invalid symbol in rule: ' + rule.name)
+        }
       }
     } else if (rule instanceof ConstantNode) {
       // Literal constant must match exactly
