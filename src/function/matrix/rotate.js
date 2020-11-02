@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { arraySize } from '../../utils/array'
+import { factory } from '../../utils/factory.js'
+import { arraySize } from '../../utils/array.js'
 
 const name = 'rotate'
 const dependencies = [
