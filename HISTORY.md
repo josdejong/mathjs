@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 7.6.0
+# 2020-11-02, version 7.6.0
 
 - Implemented function `rotate(w, theta)`. See #1992, #1160. Thanks @rnd-debug. 
 - Implemented support for custom characters in Units via `Unit.isValidAlpha`. 

@@ -164,7 +164,7 @@ describe('object', function () {
       const obj = {}
       const originalConstructor = obj.constructor
 
-      const polluted = function polluted() {}
+      const polluted = function polluted () {}
       deepExtend(obj, { constructor: polluted })
       assert.strictEqual(obj.constructor, originalConstructor)
     })
