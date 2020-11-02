@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20201102-version-760">2020-11-02, version 7.6.0 <a href="#20201102-version-760" title="Permalink">#</a></h1>
+
+- Implemented function `rotate(w, theta)`. See <a href="https://github.com/josdejong/mathjs/issues/1992">#1992</a>, <a href="https://github.com/josdejong/mathjs/issues/1160">#1160</a>. Thanks <a href="https://github.com/rnd-debug">@rnd-debug</a>. 
+- Implemented support for custom characters in Units via `Unit.isValidAlpha`. 
+  See <a href="https://github.com/josdejong/mathjs/issues/1663">#1663</a>, <a href="https://github.com/josdejong/mathjs/issues/2000">#2000</a>. Thanks <a href="https://github.com/rnd-debug">@rnd-debug</a>.
+
+
 <h1 id="20201010-version-751">2020-10-10, version 7.5.1 <a href="#20201010-version-751" title="Permalink">#</a></h1>
 
 - Fix object pollution vulnerability in `math.config`. Thanks Snyk.

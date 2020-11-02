@@ -7,6 +7,8 @@ layout: default
 File: [bignumbers.js](bignumbers.js)
 
 ```js
+/* eslint-disable no-loss-of-precision */
+
 // BigNumbers
 
 const { create, all } = require('..')

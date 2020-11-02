@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 7.5.1
- * @date    2020-10-10
+ * @version 7.6.0
+ * @date    2020-11-02
  *
  * @license
  * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
@@ -11733,6 +11733,7 @@ __webpack_require__.d(__webpack_exports__, "createOnes", function() { return /* 
 __webpack_require__.d(__webpack_exports__, "createRange", function() { return /* reexport */ range_createRange; });
 __webpack_require__.d(__webpack_exports__, "createReshape", function() { return /* reexport */ createReshape; });
 __webpack_require__.d(__webpack_exports__, "createResize", function() { return /* reexport */ createResize; });
+__webpack_require__.d(__webpack_exports__, "createRotate", function() { return /* reexport */ createRotate; });
 __webpack_require__.d(__webpack_exports__, "createRotationMatrix", function() { return /* reexport */ createRotationMatrix; });
 __webpack_require__.d(__webpack_exports__, "createRow", function() { return /* reexport */ createRow; });
 __webpack_require__.d(__webpack_exports__, "createSize", function() { return /* reexport */ createSize; });
@@ -25694,6 +25695,85 @@ var createResize = /* #__PURE__ */Object(factory["a" /* factory */])(resize_name
     }
   }
 });
+// CONCATENATED MODULE: ./src/function/matrix/rotate.js
+
+
+var rotate_name = 'rotate';
+var rotate_dependencies = ['typed', 'multiply', 'rotationMatrix'];
+var createRotate = /* #__PURE__ */Object(factory["a" /* factory */])(rotate_name, rotate_dependencies, function (_ref) {
+  var typed = _ref.typed,
+      multiply = _ref.multiply,
+      rotationMatrix = _ref.rotationMatrix;
+
+  /**
+     * Rotate a vector of size 1x2 counter-clockwise by a given angle
+     * Rotate a vector of size 1x3 counter-clockwise by a given angle around the given axis
+     *
+     * Syntax:
+     *
+     *    math.rotate(w, theta)
+     *    math.rotate(w, theta, v)
+     *
+     * Examples:
+     *
+     *    math.rotate([11, 12], math.pi / 2)                           // returns matrix([-12, 11])
+     *    math.rotate(matrix([11, 12]), math.pi / 2)                   // returns matrix([-12, 11])
+     *
+     *    math.rotate([1, 0, 0], unit('90deg'), [0, 0, 1])             // returns matrix([0, 1, 0])
+     *    math.rotate(matrix([1, 0, 0]), unit('90deg'), [0, 0, 1])     // returns matrix([0, 1, 0])
+     *
+     *    math.rotate([1, 0], math.complex(1 + i))                     // returns matrix([cos(1 + i) - sin(1 + i), sin(1 + i) + cos(1 + i)])
+     *
+     * See also:
+     *
+     *    matrix, rotationMatrix
+     *
+     * @param {Array | Matrix} w                             Vector to rotate
+     * @param {number | BigNumber | Complex | Unit} theta    Rotation angle
+     * @param {Array | Matrix} [v]                           Rotation axis
+     * @return {Array | Matrix}                              Multiplication of the rotation matrix and w
+     */
+  return typed(rotate_name, {
+    'Array , number | BigNumber | Complex | Unit': function ArrayNumberBigNumberComplexUnit(w, theta) {
+      _validateSize(w, 2);
+
+      var matrixRes = multiply(rotationMatrix(theta), w);
+      return matrixRes.toArray();
+    },
+    'Matrix , number | BigNumber | Complex | Unit': function MatrixNumberBigNumberComplexUnit(w, theta) {
+      _validateSize(w, 2);
+
+      return multiply(rotationMatrix(theta), w);
+    },
+    'Array, number | BigNumber | Complex | Unit, Array | Matrix': function ArrayNumberBigNumberComplexUnitArrayMatrix(w, theta, v) {
+      _validateSize(w, 3);
+
+      var matrixRes = multiply(rotationMatrix(theta, v), w);
+      return matrixRes;
+    },
+    'Matrix, number | BigNumber | Complex | Unit, Array | Matrix': function MatrixNumberBigNumberComplexUnitArrayMatrix(w, theta, v) {
+      _validateSize(w, 3);
+
+      return multiply(rotationMatrix(theta, v), w);
+    }
+  });
+
+  function _validateSize(v, expectedSize) {
+    var actualSize = Array.isArray(v) ? Object(utils_array["a" /* arraySize */])(v) : v.size();
+
+    if (actualSize.length > 2) {
+      throw new RangeError("Vector must be of dimensions 1x".concat(expectedSize));
+    }
+
+    if (actualSize.length === 2 && actualSize[1] !== 1) {
+      throw new RangeError("Vector must be of dimensions 1x".concat(expectedSize));
+    }
+
+    if (actualSize[0] !== expectedSize) {
+      throw new RangeError("Vector must be of dimensions 1x".concat(expectedSize));
+    }
+  }
+});
 // CONCATENATED MODULE: ./src/function/matrix/rotationMatrix.js
 
 
@@ -25727,7 +25807,7 @@ var createRotationMatrix = /* #__PURE__ */Object(factory["a" /* factory */])(rot
    * Examples:
    *
    *    math.rotationMatrix(math.pi / 2)                      // returns [[0, -1], [1, 0]]
-   *    math.rotationMatrix(math.bignumber(45))               // returns [[ bignumber(1 / sqrt(2)), - bignumber(1 / sqrt(2))], [ bignumber(1 / sqrt(2)),  bignumber(1 / sqrt(2))]]
+   *    math.rotationMatrix(math.bignumber(1))                // returns [[bignumber(cos(1)), bignumber(-sin(1))], [bignumber(sin(1)), bignumber(cos(1))]]
    *    math.rotationMatrix(math.complex(1 + i))              // returns [[cos(1 + i), -sin(1 + i)], [sin(1 + i), cos(1 + i)]]
    *    math.rotationMatrix(math.unit('1rad'))                // returns [[cos(1), -sin(1)], [sin(1), cos(1)]]
    *
@@ -25763,12 +25843,13 @@ var createRotationMatrix = /* #__PURE__ */Object(factory["a" /* factory */])(rot
 
       _validateVector(matrixV);
 
-      return _rotationMatrix3x3(theta, matrixV, config.matrix === 'Matrix' ? 'dense' : undefined);
+      return _rotationMatrix3x3(theta, matrixV, undefined);
     },
     'number | BigNumber | Complex | Unit, Matrix': function numberBigNumberComplexUnitMatrix(theta, v) {
       _validateVector(v);
 
-      return _rotationMatrix3x3(theta, v, config.matrix === 'Matrix' ? 'dense' : undefined);
+      var storageType = v.storage() || (config.matrix === 'Matrix' ? 'dense' : undefined);
+      return _rotationMatrix3x3(theta, v, storageType);
     },
     'number | BigNumber | Complex | Unit, Array, string': function numberBigNumberComplexUnitArrayString(theta, v, format) {
       var matrixV = matrix(v);
@@ -25845,7 +25926,7 @@ var createRotationMatrix = /* #__PURE__ */Object(factory["a" /* factory */])(rot
     var normV = norm(v);
 
     if (normV === 0) {
-      return _convertToFormat([], format);
+      throw new RangeError('Rotation around zero vector');
     }
 
     var Big = Object(is["e" /* isBigNumber */])(theta) ? BigNumber : null;
@@ -26753,6 +26834,7 @@ var createZeros = /* #__PURE__ */Object(factory["a" /* factory */])(zeros_name, 
   }
 }); // TODO: zeros contains almost the same code as ones. Reuse this?
 // CONCATENATED MODULE: ./src/function/special/erf.js
+/* eslint-disable no-loss-of-precision */
 
 
 
@@ -33542,19 +33624,16 @@ var createUnitClass = /* #__PURE__ */Object(factory["a" /* factory */])(Unit_nam
   function parseUnit() {
     var unitName = ''; // Alphanumeric characters only; matches [a-zA-Z0-9]
 
-    var code = text.charCodeAt(index);
-
-    while (code >= 48 && code <= 57 || code >= 65 && code <= 90 || code >= 97 && code <= 122) {
+    while (isDigit(c) || Unit.isValidAlpha(c)) {
       unitName += c;
       next();
-      code = text.charCodeAt(index);
     } // Must begin with [a-zA-Z]
 
 
-    code = unitName.charCodeAt(0);
+    var firstC = unitName.charAt(0);
 
-    if (code >= 65 && code <= 90 || code >= 97 && code <= 122) {
-      return unitName || null;
+    if (Unit.isValidAlpha(firstC)) {
+      return unitName;
     } else {
       return null;
     }
@@ -37009,24 +37088,26 @@ var createUnitClass = /* #__PURE__ */Object(factory["a" /* factory */])(Unit_nam
       UNITS[_name2] = alias;
     }
   }
+  /**
+   * Checks if a character is a valid latin letter (upper or lower case).
+   * Note that this function can be overridden, for example to allow support of other alphabets.
+   * @param {string} c Tested character
+   */
+
+
+  Unit.isValidAlpha = function isValidAlpha(c) {
+    return /^[a-zA-Z]$/.test(c);
+  };
 
   function assertUnitNameIsValid(name) {
     for (var i = 0; i < name.length; i++) {
-      var _c = name.charAt(i);
+      c = name.charAt(i);
 
-      var isValidAlpha = function isValidAlpha(p) {
-        return /^[a-zA-Z]$/.test(p);
-      };
-
-      var _isDigit = function _isDigit(c) {
-        return c >= '0' && c <= '9';
-      };
-
-      if (i === 0 && !isValidAlpha(_c)) {
+      if (i === 0 && !Unit.isValidAlpha(c)) {
         throw new Error('Invalid unit name (must begin with alpha character): "' + name + '"');
       }
 
-      if (i > 0 && !(isValidAlpha(_c) || _isDigit(_c))) {
+      if (i > 0 && !(Unit.isValidAlpha(c) || isDigit(c))) {
         throw new Error('Invalid unit name (only alphanumeric characters are allowed): "' + name + '"');
       }
     }
@@ -40614,8 +40695,8 @@ var createNode = /* #__PURE__ */Object(factory["a" /* factory */])(Node_name, No
 
   Node.prototype.traverse = function (callback) {
     // execute callback for itself
-    callback(this, null, null); // eslint-disable-line standard/no-callback-literal
-    // recursively traverse over all childs of a node
+    // eslint-disable-next-line
+    callback(this, null, null); // recursively traverse over all childs of a node
 
     function _traverse(node, callback) {
       node.forEach(function (child, path, parent) {
@@ -45745,7 +45826,7 @@ var createFunctionNode = /* #__PURE__ */Object(factory["a" /* factory */])(Funct
     var latex = ''; // Match everything of the form ${identifier} or ${identifier[2]} or $$
     // while submatching identifier and 2 (in the second case)
 
-    var regex = new RegExp('\\$(?:\\{([a-z_][a-z_0-9]*)(?:\\[([0-9]+)\\])?\\}|\\$)', 'ig');
+    var regex = /\$(?:\{([a-z_][a-z_0-9]*)(?:\[([0-9]+)\])?\}|\$)/gi;
     var inputPos = 0; // position in the input string
 
     var match;
@@ -52948,7 +53029,17 @@ var rotationMatrixDocs = {
   examples: ['rotationMatrix(pi / 2)', 'rotationMatrix(unit("45deg"), [0, 0, 1])', 'rotationMatrix(1, matrix([0, 0, 1]), "sparse")'],
   seealso: ['cos', 'sin']
 };
+// CONCATENATED MODULE: ./src/expression/embeddedDocs/function/matrix/rotate.js
+var rotateDocs = {
+  name: 'rotate',
+  category: 'Matrix',
+  syntax: ['rotate(w, theta)', 'rotate(w, theta, v)'],
+  description: 'Returns a 2-D rotation matrix (2x2) for a given angle (in radians). ' + 'Returns a 2-D rotation matrix (3x3) of a given angle (in radians) around given axis.',
+  examples: ['rotate([1, 0], math.pi / 2)', 'rotate(matrix([1, 0]), unit("35deg"))', 'rotate([1, 0, 0], unit("90deg"), [0, 0, 1])', 'rotate(matrix([1, 0, 0]), unit("90deg"), matrix([0, 0, 1]))'],
+  seealso: ['matrix', 'rotationMatrix']
+};
 // CONCATENATED MODULE: ./src/expression/embeddedDocs/embeddedDocs.js
+
 
 
 
@@ -53509,6 +53600,7 @@ var embeddedDocs = {
   range: rangeDocs,
   resize: resizeDocs,
   reshape: reshapeDocs,
+  rotate: rotateDocs,
   rotationMatrix: rotationMatrixDocs,
   row: rowDocs,
   size: sizeDocs,
@@ -56512,6 +56604,7 @@ function combinationsWithRep_isPositiveInteger(n) {
   return n.isInteger() && n.gte(0);
 }
 // CONCATENATED MODULE: ./src/plain/number/probability.js
+/* eslint-disable no-loss-of-precision */
 
 
 function gammaNumber(n) {
@@ -60661,13 +60754,13 @@ var createReplacer = /* #__PURE__ */Object(factory["a" /* factory */])(replacer_
   };
 });
 // CONCATENATED MODULE: ./src/version.js
-var version = '7.5.1'; // Note: This file is automatically generated when building math.js.
+var version = '7.6.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 // CONCATENATED MODULE: ./src/plain/number/constants.js
 var constants_pi = Math.PI;
 var tau = 2 * Math.PI;
 var constants_e = Math.E;
-var constants_phi = 1.61803398874989484820458683436563811772030917980576286213545;
+var constants_phi = 1.6180339887498948; // eslint-disable-line no-loss-of-precision
 // CONCATENATED MODULE: ./src/constants.js
 
 
@@ -61785,6 +61878,7 @@ var createVarianceTransform = /* #__PURE__ */Object(factory["a" /* factory */])(
   isTransformFunction: true
 });
 // CONCATENATED MODULE: ./src/factoriesAny.js
+
 
 
 
