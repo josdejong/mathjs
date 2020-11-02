@@ -146,8 +146,27 @@ describe('object', function () {
       const obj = {}
       assert.strictEqual(obj.polluted, undefined)
 
-      deepExtend(obj, JSON.parse('{"__proto__":{"polluted":"yes"}}'))
+      deepExtend(obj, JSON.parse('{"__proto__": {"polluted":"yes"}}'))
       assert.strictEqual(obj.polluted, undefined)
+    })
+
+    it('should not pollute Object.constructor (1)', function () {
+      const obj = {}
+      const originalConstructor = obj.constructor
+      assert.strictEqual(obj.polluted, undefined)
+
+      deepExtend(obj, JSON.parse('{"constructor": {"prototype": {"polluted": "yes"}}}'))
+      assert.strictEqual(obj.constructor, originalConstructor)
+      assert.strictEqual(obj.polluted, undefined)
+    })
+
+    it('should not pollute Object.constructor (2)', function () {
+      const obj = {}
+      const originalConstructor = obj.constructor
+
+      const polluted = function polluted () {}
+      deepExtend(obj, { constructor: polluted })
+      assert.strictEqual(obj.constructor, originalConstructor)
     })
   })
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-loss-of-precision */
+
 import assert from 'assert'
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'

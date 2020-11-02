@@ -151,7 +151,7 @@ describe('BlockNode', function () {
     ])
 
     assert.throws(function () {
-      a.map(function () {})
+      a.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

@@ -69,6 +69,7 @@ describe('SymbolNode', function () {
     const a = new SymbolNode('a')
     const b = a.map(function () {
       assert.ok(false, 'should not execute, symbol has no childs')
+      return undefined
     })
 
     assert.notStrictEqual(b, a)

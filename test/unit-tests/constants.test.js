@@ -33,7 +33,7 @@ describe('constants', function () {
     }
 
     it('should create pi', function () {
-      approx.equal(createPi(dependencies), 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664)
+      approx.equal(createPi(dependencies), 3.14159265358979)
     })
 
     it('should create tau', function () {
@@ -41,7 +41,7 @@ describe('constants', function () {
     })
 
     it('should create phi, golden ratio', function () {
-      approx.equal(createPhi(dependencies), 1.61803398874989484820458683436563811772030917980576286213545)
+      approx.equal(createPhi(dependencies), 1.61803398874989)
     })
 
     it('should create e (euler constant)', function () {
@@ -49,19 +49,19 @@ describe('constants', function () {
     })
 
     it('should create LN2', function () {
-      approx.equal(createLN2(dependencies), 0.69314718055994530941723212145817656807550013436025525412068000949339362196969471560586332699641868754200148102057068573)
+      approx.equal(createLN2(dependencies), 0.69314718055995)
     })
 
     it('should create LN10', function () {
-      approx.equal(createLN10(dependencies), 2.30258509299404568401799145468436420760110148862877297603332790096757260967735248023599720508959829834196778404228624863)
+      approx.equal(createLN10(dependencies), 2.30258509299405)
     })
 
     it('should create LOG2E', function () {
-      approx.equal(createLOG2E(dependencies), 1.44269504088896340735992468100189213742664595415298593413544940693110921918118507988552662289350634449699751830965254425)
+      approx.equal(createLOG2E(dependencies), 1.44269504088896)
     })
 
     it('should create LOG10E', function () {
-      approx.equal(createLOG10E(dependencies), 0.43429448190325182765112891891660508229439700580366656611445378316586464920887077472922494933843174831870610674476630373)
+      approx.equal(createLOG10E(dependencies), 0.43429448190325)
     })
 
     it('should create PI', function () {
@@ -69,11 +69,11 @@ describe('constants', function () {
     })
 
     it('should create SQRT1_2', function () {
-      approx.equal(createSQRT1_2(dependencies), 0.70710678118654752440084436210484903928483593768847403658833986899536623923105351942519376716382078636750692311545614851)
+      approx.equal(createSQRT1_2(dependencies), 0.70710678118655)
     })
 
     it('should create SQRT2', function () {
-      approx.equal(createSQRT2(dependencies), 1.41421356237309504880168872420969807856967187537694807317667973799073247846210703885038753432764157273501384623091229702)
+      approx.equal(createSQRT2(dependencies), 1.4142135623731)
     })
 
     it('should create Infinity', function () {

@@ -1,3 +1,5 @@
+/* eslint-disable no-loss-of-precision */
+
 import { isInteger } from '../../utils/number.js'
 import { product } from '../../utils/product.js'
 

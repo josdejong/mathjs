@@ -1,3 +1,5 @@
+/* eslint-disable no-loss-of-precision */
+
 import { deepMap } from '../../utils/collection.js'
 import { sign } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'

@@ -122,7 +122,7 @@ describe('ObjectNode', function () {
     const c = new ObjectNode({ a: a, b: b })
 
     assert.throws(function () {
-      c.map(function () {})
+      c.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

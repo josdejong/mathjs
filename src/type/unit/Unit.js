@@ -216,20 +216,15 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     let unitName = ''
 
     // Alphanumeric characters only; matches [a-zA-Z0-9]
-    let code = text.charCodeAt(index)
-    while ((code >= 48 && code <= 57) ||
-    (code >= 65 && code <= 90) ||
-    (code >= 97 && code <= 122)) {
+    while (isDigit(c) || Unit.isValidAlpha(c)) {
       unitName += c
       next()
-      code = text.charCodeAt(index)
     }
 
     // Must begin with [a-zA-Z]
-    code = unitName.charCodeAt(0)
-    if ((code >= 65 && code <= 90) ||
-      (code >= 97 && code <= 122)) {
-      return unitName || null
+    const firstC = unitName.charAt(0)
+    if (Unit.isValidAlpha(firstC)) {
+      return unitName
     } else {
       return null
     }
@@ -1103,7 +1098,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Simplfy the unit list, unless it is valueless or was created directly in the
     // constructor or as the result of to or toSI
     const simp = this.skipAutomaticSimplification || this.value === null
-      ? this.clone() : this.simplify()
+      ? this.clone()
+      : this.simplify()
 
     // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
     let isImaginary = false
@@ -3030,21 +3026,22 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
   }
 
+  /**
+   * Checks if a character is a valid latin letter (upper or lower case).
+   * Note that this function can be overridden, for example to allow support of other alphabets.
+   * @param {string} c Tested character
+   */
+  Unit.isValidAlpha = function isValidAlpha (c) {
+    return /^[a-zA-Z]$/.test(c)
+  }
+
   function assertUnitNameIsValid (name) {
     for (let i = 0; i < name.length; i++) {
-      const c = name.charAt(i)
+      c = name.charAt(i)
 
-      const isValidAlpha = function (p) {
-        return /^[a-zA-Z]$/.test(p)
-      }
+      if (i === 0 && !Unit.isValidAlpha(c)) { throw new Error('Invalid unit name (must begin with alpha character): "' + name + '"') }
 
-      const isDigit = function (c) {
-        return (c >= '0' && c <= '9')
-      }
-
-      if (i === 0 && !isValidAlpha(c)) { throw new Error('Invalid unit name (must begin with alpha character): "' + name + '"') }
-
-      if (i > 0 && !(isValidAlpha(c) ||
+      if (i > 0 && !(Unit.isValidAlpha(c) ||
         isDigit(c))) { throw new Error('Invalid unit name (only alphanumeric characters are allowed): "' + name + '"') }
     }
   }

@@ -123,7 +123,7 @@ describe('RangeNode', function () {
     const n = new RangeNode(start, end, step)
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

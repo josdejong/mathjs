@@ -132,7 +132,7 @@ describe('nthRoot', function () {
   describe('Array', function () {
     it('should return the nthRoot for array - scalar', function () {
       approx.deepEqual(nthRoot([8, 27, 64], 3), [2, 3, 4])
-      approx.deepEqual(nthRoot(64, [2, 3, 8]), [8, 4, 1.6817928305074290860622509524664])
+      approx.deepEqual(nthRoot(64, [2, 3, 8]), [8, 4, 1.68179283050743])
     })
 
     it('should return the nthRoot for array - array', function () {
@@ -151,7 +151,7 @@ describe('nthRoot', function () {
   describe('DenseMatrix', function () {
     it('should return the nthRoot for dense matrix - scalar', function () {
       approx.deepEqual(nthRoot(matrix([8, 27, 64]), 3), matrix([2, 3, 4]))
-      approx.deepEqual(nthRoot(64, matrix([2, 3, 8])), matrix([8, 4, 1.6817928305074290860622509524664]))
+      approx.deepEqual(nthRoot(64, matrix([2, 3, 8])), matrix([8, 4, 1.68179283050743]))
     })
 
     it('should return the nthRoot for dense matrix - array', function () {
@@ -170,7 +170,7 @@ describe('nthRoot', function () {
   describe('SparseMatrix', function () {
     it('should return the nthRoot for sparse matrix - scalar', function () {
       approx.deepEqual(nthRoot(sparse([[8, 27], [0, 64]]), 3), sparse([[2, 3], [0, 4]]))
-      approx.deepEqual(nthRoot(64, sparse([[2, 3], [1, 8]])), sparse([[8, 4], [64, 1.6817928305074290860622509524664]]))
+      approx.deepEqual(nthRoot(64, sparse([[2, 3], [1, 8]])), sparse([[8, 4], [64, 1.68179283050743]]))
     })
 
     it('should return the nthRoot for sparse matrix - array', function () {

@@ -215,6 +215,7 @@ import { numericDocs } from './function/utils/numeric.js'
 import { columnDocs } from './function/matrix/column.js'
 import { rowDocs } from './function/matrix/row.js'
 import { rotationMatrixDocs } from './function/matrix/rotationMatrix.js'
+import { rotateDocs } from './function/matrix/rotate.js'
 
 export const embeddedDocs = {
 
@@ -427,6 +428,7 @@ export const embeddedDocs = {
   range: rangeDocs,
   resize: resizeDocs,
   reshape: reshapeDocs,
+  rotate: rotateDocs,
   rotationMatrix: rotationMatrixDocs,
   row: rowDocs,
   size: sizeDocs,

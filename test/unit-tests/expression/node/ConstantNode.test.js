@@ -86,6 +86,7 @@ describe('ConstantNode', function () {
     const a = new ConstantNode(2)
     const b = a.map(function () {
       assert.ok(false, 'should not execute, constant has no childs')
+      return undefined
     })
 
     assert.notStrictEqual(b, a)

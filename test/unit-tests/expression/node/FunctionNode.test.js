@@ -247,7 +247,7 @@ describe('FunctionNode', function () {
     const f = new FunctionNode(s, [b])
 
     assert.throws(function () {
-      f.map(function () {})
+      f.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 
