@@ -1,1 +1,1 @@
-export * from './main/esm/number' // eslint-disable-line
+module.exports = require('./lib/entry/mainNumber')
