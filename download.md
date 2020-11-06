@@ -29,7 +29,7 @@ Math.js can be downloaded or linked from various content delivery networks:
   <tbody>
     <tr>
       <td>unpkg</td>
-      <td><a href="https://unpkg.com/mathjs@7.6.0/">https://unpkg.com/mathjs@7.6.0/</a></td>
+      <td><a href="https://unpkg.com/mathjs@8.0.0/">https://unpkg.com/mathjs@8.0.0/</a></td>
     </tr>
     <tr>
       <td>cdnjs</td>
@@ -46,30 +46,13 @@ Math.js can be downloaded or linked from various content delivery networks:
   </tbody>
 </table>
 
-Here some direct download links from [unpkg](https://unpkg.com):
+Or download the full bundle directly from [unpkg](https://unpkg.com):
 
-<table class="download">
-  <tr>
-    <td>
-      <a href="https://unpkg.com/mathjs@7.6.0/dist/math.js">
-        Development (version 7.6.0)
-      </a>
-    </td>
-    <td>
-      <span id="development-size">1869 kB</span>, uncompressed with comments
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <a href="https://unpkg.com/mathjs@7.6.0/dist/math.min.js">
-        Production (version 7.6.0)
-      </a>
-    </td>
-    <td>
-      <span id="production-size">141 kB</span>, minified and gzipped
-    </td>
-  </tr>
-</table>
+<p>
+    <a href="https://unpkg.com/mathjs@8.0.0/lib/browser/math.js">
+      math.js (version 8.0.0, <span id="size">140 kB</span>, minified and gzipped)
+    </a>
+</p>
 
 Too large for you? Create your own [custom bundle](docs/custom_bundling.html).
 

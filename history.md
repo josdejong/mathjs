@@ -4,6 +4,35 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20201106-version-800">2020-11-06, version 8.0.0 <a href="#20201106-version-800" title="Permalink">#</a></h1>
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- You can now use mathjs directly in node.js using ES modules without need for 
+  a transpiler (see <a href="https://github.com/josdejong/mathjs/issues/1928">#1928</a>, <a href="https://github.com/josdejong/mathjs/issues/1941">#1941</a>, <a href="https://github.com/josdejong/mathjs/issues/1962">#1962</a>). 
+  Automatically loading either commonjs code or ES modules code is improved.
+  All generated code is moved under `/lib`: the browser bundle is moved from 
+  `/dist` to `/lib/browser`, ES module files are moved to `/lib/esm`, 
+  and commonjs files are moved to `/lib/cjs`. Thanks <a href="https://github.com/GreenImp">@GreenImp</a>.
+- Non-minified bundle `dist/math.js` is no longer provided. Either use the
+  minified bundle, or create a bundle yourself.
+- Replaced random library `seed-random` with `seedrandom`, see <a href="https://github.com/josdejong/mathjs/issues/1955">#1955</a>. 
+  Thanks <a href="https://github.com/poppinlp">@poppinlp</a>.
+- Breaking changes in `pickRandom`, see <a href="https://github.com/josdejong/mathjs/issues/1990">#1990</a>, <a href="https://github.com/josdejong/mathjs/issues/1976">#1976</a>.
+  - Will no longer return the input matrix when the given number is greater 
+    than the length of the provided possibles. Instead, the function always
+    returns results with the requested number of picks.
+  - Will now return a `Matrix` as output when input was a `Matrix`.
+  - Introduced a new syntax:
+    
+    ```
+    math.pickRandom(array, { weights, number, elementWise })
+    ```
+  - Introduced a new option `elementWise`, which is `true` by default. 
+    When setting `elementWise` to false, an array containing arrays will return
+    random pick of arrays instead of the elements inside of the nested arrays.
+
+
 <h1 id="20201102-version-760">2020-11-02, version 7.6.0 <a href="#20201102-version-760" title="Permalink">#</a></h1>
 
 - Implemented function `rotate(w, theta)`. See <a href="https://github.com/josdejong/mathjs/issues/1992">#1992</a>, <a href="https://github.com/josdejong/mathjs/issues/1160">#1160</a>. Thanks <a href="https://github.com/rnd-debug">@rnd-debug</a>. 

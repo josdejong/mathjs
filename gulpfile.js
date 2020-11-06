@@ -10,7 +10,7 @@ var rename = require('gulp-rename');
 var header = require('gulp-header');
 var handlebars = require('handlebars');
 
-var LIB_SRC           = './node_modules/mathjs/dist/*';
+var LIB_SRC           = './node_modules/mathjs/lib/browser/*';
 var LIB_DEST          = './js/lib';
 var DOCS_SRC          = './node_modules/mathjs/docs/**/*.md';
 var DOCS_DEST         = './docs';
@@ -19,7 +19,6 @@ var EXAMPLES_DEST     = './examples';
 var HISTORY_SRC       = './node_modules/mathjs/HISTORY.md';
 var HISTORY_DEST      = '.';
 var MATHJS            = LIB_DEST + '/math.js';
-var MATHJS_MIN        = LIB_DEST + '/math.min.js';
 var DOWNLOAD          = './download.md';
 
 var MD_HEADER =
@@ -97,7 +96,7 @@ var injectClickableUserTags = replace(/ (@([0-9a-zA-Z_-]+))/mg, function (match,
 });
 
 /**
- * copy math.js and math.min.js
+ * copy math.js
  */
 gulp.task('copy', function () {
   return gulp.src(LIB_SRC)
@@ -132,12 +131,11 @@ gulp.task('docs', function () {
  */
 gulp.task('copyExamples', function () {
   // TODO: make these script replacements more robust
-  var script = 'https://unpkg.com/mathjs@' + version() + '/dist/math.min.js';
+  var script = 'https://unpkg.com/mathjs@' + version() + '/lib/browser/math.js';
   console.log('copy examples', version(), { url: script })
   return gulp.src(EXAMPLES_SRC)
-      .pipe(replace(/src=".*dist\/math.js"/, 'src="' + script + '"'))
-      .pipe(replace(/src=".*dist\/math.min.js"/, 'src="' + script + '"'))
-      .pipe(replace(/'.*dist\/math.js'/, "'" + script + "'"))
+      .pipe(replace(/src=".*lib\/browser\/math.js"/, 'src="' + script + '"'))
+      .pipe(replace(/'.*lib\/browser\/math.js'/, "'" + script + "'"))
       .pipe(replace(/require\('..\/index'\)/, "require('mathjs')"))
       .pipe(gulp.dest(EXAMPLES_DEST));
 });
@@ -247,22 +245,9 @@ gulp.task('history', function () {
  * Update size and version number on the downloads page
  */
 gulp.task('version', function (cb) {
-  // get development size
-  function developmentSize(callback) {
-    fs.readFile(MATHJS, function (err, data) {
-      if (!err) {
-        var size = Math.round(data.length / 1024) + ' kB';
-        callback(null, size);
-      }
-      else {
-        callback(err);
-      }
-    });
-  }
-
-  // get (gzipped) production size
+  // get (gzipped) bundle size
   function productionSize(callback) {
-    fs.readFile(MATHJS_MIN, function (err, data) {
+    fs.readFile(MATHJS, function (err, data) {
       if (!err) {
         zlib.gzip(data, function (err, data) {
           if (!err) {
@@ -281,9 +266,8 @@ gulp.task('version', function (cb) {
   }
 
   // update version and library sizes in index.md
-  function updateVersion(developmentSize, productionSize, callback) {
-    log('development size: ' + developmentSize);
-    log('production size: ' + productionSize);
+  function updateVersion(productionSize, callback) {
+    log('bundle size: ' + productionSize);
     log('version: ' + version());
 
     fs.readFile(DOWNLOAD, function (err, data) {
@@ -291,17 +275,13 @@ gulp.task('version', function (cb) {
         data = String(data);
 
         // replace version
-        data = data.replace(/\(version [0-9]+\.[0-9]+\.[0-9]+(-SNAPSHOT)?\)/g, '(version ' + version() + ')');
+        data = data.replace(/\(version [0-9]+\.[0-9]+\.[0-9]+(-SNAPSHOT)?,/g, '(version ' + version() + ',');
         data = data.replace(/\/[0-9]+\.[0-9]+\.[0-9]+?(-SNAPSHOT)?\//g, '/' + version() + '/');
         data = data.replace(/\/mathjs@[0-9]+\.[0-9]+\.[0-9]+?(-SNAPSHOT)?\//g, '/mathjs@' + version() + '/');
 
-        // replace development size
-        data = data.replace(/<span id="development-size">([\w\s]*)<\/span>/g,
-                '<span id="development-size">' + developmentSize + '</span>');
-
-        // replace production size
-        data = data.replace(/<span id="production-size">([\w\s]*)<\/span>/g,
-                '<span id="production-size">' + productionSize + '</span>');
+        // replace bundle size
+        data = data.replace(/<span id="size">([\w\s]*)<\/span>/g,
+                '<span id="size">' + productionSize + '</span>');
 
         fs.writeFile(DOWNLOAD, data, callback);
       }
@@ -311,17 +291,14 @@ gulp.task('version', function (cb) {
     });
   }
 
-  developmentSize(function (err, devSize) {
-    productionSize(function (err, prodSize) {
-      if (devSize && prodSize) {
-        updateVersion(devSize, prodSize, cb);
-      }
-      else {
-        cb(new Error('Failed to calculate development size or production size'));
-      }
-    });
+  productionSize(function (err, prodSize) {
+    if (prodSize) {
+      updateVersion(prodSize, cb);
+    }
+    else {
+      cb(new Error('Failed to calculate development size or production size'));
+    }
   });
-
 });
 
 gulp.task('default', gulp.series(

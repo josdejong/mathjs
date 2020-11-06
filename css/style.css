@@ -208,16 +208,6 @@ div.cols .end {
   background-color: #f8f8f8;
 }
 
-#content table.download tr {
-  background-color: transparent;
-}
-
-#content table.download td,
-#content table.download th {
-  border: none;
-  padding: 5px 20px 5px 0;
-}
-
 pre {
   overflow: auto;
 }

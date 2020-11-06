@@ -18,6 +18,7 @@ math.pickRandom(array, number)
 math.pickRandom(array, weights)
 math.pickRandom(array, number, weights)
 math.pickRandom(array, weights, number)
+math.pickRandom(array, { weights, number, elementWise })
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -40,9 +41,13 @@ number &#124; Array | Returns a single random value from array when number is 1 
 ```js
 math.pickRandom([3, 6, 12, 2])                  // returns one of the values in the array
 math.pickRandom([3, 6, 12, 2], 2)               // returns an array of two of the values in the array
+math.pickRandom([3, 6, 12, 2], { number: 2 })   // returns an array of two of the values in the array
 math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1])    // returns one of the values in the array with weighted distribution
 math.pickRandom([3, 6, 12, 2], 2, [1, 3, 2, 1]) // returns an array of two of the values in the array with weighted distribution
 math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1], 2) // returns an array of two of the values in the array with weighted distribution
+
+math.pickRandom([{x: 1.0, y: 2.0}, {x: 1.1, y: 2.0}], { elementWise: false })
+    // returns one of the items in the array
 ```
 
 
