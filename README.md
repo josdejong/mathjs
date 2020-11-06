@@ -110,6 +110,12 @@ from the source files and put them in the folder lib.
 
 When developing new features for mathjs, it is good to be aware of the following background information.
 
+### Code
+
+The code of `mathjs` is written in ES modules, and requires all files to have a real, relative path, meaning the files must have a `*.js` extension. Please configure adding file extensions on auto import in your IDE.
+
+### Architecture
+
 What mathjs tries to achieve is to offer an environment where you can do calculations with mixed data types, 
 like multiplying a regular `number` with a `Complex` number or a `BigNumber`, and work with all of those in matrices. 
 Mathjs also allows to add a new data type, like say `BigInt`, with little effort.
@@ -122,7 +128,14 @@ The solution that mathjs uses has two main ingredients:
 
 At the lowest level, mathjs has immutable factory functions which create immutable functions. The core function `math.create(...)` creates a new instance having functions created from all passed factory functions. A mathjs instance is a collection of created functions. It contains a function like `math.import` to allow extending the instance with new functions, which can then be used in the expression parser.
 
-The code of `mathjs` is written in ES modules, and requires all files to have a real, relative path, meaning the files must have a `*.js` extension. Please configure adding file extensions on auto import in your IDE.
+### Build scripts
+
+The build script currently generates two types of output: 
+
+- **any**, generate entry points to create full versions of all functions
+- **number**: generating and entry points to create lightweight functions just supporting `number`
+
+For each function, an object is generated containing the factory functions of all dependencies of the function. This allows to just load a specific set of functions, and not load or bundle any other functionality. So for example, to just create function `add` you can do `math.create(addDependencies)`.
 
 
 ## Test
