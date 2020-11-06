@@ -1,6 +1,6 @@
 # History
 
-# 2020-11-06, version 8.0.0-beta.1
+# 2020-11-06, version 8.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
