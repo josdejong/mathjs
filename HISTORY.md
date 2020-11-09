@@ -2,6 +2,7 @@
 
 # not yet published, version 8.0.1
 
+- Fix #1979: missing "subset" dependency when using "mathjs/number" entry point.
 - Fix #2022: update pretty printing with MathJax example to the latest version 
   of MathJax. Thanks @pkra.
 
