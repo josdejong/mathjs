@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20201109-version-801">2020-11-09, version 8.0.1 <a href="#20201109-version-801" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1979">#1979</a>: missing "subset" dependency when using "mathjs/number" entry point.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2022">#2022</a>: update pretty printing with MathJax example to the latest version 
+  of MathJax. Thanks <a href="https://github.com/pkra">@pkra</a>.
+
+
 <h1 id="20201106-version-800">2020-11-06, version 8.0.0 <a href="#20201106-version-800" title="Permalink">#</a></h1>
 
 !!! BE CAREFUL: BREAKING CHANGES !!!

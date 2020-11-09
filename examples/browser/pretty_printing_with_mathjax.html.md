@@ -13,8 +13,9 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html) (cl
   <meta charset="utf-8">
   <title>math.js | pretty printing with MathJax</title>
 
-  <script src="https://unpkg.com/mathjs@8.0.0/lib/browser/math.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+  <script src="https://unpkg.com/mathjs@8.0.1/lib/browser/math.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 
   <style>
     body,
@@ -64,7 +65,7 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html) (cl
   </tr>
   <tr>
     <th>Pretty print</th>
-    <td><div id="pretty">$$$$</div></td>
+    <td><div id="pretty"></div></td>
   </tr>
   <tr>
     <th>Result</th>
@@ -88,9 +89,14 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html) (cl
   let parenthesis = 'keep'
   let implicit = 'hide'
 
+  const mj = function (tex) {
+    return MathJax.tex2svg(tex, {em: 16, ex: 6, display: false});
+  }
+
   // initialize with an example expression
   expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2'
-  pretty.innerHTML = '$$' + math.parse(expr.value).toTex({parenthesis: parenthesis}) + '$$'
+  pretty.innerHTML = '';
+  pretty.appendChild(mj(math.parse(expr.value).toTex({parenthesis: parenthesis})));
   result.innerHTML = math.format(math.evaluate(expr.value))
 
   expr.oninput = function () {
@@ -113,8 +119,9 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html) (cl
       console.log('LaTeX expression:', latex)
 
       // display and re-render the expression
-      const elem = MathJax.Hub.getAllJax('pretty')[0]
-      MathJax.Hub.Queue(['Text', elem, latex])
+      MathJax.typesetClear();
+      pretty.innerHTML = '';
+      pretty.appendChild(mj(latex));
     }
     catch (err) {}
   }
