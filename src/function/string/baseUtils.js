@@ -1,6 +1,15 @@
 import { factory } from '../../utils/factory'
 
-function baseFormatter (base, {typed, add, subtract, pow, smaller, larger, unaryMinus, bignumber, isInteger}) {
+function baseFormatter (base, {typed, add, subtract, divide, floor, mod, pow, smaller, larger, unaryMinus, number, bignumber, isInteger}) {
+  function n2base(n, base) {
+    const digits = '0123456789abcdef'
+    let result = []
+    while (larger(n, 0)) {
+      result.push(digits[number(mod(n, base))])
+      n = floor(divide(n, base))
+    }
+    return result.reverse().join('')
+  }
   const prefixes = { 2: '0b', 8: '0o', 16: '0x' }
   const prefix = prefixes[base]
   return function (n, size) {
@@ -18,14 +27,21 @@ function baseFormatter (base, {typed, add, subtract, pow, smaller, larger, unary
         throw new Error('Value must be an integer')
       }
       if (smaller(n, 0)) {
-        n = add(n, pow(2, size))
+        n = add(n, pow(bignumber(2), size))
       }
+      return `${prefix}${n2base(n, base)}`
+    } else {
+      let sign = ''
+      if (smaller(n, 0)) {
+        n = unaryMinus(n)
+        sign = '-'
+      }
+      return `${sign}${prefix}${n2base(n, base)}` 
     }
-    return `${prefix}${n.toString(base)}`
   }
 }
 
-const dependencies = ['typed', 'add', 'subtract', 'pow', 'smaller', 'larger', 'unaryMinus', 'bignumber', 'isInteger']
+const dependencies = ['typed', 'add', 'subtract', 'divide', 'floor', 'mod', 'pow', 'smaller', 'larger', 'unaryMinus', 'number', 'bignumber', 'isInteger']
 
 export function createBaseFormatterFactory (name, base) {
   return factory(name, dependencies, (dependencies) => {
