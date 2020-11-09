@@ -25,7 +25,7 @@ Run:
 
 ## Build and test
 
-Build the distribution files in folders `dist` and `lib`, and test everything by running:
+Build the distribution files in folders under `lib`, and test everything by running:
 
     npm run build-and-test
 
