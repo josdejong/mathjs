@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 8.0.1
+
+- Update pretty printing with MathJax example to the latest MathJax version.
+  Thanks @pkra.
+
+
 # 2020-11-06, version 8.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
