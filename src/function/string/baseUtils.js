@@ -1,9 +1,11 @@
 import { factory } from '../../utils/factory'
 
-function baseFormatter (base, {typed, add, subtract, divide, floor, mod, pow, smaller, larger, unaryMinus, number, bignumber, isInteger}) {
+function baseFormatter (base, {typed, add, subtract, divide, floor, mod, pow, smaller, larger, equal, unaryMinus, number, bignumber, isInteger}) {
   function n2base(n, base) {
     const digits = '0123456789abcdef'
     let result = []
+    if (equal(n, 0))
+      return '0'
     while (larger(n, 0)) {
       result.push(digits[number(mod(n, base))])
       n = floor(divide(n, base))
@@ -41,7 +43,7 @@ function baseFormatter (base, {typed, add, subtract, divide, floor, mod, pow, sm
   }
 }
 
-const dependencies = ['typed', 'add', 'subtract', 'divide', 'floor', 'mod', 'pow', 'smaller', 'larger', 'unaryMinus', 'number', 'bignumber', 'isInteger']
+const dependencies = ['typed', 'add', 'subtract', 'divide', 'floor', 'mod', 'pow', 'smaller', 'larger', 'equal', 'unaryMinus', 'number', 'bignumber', 'isInteger']
 
 export function createBaseFormatterFactory (name, base) {
   return factory(name, dependencies, (dependencies) => {
