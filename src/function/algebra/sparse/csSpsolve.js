@@ -1,5 +1,5 @@
-import { csReach } from './csReach'
-import { factory } from '../../../utils/factory'
+import { csReach } from './csReach.js'
+import { factory } from '../../../utils/factory.js'
 
 const name = 'csSpsolve'
 const dependencies = [

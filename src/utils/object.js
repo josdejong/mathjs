@@ -1,4 +1,4 @@
-import { isBigNumber } from './is'
+import { isBigNumber } from './is.js'
 
 /**
  * Clone an object

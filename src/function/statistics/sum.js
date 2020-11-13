@@ -1,6 +1,6 @@
-import { containsCollections, deepForEach, reduce } from '../../utils/collection'
-import { factory } from '../../utils/factory'
-import { improveErrorMessage } from './utils/improveErrorMessage'
+import { containsCollections, deepForEach, reduce } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
+import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'sum'
 const dependencies = ['typed', 'config', 'add', 'numeric']

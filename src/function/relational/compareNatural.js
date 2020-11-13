@@ -1,6 +1,6 @@
 import naturalSort from 'javascript-natural-sort'
-import { isDenseMatrix, isSparseMatrix, typeOf } from '../../utils/is'
-import { factory } from '../../utils/factory'
+import { isDenseMatrix, isSparseMatrix, typeOf } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'compareNatural'
 const dependencies = [

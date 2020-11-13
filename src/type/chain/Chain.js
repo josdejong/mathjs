@@ -1,7 +1,7 @@
-import { isChain } from '../../utils/is'
-import { format } from '../../utils/string'
-import { hasOwnProperty, lazy } from '../../utils/object'
-import { factory } from '../../utils/factory'
+import { isChain } from '../../utils/is.js'
+import { format } from '../../utils/string.js'
+import { hasOwnProperty, lazy } from '../../utils/object.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Chain'
 const dependencies = ['?on', 'math']

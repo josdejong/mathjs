@@ -1,6 +1,6 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 
 const Complex = math.Complex
 const Unit = math.Unit

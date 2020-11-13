@@ -1,6 +1,6 @@
-import { isBigNumber } from '../../utils/is'
-import { format, sign } from '../../utils/number'
-import { factory } from '../../utils/factory'
+import { isBigNumber } from '../../utils/is.js'
+import { format, sign } from '../../utils/number.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Range'
 const dependencies = []

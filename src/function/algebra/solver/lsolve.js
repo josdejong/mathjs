@@ -1,5 +1,5 @@
-import { factory } from '../../../utils/factory'
-import { createSolveValidation } from './utils/solveValidation'
+import { factory } from '../../../utils/factory.js'
+import { createSolveValidation } from './utils/solveValidation.js'
 
 const name = 'lsolve'
 const dependencies = [

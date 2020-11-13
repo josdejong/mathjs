@@ -1,7 +1,7 @@
-import { isBigNumber, isCollection, isNumber } from '../../utils/is'
-import { factory } from '../../utils/factory'
-import { errorTransform } from './utils/errorTransform'
-import { createMin } from '../../function/statistics/min'
+import { isBigNumber, isCollection, isNumber } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { errorTransform } from './utils/errorTransform.js'
+import { createMin } from '../../function/statistics/min.js'
 
 const name = 'min'
 const dependencies = ['typed', 'config', 'numeric', 'smaller']

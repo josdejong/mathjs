@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const combinationsWithRep = math.combinationsWithRep
 
 describe('combinations', function () {

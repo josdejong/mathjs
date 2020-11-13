@@ -1,8 +1,8 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
-import { isBigNumber, isFraction } from '../../../../src/utils/is'
-import { hasOwnProperty } from '../../../../src/utils/object'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
+import { isBigNumber, isFraction } from '../../../../src/utils/is.js'
+import { hasOwnProperty } from '../../../../src/utils/object.js'
 
 const Unit = math.Unit
 

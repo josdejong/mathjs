@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { atanhNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { atanhNumber } from '../../plain/number/index.js'
 
 const name = 'atanh'
 const dependencies = ['typed', 'config', 'Complex']

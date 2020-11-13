@@ -1,6 +1,6 @@
-import { factory } from '../../../utils/factory'
-import { csEreach } from './csEreach'
-import { createCsSymperm } from './csSymperm'
+import { factory } from '../../../utils/factory.js'
+import { csEreach } from './csEreach.js'
+import { createCsSymperm } from './csSymperm.js'
 
 const name = 'csChol'
 const dependencies = [

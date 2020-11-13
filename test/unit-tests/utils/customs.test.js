@@ -1,8 +1,8 @@
 // test boolean utils
 import assert from 'assert'
 
-import { isPlainObject, isSafeMethod, isSafeProperty } from '../../../src/utils/customs'
-import math from '../../../src/bundleAny'
+import { isPlainObject, isSafeMethod, isSafeProperty } from '../../../src/utils/customs.js'
+import math from '../../../src/defaultInstance.js'
 
 describe('customs', function () {
   describe('isSafeMethod', function () {

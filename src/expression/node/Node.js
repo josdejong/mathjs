@@ -1,8 +1,8 @@
-import { isNode } from '../../utils/is'
+import { isNode } from '../../utils/is.js'
 
-import { keywords } from '../keywords'
-import { deepStrictEqual, hasOwnProperty } from '../../utils/object'
-import { factory } from '../../utils/factory'
+import { keywords } from '../keywords.js'
+import { deepStrictEqual, hasOwnProperty } from '../../utils/object.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Node'
 const dependencies = ['mathWithTransform']
@@ -115,7 +115,8 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    */
   Node.prototype.traverse = function (callback) {
     // execute callback for itself
-    callback(this, null, null) // eslint-disable-line standard/no-callback-literal
+    // eslint-disable-next-line
+    callback(this, null, null)
 
     // recursively traverse over all childs of a node
     function _traverse (node, callback) {

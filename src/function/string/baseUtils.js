@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { isInteger } from '../../utils/number'
+import { factory } from '../../utils/factory.js'
+import { isInteger } from '../../utils/number.js'
 
 function baseFormatter (base) {
   const prefixes = { 2: '0b', 8: '0o', 16: '0x' }

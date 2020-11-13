@@ -1,5 +1,5 @@
-import { reshape as arrayReshape } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { reshape as arrayReshape } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'reshape'
 const dependencies = ['typed', 'isInteger', 'matrix']

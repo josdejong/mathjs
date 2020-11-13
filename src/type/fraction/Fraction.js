@@ -1,5 +1,5 @@
 import Fraction from 'fraction.js'
-import { factory } from '../../utils/factory'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Fraction'
 const dependencies = []

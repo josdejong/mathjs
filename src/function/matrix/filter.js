@@ -1,6 +1,6 @@
-import { filter, filterRegExp } from '../../utils/array'
-import { maxArgumentCount } from '../../utils/function'
-import { factory } from '../../utils/factory'
+import { filter, filterRegExp } from '../../utils/array.js'
+import { maxArgumentCount } from '../../utils/function.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'filter'
 const dependencies = ['typed']

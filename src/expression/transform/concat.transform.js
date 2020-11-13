@@ -1,7 +1,7 @@
-import { isBigNumber, isNumber } from '../../utils/is'
-import { errorTransform } from './utils/errorTransform'
-import { factory } from '../../utils/factory'
-import { createConcat } from '../../function/matrix/concat'
+import { isBigNumber, isNumber } from '../../utils/is.js'
+import { errorTransform } from './utils/errorTransform.js'
+import { factory } from '../../utils/factory.js'
+import { createConcat } from '../../function/matrix/concat.js'
 
 const name = 'concat'
 const dependencies = ['typed', 'matrix', 'isInteger']

@@ -1,5 +1,5 @@
-import { clone as objectClone } from '../../utils/object'
-import { factory } from '../../utils/factory'
+import { clone as objectClone } from '../../utils/object.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'clone'
 const dependencies = ['typed']

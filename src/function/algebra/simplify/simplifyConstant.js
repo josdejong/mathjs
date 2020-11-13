@@ -1,8 +1,8 @@
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
-import { isFraction, isNode, isOperatorNode } from '../../../utils/is'
-import { factory } from '../../../utils/factory'
-import { createUtil } from './util'
-import { noBignumber, noFraction } from '../../../utils/noop'
+import { isFraction, isNode, isOperatorNode } from '../../../utils/is.js'
+import { factory } from '../../../utils/factory.js'
+import { createUtil } from './util.js'
+import { noBignumber, noFraction } from '../../../utils/noop.js'
 
 const name = 'simplifyConstant'
 const dependencies = [
@@ -70,12 +70,17 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
     }
   })
 
-  // convert a number to a fraction only if it can be expressed exactly
+  // convert a number to a fraction only if it can be expressed exactly,
+  // and when both numerator and denominator are small enough
   function _exactFraction (n, options) {
     const exactFractions = (options && options.exactFractions !== false)
     if (exactFractions && isFinite(n) && fraction) {
       const f = fraction(n)
-      if (f.valueOf() === n) {
+      const fractionsLimit = (options && typeof options.fractionsLimit === 'number')
+        ? options.fractionsLimit
+        : Infinity // no limit by default
+
+      if (f.valueOf() === n && f.n < fractionsLimit && f.d < fractionsLimit) {
         return f
       }
     }

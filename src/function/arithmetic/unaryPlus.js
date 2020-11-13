@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { unaryPlusNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { unaryPlusNumber } from '../../plain/number/index.js'
 
 const name = 'unaryPlus'
 const dependencies = ['typed', 'config', 'BigNumber']

@@ -1,7 +1,7 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
+import math from '../../../../src/defaultInstance.js'
+import approx from '../../../../tools/approx.js'
 
-import math from '../../../../src/bundleAny'
 const bignumber = math.bignumber
 const complex = math.complex
 const unit = math.unit
@@ -58,8 +58,8 @@ describe('rotationMatrix', function () {
   })
 
   it('should create a 2D rotation matrix of given complex angle', function () {
-    const reI = 1.5430806348152437784
-    const imI = 1.1752011936438014568
+    const reI = 1.54308063481524
+    const imI = 1.17520119364380
     approx.deepEqual(rotationMatrix(math.i), matrix([[complex(reI, 0.0), complex(0.0, -imI)],
       [complex(0.0, imI), complex(reI, 0.0)]]))
 
@@ -77,7 +77,7 @@ describe('rotationMatrix', function () {
     approx.deepEqual(rotationMatrix(unit('-135deg')), matrix([[minusSqrtTwoInv, sqrtTwoInv], [minusSqrtTwoInv, minusSqrtTwoInv]]))
 
     const cosComplex = complex(0.833730025131149, -0.988897705762865)
-    const sinComplex = complex(1.298457581415977, 0.63496391478473611)
+    const sinComplex = complex(1.298457581415977, 0.6349639147847361)
     approx.deepEqual(rotationMatrix(unit(complex(1, 1), 'rad')), matrix([[cosComplex, multiply(-1.0, sinComplex)], [sinComplex, cosComplex]]))
   })
 

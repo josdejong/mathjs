@@ -1,9 +1,9 @@
-import { factory } from '../../utils/factory'
-import { isMatrix } from '../../utils/is'
-import { extend } from '../../utils/object'
-import { arraySize } from '../../utils/array'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { factory } from '../../utils/factory.js'
+import { isMatrix } from '../../utils/is.js'
+import { extend } from '../../utils/object.js'
+import { arraySize } from '../../utils/array.js'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
 
 const name = 'multiply'
 const dependencies = [

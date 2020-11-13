@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { ArgumentsError } from '../../../src/error/ArgumentsError'
+import { ArgumentsError } from '../../../src/error/ArgumentsError.js'
 
 describe('ArgumentsError', function () {
   it('should construct an ArgumentsError without max', function () {

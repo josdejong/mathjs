@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { arraySize } from '../../utils/array'
-import { isMatrix } from '../../utils/is'
-import { IndexError } from '../../error/IndexError'
+import { factory } from '../../utils/factory.js'
+import { arraySize } from '../../utils/array.js'
+import { isMatrix } from '../../utils/is.js'
+import { IndexError } from '../../error/IndexError.js'
 
 const name = 'apply'
 const dependencies = ['typed', 'isInteger']

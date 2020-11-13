@@ -2,8 +2,8 @@
 
 import assert from 'assert'
 
-import approx from '../../../tools/approx'
-import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx.js'
+import math from '../../../src/defaultInstance.js'
 const Parser = math.Parser
 
 describe('parser', function () {

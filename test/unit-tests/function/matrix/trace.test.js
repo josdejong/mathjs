@@ -1,6 +1,6 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 
 describe('trace', function () {
   it('should calculate correctly the trace of a NxN array', function () {

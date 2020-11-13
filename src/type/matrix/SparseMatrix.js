@@ -1,10 +1,10 @@
-import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
-import { isInteger } from '../../utils/number'
-import { format } from '../../utils/string'
-import { clone, deepStrictEqual } from '../../utils/object'
-import { arraySize, getArrayDataType, unsqueeze, validateIndex } from '../../utils/array'
-import { factory } from '../../utils/factory'
-import { DimensionError } from '../../error/DimensionError'
+import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
+import { isInteger } from '../../utils/number.js'
+import { format } from '../../utils/string.js'
+import { clone, deepStrictEqual } from '../../utils/object.js'
+import { arraySize, getArrayDataType, unsqueeze, validateIndex } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
+import { DimensionError } from '../../error/DimensionError.js'
 
 const name = 'SparseMatrix'
 const dependencies = [

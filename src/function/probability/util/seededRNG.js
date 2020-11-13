@@ -1,12 +1,6 @@
-// create a random seed here to prevent an infinite loop from seed-random
-// inside the factory. Reason is that math.random is defined as a getter/setter
-// and seed-random generates a seed from the local entropy by reading every
-// defined object including `math` itself. That means that whilst getting
-// math.random, it tries to get math.random, etc... an infinite loop.
-// See https://github.com/ForbesLindesay/seed-random/issues/6
-import seedrandom from 'seed-random'
+import seedrandom from 'seedrandom'
 
-const singletonRandom = /* #__PURE__ */ seedrandom()
+const singletonRandom = /* #__PURE__ */ seedrandom(Date.now())
 
 export function createRng (randomSeed) {
   let random

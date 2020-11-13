@@ -1,8 +1,8 @@
-import { isInteger } from './number'
-import { isNumber } from './is'
-import { format } from './string'
-import { DimensionError } from '../error/DimensionError'
-import { IndexError } from '../error/IndexError'
+import { isInteger } from './number.js'
+import { isNumber } from './is.js'
+import { format } from './string.js'
+import { DimensionError } from '../error/DimensionError.js'
+import { IndexError } from '../error/IndexError.js'
 
 /**
  * Calculate the size of a multi dimensional array.

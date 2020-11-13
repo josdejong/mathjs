@@ -1,4 +1,4 @@
-import { isNumber } from './is'
+import { isNumber } from './is.js'
 
 /**
  * @typedef {{sign: '+' | '-' | '', coefficients: number[], exponent: number}} SplitValue

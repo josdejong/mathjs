@@ -1,10 +1,10 @@
-import { isConstantNode, isParenthesisNode } from '../../utils/is'
-import { factory } from '../../utils/factory'
-import { createUtil } from './simplify/util'
-import { createSimplifyCore } from './simplify/simplifyCore'
-import { createSimplifyConstant } from './simplify/simplifyConstant'
-import { createResolve } from './simplify/resolve'
-import { hasOwnProperty } from '../../utils/object'
+import { isConstantNode, isParenthesisNode } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { createUtil } from './simplify/util.js'
+import { createSimplifyCore } from './simplify/simplifyCore.js'
+import { createSimplifyConstant } from './simplify/simplifyConstant.js'
+import { createResolve } from './simplify/resolve.js'
+import { hasOwnProperty } from '../../utils/object.js'
 
 const name = 'simplify'
 const dependencies = [
@@ -120,8 +120,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * - [Symbolic computation - Simplification (Wikipedia)](https://en.wikipedia.org/wiki/Symbolic_computation#Simplification)
    *
    *  An optional `options` argument can be passed as last argument of `simplify`.
-   *  There is currently one option available: `exactFractions`, a boolean which
-   *  is `true` by default.
+   *  There is currently one option available:
+   *  - `exactFractions`: a boolean which is `true` by default.
+   *  - `fractionsLimit`: when `exactFractions` is true, a fraction will be returned
+   *    only when both numerator and denominator are smaller than `fractionsLimit`.
+   *    Default value is 10000.
    *
    * Syntax:
    *

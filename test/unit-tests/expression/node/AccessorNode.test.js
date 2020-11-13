@@ -1,7 +1,7 @@
 // test AccessorNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const bigmath = math.create({ number: 'BigNumber' })
 const Node = math.Node
 const ConstantNode = math.ConstantNode
@@ -278,7 +278,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, new IndexNode([b, c]))
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

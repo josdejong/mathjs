@@ -1,10 +1,10 @@
-import { isNode } from '../../utils/is'
-import { map } from '../../utils/array'
-import { escape } from '../../utils/string'
-import { getSafeProperty, isSafeMethod } from '../../utils/customs'
-import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators'
-import { latexOperators } from '../../utils/latex'
-import { factory } from '../../utils/factory'
+import { isNode } from '../../utils/is.js'
+import { map } from '../../utils/array.js'
+import { escape } from '../../utils/string.js'
+import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
+import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators.js'
+import { latexOperators } from '../../utils/latex.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'OperatorNode'
 const dependencies = [

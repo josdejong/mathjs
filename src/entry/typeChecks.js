@@ -40,4 +40,4 @@ export {
   isSparseMatrix,
   isSymbolNode,
   isUnit
-} from '../utils/is'
+} from '../utils/is.js'

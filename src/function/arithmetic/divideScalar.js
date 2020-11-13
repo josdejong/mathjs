@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { typeOf } from '../../utils/is'
+import { factory } from '../../utils/factory.js'
+import { typeOf } from '../../utils/is.js'
 
 const name = 'divideScalar'
 const dependencies = ['typed', 'numeric']

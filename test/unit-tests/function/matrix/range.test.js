@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const range = math.range
 const matrix = math.matrix
 const bignumber = math.bignumber

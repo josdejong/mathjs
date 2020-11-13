@@ -1,5 +1,5 @@
-import { isInteger } from '../../utils/number'
-import { product } from '../../utils/product'
+import { isInteger } from '../../utils/number.js'
+import { product } from '../../utils/product.js'
 
 export function combinationsNumber (n, k) {
   if (!isInteger(n) || n < 0) {

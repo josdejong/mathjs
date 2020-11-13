@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { log1p as _log1p } from '../../utils/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { log1p as _log1p } from '../../utils/number.js'
 
 const name = 'log1p'
 const dependencies = ['typed', 'config', 'divideScalar', 'log', 'Complex']

@@ -1,7 +1,6 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 
 const unit = math.unit
 const complex = math.complex
@@ -12,7 +11,7 @@ const multiply = math.multiply
 const matrix = math.matrix
 const rotate = math.rotate
 
-describe('rotationMatrix', function () {
+describe('rotate', function () {
   it('should return a rotated 1x2 vector when it is provided as array', function () {
     assert.deepStrictEqual(rotate([1, 0], 0), [1, 0])
 

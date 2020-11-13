@@ -1,8 +1,8 @@
-import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is'
-import { maxArgumentCount } from '../../utils/function'
-import { forEach } from '../../utils/array'
-import { factory } from '../../utils/factory'
-import { compileInlineExpression } from './utils/compileInlineExpression'
+import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
+import { maxArgumentCount } from '../../utils/function.js'
+import { forEach } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
+import { compileInlineExpression } from './utils/compileInlineExpression.js'
 
 const name = 'forEach'
 const dependencies = ['typed']

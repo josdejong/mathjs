@@ -1,6 +1,6 @@
-import { csMarked } from './csMarked'
-import { csMark } from './csMark'
-import { csDfs } from './csDfs'
+import { csMarked } from './csMarked.js'
+import { csMark } from './csMark.js'
+import { csDfs } from './csDfs.js'
 
 /**
  * The csReach function computes X = Reach(B), where B is the nonzero pattern of the n-by-1

@@ -1,7 +1,7 @@
 // test RelationalNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
@@ -103,7 +103,7 @@ describe('RelationalNode', function () {
     const n = new RelationalNode(['smaller', 'smaller'], [one, two, three])
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

@@ -1,7 +1,7 @@
-import { isBigNumber } from '../../utils/is'
-import { isInteger } from '../../utils/number'
-import { resize } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { isBigNumber } from '../../utils/is.js'
+import { isInteger } from '../../utils/number.js'
+import { resize } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'ones'
 const dependencies = ['typed', 'config', 'matrix', 'BigNumber']

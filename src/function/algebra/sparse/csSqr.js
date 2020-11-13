@@ -1,9 +1,9 @@
-import { csPermute } from './csPermute'
-import { csPost } from './csPost'
-import { csEtree } from './csEtree'
-import { createCsAmd } from './csAmd'
-import { createCsCounts } from './csCounts'
-import { factory } from '../../../utils/factory'
+import { csPermute } from './csPermute.js'
+import { csPost } from './csPost.js'
+import { csEtree } from './csEtree.js'
+import { createCsAmd } from './csAmd.js'
+import { createCsCounts } from './csCounts.js'
+import { factory } from '../../../utils/factory.js'
 
 const name = 'csSqr'
 const dependencies = [

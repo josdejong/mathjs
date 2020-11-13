@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { asechNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { asechNumber } from '../../plain/number/index.js'
 
 const name = 'asech'
 const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
