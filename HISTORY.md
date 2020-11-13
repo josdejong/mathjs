@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 8.0.2
+
+- Fix #2026: have function `simplify` not output decimal values into fractions
+  with very large numerator/denominator.
+
+
 # 2020-11-09, version 8.0.1
 
 - Fix #1979: missing "subset" dependency when using "mathjs/number" entry point.

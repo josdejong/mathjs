@@ -62,6 +62,8 @@ describe('simplify', function () {
   it('should simplify rational expressions with no symbols to fraction', function () {
     simplifyAndCompare('3*4', '12')
     simplifyAndCompare('3+2/4', '7/2')
+    simplifyAndCompare('0.0000125', '0.0000125') // no fraction output
+    simplifyAndCompare('5667.63', '5667.63') // no fraction output
   })
 
   it('should simplify equations with different variables', function () {
