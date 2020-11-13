@@ -62,8 +62,6 @@ describe('simplify', function () {
   it('should simplify rational expressions with no symbols to fraction', function () {
     simplifyAndCompare('3*4', '12')
     simplifyAndCompare('3+2/4', '7/2')
-    simplifyAndCompare('0.0000125', '0.0000125') // no fraction output
-    simplifyAndCompare('5667.63', '5667.63') // no fraction output
   })
 
   it('should simplify equations with different variables', function () {
@@ -295,13 +293,19 @@ describe('simplify', function () {
     simplifyAndCompare('x-0', 'x')
   })
 
-  it('new options parameters', function () {
+  it('options parameters', function () {
     simplifyAndCompare('0.1*x', 'x/10')
     simplifyAndCompare('0.1*x', 'x/10', math.simplify.rules, {}, { exactFractions: true })
     simplifyAndCompare('0.1*x', '0.1*x', math.simplify.rules, {}, { exactFractions: false })
     simplifyAndCompare('y+0.1*x', 'x/10+1', { y: 1 })
     simplifyAndCompare('y+0.1*x', 'x/10+1', { y: 1 }, { exactFractions: true })
     simplifyAndCompare('y+0.1*x', '0.1*x+1', { y: 1 }, { exactFractions: false })
+
+    simplifyAndCompare('0.00125', '1 / 800', math.simplify.rules, {}, { exactFractions: true })
+    simplifyAndCompare('0.00125', '0.00125', math.simplify.rules, {}, { exactFractions: true, fractionsLimit: 100 })
+    simplifyAndCompare('0.4', '2 / 5', math.simplify.rules, {}, { exactFractions: true, fractionsLimit: 100 })
+    simplifyAndCompare('100.8', '504 / 5', math.simplify.rules, {}, { exactFractions: true })
+    simplifyAndCompare('100.8', '100.8', math.simplify.rules, {}, { exactFractions: true, fractionsLimit: 100 })
   })
 
   it('resolve() should substitute scoped constants', function () {

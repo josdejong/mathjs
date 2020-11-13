@@ -17,8 +17,6 @@ const dependencies = [
   'SymbolNode'
 ]
 
-const FRACTION_LIMIT = 1e4
-
 export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies, ({
   typed,
   config,
@@ -78,7 +76,11 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
     const exactFractions = (options && options.exactFractions !== false)
     if (exactFractions && isFinite(n) && fraction) {
       const f = fraction(n)
-      if (f.valueOf() === n && f.n < FRACTION_LIMIT && f.d < FRACTION_LIMIT) {
+      const fractionsLimit = (options && typeof options.fractionsLimit === 'number')
+        ? options.fractionsLimit
+        : Infinity // no limit by default
+
+      if (f.valueOf() === n && f.n < fractionsLimit && f.d < fractionsLimit) {
         return f
       }
     }

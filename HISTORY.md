@@ -2,8 +2,8 @@
 
 # not yet published, version 8.0.2
 
-- Fix #2026: have function `simplify` not output decimal values into fractions
-  with very large numerator/denominator.
+- Fix #2026: Implement a new option `fractionsLimit` for function `simplify`, 
+  defaulting to `Infinity`.
 
 
 # 2020-11-09, version 8.0.1
