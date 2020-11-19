@@ -50,6 +50,18 @@ describe('SymbolNode', function () {
     assert.strictEqual(expr2.evaluate(scope2), math.sqrt)
   })
 
+  it('should allow customizing the behavior for undefined symbols', function () {
+    const original = SymbolNode.prototype.handleUndefinedSymbol
+
+    const foo = new SymbolNode('foo')
+    assert.throws(() => foo.evaluate(), /Undefined symbol foo/)
+
+    SymbolNode.prototype.handleUndefinedSymbol = () => 0
+    assert.strictEqual(foo.evaluate(), 0)
+
+    SymbolNode.prototype.handleUndefinedSymbol = original
+  })
+
   it('should filter a SymbolNode', function () {
     const n = new SymbolNode('x')
     assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [n])
