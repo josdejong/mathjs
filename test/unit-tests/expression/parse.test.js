@@ -298,7 +298,6 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('0x12ii') })
       assert.throws(function () { parseAndEval('0x12u') })
       assert.throws(function () { parseAndEval('0x12i-8') })
-      assert.throws(function () { parseAndEval('0x12i54') })
     })
   })
 
