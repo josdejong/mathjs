@@ -179,12 +179,14 @@ describe('format', function () {
       assert.strictEqual(math.oct(0o70), '0o70')
       assert.strictEqual(math.hex(0xf0), '0xf0')
       assert.strictEqual(math.hex(0x7fffffff), '0x7fffffff')
+      assert.strictEqual(math.hex(127, 8), '0x7f')
       assert.strictEqual(math.hex(-1, 8), '0xff')
       assert.strictEqual(math.oct(-1, 8), '0o377')
       assert.strictEqual(math.bin(-1, 8), '0b11111111')
+      assert.strictEqual(math.hex(1.25), '0x1.4')
     })
     it('should throw an error for invalid values', function () {
-
+      assert.throws(function () { math.hex(1.25, 8) }, Error('Value must be an integer'))
     })
   })
 

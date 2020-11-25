@@ -265,6 +265,7 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('0x7fffffffi32'), 2 ** 31 - 1)
       assert.strictEqual(parseAndEval('0x1fffffffffffff'), 2 ** 53 - 1)
       assert.strictEqual(parseAndEval('0x1fffffffffffffi53'), -1)
+      assert.strictEqual(parseAndEval('0xfffffffffffffffffffffffff'), 0xfffffffffffffffffffffffff)
     })
 
     it('should parse a number followed by e', function () {
