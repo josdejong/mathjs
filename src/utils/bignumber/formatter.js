@@ -1,5 +1,4 @@
-import { bignumber } from '../../plain/bignumber/index'
-import { isInteger } from '../number'
+import { isInteger } from '../number.js'
 
 /**
  * Formats a BigNumber in a given base
@@ -9,6 +8,8 @@ import { isInteger } from '../number'
  * @returns {string}
  */
 function formatBigNumberToBase (n, base, size) {
+  const BigNumberCtor = n.clone()
+  const big2 = new BigNumberCtor(2)
   if (size) {
     if (size < 1) {
       throw new Error('size must be in greater than 0')
@@ -16,14 +17,14 @@ function formatBigNumberToBase (n, base, size) {
     if (!isInteger(size)) {
       throw new Error('size must be an integer')
     }
-    if (n.greaterThan(bignumber(2).pow(size - 1).sub(1)) || n.lessThan(bignumber(2).pow(size - 1).mul(-1))) {
+    if (n.greaterThan(big2.pow(size - 1).sub(1)) || n.lessThan(big2.pow(size - 1).mul(-1))) {
       throw new Error(`Value must be in range [-2^${size - 1}, 2^${size - 1}-1]`)
     }
     if (!n.isInteger()) {
       throw new Error('Value must be an integer')
     }
     if (n.lessThan(0)) {
-      n = n.add(bignumber(2).pow(size))
+      n = n.add(big2.pow(size))
     }
   }
   switch (base) {
