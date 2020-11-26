@@ -1,4 +1,7 @@
-import { createBaseFormatterFactory } from './baseUtils'
+import { factory } from '../../utils/factory'
+
+const name = 'bin'
+const dependencies = ['typed', 'format']
 
 /**
  * Format a number as binary.
@@ -20,4 +23,13 @@ import { createBaseFormatterFactory } from './baseUtils'
  * @param {number} value    Value to be stringified
  * @return {string}         The formatted value
  */
-export const createBin = createBaseFormatterFactory('bin', 2)
+export const createBin = factory(name, dependencies, ({ typed, format }) => {
+  return typed(name, {
+    'number | BigNumber': function(n) {
+      return format(n, {base: 2})
+    },
+    'number | BigNumber, number': function(n, wordSize) {
+      return format(n, {base: 2, wordSize: wordSize})
+    }
+  })
+})

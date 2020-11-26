@@ -105,6 +105,41 @@ export const expm1 = /* #__PURE__ */ Math.expm1 || function expm1 (x) {
 }
 
 /**
+ * Formats a number in a given base
+ * @param {number} n 
+ * @param {number} base 
+ * @param {number} size 
+ * @returns {string} 
+ */
+function formatNumberToBase (n, base, size) {
+  const prefixes = { 2: '0b', 8: '0o', 16: '0x' }
+  const prefix = prefixes[base]
+  if (size) {
+    if (size < 1) {
+      throw new Error('size must be in greater than 0')
+    }
+    if (!isInteger(size)) {
+      throw new Error('size must be an integer')
+    }
+    if (n > 2 ** (size - 1) - 1 || n < -(2 ** (size - 1))) {
+      throw new Error(`Value must be in range [-2^${size - 1}, 2^${size - 1}-1]`)
+    }
+    if (!isInteger(n)) {
+      throw new Error('Value must be an integer')
+    }
+    if (n < 0) {
+      n = n + 2 ** size
+    }
+  }
+  let sign = ''
+  if (n < 0) {
+    n = -n
+    sign = '-'
+  }
+  return `${sign}${prefix}${n.toString(base)}`
+}
+
+/**
  * Convert a number to a formatted string representation.
  *
  * Syntax:
@@ -204,6 +239,23 @@ export function format (value, options) {
       precision = options
     } else if (isNumber(options.precision)) {
       precision = options.precision
+    }
+    
+    if (options.base) {
+      if (![2, 8, 16].includes(options.base)) {
+        throw new Error('Option "base" must be one of 2, 8, or 16')
+      }
+      let base = options.base
+      if (options.wordSize) {
+        if (typeof(options.wordSize) !== 'number') {
+          throw new Error('Option "wordSize" must be a number')
+        }
+      }
+      return formatNumberToBase(value, base, options.wordSize)
+    } else {
+      if (options.wordSize) {
+        throw new Error('Option "wordSize" must used with option "base"')
+      }
     }
   }
 

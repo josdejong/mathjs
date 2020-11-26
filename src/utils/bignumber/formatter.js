@@ -1,3 +1,39 @@
+import { bignumber } from '../../plain/bignumber/index'
+import { isInteger } from '../number'
+
+/**
+ * Formats a BigNumber in a given base
+ * @param {BigNumber} n
+ * @param {number} base
+ * @param {number} size
+ * @returns {string}
+ */
+function formatBigNumberToBase (n, base, size) {
+  if (size) {
+    if (size < 1) {
+      throw new Error('size must be in greater than 0')
+    }
+    if (!isInteger(size)) {
+      throw new Error('size must be an integer')
+    }
+    if (n.greaterThan(bignumber(2).pow(size - 1).sub(1)) || n.lessThan(bignumber(2).pow(size - 1).mul(-1))) {
+      throw new Error(`Value must be in range [-2^${size - 1}, 2^${size - 1}-1]`)
+    }
+    if (!n.isInteger()) {
+      throw new Error('Value must be an integer')
+    }
+    if (n.lessThan(0)) {
+      n = n.add(bignumber(2).pow(size))
+    }
+  }
+  switch (base) {
+    case 2: return n.toBinary()
+    case 8: return n.toOctal()
+    case 16: return n.toHexadecimal()
+    default: throw new Error(`Base ${base} not supported `)
+  }
+}
+
 /**
  * Convert a BigNumber to a formatted string representation.
  *
@@ -25,6 +61,10 @@
  *                                          Lower bound is included, upper bound
  *                                          is excluded.
  *                                          For example '123.4' and '1.4e7'.
+ *                         'bin', 'oct, or 
+ *                         'hex'            Format the number using binary, octal,
+ *                                          or hexadecimal notation.
+ *                                          For example '0b1101' and '0x10fe'.
  *                     {number} precision   A number between 0 and 16 to round
  *                                          the digits of the number.
  *                                          In case of notations 'exponential',
@@ -91,6 +131,23 @@ export function format (value, options) {
       precision = options
     } else if (options.precision) {
       precision = options.precision
+    }
+    
+    if (options.base) {
+      if (![2, 8, 16].includes(options.base)) {
+        throw new Error('Option "base" must be one of 2, 8, or 16')
+      }
+      let base = options.base
+      if (options.wordSize) {
+        if (typeof(options.wordSize) != 'number') {
+          throw new Error('Option "wordSize" must be a number')
+        }
+      }
+      return formatBigNumberToBase(value, base, options.wordSize)
+    } else {
+      if (options.wordSize) {
+        throw new Error('Option "wordSize" must used with option "base"')
+      }
     }
   }
 
