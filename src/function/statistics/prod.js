@@ -1,6 +1,6 @@
-import { deepForEach } from '../../utils/collection'
-import { factory } from '../../utils/factory'
-import { improveErrorMessage } from './utils/improveErrorMessage'
+import { deepForEach } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
+import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'prod'
 const dependencies = ['typed', 'config', 'multiplyScalar', 'numeric']

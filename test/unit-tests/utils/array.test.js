@@ -10,7 +10,7 @@ import {
   unsqueeze,
   validate,
   validateIndex
-} from '../../../src/utils/array'
+} from '../../../src/utils/array.js'
 
 describe('util.array', function () {
   describe('size', function () {

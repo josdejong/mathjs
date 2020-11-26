@@ -6,9 +6,9 @@
  * into ES5 code under /lib and can be used straight by node.js
  */
 import assert from 'assert'
-import * as allIsFunctions from './is'
-import { create } from '../core/create'
-import { endsWith } from './string'
+import * as allIsFunctions from './is.js'
+import { create } from '../core/create.js'
+import { endsWith } from './string.js'
 
 export function validateBundle (expectedBundleStructure, bundle) {
   const originalWarn = console.warn

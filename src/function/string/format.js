@@ -1,5 +1,5 @@
-import { format as formatString } from '../../utils/string'
-import { factory } from '../../utils/factory'
+import { format as formatString } from '../../utils/string.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'format'
 const dependencies = ['typed']

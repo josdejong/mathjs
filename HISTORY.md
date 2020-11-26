@@ -1,5 +1,55 @@
 # History
 
+# not yet published, version 8.0.2
+
+- Implemented units `kilogramforce` (`kgf`). Thanks @rnd-debug.
+- Fix #2026: Implement a new option `fractionsLimit` for function `simplify`, 
+  defaulting to `Infinity`.
+
+
+# 2020-11-09, version 8.0.1
+
+- Fix #1979: missing "subset" dependency when using "mathjs/number" entry point.
+- Fix #2022: update pretty printing with MathJax example to the latest version 
+  of MathJax. Thanks @pkra.
+
+
+# 2020-11-06, version 8.0.0
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- You can now use mathjs directly in node.js using ES modules without need for 
+  a transpiler (see #1928, #1941, #1962). 
+  Automatically loading either commonjs code or ES modules code is improved.
+  All generated code is moved under `/lib`: the browser bundle is moved from 
+  `/dist` to `/lib/browser`, ES module files are moved to `/lib/esm`, 
+  and commonjs files are moved to `/lib/cjs`. Thanks @GreenImp.
+- Non-minified bundle `dist/math.js` is no longer provided. Either use the
+  minified bundle, or create a bundle yourself.
+- Replaced random library `seed-random` with `seedrandom`, see #1955. 
+  Thanks @poppinlp.
+- Breaking changes in `pickRandom`, see #1990, #1976.
+  - Will no longer return the input matrix when the given number is greater 
+    than the length of the provided possibles. Instead, the function always
+    returns results with the requested number of picks.
+  - Will now return a `Matrix` as output when input was a `Matrix`.
+  - Introduced a new syntax:
+    
+    ```
+    math.pickRandom(array, { weights, number, elementWise })
+    ```
+  - Introduced a new option `elementWise`, which is `true` by default. 
+    When setting `elementWise` to false, an array containing arrays will return
+    random pick of arrays instead of the elements inside of the nested arrays.
+
+
+# 2020-11-02, version 7.6.0
+
+- Implemented function `rotate(w, theta)`. See #1992, #1160. Thanks @rnd-debug. 
+- Implemented support for custom characters in Units via `Unit.isValidAlpha`. 
+  See #1663, #2000. Thanks @rnd-debug.
+
+
 # 2020-10-10, version 7.5.1
 
 - Fix object pollution vulnerability in `math.config`. Thanks Snyk.

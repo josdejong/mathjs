@@ -1,11 +1,11 @@
-import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
+import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is.js'
 
-import { escape } from '../../utils/string'
-import { hasOwnProperty } from '../../utils/object'
-import { map } from '../../utils/array'
-import { getSafeProperty, validateSafeMethod } from '../../utils/customs'
-import { factory } from '../../utils/factory'
-import { defaultTemplate, latexFunctions } from '../../utils/latex'
+import { escape } from '../../utils/string.js'
+import { hasOwnProperty } from '../../utils/object.js'
+import { map } from '../../utils/array.js'
+import { getSafeProperty, validateSafeMethod } from '../../utils/customs.js'
+import { factory } from '../../utils/factory.js'
+import { defaultTemplate, latexFunctions } from '../../utils/latex.js'
 
 const name = 'FunctionNode'
 const dependencies = [
@@ -287,7 +287,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     // Match everything of the form ${identifier} or ${identifier[2]} or $$
     // while submatching identifier and 2 (in the second case)
-    const regex = new RegExp('\\$(?:\\{([a-z_][a-z_0-9]*)(?:\\[([0-9]+)\\])?\\}|\\$)', 'ig')
+    const regex = /\$(?:\{([a-z_][a-z_0-9]*)(?:\[([0-9]+)\])?\}|\$)/gi
 
     let inputPos = 0 // position in the input string
     let match

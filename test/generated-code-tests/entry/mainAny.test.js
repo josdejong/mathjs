@@ -1,7 +1,7 @@
 import assert from 'assert'
-import * as mainAny from '../../../src/entry/mainAny'
-import * as factoriesAny from '../../../src/factoriesAny'
-import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../../src/utils/snapshot'
+import * as mainAny from '../../../src/entry/mainAny.js'
+import * as factoriesAny from '../../../src/factoriesAny.js'
+import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../../src/utils/snapshot.js'
 const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate, chain, reviver, Complex, addDependencies } = mainAny
 
 const {

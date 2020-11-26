@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { signNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { signNumber } from '../../plain/number/index.js'
 
 const name = 'sign'
 const dependencies = ['typed', 'BigNumber', 'Fraction', 'complex']

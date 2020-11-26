@@ -8,10 +8,10 @@ import {
   isObjectNode,
   isParenthesisNode,
   isSymbolNode
-} from '../../utils/is'
-import { getSafeProperty } from '../../utils/customs'
-import { factory } from '../../utils/factory'
-import { accessFactory } from './utils/access'
+} from '../../utils/is.js'
+import { getSafeProperty } from '../../utils/customs.js'
+import { factory } from '../../utils/factory.js'
+import { accessFactory } from './utils/access.js'
 
 const name = 'AccessorNode'
 const dependencies = [

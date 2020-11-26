@@ -1,9 +1,9 @@
-import { factory } from '../../utils/factory'
-import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
-import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
-import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { factory } from '../../utils/factory.js'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03.js'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07.js'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12.js'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
 
 const name = 'equal'
 const dependencies = [

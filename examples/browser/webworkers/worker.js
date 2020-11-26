@@ -1,4 +1,4 @@
-importScripts('../../../dist/math.js')
+importScripts('../../../lib/browser/math.js')
 
 // create a parser
 const parser = self.math.parser()

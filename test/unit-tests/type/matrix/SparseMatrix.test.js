@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const index = math.index
 const Matrix = math.Matrix
 const SparseMatrix = math.SparseMatrix
@@ -1379,7 +1379,7 @@ describe('SparseMatrix', function () {
         ptr: [0, 2, 3, 4],
         size: [3, 3]
       })
-      assert.throws(function () { m.map(function () {}, m, true) }, /Cannot invoke map on a Pattern only matrix/)
+      assert.throws(function () { m.map(function () { return undefined }, m, true) }, /Cannot invoke map on a Pattern only matrix/)
     })
   })
 

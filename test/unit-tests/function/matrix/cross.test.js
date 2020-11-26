@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 
 describe('cross', function () {
   it('should calculate cross product for two arrays', function () {

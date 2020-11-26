@@ -1,7 +1,7 @@
-import { escape } from '../../utils/string'
-import { getSafeProperty } from '../../utils/customs'
-import { factory } from '../../utils/factory'
-import { toSymbol } from '../../utils/latex'
+import { escape } from '../../utils/string.js'
+import { getSafeProperty } from '../../utils/customs.js'
+import { factory } from '../../utils/factory.js'
+import { toSymbol } from '../../utils/latex.js'
 
 const name = 'SymbolNode'
 const dependencies = [

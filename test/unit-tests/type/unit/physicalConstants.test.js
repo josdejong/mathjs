@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
+import approx from '../../../../tools/approx.js'
 import {
   createAtomicMass,
   createAvogadro,
@@ -52,8 +52,10 @@ import {
   createVacuumImpedance,
   createWeakMixingAngle,
   createWienDisplacement
-} from '../../../../src/type/unit/physicalConstants'
-import { BigNumber, Unit } from '../../../../src/bundleAny'
+} from '../../../../src/type/unit/physicalConstants.js'
+import math from '../../../../src/defaultInstance.js'
+
+const { BigNumber, Unit } = math
 
 describe('physical constants', function () {
   it('should return the correct value and unit for physical constants', function () {

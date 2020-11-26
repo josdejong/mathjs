@@ -16,7 +16,7 @@
 //                  left argument doesn't need to be enclosed
 //                  in parentheses
 // latexRightParens: the same for the right argument
-import { hasOwnProperty } from '../utils/object'
+import { hasOwnProperty } from '../utils/object.js'
 
 export const properties = [
   { // assignment
@@ -239,7 +239,7 @@ export function getPrecedence (_node, parenthesis) {
  * Returns a string containing 'left' or 'right' or null if
  * the associativity is not defined.
  *
- * @param {Node}
+ * @param {Node} _node
  * @param {string} parenthesis
  * @return {string|null}
  * @throws {Error}

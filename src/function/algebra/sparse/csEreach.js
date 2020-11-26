@@ -1,5 +1,5 @@
-import { csMark } from './csMark'
-import { csMarked } from './csMarked'
+import { csMark } from './csMark.js'
+import { csMarked } from './csMarked.js'
 
 /**
  * Find nonzero pattern of Cholesky L(k,1:k-1) using etree and triu(A(:,k))

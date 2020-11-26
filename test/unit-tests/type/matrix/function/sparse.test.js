@@ -1,7 +1,7 @@
 // test matrix construction
 import assert from 'assert'
 
-import math from '../../../../../src/bundleAny'
+import math from '../../../../../src/defaultInstance.js'
 const sparse = math.sparse
 
 describe('sparse', function () {

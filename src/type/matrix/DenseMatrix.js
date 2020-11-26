@@ -1,10 +1,10 @@
-import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
-import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array'
-import { format } from '../../utils/string'
-import { isInteger } from '../../utils/number'
-import { clone, deepStrictEqual } from '../../utils/object'
-import { DimensionError } from '../../error/DimensionError'
-import { factory } from '../../utils/factory'
+import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
+import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array.js'
+import { format } from '../../utils/string.js'
+import { isInteger } from '../../utils/number.js'
+import { clone, deepStrictEqual } from '../../utils/object.js'
+import { DimensionError } from '../../error/DimensionError.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'DenseMatrix'
 const dependencies = [

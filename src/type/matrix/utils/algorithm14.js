@@ -1,5 +1,5 @@
-import { factory } from '../../../utils/factory'
-import { clone } from '../../../utils/object'
+import { factory } from '../../../utils/factory.js'
+import { clone } from '../../../utils/object.js'
 
 const name = 'algorithm14'
 const dependencies = ['typed']

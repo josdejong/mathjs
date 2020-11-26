@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { addDependencies, divideDependencies, piDependencies } from '../../src/entry/dependenciesAny.generated'
-const { create } = require('../../src/core/create')
+import { addDependencies, divideDependencies, piDependencies } from '../../src/entry/dependenciesAny.generated.js'
+import { create } from '../../src/core/create.js'
 
 describe('dependencies', function () {
   it('should create functions from a collection of dependencies', () => {

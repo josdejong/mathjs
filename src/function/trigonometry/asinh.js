@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { asinhNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { asinhNumber } from '../../plain/number/index.js'
 
 const name = 'asinh'
 const dependencies = ['typed']

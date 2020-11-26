@@ -1,8 +1,8 @@
-import { getPrecedence } from '../operators'
-import { escape } from '../../utils/string'
-import { getSafeProperty } from '../../utils/customs'
-import { latexOperators } from '../../utils/latex'
-import { factory } from '../../utils/factory'
+import { getPrecedence } from '../operators.js'
+import { escape } from '../../utils/string.js'
+import { getSafeProperty } from '../../utils/customs.js'
+import { latexOperators } from '../../utils/latex.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'RelationalNode'
 const dependencies = [

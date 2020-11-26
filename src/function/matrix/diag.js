@@ -1,7 +1,7 @@
-import { isMatrix } from '../../utils/is'
-import { arraySize } from '../../utils/array'
-import { isInteger } from '../../utils/number'
-import { factory } from '../../utils/factory'
+import { isMatrix } from '../../utils/is.js'
+import { arraySize } from '../../utils/array.js'
+import { isInteger } from '../../utils/number.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'diag'
 const dependencies = ['typed', 'matrix', 'DenseMatrix', 'SparseMatrix']

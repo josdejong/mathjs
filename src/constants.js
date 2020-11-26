@@ -1,12 +1,12 @@
-import { factory } from './utils/factory'
-import { version } from './version'
+import { factory } from './utils/factory.js'
+import { version } from './version.js'
 import {
   createBigNumberE,
   createBigNumberPhi,
   createBigNumberPi,
   createBigNumberTau
-} from './utils/bignumber/constants'
-import { pi, tau, e, phi } from './plain/number'
+} from './utils/bignumber/constants.js'
+import { pi, tau, e, phi } from './plain/number/index.js'
 
 export const createTrue = /* #__PURE__ */ factory('true', [], () => true)
 export const createFalse = /* #__PURE__ */ factory('false', [], () => false)

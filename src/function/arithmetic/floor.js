@@ -1,10 +1,10 @@
-import { Decimal } from 'decimal.js'
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { nearlyEqual } from '../../utils/number'
-import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import Decimal from 'decimal.js'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { nearlyEqual } from '../../utils/number.js'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
 
 const name = 'floor'
 const dependencies = ['typed', 'config', 'round', 'matrix', 'equalScalar']

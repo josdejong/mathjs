@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 
 describe('intersect', function () {
   it('should calculate the intersection point of two 2D lines', function () {

@@ -1,7 +1,7 @@
-import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
-import { nearlyEqual } from '../../utils/number'
-import { factory } from '../../utils/factory'
-import { complexEquals } from '../../utils/complex'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
+import { nearlyEqual } from '../../utils/number.js'
+import { factory } from '../../utils/factory.js'
+import { complexEquals } from '../../utils/complex.js'
 
 const name = 'equalScalar'
 const dependencies = ['typed', 'config']

@@ -1,5 +1,5 @@
-import { deepMap } from '../../utils/collection'
-import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'isNumeric'
 const dependencies = ['typed']

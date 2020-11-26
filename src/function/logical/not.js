@@ -1,6 +1,6 @@
-import { deepMap } from '../../utils/collection'
-import { factory } from '../../utils/factory'
-import { notNumber } from '../../plain/number'
+import { deepMap } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
+import { notNumber } from '../../plain/number/index.js'
 
 const name = 'not'
 const dependencies = ['typed']

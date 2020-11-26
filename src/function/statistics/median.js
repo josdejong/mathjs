@@ -1,7 +1,7 @@
-import { containsCollections } from '../../utils/collection'
-import { flatten } from '../../utils/array'
-import { factory } from '../../utils/factory'
-import { improveErrorMessage } from './utils/improveErrorMessage'
+import { containsCollections } from '../../utils/collection.js'
+import { flatten } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
+import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'median'
 const dependencies = ['typed', 'add', 'divide', 'compare', 'partitionSelect']

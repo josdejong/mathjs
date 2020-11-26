@@ -1,6 +1,6 @@
-import { isOperatorNode } from '../../../utils/is'
-import { factory } from '../../../utils/factory'
-import { hasOwnProperty } from '../../../utils/object'
+import { isOperatorNode } from '../../../utils/is.js'
+import { factory } from '../../../utils/factory.js'
+import { hasOwnProperty } from '../../../utils/object.js'
 
 const name = 'simplifyUtil'
 const dependencies = [

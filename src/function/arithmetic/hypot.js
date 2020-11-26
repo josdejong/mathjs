@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory.js'
+import { flatten } from '../../utils/array.js'
 
 const name = 'hypot'
 const dependencies = [

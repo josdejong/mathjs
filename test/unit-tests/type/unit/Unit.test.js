@@ -1,8 +1,8 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
-import { isBigNumber, isFraction } from '../../../../src/utils/is'
-import { hasOwnProperty } from '../../../../src/utils/object'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
+import { isBigNumber, isFraction } from '../../../../src/utils/is.js'
+import { hasOwnProperty } from '../../../../src/utils/object.js'
 
 const Unit = math.Unit
 
@@ -1045,6 +1045,8 @@ describe('Unit', function () {
 
       assert.strictEqual(math.evaluate('2 feet * 8 s').toString(), '16 feet s')
       assert.strictEqual(math.evaluate('2 s * 8 feet').toString(), '16 s feet')
+
+      assert.strictEqual(math.evaluate('2 N + 2 kgf').toString(), '21.6133 N')
     })
   })
 
@@ -1059,6 +1061,7 @@ describe('Unit', function () {
       assert.strictEqual(new Unit(1, 'Wb/A').equals(new Unit(1, 'H')), true)
       assert.strictEqual(new Unit(1, 'ohm^-1').equals(new Unit(1, 'S')), true)
       assert.strictEqual(new Unit(1, 'eV').equals(new Unit(1.602176565e-19, 'J')), true)
+      assert.strictEqual(new Unit(1, 'kilogramforce').equals(new Unit(1, 'kgf')), true)
     })
 
     it("For each built-in unit, 'name' should match key", function () {
@@ -1139,6 +1142,8 @@ describe('Unit', function () {
       assert.throws(function () { Unit.createUnitSingle() }, /createUnitSingle expects first parameter/)
       assert.throws(function () { Unit.createUnitSingle(42) }, /createUnitSingle expects first parameter/)
       assert.throws(function () { Unit.createUnitSingle('42') }, /Error: Invalid unit name/)
+      assert.throws(function () { Unit.createUnitSingle('toto', 5) }, /TypeError: Cannot create unit/)
+      assert.throws(function () { Unit.createUnitSingle('foo', { definition: '1 vteřiny', prefixes: 'long' }) }, /Error: Could not create unit/)
     })
 
     it('should apply the correct prefixes', function () {
@@ -1247,6 +1252,7 @@ describe('Unit', function () {
     it('should return the unit in SI units', function () {
       assert.strictEqual(Unit.parse('3 ft').toSI().format(10), '0.9144 m')
       assert.strictEqual(Unit.parse('0.111 ft^2').toSI().format(10), '0.01031223744 m^2')
+      assert.strictEqual(Unit.parse('1 kgf').toSI().toString(), '9.80665 (kg m) / s^2')
     })
 
     it('should return SI units for valueless units', function () {
@@ -1261,6 +1267,38 @@ describe('Unit', function () {
     it('should throw if custom unit not defined from existing units', function () {
       Unit.createUnit({ baz: '' }, { override: true })
       assert.throws(function () { Unit.parse('10 baz').toSI() }, /Cannot express custom unit/)
+    })
+  })
+
+  describe('isValidAlpha', function () {
+    it('per default refuse to parse non-latin unit names', function () {
+      assert.throws(function () { Unit.createUnit({ чекушки: '0.25 L' }) }, /Error: Invalid unit name/)
+    })
+
+    it('should support cyrillic when Unit.isValidAlpha is overridden', function () {
+      const isValidCyrillic = function (c) {
+        const charCode = c.charCodeAt(0)
+        return charCode > 1039 && charCode < 1103
+      }
+      const isAlphaOriginal = math.Unit.isValidAlpha
+      Unit.isValidAlpha = function (c) {
+        return isAlphaOriginal(c) || isValidCyrillic(c)
+      }
+
+      Unit.createUnit({ чекушки: '0.25 L' })
+
+      assert.strictEqual(Unit.parse('2 чекушки').toSI().toString(), '5e-4 m^3')
+    })
+
+    it('should support wide range of european alphabets when Unit.isValidAlpha is overridden', function () {
+      const isAlphaOriginal = math.Unit.isValidAlpha
+      Unit.isValidAlpha = function (c) {
+        return isAlphaOriginal(c) || ((c).toUpperCase() !== (c).toLowerCase())
+      }
+
+      Unit.createUnit({ vteřiny: '1 s' })
+
+      assert.strictEqual(Unit.parse('21 vteřiny').toSI().toString(), '21 s')
     })
   })
 })

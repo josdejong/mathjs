@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { acscNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { acscNumber } from '../../plain/number/index.js'
 
 const name = 'acsc'
 const dependencies = ['typed', 'config', 'Complex', 'BigNumber']

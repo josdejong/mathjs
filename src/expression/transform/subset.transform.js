@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { errorTransform } from './utils/errorTransform'
-import { createSubset } from '../../function/matrix/subset'
+import { factory } from '../../utils/factory.js'
+import { errorTransform } from './utils/errorTransform.js'
+import { createSubset } from '../../function/matrix/subset.js'
 
 const name = 'subset'
 const dependencies = ['typed', 'matrix']

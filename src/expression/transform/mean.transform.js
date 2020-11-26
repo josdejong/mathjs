@@ -1,7 +1,7 @@
-import { isBigNumber, isCollection, isNumber } from '../../utils/is'
-import { factory } from '../../utils/factory'
-import { errorTransform } from './utils/errorTransform'
-import { createMean } from '../../function/statistics/mean'
+import { isBigNumber, isCollection, isNumber } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { errorTransform } from './utils/errorTransform.js'
+import { createMean } from '../../function/statistics/mean.js'
 
 const name = 'mean'
 const dependencies = ['typed', 'add', 'divide']

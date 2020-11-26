@@ -1,7 +1,7 @@
 // test ConstantNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const bigmath = math.create({ number: 'BigNumber' })
 const Node = math.Node
 const ConstantNode = math.ConstantNode
@@ -86,6 +86,7 @@ describe('ConstantNode', function () {
     const a = new ConstantNode(2)
     const b = a.map(function () {
       assert.ok(false, 'should not execute, constant has no childs')
+      return undefined
     })
 
     assert.notStrictEqual(b, a)
