@@ -106,10 +106,10 @@ export const expm1 = /* #__PURE__ */ Math.expm1 || function expm1 (x) {
 
 /**
  * Formats a number in a given base
- * @param {number} n 
- * @param {number} base 
- * @param {number} size 
- * @returns {string} 
+ * @param {number} n
+ * @param {number} base
+ * @param {number} size
+ * @returns {string}
  */
 function formatNumberToBase (n, base, size) {
   const prefixes = { 2: '0b', 8: '0o', 16: '0x' }
@@ -240,14 +240,14 @@ export function format (value, options) {
     } else if (isNumber(options.precision)) {
       precision = options.precision
     }
-    
+
     if (options.base) {
       if (![2, 8, 16].includes(options.base)) {
         throw new Error('Option "base" must be one of 2, 8, or 16')
       }
-      let base = options.base
+      const base = options.base
       if (options.wordSize) {
-        if (typeof(options.wordSize) !== 'number') {
+        if (typeof (options.wordSize) !== 'number') {
           throw new Error('Option "wordSize" must be a number')
         }
       }

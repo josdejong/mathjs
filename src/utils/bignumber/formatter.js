@@ -61,7 +61,7 @@ function formatBigNumberToBase (n, base, size) {
  *                                          Lower bound is included, upper bound
  *                                          is excluded.
  *                                          For example '123.4' and '1.4e7'.
- *                         'bin', 'oct, or 
+ *                         'bin', 'oct, or
  *                         'hex'            Format the number using binary, octal,
  *                                          or hexadecimal notation.
  *                                          For example '0b1101' and '0x10fe'.
@@ -132,14 +132,14 @@ export function format (value, options) {
     } else if (options.precision) {
       precision = options.precision
     }
-    
+
     if (options.base) {
       if (![2, 8, 16].includes(options.base)) {
         throw new Error('Option "base" must be one of 2, 8, or 16')
       }
-      let base = options.base
+      const base = options.base
       if (options.wordSize) {
-        if (typeof(options.wordSize) != 'number') {
+        if (typeof (options.wordSize) !== 'number') {
           throw new Error('Option "wordSize" must be a number')
         }
       }

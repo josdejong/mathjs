@@ -25,11 +25,11 @@ const dependencies = ['typed', 'format']
  */
 export const createHex = factory(name, dependencies, ({ typed, format }) => {
   return typed(name, {
-    'number | BigNumber': function(n) {
-      return format(n, {base: 16})
+    'number | BigNumber': function (n) {
+      return format(n, { base: 16 })
     },
-    'number | BigNumber, number': function(n, wordSize) {
-      return format(n, {base: 16, wordSize: wordSize})
+    'number | BigNumber, number': function (n, wordSize) {
+      return format(n, { base: 16, wordSize: wordSize })
     }
   })
 })

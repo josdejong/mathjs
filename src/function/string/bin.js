@@ -25,11 +25,11 @@ const dependencies = ['typed', 'format']
  */
 export const createBin = factory(name, dependencies, ({ typed, format }) => {
   return typed(name, {
-    'number | BigNumber': function(n) {
-      return format(n, {base: 2})
+    'number | BigNumber': function (n) {
+      return format(n, { base: 2 })
     },
-    'number | BigNumber, number': function(n, wordSize) {
-      return format(n, {base: 2, wordSize: wordSize})
+    'number | BigNumber, number': function (n, wordSize) {
+      return format(n, { base: 2, wordSize: wordSize })
     }
   })
 })
