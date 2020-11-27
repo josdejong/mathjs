@@ -186,7 +186,7 @@ describe('format', function () {
       assert.strictEqual(math.hex(1.25), '0x1.4')
     })
     it('should throw an error for invalid values', function () {
-      assert.throws(function () { math.hex(1.25, 8) }, Error('Value must be an integer'))
+      assert.throws(function () { math.hex(1.25, 8) }, 'Error: Value must be an integer')
     })
   })
 
