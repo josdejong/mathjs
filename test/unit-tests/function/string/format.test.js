@@ -335,7 +335,7 @@ describe('format', function () {
         assert.strictEqual(math.format(bignumber('0.0000000000001234567890123456789'), { notation: 'engineering', precision: 16 }), '123.4567890123457e-15')
       })
     })
-    
+
     describe('non decimal base formatting', function () {
       it('should format in binary, octal, and hexadecimal', function () {
         assert.strictEqual(math.format(math.bignumber(128), { base: 2 }), '0b10000000')
