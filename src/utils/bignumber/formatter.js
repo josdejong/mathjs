@@ -8,7 +8,7 @@ import { isInteger } from '../number.js'
  * @returns {string}
  */
 function formatBigNumberToBase (n, base, size) {
-  const BigNumberCtor = n.clone()
+  const BigNumberCtor = n.constructor
   const big2 = new BigNumberCtor(2)
   if (size) {
     if (size < 1) {
