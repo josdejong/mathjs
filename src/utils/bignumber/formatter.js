@@ -120,6 +120,7 @@ export function format (value, options) {
   // default values for options
   let notation = 'auto'
   let precision
+  let wordSize
 
   if (options !== undefined) {
     // determine notation from options
@@ -134,20 +135,10 @@ export function format (value, options) {
       precision = options.precision
     }
 
-    if (options.base) {
-      if (![2, 8, 16].includes(options.base)) {
-        throw new Error('Option "base" must be one of 2, 8, or 16')
-      }
-      const base = options.base
-      if (options.wordSize) {
-        if (typeof (options.wordSize) !== 'number') {
-          throw new Error('Option "wordSize" must be a number')
-        }
-      }
-      return formatBigNumberToBase(value, base, options.wordSize)
-    } else {
-      if (options.wordSize) {
-        throw new Error('Option "wordSize" must used with option "base"')
+    if (options.wordSize) {
+      wordSize = options.wordSize
+      if (typeof (wordSize) !== 'number') {
+        throw new Error('Option "wordSize" must be a number')
       }
     }
   }
@@ -162,6 +153,15 @@ export function format (value, options) {
 
     case 'engineering':
       return toEngineering(value, precision)
+
+    case 'bin':
+      return formatBigNumberToBase(value, 2, wordSize)
+
+    case 'oct':
+      return formatBigNumberToBase(value, 8, wordSize)
+
+    case 'hex':
+      return formatBigNumberToBase(value, 16, wordSize)
 
     case 'auto':
     {
@@ -194,7 +194,7 @@ export function format (value, options) {
     }
     default:
       throw new Error('Unknown notation "' + notation + '". ' +
-          'Choose "auto", "exponential", or "fixed".')
+          'Choose "auto", "exponential", "fixed", "bin", "oct", or "hex.')
   }
 }
 

@@ -27,10 +27,10 @@ const dependencies = ['typed', 'format']
 export const createOct = factory(name, dependencies, ({ typed, format }) => {
   return typed(name, {
     'number | BigNumber': function (n) {
-      return format(n, { base: 8 })
+      return format(n, { notation: 'oct' })
     },
     'number | BigNumber, number': function (n, wordSize) {
-      return format(n, { base: 8, wordSize: wordSize })
+      return format(n, { notation: 'oct', wordSize: wordSize })
     }
   })
 })
