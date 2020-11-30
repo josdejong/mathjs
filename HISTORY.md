@@ -5,6 +5,7 @@
 - Implemented units `kilogramforce` (`kgf`). Thanks @rnd-debug.
 - Fix #2026: Implement a new option `fractionsLimit` for function `simplify`, 
   defaulting to `Infinity`.
+- Fix #660: Implement a way to customize handling undefined symbols.
 
 
 # 2020-11-09, version 8.0.1

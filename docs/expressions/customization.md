@@ -377,3 +377,22 @@ math.parse.isAlpha = function (c, cPrev, cNext) {
 const result = math.evaluate('\u260Efoo', {'\u260Efoo': 42}) // returns 42
 console.log(result)
 ```
+
+
+## Customize handling of undefined symbols
+
+When evaluating an expression which contains undefined symbols, an error will be thrown:
+
+```js
+math.evaluate('foo + 42') // throws "Error: Undefined symbol foo"
+```
+
+In some cases, you may want to resolve the undefined symbol instead of throwing an error. You could for example return `0` instead, or resolve the undefined symbol by looking it up somewhere. This is possible by overriding the method `handleUndefinedSymbol` on the prototype of `SymbolNode`:
+
+```js
+math.SymbolNode.prototype.handleUndefinedSymbol = function (name) {
+  return 0
+}
+
+math.evaluate('foo + 42') // returns 42
+```
