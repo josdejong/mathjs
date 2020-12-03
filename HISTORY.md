@@ -1,5 +1,13 @@
 # History
 
+# not yet published, version 8.0.2
+
+- Implemented units `kilogramforce` (`kgf`). Thanks @rnd-debug.
+- Fix #2026: Implement a new option `fractionsLimit` for function `simplify`, 
+  defaulting to `Infinity`.
+- Improved the documentation of function `clone`. Thanks @redbar0n.
+
+
 # 2020-11-09, version 8.0.1
 
 - Fix #1979: missing "subset" dependency when using "mathjs/number" entry point.

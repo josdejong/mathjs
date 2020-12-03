@@ -120,8 +120,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * - [Symbolic computation - Simplification (Wikipedia)](https://en.wikipedia.org/wiki/Symbolic_computation#Simplification)
    *
    *  An optional `options` argument can be passed as last argument of `simplify`.
-   *  There is currently one option available: `exactFractions`, a boolean which
-   *  is `true` by default.
+   *  There is currently one option available:
+   *  - `exactFractions`: a boolean which is `true` by default.
+   *  - `fractionsLimit`: when `exactFractions` is true, a fraction will be returned
+   *    only when both numerator and denominator are smaller than `fractionsLimit`.
+   *    Default value is 10000.
    *
    * Syntax:
    *

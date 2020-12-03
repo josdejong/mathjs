@@ -6,7 +6,7 @@ const dependencies = ['typed']
 
 export const createClone = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
-   * Clone an object.
+   * Clone an object. Will make a deep copy of the data.
    *
    * Syntax:
    *

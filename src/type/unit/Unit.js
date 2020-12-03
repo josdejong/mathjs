@@ -2431,6 +2431,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       value: 4448.2216,
       offset: 0
     },
+    kilogramforce: {
+      name: 'kilogramforce',
+      base: BASE_UNITS.FORCE,
+      prefixes: PREFIXES.NONE,
+      value: 9.80665,
+      offset: 0
+    },
 
     // Energy
     J: {
@@ -2780,6 +2787,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     lbs: 'lbm',
 
     kips: 'kip',
+    kgf: 'kilogramforce',
 
     acres: 'acre',
     hectares: 'hectare',
