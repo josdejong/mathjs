@@ -1,6 +1,12 @@
 name: Browser testing on browser stack
 
-on: push
+on:
+  push:
+    branches:
+      - develop
+      - master
+    tags:  
+  pull_request:
 
 jobs:
   browser-tests:
