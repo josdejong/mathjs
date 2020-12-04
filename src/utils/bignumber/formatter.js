@@ -10,6 +10,7 @@ import { isInteger } from '../number.js'
 function formatBigNumberToBase (n, base, size) {
   const BigNumberCtor = n.constructor
   const big2 = new BigNumberCtor(2)
+  let suffix = ''
   if (size) {
     if (size < 1) {
       throw new Error('size must be in greater than 0')
@@ -26,11 +27,12 @@ function formatBigNumberToBase (n, base, size) {
     if (n.lessThan(0)) {
       n = n.add(big2.pow(size))
     }
+    suffix = `i${size}`
   }
   switch (base) {
-    case 2: return n.toBinary()
-    case 8: return n.toOctal()
-    case 16: return n.toHexadecimal()
+    case 2: return `${n.toBinary()}${suffix}`
+    case 8: return `${n.toOctal()}${suffix}`
+    case 16: return `${n.toHexadecimal()}${suffix}`
     default: throw new Error(`Base ${base} not supported `)
   }
 }

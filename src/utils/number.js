@@ -114,6 +114,7 @@ export const expm1 = /* #__PURE__ */ Math.expm1 || function expm1 (x) {
 function formatNumberToBase (n, base, size) {
   const prefixes = { 2: '0b', 8: '0o', 16: '0x' }
   const prefix = prefixes[base]
+  let suffix = ''
   if (size) {
     if (size < 1) {
       throw new Error('size must be in greater than 0')
@@ -130,13 +131,14 @@ function formatNumberToBase (n, base, size) {
     if (n < 0) {
       n = n + 2 ** size
     }
+    suffix = `i${size}`
   }
   let sign = ''
   if (n < 0) {
     n = -n
     sign = '-'
   }
-  return `${sign}${prefix}${n.toString(base)}`
+  return `${sign}${prefix}${n.toString(base)}${suffix}`
 }
 
 /**
