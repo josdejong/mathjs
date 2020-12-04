@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-clone">Function clone <a href="#function-clone" title="Permalink">#</a></h1>
 
-Clone an object.
+Clone an object. Will make a deep copy of the data.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>

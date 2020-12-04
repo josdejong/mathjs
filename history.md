@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20201204-version-810">2020-12-04, version 8.1.0 <a href="#20201204-version-810" title="Permalink">#</a></h1>
+
+- Implemented units `kilogramforce` (`kgf`). Thanks <a href="https://github.com/rnd-debug">@rnd-debug</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2026">#2026</a>: Implement a new option `fractionsLimit` for function `simplify`, 
+  defaulting to `Infinity`.
+- Improved the documentation of function `clone`. Thanks <a href="https://github.com/redbar0n">@redbar0n</a>.
+
+
 <h1 id="20201109-version-801">2020-11-09, version 8.0.1 <a href="#20201109-version-801" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1979">#1979</a>: missing "subset" dependency when using "mathjs/number" entry point.
