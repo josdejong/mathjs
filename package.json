@@ -39,7 +39,7 @@
     "@babel/plugin-transform-object-assign": "7.12.1",
     "@babel/preset-env": "7.12.1",
     "@babel/register": "7.12.1",
-    "babel-loader": "8.1.0",
+    "babel-loader": "8.2.2",
     "benchmark": "2.1.4",
     "codecov": "3.8.1",
     "del": "6.0.0",
