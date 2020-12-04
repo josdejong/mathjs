@@ -68,7 +68,7 @@
     "numericjs": "1.2.6",
     "nyc": "15.1.0",
     "pad-right": "0.2.2",
-    "standard": "16.0.1",
+    "standard": "16.0.3",
     "sylvester": "0.0.21",
     "webpack": "4.44.2",
     "zeros": "1.0.0"
