@@ -1,10 +1,11 @@
 # History
 
-# not yet published, version 8.0.2
+# 2020-12-04, version 8.1.0
 
 - Implemented units `kilogramforce` (`kgf`). Thanks @rnd-debug.
 - Fix #2026: Implement a new option `fractionsLimit` for function `simplify`, 
   defaulting to `Infinity`.
+- Improved the documentation of function `clone`. Thanks @redbar0n.
 
 
 # 2020-11-09, version 8.0.1

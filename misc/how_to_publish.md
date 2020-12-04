@@ -29,7 +29,7 @@ Build the distribution files in folders under `lib`, and test everything by runn
 
     npm run build-and-test
 
-After the build is complete, verify if the files are created and contain the
+After the build is complete, verify whether the files are created and contain the
 correct date and version number in the header.
 
 
