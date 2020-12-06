@@ -48,6 +48,7 @@ import { ArgumentsError } from '../error/ArgumentsError.js'
 import { DimensionError } from '../error/DimensionError.js'
 import { IndexError } from '../error/IndexError.js'
 import { DEFAULT_CONFIG } from './config.js'
+import { createDocsInstance } from '../expression/function/help.js'
 
 /**
  * Create a mathjs instance from given factory functions and optionally config
@@ -231,6 +232,13 @@ export function create (factories, config) {
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
   math.import(values(deepFlatten(factories)))
+
+  // import documentation-related functions
+  const docsInstance = createDocsInstance()
+  math.import([
+    docsInstance.createNewHelpEntry,
+    docsInstance.createHelp
+  ])
 
   math.ArgumentsError = ArgumentsError
   math.DimensionError = DimensionError

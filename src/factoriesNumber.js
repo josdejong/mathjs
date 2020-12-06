@@ -85,7 +85,6 @@ export { createResultSet } from './type/resultset/ResultSet.js'
 export { createRangeClass } from './type/matrix/Range.js'
 export { createHelpClass } from './expression/Help.js'
 export { createChainClass } from './type/chain/Chain.js'
-export { createHelp } from './expression/function/help.js'
 export { createChain } from './type/chain/function/chain.js'
 
 // algebra
