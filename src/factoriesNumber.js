@@ -84,8 +84,10 @@ export { createTyped } from './core/function/typed.js'
 export { createResultSet } from './type/resultset/ResultSet.js'
 export { createRangeClass } from './type/matrix/Range.js'
 export { createHelpClass } from './expression/Help.js'
+export { createDocumentation } from './expression/Docs.js'
 export { createChainClass } from './type/chain/Chain.js'
-export { createHelp } from './expression/function/help.js'
+export { createGetHelpFunction } from './expression/function/help.js'
+export { createNewHelpEntry } from './expression/function/createHelpEntry.js'
 export { createChain } from './type/chain/function/chain.js'
 
 // algebra
