@@ -5,9 +5,7 @@ import { hasOwnProperty } from '../../utils/object.js'
 const name = 'help'
 const dependencies = ['typed', 'mathWithTransform', 'Help', 'Docs']
 
-
 export const createGetHelpFunction = /* #__PURE__ */ factory(name, dependencies, ({ typed, mathWithTransform, Help, Docs }) => {
-
   /**
    * Retrieve help on a function or data type.
    * Help files are retrieved from the embedded documentation in math.docs.
@@ -26,7 +24,8 @@ export const createGetHelpFunction = /* #__PURE__ */ factory(name, dependencies,
    *                                              for which to get help
    * @return {Help} A help object
    */
-  return typed(name, {
+
+  return typed('help', {
     any: function (search) {
       let prop
       let searchName = search
@@ -41,18 +40,18 @@ export const createGetHelpFunction = /* #__PURE__ */ factory(name, dependencies,
         }
 
         /* TODO: implement help for data types
-         if (!text) {
-         // search data type
-         for (prop in math.type) {
-         if (hasOwnProperty(math, prop)) {
-         if (search === math.type[prop]) {
-         text = prop
-         break
-         }
-         }
-         }
-         }
-         */
+          if (!text) {
+          // search data type
+          for (prop in math.type) {
+          if (hasOwnProperty(math, prop)) {
+          if (search === math.type[prop]) {
+          text = prop
+          break
+          }
+          }
+          }
+          }
+          */
       }
 
       const doc = getSafeProperty(Docs, searchName)

@@ -1,7 +1,6 @@
 import { factory } from '../../utils/factory.js'
 import { getSafeProperty, isPlainObject } from '../../utils/customs.js'
 
-
 export const createNewHelpEntry = factory('createDocs', ['typed', 'Docs'], ({ typed, Docs }) => {
   /**
    * Retrieve help on a function or data type.
