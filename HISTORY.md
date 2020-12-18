@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 8.1.1
+
+- Moved continuous integration testing from Travis CI to Github Workflow, 
+  see #2024, #2041. Thanks @harrysarson.
+
+
 # 2020-12-04, version 8.1.0
 
 - Implemented units `kilogramforce` (`kgf`). Thanks @rnd-debug.
