@@ -75,13 +75,13 @@ export const createNewHelpEntry = factory('createDocs', ['typed', 'Docs'], ({ ty
         throw new Error('Help Entry must be in correct format: { name: string, category: string, syntax: string[],' +
           'description: string, examples: string[], seealso: string[]}')
       }
-
+      const docs = Docs.getDocs()
       const searchName = newEntry.name
-      const doc = getSafeProperty(Docs, searchName)
+      const doc = getSafeProperty(docs, searchName)
       if (doc) {
         throw new Error('Documentation for "' + searchName + '" already exists')
       }
-      Docs[searchName] = newEntry
+      docs[searchName] = newEntry
     }
   })
 })

@@ -24,7 +24,6 @@ export const createGetHelpFunction = /* #__PURE__ */ factory(name, dependencies,
    *                                              for which to get help
    * @return {Help} A help object
    */
-
   return typed('help', {
     any: function (search) {
       let prop
@@ -54,7 +53,7 @@ export const createGetHelpFunction = /* #__PURE__ */ factory(name, dependencies,
           */
       }
 
-      const doc = getSafeProperty(Docs, searchName)
+      const doc = getSafeProperty(Docs.getDocs(), searchName)
       if (!doc) {
         const searchText = typeof searchName === 'function' ? searchName.name : searchName
         throw new Error('No documentation found on "' + searchText + '"')
