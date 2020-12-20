@@ -31,8 +31,8 @@ describe('util.function', function () {
       const m = memoize(f)
 
       assert.strictEqual(m({ x: 2, y: 3 }), 6)
-      assert.deepStrictEqual(Object.keys(m.cache.values), ['[{"x":2,"y":3}]'])
-      assert.strictEqual(m.cache.values['[{"x":2,"y":3}]'], 6)
+      assert.deepStrictEqual([...m.cache.values.keys()], ['[{"x":2,"y":3}]'])
+      assert.strictEqual(m.cache.values.get('[{"x":2,"y":3}]'), 6)
     })
 
     it('should memoize a function with a custom hashIt function', function () {
@@ -44,8 +44,8 @@ describe('util.function', function () {
       const m = memoize(f, { hasher: hashIt })
 
       assert.strictEqual(m({ id: 2 }), 2)
-      assert.deepStrictEqual(Object.keys(m.cache.values), ['id:2'])
-      assert.strictEqual(m.cache.values['id:2'], 2)
+      assert.deepStrictEqual([...m.cache.values.keys()], ['id:2'])
+      assert.strictEqual(m.cache.values.get('id:2'), 2)
     })
 
     it('should really return the cached result', function () {

@@ -24,22 +24,24 @@ export function memoize (fn, { hasher, limit } = {}) {
   return function memoize () {
     if (typeof memoize.cache !== 'object') {
       memoize.cache = {
-        values: {},
+        values: new Map(),
         lru: lruQueue(limit || Number.POSITIVE_INFINITY)
       }
     }
-
-    const args = [...arguments]
+    const args = []
+    for (let i = 0; i < arguments.length; i++) {
+      args[i] = arguments[i]
+    }
     const hash = hasher(args)
 
-    if (hash in memoize.cache.values) {
+    if (memoize.cache.values.has(hash)) {
       memoize.cache.lru.hit(hash)
-      return memoize.cache.values[hash]
+      return memoize.cache.values.get(hash)
     }
 
     const newVal = fn.apply(fn, args)
-    memoize.cache.values[hash] = newVal
-    delete memoize.cache.values[memoize.cache.lru.hit(hash)]
+    memoize.cache.values.set(hash, newVal)
+    memoize.cache.values.delete(memoize.cache.lru.hit(hash))
 
     return newVal
   }
