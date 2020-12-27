@@ -21,6 +21,7 @@ const dependencies = ['typed', 'format']
  *    bin
  *
  * @param {number} value    Value to be stringified
+ * @param {number} wordSize Optional word size (see `format`)
  * @return {string}         The formatted value
  */
 export const createHex = factory(name, dependencies, ({ typed, format }) => {

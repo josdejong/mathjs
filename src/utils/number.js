@@ -170,6 +170,20 @@ function formatNumberToBase (n, base, size) {
  *                                          Lower bound is included, upper bound
  *                                          is excluded.
  *                                          For example '123.4' and '1.4e7'.
+ *                         'bin', 'oct, or
+ *                         'hex'            Format the number using binary, octal,
+ *                                          or hexadecimal notation.
+ *                                          For example '0b1101' and '0x10fe'.
+ *                     {number} wordSize    The word size in bits to use for formatting
+ *                                          in binary, octal, or hexadecimal notation.
+ *                                          To be used only with 'bin', 'oct', or 'hex'
+ *                                          values for 'notation' option. When this option
+ *                                          is defined the value is formatted as a signed
+ *                                          twos complement integer of the given word size
+ *                                          and the size suffix is appended to the output.
+ *                                          For example
+ *                                          format(-1, {notation: 'hex', wordSize: 8}) === '0xffi8'.
+ *                                          Default value is undefined.
  *                     {number} precision   A number between 0 and 16 to round
  *                                          the digits of the number.
  *                                          In case of notations 'exponential',
