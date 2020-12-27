@@ -926,6 +926,15 @@ describe('Unit', function () {
       const unit3 = math3.Unit.parse('5kg')
       assert(isBigNumber(unit3.value))
     })
+
+    it('should parse new units that override old units', function () {
+      const math2 = math.create()
+      const oldMm = math2.Unit.parse('mm')
+      const newMm = math2.createUnit('mm', '2 A')
+      assert.notDeepStrictEqual(oldMm, newMm)
+      assert.deepStrictEqual(newMm, math2.Unit.parse('mm'))
+      console.log(oldMm.units, newMm.units)
+    })
   })
 
   describe('prefixes', function () {

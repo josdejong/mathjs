@@ -1,5 +1,6 @@
 import { isComplex, isUnit, typeOf } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
+import { memoize } from '../../utils/function.js'
 import { endsWith } from '../../utils/string.js'
 import { clone, hasOwnProperty } from '../../utils/object.js'
 import { createBigNumberPi as createPi } from '../../utils/bignumber/constants.js'
@@ -567,7 +568,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    *                                  prefix is returned. Else, null is returned.
    * @private
    */
-  function _findUnit (str) {
+  const _findUnit = memoize((str) => {
     // First, match units names exactly. For example, a user could define 'mm' as 10^-4 m, which is silly, but then we would want 'mm' to match the user-defined unit.
     if (hasOwnProperty(UNITS, str)) {
       const unit = UNITS[str]
@@ -599,7 +600,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     return null
-  }
+  }, { hasher: (args) => args[0], limit: 100 })
 
   /**
    * Test if the given expression is a unit.
@@ -3290,6 +3291,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       alias.name = aliasName
       Unit.UNITS[aliasName] = alias
     }
+    // delete the memoization cache, since adding a new unit to the array
+    // invalidates all old results
+    delete _findUnit.cache
 
     return new Unit(null, name)
   }
