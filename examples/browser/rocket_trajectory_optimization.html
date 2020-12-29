@@ -20,113 +20,89 @@
   </p>
 
   <canvas id=canvas1 width=1600 height=400></canvas>
-  <canvas id=canvas2 width=800 height=400></canvas>
 
   <script>
-
+    // Solve ODE `dx/dt = f(x,t), x(0) = x0` numerically. 
     function ndsolve(f, x0, dt, tmax) {
-      const n = f.size()[0]  // Number of variables
-      const x = x0.clone()   // Current values of variables
-      const dxdt = []        // Temporary variable to hold time-derivatives
-      const result = []      // Contains entire solution
-
+      let x = x0.clone()  // Current values of variables
+      const result = []   // Contains entire solution
       const nsteps = math.divide(tmax, dt)   // Number of time steps
-      for(let i=0; i<nsteps; i++) {
+      for (let i = 0; i < nsteps; i++) {
         // Compute derivatives
-        for(let j=0; j<n; j++) {
-          dxdt[j] = f.get([j]).apply(null, x.toArray())
-        }
+        const dxdt = f.map(func => func(...x.toArray()))
         // Euler method to compute next time step
-        for(let j=0; j<n; j++) {
-          x.set([j], math.add(x.get([j]), math.multiply(dxdt[j], dt)))
-        }
-        result.push(x.clone())
+        const dx = math.multiply(dxdt, dt)
+        x = math.add(x, dx)
+        result.push(x)
       }
-
       return math.matrix(result)
     }
 
     // Import the numerical ODE solver
-    math.import({ndsolve:ndsolve})
+    math.import({ ndsolve })
 
     // Create a math.js context for our simulation. Everything else occurs in the context of the expression parser!
 
     const sim = math.parser()
 
+    // See https://en.wikipedia.org/wiki/Apollo_Lunar_Module
     sim.evaluate("G = 6.67408e-11 m^3 kg^-1 s^-2")  // Gravitational constant
-    sim.evaluate("mbody = 5.972e24 kg")             // Mass of Earth
-    sim.evaluate("mu = G * mbody")
-    sim.evaluate("dt = 1.0 s")                      // Simulation timestep
-    sim.evaluate("tfinal = 162 s")                  // Simulation duration
-    sim.evaluate("T = 1710000 lbf * 0.9")           // Engine thrust
+    sim.evaluate("mbody = 7.342e22 kg")             // Mass of Moon
+    sim.evaluate("mu = G * mbody")                  // Standard gravitational parameter
+    sim.evaluate("dt = 0.1 s")                      // Simulation timestep
+    sim.evaluate("tfinal = 410.6 s")                // Simulation duration
+    sim.evaluate("T = 16000 N")                     // Engine thrust
     sim.evaluate("g0 = 9.80665 m/s^2")              // Standard gravity: used for calculating prop consumption (dmdt)
-    sim.evaluate("isp = 290 s")                     // Specific impulse
-    sim.evaluate("gamma0 = 89.99883 deg")           // Initial pitch angle (90 deg is vertical)
-    sim.evaluate("r0 = 6378.1370 km")               // Equatorial radius of Earth
-    sim.evaluate("v0 = 10 m/s")                     // Initial velocity (must be non-zero because ODE is ill-conditioned)
+    sim.evaluate("isp = 311 s")                     // Specific impulse
+    sim.evaluate("gamma0 = 89.34 deg")              // Initial pitch angle (90 deg is vertical)
+    sim.evaluate("r0 = 1737.4 km")                  // Mean radius of Moon
+    sim.evaluate("v0 = 1 m/s")                      // Initial velocity (must be non-zero because ODE is ill-conditioned)
     sim.evaluate("phi0 = 0 deg")                    // Initial orbital reference angle
-    sim.evaluate("m0 = 1207920 lbm + 30000 lbm")    // Initial mass of rocket and fuel
+    sim.evaluate("m0 = 4700 kg")                    // Initial mass of rocket, gross
+    sim.evaluate("mf = 2353 kg")                    // Initial moss of fuel
 
-    // Define the equations of motion. It is important to maintain the same argument order for each of these functions.
-    sim.evaluate("drdt(r, v, m, phi, gamma) = v sin(gamma)")
-    sim.evaluate("dvdt(r, v, m, phi, gamma) = -mu / r^2 * sin(gamma) + T / m")
-    sim.evaluate("dmdt(r, v, m, phi, gamma) = -T/g0/isp")
-    sim.evaluate("dphidt(r, v, m, phi, gamma) = v/r * cos(gamma) * rad")
-    sim.evaluate("dgammadt(r, v, m, phi, gamma) = (1/r * (v - mu / (r v)) * cos(gamma)) * rad")
+    // Define the equations of motion. We just thrust into current direction of motion, e.g. making a gravity turn.
+    const args = `r, v, m, phi, gamma`
+    sim.evaluate(` gravity(${args}) = mu / r^2`)                                // Gravity
+    sim.evaluate(`  angVel(${args}) = v/r * cos(gamma) * rad`)                  // Angular velocity of rocket around moon
+    sim.evaluate(`    drdt(${args}) = v sin(gamma)`)                            // Vertical velocity
+    sim.evaluate(`    dvdt(${args}) = - gravity(${args}) * sin(gamma) + T / m`) // Gravity parallel to movement + Thrust
+    sim.evaluate(`    dmdt(${args}) = -T/g0/isp`)
+    sim.evaluate(`  dphidt(${args}) = angVel(${args})`)
+    sim.evaluate(`dgammadt(${args}) = angVel(${args}) - gravity(${args}) * cos(gamma) / v * rad`) // Angular velocity + Gravity normal to movement
 
-    // Again, remember to maintain the same variable order in the call to ndsolve.
-    sim.evaluate("result_stage1 = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], [r0, v0, m0, phi0, gamma0], dt, tfinal)")
+    // Remember to maintain the same variable order in the call to ndsolve.
+    sim.evaluate("result_ascent = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], [r0, v0, m0, phi0, gamma0], dt, tfinal)")
 
-    // Reset initial conditions for interstage flight
-    sim.evaluate("T = 0 lbf")
-    sim.evaluate("tfinal = 12 s")
-    sim.evaluate("x = flatten(result_stage1[result_stage1.size()[1],:])")
-    sim.evaluate("result_interstage = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], x, dt, tfinal)")
-
-    console.log(sim.evaluate("result_interstage[result_interstage.size()[1],3]").toString())
-
-    // Reset initial conditions for stage 2 flight
-    sim.evaluate("T = 210000 lbf")
-    sim.evaluate("isp = 348 s")
-    sim.evaluate("tfinal = 397 s")
-    sim.evaluate("x = flatten(result_interstage[result_interstage.size()[1],:])")
-    sim.evaluate("x[3] = 273600 lbm")  // Lighten the rocket a bit since we discarded the first stage
-    sim.evaluate("result_stage2 = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], x, dt, tfinal)")
+    console.log("fuel left", sim.evaluate("result_ascent[end,3] - (m0 - mf)").toString())
+    console.log("orbital minus final velocity", sim.evaluate("sqrt(mu/(result_ascent[end,1])) - result_ascent[end,2]").toString())
+    console.log("final state", sim.evaluate("result_ascent[end,:]").toString())
 
     // Reset initial conditions for unpowered flight
-    sim.evaluate("T = 0 lbf")
+    sim.evaluate("T = 0 N")
     sim.evaluate("tfinal = 60 s")
-    sim.evaluate("x = flatten(result_stage2[result_stage2.size()[1],:])")
+    sim.evaluate("x = flatten(result_ascent[end,:])")
     sim.evaluate("result_unpowered = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], x, dt, tfinal)")
 
-
-
     // Extract the useful information from the results so it can be plotted
-    const data_stage1 =     sim.evaluate("transpose(concat( transpose(    result_stage1[:,4] - phi0) * r0 / rad / km, (    transpose(result_stage1[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
-    const data_interstage = sim.evaluate("transpose(concat( transpose(result_interstage[:,4] - phi0) * r0 / rad / km, (transpose(result_interstage[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
-    const data_stage2 =     sim.evaluate("transpose(concat( transpose(    result_stage2[:,4] - phi0) * r0 / rad / km, (    transpose(result_stage2[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
-    const data_unpowered =  sim.evaluate("transpose(concat( transpose( result_unpowered[:,4] - phi0) * r0 / rad / km, ( transpose(result_unpowered[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
+    const data_ascent = preparePlotData('result_ascent')
+    const data_unpowered = preparePlotData('result_unpowered')
 
-    window['chart'] = new Chart(document.getElementById('canvas1'), {
+    function preparePlotData(resultMatrix) {
+      return sim.evaluate(`concat( 
+        (${resultMatrix}[:,4] - phi0) * r0 / rad / km,
+        (${resultMatrix}[:,1] - r0) / km
+      )`).toArray().map(([x, y]) => ({ x, y }))
+    }
+
+    const chart = new Chart(document.getElementById('canvas1'), {
       type: 'line',
       data: {
         datasets: [{
-          label: "Stage 1",
-          data: data_stage1,
+          label: "Ascent Stage",
+          data: data_ascent,
           fill: false,
           borderColor: "red",
-          pointRadius: 0
-        }, {
-          label: "Interstage",
-          data: data_interstage,
-          fill: false,
-          borderColor: "green",
-          pointRadius: 0
-        }, {
-          label: "Stage 2",
-          data: data_stage2,
-          fill: false,
-          borderColor: "orange",
           pointRadius: 0
         }, {
           label: "Unpowered",
@@ -140,13 +116,23 @@
         scales: {
           xAxes: [{
             type: 'linear',
-            position: 'bottom'
+            position: 'bottom',
+            scaleLabel: {
+              display: true,
+              labelString: 'surface distance travelled (in km)'
+            }
+          }],
+          yAxes: [{
+            type: 'linear',
+            scaleLabel: {
+              display: true,
+              labelString: 'height above surface (in km)'
+            }
           }]
-        }
+        },
+        animation: false
       }
-
     })
-
   </script>
 </body>
 </html>
