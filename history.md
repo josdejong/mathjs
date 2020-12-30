@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20201230-version-811">2020-12-30, version 8.1.1 <a href="#20201230-version-811" title="Permalink">#</a></h1>
+
+- Improved the performance of parsing and evaluating units a lot, see <a href="https://github.com/josdejong/mathjs/issues/2065">#2065</a>. 
+  Thanks <a href="https://github.com/flaviut">@flaviut</a>.
+- Upgraded dependency `fraction.js` to `v4.0.13`. 
+- Moved continuous integration testing from Travis CI to Github Workflow, 
+  see <a href="https://github.com/josdejong/mathjs/issues/2024">#2024</a>, <a href="https://github.com/josdejong/mathjs/issues/2041">#2041</a>. Thanks <a href="https://github.com/harrysarson">@harrysarson</a>.
+
+
 <h1 id="20201204-version-810">2020-12-04, version 8.1.0 <a href="#20201204-version-810" title="Permalink">#</a></h1>
 
 - Implemented units `kilogramforce` (`kgf`). Thanks <a href="https://github.com/rnd-debug">@rnd-debug</a>.
