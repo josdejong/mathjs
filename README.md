@@ -167,13 +167,11 @@ To see the coverage results, open the generated report in your browser:
 
 ### Continuous integration testing
 
-Continuous integration tests are run on [Travis CI](https://travis-ci.org/) and [BrowserStack](https://www.browserstack.com) every time a commit is pushed to github.
-The test results can be checked on https://travis-ci.org/josdejong/mathjs. Travis CI runs the tests for different versions of node.js, and BrowserStack runs the tests are run on all major browsers.
+Continuous integration tests are run on [Github Actions](https://github.com/josdejong/mathjs/actions) and [BrowserStack](https://www.browserstack.com) every time a commit is pushed to github. Github Actions runs the tests for different versions of node.js, and BrowserStack runs the tests are run on all major browsers.
 
-[![Travis CI](https://raw.github.com/josdejong/mathjs/develop/misc/Travis-CI-logo.png)](https://travis-ci.org/) &nbsp;&nbsp;&nbsp;
 [![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)](https://www.browserstack.com)
 
-Thanks Travis CI and BrowserStack for the generous free hosting of this open source project!
+Thanks Github Actions and BrowserStack for the generous free hosting of this open source project!
 
 ## License
 
