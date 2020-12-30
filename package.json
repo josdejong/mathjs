@@ -88,6 +88,8 @@
       "require": "./lib/cjs/number.js"
     },
     "./package.json": "./package.json",
+    "./lib/browser/math.js": "./lib/browser/math.js",
+    "./lib/browser/math.js.map": "./lib/browser/math.js.map",
     "./dist/math.js": "./dist/math.js",
     "./dist/math.min.js": "./dist/math.min.js",
     "./main/es5/index.js": "./main/es5/index.js",
