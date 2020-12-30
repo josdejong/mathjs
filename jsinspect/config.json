@@ -1,0 +1,9 @@
+{
+    "threshold": 100,
+    "identifiers": true,
+    "literals": true,
+    "color": true,
+    "minInstances": 2,
+    "ignore": "",
+    "reporter": "json"
+}

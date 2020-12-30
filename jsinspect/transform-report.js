@@ -1,6 +1,6 @@
 /**
  * Generate results first with jsinspect (from project root):  
- * `npx jsinspect -t 50 -r json ./src > ./jsinspect/report.json`
+ * `npx jsinspect --config ./jsinspect/config.json > ./jsinspect/report.json`
  * 
  * Then run this script to transform the output (from project root):  
  * `node ./jsinspect/transform-report.js`  
