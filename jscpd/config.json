@@ -1,0 +1,14 @@
+{
+    "reporters": [
+        "html",
+        "console"
+    ],
+    "output": "./jscpd",
+    "silent": true,
+    "minTokens": 100,
+    "minLines": 10,
+    "maxLines": 1000,
+    "ignore": [
+        "**/matrix/utils/algorithm*.js"
+    ]
+}
