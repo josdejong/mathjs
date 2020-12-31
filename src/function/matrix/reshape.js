@@ -32,8 +32,8 @@ export const createReshape = /* #__PURE__ */ factory(name, dependencies, ({ type
    *     size, squeeze, resize
    *
    * @param {Array | Matrix | *} x  Matrix to be reshaped
-   * @param {(number|':')[]} sizes  One dimensional array with integral sizes for
-   *                                each dimension or one wildcard ':'
+   * @param {number[]} sizes        One dimensional array with integral sizes for
+   *                                each dimension. -1 as wildcard allowed.
    *
    * @return {* | Array | Matrix}   A reshaped clone of matrix `x`
    *
@@ -53,7 +53,7 @@ export const createReshape = /* #__PURE__ */ factory(name, dependencies, ({ type
 
     'Array, Array': function (x, sizes) {
       sizes.forEach(function (size) {
-        if (size !== ':' && !isInteger(size)) {
+        if (!isInteger(size)) {
           throw new TypeError('Invalid size for dimension: ' + size)
         }
       })

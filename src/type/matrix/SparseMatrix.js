@@ -721,24 +721,23 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
 
     // check sizes
     size.forEach(function (value) {
-      if (value !== ':' && (!isNumber(value) || !isInteger(value) || value < 0)) {
-        throw new TypeError('Invalid size, must contain positive integers ' +
+      if (!isNumber(value) || !isInteger(value) || value < -1) {
+        throw new TypeError('Invalid size, must contain positive integers or -1 ' +
           '(size: ' + format(size) + ')')
       }
     })
 
-    const wildCardIndex = size.indexOf(':')
-    if (size.indexOf(':', wildCardIndex + 1) >= 0) {
+    const wildCardIndex = size.indexOf(-1)
+    if (size.indexOf(-1, wildCardIndex + 1) >= 0) {
       throw new Error('More than one wildcard in size')
     }
-    const hasWildcard = wildCardIndex >= 0
-    if (hasWildcard) {
-      const nonWildCardIndex = 1 - wildCardIndex
+    if (wildCardIndex >= 0) {
+      const newLength = size[0] * size[1]
       const currentLength = this._size[0] * this._size[1]
-      if (currentLength % size[nonWildCardIndex] !== 0) {
-        throw new Error('Could not replace wildcard, since ' + currentLength + ' is no multiple of ' + size[nonWildCardIndex])
+      if (currentLength % newLength !== 0) {
+        throw new Error('Could not replace wildcard, since ' + currentLength + ' is no multiple of ' + (-newLength))
       } else {
-        size[wildCardIndex] = currentLength / size[nonWildCardIndex]
+        size[wildCardIndex] = -currentLength / newLength
       }
     }
 

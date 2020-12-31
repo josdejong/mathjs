@@ -205,7 +205,7 @@ export function reshape (array, sizes) {
   let newArray
 
   function product (arr) {
-    return arr.reduce((prev, curr) => prev * curr, 1)
+    return arr.reduce((prev, curr) => prev * curr)
   }
 
   if (!Array.isArray(array) || !Array.isArray(sizes)) {
@@ -216,18 +216,17 @@ export function reshape (array, sizes) {
     throw new DimensionError(0, product(arraySize(array)), '!=')
   }
 
-  const totalSize = product(sizes.filter(size => size !== ':'))
+  const totalSize = product(sizes)
 
-  const wildCardIndex = sizes.indexOf(':')
-  if (sizes.indexOf(':', wildCardIndex + 1) >= 0) {
+  const wildCardIndex = sizes.indexOf(-1)
+  if (sizes.indexOf(-1, wildCardIndex + 1) >= 0) {
     throw new Error('More than one wildcard in sizes')
   }
-  const hasWildcard = wildCardIndex >= 0
-  if (hasWildcard) {
+  if (wildCardIndex >= 0) {
     if (flatArray.length % totalSize !== 0) {
-      throw new Error('Could not replace wildcard, since ' + flatArray.length + ' is no multiple of ' + totalSize)
+      throw new Error('Could not replace wildcard, since ' + flatArray.length + ' is no multiple of ' + (-totalSize))
     } else {
-      sizes[wildCardIndex] = flatArray.length / totalSize
+      sizes[wildCardIndex] = -flatArray.length / totalSize
     }
   } else if (flatArray.length !== totalSize) {
     throw new DimensionError(
