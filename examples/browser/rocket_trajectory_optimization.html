@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>math.js | rocket trajectory optimization</title>
@@ -11,15 +12,28 @@
     body {
       font-family: sans-serif;
     }
+
+    #canvas-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5%;
+      margin-top: 5%;
+    }
+
+    #canvas-grid>div {
+      overflow: hidden;
+    }
   </style>
 </head>
+
 <body>
   <h1>Rocket trajectory optimization</h1>
   <p>
     This example simulates the launch of a SpaceX Falcon 9 modeled using a system of ordinary differential equations.
   </p>
 
-  <canvas id=canvas1 width="1600" height="600"></canvas>
+  <canvas id="canvas" width="1600" height="600"></canvas>
+  <div id="canvas-grid"></div>
 
   <script>
     // Solve ODE `dx/dt = f(x,t), x(0) = x0` numerically. 
@@ -112,22 +126,26 @@
 
     // Reset initial conditions for unpowered flight
     sim.evaluate("dm = 0 kg/s")
-    sim.evaluate("tfinal = 500 s")
+    sim.evaluate("tfinal = 250 s")
     sim.evaluate("dt = 10 s")
     sim.evaluate("x = flatten(result_insertion[end,:])")
     sim.evaluate("result_unpowered2 = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt], x, dt, tfinal)")
 
-    // Extract the useful information from the results so it can be plotted
-    const datasets = ['stage1', 'interstage', 'stage2', 'unpowered1', 'insertion', 'unpowered2']
-      .map((stageName, i) => ({
-        label: stageName,
-        data: preparePlotData('result_' + stageName),
-        borderColor: i % 2 ? "blue" : "red",
-        fill: false,
-        pointRadius: 0
-      }))
+    // Join together results and add time values to it.
+    const stageNames = ['stage1', 'interstage', 'stage2', 'unpowered1', 'insertion', 'unpowered2']
+    const result = combineResults()
+    sim.set('result', result)
 
-    function preparePlotData(resultName) {
+    // Extract the useful information from the results so it can be plotted
+    const mainDatasets = stageNames.map((stageName, i) => ({
+      label: stageName,
+      data: positionDataForPlot('result_' + stageName),
+      borderColor: i % 2 ? "blue" : "red",
+      fill: false,
+      pointRadius: 0
+    }))
+
+    function positionDataForPlot(resultName) {
       return sim.evaluate('concat('
         + `(${resultName}[:,4] - phi0) * r0 / rad / km,`  // Surface distance from start (in km)
         + `(${resultName}[:,1] - r0) / km`                // Height above surface (in km)
@@ -135,12 +153,111 @@
       ).toArray().map(([x, y]) => ({ x, y }))
     }
 
-    const chart = new Chart(document.getElementById('canvas1'), {
+    new Chart(document.getElementById('canvas'), {
       type: 'line',
-      data: {
-        datasets
+      data: { datasets: mainDatasets },
+      options: getMainChartOptions()
+    })
+    createChart([{
+      label: 'velocity (in m/s)',
+      data: sim.evaluate("result[:,[2,6]]")
+        .toArray()
+        .map(([v, t]) => ({ x: t, y: v.toNumber('m/s') }))
+    }])
+    createChart([{
+      label: 'height (in km)',
+      data: sim.evaluate("concat((result[:, 1] - r0)/km, result[:, 6])")
+        .toArray()
+        .map(([r, t]) => ({ x: t, y: r })),
+    }])
+    createChart([{
+      label: 'gamma (in deg)',
+      data: sim.evaluate("result[:, [5,6]]")
+        .toArray()
+        .map(([gamma, t]) => ({ x: t, y: gamma.toNumber('deg') })),
+    }])
+    createChart([{
+      label: 'acceleration (in m/s^2)',
+      data: sim.evaluate("concat(diff(result[:, 2]) ./ diff(result[:, 6]) / (m/s), result[:end-1, 6])")
+        .toArray()
+        .map(([acc, t]) => ({ x: t, y: acc })),
+    }])
+    createChart([{
+      label: 'drag acceleration (in m/s^2)',
+      data: sim.evaluate("concat(drag(result[:, 1], result[:, 2]) ./ result[:, 3] / (m/s^2), result[:, 6])")
+        .toArray()
+        .map(([dragAcc, t]) => ({ x: t, y: dragAcc })),
+    }])
+    createChart([{
+      data: sim.evaluate("result[:, [1,4]]")
+        .toArray()
+        .map(([r, phi]) => ([r.toNumber('km'), phi.toNumber('rad')]))
+        .map(([r, phi]) => ({ x: r * Math.cos(phi), y: r * Math.sin(phi) })),
+    }, {
+      data: sim.evaluate("map(0:0.25:360, function(angle) = rotate([r0/km, 0], angle))")
+        .toArray()
+        .map(([x, y]) => ({ x, y })),
+      borderColor: "green",
+      fill: true
+    }], {
+      aspectRatio: 1,
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          min: -8000,
+          max: 8000,
+          display: false
+        }],
+        yAxes: [{
+          type: 'linear',
+          min: -8000,
+          max: 8000,
+          display: false
+        }]
       },
-      options: {
+      legend: { display: false }
+    })
+
+    // This function is a hack, but I like the charts I can draw now!
+    function combineResults() {
+      let time = 0
+      let result
+      for (const stageName of stageNames) {
+        const resultName = 'result_' + stageName
+        const dt = resultName.includes('unpowered') ? '10' : '0.5' // This is a hack!
+        const resultMatrix = sim.evaluate(resultName)
+        const resultLength = resultMatrix.size()[0]
+        const startTime = time
+        time += dt * resultLength
+        const timeRange = math.range(startTime, time, dt)
+        const resultWithTime = math.concat(resultMatrix, math.reshape(timeRange, [resultLength, 1]))
+        result = result ? math.concat(result, resultWithTime, 0) : resultWithTime
+      }
+      return result
+    }
+
+    function createChart(datasets, options = {}) {
+      const container = document.createElement("div")
+      document.querySelector("#canvas-grid").appendChild(container)
+      const canvas = document.createElement("canvas")
+      container.appendChild(canvas)
+      new Chart(canvas, {
+        type: 'line',
+        data: {
+          datasets: datasets.map(dataset => ({
+            borderColor: "#dc3912",
+            fill: false,
+            pointRadius: 0,
+            ...dataset
+          }))
+        },
+        options: getChartOptions(options)
+      })
+    }
+
+    function getMainChartOptions() {
+      return {
         scales: {
           xAxes: [{
             type: 'linear',
@@ -160,7 +277,25 @@
         },
         animation: false
       }
-    })
+    }
+
+    function getChartOptions(options) {
+      return {
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              display: true,
+              labelString: 'time (in s)'
+            }
+          }]
+        },
+        animation: false,
+        ...options
+      }
+    }
   </script>
 </body>
+
 </html>
