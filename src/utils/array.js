@@ -119,7 +119,7 @@ export function resize (array, size, defaultValue) {
   size.forEach(function (value) {
     if (!isNumber(value) || !isInteger(value) || value < 0) {
       throw new TypeError('Invalid size, must contain positive integers ' +
-          '(size: ' + format(size) + ')')
+        '(size: ' + format(size) + ')')
     }
   })
 
@@ -205,7 +205,7 @@ export function reshape (array, sizes) {
   let newArray
 
   function product (arr) {
-    return arr.reduce((prev, curr) => prev * curr)
+    return arr.reduce((prev, curr) => prev * curr, 1)
   }
 
   if (!Array.isArray(array) || !Array.isArray(sizes)) {
@@ -216,12 +216,20 @@ export function reshape (array, sizes) {
     throw new DimensionError(0, product(arraySize(array)), '!=')
   }
 
-  let totalSize = 1
-  for (let sizeIndex = 0; sizeIndex < sizes.length; sizeIndex++) {
-    totalSize *= sizes[sizeIndex]
-  }
+  const totalSize = product(sizes.filter(size => size !== ':'))
 
-  if (flatArray.length !== totalSize) {
+  const wildCardIndex = sizes.indexOf(':')
+  if (sizes.indexOf(':', wildCardIndex + 1) >= 0) {
+    throw new Error('More than one wildcard in sizes')
+  }
+  const hasWildcard = wildCardIndex >= 0
+  if (hasWildcard) {
+    if (flatArray.length % totalSize !== 0) {
+      throw new Error('Could not replace wildcard, since ' + flatArray.length + ' is no multiple of ' + totalSize)
+    } else {
+      sizes[wildCardIndex] = flatArray.length / totalSize
+    }
+  } else if (flatArray.length !== totalSize) {
     throw new DimensionError(
       product(sizes),
       product(arraySize(array)),

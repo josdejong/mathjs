@@ -239,7 +239,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       case 1:
         return _getsubset(this, index)
 
-        // intentional fall through
+      // intentional fall through
       case 2:
       case 3:
         return _setsubset(this, index, replacement, defaultValue)
@@ -572,7 +572,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     sizeArray.forEach(function (value) {
       if (!isNumber(value) || !isInteger(value) || value < 0) {
         throw new TypeError('Invalid size, must contain positive integers ' +
-                            '(size: ' + format(sizeArray) + ')')
+          '(size: ' + format(sizeArray) + ')')
       }
     })
 
@@ -721,11 +721,26 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
 
     // check sizes
     size.forEach(function (value) {
-      if (!isNumber(value) || !isInteger(value) || value < 0) {
+      if (value !== ':' && (!isNumber(value) || !isInteger(value) || value < 0)) {
         throw new TypeError('Invalid size, must contain positive integers ' +
-                            '(size: ' + format(size) + ')')
+          '(size: ' + format(size) + ')')
       }
     })
+
+    const wildCardIndex = size.indexOf(':')
+    if (size.indexOf(':', wildCardIndex + 1) >= 0) {
+      throw new Error('More than one wildcard in size')
+    }
+    const hasWildcard = wildCardIndex >= 0
+    if (hasWildcard) {
+      const nonWildCardIndex = 1 - wildCardIndex
+      const currentLength = this._size[0] * this._size[1]
+      if (currentLength % size[nonWildCardIndex] !== 0) {
+        throw new Error('Could not replace wildcard, since ' + currentLength + ' is no multiple of ' + size[nonWildCardIndex])
+      } else {
+        size[wildCardIndex] = currentLength / size[nonWildCardIndex]
+      }
+    }
 
     // m * n must not change
     if (this._size[0] * this._size[1] !== size[0] * size[1]) {
