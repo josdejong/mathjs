@@ -133,9 +133,11 @@
     sim.evaluate("x = flatten(result_insertion[end,:])")
     sim.evaluate("result_unpowered2 = ndsolve([drdt, dvdt, dmdt, dphidt, dgammadt, dtdt], x, dt, tfinal)")
 
-    // Join together results and add time values to it.
+    // Now it's time to prepare results for plotting
     const resultNames = ['stage1', 'interstage', 'stage2', 'unpowered1', 'insertion', 'unpowered2']
       .map(stageName => `result_${stageName}`)
+
+    // Concat result matrices
     sim.set('result',
       math.concat(
         ...resultNames.map(resultName =>
@@ -145,28 +147,24 @@
       )
     )
 
-    // Extract the useful information from the results so it can be plotted
     const mainDatasets = resultNames.map((resultName, i) => ({
       label: resultName.slice(7),
-      data: positionDataForPlot(resultName),
-      borderColor: i % 2 ? '#999' : '#dc3912',
-      fill: false,
-      pointRadius: 0
-    }))
-
-    function positionDataForPlot(resultName) {
-      return sim.evaluate('concat('
+      data: sim.evaluate(
+        'concat('
         + `(${resultName}[:,4] - phi0) * r0 / rad / km,`  // Surface distance from start (in km)
         + `(${resultName}[:,1] - r0) / km`                // Height above surface (in km)
         + ')'
-      ).toArray().map(([x, y]) => ({ x, y }))
-    }
-
+      ).toArray().map(([x, y]) => ({ x, y })),
+      borderColor: i % 2 ? '#999' : '#dc3912',
+      fill: false,
+      pointRadius: 0,
+    }))
     new Chart(document.getElementById('canvas'), {
       type: 'line',
       data: { datasets: mainDatasets },
       options: getMainChartOptions()
     })
+
     createChart([{
       label: 'velocity (in m/s)',
       data: sim.evaluate("result[:,[2,6]]")
@@ -197,37 +195,26 @@
         .toArray()
         .map(([dragAcc, t]) => ({ x: t.toNumber('s'), y: dragAcc.toNumber('m/s^2') })),
     }])
-    createChart([{
-      data: sim.evaluate("result[:, [1,4]]")
-        .toArray()
-        .map(([r, phi]) => math.rotate([r.toNumber('km'), 0], phi))
-        .map(([x, y]) => ({ x, y })),
-    }, {
-      data: sim.evaluate("map(0:0.25:360, function(angle) = rotate([r0/km, 0], angle))")
-        .toArray()
-        .map(([x, y]) => ({ x, y })),
-      borderColor: "#999",
-      fill: true
-    }], {
-      aspectRatio: 1,
-      scales: {
-        xAxes: [{
-          type: 'linear',
-          position: 'bottom',
-          min: -8000,
-          max: 8000,
-          display: false
-        }],
-        yAxes: [{
-          type: 'linear',
-          min: -8000,
-          max: 8000,
-          display: false
-        }]
-      },
-      legend: { display: false }
-    })
+    createChart(
+      [
+        {
+          data: sim.evaluate("result[:, [1,4]]")
+            .toArray()
+            .map(([r, phi]) => math.rotate([r.toNumber('km'), 0], phi))
+            .map(([x, y]) => ({ x, y })),
+        },
+        {
+          data: sim.evaluate("map(0:0.25:360, function(angle) = rotate([r0/km, 0], angle))")
+            .toArray()
+            .map(([x, y]) => ({ x, y })),
+          borderColor: "#999",
+          fill: true
+        }
+      ],
+      getEarthChartOptions()
+    )
 
+    // Helper functions for plotting data (nothing to learn about math.js from here on)
     function createChart(datasets, options = {}) {
       const container = document.createElement("div")
       document.querySelector("#canvas-grid").appendChild(container)
@@ -284,6 +271,28 @@
         },
         animation: false,
         ...options
+      }
+    }
+
+    function getEarthChartOptions() {
+      return {
+        aspectRatio: 1,
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom',
+            min: -8000,
+            max: 8000,
+            display: false
+          }],
+          yAxes: [{
+            type: 'linear',
+            min: -8000,
+            max: 8000,
+            display: false
+          }]
+        },
+        legend: { display: false }
       }
     }
   </script>
