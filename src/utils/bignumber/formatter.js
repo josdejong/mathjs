@@ -1,3 +1,42 @@
+import { isInteger } from '../number.js'
+
+/**
+ * Formats a BigNumber in a given base
+ * @param {BigNumber} n
+ * @param {number} base
+ * @param {number} size
+ * @returns {string}
+ */
+function formatBigNumberToBase (n, base, size) {
+  const BigNumberCtor = n.constructor
+  const big2 = new BigNumberCtor(2)
+  let suffix = ''
+  if (size) {
+    if (size < 1) {
+      throw new Error('size must be in greater than 0')
+    }
+    if (!isInteger(size)) {
+      throw new Error('size must be an integer')
+    }
+    if (n.greaterThan(big2.pow(size - 1).sub(1)) || n.lessThan(big2.pow(size - 1).mul(-1))) {
+      throw new Error(`Value must be in range [-2^${size - 1}, 2^${size - 1}-1]`)
+    }
+    if (!n.isInteger()) {
+      throw new Error('Value must be an integer')
+    }
+    if (n.lessThan(0)) {
+      n = n.add(big2.pow(size))
+    }
+    suffix = `i${size}`
+  }
+  switch (base) {
+    case 2: return `${n.toBinary()}${suffix}`
+    case 8: return `${n.toOctal()}${suffix}`
+    case 16: return `${n.toHexadecimal()}${suffix}`
+    default: throw new Error(`Base ${base} not supported `)
+  }
+}
+
 /**
  * Convert a BigNumber to a formatted string representation.
  *
@@ -25,6 +64,20 @@
  *                                          Lower bound is included, upper bound
  *                                          is excluded.
  *                                          For example '123.4' and '1.4e7'.
+ *                         'bin', 'oct, or
+ *                         'hex'            Format the number using binary, octal,
+ *                                          or hexadecimal notation.
+ *                                          For example '0b1101' and '0x10fe'.
+ *                     {number} wordSize    The word size in bits to use for formatting
+ *                                          in binary, octal, or hexadecimal notation.
+ *                                          To be used only with 'bin', 'oct', or 'hex'
+ *                                          values for 'notation' option. When this option
+ *                                          is defined the value is formatted as a signed
+ *                                          twos complement integer of the given word size
+ *                                          and the size suffix is appended to the output.
+ *                                          For example
+ *                                          format(-1, {notation: 'hex', wordSize: 8}) === '0xffi8'.
+ *                                          Default value is undefined.
  *                     {number} precision   A number between 0 and 16 to round
  *                                          the digits of the number.
  *                                          In case of notations 'exponential',
@@ -79,6 +132,7 @@ export function format (value, options) {
   // default values for options
   let notation = 'auto'
   let precision
+  let wordSize
 
   if (options !== undefined) {
     // determine notation from options
@@ -92,6 +146,13 @@ export function format (value, options) {
     } else if (options.precision) {
       precision = options.precision
     }
+
+    if (options.wordSize) {
+      wordSize = options.wordSize
+      if (typeof (wordSize) !== 'number') {
+        throw new Error('Option "wordSize" must be a number')
+      }
+    }
   }
 
   // handle the various notations
@@ -104,6 +165,15 @@ export function format (value, options) {
 
     case 'engineering':
       return toEngineering(value, precision)
+
+    case 'bin':
+      return formatBigNumberToBase(value, 2, wordSize)
+
+    case 'oct':
+      return formatBigNumberToBase(value, 8, wordSize)
+
+    case 'hex':
+      return formatBigNumberToBase(value, 16, wordSize)
 
     case 'auto':
     {
@@ -136,7 +206,7 @@ export function format (value, options) {
     }
     default:
       throw new Error('Unknown notation "' + notation + '". ' +
-          'Choose "auto", "exponential", or "fixed".')
+          'Choose "auto", "exponential", "fixed", "bin", "oct", or "hex.')
   }
 }
 

@@ -1,4 +1,7 @@
-import { createBaseFormatterFactory } from './baseUtils.js'
+import { factory } from '../../utils/factory.js'
+
+const name = 'oct'
+const dependencies = ['typed', 'format']
 
 /**
  * Format a number as octal.
@@ -17,8 +20,18 @@ import { createBaseFormatterFactory } from './baseUtils.js'
  *    bin
  *    hex
  *
- * @param {number} value  Value to be stringified
- * @return {string}       The formatted value
+ * @param {number} value    Value to be stringified
+ * @param {number} wordSize Optional word size (see `format`)
+ * @return {string}         The formatted value
  */
 
-export const createOct = createBaseFormatterFactory('oct', 8)
+export const createOct = factory(name, dependencies, ({ typed, format }) => {
+  return typed(name, {
+    'number | BigNumber': function (n) {
+      return format(n, { notation: 'oct' })
+    },
+    'number | BigNumber, number': function (n, wordSize) {
+      return format(n, { notation: 'oct', wordSize: wordSize })
+    }
+  })
+})

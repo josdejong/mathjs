@@ -252,12 +252,19 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('0xabcdef'), 0xabcdef)
       assert.strictEqual(parseAndEval('0x3456789'), 0x3456789)
       assert.strictEqual(parseAndEval('0xABCDEF'), 0xabcdef)
-      assert.strictEqual(parseAndEval('0xffffffff'), -1)
-      assert.strictEqual(parseAndEval('0xfffffffe'), -2)
-      assert.strictEqual(parseAndEval('0o37777777777'), -1)
-      assert.strictEqual(parseAndEval('0b11111111111111111111111111111111'), -1)
-      assert.strictEqual(parseAndEval('0b11111111111111111111111111111110'), -2)
+      assert.strictEqual(parseAndEval('0x80i8'), -128)
+      assert.strictEqual(parseAndEval('0x80'), 128)
+      assert.strictEqual(parseAndEval('0x80000000i32'), -2147483648)
+      assert.strictEqual(parseAndEval('0xffffffffi32'), -1)
+      assert.strictEqual(parseAndEval('0xfffffffei32'), -2)
+      assert.strictEqual(parseAndEval('0o37777777777i32'), -1)
+      assert.strictEqual(parseAndEval('0b11111111111111111111111111111111i32'), -1)
+      assert.strictEqual(parseAndEval('0b11111111111111111111111111111110i32'), -2)
+      assert.strictEqual(parseAndEval('0b11111111111111111111111111111110'), 4294967294)
       assert.strictEqual(parseAndEval('0x7fffffff'), 2 ** 31 - 1)
+      assert.strictEqual(parseAndEval('0x7fffffffi32'), 2 ** 31 - 1)
+      assert.strictEqual(parseAndEval('0x1fffffffffffff'), 2 ** 53 - 1)
+      assert.strictEqual(parseAndEval('0x1fffffffffffffi53'), -1)
     })
 
     it('should parse a number followed by e', function () {
@@ -287,7 +294,10 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('0o8') }, SyntaxError)
       assert.throws(function () { parseAndEval('0xg') }, SyntaxError)
       assert.throws(function () { parseAndEval('0x12.3') }, SyntaxError)
-      assert.throws(function () { parseAndEval('0x100000000') }, SyntaxError)
+
+      assert.throws(function () { parseAndEval('0x12ii') })
+      assert.throws(function () { parseAndEval('0x12u') })
+      assert.throws(function () { parseAndEval('0x12i-8') })
     })
   })
 
@@ -304,6 +314,12 @@ describe('parse', function () {
 
       assert.deepStrictEqual(bigmath.parse('0.1').compile().evaluate(), bigmath.bignumber(0.1))
       assert.deepStrictEqual(bigmath.parse('1.2e5000').compile().evaluate(), bigmath.bignumber('1.2e5000'))
+
+      assert.deepStrictEqual(bigmath.parse('0xffffffff').compile().evaluate(), bigmath.bignumber(0xffffffff))
+      assert.deepStrictEqual(bigmath.parse('0x80000000i32').compile().evaluate(), bigmath.bignumber(-2147483648))
+      assert.deepStrictEqual(bigmath.parse('0xffffffffi32').compile().evaluate(), bigmath.bignumber(-1))
+      assert.deepStrictEqual(bigmath.parse('0xffffffffffffffffffffffffffffffffi128').compile().evaluate(), bigmath.bignumber(-1))
+      assert.deepStrictEqual(bigmath.parse('0xffffffffffffffffffffffffffffffff').compile().evaluate(), bigmath.bignumber('0xffffffffffffffffffffffffffffffff'))
     })
   })
 

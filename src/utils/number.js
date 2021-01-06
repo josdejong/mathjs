@@ -105,6 +105,43 @@ export const expm1 = /* #__PURE__ */ Math.expm1 || function expm1 (x) {
 }
 
 /**
+ * Formats a number in a given base
+ * @param {number} n
+ * @param {number} base
+ * @param {number} size
+ * @returns {string}
+ */
+function formatNumberToBase (n, base, size) {
+  const prefixes = { 2: '0b', 8: '0o', 16: '0x' }
+  const prefix = prefixes[base]
+  let suffix = ''
+  if (size) {
+    if (size < 1) {
+      throw new Error('size must be in greater than 0')
+    }
+    if (!isInteger(size)) {
+      throw new Error('size must be an integer')
+    }
+    if (n > 2 ** (size - 1) - 1 || n < -(2 ** (size - 1))) {
+      throw new Error(`Value must be in range [-2^${size - 1}, 2^${size - 1}-1]`)
+    }
+    if (!isInteger(n)) {
+      throw new Error('Value must be an integer')
+    }
+    if (n < 0) {
+      n = n + 2 ** size
+    }
+    suffix = `i${size}`
+  }
+  let sign = ''
+  if (n < 0) {
+    n = -n
+    sign = '-'
+  }
+  return `${sign}${prefix}${n.toString(base)}${suffix}`
+}
+
+/**
  * Convert a number to a formatted string representation.
  *
  * Syntax:
@@ -133,6 +170,20 @@ export const expm1 = /* #__PURE__ */ Math.expm1 || function expm1 (x) {
  *                                          Lower bound is included, upper bound
  *                                          is excluded.
  *                                          For example '123.4' and '1.4e7'.
+ *                         'bin', 'oct, or
+ *                         'hex'            Format the number using binary, octal,
+ *                                          or hexadecimal notation.
+ *                                          For example '0b1101' and '0x10fe'.
+ *                     {number} wordSize    The word size in bits to use for formatting
+ *                                          in binary, octal, or hexadecimal notation.
+ *                                          To be used only with 'bin', 'oct', or 'hex'
+ *                                          values for 'notation' option. When this option
+ *                                          is defined the value is formatted as a signed
+ *                                          twos complement integer of the given word size
+ *                                          and the size suffix is appended to the output.
+ *                                          For example
+ *                                          format(-1, {notation: 'hex', wordSize: 8}) === '0xffi8'.
+ *                                          Default value is undefined.
  *                     {number} precision   A number between 0 and 16 to round
  *                                          the digits of the number.
  *                                          In case of notations 'exponential',
@@ -192,6 +243,7 @@ export function format (value, options) {
   // default values for options
   let notation = 'auto'
   let precision
+  let wordSize
 
   if (options) {
     // determine notation from options
@@ -204,6 +256,13 @@ export function format (value, options) {
       precision = options
     } else if (isNumber(options.precision)) {
       precision = options.precision
+    }
+
+    if (options.wordSize) {
+      wordSize = options.wordSize
+      if (typeof (wordSize) !== 'number') {
+        throw new Error('Option "wordSize" must be a number')
+      }
     }
   }
 
@@ -218,6 +277,15 @@ export function format (value, options) {
     case 'engineering':
       return toEngineering(value, precision)
 
+    case 'bin':
+      return formatNumberToBase(value, 2, wordSize)
+
+    case 'oct':
+      return formatNumberToBase(value, 8, wordSize)
+
+    case 'hex':
+      return formatNumberToBase(value, 16, wordSize)
+
     case 'auto':
       // remove trailing zeros after the decimal point
       return toPrecision(value, precision, options && options)
@@ -229,7 +297,7 @@ export function format (value, options) {
 
     default:
       throw new Error('Unknown notation "' + notation + '". ' +
-          'Choose "auto", "exponential", or "fixed".')
+          'Choose "auto", "exponential", "fixed", "bin", "oct", or "hex.')
   }
 }
 

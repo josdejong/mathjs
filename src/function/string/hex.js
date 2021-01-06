@@ -1,4 +1,7 @@
-import { createBaseFormatterFactory } from './baseUtils.js'
+import { factory } from '../../utils/factory.js'
+
+const name = 'hex'
+const dependencies = ['typed', 'format']
 
 /**
  * Format a number as hexadecimal.
@@ -18,6 +21,16 @@ import { createBaseFormatterFactory } from './baseUtils.js'
  *    bin
  *
  * @param {number} value    Value to be stringified
+ * @param {number} wordSize Optional word size (see `format`)
  * @return {string}         The formatted value
  */
-export const createHex = createBaseFormatterFactory('hex', 16)
+export const createHex = factory(name, dependencies, ({ typed, format }) => {
+  return typed(name, {
+    'number | BigNumber': function (n) {
+      return format(n, { notation: 'hex' })
+    },
+    'number | BigNumber, number': function (n, wordSize) {
+      return format(n, { notation: 'hex', wordSize: wordSize })
+    }
+  })
+})
