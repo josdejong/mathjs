@@ -2,7 +2,7 @@ import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isStri
 import { isInteger } from '../../utils/number.js'
 import { format } from '../../utils/string.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
-import { arraySize, getArrayDataType, unsqueeze, validateIndex } from '../../utils/array.js'
+import { arraySize, getArrayDataType, processSizesWildcard, unsqueeze, validateIndex } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { DimensionError } from '../../error/DimensionError.js'
 
@@ -709,40 +709,30 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *       resize().
    *
    * @memberof SparseMatrix
-   * @param {number[]} size           The new size the matrix should have.
+   * @param {number[]} sizes          The new size the matrix should have.
    * @param {boolean} [copy]          Return a reshaped copy of the matrix
    *
    * @return {Matrix}                 The reshaped matrix
    */
-  SparseMatrix.prototype.reshape = function (size, copy) {
+  SparseMatrix.prototype.reshape = function (sizes, copy) {
     // validate arguments
-    if (!isArray(size)) { throw new TypeError('Array expected') }
-    if (size.length !== 2) { throw new Error('Sparse matrices can only be reshaped in two dimensions') }
+    if (!isArray(sizes)) { throw new TypeError('Array expected') }
+    if (sizes.length !== 2) { throw new Error('Sparse matrices can only be reshaped in two dimensions') }
 
     // check sizes
-    size.forEach(function (value) {
-      if (!isNumber(value) || !isInteger(value) || value < -1) {
+    sizes.forEach(function (value) {
+      if (!isNumber(value) || !isInteger(value) || value <= -2 || value === 0) {
         throw new TypeError('Invalid size, must contain positive integers or -1 ' +
-          '(size: ' + format(size) + ')')
+          '(size: ' + format(sizes) + ')')
       }
     })
 
-    const wildCardIndex = size.indexOf(-1)
-    if (size.indexOf(-1, wildCardIndex + 1) >= 0) {
-      throw new Error('More than one wildcard in size')
-    }
-    if (wildCardIndex >= 0) {
-      const newLength = size[0] * size[1]
-      const currentLength = this._size[0] * this._size[1]
-      if (currentLength % newLength !== 0) {
-        throw new Error('Could not replace wildcard, since ' + currentLength + ' is no multiple of ' + (-newLength))
-      } else {
-        size[wildCardIndex] = -currentLength / newLength
-      }
-    }
+    const currentLength = this._size[0] * this._size[1]
+    sizes = processSizesWildcard(sizes, currentLength)
+    const newLength = sizes[0] * sizes[1]
 
     // m * n must not change
-    if (this._size[0] * this._size[1] !== size[0] * size[1]) {
+    if (currentLength !== newLength) {
       throw new Error('Reshaping sparse matrix will result in the wrong number of elements')
     }
 
@@ -750,7 +740,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     const m = copy ? this.clone() : this
 
     // return unchanged if the same shape
-    if (this._size[0] === size[0] && this._size[1] === size[1]) {
+    if (this._size[0] === sizes[0] && this._size[1] === sizes[1]) {
       return m
     }
 
@@ -773,8 +763,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       const r1 = rowIndex[i]
       const c1 = colIndex[i]
       const flat = r1 * m._size[1] + c1
-      colIndex[i] = flat % size[1]
-      rowIndex[i] = Math.floor(flat / size[1])
+      colIndex[i] = flat % sizes[1]
+      rowIndex[i] = Math.floor(flat / sizes[1])
     }
 
     // Now reshaping is supposed to preserve the row-major order, BUT these sparse matrices are stored
@@ -786,8 +776,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // 1. Remove all values from the matrix
     m._values.length = 0
     m._index.length = 0
-    m._ptr.length = size[1] + 1
-    m._size = size.slice()
+    m._ptr.length = sizes[1] + 1
+    m._size = sizes.slice()
     for (let i = 0; i < m._ptr.length; i++) {
       m._ptr[i] = 0
     }

@@ -17,7 +17,6 @@ export function isInteger (value) {
   return isFinite(value)
     ? (value === Math.round(value))
     : false
-  // Note: we use ==, not ===, as we can have Booleans as well
 }
 
 /**
@@ -229,7 +228,7 @@ export function format (value, options) {
 
     default:
       throw new Error('Unknown notation "' + notation + '". ' +
-          'Choose "auto", "exponential", or "fixed".')
+        'Choose "auto", "exponential", or "fixed".')
   }
 }
 
@@ -327,8 +326,8 @@ export function toEngineering (value, precision) {
   const decimalVal = ((isNumber(precision) && decimals.length) || decimals.match(/[1-9]/)) ? ('.' + decimals) : ''
 
   const str = c.slice(0, decimalIdx).join('') +
-      decimalVal +
-      'e' + (e >= 0 ? '+' : '') + newExp.toString()
+    decimalVal +
+    'e' + (e >= 0 ? '+' : '') + newExp.toString()
   return rounded.sign + str
 }
 
@@ -396,7 +395,7 @@ export function toExponential (value, precision) {
   // format as `C.CCCe+EEE` or `C.CCCe-EEE`
   const first = c.shift()
   return rounded.sign + first + (c.length > 0 ? ('.' + c.join('')) : '') +
-      'e' + (e >= 0 ? '+' : '') + e
+    'e' + (e >= 0 ? '+' : '') + e
 }
 
 /**
@@ -435,7 +434,7 @@ export function toPrecision (value, precision, options) {
     // append trailing zeros
     // TODO: simplify the next statement
     c = c.concat(zeros(e - c.length + 1 +
-        (c.length < precision ? precision - c.length : 0)))
+      (c.length < precision ? precision - c.length : 0)))
 
     // prepend zeros
     c = zeros(-e).concat(c)

@@ -202,54 +202,75 @@ function _resize (array, size, dim, defaultValue) {
  */
 export function reshape (array, sizes) {
   const flatArray = flatten(array)
-  let newArray
-
-  function product (arr) {
-    return arr.reduce((prev, curr) => prev * curr)
-  }
+  const currentLength = flatArray.length
 
   if (!Array.isArray(array) || !Array.isArray(sizes)) {
     throw new TypeError('Array expected')
   }
 
   if (sizes.length === 0) {
-    throw new DimensionError(0, product(arraySize(array)), '!=')
+    throw new DimensionError(0, currentLength, '!=')
   }
 
-  const totalSize = product(sizes)
-
-  const wildCardIndex = sizes.indexOf(-1)
-  if (sizes.indexOf(-1, wildCardIndex + 1) >= 0) {
-    throw new Error('More than one wildcard in sizes')
-  }
-  if (wildCardIndex >= 0) {
-    if (flatArray.length % totalSize !== 0) {
-      throw new Error('Could not replace wildcard, since ' + flatArray.length + ' is no multiple of ' + (-totalSize))
-    } else {
-      sizes[wildCardIndex] = -flatArray.length / totalSize
-    }
-  } else if (flatArray.length !== totalSize) {
+  sizes = processSizesWildcard(sizes, currentLength)
+  const newLength = product(sizes)
+  if (currentLength !== newLength) {
     throw new DimensionError(
-      product(sizes),
-      product(arraySize(array)),
+      newLength,
+      currentLength,
       '!='
     )
   }
 
   try {
-    newArray = _reshape(flatArray, sizes)
+    return _reshape(flatArray, sizes)
   } catch (e) {
     if (e instanceof DimensionError) {
       throw new DimensionError(
-        product(sizes),
-        product(arraySize(array)),
+        newLength,
+        currentLength,
         '!='
       )
     }
     throw e
   }
 
-  return newArray
+  function product (arr) { return arr.reduce((prev, curr) => prev * curr) }
+}
+
+/**
+ * Replaces the wildcard -1 in the sizes array.
+ * @param {Array.<number>} sizes  List of sizes for each dimension. At most on wildcard.
+ * @param {number} currentLength  Number of elements in the array.
+ * @throws {Error}                If more than one wildcard or unable to replace it.
+ * @returns {Array.<number>}      The sizes array with wildcard replaced.
+ */
+export function processSizesWildcard (sizes, currentLength) {
+  const newLength = product(sizes)
+  const processedSizes = sizes.slice()
+  const WILDCARD = -1
+  const wildCardIndex = sizes.indexOf(WILDCARD)
+  ensureAtMostOneWildcard()
+
+  if (hasWildcard()) {
+    if (canReplaceWildcard()) {
+      replaceWildcard()
+    } else {
+      throw new Error('Could not replace wildcard, since ' + currentLength + ' is no multiple of ' + (-newLength))
+    }
+  }
+  return processedSizes
+
+  function ensureAtMostOneWildcard () {
+    const isMoreThanOneWildcard = sizes.indexOf(WILDCARD, wildCardIndex + 1) >= 0
+    if (isMoreThanOneWildcard) {
+      throw new Error('More than one wildcard in sizes')
+    }
+  }
+  function hasWildcard () { return wildCardIndex >= 0 }
+  function canReplaceWildcard () { return currentLength % newLength === 0 }
+  function replaceWildcard () { processedSizes[wildCardIndex] = -currentLength / newLength }
+  function product (arr) { return arr.reduce((prev, curr) => prev * curr) }
 }
 
 /**
