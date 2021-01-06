@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 8.1.2
+
+- Extended and improved the example rocket_trajectory_optimization.html.
+  Thanks @Josef37.
+
+
 # 2020-12-30, version 8.1.1
 
 - Improved the performance of parsing and evaluating units a lot, see #2065. 
