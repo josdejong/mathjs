@@ -1,5 +1,18 @@
 # History
 
+# not yet published, version 9.0.0
+
+- Improved support for bin, hex, and oct literals. See #1996. Thanks @clnhlzmn.
+  - **Breaking change**: parse literals with prefixes `0b`, `0c`, and `0x` are  
+    now unsigned by default. To parse them as signed, you have to specify a
+    suffix specifying the word size such as `i16` or `i32`.
+  - Function `format` now supports more notations: `bin`, 'hex', and `oct`,
+    for example `format(255, {notation: "hex"})`.
+  - The functions `format`, `bin`, `hex`, `oct` now allow specifying a wordSize, 
+    like `bin(10, 32)` and `format(10, {notation: "bin", wordSize: 32})`.
+  - BigNumber support for the bin, hex, and oct literals. 
+
+
 # not yet published, version 8.1.2
 
 - Extended and improved the example rocket_trajectory_optimization.html.
