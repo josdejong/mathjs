@@ -1,9 +1,9 @@
 {
-    "threshold": 100,
+    "threshold": 50,
     "identifiers": true,
     "literals": true,
     "color": true,
     "minInstances": 2,
-    "ignore": "",
+    "ignore": "generated",
     "reporter": "json"
 }
