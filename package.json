@@ -70,7 +70,7 @@
     "pad-right": "0.2.2",
     "standard": "16.0.3",
     "sylvester": "0.0.21",
-    "webpack": "4.44.2",
+    "webpack": "4.45.0",
     "zeros": "1.0.0"
   },
   "type": "module",
