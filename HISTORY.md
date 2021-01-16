@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 9.0.0
+# 2021-01-16, version 9.0.0
 
 - Improved support for bin, hex, and oct literals. See #1996. Thanks @clnhlzmn.
   - **Breaking change**: parse literals with prefixes `0b`, `0c`, and `0x` are  
@@ -11,10 +11,6 @@
   - The functions `format`, `bin`, `hex`, `oct` now allow specifying a wordSize, 
     like `bin(10, 32)` and `format(10, {notation: "bin", wordSize: 32})`.
   - BigNumber support for the bin, hex, and oct literals. 
-
-
-# not yet published, version 8.1.2
-
 - Extended and improved the example rocket_trajectory_optimization.html.
   Thanks @Josef37.
 
