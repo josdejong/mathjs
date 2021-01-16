@@ -20,6 +20,7 @@ math.oct(value)
 Parameter | Type | Description
 --------- | ---- | -----------
 `value` | number | Value to be stringified
+`wordSize` | number | Optional word size (see `format`)
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

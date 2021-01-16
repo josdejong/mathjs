@@ -4,6 +4,21 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210116-version-900">2021-01-16, version 9.0.0 <a href="#20210116-version-900" title="Permalink">#</a></h1>
+
+- Improved support for bin, hex, and oct literals. See <a href="https://github.com/josdejong/mathjs/issues/1996">#1996</a>. Thanks <a href="https://github.com/clnhlzmn">@clnhlzmn</a>.
+  - **Breaking change**: parse literals with prefixes `0b`, `0c`, and `0x` are  
+    now unsigned by default. To parse them as signed, you have to specify a
+    suffix specifying the word size such as `i16` or `i32`.
+  - Function `format` now supports more notations: `bin`, 'hex', and `oct`,
+    for example `format(255, {notation: "hex"})`.
+  - The functions `format`, `bin`, `hex`, `oct` now allow specifying a wordSize, 
+    like `bin(10, 32)` and `format(10, {notation: "bin", wordSize: 32})`.
+  - BigNumber support for the bin, hex, and oct literals. 
+- Extended and improved the example rocket_trajectory_optimization.html.
+  Thanks <a href="https://github.com/Josef37">@Josef37</a>.
+
+
 <h1 id="20201230-version-811">2020-12-30, version 8.1.1 <a href="#20201230-version-811" title="Permalink">#</a></h1>
 
 - Improved the performance of parsing and evaluating units a lot, see <a href="https://github.com/josdejong/mathjs/issues/2065">#2065</a>. 
