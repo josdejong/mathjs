@@ -234,8 +234,6 @@ export function reshape (array, sizes) {
     }
     throw e
   }
-
-  function product (arr) { return arr.reduce((prev, curr) => prev * curr) }
 }
 
 /**
@@ -250,27 +248,32 @@ export function processSizesWildcard (sizes, currentLength) {
   const processedSizes = sizes.slice()
   const WILDCARD = -1
   const wildCardIndex = sizes.indexOf(WILDCARD)
-  ensureAtMostOneWildcard()
 
-  if (hasWildcard()) {
-    if (canReplaceWildcard()) {
-      replaceWildcard()
+  const isMoreThanOneWildcard = sizes.indexOf(WILDCARD, wildCardIndex + 1) >= 0
+  if (isMoreThanOneWildcard) {
+    throw new Error('More than one wildcard in sizes')
+  }
+
+  const hasWildcard = wildCardIndex >= 0
+  const canReplaceWildcard = currentLength % newLength === 0
+
+  if (hasWildcard) {
+    if (canReplaceWildcard) {
+      processedSizes[wildCardIndex] = -currentLength / newLength
     } else {
       throw new Error('Could not replace wildcard, since ' + currentLength + ' is no multiple of ' + (-newLength))
     }
   }
   return processedSizes
+}
 
-  function ensureAtMostOneWildcard () {
-    const isMoreThanOneWildcard = sizes.indexOf(WILDCARD, wildCardIndex + 1) >= 0
-    if (isMoreThanOneWildcard) {
-      throw new Error('More than one wildcard in sizes')
-    }
-  }
-  function hasWildcard () { return wildCardIndex >= 0 }
-  function canReplaceWildcard () { return currentLength % newLength === 0 }
-  function replaceWildcard () { processedSizes[wildCardIndex] = -currentLength / newLength }
-  function product (arr) { return arr.reduce((prev, curr) => prev * curr) }
+/**
+ * Computes the product of all array elements.
+ * @param {Array<number>} array Array of factors
+ * @returns {number}            Product of all elements
+ */
+function product (array) {
+  return array.reduce((prev, curr) => prev * curr, 1)
 }
 
 /**
