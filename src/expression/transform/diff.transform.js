@@ -1,7 +1,7 @@
-import { isBigNumber, isCollection, isNumber } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { errorTransform } from './utils/errorTransform.js'
 import { createDiff } from '../../function/matrix/diff.js'
+import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 
 const name = 'diff'
 const dependencies = ['typed', 'matrix', 'subtract', 'number', 'bignumber']
@@ -17,15 +17,7 @@ export const createDiffTransform = /* #__PURE__ */ factory(name, dependencies, (
    */
   return typed(name, {
     '...any': function (args) {
-      // change last argument dim from one-based to zero-based
-      if (args.length === 2 && isCollection(args[0])) {
-        const dim = args[1]
-        if (isNumber(dim)) {
-          args[1] = dim - 1
-        } else if (isBigNumber(dim)) {
-          args[1] = dim.minus(1)
-        }
-      }
+      args = lastDimToZeroBase(args)
 
       try {
         return diff.apply(null, args)

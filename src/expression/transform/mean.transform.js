@@ -1,7 +1,7 @@
-import { isBigNumber, isCollection, isNumber } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { errorTransform } from './utils/errorTransform.js'
 import { createMean } from '../../function/statistics/mean.js'
+import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 
 const name = 'mean'
 const dependencies = ['typed', 'add', 'divide']
@@ -18,15 +18,7 @@ export const createMeanTransform = /* #__PURE__ */ factory(name, dependencies, (
    */
   return typed('mean', {
     '...any': function (args) {
-      // change last argument dim from one-based to zero-based
-      if (args.length === 2 && isCollection(args[0])) {
-        const dim = args[1]
-        if (isNumber(dim)) {
-          args[1] = dim - 1
-        } else if (isBigNumber(dim)) {
-          args[1] = dim.minus(1)
-        }
-      }
+      args = lastDimToZeroBase(args)
 
       try {
         return mean.apply(null, args)

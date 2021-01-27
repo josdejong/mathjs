@@ -1,7 +1,7 @@
-import { isBigNumber, isCollection, isNumber } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { errorTransform } from './utils/errorTransform.js'
 import { createSum } from '../../function/statistics/sum.js'
+import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 
 /**
  * Attach a transform function to math.sum
@@ -18,15 +18,7 @@ export const createSumTransform = /* #__PURE__ */ factory(name, dependencies, ({
 
   return typed(name, {
     '...any': function (args) {
-      // change last argument dim from one-based to zero-based
-      if (args.length === 2 && isCollection(args[0])) {
-        const dim = args[1]
-        if (isNumber(dim)) {
-          args[1] = dim - 1
-        } else if (isBigNumber(dim)) {
-          args[1] = dim.minus(1)
-        }
-      }
+      args = lastDimToZeroBase(args)
 
       try {
         return sum.apply(null, args)

@@ -1,7 +1,7 @@
 import { factory } from '../../utils/factory.js'
 import { createStd } from '../../function/statistics/std.js'
-import { isBigNumber, isNumber, isCollection } from '../../utils/is.js'
 import { errorTransform } from './utils/errorTransform.js'
+import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 
 const name = 'std'
 const dependencies = ['typed', 'sqrt', 'variance']
@@ -18,15 +18,7 @@ export const createStdTransform = /* #__PURE__ */ factory(name, dependencies, ({
 
   return typed('std', {
     '...any': function (args) {
-      // change last argument dim from one-based to zero-based
-      if (args.length >= 2 && isCollection(args[0])) {
-        const dim = args[1]
-        if (isNumber(dim)) {
-          args[1] = dim - 1
-        } else if (isBigNumber(dim)) {
-          args[1] = dim.minus(1)
-        }
-      }
+      args = lastDimToZeroBase(args)
 
       try {
         return std.apply(null, args)
