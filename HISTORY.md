@@ -5,6 +5,8 @@
 - Extended function `reshape` with support for a wildcard `-1` to automatically
   calculate the remaining size, like `reshape([1, 2, 3, 4, 5, 6], [-1, 2])` 
   which will output `[[0, 1], [2, 3], [4, 5]]`. See #2075. Thanks @Josef37.
+- Fix #2087: function `simplify` ignores second argument of `log`, for example
+  in `simplify('log(e, 9)')` . Thanks @quentintruong.
 
 
 # 2021-01-16, version 9.0.0
