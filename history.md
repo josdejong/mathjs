@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210127-version-910">2021-01-27, version 9.1.0 <a href="#20210127-version-910" title="Permalink">#</a></h1>
+
+- Extended function `reshape` with support for a wildcard `-1` to automatically
+  calculate the remaining size, like `reshape([1, 2, 3, 4, 5, 6], [-1, 2])` 
+  which will output `[[0, 1], [2, 3], [4, 5]]`. See <a href="https://github.com/josdejong/mathjs/issues/2075">#2075</a>. Thanks <a href="https://github.com/Josef37">@Josef37</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2087">#2087</a>: function `simplify` ignores second argument of `log`, for example
+  in `simplify('log(e, 9)')` . Thanks <a href="https://github.com/quentintruong">@quentintruong</a>.
+
+
 <h1 id="20210116-version-900">2021-01-16, version 9.0.0 <a href="#20210116-version-900" title="Permalink">#</a></h1>
 
 - Improved support for bin, hex, and oct literals. See <a href="https://github.com/josdejong/mathjs/issues/1996">#1996</a>. Thanks <a href="https://github.com/clnhlzmn">@clnhlzmn</a>.

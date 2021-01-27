@@ -20,7 +20,7 @@ math.reshape(x, sizes)
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Array &#124; Matrix &#124; * | Matrix to be reshaped
-`sizes` | number[] | One dimensional array with integral sizes for each dimension
+`sizes` | number[] | One dimensional array with integral sizes for each dimension. One -1 is allowed as wildcard, which calculates this dimension automatically.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -32,18 +32,21 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.reshape([1, 2, 3, 4, 5, 6], [2, 3])
-// returns Array  [[1, 2, 3], [4, 5, 6]]
+ math.reshape([1, 2, 3, 4, 5, 6], [2, 3])
+ // returns Array  [[1, 2, 3], [4, 5, 6]]
 
-math.reshape([[1, 2], [3, 4]], [1, 4])
-// returns Array  [[1, 2, 3, 4]]
+ math.reshape([[1, 2], [3, 4]], [1, 4])
+ // returns Array  [[1, 2, 3, 4]]
 
-math.reshape([[1, 2], [3, 4]], [4])
-// returns Array [1, 2, 3, 4]
+ math.reshape([[1, 2], [3, 4]], [4])
+ // returns Array [1, 2, 3, 4]
 
-const x = math.matrix([1, 2, 3, 4, 5, 6, 7, 8])
-math.reshape(x, [2, 2, 2])
-// returns Matrix [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
+ const x = math.matrix([1, 2, 3, 4, 5, 6, 7, 8])
+ math.reshape(x, [2, 2, 2])
+ // returns Matrix [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
+
+math.reshape([1, 2, 3, 4], [-1, 2])
+// returns Matrix [[1, 2], [3, 4]]
 ```
 
 
