@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 9.1.0
+# 2021-01-27, version 9.1.0
 
 - Extended function `reshape` with support for a wildcard `-1` to automatically
   calculate the remaining size, like `reshape([1, 2, 3, 4, 5, 6], [-1, 2])` 
