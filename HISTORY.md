@@ -1,5 +1,10 @@
 # History
 
+# not yet published, version 9.1.1
+
+- Fix #2096: cleanup old reference to external dependency `crypto`.
+
+
 # 2021-01-27, version 9.1.0
 
 - Extended function `reshape` with support for a wildcard `-1` to automatically
