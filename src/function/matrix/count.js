@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'count'
-const dependencies = ['typed', 'size']
+const dependencies = ['typed', 'size', 'prod']
 
-export const createCount = /* #__PURE__ */ factory(name, dependencies, ({ typed, size }) => {
+export const createCount = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, prod }) => {
   /**
    * Count the number of elements of a matrix, array or string.
    *
@@ -31,15 +31,7 @@ export const createCount = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'Matrix | Array': function (x) {
-      const dimensions = size(x)
-      const dimensionsArray = Array.isArray(dimensions)
-        ? dimensions
-        : dimensions.toArray()
-
-      return dimensionsArray.reduce(
-        (count, dimension) => count * dimension,
-        1
-      )
+      return prod(size(x))
     }
   })
 })
