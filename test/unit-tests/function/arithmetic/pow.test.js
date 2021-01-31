@@ -199,6 +199,26 @@ describe('pow', function () {
     approx.deepEqual(pow(complex(0, 2), math.bignumber(2)), complex(-4, 0))
   })
 
+  it('should return NaN for a complex number exponentiated to Infinity', function () {
+    assert(isNaN(math.pow(complex(1, 1), Infinity)))
+  })
+
+  it('should return 1 when Infinity is exponentiated to a complex number whose Re(z) = 0', function () {
+    assert.strictEqual(math.pow(Infinity, complex(0, 0)), 1)
+  })
+
+  it('should return 0 when Infinity is exponentiated to a complex number whose Re(z) < 0', function () {
+    assert.strictEqual(math.pow(Infinity, complex(-1, 0)), 0)
+  })
+
+  it('should return Infinity when Infinity is exponentiated to a complex number whose Re(z) > 0 and Im(z) = 0', function () {
+    assert.strictEqual(math.pow(Infinity, complex(1, 0)), Infinity)
+  })
+
+  it('should return NaN when Infinity is exponentiated to any other complex number', function () {
+    assert(isNaN(math.pow(Infinity, complex(1, 1))))
+  })
+
   it('should correctly calculate unit ^ number', function () {
     assert.strictEqual(pow(unit('4 N'), 2).toString(), '16 N^2')
     assert.strictEqual(pow(unit('0.25 m/s'), -0.5).toString(), '2 s^0.5 / m^0.5')

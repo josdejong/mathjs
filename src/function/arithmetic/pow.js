@@ -52,6 +52,17 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     'number, number': _pow,
 
     'Complex, Complex': function (x, y) {
+      if (x.re === Infinity) {
+        if (y.re === 0) {
+          return 1
+        } else if (y.re < 0) {
+          return 0
+        } else if (y.im === 0 && y.re > 0) {
+          return Infinity
+        } else {
+          return NaN
+        }
+      }
       return x.pow(y)
     },
 
