@@ -107,6 +107,7 @@ import { detDocs } from './function/matrix/det.js'
 import { ctransposeDocs } from './function/matrix/ctranspose.js'
 import { crossDocs } from './function/matrix/cross.js'
 import { concatDocs } from './function/matrix/concat.js'
+import { countDocs } from './function/matrix/count.js'
 import { xorDocs } from './function/logical/xor.js'
 import { orDocs } from './function/logical/or.js'
 import { notDocs } from './function/logical/not.js'
@@ -407,6 +408,7 @@ export const embeddedDocs = {
 
   // functions - matrix
   concat: concatDocs,
+  count: countDocs,
   cross: crossDocs,
   column: columnDocs,
   ctranspose: ctransposeDocs,
