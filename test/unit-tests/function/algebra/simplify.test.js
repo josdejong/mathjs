@@ -372,4 +372,11 @@ describe('simplify', function () {
       assert.strictEqual(res.toString(), '5 - 15 / (3 * x) ^ 2')
     })
   })
+
+  it('should respect log arguments', function () {
+    simplifyAndCompareEval('log(e)', '1')
+    simplifyAndCompareEval('log(e,e)', '1')
+    simplifyAndCompareEval('log(3,5)', 'log(3,5)')
+    simplifyAndCompareEval('log(e,9)', 'log(e,9)')
+  })
 })

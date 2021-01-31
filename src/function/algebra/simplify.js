@@ -608,7 +608,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       }
 
       // rule and node match. Search the children of rule and node.
-      if ((node.args.length === 1 && rule.args.length === 1) || !isAssociative(node) || isSplit) {
+      if ((node.args.length === 1 && rule.args.length === 1) ||
+        (!isAssociative(node) && node.args.length === rule.args.length) || isSplit) {
         // Expect non-associative operators to match exactly
         const childMatches = []
         for (let i = 0; i < rule.args.length; i++) {

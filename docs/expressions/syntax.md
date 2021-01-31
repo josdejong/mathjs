@@ -291,23 +291,35 @@ math.evaluate('0o77')  //  63
 math.evaluate('0xff')  //  255
 ```
 
-Non-decimal literals are parsed as 32 bit signed integers:
+A word size suffix can be used to change the behavior of non decimal literal evaluation:
 
 ```js
-math.evaluate('0xffffffff')  //  -1
-math.evaluate('0xfffffffff')  //  SyntaxError: String "0xfffffffff" is out of range
+math.evaluate('0xffi8')         // -1
+math.evaluate('0xffffffffi32')  //  -1
+math.evaluate('0xfffffffffi32') //  SyntaxError: String "0xfffffffff" is out of range
 ```
 
-Numbers can be formatted as binary, octal, and hex strings using the functions
-`bin`, `oct`, and `hex`:
+Numbers can be formatted as binary, octal, and hex strings using the `notation` option of the `format` function:
 
 ```js
-math.evaluate('bin(3)')    //  '0b11'
-math.evaluate('oct(63)')   //  '0o77'
-math.evaluate('hex(255)')  //  '0xff'
-math.evaluate('hex(-1)')   //  '0xffffffff'
-math.evaluate('hex(2.3)')  //  Error: Value must be an integer
-math.evaluate('hex(2^35)') //  Error: Value must be in range [-2^31, 2^31-1]
+math.evaluate('format(3, {notation: "bin"})')    //  '0b11'
+math.evaluate('format(63, {notation: "oct"})')   //  '0o77'
+math.evaluate('format(255, {notation: "hex"})')  //  '0xff'
+math.evaluate('format(-1, {notation: "hex"})')   //  '-0x1'
+math.evaluate('format(2.3, {notation: "hex"})')  //  '0x2.4cccccccccccc'
+```
+
+The `format` function accepts a `wordSize` option to use in conjunction with the non binary notations:
+
+```js
+math.evaluate('format(-1, {notation: "hex", wordSize: 8})')   //  '0xffi8'
+```
+
+The functions `bin`, `oct`, and `hex` are shorthand for the `format` function with `notation` set accordingly:
+
+```js
+math.evaluate('bin(-1)')     // '-0b1'
+math.evaluate('bin(-1, 8)')  // '0b11111111i8'
 ```
 
 ### BigNumbers

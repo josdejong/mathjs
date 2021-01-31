@@ -41,16 +41,28 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     string: function (x) {
       if (x === 'NaN') return NaN
+      let size = 0
+      const boxMatch = x.match(/(0[box][0-9a-fA-F]*)i([0-9]*)/)
+      if (boxMatch) {
+        // x includes a size suffix like 0xffffi32, so we extract
+        // the suffix and remove it from x
+        size = Number(boxMatch[2])
+        x = boxMatch[1]
+      }
       let num = Number(x)
       if (isNaN(num)) {
         throw new SyntaxError('String "' + x + '" is no valid number')
       }
-      if (['0b', '0o', '0x'].includes(x.substring(0, 2))) {
-        if (num > 2 ** 32 - 1) {
+      if (boxMatch) {
+        // x is a signed bin, oct, or hex literal
+        // num is the value of string x if x is interpreted as unsigned
+        if (num > 2 ** size - 1) {
+          // literal is too large for size suffix
           throw new SyntaxError(`String "${x}" is out of range`)
         }
-        if (num & 0x80000000) {
-          num = -1 * ~(num - 1)
+        // check if the bit at index size - 1 is set and if so do the twos complement
+        if (num >= 2 ** (size - 1)) {
+          num = num - 2 ** size
         }
       }
       return num

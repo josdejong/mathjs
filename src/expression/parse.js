@@ -332,6 +332,16 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           state.token += currentCharacter(state)
           next(state)
         }
+        // check for word size suffix
+        const sign = currentCharacter(state)
+        if (sign === 'i') {
+          state.token += sign
+          next(state)
+          while (parse.isDigit(currentCharacter(state))) {
+            state.token += currentCharacter(state)
+            next(state)
+          }
+        }
         return
       }
 

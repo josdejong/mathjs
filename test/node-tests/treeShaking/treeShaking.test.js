@@ -15,8 +15,9 @@ const del = require('del')
 const webpack = require('webpack')
 
 describe('tree shaking', function () {
-  const appName = 'treeShakingApp.js'
+  const appName = 'treeShakingApp.mjs'
   const bundleName = 'treeShakingApp.bundle.js'
+  const bundleLicenseName = 'treeShakingApp.bundle.js.LICENSE.txt'
 
   before(() => {
     cleanup()
@@ -28,6 +29,7 @@ describe('tree shaking', function () {
 
   function cleanup () {
     del.sync(path.join(__dirname, bundleName))
+    del.sync(path.join(__dirname, bundleLicenseName))
   }
 
   it('should apply tree-shaking when bundling', function (done) {
@@ -52,7 +54,7 @@ describe('tree shaking', function () {
 
       const info = stats.toJson()
       if (stats.hasErrors()) {
-        console.error('Webpack errors:\n' + info.errors.join('\n'))
+        console.error('Webpack errors:', info.errors)
         done(new Error('Compile failed'))
         return
       }

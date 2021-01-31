@@ -1,5 +1,5 @@
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
-import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array.js'
+import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array.js'
 import { format } from '../../utils/string.js'
 import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
@@ -143,7 +143,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       case 1:
         return _get(this, index)
 
-        // intentional fall through
+      // intentional fall through
       case 2:
       case 3:
         return _set(this, index, replacement, defaultValue)
@@ -458,7 +458,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     const m = copy ? this.clone() : this
 
     m._data = reshape(m._data, size)
-    m._size = size.slice(0)
+    const currentLength = m._size.reduce((length, size) => length * size)
+    m._size = processSizesWildcard(size, currentLength)
     return m
   }
 
