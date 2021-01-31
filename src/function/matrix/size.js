@@ -24,7 +24,7 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * See also:
    *
-   *     resize, squeeze, subset
+   *     count, resize, squeeze, subset
    *
    * @param {boolean | number | Complex | Unit | string | Array | Matrix} x  A matrix
    * @return {Array | Matrix} A vector with size of `x`.
