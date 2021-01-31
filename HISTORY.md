@@ -1,7 +1,9 @@
 # History
 
-# not yet published, version 9.1.1
+# not yet published, version 9.2.0
 
+- Implemented function `count` to count the total elements in a matrix. 
+  Thanks @Josef37.
 - Fix #2096: cleanup old reference to external dependency `crypto`.
 
 
