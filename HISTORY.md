@@ -5,6 +5,8 @@
 - Implemented function `count` to count the total elements in a matrix, 
   see #2085. Thanks @Josef37.
 - Fix #2096: cleanup old reference to external dependency `crypto`.
+- Some refactoring in the code to remove duplications, see #2093. 
+  Thanks @Josef37.
 
 
 # 2021-01-27, version 9.1.0
