@@ -81,9 +81,6 @@ const webpackConfig = {
     globalObject: 'this',
     filename: FILE
   },
-  externals: [
-    'crypto' // is referenced by decimal.js
-  ],
   plugins: [
     bannerPlugin
     // new webpack.optimize.ModuleConcatenationPlugin()

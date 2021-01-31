@@ -1,5 +1,12 @@
 # History
 
+# not yet published, version 9.2.0
+
+- Implemented function `count` to count the total elements in a matrix, 
+  see #2085. Thanks @Josef37.
+- Fix #2096: cleanup old reference to external dependency `crypto`.
+
+
 # 2021-01-27, version 9.1.0
 
 - Extended function `reshape` with support for a wildcard `-1` to automatically
