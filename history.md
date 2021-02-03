@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20200203-version-920">2020-02-03, version 9.2.0 <a href="#20200203-version-920" title="Permalink">#</a></h1>
+
+- Implemented function `count` to count the total elements in a matrix, 
+  see <a href="https://github.com/josdejong/mathjs/issues/2085">#2085</a>. Thanks <a href="https://github.com/Josef37">@Josef37</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2096">#2096</a>: cleanup old reference to external dependency `crypto`.
+- Some refactoring in the code to remove duplications, see <a href="https://github.com/josdejong/mathjs/issues/2093">#2093</a>. 
+  Thanks <a href="https://github.com/Josef37">@Josef37</a>.
+
+
 <h1 id="20210127-version-910">2021-01-27, version 9.1.0 <a href="#20210127-version-910" title="Permalink">#</a></h1>
 
 - Extended function `reshape` with support for a wildcard `-1` to automatically
