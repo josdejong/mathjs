@@ -34,6 +34,8 @@ function objToStrings (obj) {
 
 /// ////////////////// rationalize ///////////////////////
 describe('rationalize', function () {
+  this.timeout(10000) // For IE/Edge
+
   it('invalid expression', function () {
     assert.throws(function () { math.rationalize('(x*/2)') }, /Value expected \(char 4\)/)
   })
