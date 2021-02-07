@@ -76,7 +76,7 @@
     "standard": "16.0.3",
     "sylvester": "0.0.21",
     "typescript": "4.4.3",
-    "webpack": "5.20.1",
+    "webpack": "5.52.1",
     "zeros": "1.0.0"
   },
   "type": "module",
