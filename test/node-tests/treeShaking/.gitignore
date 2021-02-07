@@ -1,2 +1,2 @@
-*.bundle.js
-*.bundle.js.LICENSE.txt
+*.bundle.js*
+*.bundle.js*.LICENSE.txt

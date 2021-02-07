@@ -3,7 +3,14 @@ module.exports = function (config) {
 
     basePath: '../..',
 
-    frameworks: ['mocha'],
+    frameworks: ['mocha', 'webpack'],
+
+    plugins: [
+      'karma-webpack',
+      'karma-mocha',
+      'karma-mocha-reporter',
+      'karma-firefox-launcher',
+    ],
 
     // list of files / patterns to load in the browser
     files: [
@@ -11,7 +18,8 @@ module.exports = function (config) {
     ],
 
     preprocessors: {
-      '**/*.js': ['webpack']
+      'src/**/*.js': ['webpack'],
+      'test/**/*.js': ['webpack'],
     },
 
     captureTimeout: 210000,

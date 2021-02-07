@@ -15,7 +15,7 @@ const del = require('del')
 const webpack = require('webpack')
 
 describe('tree shaking', function () {
-  const appName = 'treeShakingApp.mjs'
+  const appName = './sources/treeShakingApp.js'
   const bundleName = 'treeShakingApp.bundle.js'
   const bundleLicenseName = 'treeShakingApp.bundle.js.LICENSE.txt'
 
@@ -55,7 +55,7 @@ describe('tree shaking', function () {
       const info = stats.toJson()
       if (stats.hasErrors()) {
         console.error('Webpack errors:', info.errors)
-        done(new Error('Compile failed'))
+        done(new Error('Compile failed:\n' + stats.toString()))
         return
       }
 
