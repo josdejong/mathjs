@@ -26,3 +26,8 @@ export function isNaNNumber (x) {
   return Number.isNaN(x)
 }
 isNaNNumber.signature = n1
+
+export function isInfiniteNumber (x) {
+  return x === Infinity || x === -Infinity
+}
+isInfiniteNumber.signature = n1
