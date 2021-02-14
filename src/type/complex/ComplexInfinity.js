@@ -1,17 +1,15 @@
-import { factory } from "../../utils/factory.js";
+import { factory } from '../../utils/factory.js'
 
-const name = "ComplexInfinity";
-const dependencies = [];
+const name = 'ComplexInfinity'
+const dependencies = []
 
 export const createComplexInfinityClass = /* #__PURE__ */ factory(name, dependencies, () => {
+  function ComplexInfinity () {}
 
-    function ComplexInfinity() {}
+  ComplexInfinity.prototype = new ComplexInfinity()
+  ComplexInfinity.prototype.type = 'ComplexInfinity'
+  ComplexInfinity.prototype.isComplexInfinity = true
 
-    ComplexInfinity.prototype = new ComplexInfinity();
-    ComplexInfinity.prototype.type = "ComplexInfinity";
-    ComplexInfinity.prototype.isComplexInfinity = true;
-
-    return ComplexInfinity;
-  },
-  { isClass: true }
-);
+  return ComplexInfinity
+},
+{ isClass: true })
