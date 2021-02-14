@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 9.2.0
+# 2020-02-03, version 9.2.0
 
 - Implemented function `count` to count the total elements in a matrix, 
   see #2085. Thanks @Josef37.
