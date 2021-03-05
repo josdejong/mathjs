@@ -4,6 +4,19 @@ import { deepMap } from '../utils/collection.js'
 const name = 'number'
 const dependencies = ['typed']
 
+/**
+ * Parse a non decimal number of the form 0BX.Y as a Number
+ */
+function parseNonDecimalWithRadix(base, integerPart, fractionalPart) {
+  const n = parseInt(integerPart, base)
+  let f = 0
+  for (let i = 0; i < fractionalPart.length; i++) {
+    let digitValue = parseInt(fractionalPart[i], base)
+    f += digitValue / Math.pow(base, i + 1)
+  }
+  return n + f
+}
+
 export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Create a number or convert a string, boolean, or unit to a number.
@@ -41,19 +54,26 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     string: function (x) {
       if (x === 'NaN') return NaN
+      const nonDecimalWithRadixMatch = x.match(/(0[box])([0-9a-fA-F]*)\.([0-9a-fA-F]*)/)
+      if (nonDecimalWithRadixMatch) {
+        const base = ({'0b': 2, '0c':8, '0x':16})[nonDecimalWithRadixMatch[1]]
+        const integerPart = nonDecimalWithRadixMatch[2]
+        const fractionalPart = nonDecimalWithRadixMatch[3]
+        return parseNonDecimalWithRadix(base, integerPart, fractionalPart)
+      }
       let size = 0
-      const boxMatch = x.match(/(0[box][0-9a-fA-F]*)i([0-9]*)/)
-      if (boxMatch) {
+      const wordSizeSuffixMatch = x.match(/(0[box][0-9a-fA-F]*)i([0-9]*)/)
+      if (wordSizeSuffixMatch) {
         // x includes a size suffix like 0xffffi32, so we extract
         // the suffix and remove it from x
-        size = Number(boxMatch[2])
-        x = boxMatch[1]
+        size = Number(wordSizeSuffixMatch[2])
+        x = wordSizeSuffixMatch[1]
       }
       let num = Number(x)
       if (isNaN(num)) {
         throw new SyntaxError('String "' + x + '" is no valid number')
       }
-      if (boxMatch) {
+      if (wordSizeSuffixMatch) {
         // x is a signed bin, oct, or hex literal
         // num is the value of string x if x is interpreted as unsigned
         if (num > 2 ** size - 1) {

@@ -332,11 +332,20 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           state.token += currentCharacter(state)
           next(state)
         }
-        // check for word size suffix
-        const sign = currentCharacter(state)
-        if (sign === 'i') {
-          state.token += sign
+        if (currentCharacter(state) === '.') {
+          // this number has a radix point
+          state.token += '.'
           next(state)
+          // get the digits after the radix
+          while (parse.isHexDigit(currentCharacter(state))) {
+            state.token += currentCharacter(state)
+            next(state)
+          }
+        } else if (currentCharacter(state) === 'i') {
+          // this number has a word size suffix
+          state.token += 'i'
+          next(state)
+          // get the word size
           while (parse.isDigit(currentCharacter(state))) {
             state.token += currentCharacter(state)
             next(state)
