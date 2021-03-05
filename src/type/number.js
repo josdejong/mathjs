@@ -5,17 +5,17 @@ const name = 'number'
 const dependencies = ['typed']
 
 /**
- * Parse a non decimal number of the form 0BX.Y as a Number
- * @param {number} [base] the base in [2, 8, 16]
- * @param {string} [integerPart] the part before the radix
- * @param {string} [fractionalPart] the part after the radix
+ * Parse a non decimal number of the form 0RI.F as a Number
+ * @param {number} [radix] the radix in [2, 8, 16]
+ * @param {string} [integerPart] the part before the radix point
+ * @param {string} [fractionalPart] the part after the radix point
  */
-function parseNonDecimalWithRadix(base, integerPart, fractionalPart) {
-  const n = parseInt(integerPart, base)
+function parseNonDecimalWithRadixPoint(radix, integerPart, fractionalPart) {
+  const n = parseInt(integerPart, radix)
   let f = 0
   for (let i = 0; i < fractionalPart.length; i++) {
-    let digitValue = parseInt(fractionalPart[i], base)
-    f += digitValue / Math.pow(base, i + 1)
+    let digitValue = parseInt(fractionalPart[i], radix)
+    f += digitValue / Math.pow(radix, i + 1)
   }
   return n + f
 }
@@ -59,10 +59,10 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       if (x === 'NaN') return NaN
       const nonDecimalWithRadixMatch = x.match(/(0[box])([0-9a-fA-F]*)\.([0-9a-fA-F]*)/)
       if (nonDecimalWithRadixMatch) {
-        const base = ({'0b': 2, '0c':8, '0x':16})[nonDecimalWithRadixMatch[1]]
+        const radix = ({'0b': 2, '0o':8, '0x':16})[nonDecimalWithRadixMatch[1]]
         const integerPart = nonDecimalWithRadixMatch[2]
         const fractionalPart = nonDecimalWithRadixMatch[3]
-        return parseNonDecimalWithRadix(base, integerPart, fractionalPart)
+        return parseNonDecimalWithRadixPoint(radix, integerPart, fractionalPart)
       }
       let size = 0
       const wordSizeSuffixMatch = x.match(/(0[box][0-9a-fA-F]*)i([0-9]*)/)
