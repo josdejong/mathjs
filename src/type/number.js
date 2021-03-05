@@ -6,6 +6,9 @@ const dependencies = ['typed']
 
 /**
  * Parse a non decimal number of the form 0BX.Y as a Number
+ * @param {number} [base] the base in [2, 8, 16]
+ * @param {string} [integerPart] the part before the radix
+ * @param {string} [fractionalPart] the part after the radix
  */
 function parseNonDecimalWithRadix(base, integerPart, fractionalPart) {
   const n = parseInt(integerPart, base)
