@@ -10,11 +10,11 @@ const dependencies = ['typed']
  * @param {string} [integerPart] the part before the radix point
  * @param {string} [fractionalPart] the part after the radix point
  */
-function parseNonDecimalWithRadixPoint(radix, integerPart, fractionalPart) {
+function parseNonDecimalWithRadixPoint (radix, integerPart, fractionalPart) {
   const n = parseInt(integerPart, radix)
   let f = 0
   for (let i = 0; i < fractionalPart.length; i++) {
-    let digitValue = parseInt(fractionalPart[i], radix)
+    const digitValue = parseInt(fractionalPart[i], radix)
     f += digitValue / Math.pow(radix, i + 1)
   }
   return n + f
@@ -59,7 +59,7 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       if (x === 'NaN') return NaN
       const nonDecimalWithRadixMatch = x.match(/(0[box])([0-9a-fA-F]*)\.([0-9a-fA-F]*)/)
       if (nonDecimalWithRadixMatch) {
-        const radix = ({'0b': 2, '0o':8, '0x':16})[nonDecimalWithRadixMatch[1]]
+        const radix = ({ '0b': 2, '0o': 8, '0x': 16 })[nonDecimalWithRadixMatch[1]]
         const integerPart = nonDecimalWithRadixMatch[2]
         const fractionalPart = nonDecimalWithRadixMatch[3]
         return parseNonDecimalWithRadixPoint(radix, integerPart, fractionalPart)

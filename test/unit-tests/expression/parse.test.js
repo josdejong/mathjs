@@ -265,6 +265,10 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('0x7fffffffi32'), 2 ** 31 - 1)
       assert.strictEqual(parseAndEval('0x1fffffffffffff'), 2 ** 53 - 1)
       assert.strictEqual(parseAndEval('0x1fffffffffffffi53'), -1)
+      assert.strictEqual(parseAndEval('0b1.1'), 1.5)
+      assert.strictEqual(parseAndEval('0o1.4'), 1.5)
+      assert.strictEqual(parseAndEval('0x1.8'), 1.5)
+      assert.strictEqual(parseAndEval('0x1.f'), 1.9375)
     })
 
     it('should parse a number followed by e', function () {
@@ -293,7 +297,6 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('0b2') }, SyntaxError)
       assert.throws(function () { parseAndEval('0o8') }, SyntaxError)
       assert.throws(function () { parseAndEval('0xg') }, SyntaxError)
-      assert.throws(function () { parseAndEval('0x12.3') }, SyntaxError)
 
       assert.throws(function () { parseAndEval('0x12ii') })
       assert.throws(function () { parseAndEval('0x12u') })
@@ -320,6 +323,10 @@ describe('parse', function () {
       assert.deepStrictEqual(bigmath.parse('0xffffffffi32').compile().evaluate(), bigmath.bignumber(-1))
       assert.deepStrictEqual(bigmath.parse('0xffffffffffffffffffffffffffffffffi128').compile().evaluate(), bigmath.bignumber(-1))
       assert.deepStrictEqual(bigmath.parse('0xffffffffffffffffffffffffffffffff').compile().evaluate(), bigmath.bignumber('0xffffffffffffffffffffffffffffffff'))
+      assert.deepStrictEqual(bigmath.parse('0b1.1').compile().evaluate(), bigmath.bignumber(1.5))
+      assert.deepStrictEqual(bigmath.parse('0o1.4').compile().evaluate(), bigmath.bignumber(1.5))
+      assert.deepStrictEqual(bigmath.parse('0x1.8').compile().evaluate(), bigmath.bignumber(1.5))
+      assert.deepStrictEqual(bigmath.parse('0x1.f').compile().evaluate(), bigmath.bignumber(1.9375))
     })
   })
 
