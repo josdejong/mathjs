@@ -1,4 +1,4 @@
-import { clone } from '../../../utils/object'
+import { clone } from '../../../utils/object.js'
 
 export function createRealSymmetric ({ config, addScalar, subtract, column, flatten, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
   /**
@@ -245,7 +245,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, column, flat
       let minID = 0
       let minE = E[0]
       for (let j = 0; j < E.length; j++) {
-        if (E[j] < minE) {
+        if (abs(E[j]) < abs(minE)) {
           minID = j
           minE = E[minID]
         }

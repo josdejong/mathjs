@@ -1,4 +1,4 @@
-import { clone } from '../../../utils/object'
+import { clone } from '../../../utils/object.js'
 
 export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolveAll, equal, complex, larger, smaller }) {
   /**
@@ -100,7 +100,7 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
           // (we want to scale only by integer powers of radix,
           // so that we don't lose any precision due to round-off)
 
-          let f = big ? bigOne : 1
+          let f = one
           let c = colNorm
 
           const rowDivRadix = divideScalar(rowNorm, radix)
@@ -161,6 +161,8 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     const cplx = type === 'Complex'
 
     const zero = big ? bignumber(0) : cplx ? complex(0) : 0
+
+    if (big) { prec = bignumber(prec) }
 
     for (let i = 0; i < N - 2; i++) {
       // Find the largest subdiag element in the i-th col
@@ -243,6 +245,8 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
 
     const one = big ? bignumber(1) : cplx ? complex(1) : 1
 
+    if (big) { prec = bignumber(prec) }
+
     // The Francis Algorithm
     // The core idea of this algorithm is that doing successive
     // A' = Q⁺AQ transformations will eventually converge to block-
@@ -273,7 +277,7 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     // last eigenvalue converged before this many steps
     let lastConvergenceBefore = 0
 
-    while (lastConvergenceBefore <= 30) {
+    while (lastConvergenceBefore <= 100) {
       lastConvergenceBefore += 1
 
       // TODO if the convergence is slow, do something clever
@@ -365,7 +369,7 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     lambdas.sort((a, b) => +subtract(abs(a), abs(b)))
 
     // the algorithm didn't converge
-    if (lastConvergenceBefore > 30) {
+    if (lastConvergenceBefore > 100) {
       throw Error('The eigenvalues failed to converge. Only found these eigenvalues: ' + lambdas.join(', '))
     }
 
@@ -421,7 +425,7 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
       solutions.shift() // ignore the null vector
 
       if (solutions.length < multiplicities[i]) {
-        //
+        // !FIXME
       }
 
       vectors.push(...solutions)

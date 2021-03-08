@@ -1,6 +1,8 @@
-import { clone } from '../../utils/object.js'
 import { factory } from '../../utils/factory.js'
 import { format } from '../../utils/string.js'
+import { createComplex } from './eigs/complex.js'
+import { createRealSymmetric } from './eigs/realSymetric.js'
+import { typeOf, isNumber, isBigNumber, isComplex, isFraction } from '../../utils/is.js'
 
 const name = 'eigs'
 
@@ -63,8 +65,6 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
     if (prec === undefined) {
       prec = config.epsilon
     }
-
-    prec = bignumber(prec)
 
     const size = mat.size()
 
