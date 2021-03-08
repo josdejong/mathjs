@@ -63,7 +63,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
 
   function computeValuesAndVectors (mat, prec) {
     if (prec === undefined) {
-      prec = 1e-14
+      prec = config.epsilon
     }
 
     prec = bignumber(prec)
@@ -81,8 +81,9 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
       coerceReal(arr, N)
 
       if (isSymmetric(arr, N, prec)) {
-        const type = coerceTypes(mat, arr, N)
-        return doRealSymetric(arr, N, prec, type)
+        // ! FIXME uncomment the following lines
+        //const type = coerceTypes(mat, arr, N)
+        //return doRealSymetric(arr, N, prec, type)
       }
     }
 

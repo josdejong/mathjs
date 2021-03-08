@@ -13,11 +13,6 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
       findVectors = true
     }
 
-    // TODO implement QR for complex matrices
-    if (type === 'Complex') {
-      //throw new TypeError('Complex matrices not yet supported')
-    }
-
     // TODO check if any row/col are zero except the diagonal
 
     // make sure corresponding rows and columns have similar magnitude
@@ -366,6 +361,9 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
       }
     }
 
+    // standard sorting
+    lambdas.sort((a, b) => +subtract(abs(a), abs(b)))
+
     // the algorithm didn't converge
     if (lastConvergenceBefore > 30) {
       throw Error('The eigenvalues failed to converge. Only found these eigenvalues: ' + lambdas.join(', '))
@@ -389,16 +387,44 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     const Cinv = inv(C)
     const U = multiply(Cinv, A, C)
 
+    // turn values into a kind of "multiset"
+    // this way it is easier to find eigenvectors
+    const uniqueValues = []
+    const multiplicities = []
+
+    for (const λ of values) {
+      const i = indexOf(uniqueValues, λ, equal)
+
+      if (i === -1) {
+        uniqueValues.push(λ)
+        multiplicities.push(1)
+      } else {
+        multiplicities[i] += 1
+      }
+    }
+
+    // find eigenvectors by solving U − λE = 0
+    // TODO replace with an iterative eigenvector algorithm
+    // (this one might fail for imprecise eigenvalues)
+
+    const vectors = []
+    const len = uniqueValues.length
     const b = Array(N).fill(0)
     const E = diag(Array(N).fill(1))
 
-    const vectors = []
+    for (let i = 0; i < len; i++) {
+      const λ = uniqueValues[i]
 
-    for (const l of values) {
-      // TODO replace with an iterative eigenvector algorithm
-      // (this one might fail for imprecise eigenvalues)
-      const V = usolveAll(subtract(U, multiply(l, E)), b)
-      for (const v of V) { vectors.push(multiply(C, v)) }
+      let solutions = usolveAll(subtract(U, multiply(λ, E)), b)
+      solutions = solutions.map( v => multiply(C, v) )
+
+      solutions.shift() // ignore the null vector
+
+      if (solutions.length < multiplicities[i]) {
+        //
+      }
+
+      vectors.push(...solutions)
     }
 
     return vectors
@@ -505,6 +531,24 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     }
 
     return M
+  }
+
+
+  /**
+   * Finds the index of an element in an array using a custom equality function
+   * @template T
+   * @param {Array<T>} arr array in which to search
+   * @param {T} el the element to find
+   * @param {function(T, T): boolean} fn the equality function, first argument is an element of `arr`, the second is always `el`
+   * @returns {number} the index of `el`, or -1 when it's not in `arr`
+   */
+  function indexOf(arr, el, fn) {
+    for (let i = 0; i < arr.length; i++) {
+      if (fn(arr[i], el)) {
+        return i
+      }
+    }
+    return -1
   }
 
   return main
