@@ -1,7 +1,7 @@
 // test FunctionNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
@@ -247,7 +247,7 @@ describe('FunctionNode', function () {
     const f = new FunctionNode(s, [b])
 
     assert.throws(function () {
-      f.map(function () {})
+      f.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

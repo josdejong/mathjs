@@ -1,5 +1,5 @@
-import { flatten, identify } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { flatten, identify } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'setIsSubset'
 const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index']

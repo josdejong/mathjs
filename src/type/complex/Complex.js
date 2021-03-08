@@ -1,7 +1,7 @@
 import Complex from 'complex.js'
-import { format } from '../../utils/number'
-import { isNumber, isUnit } from '../../utils/is'
-import { factory } from '../../utils/factory'
+import { format } from '../../utils/number.js'
+import { isNumber, isUnit } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Complex'
 const dependencies = []

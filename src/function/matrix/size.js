@@ -1,6 +1,6 @@
-import { arraySize } from '../../utils/array'
-import { factory } from '../../utils/factory'
-import { noMatrix } from '../../utils/noop'
+import { arraySize } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
+import { noMatrix } from '../../utils/noop.js'
 
 const name = 'size'
 const dependencies = ['typed', 'config', '?matrix']
@@ -24,7 +24,7 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * See also:
    *
-   *     resize, squeeze, subset
+   *     count, resize, squeeze, subset
    *
    * @param {boolean | number | Complex | Unit | string | Array | Matrix} x  A matrix
    * @return {Array | Matrix} A vector with size of `x`.

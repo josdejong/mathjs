@@ -1,7 +1,7 @@
 // test ArrayNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
 const RangeNode = math.RangeNode
@@ -144,7 +144,7 @@ describe('ArrayNode', function () {
     const c = new ArrayNode([a, b])
 
     assert.throws(function () {
-      c.map(function () {})
+      c.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { isBigNumber, isComplex, isFraction } from '../../utils/is'
-import { deepMap } from '../../utils/collection'
-import { cbrtNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { isBigNumber, isComplex, isFraction } from '../../utils/is.js'
+import { deepMap } from '../../utils/collection.js'
+import { cbrtNumber } from '../../plain/number/index.js'
 
 const name = 'cbrt'
 const dependencies = [

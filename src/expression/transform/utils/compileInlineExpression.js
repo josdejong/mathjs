@@ -1,4 +1,4 @@
-import { isSymbolNode } from '../../../utils/is'
+import { isSymbolNode } from '../../../utils/is.js'
 
 /**
  * Compile an inline expression like "x > 0"

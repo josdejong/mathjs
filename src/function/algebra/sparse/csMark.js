@@ -1,4 +1,4 @@
-import { csFlip } from './csFlip'
+import { csFlip } from './csFlip.js'
 
 /**
  * Marks the node at w[j]

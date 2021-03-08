@@ -74,10 +74,10 @@ import {
   isSymbolNode,
   isUndefined,
   isUnit
-} from '../../utils/is'
+} from '../../utils/is.js'
 import typedFunction from 'typed-function'
-import { digits } from '../../utils/number'
-import { factory } from '../../utils/factory'
+import { digits } from '../../utils/number.js'
+import { factory } from '../../utils/factory.js'
 
 // returns a new instance of typed-function
 let _createTyped = function () {

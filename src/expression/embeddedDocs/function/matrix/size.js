@@ -13,6 +13,6 @@ export const sizeDocs = {
     'size(1:6)'
   ],
   seealso: [
-    'concat', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
+    'concat', 'count', 'det', 'diag', 'identity', 'inv', 'ones', 'range', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
   ]
 }

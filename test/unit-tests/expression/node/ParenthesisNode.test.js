@@ -1,7 +1,7 @@
 // test SymbolNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const ParenthesisNode = math.ParenthesisNode

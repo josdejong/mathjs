@@ -1,7 +1,7 @@
-import { isMatrix } from '../../utils/is'
-import { clone } from '../../utils/object'
-import { format } from '../../utils/string'
-import { factory } from '../../utils/factory'
+import { isMatrix } from '../../utils/is.js'
+import { clone } from '../../utils/object.js'
+import { format } from '../../utils/string.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'det'
 const dependencies = ['typed', 'matrix', 'subtract', 'multiply', 'unaryMinus', 'lup']

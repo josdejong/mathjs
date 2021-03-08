@@ -12,7 +12,7 @@ import {
   set,
   traverse,
   deepFlatten, hasOwnProperty
-} from '../../../src/utils/object'
+} from '../../../src/utils/object.js'
 
 describe('object', function () {
   describe('clone', function () {
@@ -140,6 +140,33 @@ describe('object', function () {
       assert.strictEqual(hasOwnProperty(o2, 'foo'), false)
 
       delete Object.prototype.foo
+    })
+
+    it('should not pollute Object.__proto__', function () {
+      const obj = {}
+      assert.strictEqual(obj.polluted, undefined)
+
+      deepExtend(obj, JSON.parse('{"__proto__": {"polluted":"yes"}}'))
+      assert.strictEqual(obj.polluted, undefined)
+    })
+
+    it('should not pollute Object.constructor (1)', function () {
+      const obj = {}
+      const originalConstructor = obj.constructor
+      assert.strictEqual(obj.polluted, undefined)
+
+      deepExtend(obj, JSON.parse('{"constructor": {"prototype": {"polluted": "yes"}}}'))
+      assert.strictEqual(obj.constructor, originalConstructor)
+      assert.strictEqual(obj.polluted, undefined)
+    })
+
+    it('should not pollute Object.constructor (2)', function () {
+      const obj = {}
+      const originalConstructor = obj.constructor
+
+      const polluted = function polluted () {}
+      deepExtend(obj, { constructor: polluted })
+      assert.strictEqual(obj.constructor, originalConstructor)
     })
   })
 

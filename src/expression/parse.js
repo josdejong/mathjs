@@ -1,7 +1,7 @@
-import { factory } from '../utils/factory'
-import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is'
-import { deepMap } from '../utils/collection'
-import { hasOwnProperty } from '../utils/object'
+import { factory } from '../utils/factory.js'
+import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is.js'
+import { deepMap } from '../utils/collection.js'
+import { hasOwnProperty } from '../utils/object.js'
 
 const name = 'parse'
 const dependencies = [
@@ -331,6 +331,16 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         while (parse.isHexDigit(currentCharacter(state))) {
           state.token += currentCharacter(state)
           next(state)
+        }
+        // check for word size suffix
+        const sign = currentCharacter(state)
+        if (sign === 'i') {
+          state.token += sign
+          next(state)
+          while (parse.isDigit(currentCharacter(state))) {
+            state.token += currentCharacter(state)
+            next(state)
+          }
         }
         return
       }

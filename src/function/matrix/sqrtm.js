@@ -1,7 +1,7 @@
-import { isMatrix } from '../../utils/is'
-import { format } from '../../utils/string'
-import { arraySize } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { isMatrix } from '../../utils/is.js'
+import { format } from '../../utils/string.js'
+import { arraySize } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'sqrtm'
 const dependencies = ['typed', 'abs', 'add', 'multiply', 'sqrt', 'subtract', 'inv', 'size', 'max', 'identity']
@@ -87,6 +87,10 @@ export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed,
               '(size: ' + format(size) + ')')
           }
         }
+        default:
+          // Multi dimensional array
+          throw new RangeError('Matrix must be at most two dimensional ' +
+          '(size: ' + format(size) + ')')
       }
     }
   })

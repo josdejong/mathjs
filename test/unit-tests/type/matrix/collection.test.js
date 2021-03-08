@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { isCollection } from '../../../../src/utils/is'
-import math from '../../../../src/bundleAny'
+import { isCollection } from '../../../../src/utils/is.js'
+import math from '../../../../src/defaultInstance.js'
 const DenseMatrix = math.DenseMatrix
 const SparseMatrix = math.SparseMatrix
 

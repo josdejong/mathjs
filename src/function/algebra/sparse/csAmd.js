@@ -1,7 +1,7 @@
-import { factory } from '../../../utils/factory'
-import { csFkeep } from './csFkeep'
-import { csFlip } from './csFlip'
-import { csTdfs } from './csTdfs'
+import { factory } from '../../../utils/factory.js'
+import { csFkeep } from './csFkeep.js'
+import { csFlip } from './csFlip.js'
+import { csTdfs } from './csTdfs.js'
 
 const name = 'csAmd'
 const dependencies = [

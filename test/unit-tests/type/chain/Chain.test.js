@@ -1,8 +1,8 @@
 // test chain
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
-import { hasOwnProperty } from '../../../../src/utils/object'
+import math from '../../../../src/defaultInstance.js'
+import { hasOwnProperty } from '../../../../src/utils/object.js'
 const Chain = math.Chain
 
 describe('Chain', function () {

@@ -1,8 +1,8 @@
 // test exp
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
 const matrix = math.matrix

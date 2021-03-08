@@ -1,6 +1,6 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const factorial = math.factorial
 
 describe('factorial', function () {
@@ -48,7 +48,7 @@ describe('factorial', function () {
   })
 
   it('should calculate the factorial of a non-integer', function () {
-    approx.equal(factorial(1.5), 1.32934038817913702047362561)
+    approx.equal(factorial(1.5), 1.32934038817914)
     approx.equal(factorial(7.5), 14034.40729348)
   })
 

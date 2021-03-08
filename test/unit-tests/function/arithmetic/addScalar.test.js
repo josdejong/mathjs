@@ -1,8 +1,8 @@
 // test add
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 import BigNumber from 'decimal.js'
 const add = math.add
 

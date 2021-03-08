@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { IndexError } from '../../../src/error/IndexError'
+import { IndexError } from '../../../src/error/IndexError.js'
 
 describe('IndexError', function () {
   it('should construct an IndexError without min and max', function () {

@@ -1,10 +1,10 @@
-import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
-import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
-import { factory } from '../../utils/factory'
-import { andNumber } from '../../plain/number'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02.js'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06.js'
+import { factory } from '../../utils/factory.js'
+import { andNumber } from '../../plain/number/index.js'
 
 const name = 'and'
 const dependencies = [

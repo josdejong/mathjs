@@ -25,11 +25,11 @@ Run:
 
 ## Build and test
 
-Build the distribution files in folders `dist` and `lib`, and test everything by running:
+Build the distribution files in folders under `lib`, and test everything by running:
 
     npm run build-and-test
 
-After the build is complete, verify if the files are created and contain the
+After the build is complete, verify whether the files are created and contain the
 correct date and version number in the header.
 
 
@@ -39,9 +39,9 @@ correct date and version number in the header.
 - Merge the develop branch into the master branch.
 - Push to github.
 
-Now go to travis-ci and verify if the tests run fine there as well:
+Now go to Github Actions and verify if the tests run fine there as well:
 
-  https://travis-ci.org/josdejong/mathjs
+https://github.com/josdejong/mathjs/actions
 
 If everything is well, create a tag for the new version, like:
 

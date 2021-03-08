@@ -1,4 +1,4 @@
-import { IndexError } from '../../../error/IndexError'
+import { IndexError } from '../../../error/IndexError.js'
 
 /**
  * Transform zero-based indices to one-based indices in errors

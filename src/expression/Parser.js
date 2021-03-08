@@ -1,6 +1,6 @@
-import { factory } from '../utils/factory'
-import { extend, hasOwnProperty } from '../utils/object'
-import { getSafeProperty, setSafeProperty } from '../utils/customs'
+import { factory } from '../utils/factory.js'
+import { extend, hasOwnProperty } from '../utils/object.js'
+import { getSafeProperty, setSafeProperty } from '../utils/customs.js'
 
 const name = 'Parser'
 const dependencies = ['parse']

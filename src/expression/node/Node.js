@@ -1,8 +1,8 @@
-import { isNode } from '../../utils/is'
+import { isNode } from '../../utils/is.js'
 
-import { keywords } from '../keywords'
-import { deepStrictEqual, hasOwnProperty } from '../../utils/object'
-import { factory } from '../../utils/factory'
+import { keywords } from '../keywords.js'
+import { deepStrictEqual, hasOwnProperty } from '../../utils/object.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Node'
 const dependencies = ['mathWithTransform']
@@ -115,7 +115,8 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    */
   Node.prototype.traverse = function (callback) {
     // execute callback for itself
-    callback(this, null, null) // eslint-disable-line standard/no-callback-literal
+    // eslint-disable-next-line
+    callback(this, null, null)
 
     // recursively traverse over all childs of a node
     function _traverse (node, callback) {
@@ -237,19 +238,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    * @return {string}
    */
   Node.prototype.toString = function (options) {
-    let customString
-    if (options && typeof options === 'object') {
-      switch (typeof options.handler) {
-        case 'object':
-        case 'undefined':
-          break
-        case 'function':
-          customString = options.handler(this, options)
-          break
-        default:
-          throw new TypeError('Object or function expected as callback')
-      }
-    }
+    const customString = this._getCustomString(options)
 
     if (typeof customString !== 'undefined') {
       return customString
@@ -284,19 +273,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    * @return {string}
    */
   Node.prototype.toHTML = function (options) {
-    let customString
-    if (options && typeof options === 'object') {
-      switch (typeof options.handler) {
-        case 'object':
-        case 'undefined':
-          break
-        case 'function':
-          customString = options.handler(this, options)
-          break
-        default:
-          throw new TypeError('Object or function expected as callback')
-      }
-    }
+    const customString = this._getCustomString(options)
 
     if (typeof customString !== 'undefined') {
       return customString
@@ -332,22 +309,10 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    * @return {string}
    */
   Node.prototype.toTex = function (options) {
-    let customTex
-    if (options && typeof options === 'object') {
-      switch (typeof options.handler) {
-        case 'object':
-        case 'undefined':
-          break
-        case 'function':
-          customTex = options.handler(this, options)
-          break
-        default:
-          throw new TypeError('Object or function expected as callback')
-      }
-    }
+    const customString = this._getCustomString(options)
 
-    if (typeof customTex !== 'undefined') {
-      return customTex
+    if (typeof customString !== 'undefined') {
+      return customString
     }
 
     return this._toTex(options)
@@ -363,6 +328,23 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
   Node.prototype._toTex = function (options) {
     // must be implemented by each of the Node implementations
     throw new Error('_toTex not implemented for ' + this.type)
+  }
+
+  /**
+   * Helper used by `to...` functions.
+   */
+  Node.prototype._getCustomString = function (options) {
+    if (options && typeof options === 'object') {
+      switch (typeof options.handler) {
+        case 'object':
+        case 'undefined':
+          return
+        case 'function':
+          return options.handler(this, options)
+        default:
+          throw new TypeError('Object or function expected as callback')
+      }
+    }
   }
 
   /**

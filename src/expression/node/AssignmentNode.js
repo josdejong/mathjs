@@ -1,9 +1,9 @@
-import { isAccessorNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
-import { getSafeProperty, setSafeProperty } from '../../utils/customs'
-import { factory } from '../../utils/factory'
-import { accessFactory } from './utils/access'
-import { assignFactory } from './utils/assign'
-import { getPrecedence } from '../operators'
+import { isAccessorNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is.js'
+import { getSafeProperty, setSafeProperty } from '../../utils/customs.js'
+import { factory } from '../../utils/factory.js'
+import { accessFactory } from './utils/access.js'
+import { assignFactory } from './utils/assign.js'
+import { getPrecedence } from '../operators.js'
 
 const name = 'AssignmentNode'
 const dependencies = [

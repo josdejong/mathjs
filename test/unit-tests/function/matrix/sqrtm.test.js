@@ -1,8 +1,8 @@
 // test sqrtm
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 
 describe('sqrtm', function () {
   const A = [[5, 2], [4, 7]]
@@ -50,6 +50,13 @@ describe('sqrtm', function () {
     assert.throws(function () { math.sqrtm([1, 2, 3]) }, /Matrix must be square/)
     assert.throws(function () { math.sqrtm([[1, 2, 3]]) }, /Matrix must be square/)
     assert.throws(function () { math.sqrtm([[1, 2, 3], [4, 5, 6]]) }, /Matrix must be square/)
+  })
+
+  it('should throw an error in case of matrices with dimension greater than two', function () {
+    const errorRegex = /Matrix must be at most two dimensional/
+    assert.throws(function () { math.sqrtm(math.zeros(1, 1, 1)) }, errorRegex)
+    assert.throws(function () { math.sqrtm(math.zeros(2, 2, 2)) }, errorRegex)
+    assert.throws(function () { math.sqrtm(math.zeros(3, 3, 3, 3)) }, errorRegex)
   })
 
   it('should LaTeX sqrtm', function () {

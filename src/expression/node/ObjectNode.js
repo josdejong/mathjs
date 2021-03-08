@@ -1,8 +1,8 @@
-import { isNode } from '../../utils/is'
-import { escape, stringify } from '../../utils/string'
-import { isSafeProperty } from '../../utils/customs'
-import { hasOwnProperty } from '../../utils/object'
-import { factory } from '../../utils/factory'
+import { isNode } from '../../utils/is.js'
+import { escape, stringify } from '../../utils/string.js'
+import { isSafeProperty } from '../../utils/customs.js'
+import { hasOwnProperty } from '../../utils/object.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'ObjectNode'
 const dependencies = [

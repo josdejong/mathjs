@@ -1,8 +1,8 @@
 // test mod
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const matrix = math.matrix
 const sparse = math.sparse

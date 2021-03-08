@@ -1,8 +1,6 @@
-import { factory } from '../../utils/factory'
-import { format } from '../../utils/string'
-import { typeOf, isNumber, isBigNumber, isComplex, isFraction } from '../../utils/is'
-import { createRealSymmetric } from './eigs/realSymetric'
-import { createComplex } from './eigs/complex'
+import { clone } from '../../utils/object.js'
+import { factory } from '../../utils/factory.js'
+import { format } from '../../utils/string.js'
 
 const name = 'eigs'
 

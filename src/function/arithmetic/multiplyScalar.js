@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { multiplyNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { multiplyNumber } from '../../plain/number/index.js'
 
 const name = 'multiplyScalar'
 const dependencies = ['typed']

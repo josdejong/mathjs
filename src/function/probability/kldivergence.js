@@ -1,4 +1,4 @@
-import { factory } from '../../utils/factory'
+import { factory } from '../../utils/factory.js'
 
 const name = 'kldivergence'
 const dependencies = ['typed', 'matrix', 'divide', 'sum', 'multiply', 'dotDivide', 'log', 'isNumeric']

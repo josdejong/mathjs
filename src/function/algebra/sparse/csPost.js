@@ -1,4 +1,4 @@
-import { csTdfs } from './csTdfs'
+import { csTdfs } from './csTdfs.js'
 
 /**
  * Post order a tree of forest

@@ -1,5 +1,7 @@
 // function utils
 
+import { lruQueue } from './lruQueue.js'
+
 /**
  * Memoize a given function by caching the computed result.
  * The cache of a memoized function can be cleared by deleting the `cache`
@@ -7,26 +9,41 @@
  *
  * @param {function} fn                     The function to be memoized.
  *                                          Must be a pure function.
- * @param {function(args: Array)} [hasher]  A custom hash builder.
- *                                          Is JSON.stringify by default.
+ * @param {Object} [options]
+ * @param {function(args: Array): string} [options.hasher]
+ *    A custom hash builder. Is JSON.stringify by default.
+ * @param {number | undefined} [options.limit]
+ *    Maximum number of values that may be cached. Undefined indicates
+ *    unlimited (default)
  * @return {function}                       Returns the memoized function
  */
-export function memoize (fn, hasher) {
+export function memoize (fn, { hasher, limit } = {}) {
+  limit = limit == null ? Number.POSITIVE_INFINITY : limit
+  hasher = hasher == null ? JSON.stringify : hasher
+
   return function memoize () {
     if (typeof memoize.cache !== 'object') {
-      memoize.cache = {}
+      memoize.cache = {
+        values: new Map(),
+        lru: lruQueue(limit || Number.POSITIVE_INFINITY)
+      }
     }
-
     const args = []
     for (let i = 0; i < arguments.length; i++) {
       args[i] = arguments[i]
     }
+    const hash = hasher(args)
 
-    const hash = hasher ? hasher(args) : JSON.stringify(args)
-    if (!(hash in memoize.cache)) {
-      memoize.cache[hash] = fn.apply(fn, args)
+    if (memoize.cache.values.has(hash)) {
+      memoize.cache.lru.hit(hash)
+      return memoize.cache.values.get(hash)
     }
-    return memoize.cache[hash]
+
+    const newVal = fn.apply(fn, args)
+    memoize.cache.values.set(hash, newVal)
+    memoize.cache.values.delete(memoize.cache.lru.hit(hash))
+
+    return newVal
   }
 }
 

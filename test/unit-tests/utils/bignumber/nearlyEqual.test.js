@@ -1,4 +1,4 @@
-import { nearlyEqual } from '../../../../src/utils/bignumber/nearlyEqual'
+import { nearlyEqual } from '../../../../src/utils/bignumber/nearlyEqual.js'
 
 import assert from 'assert'
 import BigNumber from 'decimal.js'

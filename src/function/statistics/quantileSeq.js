@@ -1,7 +1,7 @@
-import { isBigNumber, isCollection, isNumber } from '../../utils/is'
-import { isInteger } from '../../utils/number'
-import { flatten } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { isBigNumber, isCollection, isNumber } from '../../utils/is.js'
+import { isInteger } from '../../utils/number.js'
+import { flatten } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'quantileSeq'
 const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare']

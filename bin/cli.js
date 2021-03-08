@@ -30,7 +30,7 @@
  *     cat script.txt | mathjs > results.txt  Run input stream, output to file
  *
  * @license
- * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
+ * Copyright (C) 2013-2021 Jos de Jong <wjosdejong@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy
@@ -58,7 +58,7 @@ const PRECISION = 14 // decimals
  * @return {*}
  */
 function getMath () {
-  return require('../lib/bundleAny')
+  return require('../lib/cjs/defaultInstance.js').default
 }
 
 /**

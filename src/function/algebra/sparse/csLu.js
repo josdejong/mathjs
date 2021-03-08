@@ -1,5 +1,5 @@
-import { factory } from '../../../utils/factory'
-import { createCsSpsolve } from './csSpsolve'
+import { factory } from '../../../utils/factory.js'
+import { createCsSpsolve } from './csSpsolve.js'
 
 const name = 'csLu'
 const dependencies = [

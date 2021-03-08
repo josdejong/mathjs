@@ -1,8 +1,8 @@
 // test cbrt
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const cbrt = math.cbrt
 const bignumber = math.bignumber
 const complex = math.complex

@@ -1,7 +1,7 @@
 // test setCartesian
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 
 describe('setCartesian', function () {
   it('should return the cartesian product of two sets', function () {

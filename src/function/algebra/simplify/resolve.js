@@ -1,5 +1,5 @@
-import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
-import { factory } from '../../../utils/factory'
+import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is.js'
+import { factory } from '../../../utils/factory.js'
 
 const name = 'resolve'
 const dependencies = [

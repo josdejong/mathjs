@@ -1,6 +1,8 @@
+/* eslint-disable no-loss-of-precision */
+
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const gamma = math.gamma
 
