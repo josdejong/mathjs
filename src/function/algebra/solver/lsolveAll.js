@@ -22,13 +22,13 @@ export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * Syntax:
    *
-   *    math.lsolve(L, b)
+   *    math.lsolveAll(L, b)
    *
    * Examples:
    *
    *    const a = [[-2, 3], [2, 1]]
    *    const b = [11, 9]
-   *    const x = lsolve(a, b)  // [ [[-5.5], [20]] ]
+   *    const x = lsolveAll(a, b)  // [ [[-5.5], [20]] ]
    *
    * See also:
    *

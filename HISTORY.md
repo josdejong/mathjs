@@ -1,5 +1,9 @@
 # History
 
+# not yet published, version 9.2.1
+
+- Fix #2128: typo in docs of `luSolveAll` and `usolveAll`.
+
 # 2020-02-03, version 9.2.0
 
 - Implemented function `count` to count the total elements in a matrix, 
