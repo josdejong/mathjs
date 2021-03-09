@@ -269,6 +269,12 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('0o1.4'), 1.5)
       assert.strictEqual(parseAndEval('0x1.8'), 1.5)
       assert.strictEqual(parseAndEval('0x1.f'), 1.9375)
+      assert.strictEqual(parseAndEval('0b100.001'), 4.125)
+      assert.strictEqual(parseAndEval('0o100.001'), 64.001953125)
+      assert.strictEqual(parseAndEval('0x100.001'), 256.000244140625)
+      assert.strictEqual(parseAndEval('0b1.'), 1)
+      assert.strictEqual(parseAndEval('0o1.'), 1)
+      assert.strictEqual(parseAndEval('0x1.'), 1)
     })
 
     it('should parse a number followed by e', function () {
@@ -327,6 +333,12 @@ describe('parse', function () {
       assert.deepStrictEqual(bigmath.parse('0o1.4').compile().evaluate(), bigmath.bignumber(1.5))
       assert.deepStrictEqual(bigmath.parse('0x1.8').compile().evaluate(), bigmath.bignumber(1.5))
       assert.deepStrictEqual(bigmath.parse('0x1.f').compile().evaluate(), bigmath.bignumber(1.9375))
+      assert.deepStrictEqual(bigmath.parse('0b100.001').compile().evaluate(), bigmath.bignumber(4.125))
+      assert.deepStrictEqual(bigmath.parse('0o100.001').compile().evaluate(), bigmath.bignumber(64.001953125))
+      assert.deepStrictEqual(bigmath.parse('0x100.001').compile().evaluate(), bigmath.bignumber(256.000244140625))
+      assert.deepStrictEqual(bigmath.parse('0b1.').compile().evaluate(), bigmath.bignumber(1))
+      assert.deepStrictEqual(bigmath.parse('0o1.').compile().evaluate(), bigmath.bignumber(1))
+      assert.deepStrictEqual(bigmath.parse('0x1.').compile().evaluate(), bigmath.bignumber(1))
     })
   })
 
