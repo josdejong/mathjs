@@ -48,7 +48,7 @@
     "glob": "7.1.6",
     "gulp": "4.0.2",
     "gulp-babel": "8.0.0",
-    "handlebars": "4.7.6",
+    "handlebars": "4.7.7",
     "istanbul": "0.4.5",
     "jsep": "0.3.5",
     "karma": "6.1.1",
