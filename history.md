@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20200310-version-930">2020-03-10, version 9.3.0 <a href="#20200310-version-930" title="Permalink">#</a></h1>
+
+- Implemented support for parsing non decimal numbers with radix point,
+  see <a href="https://github.com/josdejong/mathjs/issues/2122">#2122</a>, <a href="https://github.com/josdejong/mathjs/issues/2121">#2121</a>. Thanks <a href="https://github.com/clnhlzmn">@clnhlzmn</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2128">#2128</a>: typo in docs of `luSolveAll` and `usolveAll`.
+
+
 <h1 id="20200203-version-920">2020-02-03, version 9.2.0 <a href="#20200203-version-920" title="Permalink">#</a></h1>
 
 - Implemented function `count` to count the total elements in a matrix, 

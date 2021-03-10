@@ -14,7 +14,7 @@ Finds all solutions of a linear equation system by backward substitution. Matrix
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.usolve(U, b)
+math.usolveAll(U, b)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -36,7 +36,7 @@ DenseMatrix[] &#124; Array[] | An array of affine-independent column vectors (x)
 ```js
 const a = [[-2, 3], [2, 1]]
 const b = [11, 9]
-const x = usolve(a, b)  // [ [[8], [9]] ]
+const x = usolveAll(a, b)  // [ [[8], [9]] ]
 ```
 
 

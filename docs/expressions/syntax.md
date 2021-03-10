@@ -303,6 +303,13 @@ math.evaluate('0xffffffffi32')  //  -1
 math.evaluate('0xfffffffffi32') //  SyntaxError: String "0xfffffffff" is out of range
 ```
 
+Non decimal numbers can include a radix point:
+```js
+math.evaluate('0b1.1')         // 1.5
+math.evaluate('0o1.4')         // 1.5
+math.evaluate('0x1.8')         // 1.5
+```
+
 Numbers can be formatted as binary, octal, and hex strings using the `notation` option of the `format` function:
 
 ```js
