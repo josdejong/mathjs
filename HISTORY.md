@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 9.2.1
+# 2020-03-10, version 9.3.0
 
 - Implemented support for parsing non decimal numbers with radix point,
   see #2122, #2121. Thanks @clnhlzmn.
