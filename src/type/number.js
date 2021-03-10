@@ -5,19 +5,39 @@ const name = 'number'
 const dependencies = ['typed']
 
 /**
- * Parse a non decimal number of the form 0RI.F as a Number
- * @param {number} [radix] the radix in [2, 8, 16]
- * @param {string} [integerPart] the part before the radix point
- * @param {string} [fractionalPart] the part after the radix point
+ * Separates the radix, integer part, and fractional part of a non decimal number string
+ * @param {string} input string to parse
+ * @returns {object} the parts of the string or null if not a valid input
  */
-function parseNonDecimalWithRadixPoint (radix, integerPart, fractionalPart) {
-  const n = parseInt(integerPart, radix)
-  let f = 0
-  for (let i = 0; i < fractionalPart.length; i++) {
-    const digitValue = parseInt(fractionalPart[i], radix)
-    f += digitValue / Math.pow(radix, i + 1)
+function getNonDecimalNumberParts (input) {
+  const nonDecimalWithRadixMatch = input.match(/(0[box])([0-9a-fA-F]*)\.([0-9a-fA-F]*)/)
+  if (nonDecimalWithRadixMatch) {
+    const radix = ({ '0b': 2, '0o': 8, '0x': 16 })[nonDecimalWithRadixMatch[1]]
+    const integerPart = nonDecimalWithRadixMatch[2]
+    const fractionalPart = nonDecimalWithRadixMatch[3]
+    return { input, radix, integerPart, fractionalPart }
+  } else {
+    return null
   }
-  return n + f
+}
+
+/**
+ * Makes a number from a radix, and integer part, and a fractional part
+ * @param {parts} [x] parts of the number string (from getNonDecimalNumberParts)
+ * @returns {number} the number
+ */
+function makeNumberFromNonDecimalParts (parts) {
+  const n = parseInt(parts.integerPart, parts.radix)
+  let f = 0
+  for (let i = 0; i < parts.fractionalPart.length; i++) {
+    const digitValue = parseInt(parts.fractionalPart[i], parts.radix)
+    f += digitValue / Math.pow(parts.radix, i + 1)
+  }
+  const result = n + f
+  if (isNaN(result)) {
+    throw new SyntaxError('String "' + parts.input + '" is no valid number')
+  }
+  return result
 }
 
 export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
@@ -57,12 +77,9 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     string: function (x) {
       if (x === 'NaN') return NaN
-      const nonDecimalWithRadixMatch = x.match(/(0[box])([0-9a-fA-F]*)\.([0-9a-fA-F]*)/)
-      if (nonDecimalWithRadixMatch) {
-        const radix = ({ '0b': 2, '0o': 8, '0x': 16 })[nonDecimalWithRadixMatch[1]]
-        const integerPart = nonDecimalWithRadixMatch[2]
-        const fractionalPart = nonDecimalWithRadixMatch[3]
-        return parseNonDecimalWithRadixPoint(radix, integerPart, fractionalPart)
+      const nonDecimalNumberParts = getNonDecimalNumberParts(x)
+      if (nonDecimalNumberParts) {
+        return makeNumberFromNonDecimalParts(nonDecimalNumberParts)
       }
       let size = 0
       const wordSizeSuffixMatch = x.match(/(0[box][0-9a-fA-F]*)i([0-9]*)/)
