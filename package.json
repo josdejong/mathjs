@@ -56,7 +56,7 @@
     "karma-firefox-launcher": "2.1.0",
     "karma-mocha": "2.0.1",
     "karma-mocha-reporter": "2.2.5",
-    "karma-webpack": "5.0.0",
+    "karma-webpack": "4.0.2",
     "math-expression-evaluator": "1.3.7",
     "mkdirp": "1.0.4",
     "mocha": "8.3.1",
@@ -130,7 +130,7 @@
     "test:browserstack": "karma start test/browser-test-config/browserstack-karma.js",
     "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test/unit-tests --recursive && echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
     "prepublishOnly": "npm run test:all && npm run lint",
-    "__prepare": "npm run build",
+    "prepare": "npm run build",
     "update-authors": "node ./tools/update-authors.js"
   },
   "bin": {
