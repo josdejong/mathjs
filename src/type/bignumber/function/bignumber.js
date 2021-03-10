@@ -41,11 +41,11 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     string: function (x) {
-      const match = x.match(/(0[box][0-9a-fA-F]*)i([0-9]*)/)
-      if (match) {
+      const wordSizeSuffixMatch = x.match(/(0[box][0-9a-fA-F]*)i([0-9]*)/)
+      if (wordSizeSuffixMatch) {
         // x has a word size suffix
-        const size = match[2]
-        const n = BigNumber(match[1])
+        const size = wordSizeSuffixMatch[2]
+        const n = BigNumber(wordSizeSuffixMatch[1])
         const twoPowSize = new BigNumber(2).pow(Number(size))
         if (n.gt(twoPowSize.sub(1))) {
           throw new SyntaxError(`String "${x}" is out of range`)
