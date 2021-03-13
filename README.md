@@ -10,7 +10,6 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![Maintenance](https://img.shields.io/maintenance/yes/2021.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
-[![Slack](https://slack.bri.im/badge.svg)](https://slack.bri.im)
 [![Codecov](https://codecov.io/gh/josdejong/mathjs/branch/develop/graph/badge.svg)](https://codecov.io/gh/josdejong/mathjs)
 
 ## Features
