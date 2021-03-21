@@ -44,4 +44,9 @@ describe('isPrime', function () {
     assert.throws(function () { isPrime(new Date()) }, /TypeError: Unexpected type of argument/)
     assert.throws(function () { isPrime({}) }, /TypeError: Unexpected type of argument/)
   })
+
+  it('should work fast for huge values', function () {
+    assert.strictEqual(isPrime(bignumber('2305843009213693951')), true)
+    assert.strictEqual(isPrime(bignumber('230584300921369395')), false)
+  })
 })
