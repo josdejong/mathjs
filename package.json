@@ -51,7 +51,7 @@
     "handlebars": "4.7.7",
     "istanbul": "0.4.5",
     "jsep": "0.3.5",
-    "karma": "6.1.1",
+    "karma": "6.3.1",
     "karma-browserstack-launcher": "1.6.0",
     "karma-firefox-launcher": "2.1.0",
     "karma-mocha": "2.0.1",
