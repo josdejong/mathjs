@@ -14,8 +14,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
 
   /**
    * Compute eigenvalues and eigenvectors of a matrix. The eigenvalues are sorted by their absolute value, ascending.
-   * Each eigenvalue can be listed several times, according to its multiplicity. The eigenvectors are returned as columns
-   * of a matrix – the eigenvector that belongs to the j-th eigenvalue in the list (eg. `values[j]`) is the j-th column (eg. `column(vectors, j)`).
+   * An eigenvalue with multiplicity k will be listed k times. The eigenvectors are returned as columns of a matrix –
+   * the eigenvector that belongs to the j-th eigenvalue in the list (eg. `values[j]`) is the j-th column (eg. `column(vectors, j)`).
    * If the algorithm fails to converge, it will throw an error – in that case, however, you may still find useful information
    * in `err.values` and `err.vectors`.
    *
@@ -31,7 +31,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *     const E = ans.values
    *     const U = ans.vectors
    *     multiply(H, column(U, 0)) // returns multiply(E[0], column(U, 0))
-   *     const UTxHxU = multiply(transpose(U), H, U) // rotates H to the eigen-representation
+   *     const UTxHxU = multiply(transpose(U), H, U) // diagonalizes H
    *     E[0] == UTxHxU[0][0]  // returns true
    *
    * See also:
@@ -41,7 +41,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
    * @param {Array | Matrix} x  Matrix to be diagonalized
    *
    * @param {number | BigNumber} [prec] Precision, default value: 1e-15
-   * @return {{values: Array, vectors: Matrix[]}} Object containing an array of eigenvalues and an array of eigenvectors.
+   * @return {{values: Array, vectors: Matrix}} Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
    *
    */
   return typed('eigs', {
