@@ -2,9 +2,10 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import approx from '../../../../tools/approx.js'
 const eigs = math.eigs
+const complex = math.complex
 
 describe('eigs', function () {
-  it('should only accept a square matrix', function () {
+  it('only accepts a square matrix', function () {
     assert.throws(function () { eigs(math.matrix([[1, 2, 3], [4, 5, 6]])) }, /Matrix must be square/)
     assert.throws(function () { eigs([[1, 2, 3], [4, 5, 6]]) }, /Matrix must be square/)
     assert.throws(function () { eigs([[1, 2], [4, 5, 6]]) }, /DimensionError: Dimension mismatch/)
@@ -13,7 +14,7 @@ describe('eigs', function () {
     assert.throws(function () { eigs('random') }, /TypeError: Unexpected type of argument/)
   })
 
-  it('should only accept a matrix with valid element type', function () {
+  it('only accepts a matrix with valid element type', function () {
     assert.throws(function () { eigs([['x', 2], [4, 5]]) }, /Cannot convert "x" to a number/)
   })
 
@@ -25,9 +26,12 @@ describe('eigs', function () {
     approx.deepEqual(eigs(
       [[2, 0, 0], [0, 1, 0], [0, 0, 5]]).values, [1, 2, 5]
     )
+    approx.deepEqual(eigs(
+      [[complex(2, 1), 0, 0], [0, 1, 0], [0, 0, complex(0, 5)]]).values, [complex(1, 0), complex(2, 1), complex(0, 5)]
+    )
   })
 
-  it('eigenvalue check for 2x2 simple matrix', function () {
+  it('calculates eigenvalues for 2x2 simple matrix', function () {
     // 2x2 test
     approx.deepEqual(eigs(
       [[1, 0.1], [0.1, 1]]).values, [0.9, 1.1]
@@ -40,7 +44,7 @@ describe('eigs', function () {
     )
   })
 
-  it('eigenvalue check for 3x3 and 4x4 matrix', function () {
+  it('calculates eigenvalues for 3x3 and 4x4 matrix', function () {
     // 3x3 test and 4x4
     approx.deepEqual(eigs(
       [[1.0, 1.0, 1.0],
@@ -75,7 +79,7 @@ describe('eigs', function () {
     approx.deepEqual(Ei, E)
   })
 
-  it('fractions are supported', function () {
+  it('supports fractions', function () {
     const aij = math.fraction('1/2')
     approx.deepEqual(eigs(
       [[aij, aij, aij],
@@ -85,7 +89,7 @@ describe('eigs', function () {
     )
   })
 
-  it('bigNumber diagonalization is supported', function () {
+  it('diagonalizes matrix with bigNumber', function () {
     const x = [[math.bignumber(1), math.bignumber(0)], [math.bignumber(0), math.bignumber(1)]]
     approx.deepEqual(eigs(x).values, [math.bignumber(1), math.bignumber(1)])
     const y = [[math.bignumber(1), math.bignumber(1.0)], [math.bignumber(1.0), math.bignumber(1)]]
@@ -109,7 +113,7 @@ describe('eigs', function () {
     approx.deepEqual(Ei, E)
   })
 
-  it('make sure BigNumbers input is actually calculated with BigNumber precision', function () {
+  it('actually calculates BigNumbers input with BigNumber precision', function () {
     const B = math.bignumber([
       [0, 1],
       [1, 0]

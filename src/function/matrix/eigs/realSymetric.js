@@ -1,6 +1,6 @@
 import { clone } from '../../../utils/object.js'
 
-export function createRealSymmetric ({ config, addScalar, subtract, column, flatten, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
+export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
   /**
    * @param {number[] | BigNumber[]} arr
    * @param {number} N
@@ -236,10 +236,11 @@ export function createRealSymmetric ({ config, addScalar, subtract, column, flat
   // sort results
   function sorting (E, S) {
     const N = E.length
-    const Ef = Array(N)
-    const Sf = Array(N)
+    const values = Array(N)
+    const vectors = Array(N)
+
     for (let k = 0; k < N; k++) {
-      Sf[k] = Array(N)
+      vectors[k] = Array(N)
     }
     for (let i = 0; i < N; i++) {
       let minID = 0
@@ -250,21 +251,13 @@ export function createRealSymmetric ({ config, addScalar, subtract, column, flat
           minE = E[minID]
         }
       }
-      Ef[i] = E.splice(minID, 1)[0]
+      values[i] = E.splice(minID, 1)[0]
       for (let k = 0; k < N; k++) {
-        Sf[k][i] = S[k][minID]
+        vectors[k][i] = S[k][minID]
         S[k].splice(minID, 1)
       }
     }
 
-    const values = clone(Ef)
-    const vectors = []
-
-    for (let i = 0; i < Sf.length; i++) {
-      vectors[i] = flatten(column(Sf, i))
-    }
-
-    // !FIXME vectors are always Array[], never Matrix[]
     return { values, vectors }
   }
 

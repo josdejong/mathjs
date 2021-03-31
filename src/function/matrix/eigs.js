@@ -6,12 +6,11 @@ import { typeOf, isNumber, isBigNumber, isComplex, isFraction } from '../../util
 
 const name = 'eigs'
 
-const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number', 'complex', 'sqrt', 'diag', 'qr', 'usolveAll', 'im', 're', 'smaller']
-
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, qr, usolveAll, im, re, smaller }) => {
-
+// The absolute state of math.js's dependency system:
+const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number', 'complex', 'sqrt', 'diag', 'qr', 'usolveAll', 'im', 're', 'smaller', 'round', 'log10', 'transpose']
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, qr, usolveAll, im, re, smaller, round, log10, transpose }) => {
   const doRealSymetric = createRealSymmetric({ config, addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
-  const doComplex = createComplex({ config, addScalar, subtract, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolveAll, equal, complex, larger, smaller })
+  const doComplex = createComplex({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolveAll, equal, complex, larger, smaller, round, log10, transpose })
 
   /**
    * Compute eigenvalues and eigenvectors of a matrix.
@@ -22,12 +21,13 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *
    * Examples:
    *
+   *     const { eigs, multiply, column, transpose } = math
    *     const H = [[5, 2.3], [2.3, 1]]
-   *     const ans = math.eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors as columns]}
+   *     const ans = eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors as columns]}
    *     const E = ans.values
    *     const U = ans.vectors
-   *     math.multiply(H, math.column(U, 0)) // returns math.multiply(E[0], math.column(U, 0))
-   *     const UTxHxU = math.multiply(math.transpose(U), H, U) // rotates H to the eigen-representation
+   *     multiply(H, column(U, 0)) // returns multiply(E[0], column(U, 0))
+   *     const UTxHxU = multiply(transpose(U), H, U) // rotates H to the eigen-representation
    *     E[0] == UTxHxU[0][0]  // returns true
    *
    * See also:
@@ -79,9 +79,8 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
       coerceReal(arr, N)
 
       if (isSymmetric(arr, N, prec)) {
-        // ! FIXME uncomment the following lines
-        //const type = coerceTypes(mat, arr, N)
-        //return doRealSymetric(arr, N, prec, type)
+        const type = coerceTypes(mat, arr, N)
+        return doRealSymetric(arr, N, prec, type)
       }
     }
 
@@ -102,7 +101,6 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
 
     return true
   }
-
 
   /** @return {boolean} */
   function isReal (arr, N, prec) {

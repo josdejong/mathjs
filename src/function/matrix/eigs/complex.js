@@ -1,6 +1,6 @@
 import { clone } from '../../../utils/object.js'
 
-export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolveAll, equal, complex, larger, smaller }) {
+export function createComplex ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolveAll, equal, complex, larger, smaller, round, log10, transpose }) {
   /**
    * @param {number[][]} arr the matrix to find eigenvalues of
    * @param {number} N size of the matrix
@@ -44,7 +44,8 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     let vectors
 
     if (findVectors) {
-      vectors = findEigenvectors(arr, N, C, values)
+      vectors = findEigenvectors(arr, N, C, values, prec)
+      vectors = transpose((vectors)) // vectors are columns of a matrix
     }
 
     return { values, vectors }
@@ -62,7 +63,7 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     const cplx = type === 'Complex'
 
     const zero = big ? bignumber(0) : cplx ? complex(0) : 0
-    const one  = big ? bignumber(1) : cplx ? complex(1) : 1
+    const one = big ? bignumber(1) : cplx ? complex(1) : 1
 
     // base of the floating-point arithmetic
     const radix = big ? bignumber(10) : 2
@@ -90,7 +91,6 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
         for (let j = 0; j < N; j++) {
           if (i === j) continue
           const c = abs(arr[i][j])
-          const r = abs(arr[j][i])
           colNorm = addScalar(colNorm, c)
           rowNorm = addScalar(rowNorm, c)
         }
@@ -117,7 +117,7 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
 
           // check whether balancing is needed
           // condition = (c + rowNorm) / f < 0.95 * (colNorm + rowNorm)
-          const condition = smaller( divideScalar(addScalar(c, rowNorm), f), multiplyScalar(addScalar(colNorm, rowNorm), 0.95))
+          const condition = smaller(divideScalar(addScalar(c, rowNorm), f), multiplyScalar(addScalar(colNorm, rowNorm), 0.95))
 
           // apply balancing similarity transformation
           if (condition) {
@@ -370,7 +370,10 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
 
     // the algorithm didn't converge
     if (lastConvergenceBefore > 100) {
-      throw Error('The eigenvalues failed to converge. Only found these eigenvalues: ' + lambdas.join(', '))
+      const err = Error('The eigenvalues failed to converge. Only found these eigenvalues: ' + lambdas.join(', '))
+      err.values = lambdas
+      err.vectors = []
+      throw err
     }
 
     // combine the overall QR transformation Qtotal with the subsequent
@@ -387,7 +390,7 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
    * @param {number[]} values array of eigenvalues of A
    * @returns {Matrix[]} eigenvalues
    */
-  function findEigenvectors (A, N, C, values) {
+  function findEigenvectors (A, N, C, values, prec) {
     const Cinv = inv(C)
     const U = multiply(Cinv, A, C)
 
@@ -399,8 +402,12 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     for (const λ of values) {
       const i = indexOf(uniqueValues, λ, equal)
 
+      // a dirty trick that helps us find more vectors
+      // TODO with iterative algorithm this can be removed
+      const roundedλ = round(λ, subtract(-1, log10(prec)))
+
       if (i === -1) {
-        uniqueValues.push(λ)
+        uniqueValues.push(roundedλ)
         multiplicities.push(1)
       } else {
         multiplicities[i] += 1
@@ -416,19 +423,30 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     const b = Array(N).fill(0)
     const E = diag(Array(N).fill(1))
 
+    // eigenvalues for which usolve failed (due to numerical error)
+    const failedLambdas = []
+
     for (let i = 0; i < len; i++) {
       const λ = uniqueValues[i]
 
       let solutions = usolveAll(subtract(U, multiply(λ, E)), b)
-      solutions = solutions.map( v => multiply(C, v) )
+      solutions = solutions.map(v => multiply(C, v))
 
       solutions.shift() // ignore the null vector
 
+      // looks like we missed something
       if (solutions.length < multiplicities[i]) {
-        // !FIXME
+        failedLambdas.push(λ)
       }
 
-      vectors.push(...solutions)
+      vectors.push(...solutions.map(v => flatten(v)))
+    }
+
+    if (failedLambdas.length !== 0) {
+      const err = new Error('Failed to find eigenvectors for the following eigenvalues: ' + failedLambdas.join(', '))
+      err.values = values
+      err.vectors = vectors
+      throw err
     }
 
     return vectors
@@ -459,8 +477,8 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     const big = type === 'BigNumber'
     const cplx = type === 'Complex'
 
-    const zero = big ?  bignumber(0) : cplx ? complex(0) : 0
-    const one = big ?  bignumber(1) : cplx ? complex(1) : 1
+    const zero = big ? bignumber(0) : cplx ? complex(0) : 0
+    const one = big ? bignumber(1) : cplx ? complex(1) : 1
 
     // matrix is already upper triangular
     // return an identity matrix
@@ -537,7 +555,6 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
     return M
   }
 
-
   /**
    * Finds the index of an element in an array using a custom equality function
    * @template T
@@ -546,7 +563,7 @@ export function createComplex ({ addScalar, subtract, multiply, multiplyScalar, 
    * @param {function(T, T): boolean} fn the equality function, first argument is an element of `arr`, the second is always `el`
    * @returns {number} the index of `el`, or -1 when it's not in `arr`
    */
-  function indexOf(arr, el, fn) {
+  function indexOf (arr, el, fn) {
     for (let i = 0; i < arr.length; i++) {
       if (fn(arr[i], el)) {
         return i
