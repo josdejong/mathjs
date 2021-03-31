@@ -13,7 +13,11 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
   const doComplex = createComplex({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolveAll, equal, complex, larger, smaller, round, log10, transpose })
 
   /**
-   * Compute eigenvalues and eigenvectors of a matrix.
+   * Compute eigenvalues and eigenvectors of a matrix. The eigenvalues are sorted by their absolute value, ascending.
+   * Each eigenvalue can be listed several times, according to its multiplicity. The eigenvectors are returned as columns
+   * of a matrix – the eigenvector that belongs to the j-th eigenvalue in the list (eg. `values[j]`) is the j-th column (eg. `column(vectors, j)`).
+   * If the algorithm fails to converge, it will throw an error – in that case, however, you may still find useful information
+   * in `err.values` and `err.vectors`.
    *
    * Syntax:
    *
