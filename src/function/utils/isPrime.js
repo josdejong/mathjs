@@ -58,6 +58,15 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
       }
       if (n.lte(3)) return n.gt(1)
       if (n.mod(2).eq(0) || n.mod(3).eq(0)) return false
+      if (n.lt(Math.pow(2, 32))) {
+        const x = n.toNumber();
+        for (let i = 5; i * i <= x; i += 6) {
+          if (x % i === 0 || x % (i + 2) === 0) {
+            return false
+          }
+        }
+        return true
+      }
 
       function modPow (base, exponent, modulus) {
         // exponent can be huge, use non-recursive variant
@@ -75,7 +84,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
       }
 
       // https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test#Deterministic_variants
-      const Decimal = n.constructor.clone({ precision: n.constructor.precision * 2 })
+      const Decimal = n.constructor.clone({ precision: n.toFixed(0).length * 2 })
       n = new Decimal(n)
       let r = 0
       let d = n.sub(1)
@@ -88,7 +97,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
       if (n.lt('3317044064679887385961981')) {
         bases = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41].filter(x => x < n)
       } else {
-        const max = Math.min(n.toNumber() - 2, Math.floor(2 * Math.pow(n.decimalPlaces() * Math.log(10), 2)))
+        const max = Math.min(n.toNumber() - 2, Math.floor(2 * Math.pow(n.toFixed(0).length * Math.log(10), 2)))
         bases = []
         for (let i = 2; i <= max; i += 1) {
           bases.push(max)
