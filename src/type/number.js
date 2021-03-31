@@ -4,6 +4,42 @@ import { deepMap } from '../utils/collection.js'
 const name = 'number'
 const dependencies = ['typed']
 
+/**
+ * Separates the radix, integer part, and fractional part of a non decimal number string
+ * @param {string} input string to parse
+ * @returns {object} the parts of the string or null if not a valid input
+ */
+function getNonDecimalNumberParts (input) {
+  const nonDecimalWithRadixMatch = input.match(/(0[box])([0-9a-fA-F]*)\.([0-9a-fA-F]*)/)
+  if (nonDecimalWithRadixMatch) {
+    const radix = ({ '0b': 2, '0o': 8, '0x': 16 })[nonDecimalWithRadixMatch[1]]
+    const integerPart = nonDecimalWithRadixMatch[2]
+    const fractionalPart = nonDecimalWithRadixMatch[3]
+    return { input, radix, integerPart, fractionalPart }
+  } else {
+    return null
+  }
+}
+
+/**
+ * Makes a number from a radix, and integer part, and a fractional part
+ * @param {parts} [x] parts of the number string (from getNonDecimalNumberParts)
+ * @returns {number} the number
+ */
+function makeNumberFromNonDecimalParts (parts) {
+  const n = parseInt(parts.integerPart, parts.radix)
+  let f = 0
+  for (let i = 0; i < parts.fractionalPart.length; i++) {
+    const digitValue = parseInt(parts.fractionalPart[i], parts.radix)
+    f += digitValue / Math.pow(parts.radix, i + 1)
+  }
+  const result = n + f
+  if (isNaN(result)) {
+    throw new SyntaxError('String "' + parts.input + '" is no valid number')
+  }
+  return result
+}
+
 export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Create a number or convert a string, boolean, or unit to a number.
@@ -41,19 +77,23 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     string: function (x) {
       if (x === 'NaN') return NaN
+      const nonDecimalNumberParts = getNonDecimalNumberParts(x)
+      if (nonDecimalNumberParts) {
+        return makeNumberFromNonDecimalParts(nonDecimalNumberParts)
+      }
       let size = 0
-      const boxMatch = x.match(/(0[box][0-9a-fA-F]*)i([0-9]*)/)
-      if (boxMatch) {
+      const wordSizeSuffixMatch = x.match(/(0[box][0-9a-fA-F]*)i([0-9]*)/)
+      if (wordSizeSuffixMatch) {
         // x includes a size suffix like 0xffffi32, so we extract
         // the suffix and remove it from x
-        size = Number(boxMatch[2])
-        x = boxMatch[1]
+        size = Number(wordSizeSuffixMatch[2])
+        x = wordSizeSuffixMatch[1]
       }
       let num = Number(x)
       if (isNaN(num)) {
         throw new SyntaxError('String "' + x + '" is no valid number')
       }
-      if (boxMatch) {
+      if (wordSizeSuffixMatch) {
         // x is a signed bin, oct, or hex literal
         // num is the value of string x if x is interpreted as unsigned
         if (num > 2 ** size - 1) {

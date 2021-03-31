@@ -10,7 +10,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![Maintenance](https://img.shields.io/maintenance/yes/2021.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
-[![Slack](https://slack.bri.im/badge.svg)](https://slack.bri.im)
+[![Codecov](https://codecov.io/gh/josdejong/mathjs/branch/develop/graph/badge.svg)](https://codecov.io/gh/josdejong/mathjs)
 
 ## Features
 
@@ -102,7 +102,7 @@ Then, the project can be build by executing the build script via npm:
 
     npm run build
 
-This will build ESM output, CommonJS output, and the bundle math.js 
+This will build ESM output, CommonJS output, and the bundle math.js
 from the source files and put them in the folder lib.
 
 
@@ -116,8 +116,8 @@ The code of `mathjs` is written in ES modules, and requires all files to have a 
 
 ### Architecture
 
-What mathjs tries to achieve is to offer an environment where you can do calculations with mixed data types, 
-like multiplying a regular `number` with a `Complex` number or a `BigNumber`, and work with all of those in matrices. 
+What mathjs tries to achieve is to offer an environment where you can do calculations with mixed data types,
+like multiplying a regular `number` with a `Complex` number or a `BigNumber`, and work with all of those in matrices.
 Mathjs also allows to add a new data type, like say `BigInt`, with little effort.
 
 The solution that mathjs uses has two main ingredients:
@@ -130,7 +130,7 @@ At the lowest level, mathjs has immutable factory functions which create immutab
 
 ### Build scripts
 
-The build script currently generates two types of output: 
+The build script currently generates two types of output:
 
 - **any**, generate entry points to create full versions of all functions
 - **number**: generating and entry points to create lightweight functions just supporting `number`

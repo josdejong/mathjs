@@ -1,5 +1,12 @@
 # History
 
+# 2020-03-10, version 9.3.0
+
+- Implemented support for parsing non decimal numbers with radix point,
+  see #2122, #2121. Thanks @clnhlzmn.
+- Fix #2128: typo in docs of `luSolveAll` and `usolveAll`.
+
+
 # 2020-02-03, version 9.2.0
 
 - Implemented function `count` to count the total elements in a matrix, 
