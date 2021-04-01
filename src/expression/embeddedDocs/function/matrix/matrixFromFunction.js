@@ -17,6 +17,6 @@ export const matrixFromFunctionDocs = {
     'matrixFromFunction([5], random)'
   ],
   seealso: [
-    'matrix', 'zeros'
+    'matrix', 'matrixFromRows', 'zeros'
   ]
 }
