@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'matrixFromFunction'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed', 'matrix', 'isZero']
 
-export const createMatrixFromFunction = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+export const createMatrixFromFunction = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, isZero }) => {
   /**
    * Create a matrix by evaluating a generating function at each index.
    *
@@ -44,8 +44,20 @@ export const createMatrixFromFunction = /* #__PURE__ */ factory(name, dependenci
   })
 
   function _create (size, fn, format, datatype) {
-    const m = matrix(format, datatype)
+    let m
+    if (datatype !== undefined) {
+      m = matrix(format, datatype)
+    } else {
+      m = matrix(format)
+    }
+
     m.resize(size)
-    m.forEach((_, index) => m.set(index, fn(index)))
+    m.forEach(function(_, index) {
+      const val = fn(index)
+      if (isZero(val)) return
+      m.set(index, val)
+    })
+
+    return m
   }
 })
