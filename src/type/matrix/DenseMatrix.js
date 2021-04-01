@@ -594,6 +594,47 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   }
 
   /**
+   * Returns an array containing the rows of a 2D matrix
+   * @returns {Array<Matrix>}
+   */
+  DenseMatrix.prototype.rows = function () {
+    const result = []
+
+    const s = this.size()
+    if (s.length !== 2 ) {
+      throw new TypeError('Rows can only be returned for a 2D matrix.')
+    }
+
+    const data = this._data
+    for (const row of data) {
+      result.push(new DenseMatrix([row], this._datatype))
+    }
+
+    return result
+  }
+
+  /**
+   * Returns an array containing the columns of a 2D matrix
+   * @returns {Array<Matrix>}
+   */
+  DenseMatrix.prototype.columns = function () {
+    const result = []
+
+    const s = this.size()
+    if (s.length !== 2 ) {
+      throw new TypeError('Rows can only be returned for a 2D matrix.')
+    }
+
+    const data = this._data
+    for (let i = 0; i < s[1]; i++) {
+      const col = data.map(row => [row[i]])
+      result.push(new DenseMatrix(col, this._datatype))
+    }
+
+    return result
+  }
+
+  /**
    * Create an Array with a copy of the data of the DenseMatrix
    * @memberof DenseMatrix
    * @returns {Array} array
