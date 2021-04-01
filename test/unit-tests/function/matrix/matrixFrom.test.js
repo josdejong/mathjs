@@ -61,4 +61,33 @@ describe('matrixFrom...', function () {
     actual = math.matrixFromRows([1, 2, 3], [4, 5, 6], matrix([7, 8, 9]))
     assert.deepStrictEqual(actual, expected)
   })
+
+  it('...Columns', function () {
+    const expected = [[1, 4, 7], [2, 5, 8], [3, 6, 9]]
+    let actual
+
+    // from simple arrays
+    actual = math.matrixFromColumns([1, 2, 3], [4, 5, 6], [7, 8, 9])
+    assert.deepStrictEqual(actual, expected)
+
+    // from multi-dimensional arrays
+    actual = math.matrixFromColumns([1, 2, 3], [[4], [5], [6]], [[7, 8, 9]])
+    assert.deepStrictEqual(actual, expected)
+
+    // from one-dimensional vectors
+    actual = math.matrixFromColumns(matrix([1, 2, 3]), matrix([4, 5, 6]), matrix([7, 8, 9]))
+    assert.deepStrictEqual(actual, matrix(expected))
+
+    // from multi-dimensional vectors
+    actual = math.matrixFromColumns(matrix([1, 2, 3]), matrix([[4], [5], [6]]), matrix([[7, 8, 9]]))
+    assert.deepStrictEqual(actual, matrix(expected))
+
+    // from sparse vectors
+    actual = math.matrixFromColumns(matrix([[1, 2, 3]], 'sparse'), matrix([[4], [5], [6]], 'sparse'), matrix([[7, 8, 9]], 'sparse'))
+    assert.deepStrictEqual(actual, matrix(expected))
+
+    // for a mixed type, returns an array
+    actual = math.matrixFromColumns([1, 2, 3], [4, 5, 6], matrix([7, 8, 9]))
+    assert.deepStrictEqual(actual, expected)
+  })
 })
