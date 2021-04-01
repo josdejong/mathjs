@@ -32,7 +32,8 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    bignumber, boolean, complex, index, number, string, unit, sparse
    *
    * @param {Array | Matrix} [data]    A multi dimensional array
-   * @param {string} [format]          The Matrix storage format
+   * @param {string} [format]          The Matrix storage format, either `'dense'` or `'sparse'`
+   * @param {string} [datatype]        Type of the values
    *
    * @return {Matrix} The created matrix
    */

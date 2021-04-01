@@ -202,6 +202,7 @@ import { splitUnitDocs } from './construction/splitUnit.js'
 import { sparseDocs } from './construction/sparse.js'
 import { numberDocs } from './construction/number.js'
 import { matrixDocs } from './construction/matrix.js'
+import { matrixFromFunctionDocs } from './function/matrix/matrixFromFunction.js'
 import { indexDocs } from './construction/index.js'
 import { fractionDocs } from './construction/fraction.js'
 import { createUnitDocs } from './construction/createUnit.js'
@@ -424,6 +425,7 @@ export const embeddedDocs = {
   inv: invDocs,
   eigs: eigsDocs,
   kron: kronDocs,
+  matrixFromFunction: matrixFromFunctionDocs,
   map: mapDocs,
   ones: onesDocs,
   partitionSelect: partitionSelectDocs,
