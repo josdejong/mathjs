@@ -938,6 +938,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *                              parameters: the value of the element, the index
    *                              of the element, and the Matrix being traversed.
    * @param {boolean} [skipZeros] Invoke callback function for non-zero values only.
+   *                              If false, the indices are guaranteed to be in order,
+   *                              if true, the indices can be unordered.
    */
   SparseMatrix.prototype.forEach = function (callback, skipZeros) {
     // check it is a pattern matrix
@@ -976,6 +978,28 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
           const value = (i in values) ? values[i] : 0
           callback(value, [i, j], me)
         }
+      }
+    }
+  }
+
+  /**
+   * Iterate over the matrix elements, skipping zeros
+   * @return {Iterable<{ value, index: number[] }>}
+   */
+  SparseMatrix.prototype[Symbol.iterator] = function * () {
+    if (!this._values) { throw new Error('Cannot iterate a Pattern only matrix') }
+
+    const columns = this._size[1]
+
+    for (let j = 0; j < columns; j++) {
+      const k0 = this._ptr[j]
+      const k1 = this._ptr[j + 1]
+
+      for (let k = k0; k < k1; k++) {
+        // row index
+        const i = this._index[k]
+
+        yield ({ value: this._values[k], index: [i, j] })
       }
     }
   }

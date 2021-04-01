@@ -781,6 +781,37 @@ describe('DenseMatrix', function () {
     })
   })
 
+  describe('iterable', function () {
+    it('should iterate in the same order as forEach', function () {
+      let m, expected
+
+      m = new DenseMatrix([
+        [[1, 2], [3, 4]],
+        [[5, 6], [7, 8]],
+        [[9, 10], [11, 12]],
+        [[13, 14], [15, 16]]
+      ])
+      expected = []
+      m.forEach((value, index) => { expected.push({ value, index }) })
+      assert.deepStrictEqual(expected, [...m])
+
+      m = new DenseMatrix([1])
+      expected = []
+      m.forEach((value, index) => { expected.push({ value, index }) })
+      assert.deepStrictEqual(expected, [...m])
+
+      m = new DenseMatrix([1, 2, 3])
+      expected = []
+      m.forEach((value, index) => { expected.push({ value, index }) })
+      assert.deepStrictEqual(expected, [...m])
+
+      m = new DenseMatrix([])
+      expected = []
+      m.forEach((value, index) => { expected.push({ value, index }) })
+      assert.deepStrictEqual(expected, [...m])
+    })
+  })
+
   describe('clone', function () {
     it('should clone the matrix properly', function () {
       const m1 = new DenseMatrix(
