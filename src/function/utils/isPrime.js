@@ -59,7 +59,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
       if (n.lte(3)) return n.gt(1)
       if (n.mod(2).eq(0) || n.mod(3).eq(0)) return false
       if (n.lt(Math.pow(2, 32))) {
-        const x = n.toNumber();
+        const x = n.toNumber()
         for (let i = 5; i * i <= x; i += 6) {
           if (x % i === 0 || x % (i + 2) === 0) {
             return false
