@@ -15,8 +15,9 @@ const dependencies = [
 
 export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, Matrix }) => {
   /**
-   * Sparse Matrix implementation. This type implements a Compressed Column Storage format
-   * for sparse matrices.
+   * Sparse Matrix implementation. This type implements
+   * a [Compressed Column Storage](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_column_(CSC_or_CCS))
+   * format for two-dimensional sparse matrices.
    * @class SparseMatrix
    */
   function SparseMatrix (data, datatype) {
@@ -546,6 +547,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *
    * @memberof SparseMatrix
    * @param {number[] | Matrix} size  The new size the matrix should have.
+   *                                  Since sparse matrices are always two-dimensional,
+   *                                  size must be two numbers in either an array or a matrix
    * @param {*} [defaultValue=0]      Default value, filled in on new entries.
    *                                  If not provided, the matrix elements will
    *                                  be filled with zeros.
@@ -710,6 +713,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *
    * @memberof SparseMatrix
    * @param {number[]} sizes          The new size the matrix should have.
+   *                                  Since sparse matrices are always two-dimensional,
+   *                                  size must be two numbers in either an array or a matrix
    * @param {boolean} [copy]          Return a reshaped copy of the matrix
    *
    * @return {Matrix}                 The reshaped matrix
