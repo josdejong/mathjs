@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 9.3.1
+
+- Fix #2133: strongly improved the performance of `isPrime`, see #2139. 
+  Thanks @Yaffle.
+
+
 # 2021-03-10, version 9.3.0
 
 - Implemented support for parsing non decimal numbers with radix point,
