@@ -4,14 +4,25 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
-<h1 id="20200310-version-930">2020-03-10, version 9.3.0 <a href="#20200310-version-930" title="Permalink">#</a></h1>
+<h1 id="20210410-version-931">2021-04-10, version 9.3.1 <a href="#20210410-version-931" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2133">#2133</a>: strongly improved the performance of `isPrime`, see <a href="https://github.com/josdejong/mathjs/issues/2139">#2139</a>. 
+  Thanks <a href="https://github.com/Yaffle">@Yaffle</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2150">#2150</a>: give a clear error "Error: Undefined function ..." instead when
+  evaluating a non-existing function.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/660">#660</a>: expose internal functions `FunctionNode.onUndefinedFunction(name)` 
+  and `SymbolNode.onUndefinedSymbol(name)`, allowing to override the behavior.
+  By default, an Error is thrown.
+
+
+<h1 id="20210310-version-930">2021-03-10, version 9.3.0 <a href="#20210310-version-930" title="Permalink">#</a></h1>
 
 - Implemented support for parsing non decimal numbers with radix point,
   see <a href="https://github.com/josdejong/mathjs/issues/2122">#2122</a>, <a href="https://github.com/josdejong/mathjs/issues/2121">#2121</a>. Thanks <a href="https://github.com/clnhlzmn">@clnhlzmn</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2128">#2128</a>: typo in docs of `luSolveAll` and `usolveAll`.
 
 
-<h1 id="20200203-version-920">2020-02-03, version 9.2.0 <a href="#20200203-version-920" title="Permalink">#</a></h1>
+<h1 id="20210203-version-920">2021-02-03, version 9.2.0 <a href="#20210203-version-920" title="Permalink">#</a></h1>
 
 - Implemented function `count` to count the total elements in a matrix, 
   see <a href="https://github.com/josdejong/mathjs/issues/2085">#2085</a>. Thanks <a href="https://github.com/Josef37">@Josef37</a>.
