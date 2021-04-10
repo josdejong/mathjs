@@ -4,6 +4,11 @@
 
 - Fix #2133: strongly improved the performance of `isPrime`, see #2139. 
   Thanks @Yaffle.
+- Fix #2150: give a clear error "Error: Undefined function ..." instead when
+  evaluating a non-existing function.
+- Fix #660: expose internal functions `FunctionNode.onUndefinedFunction(name)` 
+  and `SymbolNode.onUndefinedSymbol(name)`, allowing to override the behavior.
+  By default, an Error is thrown.
 
 
 # 2021-03-10, version 9.3.0

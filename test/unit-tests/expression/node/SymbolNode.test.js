@@ -32,7 +32,7 @@ describe('SymbolNode', function () {
   it('should throw an error when evaluating an undefined symbol', function () {
     const scope = {}
     const s = new SymbolNode('foo')
-    assert.throws(function () { s.compile().evaluate(scope) }, Error)
+    assert.throws(function () { s.compile().evaluate(scope) }, /Error: Undefined symbol foo/)
   })
 
   it('should compile a SymbolNode', function () {
