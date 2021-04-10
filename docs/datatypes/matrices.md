@@ -184,6 +184,21 @@ const c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]
 math.size(c)                                  // Array, [2, 2, 3]
 ```
 
+Note that the dimensions themselves do not have a meaning attached. 
+When creating and printing a two dimensional matrix, the first dimension is 
+normally rendered as the _column_, and the second dimension is rendered as 
+the _row_. For example:
+
+```js
+console.table(math.zeros([2, 4]))
+// 0 0 0 0
+// 0 0 0 0
+```
+
+If you have a matrix where the first dimension means `x` and the second 
+means `y`, this will look confusing since `x` is printed as _column_ 
+(vertically) and `y` as _row_ (horizontally).
+
 
 ## Resizing
 
