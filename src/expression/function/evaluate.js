@@ -1,8 +1,23 @@
 import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
+import { isMapLike } from '../../utils/customs.js'
 
 const name = 'evaluate'
 const dependencies = ['typed', 'parse']
+
+function deprecatePlainObjectScope (scope) {
+  // Using bare objects as scopes is a source of potential security vulnerabilities.
+  // https://github.com/josdejong/mathjs/issues/2165
+  if (!isMapLike(scope)) {
+    console.warn('⚠️ Using bare objects as scopes is deprecated and may be removed in future versions. Use Map instead. ⚠️')
+  }
+}
+
+function throwIfNotMapLike (scope) {
+  if (!isMapLike(scope)) {
+    throw new TypeError('New scope objects should be Map or resemble Maps')
+  }
+}
 
 export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typed, parse }) => {
   /**
@@ -39,22 +54,36 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
    */
   return typed(name, {
     string: function (expr) {
-      const scope = {}
+      const scope = new Map()
       return parse(expr).compile().evaluate(scope)
     },
 
     'string, Object': function (expr, scope) {
+      deprecatePlainObjectScope(scope)
+      return parse(expr).compile().evaluate(scope)
+    },
+
+    'string, any': function (expr, scope) {
+      throwIfNotMapLike(scope)
       return parse(expr).compile().evaluate(scope)
     },
 
     'Array | Matrix': function (expr) {
-      const scope = {}
+      const scope = new Map()
       return deepMap(expr, function (entry) {
         return parse(entry).compile().evaluate(scope)
       })
     },
 
     'Array | Matrix, Object': function (expr, scope) {
+      deprecatePlainObjectScope(scope)
+      return deepMap(expr, function (entry) {
+        return parse(entry).compile().evaluate(scope)
+      })
+    },
+
+    'Array | Matrix, any': function (expr, scope) {
+      throwIfNotMapLike(scope)
       return deepMap(expr, function (entry) {
         return parse(entry).compile().evaluate(scope)
       })

@@ -3,7 +3,7 @@ import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbol
 import { escape } from '../../utils/string.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { map } from '../../utils/array.js'
-import { getSafeProperty, validateSafeMethod } from '../../utils/customs.js'
+import { getSafeProperty, hasSafeProperty, validateSafeMethod } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 import { defaultTemplate, latexFunctions } from '../../utils/latex.js'
 
@@ -88,7 +88,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
       const isRaw = (typeof fn === 'function') && (fn.rawArgs === true)
 
       function resolveFn (scope) {
-        return name in scope
+        return hasSafeProperty(scope, name)
           ? getSafeProperty(scope, name)
           : name in math
             ? getSafeProperty(math, name)

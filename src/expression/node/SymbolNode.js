@@ -1,5 +1,5 @@
 import { escape } from '../../utils/string.js'
-import { getSafeProperty } from '../../utils/customs.js'
+import { getSafeProperty, hasSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 import { toSymbol } from '../../utils/latex.js'
 
@@ -68,7 +68,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
       }
     } else if (name in math) {
       return function (scope, args, context) {
-        return name in scope
+        return hasSafeProperty(scope, name)
           ? getSafeProperty(scope, name)
           : getSafeProperty(math, name)
       }
@@ -76,7 +76,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
       const isUnit = isValuelessUnit(name)
 
       return function (scope, args, context) {
-        return name in scope
+        return hasSafeProperty(scope, name)
           ? getSafeProperty(scope, name)
           : isUnit
             ? new Unit(null, name)

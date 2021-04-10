@@ -1,7 +1,8 @@
 import { isNode } from '../../utils/is.js'
 
 import { keywords } from '../keywords.js'
-import { deepStrictEqual, hasOwnProperty } from '../../utils/object.js'
+import { deepStrictEqual } from '../../utils/object.js'
+import { getSafeProperties } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'Node'
@@ -369,11 +370,9 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    * @param {Object} scope
    */
   function _validateScope (scope) {
-    for (const symbol in scope) {
-      if (hasOwnProperty(scope, symbol)) {
-        if (symbol in keywords) {
-          throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword')
-        }
+    for (const symbol of getSafeProperties(scope)) {
+      if (symbol in keywords) {
+        throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword')
       }
     }
   }

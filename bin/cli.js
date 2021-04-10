@@ -48,6 +48,7 @@
 let scope = {}
 const fs = require('fs')
 const path = require('path')
+const { getSafeProperties } = require('../src/utils/customs.js')
 
 const PRECISION = 14 // decimals
 
@@ -95,11 +96,9 @@ function completer (text) {
     keyword = m[0]
 
     // scope variables
-    for (const def in scope) {
-      if (hasOwnProperty(scope, def)) {
-        if (def.indexOf(keyword) === 0) {
-          matches.push(def)
-        }
+    for (const def in getSafeProperties(scope)) {
+      if (def.indexOf(keyword) === 0) {
+        matches.push(def)
       }
     }
 

@@ -32,11 +32,11 @@ describe('security', function () {
 
   it('should not allow calling constructor', function () {
     assert.throws(function () {
-      math.evaluate('constructor')
+      math.evaluate('constructor', {})
     }, /Error: No access to property "constructor"/)
 
     assert.throws(function () {
-      math.evaluate('toString')
+      math.evaluate('toString', {})
     }, /Cannot access method "toString" as a property/)
   })
 

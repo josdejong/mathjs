@@ -1,4 +1,5 @@
 import { isSymbolNode } from '../../../utils/is.js'
+import { hasSafeProperty } from '../../../utils/customs.js'
 
 /**
  * Compile an inline expression like "x > 0"
@@ -13,7 +14,7 @@ export function compileInlineExpression (expression, math, scope) {
   const symbol = expression.filter(function (node) {
     return isSymbolNode(node) &&
         !(node.name in math) &&
-        !(node.name in scope)
+        !(hasSafeProperty(scope, node.name))
   })[0]
 
   if (!symbol) {

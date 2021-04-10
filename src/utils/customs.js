@@ -9,6 +9,10 @@ import { hasOwnProperty } from './object.js'
  * @return {*} Returns the property value when safe
  */
 function getSafeProperty (object, prop) {
+  if (isMapLike(object)) {
+    return object.get(prop)
+  }
+
   // only allow getting safe properties of a plain object
   if (isPlainObject(object) && isSafeProperty(object, prop)) {
     return object[prop]
@@ -32,6 +36,13 @@ function getSafeProperty (object, prop) {
  */
 // TODO: merge this function into access.js?
 function setSafeProperty (object, prop, value) {
+  // The object looks like a Map. It maybe a Map, or it's an object with methods that
+  // will take responsibility for checking of keys.
+  if (isMapLike(object)) {
+    object.set(prop, value)
+    return value
+  }
+
   // only allow setting safe properties of a plain object
   if (isPlainObject(object) && isSafeProperty(object, prop)) {
     object[prop] = value
@@ -134,6 +145,29 @@ function isPlainObject (object) {
   return typeof object === 'object' && object && object.constructor === Object
 }
 
+function isMapLike (object) {
+  // We can use the fast instanceof, or a slower duck typing check.
+  // The duck typing method needs to cover enough methods to not be confused with DenseMatrix.
+  return object instanceof Map ||
+    ['set', 'get', 'keys', 'has'].reduce((soFarSoGood, methodName) => soFarSoGood && typeof object[methodName] === 'function', true)
+}
+
+function getSafeProperties (object) {
+  if (isMapLike(object)) {
+    return object.keys()
+  } else {
+    return Object.keys(object).filter((prop) => hasOwnProperty(object, prop))
+  }
+}
+
+function hasSafeProperty (object, prop) {
+  if (isMapLike(object)) {
+    return object.has(prop)
+  } else {
+    return prop in object
+  }
+}
+
 const safeNativeProperties = {
   length: true,
   name: true
@@ -148,6 +182,9 @@ const safeNativeMethods = {
 export { getSafeProperty }
 export { setSafeProperty }
 export { isSafeProperty }
+export { hasSafeProperty }
+export { getSafeProperties }
 export { validateSafeMethod }
 export { isSafeMethod }
 export { isPlainObject }
+export { isMapLike }

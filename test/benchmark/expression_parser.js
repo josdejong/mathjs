@@ -6,7 +6,7 @@ const assert = require('assert')
 const Benchmark = require('benchmark')
 const padRight = require('pad-right')
 const math = require('../..')
-const getSafeProperty = require('../../lib/cjs/utils/customs').getSafeProperty
+const { hasSafeProperty, getSafeProperty } = require('../../lib/cjs/utils/customs')
 
 // expose on window when using bundled in a browser
 if (typeof window !== 'undefined') {
@@ -25,7 +25,7 @@ const sin = getSafeProperty(math, 'sin')
 const pi = getSafeProperty(math, 'pi')
 const compiledPlainJs = {
   evaluate: function (scope) {
-    return 2 + 3 * ('sin' in scope ? getSafeProperty(scope, 'sin') : sin)(('pi' in scope ? getSafeProperty(scope, 'pi') : pi) / 4) - 4 * scope.x
+    return 2 + 3 * (hasSafeProperty(scope, 'sin') ? getSafeProperty(scope, 'sin') : sin)((hasSafeProperty(scope, 'pi') ? getSafeProperty(scope, 'pi') : pi) / 4) - 4 * scope.x
   }
 }
 

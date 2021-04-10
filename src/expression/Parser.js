@@ -89,9 +89,7 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   Parser.prototype.get = function (name) {
     // TODO: validate arguments
-    return name in this.scope
-      ? getSafeProperty(this.scope, name)
-      : undefined
+    return getSafeProperty(this.scope, name) ?? undefined
   }
 
   /**
