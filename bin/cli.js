@@ -45,10 +45,10 @@
  * the License.
  */
 
-let scope = {}
+let scope = new Map()
 const fs = require('fs')
 const path = require('path')
-const { getSafeProperties } = require('../src/utils/customs.js')
+const { getSafeProperties, setSafeProperty, getSafeProperty } = require('../lib/cjs/utils/customs.js')
 
 const PRECISION = 14 // decimals
 
@@ -198,7 +198,7 @@ function runStream (input, output, mode, parenthesis) {
         break
       case 'clear':
         // clear memory
-        scope = {}
+        scope = new Map()
         console.log('memory cleared')
 
         // get next input
@@ -230,16 +230,17 @@ function runStream (input, output, mode, parenthesis) {
                 if (math.isAssignmentNode(node)) {
                   const name = findSymbolName(node)
                   if (name !== null) {
-                    scope.ans = scope[name]
-                    console.log(name + ' = ' + format(scope[name]))
+                    const value = getSafeProperty(scope, name)
+                    setSafeProperty(scope, 'ans', value)
+                    console.log(name + ' = ' + format(value))
                   } else {
-                    scope.ans = res
+                    setSafeProperty(scope, 'ans', res)
                     console.log(format(res))
                   }
                 } else if (math.isHelp(res)) {
                   console.log(res.toString())
                 } else {
-                  scope.ans = res
+                  setSafeProperty(scope, 'ans', res)
                   console.log(format(res))
                 }
               }

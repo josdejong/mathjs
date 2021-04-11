@@ -1,6 +1,6 @@
 import { factory } from '../utils/factory.js'
-import { extend, hasOwnProperty } from '../utils/object.js'
-import { getSafeProperty, hasSafeProperty, setSafeProperty } from '../utils/customs.js'
+import { extend } from '../utils/object.js'
+import { getSafeProperties, getSafeProperty, hasSafeProperty, isMapLike, setSafeProperty } from '../utils/customs.js'
 
 const name = 'Parser'
 const dependencies = ['parse']
@@ -101,6 +101,11 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @return {Object} values
    */
   Parser.prototype.getAll = function () {
+    if (isMapLike(this.scope)) {
+      const newScope = new Map()
+      this.scope.keys().forEach(key => newScope.set(key, this.scope.get(key)))
+      return newScope
+    }
     return extend({}, this.scope)
   }
 
@@ -120,17 +125,21 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   Parser.prototype.remove = function (name) {
     // TODO: validate arguments
-    delete this.scope[name]
+    if (typeof this.scope.delete === 'function') {
+      this.scope.delete(name)
+    } else {
+      delete this.scope[name]
+    }
   }
 
   /**
    * Clear the scope with variables and functions
    */
   Parser.prototype.clear = function () {
-    for (const name in this.scope) {
-      if (hasOwnProperty(this.scope, name)) {
-        delete this.scope[name]
-      }
+    if (typeof this.scope.clear === 'function') {
+      this.scope.clear()
+    } else {
+      getSafeProperties(this.scope).forEach(name => this.remove(name))
     }
   }
 
