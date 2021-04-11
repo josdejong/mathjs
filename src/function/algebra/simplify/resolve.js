@@ -1,3 +1,4 @@
+import { getSafeProperty } from '../../../utils/customs.js'
 import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
 
@@ -37,7 +38,7 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
       return node
     }
     if (isSymbolNode(node)) {
-      const value = scope[node.name]
+      const value = getSafeProperty(scope, node.name)
       if (isNode(value)) {
         return resolve(value, scope)
       } else if (typeof value === 'number') {

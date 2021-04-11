@@ -67,6 +67,15 @@ describe('evaluate', function () {
     assert.deepStrictEqual(math.evaluate('hello("jos")', scope), 'hello, jos!')
   })
 
+  it('should handle the given Map scope', function () {
+    const scope = new Map(Object.entries({
+      a: 3,
+      b: 4
+    }))
+    assert.deepStrictEqual(math.evaluate('a*b', scope), 12)
+    assert.deepStrictEqual(math.evaluate('c=5', scope), 5)
+  })
+
   it('should LaTeX evaluate', function () {
     const expr1 = math.parse('evaluate(expr)')
     const expr2 = math.parse('evaluate(expr,scope)')

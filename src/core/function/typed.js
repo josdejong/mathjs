@@ -78,6 +78,7 @@ import {
 import typedFunction from 'typed-function'
 import { digits } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
+import { isMapLike } from '../../utils/customs.js'
 
 // returns a new instance of typed-function
 let _createTyped = function () {
@@ -147,6 +148,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'RangeNode', test: isRangeNode },
     { name: 'SymbolNode', test: isSymbolNode },
 
+    { name: 'MapLike', test: isMapLike },
     { name: 'Object', test: isObject } // order 'Object' last, it matches on other classes too
   ]
 

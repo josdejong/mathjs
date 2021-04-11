@@ -160,11 +160,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       return this(parse(expr), this.rules, {}, {})
     },
 
-    'string, Object': function (expr, scope) {
+    'string, Object | MapLike': function (expr, scope) {
       return this(parse(expr), this.rules, scope, {})
     },
 
-    'string, Object, Object': function (expr, scope, options) {
+    'string, Object | MapLike, Object': function (expr, scope, options) {
       return this(parse(expr), this.rules, scope, options)
     },
 
@@ -172,19 +172,19 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       return this(parse(expr), rules, {}, {})
     },
 
-    'string, Array, Object': function (expr, rules, scope) {
+    'string, Array, Object | MapLike': function (expr, rules, scope) {
       return this(parse(expr), rules, scope, {})
     },
 
-    'string, Array, Object, Object': function (expr, rules, scope, options) {
+    'string, Array, Object | MapLike, Object': function (expr, rules, scope, options) {
       return this(parse(expr), rules, scope, options)
     },
 
-    'Node, Object': function (expr, scope) {
+    'Node, Object | MapLike': function (expr, scope) {
       return this(expr, this.rules, scope, {})
     },
 
-    'Node, Object, Object': function (expr, scope, options) {
+    'Node, Object | MapLike, Object': function (expr, scope, options) {
       return this(expr, this.rules, scope, options)
     },
 
@@ -196,11 +196,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       return this(expr, rules, {}, {})
     },
 
-    'Node, Array, Object': function (expr, rules, scope) {
+    'Node, Array, Object | MapLike': function (expr, rules, scope) {
       return this(expr, rules, scope, {})
     },
 
-    'Node, Array, Object, Object': function (expr, rules, scope, options) {
+    'Node, Array, Object | MapLike, Object': function (expr, rules, scope, options) {
       rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)

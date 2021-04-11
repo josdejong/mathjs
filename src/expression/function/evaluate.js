@@ -13,12 +13,6 @@ function deprecatePlainObjectScope (scope) {
   }
 }
 
-function throwIfNotMapLike (scope) {
-  if (!isMapLike(scope)) {
-    throw new TypeError('New scope objects should be Map or resemble Maps')
-  }
-}
-
 export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typed, parse }) => {
   /**
    * Evaluate an expression.
@@ -58,13 +52,8 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return parse(expr).compile().evaluate(scope)
     },
 
-    'string, Object': function (expr, scope) {
+    'string, Object | MapLike': function (expr, scope) {
       deprecatePlainObjectScope(scope)
-      return parse(expr).compile().evaluate(scope)
-    },
-
-    'string, any': function (expr, scope) {
-      throwIfNotMapLike(scope)
       return parse(expr).compile().evaluate(scope)
     },
 
@@ -75,15 +64,8 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
       })
     },
 
-    'Array | Matrix, Object': function (expr, scope) {
+    'Array | Matrix, Object | MapLike': function (expr, scope) {
       deprecatePlainObjectScope(scope)
-      return deepMap(expr, function (entry) {
-        return parse(entry).compile().evaluate(scope)
-      })
-    },
-
-    'Array | Matrix, any': function (expr, scope) {
-      throwIfNotMapLike(scope)
       return deepMap(expr, function (entry) {
         return parse(entry).compile().evaluate(scope)
       })
