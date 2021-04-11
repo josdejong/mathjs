@@ -1,6 +1,6 @@
 import { factory } from '../utils/factory.js'
 import { extend, hasOwnProperty } from '../utils/object.js'
-import { getSafeProperty, setSafeProperty } from '../utils/customs.js'
+import { getSafeProperty, hasSafeProperty, setSafeProperty } from '../utils/customs.js'
 
 const name = 'Parser'
 const dependencies = ['parse']
@@ -89,7 +89,11 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   Parser.prototype.get = function (name) {
     // TODO: validate arguments
-    return getSafeProperty(this.scope, name) ?? undefined
+    if (hasSafeProperty(this.scope, name)) {
+      return getSafeProperty(this.scope, name)
+    } else {
+      return undefined
+    }
   }
 
   /**
