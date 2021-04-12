@@ -31,8 +31,10 @@ export const createMatrixFromColumns = /* #__PURE__ */ factory(name, dependencie
       return _createArray(arr)
     },
     '...Matrix': function (arr) {
-      return _createMatrix(arr)
+      return matrix(_createArray(arr.map(m => m.toArray())))
     }
+
+    // TODO implement this properly for SparseMatrix
   })
 
   function _createArray (arr) {
@@ -64,39 +66,8 @@ export const createMatrixFromColumns = /* #__PURE__ */ factory(name, dependencie
     return result
   }
 
-  function _createMatrix (arr) {
-    if (arr.length === 0) throw new TypeError('At least one column is needed to construct a matrix.')
-    const N = checkVectorTypeAndReturnLength(arr[0])
-
-    // create an array with empty rows
-    const data = []
-    for (let i = 0; i < N; i++) {
-      data[i] = []
-    }
-
-    // loop columns
-    for (const col of arr) {
-      const colLength = checkVectorTypeAndReturnLength(col)
-
-      if (colLength !== N) {
-        throw new TypeError('The vectors had different length: ' + (N | 0) + ' ≠ ' + (colLength | 0))
-      }
-
-      // push a value to each row
-      let i = 0
-      col.forEach(value => data[i++].push(value))
-    }
-
-    return matrix(data)
-  }
-
   function checkVectorTypeAndReturnLength (vec) {
-    let s
-    if (Array.isArray(vec)) {
-      s = size(vec)
-    } else {
-      s = vec.size()
-    }
+    const s = size(vec)
 
     if (s.length === 1) { // 1D vector
       return s[0]
