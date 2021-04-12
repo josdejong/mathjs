@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210412-version-932">2021-04-12, version 9.3.2 <a href="#20210412-version-932" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2169">#2169</a>: mathjs requesting `@babel/runtime` dependency. 
+  Regression introduced in `v9.3.1`.
+
+
 <h1 id="20210410-version-931">2021-04-10, version 9.3.1 <a href="#20210410-version-931" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2133">#2133</a>: strongly improved the performance of `isPrime`, see <a href="https://github.com/josdejong/mathjs/issues/2139">#2139</a>. 
