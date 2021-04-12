@@ -87,29 +87,41 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
       const fn = name in math ? getSafeProperty(math, name) : undefined
       const isRaw = (typeof fn === 'function') && (fn.rawArgs === true)
 
+      function resolveFn (scope) {
+        return name in scope
+          ? getSafeProperty(scope, name)
+          : name in math
+            ? getSafeProperty(math, name)
+            : FunctionNode.onUndefinedFunction(name)
+      }
+
       if (isRaw) {
         // pass unevaluated parameters (nodes) to the function
         // "raw" evaluation
         const rawArgs = this.args
         return function evalFunctionNode (scope, args, context) {
-          return (name in scope ? getSafeProperty(scope, name) : fn)(rawArgs, math, Object.assign({}, scope, args))
+          const fn = resolveFn(scope)
+          return fn(rawArgs, math, Object.assign({}, scope, args))
         }
       } else {
         // "regular" evaluation
         if (evalArgs.length === 1) {
           const evalArg0 = evalArgs[0]
           return function evalFunctionNode (scope, args, context) {
-            return (name in scope ? getSafeProperty(scope, name) : fn)(evalArg0(scope, args, context))
+            const fn = resolveFn(scope)
+            return fn(evalArg0(scope, args, context))
           }
         } else if (evalArgs.length === 2) {
           const evalArg0 = evalArgs[0]
           const evalArg1 = evalArgs[1]
           return function evalFunctionNode (scope, args, context) {
-            return (name in scope ? getSafeProperty(scope, name) : fn)(evalArg0(scope, args, context), evalArg1(scope, args, context))
+            const fn = resolveFn(scope)
+            return fn(evalArg0(scope, args, context), evalArg1(scope, args, context))
           }
         } else {
           return function evalFunctionNode (scope, args, context) {
-            return (name in scope ? getSafeProperty(scope, name) : fn).apply(null, map(evalArgs, function (evalArg) {
+            const fn = resolveFn(scope)
+            return fn.apply(null, map(evalArgs, function (evalArg) {
               return evalArg(scope, args, context)
             }))
           }
@@ -185,6 +197,14 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
    */
   FunctionNode.prototype.clone = function () {
     return new FunctionNode(this.fn, this.args.slice(0))
+  }
+
+  /**
+   * Throws an error 'Undefined function {name}'
+   * @param {string} name
+   */
+  FunctionNode.onUndefinedFunction = function (name) {
+    throw new Error('Undefined function ' + name)
   }
 
   // backup Node's toString function
