@@ -1,5 +1,11 @@
 # History
 
+# 2021-04-12, version 9.3.2
+
+- Fix #2169: mathjs requesting `@babel/runtime` dependency. 
+  Regression introduced in `v9.3.1`.
+
+
 # 2021-04-10, version 9.3.1
 
 - Fix #2133: strongly improved the performance of `isPrime`, see #2139. 
