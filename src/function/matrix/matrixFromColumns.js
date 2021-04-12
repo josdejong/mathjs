@@ -84,7 +84,7 @@ export const createMatrixFromColumns = /* #__PURE__ */ factory(name, dependencie
 
       // push a value to each row
       let i = 0
-      col.forEach( value => data[i++].push(value) )
+      col.forEach(value => data[i++].push(value))
     }
 
     return matrix(data)

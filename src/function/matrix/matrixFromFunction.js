@@ -52,7 +52,7 @@ export const createMatrixFromFunction = /* #__PURE__ */ factory(name, dependenci
     }
 
     m.resize(size)
-    m.forEach(function(_, index) {
+    m.forEach(function (_, index) {
       const val = fn(index)
       if (isZero(val)) return
       m.set(index, val)

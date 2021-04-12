@@ -9,12 +9,12 @@ describe('matrixFrom...', function () {
     let expected, actual
 
     // an antisymmetric matrix
-    expected = matrix([[0,-1,-2],[1,0,-1],[2,1,0]])
-    actual = math.matrixFromFunction([3,3], i => i[0] - i[1])
+    expected = matrix([[0, -1, -2], [1, 0, -1], [2, 1, 0]])
+    actual = math.matrixFromFunction([3, 3], i => i[0] - i[1])
     assert.deepStrictEqual(actual, expected)
 
     // a sparse subdiagonal matrix
-    expected = matrix([[0,0,0,0,0],[4,0,0,0,0],[0,4,0,0,0],[0,0,4,0,0],[0,0,0,4,0]], 'sparse')
+    expected = matrix([[0, 0, 0, 0, 0], [4, 0, 0, 0, 0], [0, 4, 0, 0, 0], [0, 0, 4, 0, 0], [0, 0, 0, 4, 0]], 'sparse')
     actual = math.matrixFromFunction([5, 5], 'sparse', i => i[0] - i[1] === 1 ? 4 : 0)
     assert.deepStrictEqual(actual, expected)
 

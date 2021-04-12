@@ -601,7 +601,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     const result = []
 
     const s = this.size()
-    if (s.length !== 2 ) {
+    if (s.length !== 2) {
       throw new TypeError('Rows can only be returned for a 2D matrix.')
     }
 
@@ -621,7 +621,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     const result = []
 
     const s = this.size()
-    if (s.length !== 2 ) {
+    if (s.length !== 2) {
       throw new TypeError('Rows can only be returned for a 2D matrix.')
     }
 
