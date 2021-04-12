@@ -35,7 +35,7 @@
     "typed-function": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.13.14",
+    "@babel/core": "7.13.15",
     "@babel/plugin-transform-object-assign": "7.12.13",
     "@babel/preset-env": "7.13.12",
     "@babel/register": "7.13.14",
