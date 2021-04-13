@@ -53,7 +53,7 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
    * @return {number | Array}          Returns a single random value from array when number is 1 or undefined.
    *                                   Returns an array with the configured number of elements when number is > 1.
    */
-  return typed({
+  return typed(name, {
     'Array | Matrix': function (possibles) {
       return _pickRandom(possibles, {})
     },
