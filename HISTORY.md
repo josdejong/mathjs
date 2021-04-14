@@ -1,5 +1,10 @@
 # History
 
+# not yet published, version 9.3.3
+
+- Fix #2174: function `pickRandom` having no name. Thanks @HK-SHAO.
+
+
 # 2021-04-12, version 9.3.2
 
 - Fix #2169: mathjs requesting `@babel/runtime` dependency. 
