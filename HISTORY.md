@@ -1,7 +1,8 @@
 # History
 
-# not yet published, version 9.3.3
+# not yet published, version 9.4.0
 
+- Extend `eigs` to support general complex matrices, see #1741. Thanks @m93a.
 - Fix #2174: function `pickRandom` having no name. Thanks @HK-SHAO.
 
 
