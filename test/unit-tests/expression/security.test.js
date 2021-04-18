@@ -104,7 +104,7 @@ describe('security', function () {
     assert.throws(function () {
       const math2 = math.create()
       math2.evaluate('import({matrix:cos.constructor},{override:1});x=["console.log(\'hacked...\')"];x()')
-    }, /Error: No access to property "constructor"/)
+    }, /Error: Undefined function import/)
   })
 
   it('should not allow calling Function via index retrieval', function () {
@@ -297,13 +297,13 @@ describe('security', function () {
       math.evaluate('f=chain("a(){return evaluate;};function b").typed({"":f()=0}).done();' +
           'g=f();' +
           "g(\"console.log('hacked...')\")")
-    }, /(is not a function)|(Object expected)/)
+    }, /Error: Undefined function chain/)
   })
 
   it('should not allow using method chain (2)', function () {
     assert.throws(function () {
       math.evaluate("evilMath=chain().create().done();evilMath.import({\"_compile\":f(a,b,c)=\"evaluate\",\"isNode\":f()=true}); parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().evaluate()(\"console.log('hacked...')\")")
-    }, /(Cannot read property 'apply' of undefined)|(undefined has no properties)|(undefined is not an object)|(Unable to get property 'apply' of undefined or null reference)/)
+    }, /Error: Undefined function chain/)
   })
 
   it('should not allow using method Chain', function () {

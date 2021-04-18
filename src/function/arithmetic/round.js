@@ -151,7 +151,7 @@ const roundNumberSignatures = {
 
   'number, number': function (x, n) {
     if (!isInteger(n)) { throw new TypeError(NO_INT) }
-    if (n < 0 || n > 15) { throw new Error('Number of decimals in function round must be in te range of 0-15') }
+    if (n < 0 || n > 15) { throw new Error('Number of decimals in function round must be in the range of 0-15') }
 
     return roundNumber(x, n)
   }

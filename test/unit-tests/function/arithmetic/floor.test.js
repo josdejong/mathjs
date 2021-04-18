@@ -209,8 +209,8 @@ describe('floor', function () {
 
   it('should throw an error if requested number of decimals is incorrect', function () {
     assert.throws(function () { floor(2.5, 1.5) }, TypeError, 'Number of decimals in function round must be an integer')
-    assert.throws(function () { floor(2.5, -2) }, Error, ' Number of decimals in function round must be in te range of 0-15')
-    assert.throws(function () { floor(2.5, Infinity) }, Error, ' Number of decimals in function round must be in te range of 0-15')
+    assert.throws(function () { floor(2.5, -2) }, Error, ' Number of decimals in function round must be in the range of 0-15')
+    assert.throws(function () { floor(2.5, Infinity) }, Error, ' Number of decimals in function round must be in the range of 0-15')
   })
 
   it('should LaTeX floor', function () {

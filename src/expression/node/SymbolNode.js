@@ -80,7 +80,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
           ? getSafeProperty(scope, name)
           : isUnit
             ? new Unit(null, name)
-            : undef(name)
+            : SymbolNode.onUndefinedSymbol(name)
       }
     }
   }
@@ -107,7 +107,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
    * Throws an error 'Undefined symbol {name}'
    * @param {string} name
    */
-  function undef (name) {
+  SymbolNode.onUndefinedSymbol = function (name) {
     throw new Error('Undefined symbol ' + name)
   }
 

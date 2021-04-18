@@ -53,6 +53,12 @@ describe('FunctionNode', function () {
     assert.strictEqual(n3.name, '')
   })
 
+  it('should throw an error when evaluating an undefined function', function () {
+    const scope = {}
+    const s = new FunctionNode('foo', [])
+    assert.throws(function () { s.compile().evaluate(scope) }, /Error: Undefined function foo/)
+  })
+
   it('should compile a FunctionNode', function () {
     const s = new SymbolNode('sqrt')
     const c = new ConstantNode(4)
