@@ -1,5 +1,5 @@
 import { escape } from '../../utils/string.js'
-import { getSafeProperty, hasSafeProperty } from '../../utils/customs.js'
+import { getSafeProperty, getScopeProperty, hasScopeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 import { toSymbol } from '../../utils/latex.js'
 
@@ -68,16 +68,16 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
       }
     } else if (name in math) {
       return function (scope, args, context) {
-        return hasSafeProperty(scope, name)
-          ? getSafeProperty(scope, name)
+        return hasScopeProperty(scope, name)
+          ? getScopeProperty(scope, name)
           : getSafeProperty(math, name)
       }
     } else {
       const isUnit = isValuelessUnit(name)
 
       return function (scope, args, context) {
-        return hasSafeProperty(scope, name)
-          ? getSafeProperty(scope, name)
+        return hasScopeProperty(scope, name)
+          ? getScopeProperty(scope, name)
           : isUnit
             ? new Unit(null, name)
             : SymbolNode.onUndefinedSymbol(name)

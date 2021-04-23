@@ -2,7 +2,7 @@ import { isNode } from '../../utils/is.js'
 
 import { keywords } from '../keywords.js'
 import { deepStrictEqual } from '../../utils/object.js'
-import { getSafeProperties } from '../../utils/customs.js'
+import { getScopeProperties } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'Node'
@@ -370,7 +370,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    * @param {Object} scope
    */
   function _validateScope (scope) {
-    for (const symbol of getSafeProperties(scope)) {
+    for (const symbol of getScopeProperties(scope)) {
       if (symbol in keywords) {
         throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword')
       }

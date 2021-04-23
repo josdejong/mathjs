@@ -5,7 +5,7 @@ import { escape } from '../../utils/string.js'
 import { forEach, join } from '../../utils/array.js'
 import { toSymbol } from '../../utils/latex.js'
 import { getPrecedence } from '../operators.js'
-import { setSafeProperty } from '../../utils/customs.js'
+import { setScopeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'FunctionAssignmentNode'
@@ -94,7 +94,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       const fn = typed(name, signatures)
       fn.syntax = syntax
 
-      setSafeProperty(scope, name, fn)
+      setScopeProperty(scope, name, fn)
 
       return fn
     }

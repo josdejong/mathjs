@@ -1,6 +1,6 @@
 import { factory } from '../utils/factory.js'
 import { extend } from '../utils/object.js'
-import { getSafeProperties, getSafeProperty, hasSafeProperty, isMapLike, setSafeProperty } from '../utils/customs.js'
+import { hasScopeProperty, getScopeProperty, setScopeProperty, getScopeProperties, isMapLike } from '../utils/customs.js'
 
 const name = 'Parser'
 const dependencies = ['parse']
@@ -89,8 +89,8 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   Parser.prototype.get = function (name) {
     // TODO: validate arguments
-    if (hasSafeProperty(this.scope, name)) {
-      return getSafeProperty(this.scope, name)
+    if (hasScopeProperty(this.scope, name)) {
+      return getScopeProperty(this.scope, name)
     } else {
       return undefined
     }
@@ -116,7 +116,7 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   Parser.prototype.set = function (name, value) {
     // TODO: validate arguments
-    return setSafeProperty(this.scope, name, value)
+    return setScopeProperty(this.scope, name, value)
   }
 
   /**
@@ -139,7 +139,7 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
     if (typeof this.scope.clear === 'function') {
       this.scope.clear()
     } else {
-      getSafeProperties(this.scope).forEach(name => this.remove(name))
+      getScopeProperties(this.scope).forEach(name => this.remove(name))
     }
   }
 

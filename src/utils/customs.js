@@ -168,6 +168,22 @@ function hasSafeProperty (object, prop) {
   }
 }
 
+function setScopeProperty (object, prop, value) {
+  return setSafeProperty(object, prop, value)
+}
+
+function getScopeProperty (object, prop) {
+  return getSafeProperty(object, prop)
+}
+
+function getScopeProperties (object) {
+  return getSafeProperties(object)
+}
+
+function hasScopeProperty (object, prop) {
+  return hasSafeProperty(object, prop)
+}
+
 const safeNativeProperties = {
   length: true,
   name: true
@@ -184,6 +200,12 @@ export { setSafeProperty }
 export { isSafeProperty }
 export { hasSafeProperty }
 export { getSafeProperties }
+
+export { getScopeProperty }
+export { setScopeProperty }
+export { hasScopeProperty }
+export { getScopeProperties }
+
 export { validateSafeMethod }
 export { isSafeMethod }
 export { isPlainObject }
