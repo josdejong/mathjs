@@ -169,19 +169,32 @@ function hasSafeProperty (object, prop) {
 }
 
 function setScopeProperty (object, prop, value) {
-  return setSafeProperty(object, prop, value)
+  if (!isMapLike(object)) {
+    throw new Error('Scope is not map like')
+  }
+  object.set(prop, value)
+  return value
 }
 
 function getScopeProperty (object, prop) {
-  return getSafeProperty(object, prop)
+  if (!isMapLike(object)) {
+    throw new Error('Scope is not map like')
+  }
+  return object.get(prop)
 }
 
 function getScopeProperties (object) {
-  return getSafeProperties(object)
+  if (!isMapLike(object)) {
+    throw new Error('Scope is not map like')
+  }
+  return object.keys()
 }
 
 function hasScopeProperty (object, prop) {
-  return hasSafeProperty(object, prop)
+  if (!isMapLike(object)) {
+    throw new Error('Scope is not map like')
+  }
+  return object.has(prop)
 }
 
 const safeNativeProperties = {

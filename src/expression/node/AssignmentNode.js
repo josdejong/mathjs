@@ -114,7 +114,9 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       }
 
       return function evalAssignmentNode (scope, args, context) {
-        return setScopeProperty(scope, name, evalValue(scope, args, context))
+        const value = evalValue(scope, args, context)
+        setScopeProperty(scope, name, value)
+        return value
       }
     } else if (this.index.isObjectProperty()) {
       // apply an object property for example `a.b=2`
@@ -123,7 +125,8 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       return function evalAssignmentNode (scope, args, context) {
         const object = evalObject(scope, args, context)
         const value = evalValue(scope, args, context)
-        return setSafeProperty(object, prop, value)
+        setSafeProperty(object, prop, value)
+        return value
       }
     } else if (isSymbolNode(this.object)) {
       // update a matrix subset, for example `a[2]=3`
