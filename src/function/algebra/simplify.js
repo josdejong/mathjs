@@ -5,6 +5,7 @@ import { createSimplifyCore } from './simplify/simplifyCore.js'
 import { createSimplifyConstant } from './simplify/simplifyConstant.js'
 import { createResolve } from './simplify/resolve.js'
 import { hasOwnProperty } from '../../utils/object.js'
+import { createEmptyScope, createScope } from '../../utils/scope.js'
 
 const name = 'simplify'
 const dependencies = [
@@ -157,50 +158,54 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    */
   const simplify = typed('simplify', {
     string: function (expr) {
-      return this(parse(expr), this.rules, {}, {})
+      return this(parse(expr), this.rules, createEmptyScope(), {})
     },
 
-    'string, Object | MapLike': function (expr, scope) {
+    'string, MapLike | Object': function (expr, scope) {
       return this(parse(expr), this.rules, scope, {})
     },
 
-    'string, Object | MapLike, Object': function (expr, scope, options) {
+    'string, MapLike | Object, Object': function (expr, scope, options) {
       return this(parse(expr), this.rules, scope, options)
     },
 
     'string, Array': function (expr, rules) {
-      return this(parse(expr), rules, {}, {})
+      return this(parse(expr), rules, createEmptyScope(), {})
     },
 
-    'string, Array, Object | MapLike': function (expr, rules, scope) {
+    'string, Array, MapLike | Object': function (expr, rules, scope) {
       return this(parse(expr), rules, scope, {})
     },
 
-    'string, Array, Object | MapLike, Object': function (expr, rules, scope, options) {
+    'string, Array, MapLike | Object, Object': function (expr, rules, scope, options) {
       return this(parse(expr), rules, scope, options)
     },
 
-    'Node, Object | MapLike': function (expr, scope) {
+    'Node, MapLike | Object': function (expr, scope) {
       return this(expr, this.rules, scope, {})
     },
 
-    'Node, Object | MapLike, Object': function (expr, scope, options) {
+    'Node, MapLike | Object, Object': function (expr, scope, options) {
       return this(expr, this.rules, scope, options)
     },
 
     Node: function (expr) {
-      return this(expr, this.rules, {}, {})
+      return this(expr, this.rules, createEmptyScope(), {})
     },
 
     'Node, Array': function (expr, rules) {
-      return this(expr, rules, {}, {})
+      return this(expr, rules, createEmptyScope(), {})
     },
 
-    'Node, Array, Object | MapLike': function (expr, rules, scope) {
+    'Node, Array, MapLike | Object': function (expr, rules, scope) {
       return this(expr, rules, scope, {})
     },
 
-    'Node, Array, Object | MapLike, Object': function (expr, rules, scope, options) {
+    'Node, Array, Object, Object': function (expr, rules, scope, options) {
+      return this(expr, rules, createScope(scope), options)
+    },
+
+    'Node, Array, MapLike, Object': function (expr, rules, scope, options) {
       rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)
