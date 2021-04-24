@@ -1,6 +1,6 @@
 // test FunctionAssignmentNode
 import assert from 'assert'
-
+import { toObject } from '../../../../src/utils/scope.js'
 import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
@@ -137,7 +137,7 @@ describe('FunctionAssignmentNode', function () {
 
   it('should pass function arguments in scope to functions with rawArgs', function () {
     const outputScope = function (args, math, scope) {
-      return scope
+      return toObject(scope)
     }
     outputScope.rawArgs = true
     math.import({ outputScope: outputScope }, { override: true })
@@ -154,7 +154,7 @@ describe('FunctionAssignmentNode', function () {
 
   it('should pass function arguments in scope to functions with rawArgs returned by another function', function () {
     const outputScope = function (args, math, scope) {
-      return scope
+      return toObject(scope)
     }
 
     outputScope.rawArgs = true
@@ -182,7 +182,7 @@ describe('FunctionAssignmentNode', function () {
       return 'should not occur'
     }
     outputScope.transform = function (args, math, scope) {
-      return scope
+      return toObject(scope)
     }
     outputScope.transform.rawArgs = true
     math.import({ outputScope: outputScope }, { override: true })

@@ -27,7 +27,7 @@ export function compileInlineExpression (expression, math, scope) {
   const subScope = createSubScope(scope)
   const eq = expression.compile()
   return function inlineExpression (x) {
-    subScope[name] = x
+    setScopeProperty(subScope, name, x)
     return eq.evaluate(subScope)
   }
 }

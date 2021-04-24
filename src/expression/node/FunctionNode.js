@@ -78,10 +78,6 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     // compile arguments
     const evalArgs = this.args.map((arg) => arg._compile(math, argNames))
 
-    const childScope = (scope, args) => {
-      return Object.assign({}, scope, args)
-    }
-
     if (isSymbolNode(this.fn)) {
       // we can statically determine whether the function has an rawArgs property
       const name = this.fn.name

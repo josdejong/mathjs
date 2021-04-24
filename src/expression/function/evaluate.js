@@ -1,6 +1,7 @@
 import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 import { isMapLike } from '../../utils/customs.js'
+import { createEmptyScope, createScope } from '../../utils/scope.js'
 
 const name = 'evaluate'
 const dependencies = ['typed', 'parse']
@@ -48,26 +49,37 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
    */
   return typed(name, {
     string: function (expr) {
-      const scope = new Map()
+      const scope = createEmptyScope()
       return parse(expr).compile().evaluate(scope)
     },
 
-    'string, Object | MapLike': function (expr, scope) {
-      deprecatePlainObjectScope(scope)
+    'string, MapLike': function (expr, scope) {
       return parse(expr).compile().evaluate(scope)
+    },
+
+    'string, Object': function (expr, scope) {
+      deprecatePlainObjectScope(scope)
+      return parse(expr).compile().evaluate(createScope(scope))
     },
 
     'Array | Matrix': function (expr) {
-      const scope = new Map()
+      const scope = createEmptyScope()
       return deepMap(expr, function (entry) {
         return parse(entry).compile().evaluate(scope)
       })
     },
 
-    'Array | Matrix, Object | MapLike': function (expr, scope) {
-      deprecatePlainObjectScope(scope)
+    'Array | Matrix, MapLike': function (expr, scope) {
       return deepMap(expr, function (entry) {
         return parse(entry).compile().evaluate(scope)
+      })
+    },
+
+    'Array | Matrix, Object': function (expr, scope) {
+      deprecatePlainObjectScope(scope)
+      const mapScope = createScope(scope)
+      return deepMap(expr, function (entry) {
+        return parse(entry).compile().evaluate(mapScope)
       })
     }
   })

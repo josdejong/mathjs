@@ -4,6 +4,7 @@ import { keywords } from '../keywords.js'
 import { deepStrictEqual } from '../../utils/object.js'
 import { getScopeProperties } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
+import { createScope } from '../../utils/scope.js'
 
 const name = 'Node'
 const dependencies = ['mathWithTransform']
@@ -47,7 +48,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
     const context = null
 
     function evaluate (scope) {
-      const s = scope || {}
+      const s = createScope(scope || {})
       _validateScope(s)
       return expr(s, args, context)
     }
