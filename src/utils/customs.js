@@ -9,10 +9,6 @@ import { hasOwnProperty } from './object.js'
  * @return {*} Returns the property value when safe
  */
 function getSafeProperty (object, prop) {
-  if (isMapLike(object)) {
-    return object.get(prop)
-  }
-
   // only allow getting safe properties of a plain object
   if (isPlainObject(object) && isSafeProperty(object, prop)) {
     return object[prop]
@@ -36,13 +32,6 @@ function getSafeProperty (object, prop) {
  */
 // TODO: merge this function into access.js?
 function setSafeProperty (object, prop, value) {
-  // The object looks like a Map. It maybe a Map, or it's an object with methods that
-  // will take responsibility for checking of keys.
-  if (isMapLike(object)) {
-    object.set(prop, value)
-    return value
-  }
-
   // only allow setting safe properties of a plain object
   if (isPlainObject(object) && isSafeProperty(object, prop)) {
     object[prop] = value
@@ -50,6 +39,14 @@ function setSafeProperty (object, prop, value) {
   }
 
   throw new Error('No access to property "' + prop + '"')
+}
+
+function getSafeProperties (object) {
+  return Object.keys(object).filter((prop) => hasOwnProperty(object, prop))
+}
+
+function hasSafeProperty (object, prop) {
+  return prop in object
 }
 
 /**
@@ -150,22 +147,6 @@ function isMapLike (object) {
   // The duck typing method needs to cover enough methods to not be confused with DenseMatrix.
   return object instanceof Map ||
     ['set', 'get', 'keys', 'has'].reduce((soFarSoGood, methodName) => soFarSoGood && typeof object[methodName] === 'function', true)
-}
-
-function getSafeProperties (object) {
-  if (isMapLike(object)) {
-    return object.keys()
-  } else {
-    return Object.keys(object).filter((prop) => hasOwnProperty(object, prop))
-  }
-}
-
-function hasSafeProperty (object, prop) {
-  if (isMapLike(object)) {
-    return object.has(prop)
-  } else {
-    return prop in object
-  }
 }
 
 function setScopeProperty (object, prop, value) {
