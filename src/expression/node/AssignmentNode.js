@@ -1,6 +1,6 @@
 import { isAccessorNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is.js'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs.js'
-import { setScopeProperty } from '../../utils/scope.js'
+import { setScopeProperty } from '../../utils/map.js'
 import { factory } from '../../utils/factory.js'
 import { accessFactory } from './utils/access.js'
 import { assignFactory } from './utils/assign.js'

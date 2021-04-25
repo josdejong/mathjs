@@ -5,7 +5,7 @@ import { createSimplifyCore } from './simplify/simplifyCore.js'
 import { createSimplifyConstant } from './simplify/simplifyConstant.js'
 import { createResolve } from './simplify/resolve.js'
 import { hasOwnProperty } from '../../utils/object.js'
-import { createEmptyScope, createScope } from '../../utils/scope.js'
+import { createEmptyScope, createScope } from '../../utils/map.js'
 
 const name = 'simplify'
 const dependencies = [

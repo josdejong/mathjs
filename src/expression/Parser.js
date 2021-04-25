@@ -1,7 +1,7 @@
 import { factory } from '../utils/factory.js'
 import { extend } from '../utils/object.js'
 import { hasSafeProperty, getSafeProperty, setSafeProperty, getSafeProperties } from '../utils/customs.js'
-import { isMap } from '../utils/scope.js'
+import { isMap } from '../utils/map.js'
 
 const name = 'Parser'
 const dependencies = ['parse']

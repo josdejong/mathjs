@@ -1,7 +1,7 @@
 import assert from 'assert'
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
-import { createScope } from '../../../../src/utils/scope.js'
+import { createScope } from '../../../../src/utils/map.js'
 
 const Complex = math.Complex
 const Unit = math.Unit

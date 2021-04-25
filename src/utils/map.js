@@ -14,7 +14,8 @@ export class ObjectScopeWrapper {
   }
 
   set (key, value) {
-    return setSafeProperty(this.objectScope, key, value)
+    setSafeProperty(this.objectScope, key, value)
+    return this
   }
 
   has (key) {
@@ -50,7 +51,7 @@ export function toObject (scope) {
   return object
 }
 
-export function assign (scope, ...objects) {
+function assign (scope, ...objects) {
   for (const args of objects) {
     if (!args) {
       continue

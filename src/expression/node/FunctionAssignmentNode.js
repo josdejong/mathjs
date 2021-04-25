@@ -5,7 +5,7 @@ import { escape } from '../../utils/string.js'
 import { forEach, join } from '../../utils/array.js'
 import { toSymbol } from '../../utils/latex.js'
 import { getPrecedence } from '../operators.js'
-import { setScopeProperty } from '../../utils/scope.js'
+import { setScopeProperty } from '../../utils/map.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'FunctionAssignmentNode'

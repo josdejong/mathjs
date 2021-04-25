@@ -1,6 +1,6 @@
 // test FunctionAssignmentNode
 import assert from 'assert'
-import { toObject } from '../../../../src/utils/scope.js'
+import { toObject } from '../../../../src/utils/map.js'
 import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode

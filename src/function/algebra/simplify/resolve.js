@@ -1,4 +1,4 @@
-import { createScope, getScopeProperty, isMap } from '../../../utils/scope.js'
+import { createScope, getScopeProperty, isMap } from '../../../utils/map.js'
 import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
 

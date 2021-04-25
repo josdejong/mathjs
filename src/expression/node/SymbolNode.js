@@ -1,6 +1,6 @@
 import { escape } from '../../utils/string.js'
 import { getSafeProperty } from '../../utils/customs.js'
-import { getScopeProperty, hasScopeProperty } from '../../utils/scope.js'
+import { getScopeProperty, hasScopeProperty } from '../../utils/map.js'
 import { factory } from '../../utils/factory.js'
 import { toSymbol } from '../../utils/latex.js'
 

@@ -1,7 +1,7 @@
 // test transforms
 import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
-import { createScope } from '../../../src/utils/scope.js'
+import { createScope } from '../../../src/utils/map.js'
 
 const parse = math.parse
 
