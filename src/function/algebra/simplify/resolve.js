@@ -1,7 +1,6 @@
-import { getScopeProperty, isMap } from '../../../utils/customs.js'
+import { createScope, getScopeProperty, isMap } from '../../../utils/scope.js'
 import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
-import { createScope } from '../../../utils/scope.js'
 
 const name = 'resolve'
 const dependencies = [

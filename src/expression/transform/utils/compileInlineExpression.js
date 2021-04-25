@@ -1,6 +1,5 @@
 import { isSymbolNode } from '../../../utils/is.js'
-import { hasScopeProperty } from '../../../utils/customs.js'
-import { createSubScope } from '../../../utils/scope.js'
+import { createSubScope, hasScopeProperty, setScopeProperty } from '../../../utils/scope.js'
 
 /**
  * Compile an inline expression like "x > 0"

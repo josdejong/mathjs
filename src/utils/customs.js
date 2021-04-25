@@ -142,42 +142,6 @@ function isPlainObject (object) {
   return typeof object === 'object' && object && object.constructor === Object
 }
 
-function isMap (object) {
-  // We can use the fast instanceof, or a slower duck typing check.
-  // The duck typing method needs to cover enough methods to not be confused with DenseMatrix.
-  return object instanceof Map ||
-    ['set', 'get', 'keys', 'has'].reduce((soFarSoGood, methodName) => soFarSoGood && typeof object[methodName] === 'function', true)
-}
-
-function setScopeProperty (object, prop, value) {
-  if (!isMap(object)) {
-    throw new Error('Scope is not map like')
-  }
-  object.set(prop, value)
-  return value
-}
-
-function getScopeProperty (object, prop) {
-  if (!isMap(object)) {
-    throw new Error('Scope is not map like')
-  }
-  return object.get(prop)
-}
-
-function getScopeProperties (object) {
-  if (!isMap(object)) {
-    throw new Error('Scope is not map like')
-  }
-  return object.keys()
-}
-
-function hasScopeProperty (object, prop) {
-  if (!isMap(object)) {
-    throw new Error('Scope is not map like')
-  }
-  return object.has(prop)
-}
-
 const safeNativeProperties = {
   length: true,
   name: true
@@ -194,13 +158,6 @@ export { setSafeProperty }
 export { isSafeProperty }
 export { hasSafeProperty }
 export { getSafeProperties }
-
-export { getScopeProperty }
-export { setScopeProperty }
-export { hasScopeProperty }
-export { getScopeProperties }
-
 export { validateSafeMethod }
 export { isSafeMethod }
 export { isPlainObject }
-export { isMap }

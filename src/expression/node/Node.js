@@ -2,7 +2,7 @@ import { isNode } from '../../utils/is.js'
 
 import { keywords } from '../keywords.js'
 import { deepStrictEqual } from '../../utils/object.js'
-import { hasScopeProperty } from '../../utils/customs.js'
+import { hasScopeProperty } from '../../utils/scope.js'
 import { factory } from '../../utils/factory.js'
 import { createScope } from '../../utils/scope.js'
 

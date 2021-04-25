@@ -1,4 +1,4 @@
-import { setSafeProperty, hasSafeProperty, getSafeProperty, isMap } from './customs.js'
+import { setSafeProperty, hasSafeProperty, getSafeProperty } from './customs.js'
 
 export class ObjectScopeWrapper {
   constructor (objectScope) {
@@ -74,4 +74,40 @@ export function createSubScope (parentScope, ...args) {
   }
 
   return assign(createEmptyScope(), parentScope, ...args)
+}
+
+export function isMap (object) {
+  // We can use the fast instanceof, or a slower duck typing check.
+  // The duck typing method needs to cover enough methods to not be confused with DenseMatrix.
+  return object instanceof Map ||
+    ['set', 'get', 'keys', 'has'].reduce((soFarSoGood, methodName) => soFarSoGood && typeof object[methodName] === 'function', true)
+}
+
+export function setScopeProperty (object, prop, value) {
+  if (!isMap(object)) {
+    throw new Error('Scope is not map like')
+  }
+  object.set(prop, value)
+  return value
+}
+
+export function getScopeProperty (object, prop) {
+  if (!isMap(object)) {
+    throw new Error('Scope is not map like')
+  }
+  return object.get(prop)
+}
+
+export function getScopeProperties (object) {
+  if (!isMap(object)) {
+    throw new Error('Scope is not map like')
+  }
+  return object.keys()
+}
+
+export function hasScopeProperty (object, prop) {
+  if (!isMap(object)) {
+    throw new Error('Scope is not map like')
+  }
+  return object.has(prop)
 }

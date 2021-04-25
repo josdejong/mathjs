@@ -1,7 +1,6 @@
 import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
-import { isMap } from '../../utils/customs.js'
-import { createEmptyScope, createScope } from '../../utils/scope.js'
+import { createEmptyScope, createScope, isMap } from '../../utils/scope.js'
 
 const name = 'evaluate'
 const dependencies = ['typed', 'parse']

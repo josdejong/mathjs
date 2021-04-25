@@ -78,7 +78,7 @@ import {
 import typedFunction from 'typed-function'
 import { digits } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
-import { isMap } from '../../utils/customs.js'
+import { isMap } from '../../utils/scope.js'
 
 // returns a new instance of typed-function
 let _createTyped = function () {
