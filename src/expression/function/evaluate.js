@@ -5,14 +5,6 @@ import { createEmptyScope, createScope, isMap } from '../../utils/scope.js'
 const name = 'evaluate'
 const dependencies = ['typed', 'parse']
 
-function deprecatePlainObjectScope (scope) {
-  // Using bare objects as scopes is a source of potential security vulnerabilities.
-  // https://github.com/josdejong/mathjs/issues/2165
-  if (!isMap(scope)) {
-    console.warn('⚠️ Using bare objects as scopes is deprecated and may be removed in future versions. Use Map instead. ⚠️')
-  }
-}
-
 export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typed, parse }) => {
   /**
    * Evaluate an expression.
@@ -57,7 +49,6 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'string, Object': function (expr, scope) {
-      deprecatePlainObjectScope(scope)
       return parse(expr).compile().evaluate(createScope(scope))
     },
 
@@ -75,7 +66,6 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'Array | Matrix, Object': function (expr, scope) {
-      deprecatePlainObjectScope(scope)
       const mapScope = createScope(scope)
       return deepMap(expr, function (entry) {
         return parse(entry).compile().evaluate(mapScope)
