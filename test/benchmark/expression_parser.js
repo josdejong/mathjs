@@ -6,7 +6,7 @@ const assert = require('assert')
 const Benchmark = require('benchmark')
 const padRight = require('pad-right')
 const math = require('../..')
-const { hasScopeProperty, getScopeProperty, getSafeProperty } = require('../../lib/cjs/utils/customs')
+const { hasMapProperty, getMapProperty, getSafeProperty } = require('../../lib/cjs/utils/customs')
 
 // expose on window when using bundled in a browser
 if (typeof window !== 'undefined') {
@@ -25,7 +25,7 @@ const sin = getSafeProperty(math, 'sin')
 const pi = getSafeProperty(math, 'pi')
 const compiledPlainJs = {
   evaluate: function (scope) {
-    return 2 + 3 * (hasScopeProperty(scope, 'sin') ? getScopeProperty(scope, 'sin') : sin)((hasScopeProperty(scope, 'pi') ? getScopeProperty(scope, 'pi') : pi) / 4) - 4 * scope.x
+    return 2 + 3 * (hasMapProperty(scope, 'sin') ? getMapProperty(scope, 'sin') : sin)((hasMapProperty(scope, 'pi') ? getMapProperty(scope, 'pi') : pi) / 4) - 4 * scope.x
   }
 }
 

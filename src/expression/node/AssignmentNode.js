@@ -1,6 +1,6 @@
 import { isAccessorNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is.js'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs.js'
-import { setScopeProperty } from '../../utils/map.js'
+import { setMapProperty } from '../../utils/map.js'
 import { factory } from '../../utils/factory.js'
 import { accessFactory } from './utils/access.js'
 import { assignFactory } from './utils/assign.js'
@@ -116,7 +116,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
 
       return function evalAssignmentNode (scope, args, context) {
         const value = evalValue(scope, args, context)
-        setScopeProperty(scope, name, value)
+        setMapProperty(scope, name, value)
         return value
       }
     } else if (this.index.isObjectProperty()) {
@@ -135,7 +135,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
         const childObject = evalObject(scope, args, context)
         const value = evalValue(scope, args, context)
         const index = evalIndex(scope, args, childObject) // Important:  we pass childObject instead of context
-        setScopeProperty(scope, name, assign(childObject, index, value))
+        setMapProperty(scope, name, assign(childObject, index, value))
         return value
       }
     } else { // isAccessorNode(node.object) === true

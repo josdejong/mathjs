@@ -1,7 +1,7 @@
 import assert from 'assert'
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
-import { createScope } from '../../../../src/utils/map.js'
+import { createMap } from '../../../../src/utils/map.js'
 
 const Complex = math.Complex
 const Unit = math.Unit
@@ -69,7 +69,7 @@ describe('evaluate', function () {
   })
 
   it('should handle the given Map scope', function () {
-    const scope = createScope({
+    const scope = createMap({
       a: 3,
       b: 4
     })

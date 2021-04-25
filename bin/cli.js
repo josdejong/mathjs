@@ -48,7 +48,7 @@
 let scope = new Map()
 const fs = require('fs')
 const path = require('path')
-const { getScopeProperties, setScopeProperty, getScopeProperty } = require('../lib/cjs/utils/customs.js')
+const { getMapProperties, setMapProperty, getMapProperty } = require('../lib/cjs/utils/map.js')
 
 const PRECISION = 14 // decimals
 
@@ -96,7 +96,7 @@ function completer (text) {
     keyword = m[0]
 
     // scope variables
-    for (const def in getScopeProperties(scope)) {
+    for (const def in getMapProperties(scope)) {
       if (def.indexOf(keyword) === 0) {
         matches.push(def)
       }
@@ -230,17 +230,17 @@ function runStream (input, output, mode, parenthesis) {
                 if (math.isAssignmentNode(node)) {
                   const name = findSymbolName(node)
                   if (name !== null) {
-                    const value = getScopeProperty(scope, name)
-                    setScopeProperty(scope, 'ans', value)
+                    const value = getMapProperty(scope, name)
+                    setMapProperty(scope, 'ans', value)
                     console.log(name + ' = ' + format(value))
                   } else {
-                    setScopeProperty(scope, 'ans', res)
+                    setMapProperty(scope, 'ans', res)
                     console.log(format(res))
                   }
                 } else if (math.isHelp(res)) {
                   console.log(res.toString())
                 } else {
-                  setScopeProperty(scope, 'ans', res)
+                  setMapProperty(scope, 'ans', res)
                   console.log(format(res))
                 }
               }

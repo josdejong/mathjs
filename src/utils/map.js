@@ -23,11 +23,11 @@ export class ObjectScopeWrapper {
   }
 }
 
-export function createEmptyScope () {
+export function createEmptyMap () {
   return new Map()
 }
 
-export function createScope (objectOrScope) {
+export function createMap (objectOrScope) {
   if (!objectOrScope) {
     return new Map()
   }
@@ -74,7 +74,7 @@ export function createSubScope (parentScope, ...args) {
     return parentScope.createSubScope(...args)
   }
 
-  return assign(createEmptyScope(), parentScope, ...args)
+  return assign(createEmptyMap(), parentScope, ...args)
 }
 
 export function isMap (object) {
@@ -84,29 +84,28 @@ export function isMap (object) {
     ['set', 'get', 'keys', 'has'].reduce((soFarSoGood, methodName) => soFarSoGood && typeof object[methodName] === 'function', true)
 }
 
-export function setScopeProperty (object, prop, value) {
+export function setMapProperty (object, prop, value) {
   if (!isMap(object)) {
     throw new Error('Scope is not map like')
   }
-  object.set(prop, value)
-  return value
+  return object.set(prop, value)
 }
 
-export function getScopeProperty (object, prop) {
+export function getMapProperty (object, prop) {
   if (!isMap(object)) {
     throw new Error('Scope is not map like')
   }
   return object.get(prop)
 }
 
-export function getScopeProperties (object) {
+export function getMapProperties (object) {
   if (!isMap(object)) {
     throw new Error('Scope is not map like')
   }
   return object.keys()
 }
 
-export function hasScopeProperty (object, prop) {
+export function hasMapProperty (object, prop) {
   if (!isMap(object)) {
     throw new Error('Scope is not map like')
   }

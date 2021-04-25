@@ -5,7 +5,7 @@ import { createSimplifyCore } from './simplify/simplifyCore.js'
 import { createSimplifyConstant } from './simplify/simplifyConstant.js'
 import { createResolve } from './simplify/resolve.js'
 import { hasOwnProperty } from '../../utils/object.js'
-import { createEmptyScope, createScope } from '../../utils/map.js'
+import { createEmptyMap, createMap } from '../../utils/map.js'
 
 const name = 'simplify'
 const dependencies = [
@@ -158,7 +158,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    */
   const simplify = typed('simplify', {
     string: function (expr) {
-      return this(parse(expr), this.rules, createEmptyScope(), {})
+      return this(parse(expr), this.rules, createEmptyMap(), {})
     },
 
     'string, Map | Object': function (expr, scope) {
@@ -170,7 +170,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     },
 
     'string, Array': function (expr, rules) {
-      return this(parse(expr), rules, createEmptyScope(), {})
+      return this(parse(expr), rules, createEmptyMap(), {})
     },
 
     'string, Array, Map | Object': function (expr, rules, scope) {
@@ -190,11 +190,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     },
 
     Node: function (expr) {
-      return this(expr, this.rules, createEmptyScope(), {})
+      return this(expr, this.rules, createEmptyMap(), {})
     },
 
     'Node, Array': function (expr, rules) {
-      return this(expr, rules, createEmptyScope(), {})
+      return this(expr, rules, createEmptyMap(), {})
     },
 
     'Node, Array, Map | Object': function (expr, rules, scope) {
@@ -202,7 +202,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     },
 
     'Node, Array, Object, Object': function (expr, rules, scope, options) {
-      return this(expr, rules, createScope(scope), options)
+      return this(expr, rules, createMap(scope), options)
     },
 
     'Node, Array, Map, Object': function (expr, rules, scope, options) {

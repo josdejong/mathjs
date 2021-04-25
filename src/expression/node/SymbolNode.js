@@ -1,6 +1,6 @@
 import { escape } from '../../utils/string.js'
 import { getSafeProperty } from '../../utils/customs.js'
-import { getScopeProperty, hasScopeProperty } from '../../utils/map.js'
+import { getMapProperty, hasMapProperty } from '../../utils/map.js'
 import { factory } from '../../utils/factory.js'
 import { toSymbol } from '../../utils/latex.js'
 
@@ -69,16 +69,16 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
       }
     } else if (name in math) {
       return function (scope, args, context) {
-        return hasScopeProperty(scope, name)
-          ? getScopeProperty(scope, name)
+        return hasMapProperty(scope, name)
+          ? getMapProperty(scope, name)
           : getSafeProperty(math, name)
       }
     } else {
       const isUnit = isValuelessUnit(name)
 
       return function (scope, args, context) {
-        return hasScopeProperty(scope, name)
-          ? getScopeProperty(scope, name)
+        return hasMapProperty(scope, name)
+          ? getMapProperty(scope, name)
           : isUnit
             ? new Unit(null, name)
             : SymbolNode.onUndefinedSymbol(name)

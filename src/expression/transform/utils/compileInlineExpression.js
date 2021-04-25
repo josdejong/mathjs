@@ -1,5 +1,5 @@
 import { isSymbolNode } from '../../../utils/is.js'
-import { createSubScope, hasScopeProperty, setScopeProperty } from '../../../utils/map.js'
+import { createSubScope, hasMapProperty, setMapProperty } from '../../../utils/map.js'
 
 /**
  * Compile an inline expression like "x > 0"
@@ -14,7 +14,7 @@ export function compileInlineExpression (expression, math, scope) {
   const symbol = expression.filter(function (node) {
     return isSymbolNode(node) &&
         !(node.name in math) &&
-        !(hasScopeProperty(scope, node.name))
+        !(hasMapProperty(scope, node.name))
   })[0]
 
   if (!symbol) {
@@ -26,7 +26,7 @@ export function compileInlineExpression (expression, math, scope) {
   const subScope = createSubScope(scope)
   const eq = expression.compile()
   return function inlineExpression (x) {
-    setScopeProperty(subScope, name, x)
+    setMapProperty(subScope, name, x)
     return eq.evaluate(subScope)
   }
 }
