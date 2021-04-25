@@ -3,7 +3,8 @@
     ["@babel/preset-env"]
   ],
   "plugins": [
-    "@babel/plugin-transform-object-assign"
+    "@babel/plugin-transform-object-assign",
+    "@babel/transform-runtime"
   ],
   "ignore": [
     "lib/**/*.js"
