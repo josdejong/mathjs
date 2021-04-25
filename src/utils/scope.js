@@ -1,4 +1,4 @@
-import { setSafeProperty, hasSafeProperty, getSafeProperty, isMapLike } from './customs.js'
+import { setSafeProperty, hasSafeProperty, getSafeProperty, isMap } from './customs.js'
 
 export class ObjectScopeWrapper {
   constructor (objectScope) {
@@ -30,7 +30,7 @@ export function createScope (objectOrScope) {
   if (!objectOrScope) {
     return new Map()
   }
-  if (isMapLike(objectOrScope)) {
+  if (isMap(objectOrScope)) {
     return objectOrScope
   }
   if (typeof objectOrScope === 'object') {
@@ -55,7 +55,7 @@ export function assign (scope, ...objects) {
     if (!args) {
       continue
     }
-    if (isMapLike(args)) {
+    if (isMap(args)) {
       for (const key of args.keys()) {
         scope.set(key, args.get(key))
       }

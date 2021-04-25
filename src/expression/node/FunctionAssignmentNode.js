@@ -36,7 +36,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
     if (typeof name !== 'string') throw new TypeError('String expected for parameter "name"')
     if (!Array.isArray(params)) throw new TypeError('Array containing strings or objects expected for parameter "params"')
     if (!isNode(expr)) throw new TypeError('Node expected for parameter "expr"')
-    if (name in keywords) throw new Error('Illegal function name, "' + name + '" is a reserved keyword')
+    if (keywords.has(name)) throw new Error('Illegal function name, "' + name + '" is a reserved keyword')
 
     this.name = name
     this.params = params.map(function (param) {

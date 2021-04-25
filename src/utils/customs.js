@@ -142,7 +142,7 @@ function isPlainObject (object) {
   return typeof object === 'object' && object && object.constructor === Object
 }
 
-function isMapLike (object) {
+function isMap (object) {
   // We can use the fast instanceof, or a slower duck typing check.
   // The duck typing method needs to cover enough methods to not be confused with DenseMatrix.
   return object instanceof Map ||
@@ -150,7 +150,7 @@ function isMapLike (object) {
 }
 
 function setScopeProperty (object, prop, value) {
-  if (!isMapLike(object)) {
+  if (!isMap(object)) {
     throw new Error('Scope is not map like')
   }
   object.set(prop, value)
@@ -158,21 +158,21 @@ function setScopeProperty (object, prop, value) {
 }
 
 function getScopeProperty (object, prop) {
-  if (!isMapLike(object)) {
+  if (!isMap(object)) {
     throw new Error('Scope is not map like')
   }
   return object.get(prop)
 }
 
 function getScopeProperties (object) {
-  if (!isMapLike(object)) {
+  if (!isMap(object)) {
     throw new Error('Scope is not map like')
   }
   return object.keys()
 }
 
 function hasScopeProperty (object, prop) {
-  if (!isMapLike(object)) {
+  if (!isMap(object)) {
     throw new Error('Scope is not map like')
   }
   return object.has(prop)
@@ -203,4 +203,4 @@ export { getScopeProperties }
 export { validateSafeMethod }
 export { isSafeMethod }
 export { isPlainObject }
-export { isMapLike }
+export { isMap }

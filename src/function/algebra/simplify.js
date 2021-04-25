@@ -161,11 +161,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       return this(parse(expr), this.rules, createEmptyScope(), {})
     },
 
-    'string, MapLike | Object': function (expr, scope) {
+    'string, Map | Object': function (expr, scope) {
       return this(parse(expr), this.rules, scope, {})
     },
 
-    'string, MapLike | Object, Object': function (expr, scope, options) {
+    'string, Map | Object, Object': function (expr, scope, options) {
       return this(parse(expr), this.rules, scope, options)
     },
 
@@ -173,19 +173,19 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       return this(parse(expr), rules, createEmptyScope(), {})
     },
 
-    'string, Array, MapLike | Object': function (expr, rules, scope) {
+    'string, Array, Map | Object': function (expr, rules, scope) {
       return this(parse(expr), rules, scope, {})
     },
 
-    'string, Array, MapLike | Object, Object': function (expr, rules, scope, options) {
+    'string, Array, Map | Object, Object': function (expr, rules, scope, options) {
       return this(parse(expr), rules, scope, options)
     },
 
-    'Node, MapLike | Object': function (expr, scope) {
+    'Node, Map | Object': function (expr, scope) {
       return this(expr, this.rules, scope, {})
     },
 
-    'Node, MapLike | Object, Object': function (expr, scope, options) {
+    'Node, Map | Object, Object': function (expr, scope, options) {
       return this(expr, this.rules, scope, options)
     },
 
@@ -197,7 +197,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       return this(expr, rules, createEmptyScope(), {})
     },
 
-    'Node, Array, MapLike | Object': function (expr, rules, scope) {
+    'Node, Array, Map | Object': function (expr, rules, scope) {
       return this(expr, rules, scope, {})
     },
 
@@ -205,7 +205,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       return this(expr, rules, createScope(scope), options)
     },
 
-    'Node, Array, MapLike, Object': function (expr, rules, scope, options) {
+    'Node, Array, Map, Object': function (expr, rules, scope, options) {
       rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)

@@ -17,7 +17,7 @@ function withObjectScope () {
 }
 
 // Where safety is important, scope can also be a Map
-function withMapScope () {
+function withPlainMapScope () {
   const scope = new Map()
   scope.set('x', 1)
 
@@ -29,8 +29,8 @@ function withMapScope () {
 }
 
 // Where flexibility is important, scope can duck type appear to be a Map.
-function withMapLikeScope () {
-  const scope = new MapLikeScope()
+function withMapScope () {
+  const scope = new MapScope()
   scope.set('x', 1)
 
   math.evaluate('x', scope) // 1
@@ -41,7 +41,7 @@ function withMapLikeScope () {
 }
 
 // This is a minimal set of functions to look like a Map.
-class MapLikeScope {
+class MapScope {
   constructor () {
     this.localScope = new Map()
   }
@@ -66,5 +66,5 @@ class MapLikeScope {
 }
 
 withObjectScope()
+withPlainMapScope()
 withMapScope()
-withMapLikeScope()

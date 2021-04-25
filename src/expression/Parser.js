@@ -1,6 +1,6 @@
 import { factory } from '../utils/factory.js'
 import { extend } from '../utils/object.js'
-import { hasSafeProperty, getSafeProperty, setSafeProperty, getSafeProperties, isMapLike } from '../utils/customs.js'
+import { hasSafeProperty, getSafeProperty, setSafeProperty, getSafeProperties, isMap } from '../utils/customs.js'
 
 const name = 'Parser'
 const dependencies = ['parse']
@@ -102,7 +102,7 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @return {Object} values
    */
   Parser.prototype.getAll = function () {
-    if (isMapLike(this.scope)) {
+    if (isMap(this.scope)) {
       const newScope = new Map()
       this.scope.keys().forEach(key => newScope.set(key, this.scope.get(key)))
       return newScope

@@ -1,4 +1,4 @@
-import { getScopeProperty, isMapLike } from '../../../utils/customs.js'
+import { getScopeProperty, isMap } from '../../../utils/customs.js'
 import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
 import { createScope } from '../../../utils/scope.js'
@@ -38,7 +38,7 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
     if (!scope) {
       return node
     }
-    if (!isMapLike(scope)) {
+    if (!isMap(scope)) {
       scope = createScope(scope)
     }
     if (isSymbolNode(node)) {

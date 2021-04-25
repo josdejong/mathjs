@@ -1,6 +1,6 @@
 import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
-import { isMapLike } from '../../utils/customs.js'
+import { isMap } from '../../utils/customs.js'
 import { createEmptyScope, createScope } from '../../utils/scope.js'
 
 const name = 'evaluate'
@@ -9,7 +9,7 @@ const dependencies = ['typed', 'parse']
 function deprecatePlainObjectScope (scope) {
   // Using bare objects as scopes is a source of potential security vulnerabilities.
   // https://github.com/josdejong/mathjs/issues/2165
-  if (!isMapLike(scope)) {
+  if (!isMap(scope)) {
     console.warn('⚠️ Using bare objects as scopes is deprecated and may be removed in future versions. Use Map instead. ⚠️')
   }
 }
@@ -53,7 +53,7 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return parse(expr).compile().evaluate(scope)
     },
 
-    'string, MapLike': function (expr, scope) {
+    'string, Map': function (expr, scope) {
       return parse(expr).compile().evaluate(scope)
     },
 
@@ -69,7 +69,7 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
       })
     },
 
-    'Array | Matrix, MapLike': function (expr, scope) {
+    'Array | Matrix, Map': function (expr, scope) {
       return deepMap(expr, function (entry) {
         return parse(entry).compile().evaluate(scope)
       })
