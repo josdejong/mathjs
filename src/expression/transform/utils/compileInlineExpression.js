@@ -1,5 +1,6 @@
 import { isSymbolNode } from '../../../utils/is.js'
 import { hasScopeProperty } from '../../../utils/customs.js'
+import { createSubScope } from '../../../utils/scope.js'
 
 /**
  * Compile an inline expression like "x > 0"
@@ -23,7 +24,7 @@ export function compileInlineExpression (expression, math, scope) {
 
   // create a test function for this equation
   const name = symbol.name // variable name
-  const subScope = Object.create(scope)
+  const subScope = createSubScope(scope)
   const eq = expression.compile()
   return function inlineExpression (x) {
     subScope[name] = x

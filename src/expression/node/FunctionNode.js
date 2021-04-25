@@ -1,8 +1,8 @@
 import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is.js'
-
 import { escape } from '../../utils/string.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { getSafeProperty, getScopeProperty, hasScopeProperty, validateSafeMethod } from '../../utils/customs.js'
+import { createSubScope } from '../../utils/scope.js'
 import { factory } from '../../utils/factory.js'
 import { defaultTemplate, latexFunctions } from '../../utils/latex.js'
 
@@ -76,7 +76,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     // compile arguments
-    const compiledArgs = this.args.map((arg) => arg._compile(math, argNames))
+    const evalArgs = this.args.map((arg) => arg._compile(math, argNames))
 
     const childScope = (scope, args) => {
       return Object.assign({}, scope, args)
@@ -104,14 +104,14 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         const rawArgs = this.args
         return function evalFunctionNode (scope, args, context) {
           const fn = resolveFn(scope)
-          return fn(rawArgs, math, childScope(scope, args))
+          return fn(rawArgs, math, createSubScope(scope, args), scope)
         }
       } else {
         return function evalFunctionNode (scope, args, context) {
           const fn = resolveFn(scope)
           // "regular" evaluation
-          const evalArgs = compiledArgs.map((evalArg) => evalArg(scope, args, context))
-          return fn(...evalArgs)
+          const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
+          return fn(...values)
         }
       }
     } else if (
@@ -131,11 +131,11 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         const isRaw = object[prop] && object[prop].rawArgs
 
         if (isRaw) {
-          return object[prop](rawArgs, math, childScope(scope, args)) // "raw" evaluation
+          return object[prop](rawArgs, math, createSubScope(scope, args), scope) // "raw" evaluation
         } else {
           // "regular" evaluation
-          const evalArgs = compiledArgs.map((evalArg) => evalArg(scope, args, context))
-          return object[prop].apply(object, evalArgs)
+          const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
+          return object[prop].apply(object, values)
         }
       }
     } else {
@@ -149,11 +149,11 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         const isRaw = fn && fn.rawArgs
 
         if (isRaw) {
-          return fn(rawArgs, math, childScope(scope, args)) // "raw" evaluation
+          return fn(rawArgs, math, createSubScope(scope, args), scope) // "raw" evaluation
         } else {
           // "regular" evaluation
-          const evalArgs = compiledArgs.map((evalArg) => evalArg(scope, args, context))
-          return fn.apply(fn, evalArgs)
+          const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
+          return fn.apply(fn, values)
         }
       }
     }
