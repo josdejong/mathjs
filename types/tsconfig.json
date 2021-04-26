@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "mathjs": ["./index.d.ts"]
+    },
+    "typeRoots": [],
+    "types": [],
+    "lib": ["ES6", "DOM"],
+    "module": "commonjs",
+    "noEmit": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": false,
+    "strictFunctionTypes": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
