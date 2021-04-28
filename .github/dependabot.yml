@@ -1,0 +1,80 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: karma-webpack
+    versions:
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+  - dependency-name: webpack
+    versions:
+    - 5.21.2
+    - 5.23.0
+    - 5.24.2
+    - 5.24.3
+    - 5.24.4
+    - 5.24.4
+    - 5.25.1
+    - 5.27.1
+    - 5.28.0
+    - 5.30.0
+    - 5.31.2
+  - dependency-name: "@babel/core"
+    versions:
+    - 7.12.13
+    - 7.12.17
+    - 7.13.10
+    - 7.13.13
+    - 7.13.15
+    - 7.13.8
+  - dependency-name: karma
+    versions:
+    - 6.0.2
+    - 6.0.3
+    - 6.1.0
+    - 6.2.0
+    - 6.3.1
+  - dependency-name: "@babel/preset-env"
+    versions:
+    - 7.12.13
+    - 7.12.17
+    - 7.13.10
+    - 7.13.12
+    - 7.13.8
+    - 7.13.9
+  - dependency-name: jsep
+    versions:
+    - 0.4.0
+  - dependency-name: mocha
+    versions:
+    - 8.3.1
+    - 8.3.2
+  - dependency-name: elliptic
+    versions:
+    - 6.5.4
+  - dependency-name: "@babel/register"
+    versions:
+    - 7.12.13
+    - 7.13.8
+  - dependency-name: complex.js
+    versions:
+    - 2.0.12
+  - dependency-name: handlebars
+    versions:
+    - 4.7.7
+  - dependency-name: "@babel/plugin-transform-object-assign"
+    versions:
+    - 7.12.13
