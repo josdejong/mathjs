@@ -2,7 +2,8 @@ import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbol
 import { escape } from '../../utils/string.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { getSafeProperty, validateSafeMethod } from '../../utils/customs.js'
-import { createSubScope, getMapProperty, hasMapProperty } from '../../utils/map.js'
+import { getMapProperty, hasMapProperty } from '../../utils/map.js'
+import { createSubScope } from '../../utils/scope.js'
 import { factory } from '../../utils/factory.js'
 import { defaultTemplate, latexFunctions } from '../../utils/latex.js'
 

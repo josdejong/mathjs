@@ -78,32 +78,6 @@ export function toObject (map) {
   return object
 }
 
-function assign (scope, ...objects) {
-  for (const args of objects) {
-    if (!args) {
-      continue
-    }
-    if (isMap(args)) {
-      for (const key of args.keys()) {
-        scope.set(key, args.get(key))
-      }
-    } else {
-      for (const key of Object.keys(args)) {
-        scope.set(key, args[key])
-      }
-    }
-  }
-  return scope
-}
-
-export function createSubScope (parentScope, ...args) {
-  if (typeof parentScope.createSubScope === 'function') {
-    return parentScope.createSubScope(...args)
-  }
-
-  return assign(createEmptyMap(), parentScope, ...args)
-}
-
 /**
  * Returns `true` if the passed object appears to be a Map (i.e. duck typing).
  *
