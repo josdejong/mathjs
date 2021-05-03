@@ -103,11 +103,33 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
           return fn(rawArgs, math, createSubScope(scope, args), scope)
         }
       } else {
-        return function evalFunctionNode (scope, args, context) {
-          const fn = resolveFn(scope)
-          // "regular" evaluation
-          const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
-          return fn(...values)
+        // "regular" evaluation
+        switch (evalArgs.length) {
+          case 0: return function evalFunctionNode (scope, args, context) {
+            const fn = resolveFn(scope)
+            return fn()
+          }
+          case 1: return function evalFunctionNode (scope, args, context) {
+            const fn = resolveFn(scope)
+            const evalArg0 = evalArgs[0]
+            return fn(
+              evalArg0(scope, args, context)
+            )
+          }
+          case 2: return function evalFunctionNode (scope, args, context) {
+            const fn = resolveFn(scope)
+            const evalArg0 = evalArgs[0]
+            const evalArg1 = evalArgs[1]
+            return fn(
+              evalArg0(scope, args, context),
+              evalArg1(scope, args, context)
+            )
+          }
+          default: return function evalFunctionNode (scope, args, context) {
+            const fn = resolveFn(scope)
+            const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
+            return fn(...values)
+          }
         }
       }
     } else if (
