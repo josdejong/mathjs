@@ -6,7 +6,8 @@ const assert = require('assert')
 const Benchmark = require('benchmark')
 const padRight = require('pad-right')
 const math = require('../..')
-const { hasMapProperty, getMapProperty, getSafeProperty } = require('../../lib/cjs/utils/customs')
+const { getSafeProperty } = require('../../lib/cjs/utils/customs')
+const { hasMapProperty, getMapProperty } = require('../../lib/cjs/utils/map')
 
 // expose on window when using bundled in a browser
 if (typeof window !== 'undefined') {
