@@ -47,7 +47,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
     const context = null
 
     function evaluate (scope) {
-      const s = createMap(scope || {})
+      const s = createMap(scope)
       _validateScope(s)
       return expr(s, args, context)
     }
