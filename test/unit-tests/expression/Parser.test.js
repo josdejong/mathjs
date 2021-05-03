@@ -122,15 +122,16 @@ describe('parser', function () {
   })
 
   describe('security', function () {
-    it('should throw an error when accessing inherited properties', function () {
+    it('should return undefined when accessing what appears to be inherited properties', function () {
       try {
         const parser = new Parser()
 
         Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
         parser.clear()
-
-        assert.throws(function () { parser.get('foo') }, /No access/)
+        assert.strictEqual(parser.get('foo'), undefined)
+        // No longer uses a Object scope, so this now works!
+        // assert.throws(function () { parser.get('foo') }, /No access/)
       } finally {
         delete Object.prototype.foo
       }
@@ -139,7 +140,10 @@ describe('parser', function () {
     it('should throw an error when assigning an inherited property', function () {
       try {
         const parser = new Parser()
-        assert.throws(function () { parser.set('toString', null) }, /No access/)
+        // We can safely set within the parser
+        assert.strictEqual(parser.set('toString', null), null)
+        // But getting it out via getAll() will throw.
+        assert.throws(function () { parser.getAll() }, /No access/)
       } finally {
         delete Object.prototype.foo
       }
