@@ -45,10 +45,10 @@
  * the License.
  */
 
-let scope = new Map()
 const fs = require('fs')
 const path = require('path')
-const { getMapProperties, setMapProperty, getMapProperty } = require('../lib/cjs/utils/map.js')
+const { createEmptyMap } = require('../lib/cjs/utils/map.js')
+let scope = createEmptyMap()
 
 const PRECISION = 14 // decimals
 
@@ -96,7 +96,7 @@ function completer (text) {
     keyword = m[0]
 
     // scope variables
-    for (const def in getMapProperties(scope)) {
+    for (const def in scope.keys()) {
       if (def.indexOf(keyword) === 0) {
         matches.push(def)
       }
@@ -198,7 +198,7 @@ function runStream (input, output, mode, parenthesis) {
         break
       case 'clear':
         // clear memory
-        scope = new Map()
+        scope = createEmptyMap()
         console.log('memory cleared')
 
         // get next input
@@ -230,17 +230,17 @@ function runStream (input, output, mode, parenthesis) {
                 if (math.isAssignmentNode(node)) {
                   const name = findSymbolName(node)
                   if (name !== null) {
-                    const value = getMapProperty(scope, name)
-                    setMapProperty(scope, 'ans', value)
+                    const value = scope.get(name)
+                    scope.set('ans', value)
                     console.log(name + ' = ' + format(value))
                   } else {
-                    setMapProperty(scope, 'ans', res)
+                    scope.set('ans', res)
                     console.log(format(res))
                   }
                 } else if (math.isHelp(res)) {
                   console.log(res.toString())
                 } else {
-                  setMapProperty(scope, 'ans', res)
+                  scope.set('ans', res)
                   console.log(format(res))
                 }
               }
