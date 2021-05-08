@@ -1,5 +1,5 @@
 import { factory } from '../utils/factory.js'
-import { isMap, createEmptyMap, hasMapProperty, getMapProperty, setMapProperty, getMapProperties, toObject } from '../utils/map.js'
+import { createEmptyMap, toObject } from '../utils/map.js'
 
 const name = 'Parser'
 const dependencies = ['parse']
@@ -58,8 +58,11 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
       throw new SyntaxError(
         'Constructor must be called with the new operator')
     }
-    // Use an object, because the parser is available from the language.
-    this.scope = createEmptyMap()
+
+    Object.defineProperty(this, 'scope', {
+      value: createEmptyMap(),
+      writable: false
+    })
   }
 
   /**
@@ -89,8 +92,8 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   Parser.prototype.get = function (name) {
     // TODO: validate arguments
-    if (hasMapProperty(this.scope, name)) {
-      return getMapProperty(this.scope, name)
+    if (this.scope.has(name)) {
+      return this.scope.get(name)
     }
   }
 
@@ -99,10 +102,15 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @return {Object} values
    */
   Parser.prototype.getAll = function () {
-    if (isMap(this.scope)) {
-      return toObject(this.scope)
-    }
-    throw new Error('Parser scope has been set and is not a map')
+    return toObject(this.scope)
+  }
+
+  /**
+   * Get a map with all defined variables
+   * @return {Map} values
+   */
+  Parser.prototype.getAllAsMap = function () {
+    return this.scope
   }
 
   /**
@@ -111,7 +119,7 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param {* | undefined} value
    */
   Parser.prototype.set = function (name, value) {
-    setMapProperty(this.scope, name, value)
+    this.scope.set(name, value)
     return value
   }
 
@@ -120,22 +128,14 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param {string} name
    */
   Parser.prototype.remove = function (name) {
-    if (typeof this.scope.delete === 'function') {
-      this.scope.delete(name)
-    } else {
-      throw new Error('Parser scope has no delete method')
-    }
+    this.scope.delete(name)
   }
 
   /**
    * Clear the scope with variables and functions
    */
   Parser.prototype.clear = function () {
-    if (typeof this.scope.clear === 'function') {
-      this.scope.clear()
-    } else {
-      getMapProperties(this.scope).forEach(name => this.remove(name))
-    }
+    this.scope.clear()
   }
 
   return Parser
