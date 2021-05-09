@@ -12,6 +12,8 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
 [![Codecov](https://codecov.io/gh/josdejong/mathjs/branch/develop/graph/badge.svg)](https://codecov.io/gh/josdejong/mathjs)
 
+[![Github Sponsor](https://user-images.githubusercontent.com/4967343/89290226-7660bb00-d650-11ea-9c30-3e4fc8502ad5.png)](https://github.com/sponsors/josdejong)
+
 ## Features
 
 - Supports numbers, big numbers, complex numbers, fractions, units, strings, arrays, and matrices.
