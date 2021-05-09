@@ -3,6 +3,9 @@
 # not yet published, version 9.4.0
 
 - Extend `eigs` to support general complex matrices, see #1741. Thanks @m93a.
+- DenseMatrix and SparseMatrix are now iterable, see #1184. Thanks @m93a.
+- Implemented utility functions `matrixFromRows`, `matrixFromColumns`, and 
+  `matrixFromFunction`, see #2155, #2153. Thanks @m93a.
 - Fix #2174: function `pickRandom` having no name. Thanks @HK-SHAO.
 
 
