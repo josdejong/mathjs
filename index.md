@@ -70,6 +70,12 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 </div>
 
 <div id="likes">
+  <!-- github sponsors -->
+  <div class="like github-sponsor">
+    <a class="github-button" href="https://github.com/sponsors/josdejong" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-heart" aria-label="Sponsor @josdejong on GitHub">Sponsor</a>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </div>
+
   <!-- github -->
   <!-- https://github.com/mdo/github-buttons -->
   <div class="like github">
@@ -100,11 +106,6 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
     <div class="fb-like" data-href="https://mathjs.org/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
-  </div>
-
-  <div class="like github-sponsor">
-    <a class="github-button" href="https://github.com/sponsors/josdejong" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-heart" aria-label="Sponsor @josdejong on GitHub">Sponsor</a>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
   </div>
 
   <div style="clear: both;"></div>
