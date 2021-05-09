@@ -34,11 +34,19 @@ declare namespace math {
     LOG2E: number;
     LOG10E: number;
     NaN: number;
-    null: number;
     phi: number;
     SQRT1_2: number;
     SQRT2: number;
     tau: number;
+
+    /**
+     * If null were to be included in this interface, it would be
+     * auto-suggested as an import in VSCode. This causes issues because
+     * `null` is not a valid label.
+     *
+     * @see https://github.com/josdejong/mathjs/issues/2019
+     */
+    // null: number;
 
     uninitialized: any;
     version: string;
