@@ -520,7 +520,7 @@ declare namespace math {
      * @param y Denominator
      * @returns Quotient, x / y
      */
-    divide(x: Unit, y: Unit): Unit;
+    divide(x: Unit, y: Unit): Unit | number;
     divide(x: number, y: number): number;
     divide(x: MathType, y: MathType): MathType;
 

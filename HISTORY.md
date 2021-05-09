@@ -10,6 +10,9 @@
   `@types/mathjs`, and making it easier to improve the definitions. See #2187, 
   #2192. Thanks @CatsMiaow.
 - Fix #2174: function `pickRandom` having no name. Thanks @HK-SHAO.
+- Fix #2019: VSCode auto import keeps adding import { null } from 'mathjs'.
+- Fix #2185: Fix TypeScript definition of unit division, which can also return 
+  a number.
 
 
 # 2021-04-12, version 9.3.2
