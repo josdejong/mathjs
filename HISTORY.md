@@ -6,6 +6,9 @@
 - DenseMatrix and SparseMatrix are now iterable, see #1184. Thanks @m93a.
 - Implemented utility functions `matrixFromRows`, `matrixFromColumns`, and 
   `matrixFromFunction`, see #2155, #2153. Thanks @m93a.
+- Added TypeScript definitions to the project, making it redundant to install
+  `@types/mathjs`, and making it easier to improve the definitions. See #2187, 
+  #2192. Thanks @CatsMiaow.
 - Fix #2174: function `pickRandom` having no name. Thanks @HK-SHAO.
 
 
