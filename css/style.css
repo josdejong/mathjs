@@ -156,6 +156,10 @@ div.like {
   height: 42px;
 }
 
+div.like.linkedin {
+  margin-top: -4px;
+}
+
 #footer {
   color: #b4b4b4;
   text-align: center;
