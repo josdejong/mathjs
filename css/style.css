@@ -151,13 +151,17 @@ body {
 
 div.like {
   float: left;
-  width: 120px;
   max-width: 100%;
   height: 42px;
+  margin-right: 10px;
+}
+
+div.like.github {
+  margin-right: 0;
 }
 
 div.like.linkedin {
-  margin-top: -4px;
+  margin-top: -3px;
 }
 
 #footer {
