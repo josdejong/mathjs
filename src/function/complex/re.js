@@ -41,6 +41,10 @@ export const createRe = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
       return x
     },
 
+    Fraction: function (x) {
+      return x
+    },
+
     Complex: function (x) {
       return x.re
     },

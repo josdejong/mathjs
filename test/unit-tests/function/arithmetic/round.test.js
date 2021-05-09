@@ -42,8 +42,8 @@ describe('round', function () {
   })
 
   it('should throw an error on invalid value of n', function () {
-    assert.throws(function () { round(math.pi, -2) }, /Number of decimals in function round must be in te range of 0-15/)
-    assert.throws(function () { round(math.pi, 20) }, /Number of decimals in function round must be in te range of 0-15/)
+    assert.throws(function () { round(math.pi, -2) }, /Number of decimals in function round must be in the range of 0-15/)
+    assert.throws(function () { round(math.pi, 20) }, /Number of decimals in function round must be in the range of 0-15/)
     assert.throws(function () { round(math.pi, 2.5) }, /Number of decimals in function round must be an integer/)
     assert.throws(function () { round(1, 1.2) }, /TypeError: Number of decimals in function round must be an integer/)
     assert.throws(function () { round(1, bignumber(1.2)) }, /TypeError: Number of decimals in function round must be an integer/)
