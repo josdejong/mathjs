@@ -24,6 +24,12 @@ export const createMatrixFromFunction = /* #__PURE__ */ factory(name, dependenci
    * See also:
    *
    *    matrix, zeros
+   *
+   * @param {Array | Matrix} size   The size of the matrix to be created
+   * @param {function} fn           Callback function invoked for every entry in the matrix
+   * @param {string} [format]       The Matrix storage format, either `'dense'` or `'sparse'
+   * @param {string} [datatype]     Type of the values
+   * @return {Matrix} Returns the created matrix
    */
   return typed(name, {
     'Array | Matrix, function, string, string': function (size, fn, format, datatype) {

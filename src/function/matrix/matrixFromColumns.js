@@ -23,7 +23,7 @@ export const createMatrixFromColumns = /* #__PURE__ */ factory(name, dependencie
    *
    *    matrix, matrixFromRows, matrixFromFunction, zeros
    *
-   * @param {...Array | ...Matrix} cols
+   * @param {... Array | Matrix} cols Multiple columns
    * @return { number[][] | Matrix } if at least one of the arguments is an array, an array will be returned
    */
   return typed(name, {
