@@ -13,6 +13,7 @@
 - Fix #2019: VSCode auto import keeps adding import { null } from 'mathjs'.
 - Fix #2185: Fix TypeScript definition of unit division, which can also return 
   a number.
+- Fix #2123: add type definitions for functions `row` and `column`.
 
 
 # 2021-04-12, version 9.3.2

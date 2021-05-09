@@ -1308,6 +1308,28 @@ declare namespace math {
     resize<T extends MathArray | Matrix>(x: T, size: MathArray | Matrix, defaultValue?: number | string): T;
 
     /**
+     * Return a row from a Matrix.
+     * @param value An array or matrix
+     * @param row The index of the row
+     * @returns The retrieved row
+     */
+    row<T extends MathArray | Matrix>(
+        value: T,
+        row: number
+    ): T;
+
+    /**
+     * Return a column from a Matrix.
+     * @param value An array or matrix
+     * @param column The index of the column
+     * @returns The retrieved column
+     */
+    column<T extends MathArray | Matrix>(
+        value: T,
+        column: number
+    ): T;
+
+    /**
      * Calculate the size of a matrix or scalar.
      * @param A matrix
      * @returns A vector with the size of x
