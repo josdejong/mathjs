@@ -8,9 +8,14 @@ describe('matrixFrom...', function () {
   it('...Function', function () {
     let expected, actual
 
-    // an antisymmetric matrix
-    expected = matrix([[0, -1, -2], [1, 0, -1], [2, 1, 0]])
+    // an antisymmetric matrix (array)
+    expected = [[0, -1, -2], [1, 0, -1], [2, 1, 0]]
     actual = math.matrixFromFunction([3, 3], i => i[0] - i[1])
+    assert.deepStrictEqual(actual, expected)
+
+    // an antisymmetric matrix (an actual Matrix)
+    expected = matrix([[0, -1, -2], [1, 0, -1], [2, 1, 0]])
+    actual = math.matrixFromFunction(matrix([3, 3]), i => i[0] - i[1])
     assert.deepStrictEqual(actual, expected)
 
     // a sparse subdiagonal matrix
@@ -19,7 +24,7 @@ describe('matrixFrom...', function () {
     assert.deepStrictEqual(actual, expected)
 
     // a random vector
-    actual = math.matrixFromFunction([5], i => math.random())
+    actual = math.matrixFromFunction([5], 'dense', i => math.random())
     assert.deepStrictEqual(actual.size(), [5])
     let counter = 0
     for (const { value } of actual) {
