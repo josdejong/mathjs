@@ -7,10 +7,10 @@ import { typeOf, isNumber, isBigNumber, isComplex, isFraction } from '../../util
 const name = 'eigs'
 
 // The absolute state of math.js's dependency system:
-const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number', 'complex', 'sqrt', 'diag', 'qr', 'usolveAll', 'im', 're', 'smaller', 'round', 'log10', 'transpose']
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, qr, usolveAll, im, re, smaller, round, log10, transpose }) => {
+const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number', 'complex', 'sqrt', 'diag', 'qr', 'usolveAll', 'im', 're', 'smaller', 'round', 'log10', 'transpose', 'matrixFromColumns']
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, qr, usolveAll, im, re, smaller, round, log10, transpose, matrixFromColumns }) => {
   const doRealSymetric = createRealSymmetric({ config, addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
-  const doComplexEigs = createComplexEigs({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolveAll, equal, complex, larger, smaller, round, log10, transpose })
+  const doComplexEigs = createComplexEigs({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolveAll, equal, complex, larger, smaller, round, log10, transpose, matrixFromColumns })
 
   /**
    * Compute eigenvalues and eigenvectors of a matrix. The eigenvalues are sorted by their absolute value, ascending.
@@ -41,7 +41,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
    * @param {Array | Matrix} x  Matrix to be diagonalized
    *
    * @param {number | BigNumber} [prec] Precision, default value: 1e-15
-   * @return {{values: Array, vectors: Matrix}} Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
+   * @return {{values: Array|Matrix, vectors: Array|Matrix}} Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
    *
    */
   return typed('eigs', {
@@ -57,11 +57,19 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
     },
 
     Matrix: function (mat) {
-      return computeValuesAndVectors(mat)
+      const { values, vectors } = computeValuesAndVectors(mat)
+      return {
+        values: matrix(values),
+        vectors: matrix(vectors)
+      }
     },
 
     'Matrix, number|BigNumber': function (mat, prec) {
-      return computeValuesAndVectors(mat, prec)
+      const { values, vectors } = computeValuesAndVectors(mat, prec)
+      return {
+        values: matrix(values),
+        vectors: matrix(vectors)
+      }
     }
   })
 

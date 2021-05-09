@@ -239,7 +239,7 @@ export const createNorm = /* #__PURE__ */ factory(
       }
       const tx = ctranspose(x)
       const squaredX = multiply(tx, x)
-      const eigenVals = eigs(squaredX).values
+      const eigenVals = eigs(squaredX).values.toArray()
       const rho = eigenVals[eigenVals.length - 1]
       return abs(sqrt(rho))
     }
