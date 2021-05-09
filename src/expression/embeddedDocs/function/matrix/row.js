@@ -10,5 +10,5 @@ export const rowDocs = {
     'row(A, 1)',
     'row(A, 2)'
   ],
-  seealso: ['column']
+  seealso: ['column', 'matrixFromRows']
 }

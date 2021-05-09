@@ -1,6 +1,6 @@
 import { clone } from '../../../utils/object.js'
 
-export function createComplex ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolveAll, equal, complex, larger, smaller, round, log10, transpose }) {
+export function createComplexEigs ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolveAll, equal, complex, larger, smaller, round, log10, transpose }) {
   /**
    * @param {number[][]} arr the matrix to find eigenvalues of
    * @param {number} N size of the matrix
@@ -8,7 +8,7 @@ export function createComplex ({ addScalar, subtract, flatten, multiply, multipl
    * @param {'number'|'BigNumber'|'Complex'} type
    * @param {boolean} findVectors should we find eigenvectors?
    */
-  function main (arr, N, prec, type, findVectors) {
+  function complexEigs (arr, N, prec, type, findVectors) {
     if (findVectors === undefined) {
       findVectors = true
     }
@@ -572,5 +572,5 @@ export function createComplex ({ addScalar, subtract, flatten, multiply, multipl
     return -1
   }
 
-  return main
+  return complexEigs
 }

@@ -15,6 +15,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
    * @class DenseMatrix
+   * @enum {{ value, index: number[] }}
    */
   function DenseMatrix (data, datatype) {
     if (!(this instanceof DenseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
@@ -573,6 +574,64 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       }
     }
     recurse(this._data, [])
+  }
+
+  /**
+   * Iterate over the matrix elements
+   * @return {Iterable<{ value, index: number[] }>}
+   */
+  DenseMatrix.prototype[Symbol.iterator] = function * () {
+    const recurse = function * (value, index) {
+      if (isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          yield * recurse(value[i], index.concat(i))
+        }
+      } else {
+        yield ({ value, index })
+      }
+    }
+    yield * recurse(this._data, [])
+  }
+
+  /**
+   * Returns an array containing the rows of a 2D matrix
+   * @returns {Array<Matrix>}
+   */
+  DenseMatrix.prototype.rows = function () {
+    const result = []
+
+    const s = this.size()
+    if (s.length !== 2) {
+      throw new TypeError('Rows can only be returned for a 2D matrix.')
+    }
+
+    const data = this._data
+    for (const row of data) {
+      result.push(new DenseMatrix([row], this._datatype))
+    }
+
+    return result
+  }
+
+  /**
+   * Returns an array containing the columns of a 2D matrix
+   * @returns {Array<Matrix>}
+   */
+  DenseMatrix.prototype.columns = function () {
+    const result = []
+
+    const s = this.size()
+    if (s.length !== 2) {
+      throw new TypeError('Rows can only be returned for a 2D matrix.')
+    }
+
+    const data = this._data
+    for (let i = 0; i < s[1]; i++) {
+      const col = data.map(row => [row[i]])
+      result.push(new DenseMatrix(col, this._datatype))
+    }
+
+    return result
   }
 
   /**
