@@ -15,8 +15,9 @@ const dependencies = [
 
 export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, Matrix }) => {
   /**
-   * Sparse Matrix implementation. This type implements a Compressed Column Storage format
-   * for sparse matrices.
+   * Sparse Matrix implementation. This type implements
+   * a [Compressed Column Storage](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_column_(CSC_or_CCS))
+   * format for two-dimensional sparse matrices.
    * @class SparseMatrix
    */
   function SparseMatrix (data, datatype) {
@@ -546,6 +547,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *
    * @memberof SparseMatrix
    * @param {number[] | Matrix} size  The new size the matrix should have.
+   *                                  Since sparse matrices are always two-dimensional,
+   *                                  size must be two numbers in either an array or a matrix
    * @param {*} [defaultValue=0]      Default value, filled in on new entries.
    *                                  If not provided, the matrix elements will
    *                                  be filled with zeros.
@@ -710,6 +713,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *
    * @memberof SparseMatrix
    * @param {number[]} sizes          The new size the matrix should have.
+   *                                  Since sparse matrices are always two-dimensional,
+   *                                  size must be two numbers in either an array or a matrix
    * @param {boolean} [copy]          Return a reshaped copy of the matrix
    *
    * @return {Matrix}                 The reshaped matrix
@@ -938,6 +943,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *                              parameters: the value of the element, the index
    *                              of the element, and the Matrix being traversed.
    * @param {boolean} [skipZeros] Invoke callback function for non-zero values only.
+   *                              If false, the indices are guaranteed to be in order,
+   *                              if true, the indices can be unordered.
    */
   SparseMatrix.prototype.forEach = function (callback, skipZeros) {
     // check it is a pattern matrix
@@ -976,6 +983,28 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
           const value = (i in values) ? values[i] : 0
           callback(value, [i, j], me)
         }
+      }
+    }
+  }
+
+  /**
+   * Iterate over the matrix elements, skipping zeros
+   * @return {Iterable<{ value, index: number[] }>}
+   */
+  SparseMatrix.prototype[Symbol.iterator] = function * () {
+    if (!this._values) { throw new Error('Cannot iterate a Pattern only matrix') }
+
+    const columns = this._size[1]
+
+    for (let j = 0; j < columns; j++) {
+      const k0 = this._ptr[j]
+      const k1 = this._ptr[j + 1]
+
+      for (let k = k0; k < k1; k++) {
+        // row index
+        const i = this._index[k]
+
+        yield ({ value: this._values[k], index: [i, j] })
       }
     }
   }

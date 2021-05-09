@@ -191,6 +191,15 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
   }
 
   /**
+   * Iterate over the matrix elements
+   * @return {Iterable<{ value, index: number[] }>}
+   */
+  Matrix.prototype[Symbol.iterator] = function () {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot iterate a Matrix interface')
+  }
+
+  /**
    * Create an Array with a copy of the data of the Matrix
    * @returns {Array} array
    */

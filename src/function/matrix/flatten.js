@@ -8,6 +8,7 @@ const dependencies = ['typed', 'matrix']
 export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Flatten a multi dimensional matrix into a single dimensional matrix.
+   * It is guaranteed to always return a clone of the argument.
    *
    * Syntax:
    *

@@ -1512,6 +1512,42 @@ describe('SparseMatrix', function () {
     })
   })
 
+  describe('iterable', function () {
+    it('should iterate in the same order as forEach', function () {
+      let m, expected
+
+      expected = []
+      m = new SparseMatrix({
+        values: [1, 3, 2, 4],
+        index: [0, 1, 0, 1],
+        ptr: [0, 2, 4],
+        size: [2, 2]
+      })
+      m.forEach((value, index) => expected.push({ value, index }), true)
+      assert.deepStrictEqual(expected, [...m])
+
+      expected = []
+      m = new SparseMatrix({
+        values: [3, 1, 4, 2],
+        index: [1, 0, 1, 0],
+        ptr: [0, 2, 4],
+        size: [2, 2]
+      })
+      m.forEach((value, index) => expected.push({ value, index }), true)
+      assert.deepStrictEqual(expected, [...m])
+
+      expected = []
+      m = math.matrix([
+        [0, 0, 1, 0, 0, 1, 1, 0, 0],
+        [0, 1, 0, 0, 1, 0, 0, 0, 1],
+        [1, 0, 0, 1, 0, 0, 0, 0, 1],
+        [1, 0, 0, 1, 0, 0, 0, 1, 0]
+      ], 'sparse')
+      m.forEach((value, index) => expected.push({ value, index }), true)
+      assert.deepStrictEqual(expected, [...m])
+    })
+  })
+
   describe('clone', function () {
     it('should clone the matrix properly', function () {
       const m1 = new SparseMatrix(
