@@ -1,6 +1,6 @@
 import { factory } from '../../utils/factory.js'
 import { format } from '../../utils/string.js'
-import { createComplex } from './eigs/complex.js'
+import { createComplexEigs } from './eigs/complexEigs.js'
 import { createRealSymmetric } from './eigs/realSymetric.js'
 import { typeOf, isNumber, isBigNumber, isComplex, isFraction } from '../../utils/is.js'
 
@@ -10,7 +10,7 @@ const name = 'eigs'
 const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number', 'complex', 'sqrt', 'diag', 'qr', 'usolveAll', 'im', 're', 'smaller', 'round', 'log10', 'transpose']
 export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, qr, usolveAll, im, re, smaller, round, log10, transpose }) => {
   const doRealSymetric = createRealSymmetric({ config, addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
-  const doComplex = createComplex({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolveAll, equal, complex, larger, smaller, round, log10, transpose })
+  const doComplexEigs = createComplexEigs({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolveAll, equal, complex, larger, smaller, round, log10, transpose })
 
   /**
    * Compute eigenvalues and eigenvectors of a matrix. The eigenvalues are sorted by their absolute value, ascending.
@@ -89,7 +89,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
     }
 
     const type = coerceTypes(mat, arr, N)
-    return doComplex(arr, N, prec, type)
+    return doComplexEigs(arr, N, prec, type)
   }
 
   /** @return {boolean} */
