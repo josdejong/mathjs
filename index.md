@@ -83,6 +83,12 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
   </div>
 
+  <!-- linkedin -->
+  <div class="like linkedin">
+    <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+    <script type="IN/Share" data-url="https://mathjs.org" data-counter="right"></script>
+  </div>
+
   <!-- facebook -->
   <div class="like facebook">
     <div id="fb-root"></div>
@@ -96,25 +102,9 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
     <div class="fb-like" data-href="https://mathjs.org/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
   </div>
 
-  <!-- linkedin -->
-  <div class="like linkedin">
-    <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
-    <script type="IN/Share" data-url="https://mathjs.org" data-counter="right"></script>
-  </div>
-
-  <!-- google+ -->
-  <div class="like googleplus">
-    <!-- Place this tag where you want the +1 button to render. -->
-    <div class="g-plusone" data-size="medium"></div>
-
-    <!-- Place this tag after the last +1 button tag. -->
-    <script type="text/javascript">
-      (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-      })();
-    </script>
+  <div class="like github-sponsor">
+    <a class="github-button" href="https://github.com/sponsors/josdejong" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-heart" aria-label="Sponsor @josdejong on GitHub">Sponsor</a>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
   </div>
 
   <div style="clear: both;"></div>
