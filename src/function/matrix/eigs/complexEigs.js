@@ -1,12 +1,14 @@
 import { clone } from '../../../utils/object.js'
 
-export function createComplexEigs ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolveAll, equal, complex, larger, smaller, round, log10, transpose }) {
+export function createComplexEigs ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolveAll, equal, complex, larger, smaller, round, log10, transpose, matrixFromColumns }) {
   /**
    * @param {number[][]} arr the matrix to find eigenvalues of
    * @param {number} N size of the matrix
    * @param {number|BigNumber} prec precision, anything lower will be considered zero
    * @param {'number'|'BigNumber'|'Complex'} type
    * @param {boolean} findVectors should we find eigenvectors?
+   *
+   * @returns {{ values: number[], vectors: number[][] }}
    */
   function complexEigs (arr, N, prec, type, findVectors) {
     if (findVectors === undefined) {
@@ -45,7 +47,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
     if (findVectors) {
       vectors = findEigenvectors(arr, N, C, values, prec)
-      vectors = transpose((vectors)) // vectors are columns of a matrix
+      vectors = matrixFromColumns(...vectors)
     }
 
     return { values, vectors }
@@ -388,7 +390,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @param {number} N size of A
    * @param {Matrix} C column transformation matrix that turns A into upper triangular
    * @param {number[]} values array of eigenvalues of A
-   * @returns {Matrix[]} eigenvalues
+   * @returns {number[][]} eigenvalues
    */
   function findEigenvectors (A, N, C, values, prec) {
     const Cinv = inv(C)
