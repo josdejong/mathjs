@@ -5,7 +5,6 @@ import { escape } from '../../utils/string.js'
 import { forEach, join } from '../../utils/array.js'
 import { toSymbol } from '../../utils/latex.js'
 import { getPrecedence } from '../operators.js'
-import { setMapProperty } from '../../utils/map.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'FunctionAssignmentNode'
@@ -94,7 +93,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       const fn = typed(name, signatures)
       fn.syntax = syntax
 
-      setMapProperty(scope, name, fn)
+      scope.set(name, fn)
 
       return fn
     }

@@ -2,7 +2,6 @@ import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbol
 import { escape } from '../../utils/string.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { getSafeProperty, validateSafeMethod } from '../../utils/customs.js'
-import { getMapProperty, hasMapProperty } from '../../utils/map.js'
 import { createSubScope } from '../../utils/scope.js'
 import { factory } from '../../utils/factory.js'
 import { defaultTemplate, latexFunctions } from '../../utils/latex.js'
@@ -86,8 +85,8 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
       const isRaw = typeof fn === 'function' && fn.rawArgs === true
 
       const resolveFn = (scope) => {
-        if (hasMapProperty(scope, name)) {
-          return getMapProperty(scope, name)
+        if (scope.has(name)) {
+          return scope.get(name)
         }
         if (name in math) {
           return getSafeProperty(math, name)

@@ -127,35 +127,3 @@ export function assign (map, ...objects) {
   }
   return map
 }
-
-/*
- * These wrapper functions are temporary. They provide scaffolding around calling the methods
- * directly. The simplest example is to a more helpful error message when things go wrong.
- */
-export function setMapProperty (object, prop, value) {
-  if (!isMap(object)) {
-    throw new Error('Scope is not map like')
-  }
-  return object.set(prop, value)
-}
-
-export function getMapProperty (object, prop) {
-  if (!isMap(object)) {
-    throw new Error('Scope is not map like')
-  }
-  return object.get(prop)
-}
-
-export function getMapProperties (object) {
-  if (!isMap(object)) {
-    throw new Error('Scope is not map like')
-  }
-  return object.keys()
-}
-
-export function hasMapProperty (object, prop) {
-  if (!isMap(object)) {
-    throw new Error('Scope is not map like')
-  }
-  return object.has(prop)
-}

@@ -3,7 +3,7 @@ import { isNode } from '../../utils/is.js'
 import { keywords } from '../keywords.js'
 import { deepStrictEqual } from '../../utils/object.js'
 import { factory } from '../../utils/factory.js'
-import { createMap, hasMapProperty } from '../../utils/map.js'
+import { createMap } from '../../utils/map.js'
 
 const name = 'Node'
 const dependencies = ['mathWithTransform']
@@ -371,7 +371,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    */
   function _validateScope (scope) {
     for (const symbol of [...keywords]) {
-      if (hasMapProperty(scope, symbol)) {
+      if (scope.has(symbol)) {
         throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword')
       }
     }
