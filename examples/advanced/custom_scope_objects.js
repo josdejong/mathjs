@@ -11,7 +11,8 @@ function withObjectScope () {
 
   math.evaluate('x', scope) // 1
   math.evaluate('y = 2 x', scope)
-  math.evaluate('area(length, width) = length * width', scope)
+  math.evaluate('scalar = 1', scope)
+  math.evaluate('area(length, width) = length * width * scalar', scope)
   math.evaluate('A = area(x, y)', scope)
 
   console.log('Object scope:', scope)
@@ -23,7 +24,8 @@ function withMapScope (scope, name) {
 
   math.evaluate('x', scope) // 1
   math.evaluate('y = 2 x', scope)
-  math.evaluate('area(length, width) = length * width', scope)
+  math.evaluate('scalar = 1', scope)
+  math.evaluate('area(length, width) = length * width * scalar', scope)
   math.evaluate('A = area(x, y)', scope)
 
   console.log(`Map-like scope (${name}):`, scope.localScope)
@@ -60,6 +62,27 @@ class MapScope {
  *
  */
 class AdvancedMapScope extends MapScope {
+  constructor (parent) {
+    super()
+    this.parentScope = parent
+  }
+
+  get (key) {
+    return this.localScope.get(key) ?? this.parentScope?.get(key)
+  }
+
+  has (key) {
+    return this.localScope.has(key) ?? this.parentScope?.get(key)
+  }
+
+  keys () {
+    if (this.parentScope) {
+      return new Set([...this.localScope.keys(), ...this.parentScope.keys()])
+    } else {
+      return this.localScope.keys()
+    }
+  }
+
   delete () {
     return this.localScope.delete()
   }
@@ -71,24 +94,11 @@ class AdvancedMapScope extends MapScope {
   /**
    * Creates a child scope from this one. This is used in function calls.
    *
-   * The `argsObject` is an object of variables local to the subscope,
-   * e.g. function arguments passed into the a function scope.
-   * @param {*} argsObj
-   * @returns
+   * @returns a new Map scope that has access to the symbols in the parent, but
+   * cannot overwrite them.
    */
-  createSubScope (argsObj) {
-    const subScope = new AdvancedMapScope()
-    for (const key of this.keys()) {
-      subScope.set(key, this.get(key))
-    }
-
-    if (argsObj) {
-      for (const key of Object.keys(argsObj)) {
-        subScope.set(key, argsObj[key])
-      }
-    }
-
-    return subScope
+  createSubScope () {
+    return new AdvancedMapScope(this)
   }
 
   toString () {

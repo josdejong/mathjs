@@ -1,22 +1,4 @@
-import { createEmptyMap, isMap } from './map.js'
-
-function assign (scope, ...objects) {
-  for (const args of objects) {
-    if (!args) {
-      continue
-    }
-    if (isMap(args)) {
-      for (const key of args.keys()) {
-        scope.set(key, args.get(key))
-      }
-    } else {
-      for (const key of Object.keys(args)) {
-        scope.set(key, args[key])
-      }
-    }
-  }
-  return scope
-}
+import { createEmptyMap, assign } from './map.js'
 
 /**
  * Create a new scope which can access the parent scope,
@@ -33,7 +15,7 @@ function assign (scope, ...objects) {
  */
 export function createSubScope (parentScope, ...args) {
   if (typeof parentScope.createSubScope === 'function') {
-    return parentScope.createSubScope(...args)
+    return assign(parentScope.createSubScope(), ...args)
   }
 
   return assign(createEmptyMap(), parentScope, ...args)

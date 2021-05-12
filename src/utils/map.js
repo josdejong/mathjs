@@ -1,4 +1,5 @@
 import { setSafeProperty, hasSafeProperty, getSafeProperty } from './customs.js'
+import { isObject } from './is.js'
 
 /**
  * A map facade on a bare object.
@@ -53,7 +54,7 @@ export function createMap (mapOrObject) {
   if (isMap(mapOrObject)) {
     return mapOrObject
   }
-  if (typeof mapOrObject === 'object') {
+  if (isObject(mapOrObject)) {
     return new ObjectWrappingMap(mapOrObject)
   }
 
@@ -89,6 +90,9 @@ export function toObject (map) {
 export function isMap (object) {
   // We can use the fast instanceof, or a slower duck typing check.
   // The duck typing method needs to cover enough methods to not be confused with DenseMatrix.
+  if (!object) {
+    return false
+  }
   return object instanceof Map ||
     object instanceof ObjectWrappingMap ||
     (
@@ -97,6 +101,31 @@ export function isMap (object) {
       typeof object.keys === 'function' &&
       typeof object.has === 'function'
     )
+}
+
+/**
+ * Copies the contents of key-value pairs from each `objects` in to `map`.
+ *
+ * Object is `objects` can be a `Map` or object.
+ *
+ * This is the `Map` analog to `Object.assign`.
+ */
+export function assign (map, ...objects) {
+  for (const args of objects) {
+    if (!args) {
+      continue
+    }
+    if (isMap(args)) {
+      for (const key of args.keys()) {
+        map.set(key, args.get(key))
+      }
+    } else if (isObject(args)) {
+      for (const key of Object.keys(args)) {
+        map.set(key, args[key])
+      }
+    }
+  }
+  return map
 }
 
 /*
