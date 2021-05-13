@@ -92,6 +92,10 @@
       "import": "./lib/esm/number.js",
       "require": "./lib/cjs/number.js"
     },
+    "./lib/esm/number": {
+      "import": "./lib/esm/number.js",
+      "require": "./lib/cjs/number.js"
+    },
     "./package.json": "./package.json",
     "./lib/browser/math.js": "./lib/browser/math.js",
     "./lib/browser/math.js.map": "./lib/browser/math.js.map",
