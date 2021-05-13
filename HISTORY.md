@@ -15,6 +15,7 @@
 - Fix #2185: Fix TypeScript definition of unit division, which can also return 
   a number.
 - Fix #2123: add type definitions for functions `row` and `column`.
+- Fix some files not exposed in the package, see #2213. Thanks @javiermarinros.
 
 
 # 2021-04-12, version 9.3.2
