@@ -404,12 +404,13 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     for (const λ of values) {
       const i = indexOf(uniqueValues, λ, equal)
 
-      // a dirty trick that helps us find more vectors
-      // TODO with iterative algorithm this can be removed
-      const roundedλ = round(λ, subtract(-1, log10(prec)))
-
       if (i === -1) {
-        uniqueValues.push(roundedλ)
+        // a dirty trick that helps us find more vectors
+        // TODO with iterative algorithm this can be removed
+        // Note: the round around log10 is needed to prevent rounding off errors in IE
+        const rounded = round(λ, subtract(-1, round(log10(prec))))
+
+        uniqueValues.push(rounded)
         multiplicities.push(1)
       } else {
         multiplicities[i] += 1
