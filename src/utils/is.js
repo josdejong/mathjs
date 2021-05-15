@@ -24,6 +24,10 @@ export function isComplex (x) {
   return (x && typeof x === 'object' && Object.getPrototypeOf(x).isComplex === true) || false
 }
 
+export function isComplexInfinity (x) {
+  return (x && typeof x === 'object' && Object.getPrototypeOf(x).isComplexInfinity === true) || false
+}
+
 export function isFraction (x) {
   return (x && typeof x === 'object' && Object.getPrototypeOf(x).isFraction === true) || false
 }

@@ -3,10 +3,12 @@ import assert from 'assert'
 
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
+import { isComplexInfinity } from '../../../../src/utils/is.js'
 const mathPredictable = math.create({ predictable: true })
 const bignumber = math.bignumber
 const fraction = math.fraction
 const complex = math.complex
+const complexInfinity = math.complexInfinity
 const matrix = math.matrix
 const unit = math.unit
 const pow = math.pow
@@ -197,6 +199,26 @@ describe('pow', function () {
   it('should exponentiate a complex number to the given bignumber power', function () {
     approx.deepEqual(pow(complex(3, 0), math.bignumber(2)), complex(9, 0))
     approx.deepEqual(pow(complex(0, 2), math.bignumber(2)), complex(-4, 0))
+  })
+
+  it('should return complexInfinity for a complex number exponentiated to Infinity', function () {
+    assert(isComplexInfinity(math.pow(complex(1, 1), Infinity)))
+  })
+
+  it('should return complexInfinity when Infinity is exponentiated to a complex number whose Re(z) = 0', function () {
+    assert(isComplexInfinity(math.pow(Infinity, complex(0, 0)), complexInfinity))
+  })
+
+  it('should return complexInfinity when Infinity is exponentiated to a complex number whose Re(z) < 0', function () {
+    assert(isComplexInfinity(math.pow(Infinity, complex(-1, 0)), complexInfinity))
+  })
+
+  it('should return complexInfinity when Infinity is exponentiated to a complex number whose Re(z) > 0 and Im(z) = 0', function () {
+    assert(isComplexInfinity(math.pow(Infinity, complex(1, 0)), complexInfinity))
+  })
+
+  it('should return complexInfinity when Infinity is exponentiated to any other complex number', function () {
+    assert(isComplexInfinity(math.pow(Infinity, complex(1, 1)), complexInfinity))
   })
 
   it('should correctly calculate unit ^ number', function () {
