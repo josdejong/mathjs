@@ -6,19 +6,17 @@ layout: default
 
 <h1 id="function-eigs">Function eigs <a href="#function-eigs" title="Permalink">#</a></h1>
 
-Compute eigenvalue and eigenvector of a real symmetric matrix.
-Only applicable to two dimensional symmetric matrices. Uses Jacobi
-Algorithm. Matrix containing mixed type ('number', 'bignumber', 'fraction')
-of elements are not supported. Input matrix or 2D array should contain all elements
-of either 'number', 'bignumber' or 'fraction' type. For 'number' and 'fraction', the
-eigenvalues are of 'number' type. For 'bignumber' the eigenvalues are of ''bignumber' type.
-Eigenvectors are always of 'number' type.
+Compute eigenvalues and eigenvectors of a matrix. The eigenvalues are sorted by their absolute value, ascending.
+An eigenvalue with multiplicity k will be listed k times. The eigenvectors are returned as columns of a matrix –
+the eigenvector that belongs to the j-th eigenvalue in the list (eg. `values[j]`) is the j-th column (eg. `column(vectors, j)`).
+If the algorithm fails to converge, it will throw an error – in that case, however, you may still find useful information
+in `err.values` and `err.vectors`.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.eigs(x)
+math.eigs(x, [prec])
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -26,23 +24,25 @@ math.eigs(x)
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Array &#124; Matrix | Matrix to be diagonalized
+`prec` | number &#124; BigNumber | Precision, default value: 1e-15
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-{values: Array, vectors: Array} &#124; {values: Matrix, vectors: Matrix} | Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix with eigenvectors as columns).
+{values: Array &#124; Matrix, vectors: Array &#124; Matrix} | Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
+const { eigs, multiply, column, transpose } = math
 const H = [[5, 2.3], [2.3, 1]]
-const ans = math.eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors as columns]}
+const ans = eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors as columns]}
 const E = ans.values
 const U = ans.vectors
-math.multiply(H, math.column(U, 0)) // returns math.multiply(E[0], math.column(U, 0))
-const UTxHxU = math.multiply(math.transpose(U), H, U) // rotates H to the eigen-representation
+multiply(H, column(U, 0)) // returns multiply(E[0], column(U, 0))
+const UTxHxU = multiply(transpose(U), H, U) // diagonalizes H
 E[0] == UTxHxU[0][0]  // returns true
 ```
 

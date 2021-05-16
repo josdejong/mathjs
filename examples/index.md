@@ -40,6 +40,7 @@ layout: default
 - [Custom evaluate using import](advanced\custom_evaluate_using_import.js.html)
 - [Custom loading](advanced\custom_loading.js.html)
 - [Custom relational functions](advanced\custom_relational_functions.js.html)
+- [Custom scope objects](advanced\custom_scope_objects.js.html)
 - [Expression trees](advanced\expression_trees.js.html)
 - [Function transform](advanced\function_transform.js.html)
 - [More secure eval](advanced\more_secure_eval.js.html)

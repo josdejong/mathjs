@@ -4,6 +4,28 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210516-version-940">2021-05-16, version 9.4.0 <a href="#20210516-version-940" title="Permalink">#</a></h1>
+
+- Implemented support to use objects with a `Map` interface as scope, 
+  see <a href="https://github.com/josdejong/mathjs/issues/2143">#2143</a>, <a href="https://github.com/josdejong/mathjs/issues/2166">#2166</a>. Thanks <a href="https://github.com/jhugman">@jhugman</a>.
+- Extend `eigs` to support general complex matrices, see <a href="https://github.com/josdejong/mathjs/issues/1741">#1741</a>. Thanks <a href="https://github.com/m93a">@m93a</a>.
+- DenseMatrix and SparseMatrix are now iterable, see <a href="https://github.com/josdejong/mathjs/issues/1184">#1184</a>. Thanks <a href="https://github.com/m93a">@m93a</a>.
+- Implemented utility functions `matrixFromRows`, `matrixFromColumns`, and 
+  `matrixFromFunction`, see <a href="https://github.com/josdejong/mathjs/issues/2155">#2155</a>, <a href="https://github.com/josdejong/mathjs/issues/2153">#2153</a>. Thanks <a href="https://github.com/m93a">@m93a</a>.
+- Added TypeScript definitions to the project, making it redundant to install
+  `@types/mathjs`, and making it easier to improve the definitions. See <a href="https://github.com/josdejong/mathjs/issues/2187">#2187</a>, 
+  <a href="https://github.com/josdejong/mathjs/issues/2192">#2192</a>. Thanks <a href="https://github.com/CatsMiaow">@CatsMiaow</a>.
+- Upgraded dependencies
+  - `complex.js@2.0.13` (fixing <a href="https://github.com/josdejong/mathjs/issues/2211">#2211</a>). Thanks <a href="https://github.com/infusion">@infusion</a>
+  - `fraction.js@4.1.0` (`pow` now supporting rational exponents).
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2174">#2174</a>: function `pickRandom` having no name. Thanks <a href="https://github.com/HK-SHAO">@HK-SHAO</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2019">#2019</a>: VSCode auto import keeps adding import { null } from 'mathjs'.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2185">#2185</a>: Fix TypeScript definition of unit division, which can also return 
+  a number.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2123">#2123</a>: add type definitions for functions `row` and `column`.
+- Fix some files not exposed in the package, see <a href="https://github.com/josdejong/mathjs/issues/2213">#2213</a>. Thanks <a href="https://github.com/javiermarinros">@javiermarinros</a>.
+
+
 <h1 id="20210412-version-932">2021-04-12, version 9.3.2 <a href="#20210412-version-932" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2169">#2169</a>: mathjs requesting `@babel/runtime` dependency. 

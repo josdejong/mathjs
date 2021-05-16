@@ -26,8 +26,8 @@ math.evaluate([expr1, expr2, expr3, ...], scope)
 
 Function `evaluate` accepts a single expression or an array with
 expressions as the first argument and has an optional second argument
-containing a scope with variables and functions. The scope is a regular
-JavaScript Object. The scope will be used to resolve symbols, and to write
+containing a scope with variables and functions. The scope can be a regular
+JavaScript Object, or Map. The scope will be used to resolve symbols, and to write
 assigned variables or function.
 
 The following code demonstrates how to evaluate expressions.
@@ -74,7 +74,7 @@ const result = code.evaluate([scope]) // evaluate the code with an optional scop
 An expression needs to be compiled only once, after which the
 expression can be evaluated repeatedly and against different scopes.
 The optional scope is used to resolve symbols and to write assigned
-variables or functions. Parameter `scope` is a regular Object.
+variables or functions. Parameter [`scope`](#scope) can be a regular Object, or Map.
 
 Example usage:
 
@@ -111,7 +111,7 @@ The API of nodes is described in detail on the page
 An expression needs to be parsed and compiled only once, after which the
 expression can be evaluated repeatedly. On evaluation, an optional scope
 can be provided, which is used to resolve symbols and to write assigned
-variables or functions. Parameter `scope` is a regular Object.
+variables or functions. Parameter [`scope`](#scope) is a regular Object or Map.
 
 Example usage:
 
@@ -209,3 +209,20 @@ parser.evaluate('hello("user")')        // "hello, user!"
 // clear defined functions and variables
 parser.clear()
 ```
+
+<h2 id="scope">Scope <a href="#scope" title="Permalink">#</a></h2>
+
+The scope is a data-structure used to store and lookup variables and functions defined and used by expressions.
+
+It is passed to mathjs via calls to [`math.evaluate`](#evaluate) or `simplify`.
+
+For ease of use, it can be a Plain Javascript Object; for safety it can be a plain `Map` and for flexibility, any object that has
+the methods `get`/`set`/`has`/`keys`, seen on `Map`.
+
+Some care is taken to mutate the same object that is passed into mathjs, so they can collect the definitions from mathjs scripts and expressions.
+
+`evaluate` will fail if the expression uses a blacklisted symbol, preventing mathjs expressions to escape into Javascript. This is enforced by access to the scope.
+
+For less reliance on this blacklist, scope can also be a `Map`, which allows mathjs expressions to define variables and functions of any name.
+
+For more, see [examples of custom scopes][../../examples/advanced/custom_scope_objects.js.html].

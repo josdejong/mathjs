@@ -128,7 +128,7 @@ Function | Description
 [math.diag(X)](functions/diag.html) | Create a diagonal matrix or retrieve the diagonal of a matrix  When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
 [math.diff(arr)](functions/diff.html) | Create a new matrix or array of the difference between elements of the given array The optional dim parameter lets you specify the dimension to evaluate the difference of If no dimension parameter is passed it is assumed as dimension 0  Dimension is zero-based in javascript and one-based in the parser and can be a number or bignumber Arrays must be 'rectangular' meaning arrays like [1, 2] If something is passed as a matrix it will be returned as a matrix but other than that all matrices are converted to arrays.
 [math.dot(x,&nbsp;y)](functions/dot.html) | Calculate the dot product of two vectors.
-[math.eigs(x)](functions/eigs.html) | Compute eigenvalue and eigenvector of a real symmetric matrix.
+[math.eigs(x,&nbsp;[prec])](functions/eigs.html) | Compute eigenvalues and eigenvectors of a matrix.
 [math.expm(x)](functions/expm.html) | Compute the matrix exponential, expm(A) = e^A.
 [math.filter(x,&nbsp;test)](functions/filter.html) | Filter the items in an array or one dimensional matrix.
 [math.flatten(x)](functions/flatten.html) | Flatten a multi dimensional matrix into a single dimensional matrix.
@@ -138,6 +138,9 @@ Function | Description
 [math.inv(x)](functions/inv.html) | Calculate the inverse of a square matrix.
 [math.kron(x,&nbsp;y)](functions/kron.html) | Calculates the kronecker product of 2 matrices or vectors.
 [math.map(x,&nbsp;callback)](functions/map.html) | Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.
+[math.matrixFromColumns(...arr)](functions/matrixFromColumns.html) | Create a dense matrix from vectors as individual columns.
+[math.matrixFromFunction(size,&nbsp;fn)](functions/matrixFromFunction.html) | Create a matrix by evaluating a generating function at each index.
+[math.matrixFromRows(...arr)](functions/matrixFromRows.html) | Create a dense matrix from vectors as individual rows.
 [math.ones(m,&nbsp;n,&nbsp;p,&nbsp;...)](functions/ones.html) | Create a matrix filled with ones.
 [math.partitionSelect(x,&nbsp;k)](functions/partitionSelect.html) | Partition-based selection of an array or 1D matrix.
 [math.range(start,&nbsp;end&nbsp;[,&nbsp;step])](functions/range.html) | Create an array from a range.
