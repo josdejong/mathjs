@@ -1,4 +1,5 @@
 import { isSymbolNode } from '../../../utils/is.js'
+import { createSubScope } from '../../../utils/scope.js'
 
 /**
  * Compile an inline expression like "x > 0"
@@ -13,7 +14,7 @@ export function compileInlineExpression (expression, math, scope) {
   const symbol = expression.filter(function (node) {
     return isSymbolNode(node) &&
         !(node.name in math) &&
-        !(node.name in scope)
+        !(scope.has(node.name))
   })[0]
 
   if (!symbol) {
@@ -22,10 +23,10 @@ export function compileInlineExpression (expression, math, scope) {
 
   // create a test function for this equation
   const name = symbol.name // variable name
-  const subScope = Object.create(scope)
+  const subScope = createSubScope(scope)
   const eq = expression.compile()
   return function inlineExpression (x) {
-    subScope[name] = x
+    subScope.set(name, x)
     return eq.evaluate(subScope)
   }
 }

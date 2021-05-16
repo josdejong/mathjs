@@ -1,6 +1,7 @@
 // test transforms
 import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
+import { createMap } from '../../../src/utils/map.js'
 
 const parse = math.parse
 
@@ -184,5 +185,5 @@ describe('transforms', function () {
  * @return {*} result
  */
 function parseAndEval (expr, scope) {
-  return parse(expr).evaluate(scope)
+  return parse(expr).evaluate(createMap(scope))
 }

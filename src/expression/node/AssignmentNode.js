@@ -114,7 +114,9 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       }
 
       return function evalAssignmentNode (scope, args, context) {
-        return setSafeProperty(scope, name, evalValue(scope, args, context))
+        const value = evalValue(scope, args, context)
+        scope.set(name, value)
+        return value
       }
     } else if (this.index.isObjectProperty()) {
       // apply an object property for example `a.b=2`
@@ -123,7 +125,8 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       return function evalAssignmentNode (scope, args, context) {
         const object = evalObject(scope, args, context)
         const value = evalValue(scope, args, context)
-        return setSafeProperty(object, prop, value)
+        setSafeProperty(object, prop, value)
+        return value
       }
     } else if (isSymbolNode(this.object)) {
       // update a matrix subset, for example `a[2]=3`
@@ -131,7 +134,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
         const childObject = evalObject(scope, args, context)
         const value = evalValue(scope, args, context)
         const index = evalIndex(scope, args, childObject) // Important:  we pass childObject instead of context
-        setSafeProperty(scope, name, assign(childObject, index, value))
+        scope.set(name, assign(childObject, index, value))
         return value
       }
     } else { // isAccessorNode(node.object) === true

@@ -68,16 +68,16 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
       }
     } else if (name in math) {
       return function (scope, args, context) {
-        return name in scope
-          ? getSafeProperty(scope, name)
+        return scope.has(name)
+          ? scope.get(name)
           : getSafeProperty(math, name)
       }
     } else {
       const isUnit = isValuelessUnit(name)
 
       return function (scope, args, context) {
-        return name in scope
-          ? getSafeProperty(scope, name)
+        return scope.has(name)
+          ? scope.get(name)
           : isUnit
             ? new Unit(null, name)
             : SymbolNode.onUndefinedSymbol(name)

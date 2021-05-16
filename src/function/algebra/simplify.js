@@ -5,6 +5,7 @@ import { createSimplifyCore } from './simplify/simplifyCore.js'
 import { createSimplifyConstant } from './simplify/simplifyConstant.js'
 import { createResolve } from './simplify/resolve.js'
 import { hasOwnProperty } from '../../utils/object.js'
+import { createEmptyMap, createMap } from '../../utils/map.js'
 
 const name = 'simplify'
 const dependencies = [
@@ -157,50 +158,54 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    */
   const simplify = typed('simplify', {
     string: function (expr) {
-      return this(parse(expr), this.rules, {}, {})
+      return this(parse(expr), this.rules, createEmptyMap(), {})
     },
 
-    'string, Object': function (expr, scope) {
+    'string, Map | Object': function (expr, scope) {
       return this(parse(expr), this.rules, scope, {})
     },
 
-    'string, Object, Object': function (expr, scope, options) {
+    'string, Map | Object, Object': function (expr, scope, options) {
       return this(parse(expr), this.rules, scope, options)
     },
 
     'string, Array': function (expr, rules) {
-      return this(parse(expr), rules, {}, {})
+      return this(parse(expr), rules, createEmptyMap(), {})
     },
 
-    'string, Array, Object': function (expr, rules, scope) {
+    'string, Array, Map | Object': function (expr, rules, scope) {
       return this(parse(expr), rules, scope, {})
     },
 
-    'string, Array, Object, Object': function (expr, rules, scope, options) {
+    'string, Array, Map | Object, Object': function (expr, rules, scope, options) {
       return this(parse(expr), rules, scope, options)
     },
 
-    'Node, Object': function (expr, scope) {
+    'Node, Map | Object': function (expr, scope) {
       return this(expr, this.rules, scope, {})
     },
 
-    'Node, Object, Object': function (expr, scope, options) {
+    'Node, Map | Object, Object': function (expr, scope, options) {
       return this(expr, this.rules, scope, options)
     },
 
     Node: function (expr) {
-      return this(expr, this.rules, {}, {})
+      return this(expr, this.rules, createEmptyMap(), {})
     },
 
     'Node, Array': function (expr, rules) {
-      return this(expr, rules, {}, {})
+      return this(expr, rules, createEmptyMap(), {})
     },
 
-    'Node, Array, Object': function (expr, rules, scope) {
+    'Node, Array, Map | Object': function (expr, rules, scope) {
       return this(expr, rules, scope, {})
     },
 
     'Node, Array, Object, Object': function (expr, rules, scope, options) {
+      return this(expr, rules, createMap(scope), options)
+    },
+
+    'Node, Array, Map, Object': function (expr, rules, scope, options) {
       rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)

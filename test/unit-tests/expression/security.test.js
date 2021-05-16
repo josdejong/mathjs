@@ -32,11 +32,11 @@ describe('security', function () {
 
   it('should not allow calling constructor', function () {
     assert.throws(function () {
-      math.evaluate('constructor')
+      math.evaluate('constructor', {})
     }, /Error: No access to property "constructor"/)
 
     assert.throws(function () {
-      math.evaluate('toString')
+      math.evaluate('toString', {})
     }, /Cannot access method "toString" as a property/)
   })
 
@@ -117,11 +117,11 @@ describe('security', function () {
     assert.throws(function () {
       math.evaluate('p = parser()\n' +
           'p.evaluate("", [])\n' +
-          'o = p.get("constructor")\n' +
-          'c = o.getOwnPropertyDescriptor(o.__proto__, "constructor")\n' +
+          'o = p.get("constructor")\n' + // this returns undefined
+          'c = o.getOwnPropertyDescriptor(o.__proto__, "constructor")\n' + // errors here!
           'f = c.value("console.log(\'hacked...\')")\n' +
           'f()')
-    }, /Error: No access to property "constructor"/)
+    }, /Error: No access to method "getOwnPropertyDescriptor"/)
   })
 
   it('should not allow calling Function via a symbol', function () {

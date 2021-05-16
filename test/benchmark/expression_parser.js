@@ -6,7 +6,7 @@ const assert = require('assert')
 const Benchmark = require('benchmark')
 const padRight = require('pad-right')
 const math = require('../..')
-const getSafeProperty = require('../../lib/cjs/utils/customs').getSafeProperty
+const { getSafeProperty } = require('../../lib/cjs/utils/customs')
 
 // expose on window when using bundled in a browser
 if (typeof window !== 'undefined') {
@@ -18,14 +18,20 @@ function pad (text) {
 }
 
 const expr = '2 + 3 * sin(pi / 4) - 4x'
-const scope = { x: 2 }
-const compiled = math.parse(expr).compile(math, {})
+const scope = new Map([
+  ['x', 2]
+])
+const compiled = math.parse(expr).compile(math)
+
+function undefinedSymbol (name) {
+  throw new Error('Undefined symbol "' + name + '"')
+}
 
 const sin = getSafeProperty(math, 'sin')
 const pi = getSafeProperty(math, 'pi')
 const compiledPlainJs = {
   evaluate: function (scope) {
-    return 2 + 3 * ('sin' in scope ? getSafeProperty(scope, 'sin') : sin)(('pi' in scope ? getSafeProperty(scope, 'pi') : pi) / 4) - 4 * scope.x
+    return 2 + 3 * (scope.has('sin') ? scope.get('sin') : sin)((scope.has('pi') ? scope.get('pi') : pi) / 4) - 4 * (scope.has('x') ? scope.get('x') : undefinedSymbol('x'))
   }
 }
 

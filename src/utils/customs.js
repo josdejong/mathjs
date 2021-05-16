@@ -41,6 +41,14 @@ function setSafeProperty (object, prop, value) {
   throw new Error('No access to property "' + prop + '"')
 }
 
+function getSafeProperties (object) {
+  return Object.keys(object).filter((prop) => hasOwnProperty(object, prop))
+}
+
+function hasSafeProperty (object, prop) {
+  return prop in object
+}
+
 /**
  * Test whether a property is safe to use for an object.
  * For example .toString and .constructor are not safe
@@ -148,6 +156,8 @@ const safeNativeMethods = {
 export { getSafeProperty }
 export { setSafeProperty }
 export { isSafeProperty }
+export { hasSafeProperty }
+export { getSafeProperties }
 export { validateSafeMethod }
 export { isSafeMethod }
 export { isPlainObject }

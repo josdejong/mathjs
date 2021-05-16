@@ -1,6 +1,5 @@
 import { factory } from '../utils/factory.js'
-import { extend, hasOwnProperty } from '../utils/object.js'
-import { getSafeProperty, setSafeProperty } from '../utils/customs.js'
+import { createEmptyMap, toObject } from '../utils/map.js'
 
 const name = 'Parser'
 const dependencies = ['parse']
@@ -59,7 +58,11 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
       throw new SyntaxError(
         'Constructor must be called with the new operator')
     }
-    this.scope = {}
+
+    Object.defineProperty(this, 'scope', {
+      value: createEmptyMap(),
+      writable: false
+    })
   }
 
   /**
@@ -89,9 +92,9 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   Parser.prototype.get = function (name) {
     // TODO: validate arguments
-    return name in this.scope
-      ? getSafeProperty(this.scope, name)
-      : undefined
+    if (this.scope.has(name)) {
+      return this.scope.get(name)
+    }
   }
 
   /**
@@ -99,7 +102,15 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @return {Object} values
    */
   Parser.prototype.getAll = function () {
-    return extend({}, this.scope)
+    return toObject(this.scope)
+  }
+
+  /**
+   * Get a map with all defined variables
+   * @return {Map} values
+   */
+  Parser.prototype.getAllAsMap = function () {
+    return this.scope
   }
 
   /**
@@ -108,8 +119,8 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param {* | undefined} value
    */
   Parser.prototype.set = function (name, value) {
-    // TODO: validate arguments
-    return setSafeProperty(this.scope, name, value)
+    this.scope.set(name, value)
+    return value
   }
 
   /**
@@ -117,19 +128,14 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param {string} name
    */
   Parser.prototype.remove = function (name) {
-    // TODO: validate arguments
-    delete this.scope[name]
+    this.scope.delete(name)
   }
 
   /**
    * Clear the scope with variables and functions
    */
   Parser.prototype.clear = function () {
-    for (const name in this.scope) {
-      if (hasOwnProperty(this.scope, name)) {
-        delete this.scope[name]
-      }
-    }
+    this.scope.clear()
   }
 
   return Parser

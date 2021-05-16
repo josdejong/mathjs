@@ -2,6 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
+import { toObject } from '../../../../src/utils/map.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
@@ -110,7 +111,7 @@ describe('FunctionNode', function () {
       assert.strictEqual(args.length, 2)
       assert(args[0] instanceof mymath.Node)
       assert(args[1] instanceof mymath.Node)
-      assert.deepStrictEqual(_scope, scope)
+      assert.deepStrictEqual(toObject(_scope), scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
     myFunction.rawArgs = true
@@ -137,7 +138,7 @@ describe('FunctionNode', function () {
       assert.strictEqual(args.length, 2)
       assert(args[0] instanceof mymath.Node)
       assert(args[1] instanceof mymath.Node)
-      assert.deepStrictEqual(_scope, scope)
+      assert.deepStrictEqual(toObject(_scope), scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
     myFunction.rawArgs = true

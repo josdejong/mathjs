@@ -89,6 +89,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
     if (this.index.isObjectProperty()) {
       const prop = this.index.getObjectProperty()
       return function evalAccessorNode (scope, args, context) {
+        // get a property from an object evaluated using the scope.
         return getSafeProperty(evalObject(scope, args, context), prop)
       }
     } else {

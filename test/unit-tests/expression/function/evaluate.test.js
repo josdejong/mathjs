@@ -1,6 +1,7 @@
 import assert from 'assert'
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
+import { createMap } from '../../../../src/utils/map.js'
 
 const Complex = math.Complex
 const Unit = math.Unit
@@ -65,6 +66,15 @@ describe('evaluate', function () {
       return 'hello, ' + name + '!'
     }
     assert.deepStrictEqual(math.evaluate('hello("jos")', scope), 'hello, jos!')
+  })
+
+  it('should handle the given Map scope', function () {
+    const scope = createMap({
+      a: 3,
+      b: 4
+    })
+    assert.deepStrictEqual(math.evaluate('a*b', scope), 12)
+    assert.deepStrictEqual(math.evaluate('c=5', scope), 5)
   })
 
   it('should LaTeX evaluate', function () {
