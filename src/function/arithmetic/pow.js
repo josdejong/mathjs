@@ -64,14 +64,16 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     },
 
     'Fraction, Fraction': function (x, y) {
-      if (y.d !== 1) {
-        if (config.predictable) {
-          throw new Error('Function pow does not support non-integer exponents for fractions.')
-        } else {
-          return _pow(x.valueOf(), y.valueOf())
-        }
+      const result = x.pow(y)
+
+      if (result != null) {
+        return result
+      }
+
+      if (config.predictable) {
+        throw new Error('Result of pow is non-rational and cannot be expressed as a fraction')
       } else {
-        return x.pow(y)
+        return _pow(x.valueOf(), y.valueOf())
       }
     },
 

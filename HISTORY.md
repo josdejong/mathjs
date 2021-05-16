@@ -9,7 +9,9 @@
 - Added TypeScript definitions to the project, making it redundant to install
   `@types/mathjs`, and making it easier to improve the definitions. See #2187, 
   #2192. Thanks @CatsMiaow.
-- Update to `complex.js@2.0.13` (fixing #2211). Thanks @infusion
+- Upgraded dependencies
+  - `complex.js@2.0.13` (fixing #2211). Thanks @infusion
+  - `fraction.js@4.1.0` (`pow` now supporting rational exponents).
 - Fix #2174: function `pickRandom` having no name. Thanks @HK-SHAO.
 - Fix #2019: VSCode auto import keeps adding import { null } from 'mathjs'.
 - Fix #2185: Fix TypeScript definition of unit division, which can also return 
