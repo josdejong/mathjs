@@ -115,10 +115,13 @@ describe('pow', function () {
   })
 
   it('should exponentiate a fraction to an non-integer power', function () {
-    assert.throws(function () { mathPredictable.pow(fraction(3), fraction(1.5)) }, /Function pow does not support non-integer exponents for fractions/)
+    assert.deepStrictEqual(math.pow(fraction(27, 8), fraction(2, 3)), fraction(9, 4))
 
-    assert.strictEqual(math.pow(fraction(4), 1.5), 8)
-    assert.strictEqual(math.pow(fraction(4), fraction(1.5)), 8)
+    approx.deepEqual(math.pow(fraction(4), 1.5114), 8.127434364206053)
+    approx.deepEqual(math.pow(fraction(4), fraction(1.5114)), 8.127434364206053)
+
+    assert.throws(function () { mathPredictable.pow(fraction(3), fraction(1.5114)) },
+      /Result of pow is non-rational and cannot be expressed as a fraction/)
   })
 
   it('should throw an error if used with wrong number of arguments', function () {
