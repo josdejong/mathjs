@@ -2,6 +2,8 @@
 
 # not yet published, version 9.4.0
 
+- Implemented support to use objects with a `Map` interface as scope, 
+  see #2143, #2166. Thanks @jhugman.
 - Extend `eigs` to support general complex matrices, see #1741. Thanks @m93a.
 - DenseMatrix and SparseMatrix are now iterable, see #1184. Thanks @m93a.
 - Implemented utility functions `matrixFromRows`, `matrixFromColumns`, and 
