@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 9.4.0
+# 2021-05-16, version 9.4.0
 
 - Implemented support to use objects with a `Map` interface as scope, 
   see #2143, #2166. Thanks @jhugman.
