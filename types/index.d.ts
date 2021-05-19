@@ -1160,6 +1160,21 @@ declare namespace math {
     dot(x: MathArray | Matrix, y: MathArray | Matrix): number;
 
     /**
+     * Compute eigenvalues and eigenvectors of a matrix.
+     * The eigenvalues are sorted by their absolute value, ascending.
+     * An eigenvalue with multiplicity k will be listed k times.
+     * The eigenvectors are returned as columns of a matrix – the eigenvector
+     * that belongs to the j-th eigenvalue in the list (eg. values[j]) is the
+     * j-th column (eg. column(vectors, j)). If the algorithm fails to converge,
+     * it will throw an error – in that case, however, you may still find useful
+     * information in err.values and err.vectors
+     * @param x Matrix to be diagonalized
+     * @param prec Precision, default value: 1e-15
+     * @returns Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
+     */
+     eigs(x: MathArray | Matrix, prec?:number|BigNumber): {values: MathArray | Matrix, vectors: MathArray | Matrix}
+
+    /**
      * Compute the matrix exponential, expm(A) = e^A. The matrix must be
      * square. Not to be confused with exp(a), which performs element-wise
      * exponentiation. The exponential is calculated using the Padé
