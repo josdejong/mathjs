@@ -332,12 +332,12 @@ describe('simplify', function () {
 
   it('resolve() should substitute scoped constants from Map like scopes', function () {
     assert.strictEqual(
-      math.simplify.resolve(math.parse('x+y'), new Map(Object.entries({ x: 1 }))).toString(),
+      math.simplify.resolve(math.parse('x+y'), new Map([['x', 1]])).toString(),
       '1 + y'
     ) // direct
     simplifyAndCompare('x+y', 'x+y', new Map()) // operator
-    simplifyAndCompare('x+y', 'y+1', new Map(Object.entries({ x: 1 })))
-    simplifyAndCompare('x+y', 'y+1', new Map(Object.entries({ x: math.parse('1') })))
+    simplifyAndCompare('x+y', 'y+1', new Map([['x', 1]]))
+    simplifyAndCompare('x+y', 'y+1', new Map([['x', math.parse('1')]]))
   })
 
   it('should keep implicit multiplication implicit', function () {
