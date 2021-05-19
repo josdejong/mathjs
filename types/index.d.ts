@@ -1172,7 +1172,7 @@ declare namespace math {
      * @param prec Precision, default value: 1e-15
      * @returns Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
      */
-     eigs(x: MathArray | Matrix, prec?:number|BigNumber[]): {values: MathArray | Matrix, vectors: MathArray | Matrix}
+     eigs(x: MathArray | Matrix, prec?:number|BigNumber): {values: MathArray | Matrix, vectors: MathArray | Matrix}
 
     /**
      * Compute the matrix exponential, expm(A) = e^A. The matrix must be
