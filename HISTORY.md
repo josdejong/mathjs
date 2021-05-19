@@ -1,5 +1,10 @@
 # History
 
+# not yet published, version 9.4.1
+
+- Fix #2100: add TypeScript declaration for `eigs`. Thanks @andrebianchessi.
+
+
 # 2021-05-16, version 9.4.0
 
 - Implemented support to use objects with a `Map` interface as scope, 
