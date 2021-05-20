@@ -114,6 +114,7 @@
     "lib",
     "examples",
     "main",
+    "types",
     "number.cjs",
     "LICENSE",
     "NOTICE",
