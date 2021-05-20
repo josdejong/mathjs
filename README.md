@@ -33,8 +33,6 @@ Install math.js using [npm](https://www.npmjs.com/package/mathjs):
 
     npm install mathjs
 
-> Note that when using mathjs in a TypeScript project, you will have to install type definition files too: `npm install @types/mathjs`.
-
 Or download mathjs via one of the CDN's listed on the downloads page:
 
 &nbsp;&nbsp;&nbsp;&nbsp;[https://mathjs.org/download.html](https://mathjs.org/download.html#download)
