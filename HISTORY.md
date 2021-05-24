@@ -3,6 +3,8 @@
 # not yet published, version 9.4.1
 
 - Fix #2100: add TypeScript declaration for `eigs`. Thanks @andrebianchessi.
+- Add files in folder `types` when published on npm. Thanks @dhritzkiv.
+- Update readme regarding TypeScript definition files. Thanks @dhritzkiv.
 
 
 # 2021-05-16, version 9.4.0
