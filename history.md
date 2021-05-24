@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210524-version-941">2021-05-24, version 9.4.1 <a href="#20210524-version-941" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2100">#2100</a>: add TypeScript declaration for `eigs`. Thanks <a href="https://github.com/andrebianchessi">@andrebianchessi</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2220">#2220</a>: add TypeScript files to published npm package. Thanks <a href="https://github.com/dhritzkiv">@dhritzkiv</a>.
+- Update readme regarding TypeScript definition files. Thanks <a href="https://github.com/dhritzkiv">@dhritzkiv</a>.
+- Update to `fraction.js@4.1.1`
+
+
 <h1 id="20210516-version-940">2021-05-16, version 9.4.0 <a href="#20210516-version-940" title="Permalink">#</a></h1>
 
 - Implemented support to use objects with a `Map` interface as scope, 
