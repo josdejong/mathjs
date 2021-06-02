@@ -1,6 +1,6 @@
 import { clone } from '../../../utils/object.js'
 
-export function createComplexEigs ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolveAll, equal, complex, larger, smaller, round, log10, transpose, matrixFromColumns }) {
+export function createComplexEigs ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolve, usolveAll, equal, complex, larger, smaller, matrixFromColumns, dot }) {
   /**
    * @param {number[][]} arr the matrix to find eigenvalues of
    * @param {number} N size of the matrix
@@ -46,7 +46,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     let vectors
 
     if (findVectors) {
-      vectors = findEigenvectors(arr, N, C, values, prec)
+      vectors = findEigenvectors(arr, N, C, values, prec, type)
       vectors = matrixFromColumns(...vectors)
     }
 
@@ -390,11 +390,18 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @param {number} N size of A
    * @param {Matrix} C column transformation matrix that turns A into upper triangular
    * @param {number[]} values array of eigenvalues of A
+   * @param {'number'|'BigNumber'|'Complex'} type
    * @returns {number[][]} eigenvalues
    */
-  function findEigenvectors (A, N, C, values, prec) {
+  function findEigenvectors (A, N, C, values, prec, type) {
     const Cinv = inv(C)
     const U = multiply(Cinv, A, C)
+
+    const big = type === 'BigNumber'
+    const cplx = type === 'Complex'
+
+    const zero = big ? bignumber(0) : cplx ? complex(0) : 0
+    const one = big ? bignumber(1) : cplx ? complex(1) : 1
 
     // turn values into a kind of "multiset"
     // this way it is easier to find eigenvectors
@@ -405,12 +412,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
       const i = indexOf(uniqueValues, λ, equal)
 
       if (i === -1) {
-        // a dirty trick that helps us find more vectors
-        // TODO with iterative algorithm this can be removed
-        // Note: the round around log10 is needed to prevent rounding off errors in IE
-        const rounded = round(λ, subtract(-1, round(log10(prec))))
-
-        uniqueValues.push(rounded)
+        uniqueValues.push(λ)
         multiplicities.push(1)
       } else {
         multiplicities[i] += 1
@@ -423,23 +425,32 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
     const vectors = []
     const len = uniqueValues.length
-    const b = Array(N).fill(0)
-    const E = diag(Array(N).fill(1))
+    const b = Array(N).fill(zero)
+    const E = diag(Array(N).fill(one))
 
     // eigenvalues for which usolve failed (due to numerical error)
     const failedLambdas = []
 
     for (let i = 0; i < len; i++) {
       const λ = uniqueValues[i]
+      const A = subtract(U, multiply(λ, E)) // the characteristic matrix
 
-      let solutions = usolveAll(subtract(U, multiply(λ, E)), b)
+      let solutions = usolveAll(A, b)
       solutions = solutions.map(v => multiply(C, v))
 
       solutions.shift() // ignore the null vector
 
-      // looks like we missed something
-      if (solutions.length < multiplicities[i]) {
-        failedLambdas.push(λ)
+      // looks like we missed something, try inverse iteration
+      while (solutions.length < multiplicities[i]) {
+        const approxVec = inverseIterate(A, N, solutions, prec, type)
+
+        if (approxVec == null) {
+          // no more vectors were found
+          failedLambdas.push(λ)
+          break
+        }
+
+        solutions.push(approxVec)
       }
 
       vectors.push(...solutions.map(v => flatten(v)))
@@ -573,6 +584,109 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
       }
     }
     return -1
+  }
+
+  /**
+   * Provided a near-singular upper-triangular matrix A and a list of vectors,
+   * finds an eigenvector of A with the smallest eigenvalue, which is orthogonal
+   * to each vector in the list
+   * @template T
+   * @param {T[][]} A near-singular square matrix
+   * @param {number} N dimension
+   * @param {T[][]} orthog list of vectors
+   * @param {number} prec epsilon
+   * @param {'number'|'BigNumber'|'Complex'} type
+   * @return {T[] | null} eigenvector
+   *
+   * @see Numerical Recipes for Fortran 77 – 11.7 Eigenvalues or Eigenvectors by Inverse Iteration
+   */
+  function inverseIterate (A, N, orthog, prec, type) {
+    const largeNum = type === 'BigNumber' ? bignumber(1000) : 1000
+
+    let b // the vector
+
+    // you better choose a random vector before I count to five
+    let i = 0
+    while (true) {
+      b = randomOrthogonalVector(N, orthog, type)
+      b = usolve(A, b)
+
+      if (larger(norm(b), largeNum)) { break }
+      if (++i >= 5) { return null }
+    }
+
+    // you better converge before I count to ten
+    i = 0
+    while (true) {
+      const c = usolve(A, b)
+
+      if (smaller(norm(orthogonalComplement(b, [c])), prec)) { break }
+      if (++i >= 10) { return null }
+
+      b = normalize(c)
+    }
+
+    return b
+  }
+
+  /**
+   * Generates a random unit vector of dimension N, orthogonal to each vector in the list
+   * @template T
+   * @param {number} N dimension
+   * @param {T[][]} orthog list of vectors
+   * @param {'number'|'BigNumber'|'Complex'} type
+   * @returns {T[]} random vector
+   */
+  function randomOrthogonalVector (N, orthog, type) {
+    const big = type === 'BigNumber'
+    const cplx = type === 'Complex'
+
+    // generate random vector with the correct type
+    let v = Array(N).fill(0).map(_ => 2 * Math.random() - 1)
+    if (big) { v = v.map(n => bignumber(n)) }
+    if (cplx) { v = v.map(n => complex(n)) }
+
+    // project to orthogonal complement
+    v = orthogonalComplement(v, orthog)
+
+    // normalize
+    return normalize(v, type)
+  }
+
+  /**
+   * Project vector v to the orthogonal complement of an array of vectors
+   */
+  function orthogonalComplement (v, orthog) {
+    for (const w of orthog) {
+      // v := v − (w, v)/∥w∥² w
+      v = subtract(v, multiply(divideScalar(dot(w, v), dot(w, w)), w))
+    }
+
+    return v
+  }
+
+  /**
+   * Calculate the norm of a vector.
+   * We can't use math.norm because factory can't handle circular dependency.
+   * Seriously, I'm really fed up with factory.
+   */
+  function norm (v) {
+    return abs(sqrt(dot(v, v)))
+  }
+
+  /**
+   * Normalize a vector
+   * @template T
+   * @param {T[]} v
+   * @param {'number'|'BigNumber'|'Complex'} type
+   * @returns {T[]} normalized vec
+   */
+  function normalize (v, type) {
+    const big = type === 'BigNumber'
+    const cplx = type === 'Complex'
+    const one = big ? bignumber(1) : cplx ? complex(1) : 1
+
+    return multiply(divideScalar(one, norm(v)), v)
   }
 
   return complexEigs
