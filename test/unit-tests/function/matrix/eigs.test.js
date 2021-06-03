@@ -94,24 +94,23 @@ describe('eigs', function () {
     ])
 
     const expectedVecs = [
-      [ 0, 1, 0, 0, 0 ],
-      [ 1, 0, 0, 0, 0 ],
-      [ 0, 0, complex(0.11830597156369933, -0.031220615673570772), complex(-0.1200245154270954, -0.023772787955108215), complex(-0.9202478355596486, 0.3913360718714568) ],
-      [ 0, 0, complex(0.595491754174446, -0.7939890055659293), complex(-1.9907357758894604e-15, -7.492144846834677e-16), 0 ],
-      [ 0, 0, complex(1.4367985194861642e-30, 1.7021784687445796e-45),  complex(0.6439057179284668, 0.7552578345627129), 0 ]
+      [0, 1, 0, 0, 0],
+      [1, 0, 0, 0, 0],
+      [0, 0, complex(0.11830597156369933, -0.031220615673570772), complex(-0.1200245154270954, -0.023772787955108215), complex(-0.9202478355596486, 0.3913360718714568)],
+      [0, 0, complex(0.595491754174446, -0.7939890055659293), complex(-1.9907357758894604e-15, -7.492144846834677e-16), 0],
+      [0, 0, complex(1.4367985194861642e-30, 1.7021784687445796e-45), complex(0.6439057179284668, 0.7552578345627129), 0]
     ]
 
-    const orthogonalSize = (v, w) => v = norm(subtract(v, multiply(divide(dot(w, v), dot(w, w)), w)))
+    const orthogonalSize = (v, w) => norm(subtract(v, multiply(divide(dot(w, v), dot(w, w)), w)))
 
     // inverse iteration is stochastic, check it multiple times
     for (let i = 0; i < 5; i++) {
-      const { vectors } = eigs(m);
+      const { vectors } = eigs(m)
 
       for (let j = 0; j < 5; j++) {
         assert(orthogonalSize(vectors[j], expectedVecs[j]) < 0.5) // this is poor precision, what's wrong?
       }
     }
-
   })
 
   it('eigenvector check', function () {
