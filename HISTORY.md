@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 9.4.2
+# 2021-06-05, version 9.4.2
 
 - Implemented iterative eigenvalue finder for `eigs`, making it much more 
   robust. See #2179, #2237. Thanks @m93a.
