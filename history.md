@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210605-version-942">2021-06-05, version 9.4.2 <a href="#20210605-version-942" title="Permalink">#</a></h1>
+
+- Implemented iterative eigenvalue finder for `eigs`, making it much more 
+  robust. See <a href="https://github.com/josdejong/mathjs/issues/2179">#2179</a>, <a href="https://github.com/josdejong/mathjs/issues/2237">#2237</a>. Thanks <a href="https://github.com/m93a">@m93a</a>.
+- Improved TypeScript definitions of function `parse`. Thanks <a href="https://github.com/OpportunityLiu">@OpportunityLiu</a>.
+
+
 <h1 id="20210524-version-941">2021-05-24, version 9.4.1 <a href="#20210524-version-941" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2100">#2100</a>: add TypeScript declaration for `eigs`. Thanks <a href="https://github.com/andrebianchessi">@andrebianchessi</a>.
