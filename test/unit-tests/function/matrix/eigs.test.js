@@ -1,7 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import approx from '../../../../tools/approx.js'
-const { eigs, complex, matrix, size, bignumber: bignum, Matrix, Complex } = math
+const { eigs, complex, divide, dot, matrix, multiply, norm, size, subtract, bignumber: bignum, zeros, Matrix, Complex } = math
 
 describe('eigs', function () {
   it('only accepts a square matrix', function () {
@@ -80,6 +80,39 @@ describe('eigs', function () {
         [4.1957619745869845, 0.9232933211541949, -1.2931270747054358, -4.665994662426116]]).values,
     [-0.9135495807127523, 2.26552473288741, 5.6502090685149735, -8.687249803623432]
     )
+  })
+
+  it('calculates eigenvalues and eigenvectors for 5x5 matrix', function () {
+    this.timeout(10000)
+
+    const m = zeros([5, 5])
+    m[4][3] = m[3][4] = m[3][2] = m[2][4] = 1
+
+    approx.deepEqual(eigs(m).values, [
+      0, 0,
+      complex(-0.6623589786223121, 0.5622795120622232),
+      complex(-0.6623589786223121, -0.5622795120622232),
+      1.3247179572446257
+    ])
+
+    const expectedVecs = [
+      [0, 1, 0, 0, 0],
+      [1, 0, 0, 0, 0],
+      [0, 0, complex(0.11830597156369933, -0.031220615673570772), complex(-0.1200245154270954, -0.023772787955108215), complex(-0.9202478355596486, 0.3913360718714568)],
+      [0, 0, complex(0.595491754174446, -0.7939890055659293), complex(-1.9907357758894604e-15, -7.492144846834677e-16), 0],
+      [0, 0, complex(1.4367985194861642e-30, 1.7021784687445796e-45), complex(0.6439057179284668, 0.7552578345627129), 0]
+    ]
+
+    const orthogonalSize = (v, w) => norm(subtract(v, multiply(divide(dot(w, v), dot(w, w)), w)))
+
+    // inverse iteration is stochastic, check it multiple times
+    for (let i = 0; i < 5; i++) {
+      const { vectors } = eigs(m)
+
+      for (let j = 0; j < 5; j++) {
+        assert(orthogonalSize(vectors[j], expectedVecs[j]) < 0.5) // this is poor precision, what's wrong?
+      }
+    }
   })
 
   it('eigenvector check', function () {
