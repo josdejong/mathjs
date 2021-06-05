@@ -4,6 +4,7 @@
 
 - Implemented iterative eigenvalue finder for `eigs`, making it much more 
   robust. See #2179, #2237. Thanks @m93a.
+- Improved TypeScript definitions of function `parse`. Thanks @OpportunityLiu.
 
 
 # 2021-05-24, version 9.4.1
