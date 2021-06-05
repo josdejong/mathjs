@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 9.4.2
+
+- Implemented iterative eigenvalue finder for `eigs`, making it much more 
+  robust. See #2179, #2237. Thanks @m93a.
+
+
 # 2021-05-24, version 9.4.1
 
 - Fix #2100: add TypeScript declaration for `eigs`. Thanks @andrebianchessi.
