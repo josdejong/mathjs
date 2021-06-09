@@ -3,8 +3,8 @@ import assert from 'assert'
 
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
-import BigNumber from 'decimal.js'
-const add = math.add
+import Decimal from 'decimal.js'
+const { add, BigNumber } = math
 
 // TODO: make unit tests independent of math
 describe('addScalar', function () {

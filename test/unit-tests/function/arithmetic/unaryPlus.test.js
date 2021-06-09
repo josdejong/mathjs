@@ -32,11 +32,11 @@ describe('unaryPlus', function () {
   it('should return bignumber unary plus on a string', function () {
     const bigmath = math.create({ number: 'BigNumber' })
     const a = bigmath.unaryPlus('2')
-    assert(a instanceof math.BigNumber)
+    assert(a instanceof bigmath.BigNumber)
     assert.deepStrictEqual(a.toString(), '2')
 
     const b = bigmath.unaryPlus('-2')
-    assert(b instanceof math.BigNumber)
+    assert(b instanceof bigmath.BigNumber)
     assert.deepStrictEqual(b.toString(), '-2')
   })
 

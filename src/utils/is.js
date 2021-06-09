@@ -17,7 +17,9 @@ export function isNumber (x) {
 }
 
 export function isBigNumber (x) {
-  return (x && x.constructor.prototype.isBigNumber === true) || false
+  if (x?.isBigNumber === true && x?.constructor?.prototype?.isBigNumber === true) return true
+  if (x?.constructor?.isDecimal && x.constructor.isDecimal(x) === true) return true
+  return false
 }
 
 export function isComplex (x) {
