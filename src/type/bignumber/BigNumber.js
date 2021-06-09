@@ -6,35 +6,41 @@ const dependencies = ['?on', 'config']
 
 export const createBigNumberClass = /* #__PURE__ */ factory(name, dependencies, ({ on, config }) => {
   const EUCLID = 9 // Use euclidian division for mod calculation
-  const BigNumber = Decimal.clone({ precision: config.precision, modulo: EUCLID })
 
-  /**
-   * Attach type information
-   */
-  BigNumber.prototype.type = 'BigNumber'
-  BigNumber.prototype.isBigNumber = true
+  class BigNumber extends Decimal.clone({ precision: config.precision, modulo: EUCLID }) {
 
-  /**
-   * Get a JSON representation of a BigNumber containing
-   * type information
-   * @returns {Object} Returns a JSON object structured as:
-   *                   `{"mathjs": "BigNumber", "value": "0.2"}`
-   */
-  BigNumber.prototype.toJSON = function () {
-    return {
-      mathjs: 'BigNumber',
-      value: this.toString()
+    constructor(...args) {
+      super(...args)
     }
-  }
 
-  /**
-   * Instantiate a BigNumber from a JSON object
-   * @param {Object} json  a JSON object structured as:
-   *                       `{"mathjs": "BigNumber", "value": "0.2"}`
-   * @return {BigNumber}
-   */
-  BigNumber.fromJSON = function (json) {
-    return new BigNumber(json.value)
+    /**
+     * Attach type information
+     */
+    type = 'BigNumber'
+    isBigNumber = true
+
+    /**
+     * Get a JSON representation of a BigNumber containing
+     * type information
+     * @returns {Object} Returns a JSON object structured as:
+     *                   `{"mathjs": "BigNumber", "value": "0.2"}`
+     */
+    toJSON = function () {
+      return {
+        mathjs: 'BigNumber',
+        value: this.toString()
+      }
+    }
+
+    /**
+     * Instantiate a BigNumber from a JSON object
+     * @param {Object} json  a JSON object structured as:
+     *                       `{"mathjs": "BigNumber", "value": "0.2"}`
+     * @return {BigNumber}
+     */
+    static fromJSON = function (json) {
+      return new BigNumber(json.value)
+    }
   }
 
   if (on) {
