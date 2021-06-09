@@ -59,6 +59,13 @@ describe('addScalar', function () {
     assert.deepStrictEqual(add(new BigNumber(2), math.complex(3, -4)), math.complex(5, -4))
   })
 
+  it('should add Decimals', function () {
+    assert.deepStrictEqual(add(Decimal(0.1), Decimal(0.2)), Decimal(0.3))
+    assert.deepStrictEqual(add(Decimal(0.1), 0.2), Decimal(0.3))
+    assert.deepStrictEqual(add(Decimal(0.1), new BigNumber(0.2)).toString(), '0.3')
+    assert.deepStrictEqual(add(new BigNumber(0.1), Decimal(0.2)).toString(), '0.3')
+  })
+
   it('should add two complex numbers', function () {
     assert.deepStrictEqual(add(math.complex(3, -4), math.complex(8, 2)), math.complex('11 - 2i'))
     assert.deepStrictEqual(add(math.complex(3, -4), 10), math.complex('13 - 4i'))
