@@ -27,7 +27,7 @@
   "dependencies": {
     "@babel/runtime": "^7.14.0",
     "complex.js": "^2.0.13",
-    "decimal.js": "^10.2.1",
+    "decimal.js": "^10.3.0",
     "escape-latex": "^1.2.0",
     "fraction.js": "^4.1.1",
     "javascript-natural-sort": "^0.7.1",
