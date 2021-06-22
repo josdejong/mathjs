@@ -17,8 +17,14 @@ export function isNumber (x) {
 }
 
 export function isBigNumber (x) {
-  if (x?.isBigNumber === true && x?.constructor?.prototype?.isBigNumber === true) return true
-  if (x?.constructor?.isDecimal && x.constructor.isDecimal(x) === true) return true
+  try {
+    if (x.isBigNumber === true && x.constructor.prototype.isBigNumber === true) return true
+  } catch {}
+
+  try {
+    if (x.constructor.isDecimal(x) === true) return true
+  } catch {}
+
   return false
 }
 
