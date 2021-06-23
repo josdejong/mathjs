@@ -29,7 +29,7 @@ Math.js can be downloaded or linked from various content delivery networks:
   <tbody>
     <tr>
       <td>unpkg</td>
-      <td><a href="https://unpkg.com/mathjs@9.4.2/">https://unpkg.com/mathjs@9.4.2/</a></td>
+      <td><a href="https://unpkg.com/mathjs@9.4.3/">https://unpkg.com/mathjs@9.4.3/</a></td>
     </tr>
     <tr>
       <td>cdnjs</td>
@@ -49,8 +49,8 @@ Math.js can be downloaded or linked from various content delivery networks:
 Or download the full bundle directly from [unpkg](https://unpkg.com):
 
 <p>
-    <a href="https://unpkg.com/mathjs@9.4.2/lib/browser/math.js">
-      math.js (version 9.4.2, <span id="size">149 kB</span>, minified and gzipped)
+    <a href="https://unpkg.com/mathjs@9.4.3/lib/browser/math.js">
+      math.js (version 9.4.3, <span id="size">149 kB</span>, minified and gzipped)
     </a>
 </p>
 

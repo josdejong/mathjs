@@ -4,6 +4,17 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210623-version-943">2021-06-23, version 9.4.3 <a href="#20210623-version-943" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2222">#2222</a>: mathjs polluting the `Decimal` prototype. Thanks <a href="https://github.com/m93a">@m93a</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2253">#2253</a>: expression parser throwing an error when accessing nested object
+  properties named `e`.
+- Fixes in TypeScript definitions fo:
+  - function `floor`, <a href="https://github.com/josdejong/mathjs/issues/2159">#2159</a>, <a href="https://github.com/josdejong/mathjs/issues/2246">#2246</a>. Thanks <a href="https://github.com/write2kcl">@write2kcl</a>.
+  - function `simplify`, see <a href="https://github.com/josdejong/mathjs/issues/2252">#2252</a>. Thanks <a href="https://github.com/nitroin">@nitroin</a>. 
+- Upgraded to `decimal.js@10.3.0`
+
+
 <h1 id="20210605-version-942">2021-06-05, version 9.4.2 <a href="#20210605-version-942" title="Permalink">#</a></h1>
 
 - Implemented iterative eigenvalue finder for `eigs`, making it much more 
