@@ -174,7 +174,6 @@ describe('simplify', function () {
   })
 
   it('should preserve the value of BigNumbers', function () {
-    this.timeout(10000)
     const bigmath = math.create({ number: 'BigNumber', precision: 64 })
     assert.deepStrictEqual(bigmath.simplify('111111111111111111 + 111111111111111111').evaluate(), bigmath.evaluate('222222222222222222'))
     assert.deepStrictEqual(bigmath.simplify('1 + 111111111111111111').evaluate(), bigmath.evaluate('111111111111111112'))

@@ -916,8 +916,6 @@ describe('Unit', function () {
     })
 
     it('should parse the value of the unit as Fraction or BigNumber when math.js is configured so', function () {
-      this.timeout(10000) // For IE tests
-
       const math2 = math.create({ number: 'Fraction' })
       const unit2 = math2.Unit.parse('5kg')
       assert(isFraction(unit2.value))

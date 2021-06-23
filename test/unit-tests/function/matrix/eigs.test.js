@@ -83,8 +83,6 @@ describe('eigs', function () {
   })
 
   it('calculates eigenvalues and eigenvectors for 5x5 matrix', function () {
-    this.timeout(10000)
-
     const m = zeros([5, 5])
     m[4][3] = m[3][4] = m[3][2] = m[2][4] = 1
 
