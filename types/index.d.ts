@@ -728,6 +728,18 @@ declare namespace math {
     floor(x: MathArray): MathArray;
     floor(x: Matrix): Matrix;
 
+      /**
+     * Round a value towards minus infinity. For matrices, the function is
+     * evaluated element wise.
+     * @param x Number to be rounded
+     * @param n Number of decimals Default value: 0.
+     * @returns Rounded value
+     */
+       floor(
+        x: number | BigNumber | Fraction | Complex | MathArray | Matrix,
+        n: number | BigNumber | MathArray
+      ): number | BigNumber | Fraction | Complex | MathArray | Matrix;
+
     /**
      * Calculate the greatest common divisor for two or more values or
      * arrays. For matrices, the function is evaluated element wise.
