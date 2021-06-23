@@ -3,8 +3,8 @@ import assert from 'assert'
 
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
-import BigNumber from 'decimal.js'
-const add = math.add
+import Decimal from 'decimal.js'
+const { add, BigNumber } = math
 
 // TODO: make unit tests independent of math
 describe('addScalar', function () {
@@ -57,6 +57,13 @@ describe('addScalar', function () {
   it('should add mixed complex numbers and BigNumbers', function () {
     assert.deepStrictEqual(add(math.complex(3, -4), new BigNumber(2)), math.complex(5, -4))
     assert.deepStrictEqual(add(new BigNumber(2), math.complex(3, -4)), math.complex(5, -4))
+  })
+
+  it('should add Decimals', function () {
+    assert.deepStrictEqual(add(Decimal(0.1), Decimal(0.2)), Decimal(0.3))
+    assert.deepStrictEqual(add(Decimal(0.1), 0.2), Decimal(0.3))
+    assert.deepStrictEqual(add(Decimal(0.1), new BigNumber(0.2)).toString(), '0.3')
+    assert.deepStrictEqual(add(new BigNumber(0.1), Decimal(0.2)).toString(), '0.3')
   })
 
   it('should add two complex numbers', function () {

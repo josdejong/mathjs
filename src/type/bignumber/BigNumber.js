@@ -5,8 +5,8 @@ const name = 'BigNumber'
 const dependencies = ['?on', 'config']
 
 export const createBigNumberClass = /* #__PURE__ */ factory(name, dependencies, ({ on, config }) => {
-  const EUCLID = 9 // Use euclidian division for mod calculation
-  const BigNumber = Decimal.clone({ precision: config.precision, modulo: EUCLID })
+  const BigNumber = Decimal.clone({ precision: config.precision, modulo: Decimal.EUCLID })
+  BigNumber.prototype = Object.create(BigNumber.prototype)
 
   /**
    * Attach type information

@@ -1,5 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
+import Decimal from 'decimal.js'
 const math2 = math.create()
 
 describe('typed', function () {
@@ -26,6 +27,12 @@ describe('typed', function () {
     assert.strictEqual(math.isBigNumber({ isBigNumber: true }), false)
     assert.strictEqual(math.isBigNumber(2), false)
     assert.strictEqual(math.isBigNumber(), false)
+  })
+
+  it('should recognize a Decimal as a BigNumber', function () {
+    assert.strictEqual(math.isBigNumber(Decimal(2)), true)
+    assert.strictEqual(math.isBigNumber(Decimal('2.6666666')), true)
+    assert.strictEqual(math.isBigNumber(Decimal(1).add(2)), true)
   })
 
   it('should test whether a value is a Fraction', function () {
