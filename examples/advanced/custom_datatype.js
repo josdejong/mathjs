@@ -51,6 +51,6 @@ console.log(ans1.toString())
 // outputs 'CustomValue:5'
 
 // you can automatically use the new type in functions which use `add` under the hood:
-const ans2 = math.sum(new math.CustomValue(2), new math.CustomValue(3), new math.CustomValue(4))
+const ans2 = math.sum(new math.CustomValue(6), new math.CustomValue(1), new math.CustomValue(2))
 console.log(ans2.toString())
 // outputs 'CustomValue:9'
