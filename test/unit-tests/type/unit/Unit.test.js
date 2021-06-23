@@ -931,7 +931,6 @@ describe('Unit', function () {
       const newMm = math2.createUnit('mm', '2 A')
       assert.notDeepStrictEqual(oldMm, newMm)
       assert.deepStrictEqual(newMm, math2.Unit.parse('mm'))
-      console.log(oldMm.units, newMm.units)
     })
   })
 
