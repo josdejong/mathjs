@@ -4,8 +4,6 @@ const cp = require('child_process')
 const path = require('path')
 
 describe('lib/esm', function () {
-  this.timeout(10000)
-
   it('should load via mjs', function (done) {
     const filename = path.join(__dirname, 'esmApp.mjs')
     cp.exec('node ' + filename, function (error, result) {

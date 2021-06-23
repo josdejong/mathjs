@@ -1,5 +1,14 @@
 # History
 
+# not yet published, version 9.4.3
+
+- Fix #2253: expression parser throwing an error when accessing nested object
+  properties named `e`.
+- Fixes in TypeScript definitions fo:
+  - function `floor`, #2159, #2246. Thanks @write2kcl.
+  - function `simplify`, see #2252. Thanks @nitroin. 
+
+
 # 2021-06-05, version 9.4.2
 
 - Implemented iterative eigenvalue finder for `eigs`, making it much more 

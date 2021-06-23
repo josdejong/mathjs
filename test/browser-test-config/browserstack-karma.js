@@ -1,4 +1,5 @@
 const baseKarma = require('./base-karma')
+const mochaConfig = require('../../.mocharc.json')
 
 module.exports = function (config) {
   const baseConfig = baseKarma(config)
@@ -19,7 +20,8 @@ module.exports = function (config) {
 
     client: {
       mocha: {
-        reporter: 'html'
+        reporter: 'dot',
+        timeout: mochaConfig.timeout
       }
     },
 

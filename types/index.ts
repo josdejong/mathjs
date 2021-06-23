@@ -89,6 +89,22 @@ Chaining examples
 }
 
 /*
+Simplify examples
+*/
+{
+  const math = create(all);
+
+  math.simplify("2 * 1 * x ^ (2 - 1)");
+  math.simplify("2 * 3 * x", { x: 4 });
+
+  const f = math.parse("2 * 1 * x ^ (2 - 1)");
+  math.simplify(f);
+
+  math.simplify("0.4 * x", {}, { exactFractions: true });
+  math.simplify("0.4 * x", {}, { exactFractions: false });
+}
+
+/*
 Complex numbers examples
 */
 {
@@ -430,6 +446,32 @@ Expression tree examples
     }
   });
 }
+
+/*
+Function floor examples
+*/
+{
+  const math = create(all, {});
+
+  // number input
+  math.floor(3.2); // returns number 3
+  math.floor(-4.2); // returns number -5
+
+  // number input
+  // roundoff result to 2 decimals
+  math.floor(3.212, 2); // returns number 3.21
+  math.floor(-4.212, 2); // returns number -4.22
+
+  // Complex input
+  const c = math.complex(3.24, -2.71); // returns Complex 3 - 3i
+  math.floor(c); // returns Complex 3 - 3i
+  math.floor(c, 1); // returns Complex 3.2 - 2.8i
+
+  //array input
+  math.floor([3.2, 3.8, -4.7]); // returns Array [3, 3, -5]
+  math.floor([3.21, 3.82, -4.71], 1); // returns Array [3.2, 3.8, -4.8]
+}
+
 
 /*
 JSON serialization/deserialization

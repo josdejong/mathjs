@@ -522,18 +522,21 @@ declare namespace math {
     /**
      * Simplify an expression tree.
      * @param expr The expression to be simplified
-     * @param rules A list of rules are applied to an expression, repeating
+     * @param [rules] (optional) A list of rules are applied to an expression, repeating
      * over the list until no further changes are made. It’s possible to
      * pass a custom set of rules to the function as second argument. A rule
      * can be specified as an object, string, or function.
-     * @param scope Scope to variables
+     * @param [scope] (optional) Scope to variables
+     * @param [options] (optional) An object with simplify options
      * @returns Returns the simplified form of expr
      */
     simplify(
       expr: MathNode | string,
       rules?: Array<{ l: string; r: string } | string | ((node: MathNode) => MathNode)>,
-      scope?: object
+      scope?: object,
+      options?: SimplifyOptions,
     ): MathNode;
+    simplify(expr: MathNode | string, scope?: object, options?: SimplifyOptions): MathNode;
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -724,6 +727,18 @@ declare namespace math {
     floor(x: Complex): Complex;
     floor(x: MathArray): MathArray;
     floor(x: Matrix): Matrix;
+
+      /**
+     * Round a value towards minus infinity. For matrices, the function is
+     * evaluated element wise.
+     * @param x Number to be rounded
+     * @param n Number of decimals Default value: 0.
+     * @returns Rounded value
+     */
+       floor(
+        x: number | BigNumber | Fraction | Complex | MathArray | Matrix,
+        n: number | BigNumber | MathArray
+      ): number | BigNumber | Fraction | Complex | MathArray | Matrix;
 
     /**
      * Calculate the greatest common divisor for two or more values or
@@ -2931,6 +2946,17 @@ declare namespace math {
     aliases?: string[];
     offset?: number;
     override?: boolean;
+  }
+
+  interface SimplifyOptions {
+    /** A boolean which is `true` by default. */
+    exactFractions?: boolean;
+    /**
+     * When `exactFractions` is true, a fraction will be returned only
+     * when both numerator and denominator are smaller than `fractionsLimit`.
+     * Default value is 10000.
+     */
+    fractionsLimit?: number;
   }
 
   interface UnitDefinition {

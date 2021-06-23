@@ -1,0 +1,5 @@
+{
+  "timeout": 10000,
+  "forbid-only": true,
+  "recursive": true
+}
