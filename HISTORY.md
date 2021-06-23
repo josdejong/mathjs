@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 9.4.3
+# 2021-06-23, version 9.4.3
 
 - Fix #2222: mathjs polluting the `Decimal` prototype. Thanks @m93a.
 - Fix #2253: expression parser throwing an error when accessing nested object
