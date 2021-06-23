@@ -554,7 +554,7 @@ const node2 = new math.ObjectNode({a: a, b: b, c: c})
 Construction:
 
 ```
-new OperatorNode(op: string, fn: string, args: Node[])
+new OperatorNode(op: string, fn: string, args: Node[], implicit: boolean = false)
 ```
 
 Additional methods:
@@ -587,6 +587,7 @@ Properties:
 - `op: string`
 - `fn: string`
 - `args: Node[]`
+- `implicit: boolean` True in case of an implicit multiplication, false otherwise
 
 Examples:
 
