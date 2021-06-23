@@ -362,6 +362,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         if (!parse.isDigit(currentCharacter(state))) {
           // this is no number, it is just a dot (can be dot notation)
           state.tokenType = TOKENTYPE.DELIMITER
+          return
         }
       } else {
         while (parse.isDigit(currentCharacter(state))) {

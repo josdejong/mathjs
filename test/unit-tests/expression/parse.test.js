@@ -823,6 +823,13 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj.foo.bar', { obj: { foo: { bar: 2 } } }), 2)
     })
 
+    it('should get a nested object property e using dot notation', function () {
+      // in the past, the parser was trying to parse '.e' as a number
+      const scope = { a: { e: { x : 2 } } }
+      assert.deepStrictEqual(parseAndEval('a.e', scope), { x: 2 })
+      assert.strictEqual(parseAndEval('a.e.x', scope), 2)
+    })
+
     it('should invoke a function in an object', function () {
       const scope = {
         obj: {
