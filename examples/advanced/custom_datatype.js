@@ -46,8 +46,11 @@ math.import([
 ])
 
 // use the new type
-const ans = math.add(new math.CustomValue(2), new math.CustomValue(3))
-// ans = CustomValue(5)
-
-console.log(ans.toString())
+const ans1 = math.add(new math.CustomValue(2), new math.CustomValue(3))
+console.log(ans1.toString())
 // outputs 'CustomValue:5'
+
+// you can automatically use the new type in functions which use `add` under the hood:
+const ans2 = math.sum(new math.CustomValue(6), new math.CustomValue(1), new math.CustomValue(2))
+console.log(ans2.toString())
+// outputs 'CustomValue:9'
