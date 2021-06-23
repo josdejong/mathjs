@@ -20,7 +20,6 @@ module.exports = function (config) {
 
     client: {
       mocha: {
-        reporter: 'dot',
         timeout: mochaConfig.timeout
       }
     },

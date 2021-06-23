@@ -7,6 +7,7 @@
 - Fixes in TypeScript definitions fo:
   - function `floor`, #2159, #2246. Thanks @write2kcl.
   - function `simplify`, see #2252. Thanks @nitroin. 
+- Upgraded to `decimal.js@10.3.0`
 
 
 # 2021-06-05, version 9.4.2
