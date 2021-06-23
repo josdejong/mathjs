@@ -17,13 +17,27 @@ export function isNumber (x) {
 }
 
 export function isBigNumber (x) {
-  try {
-    if (x.isBigNumber === true && x.constructor.prototype.isBigNumber === true) return true
-  } catch {}
+  if (
+    !x || typeof x !== 'object' ||
+    typeof x.constructor !== 'function'
+  ) {
+    return false
+  }
 
-  try {
-    if (x.constructor.isDecimal(x) === true) return true
-  } catch {}
+  if (
+    x.isBigNumber === true &&
+    typeof x.constructor.prototype === 'object' &&
+    x.constructor.prototype.isBigNumber === true
+  ) {
+    return true
+  }
+
+  if (
+    typeof x.constructor.isDecimal === 'function' &&
+    x.constructor.isDecimal(x) === true
+  ) {
+    return true
+  }
 
   return false
 }
