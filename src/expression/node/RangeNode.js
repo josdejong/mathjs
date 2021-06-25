@@ -66,7 +66,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   RangeNode.prototype._compile = function (math, argNames) {
-    const range = math.range
+    const range = math.get('range')
     const evalStart = this.start._compile(math, argNames)
     const evalEnd = this.end._compile(math, argNames)
 

@@ -2,7 +2,6 @@ import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '
 import { map } from '../../utils/array.js'
 import { escape } from '../../utils/string.js'
 import { factory } from '../../utils/factory.js'
-import { getSafeProperty } from '../../utils/customs.js'
 
 const name = 'IndexNode'
 const dependencies = [
@@ -134,7 +133,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
       }
     })
 
-    const index = getSafeProperty(math, 'index')
+    const index = math.get('index')
 
     return function evalIndexNode (scope, args, context) {
       const dimensions = map(evalDimensions, function (evalDimension) {
