@@ -16,7 +16,7 @@ const BUNDLE_ENTRY = `${SRC_DIR}/defaultInstance.js`
 const BUNDLE_ENTRY_COREJS = `${SRC_DIR}/defaultInstanceCorejs.js`
 const HEADER = `${SRC_DIR}/header.js`
 const VERSION = `${SRC_DIR}/version.js`
-const COMPILE_SRC = `${SRC_DIR}/**/*.?(c)js`
+const COMPILE_SRC = [`${SRC_DIR}/**/*.?(c)js`, `!${BUNDLE_ENTRY_COREJS}`]
 const COMPILE_ENTRY_SRC = `${SRC_DIR}/entry/**/*.js`
 
 const COMPILE_DIR = path.join(__dirname, '/lib')
