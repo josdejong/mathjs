@@ -151,6 +151,6 @@ describe('det', function () {
 
   it('should LaTeX det', function () {
     const expression = math.parse('det([1])')
-    assert.strictEqual(expression.toTex(), '\\det\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\det\\left(\\begin{bmatrix}1\\end{bmatrix}\\right)')
   })
 })

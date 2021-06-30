@@ -120,6 +120,6 @@ describe('resize', function () {
 
   it('should LaTeX resize', function () {
     const expression = math.parse('resize([1,2],1)')
-    assert.strictEqual(expression.toTex(), '\\mathrm{resize}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{resize}\\left(\\begin{bmatrix}1\\\\2\\end{bmatrix},1\\right)')
   })
 })

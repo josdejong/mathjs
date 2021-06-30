@@ -300,7 +300,7 @@ describe('ArrayNode', function () {
     const v2 = new ArrayNode([c, d])
     const n = new ArrayNode([v1, v2])
 
-    assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}')
+    assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}')
   })
 
   it('should LaTeX an ArrayNode with custom toTex', function () {
