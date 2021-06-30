@@ -157,7 +157,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
   ArrayNode.prototype._toTex = function (options) {
     let s = '\\begin{bmatrix}'
 
-    this.items.forEach(function (node) {
+    this.items.forEach(function (node, idx, items) {
       if (node.items) {
         s += node.items.map(function (childNode) {
           return childNode.toTex(options)
@@ -166,8 +166,10 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
         s += node.toTex(options)
       }
 
-      // new line
-      s += '\\\\'
+      // new line (include row delimiter on every low but the last)
+      if (idx < items.length - 1) {
+        s += '\\\\'
+      }
     })
     s += '\\end{bmatrix}'
     return s
