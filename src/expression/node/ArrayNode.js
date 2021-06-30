@@ -155,24 +155,17 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    * @return {string} str
    */
   ArrayNode.prototype._toTex = function (options) {
-    let s = '\\begin{bmatrix}'
+    const itemsTex = this.items
+      .map(function (node) {
+        if (node.items) {
+          return node.items.map(item => item.toTex(options)).join('&')
+        } else {
+          return node.toTex(options)
+        }
+      })
+      .join('\\\\')
 
-    this.items.forEach(function (node, idx, items) {
-      if (node.items) {
-        s += node.items.map(function (childNode) {
-          return childNode.toTex(options)
-        }).join('&')
-      } else {
-        s += node.toTex(options)
-      }
-
-      // new line (include row delimiter on every low but the last)
-      if (idx < items.length - 1) {
-        s += '\\\\'
-      }
-    })
-    s += '\\end{bmatrix}'
-    return s
+    return '\\begin{bmatrix}' + itemsTex + '\\end{bmatrix}'
   }
 
   return ArrayNode
