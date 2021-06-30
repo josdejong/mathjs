@@ -4,7 +4,7 @@
   ],
   "plugins": [
     "@babel/plugin-transform-object-assign",
-    "@babel/transform-runtime"
+    "@babel/plugin-transform-runtime"
   ],
   "ignore": [
     "lib/**/*.js"
