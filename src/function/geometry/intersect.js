@@ -40,22 +40,22 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     'Array, Array, Array, Array': _AAAA,
 
     'Matrix, Matrix, Matrix': function (x, y, plane) {
-      const arr = _AAA(_toArr(x), _toArr(y), _toArr(plane))
+      const arr = _AAA(x.valueOf(), y.valueOf(), plane.valueOf())
       return arr === null ? null : matrix(arr)
     },
 
     'Matrix, Matrix, Matrix, Matrix': function (w, x, y, z) {
       // TODO: output matrix type should match input matrix type
-      const arr = _AAAA(_toArr(w), _toArr(x), _toArr(y), _toArr(z))
+      const arr = _AAAA(w.valueOf(), x.valueOf(), y.valueOf(), z.valueOf())
       return arr === null ? null : matrix(arr)
     }
   })
 
-  function _toArr (x) {
-    return flatten(x.valueOf())
-  }
-
   function _AAA (x, y, plane) {
+    x = _coerceArr(x)
+    y = _coerceArr(y)
+    plane = _coerceArr(plane)
+
     if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
     if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
     if (!_4d(plane)) { throw new TypeError('Array with 4 numbers expected as third argument') }
@@ -64,6 +64,11 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
   }
 
   function _AAAA (w, x, y, z) {
+    w = _coerceArr(w)
+    x = _coerceArr(x)
+    y = _coerceArr(y)
+    z = _coerceArr(z)
+
     if (w.length === 2) {
       if (!_2d(w)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
       if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
@@ -81,6 +86,19 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     } else {
       throw new TypeError('Arrays with two or thee dimensional points expected')
     }
+  }
+
+  /** Coerce row and column 2-dim arrays to 1-dim array */
+  function _coerceArr (arr) {
+    // row matrix
+    if (arr.length === 1) return arr[0]
+
+    // column matrix
+    if (arr.length > 1 && Array.isArray(arr[0])) {
+      if (arr.every(el => Array.isArray(el) && el.length === 1)) return flatten(arr)
+    }
+
+    return arr
   }
 
   function _isNumeric (a) {
