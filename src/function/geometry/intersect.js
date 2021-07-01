@@ -3,10 +3,10 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'intersect'
 const dependencies = [
-  'typed', 'config', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar'
+  'typed', 'config', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar', 'flatten'
 ]
 
-export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar }) => {
+export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar, flatten }) => {
   /**
    * Calculates the point of intersection of two lines in two or three dimensions
    * and of a line and a plane in three dimensions. The inputs are in the form of
@@ -31,47 +31,57 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @param  {Array | Matrix} y   Co-ordinates of first end-point of second line
    *                              OR Co-efficients of the plane's equation
    * @param  {Array | Matrix} z   Co-ordinates of second end-point of second line
-   *                              OR null if the calculation is for line and plane
+   *                              OR undefined if the calculation is for line and plane
    * @return {Array}              Returns the point of intersection of lines/lines-planes
    */
   return typed('intersect', {
-    'Array, Array, Array': function (x, y, plane) {
-      if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
-      if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
-      if (!_4d(plane)) { throw new TypeError('Array with 4 numbers expected as third argument') }
+    'Array, Array, Array': _AAA,
 
-      return _intersectLinePlane(x[0], x[1], x[2], y[0], y[1], y[2], plane[0], plane[1], plane[2], plane[3])
-    },
-
-    'Array, Array, Array, Array': function (w, x, y, z) {
-      if (w.length === 2) {
-        if (!_2d(w)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
-        if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
-        if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for third argument') }
-        if (!_2d(z)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for fourth argument') }
-
-        return _intersect2d(w, x, y, z)
-      } else if (w.length === 3) {
-        if (!_3d(w)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
-        if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
-        if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for third argument') }
-        if (!_3d(z)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for fourth argument') }
-
-        return _intersect3d(w[0], w[1], w[2], x[0], x[1], x[2], y[0], y[1], y[2], z[0], z[1], z[2])
-      } else {
-        throw new TypeError('Arrays with two or thee dimensional points expected')
-      }
-    },
+    'Array, Array, Array, Array': _AAAA,
 
     'Matrix, Matrix, Matrix': function (x, y, plane) {
-      return matrix(this(x.valueOf(), y.valueOf(), plane.valueOf()))
+      const arr = _AAA(_toArr(x), _toArr(y), _toArr(plane))
+      return arr === null ? null : matrix(arr)
     },
 
     'Matrix, Matrix, Matrix, Matrix': function (w, x, y, z) {
       // TODO: output matrix type should match input matrix type
-      return matrix(this(w.valueOf(), x.valueOf(), y.valueOf(), z.valueOf()))
+      const arr = _AAAA(_toArr(w), _toArr(x), _toArr(y), _toArr(z))
+      return arr === null ? null : matrix(arr)
     }
   })
+
+  function _toArr (x) {
+    return flatten(x.valueOf())
+  }
+
+  function _AAA (x, y, plane) {
+    if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
+    if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
+    if (!_4d(plane)) { throw new TypeError('Array with 4 numbers expected as third argument') }
+
+    return _intersectLinePlane(x[0], x[1], x[2], y[0], y[1], y[2], plane[0], plane[1], plane[2], plane[3])
+  }
+
+  function _AAAA (w, x, y, z) {
+    if (w.length === 2) {
+      if (!_2d(w)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
+      if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
+      if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for third argument') }
+      if (!_2d(z)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for fourth argument') }
+
+      return _intersect2d(w, x, y, z)
+    } else if (w.length === 3) {
+      if (!_3d(w)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
+      if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
+      if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for third argument') }
+      if (!_3d(z)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for fourth argument') }
+
+      return _intersect3d(w[0], w[1], w[2], x[0], x[1], x[2], y[0], y[1], y[2], z[0], z[1], z[2])
+    } else {
+      throw new TypeError('Arrays with two or thee dimensional points expected')
+    }
+  }
 
   function _isNumeric (a) {
     // intersect supports numbers and bignumbers
@@ -146,9 +156,12 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     const y2y = multiplyScalar(y2, y)
     const z1z = multiplyScalar(z1, z)
     const z2z = multiplyScalar(z2, z)
-    const t = divideScalar(
-      subtract(subtract(subtract(c, x1x), y1y), z1z),
-      subtract(subtract(subtract(addScalar(addScalar(x2x, y2y), z2z), x1x), y1y), z1z))
+
+    const numerator = subtract(subtract(subtract(c, x1x), y1y), z1z)
+    const denominator = subtract(subtract(subtract(addScalar(addScalar(x2x, y2y), z2z), x1x), y1y), z1z)
+
+    const t = divideScalar(numerator, denominator)
+
     const px = addScalar(x1, multiplyScalar(t, subtract(x2, x1)))
     const py = addScalar(y1, multiplyScalar(t, subtract(y2, y1)))
     const pz = addScalar(z1, multiplyScalar(t, subtract(z2, z1)))

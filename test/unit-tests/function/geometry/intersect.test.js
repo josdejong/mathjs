@@ -30,6 +30,10 @@ describe('intersect', function () {
   it('should return null if the points do not intersect', function () {
     assert.deepStrictEqual(math.intersect([0, 1, 0], [0, 0, 0], [1, 1, 0], [1, 0, 0]), null)
     assert.deepStrictEqual(math.intersect([0, 1], [0, 0], [1, 1], [1, 0]), null)
+    // assert.deepStrictEqual(math.intersect([0, 30, 0], [0, 21, 0], [0, 0, 9, 0]), null) // TODO
+
+    assert.deepStrictEqual(math.intersect(math.matrix([1, 0, 0]), math.matrix([1, 1, 1]), math.matrix([0, 1, 0]), math.matrix([1, 1, 0])), null)
+    // assert.deepStrictEqual(math.intersect(math.matrix([0, 30, 0]), math.matrix([0, 21, 0]), math.matrix([0, 0, 9, 0])), null) // TODO
   })
 
   it('should throw an error when number of arguments are other than 3 or 4', function () {
