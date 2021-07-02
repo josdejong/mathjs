@@ -1,4 +1,4 @@
-import { isNode } from '../../utils/is.js'
+import { isArrayNode, isNode } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
@@ -155,17 +155,25 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    * @return {string} str
    */
   ArrayNode.prototype._toTex = function (options) {
-    const itemsTex = this.items
-      .map(function (node) {
-        if (node.items) {
-          return node.items.map(item => item.toTex(options)).join('&')
-        } else {
-          return node.toTex(options)
-        }
-      })
-      .join('\\\\')
-
-    return '\\begin{bmatrix}' + itemsTex + '\\end{bmatrix}'
+    function itemsToTex (items, nested) {
+      const mixedItems = items.some(isArrayNode) && !items.every(isArrayNode)
+      const itemsFormRow = nested || mixedItems
+      const itemSep = itemsFormRow ? '&' : '\\\\'
+      const itemsTex = items
+        .map(function (node) {
+          if (node.items) {
+            const nodeTex = itemsToTex(node.items, !nested)
+            return nodeTex
+          } else {
+            return node.toTex(options)
+          }
+        })
+        .join(itemSep)
+      return mixedItems || !itemsFormRow || (itemsFormRow && !nested)
+        ? '\\begin{bmatrix}' + itemsTex + '\\end{bmatrix}'
+        : itemsTex
+    }
+    return itemsToTex(this.items, false)
   }
 
   return ArrayNode
