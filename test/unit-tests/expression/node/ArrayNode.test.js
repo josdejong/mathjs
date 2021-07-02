@@ -303,6 +303,35 @@ describe('ArrayNode', function () {
     assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}')
   })
 
+  it('should LaTeX a nested ArrayNode', function () {
+    // [x, [y, [z]]]
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
+    const c = new ConstantNode(3)
+
+    const v1 = new ArrayNode([c])
+    const v2 = new ArrayNode([b, v1])
+    const n = new ArrayNode([a, v2])
+
+    assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&\\begin{bmatrix}2&\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}')
+  })
+
+  it('should LaTeX a nested ArrayNode', function () {
+    // [x; [y; [z]]]
+    const v = new ArrayNode([
+      new ArrayNode([new ConstantNode(1)]),
+      new ArrayNode([
+        new ArrayNode([
+          new ArrayNode([new ConstantNode(2)]),
+          new ArrayNode([
+            new ArrayNode([new ConstantNode(3)])
+          ])
+        ])
+      ])
+    ])
+    assert.strictEqual(v.toTex(), '\\begin{bmatrix}1\\\\\\begin{bmatrix}2\\\\\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}')
+  })
+
   it('should LaTeX an ArrayNode with custom toTex', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {
