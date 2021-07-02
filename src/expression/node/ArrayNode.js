@@ -162,8 +162,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
       const itemsTex = items
         .map(function (node) {
           if (node.items) {
-            const nodeTex = itemsToTex(node.items, !nested)
-            return nodeTex
+            return itemsToTex(node.items, !nested)
           } else {
             return node.toTex(options)
           }
