@@ -206,7 +206,7 @@ describe('trace', function () {
 
   it('should LaTeX trace', function () {
     const expression = math.parse('trace([[1,2],[3,4]])')
-    assert.strictEqual(expression.toTex(), '\\mathrm{tr}\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{tr}\\left(\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}\\right)')
   })
 
   describe('DenseMatrix', function () {
