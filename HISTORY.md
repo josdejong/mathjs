@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 9.4.4
+
+- Fixed `ArrayNode.toTex()`: remove the row delimiter on the last row, 
+  see #2267. Thanks @davidtranhq.
+
+
 # 2021-06-23, version 9.4.3
 
 - Fix #2222: mathjs polluting the `Decimal` prototype. Thanks @m93a.
