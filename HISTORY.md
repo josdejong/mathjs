@@ -1,9 +1,16 @@
 # History
 
-# not yet published, version 9.4.4
+# 2021-07-07, version 9.4.4
 
 - Fixed `ArrayNode.toTex()`: remove the row delimiter on the last row, 
   see #2267. Thanks @davidtranhq.
+- Fix #2269: `intersect`  not returning `null` for matrix input. Thanks @m93a.
+- Fix #2245: mathjs not working in IE11 anymore due to a missing polyfill for
+  `Symbol`. The browser bundle now includes the necessary polyfills (it is 
+  larger now because of that, see also #2266). Thanks @m93a.
+- Update dependencies (`complex.js@2.0.15`, `decimal.js@10.3.1`)
+- Drop official support for node.js 10, which has reached end of life. 
+  See #2258.
 
 
 # 2021-06-23, version 9.4.3
