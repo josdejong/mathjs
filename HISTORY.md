@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 9.4.4
+# 2021-07-07, version 9.4.4
 
 - Fixed `ArrayNode.toTex()`: remove the row delimiter on the last row, 
   see #2267. Thanks @davidtranhq.
