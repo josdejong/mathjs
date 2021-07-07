@@ -33,6 +33,9 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
 
   Node.prototype.comment = ''
 
+  // Wrap the mathWithTransform object in a map
+  const math = createMap(mathWithTransform)
+
   /**
    * Compile the node into an optimized, evauatable JavaScript function
    * @return {{evaluate: function([Object])}} object
@@ -42,7 +45,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    *                variables.
    */
   Node.prototype.compile = function () {
-    const expr = this._compile(mathWithTransform, {})
+    const expr = this._compile(math, {})
     const args = {}
     const context = null
 

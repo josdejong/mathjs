@@ -1,6 +1,5 @@
 import { getPrecedence } from '../operators.js'
 import { escape } from '../../utils/string.js'
-import { getSafeProperty } from '../../utils/customs.js'
 import { latexOperators } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
 
@@ -62,7 +61,7 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
       for (let i = 0; i < self.conditionals.length; i++) {
         evalLhs = evalRhs
         evalRhs = compiled[i + 1](scope, args, context)
-        const condFn = getSafeProperty(math, self.conditionals[i])
+        const condFn = math.get(self.conditionals[i])
         if (!condFn(evalLhs, evalRhs)) {
           return false
         }

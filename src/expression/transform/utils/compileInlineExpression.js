@@ -13,8 +13,8 @@ export function compileInlineExpression (expression, math, scope) {
   // find an undefined symbol
   const symbol = expression.filter(function (node) {
     return isSymbolNode(node) &&
-        !(node.name in math) &&
-        !(scope.has(node.name))
+        !math.has(node.name) &&
+        !scope.has(node.name)
   })[0]
 
   if (!symbol) {
