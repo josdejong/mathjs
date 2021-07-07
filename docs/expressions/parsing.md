@@ -221,4 +221,4 @@ Some care is taken to mutate the same object that is passed into mathjs, so they
 
 For less reliance on this blacklist, scope can also be a `Map`, which allows mathjs expressions to define variables and functions of any name.
 
-For more, see [examples of custom scopes][../../examples/advanced/custom_scope_objects.js.html].
+For more, see [examples of custom scopes](../../examples/advanced/custom_scope_objects.js).
