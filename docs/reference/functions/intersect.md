@@ -28,7 +28,7 @@ Parameter | Type | Description
 `w` | Array &#124; Matrix | Co-ordinates of first end-point of first line
 `x` | Array &#124; Matrix | Co-ordinates of second end-point of first line
 `y` | Array &#124; Matrix | Co-ordinates of first end-point of second line OR Co-efficients of the plane's equation
-`z` | Array &#124; Matrix | Co-ordinates of second end-point of second line OR null if the calculation is for line and plane
+`z` | Array &#124; Matrix | Co-ordinates of second end-point of second line OR undefined if the calculation is for line and plane
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

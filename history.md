@@ -4,6 +4,19 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210707-version-944">2021-07-07, version 9.4.4 <a href="#20210707-version-944" title="Permalink">#</a></h1>
+
+- Fixed `ArrayNode.toTex()`: remove the row delimiter on the last row, 
+  see <a href="https://github.com/josdejong/mathjs/issues/2267">#2267</a>. Thanks <a href="https://github.com/davidtranhq">@davidtranhq</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2269">#2269</a>: `intersect`  not returning `null` for matrix input. Thanks <a href="https://github.com/m93a">@m93a</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2245">#2245</a>: mathjs not working in IE11 anymore due to a missing polyfill for
+  `Symbol`. The browser bundle now includes the necessary polyfills (it is 
+  larger now because of that, see also <a href="https://github.com/josdejong/mathjs/issues/2266">#2266</a>). Thanks <a href="https://github.com/m93a">@m93a</a>.
+- Update dependencies (`complex.js@2.0.15`, `decimal.js@10.3.1`)
+- Drop official support for node.js 10, which has reached end of life. 
+  See <a href="https://github.com/josdejong/mathjs/issues/2258">#2258</a>.
+
+
 <h1 id="20210623-version-943">2021-06-23, version 9.4.3 <a href="#20210623-version-943" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2222">#2222</a>: mathjs polluting the `Decimal` prototype. Thanks <a href="https://github.com/m93a">@m93a</a>.
