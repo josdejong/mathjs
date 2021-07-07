@@ -177,6 +177,6 @@ describe('dotMultiply', function () {
 
   it('should LaTeX dotMultiply', function () {
     const expression = math.parse('dotMultiply([1,2],[3,4])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\end{bmatrix}.\\cdot\\begin{bmatrix}3\\\\4\\end{bmatrix}\\right)')
   })
 })

@@ -61,7 +61,7 @@ describe('sqrtm', function () {
 
   it('should LaTeX sqrtm', function () {
     const expression = math.parse('sqrtm([[33, 24], [48, 57]])')
-    assert.strictEqual(expression.toTex(), '{\\begin{bmatrix}33&24\\\\48&57\\\\\\end{bmatrix}}^{\\frac{1}{2}}')
+    assert.strictEqual(expression.toTex(), '{\\begin{bmatrix}33&24\\\\48&57\\end{bmatrix}}^{\\frac{1}{2}}')
   })
 
   it('should return the result in the same format as the input', function () {

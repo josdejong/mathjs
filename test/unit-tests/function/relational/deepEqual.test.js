@@ -60,6 +60,6 @@ describe('deepEqual', function () {
 
   it('should LaTeX deepEqual', function () {
     const expression = math.parse('deepEqual([1,2],[1,3])')
-    assert.strictEqual(expression.toTex(), '\\mathrm{deepEqual}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},\\begin{bmatrix}1\\\\3\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{deepEqual}\\left(\\begin{bmatrix}1\\\\2\\end{bmatrix},\\begin{bmatrix}1\\\\3\\end{bmatrix}\\right)')
   })
 })

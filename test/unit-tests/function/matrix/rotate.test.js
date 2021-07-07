@@ -176,10 +176,10 @@ describe('rotate', function () {
 
   it('should LaTeX rotationMatrix', function () {
     const expression1 = math.parse('rotate([1, 2, 3], 1)')
-    assert.strictEqual(expression1.toTex(), '\\mathrm{rotate}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix},1\\right)')
+    assert.strictEqual(expression1.toTex(), '\\mathrm{rotate}\\left(\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix},1\\right)')
 
     const expression2 = math.parse('rotate([1, 2, 3], 1, [4, 5, 6])')
-    assert.strictEqual(expression2.toTex(), '\\mathrm{rotate}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix},1,' +
-      '\\begin{bmatrix}4\\\\5\\\\6\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression2.toTex(), '\\mathrm{rotate}\\left(\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix},1,' +
+      '\\begin{bmatrix}4\\\\5\\\\6\\end{bmatrix}\\right)')
   })
 })
