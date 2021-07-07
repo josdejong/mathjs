@@ -47,7 +47,7 @@ describe('lib/browser', function () {
 
     // test whether all functions are documented
     const missing = []
-    Object.keys(math.expression.mathWithTransform).forEach(function (prop) {
+    Array.from(math.expression.mathWithTransform.keys()).forEach(function (prop) {
       const obj = math[prop]
       if (math.typeOf(obj) !== 'Object') {
         try {

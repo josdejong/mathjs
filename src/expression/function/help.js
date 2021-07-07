@@ -1,7 +1,6 @@
-import { factory } from '../../utils/factory.js'
 import { getSafeProperty } from '../../utils/customs.js'
+import { factory } from '../../utils/factory.js'
 import { embeddedDocs } from '../embeddedDocs/embeddedDocs.js'
-import { hasOwnProperty } from '../../utils/object.js'
 
 const name = 'help'
 const dependencies = ['typed', 'mathWithTransform', 'Help']
@@ -27,13 +26,12 @@ export const createHelp = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   return typed(name, {
     any: function (search) {
-      let prop
       let searchName = search
 
       if (typeof search !== 'string') {
-        for (prop in mathWithTransform) {
+        for (const prop of mathWithTransform.keys()) {
           // search in functions and constants
-          if (hasOwnProperty(mathWithTransform, prop) && (search === mathWithTransform[prop])) {
+          if (search === mathWithTransform.get(prop)) {
             searchName = prop
             break
           }
