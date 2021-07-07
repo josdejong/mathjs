@@ -33,6 +33,73 @@ export class ObjectWrappingMap {
 }
 
 /**
+ * A lazy map implementation
+ *
+ * instead of setting a value, a value resolver can be set using `LazyMap.setLazy`.
+ * The value will be resolved the first time it is requested, and is resolved only once.
+ */
+export class LazyMap {
+  constructor () {
+    this.values = new Map()
+    this.valueResolvers = new Map()
+  }
+
+  keys () {
+    return this.valueResolvers.keys()
+  }
+
+  /**
+   * @param {string} key
+   * @returns {*}
+   */
+  get (key) {
+    if (!this.values.has(key)) {
+      if (this.valueResolvers.has(key)) {
+        const resolver = this.valueResolvers.get(key)
+        const value = resolver()
+        this.values.set(key, value)
+      }
+    }
+
+    return this.values.get(key)
+  }
+
+  /**
+   * @param {string} key
+   * @param {*} value
+   * @returns {LazyMap}
+   */
+  set (key, value) {
+    this.values.set(key, value)
+    this.valueResolvers.set(key, () => value)
+    return this
+  }
+
+  /**
+   * @param {string} key
+   * @param {function() : *} resolver
+   * @returns {LazyMap}
+   */
+  setLazy (key, resolver) {
+    if (typeof resolver !== 'function') {
+      throw new TypeError('Value resolver must be a function')
+    }
+
+    this.values.delete(key)
+    this.valueResolvers.set(key, resolver)
+    return this
+  }
+
+  /**
+   * @param {string} key
+   * @returns {boolean}
+   */
+  has (key) {
+    return this.valueResolvers.has(key)
+  }
+}
+
+/**
  * Creates an empty map, or whatever your platform's polyfill is.
  *
  * @returns an empty Map or Map like object.
@@ -44,7 +111,7 @@ export function createEmptyMap () {
 /**
  * Creates a Map from the given object.
  *
- * @param { Map | { [key: string]: unknown } | undefined } mapOrObject
+ * @param { Map | Object<string, *> } [mapOrObject]
  * @returns
  */
 export function createMap (mapOrObject) {

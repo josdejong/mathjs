@@ -1,5 +1,4 @@
 import { escape } from '../../utils/string.js'
-import { getSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 import { toSymbol } from '../../utils/latex.js'
 
@@ -48,7 +47,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants.
+   * @param {Map} math        Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -66,11 +65,11 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
       return function (scope, args, context) {
         return args[name]
       }
-    } else if (name in math) {
+    } else if (math.has(name)) {
       return function (scope, args, context) {
         return scope.has(name)
           ? scope.get(name)
-          : getSafeProperty(math, name)
+          : math.get(name)
       }
     } else {
       const isUnit = isValuelessUnit(name)

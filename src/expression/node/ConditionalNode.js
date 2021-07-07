@@ -41,7 +41,7 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants.
+   * @param {Map} math        Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions

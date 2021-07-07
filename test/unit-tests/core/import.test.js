@@ -94,6 +94,8 @@ describe('import', function () {
 
   it('should parse the user defined members', function () {
     if (math.parser) {
+      math.import({ myvalue: 10 }, { override: true })
+
       const parser = math.parser()
       math.add(math.myvalue, 10)
       parser.evaluate('myvalue + 10') // 52
@@ -256,7 +258,7 @@ describe('import', function () {
     assert(hasOwnProperty(math, 'mean'))
     assert.strictEqual(math.mean, mean)
     assert.strictEqual(math.expression.transform.mean, undefined)
-    assert.strictEqual(math.expression.mathWithTransform.mean, mean)
+    assert.strictEqual(math.expression.mathWithTransform.get('mean'), mean)
   })
 
   describe('factory', () => {

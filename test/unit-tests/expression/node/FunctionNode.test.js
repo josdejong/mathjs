@@ -115,7 +115,7 @@ describe('FunctionNode', function () {
       return 'myFunction(' + args.join(', ') + ')'
     }
     myFunction.rawArgs = true
-    mymath.import({ myFunction: myFunction })
+    mymath.import({ myFunction })
 
     const s = new SymbolNode('myFunction')
     const a = new mymath.ConstantNode(4)

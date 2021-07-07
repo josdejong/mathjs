@@ -1,4 +1,5 @@
 import './../utils/polyfills.js'
+import { LazyMap } from '../utils/map.js'
 import { deepFlatten, isLegacyFactory, values } from '../utils/object.js'
 import * as emitter from './../utils/emitter.js'
 import { importFactory } from './function/import.js'
@@ -145,11 +146,12 @@ export function create (factories, config) {
   // load config function and apply provided config
   math.config = configFactory(configInternal, math.emit)
 
+  const mathWithTransform = new LazyMap()
+  mathWithTransform.set('config', math.config)
+
   math.expression = {
     transform: {},
-    mathWithTransform: {
-      config: math.config
-    }
+    mathWithTransform
   }
 
   // cached factories and instances used by function load

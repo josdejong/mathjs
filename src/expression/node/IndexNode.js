@@ -2,7 +2,6 @@ import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '
 import { map } from '../../utils/array.js'
 import { escape } from '../../utils/string.js'
 import { factory } from '../../utils/factory.js'
-import { getSafeProperty } from '../../utils/customs.js'
 
 const name = 'IndexNode'
 const dependencies = [
@@ -54,7 +53,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants.
+   * @param {Map} math        Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -134,7 +133,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
       }
     })
 
-    const index = getSafeProperty(math, 'index')
+    const index = math.get('index')
 
     return function evalIndexNode (scope, args, context) {
       const dimensions = map(evalDimensions, function (evalDimension) {

@@ -1,4 +1,5 @@
 import { isBigNumber } from './is.js'
+import { LazyMap } from './map.js'
 
 /**
  * Clone an object
@@ -204,32 +205,36 @@ export function canDefineProperty () {
  * Attach a lazy loading property to a constant.
  * The given function `fn` is called once when the property is first requested.
  *
- * @param {Object} object         Object where to add the property
- * @param {string} prop           Property name
- * @param {Function} valueResolver Function returning the property value. Called
- *                                without arguments.
+ * @param {Object | LazyMap} object Object where to add the property
+ * @param {string} prop             Property name
+ * @param {Function} valueResolver  Function returning the property value. Called
+ *                                  without arguments.
  */
 export function lazy (object, prop, valueResolver) {
-  let _uninitialized = true
-  let _value
+  if (object instanceof LazyMap) {
+    object.setLazy(prop, valueResolver)
+  } else {
+    let _uninitialized = true
+    let _value
 
-  Object.defineProperty(object, prop, {
-    get: function () {
-      if (_uninitialized) {
-        _value = valueResolver()
+    Object.defineProperty(object, prop, {
+      get: function () {
+        if (_uninitialized) {
+          _value = valueResolver()
+          _uninitialized = false
+        }
+        return _value
+      },
+
+      set: function (value) {
+        _value = value
         _uninitialized = false
-      }
-      return _value
-    },
+      },
 
-    set: function (value) {
-      _value = value
-      _uninitialized = false
-    },
-
-    configurable: true,
-    enumerable: true
-  })
+      configurable: true,
+      enumerable: true
+    })
+  }
 }
 
 /**

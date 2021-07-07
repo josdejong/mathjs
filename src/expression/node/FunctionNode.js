@@ -1,7 +1,7 @@
 import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is.js'
 import { escape } from '../../utils/string.js'
 import { hasOwnProperty } from '../../utils/object.js'
-import { getSafeProperty, validateSafeMethod } from '../../utils/customs.js'
+import { validateSafeMethod } from '../../utils/customs.js'
 import { createSubScope } from '../../utils/scope.js'
 import { factory } from '../../utils/factory.js'
 import { defaultTemplate, latexFunctions } from '../../utils/latex.js'
@@ -61,7 +61,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants.
+   * @param {Map} math        Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -81,15 +81,15 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     if (isSymbolNode(this.fn)) {
       // we can statically determine whether the function has an rawArgs property
       const name = this.fn.name
-      const fn = name in math ? getSafeProperty(math, name) : undefined
+      const fn = math.has(name) ? math.get(name) : undefined
       const isRaw = typeof fn === 'function' && fn.rawArgs === true
 
       const resolveFn = (scope) => {
         if (scope.has(name)) {
           return scope.get(name)
         }
-        if (name in math) {
-          return getSafeProperty(math, name)
+        if (math.has(name)) {
+          return math.get(name)
         }
         return FunctionNode.onUndefinedFunction(name)
       }
