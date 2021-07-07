@@ -9,6 +9,8 @@
   `Symbol`. The browser bundle now includes the necessary polyfills (it is 
   larger now because of that, see also #2266). Thanks @m93a.
 - Update dependencies (`complex.js@2.0.15`, `decimal.js@10.3.1`)
+- Drop official support for node.js 10, which has reached end of life. 
+  See #2258.
 
 
 # 2021-06-23, version 9.4.3

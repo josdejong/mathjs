@@ -27,21 +27,6 @@ jobs:
         env:
           CI: true
 
-
-  test-on-node-10:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
-      - run: npm ci
-      - run: npm run test:src -- --require @babel/register
-        env:
-          CI: true
-
-
   lint:
     runs-on: ubuntu-latest
 
