@@ -303,7 +303,7 @@ describe('pickRandom', function () {
 
   it('should LaTeX pickRandom', function () {
     const expression = math.parse('pickRandom([1,2,3])')
-    assert.strictEqual(expression.toTex(), '\\mathrm{pickRandom}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{pickRandom}\\left(\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix}\\right)')
   })
 })
 
