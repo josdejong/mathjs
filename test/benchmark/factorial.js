@@ -2,6 +2,8 @@ const Benchmark = require('benchmark')
 const BigNumber = require('decimal.js')
 const padRight = require('pad-right')
 
+BigNumber.set({ precision: 500, toExpPos: 3000 })
+
 function pad (text) {
   return padRight(text, 40, ' ')
 }
@@ -45,6 +47,44 @@ function betterFactorial (n) {
   return prod
 }
 
+function xFactorial(n) {
+  if (n < 7n) {
+    return {
+      comma: 0,
+      number: [1n, 1n, 2n, 6n, 24n, 120n, 720n][+`${n}`],
+      sign: false
+    };
+  }
+
+  let nostart = false;
+  const h = n / 2n;
+  let s = h + 1n;
+  let k = s + h;
+  let f = (n & 1n) === 1n ? k : 1n;
+
+  if ((h & 1n) === 1n) f = -f;
+  k += 4n;
+
+  function HyperFact(l) {
+    if (l > 1n) {
+      const m = l >> 1n;
+      return HyperFact(m) * HyperFact(l - m);
+    }
+
+    if (nostart) {
+      s -= k -= 4n;
+      return s;
+    }
+    nostart = true;
+
+    return f;
+  }
+
+  return HyperFact(h + 1n) << h;
+};
+
+console.log(xFactorial(300n));
+
 const suite = new Benchmark.Suite()
 suite
   .add(pad('bigFactorial for small numbers'), function () {
@@ -53,6 +93,10 @@ suite
   })
   .add(pad('new bigFactorial for small numbers'), function () {
     const res = betterFactorial(new BigNumber(8))
+    results.push(res)
+  })
+  .add(pad('xFactorial for small numbers'), function () {
+    const res = xFactorial(8n)
     results.push(res)
   })
 
@@ -64,6 +108,10 @@ suite
     const res = betterFactorial(new BigNumber(20))
     results.push(res)
   })
+  .add(pad('xFactorial for small numbers 2'), function () {
+    const res = xFactorial(20n)
+    results.push(res)
+  })
 
   .add(pad('bigFactorial for big numbers'), function () {
     const res = bigFactorial(new BigNumber(600))
@@ -71,6 +119,10 @@ suite
   })
   .add(pad('new bigFactorial for big numbers'), function () {
     const res = betterFactorial(new BigNumber(600))
+    results.push(res)
+  })
+  .add(pad('xFactorial for big numbers'), function () {
+    const res = xFactorial(600n)
     results.push(res)
   })
 
@@ -82,6 +134,10 @@ suite
     const res = betterFactorial(new BigNumber(1500))
     results.push(res)
   })
+  .add(pad('xFactorial for HUGE numbers'), function () {
+    const res = xFactorial(1500n)
+    results.push(res)
+  })
 
   .add(pad('bigFactorial for "HUGER" numbers'), function () {
     const res = bigFactorial(new BigNumber(10000))
@@ -89,6 +145,10 @@ suite
   })
   .add(pad('new bigFactorial for "HUGER" numbers'), function () {
     const res = betterFactorial(new BigNumber(10000))
+    results.push(res)
+  })
+  .add(pad('xFactorial for "HUGER" numbers'), function () {
+    const res = xFactorial(10000n)
     results.push(res)
   })
   .on('cycle', function (event) {
