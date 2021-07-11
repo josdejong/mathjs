@@ -595,3 +595,22 @@ Factory Test
   const result = math.evaluate("\u260Efoo", { "\u260Efoo": 42 }); // returns 42
   console.log(result);
 }
+
+/**
+ * Util functions
+ * https://mathjs.org/docs/reference/functions.html#utils-functions
+ */
+{
+  const math = create(all, {});
+
+  // hasNumericValue function
+  math.hasNumericValue(2);                     // returns true
+  math.hasNumericValue('2');                   // returns true
+  math.isNumeric('2');                         // returns false
+  math.hasNumericValue(0);                     // returns true
+  math.hasNumericValue(math.bignumber(500));   // returns true
+  math.hasNumericValue([2.3, 'foo', false]);   // returns [true, false, true]
+  math.hasNumericValue(math.fraction(4));      // returns true
+  math.hasNumericValue(math.complex('2-4i'));  // returns false
+}
+
