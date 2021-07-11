@@ -2948,8 +2948,7 @@ declare namespace math {
     toJSON(): MathJSON;
     formatUnits(): string;
     format(options: FormatOptions): string;
-    splitUnit(parts: ReadonlyArray<string | Unit>): Unit[];
-    isValidAlpha(c: string): boolean;
+    splitUnit(parts: ReadonlyArray<string | Unit>): Unit[];   
   }
 
   interface CreateUnitOptions {
