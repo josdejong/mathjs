@@ -156,6 +156,131 @@ declare namespace math {
     isHexDigit(c: string): boolean;
   }
 
+  interface AccessorNode extends MathNode {
+    object: MathNode;
+    index: IndexNode;
+    name: string;
+  }
+  interface AccessorNodeCtor {
+    new(object: MathNode, index: IndexNode): AccessorNode;
+  }
+
+  interface ArrayNode extends MathNode {
+    items: MathNode[];
+  }
+  interface ArrayNodeCtor {
+    new(items: MathNode[]): ArrayNode;
+  }
+
+  interface AssignmentNode {
+    object: SymbolNode | AccessorNode;
+    index: IndexNode | null;
+    value: MathNode;
+    name: string;
+  }
+  interface AssignmentNodeCtor {
+    new(object: SymbolNode, value: MathNode): AssignmentNode;
+    new(object: SymbolNode | AccessorNode, index: IndexNode, value: MathNode): AssignmentNode;
+  }
+
+  interface BlockNode extends MathNode {
+    blocks: Array<{node: MathNode, visible: boolean}>;
+  }
+  interface BlockNodeCtor {
+    new(arr: Array<{node: MathNode} | {node: MathNode, visible: boolean}>): BlockNode;
+  }
+
+  interface ConditionalNode extends MathNode {
+    condition: MathNode;
+    trueExpr: MathNode;
+    falseExpr: MathNode;
+  }
+  interface ConditionalNodeCtor {
+    new(condition: MathNode, trueExpr: MathNode, falseExpr: MathNode): ConditionalNode;
+  }
+
+  interface ConstantNodeCtor {
+    new(constant: number): MathNode;
+  }
+
+  interface FunctionAssignmentNode extends MathNode {
+    name: string;
+    params: string[];
+    expr: MathNode;
+  }
+  interface FunctionAssignmentNodeCtor {
+    new(name: string, params: string[], expr: MathNode): FunctionAssignmentNode;
+  }
+
+  interface FunctionNode extends MathNode {
+    //TODO Proper type for fn
+    // fn: MathNode | string;
+    args: MathNode[];
+  }
+  interface FunctionNodeCtor {
+    new(fn: MathNode | string, args: MathNode[]): FunctionNode;
+  }
+
+  interface IndexNode extends MathNode {
+    dimensions: MathNode[];
+    dotNotation: boolean;
+  }
+  interface IndexNodeCtor {
+    new(dimensions: MathNode[]): IndexNode;
+    new(dimensions: MathNode[], dotNotation: boolean): IndexNode;
+  }
+
+  interface ObjectNode extends MathNode {
+    properties: Record<string, MathNode>;
+  }
+  interface ObjectNodeCtor {
+    new(properties: Record<string, MathNode>): ObjectNode;
+  }
+
+  interface OperatorNode extends MathNode {
+    op: string;
+    fn: string;
+    args: MathNode[];
+    implicit: boolean;
+    isUnary(): boolean;
+    isBinary(): boolean;
+  }
+  interface OperatorNodeCtor {
+    new(op: string, fn: string, args: MathNode[], implicit?: boolean): OperatorNode;
+  }
+  
+  interface ParenthesisNode extends MathNode {
+    content: MathNode;
+  }
+  interface ParenthesisNodeCtor {
+    new(content: MathNode): ParenthesisNode;
+  }
+
+  interface RangeNode extends MathNode {
+    start: MathNode;
+    end: MathNode;
+    step: MathNode | null;
+  }
+  interface RangeNodeCtor {
+    new(start: MathNode, end: MathNode, step?: MathNode): RangeNode;
+  }
+
+  interface RelationalNode extends MathNode {
+    conditionals: string[];
+    params: MathNode[];
+  }
+  interface RelationalNodeCtor {
+    new(conditionals: string[], params: MathNode[]): RelationalNode;
+  }
+
+  interface SymbolNode extends MathNode {
+    name: string;
+  }
+  interface SymbolNodeCtor {
+    new(name: string): SymbolNode;
+  }
+
+
   type MathJsFunctionName = keyof MathJsStatic;
 
   interface MathJsStatic extends FactoryDependencies {
@@ -172,6 +297,23 @@ declare namespace math {
     SQRT1_2: number;
     SQRT2: number;
     tau: number;
+
+    // Class-like constructors
+    AccessorNode: AccessorNodeCtor;
+    ArrayNode: ArrayNodeCtor;
+    AssignmentNode: AssignmentNodeCtor;
+    BlockNode: BlockNodeCtor;
+    ConditionalNode: ConditionalNodeCtor;
+    ConstantNode: ConstantNodeCtor;
+    FunctionAssignmentNode: FunctionAssignmentNodeCtor;
+    FunctionNode: FunctionNodeCtor;
+    IndexNode: IndexNodeCtor;
+    ObjectNode: ObjectNodeCtor;
+    OperatorNode: OperatorNodeCtor;
+    ParenthesisNode: ParenthesisNodeCtor;
+    RangeNode: RangeNodeCtor;
+    RelationalNode: RelationalNodeCtor;
+    SymbolNode: SymbolNodeCtor;
 
     /**
      * If null were to be included in this interface, it would be
@@ -500,6 +642,7 @@ declare namespace math {
      */
     qr(A: Matrix | MathArray): { Q: MathArray | Matrix; R: MathArray | Matrix };
 
+    rationalize(expr: MathNode | string, optional?: object | boolean, detailed?: false): MathNode;
     /**
      * Transform a rationalizable expression in a rational fraction. If
      * rational fraction is one variable polynomial then converts the
@@ -517,7 +660,7 @@ declare namespace math {
       optional?: object | boolean,
       detailed?: true
     ): { expression: MathNode | string; variables: string[]; coefficients: MathType[] };
-    rationalize(expr: MathNode | string, optional?: object | boolean, detailed?: false): MathNode;
+    
 
     /**
      * Simplify an expression tree.
@@ -530,13 +673,7 @@ declare namespace math {
      * @param [options] (optional) An object with simplify options
      * @returns Returns the simplified form of expr
      */
-    simplify(
-      expr: MathNode | string,
-      rules?: Array<{ l: string; r: string } | string | ((node: MathNode) => MathNode)>,
-      scope?: object,
-      options?: SimplifyOptions,
-    ): MathNode;
-    simplify(expr: MathNode | string, scope?: object, options?: SimplifyOptions): MathNode;
+    simplify: Simplify;
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -649,6 +786,7 @@ declare namespace math {
      * @returns Quotient, x / y
      */
     divide(x: Unit, y: Unit): Unit | number;
+    divide(x: Unit, y: number): Unit;
     divide(x: number, y: number): number;
     divide(x: MathType, y: MathType): MathType;
 
@@ -941,6 +1079,8 @@ declare namespace math {
      * @param y Value to subtract from x
      * @returns Subtraction of x and y
      */
+    subtract(x: number, y: number): number;
+    subtract(x: Unit, y: Unit): Unit;
     subtract(x: MathType, y: MathType): MathType;
 
     /**
@@ -2540,7 +2680,7 @@ declare namespace math {
    * Factory and Dependencies
    ************************************************************************/
   interface FactoryDependencies {
-    create: (factories: FactoryFunctionMap, config?: ConfigOptions) => Partial<MathJsStatic>;
+    create: (factories: FactoryFunctionMap, config?: ConfigOptions) => MathJsStatic;
     factory: <T>(
       name: string,
       dependencies: MathJsFunctionName[],
@@ -2941,8 +3081,8 @@ declare namespace math {
     pow(unit: Unit): Unit;
     abs(unit: Unit): Unit;
     to(unit: string): Unit;
-    toNumber(unit: string): number;
-    toNumeric(unit: string): number | Fraction | BigNumber;
+    toNumber(unit?: string): number;
+    toNumeric(unit?: string): number | Fraction | BigNumber;
     toSI(): Unit;
     toString(): string;
     toJSON(): MathJSON;
@@ -2967,6 +3107,26 @@ declare namespace math {
      * Default value is 10000.
      */
     fractionsLimit?: number;
+  }
+
+  type SimplifyRule = { l: string; r: string } | string | ((node: MathNode) => MathNode);
+
+  interface Simplify {
+    (
+      expr: MathNode | string,
+      rules?: Array<SimplifyRule>,
+      scope?: object,
+      options?: SimplifyOptions,
+    ): MathNode;
+    (
+      expr: MathNode | string,
+      scope?: object,
+      options?: SimplifyOptions,
+    ): MathNode;
+
+    rules: Array<SimplifyRule>;
+
+    simplifyCore(expr: MathNode): MathNode;
   }
 
   interface UnitDefinition {
@@ -3008,6 +3168,7 @@ declare namespace math {
     type: string;
     name?: string;
     value?: any;
+    implicit?: boolean;
 
     /**
      * Create a shallow clone of the node. The node itself is cloned, its
@@ -3445,7 +3606,7 @@ declare namespace math {
      * can be specified as an object, string, or function.
      * @param scope Scope to variables
      */
-    simplify(rules?: Array<{ l: string; r: string } | string | ((node: MathNode) => MathNode)>, scope?: object): MathJsChain;
+    simplify(rules?: Array<SimplifyRule>, scope?: object): MathJsChain;
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
