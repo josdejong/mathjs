@@ -1229,6 +1229,16 @@ describe('parse', function () {
       approx.equal(parseAndEval('8 % 3'), 2)
     })
 
+    it('should parse % value', function () {
+      approx.equal(parseAndEval('8 % '), 0.08)
+      approx.equal(parseAndEval('100%'), 1)
+    })
+
+    it('should parse % arithmetic', function () {
+      approx.equal(parseAndEval('100*50%'), 50)
+      approx.equal(parseAndEval('50%*100'), 50)
+    })
+
     it('should parse operator mod', function () {
       approx.equal(parseAndEval('8 mod 3'), 2)
     })
