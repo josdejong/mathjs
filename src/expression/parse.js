@@ -1030,7 +1030,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         getTokenSkipNewline(state)
 
         if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER) {
-          //If the expression contains only %, then treat that as /100
+          // If the expression contains only %, then treat that as /100
           node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)])
         } else {
           last = parseImplicitMultiplication(state)
