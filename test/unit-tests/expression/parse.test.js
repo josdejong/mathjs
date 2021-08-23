@@ -1227,6 +1227,7 @@ describe('parse', function () {
 
     it('should parse mod %', function () {
       approx.equal(parseAndEval('8 % 3'), 2)
+      approx.equal(parseAndEval('80% pi'), 1.4601836602551685)
     })
 
     it('should parse % value', function () {
