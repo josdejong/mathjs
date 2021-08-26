@@ -1808,8 +1808,8 @@ declare namespace math {
 
     /**
      * Create the cartesian product of two (multi)sets. Multi-dimension
-     * arrays will be converted to single-dimension arrays before the
-     * operation.
+     * arrays will be converted to single-dimension arrays and the values
+     * will be sorted in ascending order before the operation.
      * @param a1 A (multi)set
      * @param a2 A (multi)set
      * @returns The cartesian product of two (multi)sets
@@ -4292,8 +4292,8 @@ declare namespace math {
 
     /**
      * Create the cartesian product of two (multi)sets. Multi-dimension
-     * arrays will be converted to single-dimension arrays before the
-     * operation.
+     * arrays will be converted to single-dimension arrays and the values
+     * will be sorted in ascending order before the operation.
      * @param a2 A (multi)set
      */
     setCartesian(a2: MathArray | Matrix): MathJsChain;
