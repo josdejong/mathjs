@@ -1235,9 +1235,25 @@ describe('parse', function () {
       approx.equal(parseAndEval('100%'), 1)
     })
 
-    it('should parse % arithmetic', function () {
+    it('should parse % with multiplication', function () {
       approx.equal(parseAndEval('100*50%'), 50)
       approx.equal(parseAndEval('50%*100'), 50)
+    })
+
+    it('should parse % with division', function () {
+      approx.equal(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
+      approx.equal(parseAndEval('100/50%*2'), 400) // should be treated as (100÷(50%))×2
+      approx.equal(parseAndEval('50%/100'), 0.005)
+    })
+
+    it('should parse % with addition', function () {
+      approx.equal(parseAndEval('100+3%'), 103)
+      approx.equal(parseAndEval('3%+100'), 100.03)
+    })
+
+    it('should parse % with subtraction', function () {
+      approx.equal(parseAndEval('100-3%'), 97)
+      approx.equal(parseAndEval('3%-100'), -99.97)
     })
 
     it('should parse operator mod', function () {

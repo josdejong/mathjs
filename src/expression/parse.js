@@ -482,8 +482,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   parse.isAlpha = function isAlpha (c, cPrev, cNext) {
     return parse.isValidLatinOrGreek(c) ||
-        parse.isValidMathSymbol(c, cNext) ||
-        parse.isValidMathSymbol(cPrev, c)
+      parse.isValidMathSymbol(c, cNext) ||
+      parse.isValidMathSymbol(cPrev, c)
   }
 
   /**
@@ -512,8 +512,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   parse.isValidMathSymbol = function isValidMathSymbol (high, low) {
     return /^[\uD835]$/.test(high) &&
-        /^[\uDC00-\uDFFF]$/.test(low) &&
-        /^[^\uDC55\uDC9D\uDCA0\uDCA1\uDCA3\uDCA4\uDCA7\uDCA8\uDCAD\uDCBA\uDCBC\uDCC4\uDD06\uDD0B\uDD0C\uDD15\uDD1D\uDD3A\uDD3F\uDD45\uDD47-\uDD49\uDD51\uDEA6\uDEA7\uDFCC\uDFCD]$/.test(low)
+      /^[\uDC00-\uDFFF]$/.test(low) &&
+      /^[^\uDC55\uDC9D\uDCA0\uDCA1\uDCA3\uDCA4\uDCA7\uDCA8\uDCAD\uDCBA\uDCBC\uDCC4\uDD06\uDD0B\uDD0C\uDD15\uDD1D\uDD3A\uDD3F\uDD45\uDD47-\uDD49\uDD51\uDEA6\uDEA7\uDFCC\uDFCD]$/.test(low)
   }
 
   /**
@@ -563,8 +563,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   parse.isHexDigit = function isHexDigit (c) {
     return ((c >= '0' && c <= '9') ||
-            (c >= 'a' && c <= 'f') ||
-            (c >= 'A' && c <= 'F'))
+      (c >= 'a' && c <= 'f') ||
+      (c >= 'A' && c <= 'F'))
   }
 
   /**
@@ -994,7 +994,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       fn = operators[name]
 
       getTokenSkipNewline(state)
-      params = [node, parseMultiplyDivide(state)]
+      const rightNode = parseMultiplyDivide(state)
+      if (rightNode.isPercentage) {
+        params = [node, new OperatorNode('*', 'multiply', [node, rightNode])]
+      } else {
+        params = [node, rightNode]
+      }
       node = new OperatorNode(name, fn, params)
     }
 
@@ -1016,9 +1021,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       '*': 'multiply',
       '.*': 'dotMultiply',
       '/': 'divide',
-      './': 'dotDivide',
-      '%': 'mod',
-      mod: 'mod'
+      './': 'dotDivide'
     }
 
     while (true) {
@@ -1029,13 +1032,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
         getTokenSkipNewline(state)
 
-        if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER) {
-          // If the expression contains only %, then treat that as /100
-          node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)])
-        } else {
-          last = parseImplicitMultiplication(state)
-          node = new OperatorNode(name, fn, [node, last])
-        }
+        last = parseImplicitMultiplication(state)
+        node = new OperatorNode(name, fn, [node, last])
       } else {
         break
       }
@@ -1057,11 +1055,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (true) {
       if ((state.tokenType === TOKENTYPE.SYMBOL) ||
-          (state.token === 'in' && isConstantNode(node)) ||
-          (state.tokenType === TOKENTYPE.NUMBER &&
-              !isConstantNode(last) &&
-              (!isOperatorNode(last) || last.op === '!')) ||
-          (state.token === '(')) {
+        (state.token === 'in' && isConstantNode(node)) ||
+        (state.tokenType === TOKENTYPE.NUMBER &&
+          !isConstantNode(last) &&
+          (!isOperatorNode(last) || last.op === '!')) ||
+        (state.token === '(')) {
         // parse implicit multiplication
         //
         // symbol:      implicit multiplication like '2a', '(2+3)a', 'a b'
@@ -1085,7 +1083,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseRule2 (state) {
-    let node = parseUnary(state)
+    let node = parsePercentage(state)
     let last = node
     const tokenStates = []
 
@@ -1108,7 +1106,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             Object.assign(state, tokenStates.pop())
             tokenStates.pop()
-            last = parseUnary(state)
+            last = parsePercentage(state)
             node = new OperatorNode('/', 'divide', [node, last])
           } else {
             // Not a match, so rewind
@@ -1123,6 +1121,38 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
       } else {
         break
+      }
+    }
+
+    return node
+  }
+
+  /**
+   * add or subtract
+   * @return {Node} node
+   * @private
+   */
+  function parsePercentage (state) {
+    let node, name, fn, params
+
+    node = parseUnary(state)
+
+    const operators = {
+      '%': 'mod',
+      mod: 'mod'
+    }
+    while (hasOwnProperty(operators, state.token)) {
+      name = state.token
+      fn = operators[name]
+
+      getTokenSkipNewline(state)
+
+      if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER) {
+        // If the expression contains only %, then treat that as /100
+        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
+      } else {
+        params = [node, parseUnary(state)]
+        node = new OperatorNode(name, fn, params)
       }
     }
 
@@ -1285,7 +1315,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     let node, name
 
     if (state.tokenType === TOKENTYPE.SYMBOL ||
-        (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
+      (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
       name = state.token
 
       getToken(state)
@@ -1324,7 +1354,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     let params
 
     while ((state.token === '(' || state.token === '[' || state.token === '.') &&
-        (!types || types.indexOf(state.token) !== -1)) { // eslint-disable-line no-unmodified-loop-condition
+      (!types || types.indexOf(state.token) !== -1)) { // eslint-disable-line no-unmodified-loop-condition
       params = []
 
       if (state.token === '(') {
@@ -1539,7 +1569,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           for (let r = 1; r < rows; r++) {
             if (params[r].items.length !== cols) {
               throw createError(state, 'Column dimensions mismatch ' +
-                  '(' + params[r].items.length + ' !== ' + cols + ')')
+                '(' + params[r].items.length + ' !== ' + cols + ')')
             }
           }
 
