@@ -1,6 +1,6 @@
+import { deepMap } from '../utils/collection.js'
 import { factory } from '../utils/factory.js'
 import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is.js'
-import { deepMap } from '../utils/collection.js'
 import { hasOwnProperty } from '../utils/object.js'
 
 const name = 'parse'
@@ -379,6 +379,25 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         state.token += currentCharacter(state)
         next(state)
       }
+
+      /**
+       * support percentage
+       * eg:
+       * '20%' should be parsed to be a number 0.2
+       * '20%5' and '20% 5' should be parsed to be a mod expression
+       * '20 %' should be throw a error
+       */
+      if (currentCharacter(state) === '%') {
+        const subExpression = state.expression.substr(state.index + 1)
+        const nextNotBlankCharacter = subExpression ? subExpression.trim()[0] : ''
+        if (parse.isDigit(nextNotBlankCharacter)) {
+          return
+        }
+        state.token += currentCharacter(state)
+        next(state)
+        return
+      }
+
       // check for exponential notation like "2.3e-4", "1.23e50" or "2e+4"
       if (currentCharacter(state) === 'E' || currentCharacter(state) === 'e') {
         if (parse.isDigit(nextCharacter(state)) || nextCharacter(state) === '-' || nextCharacter(state) === '+') {

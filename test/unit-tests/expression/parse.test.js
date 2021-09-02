@@ -1,8 +1,8 @@
 // test parse
 import assert from 'assert'
 
-import approx from '../../../tools/approx.js'
 import math from '../../../src/defaultInstance.js'
+import approx from '../../../tools/approx.js'
 
 const parse = math.parse
 const ConditionalNode = math.ConditionalNode
@@ -281,6 +281,11 @@ describe('parse', function () {
       approx.equal(parseAndEval('2e'), 2 * Math.E)
     })
 
+    it('should parse percentage number', function () {
+      assert.strictEqual(parseAndEval('20%'), 0.2)
+      assert.strictEqual(parseAndEval('20.1%'), 0.201)
+    })
+
     it('should throw an error with invalid numbers', function () {
       assert.throws(function () { parseAndEval('.') }, /Value expected/)
       assert.throws(function () { parseAndEval('3.2.2') }, SyntaxError)
@@ -311,6 +316,8 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is no valid number/)
       assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is no valid number/)
       assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is no valid number/)
+
+      assert.throws(function () { parseAndEval('2 %') }, SyntaxError)
     })
   })
 
@@ -1227,6 +1234,7 @@ describe('parse', function () {
 
     it('should parse mod %', function () {
       approx.equal(parseAndEval('8 % 3'), 2)
+      approx.equal(parseAndEval('8% 3'), 2)
     })
 
     it('should parse operator mod', function () {

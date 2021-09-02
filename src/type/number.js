@@ -1,5 +1,5 @@
-import { factory } from '../utils/factory.js'
 import { deepMap } from '../utils/collection.js'
+import { factory } from '../utils/factory.js'
 
 const name = 'number'
 const dependencies = ['typed']
@@ -91,7 +91,11 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       }
       let num = Number(x)
       if (isNaN(num)) {
-        throw new SyntaxError('String "' + x + '" is no valid number')
+        if (x && x[x.length - 1] === '%') {
+          num = x.substring(0, x.length - 1) * 0.01
+        } else {
+          throw new SyntaxError('String "' + x + '" is no valid number')
+        }
       }
       if (wordSizeSuffixMatch) {
         // x is a signed bin, oct, or hex literal
