@@ -2429,6 +2429,16 @@ declare namespace math {
      */
     clone(x: any): any;
 
+       /**
+     * Test whether a value is an numeric value. In case of a string,
+     *  true is returned if the string contains a numeric value.   
+     * @param x Value to be tested
+     * @returns Returns true when x is a number, BigNumber, Fraction, Boolean, or a String containing number.
+     * Returns false for other types.
+     * Throws an error in case of unknown types.
+     */
+     hasNumericValue(x: any ): boolean| boolean[];
+
     /**
      * Test whether a value is an integer number. The function supports
      * number, BigNumber, and Fraction. The function is evaluated
@@ -2938,7 +2948,7 @@ declare namespace math {
     toJSON(): MathJSON;
     formatUnits(): string;
     format(options: FormatOptions): string;
-    splitUnit(parts: ReadonlyArray<string | Unit>): Unit[];
+    splitUnit(parts: ReadonlyArray<string | Unit>): Unit[];   
   }
 
   interface CreateUnitOptions {
@@ -2978,7 +2988,7 @@ declare namespace math {
     isArrayNode?: boolean;
     isAssignmentNode?: boolean;
     isBlockNode?: boolean;
-    isConditionalnode?: boolean;
+    isConditionalNode?: boolean;
     isConstantNode?: boolean;
     isFunctionAssignmentNode?: boolean;
     isFunctionNode?: boolean;
@@ -2987,6 +2997,7 @@ declare namespace math {
     isOperatorNode?: boolean;
     isParenthesisNode?: boolean;
     isRangeNode?: boolean;
+    isRelationalNode?: boolean;
     isSymbolNode?: boolean;
     isUpdateNode?: boolean;
     comment?: string;
