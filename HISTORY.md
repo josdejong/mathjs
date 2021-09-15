@@ -1,5 +1,10 @@
 # History
 
+# not yet published, version 9.4.6
+
+- Improved documentation of function `setCartesian`. Thanks @fieldfoxWim.
+
+
 # 2021-09-15, version 9.4.5
 
 - Improved the performance of `Node.equals` by improving the internal 
