@@ -2997,6 +2997,7 @@ declare namespace math {
     isOperatorNode?: boolean;
     isParenthesisNode?: boolean;
     isRangeNode?: boolean;
+    isRelationalNode?: boolean;
     isSymbolNode?: boolean;
     isUpdateNode?: boolean;
     comment?: string;
