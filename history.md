@@ -4,6 +4,16 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210915-version-945">2021-09-15, version 9.4.5 <a href="#20210915-version-945" title="Permalink">#</a></h1>
+
+- Improved the performance of `Node.equals` by improving the internal 
+  function `deepStrictEqual`. Thanks <a href="https://github.com/tomlarkworthy">@tomlarkworthy</a>.
+- Fixes in the TypeScript definitions:
+  - Define `hasNumericValue`. Thanks <a href="https://github.com/write2kcl">@write2kcl</a>. 
+  - Define `MathNode.isRelationalNode`. Thanks <a href="https://github.com/m93a">@m93a</a>.
+  - Fix typo in `MathNode.isConditionalNode`. Thanks <a href="https://github.com/m93a">@m93a</a>.
+
+
 <h1 id="20210707-version-944">2021-07-07, version 9.4.4 <a href="#20210707-version-944" title="Permalink">#</a></h1>
 
 - Fixed `ArrayNode.toTex()`: remove the row delimiter on the last row, 
@@ -22,7 +32,7 @@ layout: default
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2222">#2222</a>: mathjs polluting the `Decimal` prototype. Thanks <a href="https://github.com/m93a">@m93a</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2253">#2253</a>: expression parser throwing an error when accessing nested object
   properties named `e`.
-- Fixes in TypeScript definitions fo:
+- Fixes in the TypeScript definitions:
   - function `floor`, <a href="https://github.com/josdejong/mathjs/issues/2159">#2159</a>, <a href="https://github.com/josdejong/mathjs/issues/2246">#2246</a>. Thanks <a href="https://github.com/write2kcl">@write2kcl</a>.
   - function `simplify`, see <a href="https://github.com/josdejong/mathjs/issues/2252">#2252</a>. Thanks <a href="https://github.com/nitroin">@nitroin</a>. 
 - Upgraded to `decimal.js@10.3.0`
