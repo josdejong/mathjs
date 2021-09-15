@@ -147,7 +147,7 @@ export function deepStrictEqual (a, b) {
     }
     for (prop in b) {
       // noinspection JSUnfilteredForInLoop
-      if (!(prop in a) || !deepStrictEqual(a[prop], b[prop])) {
+      if (!(prop in a)) {
         return false
       }
     }
