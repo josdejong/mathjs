@@ -2988,7 +2988,7 @@ declare namespace math {
     isArrayNode?: boolean;
     isAssignmentNode?: boolean;
     isBlockNode?: boolean;
-    isConditionalnode?: boolean;
+    isConditionalNode?: boolean;
     isConstantNode?: boolean;
     isFunctionAssignmentNode?: boolean;
     isFunctionNode?: boolean;
