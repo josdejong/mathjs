@@ -199,8 +199,10 @@ declare namespace math {
     new(condition: MathNode, trueExpr: MathNode, falseExpr: MathNode): ConditionalNode;
   }
 
+  type ConstantNode = MathNode;
+
   interface ConstantNodeCtor {
-    new(constant: number): MathNode;
+    new(constant: number): ConstantNode;
   }
 
   interface FunctionAssignmentNode extends MathNode {
