@@ -3116,7 +3116,7 @@ declare namespace math {
   interface Simplify {
     (
       expr: MathNode | string,
-      rules?: Array<SimplifyRule>,
+      rules?: SimplifyRule[],
       scope?: object,
       options?: SimplifyOptions,
     ): MathNode;
@@ -3126,7 +3126,7 @@ declare namespace math {
       options?: SimplifyOptions,
     ): MathNode;
 
-    rules: Array<SimplifyRule>;
+    rules: SimplifyRule[];
 
     simplifyCore(expr: MathNode): MathNode;
   }
@@ -3608,7 +3608,7 @@ declare namespace math {
      * can be specified as an object, string, or function.
      * @param scope Scope to variables
      */
-    simplify(rules?: Array<SimplifyRule>, scope?: object): MathJsChain;
+    simplify(rules?: SimplifyRule[], scope?: object): MathJsChain;
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
