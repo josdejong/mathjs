@@ -1,5 +1,20 @@
 # History
 
+# not yet published, version 9.4.6
+
+- Improved documentation of function `setCartesian`. Thanks @fieldfoxWim.
+
+
+# 2021-09-15, version 9.4.5
+
+- Improved the performance of `Node.equals` by improving the internal 
+  function `deepStrictEqual`. Thanks @tomlarkworthy.
+- Fixes in the TypeScript definitions:
+  - Define `hasNumericValue`. Thanks @write2kcl. 
+  - Define `MathNode.isRelationalNode`. Thanks @m93a.
+  - Fix typo in `MathNode.isConditionalNode`. Thanks @m93a.
+
+
 # 2021-07-07, version 9.4.4
 
 - Fixed `ArrayNode.toTex()`: remove the row delimiter on the last row, 
@@ -18,7 +33,7 @@
 - Fix #2222: mathjs polluting the `Decimal` prototype. Thanks @m93a.
 - Fix #2253: expression parser throwing an error when accessing nested object
   properties named `e`.
-- Fixes in TypeScript definitions fo:
+- Fixes in the TypeScript definitions:
   - function `floor`, #2159, #2246. Thanks @write2kcl.
   - function `simplify`, see #2252. Thanks @nitroin. 
 - Upgraded to `decimal.js@10.3.0`

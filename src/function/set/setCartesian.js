@@ -7,7 +7,8 @@ const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'Den
 export const createSetCartesian = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index, DenseMatrix }) => {
   /**
    * Create the cartesian product of two (multi)sets.
-   * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
+   * Multi-dimension arrays will be converted to single-dimension arrays
+   * and the values will be sorted in ascending order before the operation.
    *
    * Syntax:
    *
@@ -16,6 +17,7 @@ export const createSetCartesian = /* #__PURE__ */ factory(name, dependencies, ({
    * Examples:
    *
    *    math.setCartesian([1, 2], [3, 4])        // returns [[1, 3], [1, 4], [2, 3], [2, 4]]
+   *    math.setCartesian([4, 3], [2, 1])        // returns [[3, 1], [3, 2], [4, 1], [4, 2]]
    *
    * See also:
    *
