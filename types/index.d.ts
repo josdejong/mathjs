@@ -172,7 +172,7 @@ declare namespace math {
     new(items: MathNode[]): ArrayNode;
   }
 
-  interface AssignmentNode {
+  interface AssignmentNode extends MathNode {
     object: SymbolNode | AccessorNode;
     index: IndexNode | null;
     value: MathNode;
