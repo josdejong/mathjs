@@ -200,7 +200,7 @@ declare namespace math {
 
   interface ConditionalNode extends MathNodeCommon {
     type: 'ConditionalNode';
-    isConditionalnode: boolean;
+    isConditionalNode: boolean;
     condition: MathNode;
     trueExpr: MathNode;
     falseExpr: MathNode;
