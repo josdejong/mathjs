@@ -156,7 +156,9 @@ declare namespace math {
     isHexDigit(c: string): boolean;
   }
 
-  interface AccessorNode extends MathNode {
+  interface AccessorNode extends MathNodeCommon {
+    type: 'AccessorNode';
+    isAccessorNode: true;
     object: MathNode;
     index: IndexNode;
     name: string;
@@ -165,14 +167,18 @@ declare namespace math {
     new(object: MathNode, index: IndexNode): AccessorNode;
   }
 
-  interface ArrayNode extends MathNode {
+  interface ArrayNode extends MathNodeCommon {
+    type: 'ArrayNode';
+    isArrayNode: true;
     items: MathNode[];
   }
   interface ArrayNodeCtor {
     new(items: MathNode[]): ArrayNode;
   }
 
-  interface AssignmentNode extends MathNode {
+  interface AssignmentNode extends MathNodeCommon {
+    type: 'AssignmentNode';
+    isAssignmentNode: true;
     object: SymbolNode | AccessorNode;
     index: IndexNode | null;
     value: MathNode;
@@ -183,14 +189,18 @@ declare namespace math {
     new(object: SymbolNode | AccessorNode, index: IndexNode, value: MathNode): AssignmentNode;
   }
 
-  interface BlockNode extends MathNode {
+  interface BlockNode extends MathNodeCommon {
+    type: 'BlockNode';
+    isBlockNode: true;
     blocks: Array<{node: MathNode, visible: boolean}>;
   }
   interface BlockNodeCtor {
     new(arr: Array<{node: MathNode} | {node: MathNode, visible: boolean}>): BlockNode;
   }
 
-  interface ConditionalNode extends MathNode {
+  interface ConditionalNode extends MathNodeCommon {
+    type: 'ConditionalNode';
+    isConditionalnode: boolean;
     condition: MathNode;
     trueExpr: MathNode;
     falseExpr: MathNode;
@@ -199,13 +209,19 @@ declare namespace math {
     new(condition: MathNode, trueExpr: MathNode, falseExpr: MathNode): ConditionalNode;
   }
 
-  type ConstantNode = MathNode;
+  interface ConstantNode extends MathNodeCommon {
+    type: 'ConstantNode';
+    isConstantNode: true;
+    value: any;
+  }
 
   interface ConstantNodeCtor {
     new(constant: number): ConstantNode;
   }
 
-  interface FunctionAssignmentNode extends MathNode {
+  interface FunctionAssignmentNode extends MathNodeCommon {
+    type: 'FunctionAssignmentNode';
+    isFunctionAssignmentNode: true;
     name: string;
     params: string[];
     expr: MathNode;
@@ -214,16 +230,19 @@ declare namespace math {
     new(name: string, params: string[], expr: MathNode): FunctionAssignmentNode;
   }
 
-  interface FunctionNode extends MathNode {
-    //TODO Proper type for fn
-    // fn: MathNode | string;
+  interface FunctionNode extends MathNodeCommon {
+    type: 'FunctionNode';
+    isFunctionNode: true;
+    fn: SymbolNode;
     args: MathNode[];
   }
   interface FunctionNodeCtor {
     new(fn: MathNode | string, args: MathNode[]): FunctionNode;
   }
 
-  interface IndexNode extends MathNode {
+  interface IndexNode extends MathNodeCommon {
+    type: 'IndexNode';
+    isIndexNode: true;
     dimensions: MathNode[];
     dotNotation: boolean;
   }
@@ -232,14 +251,18 @@ declare namespace math {
     new(dimensions: MathNode[], dotNotation: boolean): IndexNode;
   }
 
-  interface ObjectNode extends MathNode {
+  interface ObjectNode extends MathNodeCommon {
+    type: 'ObjectNode';
+    isObjectNode: true;
     properties: Record<string, MathNode>;
   }
   interface ObjectNodeCtor {
     new(properties: Record<string, MathNode>): ObjectNode;
   }
 
-  interface OperatorNode extends MathNode {
+  interface OperatorNode extends MathNodeCommon {
+    type: 'OperatorNode';
+    isOperatorNode: true;
     op: string;
     fn: string;
     args: MathNode[];
@@ -251,14 +274,18 @@ declare namespace math {
     new(op: string, fn: string, args: MathNode[], implicit?: boolean): OperatorNode;
   }
   
-  interface ParenthesisNode extends MathNode {
+  interface ParenthesisNode extends MathNodeCommon {
+    type: 'ParenthesisNode';
+    isParenthesisNode: true;
     content: MathNode;
   }
   interface ParenthesisNodeCtor {
     new(content: MathNode): ParenthesisNode;
   }
 
-  interface RangeNode extends MathNode {
+  interface RangeNode extends MathNodeCommon {
+    type: 'RangeNode';
+    isRangeNode: true;
     start: MathNode;
     end: MathNode;
     step: MathNode | null;
@@ -267,7 +294,9 @@ declare namespace math {
     new(start: MathNode, end: MathNode, step?: MathNode): RangeNode;
   }
 
-  interface RelationalNode extends MathNode {
+  interface RelationalNode extends MathNodeCommon {
+    type: 'RelationalNode';
+    isRelationalNode: true;
     conditionals: string[];
     params: MathNode[];
   }
@@ -275,12 +304,18 @@ declare namespace math {
     new(conditionals: string[], params: MathNode[]): RelationalNode;
   }
 
-  interface SymbolNode extends MathNode {
+  interface SymbolNode extends MathNodeCommon {
+    type: 'SymbolNode';
+    isSymbolNode: true;
     name: string;
   }
   interface SymbolNodeCtor {
     new(name: string): SymbolNode;
   }
+
+  type MathNode = AccessorNode | ArrayNode | AssignmentNode | BlockNode | ConditionalNode | ConstantNode |
+    FunctionAssignmentNode | FunctionNode | IndexNode | ObjectNode | OperatorNode | ParenthesisNode | RangeNode |
+    RelationalNode | SymbolNode;
 
 
   type MathJsFunctionName = keyof MathJsStatic;
@@ -3144,33 +3179,14 @@ declare namespace math {
     evaluate(scope?: any): any;
   }
 
-  interface MathNode {
-    isNode: boolean;
-    isAccessorNode?: boolean;
-    isArrayNode?: boolean;
-    isAssignmentNode?: boolean;
-    isBlockNode?: boolean;
-    isConditionalNode?: boolean;
-    isConstantNode?: boolean;
-    isFunctionAssignmentNode?: boolean;
-    isFunctionNode?: boolean;
-    isIndexNode?: boolean;
-    isObjectNode?: boolean;
-    isOperatorNode?: boolean;
-    isParenthesisNode?: boolean;
-    isRangeNode?: boolean;
-    isRelationalNode?: boolean;
-    isSymbolNode?: boolean;
+  interface MathNodeCommon {
+    isNode: true;
+    comment: string;
+    type: 'AccessorNode' | 'ArrayNode' | 'AssignmentNode' | 'BlockNode' | 'ConditionalNode' | 'ConstantNode' |
+          'FunctionAssignmentNode' | 'FunctionNode' | 'IndexNode' | 'ObjectNode' | 'OperatorNode' | 'ParenthesisNode' |
+          'RangeNode' | 'RelationalNode' | 'SymbolNode';
+
     isUpdateNode?: boolean;
-    comment?: string;
-    content?: MathNode;
-    op?: string;
-    fn?: string;
-    args?: MathNode[];
-    type: string;
-    name?: string;
-    value?: any;
-    implicit?: boolean;
 
     /**
      * Create a shallow clone of the node. The node itself is cloned, its
