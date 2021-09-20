@@ -29,6 +29,14 @@ describe('parser', function () {
     assert.strictEqual(result, 5)
   })
 
+  it('should evaluate a list with expressions', function () {
+    const parser = new Parser()
+
+    const result = parser.evaluate(['a = 2', 'a + 3'])
+    console.log('result', result, math.typeOf(result))
+    assert.deepStrictEqual(result, [2, 5])
+  })
+
   it('should get variables from the parsers namespace ', function () {
     const parser = new Parser()
 
