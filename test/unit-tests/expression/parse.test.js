@@ -1227,6 +1227,36 @@ describe('parse', function () {
 
     it('should parse mod %', function () {
       approx.equal(parseAndEval('8 % 3'), 2)
+      approx.equal(parseAndEval('80% pi'), 1.4601836602551685)
+      assert.throws(function () { parseAndEval('3%(-100)') }, /Cannot calculate mod for a negative divisor/)
+    })
+
+    it('should parse % value', function () {
+      approx.equal(parseAndEval('8 % '), 0.08)
+      approx.equal(parseAndEval('100%'), 1)
+    })
+
+    it('should parse % with multiplication', function () {
+      approx.equal(parseAndEval('100*50%'), 50)
+      approx.equal(parseAndEval('50%*100'), 50)
+      assert.throws(function () { parseAndEval('50%(*100)') }, /Value expected/)
+    })
+
+    it('should parse % with division', function () {
+      approx.equal(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
+      approx.equal(parseAndEval('100/50%*2'), 400) // should be treated as (100÷(50%))×2
+      approx.equal(parseAndEval('50%/100'), 0.005)
+      assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
+    })
+
+    it('should parse % with addition', function () {
+      approx.equal(parseAndEval('100+3%'), 103)
+      approx.equal(parseAndEval('3%+100'), 100.03)
+    })
+
+    it('should parse % with subtraction', function () {
+      approx.equal(parseAndEval('100-3%'), 97)
+      approx.equal(parseAndEval('3%-100'), -99.97)
     })
 
     it('should parse operator mod', function () {

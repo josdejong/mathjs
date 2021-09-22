@@ -994,7 +994,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       fn = operators[name]
 
       getTokenSkipNewline(state)
-      params = [node, parseMultiplyDivide(state)]
+      const rightNode = parseMultiplyDivide(state)
+      if (rightNode.isPercentage) {
+        params = [node, new OperatorNode('*', 'multiply', [node, rightNode])]
+      } else {
+        params = [node, rightNode]
+      }
       node = new OperatorNode(name, fn, params)
     }
 
@@ -1016,9 +1021,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       '*': 'multiply',
       '.*': 'dotMultiply',
       '/': 'divide',
-      './': 'dotDivide',
-      '%': 'mod',
-      mod: 'mod'
+      './': 'dotDivide'
     }
 
     while (true) {
@@ -1080,7 +1083,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseRule2 (state) {
-    let node = parseUnary(state)
+    let node = parsePercentage(state)
     let last = node
     const tokenStates = []
 
@@ -1103,7 +1106,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             Object.assign(state, tokenStates.pop())
             tokenStates.pop()
-            last = parseUnary(state)
+            last = parsePercentage(state)
             node = new OperatorNode('/', 'divide', [node, last])
           } else {
             // Not a match, so rewind
@@ -1118,6 +1121,38 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
       } else {
         break
+      }
+    }
+
+    return node
+  }
+
+  /**
+   * percentage or mod
+   * @return {Node} node
+   * @private
+   */
+  function parsePercentage (state) {
+    let node, name, fn, params
+
+    node = parseUnary(state)
+
+    const operators = {
+      '%': 'mod',
+      mod: 'mod'
+    }
+    while (hasOwnProperty(operators, state.token)) {
+      name = state.token
+      fn = operators[name]
+
+      getTokenSkipNewline(state)
+
+      if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
+        // If the expression contains only %, then treat that as /100
+        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
+      } else {
+        params = [node, parseUnary(state)]
+        node = new OperatorNode(name, fn, params)
       }
     }
 

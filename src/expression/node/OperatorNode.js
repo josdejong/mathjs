@@ -21,8 +21,9 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    * @param {string} fn           Function name, for example 'add'
    * @param {Node[]} args         Operator arguments
    * @param {boolean} [implicit]  Is this an implicit multiplication?
+   * @param {boolean} [isPercentage] Is this an percentage Operation?
    */
-  function OperatorNode (op, fn, args, implicit) {
+  function OperatorNode (op, fn, args, implicit, isPercentage) {
     if (!(this instanceof OperatorNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -39,6 +40,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     this.implicit = (implicit === true)
+    this.isPercentage = (isPercentage === true)
     this.op = op
     this.fn = fn
     this.args = args || []
@@ -119,7 +121,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
     for (let i = 0; i < this.args.length; i++) {
       args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this))
     }
-    return new OperatorNode(this.op, this.fn, args, this.implicit)
+    return new OperatorNode(this.op, this.fn, args, this.implicit, this.isPercentage)
   }
 
   /**
@@ -127,7 +129,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {OperatorNode}
    */
   OperatorNode.prototype.clone = function () {
-    return new OperatorNode(this.op, this.fn, this.args.slice(0), this.implicit)
+    return new OperatorNode(this.op, this.fn, this.args.slice(0), this.implicit, this.isPercentage)
   }
 
   /**
@@ -431,19 +433,20 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
       op: this.op,
       fn: this.fn,
       args: this.args,
-      implicit: this.implicit
+      implicit: this.implicit,
+      isPercentage: this.isPercentage
     }
   }
 
   /**
    * Instantiate an OperatorNode from its JSON representation
    * @param {Object} json  An object structured like
-   *                       `{"mathjs": "OperatorNode", "op": "+", "fn": "add", "args": [...], "implicit": false}`,
+   *                       `{"mathjs": "OperatorNode", "op": "+", "fn": "add", "args": [...], "implicit": false, "isPercentage":false}`,
    *                       where mathjs is optional
    * @returns {OperatorNode}
    */
   OperatorNode.fromJSON = function (json) {
-    return new OperatorNode(json.op, json.fn, json.args, json.implicit)
+    return new OperatorNode(json.op, json.fn, json.args, json.implicit, json.isPercentage)
   }
 
   /**

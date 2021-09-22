@@ -45,50 +45,53 @@ math.evaluate('(2 + 3) * 4') // 20
 
 The following operators are available:
 
-Operator    | Name                    | Syntax      | Associativity | Example               | Result
------------ | ----------------------- | ----------  | ------------- | --------------------- | ---------------
-`(`, `)`    | Grouping                | `(x)`       | None          | `2 * (3 + 4)`         | `14`
-`[`, `]`    | Matrix, Index           | `[...]`     | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
-`{`, `}`    | Object                  | `{...}`     | None          | `{a: 1, b: 2}`        | `{a: 1, b: 2}`
-`,`         | Parameter separator     | `x, y`      | Left to right | `max(2, 1, 5)`        | `5`
-`.`         | Property accessor       | `obj.prop`  | Left to right | `obj={a: 12}; obj.a`  | `12`
-`;`         | Statement separator     | `x; y`      | Left to right | `a=2; b=3; a*b`       | `[6]`
-`;`         | Row separator           | `[x; y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
-`\n`        | Statement separator     | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
-`+`         | Add                     | `x + y`     | Left to right | `4 + 5`               | `9`
-`+`         | Unary plus              | `+y`        | Right to left | `+4`                  | `4`
-`-`         | Subtract                | `x - y`     | Left to right | `7 - 3`               | `4`
-`-`         | Unary minus             | `-y`        | Right to left | `-4`                  | `-4`
-`*`         | Multiply                | `x * y`     | Left to right | `2 * 3`               | `6`
-`.*`        | Element-wise multiply   | `x .* y`    | Left to right | `[1,2,3] .* [1,2,3]`  | `[1,4,9]`
-`/`         | Divide                  | `x / y`     | Left to right | `6 / 2`               | `3`
-`./`        | Element-wise divide     | `x ./ y`    | Left to right | `[9,6,4] ./ [3,2,2]`  | `[3,3,2]`
-`%`, `mod`  | Modulus                 | `x % y`     | Left to right | `8 % 3`               | `2`
-`^`         | Power                   | `x ^ y`     | Right to left | `2 ^ 3`               | `8`
-`.^`        | Element-wise power      | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[8,27]`
-`'`         | Transpose               | `y'`        | Left to right | `[[1,2],[3,4]]'`      | `[[1,3],[2,4]]`
-`!`         | Factorial               | `y!`        | Left to right | `5!`                  | `120`
-`&`         | Bitwise and             | `x & y`     | Left to right | `5 & 3`               | `1`
-`~`         | Bitwise not             | `~x`        | Right to left | `~2`                  | `-3`
+Operator    | Name                       | Syntax      | Associativity | Example               | Result
+----------- | -------------------------- | ----------  | ------------- | --------------------- | ---------------
+`(`, `)`    | Grouping                   | `(x)`       | None          | `2 * (3 + 4)`         | `14`
+`[`, `]`    | Matrix, Index              | `[...]`     | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
+`{`, `}`    | Object                     | `{...}`     | None          | `{a: 1, b: 2}`        | `{a: 1, b: 2}`
+`,`         | Parameter separator        | `x, y`      | Left to right | `max(2, 1, 5)`        | `5`
+`.`         | Property accessor          | `obj.prop`  | Left to right | `obj={a: 12}; obj.a`  | `12`
+`;`         | Statement separator        | `x; y`      | Left to right | `a=2; b=3; a*b`       | `[6]`
+`;`         | Row separator              | `[x; y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
+`\n`        | Statement separator        | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
+`+`         | Add                        | `x + y`     | Left to right | `4 + 5`               | `9`
+`+`         | Unary plus                 | `+y`        | Right to left | `+4`                  | `4`
+`-`         | Subtract                   | `x - y`     | Left to right | `7 - 3`               | `4`
+`-`         | Unary minus                | `-y`        | Right to left | `-4`                  | `-4`
+`*`         | Multiply                   | `x * y`     | Left to right | `2 * 3`               | `6`
+`.*`        | Element-wise multiply      | `x .* y`    | Left to right | `[1,2,3] .* [1,2,3]`  | `[1,4,9]`
+`/`         | Divide                     | `x / y`     | Left to right | `6 / 2`               | `3`
+`./`        | Element-wise divide        | `x ./ y`    | Left to right | `[9,6,4] ./ [3,2,2]`  | `[3,3,2]`
+`%`         | Percentage                 | `x%`        | None          | `8%`                  | `0.08`
+`%`         | Addition with Percentage   | `x + y%`    | Left to right | `100 + 3%`            | `103`
+`%`         | Subtraction with Percentage| `x - y%`    | Left to right | `100 - 3%`            | `97`
+`%` `mod`   | Modulus                    | `x % y`     | Left to right | `8 % 3`               | `2`
+`^`         | Power                      | `x ^ y`     | Right to left | `2 ^ 3`               | `8`
+`.^`        | Element-wise power         | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[8,27]`
+`'`         | Transpose                  | `y'`        | Left to right | `[[1,2],[3,4]]'`      | `[[1,3],[2,4]]`
+`!`         | Factorial                  | `y!`        | Left to right | `5!`                  | `120`
+`&`         | Bitwise and                | `x & y`     | Left to right | `5 & 3`               | `1`
+`~`         | Bitwise not                | `~x`        | Right to left | `~2`                  | `-3`
 <code>&#124;</code>  | Bitwise or     | <code>x &#124; y</code>   | Left to right | <code>5 &#124; 3</code>  | `7`
 <code>^&#124;</code> | Bitwise xor    | <code>x ^&#124; y</code>  | Left to right | <code>5 ^&#124; 2</code> | `7`
-`<<`        | Left shift              | `x << y`    | Left to right | `4 << 1`              | `8`
-`>>`        | Right arithmetic shift  | `x >> y`    | Left to right | `8 >> 1`              | `4`
-`>>>`       | Right logical shift     | `x >>> y`   | Left to right | `-8 >>> 1`            | `2147483644`
-`and`       | Logical and             | `x and y`   | Left to right | `true and false`      | `false`
-`not`       | Logical not             | `not y`     | Right to left | `not true`            | `false`
-`or`        | Logical or              | `x or y`    | Left to right | `true or false`       | `true`
-`xor`       | Logical xor             | `x xor y`   | Left to right | `true xor true`       | `false`
-`=`         | Assignment              | `x = y`     | Right to left | `a = 5`               | `5`
-`?` `:`     | Conditional expression  | `x ? y : z` | Right to left | `15 > 100 ? 1 : -1`   | `-1`
-`:`         | Range                   | `x : y`     | Right to left | `1:4`                 | `[1,2,3,4]`
-`to`, `in`  | Unit conversion         | `x to y`    | Left to right | `2 inch to cm`        | `5.08 cm`
-`==`        | Equal                   | `x == y`    | Left to right | `2 == 4 - 2`          | `true`
-`!=`        | Unequal                 | `x != y`    | Left to right | `2 != 3`              | `true`
-`<`         | Smaller                 | `x < y`     | Left to right | `2 < 3`               | `true`
-`>`         | Larger                  | `x > y`     | Left to right | `2 > 3`               | `false`
-`<=`        | Smallereq               | `x <= y`    | Left to right | `4 <= 3`              | `false`
-`>=`        | Largereq                | `x >= y`    | Left to right | `2 + 4 >= 6`          | `true`
+`<<`        | Left shift                 | `x << y`    | Left to right | `4 << 1`              | `8`
+`>>`        | Right arithmetic shift     | `x >> y`    | Left to right | `8 >> 1`              | `4`
+`>>>`       | Right logical shift        | `x >>> y`   | Left to right | `-8 >>> 1`            | `2147483644`
+`and`       | Logical and                | `x and y`   | Left to right | `true and false`      | `false`
+`not`       | Logical not                | `not y`     | Right to left | `not true`            | `false`
+`or`        | Logical or                 | `x or y`    | Left to right | `true or false`       | `true`
+`xor`       | Logical xor                | `x xor y`   | Left to right | `true xor true`       | `false`
+`=`         | Assignment                 | `x = y`     | Right to left | `a = 5`               | `5`
+`?` `:`     | Conditional expression     | `x ? y : z` | Right to left | `15 > 100 ? 1 : -1`   | `-1`
+`:`         | Range                      | `x : y`     | Right to left | `1:4`                 | `[1,2,3,4]`
+`to`, `in`  | Unit conversion            | `x to y`    | Left to right | `2 inch to cm`        | `5.08 cm`
+`==`        | Equal                      | `x == y`    | Left to right | `2 == 4 - 2`          | `true`
+`!=`        | Unequal                    | `x != y`    | Left to right | `2 != 3`              | `true`
+`<`         | Smaller                    | `x < y`     | Left to right | `2 < 3`               | `true`
+`>`         | Larger                     | `x > y`     | Left to right | `2 > 3`               | `false`
+`<=`        | Smallereq                  | `x <= y`    | Left to right | `4 <= 3`              | `false`
+`>=`        | Largereq                   | `x >= y`    | Left to right | `2 + 4 >= 6`          | `true`
 
 
 ## Precedence
@@ -104,7 +107,7 @@ Operators                         | Description
 `^`, `.^`                         | Exponentiation
 `+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
 See section below                 | Implicit multiplication
-`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus
+`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, percentage, modulus
 `+`, `-`                          | Add, subtract
 `:`                               | Range
 `to`, `in`                        | Unit conversion

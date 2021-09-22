@@ -152,12 +152,14 @@ describe('replacer', function () {
                   name: 'x'
                 }
               ],
-              implicit: true
+              implicit: true,
+              isPercentage: false
             }
           ]
         }
       ],
-      implicit: false
+      implicit: false,
+      isPercentage: false
     }
 
     assert.deepStrictEqual(JSON.parse(JSON.stringify(node)), json)
