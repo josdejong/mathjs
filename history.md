@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210922-version-950">2021-09-22, version 9.5.0 <a href="#20210922-version-950" title="Permalink">#</a></h1>
+
+- Implemented support for calculations with percentage, see <a href="https://github.com/josdejong/mathjs/issues/2303">#2303</a>. 
+  Thanks <a href="https://github.com/rvramesh">@rvramesh</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2319">#2319</a>: make the API of `Parser.evaluate` consistent with `math.evaluate`: 
+  support a list with expressions as input.
+- Improved documentation of function `setCartesian`. Thanks <a href="https://github.com/fieldfoxWim">@fieldfoxWim</a>.
+
+
 <h1 id="20210915-version-945">2021-09-15, version 9.4.5 <a href="#20210915-version-945" title="Permalink">#</a></h1>
 
 - Improved the performance of `Node.equals` by improving the internal 

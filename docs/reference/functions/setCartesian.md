@@ -7,7 +7,8 @@ layout: default
 <h1 id="function-setcartesian">Function setCartesian <a href="#function-setcartesian" title="Permalink">#</a></h1>
 
 Create the cartesian product of two (multi)sets.
-Multi-dimension arrays will be converted to single-dimension arrays before the operation.
+Multi-dimension arrays will be converted to single-dimension arrays
+and the values will be sorted in ascending order before the operation.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -34,6 +35,7 @@ Array &#124; Matrix | The cartesian product of two (multi)sets
 
 ```js
 math.setCartesian([1, 2], [3, 4])        // returns [[1, 3], [1, 4], [2, 3], [2, 4]]
+math.setCartesian([4, 3], [2, 1])        // returns [[3, 1], [3, 2], [4, 1], [4, 2]]
 ```
 
 
