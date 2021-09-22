@@ -1,7 +1,9 @@
 # History
 
-# not yet published, version 9.4.6
+# not yet published, version 9.5.0
 
+- Implemented support for calculations with percentage, see #2303. 
+  Thanks @rvramesh.
 - Fix #2319: make the API of `Parser.evaluate` consistent with `math.evaluate`: 
   support a list with expressions as input.
 - Improved documentation of function `setCartesian`. Thanks @fieldfoxWim.
