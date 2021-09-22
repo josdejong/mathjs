@@ -2,9 +2,9 @@ import { factory } from '../utils/factory.js'
 import { createEmptyMap, toObject } from '../utils/map.js'
 
 const name = 'Parser'
-const dependencies = ['parse']
+const dependencies = ['evaluate']
 
-export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ parse }) => {
+export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ evaluate }) => {
   /**
    * @constructor Parser
    * Parser contains methods to evaluate or parse expressions, and has a number
@@ -73,15 +73,14 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
 
   /**
    * Parse and evaluate the given expression
-   * @param {string} expr   A string containing an expression, for example "2+3"
+   * @param {string | string[]} expr   A string containing an expression,
+   *                                   for example "2+3", or a list with expressions
    * @return {*} result     The result, or undefined when the expression was empty
    * @throws {Error}
    */
   Parser.prototype.evaluate = function (expr) {
     // TODO: validate arguments
-    return parse(expr)
-      .compile()
-      .evaluate(this.scope)
+    return evaluate(expr, this.scope)
   }
 
   /**

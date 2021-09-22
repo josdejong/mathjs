@@ -21,7 +21,7 @@ declare namespace math {
   interface FactoryFunctionMap {
     [key: string]: FactoryFunction<any> | FactoryFunctionMap;
   }
-  
+
 
   /** Available options for parse */
   interface ParseOptions {
@@ -2431,7 +2431,7 @@ declare namespace math {
 
        /**
      * Test whether a value is an numeric value. In case of a string,
-     *  true is returned if the string contains a numeric value.   
+     *  true is returned if the string contains a numeric value.
      * @param x Value to be tested
      * @returns Returns true when x is a number, BigNumber, Fraction, Boolean, or a String containing number.
      * Returns false for other types.
@@ -2948,7 +2948,7 @@ declare namespace math {
     toJSON(): MathJSON;
     formatUnits(): string;
     format(options: FormatOptions): string;
-    splitUnit(parts: ReadonlyArray<string | Unit>): Unit[];   
+    splitUnit(parts: ReadonlyArray<string | Unit>): Unit[];
   }
 
   interface CreateUnitOptions {
@@ -3155,7 +3155,7 @@ declare namespace math {
   }
 
   interface Parser {
-    evaluate(expr: string): any;
+    evaluate(expr: string | string[]): any;
     get(variable: string): any;
     getAll(): { [key: string]: any };
     set: (variable: string, value: any) => void;
