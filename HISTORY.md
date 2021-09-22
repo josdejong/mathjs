@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 9.5.0
+# 2021-09-22, version 9.5.0
 
 - Implemented support for calculations with percentage, see #2303. 
   Thanks @rvramesh.
