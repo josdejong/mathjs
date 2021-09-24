@@ -33,8 +33,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *     size, resize, squeeze, index
    *
    * @param {Array | Matrix | string} matrix  An array, matrix, or string
-   * @param {Index} index                     An index containing ranges for each
-   *                                          dimension
+   * @param {Index} index                     An index containing the indices to subset for each dimension
    * @param {*} [replacement]                 An array, matrix, or scalar.
    *                                          If provided, the subset is replaced with replacement.
    *                                          If not provided, the subset is returned
@@ -91,7 +90,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
 /**
  * Retrieve a subset of a string
  * @param {string} str            string from which to get a substring
- * @param {Index} index           An index containing ranges for each dimension
+ * @param {Index} index           An index containing the indices to subset for each dimension
  * @returns {string} substring
  * @private
  */
@@ -122,7 +121,7 @@ function _getSubstring (str, index) {
 /**
  * Replace a substring in a string
  * @param {string} str            string to be replaced
- * @param {Index} index           An index containing ranges for each dimension
+ * @param {Index} index           An index containing the indices to subset for each dimension
  * @param {string} replacement    Replacement string
  * @param {string} [defaultValue] Default value to be uses when resizing
  *                                the string. is ' ' by default
