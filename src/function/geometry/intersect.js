@@ -1,12 +1,12 @@
-import { isBigNumber } from '../../utils/is.js'
+import { isBigNumber, isFraction } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'intersect'
 const dependencies = [
-  'typed', 'config', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar', 'flatten'
+  'typed', 'config', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar', 'flatten', 'isZero'
 ]
 
-export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar, flatten }) => {
+export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar, flatten, isZero }) => {
   /**
    * Calculates the point of intersection of two lines in two or three dimensions
    * and of a line and a plane in three dimensions. The inputs are in the form of
@@ -102,8 +102,8 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
   }
 
   function _isNumeric (a) {
-    // intersect supports numbers and bignumbers
-    return (typeof a === 'number' || isBigNumber(a))
+    // intersect supports numbers and bignumbers and fractions
+    return (typeof a === 'number' || isBigNumber(a) || isFraction(a))
   }
 
   function _2d (x) {
@@ -124,6 +124,7 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     const d1 = subtract(o1, p1b)
     const d2 = subtract(o2, p2b)
     const det = subtract(multiplyScalar(d1[0], d2[1]), multiplyScalar(d2[0], d1[1]))
+    if (isFraction(det) && isZero(det)) return null
     if (smaller(abs(det), config.epsilon)) {
       return null
     }
@@ -149,9 +150,10 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     const d1321 = _intersect3dHelper(x1, x3, x2, x1, y1, y3, y2, y1, z1, z3, z2, z1)
     const d4343 = _intersect3dHelper(x4, x3, x4, x3, y4, y3, y4, y3, z4, z3, z4, z3)
     const d2121 = _intersect3dHelper(x2, x1, x2, x1, y2, y1, y2, y1, z2, z1, z2, z1)
-    const ta = divideScalar(
-      subtract(multiplyScalar(d1343, d4321), multiplyScalar(d1321, d4343)),
-      subtract(multiplyScalar(d2121, d4343), multiplyScalar(d4321, d4321)))
+    const numerator = subtract(multiplyScalar(d1343, d4321), multiplyScalar(d1321, d4343))
+    const denominator = subtract(multiplyScalar(d2121, d4343), multiplyScalar(d4321, d4321))
+    if (isFraction(denominator) && isZero(denominator)) return null
+    const ta = divideScalar(numerator, denominator)
     const tb = divideScalar(addScalar(d1343, multiplyScalar(ta, d4321)), d4343)
 
     const pax = addScalar(x1, multiplyScalar(ta, subtract(x2, x1)))

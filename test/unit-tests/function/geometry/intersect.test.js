@@ -1,6 +1,8 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 
+const fraction = math.fraction
+
 describe('intersect', function () {
   it('should calculate the intersection point of two 2D lines', function () {
     assert.deepStrictEqual(math.intersect([0, 0], [10, 10], [10, 0], [0, 10]), [5, 5])
@@ -70,5 +72,20 @@ describe('intersect', function () {
     assert.deepStrictEqual(math.intersect(math.matrix([[0], [0], [0]]), [[10, 10, 0]], [10, 0, 0], math.matrix([0, 10, 0])), math.matrix([5, 5, 0]))
     assert.deepStrictEqual(math.intersect(math.matrix([[1, 0, 1]]), [4, -2, 2], math.matrix([[1], [1], [1], [6]])), math.matrix([7, -4, 3]))
     assert.deepStrictEqual(math.intersect(math.matrix([[1], [0], [1]]), math.matrix([4, -2, 2]), math.matrix([[1, 1, 1, 6]])), math.matrix([7, -4, 3]))
+  })
+
+  it('should calculate the intersection point if coordinates are fractions', function () {
+    assert.deepStrictEqual(math.intersect([fraction(1, 1), fraction(0, 1), fraction(1, 1)], [fraction(4, 1), fraction(-2, 1), fraction(2, 1)], [fraction(1, 1), fraction(1, 1), fraction(1, 1), fraction(6, 1)]), [fraction(7, 1), fraction(-4, 1), fraction(3, 1)])
+    assert.deepStrictEqual(math.intersect(math.matrix([fraction(1, 1), fraction(0, 1), fraction(1, 1)]), [fraction(4, 1), fraction(-2, 1), fraction(2, 1)], math.matrix([fraction(1, 1), fraction(1, 1), fraction(1, 1), fraction(6, 1)])), math.matrix([fraction(7, 1), fraction(-4, 1), fraction(3, 1)]))
+    // assert.deepStrictEqual(math.intersect(math.matrix([1, 0, 1]), math.matrix([4, -2, 2]), math.matrix([1, 1, 1, 6])), math.matrix([7, -4, 3]))
+  })
+
+  it('should return null if the points do not intersect and the coordinates are fractions', function () {
+    assert.deepStrictEqual(math.intersect([fraction(0, 1), fraction(1, 1), fraction(0, 1)], [fraction(0, 1), fraction(0, 1), fraction(0, 1)], [fraction(1, 1), fraction(1, 1), fraction(0, 1)], [fraction(1, 1), fraction(0, 1), fraction(0, 1)]), null)
+    assert.deepStrictEqual(math.intersect([fraction(0, 1), fraction(1, 1)], [fraction(0, 1), fraction(0, 1)], [fraction(1, 1), fraction(1, 1)], [fraction(1, 1), fraction(0, 1)]), null)
+    // assert.deepStrictEqual(math.intersect([0, 30, 0], [0, 21, 0], [0, 0, 9, 0]), null) // TODO
+
+    assert.deepStrictEqual(math.intersect(math.matrix([fraction(1, 1), fraction(0, 1), fraction(0, 1)]), math.matrix([fraction(1, 1), fraction(1, 1), fraction(1, 1)]), math.matrix([fraction(0, 1), fraction(1, 1), fraction(0, 1)]), math.matrix([fraction(1, 1), fraction(1, 1), fraction(0, 1)])), null)
+    // assert.deepStrictEqual(math.intersect(math.matrix([0, 30, 0]), math.matrix([0, 21, 0]), math.matrix([0, 0, 9, 0])), null) // TODO
   })
 })
