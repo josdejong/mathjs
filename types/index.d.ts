@@ -1423,6 +1423,19 @@ declare namespace math {
      ************************************************************************/
 
     /**
+     * Apply a function that maps an array to a scalar along a given axis of a
+     * matrix or array. Returns a new matrix or array with one less dimension
+     * than the input.
+     * @param array The input Matrix
+     * @param dim The dimension along which the callback is applied
+     * @param callback The callback function that is applied. This Function should take an
+     * array or 1-d matrix as an input and return a number.
+     * @returns The residual matrix with the function applied over some dimension.
+     */
+     apply<T extends MathArray | Matrix>(array: T, dim: number, callback: (array: MathArray | Matrix) => number): T
+
+
+    /**
      * Concatenate two or more matrices. dim: number is a zero-based
      * dimension over which to concatenate the matrices. By default the last
      * dimension of the matrices.
@@ -3056,6 +3069,7 @@ declare namespace math {
     create(data: MathArray, datatype?: string): void;
     density(): number;
     subset(index: Index, replacement?: any, defaultValue?: any): Matrix;
+    apply(dim: number, callback: (array: MathArray | Matrix) => number): Matrix | MathArray;
     get(index: number[]): any;
     set(index: number[], value: any, defaultValue?: number | string): Matrix;
     resize(size: MathArray | Matrix, defaultValue?: number | string): Matrix;
@@ -3666,6 +3680,17 @@ declare namespace math {
      * @param y Second value to add
      */
     add(y: MathType): MathJsChain;
+
+    /**
+     * Apply a function that maps an array to a scalar along a given axis of the
+     * matrix or array. Returns a new matrix or array with one less dimension
+     * than the input.
+     * @param dim The dimension along which the callback is applied
+     * @param callback The callback function that is applied. This Function should take an
+     * array or 1-d matrix as an input and return a number.
+     * @returns The residual matrix with the function applied over some dimension.
+     */
+     apply(dim: number, callback: (array: Array<MathType> | Matrix) => number): MathJsChain;
 
     /**
      * Calculate the cubic root of a value. For matrices, the function is
