@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 9.5.1
+# 2021-10-13, version 9.5.1
 
 - Various improvements to the Typescript typings. 
   Thanks @joshhansen and @DianaTdr.
