@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20211013-version-951">2021-10-13, version 9.5.1 <a href="#20211013-version-951" title="Permalink">#</a></h1>
+
+- Various improvements to the Typescript typings. 
+  Thanks <a href="https://github.com/joshhansen">@joshhansen</a> and <a href="https://github.com/DianaTdr">@DianaTdr</a>.
+
+
 <h1 id="20210922-version-950">2021-09-22, version 9.5.0 <a href="#20210922-version-950" title="Permalink">#</a></h1>
 
 - Implemented support for calculations with percentage, see <a href="https://github.com/josdejong/mathjs/issues/2303">#2303</a>. 
