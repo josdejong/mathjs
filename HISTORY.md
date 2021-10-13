@@ -2,7 +2,8 @@
 
 # not yet published, version 9.5.1
 
-- Various improvements to the Typescript typings. Thanks @joshhansen.
+- Various improvements to the Typescript typings. 
+  Thanks @joshhansen and @DianaTdr.
 
 
 # 2021-09-22, version 9.5.0
