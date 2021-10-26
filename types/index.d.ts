@@ -3275,7 +3275,7 @@ declare namespace math {
     /**
      * Get a HTML representation of the parsed expression.
      */
-    toHtml(options?: object): string;
+    toHTML(options?: object): string;
 
     /**
      * Get a string representation of the parsed expression. This is not
