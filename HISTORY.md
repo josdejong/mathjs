@@ -11,6 +11,8 @@
   Breaking changes: interface `MathNode` is now renamed to `MathNodeCommon`
   and the related interfaces are structured in a different way.
 
+- Fixed a typo in the TypeScript definition of toHTML. Thanks @TheToto.
+
 
 # 2021-11-03, version 9.5.2`
 
