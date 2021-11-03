@@ -5,10 +5,10 @@ export as namespace math;
 export = math;
 
 type NoLiteralType<T> =
-  T extends number ? number :
-  T extends string ? string :
-  T extends boolean ? boolean :
-  T;
+    T extends number ? number :
+        T extends string ? string :
+            T extends boolean ? boolean :
+                T;
 
 declare namespace math {
   type MathArray = number[] | number[][];
@@ -156,6 +156,168 @@ declare namespace math {
     isHexDigit(c: string): boolean;
   }
 
+  interface AccessorNode extends MathNodeCommon {
+    type: 'AccessorNode';
+    isAccessorNode: true;
+    object: MathNode;
+    index: IndexNode;
+    name: string;
+  }
+  interface AccessorNodeCtor {
+    new(object: MathNode, index: IndexNode): AccessorNode;
+  }
+
+  interface ArrayNode extends MathNodeCommon {
+    type: 'ArrayNode';
+    isArrayNode: true;
+    items: MathNode[];
+  }
+  interface ArrayNodeCtor {
+    new(items: MathNode[]): ArrayNode;
+  }
+
+  interface AssignmentNode extends MathNodeCommon {
+    type: 'AssignmentNode';
+    isAssignmentNode: true;
+    object: SymbolNode | AccessorNode;
+    index: IndexNode | null;
+    value: MathNode;
+    name: string;
+  }
+  interface AssignmentNodeCtor {
+    new(object: SymbolNode, value: MathNode): AssignmentNode;
+    new(object: SymbolNode | AccessorNode, index: IndexNode, value: MathNode): AssignmentNode;
+  }
+
+  interface BlockNode extends MathNodeCommon {
+    type: 'BlockNode';
+    isBlockNode: true;
+    blocks: Array<{node: MathNode, visible: boolean}>;
+  }
+  interface BlockNodeCtor {
+    new(arr: Array<{node: MathNode} | {node: MathNode, visible: boolean}>): BlockNode;
+  }
+
+  interface ConditionalNode extends MathNodeCommon {
+    type: 'ConditionalNode';
+    isConditionalNode: boolean;
+    condition: MathNode;
+    trueExpr: MathNode;
+    falseExpr: MathNode;
+  }
+  interface ConditionalNodeCtor {
+    new(condition: MathNode, trueExpr: MathNode, falseExpr: MathNode): ConditionalNode;
+  }
+
+  interface ConstantNode extends MathNodeCommon {
+    type: 'ConstantNode';
+    isConstantNode: true;
+    value: any;
+  }
+
+  interface ConstantNodeCtor {
+    new(constant: number): ConstantNode;
+  }
+
+  interface FunctionAssignmentNode extends MathNodeCommon {
+    type: 'FunctionAssignmentNode';
+    isFunctionAssignmentNode: true;
+    name: string;
+    params: string[];
+    expr: MathNode;
+  }
+  interface FunctionAssignmentNodeCtor {
+    new(name: string, params: string[], expr: MathNode): FunctionAssignmentNode;
+  }
+
+  interface FunctionNode extends MathNodeCommon {
+    type: 'FunctionNode';
+    isFunctionNode: true;
+    fn: SymbolNode;
+    args: MathNode[];
+  }
+  interface FunctionNodeCtor {
+    new(fn: MathNode | string, args: MathNode[]): FunctionNode;
+  }
+
+  interface IndexNode extends MathNodeCommon {
+    type: 'IndexNode';
+    isIndexNode: true;
+    dimensions: MathNode[];
+    dotNotation: boolean;
+  }
+  interface IndexNodeCtor {
+    new(dimensions: MathNode[]): IndexNode;
+    new(dimensions: MathNode[], dotNotation: boolean): IndexNode;
+  }
+
+  interface ObjectNode extends MathNodeCommon {
+    type: 'ObjectNode';
+    isObjectNode: true;
+    properties: Record<string, MathNode>;
+  }
+  interface ObjectNodeCtor {
+    new(properties: Record<string, MathNode>): ObjectNode;
+  }
+
+  interface OperatorNode extends MathNodeCommon {
+    type: 'OperatorNode';
+    isOperatorNode: true;
+    op: string;
+    fn: string;
+    args: MathNode[];
+    implicit: boolean;
+    isUnary(): boolean;
+    isBinary(): boolean;
+  }
+  interface OperatorNodeCtor {
+    new(op: string, fn: string, args: MathNode[], implicit?: boolean): OperatorNode;
+  }
+
+  interface ParenthesisNode extends MathNodeCommon {
+    type: 'ParenthesisNode';
+    isParenthesisNode: true;
+    content: MathNode;
+  }
+  interface ParenthesisNodeCtor {
+    new(content: MathNode): ParenthesisNode;
+  }
+
+  interface RangeNode extends MathNodeCommon {
+    type: 'RangeNode';
+    isRangeNode: true;
+    start: MathNode;
+    end: MathNode;
+    step: MathNode | null;
+  }
+  interface RangeNodeCtor {
+    new(start: MathNode, end: MathNode, step?: MathNode): RangeNode;
+  }
+
+  interface RelationalNode extends MathNodeCommon {
+    type: 'RelationalNode';
+    isRelationalNode: true;
+    conditionals: string[];
+    params: MathNode[];
+  }
+  interface RelationalNodeCtor {
+    new(conditionals: string[], params: MathNode[]): RelationalNode;
+  }
+
+  interface SymbolNode extends MathNodeCommon {
+    type: 'SymbolNode';
+    isSymbolNode: true;
+    name: string;
+  }
+  interface SymbolNodeCtor {
+    new(name: string): SymbolNode;
+  }
+
+  type MathNode = AccessorNode | ArrayNode | AssignmentNode | BlockNode | ConditionalNode | ConstantNode |
+      FunctionAssignmentNode | FunctionNode | IndexNode | ObjectNode | OperatorNode | ParenthesisNode | RangeNode |
+      RelationalNode | SymbolNode;
+
+
   type MathJsFunctionName = keyof MathJsStatic;
 
   interface MathJsStatic extends FactoryDependencies {
@@ -172,6 +334,23 @@ declare namespace math {
     SQRT1_2: number;
     SQRT2: number;
     tau: number;
+
+    // Class-like constructors
+    AccessorNode: AccessorNodeCtor;
+    ArrayNode: ArrayNodeCtor;
+    AssignmentNode: AssignmentNodeCtor;
+    BlockNode: BlockNodeCtor;
+    ConditionalNode: ConditionalNodeCtor;
+    ConstantNode: ConstantNodeCtor;
+    FunctionAssignmentNode: FunctionAssignmentNodeCtor;
+    FunctionNode: FunctionNodeCtor;
+    IndexNode: IndexNodeCtor;
+    ObjectNode: ObjectNodeCtor;
+    OperatorNode: OperatorNodeCtor;
+    ParenthesisNode: ParenthesisNodeCtor;
+    RangeNode: RangeNodeCtor;
+    RelationalNode: RelationalNodeCtor;
+    SymbolNode: SymbolNodeCtor;
 
     /**
      * If null were to be included in this interface, it would be
@@ -310,8 +489,8 @@ declare namespace math {
      * @returns Returns a fraction
      */
     fraction(
-      numerator: number | string | MathArray | Matrix,
-      denominator?: number | string | MathArray | Matrix
+        numerator: number | string | MathArray | Matrix,
+        denominator?: number | string | MathArray | Matrix
     ): Fraction | MathArray | Matrix;
 
     /**
@@ -500,6 +679,7 @@ declare namespace math {
      */
     qr(A: Matrix | MathArray): { Q: MathArray | Matrix; R: MathArray | Matrix };
 
+    rationalize(expr: MathNode | string, optional?: object | boolean, detailed?: false): MathNode;
     /**
      * Transform a rationalizable expression in a rational fraction. If
      * rational fraction is one variable polynomial then converts the
@@ -513,11 +693,11 @@ declare namespace math {
      * @returns The rational polynomial of expr
      */
     rationalize(
-      expr: MathNode | string,
-      optional?: object | boolean,
-      detailed?: true
+        expr: MathNode | string,
+        optional?: object | boolean,
+        detailed?: true
     ): { expression: MathNode | string; variables: string[]; coefficients: MathType[] };
-    rationalize(expr: MathNode | string, optional?: object | boolean, detailed?: false): MathNode;
+
 
     /**
      * Simplify an expression tree.
@@ -530,13 +710,7 @@ declare namespace math {
      * @param [options] (optional) An object with simplify options
      * @returns Returns the simplified form of expr
      */
-    simplify(
-      expr: MathNode | string,
-      rules?: Array<{ l: string; r: string } | string | ((node: MathNode) => MathNode)>,
-      scope?: object,
-      options?: SimplifyOptions,
-    ): MathNode;
-    simplify(expr: MathNode | string, scope?: object, options?: SimplifyOptions): MathNode;
+    simplify: Simplify;
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -649,6 +823,7 @@ declare namespace math {
      * @returns Quotient, x / y
      */
     divide(x: Unit, y: Unit): Unit | number;
+    divide(x: Unit, y: number): Unit;
     divide(x: number, y: number): number;
     divide(x: MathType, y: MathType): MathType;
 
@@ -728,17 +903,17 @@ declare namespace math {
     floor(x: MathArray): MathArray;
     floor(x: Matrix): Matrix;
 
-      /**
+    /**
      * Round a value towards minus infinity. For matrices, the function is
      * evaluated element wise.
      * @param x Number to be rounded
      * @param n Number of decimals Default value: 0.
      * @returns Rounded value
      */
-       floor(
+    floor(
         x: number | BigNumber | Fraction | Complex | MathArray | Matrix,
         n: number | BigNumber | MathArray
-      ): number | BigNumber | Fraction | Complex | MathArray | Matrix;
+    ): number | BigNumber | Fraction | Complex | MathArray | Matrix;
 
     /**
      * Calculate the greatest common divisor for two or more values or
@@ -834,8 +1009,8 @@ declare namespace math {
      * @returns Returns the remainder of x divided by y
      */
     mod<T extends number | BigNumber | Fraction | MathArray | Matrix>(
-      x: T,
-      y: number | BigNumber | Fraction | MathArray | Matrix
+        x: T,
+        y: number | BigNumber | Fraction | MathArray | Matrix
     ): NoLiteralType<T>;
 
     /**
@@ -888,8 +1063,8 @@ declare namespace math {
      * @returns Rounded value of x
      */
     round<T extends number | BigNumber | Fraction | Complex | MathArray | Matrix>(
-      x: T,
-      n?: number | BigNumber | MathArray
+        x: T,
+        n?: number | BigNumber | MathArray
     ): NoLiteralType<T>;
 
     /**
@@ -941,6 +1116,8 @@ declare namespace math {
      * @param y Value to subtract from x
      * @returns Subtraction of x and y
      */
+    subtract(x: number, y: number): number;
+    subtract(x: Unit, y: Unit): Unit;
     subtract(x: MathType, y: MathType): MathType;
 
     /**
@@ -1201,8 +1378,8 @@ declare namespace math {
      * nonzero/nonempty value.
      */
     and(
-      x: number | BigNumber | Complex | Unit | MathArray | Matrix,
-      y: number | BigNumber | Complex | Unit | MathArray | Matrix
+        x: number | BigNumber | Complex | Unit | MathArray | Matrix,
+        y: number | BigNumber | Complex | Unit | MathArray | Matrix
     ): boolean | MathArray | Matrix;
 
     /**
@@ -1223,8 +1400,8 @@ declare namespace math {
      * nonzero/nonempty value.
      */
     or(
-      x: number | BigNumber | Complex | Unit | MathArray | Matrix,
-      y: number | BigNumber | Complex | Unit | MathArray | Matrix
+        x: number | BigNumber | Complex | Unit | MathArray | Matrix,
+        y: number | BigNumber | Complex | Unit | MathArray | Matrix
     ): boolean | MathArray | Matrix;
 
     /**
@@ -1237,8 +1414,8 @@ declare namespace math {
      * nonzero/nonempty value.
      */
     xor(
-      x: number | BigNumber | Complex | Unit | MathArray | Matrix,
-      y: number | BigNumber | Complex | Unit | MathArray | Matrix
+        x: number | BigNumber | Complex | Unit | MathArray | Matrix,
+        y: number | BigNumber | Complex | Unit | MathArray | Matrix
     ): boolean | MathArray | Matrix;
 
     /*************************************************************************
@@ -1255,7 +1432,7 @@ declare namespace math {
      * array or 1-d matrix as an input and return a number.
      * @returns The residual matrix with the function applied over some dimension.
      */
-     apply<T extends MathArray | Matrix>(array: T, dim: number, callback: (array: MathArray | Matrix) => number): T
+    apply<T extends MathArray | Matrix>(array: T, dim: number, callback: (array: MathArray | Matrix) => number): T
 
 
     /**
@@ -1325,7 +1502,7 @@ declare namespace math {
      * @param prec Precision, default value: 1e-15
      * @returns Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
      */
-     eigs(x: MathArray | Matrix, prec?:number|BigNumber): {values: MathArray | Matrix, vectors: MathArray | Matrix}
+    eigs(x: MathArray | Matrix, prec?:number|BigNumber): {values: MathArray | Matrix, vectors: MathArray | Matrix}
 
     /**
      * Compute the matrix exponential, expm(A) = e^A. The matrix must be
@@ -1364,8 +1541,8 @@ declare namespace math {
      * traversed. The function must return a boolean.
      */
     filter(
-      x: Matrix | MathArray | string[],
-      test: ((value: any, index: any, matrix: Matrix | MathArray | string[]) => boolean) | RegExp
+        x: Matrix | MathArray | string[],
+        test: ((value: any, index: any, matrix: Matrix | MathArray | string[]) => boolean) | RegExp
     ): Matrix | MathArray;
 
     /**
@@ -2442,7 +2619,7 @@ declare namespace math {
      */
     clone(x: any): any;
 
-       /**
+    /**
      * Test whether a value is an numeric value. In case of a string,
      *  true is returned if the string contains a numeric value.
      * @param x Value to be tested
@@ -2450,7 +2627,7 @@ declare namespace math {
      * Returns false for other types.
      * Throws an error in case of unknown types.
      */
-     hasNumericValue(x: any ): boolean| boolean[];
+    hasNumericValue(x: any ): boolean| boolean[];
 
     /**
      * Test whether a value is an integer number. The function supports
@@ -2553,12 +2730,12 @@ declare namespace math {
    * Factory and Dependencies
    ************************************************************************/
   interface FactoryDependencies {
-    create: (factories: FactoryFunctionMap, config?: ConfigOptions) => Partial<MathJsStatic>;
+    create: (factories: FactoryFunctionMap, config?: ConfigOptions) => MathJsStatic;
     factory: <T>(
-      name: string,
-      dependencies: MathJsFunctionName[],
-      create: (injected: Partial<MathJsStatic>) => T,
-      meta?: any
+        name: string,
+        dependencies: MathJsFunctionName[],
+        create: (injected: Partial<MathJsStatic>) => T,
+        meta?: any
     ) => FactoryFunction<T>;
     all: FactoryFunctionMap;
 
@@ -2955,8 +3132,8 @@ declare namespace math {
     pow(unit: Unit): Unit;
     abs(unit: Unit): Unit;
     to(unit: string): Unit;
-    toNumber(unit: string): number;
-    toNumeric(unit: string): number | Fraction | BigNumber;
+    toNumber(unit?: string): number;
+    toNumeric(unit?: string): number | Fraction | BigNumber;
     toSI(): Unit;
     toString(): string;
     toJSON(): MathJSON;
@@ -2983,6 +3160,26 @@ declare namespace math {
     fractionsLimit?: number;
   }
 
+  type SimplifyRule = { l: string; r: string } | string | ((node: MathNode) => MathNode);
+
+  interface Simplify {
+    (
+        expr: MathNode | string,
+        rules?: SimplifyRule[],
+        scope?: object,
+        options?: SimplifyOptions,
+    ): MathNode;
+    (
+        expr: MathNode | string,
+        scope?: object,
+        options?: SimplifyOptions,
+    ): MathNode;
+
+    rules: SimplifyRule[];
+
+    simplifyCore(expr: MathNode): MathNode;
+  }
+
   interface UnitDefinition {
     definition?: string | Unit;
     prefixes?: string;
@@ -2996,32 +3193,14 @@ declare namespace math {
     evaluate(scope?: any): any;
   }
 
-  interface MathNode {
-    isNode: boolean;
-    isAccessorNode?: boolean;
-    isArrayNode?: boolean;
-    isAssignmentNode?: boolean;
-    isBlockNode?: boolean;
-    isConditionalNode?: boolean;
-    isConstantNode?: boolean;
-    isFunctionAssignmentNode?: boolean;
-    isFunctionNode?: boolean;
-    isIndexNode?: boolean;
-    isObjectNode?: boolean;
-    isOperatorNode?: boolean;
-    isParenthesisNode?: boolean;
-    isRangeNode?: boolean;
-    isRelationalNode?: boolean;
-    isSymbolNode?: boolean;
+  interface MathNodeCommon {
+    isNode: true;
+    comment: string;
+    type: 'AccessorNode' | 'ArrayNode' | 'AssignmentNode' | 'BlockNode' | 'ConditionalNode' | 'ConstantNode' |
+        'FunctionAssignmentNode' | 'FunctionNode' | 'IndexNode' | 'ObjectNode' | 'OperatorNode' | 'ParenthesisNode' |
+        'RangeNode' | 'RelationalNode' | 'SymbolNode';
+
     isUpdateNode?: boolean;
-    comment?: string;
-    content?: MathNode;
-    op?: string;
-    fn?: string;
-    args?: MathNode[];
-    type: string;
-    name?: string;
-    value?: any;
 
     /**
      * Create a shallow clone of the node. The node itself is cloned, its
@@ -3459,7 +3638,7 @@ declare namespace math {
      * can be specified as an object, string, or function.
      * @param scope Scope to variables
      */
-    simplify(rules?: Array<{ l: string; r: string } | string | ((node: MathNode) => MathNode)>, scope?: object): MathJsChain;
+    simplify(rules?: SimplifyRule[], scope?: object): MathJsChain;
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -3511,7 +3690,7 @@ declare namespace math {
      * array or 1-d matrix as an input and return a number.
      * @returns The residual matrix with the function applied over some dimension.
      */
-     apply(dim: number, callback: (array: Array<MathType> | Matrix) => number): MathJsChain;
+    apply(dim: number, callback: (array: Array<MathType> | Matrix) => number): MathJsChain;
 
     /**
      * Calculate the cubic root of a value. For matrices, the function is
