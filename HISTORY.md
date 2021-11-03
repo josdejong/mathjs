@@ -1,5 +1,11 @@
 # History
 
+# 2021-11-03, version 9.5.2
+
+- Revert the improvements to the Typescript typings because they contain
+  breaking changes. The improvements will be published in v10.0.0. See #2339.
+
+
 # 2021-10-13, version 9.5.1
 
 - Various improvements to the Typescript typings. 
