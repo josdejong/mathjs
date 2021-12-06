@@ -40,10 +40,10 @@ const c = parser.evaluate('2 inch in cm')    // 5.08 cm
 const d = parser.evaluate('cos(45 deg)')     // 0.7071067811865476
 
 // define variables and functions
-parser.evaluate('x = 7 / 2')                 // 3.5
-parser.evaluate('x + 3')                     // 6.5
-parser.evaluate('function f(x, y) = x^y')    // f(x, y)
-parser.evaluate('f(2, 3)')                   // 8
+parser.evaluate('x = 7 / 2')             // 3.5
+parser.evaluate('x + 3')                 // 6.5
+parser.evaluate('f(x, y) = x^y')         // f(x, y)
+parser.evaluate('f(2, 3)')               // 8
 
 // get and set variables and functions
 const x = parser.get('x')                // 7
