@@ -39,7 +39,7 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         return this(n.re)
       }
 
-      if(n.re < 0) { // Euler's reflection formula
+      if (n.re < 0) { // Euler's reflection formula
         // gamma(1-z) * gamma(z) = PI / sin(PI * z)
         // real part of Z should not be integer [sin(PI) == 0 -> 1/0 - undefined]
         // thanks to imperfect sin implementation sin(PI * n) != 0
