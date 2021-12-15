@@ -123,6 +123,8 @@ describe('gamma', function () {
       0.054850170))
     approx.deepEqual(gamma(math.complex(-0.45, -0.15)), math.complex(-3.2466111264,
       0.2219549583256))
+    approx.deepEqual(gamma(math.complex(0.49, 1)), math.complex(0.294136245907794,
+      -0.4298609111267))
     approx.deepEqual(gamma(math.complex(9.43, -4.15)), math.complex(-39533.5179564,
       -7863.025662998))
     approx.deepEqual(gamma(math.complex(5, 3)), math.complex(0.016041882741652,
