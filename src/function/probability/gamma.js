@@ -39,6 +39,17 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         return this(n.re)
       }
 
+      if (n.re < 0) { // Euler's reflection formula
+        // gamma(1-z) * gamma(z) = PI / sin(PI * z)
+        // real part of Z should not be integer [sin(PI) == 0 -> 1/0 - undefined]
+        // thanks to imperfect sin implementation sin(PI * n) != 0
+        // we can safely use it anyway
+        const t = new Complex(1 - n.re, -n.im)
+        const r = new Complex(Math.PI * n.re, Math.PI * n.im)
+
+        return new Complex(Math.PI).div(r.sin()).div(this(t))
+      }
+
       n = new Complex(n.re - 1, n.im)
       const x = new Complex(gammaP[0], 0)
       for (let i = 1; i < gammaP.length; ++i) {
