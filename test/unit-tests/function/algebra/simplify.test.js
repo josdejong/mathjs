@@ -388,4 +388,11 @@ describe('simplify', function () {
     simplifyAndCompareEval('log(3,5)', 'log(3,5)')
     simplifyAndCompareEval('log(e,9)', 'log(e,9)')
   })
+
+  it('should simplify fraction where denominator is a negative variable', function () {
+    simplifyAndCompare('1/(-y)', '-(1/y)')
+    simplifyAndCompare('x/(-y)', '-(x/y)')
+    simplifyAndCompare('(-1)/(-y)', '1/y')
+    simplifyAndCompare('(-x)/(-y)', 'x/y')
+  })
 })
