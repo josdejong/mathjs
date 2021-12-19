@@ -35,7 +35,7 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    *    // define variables and functions
    *    parser.evaluate('x = 7 / 2')              // 3.5
    *    parser.evaluate('x + 3')                  // 6.5
-   *    parser.evaluate('function f(x, y) = x^y') // f(x, y)
+   *    parser.evaluate('f(x, y) = x^y')          // f(x, y)
    *    parser.evaluate('f(2, 3)')                // 8
    *
    *    // get and set variables and functions

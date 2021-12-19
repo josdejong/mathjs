@@ -1,8 +1,29 @@
 # History
 
-# not yet published, version 9.5.1
+# 2021-11-03, version 10.0.0
 
-- Various improvements to the Typescript typings. Thanks @joshhansen.
+!!! BE CAREFUL: BREAKING CHANGES IN THE TYPESCRIPT DEFINITIONS !!!
+
+- Improvements to the Typescript typings (commit fc5c202e). 
+  Thanks @joshhansen. First introduced in v9.5.1, but reverted because
+  it contains breaking changes.
+  
+  Breaking changes: interface `MathNode` is now renamed to `MathNodeCommon`
+  and the related interfaces are structured in a different way.
+
+- Fixed a typo in the TypeScript definition of toHTML. Thanks @TheToto.
+
+
+# 2021-11-03, version 9.5.2`
+
+- Revert the improvements to the Typescript typings because they contain
+  breaking changes. The improvements will be published in v10.0.0. See #2339.
+
+
+# 2021-10-13, version 9.5.1
+
+- Various improvements to the Typescript typings. 
+  Thanks @joshhansen and @DianaTdr.
 
 
 # 2021-09-22, version 9.5.0

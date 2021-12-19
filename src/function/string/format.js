@@ -50,8 +50,11 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *      For example format(-1, {notation: 'hex', wordSize: 8}) === '0xffi8'.
    *      Default value is undefined.
    *    - `precision: number`
-   *      A number between 0 and 16 to round the digits of the number. In case
-   *      of notations 'exponential', 'engineering', and 'auto', `precision`
+   *      Limit the number of digits of the formatted value.
+   *      For regular numbers, must be a number between 0 and 16.
+   *      For bignumbers, the maximum depends on the configured precision,
+   *      see function `config()`.
+   *      In case of notations 'exponential', 'engineering', and 'auto', `precision`
    *      defines the total number of significant digits returned.
    *      In case of notation 'fixed', `precision` defines the number of
    *      significant digits after the decimal point.
