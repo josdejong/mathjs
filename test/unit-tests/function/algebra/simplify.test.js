@@ -389,10 +389,43 @@ describe('simplify', function () {
     simplifyAndCompareEval('log(e,9)', 'log(e,9)')
   })
 
-  it('should simplify fraction where denominator is a negative variable', function () {
-    simplifyAndCompare('1/(-y)', '-(1/y)')
-    simplifyAndCompare('x/(-y)', '-(x/y)')
-    simplifyAndCompare('(-1)/(-y)', '1/y')
-    simplifyAndCompare('(-x)/(-y)', 'x/y')
+  describe('should simplify fraction where denominator has a minus', function () {
+    it('unary numerator and unary denominator', function () {
+      simplifyAndCompare('1/(-y)', '-(1/y)')
+      simplifyAndCompare('x/(-y)', '-(x/y)')
+      simplifyAndCompare('(-1)/(-y)', '1/y')
+      simplifyAndCompare('(-x)/(-y)', 'x/y')
+    })
+
+    it('binary numerator and unary denominator', function () {
+      simplifyAndCompare('(1+x)/(-y)', '-((x+1)/y)')
+      simplifyAndCompare('(w+x)/(-y)', '-((w+x)/y)')
+      simplifyAndCompare('(1-x)/(-y)', '(x-1)/y')
+      simplifyAndCompare('(w-x)/(-y)', '(x-w)/y')
+    })
+
+    it('unary numerator and binary denominator', function () {
+      simplifyAndCompare('1/(-(y+z))', '-(1/(y+z))')
+      simplifyAndCompare('x/(-(y+z))', '-(x/(y+z))')
+      simplifyAndCompare('(-1)/(-(y+z))', '1/(y+z)')
+      simplifyAndCompare('(-x)/(-(y+z))', 'x/(y+z)')
+
+      simplifyAndCompare('1/(-(y-z))', '1/(z-y)')
+      simplifyAndCompare('x/(-(y-z))', 'x/(z-y)')
+      simplifyAndCompare('(-1)/(-(y-z))', '-(1/(z-y))')
+      simplifyAndCompare('(-x)/(-(y-z))', '-(x/(z-y))')
+    })
+
+    it('binary numerator and binary denominator', function () {
+      simplifyAndCompare('(1+x)/(-(y+z))', '-((x+1)/(y+z))')
+      simplifyAndCompare('(w+x)/(-(y+z))', '-((w+x)/(y+z))')
+      simplifyAndCompare('(1-x)/(-(y+z))', '(x-1)/(y+z)')
+      simplifyAndCompare('(w-x)/(-(y+z))', '(x-w)/(y+z)')
+
+      simplifyAndCompare('(1+x)/(-(y-z))', '(x+1)/(z-y)')
+      simplifyAndCompare('(w+x)/(-(y-z))', '(w+x)/(z-y)')
+      simplifyAndCompare('(1-x)/(-(y-z))', '(1-x)/(z-y)')
+      simplifyAndCompare('(w-x)/(-(y-z))', '(w-x)/(z-y)')
+    })
   })
 })
