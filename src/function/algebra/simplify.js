@@ -329,7 +329,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     { l: 'n1/(n2/n3)', r: '(n1*n3)/n2' },
 
-    { l: 'n1/(-n2)', r: '-(n1/n2)' }
+    { l: 'n1/(-n2)', r: '-n1/n2' }
 
   ]
 
