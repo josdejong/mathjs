@@ -1,5 +1,12 @@
 # History
 
+# 2021-12-22, version 10.0.1
+
+- Fix #1681: function `gamma` giving inaccurate complex results in some cases.
+  Thanks @kmdrGroch.
+- Fixed a typo in an example, see #2366. Thanks @blackwindforce.
+
+
 # 2021-11-03, version 10.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES IN THE TYPESCRIPT DEFINITIONS !!!
