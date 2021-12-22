@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20211222-version-1001">2021-12-22, version 10.0.1 <a href="#20211222-version-1001" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1681">#1681</a>: function `gamma` giving inaccurate complex results in some cases.
+  Thanks <a href="https://github.com/kmdrGroch">@kmdrGroch</a>.
+- Fixed a typo in an example, see <a href="https://github.com/josdejong/mathjs/issues/2366">#2366</a>. Thanks <a href="https://github.com/blackwindforce">@blackwindforce</a>.
+
+
 <h1 id="20211103-version-1000">2021-11-03, version 10.0.0 <a href="#20211103-version-1000" title="Permalink">#</a></h1>
 
 !!! BE CAREFUL: BREAKING CHANGES IN THE TYPESCRIPT DEFINITIONS !!!
