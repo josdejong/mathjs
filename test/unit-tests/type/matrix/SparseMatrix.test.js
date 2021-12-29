@@ -1127,16 +1127,16 @@ describe('SparseMatrix', function () {
       assert.deepStrictEqual(
         m.toArray(),
         [
-          [1, 2],
-          [0, 0]
+          [1, 0, 2],
+          [0, 0, 0]
         ])
 
       m.subset(index(1, [0, 2]), [3, 4])
       assert.deepStrictEqual(
         m.toArray(),
         [
-          [1, 2],
-          [3, 4]
+          [1, 0, 2],
+          [3, 0, 4]
         ])
     })
 
@@ -1232,21 +1232,22 @@ describe('SparseMatrix', function () {
       assert.deepStrictEqual(
         m.toArray(),
         [
-          [0, 0, 0, -1],
-          [0, 0, 0, -1],
-          [0, 0, 1, 2],
-          [-1, -1, 3, 4]
+          [0, 0, 0, -1, -1],
+          [0, 0, 0, -1, -1],
+          [0, 0, 1, -1, 2],
+          [-1, -1, -1, -1, -1],
+          [-1, -1, 3, -1, 4]
         ])
 
       m.subset(index(4, new Range(0, 3)), [5, 6, 7], -2)
       assert.deepStrictEqual(
         m.toArray(),
         [
-          [0, 0, 0, -1],
-          [0, 0, 0, -1],
-          [0, 0, 1, 2],
-          [-1, -1, 3, 4],
-          [5, 6, 7, -2]
+          [0, 0, 0, -1, -1],
+          [0, 0, 0, -1, -1],
+          [0, 0, 1, -1, 2],
+          [-1, -1, -1, -1, -1],
+          [5, 6, 7, -1, 4]
         ])
 
       m.subset(index(new Range(0, 3), 4), [8, 9, 10], -3)
@@ -1255,9 +1256,48 @@ describe('SparseMatrix', function () {
         [
           [0, 0, 0, -1, 8],
           [0, 0, 0, -1, 9],
-          [0, 0, 1, 2, 10],
-          [-1, -1, 3, 4, -3],
-          [5, 6, 7, -2, -3]
+          [0, 0, 1, -1, 10],
+          [-1, -1, -1, -1, -1],
+          [5, 6, 7, -1, 4]
+        ])
+    })
+
+    it('should set subset with non consecutive indexes', function () {
+      // set 2-dimensional
+      let m = new SparseMatrix(
+        [
+          [0, 0],
+          [0, 0]
+        ])
+
+      m.subset(index([0, 1], [1, 0]), math.identity(2))
+      assert.deepStrictEqual(
+        m.toArray(),
+        [
+          [0, 1],
+          [1, 0]
+        ])
+
+      m.subset(index([0, 2], [0, 2]), [[1, 2], [3, 4]])
+      assert.deepStrictEqual(
+        m.toArray(),
+        [
+          [1, 1, 2],
+          [1, 0, 0],
+          [3, 0, 4]
+        ])
+
+      m = math.sparse([1, 2, 3, 4, 5])
+
+      m.subset(index([2, 0]), [7, 9])
+      assert.deepStrictEqual(
+        m.toArray(),
+        [
+          [9],
+          [2],
+          [7],
+          [4],
+          [5]
         ])
     })
 
