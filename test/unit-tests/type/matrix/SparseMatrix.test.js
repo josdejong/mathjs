@@ -1300,6 +1300,21 @@ describe('SparseMatrix', function () {
         ])
     })
 
+    it('should get subset with non consecutive indexes', function () {
+      let m = new SparseMatrix(
+        [
+          [0, 1],
+          [1, 0]
+        ])
+
+      assert.deepStrictEqual(
+        m.subset(index([0, 1], [1, 0])).toArray(),
+        [
+          [1, 0],
+          [0, 1]
+        ])
+    })
+
     it('should throw an error in case of wrong type of index', function () {
       assert.throws(function () { console.log(new SparseMatrix().subset('no index', 2)) }, /Invalid index/)
     })
