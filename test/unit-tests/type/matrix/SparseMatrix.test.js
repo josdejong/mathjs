@@ -1301,7 +1301,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get subset with non consecutive indexes', function () {
-      let m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [0, 1],
           [1, 0]
