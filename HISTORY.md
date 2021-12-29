@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 10.0.2
+# 2021-12-29, version 10.0.2
 
 - Fix #2156: simplify expressions like `-1 / (-x)` to `1/x`. Thanks @ony3000.
 - Fix #2363: remove a redundant part of the regex to split a number.
