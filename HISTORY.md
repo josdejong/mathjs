@@ -1,5 +1,10 @@
 # History
 
+# not yet published, version 10.0.2
+
+- Fixed #2156: simplify expressions like `-1 / (-x)` to `1/x`. Thanks @ony3000.
+
+
 # 2021-12-22, version 10.0.1
 
 - Fix #1681: function `gamma` giving inaccurate complex results in some cases.
