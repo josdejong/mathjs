@@ -91,7 +91,7 @@ const scope2 = {
 print(code2.evaluate(scope2)) // 9
 
 // change a value in the scope and re-evaluate the node
-scope.a = 3
+scope2.a = 3
 print(code2.evaluate(scope2)) // 27
 
 // 3. using function math.compile

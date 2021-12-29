@@ -376,6 +376,7 @@ describe('number', function () {
         assert.deepStrictEqual(splitNumber('-23e3'), { sign: '-', coefficients: [2, 3], exponent: 4 })
         assert.deepStrictEqual(splitNumber('2.3e-3'), { sign: '', coefficients: [2, 3], exponent: -3 })
         assert.deepStrictEqual(splitNumber('23e-3'), { sign: '', coefficients: [2, 3], exponent: -2 })
+        assert.deepStrictEqual(splitNumber('000e+003'), { sign: '', coefficients: [0], exponent: 3 })
         assert.deepStrictEqual(splitNumber('-23e-3'), { sign: '-', coefficients: [2, 3], exponent: -2 })
         assert.deepStrictEqual(splitNumber('99.99'), { sign: '', coefficients: [9, 9, 9, 9], exponent: 1 })
       })
