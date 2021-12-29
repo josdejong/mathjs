@@ -308,7 +308,7 @@ export function format (value, options) {
  */
 export function splitNumber (value) {
   // parse the input value
-  const match = String(value).toLowerCase().match(/^0*?(-?)(\d+\.?\d*)(e([+-]?\d+))?$/)
+  const match = String(value).toLowerCase().match(/^(-?)(\d+\.?\d*)(e([+-]?\d+))?$/)
   if (!match) {
     throw new SyntaxError('Invalid number ' + value)
   }
