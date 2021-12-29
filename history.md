@@ -4,6 +4,16 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20211229-version-1002">2021-12-29, version 10.0.2 <a href="#20211229-version-1002" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2156">#2156</a>: simplify expressions like `-1 / (-x)` to `1/x`. Thanks <a href="https://github.com/ony3000">@ony3000</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2363">#2363</a>: remove a redundant part of the regex to split a number.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2291">#2291</a>: add support for fractions in function `intersect`. 
+  Thanks <a href="https://github.com/thetazero">@thetazero</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2358">#2358</a>: bug in `SparseMatrix` when replacing a subset of a matrix with
+  a non-consecutive index. Thanks <a href="https://github.com/Al-0">@Al-0</a>.
+
+
 <h1 id="20211222-version-1001">2021-12-22, version 10.0.1 <a href="#20211222-version-1001" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1681">#1681</a>: function `gamma` giving inaccurate complex results in some cases.
