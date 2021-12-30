@@ -8,6 +8,7 @@
 import assert from 'assert'
 import * as allIsFunctions from './is.js'
 import { create } from '../core/create.js'
+import { isMap } from './map.js'
 import { endsWith } from './string.js'
 
 export function validateBundle (expectedBundleStructure, bundle) {
@@ -287,7 +288,11 @@ function get (object, path) {
 
   for (let i = 0; i < path.length; i++) {
     const key = path[i]
-    child = child ? child[key] : undefined
+    child = isMap(child)
+      ? child.get(key)
+      : child
+        ? child[key]
+        : undefined
   }
 
   return child

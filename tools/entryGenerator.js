@@ -87,6 +87,7 @@ const impureFunctionsTemplate = Handlebars.compile(`/**
  * DON'T MAKE CHANGES HERE
  */
 import { config } from './configReadonly.js'
+import { LazyMap } from '../utils/map.js'
 import {
   {{#impureFactories}}
   {{factoryName}},{{eslintComment}}
@@ -102,7 +103,7 @@ import {
 } from './pureFunctions{{suffix}}.generated.js'
 
 const math = {} // NOT pure!
-const mathWithTransform = {} // NOT pure!
+const mathWithTransform = new LazyMap() // NOT pure!
 const classes = {} // NOT pure!
 
 {{#impureFactories}}
@@ -127,16 +128,17 @@ Object.assign(math, {
   config
 })
 
-Object.assign(mathWithTransform, math, {
-  {{#transformFactories}}
-  {{name}}: {{factoryName ~}}
-  ({{braceOpen}}{{#if dependencies}} {{/if ~}}
-  {{#dependencies ~}}
-  {{name}}{{#unless @last}}, {{/unless ~}}
-  {{/dependencies ~}}
-  {{#if dependencies}} {{/if ~}}}){{#unless @last}},{{/unless}}
-  {{/transformFactories}}
+Object.keys(math).forEach(key => {
+  mathWithTransform.setLazy(key, () => math[key])
 })
+{{#transformFactories}}
+mathWithTransform.setLazy('{{name}}', () => {{factoryName ~}}
+({{braceOpen}}{{#if dependencies}} {{/if ~}}
+{{#dependencies ~}}
+{{name}}{{#unless @last}}, {{/unless ~}}
+{{/dependencies ~}}
+{{#if dependencies}} {{/if ~}}}))
+{{/transformFactories}}
 
 Object.assign(classes, {
 {{#classes}}

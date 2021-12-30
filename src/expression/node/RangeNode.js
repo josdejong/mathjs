@@ -56,7 +56,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants.
+   * @param {Map} math        Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -66,7 +66,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   RangeNode.prototype._compile = function (math, argNames) {
-    const range = math.range
+    const range = math.get('range')
     const evalStart = this.start._compile(math, argNames)
     const evalEnd = this.end._compile(math, argNames)
 

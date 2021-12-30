@@ -34,8 +34,8 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
   Node.prototype.comment = ''
 
   /**
-   * Compile the node into an optimized, evauatable JavaScript function
-   * @return {{evaluate: function([Object])}} object
+   * Compile the node into an optimized, evaluable JavaScript function
+   * @return {{evaluate: function(Object?)}} object
    *                Returns an object with a function 'evaluate',
    *                which can be invoked as expr.evaluate([scope: Object]),
    *                where scope is an optional object with
@@ -61,7 +61,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants.
+   * @param {Map} math        Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions

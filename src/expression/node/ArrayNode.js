@@ -37,7 +37,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants.
+   * @param {Map} math        Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -51,9 +51,9 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
       return item._compile(math, argNames)
     })
 
-    const asMatrix = (math.config.matrix !== 'Array')
+    const asMatrix = (math.get('config').matrix !== 'Array')
     if (asMatrix) {
-      const matrix = math.matrix
+      const matrix = math.get('matrix')
       return function evalArrayNode (scope, args, context) {
         return matrix(map(evalItems, function (evalItem) {
           return evalItem(scope, args, context)

@@ -183,13 +183,13 @@ export function importFactory (typed, load, math, importedFactories) {
     if (value && typeof value.transform === 'function') {
       math.expression.transform[name] = value.transform
       if (allowedInExpressions(name)) {
-        math.expression.mathWithTransform[name] = value.transform
+        math.expression.mathWithTransform.set(name, value.transform)
       }
     } else {
       // remove existing transform
       delete math.expression.transform[name]
       if (allowedInExpressions(name)) {
-        math.expression.mathWithTransform[name] = value
+        math.expression.mathWithTransform.set(name, value)
       }
     }
   }
@@ -197,9 +197,9 @@ export function importFactory (typed, load, math, importedFactories) {
   function _deleteTransform (name) {
     delete math.expression.transform[name]
     if (allowedInExpressions(name)) {
-      math.expression.mathWithTransform[name] = math[name]
+      math.expression.mathWithTransform.set(name, math[name])
     } else {
-      delete math.expression.mathWithTransform[name]
+      math.expression.mathWithTransform.delete(name)
     }
   }
 
@@ -302,7 +302,7 @@ export function importFactory (typed, load, math, importedFactories) {
         _deleteTransform(name)
       } else {
         if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
-          lazy(math.expression.mathWithTransform, name, () => namespace[name])
+          math.expression.mathWithTransform.setLazy(name, () => namespace[name])
         }
       }
     } else {
@@ -313,7 +313,7 @@ export function importFactory (typed, load, math, importedFactories) {
         _deleteTransform(name)
       } else {
         if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
-          lazy(math.expression.mathWithTransform, name, () => namespace[name])
+          math.expression.mathWithTransform.setLazy(name, () => namespace[name])
         }
       }
     }

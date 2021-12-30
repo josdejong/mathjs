@@ -1,7 +1,7 @@
 import { isNode } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
 import { escape } from '../../utils/string.js'
-import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
+import { isSafeMethod } from '../../utils/customs.js'
 import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators.js'
 import { latexOperators } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
@@ -56,7 +56,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants.
+   * @param {Map} math        Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -67,15 +67,14 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    */
   OperatorNode.prototype._compile = function (math, argNames) {
     // validate fn
-    if (typeof this.fn !== 'string' || !isSafeMethod(math, this.fn)) {
-      if (!math[this.fn]) {
-        throw new Error('Function ' + this.fn + ' missing in provided namespace "math"')
-      } else {
-        throw new Error('No access to function "' + this.fn + '"')
-      }
+    if (typeof this.fn !== 'string' || isSafeMethod(this.fn)) {
+      throw new Error('No access to function "' + this.fn + '"')
+    }
+    if (!math.has(this.fn)) {
+      throw new Error('Function ' + this.fn + ' missing in provided namespace "math"')
     }
 
-    const fn = getSafeProperty(math, this.fn)
+    const fn = math.get(this.fn)
     const evalArgs = map(this.args, function (arg) {
       return arg._compile(math, argNames)
     })
