@@ -1123,7 +1123,7 @@ describe('SparseMatrix', function () {
         [0, 0]
       ])
 
-      m.subset(index(0, [0, 2]), [1, 2])
+      m.subset(index(0, [0, 1]), [1, 2])
       assert.deepStrictEqual(
         m.toArray(),
         [
@@ -1131,7 +1131,7 @@ describe('SparseMatrix', function () {
           [0, 0]
         ])
 
-      m.subset(index(1, [0, 2]), [3, 4])
+      m.subset(index(1, [0, 1]), [3, 4])
       assert.deepStrictEqual(
         m.toArray(),
         [
@@ -1228,7 +1228,7 @@ describe('SparseMatrix', function () {
           [0, 0, 0]
         ])
 
-      m.subset(index([2, 4], [2, 4]), [[1, 2], [3, 4]], -1)
+      m.subset(index([2, 3], [2, 3]), [[1, 2], [3, 4]], -1)
       assert.deepStrictEqual(
         m.toArray(),
         [
@@ -1258,6 +1258,60 @@ describe('SparseMatrix', function () {
           [0, 0, 1, 2, 10],
           [-1, -1, 3, 4, -3],
           [5, 6, 7, -2, -3]
+        ])
+    })
+
+    it('should set subset with non consecutive indexes', function () {
+      // set 2-dimensional
+      let m = new SparseMatrix(
+        [
+          [0, 0],
+          [0, 0]
+        ])
+
+      m.subset(index([0, 1], [1, 0]), math.identity(2))
+      assert.deepStrictEqual(
+        m.toArray(),
+        [
+          [0, 1],
+          [1, 0]
+        ])
+
+      m.subset(index([0, 2], [0, 2]), [[1, 2], [3, 4]])
+      assert.deepStrictEqual(
+        m.toArray(),
+        [
+          [1, 1, 2],
+          [1, 0, 0],
+          [3, 0, 4]
+        ])
+
+      m = math.sparse([1, 2, 3, 4, 5])
+
+      m.subset(index([2, 0]), [7, 9])
+      assert.deepStrictEqual(
+        m.toArray(),
+        [
+          [9],
+          [2],
+          [7],
+          [4],
+          [5]
+        ])
+    })
+
+    it('should get subset with non consecutive indexes', function () {
+      const m = new SparseMatrix(
+        [
+          [0, 1],
+          [1, 0]
+        ])
+
+      assert.deepStrictEqual(
+        m.subset(index([0, 1], [1, 0])).toArray(),
+        [
+          [1, 0],
+          [0, 1]
         ])
     })
 

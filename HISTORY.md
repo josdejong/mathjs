@@ -1,5 +1,22 @@
 # History
 
+# 2021-12-29, version 10.0.2
+
+- Fix #2156: simplify expressions like `-1 / (-x)` to `1/x`. Thanks @ony3000.
+- Fix #2363: remove a redundant part of the regex to split a number.
+- Fix #2291: add support for fractions in function `intersect`. 
+  Thanks @thetazero.
+- Fix #2358: bug in `SparseMatrix` when replacing a subset of a matrix with
+  a non-consecutive index. Thanks @Al-0.
+
+
+# 2021-12-22, version 10.0.1
+
+- Fix #1681: function `gamma` giving inaccurate complex results in some cases.
+  Thanks @kmdrGroch.
+- Fixed a typo in an example, see #2366. Thanks @blackwindforce.
+
+
 # 2021-11-03, version 10.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES IN THE TYPESCRIPT DEFINITIONS !!!
