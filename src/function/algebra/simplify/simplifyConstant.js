@@ -11,6 +11,7 @@ const dependencies = [
   'mathWithTransform',
   '?fraction',
   '?bignumber',
+  'ArrayNode',
   'ConstantNode',
   'OperatorNode',
   'FunctionNode',
@@ -23,6 +24,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   mathWithTransform,
   fraction,
   bignumber,
+  ArrayNode,
   ConstantNode,
   OperatorNode,
   FunctionNode,
@@ -38,7 +40,11 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
 
   function _eval (fnname, args, options) {
     try {
-      return _toNumber(mathWithTransform[fnname].apply(null, args), options)
+      /* Originally the below was wrapped with _toNumber but (a) I don't see
+       * why that was needed, (b) removing it did not break any tests, and
+       * (c) its presence messes up string constant handling.
+       */
+      return mathWithTransform[fnname].apply(null, args)
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
       args = args.map(function (x) {
@@ -67,6 +73,12 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
     },
     Complex: function (s) {
       throw new Error('Cannot convert Complex number to Node')
+    },
+    string: function (s) {
+      return new ConstantNode(s);
+    },
+    Matrix: function (m) {
+	return new ArrayNode(m._data.map(e => _toNode(e)));
     }
   })
 
@@ -176,8 +188,11 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       case 'SymbolNode':
         return node
       case 'ConstantNode':
-        if (typeof node.value === 'number' || !isNaN(node.value)) {
-          return _toNumber(node.value, options)
+        switch (typeof node.value) {
+          case 'number': return _toNumber(node.value, options)
+          case 'string': return node.value
+          default:
+            if (!isNaN(node.value)) return _toNumber(node.value, options)
         }
         return node
       case 'FunctionNode':
@@ -262,7 +277,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       case 'AccessorNode':
         /* falls through */
       case 'ArrayNode':
-        /* falls through */
+        return node; // FIXME: these two cases missing possible simplifications
       case 'AssignmentNode':
         /* falls through */
       case 'BlockNode':
