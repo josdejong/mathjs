@@ -40,10 +40,6 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
 
   function _eval (fnname, args, options) {
     try {
-      /* Originally the below was wrapped with _toNumber but (a) I don't see
-       * why that was needed, (b) removing it did not break any tests, and
-       * (c) its presence messes up string constant handling.
-       */
       return mathWithTransform[fnname].apply(null, args)
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
@@ -75,10 +71,10 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       throw new Error('Cannot convert Complex number to Node')
     },
     string: function (s) {
-      return new ConstantNode(s);
+      return new ConstantNode(s)
     },
     Matrix: function (m) {
-	return new ArrayNode(m._data.map(e => _toNode(e)));
+      return new ArrayNode(m._data.map(e => _toNode(e)))
     }
   })
 
@@ -277,7 +273,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       case 'AccessorNode':
         /* falls through */
       case 'ArrayNode':
-        return node; // FIXME: these two cases missing possible simplifications
+        return node // FIXME: these two cases missing possible simplifications
       case 'AssignmentNode':
         /* falls through */
       case 'BlockNode':

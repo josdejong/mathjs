@@ -65,11 +65,11 @@ describe('simplify', function () {
   })
 
   it('handles string constants', function () {
-    simplifyAndCompare('"a"','"a"')
+    simplifyAndCompare('"a"', '"a"')
     simplifyAndCompare('f("0xffff")', 'f("0xffff")')
     simplifyAndCompare('"1234"', '"1234"')
-    simplifyAndCompare('concat("a","b")','"ab"')
-    simplifyAndCompare('size(concat("A","4/2"))','[4]')
+    simplifyAndCompare('concat("a","b")', '"ab"')
+    simplifyAndCompare('size(concat("A","4/2"))', '[4]')
     simplifyAndCompare('string(4/2)', '"2"')
     simplifyAndCompare('2+number("2")', '4')
   })
@@ -150,15 +150,15 @@ describe('simplify', function () {
     assert.strictEqual(math.simplify('0 - (x - y)', {}).toString(), 'y - x')
   })
 
-  it.skip('should simplify inside arrays and indexing', function() {
+  it.skip('should simplify inside arrays and indexing', function () {
     simplifyAndCompare('[3x+5x]', '[8x]')
     simplifyAndCompare('[2*3,6+2]', '[6,8]')
     simplifyAndCompare('[x,y,z][(3-2)*a]', '[x,y,z][a]')
   })
 
-  it.skip('should index an array or object with a constant', function() {
-    simplifyAndCompare('[x,y,z][2]', 'y');
-    simplifyAndCompare('{a:3,b:2}.b', '2');
+  it.skip('should index an array or object with a constant', function () {
+    simplifyAndCompare('[x,y,z][2]', 'y')
+    simplifyAndCompare('{a:3,b:2}.b', '2')
   })
 
   it('should handle custom functions', function () {
