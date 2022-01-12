@@ -2,7 +2,8 @@
 
 # not yet published, version 10.0.3
 
-- Fix #2379: add documentation for function `print` in function `help`.
+- Fix #2379: add embedded documentation for function `print`.
+- Remove broken example from the embedded documentation of function `forEach`.
 
 
 # 2021-12-29, version 10.0.2
