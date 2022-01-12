@@ -64,6 +64,16 @@ describe('simplify', function () {
     simplifyAndCompare('3+2/4', '7/2')
   })
 
+  it('handles string constants', function () {
+    simplifyAndCompare('"a"', '"a"')
+    simplifyAndCompare('f("0xffff")', 'f("0xffff")')
+    simplifyAndCompare('"1234"', '"1234"')
+    simplifyAndCompare('concat("a","b")', '"ab"')
+    simplifyAndCompare('size(concat("A","4/2"))', '[4]')
+    simplifyAndCompare('string(4/2)', '"2"')
+    simplifyAndCompare('2+number("2")', '4')
+  })
+
   it('should simplify equations with different variables', function () {
     simplifyAndCompare('-(x+y)', '-(x + y)')
     simplifyAndCompare('-(x*y)', '-(x * y)')
@@ -140,6 +150,17 @@ describe('simplify', function () {
     assert.strictEqual(math.simplify('0 - (x - y)', {}).toString(), 'y - x')
   })
 
+  it.skip('should simplify inside arrays and indexing', function () {
+    simplifyAndCompare('[3x+5x]', '[8x]')
+    simplifyAndCompare('[2*3,6+2]', '[6,8]')
+    simplifyAndCompare('[x,y,z][(3-2)*a]', '[x,y,z][a]')
+  })
+
+  it.skip('should index an array or object with a constant', function () {
+    simplifyAndCompare('[x,y,z][2]', 'y')
+    simplifyAndCompare('{a:3,b:2}.b', '2')
+  })
+
   it('should handle custom functions', function () {
     function doubleIt (x) { return x + x }
     const f = new math.FunctionNode(new math.SymbolNode('doubleIt'), [new math.SymbolNode('value')])
@@ -190,7 +211,7 @@ describe('simplify', function () {
     simplifyAndCompareEval('0.2 * 1e-14', '2e-15')
   })
 
-  it.skip('should not change the value of numbers when converting to fractions (3)', function () {
+  it('should not change the value of numbers when converting to fractions (3)', function () {
     // TODO this requires that all operators and functions have the correct logic in their 'Fraction' typed-functions.
     //      Ideally they should convert parameters to Fractions if they can all be expressed exactly,
     //      otherwise convert all parameters to the 'number' type.
