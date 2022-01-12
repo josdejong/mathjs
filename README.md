@@ -155,6 +155,14 @@ To run the tests remotely on BrowserStack, first set the environment variables `
 
     npm run test:browserstack
 
+You can separately run the code linter, though it is also executed with `npm test`:
+
+    npm run lint
+
+To automatically fix linting issue, run:
+
+    npm run format
+
 To test code coverage of the tests:
 
     npm run coverage
