@@ -4,6 +4,8 @@
 
 - Fix #2379: add embedded documentation for function `print`.
 - Remove broken example from the embedded documentation of function `forEach`.
+- Fix #2152: function `simplify` transforming strings into numbers.
+  Thanks @gwhitney.
 
 
 # 2021-12-29, version 10.0.2
