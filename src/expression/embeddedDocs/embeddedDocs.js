@@ -1,4 +1,5 @@
 import { bignumberDocs } from './construction/bignumber.js'
+import { printDocs } from './function/utils/print.js'
 import { typeOfDocs } from './function/utils/typeOf.js'
 import { isZeroDocs } from './function/utils/isZero.js'
 import { isPrimeDocs } from './function/utils/isPrime.js'
@@ -545,7 +546,7 @@ export const embeddedDocs = {
   isPositive: isPositiveDocs,
   isPrime: isPrimeDocs,
   isZero: isZeroDocs,
-  // print: printDocs // TODO: add documentation for print as soon as the parser supports objects.
+  print: printDocs,
   typeOf: typeOfDocs,
   numeric: numericDocs
 }
