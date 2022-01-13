@@ -171,6 +171,22 @@ describe('simplify', function () {
     simplifyAndCompare('{a:3,b:2}.c', 'undefined')
   })
 
+  it('should compute with literal constant matrices', function () {
+    simplifyAndCompare('[1,2]+[3,4]', '[4,6]')
+    simplifyAndCompare('[0,1;2,3]*[3,2;1,0]', '[1,0;9,4]')
+    simplifyAndCompare('3*[0,1,2;3,4,5]', '[0,3,6;9,12,15]')
+    simplifyAndCompare('zeros(2,1)', '[0;0]')
+    simplifyAndCompare('ones(3)', '[1,1,1]')
+    simplifyAndCompare('identity(2)', '[1,0;0,1]')
+    simplifyAndCompare('sqrt([1,4,9])', '[1,2,3]')
+    simplifyAndCompare('det([2,1;-1,3])', '7')
+    simplifyAndCompare("[1,2;3,4]'", '[1,3;2,4]')
+  })
+
+  it('should recognize array size does not depend on entries', function () {
+    simplifyAndCompare('size([a,b;c,d])', '[2,2]')
+  })
+
   it('should handle custom functions', function () {
     function doubleIt (x) { return x + x }
     const f = new math.FunctionNode(new math.SymbolNode('doubleIt'), [new math.SymbolNode('value')])
