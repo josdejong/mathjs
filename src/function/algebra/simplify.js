@@ -474,6 +474,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           res.properties[prop] = applyRule(res.properties[prop], rule)
         }
       }
+
       // Try to match a rule against this node
       let repl = rule.r
       let matches = _ruleMatch(rule.l, res)[0]

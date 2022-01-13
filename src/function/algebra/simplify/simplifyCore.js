@@ -31,8 +31,8 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
   AccessorNode,
   ArrayNode,
   ConstantNode,
-  IndexNode,
   FunctionNode,
+  IndexNode,
   ObjectNode,
   OperatorNode,
   ParenthesisNode
