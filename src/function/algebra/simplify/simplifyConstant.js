@@ -1,5 +1,5 @@
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
-import { isFraction, isNode, isOperatorNode } from '../../../utils/is.js'
+import { isFraction, isNode, isArrayNode, isConstantNode, isIndexNode, isObjectNode, isOperatorNode } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
 import { createUtil } from './util.js'
 import { noBignumber, noFraction } from '../../../utils/noop.js'
@@ -11,10 +11,13 @@ const dependencies = [
   'mathWithTransform',
   '?fraction',
   '?bignumber',
+  'AccessorNode',
   'ArrayNode',
   'ConstantNode',
-  'OperatorNode',
   'FunctionNode',
+  'IndexNode',
+  'ObjectNode',
+  'OperatorNode',
   'SymbolNode'
 ]
 
@@ -24,10 +27,13 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   mathWithTransform,
   fraction,
   bignumber,
+  AccessorNode,
   ArrayNode,
   ConstantNode,
-  OperatorNode,
   FunctionNode,
+  IndexNode,
+  ObjectNode,
+  OperatorNode,
   SymbolNode
 }) => {
   const { isCommutative, isAssociative, allChildren, createMakeNodeFunction } =
@@ -270,19 +276,79 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       case 'ParenthesisNode':
         // remove the uneccessary parenthesis
         return foldFraction(node.content, options)
-      case 'AccessorNode':
-        /* falls through */
-      case 'ArrayNode':
-        return node // FIXME: these two cases missing possible simplifications
+      case 'AccessorNode': {
+        let obj = foldFraction(node.object, options)
+        const ind = foldFraction(node.index, options)
+        if (isIndexNode(ind)) {
+          if (isArrayNode(obj)) {
+            const remainingDims = Array.from(ind.dimensions)
+            while (remainingDims.length > 0) {
+              if (isConstantNode(remainingDims[0]) &&
+                  typeof remainingDims[0].value !== 'string') {
+                const first = _toNumber(remainingDims.shift().value, options)
+                obj = obj.items[first - 1]
+              } else if (remainingDims.length > 1 &&
+                         isConstantNode(remainingDims[1]) &&
+                         typeof remainingDims[1].value !== 'string') {
+                const second = _toNumber(remainingDims[1].value, options)
+                const tryItems = []
+                for (const item of obj.items) {
+                  if (isArrayNode(item)) {
+                    tryItems.push(item.items[second - 1])
+                  } else {
+                    break
+                  }
+                }
+                if (tryItems.length === obj.items.length) {
+                  obj = new ArrayNode(tryItems)
+                  remainingDims.splice(1, 1)
+                } else {
+                  break
+                }
+              } else {
+                break
+              }
+            }
+            if (remainingDims.length === ind.dimensions.length) {
+              /* Neither the first or second dimension was constant */
+              return new AccessorNode(obj, ind)
+            } else if (remainingDims.length === 0) {
+              /* All dimensions were constant, access completely resolved */
+              return obj
+            } else {
+              return new AccessorNode(obj, new IndexNode(remainingDims))
+            }
+          } else if (isObjectNode(obj) &&
+                     ind.dimensions.length === 1 &&
+                     isConstantNode(ind.dimensions[0])) {
+            const prop = obj.properties[ind.dimensions[0].value]
+            if (prop === undefined) {
+              return new ConstantNode(prop)
+            }
+            return prop
+          }
+        }
+        return new AccessorNode(obj, ind)
+      }
+      case 'ArrayNode': {
+        return new ArrayNode(node.items.map(n => simplifyConstant(n, options)))
+      }
+      case 'IndexNode': {
+        return new IndexNode(
+          node.dimensions.map(n => simplifyConstant(n, options)))
+      }
+      case 'ObjectNode': {
+        const foldProps = {}
+        for (const prop in node.properties) {
+          foldProps[prop] = simplifyConstant(node.properties[prop], options)
+        }
+        return new ObjectNode(foldProps)
+      }
       case 'AssignmentNode':
         /* falls through */
       case 'BlockNode':
         /* falls through */
       case 'FunctionAssignmentNode':
-        /* falls through */
-      case 'IndexNode':
-        /* falls through */
-      case 'ObjectNode':
         /* falls through */
       case 'RangeNode':
         /* falls through */

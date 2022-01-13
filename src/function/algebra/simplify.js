@@ -22,9 +22,12 @@ const dependencies = [
   '?fraction',
   '?bignumber',
   'mathWithTransform',
+  'AccessorNode',
   'ArrayNode',
   'ConstantNode',
   'FunctionNode',
+  'IndexNode',
+  'ObjectNode',
   'OperatorNode',
   'ParenthesisNode',
   'SymbolNode'
@@ -45,9 +48,12 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     fraction,
     bignumber,
     mathWithTransform,
+    AccessorNode,
     ArrayNode,
     ConstantNode,
     FunctionNode,
+    IndexNode,
+    ObjectNode,
     OperatorNode,
     ParenthesisNode,
     SymbolNode
@@ -59,10 +65,13 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     mathWithTransform,
     fraction,
     bignumber,
+    AccessorNode,
     ArrayNode,
     ConstantNode,
-    OperatorNode,
     FunctionNode,
+    IndexNode,
+    ObjectNode,
+    OperatorNode,
     SymbolNode
   })
   const simplifyCore = createSimplifyCore({
@@ -73,9 +82,13 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     multiply,
     divide,
     pow,
+    AccessorNode,
+    ArrayNode,
     ConstantNode,
-    OperatorNode,
     FunctionNode,
+    IndexNode,
+    ObjectNode,
+    OperatorNode,
     ParenthesisNode
   })
   const resolve = createResolve({
@@ -412,6 +425,14 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     return new SymbolNode('_p' + _lastsym++)
   }
 
+  function mapRule (nodes, rule) {
+    if (nodes) {
+      for (let i = 0; i < nodes.length; ++i) {
+        nodes[i] = applyRule(nodes[i], rule)
+      }
+    }
+  }
+
   /**
    * Returns a simplfied form of node, or the original node if no simplification was possible.
    *
@@ -426,20 +447,30 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       let res = node
 
       // First replace our child nodes with their simplified versions
-      // If a child could not be simplified, the assignments will have
-      // no effect since the node is returned unchanged
+      // If a child could not be simplified, applying the rule to it
+      // will have no effect since the node is returned unchanged
       if (res instanceof OperatorNode || res instanceof FunctionNode) {
-        if (res.args) {
-          for (let i = 0; i < res.args.length; i++) {
-            res.args[i] = applyRule(res.args[i], rule)
-          }
-        }
+        mapRule(res.args, rule)
       } else if (res instanceof ParenthesisNode) {
         if (res.content) {
           res.content = applyRule(res.content, rule)
         }
+      } else if (res instanceof ArrayNode) {
+        mapRule(res.items, rule)
+      } else if (res instanceof AccessorNode) {
+        if (res.object) {
+          res.object = applyRule(res.object, rule)
+        }
+        if (res.index) {
+          res.index = applyRule(res.index, rule)
+        }
+      } else if (res instanceof IndexNode) {
+        mapRule(res.dimensions, rule)
+      } else if (res instanceof ObjectNode) {
+        for (const prop in res.properties) {
+          res.properties[prop] = applyRule(res.properties[prop], rule)
+        }
       }
-
       // Try to match a rule against this node
       let repl = rule.r
       let matches = _ruleMatch(rule.l, res)[0]
