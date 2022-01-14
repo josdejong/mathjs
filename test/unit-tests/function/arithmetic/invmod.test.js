@@ -12,14 +12,14 @@ describe('invmod', function () {
   })
 
   it('should return NaN when there is no multiplicative inverse', () => {
-    assert.strictEqual(invmod(3, 15), NaN)
-    assert.strictEqual(invmod(14, 7), NaN)
-    assert.strictEqual(invmod(42, 1200), NaN)
+    assert(isNaN(invmod(3, 15)))
+    assert(isNaN(invmod(14, 7)))
+    assert(isNaN(invmod(42, 1200)))
   })
 
   it('should work when a≥b', () => {
     assert.strictEqual(invmod(4, 3), 1)
-    assert.strictEqual(invmod(7, 7), NaN)
+    assert(isNaN(invmod(7, 7)))
   })
 
   it('should work for negative values', () => {
