@@ -257,7 +257,12 @@ describe('simplify', function () {
     simplifyAndCompare('x+x', '2*x')
     simplifyAndCompare('2x+x', '3*x')
     simplifyAndCompare('2(x+1)+(x+1)', '3*(x + 1)')
-    simplifyAndCompare('y*x^2+2*x^2', '(y+2)*x^2')
+    simplifyAndCompare('2(x+1)+x+1', '3*(x + 1)')
+    simplifyAndCompare('y*x^2+2*x^2', 'x^2*(y+2)')
+    simplifyAndCompare('x*y + y*x', '2*x*y')
+    simplifyAndCompare('x*y - y*x', '0')
+    simplifyAndCompare('x^2*y^3*z - y*z*y*x^2*y', '0')
+    simplifyAndCompare('x^2*y^3*z - y*z*x^2*y', 'x^2*z*(y^3-y^2)')
   })
 
   it('should collect separated like terms', function () {
@@ -272,6 +277,7 @@ describe('simplify', function () {
     simplifyAndCompare('10 - (x - 2)', '12 - x')
     simplifyAndCompare('x - (y + x)', '-y')
     simplifyAndCompare('x - (y - (y - x))', '0')
+    simplifyAndCompare('5 + (5 * x) - (3 * x) + 2', '2*x+7')
   })
 
   it('should collect separated like factors', function () {

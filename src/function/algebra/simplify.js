@@ -301,11 +301,19 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'log(e)', r: '1' },
 
     // temporary rules
+    // Note initially we tend constants to the right because like-term
+    // collection prefers the left, and we would rather collect nonconstants
     { l: 'n-n1', r: 'n+-n1' }, // temporarily replace 'subtract' so we can further flatten the 'add' operator
-    { l: '-(c*v)', r: '(-c) * v' }, // make non-constant terms positive
-    { l: '-v', r: '(-1) * v' },
+    { l: '-(c*v)', r: 'v * (-c)' }, // make non-constant terms positive
+    { l: '-v', r: 'v * (-1)' },
     { l: 'n/n1^n2', r: 'n*n1^-n2' }, // temporarily replace 'divide' so we can further flatten the 'multiply' operator
     { l: 'n/n1', r: 'n*n1^-1' },
+
+    // remove parenthesis in the case of negating a quantity
+    { l: 'n1 + (n2 + n3)*(-1)', r: 'n1 + n2*(-1) + n3*(-1)' },
+    // subsume resulting -1 into constants where possible
+    { l: '(-1) * c', r: '-c' },
+    { l: '(-1) * (-c)', r: 'c' },
 
     // expand nested exponentiation
     { l: '(n ^ n1) ^ n2', r: 'n ^ (n1 * n2)' },
@@ -318,17 +326,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // collect like terms
     { l: 'n+n', r: '2*n' },
     { l: 'n+-n', r: '0' },
-    { l: 'n1*n2 + n2', r: '(n1+1)*n2' },
-    { l: 'n1*n3 + n2*n3', r: '(n1+n2)*n3' },
-
-    // remove parenthesis in the case of negating a quantitiy
-    { l: 'n1 + -1 * (n2 + n3)', r: 'n1 + -1 * n2 + -1 * n3' },
+    { l: 'v*n + v', r: 'v*(n+1)' }, // NOTE: leftmost position is special:
+    { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
+    { l: 'n*c + c', r: '(n+1)*c' },
 
     simplifyConstant,
 
     { l: '(-n)*n1', r: '-(n*n1)' }, // make factors positive (and undo 'make non-constant terms positive')
 
-    // ordering of constants
+    // final ordering of constants
     { l: 'c+v', r: 'v+c', context: { add: { commutative: false } } },
     { l: 'v*c', r: 'c*v', context: { multiply: { commutative: false } } },
 
@@ -392,7 +398,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             r: removeParens(parse(rule.r))
           }
           if (rule.context) {
-            newRule.evaluate = rule.context
+            newRule.context = rule.context
           }
           if (rule.evaluate) {
             newRule.evaluate = parse(rule.evaluate)
