@@ -387,6 +387,33 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { multiply: { commutative: false } }
     },
 
+    // remove parenthesis in the case of negating a quantity
+    { l: 'n1 + (n2 + n3)*(-1)', r: 'n1 + n2*(-1) + n3*(-1)' },
+    // subsume resulting -1 into constants where possible
+    { l: '(-1) * c', r: '-c' },
+    { l: '(-1) * (-c)', r: 'c' },
+
+    // expand nested exponentiation
+    { l: '(n ^ n1) ^ n2', r: 'n ^ (n1 * n2)' },
+
+    // collect like factors; into a sum, only do this for nonconstants
+    { l: ' v   * ( v   * n1 + n2)', r: 'v^2       * n1 +  v   * n2' },
+    { l: ' v   * (v^n4 * n1 + n2)', r: 'v^(1+n4)  * n1 +  v   * n2' },
+    { l: 'v^n3 * ( v   * n1 + n2)', r: 'v^(n3+1)  * n1 + v^n3 * n2' },
+    { l: 'v^n3 * (v^n4 * n1 + n2)', r: 'v^(n3+n4) * n1 + v^n3 * n2' },
+    { l: ' n   *  n  ', r: 'n^2' },
+    { l: ' n   * n^n2', r: 'n^(n2+1)' },
+    { l: 'n^n1 * n^n2', r: 'n^(n1+n2)' },
+
+    // collect like terms
+    { l: 'n+n', r: '2*n' },
+    { l: 'n+-n', r: '0' },
+    { l: ' v*n  + v    ', r: 'v *(n + 1)' }, // Leftmost position is special:
+    { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
+    { l: 'n3^(-n4)*n1 +   n3  * n2', r: 'n3^(-n4)*(n1 + n3^(n4+1) *n2)' },
+    { l: 'n3^(-n4)*n1 + n3^n5 * n2', r: 'n3^(-n4)*(n1 + n3^(n4+n5)*n2)' },
+    { l: 'n*c + c', r: '(n+1)*c' },
+
     simplifyConstant,
 
     // expand nested exponentiation
@@ -462,10 +489,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { multiply: { commutative: true } } // o.w. / not conventional
     },
     {
-      s: 'n1^-1 -> 1/n1',
+      s: 'n^-1 -> 1/n',
       assuming: { multiply: { commutative: true } } // o.w. / not conventional
     },
-
+    { l: 'n^ 1', r: 'n' }, // can be produced by power cancellation
     {
       s: 'n*(n1/n2) -> (n*n1)/n2', // '*' before '/'
       assuming: { multiply: { associative: true } }

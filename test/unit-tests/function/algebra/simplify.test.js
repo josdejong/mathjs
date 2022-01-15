@@ -301,6 +301,10 @@ describe('simplify', function () {
     simplifyAndCompare('x - (y - (y - x))', '0')
     simplifyAndCompare('5 + (5 * x) - (3 * x) + 2', '2*x+7')
     simplifyAndCompare('x^2*y^2 - (x*y)^2', '0')
+    simplifyAndCompare('(x*z^2 + y*z)/z^4', '(y + z*x)/z^3') // #1423
+    simplifyAndCompare('(x^2*y + z*y)/y^4', '(x^2 + z)/y^3')
+    simplifyAndCompare('(x^2 + 2x)*x', '2*x^2 + x^3')
+    simplifyAndCompare('x + y/z', 'x + y/z') // avoid overzealous '(x+y*z)/z'
   })
 
   it('should collect separated like factors', function () {
