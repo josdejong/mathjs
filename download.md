@@ -13,7 +13,7 @@ npm install mathjs
 
 When installed globally with [npm](https://npmjs.org/) (using the `-g` option), math.js is available as a command line application `mathjs`, see documentation on [Command Line Interface](docs/command_line_interface.html).
 
-> Note that when using mathjs in a TypeScript project, you will have to install type definition files too: `npm install @types/mathjs`.
+> Math.js now ships built-in TypeScript type definition.
 
 <h1 id="download">Download <a href="#download" title="Permalink">#</a></h1>
 
