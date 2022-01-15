@@ -4,6 +4,17 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220115-version-1010">2022-01-15, version 10.1.0 <a href="#20220115-version-1010" title="Permalink">#</a></h1>
+
+- Implemented function `invmod`, see <a href="https://github.com/josdejong/mathjs/issues/2368">#2368</a>, <a href="https://github.com/josdejong/mathjs/issues/1744">#1744</a>. Thanks <a href="https://github.com/thetazero">@thetazero</a>.
+- Improvements and fixes in function `simplify`, thanks <a href="https://github.com/gwhitney">@gwhitney</a>:
+  - Fix <a href="https://github.com/josdejong/mathjs/issues/1179">#1179</a>, <a href="https://github.com/josdejong/mathjs/issues/1290">#1290</a>: improve collection of non-constant like terms  <a href="https://github.com/josdejong/mathjs/issues/2384">#2384</a>).
+  - Fix <a href="https://github.com/josdejong/mathjs/issues/2152">#2152</a>: do not transform strings into numbers  <a href="https://github.com/josdejong/mathjs/issues/2372">#2372</a>).
+  - Fix <a href="https://github.com/josdejong/mathjs/issues/1913">#1913</a>: implement support for array and object simplification  <a href="https://github.com/josdejong/mathjs/issues/2382">#2382</a>).
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2379">#2379</a>: add embedded documentation for function `print`.
+- Remove broken example from the embedded documentation of function `forEach`.
+
+
 <h1 id="20211229-version-1002">2021-12-29, version 10.0.2 <a href="#20211229-version-1002" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2156">#2156</a>: simplify expressions like `-1 / (-x)` to `1/x`. Thanks <a href="https://github.com/ony3000">@ony3000</a>.

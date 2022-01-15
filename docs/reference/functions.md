@@ -48,6 +48,7 @@ Function | Description
 [math.floor(x)](functions/floor.html) | Round a value towards minus infinity.
 [math.gcd(a,&nbsp;b)](functions/gcd.html) | Calculate the greatest common divisor for two or more values or arrays.
 [math.hypot(a,&nbsp;b,&nbsp;...)](functions/hypot.html) | Calculate the hypotenusa of a list with values.
+[math.invmod(a,&nbsp;b)](functions/invmod.html) | Calculate the (modular) multiplicative inverse of a modulo b.
 [math.lcm(a,&nbsp;b)](functions/lcm.html) | Calculate the least common multiple for two or more values or arrays.
 [math.log(x&nbsp;[,&nbsp;base])](functions/log.html) | Calculate the logarithm of a value.
 [math.log10(x)](functions/log10.html) | Calculate the 10-base logarithm of a value.

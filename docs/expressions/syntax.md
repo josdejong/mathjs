@@ -551,7 +551,7 @@ parser.evaluate('c[end - 1 : -1 : 2]')    // Matrix, [8, 7, 6]
 <h2 id="objects">Objects <a href="#objects" title="Permalink">#</a></h2>
 
 Objects in math.js work the same as in languages like JavaScript and Python.
-An object is enclosed by square brackets `{`, `}`, and contains a set of
+An object is enclosed by curly brackets `{`, `}`, and contains a set of
 comma separated key/value pairs. Keys and values are separated by a colon `:`.
 Keys can be a symbol like `prop` or a string like `"prop"`.
 
