@@ -136,6 +136,7 @@ import { bitOrDocs } from './function/bitwise/bitOr.js'
 import { bitNotDocs } from './function/bitwise/bitNot.js'
 import { bitAndDocs } from './function/bitwise/bitAnd.js'
 import { xgcdDocs } from './function/arithmetic/xgcd.js'
+import { invmodDocs } from './function/arithmetic/invmod.js'
 import { unaryPlusDocs } from './function/arithmetic/unaryPlus.js'
 import { unaryMinusDocs } from './function/arithmetic/unaryMinus.js'
 import { squareDocs } from './function/arithmetic/square.js'
@@ -369,6 +370,7 @@ export const embeddedDocs = {
   unaryMinus: unaryMinusDocs,
   unaryPlus: unaryPlusDocs,
   xgcd: xgcdDocs,
+  invmod: invmodDocs,
 
   // functions - bitwise
   bitAnd: bitAndDocs,
