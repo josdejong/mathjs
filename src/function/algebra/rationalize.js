@@ -19,10 +19,14 @@ const dependencies = [
   '?bignumber',
   '?fraction',
   'mathWithTransform',
+  'matrix',
+  'AccessorNode',
   'ArrayNode',
   'ConstantNode',
-  'OperatorNode',
   'FunctionNode',
+  'IndexNode',
+  'ObjectNode',
+  'OperatorNode',
   'SymbolNode',
   'ParenthesisNode'
 ]
@@ -42,10 +46,14 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
   fraction,
   bignumber,
   mathWithTransform,
+  matrix,
+  AccessorNode,
   ArrayNode,
   ConstantNode,
-  OperatorNode,
   FunctionNode,
+  IndexNode,
+  ObjectNode,
+  OperatorNode,
   SymbolNode,
   ParenthesisNode
 }) => {
@@ -53,12 +61,16 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
     typed,
     config,
     mathWithTransform,
+    matrix,
     fraction,
     bignumber,
+    AccessorNode,
     ArrayNode,
     ConstantNode,
-    OperatorNode,
     FunctionNode,
+    IndexNode,
+    ObjectNode,
+    OperatorNode,
     SymbolNode
   })
   const simplifyCore = createSimplifyCore({
@@ -69,9 +81,13 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
     multiply,
     divide,
     pow,
+    AccessorNode,
+    ArrayNode,
     ConstantNode,
-    OperatorNode,
     FunctionNode,
+    IndexNode,
+    ObjectNode,
+    OperatorNode,
     ParenthesisNode
   })
 

@@ -1,5 +1,5 @@
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
-import { isFraction, isNode, isOperatorNode } from '../../../utils/is.js'
+import { isFraction, isMatrix, isNode, isArrayNode, isConstantNode, isIndexNode, isObjectNode, isOperatorNode } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
 import { createUtil } from './util.js'
 import { noBignumber, noFraction } from '../../../utils/noop.js'
@@ -9,12 +9,16 @@ const dependencies = [
   'typed',
   'config',
   'mathWithTransform',
+  'matrix',
   '?fraction',
   '?bignumber',
+  'AccessorNode',
   'ArrayNode',
   'ConstantNode',
-  'OperatorNode',
   'FunctionNode',
+  'IndexNode',
+  'ObjectNode',
+  'OperatorNode',
   'SymbolNode'
 ]
 
@@ -22,20 +26,36 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   typed,
   config,
   mathWithTransform,
+  matrix,
   fraction,
   bignumber,
+  AccessorNode,
   ArrayNode,
   ConstantNode,
-  OperatorNode,
   FunctionNode,
+  IndexNode,
+  ObjectNode,
+  OperatorNode,
   SymbolNode
 }) => {
   const { isCommutative, isAssociative, allChildren, createMakeNodeFunction } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
   function simplifyConstant (expr, options) {
-    const res = foldFraction(expr, options)
-    return isNode(res) ? res : _toNode(res)
+    return _ensureNode(foldFraction(expr, options))
+  }
+
+  function _removeFractions (thing) {
+    if (isFraction(thing)) {
+      return thing.valueOf()
+    }
+    if (thing instanceof Array) {
+      return thing.map(_removeFractions)
+    }
+    if (isMatrix(thing)) {
+      return matrix(_removeFractions(thing.valueOf()))
+    }
+    return thing
   }
 
   function _eval (fnname, args, options) {
@@ -43,12 +63,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       return mathWithTransform[fnname].apply(null, args)
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
-      args = args.map(function (x) {
-        if (isFraction(x)) {
-          return x.valueOf()
-        }
-        return x
-      })
+      args = args.map(_removeFractions)
       return _toNumber(mathWithTransform[fnname].apply(null, args), options)
     }
   }
@@ -74,9 +89,16 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       return new ConstantNode(s)
     },
     Matrix: function (m) {
-      return new ArrayNode(m._data.map(e => _toNode(e)))
+      return new ArrayNode(m.valueOf().map(e => _toNode(e)))
     }
   })
+
+  function _ensureNode (thing) {
+    if (isNode(thing)) {
+      return thing
+    }
+    return _toNode(thing)
+  }
 
   // convert a number to a fraction only if it can be expressed exactly,
   // and when both numerator and denominator are small enough
@@ -128,6 +150,14 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         return s
       }
       return _exactFraction(s.re, options)
+    },
+
+    'Matrix, Object': function (s, options) {
+      return matrix(_exactFraction(s.valueOf()))
+    },
+
+    'Array, Object': function (s, options) {
+      return s.map(_exactFraction)
     }
   })
 
@@ -148,6 +178,85 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       return n
     }
     return new OperatorNode('/', 'divide', [n, new ConstantNode(f.d)])
+  }
+
+  /* Handles constant indexing of ArrayNodes, matrices, and ObjectNodes */
+  function _foldAccessor (obj, index, options) {
+    if (!isIndexNode(index)) { // don't know what to do with that...
+      return new AccessorNode(_ensureNode(obj), _ensureNode(index))
+    }
+    if (isArrayNode(obj) || isMatrix(obj)) {
+      const remainingDims = Array.from(index.dimensions)
+      /* We will resolve constant indices one at a time, looking
+       * just in the first or second dimensions because (a) arrays
+       * of more than two dimensions are likely rare, and (b) pulling
+       * out the third or higher dimension would be pretty intricate.
+       * The price is that we miss simplifying [..3d array][x,y,1]
+       */
+      while (remainingDims.length > 0) {
+        if (isConstantNode(remainingDims[0]) &&
+            typeof remainingDims[0].value !== 'string') {
+          const first = _toNumber(remainingDims.shift().value, options)
+          if (isArrayNode(obj)) {
+            obj = obj.items[first - 1]
+          } else { // matrix
+            obj = obj.valueOf()[first - 1]
+            if (obj instanceof Array) {
+              obj = matrix(obj)
+            }
+          }
+        } else if (remainingDims.length > 1 &&
+                   isConstantNode(remainingDims[1]) &&
+                   typeof remainingDims[1].value !== 'string') {
+          const second = _toNumber(remainingDims[1].value, options)
+          const tryItems = []
+          const fromItems = isArrayNode(obj) ? obj.items : obj.valueOf()
+          for (const item of fromItems) {
+            if (isArrayNode(item)) {
+              tryItems.push(item.items[second - 1])
+            } else if (isMatrix(obj)) {
+              tryItems.push(item[second - 1])
+            } else {
+              break
+            }
+          }
+          if (tryItems.length === fromItems.length) {
+            if (isArrayNode(obj)) {
+              obj = new ArrayNode(tryItems)
+            } else { // matrix
+              obj = matrix(tryItems)
+            }
+            remainingDims.splice(1, 1)
+          } else { // extracting slice along 2nd dimension failed, give up
+            break
+          }
+        } else { // neither 1st or 2nd dimension is constant, give up
+          break
+        }
+      }
+      if (remainingDims.length === index.dimensions.length) {
+        /* No successful constant indexing */
+        return new AccessorNode(_ensureNode(obj), index)
+      }
+      if (remainingDims.length > 0) {
+        /* Indexed some but not all dimensions */
+        index = new IndexNode(remainingDims)
+        return new AccessorNode(_ensureNode(obj), index)
+      }
+      /* All dimensions were constant, access completely resolved */
+      return obj
+    }
+    if (isObjectNode(obj) &&
+        index.dimensions.length === 1 &&
+        isConstantNode(index.dimensions[0])) {
+      const key = index.dimensions[0].value
+      if (key in obj.properties) {
+        return obj.properties[key]
+      }
+      return new ConstantNode() // undefined
+    }
+    /* Don't know how to index this sort of obj, at least not with this index */
+    return new AccessorNode(_ensureNode(obj), index)
   }
 
   /*
@@ -199,20 +308,30 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           // Process operators as OperatorNode
           const operatorFunctions = ['add', 'multiply']
           if (operatorFunctions.indexOf(node.name) === -1) {
-            let args = node.args.map(arg => foldFraction(arg, options))
+            const args = node.args.map(arg => foldFraction(arg, options))
 
             // If all args are numbers
             if (!args.some(isNode)) {
               try {
                 return _eval(node.name, args, options)
-              } catch (ignoreandcontine) {}
+              } catch (ignoreandcontinue) { }
+            }
+
+            // Size of a matrix does not depend on entries
+            if (node.name === 'size' &&
+                args.length === 1 &&
+                isArrayNode(args[0])) {
+              const sz = []
+              let section = args[0]
+              while (isArrayNode(section)) {
+                sz.push(section.items.length)
+                section = section.items[0]
+              }
+              return matrix(sz)
             }
 
             // Convert all args to nodes and construct a symbolic function call
-            args = args.map(function (arg) {
-              return isNode(arg) ? arg : _toNode(arg)
-            })
-            return new FunctionNode(node.name, args)
+            return new FunctionNode(node.name, args.map(_ensureNode))
           } else {
             // treat as operator
           }
@@ -271,18 +390,34 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         // remove the uneccessary parenthesis
         return foldFraction(node.content, options)
       case 'AccessorNode':
-        /* falls through */
-      case 'ArrayNode':
-        return node // FIXME: these two cases missing possible simplifications
+        return _foldAccessor(
+          foldFraction(node.object, options),
+          foldFraction(node.index, options),
+          options)
+      case 'ArrayNode': {
+        const foldItems = node.items.map(item => foldFraction(item, options))
+        if (foldItems.some(isNode)) {
+          return new ArrayNode(foldItems.map(_ensureNode))
+        }
+        /* All literals -- return a Matrix so we can operate on it */
+        return matrix(foldItems)
+      }
+      case 'IndexNode': {
+        return new IndexNode(
+          node.dimensions.map(n => simplifyConstant(n, options)))
+      }
+      case 'ObjectNode': {
+        const foldProps = {}
+        for (const prop in node.properties) {
+          foldProps[prop] = simplifyConstant(node.properties[prop], options)
+        }
+        return new ObjectNode(foldProps)
+      }
       case 'AssignmentNode':
         /* falls through */
       case 'BlockNode':
         /* falls through */
       case 'FunctionAssignmentNode':
-        /* falls through */
-      case 'IndexNode':
-        /* falls through */
-      case 'ObjectNode':
         /* falls through */
       case 'RangeNode':
         /* falls through */

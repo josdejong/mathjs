@@ -150,15 +150,41 @@ describe('simplify', function () {
     assert.strictEqual(math.simplify('0 - (x - y)', {}).toString(), 'y - x')
   })
 
-  it.skip('should simplify inside arrays and indexing', function () {
-    simplifyAndCompare('[3x+5x]', '[8x]')
+  it('should simplify inside arrays and indexing', function () {
+    simplifyAndCompare('[3x+0]', '[3x]') // simplifyCore inside array
+    simplifyAndCompare('[3x+5x]', '[8*x]')
     simplifyAndCompare('[2*3,6+2]', '[6,8]')
-    simplifyAndCompare('[x,y,z][(3-2)*a]', '[x,y,z][a]')
+    simplifyAndCompare('[a^0,b*0][n*1]', '[1,0][n]') // simplifyCore in index
+    simplifyAndCompare('[x,y-2y,z][(3-2)*a]', '[x,-y,z][a]')
   })
 
-  it.skip('should index an array or object with a constant', function () {
+  it('should simplify inside objects', function () {
+    simplifyAndCompare('{a:(x^2+x*x), b:2+6, c:n+0}', '{a:2*x^2, b:8, c:n}')
+  })
+
+  it('should index an array or object with a constant', function () {
     simplifyAndCompare('[x,y,z][2]', 'y')
+    simplifyAndCompare('5+[6*2,3-3][2-1]', '17')
+    simplifyAndCompare('[1,2;3,4][2,y]', '[3,4][y]')
+    simplifyAndCompare('[1,2;3,4][y,2]', '[2,4][y]')
     simplifyAndCompare('{a:3,b:2}.b', '2')
+    simplifyAndCompare('{a:3,b:2}.c', 'undefined')
+  })
+
+  it('should compute with literal constant matrices', function () {
+    simplifyAndCompare('[1,2]+[3,4]', '[4,6]')
+    simplifyAndCompare('[0,1;2,3]*[3,2;1,0]', '[1,0;9,4]')
+    simplifyAndCompare('3*[0,1,2;3,4,5]', '[0,3,6;9,12,15]')
+    simplifyAndCompare('zeros(2,1)', '[0;0]')
+    simplifyAndCompare('ones(3)', '[1,1,1]')
+    simplifyAndCompare('identity(2)', '[1,0;0,1]')
+    simplifyAndCompare('sqrt([1,4,9])', '[1,2,3]')
+    simplifyAndCompare('det([2,1;-1,3])', '7')
+    simplifyAndCompare("[1,2;3,4]'", '[1,3;2,4]')
+  })
+
+  it('should recognize array size does not depend on entries', function () {
+    simplifyAndCompare('size([a,b;c,d])', '[2,2]')
   })
 
   it('should handle custom functions', function () {

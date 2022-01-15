@@ -1,4 +1,4 @@
-import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is.js'
+import { isAccessorNode, isArrayNode, isConstantNode, isFunctionNode, isIndexNode, isObjectNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
 
 const name = 'simplifyCore'
@@ -10,9 +10,13 @@ const dependencies = [
   'multiply',
   'divide',
   'pow',
+  'AccessorNode',
+  'ArrayNode',
   'ConstantNode',
-  'OperatorNode',
   'FunctionNode',
+  'IndexNode',
+  'ObjectNode',
+  'OperatorNode',
   'ParenthesisNode'
 ]
 
@@ -24,13 +28,25 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
   multiply,
   divide,
   pow,
+  AccessorNode,
+  ArrayNode,
   ConstantNode,
-  OperatorNode,
   FunctionNode,
+  IndexNode,
+  ObjectNode,
+  OperatorNode,
   ParenthesisNode
 }) => {
   const node0 = new ConstantNode(0)
   const node1 = new ConstantNode(1)
+
+  function mapSimplifyCore (nodeArray) {
+    return nodeArray
+      .map(simplifyCore)
+      .map(function (arg) {
+        return isParenthesisNode(arg) ? arg.content : arg
+      })
+  }
 
   /**
    * simplifyCore() performs single pass simplification suitable for
@@ -175,12 +191,23 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
       }
       return new ParenthesisNode(c)
     } else if (isFunctionNode(node)) {
-      const args = node.args
-        .map(simplifyCore)
-        .map(function (arg) {
-          return isParenthesisNode(arg) ? arg.content : arg
-        })
-      return new FunctionNode(simplifyCore(node.fn), args)
+      return new FunctionNode(simplifyCore(node.fn), mapSimplifyCore(node.args))
+    } else if (isArrayNode(node)) {
+      return new ArrayNode(mapSimplifyCore(node.items))
+    } else if (isAccessorNode(node)) {
+      let obj = mapSimplifyCore(node.object)
+      if (isParenthesisNode(obj)) {
+        obj = obj.content
+      }
+      return new AccessorNode(obj, simplifyCore(node.index))
+    } else if (isIndexNode(node)) {
+      return new IndexNode(mapSimplifyCore(node.dimensions))
+    } else if (isObjectNode(node)) {
+      const newProps = {}
+      for (const prop in node.properties) {
+        newProps[prop] = simplifyCore(node.properties[prop])
+      }
+      return new ObjectNode(newProps)
     } else {
       // cannot simplify
     }
