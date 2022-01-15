@@ -2,6 +2,7 @@
 
 # not yet published, version 10.0.3
 
+- Implemented function `invmod`, see #2368, #1744. Thanks @thetazero.
 - Fix #2379: add embedded documentation for function `print`.
 - Remove broken example from the embedded documentation of function `forEach`.
 - Fix #2152: function `simplify` transforming strings into numbers.
