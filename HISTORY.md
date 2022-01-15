@@ -1,12 +1,14 @@
 # History
 
-# not yet published, version 10.0.3
+# 2022-01-15, version 10.1.0
 
 - Implemented function `invmod`, see #2368, #1744. Thanks @thetazero.
+- Improvements and fixes in function `simplify`, thanks @gwhitney:
+  - Fix #1179, #1290: improve collection of non-constant like terms (#2384).
+  - Fix #2152: do not transform strings into numbers (#2372).
+  - Fix #1913: implement support for array and object simplification (#2382).
 - Fix #2379: add embedded documentation for function `print`.
 - Remove broken example from the embedded documentation of function `forEach`.
-- Fix #2152: function `simplify` transforming strings into numbers.
-  Thanks @gwhitney.
 
 
 # 2021-12-29, version 10.0.2
