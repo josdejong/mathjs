@@ -327,9 +327,6 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'n/n1^n2', r: 'n*n1^-n2' }, // temporarily replace 'divide' so we can further flatten the 'multiply' operator
     { l: 'n/n1', r: 'n*n1^-1' },
 
-    // remove parenthesis in the case of negating a quantity
-    { l: 'n1 + (n2 + n3)*(-1)', r: 'n1 + n2*(-1) + n3*(-1)' },
-
     simplifyConstant,
 
     // expand nested exponentiation
@@ -347,7 +344,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
     { l: 'n*c + c', r: '(n+1)*c' },
 
-    { l: '(-n)*n1', r: '-(n*n1)' }, // make factors positive (and undo 'make non-constant terms positive')
+    // remove parenthesis in the case of negating a quantity
+    // (It might seem this rule should precede collecting like terms,
+    // but putting it after gives another chance of noticing like terms,
+    // and any new like terms produced by this will be collected
+    // on the next pass through all the rules.)
+    { l: 'n1 + (n2 + n3)*(-1)', r: 'n1 + n2*(-1) + n3*(-1)' },
+
+    // make factors positive (and undo 'make non-constant terms positive')
+    { l: '(-n)*n1', r: '-(n*n1)' },
 
     // final ordering of constants
     { l: 'c+v', r: 'v+c', context: { add: { commutative: false } } },

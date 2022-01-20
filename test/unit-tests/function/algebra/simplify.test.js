@@ -277,6 +277,7 @@ describe('simplify', function () {
   it('should collect like terms that are embedded in other terms', function () {
     simplifyAndCompare('10 - (x - 2)', '12 - x')
     simplifyAndCompare('x - (y + x)', '-y')
+    simplifyAndCompare('x - (y - y + x)', '0')
     simplifyAndCompare('x - (y - (y - x))', '0')
     simplifyAndCompare('5 + (5 * x) - (3 * x) + 2', '2*x+7')
   })
