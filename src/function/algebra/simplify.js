@@ -101,7 +101,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     ParenthesisNode
   })
 
-  const { isCommutative, isAssociative, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
+  const { isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
   /**
@@ -229,7 +229,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     'Node, Array, Map, Object': function (expr, rules, scope, options) {
       const debug = options.consoleDebug
-      rules = _buildRules(rules)
+      rules = _buildRules(rules, options.context)
       let res = resolve(expr, scope)
       res = removeParens(res)
       const visited = {}
@@ -245,8 +245,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             res = rules[i](res, options)
             if (debug) rulestr = rules[i].name
           } else {
-            flatten(res)
-            res = applyRule(res, rules[i])
+            flatten(res, options.context)
+            res = applyRule(res, rules[i], options.context)
             if (debug) {
               rulestr = `${rules[i].l.toString()} -> ${rules[i].r.toString()}`
             }
@@ -258,7 +258,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
               laststr = newstr
             }
           }
-          unflattenl(res) // using left-heavy binary tree here since custom rule functions may expect it
+          /* Use left-heavy binary tree internally,
+           * since custom rule functions may expect it
+           */
+          unflattenl(res, options.context)
         }
         str = res.toString({ parenthesis: 'all' })
       }
@@ -349,10 +352,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // but putting it after gives another chance of noticing like terms,
     // and any new like terms produced by this will be collected
     // on the next pass through all the rules.)
-    { l: 'n1 + (n2 + n3)*(-1)', r: 'n1 + n2*(-1) + n3*(-1)' },
+    { l: 'n1 + (n2 + n3)*(-1)', r: 'n1 + (n2*(-1) + n3*(-1))' },
 
     // make factors positive (and undo 'make non-constant terms positive')
     { l: '(-n)*n1', r: '-(n*n1)' },
+    //    { l: 'n1*(-n)', r: '-(n1*n)' }, // in case * non-commutative
 
     // final ordering of constants
     { l: 'c+v', r: 'v+c', context: { add: { commutative: false } } },
@@ -361,7 +365,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // undo temporary rules
     // { l: '(-1) * n', r: '-n' }, // #811 added test which proved this is redundant
     { l: 'n+-n1', r: 'n-n1' }, // undo replace 'subtract'
-    { l: 'n*(n1^-1)', r: 'n/n1' }, // undo replace 'divide'
+    { l: 'n*(n1^-1)', r: 'n/n1' }, // undo replace 'divide'; should require * commutative, since if not, / notation is generally not used
     { l: 'n*n1^-n2', r: 'n/n1^n2' },
     { l: 'n1^-1', r: '1/n1' },
 
@@ -370,7 +374,9 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // { l: '(n1/n2)/n3', r: 'n1/(n2*n3)' },
     // { l: '(n*n1)/(n*n2)', r: 'n1/n2' },
 
-    { l: '1*n', r: 'n' }, // this pattern can be produced by simplifyConstant
+    // simplifyConstant can leave an extra factor of 1, which can always
+    // be eliminated, since the identity always commutes
+    { l: '1*n', r: 'n', context: { multiply: { commutative: true } } },
 
     { l: 'n1/(n2/n3)', r: '(n1*n3)/n2' },
 
@@ -394,7 +400,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * Short hand notation:
    * 'n1 * c1 -> c1 * n1'
    */
-  function _buildRules (rules) {
+  function _buildRules (rules, context) {
     // Array of rules to be used to simplify expressions
     const ruleSet = []
     for (let i = 0; i < rules.length; i++) {
@@ -424,15 +430,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             newRule.evaluate = parse(rule.evaluate)
           }
 
-          if (isAssociative(newRule.l)) {
+          if (isAssociative(newRule.l, context)) {
             const makeNode = createMakeNodeFunction(newRule.l)
             const expandsym = _getExpandPlaceholderSymbol()
             newRule.expanded = {}
             newRule.expanded.l = makeNode([newRule.l.clone(), expandsym])
             // Push the expandsym into the deepest possible branch.
             // This helps to match the newRule against nodes returned from getSplits() later on.
-            flatten(newRule.expanded.l)
-            unflattenr(newRule.expanded.l)
+            flatten(newRule.expanded.l, context)
+            unflattenr(newRule.expanded.l, context)
             newRule.expanded.r = makeNode([newRule.r, expandsym])
           }
           break
@@ -454,10 +460,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     return new SymbolNode('_p' + _lastsym++)
   }
 
-  function mapRule (nodes, rule) {
+  function mapRule (nodes, rule, context) {
     if (nodes) {
       for (let i = 0; i < nodes.length; ++i) {
-        nodes[i] = applyRule(nodes[i], rule)
+        nodes[i] = applyRule(nodes[i], rule, context)
       }
     }
   }
@@ -466,79 +472,81 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * Returns a simplfied form of node, or the original node if no simplification was possible.
    *
    * @param  {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode} node
+   * @param  {Object | Function} rule
+   * @param  {Object} context -- information about assumed properties of operators
    * @return {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode} The simplified form of `expr`, or the original node if no simplification was possible.
    */
-  const applyRule = typed('applyRule', {
-    'Node, Object': function (node, rule) {
-      // console.log('Entering applyRule(' + node.toString() + ')')
+  function applyRule (node, rule, context) {
+    //    console.log('Entering applyRule("', rule.l.toString({parenthesis:'all'}), '->', rule.r.toString({parenthesis:'all'}), '",', node.toString({parenthesis:'all'}),')')
 
-      // Do not clone node unless we find a match
-      let res = node
+    context = mergeContext(rule.context, context)
 
-      // First replace our child nodes with their simplified versions
-      // If a child could not be simplified, applying the rule to it
-      // will have no effect since the node is returned unchanged
-      if (res instanceof OperatorNode || res instanceof FunctionNode) {
-        mapRule(res.args, rule)
-      } else if (res instanceof ParenthesisNode) {
-        if (res.content) {
-          res.content = applyRule(res.content, rule)
-        }
-      } else if (res instanceof ArrayNode) {
-        mapRule(res.items, rule)
-      } else if (res instanceof AccessorNode) {
-        if (res.object) {
-          res.object = applyRule(res.object, rule)
-        }
-        if (res.index) {
-          res.index = applyRule(res.index, rule)
-        }
-      } else if (res instanceof IndexNode) {
-        mapRule(res.dimensions, rule)
-      } else if (res instanceof ObjectNode) {
-        for (const prop in res.properties) {
-          res.properties[prop] = applyRule(res.properties[prop], rule)
-        }
+    // Do not clone node unless we find a match
+    let res = node
+
+    // First replace our child nodes with their simplified versions
+    // If a child could not be simplified, applying the rule to it
+    // will have no effect since the node is returned unchanged
+    if (res instanceof OperatorNode || res instanceof FunctionNode) {
+      mapRule(res.args, rule, context)
+    } else if (res instanceof ParenthesisNode) {
+      if (res.content) {
+        res.content = applyRule(res.content, rule, context)
       }
-
-      // Try to match a rule against this node
-      let repl = rule.r
-      let matches = _ruleMatch(rule.l, res)[0]
-
-      // If the rule is associative operator, we can try matching it while allowing additional terms.
-      // This allows us to match rules like 'n+n' to the expression '(1+x)+x' or even 'x+1+x' if the operator is commutative.
-      if (!matches && rule.expanded) {
-        repl = rule.expanded.r
-        matches = _ruleMatch(rule.expanded.l, res)[0]
+    } else if (res instanceof ArrayNode) {
+      mapRule(res.items, rule, context)
+    } else if (res instanceof AccessorNode) {
+      if (res.object) {
+        res.object = applyRule(res.object, rule, context)
       }
-
-      if (matches) {
-        // const before = res.toString({parenthesis: 'all'})
-
-        // Create a new node by cloning the rhs of the matched rule
-        // we keep any implicit multiplication state if relevant
-        const implicit = res.implicit
-        res = repl.clone()
-        if (implicit && 'implicit' in repl) {
-          res.implicit = true
-        }
-
-        // Replace placeholders with their respective nodes without traversing deeper into the replaced nodes
-        res = res.transform(function (node) {
-          if (node.isSymbolNode && hasOwnProperty(matches.placeholders, node.name)) {
-            return matches.placeholders[node.name].clone()
-          } else {
-            return node
-          }
-        })
-
-        // const after = res.toString({parenthesis: 'all'})
-        // console.log('Simplified ' + before + ' to ' + after)
+      if (res.index) {
+        res.index = applyRule(res.index, rule, context)
       }
-
-      return res
+    } else if (res instanceof IndexNode) {
+      mapRule(res.dimensions, rule, context)
+    } else if (res instanceof ObjectNode) {
+      for (const prop in res.properties) {
+        res.properties[prop] = applyRule(res.properties[prop], rule, context)
+      }
     }
-  })
+
+    // Try to match a rule against this node
+    let repl = rule.r
+    let matches = _ruleMatch(rule.l, res, context)[0]
+
+    // If the rule is associative operator, we can try matching it while allowing additional terms.
+    // This allows us to match rules like 'n+n' to the expression '(1+x)+x' or even 'x+1+x' if the operator is commutative.
+    if (!matches && rule.expanded) {
+      repl = rule.expanded.r
+      matches = _ruleMatch(rule.expanded.l, res, context)[0]
+    }
+
+    if (matches) {
+      // const before = res.toString({parenthesis: 'all'})
+
+      // Create a new node by cloning the rhs of the matched rule
+      // we keep any implicit multiplication state if relevant
+      const implicit = res.implicit
+      res = repl.clone()
+      if (implicit && 'implicit' in repl) {
+        res.implicit = true
+      }
+
+      // Replace placeholders with their respective nodes without traversing deeper into the replaced nodes
+      res = res.transform(function (node) {
+        if (node.isSymbolNode && hasOwnProperty(matches.placeholders, node.name)) {
+          return matches.placeholders[node.name].clone()
+        } else {
+          return node
+        }
+      })
+
+      // const after = res.toString({parenthesis: 'all'})
+      // console.log('Simplified ' + before + ' to ' + after)
+    }
+
+    return res
+  }
 
   /**
    * Get (binary) combinations of a flattened binary node
@@ -560,9 +568,16 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         res.push(makeNode([node.args[i], right]))
       }
     } else {
-      rightArgs = node.args.slice(1)
-      right = (rightArgs.length === 1) ? rightArgs[0] : makeNode(rightArgs)
-      res.push(makeNode([node.args[0], right]))
+      // Keep order, but try all parenthesizations
+      for (let i = 1; i < node.args.length; i++) {
+        let left = node.args[0]
+        if (i > 1) {
+          left = makeNode(node.args.slice(0, i))
+        }
+        rightArgs = node.args.slice(i)
+        right = (rightArgs.length === 1) ? rightArgs[0] : makeNode(rightArgs)
+        res.push(makeNode([left, right]))
+      }
     }
     return res
   }
@@ -655,14 +670,18 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *
    * @param {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode} rule
    * @param {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode} node
+   * @param {Object} context -- provides assumed properties of operators
+   * @param {Boolean} isSplit -- whether we are in process of splitting an
+   *                    n-ary operator node into possible binary combinations.
+   *                    Defaults to false.
    * @return {Object} Information about the match, if it exists.
    */
-  function _ruleMatch (rule, node, isSplit) {
+  function _ruleMatch (rule, node, context, isSplit) {
     //    console.log('Entering _ruleMatch(' + JSON.stringify(rule) + ', ' + JSON.stringify(node) + ')')
     //    console.log('rule = ' + rule)
     //    console.log('node = ' + node)
 
-    //    console.log('Entering _ruleMatch(' + rule.toString() + ', ' + node.toString() + ')')
+    //    console.log('Entering _ruleMatch(', rule.toString({parenthesis:'all'}), ', ', node.toString({parenthesis:'all'}), ', ', context, ')')
     let res = [{ placeholders: {} }]
 
     if ((rule instanceof OperatorNode && node instanceof OperatorNode) ||
@@ -680,26 +699,52 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
       // rule and node match. Search the children of rule and node.
       if ((node.args.length === 1 && rule.args.length === 1) ||
-        (!isAssociative(node) && node.args.length === rule.args.length) || isSplit) {
-        // Expect non-associative operators to match exactly
-        const childMatches = []
+          (!isAssociative(node, context) &&
+           node.args.length === rule.args.length) ||
+          isSplit) {
+        // Expect non-associative operators to match exactly,
+        // except in any order if operator is commutative
+        let childMatches = []
         for (let i = 0; i < rule.args.length; i++) {
-          const childMatch = _ruleMatch(rule.args[i], node.args[i])
+          const childMatch = _ruleMatch(rule.args[i], node.args[i], context)
           if (childMatch.length === 0) {
             // Child did not match, so stop searching immediately
-            return []
+            break
           }
           // The child matched, so add the information returned from the child to our result
           childMatches.push(childMatch)
+        }
+        if (childMatches.length !== rule.args.length) {
+          if (!isCommutative(node, context) || // exact match in order needed
+              rule.args.length === 1) { // nothing to commute
+            return []
+          }
+          if (rule.args.length > 2) {
+            /* Need to generate all permutations and try them.
+             * It's a bit complicated, and unlikely to come up since there
+             * are very few ternary or higher operators. So punt for now.
+             */
+            throw new Error('permuting >2 commutative non-associative rule arguments not yet implemented')
+          }
+          /* Exactly two arguments, try them reversed */
+          const leftMatch = _ruleMatch(rule.args[0], node.args[1], context)
+          if (leftMatch.length === 0) {
+            return []
+          }
+          const rightMatch = _ruleMatch(rule.args[1], node.args[0], context)
+          if (rightMatch.length === 0) {
+            return []
+          }
+          childMatches = [leftMatch, rightMatch]
         }
         res = mergeChildMatches(childMatches)
       } else if (node.args.length >= 2 && rule.args.length === 2) { // node is flattened, rule is not
         // Associative operators/functions can be split in different ways so we check if the rule matches each
         // them and return their union.
-        const splits = getSplits(node, rule.context)
+        const splits = getSplits(node, context)
         let splitMatches = []
         for (let i = 0; i < splits.length; i++) {
-          const matchSet = _ruleMatch(rule, splits[i], true) // recursing at the same tree depth here
+          const matchSet = _ruleMatch(rule, splits[i], context, true) // recursing at the same tree depth here
           splitMatches = splitMatches.concat(matchSet)
         }
         return splitMatches

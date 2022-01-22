@@ -4,25 +4,27 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 
 describe('simplify', function () {
-  function simplifyAndCompare (left, right, rules, scope, opt) {
+  function simplifyAndCompare (left, right, rules, scope, opt, stringOpt) {
+    let simpLeft
     try {
       if (Array.isArray(rules)) {
         if (opt) {
-          assert.strictEqual(math.simplify(left, rules, scope, opt).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left, rules, scope, opt)
         } else if (scope) {
-          assert.strictEqual(math.simplify(left, rules, scope).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left, rules, scope)
         } else {
-          assert.strictEqual(math.simplify(left, rules).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left, rules)
         }
       } else {
+        if (opt) stringOpt = opt
         if (scope) opt = scope
         if (rules) scope = rules
         if (opt) {
-          assert.strictEqual(math.simplify(left, scope, opt).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left, scope, opt)
         } else if (scope) {
-          assert.strictEqual(math.simplify(left, scope).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left, scope)
         } else {
-          assert.strictEqual(math.simplify(left).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left)
         }
       }
     } catch (err) {
@@ -33,6 +35,8 @@ describe('simplify', function () {
       }
       throw err
     }
+    assert.strictEqual(
+      simpLeft.toString(stringOpt), math.parse(right).toString(stringOpt))
   }
 
   function simplifyAndCompareEval (left, right, scope) {
@@ -360,6 +364,37 @@ describe('simplify', function () {
     simplifyAndCompare('0.4', '2 / 5', math.simplify.rules, {}, { exactFractions: true, fractionsLimit: 100 })
     simplifyAndCompare('100.8', '504 / 5', math.simplify.rules, {}, { exactFractions: true })
     simplifyAndCompare('100.8', '100.8', math.simplify.rules, {}, { exactFractions: true, fractionsLimit: 100 })
+  })
+
+  it('should respect context changes to operator properties', function () {
+    const optsNCM = { context: { multiply: { commutative: false } } }
+    simplifyAndCompare('x*y+y*x', 'x*y+y*x', {}, optsNCM)
+    //    simplifyAndCompare('x*y-y*x', 'x*y-y*x', {}, optsNCM)
+    //    simplifyAndCompare('x*5', 'x*5', {}, optsNCM)
+    //    simplifyAndCompare('x*y*x^(-1)', 'x*y*x^(-1)', {}, optsNCM)
+    //    simplifyAndCompare('x*y/x', 'x*y*x^(-1)', {}, optsNCM)
+    //    simplifyAndCompare('x*y*(1/x)', 'x*y*x^(-1)', {}, optsNCM)
+
+    const optsNAA = { context: { add: { associative: false } } }
+    simplifyAndCompare(
+      'x + (-x+y)', 'x + (y-x)', {}, optsNAA, { parenthesis: 'all' })
+  })
+
+  it('performs other simplifications in unrelated contexts', function () {
+    const optsNCM = { context: { multiply: { commutative: false } } }
+    simplifyAndCompare('x-(y-y+x)', '0', {}, optsNCM)
+
+    const optsNAA = { context: { add: { associative: false } } }
+    simplifyAndCompare('x*y - y*x', '0', {}, optsNAA)
+    simplifyAndCompare('x-(y-y+x)', '0', {}, optsNAA)
+
+    const optsNAANCM = {
+      context: {
+        add: { associative: false },
+        multiply: { commutative: false }
+      }
+    }
+    simplifyAndCompare('x-(y-y+x)', '0', {}, optsNAANCM)
   })
 
   it('resolve() should substitute scoped constants', function () {
