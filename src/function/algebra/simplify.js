@@ -455,6 +455,12 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { multiply: { commutative: false } }
     },
 
+    // Simplifying constants likely needs to be kept late in the rule order,
+    // once expressions have been expanded as much as they are going to
+    // be, allowing constants to coalesce, but before the rules below that
+    // start to restore things to "standard presentation."
+    simplifyConstant,
+
     // make factors positive (and undo 'make non-constant terms positive')
     {
       s: '(-n)*n1 -> -(n*n1)',
