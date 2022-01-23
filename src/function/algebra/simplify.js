@@ -140,11 +140,14 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * - [Symbolic computation - Simplification (Wikipedia)](https://en.wikipedia.org/wiki/Symbolic_computation#Simplification)
    *
    *  An optional `options` argument can be passed as last argument of `simplify`.
-   *  There is currently one option available:
-   *  - `exactFractions`: a boolean which is `true` by default.
-   *  - `fractionsLimit`: when `exactFractions` is true, a fraction will be returned
-   *    only when both numerator and denominator are smaller than `fractionsLimit`.
-   *    Default value is 10000.
+   *  Currently available options (defaults in parentheses):
+   *  - `consoleDebug` (false): whether to write the expression being simplified
+        and any changes to it, along with the rule responsible, to console
+   *  - `exactFractions` (true): whether to try to convert all constants to
+        exact rational numbers.
+   *  - `fractionsLimit` (10000): when `exactFractions` is true, constants will
+        be expressed as fractions only when both numerator and denominator
+        are smaller than `fractionsLimit`.
    *
    * Syntax:
    *
@@ -225,6 +228,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     },
 
     'Node, Array, Map, Object': function (expr, rules, scope, options) {
+      const debug = options.consoleDebug
       rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)
@@ -233,12 +237,26 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       while (!visited[str]) {
         visited[str] = true
         _lastsym = 0 // counter for placeholder symbols
+        let laststr = str
+        if (debug) console.log('Working on: ', str)
         for (let i = 0; i < rules.length; i++) {
+          let rulestr = ''
           if (typeof rules[i] === 'function') {
             res = rules[i](res, options)
+            if (debug) rulestr = rules[i].name
           } else {
             flatten(res)
             res = applyRule(res, rules[i])
+            if (debug) {
+              rulestr = `${rules[i].l.toString()} -> ${rules[i].r.toString()}`
+            }
+          }
+          if (debug) {
+            const newstr = res.toString({ parenthesis: 'all' })
+            if (newstr !== laststr) {
+              console.log('Applying', rulestr, 'produced', newstr)
+              laststr = newstr
+            }
           }
           unflattenl(res) // using left-heavy binary tree here since custom rule functions may expect it
         }
@@ -309,11 +327,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'n/n1^n2', r: 'n*n1^-n2' }, // temporarily replace 'divide' so we can further flatten the 'multiply' operator
     { l: 'n/n1', r: 'n*n1^-1' },
 
-    // remove parenthesis in the case of negating a quantity
-    { l: 'n1 + (n2 + n3)*(-1)', r: 'n1 + n2*(-1) + n3*(-1)' },
-    // subsume resulting -1 into constants where possible
-    { l: '(-1) * c', r: '-c' },
-    { l: '(-1) * (-c)', r: 'c' },
+    simplifyConstant,
 
     // expand nested exponentiation
     { l: '(n ^ n1) ^ n2', r: 'n ^ (n1 * n2)' },
@@ -330,9 +344,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
     { l: 'n*c + c', r: '(n+1)*c' },
 
-    simplifyConstant,
+    // remove parenthesis in the case of negating a quantity
+    // (It might seem this rule should precede collecting like terms,
+    // but putting it after gives another chance of noticing like terms,
+    // and any new like terms produced by this will be collected
+    // on the next pass through all the rules.)
+    { l: 'n1 + (n2 + n3)*(-1)', r: 'n1 + n2*(-1) + n3*(-1)' },
 
-    { l: '(-n)*n1', r: '-(n*n1)' }, // make factors positive (and undo 'make non-constant terms positive')
+    // make factors positive (and undo 'make non-constant terms positive')
+    { l: '(-n)*n1', r: '-(n*n1)' },
 
     // final ordering of constants
     { l: 'c+v', r: 'v+c', context: { add: { commutative: false } } },

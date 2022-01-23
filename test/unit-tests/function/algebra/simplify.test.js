@@ -270,12 +270,14 @@ describe('simplify', function () {
     simplifyAndCompare('x^2+x+3+x^2', '2*x^2+x+3')
     simplifyAndCompare('x+1+2x', '3*x+1')
     simplifyAndCompare('x-1+x', '2*x-1')
+    simplifyAndCompare('2-(x+1)', '1-x') // #2393
     simplifyAndCompare('x-1-2x+2', '1-x')
   })
 
   it('should collect like terms that are embedded in other terms', function () {
     simplifyAndCompare('10 - (x - 2)', '12 - x')
     simplifyAndCompare('x - (y + x)', '-y')
+    simplifyAndCompare('x - (y - y + x)', '0')
     simplifyAndCompare('x - (y - (y - x))', '0')
     simplifyAndCompare('5 + (5 * x) - (3 * x) + 2', '2*x+7')
   })
