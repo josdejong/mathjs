@@ -92,7 +92,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     IndexNode,
     ObjectNode,
     OperatorNode,
-    ParenthesisNode
+    ParenthesisNode,
+    SymbolNode
   })
   const resolve = createResolve({
     parse,

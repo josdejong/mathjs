@@ -1,4 +1,4 @@
-import { isFunctionNode, isOperatorNode } from '../../../utils/is.js'
+import { isFunctionNode, isOperatorNode, isParenthesisNode } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
 import { hasOwnProperty } from '../../../utils/object.js'
 
@@ -37,6 +37,8 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
       name = nodeOrName.fn.toString()
     } else if (isFunctionNode(nodeOrName)) {
       name = nodeOrName.name
+    } else if (isParenthesisNode(nodeOrName)) {
+      name = 'paren'
     }
     if (hasOwnProperty(context, name)) {
       const properties = context[name]
@@ -191,6 +193,7 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
 
   return {
     createMakeNodeFunction,
+    hasProperty,
     isCommutative,
     isAssociative,
     mergeContext,

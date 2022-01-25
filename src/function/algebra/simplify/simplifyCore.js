@@ -1,4 +1,5 @@
-import { isAccessorNode, isArrayNode, isConstantNode, isFunctionNode, isIndexNode, isObjectNode, isOperatorNode, isParenthesisNode } from '../../../utils/is.js'
+import { isAccessorNode, isArrayNode, isConstantNode, isFunctionNode, isIndexNode, isObjectNode, isOperatorNode } from '../../../utils/is.js'
+import { createUtil } from './util.js'
 import { factory } from '../../../utils/factory.js'
 
 const name = 'simplifyCore'
@@ -17,7 +18,8 @@ const dependencies = [
   'IndexNode',
   'ObjectNode',
   'OperatorNode',
-  'ParenthesisNode'
+  'ParenthesisNode',
+  'SymbolNode'
 ]
 
 export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
@@ -35,11 +37,14 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
   IndexNode,
   ObjectNode,
   OperatorNode,
-  ParenthesisNode
+  ParenthesisNode,
+  SymbolNode
 }) => {
   const node0 = new ConstantNode(0)
   const node1 = new ConstantNode(1)
 
+  const { hasProperty } =
+    createUtil({ FunctionNode, OperatorNode, SymbolNode })
   /**
    * simplifyCore() performs single pass simplification suitable for
    * applications requiring ultimate performance. In contrast, simplify()
@@ -62,14 +67,28 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * @param {Node} node
    *     The expression to be simplified
+   * @param {Object} options
+   *     Simplification options, as per simplify()
    */
-  function simplifyCore (node) {
-    if (isOperatorNode(node) && node.isUnary()) {
-      const a0 = simplifyCore(node.args[0])
-
-      if (node.op === '+') { // unary plus
-        return a0
+  function simplifyCore (node, options) {
+    const context = options ? options.context : undefined
+    if (hasProperty(node, 'trivial', context)) {
+      // This node does nothing if it has only one argument, so if so,
+      // return that argument simplified
+      let simpChild = false
+      let childCount = 0
+      node.forEach(c => {
+        if (++childCount === 1) {
+          simpChild = simplifyCore(c, options)
+        }
+      })
+      if (childCount === 1) {
+        return simpChild
       }
+    }
+
+    if (isOperatorNode(node) && node.isUnary()) {
+      const a0 = simplifyCore(node.args[0], options)
 
       if (node.op === '-') { // unary minus
         if (isOperatorNode(a0)) {
@@ -82,8 +101,8 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
         return new OperatorNode(node.op, node.fn, [a0])
       }
     } else if (isOperatorNode(node) && node.isBinary()) {
-      const a0 = simplifyCore(node.args[0])
-      const a1 = simplifyCore(node.args[1])
+      const a0 = simplifyCore(node.args[0], options)
+      const a1 = simplifyCore(node.args[1], options)
 
       if (node.op === '+') {
         if (isConstantNode(a0)) {
@@ -114,7 +133,8 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
             return a0
           }
           if (isOperatorNode(a1) && a1.isUnary() && a1.op === '-') {
-            return simplifyCore(new OperatorNode('+', 'add', [a0, a1.args[0]]))
+            return simplifyCore(
+              new OperatorNode('+', 'add', [a0, a1.args[0]]), options)
           }
           return new OperatorNode(node.op, node.fn, [a0, a1])
         }
@@ -176,22 +196,22 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
         }
         return new OperatorNode(node.op, node.fn, [a0, a1])
       }
-    } else if (isParenthesisNode(node)) {
-      return simplifyCore(node.content)
     } else if (isFunctionNode(node)) {
       return new FunctionNode(
-        simplifyCore(node.fn), node.args.map(simplifyCore))
+        simplifyCore(node.fn), node.args.map(n => simplifyCore(n, options)))
     } else if (isArrayNode(node)) {
-      return new ArrayNode(node.items.map(simplifyCore))
+      return new ArrayNode(
+        node.items.map(n => simplifyCore(n, options)))
     } else if (isAccessorNode(node)) {
       return new AccessorNode(
-        simplifyCore(node.object), simplifyCore(node.index))
+        simplifyCore(node.object, options), simplifyCore(node.index, options))
     } else if (isIndexNode(node)) {
-      return new IndexNode(node.dimensions.map(simplifyCore))
+      return new IndexNode(
+        node.dimensions.map(n => simplifyCore(n, options)))
     } else if (isObjectNode(node)) {
       const newProps = {}
       for (const prop in node.properties) {
-        newProps[prop] = simplifyCore(node.properties[prop])
+        newProps[prop] = simplifyCore(node.properties[prop], options)
       }
       return new ObjectNode(newProps)
     } else {

@@ -88,7 +88,8 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
     IndexNode,
     ObjectNode,
     OperatorNode,
-    ParenthesisNode
+    ParenthesisNode,
+    SymbolNode
   })
 
   /**
