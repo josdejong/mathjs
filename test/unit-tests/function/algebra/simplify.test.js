@@ -103,11 +103,12 @@ describe('simplify', function () {
     assert.strictEqual(fsimplified.evaluate()(5), 0.9933071490757153)
   })
 
+  const testSimplifyCore = function (expr, expected, opts = {}) {
+    const actual = math.simplify.simplifyCore(math.parse(expr)).toString(opts)
+    assert.strictEqual(actual, expected)
+  }
+
   it('simplifyCore should handle different node types', function () {
-    const testSimplifyCore = function (expr, expected) {
-      const actual = math.simplify.simplifyCore(math.parse(expr)).toString()
-      assert.strictEqual(actual, expected)
-    }
     testSimplifyCore('5*x*3', '15 * x')
     testSimplifyCore('5*x*3*x', '15 * x * x')
 
@@ -126,10 +127,22 @@ describe('simplify', function () {
     testSimplifyCore('sin(x+0)*1', 'sin(x)')
     testSimplifyCore('((x+0)*1)', 'x')
     testSimplifyCore('sin((x-0)*1+y*0)', 'sin(x)')
-    testSimplifyCore('((x)*(y))', '(x * y)')
-    testSimplifyCore('((x)*(y))^1', '(x * y)')
+    testSimplifyCore('[x+0,1*y,z*0]', '[x, y, 0]')
+    testSimplifyCore('(a+b+0)[i*0+1,-(j)]', '(a + b)[1, -j]')
+    testSimplifyCore('{a:x*1, b:y-0}', '{"a": x, "b": y}')
+  })
 
-    // constant folding
+  it('simplifyCore strips ParenthesisNodes (implicit in tree)', function () {
+    testSimplifyCore('((x)*(y))', 'x * y')
+    testSimplifyCore('((x)*(y))^1', 'x * y')
+    testSimplifyCore('x*(y+z)', 'x * (y + z)')
+    testSimplifyCore('x+(y+z)+w', 'x + y + z + w')
+    // But it doesn't actually change the association internally:
+    testSimplifyCore('x+ y+z +w', '((x + y) + z) + w', { parenthesis: 'all' })
+    testSimplifyCore('x+(y+z)+w', '(x + (y + z)) + w', { parenthesis: 'all' })
+  })
+
+  it('simplifyCore folds constants', function () {
     testSimplifyCore('1+2', '3')
     testSimplifyCore('2*3', '6')
     testSimplifyCore('2-3', '-1')
