@@ -477,6 +477,7 @@ Properties:
 
 - `fn: Node | string` (read-only) The object or function name which to invoke.
 - `args: Node[]`
+- `name: string` The name of the function
 
 Examples:
 
