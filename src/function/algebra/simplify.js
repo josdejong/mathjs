@@ -102,8 +102,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   })
 
   const utils = createUtil({ FunctionNode, OperatorNode, SymbolNode })
-  const { isCommutative, isAssociative, flatten, unflattenr, unflattenl, createMakeNodeFunction } = utils;
-    
+  const { isCommutative, isAssociative, flatten, unflattenr, unflattenl, createMakeNodeFunction } = utils
 
   /**
    * Simplify an expression tree.
@@ -807,7 +806,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     return true
   }
 
-  simplify.utils = utils;
+  simplify.utils = utils
 
   return simplify
 })
