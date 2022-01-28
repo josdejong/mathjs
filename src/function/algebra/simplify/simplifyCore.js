@@ -153,8 +153,8 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
             return node0
           } else if (equal(a1.value, 1)) {
             return a0
-          } else if (isOperatorNode(a0) && a0.isBinary() && a0.op === node.op
-                     && isCommutative(node, context)) {
+          } else if (isOperatorNode(a0) && a0.isBinary() &&
+                     a0.op === node.op && isCommutative(node, context)) {
             const a00 = a0.args[0]
             if (isConstantNode(a00)) {
               const a00a1 = new ConstantNode(multiply(a00.value, a1.value))

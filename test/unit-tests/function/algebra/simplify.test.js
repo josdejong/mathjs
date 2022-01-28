@@ -297,6 +297,7 @@ describe('simplify', function () {
     simplifyAndCompare('x - (y - y + x)', '0')
     simplifyAndCompare('x - (y - (y - x))', '0')
     simplifyAndCompare('5 + (5 * x) - (3 * x) + 2', '2*x+7')
+    simplifyAndCompare('x^2*y^2 - (x*y)^2', '0')
   })
 
   it('should collect separated like factors', function () {
@@ -382,11 +383,11 @@ describe('simplify', function () {
   it('should respect context changes to operator properties', function () {
     const optsNCM = { context: { multiply: { commutative: false } } }
     simplifyAndCompare('x*y+y*x', 'x*y+y*x', {}, optsNCM)
-    //    simplifyAndCompare('x*y-y*x', 'x*y-y*x', {}, optsNCM)
+    simplifyAndCompare('x*y-y*x', 'x*y-y*x', {}, optsNCM)
     simplifyAndCompare('x*5', 'x*5', {}, optsNCM)
-    //    simplifyAndCompare('x*y*x^(-1)', 'x*y*x^(-1)', {}, optsNCM)
-    //    simplifyAndCompare('x*y/x', 'x*y*x^(-1)', {}, optsNCM)
-    //    simplifyAndCompare('x*y*(1/x)', 'x*y*x^(-1)', {}, optsNCM)
+    simplifyAndCompare('x*y*x^(-1)', 'x*y*x^(-1)', {}, optsNCM)
+    simplifyAndCompare('x*y/x', 'x*y*x^(-1)', {}, optsNCM)
+    simplifyAndCompare('x*y*(1/x)', 'x*y*x^(-1)', {}, optsNCM)
 
     const optsNAA = { context: { add: { associative: false } } }
     simplifyAndCompare(
