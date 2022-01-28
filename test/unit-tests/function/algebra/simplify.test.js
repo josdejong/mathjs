@@ -383,7 +383,7 @@ describe('simplify', function () {
     const optsNCM = { context: { multiply: { commutative: false } } }
     simplifyAndCompare('x*y+y*x', 'x*y+y*x', {}, optsNCM)
     //    simplifyAndCompare('x*y-y*x', 'x*y-y*x', {}, optsNCM)
-    //    simplifyAndCompare('x*5', 'x*5', {}, optsNCM)
+    simplifyAndCompare('x*5', 'x*5', {}, optsNCM)
     //    simplifyAndCompare('x*y*x^(-1)', 'x*y*x^(-1)', {}, optsNCM)
     //    simplifyAndCompare('x*y/x', 'x*y*x^(-1)', {}, optsNCM)
     //    simplifyAndCompare('x*y*(1/x)', 'x*y*x^(-1)', {}, optsNCM)
@@ -398,6 +398,7 @@ describe('simplify', function () {
     simplifyAndCompare('x-(y-y+x)', '0', {}, optsNCM)
 
     const optsNAA = { context: { add: { associative: false } } }
+    simplifyAndCompare('3+x', 'x+3', {}, optsNAA)
     simplifyAndCompare('x*y - y*x', '0', {}, optsNAA)
     simplifyAndCompare('x-(y-y+x)', '0', {}, optsNAA)
 

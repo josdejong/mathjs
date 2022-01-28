@@ -43,7 +43,7 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
   const node0 = new ConstantNode(0)
   const node1 = new ConstantNode(1)
 
-  const { hasProperty } =
+  const { hasProperty, isCommutative } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
   /**
    * simplifyCore() performs single pass simplification suitable for
@@ -153,14 +153,19 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
             return node0
           } else if (equal(a1.value, 1)) {
             return a0
-          } else if (isOperatorNode(a0) && a0.isBinary() && a0.op === node.op) {
+          } else if (isOperatorNode(a0) && a0.isBinary() && a0.op === node.op
+                     && isCommutative(node, context)) {
             const a00 = a0.args[0]
             if (isConstantNode(a00)) {
               const a00a1 = new ConstantNode(multiply(a00.value, a1.value))
               return new OperatorNode(node.op, node.fn, [a00a1, a0.args[1]], node.implicit) // constants on left
             }
           }
-          return new OperatorNode(node.op, node.fn, [a1, a0], node.implicit) // constants on left
+          if (isCommutative(node, context)) {
+            return new OperatorNode(node.op, node.fn, [a1, a0], node.implicit) // constants on left
+          } else {
+            return new OperatorNode(node.op, node.fn, [a0, a1], node.implicit)
+          }
         }
         return new OperatorNode(node.op, node.fn, [a0, a1], node.implicit)
       } else if (node.op === '/') {

@@ -102,7 +102,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     ParenthesisNode
   })
 
-  const { isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
+  const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
   /**
@@ -139,6 +139,9 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * When specifying a rule as an object, the following keys are meaningful:
    * - l - the left pattern
    * - r - the right pattern
+   * - assuming - gives a context object, as in the 'context' option to
+   *     simplify. Every property in the context object must match the current
+   *     context in order, or else the rule will not be applied.
    * - imposeContext - gives a context object, as in the 'context' option to
    *     simplify. Any settings specified will override the incoming context
    *     for all matches of this rule.
@@ -368,8 +371,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     //    { l: 'n1*(-n)', r: '-(n1*n)' }, // in case * non-commutative
 
     // final ordering of constants
-    { l: 'c+v', r: 'v+c', imposeContext: { add: { commutative: false } } },
-    { l: 'v*c', r: 'c*v', imposeContext: { multiply: { commutative: false } } },
+    { l: 'c+v', r: 'v+c', assuming: { add: { commutative: true } },
+      imposeContext: { add: { commutative: false } } },
+    { l: 'v*c', r: 'c*v', assuming: { multiply: { commutative: true } },
+      imposeContext: { multiply: { commutative: false } } },
 
     // undo temporary rules
     // { l: '(-1) * n', r: '-n' }, // #811 added test which proved this is redundant
@@ -435,6 +440,9 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           if (rule.imposeContext) {
             newRule.imposeContext = rule.imposeContext
           }
+          if (rule.assuming) {
+            newRule.assuming = rule.assuming
+          }
           if (rule.evaluate) {
             newRule.evaluate = parse(rule.evaluate)
           }
@@ -488,7 +496,20 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   function applyRule (node, rule, context) {
     //    console.log('Entering applyRule("', rule.l.toString({parenthesis:'all'}), '->', rule.r.toString({parenthesis:'all'}), '",', node.toString({parenthesis:'all'}),')')
 
-    context = mergeContext(rule.imposeContext, context)
+    // check that the assumptions for this rule are satisfied by the current
+    // context:
+    if (rule.assuming) {
+      for (const symbol in rule.assuming) {
+        for (const property in rule.assuming[symbol]) {
+          if (hasProperty(symbol, property, context) !==
+              rule.assuming[symbol][property]) {
+            return node
+          }
+        }
+      }
+    }
+
+    const mergedContext = mergeContext(rule.imposeContext, context)
 
     // Do not clone node unless we find a match
     let res = node
@@ -521,13 +542,13 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     // Try to match a rule against this node
     let repl = rule.r
-    let matches = _ruleMatch(rule.l, res, context)[0]
+    let matches = _ruleMatch(rule.l, res, mergedContext)[0]
 
     // If the rule is associative operator, we can try matching it while allowing additional terms.
     // This allows us to match rules like 'n+n' to the expression '(1+x)+x' or even 'x+1+x' if the operator is commutative.
     if (!matches && rule.expanded) {
       repl = rule.expanded.r
-      matches = _ruleMatch(rule.expanded.l, res, context)[0]
+      matches = _ruleMatch(rule.expanded.l, res, mergedContext)[0]
     }
 
     if (matches) {
