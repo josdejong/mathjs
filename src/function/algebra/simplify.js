@@ -135,6 +135,14 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * The default list of rules is exposed on the function as `simplify.rules`
    * and can be used as a basis to built a set of custom rules.
    *
+   * To specify a rule as a string, separate the left and right pattern by '->'
+   * When specifying a rule as an object, the following keys are meaningful:
+   * - l - the left pattern
+   * - r - the right pattern
+   * - imposeContext - gives a context object, as in the 'context' option to
+   *     simplify. Any settings specified will override the incoming context
+   *     for all matches of this rule.
+   *
    * For more details on the theory, see:
    *
    * - [Strategies for simplifying math expressions (Stackoverflow)](https://stackoverflow.com/questions/7540227/strategies-for-simplifying-math-expressions)
@@ -360,8 +368,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     //    { l: 'n1*(-n)', r: '-(n1*n)' }, // in case * non-commutative
 
     // final ordering of constants
-    { l: 'c+v', r: 'v+c', context: { add: { commutative: false } } },
-    { l: 'v*c', r: 'c*v', context: { multiply: { commutative: false } } },
+    { l: 'c+v', r: 'v+c', imposeContext: { add: { commutative: false } } },
+    { l: 'v*c', r: 'c*v', imposeContext: { multiply: { commutative: false } } },
 
     // undo temporary rules
     // { l: '(-1) * n', r: '-n' }, // #811 added test which proved this is redundant
@@ -377,7 +385,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     // simplifyConstant can leave an extra factor of 1, which can always
     // be eliminated, since the identity always commutes
-    { l: '1*n', r: 'n', context: { multiply: { commutative: true } } },
+    { l: '1*n', r: 'n', imposeContext: { multiply: { commutative: true } } },
 
     { l: 'n1/(n2/n3)', r: '(n1*n3)/n2' },
 
@@ -424,8 +432,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             l: removeParens(parse(rule.l)),
             r: removeParens(parse(rule.r))
           }
-          if (rule.context) {
-            newRule.context = rule.context
+          if (rule.imposeContext) {
+            newRule.imposeContext = rule.imposeContext
           }
           if (rule.evaluate) {
             newRule.evaluate = parse(rule.evaluate)
@@ -480,7 +488,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   function applyRule (node, rule, context) {
     //    console.log('Entering applyRule("', rule.l.toString({parenthesis:'all'}), '->', rule.r.toString({parenthesis:'all'}), '",', node.toString({parenthesis:'all'}),')')
 
-    context = mergeContext(rule.context, context)
+    context = mergeContext(rule.imposeContext, context)
 
     // Do not clone node unless we find a match
     let res = node
