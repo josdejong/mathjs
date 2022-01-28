@@ -21,12 +21,19 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
 
   const defaultName = 'defaultF'
   const defaultContext = {
-    /*     */ add: { trivial: T, total: T, commutative: T, associative: T },
-    /**/ subtract: { trivial: F, total: T, commutative: F, associative: F },
-    /**/ multiply: { trivial: T, total: T, commutative: T, associative: T },
-    /*  */ divide: { trivial: F, total: T, commutative: F, associative: F },
-    /*   */ paren: { trivial: T, total: T, commutative: T, associative: F },
-    /**/ defaultF: { trivial: F, total: T, commutative: F, associative: F }
+    /*      */ add: { trivial: T, total: T, commutative: T, associative: T },
+    /**/ unaryPlus: { trivial: T, total: T, commutative: T, associative: T },
+    /* */ subtract: { trivial: F, total: T, commutative: F, associative: F },
+    /* */ multiply: { trivial: T, total: T, commutative: T, associative: T },
+    /*   */ divide: { trivial: F, total: T, commutative: F, associative: F },
+    /*    */ paren: { trivial: T, total: T, commutative: T, associative: F },
+    /* */ defaultF: { trivial: F, total: T, commutative: F, associative: F }
+  }
+  const realContext = { divide: { total: F }, log: { total: F } }
+  const positiveContext = {
+    subtract: { total: F },
+    abs: { trivial: T },
+    log: { total: T }
   }
 
   function hasProperty (nodeOrName, property, context = defaultContext) {
@@ -200,6 +207,9 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
     flatten,
     allChildren,
     unflattenr,
-    unflattenl
+    unflattenl,
+    defaultContext,
+    realContext,
+    positiveContext
   }
 })

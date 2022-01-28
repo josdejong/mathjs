@@ -102,7 +102,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     ParenthesisNode
   })
 
-  const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
+  const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction, defaultContext, realContext, positiveContext } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
   /**
@@ -156,12 +156,28 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *  An optional `options` argument can be passed as last argument of `simplify`.
    *  Currently available options (defaults in parentheses):
    *  - `consoleDebug` (false): whether to write the expression being simplified
-        and any changes to it, along with the rule responsible, to console
+   *    and any changes to it, along with the rule responsible, to console
+   *  - `context` (simplify.defaultContext): an object giving properties of
+   *    each operator, which determine what simplifications are allowed. The
+   *    currently meaningful properties are commutative, associative,
+   *    total (whether the operation is defined for all arguments), and
+   *    trivial (whether the operation applied to a single argument leaves
+   *    that argument unchanged). The default context is very permissive and
+   *    allows almost all simplifications. Only properties differing from
+   *    the default need to be specified; the default context is used as a
+   *    fallback. Additional contexts `simplify.realContext` and
+   *    `simplify.positiveContext` are supplied to cause simplify to perform
+   *    just simplifications guaranteed to preserve all values of the expression
+   *    assuming all variables and subexpressions are real numbers or
+   *    positive real numbers, respectively. (Note that these are in some cases
+   *    more restrictive than the default context; for example, the default
+   *    context will allow `x/x` to simplify to 1, whereas
+   *    `simplify.realContext` will not, as `0/0` is not equal to 1.)
    *  - `exactFractions` (true): whether to try to convert all constants to
-        exact rational numbers.
+   *    exact rational numbers.
    *  - `fractionsLimit` (10000): when `exactFractions` is true, constants will
-        be expressed as fractions only when both numerator and denominator
-        are smaller than `fractionsLimit`.
+   *    be expressed as fractions only when both numerator and denominator
+   *    are smaller than `fractionsLimit`.
    *
    * Syntax:
    *
@@ -284,6 +300,9 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   })
   simplify.simplifyCore = simplifyCore
   simplify.resolve = resolve
+  simplify.defaultContext = defaultContext
+  simplify.realContext = realContext
+  simplify.positiveContext = positiveContext
 
   function removeParens (node) {
     return node.transform(function (node, path, parent) {
@@ -338,7 +357,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // temporary rules
     // Note initially we tend constants to the right because like-term
     // collection prefers the left, and we would rather collect nonconstants
-    { l: 'n-n1', r: 'n+-n1' }, // temporarily replace 'subtract' so we can further flatten the 'add' operator
+    {
+      s: 'n-n1 -> n+-n1', // temporarily replace 'subtract' so we can further flatten the 'add' operator
+      assuming: { subtract: { total: true } }
+    },
     {
       s: '-(c*v) -> v * (-c)', // make non-constant terms positive
       assuming: { multiply: { commutative: true }, subtract: { total: true } }

@@ -75,6 +75,10 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
     if (hasProperty(node, 'trivial', context)) {
       // This node does nothing if it has only one argument, so if so,
       // return that argument simplified
+      if (isFunctionNode(node) && node.args.length === 1) {
+        return simplifyCore(node.args[0], options)
+      }
+      // For other node types, we try the generic methods
       let simpChild = false
       let childCount = 0
       node.forEach(c => {
@@ -86,7 +90,6 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
         return simpChild
       }
     }
-
     if (isOperatorNode(node) && node.isUnary()) {
       const a0 = simplifyCore(node.args[0], options)
 
