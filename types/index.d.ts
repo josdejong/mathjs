@@ -3409,11 +3409,11 @@ declare namespace math {
 
   interface ConfigOptions {
     epsilon?: number;
-    matrix?: string;
-    number?: string;
+    matrix?: 'Matrix' | 'Array';
+    number?: 'number' | 'BigNumber' | 'Fraction';
     precision?: number;
-    parenthesis?: string;
-    randomSeed?: string;
+    predictable?: boolean;
+    randomSeed?: string | null;
   }
 
   interface MathJsJson {
