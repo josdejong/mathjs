@@ -537,6 +537,14 @@ describe('simplify', function () {
     })
   })
 
+  function assertAlike (a, b) { // OK if both NaN or deepEqual
+    if (isNaN(a)) {
+      assert(isNaN(b))
+    } else {
+      assert.deepEqual(a, b)
+    }
+  }
+
   it('should preserve values according to context', function () {
     const realContext = { context: math.simplify.realContext }
     const positiveContext = { context: math.simplify.positiveContext }
@@ -567,16 +575,17 @@ describe('simplify', function () {
       const expr = math.parse(textExpr)
       const realex = math.simplify(expr, {}, realContext)
       const posex = math.simplify(expr, {}, positiveContext)
-      assert.deepEqual(expr.evaluate(zeroes), realex.evaluate(zeroes))
-      assert.deepEqual(expr.evaluate(negones), realex.evaluate(negones))
-      assert.deepEqual(expr.evaluate(ones), realex.evaluate(ones))
-      assert.deepEqual(expr.evaluate(twos), realex.evaluate(twos))
-      assert.deepEqual(expr.evaluate(ones), posex.evaluate(ones))
-      assert.deepEqual(expr.evaluate(twos), posex.evaluate(twos))
+      assertAlike(expr.evaluate(zeroes), realex.evaluate(zeroes))
+      assertAlike(expr.evaluate(negones), realex.evaluate(negones))
+      assertAlike(expr.evaluate(ones), realex.evaluate(ones))
+      assertAlike(expr.evaluate(twos), realex.evaluate(twos))
+      assertAlike(expr.evaluate(ones), posex.evaluate(ones))
+      assertAlike(expr.evaluate(twos), posex.evaluate(twos))
     }
     // Make sure at least something is not equal
     const expr = math.parse('x/x')
     const posex = math.simplify(expr, {}, positiveContext)
+    assert(!isNaN(posex.evaluate(zeroes)))
     assert.notEqual(expr.evaluate(zeroes), posex.evaluate(zeroes))
   })
 })
