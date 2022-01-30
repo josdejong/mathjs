@@ -1,5 +1,14 @@
 # History
 
+# not yet published, version 10.1.1
+
+- Improvements and fixes in function `simplify`, thanks @gwhitney:
+  - Fix #2393: regression bug in `simplify('2-(x+1)')`.
+  - Ad option `consoleDebug` to `simplify` to see what is going on.
+- Fix TypeScript definition of `ConfigOptions`, which was missing option 
+  `predictable`.
+
+
 # 2022-01-15, version 10.1.0
 
 - Implemented function `invmod`, see #2368, #1744. Thanks @thetazero.
