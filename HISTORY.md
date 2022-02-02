@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 10.1.1
+# 2022-02-02, version 10.1.1
 
 - Improvements and fixes in function `simplify`, thanks @gwhitney:
   - Fix #2393: regression bug in `simplify('2-(x+1)')`.
