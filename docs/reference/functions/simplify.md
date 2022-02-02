@@ -41,11 +41,14 @@ For more details on the theory, see:
 - [Symbolic computation - Simplification (Wikipedia)](https://en.wikipedia.org/wiki/Symbolic_computation#Simplification)
 
  An optional `options` argument can be passed as last argument of `simplify`.
- There is currently one option available:
- - `exactFractions`: a boolean which is `true` by default.
- - `fractionsLimit`: when `exactFractions` is true, a fraction will be returned
-   only when both numerator and denominator are smaller than `fractionsLimit`.
-   Default value is 10000.
+ Currently available options (defaults in parentheses):
+ - `consoleDebug` (false): whether to write the expression being simplified
+        and any changes to it, along with the rule responsible, to console
+ - `exactFractions` (true): whether to try to convert all constants to
+        exact rational numbers.
+ - `fractionsLimit` (10000): when `exactFractions` is true, constants will
+        be expressed as fractions only when both numerator and denominator
+        are smaller than `fractionsLimit`.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>

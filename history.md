@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220202-version-1011">2022-02-02, version 10.1.1 <a href="#20220202-version-1011" title="Permalink">#</a></h1>
+
+- Improvements and fixes in function `simplify`, thanks <a href="https://github.com/gwhitney">@gwhitney</a>:
+  - Fix <a href="https://github.com/josdejong/mathjs/issues/2393">#2393</a>: regression bug in `simplify('2-(x+1)')`.
+  - Ad option `consoleDebug` to `simplify` to see what is going on.
+- Fix TypeScript definition of `ConfigOptions`, which was missing option 
+  `predictable`.
+
+
 <h1 id="20220115-version-1010">2022-01-15, version 10.1.0 <a href="#20220115-version-1010" title="Permalink">#</a></h1>
 
 - Implemented function `invmod`, see <a href="https://github.com/josdejong/mathjs/issues/2368">#2368</a>, <a href="https://github.com/josdejong/mathjs/issues/1744">#1744</a>. Thanks <a href="https://github.com/thetazero">@thetazero</a>.
