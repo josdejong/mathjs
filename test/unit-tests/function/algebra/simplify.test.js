@@ -416,10 +416,21 @@ describe('simplify', function () {
   })
 
   it('resolve() should substitute scoped constants', function () {
+    const sumxy = math.parse('x+y')
+    const collapsingScope = { x: math.parse('y'), y: math.parse('z') }
     assert.strictEqual(
-      math.simplify.resolve(math.parse('x+y'), { x: 1 }).toString(),
+      math.simplify.resolve(sumxy, { x: 1 }).toString(),
       '1 + y'
     ) // direct
+    assert.strictEqual(
+      math.simplify.resolve(sumxy, collapsingScope).toString(),
+      'z + z'
+    )
+    assert.strictEqual(
+      math.simplify.resolve(
+        math.parse('[x,y,1,w]'), collapsingScope).toString(),
+      '[z, z, 1, w]'
+    )
     simplifyAndCompare('x+y', 'x+y', {}) // operator
     simplifyAndCompare('x+y', 'y+1', { x: 1 })
     simplifyAndCompare('x+y', 'y+1', { x: math.parse('1') })
@@ -434,7 +445,7 @@ describe('simplify', function () {
     simplifyAndCompare('combinations( ceil(abs(sin(x)) * (y+3)), abs(x) )',
       'combinations(ceil(0.9092974268256817 * (y + 3) ), 2)', { x: -2 })
 
-    // TODO(deal with accessor nodes) simplifyAndCompare('size(text)[1]', '11', {text: "hello world"})
+    simplifyAndCompare('size(text)[1]', '11', { text: 'hello world' })
   })
 
   it('resolve() should substitute scoped constants from Map like scopes', function () {
@@ -445,6 +456,20 @@ describe('simplify', function () {
     simplifyAndCompare('x+y', 'x+y', new Map()) // operator
     simplifyAndCompare('x+y', 'y+1', new Map([['x', 1]]))
     simplifyAndCompare('x+y', 'y+1', new Map([['x', math.parse('1')]]))
+  })
+
+  it('resolve() should throw an error in case of reference loop', function () {
+    const sumxy = math.parse('x+y')
+    assert.throws(
+      () => math.simplify.resolve(sumxy, { x: math.parse('x') }),
+      /ReferenceError.*x -> x/)
+    assert.throws(
+      () => math.simplify.resolve(sumxy, {
+        y: math.parse('3z'),
+        z: math.parse('1-x'),
+        x: math.parse('cos(y)')
+      }),
+      ReferenceError)
   })
 
   it('should keep implicit multiplication implicit', function () {
