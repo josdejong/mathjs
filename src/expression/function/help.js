@@ -31,12 +31,22 @@ export const createHelp = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       let searchName = search
 
       if (typeof search !== 'string') {
+        searchName = ''
         for (prop in mathWithTransform) {
           // search in functions and constants
-          if (hasOwnProperty(mathWithTransform, prop) && (search === mathWithTransform[prop])) {
+          const value = mathWithTransform[prop]
+          if (hasOwnProperty(mathWithTransform, prop) && (search === value)) {
             searchName = prop
             break
           }
+          // search one level down as well for functions like simplify.resolve
+          for (const second in value) {
+            if (hasOwnProperty(value, second) && (search === value[second])) {
+              searchName = prop + '.' + second
+              break
+            }
+          }
+          if (searchName) break
         }
 
         /* TODO: implement help for data types
