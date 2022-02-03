@@ -340,10 +340,22 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         break
     }
 
-    // handles an edge case of 'auto' parentheses with implicit multiplication of ConstantNode
-    // In that case print parentheses for ParenthesisNodes even though they normally wouldn't be
-    // printed.
+    // The following block handles edge cases of 'auto' parentheses with
+    // implicit multiplication:
+    // A) Parenthesized ConstantNodes must be placed in parentheses even
+    //    though they normally wouldn't be, to preserve implicit
+    //    multiplication
+    // B) Fractions with unary operators for either operand must be
+    //    parenthesized, because of parsing rules for implicit multiplication
+    //    by fractions (e.g. 1/2 a is interpreted as (1/2)a and -1/2a is
+    //    interpreted as -1/(2a) by contrast).
     if ((args.length >= 2) && (root.getIdentifier() === 'OperatorNode:multiply') && root.implicit && (parenthesis === 'auto') && (implicit === 'hide')) {
+      // First check case (B) above
+      if (args[0].getIdentifier() === 'OperatorNode:divide' &&
+          args[0].args.some(n => n.type === 'OperatorNode' && n.isUnary())) {
+        result[0] = true
+      }
+      // Then handle case (A)
       result = args.map(function (arg, index) {
         const isParenthesisNode = (arg.getIdentifier() === 'ParenthesisNode')
         if (result[index] || isParenthesisNode) { // put in parenthesis?

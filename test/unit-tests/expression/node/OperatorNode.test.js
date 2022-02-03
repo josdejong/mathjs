@@ -801,6 +801,29 @@ describe('OperatorNode', function () {
     assert.strictEqual(c.toString({ implicit: 'hide', parenthesis: 'auto' }), '4 (4 (4))')
   })
 
+  it('should stringify implicit multiplications of a fraction with unary operators to preserve its value', function () {
+    const one = new ConstantNode(1)
+    const two = new ConstantNode(2)
+    const m1 = new OperatorNode('-', 'unaryMinus', [one])
+    const m2 = new OperatorNode('-', 'unaryMinus', [two])
+    const p1 = new OperatorNode('+', 'unaryPlus', [one])
+    const p2 = new OperatorNode('+', 'unaryPlus', [two])
+    const m1two = new OperatorNode('/', 'divide', [m1, two])
+    const p1two = new OperatorNode('/', 'divide', [p1, two])
+    const onem2 = new OperatorNode('/', 'divide', [one, m2])
+    const onep2 = new OperatorNode('/', 'divide', [one, p2])
+    const avar = new SymbolNode('a')
+    const ascope = { a: 2 }
+    for (const coeff of [m1two, p1two, onem2, onep2]) {
+      let expr = new math.OperatorNode('*', 'multiply', [coeff, avar], true)
+      let estring = expr.toString({ parenthesis: 'auto', implicit: 'hide' })
+      assert.strictEqual(math.evaluate(estring, ascope), expr.evaluate(ascope))
+      expr = new math.OperatorNode('*', 'multiply', [coeff, two], true)
+      estring = expr.toString({ parenthesis: 'auto', implicit: 'hide' })
+      assert.strictEqual(math.evaluate(estring, {}), expr.evaluate(ascope))
+    }
+  })
+
   it('should LaTeX implicit multiplications between ConstantNodes with parentheses', function () {
     const a = math.parse('(4)(4)(4)(4)')
     const b = math.parse('4b*4(4)')
