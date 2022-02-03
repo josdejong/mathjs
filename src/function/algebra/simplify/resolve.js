@@ -29,9 +29,18 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
    *     math.simplify.resolve(math.parse('x+y'), {x:1, y:2}) // Node {1 + 2}
    *     math.simplify('x+y', {x:2, y:'x+x'}).toString()      // "6"
    *
+   * See also:
+   *
+   *     simplify, evaluate
+   *
    * @param {Node} node
    *     The expression tree to be simplified
-   * @param {Object} scope with variables to be resolved
+   * @param {Object} scope
+   *     Scope specifying variables to be resolved
+   * @return {Node} Returns `node` with variables recursively substituted.
+   * @throws {ReferenceError}
+   *     If there is a cyclic dependency among the variables in `scope`,
+   *     resolution is impossible and a ReferenceError is thrown.
    */
   function resolve (node, scope) {
     if (!scope) {

@@ -211,6 +211,17 @@ function generateDocs (done) {
   const functionNames = Object.keys(all)
     .filter(key => typeof all[key] === 'function')
 
+  // pick up functions with (one) prefix, like simplify.resolve
+  const moreNames = []
+  for (const name of functionNames) {
+    for (const key of Object.keys(all[name])) {
+      if (typeof all[name][key] === 'function') {
+        moreNames.push(key)
+      }
+    }
+  }
+  functionNames.push(...moreNames)
+
   docgenerator.cleanup(REF_DEST, REF_ROOT)
   docgenerator.iteratePath(functionNames, REF_SRC, REF_DEST, REF_ROOT)
 

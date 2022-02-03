@@ -282,6 +282,34 @@ function generateDoc (name, code) {
     return count > 0
   }
 
+  function parseThrows () {
+    let count = 0
+    let match
+    do {
+      match = /\s*@throws\s*\{(.*)}\s*(.*)?$/.exec(line)
+      if (match) {
+        next()
+
+        count++
+        const annotation = {
+          description: (match[2] || '').trim(),
+          type: (match[1] || '').trim()
+        }
+        doc.mayThrow.push(annotation)
+
+        // multi line description (must be non-empty and not start with @param or @return)
+        while (exists() && !empty() && !/^\s*@/.test(line)) {
+          const lineTrim = line.trim()
+          const separator = (lineTrim[0] === '-' ? '</br>' : ' ')
+          annotation.description += separator + lineTrim
+          next()
+        }
+      }
+    } while (match)
+
+    return count > 0
+  }
+
   function parseReturns () {
     const match = /\s*@returns?\s*\{(.*)}\s*(.*)?$/.exec(line)
     if (match) {
@@ -312,7 +340,8 @@ function generateDoc (name, code) {
     examples: [],
     seeAlso: [],
     parameters: [],
-    returns: null
+    returns: null,
+    mayThrow: []
   }
 
   next()
@@ -327,7 +356,8 @@ function generateDoc (name, code) {
         parseExamples() ||
         parseSeeAlso() ||
         parseParameters() ||
-        parseReturns()
+        parseReturns() ||
+        parseThrows()
 
     if (!handled) {
       // skip this line, no one knows what to do with it
@@ -382,6 +412,15 @@ function validateDoc (doc) {
     if (!ignore('parameters')) {
       issues.push('function "' + doc.name + '": parameters missing')
     }
+  }
+
+  if (doc.mayThrow && doc.mayThrow.length) {
+    doc.mayThrow.forEach(function (err, index) {
+      if (!err.type) {
+        issues.push(
+          'function "' + doc.name + '": error type missing for throw ' + index)
+      }
+    })
   }
 
   if (doc.returns) {
@@ -451,6 +490,16 @@ function generateMarkdown (doc, functions) {
         '---- | -----------\n' +
         (doc.returns.types ? doc.returns.types.join(' &#124; ') : '') + ' | ' + doc.returns.description +
         '\n\n\n'
+  }
+
+  if (doc.mayThrow) {
+    text += '### Throws\n\n' +
+      'Type | Description\n' +
+      '---- | -----------\n' +
+      doc.mayThrow.map(function (t) {
+        return (t.type || '') + ' | ' + t.description
+      }).join('\n') +
+      '\n\n'
   }
 
   if (doc.examples && doc.examples.length) {
@@ -550,6 +599,7 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
     let issues = []
     Object.keys(functions).forEach(name => {
       const fn = functions[name]
+
       const code = String(fs.readFileSync(fn.fullPath))
 
       const isFunction = (functionNames.indexOf(name) !== -1) && !IGNORE_FUNCTIONS[name]

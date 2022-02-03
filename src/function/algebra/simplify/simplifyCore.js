@@ -69,6 +69,7 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    *     The expression to be simplified
    * @param {Object} options
    *     Simplification options, as per simplify()
+   * @return {Node} Returns expression with basic simplifications applied
    */
   function simplifyCore (node, options) {
     const context = options ? options.context : undefined
