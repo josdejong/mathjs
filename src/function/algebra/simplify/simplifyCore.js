@@ -82,7 +82,8 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
       let simpChild = false
       let childCount = 0
       node.forEach(c => {
-        if (++childCount === 1) {
+        ++childCount
+        if (childCount === 1) {
           simpChild = simplifyCore(c, options)
         }
       })

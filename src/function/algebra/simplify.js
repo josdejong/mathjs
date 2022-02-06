@@ -491,6 +491,50 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   ]
 
   /**
+   * Takes any rule object as allowed by the specification in simplify
+   * and puts it in a standard form used by applyRule
+   */
+  function _canonicalizeRule (ruleObject, context) {
+    const newRule = {}
+    if (ruleObject.s) {
+      const lr = ruleObject.s.split('->')
+      if (lr.length === 2) {
+        newRule.l = lr[0]
+        newRule.r = lr[1]
+      } else {
+        throw SyntaxError('Could not parse rule: ' + ruleObject.s)
+      }
+    } else {
+      newRule.l = ruleObject.l
+      newRule.r = ruleObject.r
+    }
+    newRule.l = removeParens(parse(newRule.l))
+    newRule.r = removeParens(parse(newRule.r))
+    for (const prop of ['imposeContext', 'repeat', 'assuming']) {
+      if (prop in ruleObject) {
+        newRule[prop] = ruleObject[prop]
+      }
+    }
+    if (ruleObject.evaluate) {
+      newRule.evaluate = parse(ruleObject.evaluate)
+    }
+
+    if (isAssociative(newRule.l, context)) {
+      const makeNode = createMakeNodeFunction(newRule.l)
+      const expandsym = _getExpandPlaceholderSymbol()
+      newRule.expanded = {}
+      newRule.expanded.l = makeNode([newRule.l.clone(), expandsym])
+      // Push the expandsym into the deepest possible branch.
+      // This helps to match the newRule against nodes returned from getSplits() later on.
+      flatten(newRule.expanded.l, context)
+      unflattenr(newRule.expanded.l, context)
+      newRule.expanded.r = makeNode([newRule.r, expandsym])
+    }
+
+    return newRule
+  }
+
+  /**
    * Parse the string array of rules into nodes
    *
    * Example syntax for rules:
@@ -518,45 +562,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           rule = { s: rule }
         /* falls through */
         case 'object':
-          newRule = {}
-          if (rule.s) {
-            const lr = rule.s.split('->')
-            if (lr.length === 2) {
-              newRule.l = lr[0]
-              newRule.r = lr[1]
-            } else {
-              throw SyntaxError('Could not parse rule: ' + rule)
-            }
-          } else {
-            newRule.l = rule.l
-            newRule.r = rule.r
-          }
-          newRule.l = removeParens(parse(newRule.l))
-          newRule.r = removeParens(parse(newRule.r))
-          if (rule.imposeContext) {
-            newRule.imposeContext = rule.imposeContext
-          }
-          if (rule.repeat) {
-            newRule.repeat = rule.repeat
-          }
-          if (rule.assuming) {
-            newRule.assuming = rule.assuming
-          }
-          if (rule.evaluate) {
-            newRule.evaluate = parse(rule.evaluate)
-          }
-
-          if (isAssociative(newRule.l, context)) {
-            const makeNode = createMakeNodeFunction(newRule.l)
-            const expandsym = _getExpandPlaceholderSymbol()
-            newRule.expanded = {}
-            newRule.expanded.l = makeNode([newRule.l.clone(), expandsym])
-            // Push the expandsym into the deepest possible branch.
-            // This helps to match the newRule against nodes returned from getSplits() later on.
-            flatten(newRule.expanded.l, context)
-            unflattenr(newRule.expanded.l, context)
-            newRule.expanded.r = makeNode([newRule.r, expandsym])
-          }
+          newRule = _canonicalizeRule(rule, context)
           break
         case 'function':
           newRule = rule
