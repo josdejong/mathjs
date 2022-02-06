@@ -134,13 +134,13 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
    * @param  {Object|boolean}      optional scope of expression or true for already evaluated rational expression at input
    * @param  {Boolean}  detailed   optional True if return an object, false if return expression node (default)
    *
-   * @return {Object | Node}    The rational polynomial of `expr` or na object
-   *            {Object}
-   *              {Expression Node} expression: node simplified expression
-   *              {Expression Node} numerator: simplified numerator of expression
-   *              {Expression Node | boolean} denominator: simplified denominator or false (if there is no denominator)
-   *              {Array}           variables:  variable names
-   *              {Array}           coefficients: coefficients of numerator sorted by increased exponent
+   * @return {Object | Node}    The rational polynomial of `expr` or an object
+   *            `{expression, numerator, denominator, variables, coefficients}`, where
+   *              `expression` is a `Node` with the node simplified expression,
+   *              `numerator` is a `Node` with the simplified numerator of expression,
+   *              `denominator` is a `Node` or `boolean` with the simplified denominator or `false` (if there is no denominator),
+   *              `variables` is an array with variable names,
+   *              and `coefficients` is an array with coefficients of numerator sorted by increased exponent
    *           {Expression Node}  node simplified expression
    *
    */
