@@ -175,6 +175,7 @@ import { qrDocs } from './function/algebra/qr.js'
 import { usolveDocs } from './function/algebra/usolve.js'
 import { usolveAllDocs } from './function/algebra/usolveAll.js'
 import { sluDocs } from './function/algebra/slu.js'
+import { leafCountDocs } from './function/algebra/leafCount.js'
 import { rationalizeDocs } from './function/algebra/rationalize.js'
 import { simplifyDocs } from './function/algebra/simplify.js'
 import { lupDocs } from './function/algebra/lup.js'
@@ -326,6 +327,7 @@ export const embeddedDocs = {
   lsolveAll: lsolveAllDocs,
   lup: lupDocs,
   lusolve: lusolveDocs,
+  leafCount: leafCountDocs,
   simplify: simplifyDocs,
   rationalize: rationalizeDocs,
   slu: sluDocs,
