@@ -1783,7 +1783,7 @@ declare namespace math {
      * @param n A real or complex number
      * @returns The gamma of n
      */
-    gamma(n: number | MathArray | Matrix): number | MathArray | Matrix;
+    gamma<T extends number | BigNumber | Complex | MathArray | Matrix>(n: T): NoLiteralType<T>;
 
     /**
      * Calculate the Kullback-Leibler (KL) divergence between two
