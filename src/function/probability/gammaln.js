@@ -24,7 +24,7 @@ export const createGammaln = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *    gamma
    *
-   * @param {number | Array | Matrix} n   A real number > 0
+   * @param {number | Array | Matrix} n   A real number
    * @return {number | Array | Matrix}    The gammaln of `n`
    */
 
