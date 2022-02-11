@@ -1787,10 +1787,10 @@ declare namespace math {
 
     /**
      * Compute the gammaln function of a value using Lanczos approximation.
-     * @param n A real number > 0
+     * @param n A real number
      * @returns The gammaln of n
      */
-    gammaln(n: number): number;
+    gammaln<T extends number | MathArray | Matrix>(n: T): T;
 
     /**
      * Calculate the Kullback-Leibler (KL) divergence between two

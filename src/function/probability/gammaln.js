@@ -1,4 +1,5 @@
 import { gammalnNumber } from '../../plain/number/index.js'
+import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'gammaln'
@@ -28,6 +29,10 @@ export const createGammaln = /* #__PURE__ */ factory(name, dependencies, ({ type
    */
 
   return typed(name, {
-    number: gammalnNumber
+    number: gammalnNumber,
+
+    'Array | Matrix': function (n) {
+      return deepMap(n, this)
+    }
   })
 })

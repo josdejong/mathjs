@@ -22,7 +22,9 @@ describe('gammaln', function () {
     approx.equal(gammaln(0.000001), 13.815509980749431669207827)
     approx.equal(gammaln(0.25), 1.2880225246980774573706104)
     approx.equal(gammaln(0.8), 0.1520596783998375887782926)
+    approx.equal(gammaln(1), 0)
     approx.equal(gammaln(1.5), -0.12078223763524522234551845)
+    approx.equal(gammaln(2), 0)
     approx.equal(gammaln(2.5), 0.28468287047291915963249467)
     approx.equal(gammaln(12.5), 18.734347511936445701634125)
     approx.equal(gammaln(125.5), 479.45782236390339913576384)
@@ -41,6 +43,20 @@ describe('gammaln', function () {
   it('should calculate the gammaln of a boolean', function () {
     assert.strictEqual(gammaln(true), 0)
     assert.strictEqual(gammaln(false), Infinity)
+  })
+
+  it('should calculate the gammaln of each element in a matrix', function () {
+    approx.deepEqual(
+      gammaln(math.matrix([0, 1, 2, 3, 4, 5])),
+      math.matrix([Infinity, 0, 0, 0.69314718055994530941723212, 1.7917594692280550008124774, 3.1780538303479456196469416])
+    )
+  })
+
+  it('should calculate the gammaln of each element in an array', function () {
+    approx.deepEqual(
+      gammaln([0, 1, 2, 3, 4, 5]),
+      [Infinity, 0, 0, 0.69314718055994530941723212, 1.7917594692280550008124774, 3.1780538303479456196469416]
+    )
   })
 
   it('should throw en error if called with invalid number of arguments', function () {
