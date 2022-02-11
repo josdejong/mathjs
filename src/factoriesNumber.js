@@ -35,6 +35,7 @@ import {
   fixNumber,
   floorNumber,
   gammaNumber,
+  gammalnNumber,
   gcdNumber,
   isIntegerNumber,
   isNaNNumber,
@@ -218,6 +219,7 @@ export { createPartitionSelect } from './function/matrix/partitionSelect.js'
 // probability
 export const createCombinations = createNumberFactory('combinations', combinationsNumber)
 export const createGamma = createNumberFactory('gamma', gammaNumber)
+export const createGammaln = createNumberFactory('gammaln', gammalnNumber)
 export { createCombinationsWithRep } from './function/probability/combinationsWithRep.js'
 export { createFactorial } from './function/probability/factorial.js'
 export { createMultinomial } from './function/probability/multinomial.js'

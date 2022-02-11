@@ -69,3 +69,30 @@ export const gammaP = [
   -0.26190838401581408670e-4,
   0.36899182659531622704e-5
 ]
+
+export function gammalnNumber (n) {
+  if (n < 0) return NaN
+  if (n === 0) return Infinity
+  if (!isFinite(n)) return n
+
+  const lnSqrt2PI = 0.91893853320467274178
+  const gammaSeries = [
+    76.18009172947146,
+    -86.50532032941677,
+    24.01409824083091,
+    -1.231739572450155,
+    0.1208650973866179e-2,
+    -0.5395239384953e-5
+  ]
+
+  // Lanczos method
+  const n1 = n + 5.5
+  let denom = n + 1
+  let series = 1.000000000190015
+  for (let i = 0; i < 6; i++) {
+    series += gammaSeries[i] / denom
+    denom += 1.0
+  }
+  return lnSqrt2PI + (n + 0.5) * Math.log(n1) - n1 + Math.log(series / n)
+}
+gammalnNumber.signature = 'number'
