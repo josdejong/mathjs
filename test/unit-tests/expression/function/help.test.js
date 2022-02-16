@@ -21,21 +21,15 @@ describe('help', function () {
   })
 
   it('should find help from a function name', function () {
-    let help = math.help('sin')
+    const help = math.help('sin')
     assert(help instanceof math.Help)
     assert.strictEqual(help.doc.name, 'sin')
-    help = math.help('simplify.resolve')
-    assert(help instanceof math.Help)
-    assert.strictEqual(help.doc.name, 'simplify.resolve')
   })
 
   it('should find help from a function', function () {
-    let help = math.help(math.sin)
+    const help = math.help(math.sin)
     assert(help instanceof math.Help)
     assert.strictEqual(help.doc.name, 'sin')
-    help = math.help('simplify.simplifyCore')
-    assert(help instanceof math.Help)
-    assert.strictEqual(help.doc.name, 'simplify.simplifyCore')
   })
 
   it('should find help from a constant name', function () {

@@ -1,9 +1,9 @@
 import { isConstantNode, isParenthesisNode } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { createUtil } from './simplify/util.js'
-import { createSimplifyCore } from './simplify/simplifyCore.js'
+import { createSimplifyCore } from './simplifyCore.js'
 import { createSimplifyConstant } from './simplify/simplifyConstant.js'
-import { createResolve } from './simplify/resolve.js'
+import { createResolve } from './resolve.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { createEmptyMap, createMap } from '../../utils/map.js'
 
@@ -299,8 +299,6 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       return res
     }
   })
-  simplify.simplifyCore = simplifyCore
-  simplify.resolve = resolve
   simplify.defaultContext = defaultContext
   simplify.realContext = realContext
   simplify.positiveContext = positiveContext

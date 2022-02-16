@@ -1,6 +1,6 @@
-import { createMap, isMap } from '../../../utils/map.js'
-import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is.js'
-import { factory } from '../../../utils/factory.js'
+import { createMap, isMap } from '../../utils/map.js'
+import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'resolve'
 const dependencies = [
@@ -23,12 +23,12 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Syntax:
    *
-   *     simplify.resolve(expr, scope)
+   *     resolve(expr, scope)
    *
    * Examples:
    *
-   *     math.simplify.resolve('x + y', {x:1, y:2})           // Node {1 + 2}
-   *     math.simplify.resolve(math.parse('x+y'), {x:1, y:2}) // Node {1 + 2}
+   *     math.resolve('x + y', {x:1, y:2})           // Node {1 + 2}
+   *     math.resolve(math.parse('x+y'), {x:1, y:2}) // Node {1 + 2}
    *     math.simplify('x+y', {x:2, y:'x+x'}).toString()      // "6"
    *
    * See also:

@@ -17,39 +17,3 @@ export const simplifyDocs = {
     'derivative', 'parse', 'evaluate'
   ]
 }
-
-export const resolveDocs = {
-  name: 'simplify.resolve',
-  category: 'Algebra',
-  syntax: [
-    'simplify.resolve(node, scope)'
-  ],
-  description: 'Substitute variables in an expression tree.',
-  examples: [
-    'simplify.resolve(parse("1 + x"), { x: 7 })',
-    'simplify.resolve(parse("size(text)"), { text: "Hello World" })',
-    'simplify.resolve(parse("x + y"), { x: parse("3z") })'
-  ],
-  seealso: [
-    'simplify', 'evaluate'
-  ],
-  mayThrow: [
-    'ReferenceError'
-  ]
-}
-
-export const simplifyCoreDocs = {
-  name: 'simplify.simplifyCore',
-  category: 'Algebra',
-  syntax: [
-    'simplify.simplifyCore(node)'
-  ],
-  description: 'Perform simple one-pass simplifications on an expression tree.',
-  examples: [
-    'simplify.simplifyCore(parse("0*x"))',
-    'simplify.simplifyCore(parse("(x+0)*2"))'
-  ],
-  seealso: [
-    'simplify', 'evaluate'
-  ]
-}

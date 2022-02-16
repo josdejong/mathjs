@@ -1,6 +1,6 @@
-import { isAccessorNode, isArrayNode, isConstantNode, isFunctionNode, isIndexNode, isObjectNode, isOperatorNode } from '../../../utils/is.js'
-import { createUtil } from './util.js'
-import { factory } from '../../../utils/factory.js'
+import { isAccessorNode, isArrayNode, isConstantNode, isFunctionNode, isIndexNode, isObjectNode, isOperatorNode } from '../../utils/is.js'
+import { createUtil } from './simplify/util.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'simplifyCore'
 const dependencies = [
@@ -53,17 +53,17 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Syntax:
    *
-   *     simplify.simplifyCore(expr)
+   *     simplifyCore(expr)
    *
    * Examples:
    *
    *     const f = math.parse('2 * 1 * x ^ (2 - 1)')
-   *     math.simplify.simpifyCore(f)                          // Node {2 * x}
-   *     math.simplify('2 * 1 * x ^ (2 - 1)', [math.simplify.simpifyCore]) // Node {2 * x}
+   *     math.simpifyCore(f)                          // Node {2 * x}
+   *     math.simplify('2 * 1 * x ^ (2 - 1)', [math.simplifyCore]) // Node {2 * x}
    *
    * See also:
    *
-   *     derivative
+   *     simplify, resolve, derivative
    *
    * @param {Node} node
    *     The expression to be simplified
