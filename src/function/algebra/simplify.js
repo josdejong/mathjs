@@ -374,7 +374,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { multiply: { commutative: false }, subtract: { total: true } }
     },
     { l: '-(n1/n2)', r: '-n1/n2' },
-    { l: '-v', r: 'v * (-1)' },
+    { l: '-v', r: 'v * (-1)' }, // finish making non-constant terms positive
     { l: '(n1 + n2)*(-1)', r: 'n1*(-1) + n2*(-1)', repeat: true }, // expand negations to achieve as much sign cancellation as possible
     { l: 'n/n1^n2', r: 'n*n1^-n2' }, // temporarily replace 'divide' so we can further flatten the 'multiply' operator
     { l: 'n/n1', r: 'n*n1^-1' },
@@ -387,42 +387,26 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { multiply: { commutative: false } }
     },
 
-    // remove parenthesis in the case of negating a quantity
-    { l: 'n1 + (n2 + n3)*(-1)', r: 'n1 + n2*(-1) + n3*(-1)' },
-    // subsume resulting -1 into constants where possible
-    { l: '(-1) * c', r: '-c' },
-    { l: '(-1) * (-c)', r: 'c' },
-
-    // expand nested exponentiation
-    { l: '(n ^ n1) ^ n2', r: 'n ^ (n1 * n2)' },
-
-    // collect like factors; into a sum, only do this for nonconstants
-    { l: ' v   * ( v   * n1 + n2)', r: 'v^2       * n1 +  v   * n2' },
-    { l: ' v   * (v^n4 * n1 + n2)', r: 'v^(1+n4)  * n1 +  v   * n2' },
-    { l: 'v^n3 * ( v   * n1 + n2)', r: 'v^(n3+1)  * n1 + v^n3 * n2' },
-    { l: 'v^n3 * (v^n4 * n1 + n2)', r: 'v^(n3+n4) * n1 + v^n3 * n2' },
-    { l: ' n   *  n  ', r: 'n^2' },
-    { l: ' n   * n^n2', r: 'n^(n2+1)' },
-    { l: 'n^n1 * n^n2', r: 'n^(n1+n2)' },
-
-    // collect like terms
-    { l: 'n+n', r: '2*n' },
-    { l: 'n+-n', r: '0' },
-    { l: ' v*n  + v    ', r: 'v *(n + 1)' }, // Leftmost position is special:
-    { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
-    { l: 'n3^(-n4)*n1 +   n3  * n2', r: 'n3^(-n4)*(n1 + n3^(n4+1) *n2)' },
-    { l: 'n3^(-n4)*n1 + n3^n5 * n2', r: 'n3^(-n4)*(n1 + n3^(n4+n5)*n2)' },
-    { l: 'n*c + c', r: '(n+1)*c' },
-
-    simplifyConstant,
-
     // expand nested exponentiation
     {
       s: '(n ^ n1) ^ n2 -> n ^ (n1 * n2)',
       assuming: { divide: { total: true } } // 1/(1/n) = n needs 1/n to exist
     },
 
-    // collect like factors
+    // collect like factors; into a sum, only do this for nonconstants
+    { l: ' v   * ( v   * n1 + n2)', r: 'v^2       * n1 +  v   * n2' },
+    {
+      s: ' v   * (v^n4 * n1 + n2)   ->  v^(1+n4)  * n1 +  v   * n2',
+      assuming: { divide: { total: true } } // v*1/v = v^(1+-1) needs 1/v
+    },
+    {
+      s: 'v^n3 * ( v   * n1 + n2)   ->  v^(n3+1)  * n1 + v^n3 * n2',
+      assuming: { divide: { total: true } }
+    },
+    {
+      s: 'v^n3 * (v^n4 * n1 + n2)   ->  v^(n3+n4) * n1 + v^n3 * n2',
+      assuming: { divide: { total: true } }
+    },
     { l: 'n*n', r: 'n^2' },
     {
       s: 'n * n^n1 -> n^(n1+1)',
@@ -433,6 +417,12 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { divide: { total: true } } // ditto for n^2*1/n^2
     },
 
+    // Unfortunately, to deal with more complicated cancellations, it
+    // becomes necessary to simplify constants twice per pass. It's not
+    // terribly expensive compared to matching rules, so this should not
+    // pose a performance problem.
+    simplifyConstant, // First: before collecting like terms
+
     // collect like terms
     {
       s: 'n+n -> 2*n',
@@ -441,6 +431,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'n+-n', r: '0' },
     { l: 'v*n + v', r: 'v*(n+1)' }, // NOTE: leftmost position is special:
     { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
+    { l: 'n3^(-n4)*n1 +   n3  * n2', r: 'n3^(-n4)*(n1 + n3^(n4+1) *n2)' },
+    { l: 'n3^(-n4)*n1 + n3^n5 * n2', r: 'n3^(-n4)*(n1 + n3^(n4+n5)*n2)' },
     {
       s: 'n*v + v -> (n+1)*v', // noncommutative additional cases
       assuming: { multiply: { commutative: false } }
@@ -449,17 +441,21 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: 'n1*n3 + n2*n3 -> (n1+n2)*n3',
       assuming: { multiply: { commutative: false } }
     },
+    {
+      s: 'n1*n3^(-n4) + n2 * n3    -> (n1 + n2*n3^(n4 +  1))*n3^(-n4)',
+      assuming: { multiply: { commutative: false } }
+    },
+    {
+      s: 'n1*n3^(-n4) + n2 * n3^n5 -> (n1 + n2*n3^(n4 + n5))*n3^(-n4)',
+      assuming: { multiply: { commutative: false } }
+    },
     { l: 'n*c + c', r: '(n+1)*c' },
     {
       s: 'c*n + c -> c*(n+1)',
       assuming: { multiply: { commutative: false } }
     },
 
-    // Simplifying constants likely needs to be kept late in the rule order,
-    // once expressions have been expanded as much as they are going to
-    // be, allowing constants to coalesce, but before the rules below that
-    // start to restore things to "standard presentation."
-    simplifyConstant,
+    simplifyConstant, // Second: before returning expressions to "standard form"
 
     // make factors positive (and undo 'make non-constant terms positive')
     {
@@ -498,7 +494,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: 'n^-1 -> 1/n',
       assuming: { multiply: { commutative: true } } // o.w. / not conventional
     },
-    { l: 'n^ 1', r: 'n' }, // can be produced by power cancellation
+    { l: 'n^1', r: 'n' }, // can be produced by power cancellation
     {
       s: 'n*(n1/n2) -> (n*n1)/n2', // '*' before '/'
       assuming: { multiply: { associative: true } }
