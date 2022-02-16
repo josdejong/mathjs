@@ -106,7 +106,7 @@ describe('rationalize', function () {
   it('processing 2 variable expressions', function () {
     assert.strictEqual(stri(math.rationalize('x+y')), 'x+y')
     assert.strictEqual(stri(math.rationalize('x^2 + 2*x*y + 3')), 'x^2+2*x*y+3')
-    assert.strictEqual(stri(math.rationalize('2x/y - y/(x+1)')), '(2*x^2-y^2+2*x)/(x*y+y)')
+    assert.strictEqual(stri(math.rationalize('2x/y - y/(x+1)')), '(2*x^2+2*x-y^2)/(x*y+y)')
   })
 
   it('processing power expressions', function () {
@@ -145,8 +145,8 @@ describe('rationalize', function () {
     assert.deepStrictEqual(objToStrings(math.rationalize('2x/y - y/(x+1)', {}, true)), {
       coefficients: '',
       denominator: 'x*y+y',
-      expression: '(2*x^2-y^2+2*x)/(x*y+y)',
-      numerator: '2*x^2-y^2+2*x',
+      expression: '(2*x^2+2*x-y^2)/(x*y+y)',
+      numerator: '2*x^2+2*x-y^2',
       variables: 'x,y'
     })
     assert.deepStrictEqual(objToStrings(math.rationalize('-2+5x^2', {}, true)), {
