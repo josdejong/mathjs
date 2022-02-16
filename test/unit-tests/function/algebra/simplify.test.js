@@ -4,25 +4,29 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 
 describe('simplify', function () {
-  function simplifyAndCompare (left, right, rules, scope, opt) {
+  const expLibrary = []
+  function simplifyAndCompare (left, right, rules, scope, opt, stringOpt) {
+    expLibrary.push(left)
+    let simpLeft
     try {
       if (Array.isArray(rules)) {
         if (opt) {
-          assert.strictEqual(math.simplify(left, rules, scope, opt).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left, rules, scope, opt)
         } else if (scope) {
-          assert.strictEqual(math.simplify(left, rules, scope).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left, rules, scope)
         } else {
-          assert.strictEqual(math.simplify(left, rules).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left, rules)
         }
       } else {
+        if (opt) stringOpt = opt
         if (scope) opt = scope
         if (rules) scope = rules
         if (opt) {
-          assert.strictEqual(math.simplify(left, scope, opt).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left, scope, opt)
         } else if (scope) {
-          assert.strictEqual(math.simplify(left, scope).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left, scope)
         } else {
-          assert.strictEqual(math.simplify(left).toString(), math.parse(right).toString())
+          simpLeft = math.simplify(left)
         }
       }
     } catch (err) {
@@ -33,9 +37,12 @@ describe('simplify', function () {
       }
       throw err
     }
+    assert.strictEqual(
+      simpLeft.toString(stringOpt), math.parse(right).toString(stringOpt))
   }
 
   function simplifyAndCompareEval (left, right, scope) {
+    expLibrary.push(left)
     scope = scope || {}
     assert.strictEqual(math.simplify(left).evaluate(scope), math.parse(right).evaluate(scope))
   }
@@ -66,7 +73,7 @@ describe('simplify', function () {
 
   it('handles string constants', function () {
     simplifyAndCompare('"a"', '"a"')
-    simplifyAndCompare('f("0xffff")', 'f("0xffff")')
+    simplifyAndCompare('foo("0xffff")', 'foo("0xffff")')
     simplifyAndCompare('"1234"', '"1234"')
     simplifyAndCompare('concat("a","b")', '"ab"')
     simplifyAndCompare('size(concat("A","4/2"))', '[4]')
@@ -99,11 +106,12 @@ describe('simplify', function () {
     assert.strictEqual(fsimplified.evaluate()(5), 0.9933071490757153)
   })
 
+  const testSimplifyCore = function (expr, expected, opts = {}) {
+    const actual = math.simplify.simplifyCore(math.parse(expr)).toString(opts)
+    assert.strictEqual(actual, expected)
+  }
+
   it('simplifyCore should handle different node types', function () {
-    const testSimplifyCore = function (expr, expected) {
-      const actual = math.simplify.simplifyCore(math.parse(expr)).toString()
-      assert.strictEqual(actual, expected)
-    }
     testSimplifyCore('5*x*3', '15 * x')
     testSimplifyCore('5*x*3*x', '15 * x * x')
 
@@ -122,10 +130,22 @@ describe('simplify', function () {
     testSimplifyCore('sin(x+0)*1', 'sin(x)')
     testSimplifyCore('((x+0)*1)', 'x')
     testSimplifyCore('sin((x-0)*1+y*0)', 'sin(x)')
-    testSimplifyCore('((x)*(y))', '(x * y)')
-    testSimplifyCore('((x)*(y))^1', '(x * y)')
+    testSimplifyCore('[x+0,1*y,z*0]', '[x, y, 0]')
+    testSimplifyCore('(a+b+0)[n*0+1,-(n)]', '(a + b)[1, -n]')
+    testSimplifyCore('{a:x*1, b:y-0}', '{"a": x, "b": y}')
+  })
 
-    // constant folding
+  it('simplifyCore strips ParenthesisNodes (implicit in tree)', function () {
+    testSimplifyCore('((x)*(y))', 'x * y')
+    testSimplifyCore('((x)*(y))^1', 'x * y')
+    testSimplifyCore('x*(y+z)', 'x * (y + z)')
+    testSimplifyCore('x+(y+z)+w', 'x + y + z + w')
+    // But it doesn't actually change the association internally:
+    testSimplifyCore('x+ y+z +w', '((x + y) + z) + w', { parenthesis: 'all' })
+    testSimplifyCore('x+(y+z)+w', '(x + (y + z)) + w', { parenthesis: 'all' })
+  })
+
+  it('simplifyCore folds constants', function () {
     testSimplifyCore('1+2', '3')
     testSimplifyCore('2*3', '6')
     testSimplifyCore('2-3', '-1')
@@ -154,8 +174,8 @@ describe('simplify', function () {
     simplifyAndCompare('[3x+0]', '[3x]') // simplifyCore inside array
     simplifyAndCompare('[3x+5x]', '[8*x]')
     simplifyAndCompare('[2*3,6+2]', '[6,8]')
-    simplifyAndCompare('[a^0,b*0][n*1]', '[1,0][n]') // simplifyCore in index
-    simplifyAndCompare('[x,y-2y,z][(3-2)*a]', '[x,-y,z][a]')
+    simplifyAndCompare('[x^0,y*0,z*1,w-0][2+n*1]', '[1,0,z,w][n+2]') // simplifyCore in index
+    simplifyAndCompare('[x,y-2y,z,w+w][(3-2)*n+2]', '[x,-y,z,2*w][n+2]')
   })
 
   it('should simplify inside objects', function () {
@@ -165,8 +185,8 @@ describe('simplify', function () {
   it('should index an array or object with a constant', function () {
     simplifyAndCompare('[x,y,z][2]', 'y')
     simplifyAndCompare('5+[6*2,3-3][2-1]', '17')
-    simplifyAndCompare('[1,2;3,4][2,y]', '[3,4][y]')
-    simplifyAndCompare('[1,2;3,4][y,2]', '[2,4][y]')
+    simplifyAndCompare('[1,2,1,2;3,4,3,4][2,y+2]', '[3,4,3,4][y+2]')
+    simplifyAndCompare('[1,2;3,4;5,6;7,8][y+2,2]', '[2,4,6,8][y+2]')
     simplifyAndCompare('{a:3,b:2}.b', '2')
     simplifyAndCompare('{a:3,b:2}.c', 'undefined')
   })
@@ -184,7 +204,7 @@ describe('simplify', function () {
   })
 
   it('should recognize array size does not depend on entries', function () {
-    simplifyAndCompare('size([a,b;c,d])', '[2,2]')
+    simplifyAndCompare('size([x,y;z,w])', '[2,2]')
   })
 
   it('should handle custom functions', function () {
@@ -280,6 +300,7 @@ describe('simplify', function () {
     simplifyAndCompare('x - (y - y + x)', '0')
     simplifyAndCompare('x - (y - (y - x))', '0')
     simplifyAndCompare('5 + (5 * x) - (3 * x) + 2', '2*x+7')
+    simplifyAndCompare('x^2*y^2 - (x*y)^2', '0')
   })
 
   it('should collect separated like factors', function () {
@@ -362,6 +383,38 @@ describe('simplify', function () {
     simplifyAndCompare('100.8', '100.8', math.simplify.rules, {}, { exactFractions: true, fractionsLimit: 100 })
   })
 
+  it('should respect context changes to operator properties', function () {
+    const optsNCM = { context: { multiply: { commutative: false } } }
+    simplifyAndCompare('x*y+y*x', 'x*y+y*x', {}, optsNCM)
+    simplifyAndCompare('x*y-y*x', 'x*y-y*x', {}, optsNCM)
+    simplifyAndCompare('x*5', 'x*5', {}, optsNCM)
+    simplifyAndCompare('x*y*x^(-1)', 'x*y*x^(-1)', {}, optsNCM)
+    simplifyAndCompare('x*y/x', 'x*y*x^(-1)', {}, optsNCM)
+    simplifyAndCompare('x*y*(1/x)', 'x*y*x^(-1)', {}, optsNCM)
+
+    const optsNAA = { context: { add: { associative: false } } }
+    simplifyAndCompare(
+      'x + (-x+y)', 'x + (y-x)', {}, optsNAA, { parenthesis: 'all' })
+  })
+
+  it('performs other simplifications in unrelated contexts', function () {
+    const optsNCM = { context: { multiply: { commutative: false } } }
+    simplifyAndCompare('x-(y-y+x)', '0', {}, optsNCM)
+
+    const optsNAA = { context: { add: { associative: false } } }
+    simplifyAndCompare('3+x', 'x+3', {}, optsNAA)
+    simplifyAndCompare('x*y - y*x', '0', {}, optsNAA)
+    simplifyAndCompare('x-(y-y+x)', '0', {}, optsNAA)
+
+    const optsNAANCM = {
+      context: {
+        add: { associative: false },
+        multiply: { commutative: false }
+      }
+    }
+    simplifyAndCompare('x-(y-y+x)', '0', {}, optsNAANCM)
+  })
+
   it('resolve() should substitute scoped constants', function () {
     assert.strictEqual(
       math.simplify.resolve(math.parse('x+y'), { x: 1 }).toString(),
@@ -378,8 +431,8 @@ describe('simplify', function () {
     simplifyAndCompare('x+y', '6', { x: 2, y: math.parse('x+x') })
     simplifyAndCompare('x+(y+2-1-1)', '6', { x: 2, y: math.parse('x+x') }) // parentheses
     simplifyAndCompare('log(x+y)', String(Math.log(6)), { x: 2, y: math.parse('x+x') }) // function
-    simplifyAndCompare('combinations( ceil(abs(sin(x)) * y), abs(x) )',
-      'combinations(ceil(0.9092974268256817 * y ), 2)', { x: -2 })
+    simplifyAndCompare('combinations( ceil(abs(sin(x)) * (y+3)), abs(x) )',
+      'combinations(ceil(0.9092974268256817 * (y + 3) ), 2)', { x: -2 })
 
     // TODO(deal with accessor nodes) simplifyAndCompare('size(text)[1]', '11', {text: "hello world"})
   })
@@ -482,5 +535,57 @@ describe('simplify', function () {
       simplifyAndCompare('(1-x)/(-(y-z))', '(1-x)/(z-y)')
       simplifyAndCompare('(w-x)/(-(y-z))', '(w-x)/(z-y)')
     })
+  })
+
+  function assertAlike (a, b) { // OK if both NaN or deepEqual
+    if (isNaN(a)) {
+      assert(isNaN(b))
+    } else {
+      assert.deepEqual(a, b)
+    }
+  }
+
+  it('should preserve values according to context', function () {
+    const realContext = { context: math.simplify.realContext }
+    const positiveContext = { context: math.simplify.positiveContext }
+    simplifyAndCompare('x/x', 'x/x', {}, realContext)
+    simplifyAndCompare('x/x', '1', {}, positiveContext)
+    simplifyAndCompare('x-x', 'x-x', {}, positiveContext)
+    simplifyAndCompare('+x+abs(x)', '2*x', {}, positiveContext)
+
+    const id = x => x
+    const sel = (x, y, z, w) => z
+    const zeroes = { x: 0, y: 0, z: 0, w: 0, n: 0, foo: id, myMultiArg: sel }
+    const negones = {}
+    const ones = {}
+    const twos = {}
+    for (const vr in zeroes) {
+      if (typeof zeroes[vr] === 'number') {
+        negones[vr] = -1
+        ones[vr] = 1
+        twos[vr] = 2
+      } else {
+        negones[vr] = zeroes[vr]
+        ones[vr] = zeroes[vr]
+        twos[vr] = zeroes[vr]
+      }
+    }
+
+    for (const textExpr of expLibrary) {
+      const expr = math.parse(textExpr)
+      const realex = math.simplify(expr, {}, realContext)
+      const posex = math.simplify(expr, {}, positiveContext)
+      assertAlike(expr.evaluate(zeroes), realex.evaluate(zeroes))
+      assertAlike(expr.evaluate(negones), realex.evaluate(negones))
+      assertAlike(expr.evaluate(ones), realex.evaluate(ones))
+      assertAlike(expr.evaluate(twos), realex.evaluate(twos))
+      assertAlike(expr.evaluate(ones), posex.evaluate(ones))
+      assertAlike(expr.evaluate(twos), posex.evaluate(twos))
+    }
+    // Make sure at least something is not equal
+    const expr = math.parse('x/x')
+    const posex = math.simplify(expr, {}, positiveContext)
+    assert(!isNaN(posex.evaluate(zeroes)))
+    assert.notEqual(expr.evaluate(zeroes), posex.evaluate(zeroes))
   })
 })
