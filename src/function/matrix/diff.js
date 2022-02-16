@@ -110,9 +110,6 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   function _diff (arr) {
     const result = []
     const size = arr.length
-    if (size < 2) {
-      return arr
-    }
     for (let i = 1; i < size; i++) {
       result.push(_ElementDiff(arr[i - 1], arr[i]))
     }
