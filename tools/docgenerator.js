@@ -599,7 +599,6 @@ function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
     let issues = []
     Object.keys(functions).forEach(name => {
       const fn = functions[name]
-
       const code = String(fs.readFileSync(fn.fullPath))
 
       const isFunction = (functionNames.indexOf(name) !== -1) && !IGNORE_FUNCTIONS[name]

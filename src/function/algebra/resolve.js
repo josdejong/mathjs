@@ -44,8 +44,9 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
    *     If there is a cyclic dependency among the variables in `scope`,
    *     resolution is impossible and a ReferenceError is thrown.
    */
-  function resolve (node, scope, within = []) { // note `within` not documented
-    // (since `within` is for internal cycle detection only).
+  function resolve (node, scope, within = new Set()) { // note `within`:
+    // `within` is not documented, since it is for internal cycle
+    // detection only
     if (!scope) {
       return node
     }
@@ -53,14 +54,17 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
       scope = createMap(scope)
     }
     if (isSymbolNode(node)) {
-      if (within.indexOf(node.name) !== -1) {
-        within.push(node.name)
+      if (within.has(node.name)) {
+        const variables = Array.from(within).join(', ')
         throw new ReferenceError(
-          'recursive loop of variable definitions: ' + within.join(' -> '))
+          `recursive loop of variable definitions among {${variables}}`
+        )
       }
       const value = scope.get(node.name)
       if (isNode(value)) {
-        return resolve(value, scope, within.concat([node.name]))
+        const nextWithin = new Set(within)
+        nextWithin.add(node.name)
+        return resolve(value, scope, nextWithin)
       } else if (typeof value === 'number') {
         return parse(String(value))
       } else if (value !== undefined) {

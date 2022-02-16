@@ -52,13 +52,13 @@ describe('resolve', function () {
     const sumxy = math.parse('x+y')
     assert.throws(
       () => math.resolve(sumxy, { x: math.parse('x') }),
-      /ReferenceError.*x -> x/)
+      /ReferenceError.*\{x\}/)
     assert.throws(
       () => math.resolve(sumxy, {
         y: math.parse('3z'),
         z: math.parse('1-x'),
         x: math.parse('cos(y)')
       }),
-      ReferenceError)
+      /ReferenceError.*\{x, y, z\}/)
   })
 })
