@@ -1675,6 +1675,19 @@ declare namespace math {
     ): T;
 
     /**
+     * Return a rotated matrix.
+     * @param {Array | Matrix} w                             Vector to rotate
+     * @param {number | BigNumber | Complex | Unit} theta    Rotation angle
+     * @param {Array | Matrix} [v]                           Rotation axis
+     * @return {Array | Matrix}                              Multiplication of the rotation matrix and w
+     */
+         rotate<T extends MathArray | Matrix>(
+          w: T,
+          theta: number | BigNumber | Complex | Unit,
+          v?: T
+      ): T;
+
+    /**
      * Calculate the size of a matrix or scalar.
      * @param A matrix
      * @returns A vector with the size of x
