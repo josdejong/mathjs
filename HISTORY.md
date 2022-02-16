@@ -1,5 +1,13 @@
 # History
 
+# not yet published, version 10.2.0
+
+- Implemented context options to control simplifications allowed in `simplify`, 
+  see #2399, #2391. Thanks @gwhitney.
+- Implemented function `leafCount` as a first simple measure of the complexity 
+  of an expression, see #2411, #2389. Thanks @gwhitney.
+
+
 # 2022-02-02, version 10.1.1
 
 - Improvements and fixes in function `simplify`, thanks @gwhitney:
