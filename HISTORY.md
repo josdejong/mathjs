@@ -6,6 +6,10 @@
   see #2399, #2391. Thanks @gwhitney.
 - Implemented function `leafCount` as a first simple measure of the complexity 
   of an expression, see #2411, #2389. Thanks @gwhitney.
+- Fix #2413: improve `combinations` to return an integer result without rounding
+  errors for larger values, see #2414. Thanks @gwhitney.
+- Fix #2385: function `rotate` missing in TypeScript definitions. 
+  Thanks @DIVYA-19.
 
 
 # 2022-02-02, version 10.1.1
