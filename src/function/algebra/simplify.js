@@ -1,9 +1,7 @@
 import { isConstantNode, isParenthesisNode } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { createUtil } from './simplify/util.js'
-import { createSimplifyCore } from './simplifyCore.js'
 import { createSimplifyConstant } from './simplify/simplifyConstant.js'
-import { createResolve } from './resolve.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { createEmptyMap, createMap } from '../../utils/map.js'
 
@@ -19,6 +17,8 @@ const dependencies = [
   'pow',
   'isZero',
   'equal',
+  'resolve',
+  'simplifyCore',
   '?fraction',
   '?bignumber',
   'mathWithTransform',
@@ -46,6 +46,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     pow,
     isZero,
     equal,
+    resolve,
+    simplifyCore,
     fraction,
     bignumber,
     mathWithTransform,
@@ -76,31 +78,6 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     ObjectNode,
     OperatorNode,
     SymbolNode
-  })
-  const simplifyCore = createSimplifyCore({
-    equal,
-    isZero,
-    add,
-    subtract,
-    multiply,
-    divide,
-    pow,
-    AccessorNode,
-    ArrayNode,
-    ConstantNode,
-    FunctionNode,
-    IndexNode,
-    ObjectNode,
-    OperatorNode,
-    ParenthesisNode,
-    SymbolNode
-  })
-  const resolve = createResolve({
-    parse,
-    ConstantNode,
-    FunctionNode,
-    OperatorNode,
-    ParenthesisNode
   })
 
   const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction, defaultContext, realContext, positiveContext } =
