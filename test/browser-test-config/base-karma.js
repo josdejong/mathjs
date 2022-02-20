@@ -18,7 +18,7 @@ module.exports = function (config) {
     ],
 
     preprocessors: {
-      '**/*.js': ['webpack']
+      'test/**/*.js': ['webpack']
     },
 
     captureTimeout: 210000,
