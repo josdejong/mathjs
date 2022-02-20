@@ -1,3 +1,5 @@
+const webpack = require('webpack')
+
 module.exports = function (config) {
   return {
 
@@ -50,6 +52,12 @@ module.exports = function (config) {
     webpack: {
       // don't use esm
       mode: 'development',
+      
+      plugins: [
+        new webpack.ProvidePlugin({
+              process: 'process'
+        })
+      ],
 
       resolve: {
         // unless we disallow .mjs files here the tests fail
