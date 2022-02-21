@@ -177,6 +177,9 @@ function CommandLineEditor (params) {
     dom.results.scrollTop = dom.results.scrollHeight;
   }
 
+  var completionMatches = []
+  var completionIndex = -1
+
   // Auto complete current input
   function autoComplete () {
     var name;
@@ -184,57 +187,69 @@ function CommandLineEditor (params) {
     var end = /[a-zA-Z_0-9]+$/.exec(text);
     if (end) {
       var keyword = end[0];
-      var matches = [];
 
-      // scope variables
-      // TODO: not nice to read the (private) defs inside the scope
-      for (var def in parser.scope) {
-        if (parser.scope.hasOwnProperty(def)) {
+      if (completionIndex >= 0
+          && completionIndex < completionMatches.length
+          && keyword === completionMatches[completionIndex]) {
+        // keyword is exactly what we last filled in; cycle through the matches
+        ++completionIndex;
+        if (completionIndex === completionMatches.length) completionIndex = 0
+      } else {
+        completionMatches = [];
+        completionIndex = 0
+        // Look in various places in turn to find completions:
+        // scope variables
+        for (const def in parser.getAll()) {
           if (def.indexOf(keyword) == 0) {
-            matches.push(def);
+            completionMatches.push(def);
           }
         }
-      }
 
-      // commandline keywords
-      if ('clear'.indexOf(keyword) == 0) {
-        matches.push('clear');
-      }
+        // commandline keywords
+        if ('clear'.indexOf(keyword) == 0
+            && !completionMatches.includes('clear')) {
+          completionMatches.push('clear');
+        }
 
-      // math functions and constants
-      var ignore = ['expr', 'type'];
-      for (var func in math) {
-        if (math.hasOwnProperty(func)) {
-          if (func.indexOf(keyword) == 0 && ignore.indexOf(func) == -1) {
-            matches.push(func);
+        // math functions and constants
+        for (var func in math) {
+          if (math.hasOwnProperty(func)) {
+            if (func.indexOf(keyword) == 0
+                && !completionMatches.includes(func)) {
+              completionMatches.push(func);
+            }
           }
         }
-      }
 
-      // units
-      var Unit = math.type.Unit;
-      for (name in Unit.UNITS) {
-        if (Unit.UNITS.hasOwnProperty(name)) {
-          if (name.indexOf(keyword) == 0) {
-            matches.push(name);
+        // units
+        var Unit = math.Unit;
+        for (name in Unit.UNITS) {
+          if (Unit.UNITS.hasOwnProperty(name)) {
+            if (name.indexOf(keyword) == 0
+                && !completionMatches.includes(name)) {
+              completionMatches.push(name);
+            }
           }
         }
-      }
-      for (name in Unit.PREFIXES) {
-        if (Unit.PREFIXES.hasOwnProperty(name)) {
-          var prefixes = Unit.PREFIXES[name];
-          for (var prefix in prefixes) {
-            if (prefixes.hasOwnProperty(prefix)) {
-              if (prefix.indexOf(keyword) == 0) {
-                matches.push(prefix);
-              }
-              else if (keyword.indexOf(prefix) == 0) {
-                var unitKeyword = keyword.substring(prefix.length);
+        for (name in Unit.PREFIXES) {
+          if (Unit.PREFIXES.hasOwnProperty(name)) {
+            var prefixes = Unit.PREFIXES[name];
+            for (var prefix in prefixes) {
+              if (prefixes.hasOwnProperty(prefix)) {
+                if (prefix.indexOf(keyword) == 0
+                    && !completionMatches.includes(prefix)) {
+                  completionMatches.push(prefix);
+                }
+                else if (keyword.indexOf(prefix) == 0) {
+                  var unitKeyword = keyword.substring(prefix.length);
 
-                for (var n in Unit.UNITS) {
-                  if (Unit.UNITS.hasOwnProperty(n)) {
-                    if (n.indexOf(unitKeyword) == 0 && Unit.isValuelessUnit(prefix + n)) {
-                      matches.push(prefix + n);
+                  for (var n in Unit.UNITS) {
+                    if (Unit.UNITS.hasOwnProperty(n)) {
+                      if (n.indexOf(unitKeyword) == 0
+                          && Unit.isValuelessUnit(prefix + n)
+                          && !completionMatches.includes(prefix + n)) {
+                        completionMatches.push(prefix + n);
+                      }
                     }
                   }
                 }
@@ -243,11 +258,11 @@ function CommandLineEditor (params) {
           }
         }
       }
-
       // TODO: in case of multiple matches, show a drop-down box to select one
-      var firstMatch = matches[0];
-      if (firstMatch) {
-        text = text.substring(0, text.length - keyword.length) + firstMatch;
+      // but for now, just cycle through them
+      const match = completionMatches[completionIndex];
+      if (match) {
+        text = text.substring(0, text.length - keyword.length) + match;
         dom.input.value = text;
       }
     }
