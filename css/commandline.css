@@ -99,6 +99,12 @@
   color: #dc3912;
 }
 
+.cle .results .awaiting {
+  padding: 0;
+  margin: 0 0 5px 30px;
+  color: orange;
+}
+
 .cle .results .expr,
 .cle .results .res {
   background: none;

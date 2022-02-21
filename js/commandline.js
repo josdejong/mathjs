@@ -179,6 +179,7 @@ function CommandLineEditor (params) {
 
   var completionMatches = []
   var completionIndex = -1
+  var parserSymbols = []
 
   // Auto complete current input
   function autoComplete () {
@@ -199,7 +200,10 @@ function CommandLineEditor (params) {
         completionIndex = 0
         // Look in various places in turn to find completions:
         // scope variables
-        for (const def in parser.getAll()) {
+        if (!util.worker) {
+          parserSymbols = Object.keys(parser.getAll())
+        }
+        for (const def of parserSymbols) {
           if (def.indexOf(keyword) == 0) {
             completionMatches.push(def);
           }
@@ -426,9 +430,20 @@ function CommandLineEditor (params) {
     dom.btnEval.onclick = evalInput;
     dom.inputRight.appendChild(dom.btnEval);
 
+    // create a worker if possible
+    util.worker = false
+    if (typeof Worker !== 'undefined') {
+      util.worker = new Worker('js/mathworker.js')
+    }
+
     // create global event listeners
     util.addEventListener(window, 'keydown', onWindowKeyDown);
     util.addEventListener(window, 'resize', onWindowResize);
+
+    // create worker listener
+    if (util.worker) {
+      util.worker.addEventListener('message', onWorkerMessage)
+    }
   }
 
   /**
@@ -443,6 +458,11 @@ function CommandLineEditor (params) {
     // destroy event listeners
     util.removeEventListener(window, 'keydown', onWindowKeyDown);
     util.removeEventListener(window, 'resize', onWindowResize);
+
+    // shut down the worker, if any
+    if (util.worker) {
+      util.worker.terminate()
+    }
   }
 
   /**
@@ -498,12 +518,20 @@ function CommandLineEditor (params) {
     history = [];
     historyIndex = -1;
     parser.clear();
+    if (util.worker) {
+      util.worker.postMessage({clear: true})
+    }
+    parserSymbols = []
 
     util.clearDOM(dom.results);
     dom.input.value = '';
     resize();
     // save(); // TODO: save expressions (first we need a method to restore the examples)
   }
+
+  var workerSerial = 0
+  var resultSlot = []
+  var resultTimeout = []
 
   function eval (expr) {
     expr = trim(expr);
@@ -517,58 +545,106 @@ function CommandLineEditor (params) {
       history.push(expr);
       historyIndex = history.length;
 
-      var res, resStr, info;
-      try {
-        res = parser.evaluate(expr);
-        resStr = math.format(res, { precision: 14 });
-        var unRoundedStr = math.format(res);
-        if (unRoundedStr.length - resStr.length > 4) {
-          info = [
-            createDiv('This result contains a round-off error which is hidden from the output. The unrounded result is:'),
-            createDiv(unRoundedStr),
-            createA('read more...', 'docs/datatypes/numbers.html#roundoff-errors', '_blank')
-          ];
-        }
-      }
-      catch (err) {
-        resStr = err.toString();
-      }
-
+      // echo the expression and create the DOM slot for the
+      // result:
       var preExpr = document.createElement('pre');
       preExpr.className = 'expr';
       preExpr.appendChild(document.createTextNode(expr));
       dom.results.appendChild(preExpr);
 
       var preRes = document.createElement('pre');
-      preRes.className = 'res';
-      preRes.appendChild(document.createTextNode(resStr));
-      if (info) {
-        var divInfo = document.createElement('div');
-        info.forEach(function (elem) {
-          divInfo.appendChild(elem);
-        });
-        divInfo.style.display = 'none';
-
-        var divInfoIcon = document.createElement('span');
-        divInfoIcon.appendChild(document.createTextNode('round-off error'));
-        divInfoIcon.className = 'result-info-icon';
-        divInfoIcon.title = 'Click to see more info';
-        divInfoIcon.onclick = function () {
-          // toggle display
-          divInfo.style.display = (divInfo.style.display == '') ? 'none' : '';
-          resize();
-        };
-
-        preRes.appendChild(divInfoIcon);
-        preRes.appendChild(divInfo);
-      }
+      preRes.className = 'awaiting';
       dom.results.appendChild(preRes);
+      resultSlot[workerSerial] = preRes
+
+      // Now arrange to obtain the result
+      if (util.worker) {
+        util.worker.postMessage({id: workerSerial, expr})
+        let currWorker = workerSerial
+        resultTimeout[workerSerial] =
+          setTimeout(() => awaiting(currWorker), 500)
+      } else {
+        // Workers not available, perform computation synchronously
+        var res, resStr, fullResStr, info;
+        try {
+          res = parser.evaluate(expr);
+          resStr = math.format(res, { precision: 14 });
+          var unRoundedStr = math.format(res);
+          if (unRoundedStr.length - resStr.length > 4) {
+            fullResStr = unRoundedStr;
+          }
+        }
+        catch (err) {
+          resStr = err.toString();
+        }
+
+        // Since no message will be coming back, invoke the callback
+        // directly:
+        onWorkerMessage({
+          data: {id: workerSerial, value: resStr, full: fullResStr}
+        })
+      }
+      ++workerSerial
 
       scrollDown();
       dom.input.value = '';
 
       resize();
       // save();  // TODO: save expressions (first we need a method to restore the examples)
+    }
+  }
+
+  function awaiting(id) {
+    const preRes = resultSlot[id]
+    preRes.appendChild(document.createTextNode('..awaiting result..'))
+    if (id === workerSerial - 1) { // latest one entered
+      scrollDown()
+    }
+    resultTimeout[id] = false
+  }
+
+  function onWorkerMessage(e) {
+    if (e.data.symbols) {
+      parserSymbols = e.data.symbols
+    }
+    const id = e.data.id
+    const preRes = resultSlot[id]
+    if (resultTimeout[id]) {
+      clearTimeout(resultTimeout[id])
+      resultTimeout[id] = false
+    } else {
+      if (util.worker) {
+        // A timeout was set and occurred, so delete the message it left
+        preRes.removeChild(preRes.lastChild)
+      }
+    }
+    preRes.appendChild(document.createTextNode(e.data.result));
+    preRes.className = 'res';
+    if (e.data.full) {
+      const info = [
+        createDiv('This result contains a round-off error which is hidden from the output. The unrounded result is:'),
+        createDiv(e.data.full),
+        createA('read more...', 'docs/datatypes/numbers.html#roundoff-errors', '_blank')
+      ]
+      const divInfo = document.createElement('div');
+      info.forEach(elem => divInfo.appendChild(elem))
+      divInfo.style.display = 'none';
+
+      var divInfoIcon = document.createElement('span');
+      divInfoIcon.appendChild(document.createTextNode('round-off error'));
+      divInfoIcon.className = 'result-info-icon';
+      divInfoIcon.title = 'Click to see more info';
+      divInfoIcon.onclick = function () {
+        // toggle display
+        divInfo.style.display = (divInfo.style.display == '') ? 'none' : '';
+        resize();
+      };
+
+      preRes.appendChild(divInfoIcon);
+      preRes.appendChild(divInfo);
+    }
+    if (id === workerSerial - 1) { // latest one entered
+      scrollDown()
     }
   }
 

@@ -1,4 +1,5 @@
 .idea
 _site
+.jekyll-cache
 coverage
 node_modules
