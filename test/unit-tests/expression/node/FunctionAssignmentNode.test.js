@@ -220,9 +220,9 @@ describe('FunctionAssignmentNode', function () {
     const applicator = math.evaluate('applicator(f,x) = f(x)')
     assert.strictEqual(applicator(math.exp, 1), math.e)
     const repeater = math.evaluate('repeater(f,x) = f(f(x))')
-    assert.strictEqual(repeater((x)=>2*x, 3), 12)
+    assert.strictEqual(repeater((x) => 2 * x, 3), 12)
     const nd = math.evaluate('nd(f,x) = (f(x+1e-10)-f(x-1e-10))/2e-10')
-    assert(nd(math.square,2) - 4 < 1e-6)
+    assert(nd(math.square, 2) - 4 < 1e-6)
   })
 
   it('should filter a FunctionAssignmentNode', function () {
