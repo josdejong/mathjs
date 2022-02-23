@@ -1,0 +1,2 @@
+"a" == "b" Error: Cannot convert "a" to a number
+"a" == "a" Error: Cannot convert "a" to a number

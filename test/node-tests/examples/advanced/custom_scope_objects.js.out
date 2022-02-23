@@ -1,0 +1,31 @@
+Object scope: {
+  x: 3,
+  y: 6,
+  scalar: 1,
+  area: [Function: area] {
+    signatures: { 'any,any': [Function (anonymous)] },
+    syntax: 'area(length, width)'
+  },
+  A: 18
+}
+Map-like scope (simple Map): undefined
+Map-like scope (MapScope example): Map(5) {
+  'x' => 3,
+  'y' => 6,
+  'scalar' => 1,
+  'area' => [Function: area] {
+    signatures: { 'any,any': [Function (anonymous)] },
+    syntax: 'area(length, width)'
+  },
+  'A' => 18
+}
+Map-like scope (AdvancedScope example): Map(5) {
+  'x' => 3,
+  'y' => 6,
+  'scalar' => 1,
+  'area' => [Function: area] {
+    signatures: { 'any,any': [Function (anonymous)] },
+    syntax: 'area(length, width)'
+  },
+  'A' => 18
+}

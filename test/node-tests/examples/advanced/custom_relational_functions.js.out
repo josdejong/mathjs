@@ -1,0 +1,9 @@
+default (compare string by their numerical value)
+2 < 10 true
+"2" < "10" true
+
+custom (compare strings lexically)
+2 < 10 true
+"2" < "10" false
+"a" == "b" false
+"a" == "a" true

@@ -1,0 +1,13 @@
+Filter all symbol nodes "x" in the expression "x^2 + x/4 + 3*y"
+SymbolNode x
+SymbolNode x
+
+Traverse the expression tree of expression "3 * x + 2"
+OperatorNode +
+OperatorNode *
+ConstantNode 3
+SymbolNode x
+ConstantNode 2
+
+Replace all symbol nodes "x" in expression "x^2 + 5*x" with a constant 3
+3 ^ 2 + 5 * 3

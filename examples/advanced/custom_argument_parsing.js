@@ -59,13 +59,13 @@ integrate.transform = function (args, math, scope) {
 
   // create a new scope, linked to the provided scope. We use this new scope
   // to apply the variable.
-  const fnScope = Object.create(scope)
+  const fnScope = new Map(scope)
 
   // construct a function which evaluates the first parameter f after applying
   // a value for parameter x.
   const fnCode = args[0].compile()
   const f = function (x) {
-    fnScope[variable] = x
+    fnScope.set(variable, x)
     return fnCode.evaluate(fnScope)
   }
 

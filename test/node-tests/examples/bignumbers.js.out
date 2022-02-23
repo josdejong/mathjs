@@ -1,0 +1,19 @@
+round-off errors with numbers
+0.30000000000000004
+1.4999999999999998
+
+no round-off errors with BigNumbers
+0.3
+1.5
+
+create BigNumbers from strings when exceeding the range of a number
+Infinity
+1.2e+500
+
+BigNumbers still have a limited precision and are no silve bullet
+0.99999999999999999999
+
+use BigNumbers in the expression parser
+0.3
+1.5
+

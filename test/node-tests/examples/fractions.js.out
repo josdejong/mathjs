@@ -1,0 +1,32 @@
+basic usage
+1/8
+8/25
+1/3
+1/3
+2/3
+2/7
+
+round-off errors with numbers
+0.30000000000000004
+1.4999999999999998
+
+no round-off errors with fractions :)
+0.3
+1.5
+
+represent an infinite number of repeating digits
+0.(3)
+0.(285714)
+2.(09)
+
+use fractions in the expression parser
+3/10
+3/2
+23/11
+
+output formatting of fractions
+2/3
+2/3
+0.(6)
+0.(6)
+
