@@ -767,6 +767,7 @@ declare namespace math {
      * @param y Second value to add
      * @returns Sum of x and y
      */
+    add(x: Matrix, y: Matrix): Matrix;
     add(x: MathType, y: MathType): MathType;
 
     /**
@@ -1118,6 +1119,7 @@ declare namespace math {
      */
     subtract(x: number, y: number): number;
     subtract(x: Unit, y: Unit): Unit;
+    subtract(x: Matrix, y: Matrix): Matrix;
     subtract(x: MathType, y: MathType): MathType;
 
     /**
