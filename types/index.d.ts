@@ -1786,11 +1786,11 @@ declare namespace math {
     gamma(n: number | MathArray | Matrix): number | MathArray | Matrix;
 
     /**
-     * Compute the gammaln function of a value using Lanczos approximation.
+     * Compute the lgamma function of a value using Lanczos approximation.
      * @param n A real number
-     * @returns The gammaln of n
+     * @returns The log gamma of n
      */
-    gammaln<T extends number | MathArray | Matrix>(n: T): T;
+    lgamma<T extends number | MathArray | Matrix>(n: T): T;
 
     /**
      * Calculate the Kullback-Leibler (KL) divergence between two

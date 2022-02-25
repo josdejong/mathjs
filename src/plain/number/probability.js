@@ -79,7 +79,7 @@ const gammaSeries = [
   -0.5395239384953e-5
 ]
 
-export function gammalnNumber (n) {
+export function lgammaNumber (n) {
   if (n < 0) return NaN
   if (n === 0) return Infinity
   if (!isFinite(n)) return n
@@ -96,4 +96,4 @@ export function gammalnNumber (n) {
   }
   return lnSqrt2PI + (n + 0.5) * Math.log(n1) - n1 + Math.log(series / n)
 }
-gammalnNumber.signature = 'number'
+lgammaNumber.signature = 'number'
