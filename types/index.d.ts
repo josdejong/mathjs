@@ -575,7 +575,7 @@ declare namespace math {
      * @param unit The unit to be created
      * @returns The created unit
      */
-    unit(value: number | MathArray | Matrix, unit: string): Unit;
+    unit(value: number | MathArray | Matrix | BigNumber, unit: string): Unit;
 
     /*************************************************************************
      * Expression functions
