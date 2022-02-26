@@ -62,6 +62,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
       <ul>
         <li>Press <b>S</b> to set focus to the input field</li>
         <li>Press <b>Ctrl+F11</b> to toggle full screen</li>
+        <li>Press <b>Tab</b> to autocomplete (repeat to cycle choices)</li>
         <li>Enter <b>"clear"</b> to clear history</li>
       </ul>
     </div>

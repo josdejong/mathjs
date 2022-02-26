@@ -252,6 +252,7 @@ blockquote {
 .tips {
   color: #b4b4b4;
   margin: 10px 0;
+  font-size: 80%;
 }
 .tips ul {
   margin: 0;
