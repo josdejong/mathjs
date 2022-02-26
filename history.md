@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220225-version-unpublished">2022-02-25, unpublished</h1>
+
+- Restore autocompletion functionality in demo on homepage
+  - Also allow cycling through all completions by repeating TAB
+  - Mention autocompletion in demo tips
+
 <h1 id="20220202-version-1011">2022-02-02, version 10.1.1 <a href="#20220202-version-1011" title="Permalink">#</a></h1>
 
 - Improvements and fixes in function `simplify`, thanks <a href="https://github.com/gwhitney">@gwhitney</a>:
