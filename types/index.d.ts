@@ -771,7 +771,7 @@ declare namespace math {
      * @param y Second value to add
      * @returns Sum of x and y
      */
-    add(x: Matrix, y: Matrix): Matrix;
+    add<T extends MathType>(x: T, y: T): T;
     add(x: MathType, y: MathType): MathType;
 
     /**
@@ -1121,9 +1121,7 @@ declare namespace math {
      * @param y Value to subtract from x
      * @returns Subtraction of x and y
      */
-    subtract(x: number, y: number): number;
-    subtract(x: Unit, y: Unit): Unit;
-    subtract(x: Matrix, y: Matrix): Matrix;
+    subtract<T extends MathType>(x: T, y: T): T;
     subtract(x: MathType, y: MathType): MathType;
 
     /**

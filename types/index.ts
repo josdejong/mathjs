@@ -38,6 +38,10 @@ Basic usage examples
   assert.deepStrictEqual(math.multiply(math.unit('5 mm'), 3), math.unit('15 mm')); // Unit * number
   assert.deepStrictEqual(math.subtract([2, 3, 4], 5), [-3, -2, -1]); // Array - number
   assert.deepStrictEqual(math.add(math.matrix([2, 3]), [4, 5]), math.matrix([6, 8])); // Matrix + Array
+
+  // narrowed type inference
+  const b: math.Matrix = math.add(math.matrix([2]), math.matrix([3]));
+  const c: math.Matrix = math.subtract(math.matrix([4]), math.matrix([5]));
 }
 
 /*
