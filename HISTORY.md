@@ -1,5 +1,19 @@
 # History
 
+# not yet published, version 10.2.0
+
+- Implemented context options to control simplifications allowed in `simplify`, 
+  see #2399, #2391. Thanks @gwhitney.
+- Implemented function `leafCount` as a first simple measure of the complexity 
+  of an expression, see #2411, #2389. Thanks @gwhitney.
+- Fix #2413: improve `combinations` to return an integer result without rounding
+  errors for larger values, see #2414. Thanks @gwhitney.
+- Fix #2385: function `rotate` missing in TypeScript definitions. 
+  Thanks @DIVYA-19.
+- Fix #2450: Add BigNumber to parameter type in `math.unit` and add TypeScript
+  types for `Unit.simplify` and `Unit.units` (#2353). Thanks @joshhansen.
+
+
 # 2022-02-02, version 10.1.1
 
 - Improvements and fixes in function `simplify`, thanks @gwhitney:

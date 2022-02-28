@@ -14,12 +14,23 @@ export function combinationsNumber (n, k) {
 
   const nMinusk = n - k
 
-  let prodrange
-  if (k < nMinusk) {
-    prodrange = product(nMinusk + 1, n)
-    return prodrange / product(1, k)
+  let answer = 1
+  const firstnumerator = (k < nMinusk) ? nMinusk + 1 : k + 1
+  let nextdivisor = 2
+  const lastdivisor = (k < nMinusk) ? k : nMinusk
+  // balance multiplications and divisions to try to keep intermediate values
+  // in exact-integer range as long as possible
+  for (let nextnumerator = firstnumerator; nextnumerator <= n; ++nextnumerator) {
+    answer *= nextnumerator
+    while (nextdivisor <= lastdivisor && answer % nextdivisor === 0) {
+      answer /= nextdivisor
+      ++nextdivisor
+    }
   }
-  prodrange = product(k + 1, n)
-  return prodrange / product(1, nMinusk)
+  // for big n, k, floating point may have caused weirdness in remainder
+  if (nextdivisor <= lastdivisor) {
+    answer /= product(nextdivisor, lastdivisor)
+  }
+  return answer
 }
 combinationsNumber.signature = 'number, number'
