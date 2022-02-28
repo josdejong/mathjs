@@ -1,10 +1,9 @@
-import assert from 'assert'
-import path from 'path'
-import url from 'url'
+const assert = require('assert')
+const path = require('path')
 
-import approx from '../../tools/approx.js'
-import docgenerator from '../../tools/docgenerator.js'
-import math from '../../src/defaultInstance.js'
+const approx = require('../../tools/approx.js')
+const docgenerator = require('../../tools/docgenerator.js')
+const math = require('../..')
 
 function extractExpectation (comment, optional = false) {
   if (comment === '') return undefined
@@ -128,11 +127,12 @@ function checkExpectation (want, got) {
 
 const OKundocumented = new Set([
   'addScalar', 'divideScalar', 'multiplyScalar', 'equalScalar',
-  'FibonacciHeap',
+  'docs', 'FibonacciHeap',
   'IndexError', 'DimensionError', 'ArgumentsError'
 ])
 
-const knownUndocumented = [
+const knownUndocumented = new Set([
+  'all',
   'isNumber',
   'isComplex',
   'isBigNumber',
@@ -297,24 +297,29 @@ const knownUndocumented = [
   'version',
   'weakMixingAngle',
   'wienDisplacement'
-]
+])
 
 const bigwarning = `WARNING: ${knownProblems.size} known errors converted ` +
       'to PLEASE RESOLVE warnings.' +
-      `\n  WARNING: ${knownUndocumented.length} symbols in math are known to ` +
+      `\n  WARNING: ${knownUndocumented.size} symbols in math are known to ` +
       'be undocumented; PLEASE EXTEND the documentation.'
 
 describe(bigwarning + '\n  Testing examples from (jsdoc) comments', () => {
   const allNames = Object.keys(math)
-  const moduleDir = path.dirname(url.fileURLToPath(import.meta.url))
-  const srcPath = path.resolve(moduleDir, '../../src') + '/'
+  const srcPath = path.resolve(__dirname, '../../src') + '/'
   const allDocs = docgenerator.collectDocs(allNames, srcPath)
   it("should cover all names (but doesn't yet)", () => {
     const documented = new Set(Object.keys(allDocs))
-    const undocumented = allNames.filter(name => {
-      return !(documented.has(name) || OKundocumented.has(name))
+    const badUndocumented = allNames.filter(name => {
+      return !(documented.has(name) ||
+               OKundocumented.has(name) ||
+               knownUndocumented.has(name) ||
+               name.substr(0, 1) === '_' ||
+               name.substr(-12) === 'Dependencies' ||
+               name.substr(0, 6) === 'create'
+      )
     })
-    assert.deepEqual(undocumented, knownUndocumented)
+    assert.deepEqual(badUndocumented, [])
   })
   const byCategory = {}
   for (const fun of Object.values(allDocs)) {
