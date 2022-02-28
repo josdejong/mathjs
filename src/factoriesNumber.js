@@ -89,7 +89,9 @@ export { createHelp } from './expression/function/help.js'
 export { createChain } from './type/chain/function/chain.js'
 
 // algebra
+export { createResolve } from './function/algebra/resolve.js'
 export { createSimplify } from './function/algebra/simplify.js'
+export { createSimplifyCore } from './function/algebra/simplifyCore.js'
 export { createDerivative } from './function/algebra/derivative.js'
 export { createRationalize } from './function/algebra/rationalize.js'
 
