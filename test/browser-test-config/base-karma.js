@@ -5,7 +5,10 @@ module.exports = function (config) {
 
     basePath: '../..',
 
-    frameworks: ['mocha', 'webpack'],
+    frameworks: [
+      'mocha',
+      // 'webpack' TODO: needed after upgrading to webpack 5, see https://github.com/josdejong/mathjs/pull/2433
+    ],
 
     // list of files / patterns to load in the browser
     files: [
@@ -56,7 +59,7 @@ module.exports = function (config) {
 
       plugins: [
         new webpack.ProvidePlugin({
-              process: 'process'
+          process: 'process'
         })
       ],
 

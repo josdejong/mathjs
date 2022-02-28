@@ -15,6 +15,8 @@
 - Fix #2383: detect infinite loops in `simplify` (#2405). Thanks @gwhitney.
 - Fix #1423: collect like factors and cancel like terms in sums (#2388). 
   Thanks @gwhitney.
+- Fix browser bundle not being IE5 compliant (contained arrow functions for 
+  example).
 
 
 # 2022-02-02, version 10.1.1
