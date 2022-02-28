@@ -280,7 +280,7 @@ Matrices examples
     b.subset(math.index(1, [0, 1]), [[7, 8]]);
     const c = math.multiply(a, b);
     const f: math.Matrix = math.matrix([1, 0]);
-    const d: math.Matrix = f.subset(math.index(1, 0));
+    const d: math.Matrix = f.subset(math.index(1));
   }
 
   // get a sub matrix
@@ -350,7 +350,7 @@ Sparse matrices examples
   const c = math.multiply(b, math.complex(2, 2));
   const d = math.matrix([0, 1]);
   const e = math.transpose(d);
-  const f = math.multiply(e, a);
+  const f = math.multiply(e, c);
 }
 
 /*
