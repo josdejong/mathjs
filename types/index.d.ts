@@ -365,7 +365,11 @@ declare namespace math {
     version: string;
 
     expression: MathNode;
-    json: MathJsJson;
+
+    /**
+     * Returns reviver function that can be used as reviver in JSON.parse function.
+     */
+     reviver(): (key: any, value: any) => any;
 
     /*************************************************************************
      * Core functions
@@ -3429,13 +3433,6 @@ declare namespace math {
     precision?: number;
     predictable?: boolean;
     randomSeed?: string | null;
-  }
-
-  interface MathJsJson {
-    /**
-     * Returns reviver function that can be used as reviver in JSON.parse function.
-     */
-    reviver(): (key: any, value: any) => any;
   }
 
   interface MathJsChain {

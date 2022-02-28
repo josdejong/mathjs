@@ -350,7 +350,7 @@ Sparse matrices examples
   const c = math.multiply(b, math.complex(2, 2));
   const d = math.matrix([0, 1]);
   const e = math.transpose(d);
-  const f = math.multiply(e, c);
+  const f = math.multiply(e, d);
 }
 
 /*
@@ -383,7 +383,7 @@ Units examples
   );
   math.createUnit(
     {
-      foo_2: {
+      foo2: {
         prefixes: 'long',
       },
       bar: '40 foo',
@@ -486,7 +486,7 @@ JSON serialization/deserialization
     bigNumber: math.bignumber('1.5'),
   };
   const stringified = JSON.stringify(data);
-  const parsed = JSON.parse(stringified, math.json.reviver);
+  const parsed = JSON.parse(stringified, math.reviver);
   parsed.bigNumber === math.bignumber('1.5'); // true
 }
 
