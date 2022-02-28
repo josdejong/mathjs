@@ -12,6 +12,9 @@
   Thanks @DIVYA-19.
 - Fix #2450: Add BigNumber to parameter type in `math.unit` and add TypeScript
   types for `Unit.simplify` and `Unit.units` (#2353). Thanks @joshhansen.
+- Fix #2383: detect infinite loops in `simplify` (#2405). Thanks @gwhitney.
+- Fix #1423: collect like factors and cancel like terms in sums (#2388). 
+  Thanks @gwhitney.
 
 
 # 2022-02-02, version 10.1.1
