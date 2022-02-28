@@ -1,17 +1,26 @@
+const webpack = require('webpack')
+
 module.exports = function (config) {
   return {
 
     basePath: '../..',
 
-    frameworks: ['mocha'],
+    frameworks: ['mocha', 'webpack'],
 
     // list of files / patterns to load in the browser
     files: [
       'test/browser-test-config/browser-tests.test.js'
     ],
 
+    plugins: [
+      'karma-webpack',
+      'karma-mocha',
+      'karma-mocha-reporter',
+      'karma-firefox-launcher'
+    ],
+
     preprocessors: {
-      '**/*.js': ['webpack']
+      'test/**/*.js': ['webpack']
     },
 
     captureTimeout: 210000,
@@ -43,6 +52,12 @@ module.exports = function (config) {
     webpack: {
       // don't use esm
       mode: 'development',
+      
+      plugins: [
+        new webpack.ProvidePlugin({
+              process: 'process'
+        })
+      ],
 
       resolve: {
         // unless we disallow .mjs files here the tests fail
