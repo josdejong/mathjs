@@ -178,6 +178,8 @@ import { sluDocs } from './function/algebra/slu.js'
 import { leafCountDocs } from './function/algebra/leafCount.js'
 import { rationalizeDocs } from './function/algebra/rationalize.js'
 import { simplifyDocs } from './function/algebra/simplify.js'
+import { simplifyCoreDocs } from './function/algebra/simplifyCore.js'
+import { resolveDocs } from './function/algebra/resolve.js'
 import { lupDocs } from './function/algebra/lup.js'
 import { lsolveDocs } from './function/algebra/lsolve.js'
 import { lsolveAllDocs } from './function/algebra/lsolveAll.js'
@@ -329,6 +331,8 @@ export const embeddedDocs = {
   lusolve: lusolveDocs,
   leafCount: leafCountDocs,
   simplify: simplifyDocs,
+  resolve: resolveDocs,
+  simplifyCore: simplifyCoreDocs,
   rationalize: rationalizeDocs,
   slu: sluDocs,
   usolve: usolveDocs,
