@@ -13,6 +13,7 @@ module.exports = function (config) {
     ],
 
     plugins: [
+      'karma-browserstack-launcher',
       'karma-webpack',
       'karma-mocha',
       'karma-mocha-reporter',
@@ -52,7 +53,7 @@ module.exports = function (config) {
     webpack: {
       // don't use esm
       mode: 'development',
-      
+
       plugins: [
         new webpack.ProvidePlugin({
               process: 'process'
