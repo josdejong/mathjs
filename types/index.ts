@@ -164,6 +164,9 @@ Expressions examples
   // get content of a parenthesis node
   {
     const node = math.parse('(1)');
+    if (node.type !== 'ParenthesisNode') {
+      throw Error(`expected ParenthesisNode, got ${node.type}`);
+    }
     const innerNode = node.content;
   }
 
@@ -427,7 +430,7 @@ Expression tree examples
 
   // Filter an expression tree
   const node: math.MathNode = math.parse('x^2 + x/4 + 3*y');
-  const filtered: math.MathNode[] = node.filter((node: math.MathNode) => node.isSymbolNode && node.name === 'x');
+  const filtered: math.MathNode[] = node.filter((node: math.MathNode) => node.type === 'SymbolNode' && node.name === 'x');
 
   const arr: string[] = filtered.map((node: math.MathNode) => node.toString());
 
@@ -442,7 +445,7 @@ Expression tree examples
       case 'SymbolNode':
         return node.type === 'SymbolNode';
       default:
-        return node.type === 'any string at all';
+        return;
     }
   });
 }
