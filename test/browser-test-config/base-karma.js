@@ -6,7 +6,7 @@ module.exports = function (config) {
     basePath: '../..',
 
     frameworks: [
-      'mocha',
+      'mocha'
       // 'webpack' TODO: needed after upgrading to webpack 5, see https://github.com/josdejong/mathjs/pull/2433
     ],
 
