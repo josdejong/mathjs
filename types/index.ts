@@ -10,6 +10,10 @@ import {
 } from 'mathjs';
 import * as assert from 'assert';
 
+// This file serves a dual purpose:
+// 1) examples of how to use math.js in TypeScript
+// 2) tests for the TypeScript declarations provided by math.js
+
 /*
 Basic usage examples
 */
