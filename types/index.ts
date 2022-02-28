@@ -8,6 +8,7 @@ import {
   divideDependencies,
   formatDependencies,
 } from 'mathjs';
+import * as assert from 'assert';
 
 /*
 Basic usage examples
@@ -29,13 +30,14 @@ Basic usage examples
   math.evaluate('1.2 * (2 + 4.5)');
 
   // chained operations
-  const a = math.chain(3).add(4).multiply(2).done(); // 14
+  const a = math.chain(3).add(4).multiply(2).done();
+  assert.strictEqual(a, 14);
 
   // mixed use of different data types in functions
-  math.add(4, [5, 6]); // number + Array, [9, 10]
-  math.multiply(math.unit('5 mm'), 3); // Unit * number,  15 mm
-  math.subtract([2, 3, 4], 5); // Array - number, [-3, -2, -1]
-  math.add(math.matrix([2, 3]), [4, 5]); // Matrix + Array, [6, 8]
+  assert.deepStrictEqual(math.add(4, [5, 6]), [9, 10]); // number + Array
+  assert.deepStrictEqual(math.multiply(math.unit('5 mm'), 3), math.unit('15 mm')); // Unit * number
+  assert.deepStrictEqual(math.subtract([2, 3, 4], 5), [-3, -2, -1]); // Array - number
+  assert.deepStrictEqual(math.add(math.matrix([2, 3]), [4, 5]), math.matrix([6, 8])); // Matrix + Array
 }
 
 /*
@@ -49,8 +51,8 @@ Bignumbers examples
   });
 
   {
-    math.add(math.bignumber(0.1), math.bignumber(0.2)); // BigNumber, 0.3
-    math.divide(math.bignumber(0.3), math.bignumber(0.2)); // BigNumber, 1.5
+    assert.deepStrictEqual(math.add(math.bignumber(0.1), math.bignumber(0.2)), math.bignumber(0.3));
+    assert.deepStrictEqual(math.divide(math.bignumber(0.3), math.bignumber(0.2)), math.bignumber(1.5));
   }
 }
 
@@ -59,14 +61,16 @@ Chaining examples
 */
 {
   const math = create(all, {});
-  const a = math.chain(3).add(4).multiply(2).done(); // 14
+  const a = math.chain(3).add(4).multiply(2).done();
+  assert.strictEqual(a, 14);
 
   // Another example, calculate square(sin(pi / 4))
   const b = math.chain(math.pi).divide(4).sin().square().done();
 
   // toString will return a string representation of the chain's value
   const chain = math.chain(2).divide(3);
-  const str: string = chain.toString(); // "0.6666666666666666"
+  const str: string = chain.toString();
+  assert.strictEqual(str, "0.6666666666666666");
 
   chain.valueOf();
 
@@ -75,17 +79,21 @@ Chaining examples
     [1, 2],
     [3, 4],
   ];
-  const v = math.chain(array).subset(math.index(1, 0)).done(); // 3
+  const v = math.chain(array).subset(math.index(1, 0)).done();
+  assert.strictEqual(v, 3);
 
   const m = math.chain(array).subset(math.index(0, 0), 8).multiply(3).done();
 
   // filtering
-  math
-    .chain([-1, 0, 1.1, 2, 3, 1000])
-    .filter(math.isPositive)
-    .filter(math.isInteger)
-    .filter((n) => n !== 1000)
-    .done(); // [2, 3]
+  assert.deepStrictEqual(
+    math
+      .chain([-1, 0, 1.1, 2, 3, 1000])
+      .filter(math.isPositive)
+      .filter(math.isInteger)
+      .filter((n) => n !== 1000)
+      .done(),
+    [2, 3]
+  );
 }
 
 /*
@@ -173,7 +181,7 @@ Expressions examples
   // scope can contain both variables and functions
   {
     const scope = { hello: (name: string) => `hello, ${name}!` };
-    math.evaluate('hello("hero")', scope); // "hello, hero!"
+    assert.strictEqual(math.evaluate('hello("hero")', scope), "hello, hero!");
   }
 
   // define a function as an expression
@@ -206,10 +214,10 @@ Expressions examples
 
   // get and set variables and functions
   {
-    parser.evaluate('x = 7 / 2'); // 3.5
-    parser.evaluate('x + 3'); // 6.5
+    assert.strictEqual(parser.evaluate('x = 7 / 2'), 3.5);
+    assert.strictEqual(parser.evaluate('x + 3'), 6.5);
     parser.evaluate('f(x, y) = x^y'); // f(x, y)
-    parser.evaluate('f(2, 3)'); // 8
+    assert.strictEqual(parser.evaluate('f(2, 3)'), 8);
 
     const x = parser.get('x');
     const f = parser.get('f');
@@ -316,23 +324,29 @@ Matrices examples
 
   // map matrix
   {
-    math.map([1, 2, 3], function (value) {
-      return value * value;
-    }); // returns [1, 4, 9]
+    assert.deepStrictEqual(
+      math.map([1, 2, 3], function (value) {
+        return value * value;
+      }),
+      [1, 4, 9]
+    );
   }
 
   // filter matrix
   {
-    math.filter([6, -2, -1, 4, 3], function (x) {
-      return x > 0;
-    }); // returns [6, 4, 3]
-    math.filter(['23', 'foo', '100', '55', 'bar'], /[0-9]+/); // returns ["23", "100", "55"]
+    assert.deepStrictEqual(
+      math.filter([6, -2, -1, 4, 3], function (x) {
+        return x > 0;
+      }),
+      [6, 4, 3]
+    )
+    assert.deepStrictEqual(math.filter(['23', 'foo', '100', '55', 'bar'], /[0-9]+/), ["23", "100", "55"]);
   }
 
   // concat matrix
   {
-    math.concat([[0, 1, 2]], [[1, 2, 3]]); // returns [[ 0, 1, 2, 1, 2, 3 ]]
-    math.concat([[0, 1, 2]], [[1, 2, 3]], 0); // returns [[ 0, 1, 2 ], [ 1, 2, 3 ]]
+    assert.deepStrictEqual(math.concat([[0, 1, 2]], [[1, 2, 3]]), [[ 0, 1, 2, 1, 2, 3 ]]);
+    assert.deepStrictEqual(math.concat([[0, 1, 2]], [[1, 2, 3]], 0), [[ 0, 1, 2 ], [ 1, 2, 3 ]]);
   }
 }
 
@@ -457,22 +471,22 @@ Function floor examples
   const math = create(all, {});
 
   // number input
-  math.floor(3.2); // returns number 3
-  math.floor(-4.2); // returns number -5
+  assert.strictEqual(math.floor(3.2), 3);
+  assert.strictEqual(math.floor(-4.2), -5);
 
   // number input
   // roundoff result to 2 decimals
-  math.floor(3.212, 2); // returns number 3.21
-  math.floor(-4.212, 2); // returns number -4.22
+  assert.strictEqual(math.floor(3.212, 2), 3.21);
+  assert.strictEqual(math.floor(-4.212, 2), -4.22);
 
   // Complex input
-  const c = math.complex(3.24, -2.71); // returns Complex 3 - 3i
-  math.floor(c); // returns Complex 3 - 3i
-  math.floor(c, 1); // returns Complex 3.2 - 2.8i
+  const c = math.complex(3.24, -2.71);
+  assert.deepStrictEqual(math.floor(c), math.complex(3, -3));
+  assert.deepStrictEqual(math.floor(c, 1), math.complex(3.2, -2.8));
 
   //array input
-  math.floor([3.2, 3.8, -4.7]); // returns Array [3, 3, -5]
-  math.floor([3.21, 3.82, -4.71], 1); // returns Array [3.2, 3.8, -4.8]
+  assert.deepStrictEqual(math.floor([3.2, 3.8, -4.7]), [3, 3, -5]);
+  assert.deepStrictEqual(math.floor([3.21, 3.82, -4.71], 1), [3.2, 3.8, -4.8]);
 }
 
 
@@ -487,7 +501,7 @@ JSON serialization/deserialization
   };
   const stringified = JSON.stringify(data);
   const parsed = JSON.parse(stringified, math.reviver);
-  parsed.bigNumber === math.bignumber('1.5'); // true
+  assert.deepStrictEqual(parsed.bigNumber, math.bignumber('1.5'));
 }
 
 /*
@@ -579,8 +593,8 @@ Factory Test
   const b = fraction(3, 7);
   const c = add(a, b);
   const d = divide(a, b);
-  console.log('c =', format(c)); // outputs "c = 16/21"
-  console.log('d =', format(d)); // outputs "d = 7/9"
+  assert.strictEqual(format(c), "16/21");
+  assert.strictEqual(format(d), "7/9");
 }
 
 /**
@@ -595,8 +609,8 @@ Factory Test
   };
 
   // now we can use the \u260E (phone) character in expressions
-  const result = math.evaluate("\u260Efoo", { "\u260Efoo": 42 }); // returns 42
-  console.log(result);
+  const result = math.evaluate("\u260Efoo", { "\u260Efoo": 42 });
+  assert.strictEqual(result, 42);
 }
 
 /**
@@ -607,13 +621,13 @@ Factory Test
   const math = create(all, {});
 
   // hasNumericValue function
-  math.hasNumericValue(2);                     // returns true
-  math.hasNumericValue('2');                   // returns true
-  math.isNumeric('2');                         // returns false
-  math.hasNumericValue(0);                     // returns true
-  math.hasNumericValue(math.bignumber(500));   // returns true
-  math.hasNumericValue([2.3, 'foo', false]);   // returns [true, false, true]
-  math.hasNumericValue(math.fraction(4));      // returns true
-  math.hasNumericValue(math.complex('2-4i'));  // returns false
+  assert.    strictEqual(math.hasNumericValue(2),                    true);
+  assert.    strictEqual(math.hasNumericValue('2'),                  true);
+  assert.    strictEqual(math.isNumeric('2'),                        false);
+  assert.    strictEqual(math.hasNumericValue(0),                    true);
+  assert.    strictEqual(math.hasNumericValue(math.bignumber(500)),  true);
+  assert.deepStrictEqual(math.hasNumericValue([2.3, 'foo', false]),  [true, false, true]);
+  assert.    strictEqual(math.hasNumericValue(math.fraction(4)),     true);
+  assert.    strictEqual(math.hasNumericValue(math.complex('2-4i')), false);
 }
 
