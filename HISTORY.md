@@ -1,5 +1,10 @@
 # History
 
+# not yet published, version 10.3.0
+
+- Fix #1260: implement function `symbolicEqual` (#2424). Thanks @gwhitney.
+
+
 # 2022-03-01, version 10.2.0
 
 - Implemented context options to control simplifications allowed in `simplify`, 
