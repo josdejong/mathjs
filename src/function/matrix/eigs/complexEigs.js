@@ -64,8 +64,9 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     const big = type === 'BigNumber'
     const cplx = type === 'Complex'
 
-    const zero = big ? bignumber(0) : cplx ? complex(0) : 0
+    const realzero = big ? bignumber(0) : 0
     const one = big ? bignumber(1) : cplx ? complex(1) : 1
+    const realone = big ? bignumber(1) : 1
 
     // base of the floating-point arithmetic
     const radix = big ? bignumber(10) : 2
@@ -87,12 +88,12 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
       for (let i = 0; i < N; i++) {
         // compute the taxicab norm of i-th column and row
         // TODO optimize for complex numbers
-        let colNorm = zero
-        let rowNorm = zero
+        let colNorm = realzero
+        let rowNorm = realzero
 
         for (let j = 0; j < N; j++) {
           if (i === j) continue
-          const c = abs(arr[i][j])
+          const c = abs(arr[i][j]) // should be real
           colNorm = addScalar(colNorm, c)
           rowNorm = addScalar(rowNorm, c)
         }
@@ -102,7 +103,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
           // (we want to scale only by integer powers of radix,
           // so that we don't lose any precision due to round-off)
 
-          let f = one
+          let f = realone
           let c = colNorm
 
           const rowDivRadix = divideScalar(rowNorm, radix)
