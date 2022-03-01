@@ -14,6 +14,6 @@ export const simplifyDocs = {
     'simplified.evaluate({x: 2})'
   ],
   seealso: [
-    'derivative', 'parse', 'evaluate'
+    'simplifyCore', 'derivative', 'evaluate', 'parse', 'rationalize', 'resolve'
   ]
 }

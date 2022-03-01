@@ -575,7 +575,7 @@ declare namespace math {
      * @param unit The unit to be created
      * @returns The created unit
      */
-    unit(value: number | MathArray | Matrix, unit: string): Unit;
+    unit(value: number | MathArray | Matrix | BigNumber, unit: string): Unit;
 
     /*************************************************************************
      * Expression functions
@@ -1796,7 +1796,7 @@ declare namespace math {
      * @param n A real or complex number
      * @returns The gamma of n
      */
-    gamma(n: number | MathArray | Matrix): number | MathArray | Matrix;
+    gamma<T extends number | BigNumber | Complex | MathArray | Matrix>(n: T): NoLiteralType<T>;
 
     /**
      * Calculate the Kullback-Leibler (KL) divergence between two
@@ -3134,6 +3134,28 @@ declare namespace math {
     fixPrefix?: boolean;
   }
 
+  interface UnitComponent {
+    power: number;
+    prefix: string;
+    unit: {
+      name: string;
+      base: {
+        dimensions: number[];
+        key: string;
+      };
+      prefixes: Record<string, UnitPrefix>;
+      value: number;
+      offset: number;
+      dimensions: number[];
+    };
+  }
+
+  interface UnitPrefix {
+    name: string;
+    value: number;
+    scientific: boolean;
+  }
+
   interface Unit {
     valueOf(): string;
     clone(): Unit;
@@ -3152,7 +3174,14 @@ declare namespace math {
     toJSON(): MathJSON;
     formatUnits(): string;
     format(options: FormatOptions): string;
+    simplify(): Unit;
     splitUnit(parts: ReadonlyArray<string | Unit>): Unit[];
+
+    units: UnitComponent[];
+    dimensions: number[];
+    value: number;
+    fixPrefix: boolean;
+    skipAutomaticSimplification: true;
   }
 
   interface CreateUnitOptions {
