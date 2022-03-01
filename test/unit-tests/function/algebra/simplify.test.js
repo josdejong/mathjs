@@ -473,7 +473,8 @@ describe('simplify', function () {
     const positiveContext = { context: math.simplify.positiveContext }
     simplifyAndCompare('x/x', 'x/x', {}, realContext)
     simplifyAndCompare('x/x', '1', {}, positiveContext)
-    simplifyAndCompare('x-x', 'x-x', {}, positiveContext)
+    simplifyAndCompare('x-x', '0', {}, positiveContext)
+    simplifyAndCompare('x-2*x', 'x-2*x', {}, positiveContext)
     simplifyAndCompare('+x+abs(x)', '2*x', {}, positiveContext)
 
     const id = x => x
