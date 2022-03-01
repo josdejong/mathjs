@@ -22,6 +22,8 @@ Run:
 
     npm run update-authors
 
+This script is also executed when running `npm run build`, so there is normally no need to execute this manually.
+
 
 ## Build and test
 
