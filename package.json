@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "10.1.1",
+  "version": "10.2.0",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "homepage": "https://mathjs.org",
@@ -126,7 +126,7 @@
     "CONTRIBUTING.md"
   ],
   "scripts": {
-    "build": "gulp --gulpfile gulpfile.cjs",
+    "build": "gulp --gulpfile gulpfile.cjs && npm run update-authors",
     "build-and-test": "npm run build && npm run test:all && npm run lint",
     "build:clean": "gulp --gulpfile gulpfile.cjs clean",
     "build:docs": "gulp --gulpfile gulpfile.cjs docs",
