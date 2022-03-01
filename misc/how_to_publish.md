@@ -3,26 +3,12 @@
 This document describes the steps required to publish a new version of math.js.
 
 
-## Update version number
+## Update version number and history
 
-Update the version number `package.json`.
-
-Run `npm install` to also have this version number updated in `package-lock.json`
-
-
-## Update history
-
-Update the date and version number in the file `HISTORY.md`. Verify whether all
+1. Update the version number `package.json`.
+2. Run `npm install` to also have this version number updated in `package-lock.json`
+3. Update the date and version number in the file `HISTORY.md`. Verify whether all
 changes in the new version are described.
-
-
-## Update authors
-
-Run:
-
-    npm run update-authors
-
-This script is also executed when running `npm run build`, so there is normally no need to execute this manually.
 
 
 ## Build and test
@@ -58,20 +44,13 @@ Publish to npm:
     npm publish
 
 
-## Test published libraries
-
-Install the libraries locally and test whether they work correctly:
-
-    cd tmp-folder
-    npm install mathjs
-
-
 ## Update the website
 
 Wait until the new version of math.js is available on cdnjs.org.
 
 The website is located in the `gh-pages` branch of the project.
 Follow the readme in the `gh-pages` branch on how to update the website.
+
 
 ## Update the REST API
 
