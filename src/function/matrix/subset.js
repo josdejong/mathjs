@@ -25,16 +25,26 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *     // replace a subset
    *     const e = []
-   *     const f = math.subset(e, math.index(0, [0, 2]), [5, 6])  // f = [[5, 6]]
+   *     const f = math.subset(e, math.index(0, [0, 2]), [5, 6])  // f = [[5, 6]] and e = [[5, 0, 6]]
    *     const g = math.subset(f, math.index(1, 1), 7, 0)         // g = [[5, 6], [0, 7]]
+   *
+   *     // get submatrix using ranges
+   *     const M = [
+   *       [1,2,3],
+   *       [4,5,6],
+   *       [7,8,9]
+   *     ]
+   *     math.subset(M, math.index(math.range(0,2), math.range(0,3))) // [[1,2,3],[4,5,6]]
    *
    * See also:
    *
    *     size, resize, squeeze, index
    *
    * @param {Array | Matrix | string} matrix  An array, matrix, or string
-   * @param {Index} index                     An index containing ranges for each
-   *                                          dimension
+   * @param {Index} index
+   *    For each dimension of the target, specifies an index or a list of
+   *    indices to fetch or set. `subset` uses the cartesian product of
+   *    the indices specified in each dimension.
    * @param {*} [replacement]                 An array, matrix, or scalar.
    *                                          If provided, the subset is replaced with replacement.
    *                                          If not provided, the subset is returned
@@ -91,7 +101,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
 /**
  * Retrieve a subset of a string
  * @param {string} str            string from which to get a substring
- * @param {Index} index           An index containing ranges for each dimension
+ * @param {Index} index           An index or list of indices (character positions)
  * @returns {string} substring
  * @private
  */
@@ -122,7 +132,7 @@ function _getSubstring (str, index) {
 /**
  * Replace a substring in a string
  * @param {string} str            string to be replaced
- * @param {Index} index           An index containing ranges for each dimension
+ * @param {Index} index           An index or list of indices (character positions)
  * @param {string} replacement    Replacement string
  * @param {string} [defaultValue] Default value to be uses when resizing
  *                                the string. is ' ' by default

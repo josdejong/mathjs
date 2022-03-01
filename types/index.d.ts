@@ -1723,7 +1723,7 @@ declare namespace math {
     /**
      * Get or set a subset of a matrix or string.
      * @param value An array, matrix, or string
-     * @param index An index containing ranges for each dimension
+     * @param index For each dimension, an index or list of indices to get or set.
      * @param replacement An array, matrix, or scalar. If provided, the
      * subset is replaced with replacement. If not provided, the subset is
      * returned
@@ -4319,7 +4319,7 @@ declare namespace math {
 
     /**
      * Get or set a subset of a matrix or string.
-     * @param index An index containing ranges for each dimension
+     * @param index For each dimension, an index or list of indices to get or set
      * @param replacement An array, matrix, or scalar. If provided, the
      * subset is replaced with replacement. If not provided, the subset is
      * returned
