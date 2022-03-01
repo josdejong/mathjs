@@ -38,6 +38,12 @@ Type | Description
 ConstantNode &#124; SymbolNode &#124; ParenthesisNode &#124; FunctionNode &#124; OperatorNode | The derivative of `expr`
 
 
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
+
+
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js

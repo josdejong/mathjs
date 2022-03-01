@@ -35,6 +35,19 @@ interpreted as wildcards:
 The default list of rules is exposed on the function as `simplify.rules`
 and can be used as a basis to built a set of custom rules.
 
+To specify a rule as a string, separate the left and right pattern by '->'
+When specifying a rule as an object, the following keys are meaningful:
+- l - the left pattern
+- r - the right pattern
+- s - in lieu of l and r, the string form that is broken at -> to give them
+- repeat - whether to repeat this rule until the expression stabilizes
+- assuming - gives a context object, as in the 'context' option to
+    simplify. Every property in the context object must match the current
+    context in order, or else the rule will not be applied.
+- imposeContext - gives a context object, as in the 'context' option to
+    simplify. Any settings specified will override the incoming context
+    for all matches of this rule.
+
 For more details on the theory, see:
 
 - [Strategies for simplifying math expressions (Stackoverflow)](https://stackoverflow.com/questions/7540227/strategies-for-simplifying-math-expressions)
@@ -43,12 +56,28 @@ For more details on the theory, see:
  An optional `options` argument can be passed as last argument of `simplify`.
  Currently available options (defaults in parentheses):
  - `consoleDebug` (false): whether to write the expression being simplified
-        and any changes to it, along with the rule responsible, to console
+   and any changes to it, along with the rule responsible, to console
+ - `context` (simplify.defaultContext): an object giving properties of
+   each operator, which determine what simplifications are allowed. The
+   currently meaningful properties are commutative, associative,
+   total (whether the operation is defined for all arguments), and
+   trivial (whether the operation applied to a single argument leaves
+   that argument unchanged). The default context is very permissive and
+   allows almost all simplifications. Only properties differing from
+   the default need to be specified; the default context is used as a
+   fallback. Additional contexts `simplify.realContext` and
+   `simplify.positiveContext` are supplied to cause simplify to perform
+   just simplifications guaranteed to preserve all values of the expression
+   assuming all variables and subexpressions are real numbers or
+   positive real numbers, respectively. (Note that these are in some cases
+   more restrictive than the default context; for example, the default
+   context will allow `x/x` to simplify to 1, whereas
+   `simplify.realContext` will not, as `0/0` is not equal to 1.)
  - `exactFractions` (true): whether to try to convert all constants to
-        exact rational numbers.
+   exact rational numbers.
  - `fractionsLimit` (10000): when `exactFractions` is true, constants will
-        be expressed as fractions only when both numerator and denominator
-        are smaller than `fractionsLimit`.
+   be expressed as fractions only when both numerator and denominator
+   are smaller than `fractionsLimit`.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -77,6 +106,12 @@ Type | Description
 Node | Returns the simplified form of `expr`
 
 
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
+
+
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
@@ -91,7 +126,9 @@ math.simplify('0.4 * x', {}, {exactFractions: false}) // Node "0.4 * x"
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
+[simplifyCore](simplifyCore.html),
 [derivative](derivative.html),
-[parse](parse.html),
 [evaluate](evaluate.html),
-[rationalize](rationalize.html)
+[parse](parse.html),
+[rationalize](rationalize.html),
+[resolve](resolve.html)

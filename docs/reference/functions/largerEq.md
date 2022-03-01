@@ -36,6 +36,12 @@ Type | Description
 boolean &#124; Array &#124; Matrix | Returns true when the x is larger or equal to y, else returns false
 
 
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
+
+
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js

@@ -29,6 +29,12 @@ Type | Description
 {L: Array &#124; Matrix, U: Array &#124; Matrix, P: Array.&lt;number&gt;} | The lower triangular matrix, the upper triangular matrix and the permutation matrix.
 
 
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
+
+
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js

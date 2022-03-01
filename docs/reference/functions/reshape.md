@@ -29,6 +29,13 @@ Type | Description
 * &#124; Array &#124; Matrix | A reshaped clone of matrix `x`
 
 
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
+TypeError | If `sizes` does not contain solely integers
+DimensionError | If the product of the new dimension sizes does not equal that of the old ones
+
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js

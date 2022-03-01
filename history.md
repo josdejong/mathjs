@@ -4,11 +4,22 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
-<h1 id="20220225-version-unpublished">2022-02-25, unpublished</h1>
+<h1 id="20220301-version-1020">2022-03-01, version 10.2.0 <a href="#20220301-version-1020" title="Permalink">#</a></h1>
 
-- Restore autocompletion functionality in demo on homepage
-  - Also allow cycling through all completions by repeating TAB
-  - Mention autocompletion in demo tips
+- Implemented context options to control simplifications allowed in `simplify`, 
+  see <a href="https://github.com/josdejong/mathjs/issues/2399">#2399</a>, <a href="https://github.com/josdejong/mathjs/issues/2391">#2391</a>. Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Implemented function `leafCount` as a first simple measure of the complexity 
+  of an expression, see <a href="https://github.com/josdejong/mathjs/issues/2411">#2411</a>, <a href="https://github.com/josdejong/mathjs/issues/2389">#2389</a>. Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2413">#2413</a>: improve `combinations` to return an integer result without rounding
+  errors for larger values, see <a href="https://github.com/josdejong/mathjs/issues/2414">#2414</a>. Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2385">#2385</a>: function `rotate` missing in TypeScript definitions. 
+  Thanks <a href="https://github.com/DIVYA-19">@DIVYA-19</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2450">#2450</a>: Add BigNumber to parameter type in `math.unit` and add TypeScript
+  types for `Unit.simplify` and `Unit.units`  <a href="https://github.com/josdejong/mathjs/issues/2353">#2353</a>). Thanks <a href="https://github.com/joshhansen">@joshhansen</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2383">#2383</a>: detect infinite loops in `simplify`  <a href="https://github.com/josdejong/mathjs/issues/2405">#2405</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1423">#1423</a>: collect like factors and cancel like terms in sums  <a href="https://github.com/josdejong/mathjs/issues/2388">#2388</a>). 
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+
 
 <h1 id="20220202-version-1011">2022-02-02, version 10.1.1 <a href="#20220202-version-1011" title="Permalink">#</a></h1>
 

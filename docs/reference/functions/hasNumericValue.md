@@ -30,6 +30,12 @@ Type | Description
 boolean | Returns true when `x` is a `number`, `BigNumber`, `Fraction`, `Boolean`, or a `String` containing number. Returns false for other types. Throws an error in case of unknown types.
 
 
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
+
+
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js

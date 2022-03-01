@@ -18,13 +18,16 @@ Function | Description
 Function | Description
 ---- | -----------
 [derivative(expr,&nbsp;variable)](functions/derivative.html) | Takes the derivative of an expression expressed in parser Nodes.
+[leafCount(expr)](functions/leafCount.html) | Gives the number of "leaf nodes" in the parse tree of the given expression A leaf node is one that has no subexpressions, essentially either a symbol or a constant.
 [math.lsolve(L,&nbsp;b)](functions/lsolve.html) | Finds one solution of a linear equation system by forwards substitution.
 [math.lsolveAll(L,&nbsp;b)](functions/lsolveAll.html) | Finds all solutions of a linear equation system by forwards substitution.
 [math.lup(A)](functions/lup.html) | Calculate the Matrix LU decomposition with partial pivoting.
 [math.lusolve(A,&nbsp;b)](functions/lusolve.html) | Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
 [math.qr(A)](functions/qr.html) | Calculate the Matrix QR decomposition.
 [rationalize(expr)](functions/rationalize.html) | Transform a rationalizable expression in a rational fraction.
+[resolve(expr,&nbsp;scope)](functions/resolve.html) | resolve(expr, scope) replaces variable nodes with their scoped values.
 [simplify(expr)](functions/simplify.html) | Simplify an expression tree.
+[simplifyCore(expr)](functions/simplifyCore.html) | simplifyCore() performs single pass simplification suitable for applications requiring ultimate performance.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.html) | Calculate the Sparse Matrix LU decomposition with full pivoting.
 [math.usolve(U,&nbsp;b)](functions/usolve.html) | Finds one solution of a linear equation system by backward substitution.
 [math.usolveAll(U,&nbsp;b)](functions/usolveAll.html) | Finds all solutions of a linear equation system by backward substitution.

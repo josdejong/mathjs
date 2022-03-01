@@ -34,6 +34,12 @@ Type | Description
 number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit | e The sign of `x`
 
 
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
+
+
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js

@@ -33,6 +33,12 @@ Type | Description
 {values: Array &#124; Matrix, vectors: Array &#124; Matrix} | Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
 
 
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
+
+
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js

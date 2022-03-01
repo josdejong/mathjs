@@ -30,6 +30,12 @@ Type | Description
 Array | Returns an array containing 3 integers `[div, m, n]` where `div = gcd(a, b)` and `a*m + b*n = div`
 
 
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
+
+
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js

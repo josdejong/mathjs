@@ -31,6 +31,12 @@ Type | Description
 {evaluate: Function} &#124; Array.&lt;{evaluate: Function}&gt; | code An object with the compiled expression
 
 
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
+Error | 
+
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
