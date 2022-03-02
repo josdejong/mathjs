@@ -3218,8 +3218,6 @@ declare namespace math {
     ): MathNode;
 
     rules: SimplifyRule[];
-
-    simplifyCore(expr: MathNode): MathNode;
   }
 
   interface UnitDefinition {
@@ -3681,6 +3679,8 @@ declare namespace math {
      * @param scope Scope to variables
      */
     simplify(rules?: SimplifyRule[], scope?: object): MathJsChain;
+
+    simplifyCore(expr: MathNode): MathNode;
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
