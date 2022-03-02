@@ -6,8 +6,15 @@ layout: default
 
 <h1 id="function-map">Function map <a href="#function-map" title="Permalink">#</a></h1>
 
-Create a new matrix or array with the results of the callback function executed on
-each entry of the matrix/array.
+Create a new matrix or array with the results of a callback function executed on
+each entry of a given matrix/array.
+
+For each entry of the input, the callback is invoked with three arguments:
+the value of the entry, the index at which that entry occurs, and the full
+matrix/array being traversed. Note that because the matrix/array might be
+multidimensional, the "index" argument is always an array of numbers giving
+the index in each dimension. This is true even for vectors: the "index"
+argument is an array of length 1, rather than simply a number.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -20,14 +27,14 @@ math.map(x, callback)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Matrix &#124; Array | The matrix to iterate on.
-`callback` | Function | The callback method is invoked with three parameters: the value of the element, the index of the element, and the matrix being traversed.
+`x` | Matrix &#124; Array | The input to iterate on.
+`callback` | Function |  The function to call (as described above) on each entry of the input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Matrix &#124; array | Transformed map of x
+Matrix &#124; array |  Transformed map of x; always has the same type and shape as x
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -42,6 +49,16 @@ Type | Description
 math.map([1, 2, 3], function(value) {
   return value * value
 })  // returns [1, 4, 9]
+
+// The calling convention for the callback can cause subtleties:
+math.map([1, 2, 3], math.format)
+// throws TypeError: map attempted to call 'format(1,[0])' but argument 2 of type Array does not match expected type number or function or Object or string or boolean
+// [This happens because `format` _can_ take a second argument,
+// but its semantics don't match that of the 2nd argument `map` provides]
+
+// To avoid this error, use a function that takes exactly the
+// desired arguments:
+math.map([1, 2, 3], x => math.format(x)) // returns ['1', '2', '3']
 ```
 
 

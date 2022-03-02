@@ -29,6 +29,7 @@ Function | Description
 [simplify(expr)](functions/simplify.html) | Simplify an expression tree.
 [simplifyCore(expr)](functions/simplifyCore.html) | simplifyCore() performs single pass simplification suitable for applications requiring ultimate performance.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.html) | Calculate the Sparse Matrix LU decomposition with full pivoting.
+[symbolicEqual(expr1,&nbsp;expr2)](functions/symbolicEqual.html) | Attempts to determine if two expressions are symbolically equal, i.
 [math.usolve(U,&nbsp;b)](functions/usolve.html) | Finds one solution of a linear equation system by backward substitution.
 [math.usolveAll(U,&nbsp;b)](functions/usolveAll.html) | Finds all solutions of a linear equation system by backward substitution.
 
@@ -141,7 +142,7 @@ Function | Description
 [math.identity(n)](functions/identity.html) | Create a 2-dimensional identity matrix with size m x n or n x n.
 [math.inv(x)](functions/inv.html) | Calculate the inverse of a square matrix.
 [math.kron(x,&nbsp;y)](functions/kron.html) | Calculates the kronecker product of 2 matrices or vectors.
-[math.map(x,&nbsp;callback)](functions/map.html) | Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.
+[math.map(x,&nbsp;callback)](functions/map.html) | Create a new matrix or array with the results of a callback function executed on each entry of a given matrix/array.
 [math.matrixFromColumns(...arr)](functions/matrixFromColumns.html) | Create a dense matrix from vectors as individual columns.
 [math.matrixFromFunction(size,&nbsp;fn)](functions/matrixFromFunction.html) | Create a matrix by evaluating a generating function at each index.
 [math.matrixFromRows(...arr)](functions/matrixFromRows.html) | Create a dense matrix from vectors as individual rows.

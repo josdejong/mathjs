@@ -4,6 +4,18 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20210302-version-1030">2021-03-02, version 10.3.0 <a href="#20210302-version-1030" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1260">#1260</a>: implement function `symbolicEqual`  <a href="https://github.com/josdejong/mathjs/issues/2424">#2424</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2441">#2441</a>, <a href="https://github.com/josdejong/mathjs/issues/2442">#2442</a>: support passing a function as argument to functions created
+  in the expression parser  <a href="https://github.com/josdejong/mathjs/issues/2443">#2443</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2325">#2325</a>: improve documentation of subset indices  <a href="https://github.com/josdejong/mathjs/issues/2446">#2446</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2439">#2439</a>: fix a bug in `complexEigs` in which real-valued norms were 
+  inadvertently being typed as complex numbers  <a href="https://github.com/josdejong/mathjs/issues/2445">#2445</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2436">#2436</a>: improve documentation and error message of function `map`  <a href="https://github.com/josdejong/mathjs/issues/2457">#2457</a>).
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+
+
 <h1 id="20220301-version-1020">2022-03-01, version 10.2.0 <a href="#20220301-version-1020" title="Permalink">#</a></h1>
 
 - Implemented context options to control simplifications allowed in `simplify`, 

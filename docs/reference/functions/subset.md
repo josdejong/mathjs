@@ -21,7 +21,7 @@ math.subset(value, index, replacement [, defaultValue])  // replace a subset
 Parameter | Type | Description
 --------- | ---- | -----------
 `matrix` | Array &#124; Matrix &#124; string | An array, matrix, or string
-`index` | Index | An index containing ranges for each dimension
+`index` | Index |  For each dimension of the target, specifies an index or a list of indices to fetch or set. `subset` uses the cartesian product of the indices specified in each dimension.
 `replacement` | * | An array, matrix, or scalar. If provided, the subset is replaced with replacement. If not provided, the subset is returned
 `defaultValue` | * | Default value, filled in on new entries when the matrix is resized. If not provided, math.matrix elements will be left undefined. Default value: undefined.
 
@@ -48,8 +48,16 @@ math.subset(d, math.index([0, 1], 1))   // returns [[2], [4]]
 
 // replace a subset
 const e = []
-const f = math.subset(e, math.index(0, [0, 2]), [5, 6])  // f = [[5, 6]]
+const f = math.subset(e, math.index(0, [0, 2]), [5, 6])  // f = [[5, 6]] and e = [[5, 0, 6]]
 const g = math.subset(f, math.index(1, 1), 7, 0)         // g = [[5, 6], [0, 7]]
+
+// get submatrix using ranges
+const M = [
+  [1,2,3],
+  [4,5,6],
+  [7,8,9]
+]
+math.subset(M, math.index(math.range(0,2), math.range(0,3))) // [[1,2,3],[4,5,6]]
 ```
 
 
