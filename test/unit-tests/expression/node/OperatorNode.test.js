@@ -791,6 +791,38 @@ describe('OperatorNode', function () {
     )
   })
 
+  it('should stringify implicit multiplications in a recoverable way', function () {
+    let coeff = new OperatorNode('/', 'divide',
+      [new ConstantNode(1), new ConstantNode(2)])
+    const variable = new SymbolNode('a')
+    let start = new OperatorNode('*', 'multiply', [coeff, variable], true)
+    let startString = start.toString()
+    let finish = math.parse(startString)
+    assert.strictEqual(
+      finish.toString({ parenthesis: 'all' }),
+      start.toString({ parenthesis: 'all' }))
+    coeff = new OperatorNode('/', 'divide', [
+      new OperatorNode('-', 'unaryMinus', [new ConstantNode(1)]),
+      new ConstantNode(2)])
+    start = new OperatorNode('*', 'multiply', [coeff, variable], true)
+    startString = start.toString()
+    finish = math.parse(startString)
+    assert.strictEqual(
+      finish.toString({ parenthesis: 'all' }),
+      start.toString({ parenthesis: 'all' }))
+    coeff = new OperatorNode('/', 'divide', [
+      new ConstantNode(1),
+      new OperatorNode('-', 'unaryMinus', [new ConstantNode(2)])])
+    start = new OperatorNode('*', 'multiply', [coeff, variable], true)
+    startString = start.toString()
+    finish = math.parse(startString)
+    /* FIXME: this test currently fails, related to #1431:
+    assert.strictEqual(
+      finish.toString({ parenthesis: 'all' }),
+      start.toString({ parenthesis: 'all' }))
+    */
+  })
+
   it('should stringify implicit multiplications between ConstantNodes with parentheses', function () {
     const a = math.parse('(4)(4)(4)(4)')
     const b = math.parse('4b*4(4)')
