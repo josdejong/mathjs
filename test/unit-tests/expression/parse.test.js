@@ -1338,11 +1338,16 @@ describe('parse', function () {
 
     it('should follow precedence rules for implicit multiplication and division', function () {
       assert.strictEqual(parseAndStringifyWithParens('2 / 3 x'), '(2 / 3) x')
+      assert.strictEqual(parseAndStringifyWithParens('-2/3x'), '((-2) / 3) x')
       assert.strictEqual(parseAndStringifyWithParens('2.5 / 5 kg'), '(2.5 / 5) kg')
       assert.strictEqual(parseAndStringifyWithParens('2.5 / 5 x y'), '((2.5 / 5) x) y')
       assert.strictEqual(parseAndStringifyWithParens('2 x / 5 y'), '(2 x) / (5 y)')
       assert.strictEqual(parseAndStringifyWithParens('17 h / 1 h'), '(17 h) / (1 h)')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 x'), '(1 / 2) x')
+      assert.strictEqual(parseAndStringifyWithParens('+1/2x'), '((+1) / 2) x')
+      assert.strictEqual(parseAndStringifyWithParens('~1/2x'), '((~1) / 2) x')
+      assert.strictEqual(parseAndStringifyWithParens('1 / -2 x'), '1 / ((-2) x)')
+      assert.strictEqual(parseAndStringifyWithParens('-1 / -2 x'), '(-1) / ((-2) x)')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 * x'), '(1 / 2) * x')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 x y'), '((1 / 2) x) y')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 (x y)'), '(1 / 2) (x y)')

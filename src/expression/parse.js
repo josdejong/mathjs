@@ -1073,10 +1073,19 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     return node
   }
 
+  function isRule2Node (node) {
+    return isConstantNode(node) ||
+      (isOperatorNode(node) &&
+       node.args.length === 1 &&
+       isConstantNode(node.args[0]) &&
+       '-+~'.includes(node.op))
+  }
   /**
    * Infamous "rule 2" as described in https://github.com/josdejong/mathjs/issues/792#issuecomment-361065370
+   * And as amended in https://github.com/josdejong/mathjs/issues/2370#issuecomment-1054052164
    * Explicit division gets higher precedence than implicit multiplication
-   * when the division matches this pattern: [number] / [number] [symbol]
+   * when the division matches this pattern:
+   *   [unaryPrefixOp]?[number] / [number] [symbol]
    * @return {Node} node
    * @private
    */
@@ -1087,7 +1096,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (true) {
       // Match the "number /" part of the pattern "number / number symbol"
-      if (state.token === '/' && isConstantNode(last)) {
+      if (state.token === '/' && isRule2Node(last)) {
         // Look ahead to see if the next token is a number
         tokenStates.push(Object.assign({}, state))
         getTokenSkipNewline(state)
