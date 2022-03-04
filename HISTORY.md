@@ -1,5 +1,17 @@
 # History
 
+# 2021-03-02, version 10.3.0
+
+- Fix #1260: implement function `symbolicEqual` (#2424). Thanks @gwhitney.
+- Fix #2441, #2442: support passing a function as argument to functions created
+  in the expression parser (#2443). Thanks @gwhitney.
+- Fix #2325: improve documentation of subset indices (#2446). Thanks @gwhitney.
+- Fix #2439: fix a bug in `complexEigs` in which real-valued norms were 
+  inadvertently being typed as complex numbers (#2445). Thanks @gwhitney.
+- Fix #2436: improve documentation and error message of function `map` (#2457).
+  Thanks @gwhitney.
+
+
 # 2022-03-01, version 10.2.0
 
 - Implemented context options to control simplifications allowed in `simplify`, 
