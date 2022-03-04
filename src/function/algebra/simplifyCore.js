@@ -204,8 +204,8 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
             }
           }
         }
-        return new OperatorNode(node.op, node.fn, [a0, a1])
       }
+      return new OperatorNode(node.op, node.fn, [a0, a1])
     } else if (isFunctionNode(node)) {
       return new FunctionNode(
         simplifyCore(node.fn), node.args.map(n => simplifyCore(n, options)))
