@@ -2254,7 +2254,7 @@ declare namespace math {
      * ‘unbiased’.
      * @returns The standard deviation array
      */
-    std(array: number[][] | Matrix, dimension: number, normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): number[]
+    std(array: MathArray | Matrix, dimension: number, normalization?: 'unbiased' | 'uncorrected' | 'biased'): number[]
     /**
      * Compute the standard deviation of a matrix or a list with values. The
      * standard deviations is defined as the square root of the variance:
@@ -2271,7 +2271,7 @@ declare namespace math {
      * ‘unbiased’.
      * @returns The standard deviation
      */
-    std(array: MathArray | Matrix, normalization: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): number
+    std(array: MathArray | Matrix, normalization: 'unbiased' | 'uncorrected' | 'biased'): number
 
     /**
      * Compute the sum of a matrix or a list with values. In case of a
@@ -2320,7 +2320,7 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns variance matrix.
      */
-    variance(array: number[][] | Matrix, dimension: number, normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): number[];
+    variance(array: MathArray | Matrix, dimension: number, normalization?: 'unbiased' | 'uncorrected' | 'biased'): number[];
     /**
      * @param array A single matrix
      * @param normalization normalization Determines how to normalize the
@@ -2328,7 +2328,7 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns The variance
      */
-    variance(array: MathArray | Matrix, normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): number;
+    variance(array: MathArray | Matrix, normalization?: 'unbiased' | 'uncorrected' | 'biased'): number;
 
     /*************************************************************************
      * String functions
@@ -4774,7 +4774,7 @@ declare namespace math {
      * ‘unbiased’.
      * @returns The standard deviation
      */
-    std(dim: number, normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): MathJsChain;
+    std(dim: number, normalization?: 'unbiased' | 'uncorrected' | 'biased'): MathJsChain;
     /**
      * Compute the standard deviation of a matrix or a list with values. The
      * standard deviations is defined as the square root of the variance:
@@ -4791,7 +4791,7 @@ declare namespace math {
      * ‘unbiased’.
      * @returns The standard deviation
      */
-    std(normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): MathJsChain;
+    std(normalization?: 'unbiased' | 'uncorrected' | 'biased'): MathJsChain;
 
     /**
      * Compute the sum of a matrix or a list with values. In case of a
@@ -4816,7 +4816,7 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns The variance
      */
-    variance(dim: number, normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): MathJsChain;
+    variance(dim: number, normalization?: 'unbiased' | 'uncorrected' | 'biased'): MathJsChain;
     /**
      * Compute the variance of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the variance over all elements
@@ -4833,7 +4833,7 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns The variance
      */
-    variance(normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): MathJsChain;
+    variance(normalization?: 'unbiased' | 'uncorrected' | 'biased'): MathJsChain;
 
     /*************************************************************************
      * String functions
