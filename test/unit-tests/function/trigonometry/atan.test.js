@@ -92,11 +92,13 @@ describe('atan', function () {
     assert.throws(function () { atan('string') })
   })
 
-  it('should calculate the arctan element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => atan([1, 2, 3]), TypeError)
+    assert.throws(() => atan(matrix([1, 2, 3])), TypeError)
     // matrix, array, range
     const atan123 = [0.785398163397448, 1.107148717794090, 1.249045772398254]
-    approx.deepEqual(atan([1, 2, 3]), atan123)
-    approx.deepEqual(atan(matrix([1, 2, 3])), matrix(atan123))
+    approx.deepEqual(math.map([1, 2, 3], atan), atan123)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), atan), matrix(atan123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

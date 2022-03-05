@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { secNumber } from '../../plain/number/index.js'
 
 const name = 'sec'
@@ -9,7 +8,8 @@ export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
   /**
    * Calculate the secant of a value, defined as `sec(x) = 1/cos(x)`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix secant, this function does not
+   * apply to matrices.
    *
    * Syntax:
    *
@@ -24,8 +24,8 @@ export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
    *
    *    cos, csc, cot
    *
-   * @param {number | Complex | Unit | Array | Matrix} x  Function input
-   * @return {number | Complex | Array | Matrix} Secant of x
+   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @return {number | BigNumber | Complex} Secant of x
    */
   return typed(name, {
     number: secNumber,
@@ -43,10 +43,6 @@ export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
         throw new TypeError('Unit in function sec is no angle')
       }
       return this(x.value)
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

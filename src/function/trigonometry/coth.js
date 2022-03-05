@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { cothNumber } from '../../plain/number/index.js'
 
 const name = 'coth'
@@ -10,7 +9,8 @@ export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * Calculate the hyperbolic cotangent of a value,
    * defined as `coth(x) = 1 / tanh(x)`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix hyperbolic cotangent, this function
+   * does not apply to matrices.
    *
    * Syntax:
    *
@@ -26,8 +26,8 @@ export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    sinh, tanh, cosh
    *
-   * @param {number | Complex | Unit | Array | Matrix} x  Function input
-   * @return {number | Complex | Array | Matrix} Hyperbolic cotangent of x
+   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @return {number | BigNumber | Complex} Hyperbolic cotangent of x
    */
   return typed(name, {
     number: cothNumber,
@@ -45,10 +45,6 @@ export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         throw new TypeError('Unit in function coth is no angle')
       }
       return this(x.value)
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

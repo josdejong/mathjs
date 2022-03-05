@@ -99,10 +99,12 @@ describe('asech', function () {
     assert.throws(function () { asech('string') })
   })
 
-  it('should calculate the arcsec element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => asech([0, 1]), TypeError)
+    assert.throws(() => asech(matrix([0, 1])), TypeError)
     const asech01 = [Infinity, 0]
-    assert.deepStrictEqual(asech([0, 1]), asech01)
-    assert.deepStrictEqual(asech(matrix([0, 1])), matrix(asech01))
+    assert.deepStrictEqual(math.map([0, 1], asech), asech01)
+    assert.deepStrictEqual(math.map(matrix([0, 1]), asech), matrix(asech01))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

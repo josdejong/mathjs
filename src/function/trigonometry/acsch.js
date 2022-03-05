@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { acschNumber } from '../../plain/number/index.js'
 
 const name = 'acsch'
@@ -10,7 +9,8 @@ export const createAcsch = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * Calculate the hyperbolic arccosecant of a value,
    * defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix hyperbolic arccosecant, this function
+   * does not apply to matrices.
    *
    * Syntax:
    *
@@ -24,8 +24,8 @@ export const createAcsch = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    asech, acoth
    *
-   * @param {number | Complex | Array | Matrix} x  Function input
-   * @return {number | Complex | Array | Matrix} Hyperbolic arccosecant of x
+   * @param {number | BigNumber | Complex} x  Function input
+   * @return {number | BigNumber | Complex} Hyperbolic arccosecant of x
    */
   return typed(name, {
     number: acschNumber,
@@ -36,10 +36,6 @@ export const createAcsch = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     BigNumber: function (x) {
       return new BigNumber(1).div(x).asinh()
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

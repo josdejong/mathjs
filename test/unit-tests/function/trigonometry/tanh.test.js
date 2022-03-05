@@ -72,12 +72,14 @@ describe('tanh', function () {
 
   const tanh123 = [0.76159415595576, 0.96402758007582, 0.99505475368673]
 
-  it('should return the tanh of each element of an array', function () {
-    approx.deepEqual(tanh([1, 2, 3]), tanh123)
+  it('should not operate on an array', function () {
+    assert.throws(() => tanh([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], tanh), tanh123)
   })
 
-  it('should return the tanh of each element of a matrix', function () {
-    approx.deepEqual(tanh(matrix([1, 2, 3])), matrix(tanh123))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => tanh(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), tanh), matrix(tanh123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
