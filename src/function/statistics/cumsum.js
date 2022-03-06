@@ -1,18 +1,18 @@
-import { containsCollections } from '../../utils/collection'
-import { factory } from '../../utils/factory'
-import { _switch } from '../../utils/switch'
-import { improveErrorMessage } from './utils/improveErrorMessage'
-import { arraySize } from '../../utils/array'
-import { IndexError } from '../../error/IndexError'
+import { containsCollections } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
+import { _switch } from '../../utils/switch.js'
+import { improveErrorMessage } from './utils/improveErrorMessage.js'
+import { arraySize } from '../../utils/array.js'
+import { IndexError } from '../../error/IndexError.js'
 
 const name = 'cumsum'
-const dependencies = ['typed', 'add', 'unaryMinus']
+const dependencies = ['typed', 'add', 'unaryPlus']
 
-export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, unaryMinus }) => {
+export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, unaryPlus }) => {
   /**
    * Compute the cumulative sum of a matrix or a list with values.
-   * In case of a (multi dimensional) array or matrix, the cumulative sum of
-   * across a certain dimension will be calculated.
+   * In case of a (multi dimensional) array or matrix, the cumulative sums
+   * along a specified dimension (defaulting to the first) will be calculated.
    *
    * Syntax:
    *
@@ -77,16 +77,14 @@ export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return []
     }
 
-    // initialize the sum with zero but having the right data type:
-    // can be Unit, number, BigNumber, Fraction, etc
-    // we use add and unaryMinus and not subtract because unaryMinus is more lightweight
-    const first = array[0]
-    let sum = add(first, unaryMinus(first))
-
-    return array.map(value => {
-      sum = add(sum, value)
-      return sum
-    })
+    const sums = [unaryPlus(array[0])] // unaryPlus converts to number if need be
+    for (let i = 1; i < array.length; ++i) {
+      // Must use add below and not addScalar for the case of summing a
+      // 2+-dimensional array along the 0th dimension (the row vectors,
+      // or higher-d analogues, are literally added to each other).
+      sums.push(add(sums[i - 1], array[i]))
+    }
+    return sums
   }
 
   function _ncumSumDim (array, dim) {

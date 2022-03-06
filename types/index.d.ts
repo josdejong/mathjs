@@ -2288,6 +2288,21 @@ declare namespace math {
     sum(array: MathArray | Matrix): any;
 
     /**
+     * Compute the cumulative sum of a matrix or a list with values.
+     * In case of a (multi dimensional) array or matrix, the cumulative sums
+     * along a specified dimension (defaulting to the first) will be calculated.
+     * @param args A single matrix or multiple scalar values
+     * @returns The cumulative sums of the the values.
+     */
+    cumsum(...args: MathType[]): MathType[];
+    /**
+     * @param array A single matrix
+     * @param dim The dimension along which to sum (defaults to 0)
+     * @returns The cumulative sums along the given dimension
+     */
+    cumsum(array: MathArray | Matrix, dim?: number): MathArray | Matrix;
+
+    /**
      * Compute the variance of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the variance over all elements
      * will be calculated. Optionally, the type of normalization can be
