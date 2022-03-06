@@ -575,7 +575,7 @@ declare namespace math {
      * @param unit The unit to be created
      * @returns The created unit
      */
-    unit(value: number | MathArray | Matrix, unit: string): Unit;
+    unit(value: number | MathArray | Matrix | BigNumber, unit: string): Unit;
 
     /*************************************************************************
      * Expression functions
@@ -1723,7 +1723,7 @@ declare namespace math {
     /**
      * Get or set a subset of a matrix or string.
      * @param value An array, matrix, or string
-     * @param index An index containing ranges for each dimension
+     * @param index For each dimension, an index or list of indices to get or set.
      * @param replacement An array, matrix, or scalar. If provided, the
      * subset is replaced with replacement. If not provided, the subset is
      * returned
@@ -1796,7 +1796,7 @@ declare namespace math {
      * @param n A real or complex number
      * @returns The gamma of n
      */
-    gamma(n: number | MathArray | Matrix): number | MathArray | Matrix;
+    gamma<T extends number | BigNumber | Complex | MathArray | Matrix>(n: T): NoLiteralType<T>;
 
     /**
      * Calculate the Kullback-Leibler (KL) divergence between two
@@ -2233,13 +2233,45 @@ declare namespace math {
      * values: 'unbiased' (default) The sum of squared errors is divided by
      * (n - 1) 'uncorrected' The sum of squared errors is divided by n
      * 'biased' The sum of squared errors is divided by (n + 1)
+     * @param a variadic argument of number to calculate standard deviation
+     * @returns The standard deviation array
+     */
+    std(...values: number[]): number
+    /**
+     * Compute the standard deviation of a matrix or a list with values. The
+     * standard deviations is defined as the square root of the variance:
+     * std(A) = sqrt(variance(A)). In case of a (multi dimensional) array or
+     * matrix, the standard deviation over all elements will be calculated.
+     * Optionally, the type of normalization can be specified as second
+     * parameter. The parameter normalization can be one of the following
+     * values: 'unbiased' (default) The sum of squared errors is divided by
+     * (n - 1) 'uncorrected' The sum of squared errors is divided by n
+     * 'biased' The sum of squared errors is divided by (n + 1)
+     * @param array A single matrix to compute standard deviation.
+     * @param dimension A dimension to calculate standard deviation
+     * @param normalization Determines how to normalize the variance. Choose
+     * ‘unbiased’ (default), ‘uncorrected’, or ‘biased’. Default value:
+     * ‘unbiased’.
+     * @returns The standard deviation array
+     */
+    std(array: MathArray | Matrix, dimension: number, normalization?: 'unbiased' | 'uncorrected' | 'biased'): number[]
+    /**
+     * Compute the standard deviation of a matrix or a list with values. The
+     * standard deviations is defined as the square root of the variance:
+     * std(A) = sqrt(variance(A)). In case of a (multi dimensional) array or
+     * matrix, the standard deviation over all elements will be calculated.
+     * Optionally, the type of normalization can be specified as second
+     * parameter. The parameter normalization can be one of the following
+     * values: 'unbiased' (default) The sum of squared errors is divided by
+     * (n - 1) 'uncorrected' The sum of squared errors is divided by n
+     * 'biased' The sum of squared errors is divided by (n + 1)
      * @param array A single matrix or multiple scalar values
      * @param normalization Determines how to normalize the variance. Choose
      * ‘unbiased’ (default), ‘uncorrected’, or ‘biased’. Default value:
      * ‘unbiased’.
      * @returns The standard deviation
      */
-    std(array: MathArray | Matrix, normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): number;
+    std(array: MathArray | Matrix, normalization: 'unbiased' | 'uncorrected' | 'biased'): number
 
     /**
      * Compute the sum of a matrix or a list with values. In case of a
@@ -2256,6 +2288,21 @@ declare namespace math {
     sum(array: MathArray | Matrix): any;
 
     /**
+     * Compute the cumulative sum of a matrix or a list with values.
+     * In case of a (multi dimensional) array or matrix, the cumulative sums
+     * along a specified dimension (defaulting to the first) will be calculated.
+     * @param args A single matrix or multiple scalar values
+     * @returns The cumulative sums of the the values.
+     */
+    cumsum(...args: MathType[]): MathType[];
+    /**
+     * @param array A single matrix
+     * @param dim The dimension along which to sum (defaults to 0)
+     * @returns The cumulative sums along the given dimension
+     */
+    cumsum(array: MathArray | Matrix, dim?: number): MathArray | Matrix;
+
+    /**
      * Compute the variance of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the variance over all elements
      * will be calculated. Optionally, the type of normalization can be
@@ -2269,7 +2316,26 @@ declare namespace math {
      * @param args A single matrix or multiple scalar values
      * @returns The variance
      */
-    variance(...args: Array<number | BigNumber | Fraction>): any;
+    variance(...args: Array<number | BigNumber | Fraction>): number;
+    /**
+     * Compute the variance of a matrix or a list with values. In case of a
+     * (multi dimensional) array or matrix, the variance over all elements
+     * will be calculated. Optionally, the type of normalization can be
+     * specified as second parameter. The parameter normalization can be one
+     * of the following values: 'unbiased' (default) The sum of squared
+     * errors is divided by (n - 1) 'uncorrected' The sum of squared errors
+     * is divided by n 'biased' The sum of squared errors is divided by (n +
+     * 1) Note that older browser may not like the variable name var. In
+     * that case, the function can be called as math['var'](...) instead of
+     * math.variance(...).
+     * @param array A matrix to compute variance.
+     * @param dimension A dimension to compute variance on
+     * @param normalization normalization Determines how to normalize the
+     * variance. Choose ‘unbiased’ (default), ‘uncorrected’, or ‘biased’.
+     * Default value: ‘unbiased’.
+     * @returns variance matrix.
+     */
+    variance(array: MathArray | Matrix, dimension: number, normalization?: 'unbiased' | 'uncorrected' | 'biased'): number[];
     /**
      * @param array A single matrix
      * @param normalization normalization Determines how to normalize the
@@ -2277,7 +2343,7 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns The variance
      */
-    variance(array: MathArray | Matrix, normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): any;
+    variance(array: MathArray | Matrix, normalization?: 'unbiased' | 'uncorrected' | 'biased'): number;
 
     /*************************************************************************
      * String functions
@@ -3134,6 +3200,28 @@ declare namespace math {
     fixPrefix?: boolean;
   }
 
+  interface UnitComponent {
+    power: number;
+    prefix: string;
+    unit: {
+      name: string;
+      base: {
+        dimensions: number[];
+        key: string;
+      };
+      prefixes: Record<string, UnitPrefix>;
+      value: number;
+      offset: number;
+      dimensions: number[];
+    };
+  }
+
+  interface UnitPrefix {
+    name: string;
+    value: number;
+    scientific: boolean;
+  }
+
   interface Unit {
     valueOf(): string;
     clone(): Unit;
@@ -3152,7 +3240,14 @@ declare namespace math {
     toJSON(): MathJSON;
     formatUnits(): string;
     format(options: FormatOptions): string;
+    simplify(): Unit;
     splitUnit(parts: ReadonlyArray<string | Unit>): Unit[];
+
+    units: UnitComponent[];
+    dimensions: number[];
+    value: number;
+    fixPrefix: boolean;
+    skipAutomaticSimplification: true;
   }
 
   interface CreateUnitOptions {
@@ -3189,8 +3284,6 @@ declare namespace math {
     ): MathNode;
 
     rules: SimplifyRule[];
-
-    simplifyCore(expr: MathNode): MathNode;
   }
 
   interface UnitDefinition {
@@ -3652,6 +3745,8 @@ declare namespace math {
      * @param scope Scope to variables
      */
     simplify(rules?: SimplifyRule[], scope?: object): MathJsChain;
+
+    simplifyCore(expr: MathNode): MathNode;
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -4290,7 +4385,7 @@ declare namespace math {
 
     /**
      * Get or set a subset of a matrix or string.
-     * @param index An index containing ranges for each dimension
+     * @param index For each dimension, an index or list of indices to get or set
      * @param replacement An array, matrix, or scalar. If provided, the
      * subset is replaced with replacement. If not provided, the subset is
      * returned
@@ -4677,7 +4772,24 @@ declare namespace math {
      * @param sorted =false is data sorted in ascending order
      */
     quantileSeq(prob: number | BigNumber | MathArray, sorted?: boolean): MathJsChain;
-
+    /**
+     * Compute the standard deviation of a matrix or a list with values. The
+     * standard deviations is defined as the square root of the variance:
+     * std(A) = sqrt(variance(A)). In case of a (multi dimensional) array or
+     * matrix, the standard deviation over all elements will be calculated.
+     * Optionally, the type of normalization can be specified as second
+     * parameter. The parameter normalization can be one of the following
+     * values: 'unbiased' (default) The sum of squared errors is divided by
+     * (n - 1) 'uncorrected' The sum of squared errors is divided by n
+     * 'biased' The sum of squared errors is divided by (n + 1)
+     * @param array A single matrix or multiple scalar values
+     * @param dim A dimension to compute standard deviation.
+     * @param normalization Determines how to normalize the variance. Choose
+     * ‘unbiased’ (default), ‘uncorrected’, or ‘biased’. Default value:
+     * ‘unbiased’.
+     * @returns The standard deviation
+     */
+    std(dim: number, normalization?: 'unbiased' | 'uncorrected' | 'biased'): MathJsChain;
     /**
      * Compute the standard deviation of a matrix or a list with values. The
      * standard deviations is defined as the square root of the variance:
@@ -4694,7 +4806,7 @@ declare namespace math {
      * ‘unbiased’.
      * @returns The standard deviation
      */
-    std(normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): MathJsChain;
+    std(normalization?: 'unbiased' | 'uncorrected' | 'biased'): MathJsChain;
 
     /**
      * Compute the sum of a matrix or a list with values. In case of a
@@ -4702,7 +4814,24 @@ declare namespace math {
      * calculated.
      */
     sum(): MathJsChain;
-
+    /**
+     * Compute the variance of a matrix or a list with values. In case of a
+     * (multi dimensional) array or matrix, the variance over all elements
+     * will be calculated. Optionally, the type of normalization can be
+     * specified as second parameter. The parameter normalization can be one
+     * of the following values: 'unbiased' (default) The sum of squared
+     * errors is divided by (n - 1) 'uncorrected' The sum of squared errors
+     * is divided by n 'biased' The sum of squared errors is divided by (n +
+     * 1) Note that older browser may not like the variable name var. In
+     * that case, the function can be called as math['var'](...) instead of
+     * math.variance(...).
+     * @param dim a dimension to compute variance.
+     * @param normalization normalization Determines how to normalize the
+     * variance. Choose ‘unbiased’ (default), ‘uncorrected’, or ‘biased’.
+     * Default value: ‘unbiased’.
+     * @returns The variance
+     */
+    variance(dim: number, normalization?: 'unbiased' | 'uncorrected' | 'biased'): MathJsChain;
     /**
      * Compute the variance of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the variance over all elements
@@ -4719,7 +4848,7 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns The variance
      */
-    variance(normalization?: 'unbiased' | 'uncorrected' | 'biased' | 'unbiased'): MathJsChain;
+    variance(normalization?: 'unbiased' | 'uncorrected' | 'biased'): MathJsChain;
 
     /*************************************************************************
      * String functions

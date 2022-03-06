@@ -1,6 +1,27 @@
 # History
 
-# not yet published, version 10.2.0
+# not yet published, version 10.3.1
+
+- Fix #2461: make sure `simplifyCore` recurses over all binary nodes (#2462).
+  Thanks @gwhitney.
+- Fix #2429: fix the TypeScript definitions of functions `std` and `variance`
+  (#2455). Thanks @NattapongSiri.
+- Fix #1633: implement a `cumsum` function generating cumulative sums of a list
+  of values or a matrix. (#1870). Thanks @hjonasson.
+
+# 2021-03-02, version 10.3.0
+
+- Fix #1260: implement function `symbolicEqual` (#2424). Thanks @gwhitney.
+- Fix #2441, #2442: support passing a function as argument to functions created
+  in the expression parser (#2443). Thanks @gwhitney.
+- Fix #2325: improve documentation of subset indices (#2446). Thanks @gwhitney.
+- Fix #2439: fix a bug in `complexEigs` in which real-valued norms were 
+  inadvertently being typed as complex numbers (#2445). Thanks @gwhitney.
+- Fix #2436: improve documentation and error message of function `map` (#2457).
+  Thanks @gwhitney.
+
+
+# 2022-03-01, version 10.2.0
 
 - Implemented context options to control simplifications allowed in `simplify`, 
   see #2399, #2391. Thanks @gwhitney.
@@ -10,6 +31,11 @@
   errors for larger values, see #2414. Thanks @gwhitney.
 - Fix #2385: function `rotate` missing in TypeScript definitions. 
   Thanks @DIVYA-19.
+- Fix #2450: Add BigNumber to parameter type in `math.unit` and add TypeScript
+  types for `Unit.simplify` and `Unit.units` (#2353). Thanks @joshhansen.
+- Fix #2383: detect infinite loops in `simplify` (#2405). Thanks @gwhitney.
+- Fix #1423: collect like factors and cancel like terms in sums (#2388). 
+  Thanks @gwhitney.
 
 
 # 2022-02-02, version 10.1.1

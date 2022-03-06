@@ -7,7 +7,7 @@ import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
  * Attach a transform function to math.sum
  * Adds a property transform containing the transform function.
  *
- * This transform changed the last `dim` parameter of function mean
+ * This transform changed the last `dim` parameter of function sum
  * from one-based to zero based
  */
 const name = 'sum'

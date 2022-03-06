@@ -138,8 +138,8 @@ math.evaluate('log(10000, 3 + 7)')  // 4
 math.evaluate('sin(pi / 4)')        // 0.7071067811865475
 ```
 
-New functions can be defined using the `function` keyword. Functions can be
-defined with multiple variables. Function assignments are limited: they can
+New functions can be defined by "assigning" an expression to a function call
+with one or more variables. Such function assignments are limited: they can
 only be defined on a single line.
 
 ```js
@@ -151,6 +151,35 @@ parser.evaluate('f(3)')     // 4
 
 parser.evaluate('g(x, y) = x ^ y')
 parser.evaluate('g(2, 3)')  // 8
+```
+
+Note that these function assignments do _not_ create closures; put another way,
+all free variables in mathjs are dynamic:
+
+```js
+const parser = math.parser()
+
+parser.evaluate('x = 7')
+parser.evaluate('h(y) = x + y')
+parser.evaluate('h(3)')         // 10
+parser.evaluate('x = 3')
+parser.evaluate('h(3)')         // 6, *not* 10
+```
+
+It is however possible to pass functions as parameters:
+
+```js
+const parser = math.parser()
+
+parser.evaluate('twice(func, x) = func(func(x))')
+parser.evaluate('twice(square, 2)')    // 16
+parser.evaluate('f(x) = 3*x')
+parser.evaluate('twice(f, 2)')         // 18
+
+// a simplistic "numerical derivative":
+parser.evaluate('eps = 1e-10')
+parser.evaluate('nd(f, x) = (f(x+eps) - func(x-eps))/(2*eps)')
+parser.evaluate('nd(square,2)')        // 4.000000330961484
 ```
 
 Math.js itself heavily uses typed functions, which ensure correct inputs and

@@ -72,6 +72,20 @@ describe('map', function () {
     assert.throws(function () { math.map([1, 2, 3]) })
   })
 
+  it('should throw an error if the callback argument types are incorrect',
+    function () {
+      assert.throws(() => math.map([1, 2, 3], math.format), TypeError)
+    })
+
+  it('should operate from the parser', function () {
+    assert.deepStrictEqual(
+      math.evaluate('map([1,2,3], square)'),
+      math.matrix([1, 4, 9]))
+    assert.deepStrictEqual(
+      math.evaluate('map([1,2,3], f(x) = format(x))'),
+      math.matrix(['1', '2', '3']))
+  })
+
   it('should LaTeX map', function () {
     const expression = math.parse('map([1,2,3],callback)')
     assert.strictEqual(expression.toTex(), '\\mathrm{map}\\left(\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix}, callback\\right)')
