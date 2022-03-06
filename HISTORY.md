@@ -6,7 +6,8 @@
   Thanks @gwhitney.
 - Fix #2429: fix the TypeScript definitions of functions `std` and `variance`
   (#2455). Thanks @NattapongSiri.
-
+- Fix #1633: implement a `cumsum` function generating cumulative sums of a list
+  of values or a matrix. (#1870). Thanks @hjonasson.
 
 # 2021-03-02, version 10.3.0
 

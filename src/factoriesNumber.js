@@ -251,6 +251,7 @@ export { createProd } from './function/statistics/prod.js'
 export { createMax } from './function/statistics/max.js'
 export { createMin } from './function/statistics/min.js'
 export { createSum } from './function/statistics/sum.js'
+export { createCumSum } from './function/statistics/cumsum.js'
 export { createMean } from './function/statistics/mean.js'
 export { createMedian } from './function/statistics/median.js'
 export { createMad } from './function/statistics/mad.js'
@@ -301,6 +302,7 @@ export { createRangeTransform } from './expression/transform/range.transform.js'
 export const createSubsetTransform = /* #__PURE__ */ factory('subset', [], () => noSubset, { isTransformFunction: true })
 export { createStdTransform } from './expression/transform/std.transform.js'
 export { createSumTransform } from './expression/transform/sum.transform.js'
+export { createCumSumTransform } from './expression/transform/cumsum.transform.js'
 export { createVarianceTransform } from './expression/transform/variance.transform.js'
 
 // utils
