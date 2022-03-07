@@ -4,6 +4,20 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220307-version-1040">2022-03-07, version 10.4.0 <a href="#20220307-version-1040" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2461">#2461</a>: make sure `simplifyCore` recurses over all binary nodes  <a href="https://github.com/josdejong/mathjs/issues/2462">#2462</a>).
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2429">#2429</a>: fix the TypeScript definitions of functions `std` and `variance`
+   <a href="https://github.com/josdejong/mathjs/issues/2455">#2455</a>). Thanks <a href="https://github.com/NattapongSiri">@NattapongSiri</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1633">#1633</a>: implement a `cumsum` function generating cumulative sums of a list
+  of values or a matrix.  <a href="https://github.com/josdejong/mathjs/issues/1870">#1870</a>). Thanks <a href="https://github.com/hjonasson">@hjonasson</a>.
+- Upgrade to the latest version of `Fraction.js`, having more strict input, 
+  only accepting an integer numerator and denominator. See <a href="https://github.com/josdejong/mathjs/issues/2427">#2427</a>.
+- Fix typo in documentation example for `format`.  <a href="https://github.com/josdejong/mathjs/issues/2468">#2468</a>) Thanks <a href="https://github.com/abranhe">@abranhe</a>.
+- Write unit tests for all jsdoc examples. See <a href="https://github.com/josdejong/mathjs/issues/2452">#2452</a>. Thanks <a href="https://github.com/gwhitney">@gwhitney</a>. 
+
+
 <h1 id="20210302-version-1030">2021-03-02, version 10.3.0 <a href="#20210302-version-1030" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1260">#1260</a>: implement function `symbolicEqual`  <a href="https://github.com/josdejong/mathjs/issues/2424">#2424</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
