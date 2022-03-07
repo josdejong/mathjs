@@ -91,7 +91,8 @@ const knownProblems = new Set([
   'ctranspose', 'concat', 'sqrtm', 'subtract', 'nthRoots', 'nthRoot', 'multiply',
   'mod', 'invmod', 'floor', 'fix', 'expm1', 'exp', 'dotPow', 'dotMultiply',
   'dotDivide', 'divide', 'ceil', 'cbrt', 'add', 'usolveAll', 'usolve', 'slu',
-  'rationalize', 'qr', 'lusolve', 'lup', 'lsolveAll', 'lsolve', 'derivative'
+  'rationalize', 'qr', 'lusolve', 'lup', 'lsolveAll', 'lsolve', 'derivative',
+  'simplifyCore', 'symbolicEqual', 'map', 'resolve'
 ])
 
 function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
