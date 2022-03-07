@@ -249,6 +249,13 @@ describe('simplify', function () {
     simplifyAndCompare('x - (y - (y - x))', '0')
     simplifyAndCompare('5 + (5 * x) - (3 * x) + 2', '2*x+7')
     simplifyAndCompare('x^2*y^2 - (x*y)^2', '0')
+    simplifyAndCompare('(x*z^2 + y*z)/z^4', '(y + z*x)/z^3') // #1423
+    simplifyAndCompare('(x^2*y + z*y)/y^4', '(x^2 + z)/y^3')
+    simplifyAndCompare('6x/3x', '2') // Additional cases from PR review
+    simplifyAndCompare('-28y/-4y', '7')
+    simplifyAndCompare('-28*(z/-4z)', '7')
+    simplifyAndCompare('(x^2 + 2x)*x', '2*x^2 + x^3')
+    simplifyAndCompare('x + y/z', 'x + y/z') // avoid overzealous '(x+y*z)/z'
   })
 
   it('should collect separated like factors', function () {
@@ -466,7 +473,8 @@ describe('simplify', function () {
     const positiveContext = { context: math.simplify.positiveContext }
     simplifyAndCompare('x/x', 'x/x', {}, realContext)
     simplifyAndCompare('x/x', '1', {}, positiveContext)
-    simplifyAndCompare('x-x', 'x-x', {}, positiveContext)
+    simplifyAndCompare('x-x', '0', {}, positiveContext)
+    simplifyAndCompare('x-2*x', 'x-2*x', {}, positiveContext)
     simplifyAndCompare('+x+abs(x)', '2*x', {}, positiveContext)
 
     const id = x => x
