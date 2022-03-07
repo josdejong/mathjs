@@ -3,44 +3,44 @@ import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
 
-describe('simplify', function () {
-  const expLibrary = []
-  function simplifyAndCompare (left, right, rules, scope, opt, stringOpt) {
-    expLibrary.push(left)
-    let simpLeft
-    try {
-      if (Array.isArray(rules)) {
-        if (opt) {
-          simpLeft = math.simplify(left, rules, scope, opt)
-        } else if (scope) {
-          simpLeft = math.simplify(left, rules, scope)
-        } else {
-          simpLeft = math.simplify(left, rules)
-        }
+const expLibrary = []
+export function simplifyAndCompare (left, right, rules, scope, opt, stringOpt) {
+  expLibrary.push(left)
+  let simpLeft
+  try {
+    if (Array.isArray(rules)) {
+      if (opt) {
+        simpLeft = math.simplify(left, rules, scope, opt)
+      } else if (scope) {
+        simpLeft = math.simplify(left, rules, scope)
       } else {
-        if (opt) stringOpt = opt
-        if (scope) opt = scope
-        if (rules) scope = rules
-        if (opt) {
-          simpLeft = math.simplify(left, scope, opt)
-        } else if (scope) {
-          simpLeft = math.simplify(left, scope)
-        } else {
-          simpLeft = math.simplify(left)
-        }
+        simpLeft = math.simplify(left, rules)
       }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log(err.stack)
+    } else {
+      if (opt) stringOpt = opt
+      if (scope) opt = scope
+      if (rules) scope = rules
+      if (opt) {
+        simpLeft = math.simplify(left, scope, opt)
+      } else if (scope) {
+        simpLeft = math.simplify(left, scope)
       } else {
-        console.log(new Error(err))
+        simpLeft = math.simplify(left)
       }
-      throw err
     }
-    assert.strictEqual(
-      simpLeft.toString(stringOpt), math.parse(right).toString(stringOpt))
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log(err.stack)
+    } else {
+      console.log(new Error(err))
+    }
+    throw err
   }
+  assert.strictEqual(
+    simpLeft.toString(stringOpt), math.parse(right).toString(stringOpt))
+}
 
+describe('simplify', function () {
   function simplifyAndCompareEval (left, right, scope) {
     expLibrary.push(left)
     scope = scope || {}
@@ -101,65 +101,13 @@ describe('simplify', function () {
     const f = new math.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
     assert.strictEqual(f.toString(), 'sigma(x) = 1 / (1 + exp(-x))')
     assert.strictEqual(f.evaluate()(5), 0.9933071490757153)
-    const fsimplified = math.simplify.simplifyCore(f)
+    const fsimplified = math.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), 'sigma(x) = 1 / (1 + exp(-x))')
     assert.strictEqual(fsimplified.evaluate()(5), 0.9933071490757153)
   })
 
-  const testSimplifyCore = function (expr, expected, opts = {}) {
-    const actual = math.simplify.simplifyCore(math.parse(expr)).toString(opts)
-    assert.strictEqual(actual, expected)
-  }
-
-  it('simplifyCore should handle different node types', function () {
-    testSimplifyCore('5*x*3', '15 * x')
-    testSimplifyCore('5*x*3*x', '15 * x * x')
-
-    testSimplifyCore('x-0', 'x')
-    testSimplifyCore('0-x', '-x')
-    testSimplifyCore('0-3', '-3')
-    testSimplifyCore('x+0', 'x')
-    testSimplifyCore('0+x', 'x')
-    testSimplifyCore('0*x', '0')
-    testSimplifyCore('x*0', '0')
-    testSimplifyCore('x*1', 'x')
-    testSimplifyCore('1*x', 'x')
-    testSimplifyCore('-(x)', '-x')
-    testSimplifyCore('0/x', '0')
-    testSimplifyCore('(1*x + y*0)*1+0', 'x')
-    testSimplifyCore('sin(x+0)*1', 'sin(x)')
-    testSimplifyCore('((x+0)*1)', 'x')
-    testSimplifyCore('sin((x-0)*1+y*0)', 'sin(x)')
-    testSimplifyCore('[x+0,1*y,z*0]', '[x, y, 0]')
-    testSimplifyCore('(a+b+0)[n*0+1,-(n)]', '(a + b)[1, -n]')
-    testSimplifyCore('{a:x*1, b:y-0}', '{"a": x, "b": y}')
-  })
-
-  it('simplifyCore strips ParenthesisNodes (implicit in tree)', function () {
-    testSimplifyCore('((x)*(y))', 'x * y')
-    testSimplifyCore('((x)*(y))^1', 'x * y')
-    testSimplifyCore('x*(y+z)', 'x * (y + z)')
-    testSimplifyCore('x+(y+z)+w', 'x + y + z + w')
-    // But it doesn't actually change the association internally:
-    testSimplifyCore('x+ y+z +w', '((x + y) + z) + w', { parenthesis: 'all' })
-    testSimplifyCore('x+(y+z)+w', '(x + (y + z)) + w', { parenthesis: 'all' })
-  })
-
-  it('simplifyCore folds constants', function () {
-    testSimplifyCore('1+2', '3')
-    testSimplifyCore('2*3', '6')
-    testSimplifyCore('2-3', '-1')
-    testSimplifyCore('3/2', '1.5')
-    testSimplifyCore('3^2', '9')
-  })
-
-  it('should simplifyCore convert +unaryMinus to subtract', function () {
-    simplifyAndCompareEval('--2', '2')
-    const result = math.simplify('x + y + a', [math.simplify.simplifyCore], { a: -1 }).toString()
-    assert.strictEqual(result, 'x + y - 1')
-  })
-
   it('should simplify convert minus and unary minus', function () {
+    simplifyAndCompareEval('--2', '2')
     // see https://github.com/josdejong/mathjs/issues/1013
     assert.strictEqual(math.simplify('0 - -1', {}).toString(), '1')
     assert.strictEqual(math.simplify('0 - -x', {}).toString(), 'x')
@@ -171,10 +119,10 @@ describe('simplify', function () {
   })
 
   it('should simplify inside arrays and indexing', function () {
-    simplifyAndCompare('[3x+0]', '[3x]') // simplifyCore inside array
+    simplifyAndCompare('[3x+0]', '[3x]')
     simplifyAndCompare('[3x+5x]', '[8*x]')
     simplifyAndCompare('[2*3,6+2]', '[6,8]')
-    simplifyAndCompare('[x^0,y*0,z*1,w-0][2+n*1]', '[1,0,z,w][n+2]') // simplifyCore in index
+    simplifyAndCompare('[x^0,y*0,z*1,w-0][2+n*1]', '[1,0,z,w][n+2]')
     simplifyAndCompare('[x,y-2y,z,w+w][(3-2)*n+2]', '[x,-y,z,2*w][n+2]')
   })
 
@@ -212,7 +160,7 @@ describe('simplify', function () {
     const f = new math.FunctionNode(new math.SymbolNode('doubleIt'), [new math.SymbolNode('value')])
     assert.strictEqual(f.toString(), 'doubleIt(value)')
     assert.strictEqual(f.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
-    const fsimplified = math.simplify.simplifyCore(f)
+    const fsimplified = math.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), 'doubleIt(value)')
     assert.strictEqual(fsimplified.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
   })
@@ -222,7 +170,7 @@ describe('simplify', function () {
     const f = new math.FunctionNode(s, [new math.SymbolNode('x')])
     assert.strictEqual(f.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)')
     assert.strictEqual(f.evaluate({ x: 5 }), 0.9933071490757153)
-    const fsimplified = math.simplify.simplifyCore(f)
+    const fsimplified = math.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)')
     assert.strictEqual(fsimplified.evaluate({ x: 5 }), 0.9933071490757153)
   })
@@ -232,11 +180,11 @@ describe('simplify', function () {
     simplifyAndCompare('2 - 3', '-1')
     simplifyAndCompare('2 - -3', '5')
     let e = math.parse('2 - -3')
-    e = math.simplify.simplifyCore(e)
+    e = math.simplifyCore(e)
     assert.strictEqual(e.toString(), '5') // simplifyCore
     simplifyAndCompare('x - -x', '2*x')
     e = math.parse('x - -x')
-    e = math.simplify.simplifyCore(e)
+    e = math.simplifyCore(e)
     assert.strictEqual(e.toString(), 'x + x') // not a core simplification since + is cheaper than *
   })
 
@@ -301,6 +249,13 @@ describe('simplify', function () {
     simplifyAndCompare('x - (y - (y - x))', '0')
     simplifyAndCompare('5 + (5 * x) - (3 * x) + 2', '2*x+7')
     simplifyAndCompare('x^2*y^2 - (x*y)^2', '0')
+    simplifyAndCompare('(x*z^2 + y*z)/z^4', '(y + z*x)/z^3') // #1423
+    simplifyAndCompare('(x^2*y + z*y)/y^4', '(x^2 + z)/y^3')
+    simplifyAndCompare('6x/3x', '2') // Additional cases from PR review
+    simplifyAndCompare('-28y/-4y', '7')
+    simplifyAndCompare('-28*(z/-4z)', '7')
+    simplifyAndCompare('(x^2 + 2x)*x', '2*x^2 + x^3')
+    simplifyAndCompare('x + y/z', 'x + y/z') // avoid overzealous '(x+y*z)/z'
   })
 
   it('should collect separated like factors', function () {
@@ -415,38 +370,6 @@ describe('simplify', function () {
     simplifyAndCompare('x-(y-y+x)', '0', {}, optsNAANCM)
   })
 
-  it('resolve() should substitute scoped constants', function () {
-    assert.strictEqual(
-      math.simplify.resolve(math.parse('x+y'), { x: 1 }).toString(),
-      '1 + y'
-    ) // direct
-    simplifyAndCompare('x+y', 'x+y', {}) // operator
-    simplifyAndCompare('x+y', 'y+1', { x: 1 })
-    simplifyAndCompare('x+y', 'y+1', { x: math.parse('1') })
-    simplifyAndCompare('x+y', '3', { x: 1, y: 2 })
-    simplifyAndCompare('x+x+x', '3*x')
-    simplifyAndCompare('y', 'x+1', { y: math.parse('1+x') })
-    simplifyAndCompare('y', '3', { x: 2, y: math.parse('1+x') })
-    simplifyAndCompare('x+y', '3*x', { y: math.parse('x+x') })
-    simplifyAndCompare('x+y', '6', { x: 2, y: math.parse('x+x') })
-    simplifyAndCompare('x+(y+2-1-1)', '6', { x: 2, y: math.parse('x+x') }) // parentheses
-    simplifyAndCompare('log(x+y)', String(Math.log(6)), { x: 2, y: math.parse('x+x') }) // function
-    simplifyAndCompare('combinations( ceil(abs(sin(x)) * (y+3)), abs(x) )',
-      'combinations(ceil(0.9092974268256817 * (y + 3) ), 2)', { x: -2 })
-
-    // TODO(deal with accessor nodes) simplifyAndCompare('size(text)[1]', '11', {text: "hello world"})
-  })
-
-  it('resolve() should substitute scoped constants from Map like scopes', function () {
-    assert.strictEqual(
-      math.simplify.resolve(math.parse('x+y'), new Map([['x', 1]])).toString(),
-      '1 + y'
-    ) // direct
-    simplifyAndCompare('x+y', 'x+y', new Map()) // operator
-    simplifyAndCompare('x+y', 'y+1', new Map([['x', 1]]))
-    simplifyAndCompare('x+y', 'y+1', new Map([['x', math.parse('1')]]))
-  })
-
   it('should keep implicit multiplication implicit', function () {
     const f = math.parse('2x')
     assert.strictEqual(f.toString({ implicit: 'hide' }), '2 x')
@@ -550,7 +473,8 @@ describe('simplify', function () {
     const positiveContext = { context: math.simplify.positiveContext }
     simplifyAndCompare('x/x', 'x/x', {}, realContext)
     simplifyAndCompare('x/x', '1', {}, positiveContext)
-    simplifyAndCompare('x-x', 'x-x', {}, positiveContext)
+    simplifyAndCompare('x-x', '0', {}, positiveContext)
+    simplifyAndCompare('x-2*x', 'x-2*x', {}, positiveContext)
     simplifyAndCompare('+x+abs(x)', '2*x', {}, positiveContext)
 
     const id = x => x
