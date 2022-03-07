@@ -8,6 +8,7 @@
   (#2455). Thanks @NattapongSiri.
 - Fix #1633: implement a `cumsum` function generating cumulative sums of a list
   of values or a matrix. (#1870). Thanks @hjonasson.
+- Fix typo in documentation example for `format`. (#2468) Thanks @abranhe.
 
 # 2021-03-02, version 10.3.0
 
