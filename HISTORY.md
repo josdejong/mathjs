@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 10.4.0
+# 2022-03-07, version 10.4.0
 
 - Fix #2461: make sure `simplifyCore` recurses over all binary nodes (#2462).
   Thanks @gwhitney.
@@ -11,6 +11,7 @@
 - Upgrade to the latest version of `Fraction.js`, having more strict input, 
   only accepting an integer numerator and denominator. See #2427.
 - Fix typo in documentation example for `format`. (#2468) Thanks @abranhe.
+- Write unit tests for all jsdoc examples. See #2452. Thanks @gwhitney. 
 
 
 # 2021-03-02, version 10.3.0
