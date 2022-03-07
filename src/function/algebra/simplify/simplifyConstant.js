@@ -42,7 +42,9 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
   function simplifyConstant (expr, options) {
-    return _ensureNode(foldFraction(expr, options))
+    const folded = foldFraction(expr, options)
+    if (options.unwrapConstants) return folded
+    return _ensureNode(folded)
   }
 
   function _removeFractions (thing) {
@@ -310,12 +312,10 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           if (operatorFunctions.indexOf(node.name) === -1) {
             const args = node.args.map(arg => foldFraction(arg, options))
 
-            // If all args are numbers
-            if (!args.some(isNode)) {
-              try {
-                return _eval(node.name, args, options)
-              } catch (ignoreandcontinue) { }
-            }
+            // If the function can handle the arguments, call it
+            try {
+              return _eval(node.name, args, options)
+            } catch (ignoreandcontinue) { }
 
             // Size of a matrix does not depend on entries
             if (node.name === 'size' &&
