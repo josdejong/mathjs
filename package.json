@@ -82,6 +82,7 @@
     "webpack": "4.46.0",
     "zeros": "1.0.0"
   },
+  "type": "module",
   "main": "./lib/cjs",
   "types": "./types/index.d.ts",
   "module": "./lib/esm",
@@ -143,7 +144,7 @@
     "test:all": "npm run test:src && npm run test:generated && npm run test:node && npm run test:types",
     "test:browser": "karma start test/browser-test-config/local-karma.js",
     "test:browserstack": "karma start test/browser-test-config/browserstack-karma.js",
-    "test:types": "ts-node types/index.ts",
+    "test:types": "cd types && node --loader ts-node/esm ./index.ts",
     "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test/unit-tests && echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
     "prepublishOnly": "npm run test:all && npm run lint",
     "prepare": "npm run build",
