@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 10.3.1
+# not yet published, version 10.4.0
 
 - Fix #2461: make sure `simplifyCore` recurses over all binary nodes (#2462).
   Thanks @gwhitney.
@@ -8,7 +8,10 @@
   (#2455). Thanks @NattapongSiri.
 - Fix #1633: implement a `cumsum` function generating cumulative sums of a list
   of values or a matrix. (#1870). Thanks @hjonasson.
+- Upgrade to the latest version of `Fraction.js`, having more strict input, 
+  only accepting an integer numerator and denominator. See #2427.
 - Fix typo in documentation example for `format`. (#2468) Thanks @abranhe.
+
 
 # 2021-03-02, version 10.3.0
 
