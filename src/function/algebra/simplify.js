@@ -338,6 +338,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { subtract: { total: true } }
     },
     {
+      s: 'n-n -> 0', // partial alternative when we can't always subtract
+      assuming: { subtract: { total: false } }
+    },
+    {
       s: '-(c*v) -> v * (-c)', // make non-constant terms positive
       assuming: { multiply: { commutative: true }, subtract: { total: true } }
     },
