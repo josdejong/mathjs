@@ -1,4 +1,4 @@
-import { isNode } from '../../utils/is.js'
+import { isNode, isConstantNode, isParenthesisNode, rule2Node } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
 import { escape } from '../../utils/string.js'
 import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
@@ -340,18 +340,80 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         break
     }
 
-    // handles an edge case of 'auto' parentheses with implicit multiplication of ConstantNode
-    // In that case print parentheses for ParenthesisNodes even though they normally wouldn't be
-    // printed.
-    if ((args.length >= 2) && (root.getIdentifier() === 'OperatorNode:multiply') && root.implicit && (parenthesis === 'auto') && (implicit === 'hide')) {
-      result = args.map(function (arg, index) {
-        const isParenthesisNode = (arg.getIdentifier() === 'ParenthesisNode')
-        if (result[index] || isParenthesisNode) { // put in parenthesis?
-          return true
+    // The following block handles edge cases of parentheses with
+    // implicit multiplication:
+    // A) With parenthesis 'auto', parenthesized nodes except for
+    //    the first must be placed in parentheses even though they
+    //    normally wouldn't be, to preserve implicit multiplication
+    // B) With 'auto' or 'keep', ConstantNodes that follow unparenthesized
+    //    expressions must be placed in parentheses to preserve implicit
+    //    multiplication.
+    // C) With 'auto' or 'keep', fractions in which the denominator is not
+    //    constant or in which the numerator is not a "Rule 2 Node" must be
+    //    parenthesized, because of parsing rules for implicit multiplication
+    //    by fractions (e.g. 1/2 a is interpreted as (1/2)a and -1/2a is
+    //    interpreted as (-1/2)a but 2/-3 a is interpreted as 2/(-3a),
+    //    by contrast.
+    if (args.length >= 2 && root.getIdentifier() === 'OperatorNode:multiply' &&
+        root.implicit && parenthesis !== 'all' && implicit === 'hide') {
+      // First check case (C) above
+      if (args[0].getIdentifier() === 'OperatorNode:divide' &&
+          (!rule2Node(args[0].args[0]) || !isConstantNode(args[0].args[1]))) {
+        result[0] = true
+      }
+      // Then handle case (A)
+      if (parenthesis === 'auto') {
+        for (let i = 1; i < result.length; ++i) {
+          if (result[i]) continue
+          result[i] = isParenthesisNode(args[i])
         }
+      }
+      // Finally take care of case (B)
+      for (let i = 1; i < result.length; ++i) {
+        if (isConstantNode(args[i]) && !result[i - 1] &&
+            !isParenthesisNode(args[i - 1])) {
+          result[i] = true
+        }
+      }
+    }
 
-        return false
-      })
+    // Small helper to make the below more readable:
+    function maybeParenthesized (predicate, node) {
+      return predicate(node) ||
+        (parenthesis === 'auto' && isParenthesisNode(node) &&
+         predicate(node.content))
+    }
+    // This unfortunately complicated block handles the flip sides
+    // of (C) above: in a fraction, you don't need to parenthesize
+    // the denominator if it is an implicit multiplication where
+    // "Rule 2" does not apply, and you _do_ need to parenthesize the
+    // numerator or denominator if "Rule 2" would otherwise apply.
+    // It would be great to devise a simpler approach to parenthesization.
+    if (args.length === 2 &&
+        root.getIdentifier() === 'OperatorNode:divide' &&
+        args[1].getIdentifier() === 'OperatorNode:multiply' &&
+        args[1].implicit && parenthesis !== 'all') {
+      if (!result[0] && maybeParenthesized(rule2Node, args[0]) &&
+          isConstantNode(args[1].args[0])) {
+        result[0] = true
+      }
+      if (result[1]) {
+        // Note if the numerator is parenthesized and denominator is implicit,
+        // then the denominator definitely does not need parentheses:
+        if (implicit === 'hide' &&
+            (result[0] ||
+             !maybeParenthesized(rule2Node, args[0]) ||
+             !maybeParenthesized(isConstantNode, args[1].args[0]))) {
+          result[1] = false
+        }
+      } else { // result[1] was false
+        if (parenthesis === 'auto' && !latex && !result[0] &&
+            maybeParenthesized(rule2Node, args[0]) &&
+            isParenthesisNode(args[1].args[0]) &&
+            isConstantNode(args[1].args[0].content)) {
+          result[1] = true
+        }
+      }
     }
 
     return result
@@ -521,6 +583,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
     const implicit = (options && options.implicit) ? options.implicit : 'hide'
     const args = this.args
     const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, true)
+
     let op = latexOperators[this.fn]
     op = typeof op === 'undefined' ? this.op : op // fall back to using this.op
 
@@ -589,7 +652,8 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         return arg
       })
 
-      if ((this.getIdentifier() === 'OperatorNode:multiply') && this.implicit) {
+      if ((this.getIdentifier() === 'OperatorNode:multiply') &&
+          this.implicit && implicit === 'hide') {
         return texifiedArgs.join('~')
       }
 

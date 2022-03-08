@@ -7,6 +7,21 @@ const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
 const OperatorNode = math.OperatorNode
 const ConditionalNode = math.ConditionalNode
+// Set up a bunch of expression pieces that are used over and over:
+const one = new ConstantNode(1)
+const two = new ConstantNode(2)
+const three = new ConstantNode(3)
+const four = new ConstantNode(4)
+const five = new ConstantNode(5)
+const add23 = new OperatorNode('+', 'add', [two, three])
+const sub23 = new OperatorNode('-', 'subtract', [two, three])
+
+const asym = new SymbolNode('a')
+const bsym = new SymbolNode('b')
+const csym = new SymbolNode('c')
+const dsym = new SymbolNode('d')
+const xsym = new SymbolNode('x')
+const ysym = new SymbolNode('y')
 
 describe('OperatorNode', function () {
   it('should create an OperatorNode', function () {
@@ -22,36 +37,28 @@ describe('OperatorNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    const a = new ConstantNode(2)
-    const b = new ConstantNode(3)
-    assert.throws(function () { OperatorNode('+', 'add', [a, b]) }, SyntaxError)
+    assert.throws(function () { OperatorNode('+', 'add', [two, three]) }, SyntaxError)
   })
 
   it('should compile an OperatorNode', function () {
-    const a = new ConstantNode(2)
-    const b = new ConstantNode(3)
-    const n = new OperatorNode('+', 'add', [a, b])
-
-    const expr = n.compile()
-
-    assert.strictEqual(expr.evaluate(), 5)
+    assert.strictEqual(add23.compile().evaluate(), 5)
   })
 
   it('should test whether a unary or binary operator', function () {
-    const n1 = new OperatorNode('-', 'unaryMinus', [new ConstantNode(2)])
+    const n1 = new OperatorNode('-', 'unaryMinus', [two])
     assert.strictEqual(n1.isUnary(), true)
     assert.strictEqual(n1.isBinary(), false)
 
     // change the args of an operator node (bad practice, but should keep working correctly)
-    n1.args.push(new ConstantNode(3))
+    n1.args.push(three)
     assert.strictEqual(n1.isUnary(), false)
     assert.strictEqual(n1.isBinary(), true)
 
-    const n2 = new OperatorNode('+', 'add', [new ConstantNode(2), new ConstantNode(3)])
+    const n2 = new OperatorNode('+', 'add', [two, three])
     assert.strictEqual(n2.isUnary(), false)
     assert.strictEqual(n2.isBinary(), true)
 
-    const n3 = new OperatorNode('+', 'add', [new ConstantNode(2), new ConstantNode(3), new ConstantNode(4)])
+    const n3 = new OperatorNode('+', 'add', [two, three, four])
     assert.strictEqual(n3.isUnary(), false)
     assert.strictEqual(n3.isBinary(), false)
 
@@ -62,9 +69,7 @@ describe('OperatorNode', function () {
   })
 
   it('should throw an error in case of unresolved operator function', function () {
-    const a = new ConstantNode(2)
-    const b = new ConstantNode(3)
-    const n = new OperatorNode('***', 'foo', [a, b])
+    const n = new OperatorNode('***', 'foo', [two, three])
 
     assert.throws(function () {
       n.compile()
@@ -72,15 +77,11 @@ describe('OperatorNode', function () {
   })
 
   it('should filter an OperatorNode', function () {
-    const a = new ConstantNode(2)
-    const b = new ConstantNode(3)
-    const n = new OperatorNode('+', 'add', [a, b])
-
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof OperatorNode }), [n])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a, b])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [a])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
+    assert.deepStrictEqual(add23.filter(function (node) { return node instanceof OperatorNode }), [add23])
+    assert.deepStrictEqual(add23.filter(function (node) { return node instanceof SymbolNode }), [])
+    assert.deepStrictEqual(add23.filter(function (node) { return node instanceof ConstantNode }), [two, three])
+    assert.deepStrictEqual(add23.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [two])
+    assert.deepStrictEqual(add23.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should filter an OperatorNode without contents', function () {
@@ -92,10 +93,8 @@ describe('OperatorNode', function () {
 
   it('should run forEach on an OperatorNode', function () {
     // x^2-x
-    const a = new SymbolNode('x')
-    const b = new ConstantNode(2)
-    const c = new OperatorNode('^', 'pow', [a, b])
-    const d = new SymbolNode('x')
+    const c = new OperatorNode('^', 'pow', [xsym, two])
+    const d = new SymbolNode('x') // to make sure it's different from xsym
     const e = new OperatorNode('-', 'subtract', [c, d])
 
     const nodes = []
@@ -114,21 +113,18 @@ describe('OperatorNode', function () {
 
   it('should map an OperatorNode', function () {
     // x^2-x
-    const a = new SymbolNode('x')
-    const b = new ConstantNode(2)
-    const c = new OperatorNode('^', 'pow', [a, b])
-    const d = new SymbolNode('x')
+    const c = new OperatorNode('^', 'pow', [xsym, two])
+    const d = new SymbolNode('x') // to make sure it's different from xsym
     const e = new OperatorNode('-', 'subtract', [c, d])
 
     const nodes = []
     const paths = []
-    const f = new ConstantNode(3)
     const g = e.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
       assert.strictEqual(parent, e)
 
-      return node instanceof SymbolNode && node.name === 'x' ? f : node
+      return node instanceof SymbolNode && node.name === 'x' ? three : node
     })
 
     assert.strictEqual(nodes.length, 2)
@@ -138,23 +134,19 @@ describe('OperatorNode', function () {
 
     assert.notStrictEqual(g, e)
     assert.strictEqual(g.args[0], e.args[0])
-    assert.strictEqual(g.args[0].args[0], a) // nested x is not replaced
-    assert.deepStrictEqual(g.args[0].args[1], b)
-    assert.deepStrictEqual(g.args[1], f)
+    assert.strictEqual(g.args[0].args[0], xsym) // nested x is not replaced
+    assert.deepStrictEqual(g.args[0].args[1], two)
+    assert.deepStrictEqual(g.args[1], three)
   })
 
   it('should map an implicit OperatorNode', function () {
-    const x = new SymbolNode('x')
-    const y = new SymbolNode('y')
-    const product = new OperatorNode('*', 'multiply', [x, y], true /* implicit */)
+    const product = new OperatorNode('*', 'multiply', [xsym, ysym], true /* implicit */)
 
     assert.deepStrictEqual(product.map(function (x) { return x }), product)
   })
 
   it('should throw an error when the map callback does not return a node', function () {
-    const a = new SymbolNode('x')
-    const b = new ConstantNode(2)
-    const c = new OperatorNode('^', 'pow', [a, b])
+    const c = new OperatorNode('^', 'pow', [xsym, two])
 
     assert.throws(function () {
       c.map(function () { return undefined })
@@ -163,40 +155,30 @@ describe('OperatorNode', function () {
 
   it('should transform an OperatorNodes parameters', function () {
     // x^2-x
-    const a = new SymbolNode('x')
-    const b = new ConstantNode(2)
-    const c = new OperatorNode('^', 'pow', [a, b])
-    const d = new SymbolNode('x')
+    const c = new OperatorNode('^', 'pow', [xsym, two])
+    const d = new SymbolNode('x') // to make sure it's different from xsym
     const e = new OperatorNode('-', 'subtract', [c, d])
 
-    const f = new ConstantNode(3)
     const g = e.transform(function (node) {
-      return node instanceof SymbolNode && node.name === 'x' ? f : node
+      return node instanceof SymbolNode && node.name === 'x' ? three : node
     })
 
-    assert.deepStrictEqual(g.args[1], f)
+    assert.deepStrictEqual(g.args[1], three)
   })
 
   it('should transform an OperatorNode itself', function () {
-    // x^2-x
-    const a = new SymbolNode('x')
-    const b = new ConstantNode(2)
-    const c = new OperatorNode('+', 'add', [a, b])
+    const c = new OperatorNode('+', 'add', [xsym, two])
 
-    const f = new ConstantNode(3)
     const g = c.transform(function (node) {
-      return node instanceof OperatorNode ? f : node
+      return node instanceof OperatorNode ? three : node
     })
 
     assert.notStrictEqual(g, c)
-    assert.deepStrictEqual(g, f)
+    assert.deepStrictEqual(g, three)
   })
 
   it('should clone an OperatorNode', function () {
-    // x^2-x
-    const a = new SymbolNode('x')
-    const b = new ConstantNode(2)
-    const c = new OperatorNode('+', 'add', [a, b])
+    const c = new OperatorNode('+', 'add', [xsym, two])
 
     const d = c.clone()
     assert(d instanceof OperatorNode)
@@ -208,9 +190,7 @@ describe('OperatorNode', function () {
   })
 
   it('should clone implicit multiplications', function () {
-    const two = new ConstantNode(2)
-    const x = new SymbolNode('x')
-    const node = new OperatorNode('*', 'multiply', [two, x], true)
+    const node = new OperatorNode('*', 'multiply', [two, xsym], true)
 
     assert.strictEqual('2 x', node.toString())
     assert.strictEqual(true, node.clone().implicit)
@@ -218,6 +198,7 @@ describe('OperatorNode', function () {
   })
 
   it('test equality another Node', function () {
+    // not using the standard instances to make sure everything is fresh
     const a = new OperatorNode('+', 'add', [new SymbolNode('x'), new ConstantNode(2)])
     const b = new OperatorNode('+', 'add', [new SymbolNode('x'), new ConstantNode(2)])
     const c = new OperatorNode('*', 'multiply', [new SymbolNode('x'), new ConstantNode(2)])
@@ -232,149 +213,157 @@ describe('OperatorNode', function () {
     assert.strictEqual(a.equals(e), false)
   })
 
-  describe('toString', function () {
-    it('should stringify an OperatorNode', function () {
-      const a = new ConstantNode(2)
-      const b = new ConstantNode(3)
+  // Put a given expression through formatting paces: test its consistency,
+  // and results under toString and toTex, with various options:
+  // example is a object with either a key 'i' for input, or 'n' for Node
+  // (in the former case the value of 'i' is parsed to get the Node to test)
+  // and keys 's' and 'l' for the string and LaTex output, respectively.
+  // If the output is expected to differ for paren values of 'keep' and 'auto',
+  // then the keys 'skeep', 'sauto', 'lkeep', and 'lauto' can be used instead
+  // Takes optional 2nd argument that gives the list of paren values to try,
+  // defaults to ['keep', 'auto']
+  function ex (example, parens = ['keep', 'auto']) {
+    const hasi = 'i' in example
+    const expr = hasi ? math.parse(example.i) : example.n
+    const orig = hasi
+      ? example.i
+      : `${expr.getIdentifier()}${expr.args.map(arg => arg.getIdentifier())}`
+    for (const paren of parens) {
+      const prefix = `${orig},${paren}: ` // eases reading of failure output
+      const skey = 's' in example ? 's' : 's' + paren
+      const lkey = 'l' in example ? 'l' : 'l' + paren
+      assert.strictEqual(
+        prefix + expr.toString({ parenthesis: paren }), prefix + example[skey])
+      assert.strictEqual(
+        prefix + expr.toTex({ parenthesis: paren }), prefix + example[lkey])
+    }
+  }
 
-      const n = new OperatorNode('+', 'add', [a, b])
-      assert.strictEqual(n.toString(), '2 + 3')
+  describe('toString and toTex', function () {
+    it('on an OperatorNode', function () {
+      ex({ n: add23, s: '2 + 3', l: '2+3' })
     })
 
-    it('should stringify an OperatorNode with factorial', function () {
-      const a = new ConstantNode(2)
-      const n = new OperatorNode('!', 'factorial', [a])
-      assert.strictEqual(n.toString(), '2!')
+    it('on an OperatorNode with factorial', function () {
+      ex({ n: new OperatorNode('!', 'factorial', [two]), s: '2!', l: '2!' })
     })
 
-    it('should stringify an OperatorNode with unary minus', function () {
-      const a = new ConstantNode(2)
-      const n = new OperatorNode('-', 'unaryMinus', [a])
-      assert.strictEqual(n.toString(), '-2')
+    it('on an OperatorNode with unary minus', function () {
+      ex({ n: new OperatorNode('-', 'unaryMinus', [two]), s: '-2', l: '-2' })
     })
 
-    it('should stringify an OperatorNode with zero arguments', function () {
-      const n = new OperatorNode('foo', 'foo', [])
-      assert.strictEqual(n.toString(), 'foo()')
+    it('on an OperatorNode with zero arguments', function () {
+      ex({ n: new OperatorNode('foo', 'foo', []), s: 'foo()', l: '\\mathrm{foo}\\left(\\right)' })
     })
 
-    it('should stringify an OperatorNode with more than two operators', function () {
-      const a = new ConstantNode(2)
-      const b = new ConstantNode(3)
-      const c = new ConstantNode(4)
-
-      const n = new OperatorNode('foo', 'foo', [a, b, c])
-      assert.strictEqual(n.toString(), 'foo(2, 3, 4)')
+    it('on an OperatorNode with more than two operators', function () {
+      ex({
+        n: new OperatorNode('foo', 'foo', [two, three, four]),
+        s: 'foo(2, 3, 4)',
+        l: '\\mathrm{foo}\\left(2,3,4\\right)'
+      })
     })
 
-    it('should stringify addition and multiplication with more than two operands', function () {
-      const a = new SymbolNode('a')
-      const b = new SymbolNode('b')
-      const c = new SymbolNode('c')
-
-      const add = new OperatorNode('+', 'add', [a, b, c])
-      const multiply = new OperatorNode('*', 'multiply', [a, b, c])
-      const implicitMultiply = new OperatorNode('*', 'multiply', [a, b, c], true)
-
+    it('on addition and multiplication with more than two operands', function () {
+      // This is slightly different than most of the tests, so not using `ex`
+      const add = new OperatorNode('+', 'add', [asym, bsym, csym])
+      const multiply = new OperatorNode('*', 'multiply', [asym, bsym, csym])
+      const implicitMultiply = new OperatorNode('*', 'multiply', [asym, bsym, csym], true)
       assert.strictEqual(add.toString(), 'a + b + c')
       assert.strictEqual(multiply.toString(), 'a * b * c')
+      // The first two verify that implicit: hide is indeed the default
       assert.strictEqual(implicitMultiply.toString(), 'a b c')
+      assert.strictEqual(implicitMultiply.toString({ implicit: 'hide' }), 'a b c')
+      assert.strictEqual(implicitMultiply.toString({ implicit: 'show' }), 'a * b * c')
+
+      assert.strictEqual(add.toTex(), ' a+\\mathrm{b}+ c')
+      assert.strictEqual(multiply.toTex(), ' a\\cdot\\mathrm{b}\\cdot c')
+      // The first two verify that implicit: hide is indeed the default
+      assert.strictEqual(implicitMultiply.toTex(), ' a~\\mathrm{b}~ c')
+      assert.strictEqual(implicitMultiply.toTex({ implicit: 'hide' }), ' a~\\mathrm{b}~ c')
+      assert.strictEqual(implicitMultiply.toTex({ implicit: 'show' }), ' a\\cdot\\mathrm{b}\\cdot c')
     })
 
-    it('should stringify addition and multiplication with more than two operands including OperatorNode', function () {
-      const a = new SymbolNode('a')
-      const b = new SymbolNode('b')
-      const c = new SymbolNode('c')
-      const d = new SymbolNode('d')
+    it('on addition and multiplication with more than two operands including OperatorNode', function () {
+      const mult = new OperatorNode('*', 'multiply', [asym, bsym])
+      const add = new OperatorNode('+', 'add', [asym, bsym])
 
-      const mult = new OperatorNode('*', 'multiply', [a, b])
-      const add = new OperatorNode('+', 'add', [a, b])
+      const multipleMultWithMult = new OperatorNode('*', 'multiply', [csym, mult, dsym])
+      const multipleMultWithAdd = new OperatorNode('*', 'multiply', [csym, add, dsym])
+      const multipleAddWithMult = new OperatorNode('+', 'add', [csym, mult, dsym])
+      const multipleAddWithAdd = new OperatorNode('+', 'add', [csym, add, dsym])
 
-      const multipleMultWithMult = new OperatorNode('*', 'multiply', [c, mult, d])
-      const multipleMultWithAdd = new OperatorNode('*', 'multiply', [c, add, d])
-      const multipleAddWithMult = new OperatorNode('+', 'add', [c, mult, d])
-      const multipleAddWithAdd = new OperatorNode('+', 'add', [c, add, d])
-
-      assert.strictEqual(multipleMultWithMult.toString(), 'c * a * b * d')
-      assert.strictEqual(multipleMultWithAdd.toString(), 'c * (a + b) * d')
-      assert.strictEqual(multipleAddWithMult.toString(), 'c + a * b + d')
-      assert.strictEqual(multipleAddWithAdd.toString(), 'c + a + b + d')
+      ex({ n: multipleMultWithMult, s: 'c * a * b * d', l: ' c\\cdot a\\cdot\\mathrm{b}\\cdot d' })
+      ex({ n: multipleMultWithAdd, s: 'c * (a + b) * d', l: ' c\\cdot\\left( a+\\mathrm{b}\\right)\\cdot d' })
+      ex({ n: multipleAddWithMult, s: 'c + a * b + d', l: ' c+ a\\cdot\\mathrm{b}+ d' })
+      ex({ n: multipleAddWithAdd, s: 'c + a + b + d', l: ' c+ a+\\mathrm{b}+ d' })
     })
 
-    it('should stringify an OperatorNode that contains an operatornode with more than two operands', function () {
-      const a = new SymbolNode('a')
-      const b = new SymbolNode('b')
-      const c = new SymbolNode('c')
-      const d = new SymbolNode('d')
+    it('on an OperatorNode that contains an operatornode with more than two operands', function () {
+      const mult = new OperatorNode('*', 'multiply', [asym, bsym, csym])
+      const add = new OperatorNode('+', 'add', [asym, bsym, csym])
 
-      const mult = new OperatorNode('*', 'multiply', [a, b, c])
-      const add = new OperatorNode('+', 'add', [a, b, c])
+      const addWithMult = new OperatorNode('+', 'add', [mult, dsym])
+      const addWithAdd = new OperatorNode('+', 'add', [add, dsym])
+      const multWithMult = new OperatorNode('*', 'multiply', [mult, dsym])
+      const multWithAdd = new OperatorNode('*', 'multiply', [add, dsym])
 
-      const addWithMult = new OperatorNode('+', 'add', [mult, d])
-      const addWithAdd = new OperatorNode('+', 'add', [add, d])
-      const multWithMult = new OperatorNode('*', 'multiply', [mult, d])
-      const multWithAdd = new OperatorNode('*', 'multiply', [add, d])
-
-      assert.strictEqual(addWithMult.toString(), 'a * b * c + d')
-      assert.strictEqual(addWithAdd.toString(), 'a + b + c + d')
-      assert.strictEqual(multWithMult.toString(), 'a * b * c * d')
-      assert.strictEqual(multWithAdd.toString(), '(a + b + c) * d')
+      ex({ n: addWithMult, s: 'a * b * c + d', l: ' a\\cdot\\mathrm{b}\\cdot c+ d' })
+      ex({ n: addWithAdd, s: 'a + b + c + d', l: ' a+\\mathrm{b}+ c+ d' })
+      ex({ n: multWithMult, s: 'a * b * c * d', l: ' a\\cdot\\mathrm{b}\\cdot c\\cdot d' })
+      ex({ n: multWithAdd, s: '(a + b + c) * d', l: '\\left( a+\\mathrm{b}+ c\\right)\\cdot d' })
     })
 
-    it('should stringify an OperatorNode with nested operator nodes', function () {
-      const a = new ConstantNode(2)
-      const b = new ConstantNode(3)
-      const c = new ConstantNode(4)
-      const d = new ConstantNode(5)
+    it('on an OperatorNode with nested operator nodes', function () {
+      const sub45 = new OperatorNode('-', 'subtract', [four, five])
+      const prod1 = new OperatorNode('*', 'multiply', [add23, sub45])
+      const prod2 = new OperatorNode('*', 'multiply', [add23, four])
+      const diff1 = new OperatorNode('-', 'subtract', [prod2, five])
 
-      const n1 = new OperatorNode('+', 'add', [a, b])
-      const n2 = new OperatorNode('-', 'subtract', [c, d])
-      const n3 = new OperatorNode('*', 'multiply', [n1, n2])
-
-      assert.strictEqual(n1.toString(), '2 + 3')
-      assert.strictEqual(n2.toString(), '4 - 5')
-      assert.strictEqual(n3.toString(), '(2 + 3) * (4 - 5)')
+      ex({ n: sub45, s: '4 - 5', l: '4-5' })
+      ex({ n: prod1, s: '(2 + 3) * (4 - 5)', l: '\\left(2+3\\right)\\cdot\\left(4-5\\right)' })
+      ex({ n: diff1, s: '(2 + 3) * 4 - 5', l: '\\left(2+3\\right)\\cdot4-5' })
     })
 
-    it('should stringify left associative OperatorNodes that are associative with another Node', function () {
-      assert.strictEqual(math.parse('(a+b)+c').toString({ parenthesis: 'auto' }), 'a + b + c')
-      assert.strictEqual(math.parse('a+(b+c)').toString({ parenthesis: 'auto' }), 'a + b + c')
-      assert.strictEqual(math.parse('(a+b)-c').toString({ parenthesis: 'auto' }), 'a + b - c')
-      assert.strictEqual(math.parse('a+(b-c)').toString({ parenthesis: 'auto' }), 'a + b - c')
+    it('on left associative OperatorNodes that are associative with another Node', function () {
+      ex({ i: '(a+b)+c', skeep: '(a + b) + c', sauto: 'a + b + c', lkeep: '\\left( a+\\mathrm{b}\\right)+ c', lauto: ' a+\\mathrm{b}+ c' })
+      ex({ i: 'a+(b+c)', skeep: 'a + (b + c)', sauto: 'a + b + c', lkeep: ' a+\\left(\\mathrm{b}+ c\\right)', lauto: ' a+\\mathrm{b}+ c' })
+      ex({ i: '(a+b)-c', skeep: '(a + b) - c', sauto: 'a + b - c', lkeep: '\\left( a+\\mathrm{b}\\right)- c', lauto: ' a+\\mathrm{b}- c' })
+      ex({ i: 'a+(b-c)', skeep: 'a + (b - c)', sauto: 'a + b - c', lkeep: ' a+\\left(\\mathrm{b}- c\\right)', lauto: ' a+\\mathrm{b}- c' })
 
-      assert.strictEqual(math.parse('(a*b)*c').toString({ parenthesis: 'auto' }), 'a * b * c')
-      assert.strictEqual(math.parse('a*(b*c)').toString({ parenthesis: 'auto' }), 'a * b * c')
-      assert.strictEqual(math.parse('(a*b)/c').toString({ parenthesis: 'auto' }), 'a * b / c')
-      assert.strictEqual(math.parse('a*(b/c)').toString({ parenthesis: 'auto' }), 'a * b / c')
+      ex({ i: '(a*b)*c', skeep: '(a * b) * c', sauto: 'a * b * c', lkeep: '\\left( a\\cdot\\mathrm{b}\\right)\\cdot c', lauto: ' a\\cdot\\mathrm{b}\\cdot c' })
+      ex({ i: 'a*(b*c)', skeep: 'a * (b * c)', sauto: 'a * b * c', lkeep: ' a\\cdot\\left(\\mathrm{b}\\cdot c\\right)', lauto: ' a\\cdot\\mathrm{b}\\cdot c' })
+      ex({ i: '(a*b)/c', skeep: '(a * b) / c', sauto: 'a * b / c', lkeep: '\\frac{\\left( a\\cdot\\mathrm{b}\\right)}{ c}', lauto: '\\frac{ a\\cdot\\mathrm{b}}{ c}' })
+      ex({ i: 'a*(b/c)', skeep: 'a * (b / c)', sauto: 'a * b / c', lkeep: ' a\\cdot\\left(\\frac{\\mathrm{b}}{ c}\\right)', lauto: ' a\\cdot\\frac{\\mathrm{b}}{ c}' })
     })
 
-    it('should stringify left associative OperatorNodes that are not associative with another Node', function () {
-      assert.strictEqual(math.parse('(a-b)-c').toString({ parenthesis: 'auto' }), 'a - b - c')
-      assert.strictEqual(math.parse('a-(b-c)').toString({ parenthesis: 'auto' }), 'a - (b - c)')
-      assert.strictEqual(math.parse('(a-b)+c').toString({ parenthesis: 'auto' }), 'a - b + c')
-      assert.strictEqual(math.parse('a-(b+c)').toString({ parenthesis: 'auto' }), 'a - (b + c)')
+    it('on left associative OperatorNodes that are not associative with another Node', function () {
+      ex({ i: '(a-b)-c', skeep: '(a - b) - c', sauto: 'a - b - c', lkeep: '\\left( a-\\mathrm{b}\\right)- c', lauto: ' a-\\mathrm{b}- c' })
+      ex({ i: 'a-(b-c)', s: 'a - (b - c)', l: ' a-\\left(\\mathrm{b}- c\\right)' })
+      ex({ i: '(a-b)+c', skeep: '(a - b) + c', sauto: 'a - b + c', lkeep: '\\left( a-\\mathrm{b}\\right)+ c', lauto: ' a-\\mathrm{b}+ c' })
+      ex({ i: 'a-(b+c)', s: 'a - (b + c)', l: ' a-\\left(\\mathrm{b}+ c\\right)' })
 
-      assert.strictEqual(math.parse('(a/b)/c').toString({ parenthesis: 'auto' }), 'a / b / c')
-      assert.strictEqual(math.parse('a/(b/c)').toString({ parenthesis: 'auto' }), 'a / (b / c)')
-      assert.strictEqual(math.parse('(a/b)*c').toString({ parenthesis: 'auto' }), 'a / b * c')
-      assert.strictEqual(math.parse('a/(b*c)').toString({ parenthesis: 'auto' }), 'a / (b * c)')
+      ex({ i: '(a/b)/c', skeep: '(a / b) / c', sauto: 'a / b / c', lkeep: '\\frac{\\left(\\frac{ a}{\\mathrm{b}}\\right)}{ c}', lauto: '\\frac{\\frac{ a}{\\mathrm{b}}}{ c}' })
+      ex({ i: 'a/(b/c)', s: 'a / (b / c)', lkeep: '\\frac{ a}{\\left(\\frac{\\mathrm{b}}{ c}\\right)}', lauto: '\\frac{ a}{\\frac{\\mathrm{b}}{ c}}' })
+      ex({ i: '(a/b)*c', skeep: '(a / b) * c', sauto: 'a / b * c', lkeep: '\\left(\\frac{ a}{\\mathrm{b}}\\right)\\cdot c', lauto: '\\frac{ a}{\\mathrm{b}}\\cdot c' })
+      ex({ i: 'a/(b*c)', s: 'a / (b * c)', lkeep: '\\frac{ a}{\\left(\\mathrm{b}\\cdot c\\right)}', lauto: '\\frac{ a}{\\mathrm{b}\\cdot c}' })
     })
 
-    it('should stringify right associative OperatorNodes that are not associative with another Node', function () {
-      assert.strictEqual(math.parse('(a^b)^c').toString({ parenthesis: 'auto' }), '(a ^ b) ^ c')
-      assert.strictEqual(math.parse('a^(b^c)').toString({ parenthesis: 'auto' }), 'a ^ b ^ c')
+    it('on right associative OperatorNodes that are not associative with another Node', function () {
+      ex({ i: '(a^b)^c', s: '(a ^ b) ^ c', l: '{\\left({ a}^{\\mathrm{b}}\\right)}^{ c}' })
+      ex({ i: 'a^(b^c)', skeep: 'a ^ (b ^ c)', sauto: 'a ^ b ^ c', lkeep: '{ a}^{\\left({\\mathrm{b}}^{ c}\\right)}', lauto: '{ a}^{{\\mathrm{b}}^{ c}}' })
     })
 
-    it('should stringify unary OperatorNodes containing a binary OperatorNode', function () {
-      assert.strictEqual(math.parse('(a*b)!').toString(), '(a * b)!')
-      assert.strictEqual(math.parse('-(a*b)').toString(), '-(a * b)')
-      assert.strictEqual(math.parse('-(a+b)').toString(), '-(a + b)')
+    it('on unary OperatorNodes containing a binary OperatorNode', function () {
+      ex({ i: '(a*b)!', s: '(a * b)!', l: '\\left( a\\cdot\\mathrm{b}\\right)!' })
+      ex({ i: '-(a*b)', s: '-(a * b)', l: '-\\left( a\\cdot\\mathrm{b}\\right)' })
+      ex({ i: '-(a+b)', s: '-(a + b)', l: '-\\left( a+\\mathrm{b}\\right)' })
     })
 
-    it('should stringify unary OperatorNodes containing a unary OperatorNode', function () {
-      assert.strictEqual(math.parse('(-a)!').toString({ parenthesis: 'auto' }), '(-a)!')
-      assert.strictEqual(math.parse('-(a!)').toString({ parenthesis: 'auto' }), '-a!')
-      assert.strictEqual(math.parse('-(-a)').toString({ parenthesis: 'auto' }), '-(-a)')
+    it('on unary OperatorNodes containing a unary OperatorNode', function () {
+      ex({ i: '(-a)!', s: '(-a)!', l: '\\left(- a\\right)!' })
+      ex({ i: '-(a!)', skeep: '-(a!)', sauto: '-a!', lkeep: '-\\left( a!\\right)', lauto: '- a!' })
+      ex({ i: '-(-a)', s: '-(-a)', l: '-\\left(- a\\right)' })
     })
   })
 
@@ -390,13 +379,9 @@ describe('OperatorNode', function () {
       }
     }
 
-    const a = new ConstantNode(1)
-    const b = new ConstantNode(2)
+    const n2 = new OperatorNode('-', 'subtract', [one, two])
 
-    const n1 = new OperatorNode('+', 'add', [a, b])
-    const n2 = new OperatorNode('-', 'subtract', [a, b])
-
-    assert.strictEqual(n1.toString({ handler: customFunction }), '+add(const(1, number), const(2, number))')
+    assert.strictEqual(add23.toString({ handler: customFunction }), '+add(const(2, number), const(3, number))')
     assert.strictEqual(n2.toString({ handler: customFunction }), '-subtract(const(1, number), const(2, number))')
   })
 
@@ -412,190 +397,54 @@ describe('OperatorNode', function () {
       }
     }
 
-    const a = new ConstantNode(1)
-    const b = new ConstantNode(2)
-
-    const n = new OperatorNode('+', 'add', [a, b])
-
-    assert.strictEqual(n.toString({ handler: customFunction }), 'const(1, number)+add+const(2, number)')
+    assert.strictEqual(add23.toString({ handler: customFunction }), 'const(2, number)+add+const(3, number)')
   })
 
   it('should respect the \'all\' parenthesis option', function () {
-    assert.strictEqual(math.parse('1+1+1').toString({ parenthesis: 'all' }), '(1 + 1) + 1')
-    assert.strictEqual(math.parse('1+1+1').toTex({ parenthesis: 'all' }), '\\left(1+1\\right)+1')
+    ex({ i: '1+1+1', s: '(1 + 1) + 1', l: '\\left(1+1\\right)+1' }, ['all'])
   })
 
-  it('should correctly LaTeX fractions in \'all\' parenthesis mode', function () {
-    assert.strictEqual(math.parse('1/2/3').toTex({ parenthesis: 'all' }), '\\frac{\\left(\\frac{1}{2}\\right)}{3}')
+  it('should correctly format fractions in \'all\' parenthesis mode', function () {
+    ex({ i: '1/2/3', s: '(1 / 2) / 3', l: '\\frac{\\left(\\frac{1}{2}\\right)}{3}' },
+      ['all'])
   })
 
-  it('should LaTeX an OperatorNode', function () {
-    const a = new ConstantNode(2)
-    const b = new ConstantNode(3)
+  it('should format an OperatorNode with factorial of an OperatorNode', function () {
+    const mult23 = new OperatorNode('*', 'multiply', [two, three])
+    const div23 = new OperatorNode('/', 'divide', [two, three])
 
-    const n = new OperatorNode('+', 'add', [a, b])
-    assert.strictEqual(n.toTex(), '2+3')
+    const n1 = new OperatorNode('!', 'factorial', [sub23])
+    const n2 = new OperatorNode('!', 'factorial', [add23])
+    const n3 = new OperatorNode('!', 'factorial', [mult23])
+    const n4 = new OperatorNode('!', 'factorial', [div23])
+    ex({ n: n1, s: '(2 - 3)!', l: '\\left(2-3\\right)!' })
+    ex({ n: n2, s: '(2 + 3)!', l: '\\left(2+3\\right)!' })
+    ex({ n: n3, s: '(2 * 3)!', l: '\\left(2\\cdot3\\right)!' })
+    ex({ n: n4, s: '(2 / 3)!', l: '\\frac{2}{3}!' })
   })
 
-  it('should LaTeX an OperatorNode with factorial', function () {
-    const a = new ConstantNode(2)
-    const n = new OperatorNode('!', 'factorial', [a])
-    assert.strictEqual(n.toTex(), '2!')
+  it('should format an OperatorNode with unary minus', function () {
+    const n2 = new OperatorNode('-', 'unaryMinus', [sub23])
+    const n3 = new OperatorNode('-', 'unaryMinus', [add23])
+
+    ex({ n: n2, s: '-(2 - 3)', l: '-\\left(2-3\\right)' })
+    ex({ n: n3, s: '-(2 + 3)', l: '-\\left(2+3\\right)' })
   })
 
-  it('should LaTeX an OperatorNode with factorial of an OperatorNode', function () {
-    const a = new ConstantNode(2)
-    const b = new ConstantNode(3)
+  it('should format an OperatorNode that subtracts an OperatorNode', function () {
+    const n1 = new OperatorNode('-', 'subtract', [one, sub23])
+    const n2 = new OperatorNode('-', 'subtract', [one, add23])
 
-    const sub = new OperatorNode('-', 'subtract', [a, b])
-    const add = new OperatorNode('+', 'add', [a, b])
-    const mult = new OperatorNode('*', 'multiply', [a, b])
-    const div = new OperatorNode('/', 'divide', [a, b])
-
-    const n1 = new OperatorNode('!', 'factorial', [sub])
-    const n2 = new OperatorNode('!', 'factorial', [add])
-    const n3 = new OperatorNode('!', 'factorial', [mult])
-    const n4 = new OperatorNode('!', 'factorial', [div])
-    assert.strictEqual(n1.toTex(), '\\left(2-3\\right)!')
-    assert.strictEqual(n2.toTex(), '\\left(2+3\\right)!')
-    assert.strictEqual(n3.toTex(), '\\left(2\\cdot3\\right)!')
-    assert.strictEqual(n4.toTex(), '\\frac{2}{3}!')
+    ex({ n: n1, s: '1 - (2 - 3)', l: '1-\\left(2-3\\right)' })
+    ex({ n: n2, s: '1 - (2 + 3)', l: '1-\\left(2+3\\right)' })
   })
 
-  it('should LaTeX an OperatorNode with unary minus', function () {
-    const a = new ConstantNode(2)
-    const b = new ConstantNode(3)
-
-    const sub = new OperatorNode('-', 'subtract', [a, b])
-    const add = new OperatorNode('+', 'add', [a, b])
-
-    const n1 = new OperatorNode('-', 'unaryMinus', [a])
-    const n2 = new OperatorNode('-', 'unaryMinus', [sub])
-    const n3 = new OperatorNode('-', 'unaryMinus', [add])
-
-    assert.strictEqual(n1.toTex(), '-2')
-    assert.strictEqual(n2.toTex(), '-\\left(2-3\\right)')
-    assert.strictEqual(n3.toTex(), '-\\left(2+3\\right)')
-  })
-
-  it('should LaTeX an OperatorNode that subtracts an OperatorNode', function () {
-    const a = new ConstantNode(1)
-    const b = new ConstantNode(2)
-    const c = new ConstantNode(3)
-
-    const sub = new OperatorNode('-', 'subtract', [b, c])
-    const add = new OperatorNode('+', 'add', [b, c])
-
-    const n1 = new OperatorNode('-', 'subtract', [a, sub])
-    const n2 = new OperatorNode('-', 'subtract', [a, add])
-
-    assert.strictEqual(n1.toTex(), '1-\\left(2-3\\right)')
-    assert.strictEqual(n2.toTex(), '1-\\left(2+3\\right)')
-  })
-
-  it('should LaTeX an OperatorNode with zero arguments', function () {
-    const n = new OperatorNode('foo', 'foo', [])
-    assert.strictEqual(n.toTex(), '\\mathrm{foo}\\left(\\right)')
-  })
-
-  it('should LaTeX an OperatorNode with more than two operators', function () {
-    const a = new ConstantNode(2)
-    const b = new ConstantNode(3)
-    const c = new ConstantNode(4)
-
-    const n = new OperatorNode('foo', 'foo', [a, b, c])
-    assert.strictEqual(n.toTex(), '\\mathrm{foo}\\left(2,3,4\\right)')
-  })
-
-  it('should LaTeX an OperatorNode with nested operator nodes', function () {
-    const a = new ConstantNode(2)
-    const b = new ConstantNode(3)
-    const c = new ConstantNode(4)
-    const d = new ConstantNode(5)
-
-    const n1 = new OperatorNode('+', 'add', [a, b])
-    const n2 = new OperatorNode('-', 'subtract', [c, d])
-    const n3 = new OperatorNode('*', 'multiply', [n1, n2])
-
-    const m2 = new OperatorNode('*', 'multiply', [n1, c])
-    const m3 = new OperatorNode('-', 'subtract', [m2, d])
-
-    assert.strictEqual(n1.toTex(), '2+3')
-    assert.strictEqual(n2.toTex(), '4-5')
-    assert.strictEqual(n3.toTex(), '\\left(2+3\\right)\\cdot\\left(4-5\\right)')
-    assert.strictEqual(m3.toTex(), '\\left(2+3\\right)\\cdot4-5')
-  })
-
-  it('should LaTeX addition and multiplication with more than two operands', function () {
-    const a = new SymbolNode('a')
-    const b = new SymbolNode('b')
-    const c = new SymbolNode('c')
-
-    const add = new OperatorNode('+', 'add', [a, b, c])
-    const multiply = new OperatorNode('*', 'multiply', [a, b, c])
-    const implicitMultiply = new OperatorNode('*', 'multiply', [a, b, c], true)
-
-    assert.strictEqual(add.toTex(), ' a+\\mathrm{b}+ c')
-    assert.strictEqual(multiply.toTex(), ' a\\cdot\\mathrm{b}\\cdot c')
-    assert.strictEqual(implicitMultiply.toTex(), ' a~\\mathrm{b}~ c')
-  })
-
-  it('should LaTeX addition and multiplication with more than two operands including OperatorNode', function () {
-    const a = new SymbolNode('a')
-    const b = new SymbolNode('b')
-    const c = new SymbolNode('c')
-    const d = new SymbolNode('d')
-
-    const mult = new OperatorNode('*', 'multiply', [a, b])
-    const add = new OperatorNode('+', 'add', [a, b])
-
-    const multipleMultWithMult = new OperatorNode('*', 'multiply', [c, mult, d])
-    const multipleMultWithAdd = new OperatorNode('*', 'multiply', [c, add, d])
-    const multipleAddWithMult = new OperatorNode('+', 'add', [c, mult, d])
-    const multipleAddWithAdd = new OperatorNode('+', 'add', [c, add, d])
-
-    assert.strictEqual(multipleMultWithMult.toTex(), ' c\\cdot a\\cdot\\mathrm{b}\\cdot d')
-    assert.strictEqual(multipleMultWithAdd.toTex(), ' c\\cdot\\left( a+\\mathrm{b}\\right)\\cdot d')
-    assert.strictEqual(multipleAddWithMult.toTex(), ' c+ a\\cdot\\mathrm{b}+ d')
-    assert.strictEqual(multipleAddWithAdd.toTex(), ' c+ a+\\mathrm{b}+ d')
-  })
-
-  it('should LaTeX an OperatorNode that contains an operatornode with more than two operands', function () {
-    const a = new SymbolNode('a')
-    const b = new SymbolNode('b')
-    const c = new SymbolNode('c')
-    const d = new SymbolNode('d')
-
-    const mult = new OperatorNode('*', 'multiply', [a, b, c])
-    const add = new OperatorNode('+', 'add', [a, b, c])
-
-    const addWithMult = new OperatorNode('+', 'add', [mult, d])
-    const addWithAdd = new OperatorNode('+', 'add', [add, d])
-    const multWithMult = new OperatorNode('*', 'multiply', [mult, d])
-    const multWithAdd = new OperatorNode('*', 'multiply', [add, d])
-
-    assert.strictEqual(addWithMult.toTex(), ' a\\cdot\\mathrm{b}\\cdot c+ d')
-    assert.strictEqual(addWithAdd.toTex(), ' a+\\mathrm{b}+ c+ d')
-    assert.strictEqual(multWithMult.toTex(), ' a\\cdot\\mathrm{b}\\cdot c\\cdot d')
-    assert.strictEqual(multWithAdd.toTex(), '\\left( a+\\mathrm{b}+ c\\right)\\cdot d')
-  })
-
-  it('should LaTeX fractions with operators that are enclosed in parenthesis', function () {
-    const a = new ConstantNode(1)
-    const b = new ConstantNode(2)
-
-    const add = new OperatorNode('+', 'add', [a, a])
-    const frac = new OperatorNode('/', 'divide', [add, b])
-    assert.strictEqual(frac.toTex(), '\\frac{1+1}{2}')
+  it('should format fractions with operators that are enclosed in parenthesis', function () {
+    ex({ n: new OperatorNode('/', 'divide', [add23, four]), s: '(2 + 3) / 4', l: '\\frac{2+3}{4}' })
   })
 
   it('should have an identifier', function () {
-    const a = new ConstantNode(1)
-    const b = new ConstantNode(2)
-
-    const n = new OperatorNode('+', 'add', [a, b])
-
-    assert.strictEqual(n.getIdentifier(), 'OperatorNode:add')
+    assert.strictEqual(add23.getIdentifier(), 'OperatorNode:add')
   })
 
   it('should LaTeX an OperatorNode with custom toTex', function () {
@@ -610,14 +459,8 @@ describe('OperatorNode', function () {
       }
     }
 
-    const a = new ConstantNode(1)
-    const b = new ConstantNode(2)
-
-    const n1 = new OperatorNode('+', 'add', [a, b])
-    const n2 = new OperatorNode('-', 'subtract', [a, b])
-
-    assert.strictEqual(n1.toTex({ handler: customFunction }), '+add(const\\left(1, number\\right), const\\left(2, number\\right))')
-    assert.strictEqual(n2.toTex({ handler: customFunction }), '-subtract(const\\left(1, number\\right), const\\left(2, number\\right))')
+    assert.strictEqual(add23.toTex({ handler: customFunction }), '+add(const\\left(2, number\\right), const\\left(3, number\\right))')
+    assert.strictEqual(sub23.toTex({ handler: customFunction }), '-subtract(const\\left(2, number\\right), const\\left(3, number\\right))')
   })
 
   it('should LaTeX an OperatorNode with custom toTex for a single operator', function () {
@@ -632,83 +475,108 @@ describe('OperatorNode', function () {
       }
     }
 
-    const a = new ConstantNode(1)
-    const b = new ConstantNode(2)
-
-    const n = new OperatorNode('+', 'add', [a, b])
-
-    assert.strictEqual(n.toTex({ handler: customFunction }), 'const\\left(1, number\\right)+add+const\\left(2, number\\right)')
+    assert.strictEqual(add23.toTex({ handler: customFunction }), 'const\\left(2, number\\right)+add+const\\left(3, number\\right)')
   })
 
-  it('should LaTeX powers of fractions with parentheses', function () {
-    const a = new ConstantNode(1)
-    const frac = new OperatorNode('/', 'divide', [a, a])
-    const pow = new OperatorNode('^', 'pow', [frac, a])
+  it('should format powers of fractions with parentheses', function () {
+    const frac = new OperatorNode('/', 'divide', [one, one])
+    const pow = new OperatorNode('^', 'pow', [frac, one])
 
-    assert.strictEqual(pow.toTex(), '\\left({\\frac{1}{1}}\\right)^{1}')
+    ex({ n: pow, s: '(1 / 1) ^ 1', l: '\\left({\\frac{1}{1}}\\right)^{1}' })
   })
 
-  it('should LaTeX powers of conditions with parentheses', function () {
-    const a = new ConstantNode(1)
-    const cond = new ConditionalNode(a, a, a)
-    const pow = new OperatorNode('^', 'pow', [cond, a])
+  it('should format powers of conditions with parentheses', function () {
+    const cond = new ConditionalNode(one, one, one)
+    const pow = new OperatorNode('^', 'pow', [cond, one])
 
-    assert.strictEqual(pow.toTex(), '\\left({\\begin{cases} {1}, &\\quad{\\text{if }\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{cases}}\\right)^{1}')
+    ex({ n: pow, s: '(1 ? 1 : 1) ^ 1', l: '\\left({\\begin{cases} {1}, &\\quad{\\text{if }\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{cases}}\\right)^{1}' })
   })
 
-  it('should LaTeX simple expressions in \'auto\' mode', function () {
+  it('should format simple expressions in \'auto\' mode', function () {
     // this covers a bug that was triggered previously
-    assert.strictEqual(math.parse('1+(1+1)').toTex({ parenthesis: 'auto' }), '1+1+1')
+    ex({ i: '1+(1+1)', skeep: '1 + (1 + 1)', sauto: '1 + 1 + 1', lkeep: '1+\\left(1+1\\right)', lauto: '1+1+1' })
   })
 
-  it('should stringify implicit multiplications', function () {
-    const a = math.parse('4a')
-    const b = math.parse('4 a')
-    const c = math.parse('a b')
-    const d = math.parse('2a b')
-    const e = math.parse('a b c')
-    const f = math.parse('(2+3)a')
-    const g = math.parse('(2+3)2')
-    const h = math.parse('2(3+4)')
+  // Variant of the `ex` tester that also tests implicit hide and show
+  function exhs (example, parens = ['keep', 'auto']) {
+    const imps = ['hide', 'show']
+    const hasi = 'i' in example
+    const expr = hasi ? math.parse(example.i) : example.n
+    const orig = hasi
+      ? example.i
+      : `${expr.getIdentifier()}${expr.args.map(arg => arg.getIdentifier())}`
+    for (const paren of parens) {
+      const skey = 's' in example ? 's' : 's' + paren
+      const lkey = 'l' in example ? 'l' : 'l' + paren
+      for (const i of [0, 1]) {
+        const prefix = `${orig},${paren},${imps[i]}: ` // eases reading of failure output
+        assert.strictEqual(
+          prefix + expr.toString({ parenthesis: paren, implicit: imps[i] }),
+          prefix + example[skey][i])
+        assert.strictEqual(
+          prefix + expr.toTex({ parenthesis: paren, implicit: imps[i] }),
+          prefix + example[lkey][i])
+      }
+    }
+  }
 
-    assert.strictEqual(a.toString(), a.toString({ implicit: 'hide' }))
-    assert.strictEqual(a.toString({ implicit: 'hide' }), '4 a')
-    assert.strictEqual(a.toString({ implicit: 'show' }), '4 * a')
-
-    assert.strictEqual(b.toString(), b.toString({ implicit: 'hide' }))
-    assert.strictEqual(b.toString({ implicit: 'hide' }), '4 a')
-    assert.strictEqual(b.toString({ implicit: 'show' }), '4 * a')
-
-    assert.strictEqual(c.toString(), c.toString({ implicit: 'hide' }))
-    assert.strictEqual(c.toString({ implicit: 'hide' }), 'a b')
-    assert.strictEqual(c.toString({ implicit: 'show' }), 'a * b')
-
-    assert.strictEqual(d.toString(), d.toString({ implicit: 'hide' }))
-    assert.strictEqual(d.toString({ implicit: 'hide' }), '2 a b')
-    assert.strictEqual(d.toString({ implicit: 'show' }), '2 * a * b')
-
-    assert.strictEqual(e.toString(), e.toString({ implicit: 'hide' }))
-    assert.strictEqual(e.toString({ implicit: 'hide' }), 'a b c')
-    assert.strictEqual(e.toString({ implicit: 'show' }), 'a * b * c')
-
-    assert.strictEqual(f.toString(), f.toString({ implicit: 'hide' }))
-    assert.strictEqual(f.toString({ implicit: 'hide' }), '(2 + 3) a')
-    assert.strictEqual(f.toString({ implicit: 'show' }), '(2 + 3) * a')
-
-    assert.strictEqual(g.toString(), g.toString({ implicit: 'hide' }))
-    assert.strictEqual(g.toString({ implicit: 'hide' }), '(2 + 3) 2')
-    assert.strictEqual(g.toString({ implicit: 'show' }), '(2 + 3) * 2')
-
-    assert.strictEqual(h.toString(), h.toString({ implicit: 'hide' }))
-    assert.strictEqual(h.toString({ implicit: 'hide' }), '2 (3 + 4)')
-    assert.strictEqual(h.toString({ implicit: 'show' }), '2 * (3 + 4)')
+  it('should format implicit multiplications', function () {
+    exhs({ i: '4a', s: ['4 a', '4 * a'], l: ['4~ a', '4\\cdot a'] })
+    exhs({ i: '4 a', s: ['4 a', '4 * a'], l: ['4~ a', '4\\cdot a'] })
+    exhs({ i: 'a b', s: ['a b', 'a * b'], l: [' a~\\mathrm{b}', ' a\\cdot\\mathrm{b}'] })
+    exhs({ i: '2a b', s: ['2 a b', '2 * a * b'], l: ['2~ a~\\mathrm{b}', '2\\cdot a\\cdot\\mathrm{b}'] })
+    exhs({ i: 'a b c', s: ['a b c', 'a * b * c'], l: [' a~\\mathrm{b}~ c', ' a\\cdot\\mathrm{b}\\cdot c'] })
+    exhs({ i: '(2+3)a', s: ['(2 + 3) a', '(2 + 3) * a'], l: ['\\left(2+3\\right)~ a', '\\left(2+3\\right)\\cdot a'] })
+    exhs({ i: '(2+3)2', s: ['(2 + 3) 2', '(2 + 3) * 2'], l: ['\\left(2+3\\right)~2', '\\left(2+3\\right)\\cdot2'] })
+    exhs({ i: '2(3+4)', s: ['2 (3 + 4)', '2 * (3 + 4)'], l: ['2~\\left(3+4\\right)', '2\\cdot\\left(3+4\\right)'] })
+    exhs({ i: '1/2 a', s: ['1 / 2 a', '1 / 2 * a'], l: ['\\frac{1}{2}~ a', '\\frac{1}{2}\\cdot a'] })
+    exhs({ i: '-2/3 a', s: ['-2 / 3 a', '-2 / 3 * a'], l: ['\\frac{-2}{3}~ a', '\\frac{-2}{3}\\cdot a'] })
+    exhs({ i: '2!/3 a', s: ['2! / 3 a', '2! / (3 * a)'], l: ['\\frac{2!}{3~ a}', '\\frac{2!}{3\\cdot a}'] })
+    exhs({ i: '+2!/3 a', s: ['+2! / 3 a', '+2! / (3 * a)'], l: ['\\frac{+2!}{3~ a}', '\\frac{+2!}{3\\cdot a}'] })
+    exhs({ i: '2/3! a', s: ['2 / 3! a', '2 / (3! * a)'], l: ['\\frac{2}{3!~ a}', '\\frac{2}{3!\\cdot a}'] })
+    exhs({ i: '-2!/+3! a', s: ['-2! / +3! a', '-2! / (+3! * a)'], l: ['\\frac{-2!}{+3!~ a}', '\\frac{-2!}{+3!\\cdot a}'] })
+    exhs({ i: '2/-3 a', s: ['2 / -3 a', '2 / (-3 * a)'], l: ['\\frac{2}{-3~ a}', '\\frac{2}{-3\\cdot a}'] })
+    exhs({ i: '-(2+3)/3x', s: ['-(2 + 3) / 3 x', '-(2 + 3) / (3 * x)'], l: ['\\frac{-\\left(2+3\\right)}{3~ x}', '\\frac{-\\left(2+3\\right)}{3\\cdot x}'] })
+    exhs({ i: '-2/(3+4)x', s: ['-2 / (3 + 4) x', '-2 / ((3 + 4) * x)'], l: ['\\frac{-2}{\\left(3+4\\right)~ x}', '\\frac{-2}{\\left(3+4\\right)\\cdot x}'] })
+    exhs({
+      i: '(2)/3x',
+      s: ['(2) / 3 x', '(2) / (3 * x)'],
+      l: ['\\frac{\\left(2\\right)}{3~ x}', '\\frac{\\left(2\\right)}{3\\cdot x}']
+    })
+    exhs({
+      i: '2/(3)x',
+      skeep: ['2 / (3) x', '2 / ((3) * x)'],
+      sauto: ['2 / (3 x)', '2 / (3 * x)'],
+      lkeep: ['\\frac{2}{\\left(3\\right)~ x}', '\\frac{2}{\\left(3\\right)\\cdot x}'],
+      lauto: ['\\frac{2}{3~ x}', '\\frac{2}{3\\cdot x}']
+    })
+    exhs({
+      i: '(2)/(3)x',
+      skeep: ['(2) / (3) x', '(2) / ((3) * x)'],
+      sauto: ['2 / (3 x)', '2 / (3 * x)'],
+      lkeep: ['\\frac{\\left(2\\right)}{\\left(3\\right)~ x}', '\\frac{\\left(2\\right)}{\\left(3\\right)\\cdot x}'],
+      lauto: ['\\frac{2}{3~ x}', '\\frac{2}{3\\cdot x}']
+    })
+    exhs({
+      i: '(2!)/(3)x',
+      skeep: ['(2!) / (3) x', '(2!) / ((3) * x)'],
+      sauto: ['2! / 3 x', '2! / (3 * x)'],
+      lkeep: ['\\frac{\\left(2!\\right)}{\\left(3\\right)~ x}', '\\frac{\\left(2!\\right)}{\\left(3\\right)\\cdot x}'],
+      lauto: ['\\frac{2!}{3~ x}', '\\frac{2!}{3\\cdot x}']
+    })
+    exhs({
+      i: '(2!)/3x',
+      skeep: ['(2!) / 3 x', '(2!) / (3 * x)'],
+      sauto: ['2! / 3 x', '2! / (3 * x)'],
+      lkeep: ['\\frac{\\left(2!\\right)}{3~ x}', '\\frac{\\left(2!\\right)}{3\\cdot x}'],
+      lauto: ['\\frac{2!}{3~ x}', '\\frac{2!}{3\\cdot x}']
+    })
   })
 
   it('toJSON and fromJSON', function () {
-    const b = new ConstantNode(1)
-    const c = new ConstantNode(2)
-
-    const node = new OperatorNode('+', 'add', [b, c], true)
+    // There is no such thing as an implicit add node, really, but
+    // put toJSON really through its paces
+    const node = new OperatorNode('+', 'add', [one, two], true)
 
     const json = node.toJSON()
 
@@ -716,56 +584,13 @@ describe('OperatorNode', function () {
       mathjs: 'OperatorNode',
       op: '+',
       fn: 'add',
-      args: [b, c],
+      args: [one, two],
       implicit: true,
       isPercentage: false
     })
 
     const parsed = OperatorNode.fromJSON(json)
     assert.deepStrictEqual(parsed, node)
-  })
-
-  it('should LaTeX implicit multiplications', function () {
-    const a = math.parse('4a')
-    const b = math.parse('4 a')
-    const c = math.parse('a b')
-    const d = math.parse('2a b')
-    const e = math.parse('a b c')
-    const f = math.parse('(2+3)a')
-    const g = math.parse('(2+3)2')
-    const h = math.parse('2(3+4)')
-
-    assert.strictEqual(a.toTex(), a.toTex({ implicit: 'hide' }))
-    assert.strictEqual(a.toTex({ implicit: 'hide' }), '4~ a')
-    assert.strictEqual(a.toTex({ implicit: 'show' }), '4\\cdot a')
-
-    assert.strictEqual(b.toTex(), b.toTex({ implicit: 'hide' }))
-    assert.strictEqual(b.toTex({ implicit: 'hide' }), '4~ a')
-    assert.strictEqual(b.toTex({ implicit: 'show' }), '4\\cdot a')
-
-    assert.strictEqual(c.toTex(), c.toTex({ implicit: 'hide' }))
-    assert.strictEqual(c.toTex({ implicit: 'hide' }), ' a~\\mathrm{b}')
-    assert.strictEqual(c.toTex({ implicit: 'show' }), ' a\\cdot\\mathrm{b}')
-
-    assert.strictEqual(d.toTex(), d.toTex({ implicit: 'hide' }))
-    assert.strictEqual(d.toTex({ implicit: 'hide' }), '2~ a~\\mathrm{b}')
-    assert.strictEqual(d.toTex({ implicit: 'show' }), '2\\cdot a\\cdot\\mathrm{b}')
-
-    assert.strictEqual(e.toTex(), e.toTex({ implicit: 'hide' }))
-    assert.strictEqual(e.toTex({ implicit: 'hide' }), ' a~\\mathrm{b}~ c')
-    assert.strictEqual(e.toTex({ implicit: 'show' }), ' a\\cdot\\mathrm{b}\\cdot c')
-
-    assert.strictEqual(f.toTex(), f.toTex({ implicit: 'hide' }))
-    assert.strictEqual(f.toTex({ implicit: 'hide' }), '\\left(2+3\\right)~ a')
-    assert.strictEqual(f.toTex({ implicit: 'show' }), '\\left(2+3\\right)\\cdot a')
-
-    assert.strictEqual(g.toTex(), g.toTex({ implicit: 'hide' }))
-    assert.strictEqual(g.toTex({ implicit: 'hide' }), '\\left(2+3\\right)~2')
-    assert.strictEqual(g.toTex({ implicit: 'show' }), '\\left(2+3\\right)\\cdot2')
-
-    assert.strictEqual(h.toTex(), h.toTex({ implicit: 'hide' }))
-    assert.strictEqual(h.toTex({ implicit: 'hide' }), '2~\\left(3+4\\right)')
-    assert.strictEqual(h.toTex({ implicit: 'show' }), '2\\cdot\\left(3+4\\right)')
   })
 
   it('should HTML operators', function () {
@@ -791,64 +616,73 @@ describe('OperatorNode', function () {
     )
   })
 
-  it('should stringify implicit multiplications in a recoverable way', function () {
-    let coeff = new OperatorNode('/', 'divide',
-      [new ConstantNode(1), new ConstantNode(2)])
-    const variable = new SymbolNode('a')
-    let start = new OperatorNode('*', 'multiply', [coeff, variable], true)
-    let startString = start.toString()
-    let finish = math.parse(startString)
-    assert.strictEqual(
-      finish.toString({ parenthesis: 'all' }),
-      start.toString({ parenthesis: 'all' }))
-    coeff = new OperatorNode('/', 'divide', [
-      new OperatorNode('-', 'unaryMinus', [new ConstantNode(1)]),
-      new ConstantNode(2)])
-    start = new OperatorNode('*', 'multiply', [coeff, variable], true)
-    startString = start.toString()
-    finish = math.parse(startString)
-    assert.strictEqual(
-      finish.toString({ parenthesis: 'all' }),
-      start.toString({ parenthesis: 'all' }))
-    coeff = new OperatorNode('/', 'divide', [
-      new ConstantNode(1),
-      new OperatorNode('-', 'unaryMinus', [new ConstantNode(2)])])
-    start = new OperatorNode('*', 'multiply', [coeff, variable], true)
-    startString = start.toString()
-    finish = math.parse(startString)
-    /* FIXME: this test currently fails, related to #1431:
-    assert.strictEqual(
-      finish.toString({ parenthesis: 'all' }),
-      start.toString({ parenthesis: 'all' }))
-    */
+  it('should format implicit multiplications between ConstantNodes with parentheses', function () {
+    ex({ i: '(3)x', skeep: '(3) x', sauto: '3 x', lkeep: '\\left(3\\right)~ x', lauto: '3~ x' })
+    ex({
+      i: '(4)(4)(4)(4)',
+      skeep: '(4) (4) (4) (4)',
+      sauto: '4 (4) (4) (4)',
+      lkeep: '\\left(4\\right)~\\left(4\\right)~\\left(4\\right)~\\left(4\\right)',
+      lauto: '4~\\left(4\\right)~\\left(4\\right)~\\left(4\\right)'
+    })
+    ex({ i: '4b*4(4)', s: '4 b * 4 (4)', l: '4~\\mathrm{b}\\cdot4~\\left(4\\right)' })
+    ex({
+      i: '(4(4(4)))',
+      skeep: '(4 (4 (4)))',
+      sauto: '4 (4 (4))',
+      lkeep: '\\left(4~\\left(4~\\left(4\\right)\\right)\\right)',
+      lauto: '4~\\left(4~\\left(4\\right)\\right)'
+    })
   })
 
-  it('should stringify implicit multiplications between ConstantNodes with parentheses', function () {
-    const a = math.parse('(4)(4)(4)(4)')
-    const b = math.parse('4b*4(4)')
-    const c = math.parse('(4(4(4)))')
-
-    assert.strictEqual(a.toString({ implicit: 'hide', parenthesis: 'auto' }), '(4) (4) (4) (4)')
-    assert.strictEqual(b.toString({ implicit: 'hide', parenthesis: 'auto' }), '4 b * 4 (4)')
-    assert.strictEqual(c.toString({ implicit: 'hide', parenthesis: 'auto' }), '4 (4 (4))')
-  })
-
-  it('should LaTeX implicit multiplications between ConstantNodes with parentheses', function () {
-    const a = math.parse('(4)(4)(4)(4)')
-    const b = math.parse('4b*4(4)')
-    const c = math.parse('(4(4(4)))')
-
-    assert.strictEqual(a.toTex({ implicit: 'hide', parenthesis: 'auto' }), '\\left(4\\right)~\\left(4\\right)~\\left(4\\right)~\\left(4\\right)')
-    assert.strictEqual(b.toTex({ implicit: 'hide', parenthesis: 'auto' }), '4~\\mathrm{b}\\cdot4~\\left(4\\right)')
-    assert.strictEqual(c.toTex({ implicit: 'hide', parenthesis: 'auto' }), '4~\\left(4~\\left(4\\right)\\right)')
+  it('should stringify implicit multiplications recoverably and to preserve their values', function () {
+    const m1 = new OperatorNode('-', 'unaryMinus', [one])
+    const m2 = new OperatorNode('-', 'unaryMinus', [two])
+    const p1 = new OperatorNode('+', 'unaryPlus', [one])
+    const p2 = new OperatorNode('+', 'unaryPlus', [two])
+    const onetwo = new OperatorNode('/', 'divide', [one, two])
+    const m1two = new OperatorNode('/', 'divide', [m1, two])
+    const p1two = new OperatorNode('/', 'divide', [p1, two])
+    const onem2 = new OperatorNode('/', 'divide', [one, m2])
+    const onep2 = new OperatorNode('/', 'divide', [one, p2])
+    const onePlus2 = new OperatorNode('+', 'add', [one, two])
+    const onePlusm2 = new OperatorNode('+', 'add', [one, m2])
+    const onePlus2over2 = new OperatorNode('/', 'divide', [
+      new OperatorNode('+', 'add', [one, two]), two])
+    const twoOver1plus2 = new OperatorNode('/', 'divide', [
+      two, new OperatorNode('+', 'add', [one, two])])
+    const avar = new SymbolNode('a')
+    const ascope = { a: 2 }
+    const cs = [
+      onetwo, m1two, p1two, onem2, onep2,
+      onePlus2, onePlusm2, onePlus2over2, twoOver1plus2]
+    for (const paren of ['auto', 'keep']) {
+      for (const coeff of cs) {
+        let expr = new math.OperatorNode('*', 'multiply', [coeff, avar], true)
+        let estring = expr.toString({ parenthesis: paren, implicit: 'hide' })
+        const rexpr = math.parse(estring)
+        const rstring = rexpr.toString({ parenthesis: 'all' })
+        // Make sure parsing the string version gives back the same grouping as the
+        // original:
+        assert.strictEqual(rstring, expr.toString({ parenthesis: 'all' }))
+        // And make sure that it produces the same value
+        assert.strictEqual(rexpr.evaluate(ascope), expr.evaluate(ascope))
+        // And make sure that's the same value you get with a constant in the expression
+        expr = new math.OperatorNode('*', 'multiply', [coeff, two], true)
+        estring = expr.toString({ parenthesis: paren, implicit: 'hide' })
+        assert.strictEqual(math.evaluate(estring, {}), expr.evaluate(ascope))
+      }
+    }
   })
 
   it('should HTML implicit multiplications between ConstantNodes with parentheses', function () {
+    const z = math.parse('(3)x')
     const a = math.parse('(4)(4)(4)(4)')
     const b = math.parse('4b*4(4)')
     const c = math.parse('(4(4(4)))')
 
-    assert.strictEqual(a.toHTML({ implicit: 'hide', parenthesis: 'auto' }), '<span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span>')
+    assert.strictEqual(z.toHTML({ implicit: 'hide', parenthesis: 'auto' }), '<span class="math-number">3</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-symbol">x</span>')
+    assert.strictEqual(a.toHTML({ implicit: 'hide', parenthesis: 'auto' }), '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span>')
     assert.strictEqual(b.toHTML({ implicit: 'hide', parenthesis: 'auto' }), '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-symbol">b</span><span class="math-operator math-binary-operator math-explicit-binary-operator">*</span><span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span>')
     assert.strictEqual(c.toHTML({ implicit: 'hide', parenthesis: 'auto' }), '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-parenthesis math-round-parenthesis">)</span>')
   })
