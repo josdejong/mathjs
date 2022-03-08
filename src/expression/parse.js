@@ -1,5 +1,5 @@
 import { factory } from '../utils/factory.js'
-import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is.js'
+import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
 import { deepMap } from '../utils/collection.js'
 import { hasOwnProperty } from '../utils/object.js'
 
@@ -1073,13 +1073,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     return node
   }
 
-  function isRule2Node (node) {
-    return isConstantNode(node) ||
-      (isOperatorNode(node) &&
-       node.args.length === 1 &&
-       isConstantNode(node.args[0]) &&
-       '-+~'.includes(node.op))
-  }
   /**
    * Infamous "rule 2" as described in https://github.com/josdejong/mathjs/issues/792#issuecomment-361065370
    * And as amended in https://github.com/josdejong/mathjs/issues/2370#issuecomment-1054052164
@@ -1096,7 +1089,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (true) {
       // Match the "number /" part of the pattern "number / number symbol"
-      if (state.token === '/' && isRule2Node(last)) {
+      if (state.token === '/' && rule2Node(last)) {
         // Look ahead to see if the next token is a number
         tokenStates.push(Object.assign({}, state))
         getTokenSkipNewline(state)
