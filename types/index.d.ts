@@ -365,7 +365,11 @@ declare namespace math {
     version: string;
 
     expression: MathNode;
-    json: MathJsJson;
+
+    /**
+     * Returns reviver function that can be used as reviver in JSON.parse function.
+     */
+     reviver(): (key: any, value: any) => any;
 
     /*************************************************************************
      * Core functions
@@ -767,6 +771,7 @@ declare namespace math {
      * @param y Second value to add
      * @returns Sum of x and y
      */
+    add<T extends MathType>(x: T, y: T): T;
     add(x: MathType, y: MathType): MathType;
 
     /**
@@ -1116,8 +1121,7 @@ declare namespace math {
      * @param y Value to subtract from x
      * @returns Subtraction of x and y
      */
-    subtract(x: number, y: number): number;
-    subtract(x: Unit, y: Unit): Unit;
+    subtract<T extends MathType>(x: T, y: T): T;
     subtract(x: MathType, y: MathType): MathType;
 
     /**
@@ -3520,13 +3524,6 @@ declare namespace math {
     precision?: number;
     predictable?: boolean;
     randomSeed?: string | null;
-  }
-
-  interface MathJsJson {
-    /**
-     * Returns reviver function that can be used as reviver in JSON.parse function.
-     */
-    reviver(): (key: any, value: any) => any;
   }
 
   interface MathJsChain {
