@@ -1339,6 +1339,13 @@ describe('parse', function () {
     it('should follow precedence rules for implicit multiplication and division', function () {
       assert.strictEqual(parseAndStringifyWithParens('2 / 3 x'), '(2 / 3) x')
       assert.strictEqual(parseAndStringifyWithParens('-2/3x'), '((-2) / 3) x')
+      assert.strictEqual(parseAndStringifyWithParens('+2/3x'), '((+2) / 3) x')
+      assert.strictEqual(parseAndStringifyWithParens('2!/3x'), '(2!) / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('(2)/3x'), '2 / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('2/3!x'), '2 / ((3!) x)')
+      assert.strictEqual(parseAndStringifyWithParens('2/(3)x'), '2 / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('(2+4)/3x'), '(2 + 4) / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('2/(3+4)x'), '2 / ((3 + 4) x)')
       assert.strictEqual(parseAndStringifyWithParens('2.5 / 5 kg'), '(2.5 / 5) kg')
       assert.strictEqual(parseAndStringifyWithParens('2.5 / 5 x y'), '((2.5 / 5) x) y')
       assert.strictEqual(parseAndStringifyWithParens('2 x / 5 y'), '(2 x) / (5 y)')
