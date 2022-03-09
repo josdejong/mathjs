@@ -428,5 +428,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
     }
   }
 
+  simplifyConstant.ensureNode = _ensureNode
+
   return simplifyConstant
 })

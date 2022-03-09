@@ -74,13 +74,13 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
       }
     } else {
       const isUnit = isValuelessUnit(name)
-
+      const me = this
       return function (scope, args, context) {
         return scope.has(name)
           ? scope.get(name)
           : isUnit
             ? new Unit(null, name)
-            : SymbolNode.onUndefinedSymbol(name)
+            : SymbolNode.onUndefinedSymbol(name, me)
       }
     }
   }

@@ -2,7 +2,7 @@ import { isNode } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
 import { escape } from '../../utils/string.js'
 import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
-import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators.js'
+import { getAssociativity, getPrecedence, getOperator, isAssociativeWith, properties } from '../operators.js'
 import { latexOperators } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
 
@@ -612,6 +612,8 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
   OperatorNode.prototype.getIdentifier = function () {
     return this.type + ':' + this.fn
   }
+
+  OperatorNode.getOperator = getOperator
 
   return OperatorNode
 }, { isClass: true, isNode: true })
