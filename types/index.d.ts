@@ -2692,7 +2692,86 @@ declare namespace math {
     to(x: Unit | MathArray | Matrix, unit: Unit | string): Unit | MathArray | Matrix;
 
     /*************************************************************************
-     * Utils functions
+     * Utils
+     ************************************************************************/
+     isNumber(x: unknown): x is number;
+
+     isBigNumber(x: unknown): x is BigNumber;
+
+     isComplex(x: unknown): x is Complex;
+
+     isFraction(x: unknown): x is Fraction;
+
+     isUnit(x: unknown): x is Unit;
+
+     isString(x: unknown): x is string;
+
+     isArray: ArrayConstructor['isArray'];
+
+     isMatrix(x: unknown): x is Matrix;
+
+     isCollection(x: unknown): x is (Matrix | any[]);
+
+     isDenseMatrix(x: unknown): x is Matrix;
+
+     isSparseMatrix(x: unknown): x is Matrix;
+
+     isRange(x: unknown): boolean;
+
+     isIndex(x: unknown): x is Index;
+
+     isBoolean(x: unknown): x is boolean;
+
+     isResultSet(x: unknown): boolean;
+
+     isHelp(x: unknown): x is Help;
+
+     isFunction(x: unknown): boolean;
+
+     isDate(x: unknown): x is Date;
+
+     isRegExp(x: unknown): x is RegExp;
+
+     isObject(x: unknown): boolean;
+
+     isNull(x: unknown): x is null;
+
+     isUndefined(x: unknown): x is undefined;
+
+     isAccessorNode(x: unknown): x is AccessorNode;
+
+     isArrayNode(x: unknown): x is ArrayNode;
+
+     isAssignmentNode(x: unknown): x is AssignmentNode;
+
+     isBlockNode(x: unknown): x is BlockNode;
+
+     isConditionalNode(x: unknown): x is ConditionalNode;
+
+     isConstantNode(x: unknown): x is ConstantNode;
+
+     isFunctionAssignmentNode(x: unknown): x is FunctionAssignmentNode;
+
+     isFunctionNode(x: unknown): x is FunctionNode;
+
+     isIndexNode(x: unknown): x is IndexNode;
+
+     isNode(x: unknown): x is MathNodeCommon;
+
+     isObjectNode(x: unknown): x is ObjectNode;
+
+     isOperatorNode(x: unknown): x is OperatorNode;
+
+     isParenthesisNode(x: unknown): x is ParenthesisNode;
+
+     isRangeNode(x: unknown): x is RangeNode;
+
+     isSymbolNode(x: unknown): x is SymbolNode;
+
+     isChain(x: unknown): boolean;
+
+    /*************************************************************************
+     * Functions -> Utils
      ************************************************************************/
 
     /**
@@ -5123,4 +5202,6 @@ declare namespace math {
   interface ImportObject {
     [key: string]: any;
   }
+
+
 }

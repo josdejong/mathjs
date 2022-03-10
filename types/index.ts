@@ -9,6 +9,7 @@ import {
   formatDependencies,
 } from 'mathjs';
 import * as assert from 'assert';
+import { expectTypeOf } from 'expect-type'
 
 // This file serves a dual purpose:
 // 1) examples of how to use math.js in TypeScript
@@ -639,3 +640,159 @@ Factory Test
   assert.    strictEqual(math.hasNumericValue(math.complex('2-4i')), false);
 }
 
+{
+  const math = create(all, {});
+
+  type IsFunc = (x: unknown) => boolean;
+  const isFuncs: IsFunc[] = [
+    math.isNumber,
+    math.isBigNumber,
+    math.isComplex,
+    math.isFraction,
+    math.isUnit,
+    math.isString,
+    math.isArray,
+    math.isMatrix,
+    math.isCollection,
+    math.isDenseMatrix,
+    math.isSparseMatrix,
+    math.isRange,
+    math.isIndex,
+    math.isBoolean,
+    math.isResultSet,
+    math.isHelp,
+    math.isFunction,
+    math.isDate,
+    math.isRegExp,
+    math.isObject,
+    math.isNull,
+    math.isUndefined,
+    math.isAccessorNode,
+    math.isArrayNode,
+    math.isAssignmentNode,
+    math.isBlockNode,
+    math.isConditionalNode,
+    math.isConstantNode,
+    math.isFunctionAssignmentNode,
+    math.isFunctionNode,
+    math.isIndexNode,
+    math.isNode,
+    math.isObjectNode,
+    math.isOperatorNode,
+    math.isParenthesisNode,
+    math.isRangeNode,
+    math.isSymbolNode,
+    math.isChain
+  ]
+
+  isFuncs.forEach(f => {
+    const result = f(1);
+    const isResultBoolean = result === true || result === false;
+    assert.ok(isResultBoolean);
+  })
+
+  // Check guards do type refinement
+  
+  let x: unknown
+
+  if (math.isNumber(x)) {
+    expectTypeOf(x).toMatchTypeOf<number>()
+  } 
+  if (math.isBigNumber(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.BigNumber>()
+  } 
+  if (math.isComplex(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.Complex>()
+  } 
+  if (math.isFraction(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.Fraction>()
+  } 
+  if (math.isUnit(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.Unit>()
+  } 
+  if (math.isString(x)) {
+    expectTypeOf(x).toMatchTypeOf<string>()
+  } 
+  if (math.isArray(x)) {
+    expectTypeOf(x).toMatchTypeOf<unknown[]>()
+  }
+  if (math.isMatrix(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.Matrix>()
+  }
+  if (math.isDenseMatrix(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.Matrix>()
+  }
+  if (math.isSparseMatrix(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.Matrix>()
+  }
+  if (math.isIndex(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.Index>()
+  }
+  if (math.isBoolean(x)) {
+    expectTypeOf(x).toMatchTypeOf<boolean>()
+  }
+  if (math.isHelp(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.Help>()
+  }
+  if (math.isDate(x)) {
+    expectTypeOf(x).toMatchTypeOf<Date>()
+  }
+  if (math.isRegExp(x)) {
+    expectTypeOf(x).toMatchTypeOf<RegExp>()
+  }
+  if (math.isNull(x)) {
+    expectTypeOf(x).toMatchTypeOf<null>()
+  }
+  if (math.isUndefined(x)) {
+    expectTypeOf(x).toMatchTypeOf<undefined>()
+  }
+
+  if (math.isAccessorNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.AccessorNode>()
+  }
+  if (math.isArrayNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.ArrayNode>()
+  }
+  if (math.isAssignmentNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.AssignmentNode>()
+  }
+  if (math.isBlockNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.BlockNode>()
+  }
+  if (math.isConditionalNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.ConditionalNode>()
+  }
+  if (math.isConstantNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.ConstantNode>()
+  }
+  if (math.isFunctionAssignmentNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.FunctionAssignmentNode>()
+  }
+  if (math.isFunctionNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.FunctionNode>()
+  }
+  if (math.isIndexNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.IndexNode>()
+  }
+  if (math.isNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.MathNodeCommon>()
+  }
+  if (math.isNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.MathNodeCommon>()
+  }
+  if (math.isObjectNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.ObjectNode>()
+  }
+  if (math.isOperatorNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.OperatorNode>()
+  }
+  if (math.isParenthesisNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.ParenthesisNode>()
+  }
+  if (math.isRangeNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.RangeNode>()
+  }
+  if (math.isSymbolNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.SymbolNode>()
+  }
+}
