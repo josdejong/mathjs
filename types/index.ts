@@ -45,9 +45,12 @@ Basic usage examples
   math.variance([[1,2,3], [4,5,6]], 1, "uncorrected")
 
   // std and variance on chain
-  math.chain([1, 2, 3]).std("unbiased").std(0, "biased").std(0, "uncorrected")
-  math.chain([[1, 2, 3], [4, 5, 6]]).std("unbiased").std(0, "biased").std(0, "uncorrected")
-  math.chain([[1, 2, 3], [4, 5, 6]]).variance("unbiased").variance(0, "biased").variance(1, "uncorrected")
+  math.chain([1, 2, 3]).std("unbiased")
+  math.chain([[1, 2, 3], [4, 5, 6]]).std(0, "biased").std(0, "uncorrected")
+  math.chain([[1, 2, 3], [4, 5, 6]]).std(0, "biased").std(0, "uncorrected")
+  math.chain([1, 2, 3]).std("unbiased")
+  math.chain([[1, 2, 3], [4, 5, 6]]).variance(0, "biased")
+  math.chain([[1, 2, 3], [4, 5, 6]]).variance(1, "uncorrected").variance("unbiased")
 
 
   // expressions
