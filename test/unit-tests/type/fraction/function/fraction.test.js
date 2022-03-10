@@ -11,6 +11,17 @@ describe('fraction', function () {
     equalFraction(math.fraction(null), new Fraction(0))
   })
 
+  it('should fail to create a fraction in case of non-integer quotient', () => {
+    assert.throws(() => math.fraction(4, 5.1), /Parameters must be integer/)
+    assert.throws(() => math.fraction(62.8, 10), /Parameters must be integer/)
+    assert.throws(() => math.fraction(Infinity, 3), /Parameters must be integer/)
+  })
+
+  it('should create a fraction from a quotient regardless of integrality', () => {
+    equalFraction(math.divide(math.fraction(4), math.fraction(5.1)),
+      math.fraction(40, 51))
+  })
+
   it('should create a fraction from a BigNumber', function () {
     const b = math.bignumber(2).div(3)
     const f = math.fraction(b)
