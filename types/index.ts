@@ -357,6 +357,11 @@ Matrices examples
     assert.deepStrictEqual(math.concat([[0, 1, 2]], [[1, 2, 3]]), [[ 0, 1, 2, 1, 2, 3 ]]);
     assert.deepStrictEqual(math.concat([[0, 1, 2]], [[1, 2, 3]], 0), [[ 0, 1, 2 ], [ 1, 2, 3 ]]);
   }
+
+  // Matrix is available as a constructor for instanceof checks
+  {
+    assert.strictEqual(math.matrix([1, 2, 3]) instanceof math.Matrix, true)
+  }
 }
 
 /*
@@ -640,6 +645,9 @@ Factory Test
   assert.    strictEqual(math.hasNumericValue(math.complex('2-4i')), false);
 }
 
+/**
+ * src/util/is functions
+ */
 {
   const math = create(all, {});
 

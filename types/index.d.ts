@@ -352,6 +352,8 @@ declare namespace math {
     RelationalNode: RelationalNodeCtor;
     SymbolNode: SymbolNodeCtor;
 
+    Matrix: MatrixCtor;
+
     /**
      * If null were to be included in this interface, it would be
      * auto-suggested as an import in VSCode. This causes issues because
@@ -3246,6 +3248,10 @@ declare namespace math {
     toJSON(): any;
     diagonal(k?: number | BigNumber): any[];
     swapRows(i: number, j: number): Matrix;
+  }
+
+  interface MatrixCtor {
+    new(): Matrix;
   }
 
   interface BigNumber extends Decimal {} // tslint:disable-line no-empty-interface
