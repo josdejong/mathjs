@@ -385,6 +385,7 @@ Units examples
   // a string with a valued unit.
   const a = math.unit(45, 'cm'); // 450 mm
   const b = math.unit('0.1m'); // 100 mm
+  const c = math.unit(b)
 
   // creating units
   math.createUnit('foo');
