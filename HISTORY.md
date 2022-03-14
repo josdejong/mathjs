@@ -1,5 +1,10 @@
 # History
 
+# not yet published, version 10.4.1
+
+- Add tests for type declarations (#2448). Thanks @samestep.
+
+
 # 2022-03-07, version 10.4.0
 
 - Fix #2461: make sure `simplifyCore` recurses over all binary nodes (#2462).
