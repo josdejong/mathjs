@@ -2,6 +2,8 @@
 
 # not yet published, version 10.4.1
 
+- Improve TypeScript definitions for function `unit` (#2479). 
+  Thanks @SinanAkkoyun.
 - Add tests for type declarations (#2448). Thanks @samestep.
 
 
