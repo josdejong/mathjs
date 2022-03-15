@@ -180,12 +180,6 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         return new Complex(x, 0)
       }
     }, {
-      from: 'number',
-      to: 'string',
-      convert: function (x) {
-        return x + ''
-      }
-    }, {
       from: 'BigNumber',
       to: 'Complex',
       convert: function (x) {

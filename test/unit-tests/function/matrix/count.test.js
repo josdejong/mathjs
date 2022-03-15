@@ -31,7 +31,7 @@ describe('count', function () {
 
   it('should throw an error if called with an invalid number of arguments', function () {
     assert.throws(function () { count() }, /TypeError: Too few arguments/)
-    assert.throws(function () { count(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () { count([1], 2) }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error if called with invalid type of arguments', function () {
