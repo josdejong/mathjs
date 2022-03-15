@@ -82,13 +82,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       this.units = u.units
       this.dimensions = u.dimensions
     } else {
-      this.units = [
-        {
-          unit: UNIT_NONE,
-          prefix: PREFIXES.NONE, // link to a list with supported prefixes
-          power: 0
-        }
-      ]
+      this.units = []
       this.dimensions = []
       for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
         this.dimensions[i] = 0
