@@ -13,7 +13,7 @@ describe('digamma', function () {
     approx.deepEqual(digamma(2), 0.42278433509846713)
     approx.deepEqual(digamma(3), 0.9227843350984671)
   })
-  it('should calculate the gamma of a complex number', function() {
+  it('should calculate the gamma of a complex number', function () {
     approx.deepEqual(digamma(math.i), math.complex(0.09465032062247697727,
       2.0766740474685811))
     approx.deepEqual(digamma(math.complex(0.5, 0.5)), math.complex(-0.8681073626454773139, 1.4406595199775145926589))

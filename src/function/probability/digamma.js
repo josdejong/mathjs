@@ -6,7 +6,7 @@ const dependencies = ['typed', 'Complex']
 
 export const createDigamma = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex }) => {
   /**
-   * Compute the digamma function of a value using Asymptotic expansion and recurrence formula 
+   * Compute the digamma function of a value using Asymptotic expansion and recurrence formula
    *
    * For matrices, the function is evaluated element wise.
    *
@@ -14,7 +14,7 @@ export const createDigamma = /* #__PURE__ */ factory(name, dependencies, ({ type
    *    It might not have perfect precision - last digits might differ
    *    The precision could be improved by increasing number in recursive formula
    *    Or adding more terms in asymptotic expansion
-   * 
+   *
    * Syntax:
    *
    *    math.digamma(n)
