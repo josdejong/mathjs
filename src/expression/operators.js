@@ -34,6 +34,7 @@ export const properties = [
   },
   { // logical or
     'OperatorNode:or': {
+      op: 'or',
       associativity: 'left',
       associativeWith: []
     }
@@ -41,56 +42,67 @@ export const properties = [
   },
   { // logical xor
     'OperatorNode:xor': {
+      op: 'xor',
       associativity: 'left',
       associativeWith: []
     }
   },
   { // logical and
     'OperatorNode:and': {
+      op: 'and',
       associativity: 'left',
       associativeWith: []
     }
   },
   { // bitwise or
     'OperatorNode:bitOr': {
+      op: '|',
       associativity: 'left',
       associativeWith: []
     }
   },
   { // bitwise xor
     'OperatorNode:bitXor': {
+      op: '^|',
       associativity: 'left',
       associativeWith: []
     }
   },
   { // bitwise and
     'OperatorNode:bitAnd': {
+      op: '&',
       associativity: 'left',
       associativeWith: []
     }
   },
   { // relational operators
     'OperatorNode:equal': {
+      op: '==',
       associativity: 'left',
       associativeWith: []
     },
     'OperatorNode:unequal': {
+      op: '!=',
       associativity: 'left',
       associativeWith: []
     },
     'OperatorNode:smaller': {
+      op: '<',
       associativity: 'left',
       associativeWith: []
     },
     'OperatorNode:larger': {
+      op: '>',
       associativity: 'left',
       associativeWith: []
     },
     'OperatorNode:smallerEq': {
+      op: '<=',
       associativity: 'left',
       associativeWith: []
     },
     'OperatorNode:largerEq': {
+      op: '>=',
       associativity: 'left',
       associativeWith: []
     },
@@ -101,20 +113,24 @@ export const properties = [
   },
   { // bitshift operators
     'OperatorNode:leftShift': {
+      op: '<<',
       associativity: 'left',
       associativeWith: []
     },
     'OperatorNode:rightArithShift': {
+      op: '>>',
       associativity: 'left',
       associativeWith: []
     },
     'OperatorNode:rightLogShift': {
+      op: '>>>',
       associativity: 'left',
       associativeWith: []
     }
   },
   { // unit conversion
     'OperatorNode:to': {
+      op: 'to',
       associativity: 'left',
       associativeWith: []
     }
@@ -124,16 +140,19 @@ export const properties = [
   },
   { // addition, subtraction
     'OperatorNode:add': {
+      op: '+',
       associativity: 'left',
       associativeWith: ['OperatorNode:add', 'OperatorNode:subtract']
     },
     'OperatorNode:subtract': {
+      op: '-',
       associativity: 'left',
       associativeWith: []
     }
   },
   { // multiply, divide, modulus
     'OperatorNode:multiply': {
+      op: '*',
       associativity: 'left',
       associativeWith: [
         'OperatorNode:multiply',
@@ -143,6 +162,7 @@ export const properties = [
       ]
     },
     'OperatorNode:divide': {
+      op: '/',
       associativity: 'left',
       associativeWith: [],
       latexLeftParens: false,
@@ -153,6 +173,7 @@ export const properties = [
       // in LaTeX
     },
     'OperatorNode:dotMultiply': {
+      op: '.*',
       associativity: 'left',
       associativeWith: [
         'OperatorNode:multiply',
@@ -162,30 +183,37 @@ export const properties = [
       ]
     },
     'OperatorNode:dotDivide': {
+      op: './',
       associativity: 'left',
       associativeWith: []
     },
     'OperatorNode:mod': {
+      op: 'mod',
       associativity: 'left',
       associativeWith: []
     }
   },
   { // unary prefix operators
     'OperatorNode:unaryPlus': {
+      op: '+',
       associativity: 'right'
     },
     'OperatorNode:unaryMinus': {
+      op: '-',
       associativity: 'right'
     },
     'OperatorNode:bitNot': {
+      op: '~',
       associativity: 'right'
     },
     'OperatorNode:not': {
+      op: 'not',
       associativity: 'right'
     }
   },
   { // exponentiation
     'OperatorNode:pow': {
+      op: '^',
       associativity: 'right',
       associativeWith: [],
       latexRightParens: false
@@ -194,17 +222,20 @@ export const properties = [
       // (it's on top)
     },
     'OperatorNode:dotPow': {
+      op: '.^',
       associativity: 'right',
       associativeWith: []
     }
   },
   { // factorial
     'OperatorNode:factorial': {
+      op: '!',
       associativity: 'left'
     }
   },
   { // matrix transpose
-    'OperatorNode:transpose': {
+    'OperatorNode:ctranspose': {
+      op: "'",
       associativity: 'left'
     }
   }
@@ -307,5 +338,24 @@ export function isAssociativeWith (nodeA, nodeB, parenthesis) {
   }
 
   // associativeWith is not defined
+  return null
+}
+
+/**
+ * Get the operator associated with a function name.
+ * Returns a string with the operator symbol, or null if the
+ * input is not the name of a function associated with an
+ * operator.
+ *
+ * @param {string} Function name
+ * @return {string | null} Associated operator symbol, if any
+ */
+export function getOperator (fn) {
+  const identifier = 'OperatorNode:' + fn
+  for (const group of properties) {
+    if (identifier in group) {
+      return group[identifier].op
+    }
+  }
   return null
 }

@@ -27,6 +27,12 @@ console.log(simplified.toString())       // '3 * x'
 console.log(simplified.evaluate({x: 4})) // 12
 ```
 
+Among its other actions, calling `simplify()` on an expression will convert
+any functions that have operator equivalents to their operator form:
+```js
+console.log(math.simplify('multiply(x,3)').toString)  // '3 * x'
+```
+
 Note that `simplify` has an optional argument `scope` that allows the definitions of variables in the expression (as numeric values, or as further expressions) to be specified and used in the simplification, e.g. continuing the previous example,
 
 ```js
