@@ -131,11 +131,12 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
    * Is parenthesis needed?
    * @param {Node} node
    * @param {Object} parenthesis
+   * @param {string} implicit
    * @private
    */
-  function needParenthesis (node, parenthesis) {
-    const precedence = getPrecedence(node, parenthesis)
-    const exprPrecedence = getPrecedence(node.expr, parenthesis)
+  function needParenthesis (node, parenthesis, implicit) {
+    const precedence = getPrecedence(node, parenthesis, implicit)
+    const exprPrecedence = getPrecedence(node.expr, parenthesis, implicit)
 
     return (parenthesis === 'all') ||
       ((exprPrecedence !== null) && (exprPrecedence <= precedence))
@@ -149,7 +150,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
   FunctionAssignmentNode.prototype._toString = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
     let expr = this.expr.toString(options)
-    if (needParenthesis(this, parenthesis)) {
+    if (needParenthesis(this, parenthesis, options && options.implicit)) {
       expr = '(' + expr + ')'
     }
     return this.name + '(' + this.params.join(', ') + ') = ' + expr
@@ -198,7 +199,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       params.push('<span class="math-symbol math-parameter">' + escape(this.params[i]) + '</span>')
     }
     let expr = this.expr.toHTML(options)
-    if (needParenthesis(this, parenthesis)) {
+    if (needParenthesis(this, parenthesis, options && options.implicit)) {
       expr = '<span class="math-parenthesis math-round-parenthesis">(</span>' + expr + '<span class="math-parenthesis math-round-parenthesis">)</span>'
     }
     return '<span class="math-function">' + escape(this.name) + '</span>' + '<span class="math-parenthesis math-round-parenthesis">(</span>' + params.join('<span class="math-separator">,</span>') + '<span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-assignment-operator math-variable-assignment-operator math-binary-operator">=</span>' + expr
@@ -212,7 +213,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
   FunctionAssignmentNode.prototype._toTex = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
     let expr = this.expr.toTex(options)
-    if (needParenthesis(this, parenthesis)) {
+    if (needParenthesis(this, parenthesis, options && options.implicit)) {
       expr = `\\left(${expr}\\right)`
     }
 
