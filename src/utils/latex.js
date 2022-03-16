@@ -198,6 +198,7 @@ export const latexFunctions = {
   combinationsWithRep: { 2: '\\left(\\!\\!{\\binom{${args[0]}}{${args[1]}}}\\!\\!\\right)' },
   factorial: { 1: `\\left(\${args[0]}\\right)${latexOperators.factorial}` },
   gamma: { 1: '\\Gamma\\left(${args[0]}\\right)' },
+  digamma: { 1: '\\Digamma\\left(${args[0]}\\right)' },
 
   // relational
   equal: { 2: `\\left(\${args[0]}${latexOperators.equal}\${args[1]}\\right)` },

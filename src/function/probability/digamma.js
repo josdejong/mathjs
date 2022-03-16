@@ -10,6 +10,11 @@ export const createDigamma = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * For matrices, the function is evaluated element wise.
    *
+   * Note:
+   *    It might not have perfect precision - last digits might differ
+   *    The precision could be improved by increasing number in recursive formula
+   *    Or adding more terms in asymptotic expansion
+   * 
    * Syntax:
    *
    *    math.digamma(n)
@@ -18,7 +23,7 @@ export const createDigamma = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *    math.digamma(5)       // returns 1.5061176684318004727
    *    math.digamma(1)       // returns -0.5772156649015328606
-   *    math.digamma(math.i)  // returns -0.15494982830180973 - 0.49801566811835596i
+   *    math.digamma(math.i)  // returns 0.09465032062247697727 + 2.0766740474685811i
    *
    * See also:
    *
@@ -59,8 +64,13 @@ export const createDigamma = /* #__PURE__ */ factory(name, dependencies, ({ type
       const term1 = n.log()
       const term2 = new Complex(1).div(n.add(n)) // 1 / 2z
       const term3 = term2.mul(term2).mul(1 / 3) // 1 / 12z^2 -> (1/2z)*(1/2z)*1/3
+      const n2 = n.mul(n) // z^2
+      const n4 = n2.mul(n2) // z^4
+      const term4 = new Complex(1).div(n4.mul(120)) // 1 / 120z^4
+      const term5 = new Complex(1).div(n4.mul(n2).mul(252)) // 1 / 252z^6
+      const term6 = new Complex(1).div(n4.mul(n4).mul(240)) // 1 / 240z^8
 
-      return term1.sub(term2).sub(term3).sub(result)
+      return term1.sub(term2).sub(term3).sub(result).add(term4).sub(term5).add(term6)
     },
 
     'Array | Matrix': function (n) {
