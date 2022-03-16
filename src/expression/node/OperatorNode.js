@@ -1,4 +1,4 @@
-import { isNode, isConstantNode, isParenthesisNode, rule2Node } from '../../utils/is.js'
+import { isNode, isConstantNode, isOperatorNode, isParenthesisNode } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
 import { escape } from '../../utils/string.js'
 import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
@@ -151,6 +151,24 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Returns true if the expression starts with a constant, under
+   * the current parenthesization:
+   * @param {Node} expression
+   * @param {string} parenthesis
+   * @return {boolean}
+   */
+  function startsWithConstant (expr, parenthesis) {
+    let curNode = expr
+    if (parenthesis === 'auto') {
+      while (isParenthesisNode(curNode)) curNode = curNode.content
+    }
+    if (isConstantNode(curNode)) return true
+    if (isOperatorNode(curNode)) {
+      return startsWithConstant(curNode.args[0], parenthesis)
+    }
+    return false
+  }
+  /**
    * Calculate which parentheses are necessary. Gets an OperatorNode
    * (which is the root of the tree) and an Array of Nodes
    * (this.args) and returns an array where 'true' means that an argument
@@ -165,7 +183,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function calculateNecessaryParentheses (root, parenthesis, implicit, args, latex) {
     // precedence of the root OperatorNode
-    const precedence = getPrecedence(root, parenthesis)
+    const precedence = getPrecedence(root, parenthesis, implicit)
     const associativity = getAssociativity(root, parenthesis)
 
     if ((parenthesis === 'all') || ((args.length > 2) && (root.getIdentifier() !== 'OperatorNode:add') && (root.getIdentifier() !== 'OperatorNode:multiply'))) {
@@ -191,7 +209,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
       case 1: // unary operators
         {
           // precedence of the operand
-          const operandPrecedence = getPrecedence(args[0], parenthesis)
+          const operandPrecedence = getPrecedence(args[0], parenthesis, implicit, root)
 
           // handle special cases for LaTeX, where some of the parentheses aren't needed
           if (latex && (operandPrecedence !== null)) {
@@ -236,7 +254,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         {
           let lhsParens // left hand side needs parenthesis?
           // precedence of the left hand side
-          const lhsPrecedence = getPrecedence(args[0], parenthesis)
+          const lhsPrecedence = getPrecedence(args[0], parenthesis, implicit, root)
           // is the root node associative with the left hand side
           const assocWithLhs = isAssociativeWith(root, args[0], parenthesis)
 
@@ -258,7 +276,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
           let rhsParens // right hand side needs parenthesis?
           // precedence of the right hand side
-          const rhsPrecedence = getPrecedence(args[1], parenthesis)
+          const rhsPrecedence = getPrecedence(args[1], parenthesis, implicit, root)
           // is the root node associative with the right hand side?
           const assocWithRhs = isAssociativeWith(root, args[1], parenthesis)
 
@@ -322,7 +340,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
       default:
         if ((root.getIdentifier() === 'OperatorNode:add') || (root.getIdentifier() === 'OperatorNode:multiply')) {
           result = args.map(function (arg) {
-            const argPrecedence = getPrecedence(arg, parenthesis)
+            const argPrecedence = getPrecedence(arg, parenthesis, implicit, root)
             const assocWithArg = isAssociativeWith(root, arg, parenthesis)
             const argAssociativity = getAssociativity(arg, parenthesis)
             if (argPrecedence === null) {
@@ -340,78 +358,16 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         break
     }
 
-    // The following block handles edge cases of parentheses with
-    // implicit multiplication:
-    // A) With parenthesis 'auto', parenthesized nodes except for
-    //    the first must be placed in parentheses even though they
-    //    normally wouldn't be, to preserve implicit multiplication
-    // B) With 'auto' or 'keep', ConstantNodes that follow unparenthesized
-    //    expressions must be placed in parentheses to preserve implicit
-    //    multiplication.
-    // C) With 'auto' or 'keep', fractions in which the denominator is not
-    //    constant or in which the numerator is not a "Rule 2 Node" must be
-    //    parenthesized, because of parsing rules for implicit multiplication
-    //    by fractions (e.g. 1/2 a is interpreted as (1/2)a and -1/2a is
-    //    interpreted as (-1/2)a but 2/-3 a is interpreted as 2/(-3a),
-    //    by contrast.
+    // Handles an edge case of parentheses with implicit multiplication
+    // of ConstantNode.
+    // In that case, parenthesize ConstantNodes that follow an unparenthesized
+    // expression, even though they normally wouldn't be printed.
     if (args.length >= 2 && root.getIdentifier() === 'OperatorNode:multiply' &&
         root.implicit && parenthesis !== 'all' && implicit === 'hide') {
-      // First check case (C) above
-      if (args[0].getIdentifier() === 'OperatorNode:divide' &&
-          (!rule2Node(args[0].args[0]) || !isConstantNode(args[0].args[1]))) {
-        result[0] = true
-      }
-      // Then handle case (A)
-      if (parenthesis === 'auto') {
-        for (let i = 1; i < result.length; ++i) {
-          if (result[i]) continue
-          result[i] = isParenthesisNode(args[i])
-        }
-      }
-      // Finally take care of case (B)
       for (let i = 1; i < result.length; ++i) {
-        if (isConstantNode(args[i]) && !result[i - 1] &&
-            !isParenthesisNode(args[i - 1])) {
+        if (startsWithConstant(args[i], parenthesis) && !result[i - 1] &&
+            (parenthesis !== 'keep' || !isParenthesisNode(args[i - 1]))) {
           result[i] = true
-        }
-      }
-    }
-
-    // Small helper to make the below more readable:
-    function maybeParenthesized (predicate, node) {
-      return predicate(node) ||
-        (parenthesis === 'auto' && isParenthesisNode(node) &&
-         predicate(node.content))
-    }
-    // This unfortunately complicated block handles the flip sides
-    // of (C) above: in a fraction, you don't need to parenthesize
-    // the denominator if it is an implicit multiplication where
-    // "Rule 2" does not apply, and you _do_ need to parenthesize the
-    // numerator or denominator if "Rule 2" would otherwise apply.
-    // It would be great to devise a simpler approach to parenthesization.
-    if (args.length === 2 &&
-        root.getIdentifier() === 'OperatorNode:divide' &&
-        args[1].getIdentifier() === 'OperatorNode:multiply' &&
-        args[1].implicit && parenthesis !== 'all') {
-      if (!result[0] && maybeParenthesized(rule2Node, args[0]) &&
-          isConstantNode(args[1].args[0])) {
-        result[0] = true
-      }
-      if (result[1]) {
-        // Note if the numerator is parenthesized and denominator is implicit,
-        // then the denominator definitely does not need parentheses:
-        if (implicit === 'hide' &&
-            (result[0] ||
-             !maybeParenthesized(rule2Node, args[0]) ||
-             !maybeParenthesized(isConstantNode, args[1].args[0]))) {
-          result[1] = false
-        }
-      } else { // result[1] was false
-        if (parenthesis === 'auto' && !latex && !result[0] &&
-            maybeParenthesized(rule2Node, args[0]) &&
-            isParenthesisNode(args[1].args[0]) &&
-            isConstantNode(args[1].args[0].content)) {
-          result[1] = true
         }
       }
     }
