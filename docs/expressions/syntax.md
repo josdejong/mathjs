@@ -207,8 +207,8 @@ Operator Expression  | Equivalent Function Expression
 `a or b`             |`or(a,b)`
 `a xor b`            |`xor(a,b)`
 `a and b`            |`and(a,b)`
-`a | b`              |`bitOr(a,b)`
-`a ^| b`             |`bitXor(a,b)`
+`a \| b`             |`bitOr(a,b)`
+`a ^\| b`            |`bitXor(a,b)`
 `a & b`              |`bitAnd(a,b)`
 `a == b`             |`equal(a,b)`
 `a != b`             |`unequal(a,b)`
