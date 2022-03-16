@@ -4,8 +4,10 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 
 describe('simplifyCore', function () {
-  const testSimplifyCore = function (expr, expected, opts = {}) {
-    const actual = math.simplifyCore(math.parse(expr)).toString(opts)
+  const testSimplifyCore = function (expr, expected, opts = {}, simpOpts = {}) {
+    let actual = math.simplifyCore(math.parse(expr), simpOpts).toString(opts)
+    assert.strictEqual(actual, expected)
+    actual = math.simplifyCore(expr, simpOpts).toString(opts)
     assert.strictEqual(actual, expected)
   }
 
@@ -31,6 +33,14 @@ describe('simplifyCore', function () {
     testSimplifyCore('[x+0,1*y,z*0]', '[x, y, 0]')
     testSimplifyCore('(a+b+0)[n*0+1,-(n)]', '(a + b)[1, -n]')
     testSimplifyCore('{a:x*1, b:y-0}', '{"a": x, "b": y}')
+  })
+
+  it('should not alter order of multiplication when noncommutative', function () {
+    testSimplifyCore('5*x*3', '5 * x * 3', {}, { context: { multiply: { commutative: false } } })
+  })
+
+  it('should remove any trivial function', function () {
+    testSimplifyCore('foo(y)', 'y', {}, { context: { foo: { trivial: true } } })
   })
 
   it('strips ParenthesisNodes (implicit in tree)', function () {
@@ -61,5 +71,18 @@ describe('simplifyCore', function () {
   it('should recurse through arbitrary binary operators', function () {
     testSimplifyCore('x+0==5', 'x == 5')
     testSimplifyCore('(x*1) % (y^1)', 'x % y')
+  })
+
+  it('converts functions to their corresponding infix operators', () => {
+    testSimplifyCore('add(x, y)', 'x + y')
+    testSimplifyCore('mod(x, 5)', 'x mod 5')
+    testSimplifyCore('to(5 cm, in)', '5 cm to in')
+    testSimplifyCore('ctranspose(M)', "M'")
+  })
+
+  it('continues to simplify after function -> operator conversion', () => {
+    testSimplifyCore('add(multiply(x, 0), y)', 'y')
+    testSimplifyCore('and(multiply(1, x), true)', 'x and true')
+    testSimplifyCore('add(x, 0 ,y)', 'x + y')
   })
 })

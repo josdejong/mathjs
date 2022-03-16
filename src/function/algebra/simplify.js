@@ -111,7 +111,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * - 'v' - matches any Node that is not a ConstantNode
    *
    * The default list of rules is exposed on the function as `simplify.rules`
-   * and can be used as a basis to built a set of custom rules.
+   * and can be used as a basis to built a set of custom rules. Note that since
+   * the `simplifyCore` function is in the default list of rules, by default
+   * simplify will convert any function calls in the expression that have
+   * operator equivalents to their operator forms.
    *
    * To specify a rule as a string, separate the left and right pattern by '->'
    * When specifying a rule as an object, the following keys are meaningful:
