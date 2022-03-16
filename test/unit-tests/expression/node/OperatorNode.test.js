@@ -529,6 +529,8 @@ describe('OperatorNode', function () {
     exhs({ i: '(2+3)a', s: ['(2 + 3) a', '(2 + 3) * a'], l: ['\\left(2+3\\right)~ a', '\\left(2+3\\right)\\cdot a'] })
     exhs({ i: '(2+3)2', s: ['(2 + 3) 2', '(2 + 3) * 2'], l: ['\\left(2+3\\right)~2', '\\left(2+3\\right)\\cdot2'] })
     exhs({ i: '2(3+4)', s: ['2 (3 + 4)', '2 * (3 + 4)'], l: ['2~\\left(3+4\\right)', '2\\cdot\\left(3+4\\right)'] })
+    exhs({ i: 'a / b c', s: ['a / b c', 'a / (b * c)'], l: ['\\frac{ a}{\\mathrm{b}~ c}', '\\frac{ a}{\\mathrm{b}\\cdot c}'] })
+    exhs({ i: 'a / b c d', s: ['a / b c d', 'a / (b * c * d)'], l: ['\\frac{ a}{\\mathrm{b}~ c~ d}', '\\frac{ a}{\\mathrm{b}\\cdot c\\cdot d}'] })
     exhs({ i: '1/2 a', s: ['1 / 2 a', '1 / 2 * a'], l: ['\\frac{1}{2}~ a', '\\frac{1}{2}\\cdot a'] })
     exhs({ i: '-2/3 a', s: ['-2 / 3 a', '-2 / 3 * a'], l: ['\\frac{-2}{3}~ a', '\\frac{-2}{3}\\cdot a'] })
     exhs({ i: '2!/3 a', s: ['2! / 3 a', '2! / (3 * a)'], l: ['\\frac{2!}{3~ a}', '\\frac{2!}{3\\cdot a}'] })
@@ -540,8 +542,10 @@ describe('OperatorNode', function () {
     exhs({ i: '-2/(3+4)x', s: ['-2 / (3 + 4) x', '-2 / ((3 + 4) * x)'], l: ['\\frac{-2}{\\left(3+4\\right)~ x}', '\\frac{-2}{\\left(3+4\\right)\\cdot x}'] })
     exhs({
       i: '(2)/3x',
-      s: ['(2) / 3 x', '(2) / (3 * x)'],
-      l: ['\\frac{\\left(2\\right)}{3~ x}', '\\frac{\\left(2\\right)}{3\\cdot x}']
+      skeep: ['(2) / 3 x', '(2) / (3 * x)'],
+      sauto: ['2 / (3 x)', '2 / (3 * x)'],
+      lkeep: ['\\frac{\\left(2\\right)}{3~ x}', '\\frac{\\left(2\\right)}{3\\cdot x}'],
+      lauto: ['\\frac{2}{3~ x}', '\\frac{2}{3\\cdot x}']
     })
     exhs({
       i: '2/(3)x',

@@ -215,15 +215,16 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
    * Is parenthesis needed?
    * @param {node} node
    * @param {string} [parenthesis='keep']
+   * @param {string} implicit
    * @private
    */
-  function needParenthesis (node, parenthesis) {
+  function needParenthesis (node, parenthesis, implicit) {
     if (!parenthesis) {
       parenthesis = 'keep'
     }
 
-    const precedence = getPrecedence(node, parenthesis)
-    const exprPrecedence = getPrecedence(node.value, parenthesis)
+    const precedence = getPrecedence(node, parenthesis, implicit)
+    const exprPrecedence = getPrecedence(node.value, parenthesis, implicit)
     return (parenthesis === 'all') ||
       ((exprPrecedence !== null) && (exprPrecedence <= precedence))
   }
@@ -237,7 +238,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     const object = this.object.toString(options)
     const index = this.index ? this.index.toString(options) : ''
     let value = this.value.toString(options)
-    if (needParenthesis(this, options && options.parenthesis)) {
+    if (needParenthesis(this, options && options.parenthesis, options && options.implicit)) {
       value = '(' + value + ')'
     }
 
@@ -277,7 +278,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     const object = this.object.toHTML(options)
     const index = this.index ? this.index.toHTML(options) : ''
     let value = this.value.toHTML(options)
-    if (needParenthesis(this, options && options.parenthesis)) {
+    if (needParenthesis(this, options && options.parenthesis, options && options.implicit)) {
       value = '<span class="math-paranthesis math-round-parenthesis">(</span>' + value + '<span class="math-paranthesis math-round-parenthesis">)</span>'
     }
 
@@ -293,7 +294,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     const object = this.object.toTex(options)
     const index = this.index ? this.index.toTex(options) : ''
     let value = this.value.toTex(options)
-    if (needParenthesis(this, options && options.parenthesis)) {
+    if (needParenthesis(this, options && options.parenthesis, options && options.implicit)) {
       value = `\\left(${value}\\right)`
     }
 

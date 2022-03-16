@@ -17,6 +17,7 @@
 //                  in parentheses
 // latexRightParens: the same for the right argument
 import { hasOwnProperty } from '../utils/object.js'
+import { isConstantNode, isParenthesisNode, rule2Node } from '../utils/is.js'
 
 export const properties = [
   { // assignment
@@ -193,6 +194,17 @@ export const properties = [
       associativeWith: []
     }
   },
+  { // Repeat multiplication for implicit multiplication
+    'OperatorNode:multiply': {
+      associativity: 'left',
+      associativeWith: [
+        'OperatorNode:multiply',
+        'OperatorNode:divide',
+        'Operator:dotMultiply',
+        'Operator:dotDivide'
+      ]
+    }
+  },
   { // unary prefix operators
     'OperatorNode:unaryPlus': {
       op: '+',
@@ -242,27 +254,60 @@ export const properties = [
 ]
 
 /**
+ * Returns the first non-parenthesis internal node, but only
+ * when the 'parenthesis' option is unset or auto.
+ * @param {Node} _node
+ * @param {string} parenthesis
+ * @return {Node}
+ */
+function unwrapParen (_node, parenthesis) {
+  if (!parenthesis || parenthesis !== 'auto') return _node
+  let node = _node
+  while (isParenthesisNode(node)) node = node.content
+  return node
+}
+
+/**
  * Get the precedence of a Node.
  * Higher number for higher precedence, starting with 0.
  * Returns null if the precedence is undefined.
  *
  * @param {Node} _node
  * @param {string} parenthesis
+ * @param {string} implicit
+ * @param {Node} parent (for determining context for implicit multiplication)
  * @return {number | null}
  */
-export function getPrecedence (_node, parenthesis) {
+export function getPrecedence (_node, parenthesis, implicit, parent) {
   let node = _node
   if (parenthesis !== 'keep') {
     // ParenthesisNodes are only ignored when not in 'keep' mode
     node = _node.getContent()
   }
   const identifier = node.getIdentifier()
+  let precedence = null
   for (let i = 0; i < properties.length; i++) {
     if (identifier in properties[i]) {
-      return i
+      precedence = i
+      break
     }
   }
-  return null
+  // Bump up precedence of implicit multiplication, except when preceded
+  // by a "Rule 2" fraction ( [unaryOp]constant / constant )
+  if (identifier === 'OperatorNode:multiply' && node.implicit &&
+      implicit !== 'show') {
+    const leftArg = unwrapParen(node.args[0], parenthesis)
+    if (!(isConstantNode(leftArg) && parent &&
+          parent.getIdentifier() === 'OperatorNode:divide' &&
+          rule2Node(unwrapParen(parent.args[0], parenthesis))) &&
+        !(leftArg.getIdentifier() === 'OperatorNode:divide' &&
+          rule2Node(unwrapParen(leftArg.args[0], parenthesis)) &&
+          isConstantNode(unwrapParen(leftArg.args[1])))
+    ) {
+      precedence += 1
+    }
+  }
+  return precedence
 }
 
 /**
