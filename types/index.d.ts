@@ -575,6 +575,11 @@ declare namespace math {
      */
     unit(unit: string): Unit;
     /**
+     * @param unit The unit to be created
+     * @returns The created unit
+     */
+    unit(unit: Unit): Unit;
+    /**
      * @param value The value of the unit to be created
      * @param unit The unit to be created
      * @returns The created unit
