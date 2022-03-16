@@ -102,6 +102,9 @@ describe('gamma', function () {
   })
 
   it('should calculate the gamma of a complex number', function () {
+    approx.deepEqual(gamma(math.complex(0, 0)), math.complex(Infinity))
+    approx.deepEqual(gamma(math.complex(0.0001, 0.0001)), math.complex(4999.422883240696,
+      -4999.9999011125))
     approx.deepEqual(gamma(math.complex(1, 1)), math.complex(0.498015668118356,
       -0.154949828301810))
     approx.deepEqual(gamma(math.complex(1, -1)), math.complex(0.498015668118356,
@@ -118,6 +121,12 @@ describe('gamma', function () {
       -0.0548501708))
     approx.deepEqual(gamma(math.complex(-0.5, -0.5)), math.complex(-1.581477828,
       0.054850170))
+    approx.deepEqual(gamma(math.complex(-0.45, -0.15)), math.complex(-3.2466111264,
+      0.2219549583256))
+    approx.deepEqual(gamma(math.complex(0.49, 1)), math.complex(0.294136245907794,
+      -0.4298609111267))
+    approx.deepEqual(gamma(math.complex(9.43, -4.15)), math.complex(-39533.5179564,
+      -7863.025662998))
     approx.deepEqual(gamma(math.complex(5, 3)), math.complex(0.016041882741652,
       -9.433293289755986))
     approx.deepEqual(gamma(math.complex(5, -3)), math.complex(0.016041882741652,

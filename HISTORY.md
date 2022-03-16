@@ -1,5 +1,94 @@
 # History
 
+# not yet published, version 10.4.1
+
+- Improve TypeScript definitions for function `unit` (#2479). 
+  Thanks @SinanAkkoyun.
+- Add tests for type declarations (#2448). Thanks @samestep.
+- Further improvement to TypeScript definitions of `std` and `variance`
+  (make dimension parameter optional, #2474). Thanks @NattapongSiri.
+
+
+# 2022-03-07, version 10.4.0
+
+- Fix #2461: make sure `simplifyCore` recurses over all binary nodes (#2462).
+  Thanks @gwhitney.
+- Fix #2429: fix the TypeScript definitions of functions `std` and `variance`
+  (#2455). Thanks @NattapongSiri.
+- Fix #1633: implement a `cumsum` function generating cumulative sums of a list
+  of values or a matrix. (#1870). Thanks @hjonasson.
+- Upgrade to the latest version of `Fraction.js`, having more strict input, 
+  only accepting an integer numerator and denominator. See #2427.
+- Fix typo in documentation example for `format`. (#2468) Thanks @abranhe.
+- Write unit tests for all jsdoc examples. See #2452. Thanks @gwhitney. 
+
+
+# 2021-03-02, version 10.3.0
+
+- Fix #1260: implement function `symbolicEqual` (#2424). Thanks @gwhitney.
+- Fix #2441, #2442: support passing a function as argument to functions created
+  in the expression parser (#2443). Thanks @gwhitney.
+- Fix #2325: improve documentation of subset indices (#2446). Thanks @gwhitney.
+- Fix #2439: fix a bug in `complexEigs` in which real-valued norms were 
+  inadvertently being typed as complex numbers (#2445). Thanks @gwhitney.
+- Fix #2436: improve documentation and error message of function `map` (#2457).
+  Thanks @gwhitney.
+
+
+# 2022-03-01, version 10.2.0
+
+- Implemented context options to control simplifications allowed in `simplify`, 
+  see #2399, #2391. Thanks @gwhitney.
+- Implemented function `leafCount` as a first simple measure of the complexity 
+  of an expression, see #2411, #2389. Thanks @gwhitney.
+- Fix #2413: improve `combinations` to return an integer result without rounding
+  errors for larger values, see #2414. Thanks @gwhitney.
+- Fix #2385: function `rotate` missing in TypeScript definitions. 
+  Thanks @DIVYA-19.
+- Fix #2450: Add BigNumber to parameter type in `math.unit` and add TypeScript
+  types for `Unit.simplify` and `Unit.units` (#2353). Thanks @joshhansen.
+- Fix #2383: detect infinite loops in `simplify` (#2405). Thanks @gwhitney.
+- Fix #1423: collect like factors and cancel like terms in sums (#2388). 
+  Thanks @gwhitney.
+
+
+# 2022-02-02, version 10.1.1
+
+- Improvements and fixes in function `simplify`, thanks @gwhitney:
+  - Fix #2393: regression bug in `simplify('2-(x+1)')`.
+  - Ad option `consoleDebug` to `simplify` to see what is going on.
+- Fix TypeScript definition of `ConfigOptions`, which was missing option 
+  `predictable`.
+
+
+# 2022-01-15, version 10.1.0
+
+- Implemented function `invmod`, see #2368, #1744. Thanks @thetazero.
+- Improvements and fixes in function `simplify`, thanks @gwhitney:
+  - Fix #1179, #1290: improve collection of non-constant like terms (#2384).
+  - Fix #2152: do not transform strings into numbers (#2372).
+  - Fix #1913: implement support for array and object simplification (#2382).
+- Fix #2379: add embedded documentation for function `print`.
+- Remove broken example from the embedded documentation of function `forEach`.
+
+
+# 2021-12-29, version 10.0.2
+
+- Fix #2156: simplify expressions like `-1 / (-x)` to `1/x`. Thanks @ony3000.
+- Fix #2363: remove a redundant part of the regex to split a number.
+- Fix #2291: add support for fractions in function `intersect`. 
+  Thanks @thetazero.
+- Fix #2358: bug in `SparseMatrix` when replacing a subset of a matrix with
+  a non-consecutive index. Thanks @Al-0.
+
+
+# 2021-12-22, version 10.0.1
+
+- Fix #1681: function `gamma` giving inaccurate complex results in some cases.
+  Thanks @kmdrGroch.
+- Fixed a typo in an example, see #2366. Thanks @blackwindforce.
+
+
 # 2021-11-03, version 10.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES IN THE TYPESCRIPT DEFINITIONS !!!

@@ -110,7 +110,7 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *      // you could also use math.format inside the callback:
    *      // return '$' + math.format(value, {notation: 'fixed', precision: 2})
    *    }
-   *    math.format([2.1, 3, 0.016], formatCurrency}            // returns '[$2.10, $3.00, $0.02]'
+   *    math.format([2.1, 3, 0.016], formatCurrency)            // returns '[$2.10, $3.00, $0.02]'
    *
    * See also:
    *

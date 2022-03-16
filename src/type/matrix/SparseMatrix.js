@@ -391,23 +391,25 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         throw new DimensionError(iSize, sSize, '>')
       }
 
-      // offsets
-      const x0 = index.min()[0]
-      const y0 = index.min()[1]
-
-      // submatrix rows and columns
-      const m = sSize[0]
-      const n = sSize[1]
-
-      // loop submatrix
-      for (let x = 0; x < m; x++) {
-        // loop columns
-        for (let y = 0; y < n; y++) {
-          // value at i, j
-          const v = submatrix[x][y]
-          // invoke set (zero value will remove entry from matrix)
-          matrix.set([x + x0, y + y0], v, defaultValue)
-        }
+      // insert the sub matrix
+      if (iSize.length === 1) {
+        // if the replacement index only has 1 dimension, go trough each one and set its value
+        const range = index.dimension(0)
+        range.forEach(function (dataIndex, subIndex) {
+          validateIndex(dataIndex)
+          matrix.set([dataIndex, 0], submatrix[subIndex[0]], defaultValue)
+        })
+      } else {
+        // if the replacement index has 2 dimensions, go through each one and set the value in the correct index
+        const firstDimensionRange = index.dimension(0)
+        const secondDimensionRange = index.dimension(1)
+        firstDimensionRange.forEach(function (firstDataIndex, firstSubIndex) {
+          validateIndex(firstDataIndex)
+          secondDimensionRange.forEach(function (secondDataIndex, secondSubIndex) {
+            validateIndex(secondDataIndex)
+            matrix.set([firstDataIndex, secondDataIndex], submatrix[firstSubIndex[0]][secondSubIndex[0]], defaultValue)
+          })
+        })
       }
     }
     return matrix

@@ -79,56 +79,70 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     const evalArgs = this.args.map((arg) => arg._compile(math, argNames))
 
     if (isSymbolNode(this.fn)) {
-      // we can statically determine whether the function has an rawArgs property
       const name = this.fn.name
-      const fn = name in math ? getSafeProperty(math, name) : undefined
-      const isRaw = typeof fn === 'function' && fn.rawArgs === true
+      if (!argNames[name]) {
+        // we can statically determine whether the function has an rawArgs property
+        const fn = name in math ? getSafeProperty(math, name) : undefined
+        const isRaw = typeof fn === 'function' && fn.rawArgs === true
 
-      const resolveFn = (scope) => {
-        if (scope.has(name)) {
-          return scope.get(name)
+        const resolveFn = (scope) => {
+          if (scope.has(name)) {
+            return scope.get(name)
+          }
+          if (name in math) {
+            return getSafeProperty(math, name)
+          }
+          return FunctionNode.onUndefinedFunction(name)
         }
-        if (name in math) {
-          return getSafeProperty(math, name)
-        }
-        return FunctionNode.onUndefinedFunction(name)
-      }
 
-      if (isRaw) {
-        // pass unevaluated parameters (nodes) to the function
-        // "raw" evaluation
+        if (isRaw) {
+          // pass unevaluated parameters (nodes) to the function
+          // "raw" evaluation
+          const rawArgs = this.args
+          return function evalFunctionNode (scope, args, context) {
+            const fn = resolveFn(scope)
+            return fn(rawArgs, math, createSubScope(scope, args), scope)
+          }
+        } else {
+          // "regular" evaluation
+          switch (evalArgs.length) {
+            case 0: return function evalFunctionNode (scope, args, context) {
+              const fn = resolveFn(scope)
+              return fn()
+            }
+            case 1: return function evalFunctionNode (scope, args, context) {
+              const fn = resolveFn(scope)
+              const evalArg0 = evalArgs[0]
+              return fn(
+                evalArg0(scope, args, context)
+              )
+            }
+            case 2: return function evalFunctionNode (scope, args, context) {
+              const fn = resolveFn(scope)
+              const evalArg0 = evalArgs[0]
+              const evalArg1 = evalArgs[1]
+              return fn(
+                evalArg0(scope, args, context),
+                evalArg1(scope, args, context)
+              )
+            }
+            default: return function evalFunctionNode (scope, args, context) {
+              const fn = resolveFn(scope)
+              const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
+              return fn(...values)
+            }
+          }
+        }
+      } else { // the function symbol is an argName
         const rawArgs = this.args
         return function evalFunctionNode (scope, args, context) {
-          const fn = resolveFn(scope)
-          return fn(rawArgs, math, createSubScope(scope, args), scope)
-        }
-      } else {
-        // "regular" evaluation
-        switch (evalArgs.length) {
-          case 0: return function evalFunctionNode (scope, args, context) {
-            const fn = resolveFn(scope)
-            return fn()
-          }
-          case 1: return function evalFunctionNode (scope, args, context) {
-            const fn = resolveFn(scope)
-            const evalArg0 = evalArgs[0]
-            return fn(
-              evalArg0(scope, args, context)
-            )
-          }
-          case 2: return function evalFunctionNode (scope, args, context) {
-            const fn = resolveFn(scope)
-            const evalArg0 = evalArgs[0]
-            const evalArg1 = evalArgs[1]
-            return fn(
-              evalArg0(scope, args, context),
-              evalArg1(scope, args, context)
-            )
-          }
-          default: return function evalFunctionNode (scope, args, context) {
-            const fn = resolveFn(scope)
+          const fn = args[name]
+          const isRaw = fn && fn.rawArgs
+          if (isRaw) {
+            return fn(rawArgs, math, createSubScope(scope, args), scope) // "raw" evaluation
+          } else {
             const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
-            return fn(...values)
+            return fn.apply(fn, values)
           }
         }
       }
