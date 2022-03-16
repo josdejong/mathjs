@@ -71,9 +71,9 @@ describe('exp', function () {
     assert.throws(function () { exp('text') })
   })
 
-  it('should not oprate on matrices, arrays and ranges', function () {
+  it('should not operate on matrices, arrays and ranges', function () {
     // array
-    assert.throws(() => exp([0, 1, 2, 3]), TypeError)
+    assert.throws(() => exp([0, 1, 2, 3]), /Function 'exp' doesn't apply/)
     approx.deepEqual(math.map([0, 1, 2, 3], exp), [1, 2.71828182845905, 7.38905609893065, 20.0855369231877])
     approx.deepEqual(math.map([[0, 1], [2, 3]], exp), [[1, 2.71828182845905], [7.38905609893065, 20.0855369231877]])
     // dense matrix

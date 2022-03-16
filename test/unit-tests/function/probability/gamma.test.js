@@ -146,7 +146,7 @@ describe('gamma', function () {
   })
 
   it('should not operate on a matrix', function () {
-    assert.throws(() => gamma(math.matrix([0, 1, 2, 3, 4, 5])), TypeError)
+    assert.throws(() => gamma(math.matrix([0, 1, 2, 3, 4, 5])), /Function 'gamma' doesn't apply to matrices/)
     assert.deepStrictEqual(math.map(math.matrix([0, 1, 2, 3, 4, 5]), gamma), math.matrix([Infinity, 1, 1, 2, 6, 24]))
   })
 
