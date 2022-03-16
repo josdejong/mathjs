@@ -92,7 +92,7 @@ export const properties = [
       associativeWith: []
     },
     'OperatorNode:larger': {
-      op: '<',
+      op: '>',
       associativity: 'left',
       associativeWith: []
     },

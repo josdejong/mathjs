@@ -56,15 +56,31 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    * extends simplifyCore() with additional passes to provide deeper
    * simplification.
    *
+   * Specifically, simplifyCore:
+   *
+   * * Converts all function calls with operator equivalents to their
+   *   operator forms.
+   * * Removes operators or function calls that are guaranteed to have no
+   *   effect (such as unary '+').
+   * * Removes double unary '-'
+   * * Eliminates addition/subtraction of 0 and multiplication/division/powers
+   *   by 1 or 0.
+   * * Converts addition of a negation into subtraction.
+   * * Puts constants on the left of a product, if multiplication is
+   *   considered commutative by the options (which is the default)
+   * * Replaces subexpressions that consist of basic arithmetic operations on
+   *   constants with their values.
+   *
    * Syntax:
    *
    *     simplifyCore(expr)
+   *     simplifyCore(expr, options)
    *
    * Examples:
    *
    *     const f = math.parse('2 * 1 * x ^ (2 - 1)')
-   *     math.simpifyCore(f)                          // Node {2 * x}
-   *     math.simplify('2 * 1 * x ^ (2 - 1)', [math.simplifyCore]) // Node {2 * x}
+   *     math.simplifyCore(f)                          // Node "2 * x"
+   *     math.simplify('2 * 1 * x ^ (2 - 1)', [math.simplifyCore]) // Node "2 * x"
    *
    * See also:
    *
