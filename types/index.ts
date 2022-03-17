@@ -724,27 +724,27 @@ Factory Test
   })
 
   // Check guards do type refinement
-  
+
   let x: unknown
 
   if (math.isNumber(x)) {
     expectTypeOf(x).toMatchTypeOf<number>()
-  } 
+  }
   if (math.isBigNumber(x)) {
     expectTypeOf(x).toMatchTypeOf<math.BigNumber>()
-  } 
+  }
   if (math.isComplex(x)) {
     expectTypeOf(x).toMatchTypeOf<math.Complex>()
-  } 
+  }
   if (math.isFraction(x)) {
     expectTypeOf(x).toMatchTypeOf<math.Fraction>()
-  } 
+  }
   if (math.isUnit(x)) {
     expectTypeOf(x).toMatchTypeOf<math.Unit>()
-  } 
+  }
   if (math.isString(x)) {
     expectTypeOf(x).toMatchTypeOf<string>()
-  } 
+  }
   if (math.isArray(x)) {
     expectTypeOf(x).toMatchTypeOf<unknown[]>()
   }
