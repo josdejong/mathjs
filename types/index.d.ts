@@ -978,7 +978,7 @@ declare namespace math {
     cbrt(x: number, allRoots?: boolean): number
     cbrt(x: BigNumber): BigNumber
     cbrt(x: Complex, allRoots?: boolean): Complex
-    cbrt(x: Unit, allRoots?: boolean): Unit
+    cbrt(x: Unit): Unit
 
     // Rounding functions, grouped for similarity, even though it breaks
     // the alphabetic order among arithmetic functions.
