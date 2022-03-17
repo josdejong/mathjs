@@ -160,7 +160,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    */
   RangeNode.prototype._toString = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const parens = calculateNecessaryParentheses(this, parenthesis, options && options.implicit)
+    const parens = calculateNecessaryParentheses(this, parenthesis, options?.implicit)
 
     // format string as start:step:stop
     let str
@@ -219,7 +219,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    */
   RangeNode.prototype.toHTML = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const parens = calculateNecessaryParentheses(this, parenthesis, options && options.implicit)
+    const parens = calculateNecessaryParentheses(this, parenthesis, options?.implicit)
 
     // format string as start:step:stop
     let str
@@ -254,7 +254,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    */
   RangeNode.prototype._toTex = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const parens = calculateNecessaryParentheses(this, parenthesis, options && options.implicit)
+    const parens = calculateNecessaryParentheses(this, parenthesis, options?.implicit)
 
     let str = this.start.toTex(options)
     if (parens.start) {
