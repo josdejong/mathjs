@@ -104,10 +104,10 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
    */
   RelationalNode.prototype._toString = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const precedence = getPrecedence(this, parenthesis, options?.implicit)
+    const precedence = getPrecedence(this, parenthesis, options && options.implicit)
 
     const paramStrings = this.params.map(function (p, index) {
-      const paramPrecedence = getPrecedence(p, parenthesis, options?.implicit)
+      const paramPrecedence = getPrecedence(p, parenthesis, options && options.implicit)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
         ? '(' + p.toString(options) + ')'
         : p.toString(options)
@@ -160,10 +160,10 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
    */
   RelationalNode.prototype.toHTML = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const precedence = getPrecedence(this, parenthesis, options?.implicit)
+    const precedence = getPrecedence(this, parenthesis, options && options.implicit)
 
     const paramStrings = this.params.map(function (p, index) {
-      const paramPrecedence = getPrecedence(p, parenthesis, options?.implicit)
+      const paramPrecedence = getPrecedence(p, parenthesis, options && options.implicit)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
         ? '<span class="math-parenthesis math-round-parenthesis">(</span>' + p.toHTML(options) + '<span class="math-parenthesis math-round-parenthesis">)</span>'
         : p.toHTML(options)
@@ -193,10 +193,10 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
    */
   RelationalNode.prototype._toTex = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const precedence = getPrecedence(this, parenthesis, options?.implicit)
+    const precedence = getPrecedence(this, parenthesis, options && options.implicit)
 
     const paramStrings = this.params.map(function (p, index) {
-      const paramPrecedence = getPrecedence(p, parenthesis, options?.implicit)
+      const paramPrecedence = getPrecedence(p, parenthesis, options && options.implicit)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
         ? '\\left(' + p.toTex(options) + '\right)'
         : p.toTex(options)
