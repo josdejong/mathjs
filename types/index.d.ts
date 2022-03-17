@@ -2775,7 +2775,7 @@ declare namespace math {
 
      isSymbolNode(x: unknown): x is SymbolNode;
 
-     isChain(x: unknown): boolean;
+     isChain(x: unknown): x is MathJsChain;
 
     /*************************************************************************
      * Functions -> Utils
@@ -5211,6 +5211,5 @@ declare namespace math {
   interface ImportObject {
     [key: string]: any;
   }
-
 
 }

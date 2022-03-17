@@ -827,4 +827,7 @@ Factory Test
   if (math.isSymbolNode(x)) {
     expectTypeOf(x).toMatchTypeOf<math.SymbolNode>()
   }
+  if (math.isChain(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.MathJsChain>()
+  }
 }
