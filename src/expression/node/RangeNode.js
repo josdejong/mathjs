@@ -128,24 +128,25 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    * Calculate the necessary parentheses
    * @param {Node} node
    * @param {string} parenthesis
+   * @param {string} implicit
    * @return {Object} parentheses
    * @private
    */
-  function calculateNecessaryParentheses (node, parenthesis) {
-    const precedence = getPrecedence(node, parenthesis)
+  function calculateNecessaryParentheses (node, parenthesis, implicit) {
+    const precedence = getPrecedence(node, parenthesis, implicit)
     const parens = {}
 
-    const startPrecedence = getPrecedence(node.start, parenthesis)
+    const startPrecedence = getPrecedence(node.start, parenthesis, implicit)
     parens.start = ((startPrecedence !== null) && (startPrecedence <= precedence)) ||
       (parenthesis === 'all')
 
     if (node.step) {
-      const stepPrecedence = getPrecedence(node.step, parenthesis)
+      const stepPrecedence = getPrecedence(node.step, parenthesis, implicit)
       parens.step = ((stepPrecedence !== null) && (stepPrecedence <= precedence)) ||
         (parenthesis === 'all')
     }
 
-    const endPrecedence = getPrecedence(node.end, parenthesis)
+    const endPrecedence = getPrecedence(node.end, parenthesis, implicit)
     parens.end = ((endPrecedence !== null) && (endPrecedence <= precedence)) ||
       (parenthesis === 'all')
 
@@ -159,7 +160,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    */
   RangeNode.prototype._toString = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const parens = calculateNecessaryParentheses(this, parenthesis)
+    const parens = calculateNecessaryParentheses(this, parenthesis, options && options.implicit)
 
     // format string as start:step:stop
     let str
@@ -218,7 +219,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    */
   RangeNode.prototype.toHTML = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const parens = calculateNecessaryParentheses(this, parenthesis)
+    const parens = calculateNecessaryParentheses(this, parenthesis, options && options.implicit)
 
     // format string as start:step:stop
     let str
@@ -253,7 +254,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    */
   RangeNode.prototype._toTex = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const parens = calculateNecessaryParentheses(this, parenthesis)
+    const parens = calculateNecessaryParentheses(this, parenthesis, options && options.implicit)
 
     let str = this.start.toTex(options)
     if (parens.start) {

@@ -1,4 +1,4 @@
-import { isNode } from '../../utils/is.js'
+import { isNode, isConstantNode, isOperatorNode, isParenthesisNode } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
 import { escape } from '../../utils/string.js'
 import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
@@ -151,6 +151,24 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Returns true if the expression starts with a constant, under
+   * the current parenthesization:
+   * @param {Node} expression
+   * @param {string} parenthesis
+   * @return {boolean}
+   */
+  function startsWithConstant (expr, parenthesis) {
+    let curNode = expr
+    if (parenthesis === 'auto') {
+      while (isParenthesisNode(curNode)) curNode = curNode.content
+    }
+    if (isConstantNode(curNode)) return true
+    if (isOperatorNode(curNode)) {
+      return startsWithConstant(curNode.args[0], parenthesis)
+    }
+    return false
+  }
+  /**
    * Calculate which parentheses are necessary. Gets an OperatorNode
    * (which is the root of the tree) and an Array of Nodes
    * (this.args) and returns an array where 'true' means that an argument
@@ -165,7 +183,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function calculateNecessaryParentheses (root, parenthesis, implicit, args, latex) {
     // precedence of the root OperatorNode
-    const precedence = getPrecedence(root, parenthesis)
+    const precedence = getPrecedence(root, parenthesis, implicit)
     const associativity = getAssociativity(root, parenthesis)
 
     if ((parenthesis === 'all') || ((args.length > 2) && (root.getIdentifier() !== 'OperatorNode:add') && (root.getIdentifier() !== 'OperatorNode:multiply'))) {
@@ -191,7 +209,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
       case 1: // unary operators
         {
           // precedence of the operand
-          const operandPrecedence = getPrecedence(args[0], parenthesis)
+          const operandPrecedence = getPrecedence(args[0], parenthesis, implicit, root)
 
           // handle special cases for LaTeX, where some of the parentheses aren't needed
           if (latex && (operandPrecedence !== null)) {
@@ -236,7 +254,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         {
           let lhsParens // left hand side needs parenthesis?
           // precedence of the left hand side
-          const lhsPrecedence = getPrecedence(args[0], parenthesis)
+          const lhsPrecedence = getPrecedence(args[0], parenthesis, implicit, root)
           // is the root node associative with the left hand side
           const assocWithLhs = isAssociativeWith(root, args[0], parenthesis)
 
@@ -258,7 +276,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
           let rhsParens // right hand side needs parenthesis?
           // precedence of the right hand side
-          const rhsPrecedence = getPrecedence(args[1], parenthesis)
+          const rhsPrecedence = getPrecedence(args[1], parenthesis, implicit, root)
           // is the root node associative with the right hand side?
           const assocWithRhs = isAssociativeWith(root, args[1], parenthesis)
 
@@ -322,7 +340,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
       default:
         if ((root.getIdentifier() === 'OperatorNode:add') || (root.getIdentifier() === 'OperatorNode:multiply')) {
           result = args.map(function (arg) {
-            const argPrecedence = getPrecedence(arg, parenthesis)
+            const argPrecedence = getPrecedence(arg, parenthesis, implicit, root)
             const assocWithArg = isAssociativeWith(root, arg, parenthesis)
             const argAssociativity = getAssociativity(arg, parenthesis)
             if (argPrecedence === null) {
@@ -340,18 +358,18 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         break
     }
 
-    // handles an edge case of 'auto' parentheses with implicit multiplication of ConstantNode
-    // In that case print parentheses for ParenthesisNodes even though they normally wouldn't be
-    // printed.
-    if ((args.length >= 2) && (root.getIdentifier() === 'OperatorNode:multiply') && root.implicit && (parenthesis === 'auto') && (implicit === 'hide')) {
-      result = args.map(function (arg, index) {
-        const isParenthesisNode = (arg.getIdentifier() === 'ParenthesisNode')
-        if (result[index] || isParenthesisNode) { // put in parenthesis?
-          return true
+    // Handles an edge case of parentheses with implicit multiplication
+    // of ConstantNode.
+    // In that case, parenthesize ConstantNodes that follow an unparenthesized
+    // expression, even though they normally wouldn't be printed.
+    if (args.length >= 2 && root.getIdentifier() === 'OperatorNode:multiply' &&
+        root.implicit && parenthesis !== 'all' && implicit === 'hide') {
+      for (let i = 1; i < result.length; ++i) {
+        if (startsWithConstant(args[i], parenthesis) && !result[i - 1] &&
+            (parenthesis !== 'keep' || !isParenthesisNode(args[i - 1]))) {
+          result[i] = true
         }
-
-        return false
-      })
+      }
     }
 
     return result
@@ -521,6 +539,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
     const implicit = (options && options.implicit) ? options.implicit : 'hide'
     const args = this.args
     const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, true)
+
     let op = latexOperators[this.fn]
     op = typeof op === 'undefined' ? this.op : op // fall back to using this.op
 
@@ -589,7 +608,8 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         return arg
       })
 
-      if ((this.getIdentifier() === 'OperatorNode:multiply') && this.implicit) {
+      if ((this.getIdentifier() === 'OperatorNode:multiply') &&
+          this.implicit && implicit === 'hide') {
         return texifiedArgs.join('~')
       }
 
