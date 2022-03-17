@@ -61,12 +61,14 @@ describe('coth', function () {
 
   const coth123 = [1.3130352854993, 1.0373147207275, 1.0049698233137]
 
-  it('should return the coth of each element of an array', function () {
-    approx.deepEqual(coth([1, 2, 3]), coth123)
+  it('should not operate on an array', function () {
+    assert.throws(() => coth([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], coth), coth123)
   })
 
-  it('should return the coth of each element of a matrix', function () {
-    approx.deepEqual(coth(matrix([1, 2, 3])), matrix(coth123))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => coth(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), coth), matrix(coth123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

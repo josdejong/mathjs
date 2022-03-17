@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { expm1Number } from '../../plain/number/index.js'
 
 const name = 'expm1'
@@ -8,7 +7,10 @@ const dependencies = ['typed', 'Complex']
 export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex }) => {
   /**
    * Calculate the value of subtracting 1 from the exponential value.
-   * For matrices, the function is evaluated element wise.
+   * This function is more accurate than `math.exp(x)-1` when `x` is near 0
+   * To avoid ambiguity with the matrix exponential `expm`, this function
+   * does not operate on matrices; if you wish to apply it elementwise, see
+   * the examples.
    *
    * Syntax:
    *
@@ -18,9 +20,11 @@ export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    math.expm1(2)                      // returns number 6.38905609893065
    *    math.pow(math.e, 2) - 1            // returns number 6.3890560989306495
+   *    math.expm1(1e-8)                   // returns number 1.0000000050000001e-8
+   *    math.exp(1e-8) - 1                 // returns number 9.9999999392253e-9
    *    math.log(math.expm1(2) + 1)        // returns number 2
    *
-   *    math.expm1([1, 2, 3])
+   *    math.map([1, 2, 3], math.expm1)
    *    // returns Array [
    *    //   1.718281828459045,
    *    //   6.3890560989306495,
@@ -29,10 +33,10 @@ export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * See also:
    *
-   *    exp, log, pow
+   *    exp, expm, log, pow
    *
-   * @param {number | BigNumber | Complex | Array | Matrix} x  A number or matrix to apply expm1
-   * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
+   * @param {number | BigNumber | Complex} x  A number or matrix to apply expm1
+   * @return {number | BigNumber | Complex} Exponential of `x`, minus one
    */
   return typed(name, {
     number: expm1Number,
@@ -47,10 +51,6 @@ export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     BigNumber: function (x) {
       return x.exp().minus(1)
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

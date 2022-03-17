@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 
 const name = 'sin'
 const dependencies = ['typed']
@@ -8,7 +7,8 @@ export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed })
   /**
    * Calculate the sine of a value.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix sine, this function does not apply
+   * to matrices.
    *
    * Syntax:
    *
@@ -28,8 +28,8 @@ export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *
    *    cos, tan
    *
-   * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
-   * @return {number | BigNumber | Complex | Array | Matrix} Sine of x
+   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @return {number | BigNumber | Complex} Sine of x
    */
   return typed(name, {
     number: Math.sin,
@@ -47,11 +47,6 @@ export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed })
         throw new TypeError('Unit in function sin is no angle')
       }
       return this(x.value)
-    },
-
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since sin(0) = 0
-      return deepMap(x, this, true)
     }
   })
 })

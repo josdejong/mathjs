@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 
 const name = 'cos'
 const dependencies = ['typed']
@@ -8,7 +7,8 @@ export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed })
   /**
    * Calculate the cosine of a value.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix cosine, this function does not
+   * apply to matrices.
    *
    * Syntax:
    *
@@ -28,8 +28,8 @@ export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *
    *    cos, tan
    *
-   * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
-   * @return {number | BigNumber | Complex | Array | Matrix} Cosine of x
+   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @return {number | BigNumber | Complex} Cosine of x
    */
   return typed(name, {
     number: Math.cos,
@@ -47,10 +47,6 @@ export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed })
         throw new TypeError('Unit in function cos is no angle')
       }
       return this(x.value)
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

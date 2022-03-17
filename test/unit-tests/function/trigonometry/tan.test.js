@@ -73,12 +73,14 @@ describe('tan', function () {
 
   const tan123 = [1.557407724654902, -2.185039863261519, -0.142546543074278]
 
-  it('should return the tan of each element of an array', function () {
-    approx.deepEqual(tan([1, 2, 3]), tan123)
+  it('should not operate on an array', function () {
+    assert.throws(() => tan([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], tan), tan123)
   })
 
-  it('should return the tan of each element of a matrix', function () {
-    approx.deepEqual(tan(matrix([1, 2, 3])), matrix(tan123))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => tan(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), tan), matrix(tan123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

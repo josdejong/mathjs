@@ -98,10 +98,12 @@ describe('acoth', function () {
     assert.throws(function () { acoth('string') })
   })
 
-  it('should calculate the arccot element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => acoth([1, 2, 3]), TypeError)
+    assert.throws(() => acoth(matrix([1, 2, 3])), TypeError)
     const acoth123 = [Infinity, 0.54930614433405, 0.34657359027997]
-    approx.deepEqual(acoth([1, 2, 3]), acoth123)
-    approx.deepEqual(acoth(matrix([1, 2, 3])), matrix(acoth123))
+    approx.deepEqual(math.map([1, 2, 3], acoth), acoth123)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), acoth), matrix(acoth123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

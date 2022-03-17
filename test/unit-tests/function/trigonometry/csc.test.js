@@ -73,12 +73,14 @@ describe('csc', function () {
 
   const csc123 = [1.18839510577812, 1.09975017029462, 7.08616739573719]
 
-  it('should return the cosecant of each element of an array', function () {
-    approx.deepEqual(csc([1, 2, 3]), csc123)
+  it('should not operate on an array', function () {
+    assert.throws(() => csc([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], csc), csc123)
   })
 
-  it('should return the cosecant of each element of a matrix', function () {
-    approx.deepEqual(csc(matrix([1, 2, 3])), matrix(csc123))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => csc(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), csc), matrix(csc123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
