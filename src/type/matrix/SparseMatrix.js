@@ -5,6 +5,7 @@ import { clone, deepStrictEqual } from '../../utils/object.js'
 import { arraySize, getArrayDataType, processSizesWildcard, unsqueeze, validateIndex } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { DimensionError } from '../../error/DimensionError.js'
+import { maxArgumentCount } from '../../utils/function.js'
 
 const name = 'SparseMatrix'
 const dependencies = [
@@ -849,8 +850,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     const rows = this._size[0]
     const columns = this._size[1]
     // invoke callback
+    const args = maxArgumentCount(callback)
     const invoke = function (v, i, j) {
       // invoke callback
+      if (args === 1) return callback(v)
+      if (args === 2) return callback(v, [i, j])
       return callback(v, [i, j], me)
     }
     // invoke _map

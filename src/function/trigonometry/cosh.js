@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { cosh as coshNumber } from '../../utils/number.js'
 
 const name = 'cosh'
@@ -10,7 +9,8 @@ export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * Calculate the hyperbolic cosine of a value,
    * defined as `cosh(x) = 1/2 * (exp(x) + exp(-x))`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix hyperbolic cosine, this function does
+   * not apply to matrices.
    *
    * Syntax:
    *
@@ -24,8 +24,8 @@ export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *
    *    sinh, tanh
    *
-   * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
-   * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic cosine of x
+   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @return {number | BigNumber | Complex} Hyperbolic cosine of x
    */
   return typed(name, {
     number: coshNumber,
@@ -43,10 +43,6 @@ export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
         throw new TypeError('Unit in function cosh is no angle')
       }
       return this(x.value)
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

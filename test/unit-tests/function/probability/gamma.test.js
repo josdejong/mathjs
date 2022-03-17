@@ -145,12 +145,14 @@ describe('gamma', function () {
     assert.strictEqual(gamma(false), Infinity)
   })
 
-  it('should calculate the gamma of each element in a matrix', function () {
-    assert.deepStrictEqual(gamma(math.matrix([0, 1, 2, 3, 4, 5])), math.matrix([Infinity, 1, 1, 2, 6, 24]))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => gamma(math.matrix([0, 1, 2, 3, 4, 5])), /Function 'gamma' doesn't apply to matrices/)
+    assert.deepStrictEqual(math.map(math.matrix([0, 1, 2, 3, 4, 5]), gamma), math.matrix([Infinity, 1, 1, 2, 6, 24]))
   })
 
-  it('should calculate the gamma of each element in an array', function () {
-    assert.deepStrictEqual(gamma([0, 1, 2, 3, 4, 5]), [Infinity, 1, 1, 2, 6, 24])
+  it('should not operate on an array', function () {
+    assert.throws(() => gamma([0, 1, 2, 3, 4, 5]), TypeError)
+    assert.deepStrictEqual(math.map([0, 1, 2, 3, 4, 5], gamma), [Infinity, 1, 1, 2, 6, 24])
   })
 
   it('should throw en error if called with invalid number of arguments', function () {

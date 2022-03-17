@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { logNumber } from '../../plain/number/index.js'
 
 const name = 'log'
@@ -9,7 +8,8 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
   /**
    * Calculate the logarithm of a value.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix logarithm, this function does not
+   * apply to matrices.
    *
    * Syntax:
    *
@@ -32,12 +32,12 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    *    exp, log2, log10, log1p
    *
-   * @param {number | BigNumber | Complex | Array | Matrix} x
+   * @param {number | BigNumber | Complex} x
    *            Value for which to calculate the logarithm.
    * @param {number | BigNumber | Complex} [base=e]
    *            Optional base for the logarithm. If not provided, the natural
    *            logarithm of `x` is calculated.
-   * @return {number | BigNumber | Complex | Array | Matrix}
+   * @return {number | BigNumber | Complex}
    *            Returns the logarithm of `x`
    */
   return typed(name, {
@@ -61,10 +61,6 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
         // downgrade to number, return Complex valued result
         return new Complex(x.toNumber(), 0).log()
       }
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     },
 
     'any, any': function (x, base) {

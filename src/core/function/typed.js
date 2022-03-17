@@ -45,6 +45,7 @@ import {
   isBlockNode,
   isBoolean,
   isChain,
+  isCollection,
   isComplex,
   isConditionalNode,
   isConstantNode,
@@ -331,6 +332,25 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       }
     }
   ]
+
+  // Provide a suggestion on how to call a function elementwise
+  // This was added primarily as guidance for the v10 -> v11 transition,
+  // and could potentially be removed in the future if it no longer seems
+  // to be helpful.
+  typed.onMismatch = (name, args, signatures) => {
+    const usualError = typed.createError(name, args, signatures)
+    if (['wrongType', 'mismatch'].includes(usualError.data.category) &&
+        args.length === 1 && isCollection(args[0]) &&
+        // check if the function can be unary:
+        signatures.some(sig => !sig.params.includes(','))) {
+      const err = new TypeError(
+        `Function '${name}' doesn't apply to matrices. To call it ` +
+          `elementwise on a matrix 'M', try 'map(M, ${name})'.`)
+      err.data = usualError.data
+      throw err
+    }
+    throw usualError
+  }
 
   return typed
 })

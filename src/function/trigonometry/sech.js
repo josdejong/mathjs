@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { sechNumber } from '../../plain/number/index.js'
 
 const name = 'sech'
@@ -10,7 +9,8 @@ export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * Calculate the hyperbolic secant of a value,
    * defined as `sech(x) = 1 / cosh(x)`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix hyperbolic secant, this function does
+   * not apply to matrices.
    *
    * Syntax:
    *
@@ -26,8 +26,8 @@ export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    cosh, csch, coth
    *
-   * @param {number | Complex | Unit | Array | Matrix} x  Function input
-   * @return {number | Complex | Array | Matrix} Hyperbolic secant of x
+   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @return {number | BigNumber | Complex} Hyperbolic secant of x
    */
   return typed(name, {
     number: sechNumber,
@@ -45,10 +45,6 @@ export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         throw new TypeError('Unit in function sech is no angle')
       }
       return this(x.value)
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

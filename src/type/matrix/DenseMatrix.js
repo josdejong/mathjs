@@ -5,6 +5,7 @@ import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
+import { maxArgumentCount } from '../../utils/function.js'
 
 const name = 'DenseMatrix'
 const dependencies = [
@@ -535,13 +536,21 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.map = function (callback) {
     // matrix instance
     const me = this
+    const args = maxArgumentCount(callback)
     const recurse = function (value, index) {
       if (isArray(value)) {
         return value.map(function (child, i) {
           return recurse(child, index.concat(i))
         })
       } else {
-        return callback(value, index, me)
+        // invoke the callback function with the right number of arguments
+        if (args === 1) {
+          return callback(value)
+        } else if (args === 2) {
+          return callback(value, index)
+        } else { // 3 or -1
+          return callback(value, index, me)
+        }
       }
     }
 

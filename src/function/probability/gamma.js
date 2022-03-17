@@ -1,4 +1,3 @@
-import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 import { gammaG, gammaNumber, gammaP } from '../../plain/number/index.js'
 
@@ -10,7 +9,8 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix Gamma function, this function does
+   * not apply to matrices.
    *
    * Syntax:
    *
@@ -26,8 +26,8 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    combinations, factorial, permutations
    *
-   * @param {number | Array | Matrix} n   A real or complex number
-   * @return {number | Array | Matrix}    The gamma of `n`
+   * @param {number | BigNumber | Complex} n   A real or complex number
+   * @return {number | BigNumber | Complex}    The gamma of `n`
    */
 
   return typed(name, {
@@ -88,10 +88,6 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
 
       throw new Error('Integer BigNumber expected')
-    },
-
-    'Array | Matrix': function (n) {
-      return deepMap(n, this)
     }
   })
 
