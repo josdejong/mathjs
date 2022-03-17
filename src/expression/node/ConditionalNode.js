@@ -101,14 +101,14 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
    */
   ConditionalNode.prototype._toString = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const precedence = getPrecedence(this, parenthesis, options && options.implicit)
+    const precedence = getPrecedence(this, parenthesis, options?.implicit)
 
     // Enclose Arguments in parentheses if they are an OperatorNode
     // or have lower or equal precedence
     // NOTE: enclosing all OperatorNodes in parentheses is a decision
     // purely based on aesthetics and readability
     let condition = this.condition.toString(options)
-    const conditionPrecedence = getPrecedence(this.condition, parenthesis, options && options.implicit)
+    const conditionPrecedence = getPrecedence(this.condition, parenthesis, options?.implicit)
     if ((parenthesis === 'all') ||
         (this.condition.type === 'OperatorNode') ||
         ((conditionPrecedence !== null) && (conditionPrecedence <= precedence))) {
@@ -116,7 +116,7 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
     }
 
     let trueExpr = this.trueExpr.toString(options)
-    const truePrecedence = getPrecedence(this.trueExpr, parenthesis, options && options.implicit)
+    const truePrecedence = getPrecedence(this.trueExpr, parenthesis, options?.implicit)
     if ((parenthesis === 'all') ||
         (this.trueExpr.type === 'OperatorNode') ||
         ((truePrecedence !== null) && (truePrecedence <= precedence))) {
@@ -124,7 +124,7 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
     }
 
     let falseExpr = this.falseExpr.toString(options)
-    const falsePrecedence = getPrecedence(this.falseExpr, parenthesis, options && options.implicit)
+    const falsePrecedence = getPrecedence(this.falseExpr, parenthesis, options?.implicit)
     if ((parenthesis === 'all') ||
         (this.falseExpr.type === 'OperatorNode') ||
         ((falsePrecedence !== null) && (falsePrecedence <= precedence))) {
@@ -164,14 +164,14 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
    */
   ConditionalNode.prototype.toHTML = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const precedence = getPrecedence(this, parenthesis, options && options.implicit)
+    const precedence = getPrecedence(this, parenthesis, options?.implicit)
 
     // Enclose Arguments in parentheses if they are an OperatorNode
     // or have lower or equal precedence
     // NOTE: enclosing all OperatorNodes in parentheses is a decision
     // purely based on aesthetics and readability
     let condition = this.condition.toHTML(options)
-    const conditionPrecedence = getPrecedence(this.condition, parenthesis, options && options.implicit)
+    const conditionPrecedence = getPrecedence(this.condition, parenthesis, options?.implicit)
     if ((parenthesis === 'all') ||
         (this.condition.type === 'OperatorNode') ||
         ((conditionPrecedence !== null) && (conditionPrecedence <= precedence))) {
@@ -179,7 +179,7 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
     }
 
     let trueExpr = this.trueExpr.toHTML(options)
-    const truePrecedence = getPrecedence(this.trueExpr, parenthesis, options && options.implicit)
+    const truePrecedence = getPrecedence(this.trueExpr, parenthesis, options?.implicit)
     if ((parenthesis === 'all') ||
         (this.trueExpr.type === 'OperatorNode') ||
         ((truePrecedence !== null) && (truePrecedence <= precedence))) {
@@ -187,7 +187,7 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
     }
 
     let falseExpr = this.falseExpr.toHTML(options)
-    const falsePrecedence = getPrecedence(this.falseExpr, parenthesis, options && options.implicit)
+    const falsePrecedence = getPrecedence(this.falseExpr, parenthesis, options?.implicit)
     if ((parenthesis === 'all') ||
         (this.falseExpr.type === 'OperatorNode') ||
         ((falsePrecedence !== null) && (falsePrecedence <= precedence))) {
