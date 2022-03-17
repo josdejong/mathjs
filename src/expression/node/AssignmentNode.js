@@ -238,7 +238,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     const object = this.object.toString(options)
     const index = this.index ? this.index.toString(options) : ''
     let value = this.value.toString(options)
-    if (needParenthesis(this, options && options.parenthesis, options && options.implicit)) {
+    if (needParenthesis(this, options && options.parenthesis, options?.implicit)) {
       value = '(' + value + ')'
     }
 
@@ -278,7 +278,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     const object = this.object.toHTML(options)
     const index = this.index ? this.index.toHTML(options) : ''
     let value = this.value.toHTML(options)
-    if (needParenthesis(this, options && options.parenthesis, options && options.implicit)) {
+    if (needParenthesis(this, options && options.parenthesis, options?.implicit)) {
       value = '<span class="math-paranthesis math-round-parenthesis">(</span>' + value + '<span class="math-paranthesis math-round-parenthesis">)</span>'
     }
 
@@ -294,7 +294,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     const object = this.object.toTex(options)
     const index = this.index ? this.index.toTex(options) : ''
     let value = this.value.toTex(options)
-    if (needParenthesis(this, options && options.parenthesis, options && options.implicit)) {
+    if (needParenthesis(this, options && options.parenthesis, options?.implicit)) {
       value = `\\left(${value}\\right)`
     }
 
