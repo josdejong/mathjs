@@ -7,6 +7,9 @@
 - Add tests for type declarations (#2448). Thanks @samestep.
 - Further improvement to TypeScript definitions of `std` and `variance`
   (make dimension parameter optional, #2474). Thanks @NattapongSiri.
+- Next step (as per #2431) for full publication of "is" functions like
+  `isMatrix` etc: Provide TypeScript definitions of "is" functions and
+  make them type guards. (#2432). Thanks @ChristopherChudzicki.
 
 
 # 2022-03-07, version 10.4.0

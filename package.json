@@ -49,6 +49,7 @@
     "core-js": "3.21.1",
     "del": "6.0.0",
     "dtslint": "4.2.1",
+    "expect-type": "^0.13.0",
     "expr-eval": "2.0.2",
     "fancy-log": "2.0.0",
     "glob": "7.2.0",
