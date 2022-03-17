@@ -19,7 +19,7 @@ describe('operators', function () {
 
     assert.strictEqual(getPrecedence(n1, 'keep'), 0)
     assert.strictEqual(getPrecedence(n2, 'keep'), 2)
-    assert.strictEqual(getPrecedence(n3, 'keep'), 17)
+    assert.strictEqual(getPrecedence(n3, 'keep'), 18)
   })
 
   it('should return null if precedence is not defined for a node', function () {
