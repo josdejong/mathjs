@@ -24,7 +24,7 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    * See also:
    *
-   *    mean, median, min, max, prod, std, variance
+   *    mean, median, min, max, prod, std, variance, cumsum
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The sum of all values

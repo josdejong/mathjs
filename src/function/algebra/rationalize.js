@@ -1,7 +1,6 @@
 import { isInteger } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 import { createSimplifyConstant } from './simplify/simplifyConstant.js'
-import { createSimplifyCore } from './simplify/simplifyCore.js'
 
 const name = 'rationalize'
 const dependencies = [
@@ -15,6 +14,7 @@ const dependencies = [
   'divide',
   'pow',
   'parse',
+  'simplifyCore',
   'simplify',
   '?bignumber',
   '?fraction',
@@ -42,6 +42,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
   divide,
   pow,
   parse,
+  simplifyCore,
   simplify,
   fraction,
   bignumber,
@@ -71,24 +72,6 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
     IndexNode,
     ObjectNode,
     OperatorNode,
-    SymbolNode
-  })
-  const simplifyCore = createSimplifyCore({
-    equal,
-    isZero,
-    add,
-    subtract,
-    multiply,
-    divide,
-    pow,
-    AccessorNode,
-    ArrayNode,
-    ConstantNode,
-    FunctionNode,
-    IndexNode,
-    ObjectNode,
-    OperatorNode,
-    ParenthesisNode,
     SymbolNode
   })
 
