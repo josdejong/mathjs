@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 
 const name = 'sqrt'
 const dependencies = ['config', 'typed', 'Complex']
@@ -8,7 +7,9 @@ export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
   /**
    * Calculate the square root of a value.
    *
-   * For matrices, the function is evaluated element wise.
+   * For matrices, if you want the matrix square root of a square matrix,
+   * use the `sqrtm` function. If you wish to apply `sqrt` elementwise to
+   * a matrix M, use `math.map(M, math.sqrt)`.
    *
    * Syntax:
    *
@@ -24,9 +25,9 @@ export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *
    *    square, multiply, cube, cbrt, sqrtm
    *
-   * @param {number | BigNumber | Complex | Array | Matrix | Unit} x
+   * @param {number | BigNumber | Complex | Unit} x
    *            Value for which to calculate the square root.
-   * @return {number | BigNumber | Complex | Array | Matrix | Unit}
+   * @return {number | BigNumber | Complex | Unit}
    *            Returns the square root of `x`
    */
   return typed('sqrt', {
@@ -43,11 +44,6 @@ export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
         // negative value -> downgrade to number to do complex value computation
         return _sqrtNumber(x.toNumber())
       }
-    },
-
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since sqrt(0) = 0
-      return deepMap(x, this, true)
     },
 
     Unit: function (x) {

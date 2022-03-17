@@ -147,7 +147,7 @@ describe('simplify', function () {
     simplifyAndCompare('zeros(2,1)', '[0;0]')
     simplifyAndCompare('ones(3)', '[1,1,1]')
     simplifyAndCompare('identity(2)', '[1,0;0,1]')
-    simplifyAndCompare('sqrt([1,4,9])', '[1,2,3]')
+    simplifyAndCompare('floor([1.1,4.4,9.9])', '[1,4,9]')
     simplifyAndCompare('det([2,1;-1,3])', '7')
     simplifyAndCompare("[1,2;3,4]'", '[1,3;2,4]')
   })

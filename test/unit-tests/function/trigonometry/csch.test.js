@@ -64,12 +64,14 @@ describe('csch', function () {
 
   const csch123 = [0.85091812823932, 0.27572056477178, 0.099821569668823]
 
-  it('should return the csch of each element of an array', function () {
-    approx.deepEqual(csch([1, 2, 3]), csch123)
+  it('should not operate on an array', function () {
+    assert.throws(() => csch([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], csch), csch123)
   })
 
-  it('should return the csch of each element of a matrix', function () {
-    approx.deepEqual(csch(matrix([1, 2, 3])), matrix(csch123))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => csch(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), csch), matrix(csch123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

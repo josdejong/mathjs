@@ -112,11 +112,12 @@ describe('log', function () {
     assert.throws(function () { log('text') })
   })
 
-  it('should return the log of each element of a matrix', function () {
+  it('should not operate on a matrix', function () {
     const res = [0, 0.693147180559945, 1.098612288668110, 1.386294361119891]
-    approx.deepEqual(log([1, 2, 3, 4]), res)
-    approx.deepEqual(log(matrix([1, 2, 3, 4])), matrix(res))
-    approx.deepEqual(log(matrix([[1, 2], [3, 4]])),
+    assert.throws(() => log([1, 2, 3, 4]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3, 4], x => log(x)), res)
+    approx.deepEqual(math.map(matrix([1, 2, 3, 4]), x => log(x)), matrix(res))
+    approx.deepEqual(math.map(matrix([[1, 2], [3, 4]]), x => log(x)),
       matrix([[0, 0.693147180559945], [1.098612288668110, 1.386294361119891]]))
   })
 

@@ -93,12 +93,13 @@ describe('acos', function () {
     assert.throws(function () { acos('string') })
   })
 
-  it('should calculate the arccos element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => acos([1, 2, 3]), TypeError)
     // note: the results of acos(2) and acos(3) differs in octave
     // the next tests are verified with mathematica
     const acos123 = [0, complex(0, 1.316957896924817), complex(0, 1.762747174039086)]
-    approx.deepEqual(acos([1, 2, 3]), acos123)
-    approx.deepEqual(acos(matrix([1, 2, 3])), matrix(acos123))
+    approx.deepEqual(math.map([1, 2, 3], acos), acos123)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), acos), matrix(acos123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

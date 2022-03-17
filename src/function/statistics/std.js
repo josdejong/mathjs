@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
-
+import { isCollection } from '../../utils/is.js'
 const name = 'std'
-const dependencies = ['typed', 'sqrt', 'variance']
+const dependencies = ['typed', 'map', 'sqrt', 'variance']
 
-export const createStd = /* #__PURE__ */ factory(name, dependencies, ({ typed, sqrt, variance }) => {
+export const createStd = /* #__PURE__ */ factory(name, dependencies, ({ typed, map, sqrt, variance }) => {
   /**
    * Compute the standard deviation of a matrix or a  list with values.
    * The standard deviations is defined as the square root of the variance:
@@ -81,7 +81,12 @@ export const createStd = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
     }
 
     try {
-      return sqrt(variance.apply(null, arguments))
+      const v = variance.apply(null, arguments)
+      if (isCollection(v)) {
+        return map(v, sqrt)
+      } else {
+        return sqrt(v)
+      }
     } catch (err) {
       if (err instanceof TypeError && err.message.indexOf(' variance') !== -1) {
         throw new TypeError(err.message.replace(' variance', ' std'))

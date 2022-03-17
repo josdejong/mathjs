@@ -96,12 +96,14 @@ describe('sinh', function () {
 
   const sinh123 = [1.1752011936438014, 3.626860407847, 10.01787492741]
 
-  it('should return the sinh of each element of an array', function () {
-    approx.deepEqual(sinh([1, 2, 3]), sinh123, EPSILON)
+  it('should not operate on an array', function () {
+    assert.throws(() => sinh([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], sinh), sinh123, EPSILON)
   })
 
-  it('should return the sinh of each element of a matrix', function () {
-    approx.deepEqual(sinh(matrix([1, 2, 3])), matrix(sinh123), EPSILON)
+  it('should not operate on a matrix', function () {
+    assert.throws(() => sinh(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), sinh), matrix(sinh123), EPSILON)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

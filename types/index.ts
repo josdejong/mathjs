@@ -209,8 +209,13 @@ Complex numbers examples
 
   // create a complex number from polar coordinates
   {
-    const p: math.PolarCoordinates = { r: math.sqrt(2), phi: math.pi / 4 }
-    const _c: math.Complex = math.complex(p)
+    const p: math.PolarCoordinates = {
+      r: math.sqrt(2) as number, // must be real but a sqrt could be Complex
+      phi: math.pi / 4
+    }
+    const c: math.Complex = math.complex(p)
+    assert.strictEqual(c.im, 1)
+    assert.ok(Math.abs(c.re - 1) < 1e-12)
   }
 
   // get polar coordinates of a complex number
@@ -337,7 +342,7 @@ Matrices examples
   const _clone: math.Matrix = a.clone()
 
   // perform operations with matrices
-  math.sqrt(a)
+  math.map(a, math.sqrt)
   math.factorial(a)
 
   // create and manipulate matrices. Arrays and Matrices can be used mixed.
