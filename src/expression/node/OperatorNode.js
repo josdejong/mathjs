@@ -382,7 +382,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    */
   OperatorNode.prototype._toString = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const implicit = (options?.implicit) ? options.implicit : 'hide'
+    const implicit = (options && options.implicit) ? options.implicit : 'hide'
     const args = this.args
     const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, false)
 
@@ -474,7 +474,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    */
   OperatorNode.prototype.toHTML = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const implicit = (options?.implicit) ? options.implicit : 'hide'
+    const implicit = (options && options.implicit) ? options.implicit : 'hide'
     const args = this.args
     const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, false)
 
@@ -536,7 +536,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    */
   OperatorNode.prototype._toTex = function (options) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const implicit = (options?.implicit) ? options.implicit : 'hide'
+    const implicit = (options && options.implicit) ? options.implicit : 'hide'
     const args = this.args
     const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, true)
 
