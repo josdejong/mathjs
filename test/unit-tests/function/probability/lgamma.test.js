@@ -42,6 +42,54 @@ describe('lgamma', () => {
     approx.equal(lgamma(Math.E), 0.44946174182006766700250782, 1e-10)
   })
 
+  it('should calculate the lgamma of a complex number', function () {
+    approx.deepEqual(lgamma(math.complex(0, 0)), math.complex(Infinity))
+    approx.deepEqual(
+      lgamma(math.complex(0.000000001, 0.000000001)),
+      math.complex(20.37669224608922283655, -0.7853981639746639728723)
+    )
+    approx.deepEqual(
+      lgamma(math.complex(0.000001, 0.000001)),
+      math.complex(13.46893639046863654867, -0.785398740611468277883)
+    )
+    approx.deepEqual(lgamma(math.complex(0.25, 0.25)), math.complex(0.9044745094933388897705, -0.83887024394321281804))
+    approx.deepEqual(lgamma(math.complex(-0.25, 0.25)), math.complex(1.166572037360874928654, -2.614627038651155510161))
+    approx.deepEqual(lgamma(math.complex(0.8, -0.8)), math.complex(-0.4192408111364207487877, 0.516230802139298279437))
+    approx.deepEqual(lgamma(math.complex(-0.8, 0.8)), math.complex(-0.3775761850502096333074, -3.808650210275887665669))
+
+    approx.deepEqual(lgamma(math.complex(1, 1)), math.complex(-0.6509231993018563388852, -0.301640320467533197888))
+    approx.deepEqual(lgamma(math.complex(1, -1)), math.complex(-0.6509231993018563388852, 0.301640320467533197888))
+    approx.deepEqual(lgamma(math.complex(-1, 1)), math.complex(-0.9974967895818289935938, -4.228631137454774745966))
+    approx.deepEqual(lgamma(math.complex(-1, -1)), math.complex(-0.9974967895818289935938, 4.228631137454774745966))
+
+    approx.deepEqual(lgamma(math.complex(1.5, 1.5)), math.complex(-0.979150939181364358873, 0.3858947712671547243602))
+    approx.deepEqual(lgamma(math.complex(1.5, -1.5)), math.complex(-0.979150939181364358873, -0.3858947712671547243602))
+    approx.deepEqual(lgamma(math.complex(-1.5, 1.5)), math.complex(-2.647480369443656460743, -5.11189237251498344295))
+    approx.deepEqual(lgamma(math.complex(-1.5, -1.5)), math.complex(-2.647480369443656460743, 5.11189237251498344295))
+
+    approx.deepEqual(lgamma(math.complex(2, -2)), math.complex(-1.07135983021387915393, -1.236795034103878814401))
+    approx.deepEqual(lgamma(math.complex(-2.5, -2.5)), math.complex(-6.276850851486485716676, 6.428043937939841678668))
+    approx.deepEqual(lgamma(math.complex(-12.5, 12.5)), math.complex(-53.37675533240963698656, -13.5132687247807014785))
+    approx.deepEqual(lgamma(math.complex(125.5, 125.5)), math.complex(424.2117196389647184265, 622.6237967006225892456))
+    approx.deepEqual(
+      lgamma(math.complex(5555.5555, -5555.5555)),
+      math.complex(39906.0402274967320859, -48635.85931123069084207)
+    )
+    approx.deepEqual(
+      lgamma(math.complex(-5000000.5, -5000000.5)),
+      math.complex(-85638598.7850343162145, -62076637.09881126065676)
+    )
+    approx.deepEqual(
+      lgamma(math.complex(99999999999999.5, 99999999999999.5)),
+      math.complex(3079736672879885.121007, 3236816305559388.977277)
+    )
+
+    approx.deepEqual(
+      lgamma(math.complex(123456789.123, 0.123456789)),
+      math.complex(2176716241.514932408408, 2.300173036243032340655)
+    )
+  })
+
   it('should calculate the lgamma of a boolean', () => {
     approx.equal(lgamma(true), 0, 1e-10)
     assert.strictEqual(lgamma(false), Infinity)
