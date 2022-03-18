@@ -70,7 +70,13 @@ export const gammaP = [
   0.36899182659531622704e-5
 ]
 
-const gammaSeries = [
+// lgamma implementation ref: https://mrob.com/pub/ries/lanczos-gamma.html#code
+
+export const lgammaG = 5 // Lanczos parameter "g"
+export const lgammaN = 7 // Range of coefficients "n"
+
+export const lgammaSeries = [
+  1.000000000190015,
   76.18009172947146,
   -86.50532032941677,
   24.01409824083091,
@@ -84,16 +90,25 @@ export function lgammaNumber (n) {
   if (n === 0) return Infinity
   if (!isFinite(n)) return n
 
+  if (n < 0.5) {
+    // Use Euler's reflection formula:
+    // gamma(z) = PI / (sin(PI * z) * gamma(1 - z))
+    return Math.log(Math.PI / Math.sin(Math.PI * n)) - lgammaNumber(1 - n)
+  }
+
+  // Compute the logarithm of the Gamma function using the Lanczos method
+
   const lnSqrt2PI = 0.91893853320467274178
 
-  // Lanczos method
-  const n1 = n + 5.5
-  let denom = n + 1
-  let series = 1.000000000190015
-  for (let i = 0; i < 6; i++) {
-    series += gammaSeries[i] / denom
-    denom += 1.0
+  n = n - 1
+  const base = n + lgammaG + 0.5 // Base of the Lanczos exponential
+  let sum = lgammaSeries[0]
+
+  // We start with the terms that have the smallest coefficients and largest denominator
+  for (let i = lgammaN - 1; i >= 1; i--) {
+    sum += lgammaSeries[i] / (n + i)
   }
-  return lnSqrt2PI + (n + 0.5) * Math.log(n1) - n1 + Math.log(series / n)
+
+  return lnSqrt2PI + (n + 0.5) * Math.log(base) - base + Math.log(sum)
 }
 lgammaNumber.signature = 'number'
