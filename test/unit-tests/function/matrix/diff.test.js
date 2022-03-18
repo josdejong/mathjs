@@ -33,6 +33,12 @@ describe('diff', function () {
     assert.deepStrictEqual(diff(matrix([])), matrix([]))
     assert.deepStrictEqual(diff([2]), [])
     assert.deepStrictEqual(diff(matrix([2])), matrix([]))
+
+    // Two-dimensional:
+    assert.deepStrictEqual(diff([[1, 3, 6, 10, 15]]), [])
+    assert.deepStrictEqual(diff([[1, 3, 6, 10, 15]], 1), [[2, 3, 4, 5]])
+    assert.deepStrictEqual(diff([[1], [3], [6], [10], [15]]), [[2], [3], [4], [5]])
+    assert.deepStrictEqual(diff([[1], [3], [6], [10], [15]], 1), [[], [], [], [], []])
   })
 
   it('should return difference between elements of a 1-dimensional array, with and without specified dimension', function () {
