@@ -1,7 +1,6 @@
 import { isInteger } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 import { createSimplifyConstant } from './simplify/simplifyConstant.js'
-import { createSimplifyCore } from './simplify/simplifyCore.js'
 
 const name = 'rationalize'
 const dependencies = [
@@ -15,6 +14,7 @@ const dependencies = [
   'divide',
   'pow',
   'parse',
+  'simplifyCore',
   'simplify',
   '?bignumber',
   '?fraction',
@@ -42,6 +42,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
   divide,
   pow,
   parse,
+  simplifyCore,
   simplify,
   fraction,
   bignumber,
@@ -72,23 +73,6 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
     ObjectNode,
     OperatorNode,
     SymbolNode
-  })
-  const simplifyCore = createSimplifyCore({
-    equal,
-    isZero,
-    add,
-    subtract,
-    multiply,
-    divide,
-    pow,
-    AccessorNode,
-    ArrayNode,
-    ConstantNode,
-    FunctionNode,
-    IndexNode,
-    ObjectNode,
-    OperatorNode,
-    ParenthesisNode
   })
 
   /**
@@ -177,6 +161,8 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
       const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
       const polyRet = polynomial(expr, scope, true, setRules.firstRules) // Check if expression is a rationalizable polynomial
       const nVars = polyRet.variables.length
+      const noExactFractions = { exactFractions: false }
+      const withExactFractions = { exactFractions: true }
       expr = polyRet.expression
 
       if (nVars >= 1) { // If expression in not a constant
@@ -185,11 +171,14 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
         let rules
         let eDistrDiv = true
         let redoInic = false
-        expr = simplify(expr, setRules.firstRules, {}, { exactFractions: false }) // Apply the initial rules, including succ div rules
+        // Apply the initial rules, including succ div rules:
+        expr = simplify(expr, setRules.firstRules, {}, noExactFractions)
         let s
-        while (true) { // Apply alternately  successive division rules and distr.div.rules
+        while (true) {
+          // Alternate applying successive division rules and distr.div.rules
+          // until there are no more changes:
           rules = eDistrDiv ? setRules.distrDivRules : setRules.sucDivRules
-          expr = simplify(expr, rules) // until no more changes
+          expr = simplify(expr, rules, {}, withExactFractions)
           eDistrDiv = !eDistrDiv // Swap between Distr.Div and Succ. Div. Rules
 
           s = expr.toString()
@@ -202,9 +191,10 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
         }
 
         if (redoInic) { // Apply first rules again without succ div rules (if there are changes)
-          expr = simplify(expr, setRules.firstRulesAgain, {}, { exactFractions: false })
+          expr = simplify(expr, setRules.firstRulesAgain, {}, noExactFractions)
         }
-        expr = simplify(expr, setRules.finalRules, {}, { exactFractions: false }) // Apply final rules
+        // Apply final rules:
+        expr = simplify(expr, setRules.finalRules, {}, noExactFractions)
       } // NVars >= 1
 
       const coefficients = []

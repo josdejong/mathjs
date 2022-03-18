@@ -4,10 +4,11 @@
     "paths": {
       "mathjs": ["./index.d.ts"]
     },
+    "moduleResolution": "node",
     "typeRoots": [],
     "types": [],
     "lib": ["ES6", "DOM"],
-    "module": "commonjs",
+    "module": "ESNEXT",
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitThis": true,

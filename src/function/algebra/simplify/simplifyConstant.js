@@ -350,11 +350,11 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           } else {
             res = makeNode(args)
           }
-        } else if (isAssociative(node)) {
-          args = allChildren(node)
+        } else if (isAssociative(node, options.context)) {
+          args = allChildren(node, options.context)
           args = args.map(arg => foldFraction(arg, options))
 
-          if (isCommutative(fn)) {
+          if (isCommutative(fn, options.context)) {
             // commutative binary operator
             const consts = []
             const vars = []

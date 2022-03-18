@@ -76,6 +76,9 @@ export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ pa
       }
       desc += '\n'
     }
+    if (doc.mayThrow && doc.mayThrow.length) {
+      desc += 'Throws: ' + doc.mayThrow.join(', ') + '\n\n'
+    }
     if (doc.seealso && doc.seealso.length) {
       desc += 'See also: ' + doc.seealso.join(', ') + '\n'
     }
