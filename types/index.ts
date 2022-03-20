@@ -135,13 +135,19 @@ Simplify examples
   const math = create(all);
 
   math.simplify("2 * 1 * x ^ (2 - 1)");
+  math.simplifyConstant("2 * 1 * x ^ (2 - 1)");
+  math.simplifyCore("2 * 1 * x ^ (2 - 1)");
   math.simplify("2 * 3 * x", { x: 4 });
 
   const f = math.parse("2 * 1 * x ^ (2 - 1)");
   math.simplify(f);
 
   math.simplify("0.4 * x", {}, { exactFractions: true });
+  math.simplifyConstant("0.4 * x", { exactFractions: true });
   math.simplify("0.4 * x", {}, { exactFractions: false });
+  math.simplifyCore("0.4 * x + 0", { exactFractions: false });
+
+  math.chain("0.4 * x + 0").parse().simplifyCore({exactFractions: false}).simplifyConstant();
 }
 
 /*

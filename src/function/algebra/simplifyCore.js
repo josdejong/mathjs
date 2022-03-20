@@ -47,6 +47,13 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
 }) => {
   const node0 = new ConstantNode(0)
   const node1 = new ConstantNode(1)
+  const nodeT = new ConstantNode(true)
+  const nodeF = new ConstantNode(false)
+  // test if a node will always have a boolean value (true/false)
+  // not sure if this list is complete
+  function isAlwaysBoolean (node) {
+    return isOperatorNode(node) && ['and', 'not', 'or'].includes(node.op)
+  }
 
   const { hasProperty, isCommutative } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
@@ -86,9 +93,9 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * See also:
    *
-   *     simplify, resolve, derivative
+   *     simplify, simplifyConstant, resolve, derivative
    *
-   * @param {Node} node
+   * @param {Node | string} node
    *     The expression to be simplified
    * @param {Object} options
    *     Simplification options, as per simplify()
@@ -157,7 +164,12 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
         }
         if (node.op === 'not') { // logical not
           if (isOperatorNode(a0) && a0.isUnary() && a0.op === 'not') {
-            return a0.args[0]
+            // Has the effect of turning the argument into a boolean
+            // So can only eliminate the double negation if
+            // the inside is already boolean
+            if (isAlwaysBoolean(a0.args[0])) {
+              return a0.args[0]
+            }
           }
         }
         let finish = true
@@ -244,18 +256,32 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
         if (node.op === 'and') {
           if (isConstantNode(a0)) {
             if (a0.value) {
-              return a1
+              if (isAlwaysBoolean(a1)) return a1
             } else {
-              return a0
+              return nodeF
+            }
+          }
+          if (isConstantNode(a1)) {
+            if (a1.value) {
+              if (isAlwaysBoolean(a0)) return a0
+            } else {
+              return nodeF
             }
           }
         }
         if (node.op === 'or') {
           if (isConstantNode(a0)) {
             if (a0.value) {
-              return a0
+              return nodeT
             } else {
-              return a1
+              if (isAlwaysBoolean(a1)) return a1
+            }
+          }
+          if (isConstantNode(a1)) {
+            if (a1.value) {
+              return nodeT
+            } else {
+              if (isAlwaysBoolean(a0)) return a0
             }
           }
         }
