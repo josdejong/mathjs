@@ -26,6 +26,12 @@ describe('simplifyCore', function () {
     testSimplifyCore('1*x', 'x')
     testSimplifyCore('-(x)', '-x')
     testSimplifyCore('0/x', '0')
+    testSimplifyCore('~~(a | b)', 'a | b')
+    testSimplifyCore('not (not (p and q))', 'p and q')
+    testSimplifyCore('1 and done', 'done')
+    testSimplifyCore('false and you(know, it)', 'false')
+    testSimplifyCore('false or bust', 'bust')
+    testSimplifyCore('6 or dozen/2', '6')
     testSimplifyCore('(1*x + y*0)*1+0', 'x')
     testSimplifyCore('sin(x+0)*1', 'sin(x)')
     testSimplifyCore('((x+0)*1)', 'x')
@@ -54,6 +60,7 @@ describe('simplifyCore', function () {
   })
 
   it('should convert +unaryMinus to subtract', function () {
+    testSimplifyCore('x + -1', 'x - 1')
     const result = math.simplify(
       'x + y + a', [math.simplifyCore], { a: -1 }
     ).toString()
@@ -76,5 +83,12 @@ describe('simplifyCore', function () {
     testSimplifyCore('add(multiply(x, 0), y)', 'y')
     testSimplifyCore('and(multiply(1, x), true)', 'x and true')
     testSimplifyCore('add(x, 0 ,y)', 'x + y')
+  })
+
+  it('can perform sequential distinct core simplifications', () => {
+    testSimplifyCore('0 - -x', 'x')
+    testSimplifyCore('0 - (x - y)', 'y - x')
+    testSimplifyCore('a + -0', 'a')
+    testSimplifyCore('-(-x - y)', 'y + x')
   })
 })

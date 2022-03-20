@@ -516,7 +516,6 @@ describe('simplify', function () {
       const expr = math.parse(textExpr)
       const realex = math.simplify(expr, {}, realContext)
       const posex = math.simplify(expr, {}, positiveContext)
-      console.log('Trying', textExpr)
       assertAlike(realex.evaluate(zeroes), expr.evaluate(zeroes))
       assertAlike(realex.evaluate(negones), expr.evaluate(negones))
       assertAlike(realex.evaluate(ones), expr.evaluate(ones))
