@@ -10,6 +10,8 @@
 - Next step (as per #2431) for full publication of "is" functions like
   `isMatrix` etc: Provide TypeScript definitions of "is" functions and
   make them type guards. (#2432). Thanks @ChristopherChudzicki.
+- Fix #2491: Multi line object expressions don't work with comments (#2492).
+  Thanks @gwhitney.
 
 
 # 2022-03-07, version 10.4.0
