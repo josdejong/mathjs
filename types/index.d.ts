@@ -890,6 +890,9 @@ declare namespace math {
      */
     simplify: Simplify
 
+    simplifyConstant(expr: MathNode | string, options?: SimplifyOptions);
+    simplifyCore(expr: MathNode | string, options?: SimplifyOptions);
+
     /**
      *  Replaces variable nodes with their scoped values
      * @param node Tree to replace variable nodes in
@@ -4352,11 +4355,16 @@ declare namespace math {
     simplify(
       this: MathJsChain<MathNode | string>,
       rules?: SimplifyRule[],
-      scope?: object
+      scope?: Map | object,
+      options?: SimplifyOptions
     ): MathJsChain<MathNode>
 
-    // TODO check that this should even be here...
-    simplifyCore(expr: MathNode): MathNode
+    simplifyConstant(
+      this: MathJsChain<MathNode | string>,
+      options?: SimplifyOptions): MathJsChain<MathNode>
+    simplifyCore(
+      this: MathJsChain<MathNode | string>,
+      options?: SimplifyOptions): MathJsChain<MathNode>
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.

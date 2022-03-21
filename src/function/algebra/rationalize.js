@@ -1,6 +1,5 @@
 import { isInteger } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
-import { createSimplifyConstant } from './simplify/simplifyConstant.js'
 
 const name = 'rationalize'
 const dependencies = [
@@ -14,6 +13,7 @@ const dependencies = [
   'divide',
   'pow',
   'parse',
+  'simplifyConstant',
   'simplifyCore',
   'simplify',
   '?bignumber',
@@ -42,6 +42,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
   divide,
   pow,
   parse,
+  simplifyConstant,
   simplifyCore,
   simplify,
   fraction,
@@ -58,23 +59,6 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
   SymbolNode,
   ParenthesisNode
 }) => {
-  const simplifyConstant = createSimplifyConstant({
-    typed,
-    config,
-    mathWithTransform,
-    matrix,
-    fraction,
-    bignumber,
-    AccessorNode,
-    ArrayNode,
-    ConstantNode,
-    FunctionNode,
-    IndexNode,
-    ObjectNode,
-    OperatorNode,
-    SymbolNode
-  })
-
   /**
    * Transform a rationalizable expression in a rational fraction.
    * If rational fraction is one variable polynomial then converts

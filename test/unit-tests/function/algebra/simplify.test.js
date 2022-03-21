@@ -182,7 +182,7 @@ describe('simplify', function () {
     simplifyAndCompare('2 - -3', '5')
     let e = math.parse('2 - -3')
     e = math.simplifyCore(e)
-    assert.strictEqual(e.toString(), '5') // simplifyCore
+    assert.strictEqual(e.toString(), '2 + 3') // simplifyCore
     simplifyAndCompare('x - -x', '2*x')
     e = math.parse('x - -x')
     e = math.simplifyCore(e)
@@ -213,7 +213,7 @@ describe('simplify', function () {
     simplifyAndCompareEval('1 - 1e-10', '1 - 1e-10')
     simplifyAndCompareEval('1 + 1e-10', '1 + 1e-10')
     simplifyAndCompareEval('1e-10 / 2', '1e-10 / 2')
-    simplifyAndCompareEval('(1e-5)^2', '(1e-5)^2')
+    simplifyAndCompareEval('(1e-5)^2', '1e-10')
     simplifyAndCompareEval('min(1, -1e-10)', '-1e-10')
     simplifyAndCompareEval('max(1e-10, -1)', '1e-10')
   })
@@ -287,7 +287,7 @@ describe('simplify', function () {
   it('should not run into an infinite recursive loop', function () {
     simplifyAndCompare('2n - 1', '2 n - 1')
     simplifyAndCompare('16n - 1', '16 n - 1')
-    simplifyAndCompare('16n / 1', '16 * n')
+    simplifyAndCompare('16n / 1', '16 n')
     simplifyAndCompare('8 / 5n', 'n * 8 / 5')
     simplifyAndCompare('8n - 4n', '4 * n')
     simplifyAndCompare('8 - 4n', '8 - 4 * n')
@@ -510,16 +510,20 @@ describe('simplify', function () {
       }
     }
 
+    // Simplify actually increases accuracy when it uses fractions, so we
+    // disable that to get equality in these tests:
+    realContext.exactFractions = false
+    positiveContext.exactFractions = false
     for (const textExpr of expLibrary) {
       const expr = math.parse(textExpr)
       const realex = math.simplify(expr, {}, realContext)
       const posex = math.simplify(expr, {}, positiveContext)
-      assertAlike(expr.evaluate(zeroes), realex.evaluate(zeroes))
-      assertAlike(expr.evaluate(negones), realex.evaluate(negones))
-      assertAlike(expr.evaluate(ones), realex.evaluate(ones))
-      assertAlike(expr.evaluate(twos), realex.evaluate(twos))
-      assertAlike(expr.evaluate(ones), posex.evaluate(ones))
-      assertAlike(expr.evaluate(twos), posex.evaluate(twos))
+      assertAlike(realex.evaluate(zeroes), expr.evaluate(zeroes))
+      assertAlike(realex.evaluate(negones), expr.evaluate(negones))
+      assertAlike(realex.evaluate(ones), expr.evaluate(ones))
+      assertAlike(realex.evaluate(twos), expr.evaluate(twos))
+      assertAlike(posex.evaluate(ones), expr.evaluate(ones))
+      assertAlike(posex.evaluate(twos), expr.evaluate(twos))
     }
     // Make sure at least something is not equal
     const expr = math.parse('x/x')

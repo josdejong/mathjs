@@ -47,14 +47,23 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
 }) => {
   const node0 = new ConstantNode(0)
   const node1 = new ConstantNode(1)
+  const nodeT = new ConstantNode(true)
+  const nodeF = new ConstantNode(false)
+  // test if a node will always have a boolean value (true/false)
+  // not sure if this list is complete
+  function isAlwaysBoolean (node) {
+    return isOperatorNode(node) && ['and', 'not', 'or'].includes(node.op)
+  }
 
   const { hasProperty, isCommutative } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
   /**
    * simplifyCore() performs single pass simplification suitable for
-   * applications requiring ultimate performance. In contrast, simplify()
-   * extends simplifyCore() with additional passes to provide deeper
-   * simplification.
+   * applications requiring ultimate performance. To roughly summarize,
+   * it handles cases along the lines of simplifyConstant() but where
+   * knowledge of a single argument is sufficient to determine the value.
+   * In contrast, simplify() extends simplifyCore() with additional passes
+   * to provide deeper simplification (such as gathering like terms).
    *
    * Specifically, simplifyCore:
    *
@@ -62,14 +71,14 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    *   operator forms.
    * * Removes operators or function calls that are guaranteed to have no
    *   effect (such as unary '+').
-   * * Removes double unary '-'
+   * * Removes double unary '-', '~', and 'not'
    * * Eliminates addition/subtraction of 0 and multiplication/division/powers
    *   by 1 or 0.
    * * Converts addition of a negation into subtraction.
+   * * Eliminates logical operations with constant true or false leading
+   *   arguments.
    * * Puts constants on the left of a product, if multiplication is
    *   considered commutative by the options (which is the default)
-   * * Replaces subexpressions that consist of basic arithmetic operations on
-   *   constants with their values.
    *
    * Syntax:
    *
@@ -78,15 +87,15 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Examples:
    *
-   *     const f = math.parse('2 * 1 * x ^ (2 - 1)')
+   *     const f = math.parse('2 * 1 * x ^ (1 - 0)')
    *     math.simplifyCore(f)                          // Node "2 * x"
-   *     math.simplify('2 * 1 * x ^ (2 - 1)', [math.simplifyCore]) // Node "2 * x"
+   *     math.simplify('2 * 1 * x ^ (1 - 0)', [math.simplifyCore]) // Node "2 * x"
    *
    * See also:
    *
-   *     simplify, resolve, derivative
+   *     simplify, simplifyConstant, resolve, derivative
    *
-   * @param {Node} node
+   * @param {Node | string} node
    *     The expression to be simplified
    * @param {Object} options
    *     Simplification options, as per simplify()
@@ -148,62 +157,70 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
       if (isOperatorNode(node) && node.isUnary()) {
         const a0 = simplifyCore(node.args[0], options)
 
-        if (node.op === '-') { // unary minus
-          if (isOperatorNode(a0)) {
-            if (a0.isUnary() && a0.op === '-') {
+        if (node.op === '~') { // bitwise not
+          if (isOperatorNode(a0) && a0.isUnary() && a0.op === '~') {
+            return a0.args[0]
+          }
+        }
+        if (node.op === 'not') { // logical not
+          if (isOperatorNode(a0) && a0.isUnary() && a0.op === 'not') {
+            // Has the effect of turning the argument into a boolean
+            // So can only eliminate the double negation if
+            // the inside is already boolean
+            if (isAlwaysBoolean(a0.args[0])) {
               return a0.args[0]
-            } else if (a0.isBinary() && a0.fn === 'subtract') {
-              return new OperatorNode('-', 'subtract', [a0.args[1], a0.args[0]])
             }
           }
-          return new OperatorNode(node.op, node.fn, [a0])
         }
-      } else if (isOperatorNode(node) && node.isBinary()) {
+        let finish = true
+        if (node.op === '-') { // unary minus
+          if (isOperatorNode(a0)) {
+            if (a0.isBinary() && a0.fn === 'subtract') {
+              node = new OperatorNode('-', 'subtract', [a0.args[1], a0.args[0]])
+              finish = false // continue to process the new binary node
+            }
+            if (a0.isUnary() && a0.op === '-') {
+              return a0.args[0]
+            }
+          }
+        }
+        if (finish) return new OperatorNode(node.op, node.fn, [a0])
+      }
+      if (isOperatorNode(node) && node.isBinary()) {
         const a0 = simplifyCore(node.args[0], options)
-        const a1 = simplifyCore(node.args[1], options)
+        let a1 = simplifyCore(node.args[1], options)
 
         if (node.op === '+') {
-          if (isConstantNode(a0)) {
-            if (isZero(a0.value)) {
-              return a1
-            } else if (isConstantNode(a1)) {
-              return new ConstantNode(add(a0.value, a1.value))
-            }
+          if (isConstantNode(a0) && isZero(a0.value)) {
+            return a1
           }
           if (isConstantNode(a1) && isZero(a1.value)) {
             return a0
           }
           if (isOperatorNode(a1) && a1.isUnary() && a1.op === '-') {
-            return new OperatorNode('-', 'subtract', [a0, a1.args[0]])
+            a1 = a1.args[0]
+            node = new OperatorNode('-', 'subtract', [a0, a1])
           }
-          return new OperatorNode(node.op, node.fn, a1 ? [a0, a1] : [a0])
-        } else if (node.op === '-') {
-          if (isConstantNode(a0) && a1) {
-            if (isConstantNode(a1)) {
-              return new ConstantNode(subtract(a0.value, a1.value))
-            } else if (isZero(a0.value)) {
-              return new OperatorNode('-', 'unaryMinus', [a1])
-            }
+        }
+        if (node.op === '-') {
+          if (isOperatorNode(a1) && a1.isUnary() && a1.op === '-') {
+            return simplifyCore(
+              new OperatorNode('+', 'add', [a0, a1.args[0]]), options)
           }
-          // if (node.fn === "subtract" && node.args.length === 2) {
-          if (node.fn === 'subtract') {
-            if (isConstantNode(a1) && isZero(a1.value)) {
-              return a0
-            }
-            if (isOperatorNode(a1) && a1.isUnary() && a1.op === '-') {
-              return simplifyCore(
-                new OperatorNode('+', 'add', [a0, a1.args[0]]), options)
-            }
-            return new OperatorNode(node.op, node.fn, [a0, a1])
+          if (isConstantNode(a0) && isZero(a0.value)) {
+            return simplifyCore(new OperatorNode('-', 'unaryMinus', [a1]))
           }
-        } else if (node.op === '*') {
+          if (isConstantNode(a1) && isZero(a1.value)) {
+            return a0
+          }
+          return new OperatorNode(node.op, node.fn, [a0, a1])
+        }
+        if (node.op === '*') {
           if (isConstantNode(a0)) {
             if (isZero(a0.value)) {
               return node0
             } else if (equal(a0.value, 1)) {
               return a1
-            } else if (isConstantNode(a1)) {
-              return new ConstantNode(multiply(a0.value, a1.value))
             }
           }
           if (isConstantNode(a1)) {
@@ -211,55 +228,66 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
               return node0
             } else if (equal(a1.value, 1)) {
               return a0
-            } else if (isOperatorNode(a0) && a0.isBinary() &&
-                       a0.op === node.op && isCommutative(node, context)) {
-              const a00 = a0.args[0]
-              if (isConstantNode(a00)) {
-                const a00a1 = new ConstantNode(multiply(a00.value, a1.value))
-                return new OperatorNode(node.op, node.fn, [a00a1, a0.args[1]], node.implicit) // constants on left
-              }
             }
             if (isCommutative(node, context)) {
               return new OperatorNode(node.op, node.fn, [a1, a0], node.implicit) // constants on left
-            } else {
-              return new OperatorNode(node.op, node.fn, [a0, a1], node.implicit)
             }
           }
           return new OperatorNode(node.op, node.fn, [a0, a1], node.implicit)
-        } else if (node.op === '/') {
-          if (isConstantNode(a0)) {
-            if (isZero(a0.value)) {
-              return node0
-            } else if (isConstantNode(a1) &&
-                       (equal(a1.value, 1) || equal(a1.value, 2) || equal(a1.value, 4))) {
-              return new ConstantNode(divide(a0.value, a1.value))
-            }
+        }
+        if (node.op === '/') {
+          if (isConstantNode(a0) && isZero(a0.value)) {
+            return node0
+          }
+          if (isConstantNode(a1) && equal(a1.value, 1)) {
+            return a0
           }
           return new OperatorNode(node.op, node.fn, [a0, a1])
-        } else if (node.op === '^') {
+        }
+        if (node.op === '^') {
           if (isConstantNode(a1)) {
             if (isZero(a1.value)) {
               return node1
             } else if (equal(a1.value, 1)) {
               return a0
+            }
+          }
+        }
+        if (node.op === 'and') {
+          if (isConstantNode(a0)) {
+            if (a0.value) {
+              if (isAlwaysBoolean(a1)) return a1
             } else {
-              if (isConstantNode(a0)) {
-                // fold constant
-                return new ConstantNode(pow(a0.value, a1.value))
-              } else if (isOperatorNode(a0) && a0.isBinary() && a0.op === '^') {
-                const a01 = a0.args[1]
-                if (isConstantNode(a01)) {
-                  return new OperatorNode(node.op, node.fn, [
-                    a0.args[0],
-                    new ConstantNode(multiply(a01.value, a1.value))
-                  ])
-                }
-              }
+              return nodeF
+            }
+          }
+          if (isConstantNode(a1)) {
+            if (a1.value) {
+              if (isAlwaysBoolean(a0)) return a0
+            } else {
+              return nodeF
+            }
+          }
+        }
+        if (node.op === 'or') {
+          if (isConstantNode(a0)) {
+            if (a0.value) {
+              return nodeT
+            } else {
+              if (isAlwaysBoolean(a1)) return a1
+            }
+          }
+          if (isConstantNode(a1)) {
+            if (a1.value) {
+              return nodeT
+            } else {
+              if (isAlwaysBoolean(a0)) return a0
             }
           }
         }
         return new OperatorNode(node.op, node.fn, [a0, a1])
-      } else if (isOperatorNode(node)) {
+      }
+      if (isOperatorNode(node)) {
         return new OperatorNode(node.op, node.fn,
           node.args.map(a => simplifyCore(a, options)))
       }

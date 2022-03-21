@@ -776,6 +776,8 @@ Simplify examples
   const math = create(all)
 
   math.simplify('2 * 1 * x ^ (2 - 1)')
+  math.simplifyConstant('2 * 1 * x ^ (2 - 1)')
+  math.simplifyCore('2 * 1 * x ^ (2 - 1)')
   math.simplify('2 * 3 * x', { x: 4 })
 
   expectTypeOf(math.simplify.rules).toMatchTypeOf<Array<SimplifyRule>>
@@ -784,6 +786,7 @@ Simplify examples
   math.simplify(f)
 
   math.simplify('0.4 * x', {}, { exactFractions: true })
+  math.simplifyConstant('0.4 * x', { exactFractions: true })
   math.simplify('0.4 * x', {}, { exactFractions: false })
   math.simplify('0.4 * x', {}, { fractionsLimit: 2 })
   math.simplify('0.4 * x', {}, { consoleDebug: false })
@@ -849,6 +852,9 @@ Simplify examples
     },
     (node: MathNode) => node,
   ])
+  math.simplifyCore('0.4 * x + 0', { exactFractions: false })
+
+  math.chain('0.4 * x + 0').parse().simplifyCore({exactFractions: false}).simplifyConstant()
 }
 
 /*
