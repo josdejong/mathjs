@@ -815,6 +815,9 @@ declare namespace math {
      */
     simplify: Simplify
 
+    simplifyConstant(expr: MathNode | string, options?: SimplifyOptions);
+    simplifyCore(expr: MathNode | string, options?: SimplifyOptions);
+
     /**
      *  Replaces variable nodes with their scoped values
      * @param node Tree to replace variable nodes in
@@ -3618,6 +3621,8 @@ declare namespace math {
      * Default value is 10000.
      */
     fractionsLimit?: number
+    consoleDebug?: boolean
+    context?: object
   }
 
   type SimplifyRule =
@@ -4150,7 +4155,8 @@ declare namespace math {
      */
     simplify(rules?: SimplifyRule[], scope?: object): MathJsChain
 
-    simplifyCore(expr: MathNode): MathNode
+    simplifyConstant(options?: SimplifyOptions): MathJsChain
+    simplifyCore(options?: SimplifyOptions): MathJsChain
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.

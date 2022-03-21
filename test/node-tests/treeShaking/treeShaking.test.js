@@ -66,7 +66,6 @@ describe('tree shaking', function () {
       assert.strictEqual(info.assets[0].name, bundleName)
       const size = info.assets[0].size
       const maxSize = 120000
-      const maxSize = 111000
       assert(size < maxSize,
         'bundled size must be small enough ' +
         '(actual size: ' + size + ' bytes, max size: ' + maxSize + ' bytes)')

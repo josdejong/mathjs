@@ -1,7 +1,6 @@
 import { isConstantNode, isParenthesisNode } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { createUtil } from './simplify/util.js'
-import { createSimplifyConstant } from './simplify/simplifyConstant.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { createEmptyMap, createMap } from '../../utils/map.js'
 
@@ -18,6 +17,7 @@ const dependencies = [
   'isZero',
   'equal',
   'resolve',
+  'simplifyConstant',
   'simplifyCore',
   '?fraction',
   '?bignumber',
@@ -47,6 +47,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     isZero,
     equal,
     resolve,
+    simplifyConstant,
     simplifyCore,
     fraction,
     bignumber,
@@ -63,23 +64,6 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     SymbolNode
   }
 ) => {
-  const simplifyConstant = createSimplifyConstant({
-    typed,
-    config,
-    mathWithTransform,
-    matrix,
-    fraction,
-    bignumber,
-    AccessorNode,
-    ArrayNode,
-    ConstantNode,
-    FunctionNode,
-    IndexNode,
-    ObjectNode,
-    OperatorNode,
-    SymbolNode
-  })
-
   const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction, defaultContext, realContext, positiveContext } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
 

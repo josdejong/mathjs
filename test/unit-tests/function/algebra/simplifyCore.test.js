@@ -12,8 +12,8 @@ describe('simplifyCore', function () {
   }
 
   it('should handle different node types', function () {
-    testSimplifyCore('5*x*3', '15 * x')
-    testSimplifyCore('5*x*3*x', '15 * x * x')
+    testSimplifyCore('5*x*3', '3 * 5 * x')
+    testSimplifyCore('5*x*3*x', '3 * 5 * x * x')
 
     testSimplifyCore('x-0', 'x')
     testSimplifyCore('0-x', '-x')
@@ -26,6 +26,16 @@ describe('simplifyCore', function () {
     testSimplifyCore('1*x', 'x')
     testSimplifyCore('-(x)', '-x')
     testSimplifyCore('0/x', '0')
+    testSimplifyCore('~~(a | b)', 'a | b')
+    testSimplifyCore('not (not (p and q))', 'p and q')
+    testSimplifyCore('1 and not done', 'not done')
+    testSimplifyCore('false and you(know, it)', 'false')
+    testSimplifyCore('(p or q) and "you"', 'p or q')
+    testSimplifyCore('something and ""', 'false')
+    testSimplifyCore('false or not(way)', 'not way')
+    testSimplifyCore('6 or dozen/2', 'true')
+    testSimplifyCore('(a and b) or 0', 'a and b')
+    testSimplifyCore('consequences or true', 'true')
     testSimplifyCore('(1*x + y*0)*1+0', 'x')
     testSimplifyCore('sin(x+0)*1', 'sin(x)')
     testSimplifyCore('((x+0)*1)', 'x')
@@ -53,15 +63,8 @@ describe('simplifyCore', function () {
     testSimplifyCore('x+(y+z)+w', '(x + (y + z)) + w', { parenthesis: 'all' })
   })
 
-  it('folds constants', function () {
-    testSimplifyCore('1+2', '3')
-    testSimplifyCore('2*3', '6')
-    testSimplifyCore('2-3', '-1')
-    testSimplifyCore('3/2', '1.5')
-    testSimplifyCore('3^2', '9')
-  })
-
   it('should convert +unaryMinus to subtract', function () {
+    testSimplifyCore('x + -1', 'x - 1')
     const result = math.simplify(
       'x + y + a', [math.simplifyCore], { a: -1 }
     ).toString()
@@ -84,5 +87,12 @@ describe('simplifyCore', function () {
     testSimplifyCore('add(multiply(x, 0), y)', 'y')
     testSimplifyCore('and(multiply(1, x), true)', 'x and true')
     testSimplifyCore('add(x, 0 ,y)', 'x + y')
+  })
+
+  it('can perform sequential distinct core simplifications', () => {
+    testSimplifyCore('0 - -x', 'x')
+    testSimplifyCore('0 - (x - y)', 'y - x')
+    testSimplifyCore('a + -0', 'a')
+    testSimplifyCore('-(-x - y)', 'y + x')
   })
 })
