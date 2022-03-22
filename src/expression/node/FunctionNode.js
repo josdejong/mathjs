@@ -57,6 +57,13 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
   FunctionNode.prototype.isFunctionNode = true
 
+  /* Returns length-limited string of its argument */
+  function strin (entity) {
+    const s = entity.toString()
+    if (s.length < 79) return s
+    return s.substring(0, 74) + '...'
+  }
+
   /**
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
@@ -86,13 +93,20 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         const isRaw = typeof fn === 'function' && fn.rawArgs === true
 
         const resolveFn = (scope) => {
+          let value
           if (scope.has(name)) {
-            return scope.get(name)
+            value = scope.get(name)
+          } else if (name in math) {
+            value = getSafeProperty(math, name)
+          } else {
+            return FunctionNode.onUndefinedFunction(name)
           }
-          if (name in math) {
-            return getSafeProperty(math, name)
+          if (typeof value === 'function') {
+            return value
           }
-          return FunctionNode.onUndefinedFunction(name)
+          throw new TypeError(
+            `'${name}' is not a function; its value is:\n  ${strin(value)}`
+          )
         }
 
         if (isRaw) {
@@ -137,8 +151,12 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         const rawArgs = this.args
         return function evalFunctionNode (scope, args, context) {
           const fn = args[name]
-          const isRaw = fn && fn.rawArgs
-          if (isRaw) {
+          if (typeof fn !== 'function') {
+            throw new TypeError(
+              `Argument '${name}' was not a function; received: ${strin(fn)}`
+            )
+          }
+          if (fn.rawArgs) {
             return fn(rawArgs, math, createSubScope(scope, args), scope) // "raw" evaluation
           } else {
             const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
@@ -173,14 +191,19 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     } else {
       // node.fn.isAccessorNode && !node.fn.index.isObjectProperty()
       // we have to dynamically determine whether the function has a rawArgs property
+      const fnExpr = this.fn.toString()
       const evalFn = this.fn._compile(math, argNames)
       const rawArgs = this.args
 
       return function evalFunctionNode (scope, args, context) {
         const fn = evalFn(scope, args, context)
-        const isRaw = fn && fn.rawArgs
-
-        if (isRaw) {
+        if (typeof fn !== 'function') {
+          throw new TypeError(
+            `Expression '${fnExpr}' did not evaluate to a function; value is:` +
+            `\n  ${strin(fn)}`
+          )
+        }
+        if (fn.rawArgs) {
           return fn(rawArgs, math, createSubScope(scope, args), scope) // "raw" evaluation
         } else {
           // "regular" evaluation
