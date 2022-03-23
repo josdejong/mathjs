@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 10.4.1
+# 2022-03-23, version 10.4.1
 
 - Improve TypeScript definitions for function `unit` (#2479). 
   Thanks @SinanAkkoyun.
@@ -12,6 +12,9 @@
   make them type guards. (#2432). Thanks @ChristopherChudzicki.
 - Fix #2491: Multi line object expressions don't work with comments (#2492).
   Thanks @gwhitney.
+- Fix #2478: a bug in calculating the eigenvectors when dealing with complex
+  numbers (#2496). Thanks @gwhitney.
+- Update project dependencies and devDependencies.
 
 
 # 2022-03-07, version 10.4.0
