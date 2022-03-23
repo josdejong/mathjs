@@ -4,6 +4,23 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220323-version-1041">2022-03-23, version 10.4.1 <a href="#20220323-version-1041" title="Permalink">#</a></h1>
+
+- Improve TypeScript definitions for function `unit`  <a href="https://github.com/josdejong/mathjs/issues/2479">#2479</a>). 
+  Thanks <a href="https://github.com/SinanAkkoyun">@SinanAkkoyun</a>.
+- Add tests for type declarations  <a href="https://github.com/josdejong/mathjs/issues/2448">#2448</a>). Thanks <a href="https://github.com/samestep">@samestep</a>.
+- Further improvement to TypeScript definitions of `std` and `variance`
+  (make dimension parameter optional, <a href="https://github.com/josdejong/mathjs/issues/2474">#2474</a>). Thanks <a href="https://github.com/NattapongSiri">@NattapongSiri</a>.
+- Next step (as per <a href="https://github.com/josdejong/mathjs/issues/2431">#2431</a>) for full publication of "is" functions like
+  `isMatrix` etc: Provide TypeScript definitions of "is" functions and
+  make them type guards.  <a href="https://github.com/josdejong/mathjs/issues/2432">#2432</a>). Thanks <a href="https://github.com/ChristopherChudzicki">@ChristopherChudzicki</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2491">#2491</a>: Multi line object expressions don't work with comments  <a href="https://github.com/josdejong/mathjs/issues/2492">#2492</a>).
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2478">#2478</a>: a bug in calculating the eigenvectors when dealing with complex
+  numbers  <a href="https://github.com/josdejong/mathjs/issues/2496">#2496</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Update project dependencies and devDependencies.
+
+
 <h1 id="20220307-version-1040">2022-03-07, version 10.4.0 <a href="#20220307-version-1040" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2461">#2461</a>: make sure `simplifyCore` recurses over all binary nodes  <a href="https://github.com/josdejong/mathjs/issues/2462">#2462</a>).
