@@ -19,11 +19,13 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
     // make sure corresponding rows and columns have similar magnitude
     // important because of numerical stability
+    // MODIFIES arr by side effect!
     const R = balance(arr, N, prec, type, findVectors)
 
     // R is the row transformation matrix
-    // A' = R A R⁻¹, A is the original matrix
+    // arr = A' = R A R⁻¹, A is the original matrix
     // (if findVectors is false, R is undefined)
+    // (And so to return to original matrix: A = R⁻¹ arr R)
 
     // TODO if magnitudes of elements vary over many orders,
     // move greatest elements to the top left corner
@@ -31,22 +33,23 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     // using similarity transformations, reduce the matrix
     // to Hessenberg form (upper triangular plus one subdiagonal row)
     // updates the transformation matrix R with new row operationsq
+    // MODIFIES arr by side effect!
     reduceToHessenberg(arr, N, prec, type, findVectors, R)
+    // still true that original A = R⁻¹ arr R)
 
     // find eigenvalues
-    let { values, C } = iterateUntilTriangular(arr, N, prec, type, findVectors)
+    const { values, C } = iterateUntilTriangular(arr, N, prec, type, findVectors)
 
     // values is the list of eigenvalues, C is the column
-    // transformation matrix that transforms the hessenberg
-    // matrix to upper triangular
-
-    // compose transformations A → hess. and hess. → triang.
-    C = multiply(inv(R), C)
+    // transformation matrix that transforms arr, the hessenberg
+    // matrix, to upper triangular
+    // (So U = C⁻¹ arr C and the relationship between current arr
+    // and original A is unchanged.)
 
     let vectors
 
     if (findVectors) {
-      vectors = findEigenvectors(arr, N, C, values, prec, type)
+      vectors = findEigenvectors(arr, N, C, R, values, prec, type)
       vectors = matrixFromColumns(...vectors)
     }
 
@@ -387,14 +390,15 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
   }
 
   /**
-   * @param {Matrix} A original matrix
+   * @param {Matrix} A hessenberg-form matrix
    * @param {number} N size of A
    * @param {Matrix} C column transformation matrix that turns A into upper triangular
+   * @param {Matrix} R similarity that turns original matrix into A
    * @param {number[]} values array of eigenvalues of A
    * @param {'number'|'BigNumber'|'Complex'} type
    * @returns {number[][]} eigenvalues
    */
-  function findEigenvectors (A, N, C, values, prec, type) {
+  function findEigenvectors (A, N, C, R, values, prec, type) {
     const Cinv = inv(C)
     const U = multiply(Cinv, A, C)
 
@@ -434,16 +438,14 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
     for (let i = 0; i < len; i++) {
       const λ = uniqueValues[i]
-      const A = subtract(U, multiply(λ, E)) // the characteristic matrix
+      const S = subtract(U, multiply(λ, E)) // the characteristic matrix
 
-      let solutions = usolveAll(A, b)
-      solutions = solutions.map(v => multiply(C, v))
-
+      let solutions = usolveAll(S, b)
       solutions.shift() // ignore the null vector
 
       // looks like we missed something, try inverse iteration
       while (solutions.length < multiplicities[i]) {
-        const approxVec = inverseIterate(A, N, solutions, prec, type)
+        const approxVec = inverseIterate(S, N, solutions, prec, type)
 
         if (approxVec == null) {
           // no more vectors were found
@@ -453,6 +455,10 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
         solutions.push(approxVec)
       }
+
+      // Transform back into original array coordinates
+      const correction = multiply(inv(R), C)
+      solutions = solutions.map(v => multiply(correction, v))
 
       vectors.push(...solutions.map(v => flatten(v)))
     }
