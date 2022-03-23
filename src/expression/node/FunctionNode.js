@@ -1,5 +1,5 @@
 import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is.js'
-import { escape } from '../../utils/string.js'
+import { escape, format } from '../../utils/string.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { getSafeProperty, validateSafeMethod } from '../../utils/customs.js'
 import { createSubScope } from '../../utils/scope.js'
@@ -57,12 +57,8 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
   FunctionNode.prototype.isFunctionNode = true
 
-  /* Returns length-limited string of its argument */
-  function strin (entity) {
-    const s = entity.toString()
-    if (s.length < 79) return s
-    return s.substring(0, 74) + '...'
-  }
+  /* format to fixed length */
+  const strin = entity => format(entity, { truncate: 78 })
 
   /**
    * Compile a node into a JavaScript function.
