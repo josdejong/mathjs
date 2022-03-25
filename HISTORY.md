@@ -4,6 +4,7 @@
 
 - Fix #2493: unclear error message when an entity that is not a function
   is being called as a function (#2494). Thanks @gwhitney.
+- Some fixes in the docs on units (#2498). Thanks @dvd101x.
 
 
 # 2022-03-23, version 10.4.1
