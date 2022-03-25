@@ -68,6 +68,9 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    - `fraction: string`. Available values: 'ratio' (default) or 'decimal'.
    *      For example `format(fraction(1, 3))` will output '1/3' when 'ratio' is
    *      configured, and will output `0.(3)` when 'decimal' is configured.
+   *    - `truncate: number`. Specifies the maximum allowed length of the
+   *      returned string. If it would have been longer, the excess characters
+   *      are deleted and replaced with `'...'`.
    * - `callback: function`
    *   A custom formatting function, invoked for all numeric elements in `value`,
    *   for example all elements of a matrix, or the real and imaginary

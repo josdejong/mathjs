@@ -620,6 +620,45 @@ describe('FunctionNode', function () {
     assert.throws(function () { tree.toTex() }, TypeError)
   })
 
+  it('evaluates different sorts of function calls', () => {
+    const examples = [
+      ['1; square(3)', 9],
+      ['f(x) = x*x; f(3)', 9],
+      ['a={n:7, f: lambda(x) = x*x}; a.f(3)', 9],
+      ['a=[7, f(x)=x*x]; a[2](3)', 9],
+      ['twiceOn(f,x) = f(f(x)); twiceOn(square, 3)', 81],
+      ['twice(f) = lambda(x) = f(f(x)); fourth = twice(square); fourth(3)', 81],
+      ['twice(f) = lambda(x) = f(f(x)); [twice(square)][1](3)', 81]
+    ]
+    for (const example of examples) {
+      const answer = math.evaluate(example[0]).valueOf()[0]
+      assert.strictEqual(answer, example[1])
+    }
+  })
+
+  it('produces clear error messages when the callee is not a function', () => {
+    const throwers = [
+      ['tau(3)', TypeError, /tau.*value[\s\S]*6.28/],
+      ['f = 7; f(3)', TypeError, /f.*value[\s\S]*7/],
+      ['a={f: 7}; a.f(3)', Error, /method.*f/],
+      ['a=[1,2]; a[2](3)', TypeError, /a\[2\].*value[\s\S]*2/],
+      ['twiceOn(f, x) = f(f(x)); twiceOn(7, 3)',
+        TypeError,
+        /f.*received[\s\S]*7/],
+      ['twice(f) = lambda(x) = f(f(x)); weird = twice(7); weird(3)',
+        TypeError,
+        /f.*received[\s\S]*7/],
+      ['twice(f) = lambda(x) = f(f(x)); [twice(7)][1](3)',
+        TypeError,
+        /f.*received[\s\S]*7/],
+      ['[square(7)][1](3)', TypeError, /square\(7\).*evaluate[\s\S]*49/]
+    ]
+    for (const problem of throwers) {
+      assert.throws(() => math.evaluate(problem[0]), problem[1])
+      assert.throws(() => math.evaluate(problem[0]), problem[2])
+    }
+  })
+
   // FIXME: custom instances should have there own function, not return the same function?
   after(() => {
     const customMath = math.create()

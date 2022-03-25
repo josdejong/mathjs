@@ -1,5 +1,11 @@
 # History
 
+# not yet published, version 10.4.2
+
+- Fix #2493: unclear error message when an entity that is not a function
+  is being called as a function (#2494). Thanks @gwhitney.
+
+
 # 2022-03-23, version 10.4.1
 
 - Improve TypeScript definitions for function `unit` (#2479). 
