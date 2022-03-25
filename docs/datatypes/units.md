@@ -89,7 +89,7 @@ const F = math.multiply(q, math.cross(v, B))   // [0 N, 0 N, -1 N]
 
 All arithmetic operators act on the value of the unit as it is represented in SI units.
 This may lead to surprising behavior when working with temperature scales like `celsius` (or `degC`) and `fahrenheit` (or `degF`).
-In general you should avoid calculations using `celsius` and `fahrenheit`. Rather, use `kelvin` (or `K`) and `rankine` (or `R`) instead.
+In general you should avoid calculations using `celsius` and `fahrenheit`. Rather, use `kelvin` (or `K`) and `rankine` (or `degR`) instead.
 This example highlights some problems when using `celsius` and `fahrenheit` in calculations:
 
 ```js
@@ -135,7 +135,7 @@ An optional `options` object can also be supplied as the last argument to `creat
 
 ```js
 // Redefine the mile (would not be the first time in history)
-math.createUnit('mile', '1609.347218694', {override: true}})
+math.createUnit('mile', '1609.347218694 m', {override: true})
 ```
 Base units created without specifying a definition cannot be overridden.
 
