@@ -94,6 +94,14 @@ describe('subtract', function () {
     assert.deepStrictEqual(subtract(math.unit(math.complex(10, 10), 'K'), math.unit(3, 'K')), math.unit(math.complex(7, 10), 'K'))
   })
 
+  it('should subtract units even when they have offsets', () => {
+    let t = math.unit(20, 'degC')
+    assert.deepStrictEqual(subtract(t, math.unit(1, 'degC')), math.unit(19, 'degC'))
+    t = math.unit(68, 'degF')
+    approx.deepEqual(subtract(t, math.unit(2, 'degF')), math.unit(66, 'degF'))
+    approx.deepEqual(subtract(t, math.unit(1, 'degC')), math.unit(66.2, 'degF'))
+  })
+
   it('should throw an error if subtracting two quantities of different units', function () {
     assert.throws(function () {
       subtract(math.unit(5, 'km'), math.unit(100, 'gram'))

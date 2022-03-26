@@ -504,6 +504,8 @@ describe('parse', function () {
         math.unit(68, 'fahrenheit').to('fahrenheit'))
       approx.deepEqual(parseAndEval('50 fahrenheit to celsius'),
         math.unit(10, 'celsius').to('celsius'))
+      approx.deepEqual(parseAndEval('degC to degF'),
+        math.unit(1.8, 'degF').to('degF'))
     })
 
     it('should create units and aliases', function () {
