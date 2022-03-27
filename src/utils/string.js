@@ -19,6 +19,7 @@ export function endsWith (text, search) {
  * Usage:
  *     math.format(value)
  *     math.format(value, precision)
+ *     math.format(value, options)
  *
  * When value is a function:
  *
@@ -42,13 +43,24 @@ export function endsWith (text, search) {
  *     math.format('hello')            // '"hello"'
  *
  * @param {*} value             Value to be stringified
- * @param {Object | number | Function} [options]  Formatting options. See
- *                                                lib/utils/number:format for a
- *                                                description of the available
- *                                                options.
+ * @param {Object | number | Function} [options]
+ *     Formatting options. See src/utils/number.js:format for a
+ *     description of the available options controlling number output.
+ *     This generic "format" also supports the option property `truncate: NN`
+ *     giving the maximum number NN of characters to return (if there would
+ *     have been more, they are deleted and replaced by an ellipsis).
  * @return {string} str
  */
 export function format (value, options) {
+  const result = _format(value, options)
+  if (options && typeof options === 'object' && 'truncate' in options &&
+      result.length > options.truncate) {
+    return result.substring(0, options.truncate - 3) + '...'
+  }
+  return result
+}
+
+function _format (value, options) {
   if (typeof value === 'number') {
     return formatNumber(value, options)
   }
