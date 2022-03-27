@@ -72,6 +72,9 @@ export const gammaP = [
 
 // lgamma implementation ref: https://mrob.com/pub/ries/lanczos-gamma.html#code
 
+// log(2 * pi) / 2
+export const lnSqrt2PI = 0.91893853320467274178
+
 export const lgammaG = 5 // Lanczos parameter "g"
 export const lgammaN = 7 // Range of coefficients "n"
 
@@ -97,8 +100,6 @@ export function lgammaNumber (n) {
   }
 
   // Compute the logarithm of the Gamma function using the Lanczos method
-
-  const lnSqrt2PI = 0.91893853320467274178
 
   n = n - 1
   const base = n + lgammaG + 0.5 // Base of the Lanczos exponential

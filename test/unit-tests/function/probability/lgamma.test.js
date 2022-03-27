@@ -1,6 +1,6 @@
 /* eslint-disable no-loss-of-precision */
 
-// computation ref: https://keisan.casio.com/exec/system/1180573442
+// computation ref: https://www.wolframalpha.com/input?i=LogGamma%5Bx%5D
 
 import assert from 'assert'
 import approx from '../../../../tools/approx.js'
@@ -8,104 +8,125 @@ import math from '../../../../src/defaultInstance.js'
 const lgamma = math.lgamma
 
 describe('lgamma', () => {
-  it('should calculate the lgamma of 0', () => {
+  it('should calculate the lgamma of 0 and negative numbers', () => {
     assert.strictEqual(lgamma(0), Infinity)
-  })
 
-  it('should calculate the lgamma of a negative integer', () => {
+    assert.ok(isNaN(lgamma(-0.0005)))
+    assert.ok(isNaN(lgamma(-0.5)))
     assert.ok(isNaN(lgamma(-1)))
+    assert.ok(isNaN(lgamma(-1.5)))
     assert.ok(isNaN(lgamma(-2)))
+    assert.ok(isNaN(lgamma(-2.5)))
     assert.ok(isNaN(lgamma(-100000)))
-    assert.ok(isNaN(lgamma(-NaN)))
+    assert.ok(isNaN(lgamma(-123456.123456)))
   })
 
-  it('should calculate the lgamma of a positive number', () => {
-    approx.equal(lgamma(/**/ 0.000000001), /*   */ 20.723265836369195492082857, 1e-10)
-    approx.equal(lgamma(/*   */ 0.000001), /*   */ 13.815509980749431669207827, 1e-10)
-    approx.equal(lgamma(/*       */ 0.25), /*   */ 1.2880225246980774573706104, 1e-10)
-    approx.equal(lgamma(/*        */ 0.8), /*   */ 0.1520596783998375887782926, 1e-10)
-    approx.equal(lgamma(/*          */ 1), /*                             */ 0, 1e-10)
-    approx.equal(lgamma(/*        */ 1.5), /* */ -0.12078223763524522234551845, 1e-10)
-    approx.equal(lgamma(/*          */ 2), /*                             */ 0, 1e-10)
-    approx.equal(lgamma(/*        */ 2.5), /*  */ 0.28468287047291915963249467, 1e-10)
-    approx.equal(lgamma(/*       */ 12.5), /*   */ 18.734347511936445701634125, 1e-10)
-    approx.equal(lgamma(/*      */ 125.5), /*   */ 479.45782236390339913576384, 1e-10)
-    approx.equal(lgamma(/*  */ 5555.5555), /*   */ 42344.127792509816147711716, 1e-10)
-    approx.equal(lgamma(/*  */ 5000000.5), /*   */ 72124743.270930397264882949, 1e-10)
-    approx.equal(lgamma(99999999999999.5), /*   */ 3123619130191632.6403724193, 1e-10)
-    approx.equal(lgamma(/*       */ 1e92), /**/ 2.1083782855545220292965521e94, 1e-10)
+  it('should calculate the lgamma of a positive numbers', () => {
+    approx.equal(lgamma(/**/ 0.000000001), /*  */ 20.7232658363691954921, 1e-10)
+    approx.equal(lgamma(/*   */ 0.000001), /*  */ 13.8155099807494316692, 1e-10)
+    approx.equal(lgamma(/*       */ 0.25), /*  */ 1.28802252469807745737, 1e-10)
+    approx.equal(lgamma(/*        */ 0.8), /*  */ 0.15205967839983758878, 1e-10)
+    approx.equal(lgamma(/*          */ 1), /*                       */ 0, 1e-10)
+    approx.equal(lgamma(/*        */ 1.5), /* */ -0.12078223763524522235, 1e-10)
+    approx.equal(lgamma(/*          */ 2), /*                       */ 0, 1e-10)
+    approx.equal(lgamma(/*        */ 2.5), /*  */ 0.28468287047291915963, 1e-10)
+    approx.equal(lgamma(/*       */ 12.5), /*  */ 18.7343475119364457016, 1e-10)
+    approx.equal(lgamma(/*      */ 125.5), /*  */ 479.457822363903399136, 1e-10)
+    approx.equal(lgamma(/*  */ 5555.5555), /*  */ 42344.1277925098161477, 1e-10)
+    approx.equal(lgamma(/*  */ 5000000.5), /*  */ 72124743.2709303972649, 1e-10)
+    approx.equal(lgamma(99999999999999.5), /*  */ 3123619130191632.64037, 1e-10)
+    approx.equal(lgamma(/*       */ 1e92), /**/ 2.1083782855545220293e94, 1e-10)
   })
 
   it('should calculate the lgamma of an irrational number', () => {
-    approx.equal(lgamma(Math.SQRT2), -0.12038230351896920333038516, 1e-10)
-    approx.equal(lgamma(Math.PI), 0.82769459232343710152957856, 1e-10)
-    approx.equal(lgamma(Math.E), 0.44946174182006766700250782, 1e-10)
+    approx.equal(lgamma(Math.SQRT2), -0.12038230351896920333, 1e-10)
+    approx.equal(lgamma(Math.PI), 0.82769459232343710153, 1e-10)
+    approx.equal(lgamma(Math.E), 0.449461741820067667, 1e-10)
   })
 
   it('should calculate the lgamma of a complex number', function () {
     approx.deepEqual(lgamma(math.complex(0, 0)), math.complex(Infinity))
     approx.deepEqual(
       lgamma(math.complex(0.000000001, 0.000000001)),
-      math.complex(20.37669224608922283655, -0.7853981639746639728723)
+      math.complex(20.3766922460892228366, -0.78539816397466397287)
     )
     approx.deepEqual(
       lgamma(math.complex(0.000001, 0.000001)),
-      math.complex(13.46893639046863654867, -0.785398740611468277883)
+      math.complex(13.4689363904686365487, -0.78539874061146827788)
     )
-    approx.deepEqual(lgamma(math.complex(0.25, 0.25)), math.complex(0.9044745094933388897705, -0.83887024394321281804))
-    approx.deepEqual(lgamma(math.complex(-0.25, 0.25)), math.complex(1.166572037360874928654, -2.614627038651155510161))
-    approx.deepEqual(lgamma(math.complex(0.8, -0.8)), math.complex(-0.4192408111364207487877, 0.516230802139298279437))
-    approx.deepEqual(lgamma(math.complex(-0.8, 0.8)), math.complex(-0.3775761850502096333074, -3.808650210275887665669))
+    approx.deepEqual(lgamma(math.complex(0.25, 0.25)), math.complex(0.90447450949333888977, -0.83887024394321281804))
+    approx.deepEqual(lgamma(math.complex(-0.25, 0.25)), math.complex(1.16657203736087492865, -2.61462703865115551016))
+    approx.deepEqual(lgamma(math.complex(0.8, -0.8)), math.complex(-0.41924081113642074879, 0.51623080213929827944))
+    approx.deepEqual(lgamma(math.complex(-0.8, 0.8)), math.complex(-0.3775761850502096333, -3.80865021027588766567))
 
-    approx.deepEqual(lgamma(math.complex(1, 1)), math.complex(-0.6509231993018563388852, -0.301640320467533197888))
-    approx.deepEqual(lgamma(math.complex(1, -1)), math.complex(-0.6509231993018563388852, 0.301640320467533197888))
-    approx.deepEqual(lgamma(math.complex(-1, 1)), math.complex(-0.9974967895818289935938, -4.228631137454774745966))
-    approx.deepEqual(lgamma(math.complex(-1, -1)), math.complex(-0.9974967895818289935938, 4.228631137454774745966))
+    approx.deepEqual(lgamma(math.complex(1, 1)), math.complex(-0.65092319930185633889, -0.30164032046753319789))
+    approx.deepEqual(lgamma(math.complex(1, -1)), math.complex(-0.65092319930185633889, 0.30164032046753319789))
+    approx.deepEqual(lgamma(math.complex(-1, 1)), math.complex(-0.99749678958182899359, -4.22863113745477474597))
+    approx.deepEqual(lgamma(math.complex(-1, -1)), math.complex(-0.99749678958182899359, 4.22863113745477474597))
 
-    approx.deepEqual(lgamma(math.complex(1.5, 1.5)), math.complex(-0.979150939181364358873, 0.3858947712671547243602))
-    approx.deepEqual(lgamma(math.complex(1.5, -1.5)), math.complex(-0.979150939181364358873, -0.3858947712671547243602))
-    approx.deepEqual(lgamma(math.complex(-1.5, 1.5)), math.complex(-2.647480369443656460743, -5.11189237251498344295))
-    approx.deepEqual(lgamma(math.complex(-1.5, -1.5)), math.complex(-2.647480369443656460743, 5.11189237251498344295))
+    approx.deepEqual(lgamma(math.complex(1.5, 1.5)), math.complex(-0.97915093918136435887, 0.38589477126715472436))
+    approx.deepEqual(lgamma(math.complex(1.5, -1.5)), math.complex(-0.97915093918136435887, -0.38589477126715472436))
+    approx.deepEqual(lgamma(math.complex(-1.5, 1.5)), math.complex(-2.64748036944365646074, -5.11189237251498344295))
+    approx.deepEqual(lgamma(math.complex(-1.5, -1.5)), math.complex(-2.64748036944365646074, 5.11189237251498344295))
 
-    approx.deepEqual(lgamma(math.complex(2, -2)), math.complex(-1.07135983021387915393, -1.236795034103878814401))
-    approx.deepEqual(lgamma(math.complex(-2.5, -2.5)), math.complex(-6.276850851486485716676, 6.428043937939841678668))
-    approx.deepEqual(lgamma(math.complex(-12.5, 12.5)), math.complex(-53.37675533240963698656, -13.5132687247807014785))
-    approx.deepEqual(lgamma(math.complex(125.5, 125.5)), math.complex(424.2117196389647184265, 622.6237967006225892456))
+    approx.deepEqual(lgamma(math.complex(2, -2)), math.complex(-1.07135983021387915393, -1.2367950341038788144))
+    approx.deepEqual(lgamma(math.complex(-2.5, -2.5)), math.complex(-6.27685085148648571668, 6.42804393793984167867))
+    approx.deepEqual(lgamma(math.complex(-12.5, 12.5)), math.complex(-53.3767553324096369866, -7.23008341760111500158))
+    approx.deepEqual(lgamma(math.complex(125.5, 125.5)), math.complex(424.211719638964718426, 622.623796700622589246))
     approx.deepEqual(
       lgamma(math.complex(5555.5555, -5555.5555)),
-      math.complex(39906.0402274967320859, -48635.85931123069084207)
+      math.complex(39906.0402274967320859, -48635.8593112306908421)
     )
     approx.deepEqual(
       lgamma(math.complex(-5000000.5, -5000000.5)),
-      math.complex(-85638598.7850343162145, -62076637.09881126065676)
+      math.complex(-8.56385987850343162145e7, -6.20766433819965678363e7)
     )
     approx.deepEqual(
       lgamma(math.complex(99999999999999.5, 99999999999999.5)),
-      math.complex(3079736672879885.121007, 3236816305559388.977277)
+      math.complex(3.07973667287988512101e15, 3.23681630555938897728e15)
+    )
+    approx.deepEqual(
+      lgamma(math.complex(-9.87654321e50, 1.23456789e70)),
+      math.complex(-1.93925470679092599791e70, 1.98014414903993314695e72)
     )
 
     approx.deepEqual(
+      lgamma(math.complex(0.000123, 123456789)),
+      math.complex(-1.93925479073563285659e8, 2.17671624683482738475e9)
+    )
+    approx.deepEqual(
+      lgamma(math.complex(-0.000123, 123456789)),
+      math.complex(-1.93925479078146610494e8, 2.17671624683444096885e9)
+    )
+    approx.deepEqual(
+      lgamma(math.complex(123456789, -0.000123)),
+      math.complex(2.17671623922326999167e9, 0.00229166241674051621)
+    )
+    approx.deepEqual(
+      lgamma(math.complex(-123456789, -0.000123)),
+      math.complex(-2.17671625601718110732e9, 3.87850942926689860771e8)
+    )
+    approx.deepEqual(
       lgamma(math.complex(123456789.123, 0.123456789)),
-      math.complex(2176716241.514932408408, 2.300173036243032340655)
+      math.complex(2.17671624151493240841e9, 2.30017303624303234065)
     )
   })
 
-  it('should calculate the lgamma of a boolean', () => {
+  it('should calculate the lgamma of some special arguments', () => {
     approx.equal(lgamma(true), 0, 1e-10)
     assert.strictEqual(lgamma(false), Infinity)
+
+    assert.ok(isNaN(lgamma(NaN)))
+    assert.ok(isNaN(lgamma(-NaN)))
+
+    assert.ok(!isFinite(lgamma(Infinity)))
+    assert.ok(!isFinite(lgamma(-Infinity)))
   })
 
   it('should calculate the lgamma of each element in a matrix', () => {
     approx.deepEqual(
       lgamma(math.matrix([0, 1, 2, 3, 4, 5])),
-      math.matrix([
-        Infinity,
-        0,
-        0,
-        0.69314718055994530941723212,
-        1.7917594692280550008124774,
-        3.1780538303479456196469416
-      ])
+      math.matrix([Infinity, 0, 0, 0.69314718055994530942, 1.79175946922805500081, 3.17805383034794561965])
     )
   })
 
@@ -114,9 +135,9 @@ describe('lgamma', () => {
       Infinity,
       0,
       0,
-      0.69314718055994530941723212,
-      1.7917594692280550008124774,
-      3.1780538303479456196469416
+      0.69314718055994530942,
+      1.79175946922805500081,
+      3.17805383034794561965
     ])
   })
 
