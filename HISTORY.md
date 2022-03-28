@@ -5,7 +5,9 @@
 - Fix #2493: unclear error message when an entity that is not a function
   is being called as a function (#2494). Thanks @gwhitney.
 - Some fixes in the docs on units (#2498). Thanks @dvd101x.
-
+- Correct approx.deepEqual() to accept an epsilon argument giving the
+  comparison tolerance. It was already being called this way, but was
+  silently ignoring the tolerance. Thanks @yifanwww.
 
 # 2022-03-23, version 10.4.1
 
