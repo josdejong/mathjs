@@ -93,6 +93,17 @@ describe('log', function () {
     approx.deepEqual(log(complex(1, 0)), complex(0, 0))
   })
 
+  it('should handle complex number with large imaginary part', function () {
+    const tau4 = math.tau / 4
+    const real = [0, -1, 1]
+    const imaginary = [1e15, 1e17, 1e20, 1e30]
+    for (const r of real) {
+      for (const im of imaginary) {
+        approx.deepEqual(log(complex(r, im)), complex(Math.log(im), tau4))
+      }
+    }
+  })
+
   it('should throw an error when used on a unit', function () {
     assert.throws(function () { log(unit('5cm')) })
   })
