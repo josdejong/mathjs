@@ -1007,6 +1007,19 @@ describe('Unit', function () {
       const unitP = unit5.pow(math.bignumber(-3.5))
       assert(math.isBigNumber(unitP.value))
     })
+
+    it('should multiply/divide units with offsets correctly', () => {
+      const unit1 = new Unit(1, 'm')
+      const unit2 = new Unit(1, 'degC')
+      const unit3 = new Unit(1, 'm degC')
+      unit3.skipAutomaticSimplification = false
+      assert.deepStrictEqual(unit1.multiply(unit2), unit3)
+      const unit4 = new Unit(1, 'in')
+      const unit5 = new Unit(1, 'degF')
+      const unit6 = new Unit(1, 'in/degF')
+      unit6.skipAutomaticSimplification = false
+      assert.deepStrictEqual(unit4.divide(unit5), unit6)
+    })
   })
 
   describe('plurals', function () {
@@ -1129,7 +1142,9 @@ describe('Unit', function () {
 
     it('should create a custom unit from a configuration object', function () {
       Unit.createUnitSingle('wiggle', { definition: '4 rad^2/s', offset: 1, prefixes: 'long' })
-      assert.strictEqual(math.evaluate('8000 rad^2/s').toString(), '1 kilowiggle')
+      assert.strictEqual(math.evaluate('8000 rad^2/s').toString(), '2 kilowiggle')
+      Unit.createUnitSingle('wriggle', { definition: '4 rad^2/s', offset: 0, prefixes: 'long' })
+      assert.strictEqual(math.evaluate('2 wriggle to wiggle').toString(), '1 wiggle')
     })
 
     it('should return the new (value-less) unit', function () {

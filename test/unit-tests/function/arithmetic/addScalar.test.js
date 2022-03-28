@@ -123,6 +123,14 @@ describe('addScalar', function () {
     approx.deepEqual(add(math.unit(math.complex(-3, 2), 'g'), math.unit(math.complex(5, -6), 'g')).toString(), '(2 - 4i) g')
   })
 
+  it('should add units properly even when they have offsets', () => {
+    let t = math.unit(20, 'degC')
+    assert.deepStrictEqual(add(t, math.unit(1, 'degC')), math.unit(21, 'degC'))
+    t = math.unit(68, 'degF')
+    assert.deepStrictEqual(add(t, math.unit(2, 'degF')), math.unit(70, 'degF'))
+    approx.deepEqual(add(t, math.unit(1, 'degC')), math.unit(69.8, 'degF'))
+  })
+
   it('should throw an error for two measures of different units', function () {
     assert.throws(function () {
       add(math.unit(5, 'km'), math.unit(100, 'gram'))
