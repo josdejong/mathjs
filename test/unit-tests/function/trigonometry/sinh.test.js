@@ -73,7 +73,7 @@ describe('sinh', function () {
   it('should return the sinh of a complex number', function () {
     approx.deepEqual(sinh(complex('1')), complex(1.1752011936438014, 0), EPSILON)
     approx.deepEqual(sinh(complex('i')), complex(0, 0.8414709848079), EPSILON)
-    approx.deepEqual(sinh(complex('2 + i')), complex(1.9596010414216, 3.1657785132162), EPSILON)
+    approx.deepEqual(sinh(complex('2 + i')), complex(1.95960104142160589707, 3.16577851321616814674), EPSILON)
   })
 
   it('should return the sinh of an angle', function () {
@@ -83,7 +83,7 @@ describe('sinh', function () {
     assert(math.isBigNumber(sinh(unit(math.bignumber(90), 'deg'))))
     approx.equal(sinh(unit(math.bignumber(90), 'deg')).toNumber(), 2.3012989023073, EPSILON)
 
-    approx.deepEqual(sinh(unit(complex('2 + i'), 'rad')), complex(1.9596010414216, 3.1657785132162), EPSILON)
+    approx.deepEqual(sinh(unit(complex('2 + i'), 'rad')), complex(1.95960104142160589707, 3.16577851321616814674), EPSILON)
   })
 
   it('should throw an error if called with an invalid unit', function () {

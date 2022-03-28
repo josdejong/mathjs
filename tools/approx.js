@@ -65,29 +65,29 @@ exports.equal = function equal (a, b, epsilon) {
  * @param {*} a
  * @param {*} b
  */
-exports.deepEqual = function deepEqual (a, b) {
+exports.deepEqual = function deepEqual (a, b, epsilon) {
   let prop, i, len
 
   if (Array.isArray(a) && Array.isArray(b)) {
     assert.strictEqual(a.length, b.length, a + ' ~= ' + b)
     for (i = 0, len = a.length; i < len; i++) {
-      deepEqual(a[i], b[i])
+      deepEqual(a[i], b[i], epsilon)
     }
   } else if (a instanceof Object && b instanceof Object) {
     for (prop in a) {
       if (hasOwnProperty(a, prop)) {
         assert.ok(hasOwnProperty(b, prop), a[prop] + ' ~= ' + b[prop])
-        deepEqual(a[prop], b[prop])
+        deepEqual(a[prop], b[prop], epsilon)
       }
     }
 
     for (prop in b) {
       if (hasOwnProperty(b, prop)) {
         assert.ok(hasOwnProperty(a, prop), a[prop] + ' ~= ' + b[prop])
-        deepEqual(a[prop], b[prop])
+        deepEqual(a[prop], b[prop], epsilon)
       }
     }
   } else {
-    exports.equal(a, b)
+    exports.equal(a, b, epsilon)
   }
 }
