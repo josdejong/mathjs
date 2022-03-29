@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 10.4.2
+# 2022-03-29, version 10.4.2
 
 - Fix #2499: different behavior for unit conversion "degC" and "K" (#2501).
   Also disables getting the sign for units with an offset, which is ambiguous. 
@@ -11,6 +11,7 @@
 - Fix #2493: unclear error message when an entity that is not a function
   is being called as a function (#2494). Thanks @gwhitney.
 - Some fixes in the docs on units (#2498). Thanks @dvd101x.
+- Add `forEach` example in embedded docs (#2507). Thanks @dvd101x.
 - Correct approx.deepEqual() to accept an epsilon argument giving the
   comparison tolerance. It was already being called this way, but was
   silently ignoring the tolerance. Thanks @yifanwww.
