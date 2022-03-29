@@ -484,35 +484,20 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   Unit.prototype._normalize = function (value) {
-    let unitValue, unitOffset, unitPower, unitPrefixValue
-    let convert
-
     if (value === null || value === undefined || this.units.length === 0) {
       return value
-    } else if (this._isDerived()) {
-      // This is a derived unit, so do not apply offsets.
-      // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
-      let res = value
-      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
-
-      for (let i = 0; i < this.units.length; i++) {
-        unitValue = convert(this.units[i].unit.value)
-        unitPrefixValue = convert(this.units[i].prefix.value)
-        unitPower = convert(this.units[i].power)
-        res = multiplyScalar(res, pow(multiplyScalar(unitValue, unitPrefixValue), unitPower))
-      }
-
-      return res
-    } else {
-      // This is a single unit of power 1, like kg or degC
-      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
-
-      unitValue = convert(this.units[0].unit.value)
-      unitOffset = convert(this.units[0].unit.offset)
-      unitPrefixValue = convert(this.units[0].prefix.value)
-
-      return multiplyScalar(addScalar(value, unitOffset), multiplyScalar(unitValue, unitPrefixValue))
     }
+    let res = value
+    const convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
+
+    for (let i = 0; i < this.units.length; i++) {
+      const unitValue = convert(this.units[i].unit.value)
+      const unitPrefixValue = convert(this.units[i].prefix.value)
+      const unitPower = convert(this.units[i].power)
+      res = multiplyScalar(res, pow(multiplyScalar(unitValue, unitPrefixValue), unitPower))
+    }
+
+    return res
   }
 
   /**
@@ -524,40 +509,20 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   Unit.prototype._denormalize = function (value, prefixValue) {
-    let unitValue, unitOffset, unitPower, unitPrefixValue
-    let convert
-
     if (value === null || value === undefined || this.units.length === 0) {
       return value
-    } else if (this._isDerived()) {
-      // This is a derived unit, so do not apply offsets.
-      // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
-      // Also, prefixValue is ignored--but we will still use the prefix value stored in each unit, since kg is usually preferable to g unless the user decides otherwise.
-      let res = value
-      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
-
-      for (let i = 0; i < this.units.length; i++) {
-        unitValue = convert(this.units[i].unit.value)
-        unitPrefixValue = convert(this.units[i].prefix.value)
-        unitPower = convert(this.units[i].power)
-        res = divideScalar(res, pow(multiplyScalar(unitValue, unitPrefixValue), unitPower))
-      }
-
-      return res
-    } else {
-      // This is a single unit of power 1, like kg or degC
-      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
-
-      unitValue = convert(this.units[0].unit.value)
-      unitPrefixValue = convert(this.units[0].prefix.value)
-      unitOffset = convert(this.units[0].unit.offset)
-
-      if (prefixValue === undefined || prefixValue === null) {
-        return subtract(divideScalar(divideScalar(value, unitValue), unitPrefixValue), unitOffset)
-      } else {
-        return subtract(divideScalar(divideScalar(value, unitValue), prefixValue), unitOffset)
-      }
     }
+    let res = value
+    const convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
+
+    for (let i = 0; i < this.units.length; i++) {
+      const unitValue = convert(this.units[i].unit.value)
+      const unitPrefixValue = convert(this.units[i].prefix.value)
+      const unitPower = convert(this.units[i].power)
+      res = divideScalar(res, pow(multiplyScalar(unitValue, unitPrefixValue), unitPower))
+    }
+
+    return res
   }
 
   /**
@@ -794,10 +759,21 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @returns {Unit}      The result: |x|, absolute value of x
    */
   Unit.prototype.abs = function () {
-    // This gives correct, but unexpected, results for units with an offset.
-    // For example, abs(-283.15 degC) = -263.15 degC !!!
     const ret = this.clone()
-    ret.value = ret.value !== null ? abs(ret.value) : null
+    if (ret.value !== null) {
+      if (ret._isDerived() || ret.units[0].unit.offset === 0) {
+        ret.value = abs(ret.value)
+      } else {
+        // To give the correct, but unexpected, results for units with an offset.
+        // For example, abs(-283.15 degC) = -263.15 degC !!!
+        // We must take the offset into consideration here
+        const convert = Unit._getNumberConverter(typeOf(ret.value)) // convert to Fraction or BigNumber if needed
+        const unitValue = convert(ret.units[0].unit.value)
+        const nominalOffset = convert(ret.units[0].unit.offset)
+        const unitOffset = multiplyScalar(unitValue, nominalOffset)
+        ret.value = subtract(abs(addScalar(ret.value, unitOffset)), unitOffset)
+      }
+    }
 
     for (const i in ret.units) {
       if (ret.units[i].unit.name === 'VA' || ret.units[i].unit.name === 'VAR') {
@@ -815,37 +791,43 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @returns {Unit} Returns a clone of the unit with a fixed prefix and unit.
    */
   Unit.prototype.to = function (valuelessUnit) {
-    let other
     const value = this.value === null ? this._normalize(1) : this.value
+    let other
     if (typeof valuelessUnit === 'string') {
-      // other = new Unit(null, valuelessUnit)
       other = Unit.parse(valuelessUnit)
-      if (!this.equalBase(other)) {
-        throw new Error(`Units do not match ('${other.toString()}' != '${this.toString()}')`)
-      }
-      if (other.value !== null) {
-        throw new Error('Cannot convert to a unit with a value')
-      }
-
-      other.value = clone(value)
-      other.fixPrefix = true
-      other.skipAutomaticSimplification = true
-      return other
     } else if (isUnit(valuelessUnit)) {
-      if (!this.equalBase(valuelessUnit)) {
-        throw new Error(`Units do not match ('${valuelessUnit.toString()}' != '${this.toString()}')`)
-      }
-      if (valuelessUnit.value !== null) {
-        throw new Error('Cannot convert to a unit with a value')
-      }
       other = valuelessUnit.clone()
-      other.value = clone(value)
-      other.fixPrefix = true
-      other.skipAutomaticSimplification = true
-      return other
     } else {
       throw new Error('String or Unit expected as parameter')
     }
+
+    if (!this.equalBase(other)) {
+      throw new Error(`Units do not match ('${other.toString()}' != '${this.toString()}')`)
+    }
+    if (other.value !== null) {
+      throw new Error('Cannot convert to a unit with a value')
+    }
+
+    if (this.value === null || this._isDerived() ||
+        this.units[0].unit.offset === other.units[0].unit.offset) {
+      other.value = clone(value)
+    } else {
+      /* Need to adjust value by difference in offset to convert */
+      const convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
+
+      const thisUnitValue = convert(this.units[0].unit.value)
+      const thisNominalOffset = convert(this.units[0].unit.offset)
+      const thisUnitOffset = multiplyScalar(thisUnitValue, thisNominalOffset)
+
+      const otherUnitValue = convert(other.units[0].unit.value)
+      const otherNominalOffset = convert(other.units[0].unit.offset)
+      const otherUnitOffset = multiplyScalar(otherUnitValue, otherNominalOffset)
+
+      other.value = subtract(addScalar(value, thisUnitOffset), otherUnitOffset)
+    }
+    other.fixPrefix = true
+    other.skipAutomaticSimplification = true
+    return other
   }
 
   /**

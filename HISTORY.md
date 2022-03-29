@@ -2,6 +2,9 @@
 
 # not yet published, version 10.4.2
 
+- Fix #2499: different behavior for unit conversion "degC" and "K" (#2501).
+  Also disables getting the sign for units with an offset, which is ambiguous. 
+  Thanks @gwhitney.
 - Fix #2503: fix an issue in `log()` for complex numbers in which the imaginary
   part is much larger in absolute value than the real part, fixed in 
   `complex.js@2.1.0` (#2505), thanks @gwhitney, @infusion.

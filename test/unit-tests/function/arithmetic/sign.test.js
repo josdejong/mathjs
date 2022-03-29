@@ -41,9 +41,16 @@ describe('sign', function () {
     assert.strictEqual(math.sign(math.unit('5 cm')), 1)
     assert.strictEqual(math.sign(math.unit('-5 kg')), -1)
     assert.strictEqual(math.sign(math.unit('0 mol/s')), 0)
-    assert.strictEqual(math.sign(math.unit('-283.15 degC')), -1)
-    assert.strictEqual(math.sign(math.unit('-273.15 degC')), 0)
-    assert.strictEqual(math.sign(math.unit('-263.15 degC')), 1)
+
+    /* sign is ambiguous on units with offset, because you don't know if
+     * -3 degC is the difference between two temperatures, in which case
+     * it is definitely negative, or an actual temperature of something,
+     * in which case it is arguably positive. So actually mathjs should
+     * throw an error, which we will test below. Formerly:
+     assert.strictEqual(math.sign(math.unit('-283.15 degC')), -1)
+     assert.strictEqual(math.sign(math.unit('-273.15 degC')), 0)
+     assert.strictEqual(math.sign(math.unit('-263.15 degC')), 1)
+    */
 
     assert.deepStrictEqual(math.sign(math.unit(bignumber(5), 'cm')), bignumber(1))
     assert.deepStrictEqual(math.sign(math.unit(bignumber(-5), 'cm')), bignumber(-1))
@@ -51,6 +58,11 @@ describe('sign', function () {
     assert.deepStrictEqual(math.sign(math.unit(fraction(-5), 'cm')), fraction(-1))
 
     assert.deepStrictEqual(math.sign(math.unit(complex(3, 4), 'mi')), complex(0.6, 0.8))
+  })
+
+  it('should throw an error on a valueless unit or a unit with offset', () => {
+    assert.throws(() => math.sign(math.unit('ohm')), TypeError)
+    assert.throws(() => math.sign(math.unit('-3 degC')), /ambiguous/)
   })
 
   it('should throw an error when used with a string', function () {
