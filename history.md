@@ -4,6 +4,23 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220329-version-1042">2022-03-29, version 10.4.2 <a href="#20220329-version-1042" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2499">#2499</a>: different behavior for unit conversion "degC" and "K"  <a href="https://github.com/josdejong/mathjs/issues/2501">#2501</a>).
+  Also disables getting the sign for units with an offset, which is ambiguous. 
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2503">#2503</a>: fix an issue in `log()` for complex numbers in which the imaginary
+  part is much larger in absolute value than the real part, fixed in 
+  `complex.js@2.1.0`  <a href="https://github.com/josdejong/mathjs/issues/2505">#2505</a>), thanks <a href="https://github.com/gwhitney">@gwhitney</a>, <a href="https://github.com/infusion">@infusion</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2493">#2493</a>: unclear error message when an entity that is not a function
+  is being called as a function  <a href="https://github.com/josdejong/mathjs/issues/2494">#2494</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Some fixes in the docs on units  <a href="https://github.com/josdejong/mathjs/issues/2498">#2498</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Add `forEach` example in embedded docs  <a href="https://github.com/josdejong/mathjs/issues/2507">#2507</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Correct approx.deepEqual() to accept an epsilon argument giving the
+  comparison tolerance. It was already being called this way, but was
+  silently ignoring the tolerance. Thanks <a href="https://github.com/yifanwww">@yifanwww</a>.
+
+
 <h1 id="20220323-version-1041">2022-03-23, version 10.4.1 <a href="#20220323-version-1041" title="Permalink">#</a></h1>
 
 - Improve TypeScript definitions for function `unit`  <a href="https://github.com/josdejong/mathjs/issues/2479">#2479</a>). 
