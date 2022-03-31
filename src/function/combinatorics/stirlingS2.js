@@ -73,7 +73,7 @@ export const createStirlingS2 = /* #__PURE__ */ factory(name, dependencies, (
         throw new TypeError('k must be less than or equal to n in function stirlingS2')
       }
 
-      let big = !(isNumber(n) && isNumber(k))
+      const big = !(isNumber(n) && isNumber(k))
       const cache = big ? bigCache : smallCache
       const make = big ? bignumber : number
       const nn = number(n)
@@ -85,16 +85,16 @@ export const createStirlingS2 = /* #__PURE__ */ factory(name, dependencies, (
       /* Fill the cache */
       for (let m = 0; m <= nn; ++m) {
         if (!cache[m]) {
-          cache[m] = [ m === 0 ? make(1) : make(0) ]
+          cache[m] = [m === 0 ? make(1) : make(0)]
         }
         if (m === 0) continue
         const row = cache[m]
-        const prev = cache[m-1]
+        const prev = cache[m - 1]
         for (let i = row.length; i <= m && i <= nk; ++i) {
-          if (i == m) {
+          if (i === m) {
             row[i] = 1
           } else {
-            row[i] = addScalar(multiplyScalar(make(i), prev[i]), prev[i-1])
+            row[i] = addScalar(multiplyScalar(make(i), prev[i]), prev[i - 1])
           }
         }
       }
