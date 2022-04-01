@@ -7,11 +7,25 @@ describe('stirlingS2', function () {
     assert.strictEqual(stirlingS2(5, 3), 25)
     assert.strictEqual(stirlingS2(0, 0), 1)
     assert.strictEqual(stirlingS2(8, 7), 28)
+    assert.strictEqual(stirlingS2(14, 13), 91)
+    assert.strictEqual(stirlingS2(10, 5), 42525)
+    assert.strictEqual(stirlingS2(15, 6), 420693273)
+    assert.strictEqual(stirlingS2(22, 9), 1241963303533920)
+    // and that's about as big as we can go with the number type
   })
 
   it('should calculate the stirlingS2 of n items taken k at a time with BigNumbers', function () {
-    assert.deepStrictEqual(stirlingS2(math.bignumber(7), math.bignumber(5)), math.bignumber(140))
-    assert.deepStrictEqual(stirlingS2(math.bignumber(8), math.bignumber(6)), math.bignumber(266))
+    const bn = math.bignumber
+    assert.deepStrictEqual(stirlingS2(bn(7), bn(5)), bn(140))
+    assert.deepStrictEqual(stirlingS2(bn(8), bn(6)), bn(266))
+    assert.deepStrictEqual(stirlingS2(bn(14), 13), bn(91))
+    assert.deepStrictEqual(stirlingS2(10, bn(5)), bn(42525))
+    assert.deepStrictEqual(stirlingS2(bn(15), bn(6)), bn(420693273))
+    assert.deepStrictEqual(stirlingS2(bn(22), 9), bn(1241963303533920))
+    // And now we can go bigger:
+    assert.deepStrictEqual(stirlingS2(bn(23), 9), bn('12320068811796900'))
+    assert.deepStrictEqual(stirlingS2(bn(50), 14),
+      bn('16132809270066494376125322988035691981158490930'))
   })
 
   it('should not work with non-integer and negative input', function () {
