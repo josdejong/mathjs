@@ -24,7 +24,11 @@ the lower level syntax of math.js. Differences are:
   not bitwise xor.
 - Implicit multiplication, like `2 pi`, is supported and has special rules.
 - Relational operators (`<`, `>`, `<=`, `>=`, `==`, and `!=`) are chained, so the expression `5 < x < 10` is equivalent to `5 < x and x < 10`.
-
+- Multi-expression constructs like `a = 1; b = 2; a + b` or
+  `"a = 1;\n cos(a)\n sin(a)"` (where `\n` denotes newline)
+  produce a collection ("ResultSet") of values. Those expressions
+  terminated by `;` are evaluated for side effect only and their values
+  are suppressed from the result.
 
 ## Operators
 
@@ -651,7 +655,7 @@ Parentheses are parsed as a function call when there is a symbol or accessor on
 the left hand side, like `sqrt(4)` or `obj.method(4)`. In other cases the
 parentheses are interpreted as an implicit multiplication.
 
-Math.js will always evaluate implicit multiplication before explicit multiplication `*`, so that the expression `x * y z` is parsed as `x * (y * z)`. Math.js also gives implicit multiplication higher precedence than division, *except* when the division matches the pattern `[number] / [number] [symbol]` or `[number] / [number] [left paren]`. In that special case, the division is evaluated first:
+Math.js will always evaluate implicit multiplication before explicit multiplication `*`, so that the expression `x * y z` is parsed as `x * (y * z)`. Math.js also gives implicit multiplication higher precedence than division, *except* when the division matches the pattern `[unaryPrefixOp]?[number] / [number] [symbol]` or `[unaryPrefixOp]?[number] / [number] [left paren]`. In that special case, the division is evaluated first:
 
 ```js
 math.evaluate('20 kg / 4 kg')   // 5      Evaluated as (20 kg) / (4 kg)
@@ -661,7 +665,7 @@ math.evaluate('20 / 4 kg')      // 5 kg   Evaluated as (20 / 4) kg
 The behavior of implicit multiplication can be summarized by these operator precedence rules, listed from highest to lowest precedence:
 
 - Function calls: `[symbol] [left paren]`
-- Explicit division `/` when the division matches this pattern: `[number] / [number] [symbol]` or `[number] / [number] [left paren]`
+- Explicit division `/` when the division matches this pattern: `[+-~]?[number] / [+-~]?[number] [symbol]` or `[number] / [number] [left paren]`
 - Implicit multiplication
 - All other division `/` and multiplication `*`
 
