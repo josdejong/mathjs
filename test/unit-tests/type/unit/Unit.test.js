@@ -1020,6 +1020,11 @@ describe('Unit', function () {
       unit6.skipAutomaticSimplification = false
       assert.deepStrictEqual(unit4.divide(unit5), unit6)
     })
+
+    it.skip('should cancel units in numerator and denominator', () => {
+      assert.strictEqual(math.evaluate('2 J/K/g * 2 g').toString(), '4 J / K')
+      assert.strictEqual(math.evaluate('2 J/K/g * 2K').toString(), '4 J / g')
+    })
   })
 
   describe('plurals', function () {
