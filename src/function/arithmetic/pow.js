@@ -10,12 +10,13 @@ const dependencies = [
   'identity',
   'multiply',
   'matrix',
+  'inv',
   'fraction',
   'number',
   'Complex'
 ]
 
-export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, identity, multiply, matrix, number, fraction, Complex }) => {
+export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, identity, multiply, matrix, inv, number, fraction, Complex }) => {
   /**
    * Calculates the power of x to y, `x ^ y`.
    * Matrix exponentiation is supported for square matrices `x`, and positive
@@ -150,13 +151,13 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
   /**
    * Calculate the power of a 2d array
    * @param {Array} x     must be a 2 dimensional, square matrix
-   * @param {number} y    a positive, integer value
+   * @param {number} y    a integer value (positive if `x` is not invertible)
    * @returns {Array}
    * @private
    */
   function _powArray (x, y) {
-    if (!isInteger(y) || y < 0) {
-      throw new TypeError('For A^b, b must be a positive integer (value is ' + y + ')')
+    if (!isInteger(y)) {
+      throw new TypeError('For A^b, b must be an integer (value is ' + y + ')')
     }
     // verify that A is a 2 dimensional square matrix
     const s = size(x)
@@ -165,6 +166,16 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     }
     if (s[0] !== s[1]) {
       throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')')
+    }
+    if (y < 0) {
+      try {
+        return _powArray(inv(x), -y)
+      } catch (error) {
+        if (error.message === 'Cannot calculate inverse, determinant is zero') {
+          throw new TypeError('For A^b, when A is not invertible, b must be a positive integer (value is ' + y + ')')
+        }
+        throw error
+      }
     }
 
     let res = identity(s[0]).valueOf()
