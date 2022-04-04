@@ -123,7 +123,8 @@ export const createXgcd = /* #__PURE__ */ createNumberFactory('xgcd', xgcdNumber
 export const createDivideScalar = /* #__PURE__ */ createNumberFactory('divideScalar', divideNumber)
 export const createPow = /* #__PURE__ */ createNumberFactory('pow', powNumber)
 export { createRoundNumber as createRound } from './function/arithmetic/round.js'
-export const createLog = /* #__PURE__ */ createNumberFactory('log', logNumber)
+export const createLog = /* #__PURE__ */
+  createNumberOptionalSecondArgFactory('log', logNumber)
 export const createLog1p = /* #__PURE__ */ createNumberFactory('log1p', log1pNumber)
 export const createAdd = /* #__PURE__ */ createNumberFactory('add', addNumber)
 export { createHypot } from './function/arithmetic/hypot.js'
@@ -322,7 +323,11 @@ export { createNumeric } from './function/utils/numeric.js'
 export { createReviver } from './json/reviver.js'
 export { createReplacer } from './json/replacer.js'
 
-// helper function to create a factory function for a function which only needs typed-function
+// helper functions to create a factory function for a function which only needs typed-function
 function createNumberFactory (name, fn) {
   return factory(name, ['typed'], ({ typed }) => typed(fn))
+}
+function createNumberOptionalSecondArgFactory (name, fn) {
+  return factory(
+    name, ['typed'], ({ typed }) => typed({ number: fn, 'number,number': fn }))
 }
