@@ -124,14 +124,15 @@ export function lcmNumber (a, b) {
 lcmNumber.signature = n2
 
 /**
- * Calculate the logarithm of a value.
+ * Calculate the logarithm of a value, optionally to a given base.
  * @param {number} x
+ * @param {number | null | undefined} base
  * @return {number}
  */
-export function logNumber (x) {
+export function logNumber (x, y) {
+  if (y) { return Math.log(x) / Math.log(y) }
   return Math.log(x)
 }
-logNumber.signature = n1
 
 /**
  * Calculate the 10-base logarithm of a number
