@@ -108,23 +108,32 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       // this algorithm have same complexity as LUP decomposition (O(n^3))
       // but it preserve precision of floating point more relative to the LUP decomposition
       let negated = false
+      const rowIndices = new Array(rows).fill(0).map((_, i) => i) // matrix index of row i
       for (let k = 0; k < rows; k++) {
-        if (isZero(matrix[k][k])) {
-          let k_
-          for (k_ = k + 1; k_ < rows; k_++) {
-            if (!isZero(matrix[k_][k])) {
-              [matrix[k_], matrix[k]] = [matrix[k], matrix[k_]]
+        let k_ = rowIndices[k]
+        if (isZero(matrix[k_][k])) {
+          let _k
+          for (_k = k + 1; _k < rows; _k++) {
+            if (!isZero(matrix[rowIndices[_k]][k])) {
+              k_ = rowIndices[_k]
+              rowIndices[_k] = rowIndices[k]
+              rowIndices[k] = k_
               negated = !negated
               break
             }
           }
-          if (k_ === rows) return 0
+          if (_k === rows) return matrix[k_][k] // some zero of the type
         }
-        const piv = matrix[k][k]
-        const piv_ = k === 0 ? 1 : matrix[k - 1][k - 1]
-        for (let i = k + 1; i < rows; i++) { for (let j = k + 1; j < rows; j++) matrix[i][j] = divideScalar(subtract(multiply(matrix[i][j], piv), multiply(matrix[i][k], matrix[k][j])), piv_) }
+        const piv = matrix[k_][k]
+        const piv_ = k === 0 ? 1 : matrix[rowIndices[k - 1]][k - 1]
+        for (let i = k + 1; i < rows; i++) {
+          const i_ = rowIndices[i]
+          for (let j = k + 1; j < rows; j++) {
+            matrix[i_][j] = divideScalar(subtract(multiply(matrix[i_][j], piv), multiply(matrix[i_][k], matrix[k_][j])), piv_)
+          }
+        }
       }
-      const det = matrix[rows - 1][rows - 1]
+      const det = matrix[rowIndices[rows - 1]][rows - 1]
       return negated ? unaryMinus(det) : det
     }
   }
