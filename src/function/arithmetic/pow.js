@@ -19,8 +19,10 @@ const dependencies = [
 export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, identity, multiply, matrix, inv, number, fraction, Complex }) => {
   /**
    * Calculates the power of x to y, `x ^ y`.
-   * Matrix exponentiation is supported for square matrices `x`, and positive
+   * Matrix exponentiation is supported for any square matrices `x`, and non-negative
    * integer exponents `y`.
+   * For invertible square matrices `x`, and negative integer exponents `y`,
+   * the function returns `math.pow(math.inv(x), -y)`
    *
    * For cubic roots of negative numbers, the function returns the principal
    * root by default. In order to let the function return the real root,
@@ -40,6 +42,8 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    *    const b = [[1, 2], [4, 3]]
    *    math.pow(b, 2)               // returns Array [[9, 8], [16, 17]]
+   *
+   *    math.pow(b, -1)               // returns Array [[0.6, -0.4], [-0.8, 0.2]]
    *
    * See also:
    *
