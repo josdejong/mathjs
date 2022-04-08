@@ -1,11 +1,13 @@
 # History
 
 
-# not yet published, version 10.4.3
+# 2022-04-08, version 10.4.3
 
 - Fix #2508: improve the precision of stirlingS2 (#2509). Thanks @gwhitney.
 - Fix #2514: implement optional argument `base` in the number implementation
   of function `log` (#2515). Thanks @gwhitney.
+- Improve the documentation on operator `;` (#2512). Thanks @gwhitney.
+
 
 # 2022-03-29, version 10.4.2
 
