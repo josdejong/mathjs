@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h1 id="20220408-version-1043">2022-04-08, version 10.4.3 <a href="#20220408-version-1043" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2508">#2508</a>: improve the precision of stirlingS2  <a href="https://github.com/josdejong/mathjs/issues/2509">#2509</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2514">#2514</a>: implement optional argument `base` in the number implementation
+  of function `log`  <a href="https://github.com/josdejong/mathjs/issues/2515">#2515</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Improve the documentation on operator `;`  <a href="https://github.com/josdejong/mathjs/issues/2512">#2512</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+
+
 <h1 id="20220329-version-1042">2022-03-29, version 10.4.2 <a href="#20220329-version-1042" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2499">#2499</a>: different behavior for unit conversion "degC" and "K"  <a href="https://github.com/josdejong/mathjs/issues/2501">#2501</a>).

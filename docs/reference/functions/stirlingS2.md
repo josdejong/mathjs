@@ -11,7 +11,11 @@ a set of n labelled objects into k nonempty unlabelled subsets.
 stirlingS2 only takes integer arguments.
 The following condition must be enforced: k <= n.
 
- If n = k or k = 1, then s(n,k) = 1
+ If n = k or k = 1 <= n, then s(n,k) = 1
+ If k = 0 < n, then s(n,k) = 0
+
+Note that if either n or k is supplied as a BigNumber, the result will be
+as well.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
