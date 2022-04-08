@@ -43,7 +43,8 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *    const b = [[1, 2], [4, 3]]
    *    math.pow(b, 2)               // returns Array [[9, 8], [16, 17]]
    *
-   *    math.pow(b, -1)               // returns Array [[-0.6, 0.4], [0.8, -0.2]]
+   *    const c = [[1, 2], [4, 3]]
+   *    math.pow(c, -1)               // returns Array [[-0.6, 0.4], [0.8, -0.2]]
    *
    * See also:
    *
