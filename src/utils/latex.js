@@ -189,6 +189,7 @@ export const latexFunctions = {
   dot: { 2: '\\left(${args[0]}\\cdot${args[1]}\\right)' },
   expm: { 1: '\\exp\\left(${args[0]}\\right)' },
   inv: { 1: '\\left(${args[0]}\\right)^{-1}' },
+  pinv: { 1: '\\left(${args[0]}\\right)^{+}' },
   sqrtm: { 1: `{\${args[0]}}${latexOperators.pow}{\\frac{1}{2}}` },
   trace: { 1: '\\mathrm{tr}\\left(${args[0]}\\right)' },
   transpose: { 1: `\\left(\${args[0]}\\right)${latexOperators.transpose}` },
