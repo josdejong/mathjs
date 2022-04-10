@@ -68,6 +68,10 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
       }
     },
 
+    BigNumber: function () {
+      throw new Error("mathjs doesn't yet provide an implementation of the algorithm lgamma for BigNumber")
+    },
+
     'Array | Matrix': function (n) {
       return deepMap(n, this)
     }
