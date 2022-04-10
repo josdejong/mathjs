@@ -1,7 +1,5 @@
 /* eslint-disable no-loss-of-precision */
 
-// computation ref: https://www.wolframalpha.com/input?i=LogGamma%5Bx%5D
-
 import assert from 'assert'
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
@@ -27,6 +25,8 @@ describe('lgamma', () => {
   })
 
   it('should calculate the lgamma of a positive numbers', () => {
+    // computation reference: https://www.wolframalpha.com/input?i=LogGamma%5Bx%5D
+
     approx.equal(lgamma(/**/ 0.000000001), /*  */ 20.7232658363691954921, EPSILON)
     approx.equal(lgamma(/*   */ 0.000001), /*  */ 13.8155099807494316692, EPSILON)
     approx.equal(lgamma(/*       */ 0.25), /*  */ 1.28802252469807745737, EPSILON)
@@ -201,24 +201,6 @@ describe('lgamma', () => {
 
     assert.ok(!isFinite(lgamma(Infinity)))
     assert.ok(!isFinite(lgamma(-Infinity)))
-  })
-
-  it('should calculate the lgamma of each element in a matrix', () => {
-    approx.deepEqual(
-      lgamma(math.matrix([0, 1, 2, 3, 4, 5])),
-      math.matrix([Infinity, 0, 0, 0.69314718055994530942, 1.79175946922805500081, 3.17805383034794561965])
-    )
-  })
-
-  it('should calculate the lgamma of each element in an array', () => {
-    approx.deepEqual(lgamma([0, 1, 2, 3, 4, 5]), [
-      Infinity,
-      0,
-      0,
-      0.69314718055994530942,
-      1.79175946922805500081,
-      3.17805383034794561965
-    ])
   })
 
   it('should throw an error if called with a big number', () => {

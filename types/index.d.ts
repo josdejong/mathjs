@@ -1810,13 +1810,6 @@ declare namespace math {
     gamma<T extends number | BigNumber | Complex | MathArray | Matrix>(n: T): NoLiteralType<T>;
 
     /**
-     * Compute the lgamma function of a value using Lanczos approximation.
-     * @param n A real number
-     * @returns The log gamma of n
-     */
-    lgamma<T extends number | Complex | MathArray | Matrix>(n: T): NoLiteralType<T>;
-
-    /**
      * Calculate the Kullback-Leibler (KL) divergence between two
      * distributions
      * @param q First vector
@@ -1824,6 +1817,13 @@ declare namespace math {
      * @returns Returns disance between q and p
      */
     kldivergence(q: MathArray | Matrix, p: MathArray | Matrix): number;
+
+    /**
+     * Compute the log gamma function of a value, using Lanczos approximation for numbers and Stirling series for complex numbers.
+     * @param n A real or complex number
+     * @returns The log gamma of `n`
+     */
+    lgamma<T extends number | Complex>(n: T): NoLiteralType<T>;
 
     /**
      * Multinomial Coefficients compute the number of ways of picking a1,

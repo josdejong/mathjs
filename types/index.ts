@@ -831,3 +831,13 @@ Factory Test
     expectTypeOf(x).toMatchTypeOf<math.MathJsChain>()
   }
 }
+
+/*
+Probability function examples
+*/
+{
+  const math = create(all, {});
+
+  expectTypeOf(math.lgamma(1.5)).toMatchTypeOf<number>()
+  expectTypeOf(math.lgamma(math.complex(1.5, -1.5))).toMatchTypeOf<math.Complex>()
+}
