@@ -33,13 +33,14 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
    *    math.lgamma(5)       // returns 3.178053830347945
    *    math.lgamma(0)       // returns Infinity
    *    math.lgamma(-0.5)    // returns NaN
+   *    math.lgamma(math.i)  // returns -0.6509231993018536 - 1.8724366472624294i
    *
    * See also:
    *
    *    gamma
    *
-   * @param {number | Array | Matrix} n   A real or complex number
-   * @return {number | Array | Matrix}    The log gamma of `n`
+   * @param {number | Complex | Array | Matrix} n   A real or complex number
+   * @return {number | Complex | Array | Matrix}    The log gamma of `n`
    */
 
   return typed(name, {

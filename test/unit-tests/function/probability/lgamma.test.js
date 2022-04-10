@@ -221,12 +221,16 @@ describe('lgamma', () => {
     ])
   })
 
-  it('should throw en error if called with invalid number of arguments', () => {
+  it('should throw an error if called with a big number', () => {
+    assert.throws(() => lgamma(math.bignumber(0)))
+  })
+
+  it('should throw an error if called with invalid number of arguments', () => {
     assert.throws(() => lgamma())
     assert.throws(() => lgamma(1, 3))
   })
 
-  it('should throw en error if called with invalid type of argument', () => {
+  it('should throw an error if called with invalid type of argument', () => {
     assert.throws(() => lgamma(new Date()))
     assert.throws(() => lgamma('a string'))
   })

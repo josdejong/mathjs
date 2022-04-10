@@ -1814,7 +1814,7 @@ declare namespace math {
      * @param n A real number
      * @returns The log gamma of n
      */
-    lgamma<T extends number | MathArray | Matrix>(n: T): T;
+    lgamma<T extends number | Complex | MathArray | Matrix>(n: T): NoLiteralType<T>;
 
     /**
      * Calculate the Kullback-Leibler (KL) divergence between two
