@@ -10,7 +10,9 @@ export const powDocs = {
   examples: [
     '2^3',
     '2*2*2',
-    '1 + e ^ (pi * i)'
+    '1 + e ^ (pi * i)',
+    'math.pow([[1, 2], [4, 3]], 2)',
+    'math.pow([[1, 2], [4, 3]], -1)'
   ],
   seealso: [
     'multiply',

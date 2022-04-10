@@ -1,6 +1,19 @@
 # History
 
-# not yet published, version 10.4.2
+# unpublished changes since 10.4.3:
+
+- Implement #2463: allow negative integer powers of invertible square matrices
+  (#2517). Thanks @HanchaiN.
+
+# 2022-04-08, version 10.4.3
+
+- Fix #2508: improve the precision of stirlingS2 (#2509). Thanks @gwhitney.
+- Fix #2514: implement optional argument `base` in the number implementation
+  of function `log` (#2515). Thanks @gwhitney.
+- Improve the documentation on operator `;` (#2512). Thanks @gwhitney.
+
+
+# 2022-03-29, version 10.4.2
 
 - Fix #2499: different behavior for unit conversion "degC" and "K" (#2501).
   Also disables getting the sign for units with an offset, which is ambiguous. 
@@ -11,6 +24,7 @@
 - Fix #2493: unclear error message when an entity that is not a function
   is being called as a function (#2494). Thanks @gwhitney.
 - Some fixes in the docs on units (#2498). Thanks @dvd101x.
+- Add `forEach` example in embedded docs (#2507). Thanks @dvd101x.
 - Correct approx.deepEqual() to accept an epsilon argument giving the
   comparison tolerance. It was already being called this way, but was
   silently ignoring the tolerance. Thanks @yifanwww.
