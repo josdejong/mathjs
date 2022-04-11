@@ -4,9 +4,9 @@ import { format } from '../../utils/string.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'det'
-const dependencies = ['typed', 'matrix', 'subtract', 'multiply', 'unaryMinus', 'lup']
+const dependencies = ['typed', 'matrix', 'subtract', 'multiply', 'divideScalar', 'isZero', 'unaryMinus']
 
-export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract, multiply, unaryMinus, lup }) => {
+export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract, multiply, divideScalar, isZero, unaryMinus }) => {
   /**
    * Calculate the determinant of a matrix.
    *
@@ -104,38 +104,37 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         multiply(matrix[1][0], matrix[0][1])
       )
     } else {
-      // Compute the LU decomposition
-      const decomp = lup(matrix)
-
-      // The determinant is the product of the diagonal entries of U (and those of L, but they are all 1)
-      let det = decomp.U[0][0]
-      for (let i = 1; i < rows; i++) {
-        det = multiply(det, decomp.U[i][i])
+      // Bareiss algorithm
+      // this algorithm have same complexity as LUP decomposition (O(n^3))
+      // but it preserve precision of floating point more relative to the LUP decomposition
+      let negated = false
+      const rowIndices = new Array(rows).fill(0).map((_, i) => i) // matrix index of row i
+      for (let k = 0; k < rows; k++) {
+        let k_ = rowIndices[k]
+        if (isZero(matrix[k_][k])) {
+          let _k
+          for (_k = k + 1; _k < rows; _k++) {
+            if (!isZero(matrix[rowIndices[_k]][k])) {
+              k_ = rowIndices[_k]
+              rowIndices[_k] = rowIndices[k]
+              rowIndices[k] = k_
+              negated = !negated
+              break
+            }
+          }
+          if (_k === rows) return matrix[k_][k] // some zero of the type
+        }
+        const piv = matrix[k_][k]
+        const piv_ = k === 0 ? 1 : matrix[rowIndices[k - 1]][k - 1]
+        for (let i = k + 1; i < rows; i++) {
+          const i_ = rowIndices[i]
+          for (let j = k + 1; j < rows; j++) {
+            matrix[i_][j] = divideScalar(subtract(multiply(matrix[i_][j], piv), multiply(matrix[i_][k], matrix[k_][j])), piv_)
+          }
+        }
       }
-
-      // The determinant will be multiplied by 1 or -1 depending on the parity of the permutation matrix.
-      // This can be determined by counting the cycles. This is roughly a linear time algorithm.
-      let evenCycles = 0
-      let i = 0
-      const visited = []
-      while (true) {
-        while (visited[i]) {
-          i++
-        }
-        if (i >= rows) break
-        let j = i
-        let cycleLen = 0
-        while (!visited[decomp.p[j]]) {
-          visited[decomp.p[j]] = true
-          j = decomp.p[j]
-          cycleLen++
-        }
-        if (cycleLen % 2 === 0) {
-          evenCycles++
-        }
-      }
-
-      return evenCycles % 2 === 0 ? det : unaryMinus(det)
+      const det = matrix[rowIndices[rows - 1]][rows - 1]
+      return negated ? unaryMinus(det) : det
     }
   }
 })
