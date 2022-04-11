@@ -241,6 +241,21 @@ describe('pow', function () {
     approx.deepEqual(pow(matrix(a), 2), matrix(res))
   })
 
+  it('should raise an inverted matrix for power -1', function () {
+    const a = [
+      [2, -1, 0],
+      [-1, 2, -1],
+      [0, -1, 2]
+    ]
+    const res = [
+      [3 / 4, 1 / 2, 1 / 4],
+      [1 / 2, 1, 1 / 2],
+      [1 / 4, 1 / 2, 3 / 4]
+    ]
+    approx.deepEqual(pow(a, -1), res)
+    approx.deepEqual(pow(matrix(a), -1), matrix(res))
+  })
+
   it('should return identity matrix for power 0', function () {
     const a = [[1, 2], [3, 4]]
     const res = [[1, 0], [0, 1]]
@@ -264,6 +279,11 @@ describe('pow', function () {
     const a = [[1, 2], [3, 4]]
     assert.throws(function () { pow(a, 2.5) })
     assert.throws(function () { pow(a, [2, 3]) })
+  })
+
+  it('should throw an error when raising a non-invertible matrix to a negative integer power', function () {
+    const a = [[1, 1, 1], [1, 0, 0], [0, 0, 0]]
+    assert.throws(function () { pow(a, -1) })
   })
 
   it('should LaTeX pow', function () {
