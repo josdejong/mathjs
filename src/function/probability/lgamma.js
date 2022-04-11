@@ -7,6 +7,7 @@
 
 import { lgammaNumber, lnSqrt2PI } from '../../plain/number/index.js'
 import { factory } from '../../utils/factory.js'
+import { copysign } from '../../utils/number.js'
 
 const name = 'lgamma'
 const dependencies = ['Complex', 'typed']
@@ -23,7 +24,7 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
   /**
    * The coefficients are B[2*n]/(2*n*(2*n - 1)) where B[2*n] is the (2*n)th Bernoulli number. See (1.1) in [1].
    *
-   * We can also get these values from the formula (if you cannot access the paper) in [2].
+   * If you cannot access the paper, can also get these values from the formula in [2].
    *
    *    1 /     12 = 0.00833333333333333333333333333333
    *    1 /    360 = 0.00277777777777777777777777777778
@@ -36,7 +37,8 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
   ]
 
   /**
-   * Logarithm of the gamma function for real, positive numbers and complex numbers.
+   * Logarithm of the gamma function for real, positive numbers and complex numbers,
+   * using Lanczos approximation for numbers and Stirling series for complex numbers.
    *
    * Syntax:
    *
@@ -91,13 +93,6 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
       throw new Error("mathjs doesn't yet provide an implementation of the algorithm lgamma for BigNumber")
     }
   })
-
-  function copysign (a, b) {
-    const signa = a > 0 ? true : a < 0 ? false : 1 / a === Infinity
-    const signb = b > 0 ? true : b < 0 ? false : 1 / b === Infinity
-
-    return signa ^ signb ? -a : a
-  }
 
   function lgammaStirling (z) {
     // formula ref in [2]
