@@ -5,9 +5,9 @@ import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const lgamma = math.lgamma
 
-const EPSILON = 1e-10
-// lgamma for complex numbers is not quite as precies as lgamma for reals,
-// because `complex.js sin` doesn't have extremely high precision
+const EPSILON = 1e-11
+// TODO: lgamma for some cases of complex numbers is not quite as precise as
+// lgamma for reals
 const CEPSILON = 5e-8
 
 describe('lgamma', () => {
@@ -50,135 +50,135 @@ describe('lgamma', () => {
   })
 
   it('should calculate the lgamma of a complex number', () => {
-    approx.deepEqual(lgamma(math.complex(0, 0)), math.complex(Infinity), CEPSILON)
+    approx.deepEqual(lgamma(math.complex(0, 0)), math.complex(Infinity), EPSILON)
     approx.deepEqual(
       lgamma(math.complex(0.000000001, 0.000000001)),
       math.complex(20.3766922460892228366, -0.78539816397466397287),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(0.000001, 0.000001)),
       math.complex(13.4689363904686365487, -0.78539874061146827788),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(0.25, 0.25)),
       math.complex(0.90447450949333888977, -0.83887024394321281804),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-0.25, 0.25)),
       math.complex(1.16657203736087492865, -2.61462703865115551016),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(0.8, -0.8)),
       math.complex(-0.41924081113642074879, 0.51623080213929827944),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-0.8, 0.8)),
       math.complex(-0.3775761850502096333, -3.80865021027588766567),
-      CEPSILON
+      EPSILON
     )
 
     approx.deepEqual(
       lgamma(math.complex(1, 1)),
       math.complex(-0.65092319930185633889, -0.30164032046753319789),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(1, -1)),
       math.complex(-0.65092319930185633889, 0.30164032046753319789),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-1, 1)),
       math.complex(-0.99749678958182899359, -4.22863113745477474597),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-1, -1)),
       math.complex(-0.99749678958182899359, 4.22863113745477474597),
-      CEPSILON
+      EPSILON
     )
 
     approx.deepEqual(
       lgamma(math.complex(1.5, 1.5)),
       math.complex(-0.97915093918136435887, 0.38589477126715472436),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(1.5, -1.5)),
       math.complex(-0.97915093918136435887, -0.38589477126715472436),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-1.5, 1.5)),
       math.complex(-2.64748036944365646074, -5.11189237251498344295),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-1.5, -1.5)),
       math.complex(-2.64748036944365646074, 5.11189237251498344295),
-      CEPSILON
+      EPSILON
     )
 
     approx.deepEqual(
       lgamma(math.complex(2, -2)),
       math.complex(-1.07135983021387915393, -1.2367950341038788144),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-2.5, -2.5)),
       math.complex(-6.27685085148648571668, 6.42804393793984167867),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-12.5, 12.5)),
       math.complex(-53.3767553324096369866, -7.23008341760111500158),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(125.5, 125.5)),
       math.complex(424.211719638964718426, 622.623796700622589246),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(5555.5555, -5555.5555)),
       math.complex(39906.0402274967320859, -48635.8593112306908421),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-5000000.5, -5000000.5)),
       math.complex(-8.56385987850343162145e7, -6.20766433819965678363e7),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(99999999999999.5, 99999999999999.5)),
       math.complex(3.07973667287988512101e15, 3.23681630555938897728e15),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-9.87654321e50, 1.23456789e70)),
       math.complex(-1.93925470679092599791e70, 1.98014414903993314695e72),
-      CEPSILON
+      EPSILON
     )
 
     approx.deepEqual(
       lgamma(math.complex(0.000123, 123456789)),
       math.complex(-1.93925479073563285659e8, 2.17671624683482738475e9),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-0.000123, 123456789)),
       math.complex(-1.93925479078146610494e8, 2.17671624683444096885e9),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(123456789, -0.000123)),
       math.complex(2.17671623922326999167e9, -0.00229166241674051621),
-      CEPSILON
+      EPSILON
     )
     approx.deepEqual(
       lgamma(math.complex(-123456789, -0.000123)),
@@ -188,7 +188,7 @@ describe('lgamma', () => {
     approx.deepEqual(
       lgamma(math.complex(123456789.123, 0.123456789)),
       math.complex(2.17671624151493240841e9, 2.30017303624303234065),
-      CEPSILON
+      EPSILON
     )
   })
 
