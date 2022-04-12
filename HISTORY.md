@@ -7,7 +7,8 @@
 - Implement #2463: allow negative integer powers of invertible square matrices
   (#2517). Thanks @HanchaiN.
 - Implement the `lgamma` function (defined as log(gamma(z))) for number and
-  Complex types. Supersedes #320. Thanks @yifanwww.
+  Complex types. Supersedes #320. (#2417). Thanks @yifanwww.
+- Change mocha reporter to 'dot' to avoid excessively long log files. (#2520)
 
 
 # 2022-04-08, version 10.4.3
