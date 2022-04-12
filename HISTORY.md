@@ -2,8 +2,11 @@
 
 # unpublished changes since 10.4.3:
 
+- Optimize function `det` for integers by switching to the Bareiss algorithm: 
+  no more round-off errors for integer input (#2516). Thanks @HanchaiN.
 - Implement #2463: allow negative integer powers of invertible square matrices
   (#2517). Thanks @HanchaiN.
+
 
 # 2022-04-08, version 10.4.3
 
