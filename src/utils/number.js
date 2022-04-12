@@ -688,3 +688,15 @@ export const tanh = Math.tanh || function (x) {
   const e = Math.exp(2 * x)
   return (e - 1) / (e + 1)
 }
+
+/**
+ * Returns a value with the magnitude of x and the sign of y.
+ * @param {number} x
+ * @param {number} y
+ * @returns {number}
+ */
+export function copysign (x, y) {
+  const signx = x > 0 ? true : x < 0 ? false : 1 / x === Infinity
+  const signy = y > 0 ? true : y < 0 ? false : 1 / y === Infinity
+  return signx ^ signy ? -x : x
+}

@@ -145,6 +145,7 @@ import { combinationsDocs } from './function/probability/combinations.js'
 import { combinationsWithRepDocs } from './function/probability/combinationsWithRep.js'
 import { factorialDocs } from './function/probability/factorial.js'
 import { gammaDocs } from './function/probability/gamma.js'
+import { lgammaDocs } from './function/probability/lgamma.js'
 import { kldivergenceDocs } from './function/probability/kldivergence.js'
 import { multinomialDocs } from './function/probability/multinomial.js'
 import { permutationsDocs } from './function/probability/permutations.js'
@@ -466,6 +467,7 @@ export const embeddedDocs = {
   factorial: factorialDocs,
   gamma: gammaDocs,
   kldivergence: kldivergenceDocs,
+  lgamma: lgammaDocs,
   multinomial: multinomialDocs,
   permutations: permutationsDocs,
   pickRandom: pickRandomDocs,
