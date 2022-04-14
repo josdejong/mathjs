@@ -8,6 +8,8 @@
   (#2517). Thanks @HanchaiN.
 - Implement the `lgamma` function (defined as log(gamma(z))) for number and
   Complex types. Supersedes #320. (#2417). Thanks @yifanwww.
+- Fix #2523: update to the latest complex.js to improve `sin(z)` for small
+  `im(z)` (#2525). Thanks @gwhitney.
 - Change mocha reporter to 'dot' to avoid excessively long log files. (#2520)
 
 
