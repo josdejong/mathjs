@@ -1819,6 +1819,13 @@ declare namespace math {
     kldivergence(q: MathArray | Matrix, p: MathArray | Matrix): number;
 
     /**
+     * Compute the log gamma function of a value, using Lanczos approximation for numbers and Stirling series for complex numbers.
+     * @param n A real or complex number
+     * @returns The log gamma of `n`
+     */
+    lgamma<T extends number | Complex>(n: T): NoLiteralType<T>;
+
+    /**
      * Multinomial Coefficients compute the number of ways of picking a1,
      * a2, ..., ai unordered outcomes from n possibilities. multinomial
      * takes one array of integers as an argument. The following condition

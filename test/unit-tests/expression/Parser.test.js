@@ -33,7 +33,6 @@ describe('parser', function () {
     const parser = new Parser()
 
     const result = parser.evaluate(['a = 2', 'a + 3'])
-    console.log('result', result, math.typeOf(result))
     assert.deepStrictEqual(result, [2, 5])
   })
 
