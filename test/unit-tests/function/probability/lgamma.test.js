@@ -5,7 +5,14 @@ import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const lgamma = math.lgamma
 
-const EPSILON = 1e-11
+function isInternetExplorer () {
+  return typeof window !== 'undefined'
+    ? window?.navigator?.userAgent?.indexOf('MSIE ') > 0
+    : false
+}
+
+// IE does have less precision for unclear reason, therefore this hack
+const EPSILON = isInternetExplorer() ? 1e-9 : 1e-11
 // TODO: lgamma for some cases of complex numbers is not quite as precise as
 // lgamma for reals
 const CEPSILON = 5e-8
