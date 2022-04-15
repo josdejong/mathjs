@@ -6,8 +6,8 @@ import math from '../../../../src/defaultInstance.js'
 const lgamma = math.lgamma
 
 function isInternetExplorer () {
-  return typeof window !== 'undefined'
-    ? window?.navigator?.userAgent?.indexOf('MSIE ') > 0
+  return typeof window !== 'undefined' && window.navigator && window.navigator.userAgent
+    ? window.navigator.userAgent.indexOf('MSIE ') > 0
     : false
 }
 
