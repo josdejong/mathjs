@@ -38,20 +38,21 @@ describe('pinv', function () {
     if (A_) {
       if (strict) assert.deepStrictEqual(pinvA, A_)
       else approx.deepEqual(pinvA, A_)
-    }
-    switch (math.size(A).valueOf().length) {
-      case 0:
-        assertValidPinv([[A]], [[pinvA]])
-        break
-      case 1:
-        assertValidPinv(math.reshape(A, [1, -1]), math.reshape(pinvA, [-1, 1]))
-        break
-      case 2:
-        assertValidPinv(A, pinvA)
-        break
-      default:
-        assert.ok(math.size(A).valueOf().length < 3)
-        break
+    } else {
+      switch (math.size(A).valueOf().length) {
+        case 0:
+          assertValidPinv([[A]], [[pinvA]])
+          break
+        case 1:
+          assertValidPinv(math.reshape(A, [1, -1]), math.reshape(pinvA, [-1, 1]))
+          break
+        case 2:
+          assertValidPinv(A, pinvA)
+          break
+        default:
+          assert.ok(math.size(A).valueOf().length < 3)
+          break
+      }
     }
   }
   it('should return the inverse of a number', function () {
