@@ -10,13 +10,14 @@ const dependencies = [
   'matrix',
   'inv',
   'deepEqual',
+  'equal',
   'dotDivide',
   'dot',
   'ctranspose',
   'divideScalar',
-  'zeros',
-  'isZero',
-  'multiply'
+  'multiply',
+  'add',
+  'Complex'
 ]
 
 export const createPinv = /* #__PURE__ */ factory(name, dependencies, ({
@@ -24,13 +25,14 @@ export const createPinv = /* #__PURE__ */ factory(name, dependencies, ({
   matrix,
   inv,
   deepEqual,
+  equal,
   dotDivide,
   dot,
   ctranspose,
   divideScalar,
-  zeros,
-  isZero,
-  multiply
+  multiply,
+  add,
+  Complex
 }) => {
   /**
    * Calculate the Moore–Penrose inverse of a matrix.
@@ -58,7 +60,7 @@ export const createPinv = /* #__PURE__ */ factory(name, dependencies, ({
       switch (size.length) {
         case 1:
           // vector
-          if (deepEqual(x, size)) return ctranspose(x) // null vector
+          if (_isZeros(x)) return ctranspose(x) // null vector
           if (size[0] === 1) {
             return inv(x) // invertible matrix
           } else {
@@ -68,7 +70,7 @@ export const createPinv = /* #__PURE__ */ factory(name, dependencies, ({
         case 2:
         // two dimensional array
         {
-          if (deepEqual(x, zeros(size))) return ctranspose(x) // zero matrixx
+          if (_isZeros(x)) return ctranspose(x) // zero matrixx
           const rows = size[0]
           const cols = size[1]
           if (rows === cols) {
@@ -102,8 +104,8 @@ export const createPinv = /* #__PURE__ */ factory(name, dependencies, ({
 
     any: function (x) {
       // scalar
-      if (isZero(x)) return clone(x) // zero
-      return divideScalar(1, x) // FIXME: create a BigNumber one when configured for bignumbers
+      if (equal(x, 0)) return clone(x) // zero
+      return divideScalar(1, x)
     }
   })
 
@@ -116,7 +118,7 @@ export const createPinv = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function _pinv (mat, rows, cols) {
-    const { C, F } = _rankFact(mat, rows, cols)
+    const { C, F } = _rankFact(mat, rows, cols) // TODO: Use SVD instead (may improve precision)
     const Cpinv = multiply(inv(multiply(ctranspose(C), C)), ctranspose(C))
     const Fpinv = multiply(ctranspose(F), inv(multiply(F, ctranspose(F))))
     return multiply(Fpinv, Cpinv)
@@ -141,7 +143,7 @@ export const createPinv = /* #__PURE__ */ factory(name, dependencies, ({
         return M
       }
       let i = r
-      while (isZero(M[i][lead])) {
+      while (_isZero(M[i][lead])) {
         i++
         if (rows === i) {
           i = r
@@ -156,14 +158,14 @@ export const createPinv = /* #__PURE__ */ factory(name, dependencies, ({
 
       let val = M[r][lead]
       for (let j = 0; j < cols; j++) {
-        M[r][j] /= val
+        M[r][j] = dotDivide(M[r][j], val)
       }
 
       for (let i = 0; i < rows; i++) {
         if (i === r) continue
         val = M[i][lead]
         for (let j = 0; j < cols; j++) {
-          M[i][j] -= val * M[r][j]
+          M[i][j] = add(M[i][j], multiply(-1, multiply(val, M[r][j])))
         }
       }
       lead++
@@ -182,8 +184,16 @@ export const createPinv = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function _rankFact (mat, rows, cols) {
     const rref = _rref(mat, rows, cols)
-    const C = mat.map((_, i) => _.filter((_, j) => j < rows && !isZero(dot(rref[j], rref[j]))))
-    const F = rref.filter((_, i) => !isZero(dot(rref[i], rref[i])))
+    const C = mat.map((_, i) => _.filter((_, j) => j < rows && !_isZero(dot(rref[j], rref[j]))))
+    const F = rref.filter((_, i) => !_isZero(dot(rref[i], rref[i])))
     return { C, F }
+  }
+
+  function _isZero (x) {
+    return equal(add(x, Complex(1, 1)), add(0, Complex(1, 1)))
+  }
+
+  function _isZeros (arr) {
+    return deepEqual(add(arr, Complex(1, 1)), add(multiply(arr, 0), Complex(1, 1)))
   }
 })
