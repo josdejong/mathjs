@@ -38,7 +38,7 @@ exports.equal = function equal (a, b, epsilon) {
       const max = Math.max(a, b)
       const maxDiff = Math.abs(max * epsilon)
       assert.ok(diff <= maxDiff, (a + ' ~= ' + b +
-        ' (' + JSON.stringify({ epsilon, diff, max, maxDiff }) + ')'))
+        ' (' + JSON.stringify({ epsilon: epsilon, diff: diff, max: max, maxDiff: maxDiff }) + ')'))
     }
   } else if (a && a.isBigNumber) {
     return exports.equal(a.toNumber(), b, epsilon)
