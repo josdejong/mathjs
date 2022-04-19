@@ -148,6 +148,7 @@ Function | Description
 [math.matrixFromRows(...arr)](functions/matrixFromRows.html) | Create a dense matrix from vectors as individual rows.
 [math.ones(m,&nbsp;n,&nbsp;p,&nbsp;...)](functions/ones.html) | Create a matrix filled with ones.
 [math.partitionSelect(x,&nbsp;k)](functions/partitionSelect.html) | Partition-based selection of an array or 1D matrix.
+[math.pinv(x)](functions/pinv.html) | Calculate the Moore–Penrose inverse of a matrix.
 [math.range(start,&nbsp;end&nbsp;[,&nbsp;step])](functions/range.html) | Create an array from a range.
 [math.reshape(x,&nbsp;sizes)](functions/reshape.html) | Reshape a multi dimensional array to fit the specified dimensions.
 [math.resize(x,&nbsp;size&nbsp;[,&nbsp;defaultValue])](functions/resize.html) | Resize a matrix.
@@ -172,6 +173,7 @@ Function | Description
 [math.factorial(n)](functions/factorial.html) | Compute the factorial of a value  Factorial only supports an integer value as argument.
 [math.gamma(n)](functions/gamma.html) | Compute the gamma function of a value using Lanczos approximation for small values, and an extended Stirling approximation for large values.
 [math.kldivergence(x,&nbsp;y)](functions/kldivergence.html) | Calculate the Kullback-Leibler (KL) divergence  between two distributions.
+[math.lgamma(n)](functions/lgamma.html) | Logarithm of the gamma function for real, positive numbers and complex numbers, using Lanczos approximation for numbers and Stirling series for complex numbers.
 [math.multinomial(a)](functions/multinomial.html) | Multinomial Coefficients compute the number of ways of picking a1, a2, .
 [math.permutations(n&nbsp;[,&nbsp;k])](functions/permutations.html) | Compute the number of ways of obtaining an ordered subset of `k` elements from a set of `n` elements.
 [math.pickRandom(array)](functions/pickRandom.html) | Random pick one or more values from a one dimensional array.

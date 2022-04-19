@@ -7,8 +7,11 @@ layout: default
 <h1 id="function-pow">Function pow <a href="#function-pow" title="Permalink">#</a></h1>
 
 Calculates the power of x to y, `x ^ y`.
-Matrix exponentiation is supported for square matrices `x`, and positive
-integer exponents `y`.
+
+Matrix exponentiation is supported for square matrices `x` and integers `y`:
+when `y` is nonnegative, `x` may be any square matrix; and when `y` is
+negative, `x` must be invertible, and then this function returns
+inv(x)^(-y).
 
 For cubic roots of negative numbers, the function returns the principal
 root by default. In order to let the function return the real root,
@@ -52,6 +55,9 @@ math.pow(a, 2)                // returns Complex -5 + 12i
 
 const b = [[1, 2], [4, 3]]
 math.pow(b, 2)               // returns Array [[9, 8], [16, 17]]
+
+const c = [[1, 2], [4, 3]]
+math.pow(c, -1)               // returns Array [[-0.6, 0.4], [0.8, -0.2]]
 ```
 
 

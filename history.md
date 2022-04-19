@@ -4,6 +4,21 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220419-version-1050">2022-04-19, version 10.5.0 <a href="#20220419-version-1050" title="Permalink">#</a></h1>
+
+- Implement <a href="https://github.com/josdejong/mathjs/issues/1563">#1563</a>: function `pinv`, Moore–Penrose inverse  <a href="https://github.com/josdejong/mathjs/issues/2521">#2521</a>). 
+  Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
+- Optimize function `det` for integers by switching to the Bareiss algorithm: 
+  no more round-off errors for integer input  <a href="https://github.com/josdejong/mathjs/issues/2516">#2516</a>). Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
+- Implement <a href="https://github.com/josdejong/mathjs/issues/2463">#2463</a>: allow negative integer powers of invertible square matrices
+   <a href="https://github.com/josdejong/mathjs/issues/2517">#2517</a>). Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
+- Implement the `lgamma` function (defined as log(gamma(z))) for number and
+  Complex types. Supersedes <a href="https://github.com/josdejong/mathjs/issues/320">#320</a>.  <a href="https://github.com/josdejong/mathjs/issues/2417">#2417</a>). Thanks <a href="https://github.com/yifanwww">@yifanwww</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2523">#2523</a>: update to the latest complex.js to improve `sin(z)` for small
+  `im(z)`  <a href="https://github.com/josdejong/mathjs/issues/2525">#2525</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2526">#2526</a>: update TypeScript definition of `ceil`  <a href="https://github.com/josdejong/mathjs/issues/2531">#2531</a>). Thanks <a href="https://github.com/simlaticak">@simlaticak</a>
+- Change mocha reporter to 'dot' to avoid excessively long log files.  <a href="https://github.com/josdejong/mathjs/issues/2520">#2520</a>)
+
 
 <h1 id="20220408-version-1043">2022-04-08, version 10.4.3 <a href="#20220408-version-1043" title="Permalink">#</a></h1>
 
