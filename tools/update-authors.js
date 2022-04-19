@@ -6,7 +6,7 @@ const readline = require('readline')
 getAuthorsFromShortLog()
   .then(writeAuthors)
 
-function writeAuthors(authors) {
+function writeAuthors (authors) {
   const output = '# Authors ordered by number of commits.\n' +
     '\n' +
     authors
@@ -18,11 +18,11 @@ function writeAuthors(authors) {
   fs.writeFileSync('AUTHORS', output)
 }
 
-async function getAuthorsFromShortLog() {
+async function getAuthorsFromShortLog () {
   return new Promise(resolve => {
     const log = spawn(
       'git',
-      ['shortlog', '--summary', '--numbered', '--email' ],
+      ['shortlog', '--summary', '--numbered', '--email'],
       {
         stdio: ['inherit', 'pipe', 'inherit']
       })
@@ -39,7 +39,7 @@ async function getAuthorsFromShortLog() {
   })
 }
 
-function dedupeAuthors(authors) {
+function dedupeAuthors (authors) {
   const authorsMap = {}
 
   // the following way, we will pick the *latest* username which is normally the most recent
@@ -50,7 +50,7 @@ function dedupeAuthors(authors) {
   return Object.values(authorsMap)
 }
 
-function toAuthor(line) {
+function toAuthor (line) {
   const match = line.match(/^\s*(\d+)\s*(.*)\s<(.*)>$/)
 
   if (!match) {
