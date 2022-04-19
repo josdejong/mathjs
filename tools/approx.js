@@ -37,7 +37,7 @@ exports.equal = function equal (a, b, epsilon) {
       const diff = Math.abs(a - b)
       const max = Math.max(a, b)
       const maxDiff = Math.abs(max * epsilon)
-      assert.ok(diff <= maxDiff, (a + ' ~= ' + b))
+      assert.ok(diff <= maxDiff, (a + ' ~= ' + b + ' (epsilon: ' + epsilon + ')'))
     }
   } else if (a && a.isBigNumber) {
     return exports.equal(a.toNumber(), b, epsilon)
@@ -76,14 +76,16 @@ exports.deepEqual = function deepEqual (a, b, epsilon) {
   } else if (a instanceof Object && b instanceof Object) {
     for (prop in a) {
       if (hasOwnProperty(a, prop)) {
-        assert.ok(hasOwnProperty(b, prop), a[prop] + ' ~= ' + b[prop])
+        assert.ok(hasOwnProperty(b, prop), a[prop] + ' ~= ' + b[prop] +
+          ' (epsilon: ' + epsilon + ', prop: ' + prop + ')')
         deepEqual(a[prop], b[prop], epsilon)
       }
     }
 
     for (prop in b) {
       if (hasOwnProperty(b, prop)) {
-        assert.ok(hasOwnProperty(a, prop), a[prop] + ' ~= ' + b[prop])
+        assert.ok(hasOwnProperty(a, prop), a[prop] + ' ~= ' + b[prop] +
+          ' (epsilon: ' + epsilon + ', prop: ' + prop + ')')
         deepEqual(a[prop], b[prop], epsilon)
       }
     }
