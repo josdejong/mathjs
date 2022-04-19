@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since version 10.5.0:
+
+- Fix #2532: matrix index symbol `end` not working when used inside
+  a sub-expression.
+
+
 # 2022-04-19, version 10.5.0
 
 - Implement #1563: function `pinv`, Moore–Penrose inverse (#2521). 

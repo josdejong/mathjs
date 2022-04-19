@@ -76,6 +76,27 @@ describe('AccessorNode', function () {
     assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
   })
 
+  it('should compile a AccessorNode with "end" in an expression', function () {
+    const a = new SymbolNode('a')
+    const index = new IndexNode([
+      new OperatorNode(
+        '-',
+        'subtract',
+        [
+          new SymbolNode('end'),
+          new ConstantNode(2)
+        ]
+      )
+    ])
+    const n = new AccessorNode(a, index)
+    const expr = n.compile()
+
+    const scope = {
+      a: [1, 2, 3, 4]
+    }
+    assert.deepStrictEqual(expr.evaluate(scope), 2)
+  })
+
   it('should compile a AccessorNode with a property', function () {
     const a = new SymbolNode('a')
     const index = new IndexNode([new ConstantNode('b')])

@@ -1,8 +1,8 @@
-import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
-import { escape } from '../../utils/string.js'
-import { factory } from '../../utils/factory.js'
 import { getSafeProperty } from '../../utils/customs.js'
+import { factory } from '../../utils/factory.js'
+import { isBigNumber, isConstantNode, isNode, isRangeNode } from '../../utils/is.js'
+import { escape } from '../../utils/string.js'
 
 const name = 'IndexNode'
 const dependencies = [
@@ -111,25 +111,32 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
             )
           }
         }
-      } else if (isSymbolNode(range) && range.name === 'end') {
-        // SymbolNode 'end'
-        const childArgNames = Object.create(argNames)
-        childArgNames.end = true
-
-        const evalRange = range._compile(math, childArgNames)
-
-        return function evalDimension (scope, args, context) {
-          const s = size(context).valueOf()
-          const childArgs = Object.create(args)
-          childArgs.end = s[i]
-
-          return evalRange(scope, childArgs, context)
-        }
       } else {
-        // ConstantNode
-        const evalRange = range._compile(math, argNames)
-        return function evalDimension (scope, args, context) {
-          return evalRange(scope, args, context)
+        const needsEnd = range
+          .filter(node => node.isSymbolNode && node.name === 'end')
+          .length > 0
+
+        if (needsEnd) {
+          // SymbolNode 'end' is used inside the index,
+          // like in `A[end]` or `A[end - 2]`
+          const childArgNames = Object.create(argNames)
+          childArgNames.end = true
+
+          const evalRange = range._compile(math, childArgNames)
+
+          return function evalDimension (scope, args, context) {
+            const s = size(context).valueOf()
+            const childArgs = Object.create(args)
+            childArgs.end = s[i]
+
+            return evalRange(scope, childArgs, context)
+          }
+        } else {
+          // SymbolNode `end` not used
+          const evalRange = range._compile(math, argNames)
+          return function evalDimension (scope, args, context) {
+            return evalRange(scope, args, context)
+          }
         }
       }
     })
