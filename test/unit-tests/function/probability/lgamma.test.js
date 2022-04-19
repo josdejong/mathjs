@@ -5,14 +5,15 @@ import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const lgamma = math.lgamma
 
+// https://www.scratchcode.io/how-to-detect-ie-browser-in-javascript/
 function isInternetExplorer () {
-  return typeof window !== 'undefined' && window.navigator && window.navigator.userAgent
-    ? window.navigator.userAgent.indexOf('MSIE ') > 0
+  return typeof document !== 'undefined'
+    ? !!document.documentMode
     : false
 }
 
 // IE does have less precision for unclear reason, therefore this hack
-const EPSILON = isInternetExplorer() ? 1e-6 : 1e-11
+const EPSILON = isInternetExplorer() ? 1e-8 : 1e-11
 // TODO: lgamma for some cases of complex numbers is not quite as precise as
 // lgamma for reals
 const CEPSILON = 5e-8
