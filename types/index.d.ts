@@ -723,6 +723,8 @@ declare namespace math {
      */
     simplify: Simplify;
 
+    simplifyCore(expr: MathNode): MathNode;
+
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
      * Sparse Matrix A is decomposed in two matrices (L, U) and two
@@ -3854,7 +3856,7 @@ declare namespace math {
      */
     simplify(rules?: SimplifyRule[], scope?: object): MathJsChain;
 
-    simplifyCore(expr: MathNode): MathNode;
+    simplifyCore(expr: MathNode): MathJsChain;
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
