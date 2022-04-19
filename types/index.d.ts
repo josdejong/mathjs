@@ -811,7 +811,21 @@ declare namespace math {
     ceil(x: Complex): Complex;
     ceil(x: MathArray): MathArray;
     ceil(x: Matrix): Matrix;
-    ceil(x: Unit): Unit;
+
+    /**
+     * Round a value towards plus infinity If x is complex, both real and
+     * imaginary part are rounded towards plus infinity. For matrices, the
+     * function is evaluated element wise.
+     * @param x Number to be rounded
+     * @param n Number of decimals Default value: 0.
+     * @returns Rounded value
+     */
+    ceil(x: number, n: number | MathArray): number;
+    ceil(x: BigNumber, n: BigNumber | MathArray): BigNumber;
+    ceil(x: Fraction, n: number): Fraction;
+    ceil(x: Complex, n: number | MathArray): Complex;
+    ceil(x: MathArray, n: number): MathArray;
+    ceil(x: Matrix, n: number | BigNumber): Matrix;
 
     /**
      * Compute the cube of a value, x * x * x. For matrices, the function is
