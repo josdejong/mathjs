@@ -13,7 +13,7 @@ function isInternetExplorer () {
 }
 
 // IE does have less precision for unclear reason, therefore this hack
-const EPSILON = isInternetExplorer() ? 1e-8 : 1e-11
+const EPSILON = isInternetExplorer() ? 1e-6 : 1e-11
 // TODO: lgamma for some cases of complex numbers is not quite as precise as
 // lgamma for reals
 const CEPSILON = 5e-8
