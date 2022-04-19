@@ -1,7 +1,9 @@
 # History
 
-# unpublished changes since 10.4.3:
+# 2022-04-19, version 10.5.0
 
+- Implement #1563: function `pinv`, Moore–Penrose inverse (#2521). 
+  Thanks @HanchaiN.
 - Optimize function `det` for integers by switching to the Bareiss algorithm: 
   no more round-off errors for integer input (#2516). Thanks @HanchaiN.
 - Implement #2463: allow negative integer powers of invertible square matrices
@@ -10,6 +12,7 @@
   Complex types. Supersedes #320. (#2417). Thanks @yifanwww.
 - Fix #2523: update to the latest complex.js to improve `sin(z)` for small
   `im(z)` (#2525). Thanks @gwhitney.
+- Fix #2526: update TypeScript definition of `ceil` (#2531). Thanks @simlaticak
 - Change mocha reporter to 'dot' to avoid excessively long log files. (#2520)
 
 
