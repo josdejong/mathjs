@@ -2913,7 +2913,7 @@ declare namespace math {
      * @param object An object with functions to be imported.
      * @param options An object with import options.
      */
-    import(object: ImportObject | ImportObject[], options: ImportOptions): void;
+    import(object: ImportObject | ImportObject[], options?: ImportOptions): void;
   }
 
   /*************************************************************************
