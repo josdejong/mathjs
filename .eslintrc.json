@@ -1,0 +1,35 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "rules": {},
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "extends": [
+        "standard"
+      ]
+    },
+    {
+      "files": ["*.ts"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "plugins": ["@typescript-eslint"],
+      "parserOptions": {
+        "ecmaVersion": 12,
+        "sourceType": "module",
+        "project": "types/tsconfig.json"
+      }
+    }
+  ]
+}
