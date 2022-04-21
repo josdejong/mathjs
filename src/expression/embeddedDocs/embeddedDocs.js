@@ -142,6 +142,8 @@ import { subsetDocs } from './function/matrix/subset.js'
 import { traceDocs } from './function/matrix/trace.js'
 import { transposeDocs } from './function/matrix/transpose.js'
 import { zerosDocs } from './function/matrix/zeros.js'
+import { fftDocs } from './function/matrix/fft.js'
+import { ifftDocs } from './function/matrix/ifft.js'
 import { combinationsDocs } from './function/probability/combinations.js'
 import { combinationsWithRepDocs } from './function/probability/combinationsWithRep.js'
 import { factorialDocs } from './function/probability/factorial.js'
@@ -461,6 +463,8 @@ export const embeddedDocs = {
   trace: traceDocs,
   transpose: transposeDocs,
   zeros: zerosDocs,
+  fft: fftDocs,
+  ifft: ifftDocs,
 
   // functions - probability
   combinations: combinationsDocs,
