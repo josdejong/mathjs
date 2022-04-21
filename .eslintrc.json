@@ -16,13 +16,15 @@
     {
       "files": ["*.js"],
       "extends": [
-        "standard"
+        "standard",
+        "plugin:prettier/recommended"
       ]
     },
     {
       "files": ["*.ts"],
       "extends": [
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
       ],
       "plugins": ["@typescript-eslint"],
       "parserOptions": {
