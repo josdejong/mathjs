@@ -2,7 +2,7 @@ import assert from 'assert'
 import * as mainAny from '../../../src/entry/mainAny.js'
 import * as factoriesAny from '../../../src/factoriesAny.js'
 import { createSnapshotFromFactories, validateBundle, validateTypeOf } from '../../../src/utils/snapshot.js'
-const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate, chain, reviver, Complex, addDependencies } = mainAny
+const { create, all, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate, chain, reviver, Complex, FunctionNode, SymbolNode, ConstantNode, addDependencies } = mainAny
 
 const {
   expectedInstanceStructure,
@@ -144,6 +144,14 @@ describe('mainAny', function () {
 
     assert(obj instanceof Complex)
     assert.deepStrictEqual(obj, c)
+  })
+
+  it('should have the full FunctionNode interface', () => {
+    const funcname = 'myfunc'
+    const myfunc =
+      new FunctionNode(
+        new SymbolNode(funcname), [new ConstantNode(2), new ConstantNode(3)])
+    assert.strictEqual(myfunc.name, funcname)
   })
 
   // TODO: test export of errors

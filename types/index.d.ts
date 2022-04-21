@@ -233,6 +233,7 @@ declare namespace math {
   interface FunctionNode extends MathNodeCommon {
     type: 'FunctionNode';
     isFunctionNode: true;
+    name: string;
     fn: SymbolNode;
     args: MathNode[];
   }
