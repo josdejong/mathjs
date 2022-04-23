@@ -9,6 +9,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
+  ignorePatterns: ['*.generated.js'],
   rules: {},
   overrides: [
     {

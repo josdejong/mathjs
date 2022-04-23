@@ -87,8 +87,8 @@ export const createLOG10E = /* #__PURE__ */ recreateFactory(
       : Math.LOG10E
 )
 
+// eslint-disable-next-line camelcase
 export const createSQRT1_2 = /* #__PURE__ */ recreateFactory(
-  // eslint-disable-line camelcase
   'SQRT1_2',
   ['config', '?BigNumber'],
   ({ config, BigNumber }) =>

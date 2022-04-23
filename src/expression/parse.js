@@ -1480,9 +1480,9 @@ export const createParse = /* #__PURE__ */ factory(
 
       while (
         (state.token === '(' || state.token === '[' || state.token === '.') &&
+        // eslint-disable-next-line no-unmodified-loop-condition
         (!types || types.indexOf(state.token) !== -1)
       ) {
-        // eslint-disable-line no-unmodified-loop-condition
         params = []
 
         if (state.token === '(') {
