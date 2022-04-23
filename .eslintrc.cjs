@@ -20,6 +20,15 @@ module.exports = {
       ],
     },
     {
+      files: ['*.test.js'],
+      plugins: ['mocha'],
+      extends: [
+        'standard',
+        'plugin:mocha/recommended',
+        'plugin:prettier/recommended', // this should come last
+      ],
+    },
+    {
       files: ['types/*.ts'],
       extends: [
         'plugin:@typescript-eslint/recommended',
