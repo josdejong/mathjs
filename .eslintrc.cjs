@@ -24,6 +24,12 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:prettier/recommended', // this should come last
       ],
+      rules: {
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+        ],
+      },
       plugins: ['@typescript-eslint'],
       parserOptions: {
         ecmaVersion: 12,

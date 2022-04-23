@@ -3577,7 +3577,8 @@ declare namespace math {
     new (): Matrix
   }
 
-  interface BigNumber extends Decimal {} // tslint:disable-line no-empty-interface
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface BigNumber extends Decimal {}
 
   interface Fraction {
     s: number
@@ -3708,7 +3709,8 @@ declare namespace math {
     aliases?: string[]
   }
 
-  interface Index {} // tslint:disable-line no-empty-interface
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface Index {}
 
   interface EvalFunction {
     evaluate(scope?: any): any
