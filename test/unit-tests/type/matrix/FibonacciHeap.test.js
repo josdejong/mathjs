@@ -21,7 +21,9 @@ describe('FibonacciHeap', function () {
     })
 
     it('should throw an error when called without new keyword', function () {
-      assert.throws(function () { FibonacciHeap() }, /Constructor must be called with the new operator/)
+      assert.throws(function () {
+        FibonacciHeap()
+      }, /Constructor must be called with the new operator/)
     })
   })
 
@@ -92,7 +94,9 @@ describe('FibonacciHeap', function () {
       let s = h._size
       while (true) {
         n = h.extractMinimum()
-        if (!n) { break }
+        if (!n) {
+          break
+        }
         assert(n.key > l.key)
         assert.strictEqual(h._size, --s)
         l = n

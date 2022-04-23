@@ -79,7 +79,7 @@ describe('typeOf', function () {
   })
 
   it('should return function type for a function', function () {
-    function f1 () {}
+    function f1() {}
     assert.strictEqual(math.typeOf(f1), 'Function')
   })
 
@@ -97,18 +97,41 @@ describe('typeOf', function () {
     const symbolNode = new math.SymbolNode('x')
     const indexNode = new math.IndexNode([])
 
-    assert.strictEqual(math.typeOf(new math.AccessorNode(symbolNode, indexNode)), 'AccessorNode')
+    assert.strictEqual(
+      math.typeOf(new math.AccessorNode(symbolNode, indexNode)),
+      'AccessorNode'
+    )
     assert.strictEqual(math.typeOf(new math.ArrayNode([])), 'ArrayNode')
-    assert.strictEqual(math.typeOf(new math.AssignmentNode(symbolNode, constantNode)), 'AssignmentNode')
+    assert.strictEqual(
+      math.typeOf(new math.AssignmentNode(symbolNode, constantNode)),
+      'AssignmentNode'
+    )
     assert.strictEqual(math.typeOf(new math.BlockNode([])), 'BlockNode')
-    assert.strictEqual(math.typeOf(new math.ConditionalNode(symbolNode, constantNode, constantNode)), 'ConditionalNode')
+    assert.strictEqual(
+      math.typeOf(
+        new math.ConditionalNode(symbolNode, constantNode, constantNode)
+      ),
+      'ConditionalNode'
+    )
     assert.strictEqual(math.typeOf(constantNode), 'ConstantNode')
-    assert.strictEqual(math.typeOf(new math.FunctionAssignmentNode('f', [], constantNode)), 'FunctionAssignmentNode')
-    assert.strictEqual(math.typeOf(new math.FunctionNode('f', [])), 'FunctionNode')
+    assert.strictEqual(
+      math.typeOf(new math.FunctionAssignmentNode('f', [], constantNode)),
+      'FunctionAssignmentNode'
+    )
+    assert.strictEqual(
+      math.typeOf(new math.FunctionNode('f', [])),
+      'FunctionNode'
+    )
     assert.strictEqual(math.typeOf(indexNode), 'IndexNode')
     assert.strictEqual(math.typeOf(new math.ObjectNode({})), 'ObjectNode')
-    assert.strictEqual(math.typeOf(new math.ParenthesisNode(constantNode)), 'ParenthesisNode')
-    assert.strictEqual(math.typeOf(new math.RangeNode(constantNode, constantNode)), 'RangeNode')
+    assert.strictEqual(
+      math.typeOf(new math.ParenthesisNode(constantNode)),
+      'ParenthesisNode'
+    )
+    assert.strictEqual(
+      math.typeOf(new math.RangeNode(constantNode, constantNode)),
+      'RangeNode'
+    )
     assert.strictEqual(math.typeOf(symbolNode), 'SymbolNode')
   })
 
@@ -129,8 +152,12 @@ describe('typeOf', function () {
   })
 
   it('should throw an error if called with a wrong number of arguments', function () {
-    assert.throws(function () { math.typeOf() })
-    assert.throws(function () { math.typeOf(1, 2) })
+    assert.throws(function () {
+      math.typeOf()
+    })
+    assert.throws(function () {
+      math.typeOf(1, 2)
+    })
   })
 
   it('should LaTeX typeOf', function () {
@@ -139,7 +166,11 @@ describe('typeOf', function () {
   })
 
   it('should throw an error in case of wrong number of arguments', function () {
-    assert.throws(function () { math.typeOf() }, /Too few arguments in function typeOf/)
-    assert.throws(function () { math.typeOf(1, 2, 3) }, /Too many arguments in function typeOf/)
+    assert.throws(function () {
+      math.typeOf()
+    }, /Too few arguments in function typeOf/)
+    assert.throws(function () {
+      math.typeOf(1, 2, 3)
+    }, /Too many arguments in function typeOf/)
   })
 })

@@ -1,6 +1,10 @@
 import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
-import { getAssociativity, getPrecedence, isAssociativeWith } from '../../../src/expression/operators.js'
+import {
+  getAssociativity,
+  getPrecedence,
+  isAssociativeWith,
+} from '../../../src/expression/operators.js'
 const OperatorNode = math.OperatorNode
 const AssignmentNode = math.AssignmentNode
 const SymbolNode = math.SymbolNode
@@ -60,7 +64,10 @@ describe('operators', function () {
     const p = new ParenthesisNode(op)
 
     assert.strictEqual(getAssociativity(p, 'all'), getAssociativity(op, 'keep'))
-    assert.strictEqual(getAssociativity(p, 'auto'), getAssociativity(op, 'keep'))
+    assert.strictEqual(
+      getAssociativity(p, 'auto'),
+      getAssociativity(op, 'keep')
+    )
     assert.strictEqual(getAssociativity(p, 'keep'), null)
   })
 

@@ -34,10 +34,22 @@ describe('bitXor', function () {
 
   it('should bitwise xor bignumbers', function () {
     assert.deepStrictEqual(bitXor(bignumber(1), bignumber(2)), bignumber(3))
-    assert.deepStrictEqual(bitXor(bignumber('-1.0e+31'), bignumber('-1.0e+32')), bignumber('92546795970570634164073698164736'))
-    assert.deepStrictEqual(bitXor(bignumber('1.0e+31'), bignumber('1.0e+32')), bignumber('92546795970570634164077993132032'))
-    assert.deepStrictEqual(bitXor(bignumber('-1.0e+31'), bignumber('1.0e+32')), bignumber('-92546795970570634164077993132032'))
-    assert.deepStrictEqual(bitXor(bignumber('1.0e+31'), bignumber('-1.0e+32')), bignumber('-92546795970570634164073698164736'))
+    assert.deepStrictEqual(
+      bitXor(bignumber('-1.0e+31'), bignumber('-1.0e+32')),
+      bignumber('92546795970570634164073698164736')
+    )
+    assert.deepStrictEqual(
+      bitXor(bignumber('1.0e+31'), bignumber('1.0e+32')),
+      bignumber('92546795970570634164077993132032')
+    )
+    assert.deepStrictEqual(
+      bitXor(bignumber('-1.0e+31'), bignumber('1.0e+32')),
+      bignumber('-92546795970570634164077993132032')
+    )
+    assert.deepStrictEqual(
+      bitXor(bignumber('1.0e+31'), bignumber('-1.0e+32')),
+      bignumber('-92546795970570634164073698164736')
+    )
   })
 
   it('should bitwise xor mixed numbers and bignumbers', function () {
@@ -55,9 +67,15 @@ describe('bitXor', function () {
   })
 
   it('should throw an error if used with a unit', function () {
-    assert.throws(function () { bitXor(math.unit('5cm'), 2) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { bitXor(2, math.unit('5cm')) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { bitXor(math.unit('2cm'), math.unit('5cm')) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      bitXor(math.unit('5cm'), 2)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      bitXor(2, math.unit('5cm'))
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      bitXor(math.unit('2cm'), math.unit('5cm'))
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should throw an error if the parameters are not integers', function () {
@@ -91,15 +109,60 @@ describe('bitXor', function () {
     })
 
     it('should bitwise xor array - array', function () {
-      assert.deepStrictEqual(bitXor([[1, 2], [3, 4]], [[5, 6], [7, 8]]), [[4, 4], [4, 12]])
+      assert.deepStrictEqual(
+        bitXor(
+          [
+            [1, 2],
+            [3, 4],
+          ],
+          [
+            [5, 6],
+            [7, 8],
+          ]
+        ),
+        [
+          [4, 4],
+          [4, 12],
+        ]
+      )
     })
 
     it('should bitwise xor array - dense matrix', function () {
-      assert.deepStrictEqual(bitXor([[1, 2], [3, 4]], matrix([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(
+        bitXor(
+          [
+            [1, 2],
+            [3, 4],
+          ],
+          matrix([
+            [5, 6],
+            [7, 8],
+          ])
+        ),
+        matrix([
+          [4, 4],
+          [4, 12],
+        ])
+      )
     })
 
     it('should bitwise xor array - sparse matrix', function () {
-      assert.deepStrictEqual(bitXor([[1, 2], [3, 4]], sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(
+        bitXor(
+          [
+            [1, 2],
+            [3, 4],
+          ],
+          sparse([
+            [5, 6],
+            [7, 8],
+          ])
+        ),
+        matrix([
+          [4, 4],
+          [4, 12],
+        ])
+      )
     })
   })
 
@@ -110,48 +173,176 @@ describe('bitXor', function () {
     })
 
     it('should bitwise xor dense matrix - array', function () {
-      assert.deepStrictEqual(bitXor(matrix([[1, 2], [3, 4]]), [[5, 6], [7, 8]]), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(
+        bitXor(
+          matrix([
+            [1, 2],
+            [3, 4],
+          ]),
+          [
+            [5, 6],
+            [7, 8],
+          ]
+        ),
+        matrix([
+          [4, 4],
+          [4, 12],
+        ])
+      )
     })
 
     it('should bitwise xor dense matrix - dense matrix', function () {
-      assert.deepStrictEqual(bitXor(matrix([[1, 2], [3, 4]]), matrix([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(
+        bitXor(
+          matrix([
+            [1, 2],
+            [3, 4],
+          ]),
+          matrix([
+            [5, 6],
+            [7, 8],
+          ])
+        ),
+        matrix([
+          [4, 4],
+          [4, 12],
+        ])
+      )
     })
 
     it('should bitwise xor dense matrix - sparse matrix', function () {
-      assert.deepStrictEqual(bitXor(matrix([[1, 2], [3, 4]]), sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(
+        bitXor(
+          matrix([
+            [1, 2],
+            [3, 4],
+          ]),
+          sparse([
+            [5, 6],
+            [7, 8],
+          ])
+        ),
+        matrix([
+          [4, 4],
+          [4, 12],
+        ])
+      )
     })
   })
 
   describe('SparseMatrix', function () {
     it('should bitwise xor sparse matrix - scalar', function () {
-      assert.deepStrictEqual(bitXor(12, sparse([[3, 9], [9, 3]])), matrix([[15, 5], [5, 15]]))
-      assert.deepStrictEqual(bitXor(sparse([[3, 9], [9, 3]]), 12), matrix([[15, 5], [5, 15]]))
+      assert.deepStrictEqual(
+        bitXor(
+          12,
+          sparse([
+            [3, 9],
+            [9, 3],
+          ])
+        ),
+        matrix([
+          [15, 5],
+          [5, 15],
+        ])
+      )
+      assert.deepStrictEqual(
+        bitXor(
+          sparse([
+            [3, 9],
+            [9, 3],
+          ]),
+          12
+        ),
+        matrix([
+          [15, 5],
+          [5, 15],
+        ])
+      )
     })
 
     it('should bitwise xor sparse matrix - array', function () {
-      assert.deepStrictEqual(bitXor(sparse([[1, 2], [3, 4]]), [[5, 6], [7, 8]]), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(
+        bitXor(
+          sparse([
+            [1, 2],
+            [3, 4],
+          ]),
+          [
+            [5, 6],
+            [7, 8],
+          ]
+        ),
+        matrix([
+          [4, 4],
+          [4, 12],
+        ])
+      )
     })
 
     it('should bitwise xor sparse matrix - dense matrix', function () {
-      assert.deepStrictEqual(bitXor(sparse([[1, 2], [3, 4]]), matrix([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(
+        bitXor(
+          sparse([
+            [1, 2],
+            [3, 4],
+          ]),
+          matrix([
+            [5, 6],
+            [7, 8],
+          ])
+        ),
+        matrix([
+          [4, 4],
+          [4, 12],
+        ])
+      )
     })
 
     it('should bitwise xor sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(bitXor(sparse([[1, 2], [3, 4]]), sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(
+        bitXor(
+          sparse([
+            [1, 2],
+            [3, 4],
+          ]),
+          sparse([
+            [5, 6],
+            [7, 8],
+          ])
+        ),
+        matrix([
+          [4, 4],
+          [4, 12],
+        ])
+      )
     })
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { bitXor(1) }, /TypeError: Too few arguments/)
-    assert.throws(function () { bitXor(1, 2, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      bitXor(1)
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      bitXor(1, 2, 3)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () { bitXor(2, null) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { bitXor(new Date(), true) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { bitXor(true, new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { bitXor(true, undefined) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { bitXor(undefined, true) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      bitXor(2, null)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      bitXor(new Date(), true)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      bitXor(true, new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      bitXor(true, undefined)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      bitXor(undefined, true)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX bitXor', function () {

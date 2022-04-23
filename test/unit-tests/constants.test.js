@@ -18,7 +18,7 @@ import {
   createSQRT2,
   createSQRT1_2, // eslint-disable-line camelcase
   createTau,
-  createTrue
+  createTrue,
 } from '../../src/constants.js'
 
 describe('constants', function () {
@@ -29,7 +29,7 @@ describe('constants', function () {
     const dependencies = {
       config,
       BigNumber,
-      Complex
+      Complex,
     }
 
     it('should create pi', function () {
@@ -92,51 +92,84 @@ describe('constants', function () {
     const dependencies = {
       config,
       BigNumber,
-      Complex
+      Complex,
     }
 
     it('should create bignumber pi', function () {
-      assert.strictEqual(createPi(dependencies).toString(), '3.141592653589793238462643383279502884197169399375105820974944592')
+      assert.strictEqual(
+        createPi(dependencies).toString(),
+        '3.141592653589793238462643383279502884197169399375105820974944592'
+      )
     })
 
     it('should create bignumber tau', function () {
-      assert.strictEqual(createTau(dependencies).toString(), '6.283185307179586476925286766559005768394338798750211641949889184')
+      assert.strictEqual(
+        createTau(dependencies).toString(),
+        '6.283185307179586476925286766559005768394338798750211641949889184'
+      )
     })
 
     it('should create bignumber phi, golden ratio', function () {
-      assert.strictEqual(createPhi(dependencies).toString(), '1.618033988749894848204586834365638117720309179805762862135448623')
+      assert.strictEqual(
+        createPhi(dependencies).toString(),
+        '1.618033988749894848204586834365638117720309179805762862135448623'
+      )
     })
 
     it('should create bignumber e', function () {
-      assert.strictEqual(createE(dependencies).toString(), '2.718281828459045235360287471352662497757247093699959574966967628')
+      assert.strictEqual(
+        createE(dependencies).toString(),
+        '2.718281828459045235360287471352662497757247093699959574966967628'
+      )
     })
 
     it('should create bignumber LN2', function () {
-      assert.strictEqual(createLN2(dependencies).toString(), '0.6931471805599453094172321214581765680755001343602552541206800095')
+      assert.strictEqual(
+        createLN2(dependencies).toString(),
+        '0.6931471805599453094172321214581765680755001343602552541206800095'
+      )
     })
 
     it('should create bignumber LN10', function () {
-      assert.strictEqual(createLN10(dependencies).toString(), '2.302585092994045684017991454684364207601101488628772976033327901')
+      assert.strictEqual(
+        createLN10(dependencies).toString(),
+        '2.302585092994045684017991454684364207601101488628772976033327901'
+      )
     })
 
     it('should create bignumber LOG2E', function () {
-      assert.strictEqual(createLOG2E(dependencies).toString(), '1.442695040888963407359924681001892137426645954152985934135449407')
+      assert.strictEqual(
+        createLOG2E(dependencies).toString(),
+        '1.442695040888963407359924681001892137426645954152985934135449407'
+      )
     })
 
     it('should create bignumber LOG10E', function () {
-      assert.strictEqual(createLOG10E(dependencies).toString(), '0.4342944819032518276511289189166050822943970058036665661144537832')
+      assert.strictEqual(
+        createLOG10E(dependencies).toString(),
+        '0.4342944819032518276511289189166050822943970058036665661144537832'
+      )
     })
 
     it('should create bignumber PI (upper case)', function () {
-      assert.strictEqual(createPi(dependencies).toString(), '3.141592653589793238462643383279502884197169399375105820974944592')
+      assert.strictEqual(
+        createPi(dependencies).toString(),
+        '3.141592653589793238462643383279502884197169399375105820974944592'
+      )
     })
 
     it('should create bignumber SQRT1_2', function () {
-      assert.strictEqual(createSQRT1_2(dependencies).toString(), '0.707106781186547524400844362104849039284835937688474036588339869')
+      assert.strictEqual(
+        createSQRT1_2(dependencies).toString(),
+        '0.707106781186547524400844362104849039284835937688474036588339869'
+      )
     })
 
     it('should create bignumber SQRT2', function () {
-      assert.strictEqual(createSQRT2(dependencies).toString(), '1.414213562373095048801688724209698078569671875376948073176679738')
+      assert.strictEqual(
+        createSQRT2(dependencies).toString(),
+        '1.414213562373095048801688724209698078569671875376948073176679738'
+      )
     })
 
     it('should create bignumber Infinity', function () {

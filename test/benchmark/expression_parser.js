@@ -13,17 +13,15 @@ if (typeof window !== 'undefined') {
   window.Benchmark = Benchmark
 }
 
-function pad (text) {
+function pad(text) {
   return padRight(text, 40, ' ')
 }
 
 const expr = '2 + 3 * sin(pi / 4) - 4x'
-const scope = new Map([
-  ['x', 2]
-])
+const scope = new Map([['x', 2]])
 const compiled = math.parse(expr).compile(math)
 
-function undefinedSymbol (name) {
+function undefinedSymbol(name) {
   throw new Error('Undefined symbol "' + name + '"')
 }
 
@@ -31,8 +29,15 @@ const sin = getSafeProperty(math, 'sin')
 const pi = getSafeProperty(math, 'pi')
 const compiledPlainJs = {
   evaluate: function (scope) {
-    return 2 + 3 * (scope.has('sin') ? scope.get('sin') : sin)((scope.has('pi') ? scope.get('pi') : pi) / 4) - 4 * (scope.has('x') ? scope.get('x') : undefinedSymbol('x'))
-  }
+    return (
+      2 +
+      3 *
+        (scope.has('sin') ? scope.get('sin') : sin)(
+          (scope.has('pi') ? scope.get('pi') : pi) / 4
+        ) -
+      4 * (scope.has('x') ? scope.get('x') : undefinedSymbol('x'))
+    )
+  },
 }
 
 const correctResult = -3.878679656440358
@@ -82,7 +87,7 @@ suite
   })
   .run()
 
-function assertApproxEqual (actual, expected, tolerance) {
+function assertApproxEqual(actual, expected, tolerance) {
   const diff = Math.abs(expected - actual)
   if (diff > tolerance) assert.strictEqual(actual, expected)
   else assert.ok(diff <= tolerance, actual + ' === ' + expected)

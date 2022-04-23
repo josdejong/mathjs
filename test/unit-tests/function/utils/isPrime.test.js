@@ -36,13 +36,25 @@ describe('isPrime', function () {
   })
 
   it('should test isPrime element wise on an Array', function () {
-    assert.deepStrictEqual(isPrime([0, 1, 2, 5, 9]), [false, false, true, true, false])
+    assert.deepStrictEqual(isPrime([0, 1, 2, 5, 9]), [
+      false,
+      false,
+      true,
+      true,
+      false,
+    ])
   })
 
   it('should throw an error in case of unsupported data types', function () {
-    assert.throws(function () { isPrime(complex(2, 3)) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { isPrime(new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { isPrime({}) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      isPrime(complex(2, 3))
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      isPrime(new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      isPrime({})
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should work fast for huge values', function () {

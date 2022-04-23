@@ -18,7 +18,10 @@ describe('string', function () {
 
   it('should escape special HTML characters', function () {
     assert.strictEqual(escape('&<>"\''), '&amp;&lt;&gt;&quot;&#39;')
-    assert.strictEqual(escape('<script src="script.js?version=1.0&type=js">'), '&lt;script src=&quot;script.js?version=1.0&amp;type=js&quot;&gt;')
+    assert.strictEqual(
+      escape('<script src="script.js?version=1.0&type=js">'),
+      '&lt;script src=&quot;script.js?version=1.0&amp;type=js&quot;&gt;'
+    )
   })
 
   describe('format', function () {
@@ -36,7 +39,7 @@ describe('string', function () {
 
     it('should format a bignumber', function () {
       const B = BigNumber.config({
-        precision: 20
+        precision: 20,
       })
       assert.strictEqual(format(new B(1).div(3)), '0.33333333333333333333')
     })
@@ -47,14 +50,26 @@ describe('string', function () {
       assert.strictEqual(format(math.fraction(-0.125)), '-1/8')
     })
 
-    it('should format a fraction with option fraction=\'ratio\'', function () {
-      assert.strictEqual(format(math.fraction(1, 3), { fraction: 'ratio' }), '1/3')
-      assert.strictEqual(format(math.fraction(2, 6), { fraction: 'ratio' }), '1/3')
+    it("should format a fraction with option fraction='ratio'", function () {
+      assert.strictEqual(
+        format(math.fraction(1, 3), { fraction: 'ratio' }),
+        '1/3'
+      )
+      assert.strictEqual(
+        format(math.fraction(2, 6), { fraction: 'ratio' }),
+        '1/3'
+      )
     })
 
-    it('should format a fraction with option fraction=\'decimal\'', function () {
-      assert.strictEqual(format(math.fraction(1, 3), { fraction: 'decimal' }), '0.(3)')
-      assert.strictEqual(format(math.fraction(2, 6), { fraction: 'decimal' }), '0.(3)')
+    it("should format a fraction with option fraction='decimal'", function () {
+      assert.strictEqual(
+        format(math.fraction(1, 3), { fraction: 'decimal' }),
+        '0.(3)'
+      )
+      assert.strictEqual(
+        format(math.fraction(2, 6), { fraction: 'decimal' }),
+        '0.(3)'
+      )
     })
 
     it('should format a number with configuration', function () {
@@ -64,7 +79,13 @@ describe('string', function () {
 
     it('should format an array', function () {
       assert.strictEqual(format([1, 2, 3]), '[1, 2, 3]')
-      assert.strictEqual(format([[1, 2], [3, 4]]), '[[1, 2], [3, 4]]')
+      assert.strictEqual(
+        format([
+          [1, 2],
+          [3, 4],
+        ]),
+        '[[1, 2], [3, 4]]'
+      )
     })
 
     it('should format a string', function () {
@@ -74,7 +95,7 @@ describe('string', function () {
     it('should format an object', function () {
       const obj = {
         a: 1.1111,
-        b: math.complex(2.2222, 3)
+        b: math.complex(2.2222, 3),
       }
 
       assert.strictEqual(format(obj), '{"a": 1.1111, "b": 2.2222 + 3i}')
@@ -89,7 +110,7 @@ describe('string', function () {
             str += ' ' + JSON.stringify(options)
           }
           return str
-        }
+        },
       }
 
       assert.strictEqual(format(obj), 'obj')
@@ -98,8 +119,15 @@ describe('string', function () {
     })
 
     it('should format a function', function () {
-      assert.strictEqual(format(function (a, b) { return a + b }), 'function')
-      const f = function (a, b) { return a + b }
+      assert.strictEqual(
+        format(function (a, b) {
+          return a + b
+        }),
+        'function'
+      )
+      const f = function (a, b) {
+        return a + b
+      }
       f.syntax = 'f(x, y)'
       assert.strictEqual(format(f), 'f(x, y)')
     })
@@ -112,7 +140,7 @@ describe('string', function () {
       assert.strictEqual(format(true), 'true')
     })
 
-    it('should limit the length of output with a truncate option', () => {
+    it('should limit the length of output with a truncate option', function () {
       const result = format('01234567890123456789', { truncate: 17 })
       assert.strictEqual(result.length, 17)
       assert.ok(endsWith(result, '...'))

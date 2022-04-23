@@ -2,13 +2,13 @@ const Benchmark = require('benchmark')
 const BigNumber = require('decimal.js')
 const padRight = require('pad-right')
 
-function pad (text) {
+function pad(text) {
   return padRight(text, 40, ' ')
 }
 
 const results = []
 
-function bigFactorial (n) {
+function bigFactorial(n) {
   if (n.isZero()) {
     return new BigNumber(1) // 0! is per definition 1
   }
@@ -23,7 +23,7 @@ function bigFactorial (n) {
   return new BigNumber(res)
 }
 
-function betterFactorial (n) {
+function betterFactorial(n) {
   if (n < 8) {
     return new BigNumber([1, 1, 2, 6, 24, 120, 720, 5040][n])
   }
@@ -94,6 +94,5 @@ suite
   .on('cycle', function (event) {
     console.log(String(event.target))
   })
-  .on('complete', function () {
-  })
+  .on('complete', function () {})
   .run()

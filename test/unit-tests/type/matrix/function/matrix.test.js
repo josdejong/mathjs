@@ -30,22 +30,53 @@ describe('matrix', function () {
   })
 
   it('should create a matrix from an array', function () {
-    const b = matrix([[1, 2], [3, 4]])
+    const b = matrix([
+      [1, 2],
+      [3, 4],
+    ])
     assert.ok(b instanceof math.Matrix)
-    assert.deepStrictEqual(b, matrix([[1, 2], [3, 4]]))
+    assert.deepStrictEqual(
+      b,
+      matrix([
+        [1, 2],
+        [3, 4],
+      ])
+    )
     assert.deepStrictEqual(math.size(b), matrix([2, 2]))
   })
 
   it('should be the identity if called with a matrix, dense format', function () {
-    const b = matrix([[1, 2], [3, 4]], 'dense')
+    const b = matrix(
+      [
+        [1, 2],
+        [3, 4],
+      ],
+      'dense'
+    )
     const c = matrix(b, 'dense')
     assert.ok(c._data !== b._data) // data should be cloned
-    assert.deepStrictEqual(c, matrix([[1, 2], [3, 4]], 'dense'))
+    assert.deepStrictEqual(
+      c,
+      matrix(
+        [
+          [1, 2],
+          [3, 4],
+        ],
+        'dense'
+      )
+    )
     assert.deepStrictEqual(math.size(c), matrix([2, 2], 'dense'))
   })
 
   it('should be the identity if called with a matrix, dense format, number datatype', function () {
-    const b = matrix([[1, 2], [3, 4]], 'dense', 'number')
+    const b = matrix(
+      [
+        [1, 2],
+        [3, 4],
+      ],
+      'dense',
+      'number'
+    )
     const c = matrix(b, 'dense')
     assert.ok(c._data !== b._data) // data should be cloned
     assert.ok(c._size !== b._size)
@@ -55,14 +86,36 @@ describe('matrix', function () {
   })
 
   it('should be the identity if called with a matrix, sparse', function () {
-    const b = matrix([[1, 2], [3, 4]], 'sparse')
+    const b = matrix(
+      [
+        [1, 2],
+        [3, 4],
+      ],
+      'sparse'
+    )
     const c = matrix(b, 'sparse')
     assert.ok(c._values !== b._values) // data should be cloned
-    assert.deepStrictEqual(c, matrix([[1, 2], [3, 4]], 'sparse'))
+    assert.deepStrictEqual(
+      c,
+      matrix(
+        [
+          [1, 2],
+          [3, 4],
+        ],
+        'sparse'
+      )
+    )
   })
 
   it('should be the identity if called with a matrix, sparse, number datatype', function () {
-    const b = matrix([[1, 2], [3, 4]], 'sparse', 'number')
+    const b = matrix(
+      [
+        [1, 2],
+        [3, 4],
+      ],
+      'sparse',
+      'number'
+    )
     const c = matrix(b, 'sparse')
     assert.ok(c._values !== b._values) // data should be cloned
     assert.deepStrictEqual(c.valueOf(), b.valueOf())
@@ -77,23 +130,33 @@ describe('matrix', function () {
   })
 
   it('should throw an error if called with an invalid argument', function () {
-    assert.throws(function () { matrix(new Date()) }, TypeError)
+    assert.throws(function () {
+      matrix(new Date())
+    }, TypeError)
   })
 
   it('should throw an error if called with a unit', function () {
-    assert.throws(function () { matrix(math.unit('5cm')) }, TypeError)
+    assert.throws(function () {
+      matrix(math.unit('5cm'))
+    }, TypeError)
   })
 
   it('should throw an error if called with too many arguments', function () {
-    assert.throws(function () { matrix([], 3, 3, 7) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      matrix([], 3, 3, 7)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error when called with an invalid storage format', function () {
-    assert.throws(function () { math.matrix([], 1) }, /TypeError: Unknown matrix type "1"/)
+    assert.throws(function () {
+      math.matrix([], 1)
+    }, /TypeError: Unknown matrix type "1"/)
   })
 
   it('should throw an error when called with an unknown storage format', function () {
-    assert.throws(function () { math.matrix([], '123') }, /TypeError: Unknown matrix type "123"/)
+    assert.throws(function () {
+      math.matrix([], '123')
+    }, /TypeError: Unknown matrix type "123"/)
   })
 
   it('should LaTeX matrix', function () {
@@ -101,6 +164,9 @@ describe('matrix', function () {
     const expr2 = math.parse('matrix([1])')
 
     assert.strictEqual(expr1.toTex(), '\\begin{bmatrix}\\end{bmatrix}')
-    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\end{bmatrix}\\right)')
+    assert.strictEqual(
+      expr2.toTex(),
+      '\\left(\\begin{bmatrix}1\\end{bmatrix}\\right)'
+    )
   })
 })

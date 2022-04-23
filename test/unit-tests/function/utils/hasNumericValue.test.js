@@ -31,15 +31,26 @@ describe('hasNumericValue', function () {
   })
 
   it('should test hasNumericValue element wise on an Array', function () {
-    assert.deepStrictEqual(hasNumericValue([2, 'foo', true]), [true, false, true])
+    assert.deepStrictEqual(hasNumericValue([2, 'foo', true]), [
+      true,
+      false,
+      true,
+    ])
   })
 
   it('should test hasNumericValue element wise on a Matrix', function () {
-    assert.deepStrictEqual(hasNumericValue(math.matrix([2, 'foo', true])), math.matrix([true, false, true]))
+    assert.deepStrictEqual(
+      hasNumericValue(math.matrix([2, 'foo', true])),
+      math.matrix([true, false, true])
+    )
   })
 
   it('should throw an error in case of unsupported data types', function () {
-    assert.throws(function () { hasNumericValue(new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { hasNumericValue({}) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      hasNumericValue(new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      hasNumericValue({})
+    }, /TypeError: Unexpected type of argument/)
   })
 })

@@ -29,18 +29,30 @@ describe('RangeNode', function () {
   it('should throw an error when calling without new operator', function () {
     const start = new ConstantNode(0)
     const end = new ConstantNode(10)
-    assert.throws(function () { RangeNode([start, end]) }, SyntaxError)
+    assert.throws(function () {
+      RangeNode([start, end])
+    }, SyntaxError)
   })
 
   it('should throw an error creating a RangeNode with wrong number or type of arguments', function () {
     const start = new ConstantNode(0)
     const end = new ConstantNode(10)
 
-    assert.throws(function () { console.log(new RangeNode()) }, TypeError)
-    assert.throws(function () { console.log(new RangeNode(start)) }, TypeError)
-    assert.throws(function () { console.log(new RangeNode([])) }, TypeError)
-    assert.throws(function () { console.log(new RangeNode(start, end, start, end)) }, Error)
-    assert.throws(function () { console.log(new RangeNode(0, 10)) }, TypeError)
+    assert.throws(function () {
+      console.log(new RangeNode())
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new RangeNode(start))
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new RangeNode([]))
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new RangeNode(start, end, start, end))
+    }, Error)
+    assert.throws(function () {
+      console.log(new RangeNode(0, 10))
+    }, TypeError)
   })
 
   it('should compile a RangeNode', function () {
@@ -59,11 +71,36 @@ describe('RangeNode', function () {
     const step = new ConstantNode(2)
     const n = new RangeNode(start, end, step)
 
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof RangeNode }), [n])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [start, end, step])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [step])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof RangeNode
+      }),
+      [n]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof SymbolNode
+      }),
+      []
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof ConstantNode
+      }),
+      [start, end, step]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof ConstantNode && node.value === 2
+      }),
+      [step]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof ConstantNode && node.value === 4
+      }),
+      []
+    )
   })
 
   it('should run forEach on a RangeNode', function () {
@@ -123,7 +160,9 @@ describe('RangeNode', function () {
     const n = new RangeNode(start, end, step)
 
     assert.throws(function () {
-      n.map(function () { return undefined })
+      n.map(function () {
+        return undefined
+      })
     }, /Callback function must return a Node/)
   })
 
@@ -239,15 +278,36 @@ describe('RangeNode', function () {
   })
 
   it('test equality another Node', function () {
-    assert.strictEqual(createRangeNode(2, 4).equals(createRangeNode(2, 4)), true)
-    assert.strictEqual(createRangeNode(2, 4).equals(createRangeNode(2, 5)), false)
-    assert.strictEqual(createRangeNode(2, 4).equals(createRangeNode(2, 4, 1)), false)
-    assert.strictEqual(createRangeNode(2, 4).equals(createRangeNode(2, 4, -1)), false)
-    assert.strictEqual(createRangeNode(2, 4, -1).equals(createRangeNode(2, 4, -1)), true)
+    assert.strictEqual(
+      createRangeNode(2, 4).equals(createRangeNode(2, 4)),
+      true
+    )
+    assert.strictEqual(
+      createRangeNode(2, 4).equals(createRangeNode(2, 5)),
+      false
+    )
+    assert.strictEqual(
+      createRangeNode(2, 4).equals(createRangeNode(2, 4, 1)),
+      false
+    )
+    assert.strictEqual(
+      createRangeNode(2, 4).equals(createRangeNode(2, 4, -1)),
+      false
+    )
+    assert.strictEqual(
+      createRangeNode(2, 4, -1).equals(createRangeNode(2, 4, -1)),
+      true
+    )
     assert.strictEqual(createRangeNode(2, 4, -1).equals(null), false)
     assert.strictEqual(createRangeNode(2, 4, -1).equals(undefined), false)
-    assert.strictEqual(createRangeNode(2, 4, -1).equals(new SymbolNode('a')), false)
-    assert.strictEqual(createRangeNode(2, 4, -1).equals(new SymbolNode('a')), false)
+    assert.strictEqual(
+      createRangeNode(2, 4, -1).equals(new SymbolNode('a')),
+      false
+    )
+    assert.strictEqual(
+      createRangeNode(2, 4, -1).equals(new SymbolNode('a')),
+      false
+    )
   })
 
   it('should stringify a RangeNode without step', function () {
@@ -295,9 +355,14 @@ describe('RangeNode', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {
       if (node.type === 'RangeNode') {
-        return 'from ' + node.start.toString(options) +
-          ' to ' + node.end.toString(options) +
-          ' with steps of ' + node.step.toString(options)
+        return (
+          'from ' +
+          node.start.toString(options) +
+          ' to ' +
+          node.end.toString(options) +
+          ' with steps of ' +
+          node.step.toString(options)
+        )
       } else if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
@@ -309,12 +374,21 @@ describe('RangeNode', function () {
 
     const n = new RangeNode(a, b, c)
 
-    assert.strictEqual(n.toString({ handler: customFunction }), 'from const(1, number) to const(2, number) with steps of const(3, number)')
+    assert.strictEqual(
+      n.toString({ handler: customFunction }),
+      'from const(1, number) to const(2, number) with steps of const(3, number)'
+    )
   })
 
-  it('should respect the \'all\' parenthesis option', function () {
-    assert.strictEqual(math.parse('1:2:3').toString({ parenthesis: 'all' }), '(1):(2):(3)')
-    assert.strictEqual(math.parse('1:2:3').toTex({ parenthesis: 'all' }), '\\left(1\\right):\\left(2\\right):\\left(3\\right)')
+  it("should respect the 'all' parenthesis option", function () {
+    assert.strictEqual(
+      math.parse('1:2:3').toString({ parenthesis: 'all' }),
+      '(1):(2):(3)'
+    )
+    assert.strictEqual(
+      math.parse('1:2:3').toTex({ parenthesis: 'all' }),
+      '\\left(1\\right):\\left(2\\right):\\left(3\\right)'
+    )
   })
 
   it('toJSON and fromJSON', function () {
@@ -329,7 +403,7 @@ describe('RangeNode', function () {
       mathjs: 'RangeNode',
       start: a,
       end: b,
-      step: c
+      step: c,
     })
 
     const parsed = RangeNode.fromJSON(json)
@@ -357,11 +431,22 @@ describe('RangeNode', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {
       if (node.type === 'RangeNode') {
-        return 'from ' + node.start.toTex(options) +
-          ' to ' + node.end.toTex(options) +
-          ' with steps of ' + node.step.toTex(options)
+        return (
+          'from ' +
+          node.start.toTex(options) +
+          ' to ' +
+          node.end.toTex(options) +
+          ' with steps of ' +
+          node.step.toTex(options)
+        )
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
+        return (
+          'const\\left(' +
+          node.value +
+          ', ' +
+          math.typeOf(node.value) +
+          '\\right)'
+        )
       }
     }
 
@@ -371,7 +456,10 @@ describe('RangeNode', function () {
 
     const n = new RangeNode(a, b, c)
 
-    assert.strictEqual(n.toTex({ handler: customFunction }), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)')
+    assert.strictEqual(
+      n.toTex({ handler: customFunction }),
+      'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)'
+    )
   })
 
   /**
@@ -381,11 +469,15 @@ describe('RangeNode', function () {
    * @param {number} [step]
    * @return {RangeNode}
    */
-  function createRangeNode (start, end, step) {
+  function createRangeNode(start, end, step) {
     if (step === undefined) {
       return new RangeNode(new ConstantNode(start), new ConstantNode(end))
     } else {
-      return new RangeNode(new ConstantNode(start), new ConstantNode(end), new ConstantNode(step))
+      return new RangeNode(
+        new ConstantNode(start),
+        new ConstantNode(end),
+        new ConstantNode(step)
+      )
     }
   }
 })

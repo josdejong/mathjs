@@ -1,6 +1,9 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
 const assert = require('assert')
-const { createSnapshotFromFactories, validateBundle } = require('../../lib/cjs/utils/snapshot')
+const {
+  createSnapshotFromFactories,
+  validateBundle,
+} = require('../../lib/cjs/utils/snapshot')
 const factoriesAny = require('../../lib/cjs/factoriesAny')
 const version = require('../../package.json').version
 const embeddedDocs = require('../../lib/cjs/expression/embeddedDocs/embeddedDocs')
@@ -38,11 +41,18 @@ describe('lib/browser', function () {
     // names to ignore
     const ignore = [
       // functions not supported or relevant for the parser:
-      'chain', 'print',
-      'compile', 'parse', 'parser', // TODO: add embedded docs for compile, parse, and parser?
-      'reviver', 'replacer', // TODO: add embedded docs for reviver and replacer?
+      'chain',
+      'print',
+      'compile',
+      'parse',
+      'parser', // TODO: add embedded docs for compile, parse, and parser?
+      'reviver',
+      'replacer', // TODO: add embedded docs for reviver and replacer?
       'apply', // FIXME: apply is not supported right now because of security concerns
-      'addScalar', 'divideScalar', 'multiplyScalar', 'equalScalar'
+      'addScalar',
+      'divideScalar',
+      'multiplyScalar',
+      'equalScalar',
     ]
 
     // test whether all functions are documented
@@ -67,17 +77,22 @@ describe('lib/browser', function () {
     })
 
     if (missing.length > 0 || redundant.length > 0) {
-      let message = 'Validation failed: not all functions have embedded documentation. '
+      let message =
+        'Validation failed: not all functions have embedded documentation. '
 
       if (missing.length > 0) {
         message += 'Undocumented functions: ' + missing.join(', ') + '. '
       }
 
       if (redundant.length > 0) {
-        message += 'Documentation for non-existing functions: ' + redundant.join(', ') + '. '
+        message +=
+          'Documentation for non-existing functions: ' +
+          redundant.join(', ') +
+          '. '
       }
 
-      message += 'Embedded documentation for the expression parser is defined in src/expression/embeddedDocs.'
+      message +=
+        'Embedded documentation for the expression parser is defined in src/expression/embeddedDocs.'
 
       throw Error(message)
     }

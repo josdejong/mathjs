@@ -89,13 +89,17 @@ describe('parser', function () {
 
     parser.remove('qq')
     assert.strictEqual(parser.get('qq'), undefined)
-    assert.throws(function () { parser.evaluate('qq') })
+    assert.throws(function () {
+      parser.evaluate('qq')
+    })
 
     assert.strictEqual(parser.evaluate('ww = 5'), 5)
     assert.strictEqual(parser.get('ww'), 5)
     parser.remove('ww')
     assert.strictEqual(parser.get('ww'), undefined)
-    assert.throws(function () { parser.evaluate('ww') })
+    assert.throws(function () {
+      parser.evaluate('ww')
+    })
   })
 
   it('should clear the parsers namespace ', function () {
@@ -122,9 +126,15 @@ describe('parser', function () {
     assert.strictEqual(parser.get('zz'), undefined)
     approx.equal(parser.get('pi'), undefined)
 
-    assert.throws(function () { parser.evaluate('xx') })
-    assert.throws(function () { parser.evaluate('yy') })
-    assert.throws(function () { parser.evaluate('zz') })
+    assert.throws(function () {
+      parser.evaluate('xx')
+    })
+    assert.throws(function () {
+      parser.evaluate('yy')
+    })
+    assert.throws(function () {
+      parser.evaluate('zz')
+    })
     assert.strictEqual(parser.evaluate('pi'), Math.PI)
   })
 
@@ -150,7 +160,9 @@ describe('parser', function () {
         // We can safely set within the parser
         assert.strictEqual(parser.set('toString', null), null)
         // But getting it out via getAll() will throw.
-        assert.throws(function () { parser.getAll() }, /No access/)
+        assert.throws(function () {
+          parser.getAll()
+        }, /No access/)
       } finally {
         delete Object.prototype.foo
       }
@@ -158,6 +170,8 @@ describe('parser', function () {
   })
 
   it('should throw an exception when creating a parser without new', function () {
-    assert.throws(function () { Parser() }, /Constructor must be called with the new operator/)
+    assert.throws(function () {
+      Parser()
+    }, /Constructor must be called with the new operator/)
   })
 })

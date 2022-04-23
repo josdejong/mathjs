@@ -37,7 +37,10 @@ describe('tanh', function () {
     assert.deepStrictEqual(tanhBig(Big(1)), Big('0.76159415595576488812'))
     assert.deepStrictEqual(tanhBig(Big(2)), Big('0.96402758007581688395'))
     assert.deepStrictEqual(tanhBig(Big(3)), Big('0.99505475368673045133'))
-    assert.deepStrictEqual(tanhBig(bigmath.pi).toString(), '0.99627207622074994426')
+    assert.deepStrictEqual(
+      tanhBig(bigmath.pi).toString(),
+      '0.99627207622074994426'
+    )
     assert.deepStrictEqual(tanhBig(arg10), Big(1))
 
     // Make sure args were not changed
@@ -49,7 +52,10 @@ describe('tanh', function () {
   it('should return the tanh of a complex number', function () {
     approx.deepEqual(tanh(complex('1')), complex(0.76159415595576, 0))
     approx.deepEqual(tanh(complex('i')), complex(0, 1.5574077246549))
-    approx.deepEqual(tanh(complex('2 + i')), complex(1.0147936161466, 0.033812826079897))
+    approx.deepEqual(
+      tanh(complex('2 + i')),
+      complex(1.0147936161466, 0.033812826079897)
+    )
   })
 
   it('should return the tanh of an angle', function () {
@@ -57,17 +63,27 @@ describe('tanh', function () {
     approx.equal(tanh(unit('-45deg')), -0.65579420263267)
 
     assert(math.isBigNumber(tanh(unit(math.bignumber(90), 'deg'))))
-    approx.equal(tanh(unit(math.bignumber(90), 'deg')).toNumber(), 0.91715233566727)
+    approx.equal(
+      tanh(unit(math.bignumber(90), 'deg')).toNumber(),
+      0.91715233566727
+    )
 
-    approx.deepEqual(tanh(unit(complex('2 + i'), 'rad')), complex(1.0147936161466, 0.033812826079897))
+    approx.deepEqual(
+      tanh(unit(complex('2 + i'), 'rad')),
+      complex(1.0147936161466, 0.033812826079897)
+    )
   })
 
   it('should throw an error if called with an invalid unit', function () {
-    assert.throws(function () { tanh(unit('5 celsius')) })
+    assert.throws(function () {
+      tanh(unit('5 celsius'))
+    })
   })
 
   it('should throw an error if called with a string', function () {
-    assert.throws(function () { tanh('string') })
+    assert.throws(function () {
+      tanh('string')
+    })
   })
 
   const tanh123 = [0.76159415595576, 0.96402758007582, 0.99505475368673]
@@ -81,8 +97,12 @@ describe('tanh', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { tanh() }, /TypeError: Too few arguments/)
-    assert.throws(function () { tanh(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      tanh()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      tanh(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX tanh', function () {

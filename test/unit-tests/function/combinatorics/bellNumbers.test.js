@@ -20,28 +20,46 @@ describe('bellNumbers', function () {
     assert.deepStrictEqual(bellNumbers(bn(22)), bn(4506715738447323))
     // and now we can go farther
     assert.deepStrictEqual(bellNumbers(bn(26)), bn('49631246523618756274'))
-    assert.deepStrictEqual(bellNumbers(bn(50)),
-      bn('185724268771078270438257767181908917499221852770'))
+    assert.deepStrictEqual(
+      bellNumbers(bn(50)),
+      bn('185724268771078270438257767181908917499221852770')
+    )
   })
 
   it('should not work with non-integer and negative input', function () {
-    assert.throws(function () { bellNumbers(0.5) }, TypeError)
-    assert.throws(function () { bellNumbers(-1) }, TypeError)
-    assert.throws(function () { bellNumbers(math.bignumber(-3)) }, TypeError)
-    assert.throws(function () { bellNumbers(math.bignumber(3.5)) }, TypeError)
+    assert.throws(function () {
+      bellNumbers(0.5)
+    }, TypeError)
+    assert.throws(function () {
+      bellNumbers(-1)
+    }, TypeError)
+    assert.throws(function () {
+      bellNumbers(math.bignumber(-3))
+    }, TypeError)
+    assert.throws(function () {
+      bellNumbers(math.bignumber(3.5))
+    }, TypeError)
   })
 
   it('should throw an error in case of non-integer input', function () {
-    assert.throws(function () { bellNumbers(5.2) }, /Non-negative integer value expected/)
+    assert.throws(function () {
+      bellNumbers(5.2)
+    }, /Non-negative integer value expected/)
   })
 
   it('should throw an error in case of negative input', function () {
-    assert.throws(function () { bellNumbers(-2) }, /Non-negative integer value expected/)
+    assert.throws(function () {
+      bellNumbers(-2)
+    }, /Non-negative integer value expected/)
   })
 
   it('should throw an error in case of wrong number or type of arguments', function () {
-    assert.throws(function () { bellNumbers(5, 3, 2) })
-    assert.throws(function () { bellNumbers(true, 'hello world') })
+    assert.throws(function () {
+      bellNumbers(5, 3, 2)
+    })
+    assert.throws(function () {
+      bellNumbers(true, 'hello world')
+    })
   })
 
   it('should LaTeX bellNumbers', function () {

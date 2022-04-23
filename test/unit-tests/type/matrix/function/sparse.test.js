@@ -17,14 +17,29 @@ describe('sparse', function () {
   })
 
   it('should be the identity if called with a matrix', function () {
-    const b = sparse([[1, 2], [3, 4]])
+    const b = sparse([
+      [1, 2],
+      [3, 4],
+    ])
     const c = sparse(b)
     assert.ok(c._values !== b._values) // data should be cloned
-    assert.deepStrictEqual(c, sparse([[1, 2], [3, 4]]))
+    assert.deepStrictEqual(
+      c,
+      sparse([
+        [1, 2],
+        [3, 4],
+      ])
+    )
   })
 
   it('should be the identity if called with a matrix, number datatype', function () {
-    const b = sparse([[1, 2], [3, 4]], 'number')
+    const b = sparse(
+      [
+        [1, 2],
+        [3, 4],
+      ],
+      'number'
+    )
     const c = sparse(b)
     assert.ok(c._values !== b._values) // data should be cloned
     assert.deepStrictEqual(c.valueOf(), b.valueOf())
@@ -32,15 +47,21 @@ describe('sparse', function () {
   })
 
   it('should throw an error if called with an invalid argument', function () {
-    assert.throws(function () { sparse(new Date()) }, TypeError)
+    assert.throws(function () {
+      sparse(new Date())
+    }, TypeError)
   })
 
   it('should throw an error if called with a unit', function () {
-    assert.throws(function () { sparse(math.unit('5cm')) }, TypeError)
+    assert.throws(function () {
+      sparse(math.unit('5cm'))
+    }, TypeError)
   })
 
   it('should throw an error if called with too many arguments', function () {
-    assert.throws(function () { sparse([], 3, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      sparse([], 3, 3)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX matrix', function () {
@@ -48,6 +69,9 @@ describe('sparse', function () {
     const expr2 = math.parse('sparse([1])')
 
     assert.strictEqual(expr1.toTex(), '\\begin{bsparse}\\end{bsparse}')
-    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\end{bmatrix}\\right)')
+    assert.strictEqual(
+      expr2.toTex(),
+      '\\left(\\begin{bmatrix}1\\end{bmatrix}\\right)'
+    )
   })
 })

@@ -3,7 +3,7 @@ const assert = require('assert')
 const path = require('path')
 const cp = require('child_process')
 
-function run (args, done) {
+function run(args, done) {
   cp.exec('node bin/cli.js ' + args, function (e, r) {
     done(e, r.replace(/\n$/g, ''))
   })

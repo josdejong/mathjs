@@ -33,14 +33,38 @@ describe('zeros', function () {
   })
 
   it('should create a 2D matrix with zeros from an array', function () {
-    assert.deepStrictEqual(zeros(2, 3), matrix([[0, 0, 0], [0, 0, 0]]))
-    assert.deepStrictEqual(zeros(3, 2), matrix([[0, 0], [0, 0], [0, 0]]))
-    assert.deepStrictEqual(zeros([3, 2]), [[0, 0], [0, 0], [0, 0]])
+    assert.deepStrictEqual(
+      zeros(2, 3),
+      matrix([
+        [0, 0, 0],
+        [0, 0, 0],
+      ])
+    )
+    assert.deepStrictEqual(
+      zeros(3, 2),
+      matrix([
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ])
+    )
+    assert.deepStrictEqual(zeros([3, 2]), [
+      [0, 0],
+      [0, 0],
+      [0, 0],
+    ])
   })
 
   it('should create a matrix with zeros from a matrix', function () {
     assert.deepStrictEqual(zeros(matrix([3])), matrix([0, 0, 0]))
-    assert.deepStrictEqual(zeros(matrix([3, 2])), matrix([[0, 0], [0, 0], [0, 0]]))
+    assert.deepStrictEqual(
+      zeros(matrix([3, 2])),
+      matrix([
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ])
+    )
   })
 
   it('should create a 3D matrix with zeros', function () {
@@ -48,13 +72,13 @@ describe('zeros', function () {
       [
         [0, 0, 0, 0],
         [0, 0, 0, 0],
-        [0, 0, 0, 0]
+        [0, 0, 0, 0],
       ],
       [
         [0, 0, 0, 0],
         [0, 0, 0, 0],
-        [0, 0, 0, 0]
-      ]
+        [0, 0, 0, 0],
+      ],
     ]
 
     assert.deepStrictEqual(zeros(2, 3, 4), matrix(res))
@@ -65,7 +89,10 @@ describe('zeros', function () {
   // TODO: test setting `matrix`
 
   it('should create a matrix with zeros with the same size as original matrix', function () {
-    const a = matrix([[1, 2, 3], [4, 5, 6]])
+    const a = matrix([
+      [1, 2, 3],
+      [4, 5, 6],
+    ])
     assert.deepStrictEqual(zeros(math.size(a)).size(), a.size())
   })
 

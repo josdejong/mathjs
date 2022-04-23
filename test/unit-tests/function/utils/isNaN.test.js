@@ -55,7 +55,9 @@ describe('isNegative', function () {
     assert.strictEqual(isNaN('2'), false)
     assert.strictEqual(isNaN('-2'), false)
     assert.strictEqual(isNaN('0'), false)
-    assert.throws(function () { isNaN('NaN') }, /Error: Cannot convert "NaN" to a number/)
+    assert.throws(function () {
+      isNaN('NaN')
+    }, /Error: Cannot convert "NaN" to a number/)
     assert.strictEqual(isNaN(''), false)
   })
 
@@ -64,11 +66,18 @@ describe('isNegative', function () {
   })
 
   it('should test isNegative element wise on a Matrix', function () {
-    assert.deepStrictEqual(isNaN(math.matrix([0, 5, -2, NaN])), math.matrix([false, false, false, true]))
+    assert.deepStrictEqual(
+      isNaN(math.matrix([0, 5, -2, NaN])),
+      math.matrix([false, false, false, true])
+    )
   })
 
   it('should throw an error in case of unsupported data types', function () {
-    assert.throws(function () { isNaN(new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { isNaN({}) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      isNaN(new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      isNaN({})
+    }, /TypeError: Unexpected type of argument/)
   })
 })

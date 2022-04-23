@@ -20,8 +20,12 @@ describe('clone', function () {
   })
 
   it('should throw an error on wrong number of arguments', function () {
-    assert.throws(function () { math.clone() }, /TypeError: Too few arguments/)
-    assert.throws(function () { math.clone(2, 4) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      math.clone()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      math.clone(2, 4)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should clone a bignumber', function () {
@@ -69,7 +73,10 @@ describe('clone', function () {
   })
 
   it('should clone a matrix', function () {
-    let a = math.matrix([[1, 2], [3, 4]])
+    let a = math.matrix([
+      [1, 2],
+      [3, 4],
+    ])
     let b = math.clone(a)
     a.valueOf()[0][0] = 5
     assert.strictEqual(b.valueOf()[0][0], 1)

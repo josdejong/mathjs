@@ -68,12 +68,15 @@ describe('bignumber', function () {
   it('should create a bignumber from a fraction', function () {
     const f = math.fraction(2, 3)
     const b = math.bignumber(f)
-    assert.strictEqual(b.toString(), '0.6666666666666666666666666666666666666666666666666666666666666667')
+    assert.strictEqual(
+      b.toString(),
+      '0.6666666666666666666666666666666666666666666666666666666666666667'
+    )
   })
 
   it('should apply precision setting to bignumbers', function () {
     const mymath = math.create({
-      precision: 32
+      precision: 32,
     })
 
     const a = mymath.bignumber(1).dividedBy(3)
@@ -82,7 +85,7 @@ describe('bignumber', function () {
 
   it('should support very high precisions', function () {
     const mymath = math.create({
-      precision: 2000
+      precision: 2000,
     })
 
     const a = mymath.bignumber(1).dividedBy(3)
@@ -92,11 +95,15 @@ describe('bignumber', function () {
   })
 
   it('should throw an error in case of unsupported type of argument', function () {
-    assert.throws(function () { math.bignumber(new Date()) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      math.bignumber(new Date())
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { math.bignumber(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      math.bignumber(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX bignumber', function () {

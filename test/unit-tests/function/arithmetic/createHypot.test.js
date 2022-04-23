@@ -19,8 +19,12 @@ describe('hypot', function () {
   it('should return the hypot of BigNumbers', function () {
     assert.deepStrictEqual(hypot(bignumber(3), bignumber(4)), bignumber(5))
     assert.deepStrictEqual(hypot(bignumber(3), bignumber(-4)), bignumber(5))
-    assert.deepStrictEqual(hypot(bignumber(3), bignumber(4), bignumber(5)),
-      bignumber('7.07106781186547524400844362104849039284835937688474036588339869'))
+    assert.deepStrictEqual(
+      hypot(bignumber(3), bignumber(4), bignumber(5)),
+      bignumber(
+        '7.07106781186547524400844362104849039284835937688474036588339869'
+      )
+    )
     assert.deepStrictEqual(hypot(bignumber(-2)), bignumber(2))
   })
 
@@ -37,15 +41,27 @@ describe('hypot', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { hypot() }, /TypeError: Too few arguments/)
-    assert.throws(function () { hypot([], 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      hypot()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      hypot([], 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of unsupported types', function () {
-    assert.throws(function () { hypot(new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { hypot([new Date()]) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { hypot([2, 3, math.complex()]) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { hypot(undefined) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      hypot(new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      hypot([new Date()])
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      hypot([2, 3, math.complex()])
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      hypot(undefined)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX hypot', function () {

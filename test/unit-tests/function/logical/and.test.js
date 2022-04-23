@@ -102,10 +102,22 @@ describe('and', function () {
     assert.strictEqual(and(unit(5, 'km'), unit(0, 'gram')), false)
     assert.strictEqual(and(unit(0, 'km'), unit(100, 'gram')), false)
 
-    assert.strictEqual(and(unit(bignumber(0), 'm'), unit(bignumber(0), 'm')), false)
-    assert.strictEqual(and(unit(bignumber(1), 'm'), unit(bignumber(0), 'm')), false)
-    assert.strictEqual(and(unit(bignumber(0), 'm'), unit(bignumber(1), 'm')), false)
-    assert.strictEqual(and(unit(bignumber(1), 'm'), unit(bignumber(1), 'm')), true)
+    assert.strictEqual(
+      and(unit(bignumber(0), 'm'), unit(bignumber(0), 'm')),
+      false
+    )
+    assert.strictEqual(
+      and(unit(bignumber(1), 'm'), unit(bignumber(0), 'm')),
+      false
+    )
+    assert.strictEqual(
+      and(unit(bignumber(0), 'm'), unit(bignumber(1), 'm')),
+      false
+    )
+    assert.strictEqual(
+      and(unit(bignumber(1), 'm'), unit(bignumber(1), 'm')),
+      true
+    )
   })
 
   describe('Array', function () {
@@ -115,17 +127,40 @@ describe('and', function () {
     })
 
     it('should and array - array', function () {
-      assert.deepStrictEqual(and([0, 1, 0, 12], [0, 0, 1, 22]), [false, false, false, true])
+      assert.deepStrictEqual(and([0, 1, 0, 12], [0, 0, 1, 22]), [
+        false,
+        false,
+        false,
+        true,
+      ])
       assert.deepStrictEqual(and([], []), [])
     })
 
     it('should and array - dense matrix', function () {
-      assert.deepStrictEqual(and([0, 1, 0, 12], matrix([0, 0, 1, 22])), matrix([false, false, false, true]))
+      assert.deepStrictEqual(
+        and([0, 1, 0, 12], matrix([0, 0, 1, 22])),
+        matrix([false, false, false, true])
+      )
       assert.deepStrictEqual(and([], matrix([])), matrix([]))
     })
 
     it('should and array - sparse matrix', function () {
-      assert.deepStrictEqual(and([[0, 1], [0, 12]], sparse([[0, 0], [1, 22]])), sparse([[false, false], [false, true]]))
+      assert.deepStrictEqual(
+        and(
+          [
+            [0, 1],
+            [0, 12],
+          ],
+          sparse([
+            [0, 0],
+            [1, 22],
+          ])
+        ),
+        sparse([
+          [false, false],
+          [false, true],
+        ])
+      )
     })
   })
 
@@ -136,50 +171,136 @@ describe('and', function () {
     })
 
     it('should and dense matrix - array', function () {
-      assert.deepStrictEqual(and(matrix([0, 1, 0, 12]), [0, 0, 1, 22]), matrix([false, false, false, true]))
+      assert.deepStrictEqual(
+        and(matrix([0, 1, 0, 12]), [0, 0, 1, 22]),
+        matrix([false, false, false, true])
+      )
       assert.deepStrictEqual(and(matrix([]), []), matrix([]))
     })
 
     it('should and dense matrix - dense matrix', function () {
-      assert.deepStrictEqual(and(matrix([0, 1, 0, 12]), matrix([0, 0, 1, 22])), matrix([false, false, false, true]))
+      assert.deepStrictEqual(
+        and(matrix([0, 1, 0, 12]), matrix([0, 0, 1, 22])),
+        matrix([false, false, false, true])
+      )
       assert.deepStrictEqual(and(matrix([]), matrix([])), matrix([]))
     })
 
     it('should and dense matrix - sparse matrix', function () {
-      assert.deepStrictEqual(and(matrix([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), sparse([[false, false], [false, true]]))
+      assert.deepStrictEqual(
+        and(
+          matrix([
+            [0, 1],
+            [0, 12],
+          ]),
+          sparse([
+            [0, 0],
+            [1, 22],
+          ])
+        ),
+        sparse([
+          [false, false],
+          [false, true],
+        ])
+      )
     })
   })
 
   describe('SparseMatrix', function () {
     it('should and sparse matrix - scalar', function () {
-      assert.deepStrictEqual(and(10, sparse([[0], [2]])), sparse([[false], [true]]))
-      assert.deepStrictEqual(and(sparse([[0], [2]]), 10), sparse([[false], [true]]))
+      assert.deepStrictEqual(
+        and(10, sparse([[0], [2]])),
+        sparse([[false], [true]])
+      )
+      assert.deepStrictEqual(
+        and(sparse([[0], [2]]), 10),
+        sparse([[false], [true]])
+      )
     })
 
     it('should and sparse matrix - array', function () {
-      assert.deepStrictEqual(and(sparse([[0, 1], [0, 12]]), [[0, 0], [1, 22]]), sparse([[false, false], [false, true]]))
+      assert.deepStrictEqual(
+        and(
+          sparse([
+            [0, 1],
+            [0, 12],
+          ]),
+          [
+            [0, 0],
+            [1, 22],
+          ]
+        ),
+        sparse([
+          [false, false],
+          [false, true],
+        ])
+      )
     })
 
     it('should and sparse matrix - dense matrix', function () {
-      assert.deepStrictEqual(and(sparse([[0, 1], [0, 12]]), matrix([[0, 0], [1, 22]])), sparse([[false, false], [false, true]]))
+      assert.deepStrictEqual(
+        and(
+          sparse([
+            [0, 1],
+            [0, 12],
+          ]),
+          matrix([
+            [0, 0],
+            [1, 22],
+          ])
+        ),
+        sparse([
+          [false, false],
+          [false, true],
+        ])
+      )
     })
 
     it('should and sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(and(sparse([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), sparse([[false, false], [false, true]]))
+      assert.deepStrictEqual(
+        and(
+          sparse([
+            [0, 1],
+            [0, 12],
+          ]),
+          sparse([
+            [0, 0],
+            [1, 22],
+          ])
+        ),
+        sparse([
+          [false, false],
+          [false, true],
+        ])
+      )
     })
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { and(1) }, /TypeError: Too few arguments/)
-    assert.throws(function () { and(1, 2, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      and(1)
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      and(1, 2, 3)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () { and(2, null) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { and(new Date(), true) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { and(true, new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { and(true, undefined) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { and(undefined, true) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      and(2, null)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      and(new Date(), true)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      and(true, new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      and(true, undefined)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      and(undefined, true)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX and', function () {

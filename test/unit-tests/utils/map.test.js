@@ -1,8 +1,14 @@
 import assert from 'assert'
-import { isMap, ObjectWrappingMap, toObject, createMap, assign } from '../../../src/utils/map.js'
+import {
+  isMap,
+  ObjectWrappingMap,
+  toObject,
+  createMap,
+  assign,
+} from '../../../src/utils/map.js'
 
 describe('maps', function () {
-  it('should provide isMap, a function to tell maps from non-maps', () => {
+  it('should provide isMap, a function to tell maps from non-maps', function () {
     assert.ok(isMap(new Map()))
     assert.ok(!isMap([]))
     assert.ok(!isMap({}))
@@ -11,7 +17,7 @@ describe('maps', function () {
       has: () => 0,
       keys: () => 0,
       get: () => 0,
-      set: () => 0
+      set: () => 0,
     }
 
     assert.ok(isMap(duckMap))
@@ -19,21 +25,32 @@ describe('maps', function () {
     const duckNotMap = {
       has: () => 0,
       keys: () => 0,
-      set: () => 0
+      set: () => 0,
     }
     assert.ok(!isMap(duckNotMap))
 
-    const notMaps = [null, undefined, true, false, 'string', 42, /regular-expression/, new Date(), {}, []]
+    const notMaps = [
+      null,
+      undefined,
+      true,
+      false,
+      'string',
+      42,
+      /regular-expression/,
+      new Date(),
+      {},
+      [],
+    ]
     for (const thing of notMaps) {
       assert.ok(!isMap(thing))
     }
   })
 
-  it('should wrap an object in a map-like object', () => {
+  it('should wrap an object in a map-like object', function () {
     const obj = {
       a: 1,
       b: 2,
-      c: 3
+      c: 3,
     }
     const map = new ObjectWrappingMap(obj)
 
@@ -53,7 +70,7 @@ describe('maps', function () {
     // We can behind the scenes add to the wrapped object.
     Object.assign(obj, {
       d: 4,
-      e: 5
+      e: 5,
     })
 
     // set()
@@ -82,7 +99,7 @@ describe('maps', function () {
     assert.strictEqual(innerObject, obj)
   })
 
-  it('should create a map from objects, maps, or undefined', () => {
+  it('should create a map from objects, maps, or undefined', function () {
     const emptyMap = createMap()
     assert.ok(isMap(emptyMap))
 
@@ -97,14 +114,12 @@ describe('maps', function () {
     }
   })
 
-  it('should let us transform a map into an object', () => {
-    const actualMap = new Map()
-      .set('a', 1)
-      .set('b', 2)
+  it('should let us transform a map into an object', function () {
+    const actualMap = new Map().set('a', 1).set('b', 2)
 
     const obj = {
       a: 1,
-      b: 2
+      b: 2,
     }
 
     assert.deepStrictEqual(toObject(actualMap), obj)
@@ -116,23 +131,14 @@ describe('maps', function () {
     assert.strictEqual(toObject(wrappedMap), obj)
   })
 
-  it('should provide an assign function like Object.assign', () => {
-    const target = new Map()
-      .set('a', 1)
-      .set('b', 2)
+  it('should provide an assign function like Object.assign', function () {
+    const target = new Map().set('a', 1).set('b', 2)
 
     assign(target, null, undefined, 'string', new Date())
 
-    assert.deepStrictEqual(
-      target,
-      new Map()
-        .set('a', 1)
-        .set('b', 2)
-    )
+    assert.deepStrictEqual(target, new Map().set('a', 1).set('b', 2))
 
-    const src1 = new Map()
-      .set('c', 3)
-      .set('d', 4)
+    const src1 = new Map().set('c', 3).set('d', 4)
 
     const src2 = { e: 5, f: 6 }
 

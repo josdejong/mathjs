@@ -24,7 +24,9 @@ describe('OperatorNode', function () {
   it('should throw an error when calling without new operator', function () {
     const a = new ConstantNode(2)
     const b = new ConstantNode(3)
-    assert.throws(function () { OperatorNode('+', 'add', [a, b]) }, SyntaxError)
+    assert.throws(function () {
+      OperatorNode('+', 'add', [a, b])
+    }, SyntaxError)
   })
 
   it('should compile an OperatorNode', function () {
@@ -47,11 +49,18 @@ describe('OperatorNode', function () {
     assert.strictEqual(n1.isUnary(), false)
     assert.strictEqual(n1.isBinary(), true)
 
-    const n2 = new OperatorNode('+', 'add', [new ConstantNode(2), new ConstantNode(3)])
+    const n2 = new OperatorNode('+', 'add', [
+      new ConstantNode(2),
+      new ConstantNode(3),
+    ])
     assert.strictEqual(n2.isUnary(), false)
     assert.strictEqual(n2.isBinary(), true)
 
-    const n3 = new OperatorNode('+', 'add', [new ConstantNode(2), new ConstantNode(3), new ConstantNode(4)])
+    const n3 = new OperatorNode('+', 'add', [
+      new ConstantNode(2),
+      new ConstantNode(3),
+      new ConstantNode(4),
+    ])
     assert.strictEqual(n3.isUnary(), false)
     assert.strictEqual(n3.isBinary(), false)
 
@@ -76,18 +85,53 @@ describe('OperatorNode', function () {
     const b = new ConstantNode(3)
     const n = new OperatorNode('+', 'add', [a, b])
 
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof OperatorNode }), [n])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a, b])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [a])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof OperatorNode
+      }),
+      [n]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof SymbolNode
+      }),
+      []
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof ConstantNode
+      }),
+      [a, b]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof ConstantNode && node.value === 2
+      }),
+      [a]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof ConstantNode && node.value === 4
+      }),
+      []
+    )
   })
 
   it('should filter an OperatorNode without contents', function () {
     const n = new OperatorNode('op', 'fn', [])
 
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof OperatorNode }), [n])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof OperatorNode
+      }),
+      [n]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof SymbolNode
+      }),
+      []
+    )
   })
 
   it('should run forEach on an OperatorNode', function () {
@@ -146,9 +190,19 @@ describe('OperatorNode', function () {
   it('should map an implicit OperatorNode', function () {
     const x = new SymbolNode('x')
     const y = new SymbolNode('y')
-    const product = new OperatorNode('*', 'multiply', [x, y], true /* implicit */)
+    const product = new OperatorNode(
+      '*',
+      'multiply',
+      [x, y],
+      true /* implicit */
+    )
 
-    assert.deepStrictEqual(product.map(function (x) { return x }), product)
+    assert.deepStrictEqual(
+      product.map(function (x) {
+        return x
+      }),
+      product
+    )
   })
 
   it('should throw an error when the map callback does not return a node', function () {
@@ -157,7 +211,9 @@ describe('OperatorNode', function () {
     const c = new OperatorNode('^', 'pow', [a, b])
 
     assert.throws(function () {
-      c.map(function () { return undefined })
+      c.map(function () {
+        return undefined
+      })
     }, /Callback function must return a Node/)
   })
 
@@ -218,11 +274,27 @@ describe('OperatorNode', function () {
   })
 
   it('test equality another Node', function () {
-    const a = new OperatorNode('+', 'add', [new SymbolNode('x'), new ConstantNode(2)])
-    const b = new OperatorNode('+', 'add', [new SymbolNode('x'), new ConstantNode(2)])
-    const c = new OperatorNode('*', 'multiply', [new SymbolNode('x'), new ConstantNode(2)])
-    const d = new OperatorNode('*', 'add', [new SymbolNode('x'), new ConstantNode(3)])
-    const e = new OperatorNode('*', 'add', [new SymbolNode('x'), new ConstantNode(2), new ConstantNode(4)])
+    const a = new OperatorNode('+', 'add', [
+      new SymbolNode('x'),
+      new ConstantNode(2),
+    ])
+    const b = new OperatorNode('+', 'add', [
+      new SymbolNode('x'),
+      new ConstantNode(2),
+    ])
+    const c = new OperatorNode('*', 'multiply', [
+      new SymbolNode('x'),
+      new ConstantNode(2),
+    ])
+    const d = new OperatorNode('*', 'add', [
+      new SymbolNode('x'),
+      new ConstantNode(3),
+    ])
+    const e = new OperatorNode('*', 'add', [
+      new SymbolNode('x'),
+      new ConstantNode(2),
+      new ConstantNode(4),
+    ])
 
     assert.strictEqual(a.equals(null), false)
     assert.strictEqual(a.equals(undefined), false)
@@ -274,7 +346,12 @@ describe('OperatorNode', function () {
 
       const add = new OperatorNode('+', 'add', [a, b, c])
       const multiply = new OperatorNode('*', 'multiply', [a, b, c])
-      const implicitMultiply = new OperatorNode('*', 'multiply', [a, b, c], true)
+      const implicitMultiply = new OperatorNode(
+        '*',
+        'multiply',
+        [a, b, c],
+        true
+      )
 
       assert.strictEqual(add.toString(), 'a + b + c')
       assert.strictEqual(multiply.toString(), 'a * b * c')
@@ -290,7 +367,11 @@ describe('OperatorNode', function () {
       const mult = new OperatorNode('*', 'multiply', [a, b])
       const add = new OperatorNode('+', 'add', [a, b])
 
-      const multipleMultWithMult = new OperatorNode('*', 'multiply', [c, mult, d])
+      const multipleMultWithMult = new OperatorNode('*', 'multiply', [
+        c,
+        mult,
+        d,
+      ])
       const multipleMultWithAdd = new OperatorNode('*', 'multiply', [c, add, d])
       const multipleAddWithMult = new OperatorNode('+', 'add', [c, mult, d])
       const multipleAddWithAdd = new OperatorNode('+', 'add', [c, add, d])
@@ -337,32 +418,86 @@ describe('OperatorNode', function () {
     })
 
     it('should stringify left associative OperatorNodes that are associative with another Node', function () {
-      assert.strictEqual(math.parse('(a+b)+c').toString({ parenthesis: 'auto' }), 'a + b + c')
-      assert.strictEqual(math.parse('a+(b+c)').toString({ parenthesis: 'auto' }), 'a + b + c')
-      assert.strictEqual(math.parse('(a+b)-c').toString({ parenthesis: 'auto' }), 'a + b - c')
-      assert.strictEqual(math.parse('a+(b-c)').toString({ parenthesis: 'auto' }), 'a + b - c')
+      assert.strictEqual(
+        math.parse('(a+b)+c').toString({ parenthesis: 'auto' }),
+        'a + b + c'
+      )
+      assert.strictEqual(
+        math.parse('a+(b+c)').toString({ parenthesis: 'auto' }),
+        'a + b + c'
+      )
+      assert.strictEqual(
+        math.parse('(a+b)-c').toString({ parenthesis: 'auto' }),
+        'a + b - c'
+      )
+      assert.strictEqual(
+        math.parse('a+(b-c)').toString({ parenthesis: 'auto' }),
+        'a + b - c'
+      )
 
-      assert.strictEqual(math.parse('(a*b)*c').toString({ parenthesis: 'auto' }), 'a * b * c')
-      assert.strictEqual(math.parse('a*(b*c)').toString({ parenthesis: 'auto' }), 'a * b * c')
-      assert.strictEqual(math.parse('(a*b)/c').toString({ parenthesis: 'auto' }), 'a * b / c')
-      assert.strictEqual(math.parse('a*(b/c)').toString({ parenthesis: 'auto' }), 'a * b / c')
+      assert.strictEqual(
+        math.parse('(a*b)*c').toString({ parenthesis: 'auto' }),
+        'a * b * c'
+      )
+      assert.strictEqual(
+        math.parse('a*(b*c)').toString({ parenthesis: 'auto' }),
+        'a * b * c'
+      )
+      assert.strictEqual(
+        math.parse('(a*b)/c').toString({ parenthesis: 'auto' }),
+        'a * b / c'
+      )
+      assert.strictEqual(
+        math.parse('a*(b/c)').toString({ parenthesis: 'auto' }),
+        'a * b / c'
+      )
     })
 
     it('should stringify left associative OperatorNodes that are not associative with another Node', function () {
-      assert.strictEqual(math.parse('(a-b)-c').toString({ parenthesis: 'auto' }), 'a - b - c')
-      assert.strictEqual(math.parse('a-(b-c)').toString({ parenthesis: 'auto' }), 'a - (b - c)')
-      assert.strictEqual(math.parse('(a-b)+c').toString({ parenthesis: 'auto' }), 'a - b + c')
-      assert.strictEqual(math.parse('a-(b+c)').toString({ parenthesis: 'auto' }), 'a - (b + c)')
+      assert.strictEqual(
+        math.parse('(a-b)-c').toString({ parenthesis: 'auto' }),
+        'a - b - c'
+      )
+      assert.strictEqual(
+        math.parse('a-(b-c)').toString({ parenthesis: 'auto' }),
+        'a - (b - c)'
+      )
+      assert.strictEqual(
+        math.parse('(a-b)+c').toString({ parenthesis: 'auto' }),
+        'a - b + c'
+      )
+      assert.strictEqual(
+        math.parse('a-(b+c)').toString({ parenthesis: 'auto' }),
+        'a - (b + c)'
+      )
 
-      assert.strictEqual(math.parse('(a/b)/c').toString({ parenthesis: 'auto' }), 'a / b / c')
-      assert.strictEqual(math.parse('a/(b/c)').toString({ parenthesis: 'auto' }), 'a / (b / c)')
-      assert.strictEqual(math.parse('(a/b)*c').toString({ parenthesis: 'auto' }), 'a / b * c')
-      assert.strictEqual(math.parse('a/(b*c)').toString({ parenthesis: 'auto' }), 'a / (b * c)')
+      assert.strictEqual(
+        math.parse('(a/b)/c').toString({ parenthesis: 'auto' }),
+        'a / b / c'
+      )
+      assert.strictEqual(
+        math.parse('a/(b/c)').toString({ parenthesis: 'auto' }),
+        'a / (b / c)'
+      )
+      assert.strictEqual(
+        math.parse('(a/b)*c').toString({ parenthesis: 'auto' }),
+        'a / b * c'
+      )
+      assert.strictEqual(
+        math.parse('a/(b*c)').toString({ parenthesis: 'auto' }),
+        'a / (b * c)'
+      )
     })
 
     it('should stringify right associative OperatorNodes that are not associative with another Node', function () {
-      assert.strictEqual(math.parse('(a^b)^c').toString({ parenthesis: 'auto' }), '(a ^ b) ^ c')
-      assert.strictEqual(math.parse('a^(b^c)').toString({ parenthesis: 'auto' }), 'a ^ b ^ c')
+      assert.strictEqual(
+        math.parse('(a^b)^c').toString({ parenthesis: 'auto' }),
+        '(a ^ b) ^ c'
+      )
+      assert.strictEqual(
+        math.parse('a^(b^c)').toString({ parenthesis: 'auto' }),
+        'a ^ b ^ c'
+      )
     })
 
     it('should stringify unary OperatorNodes containing a binary OperatorNode', function () {
@@ -372,9 +507,18 @@ describe('OperatorNode', function () {
     })
 
     it('should stringify unary OperatorNodes containing a unary OperatorNode', function () {
-      assert.strictEqual(math.parse('(-a)!').toString({ parenthesis: 'auto' }), '(-a)!')
-      assert.strictEqual(math.parse('-(a!)').toString({ parenthesis: 'auto' }), '-a!')
-      assert.strictEqual(math.parse('-(-a)').toString({ parenthesis: 'auto' }), '-(-a)')
+      assert.strictEqual(
+        math.parse('(-a)!').toString({ parenthesis: 'auto' }),
+        '(-a)!'
+      )
+      assert.strictEqual(
+        math.parse('-(a!)').toString({ parenthesis: 'auto' }),
+        '-a!'
+      )
+      assert.strictEqual(
+        math.parse('-(-a)').toString({ parenthesis: 'auto' }),
+        '-(-a)'
+      )
     })
   })
 
@@ -382,9 +526,15 @@ describe('OperatorNode', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {
       if (node.type === 'OperatorNode') {
-        return node.op + node.fn + '(' +
+        return (
+          node.op +
+          node.fn +
+          '(' +
           node.args[0].toString(options) +
-          ', ' + node.args[1].toString(options) + ')'
+          ', ' +
+          node.args[1].toString(options) +
+          ')'
+        )
       } else if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
@@ -396,17 +546,27 @@ describe('OperatorNode', function () {
     const n1 = new OperatorNode('+', 'add', [a, b])
     const n2 = new OperatorNode('-', 'subtract', [a, b])
 
-    assert.strictEqual(n1.toString({ handler: customFunction }), '+add(const(1, number), const(2, number))')
-    assert.strictEqual(n2.toString({ handler: customFunction }), '-subtract(const(1, number), const(2, number))')
+    assert.strictEqual(
+      n1.toString({ handler: customFunction }),
+      '+add(const(1, number), const(2, number))'
+    )
+    assert.strictEqual(
+      n2.toString({ handler: customFunction }),
+      '-subtract(const(1, number), const(2, number))'
+    )
   })
 
   it('should stringify an OperatorNode with custom toString for a single operator', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {
-      if ((node.type === 'OperatorNode') && (node.fn === 'add')) {
-        return node.args[0].toString(options) +
-          node.op + node.fn + node.op +
+      if (node.type === 'OperatorNode' && node.fn === 'add') {
+        return (
+          node.args[0].toString(options) +
+          node.op +
+          node.fn +
+          node.op +
           node.args[1].toString(options)
+        )
       } else if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
@@ -417,16 +577,28 @@ describe('OperatorNode', function () {
 
     const n = new OperatorNode('+', 'add', [a, b])
 
-    assert.strictEqual(n.toString({ handler: customFunction }), 'const(1, number)+add+const(2, number)')
+    assert.strictEqual(
+      n.toString({ handler: customFunction }),
+      'const(1, number)+add+const(2, number)'
+    )
   })
 
-  it('should respect the \'all\' parenthesis option', function () {
-    assert.strictEqual(math.parse('1+1+1').toString({ parenthesis: 'all' }), '(1 + 1) + 1')
-    assert.strictEqual(math.parse('1+1+1').toTex({ parenthesis: 'all' }), '\\left(1+1\\right)+1')
+  it("should respect the 'all' parenthesis option", function () {
+    assert.strictEqual(
+      math.parse('1+1+1').toString({ parenthesis: 'all' }),
+      '(1 + 1) + 1'
+    )
+    assert.strictEqual(
+      math.parse('1+1+1').toTex({ parenthesis: 'all' }),
+      '\\left(1+1\\right)+1'
+    )
   })
 
-  it('should correctly LaTeX fractions in \'all\' parenthesis mode', function () {
-    assert.strictEqual(math.parse('1/2/3').toTex({ parenthesis: 'all' }), '\\frac{\\left(\\frac{1}{2}\\right)}{3}')
+  it("should correctly LaTeX fractions in 'all' parenthesis mode", function () {
+    assert.strictEqual(
+      math.parse('1/2/3').toTex({ parenthesis: 'all' }),
+      '\\frac{\\left(\\frac{1}{2}\\right)}{3}'
+    )
   })
 
   it('should LaTeX an OperatorNode', function () {
@@ -554,8 +726,14 @@ describe('OperatorNode', function () {
     const multipleAddWithMult = new OperatorNode('+', 'add', [c, mult, d])
     const multipleAddWithAdd = new OperatorNode('+', 'add', [c, add, d])
 
-    assert.strictEqual(multipleMultWithMult.toTex(), ' c\\cdot a\\cdot\\mathrm{b}\\cdot d')
-    assert.strictEqual(multipleMultWithAdd.toTex(), ' c\\cdot\\left( a+\\mathrm{b}\\right)\\cdot d')
+    assert.strictEqual(
+      multipleMultWithMult.toTex(),
+      ' c\\cdot a\\cdot\\mathrm{b}\\cdot d'
+    )
+    assert.strictEqual(
+      multipleMultWithAdd.toTex(),
+      ' c\\cdot\\left( a+\\mathrm{b}\\right)\\cdot d'
+    )
     assert.strictEqual(multipleAddWithMult.toTex(), ' c+ a\\cdot\\mathrm{b}+ d')
     assert.strictEqual(multipleAddWithAdd.toTex(), ' c+ a+\\mathrm{b}+ d')
   })
@@ -576,8 +754,14 @@ describe('OperatorNode', function () {
 
     assert.strictEqual(addWithMult.toTex(), ' a\\cdot\\mathrm{b}\\cdot c+ d')
     assert.strictEqual(addWithAdd.toTex(), ' a+\\mathrm{b}+ c+ d')
-    assert.strictEqual(multWithMult.toTex(), ' a\\cdot\\mathrm{b}\\cdot c\\cdot d')
-    assert.strictEqual(multWithAdd.toTex(), '\\left( a+\\mathrm{b}+ c\\right)\\cdot d')
+    assert.strictEqual(
+      multWithMult.toTex(),
+      ' a\\cdot\\mathrm{b}\\cdot c\\cdot d'
+    )
+    assert.strictEqual(
+      multWithAdd.toTex(),
+      '\\left( a+\\mathrm{b}+ c\\right)\\cdot d'
+    )
   })
 
   it('should LaTeX fractions with operators that are enclosed in parenthesis', function () {
@@ -602,11 +786,23 @@ describe('OperatorNode', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {
       if (node.type === 'OperatorNode') {
-        return node.op + node.fn + '(' +
+        return (
+          node.op +
+          node.fn +
+          '(' +
           node.args[0].toTex(options) +
-          ', ' + node.args[1].toTex(options) + ')'
+          ', ' +
+          node.args[1].toTex(options) +
+          ')'
+        )
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
+        return (
+          'const\\left(' +
+          node.value +
+          ', ' +
+          math.typeOf(node.value) +
+          '\\right)'
+        )
       }
     }
 
@@ -616,19 +812,35 @@ describe('OperatorNode', function () {
     const n1 = new OperatorNode('+', 'add', [a, b])
     const n2 = new OperatorNode('-', 'subtract', [a, b])
 
-    assert.strictEqual(n1.toTex({ handler: customFunction }), '+add(const\\left(1, number\\right), const\\left(2, number\\right))')
-    assert.strictEqual(n2.toTex({ handler: customFunction }), '-subtract(const\\left(1, number\\right), const\\left(2, number\\right))')
+    assert.strictEqual(
+      n1.toTex({ handler: customFunction }),
+      '+add(const\\left(1, number\\right), const\\left(2, number\\right))'
+    )
+    assert.strictEqual(
+      n2.toTex({ handler: customFunction }),
+      '-subtract(const\\left(1, number\\right), const\\left(2, number\\right))'
+    )
   })
 
   it('should LaTeX an OperatorNode with custom toTex for a single operator', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {
-      if ((node.type === 'OperatorNode') && (node.fn === 'add')) {
-        return node.args[0].toTex(options) +
-          node.op + node.fn + node.op +
+      if (node.type === 'OperatorNode' && node.fn === 'add') {
+        return (
+          node.args[0].toTex(options) +
+          node.op +
+          node.fn +
+          node.op +
           node.args[1].toTex(options)
+        )
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
+        return (
+          'const\\left(' +
+          node.value +
+          ', ' +
+          math.typeOf(node.value) +
+          '\\right)'
+        )
       }
     }
 
@@ -637,7 +849,10 @@ describe('OperatorNode', function () {
 
     const n = new OperatorNode('+', 'add', [a, b])
 
-    assert.strictEqual(n.toTex({ handler: customFunction }), 'const\\left(1, number\\right)+add+const\\left(2, number\\right)')
+    assert.strictEqual(
+      n.toTex({ handler: customFunction }),
+      'const\\left(1, number\\right)+add+const\\left(2, number\\right)'
+    )
   })
 
   it('should LaTeX powers of fractions with parentheses', function () {
@@ -653,12 +868,18 @@ describe('OperatorNode', function () {
     const cond = new ConditionalNode(a, a, a)
     const pow = new OperatorNode('^', 'pow', [cond, a])
 
-    assert.strictEqual(pow.toTex(), '\\left({\\begin{cases} {1}, &\\quad{\\text{if }\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{cases}}\\right)^{1}')
+    assert.strictEqual(
+      pow.toTex(),
+      '\\left({\\begin{cases} {1}, &\\quad{\\text{if }\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{cases}}\\right)^{1}'
+    )
   })
 
-  it('should LaTeX simple expressions in \'auto\' mode', function () {
+  it("should LaTeX simple expressions in 'auto' mode", function () {
     // this covers a bug that was triggered previously
-    assert.strictEqual(math.parse('1+(1+1)').toTex({ parenthesis: 'auto' }), '1+1+1')
+    assert.strictEqual(
+      math.parse('1+(1+1)').toTex({ parenthesis: 'auto' }),
+      '1+1+1'
+    )
   })
 
   it('should stringify implicit multiplications', function () {
@@ -718,7 +939,7 @@ describe('OperatorNode', function () {
       fn: 'add',
       args: [b, c],
       implicit: true,
-      isPercentage: false
+      isPercentage: false,
     })
 
     const parsed = OperatorNode.fromJSON(json)
@@ -749,45 +970,64 @@ describe('OperatorNode', function () {
 
     assert.strictEqual(d.toTex(), d.toTex({ implicit: 'hide' }))
     assert.strictEqual(d.toTex({ implicit: 'hide' }), '2~ a~\\mathrm{b}')
-    assert.strictEqual(d.toTex({ implicit: 'show' }), '2\\cdot a\\cdot\\mathrm{b}')
+    assert.strictEqual(
+      d.toTex({ implicit: 'show' }),
+      '2\\cdot a\\cdot\\mathrm{b}'
+    )
 
     assert.strictEqual(e.toTex(), e.toTex({ implicit: 'hide' }))
     assert.strictEqual(e.toTex({ implicit: 'hide' }), ' a~\\mathrm{b}~ c')
-    assert.strictEqual(e.toTex({ implicit: 'show' }), ' a\\cdot\\mathrm{b}\\cdot c')
+    assert.strictEqual(
+      e.toTex({ implicit: 'show' }),
+      ' a\\cdot\\mathrm{b}\\cdot c'
+    )
 
     assert.strictEqual(f.toTex(), f.toTex({ implicit: 'hide' }))
     assert.strictEqual(f.toTex({ implicit: 'hide' }), '\\left(2+3\\right)~ a')
-    assert.strictEqual(f.toTex({ implicit: 'show' }), '\\left(2+3\\right)\\cdot a')
+    assert.strictEqual(
+      f.toTex({ implicit: 'show' }),
+      '\\left(2+3\\right)\\cdot a'
+    )
 
     assert.strictEqual(g.toTex(), g.toTex({ implicit: 'hide' }))
     assert.strictEqual(g.toTex({ implicit: 'hide' }), '\\left(2+3\\right)~2')
-    assert.strictEqual(g.toTex({ implicit: 'show' }), '\\left(2+3\\right)\\cdot2')
+    assert.strictEqual(
+      g.toTex({ implicit: 'show' }),
+      '\\left(2+3\\right)\\cdot2'
+    )
 
     assert.strictEqual(h.toTex(), h.toTex({ implicit: 'hide' }))
     assert.strictEqual(h.toTex({ implicit: 'hide' }), '2~\\left(3+4\\right)')
-    assert.strictEqual(h.toTex({ implicit: 'show' }), '2\\cdot\\left(3+4\\right)')
+    assert.strictEqual(
+      h.toTex({ implicit: 'show' }),
+      '2\\cdot\\left(3+4\\right)'
+    )
   })
 
   it('should HTML operators', function () {
-    assert.strictEqual(math.parse('2 + 3').toHTML(),
+    assert.strictEqual(
+      math.parse('2 + 3').toHTML(),
       '<span class="math-number">2</span>' +
-      '<span class="math-operator math-binary-operator math-explicit-binary-operator">+</span>' +
-      '<span class="math-number">3</span>'
+        '<span class="math-operator math-binary-operator math-explicit-binary-operator">+</span>' +
+        '<span class="math-number">3</span>'
     )
 
-    assert.strictEqual(math.parse('not 5').toHTML(),
+    assert.strictEqual(
+      math.parse('not 5').toHTML(),
       '<span class="math-operator math-unary-operator math-lefthand-unary-operator">not</span>' +
-      '<span class="math-number">5</span>'
+        '<span class="math-number">5</span>'
     )
 
-    assert.strictEqual(math.parse('5!').toHTML(),
+    assert.strictEqual(
+      math.parse('5!').toHTML(),
       '<span class="math-number">5</span>' +
-      '<span class="math-operator math-unary-operator math-righthand-unary-operator">!</span>'
+        '<span class="math-operator math-unary-operator math-righthand-unary-operator">!</span>'
     )
 
-    assert.strictEqual(math.parse('5\'').toHTML(),
+    assert.strictEqual(
+      math.parse("5'").toHTML(),
       '<span class="math-number">5</span>' +
-      '<span class="math-operator math-unary-operator math-righthand-unary-operator">&#39;</span>'
+        '<span class="math-operator math-unary-operator math-righthand-unary-operator">&#39;</span>'
     )
   })
 
@@ -796,9 +1036,18 @@ describe('OperatorNode', function () {
     const b = math.parse('4b*4(4)')
     const c = math.parse('(4(4(4)))')
 
-    assert.strictEqual(a.toString({ implicit: 'hide', parenthesis: 'auto' }), '(4) (4) (4) (4)')
-    assert.strictEqual(b.toString({ implicit: 'hide', parenthesis: 'auto' }), '4 b * 4 (4)')
-    assert.strictEqual(c.toString({ implicit: 'hide', parenthesis: 'auto' }), '4 (4 (4))')
+    assert.strictEqual(
+      a.toString({ implicit: 'hide', parenthesis: 'auto' }),
+      '(4) (4) (4) (4)'
+    )
+    assert.strictEqual(
+      b.toString({ implicit: 'hide', parenthesis: 'auto' }),
+      '4 b * 4 (4)'
+    )
+    assert.strictEqual(
+      c.toString({ implicit: 'hide', parenthesis: 'auto' }),
+      '4 (4 (4))'
+    )
   })
 
   it('should LaTeX implicit multiplications between ConstantNodes with parentheses', function () {
@@ -806,9 +1055,18 @@ describe('OperatorNode', function () {
     const b = math.parse('4b*4(4)')
     const c = math.parse('(4(4(4)))')
 
-    assert.strictEqual(a.toTex({ implicit: 'hide', parenthesis: 'auto' }), '\\left(4\\right)~\\left(4\\right)~\\left(4\\right)~\\left(4\\right)')
-    assert.strictEqual(b.toTex({ implicit: 'hide', parenthesis: 'auto' }), '4~\\mathrm{b}\\cdot4~\\left(4\\right)')
-    assert.strictEqual(c.toTex({ implicit: 'hide', parenthesis: 'auto' }), '4~\\left(4~\\left(4\\right)\\right)')
+    assert.strictEqual(
+      a.toTex({ implicit: 'hide', parenthesis: 'auto' }),
+      '\\left(4\\right)~\\left(4\\right)~\\left(4\\right)~\\left(4\\right)'
+    )
+    assert.strictEqual(
+      b.toTex({ implicit: 'hide', parenthesis: 'auto' }),
+      '4~\\mathrm{b}\\cdot4~\\left(4\\right)'
+    )
+    assert.strictEqual(
+      c.toTex({ implicit: 'hide', parenthesis: 'auto' }),
+      '4~\\left(4~\\left(4\\right)\\right)'
+    )
   })
 
   it('should HTML implicit multiplications between ConstantNodes with parentheses', function () {
@@ -816,8 +1074,17 @@ describe('OperatorNode', function () {
     const b = math.parse('4b*4(4)')
     const c = math.parse('(4(4(4)))')
 
-    assert.strictEqual(a.toHTML({ implicit: 'hide', parenthesis: 'auto' }), '<span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span>')
-    assert.strictEqual(b.toHTML({ implicit: 'hide', parenthesis: 'auto' }), '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-symbol">b</span><span class="math-operator math-binary-operator math-explicit-binary-operator">*</span><span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span>')
-    assert.strictEqual(c.toHTML({ implicit: 'hide', parenthesis: 'auto' }), '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-parenthesis math-round-parenthesis">)</span>')
+    assert.strictEqual(
+      a.toHTML({ implicit: 'hide', parenthesis: 'auto' }),
+      '<span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span>'
+    )
+    assert.strictEqual(
+      b.toHTML({ implicit: 'hide', parenthesis: 'auto' }),
+      '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-symbol">b</span><span class="math-operator math-binary-operator math-explicit-binary-operator">*</span><span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span>'
+    )
+    assert.strictEqual(
+      c.toHTML({ implicit: 'hide', parenthesis: 'auto' }),
+      '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-parenthesis math-round-parenthesis">)</span>'
+    )
   })
 })

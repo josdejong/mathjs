@@ -25,7 +25,9 @@ describe('AssignmentNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { AssignmentNode(new SymbolNode('a'), new Node()) }, SyntaxError)
+    assert.throws(function () {
+      AssignmentNode(new SymbolNode('a'), new Node())
+    }, SyntaxError)
   })
 
   it('should throw an error when creating an AssignmentNode with a reserved keyword', function () {
@@ -35,25 +37,46 @@ describe('AssignmentNode', function () {
   })
 
   it('should throw an error on wrong constructor arguments', function () {
-    assert.throws(function () { console.log(new AssignmentNode()) }, TypeError)
-    assert.throws(function () { console.log(new AssignmentNode(new Node(), new Node())) }, TypeError)
-    assert.throws(function () { console.log(new AssignmentNode('a', new Node())) }, TypeError)
-    assert.throws(function () { console.log(new AssignmentNode(2, new Node())) }, TypeError)
-    assert.throws(function () { console.log(new AssignmentNode(new Node(), new Node(), new Node())) }, TypeError)
+    assert.throws(function () {
+      console.log(new AssignmentNode())
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new AssignmentNode(new Node(), new Node()))
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new AssignmentNode('a', new Node()))
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new AssignmentNode(2, new Node()))
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new AssignmentNode(new Node(), new Node(), new Node()))
+    }, TypeError)
   })
 
   it('should get the name of an AssignmentNode', function () {
     const n = new AssignmentNode(new SymbolNode('a'), new ConstantNode(1))
     assert.strictEqual(n.name, 'a')
 
-    const n2 = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode('b')]))
+    const n2 = new AccessorNode(
+      new SymbolNode('a'),
+      new IndexNode([new ConstantNode('b')])
+    )
     const n3 = new AssignmentNode(n2, new ConstantNode(1))
     assert.strictEqual(n3.name, 'b')
 
-    const n4 = new AssignmentNode(new SymbolNode('a'), new IndexNode([new ConstantNode('b')]), new ConstantNode(1))
+    const n4 = new AssignmentNode(
+      new SymbolNode('a'),
+      new IndexNode([new ConstantNode('b')]),
+      new ConstantNode(1)
+    )
     assert.strictEqual(n4.name, 'b')
 
-    const n5 = new AssignmentNode(new SymbolNode('a'), new IndexNode([new ConstantNode(1)]), new ConstantNode(1))
+    const n5 = new AssignmentNode(
+      new SymbolNode('a'),
+      new IndexNode([new ConstantNode(1)]),
+      new ConstantNode(1)
+    )
     assert.strictEqual(n5.name, '')
   })
 
@@ -76,7 +99,7 @@ describe('AssignmentNode', function () {
     const expr = n.compile()
 
     const scope = {
-      a: {}
+      a: {},
     }
     assert.strictEqual(expr.evaluate(scope), 3)
     assert.deepStrictEqual(scope, { a: { b: 3 } })
@@ -93,8 +116,8 @@ describe('AssignmentNode', function () {
 
     const scope = {
       a: {
-        b: {}
-      }
+        b: {},
+      },
     }
     assert.strictEqual(expr.evaluate(scope), 3)
     assert.deepStrictEqual(scope, { a: { b: { c: 3 } } })
@@ -102,20 +125,23 @@ describe('AssignmentNode', function () {
 
   it('should compile an AssignmentNode with matrix index', function () {
     const object = new SymbolNode('a')
-    const index = new IndexNode([
-      new ConstantNode(2),
-      new ConstantNode(1)
-    ])
+    const index = new IndexNode([new ConstantNode(2), new ConstantNode(1)])
     const value = new ConstantNode(5)
     const n = new AssignmentNode(object, index, value)
     const expr = n.compile()
 
     const scope = {
-      a: [[0, 0], [0, 0]]
+      a: [
+        [0, 0],
+        [0, 0],
+      ],
     }
     assert.strictEqual(expr.evaluate(scope), 5)
     assert.deepStrictEqual(scope, {
-      a: [[0, 0], [5, 0]]
+      a: [
+        [0, 0],
+        [5, 0],
+      ],
     })
   })
 
@@ -123,23 +149,26 @@ describe('AssignmentNode', function () {
     const object = new SymbolNode('a')
     const index = new IndexNode([
       new ConstantNode(2),
-      new RangeNode(
-        new ConstantNode(1),
-        new SymbolNode('end')
-      )
+      new RangeNode(new ConstantNode(1), new SymbolNode('end')),
     ])
     const value = new SymbolNode('b')
     const n = new AssignmentNode(object, index, value)
     const expr = n.compile()
 
     const scope = {
-      a: [[0, 0], [0, 0]],
-      b: [5, 6]
+      a: [
+        [0, 0],
+        [0, 0],
+      ],
+      b: [5, 6],
     }
     assert.deepStrictEqual(expr.evaluate(scope), [5, 6])
     assert.deepStrictEqual(scope, {
-      a: [[0, 0], [5, 6]],
-      b: [5, 6]
+      a: [
+        [0, 0],
+        [5, 6],
+      ],
+      b: [5, 6],
     })
   })
 
@@ -149,18 +178,24 @@ describe('AssignmentNode', function () {
     const object = new bigmath.SymbolNode('a')
     const index = new bigmath.IndexNode([
       new bigmath.ConstantNode(2),
-      new bigmath.ConstantNode(1)
+      new bigmath.ConstantNode(1),
     ])
     const value = new bigmath.ConstantNode(bigmath.bignumber(5))
     const n = new bigmath.AssignmentNode(object, index, value)
     const expr = n.compile()
 
     const scope = {
-      a: [[0, 0], [0, 0]]
+      a: [
+        [0, 0],
+        [0, 0],
+      ],
     }
     assert.deepStrictEqual(expr.evaluate(scope), bigmath.bignumber(5))
     assert.deepStrictEqual(scope, {
-      a: [[0, 0], [bigmath.bignumber(5), 0]]
+      a: [
+        [0, 0],
+        [bigmath.bignumber(5), 0],
+      ],
     })
   })
 
@@ -172,9 +207,11 @@ describe('AssignmentNode', function () {
     const expr = n.compile()
 
     const scope = {
-      a: 42
+      a: 42,
     }
-    assert.throws(function () { expr.evaluate(scope) }, /Cannot apply index: unsupported type of object/)
+    assert.throws(function () {
+      expr.evaluate(scope)
+    }, /Cannot apply index: unsupported type of object/)
   })
 
   it('should filter an AssignmentNode', function () {
@@ -185,12 +222,42 @@ describe('AssignmentNode', function () {
     const v = new ConstantNode(2)
     const n = new AssignmentNode(a, i, v)
 
-    assert.deepStrictEqual(n.filter(function (node) { return node.isAssignmentNode }), [n])
-    assert.deepStrictEqual(n.filter(function (node) { return node.isSymbolNode }), [a])
-    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode }), [b, c, v])
-    assert.deepStrictEqual(n.filter(function (node) { return node.value === 1 }), [c])
-    assert.deepStrictEqual(n.filter(function (node) { return node.value === 2 }), [b, v])
-    assert.deepStrictEqual(n.filter(function (node) { return node.name === 'q' }), [])
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isAssignmentNode
+      }),
+      [n]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isSymbolNode
+      }),
+      [a]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isConstantNode
+      }),
+      [b, c, v]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.value === 1
+      }),
+      [c]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.value === 2
+      }),
+      [b, v]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.name === 'q'
+      }),
+      []
+    )
   })
 
   it('should filter an AssignmentNode without index', function () {
@@ -198,11 +265,36 @@ describe('AssignmentNode', function () {
     const v = new ConstantNode(2)
     const n = new AssignmentNode(a, v)
 
-    assert.deepStrictEqual(n.filter(function (node) { return node.isAssignmentNode }), [n])
-    assert.deepStrictEqual(n.filter(function (node) { return node.isSymbolNode }), [a])
-    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode }), [v])
-    assert.deepStrictEqual(n.filter(function (node) { return node.value === 2 }), [v])
-    assert.deepStrictEqual(n.filter(function (node) { return node.name === 'q' }), [])
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isAssignmentNode
+      }),
+      [n]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isSymbolNode
+      }),
+      [a]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isConstantNode
+      }),
+      [v]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.value === 2
+      }),
+      [v]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.name === 'q'
+      }),
+      []
+    )
   })
 
   it('should run forEach on an AssignmentNode', function () {
@@ -318,7 +410,9 @@ describe('AssignmentNode', function () {
     const n = new AssignmentNode(a, i, v)
 
     assert.throws(function () {
-      n.map(function () { return undefined })
+      n.map(function () {
+        return undefined
+      })
     }, /Callback function must return a Node/)
   })
 
@@ -436,23 +530,28 @@ describe('AssignmentNode', function () {
     const a = new AssignmentNode(
       new SymbolNode('A'),
       new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
-      new ConstantNode(3))
+      new ConstantNode(3)
+    )
     const b = new AssignmentNode(
       new SymbolNode('A'),
       new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
-      new ConstantNode(3))
+      new ConstantNode(3)
+    )
     const c = new AssignmentNode(
       new SymbolNode('B'),
       new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
-      new ConstantNode(3))
+      new ConstantNode(3)
+    )
     const d = new AssignmentNode(
       new SymbolNode('A'),
       new IndexNode([new ConstantNode(2)]),
-      new ConstantNode(3))
+      new ConstantNode(3)
+    )
     const e = new AssignmentNode(
       new SymbolNode('A'),
       new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
-      new ConstantNode(4))
+      new ConstantNode(4)
+    )
 
     assert.strictEqual(a.equals(null), false)
     assert.strictEqual(a.equals(undefined), false)
@@ -462,7 +561,7 @@ describe('AssignmentNode', function () {
     assert.strictEqual(a.equals(e), false)
   })
 
-  it('should respect the \'all\' parenthesis option', function () {
+  it("should respect the 'all' parenthesis option", function () {
     const object = new SymbolNode('a')
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
@@ -491,9 +590,12 @@ describe('AssignmentNode', function () {
     // Also checks if custom funcions get passed to the children
     const customFunction = function (node, options) {
       if (node.type === 'AssignmentNode') {
-        return node.object.toString(options) +
-            (node.index ? node.index.toString(options) : '') +
-            ' equals ' + node.value.toString(options)
+        return (
+          node.object.toString(options) +
+          (node.index ? node.index.toString(options) : '') +
+          ' equals ' +
+          node.value.toString(options)
+        )
       } else if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
@@ -503,7 +605,10 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.strictEqual(n.toString({ handler: customFunction }), 'a equals const(1, number)')
+    assert.strictEqual(
+      n.toString({ handler: customFunction }),
+      'a equals const(1, number)'
+    )
   })
 
   it('toJSON and fromJSON', function () {
@@ -520,7 +625,7 @@ describe('AssignmentNode', function () {
       mathjs: 'AssignmentNode',
       index: node.index,
       object: a,
-      value: d
+      value: d,
     })
 
     const parsed = AssignmentNode.fromJSON(json)
@@ -546,11 +651,20 @@ describe('AssignmentNode', function () {
     // Also checks if custom funcions get passed to the children
     const customFunction = function (node, options) {
       if (node.isAssignmentNode) {
-        return node.object.toTex(options) +
-            (node.index ? node.index.toTex(options) : '') +
-            '\\mbox{equals}' + node.value.toTex(options)
+        return (
+          node.object.toTex(options) +
+          (node.index ? node.index.toTex(options) : '') +
+          '\\mbox{equals}' +
+          node.value.toTex(options)
+        )
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
+        return (
+          'const\\left(' +
+          node.value +
+          ', ' +
+          math.typeOf(node.value) +
+          '\\right)'
+        )
       }
     }
 
@@ -558,6 +672,9 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.strictEqual(n.toTex({ handler: customFunction }), ' a\\mbox{equals}const\\left(1, number\\right)')
+    assert.strictEqual(
+      n.toTex({ handler: customFunction }),
+      ' a\\mbox{equals}const\\left(1, number\\right)'
+    )
   })
 })

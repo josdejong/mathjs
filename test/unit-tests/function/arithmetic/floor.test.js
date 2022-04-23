@@ -139,13 +139,28 @@ describe('floor', function () {
     assert.deepStrictEqual(floor(bignumber(7.999999999999999)), bignumber(8))
     assert.deepStrictEqual(floor(bignumber(-3.0000000000000004)), bignumber(-3))
     assert.deepStrictEqual(floor(bignumber(-7.999999999999999)), bignumber(-8))
-    assert.deepStrictEqual(floor(bignumber(30000.000000000004)), bignumber(30000))
-    assert.deepStrictEqual(floor(bignumber(799999.9999999999)), bignumber(800000))
-    assert.deepStrictEqual(floor(bignumber(-30000.000000000004)), bignumber(-30000))
+    assert.deepStrictEqual(
+      floor(bignumber(30000.000000000004)),
+      bignumber(30000)
+    )
+    assert.deepStrictEqual(
+      floor(bignumber(799999.9999999999)),
+      bignumber(800000)
+    )
+    assert.deepStrictEqual(
+      floor(bignumber(-30000.000000000004)),
+      bignumber(-30000)
+    )
   })
 
   it('should throw an error with a unit', function () {
-    assert.throws(function () { floor(unit('5cm')) }, TypeError, 'Function floor(unit) not supported')
+    assert.throws(
+      function () {
+        floor(unit('5cm'))
+      },
+      TypeError,
+      'Function floor(unit) not supported'
+    )
   })
 
   it('should convert a string to a number', function () {
@@ -157,12 +172,21 @@ describe('floor', function () {
 
   it('should floor all elements in a matrix', function () {
     approx.deepEqual(floor([1.2, 3.4, 5.6, 7.8, 10.0]), [1, 3, 5, 7, 10])
-    approx.deepEqual(floor(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([1, 3, 5, 7, 10]))
+    approx.deepEqual(
+      floor(matrix([1.2, 3.4, 5.6, 7.8, 10.0])),
+      matrix([1, 3, 5, 7, 10])
+    )
   })
 
   it('should floor each element in a matrix with a given number of decimals', function () {
-    approx.deepEqual(floor([1.282, 3.415, -5.121, -10.128], 2), [1.28, 3.41, -5.13, -10.13])
-    approx.deepEqual(floor(matrix([1.282, 3.415, -5.121, -10.128]), 2), matrix([1.28, 3.41, -5.13, -10.13]))
+    approx.deepEqual(
+      floor([1.282, 3.415, -5.121, -10.128], 2),
+      [1.28, 3.41, -5.13, -10.13]
+    )
+    approx.deepEqual(
+      floor(matrix([1.282, 3.415, -5.121, -10.128]), 2),
+      matrix([1.28, 3.41, -5.13, -10.13])
+    )
   })
 
   it('should floor when number of decimals is provided in an array', function () {
@@ -170,47 +194,149 @@ describe('floor', function () {
   })
 
   it('should floor dense matrix', function () {
-    assert.deepStrictEqual(floor(matrix([[1.712, 2.345], [8.987, -3.565]]), 2), matrix([[1.71, 2.34], [8.98, -3.57]]))
+    assert.deepStrictEqual(
+      floor(
+        matrix([
+          [1.712, 2.345],
+          [8.987, -3.565],
+        ]),
+        2
+      ),
+      matrix([
+        [1.71, 2.34],
+        [8.98, -3.57],
+      ])
+    )
   })
 
   it('should floor dense matrix and scalar', function () {
-    assert.deepStrictEqual(floor(matrix([[1.7777, 2.3456], [-90.8272, 0]]), 3), matrix([[1.777, 2.345], [-90.828, 0]]))
+    assert.deepStrictEqual(
+      floor(
+        matrix([
+          [1.7777, 2.3456],
+          [-90.8272, 0],
+        ]),
+        3
+      ),
+      matrix([
+        [1.777, 2.345],
+        [-90.828, 0],
+      ])
+    )
   })
 
   it('should floor dense matrix with given bignumber decimals', function () {
-    const expected = bignumber(matrix([[1.777, 2.345], [-90.828, 0]]))
+    const expected = bignumber(
+      matrix([
+        [1.777, 2.345],
+        [-90.828, 0],
+      ])
+    )
     const decimals = bignumber(3)
-    approx.deepEqual(floor(matrix([[1.7777, 2.3456], [-90.8272, 0]]), decimals), expected)
+    approx.deepEqual(
+      floor(
+        matrix([
+          [1.7777, 2.3456],
+          [-90.8272, 0],
+        ]),
+        decimals
+      ),
+      expected
+    )
   })
 
   it('should floor sparse matrix', function () {
-    assert.deepStrictEqual(floor(sparse([[1.7, 0], [8.987, -3.565]]), 2), sparse([[1.7, 0], [8.98, -3.57]]))
+    assert.deepStrictEqual(
+      floor(
+        sparse([
+          [1.7, 0],
+          [8.987, -3.565],
+        ]),
+        2
+      ),
+      sparse([
+        [1.7, 0],
+        [8.98, -3.57],
+      ])
+    )
   })
 
   it('should floor sparse matrix and scalar', function () {
-    assert.deepStrictEqual(floor(sparse([[1.7777, 2.3456], [-90.8272, 0]]), 3), sparse([[1.777, 2.345], [-90.828, 0]]))
+    assert.deepStrictEqual(
+      floor(
+        sparse([
+          [1.7777, 2.3456],
+          [-90.8272, 0],
+        ]),
+        3
+      ),
+      sparse([
+        [1.777, 2.345],
+        [-90.828, 0],
+      ])
+    )
   })
 
   it('should floor sparse matrix with given bignumber decimals', function () {
-    const expected = bignumber(sparse([[1.777, 2.345], [-90.828, 0]]))
+    const expected = bignumber(
+      sparse([
+        [1.777, 2.345],
+        [-90.828, 0],
+      ])
+    )
     const decimals = bignumber(3)
-    assert.deepStrictEqual(floor(sparse([[1.7777, 2.3456], [-90.8272, 0]]), decimals), expected)
+    assert.deepStrictEqual(
+      floor(
+        sparse([
+          [1.7777, 2.3456],
+          [-90.8272, 0],
+        ]),
+        decimals
+      ),
+      expected
+    )
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { floor() }, /TypeError: Too few arguments/)
-    assert.throws(function () { floor(1, 2, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      floor()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      floor(1, 2, 3)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an in case of wrong type of arguments', function () {
-    assert.throws(function () { floor(null) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { floor(42, null) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      floor(null)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      floor(42, null)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should throw an error if requested number of decimals is incorrect', function () {
-    assert.throws(function () { floor(2.5, 1.5) }, TypeError, 'Number of decimals in function round must be an integer')
-    assert.throws(function () { floor(2.5, -2) }, Error, ' Number of decimals in function round must be in the range of 0-15')
-    assert.throws(function () { floor(2.5, Infinity) }, Error, ' Number of decimals in function round must be in the range of 0-15')
+    assert.throws(
+      function () {
+        floor(2.5, 1.5)
+      },
+      TypeError,
+      'Number of decimals in function round must be an integer'
+    )
+    assert.throws(
+      function () {
+        floor(2.5, -2)
+      },
+      Error,
+      ' Number of decimals in function round must be in the range of 0-15'
+    )
+    assert.throws(
+      function () {
+        floor(2.5, Infinity)
+      },
+      Error,
+      ' Number of decimals in function round must be in the range of 0-15'
+    )
   })
 
   it('should LaTeX floor', function () {

@@ -41,35 +41,76 @@ describe('unaryMinus', function () {
   })
 
   it('should perform unary minus of a complex number', function () {
-    assert.strictEqual(math.unaryMinus(math.complex(3, 2)).toString(), '-3 - 2i')
-    assert.strictEqual(math.unaryMinus(math.complex(3, -2)).toString(), '-3 + 2i')
-    assert.strictEqual(math.unaryMinus(math.complex(-3, 2)).toString(), '3 - 2i')
-    assert.strictEqual(math.unaryMinus(math.complex(-3, -2)).toString(), '3 + 2i')
+    assert.strictEqual(
+      math.unaryMinus(math.complex(3, 2)).toString(),
+      '-3 - 2i'
+    )
+    assert.strictEqual(
+      math.unaryMinus(math.complex(3, -2)).toString(),
+      '-3 + 2i'
+    )
+    assert.strictEqual(
+      math.unaryMinus(math.complex(-3, 2)).toString(),
+      '3 - 2i'
+    )
+    assert.strictEqual(
+      math.unaryMinus(math.complex(-3, -2)).toString(),
+      '3 + 2i'
+    )
   })
 
   it('should perform unary minus of a unit', function () {
     assert.strictEqual(math.unaryMinus(math.unit(5, 'km')).toString(), '-5 km')
-    assert.strictEqual(math.unaryMinus(math.unit(fraction(2 / 3), 'km')).toString(), '-2/3 km')
-    assert.strictEqual(math.unaryMinus(math.unit(complex(2, -4), 'gal')).toString(), '(-2 + 4i) gal')
+    assert.strictEqual(
+      math.unaryMinus(math.unit(fraction(2 / 3), 'km')).toString(),
+      '-2/3 km'
+    )
+    assert.strictEqual(
+      math.unaryMinus(math.unit(complex(2, -4), 'gal')).toString(),
+      '(-2 + 4i) gal'
+    )
   })
 
   it('should perform element-wise unary minus on a matrix', function () {
-    const a2 = math.matrix([[1, 2], [3, 4]])
+    const a2 = math.matrix([
+      [1, 2],
+      [3, 4],
+    ])
     const a7 = math.unaryMinus(a2)
     assert.ok(a7 instanceof math.Matrix)
     assert.deepStrictEqual(a7.size(), [2, 2])
-    assert.deepStrictEqual(a7.valueOf(), [[-1, -2], [-3, -4]])
-    assert.deepStrictEqual(math.unaryMinus([[1, 2], [3, 4]]), [[-1, -2], [-3, -4]])
+    assert.deepStrictEqual(a7.valueOf(), [
+      [-1, -2],
+      [-3, -4],
+    ])
+    assert.deepStrictEqual(
+      math.unaryMinus([
+        [1, 2],
+        [3, 4],
+      ]),
+      [
+        [-1, -2],
+        [-3, -4],
+      ]
+    )
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { math.unaryMinus() }, /TypeError: Too few arguments/)
-    assert.throws(function () { math.unaryMinus(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      math.unaryMinus()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      math.unaryMinus(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of argument', function () {
-    assert.throws(function () { math.unaryMinus(new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { math.unaryMinus(null) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      math.unaryMinus(new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      math.unaryMinus(null)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX unaryMinus', function () {

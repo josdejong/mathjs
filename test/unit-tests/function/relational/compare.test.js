@@ -22,10 +22,22 @@ describe('compare', function () {
 
   it('should compare two floating point numbers correctly', function () {
     // Infinity
-    assert.strictEqual(compare(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), 0)
-    assert.strictEqual(compare(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), 0)
-    assert.strictEqual(compare(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), 1)
-    assert.strictEqual(compare(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), -1)
+    assert.strictEqual(
+      compare(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY),
+      0
+    )
+    assert.strictEqual(
+      compare(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY),
+      0
+    )
+    assert.strictEqual(
+      compare(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY),
+      1
+    )
+    assert.strictEqual(
+      compare(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY),
+      -1
+    )
     assert.strictEqual(compare(Number.POSITIVE_INFINITY, 2.0), 1)
     assert.strictEqual(compare(2.0, Number.POSITIVE_INFINITY), -1)
     assert.strictEqual(compare(Number.NEGATIVE_INFINITY, 2.0), -1)
@@ -77,10 +89,19 @@ describe('compare', function () {
     assert.strictEqual(b.toString(), '0.1(6)')
 
     assert.strictEqual(compare(math.fraction(3), math.fraction(2)).valueOf(), 1)
-    assert.strictEqual(compare(math.fraction(2), math.fraction(3)).valueOf(), -1)
+    assert.strictEqual(
+      compare(math.fraction(2), math.fraction(3)).valueOf(),
+      -1
+    )
     assert.strictEqual(compare(math.fraction(3), math.fraction(3)).valueOf(), 0)
 
-    assert.strictEqual(compare(math.add(math.fraction(0.1), math.fraction(0.2)), math.fraction(0.3)).valueOf(), 0) // this would fail with numbers
+    assert.strictEqual(
+      compare(
+        math.add(math.fraction(0.1), math.fraction(0.2)),
+        math.fraction(0.3)
+      ).valueOf(),
+      0
+    ) // this would fail with numbers
   })
 
   it('should compare mixed fractions and numbers', function () {
@@ -96,15 +117,21 @@ describe('compare', function () {
   })
 
   it('should throw an error if comparing a unit with a number', function () {
-    assert.throws(function () { compare(unit('100cm'), 22) })
+    assert.throws(function () {
+      compare(unit('100cm'), 22)
+    })
   })
 
   it('should throw an error for two measures of different units', function () {
-    assert.throws(function () { compare(math.unit(5, 'km'), math.unit(100, 'gram')) })
+    assert.throws(function () {
+      compare(math.unit(5, 'km'), math.unit(100, 'gram'))
+    })
   })
 
   it('should throw an error if comparing a unit with a bignumber', function () {
-    assert.throws(function () { compare(unit('100cm'), bignumber(22)) })
+    assert.throws(function () {
+      compare(unit('100cm'), bignumber(22))
+    })
   })
 
   it('should compare two strings', function () {
@@ -119,15 +146,60 @@ describe('compare', function () {
     })
 
     it('should compare array - array', function () {
-      assert.deepStrictEqual(compare([[1, 2, 0], [-1, 0, 2]], [[3, -1, 0], [-2, 1, 0]]), [[-1, 1, 0], [1, -1, 1]])
+      assert.deepStrictEqual(
+        compare(
+          [
+            [1, 2, 0],
+            [-1, 0, 2],
+          ],
+          [
+            [3, -1, 0],
+            [-2, 1, 0],
+          ]
+        ),
+        [
+          [-1, 1, 0],
+          [1, -1, 1],
+        ]
+      )
     })
 
     it('should compare array - dense matrix', function () {
-      assert.deepStrictEqual(compare([[1, 2, 0], [-1, 0, 2]], matrix([[3, -1, 0], [-2, 1, 0]])), matrix([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(
+        compare(
+          [
+            [1, 2, 0],
+            [-1, 0, 2],
+          ],
+          matrix([
+            [3, -1, 0],
+            [-2, 1, 0],
+          ])
+        ),
+        matrix([
+          [-1, 1, 0],
+          [1, -1, 1],
+        ])
+      )
     })
 
     it('should compare array - sparse matrix', function () {
-      assert.deepStrictEqual(compare([[1, 2, 0], [-1, 0, 2]], sparse([[3, -1, 0], [-2, 1, 0]])), matrix([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(
+        compare(
+          [
+            [1, 2, 0],
+            [-1, 0, 2],
+          ],
+          sparse([
+            [3, -1, 0],
+            [-2, 1, 0],
+          ])
+        ),
+        matrix([
+          [-1, 1, 0],
+          [1, -1, 1],
+        ])
+      )
     })
   })
 
@@ -138,70 +210,211 @@ describe('compare', function () {
     })
 
     it('should compare dense matrix - array', function () {
-      assert.deepStrictEqual(compare(matrix([[1, 2, 0], [-1, 0, 2]]), [[3, -1, 0], [-2, 1, 0]]), matrix([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(
+        compare(
+          matrix([
+            [1, 2, 0],
+            [-1, 0, 2],
+          ]),
+          [
+            [3, -1, 0],
+            [-2, 1, 0],
+          ]
+        ),
+        matrix([
+          [-1, 1, 0],
+          [1, -1, 1],
+        ])
+      )
     })
 
     it('should compare dense matrix - dense matrix', function () {
-      assert.deepStrictEqual(compare(matrix([[1, 2, 0], [-1, 0, 2]]), matrix([[3, -1, 0], [-2, 1, 0]])), matrix([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(
+        compare(
+          matrix([
+            [1, 2, 0],
+            [-1, 0, 2],
+          ]),
+          matrix([
+            [3, -1, 0],
+            [-2, 1, 0],
+          ])
+        ),
+        matrix([
+          [-1, 1, 0],
+          [1, -1, 1],
+        ])
+      )
     })
 
     it('should compare dense matrix - sparse matrix', function () {
-      assert.deepStrictEqual(compare(matrix([[1, 2, 0], [-1, 0, 2]]), sparse([[3, -1, 0], [-2, 1, 0]])), matrix([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(
+        compare(
+          matrix([
+            [1, 2, 0],
+            [-1, 0, 2],
+          ]),
+          sparse([
+            [3, -1, 0],
+            [-2, 1, 0],
+          ])
+        ),
+        matrix([
+          [-1, 1, 0],
+          [1, -1, 1],
+        ])
+      )
     })
   })
 
   describe('SparseMatrix', function () {
     it('should compare sparse matrix - scalar', function () {
-      assert.deepStrictEqual(compare(2, sparse([[1, 2], [3, 4]])), matrix([[1, 0], [-1, -1]]))
-      assert.deepStrictEqual(compare(sparse([[1, 2], [3, 4]]), 2), matrix([[-1, 0], [1, 1]]))
+      assert.deepStrictEqual(
+        compare(
+          2,
+          sparse([
+            [1, 2],
+            [3, 4],
+          ])
+        ),
+        matrix([
+          [1, 0],
+          [-1, -1],
+        ])
+      )
+      assert.deepStrictEqual(
+        compare(
+          sparse([
+            [1, 2],
+            [3, 4],
+          ]),
+          2
+        ),
+        matrix([
+          [-1, 0],
+          [1, 1],
+        ])
+      )
     })
 
     it('should compare sparse matrix - array', function () {
-      assert.deepStrictEqual(compare(sparse([[1, 2, 0], [-1, 0, 2]]), [[3, -1, 0], [-2, 1, 0]]), matrix([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(
+        compare(
+          sparse([
+            [1, 2, 0],
+            [-1, 0, 2],
+          ]),
+          [
+            [3, -1, 0],
+            [-2, 1, 0],
+          ]
+        ),
+        matrix([
+          [-1, 1, 0],
+          [1, -1, 1],
+        ])
+      )
     })
 
     it('should compare sparse matrix - dense matrix', function () {
-      assert.deepStrictEqual(compare(sparse([[1, 2, 0], [-1, 0, 2]]), matrix([[3, -1, 0], [-2, 1, 0]])), matrix([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(
+        compare(
+          sparse([
+            [1, 2, 0],
+            [-1, 0, 2],
+          ]),
+          matrix([
+            [3, -1, 0],
+            [-2, 1, 0],
+          ])
+        ),
+        matrix([
+          [-1, 1, 0],
+          [1, -1, 1],
+        ])
+      )
     })
 
     it('should compare sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(compare(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[3, -1, 0], [-2, 1, 0]])), sparse([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(
+        compare(
+          sparse([
+            [1, 2, 0],
+            [-1, 0, 2],
+          ]),
+          sparse([
+            [3, -1, 0],
+            [-2, 1, 0],
+          ])
+        ),
+        sparse([
+          [-1, 1, 0],
+          [1, -1, 1],
+        ])
+      )
     })
   })
 
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.compare(1, 0.991), 1)
-    assert.strictEqual(mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), '1')
+    assert.strictEqual(
+      mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(),
+      '1'
+    )
 
     mymath.config({ epsilon: 1e-2 })
     assert.strictEqual(mymath.compare(1, 0.991), 0)
-    assert.strictEqual(mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), '0')
+    assert.strictEqual(
+      mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(),
+      '0'
+    )
   })
 
   it('should throw an error when comparing complex numbers', function () {
-    assert.throws(function () { compare(complex(1, 1), complex(1, 2)) }, TypeError)
-    assert.throws(function () { compare(complex(2, 1), 3) }, TypeError)
-    assert.throws(function () { compare(3, complex(2, 4)) }, TypeError)
-    assert.throws(function () { compare(math.bignumber(3), complex(2, 4)) }, TypeError)
-    assert.throws(function () { compare(complex(2, 4), math.bignumber(3)) }, TypeError)
+    assert.throws(function () {
+      compare(complex(1, 1), complex(1, 2))
+    }, TypeError)
+    assert.throws(function () {
+      compare(complex(2, 1), 3)
+    }, TypeError)
+    assert.throws(function () {
+      compare(3, complex(2, 4))
+    }, TypeError)
+    assert.throws(function () {
+      compare(math.bignumber(3), complex(2, 4))
+    }, TypeError)
+    assert.throws(function () {
+      compare(complex(2, 4), math.bignumber(3))
+    }, TypeError)
   })
 
   it('should throw an error if matrices are different sizes', function () {
-    assert.throws(function () { compare([1, 4, 6], [3, 4]) })
+    assert.throws(function () {
+      compare([1, 4, 6], [3, 4])
+    })
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { compare(1) }, /TypeError: Too few arguments/)
-    assert.throws(function () { compare(1, 2, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      compare(1)
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      compare(1, 2, 3)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () { compare(2, null) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      compare(2, null)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX compare', function () {
     const expression = math.parse('compare(1,2)')
-    assert.strictEqual(expression.toTex(), '\\mathrm{compare}\\left(1,2\\right)')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\mathrm{compare}\\left(1,2\\right)'
+    )
   })
 })

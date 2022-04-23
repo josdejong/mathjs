@@ -11,21 +11,31 @@ describe('fraction', function () {
     equalFraction(math.fraction(null), new Fraction(0))
   })
 
-  it('should fail to create a fraction in case of non-integer quotient', () => {
+  it('should fail to create a fraction in case of non-integer quotient', function () {
     assert.throws(() => math.fraction(4, 5.1), /Parameters must be integer/)
     assert.throws(() => math.fraction(62.8, 10), /Parameters must be integer/)
-    assert.throws(() => math.fraction(Infinity, 3), /Parameters must be integer/)
+    assert.throws(
+      () => math.fraction(Infinity, 3),
+      /Parameters must be integer/
+    )
   })
 
-  it('should create a fraction from a quotient regardless of integrality', () => {
-    equalFraction(math.divide(math.fraction(4), math.fraction(5.1)),
-      math.fraction(40, 51))
+  it('should create a fraction from a quotient regardless of integrality', function () {
+    equalFraction(
+      math.divide(math.fraction(4), math.fraction(5.1)),
+      math.fraction(40, 51)
+    )
   })
 
   it('should create a fraction from a BigNumber', function () {
     const b = math.bignumber(2).div(3)
     const f = math.fraction(b)
-    equalFraction(f, new Fraction('0.6666666666666666666666666666666666666666666666666666666666666667'))
+    equalFraction(
+      f,
+      new Fraction(
+        '0.6666666666666666666666666666666666666666666666666666666666666667'
+      )
+    )
   })
 
   it('should clone a fraction', function () {
@@ -55,13 +65,19 @@ describe('fraction', function () {
   })
 
   it('should throw an error in case of NaN or Infinity', function () {
-    assert.throws(function () { math.fraction(Infinity) }, /Error: Infinity cannot be represented as a fraction/)
-    assert.throws(function () { math.fraction(-Infinity) }, /Error: -Infinity cannot be represented as a fraction/)
-    assert.throws(function () { math.fraction(NaN) }, /Error: NaN cannot be represented as a fraction/)
+    assert.throws(function () {
+      math.fraction(Infinity)
+    }, /Error: Infinity cannot be represented as a fraction/)
+    assert.throws(function () {
+      math.fraction(-Infinity)
+    }, /Error: -Infinity cannot be represented as a fraction/)
+    assert.throws(function () {
+      math.fraction(NaN)
+    }, /Error: NaN cannot be represented as a fraction/)
   })
 })
 
-function equalFraction (a, b) {
+function equalFraction(a, b) {
   const msg = a.toString() + ' !== ' + b.toString()
   assert.strictEqual(a.s, b.s, msg)
   assert.strictEqual(a.n, b.n, msg)

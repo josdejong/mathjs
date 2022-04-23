@@ -16,8 +16,12 @@ describe('help', function () {
   })
 
   it('should throw an error on wrong number of arguments', function () {
-    assert.throws(function () { math.help() }, /TypeError: Too few arguments/)
-    assert.throws(function () { math.help('sin', 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      math.help()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      math.help('sin', 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should find help from a function name', function () {
@@ -45,18 +49,29 @@ describe('help', function () {
   })
 
   it('should not allow accessing unsafe properties ', function () {
-    assert.throws(function () { math.help('constructor') }, /No access/)
+    assert.throws(function () {
+      math.help('constructor')
+    }, /No access/)
   })
 
   it('should throw an error when no help is found', function () {
     // assert.throws(function () {math.help(undefined)}, /No documentation found/);
-    assert.throws(function () { math.help(new Date()) }, /No documentation found/)
-    assert.throws(function () { math.help('nonExistingFunction') }, /No documentation found/)
-    assert.throws(function () { math.help('parse') }, /No documentation found/)
+    assert.throws(function () {
+      math.help(new Date())
+    }, /No documentation found/)
+    assert.throws(function () {
+      math.help('nonExistingFunction')
+    }, /No documentation found/)
+    assert.throws(function () {
+      math.help('parse')
+    }, /No documentation found/)
   })
 
   it('should LaTeX help', function () {
     const expression = math.parse('help(parse)')
-    assert.strictEqual(expression.toTex(), '\\mathrm{help}\\left( parse\\right)')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\mathrm{help}\\left( parse\\right)'
+    )
   })
 })

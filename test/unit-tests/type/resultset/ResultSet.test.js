@@ -18,7 +18,9 @@ describe('ResultSet', function () {
   })
 
   it('should throw an error when called without the new operator', function () {
-    assert.throws(function () { ResultSet([1, 2, 3]) })
+    assert.throws(function () {
+      ResultSet([1, 2, 3])
+    })
   })
 
   it('should return an Array when calling valueOf()', function () {

@@ -48,8 +48,14 @@ describe('gcd', function () {
   })
 
   it('should calculate gcd for BigNumbers', function () {
-    assert.deepStrictEqual(gcd(math.bignumber(12), math.bignumber(8)), math.bignumber(4))
-    assert.deepStrictEqual(gcd(math.bignumber(8), math.bignumber(12)), math.bignumber(4))
+    assert.deepStrictEqual(
+      gcd(math.bignumber(12), math.bignumber(8)),
+      math.bignumber(4)
+    )
+    assert.deepStrictEqual(
+      gcd(math.bignumber(8), math.bignumber(12)),
+      math.bignumber(4)
+    )
   })
 
   it('should calculate gcd for mixed BigNumbers and Numbers', function () {
@@ -76,16 +82,24 @@ describe('gcd', function () {
   })
 
   it('should throw an error if only one argument', function () {
-    assert.throws(function () { gcd(1) }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      gcd(1)
+    }, /TypeError: Too few arguments/)
   })
 
   it('should throw an error for non-integer numbers', function () {
-    assert.throws(function () { gcd(2, 4.1) }, /Parameters in function gcd must be integer numbers/)
-    assert.throws(function () { gcd(2.3, 4) }, /Parameters in function gcd must be integer numbers/)
+    assert.throws(function () {
+      gcd(2, 4.1)
+    }, /Parameters in function gcd must be integer numbers/)
+    assert.throws(function () {
+      gcd(2.3, 4)
+    }, /Parameters in function gcd must be integer numbers/)
   })
 
   it('should throw an error with complex numbers', function () {
-    assert.throws(function () { gcd(math.complex(1, 3), 2) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      gcd(math.complex(1, 3), 2)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should convert strings to numbers', function () {
@@ -93,11 +107,15 @@ describe('gcd', function () {
     assert.strictEqual(gcd(12, '8'), 4)
     assert.strictEqual(gcd('12', 8), 4)
 
-    assert.throws(function () { gcd('a', 8) }, /Cannot convert "a" to a number/)
+    assert.throws(function () {
+      gcd('a', 8)
+    }, /Cannot convert "a" to a number/)
   })
 
   it('should throw an error with units', function () {
-    assert.throws(function () { gcd(math.unit('5cm'), 2) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      gcd(math.unit('5cm'), 2)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   describe('Array', function () {
@@ -111,11 +129,29 @@ describe('gcd', function () {
     })
 
     it('should find the greatest common divisor array - dense matrix', function () {
-      assert.deepStrictEqual(gcd([5, 2, 3], matrix([25, 3, 6])), matrix([5, 1, 3]))
+      assert.deepStrictEqual(
+        gcd([5, 2, 3], matrix([25, 3, 6])),
+        matrix([5, 1, 3])
+      )
     })
 
     it('should find the greatest common divisor array - sparse matrix', function () {
-      assert.deepStrictEqual(gcd([[5, 2, 3], [3, 2, 5]], sparse([[0, 3, 6], [6, 0, 25]])), matrix([[5, 1, 3], [3, 2, 5]]))
+      assert.deepStrictEqual(
+        gcd(
+          [
+            [5, 2, 3],
+            [3, 2, 5],
+          ],
+          sparse([
+            [0, 3, 6],
+            [6, 0, 25],
+          ])
+        ),
+        matrix([
+          [5, 1, 3],
+          [3, 2, 5],
+        ])
+      )
     })
   })
 
@@ -126,34 +162,124 @@ describe('gcd', function () {
     })
 
     it('should find the greatest common divisor dense matrix - array', function () {
-      assert.deepStrictEqual(gcd(matrix([5, 2, 3]), [25, 3, 6]), matrix([5, 1, 3]))
+      assert.deepStrictEqual(
+        gcd(matrix([5, 2, 3]), [25, 3, 6]),
+        matrix([5, 1, 3])
+      )
     })
 
     it('should find the greatest common divisor dense matrix - dense matrix', function () {
-      assert.deepStrictEqual(gcd(matrix([5, 2, 3]), matrix([25, 3, 6])), matrix([5, 1, 3]))
+      assert.deepStrictEqual(
+        gcd(matrix([5, 2, 3]), matrix([25, 3, 6])),
+        matrix([5, 1, 3])
+      )
     })
 
     it('should find the greatest common divisor dense matrix - sparse matrix', function () {
-      assert.deepStrictEqual(gcd(matrix([[5, 2, 3], [3, 2, 5]]), sparse([[0, 3, 6], [6, 0, 25]])), matrix([[5, 1, 3], [3, 2, 5]]))
+      assert.deepStrictEqual(
+        gcd(
+          matrix([
+            [5, 2, 3],
+            [3, 2, 5],
+          ]),
+          sparse([
+            [0, 3, 6],
+            [6, 0, 25],
+          ])
+        ),
+        matrix([
+          [5, 1, 3],
+          [3, 2, 5],
+        ])
+      )
     })
   })
 
   describe('SparseMatrix', function () {
     it('should find the greatest common divisor sparse matrix - scalar', function () {
-      assert.deepStrictEqual(gcd(sparse([[5, 0, 3], [0, 18, 0]]), 3), matrix([[1, 3, 3], [3, 3, 3]]))
-      assert.deepStrictEqual(gcd(3, sparse([[5, 0, 3], [0, 18, 0]])), matrix([[1, 3, 3], [3, 3, 3]]))
+      assert.deepStrictEqual(
+        gcd(
+          sparse([
+            [5, 0, 3],
+            [0, 18, 0],
+          ]),
+          3
+        ),
+        matrix([
+          [1, 3, 3],
+          [3, 3, 3],
+        ])
+      )
+      assert.deepStrictEqual(
+        gcd(
+          3,
+          sparse([
+            [5, 0, 3],
+            [0, 18, 0],
+          ])
+        ),
+        matrix([
+          [1, 3, 3],
+          [3, 3, 3],
+        ])
+      )
     })
 
     it('should find the greatest common divisor sparse matrix - array', function () {
-      assert.deepStrictEqual(gcd(sparse([[5, 2, 3], [3, 2, 5]]), [[0, 3, 6], [6, 0, 25]]), matrix([[5, 1, 3], [3, 2, 5]]))
+      assert.deepStrictEqual(
+        gcd(
+          sparse([
+            [5, 2, 3],
+            [3, 2, 5],
+          ]),
+          [
+            [0, 3, 6],
+            [6, 0, 25],
+          ]
+        ),
+        matrix([
+          [5, 1, 3],
+          [3, 2, 5],
+        ])
+      )
     })
 
     it('should find the greatest common divisor sparse matrix - dense matrix', function () {
-      assert.deepStrictEqual(gcd(sparse([[5, 2, 3], [3, 2, 5]]), matrix([[0, 3, 6], [6, 0, 25]])), matrix([[5, 1, 3], [3, 2, 5]]))
+      assert.deepStrictEqual(
+        gcd(
+          sparse([
+            [5, 2, 3],
+            [3, 2, 5],
+          ]),
+          matrix([
+            [0, 3, 6],
+            [6, 0, 25],
+          ])
+        ),
+        matrix([
+          [5, 1, 3],
+          [3, 2, 5],
+        ])
+      )
     })
 
     it('should find the greatest common divisor sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(gcd(sparse([[5, 2, 3], [3, 2, 5]]), sparse([[0, 3, 6], [6, 0, 25]])), sparse([[5, 1, 3], [3, 2, 5]]))
+      assert.deepStrictEqual(
+        gcd(
+          sparse([
+            [5, 2, 3],
+            [3, 2, 5],
+          ]),
+          sparse([
+            [0, 3, 6],
+            [6, 0, 25],
+          ])
+        ),
+        sparse([
+          [5, 1, 3],
+          [3, 2, 5],
+        ])
+      )
     })
   })
 

@@ -73,29 +73,59 @@ describe('acoth', function () {
     assert.deepStrictEqual(acothBig(bigmath.coth(Big(1))), Big(1))
 
     /* Pass in more digits to pi. */
-    assert.deepStrictEqual(acothBig(biggermath.coth(Big(-2))), Big('-2.0000000000000000001'))
-    assert.deepStrictEqual(acothBig(biggermath.coth(Big(2))), Big('2.0000000000000000001'))
+    assert.deepStrictEqual(
+      acothBig(biggermath.coth(Big(-2))),
+      Big('-2.0000000000000000001')
+    )
+    assert.deepStrictEqual(
+      acothBig(biggermath.coth(Big(2))),
+      Big('2.0000000000000000001')
+    )
   })
 
   it('should return the arccoth of a complex number', function () {
-    approx.deepEqual(acoth(complex('2+3i')), complex(0.1469466662255, -0.2318238045004))
-    approx.deepEqual(acoth(complex('2-3i')), complex(0.1469466662255, 0.2318238045004))
-    approx.deepEqual(acoth(complex('-2+3i')), complex(-0.1469466662255, -0.2318238045004))
-    approx.deepEqual(acoth(complex('-2-3i')), complex(-0.1469466662255, 0.2318238045004))
-    approx.deepEqual(acoth(complex('1+i')), complex(0.4023594781085251, -0.55357435889705))
+    approx.deepEqual(
+      acoth(complex('2+3i')),
+      complex(0.1469466662255, -0.2318238045004)
+    )
+    approx.deepEqual(
+      acoth(complex('2-3i')),
+      complex(0.1469466662255, 0.2318238045004)
+    )
+    approx.deepEqual(
+      acoth(complex('-2+3i')),
+      complex(-0.1469466662255, -0.2318238045004)
+    )
+    approx.deepEqual(
+      acoth(complex('-2-3i')),
+      complex(-0.1469466662255, 0.2318238045004)
+    )
+    approx.deepEqual(
+      acoth(complex('1+i')),
+      complex(0.4023594781085251, -0.55357435889705)
+    )
     approx.deepEqual(acoth(complex('i')), complex(0, -pi / 4))
     assert.deepStrictEqual(acoth(complex('1')), complex(Infinity, 0))
-    approx.deepEqual(acoth(complex('0.5')), complex(0.5493061443340548, -1.5707963267949))
+    approx.deepEqual(
+      acoth(complex('0.5')),
+      complex(0.5493061443340548, -1.5707963267949)
+    )
     approx.deepEqual(acoth(complex('0')), complex(0, pi / 2))
   })
 
   it('should throw an error if called with a unit', function () {
-    assert.throws(function () { acoth(unit('45deg')) })
-    assert.throws(function () { acoth(unit('5 celsius')) })
+    assert.throws(function () {
+      acoth(unit('45deg'))
+    })
+    assert.throws(function () {
+      acoth(unit('5 celsius'))
+    })
   })
 
   it('should throw an error if called with a string', function () {
-    assert.throws(function () { acoth('string') })
+    assert.throws(function () {
+      acoth('string')
+    })
   })
 
   it('should calculate the arccot element-wise for arrays and matrices', function () {
@@ -105,8 +135,12 @@ describe('acoth', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { acoth() }, /TypeError: Too few arguments/)
-    assert.throws(function () { acoth(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      acoth()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      acoth(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX acoth', function () {

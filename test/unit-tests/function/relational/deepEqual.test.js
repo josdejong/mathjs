@@ -25,12 +25,65 @@ describe('deepEqual', function () {
     assert.deepStrictEqual(deepEqual([1, 4], [1, 4, 5]), false)
     assert.deepStrictEqual(deepEqual([1, 4, 5], matrix([3, 4, 5])), false)
     assert.deepStrictEqual(deepEqual([1, 4, 5], matrix([1, 4, 5])), true)
-    assert.deepStrictEqual(deepEqual(matrix([1, 4, 5]), matrix([1, 4, 5])), true)
+    assert.deepStrictEqual(
+      deepEqual(matrix([1, 4, 5]), matrix([1, 4, 5])),
+      true
+    )
 
-    assert.deepStrictEqual(deepEqual(matrix([[1, 2], [3, 4]]), matrix([[1, 2], [3, 4]])), true)
-    assert.deepStrictEqual(deepEqual(matrix([[1, 2], [3, 4]]), matrix([[1, 2], [3, 5]])), false)
-    assert.deepStrictEqual(deepEqual(matrix([[1, 2], [3, 4]]), matrix([[1, 2], [3, 4], [5, 6]])), false)
-    assert.deepStrictEqual(deepEqual(matrix([[1, 2], [3, 4], [5, 6]]), matrix([[1, 2], [3, 4]])), false)
+    assert.deepStrictEqual(
+      deepEqual(
+        matrix([
+          [1, 2],
+          [3, 4],
+        ]),
+        matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      ),
+      true
+    )
+    assert.deepStrictEqual(
+      deepEqual(
+        matrix([
+          [1, 2],
+          [3, 4],
+        ]),
+        matrix([
+          [1, 2],
+          [3, 5],
+        ])
+      ),
+      false
+    )
+    assert.deepStrictEqual(
+      deepEqual(
+        matrix([
+          [1, 2],
+          [3, 4],
+        ]),
+        matrix([
+          [1, 2],
+          [3, 4],
+          [5, 6],
+        ])
+      ),
+      false
+    )
+    assert.deepStrictEqual(
+      deepEqual(
+        matrix([
+          [1, 2],
+          [3, 4],
+          [5, 6],
+        ]),
+        matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      ),
+      false
+    )
   })
 
   it('should compare mixed scalars and matrices', function () {
@@ -45,21 +98,36 @@ describe('deepEqual', function () {
     assert.deepStrictEqual(deepEqual([1, 4], [1, '4']), true)
     assert.deepStrictEqual(deepEqual([2, 3], [2, bignumber(3)]), true)
     assert.deepStrictEqual(deepEqual([2, 3], [2, bignumber(4)]), false)
-    assert.deepStrictEqual(deepEqual([complex(2, 3), 3], [complex(2, 3), 3]), true)
-    assert.deepStrictEqual(deepEqual([complex(2, 3), 3], [complex(2, 4), 3]), false)
+    assert.deepStrictEqual(
+      deepEqual([complex(2, 3), 3], [complex(2, 3), 3]),
+      true
+    )
+    assert.deepStrictEqual(
+      deepEqual([complex(2, 3), 3], [complex(2, 4), 3]),
+      false
+    )
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { deepEqual(1) }, /TypeError: Too few arguments/)
-    assert.throws(function () { deepEqual(1, 2, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      deepEqual(1)
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      deepEqual(1, 2, 3)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () { deepEqual(['A'], ['B']) }, /Error: Cannot convert "A" to a number/)
+    assert.throws(function () {
+      deepEqual(['A'], ['B'])
+    }, /Error: Cannot convert "A" to a number/)
   })
 
   it('should LaTeX deepEqual', function () {
     const expression = math.parse('deepEqual([1,2],[1,3])')
-    assert.strictEqual(expression.toTex(), '\\mathrm{deepEqual}\\left(\\begin{bmatrix}1\\\\2\\end{bmatrix},\\begin{bmatrix}1\\\\3\\end{bmatrix}\\right)')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\mathrm{deepEqual}\\left(\\begin{bmatrix}1\\\\2\\end{bmatrix},\\begin{bmatrix}1\\\\3\\end{bmatrix}\\right)'
+    )
   })
 })

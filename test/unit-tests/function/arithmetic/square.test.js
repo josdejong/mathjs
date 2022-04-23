@@ -33,12 +33,18 @@ describe('square', function () {
   })
 
   it('should throw an error if used with wrong number of arguments', function () {
-    assert.throws(function () { square() }, /TypeError: Too few arguments/)
-    assert.throws(function () { square(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      square()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      square(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an in case of wrong type of arguments', function () {
-    assert.throws(function () { square(null) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      square(null)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should return the square of a complex number', function () {
@@ -54,13 +60,26 @@ describe('square', function () {
   })
 
   it('should throw an error when used with a string', function () {
-    assert.throws(function () { square('text') })
+    assert.throws(function () {
+      square('text')
+    })
   })
 
   it('should return the square of each element in a matrix', function () {
     assert.deepStrictEqual(square([2, 3, 4, 5]), [4, 9, 16, 25])
     assert.deepStrictEqual(square(matrix([2, 3, 4, 5])), matrix([4, 9, 16, 25]))
-    assert.deepStrictEqual(square(matrix([[1, 2], [3, 4]])), matrix([[1, 4], [9, 16]]))
+    assert.deepStrictEqual(
+      square(
+        matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      ),
+      matrix([
+        [1, 4],
+        [9, 16],
+      ])
+    )
   })
 
   it('should LaTeX square', function () {

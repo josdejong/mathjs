@@ -35,16 +35,31 @@ describe('leftShift', function () {
 
   it('should left shift bignumbers', function () {
     assert.deepStrictEqual(leftShift(bignumber(2), bignumber(3)), bignumber(16))
-    assert.deepStrictEqual(leftShift(bignumber(500), bignumber(100)), bignumber('633825300114114700748351602688000'))
-    assert.deepStrictEqual(leftShift(bignumber(-1), bignumber(2)), bignumber(-4))
+    assert.deepStrictEqual(
+      leftShift(bignumber(500), bignumber(100)),
+      bignumber('633825300114114700748351602688000')
+    )
+    assert.deepStrictEqual(
+      leftShift(bignumber(-1), bignumber(2)),
+      bignumber(-4)
+    )
     assert.strictEqual(leftShift(bignumber(0), bignumber(-2)).isNaN(), true)
-    assert.deepStrictEqual(leftShift(bignumber(Infinity), bignumber(2)).toString(), 'Infinity')
-    assert.strictEqual(leftShift(bignumber(Infinity), bignumber(Infinity)).isNaN(), true)
+    assert.deepStrictEqual(
+      leftShift(bignumber(Infinity), bignumber(2)).toString(),
+      'Infinity'
+    )
+    assert.strictEqual(
+      leftShift(bignumber(Infinity), bignumber(Infinity)).isNaN(),
+      true
+    )
   })
 
   it('should left shift mixed numbers and bignumbers', function () {
     assert.deepStrictEqual(leftShift(bignumber(2), 3), bignumber(16))
-    assert.deepStrictEqual(leftShift(bignumber(500), 100), bignumber('633825300114114700748351602688000'))
+    assert.deepStrictEqual(
+      leftShift(bignumber(500), 100),
+      bignumber('633825300114114700748351602688000')
+    )
     assert.deepStrictEqual(leftShift(2, bignumber(3)), bignumber(16))
     assert.deepStrictEqual(leftShift(-1, bignumber(2)), bignumber(-4))
     assert.deepStrictEqual(leftShift(bignumber(-1), 2), bignumber(-4))
@@ -60,9 +75,15 @@ describe('leftShift', function () {
   })
 
   it('should throw an error if used with a unit', function () {
-    assert.throws(function () { leftShift(math.unit('5cm'), 2) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { leftShift(2, math.unit('5cm')) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { leftShift(math.unit('2cm'), math.unit('5cm')) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      leftShift(math.unit('5cm'), 2)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      leftShift(2, math.unit('5cm'))
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      leftShift(math.unit('2cm'), math.unit('5cm'))
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should throw an error if the parameters are not integers', function () {
@@ -91,81 +112,434 @@ describe('leftShift', function () {
 
   describe('Array', function () {
     it('should left shift array and scalar', function () {
-      assert.deepStrictEqual(leftShift([[1, 2], [8, 0]], 2), [[4, 8], [32, 0]])
-      assert.deepStrictEqual(leftShift(2, [[1, 2], [8, 0]]), [[4, 8], [512, 2]])
+      assert.deepStrictEqual(
+        leftShift(
+          [
+            [1, 2],
+            [8, 0],
+          ],
+          2
+        ),
+        [
+          [4, 8],
+          [32, 0],
+        ]
+      )
+      assert.deepStrictEqual(
+        leftShift(2, [
+          [1, 2],
+          [8, 0],
+        ]),
+        [
+          [4, 8],
+          [512, 2],
+        ]
+      )
     })
 
     it('should left shift array - array', function () {
-      assert.deepStrictEqual(leftShift([[1, 2], [8, 0]], [[4, 8], [32, 0]]), [[16, 512], [8, 0]])
-      assert.deepStrictEqual(leftShift([[4, 8], [32, 0]], [[1, 2], [8, 0]]), [[8, 32], [8192, 0]])
+      assert.deepStrictEqual(
+        leftShift(
+          [
+            [1, 2],
+            [8, 0],
+          ],
+          [
+            [4, 8],
+            [32, 0],
+          ]
+        ),
+        [
+          [16, 512],
+          [8, 0],
+        ]
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          [
+            [4, 8],
+            [32, 0],
+          ],
+          [
+            [1, 2],
+            [8, 0],
+          ]
+        ),
+        [
+          [8, 32],
+          [8192, 0],
+        ]
+      )
     })
 
     it('should left shift array - dense matrix', function () {
-      assert.deepStrictEqual(leftShift([[1, 2], [8, 0]], matrix([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
-      assert.deepStrictEqual(leftShift([[4, 8], [32, 0]], matrix([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(
+        leftShift(
+          [
+            [1, 2],
+            [8, 0],
+          ],
+          matrix([
+            [4, 8],
+            [32, 0],
+          ])
+        ),
+        matrix([
+          [16, 512],
+          [8, 0],
+        ])
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          [
+            [4, 8],
+            [32, 0],
+          ],
+          matrix([
+            [1, 2],
+            [8, 0],
+          ])
+        ),
+        matrix([
+          [8, 32],
+          [8192, 0],
+        ])
+      )
     })
 
     it('should left shift array - sparse matrix', function () {
-      assert.deepStrictEqual(leftShift([[1, 2], [8, 0]], sparse([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
-      assert.deepStrictEqual(leftShift([[4, 8], [32, 0]], sparse([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(
+        leftShift(
+          [
+            [1, 2],
+            [8, 0],
+          ],
+          sparse([
+            [4, 8],
+            [32, 0],
+          ])
+        ),
+        matrix([
+          [16, 512],
+          [8, 0],
+        ])
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          [
+            [4, 8],
+            [32, 0],
+          ],
+          sparse([
+            [1, 2],
+            [8, 0],
+          ])
+        ),
+        matrix([
+          [8, 32],
+          [8192, 0],
+        ])
+      )
     })
   })
 
   describe('DenseMatrix', function () {
     it('should left shift dense matrix and scalar', function () {
-      assert.deepStrictEqual(leftShift(matrix([[1, 2], [8, 0]]), 2), matrix([[4, 8], [32, 0]]))
-      assert.deepStrictEqual(leftShift(2, matrix([[1, 2], [8, 0]])), matrix([[4, 8], [512, 2]]))
+      assert.deepStrictEqual(
+        leftShift(
+          matrix([
+            [1, 2],
+            [8, 0],
+          ]),
+          2
+        ),
+        matrix([
+          [4, 8],
+          [32, 0],
+        ])
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          2,
+          matrix([
+            [1, 2],
+            [8, 0],
+          ])
+        ),
+        matrix([
+          [4, 8],
+          [512, 2],
+        ])
+      )
     })
 
     it('should left shift dense matrix - array', function () {
-      assert.deepStrictEqual(leftShift(matrix([[1, 2], [8, 0]]), [[4, 8], [32, 0]]), matrix([[16, 512], [8, 0]]))
-      assert.deepStrictEqual(leftShift(matrix([[4, 8], [32, 0]]), [[1, 2], [8, 0]]), matrix([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(
+        leftShift(
+          matrix([
+            [1, 2],
+            [8, 0],
+          ]),
+          [
+            [4, 8],
+            [32, 0],
+          ]
+        ),
+        matrix([
+          [16, 512],
+          [8, 0],
+        ])
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          matrix([
+            [4, 8],
+            [32, 0],
+          ]),
+          [
+            [1, 2],
+            [8, 0],
+          ]
+        ),
+        matrix([
+          [8, 32],
+          [8192, 0],
+        ])
+      )
     })
 
     it('should left shift dense matrix - dense matrix', function () {
-      assert.deepStrictEqual(leftShift(matrix([[1, 2], [8, 0]]), matrix([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
-      assert.deepStrictEqual(leftShift(matrix([[4, 8], [32, 0]]), matrix([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(
+        leftShift(
+          matrix([
+            [1, 2],
+            [8, 0],
+          ]),
+          matrix([
+            [4, 8],
+            [32, 0],
+          ])
+        ),
+        matrix([
+          [16, 512],
+          [8, 0],
+        ])
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          matrix([
+            [4, 8],
+            [32, 0],
+          ]),
+          matrix([
+            [1, 2],
+            [8, 0],
+          ])
+        ),
+        matrix([
+          [8, 32],
+          [8192, 0],
+        ])
+      )
     })
 
     it('should left shift dense matrix - sparse matrix', function () {
-      assert.deepStrictEqual(leftShift(matrix([[1, 2], [8, 0]]), sparse([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
-      assert.deepStrictEqual(leftShift(matrix([[4, 8], [32, 0]]), sparse([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(
+        leftShift(
+          matrix([
+            [1, 2],
+            [8, 0],
+          ]),
+          sparse([
+            [4, 8],
+            [32, 0],
+          ])
+        ),
+        matrix([
+          [16, 512],
+          [8, 0],
+        ])
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          matrix([
+            [4, 8],
+            [32, 0],
+          ]),
+          sparse([
+            [1, 2],
+            [8, 0],
+          ])
+        ),
+        matrix([
+          [8, 32],
+          [8192, 0],
+        ])
+      )
     })
   })
 
   describe('SparseMatrix', function () {
     it('should left shift sparse matrix and scalar', function () {
-      assert.deepStrictEqual(leftShift(sparse([[1, 2], [8, 0]]), 2), sparse([[4, 8], [32, 0]]))
-      assert.deepStrictEqual(leftShift(2, sparse([[1, 2], [8, 0]])), matrix([[4, 8], [512, 2]]))
+      assert.deepStrictEqual(
+        leftShift(
+          sparse([
+            [1, 2],
+            [8, 0],
+          ]),
+          2
+        ),
+        sparse([
+          [4, 8],
+          [32, 0],
+        ])
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          2,
+          sparse([
+            [1, 2],
+            [8, 0],
+          ])
+        ),
+        matrix([
+          [4, 8],
+          [512, 2],
+        ])
+      )
     })
 
     it('should left shift sparse matrix - array', function () {
-      assert.deepStrictEqual(leftShift(sparse([[1, 2], [8, 0]]), [[4, 8], [32, 0]]), sparse([[16, 512], [8, 0]]))
-      assert.deepStrictEqual(leftShift(sparse([[4, 8], [32, 0]]), [[1, 2], [8, 0]]), sparse([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(
+        leftShift(
+          sparse([
+            [1, 2],
+            [8, 0],
+          ]),
+          [
+            [4, 8],
+            [32, 0],
+          ]
+        ),
+        sparse([
+          [16, 512],
+          [8, 0],
+        ])
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          sparse([
+            [4, 8],
+            [32, 0],
+          ]),
+          [
+            [1, 2],
+            [8, 0],
+          ]
+        ),
+        sparse([
+          [8, 32],
+          [8192, 0],
+        ])
+      )
     })
 
     it('should left shift sparse matrix - dense matrix', function () {
-      assert.deepStrictEqual(leftShift(sparse([[1, 2], [8, 0]]), matrix([[4, 8], [32, 0]])), sparse([[16, 512], [8, 0]]))
-      assert.deepStrictEqual(leftShift(sparse([[4, 8], [32, 0]]), matrix([[1, 2], [8, 0]])), sparse([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(
+        leftShift(
+          sparse([
+            [1, 2],
+            [8, 0],
+          ]),
+          matrix([
+            [4, 8],
+            [32, 0],
+          ])
+        ),
+        sparse([
+          [16, 512],
+          [8, 0],
+        ])
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          sparse([
+            [4, 8],
+            [32, 0],
+          ]),
+          matrix([
+            [1, 2],
+            [8, 0],
+          ])
+        ),
+        sparse([
+          [8, 32],
+          [8192, 0],
+        ])
+      )
     })
 
     it('should left shift sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(leftShift(sparse([[1, 2], [8, 0]]), sparse([[4, 8], [32, 0]])), sparse([[16, 512], [8, 0]]))
-      assert.deepStrictEqual(leftShift(sparse([[4, 8], [32, 0]]), sparse([[1, 2], [8, 0]])), sparse([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(
+        leftShift(
+          sparse([
+            [1, 2],
+            [8, 0],
+          ]),
+          sparse([
+            [4, 8],
+            [32, 0],
+          ])
+        ),
+        sparse([
+          [16, 512],
+          [8, 0],
+        ])
+      )
+      assert.deepStrictEqual(
+        leftShift(
+          sparse([
+            [4, 8],
+            [32, 0],
+          ]),
+          sparse([
+            [1, 2],
+            [8, 0],
+          ])
+        ),
+        sparse([
+          [8, 32],
+          [8192, 0],
+        ])
+      )
     })
   })
 
   it('should throw an error if used with wrong number of arguments', function () {
-    assert.throws(function () { leftShift(1) }, /TypeError: Too few arguments/)
-    assert.throws(function () { leftShift(1, 2, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      leftShift(1)
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      leftShift(1, 2, 3)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () { leftShift(new Date(), true) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { leftShift(2, null) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { leftShift(true, new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { leftShift(true, undefined) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { leftShift(undefined, true) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      leftShift(new Date(), true)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      leftShift(2, null)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      leftShift(true, new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      leftShift(true, undefined)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      leftShift(undefined, true)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX leftShift', function () {

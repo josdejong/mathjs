@@ -9,7 +9,9 @@ describe('abs', function () {
   })
 
   it('should not support null', function () {
-    assert.throws(function () { abs(null) }, /Unexpected type of argument/)
+    assert.throws(function () {
+      abs(null)
+    }, /Unexpected type of argument/)
   })
 
   it('should return the abs value of a number', function () {
@@ -27,7 +29,7 @@ describe('abs', function () {
 
   it('should return the absolute value of a complex number', function () {
     assert.strictEqual(abs(complex(3, -4)), 5)
-    assert.strictEqual(abs(complex(1e200, -4e200)), 4.12310562561766e+200)
+    assert.strictEqual(abs(complex(1e200, -4e200)), 4.12310562561766e200)
   })
 
   it('should return the absolute value of a fraction', function () {
@@ -87,18 +89,30 @@ describe('abs', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { abs() }, /TypeError: Too few arguments/)
-    assert.throws(function () { abs(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      abs()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      abs(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an in case of wrong type of arguments', function () {
-    assert.throws(function () { abs(null) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      abs(null)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should throw an error in case of unsupported types', function () {
-    assert.throws(function () { abs(new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { abs(null) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { abs(undefined) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      abs(new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      abs(null)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      abs(undefined)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX abs', function () {

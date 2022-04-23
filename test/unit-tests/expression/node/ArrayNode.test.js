@@ -25,12 +25,18 @@ describe('ArrayNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { ArrayNode() }, SyntaxError)
+    assert.throws(function () {
+      ArrayNode()
+    }, SyntaxError)
   })
 
   it('should throw an error on wrong constructor arguments', function () {
-    assert.throws(function () { console.log(new ArrayNode(2)) }, TypeError)
-    assert.throws(function () { console.log(new ArrayNode([2, 3])) }, TypeError)
+    assert.throws(function () {
+      console.log(new ArrayNode(2))
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new ArrayNode([2, 3]))
+    }, TypeError)
   })
 
   it('should evaluate an ArrayNode', function () {
@@ -75,7 +81,13 @@ describe('ArrayNode', function () {
     const n4 = new ArrayNode([n2, n3])
 
     const expr = n4.compile()
-    assert.deepStrictEqual(expr.evaluate(), math.matrix([[1, 2], [3, 4]]))
+    assert.deepStrictEqual(
+      expr.evaluate(),
+      math.matrix([
+        [1, 2],
+        [3, 4],
+      ])
+    )
   })
 
   it('should find an ArrayNode', function () {
@@ -84,11 +96,36 @@ describe('ArrayNode', function () {
     const c = new ConstantNode(2)
     const d = new ArrayNode([a, b, c])
 
-    assert.deepStrictEqual(d.filter(function (node) { return node instanceof ArrayNode }), [d])
-    assert.deepStrictEqual(d.filter(function (node) { return node instanceof SymbolNode }), [b])
-    assert.deepStrictEqual(d.filter(function (node) { return node instanceof RangeNode }), [])
-    assert.deepStrictEqual(d.filter(function (node) { return node instanceof ConstantNode }), [a, c])
-    assert.deepStrictEqual(d.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [c])
+    assert.deepStrictEqual(
+      d.filter(function (node) {
+        return node instanceof ArrayNode
+      }),
+      [d]
+    )
+    assert.deepStrictEqual(
+      d.filter(function (node) {
+        return node instanceof SymbolNode
+      }),
+      [b]
+    )
+    assert.deepStrictEqual(
+      d.filter(function (node) {
+        return node instanceof RangeNode
+      }),
+      []
+    )
+    assert.deepStrictEqual(
+      d.filter(function (node) {
+        return node instanceof ConstantNode
+      }),
+      [a, c]
+    )
+    assert.deepStrictEqual(
+      d.filter(function (node) {
+        return node instanceof ConstantNode && node.value === 2
+      }),
+      [c]
+    )
   })
 
   it('should run forEach on an ArrayNode', function () {
@@ -125,7 +162,7 @@ describe('ArrayNode', function () {
       paths.push(path)
       assert.strictEqual(parent, c)
 
-      return (node instanceof SymbolNode) && (node.name === 'x') ? d : node
+      return node instanceof SymbolNode && node.name === 'x' ? d : node
     })
 
     assert.deepStrictEqual(paths, ['items[0]', 'items[1]'])
@@ -144,7 +181,9 @@ describe('ArrayNode', function () {
     const c = new ArrayNode([a, b])
 
     assert.throws(function () {
-      c.map(function () { return undefined })
+      c.map(function () {
+        return undefined
+      })
     }, /Callback function must return a Node/)
   })
 
@@ -156,7 +195,7 @@ describe('ArrayNode', function () {
 
     const d = new ConstantNode(3)
     const e = c.transform(function (node) {
-      return (node instanceof SymbolNode) && (node.name === 'x') ? d : node
+      return node instanceof SymbolNode && node.name === 'x' ? d : node
     })
 
     assert.notStrictEqual(e, c)
@@ -172,7 +211,7 @@ describe('ArrayNode', function () {
 
     const d = new ConstantNode(3)
     const e = c.transform(function (node) {
-      return (node instanceof ArrayNode) ? d : node
+      return node instanceof ArrayNode ? d : node
     })
 
     assert.notStrictEqual(e, c)
@@ -234,9 +273,24 @@ describe('ArrayNode', function () {
 
     assert.strictEqual(c.equals(null), false)
     assert.strictEqual(c.equals(undefined), false)
-    assert.strictEqual(c.equals(new ArrayNode([new SymbolNode('x'), new ConstantNode(2)])), true)
-    assert.strictEqual(c.equals(new ArrayNode([new SymbolNode('x'), new ConstantNode(2), new ConstantNode(3)])), false)
-    assert.strictEqual(c.equals(new ArrayNode([new SymbolNode('x'), new ConstantNode(3)])), false)
+    assert.strictEqual(
+      c.equals(new ArrayNode([new SymbolNode('x'), new ConstantNode(2)])),
+      true
+    )
+    assert.strictEqual(
+      c.equals(
+        new ArrayNode([
+          new SymbolNode('x'),
+          new ConstantNode(2),
+          new ConstantNode(3),
+        ])
+      ),
+      false
+    )
+    assert.strictEqual(
+      c.equals(new ArrayNode([new SymbolNode('x'), new ConstantNode(3)])),
+      false
+    )
     assert.strictEqual(c.equals(new ArrayNode([new SymbolNode('x')])), false)
   })
 
@@ -271,7 +325,10 @@ describe('ArrayNode', function () {
 
     const n = new ArrayNode([a, b])
 
-    assert.strictEqual(n.toString({ handler: customFunction }), '[const(1, number), const(2, number), ]')
+    assert.strictEqual(
+      n.toString({ handler: customFunction }),
+      '[const(1, number), const(2, number), ]'
+    )
   })
 
   it('toJSON and fromJSON', function () {
@@ -284,7 +341,7 @@ describe('ArrayNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'ArrayNode',
-      items: [b, c]
+      items: [b, c],
     })
 
     const parsed = ArrayNode.fromJSON(json)
@@ -313,7 +370,10 @@ describe('ArrayNode', function () {
     const v2 = new ArrayNode([b, v1])
     const n = new ArrayNode([a, v2])
 
-    assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&\\begin{bmatrix}2&\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}')
+    assert.strictEqual(
+      n.toTex(),
+      '\\begin{bmatrix}1&\\begin{bmatrix}2&\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}'
+    )
   })
 
   it('should LaTeX a nested ArrayNode', function () {
@@ -323,13 +383,14 @@ describe('ArrayNode', function () {
       new ArrayNode([
         new ArrayNode([
           new ArrayNode([new ConstantNode(2)]),
-          new ArrayNode([
-            new ArrayNode([new ConstantNode(3)])
-          ])
-        ])
-      ])
+          new ArrayNode([new ArrayNode([new ConstantNode(3)])]),
+        ]),
+      ]),
     ])
-    assert.strictEqual(v.toTex(), '\\begin{bmatrix}1\\\\\\begin{bmatrix}2\\\\\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}')
+    assert.strictEqual(
+      v.toTex(),
+      '\\begin{bmatrix}1\\\\\\begin{bmatrix}2\\\\\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}'
+    )
   })
 
   it('should LaTeX an ArrayNode with custom toTex', function () {
@@ -344,7 +405,13 @@ describe('ArrayNode', function () {
         latex += '\\right]'
         return latex
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
+        return (
+          'const\\left(' +
+          node.value +
+          ', ' +
+          math.typeOf(node.value) +
+          '\\right)'
+        )
       }
     }
 
@@ -353,6 +420,9 @@ describe('ArrayNode', function () {
 
     const n = new ArrayNode([a, b])
 
-    assert.strictEqual(n.toTex({ handler: customFunction }), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]')
+    assert.strictEqual(
+      n.toTex({ handler: customFunction }),
+      '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]'
+    )
   })
 })

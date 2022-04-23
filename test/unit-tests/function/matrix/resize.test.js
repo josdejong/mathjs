@@ -5,8 +5,15 @@ import math from '../../../../src/defaultInstance.js'
 
 describe('resize', function () {
   it('should resize an array', function () {
-    const array = [[0, 1, 2], [3, 4, 5]]
-    assert.deepStrictEqual(math.resize(array, [3, 2]), [[0, 1], [3, 4], [0, 0]])
+    const array = [
+      [0, 1, 2],
+      [3, 4, 5],
+    ]
+    assert.deepStrictEqual(math.resize(array, [3, 2]), [
+      [0, 1],
+      [3, 4],
+      [0, 0],
+    ])
 
     // content should be cloned
     const x = math.complex(2, 3)
@@ -17,8 +24,15 @@ describe('resize', function () {
   })
 
   it('should resize an array with a default value', function () {
-    const array = [[0, 1, 2], [3, 4, 5]]
-    assert.deepStrictEqual(math.resize(array, [3, 2], 5), [[0, 1], [3, 4], [5, 5]])
+    const array = [
+      [0, 1, 2],
+      [3, 4, 5],
+    ]
+    assert.deepStrictEqual(math.resize(array, [3, 2], 5), [
+      [0, 1],
+      [3, 4],
+      [5, 5],
+    ])
     assert.deepStrictEqual(math.resize(array, [2]), [0, 3])
   })
 
@@ -33,16 +47,34 @@ describe('resize', function () {
     const two = math.bignumber(2)
     const three = math.bignumber(3)
     const array = [one, two, three]
-    assert.deepStrictEqual(math.resize(array, [three, two], zero),
-      [[one, zero], [two, zero], [three, zero]])
+    assert.deepStrictEqual(math.resize(array, [three, two], zero), [
+      [one, zero],
+      [two, zero],
+      [three, zero],
+    ])
   })
 
   it('should resize a matrix', function () {
-    const matrix = math.matrix([[0, 1, 2], [3, 4, 5]])
-    assert.deepStrictEqual(math.resize(matrix, [3, 2]),
-      math.matrix([[0, 1], [3, 4], [0, 0]]))
-    assert.deepStrictEqual(math.resize(matrix, math.matrix([3, 2])),
-      math.matrix([[0, 1], [3, 4], [0, 0]]))
+    const matrix = math.matrix([
+      [0, 1, 2],
+      [3, 4, 5],
+    ])
+    assert.deepStrictEqual(
+      math.resize(matrix, [3, 2]),
+      math.matrix([
+        [0, 1],
+        [3, 4],
+        [0, 0],
+      ])
+    )
+    assert.deepStrictEqual(
+      math.resize(matrix, math.matrix([3, 2])),
+      math.matrix([
+        [0, 1],
+        [3, 4],
+        [0, 0],
+      ])
+    )
 
     // content should be cloned
     const x = math.complex(2, 3)
@@ -53,12 +85,18 @@ describe('resize', function () {
   })
 
   it('should resize an array into a scalar', function () {
-    const array = [[0, 1, 2], [3, 4, 5]]
+    const array = [
+      [0, 1, 2],
+      [3, 4, 5],
+    ]
     assert.deepStrictEqual(math.resize(array, []), 0)
   })
 
   it('should resize a matrix into a scalar', function () {
-    const matrix = math.matrix([[0, 1, 2], [3, 4, 5]])
+    const matrix = math.matrix([
+      [0, 1, 2],
+      [3, 4, 5],
+    ])
     assert.deepStrictEqual(math.resize(matrix, []), 0)
   })
 
@@ -66,24 +104,48 @@ describe('resize', function () {
     const math2 = math.create({ matrix: 'Array' })
 
     assert.deepStrictEqual(math2.resize(2, [3], 4), [2, 4, 4])
-    assert.deepStrictEqual(math2.resize(2, [2, 2], 4), [[2, 4], [4, 4]])
+    assert.deepStrictEqual(math2.resize(2, [2, 2], 4), [
+      [2, 4],
+      [4, 4],
+    ])
   })
 
   it('should resize a vector into a 2d matrix', function () {
     const math2 = math.create({ matrix: 'Array' })
 
-    assert.deepStrictEqual(math2.resize([1, 2, 3], [3, 2], 0), [[1, 0], [2, 0], [3, 0]])
+    assert.deepStrictEqual(math2.resize([1, 2, 3], [3, 2], 0), [
+      [1, 0],
+      [2, 0],
+      [3, 0],
+    ])
   })
 
   it('should resize 2d matrix into a vector', function () {
     const math2 = math.create({ matrix: 'Array' })
 
-    assert.deepStrictEqual(math2.resize([[1, 2], [3, 4], [5, 6]], [3], 0), [1, 3, 5])
+    assert.deepStrictEqual(
+      math2.resize(
+        [
+          [1, 2],
+          [3, 4],
+          [5, 6],
+        ],
+        [3],
+        0
+      ),
+      [1, 3, 5]
+    )
   })
 
   it('should resize a scalar into a matrix', function () {
     assert.deepStrictEqual(math.resize(2, [3], 4), math.matrix([2, 4, 4]))
-    assert.deepStrictEqual(math.resize(2, [2, 2], 4), math.matrix([[2, 4], [4, 4]]))
+    assert.deepStrictEqual(
+      math.resize(2, [2, 2], 4),
+      math.matrix([
+        [2, 4],
+        [4, 4],
+      ])
+    )
   })
 
   it('should resize a scalar into a scalar', function () {
@@ -101,25 +163,52 @@ describe('resize', function () {
   })
 
   it('should throw an error on invalid arguments', function () {
-    assert.throws(function () { math.resize() })
-    assert.throws(function () { math.resize([]) })
-    assert.throws(function () { math.resize([], 2) })
-    assert.throws(function () { math.resize([], [], 4, 555) })
+    assert.throws(function () {
+      math.resize()
+    })
+    assert.throws(function () {
+      math.resize([])
+    })
+    assert.throws(function () {
+      math.resize([], 2)
+    })
+    assert.throws(function () {
+      math.resize([], [], 4, 555)
+    })
 
-    assert.throws(function () { math.resize([], ['no number']) }, /Invalid size/)
-    assert.throws(function () { math.resize([], [2.3]) }, /Invalid size/)
+    assert.throws(function () {
+      math.resize([], ['no number'])
+    }, /Invalid size/)
+    assert.throws(function () {
+      math.resize([], [2.3])
+    }, /Invalid size/)
 
-    assert.throws(function () { math.resize('hello', []) })
-    assert.throws(function () { math.resize('hello', [2, 3]) })
-    assert.throws(function () { math.resize('hello', [8], 'charzzz') })
-    assert.throws(function () { math.resize('hello', [8], 2) })
+    assert.throws(function () {
+      math.resize('hello', [])
+    })
+    assert.throws(function () {
+      math.resize('hello', [2, 3])
+    })
+    assert.throws(function () {
+      math.resize('hello', [8], 'charzzz')
+    })
+    assert.throws(function () {
+      math.resize('hello', [8], 2)
+    })
 
-    assert.throws(function () { math.resize('hello', ['no number']) }, /Invalid size/)
-    assert.throws(function () { math.resize('hello', [2.3]) }, /Invalid size/)
+    assert.throws(function () {
+      math.resize('hello', ['no number'])
+    }, /Invalid size/)
+    assert.throws(function () {
+      math.resize('hello', [2.3])
+    }, /Invalid size/)
   })
 
   it('should LaTeX resize', function () {
     const expression = math.parse('resize([1,2],1)')
-    assert.strictEqual(expression.toTex(), '\\mathrm{resize}\\left(\\begin{bmatrix}1\\\\2\\end{bmatrix},1\\right)')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\mathrm{resize}\\left(\\begin{bmatrix}1\\\\2\\end{bmatrix},1\\right)'
+    )
   })
 })

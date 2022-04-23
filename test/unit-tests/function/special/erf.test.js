@@ -60,35 +60,51 @@ describe('erf', function () {
   })
 
   it('should calculate the erf of each element in a matrix', function () {
-    math.subtract(
-      erf(math.matrix([0, 1, 2, 3, 4, 5])),
-      math.matrix([0, 1, 2, 3, 4, 5].map(function (x) {
-        return actualErfValues[x.toFixed(1)]
-      }))
-    ).forEach(function (diff) {
-      assert.ok(diff < DIFF_THRESH)
-    })
+    math
+      .subtract(
+        erf(math.matrix([0, 1, 2, 3, 4, 5])),
+        math.matrix(
+          [0, 1, 2, 3, 4, 5].map(function (x) {
+            return actualErfValues[x.toFixed(1)]
+          })
+        )
+      )
+      .forEach(function (diff) {
+        assert.ok(diff < DIFF_THRESH)
+      })
   })
 
   it('should calculate the erf of each element in an array', function () {
-    math.subtract(
-      erf(math.matrix([0, 1, 2, 3, 4, 5])),
-      math.matrix([0, 1, 2, 3, 4, 5].map(function (x) {
-        return actualErfValues[x.toFixed(1)]
-      }))
-    ).forEach(function (diff) {
-      assert.ok(diff < DIFF_THRESH)
-    })
+    math
+      .subtract(
+        erf(math.matrix([0, 1, 2, 3, 4, 5])),
+        math.matrix(
+          [0, 1, 2, 3, 4, 5].map(function (x) {
+            return actualErfValues[x.toFixed(1)]
+          })
+        )
+      )
+      .forEach(function (diff) {
+        assert.ok(diff < DIFF_THRESH)
+      })
   })
 
   it('should throw en error if called with invalid number of arguments', function () {
-    assert.throws(function () { erf() })
-    assert.throws(function () { erf(1, 3) })
+    assert.throws(function () {
+      erf()
+    })
+    assert.throws(function () {
+      erf(1, 3)
+    })
   })
 
   it('should throw en error if called with invalid type of argument', function () {
-    assert.throws(function () { erf(new Date()) })
-    assert.throws(function () { erf('a string') })
+    assert.throws(function () {
+      erf(new Date())
+    })
+    assert.throws(function () {
+      erf('a string')
+    })
   })
 
   it('should LaTeX erf', function () {
@@ -250,5 +266,5 @@ const actualErfValues = {
   6.6: 1.0,
   6.7: 1.0,
   6.8: 1.0,
-  6.9: 1.0
+  6.9: 1.0,
 }

@@ -7,7 +7,7 @@ const Unit = math.Unit
 const Complex = math.Complex
 
 describe('Complex', function () {
-  function assertComplex (complex, re, im) {
+  function assertComplex(complex, re, im) {
     assert(complex instanceof Complex)
     assert.strictEqual(complex.re, re)
     assert.strictEqual(complex.im, im)
@@ -57,7 +57,10 @@ describe('Complex', function () {
     })
 
     it('should not round off digits', function () {
-      assert.strictEqual(new Complex(1 / 3, 1 / 3).toString(), '0.3333333333333333 + 0.3333333333333333i')
+      assert.strictEqual(
+        new Complex(1 / 3, 1 / 3).toString(),
+        '0.3333333333333333 + 0.3333333333333333i'
+      )
     })
   })
 
@@ -83,8 +86,14 @@ describe('Complex', function () {
 
     it('should format a complex number with custom precision', function () {
       assert.strictEqual(new Complex(1 / 3, 1 / 3).format(3), '0.333 + 0.333i')
-      assert.strictEqual(new Complex(1 / 3, 1 / 3).format(4), '0.3333 + 0.3333i')
-      assert.strictEqual(new Complex(1 / 3, 1 / 3).format(), '0.3333333333333333 + 0.3333333333333333i')
+      assert.strictEqual(
+        new Complex(1 / 3, 1 / 3).format(4),
+        '0.3333 + 0.3333i'
+      )
+      assert.strictEqual(
+        new Complex(1 / 3, 1 / 3).format(),
+        '0.3333333333333333 + 0.3333333333333333i'
+      )
     })
 
     it('should round im to zero if very small compared to re', function () {
@@ -153,18 +162,42 @@ describe('Complex', function () {
     })
 
     it('should throw an exception if called with an invalid string', function () {
-      assert.throws(function () { Complex('') })
-      assert.throws(function () { Complex('2r') })
-      assert.throws(function () { Complex('str') })
-      assert.throws(function () { Complex('2ia') })
-      assert.throws(function () { Complex('3e + 4i') })
-      assert.throws(function () { Complex('3 + 4i foo') })
-      assert.throws(function () { Complex('3e1.2 + 4i') })
-      assert.throws(function () { Complex('3e1.2i') })
-      assert.throws(function () { Complex('.') })
-      assert.throws(function () { Complex('2 + .i') })
-      assert.throws(function () { Complex('4i foo') })
-      assert.throws(function () { Complex('i foo') })
+      assert.throws(function () {
+        Complex('')
+      })
+      assert.throws(function () {
+        Complex('2r')
+      })
+      assert.throws(function () {
+        Complex('str')
+      })
+      assert.throws(function () {
+        Complex('2ia')
+      })
+      assert.throws(function () {
+        Complex('3e + 4i')
+      })
+      assert.throws(function () {
+        Complex('3 + 4i foo')
+      })
+      assert.throws(function () {
+        Complex('3e1.2 + 4i')
+      })
+      assert.throws(function () {
+        Complex('3e1.2i')
+      })
+      assert.throws(function () {
+        Complex('.')
+      })
+      assert.throws(function () {
+        Complex('2 + .i')
+      })
+      assert.throws(function () {
+        Complex('4i foo')
+      })
+      assert.throws(function () {
+        Complex('i foo')
+      })
     })
   })
 
@@ -224,21 +257,29 @@ describe('Complex', function () {
     })
 
     it('should only accept an object with r and phi keys for 1 argument', function () {
-      assert.throws(function () { Complex({}) }, /Invalid Param/)
-      assert.throws(function () { Complex({ r: 1 }) }, /Invalid Param/)
-      assert.throws(function () { Complex({ phi: 1 }) }, /Invalid Param/)
-      assert.throws(function () { Complex('') }, /Invalid Param/)
+      assert.throws(function () {
+        Complex({})
+      }, /Invalid Param/)
+      assert.throws(function () {
+        Complex({ r: 1 })
+      }, /Invalid Param/)
+      assert.throws(function () {
+        Complex({ phi: 1 })
+      }, /Invalid Param/)
+      assert.throws(function () {
+        Complex('')
+      }, /Invalid Param/)
     })
   })
 
   describe('toPolar', function () {
     it('should return polar coordinates properly', function () {
-      const polar0 = (new Complex(0, 0)).toPolar()
-      const polar1 = (new Complex(3, 4)).toPolar()
-      const polar2 = (new Complex(-3, 4)).toPolar()
-      const polar3 = (new Complex(3, -4)).toPolar()
-      const polar4 = (new Complex(-3, -4)).toPolar()
-      const polar5 = (new Complex(0, -1)).toPolar()
+      const polar0 = new Complex(0, 0).toPolar()
+      const polar1 = new Complex(3, 4).toPolar()
+      const polar2 = new Complex(-3, 4).toPolar()
+      const polar3 = new Complex(3, -4).toPolar()
+      const polar4 = new Complex(-3, -4).toPolar()
+      const polar5 = new Complex(0, -1).toPolar()
       assert.strictEqual(polar0.r, 0)
       assert.strictEqual(polar1.r, 5)
       assert.strictEqual(polar2.r, 5)
@@ -255,8 +296,16 @@ describe('Complex', function () {
   })
 
   it('toJSON', function () {
-    assert.deepStrictEqual(new Complex(2, 4).toJSON(), { mathjs: 'Complex', re: 2, im: 4 })
-    assert.deepStrictEqual(new Complex(3, 0).toJSON(), { mathjs: 'Complex', re: 3, im: 0 })
+    assert.deepStrictEqual(new Complex(2, 4).toJSON(), {
+      mathjs: 'Complex',
+      re: 2,
+      im: 4,
+    })
+    assert.deepStrictEqual(new Complex(3, 0).toJSON(), {
+      mathjs: 'Complex',
+      re: 3,
+      im: 0,
+    })
   })
 
   it('fromJSON', function () {
@@ -272,8 +321,17 @@ describe('Complex', function () {
   })
 
   it('compare', function () {
-    assert.deepStrictEqual(Complex.compare(new Complex(3, 4), new Complex(2, 4)), 1)
-    assert.deepStrictEqual(Complex.compare(new Complex(2, 4), new Complex(2, 4)), 0)
-    assert.deepStrictEqual(Complex.compare(new Complex(2, 4), new Complex(2, 7)), -1)
+    assert.deepStrictEqual(
+      Complex.compare(new Complex(3, 4), new Complex(2, 4)),
+      1
+    )
+    assert.deepStrictEqual(
+      Complex.compare(new Complex(2, 4), new Complex(2, 4)),
+      0
+    )
+    assert.deepStrictEqual(
+      Complex.compare(new Complex(2, 4), new Complex(2, 7)),
+      -1
+    )
   })
 })

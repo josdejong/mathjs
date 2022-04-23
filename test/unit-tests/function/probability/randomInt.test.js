@@ -50,12 +50,17 @@ describe('randomInt', function () {
   })
 
   it('should throw an error in case of wrong number of arguments', function () {
-    assert.throws(function () { randomInt([2, 3], 10, 100, 12) }, / Too many arguments/)
+    assert.throws(function () {
+      randomInt([2, 3], 10, 100, 12)
+    }, / Too many arguments/)
   })
 
   it('should LaTeX randomInt', function () {
     const expression = math.parse('randomInt(0,100)')
-    assert.strictEqual(expression.toTex(), '\\mathrm{randomInt}\\left(0,100\\right)')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\mathrm{randomInt}\\left(0,100\\right)'
+    )
   })
 })
 
@@ -68,7 +73,9 @@ const assertUniformDistributionInt = function (values, min, max) {
   })
 
   valuesRange.forEach(function (val) {
-    count = values.filter(function (testVal) { return testVal === val }).length
+    count = values.filter(function (testVal) {
+      return testVal === val
+    }).length
     assertApproxEqual(count / values.length, 1 / valuesRange.length, 0.03)
   })
 }
@@ -79,13 +86,13 @@ const assertApproxEqual = function (testVal, val, tolerance) {
   else assert.ok(diff <= tolerance)
 }
 
-function times (n, callback) {
+function times(n, callback) {
   for (let i = 0; i < n; i++) {
     callback()
   }
 }
 
-function range (start, end) {
+function range(start, end) {
   const array = []
 
   for (let i = start; i < end; i++) {

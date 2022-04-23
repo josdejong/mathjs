@@ -15,23 +15,39 @@ describe('catalan', function () {
   })
 
   it('should not work with non-integer and negative input', function () {
-    assert.throws(function () { catalan(0.5) }, TypeError)
-    assert.throws(function () { catalan(-1) }, TypeError)
-    assert.throws(function () { catalan(math.bignumber(-3)) }, TypeError)
-    assert.throws(function () { catalan(math.bignumber(3.5)) }, TypeError)
+    assert.throws(function () {
+      catalan(0.5)
+    }, TypeError)
+    assert.throws(function () {
+      catalan(-1)
+    }, TypeError)
+    assert.throws(function () {
+      catalan(math.bignumber(-3))
+    }, TypeError)
+    assert.throws(function () {
+      catalan(math.bignumber(3.5))
+    }, TypeError)
   })
 
   it('should throw an error in case of non-integer input', function () {
-    assert.throws(function () { catalan(5.2) }, /Non-negative integer value expected/)
+    assert.throws(function () {
+      catalan(5.2)
+    }, /Non-negative integer value expected/)
   })
 
   it('should throw an error in case of negative input', function () {
-    assert.throws(function () { catalan(-2) }, /Non-negative integer value expected/)
+    assert.throws(function () {
+      catalan(-2)
+    }, /Non-negative integer value expected/)
   })
 
   it('should throw an error in case of wrong number or type of arguments', function () {
-    assert.throws(function () { catalan(5, 3, 2) })
-    assert.throws(function () { catalan(true, 'hello world') })
+    assert.throws(function () {
+      catalan(5, 3, 2)
+    })
+    assert.throws(function () {
+      catalan(true, 'hello world')
+    })
   })
 
   it('should LaTeX catalan', function () {

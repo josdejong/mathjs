@@ -1,7 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 
-function assertFalse (val) {
+function assertFalse(val) {
   assert(!val)
 }
 
@@ -24,9 +24,15 @@ describe('symbolicEqual', function () {
   })
 
   it('responds to context', function () {
-    assertFalse(math.symbolicEqual(
-      'x*y', 'y*x', { context: { multiply: { commutative: false } } }))
-    assert(math.symbolicEqual(
-      'abs(x)', 'x', { context: math.simplify.positiveContext }))
+    assertFalse(
+      math.symbolicEqual('x*y', 'y*x', {
+        context: { multiply: { commutative: false } },
+      })
+    )
+    assert(
+      math.symbolicEqual('abs(x)', 'x', {
+        context: math.simplify.positiveContext,
+      })
+    )
   })
 })

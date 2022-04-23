@@ -25,11 +25,18 @@ describe('isNumeric', function () {
   })
 
   it('should test isNumeric element wise on a Matrix', function () {
-    assert.deepStrictEqual(isNumeric(math.matrix([2, 'foo', true])), math.matrix([true, false, true]))
+    assert.deepStrictEqual(
+      isNumeric(math.matrix([2, 'foo', true])),
+      math.matrix([true, false, true])
+    )
   })
 
   it('should throw an error in case of unsupported data types', function () {
-    assert.throws(function () { isNumeric(new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { isNumeric({}) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      isNumeric(new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      isNumeric({})
+    }, /TypeError: Unexpected type of argument/)
   })
 })

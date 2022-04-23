@@ -10,7 +10,10 @@ describe('DimensionError', function () {
     assert.strictEqual(err.actual, 3)
     assert.strictEqual(err.expected, 5)
     assert.strictEqual(err.relation, undefined)
-    assert.strictEqual(err.toString(), 'DimensionError: Dimension mismatch (3 != 5)')
+    assert.strictEqual(
+      err.toString(),
+      'DimensionError: Dimension mismatch (3 != 5)'
+    )
   })
 
   it('should construct a DimensionError with numbers and a custom relation', function () {
@@ -21,7 +24,10 @@ describe('DimensionError', function () {
     assert.strictEqual(err.actual, 3)
     assert.strictEqual(err.expected, 5)
     assert.strictEqual(err.relation, '<')
-    assert.strictEqual(err.toString(), 'DimensionError: Dimension mismatch (3 < 5)')
+    assert.strictEqual(
+      err.toString(),
+      'DimensionError: Dimension mismatch (3 < 5)'
+    )
   })
 
   it('should construct a DimensionError with arrays', function () {
@@ -32,7 +38,10 @@ describe('DimensionError', function () {
     assert.deepStrictEqual(err.actual, [2, 3])
     assert.deepStrictEqual(err.expected, [1, 3])
     assert.strictEqual(err.relation, undefined)
-    assert.strictEqual(err.toString(), 'DimensionError: Dimension mismatch ([2, 3] != [1, 3])')
+    assert.strictEqual(
+      err.toString(),
+      'DimensionError: Dimension mismatch ([2, 3] != [1, 3])'
+    )
   })
 
   it('should construct a DimensionError with arrays and a custom relation', function () {
@@ -43,10 +52,15 @@ describe('DimensionError', function () {
     assert.deepStrictEqual(err.actual, [2, 3])
     assert.deepStrictEqual(err.expected, [1, 3])
     assert.strictEqual(err.relation, '<')
-    assert.strictEqual(err.toString(), 'DimensionError: Dimension mismatch ([2, 3] < [1, 3])')
+    assert.strictEqual(
+      err.toString(),
+      'DimensionError: Dimension mismatch ([2, 3] < [1, 3])'
+    )
   })
 
   it('should throw an error when operator new is missing', function () {
-    assert.throws(function () { DimensionError(3, 5) }, SyntaxError)
+    assert.throws(function () {
+      DimensionError(3, 5)
+    }, SyntaxError)
   })
 })

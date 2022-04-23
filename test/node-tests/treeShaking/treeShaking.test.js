@@ -19,15 +19,15 @@ describe('tree shaking', function () {
   const bundleName = 'treeShakingApp.bundle.js'
   const bundleLicenseName = 'treeShakingApp.bundle.js.LICENSE.txt'
 
-  before(() => {
+  before(function () {
     cleanup()
   })
 
-  after(() => {
+  after(function () {
     cleanup()
   })
 
-  function cleanup () {
+  function cleanup() {
     del.sync(path.join(__dirname, bundleName))
     del.sync(path.join(__dirname, bundleLicenseName))
   }
@@ -41,8 +41,8 @@ describe('tree shaking', function () {
       mode: 'production',
       output: {
         filename: bundleName,
-        path: __dirname
-      }
+        path: __dirname,
+      },
     }
 
     webpack(webpackConfig).run(function (err, stats) {
@@ -66,21 +66,30 @@ describe('tree shaking', function () {
       assert.strictEqual(info.assets[0].name, bundleName)
       const size = info.assets[0].size
       const maxSize = 120000
-      assert(size < maxSize,
+      assert(
+        size < maxSize,
         'bundled size must be small enough ' +
-        '(actual size: ' + size + ' bytes, max size: ' + maxSize + ' bytes)')
+          '(actual size: ' +
+          size +
+          ' bytes, max size: ' +
+          maxSize +
+          ' bytes)'
+      )
 
       // Execute the bundle to test whether it actually works
-      cp.exec('node ' + path.join(__dirname, bundleName), function (err, result) {
-        if (err) {
-          done(err)
-          return
+      cp.exec(
+        'node ' + path.join(__dirname, bundleName),
+        function (err, result) {
+          if (err) {
+            done(err)
+            return
+          }
+
+          assert.strictEqual(result.replace(/\s/g, ''), '3')
+
+          done()
         }
-
-        assert.strictEqual(result.replace(/\s/g, ''), '3')
-
-        done()
-      })
+      )
     })
   })
 })

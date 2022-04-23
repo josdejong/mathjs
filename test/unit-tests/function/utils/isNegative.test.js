@@ -53,16 +53,30 @@ describe('isNegative', function () {
   })
 
   it('should test isNegative element wise on an Array', function () {
-    assert.deepStrictEqual(isNegative([0, 5, 0, -3]), [false, false, false, true])
+    assert.deepStrictEqual(isNegative([0, 5, 0, -3]), [
+      false,
+      false,
+      false,
+      true,
+    ])
   })
 
   it('should test isNegative element wise on a Matrix', function () {
-    assert.deepStrictEqual(isNegative(math.matrix([0, 5, 0, -3])), math.matrix([false, false, false, true]))
+    assert.deepStrictEqual(
+      isNegative(math.matrix([0, 5, 0, -3])),
+      math.matrix([false, false, false, true])
+    )
   })
 
   it('should throw an error in case of unsupported data types', function () {
-    assert.throws(function () { isNegative(complex(2, 3)) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { isNegative(new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { isNegative({}) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      isNegative(complex(2, 3))
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      isNegative(new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      isNegative({})
+    }, /TypeError: Unexpected type of argument/)
   })
 })

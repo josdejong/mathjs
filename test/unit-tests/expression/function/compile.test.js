@@ -21,12 +21,18 @@ describe('compile', function () {
   })
 
   it('should throw an error on wrong number of arguments', function () {
-    assert.throws(function () { math.compile() }, /TypeError: Too few arguments/)
-    assert.throws(function () { math.compile('2+3', '3+4') }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      math.compile()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      math.compile('2+3', '3+4')
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error on wrong type of argument', function () {
-    assert.throws(function () { math.compile(math.complex(2, 3)) }, TypeError)
+    assert.throws(function () {
+      math.compile(math.complex(2, 3))
+    }, TypeError)
   })
 
   it('should LaTeX compile', function () {

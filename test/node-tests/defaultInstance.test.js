@@ -13,14 +13,14 @@ describe('defaultInstance', function () {
       precision: 64,
       predictable: false,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
     })
   })
 
   it('should create an instance of math.js with custom configuration', function () {
     const math1 = math.create({
       matrix: 'Array',
-      number: 'BigNumber'
+      number: 'BigNumber',
     })
 
     assert.strictEqual(typeof math1, 'object')
@@ -30,14 +30,14 @@ describe('defaultInstance', function () {
       precision: 64,
       predictable: false,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
     })
   })
 
   it('two instances of math.js should be isolated from each other', function () {
     const math1 = math.create()
     const math2 = math.create({
-      matrix: 'Array'
+      matrix: 'Array',
     })
 
     assert.notStrictEqual(math, math1)
@@ -59,12 +59,15 @@ describe('defaultInstance', function () {
     assert.deepStrictEqual(math1.sqrt(-4), math1.complex(0, 2))
     assert.strictEqual(math1.typeOf(math1.pi), 'number')
     assert.strictEqual(math1.typeOf(math1.Unit.UNITS.rad.value), 'number') // TODO: find a better way to unit test this
-    assert.strictEqual(math1.bignumber(1).div(3).toString(), '0.3333333333333333333333333333333333333333333333333333333333333333')
+    assert.strictEqual(
+      math1.bignumber(1).div(3).toString(),
+      '0.3333333333333333333333333333333333333333333333333333333333333333'
+    )
 
     const config = math1.config({
       number: 'BigNumber',
       precision: 4,
-      predictable: true
+      predictable: true,
     })
 
     assert.deepStrictEqual(config, {
@@ -73,7 +76,7 @@ describe('defaultInstance', function () {
       precision: 4,
       predictable: true,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
     })
 
     assert.ok(math1.isNaN(math1.sqrt(-4)))
@@ -84,7 +87,7 @@ describe('defaultInstance', function () {
     const config2 = math1.config({
       number: 'number',
       precision: 64,
-      predictable: false
+      predictable: false,
     })
 
     assert.deepStrictEqual(config2, {
@@ -93,23 +96,29 @@ describe('defaultInstance', function () {
       precision: 64,
       predictable: false,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
     })
 
     assert.deepStrictEqual(math1.sqrt(-4), math1.complex(0, 2))
     assert.strictEqual(math1.typeOf(math1.pi), 'number')
     assert.strictEqual(math1.typeOf(math1.Unit.UNITS.rad.value), 'number') // TODO: find a better way to unit test this
-    assert.strictEqual(math1.bignumber(1).div(3).toString(), '0.3333333333333333333333333333333333333333333333333333333333333333')
+    assert.strictEqual(
+      math1.bignumber(1).div(3).toString(),
+      '0.3333333333333333333333333333333333333333333333333333333333333333'
+    )
   })
 
   it('should not override a custom imported function when config changes', function () {
     const math1 = math.create()
 
-    math1.import({
-      sqrt: function customSqrt (x) {
-        return 'foo(' + x + ')'
-      }
-    }, { override: true })
+    math1.import(
+      {
+        sqrt: function customSqrt(x) {
+          return 'foo(' + x + ')'
+        },
+      },
+      { override: true }
+    )
 
     assert.strictEqual(math1.sqrt(4), 'foo(4)')
 

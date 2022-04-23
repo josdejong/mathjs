@@ -92,7 +92,10 @@ describe('pickRandom', function () {
     assert.strictEqual(pickRandom(possibles, number).length, number)
     assert.strictEqual(pickRandom(possibles, number, weights).length, number)
     assert.strictEqual(pickRandom(possibles, weights, number).length, number)
-    assert.strictEqual(pickRandom(possibles, { weights, number }).length, number)
+    assert.strictEqual(
+      pickRandom(possibles, { weights, number }).length,
+      number
+    )
   })
 
   it('should pick the given number of values from the given array also when this is more than the number of possibles', function () {
@@ -103,15 +106,27 @@ describe('pickRandom', function () {
     assert.strictEqual(pickRandom(possibles, number).length, number)
     assert.strictEqual(pickRandom(possibles, number, weights).length, number)
     assert.strictEqual(pickRandom(possibles, weights, number).length, number)
-    assert.strictEqual(pickRandom(possibles, { weights, number }).length, number)
+    assert.strictEqual(
+      pickRandom(possibles, { weights, number }).length,
+      number
+    )
   })
 
   it('should pick the given number of values element-wise', function () {
-    const possibles = [[1, 2], [3, 4]]
+    const possibles = [
+      [1, 2],
+      [3, 4],
+    ]
 
     assert.strictEqual(typeof pickRandom(possibles), 'number')
-    assert.strictEqual(typeof pickRandom(possibles, { elementWise: true }), 'number')
-    assert.strictEqual(Array.isArray(pickRandom(possibles, { elementWise: false })), true)
+    assert.strictEqual(
+      typeof pickRandom(possibles, { elementWise: true }),
+      'number'
+    )
+    assert.strictEqual(
+      Array.isArray(pickRandom(possibles, { elementWise: false })),
+      true
+    )
   })
 
   it('should return a matrix when input was a matrix', function () {
@@ -145,25 +160,38 @@ describe('pickRandom', function () {
   })
 
   it('should pick a number from the given multi dimensional array following an uniform distribution', function () {
-    const possibles = [[11, 12], [22, 23], [33, 34], [44, 45], [55, 56]]
+    const possibles = [
+      [11, 12],
+      [22, 23],
+      [33, 34],
+      [44, 45],
+      [55, 56],
+    ]
     const picked = []
 
     times(1000, () => picked.push(pickRandom(possibles)))
 
-    flatten(possibles).forEach(possible => {
-      const count = flatten(picked).filter(val => val === possible).length
+    flatten(possibles).forEach((possible) => {
+      const count = flatten(picked).filter((val) => val === possible).length
       assert.strictEqual(math.round(count / picked.length, 1), 0.1)
     })
   })
 
   it('should pick a value from the given multi dimensional array following an uniform distribution', function () {
     // just to be sure that works for any kind of array
-    const possibles = [[[11], [12]], ['test', 45], 'another test', 10, false, [1.3, 4.5, true]]
+    const possibles = [
+      [[11], [12]],
+      ['test', 45],
+      'another test',
+      10,
+      false,
+      [1.3, 4.5, true],
+    ]
     const picked = []
 
     times(1000, () => picked.push(pickRandom(possibles)))
-    flatten(possibles).forEach(possible => {
-      const count = picked.filter(val => val === possible).length
+    flatten(possibles).forEach((possible) => {
+      const count = picked.filter((val) => val === possible).length
       assert.strictEqual(math.round(count / picked.length, 1), 0.1)
     })
   })
@@ -177,19 +205,29 @@ describe('pickRandom', function () {
       picked.push(pickRandom(possibles))
     })
 
-    count = picked.filter(function (val) { return val === 11 }).length
+    count = picked.filter(function (val) {
+      return val === 11
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 22 }).length
+    count = picked.filter(function (val) {
+      return val === 22
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 33 }).length
+    count = picked.filter(function (val) {
+      return val === 33
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 44 }).length
+    count = picked.filter(function (val) {
+      return val === 44
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 55 }).length
+    count = picked.filter(function (val) {
+      return val === 55
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
@@ -205,19 +243,29 @@ describe('pickRandom', function () {
 
     assert.strictEqual(picked.length, 2000)
 
-    count = picked.filter(function (val) { return val === 11 }).length
+    count = picked.filter(function (val) {
+      return val === 11
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 22 }).length
+    count = picked.filter(function (val) {
+      return val === 22
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 33 }).length
+    count = picked.filter(function (val) {
+      return val === 33
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 44 }).length
+    count = picked.filter(function (val) {
+      return val === 44
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 55 }).length
+    count = picked.filter(function (val) {
+      return val === 55
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
   })
 
@@ -231,19 +279,29 @@ describe('pickRandom', function () {
       picked.push(pickRandom(possibles, weights))
     })
 
-    count = picked.filter(function (val) { return val === 11 }).length
+    count = picked.filter(function (val) {
+      return val === 11
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = picked.filter(function (val) { return val === 22 }).length
-    assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
+    count = picked.filter(function (val) {
+      return val === 22
+    }).length
+    assert.strictEqual(math.round(count / picked.length, 1), 0.4)
 
-    count = picked.filter(function (val) { return val === 33 }).length
+    count = picked.filter(function (val) {
+      return val === 33
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = picked.filter(function (val) { return val === 44 }).length
+    count = picked.filter(function (val) {
+      return val === 44
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 55 }).length
+    count = picked.filter(function (val) {
+      return val === 55
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
@@ -258,56 +316,85 @@ describe('pickRandom', function () {
       picked.push.apply(picked, pickRandom(possibles, number, weights))
     })
 
-    count = picked.filter(function (val) { return val === 11 }).length
+    count = picked.filter(function (val) {
+      return val === 11
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = picked.filter(function (val) { return val === 22 }).length
-    assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
+    count = picked.filter(function (val) {
+      return val === 22
+    }).length
+    assert.strictEqual(math.round(count / picked.length, 1), 0.4)
 
-    count = picked.filter(function (val) { return val === 33 }).length
+    count = picked.filter(function (val) {
+      return val === 33
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = picked.filter(function (val) { return val === 44 }).length
+    count = picked.filter(function (val) {
+      return val === 44
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 55 }).length
+    count = picked.filter(function (val) {
+      return val === 55
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
 
     times(1000, function () {
       picked.push.apply(picked, pickRandom(possibles, weights, number))
     })
 
-    count = picked.filter(function (val) { return val === 11 }).length
+    count = picked.filter(function (val) {
+      return val === 11
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
-    count = picked.filter(function (val) { return val === 22 }).length
-    assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
+    count = picked.filter(function (val) {
+      return val === 22
+    }).length
+    assert.strictEqual(math.round(count / picked.length, 1), 0.4)
 
-    count = picked.filter(function (val) { return val === 33 }).length
+    count = picked.filter(function (val) {
+      return val === 33
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0)
 
-    count = picked.filter(function (val) { return val === 44 }).length
+    count = picked.filter(function (val) {
+      return val === 44
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
-    count = picked.filter(function (val) { return val === 55 }).length
+    count = picked.filter(function (val) {
+      return val === 55
+    }).length
     assert.strictEqual(math.round(count / picked.length, 1), 0.3)
   })
 
   it('should throw an error in case of wrong type of arguments', function () {
-    assert.throws(function () { pickRandom(23) }, /Unexpected type of argument/)
-    assert.throws(function () { pickRandom() }, /Too few arguments/)
-    assert.throws(function () { pickRandom([], 23, [], 9) }, /Too many arguments/)
+    assert.throws(function () {
+      pickRandom(23)
+    }, /Unexpected type of argument/)
+    assert.throws(function () {
+      pickRandom()
+    }, /Too few arguments/)
+    assert.throws(function () {
+      pickRandom([], 23, [], 9)
+    }, /Too many arguments/)
 
     // TODO: more type testing...
   })
 
   it('should LaTeX pickRandom', function () {
     const expression = math.parse('pickRandom([1,2,3])')
-    assert.strictEqual(expression.toTex(), '\\mathrm{pickRandom}\\left(\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix}\\right)')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\mathrm{pickRandom}\\left(\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix}\\right)'
+    )
   })
 })
 
-function times (n, callback) {
+function times(n, callback) {
   for (let i = 0; i < n; i++) {
     callback()
   }

@@ -1,11 +1,17 @@
 import assert from 'assert'
-import { maxArgumentCount, memoize, memoizeCompare } from '../../../src/utils/function.js'
+import {
+  maxArgumentCount,
+  memoize,
+  memoizeCompare,
+} from '../../../src/utils/function.js'
 import { deepStrictEqual } from '../../../src/utils/object.js'
 
 describe('util.function', function () {
   describe('memoize', function () {
     it('should memoize a function with one argument', function () {
-      const f = function (x) { return x * x }
+      const f = function (x) {
+        return x * x
+      }
 
       const m = memoize(f)
 
@@ -14,7 +20,9 @@ describe('util.function', function () {
     })
 
     it('should memoize a function with two arguments', function () {
-      const f = function (x, y) { return x * y }
+      const f = function (x, y) {
+        return x * y
+      }
 
       const m = memoize(f)
 
@@ -26,7 +34,9 @@ describe('util.function', function () {
     })
 
     it('should memoize a function with objects as arguments', function () {
-      const f = function (obj) { return obj.x * obj.y }
+      const f = function (obj) {
+        return obj.x * obj.y
+      }
 
       const m = memoize(f)
 
@@ -36,7 +46,9 @@ describe('util.function', function () {
     })
 
     it('should memoize a function with a custom hashIt function', function () {
-      const f = function (obj) { return obj.id }
+      const f = function (obj) {
+        return obj.id
+      }
       const hashIt = function (args) {
         return 'id:' + args[0].id
       }
@@ -50,7 +62,9 @@ describe('util.function', function () {
 
     it('should really return the cached result', function () {
       let a = 2
-      const f = function (x) { return a } // trick: no pure function
+      const f = function (x) {
+        return a
+      } // trick: no pure function
 
       const m = memoize(f)
 
@@ -62,7 +76,10 @@ describe('util.function', function () {
 
   it('should limit the number of values stored', function () {
     let a = 1
-    const f = function (x) { a++; return a } // trick: no pure function
+    const f = function (x) {
+      a++
+      return a
+    } // trick: no pure function
 
     const m = memoize(f, { limit: 2 })
 
@@ -75,10 +92,10 @@ describe('util.function', function () {
   })
 
   describe('memoizeCompare', function () {
-    it('should memoize using comparison', () => {
+    it('should memoize using comparison', function () {
       let execCount = 0
 
-      function multiply (obj) {
+      function multiply(obj) {
         execCount++
         return obj.x * obj.y
       }
@@ -114,21 +131,21 @@ describe('util.function', function () {
       const a = function () {}
       a.signatures = {
         'number, number': function () {},
-        number: function () {}
+        number: function () {},
       }
       assert.strictEqual(maxArgumentCount(a), 2)
 
       const b = function () {}
       b.signatures = {
         number: function () {},
-        'number, number': function () {}
+        'number, number': function () {},
       }
       assert.strictEqual(maxArgumentCount(b), 2)
 
       const c = function () {}
       c.signatures = {
         number: function () {},
-        BigNumber: function () {}
+        BigNumber: function () {},
       }
       assert.strictEqual(maxArgumentCount(c), 1)
 
@@ -136,13 +153,16 @@ describe('util.function', function () {
       d.signatures = {
         'number,number': function () {},
         number: function () {},
-        'number,any,number': function () {}
+        'number,any,number': function () {},
       }
       assert.strictEqual(maxArgumentCount(d), 3)
     })
 
     it('should return -1 for regular functions', function () {
-      assert.strictEqual(maxArgumentCount(function () {}), -1)
+      assert.strictEqual(
+        maxArgumentCount(function () {}),
+        -1
+      )
     })
   })
 })

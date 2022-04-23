@@ -115,15 +115,25 @@ describe('random', function () {
   })
 
   it('should throw an error if called with invalid arguments', function () {
-    assert.throws(function () { random(1, 2, [4, 8]) })
-    assert.throws(function () { random(1, 2, 3, 6) })
+    assert.throws(function () {
+      random(1, 2, [4, 8])
+    })
+    assert.throws(function () {
+      random(1, 2, 3, 6)
+    })
 
-    assert.throws(function () { random('str', 10) })
-    assert.throws(function () { random(math2.bignumber(-10), 10) })
+    assert.throws(function () {
+      random('str', 10)
+    })
+    assert.throws(function () {
+      random(math2.bignumber(-10), 10)
+    })
   })
 
   it('should throw an error in case of wrong number of arguments', function () {
-    assert.throws(function () { random([2, 3], 10, 100, 12) }, /Too many arguments/)
+    assert.throws(function () {
+      random([2, 3], 10, 100, 12)
+    }, /Too many arguments/)
   })
 
   it('should LaTeX random', function () {
@@ -132,18 +142,22 @@ describe('random', function () {
   })
 })
 
-function assertUniformDistribution (values, min, max) {
+function assertUniformDistribution(values, min, max) {
   const interval = (max - min) / 10
   let count
   let i
-  count = values.filter(function (val) { return val < min }).length
+  count = values.filter(function (val) {
+    return val < min
+  }).length
   assert.strictEqual(count, 0)
-  count = values.filter(function (val) { return val > max }).length
+  count = values.filter(function (val) {
+    return val > max
+  }).length
   assert.strictEqual(count, 0)
 
   for (i = 0; i < 10; i++) {
     count = values.filter(function (val) {
-      return val >= (min + i * interval) && val < (min + (i + 1) * interval)
+      return val >= min + i * interval && val < min + (i + 1) * interval
     }).length
     assertApproxEqual(count / values.length, 0.1, 0.02)
   }
@@ -155,7 +169,7 @@ const assertApproxEqual = function (testVal, val, tolerance) {
   else assert.ok(diff <= tolerance)
 }
 
-function times (n, callback) {
+function times(n, callback) {
   for (let i = 0; i < n; i++) {
     callback()
   }

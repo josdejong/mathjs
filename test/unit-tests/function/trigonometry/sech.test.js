@@ -33,13 +33,19 @@ describe('sech', function () {
     assert.deepStrictEqual(sechBig(Big(3)), Big('0.099327927419433207829'))
 
     /* Pass in extra digits to pi. */
-    assert.deepStrictEqual(sechBig(biggermath.pi), Big('0.086266738334054414697'))
+    assert.deepStrictEqual(
+      sechBig(biggermath.pi),
+      Big('0.086266738334054414697')
+    )
   })
 
   it('should return the sech of a complex number', function () {
     approx.deepEqual(sech(complex('1')), complex(0.64805427366389, 0))
     approx.deepEqual(sech(complex('i')), complex(1.8508157176809, 0))
-    approx.deepEqual(sech(complex('2 + i')), complex(0.15117629826558, -0.22697367539372))
+    approx.deepEqual(
+      sech(complex('2 + i')),
+      complex(0.15117629826558, -0.22697367539372)
+    )
   })
 
   it('should return the sech of an angle', function () {
@@ -47,17 +53,27 @@ describe('sech', function () {
     approx.equal(sech(unit('-45deg')), 0.75493970871413)
 
     assert(math.isBigNumber(sech(unit(math.bignumber(90), 'deg'))))
-    approx.equal(sech(unit(math.bignumber(90), 'deg')).toNumber(), 0.39853681533839)
+    approx.equal(
+      sech(unit(math.bignumber(90), 'deg')).toNumber(),
+      0.39853681533839
+    )
 
-    approx.deepEqual(sech(unit(complex('2 + i'), 'rad')), complex(0.15117629826558, -0.22697367539372))
+    approx.deepEqual(
+      sech(unit(complex('2 + i'), 'rad')),
+      complex(0.15117629826558, -0.22697367539372)
+    )
   })
 
   it('should throw an error if called with an invalid unit', function () {
-    assert.throws(function () { sech(unit('5 celsius')) })
+    assert.throws(function () {
+      sech(unit('5 celsius'))
+    })
   })
 
   it('should throw an error if called with a string', function () {
-    assert.throws(function () { sech('string') })
+    assert.throws(function () {
+      sech('string')
+    })
   })
 
   const sech123 = [0.64805427366389, 0.26580222883408, 0.099327927419433]
@@ -71,8 +87,12 @@ describe('sech', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { sech() }, /TypeError: Too few arguments/)
-    assert.throws(function () { sech(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      sech()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      sech(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX sech', function () {

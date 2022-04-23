@@ -12,9 +12,18 @@ describe('reviver', function () {
 
   it('should parse a stringified numbers', function () {
     assert.strictEqual(JSON.parse('2.3', reviver), 2.3)
-    assert.strictEqual(JSON.parse('{"mathjs":"number","value":"2.3"}', reviver), 2.3)
-    assert.strictEqual(JSON.parse('{"mathjs":"number","value":"Infinity"}', reviver), Infinity)
-    assert.strictEqual(JSON.parse('{"mathjs":"number","value":"-Infinity"}', reviver), -Infinity)
+    assert.strictEqual(
+      JSON.parse('{"mathjs":"number","value":"2.3"}', reviver),
+      2.3
+    )
+    assert.strictEqual(
+      JSON.parse('{"mathjs":"number","value":"Infinity"}', reviver),
+      Infinity
+    )
+    assert.strictEqual(
+      JSON.parse('{"mathjs":"number","value":"-Infinity"}', reviver),
+      -Infinity
+    )
     assert(isNaN(JSON.parse('{"mathjs":"number","value":"NaN"}', reviver)))
   })
 
@@ -81,7 +90,8 @@ describe('reviver', function () {
   })
 
   it('should parse a stringified ResultSet', function () {
-    const json = '{"mathjs":"ResultSet","entries":[1,2,{"mathjs":"Complex","re":3,"im":4}]}'
+    const json =
+      '{"mathjs":"ResultSet","entries":[1,2,{"mathjs":"Complex","re":3,"im":4}]}'
     const r = new math.ResultSet([1, 2, new math.Complex(3, 4)])
 
     const obj = JSON.parse(json, reviver)
@@ -91,10 +101,11 @@ describe('reviver', function () {
   })
 
   it('should parse a stringified Index', function () {
-    const json = '{"mathjs":"Index","dimensions":[' +
-        '{"mathjs":"Range","start":0,"end":10,"step":1},' +
-        '{"mathjs":"Range","start":2,"end":3,"step":1}' +
-        ']}'
+    const json =
+      '{"mathjs":"Index","dimensions":[' +
+      '{"mathjs":"Range","start":0,"end":10,"step":1},' +
+      '{"mathjs":"Range","start":2,"end":3,"step":1}' +
+      ']}'
     const i = new math.Index(new Range(0, 10), new Range(2, 3))
 
     const obj = JSON.parse(json, reviver)
@@ -115,7 +126,13 @@ describe('reviver', function () {
 
   it('should parse a stringified Matrix, dense storage format', function () {
     const json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,4]],"size":[2,2]}'
-    const m = math.matrix([[1, 2], [3, 4]], 'dense')
+    const m = math.matrix(
+      [
+        [1, 2],
+        [3, 4],
+      ],
+      'dense'
+    )
 
     const obj = JSON.parse(json, reviver)
 
@@ -124,9 +141,16 @@ describe('reviver', function () {
   })
 
   it('should parse a stringified Matrix containing a complex number, dense storage format', function () {
-    const json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}'
+    const json =
+      '{"mathjs":"DenseMatrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}'
     const c = new math.Complex(4, 5)
-    const m = math.matrix([[1, 2], [3, c]], 'dense')
+    const m = math.matrix(
+      [
+        [1, 2],
+        [3, c],
+      ],
+      'dense'
+    )
 
     const obj = JSON.parse(json, reviver)
 
@@ -136,8 +160,15 @@ describe('reviver', function () {
   })
 
   it('should parse a Matrix, sparse', function () {
-    const json = '{"mathjs":"SparseMatrix","values":[1,3,2,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}'
-    const m = math.matrix([[1, 2], [3, 4]], 'sparse')
+    const json =
+      '{"mathjs":"SparseMatrix","values":[1,3,2,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}'
+    const m = math.matrix(
+      [
+        [1, 2],
+        [3, 4],
+      ],
+      'sparse'
+    )
 
     const obj = JSON.parse(json, reviver)
 
@@ -172,13 +203,13 @@ describe('reviver', function () {
       args: [
         {
           mathjs: 'ConstantNode',
-          value: 2
+          value: 2,
         },
         {
           mathjs: 'FunctionNode',
           fn: {
             mathjs: 'SymbolNode',
-            name: 'sin'
+            name: 'sin',
           },
           args: [
             {
@@ -188,19 +219,19 @@ describe('reviver', function () {
               args: [
                 {
                   mathjs: 'ConstantNode',
-                  value: 3
+                  value: 3,
                 },
                 {
                   mathjs: 'SymbolNode',
-                  name: 'x'
-                }
+                  name: 'x',
+                },
               ],
-              implicit: true
-            }
-          ]
-        }
+              implicit: true,
+            },
+          ],
+        },
       ],
-      implicit: false
+      implicit: false,
     })
 
     const node = JSON.parse(json, reviver)

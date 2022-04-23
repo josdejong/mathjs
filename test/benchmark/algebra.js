@@ -4,7 +4,7 @@ const Benchmark = require('benchmark')
 const padRight = require('pad-right')
 const math = require('../..')
 
-function pad (text) {
+function pad(text) {
   return padRight(text, 40, ' ')
 }
 
@@ -31,6 +31,5 @@ suite
   .on('cycle', function (event) {
     console.log(String(event.target))
   })
-  .on('complete', function () {
-  })
+  .on('complete', function () {})
   .run()

@@ -68,20 +68,44 @@ describe('asech', function () {
   it('should be the inverse function of bignumber sech', function () {
     assert.deepStrictEqual(asechBig(bigmath.sech(Big(-1))), Big(1))
     assert.deepStrictEqual(asechBig(bigmath.sech(Big(0))), Big(0))
-    assert.deepStrictEqual(asechBig(bigmath.sech(Big(0.5))), Big('0.49999999999999999995'))
+    assert.deepStrictEqual(
+      asechBig(bigmath.sech(Big(0.5))),
+      Big('0.49999999999999999995')
+    )
     assert.deepStrictEqual(asechBig(bigmath.sech(Big(2))), Big(2))
 
     /* Pass in more digits to pi. */
-    assert.deepStrictEqual(asechBig(biggermath.sech(Big(0.1))), Big('0.10000000000000000012'))
+    assert.deepStrictEqual(
+      asechBig(biggermath.sech(Big(0.1))),
+      Big('0.10000000000000000012')
+    )
   })
 
   it('should return the arcsech of a complex number', function () {
-    approx.deepEqual(asech(complex('2+3i')), complex(0.23133469857397, -1.420410722467035))
-    approx.deepEqual(asech(complex('2-3i')), complex(0.23133469857397, 1.420410722467035))
-    approx.deepEqual(asech(complex('-2+3i')), complex(0.23133469857397, -1.72118193112275858))
-    approx.deepEqual(asech(complex('-2-3i')), complex(0.23133469857397, 1.72118193112275858))
-    approx.deepEqual(asech(complex('1+i')), complex(0.5306375309525178, -1.11851787964370594))
-    approx.deepEqual(asech(complex('i')), complex(0.881373587019543, -1.570796326794897))
+    approx.deepEqual(
+      asech(complex('2+3i')),
+      complex(0.23133469857397, -1.420410722467035)
+    )
+    approx.deepEqual(
+      asech(complex('2-3i')),
+      complex(0.23133469857397, 1.420410722467035)
+    )
+    approx.deepEqual(
+      asech(complex('-2+3i')),
+      complex(0.23133469857397, -1.72118193112275858)
+    )
+    approx.deepEqual(
+      asech(complex('-2-3i')),
+      complex(0.23133469857397, 1.72118193112275858)
+    )
+    approx.deepEqual(
+      asech(complex('1+i')),
+      complex(0.5306375309525178, -1.11851787964370594)
+    )
+    approx.deepEqual(
+      asech(complex('i')),
+      complex(0.881373587019543, -1.570796326794897)
+    )
     approx.deepEqual(asech(complex('2')), complex(0, pi / 3))
     assert.deepStrictEqual(asech(complex('1')), complex(-0, 0))
     approx.deepEqual(asech(complex('0.5')), complex(1.3169578969248, 0))
@@ -91,12 +115,18 @@ describe('asech', function () {
   })
 
   it('should throw an error if called with a unit', function () {
-    assert.throws(function () { asech(unit('45deg')) })
-    assert.throws(function () { asech(unit('5 celsius')) })
+    assert.throws(function () {
+      asech(unit('45deg'))
+    })
+    assert.throws(function () {
+      asech(unit('5 celsius'))
+    })
   })
 
   it('should throw an error if called with a string', function () {
-    assert.throws(function () { asech('string') })
+    assert.throws(function () {
+      asech('string')
+    })
   })
 
   it('should calculate the arcsec element-wise for arrays and matrices', function () {
@@ -106,12 +136,19 @@ describe('asech', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { asech() }, /TypeError: Too few arguments/)
-    assert.throws(function () { asech(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      asech()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      asech(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX asech', function () {
     const expression = math.parse('asech(1)')
-    assert.strictEqual(expression.toTex(), '\\mathrm{sech}^{-1}\\left(1\\right)')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\mathrm{sech}^{-1}\\left(1\\right)'
+    )
   })
 })

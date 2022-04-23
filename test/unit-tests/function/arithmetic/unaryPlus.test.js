@@ -49,7 +49,10 @@ describe('unaryPlus', function () {
   it('should perform unary plus of a big number', function () {
     assert.deepStrictEqual(math.unaryPlus(bignumber(2)), bignumber(2))
     assert.deepStrictEqual(math.unaryPlus(bignumber(-2)), bignumber(-2))
-    assert.deepStrictEqual(math.unaryPlus(bignumber(0)).valueOf(), bignumber(0).valueOf())
+    assert.deepStrictEqual(
+      math.unaryPlus(bignumber(0)).valueOf(),
+      bignumber(0).valueOf()
+    )
   })
 
   it('should perform unary plus of a fraction', function () {
@@ -64,8 +67,14 @@ describe('unaryPlus', function () {
   it('should perform unary plus of a complex number', function () {
     assert.strictEqual(math.unaryPlus(math.complex(3, 2)).toString(), '3 + 2i')
     assert.strictEqual(math.unaryPlus(math.complex(3, -2)).toString(), '3 - 2i')
-    assert.strictEqual(math.unaryPlus(math.complex(-3, 2)).toString(), '-3 + 2i')
-    assert.strictEqual(math.unaryPlus(math.complex(-3, -2)).toString(), '-3 - 2i')
+    assert.strictEqual(
+      math.unaryPlus(math.complex(-3, 2)).toString(),
+      '-3 + 2i'
+    )
+    assert.strictEqual(
+      math.unaryPlus(math.complex(-3, -2)).toString(),
+      '-3 - 2i'
+    )
   })
 
   it('should perform unary plus of a unit', function () {
@@ -73,22 +82,45 @@ describe('unaryPlus', function () {
   })
 
   it('should perform element-wise unary plus on a matrix', function () {
-    const a2 = math.matrix([[1, 2], [3, 4]])
+    const a2 = math.matrix([
+      [1, 2],
+      [3, 4],
+    ])
     const a7 = math.unaryPlus(a2)
     assert.ok(a7 instanceof math.Matrix)
     assert.deepStrictEqual(a7.size(), [2, 2])
-    assert.deepStrictEqual(a7.valueOf(), [[1, 2], [3, 4]])
-    assert.deepStrictEqual(math.unaryPlus([[1, 2], [3, 4]]), [[1, 2], [3, 4]])
+    assert.deepStrictEqual(a7.valueOf(), [
+      [1, 2],
+      [3, 4],
+    ])
+    assert.deepStrictEqual(
+      math.unaryPlus([
+        [1, 2],
+        [3, 4],
+      ]),
+      [
+        [1, 2],
+        [3, 4],
+      ]
+    )
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { math.unaryPlus() }, /TypeError: Too few arguments/)
-    assert.throws(function () { math.unaryPlus(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      math.unaryPlus()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      math.unaryPlus(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of argument', function () {
-    assert.throws(function () { math.unaryPlus(new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { math.unaryPlus(null) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      math.unaryPlus(new Date())
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      math.unaryPlus(null)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX unaryPlus', function () {

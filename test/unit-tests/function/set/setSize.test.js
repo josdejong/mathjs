@@ -22,10 +22,14 @@ describe('setSize', function () {
   })
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () { math.setSize([], []) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      math.setSize([], [])
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { math.setSize() }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      math.setSize()
+    }, /TypeError: Too few arguments/)
   })
 })

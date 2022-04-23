@@ -16,15 +16,15 @@ describe('cot', function () {
 
   it('should return the cotan of a number', function () {
     approx.equal(cot(0), Infinity)
-    approx.equal(1 / cot(pi * 1 / 8), 0.414213562373095)
-    approx.equal(1 / cot(pi * 1 / 4), 1)
-    approx.equal(cot(pi * 2 / 4), 0)
-    approx.equal(1 / cot(pi * 3 / 4), -1)
-    approx.equal(1 / cot(pi * 4 / 4), 0)
-    approx.equal(1 / cot(pi * 5 / 4), 1)
-    approx.equal(cot(pi * 6 / 4), 0)
-    approx.equal(1 / cot(pi * 7 / 4), -1)
-    approx.equal(1 / cot(pi * 8 / 4), 0)
+    approx.equal(1 / cot((pi * 1) / 8), 0.414213562373095)
+    approx.equal(1 / cot((pi * 1) / 4), 1)
+    approx.equal(cot((pi * 2) / 4), 0)
+    approx.equal(1 / cot((pi * 3) / 4), -1)
+    approx.equal(1 / cot((pi * 4) / 4), 0)
+    approx.equal(1 / cot((pi * 5) / 4), 1)
+    approx.equal(cot((pi * 6) / 4), 0)
+    approx.equal(1 / cot((pi * 7) / 4), -1)
+    approx.equal(1 / cot((pi * 8) / 4), 0)
   })
 
   it('should return the cotan of a bignumber', function () {
@@ -42,7 +42,10 @@ describe('cot', function () {
     assert.strictEqual(result2.constructor.precision, 20)
     assert.strictEqual(bigPi.constructor.precision, 20)
 
-    assert.deepStrictEqual(bigmath.cot(bigPi.div(2)), Big('-1.4142135623730950488e-15')) // about zero
+    assert.deepStrictEqual(
+      bigmath.cot(bigPi.div(2)),
+      Big('-1.4142135623730950488e-15')
+    ) // about zero
     assert.deepStrictEqual(bigmath.cot(bigPi), Big('26769019461318409709')) // about infinity
   })
 
@@ -55,7 +58,10 @@ describe('cot', function () {
     approx.deepEqual(cot(complex('-2-3i')), complex(re, im))
     approx.deepEqual(cot(complex('i')), complex(0, -1.313035285499331))
     approx.deepEqual(cot(complex('1')), complex(0.642092615934331, 0))
-    approx.deepEqual(cot(complex('1+i')), complex(0.217621561854403, -0.868014142895925))
+    approx.deepEqual(
+      cot(complex('1+i')),
+      complex(0.217621561854403, -0.868014142895925)
+    )
   })
 
   it('should return the cotan of an angle', function () {
@@ -65,15 +71,22 @@ describe('cot', function () {
     assert(math.isBigNumber(cot(unit(math.bignumber(45), 'deg'))))
     approx.equal(cot(unit(math.bignumber(45), 'deg')).toNumber(), 1)
 
-    approx.deepEqual(cot(math.unit(complex('1+i'), 'rad')), complex(0.217621561854403, -0.868014142895925))
+    approx.deepEqual(
+      cot(math.unit(complex('1+i'), 'rad')),
+      complex(0.217621561854403, -0.868014142895925)
+    )
   })
 
   it('should throw an error if called with an invalid unit', function () {
-    assert.throws(function () { cot(unit('5 celsius')) })
+    assert.throws(function () {
+      cot(unit('5 celsius'))
+    })
   })
 
   it('should throw an error if called with a string', function () {
-    assert.throws(function () { cot('string') })
+    assert.throws(function () {
+      cot('string')
+    })
   })
 
   const cot123 = [0.642092615934331, -0.457657554360286, -7.015252551434534]
@@ -87,8 +100,12 @@ describe('cot', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { cot() }, /TypeError: Too few arguments/)
-    assert.throws(function () { cot(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      cot()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      cot(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX cot', function () {

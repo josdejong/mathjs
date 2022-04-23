@@ -10,7 +10,7 @@ const assert = require('assert')
 const math = create(all)
 console.timeEnd(timeLabel)
 
-function pad (text) {
+function pad(text) {
   return padRight(text, 10, ' ')
 }
 
@@ -26,11 +26,10 @@ suite
 
     // force to load all lazy functions
     const everything = Object.values(instance)
-    assert(everything.find(fn => fn.name === 'add'))
+    assert(everything.find((fn) => fn.name === 'add'))
   })
   .on('cycle', function (event) {
     console.log(String(event.target))
   })
-  .on('complete', function () {
-  })
+  .on('complete', function () {})
   .run()

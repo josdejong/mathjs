@@ -44,7 +44,10 @@ describe('acosh', function () {
     assert.deepStrictEqual(acosh(arg), Big(0))
     assert.deepStrictEqual(acoshBig(Big(2)), Big('1.3169578969248167086'))
     assert.deepStrictEqual(acoshBig(Big(3)), Big('1.7627471740390860505'))
-    assert.deepStrictEqual(acoshBig(bigmath.pi).toString(), '1.811526272460853107')
+    assert.deepStrictEqual(
+      acoshBig(bigmath.pi).toString(),
+      '1.811526272460853107'
+    )
 
     // Make sure arg was not changed
     assert.deepStrictEqual(arg, Big(1))
@@ -65,8 +68,14 @@ describe('acosh', function () {
 
     // Pass in extra digit
     const arg = Big(0.1)
-    assert.deepStrictEqual(acoshBig(biggermath.cosh(arg)), Big('0.10000000000000000012'))
-    assert.deepStrictEqual(acoshBig(biggermath.cosh(Big(0.5))), Big('0.49999999999999999995'))
+    assert.deepStrictEqual(
+      acoshBig(biggermath.cosh(arg)),
+      Big('0.10000000000000000012')
+    )
+    assert.deepStrictEqual(
+      acoshBig(biggermath.cosh(Big(0.5))),
+      Big('0.49999999999999999995')
+    )
     assert.deepStrictEqual(arg, Big(0.1))
   })
 
@@ -76,23 +85,47 @@ describe('acosh', function () {
   })
 
   it('should return the arccosh of a complex number', function () {
-    approx.deepEqual(acosh(complex('2+3i')), complex(1.9833870299165, 1.000143542473797))
-    approx.deepEqual(acosh(complex('2-3i')), complex(1.9833870299165, -1.000143542473797))
-    approx.deepEqual(acosh(complex('-2+3i')), complex(1.9833870299165, 2.14144911111600))
-    approx.deepEqual(acosh(complex('-2-3i')), complex(1.9833870299165, -2.14144911111600))
-    approx.deepEqual(acosh(complex('1+i')), complex(1.061275061905036, 0.904556894302381))
-    approx.deepEqual(acosh(complex('i')), complex(0.881373587019543, 1.570796326794897))
+    approx.deepEqual(
+      acosh(complex('2+3i')),
+      complex(1.9833870299165, 1.000143542473797)
+    )
+    approx.deepEqual(
+      acosh(complex('2-3i')),
+      complex(1.9833870299165, -1.000143542473797)
+    )
+    approx.deepEqual(
+      acosh(complex('-2+3i')),
+      complex(1.9833870299165, 2.141449111116)
+    )
+    approx.deepEqual(
+      acosh(complex('-2-3i')),
+      complex(1.9833870299165, -2.141449111116)
+    )
+    approx.deepEqual(
+      acosh(complex('1+i')),
+      complex(1.061275061905036, 0.904556894302381)
+    )
+    approx.deepEqual(
+      acosh(complex('i')),
+      complex(0.881373587019543, 1.570796326794897)
+    )
     assert.deepStrictEqual(acosh(complex('1')), complex(-0, 0))
     approx.deepEqual(acosh(complex('0')), complex(0, pi / 2))
   })
 
   it('should throw an error if called with a unit', function () {
-    assert.throws(function () { acosh(unit('45deg')) })
-    assert.throws(function () { acosh(unit('5 celsius')) })
+    assert.throws(function () {
+      acosh(unit('45deg'))
+    })
+    assert.throws(function () {
+      acosh(unit('5 celsius'))
+    })
   })
 
   it('should throw an error if called with a string', function () {
-    assert.throws(function () { acosh('string') })
+    assert.throws(function () {
+      acosh('string')
+    })
   })
 
   it('should calculate the arccos element-wise for arrays and matrices', function () {
@@ -102,8 +135,12 @@ describe('acosh', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { acosh() }, /TypeError: Too few arguments/)
-    assert.throws(function () { acosh(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      acosh()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      acosh(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX acosh', function () {

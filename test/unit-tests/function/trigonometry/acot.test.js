@@ -53,8 +53,12 @@ describe('acot', function () {
 
     // Hit Newton's method case
     const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
-    assert.deepStrictEqual(bigmath61.acot(bigmath61.bignumber(1.1)),
-      bigmath61.bignumber('0.7378150601204649138136281298033902035827333552504444896340492'))
+    assert.deepStrictEqual(
+      bigmath61.acot(bigmath61.bignumber(1.1)),
+      bigmath61.bignumber(
+        '0.7378150601204649138136281298033902035827333552504444896340492'
+      )
+    )
   })
 
   it('should be the inverse function of cot', function () {
@@ -71,9 +75,18 @@ describe('acot', function () {
     assert.deepStrictEqual(acotBig(cotBig(Big(0))), Big(0))
     assert.deepStrictEqual(acotBig(cotBig(Big(0.1))), Big(0.1))
     assert.deepStrictEqual(acotBig(cotBig(Big(0.5))), Big(0.5))
-    assert.deepStrictEqual(acotBig(cotBig(Big(2))), Big('-1.1415926535897932385'))
-    assert.deepStrictEqual(acotBig(cotBig(bigmath.pi.div(2).minus(1e-10))).toString(), '1.5707963266948966193')
-    assert.deepStrictEqual(acotBig(cotBig(bigmath.pi.div(2))).toString(), '-1.570796326794895205')
+    assert.deepStrictEqual(
+      acotBig(cotBig(Big(2))),
+      Big('-1.1415926535897932385')
+    )
+    assert.deepStrictEqual(
+      acotBig(cotBig(bigmath.pi.div(2).minus(1e-10))).toString(),
+      '1.5707963266948966193'
+    )
+    assert.deepStrictEqual(
+      acotBig(cotBig(bigmath.pi.div(2))).toString(),
+      '-1.570796326794895205'
+    )
   })
 
   it('should return the arccot of a complex number', function () {
@@ -85,16 +98,25 @@ describe('acot', function () {
     approx.deepEqual(acot(complex('-2-3i')), complex(-re, im))
     assert.deepStrictEqual(acot(complex('i')), complex(0, -Infinity))
     approx.deepEqual(acot(complex('1')), complex(pi / 4, 0))
-    approx.deepEqual(acot(complex('1+i')), complex(0.553574358897, -0.4023594781085))
+    approx.deepEqual(
+      acot(complex('1+i')),
+      complex(0.553574358897, -0.4023594781085)
+    )
   })
 
   it('should throw an error if called with a unit', function () {
-    assert.throws(function () { acot(unit('45deg')) })
-    assert.throws(function () { acot(unit('5 celsius')) })
+    assert.throws(function () {
+      acot(unit('45deg'))
+    })
+    assert.throws(function () {
+      acot(unit('5 celsius'))
+    })
   })
 
   it('should throw an error if called with a string', function () {
-    assert.throws(function () { acot('string') })
+    assert.throws(function () {
+      acot('string')
+    })
   })
 
   it('should calculate the arccot element-wise for arrays and matrices', function () {
@@ -105,8 +127,12 @@ describe('acot', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { acot() }, /TypeError: Too few arguments/)
-    assert.throws(function () { acot(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      acot()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      acot(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX acot', function () {

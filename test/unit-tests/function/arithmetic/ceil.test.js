@@ -3,7 +3,19 @@ import assert from 'assert'
 
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
-const { bignumber, ceil, complex, fraction, i, isFraction, matrix, pi, unit, parse, sparse } = math
+const {
+  bignumber,
+  ceil,
+  complex,
+  fraction,
+  i,
+  isFraction,
+  matrix,
+  pi,
+  unit,
+  parse,
+  sparse,
+} = math
 
 describe('ceil', function () {
   it('should return the ceil of a boolean', function () {
@@ -139,20 +151,56 @@ describe('ceil', function () {
     assert.deepStrictEqual(ceil(bignumber(7.999999999999999)), bignumber(8))
     assert.deepStrictEqual(ceil(bignumber(-3.0000000000000004)), bignumber(-3))
     assert.deepStrictEqual(ceil(bignumber(-7.999999999999999)), bignumber(-8))
-    assert.deepStrictEqual(ceil(bignumber(30000.000000000004)), bignumber(30000))
-    assert.deepStrictEqual(ceil(bignumber(799999.9999999999)), bignumber(800000))
-    assert.deepStrictEqual(ceil(bignumber(-30000.000000000004)), bignumber(-30000))
-    assert.deepStrictEqual(ceil(bignumber(-799999.9999999999)), bignumber(-800000))
+    assert.deepStrictEqual(
+      ceil(bignumber(30000.000000000004)),
+      bignumber(30000)
+    )
+    assert.deepStrictEqual(
+      ceil(bignumber(799999.9999999999)),
+      bignumber(800000)
+    )
+    assert.deepStrictEqual(
+      ceil(bignumber(-30000.000000000004)),
+      bignumber(-30000)
+    )
+    assert.deepStrictEqual(
+      ceil(bignumber(-799999.9999999999)),
+      bignumber(-800000)
+    )
   })
 
   it('should throw an error for units', function () {
-    assert.throws(function () { ceil(unit('5cm')) }, TypeError, 'Function ceil(unit) not supported')
+    assert.throws(
+      function () {
+        ceil(unit('5cm'))
+      },
+      TypeError,
+      'Function ceil(unit) not supported'
+    )
   })
 
   it('should throw an error if requested number of decimals is incorrect', function () {
-    assert.throws(function () { ceil(2.5, 1.5) }, TypeError, 'Number of decimals in function round must be an integer')
-    assert.throws(function () { ceil(2.5, -2) }, Error, ' Number of decimals in function round must be in the range of 0-15')
-    assert.throws(function () { ceil(2.5, Infinity) }, Error, ' Number of decimals in function round must be in the range of 0-15')
+    assert.throws(
+      function () {
+        ceil(2.5, 1.5)
+      },
+      TypeError,
+      'Number of decimals in function round must be an integer'
+    )
+    assert.throws(
+      function () {
+        ceil(2.5, -2)
+      },
+      Error,
+      ' Number of decimals in function round must be in the range of 0-15'
+    )
+    assert.throws(
+      function () {
+        ceil(2.5, Infinity)
+      },
+      Error,
+      ' Number of decimals in function round must be in the range of 0-15'
+    )
   })
 
   it('should convert a string to a number', function () {
@@ -164,12 +212,21 @@ describe('ceil', function () {
 
   it('should ceil each element in a matrix, array or range', function () {
     approx.deepEqual(ceil([1.2, 3.4, 5.6, 7.8, 10.0]), [2, 4, 6, 8, 10])
-    approx.deepEqual(ceil(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([2, 4, 6, 8, 10]))
+    approx.deepEqual(
+      ceil(matrix([1.2, 3.4, 5.6, 7.8, 10.0])),
+      matrix([2, 4, 6, 8, 10])
+    )
   })
 
   it('should ceil each element in a matrix with a given number of decimals', function () {
-    approx.deepEqual(ceil([1.282, 3.415, -5.121, -10.128], 2), [1.29, 3.42, -5.12, -10.12])
-    approx.deepEqual(ceil(matrix([1.282, 3.415, -5.121, -10.128]), 2), matrix([1.29, 3.42, -5.12, -10.12]))
+    approx.deepEqual(
+      ceil([1.282, 3.415, -5.121, -10.128], 2),
+      [1.29, 3.42, -5.12, -10.12]
+    )
+    approx.deepEqual(
+      ceil(matrix([1.282, 3.415, -5.121, -10.128]), 2),
+      matrix([1.29, 3.42, -5.12, -10.12])
+    )
   })
 
   it('should ceil when number of decimals is provided in an array', function () {
@@ -177,39 +234,121 @@ describe('ceil', function () {
   })
 
   it('should ceil dense matrix', function () {
-    assert.deepStrictEqual(ceil(matrix([[1.712, 2.345], [8.987, -3.565]]), 2), matrix([[1.72, 2.35], [8.99, -3.56]]))
+    assert.deepStrictEqual(
+      ceil(
+        matrix([
+          [1.712, 2.345],
+          [8.987, -3.565],
+        ]),
+        2
+      ),
+      matrix([
+        [1.72, 2.35],
+        [8.99, -3.56],
+      ])
+    )
   })
 
   it('should ceil dense matrix and scalar', function () {
-    assert.deepStrictEqual(ceil(matrix([[1.7777, 2.3456], [-90.8272, 0]]), 3), matrix([[1.778, 2.346], [-90.827, 0]]))
+    assert.deepStrictEqual(
+      ceil(
+        matrix([
+          [1.7777, 2.3456],
+          [-90.8272, 0],
+        ]),
+        3
+      ),
+      matrix([
+        [1.778, 2.346],
+        [-90.827, 0],
+      ])
+    )
   })
 
   it('should ceil dense matrix with given bignumber decimals', function () {
-    const expected = matrix([[1.778, 2.346], [-90.827, 0]])
-    approx.deepEqual(ceil(matrix([[1.7777, 2.3456], [-90.8272, 0]]), bignumber(3)), expected)
+    const expected = matrix([
+      [1.778, 2.346],
+      [-90.827, 0],
+    ])
+    approx.deepEqual(
+      ceil(
+        matrix([
+          [1.7777, 2.3456],
+          [-90.8272, 0],
+        ]),
+        bignumber(3)
+      ),
+      expected
+    )
   })
 
   it('should ceil sparse matrix', function () {
-    assert.deepStrictEqual(ceil(sparse([[1.7, 0], [8.987, -3.565]]), 2), sparse([[1.7, 0], [8.99, -3.56]]))
+    assert.deepStrictEqual(
+      ceil(
+        sparse([
+          [1.7, 0],
+          [8.987, -3.565],
+        ]),
+        2
+      ),
+      sparse([
+        [1.7, 0],
+        [8.99, -3.56],
+      ])
+    )
   })
 
   it('should ceil sparse matrix and scalar', function () {
-    assert.deepStrictEqual(ceil(sparse([[1.7777, 2.3456], [-90.8272, 0]]), 3), sparse([[1.778, 2.346], [-90.827, 0]]))
+    assert.deepStrictEqual(
+      ceil(
+        sparse([
+          [1.7777, 2.3456],
+          [-90.8272, 0],
+        ]),
+        3
+      ),
+      sparse([
+        [1.778, 2.346],
+        [-90.827, 0],
+      ])
+    )
   })
 
   it('should ceil sparse matrix with given bignumber decimals', function () {
-    const expected = bignumber(sparse([[1.778, 2.346], [-90.827, 0]]))
-    assert.deepStrictEqual(ceil(sparse([[1.7777, 2.3456], [-90.8272, 0]]), bignumber(3)), expected)
+    const expected = bignumber(
+      sparse([
+        [1.778, 2.346],
+        [-90.827, 0],
+      ])
+    )
+    assert.deepStrictEqual(
+      ceil(
+        sparse([
+          [1.7777, 2.3456],
+          [-90.8272, 0],
+        ]),
+        bignumber(3)
+      ),
+      expected
+    )
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { ceil() }, /TypeError: Too few arguments/)
-    assert.throws(function () { ceil(1, 2, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      ceil()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      ceil(1, 2, 3)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an in case of wrong type of arguments', function () {
-    assert.throws(function () { ceil(null) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { ceil(42, null) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      ceil(null)
+    }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      ceil(42, null)
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX ceil', function () {

@@ -11,7 +11,8 @@ import {
   pick,
   set,
   traverse,
-  deepFlatten, hasOwnProperty
+  deepFlatten,
+  hasOwnProperty,
 } from '../../../src/utils/object.js'
 
 describe('object', function () {
@@ -79,7 +80,9 @@ describe('object', function () {
     })
 
     it('should throw an error in case of an unsupported type', function () {
-      assert.throws(function () { clone(/a regexp/) }, /Cannot clone/)
+      assert.throws(function () {
+        clone(/a regexp/)
+      }, /Cannot clone/)
     })
   })
 
@@ -87,13 +90,13 @@ describe('object', function () {
     it('should extend an object with all properties of an other object', function () {
       const e = {}
       const o1 = { a: 2, b: 3 }
-      const o2 = { a: 4, b: null, c: undefined, d: 5, e: e }
+      const o2 = { a: 4, b: null, c: undefined, d: 5, e }
       const o3 = extend(o1, o2)
 
       assert.strictEqual(o1, o3)
       assert.strictEqual(o1.e, o3.e)
-      assert.deepStrictEqual(o3, { a: 4, b: null, c: undefined, d: 5, e: e })
-      assert.deepStrictEqual(o2, { a: 4, b: null, c: undefined, d: 5, e: e }) // should be unchanged
+      assert.deepStrictEqual(o3, { a: 4, b: null, c: undefined, d: 5, e })
+      assert.deepStrictEqual(o2, { a: 4, b: null, c: undefined, d: 5, e }) // should be unchanged
     })
 
     it('should ignore inherited properties when extending an object', function () {
@@ -112,23 +115,53 @@ describe('object', function () {
     it('should deep extend an object with all properties of an other object', function () {
       const e = { f: { g: 3 } }
       const o1 = { a: 2, b: 3 }
-      const o2 = { a: 4, b: null, c: undefined, d: 5, e: e }
+      const o2 = { a: 4, b: null, c: undefined, d: 5, e }
       const o3 = deepExtend(o1, o2)
 
       assert.strictEqual(o1, o3)
       assert.notStrictEqual(o3.e, o2.e)
-      assert.deepStrictEqual(o3, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 3 } } })
-      assert.deepStrictEqual(o2, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 3 } } }) // should be unchanged
+      assert.deepStrictEqual(o3, {
+        a: 4,
+        b: null,
+        c: undefined,
+        d: 5,
+        e: { f: { g: 3 } },
+      })
+      assert.deepStrictEqual(o2, {
+        a: 4,
+        b: null,
+        c: undefined,
+        d: 5,
+        e: { f: { g: 3 } },
+      }) // should be unchanged
 
       e.f.g = 4
-      assert.deepStrictEqual(o3, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 3 } } }) // should be unchanged
-      assert.deepStrictEqual(o2, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 4 } } }) // should be changed
+      assert.deepStrictEqual(o3, {
+        a: 4,
+        b: null,
+        c: undefined,
+        d: 5,
+        e: { f: { g: 3 } },
+      }) // should be unchanged
+      assert.deepStrictEqual(o2, {
+        a: 4,
+        b: null,
+        c: undefined,
+        d: 5,
+        e: { f: { g: 4 } },
+      }) // should be changed
     })
 
     it('should throw an error when deep extending an array (is not yet supported)', function () {
-      assert.throws(function () { deepExtend({}, []) }, /Arrays are not supported by deepExtend/)
-      assert.throws(function () { deepExtend({}, { a: [] }) }, /Arrays are not supported by deepExtend/)
-      assert.throws(function () { deepExtend({}, { a: { b: [] } }) }, /Arrays are not supported by deepExtend/)
+      assert.throws(function () {
+        deepExtend({}, [])
+      }, /Arrays are not supported by deepExtend/)
+      assert.throws(function () {
+        deepExtend({}, { a: [] })
+      }, /Arrays are not supported by deepExtend/)
+      assert.throws(function () {
+        deepExtend({}, { a: { b: [] } })
+      }, /Arrays are not supported by deepExtend/)
     })
 
     it('should ignore inherited properties when deep extending an object', function () {
@@ -155,7 +188,10 @@ describe('object', function () {
       const originalConstructor = obj.constructor
       assert.strictEqual(obj.polluted, undefined)
 
-      deepExtend(obj, JSON.parse('{"constructor": {"prototype": {"polluted": "yes"}}}'))
+      deepExtend(
+        obj,
+        JSON.parse('{"constructor": {"prototype": {"polluted": "yes"}}}')
+      )
       assert.strictEqual(obj.constructor, originalConstructor)
       assert.strictEqual(obj.polluted, undefined)
     })
@@ -164,7 +200,7 @@ describe('object', function () {
       const obj = {}
       const originalConstructor = obj.constructor
 
-      const polluted = function polluted () {}
+      const polluted = function polluted() {}
       deepExtend(obj, { constructor: polluted })
       assert.strictEqual(obj.constructor, originalConstructor)
     })
@@ -178,18 +214,39 @@ describe('object', function () {
       assert.strictEqual(deepStrictEqual({ a: 2, b: 3 }, { a: 2, b: 4 }), false)
       assert.strictEqual(deepStrictEqual({ a: 2, b: 3 }, { a: 2 }), false)
       assert.strictEqual(deepStrictEqual({ a: 2 }, { a: 2, b: 3 }), false)
-      assert.strictEqual(deepStrictEqual({ a: 2, b: 3 }, { a: 2, b: {} }), false)
-      assert.strictEqual(deepStrictEqual({ a: 2, b: {} }, { a: 2, b: {} }), true)
+      assert.strictEqual(
+        deepStrictEqual({ a: 2, b: 3 }, { a: 2, b: {} }),
+        false
+      )
+      assert.strictEqual(
+        deepStrictEqual({ a: 2, b: {} }, { a: 2, b: {} }),
+        true
+      )
 
-      assert.strictEqual(deepStrictEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 4 } }), true)
-      assert.strictEqual(deepStrictEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 5 } }), false)
-      assert.strictEqual(deepStrictEqual({ a: 2, b: { c: 4 } }, { a: 2, b: {} }), false)
-      assert.strictEqual(deepStrictEqual({ a: 2, b: {} }, { a: 2, b: { c: 4 } }), false)
+      assert.strictEqual(
+        deepStrictEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 4 } }),
+        true
+      )
+      assert.strictEqual(
+        deepStrictEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 5 } }),
+        false
+      )
+      assert.strictEqual(
+        deepStrictEqual({ a: 2, b: { c: 4 } }, { a: 2, b: {} }),
+        false
+      )
+      assert.strictEqual(
+        deepStrictEqual({ a: 2, b: {} }, { a: 2, b: { c: 4 } }),
+        false
+      )
 
       assert.strictEqual(deepStrictEqual(undefined, undefined), true)
-      assert.strictEqual(deepStrictEqual({ a: undefined }, { }), false)
-      assert.strictEqual(deepStrictEqual({ }, { a: undefined }), false)
-      assert.strictEqual(deepStrictEqual({ a: undefined }, { a: undefined }), true)
+      assert.strictEqual(deepStrictEqual({ a: undefined }, {}), false)
+      assert.strictEqual(deepStrictEqual({}, { a: undefined }), false)
+      assert.strictEqual(
+        deepStrictEqual({ a: undefined }, { a: undefined }),
+        true
+      )
     })
 
     it('should deep compare values and functions strictly', function () {
@@ -200,8 +257,14 @@ describe('object', function () {
       const fn2 = (a, b) => a + b
       assert.strictEqual(deepStrictEqual({ add: fn1 }, { add: fn1 }), true)
       assert.strictEqual(deepStrictEqual({ add: fn1 }, { add: fn2 }), false)
-      assert.strictEqual(deepStrictEqual({ b: { add: fn1 } }, { b: { add: fn1 } }), true)
-      assert.strictEqual(deepStrictEqual({ b: { add: fn1 } }, { b: { add: fn2 } }), false)
+      assert.strictEqual(
+        deepStrictEqual({ b: { add: fn1 } }, { b: { add: fn1 } }),
+        true
+      )
+      assert.strictEqual(
+        deepStrictEqual({ b: { add: fn1 } }, { b: { add: fn2 } }),
+        false
+      )
     })
 
     it('should deep compare two arrays', function () {
@@ -223,19 +286,46 @@ describe('object', function () {
       assert.strictEqual(deepStrictEqual({}, []), false)
       assert.strictEqual(deepStrictEqual({ a: {} }, { a: [] }), false)
 
-      assert.strictEqual(deepStrictEqual({ a: [1, 2, 3] }, { a: [1, 2, 3] }), true)
-      assert.strictEqual(deepStrictEqual({ a: [1, 2, {}] }, { a: [1, 2, {}] }), true)
-      assert.strictEqual(deepStrictEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 4 }] }), true)
-      assert.strictEqual(deepStrictEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 5 }] }), false)
-      assert.strictEqual(deepStrictEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, {}] }), false)
+      assert.strictEqual(
+        deepStrictEqual({ a: [1, 2, 3] }, { a: [1, 2, 3] }),
+        true
+      )
+      assert.strictEqual(
+        deepStrictEqual({ a: [1, 2, {}] }, { a: [1, 2, {}] }),
+        true
+      )
+      assert.strictEqual(
+        deepStrictEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 4 }] }),
+        true
+      )
+      assert.strictEqual(
+        deepStrictEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 5 }] }),
+        false
+      )
+      assert.strictEqual(
+        deepStrictEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, {}] }),
+        false
+      )
 
       assert.strictEqual(deepStrictEqual([1, 2, {}], [1, 2, {}]), true)
-      assert.strictEqual(deepStrictEqual([1, 2, { a: 3 }], [1, 2, { a: 3 }]), true)
-      assert.strictEqual(deepStrictEqual([1, 2, { a: 3 }], [1, 2, { a: 4 }]), false)
+      assert.strictEqual(
+        deepStrictEqual([1, 2, { a: 3 }], [1, 2, { a: 3 }]),
+        true
+      )
+      assert.strictEqual(
+        deepStrictEqual([1, 2, { a: 3 }], [1, 2, { a: 4 }]),
+        false
+      )
       assert.strictEqual(deepStrictEqual([1, 2, { a: 3 }], [1, 2, 3]), false)
       assert.strictEqual(deepStrictEqual([1, 2, 3], [1, 2, { a: 3 }]), false)
-      assert.strictEqual(deepStrictEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4] }]), true)
-      assert.strictEqual(deepStrictEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4, 5] }]), false)
+      assert.strictEqual(
+        deepStrictEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4] }]),
+        true
+      )
+      assert.strictEqual(
+        deepStrictEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4, 5] }]),
+        false
+      )
     })
 
     it('should not ignore inherited properties during comparison', function () {
@@ -287,8 +377,8 @@ describe('object', function () {
   describe('traverse', function () {
     it('should traverse an existing path into an object', function () {
       const a = {}
-      const b = { a: a }
-      const c = { b: b }
+      const b = { a }
+      const c = { b }
 
       assert.strictEqual(traverse(c), c)
       assert.strictEqual(traverse(c, ''), c)
@@ -299,8 +389,8 @@ describe('object', function () {
 
     it('should append missing piece of a path', function () {
       const a = {}
-      const b = { a: a }
-      const c = { b: b }
+      const b = { a }
+      const c = { b }
 
       assert.strictEqual(traverse(c), c)
       assert.strictEqual(traverse(c, ''), c)
@@ -316,23 +406,35 @@ describe('object', function () {
       assert.strictEqual(isLegacyFactory({}), false)
       assert.strictEqual(isLegacyFactory({ foo: true }), false)
       assert.strictEqual(isLegacyFactory({ name: 'foo' }), false)
-      assert.strictEqual(isLegacyFactory({ name: 'foo', factory: 'bar' }), false)
-      assert.strictEqual(isLegacyFactory({ name: 2, factory: function () {} }), true)
+      assert.strictEqual(
+        isLegacyFactory({ name: 'foo', factory: 'bar' }),
+        false
+      )
+      assert.strictEqual(
+        isLegacyFactory({ name: 2, factory: function () {} }),
+        true
+      )
       assert.strictEqual(isLegacyFactory({ factory: function () {} }), true)
 
-      assert.strictEqual(isLegacyFactory({ name: 'foo', factory: function () {} }), true)
-      assert.strictEqual(isLegacyFactory({ name: 'foo', factory: function () {}, foo: 'bar' }), true)
+      assert.strictEqual(
+        isLegacyFactory({ name: 'foo', factory: function () {} }),
+        true
+      )
+      assert.strictEqual(
+        isLegacyFactory({ name: 'foo', factory: function () {}, foo: 'bar' }),
+        true
+      )
     })
   })
 
   describe('get', function () {
-    it('should get nested properties from an object', () => {
+    it('should get nested properties from an object', function () {
       const object = {
         a: 2,
         b: {
           c: 3,
-          e: null
-        }
+          e: null,
+        },
       }
 
       assert.strictEqual(get(object, ''), undefined)
@@ -346,71 +448,86 @@ describe('object', function () {
   })
 
   describe('set', function () {
-    it('should set a nested property in an object', () => {
+    it('should set a nested property in an object', function () {
       assert.deepStrictEqual(set({}, [], 2), {})
       assert.deepStrictEqual(set({}, 'a', 2), { a: 2 })
       assert.deepStrictEqual(set({ a: 2 }, 'b.c', 3), { a: 2, b: { c: 3 } })
-      assert.deepStrictEqual(set({ a: 2 }, ['b', 'c'], 3), { a: 2, b: { c: 3 } })
+      assert.deepStrictEqual(set({ a: 2 }, ['b', 'c'], 3), {
+        a: 2,
+        b: { c: 3 },
+      })
     })
   })
 
   describe('pick', function () {
-    it('should pick the selected properties', () => {
+    it('should pick the selected properties', function () {
       const object = { a: 1, b: 2, c: 3 }
       assert.deepStrictEqual(pick(object, ['a', 'c', 'd']), { a: 1, c: 3 })
     })
 
-    it('should pick nested properties', () => {
+    it('should pick nested properties', function () {
       const object = {
         a: 1,
         b: {
           c: 2,
-          d: 3
-        }
+          d: 3,
+        },
       }
 
       assert.deepStrictEqual(pick(object, ['a']), { a: 1 })
       assert.deepStrictEqual(pick(object, ['a', 'b.c']), { a: 1, b: { c: 2 } })
-      assert.deepStrictEqual(pick(object, ['a', ['b', 'c']]), { a: 1, b: { c: 2 } })
-      assert.deepStrictEqual(pick(object, ['a', 'b.c', 'foo', 'b.foo']), { a: 1, b: { c: 2 } })
+      assert.deepStrictEqual(pick(object, ['a', ['b', 'c']]), {
+        a: 1,
+        b: { c: 2 },
+      })
+      assert.deepStrictEqual(pick(object, ['a', 'b.c', 'foo', 'b.foo']), {
+        a: 1,
+        b: { c: 2 },
+      })
     })
 
-    it('should pick and transform nested properties', () => {
+    it('should pick and transform nested properties', function () {
       const object = {
         a: 1,
         b: {
           c: 2,
-          d: 3
-        }
+          d: 3,
+        },
       }
 
-      function transform (value, key) {
+      function transform(value, key) {
         return `[${key}:${value}]`
       }
 
       assert.deepStrictEqual(pick(object, ['a', 'b.c'], transform), {
         a: '[a:1]',
         b: {
-          c: '[b.c:2]'
-        }
+          c: '[b.c:2]',
+        },
       })
     })
   })
 
   describe('deepFlatten', function () {
-    it('should flatten nested object properties', () => {
-      assert.deepStrictEqual(deepFlatten({
-        obj: { a: 2, b: 3 },
-        c: 4,
-        foo: { bar: { d: 5 } }
-      }), { a: 2, b: 3, c: 4, d: 5 })
+    it('should flatten nested object properties', function () {
+      assert.deepStrictEqual(
+        deepFlatten({
+          obj: { a: 2, b: 3 },
+          c: 4,
+          foo: { bar: { d: 5 } },
+        }),
+        { a: 2, b: 3, c: 4, d: 5 }
+      )
     })
 
-    it('should merge duplicate values when flatting nested object properties', () => {
-      assert.deepStrictEqual(deepFlatten({
-        obj: { a: 2 },
-        foo: { bar: { a: 3 } }
-      }), { a: 3 })
+    it('should merge duplicate values when flatting nested object properties', function () {
+      assert.deepStrictEqual(
+        deepFlatten({
+          obj: { a: 2 },
+          foo: { bar: { a: 3 } },
+        }),
+        { a: 3 }
+      )
     })
   })
 })

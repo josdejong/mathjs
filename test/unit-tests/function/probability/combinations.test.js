@@ -14,28 +14,66 @@ describe('combinations', function () {
   })
 
   it('should calculate the combinations of n items taken k at a time with BigNumbers', function () {
-    assert.deepStrictEqual(combinations(math.bignumber(7), math.bignumber(5)), math.bignumber(21))
-    assert.deepStrictEqual(combinations(math.bignumber(20), math.bignumber(15)), math.bignumber(15504))
-    assert.deepStrictEqual(combinations(math.bignumber(63), math.bignumber(7)), math.bignumber(553270671))
-    assert.deepStrictEqual(combinations(math.bignumber(25), math.bignumber(6)), math.bignumber(177100))
-    assert.deepStrictEqual(combinations(math.bignumber(42), math.bignumber(21)), math.bignumber(538257874440))
-    assert.deepStrictEqual(combinations(math.bignumber(44), math.bignumber(21)), math.bignumber(2012616400080))
+    assert.deepStrictEqual(
+      combinations(math.bignumber(7), math.bignumber(5)),
+      math.bignumber(21)
+    )
+    assert.deepStrictEqual(
+      combinations(math.bignumber(20), math.bignumber(15)),
+      math.bignumber(15504)
+    )
+    assert.deepStrictEqual(
+      combinations(math.bignumber(63), math.bignumber(7)),
+      math.bignumber(553270671)
+    )
+    assert.deepStrictEqual(
+      combinations(math.bignumber(25), math.bignumber(6)),
+      math.bignumber(177100)
+    )
+    assert.deepStrictEqual(
+      combinations(math.bignumber(42), math.bignumber(21)),
+      math.bignumber(538257874440)
+    )
+    assert.deepStrictEqual(
+      combinations(math.bignumber(44), math.bignumber(21)),
+      math.bignumber(2012616400080)
+    )
   })
 
   it('should not work with non-integer and negative input', function () {
-    assert.throws(function () { combinations(-12, 6) }, TypeError)
-    assert.throws(function () { combinations(12, -6) }, TypeError)
-    assert.throws(function () { combinations(0.5, 3) }, TypeError)
-    assert.throws(function () { combinations(4, 0.5) }, TypeError)
-    assert.throws(function () { combinations(3, 5) }, TypeError)
-    assert.throws(function () { combinations(math.bignumber(3), math.bignumber(5)) }, TypeError)
-    assert.throws(function () { combinations(math.bignumber(3.5), math.bignumber(-3)) }, TypeError)
-    assert.throws(function () { combinations(math.bignumber(3.5), 1 / 3) }, TypeError)
+    assert.throws(function () {
+      combinations(-12, 6)
+    }, TypeError)
+    assert.throws(function () {
+      combinations(12, -6)
+    }, TypeError)
+    assert.throws(function () {
+      combinations(0.5, 3)
+    }, TypeError)
+    assert.throws(function () {
+      combinations(4, 0.5)
+    }, TypeError)
+    assert.throws(function () {
+      combinations(3, 5)
+    }, TypeError)
+    assert.throws(function () {
+      combinations(math.bignumber(3), math.bignumber(5))
+    }, TypeError)
+    assert.throws(function () {
+      combinations(math.bignumber(3.5), math.bignumber(-3))
+    }, TypeError)
+    assert.throws(function () {
+      combinations(math.bignumber(3.5), 1 / 3)
+    }, TypeError)
   })
 
   it('should not work with the wrong number or type of arguments', function () {
-    assert.throws(function () { combinations(5, 3, 2) })
-    assert.throws(function () { combinations(true, 'hello world') })
+    assert.throws(function () {
+      combinations(5, 3, 2)
+    })
+    assert.throws(function () {
+      combinations(true, 'hello world')
+    })
   })
 
   it('should LaTeX combinations', function () {

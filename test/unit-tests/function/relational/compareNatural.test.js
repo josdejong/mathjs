@@ -22,10 +22,22 @@ describe('compareNatural', function () {
 
   it('should compare two floating point numbers correctly', function () {
     // Infinity
-    assert.strictEqual(compareNatural(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), 0)
-    assert.strictEqual(compareNatural(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), 0)
-    assert.strictEqual(compareNatural(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), 1)
-    assert.strictEqual(compareNatural(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), -1)
+    assert.strictEqual(
+      compareNatural(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY),
+      0
+    )
+    assert.strictEqual(
+      compareNatural(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY),
+      0
+    )
+    assert.strictEqual(
+      compareNatural(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY),
+      1
+    )
+    assert.strictEqual(
+      compareNatural(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY),
+      -1
+    )
     assert.strictEqual(compareNatural(Number.POSITIVE_INFINITY, 2.0), 1)
     assert.strictEqual(compareNatural(2.0, Number.POSITIVE_INFINITY), -1)
     assert.strictEqual(compareNatural(Number.NEGATIVE_INFINITY, 2.0), -1)
@@ -47,7 +59,10 @@ describe('compareNatural', function () {
     assert.strictEqual(compareNatural(bignumber(3), bignumber(2)), 1)
     assert.strictEqual(compareNatural(bignumber(0), bignumber(0)), 0)
     assert.strictEqual(compareNatural(bignumber(-2), bignumber(2)), -1)
-    assert.strictEqual(typeof compareNatural(bignumber(-2), bignumber(2)), 'number')
+    assert.strictEqual(
+      typeof compareNatural(bignumber(-2), bignumber(2)),
+      'number'
+    )
   })
 
   it('should compare two fractions', function () {
@@ -57,11 +72,26 @@ describe('compareNatural', function () {
     assert.strictEqual(a.toString(), '0.(3)')
     assert.strictEqual(b.toString(), '0.1(6)')
 
-    assert.strictEqual(compareNatural(math.fraction(3), math.fraction(2)).valueOf(), 1)
-    assert.strictEqual(compareNatural(math.fraction(2), math.fraction(3)).valueOf(), -1)
-    assert.strictEqual(compareNatural(math.fraction(3), math.fraction(3)).valueOf(), 0)
+    assert.strictEqual(
+      compareNatural(math.fraction(3), math.fraction(2)).valueOf(),
+      1
+    )
+    assert.strictEqual(
+      compareNatural(math.fraction(2), math.fraction(3)).valueOf(),
+      -1
+    )
+    assert.strictEqual(
+      compareNatural(math.fraction(3), math.fraction(3)).valueOf(),
+      0
+    )
 
-    assert.strictEqual(compareNatural(math.add(math.fraction(0.1), math.fraction(0.2)), math.fraction(0.3)).valueOf(), 0) // this would fail with numbers
+    assert.strictEqual(
+      compareNatural(
+        math.add(math.fraction(0.1), math.fraction(0.2)),
+        math.fraction(0.3)
+      ).valueOf(),
+      0
+    ) // this would fail with numbers
   })
 
   it('should compare two measures of the same unit', function () {
@@ -73,9 +103,18 @@ describe('compareNatural', function () {
   })
 
   it('should compare two measures of different unit', function () {
-    assert.strictEqual(compareNatural(math.unit(5, 'km'), math.unit(100, 'gram')), 1)
-    assert.strictEqual(compareNatural(math.unit(4, 'km/h'), math.unit(2, 'm/s^2')), -1)
-    assert.strictEqual(compareNatural(math.unit(2, 'm/s^2'), math.unit(4, 'km/h')), 1)
+    assert.strictEqual(
+      compareNatural(math.unit(5, 'km'), math.unit(100, 'gram')),
+      1
+    )
+    assert.strictEqual(
+      compareNatural(math.unit(4, 'km/h'), math.unit(2, 'm/s^2')),
+      -1
+    )
+    assert.strictEqual(
+      compareNatural(math.unit(2, 'm/s^2'), math.unit(4, 'km/h')),
+      1
+    )
   })
 
   it('should compare mixed types (by type name)', function () {
@@ -156,7 +195,19 @@ describe('compareNatural', function () {
 
     // multiple dimensions
     assert.strictEqual(compareNatural([[2, 3]], [[2, 4]]), -1)
-    assert.strictEqual(compareNatural([[2, 3], [5, 6]], [[2, 3], [5, 6]]), 0)
+    assert.strictEqual(
+      compareNatural(
+        [
+          [2, 3],
+          [5, 6],
+        ],
+        [
+          [2, 3],
+          [5, 6],
+        ]
+      ),
+      0
+    )
   })
 
   it('should compare dense matrices', function () {
@@ -168,8 +219,14 @@ describe('compareNatural', function () {
     assert.strictEqual(compareNatural(matrix([1, 2, 4]), matrix([1, 2, 3])), 1)
 
     // unequal size
-    assert.strictEqual(compareNatural(matrix([1, 2, 3, 4]), matrix([1, 2, 3])), 1)
-    assert.strictEqual(compareNatural(matrix([1, 2, 3]), matrix([1, 2, 3, 4])), -1)
+    assert.strictEqual(
+      compareNatural(matrix([1, 2, 3, 4]), matrix([1, 2, 3])),
+      1
+    )
+    assert.strictEqual(
+      compareNatural(matrix([1, 2, 3]), matrix([1, 2, 3, 4])),
+      -1
+    )
     assert.strictEqual(compareNatural(matrix([1, 4]), matrix([1, 2, 3])), 1)
 
     // unequal dimensions
@@ -177,7 +234,19 @@ describe('compareNatural', function () {
 
     // multiple dimensions
     assert.strictEqual(compareNatural(matrix([[2, 3]]), matrix([[2, 4]])), -1)
-    assert.strictEqual(compareNatural(matrix([[2, 3], [5, 6]]), matrix([[2, 3], [5, 6]])), 0)
+    assert.strictEqual(
+      compareNatural(
+        matrix([
+          [2, 3],
+          [5, 6],
+        ]),
+        matrix([
+          [2, 3],
+          [5, 6],
+        ])
+      ),
+      0
+    )
   })
 
   it('should compare sparse matrices', function () {
@@ -189,8 +258,14 @@ describe('compareNatural', function () {
     assert.strictEqual(compareNatural(sparse([1, 2, 4]), sparse([1, 2, 3])), 1)
 
     // unequal size
-    assert.strictEqual(compareNatural(sparse([1, 2, 3, 4]), sparse([1, 2, 3])), 1)
-    assert.strictEqual(compareNatural(sparse([1, 2, 3]), sparse([1, 2, 3, 4])), -1)
+    assert.strictEqual(
+      compareNatural(sparse([1, 2, 3, 4]), sparse([1, 2, 3])),
+      1
+    )
+    assert.strictEqual(
+      compareNatural(sparse([1, 2, 3]), sparse([1, 2, 3, 4])),
+      -1
+    )
     assert.strictEqual(compareNatural(sparse([1, 4]), sparse([1, 2, 3])), 1)
 
     // unequal dimensions
@@ -198,7 +273,19 @@ describe('compareNatural', function () {
 
     // multiple dimensions
     assert.strictEqual(compareNatural(sparse([[2, 3]]), sparse([[2, 4]])), -1)
-    assert.strictEqual(compareNatural(sparse([[2, 3], [5, 6]]), sparse([[2, 3], [5, 6]])), 0)
+    assert.strictEqual(
+      compareNatural(
+        sparse([
+          [2, 3],
+          [5, 6],
+        ]),
+        sparse([
+          [2, 3],
+          [5, 6],
+        ])
+      ),
+      0
+    )
   })
 
   it('should compare objects', function () {
@@ -215,19 +302,33 @@ describe('compareNatural', function () {
     assert.strictEqual(compareNatural({ a: 2, b: 3 }, { a: 2, b: 3 }), 0)
 
     // nesting
-    assert.strictEqual(compareNatural({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 3 } }), 1)
-    assert.strictEqual(compareNatural({ a: 2, b: { c: 3 } }, { a: 2, b: { c: 4 } }), -1)
+    assert.strictEqual(
+      compareNatural({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 3 } }),
+      1
+    )
+    assert.strictEqual(
+      compareNatural({ a: 2, b: { c: 3 } }, { a: 2, b: { c: 4 } }),
+      -1
+    )
   })
 
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
 
     assert.strictEqual(mymath.compareNatural(1, 0.991), 1)
-    assert.strictEqual(mymath.compareNatural(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), 1)
+    assert.strictEqual(
+      mymath
+        .compareNatural(mymath.bignumber(1), mymath.bignumber(0.991))
+        .valueOf(),
+      1
+    )
 
     mymath.config({ epsilon: 1e-2 })
     assert.strictEqual(mymath.compareNatural(1, 0.991), 0)
-    assert.strictEqual(mymath.compareNatural(mymath.bignumber(1), mymath.bignumber(0.991)), 0)
+    assert.strictEqual(
+      mymath.compareNatural(mymath.bignumber(1), mymath.bignumber(0.991)),
+      0
+    )
   })
 
   it('should compare complex numbers', function () {
@@ -237,12 +338,19 @@ describe('compareNatural', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { compareNatural(1) }, /TypeError: Too few arguments/)
-    assert.throws(function () { compareNatural(1, 2, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      compareNatural(1)
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      compareNatural(1, 2, 3)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX compare', function () {
     const expression = math.parse('compareNatural(1,2)')
-    assert.strictEqual(expression.toTex(), '\\mathrm{compareNatural}\\left(1,2\\right)')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\mathrm{compareNatural}\\left(1,2\\right)'
+    )
   })
 })

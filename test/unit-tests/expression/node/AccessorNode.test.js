@@ -25,21 +25,37 @@ describe('AccessorNode', function () {
   })
 
   it('should throw an error when calling with wrong arguments', function () {
-    assert.throws(function () { console.log(new AccessorNode()) }, TypeError)
-    assert.throws(function () { console.log(new AccessorNode('a', new IndexNode([]))) }, TypeError)
-    assert.throws(function () { console.log(new AccessorNode(new Node(), new IndexNode([2, 3]))) }, TypeError)
-    assert.throws(function () { console.log(new AccessorNode(new Node(), new IndexNode([new Node(), 3]))) }, TypeError)
+    assert.throws(function () {
+      console.log(new AccessorNode())
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new AccessorNode('a', new IndexNode([])))
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new AccessorNode(new Node(), new IndexNode([2, 3])))
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new AccessorNode(new Node(), new IndexNode([new Node(), 3])))
+    }, TypeError)
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { AccessorNode(new Node(), new IndexNode([])) }, SyntaxError)
+    assert.throws(function () {
+      AccessorNode(new Node(), new IndexNode([]))
+    }, SyntaxError)
   })
 
   it('should get the name of an AccessorNode', function () {
-    const n1 = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode('toString')]))
+    const n1 = new AccessorNode(
+      new SymbolNode('a'),
+      new IndexNode([new ConstantNode('toString')])
+    )
     assert.strictEqual(n1.name, 'toString')
 
-    const n2 = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode(1)]))
+    const n2 = new AccessorNode(
+      new SymbolNode('a'),
+      new IndexNode([new ConstantNode(1)])
+    )
     assert.strictEqual(n2.name, '')
   })
 
@@ -47,13 +63,16 @@ describe('AccessorNode', function () {
     const a = new bigmath.SymbolNode('a')
     const index = new bigmath.IndexNode([
       new bigmath.ConstantNode(2),
-      new bigmath.ConstantNode(1)
+      new bigmath.ConstantNode(1),
     ])
     const n = new bigmath.AccessorNode(a, index)
     const expr = n.compile()
 
     const scope = {
-      a: [[1, 2], [3, 4]]
+      a: [
+        [1, 2],
+        [3, 4],
+      ],
     }
     assert.strictEqual(expr.evaluate(scope), 3)
   })
@@ -62,16 +81,16 @@ describe('AccessorNode', function () {
     const a = new SymbolNode('a')
     const index = new IndexNode([
       new ConstantNode(2),
-      new RangeNode(
-        new ConstantNode(1),
-        new SymbolNode('end')
-      )
+      new RangeNode(new ConstantNode(1), new SymbolNode('end')),
     ])
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
     const scope = {
-      a: [[1, 2], [3, 4]]
+      a: [
+        [1, 2],
+        [3, 4],
+      ],
     }
     assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
   })
@@ -83,7 +102,7 @@ describe('AccessorNode', function () {
     const expr = n.compile()
 
     const scope = {
-      a: { b: 42 }
+      a: { b: 42 },
     }
     assert.deepStrictEqual(expr.evaluate(scope), 42)
   })
@@ -95,9 +114,11 @@ describe('AccessorNode', function () {
     const expr = n.compile()
 
     const scope = {
-      a: [1, 2, 3]
+      a: [1, 2, 3],
     }
-    assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
+    assert.throws(function () {
+      expr.evaluate(scope)
+    }, /Index out of range \(4 > 3\)/)
   })
 
   it('should throw a one-based index error when out of range (Matrix)', function () {
@@ -107,9 +128,11 @@ describe('AccessorNode', function () {
     const expr = n.compile()
 
     const scope = {
-      a: math.matrix([1, 2, 3])
+      a: math.matrix([1, 2, 3]),
     }
-    assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
+    assert.throws(function () {
+      expr.evaluate(scope)
+    }, /Index out of range \(4 > 3\)/)
   })
 
   it('should throw a one-based index error when out of range (string)', function () {
@@ -119,9 +142,11 @@ describe('AccessorNode', function () {
     const expr = n.compile()
 
     const scope = {
-      a: 'hey'
+      a: 'hey',
     }
-    assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
+    assert.throws(function () {
+      expr.evaluate(scope)
+    }, /Index out of range \(4 > 3\)/)
   })
 
   it('should throw an error when applying a matrix index onto an object', function () {
@@ -131,9 +156,11 @@ describe('AccessorNode', function () {
     const expr = n.compile()
 
     const scope = {
-      a: {}
+      a: {},
     }
-    assert.throws(function () { expr.evaluate(scope) }, /Cannot apply a numeric index as object property/)
+    assert.throws(function () {
+      expr.evaluate(scope)
+    }, /Cannot apply a numeric index as object property/)
   })
 
   it('should throw an error when applying an index onto a scalar', function () {
@@ -143,9 +170,11 @@ describe('AccessorNode', function () {
     const expr = n.compile()
 
     const scope = {
-      a: 42
+      a: 42,
     }
-    assert.throws(function () { expr.evaluate(scope) }, /Cannot apply index: unsupported type of object/)
+    assert.throws(function () {
+      expr.evaluate(scope)
+    }, /Cannot apply index: unsupported type of object/)
   })
 
   it('should compile a AccessorNode with negative step range and context parameters', function () {
@@ -156,13 +185,16 @@ describe('AccessorNode', function () {
         new SymbolNode('end'),
         new ConstantNode(1),
         new ConstantNode(-1)
-      )
+      ),
     ])
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
     const scope = {
-      a: [[1, 2], [3, 4]]
+      a: [
+        [1, 2],
+        [3, 4],
+      ],
     }
     assert.deepStrictEqual(expr.evaluate(scope), [[4, 3]])
   })
@@ -171,16 +203,16 @@ describe('AccessorNode', function () {
     const a = new SymbolNode('a')
     const index = new IndexNode([
       new SymbolNode('end'),
-      new RangeNode(
-        new ConstantNode(1),
-        new SymbolNode('end')
-      )
+      new RangeNode(new ConstantNode(1), new SymbolNode('end')),
     ])
     const n = new AccessorNode(a, index)
     const expr = n.compile()
 
     const scope = {
-      a: [[1, 2], [3, 4]]
+      a: [
+        [1, 2],
+        [3, 4],
+      ],
     }
     assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
   })
@@ -189,12 +221,14 @@ describe('AccessorNode', function () {
     const a = new bigmath.SymbolNode('a')
     const b = new bigmath.ConstantNode(2)
     const c = new bigmath.ConstantNode(1)
-    const n = new bigmath.AccessorNode(a,
-      new bigmath.IndexNode([b, c]))
+    const n = new bigmath.AccessorNode(a, new bigmath.IndexNode([b, c]))
     const expr = n.compile()
 
     const scope = {
-      a: [[1, 2], [3, 4]]
+      a: [
+        [1, 2],
+        [3, 4],
+      ],
     }
     assert.deepStrictEqual(expr.evaluate(scope), 3)
   })
@@ -206,19 +240,59 @@ describe('AccessorNode', function () {
     const index = new IndexNode([b, c])
     const n = new AccessorNode(a, index)
 
-    assert.deepStrictEqual(n.filter(function (node) { return node.isAccessorNode }), [n])
-    assert.deepStrictEqual(n.filter(function (node) { return node.isSymbolNode }), [a])
-    assert.deepStrictEqual(n.filter(function (node) { return node.isRangeNode }), [])
-    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode }), [b, c])
-    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode && node.value === 2 }), [b])
-    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode && node.value === 4 }), [])
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isAccessorNode
+      }),
+      [n]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isSymbolNode
+      }),
+      [a]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isRangeNode
+      }),
+      []
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isConstantNode
+      }),
+      [b, c]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isConstantNode && node.value === 2
+      }),
+      [b]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isConstantNode && node.value === 4
+      }),
+      []
+    )
   })
 
   it('should filter an empty AccessorNode', function () {
     const n = new AccessorNode(new SymbolNode('a'), new IndexNode([]))
 
-    assert.deepStrictEqual(n.filter(function (node) { return node.isAccessorNode }), [n])
-    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode }), [])
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isAccessorNode
+      }),
+      [n]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.isConstantNode
+      }),
+      []
+    )
   })
 
   it('should run forEach on an AccessorNode', function () {
@@ -278,7 +352,9 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(a, new IndexNode([b, c]))
 
     assert.throws(function () {
-      n.map(function () { return undefined })
+      n.map(function () {
+        return undefined
+      })
     }, /Callback function must return a Node/)
   })
 
@@ -365,10 +441,7 @@ describe('AccessorNode', function () {
 
   it('should stringify an AccessorNode', function () {
     const a = new SymbolNode('a')
-    const index = new IndexNode([
-      new ConstantNode(2),
-      new ConstantNode(1)
-    ])
+    const index = new IndexNode([new ConstantNode(2), new ConstantNode(1)])
 
     const n = new AccessorNode(a, index)
     assert.strictEqual(n.toString(), 'a[2, 1]')
@@ -413,15 +486,15 @@ describe('AccessorNode', function () {
 
     const n = new AccessorNode(a, new IndexNode([b, c]))
 
-    assert.strictEqual(n.toString({ handler: customFunction }), 'a at const(1, number), const(2, number), ')
+    assert.strictEqual(
+      n.toString({ handler: customFunction }),
+      'a at const(1, number), const(2, number), '
+    )
   })
 
   it('should LaTeX an AccessorNode', function () {
     const a = new SymbolNode('a')
-    const index = new IndexNode([
-      new ConstantNode(2),
-      new ConstantNode(1)
-    ])
+    const index = new IndexNode([new ConstantNode(2), new ConstantNode(1)])
 
     const n = new AccessorNode(a, index)
     assert.strictEqual(n.toTex(), ' a_{2,1}')
@@ -441,7 +514,13 @@ describe('AccessorNode', function () {
 
         return latex
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
+        return (
+          'const\\left(' +
+          node.value +
+          ', ' +
+          math.typeOf(node.value) +
+          '\\right)'
+        )
       }
     }
 
@@ -451,7 +530,10 @@ describe('AccessorNode', function () {
 
     const n = new AccessorNode(a, new IndexNode([b, c]))
 
-    assert.strictEqual(n.toTex({ handler: customFunction }), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ')
+    assert.strictEqual(
+      n.toTex({ handler: customFunction }),
+      ' a at const\\left(1, number\\right), const\\left(2, number\\right), '
+    )
   })
 
   it('toJSON and fromJSON', function () {
@@ -466,7 +548,7 @@ describe('AccessorNode', function () {
     assert.deepStrictEqual(json, {
       mathjs: 'AccessorNode',
       index: node.index,
-      object: a
+      object: a,
     })
 
     const parsed = AccessorNode.fromJSON(json)

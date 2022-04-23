@@ -58,8 +58,12 @@ describe('acsc', function () {
     const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
 
     const arg4 = bigmath61.bignumber(1.00000001)
-    assert.deepStrictEqual(bigmath61.acsc(arg4),
-      bigmath61.bignumber('1.570654905439248565373629613450057180739125884090554026623514'))
+    assert.deepStrictEqual(
+      bigmath61.acsc(arg4),
+      bigmath61.bignumber(
+        '1.570654905439248565373629613450057180739125884090554026623514'
+      )
+    )
     // wolfram             1.5706549054392485653736296134500571807391258840905540266235145245693842219005187990359787187421573662444504948773
     assert.deepStrictEqual(arg4, bigmath61.bignumber(1.00000001))
 
@@ -77,23 +81,63 @@ describe('acsc', function () {
 
   it('should be the inverse function of bignumber csc', function () {
     const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
-    assert.deepStrictEqual(bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(-2))),
-      bigmath61.bignumber('-1.141592653589793238462643383279502884197169399375105820974946'))
+    assert.deepStrictEqual(
+      bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(-2))),
+      bigmath61.bignumber(
+        '-1.141592653589793238462643383279502884197169399375105820974946'
+      )
+    )
     // wolfram:            -1.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132
-    assert.deepStrictEqual(bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(-0.5))), bigmath61.bignumber('-0.4999999999999999999999999999999999999999999999999999999999999'))
-    assert.deepStrictEqual(bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(-0.1))), bigmath61.bignumber(-0.1))
-    assert.deepStrictEqual(bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(0.1))), bigmath61.bignumber(0.1))
-    assert.deepStrictEqual(bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(0.5))), bigmath61.bignumber('0.4999999999999999999999999999999999999999999999999999999999999'))
-    assert.deepStrictEqual(bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(2))), bigmath61.bignumber('1.141592653589793238462643383279502884197169399375105820974946'))
+    assert.deepStrictEqual(
+      bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(-0.5))),
+      bigmath61.bignumber(
+        '-0.4999999999999999999999999999999999999999999999999999999999999'
+      )
+    )
+    assert.deepStrictEqual(
+      bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(-0.1))),
+      bigmath61.bignumber(-0.1)
+    )
+    assert.deepStrictEqual(
+      bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(0.1))),
+      bigmath61.bignumber(0.1)
+    )
+    assert.deepStrictEqual(
+      bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(0.5))),
+      bigmath61.bignumber(
+        '0.4999999999999999999999999999999999999999999999999999999999999'
+      )
+    )
+    assert.deepStrictEqual(
+      bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(2))),
+      bigmath61.bignumber(
+        '1.141592653589793238462643383279502884197169399375105820974946'
+      )
+    )
 
     // Full decimal Taylor test cases
-    assert.deepStrictEqual(bigmath.acsc(bigmath.csc(bigmath.bignumber(0))), bigmath.bignumber(0))
-    assert.deepStrictEqual(bigmath.acsc(bigmath.csc(bigmath.bignumber(0.1))), bigmath.bignumber('0.099999999999999999997'))
-    assert.deepStrictEqual(bigmath.acsc(bigmath.csc(bigmath.bignumber(0.5))), bigmath.bignumber(0.5))
+    assert.deepStrictEqual(
+      bigmath.acsc(bigmath.csc(bigmath.bignumber(0))),
+      bigmath.bignumber(0)
+    )
+    assert.deepStrictEqual(
+      bigmath.acsc(bigmath.csc(bigmath.bignumber(0.1))),
+      bigmath.bignumber('0.099999999999999999997')
+    )
+    assert.deepStrictEqual(
+      bigmath.acsc(bigmath.csc(bigmath.bignumber(0.5))),
+      bigmath.bignumber(0.5)
+    )
 
     // Pass in an extra digit
-    assert.deepStrictEqual(bigmath.acsc(biggermath.csc(bigmath.bignumber(-1))), bigmath.bignumber('-1'))
-    assert.deepStrictEqual(bigmath.acsc(biggermath.csc(bigmath.bignumber(2))), bigmath.bignumber('1.1415926535897932385'))
+    assert.deepStrictEqual(
+      bigmath.acsc(biggermath.csc(bigmath.bignumber(-1))),
+      bigmath.bignumber('-1')
+    )
+    assert.deepStrictEqual(
+      bigmath.acsc(biggermath.csc(bigmath.bignumber(2))),
+      bigmath.bignumber('1.1415926535897932385')
+    )
   })
 
   it('should return the arccsc of a complex number', function () {
@@ -103,7 +147,10 @@ describe('acsc', function () {
     approx.deepEqual(acsc(complex('2-3i')), complex(re, im))
     approx.deepEqual(acsc(complex('-2+3i')), complex(-re, -im))
     approx.deepEqual(acsc(complex('-2-3i')), complex(-re, im))
-    approx.deepEqual(acsc(complex('1+i')), complex(0.4522784471511907, -0.53063753095251783))
+    approx.deepEqual(
+      acsc(complex('1+i')),
+      complex(0.4522784471511907, -0.53063753095251783)
+    )
     approx.deepEqual(acsc(complex('i')), complex(0, -0.881373587019543))
 
     approx.deepEqual(acsc(complex('-1')), complex(-pi / 2, 0))
@@ -114,12 +161,18 @@ describe('acsc', function () {
   })
 
   it('should throw an error if called with a unit', function () {
-    assert.throws(function () { acsc(unit('45deg')) })
-    assert.throws(function () { acsc(unit('5 celsius')) })
+    assert.throws(function () {
+      acsc(unit('45deg'))
+    })
+    assert.throws(function () {
+      acsc(unit('5 celsius'))
+    })
   })
 
   it('should throw an error if called with a string', function () {
-    assert.throws(function () { acsc('string') })
+    assert.throws(function () {
+      acsc('string')
+    })
   })
 
   it('should calculate the arccsc element-wise for arrays and matrices', function () {
@@ -129,8 +182,12 @@ describe('acsc', function () {
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { acsc() }, /TypeError: Too few arguments/)
-    assert.throws(function () { acsc(1, 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      acsc()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      acsc(1, 2)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should LaTex acsc', function () {

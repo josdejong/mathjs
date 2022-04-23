@@ -12,7 +12,7 @@ const pinv = math.pinv
  *
  * @return {Boolean} Returns true if `A_` is a valid Moore–Penrose inverse of `A`
  */
-function assertValidPinv (A, A_) {
+function assertValidPinv(A, A_) {
   const Asize = math.size(A).valueOf()
 
   const rows = Asize[0]
@@ -22,17 +22,37 @@ function assertValidPinv (A, A_) {
   assert.deepStrictEqual(math.size(A_).valueOf(), [cols, rows])
 
   // A A_ A = A
-  approx.deepEqual(math.add(math.multiply(A, math.multiply(A_, A)), math.Complex(1, 1)).valueOf(), math.add(A, math.Complex(1, 1)).valueOf())
+  approx.deepEqual(
+    math
+      .add(math.multiply(A, math.multiply(A_, A)), math.Complex(1, 1))
+      .valueOf(),
+    math.add(A, math.Complex(1, 1)).valueOf()
+  )
   // A_ A A_ = A_
-  approx.deepEqual(math.add(math.multiply(A_, math.multiply(A, A_)), math.Complex(1, 1)).valueOf(), math.add(A_, math.Complex(1, 1)).valueOf())
+  approx.deepEqual(
+    math
+      .add(math.multiply(A_, math.multiply(A, A_)), math.Complex(1, 1))
+      .valueOf(),
+    math.add(A_, math.Complex(1, 1)).valueOf()
+  )
   // (A A_)* = A A_
-  approx.deepEqual(math.add(math.ctranspose(math.multiply(A, A_)), math.Complex(1, 1)).valueOf(), math.add(math.multiply(A, A_), math.Complex(1, 1)).valueOf())
+  approx.deepEqual(
+    math
+      .add(math.ctranspose(math.multiply(A, A_)), math.Complex(1, 1))
+      .valueOf(),
+    math.add(math.multiply(A, A_), math.Complex(1, 1)).valueOf()
+  )
   // (A_ A)* = A_ A
-  approx.deepEqual(math.add(math.ctranspose(math.multiply(A_, A)), math.Complex(1, 1)).valueOf(), math.add(math.multiply(A_, A), math.Complex(1, 1)).valueOf())
+  approx.deepEqual(
+    math
+      .add(math.ctranspose(math.multiply(A_, A)), math.Complex(1, 1))
+      .valueOf(),
+    math.add(math.multiply(A_, A), math.Complex(1, 1)).valueOf()
+  )
 }
 
 describe('pinv', function () {
-  function test (A, A_, strict = false) {
+  function test(A, A_, strict = false) {
     const pinvA = pinv(A)
     if (A_) {
       if (strict) assert.deepStrictEqual(pinvA, A_)
@@ -67,52 +87,80 @@ describe('pinv', function () {
     test([4], [1 / 4], true)
     test([[4]], [[1 / 4]], true)
 
-    test([
-      [1, 4, 7],
-      [3, 0, 5],
-      [-1, 9, 11]
-    ], [
-      [5.625, -2.375, -2.5],
-      [4.75, -2.25, -2],
-      [-3.375, 1.625, 1.5]
-    ])
+    test(
+      [
+        [1, 4, 7],
+        [3, 0, 5],
+        [-1, 9, 11],
+      ],
+      [
+        [5.625, -2.375, -2.5],
+        [4.75, -2.25, -2],
+        [-3.375, 1.625, 1.5],
+      ]
+    )
 
-    test([
-      [2, -1, 0],
-      [-1, 2, -1],
-      [0, -1, 2]
-    ], [
-      [3 / 4, 1 / 2, 1 / 4],
-      [1 / 2, 1, 1 / 2],
-      [1 / 4, 1 / 2, 3 / 4]
-    ])
+    test(
+      [
+        [2, -1, 0],
+        [-1, 2, -1],
+        [0, -1, 2],
+      ],
+      [
+        [3 / 4, 1 / 2, 1 / 4],
+        [1 / 2, 1, 1 / 2],
+        [1 / 4, 1 / 2, 3 / 4],
+      ]
+    )
 
-    test([
-      [1, 0, 0],
-      [0, 0, 1],
-      [0, 1, 0]
-    ], [
-      [1, 0, 0],
-      [0, 0, 1],
-      [0, 1, 0]
-    ])
+    test(
+      [
+        [1, 0, 0],
+        [0, 0, 1],
+        [0, 1, 0],
+      ],
+      [
+        [1, 0, 0],
+        [0, 0, 1],
+        [0, 1, 0],
+      ]
+    )
 
-    test([
-      [1, 0, 0],
-      [0, -1, 1],
-      [0, 0, 1]
-    ], [
-      [1, 0, 0],
-      [0, -1, 1],
-      [0, 0, 1]
-    ])
+    test(
+      [
+        [1, 0, 0],
+        [0, -1, 1],
+        [0, 0, 1],
+      ],
+      [
+        [1, 0, 0],
+        [0, -1, 1],
+        [0, 0, 1],
+      ]
+    )
   })
 
   it('should return the inverse for each element in a matrix', function () {
     test(math.matrix([4]), math.matrix([1 / 4]), true)
     test(math.matrix([[4]]), math.matrix([[1 / 4]]), true)
     test(math.matrix([[4]], 'sparse'), math.matrix([[1 / 4]], 'sparse'), true)
-    test(math.matrix([[1, 2], [3, 4]], 'sparse'), math.matrix([[-2, 1], [1.5, -0.5]], 'sparse'), true)
+    test(
+      math.matrix(
+        [
+          [1, 2],
+          [3, 4],
+        ],
+        'sparse'
+      ),
+      math.matrix(
+        [
+          [-2, 1],
+          [1.5, -0.5],
+        ],
+        'sparse'
+      ),
+      true
+    )
   })
 
   it('should return the Moore–Penrose inverse of complex matrices', function () {
@@ -135,8 +183,28 @@ describe('pinv', function () {
 
     test([1, 2, 3], [1 / 14, 2 / 14, 3 / 14])
 
-    test([[1, 2, 3], [4, 5, 6]], [[-17 / 18, 8 / 18], [-2 / 18, 2 / 18], [13 / 18, -4 / 18]])
-    test([[1, 4], [2, 5], [3, 6]], [[-17 / 18, -2 / 18, 13 / 18], [8 / 18, 2 / 18, -4 / 18]])
+    test(
+      [
+        [1, 2, 3],
+        [4, 5, 6],
+      ],
+      [
+        [-17 / 18, 8 / 18],
+        [-2 / 18, 2 / 18],
+        [13 / 18, -4 / 18],
+      ]
+    )
+    test(
+      [
+        [1, 4],
+        [2, 5],
+        [3, 6],
+      ],
+      [
+        [-17 / 18, -2 / 18, 13 / 18],
+        [8 / 18, 2 / 18, -4 / 18],
+      ]
+    )
 
     test([
       [64, 2, 3, 61, 60, 6],
@@ -146,31 +214,67 @@ describe('pinv', function () {
       [32, 34, 35, 29, 28, 38],
       [41, 23, 22, 44, 45, 19],
       [49, 15, 14, 52, 53, 11],
-      [8, 58, 59, 5, 4, 62]
+      [8, 58, 59, 5, 4, 62],
     ])
   })
 
   it('should throw an error in case of multi dimensional matrices', function () {
-    assert.throws(function () { pinv([[[1, 2, 3], [4, 5, 6]]]) }, /Matrix must be two dimensional/)
+    assert.throws(function () {
+      pinv([
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+        ],
+      ])
+    }, /Matrix must be two dimensional/)
   })
 
   it('should return the Moore–Penrose inverse of non-invertable matrices', function () {
     test([[0]], [[0]], true)
-    test([[1, 0], [0, 0]], [[1, 0], [0, 0]])
-    test([[1, 1, 1], [1, 0, 0], [0, 0, 0]], [[0, 1, 0], [0.5, -0.5, 0], [0.5, -0.5, 0]])
+    test(
+      [
+        [1, 0],
+        [0, 0],
+      ],
+      [
+        [1, 0],
+        [0, 0],
+      ]
+    )
+    test(
+      [
+        [1, 1, 1],
+        [1, 0, 0],
+        [0, 0, 0],
+      ],
+      [
+        [0, 1, 0],
+        [0.5, -0.5, 0],
+        [0.5, -0.5, 0],
+      ]
+    )
   })
 
   it('should throw an error in case of wrong number of arguments', function () {
-    assert.throws(function () { pinv() }, /TypeError: Too few arguments/)
-    assert.throws(function () { pinv([], []) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      pinv()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      pinv([], [])
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () { math.concat(pinv(new Date())) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      math.concat(pinv(new Date()))
+    }, /TypeError: Unexpected type of argument/)
   })
 
   it('should  LaTeX pinv', function () {
     const expression = math.parse('pinv([[1,2],[3,4]])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}\\right)^{+}')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\left(\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}\\right)^{+}'
+    )
   })
 })

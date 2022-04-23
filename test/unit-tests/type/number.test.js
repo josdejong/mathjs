@@ -43,12 +43,19 @@ describe('number', function () {
   })
 
   it('should throw an error if called with an invalid string', function () {
-    assert.throws(function () { number('2.3.4') }, SyntaxError)
-    assert.throws(function () { number('23a') }, SyntaxError)
+    assert.throws(function () {
+      number('2.3.4')
+    }, SyntaxError)
+    assert.throws(function () {
+      number('23a')
+    }, SyntaxError)
   })
 
   it('should convert the elements of a matrix to numbers', function () {
-    assert.deepStrictEqual(number(math.matrix(['123', true])), math.matrix([123, 1]))
+    assert.deepStrictEqual(
+      number(math.matrix(['123', true])),
+      math.matrix([123, 1])
+    )
   })
 
   it('should convert the elements of an array to numbers', function () {
@@ -56,18 +63,28 @@ describe('number', function () {
   })
 
   it('should throw an error if called with a wrong number of arguments', function () {
-    assert.throws(function () { number(1, 2, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      number(1, 2, 3)
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error if called with a complex number', function () {
-    assert.throws(function () { number(math.complex(2, 3)) }, TypeError)
+    assert.throws(function () {
+      number(math.complex(2, 3))
+    }, TypeError)
   })
 
   it('should throw an error with wrong type of arguments', function () {
-    assert.throws(function () { number(math.unit('5cm')) }, /Second argument with valueless unit expected/)
+    assert.throws(function () {
+      number(math.unit('5cm'))
+    }, /Second argument with valueless unit expected/)
     // assert.throws(function () {number(math.unit('5cm'), 2)}, TypeError); // FIXME: this should also throw an error
-    assert.throws(function () { number(math.unit('5cm'), new Date()) }, TypeError)
-    assert.throws(function () { number('23', 2) }, TypeError)
+    assert.throws(function () {
+      number(math.unit('5cm'), new Date())
+    }, TypeError)
+    assert.throws(function () {
+      number('23', 2)
+    }, TypeError)
   })
 
   it('should LaTeX number', function () {
@@ -77,6 +94,9 @@ describe('number', function () {
 
     assert.strictEqual(expr1.toTex(), '0')
     assert.strictEqual(expr2.toTex(), '\\left(1\\right)')
-    assert.strictEqual(expr3.toTex(), '\\left(\\left(1\\right)\\mathrm{cm}\\right)')
+    assert.strictEqual(
+      expr3.toTex(),
+      '\\left(\\left(1\\right)\\mathrm{cm}\\right)'
+    )
   })
 })

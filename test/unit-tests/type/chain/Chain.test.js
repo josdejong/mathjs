@@ -31,12 +31,34 @@ describe('Chain', function () {
   })
 
   it('should chain operations with matrices', function () {
-    assert.deepStrictEqual(new Chain(math.matrix([[1, 2], [3, 4]]))
-      .subset(math.index(0, 0), 8)
-      .multiply(3).done(), math.matrix([[24, 6], [9, 12]]))
-    assert.deepStrictEqual(new Chain([[1, 2], [3, 4]])
-      .subset(math.index(0, 0), 8)
-      .multiply(3).done(), [[24, 6], [9, 12]])
+    assert.deepStrictEqual(
+      new Chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+        .subset(math.index(0, 0), 8)
+        .multiply(3)
+        .done(),
+      math.matrix([
+        [24, 6],
+        [9, 12],
+      ])
+    )
+    assert.deepStrictEqual(
+      new Chain([
+        [1, 2],
+        [3, 4],
+      ])
+        .subset(math.index(0, 0), 8)
+        .multiply(3)
+        .done(),
+      [
+        [24, 6],
+        [9, 12],
+      ]
+    )
   })
 
   it('should get string representation', function () {
@@ -50,14 +72,14 @@ describe('Chain', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'Chain',
-      value: 2.3
+      value: 2.3,
     })
 
     const parsed = Chain.fromJSON(json)
     assert.deepStrictEqual(parsed, node)
   })
 
-  it('should get chain\'s value via valueOf', function () {
+  it("should get chain's value via valueOf", function () {
     assert.strictEqual(new Chain(5.2).valueOf(), 5.2)
     assert.strictEqual(new Chain(5.2) + 2, 7.2)
   })
@@ -70,7 +92,11 @@ describe('Chain', function () {
   })
 
   it('should create a proxy for imported functions', function () {
-    math.import({ hello: function (a) { return a + '!' } })
+    math.import({
+      hello: function (a) {
+        return a + '!'
+      },
+    })
     const a = new Chain('hello').hello().done()
     assert.strictEqual(a, 'hello!')
   })
@@ -81,12 +107,18 @@ describe('Chain', function () {
   })
 
   it('should throw an error if called with wrong input', function () {
-    assert.throws(function () { console.log(new Chain().add(2).done()) }, TypeError)
-    assert.throws(function () { console.log(new Chain(undefined).add(2).done()) }, TypeError)
+    assert.throws(function () {
+      console.log(new Chain().add(2).done())
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new Chain(undefined).add(2).done())
+    }, TypeError)
   })
 
   it('should throw an error if constructed without new keyword', function () {
-    assert.throws(function () { Chain() }, SyntaxError)
+    assert.throws(function () {
+      Chain()
+    }, SyntaxError)
   })
 
   it('should not clear inherited properties', function () {

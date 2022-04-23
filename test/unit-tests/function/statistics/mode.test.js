@@ -13,7 +13,11 @@ describe('mode', function () {
   it('should return the correct mode when there are more than one values of mode', function () {
     assert.deepStrictEqual(mode([1, 2.7, 3.2, 3.2, 4, 2.7]), [3.2, 2.7])
     assert.deepStrictEqual(mode([13, 24, 35, 46]), [13, 24, 35, 46])
-    assert.deepStrictEqual(mode(['boston', 'delhi', 'cape town']), ['boston', 'delhi', 'cape town'])
+    assert.deepStrictEqual(mode(['boston', 'delhi', 'cape town']), [
+      'boston',
+      'delhi',
+      'cape town',
+    ])
   })
 
   it('should return the mode accurately for loose arguments', function () {
@@ -39,14 +43,24 @@ describe('mode', function () {
   })
 
   it('should return NaN if any of the inputs contains NaN', function () {
-    assert.throws(function () { mode(NaN) }, /Cannot calculate mode/)
-    assert.throws(function () { mode([NaN]) }, /Cannot calculate mode/)
-    assert.throws(function () { mode([1, NaN]) }, /Cannot calculate mode/)
+    assert.throws(function () {
+      mode(NaN)
+    }, /Cannot calculate mode/)
+    assert.throws(function () {
+      mode([NaN])
+    }, /Cannot calculate mode/)
+    assert.throws(function () {
+      mode([1, NaN])
+    }, /Cannot calculate mode/)
   })
 
   it('should throw appropriate error if no parameters are assigned', function () {
-    assert.throws(function () { mode([]) })
-    assert.throws(function () { mode() })
+    assert.throws(function () {
+      mode([])
+    })
+    assert.throws(function () {
+      mode()
+    })
   })
 
   /* TODO :
@@ -61,9 +75,14 @@ describe('mode', function () {
   })
 
   it('should return the mode of a 2D matrix', function () {
-    assert.deepStrictEqual(mode(new DenseMatrix([
-      [1, 4, 0],
-      [3, 0, 5]
-    ])), [0])
+    assert.deepStrictEqual(
+      mode(
+        new DenseMatrix([
+          [1, 4, 0],
+          [3, 0, 5],
+        ])
+      ),
+      [0]
+    )
   })
 })

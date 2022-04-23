@@ -7,11 +7,19 @@ const getMatrixDataType = math.getMatrixDataType
 describe('getMatrixDataType', function () {
   describe('array', function () {
     it('should return number for pure numbers', function () {
-      const result = getMatrixDataType([[1, 2, 3], [4, 5, 6], [1, 8, 9]])
+      const result = getMatrixDataType([
+        [1, 2, 3],
+        [4, 5, 6],
+        [1, 8, 9],
+      ])
       assert.strictEqual('number', result)
     })
     it('should return number for pure numbers with NaN', function () {
-      const result = getMatrixDataType([[1, 2, NaN], [4, 5, 6], [1, 8, 9]])
+      const result = getMatrixDataType([
+        [1, 2, NaN],
+        [4, 5, 6],
+        [1, 8, 9],
+      ])
       assert.strictEqual('number', result)
     })
     it('should return string', function () {
@@ -42,7 +50,10 @@ describe('getMatrixDataType', function () {
       // Not equal in size and one is an empty array
       const result1 = getMatrixDataType([[1], []])
       // Not equal in size
-      const result2 = getMatrixDataType([[1, 2, 3], [1, 2]])
+      const result2 = getMatrixDataType([
+        [1, 2, 3],
+        [1, 2],
+      ])
       // Empty array as an input
       const result3 = getMatrixDataType([])
 
@@ -108,7 +119,11 @@ describe('getMatrixDataType', function () {
 
   describe('SparseMatrix', function () {
     it('should return number for pure numbers', function () {
-      const matrix = new SparseMatrix([[1, 2, 3], [4, 5, 6], [1, 8, 9]])
+      const matrix = new SparseMatrix([
+        [1, 2, 3],
+        [4, 5, 6],
+        [1, 8, 9],
+      ])
       const result1 = getMatrixDataType(matrix)
       const result2 = matrix.getDataType()
       assert.strictEqual('number', result1)
@@ -116,7 +131,11 @@ describe('getMatrixDataType', function () {
     })
 
     it('should return number for pure numbers with NaN', function () {
-      const matrix = new SparseMatrix([[1, 2, NaN], [4, 5, 6], [1, 8, 9]])
+      const matrix = new SparseMatrix([
+        [1, 2, NaN],
+        [4, 5, 6],
+        [1, 8, 9],
+      ])
       const result1 = getMatrixDataType(matrix)
       const result2 = matrix.getDataType()
       assert.strictEqual('number', result1)
@@ -126,7 +145,11 @@ describe('getMatrixDataType', function () {
 
   describe('DenseMatrix', function () {
     it('should return number for pure numbers', function () {
-      const matrix = new DenseMatrix([[1, 2, 3], [4, 5, 6], [1, 8, 9]])
+      const matrix = new DenseMatrix([
+        [1, 2, 3],
+        [4, 5, 6],
+        [1, 8, 9],
+      ])
       const result1 = getMatrixDataType(matrix)
       const result2 = matrix.getDataType()
       assert.strictEqual('number', result1)
@@ -134,7 +157,11 @@ describe('getMatrixDataType', function () {
     })
 
     it('should return number for pure numbers with NaN', function () {
-      const matrix = new DenseMatrix([[1, 2, NaN], [4, 5, 6], [1, 8, 9]])
+      const matrix = new DenseMatrix([
+        [1, 2, NaN],
+        [4, 5, 6],
+        [1, 8, 9],
+      ])
       const result1 = getMatrixDataType(matrix)
       const result2 = matrix.getDataType()
       assert.strictEqual('number', result1)

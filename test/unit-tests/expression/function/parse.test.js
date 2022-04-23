@@ -26,14 +26,14 @@ describe('parse', function () {
     assert.strictEqual(nodes[1].compile().evaluate(), 9)
   })
 
-  it('should parse expressions with internal newlines', () => {
+  it('should parse expressions with internal newlines', function () {
     assert.ok(math.parse('[1,\n2]') instanceof ArrayNode)
     assert.ok(math.parse('{x:1,\n y:2}') instanceof ObjectNode)
     assert.ok(math.parse('f(x,\n y)') instanceof FunctionNode)
     assert.ok(math.parse('3+\n7') instanceof OperatorNode)
   })
 
-  it('should parse expressions with internal newlines and comments', () => {
+  it('should parse expressions with internal newlines and comments', function () {
     assert.ok(math.parse('[1, # One\n2]') instanceof ArrayNode)
     assert.ok(math.parse('{x:1, # x-coordinate\n y:2}') instanceof ObjectNode)
     assert.ok(math.parse('f(x, # first argument\n y)') instanceof FunctionNode)
@@ -42,6 +42,9 @@ describe('parse', function () {
 
   it('should LaTeX parse', function () {
     const expression = math.parse('parse(expr,options)')
-    assert.strictEqual(expression.toTex(), '\\mathrm{parse}\\left( expr, options\\right)')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\mathrm{parse}\\left( expr, options\\right)'
+    )
   })
 })

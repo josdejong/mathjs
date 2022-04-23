@@ -11,7 +11,7 @@ import {
   splitNumber,
   toExponential,
   toFixed,
-  toPrecision
+  toPrecision,
 } from '../../../src/utils/number.js'
 
 describe('number', function () {
@@ -51,7 +51,7 @@ describe('number', function () {
     assert.strictEqual(digits(3000), 1)
     assert.strictEqual(digits(0.0034), 2)
     assert.strictEqual(digits(120.5e50), 4)
-    assert.strictEqual(digits(1120.5e+50), 5)
+    assert.strictEqual(digits(1120.5e50), 5)
     assert.strictEqual(digits(120.52e-50), 5)
     assert.strictEqual(digits(Math.PI), 16)
   })
@@ -96,14 +96,17 @@ describe('number', function () {
 
   it('should format a number using toExponential', function () {
     assert.strictEqual(toExponential(2.34), '2.34e+0')
-    assert.strictEqual(toExponential(2.34e+3), '2.34e+3')
+    assert.strictEqual(toExponential(2.34e3), '2.34e+3')
     assert.strictEqual(toExponential(2.34e-3), '2.34e-3')
-    assert.strictEqual(toExponential(2.34e+3, 2), '2.3e+3')
+    assert.strictEqual(toExponential(2.34e3, 2), '2.3e+3')
     assert.strictEqual(toExponential(2.135, 3), '2.14e+0')
-    assert.strictEqual(toExponential(2e+3, 20), '2.0000000000000000000e+3')
-    assert.strictEqual(toExponential(2e+3, 21), '2.00000000000000000000e+3')
-    assert.strictEqual(toExponential(2e+3, 22), '2.000000000000000000000e+3')
-    assert.strictEqual(toExponential(2e+3, 30), '2.00000000000000000000000000000e+3')
+    assert.strictEqual(toExponential(2e3, 20), '2.0000000000000000000e+3')
+    assert.strictEqual(toExponential(2e3, 21), '2.00000000000000000000e+3')
+    assert.strictEqual(toExponential(2e3, 22), '2.000000000000000000000e+3')
+    assert.strictEqual(
+      toExponential(2e3, 30),
+      '2.00000000000000000000000000000e+3'
+    )
   })
 
   describe('format', function () {
@@ -126,17 +129,38 @@ describe('number', function () {
 
         assert.strictEqual(format(123456789, options), '123456789')
         assert.strictEqual(format(-123456789, options), '-123456789')
-        assert.strictEqual(format(123456789e+9, options), '123456789000000000')
-        assert.strictEqual(format(123456789e+17, options), '12345678900000000000000000')
-        assert.strictEqual(format(123456789e+18, options), '123456789000000000000000000')
-        assert.strictEqual(format(123456789e+19, options), '1234567890000000000000000000')
-        assert.strictEqual(format(123456789e+20, options), '12345678900000000000000000000')
-        assert.strictEqual(format(123456789e+21, options), '123456789000000000000000000000')
-        assert.strictEqual(format(123456789e+22, options), '1234567890000000000000000000000')
+        assert.strictEqual(format(123456789e9, options), '123456789000000000')
+        assert.strictEqual(
+          format(123456789e17, options),
+          '12345678900000000000000000'
+        )
+        assert.strictEqual(
+          format(123456789e18, options),
+          '123456789000000000000000000'
+        )
+        assert.strictEqual(
+          format(123456789e19, options),
+          '1234567890000000000000000000'
+        )
+        assert.strictEqual(
+          format(123456789e20, options),
+          '12345678900000000000000000000'
+        )
+        assert.strictEqual(
+          format(123456789e21, options),
+          '123456789000000000000000000000'
+        )
+        assert.strictEqual(
+          format(123456789e22, options),
+          '1234567890000000000000000000000'
+        )
 
         assert.strictEqual(format(1e-18, options), '0.000000000000000001')
         assert.strictEqual(format(1e-22, options), '0.0000000000000000000001')
-        assert.strictEqual(format(1e-32, options), '0.00000000000000000000000000000001')
+        assert.strictEqual(
+          format(1e-32, options),
+          '0.00000000000000000000000000000001'
+        )
       })
 
       it('fixed notation with precision', function () {
@@ -151,12 +175,30 @@ describe('number', function () {
         assert.strictEqual(format(-0.5555, options), '-0.56')
 
         assert.strictEqual(format(123456789, options), '123456789.00')
-        assert.strictEqual(format(123456789e+9, options), '123456789000000000.00')
-        assert.strictEqual(format(123456789e+18, options), '123456789000000000000000000.00')
-        assert.strictEqual(format(123456789e+19, options), '1234567890000000000000000000.00')
-        assert.strictEqual(format(123456789e+20, options), '12345678900000000000000000000.00')
-        assert.strictEqual(format(123456789e+21, options), '123456789000000000000000000000.00')
-        assert.strictEqual(format(123456789e+22, options), '1234567890000000000000000000000.00')
+        assert.strictEqual(
+          format(123456789e9, options),
+          '123456789000000000.00'
+        )
+        assert.strictEqual(
+          format(123456789e18, options),
+          '123456789000000000000000000.00'
+        )
+        assert.strictEqual(
+          format(123456789e19, options),
+          '1234567890000000000000000000.00'
+        )
+        assert.strictEqual(
+          format(123456789e20, options),
+          '12345678900000000000000000000.00'
+        )
+        assert.strictEqual(
+          format(123456789e21, options),
+          '123456789000000000000000000000.00'
+        )
+        assert.strictEqual(
+          format(123456789e22, options),
+          '1234567890000000000000000000000.00'
+        )
 
         assert.strictEqual(format(1.2e-14, options), '0.00')
         assert.strictEqual(format(1.3e-18, options), '0.00')
@@ -165,10 +207,14 @@ describe('number', function () {
         assert.strictEqual(format(1.3e-21, options), '0.00')
         assert.strictEqual(format(1.3e-22, options), '0.00')
 
-        assert.strictEqual(format(5.6789e-30, { notation, precision: 32 }),
-          '0.00000000000000000000000000000568')
-        assert.strictEqual(format(5.6999e-30, { notation, precision: 32 }),
-          '0.00000000000000000000000000000570')
+        assert.strictEqual(
+          format(5.6789e-30, { notation, precision: 32 }),
+          '0.00000000000000000000000000000568'
+        )
+        assert.strictEqual(
+          format(5.6999e-30, { notation, precision: 32 }),
+          '0.00000000000000000000000000000570'
+        )
 
         assert.strictEqual(format(123.456, { notation, precision: 0 }), '123')
         assert.strictEqual(format(-123.456, { notation, precision: 0 }), '-123')
@@ -181,7 +227,7 @@ describe('number', function () {
         assert.strictEqual(format(123.456, options), '1.23456e+2')
         assert.strictEqual(format(0.0123, options), '1.23e-2')
         assert.strictEqual(format(123456789, options), '1.23456789e+8')
-        assert.strictEqual(format(123456789e+9, options), '1.23456789e+17')
+        assert.strictEqual(format(123456789e9, options), '1.23456789e+17')
         assert.strictEqual(format(123456789e-9, options), '1.23456789e-1')
       })
 
@@ -194,7 +240,7 @@ describe('number', function () {
 
       it('auto notation', function () {
         assert.strictEqual(format(2 / 7), '0.2857142857142857')
-        assert.strictEqual(format(0.10400), '0.104')
+        assert.strictEqual(format(0.104), '0.104')
         assert.strictEqual(format(1000), '1000')
         // assert.strictEqual(format(-0.005), '-0.005')
         assert.strictEqual(format(-2300), '-2300')
@@ -210,12 +256,12 @@ describe('number', function () {
         assert.strictEqual(format(2.3e-2), '0.023')
         assert.strictEqual(format(2.3e-1), '0.23')
         assert.strictEqual(format(2.3), '2.3')
-        assert.strictEqual(format(2.3e+1), '23')
-        assert.strictEqual(format(2.3e+2), '230')
-        assert.strictEqual(format(2.3e+3), '2300')
-        assert.strictEqual(format(2.3e+4), '23000')
-        assert.strictEqual(format(2.3e+5), '2.3e+5')
-        assert.strictEqual(format(2.3e+6), '2.3e+6')
+        assert.strictEqual(format(2.3e1), '23')
+        assert.strictEqual(format(2.3e2), '230')
+        assert.strictEqual(format(2.3e3), '2300')
+        assert.strictEqual(format(2.3e4), '23000')
+        assert.strictEqual(format(2.3e5), '2.3e+5')
+        assert.strictEqual(format(2.3e6), '2.3e+6')
 
         assert.strictEqual(format(1.000000012), '1.000000012')
         assert.strictEqual(format(1000000012), '1.000000012e+9')
@@ -225,11 +271,11 @@ describe('number', function () {
         assert.strictEqual(format(123456789123456e-14), '1.23456789123456')
         assert.strictEqual(format(123456789123456789), '1.2345678912345678e+17') // eslint-disable-line no-loss-of-precision
 
-        assert.strictEqual(format(0.1111e+6), '1.111e+5')
-        assert.strictEqual(format(0.3333e+6), '3.333e+5')
-        assert.strictEqual(format(0.6666e+6), '6.666e+5')
-        assert.strictEqual(format(0.9999e+6), '9.999e+5')
-        assert.strictEqual(format(1.111e+6), '1.111e+6')
+        assert.strictEqual(format(0.1111e6), '1.111e+5')
+        assert.strictEqual(format(0.3333e6), '3.333e+5')
+        assert.strictEqual(format(0.6666e6), '6.666e+5')
+        assert.strictEqual(format(0.9999e6), '9.999e+5')
+        assert.strictEqual(format(1.111e6), '1.111e+6')
       })
 
       it('auto notation with precision', function () {
@@ -240,8 +286,8 @@ describe('number', function () {
         assert.strictEqual(format(0.05555, { precision: 2 }), '0.056')
         assert.strictEqual(format(-0.05555, { precision: 2 }), '-0.056')
 
-        assert.strictEqual(format(1000.000, { precision: 5 }), '1000')
-        assert.strictEqual(format(1000.0010, { precision: 5 }), '1000') // rounded off at 5 digits
+        assert.strictEqual(format(1000.0, { precision: 5 }), '1000')
+        assert.strictEqual(format(1000.001, { precision: 5 }), '1000') // rounded off at 5 digits
         assert.strictEqual(format(1234, { precision: 3 }), '1230')
         assert.strictEqual(format(123.4, { precision: 6 }), '123.4')
         assert.strictEqual(format(0.001234, { precision: 3 }), '0.00123')
@@ -250,7 +296,7 @@ describe('number', function () {
         assert.strictEqual(format(1234567, { precision: 2 }), '1.2e+6')
         assert.strictEqual(format(123e-6, { precision: 2 }), '1.2e-4')
         assert.strictEqual(format(123e-6, { precision: 8 }), '1.23e-4') // should remove trailing zeros
-        assert.strictEqual(format(3e+6, { precision: 8 }), '3e+6') // should remove trailing zeros
+        assert.strictEqual(format(3e6, { precision: 8 }), '3e+6') // should remove trailing zeros
         assert.strictEqual(format(1234, { precision: 2 }), '1200')
 
         // overflow the maximum allowed precision of 20
@@ -260,17 +306,20 @@ describe('number', function () {
       it('auto notation with custom lower and upper bound', function () {
         const options = {
           lowerExp: -6,
-          upperExp: 9
+          upperExp: 9,
         }
         assert.strictEqual(format(0, options), '0')
         assert.strictEqual(format(1234567, options), '1234567')
-        assert.strictEqual(format(1e+9, options), '1e+9')
-        assert.strictEqual(format(1e+9 - 1, options), '999999999')
+        assert.strictEqual(format(1e9, options), '1e+9')
+        assert.strictEqual(format(1e9 - 1, options), '999999999')
         assert.strictEqual(format(1e-6, options), '0.000001')
         assert.strictEqual(format(0.999e-6, options), '9.99e-7')
         assert.strictEqual(format(123456789123, options), '1.23456789123e+11')
 
-        assert.strictEqual(format(Math.pow(2, 53), { upperExp: 20 }), '9007199254740992')
+        assert.strictEqual(
+          format(Math.pow(2, 53), { upperExp: 20 }),
+          '9007199254740992'
+        )
       })
 
       it('auto notation with custom lower bound', function () {
@@ -293,34 +342,85 @@ describe('number', function () {
         assert.strictEqual(format(0.01, { lowerExp: -2 }), '0.01')
         assert.strictEqual(format(0.001, { lowerExp: -2 }), '1e-3')
 
-        assert.strictEqual(format(0.009, { lowerExp: -2, precision: 1 }), '9e-3')
-        assert.strictEqual(format(0.0096, { lowerExp: -2, precision: 1 }), '0.01')
+        assert.strictEqual(
+          format(0.009, { lowerExp: -2, precision: 1 }),
+          '9e-3'
+        )
+        assert.strictEqual(
+          format(0.0096, { lowerExp: -2, precision: 1 }),
+          '0.01'
+        )
         assert.strictEqual(format(0.01, { lowerExp: -2, precision: 1 }), '0.01')
-        assert.strictEqual(format(0.001, { lowerExp: -2, precision: 1 }), '1e-3')
+        assert.strictEqual(
+          format(0.001, { lowerExp: -2, precision: 1 }),
+          '1e-3'
+        )
 
-        assert.strictEqual(format(1e-18, { lowerExp: -30 }), '0.000000000000000001')
-        assert.strictEqual(format(1e-19, { lowerExp: -30 }), '0.0000000000000000001')
-        assert.strictEqual(format(1e-20, { lowerExp: -30 }), '0.00000000000000000001')
-        assert.strictEqual(format(1e-21, { lowerExp: -30 }), '0.000000000000000000001')
-        assert.strictEqual(format(1e-22, { lowerExp: -30 }), '0.0000000000000000000001')
-        assert.strictEqual(format(1e-23, { lowerExp: -30 }), '0.00000000000000000000001')
-        assert.strictEqual(format(1e-24, { lowerExp: -30 }), '0.000000000000000000000001')
+        assert.strictEqual(
+          format(1e-18, { lowerExp: -30 }),
+          '0.000000000000000001'
+        )
+        assert.strictEqual(
+          format(1e-19, { lowerExp: -30 }),
+          '0.0000000000000000001'
+        )
+        assert.strictEqual(
+          format(1e-20, { lowerExp: -30 }),
+          '0.00000000000000000001'
+        )
+        assert.strictEqual(
+          format(1e-21, { lowerExp: -30 }),
+          '0.000000000000000000001'
+        )
+        assert.strictEqual(
+          format(1e-22, { lowerExp: -30 }),
+          '0.0000000000000000000001'
+        )
+        assert.strictEqual(
+          format(1e-23, { lowerExp: -30 }),
+          '0.00000000000000000000001'
+        )
+        assert.strictEqual(
+          format(1e-24, { lowerExp: -30 }),
+          '0.000000000000000000000001'
+        )
       })
 
       it('auto notation with custom upper bound', function () {
         const options = { upperExp: 9 }
-        assert.strictEqual(format(1e+9, options), '1e+9')
-        assert.strictEqual(format(1e+9 - 1, options), '999999999')
+        assert.strictEqual(format(1e9, options), '1e+9')
+        assert.strictEqual(format(1e9 - 1, options), '999999999')
       })
 
       it('auto notation with very large custom upper bound', function () {
-        assert.strictEqual(format(1e+18, { upperExp: 30 }), '1000000000000000000')
-        assert.strictEqual(format(1e+19, { upperExp: 30 }), '10000000000000000000')
-        assert.strictEqual(format(1e+20, { upperExp: 30 }), '100000000000000000000')
-        assert.strictEqual(format(1e+21, { upperExp: 30 }), '1000000000000000000000')
-        assert.strictEqual(format(1e+22, { upperExp: 30 }), '10000000000000000000000')
-        assert.strictEqual(format(1e+23, { upperExp: 30 }), '100000000000000000000000')
-        assert.strictEqual(format(1e+24, { upperExp: 30 }), '1000000000000000000000000')
+        assert.strictEqual(
+          format(1e18, { upperExp: 30 }),
+          '1000000000000000000'
+        )
+        assert.strictEqual(
+          format(1e19, { upperExp: 30 }),
+          '10000000000000000000'
+        )
+        assert.strictEqual(
+          format(1e20, { upperExp: 30 }),
+          '100000000000000000000'
+        )
+        assert.strictEqual(
+          format(1e21, { upperExp: 30 }),
+          '1000000000000000000000'
+        )
+        assert.strictEqual(
+          format(1e22, { upperExp: 30 }),
+          '10000000000000000000000'
+        )
+        assert.strictEqual(
+          format(1e23, { upperExp: 30 }),
+          '100000000000000000000000'
+        )
+        assert.strictEqual(
+          format(1e24, { upperExp: 30 }),
+          '1000000000000000000000000'
+        )
       })
 
       it('auto notation with very small custom upper bound', function () {
@@ -334,14 +434,14 @@ describe('number', function () {
         const options = {
           precision: 4,
           lowerExp: -6,
-          upperExp: 9
+          upperExp: 9,
         }
 
         assert.strictEqual(format(0, options), '0')
         assert.strictEqual(format(1234567, options), '1235000')
-        assert.strictEqual(format(1e+9, options), '1e+9')
-        assert.strictEqual(format(1.1e+9, options), '1.1e+9')
-        assert.strictEqual(format(1e+9 - 1, options), '1e+9')
+        assert.strictEqual(format(1e9, options), '1e+9')
+        assert.strictEqual(format(1.1e9, options), '1.1e+9')
+        assert.strictEqual(format(1e9 - 1, options), '1e+9')
         assert.strictEqual(format(1e-6, options), '0.000001')
         assert.strictEqual(format(0.999e-6, options), '9.99e-7')
         assert.strictEqual(format(123456789123, options), '1.235e+11')
@@ -354,38 +454,126 @@ describe('number', function () {
       })
 
       it('should split a number into sign, coefficient, exponent', function () {
-        assert.deepStrictEqual(splitNumber(0), { sign: '', coefficients: [0], exponent: 0 })
-        assert.deepStrictEqual(splitNumber(2.3), { sign: '', coefficients: [2, 3], exponent: 0 })
+        assert.deepStrictEqual(splitNumber(0), {
+          sign: '',
+          coefficients: [0],
+          exponent: 0,
+        })
+        assert.deepStrictEqual(splitNumber(2.3), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: 0,
+        })
 
         const a = splitNumber(2.3)
         assert.strictEqual(a.coefficients[0], 2)
         assert.strictEqual(a.coefficients[1], 3)
         assert.strictEqual(a.exponent, 0)
 
-        assert.deepStrictEqual(splitNumber(-2.3), { sign: '-', coefficients: [2, 3], exponent: 0 })
-        assert.deepStrictEqual(splitNumber('02.3'), { sign: '', coefficients: [2, 3], exponent: 0 })
-        assert.deepStrictEqual(splitNumber(2300), { sign: '', coefficients: [2, 3], exponent: 3 })
-        assert.deepStrictEqual(splitNumber(0.00023), { sign: '', coefficients: [2, 3], exponent: -4 })
-        assert.deepStrictEqual(splitNumber('0.00023'), { sign: '', coefficients: [2, 3], exponent: -4 })
-        assert.deepStrictEqual(splitNumber('000.0002300'), { sign: '', coefficients: [2, 3], exponent: -4 })
-        assert.deepStrictEqual(splitNumber('002300'), { sign: '', coefficients: [2, 3], exponent: 3 })
-        assert.deepStrictEqual(splitNumber('2.3e3'), { sign: '', coefficients: [2, 3], exponent: 3 })
-        assert.deepStrictEqual(splitNumber('2.3e+3'), { sign: '', coefficients: [2, 3], exponent: 3 })
-        assert.deepStrictEqual(splitNumber('-2.3e3'), { sign: '-', coefficients: [2, 3], exponent: 3 })
-        assert.deepStrictEqual(splitNumber('23e3'), { sign: '', coefficients: [2, 3], exponent: 4 })
-        assert.deepStrictEqual(splitNumber('-23e3'), { sign: '-', coefficients: [2, 3], exponent: 4 })
-        assert.deepStrictEqual(splitNumber('2.3e-3'), { sign: '', coefficients: [2, 3], exponent: -3 })
-        assert.deepStrictEqual(splitNumber('23e-3'), { sign: '', coefficients: [2, 3], exponent: -2 })
-        assert.deepStrictEqual(splitNumber('000e+003'), { sign: '', coefficients: [0], exponent: 3 })
-        assert.deepStrictEqual(splitNumber('-23e-3'), { sign: '-', coefficients: [2, 3], exponent: -2 })
-        assert.deepStrictEqual(splitNumber('99.99'), { sign: '', coefficients: [9, 9, 9, 9], exponent: 1 })
+        assert.deepStrictEqual(splitNumber(-2.3), {
+          sign: '-',
+          coefficients: [2, 3],
+          exponent: 0,
+        })
+        assert.deepStrictEqual(splitNumber('02.3'), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: 0,
+        })
+        assert.deepStrictEqual(splitNumber(2300), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: 3,
+        })
+        assert.deepStrictEqual(splitNumber(0.00023), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: -4,
+        })
+        assert.deepStrictEqual(splitNumber('0.00023'), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: -4,
+        })
+        assert.deepStrictEqual(splitNumber('000.0002300'), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: -4,
+        })
+        assert.deepStrictEqual(splitNumber('002300'), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: 3,
+        })
+        assert.deepStrictEqual(splitNumber('2.3e3'), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: 3,
+        })
+        assert.deepStrictEqual(splitNumber('2.3e+3'), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: 3,
+        })
+        assert.deepStrictEqual(splitNumber('-2.3e3'), {
+          sign: '-',
+          coefficients: [2, 3],
+          exponent: 3,
+        })
+        assert.deepStrictEqual(splitNumber('23e3'), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: 4,
+        })
+        assert.deepStrictEqual(splitNumber('-23e3'), {
+          sign: '-',
+          coefficients: [2, 3],
+          exponent: 4,
+        })
+        assert.deepStrictEqual(splitNumber('2.3e-3'), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: -3,
+        })
+        assert.deepStrictEqual(splitNumber('23e-3'), {
+          sign: '',
+          coefficients: [2, 3],
+          exponent: -2,
+        })
+        assert.deepStrictEqual(splitNumber('000e+003'), {
+          sign: '',
+          coefficients: [0],
+          exponent: 3,
+        })
+        assert.deepStrictEqual(splitNumber('-23e-3'), {
+          sign: '-',
+          coefficients: [2, 3],
+          exponent: -2,
+        })
+        assert.deepStrictEqual(splitNumber('99.99'), {
+          sign: '',
+          coefficients: [9, 9, 9, 9],
+          exponent: 1,
+        })
       })
 
       it('should round digits of a a split number', function () {
-        assert.deepStrictEqual(roundDigits(splitNumber(123456), 3), splitNumber(123000))
-        assert.deepStrictEqual(roundDigits(splitNumber(123456), 4), splitNumber(123500))
-        assert.deepStrictEqual(roundDigits(splitNumber(0.00555), 2), splitNumber(0.0056))
-        assert.deepStrictEqual(roundDigits(splitNumber(99.99), 2), splitNumber(100))
+        assert.deepStrictEqual(
+          roundDigits(splitNumber(123456), 3),
+          splitNumber(123000)
+        )
+        assert.deepStrictEqual(
+          roundDigits(splitNumber(123456), 4),
+          splitNumber(123500)
+        )
+        assert.deepStrictEqual(
+          roundDigits(splitNumber(0.00555), 2),
+          splitNumber(0.0056)
+        )
+        assert.deepStrictEqual(
+          roundDigits(splitNumber(99.99), 2),
+          splitNumber(100)
+        )
       })
 
       it('should format a number with toFixed', function () {
@@ -474,14 +662,30 @@ describe('number', function () {
       })
 
       it('should should throw an error on invalid input', function () {
-        assert.throws(function () { splitNumber('2.3.4') }, /SyntaxError/)
-        assert.throws(function () { splitNumber('2.3ee') }, /SyntaxError/)
-        assert.throws(function () { splitNumber('2.3e4.3') }, /SyntaxError/)
-        assert.throws(function () { splitNumber('2.3a') }, /SyntaxError/)
-        assert.throws(function () { splitNumber('foo') }, /SyntaxError/)
-        assert.throws(function () { splitNumber(NaN) }, /SyntaxError/)
-        assert.throws(function () { splitNumber('NaN') }, /SyntaxError/)
-        assert.throws(function () { splitNumber(new Date()) }, /SyntaxError/)
+        assert.throws(function () {
+          splitNumber('2.3.4')
+        }, /SyntaxError/)
+        assert.throws(function () {
+          splitNumber('2.3ee')
+        }, /SyntaxError/)
+        assert.throws(function () {
+          splitNumber('2.3e4.3')
+        }, /SyntaxError/)
+        assert.throws(function () {
+          splitNumber('2.3a')
+        }, /SyntaxError/)
+        assert.throws(function () {
+          splitNumber('foo')
+        }, /SyntaxError/)
+        assert.throws(function () {
+          splitNumber(NaN)
+        }, /SyntaxError/)
+        assert.throws(function () {
+          splitNumber('NaN')
+        }, /SyntaxError/)
+        assert.throws(function () {
+          splitNumber(new Date())
+        }, /SyntaxError/)
       })
     })
 
@@ -493,13 +697,13 @@ describe('number', function () {
     })
 
     it('should format numbers with a custom formatting function', function () {
-      function asCurrency (value) {
+      function asCurrency(value) {
         return '$' + value.toFixed(2)
       }
 
       assert.strictEqual(format(12.4264, asCurrency), '$12.43')
       assert.strictEqual(format(0.1, asCurrency), '$0.10')
-      assert.strictEqual(format(1.2e+6, asCurrency), '$1200000.00')
+      assert.strictEqual(format(1.2e6, asCurrency), '$1200000.00')
     })
   })
 
@@ -523,7 +727,7 @@ describe('number', function () {
       assert.strictEqual(nearlyEqual(1, 0.9999, epsilon2), true)
 
       // test one of these famous round-off errors
-      assert.strictEqual((0.1 + 0.2) === 0.3, false)
+      assert.strictEqual(0.1 + 0.2 === 0.3, false)
       assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3, 1e-14), true)
     })
 
@@ -537,7 +741,7 @@ describe('number', function () {
 
     it('should test whether two large numbers are nearly equal', function () {
       const epsilon = 1e-2
-      assert.strictEqual(nearlyEqual(1e200, 0.90e200, epsilon), false)
+      assert.strictEqual(nearlyEqual(1e200, 0.9e200, epsilon), false)
       assert.strictEqual(nearlyEqual(1e200, 0.95e200, epsilon), false)
       assert.strictEqual(nearlyEqual(1e200, 0.98e200, epsilon), false)
       assert.strictEqual(nearlyEqual(1e200, 0.99e200, epsilon), true)

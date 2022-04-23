@@ -28,7 +28,9 @@ describe('ConstantNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { ConstantNode(3) }, SyntaxError)
+    assert.throws(function () {
+      ConstantNode(3)
+    }, SyntaxError)
   })
 
   it('should compile a ConstantNode', function () {
@@ -60,19 +62,45 @@ describe('ConstantNode', function () {
 
   it('should find a ConstantNode', function () {
     const a = new ConstantNode(2)
-    assert.deepStrictEqual(a.filter(function (node) { return node instanceof ConstantNode }), [a])
-    assert.deepStrictEqual(a.filter(function (node) { return node instanceof SymbolNode }), [])
+    assert.deepStrictEqual(
+      a.filter(function (node) {
+        return node instanceof ConstantNode
+      }),
+      [a]
+    )
+    assert.deepStrictEqual(
+      a.filter(function (node) {
+        return node instanceof SymbolNode
+      }),
+      []
+    )
   })
 
   it('should leave quotes in strings as is (no escaping)', function () {
-    assert.strictEqual(new ConstantNode('"+foo+"').compile().evaluate(), '"+foo+"')
-    assert.strictEqual(new ConstantNode('\\"escaped\\"').compile().evaluate(), '\\"escaped\\"')
+    assert.strictEqual(
+      new ConstantNode('"+foo+"').compile().evaluate(),
+      '"+foo+"'
+    )
+    assert.strictEqual(
+      new ConstantNode('\\"escaped\\"').compile().evaluate(),
+      '\\"escaped\\"'
+    )
   })
 
   it('should find a ConstantNode', function () {
     const a = new ConstantNode(2)
-    assert.deepStrictEqual(a.filter(function (node) { return node instanceof ConstantNode }), [a])
-    assert.deepStrictEqual(a.filter(function (node) { return node instanceof SymbolNode }), [])
+    assert.deepStrictEqual(
+      a.filter(function (node) {
+        return node instanceof ConstantNode
+      }),
+      [a]
+    )
+    assert.deepStrictEqual(
+      a.filter(function (node) {
+        return node instanceof SymbolNode
+      }),
+      []
+    )
   })
 
   it('should run forEach on a ConstantNode', function () {
@@ -135,8 +163,14 @@ describe('ConstantNode', function () {
   it('should stringify a ConstantNode', function () {
     assert.strictEqual(new ConstantNode(3).toString(), '3')
     assert.deepStrictEqual(new ConstantNode(3).toString(), '3')
-    assert.deepStrictEqual(new ConstantNode(math.bignumber('1e500')).toString(), '1e+500')
-    assert.deepStrictEqual(new ConstantNode(math.fraction(2, 3)).toString(), '2/3')
+    assert.deepStrictEqual(
+      new ConstantNode(math.bignumber('1e500')).toString(),
+      '1e+500'
+    )
+    assert.deepStrictEqual(
+      new ConstantNode(math.fraction(2, 3)).toString(),
+      '2/3'
+    )
     assert.strictEqual(new ConstantNode('hi').toString(), '"hi"')
     assert.strictEqual(new ConstantNode(true).toString(), 'true')
     assert.strictEqual(new ConstantNode(false).toString(), 'false')
@@ -164,7 +198,7 @@ describe('ConstantNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'ConstantNode',
-      value: 2.3
+      value: 2.3,
     })
 
     const parsed = ConstantNode.fromJSON(json)
@@ -185,8 +219,14 @@ describe('ConstantNode', function () {
   it('should LaTeX a ConstantNode with value Infinity', function () {
     assert.strictEqual(new ConstantNode(Infinity).toTex(), '\\infty')
     assert.strictEqual(new ConstantNode(-Infinity).toTex(), '-\\infty')
-    assert.strictEqual(new ConstantNode(math.bignumber('Infinity')).toTex(), '\\infty')
-    assert.strictEqual(new ConstantNode(math.bignumber('-Infinity')).toTex(), '-\\infty')
+    assert.strictEqual(
+      new ConstantNode(math.bignumber('Infinity')).toTex(),
+      '\\infty'
+    )
+    assert.strictEqual(
+      new ConstantNode(math.bignumber('-Infinity')).toTex(),
+      '-\\infty'
+    )
   })
 
   it('should LaTeX a ConstantNode in exponential notation', function () {
@@ -204,7 +244,10 @@ describe('ConstantNode', function () {
 
     const n = new ConstantNode(1)
 
-    assert.strictEqual(n.toTex({ handler: customFunction }), 'const\\left(1\\right)')
+    assert.strictEqual(
+      n.toTex({ handler: customFunction }),
+      'const\\left(1\\right)'
+    )
   })
 
   it('should LaTeX a ConstantNode with a fraction', function () {
@@ -218,6 +261,9 @@ describe('ConstantNode', function () {
   it('should escape strings in toTex', function () {
     const n = new ConstantNode('space tab\tunderscore_bla$/')
 
-    assert.strictEqual(n.toTex(), '\\mathtt{"space~tab\\qquad{}underscore\\_bla\\$/"}')
+    assert.strictEqual(
+      n.toTex(),
+      '\\mathtt{"space~tab\\qquad{}underscore\\_bla\\$/"}'
+    )
   })
 })

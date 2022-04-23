@@ -45,13 +45,29 @@ describe('xgcd', function () {
   })
 
   it('should calculate xgcd for BigNumbers', function () {
-    assert.deepStrictEqual(xgcd(math.bignumber(65), math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)])
-    assert.deepStrictEqual(xgcd(math.bignumber(65), math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)])
+    assert.deepStrictEqual(xgcd(math.bignumber(65), math.bignumber(40)), [
+      math.bignumber(5),
+      math.bignumber(-3),
+      math.bignumber(5),
+    ])
+    assert.deepStrictEqual(xgcd(math.bignumber(65), math.bignumber(40)), [
+      math.bignumber(5),
+      math.bignumber(-3),
+      math.bignumber(5),
+    ])
   })
 
   it('should calculate xgcd for mixed BigNumbers and Numbers', function () {
-    assert.deepStrictEqual(xgcd(math.bignumber(65), 40), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)])
-    assert.deepStrictEqual(xgcd(65, math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)])
+    assert.deepStrictEqual(xgcd(math.bignumber(65), 40), [
+      math.bignumber(5),
+      math.bignumber(-3),
+      math.bignumber(5),
+    ])
+    assert.deepStrictEqual(xgcd(65, math.bignumber(40)), [
+      math.bignumber(5),
+      math.bignumber(-3),
+      math.bignumber(5),
+    ])
   })
 
   it('should calculate xgcd for edge cases with negative values', function () {
@@ -88,30 +104,58 @@ describe('xgcd', function () {
   })
 
   it('should throw an error if used with wrong number of arguments', function () {
-    assert.throws(function () { xgcd(1) })
-    assert.throws(function () { xgcd(1, 2, 3) })
+    assert.throws(function () {
+      xgcd(1)
+    })
+    assert.throws(function () {
+      xgcd(1, 2, 3)
+    })
   })
 
   it('should throw an error for non-integer numbers', function () {
-    assert.throws(function () { xgcd(2, 4.1) }, /Parameters in function xgcd must be integer numbers/)
-    assert.throws(function () { xgcd(2.3, 4) }, /Parameters in function xgcd must be integer numbers/)
+    assert.throws(function () {
+      xgcd(2, 4.1)
+    }, /Parameters in function xgcd must be integer numbers/)
+    assert.throws(function () {
+      xgcd(2.3, 4)
+    }, /Parameters in function xgcd must be integer numbers/)
   })
 
   it('should throw an error when used with a complex number', function () {
-    assert.throws(function () { xgcd(math.complex(1, 3), 2) }, TypeError, 'Function xgcd(complex, number) not supported')
+    assert.throws(
+      function () {
+        xgcd(math.complex(1, 3), 2)
+      },
+      TypeError,
+      'Function xgcd(complex, number) not supported'
+    )
   })
 
   it('should convert to a number when used with a string', function () {
     assert.deepStrictEqual(xgcd('65', '40'), [5, -3, 5])
-    assert.throws(function () { xgcd(2, 'a') }, /Cannot convert "a" to a number/)
+    assert.throws(function () {
+      xgcd(2, 'a')
+    }, /Cannot convert "a" to a number/)
   })
 
   it('should throw an error when used with a unit', function () {
-    assert.throws(function () { xgcd(math.unit('5cm'), 2) }, TypeError, 'Function xgcd(unit, number) not supported')
+    assert.throws(
+      function () {
+        xgcd(math.unit('5cm'), 2)
+      },
+      TypeError,
+      'Function xgcd(unit, number) not supported'
+    )
   })
 
   it('should throw an error when used with a matrix', function () {
-    assert.throws(function () { xgcd([5, 2, 3], [25, 3, 6]) }, TypeError, 'Function xgcd(array, array) not supported')
+    assert.throws(
+      function () {
+        xgcd([5, 2, 3], [25, 3, 6])
+      },
+      TypeError,
+      'Function xgcd(array, array) not supported'
+    )
   })
 
   it('should LaTeX xgcd', function () {

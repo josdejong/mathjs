@@ -39,7 +39,13 @@ describe('kldivergence', function () {
   })
 
   it('should return bignumber', function () {
-    const result = math.kldivergence([math.bignumber(4), math.bignumber(7)], [math.bignumber(1), math.bignumber(4)])
-    assert.strictEqual(result.toString(), '0.0717688178200499468328227075658945850681301640503275280115029999')
+    const result = math.kldivergence(
+      [math.bignumber(4), math.bignumber(7)],
+      [math.bignumber(1), math.bignumber(4)]
+    )
+    assert.strictEqual(
+      result.toString(),
+      '0.0717688178200499468328227075658945850681301640503275280115029999'
+    )
   })
 })

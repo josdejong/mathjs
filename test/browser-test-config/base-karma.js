@@ -2,29 +2,26 @@ const webpack = require('webpack')
 
 module.exports = function (config) {
   return {
-
     basePath: '../..',
 
     frameworks: [
-      'mocha'
+      'mocha',
       // 'webpack' TODO: needed after upgrading to webpack 5, see https://github.com/josdejong/mathjs/pull/2433
     ],
 
     // list of files / patterns to load in the browser
-    files: [
-      'test/browser-test-config/browser-tests.test.js'
-    ],
+    files: ['test/browser-test-config/browser-tests.test.js'],
 
     plugins: [
       'karma-browserstack-launcher',
       'karma-webpack',
       'karma-mocha',
       'karma-mocha-reporter',
-      'karma-firefox-launcher'
+      'karma-firefox-launcher',
     ],
 
     preprocessors: {
-      'test/**/*.js': ['webpack']
+      'test/**/*.js': ['webpack'],
     },
 
     captureTimeout: 210000,
@@ -59,8 +56,8 @@ module.exports = function (config) {
 
       plugins: [
         new webpack.ProvidePlugin({
-          process: 'process'
-        })
+          process: 'process',
+        }),
       ],
 
       resolve: {
@@ -69,7 +66,7 @@ module.exports = function (config) {
         extensions: ['.js', '.json'],
         // same as above, disallow 'module' field to prevent
         // decimal.mjs from breaking tests.
-        mainFields: ['browser', 'main']
+        mainFields: ['browser', 'main'],
       },
 
       module: {
@@ -77,11 +74,10 @@ module.exports = function (config) {
           {
             test: /\.js$/,
             exclude: /node_modules/,
-            use: 'babel-loader'
-          }
-        ]
-      }
-    }
-
+            use: 'babel-loader',
+          },
+        ],
+      },
+    },
   }
 }

@@ -3,7 +3,7 @@ import math from '../../../src/defaultInstance.js'
 const string = math.string
 
 describe('string', function () {
-  it('should be \'\' if called with no argument', function () {
+  it("should be '' if called with no argument", function () {
     assert.strictEqual(string(), '')
   })
 
@@ -23,12 +23,31 @@ describe('string', function () {
   })
 
   it('should convert the elements of an array to strings', function () {
-    assert.deepStrictEqual(string([[2, true], ['hi', null]]), [['2', 'true'], ['hi', 'null']])
+    assert.deepStrictEqual(
+      string([
+        [2, true],
+        ['hi', null],
+      ]),
+      [
+        ['2', 'true'],
+        ['hi', 'null'],
+      ]
+    )
   })
 
   it('should convert the elements of a matrix to strings', function () {
-    assert.deepStrictEqual(string(math.matrix([[2, true], ['hi', null]])),
-      math.matrix([['2', 'true'], ['hi', 'null']]))
+    assert.deepStrictEqual(
+      string(
+        math.matrix([
+          [2, true],
+          ['hi', null],
+        ])
+      ),
+      math.matrix([
+        ['2', 'true'],
+        ['hi', 'null'],
+      ])
+    )
   })
 
   it('should convert a number to string', function () {
@@ -51,7 +70,11 @@ describe('string', function () {
   })
 
   it('should throw an error if called with wrong number of arguments', function () {
-    assert.throws(function () { string(1, 2) }, /TypeError: Too many arguments/)
-    assert.throws(function () { string(1, 2, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      string(1, 2)
+    }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      string(1, 2, 3)
+    }, /TypeError: Too many arguments/)
   })
 })

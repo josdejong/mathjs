@@ -15,7 +15,10 @@ describe('ctranspose', function () {
 
   it('should transpose a vector', function () {
     assert.deepStrictEqual(ctranspose([1, 2, 3]), [1, 2, 3])
-    assert.deepStrictEqual(ctranspose(math.matrix([1, 2, 3]).toArray()), [1, 2, 3])
+    assert.deepStrictEqual(
+      ctranspose(math.matrix([1, 2, 3]).toArray()),
+      [1, 2, 3]
+    )
   })
 
   it('should conjgate a complex vector', function () {
@@ -26,13 +29,50 @@ describe('ctranspose', function () {
     const bH = math.complex(3, -4)
     const cH = math.complex(5, -6)
     assert.deepStrictEqual(ctranspose([a, b, c]), [aH, bH, cH])
-    assert.deepStrictEqual(ctranspose(math.matrix([a, b, c])).toArray(), [aH, bH, cH])
+    assert.deepStrictEqual(ctranspose(math.matrix([a, b, c])).toArray(), [
+      aH,
+      bH,
+      cH,
+    ])
   })
 
   it('should transpose a 2d matrix', function () {
-    assert.deepStrictEqual(ctranspose([[1, 2, 3], [4, 5, 6]]), [[1, 4], [2, 5], [3, 6]])
-    assert.deepStrictEqual(ctranspose(math.matrix([[1, 2, 3], [4, 5, 6]]).toArray()), [[1, 4], [2, 5], [3, 6]])
-    assert.deepStrictEqual(ctranspose([[1, 2], [3, 4]]), [[1, 3], [2, 4]])
+    assert.deepStrictEqual(
+      ctranspose([
+        [1, 2, 3],
+        [4, 5, 6],
+      ]),
+      [
+        [1, 4],
+        [2, 5],
+        [3, 6],
+      ]
+    )
+    assert.deepStrictEqual(
+      ctranspose(
+        math
+          .matrix([
+            [1, 2, 3],
+            [4, 5, 6],
+          ])
+          .toArray()
+      ),
+      [
+        [1, 4],
+        [2, 5],
+        [3, 6],
+      ]
+    )
+    assert.deepStrictEqual(
+      ctranspose([
+        [1, 2],
+        [3, 4],
+      ]),
+      [
+        [1, 3],
+        [2, 4],
+      ]
+    )
     assert.deepStrictEqual(ctranspose([[1, 2, 3, 4]]), [[1], [2], [3], [4]])
   })
 
@@ -49,9 +89,40 @@ describe('ctranspose', function () {
     const dH = math.complex(7, -8)
     const eH = math.complex(9, -10)
     const fH = math.complex(11, -12)
-    assert.deepStrictEqual(ctranspose([[a, b, c], [d, e, f]]), [[aH, dH], [bH, eH], [cH, fH]])
-    assert.deepStrictEqual(ctranspose(math.matrix([[a, b, c], [d, e, f]])).toArray(), [[aH, dH], [bH, eH], [cH, fH]])
-    assert.deepStrictEqual(ctranspose([[a, b], [c, d]]), [[aH, cH], [bH, dH]])
+    assert.deepStrictEqual(
+      ctranspose([
+        [a, b, c],
+        [d, e, f],
+      ]),
+      [
+        [aH, dH],
+        [bH, eH],
+        [cH, fH],
+      ]
+    )
+    assert.deepStrictEqual(
+      ctranspose(
+        math.matrix([
+          [a, b, c],
+          [d, e, f],
+        ])
+      ).toArray(),
+      [
+        [aH, dH],
+        [bH, eH],
+        [cH, fH],
+      ]
+    )
+    assert.deepStrictEqual(
+      ctranspose([
+        [a, b],
+        [c, d],
+      ]),
+      [
+        [aH, cH],
+        [bH, dH],
+      ]
+    )
     assert.deepStrictEqual(ctranspose([[a, b, c, d]]), [[aH], [bH], [cH], [dH]])
   })
 
@@ -60,13 +131,20 @@ describe('ctranspose', function () {
       assert.deepStrictEqual(ctranspose([[]]), [[]]) // size [2,0]
     })
     assert.throws(function () {
-      ctranspose([[[1], [2]], [[3], [4]]]) // size [2,2,1]
+      ctranspose([
+        [[1], [2]],
+        [[3], [4]],
+      ]) // size [2,2,1]
     })
   })
 
   it('should throw an error if called with an invalid number of arguments', function () {
-    assert.throws(function () { ctranspose() }, /TypeError: Too few arguments/)
-    assert.throws(function () { ctranspose([1, 2], 2) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      ctranspose()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      ctranspose([1, 2], 2)
+    }, /TypeError: Too many arguments/)
   })
 
   describe('DenseMatrix', function () {
@@ -83,34 +161,71 @@ describe('ctranspose', function () {
       const dH = math.complex(7, -8)
       const eH = math.complex(9, -10)
       const fH = math.complex(11, -12)
-      let m = math.matrix([[a, b, c], [d, e, f]])
+      let m = math.matrix([
+        [a, b, c],
+        [d, e, f],
+      ])
       let t = ctranspose(m)
-      assert.deepStrictEqual(t.valueOf(), [[aH, dH], [bH, eH], [cH, fH]])
+      assert.deepStrictEqual(t.valueOf(), [
+        [aH, dH],
+        [bH, eH],
+        [cH, fH],
+      ])
 
-      m = math.matrix([[a, b], [c, d], [e, f]])
+      m = math.matrix([
+        [a, b],
+        [c, d],
+        [e, f],
+      ])
       t = ctranspose(m)
-      assert.deepStrictEqual(t.toArray(), [[aH, cH, eH], [bH, dH, fH]])
+      assert.deepStrictEqual(t.toArray(), [
+        [aH, cH, eH],
+        [bH, dH, fH],
+      ])
 
-      m = math.matrix([[a, b], [c, d]])
+      m = math.matrix([
+        [a, b],
+        [c, d],
+      ])
       t = ctranspose(m)
-      assert.deepStrictEqual(t.valueOf(), [[aH, cH], [bH, dH]])
+      assert.deepStrictEqual(t.valueOf(), [
+        [aH, cH],
+        [bH, dH],
+      ])
 
       m = math.matrix([[a, b, c, d]])
       t = ctranspose(m)
       assert.deepStrictEqual(t.valueOf(), [[aH], [bH], [cH], [dH]])
 
-      m = math.matrix([[a, b], [c, d]], 'dense', 'Complex')
+      m = math.matrix(
+        [
+          [a, b],
+          [c, d],
+        ],
+        'dense',
+        'Complex'
+      )
       t = ctranspose(m)
-      assert.deepStrictEqual(t.valueOf(), [[aH, cH], [bH, dH]])
+      assert.deepStrictEqual(t.valueOf(), [
+        [aH, cH],
+        [bH, dH],
+      ])
       assert.strictEqual(t.datatype(), 'Complex')
     })
 
     it('should throw an error for invalid matrix transpose', function () {
       let m = math.matrix([[]])
-      assert.throws(function () { ctranspose(m) })
+      assert.throws(function () {
+        ctranspose(m)
+      })
 
-      m = math.matrix([[[1], [2]], [[3], [4]]])
-      assert.throws(function () { ctranspose(m) })
+      m = math.matrix([
+        [[1], [2]],
+        [[3], [4]],
+      ])
+      assert.throws(function () {
+        ctranspose(m)
+      })
     })
   })
 
@@ -128,17 +243,37 @@ describe('ctranspose', function () {
       const dH = math.complex(7, -8)
       const eH = math.complex(9, -10)
       const fH = math.complex(11, -12)
-      let m = math.sparse([[a, b, c], [d, e, f]])
+      let m = math.sparse([
+        [a, b, c],
+        [d, e, f],
+      ])
       let t = ctranspose(m)
-      assert.deepStrictEqual(t.valueOf(), [[aH, dH], [bH, eH], [cH, fH]])
+      assert.deepStrictEqual(t.valueOf(), [
+        [aH, dH],
+        [bH, eH],
+        [cH, fH],
+      ])
 
-      m = math.sparse([[a, b], [c, d], [e, f]])
+      m = math.sparse([
+        [a, b],
+        [c, d],
+        [e, f],
+      ])
       t = ctranspose(m)
-      assert.deepStrictEqual(t.toArray(), [[aH, cH, eH], [bH, dH, fH]])
+      assert.deepStrictEqual(t.toArray(), [
+        [aH, cH, eH],
+        [bH, dH, fH],
+      ])
 
-      m = math.sparse([[a, b], [c, d]])
+      m = math.sparse([
+        [a, b],
+        [c, d],
+      ])
       t = ctranspose(m)
-      assert.deepStrictEqual(t.valueOf(), [[aH, cH], [bH, dH]])
+      assert.deepStrictEqual(t.valueOf(), [
+        [aH, cH],
+        [bH, dH],
+      ])
 
       /* Failing test, but I'm not sure if would be expected to pass */
       /*
@@ -151,12 +286,17 @@ describe('ctranspose', function () {
 
     it('should throw an error for invalid matrix transpose', function () {
       const m = math.matrix([[]], 'sparse')
-      assert.throws(function () { ctranspose(m) })
+      assert.throws(function () {
+        ctranspose(m)
+      })
     })
   })
 
   it('should LaTeX transpose', function () {
     const expression = math.parse('ctranspose([[1+2i,3+4i],[5+6i,7+8i]])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1+2~ i&3+4~ i\\\\5+6~ i&7+8~ i\\end{bmatrix}\\right)^H')
+    assert.strictEqual(
+      expression.toTex(),
+      '\\left(\\begin{bmatrix}1+2~ i&3+4~ i\\\\5+6~ i&7+8~ i\\end{bmatrix}\\right)^H'
+    )
   })
 })

@@ -13,16 +13,31 @@ describe('setSymDifference', function () {
   })
 
   it('should return the symetric difference of two multisets', function () {
-    assert.deepStrictEqual(math.setSymDifference([1, 1, 2, 3, 4, 4], [1, 2, 3, 4, 4, 4]), [1, 4])
+    assert.deepStrictEqual(
+      math.setSymDifference([1, 1, 2, 3, 4, 4], [1, 2, 3, 4, 4, 4]),
+      [1, 4]
+    )
   })
 
   it('should return the same type of output as the inputs', function () {
-    assert.strictEqual(math.typeOf(math.setSymDifference([1, 2, 3], [3, 4, 5])), 'Array')
-    assert.strictEqual(math.typeOf(math.setSymDifference(math.matrix([1, 2, 3]), math.matrix([3, 4, 5]))), 'Matrix')
+    assert.strictEqual(
+      math.typeOf(math.setSymDifference([1, 2, 3], [3, 4, 5])),
+      'Array'
+    )
+    assert.strictEqual(
+      math.typeOf(
+        math.setSymDifference(math.matrix([1, 2, 3]), math.matrix([3, 4, 5]))
+      ),
+      'Matrix'
+    )
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { math.setSymDifference() }, /TypeError: Too few arguments/)
-    assert.throws(function () { math.setSymDifference([], [], []) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      math.setSymDifference()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      math.setSymDifference([], [], [])
+    }, /TypeError: Too many arguments/)
   })
 })

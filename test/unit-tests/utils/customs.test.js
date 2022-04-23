@@ -1,14 +1,18 @@
 // test boolean utils
 import assert from 'assert'
 
-import { isPlainObject, isSafeMethod, isSafeProperty } from '../../../src/utils/customs.js'
+import {
+  isPlainObject,
+  isSafeMethod,
+  isSafeProperty,
+} from '../../../src/utils/customs.js'
 import math from '../../../src/defaultInstance.js'
 
 describe('customs', function () {
   describe('isSafeMethod', function () {
     it('plain objects', function () {
       const object = {
-        fn: function () {}
+        fn: function () {},
       }
       assert.strictEqual(isSafeMethod(object, 'fn'), true)
       assert.strictEqual(isSafeMethod(object, 'toString'), true)
@@ -29,7 +33,7 @@ describe('customs', function () {
 
       // custom inherited method
       const object1 = {
-        foo: function () {}
+        foo: function () {},
       }
       const object2 = Object.create(object1)
       assert.strictEqual(isSafeMethod(object2, 'foo'), true)

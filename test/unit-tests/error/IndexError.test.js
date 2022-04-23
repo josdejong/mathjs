@@ -21,7 +21,10 @@ describe('IndexError', function () {
     assert.strictEqual(err.index, -5)
     assert.strictEqual(err.min, 0)
     assert.strictEqual(err.max, undefined)
-    assert.strictEqual(err.toString(), 'IndexError: Index out of range (-5 < 0)')
+    assert.strictEqual(
+      err.toString(),
+      'IndexError: Index out of range (-5 < 0)'
+    )
   })
 
   it('should construct an IndexError with max', function () {

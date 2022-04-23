@@ -21,18 +21,26 @@ describe('SymbolNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { SymbolNode('sqrt') }, SyntaxError)
+    assert.throws(function () {
+      SymbolNode('sqrt')
+    }, SyntaxError)
   })
 
   it('should throw an error when calling with wrong arguments', function () {
-    assert.throws(function () { console.log(new SymbolNode()) }, TypeError)
-    assert.throws(function () { console.log(new SymbolNode(2)) }, TypeError)
+    assert.throws(function () {
+      console.log(new SymbolNode())
+    }, TypeError)
+    assert.throws(function () {
+      console.log(new SymbolNode(2))
+    }, TypeError)
   })
 
   it('should throw an error when evaluating an undefined symbol', function () {
     const scope = {}
     const s = new SymbolNode('foo')
-    assert.throws(function () { s.compile().evaluate(scope) }, /Error: Undefined symbol foo/)
+    assert.throws(function () {
+      s.compile().evaluate(scope)
+    }, /Error: Undefined symbol foo/)
   })
 
   it('should compile a SymbolNode', function () {
@@ -41,7 +49,9 @@ describe('SymbolNode', function () {
     const expr = s.compile()
     const scope = { a: 5 }
     assert.strictEqual(expr.evaluate(scope), 5)
-    assert.throws(function () { expr.evaluate({}) }, Error)
+    assert.throws(function () {
+      expr.evaluate({})
+    }, Error)
 
     const s2 = new SymbolNode('sqrt')
     const expr2 = s2.compile()
@@ -52,10 +62,30 @@ describe('SymbolNode', function () {
 
   it('should filter a SymbolNode', function () {
     const n = new SymbolNode('x')
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [n])
-    assert.deepStrictEqual(n.filter(function (node) { return node.name === 'x' }), [n])
-    assert.deepStrictEqual(n.filter(function (node) { return node.name === 'q' }), [])
-    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [])
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof SymbolNode
+      }),
+      [n]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.name === 'x'
+      }),
+      [n]
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node.name === 'q'
+      }),
+      []
+    )
+    assert.deepStrictEqual(
+      n.filter(function (node) {
+        return node instanceof ConstantNode
+      }),
+      []
+    )
   })
 
   it('should run forEach on a SymbolNode', function () {
@@ -106,7 +136,7 @@ describe('SymbolNode', function () {
     const b = new SymbolNode('b')
     const aEqual = new SymbolNode('a')
     const aFake = {
-      name: 'a'
+      name: 'a',
     }
 
     assert.strictEqual(a.equals(null), false)
@@ -143,7 +173,7 @@ describe('SymbolNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'SymbolNode',
-      name: 'a'
+      name: 'a',
     })
 
     const parsed = SymbolNode.fromJSON(json)

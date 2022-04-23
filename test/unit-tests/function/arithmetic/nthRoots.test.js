@@ -16,7 +16,7 @@ describe('nthRoots', function () {
       complex({ r: 1, phi: (5 * Math.PI) / 6 }),
       complex({ r: 1, phi: (7 * Math.PI) / 6 }),
       complex(0, -1),
-      complex({ r: 1, phi: (11 * Math.PI) / 6 })
+      complex({ r: 1, phi: (11 * Math.PI) / 6 }),
     ]
 
     roots.forEach(function (value, index, array) {
@@ -29,16 +29,11 @@ describe('nthRoots', function () {
 
     approx.deepEqual(roots, [
       complex(2, 1),
-      complex(-2.0000000000000004, -0.9999999999999999)
+      complex(-2.0000000000000004, -0.9999999999999999),
     ])
   })
 
-  const twos = [
-    complex(2, 0),
-    complex(0, 2),
-    complex(-2, 0),
-    complex(0, -2)
-  ]
+  const twos = [complex(2, 0), complex(0, 2), complex(-2, 0), complex(0, -2)]
   it('should return pure roots without artifacts', function () {
     const roots = nthRoots(complex('16'), 4)
 

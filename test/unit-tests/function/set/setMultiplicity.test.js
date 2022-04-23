@@ -15,15 +15,24 @@ describe('setMultiplicity', function () {
   })
 
   it('should return a number', function () {
-    assert.strictEqual(math.typeOf(math.setMultiplicity(3, [3, 4, 5])), 'number')
+    assert.strictEqual(
+      math.typeOf(math.setMultiplicity(3, [3, 4, 5])),
+      'number'
+    )
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () { math.setMultiplicity() }, /TypeError: Too few arguments/)
-    assert.throws(function () { math.setMultiplicity(1, [], []) }, /TypeError: Too many arguments/)
+    assert.throws(function () {
+      math.setMultiplicity()
+    }, /TypeError: Too few arguments/)
+    assert.throws(function () {
+      math.setMultiplicity(1, [], [])
+    }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid order of arguments', function () {
-    assert.throws(function () { math.setMultiplicity([], 1) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () {
+      math.setMultiplicity([], 1)
+    }, /TypeError: Unexpected type of argument/)
   })
 })

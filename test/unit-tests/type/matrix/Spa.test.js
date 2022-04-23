@@ -5,7 +5,9 @@ const Spa = math.Spa
 describe('Spa', function () {
   describe('constructor', function () {
     it('should throw an error when called without new keyword', function () {
-      assert.throws(function () { Spa() }, /Constructor must be called with the new operator/)
+      assert.throws(function () {
+        Spa()
+      }, /Constructor must be called with the new operator/)
     })
 
     it('should have a property isSpa', function () {

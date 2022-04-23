@@ -17,6 +17,9 @@ describe('util.latex', function () {
   it('should escape strings', function () {
     const string = 'space tab\tunderscore_bla$/'
 
-    assert.strictEqual(toSymbol(string), 'space~tab\\qquad{}underscore\\_bla\\$/')
+    assert.strictEqual(
+      toSymbol(string),
+      'space~tab\\qquad{}underscore\\_bla\\$/'
+    )
   })
 })
