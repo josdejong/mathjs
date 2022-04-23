@@ -1,13 +1,8 @@
 export const NaNDocs = {
   name: 'NaN',
   category: 'Constants',
-  syntax: [
-    'NaN'
-  ],
+  syntax: ['NaN'],
   description: 'Not a number',
-  examples: [
-    'NaN',
-    '0 / 0'
-  ],
-  seealso: []
+  examples: ['NaN', '0 / 0'],
+  seealso: [],
 }

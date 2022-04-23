@@ -18,7 +18,7 @@ import { csUnflip } from './csUnflip.js'
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csDfs (j, g, top, xi, pinv) {
+export function csDfs(j, g, top, xi, pinv) {
   // g arrays
   const index = g._index
   const ptr = g._ptr
@@ -47,11 +47,17 @@ export function csDfs (j, g, top, xi, pinv) {
     // node j done if no unvisited neighbors
     let done = 1
     // examine all neighbors of j, stack (last n entries in xi)
-    for (p = xi[n + head], p2 = jnew < 0 ? 0 : csUnflip(ptr[jnew + 1]); p < p2; p++) {
+    for (
+      p = xi[n + head], p2 = jnew < 0 ? 0 : csUnflip(ptr[jnew + 1]);
+      p < p2;
+      p++
+    ) {
       // consider neighbor node i
       i = index[p]
       // check we have visited node i, skip it
-      if (csMarked(ptr, i)) { continue }
+      if (csMarked(ptr, i)) {
+        continue
+      }
       // pause depth-first search of node j, update stack (last n entries in xi)
       xi[n + head] = p
       // start dfs at node i

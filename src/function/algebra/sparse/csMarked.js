@@ -6,7 +6,7 @@
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csMarked (w, j) {
+export function csMarked(w, j) {
   // check node is marked
   return w[j] < 0
 }

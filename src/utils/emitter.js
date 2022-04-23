@@ -5,7 +5,7 @@ import Emitter from 'tiny-emitter'
  * @param {Object} obj
  * @return {Object} obj
  */
-export function mixin (obj) {
+export function mixin(obj) {
   // create event emitter
   const emitter = new Emitter()
 

@@ -7,14 +7,9 @@ export const randomDocs = {
     'random(min, max)',
     'random(size)',
     'random(size, max)',
-    'random(size, min, max)'
+    'random(size, min, max)',
   ],
-  description:
-      'Return a random number.',
-  examples: [
-    'random()',
-    'random(10, 20)',
-    'random([2, 3])'
-  ],
-  seealso: ['pickRandom', 'randomInt']
+  description: 'Return a random number.',
+  examples: ['random()', 'random(10, 20)', 'random([2, 3])'],
+  seealso: ['pickRandom', 'randomInt'],
 }

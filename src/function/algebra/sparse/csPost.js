@@ -8,9 +8,11 @@ import { csTdfs } from './csTdfs.js'
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csPost (parent, n) {
+export function csPost(parent, n) {
   // check inputs
-  if (!parent) { return null }
+  if (!parent) {
+    return null
+  }
   // vars
   let k = 0
   let j
@@ -29,7 +31,9 @@ export function csPost (parent, n) {
   // traverse nodes in reverse order
   for (j = n - 1; j >= 0; j--) {
     // check j is a root
-    if (parent[j] === -1) { continue }
+    if (parent[j] === -1) {
+      continue
+    }
     // add j to list of its parent
     w[next + j] = w[head + parent[j]]
     w[head + parent[j]] = j
@@ -37,7 +41,9 @@ export function csPost (parent, n) {
   // loop nodes
   for (j = 0; j < n; j++) {
     // skip j if it is not a root
-    if (parent[j] !== -1) { continue }
+    if (parent[j] !== -1) {
+      continue
+    }
     // depth-first search
     k = csTdfs(j, k, w, head, next, post, stack)
   }

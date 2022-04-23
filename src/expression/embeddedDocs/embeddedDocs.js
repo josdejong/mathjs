@@ -231,7 +231,6 @@ import { printDocs } from './function/utils/print.js'
 import { typeOfDocs } from './function/utils/typeOf.js'
 
 export const embeddedDocs = {
-
   // construction functions
   bignumber: bignumberDocs,
   boolean: booleanDocs,
@@ -269,63 +268,151 @@ export const embeddedDocs = {
 
   // physical constants
   // TODO: more detailed docs for physical constants
-  speedOfLight: { description: 'Speed of light in vacuum', examples: ['speedOfLight'] },
-  gravitationConstant: { description: 'Newtonian constant of gravitation', examples: ['gravitationConstant'] },
-  planckConstant: { description: 'Planck constant', examples: ['planckConstant'] },
-  reducedPlanckConstant: { description: 'Reduced Planck constant', examples: ['reducedPlanckConstant'] },
+  speedOfLight: {
+    description: 'Speed of light in vacuum',
+    examples: ['speedOfLight'],
+  },
+  gravitationConstant: {
+    description: 'Newtonian constant of gravitation',
+    examples: ['gravitationConstant'],
+  },
+  planckConstant: {
+    description: 'Planck constant',
+    examples: ['planckConstant'],
+  },
+  reducedPlanckConstant: {
+    description: 'Reduced Planck constant',
+    examples: ['reducedPlanckConstant'],
+  },
 
-  magneticConstant: { description: 'Magnetic constant (vacuum permeability)', examples: ['magneticConstant'] },
-  electricConstant: { description: 'Electric constant (vacuum permeability)', examples: ['electricConstant'] },
-  vacuumImpedance: { description: 'Characteristic impedance of vacuum', examples: ['vacuumImpedance'] },
-  coulomb: { description: 'Coulomb\'s constant', examples: ['coulomb'] },
-  elementaryCharge: { description: 'Elementary charge', examples: ['elementaryCharge'] },
+  magneticConstant: {
+    description: 'Magnetic constant (vacuum permeability)',
+    examples: ['magneticConstant'],
+  },
+  electricConstant: {
+    description: 'Electric constant (vacuum permeability)',
+    examples: ['electricConstant'],
+  },
+  vacuumImpedance: {
+    description: 'Characteristic impedance of vacuum',
+    examples: ['vacuumImpedance'],
+  },
+  coulomb: { description: "Coulomb's constant", examples: ['coulomb'] },
+  elementaryCharge: {
+    description: 'Elementary charge',
+    examples: ['elementaryCharge'],
+  },
   bohrMagneton: { description: 'Borh magneton', examples: ['bohrMagneton'] },
-  conductanceQuantum: { description: 'Conductance quantum', examples: ['conductanceQuantum'] },
-  inverseConductanceQuantum: { description: 'Inverse conductance quantum', examples: ['inverseConductanceQuantum'] },
+  conductanceQuantum: {
+    description: 'Conductance quantum',
+    examples: ['conductanceQuantum'],
+  },
+  inverseConductanceQuantum: {
+    description: 'Inverse conductance quantum',
+    examples: ['inverseConductanceQuantum'],
+  },
   // josephson: {description: 'Josephson constant', examples: ['josephson']},
-  magneticFluxQuantum: { description: 'Magnetic flux quantum', examples: ['magneticFluxQuantum'] },
-  nuclearMagneton: { description: 'Nuclear magneton', examples: ['nuclearMagneton'] },
+  magneticFluxQuantum: {
+    description: 'Magnetic flux quantum',
+    examples: ['magneticFluxQuantum'],
+  },
+  nuclearMagneton: {
+    description: 'Nuclear magneton',
+    examples: ['nuclearMagneton'],
+  },
   klitzing: { description: 'Von Klitzing constant', examples: ['klitzing'] },
 
   bohrRadius: { description: 'Borh radius', examples: ['bohrRadius'] },
-  classicalElectronRadius: { description: 'Classical electron radius', examples: ['classicalElectronRadius'] },
+  classicalElectronRadius: {
+    description: 'Classical electron radius',
+    examples: ['classicalElectronRadius'],
+  },
   electronMass: { description: 'Electron mass', examples: ['electronMass'] },
-  fermiCoupling: { description: 'Fermi coupling constant', examples: ['fermiCoupling'] },
-  fineStructure: { description: 'Fine-structure constant', examples: ['fineStructure'] },
+  fermiCoupling: {
+    description: 'Fermi coupling constant',
+    examples: ['fermiCoupling'],
+  },
+  fineStructure: {
+    description: 'Fine-structure constant',
+    examples: ['fineStructure'],
+  },
   hartreeEnergy: { description: 'Hartree energy', examples: ['hartreeEnergy'] },
   protonMass: { description: 'Proton mass', examples: ['protonMass'] },
   deuteronMass: { description: 'Deuteron Mass', examples: ['deuteronMass'] },
   neutronMass: { description: 'Neutron mass', examples: ['neutronMass'] },
-  quantumOfCirculation: { description: 'Quantum of circulation', examples: ['quantumOfCirculation'] },
+  quantumOfCirculation: {
+    description: 'Quantum of circulation',
+    examples: ['quantumOfCirculation'],
+  },
   rydberg: { description: 'Rydberg constant', examples: ['rydberg'] },
-  thomsonCrossSection: { description: 'Thomson cross section', examples: ['thomsonCrossSection'] },
-  weakMixingAngle: { description: 'Weak mixing angle', examples: ['weakMixingAngle'] },
+  thomsonCrossSection: {
+    description: 'Thomson cross section',
+    examples: ['thomsonCrossSection'],
+  },
+  weakMixingAngle: {
+    description: 'Weak mixing angle',
+    examples: ['weakMixingAngle'],
+  },
   efimovFactor: { description: 'Efimov factor', examples: ['efimovFactor'] },
 
   atomicMass: { description: 'Atomic mass constant', examples: ['atomicMass'] },
-  avogadro: { description: 'Avogadro\'s number', examples: ['avogadro'] },
+  avogadro: { description: "Avogadro's number", examples: ['avogadro'] },
   boltzmann: { description: 'Boltzmann constant', examples: ['boltzmann'] },
   faraday: { description: 'Faraday constant', examples: ['faraday'] },
-  firstRadiation: { description: 'First radiation constant', examples: ['firstRadiation'] },
-  loschmidt: { description: 'Loschmidt constant at T=273.15 K and p=101.325 kPa', examples: ['loschmidt'] },
+  firstRadiation: {
+    description: 'First radiation constant',
+    examples: ['firstRadiation'],
+  },
+  loschmidt: {
+    description: 'Loschmidt constant at T=273.15 K and p=101.325 kPa',
+    examples: ['loschmidt'],
+  },
   gasConstant: { description: 'Gas constant', examples: ['gasConstant'] },
-  molarPlanckConstant: { description: 'Molar Planck constant', examples: ['molarPlanckConstant'] },
-  molarVolume: { description: 'Molar volume of an ideal gas at T=273.15 K and p=101.325 kPa', examples: ['molarVolume'] },
-  sackurTetrode: { description: 'Sackur-Tetrode constant at T=1 K and p=101.325 kPa', examples: ['sackurTetrode'] },
-  secondRadiation: { description: 'Second radiation constant', examples: ['secondRadiation'] },
-  stefanBoltzmann: { description: 'Stefan-Boltzmann constant', examples: ['stefanBoltzmann'] },
-  wienDisplacement: { description: 'Wien displacement law constant', examples: ['wienDisplacement'] },
+  molarPlanckConstant: {
+    description: 'Molar Planck constant',
+    examples: ['molarPlanckConstant'],
+  },
+  molarVolume: {
+    description: 'Molar volume of an ideal gas at T=273.15 K and p=101.325 kPa',
+    examples: ['molarVolume'],
+  },
+  sackurTetrode: {
+    description: 'Sackur-Tetrode constant at T=1 K and p=101.325 kPa',
+    examples: ['sackurTetrode'],
+  },
+  secondRadiation: {
+    description: 'Second radiation constant',
+    examples: ['secondRadiation'],
+  },
+  stefanBoltzmann: {
+    description: 'Stefan-Boltzmann constant',
+    examples: ['stefanBoltzmann'],
+  },
+  wienDisplacement: {
+    description: 'Wien displacement law constant',
+    examples: ['wienDisplacement'],
+  },
   // spectralRadiance: {description: 'First radiation constant for spectral radiance', examples: ['spectralRadiance']},
 
   molarMass: { description: 'Molar mass constant', examples: ['molarMass'] },
-  molarMassC12: { description: 'Molar mass constant of carbon-12', examples: ['molarMassC12'] },
-  gravity: { description: 'Standard acceleration of gravity (standard acceleration of free-fall on Earth)', examples: ['gravity'] },
+  molarMassC12: {
+    description: 'Molar mass constant of carbon-12',
+    examples: ['molarMassC12'],
+  },
+  gravity: {
+    description:
+      'Standard acceleration of gravity (standard acceleration of free-fall on Earth)',
+    examples: ['gravity'],
+  },
 
   planckLength: { description: 'Planck length', examples: ['planckLength'] },
   planckMass: { description: 'Planck mass', examples: ['planckMass'] },
   planckTime: { description: 'Planck time', examples: ['planckTime'] },
   planckCharge: { description: 'Planck charge', examples: ['planckCharge'] },
-  planckTemperature: { description: 'Planck temperature', examples: ['planckTemperature'] },
+  planckTemperature: {
+    description: 'Planck temperature',
+    examples: ['planckTemperature'],
+  },
 
   // functions - algebra
   derivative: derivativeDocs,
@@ -564,5 +651,5 @@ export const embeddedDocs = {
   isZero: isZeroDocs,
   print: printDocs,
   typeOf: typeOfDocs,
-  numeric: numericDocs
+  numeric: numericDocs,
 }

@@ -5,7 +5,7 @@
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csFlip (i) {
+export function csFlip(i) {
   // flip the value
   return -i - 2
 }

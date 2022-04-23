@@ -8,7 +8,7 @@ import { hasOwnProperty } from './object.js'
  * @param {string} prop
  * @return {*} Returns the property value when safe
  */
-function getSafeProperty (object, prop) {
+function getSafeProperty(object, prop) {
   // only allow getting safe properties of a plain object
   if (isPlainObject(object) && isSafeProperty(object, prop)) {
     return object[prop]
@@ -31,7 +31,7 @@ function getSafeProperty (object, prop) {
  * @return {*} Returns the value
  */
 // TODO: merge this function into access.js?
-function setSafeProperty (object, prop, value) {
+function setSafeProperty(object, prop, value) {
   // only allow setting safe properties of a plain object
   if (isPlainObject(object) && isSafeProperty(object, prop)) {
     object[prop] = value
@@ -41,11 +41,11 @@ function setSafeProperty (object, prop, value) {
   throw new Error('No access to property "' + prop + '"')
 }
 
-function getSafeProperties (object) {
+function getSafeProperties(object) {
   return Object.keys(object).filter((prop) => hasOwnProperty(object, prop))
 }
 
-function hasSafeProperty (object, prop) {
+function hasSafeProperty(object, prop) {
   return prop in object
 }
 
@@ -55,7 +55,7 @@ function hasSafeProperty (object, prop) {
  * @param {string} prop
  * @return {boolean} Returns true when safe
  */
-function isSafeProperty (object, prop) {
+function isSafeProperty(object, prop) {
   if (!object || typeof object !== 'object') {
     return false
   }
@@ -90,7 +90,7 @@ function isSafeProperty (object, prop) {
  * @param {string} method
  */
 // TODO: merge this function into assign.js?
-function validateSafeMethod (object, method) {
+function validateSafeMethod(object, method) {
   if (!isSafeMethod(object, method)) {
     throw new Error('No access to method "' + method + '"')
   }
@@ -103,15 +103,22 @@ function validateSafeMethod (object, method) {
  * @param {string} method
  * @return {boolean} Returns true when safe, false otherwise
  */
-function isSafeMethod (object, method) {
-  if (object === null || object === undefined || typeof object[method] !== 'function') {
+function isSafeMethod(object, method) {
+  if (
+    object === null ||
+    object === undefined ||
+    typeof object[method] !== 'function'
+  ) {
     return false
   }
   // UNSAFE: ghosted
   // e.g overridden toString
   // Note that IE10 doesn't support __proto__ and we can't do this check there.
-  if (hasOwnProperty(object, method) &&
-      (Object.getPrototypeOf && (method in Object.getPrototypeOf(object)))) {
+  if (
+    hasOwnProperty(object, method) &&
+    Object.getPrototypeOf &&
+    method in Object.getPrototypeOf(object)
+  ) {
     return false
   }
   // SAFE: whitelisted
@@ -138,19 +145,19 @@ function isSafeMethod (object, method) {
   return true
 }
 
-function isPlainObject (object) {
+function isPlainObject(object) {
   return typeof object === 'object' && object && object.constructor === Object
 }
 
 const safeNativeProperties = {
   length: true,
-  name: true
+  name: true,
 }
 
 const safeNativeMethods = {
   toString: true,
   valueOf: true,
-  toLocaleString: true
+  toLocaleString: true,
 }
 
 export { getSafeProperty }

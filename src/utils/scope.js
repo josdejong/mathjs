@@ -13,7 +13,7 @@ import { createEmptyMap, assign } from './map.js'
  * @param  {...any} args
  * @returns {Map}
  */
-export function createSubScope (parentScope, ...args) {
+export function createSubScope(parentScope, ...args) {
   if (typeof parentScope.createSubScope === 'function') {
     return assign(parentScope.createSubScope(), ...args)
   }

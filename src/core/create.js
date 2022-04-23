@@ -42,7 +42,7 @@ import {
   isString,
   isSymbolNode,
   isUndefined,
-  isUnit
+  isUnit,
 } from '../utils/is.js'
 import { ArgumentsError } from '../error/ArgumentsError.js'
 import { DimensionError } from '../error/DimensionError.js'
@@ -88,13 +88,15 @@ import { DEFAULT_CONFIG } from './config.js'
  *                   - `config` to change configuration
  *                   - `on`, `off`, `once`, `emit` for events
  */
-export function create (factories, config) {
+export function create(factories, config) {
   const configInternal = Object.assign({}, DEFAULT_CONFIG, config)
 
   // simple test for ES5 support
   if (typeof Object.create !== 'function') {
-    throw new Error('ES5 not supported by this JavaScript engine. ' +
-      'Please load the es5-shim and es5-sham library for compatibility.')
+    throw new Error(
+      'ES5 not supported by this JavaScript engine. ' +
+        'Please load the es5-shim and es5-sham library for compatibility.'
+    )
   }
 
   // create the mathjs instance
@@ -139,7 +141,7 @@ export function create (factories, config) {
     isRangeNode,
     isSymbolNode,
 
-    isChain
+    isChain,
   })
 
   // load config function and apply provided config
@@ -148,8 +150,8 @@ export function create (factories, config) {
   math.expression = {
     transform: {},
     mathWithTransform: {
-      config: math.config
-    }
+      config: math.config,
+    },
   }
 
   // cached factories and instances used by function load
@@ -163,7 +165,7 @@ export function create (factories, config) {
    * @param {Function} factory
    * @returns {*}
    */
-  function load (factory) {
+  function load(factory) {
     if (isFactory(factory)) {
       return factory(math)
     }
@@ -174,8 +176,13 @@ export function create (factories, config) {
     }
 
     if (!isLegacyFactory(factory)) {
-      console.warn('Factory object with properties `type`, `name`, and `factory` expected', factory)
-      throw new Error('Factory object with properties `type`, `name`, and `factory` expected')
+      console.warn(
+        'Factory object with properties `type`, `name`, and `factory` expected',
+        factory
+      )
+      throw new Error(
+        'Factory object with properties `type`, `name`, and `factory` expected'
+      )
     }
 
     const index = legacyFactories.indexOf(factory)
@@ -184,7 +191,13 @@ export function create (factories, config) {
       // doesn't yet exist
       if (factory.math === true) {
         // pass with math namespace
-        instance = factory.factory(math.type, configInternal, load, math.typed, math)
+        instance = factory.factory(
+          math.type,
+          configInternal,
+          load,
+          math.typed,
+          math
+        )
       } else {
         instance = factory.factory(math.type, configInternal, load, math.typed)
       }
@@ -203,7 +216,7 @@ export function create (factories, config) {
   const importedFactories = {}
 
   // load the import function
-  function lazyTyped (...args) {
+  function lazyTyped(...args) {
     return math.typed.apply(math.typed, args)
   }
   const internalImport = importFactory(lazyTyped, load, math, importedFactories)
@@ -212,7 +225,7 @@ export function create (factories, config) {
   // listen for changes in config, import all functions again when changed
   // TODO: move this listener into the import function?
   math.on('config', () => {
-    values(importedFactories).forEach(factory => {
+    values(importedFactories).forEach((factory) => {
       if (factory && factory.meta && factory.meta.recreateOnConfigChange) {
         // FIXME: only re-create when the current instance is the same as was initially created
         // FIXME: delete the functions/constants before importing them again?

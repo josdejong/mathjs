@@ -1,74 +1,83 @@
-import { isInteger, log2, log10, cbrt, expm1, sign, toFixed, log1p } from '../../utils/number.js'
+import {
+  isInteger,
+  log2,
+  log10,
+  cbrt,
+  expm1,
+  sign,
+  toFixed,
+  log1p,
+} from '../../utils/number.js'
 
 const n1 = 'number'
 const n2 = 'number, number'
 
-export function absNumber (a) {
+export function absNumber(a) {
   return Math.abs(a)
 }
 absNumber.signature = n1
 
-export function addNumber (a, b) {
+export function addNumber(a, b) {
   return a + b
 }
 addNumber.signature = n2
 
-export function subtractNumber (a, b) {
+export function subtractNumber(a, b) {
   return a - b
 }
 subtractNumber.signature = n2
 
-export function multiplyNumber (a, b) {
+export function multiplyNumber(a, b) {
   return a * b
 }
 multiplyNumber.signature = n2
 
-export function divideNumber (a, b) {
+export function divideNumber(a, b) {
   return a / b
 }
 divideNumber.signature = n2
 
-export function unaryMinusNumber (x) {
+export function unaryMinusNumber(x) {
   return -x
 }
 unaryMinusNumber.signature = n1
 
-export function unaryPlusNumber (x) {
+export function unaryPlusNumber(x) {
   return x
 }
 unaryPlusNumber.signature = n1
 
-export function cbrtNumber (x) {
+export function cbrtNumber(x) {
   return cbrt(x)
 }
 cbrtNumber.signature = n1
 
-export function ceilNumber (x) {
+export function ceilNumber(x) {
   return Math.ceil(x)
 }
 ceilNumber.signature = n1
 
-export function cubeNumber (x) {
+export function cubeNumber(x) {
   return x * x * x
 }
 cubeNumber.signature = n1
 
-export function expNumber (x) {
+export function expNumber(x) {
   return Math.exp(x)
 }
 expNumber.signature = n1
 
-export function expm1Number (x) {
+export function expm1Number(x) {
   return expm1(x)
 }
 expm1Number.signature = n1
 
-export function fixNumber (x) {
-  return (x > 0) ? Math.floor(x) : Math.ceil(x)
+export function fixNumber(x) {
+  return x > 0 ? Math.floor(x) : Math.ceil(x)
 }
 fixNumber.signature = n1
 
-export function floorNumber (x) {
+export function floorNumber(x) {
   return Math.floor(x)
 }
 floorNumber.signature = n1
@@ -79,7 +88,7 @@ floorNumber.signature = n1
  * @param {number} b
  * @returns {number} Returns the greatest common denominator of a and b
  */
-export function gcdNumber (a, b) {
+export function gcdNumber(a, b) {
   if (!isInteger(a) || !isInteger(b)) {
     throw new Error('Parameters in function gcd must be integer numbers')
   }
@@ -91,7 +100,7 @@ export function gcdNumber (a, b) {
     a = b
     b = r
   }
-  return (a < 0) ? -a : a
+  return a < 0 ? -a : a
 }
 gcdNumber.signature = n2
 
@@ -101,7 +110,7 @@ gcdNumber.signature = n2
  * @param {number} b
  * @returns {number} Returns the least common multiple of a and b
  */
-export function lcmNumber (a, b) {
+export function lcmNumber(a, b) {
   if (!isInteger(a) || !isInteger(b)) {
     throw new Error('Parameters in function lcm must be integer numbers')
   }
@@ -129,8 +138,10 @@ lcmNumber.signature = n2
  * @param {number | null | undefined} base
  * @return {number}
  */
-export function logNumber (x, y) {
-  if (y) { return Math.log(x) / Math.log(y) }
+export function logNumber(x, y) {
+  if (y) {
+    return Math.log(x) / Math.log(y)
+  }
   return Math.log(x)
 }
 
@@ -139,7 +150,7 @@ export function logNumber (x, y) {
  * @param {number} x
  * @return {number}
  */
-export function log10Number (x) {
+export function log10Number(x) {
   return log10(x)
 }
 log10Number.signature = n1
@@ -149,7 +160,7 @@ log10Number.signature = n1
  * @param {number} x
  * @return {number}
  */
-export function log2Number (x) {
+export function log2Number(x) {
   return log2(x)
 }
 log2Number.signature = n1
@@ -159,7 +170,7 @@ log2Number.signature = n1
  * @param {number} x
  * @returns {number}
  */
-export function log1pNumber (x) {
+export function log1pNumber(x) {
   return log1p(x)
 }
 log1pNumber.signature = n1
@@ -171,7 +182,7 @@ log1pNumber.signature = n1
  * @returns {number} res
  * @private
  */
-export function modNumber (x, y) {
+export function modNumber(x, y) {
   if (y > 0) {
     // We don't use JavaScript's % operator here as this doesn't work
     // correctly for x < 0 and x === 0
@@ -179,7 +190,8 @@ export function modNumber (x, y) {
     return x - y * Math.floor(x / y)
   } else if (y === 0) {
     return x
-  } else { // y < 0
+  } else {
+    // y < 0
     // TODO: implement mod for a negative divisor
     throw new Error('Cannot calculate mod for a negative divisor')
   }
@@ -193,7 +205,7 @@ modNumber.signature = n2
  * @param {number} root
  * @private
  */
-export function nthRootNumber (a, root) {
+export function nthRootNumber(a, root) {
   const inv = root < 0
   if (inv) {
     root = -root
@@ -202,7 +214,7 @@ export function nthRootNumber (a, root) {
   if (root === 0) {
     throw new Error('Root must be non-zero')
   }
-  if (a < 0 && (Math.abs(root) % 2 !== 1)) {
+  if (a < 0 && Math.abs(root) % 2 !== 1) {
     throw new Error('Root must be odd when a is negative.')
   }
 
@@ -245,17 +257,17 @@ export function nthRootNumber (a, root) {
 }
 nthRootNumber.signature = n2
 
-export function signNumber (x) {
+export function signNumber(x) {
   return sign(x)
 }
 signNumber.signature = n1
 
-export function sqrtNumber (x) {
+export function sqrtNumber(x) {
   return Math.sqrt(x)
 }
 sqrtNumber.signature = n1
 
-export function squareNumber (x) {
+export function squareNumber(x) {
   return x * x
 }
 squareNumber.signature = n1
@@ -267,7 +279,7 @@ squareNumber.signature = n1
  * @return {number} result
  * @private
  */
-export function xgcdNumber (a, b) {
+export function xgcdNumber(a, b) {
   // source: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
   let t // used to swap two variables
   let q // quotient
@@ -313,11 +325,10 @@ xgcdNumber.signature = n2
  * @param {number} y
  * @return {number} res
  */
-export function powNumber (x, y) {
+export function powNumber(x, y) {
   // x^Infinity === 0 if -1 < x < 1
   // A real number 0 is returned instead of complex(0)
-  if ((x * x < 1 && y === Infinity) ||
-    (x * x > 1 && y === -Infinity)) {
+  if ((x * x < 1 && y === Infinity) || (x * x > 1 && y === -Infinity)) {
     return 0
   }
 
@@ -332,7 +343,7 @@ powNumber.signature = n2
  * @param {number} decimals       number of decimals, between 0 and 15 (0 by default)
  * @return {number} roundedValue
  */
-export function roundNumber (value, decimals = 0) {
+export function roundNumber(value, decimals = 0) {
   return parseFloat(toFixed(value, decimals))
 }
 roundNumber.signature = n2
@@ -342,7 +353,7 @@ roundNumber.signature = n2
  * @param {number} x
  * @return {number}
  */
-export function normNumber (x) {
+export function normNumber(x) {
   return Math.abs(x)
 }
 normNumber.signature = n1

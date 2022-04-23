@@ -3,9 +3,10 @@ export const derivativeDocs = {
   category: 'Algebra',
   syntax: [
     'derivative(expr, variable)',
-    'derivative(expr, variable, {simplify: boolean})'
+    'derivative(expr, variable, {simplify: boolean})',
   ],
-  description: 'Takes the derivative of an expression expressed in parser Nodes. The derivative will be taken over the supplied variable in the second parameter. If there are multiple variables in the expression, it will return a partial derivative.',
+  description:
+    'Takes the derivative of an expression expressed in parser Nodes. The derivative will be taken over the supplied variable in the second parameter. If there are multiple variables in the expression, it will return a partial derivative.',
   examples: [
     'derivative("2x^3", "x")',
     'derivative("2x^3", "x", {simplify: false})',
@@ -14,9 +15,7 @@ export const derivativeDocs = {
     'f = parse("x^2 + x")',
     'x = parse("x")',
     'df = derivative(f, x)',
-    'df.evaluate({x: 3})'
+    'df.evaluate({x: 3})',
   ],
-  seealso: [
-    'simplify', 'parse', 'evaluate'
-  ]
+  seealso: ['simplify', 'parse', 'evaluate'],
 }

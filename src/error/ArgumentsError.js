@@ -7,7 +7,7 @@
  * @param {number} [max]  Maximum required argument count
  * @extends Error
  */
-export function ArgumentsError (fn, count, min, max) {
+export function ArgumentsError(fn, count, min, max) {
   if (!(this instanceof ArgumentsError)) {
     throw new SyntaxError('Constructor must be called with the new operator')
   }
@@ -17,11 +17,17 @@ export function ArgumentsError (fn, count, min, max) {
   this.min = min
   this.max = max
 
-  this.message = 'Wrong number of arguments in function ' + fn +
-      ' (' + count + ' provided, ' +
-      min + ((max !== undefined && max !== null) ? ('-' + max) : '') + ' expected)'
+  this.message =
+    'Wrong number of arguments in function ' +
+    fn +
+    ' (' +
+    count +
+    ' provided, ' +
+    min +
+    (max !== undefined && max !== null ? '-' + max : '') +
+    ' expected)'
 
-  this.stack = (new Error()).stack
+  this.stack = new Error().stack
 }
 
 ArgumentsError.prototype = new Error()

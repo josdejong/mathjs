@@ -11,7 +11,7 @@ import { IndexError } from '../error/IndexError.js'
  * @param {Array} x
  * @Return {Number[]} size
  */
-export function arraySize (x) {
+export function arraySize(x) {
   const s = []
 
   while (Array.isArray(x)) {
@@ -31,7 +31,7 @@ export function arraySize (x) {
  * @throws DimensionError
  * @private
  */
-function _validate (array, size, dim) {
+function _validate(array, size, dim) {
   let i
   const len = array.length
 
@@ -66,8 +66,8 @@ function _validate (array, size, dim) {
  * @param {number[]} size  Array with the size of each dimension
  * @throws DimensionError
  */
-export function validate (array, size) {
-  const isScalar = (size.length === 0)
+export function validate(array, size) {
+  const isScalar = size.length === 0
   if (isScalar) {
     // scalar
     if (Array.isArray(array)) {
@@ -85,7 +85,7 @@ export function validate (array, size) {
  * @param {number} index    Zero-based index
  * @param {number} [length] Length of the array
  */
-export function validateIndex (index, length) {
+export function validateIndex(index, length) {
   if (!isNumber(index) || !isInteger(index)) {
     throw new TypeError('Index must be an integer (value: ' + index + ')')
   }
@@ -104,7 +104,7 @@ export function validateIndex (index, length) {
  *                              set.
  * @return {Array} array         The resized array
  */
-export function resize (array, size, defaultValue) {
+export function resize(array, size, defaultValue) {
   // TODO: add support for scalars, having size=[] ?
 
   // check the type of the arguments
@@ -118,13 +118,17 @@ export function resize (array, size, defaultValue) {
   // check whether size contains positive integers
   size.forEach(function (value) {
     if (!isNumber(value) || !isInteger(value) || value < 0) {
-      throw new TypeError('Invalid size, must contain positive integers ' +
-        '(size: ' + format(size) + ')')
+      throw new TypeError(
+        'Invalid size, must contain positive integers ' +
+          '(size: ' +
+          format(size) +
+          ')'
+      )
     }
   })
 
   // recursively resize the array
-  const _defaultValue = (defaultValue !== undefined) ? defaultValue : 0
+  const _defaultValue = defaultValue !== undefined ? defaultValue : 0
   _resize(array, size, 0, _defaultValue)
 
   return array
@@ -139,7 +143,7 @@ export function resize (array, size, defaultValue) {
  *                              undefined by default.
  * @private
  */
-function _resize (array, size, dim, defaultValue) {
+function _resize(array, size, dim, defaultValue) {
   let i
   let elem
   const oldLen = array.length
@@ -200,7 +204,7 @@ function _resize (array, size, dim, defaultValue) {
  * @throws {DimensionError}       If the product of the new dimension sizes does
  *                                not equal that of the old ones
  */
-export function reshape (array, sizes) {
+export function reshape(array, sizes) {
   const flatArray = flatten(array)
   const currentLength = flatArray.length
 
@@ -215,22 +219,14 @@ export function reshape (array, sizes) {
   sizes = processSizesWildcard(sizes, currentLength)
   const newLength = product(sizes)
   if (currentLength !== newLength) {
-    throw new DimensionError(
-      newLength,
-      currentLength,
-      '!='
-    )
+    throw new DimensionError(newLength, currentLength, '!=')
   }
 
   try {
     return _reshape(flatArray, sizes)
   } catch (e) {
     if (e instanceof DimensionError) {
-      throw new DimensionError(
-        newLength,
-        currentLength,
-        '!='
-      )
+      throw new DimensionError(newLength, currentLength, '!=')
     }
     throw e
   }
@@ -243,7 +239,7 @@ export function reshape (array, sizes) {
  * @throws {Error}                If more than one wildcard or unable to replace it.
  * @returns {Array.<number>}      The sizes array with wildcard replaced.
  */
-export function processSizesWildcard (sizes, currentLength) {
+export function processSizesWildcard(sizes, currentLength) {
   const newLength = product(sizes)
   const processedSizes = sizes.slice()
   const WILDCARD = -1
@@ -261,7 +257,12 @@ export function processSizesWildcard (sizes, currentLength) {
     if (canReplaceWildcard) {
       processedSizes[wildCardIndex] = -currentLength / newLength
     } else {
-      throw new Error('Could not replace wildcard, since ' + currentLength + ' is no multiple of ' + (-newLength))
+      throw new Error(
+        'Could not replace wildcard, since ' +
+          currentLength +
+          ' is no multiple of ' +
+          -newLength
+      )
     }
   }
   return processedSizes
@@ -272,7 +273,7 @@ export function processSizesWildcard (sizes, currentLength) {
  * @param {Array<number>} array Array of factors
  * @returns {number}            Product of all elements
  */
-function product (array) {
+function product(array) {
   return array.reduce((prev, curr) => prev * curr, 1)
 }
 
@@ -284,7 +285,7 @@ function product (array) {
  *                                specified dimensions
  */
 
-function _reshape (array, sizes) {
+function _reshape(array, sizes) {
   // testing if there are enough elements for the requested shape
   let tmpArray = array
   let tmpArray2
@@ -311,7 +312,7 @@ function _reshape (array, sizes) {
  * @param {Array} [size]
  * @returns {Array} returns the array itself
  */
-export function squeeze (array, size) {
+export function squeeze(array, size) {
   const s = size || arraySize(array)
 
   // squeeze outer dimensions
@@ -343,7 +344,7 @@ export function squeeze (array, size) {
  * @returns {Array | *} Returns the squeezed array
  * @private
  */
-function _squeeze (array, dims, dim) {
+function _squeeze(array, dims, dim) {
   let i, ii
 
   if (dim < dims) {
@@ -372,7 +373,7 @@ function _squeeze (array, dims, dim) {
  * @returns {Array} returns the array itself
  * @private
  */
-export function unsqueeze (array, dims, outer, size) {
+export function unsqueeze(array, dims, outer, size) {
   const s = size || arraySize(array)
 
   // unsqueeze outer dimensions
@@ -400,7 +401,7 @@ export function unsqueeze (array, dims, outer, size) {
  * @returns {Array | *} Returns the squeezed array
  * @private
  */
-function _unsqueeze (array, dims, dim) {
+function _unsqueeze(array, dims, dim) {
   let i, ii
 
   if (Array.isArray(array)) {
@@ -422,14 +423,14 @@ function _unsqueeze (array, dims, dim) {
  * @param {Array} array   A multi dimensional array
  * @return {Array}        The flattened array (1 dimensional)
  */
-export function flatten (array) {
+export function flatten(array) {
   if (!Array.isArray(array)) {
     // if not an array, return as is
     return array
   }
   const flat = []
 
-  array.forEach(function callback (value) {
+  array.forEach(function callback(value) {
     if (Array.isArray(value)) {
       value.forEach(callback) // traverse through sub-arrays recursively
     } else {
@@ -445,7 +446,7 @@ export function flatten (array) {
  * @param {Array} array
  * @param {function} callback
  */
-export function map (array, callback) {
+export function map(array, callback) {
   return Array.prototype.map.call(array, callback)
 }
 
@@ -454,7 +455,7 @@ export function map (array, callback) {
  * @param {Array} array
  * @param {function} callback
  */
-export function forEach (array, callback) {
+export function forEach(array, callback) {
   Array.prototype.forEach.call(array, callback)
 }
 
@@ -463,7 +464,7 @@ export function forEach (array, callback) {
  * @param {Array} array
  * @param {function} callback
  */
-export function filter (array, callback) {
+export function filter(array, callback) {
   if (arraySize(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported')
   }
@@ -478,7 +479,7 @@ export function filter (array, callback) {
  * @return {Array} Returns the filtered array
  * @private
  */
-export function filterRegExp (array, regexp) {
+export function filterRegExp(array, regexp) {
   if (arraySize(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported')
   }
@@ -491,7 +492,7 @@ export function filterRegExp (array, regexp) {
  * @param {Array} array
  * @param {string} separator
  */
-export function join (array, separator) {
+export function join(array, separator) {
   return Array.prototype.join.call(array, separator)
 }
 
@@ -500,7 +501,7 @@ export function join (array, separator) {
  * @param {Array} a  An array
  * @return {Array} An array of objects containing the original value and its identifier
  */
-export function identify (a) {
+export function identify(a) {
   if (!Array.isArray(a)) {
     throw new TypeError('Array input expected')
   }
@@ -528,7 +529,7 @@ export function identify (a) {
  * @param {array} a  An array
  * @return {array} An array of values without identifiers
  */
-export function generalize (a) {
+export function generalize(a) {
   if (!Array.isArray(a)) {
     throw new TypeError('Array input expected')
   }
@@ -553,7 +554,7 @@ export function generalize (a) {
  * @param {function} typeOf   Callback function to use to determine the type of a value
  * @return {string}
  */
-export function getArrayDataType (array, typeOf) {
+export function getArrayDataType(array, typeOf) {
   let type // to hold type info
   let length = 0 // to hold length value to ensure it has consistent sizes
 
@@ -592,14 +593,14 @@ export function getArrayDataType (array, typeOf) {
  * @param array
  * @returns {*}
  */
-export function last (array) {
+export function last(array) {
   return array[array.length - 1]
 }
 
 /**
  * Get all but the last element of array.
  */
-export function initial (array) {
+export function initial(array) {
   return array.slice(0, array.length - 1)
 }
 
@@ -609,6 +610,6 @@ export function initial (array) {
  * @param {*} item
  * @return {boolean}
  */
-export function contains (array, item) {
+export function contains(array, item) {
   return array.indexOf(item) !== -1
 }

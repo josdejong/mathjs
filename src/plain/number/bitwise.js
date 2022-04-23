@@ -3,7 +3,7 @@ import { isInteger } from '../../utils/number.js'
 const n1 = 'number'
 const n2 = 'number, number'
 
-export function bitAndNumber (x, y) {
+export function bitAndNumber(x, y) {
   if (!isInteger(x) || !isInteger(y)) {
     throw new Error('Integers expected in function bitAnd')
   }
@@ -12,7 +12,7 @@ export function bitAndNumber (x, y) {
 }
 bitAndNumber.signature = n2
 
-export function bitNotNumber (x) {
+export function bitNotNumber(x) {
   if (!isInteger(x)) {
     throw new Error('Integer expected in function bitNot')
   }
@@ -21,7 +21,7 @@ export function bitNotNumber (x) {
 }
 bitNotNumber.signature = n1
 
-export function bitOrNumber (x, y) {
+export function bitOrNumber(x, y) {
   if (!isInteger(x) || !isInteger(y)) {
     throw new Error('Integers expected in function bitOr')
   }
@@ -30,7 +30,7 @@ export function bitOrNumber (x, y) {
 }
 bitOrNumber.signature = n2
 
-export function bitXorNumber (x, y) {
+export function bitXorNumber(x, y) {
   if (!isInteger(x) || !isInteger(y)) {
     throw new Error('Integers expected in function bitXor')
   }
@@ -39,7 +39,7 @@ export function bitXorNumber (x, y) {
 }
 bitXorNumber.signature = n2
 
-export function leftShiftNumber (x, y) {
+export function leftShiftNumber(x, y) {
   if (!isInteger(x) || !isInteger(y)) {
     throw new Error('Integers expected in function leftShift')
   }
@@ -48,7 +48,7 @@ export function leftShiftNumber (x, y) {
 }
 leftShiftNumber.signature = n2
 
-export function rightArithShiftNumber (x, y) {
+export function rightArithShiftNumber(x, y) {
   if (!isInteger(x) || !isInteger(y)) {
     throw new Error('Integers expected in function rightArithShift')
   }
@@ -57,7 +57,7 @@ export function rightArithShiftNumber (x, y) {
 }
 rightArithShiftNumber.signature = n2
 
-export function rightLogShiftNumber (x, y) {
+export function rightLogShiftNumber(x, y) {
   if (!isInteger(x) || !isInteger(y)) {
     throw new Error('Integers expected in function rightLogShift')
   }

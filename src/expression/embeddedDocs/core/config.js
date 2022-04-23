@@ -1,16 +1,13 @@
 export const configDocs = {
   name: 'config',
   category: 'Core',
-  syntax: [
-    'config()',
-    'config(options)'
-  ],
+  syntax: ['config()', 'config(options)'],
   description: 'Get configuration or change configuration.',
   examples: [
     'config()',
     '1/3 + 1/4',
     'config({number: "Fraction"})',
-    '1/3 + 1/4'
+    '1/3 + 1/4',
   ],
-  seealso: []
+  seealso: [],
 }

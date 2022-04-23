@@ -13,26 +13,31 @@ import { createCumSum } from '../../function/statistics/cumsum.js'
 const name = 'cumsum'
 const dependencies = ['typed', 'add', 'unaryPlus']
 
-export const createCumSumTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, unaryPlus }) => {
-  const cumsum = createCumSum({ typed, add, unaryPlus })
+export const createCumSumTransform = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({ typed, add, unaryPlus }) => {
+    const cumsum = createCumSum({ typed, add, unaryPlus })
 
-  return typed(name, {
-    '...any': function (args) {
-      // change last argument dim from one-based to zero-based
-      if (args.length === 2 && isCollection(args[0])) {
-        const dim = args[1]
-        if (isNumber(dim)) {
-          args[1] = dim - 1
-        } else if (isBigNumber(dim)) {
-          args[1] = dim.minus(1)
+    return typed(name, {
+      '...any': function (args) {
+        // change last argument dim from one-based to zero-based
+        if (args.length === 2 && isCollection(args[0])) {
+          const dim = args[1]
+          if (isNumber(dim)) {
+            args[1] = dim - 1
+          } else if (isBigNumber(dim)) {
+            args[1] = dim.minus(1)
+          }
         }
-      }
 
-      try {
-        return cumsum.apply(null, args)
-      } catch (err) {
-        throw errorTransform(err)
-      }
-    }
-  })
-}, { isTransformFunction: true })
+        try {
+          return cumsum.apply(null, args)
+        } catch (err) {
+          throw errorTransform(err)
+        }
+      },
+    })
+  },
+  { isTransformFunction: true }
+)

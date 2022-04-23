@@ -8,7 +8,7 @@ import { csFlip } from './csFlip.js'
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csMark (w, j) {
+export function csMark(w, j) {
   // mark w[j]
   w[j] = csFlip(w[j])
 }

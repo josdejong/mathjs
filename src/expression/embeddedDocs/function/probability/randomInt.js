@@ -6,13 +6,9 @@ export const randomIntDocs = {
     'randomInt(min, max)',
     'randomInt(size)',
     'randomInt(size, max)',
-    'randomInt(size, min, max)'
+    'randomInt(size, min, max)',
   ],
-  description:
-      'Return a random integer number',
-  examples: [
-    'randomInt(10, 20)',
-    'randomInt([2, 3], 10)'
-  ],
-  seealso: ['pickRandom', 'random']
+  description: 'Return a random integer number',
+  examples: ['randomInt(10, 20)', 'randomInt([2, 3], 10)'],
+  seealso: ['pickRandom', 'random'],
 }

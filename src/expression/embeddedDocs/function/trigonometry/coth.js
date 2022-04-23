@@ -1,17 +1,8 @@
 export const cothDocs = {
   name: 'coth',
   category: 'Trigonometry',
-  syntax: [
-    'coth(x)'
-  ],
+  syntax: ['coth(x)'],
   description: 'Compute the hyperbolic cotangent of x in radians.',
-  examples: [
-    'coth(2)',
-    '1 / tanh(2)'
-  ],
-  seealso: [
-    'sech',
-    'csch',
-    'tanh'
-  ]
+  examples: ['coth(2)', '1 / tanh(2)'],
+  seealso: ['sech', 'csch', 'tanh'],
 }

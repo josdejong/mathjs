@@ -5,50 +5,54 @@ import { factory } from '../../utils/factory.js'
 const name = 'filter'
 const dependencies = ['typed']
 
-export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
-  /**
-   * Filter the items in an array or one dimensional matrix.
-   *
-   * Syntax:
-   *
-   *    math.filter(x, test)
-   *
-   * Examples:
-   *
-   *    function isPositive (x) {
-   *      return x > 0
-   *    }
-   *    math.filter([6, -2, -1, 4, 3], isPositive) // returns [6, 4, 3]
-   *
-   *    math.filter(["23", "foo", "100", "55", "bar"], /[0-9]+/) // returns ["23", "100", "55"]
-   *
-   * See also:
-   *
-   *    forEach, map, sort
-   *
-   * @param {Matrix | Array} x    A one dimensional matrix or array to filter
-   * @param {Function | RegExp} test
-   *        A function or regular expression to test items.
-   *        All entries for which `test` returns true are returned.
-   *        When `test` is a function, it is invoked with three parameters:
-   *        the value of the element, the index of the element, and the
-   *        matrix/array being traversed. The function must return a boolean.
-   * @return {Matrix | Array} Returns the filtered matrix.
-   */
-  return typed('filter', {
-    'Array, function': _filterCallback,
+export const createFilter = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({ typed }) => {
+    /**
+     * Filter the items in an array or one dimensional matrix.
+     *
+     * Syntax:
+     *
+     *    math.filter(x, test)
+     *
+     * Examples:
+     *
+     *    function isPositive (x) {
+     *      return x > 0
+     *    }
+     *    math.filter([6, -2, -1, 4, 3], isPositive) // returns [6, 4, 3]
+     *
+     *    math.filter(["23", "foo", "100", "55", "bar"], /[0-9]+/) // returns ["23", "100", "55"]
+     *
+     * See also:
+     *
+     *    forEach, map, sort
+     *
+     * @param {Matrix | Array} x    A one dimensional matrix or array to filter
+     * @param {Function | RegExp} test
+     *        A function or regular expression to test items.
+     *        All entries for which `test` returns true are returned.
+     *        When `test` is a function, it is invoked with three parameters:
+     *        the value of the element, the index of the element, and the
+     *        matrix/array being traversed. The function must return a boolean.
+     * @return {Matrix | Array} Returns the filtered matrix.
+     */
+    return typed('filter', {
+      'Array, function': _filterCallback,
 
-    'Matrix, function': function (x, test) {
-      return x.create(_filterCallback(x.toArray(), test))
-    },
+      'Matrix, function': function (x, test) {
+        return x.create(_filterCallback(x.toArray(), test))
+      },
 
-    'Array, RegExp': filterRegExp,
+      'Array, RegExp': filterRegExp,
 
-    'Matrix, RegExp': function (x, test) {
-      return x.create(filterRegExp(x.toArray(), test))
-    }
-  })
-})
+      'Matrix, RegExp': function (x, test) {
+        return x.create(filterRegExp(x.toArray(), test))
+      },
+    })
+  }
+)
 
 /**
  * Filter values in a callback given a callback function
@@ -57,7 +61,7 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
  * @return {Array} Returns the filtered array
  * @private
  */
-function _filterCallback (x, callback) {
+function _filterCallback(x, callback) {
   // figure out what number of arguments the callback function expects
   const args = maxArgumentCount(callback)
 
@@ -67,7 +71,8 @@ function _filterCallback (x, callback) {
       return callback(value)
     } else if (args === 2) {
       return callback(value, [index])
-    } else { // 3 or -1
+    } else {
+      // 3 or -1
       return callback(value, [index], array)
     }
   })

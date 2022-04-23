@@ -14,7 +14,7 @@
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csLeaf (i, j, w, first, maxfirst, prevleaf, ancestor) {
+export function csLeaf(i, j, w, first, maxfirst, prevleaf, ancestor) {
   let s, sparent
 
   // our result
@@ -22,7 +22,9 @@ export function csLeaf (i, j, w, first, maxfirst, prevleaf, ancestor) {
   let q
 
   // check j is a leaf
-  if (i <= j || w[first + j] <= w[maxfirst + i]) { return (-1) }
+  if (i <= j || w[first + j] <= w[maxfirst + i]) {
+    return -1
+  }
   // update max first[j] seen so far
   w[maxfirst + i] = w[first + j]
   // jprev = previous leaf of ith subtree
@@ -46,7 +48,7 @@ export function csLeaf (i, j, w, first, maxfirst, prevleaf, ancestor) {
     }
   }
   return {
-    jleaf: jleaf,
-    q: q
+    jleaf,
+    q,
   }
 }

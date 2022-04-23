@@ -1,13 +1,26 @@
 import { clone } from '../../../utils/object.js'
 
-export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) {
+export function createRealSymmetric({
+  config,
+  addScalar,
+  subtract,
+  abs,
+  atan,
+  cos,
+  sin,
+  multiplyScalar,
+  inv,
+  bignumber,
+  multiply,
+  add,
+}) {
   /**
    * @param {number[] | BigNumber[]} arr
    * @param {number} N
    * @param {number} prec
    * @param {'number' | 'BigNumber'} type
    */
-  function main (arr, N, prec = config.epsilon, type) {
+  function main(arr, N, prec = config.epsilon, type) {
     if (type === 'number') {
       return diag(arr, prec)
     }
@@ -20,7 +33,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   }
 
   // diagonalization implementation for number (efficient)
-  function diag (x, precision) {
+  function diag(x, precision) {
     const N = x.length
     const e0 = Math.abs(precision / N)
     let psi
@@ -48,7 +61,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   }
 
   // diagonalization implementation for bigNumber
-  function diagBig (x, precision) {
+  function diagBig(x, precision) {
     const N = x.length
     const e0 = abs(precision / N)
     let psi
@@ -77,17 +90,17 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   }
 
   // get angle
-  function getTheta (aii, ajj, aij) {
-    const denom = (ajj - aii)
+  function getTheta(aii, ajj, aij) {
+    const denom = ajj - aii
     if (Math.abs(denom) <= config.epsilon) {
       return Math.PI / 4.0
     } else {
-      return 0.5 * Math.atan(2.0 * aij / (ajj - aii))
+      return 0.5 * Math.atan((2.0 * aij) / (ajj - aii))
     }
   }
 
   // get angle
-  function getThetaBig (aii, ajj, aij) {
+  function getThetaBig(aii, ajj, aij) {
     const denom = subtract(ajj, aii)
     if (abs(denom) <= config.epsilon) {
       return bignumber(-1).acos().div(4)
@@ -97,7 +110,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   }
 
   // update eigvec
-  function Sij1 (Sij, theta, i, j) {
+  function Sij1(Sij, theta, i, j) {
     const N = Sij.length
     const c = Math.cos(theta)
     const s = Math.sin(theta)
@@ -114,15 +127,21 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
     return Sij
   }
   // update eigvec for overlap
-  function Sij1Big (Sij, theta, i, j) {
+  function Sij1Big(Sij, theta, i, j) {
     const N = Sij.length
     const c = cos(theta)
     const s = sin(theta)
     const Ski = createArray(N, bignumber(0))
     const Skj = createArray(N, bignumber(0))
     for (let k = 0; k < N; k++) {
-      Ski[k] = subtract(multiplyScalar(c, Sij[k][i]), multiplyScalar(s, Sij[k][j]))
-      Skj[k] = addScalar(multiplyScalar(s, Sij[k][i]), multiplyScalar(c, Sij[k][j]))
+      Ski[k] = subtract(
+        multiplyScalar(c, Sij[k][i]),
+        multiplyScalar(s, Sij[k][j])
+      )
+      Skj[k] = addScalar(
+        multiplyScalar(s, Sij[k][i]),
+        multiplyScalar(c, Sij[k][j])
+      )
     }
     for (let k = 0; k < N; k++) {
       Sij[k][i] = Ski[k]
@@ -132,7 +151,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   }
 
   // update matrix
-  function x1Big (Hij, theta, i, j) {
+  function x1Big(Hij, theta, i, j) {
     const N = Hij.length
     const c = bignumber(cos(theta))
     const s = bignumber(sin(theta))
@@ -143,12 +162,25 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
     // 2cs Hij
     const csHij = multiply(bignumber(2), c, s, Hij[i][j])
     //  Aii
-    const Aii = addScalar(subtract(multiplyScalar(c2, Hij[i][i]), csHij), multiplyScalar(s2, Hij[j][j]))
-    const Ajj = add(multiplyScalar(s2, Hij[i][i]), csHij, multiplyScalar(c2, Hij[j][j]))
+    const Aii = addScalar(
+      subtract(multiplyScalar(c2, Hij[i][i]), csHij),
+      multiplyScalar(s2, Hij[j][j])
+    )
+    const Ajj = add(
+      multiplyScalar(s2, Hij[i][i]),
+      csHij,
+      multiplyScalar(c2, Hij[j][j])
+    )
     // 0  to i
     for (let k = 0; k < N; k++) {
-      Aki[k] = subtract(multiplyScalar(c, Hij[i][k]), multiplyScalar(s, Hij[j][k]))
-      Akj[k] = addScalar(multiplyScalar(s, Hij[i][k]), multiplyScalar(c, Hij[j][k]))
+      Aki[k] = subtract(
+        multiplyScalar(c, Hij[i][k]),
+        multiplyScalar(s, Hij[j][k])
+      )
+      Akj[k] = addScalar(
+        multiplyScalar(s, Hij[i][k]),
+        multiplyScalar(c, Hij[j][k])
+      )
     }
     // Modify Hij
     Hij[i][i] = Aii
@@ -168,7 +200,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   }
 
   // update matrix
-  function x1 (Hij, theta, i, j) {
+  function x1(Hij, theta, i, j) {
     const N = Hij.length
     const c = Math.cos(theta)
     const s = Math.sin(theta)
@@ -202,7 +234,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   }
 
   // get max off-diagonal value from Upper Diagonal
-  function getAij (Mij) {
+  function getAij(Mij) {
     const N = Mij.length
     let maxMij = 0
     let maxIJ = [0, 1]
@@ -218,7 +250,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   }
 
   // get max off-diagonal value from Upper Diagonal
-  function getAijBig (Mij) {
+  function getAijBig(Mij) {
     const N = Mij.length
     let maxMij = 0
     let maxIJ = [0, 1]
@@ -234,7 +266,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   }
 
   // sort results
-  function sorting (E, S) {
+  function sorting(E, S) {
     const N = E.length
     const values = Array(N)
     const vectors = Array(N)
@@ -267,7 +299,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
    * @param {number} value
    * @return {number[]}
    */
-  function createArray (size, value) {
+  function createArray(size, value) {
     // TODO: as soon as all browsers support Array.fill, use that instead (IE doesn't support it)
     const array = new Array(size)
 

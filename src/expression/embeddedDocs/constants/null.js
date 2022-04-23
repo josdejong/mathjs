@@ -1,12 +1,8 @@
 export const nullDocs = {
   name: 'null',
   category: 'Constants',
-  syntax: [
-    'null'
-  ],
+  syntax: ['null'],
   description: 'Value null',
-  examples: [
-    'null'
-  ],
-  seealso: ['true', 'false']
+  examples: ['null'],
+  seealso: ['true', 'false'],
 }

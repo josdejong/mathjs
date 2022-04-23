@@ -11,7 +11,7 @@
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csTdfs (j, k, w, head, next, post, stack) {
+export function csTdfs(j, k, w, head, next, post, stack) {
   // variables
   let top = 0
   // place j on the stack

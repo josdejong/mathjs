@@ -7,7 +7,7 @@
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csCumsum (ptr, c, n) {
+export function csCumsum(ptr, c, n) {
   // variables
   let i
   let nz = 0

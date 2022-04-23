@@ -13,7 +13,7 @@
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csFkeep (a, callback, other) {
+export function csFkeep(a, callback, other) {
   // a arrays
   const avalues = a._values
   const aindex = a._index
@@ -35,7 +35,9 @@ export function csFkeep (a, callback, other) {
         // keep A(i,j)
         aindex[nz] = aindex[p]
         // check we need to process values (pattern only)
-        if (avalues) { avalues[nz] = avalues[p] }
+        if (avalues) {
+          avalues[nz] = avalues[p]
+        }
         // increment nonzero items
         nz++
       }
@@ -46,7 +48,9 @@ export function csFkeep (a, callback, other) {
   // trim arrays
   aindex.splice(nz, aindex.length - nz)
   // check we need to process values (pattern only)
-  if (avalues) { avalues.splice(nz, avalues.length - nz) }
+  if (avalues) {
+    avalues.splice(nz, avalues.length - nz)
+  }
   // return number of nonzero items
   return nz
 }

@@ -4,7 +4,15 @@ import { createVariance } from '../../function/statistics/variance.js'
 import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 
 const name = 'variance'
-const dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'apply', 'isNaN']
+const dependencies = [
+  'typed',
+  'add',
+  'subtract',
+  'multiply',
+  'divide',
+  'apply',
+  'isNaN',
+]
 
 /**
  * Attach a transform function to math.var
@@ -13,18 +21,31 @@ const dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'apply',
  * This transform changed the `dim` parameter of function var
  * from one-based to zero based
  */
-export const createVarianceTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract, multiply, divide, apply, isNaN }) => {
-  const variance = createVariance({ typed, add, subtract, multiply, divide, apply, isNaN })
+export const createVarianceTransform = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({ typed, add, subtract, multiply, divide, apply, isNaN }) => {
+    const variance = createVariance({
+      typed,
+      add,
+      subtract,
+      multiply,
+      divide,
+      apply,
+      isNaN,
+    })
 
-  return typed(name, {
-    '...any': function (args) {
-      args = lastDimToZeroBase(args)
+    return typed(name, {
+      '...any': function (args) {
+        args = lastDimToZeroBase(args)
 
-      try {
-        return variance.apply(null, args)
-      } catch (err) {
-        throw errorTransform(err)
-      }
-    }
-  })
-}, { isTransformFunction: true })
+        try {
+          return variance.apply(null, args)
+        } catch (err) {
+          throw errorTransform(err)
+        }
+      },
+    })
+  },
+  { isTransformFunction: true }
+)

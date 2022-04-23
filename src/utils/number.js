@@ -9,14 +9,12 @@ import { isNumber } from './is.js'
  * @param {number | boolean} value
  * @return {boolean} isInteger
  */
-export function isInteger (value) {
+export function isInteger(value) {
   if (typeof value === 'boolean') {
     return true
   }
 
-  return isFinite(value)
-    ? (value === Math.round(value))
-    : false
+  return isFinite(value) ? value === Math.round(value) : false
 }
 
 /**
@@ -24,42 +22,50 @@ export function isInteger (value) {
  * @param {number} x
  * @returns {number}
  */
-export const sign = /* #__PURE__ */ Math.sign || function (x) {
-  if (x > 0) {
-    return 1
-  } else if (x < 0) {
-    return -1
-  } else {
-    return 0
+export const sign =
+  /* #__PURE__ */ Math.sign ||
+  function (x) {
+    if (x > 0) {
+      return 1
+    } else if (x < 0) {
+      return -1
+    } else {
+      return 0
+    }
   }
-}
 
 /**
  * Calculate the base-2 logarithm of a number
  * @param {number} x
  * @returns {number}
  */
-export const log2 = /* #__PURE__ */ Math.log2 || function log2 (x) {
-  return Math.log(x) / Math.LN2
-}
+export const log2 =
+  /* #__PURE__ */ Math.log2 ||
+  function log2(x) {
+    return Math.log(x) / Math.LN2
+  }
 
 /**
  * Calculate the base-10 logarithm of a number
  * @param {number} x
  * @returns {number}
  */
-export const log10 = /* #__PURE__ */ Math.log10 || function log10 (x) {
-  return Math.log(x) / Math.LN10
-}
+export const log10 =
+  /* #__PURE__ */ Math.log10 ||
+  function log10(x) {
+    return Math.log(x) / Math.LN10
+  }
 
 /**
  * Calculate the natural logarithm of a number + 1
  * @param {number} x
  * @returns {number}
  */
-export const log1p = /* #__PURE__ */ Math.log1p || function (x) {
-  return Math.log(x + 1)
-}
+export const log1p =
+  /* #__PURE__ */ Math.log1p ||
+  function (x) {
+    return Math.log(x + 1)
+  }
 
 /**
  * Calculate cubic root for a number
@@ -70,38 +76,42 @@ export const log1p = /* #__PURE__ */ Math.log1p || function (x) {
  * @param {number} x
  * @returns {number} Returns the cubic root of x
  */
-export const cbrt = /* #__PURE__ */ Math.cbrt || function cbrt (x) {
-  if (x === 0) {
-    return x
-  }
+export const cbrt =
+  /* #__PURE__ */ Math.cbrt ||
+  function cbrt(x) {
+    if (x === 0) {
+      return x
+    }
 
-  const negate = x < 0
-  let result
-  if (negate) {
-    x = -x
-  }
+    const negate = x < 0
+    let result
+    if (negate) {
+      x = -x
+    }
 
-  if (isFinite(x)) {
-    result = Math.exp(Math.log(x) / 3)
-    // from https://en.wikipedia.org/wiki/Cube_root#Numerical_methods
-    result = (x / (result * result) + (2 * result)) / 3
-  } else {
-    result = x
-  }
+    if (isFinite(x)) {
+      result = Math.exp(Math.log(x) / 3)
+      // from https://en.wikipedia.org/wiki/Cube_root#Numerical_methods
+      result = (x / (result * result) + 2 * result) / 3
+    } else {
+      result = x
+    }
 
-  return negate ? -result : result
-}
+    return negate ? -result : result
+  }
 
 /**
  * Calculates exponentiation minus 1
  * @param {number} x
  * @return {number} res
  */
-export const expm1 = /* #__PURE__ */ Math.expm1 || function expm1 (x) {
-  return (x >= 2e-4 || x <= -2e-4)
-    ? Math.exp(x) - 1
-    : x + x * x / 2 + x * x * x / 6
-}
+export const expm1 =
+  /* #__PURE__ */ Math.expm1 ||
+  function expm1(x) {
+    return x >= 2e-4 || x <= -2e-4
+      ? Math.exp(x) - 1
+      : x + (x * x) / 2 + (x * x * x) / 6
+  }
 
 /**
  * Formats a number in a given base
@@ -110,7 +120,7 @@ export const expm1 = /* #__PURE__ */ Math.expm1 || function expm1 (x) {
  * @param {number} size
  * @returns {string}
  */
-function formatNumberToBase (n, base, size) {
+function formatNumberToBase(n, base, size) {
   const prefixes = { 2: '0b', 8: '0o', 16: '0x' }
   const prefix = prefixes[base]
   let suffix = ''
@@ -122,7 +132,9 @@ function formatNumberToBase (n, base, size) {
       throw new Error('size must be an integer')
     }
     if (n > 2 ** (size - 1) - 1 || n < -(2 ** (size - 1))) {
-      throw new Error(`Value must be in range [-2^${size - 1}, 2^${size - 1}-1]`)
+      throw new Error(
+        `Value must be in range [-2^${size - 1}, 2^${size - 1}-1]`
+      )
     }
     if (!isInteger(n)) {
       throw new Error('Value must be an integer')
@@ -224,7 +236,7 @@ function formatNumberToBase (n, base, size) {
  * @param {Object | Function | number} [options]
  * @return {string} str The formatted value
  */
-export function format (value, options) {
+export function format(value, options) {
   if (typeof options === 'function') {
     // handle format(value, fn)
     return options(value)
@@ -259,7 +271,7 @@ export function format (value, options) {
 
     if (options.wordSize) {
       wordSize = options.wordSize
-      if (typeof (wordSize) !== 'number') {
+      if (typeof wordSize !== 'number') {
         throw new Error('Option "wordSize" must be a number')
       }
     }
@@ -287,16 +299,22 @@ export function format (value, options) {
 
     case 'auto':
       // remove trailing zeros after the decimal point
-      return toPrecision(value, precision, options && options)
-        .replace(/((\.\d*?)(0+))($|e)/, function () {
+      return toPrecision(value, precision, options && options).replace(
+        /((\.\d*?)(0+))($|e)/,
+        function () {
           const digits = arguments[2]
           const e = arguments[4]
-          return (digits !== '.') ? digits + e : e
-        })
+          return digits !== '.' ? digits + e : e
+        }
+      )
 
     default:
-      throw new Error('Unknown notation "' + notation + '". ' +
-        'Choose "auto", "exponential", "fixed", "bin", "oct", or "hex.')
+      throw new Error(
+        'Unknown notation "' +
+          notation +
+          '". ' +
+          'Choose "auto", "exponential", "fixed", "bin", "oct", or "hex.'
+      )
   }
 }
 
@@ -306,9 +324,11 @@ export function format (value, options) {
  * @return {SplitValue}
  *              Returns an object containing sign, coefficients, and exponent
  */
-export function splitNumber (value) {
+export function splitNumber(value) {
   // parse the input value
-  const match = String(value).toLowerCase().match(/^(-?)(\d+\.?\d*)(e([+-]?\d+))?$/)
+  const match = String(value)
+    .toLowerCase()
+    .match(/^(-?)(\d+\.?\d*)(e([+-]?\d+))?$/)
   if (!match) {
     throw new SyntaxError('Invalid number ' + value)
   }
@@ -318,7 +338,7 @@ export function splitNumber (value) {
   let exponent = parseFloat(match[4] || '0')
 
   const dot = digits.indexOf('.')
-  exponent += (dot !== -1) ? (dot - 1) : (digits.length - 1)
+  exponent += dot !== -1 ? dot - 1 : digits.length - 1
 
   const coefficients = digits
     .replace('.', '') // remove the dot (must be removed before removing leading zeros)
@@ -339,9 +359,9 @@ export function splitNumber (value) {
   }
 
   return {
-    sign: sign,
-    coefficients: coefficients,
-    exponent: exponent
+    sign,
+    coefficients,
+    exponent,
   }
 }
 
@@ -350,7 +370,7 @@ export function splitNumber (value) {
  * @param {number | string} value
  * @param {number} [precision]        Optional number of significant figures to return.
  */
-export function toEngineering (value, precision) {
+export function toEngineering(value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
@@ -362,11 +382,11 @@ export function toEngineering (value, precision) {
   const c = rounded.coefficients
 
   // find nearest lower multiple of 3 for exponent
-  const newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))
+  const newExp = e % 3 === 0 ? e : e < 0 ? e - 3 - (e % 3) : e - (e % 3)
 
   if (isNumber(precision)) {
     // add zeroes to give correct sig figs
-    while (precision > c.length || (e - newExp) + 1 > c.length) {
+    while (precision > c.length || e - newExp + 1 > c.length) {
       c.push(0)
     }
   } else {
@@ -391,11 +411,17 @@ export function toEngineering (value, precision) {
   // if all coefficient values are zero after the decimal point and precision is unset, don't add a decimal value.
   // otherwise concat with the rest of the coefficients
   const decimals = c.slice(decimalIdx).join('')
-  const decimalVal = ((isNumber(precision) && decimals.length) || decimals.match(/[1-9]/)) ? ('.' + decimals) : ''
+  const decimalVal =
+    (isNumber(precision) && decimals.length) || decimals.match(/[1-9]/)
+      ? '.' + decimals
+      : ''
 
-  const str = c.slice(0, decimalIdx).join('') +
+  const str =
+    c.slice(0, decimalIdx).join('') +
     decimalVal +
-    'e' + (e >= 0 ? '+' : '') + newExp.toString()
+    'e' +
+    (e >= 0 ? '+' : '') +
+    newExp.toString()
   return rounded.sign + str
 }
 
@@ -405,15 +431,16 @@ export function toEngineering (value, precision) {
  * @param {number} [precision=undefined]  Optional number of decimals after the
  *                                        decimal point. null by default.
  */
-export function toFixed (value, precision) {
+export function toFixed(value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
 
   const splitValue = splitNumber(value)
-  const rounded = (typeof precision === 'number')
-    ? roundDigits(splitValue, splitValue.exponent + 1 + precision)
-    : splitValue
+  const rounded =
+    typeof precision === 'number'
+      ? roundDigits(splitValue, splitValue.exponent + 1 + precision)
+      : splitValue
   let c = rounded.coefficients
   let p = rounded.exponent + 1 // exponent may have changed
 
@@ -431,7 +458,7 @@ export function toFixed (value, precision) {
 
   // insert a dot if needed
   if (p < c.length) {
-    c.splice(p, 0, (p === 0) ? '0.' : '.')
+    c.splice(p, 0, p === 0 ? '0.' : '.')
   }
 
   return rounded.sign + c.join('')
@@ -444,7 +471,7 @@ export function toFixed (value, precision) {
  *                              If not provided, the maximum available digits
  *                              is used.
  */
-export function toExponential (value, precision) {
+export function toExponential(value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
@@ -462,8 +489,14 @@ export function toExponential (value, precision) {
 
   // format as `C.CCCe+EEE` or `C.CCCe-EEE`
   const first = c.shift()
-  return rounded.sign + first + (c.length > 0 ? ('.' + c.join('')) : '') +
-    'e' + (e >= 0 ? '+' : '') + e
+  return (
+    rounded.sign +
+    first +
+    (c.length > 0 ? '.' + c.join('') : '') +
+    'e' +
+    (e >= 0 ? '+' : '') +
+    e
+  )
 }
 
 /**
@@ -476,14 +509,16 @@ export function toExponential (value, precision) {
  *                                         upper = +5 (excl)
  * @return {string}
  */
-export function toPrecision (value, precision, options) {
+export function toPrecision(value, precision, options) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
 
   // determine lower and upper bound for exponential notation.
-  const lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3
-  const upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5
+  const lowerExp =
+    options && options.lowerExp !== undefined ? options.lowerExp : -3
+  const upperExp =
+    options && options.upperExp !== undefined ? options.upperExp : 5
 
   const split = splitNumber(value)
   const rounded = precision ? roundDigits(split, precision) : split
@@ -501,8 +536,11 @@ export function toPrecision (value, precision, options) {
 
     // append trailing zeros
     // TODO: simplify the next statement
-    c = c.concat(zeros(e - c.length + 1 +
-      (c.length < precision ? precision - c.length : 0)))
+    c = c.concat(
+      zeros(
+        e - c.length + 1 + (c.length < precision ? precision - c.length : 0)
+      )
+    )
 
     // prepend zeros
     c = zeros(-e).concat(c)
@@ -524,12 +562,12 @@ export function toPrecision (value, precision, options) {
  *              Returns an object containing sign, coefficients, and exponent
  *              with rounded digits
  */
-export function roundDigits (split, precision) {
+export function roundDigits(split, precision) {
   // create a clone
   const rounded = {
     sign: split.sign,
     coefficients: split.coefficients,
-    exponent: split.exponent
+    exponent: split.exponent,
   }
   const c = rounded.coefficients
 
@@ -567,7 +605,7 @@ export function roundDigits (split, precision) {
  * @param {number} length
  * @return {Array}
  */
-function zeros (length) {
+function zeros(length) {
   const arr = []
   for (let i = 0; i < length; i++) {
     arr.push(0)
@@ -586,18 +624,18 @@ function zeros (length) {
  * @param {number} value
  * @return {number} digits   Number of significant digits
  */
-export function digits (value) {
+export function digits(value) {
   return value
     .toExponential()
     .replace(/e.*$/, '') // remove exponential notation
-    .replace(/^0\.?0*|\./, '') // remove decimal point and leading zeros
-    .length
+    .replace(/^0\.?0*|\./, '').length // remove decimal point and leading zeros
 }
 
 /**
  * Minimum number added to one that makes the result different than one
  */
-export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
+export const DBL_EPSILON =
+  Number.EPSILON || 2.2204460492503130808472633361816e-16
 
 /**
  * Compares two floating point numbers.
@@ -607,8 +645,8 @@ export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-
  *                            If epsilon is undefined or null, the function will
  *                            test whether x and y are exactly equal.
  * @return {boolean} whether the two numbers are nearly equal
-*/
-export function nearlyEqual (x, y, epsilon) {
+ */
+export function nearlyEqual(x, y, epsilon) {
   // if epsilon is null or undefined, test whether x and y are exactly equal
   if (epsilon === null || epsilon === undefined) {
     return x === y
@@ -644,50 +682,62 @@ export function nearlyEqual (x, y, epsilon) {
  * @param {number} x
  * @return {number}
  */
-export const acosh = Math.acosh || function (x) {
-  return Math.log(Math.sqrt(x * x - 1) + x)
-}
+export const acosh =
+  Math.acosh ||
+  function (x) {
+    return Math.log(Math.sqrt(x * x - 1) + x)
+  }
 
-export const asinh = Math.asinh || function (x) {
-  return Math.log(Math.sqrt(x * x + 1) + x)
-}
+export const asinh =
+  Math.asinh ||
+  function (x) {
+    return Math.log(Math.sqrt(x * x + 1) + x)
+  }
 
 /**
  * Calculate the hyperbolic arctangent of a number
  * @param {number} x
  * @return {number}
  */
-export const atanh = Math.atanh || function (x) {
-  return Math.log((1 + x) / (1 - x)) / 2
-}
+export const atanh =
+  Math.atanh ||
+  function (x) {
+    return Math.log((1 + x) / (1 - x)) / 2
+  }
 
 /**
  * Calculate the hyperbolic cosine of a number
  * @param {number} x
  * @returns {number}
  */
-export const cosh = Math.cosh || function (x) {
-  return (Math.exp(x) + Math.exp(-x)) / 2
-}
+export const cosh =
+  Math.cosh ||
+  function (x) {
+    return (Math.exp(x) + Math.exp(-x)) / 2
+  }
 
 /**
  * Calculate the hyperbolic sine of a number
  * @param {number} x
  * @returns {number}
  */
-export const sinh = Math.sinh || function (x) {
-  return (Math.exp(x) - Math.exp(-x)) / 2
-}
+export const sinh =
+  Math.sinh ||
+  function (x) {
+    return (Math.exp(x) - Math.exp(-x)) / 2
+  }
 
 /**
  * Calculate the hyperbolic tangent of a number
  * @param {number} x
  * @returns {number}
  */
-export const tanh = Math.tanh || function (x) {
-  const e = Math.exp(2 * x)
-  return (e - 1) / (e + 1)
-}
+export const tanh =
+  Math.tanh ||
+  function (x) {
+    const e = Math.exp(2 * x)
+    return (e - 1) / (e + 1)
+  }
 
 /**
  * Returns a value with the magnitude of x and the sign of y.
@@ -695,7 +745,7 @@ export const tanh = Math.tanh || function (x) {
  * @param {number} y
  * @returns {number}
  */
-export function copysign (x, y) {
+export function copysign(x, y) {
   const signx = x > 0 ? true : x < 0 ? false : 1 / x === Infinity
   const signy = y > 0 ? true : y < 0 ? false : 1 / y === Infinity
   return signx ^ signy ? -x : x

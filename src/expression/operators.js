@@ -19,135 +19,148 @@
 import { hasOwnProperty } from '../utils/object.js'
 
 export const properties = [
-  { // assignment
+  {
+    // assignment
     AssignmentNode: {},
-    FunctionAssignmentNode: {}
+    FunctionAssignmentNode: {},
   },
-  { // conditional expression
+  {
+    // conditional expression
     ConditionalNode: {
       latexLeftParens: false,
       latexRightParens: false,
-      latexParens: false
+      latexParens: false,
       // conditionals don't need parentheses in LaTeX because
       // they are 2 dimensional
-    }
+    },
   },
-  { // logical or
+  {
+    // logical or
     'OperatorNode:or': {
       associativity: 'left',
-      associativeWith: []
-    }
-
+      associativeWith: [],
+    },
   },
-  { // logical xor
+  {
+    // logical xor
     'OperatorNode:xor': {
       associativity: 'left',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // logical and
+  {
+    // logical and
     'OperatorNode:and': {
       associativity: 'left',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // bitwise or
+  {
+    // bitwise or
     'OperatorNode:bitOr': {
       associativity: 'left',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // bitwise xor
+  {
+    // bitwise xor
     'OperatorNode:bitXor': {
       associativity: 'left',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // bitwise and
+  {
+    // bitwise and
     'OperatorNode:bitAnd': {
       associativity: 'left',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // relational operators
+  {
+    // relational operators
     'OperatorNode:equal': {
       associativity: 'left',
-      associativeWith: []
+      associativeWith: [],
     },
     'OperatorNode:unequal': {
       associativity: 'left',
-      associativeWith: []
+      associativeWith: [],
     },
     'OperatorNode:smaller': {
       associativity: 'left',
-      associativeWith: []
+      associativeWith: [],
     },
     'OperatorNode:larger': {
       associativity: 'left',
-      associativeWith: []
+      associativeWith: [],
     },
     'OperatorNode:smallerEq': {
       associativity: 'left',
-      associativeWith: []
+      associativeWith: [],
     },
     'OperatorNode:largerEq': {
       associativity: 'left',
-      associativeWith: []
+      associativeWith: [],
     },
     RelationalNode: {
       associativity: 'left',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // bitshift operators
+  {
+    // bitshift operators
     'OperatorNode:leftShift': {
       associativity: 'left',
-      associativeWith: []
+      associativeWith: [],
     },
     'OperatorNode:rightArithShift': {
       associativity: 'left',
-      associativeWith: []
+      associativeWith: [],
     },
     'OperatorNode:rightLogShift': {
       associativity: 'left',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // unit conversion
+  {
+    // unit conversion
     'OperatorNode:to': {
       associativity: 'left',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // range
-    RangeNode: {}
+  {
+    // range
+    RangeNode: {},
   },
-  { // addition, subtraction
+  {
+    // addition, subtraction
     'OperatorNode:add': {
       associativity: 'left',
-      associativeWith: ['OperatorNode:add', 'OperatorNode:subtract']
+      associativeWith: ['OperatorNode:add', 'OperatorNode:subtract'],
     },
     'OperatorNode:subtract': {
       associativity: 'left',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // multiply, divide, modulus
+  {
+    // multiply, divide, modulus
     'OperatorNode:multiply': {
       associativity: 'left',
       associativeWith: [
         'OperatorNode:multiply',
         'OperatorNode:divide',
         'Operator:dotMultiply',
-        'Operator:dotDivide'
-      ]
+        'Operator:dotDivide',
+      ],
     },
     'OperatorNode:divide': {
       associativity: 'left',
       associativeWith: [],
       latexLeftParens: false,
       latexRightParens: false,
-      latexParens: false
+      latexParens: false,
       // fractions don't require parentheses because
       // they're 2 dimensional, so parens aren't needed
       // in LaTeX
@@ -158,56 +171,60 @@ export const properties = [
         'OperatorNode:multiply',
         'OperatorNode:divide',
         'OperatorNode:dotMultiply',
-        'OperatorNode:doDivide'
-      ]
+        'OperatorNode:doDivide',
+      ],
     },
     'OperatorNode:dotDivide': {
       associativity: 'left',
-      associativeWith: []
+      associativeWith: [],
     },
     'OperatorNode:mod': {
       associativity: 'left',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // unary prefix operators
+  {
+    // unary prefix operators
     'OperatorNode:unaryPlus': {
-      associativity: 'right'
+      associativity: 'right',
     },
     'OperatorNode:unaryMinus': {
-      associativity: 'right'
+      associativity: 'right',
     },
     'OperatorNode:bitNot': {
-      associativity: 'right'
+      associativity: 'right',
     },
     'OperatorNode:not': {
-      associativity: 'right'
-    }
+      associativity: 'right',
+    },
   },
-  { // exponentiation
+  {
+    // exponentiation
     'OperatorNode:pow': {
       associativity: 'right',
       associativeWith: [],
-      latexRightParens: false
+      latexRightParens: false,
       // the exponent doesn't need parentheses in
       // LaTeX because it's 2 dimensional
       // (it's on top)
     },
     'OperatorNode:dotPow': {
       associativity: 'right',
-      associativeWith: []
-    }
+      associativeWith: [],
+    },
   },
-  { // factorial
+  {
+    // factorial
     'OperatorNode:factorial': {
-      associativity: 'left'
-    }
+      associativity: 'left',
+    },
   },
-  { // matrix transpose
+  {
+    // matrix transpose
     'OperatorNode:transpose': {
-      associativity: 'left'
-    }
-  }
+      associativity: 'left',
+    },
+  },
 ]
 
 /**
@@ -219,7 +236,7 @@ export const properties = [
  * @param {string} parenthesis
  * @return {number | null}
  */
-export function getPrecedence (_node, parenthesis) {
+export function getPrecedence(_node, parenthesis) {
   let node = _node
   if (parenthesis !== 'keep') {
     // ParenthesisNodes are only ignored when not in 'keep' mode
@@ -244,7 +261,7 @@ export function getPrecedence (_node, parenthesis) {
  * @return {string|null}
  * @throws {Error}
  */
-export function getAssociativity (_node, parenthesis) {
+export function getAssociativity(_node, parenthesis) {
   let node = _node
   if (parenthesis !== 'keep') {
     // ParenthesisNodes are only ignored when not in 'keep' mode
@@ -266,8 +283,13 @@ export function getAssociativity (_node, parenthesis) {
       return 'right'
     }
     // associativity is invalid
-    throw Error('\'' + identifier + '\' has the invalid associativity \'' +
-                property.associativity + '\'.')
+    throw Error(
+      "'" +
+        identifier +
+        "' has the invalid associativity '" +
+        property.associativity +
+        "'."
+    )
   }
 
   // associativity is undefined
@@ -283,10 +305,10 @@ export function getAssociativity (_node, parenthesis) {
  * @param {string} parenthesis
  * @return {boolean | null}
  */
-export function isAssociativeWith (nodeA, nodeB, parenthesis) {
+export function isAssociativeWith(nodeA, nodeB, parenthesis) {
   // ParenthesisNodes are only ignored when not in 'keep' mode
-  const a = (parenthesis !== 'keep') ? nodeA.getContent() : nodeA
-  const b = (parenthesis !== 'keep') ? nodeA.getContent() : nodeB
+  const a = parenthesis !== 'keep' ? nodeA.getContent() : nodeA
+  const b = parenthesis !== 'keep' ? nodeA.getContent() : nodeB
   const identifierA = a.getIdentifier()
   const identifierB = b.getIdentifier()
   const index = getPrecedence(a, parenthesis)
@@ -296,8 +318,10 @@ export function isAssociativeWith (nodeA, nodeB, parenthesis) {
   }
   const property = properties[index][identifierA]
 
-  if (hasOwnProperty(property, 'associativeWith') &&
-      (property.associativeWith instanceof Array)) {
+  if (
+    hasOwnProperty(property, 'associativeWith') &&
+    property.associativeWith instanceof Array
+  ) {
     for (let i = 0; i < property.associativeWith.length; i++) {
       if (property.associativeWith[i] === identifierB) {
         return true

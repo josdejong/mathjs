@@ -1,13 +1,8 @@
 export const SQRT2Docs = {
   name: 'SQRT2',
   category: 'Constants',
-  syntax: [
-    'SQRT2'
-  ],
+  syntax: ['SQRT2'],
   description: 'Returns the square root of 2, approximately equal to 1.414',
-  examples: [
-    'SQRT2',
-    'sqrt(2)'
-  ],
-  seealso: []
+  examples: ['SQRT2', 'sqrt(2)'],
+  seealso: [],
 }

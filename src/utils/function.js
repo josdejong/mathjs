@@ -17,15 +17,15 @@ import { lruQueue } from './lruQueue.js'
  *    unlimited (default)
  * @return {function}                       Returns the memoized function
  */
-export function memoize (fn, { hasher, limit } = {}) {
+export function memoize(fn, { hasher, limit } = {}) {
   limit = limit == null ? Number.POSITIVE_INFINITY : limit
   hasher = hasher == null ? JSON.stringify : hasher
 
-  return function memoize () {
+  return function memoize() {
     if (typeof memoize.cache !== 'object') {
       memoize.cache = {
         values: new Map(),
-        lru: lruQueue(limit || Number.POSITIVE_INFINITY)
+        lru: lruQueue(limit || Number.POSITIVE_INFINITY),
       }
     }
     const args = []
@@ -61,8 +61,8 @@ export function memoize (fn, { hasher, limit } = {}) {
  * @param {function(a: *, b: *) : boolean} isEqual
  * @returns {function}
  */
-export function memoizeCompare (fn, isEqual) {
-  const memoize = function memoize () {
+export function memoizeCompare(fn, isEqual) {
+  const memoize = function memoize() {
     const args = []
     for (let i = 0; i < arguments.length; i++) {
       args[i] = arguments[i]
@@ -94,10 +94,9 @@ export function memoizeCompare (fn, isEqual) {
  * @return {number} Returns the maximum number of expected arguments.
  *                  Returns -1 when no signatures where found on the function.
  */
-export function maxArgumentCount (fn) {
-  return Object.keys(fn.signatures || {})
-    .reduce(function (args, signature) {
-      const count = (signature.match(/,/g) || []).length + 1
-      return Math.max(args, count)
-    }, -1)
+export function maxArgumentCount(fn) {
+  return Object.keys(fn.signatures || {}).reduce(function (args, signature) {
+    const count = (signature.match(/,/g) || []).length + 1
+    return Math.max(args, count)
+  }, -1)
 }

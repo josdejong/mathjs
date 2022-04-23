@@ -8,7 +8,7 @@
  * @param {number} [max]     Maximum index (excluded)
  * @extends RangeError
  */
-export function IndexError (index, min, max) {
+export function IndexError(index, min, max) {
   if (!(this instanceof IndexError)) {
     throw new SyntaxError('Constructor must be called with the new operator')
   }
@@ -25,12 +25,13 @@ export function IndexError (index, min, max) {
   if (this.min !== undefined && this.index < this.min) {
     this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')'
   } else if (this.max !== undefined && this.index >= this.max) {
-    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')'
+    this.message =
+      'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')'
   } else {
     this.message = 'Index out of range (' + this.index + ')'
   }
 
-  this.stack = (new Error()).stack
+  this.stack = new Error().stack
 }
 
 IndexError.prototype = new RangeError()

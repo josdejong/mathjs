@@ -9,7 +9,7 @@ import { _switch } from './switch.js'
  * @returns {boolean} Returns true when the array contains one or multiple
  *                    collections (Arrays or Matrices). Returns false otherwise.
  */
-export function containsCollections (array) {
+export function containsCollections(array) {
   for (let i = 0; i < array.length; i++) {
     if (isCollection(array[i])) {
       return true
@@ -25,7 +25,7 @@ export function containsCollections (array) {
  * @param {Function} callback     The callback method is invoked with one
  *                                parameter: the current element in the array
  */
-export function deepForEach (array, callback) {
+export function deepForEach(array, callback) {
   if (isMatrix(array)) {
     array = array.valueOf()
   }
@@ -53,8 +53,8 @@ export function deepForEach (array, callback) {
  *
  * @return {Array | Matrix} res
  */
-export function deepMap (array, callback, skipZeros) {
-  if (array && (typeof array.map === 'function')) {
+export function deepMap(array, callback, skipZeros) {
+  if (array && typeof array.map === 'function') {
     // TODO: replace array.map with a for loop to improve performance
     return array.map(function (x) {
       return deepMap(x, callback, skipZeros)
@@ -73,9 +73,9 @@ export function deepMap (array, callback, skipZeros) {
  * @param {Function} callback
  * @return {Array | Matrix} res
  */
-export function reduce (mat, dim, callback) {
+export function reduce(mat, dim, callback) {
   const size = Array.isArray(mat) ? arraySize(mat) : mat.size()
-  if (dim < 0 || (dim >= size.length)) {
+  if (dim < 0 || dim >= size.length) {
     // TODO: would be more clear when throwing a DimensionError here
     throw new IndexError(dim, size.length)
   }
@@ -95,7 +95,7 @@ export function reduce (mat, dim, callback) {
  * @returns {Array} ret
  * @private
  */
-function _reduce (mat, dim, callback) {
+function _reduce(mat, dim, callback) {
   let i, ret, val, tran
 
   if (dim <= 0) {
@@ -123,7 +123,19 @@ function _reduce (mat, dim, callback) {
 }
 
 // TODO: document function scatter
-export function scatter (a, j, w, x, u, mark, cindex, f, inverse, update, value) {
+export function scatter(
+  a,
+  j,
+  w,
+  x,
+  u,
+  mark,
+  cindex,
+  f,
+  inverse,
+  update,
+  value
+) {
   // a arrays
   const avalues = a._values
   const aindex = a._index

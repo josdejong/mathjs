@@ -1,10 +1,16 @@
-import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is.js'
+import {
+  isBigNumber,
+  isComplex,
+  isFraction,
+  isMatrix,
+  isUnit,
+} from '../../utils/is.js'
 import { isFactory, stripOptionalNotation } from '../../utils/factory.js'
 import { hasOwnProperty, lazy } from '../../utils/object.js'
 import { contains } from '../../utils/array.js'
 import { ArgumentsError } from '../../error/ArgumentsError.js'
 
-export function importFactory (typed, load, math, importedFactories) {
+export function importFactory(typed, load, math, importedFactories) {
   /**
    * Import functions from an object or a module.
    *
@@ -60,7 +66,7 @@ export function importFactory (typed, load, math, importedFactories) {
    * @param {Object | Array} functions  Object with functions to be imported.
    * @param {Object} [options]          Import options.
    */
-  function mathImport (functions, options) {
+  function mathImport(functions, options) {
     const num = arguments.length
     if (num !== 1 && num !== 2) {
       throw new ArgumentsError('import', num, 1, 2)
@@ -70,9 +76,9 @@ export function importFactory (typed, load, math, importedFactories) {
       options = {}
     }
 
-    function flattenImports (flatValues, value, name) {
+    function flattenImports(flatValues, value, name) {
       if (Array.isArray(value)) {
-        value.forEach(item => flattenImports(flatValues, item))
+        value.forEach((item) => flattenImports(flatValues, item))
       } else if (typeof value === 'object') {
         for (const name in value) {
           if (hasOwnProperty(value, name)) {
@@ -82,12 +88,16 @@ export function importFactory (typed, load, math, importedFactories) {
       } else if (isFactory(value) || name !== undefined) {
         const flatName = isFactory(value)
           ? isTransformFunctionFactory(value)
-              ? (value.fn + '.transform') // TODO: this is ugly
-              : value.fn
+            ? value.fn + '.transform' // TODO: this is ugly
+            : value.fn
           : name
 
         // we allow importing the same function twice if it points to the same implementation
-        if (hasOwnProperty(flatValues, flatName) && flatValues[flatName] !== value && !options.silent) {
+        if (
+          hasOwnProperty(flatValues, flatName) &&
+          flatValues[flatName] !== value &&
+          !options.silent
+        ) {
           throw new Error('Cannot import "' + flatName + '" twice')
         }
 
@@ -130,7 +140,7 @@ export function importFactory (typed, load, math, importedFactories) {
    * @param {Object} options  See import for a description of the options
    * @private
    */
-  function _import (name, value, options) {
+  function _import(name, value, options) {
     // TODO: refactor this function, it's to complicated and contains duplicate code
     if (options.wrap && typeof value === 'function') {
       // create a wrapper around the function
@@ -140,7 +150,7 @@ export function importFactory (typed, load, math, importedFactories) {
     // turn a plain function with a typed-function signature into a typed-function
     if (hasTypedFunctionSignature(value)) {
       value = typed(name, {
-        [value.signature]: value
+        [value.signature]: value,
       })
     }
 
@@ -157,7 +167,7 @@ export function importFactory (typed, load, math, importedFactories) {
       delete importedFactories[name]
 
       _importTransform(name, value)
-      math.emit('import', name, function resolver () {
+      math.emit('import', name, function resolver() {
         return value
       })
       return
@@ -168,7 +178,7 @@ export function importFactory (typed, load, math, importedFactories) {
       delete importedFactories[name]
 
       _importTransform(name, value)
-      math.emit('import', name, function resolver () {
+      math.emit('import', name, function resolver() {
         return value
       })
       return
@@ -179,7 +189,7 @@ export function importFactory (typed, load, math, importedFactories) {
     }
   }
 
-  function _importTransform (name, value) {
+  function _importTransform(name, value) {
     if (value && typeof value.transform === 'function') {
       math.expression.transform[name] = value.transform
       if (allowedInExpressions(name)) {
@@ -194,7 +204,7 @@ export function importFactory (typed, load, math, importedFactories) {
     }
   }
 
-  function _deleteTransform (name) {
+  function _deleteTransform(name) {
     delete math.expression.transform[name]
     if (allowedInExpressions(name)) {
       math.expression.mathWithTransform[name] = math[name]
@@ -210,8 +220,8 @@ export function importFactory (typed, load, math, importedFactories) {
    * @return {Function} Returns the wrapped function
    * @private
    */
-  function _wrap (fn) {
-    const wrapper = function wrapper () {
+  function _wrap(fn) {
+    const wrapper = function wrapper() {
       const args = []
       for (let i = 0, len = arguments.length; i < len; i++) {
         const arg = arguments[i]
@@ -234,10 +244,13 @@ export function importFactory (typed, load, math, importedFactories) {
    * @param {string} [name=factory.name] Optional custom name
    * @private
    */
-  function _importFactory (factory, options, name = factory.fn) {
+  function _importFactory(factory, options, name = factory.fn) {
     if (contains(name, '.')) {
-      throw new Error('Factory name should not contain a nested path. ' +
-        'Name: ' + JSON.stringify(name))
+      throw new Error(
+        'Factory name should not contain a nested path. ' +
+          'Name: ' +
+          JSON.stringify(name)
+      )
     }
 
     const namespace = isTransformFunctionFactory(factory)
@@ -245,35 +258,41 @@ export function importFactory (typed, load, math, importedFactories) {
       : math
 
     const existingTransform = name in math.expression.transform
-    const existing = hasOwnProperty(namespace, name) ? namespace[name] : undefined
+    const existing = hasOwnProperty(namespace, name)
+      ? namespace[name]
+      : undefined
 
     const resolver = function () {
       // collect all dependencies, handle finding both functions and classes and other special cases
       const dependencies = {}
-      factory.dependencies
-        .map(stripOptionalNotation)
-        .forEach(dependency => {
-          if (contains(dependency, '.')) {
-            throw new Error('Factory dependency should not contain a nested path. ' +
-              'Name: ' + JSON.stringify(dependency))
-          }
+      factory.dependencies.map(stripOptionalNotation).forEach((dependency) => {
+        if (contains(dependency, '.')) {
+          throw new Error(
+            'Factory dependency should not contain a nested path. ' +
+              'Name: ' +
+              JSON.stringify(dependency)
+          )
+        }
 
-          if (dependency === 'math') {
-            dependencies.math = math
-          } else if (dependency === 'mathWithTransform') {
-            dependencies.mathWithTransform = math.expression.mathWithTransform
-          } else if (dependency === 'classes') { // special case for json reviver
-            dependencies.classes = math
-          } else {
-            dependencies[dependency] = math[dependency]
-          }
-        })
+        if (dependency === 'math') {
+          dependencies.math = math
+        } else if (dependency === 'mathWithTransform') {
+          dependencies.mathWithTransform = math.expression.mathWithTransform
+        } else if (dependency === 'classes') {
+          // special case for json reviver
+          dependencies.classes = math
+        } else {
+          dependencies[dependency] = math[dependency]
+        }
+      })
 
       const instance = /* #__PURE__ */ factory(dependencies)
 
       if (instance && typeof instance.transform === 'function') {
-        throw new Error('Transforms cannot be attached to factory functions. ' +
-            'Please create a separate function for it with exports.path="expression.transform"')
+        throw new Error(
+          'Transforms cannot be attached to factory functions. ' +
+            'Please create a separate function for it with exports.path="expression.transform"'
+        )
       }
 
       if (existing === undefined || options.override) {
@@ -301,7 +320,10 @@ export function importFactory (typed, load, math, importedFactories) {
       if (existing && existingTransform) {
         _deleteTransform(name)
       } else {
-        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
+        if (
+          isTransformFunctionFactory(factory) ||
+          factoryAllowedInExpressions(factory)
+        ) {
           lazy(math.expression.mathWithTransform, name, () => namespace[name])
         }
       }
@@ -312,7 +334,10 @@ export function importFactory (typed, load, math, importedFactories) {
       if (existing && existingTransform) {
         _deleteTransform(name)
       } else {
-        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
+        if (
+          isTransformFunctionFactory(factory) ||
+          factoryAllowedInExpressions(factory)
+        ) {
           lazy(math.expression.mathWithTransform, name, () => namespace[name])
         }
       }
@@ -330,18 +355,20 @@ export function importFactory (typed, load, math, importedFactories) {
    * @return {boolean}
    * @private
    */
-  function isSupportedType (object) {
-    return typeof object === 'function' ||
-        typeof object === 'number' ||
-        typeof object === 'string' ||
-        typeof object === 'boolean' ||
-        object === null ||
-        isUnit(object) ||
-        isComplex(object) ||
-        isBigNumber(object) ||
-        isFraction(object) ||
-        isMatrix(object) ||
-        Array.isArray(object)
+  function isSupportedType(object) {
+    return (
+      typeof object === 'function' ||
+      typeof object === 'number' ||
+      typeof object === 'string' ||
+      typeof object === 'boolean' ||
+      object === null ||
+      isUnit(object) ||
+      isComplex(object) ||
+      isBigNumber(object) ||
+      isFraction(object) ||
+      isMatrix(object) ||
+      Array.isArray(object)
+    )
   }
 
   /**
@@ -349,28 +376,33 @@ export function importFactory (typed, load, math, importedFactories) {
    * @param {*} fn
    * @return {boolean} Returns true when `fn` is a typed-function
    */
-  function isTypedFunction (fn) {
+  function isTypedFunction(fn) {
     return typeof fn === 'function' && typeof fn.signatures === 'object'
   }
 
-  function hasTypedFunctionSignature (fn) {
+  function hasTypedFunctionSignature(fn) {
     return typeof fn === 'function' && typeof fn.signature === 'string'
   }
 
-  function allowedInExpressions (name) {
+  function allowedInExpressions(name) {
     return !hasOwnProperty(unsafe, name)
   }
 
-  function factoryAllowedInExpressions (factory) {
-    return factory.fn.indexOf('.') === -1 && // FIXME: make checking on path redundant, check on meta data instead
+  function factoryAllowedInExpressions(factory) {
+    return (
+      factory.fn.indexOf('.') === -1 && // FIXME: make checking on path redundant, check on meta data instead
       !hasOwnProperty(unsafe, factory.fn) &&
       (!factory.meta || !factory.meta.isClass)
+    )
   }
 
-  function isTransformFunctionFactory (factory) {
-    return (factory !== undefined &&
-      factory.meta !== undefined &&
-      factory.meta.isTransformFunction === true) || false
+  function isTransformFunctionFactory(factory) {
+    return (
+      (factory !== undefined &&
+        factory.meta !== undefined &&
+        factory.meta.isTransformFunction === true) ||
+      false
+    )
   }
 
   // namespaces and functions not available in the parser for safety reasons
@@ -380,7 +412,7 @@ export function importFactory (typed, load, math, importedFactories) {
     docs: true,
     error: true,
     json: true,
-    chain: true // chain method not supported. Note that there is a unit chain too.
+    chain: true, // chain method not supported. Note that there is a unit chain too.
   }
 
   return mathImport

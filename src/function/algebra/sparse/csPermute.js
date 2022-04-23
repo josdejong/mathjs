@@ -10,7 +10,7 @@
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csPermute (a, pinv, q, values) {
+export function csPermute(a, pinv, q, values) {
   // a arrays
   const avalues = a._values
   const aindex = a._index
@@ -31,7 +31,7 @@ export function csPermute (a, pinv, q, values) {
     // column k of C is column q[k] of A
     cptr[k] = nz
     // apply column permutation
-    const j = q ? (q[k]) : k
+    const j = q ? q[k] : k
     // loop values in column j of A
     for (let t0 = aptr[j], t1 = aptr[j + 1], t = t0; t < t1; t++) {
       // row i of A is row pinv[i] of C
@@ -39,7 +39,9 @@ export function csPermute (a, pinv, q, values) {
       // index
       cindex[nz] = r
       // check we need to populate values
-      if (cvalues) { cvalues[nz] = avalues[t] }
+      if (cvalues) {
+        cvalues[nz] = avalues[t]
+      }
       // increment number of nonzero elements
       nz++
     }
@@ -52,6 +54,6 @@ export function csPermute (a, pinv, q, values) {
     index: cindex,
     ptr: cptr,
     size: [m, n],
-    datatype: adt
+    datatype: adt,
   })
 }

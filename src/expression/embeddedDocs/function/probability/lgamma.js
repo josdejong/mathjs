@@ -9,7 +9,7 @@ export const lgammaDocs = {
     'lgamma(4)',
     'lgamma(1/2)',
     'lgamma(math.i)',
-    'lgamma(complex(1.1, 2))'
+    'lgamma(complex(1.1, 2))',
   ],
-  seealso: ['gamma']
+  seealso: ['gamma'],
 }

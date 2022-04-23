@@ -11,12 +11,17 @@ import { isBigNumber } from './is.js'
  * @param {*} x
  * @return {*} clone
  */
-export function clone (x) {
+export function clone(x) {
   const type = typeof x
 
   // immutable primitive types
-  if (type === 'number' || type === 'string' || type === 'boolean' ||
-      x === null || x === undefined) {
+  if (
+    type === 'number' ||
+    type === 'string' ||
+    type === 'boolean' ||
+    x === null ||
+    x === undefined
+  ) {
     return x
   }
 
@@ -46,7 +51,7 @@ export function clone (x) {
  * @param {function} callback
  * @return {Object} Returns a copy of the object with mapped properties
  */
-export function mapObject (object, callback) {
+export function mapObject(object, callback) {
   const clone = {}
 
   for (const key in object) {
@@ -64,7 +69,7 @@ export function mapObject (object, callback) {
  * @param {Object} b
  * @return {Object} a
  */
-export function extend (a, b) {
+export function extend(a, b) {
   for (const prop in b) {
     if (hasOwnProperty(b, prop)) {
       a[prop] = b[prop]
@@ -79,7 +84,7 @@ export function extend (a, b) {
  * @param {Object} b
  * @returns {Object}
  */
-export function deepExtend (a, b) {
+export function deepExtend(a, b) {
   // TODO: add support for Arrays to deepExtend
   if (Array.isArray(b)) {
     throw new TypeError('Arrays are not supported by deepExtend')
@@ -88,7 +93,11 @@ export function deepExtend (a, b) {
   for (const prop in b) {
     // We check against prop not being in Object.prototype or Function.prototype
     // to prevent polluting for example Object.__proto__.
-    if (hasOwnProperty(b, prop) && !(prop in Object.prototype) && !(prop in Function.prototype)) {
+    if (
+      hasOwnProperty(b, prop) &&
+      !(prop in Object.prototype) &&
+      !(prop in Function.prototype)
+    ) {
       if (b[prop] && b[prop].constructor === Object) {
         if (a[prop] === undefined) {
           a[prop] = {}
@@ -115,7 +124,7 @@ export function deepExtend (a, b) {
  * @param {Array | Object} b
  * @returns {boolean}
  */
-export function deepStrictEqual (a, b) {
+export function deepStrictEqual(a, b) {
   let prop, i, len
   if (Array.isArray(a)) {
     if (!Array.isArray(b)) {
@@ -133,7 +142,7 @@ export function deepStrictEqual (a, b) {
     }
     return true
   } else if (typeof a === 'function') {
-    return (a === b)
+    return a === b
   } else if (a instanceof Object) {
     if (Array.isArray(b) || !(b instanceof Object)) {
       return false
@@ -153,7 +162,7 @@ export function deepStrictEqual (a, b) {
     }
     return true
   } else {
-    return (a === b)
+    return a === b
   }
 }
 
@@ -162,7 +171,7 @@ export function deepStrictEqual (a, b) {
  * @param {Object} nestedObject
  * @return {Object} Returns the flattened object
  */
-export function deepFlatten (nestedObject) {
+export function deepFlatten(nestedObject) {
   const flattenedObject = {}
 
   _deepFlatten(nestedObject, flattenedObject)
@@ -171,7 +180,7 @@ export function deepFlatten (nestedObject) {
 }
 
 // helper function used by deepFlatten
-function _deepFlatten (nestedObject, flattenedObject) {
+function _deepFlatten(nestedObject, flattenedObject) {
   for (const prop in nestedObject) {
     if (hasOwnProperty(nestedObject, prop)) {
       const value = nestedObject[prop]
@@ -188,7 +197,7 @@ function _deepFlatten (nestedObject, flattenedObject) {
  * Test whether the current JavaScript engine supports Object.defineProperty
  * @returns {boolean} returns true if supported
  */
-export function canDefineProperty () {
+export function canDefineProperty() {
   // test needed for broken IE8 implementation
   try {
     if (Object.defineProperty) {
@@ -209,7 +218,7 @@ export function canDefineProperty () {
  * @param {Function} valueResolver Function returning the property value. Called
  *                                without arguments.
  */
-export function lazy (object, prop, valueResolver) {
+export function lazy(object, prop, valueResolver) {
   let _uninitialized = true
   let _value
 
@@ -228,7 +237,7 @@ export function lazy (object, prop, valueResolver) {
     },
 
     configurable: true,
-    enumerable: true
+    enumerable: true,
   })
 }
 
@@ -239,7 +248,7 @@ export function lazy (object, prop, valueResolver) {
  * @param {string | string[]} path   A dot separated string like 'name.space'
  * @return {Object} Returns the object at the end of the path
  */
-export function traverse (object, path) {
+export function traverse(object, path) {
   if (path && typeof path === 'string') {
     return traverse(object, path.split('.'))
   }
@@ -264,7 +273,7 @@ export function traverse (object, path) {
  * @param {Object} object
  * @param {string} property
  */
-export function hasOwnProperty (object, property) {
+export function hasOwnProperty(object, property) {
   return object && Object.hasOwnProperty.call(object, property)
 }
 
@@ -280,7 +289,7 @@ export function hasOwnProperty (object, property) {
  * @param {*} object
  * @returns {boolean}
  */
-export function isLegacyFactory (object) {
+export function isLegacyFactory(object) {
   return object && typeof object.factory === 'function'
 }
 
@@ -290,7 +299,7 @@ export function isLegacyFactory (object) {
  * @param {string | string[]} path
  * @returns {Object}
  */
-export function get (object, path) {
+export function get(object, path) {
   if (typeof path === 'string') {
     if (isPath(path)) {
       return get(object, path.split('.'))
@@ -318,7 +327,7 @@ export function get (object, path) {
  * @param {*} value
  * @returns {Object}
  */
-export function set (object, path, value) {
+export function set(object, path, value) {
   if (typeof path === 'string') {
     if (isPath(path)) {
       return set(object, path.split('.'), value)
@@ -352,7 +361,7 @@ export function set (object, path, value) {
  * @param {function} [transform] Optional value to transform a value when picking it
  * @return {Object}
  */
-export function pick (object, properties, transform) {
+export function pick(object, properties, transform) {
   const copy = {}
 
   for (let i = 0; i < properties.length; i++) {
@@ -373,7 +382,7 @@ export function pick (object, properties, transform) {
  * @param {string[]} properties
  * @return {Object}
  */
-export function pickShallow (object, properties) {
+export function pickShallow(object, properties) {
   const copy = {}
 
   for (let i = 0; i < properties.length; i++) {
@@ -387,11 +396,11 @@ export function pickShallow (object, properties) {
   return copy
 }
 
-export function values (object) {
-  return Object.keys(object).map(key => object[key])
+export function values(object) {
+  return Object.keys(object).map((key) => object[key])
 }
 
 // helper function to test whether a string contains a path like 'user.name'
-function isPath (str) {
+function isPath(str) {
   return str.indexOf('.') !== -1
 }

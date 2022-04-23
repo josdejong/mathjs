@@ -1,7 +1,7 @@
 import { errorTransform } from '../../transform/utils/errorTransform.js'
 import { setSafeProperty } from '../../../utils/customs.js'
 
-export function assignFactory ({ subset, matrix }) {
+export function assignFactory({ subset, matrix }) {
   /**
    * Replace part of an object:
    *
@@ -16,12 +16,13 @@ export function assignFactory ({ subset, matrix }) {
    *                                            except in case of a string
    */
   // TODO: change assign to return the value instead of the object
-  return function assign (object, index, value) {
+  return function assign(object, index, value) {
     try {
       if (Array.isArray(object)) {
         // we use matrix.subset here instead of the function subset because we must not clone the contents
         return matrix(object).subset(index, value).valueOf()
-      } else if (object && typeof object.subset === 'function') { // Matrix
+      } else if (object && typeof object.subset === 'function') {
+        // Matrix
         return object.subset(index, value)
       } else if (typeof object === 'string') {
         // TODO: move setStringSubset into a separate util file, use that

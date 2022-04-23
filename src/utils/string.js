@@ -7,10 +7,10 @@ import { format as formatBigNumber } from './bignumber/formatter.js'
  * @param {string} text
  * @param {string} search
  */
-export function endsWith (text, search) {
+export function endsWith(text, search) {
   const start = text.length - search.length
   const end = text.length
-  return (text.substring(start, end) === search)
+  return text.substring(start, end) === search
 }
 
 /**
@@ -51,16 +51,20 @@ export function endsWith (text, search) {
  *     have been more, they are deleted and replaced by an ellipsis).
  * @return {string} str
  */
-export function format (value, options) {
+export function format(value, options) {
   const result = _format(value, options)
-  if (options && typeof options === 'object' && 'truncate' in options &&
-      result.length > options.truncate) {
+  if (
+    options &&
+    typeof options === 'object' &&
+    'truncate' in options &&
+    result.length > options.truncate
+  ) {
     return result.substring(0, options.truncate - 3) + '...'
   }
   return result
 }
 
-function _format (value, options) {
+function _format(value, options) {
   if (typeof value === 'number') {
     return formatNumber(value, options)
   }
@@ -74,7 +78,7 @@ function _format (value, options) {
   if (looksLikeFraction(value)) {
     if (!options || options.fraction !== 'decimal') {
       // output as ratio, like '1/3'
-      return (value.s * value.n) + '/' + value.d
+      return value.s * value.n + '/' + value.d
     } else {
       // output as decimal, like '0.(3)'
       return value.toString()
@@ -100,7 +104,7 @@ function _format (value, options) {
       // this object has a non-native toString method, use that one
       return value.toString(options)
     } else {
-      const entries = Object.keys(value).map(key => {
+      const entries = Object.keys(value).map((key) => {
         return '"' + key + '": ' + format(value[key], options)
       })
 
@@ -117,7 +121,7 @@ function _format (value, options) {
  * @param {*} value
  * @return {string}
  */
-export function stringify (value) {
+export function stringify(value) {
   const text = String(value)
   let escaped = ''
   let i = 0
@@ -149,9 +153,10 @@ export function stringify (value) {
  * @param {*} value
  * @return {string}
  */
-export function escape (value) {
+export function escape(value) {
   let text = String(value)
-  text = text.replace(/&/g, '&amp;')
+  text = text
+    .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;')
     .replace(/</g, '&lt;')
@@ -170,7 +175,7 @@ export function escape (value) {
  *                                                options.
  * @returns {string} str
  */
-function formatArray (array, options) {
+function formatArray(array, options) {
   if (Array.isArray(array)) {
     let str = '['
     const len = array.length
@@ -192,12 +197,15 @@ function formatArray (array, options) {
  * @param {*} value
  * @return {boolean}
  */
-function looksLikeFraction (value) {
-  return (value &&
+function looksLikeFraction(value) {
+  return (
+    (value &&
       typeof value === 'object' &&
       typeof value.s === 'number' &&
       typeof value.n === 'number' &&
-      typeof value.d === 'number') || false
+      typeof value.d === 'number') ||
+    false
+  )
 }
 
 /**
@@ -206,18 +214,24 @@ function looksLikeFraction (value) {
  * @param {string} y
  * @returns {number}
  */
-export function compareText (x, y) {
+export function compareText(x, y) {
   // we don't want to convert numbers to string, only accept string input
   if (!isString(x)) {
-    throw new TypeError('Unexpected type of argument in function compareText ' +
-      '(expected: string or Array or Matrix, actual: ' + typeOf(x) + ', index: 0)')
+    throw new TypeError(
+      'Unexpected type of argument in function compareText ' +
+        '(expected: string or Array or Matrix, actual: ' +
+        typeOf(x) +
+        ', index: 0)'
+    )
   }
   if (!isString(y)) {
-    throw new TypeError('Unexpected type of argument in function compareText ' +
-      '(expected: string or Array or Matrix, actual: ' + typeOf(y) + ', index: 1)')
+    throw new TypeError(
+      'Unexpected type of argument in function compareText ' +
+        '(expected: string or Array or Matrix, actual: ' +
+        typeOf(y) +
+        ', index: 1)'
+    )
   }
 
-  return (x === y)
-    ? 0
-    : (x > y ? 1 : -1)
+  return x === y ? 0 : x > y ? 1 : -1
 }

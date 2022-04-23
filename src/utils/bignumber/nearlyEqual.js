@@ -7,7 +7,7 @@
  *                            test whether x and y are exactly equal.
  * @return {boolean} whether the two numbers are nearly equal
  */
-export function nearlyEqual (x, y, epsilon) {
+export function nearlyEqual(x, y, epsilon) {
   // if epsilon is null or undefined, test whether x and y are exactly equal
   if (epsilon === null || epsilon === undefined) {
     return x.eq(y)

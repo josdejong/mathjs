@@ -8,6 +8,6 @@ import { nearlyEqual } from './number.js'
  * @param {number} epsilon
  * @returns {boolean}
  */
-export function complexEquals (x, y, epsilon) {
+export function complexEquals(x, y, epsilon) {
   return nearlyEqual(x.re, y.re, epsilon) && nearlyEqual(x.im, y.im, epsilon)
 }

@@ -4,7 +4,7 @@
 export const warnOnce = (() => {
   const messages = {}
 
-  return function warnOnce (...args) {
+  return function warnOnce(...args) {
     const message = args.join(', ')
 
     if (!messages[message]) {

@@ -4,8 +4,11 @@ import { factory } from '../../utils/factory.js'
 const name = 'kron'
 const dependencies = ['typed', 'matrix', 'multiplyScalar']
 
-export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiplyScalar }) => {
-  /**
+export const createKron = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({ typed, matrix, multiplyScalar }) => {
+    /**
      * Calculates the kronecker product of 2 matrices or vectors.
      *
      * NOTE: If a one dimensional vector / matrix is given, it will be
@@ -32,56 +35,65 @@ export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
      * @param  {Array | Matrix} y     Second vector
      * @return {Array | Matrix}       Returns the kronecker product of `x` and `y`
      */
-  return typed(name, {
-    'Matrix, Matrix': function (x, y) {
-      return matrix(_kron(x.toArray(), y.toArray()))
-    },
+    return typed(name, {
+      'Matrix, Matrix': function (x, y) {
+        return matrix(_kron(x.toArray(), y.toArray()))
+      },
 
-    'Matrix, Array': function (x, y) {
-      return matrix(_kron(x.toArray(), y))
-    },
+      'Matrix, Array': function (x, y) {
+        return matrix(_kron(x.toArray(), y))
+      },
 
-    'Array, Matrix': function (x, y) {
-      return matrix(_kron(x, y.toArray()))
-    },
+      'Array, Matrix': function (x, y) {
+        return matrix(_kron(x, y.toArray()))
+      },
 
-    'Array, Array': _kron
-  })
+      'Array, Array': _kron,
+    })
 
-  /**
+    /**
      * Calculate the kronecker product of two matrices / vectors
      * @param {Array} a  First vector
      * @param {Array} b  Second vector
      * @returns {Array} Returns the kronecker product of x and y
      * @private
      */
-  function _kron (a, b) {
-    // Deal with the dimensions of the matricies.
-    if (size(a).length === 1) {
-      // Wrap it in a 2D Matrix
-      a = [a]
-    }
-    if (size(b).length === 1) {
-      // Wrap it in a 2D Matrix
-      b = [b]
-    }
-    if (size(a).length > 2 || size(b).length > 2) {
-      throw new RangeError('Vectors with dimensions greater then 2 are not supported expected ' +
-            '(Size x = ' + JSON.stringify(a.length) + ', y = ' + JSON.stringify(b.length) + ')')
-    }
-    const t = []
-    let r = []
+    function _kron(a, b) {
+      // Deal with the dimensions of the matricies.
+      if (size(a).length === 1) {
+        // Wrap it in a 2D Matrix
+        a = [a]
+      }
+      if (size(b).length === 1) {
+        // Wrap it in a 2D Matrix
+        b = [b]
+      }
+      if (size(a).length > 2 || size(b).length > 2) {
+        throw new RangeError(
+          'Vectors with dimensions greater then 2 are not supported expected ' +
+            '(Size x = ' +
+            JSON.stringify(a.length) +
+            ', y = ' +
+            JSON.stringify(b.length) +
+            ')'
+        )
+      }
+      const t = []
+      let r = []
 
-    return a.map(function (a) {
-      return b.map(function (b) {
-        r = []
-        t.push(r)
-        return a.map(function (y) {
-          return b.map(function (x) {
-            return r.push(multiplyScalar(y, x))
+      return (
+        a.map(function (a) {
+          return b.map(function (b) {
+            r = []
+            t.push(r)
+            return a.map(function (y) {
+              return b.map(function (x) {
+                return r.push(multiplyScalar(y, x))
+              })
+            })
           })
-        })
-      })
-    }) && t
+        }) && t
+      )
+    }
   }
-})
+)

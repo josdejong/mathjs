@@ -4,7 +4,7 @@ import { DEFAULT_CONFIG } from '../config.js'
 export const MATRIX_OPTIONS = ['Matrix', 'Array'] // valid values for option matrix
 export const NUMBER_OPTIONS = ['number', 'BigNumber', 'Fraction'] // valid values for option number
 
-export function configFactory (config, emit) {
+export function configFactory(config, emit) {
   /**
    * Set configuration options for math.js, and get current options.
    * Will emit a 'config' event, with arguments (curr, prev, changes).
@@ -47,7 +47,7 @@ export function configFactory (config, emit) {
    *                              Set to null to randomly seed.
    * @return {Object} Returns the current configuration
    */
-  function _config (options) {
+  function _config(options) {
     if (options) {
       const prev = mapObject(config, clone)
 
@@ -76,11 +76,11 @@ export function configFactory (config, emit) {
   _config.NUMBER_OPTIONS = NUMBER_OPTIONS
 
   // attach the config properties as readonly properties to the config function
-  Object.keys(DEFAULT_CONFIG).forEach(key => {
+  Object.keys(DEFAULT_CONFIG).forEach((key) => {
     Object.defineProperty(_config, key, {
       get: () => config[key],
       enumerable: true,
-      configurable: true
+      configurable: true,
     })
   })
 
@@ -93,7 +93,7 @@ export function configFactory (config, emit) {
  * @param {string} item
  * @return {boolean}
  */
-function contains (array, item) {
+function contains(array, item) {
   return array.indexOf(item) !== -1
 }
 
@@ -103,10 +103,18 @@ function contains (array, item) {
  * @param {string} name            Name of the option to validate
  * @param {Array.<string>} values  Array with valid values for this option
  */
-function validateOption (options, name, values) {
+function validateOption(options, name, values) {
   if (options[name] !== undefined && !contains(values, options[name])) {
     // unknown value
-    console.warn('Warning: Unknown value "' + options[name] + '" for configuration option "' + name + '". ' +
-      'Available options: ' + values.map(value => JSON.stringify(value)).join(', ') + '.')
+    console.warn(
+      'Warning: Unknown value "' +
+        options[name] +
+        '" for configuration option "' +
+        name +
+        '". ' +
+        'Available options: ' +
+        values.map((value) => JSON.stringify(value)).join(', ') +
+        '.'
+    )
   }
 }

@@ -7,9 +7,11 @@
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csEtree (a, ata) {
+export function csEtree(a, ata) {
   // check inputs
-  if (!a) { return null }
+  if (!a) {
+    return null
+  }
   // a arrays
   const aindex = a._index
   const aptr = a._ptr
@@ -31,7 +33,9 @@ export function csEtree (a, ata) {
   // check we are calculating A'A
   if (ata) {
     // initialize workspace
-    for (i = 0; i < m; i++) { w[prev + i] = -1 }
+    for (i = 0; i < m; i++) {
+      w[prev + i] = -1
+    }
   }
   // loop columns
   for (let k = 0; k < n; k++) {
@@ -44,7 +48,7 @@ export function csEtree (a, ata) {
       // row
       const r = aindex[p]
       // node
-      i = ata ? (w[prev + r]) : r
+      i = ata ? w[prev + r] : r
       // traverse from i to k
       for (; i !== -1 && i < k; i = inext) {
         // inext = ancestor of i
@@ -52,9 +56,13 @@ export function csEtree (a, ata) {
         // path compression
         w[ancestor + i] = k
         // check no anc., parent is k
-        if (inext === -1) { parent[i] = k }
+        if (inext === -1) {
+          parent[i] = k
+        }
       }
-      if (ata) { w[prev + r] = k }
+      if (ata) {
+        w[prev + r] = k
+      }
     }
   }
   return parent

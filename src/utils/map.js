@@ -10,24 +10,24 @@ import { isObject } from './is.js'
  * more security prone objects.
  */
 export class ObjectWrappingMap {
-  constructor (object) {
+  constructor(object) {
     this.wrappedObject = object
   }
 
-  keys () {
+  keys() {
     return Object.keys(this.wrappedObject)
   }
 
-  get (key) {
+  get(key) {
     return getSafeProperty(this.wrappedObject, key)
   }
 
-  set (key, value) {
+  set(key, value) {
     setSafeProperty(this.wrappedObject, key, value)
     return this
   }
 
-  has (key) {
+  has(key) {
     return hasSafeProperty(this.wrappedObject, key)
   }
 }
@@ -37,7 +37,7 @@ export class ObjectWrappingMap {
  *
  * @returns an empty Map or Map like object.
  */
-export function createEmptyMap () {
+export function createEmptyMap() {
   return new Map()
 }
 
@@ -47,7 +47,7 @@ export function createEmptyMap () {
  * @param { Map | { [key: string]: unknown } | undefined } mapOrObject
  * @returns
  */
-export function createMap (mapOrObject) {
+export function createMap(mapOrObject) {
   if (!mapOrObject) {
     return createEmptyMap()
   }
@@ -67,7 +67,7 @@ export function createMap (mapOrObject) {
  * @param {Map} map
  * @returns { [key: string]: unknown }
  */
-export function toObject (map) {
+export function toObject(map) {
   if (map instanceof ObjectWrappingMap) {
     return map.wrappedObject
   }
@@ -87,20 +87,20 @@ export function toObject (map) {
  * @param {Map | object} object
  * @returns
  */
-export function isMap (object) {
+export function isMap(object) {
   // We can use the fast instanceof, or a slower duck typing check.
   // The duck typing method needs to cover enough methods to not be confused with DenseMatrix.
   if (!object) {
     return false
   }
-  return object instanceof Map ||
+  return (
+    object instanceof Map ||
     object instanceof ObjectWrappingMap ||
-    (
-      typeof object.set === 'function' &&
+    (typeof object.set === 'function' &&
       typeof object.get === 'function' &&
       typeof object.keys === 'function' &&
-      typeof object.has === 'function'
-    )
+      typeof object.has === 'function')
+  )
 }
 
 /**
@@ -110,7 +110,7 @@ export function isMap (object) {
  *
  * This is the `Map` analog to `Object.assign`.
  */
-export function assign (map, ...objects) {
+export function assign(map, ...objects) {
   for (const args of objects) {
     if (!args) {
       continue

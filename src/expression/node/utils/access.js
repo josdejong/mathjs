@@ -1,7 +1,7 @@
 import { errorTransform } from '../../transform/utils/errorTransform.js'
 import { getSafeProperty } from '../../../utils/customs.js'
 
-export function accessFactory ({ subset }) {
+export function accessFactory({ subset }) {
   /**
    * Retrieve part of an object:
    *
@@ -13,11 +13,12 @@ export function accessFactory ({ subset }) {
    * @param {Index} index
    * @return {Object | Array | Matrix | string} Returns the subset
    */
-  return function access (object, index) {
+  return function access(object, index) {
     try {
       if (Array.isArray(object)) {
         return subset(object, index)
-      } else if (object && typeof object.subset === 'function') { // Matrix
+      } else if (object && typeof object.subset === 'function') {
+        // Matrix
         return object.subset(index)
       } else if (typeof object === 'string') {
         // TODO: move getStringSubset into a separate util file, use that

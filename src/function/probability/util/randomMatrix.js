@@ -4,7 +4,7 @@
  * @param {function} random
  * @returns {Array}
  */
-export function randomMatrix (size, random) {
+export function randomMatrix(size, random) {
   const data = []
   size = size.slice(0)
 

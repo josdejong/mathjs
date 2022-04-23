@@ -7,7 +7,7 @@
  *                                          and expected size: '!=', '<', etc.
  * @extends RangeError
  */
-export function DimensionError (actual, expected, relation) {
+export function DimensionError(actual, expected, relation) {
   if (!(this instanceof DimensionError)) {
     throw new SyntaxError('Constructor must be called with the new operator')
   }
@@ -16,13 +16,16 @@ export function DimensionError (actual, expected, relation) {
   this.expected = expected
   this.relation = relation
 
-  this.message = 'Dimension mismatch (' +
-      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
-      ' ' + (this.relation || '!=') + ' ' +
-      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
-      ')'
+  this.message =
+    'Dimension mismatch (' +
+    (Array.isArray(actual) ? '[' + actual.join(', ') + ']' : actual) +
+    ' ' +
+    (this.relation || '!=') +
+    ' ' +
+    (Array.isArray(expected) ? '[' + expected.join(', ') + ']' : expected) +
+    ')'
 
-  this.stack = (new Error()).stack
+  this.stack = new Error().stack
 }
 
 DimensionError.prototype = new RangeError()

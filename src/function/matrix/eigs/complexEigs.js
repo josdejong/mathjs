@@ -1,6 +1,27 @@
 import { clone } from '../../../utils/object.js'
 
-export function createComplexEigs ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolve, usolveAll, equal, complex, larger, smaller, matrixFromColumns, dot }) {
+export function createComplexEigs({
+  addScalar,
+  subtract,
+  flatten,
+  multiply,
+  multiplyScalar,
+  divideScalar,
+  sqrt,
+  abs,
+  bignumber,
+  diag,
+  inv,
+  qr,
+  usolve,
+  usolveAll,
+  equal,
+  complex,
+  larger,
+  smaller,
+  matrixFromColumns,
+  dot,
+}) {
   /**
    * @param {number[][]} arr the matrix to find eigenvalues of
    * @param {number} N size of the matrix
@@ -10,7 +31,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    *
    * @returns {{ values: number[], vectors: number[][] }}
    */
-  function complexEigs (arr, N, prec, type, findVectors) {
+  function complexEigs(arr, N, prec, type, findVectors) {
     if (findVectors === undefined) {
       findVectors = true
     }
@@ -38,7 +59,13 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     // still true that original A = R⁻¹ arr R)
 
     // find eigenvalues
-    const { values, C } = iterateUntilTriangular(arr, N, prec, type, findVectors)
+    const { values, C } = iterateUntilTriangular(
+      arr,
+      N,
+      prec,
+      type,
+      findVectors
+    )
 
     // values is the list of eigenvalues, C is the column
     // transformation matrix that transforms arr, the hessenberg
@@ -63,7 +90,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @param {'number'|'BigNumber'|'Complex'} type
    * @returns {number[][]}
    */
-  function balance (arr, N, prec, type, findVectors) {
+  function balance(arr, N, prec, type, findVectors) {
     const big = type === 'BigNumber'
     const cplx = type === 'Complex'
 
@@ -123,7 +150,10 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
           // check whether balancing is needed
           // condition = (c + rowNorm) / f < 0.95 * (colNorm + rowNorm)
-          const condition = smaller(divideScalar(addScalar(c, rowNorm), f), multiplyScalar(addScalar(colNorm, rowNorm), 0.95))
+          const condition = smaller(
+            divideScalar(addScalar(c, rowNorm), f),
+            multiplyScalar(addScalar(colNorm, rowNorm), 0.95)
+          )
 
           // apply balancing similarity transformation
           if (condition) {
@@ -162,13 +192,15 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @param {boolean} findVectors
    * @param {number[][]} R the row transformation matrix that will be modified
    */
-  function reduceToHessenberg (arr, N, prec, type, findVectors, R) {
+  function reduceToHessenberg(arr, N, prec, type, findVectors, R) {
     const big = type === 'BigNumber'
     const cplx = type === 'Complex'
 
     const zero = big ? bignumber(0) : cplx ? complex(0) : 0
 
-    if (big) { prec = bignumber(prec) }
+    if (big) {
+      prec = bignumber(prec)
+    }
 
     for (let i = 0; i < N - 2; i++) {
       // Find the largest subdiag element in the i-th col
@@ -245,13 +277,15 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @see Press, Wiliams: Numerical recipes in Fortran 77
    * @see https://en.wikipedia.org/wiki/QR_algorithm
    */
-  function iterateUntilTriangular (A, N, prec, type, findVectors) {
+  function iterateUntilTriangular(A, N, prec, type, findVectors) {
     const big = type === 'BigNumber'
     const cplx = type === 'Complex'
 
     const one = big ? bignumber(1) : cplx ? complex(1) : 1
 
-    if (big) { prec = bignumber(prec) }
+    if (big) {
+      prec = bignumber(prec)
+    }
 
     // The Francis Algorithm
     // The core idea of this algorithm is that doing successive
@@ -332,22 +366,31 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
           arr[i].pop()
         }
 
-      // The rightmost diagonal 2x2 block converged
+        // The rightmost diagonal 2x2 block converged
       } else if (n === 2 || smaller(abs(arr[n - 2][n - 3]), prec)) {
         lastConvergenceBefore = 0
         const ll = eigenvalues2x2(
-          arr[n - 2][n - 2], arr[n - 2][n - 1],
-          arr[n - 1][n - 2], arr[n - 1][n - 1]
+          arr[n - 2][n - 2],
+          arr[n - 2][n - 1],
+          arr[n - 1][n - 2],
+          arr[n - 1][n - 1]
         )
         lambdas.push(...ll)
 
         // keep track of transformations
         if (findVectors) {
-          Sdiag.unshift(jordanBase2x2(
-            arr[n - 2][n - 2], arr[n - 2][n - 1],
-            arr[n - 1][n - 2], arr[n - 1][n - 1],
-            ll[0], ll[1], prec, type
-          ))
+          Sdiag.unshift(
+            jordanBase2x2(
+              arr[n - 2][n - 2],
+              arr[n - 2][n - 1],
+              arr[n - 1][n - 2],
+              arr[n - 1][n - 1],
+              ll[0],
+              ll[1],
+              prec,
+              type
+            )
+          )
           inflateMatrix(Qpartial, N)
           Qtotal = multiply(Qtotal, Qpartial)
 
@@ -376,7 +419,10 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
     // the algorithm didn't converge
     if (lastConvergenceBefore > 100) {
-      const err = Error('The eigenvalues failed to converge. Only found these eigenvalues: ' + lambdas.join(', '))
+      const err = Error(
+        'The eigenvalues failed to converge. Only found these eigenvalues: ' +
+          lambdas.join(', ')
+      )
       err.values = lambdas
       err.vectors = []
       throw err
@@ -398,7 +444,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @param {'number'|'BigNumber'|'Complex'} type
    * @returns {number[][]} eigenvalues
    */
-  function findEigenvectors (A, N, C, R, values, prec, type) {
+  function findEigenvectors(A, N, C, R, values, prec, type) {
     const Cinv = inv(C)
     const U = multiply(Cinv, A, C)
 
@@ -458,13 +504,16 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
       // Transform back into original array coordinates
       const correction = multiply(inv(R), C)
-      solutions = solutions.map(v => multiply(correction, v))
+      solutions = solutions.map((v) => multiply(correction, v))
 
-      vectors.push(...solutions.map(v => flatten(v)))
+      vectors.push(...solutions.map((v) => flatten(v)))
     }
 
     if (failedLambdas.length !== 0) {
-      const err = new Error('Failed to find eigenvectors for the following eigenvalues: ' + failedLambdas.join(', '))
+      const err = new Error(
+        'Failed to find eigenvectors for the following eigenvalues: ' +
+          failedLambdas.join(', ')
+      )
       err.values = values
       err.vectors = vectors
       throw err
@@ -477,12 +526,15 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * Compute the eigenvalues of an 2x2 matrix
    * @return {[number,number]}
    */
-  function eigenvalues2x2 (a, b, c, d) {
+  function eigenvalues2x2(a, b, c, d) {
     // λ± = ½ trA ± ½ √( tr²A - 4 detA )
     const trA = addScalar(a, d)
     const detA = subtract(multiplyScalar(a, d), multiplyScalar(b, c))
     const x = multiplyScalar(trA, 0.5)
-    const y = multiplyScalar(sqrt(subtract(multiplyScalar(trA, trA), multiplyScalar(4, detA))), 0.5)
+    const y = multiplyScalar(
+      sqrt(subtract(multiplyScalar(trA, trA), multiplyScalar(4, detA))),
+      0.5
+    )
 
     return [addScalar(x, y), subtract(x, y)]
   }
@@ -494,7 +546,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @see https://math.berkeley.edu/~ogus/old/Math_54-05/webfoils/jordan.pdf
    * @see http://people.math.harvard.edu/~knill/teaching/math21b2004/exhibits/2dmatrices/index.html
    */
-  function jordanBase2x2 (a, b, c, d, l1, l2, prec, type) {
+  function jordanBase2x2(a, b, c, d, l1, l2, prec, type) {
     const big = type === 'BigNumber'
     const cplx = type === 'Complex'
 
@@ -504,13 +556,19 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     // matrix is already upper triangular
     // return an identity matrix
     if (smaller(abs(c), prec)) {
-      return [[one, zero], [zero, one]]
+      return [
+        [one, zero],
+        [zero, one],
+      ]
     }
 
     // matrix is diagonalizable
     // return its eigenvectors as columns
     if (larger(abs(subtract(l1, l2)), prec)) {
-      return [[subtract(l1, d), subtract(l2, d)], [c, c]]
+      return [
+        [subtract(l1, d), subtract(l2, d)],
+        [c, c],
+      ]
     }
 
     // matrix is not diagonalizable
@@ -524,9 +582,15 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     const nd = subtract(d, l1)
 
     if (smaller(abs(nb), prec)) {
-      return [[na, one], [nc, zero]]
+      return [
+        [na, one],
+        [nc, zero],
+      ]
     } else {
-      return [[nb, zero], [nd, one]]
+      return [
+        [nb, zero],
+        [nd, one],
+      ]
     }
   }
 
@@ -534,7 +598,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * Enlarge the matrix from n×n to N×N, setting the new
    * elements to 1 on diagonal and 0 elsewhere
    */
-  function inflateMatrix (arr, N) {
+  function inflateMatrix(arr, N) {
     // add columns
     for (let i = 0; i < arr.length; i++) {
       arr[i].push(...Array(N - arr[i].length).fill(0))
@@ -554,7 +618,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @param {Matrix[] | number[][][]} arr array of matrices to be placed on the diagonal
    * @param {number} N the size of the resulting matrix
    */
-  function blockDiag (arr, N) {
+  function blockDiag(arr, N) {
     const M = []
     for (let i = 0; i < N; i++) {
       M[i] = Array(N).fill(0)
@@ -584,7 +648,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @param {function(T, T): boolean} fn the equality function, first argument is an element of `arr`, the second is always `el`
    * @returns {number} the index of `el`, or -1 when it's not in `arr`
    */
-  function indexOf (arr, el, fn) {
+  function indexOf(arr, el, fn) {
     for (let i = 0; i < arr.length; i++) {
       if (fn(arr[i], el)) {
         return i
@@ -607,7 +671,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    *
    * @see Numerical Recipes for Fortran 77 – 11.7 Eigenvalues or Eigenvectors by Inverse Iteration
    */
-  function inverseIterate (A, N, orthog, prec, type) {
+  function inverseIterate(A, N, orthog, prec, type) {
     const largeNum = type === 'BigNumber' ? bignumber(1000) : 1000
 
     let b // the vector
@@ -618,8 +682,12 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
       b = randomOrthogonalVector(N, orthog, type)
       b = usolve(A, b)
 
-      if (larger(norm(b), largeNum)) { break }
-      if (++i >= 5) { return null }
+      if (larger(norm(b), largeNum)) {
+        break
+      }
+      if (++i >= 5) {
+        return null
+      }
     }
 
     // you better converge before I count to ten
@@ -627,8 +695,12 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     while (true) {
       const c = usolve(A, b)
 
-      if (smaller(norm(orthogonalComplement(b, [c])), prec)) { break }
-      if (++i >= 10) { return null }
+      if (smaller(norm(orthogonalComplement(b, [c])), prec)) {
+        break
+      }
+      if (++i >= 10) {
+        return null
+      }
 
       b = normalize(c)
     }
@@ -644,14 +716,20 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @param {'number'|'BigNumber'|'Complex'} type
    * @returns {T[]} random vector
    */
-  function randomOrthogonalVector (N, orthog, type) {
+  function randomOrthogonalVector(N, orthog, type) {
     const big = type === 'BigNumber'
     const cplx = type === 'Complex'
 
     // generate random vector with the correct type
-    let v = Array(N).fill(0).map(_ => 2 * Math.random() - 1)
-    if (big) { v = v.map(n => bignumber(n)) }
-    if (cplx) { v = v.map(n => complex(n)) }
+    let v = Array(N)
+      .fill(0)
+      .map((_) => 2 * Math.random() - 1)
+    if (big) {
+      v = v.map((n) => bignumber(n))
+    }
+    if (cplx) {
+      v = v.map((n) => complex(n))
+    }
 
     // project to orthogonal complement
     v = orthogonalComplement(v, orthog)
@@ -663,7 +741,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
   /**
    * Project vector v to the orthogonal complement of an array of vectors
    */
-  function orthogonalComplement (v, orthog) {
+  function orthogonalComplement(v, orthog) {
     for (const w of orthog) {
       // v := v − (w, v)/∥w∥² w
       v = subtract(v, multiply(divideScalar(dot(w, v), dot(w, w)), w))
@@ -677,7 +755,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * We can't use math.norm because factory can't handle circular dependency.
    * Seriously, I'm really fed up with factory.
    */
-  function norm (v) {
+  function norm(v) {
     return abs(sqrt(dot(v, v)))
   }
 
@@ -688,7 +766,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @param {'number'|'BigNumber'|'Complex'} type
    * @returns {T[]} normalized vec
    */
-  function normalize (v, type) {
+  function normalize(v, type) {
     const big = type === 'BigNumber'
     const cplx = type === 'Complex'
     const one = big ? bignumber(1) : cplx ? complex(1) : 1

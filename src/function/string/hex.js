@@ -30,7 +30,7 @@ export const createHex = factory(name, dependencies, ({ typed, format }) => {
       return format(n, { notation: 'hex' })
     },
     'number | BigNumber, number': function (n, wordSize) {
-      return format(n, { notation: 'hex', wordSize: wordSize })
-    }
+      return format(n, { notation: 'hex', wordSize })
+    },
   })
 })

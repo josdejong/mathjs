@@ -25,8 +25,8 @@ import { pickShallow } from './object.js'
  *                                to the created factory function as property `meta`.
  * @returns {function}
  */
-export function factory (name, dependencies, create, meta) {
-  function assertAndCreate (scope) {
+export function factory(name, dependencies, create, meta) {
+  function assertAndCreate(scope) {
     // we only pass the requested dependencies to the factory function
     // to prevent functions to rely on dependencies that are not explicitly
     // requested.
@@ -53,21 +53,25 @@ export function factory (name, dependencies, create, meta) {
  * @param {Array} factories
  * @returns {Array} Returns a new array with the sorted factories.
  */
-export function sortFactories (factories) {
+export function sortFactories(factories) {
   const factoriesByName = {}
 
-  factories.forEach(factory => {
+  factories.forEach((factory) => {
     factoriesByName[factory.fn] = factory
   })
 
-  function containsDependency (factory, dependency) {
+  function containsDependency(factory, dependency) {
     // TODO: detect circular references
     if (isFactory(factory)) {
       if (contains(factory.dependencies, dependency.fn || dependency.name)) {
         return true
       }
 
-      if (factory.dependencies.some(d => containsDependency(factoriesByName[d], dependency))) {
+      if (
+        factory.dependencies.some((d) =>
+          containsDependency(factoriesByName[d], dependency)
+        )
+      ) {
         return true
       }
     }
@@ -77,9 +81,12 @@ export function sortFactories (factories) {
 
   const sorted = []
 
-  function addFactory (factory) {
+  function addFactory(factory) {
     let index = 0
-    while (index < sorted.length && !containsDependency(sorted[index], factory)) {
+    while (
+      index < sorted.length &&
+      !containsDependency(sorted[index], factory)
+    ) {
       index++
     }
 
@@ -87,22 +94,17 @@ export function sortFactories (factories) {
   }
 
   // sort regular factory functions
-  factories
-    .filter(isFactory)
-    .forEach(addFactory)
+  factories.filter(isFactory).forEach(addFactory)
 
   // sort legacy factory functions AFTER the regular factory functions
-  factories
-    .filter(factory => !isFactory(factory))
-    .forEach(addFactory)
+  factories.filter((factory) => !isFactory(factory)).forEach(addFactory)
 
   return sorted
 }
 
 // TODO: comment or cleanup if unused in the end
-export function create (factories, scope = {}) {
-  sortFactories(factories)
-    .forEach(factory => factory(scope))
+export function create(factories, scope = {}) {
+  sortFactories(factories).forEach((factory) => factory(scope))
 
   return scope
 }
@@ -113,10 +115,12 @@ export function create (factories, scope = {}) {
  * @param {*} obj
  * @returns {boolean}
  */
-export function isFactory (obj) {
-  return typeof obj === 'function' &&
+export function isFactory(obj) {
+  return (
+    typeof obj === 'function' &&
     typeof obj.fn === 'string' &&
     Array.isArray(obj.dependencies)
+  )
 }
 
 /**
@@ -128,26 +132,30 @@ export function isFactory (obj) {
  * @param {string[]} dependencies
  * @param {Object} scope
  */
-export function assertDependencies (name, dependencies, scope) {
+export function assertDependencies(name, dependencies, scope) {
   const allDefined = dependencies
-    .filter(dependency => !isOptionalDependency(dependency)) // filter optionals
-    .every(dependency => scope[dependency] !== undefined)
+    .filter((dependency) => !isOptionalDependency(dependency)) // filter optionals
+    .every((dependency) => scope[dependency] !== undefined)
 
   if (!allDefined) {
-    const missingDependencies = dependencies.filter(dependency => scope[dependency] === undefined)
+    const missingDependencies = dependencies.filter(
+      (dependency) => scope[dependency] === undefined
+    )
 
     // TODO: create a custom error class for this, a MathjsError or something like that
-    throw new Error(`Cannot create function "${name}", ` +
-      `some dependencies are missing: ${missingDependencies.map(d => `"${d}"`).join(', ')}.`)
+    throw new Error(
+      `Cannot create function "${name}", ` +
+        `some dependencies are missing: ${missingDependencies
+          .map((d) => `"${d}"`)
+          .join(', ')}.`
+    )
   }
 }
 
-export function isOptionalDependency (dependency) {
+export function isOptionalDependency(dependency) {
   return dependency && dependency[0] === '?'
 }
 
-export function stripOptionalNotation (dependency) {
-  return dependency && dependency[0] === '?'
-    ? dependency.slice(1)
-    : dependency
+export function stripOptionalNotation(dependency) {
+  return dependency && dependency[0] === '?' ? dependency.slice(1) : dependency
 }

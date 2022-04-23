@@ -10,11 +10,14 @@ import * as allIsFunctions from './is.js'
 import { create } from '../core/create.js'
 import { endsWith } from './string.js'
 
-export function validateBundle (expectedBundleStructure, bundle) {
+export function validateBundle(expectedBundleStructure, bundle) {
   const originalWarn = console.warn
 
   console.warn = function (...args) {
-    if (args.join(' ').indexOf('is moved to') !== -1 && args.join(' ').indexOf('Please use the new location instead') !== -1) {
+    if (
+      args.join(' ').indexOf('is moved to') !== -1 &&
+      args.join(' ').indexOf('Please use the new location instead') !== -1
+    ) {
       // Ignore warnings like:
       // Warning: math.type.isNumber is moved to math.isNumber in v6.0.0. Please use the new location instead.
       return
@@ -31,11 +34,16 @@ export function validateBundle (expectedBundleStructure, bundle) {
       const actualValue = get(bundle, path)
       const actualType = validateTypeOf(actualValue)
 
-      const message = (actualType === 'undefined')
-        ? 'Missing entry in bundle. ' +
-        `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
-        : 'Unexpected entry type in bundle. ' +
-        `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
+      const message =
+        actualType === 'undefined'
+          ? 'Missing entry in bundle. ' +
+            `Path: ${JSON.stringify(
+              path
+            )}, expected type: ${expectedType}, actual type: ${actualType}`
+          : 'Unexpected entry type in bundle. ' +
+            `Path: ${JSON.stringify(
+              path
+            )}, expected type: ${expectedType}, actual type: ${actualType}`
 
       if (actualType !== expectedType) {
         issues.push({ actualType, expectedType, message })
@@ -59,12 +67,17 @@ export function validateBundle (expectedBundleStructure, bundle) {
         return
       }
 
-      const message = (expectedType === 'undefined')
-        ? 'Unknown entry in bundle. ' +
-        'Is there a new function added which is missing in this snapshot test? ' +
-        `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
-        : 'Unexpected entry type in bundle. ' +
-        `Path: ${JSON.stringify(path)}, expected type: ${expectedType}, actual type: ${actualType}`
+      const message =
+        expectedType === 'undefined'
+          ? 'Unknown entry in bundle. ' +
+            'Is there a new function added which is missing in this snapshot test? ' +
+            `Path: ${JSON.stringify(
+              path
+            )}, expected type: ${expectedType}, actual type: ${actualType}`
+          : 'Unexpected entry type in bundle. ' +
+            `Path: ${JSON.stringify(
+              path
+            )}, expected type: ${expectedType}, actual type: ${actualType}`
 
       if (actualType !== expectedType) {
         issues.push({ actualType, expectedType, message })
@@ -92,7 +105,7 @@ export function validateBundle (expectedBundleStructure, bundle) {
  * @param {Object} factories
  * @return {{expectedInstanceStructure: Object, expectedES6Structure: Object}}
  */
-export function createSnapshotFromFactories (factories) {
+export function createSnapshotFromFactories(factories) {
   const math = create(factories)
 
   const allFactoryFunctions = {}
@@ -103,14 +116,14 @@ export function createSnapshotFromFactories (factories) {
   const allClasses = {}
   const allNodeClasses = {}
 
-  Object.keys(factories).forEach(factoryName => {
+  Object.keys(factories).forEach((factoryName) => {
     const factory = factories[factoryName]
     const name = factory.fn
     const isTransformFunction = factory.meta && factory.meta.isTransformFunction
-    const isClass = !isLowerCase(name[0]) && (validateTypeOf(math[name]) === 'Function')
-    const dependenciesName = factory.fn +
-      (isTransformFunction ? 'Transform' : '') +
-      'Dependencies'
+    const isClass =
+      !isLowerCase(name[0]) && validateTypeOf(math[name]) === 'Function'
+    const dependenciesName =
+      factory.fn + (isTransformFunction ? 'Transform' : '') + 'Dependencies'
 
     allFactoryFunctions[factoryName] = 'Function'
     allFunctionsConstantsClasses[name] = validateTypeOf(math[name])
@@ -132,11 +145,12 @@ export function createSnapshotFromFactories (factories) {
   })
 
   let embeddedDocs = {}
-  Object.keys(factories).forEach(factoryName => {
+  Object.keys(factories).forEach((factoryName) => {
     const factory = factories[factoryName]
     const name = factory.fn
 
-    if (isLowerCase(factory.fn[0])) { // ignore class names starting with upper case
+    if (isLowerCase(factory.fn[0])) {
+      // ignore class names starting with upper case
       embeddedDocs[name] = 'Object'
     }
   })
@@ -152,11 +166,11 @@ export function createSnapshotFromFactories (factories) {
     'parser',
     'chain',
     'reviver',
-    'replacer'
+    'replacer',
   ])
 
   const allTypeChecks = {}
-  Object.keys(allIsFunctions).forEach(name => {
+  Object.keys(allIsFunctions).forEach((name) => {
     if (name.indexOf('is') === 0) {
       allTypeChecks[name] = 'Function'
     }
@@ -165,7 +179,7 @@ export function createSnapshotFromFactories (factories) {
   const allErrorClasses = {
     ArgumentsError: 'Function',
     DimensionError: 'Function',
-    IndexError: 'Function'
+    IndexError: 'Function',
   }
 
   const expectedInstanceStructure = {
@@ -185,17 +199,15 @@ export function createSnapshotFromFactories (factories) {
 
     expression: {
       transform: {
-        ...allTransformFunctions
+        ...allTransformFunctions,
       },
       mathWithTransform: {
         // note that we don't have classes here,
         // only functions and constants are allowed in the editor
-        ...exclude(allFunctionsConstants, [
-          'chain'
-        ]),
-        config: 'Function'
-      }
-    }
+        ...exclude(allFunctionsConstants, ['chain']),
+        config: 'Function',
+      },
+    },
   }
 
   const expectedES6Structure = {
@@ -207,7 +219,7 @@ export function createSnapshotFromFactories (factories) {
       'NaN',
       'null',
       'PI',
-      'true'
+      'true',
     ]),
     create: 'Function',
     config: 'Function',
@@ -223,16 +235,16 @@ export function createSnapshotFromFactories (factories) {
     ...allDependencyCollections,
     ...allFactoryFunctions,
 
-    docs: embeddedDocs
+    docs: embeddedDocs,
   }
 
   return {
     expectedInstanceStructure,
-    expectedES6Structure
+    expectedES6Structure,
   }
 }
 
-export function validateTypeOf (x) {
+export function validateTypeOf(x) {
   if (x && x.type === 'Unit') {
     return 'Unit'
   }
@@ -260,7 +272,7 @@ export function validateTypeOf (x) {
   return typeof x
 }
 
-function traverse (obj, callback = (value, path) => {}, path = []) {
+function traverse(obj, callback = (value, path) => {}, path = []) {
   // FIXME: ugly to have these special cases
   if (path.length > 0 && path[0].indexOf('Dependencies') !== -1) {
     // special case for objects holding a collection of dependencies
@@ -268,7 +280,7 @@ function traverse (obj, callback = (value, path) => {}, path = []) {
   } else if (validateTypeOf(obj) === 'Array') {
     obj.map((item, index) => traverse(item, callback, path.concat(index)))
   } else if (validateTypeOf(obj) === 'Object') {
-    Object.keys(obj).forEach(key => {
+    Object.keys(obj).forEach((key) => {
       // FIXME: ugly to have these special cases
       // ignore special case of deprecated docs
       if (key === 'docs' && path.join('.') === 'expression') {
@@ -282,7 +294,7 @@ function traverse (obj, callback = (value, path) => {}, path = []) {
   }
 }
 
-function get (object, path) {
+function get(object, path) {
   let child = object
 
   for (let i = 0; i < path.length; i++) {
@@ -300,16 +312,16 @@ function get (object, path) {
  * @param {string[]} excludedProperties
  * @return {Object}
  */
-function exclude (object, excludedProperties) {
+function exclude(object, excludedProperties) {
   const strippedObject = Object.assign({}, object)
 
-  excludedProperties.forEach(excludedProperty => {
+  excludedProperties.forEach((excludedProperty) => {
     delete strippedObject[excludedProperty]
   })
 
   return strippedObject
 }
 
-function isLowerCase (text) {
+function isLowerCase(text) {
   return typeof text === 'string' && text.toLowerCase() === text
 }

@@ -9,131 +9,129 @@ import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
 import { modNumber } from '../../plain/number/index.js'
 
 const name = 'mod'
-const dependencies = [
-  'typed',
-  'matrix',
-  'equalScalar',
-  'DenseMatrix'
-]
+const dependencies = ['typed', 'matrix', 'equalScalar', 'DenseMatrix']
 
-export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
-  const algorithm02 = createAlgorithm02({ typed, equalScalar })
-  const algorithm03 = createAlgorithm03({ typed })
-  const algorithm05 = createAlgorithm05({ typed, equalScalar })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+export const createMod = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({ typed, matrix, equalScalar, DenseMatrix }) => {
+    const algorithm02 = createAlgorithm02({ typed, equalScalar })
+    const algorithm03 = createAlgorithm03({ typed })
+    const algorithm05 = createAlgorithm05({ typed, equalScalar })
+    const algorithm11 = createAlgorithm11({ typed, equalScalar })
+    const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
+    const algorithm13 = createAlgorithm13({ typed })
+    const algorithm14 = createAlgorithm14({ typed })
 
-  /**
-   * Calculates the modulus, the remainder of an integer division.
-   *
-   * For matrices, the function is evaluated element wise.
-   *
-   * The modulus is defined as:
-   *
-   *     x - y * floor(x / y)
-   *
-   * See https://en.wikipedia.org/wiki/Modulo_operation.
-   *
-   * Syntax:
-   *
-   *    math.mod(x, y)
-   *
-   * Examples:
-   *
-   *    math.mod(8, 3)                // returns 2
-   *    math.mod(11, 2)               // returns 1
-   *
-   *    function isOdd(x) {
-   *      return math.mod(x, 2) != 0
-   *    }
-   *
-   *    isOdd(2)                      // returns false
-   *    isOdd(3)                      // returns true
-   *
-   * See also:
-   *
-   *    divide
-   *
-   * @param  {number | BigNumber | Fraction | Array | Matrix} x Dividend
-   * @param  {number | BigNumber | Fraction | Array | Matrix} y Divisor
-   * @return {number | BigNumber | Fraction | Array | Matrix} Returns the remainder of `x` divided by `y`.
-   */
-  return typed(name, {
+    /**
+     * Calculates the modulus, the remainder of an integer division.
+     *
+     * For matrices, the function is evaluated element wise.
+     *
+     * The modulus is defined as:
+     *
+     *     x - y * floor(x / y)
+     *
+     * See https://en.wikipedia.org/wiki/Modulo_operation.
+     *
+     * Syntax:
+     *
+     *    math.mod(x, y)
+     *
+     * Examples:
+     *
+     *    math.mod(8, 3)                // returns 2
+     *    math.mod(11, 2)               // returns 1
+     *
+     *    function isOdd(x) {
+     *      return math.mod(x, 2) != 0
+     *    }
+     *
+     *    isOdd(2)                      // returns false
+     *    isOdd(3)                      // returns true
+     *
+     * See also:
+     *
+     *    divide
+     *
+     * @param  {number | BigNumber | Fraction | Array | Matrix} x Dividend
+     * @param  {number | BigNumber | Fraction | Array | Matrix} y Divisor
+     * @return {number | BigNumber | Fraction | Array | Matrix} Returns the remainder of `x` divided by `y`.
+     */
+    return typed(name, {
+      'number, number': modNumber,
 
-    'number, number': modNumber,
+      'BigNumber, BigNumber': function (x, y) {
+        if (y.isNeg()) {
+          throw new Error('Cannot calculate mod for a negative divisor')
+        }
+        return y.isZero() ? x : x.mod(y)
+      },
 
-    'BigNumber, BigNumber': function (x, y) {
-      if (y.isNeg()) {
-        throw new Error('Cannot calculate mod for a negative divisor')
-      }
-      return y.isZero() ? x : x.mod(y)
-    },
+      'Fraction, Fraction': function (x, y) {
+        if (y.compare(0) < 0) {
+          throw new Error('Cannot calculate mod for a negative divisor')
+        }
+        // Workaround suggested in Fraction.js library to calculate correct modulo for negative dividend
+        return x.compare(0) >= 0 ? x.mod(y) : x.mod(y).add(y).mod(y)
+      },
 
-    'Fraction, Fraction': function (x, y) {
-      if (y.compare(0) < 0) {
-        throw new Error('Cannot calculate mod for a negative divisor')
-      }
-      // Workaround suggested in Fraction.js library to calculate correct modulo for negative dividend
-      return x.compare(0) >= 0 ? x.mod(y) : x.mod(y).add(y).mod(y)
-    },
+      'SparseMatrix, SparseMatrix': function (x, y) {
+        return algorithm05(x, y, this, false)
+      },
 
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm05(x, y, this, false)
-    },
+      'SparseMatrix, DenseMatrix': function (x, y) {
+        return algorithm02(y, x, this, true)
+      },
 
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, this, true)
-    },
+      'DenseMatrix, SparseMatrix': function (x, y) {
+        return algorithm03(x, y, this, false)
+      },
 
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, this, false)
-    },
+      'DenseMatrix, DenseMatrix': function (x, y) {
+        return algorithm13(x, y, this)
+      },
 
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
-    },
+      'Array, Array': function (x, y) {
+        // use matrix implementation
+        return this(matrix(x), matrix(y)).valueOf()
+      },
 
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
+      'Array, Matrix': function (x, y) {
+        // use matrix implementation
+        return this(matrix(x), y)
+      },
 
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
+      'Matrix, Array': function (x, y) {
+        // use matrix implementation
+        return this(x, matrix(y))
+      },
 
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
+      'SparseMatrix, any': function (x, y) {
+        return algorithm11(x, y, this, false)
+      },
 
-    'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, this, false)
-    },
+      'DenseMatrix, any': function (x, y) {
+        return algorithm14(x, y, this, false)
+      },
 
-    'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, this, false)
-    },
+      'any, SparseMatrix': function (x, y) {
+        return algorithm12(y, x, this, true)
+      },
 
-    'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, this, true)
-    },
+      'any, DenseMatrix': function (x, y) {
+        return algorithm14(y, x, this, true)
+      },
 
-    'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
-    },
+      'Array, any': function (x, y) {
+        // use matrix implementation
+        return algorithm14(matrix(x), y, this, false).valueOf()
+      },
 
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
-    }
-  })
-})
+      'any, Array': function (x, y) {
+        // use matrix implementation
+        return algorithm14(matrix(y), x, this, true).valueOf()
+      },
+    })
+  }
+)

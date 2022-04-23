@@ -6,25 +6,30 @@ import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 const name = 'min'
 const dependencies = ['typed', 'config', 'numeric', 'smaller']
 
-export const createMinTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, smaller }) => {
-  const min = createMin({ typed, config, numeric, smaller })
+export const createMinTransform = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({ typed, config, numeric, smaller }) => {
+    const min = createMin({ typed, config, numeric, smaller })
 
-  /**
-   * Attach a transform function to math.min
-   * Adds a property transform containing the transform function.
-   *
-   * This transform changed the last `dim` parameter of function min
-   * from one-based to zero based
-   */
-  return typed('min', {
-    '...any': function (args) {
-      args = lastDimToZeroBase(args)
+    /**
+     * Attach a transform function to math.min
+     * Adds a property transform containing the transform function.
+     *
+     * This transform changed the last `dim` parameter of function min
+     * from one-based to zero based
+     */
+    return typed('min', {
+      '...any': function (args) {
+        args = lastDimToZeroBase(args)
 
-      try {
-        return min.apply(null, args)
-      } catch (err) {
-        throw errorTransform(err)
-      }
-    }
-  })
-}, { isTransformFunction: true })
+        try {
+          return min.apply(null, args)
+        } catch (err) {
+          throw errorTransform(err)
+        }
+      },
+    })
+  },
+  { isTransformFunction: true }
+)

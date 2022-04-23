@@ -14,7 +14,7 @@ import { csMarked } from './csMarked.js'
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csEreach (a, k, parent, w) {
+export function csEreach(a, k, parent, w) {
   // a arrays
   const aindex = a._index
   const aptr = a._ptr
@@ -32,7 +32,9 @@ export function csEreach (a, k, parent, w) {
     // A(i,k) is nonzero
     let i = aindex[p]
     // only use upper triangular part of A
-    if (i > k) { continue }
+    if (i > k) {
+      continue
+    }
     // traverse up etree
     for (len = 0; !csMarked(w, i); i = parent[i]) {
       // L(k,i) is nonzero, last n entries in w

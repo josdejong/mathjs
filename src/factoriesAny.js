@@ -272,7 +272,7 @@ export {
   createSQRT2,
   createTau,
   createTrue,
-  createVersion
+  createVersion,
 } from './constants.js'
 export {
   createAtomicMass,
@@ -324,7 +324,7 @@ export {
   createThomsonCrossSection,
   createVacuumImpedance,
   createWeakMixingAngle,
-  createWienDisplacement
+  createWienDisplacement,
 } from './type/unit/physicalConstants.js'
 export { createApplyTransform } from './expression/transform/apply.transform.js'
 export { createColumnTransform } from './expression/transform/column.transform.js'

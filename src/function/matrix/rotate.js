@@ -2,17 +2,13 @@ import { factory } from '../../utils/factory.js'
 import { arraySize } from '../../utils/array.js'
 
 const name = 'rotate'
-const dependencies = [
-  'typed',
-  'multiply',
-  'rotationMatrix'
-]
+const dependencies = ['typed', 'multiply', 'rotationMatrix']
 
-export const createRotate = /* #__PURE__ */ factory(name, dependencies, (
-  {
-    typed, multiply, rotationMatrix
-  }) => {
-  /**
+export const createRotate = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({ typed, multiply, rotationMatrix }) => {
+    /**
      * Rotate a vector of size 1x2 counter-clockwise by a given angle
      * Rotate a vector of size 1x3 counter-clockwise by a given angle around the given axis
      *
@@ -40,40 +36,49 @@ export const createRotate = /* #__PURE__ */ factory(name, dependencies, (
      * @param {Array | Matrix} [v]                           Rotation axis
      * @return {Array | Matrix}                              Multiplication of the rotation matrix and w
      */
-  return typed(name, {
-    'Array , number | BigNumber | Complex | Unit': function (w, theta) {
-      _validateSize(w, 2)
-      const matrixRes = multiply(rotationMatrix(theta), w)
-      return matrixRes.toArray()
-    },
+    return typed(name, {
+      'Array , number | BigNumber | Complex | Unit': function (w, theta) {
+        _validateSize(w, 2)
+        const matrixRes = multiply(rotationMatrix(theta), w)
+        return matrixRes.toArray()
+      },
 
-    'Matrix , number | BigNumber | Complex | Unit': function (w, theta) {
-      _validateSize(w, 2)
-      return multiply(rotationMatrix(theta), w)
-    },
+      'Matrix , number | BigNumber | Complex | Unit': function (w, theta) {
+        _validateSize(w, 2)
+        return multiply(rotationMatrix(theta), w)
+      },
 
-    'Array, number | BigNumber | Complex | Unit, Array | Matrix': function (w, theta, v) {
-      _validateSize(w, 3)
-      const matrixRes = multiply(rotationMatrix(theta, v), w)
-      return matrixRes
-    },
+      'Array, number | BigNumber | Complex | Unit, Array | Matrix': function (
+        w,
+        theta,
+        v
+      ) {
+        _validateSize(w, 3)
+        const matrixRes = multiply(rotationMatrix(theta, v), w)
+        return matrixRes
+      },
 
-    'Matrix, number | BigNumber | Complex | Unit, Array | Matrix': function (w, theta, v) {
-      _validateSize(w, 3)
-      return multiply(rotationMatrix(theta, v), w)
-    }
-  })
+      'Matrix, number | BigNumber | Complex | Unit, Array | Matrix': function (
+        w,
+        theta,
+        v
+      ) {
+        _validateSize(w, 3)
+        return multiply(rotationMatrix(theta, v), w)
+      },
+    })
 
-  function _validateSize (v, expectedSize) {
-    const actualSize = Array.isArray(v) ? arraySize(v) : v.size()
-    if (actualSize.length > 2) {
-      throw new RangeError(`Vector must be of dimensions 1x${expectedSize}`)
-    }
-    if (actualSize.length === 2 && actualSize[1] !== 1) {
-      throw new RangeError(`Vector must be of dimensions 1x${expectedSize}`)
-    }
-    if (actualSize[0] !== expectedSize) {
-      throw new RangeError(`Vector must be of dimensions 1x${expectedSize}`)
+    function _validateSize(v, expectedSize) {
+      const actualSize = Array.isArray(v) ? arraySize(v) : v.size()
+      if (actualSize.length > 2) {
+        throw new RangeError(`Vector must be of dimensions 1x${expectedSize}`)
+      }
+      if (actualSize.length === 2 && actualSize[1] !== 1) {
+        throw new RangeError(`Vector must be of dimensions 1x${expectedSize}`)
+      }
+      if (actualSize[0] !== expectedSize) {
+        throw new RangeError(`Vector must be of dimensions 1x${expectedSize}`)
+      }
     }
   }
-})
+)

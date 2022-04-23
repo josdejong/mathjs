@@ -18,7 +18,7 @@ import { csDfs } from './csDfs.js'
  *
  * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
-export function csReach (g, b, k, xi, pinv) {
+export function csReach(g, b, k, xi, pinv) {
   // g arrays
   const gptr = g._ptr
   const gsize = g._size

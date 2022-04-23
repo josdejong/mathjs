@@ -1,4 +1,3 @@
-
 // util functions
 export {
   isAccessorNode,
@@ -38,5 +37,5 @@ export {
   isResultSet,
   isSparseMatrix,
   isSymbolNode,
-  isUnit
+  isUnit,
 } from '../utils/is.js'

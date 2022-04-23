@@ -1,12 +1,8 @@
 export const falseDocs = {
   name: 'false',
   category: 'Constants',
-  syntax: [
-    'false'
-  ],
+  syntax: ['false'],
   description: 'Boolean value false',
-  examples: [
-    'false'
-  ],
-  seealso: ['true']
+  examples: ['false'],
+  seealso: ['true'],
 }

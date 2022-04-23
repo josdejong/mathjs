@@ -1,22 +1,9 @@
 export const sqrtDocs = {
   name: 'sqrt',
   category: 'Arithmetic',
-  syntax: [
-    'sqrt(x)'
-  ],
+  syntax: ['sqrt(x)'],
   description:
-      'Compute the square root value. If x = y * y, then y is the square root of x.',
-  examples: [
-    'sqrt(25)',
-    '5 * 5',
-    'sqrt(-1)'
-  ],
-  seealso: [
-    'square',
-    'sqrtm',
-    'multiply',
-    'nthRoot',
-    'nthRoots',
-    'pow'
-  ]
+    'Compute the square root value. If x = y * y, then y is the square root of x.',
+  examples: ['sqrt(25)', '5 * 5', 'sqrt(-1)'],
+  seealso: ['square', 'sqrtm', 'multiply', 'nthRoot', 'nthRoots', 'pow'],
 }

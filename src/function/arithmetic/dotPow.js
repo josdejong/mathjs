@@ -7,104 +7,101 @@ import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
 
 const name = 'dotPow'
-const dependencies = [
-  'typed',
-  'equalScalar',
-  'matrix',
-  'pow',
-  'DenseMatrix'
-]
+const dependencies = ['typed', 'equalScalar', 'matrix', 'pow', 'DenseMatrix']
 
-export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix }) => {
-  const algorithm03 = createAlgorithm03({ typed })
-  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+export const createDotPow = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({ typed, equalScalar, matrix, pow, DenseMatrix }) => {
+    const algorithm03 = createAlgorithm03({ typed })
+    const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
+    const algorithm11 = createAlgorithm11({ typed, equalScalar })
+    const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
+    const algorithm13 = createAlgorithm13({ typed })
+    const algorithm14 = createAlgorithm14({ typed })
 
-  /**
-   * Calculates the power of x to y element wise.
-   *
-   * Syntax:
-   *
-   *    math.dotPow(x, y)
-   *
-   * Examples:
-   *
-   *    math.dotPow(2, 3)            // returns number 8
-   *
-   *    const a = [[1, 2], [4, 3]]
-   *    math.dotPow(a, 2)            // returns Array [[1, 4], [16, 9]]
-   *    math.pow(a, 2)               // returns Array [[9, 8], [16, 17]]
-   *
-   * See also:
-   *
-   *    pow, sqrt, multiply
-   *
-   * @param  {number | BigNumber | Complex | Unit | Array | Matrix} x  The base
-   * @param  {number | BigNumber | Complex | Unit | Array | Matrix} y  The exponent
-   * @return {number | BigNumber | Complex | Unit | Array | Matrix}                     The value of `x` to the power `y`
-   */
-  return typed(name, {
+    /**
+     * Calculates the power of x to y element wise.
+     *
+     * Syntax:
+     *
+     *    math.dotPow(x, y)
+     *
+     * Examples:
+     *
+     *    math.dotPow(2, 3)            // returns number 8
+     *
+     *    const a = [[1, 2], [4, 3]]
+     *    math.dotPow(a, 2)            // returns Array [[1, 4], [16, 9]]
+     *    math.pow(a, 2)               // returns Array [[9, 8], [16, 17]]
+     *
+     * See also:
+     *
+     *    pow, sqrt, multiply
+     *
+     * @param  {number | BigNumber | Complex | Unit | Array | Matrix} x  The base
+     * @param  {number | BigNumber | Complex | Unit | Array | Matrix} y  The exponent
+     * @return {number | BigNumber | Complex | Unit | Array | Matrix}                     The value of `x` to the power `y`
+     */
+    return typed(name, {
+      'any, any': pow,
 
-    'any, any': pow,
+      'SparseMatrix, SparseMatrix': function (x, y) {
+        return algorithm07(x, y, pow, false)
+      },
 
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm07(x, y, pow, false)
-    },
+      'SparseMatrix, DenseMatrix': function (x, y) {
+        return algorithm03(y, x, pow, true)
+      },
 
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm03(y, x, pow, true)
-    },
+      'DenseMatrix, SparseMatrix': function (x, y) {
+        return algorithm03(x, y, pow, false)
+      },
 
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, pow, false)
-    },
+      'DenseMatrix, DenseMatrix': function (x, y) {
+        return algorithm13(x, y, pow)
+      },
 
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, pow)
-    },
+      'Array, Array': function (x, y) {
+        // use matrix implementation
+        return this(matrix(x), matrix(y)).valueOf()
+      },
 
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
+      'Array, Matrix': function (x, y) {
+        // use matrix implementation
+        return this(matrix(x), y)
+      },
 
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
+      'Matrix, Array': function (x, y) {
+        // use matrix implementation
+        return this(x, matrix(y))
+      },
 
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
+      'SparseMatrix, any': function (x, y) {
+        return algorithm11(x, y, this, false)
+      },
 
-    'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, this, false)
-    },
+      'DenseMatrix, any': function (x, y) {
+        return algorithm14(x, y, this, false)
+      },
 
-    'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, this, false)
-    },
+      'any, SparseMatrix': function (x, y) {
+        return algorithm12(y, x, this, true)
+      },
 
-    'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, this, true)
-    },
+      'any, DenseMatrix': function (x, y) {
+        return algorithm14(y, x, this, true)
+      },
 
-    'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
-    },
+      'Array, any': function (x, y) {
+        // use matrix implementation
+        return algorithm14(matrix(x), y, this, false).valueOf()
+      },
 
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
-    }
-  })
-})
+      'any, Array': function (x, y) {
+        // use matrix implementation
+        return algorithm14(matrix(y), x, this, true).valueOf()
+      },
+    })
+  }
+)

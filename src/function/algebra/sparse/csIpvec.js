@@ -6,7 +6,7 @@
  *
  * @return {Array}            The output vector x = P'b
  */
-export function csIpvec (p, b) {
+export function csIpvec(p, b) {
   // vars
   let k
   const n = b.length

@@ -8,104 +8,102 @@ import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01.js'
 import { bitOrNumber } from '../../plain/number/index.js'
 
 const name = 'bitOr'
-const dependencies = [
-  'typed',
-  'matrix',
-  'equalScalar',
-  'DenseMatrix'
-]
+const dependencies = ['typed', 'matrix', 'equalScalar', 'DenseMatrix']
 
-export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
-  const algorithm01 = createAlgorithm01({ typed })
-  const algorithm04 = createAlgorithm04({ typed, equalScalar })
-  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+export const createBitOr = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({ typed, matrix, equalScalar, DenseMatrix }) => {
+    const algorithm01 = createAlgorithm01({ typed })
+    const algorithm04 = createAlgorithm04({ typed, equalScalar })
+    const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
+    const algorithm13 = createAlgorithm13({ typed })
+    const algorithm14 = createAlgorithm14({ typed })
 
-  /**
-   * Bitwise OR two values, `x | y`.
-   * For matrices, the function is evaluated element wise.
-   * For units, the function is evaluated on the lowest print base.
-   *
-   * Syntax:
-   *
-   *    math.bitOr(x, y)
-   *
-   * Examples:
-   *
-   *    math.bitOr(1, 2)               // returns number 3
-   *
-   *    math.bitOr([1, 2, 3], 4)       // returns Array [5, 6, 7]
-   *
-   * See also:
-   *
-   *    bitAnd, bitNot, bitXor, leftShift, rightArithShift, rightLogShift
-   *
-   * @param  {number | BigNumber | Array | Matrix} x First value to or
-   * @param  {number | BigNumber | Array | Matrix} y Second value to or
-   * @return {number | BigNumber | Array | Matrix} OR of `x` and `y`
-   */
-  return typed(name, {
+    /**
+     * Bitwise OR two values, `x | y`.
+     * For matrices, the function is evaluated element wise.
+     * For units, the function is evaluated on the lowest print base.
+     *
+     * Syntax:
+     *
+     *    math.bitOr(x, y)
+     *
+     * Examples:
+     *
+     *    math.bitOr(1, 2)               // returns number 3
+     *
+     *    math.bitOr([1, 2, 3], 4)       // returns Array [5, 6, 7]
+     *
+     * See also:
+     *
+     *    bitAnd, bitNot, bitXor, leftShift, rightArithShift, rightLogShift
+     *
+     * @param  {number | BigNumber | Array | Matrix} x First value to or
+     * @param  {number | BigNumber | Array | Matrix} y Second value to or
+     * @return {number | BigNumber | Array | Matrix} OR of `x` and `y`
+     */
+    return typed(name, {
+      'number, number': bitOrNumber,
 
-    'number, number': bitOrNumber,
+      'BigNumber, BigNumber': bitOrBigNumber,
 
-    'BigNumber, BigNumber': bitOrBigNumber,
+      'SparseMatrix, SparseMatrix': function (x, y) {
+        return algorithm04(x, y, this)
+      },
 
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm04(x, y, this)
-    },
+      'SparseMatrix, DenseMatrix': function (x, y) {
+        return algorithm01(y, x, this, true)
+      },
 
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm01(y, x, this, true)
-    },
+      'DenseMatrix, SparseMatrix': function (x, y) {
+        return algorithm01(x, y, this, false)
+      },
 
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm01(x, y, this, false)
-    },
+      'DenseMatrix, DenseMatrix': function (x, y) {
+        return algorithm13(x, y, this)
+      },
 
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
-    },
+      'Array, Array': function (x, y) {
+        // use matrix implementation
+        return this(matrix(x), matrix(y)).valueOf()
+      },
 
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
+      'Array, Matrix': function (x, y) {
+        // use matrix implementation
+        return this(matrix(x), y)
+      },
 
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
+      'Matrix, Array': function (x, y) {
+        // use matrix implementation
+        return this(x, matrix(y))
+      },
 
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
+      'SparseMatrix, any': function (x, y) {
+        return algorithm10(x, y, this, false)
+      },
 
-    'SparseMatrix, any': function (x, y) {
-      return algorithm10(x, y, this, false)
-    },
+      'DenseMatrix, any': function (x, y) {
+        return algorithm14(x, y, this, false)
+      },
 
-    'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, this, false)
-    },
+      'any, SparseMatrix': function (x, y) {
+        return algorithm10(y, x, this, true)
+      },
 
-    'any, SparseMatrix': function (x, y) {
-      return algorithm10(y, x, this, true)
-    },
+      'any, DenseMatrix': function (x, y) {
+        return algorithm14(y, x, this, true)
+      },
 
-    'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
-    },
+      'Array, any': function (x, y) {
+        // use matrix implementation
+        return algorithm14(matrix(x), y, this, false).valueOf()
+      },
 
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
-    }
-  })
-})
+      'any, Array': function (x, y) {
+        // use matrix implementation
+        return algorithm14(matrix(y), x, this, true).valueOf()
+      },
+    })
+  }
+)
