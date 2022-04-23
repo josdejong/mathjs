@@ -6,7 +6,7 @@ ideas and suggestions, and contribute to the code.
 
 There are a few preferences regarding code contributions:
 
-- The code of math.js follows the JavaScript Standard Style as described on https://standardjs.com/.
+- The code of math.js follows the JavaScript Standard Style as described on https://standardjs.com/, enforced through ES Lint rules. Additionally, code is formatted with Prettier.
 - Make sure you properly unit test your changes.
 - Before creating a pull request, run the unit tests to make sure they all pass.
 - Only commit changes done in the source files under `src`, not to the generated builds

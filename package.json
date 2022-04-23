@@ -87,7 +87,6 @@
     "pad-right": "0.2.2",
     "prettier": "^2.6.2",
     "process": "0.11.10",
-    "standard": "16.0.4",
     "sylvester": "0.0.21",
     "ts-node": "10.7.0",
     "typescript": "4.6.3",
