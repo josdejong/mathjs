@@ -52,7 +52,7 @@ function assertValidPinv(A, A_) {
 }
 
 describe('pinv', function () {
-  function test(A, A_, strict = false) {
+  function check(A, A_, strict = false) {
     const pinvA = pinv(A)
     if (A_) {
       if (strict) assert.deepStrictEqual(pinvA, A_)
@@ -74,20 +74,20 @@ describe('pinv', function () {
     }
   }
   it('should return the inverse of a number', function () {
-    test(4, 1 / 4, true)
-    test(math.bignumber(4), math.bignumber(1 / 4), true)
+    check(4, 1 / 4, true)
+    check(math.bignumber(4), math.bignumber(1 / 4), true)
   })
 
   it('should return the inverse of a matrix with just one value', function () {
-    test([4], [1 / 4], true)
-    test([[4]], [[1 / 4]], true)
+    check([4], [1 / 4], true)
+    check([[4]], [[1 / 4]], true)
   })
 
   it('should return the inverse for each element in an array', function () {
-    test([4], [1 / 4], true)
-    test([[4]], [[1 / 4]], true)
+    check([4], [1 / 4], true)
+    check([[4]], [[1 / 4]], true)
 
-    test(
+    check(
       [
         [1, 4, 7],
         [3, 0, 5],
@@ -100,7 +100,7 @@ describe('pinv', function () {
       ]
     )
 
-    test(
+    check(
       [
         [2, -1, 0],
         [-1, 2, -1],
@@ -113,7 +113,7 @@ describe('pinv', function () {
       ]
     )
 
-    test(
+    check(
       [
         [1, 0, 0],
         [0, 0, 1],
@@ -126,7 +126,7 @@ describe('pinv', function () {
       ]
     )
 
-    test(
+    check(
       [
         [1, 0, 0],
         [0, -1, 1],
@@ -141,10 +141,10 @@ describe('pinv', function () {
   })
 
   it('should return the inverse for each element in a matrix', function () {
-    test(math.matrix([4]), math.matrix([1 / 4]), true)
-    test(math.matrix([[4]]), math.matrix([[1 / 4]]), true)
-    test(math.matrix([[4]], 'sparse'), math.matrix([[1 / 4]], 'sparse'), true)
-    test(
+    check(math.matrix([4]), math.matrix([1 / 4]), true)
+    check(math.matrix([[4]]), math.matrix([[1 / 4]]), true)
+    check(math.matrix([[4]], 'sparse'), math.matrix([[1 / 4]], 'sparse'), true)
+    check(
       math.matrix(
         [
           [1, 2],
@@ -164,7 +164,7 @@ describe('pinv', function () {
   })
 
   it('should return the Moore–Penrose inverse of complex matrices', function () {
-    test(
+    check(
       math.evaluate(`[
           [0.4032 + 0.0876i,   0.1678 + 0.0390i,   0.5425 + 0.5118i],
           [0.3174 + 0.3352i,   0.9784 + 0.4514i,  -0.4416 - 1.3188i],
@@ -179,11 +179,11 @@ describe('pinv', function () {
   })
 
   it('should return the Moore–Penrose inverse of non-square matrices', function () {
-    test([[0, 0]], [[0], [0]], true)
+    check([[0, 0]], [[0], [0]], true)
 
-    test([1, 2, 3], [1 / 14, 2 / 14, 3 / 14])
+    check([1, 2, 3], [1 / 14, 2 / 14, 3 / 14])
 
-    test(
+    check(
       [
         [1, 2, 3],
         [4, 5, 6],
@@ -194,7 +194,7 @@ describe('pinv', function () {
         [13 / 18, -4 / 18],
       ]
     )
-    test(
+    check(
       [
         [1, 4],
         [2, 5],
@@ -206,7 +206,7 @@ describe('pinv', function () {
       ]
     )
 
-    test([
+    check([
       [64, 2, 3, 61, 60, 6],
       [9, 55, 54, 12, 13, 51],
       [17, 47, 46, 20, 21, 43],
@@ -230,8 +230,8 @@ describe('pinv', function () {
   })
 
   it('should return the Moore–Penrose inverse of non-invertable matrices', function () {
-    test([[0]], [[0]], true)
-    test(
+    check([[0]], [[0]], true)
+    check(
       [
         [1, 0],
         [0, 0],
@@ -241,7 +241,7 @@ describe('pinv', function () {
         [0, 0],
       ]
     )
-    test(
+    check(
       [
         [1, 1, 1],
         [1, 0, 0],

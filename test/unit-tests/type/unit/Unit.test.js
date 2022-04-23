@@ -1216,6 +1216,7 @@ describe('Unit', function () {
       assert.deepStrictEqual(unit4.divide(unit5), unit6)
     })
 
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should cancel units in numerator and denominator', function () {
       assert.strictEqual(math.evaluate('2 J/K/g * 2 g').toString(), '4 J / K')
       assert.strictEqual(math.evaluate('2 J/K/g * 2K').toString(), '4 J / g')

@@ -196,6 +196,7 @@ describe('rationalize', function () {
     )
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('processes a really complex expression', function () {
     // note this test passes but takes for ever to complete
 

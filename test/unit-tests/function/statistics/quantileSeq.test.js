@@ -59,6 +59,7 @@ describe('quantileSeq', function () {
   })
 
   // FIXME: should return the quantileSeq of an array of bignumbers with number probability
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should return the quantileSeq of an array of bignumbers with number probability', function () {
     approx.equal(
       quantileSeq(

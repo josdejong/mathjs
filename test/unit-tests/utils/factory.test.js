@@ -35,6 +35,7 @@ describe('factory', function () {
   })
 
   // FIXME: this unit test doesn't work on IE either remove sortFactories if redundant, or use it and get the test working
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should order functions by their dependencies (1)', function () {
     function fn1() {
       return 1
@@ -90,6 +91,7 @@ describe('factory', function () {
   })
 
   // TODO: throw an error in case of circular dependencies
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should not go crazy with circular dependencies', function () {
     const fn1factory = factory('fn1', ['fn2'], () => {})
     const fn2factory = factory('fn2', ['fn1'], () => {})

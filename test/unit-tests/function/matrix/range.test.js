@@ -268,6 +268,7 @@ describe('range', function () {
   })
 
   // FIXME: should give the right error
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should not cast a single number or boolean to string', function () {
     assert.throws(function () {
       range(2)

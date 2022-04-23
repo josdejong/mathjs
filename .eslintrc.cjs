@@ -27,6 +27,10 @@ module.exports = {
         'plugin:mocha/recommended',
         'plugin:prettier/recommended', // this should come last
       ],
+      rules: {
+        'mocha/no-setup-in-describe': 'off',
+        'mocha/no-identical-title': 'off', // TODO: Remove this
+      },
     },
     {
       files: ['types/*.ts'],
