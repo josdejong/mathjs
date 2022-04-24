@@ -34,8 +34,8 @@ export const createFibonacciHeapClass = /* #__PURE__ */ factory(name, dependenci
   FibonacciHeap.prototype.insert = function (key, value) {
     // create node
     const node = {
-      key: key,
-      value: value,
+      key,
+      value,
       degree: 0
     }
     // check we have a node in the minimum

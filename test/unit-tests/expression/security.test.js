@@ -391,7 +391,7 @@ describe('security', function () {
     assert.deepStrictEqual(math.evaluate('chain'), math.unit('chain'))
   })
 
-  it('should not allow polluting the Object prototype via config', () => {
+  it('should not allow polluting the Object prototype via config', function () {
     const obj = {}
     assert.strictEqual(obj.polluted, undefined)
 
@@ -401,7 +401,7 @@ describe('security', function () {
     assert.strictEqual(obj.polluted, undefined)
   })
 
-  it('should not allow polluting the Object prototype via config via the expression parser', () => {
+  it('should not allow polluting the Object prototype via config via the expression parser', function () {
     const obj = {}
     assert.strictEqual(obj.polluted, undefined)
 
@@ -410,7 +410,7 @@ describe('security', function () {
     assert.strictEqual(obj.polluted, undefined)
   })
 
-  it('should not allow polluting the Object prototype by creating an object in the expression parser', () => {
+  it('should not allow polluting the Object prototype by creating an object in the expression parser', function () {
     const obj = {}
     assert.strictEqual(obj.polluted, undefined)
 

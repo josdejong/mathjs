@@ -177,7 +177,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     true: true,
     false: false,
     null: null,
-    undefined: undefined
+    undefined
   }
 
   const NUMERIC_CONSTANTS = [
@@ -621,8 +621,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       if (blocks.length === 0 && node) {
         visible = (state.token !== ';')
         blocks.push({
-          node: node,
-          visible: visible
+          node,
+          visible
         })
       }
 
@@ -633,8 +633,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
         visible = (state.token !== ';')
         blocks.push({
-          node: node,
-          visible: visible
+          node,
+          visible
         })
       }
     }

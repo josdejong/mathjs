@@ -357,7 +357,7 @@ describe('format', function () {
     })
   })
 
-  it('should format expressions', () => {
+  it('should format expressions', function () {
     assert.strictEqual(math.format(math.parse('0.3333'), { precision: 1 }), '0.3')
     assert.strictEqual(math.format(math.parse('0.3333 + [0.4444]'), { precision: 1 }), '0.3 + [0.4]')
 

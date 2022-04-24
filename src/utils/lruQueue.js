@@ -47,4 +47,4 @@ export function lruQueue (limit) {
       map = Object.create(null)
     }
   }
-};
+}

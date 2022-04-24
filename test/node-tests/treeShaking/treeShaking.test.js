@@ -19,11 +19,11 @@ describe('tree shaking', function () {
   const bundleName = 'treeShakingApp.bundle.js'
   const bundleLicenseName = 'treeShakingApp.bundle.js.LICENSE.txt'
 
-  before(() => {
+  before(function () {
     cleanup()
   })
 
-  after(() => {
+  after(function () {
     cleanup()
   })
 

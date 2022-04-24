@@ -75,7 +75,7 @@ describe('util.function', function () {
   })
 
   describe('memoizeCompare', function () {
-    it('should memoize using comparison', () => {
+    it('should memoize using comparison', function () {
       let execCount = 0
 
       function multiply (obj) {

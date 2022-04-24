@@ -131,7 +131,7 @@ export const createExpm = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       for (let q = 0; q <= k; q++) {
         const j = k - q
         if (errorEstimate(infNorm, q, j) < eps) {
-          return { q: q, j: j }
+          return { q, j }
         }
       }
     }

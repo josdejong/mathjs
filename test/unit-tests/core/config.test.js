@@ -2,7 +2,7 @@ import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
 
 describe('config', function () {
-  it('should allow setting config after having overwritten import', () => {
+  it('should allow setting config after having overwritten import', function () {
     const math2 = math.create()
 
     assert.strictEqual(math2.typeOf(math2.pi), 'number')

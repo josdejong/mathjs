@@ -305,11 +305,11 @@ const bigwarning = `WARNING: ${knownProblems.size} known errors converted ` +
       `\n  WARNING: ${knownUndocumented.size} symbols in math are known to ` +
       'be undocumented; PLEASE EXTEND the documentation.'
 
-describe(bigwarning + '\n  Testing examples from (jsdoc) comments', () => {
+describe(bigwarning + '\n  Testing examples from (jsdoc) comments', function () {
   const allNames = Object.keys(math)
   const srcPath = path.resolve(__dirname, '../../src') + '/'
   const allDocs = docgenerator.collectDocs(allNames, srcPath)
-  it("should cover all names (but doesn't yet)", () => {
+  it("should cover all names (but doesn't yet)", function () {
     const documented = new Set(Object.keys(allDocs))
     const badUndocumented = allNames.filter(name => {
       return !(documented.has(name) ||
@@ -330,9 +330,9 @@ describe(bigwarning + '\n  Testing examples from (jsdoc) comments', () => {
     byCategory[fun.category].push(fun.doc)
   }
   for (const category in byCategory) {
-    describe('category: ' + category, () => {
+    describe('category: ' + category, function () {
       for (const doc of byCategory[category]) {
-        it('satisfies ' + doc.name, () => {
+        it('satisfies ' + doc.name, function () {
           console.log(`      Testing ${doc.name} ...`) // can remove once no known failures; for now it clarifies "PLEASE RESOLVE"
           const lines = doc.examples
           lines.push('//') // modifies doc but OK for test

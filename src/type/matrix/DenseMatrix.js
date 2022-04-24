@@ -730,7 +730,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     // create DenseMatrix
     return new DenseMatrix({
-      data: data,
+      data,
       size: [n],
       datatype: this._datatype
     })
@@ -848,7 +848,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     // create DenseMatrix
     return new DenseMatrix({
-      data: data,
+      data,
       size: [rows, columns]
     })
   }

@@ -43,7 +43,7 @@ export function createSolveValidation ({ DenseMatrix }) {
         }
 
         return new DenseMatrix({
-          data: data,
+          data,
           size: [rows, 1],
           datatype: b._datatype
         })
@@ -64,7 +64,7 @@ export function createSolveValidation ({ DenseMatrix }) {
             }
 
             return new DenseMatrix({
-              data: data,
+              data,
               size: [rows, 1],
               datatype: b._datatype
             })
@@ -86,7 +86,7 @@ export function createSolveValidation ({ DenseMatrix }) {
           }
 
           return new DenseMatrix({
-            data: data,
+            data,
             size: [rows, 1],
             datatype: b._datatype
           })
@@ -109,7 +109,7 @@ export function createSolveValidation ({ DenseMatrix }) {
         }
 
         return new DenseMatrix({
-          data: data,
+          data,
           size: [rows, 1]
         })
       }
@@ -124,7 +124,7 @@ export function createSolveValidation ({ DenseMatrix }) {
         }
 
         return new DenseMatrix({
-          data: data,
+          data,
           size: [rows, 1]
         })
       }

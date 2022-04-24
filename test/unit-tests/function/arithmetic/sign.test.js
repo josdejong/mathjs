@@ -60,7 +60,7 @@ describe('sign', function () {
     assert.deepStrictEqual(math.sign(math.unit(complex(3, 4), 'mi')), complex(0.6, 0.8))
   })
 
-  it('should throw an error on a valueless unit or a unit with offset', () => {
+  it('should throw an error on a valueless unit or a unit with offset', function () {
     assert.throws(() => math.sign(math.unit('ohm')), TypeError)
     assert.throws(() => math.sign(math.unit('-3 degC')), /ambiguous/)
   })

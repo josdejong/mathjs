@@ -115,7 +115,7 @@ describe('FunctionNode', function () {
       return 'myFunction(' + args.join(', ') + ')'
     }
     myFunction.rawArgs = true
-    mymath.import({ myFunction: myFunction })
+    mymath.import({ myFunction })
 
     const s = new SymbolNode('myFunction')
     const a = new mymath.ConstantNode(4)
@@ -162,7 +162,7 @@ describe('FunctionNode', function () {
       assert.ok(false, 'should not be executed')
     }
     myFunction.rawArgs = true
-    mymath.import({ myFunction: myFunction })
+    mymath.import({ myFunction })
 
     const s = new mymath.SymbolNode('myFunction')
     const a = new mymath.ConstantNode(4)
@@ -620,7 +620,7 @@ describe('FunctionNode', function () {
     assert.throws(function () { tree.toTex() }, TypeError)
   })
 
-  it('evaluates different sorts of function calls', () => {
+  it('evaluates different sorts of function calls', function () {
     const examples = [
       ['1; square(3)', 9],
       ['f(x) = x*x; f(3)', 9],
@@ -636,7 +636,7 @@ describe('FunctionNode', function () {
     }
   })
 
-  it('produces clear error messages when the callee is not a function', () => {
+  it('produces clear error messages when the callee is not a function', function () {
     const throwers = [
       ['tau(3)', TypeError, /tau.*value[\s\S]*6.28/],
       ['f = 7; f(3)', TypeError, /f.*value[\s\S]*7/],
@@ -660,7 +660,7 @@ describe('FunctionNode', function () {
   })
 
   // FIXME: custom instances should have there own function, not return the same function?
-  after(() => {
+  after(function () {
     const customMath = math.create()
     delete customMath.add.toTex
     delete customMath.sum.toTex

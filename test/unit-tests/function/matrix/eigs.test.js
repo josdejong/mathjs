@@ -65,7 +65,7 @@ describe('eigs', function () {
     )
   })
 
-  it('calculates eigenvalues for 2x2 matrix with complex entries', () => {
+  it('calculates eigenvalues for 2x2 matrix with complex entries', function () {
     approx.deepEqual(
       eigs([[3, -2], [complex(4, 2), -1]]).values,
       [complex(0.08982028, 2.197368227), complex(1.91017972, -2.197368227)])
@@ -145,7 +145,7 @@ describe('eigs', function () {
     approx.deepEqual(Ei, E)
   })
 
-  it('complex matrix eigenvector check', () => {
+  it('complex matrix eigenvector check', function () {
     // Example from issue #2478
     const A = [[1, 2, 3], [2, 4, 0], [3, 0, 1]]
     const cnt = 0.1
