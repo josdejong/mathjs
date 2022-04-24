@@ -183,6 +183,7 @@ describe('multiply', function () {
     })
 
     // TODO: cleanup once decided to not downgrade BigNumber to number
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should multiply a bignumber and a unit correctly', function () {
       assert.strictEqual(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
       assert.strictEqual(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
@@ -191,6 +192,7 @@ describe('multiply', function () {
     })
 
     // TODO: cleanup once decided to not downgrade BigNumber to number
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should multiply a bignumber and a unit without value correctly', function () {
       assert.strictEqual(multiply(bignumber(2), unit('mm')).toString(), '2 mm')
       assert.strictEqual(multiply(bignumber(2), unit('km')).toString(), '2 km')
