@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/method-signature-style */
 import { Decimal } from 'decimal.js'
 
 declare const math: math.MathJsStatic
@@ -10,6 +11,7 @@ type NoLiteralType<T> =
         T extends boolean ? boolean :
           T
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 declare namespace math {
   type MathArray = number[] | number[][]
   type MathType = number | BigNumber | Fraction | Complex | Unit | MathArray | Matrix
@@ -3376,7 +3378,8 @@ declare namespace math {
     aliases?: string[]
   }
 
-  interface Index {} // tslint:disable-line no-empty-interface
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface Index {}
 
   interface EvalFunction {
     evaluate(scope?: any): any
@@ -4470,6 +4473,11 @@ declare namespace math {
      * undefined. Default value: undefined.
      */
     subset(index: Index, replacement?: any, defaultValue?: any): MathJsChain
+
+    /**
+     * Return a string representation of the result.
+     */
+    toString(): string
 
     /**
      * Calculate the trace of a matrix: the sum of the elements on the main

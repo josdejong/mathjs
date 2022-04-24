@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import {
   create,
   factory,
@@ -10,6 +11,15 @@ import {
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
+
+const assertNotNil: <T> (value: T) => asserts value is NonNullable<T> = (value) => {
+  if (value === undefined) {
+    throw new Error('Unexpected undefined value')
+  }
+  if (value === null) {
+    throw new Error('Unexpected null value')
+  }
+}
 
 // This file serves a dual purpose:
 // 1) examples of how to use math.js in TypeScript
@@ -24,7 +34,7 @@ Basic usage examples
   // functions and constants
   math.round(math.e, 3)
   math.round(100.123, 3)
-  math.atan2(3, -3) / math.pi
+  const _thing = math.atan2(3, -3) / math.pi
   math.log(10000, 10)
   math.sqrt(-4)
   math.pow([[-1, 2], [3, 1]], 2)
@@ -67,8 +77,8 @@ Basic usage examples
   assert.deepStrictEqual(math.add(math.matrix([2, 3]), [4, 5]), math.matrix([6, 8])) // Matrix + Array
 
   // narrowed type inference
-  const b: math.Matrix = math.add(math.matrix([2]), math.matrix([3]))
-  const c: math.Matrix = math.subtract(math.matrix([4]), math.matrix([5]))
+  const _b: math.Matrix = math.add(math.matrix([2]), math.matrix([3]))
+  const _c: math.Matrix = math.subtract(math.matrix([4]), math.matrix([5]))
 }
 
 /*
@@ -96,7 +106,7 @@ Chaining examples
   assert.strictEqual(a, 14)
 
   // Another example, calculate square(sin(pi / 4))
-  const b = math.chain(math.pi).divide(4).sin().square().done()
+  const _b = math.chain(math.pi).divide(4).sin().square().done()
 
   // toString will return a string representation of the chain's value
   const chain = math.chain(2).divide(3)
@@ -113,7 +123,7 @@ Chaining examples
   const v = math.chain(array).subset(math.index(1, 0)).done()
   assert.strictEqual(v, 3)
 
-  const m = math.chain(array).subset(math.index(0, 0), 8).multiply(3).done()
+  const _m = math.chain(array).subset(math.index(0, 0), 8).multiply(3).done()
 
   // filtering
   assert.deepStrictEqual(
@@ -154,8 +164,8 @@ Complex numbers examples
 
   // read the real and complex parts of the complex number
   {
-    const x: number = a.re
-    const y: number = a.im
+    const _x: number = a.re
+    const _y: number = a.im
 
     // adjust the complex value
     a.re = 5
@@ -163,7 +173,7 @@ Complex numbers examples
 
   // clone a complex value
   {
-    const clone = a.clone()
+    const _clone = a.clone()
   }
 
   // perform operations with complex numbers
@@ -176,12 +186,12 @@ Complex numbers examples
   // create a complex number from polar coordinates
   {
     const p: math.PolarCoordinates = { r: math.sqrt(2), phi: math.pi / 4 }
-    const c: math.Complex = math.complex(p)
+    const _c: math.Complex = math.complex(p)
   }
 
   // get polar coordinates of a complex number
   {
-    const p: math.PolarCoordinates = math.complex(3, 4).toPolar()
+    const _p: math.PolarCoordinates = math.complex(3, 4).toPolar()
   }
 }
 
@@ -206,7 +216,7 @@ Expressions examples
     if (node.type !== 'ParenthesisNode') {
       throw Error(`expected ParenthesisNode, got ${node.type}`)
     }
-    const innerNode = node.content
+    const _innerNode = node.content
   }
 
   // scope can contain both variables and functions
@@ -228,7 +238,7 @@ Expressions examples
 
   {
     const node2 = math.parse('x^a')
-    const code2: math.EvalFunction = node2.compile()
+    const _code2: math.EvalFunction = node2.compile()
     node2.toString()
   }
 
@@ -250,10 +260,10 @@ Expressions examples
     parser.evaluate('f(x, y) = x^y') // f(x, y)
     assert.strictEqual(parser.evaluate('f(2, 3)'), 8)
 
-    const x = parser.get('x')
+    const _x = parser.get('x')
     const f = parser.get('f')
-    const y = parser.getAll()
-    const g = f(3, 3)
+    const _y = parser.getAll()
+    const _g = f(3, 3)
 
     parser.set('h', 500)
     parser.set('hello', (name: string) => `hello, ${name}!`)
@@ -280,7 +290,7 @@ Fractions examples
   math.divide(x, y)
 
   // output formatting
-  const a = math.fraction('2/3')
+  const _a = math.fraction('2/3')
 }
 
 /*
@@ -296,10 +306,10 @@ Matrices examples
   b.size()
 
   // the Array data of a Matrix can be retrieved using valueOf()
-  const array = a.valueOf()
+  const _array = a.valueOf()
 
   // Matrices can be cloned
-  const clone: math.Matrix = a.clone()
+  const _clone: math.Matrix = a.clone()
 
   // perform operations with matrices
   math.sqrt(a)
@@ -317,9 +327,9 @@ Matrices examples
     ])
 
     b.subset(math.index(1, [0, 1]), [[7, 8]])
-    const c = math.multiply(a, b)
+    const _c = math.multiply(a, b)
     const f: math.Matrix = math.matrix([1, 0])
-    const d: math.Matrix = f.subset(math.index(1))
+    const _d: math.Matrix = f.subset(math.index(1))
   }
 
   // get a sub matrix
@@ -397,10 +407,10 @@ Sparse matrices examples
 
   // do operations with a sparse matrix
   const b = math.multiply(a, a)
-  const c = math.multiply(b, math.complex(2, 2))
+  const _c = math.multiply(b, math.complex(2, 2))
   const d = math.matrix([0, 1])
   const e = math.transpose(d)
-  const f = math.multiply(e, d)
+  const _f = math.multiply(e, d)
 }
 
 /*
@@ -413,7 +423,7 @@ Units examples
   // a string with a valued unit.
   const a = math.unit(45, 'cm') // 450 mm
   const b = math.unit('0.1m') // 100 mm
-  const c = math.unit(b)
+  const _c = math.unit(b)
 
   // creating units
   math.createUnit('foo')
@@ -483,11 +493,11 @@ Expression tree examples
   const node: math.MathNode = math.parse('x^2 + x/4 + 3*y')
   const filtered: math.MathNode[] = node.filter((node: math.MathNode) => node.type === 'SymbolNode' && node.name === 'x')
 
-  const arr: string[] = filtered.map((node: math.MathNode) => node.toString())
+  const _arr: string[] = filtered.map((node: math.MathNode) => node.toString())
 
   // Traverse an expression tree
   const node1: math.MathNode = math.parse('3 * x + 2')
-  node1.traverse((node: math.MathNode, path: string, parent: math.MathNode) => {
+  node1.traverse((node: math.MathNode, _path: string, _parent: math.MathNode) => {
     switch (node.type) {
       case 'OperatorNode':
         return node.type === 'OperatorNode'
@@ -545,14 +555,14 @@ Extend functionality with import
 
 declare module 'mathjs' {
   interface MathJsStatic {
-    testFun(): number
+    testFun: () => number
     value: number
   }
 }
 
 {
   const math = create(all, {})
-  const testFun = () => 5
+  const testFun = (): number => 5
 
   math.import(
     {
@@ -564,7 +574,7 @@ declare module 'mathjs' {
 
   math.testFun()
 
-  const a = math.value * 2
+  const _a = math.value * 2
 }
 
 /*
@@ -592,13 +602,15 @@ Factory Test
   const createNegativeSquare = factory(name, dependencies, (injected) => {
     const { multiply, unaryMinus } = injected
     return function negativeSquare (x: number): number {
+      assertNotNil(unaryMinus)
+      assertNotNil(multiply)
       return unaryMinus(multiply(x, x))
     }
   })
 
   // create an instance of the function yourself:
-  const multiply = (a: number, b: number) => a * b
-  const unaryMinus = (a: number) => -a
+  const multiply = (a: number, b: number): number => a * b
+  const unaryMinus = (a: number): number => -a
   const negativeSquare = createNegativeSquare({ multiply, unaryMinus })
   negativeSquare(3)
 }
