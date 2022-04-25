@@ -5,6 +5,8 @@
 - Fix #2526, #2529: improve TypeScript definitions of function `round`, `fix`,
   `floor`, `ceil`, and `nthRoot`, and improved the number only implementations 
   of those functions  (#2531, #2539). Thanks @simlaticak and @gwhitney.
+- Fix #2532: matrix index symbol `end` not working when used inside
+  a sub-expression.
 
 
 # 2022-04-19, version 10.5.0

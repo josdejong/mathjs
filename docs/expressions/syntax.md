@@ -549,8 +549,11 @@ can be replaced by using indexes. Indexes are enclosed in square brackets, and
 contain a number or a range for each of the matrix dimensions. A range can have
 its start and/or end undefined. When the start is undefined, the range will start
 at 1, when the end is undefined, the range will end at the end of the matrix.
+
 There is a context variable `end` available as well to denote the end of the
-matrix.
+matrix. This variable cannot be used in multiple nested indices. In that case,
+`end` will be resolved as the end of the innermost matrix. To solve this, 
+resolving of the nested index needs to be split in two separate operations.
 
 *IMPORTANT: matrix indexes and ranges work differently from the math.js indexes
 in JavaScript: They are one-based with an included upper-bound, similar to most
