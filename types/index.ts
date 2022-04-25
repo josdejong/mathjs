@@ -753,7 +753,40 @@ declare module 'mathjs' {
 
   math.testFun();
 
-  const a = math.value * 2;
+  expectTypeOf(math.testFun()).toMatchTypeOf<number>()
+
+  expectTypeOf(math.import({
+    myvalue: 42,
+    simplify: (name: string) => `simplify ${name}`
+  })).toMatchTypeOf<void>()
+
+  expectTypeOf(math.import({
+    myvalue: 42
+  }, {
+    override: true
+  })).toMatchTypeOf<void>()
+
+  expectTypeOf(math.import({
+    myvalue: 42
+  }, {
+    silent: true
+  })).toMatchTypeOf<void>()
+
+  expectTypeOf(math.import({
+    myvalue: 42
+  }, {
+    wrap: true
+  })).toMatchTypeOf<void>()
+
+  expectTypeOf(math.import({
+    myvalue: 42,
+  })).toMatchTypeOf<void>()
+
+  expectTypeOf(math.import([{
+    myvalue: 42,
+  }, {
+    simplify: (name: string) => `simplify ${name}`
+  }])).toMatchTypeOf<void>()
 }
 
 /*
@@ -1026,47 +1059,6 @@ Probability function examples
 
   expectTypeOf(math.lgamma(1.5)).toMatchTypeOf<number>()
   expectTypeOf(math.lgamma(math.complex(1.5, -1.5))).toMatchTypeOf<math.Complex>()
-}
-
-/*
-import examples
-*/
-
-{
-  const math = create(all, {});
-
-  expectTypeOf(math.import({
-    myvalue: 42,
-    simplify: (name: string) => `simplify ${name}`
-  })).toMatchTypeOf<void>()
-
-  expectTypeOf(math.import({
-    myvalue: 42
-  }, {
-    override: true
-  })).toMatchTypeOf<void>()
-
-  expectTypeOf(math.import({
-    myvalue: 42
-  }, {
-    silent: true
-  })).toMatchTypeOf<void>()
-
-  expectTypeOf(math.import({
-    myvalue: 42
-  }, {
-    wrap: true
-  })).toMatchTypeOf<void>()
-
-  expectTypeOf(math.import({
-    myvalue: 42,
-  })).toMatchTypeOf<void>()
-
-  expectTypeOf(math.import([{
-    myvalue: 42,
-  }, {
-    simplify: (name: string) => `simplify ${name}`
-  }])).toMatchTypeOf<void>()
 }
 
 /*
