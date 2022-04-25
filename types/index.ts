@@ -7,8 +7,9 @@ import {
   addDependencies,
   divideDependencies,
   formatDependencies,
-} from 'mathjs'
-import * as assert from 'assert'
+  MathNode,
+} from 'mathjs';
+import * as assert from 'assert';
 import { expectTypeOf } from 'expect-type'
 
 // This file serves a dual purpose:
@@ -1248,4 +1249,15 @@ toTex examples
       a: '123',
     })
   ).toMatchTypeOf<string>()
+}
+
+/*
+Resolve examples
+*/
+{
+  const math = create(all, {});
+
+  expectTypeOf(math.resolve(math.parse('x + y'))).toMatchTypeOf<MathNode>()
+  expectTypeOf(math.resolve(math.parse('x + y'), { x: 0 })).toMatchTypeOf<MathNode>()
+  expectTypeOf(math.resolve([math.parse('x + y')], { x: 0 })).toMatchTypeOf<MathNode[]>()
 }
