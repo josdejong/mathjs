@@ -1041,11 +1041,31 @@ import examples
   })).toMatchTypeOf<void>()
 
   expectTypeOf(math.import({
+    myvalue: 42
+  }, {
+    override: true
+  })).toMatchTypeOf<void>()
+
+  expectTypeOf(math.import({
+    myvalue: 42
+  }, {
+    silent: true
+  })).toMatchTypeOf<void>()
+
+  expectTypeOf(math.import({
+    myvalue: 42
+  }, {
+    wrap: true
+  })).toMatchTypeOf<void>()
+
+  expectTypeOf(math.import({
     myvalue: 42,
   })).toMatchTypeOf<void>()
 
   expectTypeOf(math.import([{
     myvalue: 42,
+  }, {
+    simplify: (name: string) => `simplify ${name}`
   }])).toMatchTypeOf<void>()
 }
 
