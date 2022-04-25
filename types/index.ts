@@ -841,3 +841,39 @@ Probability function examples
   expectTypeOf(math.lgamma(1.5)).toMatchTypeOf<number>()
   expectTypeOf(math.lgamma(math.complex(1.5, -1.5))).toMatchTypeOf<math.Complex>()
 }
+
+/*
+import examples
+*/
+
+{
+  const math = create(all, {});
+
+  expectTypeOf(math.import({
+    myvalue: 42,
+    simplify: (name: string) => `simplify ${name}`
+  })).toMatchTypeOf<void>()
+
+  expectTypeOf(math.import({
+    myvalue: 42,
+  })).toMatchTypeOf<void>()
+
+  expectTypeOf(math.import([{
+    myvalue: 42,
+  }])).toMatchTypeOf<void>()
+}
+
+/*
+toTex examples
+*/
+
+{
+  const math = create(all, {});
+
+  expectTypeOf(math.parse('a/b').toTex()).toMatchTypeOf<string>()
+
+  // TODO add proper types for toTex options
+  expectTypeOf(math.parse('a/b').toTex({
+    a: '123'
+  })).toMatchTypeOf<string>()
+}
