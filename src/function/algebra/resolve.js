@@ -35,11 +35,12 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
    *
    *     simplify, evaluate
    *
-   * @param {Node} node
-   *     The expression tree to be simplified
+   * @template nodeOrNodes
+   * @param {nodeOrNodes} node
+   *     The expression tree (or trees) to be simplified
    * @param {Object} scope
    *     Scope specifying variables to be resolved
-   * @return {Node} Returns `node` with variables recursively substituted.
+   * @return {numOrStr extends Node[] ? Node[] : Node} Returns `nodeOrNodes` with variables recursively substituted.
    * @throws {ReferenceError}
    *     If there is a cyclic dependency among the variables in `scope`,
    *     resolution is impossible and a ReferenceError is thrown.
