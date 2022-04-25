@@ -85,6 +85,7 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
       })
       return new FunctionNode(node.name, args)
     }
+
     // Otherwise just recursively resolve any children (might also work
     // for some of the above special cases)
     return node.map(child => resolve(child, scope, within))
