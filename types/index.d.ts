@@ -820,7 +820,8 @@ declare namespace math {
      * @param node Tree to replace variable nodes in
      * @param scope Scope to read/write variables
      */
-    resolve<TNode = MathNode>(node: TNode, scope: Record<string, any>): TNode;
+    resolve(node: MathNode, scope?: Record<string, any>): MathNode;
+    resolve(node: MathNode[], scope?: Record<string, any>): MathNode[];
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
