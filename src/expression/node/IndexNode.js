@@ -1,26 +1,16 @@
 import { map } from '../../utils/array.js'
 import { getSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
-import {
-  isArray,
-  isBigNumber,
-  isCollection,
-  isConstantNode,
-  isMatrix,
-  isNode,
-  isString,
-  typeOf
-} from '../../utils/is.js'
+import { isArray, isConstantNode, isMatrix, isNode, isString, typeOf } from '../../utils/is.js'
 import { escape } from '../../utils/string.js'
 
 const name = 'IndexNode'
 const dependencies = [
-  'Range',
   'Node',
   'size'
 ]
 
-export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, Node, size }) => {
+export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, size }) => {
   /**
    * @constructor IndexNode
    * @extends Node
@@ -94,7 +84,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
         const _evalDimension = dimension._compile(math, childArgNames)
 
         return function evalDimension (scope, args, context) {
-          if (!isCollection(context) && !isArray(context) && !isString(context)) {
+          if (!isMatrix(context) && !isArray(context) && !isString(context)) {
             throw new TypeError('Cannot resolve "end": ' +
               'context must be a Matrix, Array, or string but is ' + typeOf(context))
           }
@@ -240,15 +230,6 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
     return this.dotNotation
       ? ('.' + this.getObjectProperty() + '')
       : ('_{' + dimensions.join(',') + '}')
-  }
-
-  // helper function to create a Range from start, step and end
-  function createRange (start, end, step) {
-    return new Range(
-      isBigNumber(start) ? start.toNumber() : start,
-      isBigNumber(end) ? end.toNumber() : end,
-      isBigNumber(step) ? step.toNumber() : step
-    )
   }
 
   return IndexNode
