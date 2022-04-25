@@ -206,6 +206,23 @@ describe('AccessorNode', function () {
     assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
   })
 
+  it('should give a proper error message when using "end" inside the index of an object', function () {
+    const obj = new SymbolNode('value')
+    const index = new IndexNode([
+      new SymbolNode('end')
+    ])
+    const n = new AccessorNode(obj, index)
+    const expr = n.compile()
+
+    assert.throws(function () {
+      expr.evaluate({ value: { end: true } })
+    }, /TypeError: Cannot resolve "end": context must be a Matrix, Array, or string but is Object/)
+
+    assert.throws(function () {
+      expr.evaluate({ value: 42 })
+    }, /TypeError: Cannot resolve "end": context must be a Matrix, Array, or string but is number/)
+  })
+
   it('should compile a AccessorNode with bignumber setting', function () {
     const a = new bigmath.SymbolNode('a')
     const b = new bigmath.ConstantNode(2)

@@ -1,7 +1,16 @@
 import { map } from '../../utils/array.js'
 import { getSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
-import { isBigNumber, isConstantNode, isNode, isRangeNode } from '../../utils/is.js'
+import {
+  isArray,
+  isBigNumber,
+  isCollection,
+  isConstantNode,
+  isMatrix,
+  isNode,
+  isString,
+  typeOf
+} from '../../utils/is.js'
 import { escape } from '../../utils/string.js'
 
 const name = 'IndexNode'
@@ -85,6 +94,11 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
         const _evalDimension = dimension._compile(math, childArgNames)
 
         return function evalDimension (scope, args, context) {
+          if (!isCollection(context) && !isArray(context) && !isString(context)) {
+            throw new TypeError('Cannot resolve "end": ' +
+              'context must be a Matrix, Array, or string but is ' + typeOf(context))
+          }
+
           const s = size(context).valueOf()
           const childArgs = Object.create(args)
           childArgs.end = s[i]
