@@ -368,7 +368,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       unit.units.push({
         unit: res.unit,
         prefix: res.prefix,
-        power: power
+        power
       })
       for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
         unit.dimensions[i] += (res.unit.dimensions[i] || 0) * power
@@ -3205,11 +3205,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       BASE_UNITS[baseName] = newBaseUnit
 
       newUnit = {
-        name: name,
+        name,
         value: 1,
         dimensions: BASE_UNITS[baseName].dimensions.slice(0),
-        prefixes: prefixes,
-        offset: offset,
+        prefixes,
+        offset,
         base: BASE_UNITS[baseName]
       }
 
@@ -3219,11 +3219,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       }
     } else {
       newUnit = {
-        name: name,
+        name,
         value: defUnit.value,
         dimensions: defUnit.dimensions.slice(0),
-        prefixes: prefixes,
-        offset: offset
+        prefixes,
+        offset
       }
 
       // Create a new base if no matching base exists

@@ -33,8 +33,8 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
       if (typeof visible !== 'boolean') throw new TypeError('Property "visible" must be a boolean')
 
       return {
-        node: node,
-        visible: visible
+        node,
+        visible
       }
     })
   }
@@ -102,7 +102,7 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
       const block = this.blocks[i]
       const node = this._ifNode(callback(block.node, 'blocks[' + i + '].node', this))
       blocks[i] = {
-        node: node,
+        node,
         visible: block.visible
       }
     }

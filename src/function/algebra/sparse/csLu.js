@@ -161,9 +161,9 @@ export const createCsLu = /* #__PURE__ */ factory(name, dependencies, ({ abs, di
     uindex.splice(unz, uindex.length - unz)
     // return LU factor
     return {
-      L: L,
-      U: U,
-      pinv: pinv
+      L,
+      U,
+      pinv
     }
   }
 })

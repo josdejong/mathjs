@@ -1504,7 +1504,7 @@ describe('SparseMatrix', function () {
     })
   })
 
-  describe('index ordering', () => {
+  describe('index ordering', function () {
     const orderedSparseMatrix = new SparseMatrix({
       values: [1, 3, 2, 4],
       index: [0, 1, 0, 1],
@@ -1526,7 +1526,7 @@ describe('SparseMatrix', function () {
       { value: 4, index: [1, 1] }
     ]
 
-    it('should have parsed the two test matrices correctly', () => {
+    it('should have parsed the two test matrices correctly', function () {
       assert.deepStrictEqual(orderedSparseMatrix.toArray(), [[1, 2], [3, 4]])
       assert.deepStrictEqual(unorderedSparseMatrix.toArray(), [[1, 2], [3, 4]])
     })

@@ -159,10 +159,10 @@ describe('simplify', function () {
     function doubleIt (x) { return x + x }
     const f = new math.FunctionNode(new math.SymbolNode('doubleIt'), [new math.SymbolNode('value')])
     assert.strictEqual(f.toString(), 'doubleIt(value)')
-    assert.strictEqual(f.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
+    assert.strictEqual(f.evaluate({ doubleIt, value: 4 }), 8)
     const fsimplified = math.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), 'doubleIt(value)')
-    assert.strictEqual(fsimplified.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
+    assert.strictEqual(fsimplified.evaluate({ doubleIt, value: 4 }), 8)
   })
 
   it('should handle immediately invoked function assignments', function () {

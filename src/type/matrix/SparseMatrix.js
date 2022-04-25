@@ -326,10 +326,10 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
 
     // return matrix
     return new SparseMatrix({
-      values: values,
-      index: index,
-      ptr: ptr,
-      size: size,
+      values,
+      index,
+      ptr,
+      size,
       datatype: matrix._datatype
     })
   }
@@ -931,9 +931,9 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     ptr.push(values.length)
     // return sparse matrix
     return new SparseMatrix({
-      values: values,
-      index: index,
-      ptr: ptr,
+      values,
+      index,
+      ptr,
       size: [maxRow - minRow + 1, maxColumn - minColumn + 1]
     })
   }
@@ -1179,9 +1179,9 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     ptr.push(values.length)
     // return matrix
     return new SparseMatrix({
-      values: values,
-      index: index,
-      ptr: ptr,
+      values,
+      index,
+      ptr,
       size: [n, 1]
     })
   }
@@ -1327,9 +1327,9 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     ptr.push(values.length)
     // create SparseMatrix
     return new SparseMatrix({
-      values: values,
-      index: index,
-      ptr: ptr,
+      values,
+      index,
+      ptr,
       size: [rows, columns]
     })
   }

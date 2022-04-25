@@ -18,8 +18,8 @@ const EPSILON = isInternetExplorer() ? 1e-6 : 1e-11
 // lgamma for reals
 const CEPSILON = 5e-8
 
-describe('lgamma', () => {
-  it('should calculate the lgamma of 0 and negative numbers', () => {
+describe('lgamma', function () {
+  it('should calculate the lgamma of 0 and negative numbers', function () {
     assert.strictEqual(lgamma(0), Infinity)
 
     assert.ok(isNaN(lgamma(-0.0005)))
@@ -32,7 +32,7 @@ describe('lgamma', () => {
     assert.ok(isNaN(lgamma(-123456.123456)))
   })
 
-  it('should calculate the lgamma of a positive numbers', () => {
+  it('should calculate the lgamma of a positive numbers', function () {
     // computation reference: https://www.wolframalpha.com/input?i=LogGamma%5Bx%5D
 
     approx.equal(lgamma(/**/ 0.000000001), /*  */ 20.7232658363691954921, EPSILON)
@@ -51,13 +51,13 @@ describe('lgamma', () => {
     approx.equal(lgamma(/*       */ 1e92), /**/ 2.1083782855545220293e94, EPSILON)
   })
 
-  it('should calculate the lgamma of an irrational number', () => {
+  it('should calculate the lgamma of an irrational number', function () {
     approx.equal(lgamma(Math.SQRT2), -0.12038230351896920333, EPSILON)
     approx.equal(lgamma(Math.PI), 0.82769459232343710153, EPSILON)
     approx.equal(lgamma(Math.E), 0.449461741820067667, EPSILON)
   })
 
-  it('should calculate the lgamma of a complex number', () => {
+  it('should calculate the lgamma of a complex number', function () {
     approx.deepEqual(lgamma(math.complex(0, 0)), math.complex(Infinity), EPSILON)
     approx.deepEqual(
       lgamma(math.complex(0.000000001, 0.000000001)),
@@ -200,7 +200,7 @@ describe('lgamma', () => {
     )
   })
 
-  it('should calculate the lgamma of some special arguments', () => {
+  it('should calculate the lgamma of some special arguments', function () {
     approx.equal(lgamma(true), 0, EPSILON)
     assert.strictEqual(lgamma(false), Infinity)
 
@@ -211,21 +211,21 @@ describe('lgamma', () => {
     assert.ok(!isFinite(lgamma(-Infinity)))
   })
 
-  it('should throw an error if called with a big number', () => {
+  it('should throw an error if called with a big number', function () {
     assert.throws(() => lgamma(math.bignumber(0)))
   })
 
-  it('should throw an error if called with invalid number of arguments', () => {
+  it('should throw an error if called with invalid number of arguments', function () {
     assert.throws(() => lgamma())
     assert.throws(() => lgamma(1, 3))
   })
 
-  it('should throw an error if called with invalid type of argument', () => {
+  it('should throw an error if called with invalid type of argument', function () {
     assert.throws(() => lgamma(new Date()))
     assert.throws(() => lgamma('a string'))
   })
 
-  it('should LaTeX lgamma', () => {
+  it('should LaTeX lgamma', function () {
     const expression = math.parse('lgamma(2.5)')
     assert.strictEqual(expression.toTex(), '\\ln\\Gamma\\left(2.5\\right)')
   })

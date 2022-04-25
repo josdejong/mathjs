@@ -140,7 +140,7 @@ describe('FunctionAssignmentNode', function () {
       return toObject(scope)
     }
     outputScope.rawArgs = true
-    math.import({ outputScope: outputScope }, { override: true })
+    math.import({ outputScope }, { override: true })
 
     // f(x) = outputScope(x)
     const x = new SymbolNode('x')
@@ -149,7 +149,7 @@ describe('FunctionAssignmentNode', function () {
 
     const scope = { a: 2 }
     const f = n.evaluate(scope)
-    assert.deepStrictEqual(f(3), { a: 2, f: f, x: 3 })
+    assert.deepStrictEqual(f(3), { a: 2, f, x: 3 })
   })
 
   it('should pass function arguments in scope to functions with rawArgs returned by another function', function () {
@@ -163,8 +163,8 @@ describe('FunctionAssignmentNode', function () {
     }
 
     math.import({
-      outputScope: outputScope,
-      returnOutputScope: returnOutputScope
+      outputScope,
+      returnOutputScope
     }, { override: true })
 
     // f(x, y) = returnOutputScope(x)(y)
@@ -185,7 +185,7 @@ describe('FunctionAssignmentNode', function () {
       return toObject(scope)
     }
     outputScope.transform.rawArgs = true
-    math.import({ outputScope: outputScope }, { override: true })
+    math.import({ outputScope }, { override: true })
 
     // f(x) = outputScope(x)
     const x = new SymbolNode('x')
@@ -216,7 +216,7 @@ describe('FunctionAssignmentNode', function () {
     assert.deepStrictEqual(myFunc([1, 2, 3], 10), [10, 20, 30])
   })
 
-  it('should evaluate a function passed as a parameter', () => {
+  it('should evaluate a function passed as a parameter', function () {
     const applicator = math.evaluate('applicator(f,x) = f(x)')
     assert.strictEqual(applicator(math.exp, 1), math.e)
     const repeater = math.evaluate('repeater(f,x) = f(f(x))')
@@ -433,7 +433,7 @@ describe('FunctionAssignmentNode', function () {
         { name: 'x', type: 'number' },
         { name: 'y', type: 'any' }
       ],
-      expr: expr
+      expr
     })
 
     const parsed = FunctionAssignmentNode.fromJSON(json)

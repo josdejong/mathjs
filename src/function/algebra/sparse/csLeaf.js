@@ -46,7 +46,7 @@ export function csLeaf (i, j, w, first, maxfirst, prevleaf, ancestor) {
     }
   }
   return {
-    jleaf: jleaf,
-    q: q
+    jleaf,
+    q
   }
 }
