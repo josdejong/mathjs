@@ -152,6 +152,9 @@ Chaining examples
 
   const r = math.chain(-0.483).round([0, 1, 2]).floor().add(0.52).fix(1).done()
   assert.deepStrictEqual(r, [0.5, -0.4, -0.4])
+
+  expectTypeOf(math.chain('x + y').resolve({ x: 1 }).done()).toMatchTypeOf<any>()
+  expectTypeOf(math.chain('x + y').resolve().done()).toMatchTypeOf<any>()
 }
 
 /*

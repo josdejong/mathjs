@@ -4138,7 +4138,7 @@ declare namespace math {
      *  Replaces variable nodes with their scoped values
      * @param scope Scope to read/write variables
      */
-    resolve(scope: Record<string, any>): MathJsChain;
+    resolve(scope?: Record<string, any>): MathJsChain;
 
     /*************************************************************************
      * Algebra functions
