@@ -338,22 +338,27 @@ describe('import', function () {
     })
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should import a factory with name', function () {
     // TODO: unit test importing a factory
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should import a factory with path', function () {
     // TODO: unit test importing a factory
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should import a factory without name', function () {
     // TODO: unit test importing a factory
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should pass the namespace to a factory function', function () {
     // TODO: unit test importing a factory
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should import an Array', function () {
     // TODO: unit test importing an Array containing stuff
   })

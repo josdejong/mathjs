@@ -26,6 +26,7 @@ module.exports = {
         'plugin:mocha/recommended'
       ],
       rules: {
+        'mocha/no-skipped-tests': 'error',
         'mocha/no-setup-in-describe': 'off',
         'mocha/no-identical-title': 'off' // TODO: Remove this
       }

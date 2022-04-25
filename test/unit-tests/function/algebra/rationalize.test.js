@@ -122,6 +122,7 @@ describe('rationalize', function () {
     assert.strictEqual(stri(math.rationalize(no)), '(-20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)')
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('processes a really complex expression', function () {
     // note this test passes but takes for ever to complete
 
