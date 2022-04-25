@@ -342,6 +342,23 @@ const m1 = math.matrix([[0, 1], [0, 0]], 'sparse')
 const m2 = math.identity(1000, 1000, 'sparse')
 ```
 
+You can also coerce an array or matrix into sparse storage format with the
+`sparse` function.
+```js
+const md = math.matrix([[0, 1], [0,0]])  // dense
+const ms = math.sparse(md)               // sparse
+```
+
+Caution: `sparse` called on a JavaScript array of _n_ plain numbers produces
+a matrix with one column and _n_ rows -- in contrast to `matrix`, which
+produces a 1-dimensional matrix object with _n_ entries, i.e., a vector
+(_not_ a 1 by _n_ "row vector" nor an _n_ by 1 "column vector", but just a plain
+vector of length _n_).
+```js
+const mv = math.matrix([0, 0, 1])  // Has size [3]
+const mc = math.sparse([0, 0, 1])  // A "column vector," has size [3, 1]
+```
+
 ## API
 
 All relevant functions in math.js support Matrices and Arrays. Functions like `math.add` and `math.subtract`, `math.sqrt` handle matrices element wise. There is a set of functions specifically for creating or manipulating matrices, such as:
