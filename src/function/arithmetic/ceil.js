@@ -3,17 +3,44 @@ import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
 import { nearlyEqual } from '../../utils/number.js'
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
-import { ceilNumber } from '../../plain/number/index.js'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12.js'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
 
 const name = 'ceil'
-const dependencies = ['typed', 'config', 'round', 'matrix', 'equalScalar']
+const dependencies = ['typed', 'config', 'round', 'matrix', 'equalScalar', 'zeros', 'DenseMatrix']
 
-export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, equalScalar }) => {
+export const createCeilNumber = /* #__PURE__ */ factory(
+  name, ['typed', 'config', 'round'], ({ typed, config, round }) => {
+    return typed(name, {
+      number: function (x) {
+        if (nearlyEqual(x, round(x), config.epsilon)) {
+          return round(x)
+        } else {
+          return Math.ceil(x)
+        }
+      },
+
+      'number, number': function (x, n) {
+        if (nearlyEqual(x, round(x, n), config.epsilon)) {
+          return round(x, n)
+        } else {
+          let [number, exponent] = `${x}e`.split('e')
+          const result = Math.ceil(Number(`${number}e${Number(exponent) + n}`));
+          [number, exponent] = `${result}e`.split('e')
+          return Number(`${number}e${Number(exponent) - n}`)
+        }
+      }
+    })
+  }
+)
+
+export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix }) => {
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
   const algorithm14 = createAlgorithm14({ typed })
 
+  const ceilNumber = createCeilNumber({ typed, config, round })
   /**
    * Round a value towards plus infinity
    * If `x` is complex, both real and imaginary part are rounded towards plus infinity.
@@ -52,24 +79,8 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   return typed('ceil', {
-    number: function (x) {
-      if (nearlyEqual(x, round(x), config.epsilon)) {
-        return round(x)
-      } else {
-        return ceilNumber(x)
-      }
-    },
-
-    'number, number': function (x, n) {
-      if (nearlyEqual(x, round(x, n), config.epsilon)) {
-        return round(x, n)
-      } else {
-        let [number, exponent] = `${x}e`.split('e')
-        const result = Math.ceil(Number(`${number}e${Number(exponent) + n}`));
-        [number, exponent] = `${result}e`.split('e')
-        return Number(`${number}e${Number(exponent) - n}`)
-      }
-    },
+    number: ceilNumber.signatures.number,
+    'number,number': ceilNumber.signatures['number,number'],
 
     Complex: function (x) {
       return x.ceil()
@@ -77,6 +88,10 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     'Complex, number': function (x, n) {
       return x.ceil(n)
+    },
+
+    'Complex, BigNumber': function (x, n) {
+      return x.ceil(n.toNumber())
     },
 
     BigNumber: function (x) {
@@ -103,12 +118,16 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return x.ceil(n)
     },
 
+    'Fraction, BigNumber': function (x, n) {
+      return x.ceil(n.toNumber())
+    },
+
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since ceil(0) = 0
       return deepMap(x, this, true)
     },
 
-    'Array | Matrix, number': function (x, n) {
+    'Array, number | BigNumber': function (x, n) {
       // deep map collection, skip zeros since ceil(0) = 0
       return deepMap(x, i => this(i, n), true)
     },
@@ -121,9 +140,17 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return algorithm14(x, y, this, false)
     },
 
-    'number | Complex | BigNumber, Array': function (x, y) {
+    'number | Complex | Fraction | BigNumber, Array': function (x, y) {
       // use matrix implementation
       return algorithm14(matrix(y), x, this, true).valueOf()
+    },
+
+    'number | Complex | Fraction | BigNumber, Matrix': function (x, y) {
+      if (equalScalar(x, 0)) return zeros(y.size(), y.storage())
+      if (y.storage() === 'dense') {
+        return algorithm14(y, x, this, true)
+      }
+      return algorithm12(y, x, this, true)
     }
   })
 })

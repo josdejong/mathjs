@@ -59,6 +59,7 @@ describe('ceil', function () {
     assert.deepStrictEqual(ceil(bignumber(-1.3), 4), bignumber(-1.3))
     assert.deepStrictEqual(ceil(bignumber(-1.8), 0), bignumber(-1))
     assert.deepStrictEqual(ceil(bignumber(-1.315), 2), bignumber(-1.31))
+    assert.deepStrictEqual(ceil(bignumber(-1.315), bignumber(2)), bignumber(-1.31))
     assert.deepStrictEqual(ceil(bignumber(-2), 0), bignumber(-2))
     assert.deepStrictEqual(ceil(bignumber(-2.1), 0), bignumber(-2))
   })
@@ -75,6 +76,7 @@ describe('ceil', function () {
     approx.deepEqual(ceil(complex(1.3, 1.8), 0), complex(2, 2))
     approx.deepEqual(ceil(complex(1.3, 1.8), 1), complex(1.3, 1.8))
     approx.deepEqual(ceil(complex(1.315, 1.878), 2), complex(1.32, 1.88))
+    approx.deepEqual(ceil(complex(1.315, 1.878), bignumber(2)), complex(1.32, 1.88))
     approx.deepEqual(ceil(i, 0), complex(0, 1))
     approx.deepEqual(ceil(i, 4), complex(0, 1))
     approx.deepEqual(ceil(complex(-1.3, -1.8), 0), complex(-1, -1))
@@ -110,6 +112,7 @@ describe('ceil', function () {
     assert.strictEqual(ceil(fraction(0), 3).toString(), '0')
     assert.strictEqual(ceil(fraction(1), 4).toString(), '1')
     assert.strictEqual(ceil(fraction(1.315), 2).toString(), '1.32')
+    assert.strictEqual(ceil(fraction(1.315), bignumber(2)).toString(), '1.32')
     assert.strictEqual(ceil(fraction(-1), 0).toString(), '-1')
     assert.strictEqual(ceil(fraction(-1.315), 2).toString(), '-1.31')
   })
@@ -150,7 +153,7 @@ describe('ceil', function () {
   })
 
   it('should throw an error if requested number of decimals is incorrect', function () {
-    assert.throws(function () { ceil(2.5, 1.5) }, TypeError, 'Number of decimals in function round must be an integer')
+    assert.throws(function () { ceil(2.5, 1.5) }, Error, 'Number of decimals in function round must be an integer')
     assert.throws(function () { ceil(2.5, -2) }, Error, ' Number of decimals in function round must be in the range of 0-15')
     assert.throws(function () { ceil(2.5, Infinity) }, Error, ' Number of decimals in function round must be in the range of 0-15')
   })
@@ -170,10 +173,17 @@ describe('ceil', function () {
   it('should ceil each element in a matrix with a given number of decimals', function () {
     approx.deepEqual(ceil([1.282, 3.415, -5.121, -10.128], 2), [1.29, 3.42, -5.12, -10.12])
     approx.deepEqual(ceil(matrix([1.282, 3.415, -5.121, -10.128]), 2), matrix([1.29, 3.42, -5.12, -10.12]))
+    approx.deepEqual(ceil(matrix([1.282, 3.415, -5.121, -10.128]), bignumber(2)), matrix(bignumber([1.29, 3.42, -5.12, -10.12])))
   })
 
   it('should ceil when number of decimals is provided in an array', function () {
     assert.deepStrictEqual(ceil(3.12385, [2, 3]), [3.13, 3.124])
+  })
+
+  it('should ceil when number of decimals is provided in a matrix', function () {
+    assert.deepStrictEqual(ceil(3.12385, matrix([2, 3])), matrix([3.13, 3.124]))
+    assert.deepStrictEqual(ceil(0, matrix([2, 9, 12])), matrix([0, 0, 0]))
+    assert.deepStrictEqual(ceil(3.12385, sparse([0, 4])), matrix([[4], [3.1239]]))
   })
 
   it('should ceil dense matrix', function () {

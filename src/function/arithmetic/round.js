@@ -1,6 +1,5 @@
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
-import { isInteger } from '../../utils/number.js'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12.js'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
@@ -59,7 +58,15 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   return typed(name, {
-    ...roundNumberSignatures,
+    number: roundNumber,
+
+    'number, number': roundNumber,
+
+    'number, BigNumber': function (x, n) {
+      if (!n.isInteger()) { throw new TypeError(NO_INT) }
+
+      return new BigNumber(x).toDecimalPlaces(n.toNumber())
+    },
 
     Complex: function (x) {
       return x.round()
@@ -76,12 +83,6 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
       const _n = n.toNumber()
       return x.round(_n)
-    },
-
-    'number, BigNumber': function (x, n) {
-      if (!n.isInteger()) { throw new TypeError(NO_INT) }
-
-      return new BigNumber(x).toDecimalPlaces(n.toNumber())
     },
 
     BigNumber: function (x) {
@@ -103,6 +104,11 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return x.round(n)
     },
 
+    'Fraction, BigNumber': function (x, n) {
+      if (!n.isInteger()) { throw new TypeError(NO_INT) }
+      return x.round(n.toNumber())
+    },
+
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since round(0) = 0
       return deepMap(x, this, true)
@@ -116,7 +122,12 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return algorithm14(x, y, this, false)
     },
 
-    'number | Complex | BigNumber, SparseMatrix': function (x, y) {
+    'Array, number | BigNumber': function (x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(x), y, this, false).valueOf()
+    },
+
+    'number | Complex | BigNumber | Fraction, SparseMatrix': function (x, y) {
       // check scalar is zero
       if (equalScalar(x, 0)) {
         // do not execute algorithm, result will be a zero matrix
@@ -125,7 +136,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return algorithm12(y, x, this, true)
     },
 
-    'number | Complex | BigNumber, DenseMatrix': function (x, y) {
+    'number | Complex | BigNumber | Fraction, DenseMatrix': function (x, y) {
       // check scalar is zero
       if (equalScalar(x, 0)) {
         // do not execute algorithm, result will be a zero matrix
@@ -134,29 +145,9 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return algorithm14(y, x, this, true)
     },
 
-    'Array, number | BigNumber': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
-    },
-
-    'number | Complex | BigNumber, Array': function (x, y) {
+    'number | Complex | BigNumber | Fraction, Array': function (x, y) {
       // use matrix implementation
       return algorithm14(matrix(y), x, this, true).valueOf()
     }
   })
-})
-
-const roundNumberSignatures = {
-  number: roundNumber,
-
-  'number, number': function (x, n) {
-    if (!isInteger(n)) { throw new TypeError(NO_INT) }
-    if (n < 0 || n > 15) { throw new Error('Number of decimals in function round must be in the range of 0-15') }
-
-    return roundNumber(x, n)
-  }
-}
-
-export const createRoundNumber = /* #__PURE__ */ factory(name, ['typed'], ({ typed }) => {
-  return typed(name, roundNumberSignatures)
 })

@@ -20,7 +20,6 @@ import {
   bitOrNumber,
   bitXorNumber,
   cbrtNumber,
-  ceilNumber,
   combinationsNumber,
   coshNumber,
   cosNumber,
@@ -32,8 +31,6 @@ import {
   divideNumber,
   expm1Number,
   expNumber,
-  fixNumber,
-  floorNumber,
   gammaNumber,
   gcdNumber,
   isIntegerNumber,
@@ -52,10 +49,12 @@ import {
   multiplyNumber,
   normNumber,
   notNumber,
+  nthRootNumber,
   orNumber,
   powNumber,
   rightArithShiftNumber,
   rightLogShiftNumber,
+  roundNumber,
   sechNumber,
   secNumber,
   signNumber,
@@ -102,12 +101,12 @@ export const createUnaryPlus = /* #__PURE__ */ createNumberFactory('unaryPlus', 
 export const createAbs = /* #__PURE__ */ createNumberFactory('abs', absNumber)
 export const createAddScalar = /* #__PURE__ */ createNumberFactory('addScalar', addNumber)
 export const createCbrt = /* #__PURE__ */ createNumberFactory('cbrt', cbrtNumber)
-export const createCeil = /* #__PURE__ */ createNumberFactory('ceil', ceilNumber)
+export { createCeilNumber as createCeil } from './function/arithmetic/ceil.js'
 export const createCube = /* #__PURE__ */ createNumberFactory('cube', cubeNumber)
 export const createExp = /* #__PURE__ */ createNumberFactory('exp', expNumber)
 export const createExpm1 = /* #__PURE__ */ createNumberFactory('expm1', expm1Number)
-export const createFix = /* #__PURE__ */ createNumberFactory('fix', fixNumber)
-export const createFloor = /* #__PURE__ */ createNumberFactory('floor', floorNumber)
+export { createFixNumber as createFix } from './function/arithmetic/fix.js'
+export { createFloorNumber as createFloor } from './function/arithmetic/floor.js'
 export const createGcd = /* #__PURE__ */ createNumberFactory('gcd', gcdNumber)
 export const createLcm = /* #__PURE__ */ createNumberFactory('lcm', lcmNumber)
 export const createLog10 = /* #__PURE__ */ createNumberFactory('log10', log10Number)
@@ -115,7 +114,8 @@ export const createLog2 = /* #__PURE__ */ createNumberFactory('log2', log2Number
 export const createMod = /* #__PURE__ */ createNumberFactory('mod', modNumber)
 export const createMultiplyScalar = /* #__PURE__ */ createNumberFactory('multiplyScalar', multiplyNumber)
 export const createMultiply = /* #__PURE__ */ createNumberFactory('multiply', multiplyNumber)
-export { createNthRootNumber as createNthRoot } from './function/arithmetic/nthRoot.js'
+export const createNthRoot = /* #__PURE__ */
+  createNumberOptionalSecondArgFactory('nthRoot', nthRootNumber)
 export const createSign = /* #__PURE__ */ createNumberFactory('sign', signNumber)
 export const createSqrt = /* #__PURE__ */ createNumberFactory('sqrt', sqrtNumber)
 export const createSquare = /* #__PURE__ */ createNumberFactory('square', squareNumber)
@@ -123,7 +123,8 @@ export const createSubtract = /* #__PURE__ */ createNumberFactory('subtract', su
 export const createXgcd = /* #__PURE__ */ createNumberFactory('xgcd', xgcdNumber)
 export const createDivideScalar = /* #__PURE__ */ createNumberFactory('divideScalar', divideNumber)
 export const createPow = /* #__PURE__ */ createNumberFactory('pow', powNumber)
-export { createRoundNumber as createRound } from './function/arithmetic/round.js'
+export const createRound = /* #__PURE__ */
+  createNumberOptionalSecondArgFactory('round', roundNumber)
 export const createLog = /* #__PURE__ */
   createNumberOptionalSecondArgFactory('log', logNumber)
 export const createLog1p = /* #__PURE__ */ createNumberFactory('log1p', log1pNumber)
