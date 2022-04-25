@@ -206,6 +206,29 @@ describe('AccessorNode', function () {
     assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
   })
 
+  it('should use the inner context when using "end" in a nested index', function () {
+    // A[B[end]]
+    const node = new AccessorNode(
+      new SymbolNode('A'),
+      new IndexNode([
+        new AccessorNode(
+          new SymbolNode('B'),
+          new IndexNode([
+            new SymbolNode('end')
+          ])
+        )
+      ])
+    )
+
+    // here, end should resolve to the end of B, which is 3 (whilst the end of A is 6)
+    const expr = node.compile()
+    const scope = {
+      A: [4, 5, 6, 7, 8, 9],
+      B: [1, 2, 3]
+    }
+    assert.deepStrictEqual(expr.evaluate(scope), 6)
+  })
+
   it('should give a proper error message when using "end" inside the index of an object', function () {
     const obj = new SymbolNode('value')
     const index = new IndexNode([
