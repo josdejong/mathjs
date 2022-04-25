@@ -17,7 +17,7 @@ describe('lib/esm', function () {
     const filename = path.join(__dirname, 'esmAppNumberOnly.mjs')
     cp.exec('node ' + filename, function (error, result) {
       assert.strictEqual(error, null)
-      assert.strictEqual(result, '2\nNaN\n2\n4\n')
+      assert.strictEqual(result, '2\nNaN\n2\n4\n7\n')
       done()
     })
   })
