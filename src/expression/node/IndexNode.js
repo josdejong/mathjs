@@ -71,73 +71,29 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
     //       we can beforehand resolve the zero-based value
 
     // optimization for a simple object property
-    const evalDimensions = map(this.dimensions, function (range, i) {
-      if (isRangeNode(range)) {
-        if (range.needsEnd()) {
-          // create a range containing end (like '4:end')
-          const childArgNames = Object.create(argNames)
-          childArgNames.end = true
+    const evalDimensions = map(this.dimensions, function (dimension, i) {
+      const needsEnd = dimension
+        .filter(node => node.isSymbolNode && node.name === 'end')
+        .length > 0
 
-          const evalStart = range.start._compile(math, childArgNames)
-          const evalEnd = range.end._compile(math, childArgNames)
-          const evalStep = range.step
-            ? range.step._compile(math, childArgNames)
-            : function () { return 1 }
+      if (needsEnd) {
+        // SymbolNode 'end' is used inside the index,
+        // like in `A[end]` or `A[end - 2]`
+        const childArgNames = Object.create(argNames)
+        childArgNames.end = true
 
-          return function evalDimension (scope, args, context) {
-            const s = size(context).valueOf()
-            const childArgs = Object.create(args)
-            childArgs.end = s[i]
+        const _evalDimension = dimension._compile(math, childArgNames)
 
-            return createRange(
-              evalStart(scope, childArgs, context),
-              evalEnd(scope, childArgs, context),
-              evalStep(scope, childArgs, context)
-            )
-          }
-        } else {
-          // create range
-          const evalStart = range.start._compile(math, argNames)
-          const evalEnd = range.end._compile(math, argNames)
-          const evalStep = range.step
-            ? range.step._compile(math, argNames)
-            : function () { return 1 }
+        return function evalDimension (scope, args, context) {
+          const s = size(context).valueOf()
+          const childArgs = Object.create(args)
+          childArgs.end = s[i]
 
-          return function evalDimension (scope, args, context) {
-            return createRange(
-              evalStart(scope, args, context),
-              evalEnd(scope, args, context),
-              evalStep(scope, args, context)
-            )
-          }
+          return _evalDimension(scope, childArgs, context)
         }
       } else {
-        const needsEnd = range
-          .filter(node => node.isSymbolNode && node.name === 'end')
-          .length > 0
-
-        if (needsEnd) {
-          // SymbolNode 'end' is used inside the index,
-          // like in `A[end]` or `A[end - 2]`
-          const childArgNames = Object.create(argNames)
-          childArgNames.end = true
-
-          const evalRange = range._compile(math, childArgNames)
-
-          return function evalDimension (scope, args, context) {
-            const s = size(context).valueOf()
-            const childArgs = Object.create(args)
-            childArgs.end = s[i]
-
-            return evalRange(scope, childArgs, context)
-          }
-        } else {
-          // SymbolNode `end` not used
-          const evalRange = range._compile(math, argNames)
-          return function evalDimension (scope, args, context) {
-            return evalRange(scope, args, context)
-          }
-        }
+        // SymbolNode `end` not used
+        return dimension._compile(math, argNames)
       }
     })
 
