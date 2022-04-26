@@ -668,7 +668,7 @@ Function ceil examples
     math.fraction(6286, 1000),
   ])
 
-  // @ts-expect-error ... Should throw runtime error, array - array is (currently) undefined
+  // @ts-expect-error ... array - array is (currently) undefined
   assert.throws(() => math.ceil([3.21, 3.82], [1, 2]), TypeError)
 }
 
@@ -744,7 +744,7 @@ Function fix examples
     math.fraction(6285, 1000),
   ])
 
-  // @ts-expect-error ... Should throw runtime error, array - array is (currently) undefined
+  // @ts-expect-error ... array - array is (currently) undefined
   assert.throws(() => math.fix([3.21, 3.82], [1, 2]), TypeError)
 }
 
@@ -820,7 +820,7 @@ Function floor examples
     math.fraction(6285, 1000),
   ])
 
-  // @ts-expect-error ... Should throw runtime error, array - array is (currently) undefined
+  // @ts-expect-error ... array - array is (currently) undefined
   assert.throws(() => math.floor([3.21, 3.82], [1, 2]), TypeError)
 }
 
@@ -896,7 +896,7 @@ Function round examples
     math.fraction(6286, 1000),
   ])
 
-  // @ts-expect-error ... Should throw runtime error, array - array is (currently) undefined
+  // @ts-expect-error ... array - array is (currently) undefined
   assert.throws(() => math.round([3.21, 3.82], [1, 2]), TypeError)
 }
 
