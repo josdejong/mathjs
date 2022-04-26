@@ -15,7 +15,7 @@ describe('dependencies', function () {
     assert.strictEqual(pi, Math.PI)
   })
 
-  it('should create functions from with config', function () {
+  it('should create functions with config', function () {
     const config = { number: 'BigNumber' }
     const { pi } = create({
       piDependencies
