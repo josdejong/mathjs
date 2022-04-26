@@ -756,34 +756,35 @@ declare module 'mathjs' {
   expectTypeOf(math.testFun()).toMatchTypeOf<number>()
 
   expectTypeOf(math.import({
-    myvalue1: 42,
+    myvalue: 42,
     myFunc: (name: string) => `myFunc ${name}`
   })).toMatchTypeOf<void>()
 
   expectTypeOf(math.import({
-    myvalue2: 42
+    myvalue: 42,
+    myFunc: (name: string) => `myFunc ${name}`
   }, {
     override: true
   })).toMatchTypeOf<void>()
 
   expectTypeOf(math.import({
-    myvalue3: 42
+    myvalue2: 42
   }, {
     silent: true
   })).toMatchTypeOf<void>()
 
   expectTypeOf(math.import({
-    myvalue4: 42
+    myvalue3: 42
   }, {
     wrap: true
   })).toMatchTypeOf<void>()
 
   expectTypeOf(math.import({
-    myvalue5: 42,
+    myvalue4: 42,
   })).toMatchTypeOf<void>()
 
   expectTypeOf(math.import([{
-    myvalue6: 42,
+    myvalue5: 42,
   }, {
     myFunc2: (name: string) => `myFunc2 ${name}`
   }])).toMatchTypeOf<void>()
