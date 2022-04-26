@@ -338,11 +338,7 @@ export function splitNumber (value) {
     exponent++
   }
 
-  return {
-    sign,
-    coefficients,
-    exponent
-  }
+  return { sign, coefficients, exponent }
 }
 
 /**

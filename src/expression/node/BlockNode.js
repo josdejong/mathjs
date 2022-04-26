@@ -32,10 +32,7 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
       if (!isNode(node)) throw new TypeError('Property "node" must be a Node')
       if (typeof visible !== 'boolean') throw new TypeError('Property "visible" must be a boolean')
 
-      return {
-        node,
-        visible
-      }
+      return { node, visible }
     })
   }
 

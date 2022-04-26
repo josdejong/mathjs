@@ -538,10 +538,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (hasOwnProperty(UNITS, str)) {
       const unit = UNITS[str]
       const prefix = unit.prefixes['']
-      return {
-        unit,
-        prefix
-      }
+      return { unit, prefix }
     }
 
     for (const name in UNITS) {
@@ -555,10 +552,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
             : undefined
           if (prefix !== undefined) {
             // store unit, prefix, and value
-            return {
-              unit,
-              prefix
-            }
+            return { unit, prefix }
           }
         }
       }

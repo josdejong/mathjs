@@ -45,8 +45,5 @@ export function csLeaf (i, j, w, first, maxfirst, prevleaf, ancestor) {
       w[ancestor + s] = q
     }
   }
-  return {
-    jleaf,
-    q
-  }
+  return { jleaf, q }
 }

@@ -620,10 +620,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     while (state.token === '\n' || state.token === ';') { // eslint-disable-line no-unmodified-loop-condition
       if (blocks.length === 0 && node) {
         visible = (state.token !== ';')
-        blocks.push({
-          node,
-          visible
-        })
+        blocks.push({ node, visible })
       }
 
       getToken(state)
@@ -632,10 +629,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         node.comment = state.comment
 
         visible = (state.token !== ';')
-        blocks.push({
-          node,
-          visible
-        })
+        blocks.push({ node, visible })
       }
     }
 
