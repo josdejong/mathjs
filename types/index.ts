@@ -289,6 +289,7 @@ Expressions examples
 
   // define a function as an expression
   {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const scope: any = {
       a: 3,
       b: 4,

@@ -19,10 +19,12 @@ declare namespace math {
   type MathType = MathNumericType | Unit | MathCollection
   type MathExpression = string | string[] | MathCollection
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type FactoryFunction<T> = (scope: any) => T
 
   // FactoryFunctionMap can be nested; all nested objects will be flattened
   interface FactoryFunctionMap {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: FactoryFunction<any> | FactoryFunctionMap
   }
 
@@ -225,6 +227,7 @@ declare namespace math {
   interface ConstantNode extends MathNodeCommon {
     type: 'ConstantNode'
     isConstantNode: true
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any
   }
 
@@ -393,6 +396,7 @@ declare namespace math {
      */
     // null: number;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     uninitialized: any
     version: string
 
@@ -401,6 +405,7 @@ declare namespace math {
     /**
      * Returns reviver function that can be used as reviver in JSON.parse function.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     reviver(): (key: any, value: any) => any
 
     /*************************************************************************
@@ -434,7 +439,9 @@ declare namespace math {
      */
     typed: (
       name: string,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       signatures: Record<string, (...args: any[]) => any>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => (...args: any[]) => any
 
     /*************************************************************************
@@ -478,6 +485,7 @@ declare namespace math {
      * operation.
      * @returns The created chain
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     chain(value?: any): MathJsChain
 
     /**
@@ -550,6 +558,7 @@ declare namespace math {
      * @param ranges Zero or more ranges or numbers.
      * @returns Returns the created index
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     index(...ranges: any[]): Index
 
     /**
@@ -672,6 +681,7 @@ declare namespace math {
     evaluate(
       expr: MathExpression | MathExpression[] | Matrix,
       scope?: object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): any
 
     /**
@@ -680,6 +690,7 @@ declare namespace math {
      * @param search A function or function name for which to get help
      * @returns A help object
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     help(search: () => any): Help
 
     /**
@@ -1688,7 +1699,9 @@ declare namespace math {
       x: Matrix | MathArray | string[],
       test:
         | ((
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             value: any,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             index: any,
             matrix: Matrix | MathArray | string[]
           ) => boolean)
@@ -1712,6 +1725,7 @@ declare namespace math {
      */
     forEach<T extends Matrix | MathArray>(
       x: T,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback: (value: any, index: any, matrix: T) => void
     ): void
 
@@ -1741,6 +1755,7 @@ declare namespace math {
      */
     map<T extends Matrix | MathArray>(
       x: T,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback: (value: any, index: any, matrix: T) => MathType | string
     ): T
 
@@ -1773,7 +1788,9 @@ declare namespace math {
     partitionSelect(
       x: MathCollection,
       k: number,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       compare?: 'asc' | 'desc' | ((a: any, b: any) => number)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): any
 
     /**
@@ -1873,6 +1890,7 @@ declare namespace math {
      */
     sort<T extends Matrix | MathArray>(
       x: T,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       compare: ((a: any, b: any) => number) | 'asc' | 'desc' | 'natural'
     ): T
 
@@ -1907,7 +1925,9 @@ declare namespace math {
     subset<T extends MathCollection | string>(
       value: T,
       index: Index,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       replacement?: any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       defaultValue?: any
     ): T
 
@@ -2091,6 +2111,7 @@ declare namespace math {
      * @returns Returns the result of the comparison: 1 when x > y, -1 when
      * x < y, and 0 when x == y.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     compareNatural(x: any, y: any): number
 
     /**
@@ -2352,6 +2373,7 @@ declare namespace math {
      * @param array A single matrix or multiple scalar values.
      * @returns The median absolute deviation
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mad(array: MathCollection): any
 
     /**
@@ -2362,12 +2384,14 @@ declare namespace math {
      * @param args A single matrix or multiple scalar values
      * @returns The maximum value
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     max(...args: MathType[]): any
     /**
      * @param A A single matrix
      * @param dim The maximum over the selected dimension
      * @returns The maximum value
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     max(A: MathCollection, dim?: number): any
 
     /**
@@ -2378,12 +2402,14 @@ declare namespace math {
      * @param args A single matrix or multiple scalar values
      * @returns The mean of all values
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mean(...args: MathType[]): any
     /**
      * @param A A single matrix
      * @param dim The mean over the selected dimension
      * @returns The mean of all values
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mean(A: MathCollection, dim?: number): any
 
     /**
@@ -2396,6 +2422,7 @@ declare namespace math {
      * @param args A single matrix or or multiple scalar values
      * @returns The median
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     median(...args: MathType[]): any
 
     /**
@@ -2406,12 +2433,14 @@ declare namespace math {
      * @param args A single matrix or or multiple scalar values
      * @returns The minimum value
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     min(...args: MathType[]): any
     /**
      * @param A A single matrix
      * @param dim The minimum over the selected dimension
      * @returns The minimum value
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     min(A: MathCollection, dim?: number): any
 
     /**
@@ -2421,6 +2450,7 @@ declare namespace math {
      * @param args A single matrix
      * @returns The mode of all values
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mode(...args: MathType[]): any
 
     /**
@@ -2430,6 +2460,7 @@ declare namespace math {
      * @param args A single matrix or multiple scalar values
      * @returns The product of all values
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     prod(...args: MathType[]): any
 
     /**
@@ -2516,11 +2547,13 @@ declare namespace math {
      * @param args A single matrix or multiple scalar values
      * @returns The sum of all values
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sum(...args: Array<number | BigNumber | Fraction>): any
     /**
      * @param array A single matrix
      * @returns The sum of all values
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sum(array: MathCollection): any
 
     /**
@@ -2606,8 +2639,11 @@ declare namespace math {
      * @returns The formatted value
      */
     format(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       value: any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       options?: FormatOptions | number | ((item: any) => string),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback?: (value: any) => string
     ): string
 
@@ -2624,6 +2660,7 @@ declare namespace math {
      */
     print(
       template: string,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       values: any,
       precision?: number,
       options?: number | object
@@ -2958,6 +2995,7 @@ declare namespace math {
 
     isMatrix(x: unknown): x is Matrix
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     isCollection(x: unknown): x is Matrix | any[]
 
     isDenseMatrix(x: unknown): x is Matrix
@@ -3027,6 +3065,7 @@ declare namespace math {
      * @param x Object to be cloned
      * @returns A clone of object x
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clone(x: any): any
 
     /**
@@ -3037,6 +3076,7 @@ declare namespace math {
      * Returns false for other types.
      * Throws an error in case of unknown types.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     hasNumericValue(x: any): boolean | boolean[]
 
     /**
@@ -3079,6 +3119,7 @@ declare namespace math {
      * boolean. Returns false for other types. Throws an error in case of
      * unknown types.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     isNumeric(x: any): x is number | BigNumber | Fraction | boolean
 
     /**
@@ -3122,6 +3163,7 @@ declare namespace math {
      * case, non-primitive types are upper-camel-case. For example ‘number’,
      * ‘string’, ‘Array’, ‘Date’.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     typeOf(x: any): string
 
     /**
@@ -3154,6 +3196,7 @@ declare namespace math {
       name: string,
       dependencies: MathJsFunctionName[],
       create: (injected: Partial<MathJsStatic>) => T,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       meta?: any
     ) => FactoryFunction<T>
     all: FactoryFunctionMap
@@ -3487,29 +3530,37 @@ declare namespace math {
     datatype(): string
     create(data: MathArray, datatype?: string): void
     density(): number
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     subset(index: Index, replacement?: any, defaultValue?: any): Matrix
     apply(
       dim: number,
       callback: (array: MathCollection) => number
     ): Matrix | MathArray
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     get(index: number[]): any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     set(index: number[], value: any, defaultValue?: number | string): Matrix
     resize(size: MathCollection, defaultValue?: number | string): Matrix
     clone(): Matrix
     size(): number[]
     map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback: (a: any, b: number, c: Matrix) => any,
       skipZeros?: boolean
     ): Matrix
     forEach(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback: (a: any, b: number, c: Matrix) => void,
       skipZeros?: boolean
     ): void
     toArray(): MathArray
     valueOf(): MathArray
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     format(options?: FormatOptions | number | ((value: any) => string)): string
     toString(): string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     toJSON(): any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     diagonal(k?: number | BigNumber): any[]
     swapRows(i: number, j: number): Matrix
   }
@@ -3579,6 +3630,7 @@ declare namespace math {
   interface Unit {
     valueOf(): string
     clone(): Unit
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     hasBase(base: any): boolean
     equalBase(unit: Unit): boolean
     equals(unit: Unit): boolean
@@ -3654,6 +3706,7 @@ declare namespace math {
   interface Index {}
 
   interface EvalFunction {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     evaluate(scope?: any): any
   }
 
@@ -3698,6 +3751,7 @@ declare namespace math {
      * Compile and eval an expression, this is the equivalent of doing
      * node.compile().evaluate(scope). Example:
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     evaluate(expr?: any): any
     /**
      * Test whether this node equals an other node. Does a deep comparison
@@ -3730,6 +3784,7 @@ declare namespace math {
      * @return Returns an array with nodes for which test returned true
      */
     filter(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback: (node: MathNode, path: string, parent: MathNode) => any
     ): MathNode[]
 
@@ -3737,6 +3792,7 @@ declare namespace math {
      * [forEach description]
      */
     forEach(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback: (node: MathNode, path: string, parent: MathNode) => any
     ): MathNode[]
 
@@ -3831,20 +3887,28 @@ declare namespace math {
      */
     traverse(
       callback: (node: MathNode, path: string, parent: MathNode) => void
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): any
   }
 
   interface Parser {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     evaluate(expr: string | string[]): any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     get(variable: string): any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getAll(): { [key: string]: any }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     set: (variable: string, value: any) => void
     clear: () => void
   }
 
   interface Distribution {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     random(size: any, min?: any, max?: any): any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     randomInt(min: any, max?: any): any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     pickRandom(array: any): any
   }
 
@@ -3904,6 +3968,7 @@ declare namespace math {
   }
 
   interface MathJsChain {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     done(): any
 
     /*************************************************************************
@@ -4047,10 +4112,12 @@ declare namespace math {
      * invoking node.evaluate();
      * @param options Available options: nodes - a set of custome nodes
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parse(options?: any): MathJsChain
     /**
      * @param options Available options: nodes - a set of custome nodes
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parse(options?: any): MathJsChain
 
     /**
@@ -4676,9 +4743,8 @@ declare namespace math {
      * Filter the items in an array or one dimensional matrix.
      */
     filter(
-      test:
-        | ((value: any, index: any, matrix: Matrix | MathArray) => boolean)
-        | RegExp
+      test: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ((value: any, index: any, matrix: Matrix | MathArray) => boolean) | RegExp
     ): MathJsChain
 
     /**
@@ -4691,6 +4757,7 @@ declare namespace math {
      * callback function.
      */
     forEach(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback: (value: any, index: any, matrix: Matrix | MathArray) => void
     ): MathJsChain
 
@@ -4714,7 +4781,9 @@ declare namespace math {
      */
     map(
       callback: (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         value: any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         index: any,
         matrix: Matrix | MathArray
       ) => Matrix | MathArray
@@ -4740,6 +4809,7 @@ declare namespace math {
      */
     partitionSelect(
       k: number,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       compare?: 'asc' | 'desc' | ((a: any, b: any) => number)
     ): MathJsChain
 
@@ -4787,6 +4857,7 @@ declare namespace math {
      * b, and 0 when a == b. Default value: ‘asc’
      */
     sort(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       compare: ((a: any, b: any) => number) | 'asc' | 'desc' | 'natural'
     ): MathJsChain
 
@@ -4812,6 +4883,7 @@ declare namespace math {
      * matrix is resized. If not provided, math.matrix elements will be left
      * undefined. Default value: undefined.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     subset(index: Index, replacement?: any, defaultValue?: any): MathJsChain
 
     /**
@@ -4937,6 +5009,7 @@ declare namespace math {
      * compares in a natural way.
      * @param y Second value to compare
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     compareNatural(y: any): MathJsChain
 
     /**
@@ -5292,8 +5365,11 @@ declare namespace math {
      * @see http://mathjs.org/docs/reference/functions/format.html
      */
     format(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       value: any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       options?: FormatOptions | number | ((item: any) => string),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback?: (value: any) => string
     ): MathJsChain
 
@@ -5307,6 +5383,7 @@ declare namespace math {
      * numbers. See function math.format for a description of all options.
      */
     print(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       values: any,
       precision?: number,
       options?: number | object
@@ -5558,6 +5635,7 @@ declare namespace math {
   }
 
   interface ImportObject {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any
   }
 }
