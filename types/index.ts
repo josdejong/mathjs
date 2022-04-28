@@ -21,94 +21,48 @@ Basic usage examples
 {
   const math = create(all)
 
+  const m2by2 = [
+    [-1, 2],
+    [3, 1],
+  ]
+  const m2by3 = [
+    [1, 2, 3],
+    [4, 5, 6],
+  ]
+
   // functions and constants
   math.round(math.e, 3)
   math.round(100.123, 3)
   math.atan2(3, -3) / math.pi
   math.log(10000, 10)
   math.sqrt(-4)
-  math.pow(
-    [
-      [-1, 2],
-      [3, 1],
-    ],
-    2
-  )
+
+  math.pow(m2by2, 2)
   const angle = 0.2
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
 
   // std and variance check
+
   math.std(1, 2, 3)
   math.std([1, 2, 3])
   math.std([1, 2, 3], 'biased')
   math.std([1, 2, 3], 0, 'biased')
-  math.std(
-    [
-      [1, 2, 3],
-      [4, 5, 6],
-    ],
-    1,
-    'unbiased'
-  )
-  math.std(
-    [
-      [1, 2, 3],
-      [4, 5, 6],
-    ],
-    1,
-    'uncorrected'
-  )
+  math.std(m2by3, 1, 'unbiased')
+  math.std(m2by3, 1, 'uncorrected')
   math.variance(1, 2, 3)
   math.variance([1, 2, 3])
   math.variance([1, 2, 3], 'biased')
   math.variance([1, 2, 3], 0, 'biased')
-  math.variance(
-    [
-      [1, 2, 3],
-      [4, 5, 6],
-    ],
-    1,
-    'unbiased'
-  )
-  math.variance(
-    [
-      [1, 2, 3],
-      [4, 5, 6],
-    ],
-    1,
-    'uncorrected'
-  )
+  math.variance(m2by3, 1, 'unbiased')
+  math.variance(m2by3, 1, 'uncorrected')
 
   // std and variance on chain
   math.chain([1, 2, 3]).std('unbiased')
-  math
-    .chain([
-      [1, 2, 3],
-      [4, 5, 6],
-    ])
-    .std(0, 'biased')
-    .std(0, 'uncorrected')
-  math
-    .chain([
-      [1, 2, 3],
-      [4, 5, 6],
-    ])
-    .std(0, 'biased')
-    .std(0, 'uncorrected')
+  math.chain(m2by3).std(0, 'biased').std(0, 'uncorrected')
+  math.chain(m2by3).std(0, 'biased').std(0, 'uncorrected')
   math.chain([1, 2, 3]).std('unbiased')
-  math
-    .chain([
-      [1, 2, 3],
-      [4, 5, 6],
-    ])
-    .variance(0, 'biased')
-  math
-    .chain([
-      [1, 2, 3],
-      [4, 5, 6],
-    ])
-    .variance(1, 'uncorrected')
-    .variance('unbiased')
+  math.chain(m2by3).variance(0, 'biased')
+  math.chain(m2by3).variance(1, 'uncorrected').variance('unbiased')
 
   // expressions
   math.evaluate('1.2 * (2 + 4.5)')
