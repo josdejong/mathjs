@@ -126,6 +126,9 @@ Chaining examples
       .done(),
     [2, 3]
   );
+
+  const r = math.chain(-0.483).round([0,1,2]).floor().add(0.52).fix(1).done();
+  assert.deepStrictEqual(r, [0.5, -0.4, -0.4]);
 }
 
 /*
@@ -503,6 +506,110 @@ Expression tree examples
 }
 
 /*
+Function ceil examples
+*/
+{
+  const math = create(all, {});
+
+  // number input
+  assert.strictEqual(math.ceil(3.2), 4);
+  assert.strictEqual(math.ceil(-4.2), -4);
+
+  // number input
+  // roundoff result to 2 decimals
+  assert.strictEqual(math.ceil(3.212, 2), 3.22);
+  assert.deepStrictEqual(math.ceil(3.212, math.bignumber(2)), math.bignumber(3.22));
+  assert.strictEqual(math.ceil(-4.212, 2), -4.21);
+
+  // bignumber input
+  assert.deepStrictEqual(math.ceil(math.bignumber(3.212)), math.bignumber(4))
+  assert.deepStrictEqual(math.ceil(math.bignumber(3.212), 2), math.bignumber(3.22))
+  assert.deepStrictEqual(math.ceil(math.bignumber(3.212), math.bignumber(2)), math.bignumber(3.22))
+
+  // fraction input
+  assert.deepStrictEqual(math.ceil(math.fraction(44,7)), math.fraction(7))
+  assert.deepStrictEqual(math.ceil(math.fraction(-44,7)), math.fraction(-6))
+  assert.deepStrictEqual(math.ceil(math.fraction(44,7), 2), math.fraction(629,100))
+  assert.deepStrictEqual(math.ceil(math.fraction(44,7), math.bignumber(2)), math.fraction(629,100))
+
+  // Complex input
+  const c = math.complex(3.24, -2.71);
+  assert.deepStrictEqual(math.ceil(c), math.complex(4, -2));
+  assert.deepStrictEqual(math.ceil(c, 1), math.complex(3.3, -2.7));
+  assert.deepStrictEqual(math.ceil(c, math.bignumber(1)), math.complex(3.3, -2.7));
+
+  // array input
+  assert.deepStrictEqual(math.ceil([3.2, 3.8, -4.7]), [4, 4, -4]);
+  assert.deepStrictEqual(math.ceil([3.21, 3.82, -4.71], 1), [3.3, 3.9, -4.7]);
+  assert.deepStrictEqual(math.ceil([3.21, 3.82, -4.71], math.bignumber(1)),
+    math.bignumber([3.3, 3.9, -4.7]));
+
+  // numeric input, array or matrix of decimals
+  let numCeiled: math.MathArray = math.ceil(math.tau, [2, 3])
+  assert.deepStrictEqual(numCeiled, [6.29, 6.284]);
+  let bigCeiled: math.Matrix = math.ceil(math.bignumber(6.28318), math.matrix([2, 3]));
+  assert.deepStrictEqual(bigCeiled, math.matrix(math.bignumber([6.29, 6.284])));
+  assert.deepStrictEqual(math.ceil(math.fraction(44, 7), [2, 3]),
+    [math.fraction(629, 100), math.fraction(6286, 1000)]);
+
+  // array - array is (currently) undefined
+  //@ts-expect-error
+  assert.throws(() => math.ceil([3.21, 3.82], [1, 2]), TypeError);
+}
+
+/*
+Function fix examples
+*/
+{
+  const math = create(all, {});
+
+  // number input
+  assert.strictEqual(math.fix(3.2), 3);
+  assert.strictEqual(math.fix(-4.2), -4);
+
+  // number input
+  // roundoff result to 2 decimals
+  assert.strictEqual(math.fix(3.212, 2), 3.21);
+  assert.deepStrictEqual(math.fix(3.212, math.bignumber(2)), math.bignumber(3.21));
+  assert.strictEqual(math.fix(-4.212, 2), -4.21);
+
+  // bignumber input
+  assert.deepStrictEqual(math.fix(math.bignumber(3.212)), math.bignumber(3))
+  assert.deepStrictEqual(math.fix(math.bignumber(3.212), 2), math.bignumber(3.21))
+  assert.deepStrictEqual(math.fix(math.bignumber(3.212), math.bignumber(2)), math.bignumber(3.21))
+
+  // fraction input
+  assert.deepStrictEqual(math.fix(math.fraction(44,7)), math.fraction(6))
+  assert.deepStrictEqual(math.fix(math.fraction(-44,7)), math.fraction(-6))
+  assert.deepStrictEqual(math.fix(math.fraction(44,7), 2), math.fraction(628,100))
+  assert.deepStrictEqual(math.fix(math.fraction(44,7), math.bignumber(2)), math.fraction(628,100))
+
+  // Complex input
+  const c = math.complex(3.24, -2.71);
+  assert.deepStrictEqual(math.fix(c), math.complex(3, -2));
+  assert.deepStrictEqual(math.fix(c, 1), math.complex(3.2, -2.7));
+  assert.deepStrictEqual(math.fix(c, math.bignumber(1)), math.complex(3.2, -2.7));
+
+  // array input
+  assert.deepStrictEqual(math.fix([3.2, 3.8, -4.7]), [3, 3, -4]);
+  assert.deepStrictEqual(math.fix([3.21, 3.82, -4.71], 1), [3.2, 3.8, -4.7]);
+  assert.deepStrictEqual(math.fix([3.21, 3.82, -4.71], math.bignumber(1)),
+    math.bignumber([3.2, 3.8, -4.7]));
+
+  // numeric input, array or matrix of decimals
+  let numFixed: math.MathArray = math.fix(math.tau, [2, 3])
+  assert.deepStrictEqual(numFixed, [6.28, 6.283]);
+  let bigFixed: math.Matrix = math.fix(math.bignumber(6.28318), math.matrix([2, 3]));
+  assert.deepStrictEqual(bigFixed, math.matrix(math.bignumber([6.28, 6.283])));
+  assert.deepStrictEqual(math.fix(math.fraction(44, 7), [2, 3]),
+    [math.fraction(628, 100), math.fraction(6285, 1000)]);
+
+  // array - array is (currently) undefined
+  //@ts-expect-error
+  assert.throws(() => math.fix([3.21, 3.82], [1, 2]), TypeError);
+}
+
+/*
 Function floor examples
 */
 {
@@ -515,16 +622,95 @@ Function floor examples
   // number input
   // roundoff result to 2 decimals
   assert.strictEqual(math.floor(3.212, 2), 3.21);
+  assert.deepStrictEqual(math.floor(3.212, math.bignumber(2)), math.bignumber(3.21));
   assert.strictEqual(math.floor(-4.212, 2), -4.22);
+
+  // bignumber input
+  assert.deepStrictEqual(math.floor(math.bignumber(3.212)), math.bignumber(3))
+  assert.deepStrictEqual(math.floor(math.bignumber(3.212), 2), math.bignumber(3.21))
+  assert.deepStrictEqual(math.floor(math.bignumber(3.212), math.bignumber(2)), math.bignumber(3.21))
+
+  // fraction input
+  assert.deepStrictEqual(math.floor(math.fraction(44,7)), math.fraction(6))
+  assert.deepStrictEqual(math.floor(math.fraction(-44,7)), math.fraction(-7))
+  assert.deepStrictEqual(math.floor(math.fraction(44,7), 2), math.fraction(628,100))
+  assert.deepStrictEqual(math.floor(math.fraction(44,7), math.bignumber(2)), math.fraction(628,100))
 
   // Complex input
   const c = math.complex(3.24, -2.71);
   assert.deepStrictEqual(math.floor(c), math.complex(3, -3));
   assert.deepStrictEqual(math.floor(c, 1), math.complex(3.2, -2.8));
+  assert.deepStrictEqual(math.floor(c, math.bignumber(1)), math.complex(3.2, -2.8));
 
-  //array input
+  // array input
   assert.deepStrictEqual(math.floor([3.2, 3.8, -4.7]), [3, 3, -5]);
   assert.deepStrictEqual(math.floor([3.21, 3.82, -4.71], 1), [3.2, 3.8, -4.8]);
+  assert.deepStrictEqual(math.floor([3.21, 3.82, -4.71], math.bignumber(1)),
+    math.bignumber([3.2, 3.8, -4.8]));
+
+  // numeric input, array or matrix of decimals
+  let numFloored: math.MathArray = math.floor(math.tau, [2, 3])
+  assert.deepStrictEqual(numFloored, [6.28, 6.283]);
+  let bigFloored: math.Matrix = math.floor(math.bignumber(6.28318), math.matrix([2, 3]));
+  assert.deepStrictEqual(bigFloored, math.matrix(math.bignumber([6.28, 6.283])));
+  assert.deepStrictEqual(math.floor(math.fraction(44, 7), [2, 3]),
+    [math.fraction(628, 100), math.fraction(6285, 1000)]);
+
+  // array - array is (currently) undefined
+  //@ts-expect-error
+  assert.throws(() => math.floor([3.21, 3.82], [1, 2]), TypeError);
+}
+
+/*
+Function round examples
+*/
+{
+  const math = create(all, {});
+
+  // number input
+  assert.strictEqual(math.round(3.2), 3);
+  assert.strictEqual(math.round(-4.2), -4);
+
+  // number input
+  // roundoff result to 2 decimals
+  assert.strictEqual(math.round(3.212, 2), 3.21);
+  assert.deepStrictEqual(math.round(3.212, math.bignumber(2)), math.bignumber(3.21));
+  assert.strictEqual(math.round(-4.212, 2), -4.21);
+
+  // bignumber input
+  assert.deepStrictEqual(math.round(math.bignumber(3.212)), math.bignumber(3))
+  assert.deepStrictEqual(math.round(math.bignumber(3.212), 2), math.bignumber(3.21))
+  assert.deepStrictEqual(math.round(math.bignumber(3.212), math.bignumber(2)), math.bignumber(3.21))
+
+  // fraction input
+  assert.deepStrictEqual(math.round(math.fraction(44,7)), math.fraction(6))
+  assert.deepStrictEqual(math.round(math.fraction(-44,7)), math.fraction(-6))
+  assert.deepStrictEqual(math.round(math.fraction(44,7), 2), math.fraction(629,100))
+  assert.deepStrictEqual(math.round(math.fraction(44,7), math.bignumber(2)), math.fraction(629,100))
+
+  // Complex input
+  const c = math.complex(3.24, -2.71);
+  assert.deepStrictEqual(math.round(c), math.complex(3, -3));
+  assert.deepStrictEqual(math.round(c, 1), math.complex(3.2, -2.7));
+  assert.deepStrictEqual(math.round(c, math.bignumber(1)), math.complex(3.2, -2.7));
+
+  // array input
+  assert.deepStrictEqual(math.round([3.2, 3.8, -4.7]), [3, 4, -5]);
+  assert.deepStrictEqual(math.round([3.21, 3.82, -4.71], 1), [3.2, 3.8, -4.7]);
+  assert.deepStrictEqual(math.round([3.21, 3.82, -4.71], math.bignumber(1)),
+    math.bignumber([3.2, 3.8, -4.7]));
+
+  // numeric input, array or matrix of decimals
+  let numRounded: math.MathArray = math.round(math.tau, [2, 3])
+  assert.deepStrictEqual(numRounded, [6.28, 6.283]);
+  let bigRounded: math.Matrix = math.round(math.bignumber(6.28318), math.matrix([2, 3]));
+  assert.deepStrictEqual(bigRounded, math.matrix(math.bignumber([6.28, 6.283])));
+  assert.deepStrictEqual(math.round(math.fraction(44, 7), [2, 3]),
+    [math.fraction(629, 100), math.fraction(6286, 1000)]);
+
+  // array - array is (currently) undefined
+  //@ts-expect-error
+  assert.throws(() => math.round([3.21, 3.82], [1, 2]), TypeError);
 }
 
 

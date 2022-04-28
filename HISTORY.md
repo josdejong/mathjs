@@ -1,5 +1,16 @@
 # History
 
+# unpublished changes since version 10.5.0
+
+- Fix #2526, #2529: improve TypeScript definitions of function `round`, `fix`,
+  `floor`, `ceil`, and `nthRoot`, and improved the number only implementations 
+  of those functions  (#2531, #2539). Thanks @simlaticak and @gwhitney.
+- Fix #2532: matrix index symbol `end` not working when used inside
+  a sub-expression.
+- Fix #2524: In generating AUTHORS list, ignore a list of specific commits
+  (e.g., to avoid spurious duplicates in list). (#2543)
+
+
 # 2022-04-19, version 10.5.0
 
 - Implement #1563: function `pinv`, Moore–Penrose inverse (#2521). 

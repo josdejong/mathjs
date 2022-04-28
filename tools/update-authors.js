@@ -25,7 +25,8 @@ class CaseIndifferentMap {
 const log = spawn(
   'git',
   // Inspect author name/email and body.
-  ['log', '--reverse', '--format=Author: %aN <%aE>\n%b'], {
+  ['log', '--reverse'],
+  {
     stdio: ['inherit', 'pipe', 'inherit']
   })
 const rl = readline.createInterface({ input: log.stdout })
@@ -77,17 +78,40 @@ const mailmap = new CaseIndifferentMap()
 
 const seen = new Set()
 
+// Commits from which we do not want the author to pop up in the AUTHORS list,
+// for example because the commit was done with a wrong git user account
+const ignoreCommits = [
+  '43d4551e7c19f51d30e71b35009437c7ec6491f0'
+]
+let currentCommit
+
 // Support regular git author metadata, as well as `Author:` and
 // `Co-authored-by:` in the message body. Both have been used in the past
 // to indicate multiple authors per commit, with the latter standardized
 // by GitHub now.
 const authorRe =
-  /(^Author:|^Co-authored-by:)\s+(?<author>[^<]+)\s+(?<email><[^>]+>)/i
-rl.on('line', (line) => {
-  const match = line.match(authorRe)
-  if (!match) return
+  /(^Author:|^\s*Co-authored-by:)\s+(?<author>[^<]+)\s+(?<email><[^>]+>)/i
 
-  const { author, email } = match.groups
+// Commit line regex. Example: "commit 123456"
+const commitRe = /^commit (?<commit>.+)$/i
+
+rl.on('line', (line) => {
+  const commitMatch = line.match(commitRe)
+  if (commitMatch) {
+    currentCommit = commitMatch.groups.commit
+    return
+  }
+
+  if (ignoreCommits.includes(currentCommit)) {
+    return
+  }
+
+  const authorMatch = line.match(authorRe)
+  if (!authorMatch) {
+    return
+  }
+
+  const { author, email } = authorMatch.groups
 
   if (seen.has(email) ||
       /@chromium\.org/.test(email) ||

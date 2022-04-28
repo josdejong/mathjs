@@ -1,7 +1,6 @@
 // test floor
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const complex = math.complex
@@ -19,30 +18,31 @@ describe('floor', function () {
   })
 
   it('should floor numbers correctly', function () {
-    approx.equal(floor(0), 0)
-    approx.equal(floor(1), 1)
-    approx.equal(floor(1.3), 1)
-    approx.equal(floor(1.8), 1)
-    approx.equal(floor(2), 2)
-    approx.equal(floor(-1), -1)
-    approx.equal(floor(-1.3), -2)
-    approx.equal(floor(-1.8), -2)
-    approx.equal(floor(-2), -2)
-    approx.equal(floor(-2.1), -3)
-    approx.equal(floor(math.pi), 3)
+    assert.strictEqual(floor(0), 0)
+    assert.strictEqual(floor(1), 1)
+    assert.strictEqual(floor(1.3), 1)
+    assert.strictEqual(floor(1.8), 1)
+    assert.strictEqual(floor(2), 2)
+    assert.strictEqual(floor(-1), -1)
+    assert.strictEqual(floor(-1.3), -2)
+    assert.strictEqual(floor(-1.8), -2)
+    assert.strictEqual(floor(-2), -2)
+    assert.strictEqual(floor(-2.1), -3)
+    assert.strictEqual(floor(math.pi), 3)
   })
 
   it('should return the floor of a number with a given number of decimals', function () {
-    approx.equal(floor(0, 5), 0)
-    approx.equal(floor(2, 3), 2)
-    approx.equal(floor(1.3216, 2), 1.32)
-    approx.equal(floor(math.pi, 3), 3.141)
-    approx.equal(floor(math.pi, 6), 3.141593)
-    approx.equal(floor(1234.5678, 2), 1234.56)
-    approx.equal(floor(2.135, 2), 2.13)
-    approx.equal(floor(-1.8, 0), -2)
-    approx.equal(floor(-1.8, 1), -1.8)
-    approx.equal(floor(-2.178, 2), -2.18)
+    assert.strictEqual(floor(0, 5), 0)
+    assert.strictEqual(floor(2, 3), 2)
+    assert.strictEqual(floor(1.3216, 2), 1.32)
+    assert.strictEqual(floor(math.pi, 3), 3.141)
+    assert.strictEqual(floor(math.pi, 6), 3.141592)
+    assert.strictEqual(floor(1234.5678, 2), 1234.56)
+    assert.strictEqual(floor(2.135, 2), 2.13)
+    assert.deepStrictEqual(floor(2.135, bignumber(2)), bignumber(2.13))
+    assert.strictEqual(floor(-1.8, 0), -2)
+    assert.strictEqual(floor(-1.8, 1), -1.8)
+    assert.strictEqual(floor(-2.178, 2), -2.18)
   })
 
   it('should floor big numbers correctly', function () {
@@ -63,6 +63,7 @@ describe('floor', function () {
     assert.deepStrictEqual(floor(bignumber(1), 3), bignumber(1))
     assert.deepStrictEqual(floor(bignumber(1.315), 2), bignumber(1.31))
     assert.deepStrictEqual(floor(bignumber(1.8), 1), bignumber(1.8))
+    assert.deepStrictEqual(floor(bignumber(2.135), bignumber(2)), bignumber(2.13))
     assert.deepStrictEqual(floor(bignumber(-1), 4), bignumber(-1))
     assert.deepStrictEqual(floor(bignumber(-1.3), 4), bignumber(-1.3))
     assert.deepStrictEqual(floor(bignumber(-1.8), 0), bignumber(-2))
@@ -72,22 +73,23 @@ describe('floor', function () {
   })
 
   it('should floor complex numbers correctly', function () {
-    approx.deepEqual(floor(complex(0, 0)), complex(0, 0))
-    approx.deepEqual(floor(complex(1.3, 1.8)), complex(1, 1))
-    approx.deepEqual(floor(i), complex(0, 1))
-    approx.deepEqual(floor(complex(-1.3, -1.8)), complex(-2, -2))
+    assert.deepStrictEqual(floor(complex(0, 0)), complex(0, 0))
+    assert.deepStrictEqual(floor(complex(1.3, 1.8)), complex(1, 1))
+    assert.deepStrictEqual(floor(i), complex(0, 1))
+    assert.deepStrictEqual(floor(complex(-1.3, -1.8)), complex(-2, -2))
   })
 
   it('should return the floor of real and imag part of a complex with a given number of decimals', function () {
-    approx.deepEqual(floor(complex(0, 0), 3), complex(0, 0))
-    approx.deepEqual(floor(complex(1.3, 1.8), 0), complex(1, 1))
-    approx.deepEqual(floor(complex(1.3, 1.8), 1), complex(1.3, 1.8))
-    approx.deepEqual(floor(complex(1.315, 1.878), 2), complex(1.31, 1.87))
-    approx.deepEqual(floor(i, 0), complex(0, 1))
-    approx.deepEqual(floor(i, 4), complex(0, 1))
-    approx.deepEqual(floor(complex(-1.3, -1.8), 0), complex(-2, -2))
-    approx.deepEqual(floor(complex(-1.3, -1.8), 1), complex(-1.3, -1.8))
-    approx.deepEqual(floor(complex(-1.315, -1.878), 2), complex(-1.32, -1.88))
+    assert.deepStrictEqual(floor(complex(0, 0), 3), complex(0, 0))
+    assert.deepStrictEqual(floor(complex(1.3, 1.8), 0), complex(1, 1))
+    assert.deepStrictEqual(floor(complex(1.3, 1.8), 1), complex(1.3, 1.8))
+    assert.deepStrictEqual(floor(complex(1.315, 1.878), 2), complex(1.31, 1.87))
+    assert.deepStrictEqual(floor(complex(1.315, 1.878), bignumber(2)), complex(1.31, 1.87))
+    assert.deepStrictEqual(floor(i, 0), complex(0, 1))
+    assert.deepStrictEqual(floor(i, 4), complex(0, 1))
+    assert.deepStrictEqual(floor(complex(-1.3, -1.8), 0), complex(-2, -2))
+    assert.deepStrictEqual(floor(complex(-1.3, -1.8), 1), complex(-1.3, -1.8))
+    assert.deepStrictEqual(floor(complex(-1.315, -1.878), 2), complex(-1.32, -1.88))
   })
 
   it('should floor fractions correctly', function () {
@@ -112,6 +114,8 @@ describe('floor', function () {
     assert.strictEqual(floor(fraction(0), 3).toString(), '0')
     assert.strictEqual(floor(fraction(1), 4).toString(), '1')
     assert.strictEqual(floor(fraction(1.315), 2).toString(), '1.31')
+    assert.strictEqual(floor(fraction(1.315), bignumber(2)).toString(), '1.31')
+    assert.deepStrictEqual(floor(fraction(44, 7), bignumber(2)), fraction(628, 100))
     assert.strictEqual(floor(fraction(-1), 0).toString(), '-1')
     assert.strictEqual(floor(fraction(-1.315), 2).toString(), '-1.32')
   })
@@ -156,17 +160,30 @@ describe('floor', function () {
   })
 
   it('should floor all elements in a matrix', function () {
-    approx.deepEqual(floor([1.2, 3.4, 5.6, 7.8, 10.0]), [1, 3, 5, 7, 10])
-    approx.deepEqual(floor(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([1, 3, 5, 7, 10]))
+    assert.deepStrictEqual(floor([1.2, 3.4, 5.6, 7.8, 10.0]), [1, 3, 5, 7, 10])
+    assert.deepStrictEqual(floor(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([1, 3, 5, 7, 10]))
   })
 
   it('should floor each element in a matrix with a given number of decimals', function () {
-    approx.deepEqual(floor([1.282, 3.415, -5.121, -10.128], 2), [1.28, 3.41, -5.13, -10.13])
-    approx.deepEqual(floor(matrix([1.282, 3.415, -5.121, -10.128]), 2), matrix([1.28, 3.41, -5.13, -10.13]))
+    assert.deepStrictEqual(floor([1.282, 3.415, -5.121, -10.128], 2), [1.28, 3.41, -5.13, -10.13])
+    assert.deepStrictEqual(floor([1.282, 3.415, -5.121, -10.128], bignumber(2)), [bignumber(1.28), bignumber(3.41), bignumber(-5.13), bignumber(-10.13)])
+    assert.deepStrictEqual(floor(matrix([1.282, 3.415, -5.121, -10.128]), 2), matrix([1.28, 3.41, -5.13, -10.13]))
+    assert.deepStrictEqual(floor(matrix([1.282, 3.415, -5.121, -10.128]), bignumber(2)), matrix([bignumber(1.28), bignumber(3.41), bignumber(-5.13), bignumber(-10.13)]))
   })
 
   it('should floor when number of decimals is provided in an array', function () {
     assert.deepStrictEqual(floor(3.12385, [2, 3]), [3.12, 3.123])
+    assert.deepStrictEqual(floor(bignumber(3.12385), [2, 3]), bignumber([3.12, 3.123]))
+    assert.deepStrictEqual(floor(complex(3.12385, -1.6789), [2, 3]), [complex(3.12, -1.68), complex(3.123, -1.679)])
+    assert.deepStrictEqual(floor(fraction(44, 7), [2, 3]), [fraction(628, 100), fraction(6285, 1000)])
+  })
+
+  it('should floor when number of decimals is provided in a matrix', function () {
+    assert.deepStrictEqual(floor(3.12385, matrix([2, 3])), matrix([3.12, 3.123]))
+    assert.deepStrictEqual(floor(0, matrix([2, 3])), matrix([0, 0]))
+    assert.deepStrictEqual(floor(bignumber(3.12385), sparse([2, 3])), bignumber(matrix([[3.12], [3.123]])))
+    assert.deepStrictEqual(floor(complex(3.12385, -1.6789), matrix([2, 3])), matrix([complex(3.12, -1.68), complex(3.123, -1.679)]))
+    assert.deepStrictEqual(floor(fraction(44, 7), sparse([2, 3])), matrix([[fraction(628, 100)], [fraction(6285, 1000)]]))
   })
 
   it('should floor dense matrix', function () {
@@ -180,7 +197,7 @@ describe('floor', function () {
   it('should floor dense matrix with given bignumber decimals', function () {
     const expected = bignumber(matrix([[1.777, 2.345], [-90.828, 0]]))
     const decimals = bignumber(3)
-    approx.deepEqual(floor(matrix([[1.7777, 2.3456], [-90.8272, 0]]), decimals), expected)
+    assert.deepStrictEqual(floor(matrix([[1.7777, 2.3456], [-90.8272, 0]]), decimals), expected)
   })
 
   it('should floor sparse matrix', function () {
@@ -205,10 +222,11 @@ describe('floor', function () {
   it('should throw an in case of wrong type of arguments', function () {
     assert.throws(function () { floor(null) }, /TypeError: Unexpected type of argument/)
     assert.throws(function () { floor(42, null) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () { floor([3.82, 3.15], [1, 2]) }, /TypeError: Unexpected type of argument/)
   })
 
   it('should throw an error if requested number of decimals is incorrect', function () {
-    assert.throws(function () { floor(2.5, 1.5) }, TypeError, 'Number of decimals in function round must be an integer')
+    assert.throws(function () { floor(2.5, 1.5) }, Error, 'Number of decimals in function round must be an integer')
     assert.throws(function () { floor(2.5, -2) }, Error, ' Number of decimals in function round must be in the range of 0-15')
     assert.throws(function () { floor(2.5, Infinity) }, Error, ' Number of decimals in function round must be in the range of 0-15')
   })
