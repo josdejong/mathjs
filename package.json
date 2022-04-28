@@ -146,7 +146,7 @@
     "build:docs": "gulp --gulpfile gulpfile.cjs docs",
     "compile": "gulp --gulpfile gulpfile.cjs compile",
     "watch": "gulp --gulpfile gulpfile.cjs watch",
-    "lint": "eslint --cache src/ test/ types/",
+    "lint": "eslint --cache --max-warnings 0 src/ test/ types/",
     "format": "npm run lint -- --fix",
     "validate:ascii": "gulp --gulpfile gulpfile.cjs validate:ascii",
     "test": "npm run test:src && npm run lint",
