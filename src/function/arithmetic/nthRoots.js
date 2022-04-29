@@ -54,7 +54,7 @@ export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typ
         roots.push(_calculateExactResult[halfPiFactor % 4](r))
         continue
       }
-      roots.push(new Complex({ r: r, phi: (arg + 2 * Math.PI * k) / root }))
+      roots.push(new Complex({ r, phi: (arg + 2 * Math.PI * k) / root }))
     }
     return roots
   }

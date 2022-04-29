@@ -87,13 +87,13 @@ describe('object', function () {
     it('should extend an object with all properties of an other object', function () {
       const e = {}
       const o1 = { a: 2, b: 3 }
-      const o2 = { a: 4, b: null, c: undefined, d: 5, e: e }
+      const o2 = { a: 4, b: null, c: undefined, d: 5, e }
       const o3 = extend(o1, o2)
 
       assert.strictEqual(o1, o3)
       assert.strictEqual(o1.e, o3.e)
-      assert.deepStrictEqual(o3, { a: 4, b: null, c: undefined, d: 5, e: e })
-      assert.deepStrictEqual(o2, { a: 4, b: null, c: undefined, d: 5, e: e }) // should be unchanged
+      assert.deepStrictEqual(o3, { a: 4, b: null, c: undefined, d: 5, e })
+      assert.deepStrictEqual(o2, { a: 4, b: null, c: undefined, d: 5, e }) // should be unchanged
     })
 
     it('should ignore inherited properties when extending an object', function () {
@@ -112,7 +112,7 @@ describe('object', function () {
     it('should deep extend an object with all properties of an other object', function () {
       const e = { f: { g: 3 } }
       const o1 = { a: 2, b: 3 }
-      const o2 = { a: 4, b: null, c: undefined, d: 5, e: e }
+      const o2 = { a: 4, b: null, c: undefined, d: 5, e }
       const o3 = deepExtend(o1, o2)
 
       assert.strictEqual(o1, o3)
@@ -287,8 +287,8 @@ describe('object', function () {
   describe('traverse', function () {
     it('should traverse an existing path into an object', function () {
       const a = {}
-      const b = { a: a }
-      const c = { b: b }
+      const b = { a }
+      const c = { b }
 
       assert.strictEqual(traverse(c), c)
       assert.strictEqual(traverse(c, ''), c)
@@ -299,8 +299,8 @@ describe('object', function () {
 
     it('should append missing piece of a path', function () {
       const a = {}
-      const b = { a: a }
-      const c = { b: b }
+      const b = { a }
+      const c = { b }
 
       assert.strictEqual(traverse(c), c)
       assert.strictEqual(traverse(c, ''), c)
@@ -326,7 +326,7 @@ describe('object', function () {
   })
 
   describe('get', function () {
-    it('should get nested properties from an object', () => {
+    it('should get nested properties from an object', function () {
       const object = {
         a: 2,
         b: {
@@ -346,7 +346,7 @@ describe('object', function () {
   })
 
   describe('set', function () {
-    it('should set a nested property in an object', () => {
+    it('should set a nested property in an object', function () {
       assert.deepStrictEqual(set({}, [], 2), {})
       assert.deepStrictEqual(set({}, 'a', 2), { a: 2 })
       assert.deepStrictEqual(set({ a: 2 }, 'b.c', 3), { a: 2, b: { c: 3 } })
@@ -355,12 +355,12 @@ describe('object', function () {
   })
 
   describe('pick', function () {
-    it('should pick the selected properties', () => {
+    it('should pick the selected properties', function () {
       const object = { a: 1, b: 2, c: 3 }
       assert.deepStrictEqual(pick(object, ['a', 'c', 'd']), { a: 1, c: 3 })
     })
 
-    it('should pick nested properties', () => {
+    it('should pick nested properties', function () {
       const object = {
         a: 1,
         b: {
@@ -375,7 +375,7 @@ describe('object', function () {
       assert.deepStrictEqual(pick(object, ['a', 'b.c', 'foo', 'b.foo']), { a: 1, b: { c: 2 } })
     })
 
-    it('should pick and transform nested properties', () => {
+    it('should pick and transform nested properties', function () {
       const object = {
         a: 1,
         b: {
@@ -398,7 +398,7 @@ describe('object', function () {
   })
 
   describe('deepFlatten', function () {
-    it('should flatten nested object properties', () => {
+    it('should flatten nested object properties', function () {
       assert.deepStrictEqual(deepFlatten({
         obj: { a: 2, b: 3 },
         c: 4,
@@ -406,7 +406,7 @@ describe('object', function () {
       }), { a: 2, b: 3, c: 4, d: 5 })
     })
 
-    it('should merge duplicate values when flatting nested object properties', () => {
+    it('should merge duplicate values when flatting nested object properties', function () {
       assert.deepStrictEqual(deepFlatten({
         obj: { a: 2 },
         foo: { bar: { a: 3 } }

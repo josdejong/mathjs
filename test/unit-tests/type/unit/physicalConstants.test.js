@@ -136,7 +136,7 @@ describe('physical constants', function () {
     assert.strictEqual(createPlanckTemperature(dependencies).toString(), '1.416785e+32 K')
   })
 
-  it('should create BigNumber unit values if configured', () => {
+  it('should create BigNumber unit values if configured', function () {
     const config = { number: 'BigNumber', precision: 64, epsilon: 1e-12 }
     const dependencies = { config, BigNumber, Unit }
     const molarMass = createMolarMass(dependencies)

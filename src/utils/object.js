@@ -192,7 +192,7 @@ export function canDefineProperty () {
   // test needed for broken IE8 implementation
   try {
     if (Object.defineProperty) {
-      Object.defineProperty({}, 'x', { get: function () {} })
+      Object.defineProperty({}, 'x', { get: function () { return null } })
       return true
     }
   } catch (e) {}

@@ -31,7 +31,7 @@ export const createOct = factory(name, dependencies, ({ typed, format }) => {
       return format(n, { notation: 'oct' })
     },
     'number | BigNumber, number': function (n, wordSize) {
-      return format(n, { notation: 'oct', wordSize: wordSize })
+      return format(n, { notation: 'oct', wordSize })
     }
   })
 })

@@ -1008,7 +1008,7 @@ describe('Unit', function () {
       assert(math.isBigNumber(unitP.value))
     })
 
-    it('should multiply/divide units with offsets correctly', () => {
+    it('should multiply/divide units with offsets correctly', function () {
       const unit1 = new Unit(1, 'm')
       const unit2 = new Unit(1, 'degC')
       const unit3 = new Unit(1, 'm degC')
@@ -1021,7 +1021,8 @@ describe('Unit', function () {
       assert.deepStrictEqual(unit4.divide(unit5), unit6)
     })
 
-    it.skip('should cancel units in numerator and denominator', () => {
+    // eslint-disable-next-line mocha/no-skipped-tests
+    it.skip('should cancel units in numerator and denominator', function () {
       assert.strictEqual(math.evaluate('2 J/K/g * 2 g').toString(), '4 J / K')
       assert.strictEqual(math.evaluate('2 J/K/g * 2K').toString(), '4 J / g')
     })

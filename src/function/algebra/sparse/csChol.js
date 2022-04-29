@@ -153,9 +153,6 @@ export const createCsChol = /* #__PURE__ */ factory(name, dependencies, (
       })
     }
     // return L & P
-    return {
-      L: L,
-      P: P
-    }
+    return { L, P }
   }
 })

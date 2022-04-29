@@ -238,7 +238,7 @@ describe('import', function () {
       return text.toUpperCase()
     }
 
-    math.import({ foo: foo })
+    math.import({ foo })
 
     assert(hasOwnProperty(math, 'foo'))
     assert.strictEqual(math.foo, foo)
@@ -251,7 +251,7 @@ describe('import', function () {
       return 'test'
     }
 
-    math.import({ mean: mean }, { override: true })
+    math.import({ mean }, { override: true })
 
     assert(hasOwnProperty(math, 'mean'))
     assert.strictEqual(math.mean, mean)
@@ -259,8 +259,8 @@ describe('import', function () {
     assert.strictEqual(math.expression.mathWithTransform.mean, mean)
   })
 
-  describe('factory', () => {
-    it('should import a factory function', () => {
+  describe('factory', function () {
+    it('should import a factory function', function () {
       const math2 = create()
 
       assert.strictEqual(math2.multiplyTest, undefined)
@@ -273,7 +273,7 @@ describe('import', function () {
       assert.strictEqual(math2.cubeTest(3), 27)
     })
 
-    it('should import an array with factory functions', () => {
+    it('should import an array with factory functions', function () {
       const math2 = create()
 
       assert.strictEqual(math2.multiplyTest, undefined)
@@ -285,7 +285,7 @@ describe('import', function () {
       assert.strictEqual(math2.cubeTest(3), 27)
     })
 
-    it('should not allow nested nested paths in a factory', () => {
+    it('should not allow nested nested paths in a factory', function () {
       const math2 = create()
 
       assert.strictEqual(math2.tools, undefined)
@@ -295,7 +295,7 @@ describe('import', function () {
       }, /Factory name should not contain a nested path/)
     })
 
-    it('should import an array with factory functions in the correct order, resolving dependencies', () => {
+    it('should import an array with factory functions in the correct order, resolving dependencies', function () {
       const math2 = create()
 
       assert.strictEqual(math2.multiplyTest, undefined)
@@ -308,7 +308,7 @@ describe('import', function () {
       assert.strictEqual(math2.cubeTest(3), 27)
     })
 
-    it('should NOT import factory functions with custom name', () => {
+    it('should NOT import factory functions with custom name', function () {
       // changed since v6
       const math2 = create()
 
@@ -328,7 +328,7 @@ describe('import', function () {
       assert.strictEqual(math2.cubeTest(3), 27)
     })
 
-    it('should throw an error when a dependency is missing with import factory', () => {
+    it('should throw an error when a dependency is missing with import factory', function () {
       const math2 = create()
 
       assert.throws(() => {
@@ -338,22 +338,27 @@ describe('import', function () {
     })
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should import a factory with name', function () {
     // TODO: unit test importing a factory
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should import a factory with path', function () {
     // TODO: unit test importing a factory
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should import a factory without name', function () {
     // TODO: unit test importing a factory
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should pass the namespace to a factory function', function () {
     // TODO: unit test importing a factory
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should import an Array', function () {
     // TODO: unit test importing an Array containing stuff
   })

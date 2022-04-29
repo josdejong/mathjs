@@ -4,6 +4,7 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 
 const expLibrary = []
+// eslint-disable-next-line mocha/no-exports
 export function simplifyAndCompare (left, right, rules, scope, opt, stringOpt) {
   expLibrary.push(left)
   let simpLeft
@@ -159,10 +160,10 @@ describe('simplify', function () {
     function doubleIt (x) { return x + x }
     const f = new math.FunctionNode(new math.SymbolNode('doubleIt'), [new math.SymbolNode('value')])
     assert.strictEqual(f.toString(), 'doubleIt(value)')
-    assert.strictEqual(f.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
+    assert.strictEqual(f.evaluate({ doubleIt, value: 4 }), 8)
     const fsimplified = math.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), 'doubleIt(value)')
-    assert.strictEqual(fsimplified.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
+    assert.strictEqual(fsimplified.evaluate({ doubleIt, value: 4 }), 8)
   })
 
   it('should handle immediately invoked function assignments', function () {
@@ -404,6 +405,7 @@ describe('simplify', function () {
       assert.strictEqual(res.toString(), '30 * x')
     })
 
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should compute and simplify derivatives (3)', function () {
       // TODO: this requires the + operator to support Nodes,
       //       i.e.   math.add(5, math.parse('2')) => return an OperatorNode

@@ -57,6 +57,7 @@ describe('mod', function () {
     assert.deepStrictEqual(mod(bignumber(8), bignumber(3)).valueOf(), bignumber(2).valueOf())
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should calculate the modulus of bignumbers for fractions', function () {
     assert.deepStrictEqual(mod(bignumber(7).div(3), bignumber(1).div(3)), bignumber(0))
   })

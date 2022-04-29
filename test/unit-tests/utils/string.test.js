@@ -112,7 +112,7 @@ describe('string', function () {
       assert.strictEqual(format(true), 'true')
     })
 
-    it('should limit the length of output with a truncate option', () => {
+    it('should limit the length of output with a truncate option', function () {
       const result = format('01234567890123456789', { truncate: 17 })
       assert.strictEqual(result.length, 17)
       assert.ok(endsWith(result, '...'))

@@ -117,7 +117,9 @@ describe('variance', function () {
     assert.throws(function () { variance('a') }, /Error: Cannot convert "a" to a number/)
   })
 
-  it('should throw an error if the axis exceeds the dimension of the matrix')
+  it('should throw an error if the axis exceeds the dimension of the matrix', function () {
+    // TODO
+  })
 
   it('should throw an error if called with an empty array', function () {
     assert.throws(function () { variance([]) })
