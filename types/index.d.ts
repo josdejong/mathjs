@@ -3990,7 +3990,10 @@ declare namespace math {
      * When a matrix is provided, all elements will be converted to
      * BigNumber.
      */
-    bignumber(this: MathJsChain<unknown>): MathJsChain<unknown>
+    bignumber(
+      this: MathJsChain<number | string | Fraction | BigNumber | boolean | Fraction | null>,
+    ): MathJsChain<BigNumber>
+    bignumber<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Create a boolean or convert a string or number to a boolean. In case

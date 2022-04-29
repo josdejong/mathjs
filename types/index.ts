@@ -8,6 +8,9 @@ import {
   divideDependencies,
   formatDependencies,
   MathNode,
+  MathJsChain,
+  BigNumber,
+  MathCollection,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -159,6 +162,12 @@ Chaining examples
   expectTypeOf(math.chain('x + y').parse().resolve().done())
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .toMatchTypeOf<any>()
+
+  // bignum
+  expectTypeOf(math.chain(math.bignumber(12))).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain(math.bignumber(12)).done()).toMatchTypeOf<BigNumber>()
+  expectTypeOf(math.chain(12).bignumber()).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain([12, 13, 14]).bignumber()).toMatchTypeOf<MathJsChain<MathCollection>>()
 }
 
 /*
@@ -1225,7 +1234,7 @@ Factory Test
     expectTypeOf(x).toMatchTypeOf<math.SymbolNode>()
   }
   if (math.isChain(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.MathJsChain>()
+    expectTypeOf(x).toMatchTypeOf<math.MathJsChain<any>>()
   }
 }
 
