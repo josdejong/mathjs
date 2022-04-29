@@ -815,13 +815,13 @@ declare namespace math {
      */
     simplify: Simplify
 
-     /**
+    /**
      *  Replaces variable nodes with their scoped values
      * @param node Tree to replace variable nodes in
      * @param scope Scope to read/write variables
      */
-    resolve(node: MathNode, scope?: Record<string, any>): MathNode;
-    resolve(node: MathNode[], scope?: Record<string, any>): MathNode[];
+    resolve(node: MathNode, scope?: Record<string, any>): MathNode
+    resolve(node: MathNode[], scope?: Record<string, any>): MathNode[]
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -4138,7 +4138,7 @@ declare namespace math {
      *  Replaces variable nodes with their scoped values
      * @param scope Scope to read/write variables
      */
-    resolve(scope?: Record<string, any>): MathJsChain;
+    resolve(scope?: Record<string, any>): MathJsChain
 
     /*************************************************************************
      * Algebra functions
@@ -5653,4 +5653,3 @@ declare namespace math {
     [key: string]: any
   }
 }
-

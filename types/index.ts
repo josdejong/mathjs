@@ -8,8 +8,8 @@ import {
   divideDependencies,
   formatDependencies,
   MathNode,
-} from 'mathjs';
-import * as assert from 'assert';
+} from 'mathjs'
+import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
 
 // This file serves a dual purpose:
@@ -153,7 +153,9 @@ Chaining examples
   const r = math.chain(-0.483).round([0, 1, 2]).floor().add(0.52).fix(1).done()
   assert.deepStrictEqual(r, [0.5, -0.4, -0.4])
 
-  expectTypeOf(math.chain('x + y').resolve({ x: 1 }).done()).toMatchTypeOf<any>()
+  expectTypeOf(
+    math.chain('x + y').resolve({ x: 1 }).done()
+  ).toMatchTypeOf<any>()
   expectTypeOf(math.chain('x + y').resolve().done()).toMatchTypeOf<any>()
 }
 
@@ -1258,9 +1260,13 @@ toTex examples
 Resolve examples
 */
 {
-  const math = create(all, {});
+  const math = create(all, {})
 
   expectTypeOf(math.resolve(math.parse('x + y'))).toMatchTypeOf<MathNode>()
-  expectTypeOf(math.resolve(math.parse('x + y'), { x: 0 })).toMatchTypeOf<MathNode>()
-  expectTypeOf(math.resolve([math.parse('x + y')], { x: 0 })).toMatchTypeOf<MathNode[]>()
+  expectTypeOf(
+    math.resolve(math.parse('x + y'), { x: 0 })
+  ).toMatchTypeOf<MathNode>()
+  expectTypeOf(math.resolve([math.parse('x + y')], { x: 0 })).toMatchTypeOf<
+    MathNode[]
+  >()
 }
