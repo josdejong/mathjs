@@ -894,7 +894,65 @@ declare module 'mathjs' {
 
   math.testFun()
 
-  const _a = math.value * 2
+  expectTypeOf(math.testFun()).toMatchTypeOf<number>()
+
+  expectTypeOf(
+    math.import({
+      myvalue: 42,
+      myFunc: (name: string) => `myFunc ${name}`,
+    })
+  ).toMatchTypeOf<void>()
+
+  expectTypeOf(
+    math.import(
+      {
+        myvalue: 42,
+        myFunc: (name: string) => `myFunc ${name}`,
+      },
+      {
+        override: true,
+      }
+    )
+  ).toMatchTypeOf<void>()
+
+  expectTypeOf(
+    math.import(
+      {
+        myvalue2: 42,
+      },
+      {
+        silent: true,
+      }
+    )
+  ).toMatchTypeOf<void>()
+
+  expectTypeOf(
+    math.import(
+      {
+        myvalue3: 42,
+      },
+      {
+        wrap: true,
+      }
+    )
+  ).toMatchTypeOf<void>()
+
+  expectTypeOf(
+    math.import({
+      myvalue4: 42,
+    })
+  ).toMatchTypeOf<void>()
+
+  expectTypeOf(
+    math.import([
+      {
+        myvalue5: 42,
+      },
+      {
+        myFunc2: (name: string) => `myFunc2 ${name}`,
+      },
+    ])
+  ).toMatchTypeOf<void>()
 }
 
 /*
@@ -1173,4 +1231,21 @@ Probability function examples
   expectTypeOf(
     math.lgamma(math.complex(1.5, -1.5))
   ).toMatchTypeOf<math.Complex>()
+}
+
+/*
+toTex examples
+*/
+
+{
+  const math = create(all, {})
+
+  expectTypeOf(math.parse('a/b').toTex()).toMatchTypeOf<string>()
+
+  // TODO add proper types for toTex options
+  expectTypeOf(
+    math.parse('a/b').toTex({
+      a: '123',
+    })
+  ).toMatchTypeOf<string>()
 }
