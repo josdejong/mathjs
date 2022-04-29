@@ -3977,9 +3977,9 @@ declare namespace math {
     randomSeed?: string | null
   }
 
-  interface MathJsChain {
+  interface MathJsChain<TValue> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    done(): any
+    done(): TValue
 
     /*************************************************************************
      * Construction functions
