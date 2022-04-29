@@ -154,9 +154,11 @@ Chaining examples
   assert.deepStrictEqual(r, [0.5, -0.4, -0.4])
 
   expectTypeOf(
-    math.chain('x + y').resolve({ x: 1 }).done()
+    math.chain('x + y').parse().resolve({ x: 1 }).done()
   ).toMatchTypeOf<any>()
-  expectTypeOf(math.chain('x + y').resolve().done()).toMatchTypeOf<any>()
+  expectTypeOf(
+    math.chain('x + y').parse().resolve().done()
+  ).toMatchTypeOf<any>()
 }
 
 /*
