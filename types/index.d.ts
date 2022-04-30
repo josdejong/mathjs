@@ -890,8 +890,8 @@ declare namespace math {
      */
     simplify: Simplify
 
-    simplifyConstant(expr: MathNode | string, options?: SimplifyOptions);
-    simplifyCore(expr: MathNode | string, options?: SimplifyOptions);
+    simplifyConstant(expr: MathNode | string, options?: SimplifyOptions)
+    simplifyCore(expr: MathNode | string, options?: SimplifyOptions)
 
     /**
      *  Replaces variable nodes with their scoped values

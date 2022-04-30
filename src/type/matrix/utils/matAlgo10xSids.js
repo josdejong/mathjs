@@ -1,9 +1,9 @@
 import { factory } from '../../../utils/factory.js'
 
-const name = 'algorithm11'
-const dependencies = ['typed', 'equalScalar']
+const name = 'matAlgo10xSids'
+const dependencies = ['typed', 'DenseMatrix']
 
-export const createAlgorithm11 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
+export const createMatAlgo10xSids = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix }) => {
   /**
    * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
    * Callback function invoked NZ times (number of nonzero items in S).
@@ -11,7 +11,7 @@ export const createAlgorithm11 = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    *          ┌  f(Sij, b)  ; S(i,j) !== 0
    * C(i,j) = ┤
-   *          └  0          ; otherwise
+   *          └  b          ; otherwise
    *
    *
    * @param {Matrix}   s                 The SparseMatrix instance (S)
@@ -19,11 +19,11 @@ export const createAlgorithm11 = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param {Function} callback          The f(Aij,b) operation to invoke
    * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Sij)
    *
-   * @return {Matrix}                    SparseMatrix (C)
+   * @return {Matrix}                    DenseMatrix (C)
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
    */
-  return function algorithm11 (s, b, callback, inverse) {
+  return function matAlgo10xSids (s, b, callback, inverse) {
     // sparse matrix arrays
     const avalues = s._values
     const aindex = s._index
@@ -40,10 +40,6 @@ export const createAlgorithm11 = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     // datatype
     let dt
-    // equal signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
     // callback signature to use
     let cf = callback
 
@@ -51,10 +47,6 @@ export const createAlgorithm11 = /* #__PURE__ */ factory(name, dependencies, ({ 
     if (typeof adt === 'string') {
       // datatype
       dt = adt
-      // find signature that matches (dt, dt)
-      eq = typed.find(equalScalar, [dt, dt])
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt)
       // convert b to the same datatype
       b = typed.convert(b, dt)
       // callback
@@ -62,36 +54,46 @@ export const createAlgorithm11 = /* #__PURE__ */ factory(name, dependencies, ({ 
     }
 
     // result arrays
-    const cvalues = []
-    const cindex = []
-    const cptr = []
+    const cdata = []
+
+    // workspaces
+    const x = []
+    // marks indicating we have a value in x for a given column
+    const w = []
 
     // loop columns
     for (let j = 0; j < columns; j++) {
-      // initialize ptr
-      cptr[j] = cindex.length
+      // columns mark
+      const mark = j + 1
       // values in j
       for (let k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
         // row
-        const i = aindex[k]
-        // invoke callback
-        const v = inverse ? cf(b, avalues[k]) : cf(avalues[k], b)
-        // check value is zero
-        if (!eq(v, zero)) {
-          // push index & value
-          cindex.push(i)
-          cvalues.push(v)
+        const r = aindex[k]
+        // update workspace
+        x[r] = avalues[k]
+        w[r] = mark
+      }
+      // loop rows
+      for (let i = 0; i < rows; i++) {
+        // initialize C on first column
+        if (j === 0) {
+          // create row array
+          cdata[i] = []
+        }
+        // check sparse matrix has a value @ i,j
+        if (w[i] === mark) {
+          // invoke callback, update C
+          cdata[i][j] = inverse ? cf(b, x[i]) : cf(x[i], b)
+        } else {
+          // dense matrix value @ i, j
+          cdata[i][j] = b
         }
       }
     }
-    // update ptr
-    cptr[columns] = cindex.length
 
-    // return sparse matrix
-    return s.createSparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
+    // return dense matrix
+    return new DenseMatrix({
+      data: cdata,
       size: [rows, columns],
       datatype: dt
     })

@@ -1,10 +1,10 @@
 import { factory } from '../../utils/factory.js'
-import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01.js'
-import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02.js'
-import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06.js'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
+import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
+import { createMatAlgo06xS0S0 } from '../../type/matrix/utils/matAlgo06xS0S0.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 import { nthRootNumber } from '../../plain/number/index.js'
 
 const name = 'nthRoot'
@@ -16,12 +16,12 @@ const dependencies = [
 ]
 
 export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber }) => {
-  const algorithm01 = createAlgorithm01({ typed })
-  const algorithm02 = createAlgorithm02({ typed, equalScalar })
-  const algorithm06 = createAlgorithm06({ typed, equalScalar })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
+  const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo13xDD = createMatAlgo13xDD({ typed })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   /**
    * Calculate the nth root of a value.
@@ -80,7 +80,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // sparse + sparse
-        return algorithm06(x, y, this)
+        return matAlgo06xS0S0(x, y, this)
       } else {
         // throw exception
         throw new Error('Root must be non-zero')
@@ -88,14 +88,14 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, this, true)
+      return matAlgo02xDS0(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // dense + sparse
-        return algorithm01(x, y, this, false)
+        return matAlgo01xDSid(x, y, this, false)
       } else {
         // throw exception
         throw new Error('Root must be non-zero')
@@ -103,7 +103,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
+      return matAlgo13xDD(x, y, this)
     },
 
     'Array, Array': function (x, y) {
@@ -122,18 +122,18 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, this, false)
+      return matAlgo11xS0s(x, y, this, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, this, false)
+      return matAlgo14xDs(x, y, this, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // sparse - scalar
-        return algorithm11(y, x, this, true)
+        return matAlgo11xS0s(y, x, this, true)
       } else {
         // throw exception
         throw new Error('Root must be non-zero')
@@ -141,7 +141,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
+      return matAlgo14xDs(y, x, this, true)
     },
 
     'Array, number | BigNumber': function (x, y) {

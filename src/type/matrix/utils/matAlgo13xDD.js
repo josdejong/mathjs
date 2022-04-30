@@ -1,10 +1,10 @@
 import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
 
-const name = 'algorithm13'
+const name = 'matAlgo13xDD'
 const dependencies = ['typed']
 
-export const createAlgorithm13 = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createMatAlgo13xDD = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, Bij..z).
    * Callback function invoked MxN times.
@@ -19,7 +19,7 @@ export const createAlgorithm13 = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97658658
    */
-  return function algorithm13 (a, b, callback) {
+  return function matAlgo13xDD (a, b, callback) {
     // a arrays
     const adata = a._data
     const asize = a._size

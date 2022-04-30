@@ -1,10 +1,10 @@
 import { bitOrBigNumber } from '../../utils/bignumber/bitwise.js'
 import { factory } from '../../utils/factory.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
-import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10.js'
-import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04.js'
-import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
+import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
+import { createMatAlgo04xSidSid } from '../../type/matrix/utils/matAlgo04xSidSid.js'
+import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
 import { bitOrNumber } from '../../plain/number/index.js'
 
 const name = 'bitOr'
@@ -16,11 +16,11 @@ const dependencies = [
 ]
 
 export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
-  const algorithm01 = createAlgorithm01({ typed })
-  const algorithm04 = createAlgorithm04({ typed, equalScalar })
-  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
+  const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
+  const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
+  const matAlgo13xDD = createMatAlgo13xDD({ typed })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   /**
    * Bitwise OR two values, `x | y`.
@@ -52,19 +52,19 @@ export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     'BigNumber, BigNumber': bitOrBigNumber,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm04(x, y, this)
+      return matAlgo04xSidSid(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm01(y, x, this, true)
+      return matAlgo01xDSid(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm01(x, y, this, false)
+      return matAlgo01xDSid(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
+      return matAlgo13xDD(x, y, this)
     },
 
     'Array, Array': function (x, y) {
@@ -83,29 +83,29 @@ export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm10(x, y, this, false)
+      return matAlgo10xSids(x, y, this, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, this, false)
+      return matAlgo14xDs(x, y, this, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm10(y, x, this, true)
+      return matAlgo10xSids(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
+      return matAlgo14xDs(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
+      return matAlgo14xDs(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
+      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
     }
   })
 })

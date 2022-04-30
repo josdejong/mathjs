@@ -1,11 +1,11 @@
 import { factory } from '../../utils/factory.js'
-import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02.js'
-import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03.js'
-import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07.js'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
-import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12.js'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
+import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
+import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'dotDivide'
 const dependencies = [
@@ -17,13 +17,13 @@ const dependencies = [
 ]
 
 export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, DenseMatrix }) => {
-  const algorithm02 = createAlgorithm02({ typed, equalScalar })
-  const algorithm03 = createAlgorithm03({ typed })
-  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
+  const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
+  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo13xDD = createMatAlgo13xDD({ typed })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   /**
    * Divide two matrices element wise. The function accepts both matrices and
@@ -56,19 +56,19 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
     'any, any': divideScalar,
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm07(x, y, divideScalar, false)
+      return matAlgo07xSSf(x, y, divideScalar, false)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, divideScalar, true)
+      return matAlgo02xDS0(y, x, divideScalar, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, divideScalar, false)
+      return matAlgo03xDSf(x, y, divideScalar, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, divideScalar)
+      return matAlgo13xDD(x, y, divideScalar)
     },
 
     'Array, Array': function (x, y) {
@@ -87,29 +87,29 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, divideScalar, false)
+      return matAlgo11xS0s(x, y, divideScalar, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, divideScalar, false)
+      return matAlgo14xDs(x, y, divideScalar, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, divideScalar, true)
+      return matAlgo12xSfs(y, x, divideScalar, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, divideScalar, true)
+      return matAlgo14xDs(y, x, divideScalar, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, divideScalar, false).valueOf()
+      return matAlgo14xDs(matrix(x), y, divideScalar, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, divideScalar, true).valueOf()
+      return matAlgo14xDs(matrix(y), x, divideScalar, true).valueOf()
     }
   })
 })

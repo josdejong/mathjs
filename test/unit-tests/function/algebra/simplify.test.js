@@ -234,7 +234,7 @@ describe('simplify', function () {
     simplifyAndCompare('x^2*y^3*z - y*z*x^2*y', 'x^2*z*(y^3-y^2)')
   })
 
-  it('can simplify with functions as well as operators', () => {
+  it('can simplify with functions as well as operators', function () {
     simplifyAndCompare('add(x,x)', '2*x')
     simplifyAndCompare('multiply(x,2)+x', '3*x')
     simplifyAndCompare('add(2*add(x,1), x+1)', '3*(x + 1)')

@@ -11,23 +11,23 @@ describe('simplifyConstant', function () {
     assert.strictEqual(actual, expected)
   }
 
-  it('should evaluate constant subexpressions', () => {
+  it('should evaluate constant subexpressions', function () {
     testSimplifyConstant('2+2', '4')
     testSimplifyConstant('x+3*5', 'x + 15')
     testSimplifyConstant('f(sin(0))', 'f(0)')
     testSimplifyConstant('[10/2, y, 8-4]', '[5, y, 4]')
   })
 
-  it('should by default convert decimals into fractions', () => {
+  it('should by default convert decimals into fractions', function () {
     testSimplifyConstant('0.5 x', '1 / 2 x')
   })
 
-  it('should coalesce constants in a multi-argument expression', () => {
+  it('should coalesce constants in a multi-argument expression', function () {
     testSimplifyConstant('3 + x + 7 + y', '10 + x + y')
     testSimplifyConstant('3 * x * 7 * y', '21 * x * y')
   })
 
-  it('should respect simplify options', () => {
+  it('should respect simplify options', function () {
     testSimplifyConstant('0.5 x', '0.5 * x', { implicit: 'show' },
       { exactFractions: false })
     testSimplifyConstant('0.001 x', '0.001 * x', { implicit: 'show' },

@@ -2,8 +2,8 @@ import { factory } from '../../utils/factory.js'
 import { isMatrix } from '../../utils/is.js'
 import { extend } from '../../utils/object.js'
 import { arraySize } from '../../utils/array.js'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'multiply'
 const dependencies = [
@@ -16,8 +16,8 @@ const dependencies = [
 ]
 
 export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar, dot }) => {
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   function _validateMatrixDimensions (size1, size2) {
     // check left operand dimensions
@@ -845,29 +845,29 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, multiplyScalar, false)
+      return matAlgo11xS0s(x, y, multiplyScalar, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, multiplyScalar, false)
+      return matAlgo14xDs(x, y, multiplyScalar, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm11(y, x, multiplyScalar, true)
+      return matAlgo11xS0s(y, x, multiplyScalar, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, multiplyScalar, true)
+      return matAlgo14xDs(y, x, multiplyScalar, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, multiplyScalar, false).valueOf()
+      return matAlgo14xDs(matrix(x), y, multiplyScalar, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, multiplyScalar, true).valueOf()
+      return matAlgo14xDs(matrix(y), x, multiplyScalar, true).valueOf()
     },
 
     'any, any': multiplyScalar,

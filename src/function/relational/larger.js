@@ -1,11 +1,11 @@
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
 import { nearlyEqual } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
-import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03.js'
-import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07.js'
-import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
+import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
+import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
 
 const name = 'larger'
 const dependencies = [
@@ -16,11 +16,11 @@ const dependencies = [
 ]
 
 export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, DenseMatrix }) => {
-  const algorithm03 = createAlgorithm03({ typed })
-  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
-  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
+  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo13xDD = createMatAlgo13xDD({ typed })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   /**
    * Test whether value x is larger than y.
@@ -83,19 +83,19 @@ export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm07(x, y, this)
+      return matAlgo07xSSf(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm03(y, x, this, true)
+      return matAlgo03xDSf(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, this, false)
+      return matAlgo03xDSf(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
+      return matAlgo13xDD(x, y, this)
     },
 
     'Array, Array': function (x, y) {
@@ -114,29 +114,29 @@ export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, this, false)
+      return matAlgo12xSfs(x, y, this, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, this, false)
+      return matAlgo14xDs(x, y, this, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, this, true)
+      return matAlgo12xSfs(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
+      return matAlgo14xDs(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
+      return matAlgo14xDs(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
+      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
     }
   })
 })

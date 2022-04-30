@@ -1,8 +1,8 @@
-import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03.js'
-import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12.js'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
-import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05.js'
+import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
 import { factory } from '../../utils/factory.js'
 import { orNumber } from '../../plain/number/index.js'
 
@@ -15,11 +15,11 @@ const dependencies = [
 ]
 
 export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
-  const algorithm03 = createAlgorithm03({ typed })
-  const algorithm05 = createAlgorithm05({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
+  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo13xDD = createMatAlgo13xDD({ typed })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   /**
    * Logical `or`. Test if at least one value is defined with a nonzero/nonempty value.
@@ -66,19 +66,19 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm05(x, y, this)
+      return matAlgo05xSfSf(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm03(y, x, this, true)
+      return matAlgo03xDSf(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, this, false)
+      return matAlgo03xDSf(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
+      return matAlgo13xDD(x, y, this)
     },
 
     'Array, Array': function (x, y) {
@@ -97,29 +97,29 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, this, false)
+      return matAlgo12xSfs(x, y, this, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, this, false)
+      return matAlgo14xDs(x, y, this, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, this, true)
+      return matAlgo12xSfs(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
+      return matAlgo14xDs(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
+      return matAlgo14xDs(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
+      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
     }
   })
 })
