@@ -1,11 +1,11 @@
 import { factory } from '../../utils/factory.js'
 import { DimensionError } from '../../error/DimensionError.js'
-import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01.js'
-import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03.js'
-import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05.js'
-import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10.js'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
+import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
+import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
+import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
+import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'subtract'
 const dependencies = [
@@ -20,12 +20,12 @@ const dependencies = [
 export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, DenseMatrix }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
-  const algorithm01 = createAlgorithm01({ typed })
-  const algorithm03 = createAlgorithm03({ typed })
-  const algorithm05 = createAlgorithm05({ typed, equalScalar })
-  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
+  const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
+  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
+  const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
+  const matAlgo13xDD = createMatAlgo13xDD({ typed })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   /**
    * Subtract two values, `x - y`.
@@ -100,22 +100,22 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       checkEqualDimensions(x, y)
-      return algorithm05(x, y, this)
+      return matAlgo05xSfSf(x, y, this)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
       checkEqualDimensions(x, y)
-      return algorithm03(y, x, this, true)
+      return matAlgo03xDSf(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
       checkEqualDimensions(x, y)
-      return algorithm01(x, y, this, false)
+      return matAlgo01xDSid(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
       checkEqualDimensions(x, y)
-      return algorithm13(x, y, this)
+      return matAlgo13xDD(x, y, this)
     },
 
     'Array, Array': function (x, y) {
@@ -134,29 +134,29 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm10(x, unaryMinus(y), addScalar)
+      return matAlgo10xSids(x, unaryMinus(y), addScalar)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, this)
+      return matAlgo14xDs(x, y, this)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm10(y, x, this, true)
+      return matAlgo10xSids(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
+      return matAlgo14xDs(y, x, this, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
+      return matAlgo14xDs(matrix(x), y, this, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
+      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
     }
   })
 })

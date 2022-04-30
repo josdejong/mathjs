@@ -815,8 +815,8 @@ declare namespace math {
      */
     simplify: Simplify
 
-    simplifyConstant(expr: MathNode | string, options?: SimplifyOptions);
-    simplifyCore(expr: MathNode | string, options?: SimplifyOptions);
+    simplifyConstant(expr: MathNode | string, options?: SimplifyOptions)
+    simplifyCore(expr: MathNode | string, options?: SimplifyOptions)
 
     /**
      *  Replaces variable nodes with their scoped values
@@ -896,7 +896,7 @@ declare namespace math {
      */
     cbrt(x: number, allRoots?: boolean): number
     cbrt(x: BigNumber, allRoots?: boolean): BigNumber
-    cbrt(x: Fraction, allroots?: boolean): Fraction 
+    cbrt(x: Fraction, allroots?: boolean): Fraction
     cbrt(x: Complex, allRoots?: boolean): Complex
     cbrt(x: Unit, allRoots?: boolean): Unit
 

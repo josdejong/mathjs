@@ -1,7 +1,7 @@
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
-import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'fix'
 const dependencies = ['typed', 'Complex', 'matrix', 'ceil', 'floor', 'equalScalar', 'zeros', 'DenseMatrix']
@@ -21,8 +21,8 @@ export const createFixNumber = /* #__PURE__ */ factory(
 )
 
 export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex, matrix, ceil, floor, equalScalar, zeros, DenseMatrix }) => {
-  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   const fixNumber = createFixNumber({ typed, ceil, floor })
   /**
@@ -115,15 +115,15 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
 
     'number | Complex | Fraction | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
+      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
     },
 
     'number | Complex | Fraction | BigNumber, Matrix': function (x, y) {
       if (equalScalar(x, 0)) return zeros(y.size(), y.storage())
       if (y.storage() === 'dense') {
-        return algorithm14(y, x, this, true)
+        return matAlgo14xDs(y, x, this, true)
       }
-      return algorithm12(y, x, this, true)
+      return matAlgo12xSfs(y, x, this, true)
     }
   })
 })

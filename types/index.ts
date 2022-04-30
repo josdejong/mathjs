@@ -180,7 +180,11 @@ Simplify examples
   math.simplify('0.4 * x', {}, { exactFractions: false })
   math.simplifyCore('0.4 * x + 0', { exactFractions: false })
 
-  math.chain('0.4 * x + 0').parse().simplifyCore({exactFractions: false}).simplifyConstant()
+  math
+    .chain('0.4 * x + 0')
+    .parse()
+    .simplifyCore({ exactFractions: false })
+    .simplifyConstant()
 }
 
 /*
@@ -217,7 +221,7 @@ Complex numbers examples
   {
     const p: math.PolarCoordinates = {
       r: math.sqrt(2) as number, // must be real but a sqrt could be Complex
-      phi: math.pi / 4
+      phi: math.pi / 4,
     }
     const c: math.Complex = math.complex(p)
     assert.strictEqual(c.im, 1)

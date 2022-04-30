@@ -115,7 +115,7 @@ describe('operators', function () {
     assert.strictEqual(isAssociativeWith(p, sub, 'keep'), null)
   })
 
-  it('should get the operator of a function name', () => {
+  it('should get the operator of a function name', function () {
     assert.strictEqual(getOperator('multiply'), '*')
     assert.strictEqual(getOperator('ctranspose'), "'")
     assert.strictEqual(getOperator('mod'), 'mod')

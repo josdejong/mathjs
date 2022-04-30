@@ -1,10 +1,10 @@
 import { factory } from '../../../utils/factory.js'
 import { clone } from '../../../utils/object.js'
 
-const name = 'algorithm14'
+const name = 'matAlgo14xDs'
 const dependencies = ['typed']
 
-export const createAlgorithm14 = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createMatAlgo14xDs = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, b).
    * Callback function invoked MxN times.
@@ -20,7 +20,7 @@ export const createAlgorithm14 = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
    */
-  return function algorithm14 (a, b, callback, inverse) {
+  return function matAlgo14xDs (a, b, callback, inverse) {
     // a arrays
     const adata = a._data
     const asize = a._size

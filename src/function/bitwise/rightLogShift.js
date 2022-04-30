@@ -1,10 +1,10 @@
-import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02.js'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
-import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01.js'
-import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10.js'
-import { createAlgorithm08 } from '../../type/matrix/utils/algorithm08.js'
+import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
+import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
+import { createMatAlgo08xS0Sid } from '../../type/matrix/utils/matAlgo08xS0Sid.js'
 import { factory } from '../../utils/factory.js'
 import { rightLogShiftNumber } from '../../plain/number/index.js'
 
@@ -18,13 +18,13 @@ const dependencies = [
 ]
 
 export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
-  const algorithm01 = createAlgorithm01({ typed })
-  const algorithm02 = createAlgorithm02({ typed, equalScalar })
-  const algorithm08 = createAlgorithm08({ typed, equalScalar })
-  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
+  const matAlgo08xS0Sid = createMatAlgo08xS0Sid({ typed, equalScalar })
+  const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo13xDD = createMatAlgo13xDD({ typed })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   /**
    * Bitwise right logical shift of value x by y number of bits, `x >>> y`.
@@ -57,19 +57,19 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
     // 'BigNumber, BigNumber': ..., // TODO: implement BigNumber support for rightLogShift
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm08(x, y, this, false)
+      return matAlgo08xS0Sid(x, y, this, false)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, this, true)
+      return matAlgo02xDS0(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm01(x, y, this, false)
+      return matAlgo01xDSid(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
+      return matAlgo13xDD(x, y, this)
     },
 
     'Array, Array': function (x, y) {
@@ -92,7 +92,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
       if (equalScalar(y, 0)) {
         return x.clone()
       }
-      return algorithm11(x, y, this, false)
+      return matAlgo11xS0s(x, y, this, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
@@ -100,7 +100,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
       if (equalScalar(y, 0)) {
         return x.clone()
       }
-      return algorithm14(x, y, this, false)
+      return matAlgo14xDs(x, y, this, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
@@ -108,7 +108,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
       if (equalScalar(x, 0)) {
         return zeros(y.size(), y.storage())
       }
-      return algorithm10(y, x, this, true)
+      return matAlgo10xSids(y, x, this, true)
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
@@ -116,7 +116,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
       if (equalScalar(x, 0)) {
         return zeros(y.size(), y.storage())
       }
-      return algorithm14(y, x, this, true)
+      return matAlgo14xDs(y, x, this, true)
     },
 
     'Array, number | BigNumber': function (x, y) {

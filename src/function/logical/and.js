@@ -1,8 +1,8 @@
-import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02.js'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
-import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06.js'
+import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatAlgo06xS0S0 } from '../../type/matrix/utils/matAlgo06xS0S0.js'
 import { factory } from '../../utils/factory.js'
 import { andNumber } from '../../plain/number/index.js'
 
@@ -16,11 +16,11 @@ const dependencies = [
 ]
 
 export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not }) => {
-  const algorithm02 = createAlgorithm02({ typed, equalScalar })
-  const algorithm06 = createAlgorithm06({ typed, equalScalar })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
+  const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo13xDD = createMatAlgo13xDD({ typed })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   /**
    * Logical `and`. Test whether two values are both defined with a nonzero/nonempty value.
@@ -67,19 +67,19 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm06(x, y, this, false)
+      return matAlgo06xS0S0(x, y, this, false)
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, this, true)
+      return matAlgo02xDS0(y, x, this, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm02(x, y, this, false)
+      return matAlgo02xDS0(x, y, this, false)
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
+      return matAlgo13xDD(x, y, this)
     },
 
     'Array, Array': function (x, y) {
@@ -103,7 +103,7 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         // return zero matrix
         return zeros(x.size(), x.storage())
       }
-      return algorithm11(x, y, this, false)
+      return matAlgo11xS0s(x, y, this, false)
     },
 
     'DenseMatrix, any': function (x, y) {
@@ -112,7 +112,7 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         // return zero matrix
         return zeros(x.size(), x.storage())
       }
-      return algorithm14(x, y, this, false)
+      return matAlgo14xDs(x, y, this, false)
     },
 
     'any, SparseMatrix': function (x, y) {
@@ -121,7 +121,7 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         // return zero matrix
         return zeros(x.size(), x.storage())
       }
-      return algorithm11(y, x, this, true)
+      return matAlgo11xS0s(y, x, this, true)
     },
 
     'any, DenseMatrix': function (x, y) {
@@ -130,7 +130,7 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         // return zero matrix
         return zeros(x.size(), x.storage())
       }
-      return algorithm14(y, x, this, true)
+      return matAlgo14xDs(y, x, this, true)
     },
 
     'Array, any': function (x, y) {

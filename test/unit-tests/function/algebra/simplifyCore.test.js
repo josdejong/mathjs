@@ -76,20 +76,20 @@ describe('simplifyCore', function () {
     testSimplifyCore('(x*1) % (y^1)', 'x % y')
   })
 
-  it('converts functions to their corresponding infix operators', () => {
+  it('converts functions to their corresponding infix operators', function () {
     testSimplifyCore('add(x, y)', 'x + y')
     testSimplifyCore('mod(x, 5)', 'x mod 5')
     testSimplifyCore('to(5 cm, in)', '5 cm to in')
     testSimplifyCore('ctranspose(M)', "M'")
   })
 
-  it('continues to simplify after function -> operator conversion', () => {
+  it('continues to simplify after function -> operator conversion', function () {
     testSimplifyCore('add(multiply(x, 0), y)', 'y')
     testSimplifyCore('and(multiply(1, x), true)', 'x and true')
     testSimplifyCore('add(x, 0 ,y)', 'x + y')
   })
 
-  it('can perform sequential distinct core simplifications', () => {
+  it('can perform sequential distinct core simplifications', function () {
     testSimplifyCore('0 - -x', 'x')
     testSimplifyCore('0 - (x - y)', 'y - x')
     testSimplifyCore('a + -0', 'a')
