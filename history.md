@@ -4,6 +4,18 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220502-version-1051">2022-05-02 version 10.5.1 <a href="#20220502-version-1051" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2526">#2526</a>, <a href="https://github.com/josdejong/mathjs/issues/2529">#2529</a>: improve TypeScript definitions of function `round`, `fix`,
+  `floor`, `ceil`, and `nthRoot`, and improved the number only implementations 
+  of those functions   <a href="https://github.com/josdejong/mathjs/issues/2531">#2531</a>, <a href="https://github.com/josdejong/mathjs/issues/2539">#2539</a>). Thanks <a href="https://github.com/simlaticak">@simlaticak</a> and <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2532">#2532</a>: matrix index symbol `end` not working when used inside
+  a sub-expression.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2524">#2524</a>: In generating AUTHORS list, ignore a list of specific commits
+  (e.g., to avoid spurious duplicates in list).  <a href="https://github.com/josdejong/mathjs/issues/2543">#2543</a>)
+- Add type definitions of function `resolve`  <a href="https://github.com/josdejong/mathjs/issues/2536">#2536</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+
+
 <h1 id="20220419-version-1050">2022-04-19, version 10.5.0 <a href="#20220419-version-1050" title="Permalink">#</a></h1>
 
 - Implement <a href="https://github.com/josdejong/mathjs/issues/1563">#1563</a>: function `pinv`, Moore–Penrose inverse  <a href="https://github.com/josdejong/mathjs/issues/2521">#2521</a>). 

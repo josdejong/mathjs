@@ -56,6 +56,10 @@ math.floor(c, 1)              // returns Complex 3.2 - 2.8i
 
 math.floor([3.2, 3.8, -4.7])       // returns Array [3, 3, -5]
 math.floor([3.21, 3.82, -4.71], 1)  // returns Array [3.2, 3.8, -4.8]
+
+math.floor(math.tau, [2, 3])  // returns Array [6.28, 6.283]
+
+// Note that floor(array, array) currently not implemented.
 ```
 
 

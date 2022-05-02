@@ -14,6 +14,7 @@ For matrices, the function is evaluated element wise.
 
 ```js
 math.fix(x)
+math.fix(x,n)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

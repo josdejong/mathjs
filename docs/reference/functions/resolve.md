@@ -19,14 +19,14 @@ resolve(expr, scope)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`node` | Node |  The expression tree to be simplified
+`node` | Node &#124; Node[] |  The expression tree (or trees) to be simplified
 `scope` | Object |  Scope specifying variables to be resolved
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Node | Returns `node` with variables recursively substituted.
+Node &#124; Node[] | Returns `node` with variables recursively substituted.
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
