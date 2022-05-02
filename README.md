@@ -90,7 +90,7 @@ Math.js works on any ES5 compatible JavaScript engine: node.js, Chrome, Firefox,
 
 First clone the project from github:
 
-    git clone https://github.com/josdejong/mathjs.git
+    git clone git@github.com:josdejong/mathjs.git
     cd mathjs
 
 Install the project dependencies:
