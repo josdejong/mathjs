@@ -4,8 +4,7 @@ import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
-import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'dotDivide'
 const dependencies = [
@@ -22,8 +21,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matAlgo13xDD = createMatAlgo13xDD({ typed })
-  const matAlgo14xDs = createMatAlgo14xDs({ typed })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Divide two matrices element wise. The function accepts both matrices and
@@ -51,65 +49,12 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Denominator
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
    */
-  return typed(name, {
-
-    'any, any': divideScalar,
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo07xSSf(x, y, divideScalar, false)
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo02xDS0(y, x, divideScalar, true)
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo03xDSf(x, y, divideScalar, false)
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo13xDD(x, y, divideScalar)
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, any': function (x, y) {
-      return matAlgo11xS0s(x, y, divideScalar, false)
-    },
-
-    'DenseMatrix, any': function (x, y) {
-      return matAlgo14xDs(x, y, divideScalar, false)
-    },
-
-    'any, SparseMatrix': function (x, y) {
-      return matAlgo12xSfs(y, x, divideScalar, true)
-    },
-
-    'any, DenseMatrix': function (x, y) {
-      return matAlgo14xDs(y, x, divideScalar, true)
-    },
-
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(x), y, divideScalar, false).valueOf()
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(y), x, divideScalar, true).valueOf()
-    }
-  })
+  return typed(name, matrixAlgorithmSuite({
+    elop: divideScalar,
+    SS: matAlgo07xSSf,
+    DS: matAlgo03xDSf,
+    SD: matAlgo02xDS0,
+    Ss: matAlgo11xS0s,
+    sS: matAlgo12xSfs
+  }))
 })

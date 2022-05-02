@@ -1,11 +1,11 @@
 import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
-import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
 import { createMatAlgo08xS0Sid } from '../../type/matrix/utils/matAlgo08xS0Sid.js'
 import { factory } from '../../utils/factory.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { leftShiftNumber } from '../../plain/number/index.js'
 import { leftShiftBigNumber } from '../../utils/bignumber/bitwise.js'
 
@@ -24,8 +24,8 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
   const matAlgo08xS0Sid = createMatAlgo08xS0Sid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const matAlgo13xDD = createMatAlgo13xDD({ typed })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Bitwise left logical shift of a value x by y number of bits, `x << y`.
@@ -50,83 +50,59 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @param  {number | BigNumber} y Amount of shifts
    * @return {number | BigNumber | Array | Matrix} `x` shifted left `y` times
    */
-  return typed(name, {
+  return typed(
+    name,
+    {
+      'number, number': leftShiftNumber,
 
-    'number, number': leftShiftNumber,
+      'BigNumber, BigNumber': leftShiftBigNumber,
 
-    'BigNumber, BigNumber': leftShiftBigNumber,
+      'SparseMatrix, number | BigNumber': function (x, y) {
+        // check scalar
+        if (equalScalar(y, 0)) {
+          return x.clone()
+        }
+        return matAlgo11xS0s(x, y, this, false)
+      },
 
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo08xS0Sid(x, y, this, false)
-    },
+      'DenseMatrix, number | BigNumber': function (x, y) {
+        // check scalar
+        if (equalScalar(y, 0)) {
+          return x.clone()
+        }
+        return matAlgo14xDs(x, y, this, false)
+      },
 
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo02xDS0(y, x, this, true)
-    },
+      'number | BigNumber, SparseMatrix': function (x, y) {
+        // check scalar
+        if (equalScalar(x, 0)) {
+          return zeros(y.size(), y.storage())
+        }
+        return matAlgo10xSids(y, x, this, true)
+      },
 
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo01xDSid(x, y, this, false)
-    },
+      'number | BigNumber, DenseMatrix': function (x, y) {
+        // check scalar
+        if (equalScalar(x, 0)) {
+          return zeros(y.size(), y.storage())
+        }
+        return matAlgo14xDs(y, x, this, true)
+      },
 
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo13xDD(x, y, this)
-    },
+      'Array, number | BigNumber': function (x, y) {
+        // use matrix implementation
+        return this(matrix(x), y).valueOf()
+      },
 
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, number | BigNumber': function (x, y) {
-      // check scalar
-      if (equalScalar(y, 0)) {
-        return x.clone()
+      'number | BigNumber, Array': function (x, y) {
+        // use matrix implementation
+        return this(x, matrix(y)).valueOf()
       }
-      return matAlgo11xS0s(x, y, this, false)
     },
-
-    'DenseMatrix, number | BigNumber': function (x, y) {
-      // check scalar
-      if (equalScalar(y, 0)) {
-        return x.clone()
-      }
-      return matAlgo14xDs(x, y, this, false)
-    },
-
-    'number | BigNumber, SparseMatrix': function (x, y) {
-      // check scalar
-      if (equalScalar(x, 0)) {
-        return zeros(y.size(), y.storage())
-      }
-      return matAlgo10xSids(y, x, this, true)
-    },
-
-    'number | BigNumber, DenseMatrix': function (x, y) {
-      // check scalar
-      if (equalScalar(x, 0)) {
-        return zeros(y.size(), y.storage())
-      }
-      return matAlgo14xDs(y, x, this, true)
-    },
-
-    'Array, number | BigNumber': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y).valueOf()
-    },
-
-    'number | BigNumber, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y)).valueOf()
-    }
-  })
+    matrixAlgorithmSuite({
+      SS: matAlgo08xS0Sid,
+      DS: matAlgo01xDSid,
+      SD: matAlgo02xDS0
+    })
+  )
 })

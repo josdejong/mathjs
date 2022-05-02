@@ -3,9 +3,8 @@ import { nearlyEqual } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
-import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
 import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'compare'
 const dependencies = [
@@ -22,8 +21,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matAlgo13xDD = createMatAlgo13xDD({ typed })
-  const matAlgo14xDs = createMatAlgo14xDs({ typed })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
@@ -62,96 +60,40 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @return {number | BigNumber | Fraction | Array | Matrix} Returns the result of the comparison:
    *                                                          1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  return typed(name, {
+  return typed(
+    name,
+    createCompareNumber({ typed, config }),
+    {
+      'boolean, boolean': function (x, y) {
+        return x === y ? 0 : (x > y ? 1 : -1)
+      },
 
-    'boolean, boolean': function (x, y) {
-      return x === y ? 0 : (x > y ? 1 : -1)
-    },
+      'BigNumber, BigNumber': function (x, y) {
+        return bigNearlyEqual(x, y, config.epsilon)
+          ? new BigNumber(0)
+          : new BigNumber(x.cmp(y))
+      },
 
-    'number, number': function (x, y) {
-      return nearlyEqual(x, y, config.epsilon)
-        ? 0
-        : (x > y ? 1 : -1)
-    },
+      'Fraction, Fraction': function (x, y) {
+        return new Fraction(x.compare(y))
+      },
 
-    'BigNumber, BigNumber': function (x, y) {
-      return bigNearlyEqual(x, y, config.epsilon)
-        ? new BigNumber(0)
-        : new BigNumber(x.cmp(y))
-    },
+      'Complex, Complex': function () {
+        throw new TypeError('No ordering relation is defined for complex numbers')
+      },
 
-    'Fraction, Fraction': function (x, y) {
-      return new Fraction(x.compare(y))
-    },
-
-    'Complex, Complex': function () {
-      throw new TypeError('No ordering relation is defined for complex numbers')
-    },
-
-    'Unit, Unit': function (x, y) {
-      if (!x.equalBase(y)) {
-        throw new Error('Cannot compare units with different base')
+      'Unit, Unit': function (x, y) {
+        if (!x.equalBase(y)) {
+          throw new Error('Cannot compare units with different base')
+        }
+        return this(x.value, y.value)
       }
-      return this(x.value, y.value)
-    },
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo05xSfSf(x, y, this)
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo03xDSf(y, x, this, true)
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo03xDSf(x, y, this, false)
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo13xDD(x, y, this)
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, any': function (x, y) {
-      return matAlgo12xSfs(x, y, this, false)
-    },
-
-    'DenseMatrix, any': function (x, y) {
-      return matAlgo14xDs(x, y, this, false)
-    },
-
-    'any, SparseMatrix': function (x, y) {
-      return matAlgo12xSfs(y, x, this, true)
-    },
-
-    'any, DenseMatrix': function (x, y) {
-      return matAlgo14xDs(y, x, this, true)
-    },
-
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(x), y, this, false).valueOf()
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
-    }
-  })
+    }, matrixAlgorithmSuite({
+      SS: matAlgo05xSfSf,
+      DS: matAlgo03xDSf,
+      Ss: matAlgo12xSfs
+    })
+  )
 })
 
 export const createCompareNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {

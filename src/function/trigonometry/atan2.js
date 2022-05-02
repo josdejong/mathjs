@@ -4,8 +4,7 @@ import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo09xS0Sf } from '../../type/matrix/utils/matAlgo09xS0Sf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
-import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'atan2'
 const dependencies = [
@@ -22,8 +21,7 @@ export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matAlgo13xDD = createMatAlgo13xDD({ typed })
-  const matAlgo14xDs = createMatAlgo14xDs({ typed })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Calculate the inverse tangent function with two arguments, y/x.
@@ -54,71 +52,25 @@ export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param {number | Array | Matrix} x  First dimension
    * @return {number | Array | Matrix} Four-quadrant inverse tangent
    */
-  return typed(name, {
+  return typed(
+    name,
+    {
+      'number, number': Math.atan2,
 
-    'number, number': Math.atan2,
+      // Complex numbers doesn't seem to have a reasonable implementation of
+      // atan2(). Even Matlab removed the support, after they only calculated
+      // the atan only on base of the real part of the numbers and ignored
+      // the imaginary.
 
-    // Complex numbers doesn't seem to have a reasonable implementation of
-    // atan2(). Even Matlab removed the support, after they only calculated
-    // the atan only on base of the real part of the numbers and ignored the imaginary.
-
-    'BigNumber, BigNumber': function (y, x) {
-      return BigNumber.atan2(y, x)
+      'BigNumber, BigNumber': (y, x) => BigNumber.atan2(y, x)
     },
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo09xS0Sf(x, y, this, false)
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      // mind the order of y and x!
-      return matAlgo02xDS0(y, x, this, true)
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo03xDSf(x, y, this, false)
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo13xDD(x, y, this)
-    },
-
-    'Array, Array': function (x, y) {
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, number | BigNumber': function (x, y) {
-      return matAlgo11xS0s(x, y, this, false)
-    },
-
-    'DenseMatrix, number | BigNumber': function (x, y) {
-      return matAlgo14xDs(x, y, this, false)
-    },
-
-    'number | BigNumber, SparseMatrix': function (x, y) {
-      // mind the order of y and x
-      return matAlgo12xSfs(y, x, this, true)
-    },
-
-    'number | BigNumber, DenseMatrix': function (x, y) {
-      // mind the order of y and x
-      return matAlgo14xDs(y, x, this, true)
-    },
-
-    'Array, number | BigNumber': function (x, y) {
-      return matAlgo14xDs(matrix(x), y, this, false).valueOf()
-    },
-
-    'number | BigNumber, Array': function (x, y) {
-      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
-    }
-  })
+    matrixAlgorithmSuite({
+      scalar: 'number | BigNumber',
+      SS: matAlgo09xS0Sf,
+      DS: matAlgo03xDSf,
+      SD: matAlgo02xDS0,
+      Ss: matAlgo11xS0s,
+      sS: matAlgo12xSfs
+    })
+  )
 })

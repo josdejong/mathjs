@@ -1,11 +1,10 @@
 import { factory } from '../../utils/factory.js'
-import { DimensionError } from '../../error/DimensionError.js'
 import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
-import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
-import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'subtract'
 const dependencies = [
@@ -24,8 +23,8 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matAlgo13xDD = createMatAlgo13xDD({ typed })
-  const matAlgo14xDs = createMatAlgo14xDs({ typed })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Subtract two values, `x - y`.
@@ -60,118 +59,40 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Subtraction of `x` and `y`
    */
-  return typed(name, {
+  return typed(
+    name,
+    {
+      'number, number': (x, y) => x - y,
+      'Complex, Complex': (x, y) => x.sub(y),
+      'BigNumber, BigNumber': (x, y) => x.minus(y),
+      'Fraction, Fraction': (x, y) => x.sub(y),
 
-    'number, number': function (x, y) {
-      return x - y
-    },
+      'Unit, Unit': function (x, y) {
+        if (x.value === null) {
+          throw new Error('Parameter x contains a unit with undefined value')
+        }
 
-    'Complex, Complex': function (x, y) {
-      return x.sub(y)
-    },
+        if (y.value === null) {
+          throw new Error('Parameter y contains a unit with undefined value')
+        }
 
-    'BigNumber, BigNumber': function (x, y) {
-      return x.minus(y)
-    },
+        if (!x.equalBase(y)) {
+          throw new Error('Units do not match')
+        }
 
-    'Fraction, Fraction': function (x, y) {
-      return x.sub(y)
-    },
+        const res = x.clone()
+        res.value = this(res.value, y.value)
+        res.fixPrefix = false
 
-    'Unit, Unit': function (x, y) {
-      if (x.value === null) {
-        throw new Error('Parameter x contains a unit with undefined value')
+        return res
       }
-
-      if (y.value === null) {
-        throw new Error('Parameter y contains a unit with undefined value')
-      }
-
-      if (!x.equalBase(y)) {
-        throw new Error('Units do not match')
-      }
-
-      const res = x.clone()
-      res.value = this(res.value, y.value)
-      res.fixPrefix = false
-
-      return res
     },
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      checkEqualDimensions(x, y)
-      return matAlgo05xSfSf(x, y, this)
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      checkEqualDimensions(x, y)
-      return matAlgo03xDSf(y, x, this, true)
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      checkEqualDimensions(x, y)
-      return matAlgo01xDSid(x, y, this, false)
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      checkEqualDimensions(x, y)
-      return matAlgo13xDD(x, y, this)
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, any': function (x, y) {
-      return matAlgo10xSids(x, unaryMinus(y), addScalar)
-    },
-
-    'DenseMatrix, any': function (x, y) {
-      return matAlgo14xDs(x, y, this)
-    },
-
-    'any, SparseMatrix': function (x, y) {
-      return matAlgo10xSids(y, x, this, true)
-    },
-
-    'any, DenseMatrix': function (x, y) {
-      return matAlgo14xDs(y, x, this, true)
-    },
-
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(x), y, this, false).valueOf()
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
-    }
-  })
+    matrixAlgorithmSuite({
+      SS: matAlgo05xSfSf,
+      DS: matAlgo01xDSid,
+      SD: matAlgo03xDSf,
+      Ss: matAlgo12xSfs,
+      sS: matAlgo10xSids
+    })
+  )
 })
-
-/**
- * Check whether matrix x and y have the same number of dimensions.
- * Throws a DimensionError when dimensions are not equal
- * @param {Matrix} x
- * @param {Matrix} y
- */
-function checkEqualDimensions (x, y) {
-  const xsize = x.size()
-  const ysize = y.size()
-
-  if (xsize.length !== ysize.length) {
-    throw new DimensionError(xsize.length, ysize.length)
-  }
-}
