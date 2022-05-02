@@ -2,8 +2,7 @@ import { factory } from '../../utils/factory.js'
 import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
 import { createMatAlgo04xSidSid } from '../../type/matrix/utils/matAlgo04xSidSid.js'
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
-import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
-import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { gcdNumber } from '../../plain/number/index.js'
 
 const name = 'gcd'
@@ -19,8 +18,17 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matAlgo13xDD = createMatAlgo13xDD({ typed })
-  const matAlgo14xDs = createMatAlgo14xDs({ typed })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+
+  const gcdTypes = 'number | BigNumber | Fraction | Matrix | Array'
+  const gcdManySignature = {}
+  gcdManySignature[`${gcdTypes}, ${gcdTypes}, ...${gcdTypes}`] = function (a, b, args) {
+    let res = this(a, b)
+    for (let i = 0; i < args.length; i++) {
+      res = this(res, args[i])
+    }
+    return res
+  }
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.
@@ -47,82 +55,20 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * @param {... number | BigNumber | Fraction | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Fraction | Array | Matrix}                           The greatest common divisor
    */
-  return typed(name, {
-
-    'number, number': gcdNumber,
-
-    'BigNumber, BigNumber': _gcdBigNumber,
-
-    'Fraction, Fraction': function (x, y) {
-      return x.gcd(y)
+  return typed(
+    name,
+    {
+      'number, number': gcdNumber,
+      'BigNumber, BigNumber': _gcdBigNumber,
+      'Fraction, Fraction': (x, y) => x.gcd(y)
     },
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo04xSidSid(x, y, this)
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo01xDSid(y, x, this, true)
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo01xDSid(x, y, this, false)
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo13xDD(x, y, this)
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, number | BigNumber': function (x, y) {
-      return matAlgo10xSids(x, y, this, false)
-    },
-
-    'DenseMatrix, number | BigNumber': function (x, y) {
-      return matAlgo14xDs(x, y, this, false)
-    },
-
-    'number | BigNumber, SparseMatrix': function (x, y) {
-      return matAlgo10xSids(y, x, this, true)
-    },
-
-    'number | BigNumber, DenseMatrix': function (x, y) {
-      return matAlgo14xDs(y, x, this, true)
-    },
-
-    'Array, number | BigNumber': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(x), y, this, false).valueOf()
-    },
-
-    'number | BigNumber, Array': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
-    },
-
-    // TODO: need a smarter notation here
-    'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function (a, b, args) {
-      let res = this(a, b)
-      for (let i = 0; i < args.length; i++) {
-        res = this(res, args[i])
-      }
-      return res
-    }
-  })
+    matrixAlgorithmSuite({
+      SS: matAlgo04xSidSid,
+      DS: matAlgo01xDSid,
+      Ss: matAlgo10xSids
+    }),
+    gcdManySignature
+  )
 
   /**
    * Calculate gcd for BigNumbers

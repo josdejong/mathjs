@@ -1,6 +1,5 @@
 import { factory } from '../../utils/factory.js'
-import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
-import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'to'
 const dependencies = [
@@ -9,8 +8,7 @@ const dependencies = [
 ]
 
 export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
-  const matAlgo13xDD = createMatAlgo13xDD({ typed })
-  const matAlgo14xDs = createMatAlgo14xDs({ typed })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Change the unit of a value.
@@ -36,49 +34,9 @@ export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
    *                                      or a unit without value.
    * @return {Unit | Array | Matrix} value with changed, fixed unit.
    */
-  return typed(name, {
-    'Unit, Unit | string': function (x, unit) {
-      return x.to(unit)
-    },
-
-    'Matrix, Matrix': function (x, y) {
-      // SparseMatrix does not support Units
-      return matAlgo13xDD(x, y, this)
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'Matrix, any': function (x, y) {
-      // SparseMatrix does not support Units
-      return matAlgo14xDs(x, y, this, false)
-    },
-
-    'any, Matrix': function (x, y) {
-      // SparseMatrix does not support Units
-      return matAlgo14xDs(y, x, this, true)
-    },
-
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(x), y, this, false).valueOf()
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
-    }
-  })
+  return typed(
+    name,
+    { 'Unit, Unit | string': (x, unit) => x.to(unit) },
+    matrixAlgorithmSuite({ Ds: true })
+  )
 })

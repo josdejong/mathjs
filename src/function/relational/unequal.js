@@ -2,8 +2,7 @@ import { factory } from '../../utils/factory.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
-import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'unequal'
 const dependencies = [
@@ -18,8 +17,7 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matAlgo13xDD = createMatAlgo13xDD({ typed })
-  const matAlgo14xDs = createMatAlgo14xDs({ typed })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Test whether two values are unequal.
@@ -64,75 +62,16 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the compared values are unequal, else returns false
    */
-  return typed('unequal', {
-
-    'any, any': function (x, y) {
-      // strict equality for null and undefined?
-      if (x === null) { return y !== null }
-      if (y === null) { return x !== null }
-      if (x === undefined) { return y !== undefined }
-      if (y === undefined) { return x !== undefined }
-
-      return _unequal(x, y)
-    },
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo07xSSf(x, y, _unequal)
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo03xDSf(y, x, _unequal, true)
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return matAlgo03xDSf(x, y, _unequal, false)
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return matAlgo13xDD(x, y, _unequal)
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, any': function (x, y) {
-      return matAlgo12xSfs(x, y, _unequal, false)
-    },
-
-    'DenseMatrix, any': function (x, y) {
-      return matAlgo14xDs(x, y, _unequal, false)
-    },
-
-    'any, SparseMatrix': function (x, y) {
-      return matAlgo12xSfs(y, x, _unequal, true)
-    },
-
-    'any, DenseMatrix': function (x, y) {
-      return matAlgo14xDs(y, x, _unequal, true)
-    },
-
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(x), y, _unequal, false).valueOf()
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(y), x, _unequal, true).valueOf()
-    }
-  })
+  return typed(
+    name,
+    createUnequalNumber({ typed, equalScalar }),
+    matrixAlgorithmSuite({
+      elop: _unequal,
+      SS: matAlgo07xSSf,
+      DS: matAlgo03xDSf,
+      Ss: matAlgo12xSfs
+    })
+  )
 
   function _unequal (x, y) {
     return !equalScalar(x, y)
