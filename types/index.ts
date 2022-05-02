@@ -7,6 +7,7 @@ import {
   addDependencies,
   divideDependencies,
   formatDependencies,
+  MathNode,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -151,6 +152,13 @@ Chaining examples
 
   const r = math.chain(-0.483).round([0, 1, 2]).floor().add(0.52).fix(1).done()
   assert.deepStrictEqual(r, [0.5, -0.4, -0.4])
+
+  expectTypeOf(math.chain('x + y').parse().resolve({ x: 1 }).done())
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .toMatchTypeOf<any>()
+  expectTypeOf(math.chain('x + y').parse().resolve().done())
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .toMatchTypeOf<any>()
 }
 
 /*
@@ -1248,4 +1256,19 @@ toTex examples
       a: '123',
     })
   ).toMatchTypeOf<string>()
+}
+
+/*
+Resolve examples
+*/
+{
+  const math = create(all, {})
+
+  expectTypeOf(math.resolve(math.parse('x + y'))).toMatchTypeOf<MathNode>()
+  expectTypeOf(
+    math.resolve(math.parse('x + y'), { x: 0 })
+  ).toMatchTypeOf<MathNode>()
+  expectTypeOf(math.resolve([math.parse('x + y')], { x: 0 })).toMatchTypeOf<
+    MathNode[]
+  >()
 }

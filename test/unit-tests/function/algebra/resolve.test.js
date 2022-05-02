@@ -48,6 +48,21 @@ describe('resolve', function () {
     simplifyAndCompare('x+y', 'y+1', new Map([['x', math.parse('1')]]))
   })
 
+  it('should resolve multiple nodes', function () {
+    const scope = { x: 1, y: 2 }
+
+    assert.deepStrictEqual(
+      math.resolve([
+        math.parse('x+z'),
+        math.parse('y+z')
+      ], scope),
+      [
+        math.resolve(math.parse('x+z'), scope),
+        math.resolve(math.parse('y+z'), scope)
+      ]
+    )
+  })
+
   it('should throw an error in case of reference loop', function () {
     const sumxy = math.parse('x+y')
     assert.throws(
