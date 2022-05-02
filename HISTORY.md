@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since version 10.5.0
+# 2022-05-02 version 10.5.1
 
 - Fix #2526, #2529: improve TypeScript definitions of function `round`, `fix`,
   `floor`, `ceil`, and `nthRoot`, and improved the number only implementations 
@@ -9,6 +9,7 @@
   a sub-expression.
 - Fix #2524: In generating AUTHORS list, ignore a list of specific commits
   (e.g., to avoid spurious duplicates in list). (#2543)
+- Add type definitions of function `resolve` (#2536). Thanks @mattvague.
 
 
 # 2022-04-19, version 10.5.0
