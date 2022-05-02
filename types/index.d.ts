@@ -820,7 +820,9 @@ declare namespace math {
      * @param node Tree to replace variable nodes in
      * @param scope Scope to read/write variables
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolve(node: MathNode, scope?: Record<string, any>): MathNode
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolve(node: MathNode[], scope?: Record<string, any>): MathNode[]
 
     /**
@@ -4138,6 +4140,7 @@ declare namespace math {
      *  Replaces variable nodes with their scoped values
      * @param scope Scope to read/write variables
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolve(scope?: Record<string, any>): MathJsChain
 
     /*************************************************************************
