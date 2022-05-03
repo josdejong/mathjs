@@ -254,7 +254,7 @@ describe('derivative', function () {
   it('should throw error for incorrect argument types', function () {
     assert.throws(function () {
       derivative('42', '42')
-    }, /TypeError: Unexpected type of argument in function derivative \(expected: string or SymbolNode or boolean, actual: ConstantNode, index: 1\)/)
+    }, /TypeError: Unexpected type of argument in function derivative \(expected: SymbolNode or identifier, actual: string, index: 1\)/)
 
     assert.throws(function () {
       derivative('[1, 2; 3, 4]', 'x')
@@ -268,7 +268,7 @@ describe('derivative', function () {
   it('should throw error if incorrect number of arguments', function () {
     assert.throws(function () {
       derivative('x + 2')
-    }, /TypeError: Too few arguments in function derivative \(expected: string or SymbolNode or boolean, index: 1\)/)
+    }, /TypeError: Too few arguments in function derivative \(expected: SymbolNode or identifier, index: 1\)/)
 
     assert.throws(function () {
       derivative('x + 2', 'x', {}, true, 42)
