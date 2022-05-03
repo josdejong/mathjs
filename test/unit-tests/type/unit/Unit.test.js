@@ -20,10 +20,12 @@ describe('Unit', function () {
       unit1 = new Unit(null, 'kg')
       assert.strictEqual(unit1.value, null)
       assert.strictEqual(unit1.units[0].unit.name, 'g')
+      assert.strictEqual(unit1.valType(), 'null')
 
       unit1 = new Unit(10, 'Hz')
       assert.strictEqual(unit1.value, 10)
       assert.strictEqual(unit1.units[0].unit.name, 'Hz')
+      assert.strictEqual(unit1.valType(), 'number')
 
       unit1 = new Unit(9.81, 'kg m/s^2')
       assert.strictEqual(unit1.value, 9.81)
@@ -36,18 +38,21 @@ describe('Unit', function () {
       const unit1 = new Unit(math.fraction(1000, 3), 'cm')
       assert.deepStrictEqual(unit1.value, math.fraction(10, 3))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.valType(), 'Fraction')
     })
 
     it('should create a unit with BigNumber value', function () {
       const unit1 = new Unit(math.bignumber(5000), 'cm')
       assert.deepStrictEqual(unit1.value, math.bignumber(50))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.valType(), 'BigNumber')
     })
 
     it('should create a unit with Complex value', function () {
       const unit1 = new Unit(math.complex(500, 600), 'cm')
       assert.deepStrictEqual(unit1.value, math.complex(5, 6))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.valType(), 'Complex')
     })
 
     it('should create square meter correctly', function () {

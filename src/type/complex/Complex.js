@@ -10,7 +10,7 @@ export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ()
   /**
    * Attach type information
    */
-  Object.defineProperty(Complex, 'name', {value: 'Complex'})
+  Object.defineProperty(Complex, 'name', { value: 'Complex' })
   Complex.prototype.constructor = Complex
   Complex.prototype.type = 'Complex'
   Complex.prototype.isComplex = true

@@ -250,6 +250,10 @@ Returns a clone of a unit represented in SI units. Works with units with or with
 Get a string representation of the unit. The function will
 determine the best fitting prefix for the unit.
 
+### unit.valType()
+Get the string name of the current type of the value of this Unit object, e.g.
+'number', 'BigNumber', etc.
+
 ## Unit reference
 
 This section lists all available units, prefixes, and physical constants. These can be used via the Unit object, or via `math.evaluate()`.

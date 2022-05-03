@@ -103,7 +103,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * Attach type information
    */
-  Object.defineProperty(Unit, 'name', {value: 'Unit'})
+  Object.defineProperty(Unit, 'name', { value: 'Unit' })
   Unit.prototype.constructor = Unit
   Unit.prototype.type = 'Unit'
   Unit.prototype.isUnit = true
@@ -461,6 +461,16 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Return the type of the value of this unit
+   *
+   * @memberof Unit
+   * @ return {string} type of the value of the unit
+   */
+  Unit.prototype.valType = function () {
+    return typeOf(this.value)
+  }
+
+  /**
    * Return whether the unit is derived (such as m/s, or cm^2, but not N)
    * @memberof Unit
    * @return {boolean} True if the unit is derived
@@ -757,7 +767,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         // To give the correct, but unexpected, results for units with an offset.
         // For example, abs(-283.15 degC) = -263.15 degC !!!
         // We must take the offset into consideration here
-        const convert = Unit._getNumberConverter(typeOf(ret.value)) // convert to Fraction or BigNumber if needed
+        const convert = ret._numberConverter() // convert to Fraction or BigNumber if needed
         const unitValue = convert(ret.units[0].unit.value)
         const nominalOffset = convert(ret.units[0].unit.offset)
         const unitOffset = multiplyScalar(unitValue, nominalOffset)
@@ -2966,6 +2976,21 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     number: function (x) {
       return x
     }
+  }
+
+  /**
+   * Retrieve the right converter function corresponding with this unit's
+   * value
+   *
+   * @memberof Unit
+   * @return {Function}
+   */
+  Unit.prototype._numberConverter = function () {
+    const convert = Unit.typeConverters[this.valType()]
+    if (convert) {
+      return convert
+    }
+    throw new TypeError('Unsupported Unit value type "' + this.valType() + '"')
   }
 
   /**
