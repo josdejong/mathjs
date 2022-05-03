@@ -1,9 +1,10 @@
-import { createMap, isMap } from '../../utils/map.js'
+import { createMap } from '../../utils/map.js'
 import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'resolve'
 const dependencies = [
+  'typed',
   'parse',
   'ConstantNode',
   'FunctionNode',
@@ -12,6 +13,7 @@ const dependencies = [
 ]
 
 export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
+  typed,
   parse,
   ConstantNode,
   FunctionNode,
@@ -44,14 +46,11 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
    *     If there is a cyclic dependency among the variables in `scope`,
    *     resolution is impossible and a ReferenceError is thrown.
    */
-  function resolve (node, scope, within = new Set()) { // note `within`:
+  function _resolve (node, scope, within = new Set()) { // note `within`:
     // `within` is not documented, since it is for internal cycle
     // detection only
     if (!scope) {
       return node
-    }
-    if (!isMap(scope)) {
-      scope = createMap(scope)
     }
     if (isSymbolNode(node)) {
       if (within.has(node.name)) {
@@ -64,7 +63,7 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
       if (isNode(value)) {
         const nextWithin = new Set(within)
         nextWithin.add(node.name)
-        return resolve(value, scope, nextWithin)
+        return _resolve(value, scope, nextWithin)
       } else if (typeof value === 'number') {
         return parse(String(value))
       } else if (value !== undefined) {
@@ -74,22 +73,26 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
       }
     } else if (isOperatorNode(node)) {
       const args = node.args.map(function (arg) {
-        return resolve(arg, scope, within)
+        return _resolve(arg, scope, within)
       })
       return new OperatorNode(node.op, node.fn, args, node.implicit)
     } else if (isParenthesisNode(node)) {
-      return new ParenthesisNode(resolve(node.content, scope, within))
+      return new ParenthesisNode(_resolve(node.content, scope, within))
     } else if (isFunctionNode(node)) {
       const args = node.args.map(function (arg) {
-        return resolve(arg, scope, within)
+        return _resolve(arg, scope, within)
       })
       return new FunctionNode(node.name, args)
     }
 
     // Otherwise just recursively resolve any children (might also work
     // for some of the above special cases)
-    return node.map(child => resolve(child, scope, within))
+    return node.map(child => _resolve(child, scope, within))
   }
 
-  return resolve
+  return typed('resolve', {
+    Node: _resolve,
+    'Node, Map | null | undefined': _resolve,
+    'Node, Object': (n, scope) => _resolve(n, createMap(scope))
+  })
 })

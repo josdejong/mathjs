@@ -22,6 +22,10 @@ describe('resolve', function () {
         math.parse('[x,y,1,w]'), collapsingScope).toString(),
       '[z, z, 1, w]'
     )
+    assert.strictEqual(
+      math.resolve('[x,y,1,w]', collapsingScope).toString(),
+      '[z, z, 1, w]'
+    )
     simplifyAndCompare('x+y', 'x+y', {}) // operator
     simplifyAndCompare('x+y', 'y+1', { x: 1 })
     simplifyAndCompare('x+y', 'y+1', { x: math.parse('1') })

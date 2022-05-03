@@ -1785,5 +1785,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     return error
   }
 
+  // Now that we can parse, automatically convert strings to Nodes by parsing
+  typed.addConversion({ from: 'string', to: 'Node', convert: parse })
+
   return parse
 })
