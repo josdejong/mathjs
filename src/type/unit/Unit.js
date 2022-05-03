@@ -103,6 +103,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * Attach type information
    */
+  Object.defineProperty(Unit, 'name', {value: 'Unit'})
+  Unit.prototype.constructor = Unit
   Unit.prototype.type = 'Unit'
   Unit.prototype.isUnit = true
 

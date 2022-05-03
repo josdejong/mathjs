@@ -10,6 +10,8 @@ import * as allIsFunctions from './is.js'
 import { create } from '../core/create.js'
 import { endsWith } from './string.js'
 
+export const validateTypeOf = allIsFunctions.typeOf
+
 export function validateBundle (expectedBundleStructure, bundle) {
   const originalWarn = console.warn
 
@@ -107,24 +109,24 @@ export function createSnapshotFromFactories (factories) {
     const factory = factories[factoryName]
     const name = factory.fn
     const isTransformFunction = factory.meta && factory.meta.isTransformFunction
-    const isClass = !isLowerCase(name[0]) && (validateTypeOf(math[name]) === 'Function')
+    const isClass = !isLowerCase(name[0]) && (validateTypeOf(math[name]) === 'function')
     const dependenciesName = factory.fn +
       (isTransformFunction ? 'Transform' : '') +
       'Dependencies'
 
-    allFactoryFunctions[factoryName] = 'Function'
+    allFactoryFunctions[factoryName] = 'function'
     allFunctionsConstantsClasses[name] = validateTypeOf(math[name])
     allDependencyCollections[dependenciesName] = 'Object'
 
     if (isTransformFunction) {
-      allTransformFunctions[name] = 'Function'
+      allTransformFunctions[name] = 'function'
     }
 
     if (isClass) {
       if (endsWith(name, 'Node')) {
-        allNodeClasses[name] = 'Function'
+        allNodeClasses[name] = 'function'
       } else {
-        allClasses[name] = 'Function'
+        allClasses[name] = 'function'
       }
     } else {
       allFunctionsConstants[name] = validateTypeOf(math[name])
@@ -158,27 +160,27 @@ export function createSnapshotFromFactories (factories) {
   const allTypeChecks = {}
   Object.keys(allIsFunctions).forEach(name => {
     if (name.indexOf('is') === 0) {
-      allTypeChecks[name] = 'Function'
+      allTypeChecks[name] = 'function'
     }
   })
 
   const allErrorClasses = {
-    ArgumentsError: 'Function',
-    DimensionError: 'Function',
-    IndexError: 'Function'
+    ArgumentsError: 'function',
+    DimensionError: 'function',
+    IndexError: 'function'
   }
 
   const expectedInstanceStructure = {
     ...allFunctionsConstantsClasses,
 
-    on: 'Function',
-    off: 'Function',
-    once: 'Function',
-    emit: 'Function',
-    import: 'Function',
-    config: 'Function',
-    create: 'Function',
-    factory: 'Function',
+    on: 'function',
+    off: 'function',
+    once: 'function',
+    emit: 'function',
+    import: 'function',
+    config: 'function',
+    create: 'function',
+    factory: 'function',
 
     ...allTypeChecks,
     ...allErrorClasses,
@@ -193,7 +195,7 @@ export function createSnapshotFromFactories (factories) {
         ...exclude(allFunctionsConstants, [
           'chain'
         ]),
-        config: 'Function'
+        config: 'function'
       }
     }
   }
@@ -209,9 +211,9 @@ export function createSnapshotFromFactories (factories) {
       'PI',
       'true'
     ]),
-    create: 'Function',
-    config: 'Function',
-    factory: 'Function',
+    create: 'function',
+    config: 'function',
+    factory: 'function',
     _true: 'boolean',
     _false: 'boolean',
     _null: 'null',
@@ -230,34 +232,6 @@ export function createSnapshotFromFactories (factories) {
     expectedInstanceStructure,
     expectedES6Structure
   }
-}
-
-export function validateTypeOf (x) {
-  if (x && x.type === 'Unit') {
-    return 'Unit'
-  }
-
-  if (x && x.type === 'Complex') {
-    return 'Complex'
-  }
-
-  if (Array.isArray(x)) {
-    return 'Array'
-  }
-
-  if (x === null) {
-    return 'null'
-  }
-
-  if (typeof x === 'function') {
-    return 'Function'
-  }
-
-  if (typeof x === 'object') {
-    return 'Object'
-  }
-
-  return typeof x
 }
 
 function traverse (obj, callback = (value, path) => {}, path = []) {
