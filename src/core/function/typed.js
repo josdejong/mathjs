@@ -116,6 +116,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'BigNumber', test: isBigNumber },
     { name: 'Fraction', test: isFraction },
     { name: 'Unit', test: isUnit },
+    { name: 'identifier', test: s => isString && /^\p{L}[\p{L}\d]*$/u.test(s) },
     { name: 'string', test: isString },
     { name: 'Chain', test: isChain },
     { name: 'Array', test: isArray },
@@ -332,6 +333,8 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       }
     }
   ]
+
+  typed.ignore.push('identifier')
 
   // Provide a suggestion on how to call a function elementwise
   // This was added primarily as guidance for the v10 -> v11 transition,
