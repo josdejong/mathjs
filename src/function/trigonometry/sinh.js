@@ -24,25 +24,11 @@ export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *
    *    cosh, tanh
    *
-   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @param {number | BigNumber | Complex} x  Function input
    * @return {number | BigNumber | Complex} Hyperbolic sine of x
    */
   return typed(name, {
     number: sinhNumber,
-
-    Complex: function (x) {
-      return x.sinh()
-    },
-
-    BigNumber: function (x) {
-      return x.sinh()
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function sinh is no angle')
-      }
-      return this(x.value)
-    }
+    'Complex | BigNumber': x => x.sinh()
   })
 })

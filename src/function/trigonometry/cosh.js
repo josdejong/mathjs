@@ -24,25 +24,11 @@ export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *
    *    sinh, tanh
    *
-   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @param {number | BigNumber | Complex} x  Function input
    * @return {number | BigNumber | Complex} Hyperbolic cosine of x
    */
   return typed(name, {
     number: coshNumber,
-
-    Complex: function (x) {
-      return x.cosh()
-    },
-
-    BigNumber: function (x) {
-      return x.cosh()
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function cosh is no angle')
-      }
-      return this(x.value)
-    }
+    'Complex | BigNumber': x => x.cosh()
   })
 })

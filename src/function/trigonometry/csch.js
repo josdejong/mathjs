@@ -26,25 +26,12 @@ export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    sinh, sech, coth
    *
-   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @param {number | BigNumber | Complex} x  Function input
    * @return {number | BigNumber | Complex} Hyperbolic cosecant of x
    */
   return typed(name, {
     number: cschNumber,
-
-    Complex: function (x) {
-      return x.csch()
-    },
-
-    BigNumber: function (x) {
-      return new BigNumber(1).div(x.sinh())
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function csch is no angle')
-      }
-      return this(x.value)
-    }
+    Complex: x => x.csch(),
+    BigNumber: x => new BigNumber(1).div(x.sinh())
   })
 })

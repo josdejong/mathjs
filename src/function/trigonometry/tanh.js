@@ -27,25 +27,11 @@ export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *
    *    sinh, cosh, coth
    *
-   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @param {number | BigNumber | Complex} x  Function input
    * @return {number | BigNumber | Complex} Hyperbolic tangent of x
    */
   return typed('tanh', {
     number: _tanh,
-
-    Complex: function (x) {
-      return x.tanh()
-    },
-
-    BigNumber: function (x) {
-      return x.tanh()
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function tanh is no angle')
-      }
-      return this(x.value)
-    }
+    'Complex | BigNumber': x => x.tanh()
   })
 })
