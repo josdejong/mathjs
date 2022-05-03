@@ -215,29 +215,13 @@ export function typeOf (x) {
   const t = typeof x
 
   if (t === 'object') {
-    // JavaScript types
     if (x === null) return 'null'
-    if (Array.isArray(x)) return 'Array'
-    if (x instanceof Date) return 'Date'
-    if (x instanceof RegExp) return 'RegExp'
+    if (isBigNumber(x)) return 'BigNumber' // Special: weird mashup with Decimal
+    if (isNode(x)) return x.type // I don't understand the Node class hierarchy
+    if (x.constructor && x.constructor.name) return x.constructor.name
 
-    // math.js types
-    if (isBigNumber(x)) return 'BigNumber'
-    if (isComplex(x)) return 'Complex'
-    if (isFraction(x)) return 'Fraction'
-    if (isMatrix(x)) return 'Matrix'
-    if (isUnit(x)) return 'Unit'
-    if (isIndex(x)) return 'Index'
-    if (isRange(x)) return 'Range'
-    if (isResultSet(x)) return 'ResultSet'
-    if (isNode(x)) return x.type
-    if (isChain(x)) return 'Chain'
-    if (isHelp(x)) return 'Help'
-
-    return 'Object'
+    return 'Object' // just in case
   }
 
-  if (t === 'function') return 'Function'
-
-  return t // can be 'string', 'number', 'boolean', ...
+  return t // can be 'string', 'number', 'boolean', 'function', 'bigint', ...
 }

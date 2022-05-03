@@ -80,7 +80,7 @@ describe('typeOf', function () {
 
   it('should return function type for a function', function () {
     function f1 () {}
-    assert.strictEqual(math.typeOf(f1), 'Function')
+    assert.strictEqual(math.typeOf(f1), 'function')
   })
 
   it('should return function type for a chain', function () {
