@@ -174,28 +174,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * @return {Node} Returns the simplified form of `expr`
    */
   const simplify = typed('simplify', {
-    string: function (expr) {
-      return this(parse(expr), this.rules, createEmptyMap(), {})
-    },
-
-    'string, Map | Object': function (expr, scope) {
-      return this(parse(expr), this.rules, scope, {})
-    },
-
-    'string, Map | Object, Object': function (expr, scope, options) {
-      return this(parse(expr), this.rules, scope, options)
-    },
-
-    'string, Array': function (expr, rules) {
-      return this(parse(expr), rules, createEmptyMap(), {})
-    },
-
-    'string, Array, Map | Object': function (expr, rules, scope) {
-      return this(parse(expr), rules, scope, {})
-    },
-
-    'string, Array, Map | Object, Object': function (expr, rules, scope, options) {
-      return this(parse(expr), rules, scope, options)
+    Node: function (expr) {
+      return this(expr, this.rules, createEmptyMap(), {})
     },
 
     'Node, Map | Object': function (expr, scope) {
@@ -204,10 +184,6 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     'Node, Map | Object, Object': function (expr, scope, options) {
       return this(expr, this.rules, scope, options)
-    },
-
-    Node: function (expr) {
-      return this(expr, this.rules, createEmptyMap(), {})
     },
 
     'Node, Array': function (expr, rules) {

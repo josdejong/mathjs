@@ -113,22 +113,6 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
    *
    */
   return typed(name, {
-    string: function (expr) {
-      return this(parse(expr), {}, false)
-    },
-
-    'string, boolean': function (expr, detailed) {
-      return this(parse(expr), {}, detailed)
-    },
-
-    'string, Object': function (expr, scope) {
-      return this(parse(expr), scope, false)
-    },
-
-    'string, Object, boolean': function (expr, scope, detailed) {
-      return this(parse(expr), scope, detailed)
-    },
-
     Node: function (expr) {
       return this(expr, {}, false)
     },

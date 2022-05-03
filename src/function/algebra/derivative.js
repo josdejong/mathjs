@@ -76,27 +76,15 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
       const res = _derivative(expr, constNodes)
       return options.simplify ? simplify(res) : res
     },
+
     'Node, SymbolNode': function (expr, variable) {
       return this(expr, variable, { simplify: true })
-    },
-
-    'string, SymbolNode': function (expr, variable) {
-      return this(parse(expr), variable)
-    },
-    'string, SymbolNode, Object': function (expr, variable, options) {
-      return this(parse(expr), variable, options)
-    },
-
-    'string, string': function (expr, variable) {
-      return this(parse(expr), parse(variable))
-    },
-    'string, string, Object': function (expr, variable, options) {
-      return this(parse(expr), parse(variable), options)
     },
 
     'Node, string': function (expr, variable) {
       return this(expr, parse(variable))
     },
+
     'Node, string, Object': function (expr, variable, options) {
       return this(expr, parse(variable), options)
     }

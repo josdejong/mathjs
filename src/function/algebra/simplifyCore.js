@@ -102,14 +102,6 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Node} Returns expression with basic simplifications applied
    */
   const simplifyCore = typed('simplifyCore', {
-    string: function (expr) {
-      return this(parse(expr), {})
-    },
-
-    'string, Object': function (expr, options) {
-      return this(parse(expr), options)
-    },
-
     Node: function (node) {
       return this(node, {})
     },
