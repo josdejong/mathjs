@@ -52,14 +52,8 @@ describe('tanh', function () {
     approx.deepEqual(tanh(complex('2 + i')), complex(1.0147936161466, 0.033812826079897))
   })
 
-  it('should return the tanh of an angle', function () {
-    approx.equal(tanh(unit('90deg')), 0.91715233566727)
-    approx.equal(tanh(unit('-45deg')), -0.65579420263267)
-
-    assert(math.isBigNumber(tanh(unit(math.bignumber(90), 'deg'))))
-    approx.equal(tanh(unit(math.bignumber(90), 'deg')).toNumber(), 0.91715233566727)
-
-    approx.deepEqual(tanh(unit(complex('2 + i'), 'rad')), complex(1.0147936161466, 0.033812826079897))
+  it('should throw an error on an angle', function () {
+    assert.throws(() => tanh(unit('90deg')), TypeError)
   })
 
   it('should throw an error if called with an invalid unit', function () {

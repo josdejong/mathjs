@@ -26,25 +26,12 @@ export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    cosh, csch, coth
    *
-   * @param {number | BigNumber | Complex | Unit} x  Function input
+   * @param {number | BigNumber | Complex} x  Function input
    * @return {number | BigNumber | Complex} Hyperbolic secant of x
    */
   return typed(name, {
     number: sechNumber,
-
-    Complex: function (x) {
-      return x.sech()
-    },
-
-    BigNumber: function (x) {
-      return new BigNumber(1).div(x.cosh())
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function sech is no angle')
-      }
-      return this(x.value)
-    }
+    Complex: x => x.sech(),
+    BigNumber: x => new BigNumber(1).div(x.cosh())
   })
 })
