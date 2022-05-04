@@ -70,9 +70,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
    * @return {Node} Returns expression with constant subexpressions evaluated
    */
   const simplifyConstant = typed('simplifyConstant', {
-    Node: function (node) {
-      return this(node, {})
-    },
+    Node: node => _ensureNode(foldFraction(node, {})),
 
     'Node, Object': function (expr, options) {
       return _ensureNode(foldFraction(expr, options))
