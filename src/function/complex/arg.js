@@ -47,8 +47,6 @@ export const createArg = /* #__PURE__ */ factory(name, dependencies, ({ typed })
 
     // TODO: implement BigNumber support for function arg
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

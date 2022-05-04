@@ -44,8 +44,6 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({ ty
       return gamma(n.plus(1))
     },
 
-    'Array | Matrix': function (n) {
-      return deepMap(n, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => n => deepMap(n, self))
   })
 })

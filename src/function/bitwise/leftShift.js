@@ -6,6 +6,7 @@ import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
 import { createMatAlgo08xS0Sid } from '../../type/matrix/utils/matAlgo08xS0Sid.js'
 import { factory } from '../../utils/factory.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
+import { createUseMatrixForArrayScalar } from './useMatrixForArrayScalar.js'
 import { leftShiftNumber } from '../../plain/number/index.js'
 import { leftShiftBigNumber } from '../../utils/bignumber/bitwise.js'
 
@@ -26,6 +27,7 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const useMatrixForArrayScalar = createUseMatrixForArrayScalar({ typed, matrix })
 
   /**
    * Bitwise left logical shift of a value x by y number of bits, `x << y`.
@@ -57,48 +59,39 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
       'BigNumber, BigNumber': leftShiftBigNumber,
 
-      'SparseMatrix, number | BigNumber': function (x, y) {
+      'SparseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (equalScalar(y, 0)) {
           return x.clone()
         }
-        return matAlgo11xS0s(x, y, this, false)
-      },
+        return matAlgo11xS0s(x, y, self, false)
+      }),
 
-      'DenseMatrix, number | BigNumber': function (x, y) {
+      'DenseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (equalScalar(y, 0)) {
           return x.clone()
         }
-        return matAlgo14xDs(x, y, this, false)
-      },
+        return matAlgo14xDs(x, y, self, false)
+      }),
 
-      'number | BigNumber, SparseMatrix': function (x, y) {
+      'number | BigNumber, SparseMatrix': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (equalScalar(x, 0)) {
           return zeros(y.size(), y.storage())
         }
-        return matAlgo10xSids(y, x, this, true)
-      },
+        return matAlgo10xSids(y, x, self, true)
+      }),
 
-      'number | BigNumber, DenseMatrix': function (x, y) {
+      'number | BigNumber, DenseMatrix': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (equalScalar(x, 0)) {
           return zeros(y.size(), y.storage())
         }
-        return matAlgo14xDs(y, x, this, true)
-      },
-
-      'Array, number | BigNumber': function (x, y) {
-        // use matrix implementation
-        return this(matrix(x), y).valueOf()
-      },
-
-      'number | BigNumber, Array': function (x, y) {
-        // use matrix implementation
-        return this(x, matrix(y)).valueOf()
-      }
+        return matAlgo14xDs(y, x, self, true)
+      })
     },
+    useMatrixForArrayScalar,
     matrixAlgorithmSuite({
       SS: matAlgo08xS0Sid,
       DS: matAlgo01xDSid,

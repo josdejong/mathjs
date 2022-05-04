@@ -59,15 +59,15 @@ export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     {
       'any, any': addScalar,
 
-      'any, any, ...any': function (x, y, rest) {
-        let result = this(x, y)
+      'any, any, ...any': typed.referToSelf(self => (x, y, rest) => {
+        let result = self(x, y)
 
         for (let i = 0; i < rest.length; i++) {
-          result = this(result, rest[i])
+          result = self(result, rest[i])
         }
 
         return result
-      }
+      })
     },
     matrixAlgorithmSuite({
       elop: addScalar,

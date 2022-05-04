@@ -67,7 +67,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
       'BigNumber, BigNumber': (x, y) => x.minus(y),
       'Fraction, Fraction': (x, y) => x.sub(y),
 
-      'Unit, Unit': function (x, y) {
+      'Unit, Unit': typed.referToSelf(self => (x, y) => {
         if (x.value === null) {
           throw new Error('Parameter x contains a unit with undefined value')
         }
@@ -81,11 +81,12 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
         }
 
         const res = x.clone()
-        res.value = this(res.value, y.value)
+        res.value =
+          typed.find(self, [res.valType(), y.valType()])(res.value, y.value)
         res.fixPrefix = false
 
         return res
-      }
+      })
     },
     matrixAlgorithmSuite({
       SS: matAlgo05xSfSf,

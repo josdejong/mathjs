@@ -110,13 +110,18 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
   // define all types. The order of the types determines in which order function
   // arguments are type-checked (so for performance it's important to put the
   // most used types first).
-  typed.types = [
+  typed.clear()
+  typed.addTypes([
     { name: 'number', test: isNumber },
     { name: 'Complex', test: isComplex },
     { name: 'BigNumber', test: isBigNumber },
     { name: 'Fraction', test: isFraction },
     { name: 'Unit', test: isUnit },
-    { name: 'identifier', test: s => isString && /^\p{L}[\p{L}\d]*$/u.test(s) },
+    {
+      name: 'identifier',
+      test: s => isString && /^\p{L}[\p{L}\d]*$/u.test(s),
+      ignored: true
+    },
     { name: 'string', test: isString },
     { name: 'Chain', test: isChain },
     { name: 'Array', test: isArray },
@@ -152,9 +157,9 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
 
     { name: 'Map', test: isMap },
     { name: 'Object', test: isObject } // order 'Object' last, it matches on other classes too
-  ]
+  ])
 
-  typed.conversions = [
+  typed.addConversions([
     {
       from: 'number',
       to: 'BigNumber',
@@ -332,9 +337,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         return matrix.valueOf()
       }
     }
-  ]
-
-  typed.ignore.push('identifier')
+  ])
 
   // Provide a suggestion on how to call a function elementwise
   // This was added primarily as guidance for the v10 -> v11 transition,

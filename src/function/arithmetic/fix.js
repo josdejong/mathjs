@@ -103,27 +103,29 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
       return x.s < 0 ? ceil(x, n) : floor(x, n)
     },
 
-    'Array | Matrix': function (x) {
+    'Array | Matrix': typed.referToSelf(self => (x) => {
       // deep map collection, skip zeros since fix(0) = 0
-      return deepMap(x, this, true)
-    },
+      return deepMap(x, self, true)
+    }),
 
-    'Array | Matrix, number | BigNumber': function (x, n) {
+    'Array | Matrix, number | BigNumber': typed.referToSelf(self => (x, n) => {
       // deep map collection, skip zeros since fix(0) = 0
-      return deepMap(x, i => this(i, n), true)
-    },
+      return deepMap(x, i => self(i, n), true)
+    }),
 
-    'number | Complex | Fraction | BigNumber, Array': function (x, y) {
-      // use matrix implementation
-      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
-    },
+    'number | Complex | Fraction | BigNumber, Array':
+      typed.referToSelf(self => (x, y) => {
+        // use matrix implementation
+        return matAlgo14xDs(matrix(y), x, self, true).valueOf()
+      }),
 
-    'number | Complex | Fraction | BigNumber, Matrix': function (x, y) {
-      if (equalScalar(x, 0)) return zeros(y.size(), y.storage())
-      if (y.storage() === 'dense') {
-        return matAlgo14xDs(y, x, this, true)
-      }
-      return matAlgo12xSfs(y, x, this, true)
-    }
+    'number | Complex | Fraction | BigNumber, Matrix':
+      typed.referToSelf(self => (x, y) => {
+        if (equalScalar(x, 0)) return zeros(y.size(), y.storage())
+        if (y.storage() === 'dense') {
+          return matAlgo14xDs(y, x, self, true)
+        }
+        return matAlgo12xSfs(y, x, self, true)
+      })
   })
 })

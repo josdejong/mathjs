@@ -67,46 +67,48 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
       Complex: complexErr,
       'Complex, number': complexErr,
 
-      'Array | Matrix': function (x) {
-        return this(x, 2)
-      },
+      Array: typed.referTo('DenseMatrix,number', selfDn =>
+        x => selfDn(matrix(x), 2).valueOf()),
+      DenseMatrix: typed.referTo('DenseMatrix,number', selfDn =>
+        x => selfDn(x, 2)),
+      SparseMatrix: typed.referTo('SparseMatrix,number', selfSn =>
+        x => selfSn(x, 2)),
 
-      'SparseMatrix, SparseMatrix': function (x, y) {
+      'SparseMatrix, SparseMatrix': typed.referToSelf(self => (x, y) => {
         // density must be one (no zeros in matrix)
         if (y.density() === 1) {
           // sparse + sparse
-          return matAlgo06xS0S0(x, y, this)
+          return matAlgo06xS0S0(x, y, self)
         } else {
           // throw exception
           throw new Error('Root must be non-zero')
         }
-      },
+      }),
 
-      'DenseMatrix, SparseMatrix': function (x, y) {
+      'DenseMatrix, SparseMatrix': typed.referToSelf(self => (x, y) => {
         // density must be one (no zeros in matrix)
         if (y.density() === 1) {
           // dense + sparse
-          return matAlgo01xDSid(x, y, this, false)
+          return matAlgo01xDSid(x, y, self, false)
         } else {
           // throw exception
           throw new Error('Root must be non-zero')
         }
-      },
+      }),
 
-      'Array, SparseMatrix': function (x, y) {
-        return this(matrix(x), y)
-      },
+      'Array, SparseMatrix': typed.referTo('DenseMatrix,SparseMatrix', selfDS =>
+        (x, y) => selfDS(matrix(x), y)),
 
-      'number | BigNumber, SparseMatrix': function (x, y) {
+      'number | BigNumber, SparseMatrix': typed.referToSelf(self => (x, y) => {
         // density must be one (no zeros in matrix)
         if (y.density() === 1) {
           // sparse - scalar
-          return matAlgo11xS0s(y, x, this, true)
+          return matAlgo11xS0s(y, x, self, true)
         } else {
           // throw exception
           throw new Error('Root must be non-zero')
         }
-      }
+      })
     },
     matrixAlgorithmSuite({
       scalar: 'number | BigNumber',

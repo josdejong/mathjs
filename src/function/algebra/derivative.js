@@ -76,8 +76,8 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     return options.simplify ? simplify(res) : res
   }
 
-  typed.ignore = typed.ignore.filter(t => t !== 'identifier')
-  typed.conversions.push(
+  const identifierStatus = typed.ignore('identifier', false)
+  typed.addConversion(
     { from: 'identifier', to: 'SymbolNode', convert: parse })
 
   const derivative = typed(name, {
@@ -97,8 +97,9 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     */
   })
 
-  typed.conversions.pop()
-  typed.ignore.push('identifier')
+  typed.removeConversion(
+    { from: 'identifier', to: 'SymbolNode', convert: parse })
+  typed.ignore('identifier', identifierStatus)
 
   derivative._simplify = true
 

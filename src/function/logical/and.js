@@ -63,55 +63,54 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         return !x.isZero() && !y.isZero() && !x.isNaN() && !y.isNaN()
       },
 
-      'Unit, Unit': function (x, y) {
-        return this(x.value || 0, y.value || 0)
-      },
+      'Unit, Unit': typed.referToSelf(self =>
+        (x, y) => self(x.value || 0, y.value || 0)),
 
-      'SparseMatrix, any': function (x, y) {
+      'SparseMatrix, any': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (not(y)) {
           // return zero matrix
           return zeros(x.size(), x.storage())
         }
-        return matAlgo11xS0s(x, y, this, false)
-      },
+        return matAlgo11xS0s(x, y, self, false)
+      }),
 
-      'DenseMatrix, any': function (x, y) {
+      'DenseMatrix, any': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (not(y)) {
           // return zero matrix
           return zeros(x.size(), x.storage())
         }
-        return matAlgo14xDs(x, y, this, false)
-      },
+        return matAlgo14xDs(x, y, self, false)
+      }),
 
-      'any, SparseMatrix': function (x, y) {
+      'any, SparseMatrix': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (not(x)) {
           // return zero matrix
           return zeros(x.size(), x.storage())
         }
-        return matAlgo11xS0s(y, x, this, true)
-      },
+        return matAlgo11xS0s(y, x, self, true)
+      }),
 
-      'any, DenseMatrix': function (x, y) {
+      'any, DenseMatrix': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (not(x)) {
           // return zero matrix
           return zeros(x.size(), x.storage())
         }
-        return matAlgo14xDs(y, x, this, true)
-      },
+        return matAlgo14xDs(y, x, self, true)
+      }),
 
-      'Array, any': function (x, y) {
+      'Array, any': typed.referToSelf(self => (x, y) => {
         // use matrix implementation
-        return this(matrix(x), y).valueOf()
-      },
+        return self(matrix(x), y).valueOf()
+      }),
 
-      'any, Array': function (x, y) {
+      'any, Array': typed.referToSelf(self => (x, y) => {
         // use matrix implementation
-        return this(x, matrix(y)).valueOf()
-      }
+        return self(x, matrix(y)).valueOf()
+      })
     },
     matrixAlgorithmSuite({
       SS: matAlgo06xS0S0,
