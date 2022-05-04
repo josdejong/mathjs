@@ -69,23 +69,20 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
    *                         be simplified.
    * @return {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode}    The derivative of `expr`
    */
+  function plainDerivative (expr, variable, options = { simplify: true }) {
+    const constNodes = {}
+    constTag(constNodes, expr, variable.name)
+    const res = _derivative(expr, constNodes)
+    return options.simplify ? simplify(res) : res
+  }
+
   typed.ignore = typed.ignore.filter(t => t !== 'identifier')
   typed.conversions.push(
     { from: 'identifier', to: 'SymbolNode', convert: parse })
 
-  const derivative = typed('derivative', {
-    'Node, SymbolNode, Object': function (expr, variable, options) {
-      const constNodes = {}
-      constTag(constNodes, expr, variable.name)
-      const res = _derivative(expr, constNodes)
-      return options.simplify ? simplify(res) : res
-    },
-
-    'Node, SymbolNode': function (expr, variable) {
-      return this(expr, variable, { simplify: true })
-    }
-
-    // TODO: replace the 8 signatures above with 4 as soon as typed-function supports optional arguments
+  const derivative = typed(name, {
+    'Node, SymbolNode': plainDerivative,
+    'Node, SymbolNode, Object': plainDerivative
 
     /* TODO: implement and test syntax with order of derivatives -> implement as an option {order: number}
     'Node, SymbolNode, ConstantNode': function (expr, variable, {order}) {
