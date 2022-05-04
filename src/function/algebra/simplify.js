@@ -173,7 +173,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *            Optional list with custom rules
    * @return {Node} Returns the simplified form of `expr`
    */
-  typed.conversions.push({ from: 'Object', to: 'Map', convert: createMap })
+  typed.addConversion({ from: 'Object', to: 'Map', convert: createMap })
   const simplify = typed('simplify', {
     Node: _simplify,
     'Node, Map': (expr, scope) => _simplify(expr, false, scope),
@@ -183,6 +183,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     'Node, Array, Map': _simplify,
     'Node, Array, Map, Object': _simplify
   })
+  typed.removeConversion({ from: 'Object', to: 'Map', convert: createMap })
+
   simplify.defaultContext = defaultContext
   simplify.realContext = realContext
   simplify.positiveContext = positiveContext
@@ -981,6 +983,5 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     return true
   }
 
-  typed.conversions.pop()
   return simplify
 })

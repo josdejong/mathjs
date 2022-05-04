@@ -46,12 +46,9 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
       return x.s < 0 // It's enough to decide on the sign
     },
 
-    Unit: function (x) {
-      return this(x.value)
-    },
+    Unit: typed.referToSelf(self =>
+      x => typed.find(self, x.valType())(x.value)),
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

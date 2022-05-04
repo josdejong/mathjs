@@ -34,6 +34,7 @@ export const createHasNumericValue = /* #__PURE__ */ factory(name, dependencies,
    *                    Throws an error in case of unknown types.
    */
   return typed(name, {
+    boolean: () => true,
     string: function (x) {
       return x.trim().length > 0 && !isNaN(Number(x))
     },

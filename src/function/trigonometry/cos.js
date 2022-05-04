@@ -1,9 +1,12 @@
 import { factory } from '../../utils/factory.js'
+import { createTrigUnit } from './trigUnit.js'
 
 const name = 'cos'
 const dependencies = ['typed']
 
 export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+  const trigUnit = createTrigUnit({ typed })
+
   /**
    * Calculate the cosine of a value.
    *
@@ -33,20 +36,6 @@ export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    */
   return typed(name, {
     number: Math.cos,
-
-    Complex: function (x) {
-      return x.cos()
-    },
-
-    BigNumber: function (x) {
-      return x.cos()
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function cos is no angle')
-      }
-      return this(x.value)
-    }
-  })
+    'Complex | BigNumber': x => x.cos()
+  }, trigUnit)
 })

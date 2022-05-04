@@ -89,8 +89,6 @@ export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ type
       throw new Error('Expected object with properties (re and im) or (r and phi) or (abs and arg)')
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

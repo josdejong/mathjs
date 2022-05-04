@@ -60,9 +60,8 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
         return (!x.isZero() && !x.isNaN()) || (!y.isZero() && !y.isNaN())
       },
 
-      'Unit, Unit': function (x, y) {
-        return this(x.value || 0, y.value || 0)
-      }
+      'Unit, Unit': typed.referToSelf(self =>
+        (x, y) => self(x.value || 0, y.value || 0))
     },
     matrixAlgorithmSuite({
       SS: matAlgo05xSfSf,

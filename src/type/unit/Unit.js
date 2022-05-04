@@ -629,13 +629,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * Multiply this unit with another one
+   * Multiply this unit with another one or with a scalar
    * @memberof Unit
    * @param {Unit} other
    * @return {Unit} product of this unit and the other unit
    */
-  Unit.prototype.multiply = function (other) {
+  Unit.prototype.multiply = function (_other) {
     const res = this.clone()
+    const other = isUnit(_other) ? _other : new Unit(_other)
 
     for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
@@ -660,19 +661,33 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.value = null
     }
 
-    res.skipAutomaticSimplification = false
+    if (isUnit(_other)) {
+      res.skipAutomaticSimplification = false
+    }
 
     return getNumericIfUnitless(res)
   }
 
   /**
+   * Divide a number by this unit
+   *
+   * @memberof Unit
+   * @param {numeric} numerator
+   * @param {unit} result of dividing numerator by this unit
+   */
+  Unit.prototype.divideInto = function (numerator) {
+    return new Unit(numerator).divide(this)
+  }
+
+  /**
    * Divide this unit by another one
    * @memberof Unit
-   * @param {Unit} other
+   * @param {Unit | numeric} other
    * @return {Unit} result of dividing this unit by the other unit
    */
-  Unit.prototype.divide = function (other) {
+  Unit.prototype.divide = function (_other) {
     const res = this.clone()
+    const other = isUnit(_other) ? _other : new Unit(_other)
 
     for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
@@ -698,7 +713,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.value = null
     }
 
-    res.skipAutomaticSimplification = false
+    if (isUnit(_other)) {
+      res.skipAutomaticSimplification = false
+    }
 
     return getNumericIfUnitless(res)
   }

@@ -52,9 +52,7 @@ export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 
   /**

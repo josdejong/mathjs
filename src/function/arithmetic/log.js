@@ -63,9 +63,9 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
       }
     },
 
-    'any, any': function (x, base) {
+    'any, any': typed.referToSelf(self => (x, base) => {
       // calculate logarithm for a specified base, log(x, base)
-      return divideScalar(this(x), this(base))
-    }
+      return divideScalar(self(x), self(base))
+    })
   })
 })

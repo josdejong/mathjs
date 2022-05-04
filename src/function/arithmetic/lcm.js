@@ -20,13 +20,14 @@ export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
 
   const lcmTypes = 'number | BigNumber | Fraction | Matrix | Array'
   const lcmManySignature = {}
-  lcmManySignature[`${lcmTypes}, ${lcmTypes}, ...${lcmTypes}`] = function (a, b, args) {
-    let res = this(a, b)
-    for (let i = 0; i < args.length; i++) {
-      res = this(res, args[i])
-    }
-    return res
-  }
+  lcmManySignature[`${lcmTypes}, ${lcmTypes}, ...${lcmTypes}`] =
+    typed.referToSelf(self => (a, b, args) => {
+      let res = self(a, b)
+      for (let i = 0; i < args.length; i++) {
+        res = self(res, args[i])
+      }
+      return res
+    })
 
   /**
    * Calculate the least common multiple for two or more values or arrays.

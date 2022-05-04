@@ -71,8 +71,6 @@ export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ type
       throw new Error('Cannot convert "' + x + '" to a boolean')
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

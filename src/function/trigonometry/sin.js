@@ -1,9 +1,12 @@
 import { factory } from '../../utils/factory.js'
+import { createTrigUnit } from './trigUnit.js'
 
 const name = 'sin'
 const dependencies = ['typed']
 
 export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+  const trigUnit = createTrigUnit({ typed })
+
   /**
    * Calculate the sine of a value.
    *
@@ -33,20 +36,6 @@ export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    */
   return typed(name, {
     number: Math.sin,
-
-    Complex: function (x) {
-      return x.sin()
-    },
-
-    BigNumber: function (x) {
-      return x.sin()
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function sin is no angle')
-      }
-      return this(x.value)
-    }
-  })
+    'Complex | BigNumber': x => x.sin()
+  }, trigUnit)
 })

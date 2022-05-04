@@ -1,10 +1,13 @@
 import { factory } from '../../utils/factory.js'
 import { cotNumber } from '../../plain/number/index.js'
+import { createTrigUnit } from './trigUnit.js'
 
 const name = 'cot'
 const dependencies = ['typed', 'BigNumber']
 
 export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
+  const trigUnit = createTrigUnit({ typed })
+
   /**
    * Calculate the cotangent of a value. Defined as `cot(x) = 1 / tan(x)`.
    *
@@ -29,20 +32,7 @@ export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, B
    */
   return typed(name, {
     number: cotNumber,
-
-    Complex: function (x) {
-      return x.cot()
-    },
-
-    BigNumber: function (x) {
-      return new BigNumber(1).div(x.tan())
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function cot is no angle')
-      }
-      return this(x.value)
-    }
-  })
+    Complex: x => x.cot(),
+    BigNumber: x => new BigNumber(1).div(x.tan())
+  }, trigUnit)
 })

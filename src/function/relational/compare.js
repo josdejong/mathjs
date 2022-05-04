@@ -5,6 +5,7 @@ import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
+import { createCompareUnits } from './compareUnits.js'
 
 const name = 'compare'
 const dependencies = [
@@ -22,6 +23,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const compareUnits = createCompareUnits({ typed })
 
   /**
    * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
@@ -80,15 +82,10 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
 
       'Complex, Complex': function () {
         throw new TypeError('No ordering relation is defined for complex numbers')
-      },
-
-      'Unit, Unit': function (x, y) {
-        if (!x.equalBase(y)) {
-          throw new Error('Cannot compare units with different base')
-        }
-        return this(x.value, y.value)
       }
-    }, matrixAlgorithmSuite({
+    },
+    compareUnits,
+    matrixAlgorithmSuite({
       SS: matAlgo05xSfSf,
       DS: matAlgo03xDSf,
       Ss: matAlgo12xSfs

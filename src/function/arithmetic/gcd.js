@@ -22,13 +22,14 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
 
   const gcdTypes = 'number | BigNumber | Fraction | Matrix | Array'
   const gcdManySignature = {}
-  gcdManySignature[`${gcdTypes}, ${gcdTypes}, ...${gcdTypes}`] = function (a, b, args) {
-    let res = this(a, b)
-    for (let i = 0; i < args.length; i++) {
-      res = this(res, args[i])
-    }
-    return res
-  }
+  gcdManySignature[`${gcdTypes}, ${gcdTypes}, ...${gcdTypes}`] =
+    typed.referToSelf(self => (a, b, args) => {
+      let res = self(a, b)
+      for (let i = 0; i < args.length; i++) {
+        res = self(res, args[i])
+      }
+      return res
+    })
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.

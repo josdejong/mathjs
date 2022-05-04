@@ -1,9 +1,12 @@
 import { factory } from '../../utils/factory.js'
+import { createTrigUnit } from './trigUnit.js'
 
 const name = 'tan'
 const dependencies = ['typed']
 
 export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+  const trigUnit = createTrigUnit({ typed })
+
   /**
    * Calculate the tangent of a value. `tan(x)` is equal to `sin(x) / cos(x)`.
    *
@@ -30,20 +33,6 @@ export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    */
   return typed(name, {
     number: Math.tan,
-
-    Complex: function (x) {
-      return x.tan()
-    },
-
-    BigNumber: function (x) {
-      return x.tan()
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function tan is no angle')
-      }
-      return this(x.value)
-    }
-  })
+    'Complex | BigNumber': x => x.tan()
+  }, trigUnit)
 })

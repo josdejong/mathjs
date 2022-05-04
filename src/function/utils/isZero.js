@@ -54,12 +54,9 @@ export const createIsZero = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return x.d === 1 && x.n === 0
     },
 
-    Unit: function (x) {
-      return this(x.value)
-    },
+    Unit: typed.referToSelf(self =>
+      x => typed.find(self, x.valType())(x.value)),
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

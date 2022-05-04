@@ -1,6 +1,5 @@
 import { factory } from '../../utils/factory.js'
 import { isMatrix } from '../../utils/is.js'
-import { extend } from '../../utils/object.js'
 import { arraySize } from '../../utils/array.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
@@ -794,18 +793,18 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
    */
-  return typed(name, extend({
+  return typed(name, multiplyScalar, {
     // we extend the signatures of multiplyScalar with signatures dealing with matrices
 
-    'Array, Array': function (x, y) {
+    'Array, Array': typed.referTo('Matrix, Matrix', selfMM => (x, y) => {
       // check dimensions
       _validateMatrixDimensions(arraySize(x), arraySize(y))
 
       // use dense matrix implementation
-      const m = this(matrix(x), matrix(y))
+      const m = selfMM(matrix(x), matrix(y))
       // return array or scalar
       return isMatrix(m) ? m.valueOf() : m
-    },
+    }),
 
     'Matrix, Matrix': function (x, y) {
       // dimensions
@@ -834,15 +833,13 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return _multiplyMatrixMatrix(x, y)
     },
 
-    'Matrix, Array': function (x, y) {
-      // use Matrix * Matrix implementation
-      return this(x, matrix(y))
-    },
+    'Matrix, Array': typed.referTo('Matrix,Matrix', selfMM =>
+      (x, y) => selfMM(x, matrix(y))),
 
-    'Array, Matrix': function (x, y) {
+    'Array, Matrix': typed.referToSelf(self => (x, y) => {
       // use Matrix * Matrix implementation
-      return this(matrix(x, y.storage()), y)
-    },
+      return self(matrix(x, y.storage()), y)
+    }),
 
     'SparseMatrix, any': function (x, y) {
       return matAlgo11xS0s(x, y, multiplyScalar, false)
@@ -872,14 +869,14 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
     'any, any': multiplyScalar,
 
-    'any, any, ...any': function (x, y, rest) {
-      let result = this(x, y)
+    'any, any, ...any': typed.referToSelf(self => (x, y, rest) => {
+      let result = self(x, y)
 
       for (let i = 0; i < rest.length; i++) {
-        result = this(result, rest[i])
+        result = self(result, rest[i])
       }
 
       return result
-    }
-  }, multiplyScalar.signatures))
+    })
+  })
 })

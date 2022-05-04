@@ -109,45 +109,43 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return x.round(n.toNumber())
     },
 
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since round(0) = 0
-      return deepMap(x, this, true)
-    },
+    // deep map collection, skip zeros since round(0) = 0
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true)),
 
-    'SparseMatrix, number | BigNumber': function (x, y) {
-      return matAlgo11xS0s(x, y, this, false)
-    },
+    'SparseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
+      return matAlgo11xS0s(x, y, self, false)
+    }),
 
-    'DenseMatrix, number | BigNumber': function (x, y) {
-      return matAlgo14xDs(x, y, this, false)
-    },
+    'DenseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
+      return matAlgo14xDs(x, y, self, false)
+    }),
 
-    'Array, number | BigNumber': function (x, y) {
+    'Array, number | BigNumber': typed.referToSelf(self => (x, y) => {
       // use matrix implementation
-      return matAlgo14xDs(matrix(x), y, this, false).valueOf()
-    },
+      return matAlgo14xDs(matrix(x), y, self, false).valueOf()
+    }),
 
-    'number | Complex | BigNumber | Fraction, SparseMatrix': function (x, y) {
+    'number | Complex | BigNumber | Fraction, SparseMatrix': typed.referToSelf(self => (x, y) => {
       // check scalar is zero
       if (equalScalar(x, 0)) {
         // do not execute algorithm, result will be a zero matrix
         return zeros(y.size(), y.storage())
       }
-      return matAlgo12xSfs(y, x, this, true)
-    },
+      return matAlgo12xSfs(y, x, self, true)
+    }),
 
-    'number | Complex | BigNumber | Fraction, DenseMatrix': function (x, y) {
+    'number | Complex | BigNumber | Fraction, DenseMatrix': typed.referToSelf(self => (x, y) => {
       // check scalar is zero
       if (equalScalar(x, 0)) {
         // do not execute algorithm, result will be a zero matrix
         return zeros(y.size(), y.storage())
       }
-      return matAlgo14xDs(y, x, this, true)
-    },
+      return matAlgo14xDs(y, x, self, true)
+    }),
 
-    'number | Complex | BigNumber | Fraction, Array': function (x, y) {
+    'number | Complex | BigNumber | Fraction, Array': typed.referToSelf(self => (x, y) => {
       // use matrix implementation
-      return matAlgo14xDs(matrix(y), x, this, true).valueOf()
-    }
+      return matAlgo14xDs(matrix(y), x, self, true).valueOf()
+    })
   })
 })

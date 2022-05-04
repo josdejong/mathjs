@@ -14,6 +14,8 @@ function pad (text) {
   return padRight(text, 10, ' ')
 }
 
+let calls
+
 const suite = new Benchmark.Suite()
 suite
   .add(pad('load lazy'), function () {
@@ -23,14 +25,15 @@ suite
   })
   .add(pad('load all'), function () {
     const instance = math.create()
-
     // force to load all lazy functions
     const everything = Object.values(instance)
     assert(everything.find(fn => fn.name === 'add'))
+    calls = instance.typed.createCount
   })
   .on('cycle', function (event) {
     console.log(String(event.target))
   })
   .on('complete', function () {
+    console.log(`Load all created ${calls} typed functions.`)
   })
   .run()
