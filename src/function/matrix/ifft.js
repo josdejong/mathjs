@@ -1,7 +1,6 @@
 import { arraySize } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { isMatrix } from '../../utils/is.js'
-import { clone } from '../../utils/object.js'
 
 const name = 'ifft'
 const dependencies = [
@@ -35,11 +34,6 @@ export const createIfft = /* #__PURE__ */ factory(name, dependencies, ({
     'Array | Matrix': function (arr) {
       const size = isMatrix(arr) ? arr.size() : arraySize(arr)
       return dotDivide(conj(fft(conj(arr))), size.reduce((acc, curr) => acc * curr, 1))
-    },
-
-    any: function (x) {
-      // scalar: single element
-      return clone(x)
     }
   })
 })

@@ -1,7 +1,5 @@
 import { arraySize } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
-import { isMatrix } from '../../utils/is.js'
-import { clone } from '../../utils/object.js'
 
 const name = 'fft'
 const dependencies = [
@@ -40,17 +38,9 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Array | Matrix}       N-dimensional fourier transformation of the array
    */
   return typed(name, {
-    'Array | Matrix': function (arr) {
-      if (isMatrix(arr)) {
-        return matrix(_ndFft(arr.toArray()), arr.storage())
-      } else {
-        return _ndFft(arr)
-      }
-    },
-
-    any: function (x) {
-      // scalar: single element
-      return clone(x)
+    Array: _ndFft,
+    Matrix: function (matrix) {
+      return matrix.create(_ndFft(matrix.toArray()))
     }
   })
 
@@ -95,20 +85,23 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
     const len = arr.length
     if (len === 1) return [arr[0]]
     if (len % 2 === 0) {
-      const ret = [..._fft(arr.filter((_, i) => i % 2 === 0), len / 2), ..._fft(arr.filter((_, i) => i % 2 === 1), len / 2)]
+      const ret = [
+        ..._fft(arr.filter((_, i) => i % 2 === 0), len / 2),
+        ..._fft(arr.filter((_, i) => i % 2 === 1), len / 2)
+      ]
       for (let k = 0; k < len / 2; k++) {
-        const p = ret[k]; const q = multiplyScalar(ret[k + len / 2], exp(multiplyScalar(multiplyScalar(tau, I), divideScalar(-k, len))))
+        const p = ret[k]
+        const q = multiplyScalar(
+          ret[k + len / 2],
+          exp(
+            multiplyScalar(multiplyScalar(tau, I), divideScalar(-k, len))
+          )
+        )
         ret[k] = addScalar(p, q)
         ret[k + len / 2] = addScalar(p, multiplyScalar(-1, q))
       }
       return ret
     }
     throw new Error('Can only calculate FFT of power-of-two size')
-    // for (let div = 2; div * div <= len; div++) {
-    //   if (len % div === 0) {
-    //     // TODO: mixed-radix Cooley–Tukey algorithm
-    //   }
-    // }
-    // // TODO: FFT of prime sizes
   }
 })
