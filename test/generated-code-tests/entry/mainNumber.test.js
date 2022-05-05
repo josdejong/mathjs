@@ -10,7 +10,7 @@ const {
 } = createSnapshotFromFactories(factoriesNumber)
 
 describe('mainNumber', function () {
-  it('should export functions', () => {
+  it('should export functions', function () {
     assert.strictEqual(add(2, 3), 5)
     assert.strictEqual(sqrt(4), 2)
   })
@@ -82,17 +82,17 @@ describe('mainNumber', function () {
     assert.throws(() => { evaluate('SymbolNode') }, /Undefined symbol SymbolNode/)
   })
 
-  it('should export constants', () => {
+  it('should export constants', function () {
     assert.strictEqual(pi, Math.PI)
   })
 
-  it('should export type checking functions', () => {
+  it('should export type checking functions', function () {
     assert.strictEqual(isObject({}), true)
     assert.strictEqual(isObject(null), false)
     assert.strictEqual(isNumber('23'), false)
   })
 
-  it('should export evaluate having functions and constants', () => {
+  it('should export evaluate having functions and constants', function () {
     assert.strictEqual(evaluate('sqrt(4)'), 2)
     assert.strictEqual(evaluate('pi'), Math.PI)
 
@@ -107,25 +107,25 @@ describe('mainNumber', function () {
     assert.strictEqual(typeof evaluate('rationalize'), 'function')
   })
 
-  it('should export chain with all functions', () => {
+  it('should export chain with all functions', function () {
     assert.strictEqual(chain(2).add(3).done(), 5)
   })
 
-  it('derivative should work', () => {
+  it('derivative should work', function () {
     assert.strictEqual(derivative('2x', 'x').toString(), '2')
   })
 
-  it('simplify should work', () => {
+  it('simplify should work', function () {
     assert.strictEqual(simplify('2x + 3x').toString(), '5 * x')
   })
 
-  it('should export evaluate having help and embedded docs', () => {
+  it('should export evaluate having help and embedded docs', function () {
     const h = evaluate('help(simplify)')
 
     assert(h.toString().indexOf('Name: simplify') >= 0, true)
   })
 
-  it('should get/set scope variables', () => {
+  it('should get/set scope variables', function () {
     const math = create(all)
     const evaluate = math.evaluate
 
@@ -136,7 +136,7 @@ describe('mainNumber', function () {
     assert.deepStrictEqual(scope, { b: 2 })
   })
 
-  it('doe not support assignement and access right now', () => {
+  it('doe not support assignement and access right now', function () {
     // TODO: implement support for subset in number implementation
     assert.throws(function () {
       evaluate('A[2]', { A: [10, 20, 30] })
@@ -148,7 +148,7 @@ describe('mainNumber', function () {
     }, /No "index" implementation available/)
   })
 
-  it('should export reviver', () => {
+  it('should export reviver', function () {
     const json = '{"mathjs":"Range","start":2,"end":10}'
     const r = new Range(2, 10)
 

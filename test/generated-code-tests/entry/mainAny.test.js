@@ -10,7 +10,7 @@ const {
 } = createSnapshotFromFactories(factoriesAny)
 
 describe('mainAny', function () {
-  it('should export functions', () => {
+  it('should export functions', function () {
     assert.strictEqual(add(2, 3), 5)
     assert.strictEqual(sqrt(4), 2)
   })
@@ -72,22 +72,22 @@ describe('mainAny', function () {
     assert.throws(() => { evaluate('SymbolNode') }, /Undefined symbol SymbolNode/)
   })
 
-  it('should export constants', () => {
+  it('should export constants', function () {
     assert.strictEqual(pi, Math.PI)
   })
 
-  it('should export physical constants', () => {
+  it('should export physical constants', function () {
     assert.strictEqual(speedOfLight.toString(), '2.99792458e+8 m / s')
   })
 
-  it('should export type checking functions', () => {
+  it('should export type checking functions', function () {
     assert.strictEqual(isObject({}), true)
     assert.strictEqual(isObject(null), false)
     assert.strictEqual(isMatrix([]), false)
     assert.strictEqual(isMatrix(matrix()), true)
   })
 
-  it('should export evaluate having functions and constants', () => {
+  it('should export evaluate having functions and constants', function () {
     assert.strictEqual(evaluate('sqrt(4)'), 2)
     assert.strictEqual(evaluate('pi'), Math.PI)
     assert.strictEqual(evaluate('A[1]', { A: [1, 2, 3] }), 1) // one-based evaluation
@@ -103,12 +103,12 @@ describe('mainAny', function () {
     assert.strictEqual(typeof evaluate('rationalize'), 'function')
   })
 
-  it('should export chain with all functions', () => {
+  it('should export chain with all functions', function () {
     assert.strictEqual(chain(2).add(3).done(), 5)
     assert.strictEqual(chain('x + 2 * x').simplify().done().toString(), '3 * x')
   })
 
-  it('should get/set scope variables', () => {
+  it('should get/set scope variables', function () {
     const math = create(all)
     const evaluate = math.evaluate
 
@@ -119,7 +119,7 @@ describe('mainAny', function () {
     assert.deepStrictEqual(scope, { b: 2 })
   })
 
-  it('should evaluate assignement and access', () => {
+  it('should evaluate assignement and access', function () {
     const math = create(all)
     const evaluate = math.evaluate
 
@@ -130,13 +130,13 @@ describe('mainAny', function () {
     assert.deepStrictEqual(scope, { A: [10, 200, 30] })
   })
 
-  it('should export evaluate having help and embedded docs', () => {
+  it('should export evaluate having help and embedded docs', function () {
     const h = evaluate('help(simplify)')
 
     assert(h.toString().indexOf('Name: simplify') >= 0, true)
   })
 
-  it('should export reviver', () => {
+  it('should export reviver', function () {
     const json = '{"mathjs":"Complex","re":2,"im":4}'
     const c = new Complex(2, 4)
 

@@ -30,7 +30,7 @@ export const createBin = factory(name, dependencies, ({ typed, format }) => {
       return format(n, { notation: 'bin' })
     },
     'number | BigNumber, number': function (n, wordSize) {
-      return format(n, { notation: 'bin', wordSize: wordSize })
+      return format(n, { notation: 'bin', wordSize })
     }
   })
 })

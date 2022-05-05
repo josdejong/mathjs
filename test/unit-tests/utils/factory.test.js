@@ -2,7 +2,7 @@ import assert from 'assert'
 import { sortFactories, factory, isFactory } from '../../../src/utils/factory.js'
 
 describe('factory', function () {
-  it('should test whether something is a factory', () => {
+  it('should test whether something is a factory', function () {
     assert.strictEqual(isFactory(), false)
     assert.strictEqual(isFactory({}), false)
 
@@ -20,7 +20,7 @@ describe('factory', function () {
     assert.strictEqual(isFactory(factory3), true)
   })
 
-  it('should only pass the dependencies, not the whole scope', (done) => {
+  it('should only pass the dependencies, not the whole scope', function (done) {
     const f = factory('fn1', ['a', 'c'], (scope) => {
       assert.deepStrictEqual(scope, { a: 1, c: 3 })
 
@@ -31,7 +31,8 @@ describe('factory', function () {
   })
 
   // FIXME: this unit test doesn't work on IE either remove sortFactories if redundant, or use it and get the test working
-  it.skip('should order functions by their dependencies (1)', () => {
+  // eslint-disable-next-line mocha/no-skipped-tests
+  it.skip('should order functions by their dependencies (1)', function () {
     function fn1 () { return 1 }
     const fn2factory = factory('fn2', ['fn1'], () => {})
     const fn3factory = factory('fn3', ['fn2'], () => {})
@@ -51,7 +52,7 @@ describe('factory', function () {
       .map(f => f.fn || f.name), ['fn1', 'fn2', 'fn3', 'fn5', 'fn4'])
   })
 
-  it('should order functions by their dependencies (2)', () => {
+  it('should order functions by their dependencies (2)', function () {
     const fn1 = factory('fn1', [], () => {})
     const fn2 = factory('fn2', ['fn4'], () => {})
     const fn3 = factory('fn3', [], () => {})
@@ -62,7 +63,8 @@ describe('factory', function () {
   })
 
   // TODO: throw an error in case of circular dependencies
-  it.skip('should not go crazy with circular dependencies', () => {
+  // eslint-disable-next-line mocha/no-skipped-tests
+  it.skip('should not go crazy with circular dependencies', function () {
     const fn1factory = factory('fn1', ['fn2'], () => {})
     const fn2factory = factory('fn2', ['fn1'], () => {})
 
@@ -73,7 +75,7 @@ describe('factory', function () {
       .map(f => f.fn), ['fn2', 'fn1'])
   })
 
-  it('should allow optional dependencies', () => {
+  it('should allow optional dependencies', function () {
     const createFn1 = factory('fn1', ['a', '?b'], ({ a, b }) => {
       return () => ({ a, b })
     })
@@ -84,7 +86,7 @@ describe('factory', function () {
     assert.deepStrictEqual(a(), { a: 2, b: undefined })
   })
 
-  it('should attach meta information to a factory function', () => {
+  it('should attach meta information to a factory function', function () {
     const createFn1 = factory('fn1', [], () => {})
     assert.strictEqual(createFn1.meta, undefined)
 

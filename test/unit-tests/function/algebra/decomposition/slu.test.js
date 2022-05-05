@@ -98,7 +98,7 @@ describe('slu', function () {
       values: cvalues,
       index: cindex,
       ptr: cptr,
-      size: size,
+      size,
       datatype: A._datatype
     })
   }

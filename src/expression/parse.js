@@ -177,7 +177,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     true: true,
     false: false,
     null: null,
-    undefined: undefined
+    undefined
   }
 
   const NUMERIC_CONSTANTS = [
@@ -620,10 +620,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     while (state.token === '\n' || state.token === ';') { // eslint-disable-line no-unmodified-loop-condition
       if (blocks.length === 0 && node) {
         visible = (state.token !== ';')
-        blocks.push({
-          node: node,
-          visible: visible
-        })
+        blocks.push({ node, visible })
       }
 
       getToken(state)
@@ -632,10 +629,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         node.comment = state.comment
 
         visible = (state.token !== ';')
-        blocks.push({
-          node: node,
-          visible: visible
-        })
+        blocks.push({ node, visible })
       }
     }
 

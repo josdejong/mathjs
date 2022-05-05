@@ -58,7 +58,7 @@ describe('simplifyCore', function () {
     assert.strictEqual(result, 'x + y - 1')
   })
 
-  it('should recurse through arbitrary binary operators', () => {
+  it('should recurse through arbitrary binary operators', function () {
     testSimplifyCore('x+0==5', 'x == 5')
     testSimplifyCore('(x*1) % (y^1)', 'x % y')
   })

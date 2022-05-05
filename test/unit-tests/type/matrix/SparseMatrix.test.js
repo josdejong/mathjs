@@ -166,12 +166,14 @@ describe('SparseMatrix', function () {
     })
 
     // TODO: add some more input validations to SparseMatrix
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should throw an error when input array does not have two dimensions', function () {
       assert.throws(function () { console.log(new SparseMatrix([1, 2, 3])) }, /DimensionError: Two dimensional array expected/)
       assert.throws(function () { console.log(new SparseMatrix([[[1]], [[2]], [[3]]])) }, /DimensionError: Two dimensional array expected/)
     })
 
     // TODO: add some more input validations to SparseMatrix
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should throw an error when the dimensions of the input array are invalid', function () {
       assert.throws(function () {
         console.log(new SparseMatrix(
@@ -1504,7 +1506,7 @@ describe('SparseMatrix', function () {
     })
   })
 
-  describe('index ordering', () => {
+  describe('index ordering', function () {
     const orderedSparseMatrix = new SparseMatrix({
       values: [1, 3, 2, 4],
       index: [0, 1, 0, 1],
@@ -1526,7 +1528,7 @@ describe('SparseMatrix', function () {
       { value: 4, index: [1, 1] }
     ]
 
-    it('should have parsed the two test matrices correctly', () => {
+    it('should have parsed the two test matrices correctly', function () {
       assert.deepStrictEqual(orderedSparseMatrix.toArray(), [[1, 2], [3, 4]])
       assert.deepStrictEqual(unorderedSparseMatrix.toArray(), [[1, 2], [3, 4]])
     })
