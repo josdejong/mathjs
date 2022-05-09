@@ -127,6 +127,18 @@ The solution that mathjs uses has two main ingredients:
 
 At the lowest level, mathjs has immutable factory functions which create immutable functions. The core function `math.create(...)` creates a new instance having functions created from all passed factory functions. A mathjs instance is a collection of created functions. It contains a function like `math.import` to allow extending the instance with new functions, which can then be used in the expression parser.
 
+### Implementing a new function
+
+A common case is to implement a new function. This involves the following steps:
+
+- Implement the function in the right category, for example `./src/function/arithmetic/myNewFunction.js`, where you can replace `arithmetic` with the proper category, and `myNewFunction` with the name of the new function. Add the new function to the index files `./src/factoriesAny.js` and possibly `./src/factoriesNumber.js`.
+- Write documentation on the function in the source code comment of `myNewFunction.js`. This documentation is used to auto generate documentation on the website.
+- Write embedded documentation for the new function in `./src/expression/embeddedDocs/function/arithmetic/myNewFunction.js`. Add the new documentation to the index file `./src/expression/embeddedDocs/embeddedDocs.js`.
+- Write unit tests for the function in `./test/unit-tests/function/arithmetic/myNewFunction.test.js`.
+- Write a TypeScript definition for the new function in `./types/index.d.ts`, and write tests for it in `./types/index.ts`. Normally, two definitions need to be added: one for the static function `math.myNewFunction(...)` and one for the chained API `math.chain(...).myNewFunction(...)`.
+- Ensure the code style is ok by running `npm run lint` (run `npm run format` to fix the code style automatically).
+
+
 ### Build scripts
 
 The build script currently generates two types of output:
