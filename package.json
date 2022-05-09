@@ -137,6 +137,10 @@
     "HISTORY.md",
     "CONTRIBUTING.md"
   ],
+  "directories": {
+    "bin": "./bin",
+    "lib": "./lib"
+  },
   "scripts": {
     "build": "gulp --gulpfile gulpfile.cjs && npm run update-authors",
     "build-and-test": "npm run build && npm run test:all && npm run lint",
