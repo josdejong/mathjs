@@ -9,6 +9,7 @@ const fs = require('fs')
 const glob = require('glob')
 const mkdirp = require('mkdirp')
 const del = require('del')
+const { relative: relativePath } = require('path')
 const log = require('fancy-log')
 
 // special cases for function syntax
@@ -560,9 +561,10 @@ function collectDocs (functionNames, inputPath) {
     if (path.indexOf('docs') === -1 && functionIndex !== -1) {
       if (path.indexOf('expression') !== -1) {
         category = 'expression'
-      } else if (/^.\/lib\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
+      } else if (/\/lib\/cjs\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
+        // for type/bignumber/function/bignumber.js, type/fraction/function/fraction.js, etc
         category = 'construction'
-      } else if (/^.\/lib\/core\/function/.test(fullPath)) {
+      } else if (/\/lib\/cjs\/core\/function/.test(fullPath)) {
         category = 'core'
       } else {
         category = path[functionIndex + 1]
@@ -570,7 +572,7 @@ function collectDocs (functionNames, inputPath) {
     } else if (fullPath === './lib/cjs/expression/parse.js') {
       // TODO: this is an ugly special case
       category = 'expression'
-    } else if (path.join('/') === './lib/cjs/type') {
+    } else if (path.join('/').endsWith('/lib/cjs/type')) {
       // for boolean.js, number.js, string.js
       category = 'construction'
     }
