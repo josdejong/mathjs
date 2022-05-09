@@ -10,13 +10,15 @@ var rename = require('gulp-rename');
 var header = require('gulp-header');
 var handlebars = require('handlebars');
 
-var LIB_SRC           = './node_modules/mathjs/lib/browser/*';
+var DEP_MATHJS        = './node_modules/mathjs'
+var DEP_MATHJS_SRC    = './node_modules/mathjs-src'
+var LIB_SRC           = DEP_MATHJS_SRC + '/lib/browser/*';
 var LIB_DEST          = './js/lib';
-var DOCS_SRC          = './node_modules/mathjs/docs/**/*.md';
+var DOCS_SRC          = DEP_MATHJS_SRC + '/docs/**/*.md';
 var DOCS_DEST         = './docs';
-var EXAMPLES_SRC      = './node_modules/mathjs/examples/**/*';
+var EXAMPLES_SRC      = DEP_MATHJS_SRC + '/examples/**/*';
 var EXAMPLES_DEST     = './examples';
-var HISTORY_SRC       = './node_modules/mathjs/HISTORY.md';
+var HISTORY_SRC       = DEP_MATHJS_SRC + '/HISTORY.md';
 var HISTORY_DEST      = '.';
 var MATHJS            = LIB_DEST + '/math.js';
 var DOWNLOAD          = './download.md';
@@ -93,6 +95,25 @@ var injectClickableIssueTags = replace(/[ (](#(\d+))/mg, function (match, tag, n
 });
 var injectClickableUserTags = replace(/ (@([0-9a-zA-Z_-]+))/mg, function (match, tag, username) {
   return ' <a href="https://github.com/' + username + '">' + tag + '</a>'
+});
+
+/**
+ * Verify whether we have the same version numbers in both mathjs and mathjs-src
+ *
+ * The mathjs library itself is purely used to validate whether the library
+ * is published and whether we've an up-to-date version of the master branch
+ * with the source code.
+ */
+gulp.task('verify', function (cb) {
+  const mathjsVersion = require(DEP_MATHJS + '/package.json').version;
+  const mathjsSrcVersion = require(DEP_MATHJS_SRC + '/package.json').version;
+
+  if (mathjsVersion !== mathjsSrcVersion) {
+    throw new Error('Version numbers of mathjs and mathjs-src do not correspond'+
+      `(mathjs: ${mathjsVersion}, mathjs-src: ${mathjsSrcVersion})`);
+  }
+
+  cb();
 });
 
 /**
@@ -302,6 +323,7 @@ gulp.task('version', function (cb) {
 });
 
 gulp.task('default', gulp.series(
+    'verify',
     'clean',
     'copy',
     'docs',
