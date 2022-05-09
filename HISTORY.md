@@ -1,6 +1,17 @@
 # History
 
-# 2022-05-02 version 10.5.1
+# 2022-05-09, version 10.5.2
+
+- Fix #2553: `@types/mocha` defined in `dependencies` instead of 
+  `devDependencies`, causing problems in projects that use a different version
+  of this dependency. Thanks @Kolahzary.
+- Fix #2550: remove `examples/node_modules` folder from the npm package.
+- Fix #2528: improve contribution guidelines (#2548).
+- Document `SymbolNode.onUndefinedSymbol` and 
+  `FunctionNode.onUndefinedFunction`.
+
+
+# 2022-05-02, version 10.5.1
 
 - Fix #2526, #2529: improve TypeScript definitions of function `round`, `fix`,
   `floor`, `ceil`, and `nthRoot`, and improved the number only implementations 
