@@ -4,7 +4,18 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
-<h1 id="20220502-version-1051">2022-05-02 version 10.5.1 <a href="#20220502-version-1051" title="Permalink">#</a></h1>
+<h1 id="20220509-version-1052">2022-05-09, version 10.5.2 <a href="#20220509-version-1052" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2553">#2553</a>: `@types/mocha` defined in `dependencies` instead of 
+  `devDependencies`, causing problems in projects that use a different version
+  of this dependency. Thanks <a href="https://github.com/Kolahzary">@Kolahzary</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2550">#2550</a>: remove `examples/node_modules` folder from the npm package.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2528">#2528</a>: improve contribution guidelines  <a href="https://github.com/josdejong/mathjs/issues/2548">#2548</a>).
+- Document `SymbolNode.onUndefinedSymbol` and 
+  `FunctionNode.onUndefinedFunction`.
+
+
+<h1 id="20220502-version-1051">2022-05-02, version 10.5.1 <a href="#20220502-version-1051" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2526">#2526</a>, <a href="https://github.com/josdejong/mathjs/issues/2529">#2529</a>: improve TypeScript definitions of function `round`, `fix`,
   `floor`, `ceil`, and `nthRoot`, and improved the number only implementations 
