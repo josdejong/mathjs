@@ -127,9 +127,7 @@
   "files": [
     "bin",
     "dist",
-    "docs",
     "lib",
-    "examples",
     "main",
     "types",
     "number.cjs",
@@ -170,13 +168,6 @@
   },
   "bugs": {
     "url": "https://github.com/josdejong/mathjs/issues"
-  },
-  "directories": {
-    "doc": "./docs",
-    "example": "./examples",
-    "lib": "./lib",
-    "src": "./src",
-    "test": "./test"
   },
   "browserslist": [
     "IE 11"
