@@ -119,8 +119,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'Unit', test: isUnit },
     {
       name: 'identifier',
-      test: s => isString && /^\p{L}[\p{L}\d]*$/u.test(s),
-      ignored: true
+      test: s => isString && /^\p{L}[\p{L}\d]*$/u.test(s)
     },
     { name: 'string', test: isString },
     { name: 'Chain', test: isChain },
