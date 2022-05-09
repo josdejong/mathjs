@@ -18,15 +18,10 @@ Search through the [issues](https://github.com/josdejong/mathjs/issues) looking
   which are located in the folders `dist` and `lib`.
 - Send pull requests to the `develop` branch, not the `master` branch.
 
-### How to implement a new function?
+### FAQ
 
-- Implement the function in the right category, for example `./src/function/arithmetic/myNewFunction.js`, where you can replace `arithmetic` with the proper category, and `myNewFunction` with the name of the new function. Add the new function to the index files `./src/factoriesAny.js` and possibly `./src/factoriesNumber.js`.
-- Write documentation on the function in the source code comment of `myNewFunction.js`. This documentation is used to auto generate documentation on the website.
-- Write embedded documentation for the new function in `./src/expression/embeddedDocs/function/arithmetic/myNewFunction.js`. Add the new documentation to the index file `./src/expression/embeddedDocs/embeddedDocs.js`.
-- Write unit tests for the function in `./test/unit-tests/function/arithmetic/myNewFunction.test.js`.
-- Write a TypeScript definition for the new function in `./types/index.d.ts`, and write tests for it in `./types/index.ts`. Normally, two definitions need to be added: one for the static function `math.myNewFunction(...)` and one for the chained API `math.chain(...).myNewFunction(...)`. 
-- Ensure the code style is ok by running `npm run lint` (run `npm run format` to fix the code style automatically).
-
-More information can be found in the projects [README.md](https://github.com/josdejong/mathjs#readme). And: feel free to ask when in doubt.
+- How to implement a new function? Answer: See the section [Implementing a new function](README.md#implementing-a-new-function) in the README.md.
+- Where to find more documentation? Answer: best starting point is the project's [README.md](https://github.com/josdejong/mathjs#readme) file. 
+- I'm not sure how/where to start, what now? Answer: feel free to ask when in doubt, just [open an issue](https://github.com/josdejong/mathjs/issues) and discuss your thoughts and questions.
 
 Thanks!
