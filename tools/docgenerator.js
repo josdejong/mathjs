@@ -540,7 +540,7 @@ function cleanup (outputPath, outputRoot) {
  * @param {String} inputPath        Path to location of source files
  * @returns {object} docinfo
  *     Object whose keys are function names, and whose values are objects with
- *     keys name, category, fullpath, relativepath, doc, and issues
+ *     keys name, category, fullPath, doc, and issues
  *     giving the relevant information
  */
 function collectDocs (functionNames, inputPath) {
@@ -582,11 +582,14 @@ function collectDocs (functionNames, inputPath) {
 
     if (category) {
       functions[name] = {
-        name: name,
-        category: category,
-        fullPath: fullPath,
-        relativePath: fullPath.substring(inputPath.length)
+        name,
+        category,
+        fullPath
       }
+    } else {
+      // TODO: throw a warning that no category could be found (instead of silently ignoring it).
+      //  Right now, this matches too many functions, so to do that, we first must make the glob matching relevant
+      //  files more specific, and we need to extend the list with functions we want to ignore.
     }
   })
 
