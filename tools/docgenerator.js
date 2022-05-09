@@ -9,7 +9,6 @@ const fs = require('fs')
 const glob = require('glob')
 const mkdirp = require('mkdirp')
 const del = require('del')
-const { relative: relativePath } = require('path')
 const log = require('fancy-log')
 
 // special cases for function syntax
