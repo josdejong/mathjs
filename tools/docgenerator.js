@@ -540,7 +540,7 @@ function cleanup (outputPath, outputRoot) {
  * @param {String} inputPath        Path to location of source files
  * @returns {object} docinfo
  *     Object whose keys are function names, and whose values are objects with
- *     keys name, category, fullpath, relativepath, doc, and issues
+ *     keys name, category, fullPath, doc, and issues
  *     giving the relevant information
  */
 function collectDocs (functionNames, inputPath) {
@@ -560,17 +560,18 @@ function collectDocs (functionNames, inputPath) {
     if (path.indexOf('docs') === -1 && functionIndex !== -1) {
       if (path.indexOf('expression') !== -1) {
         category = 'expression'
-      } else if (/^.\/lib\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
+      } else if (/\/lib\/cjs\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
+        // for type/bignumber/function/bignumber.js, type/fraction/function/fraction.js, etc
         category = 'construction'
-      } else if (/^.\/lib\/core\/function/.test(fullPath)) {
+      } else if (/\/lib\/cjs\/core\/function/.test(fullPath)) {
         category = 'core'
       } else {
         category = path[functionIndex + 1]
       }
-    } else if (fullPath === './lib/cjs/expression/parse.js') {
+    } else if (fullPath.endsWith('/lib/cjs/expression/parse.js')) {
       // TODO: this is an ugly special case
       category = 'expression'
-    } else if (path.join('/') === './lib/cjs/type') {
+    } else if (path.join('/').endsWith('/lib/cjs/type')) {
       // for boolean.js, number.js, string.js
       category = 'construction'
     }
@@ -581,11 +582,14 @@ function collectDocs (functionNames, inputPath) {
 
     if (category) {
       functions[name] = {
-        name: name,
-        category: category,
-        fullPath: fullPath,
-        relativePath: fullPath.substring(inputPath.length)
+        name,
+        category,
+        fullPath
       }
+    } else {
+      // TODO: throw a warning that no category could be found (instead of silently ignoring it).
+      //  Right now, this matches too many functions, so to do that, we first must make the glob matching relevant
+      //  files more specific, and we need to extend the list with functions we want to ignore.
     }
   })
 
