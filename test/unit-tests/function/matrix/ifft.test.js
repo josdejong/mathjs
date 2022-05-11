@@ -6,7 +6,7 @@ const ifft = math.ifft
 
 describe('ifft', function () {
   it('should calculate 1-dimensional inverse fourier transformation', function () {
-    approx.deepEqual(ifft([2, math.complex(-2, -2), math.complex(0, -2), math.complex(4, 4)]), [2, math.complex(-2, -2), math.complex(0, -2), math.complex(4, 4)])
+    approx.deepEqual(ifft([2, math.complex(-2, -2), math.complex(0, -2), math.complex(4, 4)]), [1, math.complex(2, -1), math.complex(0, -1), math.complex(-1, 2)])
   })
 
   it('should calculate multidimensional inverse fourier transformation', function () {
