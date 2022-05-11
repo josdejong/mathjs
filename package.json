@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "10.5.1",
+  "version": "10.5.3",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "homepage": "https://mathjs.org",
@@ -42,17 +42,17 @@
     "@babel/preset-env": "7.17.10",
     "@babel/register": "7.17.7",
     "@types/assert": "1.5.6",
-    "@types/mocha": "^9.1.1",
-    "@typescript-eslint/eslint-plugin": "5.21.0",
-    "@typescript-eslint/parser": "5.21.0",
+    "@types/mocha": "9.1.1",
+    "@typescript-eslint/eslint-plugin": "5.22.0",
+    "@typescript-eslint/parser": "5.22.0",
     "assert": "2.0.0",
     "babel-loader": "8.2.5",
     "benchmark": "2.1.4",
     "codecov": "3.8.3",
-    "core-js": "3.22.3",
+    "core-js": "3.22.4",
     "del": "6.0.0",
     "dtslint": "4.2.1",
-    "eslint": "8.14.0",
+    "eslint": "8.15.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-config-standard": "17.0.0",
     "eslint-plugin-import": "2.26.0",
@@ -127,9 +127,7 @@
   "files": [
     "bin",
     "dist",
-    "docs",
     "lib",
-    "examples",
     "main",
     "types",
     "number.cjs",
@@ -139,6 +137,10 @@
     "HISTORY.md",
     "CONTRIBUTING.md"
   ],
+  "directories": {
+    "bin": "./bin",
+    "lib": "./lib"
+  },
   "scripts": {
     "build": "gulp --gulpfile gulpfile.cjs && npm run update-authors",
     "build-and-test": "npm run build && npm run test:all && npm run lint",
@@ -166,17 +168,10 @@
     "mathjs": "./bin/cli.js"
   },
   "engines": {
-    "node": ">= 12"
+    "node": ">= 14"
   },
   "bugs": {
     "url": "https://github.com/josdejong/mathjs/issues"
-  },
-  "directories": {
-    "doc": "./docs",
-    "example": "./examples",
-    "lib": "./lib",
-    "src": "./src",
-    "test": "./test"
   },
   "browserslist": [
     "IE 11"
