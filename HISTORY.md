@@ -1,5 +1,13 @@
 # History
 
+# 2022-05-11, version 10.5.3
+
+- Fix #2337: npm package containing examples and docs to solve security 
+  vulnerabilities being reported on the examples and their dependencies.
+- Fix core, construction, and some other functions missing in docs.
+- Drop official support for Node.js 12 which has reached it's end of life.
+
+
 # 2022-05-09, version 10.5.2
 
 - Fix #2553: `@types/mocha` defined in `dependencies` instead of 
