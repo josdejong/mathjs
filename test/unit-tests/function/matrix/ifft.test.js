@@ -10,7 +10,7 @@ describe('ifft', function () {
   })
 
   it('should calculate multidimensional inverse fourier transformation', function () {
-    const in1 =[
+    const in1 = [
       [1, 0],
       [1, 0]
     ]

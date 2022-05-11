@@ -430,20 +430,28 @@ Matrices examples
 
   // Fourier transform and inverse
   {
-    assert.deepStrictEqual(math.fft([
-      [1, 0],
-      [1, 0]
-    ]), [
-      [2, 2],
-      [0, 0]
-    ])
-    assert.deepStrictEqual(math.fft(math.matrix([
-      [1, 0],
-      [1, 0]
-    ])), math.matrix([
-      [2, 2],
-      [0, 0]
-    ]))
+    assert.deepStrictEqual(
+      math.fft([
+        [1, 0],
+        [1, 0],
+      ]),
+      [
+        [2, 2],
+        [0, 0],
+      ]
+    )
+    assert.deepStrictEqual(
+      math.fft(
+        math.matrix([
+          [1, 0],
+          [1, 0],
+        ])
+      ),
+      math.matrix([
+        [2, 2],
+        [0, 0],
+      ])
+    )
   }
 }
 

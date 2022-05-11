@@ -33,7 +33,7 @@ describe('fft', function () {
       [8, 0, 0, 0],
       [0, math.complex(0, 4), 0, -4],
       [0, 0, 0, 0],
-      [0, -4, 0, math.complex(0,-4)]
+      [0, -4, 0, math.complex(0, -4)]
     ]
     approx.deepEqual(fft(in2.valueOf()), out2.valueOf())
     approx.deepEqual(fft(math.matrix(in2)), math.matrix(out2))
