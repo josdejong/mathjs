@@ -4,6 +4,32 @@ layout: default
 
 <h1 id="function-reference">Function reference <a href="#function-reference" title="Permalink">#</a></h1>
 
+<h2 id="core-functions">Core functions <a href="#core-functions" title="Permalink">#</a></h2>
+
+Function | Description
+---- | -----------
+[math.config(config:&nbsp;Object):&nbsp;Object](functions/config.html) | Set configuration options for math.
+[math.import(object,&nbsp;override)](functions/import.html) | Import functions from an object or a module.
+[math.typed(name,&nbsp;signatures)&nbsp;:&nbsp;function](functions/typed.html) | Create a typed-function which checks the types of the arguments and can match them against multiple provided signatures.
+
+<h2 id="construction-functions">Construction functions <a href="#construction-functions" title="Permalink">#</a></h2>
+
+Function | Description
+---- | -----------
+[math.bignumber(x)](functions/bignumber.html) | Create a BigNumber, which can store numbers with arbitrary precision.
+[math.boolean(x)](functions/boolean.html) | Create a boolean or convert a string or number to a boolean.
+[math.chain(value)](functions/chain.html) | Wrap any value in a chain, allowing to perform chained operations on the value.
+[math.complex(re,&nbsp;im)](functions/complex.html) | Create a complex value or convert a value to a complex value.
+[math.createUnit(units)](functions/createUnit.html) | Create a user-defined unit and register it with the Unit type.
+[math.fraction(value)](functions/fraction.html) | Create a fraction or convert a value to a fraction.
+[math.index(range1,&nbsp;range2,&nbsp;...)](functions/index.html) | Create an index.
+[math.matrix(x)](functions/matrix.html) | Create a Matrix.
+[math.number(value)](functions/number.html) | Create a number or convert a string, boolean, or unit to a number.
+[math.sparse(x)](functions/sparse.html) | Create a Sparse Matrix.
+[math.splitUnit(unit,&nbsp;parts)](functions/splitUnit.html) | Split a unit in an array of units whose sum is equal to the original unit.
+[math.string(value)](functions/string.html) | Create a string or convert any object into a string.
+[math.unit(x)](functions/unit.html) | Create a unit.
+
 <h2 id="expression-functions">Expression functions <a href="#expression-functions" title="Permalink">#</a></h2>
 
 Function | Description
@@ -11,6 +37,7 @@ Function | Description
 [math.compile(expr)](functions/compile.html) | Parse and compile an expression.
 [math.evaluate(expr&nbsp;[,&nbsp;scope])](functions/evaluate.html) | Evaluate an expression.
 [math.help(search)](functions/help.html) | Retrieve help on a function or data type.
+[math.parse(expr&nbsp;[,&nbsp;scope])](functions/parse.html) | Parse an expression.
 [math.parser()](functions/parser.html) | Create a parser.
 
 <h2 id="algebra-functions">Algebra functions <a href="#algebra-functions" title="Permalink">#</a></h2>

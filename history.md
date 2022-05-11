@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220511-version-1053">2022-05-11, version 10.5.3 <a href="#20220511-version-1053" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2337">#2337</a>: npm package containing examples and docs to solve security 
+  vulnerabilities being reported on the examples and their dependencies.
+- Fix core, construction, and some other functions missing in docs.
+- Drop official support for Node.js 12 which has reached its end of life.
+
+
 <h1 id="20220509-version-1052">2022-05-09, version 10.5.2 <a href="#20220509-version-1052" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2553">#2553</a>: `@types/mocha` defined in `dependencies` instead of 

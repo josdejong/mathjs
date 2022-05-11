@@ -28,13 +28,20 @@ math.matrix(data, 'sparse', 'number') // creates a sparse matrix with initial da
 Parameter | Type | Description
 --------- | ---- | -----------
 `data` | Array &#124; Matrix | A multi dimensional array
-`format` | string | The Matrix storage format
+`format` | string | The Matrix storage format, either `'dense'` or `'sparse'`
+`datatype` | string | Type of the values
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Matrix | The created matrix
+
+
+<h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
+
+Type | Description
+---- | -----------
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
