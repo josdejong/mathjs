@@ -30,6 +30,11 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
    *
    *     math.fft(arr)
    *
+   * Examples:
+   *
+   *    math.fft([[1, 0], [1, 0]]) // returns [[2, 2], [0, 0]]
+   *
+   *
    * See Also:
    *
    *      ifft

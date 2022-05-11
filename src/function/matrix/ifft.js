@@ -23,6 +23,10 @@ export const createIfft = /* #__PURE__ */ factory(name, dependencies, ({
    *
    *     math.ifft(arr)
    *
+   * Examples:
+   *
+   *    math.ifft([[2, 2], [0, 0]]) // returns [[1, 0], [1, 0]]
+   *
    * See Also:
    *
    *      fft
