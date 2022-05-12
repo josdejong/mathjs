@@ -23,7 +23,7 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
   const powScalarSignatures = {}
   for (const signature in pow.signatures) {
-    if (Object.hasOwn(pow.signatures, signature)) {
+    if (Object.prototype.hasOwnProperty.call(pow.signatures, signature)) {
       if (!signature.includes('Matrix') && !signature.includes('Array')) {
         powScalarSignatures[signature] = pow.signatures[signature]
       }
