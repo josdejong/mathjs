@@ -613,7 +613,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     if (state.token !== '' && state.token !== '\n' && state.token !== ';') {
       node = parseAssignment(state)
-      node.comment = state.comment
+      if (state.comment) {
+        node.comment = state.comment
+      }
     }
 
     // TODO: simplify this loop
@@ -626,7 +628,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getToken(state)
       if (state.token !== '\n' && state.token !== ';' && state.token !== '') {
         node = parseAssignment(state)
-        node.comment = state.comment
+        if (state.comment) {
+          node.comment = state.comment
+        }
 
         visible = (state.token !== ';')
         blocks.push({ node, visible })
@@ -638,7 +642,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     } else {
       if (!node) {
         node = new ConstantNode(undefined)
-        node.comment = state.comment
+        if (state.comment) {
+          node.comment = state.comment
+        }
       }
 
       return node
