@@ -93,6 +93,18 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
   return typed('resolve', {
     Node: _resolve,
     'Node, Map | null | undefined': _resolve,
-    'Node, Object': (n, scope) => _resolve(n, createMap(scope))
+    'Node, Object': (n, scope) => _resolve(n, createMap(scope)),
+    // For arrays and matrices, we map `self` rather than `_resolve`
+    // because resolve is fairly expensive anyway, and this way
+    // we get nice error messages if one entry in the array has wrong type.
+    'Array | Matrix': typed.referToSelf(self => A => A.map(n => self(n))),
+    'Array | Matrix, null | undefined': typed.referToSelf(
+      self => A => A.map(n => self(n))),
+    'Array, Object': typed.referTo(
+      'Array,Map', selfAM => (A, scope) => selfAM(A, createMap(scope))),
+    'Matrix, Object': typed.referTo(
+      'Matrix,Map', selfMM => (A, scope) => selfMM(A, createMap(scope))),
+    'Array | Matrix, Map': typed.referToSelf(
+      self => (A, scope) => A.map(n => self(n, scope)))
   })
 })

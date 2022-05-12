@@ -647,7 +647,7 @@ declare namespace math {
      * @returns The created Matrix
      */
     matrix(
-      data: MathCollection,
+      data: MathCollection | string[],
       format?: 'sparse' | 'dense',
       dataType?: string
     ): Matrix
@@ -899,9 +899,14 @@ declare namespace math {
      * @param scope Scope to read/write variables
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolve(node: MathNode, scope?: Record<string, any>): MathNode
+    resolve(node: MathNode | string, scope?: Record<string, any>): MathNode
+    resolve(
+      node: (MathNode | string)[],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      scope?: Record<string, any>
+    ): MathNode[]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolve(node: MathNode[], scope?: Record<string, any>): MathNode[]
+    resolve(node: Matrix, scope?: Record<string, any>): Matrix
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.

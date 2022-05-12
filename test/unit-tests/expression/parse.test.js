@@ -952,17 +952,17 @@ describe('parse', function () {
 
     it('should parse constants', function () {
       assert.strictEqual(parse('true').type, 'ConstantNode')
-      assert.deepStrictEqual(parse('true'), createConstantNode(true))
-      assert.deepStrictEqual(parse('false'), createConstantNode(false))
-      assert.deepStrictEqual(parse('null'), createConstantNode(null))
-      assert.deepStrictEqual(parse('undefined'), createConstantNode(undefined))
+      assert.deepStrictEqual(parse('true'), new ConstantNode(true))
+      assert.deepStrictEqual(parse('false'), new ConstantNode(false))
+      assert.deepStrictEqual(parse('null'), new ConstantNode(null))
+      assert.deepStrictEqual(parse('undefined'), new ConstantNode(undefined))
     })
 
     it('should parse numeric constants', function () {
       const nanConstantNode = parse('NaN')
       assert.deepStrictEqual(nanConstantNode.type, 'ConstantNode')
       assert.ok(isNaN(nanConstantNode.value))
-      assert.deepStrictEqual(parse('Infinity'), createConstantNode(Infinity))
+      assert.deepStrictEqual(parse('Infinity'), new ConstantNode(Infinity))
     })
 
     it('should evaluate constants', function () {
@@ -978,13 +978,6 @@ describe('parse', function () {
       assert.strictEqual(math.evaluate('true'), true)
       assert.strictEqual(math.evaluate('false'), false)
     })
-
-    // helper function to create a ConstantNode with empty comment
-    function createConstantNode (value) {
-      const c = new ConstantNode(value)
-      c.comment = ''
-      return c
-    }
   })
 
   describe('variables', function () {

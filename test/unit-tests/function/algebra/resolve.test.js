@@ -43,27 +43,49 @@ describe('resolve', function () {
     simplifyAndCompare('size(text)[1]', '11', { text: 'hello world' })
   })
 
+  it('should operate directly on strings', function () {
+    const collapsingScope = { x: math.parse('y'), y: math.parse('z') }
+    assert.deepStrictEqual(math.resolve('x+y', { x: 1 }), math.parse('1 + y'))
+    assert.deepStrictEqual(
+      math.resolve('x + y', collapsingScope),
+      math.parse('z + z'))
+    assert.deepStrictEqual(
+      math.resolve('[x, y, 1, w]', collapsingScope),
+      math.parse('[z, z, 1, w]'))
+  })
+
   it('should substitute scoped constants from Map like scopes', function () {
     assert.strictEqual(
       math.resolve(math.parse('x+y'), new Map([['x', 1]])).toString(), '1 + y'
     ) // direct
+    assert.deepStrictEqual(
+      math.resolve('x+y', new Map([['x', 1]])), math.parse('1 + y'))
     simplifyAndCompare('x+y', 'x+y', new Map()) // operator
     simplifyAndCompare('x+y', 'y+1', new Map([['x', 1]]))
     simplifyAndCompare('x+y', 'y+1', new Map([['x', math.parse('1')]]))
   })
 
   it('should resolve multiple nodes', function () {
+    const parse = math.parse
     const scope = { x: 1, y: 2 }
-
+    const expressions = [parse('x+z'), 'y+z', 'y-x']
+    let results = [parse('x+z'), parse('y+z'), parse('y-x')]
+    assert.deepStrictEqual(math.resolve(expressions), results)
+    results = [parse('1+z'), parse('2+z'), parse('2-1')]
+    assert.deepStrictEqual(math.resolve(expressions, scope), results)
     assert.deepStrictEqual(
-      math.resolve([
-        math.parse('x+z'),
-        math.parse('y+z')
-      ], scope),
-      [
-        math.resolve(math.parse('x+z'), scope),
-        math.resolve(math.parse('y+z'), scope)
-      ]
+      math.resolve(math.matrix(expressions), scope),
+      math.matrix(results)
+    )
+    const nested = ['z/y', ['x+x', 'gcd(x,y)'], '3+x']
+    results = [parse('z/2'), [parse('1+1'), parse('gcd(1,2)')], parse('3+1')]
+    assert.deepStrictEqual(math.resolve(nested, scope), results)
+  })
+
+  it('should throw a readable error if one item is wrong type', function () {
+    assert.throws(
+      () => math.resolve([math.parse('x'), 'y', 7]),
+      /TypeError: Unexpected.*actual: number, index: 0/
     )
   })
 

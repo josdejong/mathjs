@@ -2103,11 +2103,16 @@ Resolve examples
 {
   const math = create(all, {})
 
+  expectTypeOf(math.resolve('x + y')).toMatchTypeOf<MathNode>()
   expectTypeOf(math.resolve(math.parse('x + y'))).toMatchTypeOf<MathNode>()
   expectTypeOf(
     math.resolve(math.parse('x + y'), { x: 0 })
   ).toMatchTypeOf<MathNode>()
-  expectTypeOf(math.resolve([math.parse('x + y')], { x: 0 })).toMatchTypeOf<
-    MathNode[]
-  >()
+  expectTypeOf(math.resolve('x + y', { x: 0 })).toMatchTypeOf<MathNode>()
+  expectTypeOf(
+    math.resolve([math.parse('x + y'), 'x*x'], { x: 0 })
+  ).toMatchTypeOf<MathNode[]>()
+  expectTypeOf(
+    math.resolve(math.matrix(['x', 'y']))
+  ).toMatchTypeOf<math.Matrix>()
 }
