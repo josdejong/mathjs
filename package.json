@@ -176,8 +176,5 @@
   "bugs": {
     "url": "https://github.com/josdejong/mathjs/issues"
   },
-  "browserslist": [
-    "IE 11"
-  ],
   "sideEffects": false
 }
