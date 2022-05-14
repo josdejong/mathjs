@@ -238,6 +238,11 @@ Chaining examples
   // compile
   expectTypeOf(math.chain('a + b').compile()).toMatchTypeOf<MathJsChain<EvalFunction>>()
   expectTypeOf(math.chain('a + b').compile().done()).toMatchTypeOf<EvalFunction>()
+
+  // evaluate
+  expectTypeOf(math.chain('1 + 1').evaluate()).toMatchTypeOf<MathJsChain<any>>()
+  expectTypeOf(math.chain('1 + 1').evaluate().done()).toMatchTypeOf<any>()
+  expectTypeOf(math.chain(['1 + 1', '2 + 2']).evaluate()).toMatchTypeOf<MathJsChain<any[]>>()
 }
 
 /*

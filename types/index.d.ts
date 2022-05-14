@@ -4123,11 +4123,13 @@ declare namespace math {
      */
     compile(this: MathJsChain<MathExpression>): MathJsChain<EvalFunction>
 
+    // TODO properly type this
     /**
      * Evaluate an expression.
      * @param scope Scope to read/write variables
      */
-    evaluate(this: MathJsChain<unknown>, scope?: object): MathJsChain<unknown>
+    evaluate(this: MathJsChain<MathExpression | Matrix>, scope?: object): MathJsChain<any>
+    evaluate(this: MathJsChain<MathExpression[]>, scope?: object): MathJsChain<any[]>
 
     /**
      * Retrieve help on a function or data type. Help files are retrieved
