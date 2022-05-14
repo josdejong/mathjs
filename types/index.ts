@@ -12,6 +12,7 @@ import {
   BigNumber,
   MathCollection,
   Complex,
+  Unit,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -172,15 +173,23 @@ Chaining examples
 
   // boolean
   expectTypeOf(math.chain(math.boolean(true))).toMatchTypeOf<MathJsChain<boolean>>()
+  expectTypeOf(math.chain(math.boolean(true)).done()).toMatchTypeOf<boolean>()
   expectTypeOf(math.chain(true).boolean()).toMatchTypeOf<MathJsChain<boolean>>()
   expectTypeOf(math.chain([12, 13, 14]).boolean()).toMatchTypeOf<MathJsChain<MathCollection>>()
 
   // complex
   expectTypeOf(math.chain(math.complex('123'))).toMatchTypeOf<MathJsChain<Complex>>()
+  expectTypeOf(math.chain(math.complex('123')).done()).toMatchTypeOf<Complex>()
   expectTypeOf(math.chain('123').complex()).toMatchTypeOf<MathJsChain<Complex>>()
   expectTypeOf(math.chain('123').complex(1)).toMatchTypeOf<MathJsChain<Complex>>()
   expectTypeOf(math.chain([12, 13, 14]).complex()).toMatchTypeOf<MathJsChain<MathCollection>>()
   expectTypeOf(math.chain([12, 13, 14]).complex(1)).toMatchTypeOf<MathJsChain<MathCollection>>()
+
+  // complex
+  expectTypeOf(math.chain(math.createUnit('furlong'))).toMatchTypeOf<MathJsChain<Unit>>()
+  expectTypeOf(math.chain(math.createUnit({
+    furlong: '1234'
+  }))).toMatchTypeOf<MathJsChain<Unit>>()
 }
 
 /*

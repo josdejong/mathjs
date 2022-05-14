@@ -4024,10 +4024,10 @@ declare namespace math {
      * 0.
      */
     createUnit(
-      this: MathJsChain<unknown>,
+      this: MathJsChain<string>,
       definition?: string | UnitDefinition,
       options?: CreateUnitOptions
-    ): MathJsChain<unknown>
+    ): MathJsChain<Unit>
     /**
      * Create a user-defined unit and register it with the Unit type.
      * @param options (optional) An object containing any of the following
@@ -4038,7 +4038,7 @@ declare namespace math {
      * the unit. For example, the offset for celsius is 273.15. Default is
      * 0.
      */
-    createUnit(this: MathJsChain<unknown>, options?: CreateUnitOptions): MathJsChain<unknown>
+    createUnit(this: MathJsChain<Record<string, string | UnitDefinition>>, options?: CreateUnitOptions): MathJsChain<Unit>
 
     /**
      * Create a fraction convert a value to a fraction.
