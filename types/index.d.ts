@@ -359,6 +359,11 @@ declare namespace math {
     p: number[]
   }
 
+  interface QRDecomposition {
+    Q: MathCollection
+    R: MathCollection
+  }
+
   interface MathJsStatic extends FactoryDependencies {
     e: number
     pi: number
@@ -789,7 +794,7 @@ declare namespace math {
      * decomposition.
      * @returns Q: the orthogonal matrix and R: the upper triangular matrix
      */
-    qr(A: Matrix | MathArray): { Q: MathCollection; R: MathCollection }
+    qr(A: Matrix | MathArray): QRDecomposition
 
     rationalize(
       expr: MathNode | string,
