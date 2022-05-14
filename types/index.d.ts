@@ -4068,7 +4068,8 @@ declare namespace math {
      * @param valuelessUnit A valueless unit, used to convert a unit to a
      * number
      */
-    number(this: MathJsChain<unknown>, valuelessUnit?: Unit | string): MathJsChain<unknown>
+    number(this: MathJsChain<string | number | BigNumber | Fraction | boolean | Unit | null>, valuelessUnit?: Unit | string): MathJsChain<number>
+    number(this: MathJsChain<MathCollection>, valuelessUnit?: Unit | string): MathJsChain<MathCollection>
 
     /**
      * Create a Sparse Matrix. The function creates a new math.type.Matrix

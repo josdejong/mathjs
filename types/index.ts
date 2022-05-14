@@ -211,6 +211,10 @@ Chaining examples
   expectTypeOf(math.chain([12, 13, 14, 15]).matrix()).toMatchTypeOf<MathJsChain<Matrix>>()
   expectTypeOf(math.chain([12, 13, 14, 15]).matrix().done()).toMatchTypeOf<Matrix>()
 
+   // number
+  expectTypeOf(math.chain('12').number()).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain('12').number().done()).toMatchTypeOf<number>()
+  expectTypeOf(math.chain([12, 13, 14]).number()).toMatchTypeOf<MathJsChain<MathCollection>>()
 }
 
 /*
