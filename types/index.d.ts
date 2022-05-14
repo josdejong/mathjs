@@ -540,8 +540,7 @@ declare namespace math {
      * @returns Returns a fraction
      */
     fraction(value: number | string | BigNumber | Fraction | object): Fraction
-    fraction(values: MathArray): MathArray
-    fraction(values: Matrix): Matrix
+    fraction(values: MathCollection): MathCollection
     /**
      * @param numerator Argument specifying the numerator of the fraction
      * @param denominator Argument specifying the denominator of the
@@ -4045,7 +4044,8 @@ declare namespace math {
      * @param denominator Argument specifying the denominator of the
      * fraction
      */
-    fraction(this: MathJsChain<unknown>, denominator?: number | string | MathCollection): MathJsChain<unknown>
+    fraction(this: MathJsChain<MathCollection>, denominator?: number | string | MathCollection): MathJsChain<MathCollection>
+    fraction(this: MathJsChain<number | string | BigNumber | Fraction | object>, denominator?: number | string | MathCollection): MathJsChain<Fraction>
 
     /**
      * Create an index. An Index can store ranges having start, step, and

@@ -13,6 +13,8 @@ import {
   MathCollection,
   Complex,
   Unit,
+  Fraction,
+  MathArray,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -185,11 +187,19 @@ Chaining examples
   expectTypeOf(math.chain([12, 13, 14]).complex()).toMatchTypeOf<MathJsChain<MathCollection>>()
   expectTypeOf(math.chain([12, 13, 14]).complex(1)).toMatchTypeOf<MathJsChain<MathCollection>>()
 
-  // complex
+  // createUnit
   expectTypeOf(math.chain(math.createUnit('furlong'))).toMatchTypeOf<MathJsChain<Unit>>()
   expectTypeOf(math.chain(math.createUnit({
     furlong: '1234'
   }))).toMatchTypeOf<MathJsChain<Unit>>()
+
+   // fraction
+  expectTypeOf(math.chain(math.fraction('123'))).toMatchTypeOf<MathJsChain<Fraction>>()
+  expectTypeOf(math.chain(math.fraction('123')).done()).toMatchTypeOf<Fraction>()
+  expectTypeOf(math.chain('123').fraction()).toMatchTypeOf<MathJsChain<Fraction>>()
+  expectTypeOf(math.chain('123').fraction(2)).toMatchTypeOf<MathJsChain<Fraction>>()
+  expectTypeOf(math.chain([12, 13, 14]).fraction()).toMatchTypeOf<MathJsChain<MathCollection>>()
+  expectTypeOf(math.chain([12, 13, 14]).fraction(2)).toMatchTypeOf<MathJsChain<MathCollection>>()
 }
 
 /*
