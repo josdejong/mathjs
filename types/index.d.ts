@@ -353,6 +353,12 @@ declare namespace math {
 
   type MathJsFunctionName = keyof MathJsStatic
 
+  interface LUDecomposition {
+    L: MathCollection
+    U: MathCollection
+    p: number[]
+  }
+
   interface MathJsStatic extends FactoryDependencies {
     e: number
     pi: number
@@ -747,11 +753,7 @@ declare namespace math {
      * @returns The lower triangular matrix, the upper triangular matrix and
      * the permutation matrix.
      */
-    lup(A?: Matrix | MathArray): {
-      L: MathCollection
-      U: MathCollection
-      P: number[]
-    }
+    lup(A?: Matrix | MathArray): LUDecomposition
 
     /**
      * Solves the linear system A * x = b where A is an [n x n] matrix and b
