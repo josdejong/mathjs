@@ -4238,7 +4238,7 @@ declare namespace math {
      * matrices (Q, R) where Q is an orthogonal matrix and R is an upper
      * triangular matrix.
      */
-    qr(this: MathJsChain<unknown>): MathJsChain<unknown>
+    qr(this: MathJsChain<Matrix | MathArray>): MathJsChain<QRDecomposition>
 
     /**
      * Transform a rationalizable expression in a rational fraction. If

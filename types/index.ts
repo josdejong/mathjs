@@ -19,6 +19,7 @@ import {
   Matrix,
   EvalFunction,
   LUDecomposition,
+  QRDecomposition,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -254,6 +255,10 @@ Chaining examples
   // lusolve
   expectTypeOf(math.chain([[1,2],[3,4]]).lusolve([1,2])).toMatchTypeOf<MathJsChain<MathArray>>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lusolve([1,2])).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // qr
+  expectTypeOf(math.chain([[1,2],[3,4]]).qr()).toMatchTypeOf<MathJsChain<QRDecomposition>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).qr()).toMatchTypeOf<MathJsChain<QRDecomposition>>()
 }
 
 /*
