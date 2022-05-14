@@ -652,7 +652,8 @@ declare namespace math {
      * @param unit The unit to be created
      * @returns The created unit
      */
-    unit(value: number | MathCollection | BigNumber, unit: string): Unit
+    unit(value: number | BigNumber, unit: string): Unit
+    unit(value: MathCollection, unit: string): Unit[]
 
     /*************************************************************************
      * Expression functions
