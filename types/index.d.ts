@@ -4316,7 +4316,9 @@ declare namespace math {
      * element wise.
      * @param y Second value to add
      */
-    add(this: MathJsChain<unknown>, y: MathType): MathJsChain<unknown>
+    add(this: MathJsChain<MathArray>, y: MathType): MathJsChain<MathArray>
+    add(this: MathJsChain<Matrix>, y: MathType): MathJsChain<Matrix>
+    add(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Apply a function that maps an array to a scalar along a given axis of the
