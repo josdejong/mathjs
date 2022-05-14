@@ -262,6 +262,11 @@ Chaining examples
   // derivative
   expectTypeOf(math.chain(math.parse('x^2')).derivative('x')).toMatchTypeOf<MathJsChain<MathNode>>()
   expectTypeOf(math.chain(math.parse('x^2')).derivative('x').done()).toMatchTypeOf<MathNode>()
+
+  // lsolve
+  expectTypeOf(math.chain([[1,2],[3,4]]).lsolve([1,2])).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain([[1,2],[3,4]]).lsolve([1,2]).done()).toMatchTypeOf<MathArray>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lsolve([1,2])).toMatchTypeOf<MathJsChain<Matrix>>()
 }
 
 /*

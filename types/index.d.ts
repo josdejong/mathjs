@@ -4186,7 +4186,8 @@ declare namespace math {
      * must be a lower triangular matrix.
      * @param b A column vector with the b values
      */
-    lsolve(this: MathJsChain<unknown>, b: Matrix | MathArray): MathJsChain<unknown>
+    lsolve(this: MathJsChain<Matrix>, b: Matrix | MathArray): MathJsChain<Matrix>
+    lsolve(this: MathJsChain<MathArray>, b: Matrix | MathArray): MathJsChain<MathArray>
 
     /**
      * Calculate the Matrix LU decomposition with partial pivoting. Matrix A
