@@ -228,6 +228,11 @@ Chaining examples
   expectTypeOf(math.chain('test').string()).toMatchTypeOf<MathJsChain<string>>()
   expectTypeOf(math.chain('test').string().done()).toMatchTypeOf<string>()
   expectTypeOf(math.chain([1,2,3]).string()).toMatchTypeOf<MathJsChain<MathCollection>>()
+
+  // unit
+  expectTypeOf(math.chain(12).unit()).toMatchTypeOf<MathJsChain<Unit>>()
+  expectTypeOf(math.chain(12).unit().done()).toMatchTypeOf<Unit>()
+  expectTypeOf(math.chain([1,2,3]).unit()).toMatchTypeOf<MathJsChain<Unit[]>>()
 }
 
 /*

@@ -4102,7 +4102,10 @@ declare namespace math {
      * provided, all elements will be converted to units.
      * @param unit The unit to be created
      */
-    unit(this: MathJsChain<unknown>, unit?: string): MathJsChain<unknown>
+    unit(this: MathJsChain<string>, unit?: string): MathJsChain<Unit>
+    unit(this: MathJsChain<Unit>, unit?: string): MathJsChain<Unit>
+    unit(this: MathJsChain<number | BigNumber>, unit?: string): MathJsChain<Unit>
+    unit(this: MathJsChain<MathCollection>, unit?: string): MathJsChain<Unit[]>
 
     /*************************************************************************
      * Expression functions
