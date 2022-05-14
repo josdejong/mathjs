@@ -359,6 +359,10 @@ declare namespace math {
     p: number[]
   }
 
+  interface SLUDecomposition extends LUDecomposition {
+    q: number[]
+  }
+
   interface QRDecomposition {
     Q: MathCollection
     R: MathCollection
@@ -865,7 +869,7 @@ declare namespace math {
      * @returns The lower triangular matrix, the upper triangular matrix and
      * the permutation vectors.
      */
-    slu(A: Matrix, order: number, threshold: number): object
+    slu(A: Matrix, order: number, threshold: number): SLUDecomposition
 
     /**
      * Solves the linear equation system by backward substitution. Matrix
