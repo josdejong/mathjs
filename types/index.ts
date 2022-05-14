@@ -164,28 +164,21 @@ Chaining examples
   const r = math.chain(-0.483).round([0, 1, 2]).floor().add(0.52).fix(1).done()
   assert.deepStrictEqual(r, [0.5, -0.4, -0.4])
 
-  expectTypeOf(math.chain('x + y').parse().resolve({ x: 1 }).done())
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .toMatchTypeOf<any>()
-  expectTypeOf(math.chain('x + y').parse().resolve().done())
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .toMatchTypeOf<any>()
+  expectTypeOf(math.chain('x + y').parse().resolve({ x: 1 }).done()).toMatchTypeOf<MathNode>()
+  expectTypeOf(math.chain('x + y').parse().resolve().done()).toMatchTypeOf<MathNode>()
 
   // bignum
   expectTypeOf(math.chain(math.bignumber(12))).toMatchTypeOf<MathJsChain<BigNumber>>()
-  expectTypeOf(math.chain(math.bignumber(12)).done()).toMatchTypeOf<BigNumber>()
   expectTypeOf(math.chain(12).bignumber()).toMatchTypeOf<MathJsChain<BigNumber>>()
   expectTypeOf(math.chain([12, 13, 14]).bignumber()).toMatchTypeOf<MathJsChain<MathCollection>>()
 
   // boolean
   expectTypeOf(math.chain(math.boolean(true))).toMatchTypeOf<MathJsChain<boolean>>()
-  expectTypeOf(math.chain(math.boolean(true)).done()).toMatchTypeOf<boolean>()
   expectTypeOf(math.chain(true).boolean()).toMatchTypeOf<MathJsChain<boolean>>()
   expectTypeOf(math.chain([12, 13, 14]).boolean()).toMatchTypeOf<MathJsChain<MathCollection>>()
 
   // complex
   expectTypeOf(math.chain(math.complex('123'))).toMatchTypeOf<MathJsChain<Complex>>()
-  expectTypeOf(math.chain(math.complex('123')).done()).toMatchTypeOf<Complex>()
   expectTypeOf(math.chain('123').complex()).toMatchTypeOf<MathJsChain<Complex>>()
   expectTypeOf(math.chain('123').complex(1)).toMatchTypeOf<MathJsChain<Complex>>()
   expectTypeOf(math.chain([12, 13, 14]).complex()).toMatchTypeOf<MathJsChain<MathCollection>>()
@@ -199,7 +192,6 @@ Chaining examples
 
    // fraction
   expectTypeOf(math.chain(math.fraction('123'))).toMatchTypeOf<MathJsChain<Fraction>>()
-  expectTypeOf(math.chain(math.fraction('123')).done()).toMatchTypeOf<Fraction>()
   expectTypeOf(math.chain('123').fraction()).toMatchTypeOf<MathJsChain<Fraction>>()
   expectTypeOf(math.chain('123').fraction(2)).toMatchTypeOf<MathJsChain<Fraction>>()
   expectTypeOf(math.chain([12, 13, 14]).fraction()).toMatchTypeOf<MathJsChain<MathCollection>>()
@@ -207,66 +199,52 @@ Chaining examples
 
    // index
   expectTypeOf(math.chain([12, 13, 14]).index()).toMatchTypeOf<MathJsChain<Index>>()
-  expectTypeOf(math.chain([12, 13, 14]).index().done()).toMatchTypeOf<Index>()
 
    // matrix
   expectTypeOf(math.chain([12, 13, 14, 15]).matrix()).toMatchTypeOf<MathJsChain<Matrix>>()
-  expectTypeOf(math.chain([12, 13, 14, 15]).matrix().done()).toMatchTypeOf<Matrix>()
 
    // number
   expectTypeOf(math.chain('12').number()).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain('12').number().done()).toMatchTypeOf<number>()
   expectTypeOf(math.chain([12, 13, 14]).number()).toMatchTypeOf<MathJsChain<MathCollection>>()
 
    // sparse
   expectTypeOf(math.chain([12, 13, 14, 15]).sparse()).toMatchTypeOf<MathJsChain<Matrix>>()
-  expectTypeOf(math.chain([12, 13, 14, 15]).sparse().done()).toMatchTypeOf<Matrix>()
 
   // split unit
   expectTypeOf(math.chain(math.unit('furlong')).splitUnit([])).toMatchTypeOf<MathJsChain<Unit[]>>()
-  expectTypeOf(math.chain(math.unit('furlong')).splitUnit([]).done()).toMatchTypeOf<Unit[]>()
 
   // string
   expectTypeOf(math.chain('test').string()).toMatchTypeOf<MathJsChain<string>>()
-  expectTypeOf(math.chain('test').string().done()).toMatchTypeOf<string>()
   expectTypeOf(math.chain([1,2,3]).string()).toMatchTypeOf<MathJsChain<MathCollection>>()
 
   // unit
   expectTypeOf(math.chain(12).unit()).toMatchTypeOf<MathJsChain<Unit>>()
-  expectTypeOf(math.chain(12).unit().done()).toMatchTypeOf<Unit>()
   expectTypeOf(math.chain([1,2,3]).unit()).toMatchTypeOf<MathJsChain<Unit[]>>()
 
   // compile
   expectTypeOf(math.chain('a + b').compile()).toMatchTypeOf<MathJsChain<EvalFunction>>()
-  expectTypeOf(math.chain('a + b').compile().done()).toMatchTypeOf<EvalFunction>()
 
   // evaluate
   expectTypeOf(math.chain('1 + 1').evaluate()).toMatchTypeOf<MathJsChain<any>>()
-  expectTypeOf(math.chain('1 + 1').evaluate().done()).toMatchTypeOf<any>()
   expectTypeOf(math.chain(['1 + 1', '2 + 2']).evaluate()).toMatchTypeOf<MathJsChain<any[]>>()
 
   // parse
   expectTypeOf(math.chain('1 + 1').parse()).toMatchTypeOf<MathJsChain<MathNode>>()
-  expectTypeOf(math.chain('1 + 1').parse().done()).toMatchTypeOf<MathNode>()
   expectTypeOf(math.chain(['1 + 1', '2 + 2']).parse()).toMatchTypeOf<MathJsChain<MathNode[]>>()
 
   // parser
   expectTypeOf(math.chain('1 + 1').parser()).toMatchTypeOf<MathJsChain<any>>()
-  expectTypeOf(math.chain('1 + 1').parser().done()).toMatchTypeOf<any>()
   expectTypeOf(math.chain(['1 + 1', '2 + 2']).parser()).toMatchTypeOf<MathJsChain<any>>()
 
   // resolve
   expectTypeOf(math.chain(math.parse('1 + 1')).resolve({})).toMatchTypeOf<MathJsChain<MathNode>>()
-  expectTypeOf(math.chain(math.parse('1 + 1')).resolve({}).done()).toMatchTypeOf<MathNode>()
   expectTypeOf(math.chain([math.parse('1 + 1'), math.parse('1 + 1')]).resolve({})).toMatchTypeOf<MathJsChain<MathNode[]>>()
 
   // derivative
   expectTypeOf(math.chain(math.parse('x^2')).derivative('x')).toMatchTypeOf<MathJsChain<MathNode>>()
-  expectTypeOf(math.chain(math.parse('x^2')).derivative('x').done()).toMatchTypeOf<MathNode>()
 
   // lsolve
   expectTypeOf(math.chain([[1,2],[3,4]]).lsolve([1,2])).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain([[1,2],[3,4]]).lsolve([1,2]).done()).toMatchTypeOf<MathArray>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lsolve([1,2])).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // lup
