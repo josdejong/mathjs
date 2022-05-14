@@ -4115,7 +4115,7 @@ declare namespace math {
      * Parse and compile an expression. Returns a an object with a function
      * evaluate([scope]) to evaluate the compiled expression.
      */
-    compile(this: MathJsChain<unknown>): MathJsChain<unknown>
+    compile(this: MathJsChain<MathExpression>): MathJsChain<EvalFunction>
 
     /**
      * Evaluate an expression.

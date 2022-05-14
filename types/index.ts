@@ -17,6 +17,7 @@ import {
   MathArray,
   Index,
   Matrix,
+  EvalFunction,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -233,6 +234,10 @@ Chaining examples
   expectTypeOf(math.chain(12).unit()).toMatchTypeOf<MathJsChain<Unit>>()
   expectTypeOf(math.chain(12).unit().done()).toMatchTypeOf<Unit>()
   expectTypeOf(math.chain([1,2,3]).unit()).toMatchTypeOf<MathJsChain<Unit[]>>()
+
+  // compile
+  expectTypeOf(math.chain('a + b').compile()).toMatchTypeOf<MathJsChain<EvalFunction>>()
+  expectTypeOf(math.chain('a + b').compile().done()).toMatchTypeOf<EvalFunction>()
 }
 
 /*
