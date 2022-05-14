@@ -631,7 +631,8 @@ declare namespace math {
      * @param value A value to convert to a string
      * @returns The created string
      */
-    string(value: MathType | null): string | MathCollection
+    string(value: MathNumericType | string | Unit | null): string
+    string(value: MathCollection): MathCollection
 
     /**
      * Create a unit. Depending on the passed arguments, the function will
