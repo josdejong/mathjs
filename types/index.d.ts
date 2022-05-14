@@ -468,9 +468,8 @@ declare namespace math {
      * @param x A value of any type
      * @returns The boolean value
      */
-    boolean(
-      x: string | number | boolean | MathCollection | null
-    ): boolean | MathCollection
+    boolean(x: string | number | boolean | null): boolean
+    boolean(x: MathCollection): MathCollection
 
     /**
      * Wrap any value in a chain, allowing to perform chained operations on
