@@ -4151,11 +4151,12 @@ declare namespace math {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parse(this: MathJsChain<MathExpression>, options?: any): MathJsChain<MathNode>
 
+    // TODO properly type return value
     /**
      * Create a parser. The function creates a new math.expression.Parser
      * object.
      */
-    parser(this: MathJsChain<unknown>): MathJsChain<unknown>
+    parser(this: MathJsChain<string | string[]>): MathJsChain<any>
 
     /**
      *  Replaces variable nodes with their scoped values
