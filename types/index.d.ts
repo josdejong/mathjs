@@ -735,7 +735,8 @@ declare namespace math {
      * @param b A column vector with the b values
      * @returns A column vector with the linear system solution (x)
      */
-    lsolve(L: Matrix | MathArray, b: Matrix | MathArray): Matrix | MathArray
+    lsolve(L: Matrix, b: Matrix | MathArray): Matrix
+    lsolve(L: MathArray, b: Matrix | MathArray): MathArray
 
     /**
      * Calculate the Matrix LU decomposition with partial pivoting. Matrix A
