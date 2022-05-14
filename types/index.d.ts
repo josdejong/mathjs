@@ -593,10 +593,10 @@ declare namespace math {
         | BigNumber
         | Fraction
         | boolean
-        | MathCollection
         | Unit
         | null
-    ): number | MathCollection
+    ): number
+    number(value?: MathCollection): number | MathCollection
     /**
      * @param value Value to be converted
      * @param valuelessUnit A valueless unit, used to convert a unit to a
@@ -4060,7 +4060,7 @@ declare namespace math {
      * in the matrix, like getting the size and getting or setting values in
      * the matrix. Supported storage formats are 'dense' and 'sparse'.
      */
-    matrix(this: MathJsChain<unknown>, format?: 'sparse' | 'dense', dataType?: string): MathJsChain<unknown>
+    matrix(this: MathJsChain<MathCollection>, format?: 'sparse' | 'dense', dataType?: string): MathJsChain<Matrix>
 
     /**
      * Create a number or convert a string, boolean, or unit to a number.

@@ -16,6 +16,7 @@ import {
   Fraction,
   MathArray,
   Index,
+  Matrix,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -204,6 +205,12 @@ Chaining examples
 
    // index
   expectTypeOf(math.chain([12, 13, 14]).index()).toMatchTypeOf<MathJsChain<Index>>()
+  expectTypeOf(math.chain([12, 13, 14]).index().done()).toMatchTypeOf<Index>()
+
+   // matrix
+  expectTypeOf(math.chain([12, 13, 14, 15]).matrix()).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(math.chain([12, 13, 14, 15]).matrix().done()).toMatchTypeOf<Matrix>()
+
 }
 
 /*
