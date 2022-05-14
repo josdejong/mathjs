@@ -250,6 +250,10 @@ Chaining examples
   // lup
   expectTypeOf(math.chain([[1,2],[3,4]]).lup()).toMatchTypeOf<MathJsChain<LUDecomposition>>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lup()).toMatchTypeOf<MathJsChain<LUDecomposition>>()
+
+  // lusolve
+  expectTypeOf(math.chain([[1,2],[3,4]]).lusolve([1,2])).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lusolve([1,2])).toMatchTypeOf<MathJsChain<Matrix>>()
 }
 
 /*

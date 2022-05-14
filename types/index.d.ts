@@ -4215,11 +4215,18 @@ declare namespace math {
      * see slu for details. Matrix must be a SparseMatrix.
      */
     lusolve(
-      this: MathJsChain<unknown>,
+      this: MathJsChain<Matrix>,
       b: Matrix | MathArray,
       order?: number,
       threshold?: number
-    ): MathJsChain<unknown>
+    ): MathJsChain<Matrix>
+
+    lusolve(
+      this: MathJsChain<MathArray>,
+      b: Matrix | MathArray,
+      order?: number,
+      threshold?: number
+    ): MathJsChain<MathArray>
 
     /**
      * Calculate the Matrix QR decomposition. Matrix A is decomposed in two
