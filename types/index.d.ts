@@ -4163,7 +4163,8 @@ declare namespace math {
      * @param scope Scope to read/write variables
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolve(scope?: Record<string, any>): MathJsChain
+    resolve(this: MathJsChain<MathNode>, scope?: Record<string, any>): MathJsChain<MathNode>
+    resolve(this: MathJsChain<MathNode[]>, scope?: Record<string, any>): MathJsChain<MathNode[]>
 
     /*************************************************************************
      * Algebra functions

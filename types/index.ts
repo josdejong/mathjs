@@ -253,6 +253,11 @@ Chaining examples
   expectTypeOf(math.chain('1 + 1').parser()).toMatchTypeOf<MathJsChain<any>>()
   expectTypeOf(math.chain('1 + 1').parser().done()).toMatchTypeOf<any>()
   expectTypeOf(math.chain(['1 + 1', '2 + 2']).parser()).toMatchTypeOf<MathJsChain<any>>()
+
+  // resolve
+  expectTypeOf(math.chain(math.parse('1 + 1')).resolve({})).toMatchTypeOf<MathJsChain<MathNode>>()
+  expectTypeOf(math.chain(math.parse('1 + 1')).resolve({}).done()).toMatchTypeOf<MathNode>()
+  expectTypeOf(math.chain([math.parse('1 + 1'), math.parse('1 + 1')]).resolve({})).toMatchTypeOf<MathJsChain<MathNode[]>>()
 }
 
 /*
