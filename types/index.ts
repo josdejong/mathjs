@@ -20,6 +20,7 @@ import {
   EvalFunction,
   LUDecomposition,
   QRDecomposition,
+  SLUDecomposition,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -267,6 +268,9 @@ Chaining examples
   // simplify
   expectTypeOf(math.chain('a + a + b').simplify()).toMatchTypeOf<MathJsChain<MathNode>>()
   expectTypeOf(math.chain(math.parse('a + a + b')).simplify()).toMatchTypeOf<MathJsChain<MathNode>>()
+
+  // slu
+  expectTypeOf(math.chain(math.sparse([[1,2],[3,4]])).slu(2, 0.5)).toMatchTypeOf<MathJsChain<SLUDecomposition>>()
 }
 
 /*

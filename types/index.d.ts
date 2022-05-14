@@ -4284,7 +4284,7 @@ declare namespace math {
      * with more than 10*sqr(columns) entries.
      * @param threshold Partial pivoting threshold (1 for partial pivoting)
      */
-    slu(this: MathJsChain<unknown>, order: number, threshold: number): MathJsChain<unknown>
+    slu(this: MathJsChain<unknown>, order: number, threshold: number): MathJsChain<SLUDecomposition>
 
     /**
      * Solves the linear equation system by backward substitution. Matrix
