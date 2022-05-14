@@ -4292,7 +4292,8 @@ declare namespace math {
      * must be an upper triangular matrix. U * x = b
      * @param b A column vector with the b values
      */
-    usolve(this: MathJsChain<unknown>, b: Matrix | MathArray): MathJsChain<unknown>
+    usolve(this: MathJsChain<Matrix>, b: Matrix | MathArray): MathJsChain<Matrix>
+    usolve(this: MathJsChain<MathArray>, b: Matrix | MathArray): MathJsChain<MathArray>
 
     /*************************************************************************
      * Arithmetic functions

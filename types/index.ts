@@ -271,6 +271,10 @@ Chaining examples
 
   // slu
   expectTypeOf(math.chain(math.sparse([[1,2],[3,4]])).slu(2, 0.5)).toMatchTypeOf<MathJsChain<SLUDecomposition>>()
+
+  // usolve
+  expectTypeOf(math.chain([[1,2],[3,4]]).usolve([1,2])).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).usolve([1,2])).toMatchTypeOf<MathJsChain<Matrix>>()
 }
 
 /*
