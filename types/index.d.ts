@@ -4092,7 +4092,8 @@ declare namespace math {
      * Create a string or convert any object into a string. Elements of
      * Arrays and Matrices are processed element wise.
      */
-    string(this: MathJsChain<unknown>): MathJsChain<unknown>
+    string(this: MathJsChain<MathNumericType | string | Unit | null>): MathJsChain<string>
+    string(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Create a unit. Depending on the passed arguments, the function will

@@ -223,6 +223,11 @@ Chaining examples
   // split unit
   expectTypeOf(math.chain(math.unit('furlong')).splitUnit([])).toMatchTypeOf<MathJsChain<Unit[]>>()
   expectTypeOf(math.chain(math.unit('furlong')).splitUnit([]).done()).toMatchTypeOf<Unit[]>()
+
+  // string
+  expectTypeOf(math.chain('test').string()).toMatchTypeOf<MathJsChain<string>>()
+  expectTypeOf(math.chain('test').string().done()).toMatchTypeOf<string>()
+  expectTypeOf(math.chain([1,2,3]).string()).toMatchTypeOf<MathJsChain<MathCollection>>()
 }
 
 /*
