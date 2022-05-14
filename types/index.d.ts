@@ -672,6 +672,7 @@ declare namespace math {
      */
     compile(exprs: MathExpression[]): EvalFunction[]
 
+    // TODO properly type this
     /**
      * Evaluate an expression.
      * @param expr The expression to be evaluated
@@ -679,10 +680,15 @@ declare namespace math {
      * @returns The result of the expression
      */
     evaluate(
-      expr: MathExpression | MathExpression[] | Matrix,
+      expr: MathExpression | Matrix,
       scope?: object
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): any
+    evaluate(
+      expr: MathExpression[],
+      scope?: object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): any[]
 
     /**
      * Retrieve help on a function or data type. Help files are retrieved
