@@ -4303,7 +4303,13 @@ declare namespace math {
      * Calculate the absolute value of a number. For matrices, the function
      * is evaluated element wise.
      */
-    abs(this: MathJsChain<unknown>): MathJsChain<unknown>
+    abs(this: MathJsChain<number>): MathJsChain<number>
+    abs(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    abs(this: MathJsChain<Fraction>): MathJsChain<Fraction>
+    abs(this: MathJsChain<Complex>): MathJsChain<Complex>
+    abs(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    abs(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+    abs(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
      * Add two values, x + y. For matrices, the function is evaluated
