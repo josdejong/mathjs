@@ -15,6 +15,7 @@ import {
   Unit,
   Fraction,
   MathArray,
+  Index,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -200,6 +201,9 @@ Chaining examples
   expectTypeOf(math.chain('123').fraction(2)).toMatchTypeOf<MathJsChain<Fraction>>()
   expectTypeOf(math.chain([12, 13, 14]).fraction()).toMatchTypeOf<MathJsChain<MathCollection>>()
   expectTypeOf(math.chain([12, 13, 14]).fraction(2)).toMatchTypeOf<MathJsChain<MathCollection>>()
+
+   // index
+  expectTypeOf(math.chain([12, 13, 14]).index()).toMatchTypeOf<MathJsChain<Index>>()
 }
 
 /*

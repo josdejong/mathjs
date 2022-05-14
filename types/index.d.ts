@@ -4052,7 +4052,7 @@ declare namespace math {
      * end for multiple dimensions. Matrix.get, Matrix.set, and math.subset
      * accept an Index as input.
      */
-    index(this: MathJsChain<unknown>): MathJsChain<unknown>
+    index(this: MathJsChain<any[]>): MathJsChain<Index>
 
     /**
      * Create a Matrix. The function creates a new math.type.Matrix object
