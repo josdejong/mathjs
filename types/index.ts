@@ -168,6 +168,11 @@ Chaining examples
   expectTypeOf(math.chain(math.bignumber(12)).done()).toMatchTypeOf<BigNumber>()
   expectTypeOf(math.chain(12).bignumber()).toMatchTypeOf<MathJsChain<BigNumber>>()
   expectTypeOf(math.chain([12, 13, 14]).bignumber()).toMatchTypeOf<MathJsChain<MathCollection>>()
+
+  // boolean
+  expectTypeOf(math.chain(math.boolean(true))).toMatchTypeOf<MathJsChain<boolean>>()
+  expectTypeOf(math.chain(true).boolean()).toMatchTypeOf<MathJsChain<boolean>>()
+  expectTypeOf(math.chain([12, 13, 14]).boolean()).toMatchTypeOf<MathJsChain<MathCollection>>()
 }
 
 /*

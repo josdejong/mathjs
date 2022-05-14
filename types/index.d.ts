@@ -4000,7 +4000,8 @@ declare namespace math {
      * of zero. Strings can be 'true' or 'false', or can contain a number.
      * When value is a matrix, all elements will be converted to boolean.
      */
-    boolean(this: MathJsChain<unknown>): MathJsChain<unknown>
+    boolean(this: MathJsChain<string | number | boolean | null>): MathJsChain<boolean>
+    boolean(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Create a complex value or convert a value to a complex value.
