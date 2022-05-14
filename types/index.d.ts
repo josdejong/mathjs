@@ -4196,7 +4196,7 @@ declare namespace math {
      * is decomposed in two matrices (L, U) and a row permutation vector p
      * where A[p,:] = L * U
      */
-    lup(this: MathJsChain<unknown>): MathJsChain<unknown>
+    lup(this: MathJsChain<Matrix | MathArray>): MathJsChain<LUDecomposition>
 
     /**
      * Solves the linear system A * x = b where A is an [n x n] matrix and b

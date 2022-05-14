@@ -18,6 +18,7 @@ import {
   Index,
   Matrix,
   EvalFunction,
+  LUDecomposition,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -267,6 +268,10 @@ Chaining examples
   expectTypeOf(math.chain([[1,2],[3,4]]).lsolve([1,2])).toMatchTypeOf<MathJsChain<MathArray>>()
   expectTypeOf(math.chain([[1,2],[3,4]]).lsolve([1,2]).done()).toMatchTypeOf<MathArray>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lsolve([1,2])).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // lup
+  expectTypeOf(math.chain([[1,2],[3,4]]).lup()).toMatchTypeOf<MathJsChain<LUDecomposition>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lup()).toMatchTypeOf<MathJsChain<LUDecomposition>>()
 }
 
 /*
