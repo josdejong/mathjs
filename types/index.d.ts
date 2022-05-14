@@ -878,7 +878,8 @@ declare namespace math {
      * @param b A column vector with the b values
      * @returns A column vector with the linear system solution (x)
      */
-    usolve(U: Matrix | MathArray, b: Matrix | MathArray): Matrix | MathArray
+    usolve(U: Matrix, b: Matrix | MathArray): Matrix
+    usolve(U: MathArray, b: Matrix | MathArray): MathArray
 
     /*************************************************************************
      * Arithmetic functions
