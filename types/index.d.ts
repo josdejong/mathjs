@@ -4078,7 +4078,7 @@ declare namespace math {
      * values in the matrix.
      * @param dataType Sparse Matrix data type
      */
-    sparse(this: MathJsChain<unknown>, dataType?: string): MathJsChain<unknown>
+    sparse(this: MathJsChain<MathCollection>, dataType?: string): MathJsChain<Matrix>
 
     /**
      * Split a unit in an array of units whose sum is equal to the original
