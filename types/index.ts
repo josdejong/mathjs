@@ -219,6 +219,10 @@ Chaining examples
    // sparse
   expectTypeOf(math.chain([12, 13, 14, 15]).sparse()).toMatchTypeOf<MathJsChain<Matrix>>()
   expectTypeOf(math.chain([12, 13, 14, 15]).sparse().done()).toMatchTypeOf<Matrix>()
+
+  // split unit
+  expectTypeOf(math.chain(math.unit('furlong')).splitUnit([])).toMatchTypeOf<MathJsChain<Unit[]>>()
+  expectTypeOf(math.chain(math.unit('furlong')).splitUnit([]).done()).toMatchTypeOf<Unit[]>()
 }
 
 /*

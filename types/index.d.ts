@@ -4085,7 +4085,7 @@ declare namespace math {
      * unit.
      * @param parts An array of strings or valueless units
      */
-    splitUnit(this: MathJsChain<unknown>, parts: Unit[]): MathJsChain<unknown>
+    splitUnit(this: MathJsChain<Unit>, parts: Unit[]): MathJsChain<Unit[]>
 
     /**
      * Create a string or convert any object into a string. Elements of
