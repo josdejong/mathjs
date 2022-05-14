@@ -4008,7 +4008,8 @@ declare namespace math {
      * @param im Argument specifying the imaginary part of the complex
      * number
      */
-    complex(this: MathJsChain<unknown>, im?: number): MathJsChain<unknown>
+    complex(this: MathJsChain<Complex | string | PolarCoordinates>, im?: number): MathJsChain<Complex>
+    complex(this: MathJsChain<MathCollection>, im?: number): MathJsChain<MathCollection>
 
     /**
      * Create a user-defined unit and register it with the Unit type.
