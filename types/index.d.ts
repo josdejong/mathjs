@@ -4138,17 +4138,18 @@ declare namespace math {
     help(this: MathJsChain<unknown>): MathJsChain<unknown>
 
     /**
+     * @param options Available options: nodes - a set of custome nodes
+     */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    parse(this: MathJsChain<MathExpression[]>, options?: any): MathJsChain<MathNode[]>
+
+    /**
      * Parse an expression. Returns a node tree, which can be evaluated by
      * invoking node.evaluate();
      * @param options Available options: nodes - a set of custome nodes
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    parse(this: MathJsChain<unknown>, options?: any): MathJsChain<unknown>
-    /**
-     * @param options Available options: nodes - a set of custome nodes
-     */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    parse(this: MathJsChain<unknown>, options?: any): MathJsChain<unknown>
+    parse(this: MathJsChain<MathExpression>, options?: any): MathJsChain<MathNode>
 
     /**
      * Create a parser. The function creates a new math.expression.Parser
