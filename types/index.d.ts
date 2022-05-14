@@ -4175,10 +4175,10 @@ declare namespace math {
      * by default. When false, output will not be simplified.
      */
     derivative(
-      this: MathJsChain<unknown>,
+      this: MathJsChain<MathNode | string>,
       variable: MathNode | string,
       options?: { simplify: boolean }
-    ): MathJsChain<unknown>
+    ): MathJsChain<MathNode>
 
     /**
      * Solves the linear equation system by forwards substitution. Matrix
