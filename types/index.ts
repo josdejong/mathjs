@@ -263,6 +263,10 @@ Chaining examples
   // rationalize
   expectTypeOf(math.chain('1.23').rationalize()).toMatchTypeOf<MathJsChain<MathNode>>()
   expectTypeOf(math.chain(math.parse('1.23')).rationalize()).toMatchTypeOf<MathJsChain<MathNode>>()
+
+  // simplify
+  expectTypeOf(math.chain('a + a + b').simplify()).toMatchTypeOf<MathJsChain<MathNode>>()
+  expectTypeOf(math.chain(math.parse('a + a + b')).simplify()).toMatchTypeOf<MathJsChain<MathNode>>()
 }
 
 /*

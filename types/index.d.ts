@@ -4260,8 +4260,9 @@ declare namespace math {
      * can be specified as an object, string, or function.
      * @param scope Scope to variables
      */
-    simplify(this: MathJsChain<unknown>, rules?: SimplifyRule[], scope?: object): MathJsChain<unknown>
+    simplify(this: MathJsChain<MathNode | string>, rules?: SimplifyRule[], scope?: object): MathJsChain<MathNode>
 
+    // TODO check that this should even be here...
     simplifyCore(expr: MathNode): MathNode
 
     /**
