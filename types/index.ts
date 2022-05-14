@@ -259,6 +259,10 @@ Chaining examples
   // qr
   expectTypeOf(math.chain([[1,2],[3,4]]).qr()).toMatchTypeOf<MathJsChain<QRDecomposition>>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).qr()).toMatchTypeOf<MathJsChain<QRDecomposition>>()
+
+  // rationalize
+  expectTypeOf(math.chain('1.23').rationalize()).toMatchTypeOf<MathJsChain<MathNode>>()
+  expectTypeOf(math.chain(math.parse('1.23')).rationalize()).toMatchTypeOf<MathJsChain<MathNode>>()
 }
 
 /*

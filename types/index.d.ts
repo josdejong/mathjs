@@ -4250,7 +4250,7 @@ declare namespace math {
      * @param detailed  optional True if return an object, false if return
      * expression node (default)
      */
-    rationalize(this: MathJsChain<unknown>, optional?: object | boolean, detailed?: boolean): MathJsChain<unknown>
+    rationalize(this: MathJsChain<MathNode | string>, optional?: object | boolean, detailed?: boolean): MathJsChain<MathNode>
 
     /**
      * Simplify an expression tree.
