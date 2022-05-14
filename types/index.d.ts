@@ -768,11 +768,18 @@ declare namespace math {
      * b
      */
     lusolve(
-      A: Matrix | MathArray | number,
+      A: Matrix,
       b: Matrix | MathArray,
       order?: number,
       threshold?: number
-    ): Matrix | MathArray
+    ): Matrix
+
+    lusolve(
+      A: MathArray,
+      b: Matrix | MathArray,
+      order?: number,
+      threshold?: number
+    ): MathArray
 
     /**
      * Calculate the Matrix QR decomposition. Matrix A is decomposed in two
