@@ -4414,20 +4414,20 @@ declare namespace math {
      * and scalar values.
      * @param y Denominator
      */
-    dotDivide(this: MathJsChain<unknown>, y: MathType): MathJsChain<unknown>
+    dotDivide(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Multiply two matrices element wise. The function accepts both
      * matrices and scalar values.
      * @param y Right hand value
      */
-    dotMultiply(this: MathJsChain<unknown>, y: MathType): MathJsChain<unknown>
+    dotMultiply(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Calculates the power of x to y element wise.
      * @param y The exponent
      */
-    dotPow(this: MathJsChain<unknown>, y: MathType): MathJsChain<unknown>
+    dotPow(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Calculate the exponent of a value. For matrices, the function is

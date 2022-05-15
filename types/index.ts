@@ -334,6 +334,18 @@ Chaining examples
   expectTypeOf(math.chain(math.unit('furlong')).divide(6)).toMatchTypeOf<MathJsChain<Unit>>()
   expectTypeOf(math.chain(2).divide(6)).toMatchTypeOf<MathJsChain<number>>()
   expectTypeOf(math.chain([1,2,3]).divide(6)).toMatchTypeOf<MathJsChain<MathType>>()
+
+  // dotDivide
+  expectTypeOf(math.chain(1).dotDivide(2)).toMatchTypeOf<MathJsChain<MathType>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).dotDivide(2)).toMatchTypeOf<MathJsChain<MathType>>()
+
+  // dotMultiply
+  expectTypeOf(math.chain(1).dotMultiply(2)).toMatchTypeOf<MathJsChain<MathType>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).dotMultiply(2)).toMatchTypeOf<MathJsChain<MathType>>()
+
+  // dotPow
+  expectTypeOf(math.chain(1).dotPow(2)).toMatchTypeOf<MathJsChain<MathType>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).dotPow(2)).toMatchTypeOf<MathJsChain<MathType>>()
 }
 
 /*
