@@ -4465,7 +4465,8 @@ declare namespace math {
      * matrix input, the hypotenusa is calculated for all values in the
      * matrix.
      */
-    hypot(this: MathJsChain<unknown>): MathJsChain<unknown>
+    hypot(this: MathJsChain<number[]>): MathJsChain<number>
+    hypot(this: MathJsChain<BigNumber[]>): MathJsChain<BigNumber>
 
     /**
      * Calculate the least common multiple for two or more values or arrays.
