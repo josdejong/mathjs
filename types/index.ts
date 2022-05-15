@@ -290,6 +290,9 @@ Chaining examples
   expectTypeOf(math.chain(1).add(2)).toMatchTypeOf<MathJsChain<MathType>>()
   expectTypeOf(math.chain([1]).add(2)).toMatchTypeOf<MathJsChain<MathArray>>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]]))).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // apply
+  expectTypeOf(math.chain([1,2,3]).apply(1, () => 1)).toMatchTypeOf<MathJsChain<number[]>>()
 }
 
 /*

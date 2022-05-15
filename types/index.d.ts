@@ -4329,11 +4329,11 @@ declare namespace math {
      * array or 1-d matrix as an input and return a number.
      * @returns The residual matrix with the function applied over some dimension.
      */
-    apply(
-      this: MathJsChain<unknown>,
+    apply<T extends MathCollection>(
+      this: MathJsChain<T>,
       dim: number,
       callback: (array: Array<MathType> | Matrix) => number
-    ): MathJsChain<unknown>
+    ): MathJsChain<T>
 
     /**
      * Calculate the cubic root of a value. For matrices, the function is
