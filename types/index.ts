@@ -168,221 +168,580 @@ Chaining examples
   const r = math.chain(-0.483).round([0, 1, 2]).floor().add(0.52).fix(1).done()
   assert.deepStrictEqual(r, [0.5, -0.4, -0.4])
 
-  expectTypeOf(math.chain('x + y').parse().resolve({ x: 1 }).done()).toMatchTypeOf<MathNode>()
-  expectTypeOf(math.chain('x + y').parse().resolve().done()).toMatchTypeOf<MathNode>()
+  expectTypeOf(
+    math.chain('x + y').parse().resolve({ x: 1 }).done()
+  ).toMatchTypeOf<MathNode>()
+  expectTypeOf(
+    math.chain('x + y').parse().resolve().done()
+  ).toMatchTypeOf<MathNode>()
 
   // bignum
-  expectTypeOf(math.chain(math.bignumber(12))).toMatchTypeOf<MathJsChain<BigNumber>>()
-  expectTypeOf(math.chain(12).bignumber()).toMatchTypeOf<MathJsChain<BigNumber>>()
-  expectTypeOf(math.chain([12, 13, 14]).bignumber()).toMatchTypeOf<MathJsChain<MathCollection>>()
+  expectTypeOf(math.chain(math.bignumber(12))).toMatchTypeOf<
+    MathJsChain<BigNumber>
+  >()
+  expectTypeOf(math.chain(12).bignumber()).toMatchTypeOf<
+    MathJsChain<BigNumber>
+  >()
+  expectTypeOf(math.chain([12, 13, 14]).bignumber()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
 
   // boolean
-  expectTypeOf(math.chain(math.boolean(true))).toMatchTypeOf<MathJsChain<boolean>>()
+  expectTypeOf(math.chain(math.boolean(true))).toMatchTypeOf<
+    MathJsChain<boolean>
+  >()
   expectTypeOf(math.chain(true).boolean()).toMatchTypeOf<MathJsChain<boolean>>()
-  expectTypeOf(math.chain([12, 13, 14]).boolean()).toMatchTypeOf<MathJsChain<MathCollection>>()
+  expectTypeOf(math.chain([12, 13, 14]).boolean()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
 
   // complex
-  expectTypeOf(math.chain(math.complex('123'))).toMatchTypeOf<MathJsChain<Complex>>()
-  expectTypeOf(math.chain('123').complex()).toMatchTypeOf<MathJsChain<Complex>>()
-  expectTypeOf(math.chain('123').complex(1)).toMatchTypeOf<MathJsChain<Complex>>()
-  expectTypeOf(math.chain([12, 13, 14]).complex()).toMatchTypeOf<MathJsChain<MathCollection>>()
-  expectTypeOf(math.chain([12, 13, 14]).complex(1)).toMatchTypeOf<MathJsChain<MathCollection>>()
+  expectTypeOf(math.chain(math.complex('123'))).toMatchTypeOf<
+    MathJsChain<Complex>
+  >()
+  expectTypeOf(math.chain('123').complex()).toMatchTypeOf<
+    MathJsChain<Complex>
+  >()
+  expectTypeOf(math.chain('123').complex(1)).toMatchTypeOf<
+    MathJsChain<Complex>
+  >()
+  expectTypeOf(math.chain([12, 13, 14]).complex()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
+  expectTypeOf(math.chain([12, 13, 14]).complex(1)).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
 
   // createUnit
-  expectTypeOf(math.chain(math.createUnit('furlong'))).toMatchTypeOf<MathJsChain<Unit>>()
-  expectTypeOf(math.chain(math.createUnit({
-    furlong: '1234'
-  }))).toMatchTypeOf<MathJsChain<Unit>>()
+  expectTypeOf(math.chain(math.createUnit('furlong'))).toMatchTypeOf<
+    MathJsChain<Unit>
+  >()
+  expectTypeOf(
+    math.chain(
+      math.createUnit({
+        furlong: '1234',
+      })
+    )
+  ).toMatchTypeOf<MathJsChain<Unit>>()
 
-   // fraction
-  expectTypeOf(math.chain(math.fraction('123'))).toMatchTypeOf<MathJsChain<Fraction>>()
-  expectTypeOf(math.chain('123').fraction()).toMatchTypeOf<MathJsChain<Fraction>>()
-  expectTypeOf(math.chain('123').fraction(2)).toMatchTypeOf<MathJsChain<Fraction>>()
-  expectTypeOf(math.chain([12, 13, 14]).fraction()).toMatchTypeOf<MathJsChain<MathCollection>>()
-  expectTypeOf(math.chain([12, 13, 14]).fraction(2)).toMatchTypeOf<MathJsChain<MathCollection>>()
+  // fraction
+  expectTypeOf(math.chain(math.fraction('123'))).toMatchTypeOf<
+    MathJsChain<Fraction>
+  >()
+  expectTypeOf(math.chain('123').fraction()).toMatchTypeOf<
+    MathJsChain<Fraction>
+  >()
+  expectTypeOf(math.chain('123').fraction(2)).toMatchTypeOf<
+    MathJsChain<Fraction>
+  >()
+  expectTypeOf(math.chain([12, 13, 14]).fraction()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
+  expectTypeOf(math.chain([12, 13, 14]).fraction(2)).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
 
-   // index
-  expectTypeOf(math.chain([12, 13, 14]).index()).toMatchTypeOf<MathJsChain<Index>>()
+  // index
+  expectTypeOf(math.chain([12, 13, 14]).index()).toMatchTypeOf<
+    MathJsChain<Index>
+  >()
 
-   // matrix
-  expectTypeOf(math.chain([12, 13, 14, 15]).matrix()).toMatchTypeOf<MathJsChain<Matrix>>()
+  // matrix
+  expectTypeOf(math.chain([12, 13, 14, 15]).matrix()).toMatchTypeOf<
+    MathJsChain<Matrix>
+  >()
 
-   // number
+  // number
   expectTypeOf(math.chain('12').number()).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain([12, 13, 14]).number()).toMatchTypeOf<MathJsChain<MathCollection>>()
+  expectTypeOf(math.chain([12, 13, 14]).number()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
 
-   // sparse
-  expectTypeOf(math.chain([12, 13, 14, 15]).sparse()).toMatchTypeOf<MathJsChain<Matrix>>()
+  // sparse
+  expectTypeOf(math.chain([12, 13, 14, 15]).sparse()).toMatchTypeOf<
+    MathJsChain<Matrix>
+  >()
 
   // split unit
-  expectTypeOf(math.chain(math.unit('furlong')).splitUnit([])).toMatchTypeOf<MathJsChain<Unit[]>>()
+  expectTypeOf(math.chain(math.unit('furlong')).splitUnit([])).toMatchTypeOf<
+    MathJsChain<Unit[]>
+  >()
 
   // string
   expectTypeOf(math.chain('test').string()).toMatchTypeOf<MathJsChain<string>>()
-  expectTypeOf(math.chain([1,2,3]).string()).toMatchTypeOf<MathJsChain<MathCollection>>()
+  expectTypeOf(math.chain([1, 2, 3]).string()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
 
   // unit
   expectTypeOf(math.chain(12).unit()).toMatchTypeOf<MathJsChain<Unit>>()
-  expectTypeOf(math.chain([1,2,3]).unit()).toMatchTypeOf<MathJsChain<Unit[]>>()
+  expectTypeOf(math.chain([1, 2, 3]).unit()).toMatchTypeOf<
+    MathJsChain<Unit[]>
+  >()
 
   // compile
-  expectTypeOf(math.chain('a + b').compile()).toMatchTypeOf<MathJsChain<EvalFunction>>()
+  expectTypeOf(math.chain('a + b').compile()).toMatchTypeOf<
+    MathJsChain<EvalFunction>
+  >()
 
   // evaluate
   expectTypeOf(math.chain('1 + 1').evaluate()).toMatchTypeOf<MathJsChain<any>>()
-  expectTypeOf(math.chain(['1 + 1', '2 + 2']).evaluate()).toMatchTypeOf<MathJsChain<any[]>>()
+  expectTypeOf(math.chain(['1 + 1', '2 + 2']).evaluate()).toMatchTypeOf<
+    MathJsChain<any[]>
+  >()
 
   // parse
-  expectTypeOf(math.chain('1 + 1').parse()).toMatchTypeOf<MathJsChain<MathNode>>()
-  expectTypeOf(math.chain(['1 + 1', '2 + 2']).parse()).toMatchTypeOf<MathJsChain<MathNode[]>>()
+  expectTypeOf(math.chain('1 + 1').parse()).toMatchTypeOf<
+    MathJsChain<MathNode>
+  >()
+  expectTypeOf(math.chain(['1 + 1', '2 + 2']).parse()).toMatchTypeOf<
+    MathJsChain<MathNode[]>
+  >()
 
   // parser
   expectTypeOf(math.chain('1 + 1').parser()).toMatchTypeOf<MathJsChain<any>>()
-  expectTypeOf(math.chain(['1 + 1', '2 + 2']).parser()).toMatchTypeOf<MathJsChain<any>>()
+  expectTypeOf(math.chain(['1 + 1', '2 + 2']).parser()).toMatchTypeOf<
+    MathJsChain<any>
+  >()
 
   // resolve
-  expectTypeOf(math.chain(math.parse('1 + 1')).resolve({})).toMatchTypeOf<MathJsChain<MathNode>>()
-  expectTypeOf(math.chain([math.parse('1 + 1'), math.parse('1 + 1')]).resolve({})).toMatchTypeOf<MathJsChain<MathNode[]>>()
+  expectTypeOf(math.chain(math.parse('1 + 1')).resolve({})).toMatchTypeOf<
+    MathJsChain<MathNode>
+  >()
+  expectTypeOf(
+    math.chain([math.parse('1 + 1'), math.parse('1 + 1')]).resolve({})
+  ).toMatchTypeOf<MathJsChain<MathNode[]>>()
 
   // derivative
-  expectTypeOf(math.chain(math.parse('x^2')).derivative('x')).toMatchTypeOf<MathJsChain<MathNode>>()
+  expectTypeOf(math.chain(math.parse('x^2')).derivative('x')).toMatchTypeOf<
+    MathJsChain<MathNode>
+  >()
 
   // lsolve
-  expectTypeOf(math.chain([[1,2],[3,4]]).lsolve([1,2])).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lsolve([1,2])).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(
+    math
+      .chain([
+        [1, 2],
+        [3, 4],
+      ])
+      .lsolve([1, 2])
+  ).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .lsolve([1, 2])
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // lup
-  expectTypeOf(math.chain([[1,2],[3,4]]).lup()).toMatchTypeOf<MathJsChain<LUDecomposition>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lup()).toMatchTypeOf<MathJsChain<LUDecomposition>>()
+  expectTypeOf(
+    math
+      .chain([
+        [1, 2],
+        [3, 4],
+      ])
+      .lup()
+  ).toMatchTypeOf<MathJsChain<LUDecomposition>>()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .lup()
+  ).toMatchTypeOf<MathJsChain<LUDecomposition>>()
 
   // lusolve
-  expectTypeOf(math.chain([[1,2],[3,4]]).lusolve([1,2])).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lusolve([1,2])).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(
+    math
+      .chain([
+        [1, 2],
+        [3, 4],
+      ])
+      .lusolve([1, 2])
+  ).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .lusolve([1, 2])
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // qr
-  expectTypeOf(math.chain([[1,2],[3,4]]).qr()).toMatchTypeOf<MathJsChain<QRDecomposition>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).qr()).toMatchTypeOf<MathJsChain<QRDecomposition>>()
+  expectTypeOf(
+    math
+      .chain([
+        [1, 2],
+        [3, 4],
+      ])
+      .qr()
+  ).toMatchTypeOf<MathJsChain<QRDecomposition>>()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .qr()
+  ).toMatchTypeOf<MathJsChain<QRDecomposition>>()
 
   // rationalize
-  expectTypeOf(math.chain('1.23').rationalize()).toMatchTypeOf<MathJsChain<MathNode>>()
-  expectTypeOf(math.chain(math.parse('1.23')).rationalize()).toMatchTypeOf<MathJsChain<MathNode>>()
+  expectTypeOf(math.chain('1.23').rationalize()).toMatchTypeOf<
+    MathJsChain<MathNode>
+  >()
+  expectTypeOf(math.chain(math.parse('1.23')).rationalize()).toMatchTypeOf<
+    MathJsChain<MathNode>
+  >()
 
   // simplify
-  expectTypeOf(math.chain('a + a + b').simplify()).toMatchTypeOf<MathJsChain<MathNode>>()
-  expectTypeOf(math.chain(math.parse('a + a + b')).simplify()).toMatchTypeOf<MathJsChain<MathNode>>()
+  expectTypeOf(math.chain('a + a + b').simplify()).toMatchTypeOf<
+    MathJsChain<MathNode>
+  >()
+  expectTypeOf(math.chain(math.parse('a + a + b')).simplify()).toMatchTypeOf<
+    MathJsChain<MathNode>
+  >()
 
   // slu
-  expectTypeOf(math.chain(math.sparse([[1,2],[3,4]])).slu(2, 0.5)).toMatchTypeOf<MathJsChain<SLUDecomposition>>()
+  expectTypeOf(
+    math
+      .chain(
+        math.sparse([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .slu(2, 0.5)
+  ).toMatchTypeOf<MathJsChain<SLUDecomposition>>()
 
   // usolve
-  expectTypeOf(math.chain([[1,2],[3,4]]).usolve([1,2])).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).usolve([1,2])).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(
+    math
+      .chain([
+        [1, 2],
+        [3, 4],
+      ])
+      .usolve([1, 2])
+  ).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .usolve([1, 2])
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // abs
   expectTypeOf(math.chain(1).abs()).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain(math.bignumber(1)).abs()).toMatchTypeOf<MathJsChain<BigNumber>>()
-  expectTypeOf(math.chain(math.fraction(1,2)).abs()).toMatchTypeOf<MathJsChain<Fraction>>()
-  expectTypeOf(math.chain(math.complex(1,2)).abs()).toMatchTypeOf<MathJsChain<Complex>>()
-  expectTypeOf(math.chain([1,2]).abs()).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).abs()).toMatchTypeOf<MathJsChain<Matrix>>()
-  expectTypeOf(math.chain(math.unit('furlong')).abs()).toMatchTypeOf<MathJsChain<Unit>>()
+  expectTypeOf(math.chain(math.bignumber(1)).abs()).toMatchTypeOf<
+    MathJsChain<BigNumber>
+  >()
+  expectTypeOf(math.chain(math.fraction(1, 2)).abs()).toMatchTypeOf<
+    MathJsChain<Fraction>
+  >()
+  expectTypeOf(math.chain(math.complex(1, 2)).abs()).toMatchTypeOf<
+    MathJsChain<Complex>
+  >()
+  expectTypeOf(math.chain([1, 2]).abs()).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .abs()
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(math.chain(math.unit('furlong')).abs()).toMatchTypeOf<
+    MathJsChain<Unit>
+  >()
 
   // add
   expectTypeOf(math.chain(1).add(2)).toMatchTypeOf<MathJsChain<MathType>>()
   expectTypeOf(math.chain([1]).add(2)).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]]))).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(
+    math.chain(
+      math.matrix([
+        [1, 2],
+        [3, 4],
+      ])
+    )
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // apply
-  expectTypeOf(math.chain([1,2,3]).apply(1, () => 1)).toMatchTypeOf<MathJsChain<number[]>>()
+  expectTypeOf(math.chain([1, 2, 3]).apply(1, () => 1)).toMatchTypeOf<
+    MathJsChain<number[]>
+  >()
 
   // cbrt
   expectTypeOf(math.chain(1).cbrt()).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain(math.bignumber(1)).cbrt()).toMatchTypeOf<MathJsChain<BigNumber>>()
-  expectTypeOf(math.chain(math.fraction(1,2)).cbrt()).toMatchTypeOf<MathJsChain<Fraction>>()
-  expectTypeOf(math.chain(math.complex(1,2)).cbrt()).toMatchTypeOf<MathJsChain<Complex>>()
-  expectTypeOf(math.chain([1,2]).cbrt()).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).cbrt()).toMatchTypeOf<MathJsChain<Matrix>>()
-  expectTypeOf(math.chain(math.unit('furlong')).cbrt()).toMatchTypeOf<MathJsChain<Unit>>()
+  expectTypeOf(math.chain(math.bignumber(1)).cbrt()).toMatchTypeOf<
+    MathJsChain<BigNumber>
+  >()
+  expectTypeOf(math.chain(math.fraction(1, 2)).cbrt()).toMatchTypeOf<
+    MathJsChain<Fraction>
+  >()
+  expectTypeOf(math.chain(math.complex(1, 2)).cbrt()).toMatchTypeOf<
+    MathJsChain<Complex>
+  >()
+  expectTypeOf(math.chain([1, 2]).cbrt()).toMatchTypeOf<
+    MathJsChain<MathArray>
+  >()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .cbrt()
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(math.chain(math.unit('furlong')).cbrt()).toMatchTypeOf<
+    MathJsChain<Unit>
+  >()
 
   // cbrt
-  expectTypeOf(math.chain(1).ceil()).toMatchTypeOf<MathJsChain<MathNumericType>>()
-  expectTypeOf(math.chain([1]).ceil()).toMatchTypeOf<MathJsChain<MathCollection>>()
+  expectTypeOf(math.chain(1).ceil()).toMatchTypeOf<
+    MathJsChain<MathNumericType>
+  >()
+  expectTypeOf(math.chain([1]).ceil()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
 
   // fix
-  expectTypeOf(math.chain(1).fix()).toMatchTypeOf<MathJsChain<MathNumericType>>()
-  expectTypeOf(math.chain([1]).fix()).toMatchTypeOf<MathJsChain<MathCollection>>()
+  expectTypeOf(math.chain(1).fix()).toMatchTypeOf<
+    MathJsChain<MathNumericType>
+  >()
+  expectTypeOf(math.chain([1]).fix()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
 
   // floor
-  expectTypeOf(math.chain(1).floor()).toMatchTypeOf<MathJsChain<MathNumericType>>()
-  expectTypeOf(math.chain([1]).floor()).toMatchTypeOf<MathJsChain<MathCollection>>()
+  expectTypeOf(math.chain(1).floor()).toMatchTypeOf<
+    MathJsChain<MathNumericType>
+  >()
+  expectTypeOf(math.chain([1]).floor()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
 
   // round
-  expectTypeOf(math.chain(1).round()).toMatchTypeOf<MathJsChain<MathNumericType>>()
-  expectTypeOf(math.chain([1]).round()).toMatchTypeOf<MathJsChain<MathCollection>>()
+  expectTypeOf(math.chain(1).round()).toMatchTypeOf<
+    MathJsChain<MathNumericType>
+  >()
+  expectTypeOf(math.chain([1]).round()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
 
   // cube
   expectTypeOf(math.chain(1).cube()).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain(math.bignumber(1)).cube()).toMatchTypeOf<MathJsChain<BigNumber>>()
-  expectTypeOf(math.chain(math.fraction(1,2)).cube()).toMatchTypeOf<MathJsChain<Fraction>>()
-  expectTypeOf(math.chain(math.complex(1,2)).cube()).toMatchTypeOf<MathJsChain<Complex>>()
-  expectTypeOf(math.chain([1,2]).cube()).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).cube()).toMatchTypeOf<MathJsChain<Matrix>>()
-  expectTypeOf(math.chain(math.unit('furlong')).cube()).toMatchTypeOf<MathJsChain<Unit>>()
+  expectTypeOf(math.chain(math.bignumber(1)).cube()).toMatchTypeOf<
+    MathJsChain<BigNumber>
+  >()
+  expectTypeOf(math.chain(math.fraction(1, 2)).cube()).toMatchTypeOf<
+    MathJsChain<Fraction>
+  >()
+  expectTypeOf(math.chain(math.complex(1, 2)).cube()).toMatchTypeOf<
+    MathJsChain<Complex>
+  >()
+  expectTypeOf(math.chain([1, 2]).cube()).toMatchTypeOf<
+    MathJsChain<MathArray>
+  >()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .cube()
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(math.chain(math.unit('furlong')).cube()).toMatchTypeOf<
+    MathJsChain<Unit>
+  >()
 
   // divide
-  expectTypeOf(math.chain(math.unit('furlong')).divide(math.unit('furlong'))).toMatchTypeOf<MathJsChain<number | Unit>>()
-  expectTypeOf(math.chain(math.unit('furlong')).divide(6)).toMatchTypeOf<MathJsChain<Unit>>()
+  expectTypeOf(
+    math.chain(math.unit('furlong')).divide(math.unit('furlong'))
+  ).toMatchTypeOf<MathJsChain<number | Unit>>()
+  expectTypeOf(math.chain(math.unit('furlong')).divide(6)).toMatchTypeOf<
+    MathJsChain<Unit>
+  >()
   expectTypeOf(math.chain(2).divide(6)).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain([1,2,3]).divide(6)).toMatchTypeOf<MathJsChain<MathType>>()
+  expectTypeOf(math.chain([1, 2, 3]).divide(6)).toMatchTypeOf<
+    MathJsChain<MathType>
+  >()
 
   // dotDivide
-  expectTypeOf(math.chain(1).dotDivide(2)).toMatchTypeOf<MathJsChain<MathType>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).dotDivide(2)).toMatchTypeOf<MathJsChain<MathType>>()
+  expectTypeOf(math.chain(1).dotDivide(2)).toMatchTypeOf<
+    MathJsChain<MathType>
+  >()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .dotDivide(2)
+  ).toMatchTypeOf<MathJsChain<MathType>>()
 
   // dotMultiply
-  expectTypeOf(math.chain(1).dotMultiply(2)).toMatchTypeOf<MathJsChain<MathType>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).dotMultiply(2)).toMatchTypeOf<MathJsChain<MathType>>()
+  expectTypeOf(math.chain(1).dotMultiply(2)).toMatchTypeOf<
+    MathJsChain<MathType>
+  >()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .dotMultiply(2)
+  ).toMatchTypeOf<MathJsChain<MathType>>()
 
   // dotPow
   expectTypeOf(math.chain(1).dotPow(2)).toMatchTypeOf<MathJsChain<MathType>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).dotPow(2)).toMatchTypeOf<MathJsChain<MathType>>()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .dotPow(2)
+  ).toMatchTypeOf<MathJsChain<MathType>>()
 
   // exp
   expectTypeOf(math.chain(1).exp()).toMatchTypeOf<MathJsChain<MathType>>()
-  expectTypeOf(math.chain([1,2]).exp()).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).exp()).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(math.chain([1, 2]).exp()).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .exp()
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // expm1
   expectTypeOf(math.chain(1).expm1()).toMatchTypeOf<MathJsChain<MathType>>()
-  expectTypeOf(math.chain([1,2]).expm1()).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).expm1()).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(math.chain([1, 2]).expm1()).toMatchTypeOf<
+    MathJsChain<MathArray>
+  >()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .expm1()
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // gcd
-  expectTypeOf(math.chain([1,2]).gcd()).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain([[1],[2]]).gcd()).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain([math.bignumber(1),math.bignumber(1)]).gcd()).toMatchTypeOf<MathJsChain<BigNumber>>()
-  expectTypeOf(math.chain([math.complex(1, 2),math.complex(1, 2)]).gcd()).toMatchTypeOf<MathJsChain<Complex>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).expm1()).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(math.chain([1, 2]).gcd()).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain([[1], [2]]).gcd()).toMatchTypeOf<
+    MathJsChain<MathArray>
+  >()
+  expectTypeOf(
+    math.chain([math.bignumber(1), math.bignumber(1)]).gcd()
+  ).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(
+    math.chain([math.complex(1, 2), math.complex(1, 2)]).gcd()
+  ).toMatchTypeOf<MathJsChain<Complex>>()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .expm1()
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // hypot
-  expectTypeOf(math.chain([1,2]).hypot()).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain([math.bignumber(1),math.bignumber(1)]).hypot()).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain([1, 2]).hypot()).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(
+    math.chain([math.bignumber(1), math.bignumber(1)]).hypot()
+  ).toMatchTypeOf<MathJsChain<BigNumber>>()
 
   // lcm
   expectTypeOf(math.chain(1).lcm(2)).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain(math.bignumber(1)).lcm(math.bignumber(2))).toMatchTypeOf<MathJsChain<BigNumber>>()
-  expectTypeOf(math.chain([1,2]).lcm([3,4])).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lcm(math.matrix([[1,2],[3,4]]))).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(
+    math.chain(math.bignumber(1)).lcm(math.bignumber(2))
+  ).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain([1, 2]).lcm([3, 4])).toMatchTypeOf<
+    MathJsChain<MathArray>
+  >()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .lcm(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // log
   expectTypeOf(math.chain(1).log(2)).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain(math.bignumber(1)).log(math.bignumber(2))).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(
+    math.chain(math.bignumber(1)).log(math.bignumber(2))
+  ).toMatchTypeOf<MathJsChain<BigNumber>>()
 
   // log10
   expectTypeOf(math.chain(1).log10(2)).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain(math.bignumber(1)).log10(math.bignumber(2))).toMatchTypeOf<MathJsChain<BigNumber>>()
-  expectTypeOf(math.chain([1,2]).log10([3,4])).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).log10(math.matrix([[1,2],[3,4]]))).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(
+    math.chain(math.bignumber(1)).log10(math.bignumber(2))
+  ).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain([1, 2]).log10([3, 4])).toMatchTypeOf<
+    MathJsChain<MathArray>
+  >()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .log10(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // TODO complete the rest of these...
 }
