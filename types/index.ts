@@ -22,6 +22,7 @@ import {
   QRDecomposition,
   SLUDecomposition,
   MathType,
+  MathNumericType,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -302,6 +303,10 @@ Chaining examples
   expectTypeOf(math.chain([1,2]).cbrt()).toMatchTypeOf<MathJsChain<MathArray>>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).cbrt()).toMatchTypeOf<MathJsChain<Matrix>>()
   expectTypeOf(math.chain(math.unit('furlong')).cbrt()).toMatchTypeOf<MathJsChain<Unit>>()
+
+  // cbrt
+  expectTypeOf(math.chain(1).ceil()).toMatchTypeOf<MathJsChain<MathNumericType>>()
+  expectTypeOf(math.chain([1]).ceil()).toMatchTypeOf<MathJsChain<MathCollection>>()
 }
 
 /*

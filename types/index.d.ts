@@ -4358,7 +4358,8 @@ declare namespace math {
      * function is evaluated element wise.
      * @param n Number of decimals Default value: 0.
      */
-    ceil(this: MathJsChain<unknown>, n?: number | BigNumber | MathCollection): MathJsChain<unknown>
+    ceil(this: MathJsChain<MathNumericType>, n?: number | BigNumber | MathCollection): MathJsChain<MathNumericType>
+    ceil(this: MathJsChain<MathCollection>, n?: number | BigNumber | MathCollection): MathJsChain<MathCollection>
 
     /**
      * Round a value towards zero. For matrices, the function is evaluated
