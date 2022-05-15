@@ -367,6 +367,12 @@ Chaining examples
   // hypot
   expectTypeOf(math.chain([1,2]).hypot()).toMatchTypeOf<MathJsChain<number>>()
   expectTypeOf(math.chain([math.bignumber(1),math.bignumber(1)]).hypot()).toMatchTypeOf<MathJsChain<BigNumber>>()
+
+  // lcm
+  expectTypeOf(math.chain(1).lcm(2)).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain(math.bignumber(1)).lcm(math.bignumber(2))).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain([1,2]).lcm([3,4])).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lcm(math.matrix([[1,2],[3,4]]))).toMatchTypeOf<MathJsChain<Matrix>>()
 }
 
 /*

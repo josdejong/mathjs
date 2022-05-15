@@ -4474,7 +4474,10 @@ declare namespace math {
      * the function is evaluated element wise.
      * @param b An integer number
      */
-    lcm(this: MathJsChain<unknown>, b: number | BigNumber | MathCollection): MathJsChain<unknown>
+    lcm(this: MathJsChain<number>, b: number): MathJsChain<number>
+    lcm(this: MathJsChain<BigNumber>, b: BigNumber): MathJsChain<BigNumber>
+    lcm(this: MathJsChain<MathArray>, b: MathArray): MathJsChain<MathArray>
+    lcm(this: MathJsChain<Matrix>, b: Matrix): MathJsChain<Matrix>
 
     /**
      * Calculate the logarithm of a value. For matrices, the function is
