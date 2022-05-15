@@ -4366,21 +4366,24 @@ declare namespace math {
      * element wise.
      * @param n Number of decimals Default value: 0.
      */
-    fix(this: MathJsChain<unknown>, n?: number | BigNumber | MathCollection): MathJsChain<unknown>
+    fix(this: MathJsChain<MathNumericType>, n?: number | BigNumber | MathCollection): MathJsChain<MathNumericType>
+    fix(this: MathJsChain<MathCollection>, n?: number | BigNumber | MathCollection): MathJsChain<MathCollection>
 
     /**
      * Round a value towards minus infinity. For matrices, the function is
      * evaluated element wise.
      * @param n Number of decimals Default value: 0.
      */
-    floor(this: MathJsChain<unknown>, n?: number | BigNumber | MathCollection): MathJsChain<unknown>
+    floor(this: MathJsChain<MathNumericType>, n?: number | BigNumber | MathCollection): MathJsChain<MathNumericType>
+    floor(this: MathJsChain<MathCollection>, n?: number | BigNumber | MathCollection): MathJsChain<MathCollection>
 
     /**
      * Round a value towards the nearest integer. For matrices, the function
      * is evaluated element wise.
      * @param n Number of decimals Default value: 0.
      */
-    round(this: MathJsChain<unknown>, n?: number | BigNumber | MathCollection): MathJsChain<unknown>
+    round(this: MathJsChain<MathNumericType>, n?: number | BigNumber | MathCollection): MathJsChain<MathNumericType>
+    round(this: MathJsChain<MathCollection>, n?: number | BigNumber | MathCollection): MathJsChain<MathCollection>
 
     // End of rounding group
 

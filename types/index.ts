@@ -307,6 +307,18 @@ Chaining examples
   // cbrt
   expectTypeOf(math.chain(1).ceil()).toMatchTypeOf<MathJsChain<MathNumericType>>()
   expectTypeOf(math.chain([1]).ceil()).toMatchTypeOf<MathJsChain<MathCollection>>()
+
+  // fix
+  expectTypeOf(math.chain(1).fix()).toMatchTypeOf<MathJsChain<MathNumericType>>()
+  expectTypeOf(math.chain([1]).fix()).toMatchTypeOf<MathJsChain<MathCollection>>()
+
+  // floor
+  expectTypeOf(math.chain(1).floor()).toMatchTypeOf<MathJsChain<MathNumericType>>()
+  expectTypeOf(math.chain([1]).floor()).toMatchTypeOf<MathJsChain<MathCollection>>()
+
+  // round
+  expectTypeOf(math.chain(1).round()).toMatchTypeOf<MathJsChain<MathNumericType>>()
+  expectTypeOf(math.chain([1]).round()).toMatchTypeOf<MathJsChain<MathCollection>>()
 }
 
 /*
