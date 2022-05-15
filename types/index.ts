@@ -80,6 +80,8 @@ Basic usage examples
   math.chain(m2by3).variance(0, 'biased')
   math.chain(m2by3).variance(1, 'uncorrected').variance('unbiased')
 
+  math.variance(math.variance(m2by3, 'uncorrected'))
+
   // expressions
   math.evaluate('1.2 * (2 + 4.5)')
 
@@ -166,6 +168,7 @@ Chaining examples
   )
 
   const r = math.chain(-0.483).round([0, 1, 2]).floor().add(0.52).fix(1).done()
+
   assert.deepStrictEqual(r, [0.5, -0.4, -0.4])
 
   expectTypeOf(
@@ -720,11 +723,11 @@ Chaining examples
   ).toMatchTypeOf<MathJsChain<BigNumber>>()
 
   // log10
-  expectTypeOf(math.chain(1).log10(2)).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain(1).log10()).toMatchTypeOf<MathJsChain<number>>()
   expectTypeOf(
-    math.chain(math.bignumber(1)).log10(math.bignumber(2))
+    math.chain(math.bignumber(1)).log10()
   ).toMatchTypeOf<MathJsChain<BigNumber>>()
-  expectTypeOf(math.chain([1, 2]).log10([3, 4])).toMatchTypeOf<
+  expectTypeOf(math.chain([1, 2]).log10()).toMatchTypeOf<
     MathJsChain<MathArray>
   >()
   expectTypeOf(
@@ -735,12 +738,7 @@ Chaining examples
           [3, 4],
         ])
       )
-      .log10(
-        math.matrix([
-          [1, 2],
-          [3, 4],
-        ])
-      )
+      .log10()
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // TODO complete the rest of these...

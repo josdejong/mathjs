@@ -2615,6 +2615,7 @@ declare namespace math {
      * @returns The variance
      */
     variance(...args: Array<number | BigNumber | Fraction>): number
+
     /**
      * Compute the variance of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the variance over all elements
@@ -4392,7 +4393,8 @@ declare namespace math {
      */
     add(this: MathJsChain<MathArray>, y: MathType): MathJsChain<MathArray>
     add(this: MathJsChain<Matrix>, y: MathType): MathJsChain<Matrix>
-    add(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
+    add(this: MathJsChain<Unit>, y: MathType): MathJsChain<Unit>
+    add(this: MathJsChain<MathNumericType>, y: MathType): MathJsChain<MathNumericType>
 
     /**
      * Apply a function that maps an array to a scalar along a given axis of the
@@ -5893,11 +5895,7 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns The variance
      */
-    variance(
-      this: MathJsChain<(number | BigNumber | Fraction)[]>,
-      dim?: number,
-      normalization?: 'unbiased' | 'uncorrected' | 'biased'
-    ): MathJsChain<number>
+    variance(this: MathJsChain<Array<Array<number | BigNumber | Fraction>>>): MathJsChain<number>
 
     /**
      * Compute the variance of a matrix or a list with values. In case of a
@@ -5915,10 +5913,16 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns The variance
      */
+     variance(
+      this: MathJsChain<MathCollection>,
+      dimension?: number,
+      normalization?: 'unbiased' | 'uncorrected' | 'biased'
+    ): MathJsChain<number[]>
+
     variance(
       this: MathJsChain<MathCollection>,
       normalization: 'unbiased' | 'uncorrected' | 'biased'
-    ): MathJsChain<number[]>
+    ): MathJsChain<number>
 
     /*************************************************************************
      * String functions
