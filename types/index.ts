@@ -288,8 +288,10 @@ Chaining examples
   >()
 
   // evaluate
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expectTypeOf(math.chain('1 + 1').evaluate()).toMatchTypeOf<MathJsChain<any>>()
   expectTypeOf(math.chain(['1 + 1', '2 + 2']).evaluate()).toMatchTypeOf<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     MathJsChain<any[]>
   >()
 
@@ -302,8 +304,10 @@ Chaining examples
   >()
 
   // parser
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expectTypeOf(math.chain('1 + 1').parser()).toMatchTypeOf<MathJsChain<any>>()
   expectTypeOf(math.chain(['1 + 1', '2 + 2']).parser()).toMatchTypeOf<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     MathJsChain<any>
   >()
 
@@ -724,9 +728,9 @@ Chaining examples
 
   // log10
   expectTypeOf(math.chain(1).log10()).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(
-    math.chain(math.bignumber(1)).log10()
-  ).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain(math.bignumber(1)).log10()).toMatchTypeOf<
+    MathJsChain<BigNumber>
+  >()
   expectTypeOf(math.chain([1, 2]).log10()).toMatchTypeOf<
     MathJsChain<MathArray>
   >()
@@ -1808,6 +1812,7 @@ Factory Test
     expectTypeOf(x).toMatchTypeOf<math.SymbolNode>()
   }
   if (math.isChain(x)) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expectTypeOf(x).toMatchTypeOf<math.MathJsChain<any>>()
   }
 }

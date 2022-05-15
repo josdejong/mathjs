@@ -4093,6 +4093,7 @@ declare namespace math {
      * end for multiple dimensions. Matrix.get, Matrix.set, and math.subset
      * accept an Index as input.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     index(this: MathJsChain<any[]>): MathJsChain<Index>
 
     /**
@@ -4184,10 +4185,12 @@ declare namespace math {
     evaluate(
       this: MathJsChain<MathExpression | Matrix>,
       scope?: object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): MathJsChain<any>
     evaluate(
       this: MathJsChain<MathExpression[]>,
       scope?: object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): MathJsChain<any[]>
 
     /**
@@ -4199,9 +4202,9 @@ declare namespace math {
     /**
      * @param options Available options: nodes - a set of custome nodes
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parse(
       this: MathJsChain<MathExpression[]>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       options?: any
     ): MathJsChain<MathNode[]>
 
@@ -4210,9 +4213,9 @@ declare namespace math {
      * invoking node.evaluate();
      * @param options Available options: nodes - a set of custome nodes
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parse(
       this: MathJsChain<MathExpression>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       options?: any
     ): MathJsChain<MathNode>
 
@@ -4221,19 +4224,21 @@ declare namespace math {
      * Create a parser. The function creates a new math.expression.Parser
      * object.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parser(this: MathJsChain<string | string[]>): MathJsChain<any>
 
     /**
      *  Replaces variable nodes with their scoped values
      * @param scope Scope to read/write variables
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolve(
       this: MathJsChain<MathNode>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       scope?: Record<string, any>
     ): MathJsChain<MathNode>
     resolve(
       this: MathJsChain<MathNode[]>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       scope?: Record<string, any>
     ): MathJsChain<MathNode[]>
 
@@ -4394,7 +4399,10 @@ declare namespace math {
     add(this: MathJsChain<MathArray>, y: MathType): MathJsChain<MathArray>
     add(this: MathJsChain<Matrix>, y: MathType): MathJsChain<Matrix>
     add(this: MathJsChain<Unit>, y: MathType): MathJsChain<Unit>
-    add(this: MathJsChain<MathNumericType>, y: MathType): MathJsChain<MathNumericType>
+    add(
+      this: MathJsChain<MathNumericType>,
+      y: MathType
+    ): MathJsChain<MathNumericType>
 
     /**
      * Apply a function that maps an array to a scalar along a given axis of the
@@ -5228,7 +5236,6 @@ declare namespace math {
       k: number,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       compare?: 'asc' | 'desc' | ((a: any, b: any) => number)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): MathJsChain<MathCollection>
 
     /**
@@ -5748,7 +5755,7 @@ declare namespace math {
      * values. The median absolute deviation is defined as the median of the
      * absolute deviations from the median.
      */
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mad(this: MathJsChain<MathCollection>): MathJsChain<any>
 
     /**
@@ -5758,7 +5765,10 @@ declare namespace math {
      * dimension will be calculated. Parameter dim is zero-based.
      * @param dim The maximum over the selected dimension
      */
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     max(this: MathJsChain<MathType[]>, dim?: number): MathJsChain<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     max(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
@@ -5768,7 +5778,9 @@ declare namespace math {
      * dimension will be calculated. Parameter dim is zero-based.
      * @param dim The mean over the selected dimension
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mean(this: MathJsChain<MathType[]>, dim?: number): MathJsChain<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mean(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
@@ -5779,7 +5791,9 @@ declare namespace math {
      * dimensional) array or matrix, the median of all elements will be
      * calculated.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     median(this: MathJsChain<MathType[]>, dim?: number): MathJsChain<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     median(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
@@ -5789,7 +5803,9 @@ declare namespace math {
      * dimension will be calculated. Parameter dim is zero-based.
      * @param dim The minimum over the selected dimension
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     min(this: MathJsChain<MathType[]>): MathJsChain<MathType[]>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     min(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
@@ -5805,6 +5821,7 @@ declare namespace math {
      * (multi dimensional) array or matrix, the sum of all elements will be
      * calculated.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     prod(this: MathJsChain<MathType[]>): MathJsChain<any>
 
     /**
@@ -5895,7 +5912,9 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns The variance
      */
-    variance(this: MathJsChain<Array<Array<number | BigNumber | Fraction>>>): MathJsChain<number>
+    variance(
+      this: MathJsChain<Array<Array<number | BigNumber | Fraction>>>
+    ): MathJsChain<number>
 
     /**
      * Compute the variance of a matrix or a list with values. In case of a
@@ -5913,7 +5932,7 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns The variance
      */
-     variance(
+    variance(
       this: MathJsChain<MathCollection>,
       dimension?: number,
       normalization?: 'unbiased' | 'uncorrected' | 'biased'
@@ -5940,6 +5959,7 @@ declare namespace math {
      * @see http://mathjs.org/docs/reference/functions/format.html
      */
     format(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this: MathJsChain<any>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       value: any,
@@ -6263,6 +6283,7 @@ declare namespace math {
      * Clone an object.
      */
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clone(this: MathJsChain<any>): MathJsChain<any>
 
     /**
@@ -6300,6 +6321,7 @@ declare namespace math {
      * element-wise in case of Array or Matrix input.
      */
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     isNumeric(this: MathJsChain<any>): MathJsChain<boolean>
 
     /**
@@ -6338,6 +6360,7 @@ declare namespace math {
      * Determine the type of a variable.
      */
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     typeOf(this: MathJsChain<any>): MathJsChain<string>
   }
 
