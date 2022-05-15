@@ -4342,7 +4342,13 @@ declare namespace math {
      * a number or complex number. If true, all complex roots are returned,
      * if false (default) the principal root is returned.
      */
-    cbrt(this: MathJsChain<unknown>, allRoots?: boolean): MathJsChain<unknown>
+    cbrt(this: MathJsChain<number>, allRoots?: boolean): MathJsChain<number>
+    cbrt(this: MathJsChain<BigNumber>, allRoots?: boolean): MathJsChain<BigNumber>
+    cbrt(this: MathJsChain<Fraction>, allRoots?: boolean): MathJsChain<Fraction>
+    cbrt(this: MathJsChain<Complex>, allRoots?: boolean): MathJsChain<Complex>
+    cbrt(this: MathJsChain<MathArray>, allRoots?: boolean): MathJsChain<MathArray>
+    cbrt(this: MathJsChain<Matrix>, allRoots?: boolean): MathJsChain<Matrix>
+    cbrt(this: MathJsChain<Unit>, allRoots?: boolean): MathJsChain<Unit>
 
     // Rounding functions grouped for similarity
 

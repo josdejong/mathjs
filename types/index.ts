@@ -293,6 +293,15 @@ Chaining examples
 
   // apply
   expectTypeOf(math.chain([1,2,3]).apply(1, () => 1)).toMatchTypeOf<MathJsChain<number[]>>()
+
+  // cbrt
+  expectTypeOf(math.chain(1).cbrt()).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain(math.bignumber(1)).cbrt()).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain(math.fraction(1,2)).cbrt()).toMatchTypeOf<MathJsChain<Fraction>>()
+  expectTypeOf(math.chain(math.complex(1,2)).cbrt()).toMatchTypeOf<MathJsChain<Complex>>()
+  expectTypeOf(math.chain([1,2]).cbrt()).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).cbrt()).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(math.chain(math.unit('furlong')).cbrt()).toMatchTypeOf<MathJsChain<Unit>>()
 }
 
 /*
