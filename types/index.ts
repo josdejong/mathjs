@@ -373,6 +373,18 @@ Chaining examples
   expectTypeOf(math.chain(math.bignumber(1)).lcm(math.bignumber(2))).toMatchTypeOf<MathJsChain<BigNumber>>()
   expectTypeOf(math.chain([1,2]).lcm([3,4])).toMatchTypeOf<MathJsChain<MathArray>>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).lcm(math.matrix([[1,2],[3,4]]))).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // log
+  expectTypeOf(math.chain(1).log(2)).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain(math.bignumber(1)).log(math.bignumber(2))).toMatchTypeOf<MathJsChain<BigNumber>>()
+
+  // log10
+  expectTypeOf(math.chain(1).log10(2)).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain(math.bignumber(1)).log10(math.bignumber(2))).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain([1,2]).log10([3,4])).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).log10(math.matrix([[1,2],[3,4]]))).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // TODO complete the rest of these...
 }
 
 /*
