@@ -346,6 +346,17 @@ Chaining examples
   // dotPow
   expectTypeOf(math.chain(1).dotPow(2)).toMatchTypeOf<MathJsChain<MathType>>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).dotPow(2)).toMatchTypeOf<MathJsChain<MathType>>()
+
+  // exp
+  expectTypeOf(math.chain(1).exp()).toMatchTypeOf<MathJsChain<MathType>>()
+  expectTypeOf(math.chain([1,2]).exp()).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).exp()).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // expm1
+  expectTypeOf(math.chain(1).expm1()).toMatchTypeOf<MathJsChain<MathType>>()
+  expectTypeOf(math.chain([1,2]).expm1()).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).expm1()).toMatchTypeOf<MathJsChain<Matrix>>()
+
 }
 
 /*

@@ -4433,13 +4433,21 @@ declare namespace math {
      * Calculate the exponent of a value. For matrices, the function is
      * evaluated element wise.
      */
-    exp(this: MathJsChain<unknown>): MathJsChain<unknown>
+    exp(this: MathJsChain<number>): MathJsChain<number>
+    exp(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    exp(this: MathJsChain<Complex>): MathJsChain<Complex>
+    exp(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    exp(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the value of subtracting 1 from the exponential value. For
      * matrices, the function is evaluated element wise.
      */
-    expm1(this: MathJsChain<unknown>): MathJsChain<unknown>
+    expm1(this: MathJsChain<number>): MathJsChain<number>
+    expm1(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    expm1(this: MathJsChain<Complex>): MathJsChain<Complex>
+    expm1(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    expm1(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the greatest common divisor for two or more values or
