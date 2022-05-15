@@ -357,6 +357,12 @@ Chaining examples
   expectTypeOf(math.chain([1,2]).expm1()).toMatchTypeOf<MathJsChain<MathArray>>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).expm1()).toMatchTypeOf<MathJsChain<Matrix>>()
 
+  // gcd
+  expectTypeOf(math.chain([1,2]).gcd()).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain([[1],[2]]).gcd()).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain([math.bignumber(1),math.bignumber(1)]).gcd()).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain([math.complex(1, 2),math.complex(1, 2)]).gcd()).toMatchTypeOf<MathJsChain<Complex>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).expm1()).toMatchTypeOf<MathJsChain<Matrix>>()
 }
 
 /*
