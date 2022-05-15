@@ -4391,7 +4391,13 @@ declare namespace math {
      * Compute the cube of a value, x * x * x. For matrices, the function is
      * evaluated element wise.
      */
-    cube(this: MathJsChain<unknown>): MathJsChain<unknown>
+    cube(this: MathJsChain<number>): MathJsChain<number>
+    cube(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    cube(this: MathJsChain<Fraction>): MathJsChain<Fraction>
+    cube(this: MathJsChain<Complex>): MathJsChain<Complex>
+    cube(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    cube(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+    cube(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
      * Divide two values, x / y. To divide matrices, x is multiplied with

@@ -319,6 +319,15 @@ Chaining examples
   // round
   expectTypeOf(math.chain(1).round()).toMatchTypeOf<MathJsChain<MathNumericType>>()
   expectTypeOf(math.chain([1]).round()).toMatchTypeOf<MathJsChain<MathCollection>>()
+
+  // cube
+  expectTypeOf(math.chain(1).cube()).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain(math.bignumber(1)).cube()).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(math.chain(math.fraction(1,2)).cube()).toMatchTypeOf<MathJsChain<Fraction>>()
+  expectTypeOf(math.chain(math.complex(1,2)).cube()).toMatchTypeOf<MathJsChain<Complex>>()
+  expectTypeOf(math.chain([1,2]).cube()).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).cube()).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(math.chain(math.unit('furlong')).cube()).toMatchTypeOf<MathJsChain<Unit>>()
 }
 
 /*
