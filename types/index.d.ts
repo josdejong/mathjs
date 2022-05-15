@@ -4404,7 +4404,10 @@ declare namespace math {
      * the inverse of y: x * inv(y).
      * @param y Denominator
      */
-    divide(this: MathJsChain<unknown>, y: MathType): MathJsChain<unknown>
+    divide(this: MathJsChain<Unit>, y: Unit): MathJsChain<Unit | number>
+    divide(this: MathJsChain<Unit>, y: number): MathJsChain<Unit>
+    divide(this: MathJsChain<number>, y: number): MathJsChain<number>
+    divide(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Divide two matrices element wise. The function accepts both matrices

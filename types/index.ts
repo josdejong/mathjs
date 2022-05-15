@@ -328,6 +328,12 @@ Chaining examples
   expectTypeOf(math.chain([1,2]).cube()).toMatchTypeOf<MathJsChain<MathArray>>()
   expectTypeOf(math.chain(math.matrix([[1,2],[3,4]])).cube()).toMatchTypeOf<MathJsChain<Matrix>>()
   expectTypeOf(math.chain(math.unit('furlong')).cube()).toMatchTypeOf<MathJsChain<Unit>>()
+
+  // divide
+  expectTypeOf(math.chain(math.unit('furlong')).divide(math.unit('furlong'))).toMatchTypeOf<MathJsChain<number | Unit>>()
+  expectTypeOf(math.chain(math.unit('furlong')).divide(6)).toMatchTypeOf<MathJsChain<Unit>>()
+  expectTypeOf(math.chain(2).divide(6)).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain([1,2,3]).divide(6)).toMatchTypeOf<MathJsChain<MathType>>()
 }
 
 /*
