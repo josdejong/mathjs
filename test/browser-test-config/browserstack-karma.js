@@ -32,35 +32,35 @@ module.exports = function (config) {
         base: 'BrowserStack',
         browser: 'Android Browser',
         real_mobile: true,
-        device: 'Samsung Galaxy S10',
+        device: 'Samsung Galaxy S22',
         os: 'android',
-        os_version: '9.0'
+        os_version: '12.0'
       },
       bs_firefox_windows: {
         base: 'BrowserStack',
         browser: 'firefox',
-        browser_version: '92',
+        browser_version: '100',
         os: 'Windows',
         os_version: '10'
       },
       bs_chrome_mac: {
         base: 'BrowserStack',
         browser: 'Chrome',
-        browser_version: '93',
+        browser_version: '101',
         os: 'OS X',
-        os_version: 'High Sierra'
+        os_version: 'Monterey'
       },
       bs_safari_mac: {
         base: 'BrowserStack',
         browser: 'Safari',
-        browser_version: '14.1',
+        browser_version: '15.3',
         os: 'OS X',
-        os_version: 'Big Sur'
+        os_version: 'Monterey'
       },
       bs_edge: {
         base: 'BrowserStack',
         browser: 'Edge',
-        browser_version: '93',
+        browser_version: '101',
         os: 'Windows',
         os_version: '10'
       }
