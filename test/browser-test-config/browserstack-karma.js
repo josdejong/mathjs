@@ -57,13 +57,6 @@ module.exports = function (config) {
         os: 'OS X',
         os_version: 'Big Sur'
       },
-      bs_ie_11: {
-        base: 'BrowserStack',
-        browser: 'IE',
-        browser_version: '11',
-        os: 'Windows',
-        os_version: '10'
-      },
       bs_edge: {
         base: 'BrowserStack',
         browser: 'Edge',

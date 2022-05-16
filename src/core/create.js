@@ -1,4 +1,3 @@
-import './../utils/polyfills.js'
 import { deepFlatten, isLegacyFactory, values } from '../utils/object.js'
 import * as emitter from './../utils/emitter.js'
 import { importFactory } from './function/import.js'
