@@ -5,6 +5,7 @@ on:
     branches:
       - '*'
     tags:
+  pull_request:
 
 jobs:
   browser-tests:
