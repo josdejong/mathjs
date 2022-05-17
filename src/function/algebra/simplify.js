@@ -1,4 +1,4 @@
-import { isConstantNode, isParenthesisNode } from '../../utils/is.js'
+import { isNode, isConstantNode, isParenthesisNode } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { createUtil } from './simplify/util.js'
 import { createSimplifyConstant } from './simplify/simplifyConstant.js'
@@ -156,6 +156,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *  - `fractionsLimit` (10000): when `exactFractions` is true, constants will
    *    be expressed as fractions only when both numerator and denominator
    *    are smaller than `fractionsLimit`.
+   *  - `unwrapConstants` (false): if the entire expression simplifies down to
+   *    a constant, return the value directly (as opposed to wrapped in a Node).
    *
    * Syntax:
    *
@@ -266,6 +268,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
               laststr = newstr
             }
           }
+          if (!isNode(res)) return res // short-circuit if we got to a concrete value
           /* Use left-heavy binary tree internally,
            * since custom rule functions may expect it
            */
@@ -279,6 +282,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   simplify.defaultContext = defaultContext
   simplify.realContext = realContext
   simplify.positiveContext = positiveContext
+  simplify.simplifyConstant = simplifyConstant
 
   function removeParens (node) {
     return node.transform(function (node, path, parent) {
