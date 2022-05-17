@@ -279,6 +279,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   simplify.defaultContext = defaultContext
   simplify.realContext = realContext
   simplify.positiveContext = positiveContext
+  simplify.ensureNode = simplifyConstant.ensureNode
 
   function removeParens (node) {
     return node.transform(function (node, path, parent) {

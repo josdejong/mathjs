@@ -234,6 +234,19 @@ describe('simplify', function () {
     simplifyAndCompare('x^2*y^3*z - y*z*x^2*y', 'x^2*z*(y^3-y^2)')
   })
 
+  it('can simplify with functions as well as operators', () => {
+    simplifyAndCompare('add(x,x)', '2*x')
+    simplifyAndCompare('multiply(x,2)+x', '3*x')
+    simplifyAndCompare('add(2*add(x,1), x+1)', '3*(x + 1)')
+    simplifyAndCompare('multiply(2, x+1) + add(x,1)', '3*(x + 1)')
+    simplifyAndCompare('add(y*pow(x,2), multiply(2,x^2))', 'x^2*(y+2)')
+    simplifyAndCompare('add(x*y, multiply(y,x))', '2*x*y')
+    simplifyAndCompare('subtract(multiply(x,y), multiply(y,x))', '0')
+    simplifyAndCompare('pow(x,2)*multiply(y^3, z) - multiply(y,z,y,x^2,y)', '0')
+    simplifyAndCompare('subtract(multiply(x^2, pow(y,3))*z, y*multiply(z,x^2)*y)',
+      'x^2*z*(y^3-y^2)')
+  })
+
   it('should collect separated like terms', function () {
     simplifyAndCompare('x+1+x', '2*x+1')
     simplifyAndCompare('x^2+x+3+x^2', '2*x^2+x+3')
