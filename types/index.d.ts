@@ -4217,14 +4217,6 @@ declare namespace math {
       options?: any
     ): MathJsChain<MathNode>
 
-    // TODO properly type return value and chain value
-    /**
-     * Create a parser. The function creates a new math.expression.Parser
-     * object.
-     */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    parser(this: MathJsChain<any>): MathJsChain<any>
-
     /**
      *  Replaces variable nodes with their scoped values
      * @param scope Scope to read/write variables

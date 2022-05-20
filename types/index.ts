@@ -300,10 +300,6 @@ Chaining examples
     MathJsChain<MathNode[]>
   >()
 
-  // parser
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  expectTypeOf(math.chain().parser()).toMatchTypeOf<MathJsChain<any>>()
-
   // resolve
   expectTypeOf(math.chain(math.parse('1 + 1')).resolve({})).toMatchTypeOf<
     MathJsChain<MathNode>
