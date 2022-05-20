@@ -4038,8 +4038,7 @@ declare namespace math {
       im?: number
     ): MathJsChain<Complex>
     complex(
-      this: MathJsChain<MathCollection>,
-      im?: number
+      this: MathJsChain<MathCollection>
     ): MathJsChain<MathCollection>
 
     /**

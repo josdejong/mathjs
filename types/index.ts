@@ -211,9 +211,6 @@ Chaining examples
   expectTypeOf(math.chain([12, 13, 14]).complex()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
-  expectTypeOf(math.chain([12, 13, 14]).complex(1)).toMatchTypeOf<
-    MathJsChain<MathCollection>
-  >()
 
   // createUnit
   expectTypeOf(math.chain(math.createUnit('furlong'))).toMatchTypeOf<
