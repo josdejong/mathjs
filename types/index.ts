@@ -364,8 +364,7 @@ Chaining examples
       )
       .lusolve(
         math.matrix([
-          [1, 2],
-          [3, 4],
+          [1, 2]
         ])
       )
   ).toMatchTypeOf<MathJsChain<Matrix>>()
@@ -382,10 +381,9 @@ Chaining examples
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   expectTypeOf(
-    math.chain([1, 2]).lusolve(
+    math.chain([[1, 2], [3, 4]]).lusolve(
       math.matrix([
-        [1, 2],
-        [3, 4],
+        [1, 2]
       ])
     )
   ).toMatchTypeOf<MathJsChain<MathArray>>()
