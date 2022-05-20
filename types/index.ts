@@ -355,7 +355,14 @@ Chaining examples
 
   // lusolve
   expectTypeOf(
-    math.chain( math.matrix([ [1, 2], [3, 4], ])).lusolve(math.matrix([1, 2]))
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4],
+        ])
+      )
+      .lusolve(math.matrix([1, 2]))
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   expectTypeOf(
