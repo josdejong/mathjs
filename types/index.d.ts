@@ -921,7 +921,6 @@ declare namespace math {
     cbrt(x: Complex, allRoots?: boolean): Complex
     cbrt(x: MathArray, allRoots?: boolean): MathArray
     cbrt(x: Matrix, allRoots?: boolean): Matrix
-    cbrt(x: Unit, allRoots?: boolean): Unit
 
     // Rounding functions, grouped for similarity, even though it breaks
     // the alphabetic order among arithmetic functions.
@@ -4426,7 +4425,6 @@ declare namespace math {
       allRoots?: boolean
     ): MathJsChain<MathArray>
     cbrt(this: MathJsChain<Matrix>, allRoots?: boolean): MathJsChain<Matrix>
-    cbrt(this: MathJsChain<Unit>, allRoots?: boolean): MathJsChain<Unit>
 
     // Rounding functions grouped for similarity
 
