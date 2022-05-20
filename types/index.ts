@@ -480,7 +480,7 @@ Chaining examples
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // apply
-  expectTypeOf(math.chain([1, 2, 3]).apply(1, () => 1)).toMatchTypeOf<
+  expectTypeOf(math.chain([1, 2, 3]).apply(0, () => 1)).toMatchTypeOf<
     MathJsChain<number[]>
   >()
 
