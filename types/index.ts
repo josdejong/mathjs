@@ -505,7 +505,7 @@ Chaining examples
       )
       .cbrt()
   ).toMatchTypeOf<MathJsChain<Matrix>>()
-  expectTypeOf(math.chain(math.unit('league')).cbrt()).toMatchTypeOf<
+  expectTypeOf(math.chain(math.unit('furlong')).cbrt()).toMatchTypeOf<
     MathJsChain<Unit>
   >()
 
