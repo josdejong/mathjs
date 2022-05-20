@@ -489,9 +489,6 @@ Chaining examples
   expectTypeOf(math.chain(math.bignumber(1)).cbrt()).toMatchTypeOf<
     MathJsChain<BigNumber>
   >()
-  expectTypeOf(math.chain(math.fraction(1, 2)).cbrt()).toMatchTypeOf<
-    MathJsChain<Fraction>
-  >()
   expectTypeOf(math.chain(math.complex(1, 2)).cbrt()).toMatchTypeOf<
     MathJsChain<Complex>
   >()

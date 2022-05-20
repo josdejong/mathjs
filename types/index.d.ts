@@ -918,7 +918,6 @@ declare namespace math {
      */
     cbrt(x: number, allRoots?: boolean): number
     cbrt(x: BigNumber, allRoots?: boolean): BigNumber
-    cbrt(x: Fraction, allRoots?: boolean): Fraction
     cbrt(x: Complex, allRoots?: boolean): Complex
     cbrt(x: MathArray, allRoots?: boolean): MathArray
     cbrt(x: Matrix, allRoots?: boolean): Matrix
@@ -4421,7 +4420,6 @@ declare namespace math {
       this: MathJsChain<BigNumber>,
       allRoots?: boolean
     ): MathJsChain<BigNumber>
-    cbrt(this: MathJsChain<Fraction>, allRoots?: boolean): MathJsChain<Fraction>
     cbrt(this: MathJsChain<Complex>, allRoots?: boolean): MathJsChain<Complex>
     cbrt(
       this: MathJsChain<MathArray>,
