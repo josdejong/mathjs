@@ -10,9 +10,6 @@ To update the website with the latest version of math.js:
 
 - Update the version number of math.js in package.json.
 
-- Make sure mathjs is checked out in a sibling folder `../mathjs`, and has been
-  build with the latest version.
-
 - Install the dependencies via npm:
 
       npm install
@@ -20,6 +17,10 @@ To update the website with the latest version of math.js:
 - Update the docs, examples, and version number via the build tool:
 
       npm run build
+
+  Note that this script will update a git submodule `./mathjs-src` which checks
+  out the `master` branch and generates the docs and examples fresh from the 
+  source code.
 
 - Ensure any new pages are added to git.
 

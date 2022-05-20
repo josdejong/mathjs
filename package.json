@@ -19,6 +19,7 @@
     "rimraf": "3.0.2"
   },
   "scripts": {
-    "build": "gulp"
+    "update:mathjs-src": "git submodule init && git submodule update && cd mathjs-src && git checkout master && npm install && npm run build ; cd ..",
+    "build": "npm run update:mathjs-src && gulp"
   }
 }

@@ -11,8 +11,8 @@ var header = require('gulp-header');
 var handlebars = require('handlebars');
 
 var DEP_MATHJS        = './node_modules/mathjs'
-var DEP_MATHJS_SRC    = '../mathjs' // FIXME: implement a git submodule instead of assuming the mathjs is checked out in a sibling folder
-var LIB_SRC           = DEP_MATHJS_SRC + '/lib/browser/*';
+var DEP_MATHJS_SRC    = './mathjs-src'
+var LIB_SRC           = DEP_MATHJS + '/lib/browser/*';
 var LIB_DEST          = './js/lib';
 var DOCS_SRC          = DEP_MATHJS_SRC + '/docs/**/*.md';
 var DOCS_DEST         = './docs';
