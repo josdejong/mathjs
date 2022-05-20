@@ -488,7 +488,7 @@ Chaining examples
 
   // add
   expectTypeOf(math.chain(1).add(2)).toMatchTypeOf<MathJsChain<MathType>>()
-  expectTypeOf(math.chain([1]).add(2)).toMatchTypeOf<MathJsChain<MathArray>>()
+  expectTypeOf(math.chain([1]).add(2)).toMatchTypeOf<MathJsChain<MathType>>()
   expectTypeOf(
     math.chain(
       math.matrix([

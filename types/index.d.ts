@@ -4389,13 +4389,8 @@ declare namespace math {
      * element wise.
      * @param y Second value to add
      */
-    add(this: MathJsChain<MathArray>, y: MathType): MathJsChain<MathArray>
-    add(this: MathJsChain<Matrix>, y: MathType): MathJsChain<Matrix>
-    add(this: MathJsChain<Unit>, y: MathType): MathJsChain<Unit>
-    add(
-      this: MathJsChain<MathNumericType>,
-      y: MathType
-    ): MathJsChain<MathNumericType>
+    add<T extends MathType>(this: MathJsChain<T>, y: T): MathJsChain<T>
+    add(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Apply a function that maps an array to a scalar along a given axis of the
