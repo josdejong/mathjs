@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since version 10.5.3
+
+- fix the first argument of `derivative` holding the expression not correctly
+  being converted when using `.toTex()` (#2564). Thanks @mattvague.
+
+
 # 2022-05-11, version 10.5.3
 
 - Fix #2337: npm package containing examples and docs to solve security 
