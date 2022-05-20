@@ -276,9 +276,9 @@ describe('derivative', function () {
   })
 
   it('should LaTeX expressions involving derivative', function () {
-    compareString(math.parse('derivative(x*y,x)').toTex(), '{d\\over dx}\\left[x * y\\right]')
+    compareString(math.parse('derivative(x*y,x)').toTex(), '{d\\over dx}\\left[ x\\cdot y\\right]')
     compareString(math.parse('derivative("x*y",x)').toTex(), '{d\\over dx}\\left[x * y\\right]')
-    compareString(math.parse('derivative(x*y,"x")').toTex(), '{d\\over dx}\\left[x * y\\right]')
+    compareString(math.parse('derivative(x*y,"x")').toTex(), '{d\\over dx}\\left[ x\\cdot y\\right]')
     compareString(math.parse('derivative("x*y","x")').toTex(), '{d\\over dx}\\left[x * y\\right]')
 
     // FIXME: handle toTex of derivative with options as third argument
