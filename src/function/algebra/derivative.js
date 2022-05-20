@@ -129,7 +129,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
       if (isConstantNode(expr) && typeOf(expr.value) === 'string') {
         return _derivTex(parse(expr.value).toString(), x.toString(), 1)
       } else {
-        return _derivTex(expr.toString(), x.toString(), 1)
+        return _derivTex(expr.toTex(), x.toString(), 1)
       }
     },
     'Node, ConstantNode': function (expr, x) {
