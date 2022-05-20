@@ -559,7 +559,9 @@ declare namespace math {
      * fraction
      * @returns Returns a fraction
      */
-    fraction(value: number | string | BigNumber | Fraction | FractionDefinition): Fraction
+    fraction(
+      value: number | string | BigNumber | Fraction | FractionDefinition
+    ): Fraction
     fraction(values: MathCollection): MathCollection
     /**
      * @param numerator Argument specifying the numerator of the fraction
@@ -4040,9 +4042,7 @@ declare namespace math {
       this: MathJsChain<Complex | string | PolarCoordinates>,
       im?: number
     ): MathJsChain<Complex>
-    complex(
-      this: MathJsChain<MathCollection>
-    ): MathJsChain<MathCollection>
+    complex(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Create a user-defined unit and register it with the Unit type.
@@ -4081,7 +4081,12 @@ declare namespace math {
      * @param denominator Argument specifying the denominator of the
      * fraction
      */
-    fraction(this: MathJsChain<number | string | BigNumber | Fraction | FractionDefinition>, denominator?: number): MathJsChain<Fraction>
+    fraction(
+      this: MathJsChain<
+        number | string | BigNumber | Fraction | FractionDefinition
+      >,
+      denominator?: number
+    ): MathJsChain<Fraction>
     fraction(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
@@ -4554,9 +4559,15 @@ declare namespace math {
      * arrays. For matrices, the function is evaluated element wise.
      */
     gcd(this: MathJsChain<number[]>, ...args: number[]): MathJsChain<number>
-    gcd(this: MathJsChain<BigNumber[]>, ...args: BigNumber[]): MathJsChain<BigNumber>
+    gcd(
+      this: MathJsChain<BigNumber[]>,
+      ...args: BigNumber[]
+    ): MathJsChain<BigNumber>
     gcd(this: MathJsChain<Complex[]>, ...args: Fraction[]): MathJsChain<Complex>
-    gcd(this: MathJsChain<MathArray[]>, ...args: MathArray[]): MathJsChain<MathArray>
+    gcd(
+      this: MathJsChain<MathArray[]>,
+      ...args: MathArray[]
+    ): MathJsChain<MathArray>
     gcd(this: MathJsChain<Matrix[]>, ...args: Matrix[]): MathJsChain<Matrix>
 
     /**

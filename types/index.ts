@@ -653,7 +653,9 @@ Chaining examples
 
   // gcd
   expectTypeOf(math.chain([1, 2]).gcd(3)).toMatchTypeOf<MathJsChain<number>>()
-  expectTypeOf(math.chain([1, 2]).gcd(3, 4)).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain([1, 2]).gcd(3, 4)).toMatchTypeOf<
+    MathJsChain<number>
+  >()
   // TODO make gcd() work in the following cases
   // expectTypeOf(math.chain([1, 2]).gcd()).toMatchTypeOf<MathJsChain<number>>()
   // expectTypeOf(math.chain([[1], [2]]).gcd()).toMatchTypeOf<
