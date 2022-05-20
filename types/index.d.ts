@@ -1480,9 +1480,9 @@ declare namespace math {
      * @param x A complex number or array with complex numbers
      * @returns The imaginary part of x
      */
-    im(
-      x: number | BigNumber | Complex | MathCollection
-    ): number | BigNumber | MathCollection
+    im(x: MathJsChain<number | Complex>): MathJsChain<number>
+    im(x: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    im(x: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Get the real part of a complex number. For a complex number a + bi,
@@ -1491,9 +1491,9 @@ declare namespace math {
      * @param x A complex number or array of complex numbers
      * @returns The real part of x
      */
-    re(
-      x: number | BigNumber | Complex | MathCollection
-    ): number | BigNumber | MathCollection
+    re(x: MathJsChain<number | Complex>): MathJsChain<number>
+    re(x: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    re(x: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /*************************************************************************
      * Geometry functions
@@ -4943,18 +4943,18 @@ declare namespace math {
      * bi, the function returns b. For matrices, the function is evaluated
      * element wise.
      */
-    im(
-      this: MathJsChain<number | BigNumber | Complex | MathCollection>
-    ): MathJsChain<number | BigNumber | MathCollection>
+    im(this: MathJsChain<number | Complex>): MathJsChain<number>
+    im(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    im(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Get the real part of a complex number. For a complex number a + bi,
      * the function returns a. For matrices, the function is evaluated
      * element wise.
      */
-    re(
-      x: MathJsChain<number | BigNumber | Complex | MathCollection>
-    ): MathJsChain<number | BigNumber | MathCollection>
+    re(this: MathJsChain<number | Complex>): MathJsChain<number>
+    re(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    re(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /*************************************************************************
      * Geometry functions
