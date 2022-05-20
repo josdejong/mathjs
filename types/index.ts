@@ -237,7 +237,7 @@ Chaining examples
   expectTypeOf(math.chain([12, 13, 14]).fraction()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
-  expectTypeOf(math.chain([12, 13, 14]).fraction(2)).toMatchTypeOf<
+  expectTypeOf(math.chain([12, 13, 14]).fraction()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
 

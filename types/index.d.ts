@@ -368,6 +368,11 @@ declare namespace math {
     R: MathCollection
   }
 
+  interface FractionDefinition {
+    a: number
+    b: number
+  }
+
   interface MathJsStatic extends FactoryDependencies {
     e: number
     pi: number
@@ -554,7 +559,7 @@ declare namespace math {
      * fraction
      * @returns Returns a fraction
      */
-    fraction(value: number | string | BigNumber | Fraction | object): Fraction
+    fraction(value: number | string | BigNumber | Fraction | FractionDefinition): Fraction
     fraction(values: MathCollection): MathCollection
     /**
      * @param numerator Argument specifying the numerator of the fraction
@@ -4078,14 +4083,8 @@ declare namespace math {
      * @param denominator Argument specifying the denominator of the
      * fraction
      */
-    fraction(
-      this: MathJsChain<MathCollection>,
-      denominator?: number | string | MathCollection
-    ): MathJsChain<MathCollection>
-    fraction(
-      this: MathJsChain<number | string | BigNumber | Fraction | object>,
-      denominator?: number | string | MathCollection
-    ): MathJsChain<Fraction>
+    fraction(this: MathJsChain<number | string | BigNumber | Fraction | FractionDefinition>, denominator?: number): MathJsChain<Fraction>
+    fraction(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Create an index. An Index can store ranges having start, step, and
