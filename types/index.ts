@@ -302,11 +302,7 @@ Chaining examples
 
   // parser
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  expectTypeOf(math.chain('1 + 1').parser()).toMatchTypeOf<MathJsChain<any>>()
-  expectTypeOf(math.chain(['1 + 1', '2 + 2']).parser()).toMatchTypeOf<
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    MathJsChain<any>
-  >()
+  expectTypeOf(math.chain().parser()).toMatchTypeOf<MathJsChain<any>>()
 
   // resolve
   expectTypeOf(math.chain(math.parse('1 + 1')).resolve({})).toMatchTypeOf<
