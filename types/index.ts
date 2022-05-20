@@ -219,7 +219,7 @@ Chaining examples
   expectTypeOf(
     math.chain(
       math.createUnit({
-        furlong: '1234',
+        fresnel: '1234',
       })
     )
   ).toMatchTypeOf<MathJsChain<Unit>>()
@@ -516,7 +516,7 @@ Chaining examples
       )
       .cbrt()
   ).toMatchTypeOf<MathJsChain<Matrix>>()
-  expectTypeOf(math.chain(math.unit('furlong')).cbrt()).toMatchTypeOf<
+  expectTypeOf(math.chain(math.unit('league')).cbrt()).toMatchTypeOf<
     MathJsChain<Unit>
   >()
 
@@ -582,9 +582,9 @@ Chaining examples
 
   // divide
   expectTypeOf(
-    math.chain(math.unit('furlong')).divide(math.unit('furlong'))
+    math.chain(math.unit('femtosecond')).divide(math.unit('femtosecond'))
   ).toMatchTypeOf<MathJsChain<number | Unit>>()
-  expectTypeOf(math.chain(math.unit('furlong')).divide(6)).toMatchTypeOf<
+  expectTypeOf(math.chain(math.unit('steradian')).divide(6)).toMatchTypeOf<
     MathJsChain<Unit>
   >()
   expectTypeOf(math.chain(2).divide(6)).toMatchTypeOf<MathJsChain<number>>()
