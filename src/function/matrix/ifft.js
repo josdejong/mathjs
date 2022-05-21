@@ -25,7 +25,7 @@ export const createIfft = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Examples:
    *
-   *    math.ifft([[2, 2], [0, 0]]) // returns [[1+0i, 0+0i], [1+0i, 0+0i]]
+   *    math.ifft([[2, 2], [0, 0]]) // returns [[{re:1, im:0}, {re:0, im:0}], [{re:1, im:0}, {re:0, im:0}]]
    *
    * See Also:
    *
