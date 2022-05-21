@@ -32,7 +32,7 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Examples:
    *
-   *    math.fft([[1, 0], [1, 0]]) // returns [[2+0i, 2+0i], [0+0i, 0+0i]]
+   *    math.fft([[1, 0], [1, 0]]) // returns [[{re:2, im:0}, {re:2, im:0}], [{re:0, im:0}, {re:0, im:0}]]
    *
    *
    * See Also:
