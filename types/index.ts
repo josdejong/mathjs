@@ -436,8 +436,8 @@ Matrices examples
         [1, 0],
       ]),
       [
-        [2, 2],
-        [0, 0],
+        [math.complex(2, 0), math.complex(2, 0)],
+        [math.complex(0, 0), math.complex(0, 0)],
       ]
     )
     assert.deepStrictEqual(
@@ -448,8 +448,30 @@ Matrices examples
         ])
       ),
       math.matrix([
+        [math.complex(2, 0), math.complex(2, 0)],
+        [math.complex(0, 0), math.complex(0, 0)],
+      ])
+    )
+    assert.deepStrictEqual(
+      math.ifft([
         [2, 2],
         [0, 0],
+      ]),
+      [
+        [math.complex(1, 0), math.complex(0, 0)],
+        [math.complex(1, 0), math.complex(0, 0)],
+      ]
+    )
+    assert.deepStrictEqual(
+      math.ifft(
+        math.matrix([
+          [2, 2],
+          [0, 0],
+        ])
+      ),
+      math.matrix([
+        [math.complex(1, 0), math.complex(0, 0)],
+        [math.complex(1, 0), math.complex(0, 0)],
       ])
     )
   }
