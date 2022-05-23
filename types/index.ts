@@ -11,7 +11,6 @@ import {
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
-import * as approx from '../tools/approx.js'
 
 // This file serves a dual purpose:
 // 1) examples of how to use math.js in TypeScript
@@ -431,7 +430,7 @@ Matrices examples
 
   // Fourier transform and inverse
   {
-    approx.deepEqual(
+    approx.ok(math.deepEqual(
       math.fft([
         [1, 0],
         [1, 0],
@@ -440,8 +439,8 @@ Matrices examples
         [math.complex(2, 0), math.complex(2, 0)],
         [math.complex(0, 0), math.complex(0, 0)],
       ]
-    )
-    approx.deepEqual(
+    ))
+    approx.ok(math.deepEqual(
       math.fft(
         math.matrix([
           [1, 0],
@@ -452,8 +451,8 @@ Matrices examples
         [math.complex(2, 0), math.complex(2, 0)],
         [math.complex(0, 0), math.complex(0, 0)],
       ])
-    )
-    approx.deepEqual(
+    ))
+    approx.ok(math.deepEqual(
       math.ifft([
         [2, 2],
         [0, 0],
@@ -462,8 +461,8 @@ Matrices examples
         [math.complex(1, 0), math.complex(0, 0)],
         [math.complex(1, 0), math.complex(0, 0)],
       ]
-    )
-    approx.deepEqual(
+    ))
+    approx.ok(math.deepEqual(
       math.ifft(
         math.matrix([
           [2, 2],
@@ -474,7 +473,7 @@ Matrices examples
         [math.complex(1, 0), math.complex(0, 0)],
         [math.complex(1, 0), math.complex(0, 0)],
       ])
-    )
+    ))
   }
 }
 
