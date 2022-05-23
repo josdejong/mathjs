@@ -430,7 +430,7 @@ Matrices examples
 
   // Fourier transform and inverse
   {
-    approx.ok(
+    assert.ok(
       math.deepEqual(
         math.fft([
           [1, 0],
@@ -442,7 +442,7 @@ Matrices examples
         ]
       )
     )
-    approx.ok(
+    assert.ok(
       math.deepEqual(
         math.fft(
           math.matrix([
@@ -456,7 +456,7 @@ Matrices examples
         ])
       )
     )
-    approx.ok(
+    assert.ok(
       math.deepEqual(
         math.ifft([
           [2, 2],
@@ -468,7 +468,7 @@ Matrices examples
         ]
       )
     )
-    approx.ok(
+    assert.ok(
       math.deepEqual(
         math.ifft(
           math.matrix([
