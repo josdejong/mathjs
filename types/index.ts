@@ -11,7 +11,7 @@ import {
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
-import * as approx from "../tools/approx.js"
+import * as approx from '../tools/approx.js'
 
 // This file serves a dual purpose:
 // 1) examples of how to use math.js in TypeScript
