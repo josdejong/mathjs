@@ -23,6 +23,8 @@ import {
   SLUDecomposition,
   MathType,
   MathNumericType,
+  ConstantNode,
+  OperatorNode,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -187,6 +189,11 @@ Chaining examples
   >()
   expectTypeOf(math.chain([12, 13, 14]).bignumber()).toMatchTypeOf<
     MathJsChain<MathCollection>
+  >()
+
+  // chain
+  expectTypeOf(math.chain(12).bignumber().clone()).toMatchTypeOf<
+    MathJsChain<BigNumber>
   >()
 
   // boolean
@@ -1513,6 +1520,20 @@ Function round examples
 
   // @ts-expect-error ... verify round(array, array) throws an error (for now)
   assert.throws(() => math.round([3.21, 3.82], [1, 2]), TypeError)
+}
+
+/*
+ Clone examples
+  */
+ {
+  const math = create(all, {})
+  expectTypeOf((new math.ConstantNode(1)).clone()).toMatchTypeOf<ConstantNode>()
+  expectTypeOf((new math.OperatorNode('*', 'multiply', [new math.ConstantNode(3), new math.SymbolNode('x')])).clone()).toMatchTypeOf<OperatorNode>()
+
+  expectTypeOf((new math.ConstantNode(1)).cloneDeep()).toMatchTypeOf<ConstantNode>()
+  expectTypeOf((new math.OperatorNode('*', 'multiply', [new math.ConstantNode(3), new math.SymbolNode('x')])).cloneDeep()).toMatchTypeOf<OperatorNode>()
+
+  expectTypeOf(math.clone(new math.ConstantNode(1))).toMatchTypeOf<ConstantNode>()
 }
 
 /*
