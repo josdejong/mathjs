@@ -4,6 +4,20 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220524-version-1060">2022-05-24, version 10.6.0 <a href="#20220524-version-1060" title="Permalink">#</a></h1>
+
+- Implementation of fourier transform functions `fft` and `ifft`  <a href="https://github.com/josdejong/mathjs/issues/2540">#2540</a>).
+  Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
+- Fix TypeScript types not being listed in the exported fields  <a href="https://github.com/josdejong/mathjs/issues/2569">#2569</a>).
+  Thanks <a href="https://github.com/mattvague">@mattvague</a>. 
+- Large improvements in TypeScript definitions for chained expressions  <a href="https://github.com/josdejong/mathjs/issues/2537">#2537</a>).
+  Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2571">#2571</a>: improve TypeScript definition of functions `clone` and `cloneDeep` 
+   <a href="https://github.com/josdejong/mathjs/issues/2572">#2572</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+- Fix the first argument of `derivative` holding the expression not correctly
+  being converted when using `.toTex()`  <a href="https://github.com/josdejong/mathjs/issues/2564">#2564</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+
+
 <h1 id="20220511-version-1053">2022-05-11, version 10.5.3 <a href="#20220511-version-1053" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2337">#2337</a>: npm package containing examples and docs to solve security 
