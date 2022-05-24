@@ -1997,6 +1997,20 @@ declare namespace math {
      */
     zeros(m: number, n: number, format?: string): MathCollection
 
+    /**
+     * Calculate N-dimensional fourier transform
+     * @param {Array | Matrix} arr    An array or matrix
+     * @return {Array | Matrix}       N-dimensional fourier transformation of the array
+     */
+    fft<T extends MathCollection>(arr: T): T
+
+    /**
+     * Calculate N-dimensional inverse fourier transform
+     * @param {Array | Matrix} arr    An array or matrix
+     * @return {Array | Matrix}       N-dimensional fourier transformation of the array
+     */
+    ifft<T extends MathCollection>(arr: T): T
+
     /*************************************************************************
      * Probability functions
      ************************************************************************/

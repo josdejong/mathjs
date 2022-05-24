@@ -1023,6 +1023,62 @@ Matrices examples
   {
     assert.strictEqual(math.matrix([1, 2, 3]) instanceof math.Matrix, true)
   }
+
+  // Fourier transform and inverse
+  {
+    assert.ok(
+      math.deepEqual(
+        math.fft([
+          [1, 0],
+          [1, 0],
+        ]),
+        [
+          [math.complex(2, 0), math.complex(2, 0)],
+          [math.complex(0, 0), math.complex(0, 0)],
+        ]
+      )
+    )
+    assert.ok(
+      math.deepEqual(
+        math.fft(
+          math.matrix([
+            [1, 0],
+            [1, 0],
+          ])
+        ),
+        math.matrix([
+          [math.complex(2, 0), math.complex(2, 0)],
+          [math.complex(0, 0), math.complex(0, 0)],
+        ])
+      )
+    )
+    assert.ok(
+      math.deepEqual(
+        math.ifft([
+          [2, 2],
+          [0, 0],
+        ]),
+        [
+          [math.complex(1, 0), math.complex(0, 0)],
+          [math.complex(1, 0), math.complex(0, 0)],
+        ]
+      )
+    )
+    assert.ok(
+      math.deepEqual(
+        math.ifft(
+          math.matrix([
+            [2, 2],
+            [0, 0],
+          ])
+        ),
+        math.matrix([
+          [math.complex(1, 0), math.complex(0, 0)],
+          [math.complex(1, 0), math.complex(0, 0)],
+        ])
+      )
+    )
+  }
 }
 
 /*
