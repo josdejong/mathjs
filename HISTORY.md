@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since version 10.5.3
+# 2022-05-24, version 10.6.0
 
 - Implementation of fourier transform functions `fft` and `ifft` (#2540).
   Thanks @HanchaiN.
@@ -8,6 +8,8 @@
   Thanks @mattvague. 
 - Large improvements in TypeScript definitions for chained expressions (#2537).
   Thanks @mattvague.
+- Fix #2571: improve TypeScript definition of functions `clone` and `cloneDeep` 
+  (#2572). Thanks @mattvague.
 - Fix the first argument of `derivative` holding the expression not correctly
   being converted when using `.toTex()` (#2564). Thanks @mattvague.
 
