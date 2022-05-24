@@ -353,6 +353,26 @@ declare namespace math {
 
   type MathJsFunctionName = keyof MathJsStatic
 
+  interface LUDecomposition {
+    L: MathCollection
+    U: MathCollection
+    p: number[]
+  }
+
+  interface SLUDecomposition extends LUDecomposition {
+    q: number[]
+  }
+
+  interface QRDecomposition {
+    Q: MathCollection
+    R: MathCollection
+  }
+
+  interface FractionDefinition {
+    a: number
+    b: number
+  }
+
   interface MathJsStatic extends FactoryDependencies {
     e: number
     pi: number
@@ -468,9 +488,8 @@ declare namespace math {
      * @param x A value of any type
      * @returns The boolean value
      */
-    boolean(
-      x: string | number | boolean | MathCollection | null
-    ): boolean | MathCollection
+    boolean(x: string | number | boolean | null): boolean
+    boolean(x: MathCollection): MathCollection
 
     /**
      * Wrap any value in a chain, allowing to perform chained operations on
@@ -486,7 +505,7 @@ declare namespace math {
      * @returns The created chain
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    chain(value?: any): MathJsChain
+    chain<TValue>(value?: TValue): MathJsChain<TValue>
 
     /**
      * Create a complex value or convert a value to a complex value.
@@ -540,9 +559,10 @@ declare namespace math {
      * fraction
      * @returns Returns a fraction
      */
-    fraction(value: number | string | BigNumber | Fraction | object): Fraction
-    fraction(values: MathArray): MathArray
-    fraction(values: Matrix): Matrix
+    fraction(
+      value: number | string | BigNumber | Fraction | FractionDefinition
+    ): Fraction
+    fraction(values: MathCollection): MathCollection
     /**
      * @param numerator Argument specifying the numerator of the fraction
      * @param denominator Argument specifying the denominator of the
@@ -589,16 +609,9 @@ declare namespace math {
      * @returns The created number
      */
     number(
-      value?:
-        | string
-        | number
-        | BigNumber
-        | Fraction
-        | boolean
-        | MathCollection
-        | Unit
-        | null
-    ): number | MathCollection
+      value?: string | number | BigNumber | Fraction | boolean | Unit | null
+    ): number
+    number(value?: MathCollection): number | MathCollection
     /**
      * @param value Value to be converted
      * @param valuelessUnit A valueless unit, used to convert a unit to a
@@ -633,7 +646,8 @@ declare namespace math {
      * @param value A value to convert to a string
      * @returns The created string
      */
-    string(value: MathType | null): string | MathCollection
+    string(value: MathNumericType | string | Unit | null): string
+    string(value: MathCollection): MathCollection
 
     /**
      * Create a unit. Depending on the passed arguments, the function will
@@ -653,7 +667,8 @@ declare namespace math {
      * @param unit The unit to be created
      * @returns The created unit
      */
-    unit(value: number | MathCollection | BigNumber, unit: string): Unit
+    unit(value: number | BigNumber, unit: string): Unit
+    unit(value: MathCollection, unit: string): Unit[]
 
     /*************************************************************************
      * Expression functions
@@ -672,6 +687,7 @@ declare namespace math {
      */
     compile(exprs: MathExpression[]): EvalFunction[]
 
+    // TODO properly type this
     /**
      * Evaluate an expression.
      * @param expr The expression to be evaluated
@@ -679,10 +695,15 @@ declare namespace math {
      * @returns The result of the expression
      */
     evaluate(
-      expr: MathExpression | MathExpression[] | Matrix,
+      expr: MathExpression | Matrix,
       scope?: object
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): any
+    evaluate(
+      expr: MathExpression[],
+      scope?: object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): any[]
 
     /**
      * Retrieve help on a function or data type. Help files are retrieved
@@ -729,7 +750,8 @@ declare namespace math {
      * @param b A column vector with the b values
      * @returns A column vector with the linear system solution (x)
      */
-    lsolve(L: Matrix | MathArray, b: Matrix | MathArray): Matrix | MathArray
+    lsolve(L: Matrix, b: Matrix | MathArray): Matrix
+    lsolve(L: MathArray, b: Matrix | MathArray): MathArray
 
     /**
      * Calculate the Matrix LU decomposition with partial pivoting. Matrix A
@@ -740,11 +762,7 @@ declare namespace math {
      * @returns The lower triangular matrix, the upper triangular matrix and
      * the permutation matrix.
      */
-    lup(A?: Matrix | MathArray): {
-      L: MathCollection
-      U: MathCollection
-      P: number[]
-    }
+    lup(A?: Matrix | MathArray): LUDecomposition
 
     /**
      * Solves the linear system A * x = b where A is an [n x n] matrix and b
@@ -759,11 +777,18 @@ declare namespace math {
      * b
      */
     lusolve(
-      A: Matrix | MathArray | number,
+      A: Matrix,
       b: Matrix | MathArray,
       order?: number,
       threshold?: number
-    ): Matrix | MathArray
+    ): Matrix
+
+    lusolve(
+      A: MathArray,
+      b: Matrix | MathArray,
+      order?: number,
+      threshold?: number
+    ): MathArray
 
     /**
      * Calculate the Matrix QR decomposition. Matrix A is decomposed in two
@@ -773,7 +798,7 @@ declare namespace math {
      * decomposition.
      * @returns Q: the orthogonal matrix and R: the upper triangular matrix
      */
-    qr(A: Matrix | MathArray): { Q: MathCollection; R: MathCollection }
+    qr(A: Matrix | MathArray): QRDecomposition
 
     rationalize(
       expr: MathNode | string,
@@ -844,7 +869,7 @@ declare namespace math {
      * @returns The lower triangular matrix, the upper triangular matrix and
      * the permutation vectors.
      */
-    slu(A: Matrix, order: number, threshold: number): object
+    slu(A: Matrix, order: number, threshold: number): SLUDecomposition
 
     /**
      * Solves the linear equation system by backward substitution. Matrix
@@ -853,7 +878,8 @@ declare namespace math {
      * @param b A column vector with the b values
      * @returns A column vector with the linear system solution (x)
      */
-    usolve(U: Matrix | MathArray, b: Matrix | MathArray): Matrix | MathArray
+    usolve(U: Matrix, b: Matrix | MathArray): Matrix
+    usolve(U: MathArray, b: Matrix | MathArray): MathArray
 
     /*************************************************************************
      * Arithmetic functions
@@ -894,11 +920,9 @@ declare namespace math {
      */
     cbrt(x: number, allRoots?: boolean): number
     cbrt(x: BigNumber, allRoots?: boolean): BigNumber
-    cbrt(x: Fraction, allRoots?: boolean): Fraction
     cbrt(x: Complex, allRoots?: boolean): Complex
     cbrt(x: MathArray, allRoots?: boolean): MathArray
     cbrt(x: Matrix, allRoots?: boolean): Matrix
-    cbrt(x: Unit, allRoots?: boolean): Unit
 
     // Rounding functions, grouped for similarity, even though it breaks
     // the alphabetic order among arithmetic functions.
@@ -1456,9 +1480,9 @@ declare namespace math {
      * @param x A complex number or array with complex numbers
      * @returns The imaginary part of x
      */
-    im(
-      x: number | BigNumber | Complex | MathCollection
-    ): number | BigNumber | MathCollection
+    im(x: MathJsChain<number | Complex>): MathJsChain<number>
+    im(x: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    im(x: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Get the real part of a complex number. For a complex number a + bi,
@@ -1467,9 +1491,9 @@ declare namespace math {
      * @param x A complex number or array of complex numbers
      * @returns The real part of x
      */
-    re(
-      x: number | BigNumber | Complex | MathCollection
-    ): number | BigNumber | MathCollection
+    re(x: MathJsChain<number | Complex>): MathJsChain<number>
+    re(x: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    re(x: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /*************************************************************************
      * Geometry functions
@@ -2610,6 +2634,7 @@ declare namespace math {
      * @returns The variance
      */
     variance(...args: Array<number | BigNumber | Fraction>): number
+
     /**
      * Compute the variance of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the variance over all elements
@@ -3078,7 +3103,7 @@ declare namespace math {
 
     isSymbolNode(x: unknown): x is SymbolNode
 
-    isChain(x: unknown): x is MathJsChain
+    isChain(x: unknown): x is MathJsChain<unknown>
 
     /*************************************************************************
      * Functions -> Utils
@@ -3991,9 +4016,9 @@ declare namespace math {
     randomSeed?: string | null
   }
 
-  interface MathJsChain {
+  interface MathJsChain<TValue> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    done(): any
+    done(): TValue
 
     /*************************************************************************
      * Construction functions
@@ -4004,7 +4029,12 @@ declare namespace math {
      * When a matrix is provided, all elements will be converted to
      * BigNumber.
      */
-    bignumber(): MathJsChain
+    bignumber(
+      this: MathJsChain<
+        number | string | Fraction | BigNumber | boolean | Fraction | null
+      >
+    ): MathJsChain<BigNumber>
+    bignumber<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Create a boolean or convert a string or number to a boolean. In case
@@ -4012,14 +4042,21 @@ declare namespace math {
      * of zero. Strings can be 'true' or 'false', or can contain a number.
      * When value is a matrix, all elements will be converted to boolean.
      */
-    boolean(): MathJsChain
+    boolean(
+      this: MathJsChain<string | number | boolean | null>
+    ): MathJsChain<boolean>
+    boolean(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Create a complex value or convert a value to a complex value.
      * @param im Argument specifying the imaginary part of the complex
      * number
      */
-    complex(im?: number): MathJsChain
+    complex(
+      this: MathJsChain<Complex | string | PolarCoordinates>,
+      im?: number
+    ): MathJsChain<Complex>
+    complex(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Create a user-defined unit and register it with the Unit type.
@@ -4034,9 +4071,10 @@ declare namespace math {
      * 0.
      */
     createUnit(
+      this: MathJsChain<string>,
       definition?: string | UnitDefinition,
       options?: CreateUnitOptions
-    ): MathJsChain
+    ): MathJsChain<Unit>
     /**
      * Create a user-defined unit and register it with the Unit type.
      * @param options (optional) An object containing any of the following
@@ -4047,21 +4085,31 @@ declare namespace math {
      * the unit. For example, the offset for celsius is 273.15. Default is
      * 0.
      */
-    createUnit(options?: CreateUnitOptions): MathJsChain
+    createUnit(
+      this: MathJsChain<Record<string, string | UnitDefinition>>,
+      options?: CreateUnitOptions
+    ): MathJsChain<Unit>
 
     /**
      * Create a fraction convert a value to a fraction.
      * @param denominator Argument specifying the denominator of the
      * fraction
      */
-    fraction(denominator?: number | string | MathCollection): MathJsChain
+    fraction(
+      this: MathJsChain<
+        number | string | BigNumber | Fraction | FractionDefinition
+      >,
+      denominator?: number
+    ): MathJsChain<Fraction>
+    fraction(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Create an index. An Index can store ranges having start, step, and
      * end for multiple dimensions. Matrix.get, Matrix.set, and math.subset
      * accept an Index as input.
      */
-    index(): MathJsChain
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    index(this: MathJsChain<any[]>): MathJsChain<Index>
 
     /**
      * Create a Matrix. The function creates a new math.type.Matrix object
@@ -4069,7 +4117,11 @@ declare namespace math {
      * in the matrix, like getting the size and getting or setting values in
      * the matrix. Supported storage formats are 'dense' and 'sparse'.
      */
-    matrix(format?: 'sparse' | 'dense', dataType?: string): MathJsChain
+    matrix(
+      this: MathJsChain<MathCollection>,
+      format?: 'sparse' | 'dense',
+      dataType?: string
+    ): MathJsChain<Matrix>
 
     /**
      * Create a number or convert a string, boolean, or unit to a number.
@@ -4077,7 +4129,16 @@ declare namespace math {
      * @param valuelessUnit A valueless unit, used to convert a unit to a
      * number
      */
-    number(valuelessUnit?: Unit | string): MathJsChain
+    number(
+      this: MathJsChain<
+        string | number | BigNumber | Fraction | boolean | Unit | null
+      >,
+      valuelessUnit?: Unit | string
+    ): MathJsChain<number>
+    number(
+      this: MathJsChain<MathCollection>,
+      valuelessUnit?: Unit | string
+    ): MathJsChain<MathCollection>
 
     /**
      * Create a Sparse Matrix. The function creates a new math.type.Matrix
@@ -4086,20 +4147,26 @@ declare namespace math {
      * values in the matrix.
      * @param dataType Sparse Matrix data type
      */
-    sparse(dataType?: string): MathJsChain
+    sparse(
+      this: MathJsChain<MathCollection>,
+      dataType?: string
+    ): MathJsChain<Matrix>
 
     /**
      * Split a unit in an array of units whose sum is equal to the original
      * unit.
      * @param parts An array of strings or valueless units
      */
-    splitUnit(parts: Unit[]): MathJsChain
+    splitUnit(this: MathJsChain<Unit>, parts: Unit[]): MathJsChain<Unit[]>
 
     /**
      * Create a string or convert any object into a string. Elements of
      * Arrays and Matrices are processed element wise.
      */
-    string(): MathJsChain
+    string(
+      this: MathJsChain<MathNumericType | string | Unit | null>
+    ): MathJsChain<string>
+    string(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Create a unit. Depending on the passed arguments, the function will
@@ -4107,7 +4174,13 @@ declare namespace math {
      * provided, all elements will be converted to units.
      * @param unit The unit to be created
      */
-    unit(unit?: string): MathJsChain
+    unit(this: MathJsChain<string>, unit?: string): MathJsChain<Unit>
+    unit(this: MathJsChain<Unit>, unit?: string): MathJsChain<Unit>
+    unit(
+      this: MathJsChain<number | BigNumber>,
+      unit?: string
+    ): MathJsChain<Unit>
+    unit(this: MathJsChain<MathCollection>, unit?: string): MathJsChain<Unit[]>
 
     /*************************************************************************
      * Expression functions
@@ -4117,45 +4190,64 @@ declare namespace math {
      * Parse and compile an expression. Returns a an object with a function
      * evaluate([scope]) to evaluate the compiled expression.
      */
-    compile(): MathJsChain
+    compile(this: MathJsChain<MathExpression>): MathJsChain<EvalFunction>
 
+    // TODO properly type this
     /**
      * Evaluate an expression.
      * @param scope Scope to read/write variables
      */
-    evaluate(scope?: object): MathJsChain
+    evaluate(
+      this: MathJsChain<MathExpression | Matrix>,
+      scope?: object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): MathJsChain<any>
+    evaluate(
+      this: MathJsChain<MathExpression[]>,
+      scope?: object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): MathJsChain<any[]>
 
     /**
      * Retrieve help on a function or data type. Help files are retrieved
      * from the documentation in math.expression.docs.
      */
-    help(): MathJsChain
+    help(this: MathJsChain<unknown>): MathJsChain<unknown>
+
+    /**
+     * @param options Available options: nodes - a set of custome nodes
+     */
+    parse(
+      this: MathJsChain<MathExpression[]>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      options?: any
+    ): MathJsChain<MathNode[]>
 
     /**
      * Parse an expression. Returns a node tree, which can be evaluated by
      * invoking node.evaluate();
      * @param options Available options: nodes - a set of custome nodes
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    parse(options?: any): MathJsChain
-    /**
-     * @param options Available options: nodes - a set of custome nodes
-     */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    parse(options?: any): MathJsChain
-
-    /**
-     * Create a parser. The function creates a new math.expression.Parser
-     * object.
-     */
-    parser(): MathJsChain
+    parse(
+      this: MathJsChain<MathExpression>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      options?: any
+    ): MathJsChain<MathNode>
 
     /**
      *  Replaces variable nodes with their scoped values
      * @param scope Scope to read/write variables
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolve(scope?: Record<string, any>): MathJsChain
+    resolve(
+      this: MathJsChain<MathNode>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      scope?: Record<string, any>
+    ): MathJsChain<MathNode>
+    resolve(
+      this: MathJsChain<MathNode[]>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      scope?: Record<string, any>
+    ): MathJsChain<MathNode[]>
 
     /*************************************************************************
      * Algebra functions
@@ -4166,23 +4258,31 @@ declare namespace math {
      * by default. When false, output will not be simplified.
      */
     derivative(
+      this: MathJsChain<MathNode | string>,
       variable: MathNode | string,
       options?: { simplify: boolean }
-    ): MathJsChain
+    ): MathJsChain<MathNode>
 
     /**
      * Solves the linear equation system by forwards substitution. Matrix
      * must be a lower triangular matrix.
      * @param b A column vector with the b values
      */
-    lsolve(b: Matrix | MathArray): MathJsChain
+    lsolve(
+      this: MathJsChain<Matrix>,
+      b: Matrix | MathArray
+    ): MathJsChain<Matrix>
+    lsolve(
+      this: MathJsChain<MathArray>,
+      b: Matrix | MathArray
+    ): MathJsChain<MathArray>
 
     /**
      * Calculate the Matrix LU decomposition with partial pivoting. Matrix A
      * is decomposed in two matrices (L, U) and a row permutation vector p
      * where A[p,:] = L * U
      */
-    lup(): MathJsChain
+    lup(this: MathJsChain<Matrix | MathArray>): MathJsChain<LUDecomposition>
 
     /**
      * Solves the linear system A * x = b where A is an [n x n] matrix and b
@@ -4194,17 +4294,25 @@ declare namespace math {
      * see slu for details. Matrix must be a SparseMatrix.
      */
     lusolve(
+      this: MathJsChain<Matrix>,
       b: Matrix | MathArray,
       order?: number,
       threshold?: number
-    ): MathJsChain
+    ): MathJsChain<Matrix>
+
+    lusolve(
+      this: MathJsChain<MathArray>,
+      b: Matrix | MathArray,
+      order?: number,
+      threshold?: number
+    ): MathJsChain<MathArray>
 
     /**
      * Calculate the Matrix QR decomposition. Matrix A is decomposed in two
      * matrices (Q, R) where Q is an orthogonal matrix and R is an upper
      * triangular matrix.
      */
-    qr(): MathJsChain
+    qr(this: MathJsChain<Matrix | MathArray>): MathJsChain<QRDecomposition>
 
     /**
      * Transform a rationalizable expression in a rational fraction. If
@@ -4216,7 +4324,11 @@ declare namespace math {
      * @param detailed  optional True if return an object, false if return
      * expression node (default)
      */
-    rationalize(optional?: object | boolean, detailed?: boolean): MathJsChain
+    rationalize(
+      this: MathJsChain<MathNode | string>,
+      optional?: object | boolean,
+      detailed?: boolean
+    ): MathJsChain<MathNode>
 
     /**
      * Simplify an expression tree.
@@ -4226,8 +4338,13 @@ declare namespace math {
      * can be specified as an object, string, or function.
      * @param scope Scope to variables
      */
-    simplify(rules?: SimplifyRule[], scope?: object): MathJsChain
+    simplify(
+      this: MathJsChain<MathNode | string>,
+      rules?: SimplifyRule[],
+      scope?: object
+    ): MathJsChain<MathNode>
 
+    // TODO check that this should even be here...
     simplifyCore(expr: MathNode): MathNode
 
     /**
@@ -4245,14 +4362,25 @@ declare namespace math {
      * with more than 10*sqr(columns) entries.
      * @param threshold Partial pivoting threshold (1 for partial pivoting)
      */
-    slu(order: number, threshold: number): MathJsChain
+    slu(
+      this: MathJsChain<Matrix>,
+      order: number,
+      threshold: number
+    ): MathJsChain<SLUDecomposition>
 
     /**
      * Solves the linear equation system by backward substitution. Matrix
      * must be an upper triangular matrix. U * x = b
      * @param b A column vector with the b values
      */
-    usolve(b: Matrix | MathArray): MathJsChain
+    usolve(
+      this: MathJsChain<Matrix>,
+      b: Matrix | MathArray
+    ): MathJsChain<Matrix>
+    usolve(
+      this: MathJsChain<MathArray>,
+      b: Matrix | MathArray
+    ): MathJsChain<MathArray>
 
     /*************************************************************************
      * Arithmetic functions
@@ -4262,14 +4390,21 @@ declare namespace math {
      * Calculate the absolute value of a number. For matrices, the function
      * is evaluated element wise.
      */
-    abs(): MathJsChain
+    abs(this: MathJsChain<number>): MathJsChain<number>
+    abs(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    abs(this: MathJsChain<Fraction>): MathJsChain<Fraction>
+    abs(this: MathJsChain<Complex>): MathJsChain<Complex>
+    abs(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    abs(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+    abs(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
      * Add two values, x + y. For matrices, the function is evaluated
      * element wise.
      * @param y Second value to add
      */
-    add(y: MathType): MathJsChain
+    add<T extends MathType>(this: MathJsChain<T>, y: T): MathJsChain<T>
+    add(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Apply a function that maps an array to a scalar along a given axis of the
@@ -4280,10 +4415,11 @@ declare namespace math {
      * array or 1-d matrix as an input and return a number.
      * @returns The residual matrix with the function applied over some dimension.
      */
-    apply(
+    apply<T extends MathCollection>(
+      this: MathJsChain<T>,
       dim: number,
       callback: (array: Array<MathType> | Matrix) => number
-    ): MathJsChain
+    ): MathJsChain<T>
 
     /**
      * Calculate the cubic root of a value. For matrices, the function is
@@ -4292,7 +4428,17 @@ declare namespace math {
      * a number or complex number. If true, all complex roots are returned,
      * if false (default) the principal root is returned.
      */
-    cbrt(allRoots?: boolean): MathJsChain
+    cbrt(this: MathJsChain<number>, allRoots?: boolean): MathJsChain<number>
+    cbrt(
+      this: MathJsChain<BigNumber>,
+      allRoots?: boolean
+    ): MathJsChain<BigNumber>
+    cbrt(this: MathJsChain<Complex>, allRoots?: boolean): MathJsChain<Complex>
+    cbrt(
+      this: MathJsChain<MathArray>,
+      allRoots?: boolean
+    ): MathJsChain<MathArray>
+    cbrt(this: MathJsChain<Matrix>, allRoots?: boolean): MathJsChain<Matrix>
 
     // Rounding functions grouped for similarity
 
@@ -4302,28 +4448,56 @@ declare namespace math {
      * function is evaluated element wise.
      * @param n Number of decimals Default value: 0.
      */
-    ceil(n?: number | BigNumber | MathCollection): MathJsChain
+    ceil(
+      this: MathJsChain<MathNumericType>,
+      n?: number | BigNumber | MathCollection
+    ): MathJsChain<MathNumericType>
+    ceil(
+      this: MathJsChain<MathCollection>,
+      n?: number | BigNumber | MathCollection
+    ): MathJsChain<MathCollection>
 
     /**
      * Round a value towards zero. For matrices, the function is evaluated
      * element wise.
      * @param n Number of decimals Default value: 0.
      */
-    fix(n?: number | BigNumber | MathCollection): MathJsChain
+    fix(
+      this: MathJsChain<MathNumericType>,
+      n?: number | BigNumber | MathCollection
+    ): MathJsChain<MathNumericType>
+    fix(
+      this: MathJsChain<MathCollection>,
+      n?: number | BigNumber | MathCollection
+    ): MathJsChain<MathCollection>
 
     /**
      * Round a value towards minus infinity. For matrices, the function is
      * evaluated element wise.
      * @param n Number of decimals Default value: 0.
      */
-    floor(n?: number | BigNumber | MathCollection): MathJsChain
+    floor(
+      this: MathJsChain<MathNumericType>,
+      n?: number | BigNumber | MathCollection
+    ): MathJsChain<MathNumericType>
+    floor(
+      this: MathJsChain<MathCollection>,
+      n?: number | BigNumber | MathCollection
+    ): MathJsChain<MathCollection>
 
     /**
      * Round a value towards the nearest integer. For matrices, the function
      * is evaluated element wise.
      * @param n Number of decimals Default value: 0.
      */
-    round(n?: number | BigNumber | MathCollection): MathJsChain
+    round(
+      this: MathJsChain<MathNumericType>,
+      n?: number | BigNumber | MathCollection
+    ): MathJsChain<MathNumericType>
+    round(
+      this: MathJsChain<MathCollection>,
+      n?: number | BigNumber | MathCollection
+    ): MathJsChain<MathCollection>
 
     // End of rounding group
 
@@ -4331,52 +4505,79 @@ declare namespace math {
      * Compute the cube of a value, x * x * x. For matrices, the function is
      * evaluated element wise.
      */
-    cube(): MathJsChain
+    cube(this: MathJsChain<number>): MathJsChain<number>
+    cube(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    cube(this: MathJsChain<Fraction>): MathJsChain<Fraction>
+    cube(this: MathJsChain<Complex>): MathJsChain<Complex>
+    cube(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    cube(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+    cube(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
      * Divide two values, x / y. To divide matrices, x is multiplied with
      * the inverse of y: x * inv(y).
      * @param y Denominator
      */
-    divide(y: MathType): MathJsChain
+    divide(this: MathJsChain<Unit>, y: Unit): MathJsChain<Unit | number>
+    divide(this: MathJsChain<Unit>, y: number): MathJsChain<Unit>
+    divide(this: MathJsChain<number>, y: number): MathJsChain<number>
+    divide(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Divide two matrices element wise. The function accepts both matrices
      * and scalar values.
      * @param y Denominator
      */
-    dotDivide(y: MathType): MathJsChain
+    dotDivide(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Multiply two matrices element wise. The function accepts both
      * matrices and scalar values.
      * @param y Right hand value
      */
-    dotMultiply(y: MathType): MathJsChain
+    dotMultiply(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Calculates the power of x to y element wise.
      * @param y The exponent
      */
-    dotPow(y: MathType): MathJsChain
+    dotPow(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Calculate the exponent of a value. For matrices, the function is
      * evaluated element wise.
      */
-    exp(): MathJsChain
+    exp(this: MathJsChain<number>): MathJsChain<number>
+    exp(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    exp(this: MathJsChain<Complex>): MathJsChain<Complex>
+    exp(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    exp(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the value of subtracting 1 from the exponential value. For
      * matrices, the function is evaluated element wise.
      */
-    expm1(): MathJsChain
+    expm1(this: MathJsChain<number>): MathJsChain<number>
+    expm1(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    expm1(this: MathJsChain<Complex>): MathJsChain<Complex>
+    expm1(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    expm1(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the greatest common divisor for two or more values or
      * arrays. For matrices, the function is evaluated element wise.
      */
-    gcd(): MathJsChain
+    gcd(this: MathJsChain<number[]>, ...args: number[]): MathJsChain<number>
+    gcd(
+      this: MathJsChain<BigNumber[]>,
+      ...args: BigNumber[]
+    ): MathJsChain<BigNumber>
+    gcd(this: MathJsChain<Complex[]>, ...args: Fraction[]): MathJsChain<Complex>
+    gcd(
+      this: MathJsChain<MathArray[]>,
+      ...args: MathArray[]
+    ): MathJsChain<MathArray>
+    gcd(this: MathJsChain<Matrix[]>, ...args: Matrix[]): MathJsChain<Matrix>
 
     /**
      * Calculate the hypotenusa of a list with values. The hypotenusa is
@@ -4384,7 +4585,8 @@ declare namespace math {
      * matrix input, the hypotenusa is calculated for all values in the
      * matrix.
      */
-    hypot(): MathJsChain
+    hypot(this: MathJsChain<number[]>): MathJsChain<number>
+    hypot(this: MathJsChain<BigNumber[]>): MathJsChain<BigNumber>
 
     /**
      * Calculate the least common multiple for two or more values or arrays.
@@ -4392,7 +4594,10 @@ declare namespace math {
      * the function is evaluated element wise.
      * @param b An integer number
      */
-    lcm(b: number | BigNumber | MathCollection): MathJsChain
+    lcm(this: MathJsChain<number>, b: number): MathJsChain<number>
+    lcm(this: MathJsChain<BigNumber>, b: BigNumber): MathJsChain<BigNumber>
+    lcm(this: MathJsChain<MathArray>, b: MathArray): MathJsChain<MathArray>
+    lcm(this: MathJsChain<Matrix>, b: Matrix): MathJsChain<Matrix>
 
     /**
      * Calculate the logarithm of a value. For matrices, the function is
@@ -4400,24 +4605,58 @@ declare namespace math {
      * @param base Optional base for the logarithm. If not provided, the
      * natural logarithm of x is calculated. Default value: e.
      */
-    log(base?: number | BigNumber | Complex): MathJsChain
+    log<T extends number | BigNumber | Complex | MathCollection>(
+      this: MathJsChain<T>,
+      base?: number | BigNumber | Complex
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Calculate the 10-base of a value. This is the same as calculating
      * log(x, 10). For matrices, the function is evaluated element wise.
      */
-    log10(): MathJsChain
+
+    log10(this: MathJsChain<number>): MathJsChain<number>
+    log10(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    log10(this: MathJsChain<Complex>): MathJsChain<Complex>
+    log10(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    log10(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the logarithm of a value+1. For matrices, the function is
      * evaluated element wise.
      */
-    log1p(base?: number | BigNumber | Complex): MathJsChain
+    log1p(
+      this: MathJsChain<number>,
+      base?: number | BigNumber | Complex
+    ): MathJsChain<number>
+    log1p(
+      this: MathJsChain<BigNumber>,
+      base?: number | BigNumber | Complex
+    ): MathJsChain<BigNumber>
+    log1p(
+      this: MathJsChain<Complex>,
+      base?: number | BigNumber | Complex
+    ): MathJsChain<Complex>
+    log1p(
+      this: MathJsChain<MathArray>,
+      base?: number | BigNumber | Complex
+    ): MathJsChain<MathArray>
+    log1p(
+      this: MathJsChain<Matrix>,
+      base?: number | BigNumber | Complex
+    ): MathJsChain<Matrix>
+
     /**
      * Calculate the 2-base of a value. This is the same as calculating
      * log(x, 2). For matrices, the function is evaluated element wise.
      */
-    log2(): MathJsChain
+
+    log2(this: MathJsChain<number>): MathJsChain<number>
+    log2(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    log2(this: MathJsChain<Complex>): MathJsChain<Complex>
+    log2(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    log2(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+
     /**
      * Calculates the modulus, the remainder of an integer division. For
      * matrices, the function is evaluated element wise. The modulus is
@@ -4425,14 +4664,23 @@ declare namespace math {
      * @see http://en.wikipedia.org/wiki/Modulo_operation.
      * @param y Divisor
      */
-    mod(y: number | BigNumber | Fraction | MathCollection): MathJsChain
+    mod<T extends number | BigNumber | Fraction | MathCollection>(
+      this: MathJsChain<T>,
+      y: number | BigNumber | Fraction | MathCollection
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Multiply two values, x * y. The result is squeezed. For matrices, the
      * matrix product is calculated.
      * @param y The second value to multiply
      */
-    multiply(y: MathType): MathJsChain
+    multiply<T extends Matrix | MathArray>(
+      this: MathJsChain<T>,
+      y: MathType
+    ): MathJsChain<T>
+    multiply(this: MathJsChain<Unit>, y: Unit): MathJsChain<Unit>
+    multiply(this: MathJsChain<number>, y: number): MathJsChain<number>
+    multiply(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Calculate the norm of a number, vector or matrix. The second
@@ -4441,7 +4689,10 @@ declare namespace math {
      * -Infinity. Supported strings are: 'inf', '-inf', and 'fro' (The
      * Frobenius norm) Default value: 2.
      */
-    norm(p?: number | BigNumber | string): MathJsChain
+    norm(
+      this: MathJsChain<number | BigNumber | Complex | MathCollection>,
+      p?: number | BigNumber | string
+    ): MathJsChain<number | BigNumber>
 
     /**
      * Calculate the nth root of a value. The principal nth root of a
@@ -4449,14 +4700,20 @@ declare namespace math {
      * x^root = A For matrices, the function is evaluated element wise.
      * @param root The root. Default value: 2.
      */
-    nthRoot(root?: number | BigNumber): MathJsChain
+    nthRoot(
+      this: MathJsChain<number | BigNumber | MathCollection | Complex>,
+      root?: number | BigNumber
+    ): MathJsChain<number | Complex | MathCollection>
 
     /**
      * Calculates the power of x to y, x ^ y. Matrix exponentiation is
      * supported for square matrices x, and positive integer exponents y.
      * @param y The exponent
      */
-    pow(y: number | BigNumber): MathJsChain
+    pow(
+      this: MathJsChain<MathType>,
+      y: number | BigNumber | Complex
+    ): MathJsChain<MathType>
 
     /**
      * Compute the sign of a value. The sign of a value x is: 1 when x > 1
@@ -4465,26 +4722,46 @@ declare namespace math {
      * @param x The number for which to determine the sign
      * @returns The sign of x
      */
-    sign(x: number | BigNumber): MathJsChain
+    sign(this: MathJsChain<number>): MathJsChain<number>
+    sign(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    sign(this: MathJsChain<Fraction>): MathJsChain<Fraction>
+    sign(this: MathJsChain<Complex>): MathJsChain<Complex>
+    sign(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    sign(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+    sign(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
      * Calculate the square root of a value. For matrices, the function is
      * evaluated element wise.
      */
-    sqrt(): MathJsChain
+
+    sqrt(this: MathJsChain<number>): MathJsChain<number>
+    sqrt(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    sqrt(this: MathJsChain<Complex>): MathJsChain<Complex>
+    sqrt(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    sqrt(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+    sqrt(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
      * Compute the square of a value, x * x. For matrices, the function is
      * evaluated element wise.
      */
-    square(): MathJsChain
+
+    square(this: MathJsChain<number>): MathJsChain<number>
+    square(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    square(this: MathJsChain<Fraction>): MathJsChain<Fraction>
+    square(this: MathJsChain<Complex>): MathJsChain<Complex>
+    square(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    square(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+    square(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
      * Subtract two values, x - y. For matrices, the function is evaluated
      * element wise.
      * @param y Value to subtract from x
      */
-    subtract(y: MathType): MathJsChain
+    subtract<T extends MathType>(this: MathJsChain<T>, y: T): MathJsChain<T>
+    subtract(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Inverse the sign of a value, apply a unary minus operation. For
@@ -4492,21 +4769,39 @@ declare namespace math {
      * strings will be converted to a number. For complex numbers, both real
      * and complex value are inverted.
      */
-    unaryMinus(): MathJsChain
+
+    unaryMinus(this: MathJsChain<number>): MathJsChain<number>
+    unaryMinus(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    unaryMinus(this: MathJsChain<Fraction>): MathJsChain<Fraction>
+    unaryMinus(this: MathJsChain<Complex>): MathJsChain<Complex>
+    unaryMinus(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    unaryMinus(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+    unaryMinus(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
      * Unary plus operation. Boolean values and strings will be converted to
      * a number, numeric values will be returned as is. For matrices, the
      * function is evaluated element wise.
      */
-    unaryPlus(): MathJsChain
+
+    unaryPlus(this: MathJsChain<number>): MathJsChain<number>
+    unaryPlus(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    unaryPlus(this: MathJsChain<Fraction>): MathJsChain<Fraction>
+    unaryPlus(this: MathJsChain<string>): MathJsChain<string>
+    unaryPlus(this: MathJsChain<Complex>): MathJsChain<Complex>
+    unaryPlus(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    unaryPlus(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+    unaryPlus(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
      * Calculate the extended greatest common divisor for two values. See
      * http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
      * @param b An integer number
      */
-    xgcd(b: number | BigNumber): MathJsChain
+    xgcd(
+      this: MathJsChain<number | BigNumber>,
+      b: number | BigNumber
+    ): MathJsChain<MathArray>
 
     /*************************************************************************
      * Bitwise functions
@@ -4517,14 +4812,21 @@ declare namespace math {
      * evaluated element wise.
      * @param y Second value to and
      */
-    bitAnd(y: number | BigNumber | MathCollection): MathJsChain
+    bitAnd<T extends number | BigNumber | MathCollection>(
+      this: MathJsChain<T>,
+      y: number | BigNumber | MathCollection
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Bitwise NOT value, ~x. For matrices, the function is evaluated
      * element wise. For units, the function is evaluated on the best prefix
      * base.
      */
-    bitNot(): MathJsChain
+
+    bitNot(this: MathJsChain<number>): MathJsChain<number>
+    bitNot(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    bitNot(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    bitNot(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Bitwise OR two values, x | y. For matrices, the function is evaluated
@@ -4532,14 +4834,20 @@ declare namespace math {
      * print base.
      * @param y Second value to or
      */
-    bitOr(y: number | BigNumber | MathCollection): MathJsChain
+    bitOr(this: MathJsChain<number>, y: number): MathJsChain<number>
+    bitOr(this: MathJsChain<BigNumber>, y: BigNumber): MathJsChain<BigNumber>
+    bitOr(this: MathJsChain<MathArray>, y: MathArray): MathJsChain<MathArray>
+    bitOr(this: MathJsChain<Matrix>, y: Matrix): MathJsChain<Matrix>
 
     /**
      * Bitwise XOR two values, x ^ y. For matrices, the function is
      * evaluated element wise.
      * @param y Second value to xor
      */
-    bitXor(y: number | BigNumber | MathCollection): MathJsChain
+    bitXor<T extends number | BigNumber | MathCollection>(
+      this: MathJsChain<T>,
+      y: number | BigNumber | MathCollection
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Bitwise left logical shift of a value x by y number of bits, x << y.
@@ -4547,7 +4855,10 @@ declare namespace math {
      * function is evaluated on the best prefix base.
      * @param y Amount of shifts
      */
-    leftShift(y: number | BigNumber): MathJsChain
+    leftShift<T extends number | BigNumber | MathCollection>(
+      this: MathJsChain<T>,
+      y: number | BigNumber
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Bitwise right arithmetic shift of a value x by y number of bits, x >>
@@ -4555,7 +4866,10 @@ declare namespace math {
      * the function is evaluated on the best prefix base.
      * @param y Amount of shifts
      */
-    rightArithShift(y: number | BigNumber): MathJsChain
+    rightArithShift<T extends number | BigNumber | MathCollection>(
+      this: MathJsChain<T>,
+      y: number | BigNumber
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Bitwise right logical shift of value x by y number of bits, x >>> y.
@@ -4563,7 +4877,10 @@ declare namespace math {
      * function is evaluated on the best prefix base.
      * @param y Amount of shifts
      */
-    rightLogShift(y: number): MathJsChain
+    rightLogShift<T extends number | MathCollection>(
+      this: MathJsChain<T>,
+      y: number
+    ): MathJsChain<NoLiteralType<T>>
 
     /*************************************************************************
      * Combinatorics functions
@@ -4575,21 +4892,28 @@ declare namespace math {
      * takes integer arguments. The following condition must be enforced: n
      * >= 0
      */
-    bellNumbers(): MathJsChain
+
+    bellNumbers(this: MathJsChain<number>): MathJsChain<number>
+    bellNumbers(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
 
     /**
      * The Catalan Numbers enumerate combinatorial structures of many
      * different types. catalan only takes integer arguments. The following
      * condition must be enforced: n >= 0
      */
-    catalan(): MathJsChain
+
+    catalan(this: MathJsChain<number>): MathJsChain<number>
+    catalan(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
 
     /**
      * The composition counts of n into k parts. Composition only takes
      * integer arguments. The following condition must be enforced: k <= n.
      * @param k Number of objects in the subset
      */
-    composition(k: number | BigNumber): MathJsChain
+    composition<T extends number | BigNumber>(
+      this: MathJsChain<T>,
+      k: number | BigNumber
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * The Stirling numbers of the second kind, counts the number of ways to
@@ -4599,7 +4923,10 @@ declare namespace math {
      * 1
      * @param k Number of objects in the subset
      */
-    stirlingS2(k: number | BigNumber): MathJsChain
+    stirlingS2<T extends number | BigNumber>(
+      this: MathJsChain<T>,
+      k: number | BigNumber
+    ): MathJsChain<NoLiteralType<T>>
 
     /*************************************************************************
      * Complex functions
@@ -4610,28 +4937,38 @@ declare namespace math {
      * the argument is computed as atan2(b, a). For matrices, the function
      * is evaluated element wise.
      */
-    arg(): MathJsChain
+
+    arg(this: MathJsChain<number | Complex>): MathJsChain<number>
+    arg(this: MathJsChain<BigNumber | Complex>): MathJsChain<BigNumber>
+    arg(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    arg(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Compute the complex conjugate of a complex value. If x = a+bi, the
      * complex conjugate of x is a - bi. For matrices, the function is
      * evaluated element wise.
      */
-    conj(): MathJsChain
+    conj<T extends number | BigNumber | Complex | MathCollection>(
+      this: MathJsChain<T>
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Get the imaginary part of a complex number. For a complex number a +
      * bi, the function returns b. For matrices, the function is evaluated
      * element wise.
      */
-    im(): MathJsChain
+    im(this: MathJsChain<number | Complex>): MathJsChain<number>
+    im(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    im(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /**
      * Get the real part of a complex number. For a complex number a + bi,
      * the function returns a. For matrices, the function is evaluated
      * element wise.
      */
-    re(): MathJsChain
+    re(this: MathJsChain<number | Complex>): MathJsChain<number>
+    re(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    re(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
     /*************************************************************************
      * Geometry functions
@@ -4647,7 +4984,10 @@ declare namespace math {
      * c)
      * @param y Coordinates of the second point
      */
-    distance(y: MathCollection | object): MathJsChain
+    distance(
+      this: MathJsChain<MathCollection | object>,
+      y: MathCollection | object
+    ): MathJsChain<number | BigNumber>
 
     /**
      * Calculates the point of intersection of two lines in two or three
@@ -4663,10 +5003,11 @@ declare namespace math {
      * the calculation is for line and plane
      */
     intersect(
+      this: MathJsChain<MathCollection>,
       x: MathCollection,
       y: MathCollection,
       z: MathCollection
-    ): MathJsChain
+    ): MathJsChain<MathArray>
 
     /*************************************************************************
      * Logical functions
@@ -4678,13 +5019,18 @@ declare namespace math {
      * element wise.
      * @param y Second value to and
      */
-    and(y: number | BigNumber | Complex | Unit | MathCollection): MathJsChain
+    and(
+      this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
+      y: number | BigNumber | Complex | Unit | MathCollection
+    ): MathJsChain<boolean | MathCollection>
 
     /**
      * Logical not. Flips boolean value of a given parameter. For matrices,
      * the function is evaluated element wise.
      */
-    not(): MathJsChain
+    not(
+      this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>
+    ): MathJsChain<boolean | MathCollection>
 
     /**
      * Logical or. Test if at least one value is defined with a
@@ -4692,7 +5038,10 @@ declare namespace math {
      * element wise.
      * @param y Second value to or
      */
-    or(y: number | BigNumber | Complex | Unit | MathCollection): MathJsChain
+    or(
+      this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
+      y: number | BigNumber | Complex | Unit | MathCollection
+    ): MathJsChain<boolean | MathCollection>
 
     /**
      * Logical xor. Test whether one and only one value is defined with a
@@ -4700,7 +5049,10 @@ declare namespace math {
      * element wise.
      * @param y Second value to xor
      */
-    xor(y: number | BigNumber | Complex | Unit | MathCollection): MathJsChain
+    xor(
+      this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
+      y: number | BigNumber | Complex | Unit | MathCollection
+    ): MathJsChain<boolean | MathCollection>
 
     /*************************************************************************
      * Matrix functions
@@ -4711,7 +5063,10 @@ declare namespace math {
      * dimension over which to concatenate the matrices. By default the last
      * dimension of the matrices.
      */
-    concat(): MathJsChain
+
+    concat(
+      this: MathJsChain<Array<MathCollection | number | BigNumber>>
+    ): MathJsChain<MathCollection>
 
     /**
      * Calculate the cross product for two vectors in three dimensional
@@ -4720,12 +5075,16 @@ declare namespace math {
      * * b2 - a2 * b1 ]
      * @param y Second vector
      */
-    cross(y: MathCollection): MathJsChain
+    cross(
+      this: MathJsChain<MathCollection>,
+      y: MathCollection
+    ): MathJsChain<Matrix | MathArray>
 
     /**
      * Calculate the determinant of a matrix.
      */
-    det(): MathJsChain
+
+    det(this: MathJsChain<MathCollection>): MathJsChain<number>
 
     /**
      * Create a diagonal matrix or retrieve the diagonal of a matrix. When x
@@ -4738,8 +5097,15 @@ declare namespace math {
      * retrieved. Default value: 0.
      * @param format The matrix storage format. Default value: 'dense'.
      */
-    diag(format?: string): MathJsChain
-    diag(k: number | BigNumber, format?: string): MathJsChain
+    diag(
+      this: MathJsChain<MathCollection>,
+      format?: string
+    ): MathJsChain<Matrix>
+    diag(
+      this: MathJsChain<MathCollection>,
+      k: number | BigNumber,
+      format?: string
+    ): MathJsChain<Matrix | MathArray>
 
     /**
      * Calculate the dot product of two vectors. The dot product of A = [a1,
@@ -4747,7 +5113,10 @@ declare namespace math {
      * B) = a1 * b1 + a2 * b2 + a3 * b3 + ... + an * bn
      * @param y Second vector
      */
-    dot(y: MathCollection): MathJsChain
+    dot(
+      this: MathJsChain<MathCollection>,
+      y: MathCollection
+    ): MathJsChain<number>
 
     /**
      * Compute the matrix exponential, expm(A) = e^A. The matrix must be
@@ -4756,52 +5125,77 @@ declare namespace math {
      * approximant with scaling and squaring; see “Nineteen Dubious Ways to
      * Compute the Exponential of a Matrix,” by Moler and Van Loan.
      */
-    expm(): MathJsChain
+
+    expm(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Create a 2-dimensional identity matrix with size m x n or n x n. The
      * matrix has ones on the diagonal and zeros elsewhere.
      * @param format The Matrix storage format
      */
-    identity(format?: string): MathJsChain
+    identity(
+      this: MathJsChain<number | number[] | Matrix | MathArray>,
+      format?: string
+    ): MathJsChain<Matrix | MathArray | number>
+
     /**
      * @param n The y dimension for the matrix
      * @param format The Matrix storage format
      */
-    identity(n: number, format?: string): MathJsChain
+    identity(
+      this: MathJsChain<number>,
+      n: number,
+      format?: string
+    ): MathJsChain<Matrix | MathArray | number>
 
     /**
      * Filter the items in an array or one dimensional matrix.
      */
     filter(
-      test: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ((value: any, index: any, matrix: Matrix | MathArray) => boolean) | RegExp
-    ): MathJsChain
+      this: MathJsChain<Matrix | MathArray | string[]>,
+      test:
+        | ((
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            value: any,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            index: any,
+            matrix: Matrix | MathArray | string[]
+          ) => boolean)
+        | RegExp
+    ): MathJsChain<Matrix | MathArray>
 
     /**
      * Flatten a multi dimensional matrix into a single dimensional matrix.
      */
-    flatten(): MathJsChain
+
+    flatten<T extends MathCollection>(x: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Iterate over all elements of a matrix/array, and executes the given
      * callback function.
      */
-    forEach(
+    forEach<T extends Matrix | MathArray>(
+      this: MathJsChain<T>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      callback: (value: any, index: any, matrix: Matrix | MathArray) => void
-    ): MathJsChain
+      callback: (value: any, index: any, matrix: T) => void
+    ): MathJsChain<T>
 
     /**
      * Calculate the inverse of a square matrix.
      */
-    inv(): MathJsChain
+
+    inv<T extends number | Complex | MathCollection>(
+      this: MathJsChain<T>
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Calculate the kronecker product of two matrices or vectors
      * @param y Second vector
      */
-    kron(y: Matrix | MathArray): MathJsChain
+    kron(
+      this: MathJsChain<Matrix | MathArray>,
+      y: Matrix | MathArray
+    ): MathJsChain<Matrix>
 
     /**
      * Iterate over all elements of a matrix/array, and executes the given
@@ -4810,26 +5204,31 @@ declare namespace math {
      * parameters: the value of the element, the index of the element, and
      * the Matrix/array being traversed.
      */
-    map(
-      callback: (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        value: any,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        index: any,
-        matrix: Matrix | MathArray
-      ) => Matrix | MathArray
-    ): MathJsChain
+    map<T extends Matrix | MathArray>(
+      this: MathJsChain<T>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      callback: (value: any, index: any, matrix: T) => MathType | string
+    ): MathJsChain<T>
 
     /**
      * Create a matrix filled with ones. The created matrix can have one or
      * multiple dimensions.
      * @param format The matrix storage format
      */
-    ones(format?: string): MathJsChain
+    ones(
+      this: MathJsChain<number | number[]>,
+      format?: string
+    ): MathJsChain<MathCollection>
+
     /**
      * @param format The matrix storage format
      */
-    ones(n: number, format?: string): MathJsChain
+    ones(
+      this: MathJsChain<number>,
+      n: number,
+      format?: string
+    ): MathJsChain<MathCollection>
+
     /**
      * Partition-based selection of an array or 1D matrix. Will find the kth
      * smallest value, and mutates the input array. Uses Quickselect.
@@ -4839,10 +5238,11 @@ declare namespace math {
      * and 0 when a == b. Default value: 'asc'.
      */
     partitionSelect(
+      this: MathJsChain<MathCollection>,
       k: number,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       compare?: 'asc' | 'desc' | ((a: any, b: any) => number)
-    ): MathJsChain
+    ): MathJsChain<MathCollection>
 
     /**
      * Create an array from a range. By default, the range end is excluded.
@@ -4853,20 +5253,28 @@ declare namespace math {
      * @param includeEnd: Option to specify whether to include the end or
      * not. False by default
      */
-    range(includeEnd?: boolean): Matrix
-    range(end: number | BigNumber, includeEnd?: boolean): MathJsChain
+    range(this: MathJsChain<string>, includeEnd?: boolean): MathJsChain<Matrix>
     range(
+      this: MathJsChain<number | BigNumber>,
+      end: number | BigNumber,
+      includeEnd?: boolean
+    ): MathJsChain<Matrix>
+    range(
+      this: MathJsChain<number | BigNumber>,
       end: number | BigNumber,
       step: number | BigNumber,
       includeEnd?: boolean
-    ): MathJsChain
+    ): MathJsChain<Matrix>
 
     /**
      * Reshape a multi dimensional array to fit the specified dimensions
      * @param sizes One dimensional array with integral sizes for each
      * dimension
      */
-    reshape(sizes: number[]): MathJsChain
+    reshape<T extends MathCollection>(
+      this: MathJsChain<T>,
+      sizes: number[]
+    ): MathJsChain<T>
 
     /**
      * Resize a matrix
@@ -4874,12 +5282,20 @@ declare namespace math {
      * @param defaultValue Zero by default, except in case of a string, in
      * that case defaultValue = ' ' Default value: 0.
      */
-    resize(size: MathCollection, defaultValue?: number | string): MathJsChain
+    resize<T extends MathCollection>(
+      this: MathJsChain<T>,
+      size: MathCollection,
+      defaultValue?: number | string
+    ): MathJsChain<T>
 
     /**
      * Calculate the size of a matrix or scalar.
      */
-    size(): MathJsChain
+    size(
+      this: MathJsChain<
+        boolean | number | Complex | Unit | string | MathCollection
+      >
+    ): MathJsChain<MathCollection>
 
     /**
      * Sort the items in a matrix
@@ -4887,22 +5303,25 @@ declare namespace math {
      * is called as compare(a, b), and must return 1 when a > b, -1 when a <
      * b, and 0 when a == b. Default value: ‘asc’
      */
-    sort(
+    sort<T extends Matrix | MathArray>(
+      this: MathJsChain<T>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       compare: ((a: any, b: any) => number) | 'asc' | 'desc' | 'natural'
-    ): MathJsChain
+    ): MathJsChain<T>
 
     /**
      * Calculate the principal square root of a square matrix. The principal
      * square root matrix X of another matrix A is such that X * X = A.
      */
-    sqrtm(): MathJsChain
+
+    sqrtm<T extends MathCollection>(A: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Squeeze a matrix, remove inner and outer singleton dimensions from a
      * matrix.
      */
-    squeeze(): MathJsChain
+
+    squeeze<T extends MathCollection>(x: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Get or set a subset of a matrix or string.
@@ -4915,19 +5334,28 @@ declare namespace math {
      * undefined. Default value: undefined.
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    subset(index: Index, replacement?: any, defaultValue?: any): MathJsChain
+    subset<T extends MathCollection | string>(
+      this: MathJsChain<T>,
+      index: Index,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      replacement?: any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      defaultValue?: any
+    ): MathJsChain<T>
 
     /**
      * Calculate the trace of a matrix: the sum of the elements on the main
      * diagonal of a square matrix.
      */
-    trace(): MathJsChain
+
+    trace(this: MathJsChain<MathCollection>): MathJsChain<number>
 
     /**
      * Transpose a matrix. All values of the matrix are reflected over its
      * main diagonal. Only two dimensional matrices are supported.
      */
-    transpose(): MathJsChain
+
+    transpose<T extends MathCollection>(x: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Create a matrix filled with zeros. The created matrix can have one or
@@ -4935,12 +5363,20 @@ declare namespace math {
      * @param format The matrix storage format
      * @returns A matrix filled with zeros
      */
-    zeros(format?: string): MathJsChain
+    zeros(
+      this: MathJsChain<number | number[]>,
+      format?: string
+    ): MathJsChain<MathCollection>
+
     /**
      * @param n The y dimension of the matrix
      * @param format The matrix storage format
      */
-    zeros(n: number, format?: string): MathJsChain
+    zeros(
+      this: MathJsChain<number>,
+      n: number,
+      format?: string
+    ): MathJsChain<MathCollection>
 
     /*************************************************************************
      * Probability functions
@@ -4952,28 +5388,40 @@ declare namespace math {
      * following condition must be enforced: k <= n.
      * @param k Number of objects in the subset
      */
-    combinations(k: number | BigNumber): MathJsChain
+    combinations<T extends number | BigNumber>(
+      n: MathJsChain<T>,
+      k: number | BigNumber
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Compute the factorial of a value Factorial only supports an integer
      * value as argument. For matrices, the function is evaluated element
      * wise.
      */
-    factorial(): MathJsChain
+
+    factorial<T extends number | BigNumber | MathCollection>(
+      n: MathJsChain<T>
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Compute the gamma function of a value using Lanczos approximation for
      * small values, and an extended Stirling approximation for large
      * values. For matrices, the function is evaluated element wise.
      */
-    gamma(): MathJsChain
+
+    gamma<T extends number | BigNumber | Complex | MathCollection>(
+      n: MathJsChain<T>
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Calculate the Kullback-Leibler (KL) divergence between two
      * distributions
      * @param p Second vector
      */
-    kldivergence(p: MathCollection): MathJsChain
+    kldivergence(
+      this: MathJsChain<MathCollection>,
+      p: MathCollection
+    ): MathJsChain<number>
 
     /**
      * Multinomial Coefficients compute the number of ways of picking a1,
@@ -4981,7 +5429,10 @@ declare namespace math {
      * takes one array of integers as an argument. The following condition
      * must be enforced: every ai <= 0
      */
-    multinomial(): MathJsChain
+
+    multinomial<T extends number | BigNumber>(
+      a: MathJsChain<T[]>
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Compute the number of ways of obtaining an ordered subset of k
@@ -4989,7 +5440,10 @@ declare namespace math {
      * arguments. The following condition must be enforced: k <= n.
      * @param k The number of objects in the subset
      */
-    permutations(k?: number | BigNumber): MathJsChain
+    permutations<T extends number | BigNumber>(
+      n: MathJsChain<T>,
+      k?: number | BigNumber
+    ): MathJsChain<NoLiteralType<T>>
 
     /**
      * Random pick a value from a one dimensional array. Array element is
@@ -4997,7 +5451,11 @@ declare namespace math {
      * @param number An int or float
      * @param weights An array of ints or floats
      */
-    pickRandom(number?: number, weights?: number[]): MathJsChain
+    pickRandom(
+      array: MathJsChain<number[]>,
+      number?: number,
+      weights?: number[]
+    ): MathJsChain<number | number[]>
 
     /**
      * Return a random number larger or equal to min and smaller than max
@@ -5005,9 +5463,14 @@ declare namespace math {
      * @param min Minimum boundary for the random value, included
      * @param max Maximum boundary for the random value, excluded
      */
-    random(max?: number): MathJsChain
+    random(this: MathJsChain<number>, max?: number): MathJsChain<number>
+
     // tslint:disable-next-line unified-signatures
-    random(min: number, max: number): MathJsChain
+    random<T extends MathCollection>(
+      this: MathJsChain<T>,
+      min?: number,
+      max?: number
+    ): MathJsChain<T>
 
     /**
      * Return a random integer number larger or equal to min and smaller
@@ -5015,9 +5478,20 @@ declare namespace math {
      * @param min Minimum boundary for the random value, included
      * @param max Maximum boundary for the random value, excluded
      */
-    randomInt(max?: number): MathJsChain
+    randomInt<T extends MathCollection>(
+      this: MathJsChain<T>,
+      max?: number
+    ): MathJsChain<T>
+    randomInt<T extends MathCollection>(
+      this: MathJsChain<T>,
+      max?: number
+    ): MathJsChain<T>
     // tslint:disable-next-line unified-signatures
-    randomInt(min: number, max: number): MathJsChain
+    randomInt<T extends MathCollection>(
+      this: MathJsChain<T>,
+      min: number,
+      max: number
+    ): MathJsChain<T>
 
     /*************************************************************************
      * Relational functions
@@ -5031,7 +5505,10 @@ declare namespace math {
      * For matrices, the function is evaluated element wise.
      * @param y Second value to compare
      */
-    compare(y: MathType | string): MathJsChain
+    compare(
+      this: MathJsChain<MathType | string>,
+      y: MathType | string
+    ): MathJsChain<number | BigNumber | Fraction | MathCollection>
 
     /**
      * Compare two values of any type in a deterministic, natural way. For
@@ -5041,7 +5518,7 @@ declare namespace math {
      * @param y Second value to compare
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    compareNatural(y: any): MathJsChain
+    compareNatural(this: MathJsChain<any>, y: any): MathJsChain<number>
 
     /**
      * Compare two strings lexically. Comparison is case sensitive. Returns
@@ -5049,14 +5526,22 @@ declare namespace math {
      * function is evaluated element wise.
      * @param y Second string to compare
      */
-    compareText(y: string | MathCollection): MathJsChain
+    compareText(
+      this: MathJsChain<string | MathCollection>,
+      y: string | MathCollection
+    ): MathJsChain<number | MathCollection>
 
     /**
      * Test element wise whether two matrices are equal. The function
      * accepts both matrices and scalar values.
      * @param y Second amtrix to compare
      */
-    deepEqual(y: MathType): MathJsChain
+    deepEqual(
+      this: MathJsChain<MathType>,
+      y: MathType
+    ): MathJsChain<
+      number | BigNumber | Fraction | Complex | Unit | MathCollection
+    >
 
     /**
      * Test whether two values are equal.
@@ -5070,14 +5555,20 @@ declare namespace math {
      * else, and undefined is only equal to undefined and nothing else.
      * @param y Second value to compare
      */
-    equal(y: MathType | string): MathJsChain
+    equal(
+      this: MathJsChain<MathType | string>,
+      y: MathType | string
+    ): MathJsChain<boolean | MathCollection>
 
     /**
      * Check equality of two strings. Comparison is case sensitive. For
      * matrices, the function is evaluated element wise.
      * @param y Second string to compare
      */
-    equalText(y: string | MathCollection): MathJsChain
+    equalText(
+      this: MathJsChain<string | MathCollection>,
+      y: string | MathCollection
+    ): MathJsChain<number | MathCollection>
 
     /**
      * Test whether value x is larger than y. The function returns true when
@@ -5087,7 +5578,10 @@ declare namespace math {
      * function is evaluated element wise.
      * @param y Second value to compare
      */
-    larger(y: MathType | string): MathJsChain
+    larger(
+      this: MathJsChain<MathType | string>,
+      y: MathType | string
+    ): MathJsChain<boolean | MathCollection>
 
     /**
      * Test whether value x is larger or equal to y. The function returns
@@ -5097,7 +5591,10 @@ declare namespace math {
      * the function is evaluated element wise.
      * @param y Second value to vcompare
      */
-    largerEq(y: MathType | string): MathJsChain
+    largerEq(
+      this: MathJsChain<MathType | string>,
+      y: MathType | string
+    ): MathJsChain<boolean | MathCollection>
 
     /**
      * Test whether value x is smaller than y. The function returns true
@@ -5107,7 +5604,10 @@ declare namespace math {
      * the function is evaluated element wise.
      * @param y Second value to vcompare
      */
-    smaller(y: MathType | string): MathJsChain
+    smaller(
+      this: MathJsChain<MathType | string>,
+      y: MathType | string
+    ): MathJsChain<boolean | MathCollection>
 
     /**
      * Test whether value x is smaller or equal to y. The function returns
@@ -5117,7 +5617,10 @@ declare namespace math {
      * matrices, the function is evaluated element wise.
      * @param y Second value to compare
      */
-    smallerEq(y: MathType | string): MathJsChain
+    smallerEq(
+      this: MathJsChain<MathType | string>,
+      y: MathType | string
+    ): MathJsChain<boolean | MathCollection>
 
     /**
      * Test whether two values are unequal. The function tests whether the
@@ -5130,7 +5633,10 @@ declare namespace math {
      * undefined is unequal with everything except undefined.
      * @param y Second value to vcompare
      */
-    unequal(y: MathType | string): MathJsChain
+    unequal(
+      this: MathJsChain<MathType | string>,
+      y: MathType | string
+    ): MathJsChain<boolean | MathCollection>
 
     /*************************************************************************
      * Set functions
@@ -5142,7 +5648,10 @@ declare namespace math {
      * will be sorted in ascending order before the operation.
      * @param a2 A (multi)set
      */
-    setCartesian(a2: MathCollection): MathJsChain
+    setCartesian<T extends MathCollection>(
+      this: MathJsChain<T>,
+      a2: MathCollection
+    ): MathJsChain<T>
 
     /**
      * Create the difference of two (multi)sets: every element of set1, that
@@ -5150,20 +5659,27 @@ declare namespace math {
      * to single-dimension arrays before the operation
      * @param a2 A (multi)set
      */
-    setDifference(a2: MathCollection): MathJsChain
+    setDifference<T extends MathCollection>(
+      this: MathJsChain<T>,
+      a2: MathCollection
+    ): MathJsChain<T>
 
     /**
      * Collect the distinct elements of a multiset. A multi-dimension array
      * will be converted to a single-dimension array before the operation.
      */
-    setDistinct(): MathJsChain
+
+    setDistinct<T extends MathCollection>(a: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Create the intersection of two (multi)sets. Multi-dimension arrays
      * will be converted to single-dimension arrays before the operation.
      * @param a2 A (multi)set
      */
-    setIntersect(a2: MathCollection): MathJsChain
+    setIntersect<T extends MathCollection>(
+      this: MathJsChain<T>,
+      a2: MathCollection
+    ): MathJsChain<T>
 
     /**
      * Check whether a (multi)set is a subset of another (multi)set. (Every
@@ -5171,7 +5687,10 @@ declare namespace math {
      * be converted to single-dimension arrays before the operation.
      * @param a2 A (multi)set
      */
-    setIsSubset(a2: MathCollection): MathJsChain
+    setIsSubset(
+      this: MathJsChain<MathCollection>,
+      a2: MathCollection
+    ): MathJsChain<boolean>
 
     /**
      * Count the multiplicity of an element in a multiset. A multi-dimension
@@ -5179,21 +5698,26 @@ declare namespace math {
      * operation.
      * @param a A multiset
      */
-    setMultiplicity(a: MathCollection): MathJsChain
+    setMultiplicity(
+      e: MathJsChain<number | BigNumber | Fraction | Complex>,
+      a: MathCollection
+    ): MathJsChain<number>
 
     /**
      * Create the powerset of a (multi)set. (The powerset contains very
      * possible subsets of a (multi)set.) A multi-dimension array will be
      * converted to a single-dimension array before the operation.
      */
-    setPowerset(): MathJsChain
+
+    setPowerset<T extends MathCollection>(a: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Count the number of elements of a (multi)set. When a second parameter
      * is ‘true’, count only the unique values. A multi-dimension array will
      * be converted to a single-dimension array before the operation.
      */
-    setSize(): MathJsChain
+
+    setSize(this: MathJsChain<MathCollection>): MathJsChain<number>
 
     /**
      * Create the symmetric difference of two (multi)sets. Multi-dimension
@@ -5201,14 +5725,20 @@ declare namespace math {
      * operation.
      * @param a2 A (multi)set
      */
-    setSymDifference(a2: MathCollection): MathJsChain
+    setSymDifference<T extends MathCollection>(
+      this: MathJsChain<T>,
+      a2: MathCollection
+    ): MathJsChain<T>
 
     /**
      * Create the union of two (multi)sets. Multi-dimension arrays will be
      * converted to single-dimension arrays before the operation.
      * @param a2 A (multi)set
      */
-    setUnion(a2: MathCollection): MathJsChain
+    setUnion<T extends MathCollection>(
+      this: MathJsChain<T>,
+      a2: MathCollection
+    ): MathJsChain<T>
 
     /*************************************************************************
      * Special functions
@@ -5218,7 +5748,9 @@ declare namespace math {
      * Compute the erf function of a value using a rational Chebyshev
      * approximations for different intervals of x.
      */
-    erf(): MathJsChain
+    erf<T extends number | MathCollection>(
+      this: MathJsChain<T>
+    ): MathJsChain<NoLiteralType<T>>
 
     /*************************************************************************
      * Statistics functions
@@ -5229,7 +5761,8 @@ declare namespace math {
      * values. The median absolute deviation is defined as the median of the
      * absolute deviations from the median.
      */
-    mad(): MathJsChain
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mad(this: MathJsChain<MathCollection>): MathJsChain<any>
 
     /**
      * Compute the maximum value of a matrix or a list with values. In case
@@ -5238,7 +5771,11 @@ declare namespace math {
      * dimension will be calculated. Parameter dim is zero-based.
      * @param dim The maximum over the selected dimension
      */
-    max(dim?: number): MathJsChain
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    max(this: MathJsChain<MathType[]>, dim?: number): MathJsChain<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    max(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
      * Compute the mean value of matrix or a list with values. In case of a
@@ -5247,7 +5784,10 @@ declare namespace math {
      * dimension will be calculated. Parameter dim is zero-based.
      * @param dim The mean over the selected dimension
      */
-    mean(dim?: number): MathJsChain
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mean(this: MathJsChain<MathType[]>, dim?: number): MathJsChain<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mean(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
      * Compute the median of a matrix or a list with values. The values are
@@ -5257,7 +5797,10 @@ declare namespace math {
      * dimensional) array or matrix, the median of all elements will be
      * calculated.
      */
-    median(): MathJsChain
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    median(this: MathJsChain<MathType[]>, dim?: number): MathJsChain<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    median(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
      * Compute the maximum value of a matrix or a list of values. In case of
@@ -5266,21 +5809,26 @@ declare namespace math {
      * dimension will be calculated. Parameter dim is zero-based.
      * @param dim The minimum over the selected dimension
      */
-    min(dim?: number): MathJsChain
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    min(this: MathJsChain<MathType[]>): MathJsChain<MathType[]>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    min(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
      * Computes the mode of a set of numbers or a list with values(numbers
      * or characters). If there are more than one modes, it returns a list
      * of those values.
      */
-    mode(): MathJsChain
+
+    mode(this: MathJsChain<MathType[]>): MathJsChain<MathType[]>
 
     /**
      * Compute the product of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the sum of all elements will be
      * calculated.
      */
-    prod(): MathJsChain
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    prod(this: MathJsChain<MathType[]>): MathJsChain<any>
 
     /**
      * Compute the prob order quantile of a matrix or a list with values.
@@ -5295,9 +5843,11 @@ declare namespace math {
      * @param sorted =false is data sorted in ascending order
      */
     quantileSeq(
+      A: MathJsChain<MathCollection>,
       prob: number | BigNumber | MathArray,
       sorted?: boolean
-    ): MathJsChain
+    ): MathJsChain<number | BigNumber | Unit | MathArray>
+
     /**
      * Compute the standard deviation of a matrix or a list with values. The
      * standard deviations is defined as the square root of the variance:
@@ -5315,9 +5865,11 @@ declare namespace math {
      * @returns The standard deviation
      */
     std(
+      this: MathJsChain<number[]>,
       dim?: number,
       normalization?: 'unbiased' | 'uncorrected' | 'biased'
-    ): MathJsChain
+    ): MathJsChain<number>
+
     /**
      * Compute the standard deviation of a matrix or a list with values. The
      * standard deviations is defined as the square root of the variance:
@@ -5333,14 +5885,22 @@ declare namespace math {
      * ‘unbiased’.
      * @returns The standard deviation
      */
-    std(normalization: 'unbiased' | 'uncorrected' | 'biased'): MathJsChain
+    std(
+      this: MathJsChain<MathCollection>,
+      dimension?: number,
+      normalization?: 'unbiased' | 'uncorrected' | 'biased'
+    ): MathJsChain<number[]>
 
     /**
      * Compute the sum of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the sum of all elements will be
      * calculated.
      */
-    sum(): MathJsChain
+    std(
+      this: MathJsChain<MathCollection>,
+      normalization: 'unbiased' | 'uncorrected' | 'biased'
+    ): MathJsChain<number>
+
     /**
      * Compute the variance of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the variance over all elements
@@ -5359,9 +5919,9 @@ declare namespace math {
      * @returns The variance
      */
     variance(
-      dim?: number,
-      normalization?: 'unbiased' | 'uncorrected' | 'biased'
-    ): MathJsChain
+      this: MathJsChain<Array<Array<number | BigNumber | Fraction>>>
+    ): MathJsChain<number>
+
     /**
      * Compute the variance of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the variance over all elements
@@ -5378,7 +5938,16 @@ declare namespace math {
      * Default value: ‘unbiased’.
      * @returns The variance
      */
-    variance(normalization: 'unbiased' | 'uncorrected' | 'biased'): MathJsChain
+    variance(
+      this: MathJsChain<MathCollection>,
+      dimension?: number,
+      normalization?: 'unbiased' | 'uncorrected' | 'biased'
+    ): MathJsChain<number[]>
+
+    variance(
+      this: MathJsChain<MathCollection>,
+      normalization: 'unbiased' | 'uncorrected' | 'biased'
+    ): MathJsChain<number>
 
     /*************************************************************************
      * String functions
@@ -5397,12 +5966,14 @@ declare namespace math {
      */
     format(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this: MathJsChain<any>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       value: any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       options?: FormatOptions | number | ((item: any) => string),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback?: (value: any) => string
-    ): MathJsChain
+    ): MathJsChain<string>
 
     /**
      * Interpolate values into a string template.
@@ -5414,11 +5985,12 @@ declare namespace math {
      * numbers. See function math.format for a description of all options.
      */
     print(
+      this: MathJsChain<string>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       values: any,
       precision?: number,
       options?: number | object
-    ): MathJsChain
+    ): MathJsChain<string>
 
     /*************************************************************************
      * Trigonometry functions
@@ -5428,161 +6000,271 @@ declare namespace math {
      * Calculate the inverse cosine of a value. For matrices, the function
      * is evaluated element wise.
      */
-    acos(): MathJsChain
+
+    acos(this: MathJsChain<number>): MathJsChain<number>
+    acos(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    acos(this: MathJsChain<Complex>): MathJsChain<Complex>
+    acos(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    acos(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic arccos of a value, defined as acosh(x) =
      * ln(sqrt(x^2 - 1) + x). For matrices, the function is evaluated
      * element wise.
      */
-    acosh(): MathJsChain
+
+    acosh(this: MathJsChain<number>): MathJsChain<number>
+    acosh(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    acosh(this: MathJsChain<Complex>): MathJsChain<Complex>
+    acosh(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    acosh(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the inverse cotangent of a value. For matrices, the
      * function is evaluated element wise.
      */
-    acot(): MathJsChain
+
+    acot(this: MathJsChain<number>): MathJsChain<number>
+    acot(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    acot(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    acot(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic arccotangent of a value, defined as acoth(x)
      * = (ln((x+1)/x) + ln(x/(x-1))) / 2. For matrices, the function is
      * evaluated element wise.
      */
-    acoth(): MathJsChain
+
+    acoth(this: MathJsChain<number>): MathJsChain<number>
+    acoth(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    acoth(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    acoth(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the inverse cosecant of a value. For matrices, the function
      * is evaluated element wise.
      */
-    acsc(): MathJsChain
+
+    acsc(this: MathJsChain<number>): MathJsChain<number>
+    acsc(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    acsc(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    acsc(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic arccosecant of a value, defined as acsch(x)
      * = ln(1/x + sqrt(1/x^2 + 1)). For matrices, the function is evaluated
      * element wise.
      */
-    acsch(): MathJsChain
+
+    acsch(this: MathJsChain<number>): MathJsChain<number>
+    acsch(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    acsch(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    acsch(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the inverse secant of a value. For matrices, the function
      * is evaluated element wise.
      */
-    asec(): MathJsChain
+
+    asec(this: MathJsChain<number>): MathJsChain<number>
+    asec(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    asec(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    asec(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic arcsecant of a value, defined as asech(x) =
      * ln(sqrt(1/x^2 - 1) + 1/x). For matrices, the function is evaluated
      * element wise.
      */
-    asech(): MathJsChain
+
+    asech(this: MathJsChain<number>): MathJsChain<number>
+    asech(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    asech(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    asech(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the inverse sine of a value. For matrices, the function is
      * evaluated element wise.
      */
-    asin(): MathJsChain
+
+    asin(this: MathJsChain<number>): MathJsChain<number>
+    asin(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    asin(this: MathJsChain<Complex>): MathJsChain<Complex>
+    asin(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    asin(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic arcsine of a value, defined as asinh(x) =
      * ln(x + sqrt(x^2 + 1)). For matrices, the function is evaluated
      * element wise.
      */
-    asinh(): MathJsChain
+
+    asinh(this: MathJsChain<number>): MathJsChain<number>
+    asinh(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    asinh(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    asinh(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the inverse tangent of a value. For matrices, the function
      * is evaluated element wise.
      */
-    atan(): MathJsChain
+
+    atan(this: MathJsChain<number>): MathJsChain<number>
+    atan(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    atan(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    atan(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the inverse tangent function with two arguments, y/x. By
      * providing two arguments, the right quadrant of the computed angle can
      * be determined. For matrices, the function is evaluated element wise.
      */
-    atan2(): MathJsChain
+
+    atan2(this: MathJsChain<number>, x: number): MathJsChain<number>
+    atan2(
+      this: MathJsChain<MathCollection>,
+      x: MathCollection
+    ): MathJsChain<MathCollection>
 
     /**
      * Calculate the hyperbolic arctangent of a value, defined as atanh(x) =
      * ln((1 + x)/(1 - x)) / 2. For matrices, the function is evaluated
      * element wise.
      */
-    atanh(): MathJsChain
+
+    atanh(this: MathJsChain<number>): MathJsChain<number>
+    atanh(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    atanh(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    atanh(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the cosine of a value. For matrices, the function is
      * evaluated element wise.
      */
-    cos(): MathJsChain
+
+    cos(this: MathJsChain<number | Unit>): MathJsChain<number>
+    cos(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    cos(this: MathJsChain<Complex>): MathJsChain<Complex>
+    cos(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    cos(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic cosine of a value, defined as cosh(x) = 1/2
      * * (exp(x) + exp(-x)). For matrices, the function is evaluated element
      * wise.
      */
-    cosh(): MathJsChain
+
+    cosh(this: MathJsChain<number | Unit>): MathJsChain<number>
+    cosh(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    cosh(this: MathJsChain<Complex>): MathJsChain<Complex>
+    cosh(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    cosh(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the cotangent of a value. cot(x) is defined as 1 / tan(x).
      * For matrices, the function is evaluated element wise.
      */
-    cot(): MathJsChain
+
+    cot(this: MathJsChain<number | Unit>): MathJsChain<number>
+    cot(this: MathJsChain<Complex>): MathJsChain<Complex>
+    cot(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    cot(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic cotangent of a value, defined as coth(x) = 1
      * / tanh(x). For matrices, the function is evaluated element wise.
      */
-    coth(): MathJsChain
+
+    coth(this: MathJsChain<number | Unit>): MathJsChain<number>
+    coth(this: MathJsChain<Complex>): MathJsChain<Complex>
+    coth(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    coth(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the cosecant of a value, defined as csc(x) = 1/sin(x). For
      * matrices, the function is evaluated element wise.
      */
-    csc(): MathJsChain
+
+    csc(this: MathJsChain<number | Unit>): MathJsChain<number>
+    csc(this: MathJsChain<Complex>): MathJsChain<Complex>
+    csc(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    csc(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic cosecant of a value, defined as csch(x) = 1
      * / sinh(x). For matrices, the function is evaluated element wise.
      */
-    csch(): MathJsChain
+
+    csch(this: MathJsChain<number | Unit>): MathJsChain<number>
+    csch(this: MathJsChain<Complex>): MathJsChain<Complex>
+    csch(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    csch(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the secant of a value, defined as sec(x) = 1/cos(x). For
      * matrices, the function is evaluated element wise.
      */
-    sec(): MathJsChain
+
+    sec(this: MathJsChain<number | Unit>): MathJsChain<number>
+    sec(this: MathJsChain<Complex>): MathJsChain<Complex>
+    sec(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    sec(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic secant of a value, defined as sech(x) = 1 /
      * cosh(x). For matrices, the function is evaluated element wise.
      */
-    sech(): MathJsChain
+
+    sech(this: MathJsChain<number | Unit>): MathJsChain<number>
+    sech(this: MathJsChain<Complex>): MathJsChain<Complex>
+    sech(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    sech(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the sine of a value. For matrices, the function is
      * evaluated element wise.
      */
-    sin(): MathJsChain
+
+    sin(this: MathJsChain<number | Unit>): MathJsChain<number>
+    sin(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    sin(this: MathJsChain<Complex>): MathJsChain<Complex>
+    sin(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    sin(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic sine of a value, defined as sinh(x) = 1/2 *
      * (exp(x) - exp(-x)). For matrices, the function is evaluated element
      * wise.
      */
-    sinh(): MathJsChain
+
+    sinh(this: MathJsChain<number | Unit>): MathJsChain<number>
+    sinh(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    sinh(this: MathJsChain<Complex>): MathJsChain<Complex>
+    sinh(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    sinh(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the tangent of a value. tan(x) is equal to sin(x) / cos(x).
      * For matrices, the function is evaluated element wise.
      */
-    tan(): MathJsChain
+
+    tan(this: MathJsChain<number | Unit>): MathJsChain<number>
+    tan(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    tan(this: MathJsChain<Complex>): MathJsChain<Complex>
+    tan(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    tan(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the hyperbolic tangent of a value, defined as tanh(x) =
      * (exp(2 * x) - 1) / (exp(2 * x) + 1). For matrices, the function is
      * evaluated element wise.
      */
-    tanh(): MathJsChain
+
+    tanh(this: MathJsChain<number | Unit>): MathJsChain<number>
+    tanh(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+    tanh(this: MathJsChain<Complex>): MathJsChain<Complex>
+    tanh(this: MathJsChain<MathArray>): MathJsChain<MathArray>
+    tanh(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /*************************************************************************
      * Unit functions
@@ -5594,7 +6276,10 @@ declare namespace math {
      * @param unit New unit. Can be a string like "cm" or a unit without
      * value.
      */
-    to(unit: Unit | string): MathJsChain
+    to(
+      this: MathJsChain<Unit | MathCollection>,
+      unit: Unit | string
+    ): MathJsChain<Unit | MathCollection>
 
     /*************************************************************************
      * Utils functions
@@ -5603,60 +6288,86 @@ declare namespace math {
     /**
      * Clone an object.
      */
-    clone(): MathJsChain
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    clone(this: MathJsChain<any>): MathJsChain<any>
 
     /**
      * Test whether a value is an integer number. The function supports
      * number, BigNumber, and Fraction. The function is evaluated
      * element-wise in case of Array or Matrix input.
      */
-    isInteger(): MathJsChain
+
+    isInteger(
+      this: MathJsChain<number | BigNumber | Fraction | MathCollection>
+    ): MathJsChain<boolean>
 
     /**
      * Test whether a value is NaN (not a number). The function supports
      * types number, BigNumber, Fraction, Unit and Complex. The function is
      * evaluated element-wise in case of Array or Matrix input.
      */
-    isNaN(): MathJsChain
+
+    isNaN(
+      this: MathJsChain<number | BigNumber | Fraction | MathCollection | Unit>
+    ): MathJsChain<boolean>
 
     /**
      * Test whether a value is negative: smaller than zero. The function
      * supports types number, BigNumber, Fraction, and Unit. The function is
      * evaluated element-wise in case of Array or Matrix input.
      */
-    isNegative(): MathJsChain
+
+    isNegative(
+      this: MathJsChain<number | BigNumber | Fraction | MathCollection | Unit>
+    ): MathJsChain<boolean>
 
     /**
      * Test whether a value is an numeric value. The function is evaluated
      * element-wise in case of Array or Matrix input.
      */
-    isNumeric(): MathJsChain
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    isNumeric(this: MathJsChain<any>): MathJsChain<boolean>
 
     /**
      * Test whether a value is positive: larger than zero. The function
      * supports types number, BigNumber, Fraction, and Unit. The function is
      * evaluated element-wise in case of Array or Matrix input.
      */
-    isPositive(): MathJsChain
+
+    isPositive(
+      this: MathJsChain<number | BigNumber | Fraction | MathCollection | Unit>
+    ): MathJsChain<boolean>
 
     /**
      * Test whether a value is prime: has no divisors other than itself and
      * one. The function supports type number, bignumber. The function is
      * evaluated element-wise in case of Array or Matrix input.
      */
-    isPrime(): MathJsChain
+
+    isPrime(
+      this: MathJsChain<number | BigNumber | MathCollection>
+    ): MathJsChain<boolean>
 
     /**
      * Test whether a value is zero. The function can check for zero for
      * types number, BigNumber, Fraction, Complex, and Unit. The function is
      * evaluated element-wise in case of Array or Matrix input.
      */
-    isZero(): MathJsChain
+
+    isZero(
+      this: MathJsChain<
+        number | BigNumber | Fraction | MathCollection | Unit | Complex
+      >
+    ): MathJsChain<boolean>
 
     /**
      * Determine the type of a variable.
      */
-    typeOf(): MathJsChain
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    typeOf(this: MathJsChain<any>): MathJsChain<string>
   }
 
   interface ImportOptions {
