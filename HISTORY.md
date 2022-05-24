@@ -2,7 +2,9 @@
 
 # unpublished changes since version 10.5.3
 
-- fix the first argument of `derivative` holding the expression not correctly
+- Large improvements in TypeScript definitions for chained expressions (#2537).
+  Thanks @mattvague.
+- Fix the first argument of `derivative` holding the expression not correctly
   being converted when using `.toTex()` (#2564). Thanks @mattvague.
 
 
