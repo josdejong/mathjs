@@ -312,24 +312,30 @@ declare namespace math {
 
   interface OperatorNode<
     TOp extends OperatorNodeMap[TFn],
-    TFn extends OperatorNodeFn
+    TFn extends OperatorNodeFn,
+    TArgs extends MathNode[] = MathNode[]
   > extends MathNodeCommon {
     type: 'OperatorNode'
     isOperatorNode: true
     op: TOp
     fn: TFn
-    args: MathNode[]
+    args: TArgs
     implicit: boolean
     isUnary(): boolean
     isBinary(): boolean
   }
+
   interface OperatorNodeCtor extends MathNodeCommon {
-    new <TOp extends OperatorNodeMap[TFn], TFn extends OperatorNodeFn>(
+    new <
+      TOp extends OperatorNodeMap[TFn],
+      TFn extends OperatorNodeFn,
+      TArgs extends MathNode[]
+    >(
       op: TOp,
       fn: TFn,
-      args: MathNode[],
+      args: TArgs,
       implicit?: boolean
-    ): OperatorNode<TOp, TFn>
+    ): OperatorNode<TOp, TFn, TArgs>
   }
   interface ParenthesisNode extends MathNodeCommon {
     type: 'ParenthesisNode'
