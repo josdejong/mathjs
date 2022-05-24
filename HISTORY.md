@@ -2,6 +2,8 @@
 
 # unpublished changes since version 10.5.3
 
+- Implementation of fourier transform functions `fft` and `ifft` (#2540).
+  Thanks @HanchaiN.
 - Large improvements in TypeScript definitions for chained expressions (#2537).
   Thanks @mattvague.
 - Fix the first argument of `derivative` holding the expression not correctly
