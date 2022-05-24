@@ -32,6 +32,8 @@ import {
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
 
+const math = create(all)
+
 // This file serves a dual purpose:
 // 1) examples of how to use math.js in TypeScript
 // 2) tests for the TypeScript declarations provided by math.js
