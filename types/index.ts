@@ -1525,15 +1525,29 @@ Function round examples
 /*
  Clone examples
   */
- {
+{
   const math = create(all, {})
-  expectTypeOf((new math.ConstantNode(1)).clone()).toMatchTypeOf<ConstantNode>()
-  expectTypeOf((new math.OperatorNode('*', 'multiply', [new math.ConstantNode(3), new math.SymbolNode('x')])).clone()).toMatchTypeOf<OperatorNode>()
+  expectTypeOf(new math.ConstantNode(1).clone()).toMatchTypeOf<ConstantNode>()
+  expectTypeOf(
+    new math.OperatorNode('*', 'multiply', [
+      new math.ConstantNode(3),
+      new math.SymbolNode('x'),
+    ]).clone()
+  ).toMatchTypeOf<OperatorNode>()
 
-  expectTypeOf((new math.ConstantNode(1)).cloneDeep()).toMatchTypeOf<ConstantNode>()
-  expectTypeOf((new math.OperatorNode('*', 'multiply', [new math.ConstantNode(3), new math.SymbolNode('x')])).cloneDeep()).toMatchTypeOf<OperatorNode>()
+  expectTypeOf(
+    new math.ConstantNode(1).cloneDeep()
+  ).toMatchTypeOf<ConstantNode>()
+  expectTypeOf(
+    new math.OperatorNode('*', 'multiply', [
+      new math.ConstantNode(3),
+      new math.SymbolNode('x'),
+    ]).cloneDeep()
+  ).toMatchTypeOf<OperatorNode>()
 
-  expectTypeOf(math.clone(new math.ConstantNode(1))).toMatchTypeOf<ConstantNode>()
+  expectTypeOf(
+    math.clone(new math.ConstantNode(1))
+  ).toMatchTypeOf<ConstantNode>()
 }
 
 /*
