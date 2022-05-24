@@ -102,14 +102,17 @@
   "jsdelivr": "./lib/browser/math.js",
   "exports": {
     ".": {
+      "types": "./types/index.d.ts",
       "import": "./lib/esm/index.js",
       "require": "./lib/cjs/index.js"
     },
     "./number": {
+      "types": "./types/index.d.ts",
       "import": "./lib/esm/number.js",
       "require": "./lib/cjs/number.js"
     },
     "./lib/esm/number": {
+      "types": "./types/index.d.ts",
       "import": "./lib/esm/number.js",
       "require": "./lib/cjs/number.js"
     },
