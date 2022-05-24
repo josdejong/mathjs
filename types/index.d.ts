@@ -3115,7 +3115,7 @@ declare namespace math {
      * @returns A clone of object x
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    clone(x: any): any
+    clone<TType>(x: TType): TType
 
     /**
      * Test whether a value is an numeric value. In case of a string,
@@ -3785,12 +3785,12 @@ declare namespace math {
      * Create a shallow clone of the node. The node itself is cloned, its
      * childs are not cloned.
      */
-    clone(): MathNode
+    clone(): this
     /**
      * Create a deep clone of the node. Both the node as well as all its
      * childs are cloned recursively.
      */
-    cloneDeep(): MathNode
+    cloneDeep(): this
     /**
      * Compile an expression into optimized JavaScript code. compile returns
      * an object with a function evaluate([scope]) to evaluate. Example:
@@ -6290,7 +6290,7 @@ declare namespace math {
      */
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    clone(this: MathJsChain<any>): MathJsChain<any>
+    clone<TValue>(this: MathJsChain<TValue>): MathJsChain<TValue>
 
     /**
      * Test whether a value is an integer number. The function supports
