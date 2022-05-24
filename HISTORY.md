@@ -4,6 +4,8 @@
 
 - Implementation of fourier transform functions `fft` and `ifft` (#2540).
   Thanks @HanchaiN.
+- Fix TypeScript types not being listed in the exported fields (#2569).
+  Thanks @mattvague. 
 - Large improvements in TypeScript definitions for chained expressions (#2537).
   Thanks @mattvague.
 - Fix the first argument of `derivative` holding the expression not correctly
