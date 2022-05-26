@@ -3945,9 +3945,9 @@ declare namespace math {
      * transformed.toString(); // returns '(3 ^ 2) + (5 * 3)'
      * ```
      */
-    transform(
-      callback: (node: MathNode, path: string, parent: MathNode) => MathNode
-    ): MathNode
+    transform<TResult>(
+      callback: (node: this, path: string, parent: MathNode) => TResult
+    ): TResult
 
     /**
      * `traverse(callback)`

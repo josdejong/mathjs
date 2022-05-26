@@ -925,6 +925,46 @@ Fractions examples
 }
 
 /*
+Transform examples
+*/
+{
+  const math = create(all, {})
+  {
+    const myTransform1 = (node: MathNode): OperatorNode<'+', 'add'> =>
+      new OperatorNode('+', 'add', [node, new ConstantNode(1)])
+    const myTransform2 = (
+      node: OperatorNode<'+', 'add'>
+    ): OperatorNode<'-', 'subtract'> =>
+      new OperatorNode('-', 'subtract', [node, new ConstantNode(5)])
+
+    expectTypeOf(
+      math.parse('sqrt(3^2 + 4^2)').transform(myTransform1)
+    ).toMatchTypeOf<OperatorNode<'+', 'add', MathNode[]>>()
+
+    assert.deepStrictEqual(
+      math.parse('sqrt(3^2 + 4^2)').transform(myTransform1).toString(),
+      'sqrt(3 ^ 2 + 4 ^ 2) + 1'
+    )
+
+    expectTypeOf(
+      math
+        .parse('sqrt(3^2 + 4^2)')
+        .transform(myTransform1)
+        .transform(myTransform2)
+    ).toMatchTypeOf<OperatorNode<'-', 'subtract', MathNode[]>>()
+
+    assert.deepStrictEqual(
+      math
+        .parse('sqrt(3^2 + 4^2)')
+        .transform(myTransform1)
+        .transform(myTransform2)
+        .toString(),
+        'sqrt(3 ^ 2 + 4 ^ 2) + 1 - 5'
+    )
+  }
+}
+
+/*
 Matrices examples
 */
 {
