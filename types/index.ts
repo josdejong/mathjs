@@ -959,7 +959,7 @@ Transform examples
         .transform(myTransform1)
         .transform(myTransform2)
         .toString(),
-        'sqrt(3 ^ 2 + 4 ^ 2) + 1 - 5'
+      'sqrt(3 ^ 2 + 4 ^ 2) + 1 - 5'
     )
   }
 }
