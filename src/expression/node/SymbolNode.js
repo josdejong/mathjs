@@ -120,6 +120,17 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
   }
 
   /**
+   * Check if this symbol equals another symbol
+   * @param {Object} options
+   * @return {string} str
+   * @override
+   */
+   SymbolNode.prototype.equals = function (other) {
+    if (!other || other.type !== 'SymbolNode') return false
+    return this.name === other.name
+  }
+
+  /**
    * Get string representation
    * @param {Object} options
    * @return {string} str

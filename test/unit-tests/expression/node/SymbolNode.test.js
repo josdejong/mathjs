@@ -105,6 +105,8 @@ describe('SymbolNode', function () {
     const a = new SymbolNode('a')
     const b = new SymbolNode('b')
     const aEqual = new SymbolNode('a')
+    const aEqual2 = new SymbolNode('a')
+    aEqual2.toTex = () => 'custom tex'
     const aFake = {
       name: 'a'
     }
@@ -112,6 +114,7 @@ describe('SymbolNode', function () {
     assert.strictEqual(a.equals(null), false)
     assert.strictEqual(a.equals(undefined), false)
     assert.strictEqual(a.equals(aEqual), true)
+    assert.strictEqual(a.equals(aEqual2), true)
     assert.strictEqual(a.equals(b), false)
     assert.strictEqual(a.equals(aFake), false)
     assert.strictEqual(a.equals(new ConstantNode(2)), false)
