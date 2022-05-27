@@ -311,8 +311,8 @@ declare namespace math {
   type OperatorNodeFn = keyof OperatorNodeMap
 
   interface OperatorNode<
-    TOp extends OperatorNodeMap[TFn],
-    TFn extends OperatorNodeFn,
+    TOp extends OperatorNodeMap[TFn] = never,
+    TFn extends OperatorNodeFn = never,
     TArgs extends MathNode[] = MathNode[]
   > extends MathNodeCommon {
     type: 'OperatorNode'
