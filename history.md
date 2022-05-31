@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220531-version-1061">2022-05-31, version 10.6.1 <a href="#20220531-version-1061" title="Permalink">#</a></h1>
+
+- Improve the  TypeScript types For `OperatorNode`: you can now define generic 
+  types like `OperatorNode<'+', 'add'>`. Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+
+
 <h1 id="20220524-version-1060">2022-05-24, version 10.6.0 <a href="#20220524-version-1060" title="Permalink">#</a></h1>
 
 - Implementation of fourier transform functions `fft` and `ifft`  <a href="https://github.com/josdejong/mathjs/issues/2540">#2540</a>).
