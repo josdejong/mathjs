@@ -1,5 +1,11 @@
 # History
 
+# 2022-05-31, version 10.6.1
+
+- Improve the  TypeScript types For `OperatorNode`: you can now define generic 
+  types like `OperatorNode<'+', 'add'>`. Thanks @mattvague.
+
+
 # 2022-05-24, version 10.6.0
 
 - Implementation of fourier transform functions `fft` and `ifft` (#2540).
