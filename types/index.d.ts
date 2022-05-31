@@ -276,25 +276,67 @@ declare namespace math {
     new (properties: Record<string, MathNode>): ObjectNode
   }
 
-  interface OperatorNode extends MathNodeCommon {
+  type OperatorNodeMap = {
+    xor: 'xor'
+    and: 'and'
+    bitOr: '|'
+    bitXor: '^|'
+    bitAnd: '&'
+    equal: '=='
+    unequal: '!='
+    smaller: '<'
+    larger: '>'
+    smallerEq: '<='
+    leftShift: '<<'
+    rightArithShift: '>>'
+    rightLogShift: '>>>'
+    to: 'to'
+    add: '+'
+    subtract: '-'
+    multiply: '*'
+    divide: '/'
+    dotMultiply: '.*'
+    dotDivide: './'
+    mod: 'mod'
+    unaryPlus: '+'
+    unaryMinus: '-'
+    bitNot: '~'
+    not: 'not'
+    pow: '^'
+    dotPow: '.^'
+    factorial: '!'
+  }
+
+  type OperatorNodeOp = OperatorNodeMap[keyof OperatorNodeMap]
+  type OperatorNodeFn = keyof OperatorNodeMap
+
+  interface OperatorNode<
+    TOp extends OperatorNodeMap[TFn] = never,
+    TFn extends OperatorNodeFn = never,
+    TArgs extends MathNode[] = MathNode[]
+  > extends MathNodeCommon {
     type: 'OperatorNode'
     isOperatorNode: true
-    op: string
-    fn: string
-    args: MathNode[]
+    op: TOp
+    fn: TFn
+    args: TArgs
     implicit: boolean
     isUnary(): boolean
     isBinary(): boolean
   }
-  interface OperatorNodeCtor {
-    new (
-      op: string,
-      fn: string,
-      args: MathNode[],
-      implicit?: boolean
-    ): OperatorNode
-  }
 
+  interface OperatorNodeCtor extends MathNodeCommon {
+    new <
+      TOp extends OperatorNodeMap[TFn],
+      TFn extends OperatorNodeFn,
+      TArgs extends MathNode[]
+    >(
+      op: TOp,
+      fn: TFn,
+      args: TArgs,
+      implicit?: boolean
+    ): OperatorNode<TOp, TFn, TArgs>
+  }
   interface ParenthesisNode extends MathNodeCommon {
     type: 'ParenthesisNode'
     isParenthesisNode: true
@@ -345,7 +387,7 @@ declare namespace math {
     | FunctionNode
     | IndexNode
     | ObjectNode
-    | OperatorNode
+    | OperatorNode<OperatorNodeOp, OperatorNodeFn>
     | ParenthesisNode
     | RangeNode
     | RelationalNode
@@ -3095,7 +3137,9 @@ declare namespace math {
 
     isObjectNode(x: unknown): x is ObjectNode
 
-    isOperatorNode(x: unknown): x is OperatorNode
+    isOperatorNode(
+      x: unknown
+    ): x is OperatorNode<OperatorNodeOp, OperatorNodeFn>
 
     isParenthesisNode(x: unknown): x is ParenthesisNode
 

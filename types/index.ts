@@ -25,6 +25,9 @@ import {
   MathNumericType,
   ConstantNode,
   OperatorNode,
+  OperatorNodeFn,
+  OperatorNodeOp,
+  SymbolNode,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -1527,23 +1530,34 @@ Function round examples
   */
 {
   const math = create(all, {})
+  expectTypeOf(
+    new math.OperatorNode('/', 'divide', [
+      new math.ConstantNode(3),
+      new math.SymbolNode('x'),
+    ])
+  ).toMatchTypeOf<OperatorNode<'/', 'divide', (ConstantNode | SymbolNode)[]>>()
+
   expectTypeOf(new math.ConstantNode(1).clone()).toMatchTypeOf<ConstantNode>()
   expectTypeOf(
     new math.OperatorNode('*', 'multiply', [
       new math.ConstantNode(3),
       new math.SymbolNode('x'),
     ]).clone()
-  ).toMatchTypeOf<OperatorNode>()
+  ).toMatchTypeOf<
+    OperatorNode<'*', 'multiply', (ConstantNode | SymbolNode)[]>
+  >()
 
   expectTypeOf(
     new math.ConstantNode(1).cloneDeep()
   ).toMatchTypeOf<ConstantNode>()
   expectTypeOf(
-    new math.OperatorNode('*', 'multiply', [
+    new math.OperatorNode('+', 'unaryPlus', [
       new math.ConstantNode(3),
       new math.SymbolNode('x'),
     ]).cloneDeep()
-  ).toMatchTypeOf<OperatorNode>()
+  ).toMatchTypeOf<
+    OperatorNode<'+', 'unaryPlus', (ConstantNode | SymbolNode)[]>
+  >()
 
   expectTypeOf(
     math.clone(new math.ConstantNode(1))
@@ -1900,7 +1914,9 @@ Factory Test
     expectTypeOf(x).toMatchTypeOf<math.ObjectNode>()
   }
   if (math.isOperatorNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.OperatorNode>()
+    expectTypeOf(x).toMatchTypeOf<
+      OperatorNode<OperatorNodeOp, OperatorNodeFn, MathNode[]>
+    >()
   }
   if (math.isParenthesisNode(x)) {
     expectTypeOf(x).toMatchTypeOf<math.ParenthesisNode>()
