@@ -1048,8 +1048,6 @@ declare namespace math {
     cube(x: BigNumber): BigNumber
     cube(x: Fraction): Fraction
     cube(x: Complex): Complex
-    cube(x: MathArray): MathArray
-    cube(x: Matrix): Matrix
     cube(x: Unit): Unit
 
     /**
@@ -1099,8 +1097,6 @@ declare namespace math {
     exp(x: number): number
     exp(x: BigNumber): BigNumber
     exp(x: Complex): Complex
-    exp(x: MathArray): MathArray
-    exp(x: Matrix): Matrix
 
     /**
      * Calculate the value of subtracting 1 from the exponential value. For
@@ -1111,8 +1107,6 @@ declare namespace math {
     expm1(x: number): number
     expm1(x: BigNumber): BigNumber
     expm1(x: Complex): Complex
-    expm1(x: MathArray): MathArray
-    expm1(x: Matrix): Matrix
 
     /**
      * Calculate the greatest common divisor for two or more values or
@@ -4366,10 +4360,12 @@ declare namespace math {
 
     simplifyConstant(
       this: MathJsChain<MathNode | string>,
-      options?: SimplifyOptions): MathJsChain<MathNode>
+      options?: SimplifyOptions
+    ): MathJsChain<MathNode>
     simplifyCore(
       this: MathJsChain<MathNode | string>,
-      options?: SimplifyOptions): MathJsChain<MathNode>
+      options?: SimplifyOptions
+    ): MathJsChain<MathNode>
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -4453,16 +4449,9 @@ declare namespace math {
      * if false (default) the principal root is returned.
      */
     cbrt(this: MathJsChain<number>, allRoots?: boolean): MathJsChain<number>
-    cbrt(
-      this: MathJsChain<BigNumber>,
-      allRoots?: boolean
-    ): MathJsChain<BigNumber>
+    cbrt(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
     cbrt(this: MathJsChain<Complex>, allRoots?: boolean): MathJsChain<Complex>
-    cbrt(
-      this: MathJsChain<MathArray>,
-      allRoots?: boolean
-    ): MathJsChain<MathArray>
-    cbrt(this: MathJsChain<Matrix>, allRoots?: boolean): MathJsChain<Matrix>
+    cbrt(this: MathJsChain<Unit>, allRoots?: boolean): MathJsChain<Unit>
 
     // Rounding functions grouped for similarity
 
@@ -4533,8 +4522,6 @@ declare namespace math {
     cube(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
     cube(this: MathJsChain<Fraction>): MathJsChain<Fraction>
     cube(this: MathJsChain<Complex>): MathJsChain<Complex>
-    cube(this: MathJsChain<MathArray>): MathJsChain<MathArray>
-    cube(this: MathJsChain<Matrix>): MathJsChain<Matrix>
     cube(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
@@ -4574,8 +4561,6 @@ declare namespace math {
     exp(this: MathJsChain<number>): MathJsChain<number>
     exp(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
     exp(this: MathJsChain<Complex>): MathJsChain<Complex>
-    exp(this: MathJsChain<MathArray>): MathJsChain<MathArray>
-    exp(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the value of subtracting 1 from the exponential value. For
@@ -4584,8 +4569,6 @@ declare namespace math {
     expm1(this: MathJsChain<number>): MathJsChain<number>
     expm1(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
     expm1(this: MathJsChain<Complex>): MathJsChain<Complex>
-    expm1(this: MathJsChain<MathArray>): MathJsChain<MathArray>
-    expm1(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the greatest common divisor for two or more values or
