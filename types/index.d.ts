@@ -161,6 +161,10 @@ declare namespace math {
     isHexDigit(c: string): boolean
   }
 
+  interface NodeCtor {
+    new(): Node
+  }
+
   interface AccessorNode extends MathNodeCommon {
     type: 'AccessorNode'
     isAccessorNode: true
@@ -434,6 +438,7 @@ declare namespace math {
     tau: number
 
     // Class-like constructors
+    Node: NodeCtor
     AccessorNode: AccessorNodeCtor
     ArrayNode: ArrayNodeCtor
     AssignmentNode: AssignmentNodeCtor
