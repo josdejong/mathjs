@@ -337,13 +337,16 @@ declare namespace math {
       implicit?: boolean
     ): OperatorNode<TOp, TFn, TArgs>
   }
-  interface ParenthesisNode<TContent extends MathNode = MathNode> extends MathNodeCommon {
+  interface ParenthesisNode<TContent extends MathNode = MathNode>
+    extends MathNodeCommon {
     type: 'ParenthesisNode'
     isParenthesisNode: true
     content: TContent
   }
   interface ParenthesisNodeCtor {
-    new<TContent extends MathNode>(content: TContent): ParenthesisNode<TContent>
+    new <TContent extends MathNode>(
+      content: TContent
+    ): ParenthesisNode<TContent>
   }
 
   interface RangeNode extends MathNodeCommon {

@@ -826,7 +826,6 @@ Complex numbers examples
   }
 }
 
-
 /*
 Parenthesis examples
 */
@@ -834,12 +833,8 @@ Parenthesis examples
   const math = create(all, {})
 
   expectTypeOf(
-    new math.ParenthesisNode(
-      new math.ConstantNode(3),
-    )
-  ).toMatchTypeOf<
-    ParenthesisNode<ConstantNode>
-  >()
+    new math.ParenthesisNode(new math.ConstantNode(3))
+  ).toMatchTypeOf<ParenthesisNode<ConstantNode>>()
 }
 
 /*
