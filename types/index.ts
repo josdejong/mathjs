@@ -28,6 +28,7 @@ import {
   OperatorNodeFn,
   OperatorNodeOp,
   SymbolNode,
+  ParenthesisNode,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -823,6 +824,17 @@ Complex numbers examples
   {
     const _p: math.PolarCoordinates = math.complex(3, 4).toPolar()
   }
+}
+
+/*
+Parenthesis examples
+*/
+{
+  const math = create(all, {})
+
+  expectTypeOf(
+    new math.ParenthesisNode(new math.ConstantNode(3))
+  ).toMatchTypeOf<ParenthesisNode<ConstantNode>>()
 }
 
 /*
