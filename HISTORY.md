@@ -1,5 +1,13 @@
 # History
 
+# unpublished changes since version 10.6.1
+
+- Improve TypeScript definitions of `ParenthesisNode`. Thanks @mattvague.
+- Change the TypeScript definition of `MathNodeCommon['type']` into a less 
+  strict string, so it is possible to extend with new Node classes. 
+  Thanks @mattvague.
+
+
 # 2022-05-31, version 10.6.1
 
 - Improve the  TypeScript types For `OperatorNode`: you can now define generic 
