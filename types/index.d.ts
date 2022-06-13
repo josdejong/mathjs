@@ -3809,22 +3809,7 @@ declare namespace math {
   interface MathNodeCommon {
     isNode: true
     comment: string
-    type:
-      | 'AccessorNode'
-      | 'ArrayNode'
-      | 'AssignmentNode'
-      | 'BlockNode'
-      | 'ConditionalNode'
-      | 'ConstantNode'
-      | 'FunctionAssignmentNode'
-      | 'FunctionNode'
-      | 'IndexNode'
-      | 'ObjectNode'
-      | 'OperatorNode'
-      | 'ParenthesisNode'
-      | 'RangeNode'
-      | 'RelationalNode'
-      | 'SymbolNode'
+    type: string
 
     isUpdateNode?: boolean
 
