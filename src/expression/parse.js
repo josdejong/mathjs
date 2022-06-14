@@ -110,7 +110,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     })
   }
 
-  // token types enumeration
+  /**  token types enumeration
+   * @type ParserTokenType
+   */
   const TOKENTYPE = {
     NULL: 0,
     DELIMITER: 1,
@@ -185,6 +187,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     'Infinity'
   ]
 
+  /**
+   * Return intitial parser state
+   * @returns {ParserState}
+   */
   function initialState () {
     return {
       extraNodes: {}, // current extra nodes, must be careful not to mutate
@@ -208,6 +214,28 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function currentString (state, length) {
     return state.expression.substr(state.index, length)
+  }
+
+  /**
+   * Convert parser state to source meta for attaching to nodes
+   *
+   * @param {Object} state
+   * @returns {SourceMeta}
+   * @private
+   */
+  function toSourceMeta(state) {
+    return {
+      start: state.index - state.token.length,
+      end: state.index,
+      expression: state.token
+    }
+  }
+  function toSourceMetaNew(start, end, expression) {
+    return {
+      start,
+      end,
+      expression,
+    }
   }
 
   /**
@@ -634,10 +662,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     if (blocks.length > 0) {
-      return new BlockNode(blocks)
+      return new BlockNode(blocks, toSourceMeta(state))
     } else {
       if (!node) {
-        node = new ConstantNode(undefined)
+        node = new ConstantNode(undefined, toSourceMeta(state))
         node.comment = state.comment
       }
 
@@ -664,12 +692,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         name = node.name
         getTokenSkipNewline(state)
         value = parseAssignment(state)
-        return new AssignmentNode(new SymbolNode(name), value)
+        return new AssignmentNode(new SymbolNode(name), value, toSourceMeta(state))
       } else if (isAccessorNode(node)) {
         // parse a matrix subset assignment like 'A[1,2] = 4'
         getTokenSkipNewline(state)
         value = parseAssignment(state)
-        return new AssignmentNode(node.object, node.index, value)
+        return new AssignmentNode(node.object, node.index, value, toSourceMeta(state))
       } else if (isFunctionNode(node) && isSymbolNode(node.fn)) {
         // parse function assignment like 'f(x) = x^2'
         valid = true
@@ -687,7 +715,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         if (valid) {
           getTokenSkipNewline(state)
           value = parseAssignment(state)
-          return new FunctionAssignmentNode(name, args, value)
+          return new FunctionAssignmentNode(name, args, value, toSourceMeta(state))
         }
       }
 
@@ -727,7 +755,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       const falseExpr = parseAssignment(state) // Note: check for conditional operator again, right associativity
 
-      node = new ConditionalNode(condition, trueExpr, falseExpr)
+      node = new ConditionalNode(condition, trueExpr, falseExpr, toSourceMeta(state))
 
       // restore the previous conditional level
       state.conditionalLevel = prev
@@ -738,6 +766,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * logical or, 'x or y'
+   * @param {ParserState} state
    * @return {Node} node
    * @private
    */
@@ -746,7 +775,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (state.token === 'or') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline(state)
-      node = new OperatorNode('or', 'or', [node, parseLogicalXor(state)])
+      node = new OperatorNode('or', 'or', [node, parseLogicalXor(state)], false, false, toSourceMeta(state))
     }
 
     return node
@@ -762,7 +791,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (state.token === 'xor') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline(state)
-      node = new OperatorNode('xor', 'xor', [node, parseLogicalAnd(state)])
+      node = new OperatorNode('xor', 'xor', [node, parseLogicalAnd(state)], false, false, toSourceMeta(state))
     }
 
     return node
@@ -778,7 +807,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (state.token === 'and') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline(state)
-      node = new OperatorNode('and', 'and', [node, parseBitwiseOr(state)])
+      node = new OperatorNode('and', 'and', [node, parseBitwiseOr(state)], false, false, toSourceMeta(state))
     }
 
     return node
@@ -794,7 +823,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (state.token === '|') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline(state)
-      node = new OperatorNode('|', 'bitOr', [node, parseBitwiseXor(state)])
+      node = new OperatorNode('|', 'bitOr', [node, parseBitwiseXor(state)], false ,false, toSourceMeta(state))
     }
 
     return node
@@ -810,7 +839,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (state.token === '^|') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline(state)
-      node = new OperatorNode('^|', 'bitXor', [node, parseBitwiseAnd(state)])
+      node = new OperatorNode('^|', 'bitXor', [node, parseBitwiseAnd(state)], false, false, toSourceMeta(state))
     }
 
     return node
@@ -826,7 +855,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (state.token === '&') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline(state)
-      node = new OperatorNode('&', 'bitAnd', [node, parseRelational(state)])
+      node = new OperatorNode('&', 'bitAnd', [node, parseRelational(state)], false, false, toSourceMeta(state))
     }
 
     return node
@@ -859,9 +888,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (params.length === 1) {
       return params[0]
     } else if (params.length === 2) {
-      return new OperatorNode(conditionals[0].name, conditionals[0].fn, params)
+      return new OperatorNode(conditionals[0].name, conditionals[0].fn, params, false, false, toSourceMeta(state))
     } else {
-      return new RelationalNode(conditionals.map(c => c.fn), params)
+      return new RelationalNode(conditionals.map(c => c.fn), params, toSourceMeta(state))
     }
   }
 
@@ -887,7 +916,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       getTokenSkipNewline(state)
       params = [node, parseConversion(state)]
-      node = new OperatorNode(name, fn, params)
+      node = new OperatorNode(name, fn, params, false, false, toSourceMeta(state))
     }
 
     return node
@@ -916,11 +945,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       if (name === 'in' && state.token === '') {
         // end of expression -> this is the unit 'in' ('inch')
-        node = new OperatorNode('*', 'multiply', [node, new SymbolNode('in')], true)
+        node = new OperatorNode('*', 'multiply', [node, new SymbolNode('in')], true, false, toSourceMeta(state))
       } else {
         // operator 'a to b' or 'a in b'
         params = [node, parseRange(state)]
-        node = new OperatorNode(name, fn, params)
+        node = new OperatorNode(name, fn, params, false, false, toSourceMeta(state))
       }
     }
 
@@ -936,9 +965,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     let node
     const params = []
 
+    console.log(`parseRange`, state)
+
     if (state.token === ':') {
       // implicit start=1 (one-based)
-      node = new ConstantNode(1)
+      node = new ConstantNode(1, toSourceMeta(state))
     } else {
       // explicit start
       node = parseAddSubtract(state)
@@ -954,7 +985,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
         if (state.token === ')' || state.token === ']' || state.token === ',' || state.token === '') {
           // implicit end
-          params.push(new SymbolNode('end'))
+          params.push(new SymbolNode('end'), toSourceMeta(state))
         } else {
           // explicit end
           params.push(parseAddSubtract(state))
@@ -963,10 +994,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       if (params.length === 3) {
         // params = [start, step, end]
-        node = new RangeNode(params[0], params[2], params[1]) // start, end, step
+        node = new RangeNode(params[0], params[2], params[1], toSourceMeta(state)) // start, end, step
       } else { // length === 2
         // params = [start, end]
-        node = new RangeNode(params[0], params[1]) // start, end
+        node = new RangeNode(params[0], params[1], toSourceMeta(state)) // start, end
       }
     }
 
@@ -979,7 +1010,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseAddSubtract (state) {
-    let node, name, fn, params
+    let node, name, fn, params, sourceMeta
+
+    console.log(`parseAddSubtract`, state)
+
+    sourceMeta = toSourceMetaNew(state)
 
     node = parseMultiplyDivide(state)
 
@@ -987,6 +1022,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       '+': 'add',
       '-': 'subtract'
     }
+
     while (hasOwnProperty(operators, state.token)) {
       name = state.token
       fn = operators[name]
@@ -994,11 +1030,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getTokenSkipNewline(state)
       const rightNode = parseMultiplyDivide(state)
       if (rightNode.isPercentage) {
-        params = [node, new OperatorNode('*', 'multiply', [node, rightNode])]
+        params = [node, new OperatorNode('*', 'multiply', [node, rightNode], false, false, sourceMeta)]
       } else {
         params = [node, rightNode]
       }
-      node = new OperatorNode(name, fn, params)
+
+      node = new OperatorNode(name, fn, params, false, false, sourceMeta)
     }
 
     return node
@@ -1031,7 +1068,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         getTokenSkipNewline(state)
 
         last = parseImplicitMultiplication(state)
-        node = new OperatorNode(name, fn, [node, last])
+        node = new OperatorNode(name, fn, [node, last], toSourceMeta(state))
       } else {
         break
       }
@@ -1064,7 +1101,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // number:      implicit multiplication like '(2+3)2'
         // parenthesis: implicit multiplication like '2(3+4)', '(3+4)(1+2)'
         last = parseRule2(state)
-        node = new OperatorNode('*', 'multiply', [node, last], true /* implicit */)
+        node = new OperatorNode('*', 'multiply', [node, last], true /* implicit */, toSourceMeta(state))
       } else {
         break
       }
@@ -1105,7 +1142,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             Object.assign(state, tokenStates.pop())
             tokenStates.pop()
             last = parsePercentage(state)
-            node = new OperatorNode('/', 'divide', [node, last])
+            node = new OperatorNode('/', 'divide', [node, last], toSourceMeta(state))
           } else {
             // Not a match, so rewind
             tokenStates.pop()
@@ -1147,10 +1184,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
         // If the expression contains only %, then treat that as /100
-        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
+        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true, toSourceMeta(state))
       } else {
         params = [node, parseUnary(state)]
-        node = new OperatorNode(name, fn, params)
+        node = new OperatorNode(name, fn, params, false, false, toSourceMeta(state))
       }
     }
 
@@ -1178,7 +1215,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getTokenSkipNewline(state)
       params = [parseUnary(state)]
 
-      return new OperatorNode(name, fn, params)
+      return new OperatorNode(name, fn, params, false, false, toSourceMeta(state))
     }
 
     return parsePow(state)
@@ -1201,7 +1238,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       getTokenSkipNewline(state)
       params = [node, parseUnary(state)] // Go back to unary, we can have '2^-3'
-      node = new OperatorNode(name, fn, params)
+      node = new OperatorNode(name, fn, params, false, false, toSourceMeta(state))
     }
 
     return node
@@ -1229,7 +1266,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getToken(state)
       params = [node]
 
-      node = new OperatorNode(name, fn, params)
+      node = new OperatorNode(name, fn, params, false, false, toSourceMeta(state))
       node = parseAccessors(state, node)
     }
 
@@ -1298,7 +1335,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       // create a new custom node
       // noinspection JSValidateTypes
-      return new CustomNode(params)
+      return new CustomNode(params, toSourceMeta(state))
     }
 
     return parseSymbol(state)
@@ -1319,11 +1356,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getToken(state)
 
       if (hasOwnProperty(CONSTANTS, name)) { // true, false, null, ...
-        node = new ConstantNode(CONSTANTS[name])
+        node = new ConstantNode(CONSTANTS[name], toSourceMeta(sta))
       } else if (NUMERIC_CONSTANTS.indexOf(name) !== -1) { // NaN, Infinity
-        node = new ConstantNode(numeric(name, 'number'))
+        node = new ConstantNode(numeric(name, 'number'), toSourceMeta(state))
       } else {
-        node = new SymbolNode(name)
+        node = new SymbolNode(name, toSourceMeta(state))
       }
 
       // parse function parameters and matrix index
@@ -1377,7 +1414,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           closeParams(state)
           getToken(state)
 
-          node = new FunctionNode(node, params)
+          node = new FunctionNode(node, params, toSourceMeta(state))
         } else {
           // implicit multiplication like (2+3)(4+5) or sqrt(2)(1+2)
           // don't parse it here but let it be handled by parseImplicitMultiplication
@@ -1405,7 +1442,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         closeParams(state)
         getToken(state)
 
-        node = new AccessorNode(node, new IndexNode(params))
+        node = new AccessorNode(node, new IndexNode(params), toSourceMeta(state))
       } else {
         // dot notation like variable.prop
         getToken(state)
@@ -1413,11 +1450,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         if (state.tokenType !== TOKENTYPE.SYMBOL) {
           throw createSyntaxError(state, 'Property name expected after dot')
         }
-        params.push(new ConstantNode(state.token))
+        params.push(new ConstantNode(state.token), toSourceMeta(state))
         getToken(state)
 
         const dotNotation = true
-        node = new AccessorNode(node, new IndexNode(params, dotNotation))
+        node = new AccessorNode(node, new IndexNode(params, dotNotation), toSourceMeta(state))
       }
     }
 
@@ -1436,7 +1473,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       str = parseDoubleQuotesStringToken(state)
 
       // create constant
-      node = new ConstantNode(str)
+      node = new ConstantNode(str, toSourceMeta(state))
 
       // parse index parameters
       node = parseAccessors(state, node)
@@ -1487,7 +1524,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       str = parseSingleQuotesStringToken(state)
 
       // create constant
-      node = new ConstantNode(str)
+      node = new ConstantNode(str, toSourceMeta(state))
 
       // parse index parameters
       node = parseAccessors(state, node)
@@ -1571,7 +1608,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             }
           }
 
-          array = new ArrayNode(params)
+          array = new ArrayNode(params, toSourceMeta(state))
         } else {
           // 1 dimensional vector
           if (state.token !== ']') {
@@ -1586,7 +1623,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // this is an empty matrix "[ ]"
         closeParams(state)
         getToken(state)
-        array = new ArrayNode([])
+        array = new ArrayNode([], toSourceMeta(state))
       }
 
       return parseAccessors(state, array)
@@ -1611,7 +1648,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       len++
     }
 
-    return new ArrayNode(params)
+    console.log('parseRow', state)
+
+    return new ArrayNode(params, toSourceMeta(state))
   }
 
   /**
@@ -1659,7 +1698,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       closeParams(state)
       getToken(state)
 
-      let node = new ObjectNode(properties)
+      let node = new ObjectNode(properties, toSourceMeta(state))
 
       // parse index parameters
       node = parseAccessors(state, node)
@@ -1676,14 +1715,16 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseNumber (state) {
-    let numberStr
+    let numberStr, sourceMeta
 
     if (state.tokenType === TOKENTYPE.NUMBER) {
       // this is a number
       numberStr = state.token
+      sourceMeta = toSourceMeta(state)
+
       getToken(state)
 
-      return new ConstantNode(numeric(numberStr, config.number))
+      return new ConstantNode(numeric(numberStr, config.number), sourceMeta)
     }
 
     return parseParentheses(state)
@@ -1711,7 +1752,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       closeParams(state)
       getToken(state)
 
-      node = new ParenthesisNode(node)
+      node = new ParenthesisNode(node, toSourceMeta(state))
       node = parseAccessors(state, node)
       return node
     }

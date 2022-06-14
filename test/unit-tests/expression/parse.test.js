@@ -2171,6 +2171,97 @@ describe('parse', function () {
     })
   })
 
+  describe.only('source meta', function () {
+    it('should attach source meta info to nodes', () => {
+      // assert.deepStrictEqual(parse('0').source, {
+      //   start: 0,
+      //   end: 1,
+      //   expression: '0'
+      // })
+
+      // assert.deepStrictEqual(parse('12345').source, {
+      //   start: 0,
+      //   end: 5,
+      //   expression: '12345'
+      // })
+
+      // assert.deepStrictEqual(parse('"hello"').source, {
+      //   start: 0,
+      //   end: 7,
+      //   expression: '"hello"'
+      // })
+
+      assert.deepStrictEqual(parse('1 + 2').source, {
+        start: 0,
+        end: 5,
+        expression: '1 + 2'
+      })
+
+      // assert.deepStrictEqual(parse('1 + 2').args.map(a => a.source), [
+      //   {
+      //     start: 0,
+      //     end: 1,
+      //     expression: "1"
+      //   },
+      //   {
+      //     start: 4,
+      //     end: 5,
+      //     expression: "2"
+      //   }
+      // ])
+
+      // assert.deepStrictEqual(parse('(1 + 2)').source, {
+      //   start: 0,
+      //   end: 6,
+      //   expression: '(1 + 2)'
+      // })
+
+      // assert.deepStrictEqual(parse('(1 + 2)').content.source, {
+      //   start: 1,
+      //   end: 5,
+      //   expression: '1 + 2'
+      // })
+
+      // assert.deepStrictEqual(parse('(1 + 2)').args.map(a => a.source), [
+      //   {
+      //     start: 1,
+      //     end: 2,
+      //     expression: "1"
+      //   },
+      //   {
+      //     start: 5,
+      //     end: 6,
+      //     expression: "2"
+      //   }
+      // ])
+
+      // assert.deepStrictEqual(parse('[1, 2 + 3i, 4]').source, {
+      //   start: 0,
+      //   end: 14,
+      //   expression: '[1, 2 + 3i, 4]'
+      // })
+      // assert.deepStrictEqual(parse('[1, 2 + 3i, 4]').items.map(a => a.source), [
+      //   {
+      //     start: 1,
+      //     end: 7,
+      //     expression: 1
+      //   },
+      //   {
+      //     start: 1,
+      //     end: 7,
+      //     expression: '2 + 3i'
+      //   },
+      //   {
+      //     start: 1,
+      //     end: 7,
+      //     expression: 4
+      //   }
+      // ])
+
+      // assert.strictEqual(parse('1/2a').toString(), '1 / 2 a')
+    })
+  })
+
   describe('expose test functions', function () {
     it('should expose isAlpha', function () {
       assert.ok('should expose isAlpha', typeof math.parse.isAlpha === 'function')
