@@ -33,6 +33,8 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
 
   Node.prototype.comment = ''
 
+  Node.prototype.source = null
+
   /**
    * Compile the node into an optimized, evauatable JavaScript function
    * @return {{evaluate: function([Object])}} object

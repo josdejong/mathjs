@@ -14,6 +14,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
   /**
    * Check whether some name is a valueless unit like "inch".
    * @param {string} name
+   * @param {SourceLocation | undefined} source Node source location
    * @return {boolean}
    */
   function isValuelessUnit (name) {
@@ -27,7 +28,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
    * @param {string} name
    * @extends {Node}
    */
-  function SymbolNode (name) {
+  function SymbolNode (name, source) {
     if (!(this instanceof SymbolNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -36,6 +37,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
     if (typeof name !== 'string') throw new TypeError('String expected for parameter "name"')
 
     this.name = name
+    this.source = source
   }
 
   SymbolNode.prototype = new Node()

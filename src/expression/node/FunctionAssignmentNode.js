@@ -25,8 +25,9 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
    *                                array with objects containing the name
    *                                and type of the parameter
    * @param {Node} expr             The function expression
+   * @param {SourceLocation | undefined} source Node source location
    */
-  function FunctionAssignmentNode (name, params, expr) {
+  function FunctionAssignmentNode (name, params, expr, source) {
     if (!(this instanceof FunctionAssignmentNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -45,6 +46,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       return (param && param.type) || 'any'
     })
     this.expr = expr
+    this.source = source
   }
 
   FunctionAssignmentNode.prototype = new Node()

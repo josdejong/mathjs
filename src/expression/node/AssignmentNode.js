@@ -41,8 +41,9 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
    *                                            the property is assigned to the
    *                                            global scope.
    * @param {Node} value                        The value to be assigned
+   * @param {SourceLocation | undefined} source Node source location
    */
-  function AssignmentNode (object, index, value) {
+  function AssignmentNode (object, index, value, source) {
     if (!(this instanceof AssignmentNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -50,6 +51,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     this.object = object
     this.index = value ? index : null
     this.value = value || index
+    this.source = source
 
     // validate input
     if (!isSymbolNode(object) && !isAccessorNode(object)) {

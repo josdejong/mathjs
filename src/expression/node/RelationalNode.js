@@ -15,11 +15,12 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
    *
    * @param {String[]} conditionals   An array of conditional operators used to compare the parameters
    * @param {Node[]} params   The parameters that will be compared
+   * @param {SourceLocation | undefined} source Node source location
    *
    * @constructor RelationalNode
    * @extends {Node}
    */
-  function RelationalNode (conditionals, params) {
+  function RelationalNode (conditionals, params, source) {
     if (!(this instanceof RelationalNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -29,6 +30,7 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
 
     this.conditionals = conditionals
     this.params = params
+    this.source = source
   }
 
   RelationalNode.prototype = new Node()

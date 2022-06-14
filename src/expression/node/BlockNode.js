@@ -17,8 +17,9 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
    *            An array with blocks, where a block is constructed as an Object
    *            with properties block, which is a Node, and visible, which is
    *            a boolean. The property visible is optional and is true by default
+   * @param {SourceLocation | undefined} source Node source location
    */
-  function BlockNode (blocks) {
+  function BlockNode (blocks, source) {
     if (!(this instanceof BlockNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -34,6 +35,8 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
 
       return { node, visible }
     })
+
+    this.source = source
   }
 
   BlockNode.prototype = new Node()

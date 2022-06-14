@@ -13,13 +13,15 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    * @extends {Node}
    * Holds an 1-dimensional array with items
    * @param {Node[]} [items]   1 dimensional array with items
+   * @param {SourceLocation | undefined} source Node source location
    */
-  function ArrayNode (items) {
+  function ArrayNode (items, source) {
     if (!(this instanceof ArrayNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
 
     this.items = items || []
+    this.source = source
 
     // validate input
     if (!Array.isArray(this.items) || !this.items.every(isNode)) {

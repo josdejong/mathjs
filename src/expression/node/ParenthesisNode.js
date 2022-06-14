@@ -12,9 +12,10 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
    * @extends {Node}
    * A parenthesis node describes manual parenthesis from the user input
    * @param {Node} content
+   * @param {SourceLocation | undefined} source Node source location
    * @extends {Node}
    */
-  function ParenthesisNode (content) {
+  function ParenthesisNode (content, source) {
     if (!(this instanceof ParenthesisNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -25,6 +26,7 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
     }
 
     this.content = content
+    this.source = source
   }
 
   ParenthesisNode.prototype = new Node()

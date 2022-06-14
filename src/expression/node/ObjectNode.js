@@ -15,8 +15,9 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
    * @extends {Node}
    * Holds an object with keys/values
    * @param {Object.<string, Node>} [properties]   object with key/value pairs
+   * @param {SourceLocation | undefined} source Node source location
    */
-  function ObjectNode (properties) {
+  function ObjectNode (properties, source) {
     if (!(this instanceof ObjectNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -31,6 +32,8 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
         throw new TypeError('Object containing Nodes expected')
       }
     }
+
+    this.source = source
   }
 
   ObjectNode.prototype = new Node()

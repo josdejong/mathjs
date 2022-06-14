@@ -18,15 +18,17 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
    *     new ConstantNode('hello')
    *
    * @param {*} value    Value can be any type (number, BigNumber, string, ...)
+   * @param {SourceLocation | undefined} source Node source location
    * @constructor ConstantNode
    * @extends {Node}
    */
-  function ConstantNode (value) {
+  function ConstantNode (value, source) {
     if (!(this instanceof ConstantNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
 
     this.value = value
+    this.source = source
   }
 
   ConstantNode.prototype = new Node()
