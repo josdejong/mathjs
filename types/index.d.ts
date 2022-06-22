@@ -162,7 +162,7 @@ declare namespace math {
   }
 
   interface NodeCtor {
-    new(): Node
+    new (): Node
   }
 
   interface AccessorNode extends MathNodeCommon {
@@ -3296,7 +3296,9 @@ declare namespace math {
     factory: <T, TDeps extends readonly MathJsFunctionName[]>(
       name: string,
       dependencies: TDeps,
-      create: (injected: Pick<MathJsStatic, Extract<MathJsFunctionName, TDeps[number]>>) => T,
+      create: (
+        injected: Pick<MathJsStatic, Extract<MathJsFunctionName, TDeps[number]>>
+      ) => T,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       meta?: any
     ) => FactoryFunction<T>
