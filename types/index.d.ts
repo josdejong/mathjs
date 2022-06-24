@@ -161,6 +161,10 @@ declare namespace math {
     isHexDigit(c: string): boolean
   }
 
+  interface NodeCtor {
+    new (): Node
+  }
+
   interface AccessorNode extends MathNodeCommon {
     type: 'AccessorNode'
     isAccessorNode: true
@@ -434,6 +438,7 @@ declare namespace math {
     tau: number
 
     // Class-like constructors
+    Node: NodeCtor
     AccessorNode: AccessorNodeCtor
     ArrayNode: ArrayNodeCtor
     AssignmentNode: AssignmentNodeCtor
@@ -3288,10 +3293,12 @@ declare namespace math {
       factories: FactoryFunctionMap,
       config?: ConfigOptions
     ) => MathJsStatic
-    factory: <T>(
+    factory: <T, TDeps extends readonly MathJsFunctionName[]>(
       name: string,
-      dependencies: MathJsFunctionName[],
-      create: (injected: Partial<MathJsStatic>) => T,
+      dependencies: TDeps,
+      create: (
+        injected: Pick<MathJsStatic, Extract<MathJsFunctionName, TDeps[number]>>
+      ) => T,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       meta?: any
     ) => FactoryFunction<T>
