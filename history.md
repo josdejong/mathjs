@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220624-version-1062">2022-06-24, version 10.6.2 <a href="#20220624-version-1062" title="Permalink">#</a></h1>
+
+- Improve TypeScript definitions of `ParenthesisNode`. Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+- Change the TypeScript definition of `MathNodeCommon['type']` into a less 
+  strict string, so it is possible to extend with new Node classes. 
+  Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+- Improve TypeScript definitions of the `factory` function, thanks <a href="https://github.com/mattvague">@mattvague</a>.
+
+
 <h1 id="20220531-version-1061">2022-05-31, version 10.6.1 <a href="#20220531-version-1061" title="Permalink">#</a></h1>
 
 - Improve the  TypeScript types For `OperatorNode`: you can now define generic 
