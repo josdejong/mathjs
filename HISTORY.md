@@ -1,5 +1,11 @@
 # History
 
+# 2022-06-24, version 10.6.3
+
+- Revert the TypeScript definition fixes for `factory` applied in `v10.6.2`, 
+  they give some complications.
+
+
 # 2022-06-24, version 10.6.2
 
 - Improve TypeScript definitions of `ParenthesisNode`. Thanks @mattvague.
