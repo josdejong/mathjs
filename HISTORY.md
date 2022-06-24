@@ -1,11 +1,12 @@
 # History
 
-# unpublished changes since version 10.6.1
+# 2022-06-24, version 10.6.2
 
 - Improve TypeScript definitions of `ParenthesisNode`. Thanks @mattvague.
 - Change the TypeScript definition of `MathNodeCommon['type']` into a less 
   strict string, so it is possible to extend with new Node classes. 
   Thanks @mattvague.
+- Improve TypeScript definitions of the `factory` function, thanks @mattvague.
 
 
 # 2022-05-31, version 10.6.1
