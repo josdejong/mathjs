@@ -161,6 +161,10 @@ declare namespace math {
     isHexDigit(c: string): boolean
   }
 
+  interface NodeCtor {
+    new (): MathNodeCommon
+  }
+
   interface AccessorNode extends MathNodeCommon {
     type: 'AccessorNode'
     isAccessorNode: true
