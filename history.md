@@ -4,6 +4,11 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220628-version-1064">2022-06-28, version 10.6.4 <a href="#20220628-version-1064" title="Permalink">#</a></h1>
+
+- Improve TypeScript definitions of the `factory` function, thanks <a href="https://github.com/mattvague">@mattvague</a>.
+
+
 <h1 id="20220624-version-1063">2022-06-24, version 10.6.3 <a href="#20220624-version-1063" title="Permalink">#</a></h1>
 
 - Revert the TypeScript definition fixes for `factory` applied in `v10.6.2`, 
