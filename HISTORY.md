@@ -1,5 +1,10 @@
 # History
 
+# 2022-06-28, version 10.6.4
+
+- Improve TypeScript definitions of the `factory` function, thanks @mattvague.
+
+
 # 2022-06-24, version 10.6.3
 
 - Revert the TypeScript definition fixes for `factory` applied in `v10.6.2`, 
