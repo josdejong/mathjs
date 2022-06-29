@@ -255,6 +255,7 @@ declare namespace math {
     isFunctionNode: true
     fn: SymbolNode
     args: MathNode[]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onUndefinedFunction: (name: string) => any
   }
   interface FunctionNodeCtor {
