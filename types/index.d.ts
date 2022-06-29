@@ -255,7 +255,7 @@ declare namespace math {
     isFunctionNode: true
     fn: SymbolNode
     args: MathNode[]
-    onUndefinedFunction: (name: string) => never
+    onUndefinedFunction: (name: string) => any
   }
   interface FunctionNodeCtor {
     new (fn: MathNode | string, args: MathNode[]): FunctionNode
