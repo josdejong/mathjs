@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since 10.6.4
+
+- Fix: #2608 clarify the docs on the need to configure a smaller `epsilon`
+  when using BigNumbers.
+
+
 # 2022-06-28, version 10.6.4
 
 - Improve TypeScript definitions of the `factory` function, thanks @mattvague.
