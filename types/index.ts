@@ -1285,6 +1285,7 @@ Units examples
   // use Unit as definition
   math.createUnit('c', { definition: b })
   math.createUnit('c', { definition: b }, { override: true })
+  math.createUnit('customUnit', math.unit(0.5, 'm'))
 
   // units can be added, subtracted, and multiplied or divided by numbers and by other units
   math.add(a, b)

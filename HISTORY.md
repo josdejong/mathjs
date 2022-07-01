@@ -2,7 +2,10 @@
 
 # unpublished changes since 10.6.4
 
-- Fix: #2608 clarify the docs on the need to configure a smaller `epsilon`
+- Fix #2600: improve the TypeScript definitions of `simplify`. 
+  Thanks @laureen-m and @mattvague.
+- Fix #2607: improve type definition of `createUnit`. Thanks @egziko.
+- Fix #2608: clarify the docs on the need to configure a smaller `epsilon`
   when using BigNumbers.
 
 
