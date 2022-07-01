@@ -29,6 +29,7 @@ import {
   OperatorNodeOp,
   SymbolNode,
   ParenthesisNode,
+  SimplifyRule,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -777,11 +778,77 @@ Simplify examples
   math.simplify('2 * 1 * x ^ (2 - 1)')
   math.simplify('2 * 3 * x', { x: 4 })
 
+  expectTypeOf(math.simplify.rules).toMatchTypeOf<Array<SimplifyRule>>
+
   const f = math.parse('2 * 1 * x ^ (2 - 1)')
   math.simplify(f)
 
   math.simplify('0.4 * x', {}, { exactFractions: true })
   math.simplify('0.4 * x', {}, { exactFractions: false })
+  math.simplify('0.4 * x', {}, { fractionsLimit: 2 })
+  math.simplify('0.4 * x', {}, { consoleDebug: false })
+
+  math.simplify(
+    '0.4 * x',
+    {},
+    {
+      context: {
+        xor: {
+          trivial: true,
+          total: true,
+          commutative: true,
+          associative: true,
+        },
+      },
+    }
+  )
+
+  math.simplify('0.4 * x', [])
+  math.simplify('0.4 * x', [
+    'n * n -> 2n',
+    {
+      s: 'n * n -> 2n',
+      repeat: true,
+      assuming: {
+        multiply: {
+          trivial: true,
+          total: true,
+          commutative: true,
+          associative: true,
+        },
+      },
+      imposeContext: {
+        multiply: {
+          trivial: true,
+          total: true,
+          commutative: true,
+          associative: true,
+        },
+      },
+    },
+    {
+      l: 'n * n',
+      r: '2n',
+      repeat: true,
+      assuming: {
+        multiply: {
+          trivial: true,
+          total: true,
+          commutative: true,
+          associative: true,
+        },
+      },
+      imposeContext: {
+        multiply: {
+          trivial: true,
+          total: true,
+          commutative: true,
+          associative: true,
+        },
+      },
+    },
+    (node: MathNode) => node,
+  ])
 }
 
 /*

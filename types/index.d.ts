@@ -3770,6 +3770,18 @@ declare namespace math {
     override?: boolean
   }
 
+  type SimplifyContext = Partial<
+    Record<
+      OperatorNodeFn,
+      {
+        trivial: boolean
+        total: boolean
+        commutative: boolean
+        associative: boolean
+      }
+    >
+  >
+
   interface SimplifyOptions {
     /** A boolean which is `true` by default. */
     exactFractions?: boolean
@@ -3779,23 +3791,46 @@ declare namespace math {
      * Default value is 10000.
      */
     fractionsLimit?: number
+    /** A boolean which is `false` by default. */
+    consoleDebug?: boolean
+    /**
+     * gives properties of each operator, which determine what simplifications
+     * are allowed. Properties are commutative, associative, total (whether
+     * the operation is defined for all arguments), and trivial (whether
+     * the operation applied to a single argument leaves that argument
+     * unchanged).
+     */
+    context?: SimplifyContext
   }
 
   type SimplifyRule =
-    | { l: string; r: string }
+    | {
+        l: string
+        r: string
+        repeat?: boolean
+        assuming?: SimplifyContext
+        imposeContext?: SimplifyContext
+      }
+    | {
+        s: string
+        repeat?: boolean
+        assuming?: SimplifyContext
+        imposeContext?: SimplifyContext
+      }
     | string
     | ((node: MathNode) => MathNode)
 
   interface Simplify {
+    (expr: MathNode | string): MathNode
     (
       expr: MathNode | string,
-      rules?: SimplifyRule[],
+      rules: SimplifyRule[],
       scope?: object,
       options?: SimplifyOptions
     ): MathNode
     (
       expr: MathNode | string,
-      scope?: object,
+      scope: object,
       options?: SimplifyOptions
     ): MathNode
 
