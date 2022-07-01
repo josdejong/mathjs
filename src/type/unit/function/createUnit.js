@@ -31,9 +31,10 @@ export const createCreateUnit = /* #__PURE__ */ factory(name, dependencies, ({ t
    *     math.createUnit('foo')
    *     math.createUnit('knot', {definition: '0.514444444 m/s', aliases: ['knots', 'kt', 'kts']})
    *     math.createUnit('mph', '1 mile/hour')
+   *     math.createUnit('km', math.unit(1000, 'm'))
    *
    * @param {string} name      The name of the new unit. Must be unique. Example: 'knot'
-   * @param {string, Unit} definition      Definition of the unit in terms of existing units. For example, '0.514444444 m / s'.
+   * @param {string, UnitDefinition, Unit} definition      Definition of the unit in terms of existing units. For example, '0.514444444 m / s'.
    * @param {Object} options   (optional) An object containing any of the following properties:
    *     - `prefixes {string}` "none", "short", "long", "binary_short", or "binary_long". The default is "none".
    *     - `aliases {Array}` Array of strings. Example: ['knots', 'kt', 'kts']

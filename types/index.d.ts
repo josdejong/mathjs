@@ -589,7 +589,7 @@ declare namespace math {
      */
     createUnit(
       name: string,
-      definition?: string | UnitDefinition,
+      definition?: string | UnitDefinition | Unit,
       options?: CreateUnitOptions
     ): Unit
     /**
@@ -599,7 +599,7 @@ declare namespace math {
      * @returns The new unit
      */
     createUnit(
-      units: Record<string, string | UnitDefinition>,
+      units: Record<string, string | UnitDefinition | Unit>,
       options?: CreateUnitOptions
     ): Unit
 
@@ -4146,7 +4146,7 @@ declare namespace math {
      */
     createUnit(
       this: MathJsChain<string>,
-      definition?: string | UnitDefinition,
+      definition?: string | UnitDefinition | Unit,
       options?: CreateUnitOptions
     ): MathJsChain<Unit>
     /**
@@ -4160,7 +4160,7 @@ declare namespace math {
      * 0.
      */
     createUnit(
-      this: MathJsChain<Record<string, string | UnitDefinition>>,
+      this: MathJsChain<Record<string, string | UnitDefinition | Unit>>,
       options?: CreateUnitOptions
     ): MathJsChain<Unit>
 
