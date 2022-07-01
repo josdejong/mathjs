@@ -255,11 +255,11 @@ declare namespace math {
     isFunctionNode: true
     fn: SymbolNode
     args: MathNode[]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onUndefinedFunction: (name: string) => any
   }
   interface FunctionNodeCtor {
     new (fn: MathNode | string, args: MathNode[]): FunctionNode
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onUndefinedFunction: (name: string) => any
   }
 
   interface IndexNode extends MathNodeCommon {
@@ -380,11 +380,11 @@ declare namespace math {
     type: 'SymbolNode'
     isSymbolNode: true
     name: string
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onUndefinedSymbol: (name: string) => any
   }
   interface SymbolNodeCtor {
     new (name: string): SymbolNode
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onUndefinedSymbol: (name: string) => any
   }
 
   type MathNode =
