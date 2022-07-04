@@ -7,6 +7,7 @@
 - Fix #2607: improve type definition of `createUnit`. Thanks @egziko.
 - Fix #2608: clarify the docs on the need to configure a smaller `epsilon`
   when using BigNumbers.
+- Fix #2613: describe matrix methods `get` and `set` in the docs.
 
 
 # 2022-06-28, version 10.6.4
