@@ -88,7 +88,7 @@ The rules used by `math.derivative` can be found on Wikipedia:
 
 ## Rationalize
 
-The function [`math.transform`](../reference/functions/transform.md)  transforms a rationalizable expression in a rational fraction.
+The function [`math.rationalize`](../reference/functions/rationalize.md) transforms a rationalizable expression in a rational fraction.
 If rational fraction is one variable polynomial then converts the numerator and denominator in canonical form, with decreasing exponents, returning the coefficients of numerator.
 
 ```js
