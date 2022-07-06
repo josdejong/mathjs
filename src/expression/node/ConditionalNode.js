@@ -14,11 +14,12 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
    * @param {Node} condition   Condition, must result in a boolean
    * @param {Node} trueExpr    Expression evaluated when condition is true
    * @param {Node} falseExpr   Expression evaluated when condition is true
+   * @param {SourceLocation | undefined} source Node source location
    *
    * @constructor ConditionalNode
    * @extends {Node}
    */
-  function ConditionalNode (condition, trueExpr, falseExpr) {
+  function ConditionalNode (condition, trueExpr, falseExpr, source) {
     if (!(this instanceof ConditionalNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -29,6 +30,7 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
     this.condition = condition
     this.trueExpr = trueExpr
     this.falseExpr = falseExpr
+    this.source = source
   }
 
   ConditionalNode.prototype = new Node()

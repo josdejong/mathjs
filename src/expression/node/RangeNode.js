@@ -15,8 +15,9 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    * @param {Node} start  included lower-bound
    * @param {Node} end    included upper-bound
    * @param {Node} [step] optional step
+   * @param {SourceLocation | undefined} source Node source location
    */
-  function RangeNode (start, end, step) {
+  function RangeNode (start, end, step, source) {
     if (!(this instanceof RangeNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -30,6 +31,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
     this.start = start // included lower-bound
     this.end = end // included upper-bound
     this.step = step || null // optional step
+    this.source = source
   }
 
   RangeNode.prototype = new Node()

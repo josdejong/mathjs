@@ -22,8 +22,9 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    * @param {Node[]} args         Operator arguments
    * @param {boolean} [implicit]  Is this an implicit multiplication?
    * @param {boolean} [isPercentage] Is this an percentage Operation?
+   * @param {SourceLocation | undefined} source Node source location
    */
-  function OperatorNode (op, fn, args, implicit, isPercentage) {
+  function OperatorNode (op, fn, args, implicit, isPercentage, source) {
     if (!(this instanceof OperatorNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -44,6 +45,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
     this.op = op
     this.fn = fn
     this.args = args || []
+    this.source = source
   }
 
   OperatorNode.prototype = new Node()

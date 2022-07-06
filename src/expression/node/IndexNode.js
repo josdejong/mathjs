@@ -25,14 +25,16 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
    *                                       notation like `a.b`, or using bracket
    *                                       notation like `a["b"]` (default).
    *                                       Used to stringify an IndexNode.
+   * @param {SourceLocation | undefined} source Node source location
    */
-  function IndexNode (dimensions, dotNotation) {
+  function IndexNode (dimensions, dotNotation, source) {
     if (!(this instanceof IndexNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
 
     this.dimensions = dimensions
     this.dotNotation = dotNotation || false
+    this.source = source
 
     // validate input
     if (!Array.isArray(dimensions) || !dimensions.every(isNode)) {

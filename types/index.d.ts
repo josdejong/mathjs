@@ -28,6 +28,25 @@ declare namespace math {
     [key: string]: FactoryFunction<any> | FactoryFunctionMap
   }
 
+  enum ParserTokenType {
+    NULL,
+    DELIMITER,
+    NUMBER,
+    SYMBOL,
+    UNKNOWN
+  }
+
+  interface ParserState {
+    extraNodes: any
+    expression: string
+    comment: string
+    index: 0
+    token: string 
+    tokenType: ParserTokenType
+    nestingLevel: number
+    conditionalLevel: number | null
+  }
+
   /** Available options for parse */
   interface ParseOptions {
     /** a set of custom nodes */
@@ -173,7 +192,7 @@ declare namespace math {
     name: string
   }
   interface AccessorNodeCtor {
-    new (object: MathNode, index: IndexNode): AccessorNode
+    new (object: MathNode, index: IndexNode, source?: SourceMeta): AccessorNode
   }
 
   interface ArrayNode extends MathNodeCommon {
@@ -182,7 +201,7 @@ declare namespace math {
     items: MathNode[]
   }
   interface ArrayNodeCtor {
-    new (items: MathNode[]): ArrayNode
+    new (items: MathNode[], source?: SourceMeta): ArrayNode
   }
 
   interface AssignmentNode extends MathNodeCommon {
@@ -194,7 +213,7 @@ declare namespace math {
     name: string
   }
   interface AssignmentNodeCtor {
-    new (object: SymbolNode, value: MathNode): AssignmentNode
+    new (object: SymbolNode, value: MathNode, source?: SourceMeta): AssignmentNode
     new (
       object: SymbolNode | AccessorNode,
       index: IndexNode,
@@ -209,7 +228,8 @@ declare namespace math {
   }
   interface BlockNodeCtor {
     new (
-      arr: Array<{ node: MathNode } | { node: MathNode; visible: boolean }>
+      arr: Array<{ node: MathNode } | { node: MathNode; visible: boolean }>,
+      source?: SourceMeta
     ): BlockNode
   }
 
@@ -224,7 +244,8 @@ declare namespace math {
     new (
       condition: MathNode,
       trueExpr: MathNode,
-      falseExpr: MathNode
+      falseExpr: MathNode,
+      source?: SourceMeta
     ): ConditionalNode
   }
 
@@ -236,7 +257,7 @@ declare namespace math {
   }
 
   interface ConstantNodeCtor {
-    new (constant: number): ConstantNode
+    new (constant: number, source?: SourceMeta): ConstantNode
   }
 
   interface FunctionAssignmentNode extends MathNodeCommon {
@@ -247,7 +268,7 @@ declare namespace math {
     expr: MathNode
   }
   interface FunctionAssignmentNodeCtor {
-    new (name: string, params: string[], expr: MathNode): FunctionAssignmentNode
+    new (name: string, params: string[], expr: MathNode, source?: SourceMeta): FunctionAssignmentNode
   }
 
   interface FunctionNode extends MathNodeCommon {
@@ -257,7 +278,7 @@ declare namespace math {
     args: MathNode[]
   }
   interface FunctionNodeCtor {
-    new (fn: MathNode | string, args: MathNode[]): FunctionNode
+    new (fn: MathNode | string, args: MathNode[], source?: SourceMeta): FunctionNode
   }
 
   interface IndexNode extends MathNodeCommon {
@@ -267,8 +288,8 @@ declare namespace math {
     dotNotation: boolean
   }
   interface IndexNodeCtor {
-    new (dimensions: MathNode[]): IndexNode
-    new (dimensions: MathNode[], dotNotation: boolean): IndexNode
+    new (dimensions: MathNode[], source?: SourceMeta): IndexNode
+    new (dimensions: MathNode[], dotNotation: boolean, source?: SourceMeta): IndexNode
   }
 
   interface ObjectNode extends MathNodeCommon {
@@ -277,7 +298,7 @@ declare namespace math {
     properties: Record<string, MathNode>
   }
   interface ObjectNodeCtor {
-    new (properties: Record<string, MathNode>): ObjectNode
+    new (properties: Record<string, MathNode>, source?: SourceMeta): ObjectNode
   }
 
   type OperatorNodeMap = {
@@ -338,7 +359,8 @@ declare namespace math {
       op: TOp,
       fn: TFn,
       args: TArgs,
-      implicit?: boolean
+      implicit?: boolean,
+      source?: SourceMeta
     ): OperatorNode<TOp, TFn, TArgs>
   }
   interface ParenthesisNode<TContent extends MathNode = MathNode>
@@ -349,7 +371,7 @@ declare namespace math {
   }
   interface ParenthesisNodeCtor {
     new <TContent extends MathNode>(
-      content: TContent
+      content: TContent, source?: SourceMeta
     ): ParenthesisNode<TContent>
   }
 
@@ -361,7 +383,7 @@ declare namespace math {
     step: MathNode | null
   }
   interface RangeNodeCtor {
-    new (start: MathNode, end: MathNode, step?: MathNode): RangeNode
+    new (start: MathNode, end: MathNode, step?: MathNode, source?: SourceMeta): RangeNode
   }
 
   interface RelationalNode extends MathNodeCommon {
@@ -371,7 +393,7 @@ declare namespace math {
     params: MathNode[]
   }
   interface RelationalNodeCtor {
-    new (conditionals: string[], params: MathNode[]): RelationalNode
+    new (conditionals: string[], params: MathNode[], source?: SourceMeta): RelationalNode
   }
 
   interface SymbolNode extends MathNodeCommon {
@@ -380,7 +402,7 @@ declare namespace math {
     name: string
   }
   interface SymbolNodeCtor {
-    new (name: string): SymbolNode
+    new (name: string, source?: SourceMeta): SymbolNode
   }
 
   type MathNode =
@@ -3848,10 +3870,17 @@ declare namespace math {
     evaluate(scope?: any): any
   }
 
+  interface SourceMeta {
+    start: number
+    end: number
+    expression: string
+  }
+
   interface MathNodeCommon {
     isNode: true
     comment: string
     type: string
+    source?: SourceMeta
 
     isUpdateNode?: boolean
 

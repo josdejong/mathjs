@@ -21,8 +21,9 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
    * @param {./Node | string} fn Node resolving with a function on which to invoke
    *                             the arguments, typically a SymboNode or AccessorNode
    * @param {./Node[]} args
+   * @param {SourceLocation | undefined} source Node source location
    */
-  function FunctionNode (fn, args) {
+  function FunctionNode (fn, args, source) {
     if (!(this instanceof FunctionNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -39,6 +40,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     this.fn = fn
     this.args = args || []
+    this.source = source
 
     // readonly property name
     Object.defineProperty(this, 'name', {

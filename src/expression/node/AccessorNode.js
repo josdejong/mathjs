@@ -30,8 +30,9 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
    * @param {Node} object                 The object from which to retrieve
    *                                      a property or subset.
    * @param {IndexNode} index             IndexNode containing ranges
+   * @param {SourceLocation | undefined} source Node source location
    */
-  function AccessorNode (object, index) {
+  function AccessorNode (object, index, source) {
     if (!(this instanceof AccessorNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -45,6 +46,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     this.object = object || null
     this.index = index
+    this.source = source
 
     // readonly property name
     Object.defineProperty(this, 'name', {
