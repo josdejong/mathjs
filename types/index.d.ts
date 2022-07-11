@@ -2657,7 +2657,7 @@ declare namespace math {
     /**
      * Count the number of elements of a matrix, array or string.
      * @param array A single matrix
-     * @returns The sum of all values
+     * @returns The number of members passed in parameters
      */
     count(...args: Array<string | Array<unknown> | Matrix>): number
 
