@@ -2655,6 +2655,13 @@ declare namespace math {
     sum(array: MathCollection): any
 
     /**
+     * Count the number of elements of a matrix, array or string.
+     * @param array A single matrix
+     * @returns The sum of all values
+     */
+    count(...args: Array<string | Array<unknown> | Matrix>): number
+
+    /**
      * Compute the cumulative sum of a matrix or a list with values.
      * In case of a (multi dimensional) array or matrix, the cumulative sums
      * along a specified dimension (defaulting to the first) will be calculated.
