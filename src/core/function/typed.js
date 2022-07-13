@@ -117,6 +117,10 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'BigNumber', test: isBigNumber },
     { name: 'Fraction', test: isFraction },
     { name: 'Unit', test: isUnit },
+    // The following type matches a valid variable name, i.e., an alphanumeric
+    // string starting with an alphabetic character. It is used (at least)
+    // in the definition of the derivative() function, as the argument telling
+    // what to differentiate over must (currently) be a variable.
     {
       name: 'identifier',
       test: s => isString && /^\p{L}[\p{L}\d]*$/u.test(s)
