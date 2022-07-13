@@ -89,6 +89,22 @@ Basic usage examples
 
   math.variance(math.variance(m2by3, 'uncorrected'))
 
+  // count and sum check
+  math.count([10, 10, 10])
+  math.count([
+    [1, 2, 3],
+    [4, 5, 6],
+  ])
+  math.count('mathjs')
+
+  math.sum(1, 2, 3, 4)
+  math.sum([1, 2, 3, 4])
+  math.sum([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+  ])
+
   // expressions
   math.evaluate('1.2 * (2 + 4.5)')
 
@@ -766,6 +782,11 @@ Chaining examples
       .log10()
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
+  expectTypeOf(math.chain([1, 2]).count()).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain('mathjs').count()).toMatchTypeOf<
+    MathJsChain<number>
+  >()
+  expectTypeOf(math.chain([1, 2]).sum()).toMatchTypeOf<MathJsChain<number>>()
   // TODO complete the rest of these...
 }
 
