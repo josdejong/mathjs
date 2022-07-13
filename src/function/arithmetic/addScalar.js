@@ -44,7 +44,7 @@ export const createAddScalar = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
       const res = x.clone()
       res.value =
-        typed.find(self, [res.valType(), y.valType()])(res.value, y.value)
+        typed.find(self, [res.valueType(), y.valueType()])(res.value, y.value)
       res.fixPrefix = false
       return res
     })

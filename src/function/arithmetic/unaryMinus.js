@@ -36,7 +36,7 @@ export const createUnaryMinus = /* #__PURE__ */ factory(name, dependencies, ({ t
 
     Unit: typed.referToSelf(self => x => {
       const res = x.clone()
-      res.value = typed.find(self, res.valType())(x.value)
+      res.value = typed.find(self, res.valueType())(x.value)
       return res
     }),
 

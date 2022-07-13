@@ -58,7 +58,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       if (!x._isDerived() && x.units[0].unit.offset !== 0) {
         throw new TypeError('sign is ambiguous for units with offset')
       }
-      return typed.find(self, x.valType())(x.value)
+      return typed.find(self, x.valueType())(x.value)
     })
   })
 })

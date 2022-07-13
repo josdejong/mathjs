@@ -6,7 +6,7 @@ export const createCompareUnits = /* #__PURE__ */ factory(
       if (!x.equalBase(y)) {
         throw new Error('Cannot compare units with different base')
       }
-      return typed.find(self, [x.valType(), y.valType()])(x.value, y.value)
+      return typed.find(self, [x.valueType(), y.valueType()])(x.value, y.value)
     })
   })
 )

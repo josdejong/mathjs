@@ -466,7 +466,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @memberof Unit
    * @ return {string} type of the value of the unit
    */
-  Unit.prototype.valType = function () {
+  Unit.prototype.valueType = function () {
     return typeOf(this.value)
   }
 
@@ -3003,11 +3003,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Function}
    */
   Unit.prototype._numberConverter = function () {
-    const convert = Unit.typeConverters[this.valType()]
+    const convert = Unit.typeConverters[this.valueType()]
     if (convert) {
       return convert
     }
-    throw new TypeError('Unsupported Unit value type "' + this.valType() + '"')
+    throw new TypeError('Unsupported Unit value type "' + this.valueType() + '"')
   }
 
   /**

@@ -47,7 +47,7 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
     },
 
     Unit: typed.referToSelf(self =>
-      x => typed.find(self, x.valType())(x.value)),
+      x => typed.find(self, x.valueType())(x.value)),
 
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
