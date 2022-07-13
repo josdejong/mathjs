@@ -2659,7 +2659,7 @@ declare namespace math {
      * @param array A single matrix
      * @returns The number of members passed in parameters
      */
-    count(...args: Array<string | Array<unknown> | Matrix>): number
+    count(x: MathCollection | string): number
 
     /**
      * Compute the cumulative sum of a matrix or a list with values.
