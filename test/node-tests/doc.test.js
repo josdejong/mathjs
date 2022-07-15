@@ -79,7 +79,7 @@ function extractValue (spec) {
 }
 
 const knownProblems = new Set([
-  'numeric', 'isZero', 'isPositive', 'isNumeric', 'isNegative', 'isNaN',
+  'isZero', 'isPositive', 'isNumeric', 'isNegative', 'isNaN',
   'isInteger', 'hasNumericValue', 'clone', 'print', 'hex', 'format', 'to', 'sin',
   'cos', 'atan2', 'atan', 'asin', 'asec', 'acsc', 'acoth', 'acot', 'max',
   'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',

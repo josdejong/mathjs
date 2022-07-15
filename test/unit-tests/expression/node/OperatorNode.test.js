@@ -37,7 +37,8 @@ describe('OperatorNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { OperatorNode('+', 'add', [two, three]) }, SyntaxError)
+    assert.throws(
+      function () { OperatorNode('+', 'add', [two, three]) }, TypeError)
   })
 
   it('should compile an OperatorNode', function () {

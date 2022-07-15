@@ -217,7 +217,6 @@ export function typeOf (x) {
   if (t === 'object') {
     if (x === null) return 'null'
     if (isBigNumber(x)) return 'BigNumber' // Special: weird mashup with Decimal
-    if (isNode(x)) return x.type // I don't understand the Node class hierarchy
     if (x.constructor && x.constructor.name) return x.constructor.name
 
     return 'Object' // just in case

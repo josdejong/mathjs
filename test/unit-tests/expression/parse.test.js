@@ -214,7 +214,7 @@ describe('parse', function () {
     })
 
     it('should fill in the property comment of a Node', function () {
-      assert.strictEqual(parse('2 + 3').comment, '')
+      assert.strictEqual(parse('2 + 3').comment, undefined)
 
       assert.strictEqual(parse('2 + 3 # hello').comment, '# hello')
       assert.strictEqual(parse('   # hi').comment, '# hi')

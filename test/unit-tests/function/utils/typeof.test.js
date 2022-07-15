@@ -107,8 +107,10 @@ describe('typeOf', function () {
     assert.strictEqual(math.typeOf(new math.FunctionNode('f', [])), 'FunctionNode')
     assert.strictEqual(math.typeOf(indexNode), 'IndexNode')
     assert.strictEqual(math.typeOf(new math.ObjectNode({})), 'ObjectNode')
+    assert.strictEqual(math.typeOf(math.parse('a+b')), 'OperatorNode')
     assert.strictEqual(math.typeOf(new math.ParenthesisNode(constantNode)), 'ParenthesisNode')
     assert.strictEqual(math.typeOf(new math.RangeNode(constantNode, constantNode)), 'RangeNode')
+    assert.strictEqual(math.typeOf(math.parse('a<b<c')), 'RelationalNode')
     assert.strictEqual(math.typeOf(symbolNode), 'SymbolNode')
   })
 

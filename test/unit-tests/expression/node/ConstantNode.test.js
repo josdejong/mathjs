@@ -28,7 +28,7 @@ describe('ConstantNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { ConstantNode(3) }, SyntaxError)
+    assert.throws(function () { ConstantNode(3) }, TypeError)
   })
 
   it('should compile a ConstantNode', function () {
