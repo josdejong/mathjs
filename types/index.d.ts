@@ -1845,14 +1845,37 @@ declare namespace math {
      * @param format The matrix storage format
      * @returns A matrix filled with ones
      */
-    ones(size: number | number[], format?: string): MathCollection
+    ones(
+      size?: number | number[] | BigNumber | BigNumber[],
+      format?: string
+    ): MathCollection
     /**
      * @param m The x dimension of the matrix
-     * @param n The y dimension of the amtrix
+     * @param n The y dimension of the matrix
      * @param format The matrix storage format
      * @returns A matrix filled with ones
      */
-    ones(m: number, n: number, format?: string): MathCollection
+    ones(
+      m: number | BigNumber,
+      n: number | BigNumber,
+      format?: string
+    ): MathCollection
+    /**
+     * @param m The x dimension of the matrix
+     * @param n The y dimension of the matrix
+     * @param p The z dimension of the matrix
+     * @param format The matrix storage format
+     * @returns A matrix filled with ones
+     */
+    ones(
+      m: number | BigNumber,
+      n: number | BigNumber,
+      p: number | BigNumber,
+      format?: string
+    ): MathCollection
+    /** Actually ones can take an arbitrary number of dimensions before the
+     ** optional format, not sure how to write that in TypeScript
+     **/
 
     /**
      * Partition-based selection of an array or 1D matrix. Will find the kth
@@ -2033,14 +2056,37 @@ declare namespace math {
      * @param format The matrix storage format
      * @returns A matrix filled with zeros
      */
-    zeros(size: number | number[], format?: string): MathCollection
+    zeros(
+      size?: number | number[] | BigNumber | BigNumber[],
+      format?: string
+    ): MathCollection
     /**
      * @param m The x dimension of the matrix
      * @param n The y dimension of the matrix
      * @param format The matrix storage format
      * @returns A matrix filled with zeros
      */
-    zeros(m: number, n: number, format?: string): MathCollection
+    zeros(
+      m: number | BigNumber,
+      n: number | BigNumber,
+      format?: string
+    ): MathCollection
+    /**
+     * @param m The x dimension of the matrix
+     * @param n The y dimension of the matrix
+     * @param p The z dimension of the matrix
+     * @param format The matrix storage format
+     * @returns A matrix filled with zeros
+     */
+    zeros(
+      m: number | BigNumber,
+      n: number | BigNumber,
+      p: number | BigNumber,
+      format?: string
+    ): MathCollection
+    /** Actually zeros can take any number of dimensions before the
+     ** optional format, not sure how to write that in TypeScript
+     **/
 
     /**
      * Calculate N-dimensional fourier transform
@@ -5223,16 +5269,7 @@ declare namespace math {
      * @param format The matrix storage format
      */
     ones(
-      this: MathJsChain<number | number[]>,
-      format?: string
-    ): MathJsChain<MathCollection>
-
-    /**
-     * @param format The matrix storage format
-     */
-    ones(
-      this: MathJsChain<number>,
-      n: number,
+      this: MathJsChain<number | number[] | BigNumber | BigNumber[]>,
       format?: string
     ): MathJsChain<MathCollection>
 
@@ -5371,17 +5408,7 @@ declare namespace math {
      * @returns A matrix filled with zeros
      */
     zeros(
-      this: MathJsChain<number | number[]>,
-      format?: string
-    ): MathJsChain<MathCollection>
-
-    /**
-     * @param n The y dimension of the matrix
-     * @param format The matrix storage format
-     */
-    zeros(
-      this: MathJsChain<number>,
-      n: number,
+      this: MathJsChain<number | number[] | BigNumber | BigNumber[]>,
       format?: string
     ): MathJsChain<MathCollection>
 

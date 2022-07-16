@@ -140,6 +140,11 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
       }
       if (typed.isTypedFunction(fn)) {
         const sigObject = typed.resolve(fn, args)
+        // We want to detect if a rest parameter has matched across the
+        // value in the chain and the current arguments of this call.
+        // That is the case if and only if the matching signature has
+        // exactly one parameter (which then must be a rest parameter
+        // as it is matching at least two actual arguments).
         if (sigObject.params.length === 1) {
           throw new Error('chain function ' + fn.name + ' cannot match rest parameter between chain value and additional arguments.')
         }
