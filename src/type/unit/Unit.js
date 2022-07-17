@@ -49,8 +49,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * A unit can be constructed in the following ways:
    *
-   *     const a = new Unit(value, name)
-   *     const b = new Unit(null, name)
+   *     const a = new Unit(value, valuelessUnit)
+   *     const b = new Unit(null, valuelessUnit)
    *     const c = Unit.parse(str)
    *
    * Example usage:
@@ -63,9 +63,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @class Unit
    * @constructor Unit
    * @param {number | BigNumber | Fraction | Complex | boolean} [value]  A value like 5.2
-   * @param {string} [name]   A unit name like "cm" or "inch", or a derived unit of the form: "u1[^ex1] [u2[^ex2] ...] [/ u3[^ex3] [u4[^ex4]]]", such as "kg m^2/s^2", where each unit appearing after the forward slash is taken to be in the denominator. "kg m^2 s^-2" is a synonym and is also acceptable. Any of the units can include a prefix.
+   * @param {string | Unit} valuelessUnit   A unit without value. Can have prefix, like "cm"
    */
-  function Unit (value, name) {
+  function Unit (value, valuelessUnit) {
     if (!(this instanceof Unit)) {
       throw new Error('Constructor must be called with the new operator')
     }
@@ -73,23 +73,6 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (!(value === null || value === undefined || isNumeric(value) || isComplex(value))) {
       throw new TypeError('First parameter in Unit constructor must be number, BigNumber, Fraction, Complex, or undefined')
     }
-    if (name !== undefined && (typeof name !== 'string' || name === '')) {
-      throw new TypeError('Second parameter in Unit constructor must be a string')
-    }
-
-    if (name !== undefined) {
-      const u = Unit.parse(name)
-      this.units = u.units
-      this.dimensions = u.dimensions
-    } else {
-      this.units = []
-      this.dimensions = []
-      for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
-        this.dimensions[i] = 0
-      }
-    }
-
-    this.value = (value !== undefined && value !== null) ? this._normalize(value) : null
 
     this.fixPrefix = false // if true, function format will not search for the
     // best prefix but leave it as initially provided.
@@ -98,6 +81,34 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // The justification behind this is that if the constructor is explicitly called,
     // the caller wishes the units to be returned exactly as he supplied.
     this.skipAutomaticSimplification = true
+
+    if (valuelessUnit === undefined || valuelessUnit === '') {
+      this.units = [
+        {
+          unit: UNIT_NONE,
+          prefix: PREFIXES.NONE, // link to a list with supported prefixes
+          power: 0
+        }
+      ]
+      this.dimensions = []
+      for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
+        this.dimensions[i] = 0
+      }
+    } else if (typeof valuelessUnit === 'string') {
+      const u = Unit.parse(valuelessUnit)
+      this.units = u.units
+      this.dimensions = u.dimensions
+    } else if (isUnit(valuelessUnit)) {
+      // clone from valuelessUnit
+      this.fixPrefix = valuelessUnit.fixPrefix
+      this.skipAutomaticSimplification = valuelessUnit.skipAutomaticSimplification
+      this.dimensions = valuelessUnit.dimensions.slice(0)
+      this.units = valuelessUnit.units.map(u => Object.assign({}, u))
+    } else {
+      throw new TypeError('Second parameter in Unit constructor must be a string or Unit')
+    }
+
+    this.value = this._normalize(value)
   }
 
   /**

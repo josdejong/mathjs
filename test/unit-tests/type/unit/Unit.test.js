@@ -67,6 +67,16 @@ describe('Unit', function () {
       assert.strictEqual(unit1.units[0].unit.name, 'm3')
     })
 
+    it('should create a unit from an existing unit', function () {
+      const unit1 = new Unit(null, 'm/s^2')
+      const unit2 = new Unit(5, unit1)
+      assert.strictEqual(unit2.value, 5)
+      assert.strictEqual(unit2.units.length, 2)
+      assert.strictEqual(unit2.units[0].unit.name, 'm')
+      assert.strictEqual(unit2.units[1].unit.name, 's')
+      assert.strictEqual(unit2.units[1].power, -2)
+    })
+
     it('should ignore properties on Object.prototype', function () {
       Object.prototype.foo = Unit.UNITS.meter // eslint-disable-line no-extend-native
 
