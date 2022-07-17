@@ -14,7 +14,8 @@ full name and an abbreviation. The returned object is a `Unit`.
 Syntax:
 
 ```js
-math.unit(value: number, name: string) : Unit
+math.unit(value: number, valuelessUnit: string) : Unit
+math.unit(value: number, valuelessUnit: Unit) : Unit
 math.unit(unit: string) : Unit
 math.unit(unit: Unit) : Unit
 ```
@@ -27,6 +28,7 @@ const b = math.unit('0.1 kilogram')       // Unit 100 gram
 const c = math.unit('2 inch')             // Unit 2 inch
 const d = math.unit('90 km/h')            // Unit 90 km/h
 const e = math.unit('101325 kg/(m s^2)')  // Unit 101325 kg / (m s^2)
+const f = math.unit(5, d)                 // Unit 5 km/h
 
 const d = c.to('cm')                      // Unit 5.08 cm
 b.toNumber('gram')                        // Number 100
