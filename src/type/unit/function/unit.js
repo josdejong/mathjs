@@ -43,7 +43,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       return Unit.parse(x, { allowNoUnits: true }) // a unit with value, like '5cm'
     },
 
-    'number | BigNumber | Fraction | Complex, string': function (value, unit) {
+    'number | BigNumber | Fraction | Complex, string | Unit': function (value, unit) {
       return new Unit(value, unit)
     },
 
