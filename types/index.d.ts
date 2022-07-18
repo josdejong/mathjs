@@ -2694,6 +2694,13 @@ declare namespace math {
     sum(array: MathCollection): any
 
     /**
+     * Count the number of elements of a matrix, array or string.
+     * @param x A matrix, array or string.
+     * @returns The number of members passed in parameters
+     */
+    count(x: MathCollection | string): number
+
+    /**
      * Compute the cumulative sum of a matrix or a list with values.
      * In case of a (multi dimensional) array or matrix, the cumulative sums
      * along a specified dimension (defaulting to the first) will be calculated.
@@ -4856,6 +4863,21 @@ declare namespace math {
       b: number | BigNumber
     ): MathJsChain<MathArray>
 
+    /**
+     * Count the number of elements of a matrix, array or string.
+     */
+    count(this: MathJsChain<MathCollection>): MathJsChain<number>
+    count(this: MathJsChain<string>): MathJsChain<number>
+
+    /**
+     * Compute the sum of a matrix or a list with values. In case of a
+     * (multi dimensional) array or matrix, the sum of all elements will be
+     * calculated.
+     */
+    sum(
+      this: MathJsChain<Array<number | BigNumber | Fraction>>
+    ): MathJsChain<number>
+    sum(this: MathJsChain<MathCollection>): MathJsChain<number>
     /*************************************************************************
      * Bitwise functions
      ************************************************************************/
