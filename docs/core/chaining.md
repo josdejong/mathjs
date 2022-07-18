@@ -39,3 +39,11 @@ a number of special functions:
    Executes `math.format(value)` onto the chain's value, returning
    a string representation of the value.
 
+Note that a "rest" or "..." parameter may not be broken across the value
+in the chain and a function call. For example
+
+```js
+math.chain(3).median(4,5).done() // throws error
+```
+
+does not compute the median of 3, 4, and 5.

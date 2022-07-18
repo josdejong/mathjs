@@ -1100,6 +1100,11 @@ Matrices examples
   const b: math.Matrix = math.matrix(math.ones([2, 3]))
   b.size()
 
+  // @ts-expect-error ... ones() in a chain cannot take more dimensions
+  assert.throws(() => math.chain(3).ones(2, 'dense').done(), /Error:.*ones/)
+  // @ts-expect-error ... and neither can zeros()
+  assert.throws(() => math.chain(3).zeros(2, 'sparse').done(), /Error:.*zeros/)
+
   // the Array data of a Matrix can be retrieved using valueOf()
   const _array = a.valueOf()
 

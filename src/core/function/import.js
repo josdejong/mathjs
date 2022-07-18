@@ -144,7 +144,7 @@ export function importFactory (typed, load, math, importedFactories) {
       })
     }
 
-    if (isTypedFunction(math[name]) && isTypedFunction(value)) {
+    if (typed.isTypedFunction(math[name]) && typed.isTypedFunction(value)) {
       if (options.override) {
         // give the typed function the right name
         value = typed(name, value.signatures)
@@ -280,7 +280,7 @@ export function importFactory (typed, load, math, importedFactories) {
         return instance
       }
 
-      if (isTypedFunction(existing) && isTypedFunction(instance)) {
+      if (typed.isTypedFunction(existing) && typed.isTypedFunction(instance)) {
         // merge the existing and new typed function
         return typed(existing, instance)
       }
@@ -342,15 +342,6 @@ export function importFactory (typed, load, math, importedFactories) {
         isFraction(object) ||
         isMatrix(object) ||
         Array.isArray(object)
-  }
-
-  /**
-   * Test whether a given thing is a typed-function
-   * @param {*} fn
-   * @return {boolean} Returns true when `fn` is a typed-function
-   */
-  function isTypedFunction (fn) {
-    return typeof fn === 'function' && typeof fn.signatures === 'object'
   }
 
   function hasTypedFunctionSignature (fn) {
