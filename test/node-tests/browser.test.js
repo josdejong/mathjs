@@ -32,6 +32,24 @@ describe('lib/browser', function () {
     console.warn = originalWarn
   })
 
+  it('typeOf should work on the minified bundle for Unit', function () {
+    const math = require('../../lib/browser/math.js')
+
+    const u = new math.unit('5 cm')
+    assert.strictEqual(u.type, 'Unit')
+    assert.strictEqual(u.isUnit, true)
+    assert.strictEqual(math.typeOf(u), 'Unit')
+  })
+
+  it('typeOf should work on the minified bundle for SymbolNode', function () {
+    const math = require('../../lib/browser/math.js')
+
+    const x = new math.SymbolNode('x')
+    assert.strictEqual(x.type, 'SymbolNode')
+    assert.strictEqual(x.isSymbolNode, true)
+    assert.strictEqual(math.typeOf(x), 'SymbolNode')
+  })
+
   it('should contain embedded docs for every function', function () {
     const math = require('../../lib/browser/math.js')
 
