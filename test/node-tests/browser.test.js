@@ -32,22 +32,38 @@ describe('lib/browser', function () {
     console.warn = originalWarn
   })
 
-  it('typeOf should work on the minified bundle for Unit', function () {
+  describe('typeOf should work on the minified bundle for all mathjs classes', function () {
     const math = require('../../lib/browser/math.js')
 
-    const u = new math.unit('5 cm')
-    assert.strictEqual(u.type, 'Unit')
-    assert.strictEqual(u.isUnit, true)
-    assert.strictEqual(math.typeOf(u), 'Unit')
-  })
+    const typeOfTests = [
+      { value: math.bignumber(2), expectedType: 'BigNumber' },
+      { value: math.fraction(1, 3), expectedType: 'Fraction' },
+      { value: math.fraction(1, 3), expectedType: 'Fraction' },
+      { value: math.complex(2, 4), expectedType: 'Complex' },
+      { value: math.unit('5 cm'), expectedType: 'Unit' },
+      { value: math.matrix([], 'dense'), expectedType: 'DenseMatrix' },
+      { value: math.matrix([], 'sparse'), expectedType: 'SparseMatrix' },
+      { value: math.parse('A[2]'), expectedType: 'AccessorNode' },
+      { value: math.parse('[1, 2, 3]'), expectedType: 'ArrayNode' },
+      { value: math.parse('x = 2'), expectedType: 'AssignmentNode' },
+      { value: math.parse('x = 2; y = 3'), expectedType: 'BlockNode' },
+      { value: math.parse('x < 0 ? 0 : x'), expectedType: 'ConditionalNode' },
+      { value: math.parse('3'), expectedType: 'ConstantNode' },
+      { value: math.parse('f(x) = x^2'), expectedType: 'FunctionAssignmentNode' },
+      { value: math.parse('sqrt(4)'), expectedType: 'FunctionNode' },
+      { value: new math.IndexNode([]), expectedType: 'IndexNode' },
+      { value: math.parse('{}'), expectedType: 'ObjectNode' },
+      { value: math.parse('(2 + 3)'), expectedType: 'ParenthesisNode' },
+      { value: math.parse('1:10'), expectedType: 'RangeNode' },
+      { value: math.parse('2 > 3 > 4'), expectedType: 'RelationalNode' },
+      { value: math.parse('2 + 3'), expectedType: 'OperatorNode' }
+    ]
 
-  it('typeOf should work on the minified bundle for SymbolNode', function () {
-    const math = require('../../lib/browser/math.js')
-
-    const x = new math.SymbolNode('x')
-    assert.strictEqual(x.type, 'SymbolNode')
-    assert.strictEqual(x.isSymbolNode, true)
-    assert.strictEqual(math.typeOf(x), 'SymbolNode')
+    typeOfTests.forEach(({ value, expectedType }) => {
+      it(`typeOf should return ${expectedType}`, function () {
+        assert.strictEqual(math.typeOf(value), expectedType)
+      })
+    })
   })
 
   it('should contain embedded docs for every function', function () {
