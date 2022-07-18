@@ -25,7 +25,8 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
       this.content = content
     }
 
-    get type () { return 'ParenthesisNode' }
+    static name = name
+    get type () { return name }
     get isParenthesisNode () { return true }
 
     /**
@@ -101,10 +102,7 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
      * @returns {Object}
      */
     toJSON () {
-      return {
-        mathjs: 'ParenthesisNode',
-        content: this.content
-      }
+      return { mathjs: name, content: this.content }
     }
 
     /**

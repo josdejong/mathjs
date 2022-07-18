@@ -59,7 +59,8 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
       this.step = step || null // optional step
     }
 
-    get type () { return 'RangeNode' }
+    static name = name
+    get type () { return name }
     get isRangeNode () { return true }
 
     /**
@@ -192,7 +193,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      */
     toJSON () {
       return {
-        mathjs: 'RangeNode',
+        mathjs: name,
         start: this.start,
         end: this.end,
         step: this.step

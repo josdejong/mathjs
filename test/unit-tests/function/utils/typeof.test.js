@@ -47,8 +47,8 @@ describe('typeOf', function () {
   })
 
   it('should return matrix type for a matrix', function () {
-    assert.strictEqual(math.typeOf(math.matrix()), 'Matrix')
-    assert.strictEqual(math.typeOf(math.matrix()), 'Matrix')
+    assert.strictEqual(math.typeOf(math.matrix()), 'DenseMatrix')
+    assert.strictEqual(math.typeOf(math.matrix([], 'sparse')), 'SparseMatrix')
   })
 
   it('should return unit type for a unit', function () {

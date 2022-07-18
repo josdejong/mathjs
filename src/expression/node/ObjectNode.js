@@ -32,8 +32,8 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
       }
     }
 
-    get type () { return 'ObjectNode' }
-
+    static name = name
+    get type () { return name }
     get isObjectNode () { return true }
 
     /**
@@ -147,7 +147,7 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
      */
     toJSON () {
       return {
-        mathjs: 'ObjectNode',
+        mathjs: name,
         properties: this.properties
       }
     }

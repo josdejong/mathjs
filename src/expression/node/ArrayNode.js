@@ -25,8 +25,8 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
       }
     }
 
-    get type () { return 'ArrayNode' }
-
+    static name = name
+    get type () { return name }
     get isArrayNode () { return true }
 
     /**
@@ -116,7 +116,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      */
     toJSON () {
       return {
-        mathjs: 'ArrayNode',
+        mathjs: name,
         items: this.items
       }
     }

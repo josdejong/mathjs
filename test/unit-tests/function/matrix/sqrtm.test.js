@@ -70,9 +70,9 @@ describe('sqrtm', function () {
     assert.strictEqual(math.typeOf(math.sqrtm(AA)), 'Array')
     assert.strictEqual(math.typeOf(math.sqrtm(BB)), 'Array')
 
-    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(A))), 'Matrix')
-    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(B))), 'Matrix')
-    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(AA))), 'Matrix')
-    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(BB))), 'Matrix')
+    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(A))), 'DenseMatrix')
+    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(B))), 'DenseMatrix')
+    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(AA))), 'DenseMatrix')
+    assert.strictEqual(math.typeOf(math.sqrtm(math.matrix(BB))), 'DenseMatrix')
   })
 })

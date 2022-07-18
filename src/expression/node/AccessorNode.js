@@ -72,7 +72,8 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
       }
     }
 
-    get type () { return 'AccessorNode' }
+    static name = name
+    get type () { return name }
     get isAccessorNode () { return true }
 
     /**
@@ -189,7 +190,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
      */
     toJSON () {
       return {
-        mathjs: 'AccessorNode',
+        mathjs: name,
         object: this.object,
         index: this.index
       }

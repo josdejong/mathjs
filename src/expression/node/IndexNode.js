@@ -41,7 +41,8 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
       }
     }
 
-    get type () { return 'IndexNode' }
+    static name = name
+    get type () { return name }
     get isIndexNode () { return true }
 
     /**
@@ -180,7 +181,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      */
     toJSON () {
       return {
-        mathjs: 'IndexNode',
+        mathjs: name,
         dimensions: this.dimensions,
         dotNotation: this.dotNotation
       }

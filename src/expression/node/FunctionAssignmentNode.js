@@ -63,7 +63,8 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       this.expr = expr
     }
 
-    get type () { return 'FunctionAssignmentNode' }
+    static name = name
+    get type () { return name }
     get isFunctionAssignmentNode () { return true }
 
     /**
@@ -165,7 +166,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       const types = this.types
 
       return {
-        mathjs: 'FunctionAssignmentNode',
+        mathjs: name,
         name: this.name,
         params: this.params.map(function (param, index) {
           return {

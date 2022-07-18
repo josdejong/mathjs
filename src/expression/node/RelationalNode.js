@@ -45,7 +45,8 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
       this.params = params
     }
 
-    get type () { return 'RelationalNode' }
+    static name = name
+    get type () { return name }
     get isRelationalNode () { return true }
 
     /**
@@ -146,7 +147,7 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
      */
     toJSON () {
       return {
-        mathjs: 'RelationalNode',
+        mathjs: name,
         conditionals: this.conditionals,
         params: this.params
       }

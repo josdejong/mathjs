@@ -87,6 +87,9 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       }
     }
 
+    // class name for typing purposes:
+    static name = name
+
     // readonly property name
     get name () {
       if (this.index) {
@@ -98,7 +101,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       }
     }
 
-    get type () { return 'AssignmentNode' }
+    get type () { return name }
     get isAssignmentNode () { return true }
 
     /**
@@ -254,7 +257,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
      */
     toJSON () {
       return {
-        mathjs: 'AssignmentNode',
+        mathjs: name,
         object: this.object,
         index: this.index,
         value: this.value

@@ -38,7 +38,8 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
       })
     }
 
-    get type () { return 'BlockNode' }
+    static name = name
+    get type () { return name }
     get isBlockNode () { return true }
 
     /**
@@ -139,7 +140,7 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
      */
     toJSON () {
       return {
-        mathjs: 'BlockNode',
+        mathjs: name,
         blocks: this.blocks
       }
     }

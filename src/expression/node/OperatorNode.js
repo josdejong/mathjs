@@ -271,7 +271,8 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
       this.args = args || []
     }
 
-    get type () { return 'OperatorNode' }
+    static name = name
+    get type () { return name }
     get isOperatorNode () { return true }
 
     /**
@@ -459,7 +460,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      */
     toJSON () {
       return {
-        mathjs: 'OperatorNode',
+        mathjs: name,
         op: this.op,
         fn: this.fn,
         args: this.args,

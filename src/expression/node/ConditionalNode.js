@@ -63,7 +63,8 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
       this.falseExpr = falseExpr
     }
 
-    get type () { return 'ConditionalNode' }
+    static name = name
+    get type () { return name }
     get isConditionalNode () { return true }
 
     /**
@@ -174,7 +175,7 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
      */
     toJSON () {
       return {
-        mathjs: 'ConditionalNode',
+        mathjs: name,
         condition: this.condition,
         trueExpr: this.trueExpr,
         falseExpr: this.falseExpr

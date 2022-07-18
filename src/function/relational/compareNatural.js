@@ -99,8 +99,8 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
     }
 
     // matrix types
-    if (typeX === 'Array' || typeX === 'Matrix' ||
-        typeY === 'Array' || typeY === 'Matrix') {
+    const matTypes = ['Array', 'DenseMatrix', 'SparseMatrix']
+    if (matTypes.includes(typeX) || matTypes.includes(typeY)) {
       c = compareMatricesAndArrays(_compareNatural, x, y)
       if (c !== 0) {
         return c

@@ -27,7 +27,8 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
       this.value = value
     }
 
-    get type () { return 'ConstantNode' }
+    static name = name
+    get type () { return name }
     get isConstantNode () { return true }
 
     /**
@@ -118,10 +119,7 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @returns {Object}
      */
     toJSON () {
-      return {
-        mathjs: 'ConstantNode',
-        value: this.value
-      }
+      return { mathjs: name, value: this.value }
     }
 
     /**

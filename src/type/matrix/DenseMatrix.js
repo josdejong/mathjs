@@ -74,6 +74,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   /**
    * Attach type information
    */
+  Object.defineProperty(DenseMatrix, 'name', { value: 'DenseMatrix' })
+  DenseMatrix.prototype.constructor = DenseMatrix
   DenseMatrix.prototype.type = 'DenseMatrix'
   DenseMatrix.prototype.isDenseMatrix = true
 

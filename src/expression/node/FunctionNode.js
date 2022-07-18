@@ -117,8 +117,8 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
       return this.fn.name || ''
     }
 
-    get type () { return 'FunctionNode' }
-
+    static name = name
+    get type () { return name }
     get isFunctionNode () { return true }
 
     /**
@@ -375,7 +375,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      */
     toJSON () {
       return {
-        mathjs: 'FunctionNode',
+        mathjs: name,
         fn: this.fn,
         args: this.args
       }

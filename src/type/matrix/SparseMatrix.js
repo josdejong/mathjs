@@ -150,6 +150,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
   /**
    * Attach type information
    */
+  Object.defineProperty(SparseMatrix, 'name', { value: 'SparseMatrix' })
+  SparseMatrix.prototype.constructor = SparseMatrix
   SparseMatrix.prototype.type = 'SparseMatrix'
   SparseMatrix.prototype.isSparseMatrix = true
 
