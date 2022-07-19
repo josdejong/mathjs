@@ -1,14 +1,43 @@
 # History
 
-# unpublished changes since 10.6.4
+# not yet published, version 11.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
-Breaking:
+Breaking changes:
 
-- Dropped official support for IE11.
+- Dropped official support for IE11. 
+- Upgraded to `typed-function@3`, see [josdejong/typed-function/HISTORY.md](https://github.com/josdejong/typed-function/blob/develop/HISTORY.md#2022-05-12-version-300). Thanks @gwhitney. Most importantly: 
+    - Conversions now have preference over `any`.
+    - The `this` variable is no longer bound to the typed function itself.
+    - The properties `typed.types`, `typed.conversions`, and `typed.ignore` 
+      have been removed.
+    - There are new static functions available like `typed.referTo`, 
+      `typed.referToSelf`, `typed.addTypes`, `typed.addConversions`.
+- Implement amended "Rule 2" for implicit multiplication (#2370, #2460):
+  when having a division followed by an implicit multiplication, the division 
+  gets higher precedence over the implicit multiplication when (a) the 
+  numerator is a constant with optionally a prefix operator (`-`, `+`, `~`), 
+  and (b) the denominator is a constant. Thanks @gwhitney.
+- Drop elementwise matrix support for trigonometric functions, exp, log, gamma,
+  square, sqrt, cube, and cbrt to prevent confusion with standard matrix 
+  functions (#2440, #2465). Instead, use `math.map(matrix, fn)`. 
+  Thanks @gwhitney.
+- Simplify: convert equivalent function calls into operators, for example, 
+  `add(2, x)` will now be simplified into `2 + x` (#2415, #2466).
+  Thanks @gwhitney.
+- Removed the automatic conversion from `number` to `string` (#2482).
+  Thanks @gwhitney.
+- Fix #2412: let function `diff` return an empty matrix when the input contains
+  only one element (#2422).
+- Internal refactoring in the `simplifyCore` logic (#2490, #2484, #2459). 
+  Thanks @gwhitney.
+- Disable support for splitting rest parameters in chained calculations 
+  (#2485, #2474). Thanks @gwhitney.
+- Function `typeOf` now returns `function` (lowercase) for a function instead 
+  of `Function` (#2560). Thanks @gwhitney.
 
-Non-breaking:
+Non-breaking changes:
 
 - Fix #2600: improve the TypeScript definitions of `simplify`. 
   Thanks @laureen-m and @mattvague.
