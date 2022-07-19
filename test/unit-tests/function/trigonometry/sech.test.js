@@ -42,14 +42,8 @@ describe('sech', function () {
     approx.deepEqual(sech(complex('2 + i')), complex(0.15117629826558, -0.22697367539372))
   })
 
-  it('should return the sech of an angle', function () {
-    approx.equal(sech(unit('90deg')), 0.39853681533839)
-    approx.equal(sech(unit('-45deg')), 0.75493970871413)
-
-    assert(math.isBigNumber(sech(unit(math.bignumber(90), 'deg'))))
-    approx.equal(sech(unit(math.bignumber(90), 'deg')).toNumber(), 0.39853681533839)
-
-    approx.deepEqual(sech(unit(complex('2 + i'), 'rad')), complex(0.15117629826558, -0.22697367539372))
+  it('should throw an error on an angle', function () {
+    assert.throws(() => sech(unit('90deg')), TypeError)
   })
 
   it('should throw an error if called with an invalid unit', function () {
@@ -62,12 +56,14 @@ describe('sech', function () {
 
   const sech123 = [0.64805427366389, 0.26580222883408, 0.099327927419433]
 
-  it('should return the sech of each element of an array', function () {
-    approx.deepEqual(sech([1, 2, 3]), sech123)
+  it('should not operate on an array', function () {
+    assert.throws(() => sech([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], sech), sech123)
   })
 
-  it('should return the sech of each element of a matrix', function () {
-    approx.deepEqual(sech(matrix([1, 2, 3])), matrix(sech123))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => sech(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), sech), matrix(sech123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

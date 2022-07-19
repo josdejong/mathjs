@@ -32,7 +32,7 @@ describe('AccessorNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { AccessorNode(new Node(), new IndexNode([])) }, SyntaxError)
+    assert.throws(() => AccessorNode(new Node(), new IndexNode([])), TypeError)
   })
 
   it('should get the name of an AccessorNode', function () {

@@ -10,7 +10,6 @@ module.exports = function (config) {
       'bs_firefox_windows',
       'bs_chrome_mac',
       'bs_safari_mac',
-      'bs_ie_11',
       'bs_edge'
     ],
 

@@ -101,12 +101,14 @@ describe('cos', function () {
 
   const cos123 = [0.540302305868140, -0.41614683654714, -0.989992496600445]
 
-  it('should return the cos of each element of a matrix', function () {
-    approx.deepEqual(cos(matrix([1, 2, 3])), matrix(cos123))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => cos(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), cos), matrix(cos123))
   })
 
-  it('should return the cos of each element of an array', function () {
-    approx.deepEqual(cos([1, 2, 3]), cos123)
+  it('should not operate on an array', function () {
+    assert.throws(() => cos([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], cos), cos123)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

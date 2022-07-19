@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { asinhNumber } from '../../plain/number/index.js'
 
 const name = 'asinh'
@@ -10,7 +9,8 @@ export const createAsinh = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    * Calculate the hyperbolic arcsine of a value,
    * defined as `asinh(x) = ln(x + sqrt(x^2 + 1))`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix hyperbolic arcsine, this function
+   * does not apply to matrices.
    *
    * Syntax:
    *
@@ -24,8 +24,8 @@ export const createAsinh = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    *
    *    acosh, atanh
    *
-   * @param {number | Complex | Array | Matrix} x  Function input
-   * @return {number | Complex | Array | Matrix} Hyperbolic arcsine of x
+   * @param {number | BigNumber | Complex} x  Function input
+   * @return {number | BigNumber | Complex} Hyperbolic arcsine of x
    */
   return typed('asinh', {
     number: asinhNumber,
@@ -36,11 +36,6 @@ export const createAsinh = /* #__PURE__ */ factory(name, dependencies, ({ typed 
 
     BigNumber: function (x) {
       return x.asinh()
-    },
-
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since asinh(0) = 0
-      return deepMap(x, this, true)
     }
   })
 })

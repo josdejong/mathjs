@@ -89,12 +89,14 @@ describe('sec', function () {
 
   const sec123 = [1.85081571768093, -2.40299796172238, -1.01010866590799]
 
-  it('should return the secant of each element of an array', function () {
-    approx.deepEqual(sec([1, 2, 3]), sec123)
+  it('should not operate on an array', function () {
+    assert.throws(() => sec([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], sec), sec123)
   })
 
-  it('should return the secant of each element of a matrix', function () {
-    approx.deepEqual(sec(matrix([1, 2, 3])), matrix(sec123))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => sec(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), sec), matrix(sec123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

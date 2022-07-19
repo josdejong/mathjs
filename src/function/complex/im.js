@@ -33,24 +33,9 @@ export const createIm = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    * @return {number | BigNumber | Array | Matrix} The imaginary part of x
    */
   return typed(name, {
-    number: function (x) {
-      return 0
-    },
-
-    BigNumber: function (x) {
-      return x.mul(0)
-    },
-
-    Fraction: function (x) {
-      return x.mul(0)
-    },
-
-    Complex: function (x) {
-      return x.im
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    number: () => 0,
+    'BigNumber | Fraction': x => x.mul(0),
+    Complex: x => x.im,
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

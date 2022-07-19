@@ -122,10 +122,12 @@ describe('acsc', function () {
     assert.throws(function () { acsc('string') })
   })
 
-  it('should calculate the arccsc element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => acsc([1, 2, 3]), TypeError)
+    assert.throws(() => acsc(matrix([1, 2, 3])), TypeError)
     const acsc123 = [pi / 2, pi / 6, 0.339836909454]
-    approx.deepEqual(acsc([1, 2, 3]), acsc123)
-    approx.deepEqual(acsc(matrix([1, 2, 3])), matrix(acsc123))
+    approx.deepEqual(math.map([1, 2, 3], acsc), acsc123)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), acsc), matrix(acsc123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

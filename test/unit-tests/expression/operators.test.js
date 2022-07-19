@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
-import { getAssociativity, getPrecedence, isAssociativeWith } from '../../../src/expression/operators.js'
+import { getAssociativity, getPrecedence, isAssociativeWith, getOperator } from '../../../src/expression/operators.js'
 const OperatorNode = math.OperatorNode
 const AssignmentNode = math.AssignmentNode
 const SymbolNode = math.SymbolNode
@@ -15,9 +15,11 @@ describe('operators', function () {
 
     const n1 = new AssignmentNode(new SymbolNode('a'), a)
     const n2 = new OperatorNode('or', 'or', [a, b])
+    const n3 = math.parse("M'")
 
     assert.strictEqual(getPrecedence(n1, 'keep'), 0)
     assert.strictEqual(getPrecedence(n2, 'keep'), 2)
+    assert.strictEqual(getPrecedence(n3, 'keep'), 18)
   })
 
   it('should return null if precedence is not defined for a node', function () {
@@ -45,11 +47,13 @@ describe('operators', function () {
     const n2 = new OperatorNode('^', 'pow', [a, a])
     const n3 = new OperatorNode('-', 'unaryMinus', [a])
     const n4 = new OperatorNode('!', 'factorial', [a])
+    const n5 = math.parse("M'")
 
     assert.strictEqual(getAssociativity(n1, 'keep'), 'left')
     assert.strictEqual(getAssociativity(n2, 'keep'), 'right')
     assert.strictEqual(getAssociativity(n3, 'keep'), 'right')
     assert.strictEqual(getAssociativity(n4, 'keep'), 'left')
+    assert.strictEqual(getAssociativity(n5, 'keep'), 'left')
   })
 
   it('should return the associativity of a ParenthesisNode', function () {
@@ -109,5 +113,12 @@ describe('operators', function () {
     assert.strictEqual(isAssociativeWith(p, sub, 'all'), true)
     assert.strictEqual(isAssociativeWith(p, sub, 'auto'), true)
     assert.strictEqual(isAssociativeWith(p, sub, 'keep'), null)
+  })
+
+  it('should get the operator of a function name', function () {
+    assert.strictEqual(getOperator('multiply'), '*')
+    assert.strictEqual(getOperator('ctranspose'), "'")
+    assert.strictEqual(getOperator('mod'), 'mod')
+    assert.strictEqual(getOperator('square'), null)
   })
 })

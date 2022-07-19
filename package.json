@@ -33,7 +33,7 @@
     "javascript-natural-sort": "^0.7.1",
     "seedrandom": "^3.0.5",
     "tiny-emitter": "^2.1.0",
-    "typed-function": "^2.1.0"
+    "typed-function": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.18.6",
@@ -176,8 +176,5 @@
   "bugs": {
     "url": "https://github.com/josdejong/mathjs/issues"
   },
-  "browserslist": [
-    "IE 11"
-  ],
   "sideEffects": false
 }

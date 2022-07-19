@@ -1,9 +1,8 @@
 import { factory } from '../../utils/factory.js'
-import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01.js'
-import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04.js'
-import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10.js'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
+import { createMatAlgo04xSidSid } from '../../type/matrix/utils/matAlgo04xSidSid.js'
+import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { gcdNumber } from '../../plain/number/index.js'
 
 const name = 'gcd'
@@ -16,11 +15,21 @@ const dependencies = [
 ]
 
 export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix }) => {
-  const algorithm01 = createAlgorithm01({ typed })
-  const algorithm04 = createAlgorithm04({ typed, equalScalar })
-  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
+  const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
+  const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+
+  const gcdTypes = 'number | BigNumber | Fraction | Matrix | Array'
+  const gcdManySignature = {}
+  gcdManySignature[`${gcdTypes}, ${gcdTypes}, ...${gcdTypes}`] =
+    typed.referToSelf(self => (a, b, args) => {
+      let res = self(a, b)
+      for (let i = 0; i < args.length; i++) {
+        res = self(res, args[i])
+      }
+      return res
+    })
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.
@@ -47,82 +56,20 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * @param {... number | BigNumber | Fraction | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Fraction | Array | Matrix}                           The greatest common divisor
    */
-  return typed(name, {
-
-    'number, number': gcdNumber,
-
-    'BigNumber, BigNumber': _gcdBigNumber,
-
-    'Fraction, Fraction': function (x, y) {
-      return x.gcd(y)
+  return typed(
+    name,
+    {
+      'number, number': gcdNumber,
+      'BigNumber, BigNumber': _gcdBigNumber,
+      'Fraction, Fraction': (x, y) => x.gcd(y)
     },
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm04(x, y, this)
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm01(y, x, this, true)
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm01(x, y, this, false)
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm10(x, y, this, false)
-    },
-
-    'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, this, false)
-    },
-
-    'number | BigNumber, SparseMatrix': function (x, y) {
-      return algorithm10(y, x, this, true)
-    },
-
-    'number | BigNumber, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
-    },
-
-    'Array, number | BigNumber': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
-    },
-
-    'number | BigNumber, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
-    },
-
-    // TODO: need a smarter notation here
-    'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function (a, b, args) {
-      let res = this(a, b)
-      for (let i = 0; i < args.length; i++) {
-        res = this(res, args[i])
-      }
-      return res
-    }
-  })
+    matrixAlgorithmSuite({
+      SS: matAlgo04xSidSid,
+      DS: matAlgo01xDSid,
+      Ss: matAlgo10xSids
+    }),
+    gcdManySignature
+  )
 
   /**
    * Calculate gcd for BigNumbers

@@ -25,7 +25,7 @@ describe('BlockNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { BlockNode() }, SyntaxError)
+    assert.throws(function () { BlockNode() }, TypeError)
   })
 
   it('should throw an error when adding invalid blocks', function () {

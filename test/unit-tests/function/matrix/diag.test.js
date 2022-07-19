@@ -108,7 +108,7 @@ describe('diag', function () {
 
   it('should throw an error in case of wrong number of arguments', function () {
     assert.throws(function () { math.diag() }, /TypeError: Too few arguments/)
-    assert.throws(function () { math.diag([], 2, 3, 4) }, /TypeError: Too many arguments/)
+    assert.throws(function () { math.diag([], 2, 'dense', 4) }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of arguments', function () {

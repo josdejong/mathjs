@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { acscNumber } from '../../plain/number/index.js'
 
 const name = 'acsc'
@@ -9,7 +8,8 @@ export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   /**
    * Calculate the inverse cosecant of a value, defined as `acsc(x) = asin(1/x)`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix arccosecant, this function does not
+   * apply to matrices.
    *
    * Syntax:
    *
@@ -26,8 +26,8 @@ export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    csc, asin, asec
    *
-   * @param {number | Complex | Array | Matrix} x   Function input
-   * @return {number | Complex | Array | Matrix} The arc cosecant of x
+   * @param {number | BigNumber | Complex} x   Function input
+   * @return {number | BigNumber | Complex} The arc cosecant of x
    */
   return typed(name, {
     number: function (x) {
@@ -43,10 +43,6 @@ export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     BigNumber: function (x) {
       return new BigNumber(1).div(x).asin()
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

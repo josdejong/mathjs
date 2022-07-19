@@ -31,11 +31,7 @@ export const createBitNot = /* #__PURE__ */ factory(name, dependencies, ({ typed
    */
   return typed(name, {
     number: bitNotNumber,
-
     BigNumber: bitNotBigNumber,
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

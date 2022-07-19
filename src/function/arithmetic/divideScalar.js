@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { typeOf } from '../../utils/is.js'
 
 const name = 'divideScalar'
 const dependencies = ['typed', 'numeric']
@@ -34,25 +33,10 @@ export const createDivideScalar = /* #__PURE__ */ factory(name, dependencies, ({
       return x.div(y)
     },
 
-    'Unit, number | Fraction | BigNumber': function (x, y) {
-      const res = x.clone()
-      // TODO: move the divide function to Unit.js, it uses internals of Unit
-      const one = numeric(1, typeOf(y))
-      res.value = this(((res.value === null) ? res._normalize(one) : res.value), y)
-      return res
-    },
+    'Unit, number | Complex | Fraction | BigNumber | Unit':
+      (x, y) => x.divide(y),
 
-    'number | Fraction | BigNumber, Unit': function (x, y) {
-      let res = y.clone()
-      res = res.pow(-1)
-      // TODO: move the divide function to Unit.js, it uses internals of Unit
-      const one = numeric(1, typeOf(x))
-      res.value = this(x, ((y.value === null) ? y._normalize(one) : y.value))
-      return res
-    },
-
-    'Unit, Unit': function (x, y) {
-      return x.divide(y)
-    }
+    'number | Fraction | Complex | BigNumber, Unit':
+    (x, y) => y.divideInto(x)
   })
 })

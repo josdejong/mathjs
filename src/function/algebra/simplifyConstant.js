@@ -1,12 +1,12 @@
-// TODO this could be improved by simplifying seperated constants under associative and commutative operators
-import { isFraction, isMatrix, isNode, isArrayNode, isConstantNode, isIndexNode, isObjectNode, isOperatorNode } from '../../../utils/is.js'
-import { factory } from '../../../utils/factory.js'
-import { createUtil } from './util.js'
-import { noBignumber, noFraction } from '../../../utils/noop.js'
+import { isFraction, isMatrix, isNode, isArrayNode, isConstantNode, isIndexNode, isObjectNode, isOperatorNode } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { createUtil } from './simplify/util.js'
+import { noBignumber, noFraction } from '../../utils/noop.js'
 
 const name = 'simplifyConstant'
 const dependencies = [
   'typed',
+  'parse',
   'config',
   'mathWithTransform',
   'matrix',
@@ -24,6 +24,7 @@ const dependencies = [
 
 export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies, ({
   typed,
+  parse,
   config,
   mathWithTransform,
   matrix,
@@ -41,9 +42,40 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   const { isCommutative, isAssociative, allChildren, createMakeNodeFunction } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
-  function simplifyConstant (expr, options) {
-    return _ensureNode(foldFraction(expr, options))
-  }
+  /**
+   * simplifyConstant() takes a mathjs expression (either a Node representing
+   * a parse tree or a string which it parses to produce a node), and replaces
+   * any subexpression of it consisting entirely of constants with the computed
+   * value of that subexpression.
+   *
+   * Syntax:
+   *
+   *     simplifyConstant(expr)
+   *     simplifyConstant(expr, options)
+   *
+   * Examples:
+   *
+   *     math.simplifyConstant('x + 4*3/6')  // Node "x + 2"
+   *     math.simplifyConstant('z cos(0)')   // Node "z 1"
+   *     math.simplifyConstant('(5.2 + 1.08)t', {exactFractions: false})  // Node "6.28 t"
+   *
+   * See also:
+   *
+   *     simplify, simplifyCore, resolve, derivative
+   *
+   * @param {Node | string} node
+   *     The expression to be simplified
+   * @param {Object} options
+   *     Simplification options, as per simplify()
+   * @return {Node} Returns expression with constant subexpressions evaluated
+   */
+  const simplifyConstant = typed('simplifyConstant', {
+    Node: node => _ensureNode(foldFraction(node, {})),
+
+    'Node, Object': function (expr, options) {
+      return _ensureNode(foldFraction(expr, options))
+    }
+  })
 
   function _removeFractions (thing) {
     if (isFraction(thing)) {

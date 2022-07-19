@@ -1,18 +1,18 @@
 import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
 
-const name = 'algorithm04'
+const name = 'matAlgo09xS0Sf'
 const dependencies = ['typed', 'equalScalar']
 
-export const createAlgorithm04 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
+export const createMatAlgo09xS0Sf = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
-   * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij).
-   * Callback function invoked MAX(NNZA, NNZB) times
+   * Iterates over SparseMatrix A and invokes the callback function f(Aij, Bij).
+   * Callback function invoked NZA times, number of nonzero elements in A.
    *
    *
-   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0 && B(i,j) !== 0
-   * C(i,j) = ┤  A(i,j)       ; A(i,j) !== 0
-   *          └  B(i,j)       ; B(i,j) !== 0
+   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0
+   * C(i,j) = ┤
+   *          └  0            ; otherwise
    *
    *
    * @param {Matrix}   a                 The SparseMatrix instance (A)
@@ -23,7 +23,7 @@ export const createAlgorithm04 = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
    */
-  return function algorithm04 (a, b, callback) {
+  return function matAlgo09xS0Sf (a, b, callback) {
     // sparse matrix arrays
     const avalues = a._values
     const aindex = a._index
@@ -73,12 +73,10 @@ export const createAlgorithm04 = /* #__PURE__ */ factory(name, dependencies, ({ 
     const cindex = []
     const cptr = []
 
-    // workspace
-    const xa = avalues && bvalues ? [] : undefined
-    const xb = avalues && bvalues ? [] : undefined
+    // workspaces
+    const x = cvalues ? [] : undefined
     // marks indicating we have a value in x for a given column
-    const wa = []
-    const wb = []
+    const w = []
 
     // vars
     let i, j, k, k0, k1
@@ -87,70 +85,39 @@ export const createAlgorithm04 = /* #__PURE__ */ factory(name, dependencies, ({ 
     for (j = 0; j < columns; j++) {
       // update cptr
       cptr[j] = cindex.length
-      // columns mark
+      // column mark
       const mark = j + 1
+      // check we need to process values
+      if (x) {
+        // loop B(:,j)
+        for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+          // row
+          i = bindex[k]
+          // update workspace
+          w[i] = mark
+          x[i] = bvalues[k]
+        }
+      }
       // loop A(:,j)
       for (k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
         // row
         i = aindex[k]
-        // update c
-        cindex.push(i)
-        // update workspace
-        wa[i] = mark
         // check we need to process values
-        if (xa) { xa[i] = avalues[k] }
-      }
-      // loop B(:,j)
-      for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
-        // row
-        i = bindex[k]
-        // check row exists in A
-        if (wa[i] === mark) {
-          // update record in xa @ i
-          if (xa) {
-            // invoke callback
-            const v = cf(xa[i], bvalues[k])
-            // check for zero
-            if (!eq(v, zero)) {
-              // update workspace
-              xa[i] = v
-            } else {
-              // remove mark (index will be removed later)
-              wa[i] = null
-            }
+        if (x) {
+          // b value @ i,j
+          const vb = w[i] === mark ? x[i] : zero
+          // invoke f
+          const vc = cf(avalues[k], vb)
+          // check zero value
+          if (!eq(vc, zero)) {
+            // push index
+            cindex.push(i)
+            // push value
+            cvalues.push(vc)
           }
         } else {
-          // update c
+          // push index
           cindex.push(i)
-          // update workspace
-          wb[i] = mark
-          // check we need to process values
-          if (xb) { xb[i] = bvalues[k] }
-        }
-      }
-      // check we need to process values (non pattern matrix)
-      if (xa && xb) {
-        // initialize first index in j
-        k = cptr[j]
-        // loop index in j
-        while (k < cindex.length) {
-          // row
-          i = cindex[k]
-          // check workspace has value @ i
-          if (wa[i] === mark) {
-            // push value (Aij != 0 || (Aij != 0 && Bij != 0))
-            cvalues[k] = xa[i]
-            // increment pointer
-            k++
-          } else if (wb[i] === mark) {
-            // push value (bij != 0)
-            cvalues[k] = xb[i]
-            // increment pointer
-            k++
-          } else {
-            // remove index @ k
-            cindex.splice(k, 1)
-          }
         }
       }
     }

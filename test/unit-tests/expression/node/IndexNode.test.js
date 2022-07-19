@@ -29,7 +29,7 @@ describe('IndexNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { IndexNode([]) }, SyntaxError)
+    assert.throws(function () { IndexNode([]) }, TypeError)
   })
 
   it('should filter an IndexNode', function () {

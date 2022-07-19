@@ -1,8 +1,8 @@
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
-import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 import { roundNumber } from '../../plain/number/index.js'
 
 const NO_INT = 'Number of decimals in function round must be an integer'
@@ -18,9 +18,9 @@ const dependencies = [
 ]
 
 export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, BigNumber, DenseMatrix }) => {
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   /**
    * Round a value towards the nearest integer.
@@ -109,45 +109,43 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return x.round(n.toNumber())
     },
 
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since round(0) = 0
-      return deepMap(x, this, true)
-    },
+    // deep map collection, skip zeros since round(0) = 0
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true)),
 
-    'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, this, false)
-    },
+    'SparseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
+      return matAlgo11xS0s(x, y, self, false)
+    }),
 
-    'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, this, false)
-    },
+    'DenseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
+      return matAlgo14xDs(x, y, self, false)
+    }),
 
-    'Array, number | BigNumber': function (x, y) {
+    'Array, number | BigNumber': typed.referToSelf(self => (x, y) => {
       // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
-    },
+      return matAlgo14xDs(matrix(x), y, self, false).valueOf()
+    }),
 
-    'number | Complex | BigNumber | Fraction, SparseMatrix': function (x, y) {
+    'number | Complex | BigNumber | Fraction, SparseMatrix': typed.referToSelf(self => (x, y) => {
       // check scalar is zero
       if (equalScalar(x, 0)) {
         // do not execute algorithm, result will be a zero matrix
         return zeros(y.size(), y.storage())
       }
-      return algorithm12(y, x, this, true)
-    },
+      return matAlgo12xSfs(y, x, self, true)
+    }),
 
-    'number | Complex | BigNumber | Fraction, DenseMatrix': function (x, y) {
+    'number | Complex | BigNumber | Fraction, DenseMatrix': typed.referToSelf(self => (x, y) => {
       // check scalar is zero
       if (equalScalar(x, 0)) {
         // do not execute algorithm, result will be a zero matrix
         return zeros(y.size(), y.storage())
       }
-      return algorithm14(y, x, this, true)
-    },
+      return matAlgo14xDs(y, x, self, true)
+    }),
 
-    'number | Complex | BigNumber | Fraction, Array': function (x, y) {
+    'number | Complex | BigNumber | Fraction, Array': typed.referToSelf(self => (x, y) => {
       // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
-    }
+      return matAlgo14xDs(matrix(y), x, self, true).valueOf()
+    })
   })
 })
