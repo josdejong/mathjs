@@ -2,6 +2,14 @@
 
 # unpublished changes since 10.6.4
 
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+Breaking:
+
+- Dropped official support for IE11.
+
+Non-breaking:
+
 - Fix #2600: improve the TypeScript definitions of `simplify`. 
   Thanks @laureen-m and @mattvague.
 - Fix #2607: improve type definition of `createUnit`. Thanks @egziko.
@@ -1819,7 +1827,7 @@ Non breaking changes:
 
 ## 2015-10-29, version 2.4.1
 
-- Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
+- Fixed #480: `nthRoot` not working on Internet Explorer (up to IE11).
 - Fixed #490: `nthRoot` returning an error for negative values like
   `nthRoot(-2, 3)`.
 - Fixed #489: an issue with initializing a sparse matrix without data.

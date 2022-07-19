@@ -1,4 +1,3 @@
-import './../utils/polyfills.js'
 import typedFunction from 'typed-function'
 import { deepFlatten, isLegacyFactory, values } from '../utils/object.js'
 import * as emitter from './../utils/emitter.js'
