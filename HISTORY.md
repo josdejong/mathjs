@@ -18,7 +18,9 @@ Breaking changes:
   when having a division followed by an implicit multiplication, the division 
   gets higher precedence over the implicit multiplication when (a) the 
   numerator is a constant with optionally a prefix operator (`-`, `+`, `~`), 
-  and (b) the denominator is a constant. Thanks @gwhitney.
+  and (b) the denominator is a constant. For example: formerly `-1 / 2 x` was 
+  interpreted as `-1 / (2 * x)` and now it is interpreted as `(-1 / 2) * x`.
+  Thanks @gwhitney.
 - Drop elementwise matrix support for trigonometric functions, exp, log, gamma,
   square, sqrt, cube, and cbrt to prevent confusion with standard matrix 
   functions (#2440, #2465). Instead, use `math.map(matrix, fn)`. 
@@ -30,10 +32,20 @@ Breaking changes:
   Thanks @gwhitney.
 - Fix #2412: let function `diff` return an empty matrix when the input contains
   only one element (#2422).
-- Internal refactoring in the `simplifyCore` logic (#2490, #2484, #2459). 
+- Internal refactoring in the `simplifyCore` logic (#2490, #2484, #2459).
+  The function `simplifyCore` will no longer (partially) merge constants, that 
+  behavior has been moved to `simplifyConstant`. The combination of 
+  `simplifyConstant` and `simplifyCore` is still close to the old behavior 
+  of `simplifyCore`, but there are some differences. To reproduce the same 
+  behavior as the old `simplifyCore`, you can use 
+  `math.simplify(expr, [math.simplifyCore, math.simplifyConstant])`. 
+  Thanks to the refactoring, `simplify` is more thorough in reducing constants. 
   Thanks @gwhitney.
 - Disable support for splitting rest parameters in chained calculations 
-  (#2485, #2474). Thanks @gwhitney.
+  (#2485, #2474). For example: `math.chain(3).max(4, 2).done()` will now throw
+  an error rather than return `4`, because the rest parameter of 
+  `math.max(...number)` has been split between the contents of the chain and 
+  the arguments to the max call. Thanks @gwhitney.
 - Function `typeOf` now returns `function` (lowercase) for a function instead 
   of `Function` (#2560). Thanks @gwhitney.
 
