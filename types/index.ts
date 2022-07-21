@@ -1216,71 +1216,73 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
 {
   const math = create(all, {})
 
-  let abc : MathArray = [1,2,3,4];
-  let bcd : MathArray = [[1,2,3,4],
-    [2,3,4,5],
-    [4,5,6,7],
-    [5,6,7,8]];
+  const abc: MathArray = [1, 2, 3, 4]
+  const bcd: MathArray = [
+    [1, 2, 3, 4],
+    [2, 3, 4, 5],
+    [4, 5, 6, 7],
+    [5, 6, 7, 8],
+  ]
 
-  let Mbcd = math.matrix(bcd);
-  let Mabc = math.matrix(abc);
+  const Mbcd = math.matrix(bcd)
+  const Mabc = math.matrix(abc)
 
   // Number
-  let r1 = math.multiply(1, 2);
-  console.log(r1);
+  const r1 = math.multiply(1, 2)
+  console.log(r1)
 
   // Unit
   const a = math.unit(45, 'cm') // 450 mm
   const b = math.unit(45, 'cm') // 450 mm
-  let r2 = math.multiply(a, b);
-  console.log(r2);
+  const r2 = math.multiply(a, b)
+  console.log(r2)
 
   // 1D JS Array
-  let r3 = math.multiply(abc, bcd);
-  console.log(r3);
-  r3[1]; // By default least promised valid syntax
+  const r3 = math.multiply(abc, bcd)
+  console.log(r3)
+  r3[1] // By default least promised valid syntax
 
   // 2D JS Array
-  let r12 = math.multiply(bcd, bcd);
-  console.log(r12);
+  const r12 = math.multiply(bcd, bcd)
+  console.log(r12)
   // Example to sort ambiguity between multidimensional & singledimensional arrays
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const multiDimensional = (x: any): x is any[][] => x.length && x[0].length;
+  const multiDimensional = (x: any): x is any[][] => x.length && x[0].length
   if (multiDimensional(r12)) {
-    r12[1][1];
+    r12[1][1]
   }
-  r12[1]; // Valid syntax
+  r12[1] // Valid syntax
 
   // Matrix: matrix * vector
-  let r7 = math.multiply(Mabc, bcd);
-  console.log(r7);
-  r7.toArray(); // Matrix-es have toArray function
+  const r7 = math.multiply(Mabc, bcd)
+  console.log(r7)
+  r7.toArray() // Matrix-es have toArray function
 
   // Matrix
-  let r8 = math.multiply(Mabc, 4);
-  console.log(r8);
+  const r8 = math.multiply(Mabc, 4)
+  console.log(r8)
 
   // Matrix
-  let r11 = math.multiply(4, Mabc);
-  console.log(r11);
+  const r11 = math.multiply(4, Mabc)
+  console.log(r11)
 
   // Matrix of units
-  let r9 = math.multiply(Mabc, a);
-  console.log(r9);
-  let r10 = math.multiply(a, Mabc);
-  console.log(r10);
+  const r9 = math.multiply(Mabc, a)
+  console.log(r9)
+  const r10 = math.multiply(a, Mabc)
+  console.log(r10)
 
   // Matrix
-  let r6 = math.multiply(abc, Mbcd);
-  console.log(r6);
+  const r6 = math.multiply(abc, Mbcd)
+  console.log(r6)
 
   // 2D JS Array
-  let r5 = math.multiply(bcd, abc);
-  console.log(r5);
+  const r5 = math.multiply(bcd, abc)
+  console.log(r5)
 
   // Number
-  let r4 = math.multiply(abc, math.transpose(abc));
-  console.log(r4);
+  const r4 = math.multiply(abc, math.transpose(abc))
+  console.log(r4)
 }
 
 /*
