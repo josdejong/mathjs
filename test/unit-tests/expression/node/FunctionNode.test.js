@@ -31,7 +31,7 @@ describe('FunctionNode', function () {
   it('should throw an error when calling without new operator', function () {
     const s = new SymbolNode('sqrt')
     const c = new ConstantNode(4)
-    assert.throws(function () { FunctionNode(s, [c]) }, SyntaxError)
+    assert.throws(function () { FunctionNode(s, [c]) }, TypeError)
   })
 
   it('should throw an error when calling with wrong arguments', function () {

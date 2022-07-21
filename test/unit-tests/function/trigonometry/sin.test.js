@@ -104,12 +104,14 @@ describe('sin', function () {
 
   const sin123 = [0.84147098480789, 0.909297426825682, 0.141120008059867]
 
-  it('should return the sin of each element of an array', function () {
-    approx.deepEqual(sin([1, 2, 3]), sin123, EPSILON)
+  it('should not operate on an array', function () {
+    assert.throws(() => sin([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], sin), sin123, EPSILON)
   })
 
-  it('should return the sin of each element of a matrix', function () {
-    approx.deepEqual(sin(matrix([1, 2, 3])), matrix(sin123), EPSILON)
+  it('should not operate on a matrix', function () {
+    assert.throws(() => sin(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), sin), matrix(sin123), EPSILON)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

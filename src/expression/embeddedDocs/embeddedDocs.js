@@ -40,6 +40,7 @@ import { qrDocs } from './function/algebra/qr.js'
 import { rationalizeDocs } from './function/algebra/rationalize.js'
 import { resolveDocs } from './function/algebra/resolve.js'
 import { simplifyDocs } from './function/algebra/simplify.js'
+import { simplifyConstantDocs } from './function/algebra/simplifyConstant.js'
 import { simplifyCoreDocs } from './function/algebra/simplifyCore.js'
 import { sluDocs } from './function/algebra/slu.js'
 import { symbolicEqualDocs } from './function/algebra/symbolicEqual.js'
@@ -338,6 +339,7 @@ export const embeddedDocs = {
   leafCount: leafCountDocs,
   resolve: resolveDocs,
   simplify: simplifyDocs,
+  simplifyConstant: simplifyConstantDocs,
   simplifyCore: simplifyCoreDocs,
   symbolicEqual: symbolicEqualDocs,
   rationalize: rationalizeDocs,

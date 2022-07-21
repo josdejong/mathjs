@@ -98,13 +98,6 @@ export const createNorm = /* #__PURE__ */ factory(
         return _norm(x, 2)
       },
 
-      'number | Complex | BigNumber | boolean, number | BigNumber | string': function (
-        x
-      ) {
-        // ignore second parameter, TODO: remove the option of second parameter for these types
-        return this(x)
-      },
-
       'Array, number | BigNumber | string': function (x, p) {
         return _norm(matrix(x), p)
       },

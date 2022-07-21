@@ -57,10 +57,11 @@ describe('square', function () {
     assert.throws(function () { square('text') })
   })
 
-  it('should return the square of each element in a matrix', function () {
-    assert.deepStrictEqual(square([2, 3, 4, 5]), [4, 9, 16, 25])
-    assert.deepStrictEqual(square(matrix([2, 3, 4, 5])), matrix([4, 9, 16, 25]))
-    assert.deepStrictEqual(square(matrix([[1, 2], [3, 4]])), matrix([[1, 4], [9, 16]]))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => square([2, 3, 4, 5]), TypeError)
+    assert.deepStrictEqual(math.map([2, 3, 4, 5], square), [4, 9, 16, 25])
+    assert.deepStrictEqual(math.map(matrix([2, 3, 4, 5]), square), matrix([4, 9, 16, 25]))
+    assert.deepStrictEqual(math.map(matrix([[1, 2], [3, 4]]), square), matrix([[1, 4], [9, 16]]))
   })
 
   it('should LaTeX square', function () {

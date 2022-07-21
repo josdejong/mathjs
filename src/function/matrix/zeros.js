@@ -22,6 +22,7 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * Examples:
    *
+   *    math.zeros()                   // returns []
    *    math.zeros(3)                  // returns [0, 0, 0]
    *    math.zeros(3, 2)               // returns [[0, 0], [0, 0], [0, 0]]
    *    math.zeros(3, 'dense')         // returns [0, 0, 0]
@@ -33,7 +34,7 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    ones, identity, size, range
    *
-   * @param {...number | Array} size    The size of each dimension of the matrix
+   * @param {...(number|BigNumber) | Array} size    The size of each dimension of the matrix
    * @param {string} [format]           The Matrix storage format
    *
    * @return {Array | Matrix}           A matrix filled with zeros

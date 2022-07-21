@@ -1,5 +1,5 @@
 import { factory } from '../utils/factory.js'
-import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is.js'
+import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
 import { deepMap } from '../utils/collection.js'
 import { hasOwnProperty } from '../utils/object.js'
 
@@ -613,7 +613,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     if (state.token !== '' && state.token !== '\n' && state.token !== ';') {
       node = parseAssignment(state)
-      node.comment = state.comment
+      if (state.comment) {
+        node.comment = state.comment
+      }
     }
 
     // TODO: simplify this loop
@@ -626,7 +628,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getToken(state)
       if (state.token !== '\n' && state.token !== ';' && state.token !== '') {
         node = parseAssignment(state)
-        node.comment = state.comment
+        if (state.comment) {
+          node.comment = state.comment
+        }
 
         visible = (state.token !== ';')
         blocks.push({ node, visible })
@@ -638,7 +642,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     } else {
       if (!node) {
         node = new ConstantNode(undefined)
-        node.comment = state.comment
+        if (state.comment) {
+          node.comment = state.comment
+        }
       }
 
       return node
@@ -1075,8 +1081,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * Infamous "rule 2" as described in https://github.com/josdejong/mathjs/issues/792#issuecomment-361065370
+   * And as amended in https://github.com/josdejong/mathjs/issues/2370#issuecomment-1054052164
    * Explicit division gets higher precedence than implicit multiplication
-   * when the division matches this pattern: [number] / [number] [symbol]
+   * when the division matches this pattern:
+   *   [unaryPrefixOp]?[number] / [number] [symbol]
    * @return {Node} node
    * @private
    */
@@ -1087,7 +1095,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (true) {
       // Match the "number /" part of the pattern "number / number symbol"
-      if (state.token === '/' && isConstantNode(last)) {
+      if (state.token === '/' && rule2Node(last)) {
         // Look ahead to see if the next token is a number
         tokenStates.push(Object.assign({}, state))
         getTokenSkipNewline(state)
@@ -1782,6 +1790,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     return error
   }
+
+  // Now that we can parse, automatically convert strings to Nodes by parsing
+  typed.addConversion({ from: 'string', to: 'Node', convert: parse })
 
   return parse
 })

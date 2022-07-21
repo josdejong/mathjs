@@ -159,7 +159,7 @@ describe('derivative', function () {
     compareString(derivativeWithoutSimplify('asech((2x))', 'x'), '-(2 * 1) / ((2 x) * sqrt(1 - (2 x) ^ 2))')
     compareString(derivativeWithoutSimplify('acsch((2x))', 'x'), '-(2 * 1) / (abs((2 x)) * sqrt((2 x) ^ 2 + 1))')
     compareString(derivativeWithoutSimplify('acoth((2x))', 'x'), '-(2 * 1) / (1 - (2 x) ^ 2)')
-    compareString(derivativeWithoutSimplify('abs(2x)', 'x'), '2 * 1 * abs(2 x) / (2 x)')
+    compareString(derivativeWithoutSimplify('abs(2x)', 'x'), '2 * 1 * abs(2 x) / 2 x')
 
     // See power operator tests above
     compareString(derivativeWithoutSimplify('pow(0, 2^x + x^3 + 2)', 'x'), '0')
@@ -245,7 +245,7 @@ describe('derivative', function () {
   it('should have controlled behavior on arguments errors', function () {
     assert.throws(function () {
       derivative('sqrt()', 'x')
-    }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Unit or Array or Matrix or Fraction or string or boolean, index: 0\)/)
+    }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Unit or Fraction or string or boolean, index: 0\)/)
     assert.throws(function () {
       derivative('sqrt(12, 2x)', 'x')
     }, /TypeError: Too many arguments in function sqrt \(expected: 1, actual: 2\)/)
@@ -254,21 +254,21 @@ describe('derivative', function () {
   it('should throw error for incorrect argument types', function () {
     assert.throws(function () {
       derivative('42', '42')
-    }, /TypeError: Unexpected type of argument in function derivative \(expected: string or SymbolNode or number or boolean, actual: ConstantNode, index: 1\)/)
+    }, /TypeError: Unexpected type of argument in function derivative \(expected: SymbolNode or identifier, actual: string, index: 1\)/)
 
     assert.throws(function () {
       derivative('[1, 2; 3, 4]', 'x')
-    }, /TypeError: Unexpected type of argument in function constTag \(expected: ConstantNode or FunctionNode or FunctionAssignmentNode or OperatorNode or ParenthesisNode or SymbolNode, actual: ArrayNode, index: 1\)/)
+    }, /TypeError: Unexpected type of argument in function constTag \(expected: ConstantNode or FunctionNode or FunctionAssignmentNode or OperatorNode or ParenthesisNode or SymbolNode, actual:.*ArrayNode.*, index: 1\)/)
 
     assert.throws(function () {
       derivative('x + [1, 2; 3, 4]', 'x')
-    }, /TypeError: Unexpected type of argument in function constTag \(expected: ConstantNode or FunctionNode or FunctionAssignmentNode or OperatorNode or ParenthesisNode or SymbolNode, actual: ArrayNode, index: 1\)/)
+    }, /TypeError: Unexpected type of argument in function constTag \(expected: ConstantNode or FunctionNode or FunctionAssignmentNode or OperatorNode or ParenthesisNode or SymbolNode, actual:.*ArrayNode.*, index: 1\)/)
   })
 
   it('should throw error if incorrect number of arguments', function () {
     assert.throws(function () {
       derivative('x + 2')
-    }, /TypeError: Too few arguments in function derivative \(expected: string or SymbolNode or number or boolean, index: 1\)/)
+    }, /TypeError: Too few arguments in function derivative \(expected: SymbolNode or identifier, index: 1\)/)
 
     assert.throws(function () {
       derivative('x + 2', 'x', {}, true, 42)

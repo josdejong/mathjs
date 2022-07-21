@@ -22,7 +22,10 @@ describe('setCartesian', function () {
 
   it('should return the same type of output as the inputs', function () {
     assert.strictEqual(math.typeOf(math.setCartesian([1, 2, 3], [3, 4, 5])), 'Array')
-    assert.strictEqual(math.typeOf(math.setCartesian(math.matrix([1, 2, 3]), math.matrix([3, 4, 5]))), 'Matrix')
+    assert.strictEqual(
+      math.typeOf(
+        math.setCartesian(math.matrix([1, 2, 3]), math.matrix([3, 4, 5]))),
+      'DenseMatrix')
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

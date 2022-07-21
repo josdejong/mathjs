@@ -1,4 +1,4 @@
-import { isNode } from '../../utils/is.js'
+import { isNode, isConstantNode, isOperatorNode, isParenthesisNode } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
 import { escape } from '../../utils/string.js'
 import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
@@ -13,141 +13,22 @@ const dependencies = [
 
 export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
-   * @constructor OperatorNode
-   * @extends {Node}
-   * An operator with two arguments, like 2+3
-   *
-   * @param {string} op           Operator name, for example '+'
-   * @param {string} fn           Function name, for example 'add'
-   * @param {Node[]} args         Operator arguments
-   * @param {boolean} [implicit]  Is this an implicit multiplication?
-   * @param {boolean} [isPercentage] Is this an percentage Operation?
+   * Returns true if the expression starts with a constant, under
+   * the current parenthesization:
+   * @param {Node} expression
+   * @param {string} parenthesis
+   * @return {boolean}
    */
-  function OperatorNode (op, fn, args, implicit, isPercentage) {
-    if (!(this instanceof OperatorNode)) {
-      throw new SyntaxError('Constructor must be called with the new operator')
+  function startsWithConstant (expr, parenthesis) {
+    let curNode = expr
+    if (parenthesis === 'auto') {
+      while (isParenthesisNode(curNode)) curNode = curNode.content
     }
-
-    // validate input
-    if (typeof op !== 'string') {
-      throw new TypeError('string expected for parameter "op"')
+    if (isConstantNode(curNode)) return true
+    if (isOperatorNode(curNode)) {
+      return startsWithConstant(curNode.args[0], parenthesis)
     }
-    if (typeof fn !== 'string') {
-      throw new TypeError('string expected for parameter "fn"')
-    }
-    if (!Array.isArray(args) || !args.every(isNode)) {
-      throw new TypeError('Array containing Nodes expected for parameter "args"')
-    }
-
-    this.implicit = (implicit === true)
-    this.isPercentage = (isPercentage === true)
-    this.op = op
-    this.fn = fn
-    this.args = args || []
-  }
-
-  OperatorNode.prototype = new Node()
-
-  OperatorNode.prototype.type = 'OperatorNode'
-
-  OperatorNode.prototype.isOperatorNode = true
-
-  /**
-   * Compile a node into a JavaScript function.
-   * This basically pre-calculates as much as possible and only leaves open
-   * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants.
-   * @param {Object} argNames An object with argument names as key and `true`
-   *                          as value. Used in the SymbolNode to optimize
-   *                          for arguments from user assigned functions
-   *                          (see FunctionAssignmentNode) or special symbols
-   *                          like `end` (see IndexNode).
-   * @return {function} Returns a function which can be called like:
-   *                        evalNode(scope: Object, args: Object, context: *)
-   */
-  OperatorNode.prototype._compile = function (math, argNames) {
-    // validate fn
-    if (typeof this.fn !== 'string' || !isSafeMethod(math, this.fn)) {
-      if (!math[this.fn]) {
-        throw new Error('Function ' + this.fn + ' missing in provided namespace "math"')
-      } else {
-        throw new Error('No access to function "' + this.fn + '"')
-      }
-    }
-
-    const fn = getSafeProperty(math, this.fn)
-    const evalArgs = map(this.args, function (arg) {
-      return arg._compile(math, argNames)
-    })
-
-    if (evalArgs.length === 1) {
-      const evalArg0 = evalArgs[0]
-      return function evalOperatorNode (scope, args, context) {
-        return fn(evalArg0(scope, args, context))
-      }
-    } else if (evalArgs.length === 2) {
-      const evalArg0 = evalArgs[0]
-      const evalArg1 = evalArgs[1]
-      return function evalOperatorNode (scope, args, context) {
-        return fn(evalArg0(scope, args, context), evalArg1(scope, args, context))
-      }
-    } else {
-      return function evalOperatorNode (scope, args, context) {
-        return fn.apply(null, map(evalArgs, function (evalArg) {
-          return evalArg(scope, args, context)
-        }))
-      }
-    }
-  }
-
-  /**
-   * Execute a callback for each of the child nodes of this node
-   * @param {function(child: Node, path: string, parent: Node)} callback
-   */
-  OperatorNode.prototype.forEach = function (callback) {
-    for (let i = 0; i < this.args.length; i++) {
-      callback(this.args[i], 'args[' + i + ']', this)
-    }
-  }
-
-  /**
-   * Create a new OperatorNode having it's childs be the results of calling
-   * the provided callback function for each of the childs of the original node.
-   * @param {function(child: Node, path: string, parent: Node): Node} callback
-   * @returns {OperatorNode} Returns a transformed copy of the node
-   */
-  OperatorNode.prototype.map = function (callback) {
-    const args = []
-    for (let i = 0; i < this.args.length; i++) {
-      args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this))
-    }
-    return new OperatorNode(this.op, this.fn, args, this.implicit, this.isPercentage)
-  }
-
-  /**
-   * Create a clone of this node, a shallow copy
-   * @return {OperatorNode}
-   */
-  OperatorNode.prototype.clone = function () {
-    return new OperatorNode(this.op, this.fn, this.args.slice(0), this.implicit, this.isPercentage)
-  }
-
-  /**
-   * Check whether this is an unary OperatorNode:
-   * has exactly one argument, like `-a`.
-   * @return {boolean} Returns true when an unary operator node, false otherwise.
-   */
-  OperatorNode.prototype.isUnary = function () {
-    return this.args.length === 1
-  }
-
-  /**
-   * Check whether this is a binary OperatorNode:
-   * has exactly two arguments, like `a + b`.
-   * @return {boolean} Returns true when a binary operator node, false otherwise.
-   */
-  OperatorNode.prototype.isBinary = function () {
-    return this.args.length === 2
+    return false
   }
 
   /**
@@ -165,7 +46,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function calculateNecessaryParentheses (root, parenthesis, implicit, args, latex) {
     // precedence of the root OperatorNode
-    const precedence = getPrecedence(root, parenthesis)
+    const precedence = getPrecedence(root, parenthesis, implicit)
     const associativity = getAssociativity(root, parenthesis)
 
     if ((parenthesis === 'all') || ((args.length > 2) && (root.getIdentifier() !== 'OperatorNode:add') && (root.getIdentifier() !== 'OperatorNode:multiply'))) {
@@ -191,7 +72,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
       case 1: // unary operators
         {
           // precedence of the operand
-          const operandPrecedence = getPrecedence(args[0], parenthesis)
+          const operandPrecedence = getPrecedence(args[0], parenthesis, implicit, root)
 
           // handle special cases for LaTeX, where some of the parentheses aren't needed
           if (latex && (operandPrecedence !== null)) {
@@ -236,7 +117,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         {
           let lhsParens // left hand side needs parenthesis?
           // precedence of the left hand side
-          const lhsPrecedence = getPrecedence(args[0], parenthesis)
+          const lhsPrecedence = getPrecedence(args[0], parenthesis, implicit, root)
           // is the root node associative with the left hand side
           const assocWithLhs = isAssociativeWith(root, args[0], parenthesis)
 
@@ -258,7 +139,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
           let rhsParens // right hand side needs parenthesis?
           // precedence of the right hand side
-          const rhsPrecedence = getPrecedence(args[1], parenthesis)
+          const rhsPrecedence = getPrecedence(args[1], parenthesis, implicit, root)
           // is the root node associative with the right hand side?
           const assocWithRhs = isAssociativeWith(root, args[1], parenthesis)
 
@@ -322,7 +203,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
       default:
         if ((root.getIdentifier() === 'OperatorNode:add') || (root.getIdentifier() === 'OperatorNode:multiply')) {
           result = args.map(function (arg) {
-            const argPrecedence = getPrecedence(arg, parenthesis)
+            const argPrecedence = getPrecedence(arg, parenthesis, implicit, root)
             const assocWithArg = isAssociativeWith(root, arg, parenthesis)
             const argAssociativity = getAssociativity(arg, parenthesis)
             if (argPrecedence === null) {
@@ -340,277 +221,476 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         break
     }
 
-    // handles an edge case of 'auto' parentheses with implicit multiplication of ConstantNode
-    // In that case print parentheses for ParenthesisNodes even though they normally wouldn't be
-    // printed.
-    if ((args.length >= 2) && (root.getIdentifier() === 'OperatorNode:multiply') && root.implicit && (parenthesis === 'auto') && (implicit === 'hide')) {
-      result = args.map(function (arg, index) {
-        const isParenthesisNode = (arg.getIdentifier() === 'ParenthesisNode')
-        if (result[index] || isParenthesisNode) { // put in parenthesis?
-          return true
+    // Handles an edge case of parentheses with implicit multiplication
+    // of ConstantNode.
+    // In that case, parenthesize ConstantNodes that follow an unparenthesized
+    // expression, even though they normally wouldn't be printed.
+    if (args.length >= 2 && root.getIdentifier() === 'OperatorNode:multiply' &&
+        root.implicit && parenthesis !== 'all' && implicit === 'hide') {
+      for (let i = 1; i < result.length; ++i) {
+        if (startsWithConstant(args[i], parenthesis) && !result[i - 1] &&
+            (parenthesis !== 'keep' || !isParenthesisNode(args[i - 1]))) {
+          result[i] = true
         }
-
-        return false
-      })
+      }
     }
 
     return result
   }
 
-  /**
-   * Get string representation.
-   * @param {Object} options
-   * @return {string} str
-   */
-  OperatorNode.prototype._toString = function (options) {
-    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const implicit = (options && options.implicit) ? options.implicit : 'hide'
-    const args = this.args
-    const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, false)
-
-    if (args.length === 1) { // unary operators
-      const assoc = getAssociativity(this, parenthesis)
-
-      let operand = args[0].toString(options)
-      if (parens[0]) {
-        operand = '(' + operand + ')'
+  class OperatorNode extends Node {
+    /**
+     * @constructor OperatorNode
+     * @extends {Node}
+     * An operator with two arguments, like 2+3
+     *
+     * @param {string} op           Operator name, for example '+'
+     * @param {string} fn           Function name, for example 'add'
+     * @param {Node[]} args         Operator arguments
+     * @param {boolean} [implicit]  Is this an implicit multiplication?
+     * @param {boolean} [isPercentage] Is this an percentage Operation?
+     */
+    constructor (op, fn, args, implicit, isPercentage) {
+      super()
+      // validate input
+      if (typeof op !== 'string') {
+        throw new TypeError('string expected for parameter "op"')
+      }
+      if (typeof fn !== 'string') {
+        throw new TypeError('string expected for parameter "fn"')
+      }
+      if (!Array.isArray(args) || !args.every(isNode)) {
+        throw new TypeError(
+          'Array containing Nodes expected for parameter "args"')
       }
 
-      // for example for "not", we want a space between operand and argument
-      const opIsNamed = /[a-zA-Z]+/.test(this.op)
+      this.implicit = (implicit === true)
+      this.isPercentage = (isPercentage === true)
+      this.op = op
+      this.fn = fn
+      this.args = args || []
+    }
 
-      if (assoc === 'right') { // prefix operator
-        return this.op + (opIsNamed ? ' ' : '') + operand
-      } else if (assoc === 'left') { // postfix
-        return operand + (opIsNamed ? ' ' : '') + this.op
-      }
+    static name = name
+    get type () { return name }
+    get isOperatorNode () { return true }
 
-      // fall back to postfix
-      return operand + this.op
-    } else if (args.length === 2) {
-      let lhs = args[0].toString(options) // left hand side
-      let rhs = args[1].toString(options) // right hand side
-      if (parens[0]) { // left hand side in parenthesis?
-        lhs = '(' + lhs + ')'
-      }
-      if (parens[1]) { // right hand side in parenthesis?
-        rhs = '(' + rhs + ')'
-      }
-
-      if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit === 'hide')) {
-        return lhs + ' ' + rhs
-      }
-
-      return lhs + ' ' + this.op + ' ' + rhs
-    } else if ((args.length > 2) && ((this.getIdentifier() === 'OperatorNode:add') || (this.getIdentifier() === 'OperatorNode:multiply'))) {
-      const stringifiedArgs = args.map(function (arg, index) {
-        arg = arg.toString(options)
-        if (parens[index]) { // put in parenthesis?
-          arg = '(' + arg + ')'
+    /**
+     * Compile a node into a JavaScript function.
+     * This basically pre-calculates as much as possible and only leaves open
+     * calculations which depend on a dynamic scope with variables.
+     * @param {Object} math     Math.js namespace with functions and constants.
+     * @param {Object} argNames An object with argument names as key and `true`
+     *                          as value. Used in the SymbolNode to optimize
+     *                          for arguments from user assigned functions
+     *                          (see FunctionAssignmentNode) or special symbols
+     *                          like `end` (see IndexNode).
+     * @return {function} Returns a function which can be called like:
+     *                        evalNode(scope: Object, args: Object, context: *)
+     */
+    _compile (math, argNames) {
+      // validate fn
+      if (typeof this.fn !== 'string' || !isSafeMethod(math, this.fn)) {
+        if (!math[this.fn]) {
+          throw new Error(
+            'Function ' + this.fn + ' missing in provided namespace "math"')
+        } else {
+          throw new Error('No access to function "' + this.fn + '"')
         }
+      }
 
-        return arg
+      const fn = getSafeProperty(math, this.fn)
+      const evalArgs = map(this.args, function (arg) {
+        return arg._compile(math, argNames)
       })
 
-      if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit === 'hide')) {
-        return stringifiedArgs.join(' ')
+      if (evalArgs.length === 1) {
+        const evalArg0 = evalArgs[0]
+        return function evalOperatorNode (scope, args, context) {
+          return fn(evalArg0(scope, args, context))
+        }
+      } else if (evalArgs.length === 2) {
+        const evalArg0 = evalArgs[0]
+        const evalArg1 = evalArgs[1]
+        return function evalOperatorNode (scope, args, context) {
+          return fn(
+            evalArg0(scope, args, context),
+            evalArg1(scope, args, context))
+        }
+      } else {
+        return function evalOperatorNode (scope, args, context) {
+          return fn.apply(null, map(evalArgs, function (evalArg) {
+            return evalArg(scope, args, context)
+          }))
+        }
       }
-
-      return stringifiedArgs.join(' ' + this.op + ' ')
-    } else {
-      // fallback to formatting as a function call
-      return this.fn + '(' + this.args.join(', ') + ')'
     }
-  }
 
-  /**
-   * Get a JSON representation of the node
-   * @returns {Object}
-   */
-  OperatorNode.prototype.toJSON = function () {
-    return {
-      mathjs: 'OperatorNode',
-      op: this.op,
-      fn: this.fn,
-      args: this.args,
-      implicit: this.implicit,
-      isPercentage: this.isPercentage
+    /**
+     * Execute a callback for each of the child nodes of this node
+     * @param {function(child: Node, path: string, parent: Node)} callback
+     */
+    forEach (callback) {
+      for (let i = 0; i < this.args.length; i++) {
+        callback(this.args[i], 'args[' + i + ']', this)
+      }
     }
-  }
 
-  /**
-   * Instantiate an OperatorNode from its JSON representation
-   * @param {Object} json  An object structured like
-   *                       `{"mathjs": "OperatorNode", "op": "+", "fn": "add", "args": [...], "implicit": false, "isPercentage":false}`,
-   *                       where mathjs is optional
-   * @returns {OperatorNode}
-   */
-  OperatorNode.fromJSON = function (json) {
-    return new OperatorNode(json.op, json.fn, json.args, json.implicit, json.isPercentage)
-  }
-
-  /**
-   * Get HTML representation.
-   * @param {Object} options
-   * @return {string} str
-   */
-  OperatorNode.prototype.toHTML = function (options) {
-    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const implicit = (options && options.implicit) ? options.implicit : 'hide'
-    const args = this.args
-    const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, false)
-
-    if (args.length === 1) { // unary operators
-      const assoc = getAssociativity(this, parenthesis)
-
-      let operand = args[0].toHTML(options)
-      if (parens[0]) {
-        operand = '<span class="math-parenthesis math-round-parenthesis">(</span>' + operand + '<span class="math-parenthesis math-round-parenthesis">)</span>'
+    /**
+     * Create a new OperatorNode whose children are the results of calling
+     * the provided callback function for each child of the original node.
+     * @param {function(child: Node, path: string, parent: Node): Node} callback
+     * @returns {OperatorNode} Returns a transformed copy of the node
+     */
+    map (callback) {
+      const args = []
+      for (let i = 0; i < this.args.length; i++) {
+        args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this))
       }
+      return new OperatorNode(
+        this.op, this.fn, args, this.implicit, this.isPercentage)
+    }
 
-      if (assoc === 'right') { // prefix operator
-        return '<span class="math-operator math-unary-operator math-lefthand-unary-operator">' + escape(this.op) + '</span>' + operand
-      } else { // postfix when assoc === 'left' or undefined
-        return operand + '<span class="math-operator math-unary-operator math-righthand-unary-operator">' + escape(this.op) + '</span>'
-      }
-    } else if (args.length === 2) { // binary operatoes
-      let lhs = args[0].toHTML(options) // left hand side
-      let rhs = args[1].toHTML(options) // right hand side
-      if (parens[0]) { // left hand side in parenthesis?
-        lhs = '<span class="math-parenthesis math-round-parenthesis">(</span>' + lhs + '<span class="math-parenthesis math-round-parenthesis">)</span>'
-      }
-      if (parens[1]) { // right hand side in parenthesis?
-        rhs = '<span class="math-parenthesis math-round-parenthesis">(</span>' + rhs + '<span class="math-parenthesis math-round-parenthesis">)</span>'
-      }
+    /**
+     * Create a clone of this node, a shallow copy
+     * @return {OperatorNode}
+     */
+    clone () {
+      return new OperatorNode(
+        this.op, this.fn, this.args.slice(0), this.implicit, this.isPercentage)
+    }
 
-      if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit === 'hide')) {
-        return lhs + '<span class="math-operator math-binary-operator math-implicit-binary-operator"></span>' + rhs
-      }
+    /**
+     * Check whether this is an unary OperatorNode:
+     * has exactly one argument, like `-a`.
+     * @return {boolean}
+     *     Returns true when an unary operator node, false otherwise.
+     */
+    isUnary () {
+      return this.args.length === 1
+    }
 
-      return lhs + '<span class="math-operator math-binary-operator math-explicit-binary-operator">' + escape(this.op) + '</span>' + rhs
-    } else {
-      const stringifiedArgs = args.map(function (arg, index) {
-        arg = arg.toHTML(options)
-        if (parens[index]) { // put in parenthesis?
-          arg = '<span class="math-parenthesis math-round-parenthesis">(</span>' + arg + '<span class="math-parenthesis math-round-parenthesis">)</span>'
+    /**
+     * Check whether this is a binary OperatorNode:
+     * has exactly two arguments, like `a + b`.
+     * @return {boolean}
+     *     Returns true when a binary operator node, false otherwise.
+     */
+    isBinary () {
+      return this.args.length === 2
+    }
+
+    /**
+     * Get string representation.
+     * @param {Object} options
+     * @return {string} str
+     */
+    _toString (options) {
+      const parenthesis =
+          (options && options.parenthesis) ? options.parenthesis : 'keep'
+      const implicit = (options && options.implicit) ? options.implicit : 'hide'
+      const args = this.args
+      const parens =
+          calculateNecessaryParentheses(this, parenthesis, implicit, args, false)
+
+      if (args.length === 1) { // unary operators
+        const assoc = getAssociativity(this, parenthesis)
+
+        let operand = args[0].toString(options)
+        if (parens[0]) {
+          operand = '(' + operand + ')'
         }
 
-        return arg
-      })
+        // for example for "not", we want a space between operand and argument
+        const opIsNamed = /[a-zA-Z]+/.test(this.op)
 
-      if ((args.length > 2) && ((this.getIdentifier() === 'OperatorNode:add') || (this.getIdentifier() === 'OperatorNode:multiply'))) {
-        if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit === 'hide')) {
-          return stringifiedArgs.join('<span class="math-operator math-binary-operator math-implicit-binary-operator"></span>')
+        if (assoc === 'right') { // prefix operator
+          return this.op + (opIsNamed ? ' ' : '') + operand
+        } else if (assoc === 'left') { // postfix
+          return operand + (opIsNamed ? ' ' : '') + this.op
         }
 
-        return stringifiedArgs.join('<span class="math-operator math-binary-operator math-explicit-binary-operator">' + escape(this.op) + '</span>')
+        // fall back to postfix
+        return operand + this.op
+      } else if (args.length === 2) {
+        let lhs = args[0].toString(options) // left hand side
+        let rhs = args[1].toString(options) // right hand side
+        if (parens[0]) { // left hand side in parenthesis?
+          lhs = '(' + lhs + ')'
+        }
+        if (parens[1]) { // right hand side in parenthesis?
+          rhs = '(' + rhs + ')'
+        }
+
+        if (this.implicit &&
+            (this.getIdentifier() === 'OperatorNode:multiply') &&
+            (implicit === 'hide')) {
+          return lhs + ' ' + rhs
+        }
+
+        return lhs + ' ' + this.op + ' ' + rhs
+      } else if ((args.length > 2) &&
+                 ((this.getIdentifier() === 'OperatorNode:add') ||
+                     (this.getIdentifier() === 'OperatorNode:multiply'))) {
+        const stringifiedArgs = args.map(function (arg, index) {
+          arg = arg.toString(options)
+          if (parens[index]) { // put in parenthesis?
+            arg = '(' + arg + ')'
+          }
+
+          return arg
+        })
+
+        if (this.implicit &&
+            (this.getIdentifier() === 'OperatorNode:multiply') &&
+            (implicit === 'hide')) {
+          return stringifiedArgs.join(' ')
+        }
+
+        return stringifiedArgs.join(' ' + this.op + ' ')
       } else {
         // fallback to formatting as a function call
-        return '<span class="math-function">' + escape(this.fn) + '</span><span class="math-paranthesis math-round-parenthesis">(</span>' + stringifiedArgs.join('<span class="math-separator">,</span>') + '<span class="math-paranthesis math-round-parenthesis">)</span>'
+        return this.fn + '(' + this.args.join(', ') + ')'
       }
     }
-  }
 
-  /**
-   * Get LaTeX representation
-   * @param {Object} options
-   * @return {string} str
-   */
-  OperatorNode.prototype._toTex = function (options) {
-    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    const implicit = (options && options.implicit) ? options.implicit : 'hide'
-    const args = this.args
-    const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, true)
-    let op = latexOperators[this.fn]
-    op = typeof op === 'undefined' ? this.op : op // fall back to using this.op
-
-    if (args.length === 1) { // unary operators
-      const assoc = getAssociativity(this, parenthesis)
-
-      let operand = args[0].toTex(options)
-      if (parens[0]) {
-        operand = `\\left(${operand}\\right)`
+    /**
+     * Get a JSON representation of the node
+     * @returns {Object}
+     */
+    toJSON () {
+      return {
+        mathjs: name,
+        op: this.op,
+        fn: this.fn,
+        args: this.args,
+        implicit: this.implicit,
+        isPercentage: this.isPercentage
       }
+    }
 
-      if (assoc === 'right') { // prefix operator
-        return op + operand
-      } else if (assoc === 'left') { // postfix operator
-        return operand + op
-      }
+    /**
+     * Instantiate an OperatorNode from its JSON representation
+     * @param {Object} json
+     *     An object structured like
+     *     ```
+     *     {"mathjs": "OperatorNode",
+     *      "op": "+", "fn": "add", "args": [...],
+     *      "implicit": false,
+     *      "isPercentage":false}
+     *     ```
+     *     where mathjs is optional
+     * @returns {OperatorNode}
+     */
+    static fromJSON (json) {
+      return new OperatorNode(
+        json.op, json.fn, json.args, json.implicit, json.isPercentage)
+    }
 
-      // fall back to postfix
-      return operand + op
-    } else if (args.length === 2) { // binary operators
-      const lhs = args[0] // left hand side
-      let lhsTex = lhs.toTex(options)
-      if (parens[0]) {
-        lhsTex = `\\left(${lhsTex}\\right)`
-      }
+    /**
+     * Get HTML representation.
+     * @param {Object} options
+     * @return {string} str
+     */
+    toHTML (options) {
+      const parenthesis =
+          (options && options.parenthesis) ? options.parenthesis : 'keep'
+      const implicit = (options && options.implicit) ? options.implicit : 'hide'
+      const args = this.args
+      const parens =
+          calculateNecessaryParentheses(this, parenthesis, implicit, args, false)
 
-      const rhs = args[1] // right hand side
-      let rhsTex = rhs.toTex(options)
-      if (parens[1]) {
-        rhsTex = `\\left(${rhsTex}\\right)`
-      }
+      if (args.length === 1) { // unary operators
+        const assoc = getAssociativity(this, parenthesis)
 
-      // handle some exceptions (due to the way LaTeX works)
-      let lhsIdentifier
-      if (parenthesis === 'keep') {
-        lhsIdentifier = lhs.getIdentifier()
-      } else {
-        // Ignore ParenthesisNodes if in 'keep' mode
-        lhsIdentifier = lhs.getContent().getIdentifier()
-      }
-      switch (this.getIdentifier()) {
-        case 'OperatorNode:divide':
-          // op contains '\\frac' at this point
-          return op + '{' + lhsTex + '}' + '{' + rhsTex + '}'
-        case 'OperatorNode:pow':
-          lhsTex = '{' + lhsTex + '}'
-          rhsTex = '{' + rhsTex + '}'
-          switch (lhsIdentifier) {
-            case 'ConditionalNode': //
-            case 'OperatorNode:divide':
-              lhsTex = `\\left(${lhsTex}\\right)`
-          }
-          break
-        case 'OperatorNode:multiply':
-          if (this.implicit && (implicit === 'hide')) {
-            return lhsTex + '~' + rhsTex
-          }
-      }
-      return lhsTex + op + rhsTex
-    } else if ((args.length > 2) && ((this.getIdentifier() === 'OperatorNode:add') || (this.getIdentifier() === 'OperatorNode:multiply'))) {
-      const texifiedArgs = args.map(function (arg, index) {
-        arg = arg.toTex(options)
-        if (parens[index]) {
-          arg = `\\left(${arg}\\right)`
+        let operand = args[0].toHTML(options)
+        if (parens[0]) {
+          operand =
+            '<span class="math-parenthesis math-round-parenthesis">(</span>' +
+            operand +
+            '<span class="math-parenthesis math-round-parenthesis">)</span>'
         }
-        return arg
-      })
 
-      if ((this.getIdentifier() === 'OperatorNode:multiply') && this.implicit) {
-        return texifiedArgs.join('~')
+        if (assoc === 'right') { // prefix operator
+          return '<span class="math-operator math-unary-operator ' +
+            'math-lefthand-unary-operator">' + escape(this.op) + '</span>' +
+            operand
+        } else { // postfix when assoc === 'left' or undefined
+          return operand +
+            '<span class="math-operator math-unary-operator ' +
+            'math-righthand-unary-operator">' + escape(this.op) + '</span>'
+        }
+      } else if (args.length === 2) { // binary operatoes
+        let lhs = args[0].toHTML(options) // left hand side
+        let rhs = args[1].toHTML(options) // right hand side
+        if (parens[0]) { // left hand side in parenthesis?
+          lhs = '<span class="math-parenthesis math-round-parenthesis">(</span>' +
+            lhs +
+            '<span class="math-parenthesis math-round-parenthesis">)</span>'
+        }
+        if (parens[1]) { // right hand side in parenthesis?
+          rhs = '<span class="math-parenthesis math-round-parenthesis">(</span>' +
+            rhs +
+            '<span class="math-parenthesis math-round-parenthesis">)</span>'
+        }
+
+        if (this.implicit &&
+            (this.getIdentifier() === 'OperatorNode:multiply') &&
+            (implicit === 'hide')) {
+          return lhs +
+            '<span class="math-operator math-binary-operator ' +
+            'math-implicit-binary-operator"></span>' + rhs
+        }
+
+        return lhs +
+          '<span class="math-operator math-binary-operator ' +
+          'math-explicit-binary-operator">' + escape(this.op) + '</span>' +
+          rhs
+      } else {
+        const stringifiedArgs = args.map(function (arg, index) {
+          arg = arg.toHTML(options)
+          if (parens[index]) { // put in parenthesis?
+            arg =
+              '<span class="math-parenthesis math-round-parenthesis">(</span>' +
+              arg +
+              '<span class="math-parenthesis math-round-parenthesis">)</span>'
+          }
+
+          return arg
+        })
+
+        if ((args.length > 2) &&
+            ((this.getIdentifier() === 'OperatorNode:add') ||
+                (this.getIdentifier() === 'OperatorNode:multiply'))) {
+          if (this.implicit &&
+              (this.getIdentifier() === 'OperatorNode:multiply') &&
+              (implicit === 'hide')) {
+            return stringifiedArgs.join(
+              '<span class="math-operator math-binary-operator ' +
+                'math-implicit-binary-operator"></span>')
+          }
+
+          return stringifiedArgs.join(
+            '<span class="math-operator math-binary-operator ' +
+              'math-explicit-binary-operator">' + escape(this.op) + '</span>')
+        } else {
+          // fallback to formatting as a function call
+          return '<span class="math-function">' + escape(this.fn) +
+            '</span><span class="math-paranthesis math-round-parenthesis">' +
+            '(</span>' +
+            stringifiedArgs.join('<span class="math-separator">,</span>') +
+            '<span class="math-paranthesis math-round-parenthesis">)</span>'
+        }
       }
+    }
 
-      return texifiedArgs.join(op)
-    } else {
-      // fall back to formatting as a function call
-      // as this is a fallback, it doesn't use
-      // fancy function names
-      return '\\mathrm{' + this.fn + '}\\left(' +
+    /**
+     * Get LaTeX representation
+     * @param {Object} options
+     * @return {string} str
+     */
+    _toTex (options) {
+      const parenthesis =
+          (options && options.parenthesis) ? options.parenthesis : 'keep'
+      const implicit = (options && options.implicit) ? options.implicit : 'hide'
+      const args = this.args
+      const parens =
+          calculateNecessaryParentheses(this, parenthesis, implicit, args, true)
+
+      let op = latexOperators[this.fn]
+      op = typeof op === 'undefined' ? this.op : op // fall back to using this.op
+
+      if (args.length === 1) { // unary operators
+        const assoc = getAssociativity(this, parenthesis)
+
+        let operand = args[0].toTex(options)
+        if (parens[0]) {
+          operand = `\\left(${operand}\\right)`
+        }
+
+        if (assoc === 'right') { // prefix operator
+          return op + operand
+        } else if (assoc === 'left') { // postfix operator
+          return operand + op
+        }
+
+        // fall back to postfix
+        return operand + op
+      } else if (args.length === 2) { // binary operators
+        const lhs = args[0] // left hand side
+        let lhsTex = lhs.toTex(options)
+        if (parens[0]) {
+          lhsTex = `\\left(${lhsTex}\\right)`
+        }
+
+        const rhs = args[1] // right hand side
+        let rhsTex = rhs.toTex(options)
+        if (parens[1]) {
+          rhsTex = `\\left(${rhsTex}\\right)`
+        }
+
+        // handle some exceptions (due to the way LaTeX works)
+        let lhsIdentifier
+        if (parenthesis === 'keep') {
+          lhsIdentifier = lhs.getIdentifier()
+        } else {
+          // Ignore ParenthesisNodes if in 'keep' mode
+          lhsIdentifier = lhs.getContent().getIdentifier()
+        }
+        switch (this.getIdentifier()) {
+          case 'OperatorNode:divide':
+            // op contains '\\frac' at this point
+            return op + '{' + lhsTex + '}' + '{' + rhsTex + '}'
+          case 'OperatorNode:pow':
+            lhsTex = '{' + lhsTex + '}'
+            rhsTex = '{' + rhsTex + '}'
+            switch (lhsIdentifier) {
+              case 'ConditionalNode': //
+              case 'OperatorNode:divide':
+                lhsTex = `\\left(${lhsTex}\\right)`
+            }
+            break
+          case 'OperatorNode:multiply':
+            if (this.implicit && (implicit === 'hide')) {
+              return lhsTex + '~' + rhsTex
+            }
+        }
+        return lhsTex + op + rhsTex
+      } else if ((args.length > 2) &&
+                 ((this.getIdentifier() === 'OperatorNode:add') ||
+                     (this.getIdentifier() === 'OperatorNode:multiply'))) {
+        const texifiedArgs = args.map(function (arg, index) {
+          arg = arg.toTex(options)
+          if (parens[index]) {
+            arg = `\\left(${arg}\\right)`
+          }
+          return arg
+        })
+
+        if ((this.getIdentifier() === 'OperatorNode:multiply') &&
+            this.implicit && implicit === 'hide') {
+          return texifiedArgs.join('~')
+        }
+
+        return texifiedArgs.join(op)
+      } else {
+        // fall back to formatting as a function call
+        // as this is a fallback, it doesn't use
+        // fancy function names
+        return '\\mathrm{' + this.fn + '}\\left(' +
           args.map(function (arg) {
             return arg.toTex(options)
           }).join(',') + '\\right)'
+      }
     }
-  }
 
-  /**
-   * Get identifier.
-   * @return {string}
-   */
-  OperatorNode.prototype.getIdentifier = function () {
-    return this.type + ':' + this.fn
+    /**
+     * Get identifier.
+     * @return {string}
+     */
+    getIdentifier () {
+      return this.type + ':' + this.fn
+    }
   }
 
   return OperatorNode

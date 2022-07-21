@@ -35,16 +35,8 @@ export const createIsNumeric = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *                    Throws an error in case of unknown types.
    */
   return typed(name, {
-    'number | BigNumber | Fraction | boolean': function () {
-      return true
-    },
-
-    'Complex | Unit | string | null | undefined | Node': function () {
-      return false
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'number | BigNumber | Fraction | boolean': () => true,
+    'Complex | Unit | string | null | undefined | Node': () => false,
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

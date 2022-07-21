@@ -30,7 +30,7 @@ describe('ConditionalNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { ConditionalNode() }, SyntaxError)
+    assert.throws(function () { ConditionalNode() }, TypeError)
   })
 
   it('should throw an error when creating without arguments', function () {

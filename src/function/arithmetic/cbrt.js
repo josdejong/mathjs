@@ -1,6 +1,5 @@
 import { factory } from '../../utils/factory.js'
 import { isBigNumber, isComplex, isFraction } from '../../utils/is.js'
-import { deepMap } from '../../utils/collection.js'
 import { cbrtNumber } from '../../plain/number/index.js'
 
 const name = 'cbrt'
@@ -19,7 +18,9 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
   /**
    * Calculate the cubic root of a value.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix cube root, this function does not
+   * apply to matrices. For a matrix, to take the cube root elementwise,
+   * see the examples.
    *
    * Syntax:
    *
@@ -32,7 +33,7 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *    math.cube(3)                   // returns 27
    *    math.cbrt(-64)                 // returns -4
    *    math.cbrt(math.unit('27 m^3')) // returns Unit 3 m
-   *    math.cbrt([27, 64, 125])       // returns [3, 4, 5]
+   *    math.map([27, 64, 125], x => math.cbrt(x))       // returns [3, 4, 5]
    *
    *    const x = math.complex('8i')
    *    math.cbrt(x)                   // returns Complex 1.7320508075689 + i
@@ -46,13 +47,13 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *
    *    square, sqrt, cube
    *
-   * @param {number | BigNumber | Complex | Unit | Array | Matrix} x
+   * @param {number | BigNumber | Complex | Unit} x
    *            Value for which to calculate the cubic root.
    * @param {boolean} [allRoots]  Optional, false by default. Only applicable
    *            when `x` is a number or complex number. If true, all complex
    *            roots are returned, if false (default) the principal root is
    *            returned.
-   * @return {number | BigNumber | Complex | Unit | Array | Matrix}
+   * @return {number | BigNumber | Complex | Unit}
    *            Returns the cubic root of `x`
    */
   return typed(name, {
@@ -68,12 +69,7 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
       return x.cbrt()
     },
 
-    Unit: _cbrtUnit,
-
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since cbrt(0) = 0
-      return deepMap(x, this, true)
-    }
+    Unit: _cbrtUnit
   })
 
   /**

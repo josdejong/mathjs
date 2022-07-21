@@ -74,14 +74,17 @@ describe('expm1', function () {
     assert.throws(function () { expm1('text') })
   })
 
-  it('should exponentiate matrices, arrays and ranges correctly', function () {
+  it('should not operate on matrices, arrays and ranges', function () {
     // array
-    approx.deepEqual(expm1([0, 1, 2, 3]), [0, 1.71828182845905, 6.38905609893065, 19.0855369231877])
-    approx.deepEqual(expm1([[0, 1], [2, 3]]), [[0, 1.71828182845905], [6.38905609893065, 19.0855369231877]])
+    assert.throws(() => expm1([0, 1, 2, 3]), /Function 'expm1' doesn't apply to matrices/)
+    approx.deepEqual(math.map([0, 1, 2, 3], expm1), [0, 1.71828182845905, 6.38905609893065, 19.0855369231877])
+    approx.deepEqual(math.map([[0, 1], [2, 3]], expm1), [[0, 1.71828182845905], [6.38905609893065, 19.0855369231877]])
     // dense matrix
-    approx.deepEqual(expm1(matrix([0, 1, 2, 3])), matrix([0, 1.71828182845905, 6.38905609893065, 19.0855369231877]))
-    approx.deepEqual(expm1(matrix([[0, 1], [2, 3]])), matrix([[0, 1.71828182845905], [6.38905609893065, 19.0855369231877]]))
-    approx.deepEqual(expm1(sparse([[0, 1], [2, 3]])), sparse([[0, 1.71828182845905], [6.38905609893065, 19.0855369231877]]))
+    assert.throws(() => expm1(matrix([0, 1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([0, 1, 2, 3]), expm1), matrix([0, 1.71828182845905, 6.38905609893065, 19.0855369231877]))
+    approx.deepEqual(math.map(matrix([[0, 1], [2, 3]]), expm1), matrix([[0, 1.71828182845905], [6.38905609893065, 19.0855369231877]]))
+    // sparse matrix
+    approx.deepEqual(math.map(sparse([[0, 1], [2, 3]]), expm1), sparse([[0, 1.71828182845905], [6.38905609893065, 19.0855369231877]]))
   })
 
   it('should LaTeX expm1', function () {

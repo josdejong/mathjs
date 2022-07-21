@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { acoshNumber } from '../../plain/number/index.js'
 
 const name = 'acosh'
@@ -24,8 +23,8 @@ export const createAcosh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    cosh, asinh, atanh
    *
-   * @param {number | Complex | Unit | Array | Matrix} x  Function input
-   * @return {number | Complex | Array | Matrix} Hyperbolic arccosine of x
+   * @param {number | BigNumber | Complex} x  Function input
+   * @return {number | BigNumber | Complex} Hyperbolic arccosine of x
    */
   return typed(name, {
     number: function (x) {
@@ -44,10 +43,6 @@ export const createAcosh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     BigNumber: function (x) {
       return x.acosh()
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

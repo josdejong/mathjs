@@ -44,14 +44,8 @@ describe('csch', function () {
     approx.deepEqual(csch(complex('2 + i')), complex(0.14136302161241, -0.22837506559969))
   })
 
-  it('should return the csch of an angle', function () {
-    approx.equal(csch(unit('90deg')), 0.4345372080947)
-    approx.equal(csch(unit('-45deg')), -1.1511838709208)
-
-    assert(math.isBigNumber(csch(unit(math.bignumber(90), 'deg'))))
-    approx.equal(csch(unit(math.bignumber(90), 'deg')).toNumber(), 0.4345372080947)
-
-    approx.deepEqual(csch(unit(complex('2 + i'), 'rad')), complex(0.14136302161241, -0.22837506559969))
+  it('should throw an error on an angle', function () {
+    assert.throws(() => csch(unit('90deg')), TypeError)
   })
 
   it('should throw an error if called with an invalid unit', function () {
@@ -64,12 +58,14 @@ describe('csch', function () {
 
   const csch123 = [0.85091812823932, 0.27572056477178, 0.099821569668823]
 
-  it('should return the csch of each element of an array', function () {
-    approx.deepEqual(csch([1, 2, 3]), csch123)
+  it('should not operate on an array', function () {
+    assert.throws(() => csch([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], csch), csch123)
   })
 
-  it('should return the csch of each element of a matrix', function () {
-    approx.deepEqual(csch(matrix([1, 2, 3])), matrix(csch123))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => csch(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), csch), matrix(csch123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

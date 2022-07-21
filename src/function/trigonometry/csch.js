@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { cschNumber } from '../../plain/number/index.js'
 
 const name = 'csch'
@@ -10,7 +9,8 @@ export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * Calculate the hyperbolic cosecant of a value,
    * defined as `csch(x) = 1 / sinh(x)`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix hyperbolic cosecant, this function
+   * does not apply to matrices.
    *
    * Syntax:
    *
@@ -26,29 +26,12 @@ export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    sinh, sech, coth
    *
-   * @param {number | Complex | Unit | Array | Matrix} x  Function input
-   * @return {number | Complex | Array | Matrix} Hyperbolic cosecant of x
+   * @param {number | BigNumber | Complex} x  Function input
+   * @return {number | BigNumber | Complex} Hyperbolic cosecant of x
    */
   return typed(name, {
     number: cschNumber,
-
-    Complex: function (x) {
-      return x.csch()
-    },
-
-    BigNumber: function (x) {
-      return new BigNumber(1).div(x.sinh())
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function csch is no angle')
-      }
-      return this(x.value)
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    Complex: x => x.csch(),
+    BigNumber: x => new BigNumber(1).div(x.sinh())
   })
 })
