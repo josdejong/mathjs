@@ -2,11 +2,14 @@ import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual
 import { nearlyEqual } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 import { complexEquals } from '../../utils/complex.js'
+import { createCompareUnits } from './compareUnits.js'
 
 const name = 'equalScalar'
 const dependencies = ['typed', 'config']
 
 export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed, config }) => {
+  const compareUnits = createCompareUnits({ typed })
+
   /**
    * Test whether two scalar values are nearly equal.
    *
@@ -35,15 +38,8 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     'Complex, Complex': function (x, y) {
       return complexEquals(x, y, config.epsilon)
-    },
-
-    'Unit, Unit': function (x, y) {
-      if (!x.equalBase(y)) {
-        throw new Error('Cannot compare units with different base')
-      }
-      return this(x.value, y.value)
     }
-  })
+  }, compareUnits)
 })
 
 export const createEqualScalarNumber = factory(name, ['typed', 'config'], ({ typed, config }) => {

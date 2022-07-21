@@ -28,63 +28,56 @@ export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @param {Array | Matrix} x  Matrix to be transposed
    * @return {Array | Matrix}   The transposed matrix
    */
-  return typed('transpose', {
-
-    Array: function (x) {
-      // use dense matrix implementation
-      return this(matrix(x)).valueOf()
-    },
-
-    Matrix: function (x) {
-      // matrix size
-      const size = x.size()
-
-      // result
-      let c
-
-      // process dimensions
-      switch (size.length) {
-        case 1:
-          // vector
-          c = x.clone()
-          break
-
-        case 2:
-          {
-            // rows and columns
-            const rows = size[0]
-            const columns = size[1]
-
-            // check columns
-            if (columns === 0) {
-              // throw exception
-              throw new RangeError('Cannot transpose a 2D matrix with no columns (size: ' + format(size) + ')')
-            }
-
-            // process storage format
-            switch (x.storage()) {
-              case 'dense':
-                c = _denseTranspose(x, rows, columns)
-                break
-              case 'sparse':
-                c = _sparseTranspose(x, rows, columns)
-                break
-            }
-          }
-          break
-
-        default:
-          // multi dimensional
-          throw new RangeError('Matrix must be a vector or two dimensional (size: ' + format(this._size) + ')')
-      }
-      return c
-    },
-
-    // scalars
-    any: function (x) {
-      return clone(x)
-    }
+  return typed(name, {
+    Array: x => transposeMatrix(matrix(x)).valueOf(),
+    Matrix: transposeMatrix,
+    any: clone // scalars
   })
+
+  function transposeMatrix (x) {
+    // matrix size
+    const size = x.size()
+
+    // result
+    let c
+
+    // process dimensions
+    switch (size.length) {
+      case 1:
+        // vector
+        c = x.clone()
+        break
+
+      case 2:
+        {
+          // rows and columns
+          const rows = size[0]
+          const columns = size[1]
+
+          // check columns
+          if (columns === 0) {
+            // throw exception
+            throw new RangeError('Cannot transpose a 2D matrix with no columns (size: ' + format(size) + ')')
+          }
+
+          // process storage format
+          switch (x.storage()) {
+            case 'dense':
+              c = _denseTranspose(x, rows, columns)
+              break
+            case 'sparse':
+              c = _sparseTranspose(x, rows, columns)
+              break
+          }
+        }
+        break
+
+      default:
+        // multi dimensional
+        throw new RangeError('Matrix must be a vector or two dimensional (size: ' + format(size) + ')')
+    }
+    return c
+  }
 
   function _denseTranspose (m, rows, columns) {
     // matrix array

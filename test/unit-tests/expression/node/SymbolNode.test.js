@@ -21,7 +21,7 @@ describe('SymbolNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { SymbolNode('sqrt') }, SyntaxError)
+    assert.throws(function () { SymbolNode('sqrt') }, TypeError)
   })
 
   it('should throw an error when calling with wrong arguments', function () {

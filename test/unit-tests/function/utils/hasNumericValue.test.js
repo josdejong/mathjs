@@ -15,6 +15,8 @@ describe('hasNumericValue', function () {
     assert.strictEqual(hasNumericValue('2'), true)
     assert.strictEqual(hasNumericValue(' 2'), true)
     assert.strictEqual(hasNumericValue('2.3'), true)
+    assert.strictEqual(hasNumericValue(true), true)
+    assert.strictEqual(hasNumericValue(false), true)
     assert.strictEqual(hasNumericValue('100a'), false)
     assert.strictEqual(hasNumericValue('0x11'), true)
     // The following two tests are not working on IE11

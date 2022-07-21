@@ -33,25 +33,9 @@ export const createAbs = /* #__PURE__ */ factory(name, dependencies, ({ typed })
   return typed(name, {
     number: absNumber,
 
-    Complex: function (x) {
-      return x.abs()
-    },
+    'Complex | BigNumber | Fraction | Unit': x => x.abs(),
 
-    BigNumber: function (x) {
-      return x.abs()
-    },
-
-    Fraction: function (x) {
-      return x.abs()
-    },
-
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since abs(0) = 0
-      return deepMap(x, this, true)
-    },
-
-    Unit: function (x) {
-      return x.abs()
-    }
+    // deep map collection, skip zeros since abs(0) = 0
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true))
   })
 })

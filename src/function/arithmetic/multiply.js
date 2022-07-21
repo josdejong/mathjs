@@ -1,9 +1,8 @@
 import { factory } from '../../utils/factory.js'
 import { isMatrix } from '../../utils/is.js'
-import { extend } from '../../utils/object.js'
 import { arraySize } from '../../utils/array.js'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'multiply'
 const dependencies = [
@@ -16,8 +15,8 @@ const dependencies = [
 ]
 
 export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar, dot }) => {
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   function _validateMatrixDimensions (size1, size2) {
     // check left operand dimensions
@@ -794,18 +793,18 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
    */
-  return typed(name, extend({
+  return typed(name, multiplyScalar, {
     // we extend the signatures of multiplyScalar with signatures dealing with matrices
 
-    'Array, Array': function (x, y) {
+    'Array, Array': typed.referTo('Matrix, Matrix', selfMM => (x, y) => {
       // check dimensions
       _validateMatrixDimensions(arraySize(x), arraySize(y))
 
       // use dense matrix implementation
-      const m = this(matrix(x), matrix(y))
+      const m = selfMM(matrix(x), matrix(y))
       // return array or scalar
       return isMatrix(m) ? m.valueOf() : m
-    },
+    }),
 
     'Matrix, Matrix': function (x, y) {
       // dimensions
@@ -834,52 +833,50 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return _multiplyMatrixMatrix(x, y)
     },
 
-    'Matrix, Array': function (x, y) {
-      // use Matrix * Matrix implementation
-      return this(x, matrix(y))
-    },
+    'Matrix, Array': typed.referTo('Matrix,Matrix', selfMM =>
+      (x, y) => selfMM(x, matrix(y))),
 
-    'Array, Matrix': function (x, y) {
+    'Array, Matrix': typed.referToSelf(self => (x, y) => {
       // use Matrix * Matrix implementation
-      return this(matrix(x, y.storage()), y)
-    },
+      return self(matrix(x, y.storage()), y)
+    }),
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, multiplyScalar, false)
+      return matAlgo11xS0s(x, y, multiplyScalar, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, multiplyScalar, false)
+      return matAlgo14xDs(x, y, multiplyScalar, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm11(y, x, multiplyScalar, true)
+      return matAlgo11xS0s(y, x, multiplyScalar, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, multiplyScalar, true)
+      return matAlgo14xDs(y, x, multiplyScalar, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, multiplyScalar, false).valueOf()
+      return matAlgo14xDs(matrix(x), y, multiplyScalar, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, multiplyScalar, true).valueOf()
+      return matAlgo14xDs(matrix(y), x, multiplyScalar, true).valueOf()
     },
 
     'any, any': multiplyScalar,
 
-    'any, any, ...any': function (x, y, rest) {
-      let result = this(x, y)
+    'any, any, ...any': typed.referToSelf(self => (x, y, rest) => {
+      let result = self(x, y)
 
       for (let i = 0; i < rest.length; i++) {
-        result = this(result, rest[i])
+        result = self(result, rest[i])
       }
 
       return result
-    }
-  }, multiplyScalar.signatures))
+    })
+  })
 })

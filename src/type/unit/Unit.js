@@ -82,13 +82,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       this.units = u.units
       this.dimensions = u.dimensions
     } else {
-      this.units = [
-        {
-          unit: UNIT_NONE,
-          prefix: PREFIXES.NONE, // link to a list with supported prefixes
-          power: 0
-        }
-      ]
+      this.units = []
       this.dimensions = []
       for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
         this.dimensions[i] = 0
@@ -109,6 +103,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * Attach type information
    */
+  Object.defineProperty(Unit, 'name', { value: 'Unit' })
+  Unit.prototype.constructor = Unit
   Unit.prototype.type = 'Unit'
   Unit.prototype.isUnit = true
 
@@ -465,6 +461,16 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Return the type of the value of this unit
+   *
+   * @memberof Unit
+   * @ return {string} type of the value of the unit
+   */
+  Unit.prototype.valueType = function () {
+    return typeOf(this.value)
+  }
+
+  /**
    * Return whether the unit is derived (such as m/s, or cm^2, but not N)
    * @memberof Unit
    * @return {boolean} True if the unit is derived
@@ -623,13 +629,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * Multiply this unit with another one
+   * Multiply this unit with another one or with a scalar
    * @memberof Unit
    * @param {Unit} other
    * @return {Unit} product of this unit and the other unit
    */
-  Unit.prototype.multiply = function (other) {
+  Unit.prototype.multiply = function (_other) {
     const res = this.clone()
+    const other = isUnit(_other) ? _other : new Unit(_other)
 
     for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
@@ -654,19 +661,33 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.value = null
     }
 
-    res.skipAutomaticSimplification = false
+    if (isUnit(_other)) {
+      res.skipAutomaticSimplification = false
+    }
 
     return getNumericIfUnitless(res)
   }
 
   /**
+   * Divide a number by this unit
+   *
+   * @memberof Unit
+   * @param {numeric} numerator
+   * @param {unit} result of dividing numerator by this unit
+   */
+  Unit.prototype.divideInto = function (numerator) {
+    return new Unit(numerator).divide(this)
+  }
+
+  /**
    * Divide this unit by another one
    * @memberof Unit
-   * @param {Unit} other
+   * @param {Unit | numeric} other
    * @return {Unit} result of dividing this unit by the other unit
    */
-  Unit.prototype.divide = function (other) {
+  Unit.prototype.divide = function (_other) {
     const res = this.clone()
+    const other = isUnit(_other) ? _other : new Unit(_other)
 
     for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
@@ -692,7 +713,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.value = null
     }
 
-    res.skipAutomaticSimplification = false
+    if (isUnit(_other)) {
+      res.skipAutomaticSimplification = false
+    }
 
     return getNumericIfUnitless(res)
   }
@@ -761,7 +784,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         // To give the correct, but unexpected, results for units with an offset.
         // For example, abs(-283.15 degC) = -263.15 degC !!!
         // We must take the offset into consideration here
-        const convert = Unit._getNumberConverter(typeOf(ret.value)) // convert to Fraction or BigNumber if needed
+        const convert = ret._numberConverter() // convert to Fraction or BigNumber if needed
         const unitValue = convert(ret.units[0].unit.value)
         const nominalOffset = convert(ret.units[0].unit.offset)
         const unitOffset = multiplyScalar(unitValue, nominalOffset)
@@ -2970,6 +2993,21 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     number: function (x) {
       return x
     }
+  }
+
+  /**
+   * Retrieve the right converter function corresponding with this unit's
+   * value
+   *
+   * @memberof Unit
+   * @return {Function}
+   */
+  Unit.prototype._numberConverter = function () {
+    const convert = Unit.typeConverters[this.valueType()]
+    if (convert) {
+      return convert
+    }
+    throw new TypeError('Unsupported Unit value type "' + this.valueType() + '"')
   }
 
   /**

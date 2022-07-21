@@ -1,22 +1,22 @@
 import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
 
-const name = 'algorithm01'
+const name = 'matAlgo03xDSf'
 const dependencies = ['typed']
 
-export const createAlgorithm01 = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createMatAlgo03xDSf = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
-   * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij).
-   * Callback function invoked NNZ times (number of nonzero items in SparseMatrix).
+   * Iterates over SparseMatrix items and invokes the callback function f(Dij, Sij).
+   * Callback function invoked M*N times.
    *
    *
    *          ┌  f(Dij, Sij)  ; S(i,j) !== 0
    * C(i,j) = ┤
-   *          └  Dij          ; otherwise
+   *          └  f(Dij, 0)    ; otherwise
    *
    *
    * @param {Matrix}   denseMatrix       The DenseMatrix instance (D)
-   * @param {Matrix}   sparseMatrix      The SparseMatrix instance (S)
+   * @param {Matrix}   sparseMatrix      The SparseMatrix instance (C)
    * @param {Function} callback          The f(Dij,Sij) operation to invoke, where Dij = DenseMatrix(i,j) and Sij = SparseMatrix(i,j)
    * @param {boolean}  inverse           A true value indicates callback should be invoked f(Sij,Dij)
    *
@@ -24,7 +24,7 @@ export const createAlgorithm01 = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97477571
    */
-  return function algorithm1 (denseMatrix, sparseMatrix, callback, inverse) {
+  return function matAlgo03xDSf (denseMatrix, sparseMatrix, callback, inverse) {
     // dense matrix arrays
     const adata = denseMatrix._data
     const asize = denseMatrix._size
@@ -49,18 +49,31 @@ export const createAlgorithm01 = /* #__PURE__ */ factory(name, dependencies, ({ 
     const rows = asize[0]
     const columns = asize[1]
 
-    // process data types
-    const dt = typeof adt === 'string' && adt === bdt ? adt : undefined
-    // callback function
-    const cf = dt ? typed.find(callback, [dt, dt]) : callback
+    // datatype
+    let dt
+    // zero value
+    let zero = 0
+    // callback signature to use
+    let cf = callback
 
-    // vars
-    let i, j
+    // process data types
+    if (typeof adt === 'string' && adt === bdt) {
+      // datatype
+      dt = adt
+      // convert 0 to the same datatype
+      zero = typed.convert(0, dt)
+      // callback
+      cf = typed.find(callback, [dt, dt])
+    }
 
     // result (DenseMatrix)
     const cdata = []
-    // initialize c
-    for (i = 0; i < rows; i++) { cdata[i] = [] }
+
+    // initialize dense matrix
+    for (let z = 0; z < rows; z++) {
+      // initialize row
+      cdata[z] = []
+    }
 
     // workspace
     const x = []
@@ -68,27 +81,26 @@ export const createAlgorithm01 = /* #__PURE__ */ factory(name, dependencies, ({ 
     const w = []
 
     // loop columns in b
-    for (j = 0; j < columns; j++) {
+    for (let j = 0; j < columns; j++) {
       // column mark
       const mark = j + 1
       // values in column j
       for (let k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
         // row
-        i = bindex[k]
+        const i = bindex[k]
         // update workspace
         x[i] = inverse ? cf(bvalues[k], adata[i][j]) : cf(adata[i][j], bvalues[k])
-        // mark i as updated
         w[i] = mark
       }
-      // loop rows
-      for (i = 0; i < rows; i++) {
-        // check row is in workspace
-        if (w[i] === mark) {
-          // c[i][j] was already calculated
-          cdata[i][j] = x[i]
+      // process workspace
+      for (let y = 0; y < rows; y++) {
+        // check we have a calculated value for current row
+        if (w[y] === mark) {
+          // use calculated value
+          cdata[y][j] = x[y]
         } else {
-          // item does not exist in S
-          cdata[i][j] = adata[i][j]
+          // calculate value
+          cdata[y][j] = inverse ? cf(zero, adata[y][j]) : cf(adata[y][j], zero)
         }
       }
     }

@@ -8,6 +8,8 @@ export const createFractionClass = /* #__PURE__ */ factory(name, dependencies, (
   /**
    * Attach type information
    */
+  Object.defineProperty(Fraction, 'name', { value: 'Fraction' })
+  Fraction.prototype.constructor = Fraction
   Fraction.prototype.type = 'Fraction'
   Fraction.prototype.isFraction = true
 

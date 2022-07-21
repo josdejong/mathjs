@@ -6,9 +6,7 @@ import math from '../../../../src/defaultInstance.js'
 describe('norm', function () {
   it('should return the absolute value of a boolean', function () {
     assert.strictEqual(math.norm(true), 1)
-    assert.strictEqual(math.norm(true, 10), 1)
     assert.strictEqual(math.norm(false), 0)
-    assert.strictEqual(math.norm(false, 10), 0)
   })
 
   it('should return the absolute value of a number', function () {
@@ -16,14 +14,13 @@ describe('norm', function () {
     assert.strictEqual(math.norm(-3.5), 3.5)
     assert.strictEqual(math.norm(100), 100)
     assert.strictEqual(math.norm(0), 0)
-    assert.strictEqual(math.norm(100, 10), 100)
   })
 
   it('should return the absolute value of a big number', function () {
     assert.deepStrictEqual(math.norm(math.bignumber(-2.3)), math.bignumber(2.3))
     assert.deepStrictEqual(math.norm(math.bignumber('5e500')), math.bignumber('5e500'))
     assert.deepStrictEqual(math.norm(math.bignumber('-5e500')), math.bignumber('5e500'))
-    assert.deepStrictEqual(math.norm(math.bignumber(-2.3), 'fro'), math.bignumber(2.3))
+    assert.deepStrictEqual(math.norm(math.bignumber(-2.3)), math.bignumber(2.3))
     assert.deepStrictEqual(math.norm([math.bignumber(-2.3)], 'fro'), math.bignumber(2.3))
     assert.deepStrictEqual(math.norm([[math.bignumber(-2.3)]], 'fro'), math.bignumber(2.3))
   })

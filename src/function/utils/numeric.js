@@ -33,12 +33,12 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
    *
    * Examples:
    *
-   *    math.numeric('4')                           // returns number 4
-   *    math.numeric('4', 'number')                 // returns number 4
+   *    math.numeric('4')                           // returns 4
+   *    math.numeric('4', 'number')                 // returns 4
    *    math.numeric('4', 'BigNumber')              // returns BigNumber 4
    *    math.numeric('4', 'Fraction')               // returns Fraction 4
    *    math.numeric(4, 'Fraction')                 // returns Fraction 4
-   *    math.numeric(math.fraction(2, 5), 'number') // returns number 0.4
+   *    math.numeric(math.fraction(2, 5), 'number') // returns 0.4
    *
    * See also:
    *
@@ -52,7 +52,10 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
    * @return {number | BigNumber | Fraction}
    *              Returns an instance of the numeric in the requested type
    */
-  return function numeric (value, outputType) {
+  return function numeric (value, outputType = 'number', check) {
+    if (check !== undefined) {
+      throw new SyntaxError('numeric() takes one or two arguments')
+    }
     const inputType = typeOf(value)
 
     if (!(inputType in validInputTypes)) {

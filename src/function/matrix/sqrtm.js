@@ -4,9 +4,9 @@ import { arraySize } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'sqrtm'
-const dependencies = ['typed', 'abs', 'add', 'multiply', 'sqrt', 'subtract', 'inv', 'size', 'max', 'identity']
+const dependencies = ['typed', 'abs', 'add', 'multiply', 'map', 'sqrt', 'subtract', 'inv', 'size', 'max', 'identity']
 
-export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, add, multiply, sqrt, subtract, inv, size, max, identity }) => {
+export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, add, multiply, map, sqrt, subtract, inv, size, max, identity }) => {
   const _maxIterations = 1e3
   const _tolerance = 1e-6
 
@@ -69,7 +69,7 @@ export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         case 1:
           // Single element Array | Matrix
           if (size[0] === 1) {
-            return sqrt(A)
+            return map(A, sqrt)
           } else {
             throw new RangeError('Matrix must be square ' +
             '(size: ' + format(size) + ')')

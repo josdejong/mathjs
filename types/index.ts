@@ -89,6 +89,22 @@ Basic usage examples
 
   math.variance(math.variance(m2by3, 'uncorrected'))
 
+  // count and sum check
+  math.count([10, 10, 10])
+  math.count([
+    [1, 2, 3],
+    [4, 5, 6],
+  ])
+  math.count('mathjs')
+
+  math.sum(1, 2, 3, 4)
+  math.sum([1, 2, 3, 4])
+  math.sum([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+  ])
+
   // expressions
   math.evaluate('1.2 * (2 + 4.5)')
 
@@ -133,6 +149,23 @@ Bignumbers examples
       math.bignumber(1.5)
     )
   }
+}
+
+/*
+  Arithmetic function examples
+*/
+{
+  const math = create(all, {})
+
+  const _e: number = math.exp(1)
+  const _bige: BigNumber = math.exp(math.bignumber(1))
+  const _compe: Complex = math.exp(math.complex(1, 0))
+  // TODO: Typescript type declarations are not understanding typed-function's
+  // automatic conversions, so the following do not work:
+
+  // const _compeagain: Complex = math.exp(math.fraction(1, 1))
+  // const _eagain: number = math.exp('1')
+  // const _eanother: number = math.exp(true)
 }
 
 /*
@@ -525,21 +558,23 @@ Chaining examples
   expectTypeOf(math.chain(math.complex(1, 2)).cbrt()).toMatchTypeOf<
     MathJsChain<Complex>
   >()
-  expectTypeOf(math.chain([1, 2]).cbrt()).toMatchTypeOf<
-    MathJsChain<MathArray>
-  >()
-  expectTypeOf(
-    math
-      .chain(
-        math.matrix([
-          [1, 2],
-          [3, 4],
-        ])
-      )
-      .cbrt()
-  ).toMatchTypeOf<MathJsChain<Matrix>>()
+  // @ts-expect-error ... verify cbrt does not run on arrays.
+  assert.throws(() => math.chain([1, 2]).cbrt(), TypeError)
+  assert.throws(
+    () =>
+      // @ts-expect-error ... verify cbrt does not run on matrices.
+      math
+        .chain(
+          math.matrix([
+            [1, 2],
+            [3, 4],
+          ])
+        )
+        .cbrt(),
+    TypeError
+  )
 
-  // cbrt
+  // ceil
   expectTypeOf(math.chain(1).ceil()).toMatchTypeOf<
     MathJsChain<MathNumericType>
   >()
@@ -582,19 +617,23 @@ Chaining examples
   expectTypeOf(math.chain(math.complex(1, 2)).cube()).toMatchTypeOf<
     MathJsChain<Complex>
   >()
-  expectTypeOf(math.chain([1, 2]).cube()).toMatchTypeOf<
-    MathJsChain<MathArray>
-  >()
-  expectTypeOf(
-    math
-      .chain(
-        math.matrix([
-          [1, 2],
-          [3, 4],
-        ])
-      )
-      .cube()
-  ).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // @ts-expect-error ... verify cube does not run on arrays.
+  assert.throws(() => math.chain([1, 2]).cube(), TypeError)
+  assert.throws(
+    () =>
+      // @ts-expect-error ... verify cube does not run on matrices.
+      math
+        .chain(
+          math.matrix([
+            [1, 2],
+            [3, 4],
+          ])
+        )
+        .cube(),
+    TypeError
+  )
+
   expectTypeOf(math.chain(math.unit('furlong')).cube()).toMatchTypeOf<
     MathJsChain<Unit>
   >()
@@ -656,33 +695,40 @@ Chaining examples
 
   // exp
   expectTypeOf(math.chain(1).exp()).toMatchTypeOf<MathJsChain<MathType>>()
-  expectTypeOf(math.chain([1, 2]).exp()).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(
-    math
-      .chain(
-        math.matrix([
-          [1, 2],
-          [3, 4],
-        ])
-      )
-      .exp()
-  ).toMatchTypeOf<MathJsChain<Matrix>>()
+  // @ts-expect-error ... verify exp does not run on arrays.
+  assert.throws(() => math.chain([1, 2]).exp(), TypeError)
+  assert.throws(
+    () =>
+      // @ts-expect-error ... verify exp does not run on matrices.
+      math
+        .chain(
+          math.matrix([
+            [1, 2],
+            [3, 4],
+          ])
+        )
+        .exp(),
+    TypeError
+  )
 
   // expm1
   expectTypeOf(math.chain(1).expm1()).toMatchTypeOf<MathJsChain<MathType>>()
-  expectTypeOf(math.chain([1, 2]).expm1()).toMatchTypeOf<
-    MathJsChain<MathArray>
-  >()
-  expectTypeOf(
-    math
-      .chain(
-        math.matrix([
-          [1, 2],
-          [3, 4],
-        ])
-      )
-      .expm1()
-  ).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // @ts-expect-error ... verify expm1 does not run on arrays
+  assert.throws(() => math.chain([1, 2]).expm1(), TypeError)
+  assert.throws(
+    () =>
+      // @ts-expect-error ... verify expm1 does not run on arrays
+      math
+        .chain(
+          math.matrix([
+            [1, 2],
+            [3, 4],
+          ])
+        )
+        .expm1(),
+    TypeError
+  )
 
   // gcd
   expectTypeOf(math.chain([1, 2]).gcd(3)).toMatchTypeOf<MathJsChain<number>>()
@@ -766,6 +812,11 @@ Chaining examples
       .log10()
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
+  expectTypeOf(math.chain([1, 2]).count()).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain('mathjs').count()).toMatchTypeOf<
+    MathJsChain<number>
+  >()
+  expectTypeOf(math.chain([1, 2]).sum()).toMatchTypeOf<MathJsChain<number>>()
   // TODO complete the rest of these...
 }
 
@@ -776,6 +827,8 @@ Simplify examples
   const math = create(all)
 
   math.simplify('2 * 1 * x ^ (2 - 1)')
+  math.simplifyConstant('2 * 1 * x ^ (2 - 1)')
+  math.simplifyCore('2 * 1 * x ^ (2 - 1)')
   math.simplify('2 * 3 * x', { x: 4 })
 
   expectTypeOf(math.simplify.rules).toMatchTypeOf<Array<SimplifyRule>>
@@ -784,6 +837,7 @@ Simplify examples
   math.simplify(f)
 
   math.simplify('0.4 * x', {}, { exactFractions: true })
+  math.simplifyConstant('0.4 * x', { exactFractions: true })
   math.simplify('0.4 * x', {}, { exactFractions: false })
   math.simplify('0.4 * x', {}, { fractionsLimit: 2 })
   math.simplify('0.4 * x', {}, { consoleDebug: false })
@@ -849,6 +903,13 @@ Simplify examples
     },
     (node: MathNode) => node,
   ])
+  math.simplifyCore('0.4 * x + 0', { exactFractions: false })
+
+  math
+    .chain('0.4 * x + 0')
+    .parse()
+    .simplifyCore({ exactFractions: false })
+    .simplifyConstant()
 }
 
 /*
@@ -883,8 +944,13 @@ Complex numbers examples
 
   // create a complex number from polar coordinates
   {
-    const p: math.PolarCoordinates = { r: math.sqrt(2), phi: math.pi / 4 }
-    const _c: math.Complex = math.complex(p)
+    const p: math.PolarCoordinates = {
+      r: math.sqrt(2) as number, // must be real but a sqrt could be Complex
+      phi: math.pi / 4,
+    }
+    const c: math.Complex = math.complex(p)
+    assert.strictEqual(c.im, 1)
+    assert.ok(Math.abs(c.re - 1) < 1e-12)
   }
 
   // get polar coordinates of a complex number
@@ -1055,6 +1121,11 @@ Matrices examples
   const b: math.Matrix = math.matrix(math.ones([2, 3]))
   b.size()
 
+  // @ts-expect-error ... ones() in a chain cannot take more dimensions
+  assert.throws(() => math.chain(3).ones(2, 'dense').done(), /Error:.*ones/)
+  // @ts-expect-error ... and neither can zeros()
+  assert.throws(() => math.chain(3).zeros(2, 'sparse').done(), /Error:.*zeros/)
+
   // the Array data of a Matrix can be retrieved using valueOf()
   const _array = a.valueOf()
 
@@ -1062,7 +1133,7 @@ Matrices examples
   const _clone: math.Matrix = a.clone()
 
   // perform operations with matrices
-  math.sqrt(a)
+  math.map(a, math.sqrt)
   math.factorial(a)
 
   // create and manipulate matrices. Arrays and Matrices can be used mixed.
@@ -2163,11 +2234,16 @@ Resolve examples
 {
   const math = create(all, {})
 
+  expectTypeOf(math.resolve('x + y')).toMatchTypeOf<MathNode>()
   expectTypeOf(math.resolve(math.parse('x + y'))).toMatchTypeOf<MathNode>()
   expectTypeOf(
     math.resolve(math.parse('x + y'), { x: 0 })
   ).toMatchTypeOf<MathNode>()
-  expectTypeOf(math.resolve([math.parse('x + y')], { x: 0 })).toMatchTypeOf<
-    MathNode[]
-  >()
+  expectTypeOf(math.resolve('x + y', { x: 0 })).toMatchTypeOf<MathNode>()
+  expectTypeOf(
+    math.resolve([math.parse('x + y'), 'x*x'], { x: 0 })
+  ).toMatchTypeOf<MathNode[]>()
+  expectTypeOf(
+    math.resolve(math.matrix(['x', 'y']))
+  ).toMatchTypeOf<math.Matrix>()
 }

@@ -80,10 +80,11 @@ describe('sqrt', function () {
     })
   })
 
-  it('should return the square root of each element of a matrix', function () {
-    assert.deepStrictEqual(sqrt([4, 9, 16, 25]), [2, 3, 4, 5])
-    assert.deepStrictEqual(sqrt([[4, 9], [16, 25]]), [[2, 3], [4, 5]])
-    assert.deepStrictEqual(sqrt(math.matrix([[4, 9], [16, 25]])), math.matrix([[2, 3], [4, 5]]))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => sqrt([4, 9, 16, 25]), TypeError)
+    assert.deepStrictEqual(math.map([4, 9, 16, 25], sqrt), [2, 3, 4, 5])
+    assert.deepStrictEqual(math.map([[4, 9], [16, 25]], sqrt), [[2, 3], [4, 5]])
+    assert.deepStrictEqual(math.map(math.matrix([[4, 9], [16, 25]]), sqrt), math.matrix([[2, 3], [4, 5]]))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

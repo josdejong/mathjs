@@ -1,10 +1,10 @@
 import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
 
-const name = 'algorithm07'
+const name = 'matAlgo07xSSf'
 const dependencies = ['typed', 'DenseMatrix']
 
-export const createAlgorithm07 = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix }) => {
+export const createMatAlgo07xSSf = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix }) => {
   /**
    * Iterates over SparseMatrix A and SparseMatrix B items (zero and nonzero) and invokes the callback function f(Aij, Bij).
    * Callback function invoked MxN times.
@@ -19,7 +19,7 @@ export const createAlgorithm07 = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
    */
-  return function algorithm07 (a, b, callback) {
+  return function matAlgo07xSSf (a, b, callback) {
     // sparse matrix arrays
     const asize = a._size
     const adt = a._datatype

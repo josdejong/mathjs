@@ -1,7 +1,6 @@
 import { isConstantNode, isParenthesisNode } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { createUtil } from './simplify/util.js'
-import { createSimplifyConstant } from './simplify/simplifyConstant.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { createEmptyMap, createMap } from '../../utils/map.js'
 
@@ -18,6 +17,7 @@ const dependencies = [
   'isZero',
   'equal',
   'resolve',
+  'simplifyConstant',
   'simplifyCore',
   '?fraction',
   '?bignumber',
@@ -47,6 +47,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     isZero,
     equal,
     resolve,
+    simplifyConstant,
     simplifyCore,
     fraction,
     bignumber,
@@ -63,23 +64,6 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     SymbolNode
   }
 ) => {
-  const simplifyConstant = createSimplifyConstant({
-    typed,
-    config,
-    mathWithTransform,
-    matrix,
-    fraction,
-    bignumber,
-    AccessorNode,
-    ArrayNode,
-    ConstantNode,
-    FunctionNode,
-    IndexNode,
-    ObjectNode,
-    OperatorNode,
-    SymbolNode
-  })
-
   const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction, defaultContext, realContext, positiveContext } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
@@ -111,7 +95,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * - 'v' - matches any Node that is not a ConstantNode
    *
    * The default list of rules is exposed on the function as `simplify.rules`
-   * and can be used as a basis to built a set of custom rules.
+   * and can be used as a basis to built a set of custom rules. Note that since
+   * the `simplifyCore` function is in the default list of rules, by default
+   * simplify will convert any function calls in the expression that have
+   * operator equivalents to their operator forms.
    *
    * To specify a rule as a string, separate the left and right pattern by '->'
    * When specifying a rule as an object, the following keys are meaningful:
@@ -186,96 +173,18 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *            Optional list with custom rules
    * @return {Node} Returns the simplified form of `expr`
    */
+  typed.addConversion({ from: 'Object', to: 'Map', convert: createMap })
   const simplify = typed('simplify', {
-    string: function (expr) {
-      return this(parse(expr), this.rules, createEmptyMap(), {})
-    },
-
-    'string, Map | Object': function (expr, scope) {
-      return this(parse(expr), this.rules, scope, {})
-    },
-
-    'string, Map | Object, Object': function (expr, scope, options) {
-      return this(parse(expr), this.rules, scope, options)
-    },
-
-    'string, Array': function (expr, rules) {
-      return this(parse(expr), rules, createEmptyMap(), {})
-    },
-
-    'string, Array, Map | Object': function (expr, rules, scope) {
-      return this(parse(expr), rules, scope, {})
-    },
-
-    'string, Array, Map | Object, Object': function (expr, rules, scope, options) {
-      return this(parse(expr), rules, scope, options)
-    },
-
-    'Node, Map | Object': function (expr, scope) {
-      return this(expr, this.rules, scope, {})
-    },
-
-    'Node, Map | Object, Object': function (expr, scope, options) {
-      return this(expr, this.rules, scope, options)
-    },
-
-    Node: function (expr) {
-      return this(expr, this.rules, createEmptyMap(), {})
-    },
-
-    'Node, Array': function (expr, rules) {
-      return this(expr, rules, createEmptyMap(), {})
-    },
-
-    'Node, Array, Map | Object': function (expr, rules, scope) {
-      return this(expr, rules, scope, {})
-    },
-
-    'Node, Array, Object, Object': function (expr, rules, scope, options) {
-      return this(expr, rules, createMap(scope), options)
-    },
-
-    'Node, Array, Map, Object': function (expr, rules, scope, options) {
-      const debug = options.consoleDebug
-      rules = _buildRules(rules, options.context)
-      let res = resolve(expr, scope)
-      res = removeParens(res)
-      const visited = {}
-      let str = res.toString({ parenthesis: 'all' })
-      while (!visited[str]) {
-        visited[str] = true
-        _lastsym = 0 // counter for placeholder symbols
-        let laststr = str
-        if (debug) console.log('Working on: ', str)
-        for (let i = 0; i < rules.length; i++) {
-          let rulestr = ''
-          if (typeof rules[i] === 'function') {
-            res = rules[i](res, options)
-            if (debug) rulestr = rules[i].name
-          } else {
-            flatten(res, options.context)
-            res = applyRule(res, rules[i], options.context)
-            if (debug) {
-              rulestr = `${rules[i].l.toString()} -> ${rules[i].r.toString()}`
-            }
-          }
-          if (debug) {
-            const newstr = res.toString({ parenthesis: 'all' })
-            if (newstr !== laststr) {
-              console.log('Applying', rulestr, 'produced', newstr)
-              laststr = newstr
-            }
-          }
-          /* Use left-heavy binary tree internally,
-           * since custom rule functions may expect it
-           */
-          unflattenl(res, options.context)
-        }
-        str = res.toString({ parenthesis: 'all' })
-      }
-      return res
-    }
+    Node: _simplify,
+    'Node, Map': (expr, scope) => _simplify(expr, false, scope),
+    'Node, Map, Object':
+      (expr, scope, options) => _simplify(expr, false, scope, options),
+    'Node, Array': _simplify,
+    'Node, Array, Map': _simplify,
+    'Node, Array, Map, Object': _simplify
   })
+  typed.removeConversion({ from: 'Object', to: 'Map', convert: createMap })
+
   simplify.defaultContext = defaultContext
   simplify.realContext = realContext
   simplify.positiveContext = positiveContext
@@ -589,6 +498,47 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   let _lastsym = 0
   function _getExpandPlaceholderSymbol () {
     return new SymbolNode('_p' + _lastsym++)
+  }
+
+  function _simplify (expr, rules, scope = createEmptyMap(), options = {}) {
+    const debug = options.consoleDebug
+    rules = _buildRules(rules || simplify.rules, options.context)
+    let res = resolve(expr, scope)
+    res = removeParens(res)
+    const visited = {}
+    let str = res.toString({ parenthesis: 'all' })
+    while (!visited[str]) {
+      visited[str] = true
+      _lastsym = 0 // counter for placeholder symbols
+      let laststr = str
+      if (debug) console.log('Working on: ', str)
+      for (let i = 0; i < rules.length; i++) {
+        let rulestr = ''
+        if (typeof rules[i] === 'function') {
+          res = rules[i](res, options)
+          if (debug) rulestr = rules[i].name
+        } else {
+          flatten(res, options.context)
+          res = applyRule(res, rules[i], options.context)
+          if (debug) {
+            rulestr = `${rules[i].l.toString()} -> ${rules[i].r.toString()}`
+          }
+        }
+        if (debug) {
+          const newstr = res.toString({ parenthesis: 'all' })
+          if (newstr !== laststr) {
+            console.log('Applying', rulestr, 'produced', newstr)
+            laststr = newstr
+          }
+        }
+        /* Use left-heavy binary tree internally,
+         * since custom rule functions may expect it
+         */
+        unflattenl(res, options.context)
+      }
+      str = res.toString({ parenthesis: 'all' })
+    }
+    return res
   }
 
   function mapRule (nodes, rule, context) {

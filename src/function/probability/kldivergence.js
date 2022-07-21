@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'kldivergence'
-const dependencies = ['typed', 'matrix', 'divide', 'sum', 'multiply', 'dotDivide', 'log', 'isNumeric']
+const dependencies = ['typed', 'matrix', 'divide', 'sum', 'multiply', 'map', 'dotDivide', 'log', 'isNumeric']
 
-export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divide, sum, multiply, dotDivide, log, isNumeric }) => {
+export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divide, sum, multiply, map, dotDivide, log, isNumeric }) => {
   /**
      * Calculate the Kullback-Leibler (KL) divergence  between two distributions
      *
@@ -67,7 +67,7 @@ export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({
     const qnorm = divide(q, sum(q))
     const pnorm = divide(p, sum(p))
 
-    const result = sum(multiply(qnorm, log(dotDivide(qnorm, pnorm))))
+    const result = sum(multiply(qnorm, map(dotDivide(qnorm, pnorm), x => log(x))))
     if (isNumeric(result)) {
       return result
     } else {

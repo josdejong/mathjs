@@ -79,10 +79,12 @@ describe('acsch', function () {
     assert.throws(function () { acsch('string') })
   })
 
-  it('should calculate the arccsc element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => acsch([1, 2, 3]), TypeError)
+    assert.throws(() => acsch(matrix([1, 2, 3])), TypeError)
     const acsch123 = [0.881373587019543025, 0.481211825059603447, 0.32745015023725844]
-    approx.deepEqual(acsch([1, 2, 3]), acsch123)
-    approx.deepEqual(acsch(matrix([1, 2, 3])), matrix(acsch123))
+    approx.deepEqual(math.map([1, 2, 3], acsch), acsch123)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), acsch), matrix(acsch123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
