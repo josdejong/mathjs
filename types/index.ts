@@ -1244,6 +1244,7 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   let r12 = math.multiply(bcd, bcd);
   console.log(r12);
   // Example to sort ambiguity between multidimensional & singledimensional arrays
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const multiDimensional = (x: any): x is any[][] => x.length && x[0].length;
   if (multiDimensional(r12)) {
     r12[1][1];
