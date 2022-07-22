@@ -28,7 +28,6 @@ const b = math.unit('0.1 kilogram')       // Unit 100 gram
 const c = math.unit('2 inch')             // Unit 2 inch
 const d = math.unit('90 km/h')            // Unit 90 km/h
 const e = math.unit('101325 kg/(m s^2)')  // Unit 101325 kg / (m s^2)
-const f = math.unit(5, d)                 // Unit 5 km/h
 
 const d = c.to('cm')                      // Unit 5.08 cm
 b.toNumber('gram')                        // Number 100
@@ -40,6 +39,11 @@ c.equalBase(a)                            // true
 c.equalBase(b)                            // false
 
 d.toString()                              // String "5.08 cm"
+
+const kph = math.unit('km/h')             // valueless Unit km/h
+const mps = math.unit('m/s')              // valueless Unit m/s
+const speed = math.unit(36, kph)          // Unit 36 km/h
+speed.toNumber(mps)                       // Number 10
 ```
 
 Use care when creating a unit with multiple terms in the denominator. Implicit multiplication has the same operator precedence as explicit multiplication and division, which means these three expressions are identical:
