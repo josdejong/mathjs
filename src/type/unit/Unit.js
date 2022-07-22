@@ -98,14 +98,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       const u = Unit.parse(valuelessUnit)
       this.units = u.units
       this.dimensions = u.dimensions
-    } else if (isUnit(valuelessUnit)) {
+    } else if (isUnit(valuelessUnit) && valuelessUnit.value === null) {
       // clone from valuelessUnit
       this.fixPrefix = valuelessUnit.fixPrefix
       this.skipAutomaticSimplification = valuelessUnit.skipAutomaticSimplification
       this.dimensions = valuelessUnit.dimensions.slice(0)
       this.units = valuelessUnit.units.map(u => Object.assign({}, u))
     } else {
-      throw new TypeError('Second parameter in Unit constructor must be a string or Unit')
+      throw new TypeError('Second parameter in Unit constructor must be a string or valueless Unit')
     }
 
     this.value = this._normalize(value)
