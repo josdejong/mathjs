@@ -58,6 +58,8 @@ Non-breaking changes:
   when using BigNumbers.
 - Fix #2613: describe matrix methods `get` and `set` in the docs.
 - Fix link to `math.rationalize` in the docs (#2616). Thanks @nukisman.
+- Fix #2621: add TypeScript definitions for `count` (#2622). Thanks @Hansuku.
+- Improved TypeScript definitions of `multiply` (#2623). Thanks @Windrill.
 
 
 # 2022-06-28, version 10.6.4
