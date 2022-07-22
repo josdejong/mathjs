@@ -1215,9 +1215,13 @@ declare namespace math {
      * @param y The second value to multiply
      * @returns Multiplication of x and y
      */
-    multiply<T extends Matrix | MathArray>(x: T, y: MathType): T
+
+    multiply<T extends Matrix>(x: T, y: MathType): Matrix
+    multiply<T extends Matrix>(x: MathType, y: T): Matrix
+
     multiply(x: Unit, y: Unit): Unit
     multiply(x: number, y: number): number
+    multiply(x: MathArray, y: MathArray): MathArray
     multiply(x: MathType, y: MathType): MathType
 
     /**
