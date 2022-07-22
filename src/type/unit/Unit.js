@@ -79,7 +79,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // fixPrefix is set true by the method Unit.to
 
     // The justification behind this is that if the constructor is explicitly called,
-    // the caller wishes the units to be returned exactly as he supplied.
+    // the caller wishes the units to be returned exactly as supplied.
     this.skipAutomaticSimplification = true
 
     if (valuelessUnit === undefined || valuelessUnit === '') {
