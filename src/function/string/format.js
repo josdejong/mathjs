@@ -96,7 +96,7 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * Examples:
    *
    *    math.format(6.4)                                        // returns '6.4'
-   *    math.format(1240000)                                    // returns '1.24e6'
+   *    math.format(1240000)                                    // returns '1.24e+6'
    *    math.format(1/3)                                        // returns '0.3333333333333333'
    *    math.format(1/3, 3)                                     // returns '0.333'
    *    math.format(21385, 2)                                   // returns '21000'

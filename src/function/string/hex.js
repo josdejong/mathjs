@@ -12,8 +12,7 @@ const dependencies = ['typed', 'format']
  *
  * Examples:
  *
- *    //the following outputs "0xF0"
- *    math.hex(240)
+ *    math.hex(240) // returns "0xF0"
  *
  * See also:
  *

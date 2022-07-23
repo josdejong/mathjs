@@ -36,12 +36,11 @@ export const createSymbolicEqual = /* #__PURE__ */ factory(name, dependencies, (
    *
    * Examples:
    *
-   *    symbolicEqual('x*y', 'y*x') // true
-   *    symbolicEqual('x*y', 'y*x', {context: {multiply: {commutative: false}}})
-   *        //false
-   *    symbolicEqual('x/y', '(y*x^(-1))^(-1)') // true
-   *    symbolicEqual('abs(x)','x') // false
-   *    symbolicEqual('abs(x)','x', simplify.positiveContext) // true
+   *    symbolicEqual('x*y', 'y*x') // Returns true
+   *    symbolicEqual('x*y', 'y*x', {context: {multiply: {commutative: false}}}) // Returns false
+   *    symbolicEqual('x/y', '(y*x^(-1))^(-1)') // Returns true
+   *    symbolicEqual('abs(x)','x') // Returns false
+   *    symbolicEqual('abs(x)','x', simplify.positiveContext) // Returns true
    *
    * See also:
    *

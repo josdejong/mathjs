@@ -42,7 +42,7 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    math.leftShift(1, 2)               // returns number 4
    *
-   *    math.leftShift([1, 2, 3], 4)       // returns Array [16, 32, 64]
+   *    math.leftShift([1, 2, 4], 4)       // returns Array [16, 32, 64]
    *
    * See also:
    *

@@ -24,7 +24,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *     const arr = [1, 2, 4, 7, 0]
    *     math.diff(arr) // returns [1, 2, 3, -7] (no dimension passed so 0 is assumed)
-   *     math.diff(math.matrix(arr)) // returns math.matrix([1, 2, 3, -7])
+   *     math.diff(math.matrix(arr)) // returns Matrix [1, 2, 3, -7]
    *
    *     const arr = [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [9, 8, 7, 6, 4]]
    *     math.diff(arr) // returns [[0, 0, 0, 0, 0], [8, 6, 4, 2, -1]]

@@ -21,7 +21,7 @@ export const createHasNumericValue = /* #__PURE__ */ factory(name, dependencies,
    *    math.hasNumericValue(0)                     // returns true
    *    math.hasNumericValue(math.bignumber(500))   // returns true
    *    math.hasNumericValue(math.fraction(4))      // returns true
-   *    math.hasNumericValue(math.complex('2-4i')   // returns false
+   *    math.hasNumericValue(math.complex('2-4i'))  // returns false
    *    math.hasNumericValue(false)                 // returns true
    *    math.hasNumericValue([2.3, 'foo', false])   // returns [true, false, true]
    *

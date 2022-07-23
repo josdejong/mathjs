@@ -64,7 +64,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    const c = math.complex(3.24, -2.71)
    *    math.floor(c)                 // returns Complex 3 - 3i
-   *    math.floor(c, 1)              // returns Complex 3.2 - 2.8i
+   *    math.floor(c, 1)              // returns Complex 3.2 -2.8i
    *
    *    math.floor([3.2, 3.8, -4.7])       // returns Array [3, 3, -5]
    *    math.floor([3.21, 3.82, -4.71], 1)  // returns Array [3.2, 3.8, -4.8]

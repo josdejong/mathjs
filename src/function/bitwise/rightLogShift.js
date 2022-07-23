@@ -41,7 +41,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
    *
    *    math.rightLogShift(4, 2)               // returns number 1
    *
-   *    math.rightLogShift([16, -32, 64], 4)   // returns Array [1, 2, 3]
+   *    math.rightLogShift([16, 32, 64], 4)    // returns Array [1, 2, 4]
    *
    * See also:
    *
