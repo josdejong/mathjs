@@ -254,6 +254,10 @@ Returns a clone of a unit represented in SI units. Works with units with or with
 Get a string representation of the unit. The function will
 determine the best fitting prefix for the unit.
 
+<h3 id="unitvaltype">unit.valType() <a href="#unitvaltype" title="Permalink">#</a></h3>
+Get the string name of the current type of the value of this Unit object, e.g.
+'number', 'BigNumber', etc.
+
 <h2 id="unit-reference">Unit reference <a href="#unit-reference" title="Permalink">#</a></h2>
 
 This section lists all available units, prefixes, and physical constants. These can be used via the Unit object, or via `math.evaluate()`.

@@ -38,12 +38,12 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.numeric('4')                           // returns number 4
-math.numeric('4', 'number')                 // returns number 4
+math.numeric('4')                           // returns 4
+math.numeric('4', 'number')                 // returns 4
 math.numeric('4', 'BigNumber')              // returns BigNumber 4
 math.numeric('4', 'Fraction')               // returns Fraction 4
 math.numeric(4, 'Fraction')                 // returns Fraction 4
-math.numeric(math.fraction(2, 5), 'number') // returns number 0.4
+math.numeric(math.fraction(2, 5), 'number') // returns 0.4
 ```
 
 

@@ -96,7 +96,7 @@ math.parse([expr1, expr2, expr3, ...])
 ```
 
 Function `parse` accepts a single expression or an array with
-expressions as the argument. Function `parse` returns a the root node of the tree,
+expressions as the argument. Function `parse` returns the root node of the tree,
 which can be successively compiled and evaluated:
 
 ```js

@@ -38,9 +38,9 @@ ReferenceError |  If there is a cyclic dependency among the variables in `scope`
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.resolve('x + y', {x:1, y:2})           // Node {1 + 2}
-math.resolve(math.parse('x+y'), {x:1, y:2}) // Node {1 + 2}
-math.simplify('x+y', {x:2, y:'x+x'}).toString()      // "6"
+math.resolve('x + y', {x:1, y:2})           // Node '1 + 2'
+math.resolve(math.parse('x+y'), {x:1, y:2}) // Node '1 + 2'
+math.simplify('x+y', {x:2, y: math.parse('x+x')}).toString() // "6"
 ```
 
 

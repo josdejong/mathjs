@@ -7,7 +7,8 @@ layout: default
 <h1 id="function-cube">Function cube <a href="#function-cube" title="Permalink">#</a></h1>
 
 Compute the cube of a value, `x * x * x`.
-For matrices, the function is evaluated element wise.
+To avoid confusion with `pow(M,3)`, this function does not apply to matrices.
+If you wish to cube every entry of a matrix, see the examples.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -20,13 +21,13 @@ math.cube(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit | Number for which to calculate the cube
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit | Number for which to calculate the cube
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit | Cube of x
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit | Cube of x
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -43,7 +44,7 @@ math.pow(2, 3)          // returns number 8
 math.cube(4)            // returns number 64
 4 * 4 * 4               // returns number 64
 
-math.cube([1, 2, 3, 4]) // returns Array [1, 8, 27, 64]
+math.map([1, 2, 3, 4], math.cube) // returns Array [1, 8, 27, 64]
 ```
 
 

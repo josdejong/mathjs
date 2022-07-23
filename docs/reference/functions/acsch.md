@@ -9,7 +9,8 @@ layout: default
 Calculate the hyperbolic arccosecant of a value,
 defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
 
-For matrices, the function is evaluated element wise.
+To avoid confusion with the matrix hyperbolic arccosecant, this function
+does not apply to matrices.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -22,13 +23,13 @@ math.acsch(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; Complex &#124; Array &#124; Matrix | Function input
+`x` | number &#124; BigNumber &#124; Complex | Function input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arccosecant of x
+number &#124; BigNumber &#124; Complex | Hyperbolic arccosecant of x
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

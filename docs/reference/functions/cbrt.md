@@ -8,7 +8,9 @@ layout: default
 
 Calculate the cubic root of a value.
 
-For matrices, the function is evaluated element wise.
+To avoid confusion with the matrix cube root, this function does not
+apply to matrices. For a matrix, to take the cube root elementwise,
+see the examples.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -22,14 +24,14 @@ math.cbrt(x, allRoots)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Value for which to calculate the cubic root.
+`x` | number &#124; BigNumber &#124; Complex &#124; Unit |  Value for which to calculate the cubic root.
 `allRoots` | boolean | Optional, false by default. Only applicable when `x` is a number or complex number. If true, all complex roots are returned, if false (default) the principal root is returned.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Returns the cubic root of `x`
+number &#124; BigNumber &#124; Complex &#124; Unit |  Returns the cubic root of `x`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -45,7 +47,7 @@ math.cbrt(27)                  // returns 3
 math.cube(3)                   // returns 27
 math.cbrt(-64)                 // returns -4
 math.cbrt(math.unit('27 m^3')) // returns Unit 3 m
-math.cbrt([27, 64, 125])       // returns [3, 4, 5]
+math.map([27, 64, 125], x => math.cbrt(x))       // returns [3, 4, 5]
 
 const x = math.complex('8i')
 math.cbrt(x)                   // returns Complex 1.7320508075689 + i

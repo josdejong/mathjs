@@ -8,7 +8,8 @@ layout: default
 
 Calculate the cosecant of a value, defined as `csc(x) = 1/sin(x)`.
 
-For matrices, the function is evaluated element wise.
+To avoid confusion with the matrix cosecant, this function does not
+apply to matrices.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -21,13 +22,13 @@ math.csc(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
+`x` | number &#124; BigNumber &#124; Complex &#124; Unit | Function input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; Complex &#124; Array &#124; Matrix | Cosecant of x
+number &#124; BigNumber &#124; Complex | Cosecant of x
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

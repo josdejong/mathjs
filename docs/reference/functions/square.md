@@ -7,7 +7,9 @@ layout: default
 <h1 id="function-square">Function square <a href="#function-square" title="Permalink">#</a></h1>
 
 Compute the square of a value, `x * x`.
-For matrices, the function is evaluated element wise.
+To avoid confusion with multiplying a square matrix by itself,
+this function does not apply to matrices. If you wish to square
+every element of a matrix, see the examples.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -20,13 +22,13 @@ math.square(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  Number for which to calculate the square
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit |  Number for which to calculate the square
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  Squared value
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit |  Squared value
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -43,7 +45,7 @@ math.square(3)           // returns number 9
 math.pow(3, 2)           // returns number 9
 math.multiply(3, 3)      // returns number 9
 
-math.square([1, 2, 3, 4])  // returns Array [1, 4, 9, 16]
+math.map([1, 2, 3, 4], math.square)  // returns Array [1, 4, 9, 16]
 ```
 
 

@@ -27,7 +27,7 @@ math.ones([m, n, p, ...], format)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`size` | ...number &#124; Array | The size of each dimension of the matrix
+`size` | ...(number &#124; BigNumber) &#124; Array | The size of each dimension of the matrix
 `format` | string | The Matrix storage format
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
@@ -46,6 +46,7 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
+math.ones()                    // returns []
 math.ones(3)                   // returns [1, 1, 1]
 math.ones(3, 2)                // returns [[1, 1], [1, 1], [1, 1]]
 math.ones(3, 2, 'dense')       // returns Dense Matrix [[1, 1], [1, 1], [1, 1]]

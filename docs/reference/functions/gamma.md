@@ -9,7 +9,8 @@ layout: default
 Compute the gamma function of a value using Lanczos approximation for
 small values, and an extended Stirling approximation for large values.
 
-For matrices, the function is evaluated element wise.
+To avoid confusion with the matrix Gamma function, this function does
+not apply to matrices.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -22,13 +23,13 @@ math.gamma(n)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`n` | number &#124; Array &#124; Matrix | A real or complex number
+`n` | number &#124; BigNumber &#124; Complex | A real or complex number
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; Array &#124; Matrix | The gamma of `n`
+number &#124; BigNumber &#124; Complex | The gamma of `n`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

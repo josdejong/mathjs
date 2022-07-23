@@ -8,7 +8,8 @@ layout: default
 
 Calculate the cotangent of a value. Defined as `cot(x) = 1 / tan(x)`.
 
-For matrices, the function is evaluated element wise.
+To avoid confusion with the matrix cotangent, this function does not
+apply to matrices.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>

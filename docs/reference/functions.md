@@ -54,6 +54,7 @@ Function | Description
 [rationalize(expr)](functions/rationalize.html) | Transform a rationalizable expression in a rational fraction.
 [resolve(expr,&nbsp;scope)](functions/resolve.html) | resolve(expr, scope) replaces variable nodes with their scoped values.
 [simplify(expr)](functions/simplify.html) | Simplify an expression tree.
+[simplifyConstant(expr)](functions/simplifyConstant.html) | simplifyConstant() takes a mathjs expression (either a Node representing a parse tree or a string which it parses to produce a node), and replaces any subexpression of it consisting entirely of constants with the computed value of that subexpression.
 [simplifyCore(expr)](functions/simplifyCore.html) | simplifyCore() performs single pass simplification suitable for applications requiring ultimate performance.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.html) | Calculate the Sparse Matrix LU decomposition with full pivoting.
 [symbolicEqual(expr1,&nbsp;expr2)](functions/symbolicEqual.html) | Attempts to determine if two expressions are symbolically equal, i.
@@ -73,7 +74,7 @@ Function | Description
 [math.dotDivide(x,&nbsp;y)](functions/dotDivide.html) | Divide two matrices element wise.
 [math.dotMultiply(x,&nbsp;y)](functions/dotMultiply.html) | Multiply two matrices element wise.
 [math.dotPow(x,&nbsp;y)](functions/dotPow.html) | Calculates the power of x to y element wise.
-[math.exp(x)](functions/exp.html) | Calculate the exponent of a value.
+[math.exp(x)](functions/exp.html) | Calculate the exponential of a value.
 [math.expm1(x)](functions/expm1.html) | Calculate the value of subtracting 1 from the exponential value.
 [math.fix(x)](functions/fix.html) | Round a value towards zero.
 [math.floor(x)](functions/floor.html) | Round a value towards minus infinity.
@@ -323,7 +324,7 @@ Function | Description
 [math.isPrime(x)](functions/isPrime.html) | Test whether a value is prime: has no divisors other than itself and one.
 [math.isZero(x)](functions/isZero.html) | Test whether a value is zero.
 [math.numeric(x)](functions/numeric.html) | Convert a numeric input to a specific numeric type: number, BigNumber, or Fraction.
-[math.typeOf(x)](functions/typeOf.html) | Determine the type of a variable.
+[math.typeOf(x)](functions/typeOf.html) | Determine the type of an entity.
 
 
 

@@ -9,7 +9,8 @@ layout: default
 Calculate the hyperbolic arccotangent of a value,
 defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
 
-For matrices, the function is evaluated element wise.
+To avoid confusion with the matrix hyperbolic arccotangent, this
+function does not apply to matrices.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -22,13 +23,13 @@ math.acoth(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; Complex &#124; Array &#124; Matrix | Function input
+`x` | number &#124; BigNumber &#124; Complex | Function input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arccotangent of x
+number &#124; BigNumber &#124; Complex | Hyperbolic arccotangent of x
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

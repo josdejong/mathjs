@@ -4,6 +4,68 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220723-version-1100">2022-07-23, version 11.0.0 <a href="#20220723-version-1100" title="Permalink">#</a></h1>
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+Breaking changes:
+
+- Dropped official support for IE11. 
+- Upgraded to `typed-function@3`, see [josdejong/typed-function/HISTORY.md](https://github.com/josdejong/typed-function/blob/develop/HISTORY.md#2022-05-12-version-300). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>. Most importantly: 
+    - Conversions now have preference over `any`.
+    - The `this` variable is no longer bound to the typed function itself.
+    - The properties `typed.types`, `typed.conversions`, and `typed.ignore` 
+      have been removed.
+    - There are new static functions available like `typed.referTo`, 
+      `typed.referToSelf`, `typed.addTypes`, `typed.addConversions`.
+- Implement amended "Rule 2" for implicit multiplication  <a href="https://github.com/josdejong/mathjs/issues/2370">#2370</a>, <a href="https://github.com/josdejong/mathjs/issues/2460">#2460</a>):
+  when having a division followed by an implicit multiplication, the division 
+  gets higher precedence over the implicit multiplication when (a) the 
+  numerator is a constant with optionally a prefix operator (`-`, `+`, `~`), 
+  and (b) the denominator is a constant. For example: formerly `-1 / 2 x` was 
+  interpreted as `-1 / (2 * x)` and now it is interpreted as `(-1 / 2) * x`.
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Drop elementwise matrix support for trigonometric functions, exp, log, gamma,
+  square, sqrt, cube, and cbrt to prevent confusion with standard matrix 
+  functions  <a href="https://github.com/josdejong/mathjs/issues/2440">#2440</a>, <a href="https://github.com/josdejong/mathjs/issues/2465">#2465</a>). Instead, use `math.map(matrix, fn)`. 
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Simplify: convert equivalent function calls into operators, for example, 
+  `add(2, x)` will now be simplified into `2 + x`  <a href="https://github.com/josdejong/mathjs/issues/2415">#2415</a>, <a href="https://github.com/josdejong/mathjs/issues/2466">#2466</a>).
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Removed the automatic conversion from `number` to `string`  <a href="https://github.com/josdejong/mathjs/issues/2482">#2482</a>).
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2412">#2412</a>: let function `diff` return an empty matrix when the input contains
+  only one element  <a href="https://github.com/josdejong/mathjs/issues/2422">#2422</a>).
+- Internal refactoring in the `simplifyCore` logic  <a href="https://github.com/josdejong/mathjs/issues/2490">#2490</a>, <a href="https://github.com/josdejong/mathjs/issues/2484">#2484</a>, <a href="https://github.com/josdejong/mathjs/issues/2459">#2459</a>).
+  The function `simplifyCore` will no longer (partially) merge constants, that 
+  behavior has been moved to `simplifyConstant`. The combination of 
+  `simplifyConstant` and `simplifyCore` is still close to the old behavior 
+  of `simplifyCore`, but there are some differences. To reproduce the same 
+  behavior as the old `simplifyCore`, you can use 
+  `math.simplify(expr, [math.simplifyCore, math.simplifyConstant])`. 
+  Thanks to the refactoring, `simplify` is more thorough in reducing constants. 
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Disable support for splitting rest parameters in chained calculations 
+   <a href="https://github.com/josdejong/mathjs/issues/2485">#2485</a>, <a href="https://github.com/josdejong/mathjs/issues/2474">#2474</a>). For example: `math.chain(3).max(4, 2).done()` will now throw
+  an error rather than return `4`, because the rest parameter of 
+  `math.max(...number)` has been split between the contents of the chain and 
+  the arguments to the max call. Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Function `typeOf` now returns `function` (lowercase) for a function instead 
+  of `Function`  <a href="https://github.com/josdejong/mathjs/issues/2560">#2560</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+
+Non-breaking changes:
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2600">#2600</a>: improve the TypeScript definitions of `simplify`. 
+  Thanks <a href="https://github.com/laureen-m">@laureen-m</a> and <a href="https://github.com/mattvague">@mattvague</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2607">#2607</a>: improve type definition of `createUnit`. Thanks <a href="https://github.com/egziko">@egziko</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2608">#2608</a>: clarify the docs on the need to configure a smaller `epsilon`
+  when using BigNumbers.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2613">#2613</a>: describe matrix methods `get` and `set` in the docs.
+- Fix link to `math.rationalize` in the docs  <a href="https://github.com/josdejong/mathjs/issues/2616">#2616</a>). Thanks <a href="https://github.com/nukisman">@nukisman</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2621">#2621</a>: add TypeScript definitions for `count`  <a href="https://github.com/josdejong/mathjs/issues/2622">#2622</a>). Thanks <a href="https://github.com/Hansuku">@Hansuku</a>.
+- Improved TypeScript definitions of `multiply`  <a href="https://github.com/josdejong/mathjs/issues/2623">#2623</a>). Thanks <a href="https://github.com/Windrill">@Windrill</a>.
+
+
 <h1 id="20220628-version-1064">2022-06-28, version 10.6.4 <a href="#20220628-version-1064" title="Permalink">#</a></h1>
 
 - Improve TypeScript definitions of the `factory` function, thanks <a href="https://github.com/mattvague">@mattvague</a>.
@@ -1812,7 +1874,7 @@ Non breaking changes:
 
 <h2 id="20151029-version-241">2015-10-29, version 2.4.1 <a href="#20151029-version-241" title="Permalink">#</a></h2>
 
-- Fixed <a href="https://github.com/josdejong/mathjs/issues/480">#480</a>: `nthRoot` not working on Internet Explorer (up to IE 11).
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/480">#480</a>: `nthRoot` not working on Internet Explorer (up to IE11).
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/490">#490</a>: `nthRoot` returning an error for negative values like
   `nthRoot(-2, 3)`.
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/489">#489</a>: an issue with initializing a sparse matrix without data.

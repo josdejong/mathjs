@@ -8,7 +8,9 @@ layout: default
 
 Calculate the square root of a value.
 
-For matrices, the function is evaluated element wise.
+For matrices, if you want the matrix square root of a square matrix,
+use the `sqrtm` function. If you wish to apply `sqrt` elementwise to
+a matrix M, use `math.map(M, math.sqrt)`.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -21,13 +23,13 @@ math.sqrt(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  Value for which to calculate the square root.
+`x` | number &#124; BigNumber &#124; Complex &#124; Unit |  Value for which to calculate the square root.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  Returns the square root of `x`
+number &#124; BigNumber &#124; Complex &#124; Unit |  Returns the square root of `x`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

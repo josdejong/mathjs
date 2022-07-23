@@ -7,7 +7,10 @@ layout: default
 <h1 id="function-expm1">Function expm1 <a href="#function-expm1" title="Permalink">#</a></h1>
 
 Calculate the value of subtracting 1 from the exponential value.
-For matrices, the function is evaluated element wise.
+This function is more accurate than `math.exp(x)-1` when `x` is near 0
+To avoid ambiguity with the matrix exponential `expm`, this function
+does not operate on matrices; if you wish to apply it elementwise, see
+the examples.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -20,13 +23,13 @@ math.expm1(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | A number or matrix to apply expm1
+`x` | number &#124; BigNumber &#124; Complex | A number or matrix to apply expm1
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Exponent of `x`
+number &#124; BigNumber &#124; Complex | Exponential of `x`, minus one
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -40,9 +43,11 @@ Type | Description
 ```js
 math.expm1(2)                      // returns number 6.38905609893065
 math.pow(math.e, 2) - 1            // returns number 6.3890560989306495
+math.expm1(1e-8)                   // returns number 1.0000000050000001e-8
+math.exp(1e-8) - 1                 // returns number 9.9999999392253e-9
 math.log(math.expm1(2) + 1)        // returns number 2
 
-math.expm1([1, 2, 3])
+math.map([1, 2, 3], math.expm1)
 // returns Array [
 //   1.718281828459045,
 //   6.3890560989306495,
@@ -54,5 +59,6 @@ math.expm1([1, 2, 3])
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [exp](exp.html),
+[expm](expm.html),
 [log](log.html),
 [pow](pow.html)

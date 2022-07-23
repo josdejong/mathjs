@@ -25,7 +25,7 @@ math.zeros([m, n], format)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`size` | ...number &#124; Array | The size of each dimension of the matrix
+`size` | ...(number &#124; BigNumber) &#124; Array | The size of each dimension of the matrix
 `format` | string | The Matrix storage format
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
@@ -44,6 +44,7 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
+math.zeros()                   // returns []
 math.zeros(3)                  // returns [0, 0, 0]
 math.zeros(3, 2)               // returns [[0, 0], [0, 0], [0, 0]]
 math.zeros(3, 'dense')         // returns [0, 0, 0]

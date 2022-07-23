@@ -6,8 +6,10 @@ layout: default
 
 <h1 id="function-exp">Function exp <a href="#function-exp" title="Permalink">#</a></h1>
 
-Calculate the exponent of a value.
-For matrices, the function is evaluated element wise.
+Calculate the exponential of a value.
+For matrices, if you want the matrix exponential of square matrix, use
+the `expm` function; if you want to take the exponential of each element,
+see the examples.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -20,13 +22,13 @@ math.exp(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | A number or matrix to exponentiate
+`x` | number &#124; BigNumber &#124; Complex | A number to exponentiate
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Exponent of `x`
+number &#124; BigNumber &#124; Complex | Exponential of `x`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -42,7 +44,7 @@ math.exp(2)                  // returns number 7.3890560989306495
 math.pow(math.e, 2)          // returns number 7.3890560989306495
 math.log(math.exp(2))        // returns number 2
 
-math.exp([1, 2, 3])
+math.map([1, 2, 3], math.exp)
 // returns Array [
 //   2.718281828459045,
 //   7.3890560989306495,
@@ -54,5 +56,6 @@ math.exp([1, 2, 3])
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [expm1](expm1.html),
+[expm](expm.html),
 [log](log.html),
 [pow](pow.html)

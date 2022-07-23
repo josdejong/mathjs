@@ -44,7 +44,7 @@ print(d) // [[1, 2], [3, 4]]
 const e = math.matrix([[5, 6], [1, 1]])
 print(e) // [[5, 6], [1, 1]]
 
-// set a submatrix.
+// set a submatrix
 // Matrix indexes are zero-based.
 e.subset(math.index(1, [0, 1]), [[7, 8]])
 print(e) // [[5, 6], [7, 8]]
@@ -63,6 +63,16 @@ print(h.subset(math.index([1, 2], [1, 2]))) // [[2, 0], [0, 3]]
 const i = math.range(1, 6)
 print(i) // [1, 2, 3, 4, 5]
 print(i.subset(math.index(math.range(1, 4)))) // [2, 3, 4]
+console.log()
+
+// replace a single value in a matrix
+// this will mutate the matrix
+console.log('set and get a value')
+const p = math.matrix([[1, 2], [3, 4]])
+p.set([0, 10], 5)
+print(p) // [[1, 5], [3, 4]]
+const p21 = p.get([1, 0])
+print(p21) // 3
 console.log()
 
 // resize a multi dimensional matrix

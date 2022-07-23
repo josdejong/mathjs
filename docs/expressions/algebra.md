@@ -31,6 +31,12 @@ console.log(simplified.toString())       // '3 * x'
 console.log(simplified.evaluate({x: 4})) // 12
 ```
 
+Among its other actions, calling `simplify()` on an expression will convert
+any functions that have operator equivalents to their operator form:
+```js
+console.log(math.simplify('multiply(x,3)').toString)  // '3 * x'
+```
+
 Note that `simplify` has an optional argument `scope` that allows the definitions of variables in the expression (as numeric values, or as further expressions) to be specified and used in the simplification, e.g. continuing the previous example,
 
 ```js
@@ -92,7 +98,7 @@ The rules used by `math.derivative` can be found on Wikipedia:
 
 <h2 id="rationalize">Rationalize <a href="#rationalize" title="Permalink">#</a></h2>
 
-The function [`math.transform`](../reference/functions/transform.html)  transforms a rationalizable expression in a rational fraction.
+The function [`math.rationalize`](../reference/functions/rationalize.html) transforms a rationalizable expression in a rational fraction.
 If rational fraction is one variable polynomial then converts the numerator and denominator in canonical form, with decreasing exponents, returning the coefficients of numerator.
 
 ```js

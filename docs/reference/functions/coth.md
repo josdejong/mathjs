@@ -9,7 +9,8 @@ layout: default
 Calculate the hyperbolic cotangent of a value,
 defined as `coth(x) = 1 / tanh(x)`.
 
-For matrices, the function is evaluated element wise.
+To avoid confusion with the matrix hyperbolic cotangent, this function
+does not apply to matrices.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -22,13 +23,13 @@ math.coth(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
+`x` | number &#124; BigNumber &#124; Complex | Function input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic cotangent of x
+number &#124; BigNumber &#124; Complex | Hyperbolic cotangent of x
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

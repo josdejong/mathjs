@@ -8,7 +8,8 @@ layout: default
 
 Calculate the inverse secant of a value. Defined as `asec(x) = acos(1/x)`.
 
-For matrices, the function is evaluated element wise.
+To avoid confusion with the matrix arcsecant, this function does not
+apply to matrices.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -21,13 +22,13 @@ math.asec(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; Complex &#124; Array &#124; Matrix | Function input
+`x` | number &#124; BigNumber &#124; Complex | Function input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; Complex &#124; Array &#124; Matrix | The arc secant of x
+number &#124; BigNumber &#124; Complex | The arc secant of x
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

@@ -8,7 +8,8 @@ layout: default
 
 Calculate the logarithm of a value.
 
-For matrices, the function is evaluated element wise.
+To avoid confusion with the matrix logarithm, this function does not
+apply to matrices.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -22,14 +23,14 @@ math.log(x, base)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the logarithm.
+`x` | number &#124; BigNumber &#124; Complex |  Value for which to calculate the logarithm.
 `base` | number &#124; BigNumber &#124; Complex |  Optional base for the logarithm. If not provided, the natural logarithm of `x` is calculated. Default value: e.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the logarithm of `x`
+number &#124; BigNumber &#124; Complex |  Returns the logarithm of `x`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

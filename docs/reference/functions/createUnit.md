@@ -32,7 +32,7 @@ math.createUnit({
 Parameter | Type | Description
 --------- | ---- | -----------
 `name` | string | The name of the new unit. Must be unique. Example: 'knot'
-`definition` | string, Unit | Definition of the unit in terms of existing units. For example, '0.514444444 m / s'.
+`definition` | string, UnitDefinition, Unit | Definition of the unit in terms of existing units. For example, '0.514444444 m / s'.
 `options` | Object | (optional) An object containing any of the following properties:</br>- `prefixes {string}` "none", "short", "long", "binary_short", or "binary_long". The default is "none".</br>- `aliases {Array}` Array of strings. Example: ['knots', 'kt', 'kts']</br>- `offset {Numeric}` An offset to apply when converting from the unit. For example, the offset for celsius is 273.15. Default is 0.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
@@ -54,6 +54,7 @@ Type | Description
 math.createUnit('foo')
 math.createUnit('knot', {definition: '0.514444444 m/s', aliases: ['knots', 'kt', 'kts']})
 math.createUnit('mph', '1 mile/hour')
+math.createUnit('km', math.unit(1000, 'm'))
 ```
 
 
