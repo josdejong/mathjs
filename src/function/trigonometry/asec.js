@@ -17,10 +17,10 @@ export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Examples:
    *
-   *    math.asec(0.5)           // returns 1.0471975511965979
+   *    math.asec(2)             // returns 1.0471975511965979
    *    math.asec(math.sec(1.5)) // returns 1.5
    *
-   *    math.asec(2)             // returns 0 + 1.3169578969248166 i
+   *    math.asec(0.5)           // returns Complex 0 + 1.3169578969248166i
    *
    * See also:
    *

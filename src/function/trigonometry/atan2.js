@@ -42,7 +42,7 @@ export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *    const x = math.cos(angle)
    *    const y = math.sin(angle)
    *
-   *    math.atan(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+   *    math.atan(2)             // returns number 1.1071487177940904
    *
    * See also:
    *

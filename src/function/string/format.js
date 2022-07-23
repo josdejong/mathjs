@@ -103,7 +103,7 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    math.format(12e8, {notation: 'fixed'})                  // returns '1200000000'
    *    math.format(2.3,  {notation: 'fixed', precision: 4})    // returns '2.3000'
    *    math.format(52.8, {notation: 'exponential'})            // returns '5.28e+1'
-   *    math.format(12400,{notation: 'engineering'})            // returns '12.400e+3'
+   *    math.format(12400, {notation: 'engineering'})           // returns '12.4e+3'
    *    math.format(2000, {lowerExp: -2, upperExp: 2})          // returns '2e+3'
    *
    *    function formatCurrency(value) {

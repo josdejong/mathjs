@@ -25,7 +25,7 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
    *    math.isNegative(math.bignumber(2))     // returns false
    *    math.isNegative(math.fraction(-2, 5))  // returns true
    *    math.isNegative('-2')                  // returns true
-   *    math.isNegative([2, 0, -3])           // returns [false, false, true]
+   *    math.isNegative([2, 0, -3])            // returns [false, false, true]
    *
    * See also:
    *
