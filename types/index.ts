@@ -831,7 +831,7 @@ Simplify examples
   math.simplifyCore('2 * 1 * x ^ (2 - 1)')
   math.simplify('2 * 3 * x', { x: 4 })
 
-  expectTypeOf(math.simplify.rules).toMatchTypeOf<Array<SimplifyRule>>
+  expectTypeOf(math.simplify.rules).toMatchTypeOf<Array<SimplifyRule>>()
 
   const f = math.parse('2 * 1 * x ^ (2 - 1)')
   math.simplify(f)
@@ -1299,23 +1299,19 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   const Mabc = math.matrix(abc)
 
   // Number
-  const r1 = math.multiply(1, 2)
-  console.log(r1)
+  const _r1 = math.multiply(1, 2)
 
   // Unit
   const a = math.unit(45, 'cm') // 450 mm
   const b = math.unit(45, 'cm') // 450 mm
-  const r2 = math.multiply(a, b)
-  console.log(r2)
+  const _r2 = math.multiply(a, b)
 
   // 1D JS Array
   const r3 = math.multiply(abc, bcd)
-  console.log(r3)
   r3[1] // By default least promised valid syntax
 
   // 2D JS Array
   const r12 = math.multiply(bcd, bcd)
-  console.log(r12)
   // Example to sort ambiguity between multidimensional & singledimensional arrays
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const multiDimensional = (x: any): x is any[][] => x.length && x[0].length
@@ -1326,34 +1322,26 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
 
   // Matrix: matrix * vector
   const r7 = math.multiply(Mabc, bcd)
-  console.log(r7)
   r7.toArray() // Matrix-es have toArray function
 
   // Matrix
-  const r8 = math.multiply(Mabc, 4)
-  console.log(r8)
+  const _r8 = math.multiply(Mabc, 4)
 
   // Matrix
-  const r11 = math.multiply(4, Mabc)
-  console.log(r11)
+  const _r11 = math.multiply(4, Mabc)
 
   // Matrix of units
-  const r9 = math.multiply(Mabc, a)
-  console.log(r9)
-  const r10 = math.multiply(a, Mabc)
-  console.log(r10)
+  const _r9 = math.multiply(Mabc, a)
+  const _r10 = math.multiply(a, Mabc)
 
   // Matrix
-  const r6 = math.multiply(abc, Mbcd)
-  console.log(r6)
+  const _r6 = math.multiply(abc, Mbcd)
 
   // 2D JS Array
-  const r5 = math.multiply(bcd, abc)
-  console.log(r5)
+  const _r5 = math.multiply(bcd, abc)
 
   // Number
-  const r4 = math.multiply(abc, math.transpose(abc))
-  console.log(r4)
+  const _r4 = math.multiply(abc, math.transpose(abc))
 }
 
 /*

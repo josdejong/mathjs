@@ -1,6 +1,6 @@
 # History
 
-# not yet published, version 11.0.0
+# 2022-07-23, version 11.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
