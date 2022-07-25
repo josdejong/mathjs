@@ -82,7 +82,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // the caller wishes the units to be returned exactly as supplied.
     this.skipAutomaticSimplification = true
 
-    if (valuelessUnit === undefined || valuelessUnit === '') {
+    if (valuelessUnit === undefined) {
       this.units = []
       this.dimensions = BASE_DIMENSIONS.map(x => 0)
     } else if (typeof valuelessUnit === 'string') {
