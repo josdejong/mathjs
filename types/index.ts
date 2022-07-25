@@ -45,7 +45,7 @@ import {
   Unit,
 } from 'mathjs'
 import * as assert from 'assert'
-import {expectTypeOf} from 'expect-type'
+import { expectTypeOf } from 'expect-type'
 
 // This file serves a dual purpose:
 // 1) examples of how to use math.js in TypeScript
@@ -1234,7 +1234,7 @@ Matrices examples
 
   // Matrix is available as a constructor for instanceof checks
   {
-    assert.strictEqual(math.matrix([1, 2, 3]) instanceof Matrix, true)
+    assert.strictEqual(math.matrix([1, 2, 3]) instanceof math.Matrix, true)
   }
 
   // Fourier transform and inverse
@@ -1472,20 +1472,18 @@ Expression tree examples
 
   // Traverse an expression tree
   const node1: MathNode = math.parse('3 * x + 2')
-  node1.traverse(
-    (node: MathNode, _path: string, _parent: MathNode) => {
-      switch (node.type) {
-        case 'OperatorNode':
-          return node.type === 'OperatorNode'
-        case 'ConstantNode':
-          return node.type === 'ConstantNode'
-        case 'SymbolNode':
-          return node.type === 'SymbolNode'
-        default:
-          return
-      }
+  node1.traverse((node: MathNode, _path: string, _parent: MathNode) => {
+    switch (node.type) {
+      case 'OperatorNode':
+        return node.type === 'OperatorNode'
+      case 'ConstantNode':
+        return node.type === 'ConstantNode'
+      case 'SymbolNode':
+        return node.type === 'SymbolNode'
+      default:
+        return
     }
-  )
+  })
 }
 
 /*
@@ -2090,7 +2088,7 @@ Factory Test
 
   // Check guards do type refinement
 
-  let x: unknown = undefined
+  const x: unknown = undefined
 
   if (math.isNumber(x)) {
     expectTypeOf(x).toMatchTypeOf<number>()
@@ -2207,9 +2205,7 @@ Probability function examples
   const math = create(all, {})
 
   expectTypeOf(math.lgamma(1.5)).toMatchTypeOf<number>()
-  expectTypeOf(
-    math.lgamma(math.complex(1.5, -1.5))
-  ).toMatchTypeOf<Complex>()
+  expectTypeOf(math.lgamma(math.complex(1.5, -1.5))).toMatchTypeOf<Complex>()
 }
 
 /*
@@ -2244,7 +2240,5 @@ Resolve examples
   expectTypeOf(
     math.resolve([math.parse('x + y'), 'x*x'], { x: 0 })
   ).toMatchTypeOf<MathNode[]>()
-  expectTypeOf(
-    math.resolve(math.matrix(['x', 'y']))
-  ).toMatchTypeOf<Matrix>()
+  expectTypeOf(math.resolve(math.matrix(['x', 'y']))).toMatchTypeOf<Matrix>()
 }
