@@ -47,7 +47,7 @@ math.isInteger(math.bignumber(500))   // returns true
 math.isInteger(math.fraction(4))      // returns true
 math.isInteger('3')                   // returns true
 math.isInteger([3, 0.5, -2])          // returns [true, false, true]
-math.isInteger(math.complex('2-4i')   // throws an error
+math.isInteger(math.complex('2-4i'))  // throws an error
 ```
 
 

@@ -100,7 +100,9 @@ simplify(expr, scope, options)
 Parameter | Type | Description
 --------- | ---- | -----------
 `expr` | Node &#124; string |  The expression to be simplified
-`rules` | Array&lt;{l:string, r: string} &#124; string &#124; function&gt; |  Optional list with custom rules
+`rules` | SimplifyRule[] |  Optional list with custom rules
+`scope` | Object | Optional scope with variables
+`options` | SimplifyOptions | Optional configuration settings
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

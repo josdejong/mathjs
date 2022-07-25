@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220725-version-1101">2022-07-25, version 11.0.1 <a href="#20220725-version-1101" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2632">#2632</a>: TypeScript issue of `simplifyConstant` and `simplifyCore`
+  not having a return type defined.
+
+
 <h1 id="20220723-version-1100">2022-07-23, version 11.0.0 <a href="#20220723-version-1100" title="Permalink">#</a></h1>
 
 !!! BE CAREFUL: BREAKING CHANGES !!!

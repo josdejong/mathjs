@@ -41,13 +41,13 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.rotate([11, 12], math.pi / 2)                           // returns matrix([-12, 11])
-math.rotate(matrix([11, 12]), math.pi / 2)                   // returns matrix([-12, 11])
+math.rotate([11, 12], math.pi / 2)                           // returns [-12, 11]
+math.rotate(matrix([11, 12]), math.pi / 2)                   // returns [-12, 11]
 
-math.rotate([1, 0, 0], unit('90deg'), [0, 0, 1])             // returns matrix([0, 1, 0])
-math.rotate(matrix([1, 0, 0]), unit('90deg'), [0, 0, 1])     // returns matrix([0, 1, 0])
+math.rotate([1, 0, 0], unit('90deg'), [0, 0, 1])             // returns [0, 1, 0]
+math.rotate(matrix([1, 0, 0]), unit('90deg'), [0, 0, 1])     // returns Matrix [0, 1, 0]
 
-math.rotate([1, 0], math.complex(1 + i))                     // returns matrix([cos(1 + i) - sin(1 + i), sin(1 + i) + cos(1 + i)])
+math.rotate([1, 0], math.complex(1 + i))                     // returns [cos(1 + i) - sin(1 + i), sin(1 + i) + cos(1 + i)]
 ```
 
 

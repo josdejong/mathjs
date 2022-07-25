@@ -42,7 +42,7 @@ Type | Description
 ```js
 math.rightArithShift(4, 2)               // returns number 1
 
-math.rightArithShift([16, -32, 64], 4)   // returns Array [1, -2, 3]
+math.rightArithShift([16, -32, 64], 4)   // returns Array [1, -2, 4]
 ```
 
 

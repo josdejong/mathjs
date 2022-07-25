@@ -45,9 +45,9 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.nthRoot(9, 2)    // returns 3, as 3^2 == 9
-math.sqrt(9)          // returns 3, as 3^2 == 9
-math.nthRoot(64, 3)   // returns 4, as 4^3 == 64
+math.nthRoot(9, 2)    // returns 3 (since 3^2 == 9)
+math.sqrt(9)          // returns 3 (since 3^2 == 9)
+math.nthRoot(64, 3)   // returns 4 (since 4^3 == 64)
 ```
 
 

@@ -41,7 +41,7 @@ Type | Description
 ```js
 math.bitNot(1)               // returns number -2
 
-math.bitNot([2, -3, 4])      // returns Array [-3, 2, 5]
+math.bitNot([2, -3, 4])      // returns Array [-3, 2, -5]
 ```
 
 

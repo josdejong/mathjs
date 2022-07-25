@@ -58,11 +58,11 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.distance([0,0], [4,4])                     // Returns 5.6569
+math.distance([0,0], [4,4])                     // Returns 5.656854249492381
 math.distance(
  {pointOneX: 0, pointOneY: 0},
  {pointTwoX: 10, pointTwoY: 10})                // Returns 14.142135623730951
-math.distance([1, 0, 1], [4, -2, 2])            // Returns 3.74166
+math.distance([1, 0, 1], [4, -2, 2])            // Returns 3.7416573867739413
 math.distance(
  {pointOneX: 4, pointOneY: 5, pointOneZ: 8},
  {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})    // Returns 3

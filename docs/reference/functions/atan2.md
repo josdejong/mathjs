@@ -48,7 +48,7 @@ const angle = math.unit(60, 'deg') // returns Unit 60 deg
 const x = math.cos(angle)
 const y = math.sin(angle)
 
-math.atan(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+math.atan(2)             // returns number 1.1071487177940904
 ```
 
 

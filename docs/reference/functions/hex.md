@@ -38,8 +38,7 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-//the following outputs "0xF0"
-math.hex(240)
+math.hex(240) // returns "0xF0"
 ```
 
 

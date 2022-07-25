@@ -41,17 +41,17 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.isZero(0)                     // returns true
-math.isZero(2)                     // returns false
-math.isZero(0.5)                   // returns false
-math.isZero(math.bignumber(0))     // returns true
-math.isZero(math.fraction(0))      // returns true
-math.isZero(math.fraction(1,3))    // returns false
-math.isZero(math.complex('2 - 4i') // returns false
-math.isZero(math.complex('0i')     // returns true
-math.isZero('0')                   // returns true
-math.isZero('2')                   // returns false
-math.isZero([2, 0, -3]')           // returns [false, true, false]
+math.isZero(0)                      // returns true
+math.isZero(2)                      // returns false
+math.isZero(0.5)                    // returns false
+math.isZero(math.bignumber(0))      // returns true
+math.isZero(math.fraction(0))       // returns true
+math.isZero(math.fraction(1,3))     // returns false
+math.isZero(math.complex('2 - 4i')) // returns false
+math.isZero(math.complex('0i'))     // returns true
+math.isZero('0')                    // returns true
+math.isZero('2')                    // returns false
+math.isZero([2, 0, -3])             // returns [false, true, false]
 ```
 
 

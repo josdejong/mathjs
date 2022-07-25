@@ -40,10 +40,9 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.acot(0.5)           // returns number 0.4636476090008061
+math.acot(0.5)           // returns number 1.1071487177940904
+math.acot(2)             // returns number 0.4636476090008061
 math.acot(math.cot(1.5)) // returns number 1.5
-
-math.acot(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
 ```
 
 

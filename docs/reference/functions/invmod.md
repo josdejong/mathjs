@@ -40,7 +40,7 @@ Type | Description
 
 ```js
 math.invmod(8, 12)             // returns NaN
-math.invmod(7, 13)             // return 2
+math.invmod(7, 13)             // returns 2
 math.invmod(15151, 15122)      // returns 10429
 ```
 
