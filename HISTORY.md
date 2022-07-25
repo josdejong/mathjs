@@ -1,5 +1,11 @@
 # History
 
+# 2022-07-25, version 11.0.1
+
+- Fix #2632: TypeScript issue of `simplifyConstant` and `simplifyCore`
+  not having a return type defined.
+
+
 # 2022-07-23, version 11.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
