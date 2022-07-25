@@ -94,7 +94,6 @@ describe('Unit', function () {
     it('should throw an error if called with wrong type of arguments', function () {
       assert.throws(function () { console.log(new Unit('24', 'inch')) })
       assert.throws(function () { console.log(new Unit(0, 'bla')) })
-      assert.throws(function () { console.log(new Unit(4, '')) })
       assert.throws(function () { console.log(new Unit(0, 3)) })
     })
 
