@@ -169,8 +169,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *
    * @param {Node | string} expr
    *            The expression to be simplified
-   * @param {Array<{l:string, r: string} | string | function>} [rules]
+   * @param {SimplifyRule[]} [rules]
    *            Optional list with custom rules
+   * @param {Object} [scope]
+   * @param {SimplifyOptions} [options]
    * @return {Node} Returns the simplified form of `expr`
    */
   typed.addConversion({ from: 'Object', to: 'Map', convert: createMap })

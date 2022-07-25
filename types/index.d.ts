@@ -890,8 +890,8 @@ declare namespace math {
      */
     simplify: Simplify
 
-    simplifyConstant(expr: MathNode | string, options?: SimplifyOptions)
-    simplifyCore(expr: MathNode | string, options?: SimplifyOptions)
+    simplifyConstant(expr: MathNode | string, options?: SimplifyOptions): MathNode
+    simplifyCore(expr: MathNode | string, options?: SimplifyOptions): MathNode
 
     /**
      *  Replaces variable nodes with their scoped values
@@ -4407,11 +4407,12 @@ declare namespace math {
      * pass a custom set of rules to the function as second argument. A rule
      * can be specified as an object, string, or function.
      * @param scope Scope to variables
+     * @param options Options to configure the behavior of simplify
      */
     simplify(
       this: MathJsChain<MathNode | string>,
       rules?: SimplifyRule[],
-      scope?: Map | object,
+      scope?: Map<string, MathType> | object,
       options?: SimplifyOptions
     ): MathJsChain<MathNode>
 
