@@ -83,17 +83,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     this.skipAutomaticSimplification = true
 
     if (valuelessUnit === undefined || valuelessUnit === '') {
-      this.units = [
-        {
-          unit: UNIT_NONE,
-          prefix: PREFIXES.NONE, // link to a list with supported prefixes
-          power: 0
-        }
-      ]
-      this.dimensions = []
-      for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
-        this.dimensions[i] = 0
-      }
+      this.units = []
+      this.dimensions = BASE_DIMENSIONS.map(x => 0)
     } else if (typeof valuelessUnit === 'string') {
       const u = Unit.parse(valuelessUnit)
       this.units = u.units
