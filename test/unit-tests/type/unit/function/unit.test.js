@@ -28,6 +28,13 @@ describe('unit', function () {
     assert.deepStrictEqual(b.toString(), '5 cm')
   })
 
+  it('should create a unit from an existing unit', function () {
+    const kelvin = math.unit('K')
+    const degF = math.unit('degF')
+    const a = math.unit(0, kelvin)
+    assert.deepStrictEqual(a.toNumeric(degF), -459.67)
+  })
+
   it('should create units from all elements in an array', function () {
     assert.deepStrictEqual(math.unit(['5 cm', '3kg']), [math.unit('5cm'), math.unit('3kg')])
   })

@@ -14,7 +14,8 @@ full name and an abbreviation. The returned object is a `Unit`.
 Syntax:
 
 ```js
-math.unit(value: number, name: string) : Unit
+math.unit(value: number, valuelessUnit: string) : Unit
+math.unit(value: number, valuelessUnit: Unit) : Unit
 math.unit(unit: string) : Unit
 math.unit(unit: Unit) : Unit
 ```
@@ -38,6 +39,11 @@ c.equalBase(a)                            // true
 c.equalBase(b)                            // false
 
 d.toString()                              // String "5.08 cm"
+
+const kph = math.unit('km/h')             // valueless Unit km/h
+const mps = math.unit('m/s')              // valueless Unit m/s
+const speed = math.unit(36, kph)          // Unit 36 km/h
+speed.toNumber(mps)                       // Number 10
 ```
 
 Use care when creating a unit with multiple terms in the denominator. Implicit multiplication has the same operator precedence as explicit multiplication and division, which means these three expressions are identical:
