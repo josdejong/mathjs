@@ -77,11 +77,6 @@ describe('Unit', function () {
       assert.strictEqual(unit2.units[1].power, -2)
     })
 
-    it('should create a unitless Unit if second parameter is undefined', function () {
-      const a = new Unit(6)
-      assert(a.dimensions.every(d => d === 0))
-    })
-
     it('should ignore properties on Object.prototype', function () {
       Object.prototype.foo = Unit.UNITS.meter // eslint-disable-line no-extend-native
 
