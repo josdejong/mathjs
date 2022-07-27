@@ -15,5 +15,8 @@
     "strictNullChecks": false,
     "strictFunctionTypes": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "files": [
+    "./index.ts"
+  ],
 }
