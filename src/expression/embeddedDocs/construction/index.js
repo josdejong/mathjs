@@ -12,7 +12,6 @@ export const indexDocs = {
   description:
       'Create an index to get or replace a subset of a matrix',
   examples: [
-    '[]',
     '[1, 2, 3]',
     'A = [1, 2, 3; 4, 5, 6]',
     'A[1, :]',
