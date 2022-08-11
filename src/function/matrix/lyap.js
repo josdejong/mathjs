@@ -1,16 +1,16 @@
 import { factory } from '../../utils/factory.js'
+import { isMatrix } from '../../utils/is.js'
 
 const name = 'lyap'
-const dependencies = ['typed', 'isMatrix', 'matrix', 'sylvester', 'multiply', 'transpose']
+const dependencies = ['typed', 'matrix', 'sylvester', 'multiply', 'transpose']
 
-
-export const createLyap = /* #__PURE__ */ factory(name, dependencies, ({ typed, isMatrix, matrix, sylvester, multiply, transpose }) => {
- /**
-   * 
+export const createLyap = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, sylvester, multiply, transpose }) => {
+  /**
+   *
    * Solves the Continuous-time Lyapunov equation AP+PA'=Q for P, where Q is a positive semidefinite
-   * matrix. 
-   * https://en.wikipedia.org/wiki/Lyapunov_equation  
-   * 
+   * matrix.
+   * https://en.wikipedia.org/wiki/Lyapunov_equation
+   *
    * Syntax:
    *
    *     math.lyap(A, Q)
@@ -30,20 +30,15 @@ export const createLyap = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {Matrix} Matrix P solution to the Continuous-time Lyapunov equation AP+PA'=Q
    */
   return typed(name, {
-    'Matrix, Matrix': function (A,Q){
-      if(!isMatrix(A)){
+    'Matrix, Matrix': function (A, Q) {
+      if (!isMatrix(A)) {
         A = matrix(A)
       }
-      if(!isMatrix(Q)){
+      if (!isMatrix(Q)) {
         Q = matrix(Q)
       }
-      let B = multiply(-1, transpose(A))
-      return sylvester(A,B,Q)
+      const B = multiply(-1, transpose(A))
+      return sylvester(A, B, Q)
     }
   })
 })
-
-
-
-    
-

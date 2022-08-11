@@ -1760,8 +1760,8 @@ declare namespace math {
     expm(x: Matrix): Matrix
 
     /**
-     * Solves the real-valued Sylvester equation AX-XB=C for X, where A, B and C are 
-     * matrices of appropriate dimensions, being A and B squared. The method used is 
+     * Solves the real-valued Sylvester equation AX-XB=C for X, where A, B and C are
+     * matrices of appropriate dimensions, being A and B squared. The method used is
      * the Bartels-Stewart algorithm.
      * https://en.wikipedia.org/wiki/Sylvester_equation
      * @param A  Matrix A
@@ -1771,21 +1771,19 @@ declare namespace math {
      */
     sylvester(A: Matrix, B: Matrix, C: Matrix): Matrix
 
-
     /**
      * Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal
-     * and T is upper quasi-triangular. 
+     * and T is upper quasi-triangular.
      * https://en.wikipedia.org/wiki/Schur_decomposition
      * @param A  Matrix A
      * @returns Object containing both matrix U and T of the Schur Decomposition A=UTU'
      */
-    schur(A: Matrix): {U:Matrix, T:Matrix}
-
+    schur(A: Matrix): { U: Matrix; T: Matrix }
 
     /**
      * Solves the Continuous-time Lyapunov equation AP+PA'=Q for P, where Q is a positive semidefinite
-     * matrix. 
-     * https://en.wikipedia.org/wiki/Lyapunov_equation  
+     * matrix.
+     * https://en.wikipedia.org/wiki/Lyapunov_equation
      * @param A  Matrix A
      * @param Q  Matrix Q
      * @returns  Matrix P solution to the Continuous-time Lyapunov equation AP+PA'=Q
