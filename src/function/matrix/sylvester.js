@@ -1,10 +1,10 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'sylvester'
-const dependencies = ['typed', 'schur', 'matrixFromColumns', 'matrix', 'multiply', 'range', 'concat', 'transpose', 'index', 'subset', 'add', 'subtract', 'identity', 'lusolve']
+const dependencies = ['typed', 'isMatrix', 'schur', 'matrixFromColumns', 'matrix', 'multiply', 'range', 'concat', 'transpose', 'index', 'subset', 'add', 'subtract', 'identity', 'lusolve']
 
 
-export const createSylvester = /* #__PURE__ */ factory(name, dependencies, ({ typed, schur, matrixFromColumns, matrix, multiply, range, concat, transpose, index, subset, add, subtract, identity, lusolve }) => {
+export const createSylvester = /* #__PURE__ */ factory(name, dependencies, ({ typed, isMatrix, schur, matrixFromColumns, matrix, multiply, range, concat, transpose, index, subset, add, subtract, identity, lusolve }) => {
  /**
    * 
    * Solves the real-valued Sylvester equation AX-XB=C for X, where A, B and C are 
@@ -34,7 +34,18 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, ({ ty
    */
   return typed(name, {
     'Matrix, Matrix, Matrix': function (A,B,C) {
-        let n = A.size()[0];
+        if(!isMatrix(A))
+            A = matrix(A)
+          
+        if(!isMatrix(B))
+            B = matrix(B)
+        
+        if(!isMatrix(C))
+            C = matrix(C)
+        
+        let n = B.size()[0];
+        let m = A.size()[0];
+
         let sA = schur(A)
         let F = sA.T  
         let U = sA.U
@@ -42,7 +53,7 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, ({ ty
         let G = sB.T
         let V = sB.U
         let D = multiply(multiply(transpose(U),C),V)
-        let all = range(0,n)
+        let all = range(0,m)
         let y = [];
     
     
@@ -56,18 +67,18 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, ({ ty
                     RHS = add(RHS, 
                         vc(multiply(y[j], subset(G,index(j,k))), multiply(y[j], subset(G,index(j,k+1))))
                         )
-                let gkk = multiply(identity(n), multiply(-1, subset(G,index(k,k))))
-                let gmk = multiply(identity(n), multiply(-1, subset(G,index(k+1,k))))
-                let gkm = multiply(identity(n), multiply(-1, subset(G,index(k,k+1))))
-                let gmm = multiply(identity(n), multiply(-1, subset(G,index(k+1,k+1))))
+                let gkk = multiply(identity(m), multiply(-1, subset(G,index(k,k))))
+                let gmk = multiply(identity(m), multiply(-1, subset(G,index(k+1,k))))
+                let gkm = multiply(identity(m), multiply(-1, subset(G,index(k,k+1))))
+                let gmm = multiply(identity(m), multiply(-1, subset(G,index(k+1,k+1))))
                 let LHS = vc(
                     hc(add(F,gkk), gmk),
                     hc(gkm,             add(F,gmm)),
                 )
                 // y_aux = multiply(inv(LHS), RHS)
                 y_aux = lusolve(LHS, RHS)
-                y[k] = y_aux.subset(index(range(0,n),0))
-                y[k+1] = y_aux.subset(index(range(n,2*n),0))
+                y[k] = y_aux.subset(index(range(0,m),0))
+                y[k+1] = y_aux.subset(index(range(m,2*m),0))
                 k++;
                 
             }
@@ -76,7 +87,7 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, ({ ty
                 for (let j=0; j<k; j++)
                     RHS = add(RHS, multiply(y[j], subset(G,index(j,k))))
                 let gkk = subset(G,index(k,k))
-                let LHS = subtract(F,multiply(gkk,identity(n)))
+                let LHS = subtract(F,multiply(gkk,identity(m)))
                 
                 y[k] = lusolve(LHS, RHS)
                 

@@ -1,10 +1,10 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'schur'
-const dependencies = ['typed', 'identity', 'multiply', 'qr', 'norm', 'subtract']
+const dependencies = ['typed', 'isMatrix', 'matrix', 'identity', 'multiply', 'qr', 'norm', 'subtract']
 
 
-export const createSchur = /* #__PURE__ */ factory(name, dependencies, ({ typed, identity, multiply, qr, norm, subtract }) => {
+export const createSchur = /* #__PURE__ */ factory(name, dependencies, ({ typed, isMatrix, matrix, identity, multiply, qr, norm, subtract }) => {
  /**
    * 
    * Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal
@@ -31,6 +31,9 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   return typed(name, {
     'Matrix': function (X){
+        if(!isMatrix(X)){
+          X = matrix(X)
+        }
         let n = X.size()[0];
         let A = X
         let U = identity(n)

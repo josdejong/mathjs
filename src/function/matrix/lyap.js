@@ -1,10 +1,10 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'lyap'
-const dependencies = ['typed', 'sylvester', 'multiply', 'transpose']
+const dependencies = ['typed', 'isMatrix', 'matrix', 'sylvester', 'multiply', 'transpose']
 
 
-export const createLyap = /* #__PURE__ */ factory(name, dependencies, ({ typed, sylvester, multiply, transpose }) => {
+export const createLyap = /* #__PURE__ */ factory(name, dependencies, ({ typed, isMatrix, matrix, sylvester, multiply, transpose }) => {
  /**
    * 
    * Solves the Continuous-time Lyapunov equation AP+PA'=Q for P, where Q is a positive semidefinite
@@ -31,8 +31,14 @@ export const createLyap = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   return typed(name, {
     'Matrix, Matrix': function (A,Q){
-        let B = multiply(-1, transpose(A))
-        return sylvester(A,B,Q)
+      if(!isMatrix(A)){
+        A = matrix(A)
+      }
+      if(!isMatrix(Q)){
+        Q = matrix(Q)
+      }
+      let B = multiply(-1, transpose(A))
+      return sylvester(A,B,Q)
     }
   })
 })
