@@ -1,0 +1,69 @@
+1. USING FUNCTION MATH.EVAL
+
+evaluate expressions
+5
+2i
+5.08 cm
+0.70710678118655
+
+evaluate multiple expressions at once
+[3, 4, 12]
+
+evaluate expressions providing a scope with variables and functions
+12
+6.8
+6.8
+"hello, hero!"
+8
+8
+
+2. USING FUNCTION MATH.PARSE
+
+parse an expression into a node tree
+"sqrt(3 ^ 2 + 4 ^ 2)"
+5
+
+provide a scope
+"x ^ a"
+9
+27
+
+3. USING FUNCTION MATH.COMPILE
+
+compile an expression
+5
+
+provide a scope
+10
+
+4. USING A PARSER
+
+evaluate expressions
+5
+2i
+5.08 cm
+0.70710678118655
+
+define variables and functions
+3.5
+6.5
+f2(x, y)
+8
+
+manipulate matrices
+[[1, 2], [3, 4]]
+[[0, 0], [0, 0]]
+[5, 6]
+[[5, 6], [0, 0]]
+[7, 8]
+[[5, 6], [7, 8]]
+[[19, 22], [43, 50]]
+43
+[[19], [43]]
+
+get and set variables and function in the scope of the parser
+x = 3.5
+f2 = f2(x, y)
+h = 27
+250
+"hello, hero!"

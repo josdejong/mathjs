@@ -1,0 +1,42 @@
+create a matrix
+[1, 4, 9, 16, 25]
+[[1, 1, 1], [1, 1, 1]]
+[2, 3]
+[1, 4, 9, 16, 25]
+[1, 4, 9, 16, 25]
+
+perform operations
+[1, 2, 3, 4, 5]
+[1, 2, 6, 24, 120]
+
+manipulate matrices
+[[1, 2], [3, 4]]
+[[5, 6], [1, 1]]
+[[5, 6], [7, 8]]
+[[19, 22], [43, 50]]
+43
+
+get a sub matrix
+[[1, 0, 0], [0, 2, 0], [0, 0, 3]]
+[[2, 0], [0, 3]]
+[1, 2, 3, 4, 5]
+[2, 3, 4]
+
+resizing a matrix
+[[[0, 0], [0, 0]], [[0, 0], [0, 0]]]
+[2, 2, 2]
+[[0, 0], [0, 0]]
+[2, 2]
+
+set a value outside a matrices range
+[0, 0, 6]
+
+set a value outside a matrices range, setting other new entries to null
+[null, null, 6]
+
+create ranges
+[1, 2, 3, 4, 5]
+[0, 3, 6, 9, 12, 15]
+[2, 1, 0, -1, -2]
+[1, 2, 6, 24, 120]
+

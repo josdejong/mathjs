@@ -1,0 +1,49 @@
+create units
+45 cm
+0.1 m
+
+perform operations
+55 cm
+0.2 m
+1 m / s
+1728 in^3
+
+convert to another type or to a number
+10 cm
+3.9370078740157 inch
+10
+10
+
+parse expressions
+5.08 cm
+0.70710678118655
+25 m / s
+
+50
+
+simplify units
+100 kPa
+39.24 kJ
+
+compute molar volume of ideal gas at 65 Fahrenheit, 14.7 psi in L/mol
+gas constant (Rg) =  8.314 (N m) / (mol K)
+P = 14.7 psi
+T = 65 degF
+v = Rg * T / P = 23.910432393453 L / mol
+
+compute speed of fluid flowing out of hole in a container
+g = 9.81 m / s^2
+h = 1 m
+v = (2 g h) ^ 0.5 = 4.42944691807 m / s
+
+electrical power consumption:
+460 V * 20 A * 30 days to kWh = 6624 kWh
+
+circuit design:
+24 V / (6 mA) = 4 kohm
+
+operations on arrays:
+B (magnetic field strength) = [1 T, 0 T, 0 T]
+v (particle velocity) = [0 m / s, 1 m / s, 0 m / s]
+q (particle charge) = 1 C
+F (force) = q (v cross B) = [0 N, 0 N, -1 N]

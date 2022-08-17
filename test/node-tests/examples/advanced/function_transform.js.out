@@ -1,0 +1,7 @@
+Using expression parser:
+input: a=2, b=4
+result: 6
+2+4=6
+
+Using plain JavaScript:
+2+4=6

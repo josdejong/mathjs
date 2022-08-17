@@ -33,4 +33,9 @@ math.import({
 }, { override: true })
 
 console.log(limitedEvaluate('sqrt(16)')) // Ok, 4
-console.log(limitedEvaluate('parse("2+3")')) // Error: Function parse is disabled
+try {
+  console.log(limitedEvaluate('parse("2+3")')) // Error: Function parse is disabled
+  console.log('Oops, it worked!')
+} catch (err) {
+  console.log(err.toString())
+}
