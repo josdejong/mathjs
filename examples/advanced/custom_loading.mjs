@@ -29,5 +29,8 @@ console.log('d =', format(d)) // outputs "d = 7/9"
 // Now, when bundling your application for use in the browser, only the used
 // parts of math.js will be bundled. For example to create a bundle using Webpack:
 //
-//     npx webpack custom_loading.mjs -o custom_loading.bundle.mjs --mode=production
+//     npx webpack-cli ./custom_loading.mjs --output-path custom_loading_bundle --mode=production
 //
+// Read more about what bundle sizes you can expect here:
+//
+//     https://mathjs.org/docs/custom_bundling.html
