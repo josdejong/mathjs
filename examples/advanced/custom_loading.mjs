@@ -4,7 +4,7 @@ import {
   addDependencies,
   divideDependencies,
   formatDependencies
-} from '../..'
+} from '../../lib/esm/index.js'
 
 const config = {
   // optionally, you can specify configuration
@@ -29,5 +29,5 @@ console.log('d =', format(d)) // outputs "d = 7/9"
 // Now, when bundling your application for use in the browser, only the used
 // parts of math.js will be bundled. For example to create a bundle using Webpack:
 //
-//     npx webpack custom_loading.js -o custom_loading.bundle.js --mode=production
+//     npx webpack custom_loading.mjs -o custom_loading.bundle.mjs --mode=production
 //
