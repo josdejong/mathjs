@@ -283,6 +283,7 @@ declare namespace math {
   type OperatorNodeMap = {
     xor: 'xor'
     and: 'and'
+    or: 'or'
     bitOr: '|'
     bitXor: '^|'
     bitAnd: '&'
@@ -291,6 +292,7 @@ declare namespace math {
     smaller: '<'
     larger: '>'
     smallerEq: '<='
+    largerEq: '>='
     leftShift: '<<'
     rightArithShift: '>>'
     rightLogShift: '>>>'
