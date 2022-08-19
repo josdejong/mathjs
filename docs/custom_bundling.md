@@ -84,16 +84,17 @@ The functions of mathjs support multiple data types out of the box, like
 numbers, bignumbers, complex numbers, units, and matrices. Quite commonly however,
 only support for numbers is needed and the other data-types are overkill.
 
-To accomodate for this use case of only numbers only, mathjs offers light-weight,
-number only implementations of all relevant functions. These are available by
+To accomodate for this use case where just the JavaScript `number` type
+suffices, mathjs offers light-weight,
+number-only implementations of all relevant functions. These are available by
 importing from `'mathjs/number'` instead of `'mathjs'`:
 
 ```js
-// use light-weight, numbers only implementations of functions
+// use light-weight, number-only implementations of functions
 import { create, all } from 'mathjs/number'
 
 const math = create(all)
-console.log(add(2, 3)) // 5
+console.log(math.add(2, 3)) // 5
 ```
 
 ## Bundle size
