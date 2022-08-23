@@ -164,7 +164,6 @@
     "test:types": "cd types && tsc -p ./tsconfig.json && node --loader ts-node/esm ./index.ts",
     "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test/unit-tests && echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
     "prepublishOnly": "npm run test:all && npm run lint",
-    "prepare": "npm run build",
     "update-authors": "node ./tools/update-authors.js"
   },
   "bin": {
