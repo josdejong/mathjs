@@ -417,6 +417,11 @@ declare namespace math {
     R: MathCollection
   }
 
+  interface SchurDecomposition {
+    U: MathCollection
+    T: MathCollection
+  }
+
   interface FractionDefinition {
     a: number
     b: number
@@ -1769,7 +1774,7 @@ declare namespace math {
      * @param C  Matrix C
      * @returns  Matrix X, solving the Sylvester equation
      */
-    sylvester(A: Matrix, B: Matrix, C: Matrix): Matrix
+    sylvester(A:  Matrix | MathArray, B:  Matrix | MathArray, C:  Matrix | MathArray):  Matrix | MathArray
 
     /**
      * Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal
@@ -1778,7 +1783,7 @@ declare namespace math {
      * @param A  Matrix A
      * @returns Object containing both matrix U and T of the Schur Decomposition A=UTU'
      */
-    schur(A: Matrix): { U: Matrix; T: Matrix }
+    schur(A:  Matrix | MathArray): SchurDecomposition
 
     /**
      * Solves the Continuous-time Lyapunov equation AP+PA'=Q for P, where Q is a positive semidefinite
@@ -1788,7 +1793,7 @@ declare namespace math {
      * @param Q  Matrix Q
      * @returns  Matrix P solution to the Continuous-time Lyapunov equation AP+PA'=Q
      */
-    lyap(A: Matrix, Q: Matrix): Matrix
+    lyap(A:  Matrix | MathArray, Q:  Matrix | MathArray):  Matrix | MathArray
 
     /**
      * Create a 2-dimensional identity matrix with size m x n or n x n. The
@@ -5250,6 +5255,24 @@ declare namespace math {
      */
 
     expm(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+
+    /**
+     * Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal
+     * and T is upper quasi-triangular.
+     * https://en.wikipedia.org/wiki/Schur_decomposition
+     * @returns Object containing both matrix U and T of the Schur Decomposition A=UTU'
+     */
+     schur(this: MathJsChain<Matrix | MathArray>): SchurDecomposition
+
+     /**
+      * Solves the Continuous-time Lyapunov equation AP+PA'=Q for P, where Q is a positive semidefinite
+      * matrix.
+      * https://en.wikipedia.org/wiki/Lyapunov_equation
+      * @param Q  Matrix Q
+      * @returns  Matrix P solution to the Continuous-time Lyapunov equation AP+PA'=Q
+      */
+     lyap(this:  MathJsChain<Matrix | MathArray>, Q:  Matrix | MathArray):  MathJsChain<Matrix | MathArray>
+
 
     /**
      * Create a 2-dimensional identity matrix with size m x n or n x n. The
