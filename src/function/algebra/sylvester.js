@@ -51,10 +51,10 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
    *
    * Examples:
    *
-   *     const A = [[1, 2], [2, 1]]
-   *     const B = [[3, 2], [2, 2]]
-   *     const C = [[-2, 0], [1, 3]]
-   *     const X = math.sylvester(A, B, C)        // returns [[-0.2, 0.8], [-0.8, 0.2]]
+   *     const A = [[-1, -2], [1, 1]]
+   *     const B = [[-2, 1], [-1, 2]]
+   *     const C = [[-3, 2], [3, 0]]
+   *     const X = math.sylvester(A, B, C)        //returns  [[-0.25, 0.25], [1.5, -1.25]]
    *
    * See also:
    *
