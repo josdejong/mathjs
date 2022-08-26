@@ -26,7 +26,7 @@ const COMPILE_ENTRY_LIB = `${COMPILE_CJS}/entry`
 
 const FILE = 'math.js'
 
-const REF_SRC = `${COMPILE_CJS}/`
+const REF_SRC = SRC_DIR + '/'
 const REF_DIR = path.join(__dirname, '/docs')
 const REF_DEST = `${REF_DIR}/reference/functions`
 const REF_ROOT = `${REF_DIR}/reference`
@@ -206,8 +206,8 @@ function validateAscii (done) {
   done()
 }
 
-function generateDocs (done) {
-  const all = require(REF_SRC + 'defaultInstance').default
+async function generateDocs (done) {
+  const all = await import('file://' + REF_SRC + 'defaultInstance.js')
   const functionNames = Object.keys(all)
     .filter(key => typeof all[key] === 'function')
 
@@ -218,9 +218,9 @@ function generateDocs (done) {
 }
 
 function generateEntryFiles (done) {
-  entryGenerator.generateEntryFiles()
-
-  done()
+  entryGenerator.generateEntryFiles().then(() => {
+    done()
+  })
 }
 
 /**
@@ -267,8 +267,8 @@ gulp.task('watch', function watch () {
 gulp.task('default', gulp.series(
   clean,
   updateVersionFile,
-  compileCommonJs,
   generateEntryFiles,
+  compileCommonJs,
   compileEntryFiles,
   compileESModules, // Must be after generateEntryFiles
   writeCompiledHeader,

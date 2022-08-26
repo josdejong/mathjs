@@ -1,9 +1,13 @@
 # History
 
-# 2022-07-26, unpublished changes
+# 2022-08-23, 11.1.0
 
 - Add Unit constructor from value and pure (valueless) Unit (#2628).
   Thanks @costerwi
+- Fix #2144: `examples/advanced/custom_loading.js` was broken.
+- Fix JSON `replacer` function missing in the TypeScript definitions. 
+  Thanks @mattvague.
+- Update dependencies to `typed-function@4.1.0` and `decimal.js@10.4.0`. 
 
 
 # 2022-07-25, version 11.0.1
