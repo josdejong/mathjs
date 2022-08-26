@@ -19,7 +19,7 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     multiply,
     qr,
     norm,
-    subtract 
+    subtract
   }
 ) => {
   /**
@@ -47,19 +47,19 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
    * @return {{U: Array | Matrix, T: Array | Matrix}} Object containing both matrix U and T of the Schur Decomposition A=UTU'
    */
   return typed(name, {
-    Array: function (X){
+    Array: function (X) {
       const r = _schur(matrix(X))
       return {
         U: r.U.valueOf(),
         T: r.T.valueOf()
       }
     },
-    
+
     Matrix: function (X) {
       return _schur(X)
     }
   })
-  function _schur(X){
+  function _schur (X) {
     const n = X.size()[0]
     let A = X
     let U = identity(n)
@@ -74,6 +74,6 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
       U = multiply(U, Q)
       if ((k++) > 100) { break }
     } while (norm(subtract(A, A0)) > 1e-4)
-    return { U: U, T: A }
+    return { U, T: A }
   }
 })

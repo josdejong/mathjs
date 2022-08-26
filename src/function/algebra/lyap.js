@@ -2,19 +2,20 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'lyap'
 const dependencies = [
-  'typed', 
-  'matrix', 
-  'sylvester', 
-  'multiply', 
+  'typed',
+  'matrix',
+  'sylvester',
+  'multiply',
   'transpose'
 ]
 
 export const createLyap = /* #__PURE__ */ factory(name, dependencies, (
-  { typed, 
-    matrix, 
-    sylvester, 
-    multiply, 
-    transpose 
+  {
+    typed,
+    matrix,
+    sylvester,
+    multiply,
+    transpose
   }
 ) => {
   /**

@@ -20,7 +20,7 @@ const dependencies = [
 ]
 
 export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
-  { 
+  {
     typed,
     schur,
     matrixFromColumns,
@@ -35,7 +35,7 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
     subtract,
     identity,
     lusolve,
-    abs 
+    abs
   }
 ) => {
   /**
@@ -66,30 +66,30 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
    * @return {Matrix | Array}   Matrix X, solving the Sylvester equation
    */
   return typed(name, {
-    'Matrix, Matrix, Matrix': _sylvester,    
+    'Matrix, Matrix, Matrix': _sylvester,
     'Array, Matrix, Matrix': function (A, B, C) {
-      _sylvester(matrix(A), B, C)
-    },    
+      return _sylvester(matrix(A), B, C)
+    },
     'Array, Array, Matrix': function (A, B, C) {
-      _sylvester(matrix(A), matrix(B), C)
-    },    
+      return _sylvester(matrix(A), matrix(B), C)
+    },
     'Array, Matrix, Array': function (A, B, C) {
-      _sylvester(matrix(A), B, matrix(C))
-    },    
+      return _sylvester(matrix(A), B, matrix(C))
+    },
     'Matrix, Array, Matrix': function (A, B, C) {
-      _sylvester(A, matrix(B), C)
-    },    
+      return _sylvester(A, matrix(B), C)
+    },
     'Matrix, Array, Array': function (A, B, C) {
-      _sylvester(A, matrix(B), matrix(C))
-    },    
+      return _sylvester(A, matrix(B), matrix(C))
+    },
     'Matrix, Matrix, Array': function (A, B, C) {
-      _sylvester(A, B, matrix(C))
-    },    
+      return _sylvester(A, B, matrix(C))
+    },
     'Array, Array, Array': function (A, B, C) {
-      _sylvester(matrix(A), matrix(B), matrix(C)).toArray()
+      return _sylvester(matrix(A), matrix(B), matrix(C)).toArray()
     }
   })
-  function _sylvester(A,B,C){
+  function _sylvester (A, B, C) {
     const n = B.size()[0]
     const m = A.size()[0]
 
