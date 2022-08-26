@@ -34,14 +34,12 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
    *
    * Examples:
    *
-   *     const A = [[1, 2], [2, 1]]
-   *     const res = math.schur(A)
-   *     res.U
-   *     res.T
+   *     const A = [[1, 0], [-4, 3]]
+   *     math.schur(A) // returns {T: [[3, 4], [0, 1]], R: [[0, 1], [-1, 0]]}
    *
    * See also:
    *
-   *     sylvester, lyap
+   *     sylvester, lyap, qr
    *
    * @param {Array | Matrix} A  Matrix A
    * @return {{U: Array | Matrix, T: Array | Matrix}} Object containing both matrix U and T of the Schur Decomposition A=UTU'

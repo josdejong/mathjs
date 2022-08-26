@@ -6,7 +6,7 @@ export const schurDocs = {
   ],
   description: 'Performs a real Schur decomposition of the real matrix A = UTU\'',
   examples: [
-    'schur([[1, 2], [2, 1]])',
+    'schur([[1, 0], [-4, 3]])',
     'schur(A)'
   ],
   seealso: [

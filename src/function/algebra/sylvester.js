@@ -54,7 +54,7 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
    *     const A = [[-1, -2], [1, 1]]
    *     const B = [[-2, 1], [-1, 2]]
    *     const C = [[-3, 2], [3, 0]]
-   *     const X = math.sylvester(A, B, C)        //returns  [[-0.25, 0.25], [1.5, -1.25]]
+   *     math.sylvester(A, B, C)      // returns DenseMatrix [[-0.25, 0.25], [1.5, -1.25]]
    *
    * See also:
    *
