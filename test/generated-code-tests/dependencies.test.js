@@ -1,9 +1,9 @@
 import assert from 'assert'
-import { addDependencies, divideDependencies, piDependencies } from '../../src/entry/dependenciesAny.generated'
-const { create } = require('../../src/core/create')
+import { addDependencies, divideDependencies, piDependencies } from '../../src/entry/dependenciesAny.generated.js'
+import { create } from '../../src/core/create.js'
 
 describe('dependencies', function () {
-  it('should create functions from a collection of dependencies', () => {
+  it('should create functions from a collection of dependencies', function () {
     const { add, divide, pi } = create({
       addDependencies,
       divideDependencies,
@@ -15,7 +15,7 @@ describe('dependencies', function () {
     assert.strictEqual(pi, Math.PI)
   })
 
-  it('should create functions from with config', () => {
+  it('should create functions with config', function () {
     const config = { number: 'BigNumber' }
     const { pi } = create({
       piDependencies

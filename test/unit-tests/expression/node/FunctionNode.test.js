@@ -1,7 +1,8 @@
 // test FunctionNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
+import { toObject } from '../../../../src/utils/map.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
@@ -30,7 +31,7 @@ describe('FunctionNode', function () {
   it('should throw an error when calling without new operator', function () {
     const s = new SymbolNode('sqrt')
     const c = new ConstantNode(4)
-    assert.throws(function () { FunctionNode(s, [c]) }, SyntaxError)
+    assert.throws(function () { FunctionNode(s, [c]) }, TypeError)
   })
 
   it('should throw an error when calling with wrong arguments', function () {
@@ -51,6 +52,12 @@ describe('FunctionNode', function () {
 
     const n3 = new FunctionNode(new OperatorNode('+', 'add', []), [new ConstantNode(4)])
     assert.strictEqual(n3.name, '')
+  })
+
+  it('should throw an error when evaluating an undefined function', function () {
+    const scope = {}
+    const s = new FunctionNode('foo', [])
+    assert.throws(function () { s.compile().evaluate(scope) }, /Error: Undefined function foo/)
   })
 
   it('should compile a FunctionNode', function () {
@@ -104,11 +111,11 @@ describe('FunctionNode', function () {
       assert.strictEqual(args.length, 2)
       assert(args[0] instanceof mymath.Node)
       assert(args[1] instanceof mymath.Node)
-      assert.deepStrictEqual(_scope, scope)
+      assert.deepStrictEqual(toObject(_scope), scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
     myFunction.rawArgs = true
-    mymath.import({ myFunction: myFunction })
+    mymath.import({ myFunction })
 
     const s = new SymbolNode('myFunction')
     const a = new mymath.ConstantNode(4)
@@ -131,7 +138,7 @@ describe('FunctionNode', function () {
       assert.strictEqual(args.length, 2)
       assert(args[0] instanceof mymath.Node)
       assert(args[1] instanceof mymath.Node)
-      assert.deepStrictEqual(_scope, scope)
+      assert.deepStrictEqual(toObject(_scope), scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
     myFunction.rawArgs = true
@@ -155,7 +162,7 @@ describe('FunctionNode', function () {
       assert.ok(false, 'should not be executed')
     }
     myFunction.rawArgs = true
-    mymath.import({ myFunction: myFunction })
+    mymath.import({ myFunction })
 
     const s = new mymath.SymbolNode('myFunction')
     const a = new mymath.ConstantNode(4)
@@ -247,7 +254,7 @@ describe('FunctionNode', function () {
     const f = new FunctionNode(s, [b])
 
     assert.throws(function () {
-      f.map(function () {})
+      f.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 
@@ -613,8 +620,47 @@ describe('FunctionNode', function () {
     assert.throws(function () { tree.toTex() }, TypeError)
   })
 
+  it('evaluates different sorts of function calls', function () {
+    const examples = [
+      ['1; square(3)', 9],
+      ['f(x) = x*x; f(3)', 9],
+      ['a={n:7, f: lambda(x) = x*x}; a.f(3)', 9],
+      ['a=[7, f(x)=x*x]; a[2](3)', 9],
+      ['twiceOn(f,x) = f(f(x)); twiceOn(square, 3)', 81],
+      ['twice(f) = lambda(x) = f(f(x)); fourth = twice(square); fourth(3)', 81],
+      ['twice(f) = lambda(x) = f(f(x)); [twice(square)][1](3)', 81]
+    ]
+    for (const example of examples) {
+      const answer = math.evaluate(example[0]).valueOf()[0]
+      assert.strictEqual(answer, example[1])
+    }
+  })
+
+  it('produces clear error messages when the callee is not a function', function () {
+    const throwers = [
+      ['tau(3)', TypeError, /tau.*value[\s\S]*6.28/],
+      ['f = 7; f(3)', TypeError, /f.*value[\s\S]*7/],
+      ['a={f: 7}; a.f(3)', Error, /method.*f/],
+      ['a=[1,2]; a[2](3)', TypeError, /a\[2\].*value[\s\S]*2/],
+      ['twiceOn(f, x) = f(f(x)); twiceOn(7, 3)',
+        TypeError,
+        /f.*received[\s\S]*7/],
+      ['twice(f) = lambda(x) = f(f(x)); weird = twice(7); weird(3)',
+        TypeError,
+        /f.*received[\s\S]*7/],
+      ['twice(f) = lambda(x) = f(f(x)); [twice(7)][1](3)',
+        TypeError,
+        /f.*received[\s\S]*7/],
+      ['[square(7)][1](3)', TypeError, /square\(7\).*evaluate[\s\S]*49/]
+    ]
+    for (const problem of throwers) {
+      assert.throws(() => math.evaluate(problem[0]), problem[1])
+      assert.throws(() => math.evaluate(problem[0]), problem[2])
+    }
+  })
+
   // FIXME: custom instances should have there own function, not return the same function?
-  after(() => {
+  after(function () {
     const customMath = math.create()
     delete customMath.add.toTex
     delete customMath.sum.toTex

@@ -1,6 +1,6 @@
-import { csMarked } from './csMarked'
-import { csMark } from './csMark'
-import { csUnflip } from './csUnflip'
+import { csMarked } from './csMarked.js'
+import { csMark } from './csMark.js'
+import { csUnflip } from './csUnflip.js'
 
 /**
  * Depth-first search computes the nonzero pattern xi of the directed graph G (Matrix) starting

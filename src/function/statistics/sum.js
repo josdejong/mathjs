@@ -1,6 +1,6 @@
-import { containsCollections, deepForEach, reduce } from '../../utils/collection'
-import { factory } from '../../utils/factory'
-import { improveErrorMessage } from './utils/improveErrorMessage'
+import { containsCollections, deepForEach, reduce } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
+import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'sum'
 const dependencies = ['typed', 'config', 'add', 'numeric']
@@ -24,7 +24,7 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    * See also:
    *
-   *    mean, median, min, max, prod, std, variance
+   *    mean, median, min, max, prod, std, variance, cumsum
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The sum of all values

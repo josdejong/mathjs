@@ -30,7 +30,7 @@
  *     cat script.txt | mathjs > results.txt  Run input stream, output to file
  *
  * @license
- * Copyright (C) 2013-2020 Jos de Jong <wjosdejong@gmail.com>
+ * Copyright (C) 2013-2022 Jos de Jong <wjosdejong@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy
@@ -45,9 +45,10 @@
  * the License.
  */
 
-let scope = {}
 const fs = require('fs')
 const path = require('path')
+const { createEmptyMap } = require('../lib/cjs/utils/map.js')
+let scope = createEmptyMap()
 
 const PRECISION = 14 // decimals
 
@@ -58,7 +59,7 @@ const PRECISION = 14 // decimals
  * @return {*}
  */
 function getMath () {
-  return require('../lib/bundleAny')
+  return require('../lib/cjs/defaultInstance.js').default
 }
 
 /**
@@ -95,11 +96,9 @@ function completer (text) {
     keyword = m[0]
 
     // scope variables
-    for (const def in scope) {
-      if (hasOwnProperty(scope, def)) {
-        if (def.indexOf(keyword) === 0) {
-          matches.push(def)
-        }
+    for (const def in scope.keys()) {
+      if (def.indexOf(keyword) === 0) {
+        matches.push(def)
       }
     }
 
@@ -199,7 +198,7 @@ function runStream (input, output, mode, parenthesis) {
         break
       case 'clear':
         // clear memory
-        scope = {}
+        scope = createEmptyMap()
         console.log('memory cleared')
 
         // get next input
@@ -231,16 +230,17 @@ function runStream (input, output, mode, parenthesis) {
                 if (math.isAssignmentNode(node)) {
                   const name = findSymbolName(node)
                   if (name !== null) {
-                    scope.ans = scope[name]
-                    console.log(name + ' = ' + format(scope[name]))
+                    const value = scope.get(name)
+                    scope.set('ans', value)
+                    console.log(name + ' = ' + format(value))
                   } else {
-                    scope.ans = res
+                    scope.set('ans', res)
                     console.log(format(res))
                   }
                 } else if (math.isHelp(res)) {
                   console.log(res.toString())
                 } else {
-                  scope.ans = res
+                  scope.set('ans', res)
                   console.log(format(res))
                 }
               }

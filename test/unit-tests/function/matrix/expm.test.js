@@ -1,8 +1,8 @@
 // test expm
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const expm = math.expm
 
 describe('expm', function () {
@@ -88,6 +88,6 @@ describe('expm', function () {
 
   it('should LaTeX transpose', function () {
     const expression = math.parse('expm([[1,2],[3,4]])')
-    assert.strictEqual(expression.toTex(), '\\exp\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\exp\\left(\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}\\right)')
   })
 })

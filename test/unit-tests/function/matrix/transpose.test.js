@@ -1,7 +1,7 @@
 // test transpose
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const transpose = math.transpose
 
 describe('transpose', function () {
@@ -27,7 +27,7 @@ describe('transpose', function () {
     })
     assert.throws(function () {
       transpose([[[1], [2]], [[3], [4]]]) // size [2,2,1]
-    })
+    }, /RangeError: Matrix.*2, 2, 1/)
   })
 
   it('should throw an error if called with an invalid number of arguments', function () {
@@ -96,6 +96,6 @@ describe('transpose', function () {
 
   it('should LaTeX transpose', function () {
     const expression = math.parse('transpose([[1,2],[3,4]])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)^\\top')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}\\right)^\\top')
   })
 })

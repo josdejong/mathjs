@@ -1,7 +1,7 @@
 // test matrix construction
 import assert from 'assert'
 
-import math from '../../../../../src/bundleAny'
+import math from '../../../../../src/defaultInstance.js'
 const matrix = math.matrix
 
 describe('matrix', function () {
@@ -85,11 +85,11 @@ describe('matrix', function () {
   })
 
   it('should throw an error if called with too many arguments', function () {
-    assert.throws(function () { matrix([], 3, 3, 7) }, /TypeError: Too many arguments/)
+    assert.throws(function () { matrix([], 'dense', 'number', 7) }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error when called with an invalid storage format', function () {
-    assert.throws(function () { math.matrix([], 1) }, /TypeError: Unknown matrix type "1"/)
+    assert.throws(function () { math.matrix([], '1') }, /TypeError: Unknown matrix type "1"/)
   })
 
   it('should throw an error when called with an unknown storage format', function () {
@@ -101,6 +101,6 @@ describe('matrix', function () {
     const expr2 = math.parse('matrix([1])')
 
     assert.strictEqual(expr1.toTex(), '\\begin{bmatrix}\\end{bmatrix}')
-    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\end{bmatrix}\\right)')
   })
 })

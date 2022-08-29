@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { createRange } from '../../function/matrix/range'
+import { factory } from '../../utils/factory.js'
+import { createRange } from '../../function/matrix/range.js'
 
 const name = 'range'
 const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq']

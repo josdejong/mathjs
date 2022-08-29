@@ -6,7 +6,10 @@ export const forEachDocs = {
   ],
   description: 'Iterates over all elements of a matrix/array, and executes the given callback function.',
   examples: [
-    'forEach([1, 2, 3], function(val) { console.log(val) })'
+    'numberOfPets = {}',
+    'addPet(n) = numberOfPets[n] = (numberOfPets[n] ? numberOfPets[n]:0 ) + 1;',
+    'forEach(["Dog","Cat","Cat"], addPet)',
+    'numberOfPets'
   ],
   seealso: ['map', 'sort', 'filter']
 }

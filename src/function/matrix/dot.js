@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { isMatrix } from '../../utils/is'
+import { factory } from '../../utils/factory.js'
+import { isMatrix } from '../../utils/is.js'
 
 const name = 'dot'
 const dependencies = ['typed', 'addScalar', 'multiplyScalar', 'conj', 'size']

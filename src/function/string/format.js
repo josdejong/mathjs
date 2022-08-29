@@ -1,5 +1,5 @@
-import { format as formatString } from '../../utils/string'
-import { factory } from '../../utils/factory'
+import { format as formatString } from '../../utils/string.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'format'
 const dependencies = ['typed']
@@ -38,9 +38,23 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *        `lower` and `upper` bounds, and uses exponential notation elsewhere.
    *        Lower bound is included, upper bound is excluded.
    *        For example '123.4' and '1.4e7'.
+   *      - 'bin', 'oct, or 'hex'
+   *        Format the number using binary, octal, or hexadecimal notation.
+   *        For example '0b1101' and '0x10fe'.
+   *    - `wordSize: number`
+   *      The word size in bits to use for formatting in binary, octal, or
+   *      hexadecimal notation. To be used only with 'bin', 'oct', or 'hex'
+   *      values for 'notation' option. When this option is defined the value
+   *      is formatted as a signed twos complement integer of the given word
+   *      size and the size suffix is appended to the output.
+   *      For example format(-1, {notation: 'hex', wordSize: 8}) === '0xffi8'.
+   *      Default value is undefined.
    *    - `precision: number`
-   *      A number between 0 and 16 to round the digits of the number. In case
-   *      of notations 'exponential', 'engineering', and 'auto', `precision`
+   *      Limit the number of digits of the formatted value.
+   *      For regular numbers, must be a number between 0 and 16.
+   *      For bignumbers, the maximum depends on the configured precision,
+   *      see function `config()`.
+   *      In case of notations 'exponential', 'engineering', and 'auto', `precision`
    *      defines the total number of significant digits returned.
    *      In case of notation 'fixed', `precision` defines the number of
    *      significant digits after the decimal point.
@@ -54,6 +68,9 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    - `fraction: string`. Available values: 'ratio' (default) or 'decimal'.
    *      For example `format(fraction(1, 3))` will output '1/3' when 'ratio' is
    *      configured, and will output `0.(3)` when 'decimal' is configured.
+   *    - `truncate: number`. Specifies the maximum allowed length of the
+   *      returned string. If it would have been longer, the excess characters
+   *      are deleted and replaced with `'...'`.
    * - `callback: function`
    *   A custom formatting function, invoked for all numeric elements in `value`,
    *   for example all elements of a matrix, or the real and imaginary
@@ -79,14 +96,14 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * Examples:
    *
    *    math.format(6.4)                                        // returns '6.4'
-   *    math.format(1240000)                                    // returns '1.24e6'
+   *    math.format(1240000)                                    // returns '1.24e+6'
    *    math.format(1/3)                                        // returns '0.3333333333333333'
    *    math.format(1/3, 3)                                     // returns '0.333'
    *    math.format(21385, 2)                                   // returns '21000'
    *    math.format(12e8, {notation: 'fixed'})                  // returns '1200000000'
    *    math.format(2.3,  {notation: 'fixed', precision: 4})    // returns '2.3000'
    *    math.format(52.8, {notation: 'exponential'})            // returns '5.28e+1'
-   *    math.format(12400,{notation: 'engineering'})            // returns '12.400e+3'
+   *    math.format(12400, {notation: 'engineering'})           // returns '12.4e+3'
    *    math.format(2000, {lowerExp: -2, upperExp: 2})          // returns '2e+3'
    *
    *    function formatCurrency(value) {
@@ -96,7 +113,7 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *      // you could also use math.format inside the callback:
    *      // return '$' + math.format(value, {notation: 'fixed', precision: 2})
    *    }
-   *    math.format([2.1, 3, 0.016], formatCurrency}            // returns '[$2.10, $3.00, $0.02]'
+   *    math.format([2.1, 3, 0.016], formatCurrency)            // returns '[$2.10, $3.00, $0.02]'
    *
    * See also:
    *

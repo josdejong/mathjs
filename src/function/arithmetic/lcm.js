@@ -1,10 +1,9 @@
-import { factory } from '../../utils/factory'
-import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
-import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
-import { lcmNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
+import { createMatAlgo06xS0S0 } from '../../type/matrix/utils/matAlgo06xS0S0.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
+import { lcmNumber } from '../../plain/number/index.js'
 
 const name = 'lcm'
 const dependencies = [
@@ -14,11 +13,21 @@ const dependencies = [
 ]
 
 export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
-  const algorithm02 = createAlgorithm02({ typed, equalScalar })
-  const algorithm06 = createAlgorithm06({ typed, equalScalar })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
+  const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+
+  const lcmTypes = 'number | BigNumber | Fraction | Matrix | Array'
+  const lcmManySignature = {}
+  lcmManySignature[`${lcmTypes}, ${lcmTypes}, ...${lcmTypes}`] =
+    typed.referToSelf(self => (a, b, args) => {
+      let res = self(a, b)
+      for (let i = 0; i < args.length; i++) {
+        res = self(res, args[i])
+      }
+      return res
+    })
 
   /**
    * Calculate the least common multiple for two or more values or arrays.
@@ -49,81 +58,19 @@ export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * @param {... number | BigNumber | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Array | Matrix}                           The least common multiple
    */
-  return typed(name, {
-    'number, number': lcmNumber,
-
-    'BigNumber, BigNumber': _lcmBigNumber,
-
-    'Fraction, Fraction': function (x, y) {
-      return x.lcm(y)
+  return typed(
+    name, {
+      'number, number': lcmNumber,
+      'BigNumber, BigNumber': _lcmBigNumber,
+      'Fraction, Fraction': (x, y) => x.lcm(y)
     },
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm06(x, y, this)
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, this, true)
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm02(x, y, this, false)
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, this, false)
-    },
-
-    'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, this, false)
-    },
-
-    'number | BigNumber, SparseMatrix': function (x, y) {
-      return algorithm11(y, x, this, true)
-    },
-
-    'number | BigNumber, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
-    },
-
-    'Array, number | BigNumber': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, this, false).valueOf()
-    },
-
-    'number | BigNumber, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
-    },
-
-    // TODO: need a smarter notation here
-    'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function (a, b, args) {
-      let res = this(a, b)
-      for (let i = 0; i < args.length; i++) {
-        res = this(res, args[i])
-      }
-      return res
-    }
-  })
+    matrixAlgorithmSuite({
+      SS: matAlgo06xS0S0,
+      DS: matAlgo02xDS0,
+      Ss: matAlgo11xS0s
+    }),
+    lcmManySignature
+  )
 
   /**
    * Calculate lcm for two BigNumbers

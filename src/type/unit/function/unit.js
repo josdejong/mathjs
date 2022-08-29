@@ -1,5 +1,5 @@
-import { factory } from '../../../utils/factory'
-import { deepMap } from '../../../utils/collection'
+import { factory } from '../../../utils/factory.js'
+import { deepMap } from '../../../utils/collection.js'
 
 const name = 'unit'
 const dependencies = ['typed', 'Unit']
@@ -14,10 +14,13 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
    * Syntax:
    *
    *     math.unit(unit : string)
-   *     math.unit(value : number, unit : string)
+   *     math.unit(value : number, valuelessUnit : Unit)
+   *     math.unit(value : number, valuelessUnit : string)
    *
    * Examples:
    *
+   *    const kph = math.unit('km/h')   // returns Unit km/h (valueless)
+   *    const v = math.unit(25, kph)    // returns Unit 25 km/h
    *    const a = math.unit(5, 'cm')    // returns Unit 50 mm
    *    const b = math.unit('23 kg')    // returns Unit 23 kg
    *    a.to('m')                       // returns Unit 0.05 m
@@ -43,12 +46,15 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
       return Unit.parse(x, { allowNoUnits: true }) // a unit with value, like '5cm'
     },
 
-    'number | BigNumber | Fraction | Complex, string': function (value, unit) {
+    'number | BigNumber | Fraction | Complex, string | Unit': function (value, unit) {
       return new Unit(value, unit)
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'number | BigNumber | Fraction': function (value) {
+      // dimensionless
+      return new Unit(value)
+    },
+
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

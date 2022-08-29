@@ -1,8 +1,8 @@
 // test multiply
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
-import approx from '../../../../tools/approx'
+import math from '../../../../src/defaultInstance.js'
+import approx from '../../../../tools/approx.js'
 const multiply = math.multiply
 const divide = math.divide
 const matrix = math.matrix
@@ -169,6 +169,11 @@ describe('multiply', function () {
       assert.strictEqual(multiply(unit(math.complex(3, -4), 'N'), unit(math.complex(7, -2), 'm')).toString(), '(13 - 34i) J')
     })
 
+    it('should evaluate a complicated unit multiplication', function () {
+      const v1 = math.evaluate('0.1 kg/s * 4.2 J/degC/g * 5 degC')
+      approx.equal(v1.value, 2100)
+    })
+
     it('should multiply valueless units correctly', function () {
       assert.strictEqual(multiply(unit('m'), unit('4 m')).toString(), '4 m^2')
       assert.strictEqual(multiply(unit('ft'), unit('4 ft')).format(5), '4 ft^2')
@@ -178,6 +183,7 @@ describe('multiply', function () {
     })
 
     // TODO: cleanup once decided to not downgrade BigNumber to number
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should multiply a bignumber and a unit correctly', function () {
       assert.strictEqual(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
       assert.strictEqual(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
@@ -186,6 +192,7 @@ describe('multiply', function () {
     })
 
     // TODO: cleanup once decided to not downgrade BigNumber to number
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should multiply a bignumber and a unit without value correctly', function () {
       assert.strictEqual(multiply(bignumber(2), unit('mm')).toString(), '2 mm')
       assert.strictEqual(multiply(bignumber(2), unit('km')).toString(), '2 km')

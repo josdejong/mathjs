@@ -1,7 +1,7 @@
 // test transpose
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const ctranspose = math.ctranspose
 
 describe('ctranspose', function () {
@@ -157,6 +157,6 @@ describe('ctranspose', function () {
 
   it('should LaTeX transpose', function () {
     const expression = math.parse('ctranspose([[1+2i,3+4i],[5+6i,7+8i]])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1+2~ i&3+4~ i\\\\5+6~ i&7+8~ i\\\\\\end{bmatrix}\\right)^H')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1+2~ i&3+4~ i\\\\5+6~ i&7+8~ i\\end{bmatrix}\\right)^H')
   })
 })

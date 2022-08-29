@@ -1,5 +1,5 @@
 import Fraction from 'fraction.js'
-import { factory } from '../../utils/factory'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Fraction'
 const dependencies = []
@@ -8,6 +8,8 @@ export const createFractionClass = /* #__PURE__ */ factory(name, dependencies, (
   /**
    * Attach type information
    */
+  Object.defineProperty(Fraction, 'name', { value: 'Fraction' })
+  Fraction.prototype.constructor = Fraction
   Fraction.prototype.type = 'Fraction'
   Fraction.prototype.isFraction = true
 

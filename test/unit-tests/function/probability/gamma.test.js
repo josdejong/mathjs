@@ -1,6 +1,8 @@
+/* eslint-disable no-loss-of-precision */
+
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const gamma = math.gamma
 
@@ -100,6 +102,9 @@ describe('gamma', function () {
   })
 
   it('should calculate the gamma of a complex number', function () {
+    approx.deepEqual(gamma(math.complex(0, 0)), math.complex(Infinity))
+    approx.deepEqual(gamma(math.complex(0.0001, 0.0001)), math.complex(4999.422883240696,
+      -4999.9999011125))
     approx.deepEqual(gamma(math.complex(1, 1)), math.complex(0.498015668118356,
       -0.154949828301810))
     approx.deepEqual(gamma(math.complex(1, -1)), math.complex(0.498015668118356,
@@ -116,10 +121,19 @@ describe('gamma', function () {
       -0.0548501708))
     approx.deepEqual(gamma(math.complex(-0.5, -0.5)), math.complex(-1.581477828,
       0.054850170))
+    approx.deepEqual(gamma(math.complex(-0.45, -0.15)), math.complex(-3.2466111264,
+      0.2219549583256))
+    approx.deepEqual(gamma(math.complex(0.49, 1)), math.complex(0.294136245907794,
+      -0.4298609111267))
+    approx.deepEqual(gamma(math.complex(9.43, -4.15)), math.complex(-39533.5179564,
+      -7863.025662998))
     approx.deepEqual(gamma(math.complex(5, 3)), math.complex(0.016041882741652,
       -9.433293289755986))
     approx.deepEqual(gamma(math.complex(5, -3)), math.complex(0.016041882741652,
       9.433293289755986))
+    approx.deepEqual(gamma(math.complex(-4.242, 0.0001)), math.complex(-0.131096144111857,
+      -0.000063737771212))
+
     approx.deepEqual(math.multiply(gamma(math.complex(-5, 3)), 1e6),
       math.complex(7.896487481239, 4.756173836597))
     approx.deepEqual(math.multiply(gamma(math.complex(-5, -3)), 1e6),
@@ -131,12 +145,14 @@ describe('gamma', function () {
     assert.strictEqual(gamma(false), Infinity)
   })
 
-  it('should calculate the gamma of each element in a matrix', function () {
-    assert.deepStrictEqual(gamma(math.matrix([0, 1, 2, 3, 4, 5])), math.matrix([Infinity, 1, 1, 2, 6, 24]))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => gamma(math.matrix([0, 1, 2, 3, 4, 5])), /Function 'gamma' doesn't apply to matrices/)
+    assert.deepStrictEqual(math.map(math.matrix([0, 1, 2, 3, 4, 5]), gamma), math.matrix([Infinity, 1, 1, 2, 6, 24]))
   })
 
-  it('should calculate the gamma of each element in an array', function () {
-    assert.deepStrictEqual(gamma([0, 1, 2, 3, 4, 5]), [Infinity, 1, 1, 2, 6, 24])
+  it('should not operate on an array', function () {
+    assert.throws(() => gamma([0, 1, 2, 3, 4, 5]), TypeError)
+    assert.deepStrictEqual(math.map([0, 1, 2, 3, 4, 5], gamma), [Infinity, 1, 1, 2, 6, 24])
   })
 
   it('should throw en error if called with invalid number of arguments', function () {

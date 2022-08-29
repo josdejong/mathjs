@@ -1,0 +1,6 @@
+{
+  "reporter": "dot",
+  "timeout": 60000,
+  "forbid-only": true,
+  "recursive": true
+}

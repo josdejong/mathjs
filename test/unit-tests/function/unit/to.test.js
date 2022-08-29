@@ -1,6 +1,6 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const matrix = math.matrix
 const Unit = math.Unit
 const unit = math.unit
@@ -70,7 +70,7 @@ describe('to', function () {
 
   it('should throw an error if called with a number', function () {
     assert.throws(function () { math.to(5, unit('m')) }, TypeError)
-    assert.throws(function () { math.to(unit('5cm'), 2) }, /SyntaxError: "2" contains no units/)
+    assert.throws(function () { math.to(unit('5cm'), 2) }, TypeError)
   })
 
   it('should throw an error if called with a string', function () {

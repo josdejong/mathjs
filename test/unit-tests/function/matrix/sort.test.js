@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 
 describe('sort', function () {
   it('should sort an array with numbers', function () {
@@ -54,6 +54,6 @@ describe('sort', function () {
 
   it('should LaTeX sort', function () {
     const expression = math.parse('sort([3,2,1])')
-    assert.strictEqual(expression.toTex(), '\\mathrm{sort}\\left(\\begin{bmatrix}3\\\\2\\\\1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{sort}\\left(\\begin{bmatrix}3\\\\2\\\\1\\end{bmatrix}\\right)')
   })
 })

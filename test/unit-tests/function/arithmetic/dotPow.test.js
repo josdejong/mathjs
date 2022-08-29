@@ -1,8 +1,8 @@
 // test exp
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const complex = math.complex
 const matrix = math.matrix
 const sparse = math.sparse
@@ -167,6 +167,6 @@ describe('dotPow', function () {
 
   it('should LaTeX dotPow', function () {
     const expression = math.parse('dotPow([1,2],[3,4])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.^\\wedge\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\end{bmatrix}.^\\wedge\\begin{bmatrix}3\\\\4\\end{bmatrix}\\right)')
   })
 })

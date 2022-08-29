@@ -24,7 +24,11 @@ the lower level syntax of math.js. Differences are:
   not bitwise xor.
 - Implicit multiplication, like `2 pi`, is supported and has special rules.
 - Relational operators (`<`, `>`, `<=`, `>=`, `==`, and `!=`) are chained, so the expression `5 < x < 10` is equivalent to `5 < x and x < 10`.
-
+- Multi-expression constructs like `a = 1; b = 2; a + b` or
+  `"a = 1;\n cos(a)\n sin(a)"` (where `\n` denotes newline)
+  produce a collection ("ResultSet") of values. Those expressions
+  terminated by `;` are evaluated for side effect only and their values
+  are suppressed from the result.
 
 ## Operators
 
@@ -43,52 +47,59 @@ math.evaluate('2 + 3 * 4')   // 14
 math.evaluate('(2 + 3) * 4') // 20
 ```
 
-The following operators are available:
+The following operators are available. Note that almost every operator listed
+also has a function form with identical meaning that can be used
+interchangeably. For example, `x+y` will always evaluate identically to
+`add(x,y)`. For a full list of the equivalences, see the section on
+Functions below.
 
-Operator    | Name                    | Syntax      | Associativity | Example               | Result
------------ | ----------------------- | ----------  | ------------- | --------------------- | ---------------
-`(`, `)`    | Grouping                | `(x)`       | None          | `2 * (3 + 4)`         | `14`
-`[`, `]`    | Matrix, Index           | `[...]`     | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
-`{`, `}`    | Object                  | `{...}`     | None          | `{a: 1, b: 2}`        | `{a: 1, b: 2}`
-`,`         | Parameter separator     | `x, y`      | Left to right | `max(2, 1, 5)`        | `5`
-`.`         | Property accessor       | `obj.prop`  | Left to right | `obj={a: 12}; obj.a`  | `12`
-`;`         | Statement separator     | `x; y`      | Left to right | `a=2; b=3; a*b`       | `[6]`
-`;`         | Row separator           | `[x; y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
-`\n`        | Statement separator     | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
-`+`         | Add                     | `x + y`     | Left to right | `4 + 5`               | `9`
-`+`         | Unary plus              | `+y`        | Right to left | `+4`                  | `4`
-`-`         | Subtract                | `x - y`     | Left to right | `7 - 3`               | `4`
-`-`         | Unary minus             | `-y`        | Right to left | `-4`                  | `-4`
-`*`         | Multiply                | `x * y`     | Left to right | `2 * 3`               | `6`
-`.*`        | Element-wise multiply   | `x .* y`    | Left to right | `[1,2,3] .* [1,2,3]`  | `[1,4,9]`
-`/`         | Divide                  | `x / y`     | Left to right | `6 / 2`               | `3`
-`./`        | Element-wise divide     | `x ./ y`    | Left to right | `[9,6,4] ./ [3,2,2]`  | `[3,3,2]`
-`%`, `mod`  | Modulus                 | `x % y`     | Left to right | `8 % 3`               | `2`
-`^`         | Power                   | `x ^ y`     | Right to left | `2 ^ 3`               | `8`
-`.^`        | Element-wise power      | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[8,27]`
-`'`         | Transpose               | `y'`        | Left to right | `[[1,2],[3,4]]'`      | `[[1,3],[2,4]]`
-`!`         | Factorial               | `y!`        | Left to right | `5!`                  | `120`
-`&`         | Bitwise and             | `x & y`     | Left to right | `5 & 3`               | `1`
-`~`         | Bitwise not             | `~x`        | Right to left | `~2`                  | `-3`
+Operator    | Name                       | Syntax      | Associativity | Example               | Result
+----------- | -------------------------- | ----------  | ------------- | --------------------- | ---------------
+`(`, `)`    | Grouping                   | `(x)`       | None          | `2 * (3 + 4)`         | `14`
+`[`, `]`    | Matrix, Index              | `[...]`     | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
+`{`, `}`    | Object                     | `{...}`     | None          | `{a: 1, b: 2}`        | `{a: 1, b: 2}`
+`,`         | Parameter separator        | `x, y`      | Left to right | `max(2, 1, 5)`        | `5`
+`.`         | Property accessor          | `obj.prop`  | Left to right | `obj={a: 12}; obj.a`  | `12`
+`;`         | Statement separator        | `x; y`      | Left to right | `a=2; b=3; a*b`       | `[6]`
+`;`         | Row separator              | `[x; y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
+`\n`        | Statement separator        | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
+`+`         | Add                        | `x + y`     | Left to right | `4 + 5`               | `9`
+`+`         | Unary plus                 | `+y`        | Right to left | `+4`                  | `4`
+`-`         | Subtract                   | `x - y`     | Left to right | `7 - 3`               | `4`
+`-`         | Unary minus                | `-y`        | Right to left | `-4`                  | `-4`
+`*`         | Multiply                   | `x * y`     | Left to right | `2 * 3`               | `6`
+`.*`        | Element-wise multiply      | `x .* y`    | Left to right | `[1,2,3] .* [1,2,3]`  | `[1,4,9]`
+`/`         | Divide                     | `x / y`     | Left to right | `6 / 2`               | `3`
+`./`        | Element-wise divide        | `x ./ y`    | Left to right | `[9,6,4] ./ [3,2,2]`  | `[3,3,2]`
+`%`         | Percentage                 | `x%`        | None          | `8%`                  | `0.08`
+`%`         | Addition with Percentage   | `x + y%`    | Left to right | `100 + 3%`            | `103`
+`%`         | Subtraction with Percentage| `x - y%`    | Left to right | `100 - 3%`            | `97`
+`%` `mod`   | Modulus                    | `x % y`     | Left to right | `8 % 3`               | `2`
+`^`         | Power                      | `x ^ y`     | Right to left | `2 ^ 3`               | `8`
+`.^`        | Element-wise power         | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[8,27]`
+`'`         | Transpose                  | `y'`        | Left to right | `[[1,2],[3,4]]'`      | `[[1,3],[2,4]]`
+`!`         | Factorial                  | `y!`        | Left to right | `5!`                  | `120`
+`&`         | Bitwise and                | `x & y`     | Left to right | `5 & 3`               | `1`
+`~`         | Bitwise not                | `~x`        | Right to left | `~2`                  | `-3`
 <code>&#124;</code>  | Bitwise or     | <code>x &#124; y</code>   | Left to right | <code>5 &#124; 3</code>  | `7`
 <code>^&#124;</code> | Bitwise xor    | <code>x ^&#124; y</code>  | Left to right | <code>5 ^&#124; 2</code> | `7`
-`<<`        | Left shift              | `x << y`    | Left to right | `4 << 1`              | `8`
-`>>`        | Right arithmetic shift  | `x >> y`    | Left to right | `8 >> 1`              | `4`
-`>>>`       | Right logical shift     | `x >>> y`   | Left to right | `-8 >>> 1`            | `2147483644`
-`and`       | Logical and             | `x and y`   | Left to right | `true and false`      | `false`
-`not`       | Logical not             | `not y`     | Right to left | `not true`            | `false`
-`or`        | Logical or              | `x or y`    | Left to right | `true or false`       | `true`
-`xor`       | Logical xor             | `x xor y`   | Left to right | `true xor true`       | `false`
-`=`         | Assignment              | `x = y`     | Right to left | `a = 5`               | `5`
-`?` `:`     | Conditional expression  | `x ? y : z` | Right to left | `15 > 100 ? 1 : -1`   | `-1`
-`:`         | Range                   | `x : y`     | Right to left | `1:4`                 | `[1,2,3,4]`
-`to`, `in`  | Unit conversion         | `x to y`    | Left to right | `2 inch to cm`        | `5.08 cm`
-`==`        | Equal                   | `x == y`    | Left to right | `2 == 4 - 2`          | `true`
-`!=`        | Unequal                 | `x != y`    | Left to right | `2 != 3`              | `true`
-`<`         | Smaller                 | `x < y`     | Left to right | `2 < 3`               | `true`
-`>`         | Larger                  | `x > y`     | Left to right | `2 > 3`               | `false`
-`<=`        | Smallereq               | `x <= y`    | Left to right | `4 <= 3`              | `false`
-`>=`        | Largereq                | `x >= y`    | Left to right | `2 + 4 >= 6`          | `true`
+`<<`        | Left shift                 | `x << y`    | Left to right | `4 << 1`              | `8`
+`>>`        | Right arithmetic shift     | `x >> y`    | Left to right | `8 >> 1`              | `4`
+`>>>`       | Right logical shift        | `x >>> y`   | Left to right | `-8 >>> 1`            | `2147483644`
+`and`       | Logical and                | `x and y`   | Left to right | `true and false`      | `false`
+`not`       | Logical not                | `not y`     | Right to left | `not true`            | `false`
+`or`        | Logical or                 | `x or y`    | Left to right | `true or false`       | `true`
+`xor`       | Logical xor                | `x xor y`   | Left to right | `true xor true`       | `false`
+`=`         | Assignment                 | `x = y`     | Right to left | `a = 5`               | `5`
+`?` `:`     | Conditional expression     | `x ? y : z` | Right to left | `15 > 100 ? 1 : -1`   | `-1`
+`:`         | Range                      | `x : y`     | Right to left | `1:4`                 | `[1,2,3,4]`
+`to`, `in`  | Unit conversion            | `x to y`    | Left to right | `2 inch to cm`        | `5.08 cm`
+`==`        | Equal                      | `x == y`    | Left to right | `2 == 4 - 2`          | `true`
+`!=`        | Unequal                    | `x != y`    | Left to right | `2 != 3`              | `true`
+`<`         | Smaller                    | `x < y`     | Left to right | `2 < 3`               | `true`
+`>`         | Larger                     | `x > y`     | Left to right | `2 > 3`               | `false`
+`<=`        | Smallereq                  | `x <= y`    | Left to right | `4 <= 3`              | `false`
+`>=`        | Largereq                   | `x >= y`    | Left to right | `2 + 4 >= 6`          | `true`
 
 
 ## Precedence
@@ -104,7 +115,7 @@ Operators                         | Description
 `^`, `.^`                         | Exponentiation
 `+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
 See section below                 | Implicit multiplication
-`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus
+`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, percentage, modulus
 `+`, `-`                          | Add, subtract
 `:`                               | Range
 `to`, `in`                        | Unit conversion
@@ -135,8 +146,8 @@ math.evaluate('log(10000, 3 + 7)')  // 4
 math.evaluate('sin(pi / 4)')        // 0.7071067811865475
 ```
 
-New functions can be defined using the `function` keyword. Functions can be
-defined with multiple variables. Function assignments are limited: they can
+New functions can be defined by "assigning" an expression to a function call
+with one or more variables. Such function assignments are limited: they can
 only be defined on a single line.
 
 ```js
@@ -150,6 +161,35 @@ parser.evaluate('g(x, y) = x ^ y')
 parser.evaluate('g(2, 3)')  // 8
 ```
 
+Note that these function assignments do _not_ create closures; put another way,
+all free variables in mathjs are dynamic:
+
+```js
+const parser = math.parser()
+
+parser.evaluate('x = 7')
+parser.evaluate('h(y) = x + y')
+parser.evaluate('h(3)')         // 10
+parser.evaluate('x = 3')
+parser.evaluate('h(3)')         // 6, *not* 10
+```
+
+It is however possible to pass functions as parameters:
+
+```js
+const parser = math.parser()
+
+parser.evaluate('twice(func, x) = func(func(x))')
+parser.evaluate('twice(square, 2)')    // 16
+parser.evaluate('f(x) = 3*x')
+parser.evaluate('twice(f, 2)')         // 18
+
+// a simplistic "numerical derivative":
+parser.evaluate('eps = 1e-10')
+parser.evaluate('nd(f, x) = (f(x+eps) - func(x-eps))/(2*eps)')
+parser.evaluate('nd(square,2)')        // 4.000000330961484
+```
+
 Math.js itself heavily uses typed functions, which ensure correct inputs and
 throws meaningful errors when the input arguments are invalid. One can create
 a [typed-function](https://github.com/josdejong/typed-function) in the
@@ -161,6 +201,46 @@ const parser = math.parser()
 parser.evaluate('f = typed({"number": f(x) = x ^ 2 - 5})')
 ```
 
+Finally, as mentioned above, there is a function form for nearly every one of
+the mathematical operator symbols. Moreover, for some associative operators,
+the corresponding function allows arbitrarily many arguments. The table below
+gives the full correspondence.
+
+Operator Expression  | Equivalent Function Expression
+---------------------|-------------------------------
+`a or b`             |`or(a,b)`
+`a xor b`            |`xor(a,b)`
+`a and b`            |`and(a,b)`
+`a \| b`             |`bitOr(a,b)`
+`a ^\| b`            |`bitXor(a,b)`
+`a & b`              |`bitAnd(a,b)`
+`a == b`             |`equal(a,b)`
+`a != b`             |`unequal(a,b)`
+`a < b`              |`smaller(a,b)`
+`a > b`              |`larger(a,b)`
+`a <= b`             |`smallerEq(a,b)`
+`a << 3`             |`leftShift(a,3)`
+`a >> 3`             |`rightArithShift(a,3)`
+`a >>> 3`            |`rightLogShift(a,3)`
+`u to cm`            |`to(u, cm)`
+`a + b + c + ...`    |`add(a,b,c,...)`
+`a - b`              |`subtract(a,b)`
+`a * b * c * ...`    |`multiply(a,b,c,...)`
+`A .* B`             |`dotMultiply(A,B)`
+`A ./ B`             |`dotDivide(A,B)`
+`a mod b`            |`mod(a,b)`
+`+a`                 |`unaryPlus(a)`
+`-a`                 |`unaryMinus(a)`
+`~a`                 |`bitNot(a)`
+`not a`              |`not(a)`
+`a^b`                |`pow(a,b)`
+`A .^ B`             |`dotPow(A,B)`
+`a!`                 |`factorial(a)`
+`A'`                 |`ctranspose(A)`
+
+Note that math.js embodies a preference for the operator forms, in that calling
+`simplify` (see [Algebra](./algebra.md)) converts any instances of the function
+form into the corresponding operator.
 
 ## Constants and variables
 
@@ -283,6 +363,51 @@ const ans = math.evaluate('0.1 + 0.2')  //  0.30000000000000004
 math.format(ans, {precision: 14})       // "0.3"
 ```
 
+Numbers can be expressed as binary, octal, and hexadecimal literals:
+
+```js
+math.evaluate('0b11')  //  3
+math.evaluate('0o77')  //  63
+math.evaluate('0xff')  //  255
+```
+
+A word size suffix can be used to change the behavior of non decimal literal evaluation:
+
+```js
+math.evaluate('0xffi8')         // -1
+math.evaluate('0xffffffffi32')  //  -1
+math.evaluate('0xfffffffffi32') //  SyntaxError: String "0xfffffffff" is out of range
+```
+
+Non decimal numbers can include a radix point:
+```js
+math.evaluate('0b1.1')         // 1.5
+math.evaluate('0o1.4')         // 1.5
+math.evaluate('0x1.8')         // 1.5
+```
+
+Numbers can be formatted as binary, octal, and hex strings using the `notation` option of the `format` function:
+
+```js
+math.evaluate('format(3, {notation: "bin"})')    //  '0b11'
+math.evaluate('format(63, {notation: "oct"})')   //  '0o77'
+math.evaluate('format(255, {notation: "hex"})')  //  '0xff'
+math.evaluate('format(-1, {notation: "hex"})')   //  '-0x1'
+math.evaluate('format(2.3, {notation: "hex"})')  //  '0x2.4cccccccccccc'
+```
+
+The `format` function accepts a `wordSize` option to use in conjunction with the non binary notations:
+
+```js
+math.evaluate('format(-1, {notation: "hex", wordSize: 8})')   //  '0xffi8'
+```
+
+The functions `bin`, `oct`, and `hex` are shorthand for the `format` function with `notation` set accordingly:
+
+```js
+math.evaluate('bin(-1)')     // '-0b1'
+math.evaluate('bin(-1, 8)')  // '0b11111111i8'
+```
 
 ### BigNumbers
 
@@ -397,7 +522,7 @@ using function `string`.
 
 When setting the value of a character in a string, the character that has been
 set is returned. Likewise, when a range of characters is set, that range of
-characters is returned. 
+characters is returned.
 
 
 ```js
@@ -468,8 +593,11 @@ can be replaced by using indexes. Indexes are enclosed in square brackets, and
 contain a number or a range for each of the matrix dimensions. A range can have
 its start and/or end undefined. When the start is undefined, the range will start
 at 1, when the end is undefined, the range will end at the end of the matrix.
+
 There is a context variable `end` available as well to denote the end of the
-matrix.
+matrix. This variable cannot be used in multiple nested indices. In that case,
+`end` will be resolved as the end of the innermost matrix. To solve this, 
+resolving of the nested index needs to be split in two separate operations.
 
 *IMPORTANT: matrix indexes and ranges work differently from the math.js indexes
 in JavaScript: They are one-based with an included upper-bound, similar to most
@@ -499,7 +627,7 @@ parser.evaluate('c[end - 1 : -1 : 2]')    // Matrix, [8, 7, 6]
 ## Objects
 
 Objects in math.js work the same as in languages like JavaScript and Python.
-An object is enclosed by square brackets `{`, `}`, and contains a set of 
+An object is enclosed by curly brackets `{`, `}`, and contains a set of
 comma separated key/value pairs. Keys and values are separated by a colon `:`.
 Keys can be a symbol like `prop` or a string like `"prop"`.
 
@@ -514,7 +642,7 @@ Objects can contain objects:
 math.evaluate('{a: 2, b: {c: 3, d: 4}}')  // {a: 2, b: {c: 3, d: 4}}
 ```
 
-Object properties can be retrieved or replaced using dot notation or bracket 
+Object properties can be retrieved or replaced using dot notation or bracket
 notation. Unlike JavaScript, when setting a property value, the whole object
 is returned, not the property value
 
@@ -574,7 +702,7 @@ Parentheses are parsed as a function call when there is a symbol or accessor on
 the left hand side, like `sqrt(4)` or `obj.method(4)`. In other cases the
 parentheses are interpreted as an implicit multiplication.
 
-Math.js will always evaluate implicit multiplication before explicit multiplication `*`, so that the expression `x * y z` is parsed as `x * (y * z)`. Math.js also gives implicit multiplication higher precedence than division, *except* when the division matches the pattern `[number] / [number] [symbol]` or `[number] / [number] [left paren]`. In that special case, the division is evaluated first:
+Math.js will always evaluate implicit multiplication before explicit multiplication `*`, so that the expression `x * y z` is parsed as `x * (y * z)`. Math.js also gives implicit multiplication higher precedence than division, *except* when the division matches the pattern `[unaryPrefixOp]?[number] / [number] [symbol]` or `[unaryPrefixOp]?[number] / [number] [left paren]`. In that special case, the division is evaluated first:
 
 ```js
 math.evaluate('20 kg / 4 kg')   // 5      Evaluated as (20 kg) / (4 kg)
@@ -584,13 +712,13 @@ math.evaluate('20 / 4 kg')      // 5 kg   Evaluated as (20 / 4) kg
 The behavior of implicit multiplication can be summarized by these operator precedence rules, listed from highest to lowest precedence:
 
 - Function calls: `[symbol] [left paren]`
-- Explicit division `/` when the division matches this pattern: `[number] / [number] [symbol]` or `[number] / [number] [left paren]`
+- Explicit division `/` when the division matches this pattern: `[+-~]?[number] / [+-~]?[number] [symbol]` or `[number] / [number] [left paren]`
 - Implicit multiplication
 - All other division `/` and multiplication `*`
 
 Implicit multiplication is tricky as there can appear to be ambiguity in how an expression will be evaluated. Experience has shown that the above rules most closely match user intent when entering expressions that could be interpreted different ways. It's also possible that these rules could be tweaked in future major releases.  Use implicit multiplication carefully. If you don't like the uncertainty introduced by implicit multiplication, use explicit `*` operators and parentheses to ensure your expression is evaluated the way you intend.
 
-Here are some more examples using implicit multiplication:  
+Here are some more examples using implicit multiplication:
 
 Expression      | Evaluated as        | Result
 --------------- | ------------------- | ------------------

@@ -1,6 +1,6 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const quantileSeq = math.quantileSeq
 
@@ -59,6 +59,7 @@ describe('quantileSeq', function () {
   })
 
   // FIXME: should return the quantileSeq of an array of bignumbers with number probability
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should return the quantileSeq of an array of bignumbers with number probability', function () {
     approx.equal(quantileSeq([bignumber(0.5377), bignumber(1.8339), bignumber(-2.2588), bignumber(0.8622),
       bignumber(0.3188), bignumber(-1.3077), bignumber(-0.4336), bignumber(0.3426),

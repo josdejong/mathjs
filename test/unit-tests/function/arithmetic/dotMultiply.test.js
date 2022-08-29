@@ -1,8 +1,8 @@
 // test dotMultiply (element-wise multiply)
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
-import approx from '../../../../tools/approx'
+import math from '../../../../src/defaultInstance.js'
+import approx from '../../../../tools/approx.js'
 const dotMultiply = math.dotMultiply
 const divide = math.divide
 const matrix = math.matrix
@@ -177,6 +177,6 @@ describe('dotMultiply', function () {
 
   it('should LaTeX dotMultiply', function () {
     const expression = math.parse('dotMultiply([1,2],[3,4])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\end{bmatrix}.\\cdot\\begin{bmatrix}3\\\\4\\end{bmatrix}\\right)')
   })
 })

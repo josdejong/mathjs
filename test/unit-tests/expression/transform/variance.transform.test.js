@@ -1,10 +1,10 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 
-const Unit = math.Unit
 const variance = math.expression.transform.variance
 
-describe('variance', function () {
+describe('variance.transform', function () {
   const inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
     [[10, 200], [30, 40], [50, 60]],
     [[70, 80], [90, 100], [180, 120]],
@@ -34,7 +34,6 @@ describe('variance', function () {
 
   it('should throw an error if called with invalid type of arguments', function () {
     assert.throws(function () { variance(new Date(), 2) }, /Cannot calculate variance, unexpected type of argument/)
-    assert.throws(function () { variance(new Unit(5, 'cm'), new Unit(10, 'cm')) }, /Cannot calculate variance, unexpected type of argument/)
     assert.throws(function () { variance(2, 3, null) }, /Cannot calculate variance, unexpected type of argument/)
     assert.throws(function () { variance([2, 3, null]) }, /Cannot calculate variance, unexpected type of argument/)
     assert.throws(function () { variance([[2, 4, 6], [1, 3, 5]], 'biased', 0) }, /Cannot convert "biased" to a number/)
@@ -48,5 +47,25 @@ describe('variance', function () {
   it('should LaTeX var', function () {
     const expression = math.parse('variance(1,2,3)')
     assert.strictEqual(expression.toTex(), '\\mathrm{Var}\\left(1,2,3\\right)')
+  })
+
+  it('should compute the variance of quantities with units', function () {
+    const a = math.unit(10, 'cm')
+    const b = math.unit(20, 'cm')
+    const c = math.unit(50, 'cm^2')
+    approx.equal(variance([a, b]).toNumber('cm^2'), c.toNumber('cm^2'))
+  })
+
+  it('should compute the variance of quantities with compatible units', function () {
+    const a = math.unit(1, 'm')
+    const b = math.unit(50, 'cm')
+    const c = math.unit(1250, 'cm^2')
+    approx.equal(variance([a, b]).toNumber('cm^2'), c.toNumber('cm^2'))
+  })
+
+  it('should not compute the variance of quantities with incompatible units', function () {
+    const a = math.unit(1, 'm')
+    const b = math.unit(50, 'kg')
+    assert.throws(function () { variance([a, b]) }, /Units do not match/)
   })
 })

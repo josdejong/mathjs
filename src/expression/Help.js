@@ -1,7 +1,7 @@
-import { isHelp } from '../utils/is'
-import { clone } from '../utils/object'
-import { format } from '../utils/string'
-import { factory } from '../utils/factory'
+import { isHelp } from '../utils/is.js'
+import { clone } from '../utils/object.js'
+import { format } from '../utils/string.js'
+import { factory } from '../utils/factory.js'
 
 const name = 'Help'
 const dependencies = ['parse']
@@ -75,6 +75,9 @@ export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ pa
         }
       }
       desc += '\n'
+    }
+    if (doc.mayThrow && doc.mayThrow.length) {
+      desc += 'Throws: ' + doc.mayThrow.join(', ') + '\n\n'
     }
     if (doc.seealso && doc.seealso.length) {
       desc += 'See also: ' + doc.seealso.join(', ') + '\n'

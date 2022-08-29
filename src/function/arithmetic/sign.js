@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { signNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { signNumber } from '../../plain/number/index.js'
 
 const name = 'sign'
 const dependencies = ['typed', 'BigNumber', 'Fraction', 'complex']
@@ -51,13 +51,14 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return new Fraction(x.s, 1)
     },
 
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since sign(0) = 0
-      return deepMap(x, this, true)
-    },
+    // deep map collection, skip zeros since sign(0) = 0
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true)),
 
-    Unit: function (x) {
-      return this(x.value)
-    }
+    Unit: typed.referToSelf(self => x => {
+      if (!x._isDerived() && x.units[0].unit.offset !== 0) {
+        throw new TypeError('sign is ambiguous for units with offset')
+      }
+      return typed.find(self, x.valueType())(x.value)
+    })
   })
 })

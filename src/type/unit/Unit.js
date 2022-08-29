@@ -1,8 +1,9 @@
-import { isComplex, isUnit, typeOf } from '../../utils/is'
-import { factory } from '../../utils/factory'
-import { endsWith } from '../../utils/string'
-import { clone, hasOwnProperty } from '../../utils/object'
-import { createBigNumberPi as createPi } from '../../utils/bignumber/constants'
+import { isComplex, isUnit, typeOf } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { memoize } from '../../utils/function.js'
+import { endsWith } from '../../utils/string.js'
+import { clone, hasOwnProperty } from '../../utils/object.js'
+import { createBigNumberPi as createPi } from '../../utils/bignumber/constants.js'
 
 const name = 'Unit'
 const dependencies = [
@@ -48,8 +49,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * A unit can be constructed in the following ways:
    *
-   *     const a = new Unit(value, name)
-   *     const b = new Unit(null, name)
+   *     const a = new Unit(value, valuelessUnit)
+   *     const b = new Unit(null, valuelessUnit)
    *     const c = Unit.parse(str)
    *
    * Example usage:
@@ -62,9 +63,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @class Unit
    * @constructor Unit
    * @param {number | BigNumber | Fraction | Complex | boolean} [value]  A value like 5.2
-   * @param {string} [name]   A unit name like "cm" or "inch", or a derived unit of the form: "u1[^ex1] [u2[^ex2] ...] [/ u3[^ex3] [u4[^ex4]]]", such as "kg m^2/s^2", where each unit appearing after the forward slash is taken to be in the denominator. "kg m^2 s^-2" is a synonym and is also acceptable. Any of the units can include a prefix.
+   * @param {string | Unit} valuelessUnit   A unit without value. Can have prefix, like "cm"
    */
-  function Unit (value, name) {
+  function Unit (value, valuelessUnit) {
     if (!(this instanceof Unit)) {
       throw new Error('Constructor must be called with the new operator')
     }
@@ -72,42 +73,40 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (!(value === null || value === undefined || isNumeric(value) || isComplex(value))) {
       throw new TypeError('First parameter in Unit constructor must be number, BigNumber, Fraction, Complex, or undefined')
     }
-    if (name !== undefined && (typeof name !== 'string' || name === '')) {
-      throw new TypeError('Second parameter in Unit constructor must be a string')
-    }
-
-    if (name !== undefined) {
-      const u = Unit.parse(name)
-      this.units = u.units
-      this.dimensions = u.dimensions
-    } else {
-      this.units = [
-        {
-          unit: UNIT_NONE,
-          prefix: PREFIXES.NONE, // link to a list with supported prefixes
-          power: 0
-        }
-      ]
-      this.dimensions = []
-      for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
-        this.dimensions[i] = 0
-      }
-    }
-
-    this.value = (value !== undefined && value !== null) ? this._normalize(value) : null
 
     this.fixPrefix = false // if true, function format will not search for the
     // best prefix but leave it as initially provided.
     // fixPrefix is set true by the method Unit.to
 
     // The justification behind this is that if the constructor is explicitly called,
-    // the caller wishes the units to be returned exactly as he supplied.
+    // the caller wishes the units to be returned exactly as supplied.
     this.skipAutomaticSimplification = true
+
+    if (valuelessUnit === undefined) {
+      this.units = []
+      this.dimensions = BASE_DIMENSIONS.map(x => 0)
+    } else if (typeof valuelessUnit === 'string') {
+      const u = Unit.parse(valuelessUnit)
+      this.units = u.units
+      this.dimensions = u.dimensions
+    } else if (isUnit(valuelessUnit) && valuelessUnit.value === null) {
+      // clone from valuelessUnit
+      this.fixPrefix = valuelessUnit.fixPrefix
+      this.skipAutomaticSimplification = valuelessUnit.skipAutomaticSimplification
+      this.dimensions = valuelessUnit.dimensions.slice(0)
+      this.units = valuelessUnit.units.map(u => Object.assign({}, u))
+    } else {
+      throw new TypeError('Second parameter in Unit constructor must be a string or valueless Unit')
+    }
+
+    this.value = this._normalize(value)
   }
 
   /**
    * Attach type information
    */
+  Object.defineProperty(Unit, 'name', { value: 'Unit' })
+  Unit.prototype.constructor = Unit
   Unit.prototype.type = 'Unit'
   Unit.prototype.isUnit = true
 
@@ -216,20 +215,15 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     let unitName = ''
 
     // Alphanumeric characters only; matches [a-zA-Z0-9]
-    let code = text.charCodeAt(index)
-    while ((code >= 48 && code <= 57) ||
-    (code >= 65 && code <= 90) ||
-    (code >= 97 && code <= 122)) {
+    while (isDigit(c) || Unit.isValidAlpha(c)) {
       unitName += c
       next()
-      code = text.charCodeAt(index)
     }
 
     // Must begin with [a-zA-Z]
-    code = unitName.charCodeAt(0)
-    if ((code >= 65 && code <= 90) ||
-      (code >= 97 && code <= 122)) {
-      return unitName || null
+    const firstC = unitName.charAt(0)
+    if (Unit.isValidAlpha(firstC)) {
+      return unitName
     } else {
       return null
     }
@@ -372,7 +366,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       unit.units.push({
         unit: res.unit,
         prefix: res.prefix,
-        power: power
+        power
       })
       for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
         unit.dimensions[i] += (res.unit.dimensions[i] || 0) * power
@@ -469,6 +463,16 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Return the type of the value of this unit
+   *
+   * @memberof Unit
+   * @ return {string} type of the value of the unit
+   */
+  Unit.prototype.valueType = function () {
+    return typeOf(this.value)
+  }
+
+  /**
    * Return whether the unit is derived (such as m/s, or cm^2, but not N)
    * @memberof Unit
    * @return {boolean} True if the unit is derived
@@ -488,35 +492,20 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   Unit.prototype._normalize = function (value) {
-    let unitValue, unitOffset, unitPower, unitPrefixValue
-    let convert
-
     if (value === null || value === undefined || this.units.length === 0) {
       return value
-    } else if (this._isDerived()) {
-      // This is a derived unit, so do not apply offsets.
-      // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
-      let res = value
-      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
-
-      for (let i = 0; i < this.units.length; i++) {
-        unitValue = convert(this.units[i].unit.value)
-        unitPrefixValue = convert(this.units[i].prefix.value)
-        unitPower = convert(this.units[i].power)
-        res = multiplyScalar(res, pow(multiplyScalar(unitValue, unitPrefixValue), unitPower))
-      }
-
-      return res
-    } else {
-      // This is a single unit of power 1, like kg or degC
-      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
-
-      unitValue = convert(this.units[0].unit.value)
-      unitOffset = convert(this.units[0].unit.offset)
-      unitPrefixValue = convert(this.units[0].prefix.value)
-
-      return multiplyScalar(addScalar(value, unitOffset), multiplyScalar(unitValue, unitPrefixValue))
     }
+    let res = value
+    const convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
+
+    for (let i = 0; i < this.units.length; i++) {
+      const unitValue = convert(this.units[i].unit.value)
+      const unitPrefixValue = convert(this.units[i].prefix.value)
+      const unitPower = convert(this.units[i].power)
+      res = multiplyScalar(res, pow(multiplyScalar(unitValue, unitPrefixValue), unitPower))
+    }
+
+    return res
   }
 
   /**
@@ -528,40 +517,20 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   Unit.prototype._denormalize = function (value, prefixValue) {
-    let unitValue, unitOffset, unitPower, unitPrefixValue
-    let convert
-
     if (value === null || value === undefined || this.units.length === 0) {
       return value
-    } else if (this._isDerived()) {
-      // This is a derived unit, so do not apply offsets.
-      // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
-      // Also, prefixValue is ignored--but we will still use the prefix value stored in each unit, since kg is usually preferable to g unless the user decides otherwise.
-      let res = value
-      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
-
-      for (let i = 0; i < this.units.length; i++) {
-        unitValue = convert(this.units[i].unit.value)
-        unitPrefixValue = convert(this.units[i].prefix.value)
-        unitPower = convert(this.units[i].power)
-        res = divideScalar(res, pow(multiplyScalar(unitValue, unitPrefixValue), unitPower))
-      }
-
-      return res
-    } else {
-      // This is a single unit of power 1, like kg or degC
-      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
-
-      unitValue = convert(this.units[0].unit.value)
-      unitPrefixValue = convert(this.units[0].prefix.value)
-      unitOffset = convert(this.units[0].unit.offset)
-
-      if (prefixValue === undefined || prefixValue === null) {
-        return subtract(divideScalar(divideScalar(value, unitValue), unitPrefixValue), unitOffset)
-      } else {
-        return subtract(divideScalar(divideScalar(value, unitValue), prefixValue), unitOffset)
-      }
     }
+    let res = value
+    const convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
+
+    for (let i = 0; i < this.units.length; i++) {
+      const unitValue = convert(this.units[i].unit.value)
+      const unitPrefixValue = convert(this.units[i].prefix.value)
+      const unitPower = convert(this.units[i].power)
+      res = divideScalar(res, pow(multiplyScalar(unitValue, unitPrefixValue), unitPower))
+    }
+
+    return res
   }
 
   /**
@@ -572,15 +541,12 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    *                                  prefix is returned. Else, null is returned.
    * @private
    */
-  function _findUnit (str) {
+  const _findUnit = memoize((str) => {
     // First, match units names exactly. For example, a user could define 'mm' as 10^-4 m, which is silly, but then we would want 'mm' to match the user-defined unit.
     if (hasOwnProperty(UNITS, str)) {
       const unit = UNITS[str]
       const prefix = unit.prefixes['']
-      return {
-        unit,
-        prefix
-      }
+      return { unit, prefix }
     }
 
     for (const name in UNITS) {
@@ -594,17 +560,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
             : undefined
           if (prefix !== undefined) {
             // store unit, prefix, and value
-            return {
-              unit,
-              prefix
-            }
+            return { unit, prefix }
           }
         }
       }
     }
 
     return null
-  }
+  }, { hasher: (args) => args[0], limit: 100 })
 
   /**
    * Test if the given expression is a unit.
@@ -668,13 +631,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * Multiply this unit with another one
+   * Multiply this unit with another one or with a scalar
    * @memberof Unit
    * @param {Unit} other
    * @return {Unit} product of this unit and the other unit
    */
-  Unit.prototype.multiply = function (other) {
+  Unit.prototype.multiply = function (_other) {
     const res = this.clone()
+    const other = isUnit(_other) ? _other : new Unit(_other)
 
     for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
@@ -699,19 +663,33 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.value = null
     }
 
-    res.skipAutomaticSimplification = false
+    if (isUnit(_other)) {
+      res.skipAutomaticSimplification = false
+    }
 
     return getNumericIfUnitless(res)
   }
 
   /**
+   * Divide a number by this unit
+   *
+   * @memberof Unit
+   * @param {numeric} numerator
+   * @param {unit} result of dividing numerator by this unit
+   */
+  Unit.prototype.divideInto = function (numerator) {
+    return new Unit(numerator).divide(this)
+  }
+
+  /**
    * Divide this unit by another one
    * @memberof Unit
-   * @param {Unit} other
+   * @param {Unit | numeric} other
    * @return {Unit} result of dividing this unit by the other unit
    */
-  Unit.prototype.divide = function (other) {
+  Unit.prototype.divide = function (_other) {
     const res = this.clone()
+    const other = isUnit(_other) ? _other : new Unit(_other)
 
     for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
@@ -737,7 +715,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       res.value = null
     }
 
-    res.skipAutomaticSimplification = false
+    if (isUnit(_other)) {
+      res.skipAutomaticSimplification = false
+    }
 
     return getNumericIfUnitless(res)
   }
@@ -798,10 +778,21 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @returns {Unit}      The result: |x|, absolute value of x
    */
   Unit.prototype.abs = function () {
-    // This gives correct, but unexpected, results for units with an offset.
-    // For example, abs(-283.15 degC) = -263.15 degC !!!
     const ret = this.clone()
-    ret.value = ret.value !== null ? abs(ret.value) : null
+    if (ret.value !== null) {
+      if (ret._isDerived() || ret.units[0].unit.offset === 0) {
+        ret.value = abs(ret.value)
+      } else {
+        // To give the correct, but unexpected, results for units with an offset.
+        // For example, abs(-283.15 degC) = -263.15 degC !!!
+        // We must take the offset into consideration here
+        const convert = ret._numberConverter() // convert to Fraction or BigNumber if needed
+        const unitValue = convert(ret.units[0].unit.value)
+        const nominalOffset = convert(ret.units[0].unit.offset)
+        const unitOffset = multiplyScalar(unitValue, nominalOffset)
+        ret.value = subtract(abs(addScalar(ret.value, unitOffset)), unitOffset)
+      }
+    }
 
     for (const i in ret.units) {
       if (ret.units[i].unit.name === 'VA' || ret.units[i].unit.name === 'VAR') {
@@ -819,37 +810,43 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @returns {Unit} Returns a clone of the unit with a fixed prefix and unit.
    */
   Unit.prototype.to = function (valuelessUnit) {
-    let other
     const value = this.value === null ? this._normalize(1) : this.value
+    let other
     if (typeof valuelessUnit === 'string') {
-      // other = new Unit(null, valuelessUnit)
       other = Unit.parse(valuelessUnit)
-      if (!this.equalBase(other)) {
-        throw new Error(`Units do not match ('${other.toString()}' != '${this.toString()}')`)
-      }
-      if (other.value !== null) {
-        throw new Error('Cannot convert to a unit with a value')
-      }
-
-      other.value = clone(value)
-      other.fixPrefix = true
-      other.skipAutomaticSimplification = true
-      return other
     } else if (isUnit(valuelessUnit)) {
-      if (!this.equalBase(valuelessUnit)) {
-        throw new Error(`Units do not match ('${valuelessUnit.toString()}' != '${this.toString()}')`)
-      }
-      if (valuelessUnit.value !== null) {
-        throw new Error('Cannot convert to a unit with a value')
-      }
       other = valuelessUnit.clone()
-      other.value = clone(value)
-      other.fixPrefix = true
-      other.skipAutomaticSimplification = true
-      return other
     } else {
       throw new Error('String or Unit expected as parameter')
     }
+
+    if (!this.equalBase(other)) {
+      throw new Error(`Units do not match ('${other.toString()}' != '${this.toString()}')`)
+    }
+    if (other.value !== null) {
+      throw new Error('Cannot convert to a unit with a value')
+    }
+
+    if (this.value === null || this._isDerived() ||
+        this.units[0].unit.offset === other.units[0].unit.offset) {
+      other.value = clone(value)
+    } else {
+      /* Need to adjust value by difference in offset to convert */
+      const convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
+
+      const thisUnitValue = convert(this.units[0].unit.value)
+      const thisNominalOffset = convert(this.units[0].unit.offset)
+      const thisUnitOffset = multiplyScalar(thisUnitValue, thisNominalOffset)
+
+      const otherUnitValue = convert(other.units[0].unit.value)
+      const otherNominalOffset = convert(other.units[0].unit.offset)
+      const otherUnitOffset = multiplyScalar(otherUnitValue, otherNominalOffset)
+
+      other.value = subtract(addScalar(value, thisUnitOffset), otherUnitOffset)
+    }
+    other.fixPrefix = true
+    other.skipAutomaticSimplification = true
+    return other
   }
 
   /**
@@ -1103,7 +1100,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Simplfy the unit list, unless it is valueless or was created directly in the
     // constructor or as the result of to or toSI
     const simp = this.skipAutomaticSimplification || this.value === null
-      ? this.clone() : this.simplify()
+      ? this.clone()
+      : this.simplify()
 
     // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
     let isImaginary = false
@@ -2435,6 +2433,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       value: 4448.2216,
       offset: 0
     },
+    kilogramforce: {
+      name: 'kilogramforce',
+      base: BASE_UNITS.FORCE,
+      prefixes: PREFIXES.NONE,
+      value: 9.80665,
+      offset: 0
+    },
 
     // Energy
     J: {
@@ -2784,6 +2789,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     lbs: 'lbm',
 
     kips: 'kip',
+    kgf: 'kilogramforce',
 
     acres: 'acre',
     hectares: 'hectare',
@@ -2992,6 +2998,21 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Retrieve the right converter function corresponding with this unit's
+   * value
+   *
+   * @memberof Unit
+   * @return {Function}
+   */
+  Unit.prototype._numberConverter = function () {
+    const convert = Unit.typeConverters[this.valueType()]
+    if (convert) {
+      return convert
+    }
+    throw new TypeError('Unsupported Unit value type "' + this.valueType() + '"')
+  }
+
+  /**
    * Retrieve the right convertor function corresponding with the type
    * of provided exampleValue.
    *
@@ -3030,21 +3051,22 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
   }
 
+  /**
+   * Checks if a character is a valid latin letter (upper or lower case).
+   * Note that this function can be overridden, for example to allow support of other alphabets.
+   * @param {string} c Tested character
+   */
+  Unit.isValidAlpha = function isValidAlpha (c) {
+    return /^[a-zA-Z]$/.test(c)
+  }
+
   function assertUnitNameIsValid (name) {
     for (let i = 0; i < name.length; i++) {
-      const c = name.charAt(i)
+      c = name.charAt(i)
 
-      const isValidAlpha = function (p) {
-        return /^[a-zA-Z]$/.test(p)
-      }
+      if (i === 0 && !Unit.isValidAlpha(c)) { throw new Error('Invalid unit name (must begin with alpha character): "' + name + '"') }
 
-      const isDigit = function (c) {
-        return (c >= '0' && c <= '9')
-      }
-
-      if (i === 0 && !isValidAlpha(c)) { throw new Error('Invalid unit name (must begin with alpha character): "' + name + '"') }
-
-      if (i > 0 && !(isValidAlpha(c) ||
+      if (i > 0 && !(Unit.isValidAlpha(c) ||
         isDigit(c))) { throw new Error('Invalid unit name (only alphanumeric characters are allowed): "' + name + '"') }
     }
   }
@@ -3217,11 +3239,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       BASE_UNITS[baseName] = newBaseUnit
 
       newUnit = {
-        name: name,
+        name,
         value: 1,
         dimensions: BASE_UNITS[baseName].dimensions.slice(0),
-        prefixes: prefixes,
-        offset: offset,
+        prefixes,
+        offset,
         base: BASE_UNITS[baseName]
       }
 
@@ -3231,11 +3253,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       }
     } else {
       newUnit = {
-        name: name,
+        name,
         value: defUnit.value,
         dimensions: defUnit.dimensions.slice(0),
-        prefixes: prefixes,
-        offset: offset
+        prefixes,
+        offset
       }
 
       // Create a new base if no matching base exists
@@ -3285,6 +3307,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       alias.name = aliasName
       Unit.UNITS[aliasName] = alias
     }
+    // delete the memoization cache, since adding a new unit to the array
+    // invalidates all old results
+    delete _findUnit.cache
 
     return new Unit(null, name)
   }

@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { isBoolean, isNumber, isObject, isString } from '../../../src/utils/is'
-import math from '../../../src/bundleAny'
+import { isBoolean, isNumber, isObject, isString } from '../../../src/utils/is.js'
+import math from '../../../src/defaultInstance.js'
 const { bignumber, complex, fraction, matrix, parse } = math
 
 describe('is', function () {

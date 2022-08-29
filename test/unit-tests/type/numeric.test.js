@@ -1,11 +1,15 @@
 import assert from 'assert'
-import math from '../../../src/bundleAny'
+import math from '../../../src/defaultInstance.js'
 const numeric = math.numeric
 
 describe('numeric', function () {
   it('should throw if called with wrong number of arguments', function () {
     assert.throws(() => { numeric() }, /Cannot convert/)
-    assert.throws(() => { numeric(3.14) }, /Cannot convert/)
+    assert.throws(() => { numeric(3.14, 'Fraction', 'pi') }, SyntaxError)
+  })
+
+  it('should default to converting to number', function () {
+    assert.strictEqual(numeric('3.14'), 3.14)
   })
 
   it('should throw if called with invalid argument', function () {
@@ -40,7 +44,7 @@ describe('numeric', function () {
 
   it('should convert a BigNumber to a number', function () {
     assert.deepStrictEqual(numeric(math.bignumber(-0.125), 'number'), -0.125)
-    assert.deepStrictEqual(numeric(math.bignumber(1e500), 'number'), Infinity)
+    assert.deepStrictEqual(numeric(math.bignumber(1e500), 'number'), Infinity) // eslint-disable-line no-loss-of-precision
   })
 
   it('should convert a number to a BigNumber', function () {

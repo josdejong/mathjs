@@ -1,7 +1,7 @@
 /* eslint no-template-curly-in-string: "off" */
 
 import escapeLatexLib from 'escape-latex'
-import { hasOwnProperty } from './object'
+import { hasOwnProperty } from './object.js'
 
 export const latexSymbols = {
   // GREEK LETTERS
@@ -189,6 +189,7 @@ export const latexFunctions = {
   dot: { 2: '\\left(${args[0]}\\cdot${args[1]}\\right)' },
   expm: { 1: '\\exp\\left(${args[0]}\\right)' },
   inv: { 1: '\\left(${args[0]}\\right)^{-1}' },
+  pinv: { 1: '\\left(${args[0]}\\right)^{+}' },
   sqrtm: { 1: `{\${args[0]}}${latexOperators.pow}{\\frac{1}{2}}` },
   trace: { 1: '\\mathrm{tr}\\left(${args[0]}\\right)' },
   transpose: { 1: `\\left(\${args[0]}\\right)${latexOperators.transpose}` },
@@ -198,6 +199,7 @@ export const latexFunctions = {
   combinationsWithRep: { 2: '\\left(\\!\\!{\\binom{${args[0]}}{${args[1]}}}\\!\\!\\right)' },
   factorial: { 1: `\\left(\${args[0]}\\right)${latexOperators.factorial}` },
   gamma: { 1: '\\Gamma\\left(${args[0]}\\right)' },
+  lgamma: { 1: '\\ln\\Gamma\\left(${args[0]}\\right)' },
 
   // relational
   equal: { 2: `\\left(\${args[0]}${latexOperators.equal}\${args[1]}\\right)` },

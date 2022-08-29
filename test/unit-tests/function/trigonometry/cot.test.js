@@ -1,6 +1,6 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
-import approx from '../../../../tools/approx'
+import math from '../../../../src/defaultInstance.js'
+import approx from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -78,12 +78,14 @@ describe('cot', function () {
 
   const cot123 = [0.642092615934331, -0.457657554360286, -7.015252551434534]
 
-  it('should return the cotan of each element of an array', function () {
-    approx.deepEqual(cot([1, 2, 3]), cot123)
+  it('should not operate on an array', function () {
+    assert.throws(() => cot([1, 2, 3]), TypeError)
+    approx.deepEqual(math.map([1, 2, 3], cot), cot123)
   })
 
-  it('should return the cotan of each element of a matrix', function () {
-    approx.deepEqual(cot(matrix([1, 2, 3])), matrix(cot123))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => cot(matrix([1, 2, 3])), TypeError)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), cot), matrix(cot123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

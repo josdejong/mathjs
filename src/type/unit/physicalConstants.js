@@ -1,4 +1,4 @@
-import { factory } from '../../utils/factory'
+import { factory } from '../../utils/factory.js'
 
 // Source: https://en.wikipedia.org/wiki/Physical_constant
 

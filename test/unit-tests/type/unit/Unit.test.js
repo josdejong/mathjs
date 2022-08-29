@@ -1,8 +1,8 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
-import { isBigNumber, isFraction } from '../../../../src/utils/is'
-import { hasOwnProperty } from '../../../../src/utils/object'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
+import { isBigNumber, isFraction } from '../../../../src/utils/is.js'
+import { hasOwnProperty } from '../../../../src/utils/object.js'
 
 const Unit = math.Unit
 
@@ -20,10 +20,12 @@ describe('Unit', function () {
       unit1 = new Unit(null, 'kg')
       assert.strictEqual(unit1.value, null)
       assert.strictEqual(unit1.units[0].unit.name, 'g')
+      assert.strictEqual(unit1.valueType(), 'null')
 
       unit1 = new Unit(10, 'Hz')
       assert.strictEqual(unit1.value, 10)
       assert.strictEqual(unit1.units[0].unit.name, 'Hz')
+      assert.strictEqual(unit1.valueType(), 'number')
 
       unit1 = new Unit(9.81, 'kg m/s^2')
       assert.strictEqual(unit1.value, 9.81)
@@ -36,18 +38,21 @@ describe('Unit', function () {
       const unit1 = new Unit(math.fraction(1000, 3), 'cm')
       assert.deepStrictEqual(unit1.value, math.fraction(10, 3))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.valueType(), 'Fraction')
     })
 
     it('should create a unit with BigNumber value', function () {
       const unit1 = new Unit(math.bignumber(5000), 'cm')
       assert.deepStrictEqual(unit1.value, math.bignumber(50))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.valueType(), 'BigNumber')
     })
 
     it('should create a unit with Complex value', function () {
       const unit1 = new Unit(math.complex(500, 600), 'cm')
       assert.deepStrictEqual(unit1.value, math.complex(5, 6))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.valueType(), 'Complex')
     })
 
     it('should create square meter correctly', function () {
@@ -60,6 +65,21 @@ describe('Unit', function () {
       const unit1 = new Unit(0.000000001, 'km3')
       assert.strictEqual(unit1.value, 1)
       assert.strictEqual(unit1.units[0].unit.name, 'm3')
+    })
+
+    it('should create a unit from an existing unit', function () {
+      const unit1 = new Unit(null, 'm/s^2')
+      const unit2 = new Unit(5, unit1)
+      assert.strictEqual(unit2.value, 5)
+      assert.strictEqual(unit2.units.length, 2)
+      assert.strictEqual(unit2.units[0].unit.name, 'm')
+      assert.strictEqual(unit2.units[1].unit.name, 's')
+      assert.strictEqual(unit2.units[1].power, -2)
+    })
+
+    it('should create a unitless Unit if second parameter is undefined', function () {
+      const a = new Unit(6)
+      assert(a.dimensions.every(d => d === 0))
     })
 
     it('should ignore properties on Object.prototype', function () {
@@ -924,6 +944,14 @@ describe('Unit', function () {
       const unit3 = math3.Unit.parse('5kg')
       assert(isBigNumber(unit3.value))
     })
+
+    it('should parse new units that override old units', function () {
+      const math2 = math.create()
+      const oldMm = math2.Unit.parse('mm')
+      const newMm = math2.createUnit('mm', '2 A')
+      assert.notDeepStrictEqual(oldMm, newMm)
+      assert.deepStrictEqual(newMm, math2.Unit.parse('mm'))
+    })
   })
 
   describe('prefixes', function () {
@@ -999,6 +1027,25 @@ describe('Unit', function () {
       const unitP = unit5.pow(math.bignumber(-3.5))
       assert(math.isBigNumber(unitP.value))
     })
+
+    it('should multiply/divide units with offsets correctly', function () {
+      const unit1 = new Unit(1, 'm')
+      const unit2 = new Unit(1, 'degC')
+      const unit3 = new Unit(1, 'm degC')
+      unit3.skipAutomaticSimplification = false
+      assert.deepStrictEqual(unit1.multiply(unit2), unit3)
+      const unit4 = new Unit(1, 'in')
+      const unit5 = new Unit(1, 'degF')
+      const unit6 = new Unit(1, 'in/degF')
+      unit6.skipAutomaticSimplification = false
+      assert.deepStrictEqual(unit4.divide(unit5), unit6)
+    })
+
+    // eslint-disable-next-line mocha/no-skipped-tests
+    it.skip('should cancel units in numerator and denominator', function () {
+      assert.strictEqual(math.evaluate('2 J/K/g * 2 g').toString(), '4 J / K')
+      assert.strictEqual(math.evaluate('2 J/K/g * 2K').toString(), '4 J / g')
+    })
   })
 
   describe('plurals', function () {
@@ -1043,6 +1090,8 @@ describe('Unit', function () {
 
       assert.strictEqual(math.evaluate('2 feet * 8 s').toString(), '16 feet s')
       assert.strictEqual(math.evaluate('2 s * 8 feet').toString(), '16 s feet')
+
+      assert.strictEqual(math.evaluate('2 N + 2 kgf').toString(), '21.6133 N')
     })
   })
 
@@ -1057,6 +1106,7 @@ describe('Unit', function () {
       assert.strictEqual(new Unit(1, 'Wb/A').equals(new Unit(1, 'H')), true)
       assert.strictEqual(new Unit(1, 'ohm^-1').equals(new Unit(1, 'S')), true)
       assert.strictEqual(new Unit(1, 'eV').equals(new Unit(1.602176565e-19, 'J')), true)
+      assert.strictEqual(new Unit(1, 'kilogramforce').equals(new Unit(1, 'kgf')), true)
     })
 
     it("For each built-in unit, 'name' should match key", function () {
@@ -1118,7 +1168,9 @@ describe('Unit', function () {
 
     it('should create a custom unit from a configuration object', function () {
       Unit.createUnitSingle('wiggle', { definition: '4 rad^2/s', offset: 1, prefixes: 'long' })
-      assert.strictEqual(math.evaluate('8000 rad^2/s').toString(), '1 kilowiggle')
+      assert.strictEqual(math.evaluate('8000 rad^2/s').toString(), '2 kilowiggle')
+      Unit.createUnitSingle('wriggle', { definition: '4 rad^2/s', offset: 0, prefixes: 'long' })
+      assert.strictEqual(math.evaluate('2 wriggle to wiggle').toString(), '1 wiggle')
     })
 
     it('should return the new (value-less) unit', function () {
@@ -1137,6 +1189,8 @@ describe('Unit', function () {
       assert.throws(function () { Unit.createUnitSingle() }, /createUnitSingle expects first parameter/)
       assert.throws(function () { Unit.createUnitSingle(42) }, /createUnitSingle expects first parameter/)
       assert.throws(function () { Unit.createUnitSingle('42') }, /Error: Invalid unit name/)
+      assert.throws(function () { Unit.createUnitSingle('toto', 5) }, /TypeError: Cannot create unit/)
+      assert.throws(function () { Unit.createUnitSingle('foo', { definition: '1 vteřiny', prefixes: 'long' }) }, /Error: Could not create unit/)
     })
 
     it('should apply the correct prefixes', function () {
@@ -1245,6 +1299,7 @@ describe('Unit', function () {
     it('should return the unit in SI units', function () {
       assert.strictEqual(Unit.parse('3 ft').toSI().format(10), '0.9144 m')
       assert.strictEqual(Unit.parse('0.111 ft^2').toSI().format(10), '0.01031223744 m^2')
+      assert.strictEqual(Unit.parse('1 kgf').toSI().toString(), '9.80665 (kg m) / s^2')
     })
 
     it('should return SI units for valueless units', function () {
@@ -1259,6 +1314,38 @@ describe('Unit', function () {
     it('should throw if custom unit not defined from existing units', function () {
       Unit.createUnit({ baz: '' }, { override: true })
       assert.throws(function () { Unit.parse('10 baz').toSI() }, /Cannot express custom unit/)
+    })
+  })
+
+  describe('isValidAlpha', function () {
+    it('per default refuse to parse non-latin unit names', function () {
+      assert.throws(function () { Unit.createUnit({ чекушки: '0.25 L' }) }, /Error: Invalid unit name/)
+    })
+
+    it('should support cyrillic when Unit.isValidAlpha is overridden', function () {
+      const isValidCyrillic = function (c) {
+        const charCode = c.charCodeAt(0)
+        return charCode > 1039 && charCode < 1103
+      }
+      const isAlphaOriginal = math.Unit.isValidAlpha
+      Unit.isValidAlpha = function (c) {
+        return isAlphaOriginal(c) || isValidCyrillic(c)
+      }
+
+      Unit.createUnit({ чекушки: '0.25 L' })
+
+      assert.strictEqual(Unit.parse('2 чекушки').toSI().toString(), '5e-4 m^3')
+    })
+
+    it('should support wide range of european alphabets when Unit.isValidAlpha is overridden', function () {
+      const isAlphaOriginal = math.Unit.isValidAlpha
+      Unit.isValidAlpha = function (c) {
+        return isAlphaOriginal(c) || ((c).toUpperCase() !== (c).toLowerCase())
+      }
+
+      Unit.createUnit({ vteřiny: '1 s' })
+
+      assert.strictEqual(Unit.parse('21 vteřiny').toSI().toString(), '21 s')
     })
   })
 })

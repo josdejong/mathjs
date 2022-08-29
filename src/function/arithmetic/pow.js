@@ -1,7 +1,7 @@
-import { factory } from '../../utils/factory'
-import { isInteger } from '../../utils/number'
-import { arraySize as size } from '../../utils/array'
-import { powNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { isInteger } from '../../utils/number.js'
+import { arraySize as size } from '../../utils/array.js'
+import { powNumber } from '../../plain/number/index.js'
 
 const name = 'pow'
 const dependencies = [
@@ -10,16 +10,20 @@ const dependencies = [
   'identity',
   'multiply',
   'matrix',
+  'inv',
   'fraction',
   'number',
   'Complex'
 ]
 
-export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, identity, multiply, matrix, number, fraction, Complex }) => {
+export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, identity, multiply, matrix, inv, number, fraction, Complex }) => {
   /**
    * Calculates the power of x to y, `x ^ y`.
-   * Matrix exponentiation is supported for square matrices `x`, and positive
-   * integer exponents `y`.
+   *
+   * Matrix exponentiation is supported for square matrices `x` and integers `y`:
+   * when `y` is nonnegative, `x` may be any square matrix; and when `y` is
+   * negative, `x` must be invertible, and then this function returns
+   * inv(x)^(-y).
    *
    * For cubic roots of negative numbers, the function returns the principal
    * root by default. In order to let the function return the real root,
@@ -39,6 +43,9 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    *    const b = [[1, 2], [4, 3]]
    *    math.pow(b, 2)               // returns Array [[9, 8], [16, 17]]
+   *
+   *    const c = [[1, 2], [4, 3]]
+   *    math.pow(c, -1)               // returns Array [[-0.6, 0.4], [0.8, -0.2]]
    *
    * See also:
    *
@@ -64,14 +71,16 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     },
 
     'Fraction, Fraction': function (x, y) {
-      if (y.d !== 1) {
-        if (config.predictable) {
-          throw new Error('Function pow does not support non-integer exponents for fractions.')
-        } else {
-          return _pow(x.valueOf(), y.valueOf())
-        }
+      const result = x.pow(y)
+
+      if (result != null) {
+        return result
+      }
+
+      if (config.predictable) {
+        throw new Error('Result of pow is non-rational and cannot be expressed as a fraction')
       } else {
-        return x.pow(y)
+        return _pow(x.valueOf(), y.valueOf())
       }
     },
 
@@ -148,13 +157,13 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
   /**
    * Calculate the power of a 2d array
    * @param {Array} x     must be a 2 dimensional, square matrix
-   * @param {number} y    a positive, integer value
+   * @param {number} y    a integer value (positive if `x` is not invertible)
    * @returns {Array}
    * @private
    */
   function _powArray (x, y) {
-    if (!isInteger(y) || y < 0) {
-      throw new TypeError('For A^b, b must be a positive integer (value is ' + y + ')')
+    if (!isInteger(y)) {
+      throw new TypeError('For A^b, b must be an integer (value is ' + y + ')')
     }
     // verify that A is a 2 dimensional square matrix
     const s = size(x)
@@ -163,6 +172,16 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     }
     if (s[0] !== s[1]) {
       throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')')
+    }
+    if (y < 0) {
+      try {
+        return _powArray(inv(x), -y)
+      } catch (error) {
+        if (error.message === 'Cannot calculate inverse, determinant is zero') {
+          throw new TypeError('For A^b, when A is not invertible, b must be a positive integer (value is ' + y + ')')
+        }
+        throw error
+      }
     }
 
     let res = identity(s[0]).valueOf()

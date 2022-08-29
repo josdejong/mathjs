@@ -1,4 +1,4 @@
-import { isBigNumber } from './is'
+import { isBigNumber } from './is.js'
 
 /**
  * Clone an object
@@ -86,7 +86,9 @@ export function deepExtend (a, b) {
   }
 
   for (const prop in b) {
-    if (hasOwnProperty(b, prop)) {
+    // We check against prop not being in Object.prototype or Function.prototype
+    // to prevent polluting for example Object.__proto__.
+    if (hasOwnProperty(b, prop) && !(prop in Object.prototype) && !(prop in Function.prototype)) {
       if (b[prop] && b[prop].constructor === Object) {
         if (a[prop] === undefined) {
           a[prop] = {}
@@ -145,7 +147,7 @@ export function deepStrictEqual (a, b) {
     }
     for (prop in b) {
       // noinspection JSUnfilteredForInLoop
-      if (!(prop in a) || !deepStrictEqual(a[prop], b[prop])) {
+      if (!(prop in a)) {
         return false
       }
     }
@@ -190,7 +192,7 @@ export function canDefineProperty () {
   // test needed for broken IE8 implementation
   try {
     if (Object.defineProperty) {
-      Object.defineProperty({}, 'x', { get: function () {} })
+      Object.defineProperty({}, 'x', { get: function () { return null } })
       return true
     }
   } catch (e) {}

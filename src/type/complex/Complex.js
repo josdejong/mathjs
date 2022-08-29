@@ -1,7 +1,7 @@
 import Complex from 'complex.js'
-import { format } from '../../utils/number'
-import { isNumber, isUnit } from '../../utils/is'
-import { factory } from '../../utils/factory'
+import { format } from '../../utils/number.js'
+import { isNumber, isUnit } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Complex'
 const dependencies = []
@@ -10,6 +10,8 @@ export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ()
   /**
    * Attach type information
    */
+  Object.defineProperty(Complex, 'name', { value: 'Complex' })
+  Complex.prototype.constructor = Complex
   Complex.prototype.type = 'Complex'
   Complex.prototype.isComplex = true
 
@@ -130,7 +132,7 @@ export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ()
           }
 
           if (isNumber(phi)) {
-            return new Complex({ r: r, phi: phi })
+            return new Complex({ r, phi })
           }
 
           throw new TypeError('Phi is not a number nor an angle unit.')

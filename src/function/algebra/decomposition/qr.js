@@ -1,4 +1,4 @@
-import { factory } from '../../../utils/factory'
+import { factory } from '../../../utils/factory.js'
 
 const name = 'qr'
 const dependencies = [
@@ -233,8 +233,8 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
 
     // return matrices
     return {
-      Q: Q,
-      R: R,
+      Q,
+      R,
       toString: function () {
         return 'Q: ' + this.Q.toString() + '\nR: ' + this.R.toString()
       }

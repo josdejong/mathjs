@@ -1,6 +1,6 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
-import approx from '../../../../tools/approx'
+import math from '../../../../src/defaultInstance.js'
+import approx from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -97,11 +97,13 @@ describe('acot', function () {
     assert.throws(function () { acot('string') })
   })
 
-  it('should calculate the arccot element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => acot([1, 2, 3]), TypeError)
+    assert.throws(() => acot(matrix([1, 2, 3])), TypeError)
     // matrix, array, range
     const acot123 = [pi / 4, 0.4636476090008, 0.3217505543966]
-    approx.deepEqual(acot([1, 2, 3]), acot123)
-    approx.deepEqual(acot(matrix([1, 2, 3])), matrix(acot123))
+    approx.deepEqual(math.map([1, 2, 3], acot), acot123)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), acot), matrix(acot123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

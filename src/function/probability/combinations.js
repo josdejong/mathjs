@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { combinationsNumber } from '../../plain/number/combinations'
+import { factory } from '../../utils/factory.js'
+import { combinationsNumber } from '../../plain/number/combinations.js'
 
 const name = 'combinations'
 const dependencies = ['typed']

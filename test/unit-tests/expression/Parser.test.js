@@ -2,8 +2,8 @@
 
 import assert from 'assert'
 
-import approx from '../../../tools/approx'
-import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx.js'
+import math from '../../../src/defaultInstance.js'
 const Parser = math.Parser
 
 describe('parser', function () {
@@ -27,6 +27,13 @@ describe('parser', function () {
 
     const result = parser.evaluate('2 + 3')
     assert.strictEqual(result, 5)
+  })
+
+  it('should evaluate a list with expressions', function () {
+    const parser = new Parser()
+
+    const result = parser.evaluate(['a = 2', 'a + 3'])
+    assert.deepStrictEqual(result, [2, 5])
   })
 
   it('should get variables from the parsers namespace ', function () {
@@ -122,15 +129,16 @@ describe('parser', function () {
   })
 
   describe('security', function () {
-    it('should throw an error when accessing inherited properties', function () {
+    it('should return undefined when accessing what appears to be inherited properties', function () {
       try {
         const parser = new Parser()
 
         Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
         parser.clear()
-
-        assert.throws(function () { parser.get('foo') }, /No access/)
+        assert.strictEqual(parser.get('foo'), undefined)
+        // No longer uses a Object scope, so this now works!
+        // assert.throws(function () { parser.get('foo') }, /No access/)
       } finally {
         delete Object.prototype.foo
       }
@@ -139,7 +147,10 @@ describe('parser', function () {
     it('should throw an error when assigning an inherited property', function () {
       try {
         const parser = new Parser()
-        assert.throws(function () { parser.set('toString', null) }, /No access/)
+        // We can safely set within the parser
+        assert.strictEqual(parser.set('toString', null), null)
+        // But getting it out via getAll() will throw.
+        assert.throws(function () { parser.getAll() }, /No access/)
       } finally {
         delete Object.prototype.foo
       }

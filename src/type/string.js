@@ -1,6 +1,6 @@
-import { factory } from '../utils/factory'
-import { deepMap } from '../utils/collection'
-import { format } from '../utils/number'
+import { factory } from '../utils/factory.js'
+import { deepMap } from '../utils/collection.js'
+import { format } from '../utils/number.js'
 
 const name = 'string'
 const dependencies = ['typed']
@@ -50,9 +50,7 @@ export const createString = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return x
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    },
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self)),
 
     any: function (x) {
       return String(x)

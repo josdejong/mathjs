@@ -7,7 +7,7 @@ export const typedDocs = {
   ],
   description: 'Create a typed function.',
   examples: [
-    'double = typed({ "number, number": f(x)=x+x })',
+    'double = typed({ "number": f(x)=x+x })',
     'double(2)',
     'double("hello")'
   ],

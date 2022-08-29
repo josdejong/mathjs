@@ -1,6 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
-import _ from 'underscore'
+import math from '../../../../src/defaultInstance.js'
 
 const math2 = math.create({ randomSeed: 'test' })
 const random = math2.random
@@ -14,7 +13,7 @@ describe('random', function () {
   it('should pick uniformly distributed numbers in [0, 1]', function () {
     const picked = []
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push(random())
     })
     assertUniformDistribution(picked, 0, 1)
@@ -23,7 +22,7 @@ describe('random', function () {
   it('should pick uniformly distributed numbers in [min, max]', function () {
     const picked = []
 
-    _.times(1000, function () {
+    times(1000, function () {
       picked.push(random(-10, 10))
     })
     assertUniformDistribution(picked, -10, 10)
@@ -34,7 +33,7 @@ describe('random', function () {
     const matrices = []
     const size = [2, 3, 4]
 
-    _.times(100, function () {
+    times(100, function () {
       matrices.push(random(size))
     })
 
@@ -56,7 +55,7 @@ describe('random', function () {
     const matrices = []
     const size = [2, 3, 4]
 
-    _.times(100, function () {
+    times(100, function () {
       matrices.push(random(size, 8))
     })
 
@@ -78,7 +77,7 @@ describe('random', function () {
     const matrices = []
     const size = math2.matrix([2, 3, 4])
 
-    _.times(100, function () {
+    times(100, function () {
       matrices.push(random(size))
     })
 
@@ -100,7 +99,7 @@ describe('random', function () {
     const matrices = []
     const size = [2, 3, 4]
 
-    _.times(100, function () {
+    times(100, function () {
       matrices.push(random(size, -103, 8))
     })
 
@@ -137,13 +136,13 @@ function assertUniformDistribution (values, min, max) {
   const interval = (max - min) / 10
   let count
   let i
-  count = _.filter(values, function (val) { return val < min }).length
+  count = values.filter(function (val) { return val < min }).length
   assert.strictEqual(count, 0)
-  count = _.filter(values, function (val) { return val > max }).length
+  count = values.filter(function (val) { return val > max }).length
   assert.strictEqual(count, 0)
 
   for (i = 0; i < 10; i++) {
-    count = _.filter(values, function (val) {
+    count = values.filter(function (val) {
       return val >= (min + i * interval) && val < (min + (i + 1) * interval)
     }).length
     assertApproxEqual(count / values.length, 0.1, 0.02)
@@ -154,4 +153,10 @@ const assertApproxEqual = function (testVal, val, tolerance) {
   const diff = Math.abs(val - testVal)
   if (diff > tolerance) assert.strictEqual(testVal, val)
   else assert.ok(diff <= tolerance)
+}
+
+function times (n, callback) {
+  for (let i = 0; i < n; i++) {
+    callback()
+  }
 }

@@ -1,10 +1,11 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 
 const Unit = math.Unit
 const std = math.expression.transform.std
 
-describe('std', function () {
+describe('std.transform', function () {
   const inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
     [[10, 200], [30, 40], [50, 60]],
     [[70, 80], [90, 100], [180, 120]],
@@ -34,7 +35,6 @@ describe('std', function () {
 
   it('should throw an error if called with invalid type of arguments', function () {
     assert.throws(function () { std(new Date(), 2) }, /Cannot calculate std, unexpected type of argument/)
-    assert.throws(function () { std(new Unit(5, 'cm'), new Unit(10, 'cm')) }, /Cannot calculate std, unexpected type of argument/)
     assert.throws(function () { std(2, 3, null) }, /Cannot calculate std, unexpected type of argument/)
     assert.throws(function () { std([2, 3, null]) }, /Cannot calculate std, unexpected type of argument/)
     assert.throws(function () { std([[2, 4, 6], [1, 3, 5]], 'biased', 0) }, /Cannot convert "biased" to a number/)
@@ -48,5 +48,26 @@ describe('std', function () {
   it('should LaTeX std', function () {
     const expression = math.parse('std(1,2,3)')
     assert.strictEqual(expression.toTex(), '\\mathrm{std}\\left(1,2,3\\right)')
+  })
+
+  it('should compute the standard deviation value of quantities with units', function () {
+    const a = new Unit(2, 'cm')
+    const b = new Unit(5, 'cm')
+    const c = new Unit(8, 'cm')
+    const res = math.unit(3, 'cm')
+    approx.equal(std([a, b, c]).toNumber('cm'), res.toNumber('cm'))
+  })
+
+  it('should compute the standard deviation value of quantities with compatible units', function () {
+    const a = math.unit(1, 'm')
+    const b = math.unit(50, 'cm')
+    const c = math.unit(math.sqrt(1250), 'cm')
+    approx.equal(std([a, b]).toNumber('cm'), c.toNumber('cm'))
+  })
+
+  it('should not compute the standard deviation value of quantities with incompatible units', function () {
+    const a = math.unit(1, 'm')
+    const b = math.unit(50, 'kg')
+    assert.throws(function () { std([a, b]) }, /Units do not match/)
   })
 })

@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { maxArgumentCount, memoize, memoizeCompare } from '../../../src/utils/function'
-import { deepStrictEqual } from '../../../src/utils/object'
+import { maxArgumentCount, memoize, memoizeCompare } from '../../../src/utils/function.js'
+import { deepStrictEqual } from '../../../src/utils/object.js'
 
 describe('util.function', function () {
   describe('memoize', function () {
@@ -31,8 +31,8 @@ describe('util.function', function () {
       const m = memoize(f)
 
       assert.strictEqual(m({ x: 2, y: 3 }), 6)
-      assert.deepStrictEqual(Object.keys(m.cache), ['[{"x":2,"y":3}]'])
-      assert.strictEqual(m.cache['[{"x":2,"y":3}]'], 6)
+      assert.deepStrictEqual([...m.cache.values.keys()], ['[{"x":2,"y":3}]'])
+      assert.strictEqual(m.cache.values.get('[{"x":2,"y":3}]'), 6)
     })
 
     it('should memoize a function with a custom hashIt function', function () {
@@ -41,11 +41,11 @@ describe('util.function', function () {
         return 'id:' + args[0].id
       }
 
-      const m = memoize(f, hashIt)
+      const m = memoize(f, { hasher: hashIt })
 
       assert.strictEqual(m({ id: 2 }), 2)
-      assert.deepStrictEqual(Object.keys(m.cache), ['id:2'])
-      assert.strictEqual(m.cache['id:2'], 2)
+      assert.deepStrictEqual([...m.cache.values.keys()], ['id:2'])
+      assert.strictEqual(m.cache.values.get('id:2'), 2)
     })
 
     it('should really return the cached result', function () {
@@ -60,8 +60,22 @@ describe('util.function', function () {
     })
   })
 
+  it('should limit the number of values stored', function () {
+    let a = 1
+    const f = function (x) { a++; return a } // trick: no pure function
+
+    const m = memoize(f, { limit: 2 })
+
+    assert.strictEqual(m(1), 2)
+    assert.strictEqual(m(2), 3)
+    // this should evict m(1)
+    assert.strictEqual(m(3), 4)
+
+    assert.strictEqual(m(1), 5)
+  })
+
   describe('memoizeCompare', function () {
-    it('should memoize using comparison', () => {
+    it('should memoize using comparison', function () {
       let execCount = 0
 
       function multiply (obj) {

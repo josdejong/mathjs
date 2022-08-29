@@ -1,4 +1,4 @@
-import { factory } from '../../utils/factory'
+import { factory } from '../../utils/factory.js'
 
 const name = 'nthRoots'
 const dependencies = ['config', 'typed', 'divideScalar', 'Complex']
@@ -54,7 +54,7 @@ export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typ
         roots.push(_calculateExactResult[halfPiFactor % 4](r))
         continue
       }
-      roots.push(new Complex({ r: r, phi: (arg + 2 * Math.PI * k) / root }))
+      roots.push(new Complex({ r, phi: (arg + 2 * Math.PI * k) / root }))
     }
     return roots
   }
@@ -77,12 +77,12 @@ export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *    //   {re: 1, im: 0},
    *    //   {re: -1, im: 0}
    *    // ]
-   *    nthRoots(1, 3)
+   *    math.nthRoots(1, 3)
    *    // returns [
    *    //   { re: 1, im: 0 },
    *    //   { re: -0.4999999999999998, im: 0.8660254037844387 },
    *    //   { re: -0.5000000000000004, im: -0.8660254037844385 }
-   *    ]
+   *    // ]
    *
    * See also:
    *

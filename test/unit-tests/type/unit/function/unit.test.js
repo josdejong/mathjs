@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../../src/bundleAny'
+import math from '../../../../../src/defaultInstance.js'
 const unit = math.unit
 const Unit = math.Unit
 
@@ -26,6 +26,13 @@ describe('unit', function () {
     const a = math.unit('5cm')
     const b = math.unit(a)
     assert.deepStrictEqual(b.toString(), '5 cm')
+  })
+
+  it('should create a unit from an existing unit', function () {
+    const kelvin = math.unit('K')
+    const degF = math.unit('degF')
+    const a = math.unit(0, kelvin)
+    assert.deepStrictEqual(a.toNumeric(degF), -459.67)
   })
 
   it('should create units from all elements in an array', function () {

@@ -1,8 +1,19 @@
 import assert from 'assert'
-import math from '../../../src/bundleAny'
+import math from '../../../src/defaultInstance.js'
+import Decimal from 'decimal.js'
 const math2 = math.create()
 
 describe('typed', function () {
+  it('should allow access to typed-function facilities', function () {
+    const fn = math.typed({
+      identifier: () => 'variable',
+      string: () => 'expression'
+    })
+    assert.strictEqual(fn('a96b2'), 'variable')
+    assert.strictEqual(fn('a96+b2'), 'expression')
+    assert.throws(() => fn(47), TypeError)
+  })
+
   // TODO: Move (most) of the type checks like isNumber, isComplex, to is.test.js
 
   it('should test whether a value is a number', function () {
@@ -26,6 +37,12 @@ describe('typed', function () {
     assert.strictEqual(math.isBigNumber({ isBigNumber: true }), false)
     assert.strictEqual(math.isBigNumber(2), false)
     assert.strictEqual(math.isBigNumber(), false)
+  })
+
+  it('should recognize a Decimal as a BigNumber', function () {
+    assert.strictEqual(math.isBigNumber(Decimal(2)), true)
+    assert.strictEqual(math.isBigNumber(Decimal('2.6666666')), true)
+    assert.strictEqual(math.isBigNumber(Decimal(1).add(2)), true)
   })
 
   it('should test whether a value is a Fraction', function () {

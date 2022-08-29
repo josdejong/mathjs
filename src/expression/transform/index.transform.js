@@ -1,5 +1,5 @@
-import { isArray, isBigNumber, isMatrix, isNumber, isRange } from '../../utils/is'
-import { factory } from '../../utils/factory'
+import { isArray, isBigNumber, isMatrix, isNumber, isRange } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'index'
 const dependencies = ['Index']

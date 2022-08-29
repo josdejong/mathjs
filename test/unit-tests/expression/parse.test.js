@@ -1,8 +1,8 @@
 // test parse
 import assert from 'assert'
 
-import approx from '../../../tools/approx'
-import math from '../../../src/bundleAny'
+import approx from '../../../tools/approx.js'
+import math from '../../../src/defaultInstance.js'
 
 const parse = math.parse
 const ConditionalNode = math.ConditionalNode
@@ -214,7 +214,7 @@ describe('parse', function () {
     })
 
     it('should fill in the property comment of a Node', function () {
-      assert.strictEqual(parse('2 + 3').comment, '')
+      assert.strictEqual(parse('2 + 3').comment, undefined)
 
       assert.strictEqual(parse('2 + 3 # hello').comment, '# hello')
       assert.strictEqual(parse('   # hi').comment, '# hi')
@@ -243,6 +243,38 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('300e-2'), 3)
       assert.strictEqual(parseAndEval('300E-2'), 3)
       assert.strictEqual(parseAndEval('3.2e2'), 320)
+
+      assert.strictEqual(parseAndEval('0b0'), 0)
+      assert.strictEqual(parseAndEval('0o0'), 0)
+      assert.strictEqual(parseAndEval('0x0'), 0)
+      assert.strictEqual(parseAndEval('0b01'), 0b1)
+      assert.strictEqual(parseAndEval('0o01234567'), 0o01234567)
+      assert.strictEqual(parseAndEval('0xabcdef'), 0xabcdef)
+      assert.strictEqual(parseAndEval('0x3456789'), 0x3456789)
+      assert.strictEqual(parseAndEval('0xABCDEF'), 0xabcdef)
+      assert.strictEqual(parseAndEval('0x80i8'), -128)
+      assert.strictEqual(parseAndEval('0x80'), 128)
+      assert.strictEqual(parseAndEval('0x80000000i32'), -2147483648)
+      assert.strictEqual(parseAndEval('0xffffffffi32'), -1)
+      assert.strictEqual(parseAndEval('0xfffffffei32'), -2)
+      assert.strictEqual(parseAndEval('0o37777777777i32'), -1)
+      assert.strictEqual(parseAndEval('0b11111111111111111111111111111111i32'), -1)
+      assert.strictEqual(parseAndEval('0b11111111111111111111111111111110i32'), -2)
+      assert.strictEqual(parseAndEval('0b11111111111111111111111111111110'), 4294967294)
+      assert.strictEqual(parseAndEval('0x7fffffff'), 2 ** 31 - 1)
+      assert.strictEqual(parseAndEval('0x7fffffffi32'), 2 ** 31 - 1)
+      assert.strictEqual(parseAndEval('0x1fffffffffffff'), 2 ** 53 - 1)
+      assert.strictEqual(parseAndEval('0x1fffffffffffffi53'), -1)
+      assert.strictEqual(parseAndEval('0b1.1'), 1.5)
+      assert.strictEqual(parseAndEval('0o1.4'), 1.5)
+      assert.strictEqual(parseAndEval('0x1.8'), 1.5)
+      assert.strictEqual(parseAndEval('0x1.f'), 1.9375)
+      assert.strictEqual(parseAndEval('0b100.001'), 4.125)
+      assert.strictEqual(parseAndEval('0o100.001'), 64.001953125)
+      assert.strictEqual(parseAndEval('0x100.001'), 256.000244140625)
+      assert.strictEqual(parseAndEval('0b1.'), 1)
+      assert.strictEqual(parseAndEval('0o1.'), 1)
+      assert.strictEqual(parseAndEval('0x1.'), 1)
     })
 
     it('should parse a number followed by e', function () {
@@ -264,6 +296,21 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('-3e-.5') }, /Digit expected, got "."/)
 
       assert.throws(function () { parseAndEval('2e+a') }, /Digit expected, got "a"/)
+
+      assert.throws(function () { parseAndEval('0b') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0o') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0x') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0b2') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0o8') }, SyntaxError)
+      assert.throws(function () { parseAndEval('0xg') }, SyntaxError)
+
+      assert.throws(function () { parseAndEval('0x12ii') })
+      assert.throws(function () { parseAndEval('0x12u') })
+      assert.throws(function () { parseAndEval('0x12i-8') })
+
+      assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is no valid number/)
+      assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is no valid number/)
+      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is no valid number/)
     })
   })
 
@@ -280,6 +327,22 @@ describe('parse', function () {
 
       assert.deepStrictEqual(bigmath.parse('0.1').compile().evaluate(), bigmath.bignumber(0.1))
       assert.deepStrictEqual(bigmath.parse('1.2e5000').compile().evaluate(), bigmath.bignumber('1.2e5000'))
+
+      assert.deepStrictEqual(bigmath.parse('0xffffffff').compile().evaluate(), bigmath.bignumber(0xffffffff))
+      assert.deepStrictEqual(bigmath.parse('0x80000000i32').compile().evaluate(), bigmath.bignumber(-2147483648))
+      assert.deepStrictEqual(bigmath.parse('0xffffffffi32').compile().evaluate(), bigmath.bignumber(-1))
+      assert.deepStrictEqual(bigmath.parse('0xffffffffffffffffffffffffffffffffi128').compile().evaluate(), bigmath.bignumber(-1))
+      assert.deepStrictEqual(bigmath.parse('0xffffffffffffffffffffffffffffffff').compile().evaluate(), bigmath.bignumber('0xffffffffffffffffffffffffffffffff'))
+      assert.deepStrictEqual(bigmath.parse('0b1.1').compile().evaluate(), bigmath.bignumber(1.5))
+      assert.deepStrictEqual(bigmath.parse('0o1.4').compile().evaluate(), bigmath.bignumber(1.5))
+      assert.deepStrictEqual(bigmath.parse('0x1.8').compile().evaluate(), bigmath.bignumber(1.5))
+      assert.deepStrictEqual(bigmath.parse('0x1.f').compile().evaluate(), bigmath.bignumber(1.9375))
+      assert.deepStrictEqual(bigmath.parse('0b100.001').compile().evaluate(), bigmath.bignumber(4.125))
+      assert.deepStrictEqual(bigmath.parse('0o100.001').compile().evaluate(), bigmath.bignumber(64.001953125))
+      assert.deepStrictEqual(bigmath.parse('0x100.001').compile().evaluate(), bigmath.bignumber(256.000244140625))
+      assert.deepStrictEqual(bigmath.parse('0b1.').compile().evaluate(), bigmath.bignumber(1))
+      assert.deepStrictEqual(bigmath.parse('0o1.').compile().evaluate(), bigmath.bignumber(1))
+      assert.deepStrictEqual(bigmath.parse('0x1.').compile().evaluate(), bigmath.bignumber(1))
     })
   })
 
@@ -441,6 +504,8 @@ describe('parse', function () {
         math.unit(68, 'fahrenheit').to('fahrenheit'))
       approx.deepEqual(parseAndEval('50 fahrenheit to celsius'),
         math.unit(10, 'celsius').to('celsius'))
+      approx.deepEqual(parseAndEval('degC to degF'),
+        math.unit(1.8, 'degF').to('degF'))
     })
 
     it('should create units and aliases', function () {
@@ -760,6 +825,13 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj.foo.bar', { obj: { foo: { bar: 2 } } }), 2)
     })
 
+    it('should get a nested object property e using dot notation', function () {
+      // in the past, the parser was trying to parse '.e' as a number
+      const scope = { a: { e: { x: 2 } } }
+      assert.deepStrictEqual(parseAndEval('a.e', scope), { x: 2 })
+      assert.strictEqual(parseAndEval('a.e.x', scope), 2)
+    })
+
     it('should invoke a function in an object', function () {
       const scope = {
         obj: {
@@ -880,17 +952,17 @@ describe('parse', function () {
 
     it('should parse constants', function () {
       assert.strictEqual(parse('true').type, 'ConstantNode')
-      assert.deepStrictEqual(parse('true'), createConstantNode(true))
-      assert.deepStrictEqual(parse('false'), createConstantNode(false))
-      assert.deepStrictEqual(parse('null'), createConstantNode(null))
-      assert.deepStrictEqual(parse('undefined'), createConstantNode(undefined))
+      assert.deepStrictEqual(parse('true'), new ConstantNode(true))
+      assert.deepStrictEqual(parse('false'), new ConstantNode(false))
+      assert.deepStrictEqual(parse('null'), new ConstantNode(null))
+      assert.deepStrictEqual(parse('undefined'), new ConstantNode(undefined))
     })
 
     it('should parse numeric constants', function () {
       const nanConstantNode = parse('NaN')
       assert.deepStrictEqual(nanConstantNode.type, 'ConstantNode')
       assert.ok(isNaN(nanConstantNode.value))
-      assert.deepStrictEqual(parse('Infinity'), createConstantNode(Infinity))
+      assert.deepStrictEqual(parse('Infinity'), new ConstantNode(Infinity))
     })
 
     it('should evaluate constants', function () {
@@ -906,13 +978,6 @@ describe('parse', function () {
       assert.strictEqual(math.evaluate('true'), true)
       assert.strictEqual(math.evaluate('false'), false)
     })
-
-    // helper function to create a ConstantNode with empty comment
-    function createConstantNode (value) {
-      const c = new ConstantNode(value)
-      c.comment = ''
-      return c
-    }
   })
 
   describe('variables', function () {
@@ -1157,6 +1222,36 @@ describe('parse', function () {
 
     it('should parse mod %', function () {
       approx.equal(parseAndEval('8 % 3'), 2)
+      approx.equal(parseAndEval('80% pi'), 1.4601836602551685)
+      assert.throws(function () { parseAndEval('3%(-100)') }, /Cannot calculate mod for a negative divisor/)
+    })
+
+    it('should parse % value', function () {
+      approx.equal(parseAndEval('8 % '), 0.08)
+      approx.equal(parseAndEval('100%'), 1)
+    })
+
+    it('should parse % with multiplication', function () {
+      approx.equal(parseAndEval('100*50%'), 50)
+      approx.equal(parseAndEval('50%*100'), 50)
+      assert.throws(function () { parseAndEval('50%(*100)') }, /Value expected/)
+    })
+
+    it('should parse % with division', function () {
+      approx.equal(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
+      approx.equal(parseAndEval('100/50%*2'), 400) // should be treated as (100÷(50%))×2
+      approx.equal(parseAndEval('50%/100'), 0.005)
+      assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
+    })
+
+    it('should parse % with addition', function () {
+      approx.equal(parseAndEval('100+3%'), 103)
+      approx.equal(parseAndEval('3%+100'), 100.03)
+    })
+
+    it('should parse % with subtraction', function () {
+      approx.equal(parseAndEval('100-3%'), 97)
+      approx.equal(parseAndEval('3%-100'), -99.97)
     })
 
     it('should parse operator mod', function () {
@@ -1236,11 +1331,23 @@ describe('parse', function () {
 
     it('should follow precedence rules for implicit multiplication and division', function () {
       assert.strictEqual(parseAndStringifyWithParens('2 / 3 x'), '(2 / 3) x')
+      assert.strictEqual(parseAndStringifyWithParens('-2/3x'), '((-2) / 3) x')
+      assert.strictEqual(parseAndStringifyWithParens('+2/3x'), '((+2) / 3) x')
+      assert.strictEqual(parseAndStringifyWithParens('2!/3x'), '(2!) / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('(2)/3x'), '2 / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('2/3!x'), '2 / ((3!) x)')
+      assert.strictEqual(parseAndStringifyWithParens('2/(3)x'), '2 / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('(2+4)/3x'), '(2 + 4) / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('2/(3+4)x'), '2 / ((3 + 4) x)')
       assert.strictEqual(parseAndStringifyWithParens('2.5 / 5 kg'), '(2.5 / 5) kg')
       assert.strictEqual(parseAndStringifyWithParens('2.5 / 5 x y'), '((2.5 / 5) x) y')
       assert.strictEqual(parseAndStringifyWithParens('2 x / 5 y'), '(2 x) / (5 y)')
       assert.strictEqual(parseAndStringifyWithParens('17 h / 1 h'), '(17 h) / (1 h)')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 x'), '(1 / 2) x')
+      assert.strictEqual(parseAndStringifyWithParens('+1/2x'), '((+1) / 2) x')
+      assert.strictEqual(parseAndStringifyWithParens('~1/2x'), '((~1) / 2) x')
+      assert.strictEqual(parseAndStringifyWithParens('1 / -2 x'), '1 / ((-2) x)')
+      assert.strictEqual(parseAndStringifyWithParens('-1 / -2 x'), '(-1) / ((-2) x)')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 * x'), '(1 / 2) * x')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 x y'), '((1 / 2) x) y')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 (x y)'), '(1 / 2) (x y)')

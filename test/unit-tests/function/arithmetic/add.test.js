@@ -1,7 +1,7 @@
 // test add
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const add = math.add
 
 // TODO: make unit tests independent of math

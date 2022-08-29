@@ -1,7 +1,7 @@
 // test ArrayNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
 const RangeNode = math.RangeNode
@@ -25,7 +25,7 @@ describe('ArrayNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { ArrayNode() }, SyntaxError)
+    assert.throws(function () { ArrayNode() }, TypeError)
   })
 
   it('should throw an error on wrong constructor arguments', function () {
@@ -144,7 +144,7 @@ describe('ArrayNode', function () {
     const c = new ArrayNode([a, b])
 
     assert.throws(function () {
-      c.map(function () {})
+      c.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 
@@ -300,7 +300,36 @@ describe('ArrayNode', function () {
     const v2 = new ArrayNode([c, d])
     const n = new ArrayNode([v1, v2])
 
-    assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}')
+    assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}')
+  })
+
+  it('should LaTeX a nested ArrayNode', function () {
+    // [x, [y, [z]]]
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
+    const c = new ConstantNode(3)
+
+    const v1 = new ArrayNode([c])
+    const v2 = new ArrayNode([b, v1])
+    const n = new ArrayNode([a, v2])
+
+    assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&\\begin{bmatrix}2&\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}')
+  })
+
+  it('should LaTeX a nested ArrayNode', function () {
+    // [x; [y; [z]]]
+    const v = new ArrayNode([
+      new ArrayNode([new ConstantNode(1)]),
+      new ArrayNode([
+        new ArrayNode([
+          new ArrayNode([new ConstantNode(2)]),
+          new ArrayNode([
+            new ArrayNode([new ConstantNode(3)])
+          ])
+        ])
+      ])
+    ])
+    assert.strictEqual(v.toTex(), '\\begin{bmatrix}1\\\\\\begin{bmatrix}2\\\\\\begin{bmatrix}3\\end{bmatrix}\\end{bmatrix}\\end{bmatrix}')
   })
 
   it('should LaTeX an ArrayNode with custom toTex', function () {

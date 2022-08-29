@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/bundleAny'
+import math from '../../../src/defaultInstance.js'
 
 describe('security', function () {
   it('should not allow calling Function via constructor', function () {
@@ -32,11 +32,11 @@ describe('security', function () {
 
   it('should not allow calling constructor', function () {
     assert.throws(function () {
-      math.evaluate('constructor')
+      math.evaluate('constructor', {})
     }, /Error: No access to property "constructor"/)
 
     assert.throws(function () {
-      math.evaluate('toString')
+      math.evaluate('toString', {})
     }, /Cannot access method "toString" as a property/)
   })
 
@@ -104,7 +104,7 @@ describe('security', function () {
     assert.throws(function () {
       const math2 = math.create()
       math2.evaluate('import({matrix:cos.constructor},{override:1});x=["console.log(\'hacked...\')"];x()')
-    }, /Error: No access to property "constructor"/)
+    }, /Error: Undefined function import/)
   })
 
   it('should not allow calling Function via index retrieval', function () {
@@ -117,11 +117,11 @@ describe('security', function () {
     assert.throws(function () {
       math.evaluate('p = parser()\n' +
           'p.evaluate("", [])\n' +
-          'o = p.get("constructor")\n' +
-          'c = o.getOwnPropertyDescriptor(o.__proto__, "constructor")\n' +
+          'o = p.get("constructor")\n' + // this returns undefined
+          'c = o.getOwnPropertyDescriptor(o.__proto__, "constructor")\n' + // errors here!
           'f = c.value("console.log(\'hacked...\')")\n' +
           'f()')
-    }, /Error: No access to property "constructor"/)
+    }, /Error: No access to method "getOwnPropertyDescriptor"/)
   })
 
   it('should not allow calling Function via a symbol', function () {
@@ -297,13 +297,13 @@ describe('security', function () {
       math.evaluate('f=chain("a(){return evaluate;};function b").typed({"":f()=0}).done();' +
           'g=f();' +
           "g(\"console.log('hacked...')\")")
-    }, /(is not a function)|(Object expected)/)
+    }, /Error: Undefined function chain/)
   })
 
   it('should not allow using method chain (2)', function () {
     assert.throws(function () {
       math.evaluate("evilMath=chain().create().done();evilMath.import({\"_compile\":f(a,b,c)=\"evaluate\",\"isNode\":f()=true}); parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().evaluate()(\"console.log('hacked...')\")")
-    }, /(Cannot read property 'apply' of undefined)|(undefined has no properties)|(undefined is not an object)|(Unable to get property 'apply' of undefined or null reference)/)
+    }, /Error: Undefined function chain/)
   })
 
   it('should not allow using method Chain', function () {
@@ -389,6 +389,34 @@ describe('security', function () {
     assert.strictEqual(math.expression.mathWithTransform.Node, undefined)
     assert.strictEqual(math.expression.mathWithTransform.chain, undefined)
     assert.deepStrictEqual(math.evaluate('chain'), math.unit('chain'))
+  })
+
+  it('should not allow polluting the Object prototype via config', function () {
+    const obj = {}
+    assert.strictEqual(obj.polluted, undefined)
+
+    // change the configuration
+    const newConfig = JSON.parse('{"__proto__":{"polluted":"yes"}}')
+    math.config(newConfig)
+    assert.strictEqual(obj.polluted, undefined)
+  })
+
+  it('should not allow polluting the Object prototype via config via the expression parser', function () {
+    const obj = {}
+    assert.strictEqual(obj.polluted, undefined)
+
+    // change the configuration
+    math.evaluate('config({"__proto__":{"polluted":"yes"}})')
+    assert.strictEqual(obj.polluted, undefined)
+  })
+
+  it('should not allow polluting the Object prototype by creating an object in the expression parser', function () {
+    const obj = {}
+    assert.strictEqual(obj.polluted, undefined)
+
+    // change the configuration
+    math.evaluate('a = {"__proto__":{"polluted":"yes"}}')
+    assert.strictEqual(obj.polluted, undefined)
   })
 })
 

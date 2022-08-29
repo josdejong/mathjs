@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/bundleAny'
+import math from '../../../src/defaultInstance.js'
 const replacer = math.replacer
 
 describe('replacer', function () {
@@ -152,12 +152,14 @@ describe('replacer', function () {
                   name: 'x'
                 }
               ],
-              implicit: true
+              implicit: true,
+              isPercentage: false
             }
           ]
         }
       ],
-      implicit: false
+      implicit: false,
+      isPercentage: false
     }
 
     assert.deepStrictEqual(JSON.parse(JSON.stringify(node)), json)

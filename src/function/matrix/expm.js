@@ -1,6 +1,6 @@
-import { isSparseMatrix } from '../../utils/is'
-import { format } from '../../utils/string'
-import { factory } from '../../utils/factory'
+import { isSparseMatrix } from '../../utils/is.js'
+import { format } from '../../utils/string.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'expm'
 const dependencies = ['typed', 'abs', 'add', 'identity', 'inv', 'multiply']
@@ -131,7 +131,7 @@ export const createExpm = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       for (let q = 0; q <= k; q++) {
         const j = k - q
         if (errorEstimate(infNorm, q, j) < eps) {
-          return { q: q, j: j }
+          return { q, j }
         }
       }
     }

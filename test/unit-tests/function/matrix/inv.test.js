@@ -1,8 +1,8 @@
 // test inv
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const inv = math.inv
 
 describe('inv', function () {
@@ -121,6 +121,6 @@ describe('inv', function () {
 
   it('should  LaTeX inv', function () {
     const expression = math.parse('inv([[1,2],[3,4]])')
-    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)^{-1}')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}\\right)^{-1}')
   })
 })

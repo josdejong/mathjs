@@ -1,7 +1,7 @@
 // test ConditionalNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
@@ -30,7 +30,7 @@ describe('ConditionalNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { ConditionalNode() }, SyntaxError)
+    assert.throws(function () { ConditionalNode() }, TypeError)
   })
 
   it('should throw an error when creating without arguments', function () {
@@ -168,7 +168,7 @@ describe('ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

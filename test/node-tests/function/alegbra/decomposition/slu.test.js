@@ -1,5 +1,5 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
-const math = require('../../../../../lib/bundleAny')
+const math = require('../../../../../lib/cjs/defaultInstance').default
 const approx = require('../../../../../tools/approx')
 const market = require('../../../../../tools/matrixmarket')
 
@@ -112,7 +112,7 @@ describe('slu - matrix market', function () {
       values: cvalues,
       index: cindex,
       ptr: cptr,
-      size: size,
+      size,
       datatype: A._datatype
     })
   }

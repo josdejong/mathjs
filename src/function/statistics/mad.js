@@ -1,6 +1,6 @@
-import { flatten } from '../../utils/array'
-import { factory } from '../../utils/factory'
-import { improveErrorMessage } from './utils/improveErrorMessage'
+import { flatten } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
+import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'mad'
 const dependencies = ['typed', 'abs', 'map', 'median', 'subtract']

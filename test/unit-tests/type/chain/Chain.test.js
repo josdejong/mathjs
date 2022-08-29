@@ -1,14 +1,23 @@
 // test chain
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
-import { hasOwnProperty } from '../../../../src/utils/object'
+import math from '../../../../src/defaultInstance.js'
+import { hasOwnProperty } from '../../../../src/utils/object.js'
 const Chain = math.Chain
 
 describe('Chain', function () {
   it('should chain operations with numbers', function () {
     assert.strictEqual(new Chain(3).add(4).subtract(2).done(), 5)
     assert.strictEqual(new Chain(0).add(3).done(), 3)
+  })
+
+  it('should not chain a rest parameter across stored value and additional arguments', function () {
+    assert.throws(
+      () => new Chain(3).median(4, 5).done(),
+      /Error:.*median.*rest/)
+    assert.throws(
+      () => new Chain(3).ones(2, 'dense').done(),
+      /Error:.*ones.*rest/)
   })
 
   it('should have a property isChain', function () {

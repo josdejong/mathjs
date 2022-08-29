@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { log10Number } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { log10Number } from '../../plain/number/index.js'
 
 const name = 'log10'
 const dependencies = ['typed', 'config', 'Complex']
@@ -54,8 +54,6 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

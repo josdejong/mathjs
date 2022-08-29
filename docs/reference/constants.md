@@ -5,7 +5,7 @@ Math.js contains the following constants.
 Constant        | Description | Value
 --------------- | ----------- | -----
 `e`, `E`        | Euler's number, the base of the natural logarithm. | 2.718281828459045
-`i`             | Imaginary unit, defined as i*i=-1. A complex number is described as a + b*i, where a is the real part, and b is the imaginary part. | `sqrt(-1)`
+`i`             | Imaginary unit, defined as `i * i = -1`. A complex number is described as `a + b * i`, where a is the real part, and b is the imaginary part. | `sqrt(-1)`
 `Infinity`      | Infinity, a number which is larger than the maximum number that can be handled by a floating point number. | `Infinity`
 `LN2`           | Returns the natural logarithm of 2. | `0.6931471805599453`
 `LN10`          | Returns the natural logarithm of 10. | `2.302585092994046`

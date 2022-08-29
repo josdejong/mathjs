@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const matrix = math.matrix
 const flatten = math.flatten
 
@@ -47,6 +47,6 @@ describe('flatten', function () {
 
   it('should LaTeX flatten', function () {
     const expression = math.parse('flatten([[1,2],[3,4]])')
-    assert.strictEqual(expression.toTex(), '\\mathrm{flatten}\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{flatten}\\left(\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}\\right)')
   })
 })

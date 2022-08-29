@@ -1,7 +1,7 @@
 // test BlockNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
@@ -25,7 +25,7 @@ describe('BlockNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { BlockNode() }, SyntaxError)
+    assert.throws(function () { BlockNode() }, TypeError)
   })
 
   it('should throw an error when adding invalid blocks', function () {
@@ -151,7 +151,7 @@ describe('BlockNode', function () {
     ])
 
     assert.throws(function () {
-      a.map(function () {})
+      a.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

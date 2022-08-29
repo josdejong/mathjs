@@ -1,8 +1,551 @@
 # History
 
-# not yet published, version 7.2.0
+# 2022-07-26, unpublished changes
+
+- Add Unit constructor from value and pure (valueless) Unit (#2628).
+  Thanks @costerwi
+- Fix #2144: `examples/advanced/custom_loading.js` was broken.
+
+
+# 2022-07-25, version 11.0.1
+
+- Fix #2632: TypeScript issue of `simplifyConstant` and `simplifyCore`
+  not having a return type defined.
+
+
+# 2022-07-23, version 11.0.0
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+Breaking changes:
+
+- Dropped official support for IE11. 
+- Upgraded to `typed-function@3`, see [josdejong/typed-function/HISTORY.md](https://github.com/josdejong/typed-function/blob/develop/HISTORY.md#2022-05-12-version-300). Thanks @gwhitney. Most importantly: 
+    - Conversions now have preference over `any`.
+    - The `this` variable is no longer bound to the typed function itself.
+    - The properties `typed.types`, `typed.conversions`, and `typed.ignore` 
+      have been removed.
+    - There are new static functions available like `typed.referTo`, 
+      `typed.referToSelf`, `typed.addTypes`, `typed.addConversions`.
+- Implement amended "Rule 2" for implicit multiplication (#2370, #2460):
+  when having a division followed by an implicit multiplication, the division 
+  gets higher precedence over the implicit multiplication when (a) the 
+  numerator is a constant with optionally a prefix operator (`-`, `+`, `~`), 
+  and (b) the denominator is a constant. For example: formerly `-1 / 2 x` was 
+  interpreted as `-1 / (2 * x)` and now it is interpreted as `(-1 / 2) * x`.
+  Thanks @gwhitney.
+- Drop elementwise matrix support for trigonometric functions, exp, log, gamma,
+  square, sqrt, cube, and cbrt to prevent confusion with standard matrix 
+  functions (#2440, #2465). Instead, use `math.map(matrix, fn)`. 
+  Thanks @gwhitney.
+- Simplify: convert equivalent function calls into operators, for example, 
+  `add(2, x)` will now be simplified into `2 + x` (#2415, #2466).
+  Thanks @gwhitney.
+- Removed the automatic conversion from `number` to `string` (#2482).
+  Thanks @gwhitney.
+- Fix #2412: let function `diff` return an empty matrix when the input contains
+  only one element (#2422).
+- Internal refactoring in the `simplifyCore` logic (#2490, #2484, #2459).
+  The function `simplifyCore` will no longer (partially) merge constants, that 
+  behavior has been moved to `simplifyConstant`. The combination of 
+  `simplifyConstant` and `simplifyCore` is still close to the old behavior 
+  of `simplifyCore`, but there are some differences. To reproduce the same 
+  behavior as the old `simplifyCore`, you can use 
+  `math.simplify(expr, [math.simplifyCore, math.simplifyConstant])`. 
+  Thanks to the refactoring, `simplify` is more thorough in reducing constants. 
+  Thanks @gwhitney.
+- Disable support for splitting rest parameters in chained calculations 
+  (#2485, #2474). For example: `math.chain(3).max(4, 2).done()` will now throw
+  an error rather than return `4`, because the rest parameter of 
+  `math.max(...number)` has been split between the contents of the chain and 
+  the arguments to the max call. Thanks @gwhitney.
+- Function `typeOf` now returns `function` (lowercase) for a function instead 
+  of `Function` (#2560). Thanks @gwhitney.
+
+Non-breaking changes:
+
+- Fix #2600: improve the TypeScript definitions of `simplify`. 
+  Thanks @laureen-m and @mattvague.
+- Fix #2607: improve type definition of `createUnit`. Thanks @egziko.
+- Fix #2608: clarify the docs on the need to configure a smaller `epsilon`
+  when using BigNumbers.
+- Fix #2613: describe matrix methods `get` and `set` in the docs.
+- Fix link to `math.rationalize` in the docs (#2616). Thanks @nukisman.
+- Fix #2621: add TypeScript definitions for `count` (#2622). Thanks @Hansuku.
+- Improved TypeScript definitions of `multiply` (#2623). Thanks @Windrill.
+
+
+# 2022-06-28, version 10.6.4
+
+- Improve TypeScript definitions of the `factory` function, thanks @mattvague.
+
+
+# 2022-06-24, version 10.6.3
+
+- Revert the TypeScript definition fixes for `factory` applied in `v10.6.2`, 
+  they give some complications.
+
+
+# 2022-06-24, version 10.6.2
+
+- Improve TypeScript definitions of `ParenthesisNode`. Thanks @mattvague.
+- Change the TypeScript definition of `MathNodeCommon['type']` into a less 
+  strict string, so it is possible to extend with new Node classes. 
+  Thanks @mattvague.
+- Improve TypeScript definitions of the `factory` function, thanks @mattvague.
+
+
+# 2022-05-31, version 10.6.1
+
+- Improve the  TypeScript types For `OperatorNode`: you can now define generic 
+  types like `OperatorNode<'+', 'add'>`. Thanks @mattvague.
+
+
+# 2022-05-24, version 10.6.0
+
+- Implementation of fourier transform functions `fft` and `ifft` (#2540).
+  Thanks @HanchaiN.
+- Fix TypeScript types not being listed in the exported fields (#2569).
+  Thanks @mattvague. 
+- Large improvements in TypeScript definitions for chained expressions (#2537).
+  Thanks @mattvague.
+- Fix #2571: improve TypeScript definition of functions `clone` and `cloneDeep` 
+  (#2572). Thanks @mattvague.
+- Fix the first argument of `derivative` holding the expression not correctly
+  being converted when using `.toTex()` (#2564). Thanks @mattvague.
+
+
+# 2022-05-11, version 10.5.3
+
+- Fix #2337: npm package containing examples and docs to solve security 
+  vulnerabilities being reported on the examples and their dependencies.
+- Fix core, construction, and some other functions missing in docs.
+- Drop official support for Node.js 12 which has reached its end of life.
+
+
+# 2022-05-09, version 10.5.2
+
+- Fix #2553: `@types/mocha` defined in `dependencies` instead of 
+  `devDependencies`, causing problems in projects that use a different version
+  of this dependency. Thanks @Kolahzary.
+- Fix #2550: remove `examples/node_modules` folder from the npm package.
+- Fix #2528: improve contribution guidelines (#2548).
+- Document `SymbolNode.onUndefinedSymbol` and 
+  `FunctionNode.onUndefinedFunction`.
+
+
+# 2022-05-02, version 10.5.1
+
+- Fix #2526, #2529: improve TypeScript definitions of function `round`, `fix`,
+  `floor`, `ceil`, and `nthRoot`, and improved the number only implementations 
+  of those functions  (#2531, #2539). Thanks @simlaticak and @gwhitney.
+- Fix #2532: matrix index symbol `end` not working when used inside
+  a sub-expression.
+- Fix #2524: In generating AUTHORS list, ignore a list of specific commits
+  (e.g., to avoid spurious duplicates in list). (#2543)
+- Add type definitions of function `resolve` (#2536). Thanks @mattvague.
+
+
+# 2022-04-19, version 10.5.0
+
+- Implement #1563: function `pinv`, Moore–Penrose inverse (#2521). 
+  Thanks @HanchaiN.
+- Optimize function `det` for integers by switching to the Bareiss algorithm: 
+  no more round-off errors for integer input (#2516). Thanks @HanchaiN.
+- Implement #2463: allow negative integer powers of invertible square matrices
+  (#2517). Thanks @HanchaiN.
+- Implement the `lgamma` function (defined as log(gamma(z))) for number and
+  Complex types. Supersedes #320. (#2417). Thanks @yifanwww.
+- Fix #2523: update to the latest complex.js to improve `sin(z)` for small
+  `im(z)` (#2525). Thanks @gwhitney.
+- Fix #2526: update TypeScript definition of `ceil` (#2531). Thanks @simlaticak
+- Change mocha reporter to 'dot' to avoid excessively long log files. (#2520)
+
+
+# 2022-04-08, version 10.4.3
+
+- Fix #2508: improve the precision of stirlingS2 (#2509). Thanks @gwhitney.
+- Fix #2514: implement optional argument `base` in the number implementation
+  of function `log` (#2515). Thanks @gwhitney.
+- Improve the documentation on operator `;` (#2512). Thanks @gwhitney.
+
+
+# 2022-03-29, version 10.4.2
+
+- Fix #2499: different behavior for unit conversion "degC" and "K" (#2501).
+  Also disables getting the sign for units with an offset, which is ambiguous. 
+  Thanks @gwhitney.
+- Fix #2503: fix an issue in `log()` for complex numbers in which the imaginary
+  part is much larger in absolute value than the real part, fixed in 
+  `complex.js@2.1.0` (#2505), thanks @gwhitney, @infusion.
+- Fix #2493: unclear error message when an entity that is not a function
+  is being called as a function (#2494). Thanks @gwhitney.
+- Some fixes in the docs on units (#2498). Thanks @dvd101x.
+- Add `forEach` example in embedded docs (#2507). Thanks @dvd101x.
+- Correct approx.deepEqual() to accept an epsilon argument giving the
+  comparison tolerance. It was already being called this way, but was
+  silently ignoring the tolerance. Thanks @yifanwww.
+
+
+# 2022-03-23, version 10.4.1
+
+- Improve TypeScript definitions for function `unit` (#2479). 
+  Thanks @SinanAkkoyun.
+- Add tests for type declarations (#2448). Thanks @samestep.
+- Further improvement to TypeScript definitions of `std` and `variance`
+  (make dimension parameter optional, #2474). Thanks @NattapongSiri.
+- Next step (as per #2431) for full publication of "is" functions like
+  `isMatrix` etc: Provide TypeScript definitions of "is" functions and
+  make them type guards. (#2432). Thanks @ChristopherChudzicki.
+- Fix #2491: Multi line object expressions don't work with comments (#2492).
+  Thanks @gwhitney.
+- Fix #2478: a bug in calculating the eigenvectors when dealing with complex
+  numbers (#2496). Thanks @gwhitney.
+- Update project dependencies and devDependencies.
+
+
+# 2022-03-07, version 10.4.0
+
+- Fix #2461: make sure `simplifyCore` recurses over all binary nodes (#2462).
+  Thanks @gwhitney.
+- Fix #2429: fix the TypeScript definitions of functions `std` and `variance`
+  (#2455). Thanks @NattapongSiri.
+- Fix #1633: implement a `cumsum` function generating cumulative sums of a list
+  of values or a matrix. (#1870). Thanks @hjonasson.
+- Upgrade to the latest version of `Fraction.js`, having more strict input, 
+  only accepting an integer numerator and denominator. See #2427.
+- Fix typo in documentation example for `format`. (#2468) Thanks @abranhe.
+- Write unit tests for all jsdoc examples. See #2452. Thanks @gwhitney. 
+
+
+# 2021-03-02, version 10.3.0
+
+- Fix #1260: implement function `symbolicEqual` (#2424). Thanks @gwhitney.
+- Fix #2441, #2442: support passing a function as argument to functions created
+  in the expression parser (#2443). Thanks @gwhitney.
+- Fix #2325: improve documentation of subset indices (#2446). Thanks @gwhitney.
+- Fix #2439: fix a bug in `complexEigs` in which real-valued norms were 
+  inadvertently being typed as complex numbers (#2445). Thanks @gwhitney.
+- Fix #2436: improve documentation and error message of function `map` (#2457).
+  Thanks @gwhitney.
+
+
+# 2022-03-01, version 10.2.0
+
+- Implemented context options to control simplifications allowed in `simplify`, 
+  see #2399, #2391. Thanks @gwhitney.
+- Implemented function `leafCount` as a first simple measure of the complexity 
+  of an expression, see #2411, #2389. Thanks @gwhitney.
+- Fix #2413: improve `combinations` to return an integer result without rounding
+  errors for larger values, see #2414. Thanks @gwhitney.
+- Fix #2385: function `rotate` missing in TypeScript definitions. 
+  Thanks @DIVYA-19.
+- Fix #2450: Add BigNumber to parameter type in `math.unit` and add TypeScript
+  types for `Unit.simplify` and `Unit.units` (#2353). Thanks @joshhansen.
+- Fix #2383: detect infinite loops in `simplify` (#2405). Thanks @gwhitney.
+- Fix #1423: collect like factors and cancel like terms in sums (#2388). 
+  Thanks @gwhitney.
+
+
+# 2022-02-02, version 10.1.1
+
+- Improvements and fixes in function `simplify`, thanks @gwhitney:
+  - Fix #2393: regression bug in `simplify('2-(x+1)')`.
+  - Ad option `consoleDebug` to `simplify` to see what is going on.
+- Fix TypeScript definition of `ConfigOptions`, which was missing option 
+  `predictable`.
+
+
+# 2022-01-15, version 10.1.0
+
+- Implemented function `invmod`, see #2368, #1744. Thanks @thetazero.
+- Improvements and fixes in function `simplify`, thanks @gwhitney:
+  - Fix #1179, #1290: improve collection of non-constant like terms (#2384).
+  - Fix #2152: do not transform strings into numbers (#2372).
+  - Fix #1913: implement support for array and object simplification (#2382).
+- Fix #2379: add embedded documentation for function `print`.
+- Remove broken example from the embedded documentation of function `forEach`.
+
+
+# 2021-12-29, version 10.0.2
+
+- Fix #2156: simplify expressions like `-1 / (-x)` to `1/x`. Thanks @ony3000.
+- Fix #2363: remove a redundant part of the regex to split a number.
+- Fix #2291: add support for fractions in function `intersect`. 
+  Thanks @thetazero.
+- Fix #2358: bug in `SparseMatrix` when replacing a subset of a matrix with
+  a non-consecutive index. Thanks @Al-0.
+
+
+# 2021-12-22, version 10.0.1
+
+- Fix #1681: function `gamma` giving inaccurate complex results in some cases.
+  Thanks @kmdrGroch.
+- Fixed a typo in an example, see #2366. Thanks @blackwindforce.
+
+
+# 2021-11-03, version 10.0.0
+
+!!! BE CAREFUL: BREAKING CHANGES IN THE TYPESCRIPT DEFINITIONS !!!
+
+- Improvements to the Typescript typings (commit fc5c202e). 
+  Thanks @joshhansen. First introduced in v9.5.1, but reverted because
+  it contains breaking changes.
+  
+  Breaking changes: interface `MathNode` is now renamed to `MathNodeCommon`
+  and the related interfaces are structured in a different way.
+
+- Fixed a typo in the TypeScript definition of toHTML. Thanks @TheToto.
+
+
+# 2021-11-03, version 9.5.2`
+
+- Revert the improvements to the Typescript typings because they contain
+  breaking changes. The improvements will be published in v10.0.0. See #2339.
+
+
+# 2021-10-13, version 9.5.1
+
+- Various improvements to the Typescript typings. 
+  Thanks @joshhansen and @DianaTdr.
+
+
+# 2021-09-22, version 9.5.0
+
+- Implemented support for calculations with percentage, see #2303. 
+  Thanks @rvramesh.
+- Fix #2319: make the API of `Parser.evaluate` consistent with `math.evaluate`: 
+  support a list with expressions as input.
+- Improved documentation of function `setCartesian`. Thanks @fieldfoxWim.
+
+
+# 2021-09-15, version 9.4.5
+
+- Improved the performance of `Node.equals` by improving the internal 
+  function `deepStrictEqual`. Thanks @tomlarkworthy.
+- Fixes in the TypeScript definitions:
+  - Define `hasNumericValue`. Thanks @write2kcl. 
+  - Define `MathNode.isRelationalNode`. Thanks @m93a.
+  - Fix typo in `MathNode.isConditionalNode`. Thanks @m93a.
+
+
+# 2021-07-07, version 9.4.4
+
+- Fixed `ArrayNode.toTex()`: remove the row delimiter on the last row, 
+  see #2267. Thanks @davidtranhq.
+- Fix #2269: `intersect`  not returning `null` for matrix input. Thanks @m93a.
+- Fix #2245: mathjs not working in IE11 anymore due to a missing polyfill for
+  `Symbol`. The browser bundle now includes the necessary polyfills (it is 
+  larger now because of that, see also #2266). Thanks @m93a.
+- Update dependencies (`complex.js@2.0.15`, `decimal.js@10.3.1`)
+- Drop official support for node.js 10, which has reached end of life. 
+  See #2258.
+
+
+# 2021-06-23, version 9.4.3
+
+- Fix #2222: mathjs polluting the `Decimal` prototype. Thanks @m93a.
+- Fix #2253: expression parser throwing an error when accessing nested object
+  properties named `e`.
+- Fixes in the TypeScript definitions:
+  - function `floor`, #2159, #2246. Thanks @write2kcl.
+  - function `simplify`, see #2252. Thanks @nitroin. 
+- Upgraded to `decimal.js@10.3.0`
+
+
+# 2021-06-05, version 9.4.2
+
+- Implemented iterative eigenvalue finder for `eigs`, making it much more 
+  robust. See #2179, #2237. Thanks @m93a.
+- Improved TypeScript definitions of function `parse`. Thanks @OpportunityLiu.
+
+
+# 2021-05-24, version 9.4.1
+
+- Fix #2100: add TypeScript declaration for `eigs`. Thanks @andrebianchessi.
+- Fix #2220: add TypeScript files to published npm package. Thanks @dhritzkiv.
+- Update readme regarding TypeScript definition files. Thanks @dhritzkiv.
+- Update to `fraction.js@4.1.1`
+
+
+# 2021-05-16, version 9.4.0
+
+- Implemented support to use objects with a `Map` interface as scope, 
+  see #2143, #2166. Thanks @jhugman.
+- Extend `eigs` to support general complex matrices, see #1741. Thanks @m93a.
+- DenseMatrix and SparseMatrix are now iterable, see #1184. Thanks @m93a.
+- Implemented utility functions `matrixFromRows`, `matrixFromColumns`, and 
+  `matrixFromFunction`, see #2155, #2153. Thanks @m93a.
+- Added TypeScript definitions to the project, making it redundant to install
+  `@types/mathjs`, and making it easier to improve the definitions. See #2187, 
+  #2192. Thanks @CatsMiaow.
+- Upgraded dependencies
+  - `complex.js@2.0.13` (fixing #2211). Thanks @infusion
+  - `fraction.js@4.1.0` (`pow` now supporting rational exponents).
+- Fix #2174: function `pickRandom` having no name. Thanks @HK-SHAO.
+- Fix #2019: VSCode auto import keeps adding import { null } from 'mathjs'.
+- Fix #2185: Fix TypeScript definition of unit division, which can also return 
+  a number.
+- Fix #2123: add type definitions for functions `row` and `column`.
+- Fix some files not exposed in the package, see #2213. Thanks @javiermarinros.
+
+
+# 2021-04-12, version 9.3.2
+
+- Fix #2169: mathjs requesting `@babel/runtime` dependency. 
+  Regression introduced in `v9.3.1`.
+
+
+# 2021-04-10, version 9.3.1
+
+- Fix #2133: strongly improved the performance of `isPrime`, see #2139. 
+  Thanks @Yaffle.
+- Fix #2150: give a clear error "Error: Undefined function ..." instead when
+  evaluating a non-existing function.
+- Fix #660: expose internal functions `FunctionNode.onUndefinedFunction(name)` 
+  and `SymbolNode.onUndefinedSymbol(name)`, allowing to override the behavior.
+  By default, an Error is thrown.
+
+
+# 2021-03-10, version 9.3.0
+
+- Implemented support for parsing non decimal numbers with radix point,
+  see #2122, #2121. Thanks @clnhlzmn.
+- Fix #2128: typo in docs of `luSolveAll` and `usolveAll`.
+
+
+# 2021-02-03, version 9.2.0
+
+- Implemented function `count` to count the total elements in a matrix, 
+  see #2085. Thanks @Josef37.
+- Fix #2096: cleanup old reference to external dependency `crypto`.
+- Some refactoring in the code to remove duplications, see #2093. 
+  Thanks @Josef37.
+
+
+# 2021-01-27, version 9.1.0
+
+- Extended function `reshape` with support for a wildcard `-1` to automatically
+  calculate the remaining size, like `reshape([1, 2, 3, 4, 5, 6], [-1, 2])` 
+  which will output `[[0, 1], [2, 3], [4, 5]]`. See #2075. Thanks @Josef37.
+- Fix #2087: function `simplify` ignores second argument of `log`, for example
+  in `simplify('log(e, 9)')` . Thanks @quentintruong.
+
+
+# 2021-01-16, version 9.0.0
+
+- Improved support for bin, hex, and oct literals. See #1996. Thanks @clnhlzmn.
+  - **Breaking change**: parse literals with prefixes `0b`, `0c`, and `0x` are  
+    now unsigned by default. To parse them as signed, you have to specify a
+    suffix specifying the word size such as `i16` or `i32`.
+  - Function `format` now supports more notations: `bin`, 'hex', and `oct`,
+    for example `format(255, {notation: "hex"})`.
+  - The functions `format`, `bin`, `hex`, `oct` now allow specifying a wordSize, 
+    like `bin(10, 32)` and `format(10, {notation: "bin", wordSize: 32})`.
+  - BigNumber support for the bin, hex, and oct literals. 
+- Extended and improved the example rocket_trajectory_optimization.html.
+  Thanks @Josef37.
+
+
+# 2020-12-30, version 8.1.1
+
+- Improved the performance of parsing and evaluating units a lot, see #2065. 
+  Thanks @flaviut.
+- Upgraded dependency `fraction.js` to `v4.0.13`. 
+- Moved continuous integration testing from Travis CI to Github Workflow, 
+  see #2024, #2041. Thanks @harrysarson.
+
+
+# 2020-12-04, version 8.1.0
+
+- Implemented units `kilogramforce` (`kgf`). Thanks @rnd-debug.
+- Fix #2026: Implement a new option `fractionsLimit` for function `simplify`, 
+  defaulting to `Infinity`.
+- Improved the documentation of function `clone`. Thanks @redbar0n.
+
+
+# 2020-11-09, version 8.0.1
+
+- Fix #1979: missing "subset" dependency when using "mathjs/number" entry point.
+- Fix #2022: update pretty printing with MathJax example to the latest version 
+  of MathJax. Thanks @pkra.
+
+
+# 2020-11-06, version 8.0.0
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- You can now use mathjs directly in node.js using ES modules without need for 
+  a transpiler (see #1928, #1941, #1962). 
+  Automatically loading either commonjs code or ES modules code is improved.
+  All generated code is moved under `/lib`: the browser bundle is moved from 
+  `/dist` to `/lib/browser`, ES module files are moved to `/lib/esm`, 
+  and commonjs files are moved to `/lib/cjs`. Thanks @GreenImp.
+- Non-minified bundle `dist/math.js` is no longer provided. Either use the
+  minified bundle, or create a bundle yourself.
+- Replaced random library `seed-random` with `seedrandom`, see #1955. 
+  Thanks @poppinlp.
+- Breaking changes in `pickRandom`, see #1990, #1976.
+  - Will no longer return the input matrix when the given number is greater 
+    than the length of the provided possibles. Instead, the function always
+    returns results with the requested number of picks.
+  - Will now return a `Matrix` as output when input was a `Matrix`.
+  - Introduced a new syntax:
+    
+    ```
+    math.pickRandom(array, { weights, number, elementWise })
+    ```
+  - Introduced a new option `elementWise`, which is `true` by default. 
+    When setting `elementWise` to false, an array containing arrays will return
+    random pick of arrays instead of the elements inside of the nested arrays.
+
+
+# 2020-11-02, version 7.6.0
+
+- Implemented function `rotate(w, theta)`. See #1992, #1160. Thanks @rnd-debug. 
+- Implemented support for custom characters in Units via `Unit.isValidAlpha`. 
+  See #1663, #2000. Thanks @rnd-debug.
+
+
+# 2020-10-10, version 7.5.1
+
+- Fix object pollution vulnerability in `math.config`. Thanks Snyk.
+
+
+# 2020-10-07, version 7.5.0
+
+- Function `pickRandom` now allows randomly picking elements from matrices 
+  with 2 or more dimensions instead of only from a vector, see #1974.
+  Thanks @KonradLinkowski.
+
+
+# 2020-10-07, version 7.4.0
+
+- Implemented support for passing a precision in functions `ceil`, `floor`, 
+  and `fix`, similar to `round`, see #1967, #1901. Thanks @rnd-debug.
+- Implemented function `rotationMatrix`, see #1160, #1984. Thanks @rnd-debug.
+- Implement a clear error message when using `sqrtm` with a matrix having 
+  more than two dimensions. Thanks @KonradLinkowski.
+- Update dependency `decimal.js` to `10.2.1`.
+
+
+# 2020-09-26, version 7.3.0
+
+- Implemented functions `usolveAll` and `lsolveAll`, see #1916. Thanks @m93a.
+- Implemented support for units in functions `std` and `variance`, see #1950. 
+  Thanks @rnd-debug.
+- Implemented support for binary, octal, and hexadecimal notation in the 
+  expression parser, and implemented functions `bin`, `oct`, and `hex` for 
+  formatting. Thanks @clnhlzmn.
+- Fix #1964: inconsistent calculation of negative dividend modulo for 
+  `BigNumber` and `Fraction`. Thanks @ovk.
+
+
+# 2020-08-24, version 7.2.0
 
 - Implemented new function `diff`, see #1634, #1920. Thanks @Veeloxfire. 
+- Implemented support for norm 2 for matrices in function `norm`. 
+  Thanks @rnd-debug. 
 
 
 # 2020-07-13, version 7.1.0
@@ -1340,7 +1883,7 @@ Non breaking changes:
 
 ## 2015-10-29, version 2.4.1
 
-- Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
+- Fixed #480: `nthRoot` not working on Internet Explorer (up to IE11).
 - Fixed #490: `nthRoot` returning an error for negative values like
   `nthRoot(-2, 3)`.
 - Fixed #489: an issue with initializing a sparse matrix without data.

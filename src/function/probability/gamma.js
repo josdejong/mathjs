@@ -1,6 +1,5 @@
-import { deepMap } from '../../utils/collection'
-import { factory } from '../../utils/factory'
-import { gammaG, gammaNumber, gammaP } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { gammaG, gammaNumber, gammaP } from '../../plain/number/index.js'
 
 const name = 'gamma'
 const dependencies = ['typed', 'config', 'multiplyScalar', 'pow', 'BigNumber', 'Complex']
@@ -10,7 +9,8 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix Gamma function, this function does
+   * not apply to matrices.
    *
    * Syntax:
    *
@@ -26,55 +26,55 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    combinations, factorial, permutations
    *
-   * @param {number | Array | Matrix} n   A real or complex number
-   * @return {number | Array | Matrix}    The gamma of `n`
+   * @param {number | BigNumber | Complex} n   A real or complex number
+   * @return {number | BigNumber | Complex}    The gamma of `n`
    */
 
+  function gammaComplex (n) {
+    if (n.im === 0) {
+      return gammaNumber(n.re)
+    }
+
+    // Lanczos approximation doesn't work well with real part lower than 0.5
+    // So reflection formula is required
+    if (n.re < 0.5) { // Euler's reflection formula
+      // gamma(1-z) * gamma(z) = PI / sin(PI * z)
+      // real part of Z should not be integer [sin(PI) == 0 -> 1/0 - undefined]
+      // thanks to imperfect sin implementation sin(PI * n) != 0
+      // we can safely use it anyway
+      const t = new Complex(1 - n.re, -n.im)
+      const r = new Complex(Math.PI * n.re, Math.PI * n.im)
+
+      return new Complex(Math.PI).div(r.sin()).div(gammaComplex(t))
+    }
+
+    // Lanczos approximation
+    // z -= 1
+    n = new Complex(n.re - 1, n.im)
+
+    // x = gammaPval[0]
+    let x = new Complex(gammaP[0], 0)
+    // for (i, gammaPval) in enumerate(gammaP):
+    for (let i = 1; i < gammaP.length; ++i) {
+      // x += gammaPval / (z + i)
+      const gammaPval = new Complex(gammaP[i], 0)
+      x = x.add(gammaPval.div(n.add(i)))
+    }
+    // t = z + gammaG + 0.5
+    const t = new Complex(n.re + gammaG + 0.5, n.im)
+
+    // y = sqrt(2 * pi) * t ** (z + 0.5) * exp(-t) * x
+    const twoPiSqrt = Math.sqrt(2 * Math.PI)
+    const tpow = t.pow(n.add(0.5))
+    const expt = t.neg().exp()
+
+    // y = [x] * [sqrt(2 * pi)] * [t ** (z + 0.5)] * [exp(-t)]
+    return x.mul(twoPiSqrt).mul(tpow).mul(expt)
+  }
+
   return typed(name, {
-
     number: gammaNumber,
-
-    Complex: function (n) {
-      if (n.im === 0) {
-        return this(n.re)
-      }
-
-      n = new Complex(n.re - 1, n.im)
-      const x = new Complex(gammaP[0], 0)
-      for (let i = 1; i < gammaP.length; ++i) {
-        const real = n.re + i // x += p[i]/(n+i)
-        const den = real * real + n.im * n.im
-        if (den !== 0) {
-          x.re += gammaP[i] * real / den
-          x.im += -(gammaP[i] * n.im) / den
-        } else {
-          x.re = gammaP[i] < 0
-            ? -Infinity
-            : Infinity
-        }
-      }
-
-      const t = new Complex(n.re + gammaG + 0.5, n.im)
-      const twoPiSqrt = Math.sqrt(2 * Math.PI)
-
-      n.re += 0.5
-      const result = pow(t, n)
-      if (result.im === 0) { // sqrt(2*PI)*result
-        result.re *= twoPiSqrt
-      } else if (result.re === 0) {
-        result.im *= twoPiSqrt
-      } else {
-        result.re *= twoPiSqrt
-        result.im *= twoPiSqrt
-      }
-
-      const r = Math.exp(-t.re) // exp(-t)
-      t.re = r * Math.cos(-t.im)
-      t.im = r * Math.sin(-t.im)
-
-      return multiplyScalar(multiplyScalar(result, t), x)
-    },
-
+    Complex: gammaComplex,
     BigNumber: function (n) {
       if (n.isInteger()) {
         return (n.isNegative() || n.isZero())
@@ -87,10 +87,6 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
 
       throw new Error('Integer BigNumber expected')
-    },
-
-    'Array | Matrix': function (n) {
-      return deepMap(n, this)
     }
   })
 
@@ -105,7 +101,7 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     }
 
     const precision = config.precision + (Math.log(n.toNumber()) | 0)
-    const Big = BigNumber.clone({ precision: precision })
+    const Big = BigNumber.clone({ precision })
 
     if (n % 2 === 1) {
       return n.times(bigFactorial(new BigNumber(n - 1)))

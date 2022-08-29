@@ -1,7 +1,7 @@
-import { factory } from '../utils/factory'
-import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is'
-import { deepMap } from '../utils/collection'
-import { hasOwnProperty } from '../utils/object'
+import { factory } from '../utils/factory.js'
+import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
+import { deepMap } from '../utils/collection.js'
+import { hasOwnProperty } from '../utils/object.js'
 
 const name = 'parse'
 const dependencies = [
@@ -177,7 +177,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     true: true,
     false: false,
     null: null,
-    undefined: undefined
+    undefined
   }
 
   const NUMERIC_CONSTANTS = [
@@ -259,17 +259,21 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     state.token = ''
     state.comment = ''
 
-    // skip over whitespaces
-    // space, tab, and newline when inside parameters
-    while (parse.isWhitespace(currentCharacter(state), state.nestingLevel)) {
-      next(state)
-    }
-
-    // skip comment
-    if (currentCharacter(state) === '#') {
-      while (currentCharacter(state) !== '\n' && currentCharacter(state) !== '') {
-        state.comment += currentCharacter(state)
+    // skip over ignored characters:
+    while (true) {
+      // comments:
+      if (currentCharacter(state) === '#') {
+        while (currentCharacter(state) !== '\n' &&
+               currentCharacter(state) !== '') {
+          state.comment += currentCharacter(state)
+          next(state)
+        }
+      }
+      // whitespace: space, tab, and newline when inside parameters
+      if (parse.isWhitespace(currentCharacter(state), state.nestingLevel)) {
         next(state)
+      } else {
+        break
       }
     }
 
@@ -321,6 +325,39 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (parse.isDigitDot(c1)) {
       state.tokenType = TOKENTYPE.NUMBER
 
+      // check for binary, octal, or hex
+      const c2 = currentString(state, 2)
+      if (c2 === '0b' || c2 === '0o' || c2 === '0x') {
+        state.token += currentCharacter(state)
+        next(state)
+        state.token += currentCharacter(state)
+        next(state)
+        while (parse.isHexDigit(currentCharacter(state))) {
+          state.token += currentCharacter(state)
+          next(state)
+        }
+        if (currentCharacter(state) === '.') {
+          // this number has a radix point
+          state.token += '.'
+          next(state)
+          // get the digits after the radix
+          while (parse.isHexDigit(currentCharacter(state))) {
+            state.token += currentCharacter(state)
+            next(state)
+          }
+        } else if (currentCharacter(state) === 'i') {
+          // this number has a word size suffix
+          state.token += 'i'
+          next(state)
+          // get the word size
+          while (parse.isDigit(currentCharacter(state))) {
+            state.token += currentCharacter(state)
+            next(state)
+          }
+        }
+        return
+      }
+
       // get number, can have a single dot
       if (currentCharacter(state) === '.') {
         state.token += currentCharacter(state)
@@ -329,6 +366,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         if (!parse.isDigit(currentCharacter(state))) {
           // this is no number, it is just a dot (can be dot notation)
           state.tokenType = TOKENTYPE.DELIMITER
+          return
         }
       } else {
         while (parse.isDigit(currentCharacter(state))) {
@@ -523,6 +561,17 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * checks if the given char c is a hex digit
+   * @param {string} c   a string with one character
+   * @return {boolean}
+   */
+  parse.isHexDigit = function isHexDigit (c) {
+    return ((c >= '0' && c <= '9') ||
+            (c >= 'a' && c <= 'f') ||
+            (c >= 'A' && c <= 'F'))
+  }
+
+  /**
    * Start of the parse levels below, in order of precedence
    * @return {Node} node
    * @private
@@ -564,29 +613,27 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     if (state.token !== '' && state.token !== '\n' && state.token !== ';') {
       node = parseAssignment(state)
-      node.comment = state.comment
+      if (state.comment) {
+        node.comment = state.comment
+      }
     }
 
     // TODO: simplify this loop
     while (state.token === '\n' || state.token === ';') { // eslint-disable-line no-unmodified-loop-condition
       if (blocks.length === 0 && node) {
         visible = (state.token !== ';')
-        blocks.push({
-          node: node,
-          visible: visible
-        })
+        blocks.push({ node, visible })
       }
 
       getToken(state)
       if (state.token !== '\n' && state.token !== ';' && state.token !== '') {
         node = parseAssignment(state)
-        node.comment = state.comment
+        if (state.comment) {
+          node.comment = state.comment
+        }
 
         visible = (state.token !== ';')
-        blocks.push({
-          node: node,
-          visible: visible
-        })
+        blocks.push({ node, visible })
       }
     }
 
@@ -595,7 +642,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     } else {
       if (!node) {
         node = new ConstantNode(undefined)
-        node.comment = state.comment
+        if (state.comment) {
+          node.comment = state.comment
+        }
       }
 
       return node
@@ -949,7 +998,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       fn = operators[name]
 
       getTokenSkipNewline(state)
-      params = [node, parseMultiplyDivide(state)]
+      const rightNode = parseMultiplyDivide(state)
+      if (rightNode.isPercentage) {
+        params = [node, new OperatorNode('*', 'multiply', [node, rightNode])]
+      } else {
+        params = [node, rightNode]
+      }
       node = new OperatorNode(name, fn, params)
     }
 
@@ -971,9 +1025,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       '*': 'multiply',
       '.*': 'dotMultiply',
       '/': 'divide',
-      './': 'dotDivide',
-      '%': 'mod',
-      mod: 'mod'
+      './': 'dotDivide'
     }
 
     while (true) {
@@ -1029,19 +1081,21 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * Infamous "rule 2" as described in https://github.com/josdejong/mathjs/issues/792#issuecomment-361065370
+   * And as amended in https://github.com/josdejong/mathjs/issues/2370#issuecomment-1054052164
    * Explicit division gets higher precedence than implicit multiplication
-   * when the division matches this pattern: [number] / [number] [symbol]
+   * when the division matches this pattern:
+   *   [unaryPrefixOp]?[number] / [number] [symbol]
    * @return {Node} node
    * @private
    */
   function parseRule2 (state) {
-    let node = parseUnary(state)
+    let node = parsePercentage(state)
     let last = node
     const tokenStates = []
 
     while (true) {
       // Match the "number /" part of the pattern "number / number symbol"
-      if (state.token === '/' && isConstantNode(last)) {
+      if (state.token === '/' && rule2Node(last)) {
         // Look ahead to see if the next token is a number
         tokenStates.push(Object.assign({}, state))
         getTokenSkipNewline(state)
@@ -1058,7 +1112,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             Object.assign(state, tokenStates.pop())
             tokenStates.pop()
-            last = parseUnary(state)
+            last = parsePercentage(state)
             node = new OperatorNode('/', 'divide', [node, last])
           } else {
             // Not a match, so rewind
@@ -1073,6 +1127,38 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
       } else {
         break
+      }
+    }
+
+    return node
+  }
+
+  /**
+   * percentage or mod
+   * @return {Node} node
+   * @private
+   */
+  function parsePercentage (state) {
+    let node, name, fn, params
+
+    node = parseUnary(state)
+
+    const operators = {
+      '%': 'mod',
+      mod: 'mod'
+    }
+    while (hasOwnProperty(operators, state.token)) {
+      name = state.token
+      fn = operators[name]
+
+      getTokenSkipNewline(state)
+
+      if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
+        // If the expression contains only %, then treat that as /100
+        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
+      } else {
+        params = [node, parseUnary(state)]
+        node = new OperatorNode(name, fn, params)
       }
     }
 
@@ -1704,6 +1790,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     return error
   }
+
+  // Now that we can parse, automatically convert strings to Nodes by parsing
+  typed.addConversion({ from: 'string', to: 'Node', convert: parse })
 
   return parse
 })

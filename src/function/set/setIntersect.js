@@ -1,5 +1,5 @@
-import { flatten, generalize, identify } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { flatten, generalize, identify } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'setIntersect'
 const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix']

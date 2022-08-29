@@ -1,6 +1,6 @@
-import { factory } from '../../utils/factory'
-import { deepMap } from '../../utils/collection'
-import { unaryPlusNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { deepMap } from '../../utils/collection.js'
+import { unaryPlusNumber } from '../../plain/number/index.js'
 
 const name = 'unaryPlus'
 const dependencies = ['typed', 'config', 'BigNumber']
@@ -49,10 +49,8 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
       return x.clone()
     },
 
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since unaryPlus(0) = 0
-      return deepMap(x, this, true)
-    },
+    // deep map collection, skip zeros since unaryPlus(0) = 0
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true)),
 
     'boolean | string': function (x) {
       // convert to a number or bignumber

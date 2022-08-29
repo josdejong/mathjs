@@ -1,7 +1,7 @@
 // test Node
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 
 describe('Node', function () {
@@ -25,7 +25,7 @@ describe('Node', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { Node() }, SyntaxError)
+    assert.throws(function () { Node() }, TypeError)
   })
 
   it('should filter a Node', function () {
@@ -212,7 +212,7 @@ describe('Node', function () {
     const node = new Node()
     assert.throws(function () {
       node.compile()
-    }, /Error: Method _compile should be implemented by type Node/)
+    }, /Error: Method _compile must be implemented by type Node/)
   })
 
   it('should have an identifier', function () {

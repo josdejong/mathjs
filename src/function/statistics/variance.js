@@ -1,7 +1,7 @@
-import { deepForEach } from '../../utils/collection'
-import { isBigNumber } from '../../utils/is'
-import { factory } from '../../utils/factory'
-import { improveErrorMessage } from './utils/improveErrorMessage'
+import { deepForEach } from '../../utils/collection.js'
+import { isBigNumber } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
+import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const DEFAULT_NORMALIZATION = 'unbiased'
 
@@ -97,7 +97,7 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @private
    */
   function _var (array, normalization) {
-    let sum = 0
+    let sum
     let num = 0
 
     if (array.length === 0) {
@@ -107,7 +107,7 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // calculate the mean and number of elements
     deepForEach(array, function (value) {
       try {
-        sum = add(sum, value)
+        sum = sum === undefined ? value : add(sum, value)
         num++
       } catch (err) {
         throw improveErrorMessage(err, 'variance', value)
@@ -118,10 +118,10 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const mean = divide(sum, num)
 
     // calculate the variance
-    sum = 0
+    sum = undefined
     deepForEach(array, function (value) {
       const diff = subtract(value, mean)
-      sum = add(sum, multiply(diff, diff))
+      sum = sum === undefined ? multiply(diff, diff) : add(sum, multiply(diff, diff))
     })
 
     if (isNaN(sum)) {

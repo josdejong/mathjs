@@ -1,10 +1,10 @@
-import { factory } from '../../utils/factory'
-import { createStd } from '../../function/statistics/std'
-import { isBigNumber, isNumber, isCollection } from '../../utils/is'
-import { errorTransform } from './utils/errorTransform'
+import { factory } from '../../utils/factory.js'
+import { createStd } from '../../function/statistics/std.js'
+import { errorTransform } from './utils/errorTransform.js'
+import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 
 const name = 'std'
-const dependencies = ['typed', 'sqrt', 'variance']
+const dependencies = ['typed', 'map', 'sqrt', 'variance']
 
 /**
  * Attach a transform function to math.std
@@ -13,20 +13,12 @@ const dependencies = ['typed', 'sqrt', 'variance']
  * This transform changed the `dim` parameter of function std
  * from one-based to zero based
  */
-export const createStdTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, sqrt, variance }) => {
-  const std = createStd({ typed, sqrt, variance })
+export const createStdTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, map, sqrt, variance }) => {
+  const std = createStd({ typed, map, sqrt, variance })
 
   return typed('std', {
     '...any': function (args) {
-      // change last argument dim from one-based to zero-based
-      if (args.length >= 2 && isCollection(args[0])) {
-        const dim = args[1]
-        if (isNumber(dim)) {
-          args[1] = dim - 1
-        } else if (isBigNumber(dim)) {
-          args[1] = dim.minus(1)
-        }
-      }
+      args = lastDimToZeroBase(args)
 
       try {
         return std.apply(null, args)

@@ -1,6 +1,6 @@
-import { deepMap } from '../../utils/collection'
-import { factory } from '../../utils/factory'
-import { isNegativeNumber } from '../../plain/number'
+import { deepMap } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
+import { isNegativeNumber } from '../../plain/number/index.js'
 
 const name = 'isNegative'
 const dependencies = ['typed']
@@ -25,7 +25,7 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
    *    math.isNegative(math.bignumber(2))     // returns false
    *    math.isNegative(math.fraction(-2, 5))  // returns true
    *    math.isNegative('-2')                  // returns true
-   *    math.isNegative([2, 0, -3]')           // returns [false, false, true]
+   *    math.isNegative([2, 0, -3])            // returns [false, false, true]
    *
    * See also:
    *
@@ -46,12 +46,9 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
       return x.s < 0 // It's enough to decide on the sign
     },
 
-    Unit: function (x) {
-      return this(x.value)
-    },
+    Unit: typed.referToSelf(self =>
+      x => typed.find(self, x.valueType())(x.value)),
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

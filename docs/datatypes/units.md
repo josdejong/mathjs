@@ -14,7 +14,8 @@ full name and an abbreviation. The returned object is a `Unit`.
 Syntax:
 
 ```js
-math.unit(value: number, name: string) : Unit
+math.unit(value: number, valuelessUnit: string) : Unit
+math.unit(value: number, valuelessUnit: Unit) : Unit
 math.unit(unit: string) : Unit
 math.unit(unit: Unit) : Unit
 ```
@@ -38,6 +39,11 @@ c.equalBase(a)                            // true
 c.equalBase(b)                            // false
 
 d.toString()                              // String "5.08 cm"
+
+const kph = math.unit('km/h')             // valueless Unit km/h
+const mps = math.unit('m/s')              // valueless Unit m/s
+const speed = math.unit(36, kph)          // Unit 36 km/h
+speed.toNumber(mps)                       // Number 10
 ```
 
 Use care when creating a unit with multiple terms in the denominator. Implicit multiplication has the same operator precedence as explicit multiplication and division, which means these three expressions are identical:
@@ -89,7 +95,7 @@ const F = math.multiply(q, math.cross(v, B))   // [0 N, 0 N, -1 N]
 
 All arithmetic operators act on the value of the unit as it is represented in SI units.
 This may lead to surprising behavior when working with temperature scales like `celsius` (or `degC`) and `fahrenheit` (or `degF`).
-In general you should avoid calculations using `celsius` and `fahrenheit`. Rather, use `kelvin` (or `K`) and `rankine` (or `R`) instead.
+In general you should avoid calculations using `celsius` and `fahrenheit`. Rather, use `kelvin` (or `K`) and `rankine` (or `degR`) instead.
 This example highlights some problems when using `celsius` and `fahrenheit` in calculations:
 
 ```js
@@ -135,10 +141,11 @@ An optional `options` object can also be supplied as the last argument to `creat
 
 ```js
 // Redefine the mile (would not be the first time in history)
-math.createUnit('mile', '1609.347218694', {override: true}})
+math.createUnit('mile', '1609.347218694 m', {override: true})
 ```
 Base units created without specifying a definition cannot be overridden.
 
+### Create several units at once
 Multiple units can defined using a single call to `createUnit` by passing an object map as the first argument, where each key in the object is the name of a new unit and the value is either a string defining the unit, or an object with the configuration properties listed above. If the value is an empty string or an object lacking a definition property, a new base unit is created.
 
 For example:
@@ -167,6 +174,26 @@ math.evaluate('50000 kilofoo/s')  // 4.5 gigabaz
 ```js
 math.evaluate('45 mile/hour to createUnit("knot", "0.514444m/s")')
 // 39.103964668651976 knot
+```
+
+### Support of custom characters in unit names
+Per default, the name of a new unit:
+- should start by a latin (A-Z or a-z) character
+- should contain only numeric (0-9) or latin characters
+
+It is possible to allow the usage of special characters (such as Greek alphabet, cyrillic alphabet, any Unicode symbols, etc.) by overriding the `Unit.isValidAlpha` static method. For example:
+```js
+const isAlphaOriginal = math.Unit.isValidAlpha
+const isGreekLowercaseChar = function (c) {
+  const charCode = c.charCodeAt(0)
+  return charCode > 944 && charCode < 970
+}
+math.Unit.isValidAlpha = function (c) {
+  return isAlphaOriginal(c) || isGreekLowercaseChar(c)
+}
+
+math.createUnit('θ', '1 rad')
+math.evaluate('1θ + 3 deg').toNumber('deg') // 60.29577951308232
 ```
 
 ## API
@@ -228,6 +255,10 @@ Returns a clone of a unit represented in SI units. Works with units with or with
 ### unit.toString()
 Get a string representation of the unit. The function will
 determine the best fitting prefix for the unit.
+
+### unit.valType()
+Get the string name of the current type of the value of this Unit object, e.g.
+'number', 'BigNumber', etc.
 
 ## Unit reference
 

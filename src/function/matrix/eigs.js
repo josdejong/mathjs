@@ -1,373 +1,204 @@
-import { clone } from '../../utils/object'
-import { factory } from '../../utils/factory'
-import { format } from '../../utils/string'
+import { factory } from '../../utils/factory.js'
+import { format } from '../../utils/string.js'
+import { createComplexEigs } from './eigs/complexEigs.js'
+import { createRealSymmetric } from './eigs/realSymetric.js'
+import { typeOf, isNumber, isBigNumber, isComplex, isFraction } from '../../utils/is.js'
 
 const name = 'eigs'
-const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'inv', 'bignumber', 'multiply', 'add']
 
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, multiply, add }) => {
+// The absolute state of math.js's dependency system:
+const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number', 'complex', 'sqrt', 'diag', 'qr', 'usolve', 'usolveAll', 'im', 're', 'smaller', 'matrixFromColumns', 'dot']
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, qr, usolve, usolveAll, im, re, smaller, matrixFromColumns, dot }) => {
+  const doRealSymetric = createRealSymmetric({ config, addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
+  const doComplexEigs = createComplexEigs({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolve, usolveAll, equal, complex, larger, smaller, matrixFromColumns, dot })
+
   /**
-   * Compute eigenvalue and eigenvector of a real symmetric matrix.
-   * Only applicable to two dimensional symmetric matrices. Uses Jacobi
-   * Algorithm. Matrix containing mixed type ('number', 'bignumber', 'fraction')
-   * of elements are not supported. Input matrix or 2D array should contain all elements
-   * of either 'number', 'bignumber' or 'fraction' type. For 'number' and 'fraction', the
-   * eigenvalues are of 'number' type. For 'bignumber' the eigenvalues are of ''bignumber' type.
-   * Eigenvectors are always of 'number' type.
+   * Compute eigenvalues and eigenvectors of a matrix. The eigenvalues are sorted by their absolute value, ascending.
+   * An eigenvalue with multiplicity k will be listed k times. The eigenvectors are returned as columns of a matrix –
+   * the eigenvector that belongs to the j-th eigenvalue in the list (eg. `values[j]`) is the j-th column (eg. `column(vectors, j)`).
+   * If the algorithm fails to converge, it will throw an error – in that case, however, you may still find useful information
+   * in `err.values` and `err.vectors`.
    *
    * Syntax:
    *
-   *     math.eigs(x)
+   *     math.eigs(x, [prec])
    *
    * Examples:
    *
+   *     const { eigs, multiply, column, transpose } = math
    *     const H = [[5, 2.3], [2.3, 1]]
-   *     const ans = math.eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors as columns]}
+   *     const ans = eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors as columns]}
    *     const E = ans.values
    *     const U = ans.vectors
-   *     math.multiply(H, math.column(U, 0)) // returns math.multiply(E[0], math.column(U, 0))
-   *     const UTxHxU = math.multiply(math.transpose(U), H, U) // rotates H to the eigen-representation
+   *     multiply(H, column(U, 0)) // returns multiply(E[0], column(U, 0))
+   *     const UTxHxU = multiply(transpose(U), H, U) // diagonalizes H
    *     E[0] == UTxHxU[0][0]  // returns true
+   *
    * See also:
    *
    *     inv
    *
    * @param {Array | Matrix} x  Matrix to be diagonalized
-   * @return {{values: Array, vectors: Array} | {values: Matrix, vectors: Matrix}} Object containing eigenvalues (Array or Matrix) and eigenvectors (2D Array/Matrix with eigenvectors as columns).
+   *
+   * @param {number | BigNumber} [prec] Precision, default value: 1e-15
+   * @return {{values: Array|Matrix, vectors: Array|Matrix}} Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
+   *
    */
   return typed('eigs', {
 
     Array: function (x) {
-      // check array size
       const mat = matrix(x)
-      const size = mat.size()
-      if (size.length !== 2 || size[0] !== size[1]) {
-        throw new RangeError('Matrix must be square ' +
-          '(size: ' + format(size) + ')')
-      }
-
-      // use dense 2D matrix implementation
-      const ans = checkAndSubmit(mat, size[0])
-      return { values: ans[0], vectors: ans[1] }
+      return computeValuesAndVectors(mat)
     },
 
-    Matrix: function (x) {
-      // use dense 2D array implementation
-      // dense matrix
-      const size = x.size()
-      if (size.length !== 2 || size[0] !== size[1]) {
-        throw new RangeError('Matrix must be square ' +
-          '(size: ' + format(size) + ')')
+    'Array, number|BigNumber': function (x, prec) {
+      const mat = matrix(x)
+      return computeValuesAndVectors(mat, prec)
+    },
+
+    Matrix: function (mat) {
+      const { values, vectors } = computeValuesAndVectors(mat)
+      return {
+        values: matrix(values),
+        vectors: matrix(vectors)
       }
-      const ans = checkAndSubmit(x, size[0])
-      return { values: matrix(ans[0]), vectors: matrix(ans[1]) }
+    },
+
+    'Matrix, number|BigNumber': function (mat, prec) {
+      const { values, vectors } = computeValuesAndVectors(mat, prec)
+      return {
+        values: matrix(values),
+        vectors: matrix(vectors)
+      }
     }
   })
 
-  // Is the matrix
-  // symmetric ?
-  function isSymmetric (x, n) {
-    for (let i = 0; i < n; i++) {
-      for (let j = i; j < n; j++) {
-        // not symmtric
-        if (!equal(x[i][j], x[j][i])) {
-          throw new TypeError('Input matrix is not symmetric')
+  function computeValuesAndVectors (mat, prec) {
+    if (prec === undefined) {
+      prec = config.epsilon
+    }
+
+    const size = mat.size()
+
+    if (size.length !== 2 || size[0] !== size[1]) {
+      throw new RangeError('Matrix must be square (size: ' + format(size) + ')')
+    }
+
+    const arr = mat.toArray()
+    const N = size[0]
+
+    if (isReal(arr, N, prec)) {
+      coerceReal(arr, N)
+
+      if (isSymmetric(arr, N, prec)) {
+        const type = coerceTypes(mat, arr, N)
+        return doRealSymetric(arr, N, prec, type)
+      }
+    }
+
+    const type = coerceTypes(mat, arr, N)
+    return doComplexEigs(arr, N, prec, type)
+  }
+
+  /** @return {boolean} */
+  function isSymmetric (arr, N, prec) {
+    for (let i = 0; i < N; i++) {
+      for (let j = i; j < N; j++) {
+        // TODO proper comparison of bignum and frac
+        if (larger(bignumber(abs(subtract(arr[i][j], arr[j][i]))), prec)) {
+          return false
         }
+      }
+    }
+
+    return true
+  }
+
+  /** @return {boolean} */
+  function isReal (arr, N, prec) {
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N; j++) {
+        // TODO proper comparison of bignum and frac
+        if (larger(bignumber(abs(im(arr[i][j]))), prec)) {
+          return false
+        }
+      }
+    }
+
+    return true
+  }
+
+  function coerceReal (arr, N) {
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N; j++) {
+        arr[i][j] = re(arr[i][j])
       }
     }
   }
 
-  // check input for possible problems
-  // and perform diagonalization efficiently for
-  // specific type of number
-  function checkAndSubmit (x, n) {
-    let type = x.datatype()
-    // type check
-    if (type === undefined) {
-      type = x.getDataType()
+  /** @return {'number' | 'BigNumber' | 'Complex'} */
+  function coerceTypes (mat, arr, N) {
+    /** @type {string} */
+    const type = mat.datatype()
+
+    if (type === 'number' || type === 'BigNumber' || type === 'Complex') {
+      return type
     }
-    if (type !== 'number' && type !== 'BigNumber' && type !== 'Fraction') {
-      if (type === 'mixed') {
-        throw new TypeError('Mixed matrix element type is not supported')
-      } else {
-        throw new TypeError('Matrix element type not supported (' + type + ')')
+
+    let hasNumber = false
+    let hasBig = false
+    let hasComplex = false
+
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N; j++) {
+        const el = arr[i][j]
+
+        if (isNumber(el) || isFraction(el)) {
+          hasNumber = true
+        } else if (isBigNumber(el)) {
+          hasBig = true
+        } else if (isComplex(el)) {
+          hasComplex = true
+        } else {
+          throw TypeError('Unsupported type in Matrix: ' + typeOf(el))
+        }
       }
+    }
+
+    if (hasBig && hasComplex) {
+      console.warn('Complex BigNumbers not supported, this operation will lose precission.')
+    }
+
+    if (hasComplex) {
+      for (let i = 0; i < N; i++) {
+        for (let j = 0; j < N; j++) {
+          arr[i][j] = complex(arr[i][j])
+        }
+      }
+
+      return 'Complex'
+    }
+
+    if (hasBig) {
+      for (let i = 0; i < N; i++) {
+        for (let j = 0; j < N; j++) {
+          arr[i][j] = bignumber(arr[i][j])
+        }
+      }
+
+      return 'BigNumber'
+    }
+
+    if (hasNumber) {
+      for (let i = 0; i < N; i++) {
+        for (let j = 0; j < N; j++) {
+          arr[i][j] = number(arr[i][j])
+        }
+      }
+
+      return 'number'
     } else {
-      isSymmetric(x.toArray(), n)
+      throw TypeError('Matrix contains unsupported types only.')
     }
-
-    // perform efficient calculation for 'numbers'
-    if (type === 'number') {
-      return diag(x.toArray())
-    } else if (type === 'Fraction') {
-      const xArr = x.toArray()
-      // convert fraction to numbers
-      for (let i = 0; i < n; i++) {
-        for (let j = i; j < n; j++) {
-          xArr[i][j] = xArr[i][j].valueOf()
-          xArr[j][i] = xArr[i][j]
-        }
-      }
-      return diag(x.toArray())
-    } else if (type === 'BigNumber') {
-      return diagBig(x.toArray())
-    }
-  }
-
-  // diagonalization implementation for number (efficient)
-  function diag (x) {
-    const N = x.length
-    const e0 = Math.abs(config.epsilon / N)
-    let psi
-    let Sij = new Array(N)
-    // Sij is Identity Matrix
-    for (let i = 0; i < N; i++) {
-      Sij[i] = createArray(N, 0)
-      Sij[i][i] = 1.0
-    }
-    // initial error
-    let Vab = getAij(x)
-    while (Math.abs(Vab[1]) >= Math.abs(e0)) {
-      const i = Vab[0][0]
-      const j = Vab[0][1]
-      psi = getTheta(x[i][i], x[j][j], x[i][j])
-      x = x1(x, psi, i, j)
-      Sij = Sij1(Sij, psi, i, j)
-      Vab = getAij(x)
-    }
-    const Ei = createArray(N, 0) // eigenvalues
-    for (let i = 0; i < N; i++) {
-      Ei[i] = x[i][i]
-    }
-    return sorting(clone(Ei), clone(Sij))
-  }
-
-  // diagonalization implementation for bigNumber
-  function diagBig (x) {
-    const N = x.length
-    const e0 = abs(config.epsilon / N)
-    let psi
-    let Sij = new Array(N)
-    // Sij is Identity Matrix
-    for (let i = 0; i < N; i++) {
-      Sij[i] = createArray(N, 0)
-      Sij[i][i] = 1.0
-    }
-    // initial error
-    let Vab = getAijBig(x)
-    while (abs(Vab[1]) >= abs(e0)) {
-      const i = Vab[0][0]
-      const j = Vab[0][1]
-      psi = getThetaBig(x[i][i], x[j][j], x[i][j])
-      x = x1Big(x, psi, i, j)
-      Sij = Sij1Big(Sij, psi, i, j)
-      Vab = getAijBig(x)
-    }
-    const Ei = createArray(N, 0) // eigenvalues
-    for (let i = 0; i < N; i++) {
-      Ei[i] = x[i][i]
-    }
-    // return [clone(Ei), clone(Sij)]
-    return sorting(clone(Ei), clone(Sij))
-  }
-
-  // get angle
-  function getTheta (aii, ajj, aij) {
-    const denom = (ajj - aii)
-    if (Math.abs(denom) <= config.epsilon) {
-      return Math.PI / 4
-    } else {
-      return 0.5 * Math.atan(2 * aij / (ajj - aii))
-    }
-  }
-
-  // get angle
-  function getThetaBig (aii, ajj, aij) {
-    const denom = subtract(ajj, aii)
-    if (abs(denom) <= config.epsilon) {
-      return bignumber(-1).acos().div(4)
-    } else {
-      return multiplyScalar(0.5, atan(multiply(2, aij, inv(denom))))
-    }
-  }
-
-  // update eigvec
-  function Sij1 (Sij, theta, i, j) {
-    const N = Sij.length
-    const c = Math.cos(theta)
-    const s = Math.sin(theta)
-    const Ski = createArray(N, 0)
-    const Skj = createArray(N, 0)
-    for (let k = 0; k < N; k++) {
-      Ski[k] = c * Sij[k][i] - s * Sij[k][j]
-      Skj[k] = s * Sij[k][i] + c * Sij[k][j]
-    }
-    for (let k = 0; k < N; k++) {
-      Sij[k][i] = Ski[k]
-      Sij[k][j] = Skj[k]
-    }
-    return Sij
-  }
-  // update eigvec for overlap
-  function Sij1Big (Sij, theta, i, j) {
-    const N = Sij.length
-    const c = cos(theta)
-    const s = sin(theta)
-    const Ski = createArray(N, bignumber(0))
-    const Skj = createArray(N, bignumber(0))
-    for (let k = 0; k < N; k++) {
-      Ski[k] = subtract(multiplyScalar(c, Sij[k][i]), multiplyScalar(s, Sij[k][j]))
-      Skj[k] = addScalar(multiplyScalar(s, Sij[k][i]), multiplyScalar(c, Sij[k][j]))
-    }
-    for (let k = 0; k < N; k++) {
-      Sij[k][i] = Ski[k]
-      Sij[k][j] = Skj[k]
-    }
-    return Sij
-  }
-
-  // update matrix
-  function x1Big (Hij, theta, i, j) {
-    const N = Hij.length
-    const c = bignumber(cos(theta))
-    const s = bignumber(sin(theta))
-    const c2 = multiplyScalar(c, c)
-    const s2 = multiplyScalar(s, s)
-    const Aki = createArray(N, bignumber(0))
-    const Akj = createArray(N, bignumber(0))
-    // 2cs Hij
-    const csHij = multiply(bignumber(2), c, s, Hij[i][j])
-    //  Aii
-    const Aii = addScalar(subtract(multiplyScalar(c2, Hij[i][i]), csHij), multiplyScalar(s2, Hij[j][j]))
-    const Ajj = add(multiplyScalar(s2, Hij[i][i]), csHij, multiplyScalar(c2, Hij[j][j]))
-    // 0  to i
-    for (let k = 0; k < N; k++) {
-      Aki[k] = subtract(multiplyScalar(c, Hij[i][k]), multiplyScalar(s, Hij[j][k]))
-      Akj[k] = addScalar(multiplyScalar(s, Hij[i][k]), multiplyScalar(c, Hij[j][k]))
-    }
-    // Modify Hij
-    Hij[i][i] = Aii
-    Hij[j][j] = Ajj
-    Hij[i][j] = bignumber(0)
-    Hij[j][i] = bignumber(0)
-    // 0  to i
-    for (let k = 0; k < N; k++) {
-      if (k !== i && k !== j) {
-        Hij[i][k] = Aki[k]
-        Hij[k][i] = Aki[k]
-        Hij[j][k] = Akj[k]
-        Hij[k][j] = Akj[k]
-      }
-    }
-    return Hij
-  }
-
-  // update matrix
-  function x1 (Hij, theta, i, j) {
-    const N = Hij.length
-    const c = Math.cos(theta)
-    const s = Math.sin(theta)
-    const c2 = c * c
-    const s2 = s * s
-    const Aki = createArray(N, 0)
-    const Akj = createArray(N, 0)
-    //  Aii
-    const Aii = c2 * Hij[i][i] - 2 * c * s * Hij[i][j] + s2 * Hij[j][j]
-    const Ajj = s2 * Hij[i][i] + 2 * c * s * Hij[i][j] + c2 * Hij[j][j]
-    // 0  to i
-    for (let k = 0; k < N; k++) {
-      Aki[k] = c * Hij[i][k] - s * Hij[j][k]
-      Akj[k] = s * Hij[i][k] + c * Hij[j][k]
-    }
-    // Modify Hij
-    Hij[i][i] = Aii
-    Hij[j][j] = Ajj
-    Hij[i][j] = 0
-    Hij[j][i] = 0
-    // 0  to i
-    for (let k = 0; k < N; k++) {
-      if (k !== i && k !== j) {
-        Hij[i][k] = Aki[k]
-        Hij[k][i] = Aki[k]
-        Hij[j][k] = Akj[k]
-        Hij[k][j] = Akj[k]
-      }
-    }
-    return Hij
-  }
-
-  // get max off-diagonal value from Upper Diagonal
-  function getAij (Mij) {
-    const N = Mij.length
-    let maxMij = 0
-    let maxIJ = [0, 1]
-    for (let i = 0; i < N; i++) {
-      for (let j = i + 1; j < N; j++) {
-        if (Math.abs(maxMij) < Math.abs(Mij[i][j])) {
-          maxMij = Math.abs(Mij[i][j])
-          maxIJ = [i, j]
-        }
-      }
-    }
-    return [maxIJ, maxMij]
-  }
-
-  // get max off-diagonal value from Upper Diagonal
-  function getAijBig (Mij) {
-    const N = Mij.length
-    let maxMij = 0
-    let maxIJ = [0, 1]
-    for (let i = 0; i < N; i++) {
-      for (let j = i + 1; j < N; j++) {
-        if (abs(maxMij) < abs(Mij[i][j])) {
-          maxMij = abs(Mij[i][j])
-          maxIJ = [i, j]
-        }
-      }
-    }
-    return [maxIJ, maxMij]
-  }
-
-  // sort results
-  function sorting (E, S) {
-    const N = E.length
-    const Ef = Array(N)
-    const Sf = Array(N)
-    for (let k = 0; k < N; k++) {
-      Sf[k] = Array(N)
-    }
-    for (let i = 0; i < N; i++) {
-      let minID = 0
-      let minE = E[0]
-      for (let j = 0; j < E.length; j++) {
-        if (E[j] < minE) {
-          minID = j
-          minE = E[minID]
-        }
-      }
-      Ef[i] = E.splice(minID, 1)[0]
-      for (let k = 0; k < N; k++) {
-        Sf[k][i] = S[k][minID]
-        S[k].splice(minID, 1)
-      }
-    }
-    return [clone(Ef), clone(Sf)]
-  }
-
-  /**
-   * Create an array of a certain size and fill all items with an initial value
-   * @param {number} size
-   * @param {number} value
-   * @return {number[]}
-   */
-  function createArray (size, value) {
-    // TODO: as soon as all browsers support Array.fill, use that instead (IE doesn't support it)
-    const array = new Array(size)
-
-    for (let i = 0; i < size; i++) {
-      array[i] = value
-    }
-
-    return array
   }
 })

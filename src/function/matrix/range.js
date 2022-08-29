@@ -1,5 +1,5 @@
-import { factory } from '../../utils/factory'
-import { noBignumber, noMatrix } from '../../utils/noop'
+import { factory } from '../../utils/factory.js'
+import { noBignumber, noMatrix } from '../../utils/noop.js'
 
 const name = 'range'
 const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq']

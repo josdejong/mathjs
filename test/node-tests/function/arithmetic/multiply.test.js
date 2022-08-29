@@ -1,5 +1,5 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
-const math = require('../../../../lib/bundleAny')
+const math = require('../../../../lib/cjs/defaultInstance').default
 const market = require('../../../../tools/matrixmarket')
 
 describe('multiply', function () {

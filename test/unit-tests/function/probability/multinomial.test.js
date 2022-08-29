@@ -1,6 +1,6 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
-import _ from 'underscore'
+import math from '../../../../src/defaultInstance.js'
+
 const multinomial = math.multinomial
 
 describe('multinomial', function () {
@@ -11,7 +11,7 @@ describe('multinomial', function () {
   })
 
   it('should calculate the multinomial of n items taken k at a time with BigNumbers', function () {
-    assert.strictEqual(_.isEqual(multinomial([math.bignumber(3), math.bignumber(4), math.bignumber(5)]), math.bignumber(27720)), true)
+    assert.deepStrictEqual(multinomial([math.bignumber(3), math.bignumber(4), math.bignumber(5)]), math.bignumber(27720))
     assert.deepStrictEqual(multinomial([math.bignumber(10), math.bignumber(1), math.bignumber(2)]), math.bignumber(858))
   })
 

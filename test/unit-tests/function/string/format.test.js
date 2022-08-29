@@ -1,7 +1,7 @@
 // test format
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 
 describe('format', function () {
   it('should format numbers', function () {
@@ -172,6 +172,32 @@ describe('format', function () {
     })
   })
 
+  describe('non decimal base formatting', function () {
+    it('should format in binary, octal, and hexadecimal', function () {
+      assert.strictEqual(math.format(128, { notation: 'bin' }), '0b10000000')
+      assert.strictEqual(math.format(128, { notation: 'oct' }), '0o200')
+      assert.strictEqual(math.format(128, { notation: 'hex' }), '0x80')
+      assert.strictEqual(math.format(-128, { notation: 'hex' }), '-0x80')
+      assert.strictEqual(math.format(-128, { notation: 'hex', wordSize: 8 }), '0x80i8')
+      assert.strictEqual(math.format(127, { notation: 'hex', wordSize: 8 }), '0x7fi8')
+      assert.strictEqual(math.format(-1, { notation: 'hex', wordSize: 8 }), '0xffi8')
+      assert.strictEqual(math.format(1.25, { notation: 'bin' }), '0b1.01')
+      assert.strictEqual(math.format(1.25, { notation: 'oct' }), '0o1.2')
+      assert.strictEqual(math.format(1.25, { notation: 'hex' }), '0x1.4')
+      assert.strictEqual(math.bin(-128), '-0b10000000')
+      assert.strictEqual(math.bin(-128, 8), '0b10000000i8')
+      assert.strictEqual(math.oct(-128), '-0o200')
+      assert.strictEqual(math.oct(-128, 8), '0o200i8')
+      assert.strictEqual(math.hex(-128), '-0x80')
+      assert.strictEqual(math.hex(-128, 8), '0x80i8')
+    })
+    it('should throw an error for invalid values', function () {
+      assert.throws(function () { math.format(1.25, { notation: 'hex', wordSize: 8 }) }, 'Error: Value must be an integer')
+      assert.throws(function () { math.format(1, { notation: 'hex', wordSize: -8 }) }, 'Error: size must be greater than 0')
+      assert.throws(function () { math.format(1, { notation: 'hex', wordSize: 8.5 }) }, 'Error: size must be an integer')
+    })
+  })
+
   describe('bignumber', function () {
     const bigmath = math.create({ precision: 20 }) // ensure the precision is 20 digits
 
@@ -310,9 +336,28 @@ describe('format', function () {
         assert.strictEqual(math.format(bignumber('0.0000000000001234567890123456789'), { notation: 'engineering', precision: 16 }), '123.4567890123457e-15')
       })
     })
+
+    describe('non decimal base formatting', function () {
+      it('should format in binary, octal, and hexadecimal', function () {
+        assert.strictEqual(math.format(math.bignumber(128), { notation: 'bin' }), '0b10000000')
+        assert.strictEqual(math.format(math.bignumber(128), { notation: 'oct' }), '0o200')
+        assert.strictEqual(math.format(math.bignumber(128), { notation: 'hex' }), '0x80')
+        assert.strictEqual(math.format(math.bignumber(-128), { notation: 'hex' }), '-0x80')
+        assert.strictEqual(math.format(math.bignumber(-128), { notation: 'hex', wordSize: 8 }), '0x80i8')
+        assert.strictEqual(math.format(math.bignumber(127), { notation: 'hex', wordSize: 8 }), '0x7fi8')
+        assert.strictEqual(math.format(math.bignumber(1.25), { notation: 'bin' }), '0b1.01')
+        assert.strictEqual(math.format(math.bignumber(1.25), { notation: 'oct' }), '0o1.2')
+        assert.strictEqual(math.format(math.bignumber(1.25), { notation: 'hex' }), '0x1.4')
+      })
+      it('should throw an error for invalid values', function () {
+        assert.throws(function () { math.format(math.bignumber(1.25), { notation: 'hex', wordSize: 8 }) }, 'Error: Value must be an integer')
+        assert.throws(function () { math.format(math.bignumber(1), { notation: 'hex', wordSize: -8 }) }, 'Error: size must be greater than 0')
+        assert.throws(function () { math.format(math.bignumber(1), { notation: 'hex', wordSize: 8.5 }) }, 'Error: size must be an integer')
+      })
+    })
   })
 
-  it('should format expressions', () => {
+  it('should format expressions', function () {
     assert.strictEqual(math.format(math.parse('0.3333'), { precision: 1 }), '0.3')
     assert.strictEqual(math.format(math.parse('0.3333 + [0.4444]'), { precision: 1 }), '0.3 + [0.4]')
 

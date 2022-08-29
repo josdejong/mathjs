@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const index = math.index
 const Matrix = math.Matrix
 const SparseMatrix = math.SparseMatrix
@@ -166,12 +166,14 @@ describe('SparseMatrix', function () {
     })
 
     // TODO: add some more input validations to SparseMatrix
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should throw an error when input array does not have two dimensions', function () {
       assert.throws(function () { console.log(new SparseMatrix([1, 2, 3])) }, /DimensionError: Two dimensional array expected/)
       assert.throws(function () { console.log(new SparseMatrix([[[1]], [[2]], [[3]]])) }, /DimensionError: Two dimensional array expected/)
     })
 
     // TODO: add some more input validations to SparseMatrix
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should throw an error when the dimensions of the input array are invalid', function () {
       assert.throws(function () {
         console.log(new SparseMatrix(
@@ -1123,7 +1125,7 @@ describe('SparseMatrix', function () {
         [0, 0]
       ])
 
-      m.subset(index(0, [0, 2]), [1, 2])
+      m.subset(index(0, [0, 1]), [1, 2])
       assert.deepStrictEqual(
         m.toArray(),
         [
@@ -1131,7 +1133,7 @@ describe('SparseMatrix', function () {
           [0, 0]
         ])
 
-      m.subset(index(1, [0, 2]), [3, 4])
+      m.subset(index(1, [0, 1]), [3, 4])
       assert.deepStrictEqual(
         m.toArray(),
         [
@@ -1228,7 +1230,7 @@ describe('SparseMatrix', function () {
           [0, 0, 0]
         ])
 
-      m.subset(index([2, 4], [2, 4]), [[1, 2], [3, 4]], -1)
+      m.subset(index([2, 3], [2, 3]), [[1, 2], [3, 4]], -1)
       assert.deepStrictEqual(
         m.toArray(),
         [
@@ -1258,6 +1260,60 @@ describe('SparseMatrix', function () {
           [0, 0, 1, 2, 10],
           [-1, -1, 3, 4, -3],
           [5, 6, 7, -2, -3]
+        ])
+    })
+
+    it('should set subset with non consecutive indexes', function () {
+      // set 2-dimensional
+      let m = new SparseMatrix(
+        [
+          [0, 0],
+          [0, 0]
+        ])
+
+      m.subset(index([0, 1], [1, 0]), math.identity(2))
+      assert.deepStrictEqual(
+        m.toArray(),
+        [
+          [0, 1],
+          [1, 0]
+        ])
+
+      m.subset(index([0, 2], [0, 2]), [[1, 2], [3, 4]])
+      assert.deepStrictEqual(
+        m.toArray(),
+        [
+          [1, 1, 2],
+          [1, 0, 0],
+          [3, 0, 4]
+        ])
+
+      m = math.sparse([1, 2, 3, 4, 5])
+
+      m.subset(index([2, 0]), [7, 9])
+      assert.deepStrictEqual(
+        m.toArray(),
+        [
+          [9],
+          [2],
+          [7],
+          [4],
+          [5]
+        ])
+    })
+
+    it('should get subset with non consecutive indexes', function () {
+      const m = new SparseMatrix(
+        [
+          [0, 1],
+          [1, 0]
+        ])
+
+      assert.deepStrictEqual(
+        m.subset(index([0, 1], [1, 0])).toArray(),
+        [
+          [1, 0],
+          [0, 1]
         ])
     })
 
@@ -1379,7 +1435,7 @@ describe('SparseMatrix', function () {
         ptr: [0, 2, 3, 4],
         size: [3, 3]
       })
-      assert.throws(function () { m.map(function () {}, m, true) }, /Cannot invoke map on a Pattern only matrix/)
+      assert.throws(function () { m.map(function () { return undefined }, m, true) }, /Cannot invoke map on a Pattern only matrix/)
     })
   })
 
@@ -1450,7 +1506,7 @@ describe('SparseMatrix', function () {
     })
   })
 
-  describe('index ordering', () => {
+  describe('index ordering', function () {
     const orderedSparseMatrix = new SparseMatrix({
       values: [1, 3, 2, 4],
       index: [0, 1, 0, 1],
@@ -1472,7 +1528,7 @@ describe('SparseMatrix', function () {
       { value: 4, index: [1, 1] }
     ]
 
-    it('should have parsed the two test matrices correctly', () => {
+    it('should have parsed the two test matrices correctly', function () {
       assert.deepStrictEqual(orderedSparseMatrix.toArray(), [[1, 2], [3, 4]])
       assert.deepStrictEqual(unorderedSparseMatrix.toArray(), [[1, 2], [3, 4]])
     })
@@ -1509,6 +1565,42 @@ describe('SparseMatrix', function () {
       })
 
       assert.deepStrictEqual(logs, expectedLogs)
+    })
+  })
+
+  describe('iterable', function () {
+    it('should iterate in the same order as forEach', function () {
+      let m, expected
+
+      expected = []
+      m = new SparseMatrix({
+        values: [1, 3, 2, 4],
+        index: [0, 1, 0, 1],
+        ptr: [0, 2, 4],
+        size: [2, 2]
+      })
+      m.forEach((value, index) => expected.push({ value, index }), true)
+      assert.deepStrictEqual(expected, [...m])
+
+      expected = []
+      m = new SparseMatrix({
+        values: [3, 1, 4, 2],
+        index: [1, 0, 1, 0],
+        ptr: [0, 2, 4],
+        size: [2, 2]
+      })
+      m.forEach((value, index) => expected.push({ value, index }), true)
+      assert.deepStrictEqual(expected, [...m])
+
+      expected = []
+      m = math.matrix([
+        [0, 0, 1, 0, 0, 1, 1, 0, 0],
+        [0, 1, 0, 0, 1, 0, 0, 0, 1],
+        [1, 0, 0, 1, 0, 0, 0, 0, 1],
+        [1, 0, 0, 1, 0, 0, 0, 1, 0]
+      ], 'sparse')
+      m.forEach((value, index) => expected.push({ value, index }), true)
+      assert.deepStrictEqual(expected, [...m])
     })
   })
 

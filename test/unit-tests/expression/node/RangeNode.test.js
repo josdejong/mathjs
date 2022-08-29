@@ -1,7 +1,7 @@
 // test RangeNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
@@ -29,7 +29,7 @@ describe('RangeNode', function () {
   it('should throw an error when calling without new operator', function () {
     const start = new ConstantNode(0)
     const end = new ConstantNode(10)
-    assert.throws(function () { RangeNode([start, end]) }, SyntaxError)
+    assert.throws(function () { RangeNode([start, end]) }, TypeError)
   })
 
   it('should throw an error creating a RangeNode with wrong number or type of arguments', function () {
@@ -123,7 +123,7 @@ describe('RangeNode', function () {
     const n = new RangeNode(start, end, step)
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

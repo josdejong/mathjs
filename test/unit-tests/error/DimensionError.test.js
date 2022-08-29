@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { DimensionError } from '../../../src/error/DimensionError'
+import { DimensionError } from '../../../src/error/DimensionError.js'
 
 describe('DimensionError', function () {
   it('should construct a DimensionError with numbers', function () {

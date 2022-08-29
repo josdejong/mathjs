@@ -1,7 +1,7 @@
 // test matrix construction
 import assert from 'assert'
 
-import math from '../../../../../src/bundleAny'
+import math from '../../../../../src/defaultInstance.js'
 const sparse = math.sparse
 
 describe('sparse', function () {
@@ -40,7 +40,7 @@ describe('sparse', function () {
   })
 
   it('should throw an error if called with too many arguments', function () {
-    assert.throws(function () { sparse([], 3, 3) }, /TypeError: Too many arguments/)
+    assert.throws(function () { sparse([], 'number', 3) }, /TypeError: Too many arguments/)
   })
 
   it('should LaTeX matrix', function () {
@@ -48,6 +48,6 @@ describe('sparse', function () {
     const expr2 = math.parse('sparse([1])')
 
     assert.strictEqual(expr1.toTex(), '\\begin{bsparse}\\end{bsparse}')
-    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\end{bmatrix}\\right)')
   })
 })

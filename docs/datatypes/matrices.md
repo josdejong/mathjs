@@ -184,6 +184,21 @@ const c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]
 math.size(c)                                  // Array, [2, 2, 3]
 ```
 
+Note that the dimensions themselves do not have a meaning attached. 
+When creating and printing a two dimensional matrix, the first dimension is 
+normally rendered as the _column_, and the second dimension is rendered as 
+the _row_. For example:
+
+```js
+console.table(math.zeros([2, 4]))
+// 0 0 0 0
+// 0 0 0 0
+```
+
+If you have a matrix where the first dimension means `x` and the second 
+means `y`, this will look confusing since `x` is printed as _column_ 
+(vertically) and `y` as _row_ (horizontally).
+
 
 ## Resizing
 
@@ -213,12 +228,12 @@ or unsqueezed.
 ```js
 // squeeze a matrix
 const a = [[[0, 1, 2]]]
-math.squeeze(a)         // [0, 1, 2]
-math.squeeze([[3]])     // 3
+math.squeeze(a)             // [0, 1, 2]
+math.squeeze([[3]])         // 3
 
 // subsets are automatically squeezed
 const b = math.matrix([[0, 1], [2, 3]])
-b.subset([1, 0])        // 2
+b.subset(math.index(1, 0))  // 2
 ```
 
 
@@ -270,6 +285,25 @@ c.subset(math.index(1, [0, 1]), [2, 3])       // Matrix, [[0, 1], [2, 3]]
 e.resize([2, 3], 0)                           // Matrix, [[0, 0, 0], [0, 0, 0]]
 e.subset(math.index(1, 2), 5)                 // Matrix, [[0, 0, 0], [0, 0, 5]]
 ```
+
+## Getting and setting a value in a matrix
+
+There are two methods available on matrices that allow to get or set a single 
+value inside a matrix. It is important to note that the `set` method will 
+mutate the matrix.
+
+```js
+const p = math.matrix([[1, 2], [3, 4]])
+p.set([0, 1], 5)
+// p is now [[1, 5], [3, 4]]
+p.get([1, 0]) // 3
+```
+
+When setting a value at a location outside of the current matrix size using the
+method `.set()`, the matrix will be resized. By default, new items will be 
+initialized with zero, but it is possible to specify an alternative value using
+the optional third argument `defaultValue`.
+
 
 ## Iterating
 
@@ -325,6 +359,23 @@ The type of matrix can be selected when creating a matrix using the construction
 // create sparse matrices
 const m1 = math.matrix([[0, 1], [0, 0]], 'sparse')
 const m2 = math.identity(1000, 1000, 'sparse')
+```
+
+You can also coerce an array or matrix into sparse storage format with the
+`sparse` function.
+```js
+const md = math.matrix([[0, 1], [0,0]])  // dense
+const ms = math.sparse(md)               // sparse
+```
+
+Caution: `sparse` called on a JavaScript array of _n_ plain numbers produces
+a matrix with one column and _n_ rows -- in contrast to `matrix`, which
+produces a 1-dimensional matrix object with _n_ entries, i.e., a vector
+(_not_ a 1 by _n_ "row vector" nor an _n_ by 1 "column vector", but just a plain
+vector of length _n_).
+```js
+const mv = math.matrix([0, 0, 1])  // Has size [3]
+const mc = math.sparse([0, 0, 1])  // A "column vector," has size [3, 1]
 ```
 
 ## API

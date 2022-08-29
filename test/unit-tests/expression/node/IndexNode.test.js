@@ -1,7 +1,7 @@
 // test IndexNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
@@ -29,7 +29,7 @@ describe('IndexNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { IndexNode([]) }, SyntaxError)
+    assert.throws(function () { IndexNode([]) }, TypeError)
   })
 
   it('should filter an IndexNode', function () {
@@ -112,7 +112,7 @@ describe('IndexNode', function () {
     const n = new IndexNode([b, c])
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

@@ -1,5 +1,5 @@
-import { isBigNumber } from '../../utils/is'
-import { factory } from '../../utils/factory'
+import { isBigNumber } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'distance'
 const dependencies = [
@@ -41,11 +41,11 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *    math.distance({pointX: 2, pointY: 5, pointZ: 9}, {x0: 4, y0: 6, z0: 3, a: 4, b: 2, c: 0})
     *
     * Examples:
-    *    math.distance([0,0], [4,4])                     // Returns 5.6569
+    *    math.distance([0,0], [4,4])                     // Returns 5.656854249492381
     *    math.distance(
     *     {pointOneX: 0, pointOneY: 0},
     *     {pointTwoX: 10, pointTwoY: 10})                // Returns 14.142135623730951
-    *    math.distance([1, 0, 1], [4, -2, 2])            // Returns 3.74166
+    *    math.distance([1, 0, 1], [4, -2, 2])            // Returns 3.7416573867739413
     *    math.distance(
     *     {pointOneX: 4, pointOneY: 5, pointOneZ: 8},
     *     {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})    // Returns 3

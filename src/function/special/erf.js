@@ -1,6 +1,8 @@
-import { deepMap } from '../../utils/collection'
-import { sign } from '../../utils/number'
-import { factory } from '../../utils/factory'
+/* eslint-disable no-loss-of-precision */
+
+import { deepMap } from '../../utils/collection.js'
+import { sign } from '../../utils/number.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'erf'
 const dependencies = [
@@ -48,9 +50,7 @@ export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return sign(x) * (1 - erfc3(y))
     },
 
-    'Array | Matrix': function (n) {
-      return deepMap(n, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => n => deepMap(n, self))
 
     // TODO: For complex numbers, use the approximation for the Faddeeva function
     //  from "More Efficient Computation of the Complex Error Function" (AMS)

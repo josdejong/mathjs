@@ -1,7 +1,5 @@
-import { isInteger } from '../../utils/number'
-import { factory } from '../../utils/factory'
-import { createSimplifyConstant } from './simplify/simplifyConstant'
-import { createSimplifyCore } from './simplify/simplifyCore'
+import { isInteger } from '../../utils/number.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'rationalize'
 const dependencies = [
@@ -15,13 +13,20 @@ const dependencies = [
   'divide',
   'pow',
   'parse',
+  'simplifyConstant',
+  'simplifyCore',
   'simplify',
   '?bignumber',
   '?fraction',
   'mathWithTransform',
+  'matrix',
+  'AccessorNode',
+  'ArrayNode',
   'ConstantNode',
-  'OperatorNode',
   'FunctionNode',
+  'IndexNode',
+  'ObjectNode',
+  'OperatorNode',
   'SymbolNode',
   'ParenthesisNode'
 ]
@@ -37,41 +42,23 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
   divide,
   pow,
   parse,
+  simplifyConstant,
+  simplifyCore,
   simplify,
   fraction,
   bignumber,
   mathWithTransform,
+  matrix,
+  AccessorNode,
+  ArrayNode,
   ConstantNode,
-  OperatorNode,
   FunctionNode,
+  IndexNode,
+  ObjectNode,
+  OperatorNode,
   SymbolNode,
   ParenthesisNode
 }) => {
-  const simplifyConstant = createSimplifyConstant({
-    typed,
-    config,
-    mathWithTransform,
-    fraction,
-    bignumber,
-    ConstantNode,
-    OperatorNode,
-    FunctionNode,
-    SymbolNode
-  })
-  const simplifyCore = createSimplifyCore({
-    equal,
-    isZero,
-    add,
-    subtract,
-    multiply,
-    divide,
-    pow,
-    ConstantNode,
-    OperatorNode,
-    FunctionNode,
-    ParenthesisNode
-  })
-
   /**
    * Transform a rationalizable expression in a rational fraction.
    * If rational fraction is one variable polynomial then converts
@@ -115,108 +102,91 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
    * @param  {Object|boolean}      optional scope of expression or true for already evaluated rational expression at input
    * @param  {Boolean}  detailed   optional True if return an object, false if return expression node (default)
    *
-   * @return {Object | Node}    The rational polynomial of `expr` or na object
-   *            {Object}
-   *              {Expression Node} expression: node simplified expression
-   *              {Expression Node} numerator: simplified numerator of expression
-   *              {Expression Node | boolean} denominator: simplified denominator or false (if there is no denominator)
-   *              {Array}           variables:  variable names
-   *              {Array}           coefficients: coefficients of numerator sorted by increased exponent
+   * @return {Object | Node}    The rational polynomial of `expr` or an object
+   *            `{expression, numerator, denominator, variables, coefficients}`, where
+   *              `expression` is a `Node` with the node simplified expression,
+   *              `numerator` is a `Node` with the simplified numerator of expression,
+   *              `denominator` is a `Node` or `boolean` with the simplified denominator or `false` (if there is no denominator),
+   *              `variables` is an array with variable names,
+   *              and `coefficients` is an array with coefficients of numerator sorted by increased exponent
    *           {Expression Node}  node simplified expression
    *
    */
-  return typed(name, {
-    string: function (expr) {
-      return this(parse(expr), {}, false)
-    },
+  function _rationalize (expr, scope = {}, detailed = false) {
+    const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
+    const polyRet = polynomial(expr, scope, true, setRules.firstRules) // Check if expression is a rationalizable polynomial
+    const nVars = polyRet.variables.length
+    const noExactFractions = { exactFractions: false }
+    const withExactFractions = { exactFractions: true }
+    expr = polyRet.expression
 
-    'string, boolean': function (expr, detailed) {
-      return this(parse(expr), {}, detailed)
-    },
+    if (nVars >= 1) { // If expression in not a constant
+      expr = expandPower(expr) // First expand power of polynomials (cannot be made from rules!)
+      let sBefore // Previous expression
+      let rules
+      let eDistrDiv = true
+      let redoInic = false
+      // Apply the initial rules, including succ div rules:
+      expr = simplify(expr, setRules.firstRules, {}, noExactFractions)
+      let s
+      while (true) {
+        // Alternate applying successive division rules and distr.div.rules
+        // until there are no more changes:
+        rules = eDistrDiv ? setRules.distrDivRules : setRules.sucDivRules
+        expr = simplify(expr, rules, {}, withExactFractions)
+        eDistrDiv = !eDistrDiv // Swap between Distr.Div and Succ. Div. Rules
 
-    'string, Object': function (expr, scope) {
-      return this(parse(expr), scope, false)
-    },
-
-    'string, Object, boolean': function (expr, scope, detailed) {
-      return this(parse(expr), scope, detailed)
-    },
-
-    Node: function (expr) {
-      return this(expr, {}, false)
-    },
-
-    'Node, boolean': function (expr, detailed) {
-      return this(expr, {}, detailed)
-    },
-
-    'Node, Object': function (expr, scope) {
-      return this(expr, scope, false)
-    },
-
-    'Node, Object, boolean': function (expr, scope, detailed) {
-      const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
-      const polyRet = polynomial(expr, scope, true, setRules.firstRules) // Check if expression is a rationalizable polynomial
-      const nVars = polyRet.variables.length
-      expr = polyRet.expression
-
-      if (nVars >= 1) { // If expression in not a constant
-        expr = expandPower(expr) // First expand power of polynomials (cannot be made from rules!)
-        let sBefore // Previous expression
-        let rules
-        let eDistrDiv = true
-        let redoInic = false
-        expr = simplify(expr, setRules.firstRules, {}, { exactFractions: false }) // Apply the initial rules, including succ div rules
-        let s
-        while (true) { // Apply alternately  successive division rules and distr.div.rules
-          rules = eDistrDiv ? setRules.distrDivRules : setRules.sucDivRules
-          expr = simplify(expr, rules) // until no more changes
-          eDistrDiv = !eDistrDiv // Swap between Distr.Div and Succ. Div. Rules
-
-          s = expr.toString()
-          if (s === sBefore) {
-            break // No changes : end of the loop
-          }
-
-          redoInic = true
-          sBefore = s
+        s = expr.toString()
+        if (s === sBefore) {
+          break // No changes : end of the loop
         }
 
-        if (redoInic) { // Apply first rules again without succ div rules (if there are changes)
-          expr = simplify(expr, setRules.firstRulesAgain, {}, { exactFractions: false })
-        }
-        expr = simplify(expr, setRules.finalRules, {}, { exactFractions: false }) // Apply final rules
-      } // NVars >= 1
-
-      const coefficients = []
-      const retRationalize = {}
-
-      if (expr.type === 'OperatorNode' && expr.isBinary() && expr.op === '/') { // Separate numerator from denominator
-        if (nVars === 1) {
-          expr.args[0] = polyToCanonical(expr.args[0], coefficients)
-          expr.args[1] = polyToCanonical(expr.args[1])
-        }
-        if (detailed) {
-          retRationalize.numerator = expr.args[0]
-          retRationalize.denominator = expr.args[1]
-        }
-      } else {
-        if (nVars === 1) {
-          expr = polyToCanonical(expr, coefficients)
-        }
-        if (detailed) {
-          retRationalize.numerator = expr
-          retRationalize.denominator = null
-        }
+        redoInic = true
+        sBefore = s
       }
-      // nVars
 
-      if (!detailed) return expr
-      retRationalize.coefficients = coefficients
-      retRationalize.variables = polyRet.variables
-      retRationalize.expression = expr
-      return retRationalize
-    } // ^^^^^^^ end of rationalize ^^^^^^^^
+      if (redoInic) { // Apply first rules again without succ div rules (if there are changes)
+        expr = simplify(expr, setRules.firstRulesAgain, {}, noExactFractions)
+      }
+      // Apply final rules:
+      expr = simplify(expr, setRules.finalRules, {}, noExactFractions)
+    } // NVars >= 1
+
+    const coefficients = []
+    const retRationalize = {}
+
+    if (expr.type === 'OperatorNode' && expr.isBinary() && expr.op === '/') { // Separate numerator from denominator
+      if (nVars === 1) {
+        expr.args[0] = polyToCanonical(expr.args[0], coefficients)
+        expr.args[1] = polyToCanonical(expr.args[1])
+      }
+      if (detailed) {
+        retRationalize.numerator = expr.args[0]
+        retRationalize.denominator = expr.args[1]
+      }
+    } else {
+      if (nVars === 1) {
+        expr = polyToCanonical(expr, coefficients)
+      }
+      if (detailed) {
+        retRationalize.numerator = expr
+        retRationalize.denominator = null
+      }
+    }
+    // nVars
+
+    if (!detailed) return expr
+    retRationalize.coefficients = coefficients
+    retRationalize.variables = polyRet.variables
+    retRationalize.expression = expr
+    return retRationalize
+  }
+
+  return typed(name, {
+    Node: _rationalize,
+    'Node, boolean': (expr, detailed) => _rationalize(expr, {}, detailed),
+    'Node, Object': _rationalize,
+    'Node, Object, boolean': _rationalize
   }) // end of typed rationalize
 
   /**

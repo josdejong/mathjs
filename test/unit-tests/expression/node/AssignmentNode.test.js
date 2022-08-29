@@ -1,7 +1,7 @@
 // test AssignmentNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const AccessorNode = math.AccessorNode
 const ConstantNode = math.ConstantNode
@@ -25,7 +25,8 @@ describe('AssignmentNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { AssignmentNode(new SymbolNode('a'), new Node()) }, SyntaxError)
+    assert.throws(
+      () => AssignmentNode(new SymbolNode('a'), new Node()), TypeError)
   })
 
   it('should throw an error when creating an AssignmentNode with a reserved keyword', function () {
@@ -318,7 +319,7 @@ describe('AssignmentNode', function () {
     const n = new AssignmentNode(a, i, v)
 
     assert.throws(function () {
-      n.map(function () {})
+      n.map(function () { return undefined })
     }, /Callback function must return a Node/)
   })
 

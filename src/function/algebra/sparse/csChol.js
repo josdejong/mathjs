@@ -1,6 +1,6 @@
-import { factory } from '../../../utils/factory'
-import { csEreach } from './csEreach'
-import { createCsSymperm } from './csSymperm'
+import { factory } from '../../../utils/factory.js'
+import { csEreach } from './csEreach.js'
+import { createCsSymperm } from './csSymperm.js'
 
 const name = 'csChol'
 const dependencies = [
@@ -153,9 +153,6 @@ export const createCsChol = /* #__PURE__ */ factory(name, dependencies, (
       })
     }
     // return L & P
-    return {
-      L: L,
-      P: P
-    }
+    return { L, P }
   }
 })

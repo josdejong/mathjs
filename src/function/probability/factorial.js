@@ -1,5 +1,5 @@
-import { deepMap } from '../../utils/collection'
-import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'factorial'
 const dependencies = ['typed', 'gamma']
@@ -44,8 +44,6 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({ ty
       return gamma(n.plus(1))
     },
 
-    'Array | Matrix': function (n) {
-      return deepMap(n, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => n => deepMap(n, self))
   })
 })

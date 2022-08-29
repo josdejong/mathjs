@@ -1,4 +1,4 @@
-import { isInteger, log2, log10, cbrt, expm1, sign, toFixed, log1p } from '../../utils/number'
+import { cbrt, expm1, isInteger, log10, log1p, log2, sign, toFixed } from '../../utils/number.js'
 
 const n1 = 'number'
 const n2 = 'number, number'
@@ -43,11 +43,6 @@ export function cbrtNumber (x) {
 }
 cbrtNumber.signature = n1
 
-export function ceilNumber (x) {
-  return Math.ceil(x)
-}
-ceilNumber.signature = n1
-
 export function cubeNumber (x) {
   return x * x * x
 }
@@ -62,16 +57,6 @@ export function expm1Number (x) {
   return expm1(x)
 }
 expm1Number.signature = n1
-
-export function fixNumber (x) {
-  return (x > 0) ? Math.floor(x) : Math.ceil(x)
-}
-fixNumber.signature = n1
-
-export function floorNumber (x) {
-  return Math.floor(x)
-}
-floorNumber.signature = n1
 
 /**
  * Calculate gcd for numbers
@@ -124,14 +109,15 @@ export function lcmNumber (a, b) {
 lcmNumber.signature = n2
 
 /**
- * Calculate the logarithm of a value.
+ * Calculate the logarithm of a value, optionally to a given base.
  * @param {number} x
+ * @param {number | null | undefined} base
  * @return {number}
  */
-export function logNumber (x) {
+export function logNumber (x, y) {
+  if (y) { return Math.log(x) / Math.log(y) }
   return Math.log(x)
 }
-logNumber.signature = n1
 
 /**
  * Calculate the 10-base logarithm of a number
@@ -189,10 +175,10 @@ modNumber.signature = n2
  * Calculate the nth root of a, solve x^root == a
  * http://rosettacode.org/wiki/Nth_root#JavaScript
  * @param {number} a
- * @param {number} root
+ * @param {number} [2] root
  * @private
  */
-export function nthRootNumber (a, root) {
+export function nthRootNumber (a, root = 2) {
   const inv = root < 0
   if (inv) {
     root = -root
@@ -242,7 +228,6 @@ export function nthRootNumber (a, root) {
   return inv ? 1 / x : x
   */
 }
-nthRootNumber.signature = n2
 
 export function signNumber (x) {
   return sign(x)
@@ -332,9 +317,11 @@ powNumber.signature = n2
  * @return {number} roundedValue
  */
 export function roundNumber (value, decimals = 0) {
+  if (!isInteger(decimals) || decimals < 0 || decimals > 15) {
+    throw new Error('Number of decimals in function round must be an integer from 0 to 15 inclusive')
+  }
   return parseFloat(toFixed(value, decimals))
 }
-roundNumber.signature = n2
 
 /**
  * Calculate the norm of a number, the absolute value.

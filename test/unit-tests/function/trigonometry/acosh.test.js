@@ -1,6 +1,8 @@
+/* eslint-disable no-loss-of-precision */
+
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
-import approx from '../../../../tools/approx'
+import math from '../../../../src/defaultInstance.js'
+import approx from '../../../../tools/approx.js'
 const pi = math.pi
 const acosh = math.acosh
 const cosh = math.cosh
@@ -93,10 +95,12 @@ describe('acosh', function () {
     assert.throws(function () { acosh('string') })
   })
 
-  it('should calculate the arccos element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => acosh([1, 2, 3]), TypeError)
+    assert.throws(() => acosh(matrix([1, 2, 3])), TypeError)
     const acosh123 = [0, 1.3169578969248167, 1.7627471740390860504]
-    approx.deepEqual(acosh([1, 2, 3]), acosh123)
-    approx.deepEqual(acosh(matrix([1, 2, 3])), matrix(acosh123))
+    approx.deepEqual(math.map([1, 2, 3], acosh), acosh123)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), acosh), matrix(acosh123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

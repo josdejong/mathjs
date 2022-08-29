@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 
 describe('concat', function () {
@@ -104,6 +104,6 @@ describe('concat', function () {
 
   it('should LaTeX concat', function () {
     const expression = math.parse('concat([1],[2])')
-    assert.strictEqual(expression.toTex(), '\\mathrm{concat}\\left(\\begin{bmatrix}1\\\\\\end{bmatrix},\\begin{bmatrix}2\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{concat}\\left(\\begin{bmatrix}1\\end{bmatrix},\\begin{bmatrix}2\\end{bmatrix}\\right)')
   })
 })

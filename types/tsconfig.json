@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "mathjs": ["./index.d.ts"]
+    },
+    "moduleResolution": "node",
+    "typeRoots": [],
+    "types": [],
+    "lib": ["ES6", "DOM"],
+    "module": "ESNEXT",
+    "noEmit": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": false,
+    "strictFunctionTypes": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "files": [
+    "./index.ts"
+  ],
+}

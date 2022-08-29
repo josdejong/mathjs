@@ -1,7 +1,7 @@
-import { isMatrix } from '../../utils/is'
-import { arraySize } from '../../utils/array'
-import { factory } from '../../utils/factory'
-import { format } from '../../utils/string'
+import { isMatrix } from '../../utils/is.js'
+import { arraySize } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
+import { format } from '../../utils/string.js'
 
 const name = 'inv'
 const dependencies = [

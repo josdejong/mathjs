@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const range = math.range
 const matrix = math.matrix
 const bignumber = math.bignumber
@@ -152,6 +152,7 @@ describe('range', function () {
   })
 
   // FIXME: should give the right error
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should not cast a single number or boolean to string', function () {
     assert.throws(function () { range(2) }, /TypeError: Too few arguments/)
     assert.throws(function () { range(true) }, /TypeError: Unexpected type of argument/)

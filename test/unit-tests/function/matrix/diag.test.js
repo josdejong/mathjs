@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 
 describe('diag', function () {
@@ -108,7 +108,7 @@ describe('diag', function () {
 
   it('should throw an error in case of wrong number of arguments', function () {
     assert.throws(function () { math.diag() }, /TypeError: Too few arguments/)
-    assert.throws(function () { math.diag([], 2, 3, 4) }, /TypeError: Too many arguments/)
+    assert.throws(function () { math.diag([], 2, 'dense', 4) }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of arguments', function () {
@@ -120,7 +120,7 @@ describe('diag', function () {
     const expr1 = math.parse('diag([1,2,3])')
     const expr2 = math.parse('diag([1,2,3],1)')
 
-    assert.strictEqual(expr1.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}\\right)')
-    assert.strictEqual(expr2.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix},1\\right)')
+    assert.strictEqual(expr1.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix}\\right)')
+    assert.strictEqual(expr2.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix},1\\right)')
   })
 })

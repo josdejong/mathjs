@@ -1,4 +1,4 @@
-import { factory } from '../../utils/factory'
+import { factory } from '../../utils/factory.js'
 
 const name = 'Matrix'
 const dependencies = []
@@ -188,6 +188,15 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
   Matrix.prototype.forEach = function (callback) {
     // must be implemented by each of the Matrix implementations
     throw new Error('Cannot invoke forEach on a Matrix interface')
+  }
+
+  /**
+   * Iterate over the matrix elements
+   * @return {Iterable<{ value, index: number[] }>}
+   */
+  Matrix.prototype[Symbol.iterator] = function () {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot iterate a Matrix interface')
   }
 
   /**

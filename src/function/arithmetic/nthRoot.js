@@ -1,11 +1,10 @@
-import { factory } from '../../utils/factory'
-import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
-import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
-import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
-import { nthRootNumber } from '../../plain/number'
+import { factory } from '../../utils/factory.js'
+import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
+import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
+import { createMatAlgo06xS0S0 } from '../../type/matrix/utils/matAlgo06xS0S0.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
+import { nthRootNumber } from '../../plain/number/index.js'
 
 const name = 'nthRoot'
 const dependencies = [
@@ -16,12 +15,11 @@ const dependencies = [
 ]
 
 export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber }) => {
-  const algorithm01 = createAlgorithm01({ typed })
-  const algorithm02 = createAlgorithm02({ typed, equalScalar })
-  const algorithm06 = createAlgorithm06({ typed, equalScalar })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
+  const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Calculate the nth root of a value.
@@ -39,9 +37,9 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * Examples:
    *
-   *     math.nthRoot(9, 2)    // returns 3, as 3^2 == 9
-   *     math.sqrt(9)          // returns 3, as 3^2 == 9
-   *     math.nthRoot(64, 3)   // returns 4, as 4^3 == 64
+   *     math.nthRoot(9, 2)    // returns 3 (since 3^2 == 9)
+   *     math.sqrt(9)          // returns 3 (since 3^2 == 9)
+   *     math.nthRoot(64, 3)   // returns 4 (since 4^3 == 64)
    *
    * See also:
    *
@@ -52,111 +50,73 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @param {number | BigNumber} [root=2]    The root.
    * @return {number | Complex | Array | Matrix} Returns the nth root of `a`
    */
-  const complexErr = ('' +
-    'Complex number not supported in function nthRoot. ' +
-    'Use nthRoots instead.'
+  function complexErr () {
+    throw new Error(
+      'Complex number not supported in function nthRoot. Use nthRoots instead.')
+  }
+
+  return typed(
+    name,
+    {
+      number: nthRootNumber,
+      'number, number': nthRootNumber,
+
+      BigNumber: x => _bigNthRoot(x, new BigNumber(2)),
+      'BigNumber, BigNumber': _bigNthRoot,
+
+      Complex: complexErr,
+      'Complex, number': complexErr,
+
+      Array: typed.referTo('DenseMatrix,number', selfDn =>
+        x => selfDn(matrix(x), 2).valueOf()),
+      DenseMatrix: typed.referTo('DenseMatrix,number', selfDn =>
+        x => selfDn(x, 2)),
+      SparseMatrix: typed.referTo('SparseMatrix,number', selfSn =>
+        x => selfSn(x, 2)),
+
+      'SparseMatrix, SparseMatrix': typed.referToSelf(self => (x, y) => {
+        // density must be one (no zeros in matrix)
+        if (y.density() === 1) {
+          // sparse + sparse
+          return matAlgo06xS0S0(x, y, self)
+        } else {
+          // throw exception
+          throw new Error('Root must be non-zero')
+        }
+      }),
+
+      'DenseMatrix, SparseMatrix': typed.referToSelf(self => (x, y) => {
+        // density must be one (no zeros in matrix)
+        if (y.density() === 1) {
+          // dense + sparse
+          return matAlgo01xDSid(x, y, self, false)
+        } else {
+          // throw exception
+          throw new Error('Root must be non-zero')
+        }
+      }),
+
+      'Array, SparseMatrix': typed.referTo('DenseMatrix,SparseMatrix', selfDS =>
+        (x, y) => selfDS(matrix(x), y)),
+
+      'number | BigNumber, SparseMatrix': typed.referToSelf(self => (x, y) => {
+        // density must be one (no zeros in matrix)
+        if (y.density() === 1) {
+          // sparse - scalar
+          return matAlgo11xS0s(y, x, self, true)
+        } else {
+          // throw exception
+          throw new Error('Root must be non-zero')
+        }
+      })
+    },
+    matrixAlgorithmSuite({
+      scalar: 'number | BigNumber',
+      SD: matAlgo02xDS0,
+      Ss: matAlgo11xS0s,
+      sS: false
+    })
   )
-  return typed(name, {
-
-    number: function (x) {
-      return nthRootNumber(x, 2)
-    },
-
-    'number, number': nthRootNumber,
-
-    BigNumber: function (x) {
-      return _bigNthRoot(x, new BigNumber(2))
-    },
-    Complex: function (x) {
-      throw new Error(complexErr)
-    },
-    'Complex, number': function (x, y) {
-      throw new Error(complexErr)
-    },
-    'BigNumber, BigNumber': _bigNthRoot,
-
-    'Array | Matrix': function (x) {
-      return this(x, 2)
-    },
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      // density must be one (no zeros in matrix)
-      if (y.density() === 1) {
-        // sparse + sparse
-        return algorithm06(x, y, this)
-      } else {
-        // throw exception
-        throw new Error('Root must be non-zero')
-      }
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, this, true)
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      // density must be one (no zeros in matrix)
-      if (y.density() === 1) {
-        // dense + sparse
-        return algorithm01(x, y, this, false)
-      } else {
-        // throw exception
-        throw new Error('Root must be non-zero')
-      }
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, this)
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, this, false)
-    },
-
-    'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, this, false)
-    },
-
-    'number | BigNumber, SparseMatrix': function (x, y) {
-      // density must be one (no zeros in matrix)
-      if (y.density() === 1) {
-        // sparse - scalar
-        return algorithm11(y, x, this, true)
-      } else {
-        // throw exception
-        throw new Error('Root must be non-zero')
-      }
-    },
-
-    'number | BigNumber, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, this, true)
-    },
-
-    'Array, number | BigNumber': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y).valueOf()
-    },
-
-    'number | BigNumber, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y)).valueOf()
-    }
-  })
 
   /**
    * Calculate the nth root of a for BigNumbers, solve x^root == a

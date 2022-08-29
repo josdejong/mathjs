@@ -2,8 +2,8 @@
 import assert from 'assert'
 
 import BigNumber from 'decimal.js'
-import math from '../../../src/bundleAny'
-import { endsWith, escape, format } from '../../../src/utils/string'
+import math from '../../../src/defaultInstance.js'
+import { endsWith, escape, format } from '../../../src/utils/string.js'
 
 describe('string', function () {
   it('endsWith', function () {
@@ -110,6 +110,12 @@ describe('string', function () {
 
     it('should format unknown primitives by converting them to string', function () {
       assert.strictEqual(format(true), 'true')
+    })
+
+    it('should limit the length of output with a truncate option', function () {
+      const result = format('01234567890123456789', { truncate: 17 })
+      assert.strictEqual(result.length, 17)
+      assert.ok(endsWith(result, '...'))
     })
   })
 })

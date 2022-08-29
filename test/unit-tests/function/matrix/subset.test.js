@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const subset = math.subset
 const matrix = math.matrix
 const Range = math.Range
@@ -166,6 +166,6 @@ describe('subset', function () {
 
   it('should LaTeX subset', function () {
     const expression = math.parse('subset([1],index(0,0))')
-    assert.strictEqual(expression.toTex(), '\\mathrm{subset}\\left(\\begin{bmatrix}1\\\\\\end{bmatrix},\\mathrm{index}\\left(0,0\\right)\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{subset}\\left(\\begin{bmatrix}1\\end{bmatrix},\\mathrm{index}\\left(0,0\\right)\\right)')
   })
 })

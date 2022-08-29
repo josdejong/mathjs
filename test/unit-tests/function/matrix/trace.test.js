@@ -1,6 +1,6 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 
 describe('trace', function () {
   it('should calculate correctly the trace of a NxN array', function () {
@@ -206,7 +206,7 @@ describe('trace', function () {
 
   it('should LaTeX trace', function () {
     const expression = math.parse('trace([[1,2],[3,4]])')
-    assert.strictEqual(expression.toTex(), '\\mathrm{tr}\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{tr}\\left(\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}\\right)')
   })
 
   describe('DenseMatrix', function () {

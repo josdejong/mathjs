@@ -1,7 +1,7 @@
 // test SymbolNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const ParenthesisNode = math.ParenthesisNode
@@ -18,7 +18,7 @@ describe('ParenthesisNode', function () {
 
   it('should throw an error when calling without new operator', function () {
     const a = new ConstantNode(1)
-    assert.throws(function () { ParenthesisNode(a) }, SyntaxError)
+    assert.throws(function () { ParenthesisNode(a) }, TypeError)
   })
 
   it('should throw an error when calling with wrong arguments', function () {

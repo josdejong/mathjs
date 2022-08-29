@@ -478,6 +478,11 @@ Properties:
 - `fn: Node | string` (read-only) The object or function name which to invoke.
 - `args: Node[]`
 
+Static functions:
+
+- `FunctionNode.onUndefinedFunction(name: string)`. This function is invoked when an undefined function is evaluated. By default, the function throws an exception "Undefined function x". The function can be overwritten to customize this behavior. See also `SymbolNode.onUndefinedSymbol`.
+
+
 Examples:
 
 ```js
@@ -554,7 +559,7 @@ const node2 = new math.ObjectNode({a: a, b: b, c: c})
 Construction:
 
 ```
-new OperatorNode(op: string, fn: string, args: Node[])
+new OperatorNode(op: string, fn: string, args: Node[], implicit: boolean = false)
 ```
 
 Additional methods:
@@ -587,6 +592,7 @@ Properties:
 - `op: string`
 - `fn: string`
 - `args: Node[]`
+- `implicit: boolean` True in case of an implicit multiplication, false otherwise
 
 Examples:
 
@@ -689,6 +695,11 @@ new SymbolNode(name: string)
 Properties:
 
 - `name: string`
+
+Static functions:
+
+- `SymbolNode.onUndefinedSymbol(name: string)`. This function is invoked when an undefined symbol is evaluated. By default, the function throws an exception "Undefined symbol x". The function can be overwritten to customize this behavior. See also `FunctionNode.onUndefinedFunction`.
+
 
 Examples:
 

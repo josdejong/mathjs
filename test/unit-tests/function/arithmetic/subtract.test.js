@@ -1,8 +1,8 @@
 // test subtract
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const subtract = math.subtract
 
@@ -92,6 +92,14 @@ describe('subtract', function () {
 
     assert.deepStrictEqual(subtract(math.unit(math.complex(10, 10), 'K'), math.unit(math.complex(3, 4), 'K')), math.unit(math.complex(7, 6), 'K'))
     assert.deepStrictEqual(subtract(math.unit(math.complex(10, 10), 'K'), math.unit(3, 'K')), math.unit(math.complex(7, 10), 'K'))
+  })
+
+  it('should subtract units even when they have offsets', function () {
+    let t = math.unit(20, 'degC')
+    assert.deepStrictEqual(subtract(t, math.unit(1, 'degC')), math.unit(19, 'degC'))
+    t = math.unit(68, 'degF')
+    approx.deepEqual(subtract(t, math.unit(2, 'degF')), math.unit(66, 'degF'))
+    approx.deepEqual(subtract(t, math.unit(1, 'degC')), math.unit(66.2, 'degF'))
   })
 
   it('should throw an error if subtracting two quantities of different units', function () {

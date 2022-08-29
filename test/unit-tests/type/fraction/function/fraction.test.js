@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../../src/bundleAny'
+import math from '../../../../../src/defaultInstance.js'
 import Fraction from 'fraction.js'
 
 describe('fraction', function () {
@@ -9,6 +9,17 @@ describe('fraction', function () {
     equalFraction(math.fraction('1/3'), new Fraction(1, 3))
     equalFraction(math.fraction({ n: 1, d: 3 }), new Fraction(1, 3))
     equalFraction(math.fraction(null), new Fraction(0))
+  })
+
+  it('should fail to create a fraction in case of non-integer quotient', function () {
+    assert.throws(() => math.fraction(4, 5.1), /Parameters must be integer/)
+    assert.throws(() => math.fraction(62.8, 10), /Parameters must be integer/)
+    assert.throws(() => math.fraction(Infinity, 3), /Parameters must be integer/)
+  })
+
+  it('should create a fraction from a quotient regardless of integrality', function () {
+    equalFraction(math.divide(math.fraction(4), math.fraction(5.1)),
+      math.fraction(40, 51))
   })
 
   it('should create a fraction from a BigNumber', function () {

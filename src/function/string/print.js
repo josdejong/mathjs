@@ -1,6 +1,6 @@
-import { format } from '../../utils/string'
-import { isString } from '../../utils/is'
-import { factory } from '../../utils/factory'
+import { format } from '../../utils/string.js'
+import { isString } from '../../utils/is.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'print'
 const dependencies = ['typed']

@@ -1,7 +1,7 @@
 // test SymbolNode
 import assert from 'assert'
 
-import math from '../../../../src/bundleAny'
+import math from '../../../../src/defaultInstance.js'
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
@@ -21,7 +21,7 @@ describe('SymbolNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { SymbolNode('sqrt') }, SyntaxError)
+    assert.throws(function () { SymbolNode('sqrt') }, TypeError)
   })
 
   it('should throw an error when calling with wrong arguments', function () {
@@ -32,7 +32,7 @@ describe('SymbolNode', function () {
   it('should throw an error when evaluating an undefined symbol', function () {
     const scope = {}
     const s = new SymbolNode('foo')
-    assert.throws(function () { s.compile().evaluate(scope) }, Error)
+    assert.throws(function () { s.compile().evaluate(scope) }, /Error: Undefined symbol foo/)
   })
 
   it('should compile a SymbolNode', function () {
@@ -69,6 +69,7 @@ describe('SymbolNode', function () {
     const a = new SymbolNode('a')
     const b = a.map(function () {
       assert.ok(false, 'should not execute, symbol has no childs')
+      return undefined
     })
 
     assert.notStrictEqual(b, a)

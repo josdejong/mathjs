@@ -1,8 +1,8 @@
 // test mod
 import assert from 'assert'
 
-import approx from '../../../../tools/approx'
-import math from '../../../../src/bundleAny'
+import approx from '../../../../tools/approx.js'
+import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const matrix = math.matrix
 const sparse = math.sparse
@@ -30,9 +30,11 @@ describe('mod', function () {
     approx.equal(mod(8.2, 3), 2.2)
     approx.equal(mod(4, 1.5), 1)
     approx.equal(mod(0, 3), 0)
+    approx.equal(mod(-10, 4), 2)
+    approx.equal(mod(-5, 3), 1)
   })
 
-  it('should throw an error if the modulus is negative', function () {
+  it('should throw an error if the divisor is negative', function () {
     assert.throws(function () { mod(10, -4) })
   })
 
@@ -55,12 +57,18 @@ describe('mod', function () {
     assert.deepStrictEqual(mod(bignumber(8), bignumber(3)).valueOf(), bignumber(2).valueOf())
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should calculate the modulus of bignumbers for fractions', function () {
     assert.deepStrictEqual(mod(bignumber(7).div(3), bignumber(1).div(3)), bignumber(0))
   })
 
-  it.skip('should calculate the modulus of bignumbers for negative values', function () {
+  it('should calculate the modulus of bignumbers for negative dividend', function () {
     assert.deepStrictEqual(mod(bignumber(-10), bignumber(4)), bignumber(2))
+    assert.deepStrictEqual(mod(bignumber(-5), bignumber(3)), bignumber(1))
+  })
+
+  it('should throw an error if the divisor in modulus of bignumbers is negative', function () {
+    assert.throws(function () { mod(bignumber(10), bignumber(-4)) })
   })
 
   it('should calculate the modulus of mixed numbers and bignumbers', function () {
@@ -70,6 +78,8 @@ describe('mod', function () {
     assert.deepStrictEqual(mod(7, bignumber(0)), bignumber(7))
     assert.deepStrictEqual(mod(bignumber(0), 3), bignumber(0))
     assert.deepStrictEqual(mod(bignumber(7), 0), bignumber(7))
+    assert.deepStrictEqual(mod(bignumber(-5), 3), bignumber(1))
+    assert.deepStrictEqual(mod(-5, bignumber(3)), bignumber(1))
 
     assert.throws(function () { mod(7 / 3, bignumber(2)) }, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { mod(bignumber(7).div(3), 1 / 3) }, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/)
@@ -103,6 +113,15 @@ describe('mod', function () {
     assert(a instanceof math.Fraction)
 
     assert.strictEqual(mod(math.fraction(4.55), math.fraction(0.05)).toString(), '0')
+  })
+
+  it('should calculate the modulus of fractions for negative dividend', function () {
+    assert.strictEqual(mod(math.fraction(-10), math.fraction(4)).toString(), '2')
+    assert.strictEqual(mod(math.fraction(-5), math.fraction(3)).toString(), '1')
+  })
+
+  it('should throw an error if the divosor in modulus of fractions is negative', function () {
+    assert.throws(function () { mod(math.fraction(10), math.fraction(-4)) })
   })
 
   it('should calculate modulus of mixed fractions and numbers', function () {

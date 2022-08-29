@@ -1,4 +1,4 @@
-import { hasOwnProperty } from './object'
+import { hasOwnProperty } from './object.js'
 
 /**
  * Get a property of a plain object
@@ -39,6 +39,14 @@ function setSafeProperty (object, prop, value) {
   }
 
   throw new Error('No access to property "' + prop + '"')
+}
+
+function getSafeProperties (object) {
+  return Object.keys(object).filter((prop) => hasOwnProperty(object, prop))
+}
+
+function hasSafeProperty (object, prop) {
+  return prop in object
 }
 
 /**
@@ -148,6 +156,8 @@ const safeNativeMethods = {
 export { getSafeProperty }
 export { setSafeProperty }
 export { isSafeProperty }
+export { hasSafeProperty }
+export { getSafeProperties }
 export { validateSafeMethod }
 export { isSafeMethod }
 export { isPlainObject }

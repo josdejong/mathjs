@@ -1,5 +1,5 @@
-import { deepMap } from '../../utils/collection'
-import { factory } from '../../utils/factory'
+import { deepMap } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'isNumeric'
 const dependencies = ['typed']
@@ -22,7 +22,7 @@ export const createIsNumeric = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *    math.isNumeric(0)                     // returns true
    *    math.isNumeric(math.bignumber(500))   // returns true
    *    math.isNumeric(math.fraction(4))      // returns true
-   *    math.isNumeric(math.complex('2-4i')   // returns false
+   *    math.isNumeric(math.complex('2-4i'))  // returns false
    *    math.isNumeric([2.3, 'foo', false])   // returns [true, false, true]
    *
    * See also:
@@ -35,16 +35,8 @@ export const createIsNumeric = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *                    Throws an error in case of unknown types.
    */
   return typed(name, {
-    'number | BigNumber | Fraction | boolean': function () {
-      return true
-    },
-
-    'Complex | Unit | string | null | undefined | Node': function () {
-      return false
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'number | BigNumber | Fraction | boolean': () => true,
+    'Complex | Unit | string | null | undefined | Node': () => false,
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

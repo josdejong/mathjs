@@ -1,7 +1,7 @@
-import { isBigNumber } from '../../utils/is'
-import { isInteger } from '../../utils/number'
-import { resize } from '../../utils/array'
-import { factory } from '../../utils/factory'
+import { isBigNumber } from '../../utils/is.js'
+import { isInteger } from '../../utils/number.js'
+import { resize } from '../../utils/array.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'zeros'
 const dependencies = ['typed', 'config', 'matrix', 'BigNumber']
@@ -22,6 +22,7 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * Examples:
    *
+   *    math.zeros()                   // returns []
    *    math.zeros(3)                  // returns [0, 0, 0]
    *    math.zeros(3, 2)               // returns [[0, 0], [0, 0], [0, 0]]
    *    math.zeros(3, 'dense')         // returns [0, 0, 0]
@@ -33,7 +34,7 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    ones, identity, size, range
    *
-   * @param {...number | Array} size    The size of each dimension of the matrix
+   * @param {...(number|BigNumber) | Array} size    The size of each dimension of the matrix
    * @param {string} [format]           The Matrix storage format
    *
    * @return {Array | Matrix}           A matrix filled with zeros

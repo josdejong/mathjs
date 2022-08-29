@@ -1,11 +1,10 @@
-import { factory } from '../utils/factory'
-import { extend, hasOwnProperty } from '../utils/object'
-import { getSafeProperty, setSafeProperty } from '../utils/customs'
+import { factory } from '../utils/factory.js'
+import { createEmptyMap, toObject } from '../utils/map.js'
 
 const name = 'Parser'
-const dependencies = ['parse']
+const dependencies = ['evaluate']
 
-export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ parse }) => {
+export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ evaluate }) => {
   /**
    * @constructor Parser
    * Parser contains methods to evaluate or parse expressions, and has a number
@@ -36,7 +35,7 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    *    // define variables and functions
    *    parser.evaluate('x = 7 / 2')              // 3.5
    *    parser.evaluate('x + 3')                  // 6.5
-   *    parser.evaluate('function f(x, y) = x^y') // f(x, y)
+   *    parser.evaluate('f(x, y) = x^y')          // f(x, y)
    *    parser.evaluate('f(2, 3)')                // 8
    *
    *    // get and set variables and functions
@@ -59,7 +58,11 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
       throw new SyntaxError(
         'Constructor must be called with the new operator')
     }
-    this.scope = {}
+
+    Object.defineProperty(this, 'scope', {
+      value: createEmptyMap(),
+      writable: false
+    })
   }
 
   /**
@@ -70,15 +73,14 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
 
   /**
    * Parse and evaluate the given expression
-   * @param {string} expr   A string containing an expression, for example "2+3"
+   * @param {string | string[]} expr   A string containing an expression,
+   *                                   for example "2+3", or a list with expressions
    * @return {*} result     The result, or undefined when the expression was empty
    * @throws {Error}
    */
   Parser.prototype.evaluate = function (expr) {
     // TODO: validate arguments
-    return parse(expr)
-      .compile()
-      .evaluate(this.scope)
+    return evaluate(expr, this.scope)
   }
 
   /**
@@ -89,9 +91,9 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   Parser.prototype.get = function (name) {
     // TODO: validate arguments
-    return name in this.scope
-      ? getSafeProperty(this.scope, name)
-      : undefined
+    if (this.scope.has(name)) {
+      return this.scope.get(name)
+    }
   }
 
   /**
@@ -99,7 +101,15 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @return {Object} values
    */
   Parser.prototype.getAll = function () {
-    return extend({}, this.scope)
+    return toObject(this.scope)
+  }
+
+  /**
+   * Get a map with all defined variables
+   * @return {Map} values
+   */
+  Parser.prototype.getAllAsMap = function () {
+    return this.scope
   }
 
   /**
@@ -108,8 +118,8 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param {* | undefined} value
    */
   Parser.prototype.set = function (name, value) {
-    // TODO: validate arguments
-    return setSafeProperty(this.scope, name, value)
+    this.scope.set(name, value)
+    return value
   }
 
   /**
@@ -117,19 +127,14 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param {string} name
    */
   Parser.prototype.remove = function (name) {
-    // TODO: validate arguments
-    delete this.scope[name]
+    this.scope.delete(name)
   }
 
   /**
    * Clear the scope with variables and functions
    */
   Parser.prototype.clear = function () {
-    for (const name in this.scope) {
-      if (hasOwnProperty(this.scope, name)) {
-        delete this.scope[name]
-      }
-    }
+    this.scope.clear()
   }
 
   return Parser
