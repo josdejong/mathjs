@@ -147,7 +147,7 @@ describe('simplify', function () {
     simplifyAndCompare('zeros(2,1)', '[0;0]')
     simplifyAndCompare('ones(3)', '[1,1,1]')
     simplifyAndCompare('identity(2)', '[1,0;0,1]')
-    simplifyAndCompare('sqrt([1,4,9])', '[1,2,3]')
+    simplifyAndCompare('floor([1.1,4.4,9.9])', '[1,4,9]')
     simplifyAndCompare('det([2,1;-1,3])', '7')
     simplifyAndCompare("[1,2;3,4]'", '[1,3;2,4]')
   })
@@ -182,7 +182,7 @@ describe('simplify', function () {
     simplifyAndCompare('2 - -3', '5')
     let e = math.parse('2 - -3')
     e = math.simplifyCore(e)
-    assert.strictEqual(e.toString(), '5') // simplifyCore
+    assert.strictEqual(e.toString(), '2 + 3') // simplifyCore
     simplifyAndCompare('x - -x', '2*x')
     e = math.parse('x - -x')
     e = math.simplifyCore(e)
@@ -213,7 +213,7 @@ describe('simplify', function () {
     simplifyAndCompareEval('1 - 1e-10', '1 - 1e-10')
     simplifyAndCompareEval('1 + 1e-10', '1 + 1e-10')
     simplifyAndCompareEval('1e-10 / 2', '1e-10 / 2')
-    simplifyAndCompareEval('(1e-5)^2', '(1e-5)^2')
+    simplifyAndCompareEval('(1e-5)^2', '1e-10')
     simplifyAndCompareEval('min(1, -1e-10)', '-1e-10')
     simplifyAndCompareEval('max(1e-10, -1)', '1e-10')
   })
@@ -232,6 +232,19 @@ describe('simplify', function () {
     simplifyAndCompare('x*y - y*x', '0')
     simplifyAndCompare('x^2*y^3*z - y*z*y*x^2*y', '0')
     simplifyAndCompare('x^2*y^3*z - y*z*x^2*y', 'x^2*z*(y^3-y^2)')
+  })
+
+  it('can simplify with functions as well as operators', function () {
+    simplifyAndCompare('add(x,x)', '2*x')
+    simplifyAndCompare('multiply(x,2)+x', '3*x')
+    simplifyAndCompare('add(2*add(x,1), x+1)', '3*(x + 1)')
+    simplifyAndCompare('multiply(2, x+1) + add(x,1)', '3*(x + 1)')
+    simplifyAndCompare('add(y*pow(x,2), multiply(2,x^2))', 'x^2*(y+2)')
+    simplifyAndCompare('add(x*y, multiply(y,x))', '2*x*y')
+    simplifyAndCompare('subtract(multiply(x,y), multiply(y,x))', '0')
+    simplifyAndCompare('pow(x,2)*multiply(y^3, z) - multiply(y,z,y,x^2,y)', '0')
+    simplifyAndCompare('subtract(multiply(x^2, pow(y,3))*z, y*multiply(z,x^2)*y)',
+      'x^2*z*(y^3-y^2)')
   })
 
   it('should collect separated like terms', function () {
@@ -274,7 +287,7 @@ describe('simplify', function () {
   it('should not run into an infinite recursive loop', function () {
     simplifyAndCompare('2n - 1', '2 n - 1')
     simplifyAndCompare('16n - 1', '16 n - 1')
-    simplifyAndCompare('16n / 1', '16 * n')
+    simplifyAndCompare('16n / 1', '16 n')
     simplifyAndCompare('8 / 5n', 'n * 8 / 5')
     simplifyAndCompare('8n - 4n', '4 * n')
     simplifyAndCompare('8 - 4n', '8 - 4 * n')
@@ -497,16 +510,20 @@ describe('simplify', function () {
       }
     }
 
+    // Simplify actually increases accuracy when it uses fractions, so we
+    // disable that to get equality in these tests:
+    realContext.exactFractions = false
+    positiveContext.exactFractions = false
     for (const textExpr of expLibrary) {
       const expr = math.parse(textExpr)
       const realex = math.simplify(expr, {}, realContext)
       const posex = math.simplify(expr, {}, positiveContext)
-      assertAlike(expr.evaluate(zeroes), realex.evaluate(zeroes))
-      assertAlike(expr.evaluate(negones), realex.evaluate(negones))
-      assertAlike(expr.evaluate(ones), realex.evaluate(ones))
-      assertAlike(expr.evaluate(twos), realex.evaluate(twos))
-      assertAlike(expr.evaluate(ones), posex.evaluate(ones))
-      assertAlike(expr.evaluate(twos), posex.evaluate(twos))
+      assertAlike(realex.evaluate(zeroes), expr.evaluate(zeroes))
+      assertAlike(realex.evaluate(negones), expr.evaluate(negones))
+      assertAlike(realex.evaluate(ones), expr.evaluate(ones))
+      assertAlike(realex.evaluate(twos), expr.evaluate(twos))
+      assertAlike(posex.evaluate(ones), expr.evaluate(ones))
+      assertAlike(posex.evaluate(twos), expr.evaluate(twos))
     }
     // Make sure at least something is not equal
     const expr = math.parse('x/x')

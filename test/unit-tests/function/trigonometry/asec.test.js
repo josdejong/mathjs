@@ -103,10 +103,12 @@ describe('asec', function () {
     assert.throws(function () { asec('string') })
   })
 
-  it('should calculate the arcsec element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => asec([1, 2, 3]), TypeError)
+    assert.throws(() => asec(matrix([1, 2, 3])), TypeError)
     const asec123 = [0, pi / 3, 1.23095941734077468]
-    approx.deepEqual(asec([1, 2, 3]), asec123)
-    approx.deepEqual(asec(matrix([1, 2, 3])), matrix(asec123))
+    approx.deepEqual(math.map([1, 2, 3], asec), asec123)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), asec), matrix(asec123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

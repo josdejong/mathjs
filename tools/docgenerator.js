@@ -544,7 +544,9 @@ function cleanup (outputPath, outputRoot) {
  *     giving the relevant information
  */
 function collectDocs (functionNames, inputPath) {
-  const files = glob.sync(inputPath + '**/*.js')
+  // glob@8 doesn't work on Windows, which has \ separators instead of /
+  const linuxInputPath = inputPath.replace(/\\/g, '/') + '**/*.js'
+  const files = glob.sync(linuxInputPath)
 
   // generate path information for each of the files
   const functions = {} // TODO: change to array

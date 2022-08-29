@@ -11,6 +11,15 @@ describe('Chain', function () {
     assert.strictEqual(new Chain(0).add(3).done(), 3)
   })
 
+  it('should not chain a rest parameter across stored value and additional arguments', function () {
+    assert.throws(
+      () => new Chain(3).median(4, 5).done(),
+      /Error:.*median.*rest/)
+    assert.throws(
+      () => new Chain(3).ones(2, 'dense').done(),
+      /Error:.*ones.*rest/)
+  })
+
   it('should have a property isChain', function () {
     const a = new math.Chain(5)
     assert.strictEqual(a.isChain, true)

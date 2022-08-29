@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 
 const name = 'asin'
 const dependencies = ['typed', 'config', 'Complex']
@@ -8,7 +7,8 @@ export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   /**
    * Calculate the inverse sine of a value.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matric arcsine, this function does not apply
+   * to matrices.
    *
    * Syntax:
    *
@@ -19,14 +19,14 @@ export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *    math.asin(0.5)           // returns number 0.5235987755982989
    *    math.asin(math.sin(1.5)) // returns number ~1.5
    *
-   *    math.asin(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+   *    math.asin(2)             // returns Complex 1.5707963267948966 -1.3169578969248166i
    *
    * See also:
    *
    *    sin, atan, acos
    *
-   * @param {number | BigNumber | Complex | Array | Matrix} x   Function input
-   * @return {number | BigNumber | Complex | Array | Matrix} The arc sine of x
+   * @param {number | BigNumber | Complex} x   Function input
+   * @return {number | BigNumber | Complex} The arc sine of x
    */
   return typed(name, {
     number: function (x) {
@@ -43,11 +43,6 @@ export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     BigNumber: function (x) {
       return x.asin()
-    },
-
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since asin(0) = 0
-      return deepMap(x, this, true)
     }
   })
 })

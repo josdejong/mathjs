@@ -214,7 +214,7 @@ describe('parse', function () {
     })
 
     it('should fill in the property comment of a Node', function () {
-      assert.strictEqual(parse('2 + 3').comment, '')
+      assert.strictEqual(parse('2 + 3').comment, undefined)
 
       assert.strictEqual(parse('2 + 3 # hello').comment, '# hello')
       assert.strictEqual(parse('   # hi').comment, '# hi')
@@ -952,17 +952,17 @@ describe('parse', function () {
 
     it('should parse constants', function () {
       assert.strictEqual(parse('true').type, 'ConstantNode')
-      assert.deepStrictEqual(parse('true'), createConstantNode(true))
-      assert.deepStrictEqual(parse('false'), createConstantNode(false))
-      assert.deepStrictEqual(parse('null'), createConstantNode(null))
-      assert.deepStrictEqual(parse('undefined'), createConstantNode(undefined))
+      assert.deepStrictEqual(parse('true'), new ConstantNode(true))
+      assert.deepStrictEqual(parse('false'), new ConstantNode(false))
+      assert.deepStrictEqual(parse('null'), new ConstantNode(null))
+      assert.deepStrictEqual(parse('undefined'), new ConstantNode(undefined))
     })
 
     it('should parse numeric constants', function () {
       const nanConstantNode = parse('NaN')
       assert.deepStrictEqual(nanConstantNode.type, 'ConstantNode')
       assert.ok(isNaN(nanConstantNode.value))
-      assert.deepStrictEqual(parse('Infinity'), createConstantNode(Infinity))
+      assert.deepStrictEqual(parse('Infinity'), new ConstantNode(Infinity))
     })
 
     it('should evaluate constants', function () {
@@ -978,13 +978,6 @@ describe('parse', function () {
       assert.strictEqual(math.evaluate('true'), true)
       assert.strictEqual(math.evaluate('false'), false)
     })
-
-    // helper function to create a ConstantNode with empty comment
-    function createConstantNode (value) {
-      const c = new ConstantNode(value)
-      c.comment = ''
-      return c
-    }
   })
 
   describe('variables', function () {
@@ -1338,11 +1331,23 @@ describe('parse', function () {
 
     it('should follow precedence rules for implicit multiplication and division', function () {
       assert.strictEqual(parseAndStringifyWithParens('2 / 3 x'), '(2 / 3) x')
+      assert.strictEqual(parseAndStringifyWithParens('-2/3x'), '((-2) / 3) x')
+      assert.strictEqual(parseAndStringifyWithParens('+2/3x'), '((+2) / 3) x')
+      assert.strictEqual(parseAndStringifyWithParens('2!/3x'), '(2!) / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('(2)/3x'), '2 / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('2/3!x'), '2 / ((3!) x)')
+      assert.strictEqual(parseAndStringifyWithParens('2/(3)x'), '2 / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('(2+4)/3x'), '(2 + 4) / (3 x)')
+      assert.strictEqual(parseAndStringifyWithParens('2/(3+4)x'), '2 / ((3 + 4) x)')
       assert.strictEqual(parseAndStringifyWithParens('2.5 / 5 kg'), '(2.5 / 5) kg')
       assert.strictEqual(parseAndStringifyWithParens('2.5 / 5 x y'), '((2.5 / 5) x) y')
       assert.strictEqual(parseAndStringifyWithParens('2 x / 5 y'), '(2 x) / (5 y)')
       assert.strictEqual(parseAndStringifyWithParens('17 h / 1 h'), '(17 h) / (1 h)')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 x'), '(1 / 2) x')
+      assert.strictEqual(parseAndStringifyWithParens('+1/2x'), '((+1) / 2) x')
+      assert.strictEqual(parseAndStringifyWithParens('~1/2x'), '((~1) / 2) x')
+      assert.strictEqual(parseAndStringifyWithParens('1 / -2 x'), '1 / ((-2) x)')
+      assert.strictEqual(parseAndStringifyWithParens('-1 / -2 x'), '(-1) / ((-2) x)')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 * x'), '(1 / 2) * x')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 x y'), '((1 / 2) x) y')
       assert.strictEqual(parseAndStringifyWithParens('1 / 2 (x y)'), '(1 / 2) (x y)')

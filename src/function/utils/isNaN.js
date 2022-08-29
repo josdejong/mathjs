@@ -25,7 +25,7 @@ export const createIsNaN = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    *    math.isNaN(math.bignumber(0))     // returns false
    *    math.isNaN(math.fraction(-2, 5))  // returns false
    *    math.isNaN('-2')                  // returns false
-   *    math.isNaN([2, 0, -3, NaN]')      // returns [false, false, false, true]
+   *    math.isNaN([2, 0, -3, NaN])       // returns [false, false, false, true]
    *
    * See also:
    *

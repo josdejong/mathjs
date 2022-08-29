@@ -1,16 +1,17 @@
 import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
+import { scatter } from '../../../utils/collection.js'
 
-const name = 'algorithm09'
+const name = 'matAlgo06xS0S0'
 const dependencies = ['typed', 'equalScalar']
 
-export const createAlgorithm09 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
+export const createMatAlgo06xS0S0 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
-   * Iterates over SparseMatrix A and invokes the callback function f(Aij, Bij).
-   * Callback function invoked NZA times, number of nonzero elements in A.
+   * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij).
+   * Callback function invoked (Anz U Bnz) times, where Anz and Bnz are the nonzero elements in both matrices.
    *
    *
-   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0
+   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0 && B(i,j) !== 0
    * C(i,j) = ┤
    *          └  0            ; otherwise
    *
@@ -23,17 +24,13 @@ export const createAlgorithm09 = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
    */
-  return function algorithm09 (a, b, callback) {
+  return function matAlgo06xS0S0 (a, b, callback) {
     // sparse matrix arrays
     const avalues = a._values
-    const aindex = a._index
-    const aptr = a._ptr
     const asize = a._size
     const adt = a._datatype
     // sparse matrix arrays
     const bvalues = b._values
-    const bindex = b._index
-    const bptr = b._ptr
     const bsize = b._size
     const bdt = b._datatype
 
@@ -77,47 +74,61 @@ export const createAlgorithm09 = /* #__PURE__ */ factory(name, dependencies, ({ 
     const x = cvalues ? [] : undefined
     // marks indicating we have a value in x for a given column
     const w = []
-
-    // vars
-    let i, j, k, k0, k1
+    // marks indicating value in a given row has been updated
+    const u = []
 
     // loop columns
-    for (j = 0; j < columns; j++) {
+    for (let j = 0; j < columns; j++) {
       // update cptr
       cptr[j] = cindex.length
-      // column mark
+      // columns mark
       const mark = j + 1
-      // check we need to process values
+      // scatter the values of A(:,j) into workspace
+      scatter(a, j, w, x, u, mark, cindex, cf)
+      // scatter the values of B(:,j) into workspace
+      scatter(b, j, w, x, u, mark, cindex, cf)
+      // check we need to process values (non pattern matrix)
       if (x) {
-        // loop B(:,j)
-        for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+        // initialize first index in j
+        let k = cptr[j]
+        // loop index in j
+        while (k < cindex.length) {
           // row
-          i = bindex[k]
-          // update workspace
-          w[i] = mark
-          x[i] = bvalues[k]
-        }
-      }
-      // loop A(:,j)
-      for (k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
-        // row
-        i = aindex[k]
-        // check we need to process values
-        if (x) {
-          // b value @ i,j
-          const vb = w[i] === mark ? x[i] : zero
-          // invoke f
-          const vc = cf(avalues[k], vb)
-          // check zero value
-          if (!eq(vc, zero)) {
-            // push index
-            cindex.push(i)
-            // push value
-            cvalues.push(vc)
+          const i = cindex[k]
+          // check function was invoked on current row (Aij !=0 && Bij != 0)
+          if (u[i] === mark) {
+            // value @ i
+            const v = x[i]
+            // check for zero value
+            if (!eq(v, zero)) {
+              // push value
+              cvalues.push(v)
+              // increment pointer
+              k++
+            } else {
+              // remove value @ i, do not increment pointer
+              cindex.splice(k, 1)
+            }
+          } else {
+            // remove value @ i, do not increment pointer
+            cindex.splice(k, 1)
           }
-        } else {
-          // push index
-          cindex.push(i)
+        }
+      } else {
+        // initialize first index in j
+        let p = cptr[j]
+        // loop index in j
+        while (p < cindex.length) {
+          // row
+          const r = cindex[p]
+          // check function was invoked on current row (Aij !=0 && Bij != 0)
+          if (u[r] !== mark) {
+            // remove value @ i, do not increment pointer
+            cindex.splice(p, 1)
+          } else {
+            // increment pointer
+            p++
+          }
         }
       }
     }

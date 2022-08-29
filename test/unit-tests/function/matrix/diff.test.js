@@ -21,18 +21,24 @@ const largeTestArrayDimension2 = [[[[1, 1, 1], [1, 1, 1]], [[-1, 1, 3], [3, 1, -
 const largeTestArrayDimension3 = [[[[1, 1], [1, 1], [1, 1]], [[-1, -1], [1, 1], [-1, -1]], [[-3, -1], [-3, -1], [-3, -1]]], [[[4, 333], [12, -12], [111, -222]], [[1, 1], [2, 2], [1, 1]], [[-11, -11], [0, -31], [1, 1]]], [[[63, -61], [32, 27], [-36, -28]], [[-10, -1], [2, 1], [5, -4]], [[-30, -1], [-3, -1], [-99, -1]]]]
 
 describe('diff', function () {
-  it('should return original array/matrix for less than 2 elements, with and without specified dimension', function () {
+  it('should return an empty array/matrix for less than 2 elements, with and without specified dimension', function () {
     // With Dim = 0 specified
     assert.deepStrictEqual(diff([], 0), [])
     assert.deepStrictEqual(diff(matrix([]), 0), matrix([]))
-    assert.deepStrictEqual(diff([2], 0), [2])
-    assert.deepStrictEqual(diff(matrix([2]), 0), matrix([2]))
+    assert.deepStrictEqual(diff([2], 0), [])
+    assert.deepStrictEqual(diff(matrix([2]), 0), matrix([]))
 
     // Without Dim = 0 specified
     assert.deepStrictEqual(diff([]), [])
     assert.deepStrictEqual(diff(matrix([])), matrix([]))
-    assert.deepStrictEqual(diff([2]), [2])
-    assert.deepStrictEqual(diff(matrix([2])), matrix([2]))
+    assert.deepStrictEqual(diff([2]), [])
+    assert.deepStrictEqual(diff(matrix([2])), matrix([]))
+
+    // Two-dimensional:
+    assert.deepStrictEqual(diff([[1, 3, 6, 10, 15]]), [])
+    assert.deepStrictEqual(diff([[1, 3, 6, 10, 15]], 1), [[2, 3, 4, 5]])
+    assert.deepStrictEqual(diff([[1], [3], [6], [10], [15]]), [[2], [3], [4], [5]])
+    assert.deepStrictEqual(diff([[1], [3], [6], [10], [15]], 1), [[], [], [], [], []])
   })
 
   it('should return difference between elements of a 1-dimensional array, with and without specified dimension', function () {

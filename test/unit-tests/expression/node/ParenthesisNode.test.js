@@ -18,7 +18,7 @@ describe('ParenthesisNode', function () {
 
   it('should throw an error when calling without new operator', function () {
     const a = new ConstantNode(1)
-    assert.throws(function () { ParenthesisNode(a) }, SyntaxError)
+    assert.throws(function () { ParenthesisNode(a) }, TypeError)
   })
 
   it('should throw an error when calling with wrong arguments', function () {

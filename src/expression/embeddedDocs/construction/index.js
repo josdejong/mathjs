@@ -12,12 +12,11 @@ export const indexDocs = {
   description:
       'Create an index to get or replace a subset of a matrix',
   examples: [
-    '[]',
     '[1, 2, 3]',
     'A = [1, 2, 3; 4, 5, 6]',
     'A[1, :]',
     'A[1, 2] = 50',
-    'A[0:2, 0:2] = ones(2, 2)'
+    'A[1:2, 1:2] = ones(2, 2)'
   ],
   seealso: [
     'bignumber', 'boolean', 'complex', 'matrix,', 'number', 'range', 'string', 'unit'

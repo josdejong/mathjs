@@ -24,6 +24,7 @@ export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Examples:
    *
+   *    math.ones()                    // returns []
    *    math.ones(3)                   // returns [1, 1, 1]
    *    math.ones(3, 2)                // returns [[1, 1], [1, 1], [1, 1]]
    *    math.ones(3, 2, 'dense')       // returns Dense Matrix [[1, 1], [1, 1], [1, 1]]
@@ -35,7 +36,7 @@ export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    zeros, identity, size, range
    *
-   * @param {...number | Array} size    The size of each dimension of the matrix
+   * @param {...(number|BigNumber) | Array} size    The size of each dimension of the matrix
    * @param {string} [format]           The Matrix storage format
    *
    * @return {Array | Matrix | number}  A matrix filled with ones

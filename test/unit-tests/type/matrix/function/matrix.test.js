@@ -85,11 +85,11 @@ describe('matrix', function () {
   })
 
   it('should throw an error if called with too many arguments', function () {
-    assert.throws(function () { matrix([], 3, 3, 7) }, /TypeError: Too many arguments/)
+    assert.throws(function () { matrix([], 'dense', 'number', 7) }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error when called with an invalid storage format', function () {
-    assert.throws(function () { math.matrix([], 1) }, /TypeError: Unknown matrix type "1"/)
+    assert.throws(function () { math.matrix([], '1') }, /TypeError: Unknown matrix type "1"/)
   })
 
   it('should throw an error when called with an unknown storage format', function () {

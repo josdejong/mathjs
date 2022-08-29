@@ -26,7 +26,8 @@ describe('FunctionAssignmentNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { FunctionAssignmentNode('f', ['x'], new ConstantNode(2)) }, SyntaxError)
+    assert.throws(
+      () => FunctionAssignmentNode('f', ['x'], new ConstantNode(2)), TypeError)
   })
 
   it('should throw an error on wrong constructor arguments', function () {

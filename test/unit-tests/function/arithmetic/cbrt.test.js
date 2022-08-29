@@ -111,10 +111,12 @@ describe('cbrt', function () {
     })
   })
 
-  it('should return the cubic root of each element of a matrix', function () {
-    assert.deepStrictEqual(cbrt([8, 27, 64, 125]), [2, 3, 4, 5])
-    assert.deepStrictEqual(cbrt([[8, 27], [64, 125]]), [[2, 3], [4, 5]])
-    assert.deepStrictEqual(cbrt(math.matrix([[8, 27], [64, 125]])), math.matrix([[2, 3], [4, 5]]))
+  it('should not operate on a matrix', function () {
+    assert.throws(() => cbrt([8, 27, 64, 125]), TypeError)
+    assert.throws(() => cbrt(math.matrix([8, 27])), TypeError)
+    assert.deepStrictEqual(math.map([8, 27, 64, 125], x => cbrt(x)), [2, 3, 4, 5])
+    assert.deepStrictEqual(math.map([[8, 27], [64, 125]], x => cbrt(x)), [[2, 3], [4, 5]])
+    assert.deepStrictEqual(math.map(math.matrix([[8, 27], [64, 125]]), x => cbrt(x)), math.matrix([[2, 3], [4, 5]]))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
