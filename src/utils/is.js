@@ -185,6 +185,10 @@ export function isRangeNode (x) {
   return (x && x.isRangeNode === true && x.constructor.prototype.isNode === true) || false
 }
 
+export function isRelationalNode (x) {
+  return (x && x.isRelationalNode === true && x.constructor.prototype.isNode === true) || false
+}
+
 export function isSymbolNode (x) {
   return (x && x.isSymbolNode === true && x.constructor.prototype.isNode === true) || false
 }
