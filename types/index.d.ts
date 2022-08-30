@@ -190,21 +190,25 @@ declare namespace math {
     ): ArrayNode<TItems>
   }
 
-  interface AssignmentNode extends MathNode {
+  interface AssignmentNode<TValue extends MathNode = MathNode>
+    extends MathNode {
     type: 'AssignmentNode'
     isAssignmentNode: true
     object: SymbolNode | AccessorNode
     index: IndexNode | null
-    value: MathNode
+    value: TValue
     name: string
   }
   interface AssignmentNodeCtor {
-    new (object: SymbolNode, value: MathNode): AssignmentNode
-    new (
+    new <TValue extends MathNode = MathNode>(
+      object: SymbolNode,
+      value: TValue
+    ): AssignmentNode<TValue>
+    new <TValue extends MathNode = MathNode>(
       object: SymbolNode | AccessorNode,
       index: IndexNode,
-      value: MathNode
-    ): AssignmentNode
+      value: TValue
+    ): AssignmentNode<TValue>
   }
 
   interface BlockNode extends MathNode {
