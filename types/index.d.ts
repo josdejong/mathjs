@@ -179,13 +179,15 @@ declare namespace math {
     ): AccessorNode<TObject>
   }
 
-  interface ArrayNode extends MathNode {
+  interface ArrayNode<TItems extends MathNode[] = MathNode[]> extends MathNode {
     type: 'ArrayNode'
     isArrayNode: true
-    items: MathNode[]
+    items: TItems
   }
   interface ArrayNodeCtor {
-    new (items: MathNode[]): ArrayNode
+    new <TItems extends MathNode[] = MathNode[]>(
+      items: MathNode[]
+    ): ArrayNode<TItems>
   }
 
   interface AssignmentNode extends MathNode {
