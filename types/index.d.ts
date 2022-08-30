@@ -250,14 +250,20 @@ declare namespace math {
     new (name: string, params: string[], expr: MathNode): FunctionAssignmentNode
   }
 
-  interface FunctionNode extends MathNode {
+  interface FunctionNode<
+    TFn = SymbolNode,
+    TArgs extends MathNode[] = MathNode[]
+  > extends MathNode {
     type: 'FunctionNode'
     isFunctionNode: true
-    fn: SymbolNode
-    args: MathNode[]
+    fn: TFn
+    args: TArgs
   }
   interface FunctionNodeCtor {
-    new (fn: MathNode | string, args: MathNode[]): FunctionNode
+    new <TFn = SymbolNode, TArgs extends MathNode[] = MathNode[]>(
+      fn: TFn,
+      args: SymbolNode
+    ): FunctionNode<TransferFunction, TArgs>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onUndefinedFunction: (name: string) => any
   }
