@@ -165,15 +165,18 @@ declare namespace math {
     new (): MathNode
   }
 
-  interface AccessorNode extends MathNode {
+  interface AccessorNode<TObject extends MathNode = MathNode> extends MathNode {
     type: 'AccessorNode'
     isAccessorNode: true
-    object: MathNode
+    object: TObject
     index: IndexNode
     name: string
   }
   interface AccessorNodeCtor {
-    new (object: MathNode, index: IndexNode): AccessorNode
+    new <TObject extends MathNode = MathNode>(
+      object: TObject,
+      index: IndexNode
+    ): AccessorNode<TObject>
   }
 
   interface ArrayNode extends MathNode {
