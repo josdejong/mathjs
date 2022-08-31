@@ -4,9 +4,9 @@ import { hasOwnProperty, lazy } from '../../utils/object.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'Chain'
-const dependencies = ['?on', 'math']
+const dependencies = ['?on', 'math', 'typed']
 
-export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ on, math }) => {
+export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ on, math, typed }) => {
   /**
    * @constructor Chain
    * Wrap any value in a chain, allowing to perform chained operations on
@@ -130,11 +130,26 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
    */
   function chainify (fn) {
     return function () {
-      const args = [this.value] // `this` will be the context of a Chain instance
+      // Here, `this` will be the context of a Chain instance
+      if (arguments.length === 0) {
+        return new Chain(fn(this.value))
+      }
+      const args = [this.value]
       for (let i = 0; i < arguments.length; i++) {
         args[i + 1] = arguments[i]
       }
-
+      if (typed.isTypedFunction(fn)) {
+        const sigObject = typed.resolve(fn, args)
+        // We want to detect if a rest parameter has matched across the
+        // value in the chain and the current arguments of this call.
+        // That is the case if and only if the matching signature has
+        // exactly one parameter (which then must be a rest parameter
+        // as it is matching at least two actual arguments).
+        if (sigObject.params.length === 1) {
+          throw new Error('chain function ' + fn.name + ' cannot match rest parameter between chain value and additional arguments.')
+        }
+        return new Chain(sigObject.implementation.apply(fn, args))
+      }
       return new Chain(fn.apply(fn, args))
     }
   }

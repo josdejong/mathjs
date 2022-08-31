@@ -27,7 +27,7 @@ describe('transpose', function () {
     })
     assert.throws(function () {
       transpose([[[1], [2]], [[3], [4]]]) // size [2,2,1]
-    })
+    }, /RangeError: Matrix.*2, 2, 1/)
   })
 
   it('should throw an error if called with an invalid number of arguments', function () {

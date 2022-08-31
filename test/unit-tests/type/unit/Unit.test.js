@@ -20,10 +20,12 @@ describe('Unit', function () {
       unit1 = new Unit(null, 'kg')
       assert.strictEqual(unit1.value, null)
       assert.strictEqual(unit1.units[0].unit.name, 'g')
+      assert.strictEqual(unit1.valueType(), 'null')
 
       unit1 = new Unit(10, 'Hz')
       assert.strictEqual(unit1.value, 10)
       assert.strictEqual(unit1.units[0].unit.name, 'Hz')
+      assert.strictEqual(unit1.valueType(), 'number')
 
       unit1 = new Unit(9.81, 'kg m/s^2')
       assert.strictEqual(unit1.value, 9.81)
@@ -36,18 +38,21 @@ describe('Unit', function () {
       const unit1 = new Unit(math.fraction(1000, 3), 'cm')
       assert.deepStrictEqual(unit1.value, math.fraction(10, 3))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.valueType(), 'Fraction')
     })
 
     it('should create a unit with BigNumber value', function () {
       const unit1 = new Unit(math.bignumber(5000), 'cm')
       assert.deepStrictEqual(unit1.value, math.bignumber(50))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.valueType(), 'BigNumber')
     })
 
     it('should create a unit with Complex value', function () {
       const unit1 = new Unit(math.complex(500, 600), 'cm')
       assert.deepStrictEqual(unit1.value, math.complex(5, 6))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.valueType(), 'Complex')
     })
 
     it('should create square meter correctly', function () {
@@ -60,6 +65,21 @@ describe('Unit', function () {
       const unit1 = new Unit(0.000000001, 'km3')
       assert.strictEqual(unit1.value, 1)
       assert.strictEqual(unit1.units[0].unit.name, 'm3')
+    })
+
+    it('should create a unit from an existing unit', function () {
+      const unit1 = new Unit(null, 'm/s^2')
+      const unit2 = new Unit(5, unit1)
+      assert.strictEqual(unit2.value, 5)
+      assert.strictEqual(unit2.units.length, 2)
+      assert.strictEqual(unit2.units[0].unit.name, 'm')
+      assert.strictEqual(unit2.units[1].unit.name, 's')
+      assert.strictEqual(unit2.units[1].power, -2)
+    })
+
+    it('should create a unitless Unit if second parameter is undefined', function () {
+      const a = new Unit(6)
+      assert(a.dimensions.every(d => d === 0))
     })
 
     it('should ignore properties on Object.prototype', function () {

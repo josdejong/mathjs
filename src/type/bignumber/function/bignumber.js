@@ -73,8 +73,6 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
       return new BigNumber(0)
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

@@ -79,7 +79,7 @@ function extractValue (spec) {
 }
 
 const knownProblems = new Set([
-  'numeric', 'isZero', 'isPositive', 'isNumeric', 'isNegative', 'isNaN',
+  'isZero', 'isPositive', 'isNumeric', 'isNegative', 'isNaN',
   'isInteger', 'hasNumericValue', 'clone', 'print', 'hex', 'format', 'to', 'sin',
   'cos', 'atan2', 'atan', 'asin', 'asec', 'acsc', 'acoth', 'acot', 'max',
   'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
@@ -92,7 +92,7 @@ const knownProblems = new Set([
   'mod', 'invmod', 'floor', 'fix', 'expm1', 'exp', 'dotPow', 'dotMultiply',
   'dotDivide', 'divide', 'ceil', 'cbrt', 'add', 'usolveAll', 'usolve', 'slu',
   'rationalize', 'qr', 'lusolve', 'lup', 'lsolveAll', 'lsolve', 'derivative',
-  'simplifyCore', 'symbolicEqual', 'map', 'resolve'
+  'symbolicEqual', 'map'
 ])
 
 function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {

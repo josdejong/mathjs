@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { atanhNumber } from '../../plain/number/index.js'
 
 const name = 'atanh'
@@ -10,7 +9,8 @@ export const createAtanh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * Calculate the hyperbolic arctangent of a value,
    * defined as `atanh(x) = ln((1 + x)/(1 - x)) / 2`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix hyperbolic arctangent, this function
+   * does not apply to matrices.
    *
    * Syntax:
    *
@@ -24,8 +24,8 @@ export const createAtanh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    acosh, asinh
    *
-   * @param {number | Complex | Array | Matrix} x  Function input
-   * @return {number | Complex | Array | Matrix} Hyperbolic arctangent of x
+   * @param {number | BigNumber | Complex} x  Function input
+   * @return {number | BigNumber | Complex} Hyperbolic arctangent of x
    */
   return typed(name, {
     number: function (x) {
@@ -41,11 +41,6 @@ export const createAtanh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     BigNumber: function (x) {
       return x.atanh()
-    },
-
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since atanh(0) = 0
-      return deepMap(x, this, true)
     }
   })
 })

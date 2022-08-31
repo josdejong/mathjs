@@ -27,7 +27,7 @@ describe('ObjectNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { ObjectNode() }, SyntaxError)
+    assert.throws(function () { ObjectNode() }, TypeError)
   })
 
   it('should throw an error on wrong constructor arguments', function () {
@@ -280,7 +280,13 @@ describe('ObjectNode', function () {
     const n1 = new ObjectNode({ a, b })
     const n2 = new ObjectNode({ c, n1 })
 
-    assert.strictEqual(n2.toTex(), '\\left\\{\\begin{array}{ll}\\mathbf{c:} & 3\\\\\n\\mathbf{n1:} & \\left\\{\\begin{array}{ll}\\mathbf{a:} & 1\\\\\n\\mathbf{b:} & 2\\\\\\end{array}\\right\\}\\\\\\end{array}\\right\\}')
+    assert.strictEqual(
+      n2.toTex(),
+      '\\left\\{\\begin{array}{ll}' +
+        '\\mathbf{c:} & 3\\\\\n' +
+        '\\mathbf{n1:} & \\left\\{\\begin{array}{ll}' +
+        '\\mathbf{a:} & 1\\\\\n\\mathbf{b:} & 2\\\\\\end{array}\\right\\}\\\\' +
+        '\\end{array}\\right\\}')
   })
 
   it('should LaTeX an ObjectNode with custom toTex', function () {
@@ -294,6 +300,11 @@ describe('ObjectNode', function () {
     const b = new ConstantNode(2)
     const n = new ObjectNode({ a, b })
 
-    assert.strictEqual(n.toTex({ handler: customFunction }), '\\left\\{\\begin{array}{ll}\\mathbf{a:} & const\\left(1, number\\right)\\\\\n\\mathbf{b:} & const\\left(2, number\\right)\\\\\\end{array}\\right\\}')
+    assert.strictEqual(
+      n.toTex({ handler: customFunction }),
+      '\\left\\{\\begin{array}{ll}' +
+        '\\mathbf{a:} & const\\left(1, number\\right)\\\\\n' +
+        '\\mathbf{b:} & const\\left(2, number\\right)\\\\' +
+        '\\end{array}\\right\\}')
   })
 })

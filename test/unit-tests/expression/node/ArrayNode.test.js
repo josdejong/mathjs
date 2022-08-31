@@ -25,7 +25,7 @@ describe('ArrayNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { ArrayNode() }, SyntaxError)
+    assert.throws(function () { ArrayNode() }, TypeError)
   })
 
   it('should throw an error on wrong constructor arguments', function () {

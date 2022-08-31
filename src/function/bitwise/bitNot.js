@@ -20,7 +20,7 @@ export const createBitNot = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    math.bitNot(1)               // returns number -2
    *
-   *    math.bitNot([2, -3, 4])      // returns Array [-3, 2, 5]
+   *    math.bitNot([2, -3, 4])      // returns Array [-3, 2, -5]
    *
    * See also:
    *
@@ -31,11 +31,7 @@ export const createBitNot = /* #__PURE__ */ factory(name, dependencies, ({ typed
    */
   return typed(name, {
     number: bitNotNumber,
-
     BigNumber: bitNotBigNumber,
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

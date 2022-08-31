@@ -80,10 +80,12 @@ describe('asinh', function () {
     assert.throws(function () { asinh('string') })
   })
 
-  it('should calculate the arcsin element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => asinh([1, 2, 3]), TypeError)
+    assert.throws(() => asinh(matrix([1, 2, 3])), TypeError)
     const asinh123 = [0.881373587019543025, 1.4436354751788103, 1.8184464592320668]
-    approx.deepEqual(asinh([1, 2, 3]), asinh123)
-    approx.deepEqual(asinh(matrix([1, 2, 3])), matrix(asinh123))
+    approx.deepEqual(math.map([1, 2, 3], asinh), asinh123)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), asinh), matrix(asinh123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

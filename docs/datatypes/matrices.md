@@ -286,6 +286,25 @@ e.resize([2, 3], 0)                           // Matrix, [[0, 0, 0], [0, 0, 0]]
 e.subset(math.index(1, 2), 5)                 // Matrix, [[0, 0, 0], [0, 0, 5]]
 ```
 
+## Getting and setting a value in a matrix
+
+There are two methods available on matrices that allow to get or set a single 
+value inside a matrix. It is important to note that the `set` method will 
+mutate the matrix.
+
+```js
+const p = math.matrix([[1, 2], [3, 4]])
+p.set([0, 1], 5)
+// p is now [[1, 5], [3, 4]]
+p.get([1, 0]) // 3
+```
+
+When setting a value at a location outside of the current matrix size using the
+method `.set()`, the matrix will be resized. By default, new items will be 
+initialized with zero, but it is possible to specify an alternative value using
+the optional third argument `defaultValue`.
+
+
 ## Iterating
 
 Matrices contain functions `map` and `forEach` to iterate over all elements of

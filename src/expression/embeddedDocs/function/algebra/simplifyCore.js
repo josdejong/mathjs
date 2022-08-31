@@ -10,6 +10,6 @@ export const simplifyCoreDocs = {
     'simplifyCore(parse("(x+0)*2"))'
   ],
   seealso: [
-    'simplify', 'evaluate'
+    'simplify', 'simplifyConstant', 'evaluate'
   ]
 }

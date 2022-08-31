@@ -75,8 +75,6 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return new Fraction(x)
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

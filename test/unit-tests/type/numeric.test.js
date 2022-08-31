@@ -5,7 +5,11 @@ const numeric = math.numeric
 describe('numeric', function () {
   it('should throw if called with wrong number of arguments', function () {
     assert.throws(() => { numeric() }, /Cannot convert/)
-    assert.throws(() => { numeric(3.14) }, /Cannot convert/)
+    assert.throws(() => { numeric(3.14, 'Fraction', 'pi') }, SyntaxError)
+  })
+
+  it('should default to converting to number', function () {
+    assert.strictEqual(numeric('3.14'), 3.14)
   })
 
   it('should throw if called with invalid argument', function () {

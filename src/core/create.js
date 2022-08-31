@@ -1,4 +1,4 @@
-import './../utils/polyfills.js'
+import typedFunction from 'typed-function'
 import { deepFlatten, isLegacyFactory, values } from '../utils/object.js'
 import * as emitter from './../utils/emitter.js'
 import { importFactory } from './function/import.js'
@@ -208,6 +208,8 @@ export function create (factories, config) {
   function lazyTyped (...args) {
     return math.typed.apply(math.typed, args)
   }
+  lazyTyped.isTypedFunction = typedFunction.isTypedFunction
+
   const internalImport = importFactory(lazyTyped, load, math, importedFactories)
   math.import = internalImport
 

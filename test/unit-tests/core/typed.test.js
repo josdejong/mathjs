@@ -4,6 +4,16 @@ import Decimal from 'decimal.js'
 const math2 = math.create()
 
 describe('typed', function () {
+  it('should allow access to typed-function facilities', function () {
+    const fn = math.typed({
+      identifier: () => 'variable',
+      string: () => 'expression'
+    })
+    assert.strictEqual(fn('a96b2'), 'variable')
+    assert.strictEqual(fn('a96+b2'), 'expression')
+    assert.throws(() => fn(47), TypeError)
+  })
+
   // TODO: Move (most) of the type checks like isNumber, isComplex, to is.test.js
 
   it('should test whether a value is a number', function () {
