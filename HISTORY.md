@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since 11.1.0
+
+- Added missing types `'largerEq'` and `'or'` in `OperatorNodeMap` in the
+  TypeScript definitions. Thanks @ajinkyac03.
+
+
 # 2022-08-23, 11.1.0
 
 - Add Unit constructor from value and pure (valueless) Unit (#2628).
