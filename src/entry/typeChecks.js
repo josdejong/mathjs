@@ -34,6 +34,7 @@ export {
   isParenthesisNode,
   isRange,
   isRangeNode,
+  isRelationalNode,
   isRegExp,
   isResultSet,
   isSparseMatrix,

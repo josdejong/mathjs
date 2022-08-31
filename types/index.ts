@@ -1863,6 +1863,7 @@ Factory Test
     math.isOperatorNode,
     math.isParenthesisNode,
     math.isRangeNode,
+    math.isRelationalNode,
     math.isSymbolNode,
     math.isChain,
   ]
@@ -1975,6 +1976,9 @@ Factory Test
   }
   if (math.isRangeNode(x)) {
     expectTypeOf(x).toMatchTypeOf<math.RangeNode>()
+  }
+  if (math.isRelationalNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.RelationalNode>()
   }
   if (math.isSymbolNode(x)) {
     expectTypeOf(x).toMatchTypeOf<math.SymbolNode>()

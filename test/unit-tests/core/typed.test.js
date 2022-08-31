@@ -293,6 +293,17 @@ describe('typed', function () {
     assert.strictEqual(math.isRangeNode(), false)
   })
 
+  it('should test whether a value is a RelationalNode', function () {
+    const c = ''
+    const p = new math.ConstantNode(1)
+
+    assert.strictEqual(math.isRelationalNode(new math.RelationalNode([c], [p, p])), true)
+    assert.strictEqual(math.isRelationalNode(new math2.RelationalNode([c], [p, p])), true)
+    assert.strictEqual(math.isRelationalNode({ isRelationalNode: true }), false)
+    assert.strictEqual(math.isRelationalNode(2), false)
+    assert.strictEqual(math.isRelationalNode(), false)
+  })
+
   it('should test whether a value is a Node', function () {
     assert.strictEqual(math.isNode(new math.ConstantNode(1)), true)
     assert.strictEqual(math.isNode(new math2.ConstantNode(1)), true)
