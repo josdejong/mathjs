@@ -170,6 +170,7 @@ const knownUndocumented = new Set([
   'isOperatorNode',
   'isParenthesisNode',
   'isRangeNode',
+  'isRelationalNode',
   'isSymbolNode',
   'isChain',
   'on',

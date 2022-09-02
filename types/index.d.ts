@@ -3160,6 +3160,8 @@ declare namespace math {
 
     isRangeNode(x: unknown): x is RangeNode
 
+    isRelationalNode(x: unknown): x is RelationalNode
+
     isSymbolNode(x: unknown): x is SymbolNode
 
     isChain(x: unknown): x is MathJsChain<unknown>
