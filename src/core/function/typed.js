@@ -68,6 +68,7 @@ import {
   isParenthesisNode,
   isRange,
   isRangeNode,
+  isRelationalNode,
   isRegExp,
   isResultSet,
   isSparseMatrix,
@@ -156,6 +157,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'OperatorNode', test: isOperatorNode },
     { name: 'ParenthesisNode', test: isParenthesisNode },
     { name: 'RangeNode', test: isRangeNode },
+    { name: 'RelationalNode', test: isRelationalNode },
     { name: 'SymbolNode', test: isSymbolNode },
 
     { name: 'Map', test: isMap },
