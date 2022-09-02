@@ -2,6 +2,7 @@
 
 # unpublished changes since 11.1.0
 
+- Implement function `isRelationalNode` (#2731). Thanks @isaacbyr.
 - Added missing types `'largerEq'` and `'or'` in `OperatorNodeMap` in the
   TypeScript definitions. Thanks @ajinkyac03.
 
