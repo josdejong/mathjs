@@ -260,15 +260,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { subtract: { total: false } }
     },
     {
-      s: '-(c*v) -> v * (-c)', // make non-constant terms positive
+      s: '-(cl*v) -> v * (-cl)', // make non-constant terms positive
       assuming: { multiply: { commutative: true }, subtract: { total: true } }
     },
     {
-      s: '-(c*v) -> (-c) * v', // non-commutative version, part 1
+      s: '-(cl*v) -> (-cl) * v', // non-commutative version, part 1
       assuming: { multiply: { commutative: false }, subtract: { total: true } }
     },
     {
-      s: '-(v*c) -> v * (-c)', // non-commutative version, part 2
+      s: '-(v*cl) -> v * (-cl)', // non-commutative version, part 2
       assuming: { multiply: { commutative: false }, subtract: { total: true } }
     },
     { l: '-(n1/n2)', r: '-n1/n2' },
@@ -292,17 +292,17 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     },
 
     // collect like factors; into a sum, only do this for nonconstants
-    { l: ' v   * ( v   * n1 + n2)', r: 'v^2       * n1 +  v   * n2' },
+    { l: ' vd   * ( vd   * n1 + n2)', r: 'vd^2       * n1 +  vd   * n2' },
     {
-      s: ' v   * (v^n4 * n1 + n2)   ->  v^(1+n4)  * n1 +  v   * n2',
+      s: ' vd   * (vd^n4 * n1 + n2)   ->  vd^(1+n4)  * n1 +  vd   * n2',
       assuming: { divide: { total: true } } // v*1/v = v^(1+-1) needs 1/v
     },
     {
-      s: 'v^n3 * ( v   * n1 + n2)   ->  v^(n3+1)  * n1 + v^n3 * n2',
+      s: 'vd^n3 * ( vd   * n1 + n2)   ->  vd^(n3+1)  * n1 + vd^n3 * n2',
       assuming: { divide: { total: true } }
     },
     {
-      s: 'v^n3 * (v^n4 * n1 + n2)   ->  v^(n3+n4) * n1 + v^n3 * n2',
+      s: 'vd^n3 * (vd^n4 * n1 + n2)   ->  vd^(n3+n4) * n1 + vd^n3 * n2',
       assuming: { divide: { total: true } }
     },
     { l: 'n*n', r: 'n^2' },
@@ -327,12 +327,12 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { add: { total: true } } // 2 = 1 + 1 needs to exist
     },
     { l: 'n+-n', r: '0' },
-    { l: 'v*n + v', r: 'v*(n+1)' }, // NOTE: leftmost position is special:
+    { l: 'vd*n + vd', r: 'vd*(n+1)' }, // NOTE: leftmost position is special:
     { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
     { l: 'n3^(-n4)*n1 +   n3  * n2', r: 'n3^(-n4)*(n1 + n3^(n4+1) *n2)' },
     { l: 'n3^(-n4)*n1 + n3^n5 * n2', r: 'n3^(-n4)*(n1 + n3^(n4+n5)*n2)' },
     {
-      s: 'n*v + v -> (n+1)*v', // noncommutative additional cases
+      s: 'n*vd + vd -> (n+1)*vd', // noncommutative additional cases
       assuming: { multiply: { commutative: false } }
     },
     {
@@ -347,9 +347,9 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: 'n1*n3^(-n4) + n2 * n3^n5 -> (n1 + n2*n3^(n4 + n5))*n3^(-n4)',
       assuming: { multiply: { commutative: false } }
     },
-    { l: 'n*c + c', r: '(n+1)*c' },
+    { l: 'n*cd + cd', r: '(n+1)*cd' },
     {
-      s: 'c*n + c -> c*(n+1)',
+      s: 'cd*n + cd -> cd*(n+1)',
       assuming: { multiply: { commutative: false } }
     },
 
@@ -367,12 +367,12 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     // final ordering of constants
     {
-      s: 'c+v -> v+c',
+      s: 'ce+ve -> ve+ce',
       assuming: { add: { commutative: true } },
       imposeContext: { add: { commutative: false } }
     },
     {
-      s: 'v*c -> c*v',
+      s: 'vd*cd -> cd*vd',
       assuming: { multiply: { commutative: true } },
       imposeContext: { multiply: { commutative: false } }
     },
