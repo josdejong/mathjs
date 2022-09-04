@@ -98,7 +98,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * - 'ce' - Matches a constant expression (-5 or √3) [Expressions consisting of only ConstantNodes, functions, and operators]
    * - 'v' - Matches a variable; anything not matched by c (-5 or x) [Node that is not a ConstantNode]
    * - 'vl' - Matches a variable literal (x or y) [SymbolNode]
-   * - 'vd' - Matches a non-decimal expression; anything not matched by ci (x or √3) [Node that is not a ConstantNode or unaryMinus that is wrapping a Constant\Node]
+   * - 'vd' - Matches a non-decimal expression; anything not matched by cd (x or √3) [Node that is not a ConstantNode or unaryMinus that is wrapping a ConstantNode]
    * - 've' - Matches a variable expression; anything not matched by ce (x or 2x) [Expressions that contain a SymbolNode or other non-constant term]
    *
    * The default list of rules is exposed on the function as `simplify.rules`
@@ -905,7 +905,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       // ce.* - Matches a constant expression (-5 or √3)
       // v.*  - Matches a variable; anything not matched by c (-5 or x)
       // vl.* - Matches a variable literal (x or y)
-      // vd.* - Matches a non-decimal expression; anything not matched by ci (x or √3)
+      // vd.* - Matches a non-decimal expression; anything not matched by cd (x or √3)
       // ve.* - Matches a variable expression; anything not matched by ce (x or 2x)
       if (rule.name.length === 0) {
         throw new Error('Symbol in rule has 0 length...!?')
