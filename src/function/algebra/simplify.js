@@ -1,5 +1,5 @@
-import { isParenthesisNode } from '../../utils/is'
-import { isConstantNode, isVariableNode, isNumericNode, isConstantExpression } from './simplify/wildcards'
+import { isParenthesisNode } from '../../utils/is.js'
+import { isConstantNode, isVariableNode, isNumericNode, isConstantExpression } from './simplify/wildcards.js'
 import { factory } from '../../utils/factory.js'
 import { createUtil } from './simplify/util.js'
 import { hasOwnProperty } from '../../utils/object.js'

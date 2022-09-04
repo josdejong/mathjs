@@ -1,5 +1,5 @@
-import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode } from '../../../utils/is'
-export { isConstantNode, isSymbolNode as isVariableNode } from '../../../utils/is'
+import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode } from '../../../utils/is.js'
+export { isConstantNode, isSymbolNode as isVariableNode } from '../../../utils/is.js'
 
 export function isNumericNode (x) {
   return isConstantNode(x) || (isOperatorNode(x) && x.isUnary() && isConstantNode(x.args[0]))
