@@ -149,9 +149,9 @@ Chain.createProxy(math)
 export { embeddedDocs as docs } from '../expression/embeddedDocs/embeddedDocs.js'
 `)
 
-exports.generateEntryFiles = function () {
-  const factoriesAny = require('../lib/cjs/factoriesAny')
-  const factoriesNumber = require('../lib/cjs/factoriesNumber')
+exports.generateEntryFiles = async function () {
+  const factoriesAny = await import('../src/factoriesAny.js')
+  const factoriesNumber = await import('../src/factoriesNumber.js')
 
   generateDependenciesFiles({
     suffix: 'Any',

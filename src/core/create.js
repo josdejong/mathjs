@@ -36,6 +36,7 @@ import {
   isParenthesisNode,
   isRange,
   isRangeNode,
+  isRelationalNode,
   isRegExp,
   isResultSet,
   isSparseMatrix,
@@ -137,6 +138,7 @@ export function create (factories, config) {
     isOperatorNode,
     isParenthesisNode,
     isRangeNode,
+    isRelationalNode,
     isSymbolNode,
 
     isChain

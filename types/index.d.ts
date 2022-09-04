@@ -283,6 +283,7 @@ declare namespace math {
   type OperatorNodeMap = {
     xor: 'xor'
     and: 'and'
+    or: 'or'
     bitOr: '|'
     bitXor: '^|'
     bitAnd: '&'
@@ -291,6 +292,7 @@ declare namespace math {
     smaller: '<'
     larger: '>'
     smallerEq: '<='
+    largerEq: '>='
     leftShift: '<<'
     rightArithShift: '>>'
     rightLogShift: '>>>'
@@ -477,6 +479,12 @@ declare namespace math {
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     reviver(): (key: any, value: any) => any
+
+    /**
+     * Returns replacer function that can be used as replacer in JSON.stringify function.
+     */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    replacer(): (key: any, value: any) => any
 
     /*************************************************************************
      * Core functions
@@ -3151,6 +3159,8 @@ declare namespace math {
     isParenthesisNode(x: unknown): x is ParenthesisNode
 
     isRangeNode(x: unknown): x is RangeNode
+
+    isRelationalNode(x: unknown): x is RelationalNode
 
     isSymbolNode(x: unknown): x is SymbolNode
 
