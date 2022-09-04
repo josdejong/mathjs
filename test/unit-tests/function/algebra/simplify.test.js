@@ -470,12 +470,21 @@ describe('simplify', function () {
     // Allows for basic constant fractions to be kept separate from a variable expressions
     // see https://github.com/josdejong/mathjs/issues/1406
     const rules = math.simplify.rules.slice()
-    const index = rules.findIndex(rule => rule.l === 'n*(n1/n2)')
+    const index = rules.findIndex(rule => (rule.s ? rule.s.split('->')[0].trim() : rule.l) === 'n*(n1/n2)')
     rules.splice(
       index, 1,
-      { l: 'cd*(cd1/cd2)', r: '(cd*cd1)/cd2' },
-      { l: 'n*(n1/vd2)', r: '(n*n1)/vd2' },
-      { l: 'n*(vd1/n2)', r: '(n*vd1)/n2' }
+      {
+        s: 'cd*(cd1/cd2) -> (cd*cd1)/cd2',
+        assuming: { multiply: { associative: true } }
+      },
+      {
+        s: 'n*(n1/vd2) -> (n*n1)/vd2',
+        assuming: { multiply: { associative: true } }
+      },
+      {
+        s: 'n*(vd1/n2) -> (n*vd1)/n2',
+        assuming: { multiply: { associative: true } }
+      }
     )
     assert.strictEqual(math.simplify('(1 / 2) * a', rules).toString({ parenthesis: 'all' }), '(1 / 2) * a')
     assert.strictEqual(math.simplify('-(1 / 2) * a', rules).toString({ parenthesis: 'all' }), '((-1) / 2) * a')
