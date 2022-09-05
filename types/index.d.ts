@@ -458,6 +458,7 @@ declare namespace math {
     SymbolNode: SymbolNodeCtor
 
     Matrix: MatrixCtor
+    Unit: UnitCtor
 
     /**
      * If null were to be included in this interface, it would be
@@ -3766,6 +3767,10 @@ declare namespace math {
     value: number
     fixPrefix: boolean
     skipAutomaticSimplification: true
+  }
+
+  interface UnitCtor {
+    new (): Unit
   }
 
   interface CreateUnitOptions {
