@@ -88,6 +88,7 @@ Extension | Description
 [algebra.js](https://github.com/nicolewhite/algebra.js) | Build, display, and solve algebraic equations
 [Nerdamer](https://nerdamer.com) | Symbolic Math for Javascript
 [numeral-js](https://github.com/adamwdraper/Numeral-js) | A javascript library for formatting and manipulating numbers
+[Cortex Compute Engine](https://github.com/cortex-js/compute-engine) | The Cortex Compute Engine can parse LaTeX to MathJSON, serialize MathJSON to LaTeX, format, simplify and evaluate MathJSON expressions
 
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
