@@ -5,6 +5,7 @@
 - Implement function `isRelationalNode` (#2731). Thanks @isaacbyr.
 - Added missing types `'largerEq'` and `'or'` in `OperatorNodeMap` in the
   TypeScript definitions. Thanks @ajinkyac03.
+- Fixed typos in min func type defs (#2768). Thanks @mabdullahadeel.
 
 
 # 2022-08-23, 11.1.0
