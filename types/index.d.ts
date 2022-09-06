@@ -2578,9 +2578,9 @@ declare namespace math {
     median(...args: MathType[]): any
 
     /**
-     * Compute the maximum value of a matrix or a list of values. In case of
-     * a multi dimensional array, the maximum of the flattened array will be
-     * calculated. When dim is provided, the maximum over the selected
+     * Compute the minimum value of a matrix or a list of values. In case of
+     * a multi dimensional array, the minimun of the flattened array will be
+     * calculated. When dim is provided, the minimun over the selected
      * dimension will be calculated. Parameter dim is zero-based.
      * @param args A single matrix or or multiple scalar values
      * @returns The minimum value
@@ -5877,9 +5877,9 @@ declare namespace math {
     median(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
-     * Compute the maximum value of a matrix or a list of values. In case of
-     * a multi dimensional array, the maximum of the flattened array will be
-     * calculated. When dim is provided, the maximum over the selected
+     * Compute the minimum value of a matrix or a list of values. In case of
+     * a multi dimensional array, the minimum of the flattened array will be
+     * calculated. When dim is provided, the minimum over the selected
      * dimension will be calculated. Parameter dim is zero-based.
      * @param dim The minimum over the selected dimension
      */
