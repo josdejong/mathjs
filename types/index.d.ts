@@ -2203,11 +2203,10 @@ declare namespace math {
      * undefined. Returns an array with the configured number of elements
      * when number is > 1.
      */
-    pickRandom(
-      array: number[],
-      number?: number,
-      weights?: number[]
-    ): number | number[]
+    pickRandom<T>(array: T[]): T
+    pickRandom<T>(array: T[], number: 1, weights?: number[]): T
+    pickRandom<T>(array: T[], number: number): T[]
+    pickRandom<T>(array: T[], number: number, weights: number[]): T[]
 
     /**
      * Return a random number larger or equal to min and smaller than max
