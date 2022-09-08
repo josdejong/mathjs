@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "target": "ES6",
     "paths": {
       "mathjs": ["./index.d.ts"]
     },
