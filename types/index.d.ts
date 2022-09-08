@@ -385,22 +385,8 @@ declare namespace math {
     new (name: string): SymbolNode
   }
 
-  type MathNode =
-    | AccessorNode
-    | ArrayNode
-    | AssignmentNode
-    | BlockNode
-    | ConditionalNode
-    | ConstantNode
-    | FunctionAssignmentNode
-    | FunctionNode
-    | IndexNode
-    | ObjectNode
-    | OperatorNode<OperatorNodeOp, OperatorNodeFn>
-    | ParenthesisNode
-    | RangeNode
-    | RelationalNode
-    | SymbolNode
+  // NOTE this is as it is to avoid breaking changes, please don't change it
+  type MathNode = MathNodeCommon
 
   type MathJsFunctionName = keyof MathJsStatic
 
