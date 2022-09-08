@@ -44,6 +44,7 @@ import {
   MathNodeCommon,
   Unit,
   Node,
+  isSymbolNode,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -1005,7 +1006,6 @@ Expressions examples
     if (node.type !== 'ParenthesisNode') {
       throw Error(`expected ParenthesisNode, got ${node.type}`)
     }
-    const _innerNode = node.content
   }
 
   // scope can contain both variables and functions
@@ -1464,9 +1464,9 @@ Expression tree examples
   const math = create(all, {})
 
   // Filter an expression tree
-  const node: MathNode = math.parse('x^2 + x/4 + 3*y')
-  const filtered: MathNode[] = node.filter(
-    (node: MathNode) => node.type === 'SymbolNode' && node.name === 'x'
+  const node = math.parse('x^2 + x/4 + 3*y')
+  const filtered = node.filter(
+    (node) => isSymbolNode(node) && node.name === 'x'
   )
 
   const _arr: string[] = filtered.map((node: MathNode) => node.toString())
