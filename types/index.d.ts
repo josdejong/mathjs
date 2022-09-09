@@ -2203,11 +2203,9 @@ declare namespace math {
      * undefined. Returns an array with the configured number of elements
      * when number is > 1.
      */
-    pickRandom(
-      array: number[],
-      number?: number,
-      weights?: number[]
-    ): number | number[]
+    pickRandom<T>(array: T[]): T
+    pickRandom<T>(array: T[], number: number): T[]
+    pickRandom<T>(array: T[], number: number, weights: number[]): T[]
 
     /**
      * Return a random number larger or equal to min and smaller than max
@@ -5525,11 +5523,9 @@ declare namespace math {
      * @param number An int or float
      * @param weights An array of ints or floats
      */
-    pickRandom(
-      array: MathJsChain<number[]>,
-      number?: number,
-      weights?: number[]
-    ): MathJsChain<number | number[]>
+    pickRandom<T>(array: T[]): MathJsChain<T>
+    pickRandom<T>(array: T[], number: number): MathJsChain<T[]>
+    pickRandom<T>(array: T[], number: number, weights: number[]): MathJsChain<T[]>
 
     /**
      * Return a random number larger or equal to min and smaller than max

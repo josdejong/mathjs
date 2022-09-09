@@ -2246,3 +2246,18 @@ Resolve examples
   ).toMatchTypeOf<MathNode[]>()
   expectTypeOf(math.resolve(math.matrix(['x', 'y']))).toMatchTypeOf<Matrix>()
 }
+
+/*
+Random examples
+*/
+{
+  const math = create(all, {})
+  expectTypeOf(math.pickRandom([1, 2, 3])).toMatchTypeOf<number>()
+  expectTypeOf(math.pickRandom(['a', { b: 10 }, 42])).toMatchTypeOf<
+    string | number | { b: number }
+  >()
+  expectTypeOf(math.pickRandom([1, 2, 3])).toMatchTypeOf<number>()
+  expectTypeOf(math.pickRandom([1, 2, 3], 2)).toMatchTypeOf<number[]>()
+
+  expectTypeOf(math.chain().pickRandom([1, 2, 3], 2)).toMatchTypeOf<MathJsChain<number[]>>()
+}
