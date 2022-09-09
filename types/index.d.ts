@@ -2204,7 +2204,6 @@ declare namespace math {
      * when number is > 1.
      */
     pickRandom<T>(array: T[]): T
-    pickRandom<T>(array: T[], number: 1, weights?: number[]): T
     pickRandom<T>(array: T[], number: number): T[]
     pickRandom<T>(array: T[], number: number, weights: number[]): T[]
 
@@ -5525,7 +5524,6 @@ declare namespace math {
      * @param weights An array of ints or floats
      */
     pickRandom<T>(array: T[]): MathJsChain<T>
-    pickRandom<T>(array: T[], number: 1, weights?: number[]): MathJsChain<T>
     pickRandom<T>(array: T[], number: number): MathJsChain<T[]>
     pickRandom<T>(array: T[], number: number, weights: number[]): MathJsChain<T[]>
 
