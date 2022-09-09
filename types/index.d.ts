@@ -5525,7 +5525,11 @@ declare namespace math {
      */
     pickRandom<T>(array: T[]): MathJsChain<T>
     pickRandom<T>(array: T[], number: number): MathJsChain<T[]>
-    pickRandom<T>(array: T[], number: number, weights: number[]): MathJsChain<T[]>
+    pickRandom<T>(
+      array: T[],
+      number: number,
+      weights: number[]
+    ): MathJsChain<T[]>
 
     /**
      * Return a random number larger or equal to min and smaller than max
