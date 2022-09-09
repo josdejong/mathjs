@@ -2259,7 +2259,7 @@ Random examples
   expectTypeOf(math.pickRandom([1, 2, 3])).toMatchTypeOf<number>()
   expectTypeOf(math.pickRandom([1, 2, 3], 2)).toMatchTypeOf<number[]>()
 
-  expectTypeOf(math.chain().pickRandom([1, 2, 3], 2)).toMatchTypeOf<
+  expectTypeOf(math.chain([1, 2, 3]).pickRandom(2)).toMatchTypeOf<
     MathJsChain<number[]>
   >()
 }

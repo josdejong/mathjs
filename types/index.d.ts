@@ -5523,10 +5523,10 @@ declare namespace math {
      * @param number An int or float
      * @param weights An array of ints or floats
      */
-    pickRandom<T>(array: T[]): MathJsChain<T>
-    pickRandom<T>(array: T[], number: number): MathJsChain<T[]>
+    pickRandom<T>(this: MathJsChain<T[]>): MathJsChain<T>
+    pickRandom<T>(this: MathJsChain<T[]>, number: number): MathJsChain<T[]>
     pickRandom<T>(
-      array: T[],
+      this: MathJsChain<T[]>,
       number: number,
       weights: number[]
     ): MathJsChain<T[]>
