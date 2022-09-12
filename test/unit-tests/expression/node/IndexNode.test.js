@@ -232,7 +232,7 @@ describe('IndexNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'IndexNode',
-      dimensions: [prop],
+      dimensions: [prop.toJSON()],
       dotNotation: true
     })
 

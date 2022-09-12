@@ -7,10 +7,11 @@ import { escape } from '../../utils/string.js'
 const name = 'IndexNode'
 const dependencies = [
   'Node',
-  'size'
+  'size',
+  'fromJSON'
 ]
 
-export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, size }) => {
+export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, size, fromJSON }) => {
   class IndexNode extends Node {
     /**
      * @constructor IndexNode
@@ -182,7 +183,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
     toJSON () {
       return {
         mathjs: name,
-        dimensions: this.dimensions,
+        dimensions: this.dimensions?.map(d => d.toJSON()),
         dotNotation: this.dotNotation
       }
     }
@@ -196,7 +197,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @returns {IndexNode}
      */
     static fromJSON (json) {
-      return new IndexNode(json.dimensions, json.dotNotation)
+      return new IndexNode(json.dimensions?.map(fromJSON), json.dotNotation)
     }
 
     /**
