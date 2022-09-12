@@ -1,12 +1,14 @@
 # History
 
-# unpublished changes since 11.1.0
+# 2022-09-12, 11.2.0
 
 - Implement function `isRelationalNode` (#2731). Thanks @isaacbyr.
 - Added missing types `'largerEq'` and `'or'` in `OperatorNodeMap` in the
   TypeScript definitions. Thanks @ajinkyac03.
 - Fixed typos in min func type defs (#2768). Thanks @mabdullahadeel.
 - Improved the TypeScript definitions for `pickRandom`. Thanks @mattvague.
+- Fixed documentation of unit `min` which means `minutes`, not `minim` (#2773).
+  Thanks @jasonhornsby.
 
 
 # 2022-08-23, 11.1.0
