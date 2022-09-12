@@ -1,3 +1,4 @@
+export { createfromJSON } from './json/fromJSON.js'
 export { createTyped } from './core/function/typed.js'
 export { createResultSet } from './type/resultset/ResultSet.js'
 export { createBigNumberClass } from './type/bignumber/BigNumber.js'
@@ -256,7 +257,6 @@ export { createDerivative } from './function/algebra/derivative.js'
 export { createRationalize } from './function/algebra/rationalize.js'
 export { createReviver } from './json/reviver.js'
 export { createReplacer } from './json/replacer.js'
-export { createfromJSON } from './json/fromJSON.js'
 export {
   createE,
   createUppercaseE,

@@ -16,8 +16,8 @@ import { accessFactory } from './utils/access.js'
 const name = 'AccessorNode'
 const dependencies = [
   'subset',
-  'Node',
-  'fromJSON'
+  'fromJSON',
+  'Node'
 ]
 
 export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, Node, fromJSON }) => {
