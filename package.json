@@ -6,7 +6,7 @@
     "url": "https://github.com/josdejong/mathjs.git"
   },
   "dependencies": {
-    "mathjs": "11.0.1"
+    "mathjs": "11.2.0"
   },
   "devDependencies": {
     "fancy-log": "2.0.0",

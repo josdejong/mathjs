@@ -38,7 +38,7 @@ layout: default
 - [Custom datatype](advanced\custom_datatype.js.html)
 - [Custom evaluate using factories](advanced\custom_evaluate_using_factories.js.html)
 - [Custom evaluate using import](advanced\custom_evaluate_using_import.js.html)
-- [Custom loading](advanced\custom_loading.js.html)
+- [Custom loading](advanced\custom_loading.mjs.html)
 - [Custom relational functions](advanced\custom_relational_functions.js.html)
 - [Custom scope objects](advanced\custom_scope_objects.js.html)
 - [Expression trees](advanced\expression_trees.js.html)

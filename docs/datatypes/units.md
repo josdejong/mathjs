@@ -18,7 +18,8 @@ full name and an abbreviation. The returned object is a `Unit`.
 Syntax:
 
 ```js
-math.unit(value: number, name: string) : Unit
+math.unit(value: number, valuelessUnit: string) : Unit
+math.unit(value: number, valuelessUnit: Unit) : Unit
 math.unit(unit: string) : Unit
 math.unit(unit: Unit) : Unit
 ```
@@ -42,6 +43,11 @@ c.equalBase(a)                            // true
 c.equalBase(b)                            // false
 
 d.toString()                              // String "5.08 cm"
+
+const kph = math.unit('km/h')             // valueless Unit km/h
+const mps = math.unit('m/s')              // valueless Unit m/s
+const speed = math.unit(36, kph)          // Unit 36 km/h
+speed.toNumber(mps)                       // Number 10
 ```
 
 Use care when creating a unit with multiple terms in the denominator. Implicit multiplication has the same operator precedence as explicit multiplication and division, which means these three expressions are identical:
@@ -271,9 +277,9 @@ Base                | Unit
 Length              | meter (m), inch (in), foot (ft), yard (yd), mile (mi), link (li), rod (rd), chain (ch), angstrom, mil
 Surface area        | m2, sqin, sqft, sqyd, sqmi, sqrd, sqch, sqmil, acre, hectare
 Volume              | m3, litre (l, L, lt, liter), cc, cuin, cuft, cuyd, teaspoon, tablespoon
-Liquid volume       | minim (min), fluiddram (fldr), fluidounce (floz), gill (gi), cup (cp), pint (pt), quart (qt), gallon (gal), beerbarrel (bbl), oilbarrel (obl), hogshead, drop (gtt)
+Liquid volume       | minim, fluiddram (fldr), fluidounce (floz), gill (gi), cup (cp), pint (pt), quart (qt), gallon (gal), beerbarrel (bbl), oilbarrel (obl), hogshead, drop (gtt)
 Angles              | rad (radian), deg (degree), grad (gradian), cycle, arcsec (arcsecond), arcmin (arcminute)
-Time                | second (s, secs, seconds), minute (mins, minutes), hour (h, hr, hrs, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia)
+Time                | second (s, secs, seconds), minute (min, mins, minutes), hour (h, hr, hrs, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia)
 Frequency           | hertz (Hz)
 Mass                | gram(g), tonne, ton, grain (gr), dram (dr), ounce (oz), poundmass (lbm, lb, lbs), hundredweight (cwt), stick, stone
 Electric current    | ampere (A)

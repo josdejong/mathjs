@@ -4,6 +4,27 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220912-1120">2022-09-12, 11.2.0 <a href="#20220912-1120" title="Permalink">#</a></h1>
+
+- Implement function `isRelationalNode`  <a href="https://github.com/josdejong/mathjs/issues/2731">#2731</a>). Thanks <a href="https://github.com/isaacbyr">@isaacbyr</a>.
+- Added missing types `'largerEq'` and `'or'` in `OperatorNodeMap` in the
+  TypeScript definitions. Thanks <a href="https://github.com/ajinkyac03">@ajinkyac03</a>.
+- Fixed typos in min func type defs  <a href="https://github.com/josdejong/mathjs/issues/2768">#2768</a>). Thanks <a href="https://github.com/mabdullahadeel">@mabdullahadeel</a>.
+- Improved the TypeScript definitions for `pickRandom`. Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+- Fixed documentation of unit `min` which means `minutes`, not `minim`  <a href="https://github.com/josdejong/mathjs/issues/2773">#2773</a>).
+  Thanks <a href="https://github.com/jasonhornsby">@jasonhornsby</a>.
+
+
+<h1 id="20220823-1110">2022-08-23, 11.1.0 <a href="#20220823-1110" title="Permalink">#</a></h1>
+
+- Add Unit constructor from value and pure (valueless) Unit  <a href="https://github.com/josdejong/mathjs/issues/2628">#2628</a>).
+  Thanks <a href="https://github.com/costerwi">@costerwi</a>
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2144">#2144</a>: `examples/advanced/custom_loading.js` was broken.
+- Fix JSON `replacer` function missing in the TypeScript definitions. 
+  Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+- Update dependencies to `typed-function@4.1.0` and `decimal.js@10.4.0`. 
+
+
 <h1 id="20220725-version-1101">2022-07-25, version 11.0.1 <a href="#20220725-version-1101" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2632">#2632</a>: TypeScript issue of `simplifyConstant` and `simplifyCore`
