@@ -4,10 +4,11 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'ArrayNode'
 const dependencies = [
-  'Node'
+  'Node',
+  'fromJSON'
 ]
 
-export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
+export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, fromJSON }) => {
   class ArrayNode extends Node {
     /**
      * @constructor ArrayNode
@@ -117,7 +118,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
     toJSON () {
       return {
         mathjs: name,
-        items: this.items
+        items: this.items.map(i => i.toJSON())
       }
     }
 
@@ -129,7 +130,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @returns {ArrayNode}
      */
     static fromJSON (json) {
-      return new ArrayNode(json.items)
+      return new ArrayNode(json.items.map(fromJSON))
     }
 
     /**
