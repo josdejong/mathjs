@@ -16,10 +16,11 @@ import { accessFactory } from './utils/access.js'
 const name = 'AccessorNode'
 const dependencies = [
   'subset',
-  'Node'
+  'Node',
+  'fromJSON'
 ]
 
-export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, Node }) => {
+export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, Node, fromJSON }) => {
   const access = accessFactory({ subset })
 
   /**
@@ -191,7 +192,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
     toJSON () {
       return {
         mathjs: name,
-        object: this.object,
+        object: this.object?.toJSON(),
         index: this.index
       }
     }
@@ -205,7 +206,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @returns {AccessorNode}
      */
     static fromJSON (json) {
-      return new AccessorNode(json.object, json.index)
+      return new AccessorNode(fromJSON(json.object), json.index)
     }
   }
 
