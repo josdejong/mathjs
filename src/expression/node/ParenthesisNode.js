@@ -3,10 +3,11 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'ParenthesisNode'
 const dependencies = [
-  'Node'
+  'Node',
+  'fromJSON'
 ]
 
-export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
+export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, fromJSON }) => {
   class ParenthesisNode extends Node {
     /**
      * @constructor ParenthesisNode
@@ -102,7 +103,7 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
      * @returns {Object}
      */
     toJSON () {
-      return { mathjs: name, content: this.content }
+      return { mathjs: name, content: this.content?.toJSON() }
     }
 
     /**
@@ -113,7 +114,7 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
      * @returns {ParenthesisNode}
      */
     static fromJSON (json) {
-      return new ParenthesisNode(json.content)
+      return new ParenthesisNode(fromJSON(json.content))
     }
 
     /**
