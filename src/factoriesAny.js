@@ -256,6 +256,7 @@ export { createDerivative } from './function/algebra/derivative.js'
 export { createRationalize } from './function/algebra/rationalize.js'
 export { createReviver } from './json/reviver.js'
 export { createReplacer } from './json/replacer.js'
+export { createfromJSON } from './json/fromJSON.js'
 export {
   createE,
   createUppercaseE,
