@@ -4,10 +4,11 @@ import { getPrecedence } from '../operators.js'
 
 const name = 'ConditionalNode'
 const dependencies = [
-  'Node'
+  'Node',
+  'fromJSON'
 ]
 
-export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
+export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, fromJSON }) => {
   /**
    * Test whether a condition is met
    * @param {*} condition
@@ -176,9 +177,9 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
     toJSON () {
       return {
         mathjs: name,
-        condition: this.condition,
-        trueExpr: this.trueExpr,
-        falseExpr: this.falseExpr
+        condition: this.condition?.toJSON(),
+        trueExpr: this.trueExpr?.toJSON(),
+        falseExpr: this.falseExpr?.toJSON()
       }
     }
 
@@ -196,7 +197,7 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
      * @returns {ConditionalNode}
      */
     static fromJSON (json) {
-      return new ConditionalNode(json.condition, json.trueExpr, json.falseExpr)
+      return new ConditionalNode(fromJSON(json.condition), fromJSON(json.trueExpr), fromJSON(json.falseExpr))
     }
 
     /**

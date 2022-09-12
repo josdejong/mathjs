@@ -310,9 +310,9 @@ describe('ConditionalNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'ConditionalNode',
-      condition: a,
-      trueExpr: b,
-      falseExpr: c
+      condition: a.toJSON(),
+      trueExpr: b.toJSON(),
+      falseExpr: c.toJSON()
     })
 
     const parsed = ConditionalNode.fromJSON(json)
