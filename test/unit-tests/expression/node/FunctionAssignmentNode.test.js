@@ -434,7 +434,7 @@ describe('FunctionAssignmentNode', function () {
         { name: 'x', type: 'number' },
         { name: 'y', type: 'any' }
       ],
-      expr
+      expr: expr.toJSON()
     })
 
     const parsed = FunctionAssignmentNode.fromJSON(json)
