@@ -9,10 +9,11 @@ const name = 'AssignmentNode'
 const dependencies = [
   'subset',
   '?matrix', // FIXME: should not be needed at all, should be handled by subset
-  'Node'
+  'Node',
+  'fromJSON'
 ]
 
-export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, Node }) => {
+export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, Node, fromJSON }) => {
   const access = accessFactory({ subset })
   const assign = assignFactory({ subset, matrix })
 
@@ -258,9 +259,9 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     toJSON () {
       return {
         mathjs: name,
-        object: this.object,
-        index: this.index,
-        value: this.value
+        object: this.object?.toJSON(),
+        index: this.index?.toJSON(),
+        value: this.value?.toJSON()
       }
     }
 
@@ -273,7 +274,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
      * @returns {AssignmentNode}
      */
     static fromJSON (json) {
-      return new AssignmentNode(json.object, json.index, json.value)
+      return new AssignmentNode(fromJSON(json.object), fromJSON(json.index), fromJSON(json.value))
     }
 
     /**

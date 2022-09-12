@@ -485,7 +485,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      */
     static fromJSON (json) {
       return new OperatorNode(
-        json.op, json.fn, (json.args || []).map(fromJSON), json.implicit, json.isPercentage
+        json.op, json.fn, json.args?.map(fromJSON), json.implicit, json.isPercentage
       )
     }
 

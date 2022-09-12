@@ -118,7 +118,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
     toJSON () {
       return {
         mathjs: name,
-        items: this.items.map(i => i.toJSON())
+        items: this.items?.map(i => i.toJSON())
       }
     }
 
