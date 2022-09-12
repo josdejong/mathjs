@@ -230,7 +230,7 @@ describe('RelationalNode', function () {
     assert.deepStrictEqual(json, {
       mathjs: 'RelationalNode',
       conditionals: ['smaller', 'smaller'],
-      params: [one, x, three]
+      params: [one.toJSON(), x.toJSON(), three.toJSON()]
     })
 
     const parsed = RelationalNode.fromJSON(json)

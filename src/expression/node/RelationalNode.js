@@ -6,10 +6,11 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'RelationalNode'
 const dependencies = [
-  'Node'
+  'Node',
+  'fromJSON'
 ]
 
-export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
+export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, fromJSON }) => {
   const operatorMap = {
     equal: '==',
     unequal: '!=',
@@ -149,7 +150,7 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
       return {
         mathjs: name,
         conditionals: this.conditionals,
-        params: this.params
+        params: this.params?.map(c => c.toJSON())
       }
     }
 
@@ -162,7 +163,7 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
      * @returns {RelationalNode}
      */
     static fromJSON (json) {
-      return new RelationalNode(json.conditionals, json.params)
+      return new RelationalNode(json.conditionals, json.params.map(fromJSON))
     }
 
     /**
