@@ -266,7 +266,7 @@ describe('ObjectNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'ObjectNode',
-      properties: { b, c }
+      properties: { b: b.toJSON(), c: c.toJSON() }
     })
 
     const parsed = ObjectNode.fromJSON(json)
