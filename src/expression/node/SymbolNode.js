@@ -45,9 +45,9 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
 
     /**
      * TODO
-     * @param {*} scope 
-     * @param {*} within 
-     * @returns 
+     * @param {*} scope
+     * @param {*} within
+     * @returns
      */
     resolve (scope, within = new Set()) {
       if (within.has(this.name)) {

@@ -48,9 +48,9 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
 
     /**
      * TODO
-     * @param {*} scope 
-     * @param {*} within 
-     * @returns 
+     * @param {*} scope
+     * @param {*} within
+     * @returns
      */
     resolve (scope, within = new Set()) {
       return new ParenthesisNode(this.content.resolve(scope, within))

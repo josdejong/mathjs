@@ -328,9 +328,9 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     /**
      * TODO
-     * @param {*} scope 
-     * @param {*} within 
-     * @returns 
+     * @param {*} scope
+     * @param {*} within
+     * @returns
      */
     resolve (scope, within = new Set()) {
       return new OperatorNode(this.op, this.fn, this.args.map(a => a.resolve(scope, within)), this.implicit)

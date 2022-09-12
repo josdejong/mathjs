@@ -1,24 +1,13 @@
 import { createMap } from '../../utils/map.js'
-import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'resolve'
 const dependencies = [
-  'typed',
-  'parse',
-  'ConstantNode',
-  'FunctionNode',
-  'OperatorNode',
-  'ParenthesisNode'
+  'typed'
 ]
 
 export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
-  typed,
-  parse,
-  ConstantNode,
-  FunctionNode,
-  OperatorNode,
-  ParenthesisNode
+  typed
 }) => {
   /**
    * resolve(expr, scope) replaces variable nodes with their scoped values
