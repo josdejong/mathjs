@@ -4,10 +4,11 @@ import { getPrecedence } from '../operators.js'
 
 const name = 'RangeNode'
 const dependencies = [
-  'Node'
+  'Node',
+  'fromJSON'
 ]
 
-export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
+export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, fromJSON }) => {
   /**
    * Calculate the necessary parentheses
    * @param {Node} node
@@ -194,9 +195,9 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
     toJSON () {
       return {
         mathjs: name,
-        start: this.start,
-        end: this.end,
-        step: this.step
+        start: this.start?.toJSON(),
+        end: this.end?.toJSON(),
+        step: this.step?.toJSON()
       }
     }
 
@@ -209,7 +210,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @returns {RangeNode}
      */
     static fromJSON (json) {
-      return new RangeNode(json.start, json.end, json.step)
+      return new RangeNode(fromJSON(json.start), fromJSON(json.end), fromJSON(json.step))
     }
 
     /**
