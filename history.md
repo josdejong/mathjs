@@ -4,6 +4,11 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20220913-1121">2022-09-13, 11.2.1 <a href="#20220913-1121" title="Permalink">#</a></h1>
+
+- Fix doc generator being broken, not generating a function reference.
+
+
 <h1 id="20220912-1120">2022-09-12, 11.2.0 <a href="#20220912-1120" title="Permalink">#</a></h1>
 
 - Implement function `isRelationalNode`  <a href="https://github.com/josdejong/mathjs/issues/2731">#2731</a>). Thanks <a href="https://github.com/isaacbyr">@isaacbyr</a>.
