@@ -1,6 +1,6 @@
 # History
 
-# not yet published, 11.2.1
+# 2022-09-13, 11.2.1
 
 - Fix doc generator being broken, not generating a function reference.
 
