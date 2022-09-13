@@ -324,6 +324,7 @@ export { createIsPrime } from './function/utils/isPrime.js'
 export { createNumeric } from './function/utils/numeric.js'
 
 // json
+export { createfromJSON } from './json/fromJSON.js'
 export { createReviver } from './json/reviver.js'
 export { createReplacer } from './json/replacer.js'
 
