@@ -1,5 +1,10 @@
 # History
 
+# not yet published, 11.2.1
+
+- Fix doc generator being broken, not generating a function reference.
+
+
 # 2022-09-12, 11.2.0
 
 - Implement function `isRelationalNode` (#2731). Thanks @isaacbyr.
