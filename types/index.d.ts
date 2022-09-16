@@ -162,10 +162,10 @@ declare namespace math {
   }
 
   interface NodeCtor {
-    new (): MathNodeCommon
+    new (): MathNode
   }
 
-  interface AccessorNode extends MathNodeCommon {
+  interface AccessorNode extends MathNode {
     type: 'AccessorNode'
     isAccessorNode: true
     object: MathNode
@@ -176,7 +176,7 @@ declare namespace math {
     new (object: MathNode, index: IndexNode): AccessorNode
   }
 
-  interface ArrayNode extends MathNodeCommon {
+  interface ArrayNode extends MathNode {
     type: 'ArrayNode'
     isArrayNode: true
     items: MathNode[]
@@ -185,7 +185,7 @@ declare namespace math {
     new (items: MathNode[]): ArrayNode
   }
 
-  interface AssignmentNode extends MathNodeCommon {
+  interface AssignmentNode extends MathNode {
     type: 'AssignmentNode'
     isAssignmentNode: true
     object: SymbolNode | AccessorNode
@@ -202,7 +202,7 @@ declare namespace math {
     ): AssignmentNode
   }
 
-  interface BlockNode extends MathNodeCommon {
+  interface BlockNode extends MathNode {
     type: 'BlockNode'
     isBlockNode: true
     blocks: Array<{ node: MathNode; visible: boolean }>
@@ -213,7 +213,7 @@ declare namespace math {
     ): BlockNode
   }
 
-  interface ConditionalNode extends MathNodeCommon {
+  interface ConditionalNode extends MathNode {
     type: 'ConditionalNode'
     isConditionalNode: boolean
     condition: MathNode
@@ -228,7 +228,7 @@ declare namespace math {
     ): ConditionalNode
   }
 
-  interface ConstantNode extends MathNodeCommon {
+  interface ConstantNode extends MathNode {
     type: 'ConstantNode'
     isConstantNode: true
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -239,7 +239,7 @@ declare namespace math {
     new (constant: number): ConstantNode
   }
 
-  interface FunctionAssignmentNode extends MathNodeCommon {
+  interface FunctionAssignmentNode extends MathNode {
     type: 'FunctionAssignmentNode'
     isFunctionAssignmentNode: true
     name: string
@@ -250,7 +250,7 @@ declare namespace math {
     new (name: string, params: string[], expr: MathNode): FunctionAssignmentNode
   }
 
-  interface FunctionNode extends MathNodeCommon {
+  interface FunctionNode extends MathNode {
     type: 'FunctionNode'
     isFunctionNode: true
     fn: SymbolNode
@@ -260,7 +260,7 @@ declare namespace math {
     new (fn: MathNode | string, args: MathNode[]): FunctionNode
   }
 
-  interface IndexNode extends MathNodeCommon {
+  interface IndexNode extends MathNode {
     type: 'IndexNode'
     isIndexNode: true
     dimensions: MathNode[]
@@ -271,7 +271,7 @@ declare namespace math {
     new (dimensions: MathNode[], dotNotation: boolean): IndexNode
   }
 
-  interface ObjectNode extends MathNodeCommon {
+  interface ObjectNode extends MathNode {
     type: 'ObjectNode'
     isObjectNode: true
     properties: Record<string, MathNode>
@@ -320,7 +320,7 @@ declare namespace math {
     TOp extends OperatorNodeMap[TFn] = never,
     TFn extends OperatorNodeFn = never,
     TArgs extends MathNode[] = MathNode[]
-  > extends MathNodeCommon {
+  > extends MathNode {
     type: 'OperatorNode'
     isOperatorNode: true
     op: TOp
@@ -331,7 +331,7 @@ declare namespace math {
     isBinary(): boolean
   }
 
-  interface OperatorNodeCtor extends MathNodeCommon {
+  interface OperatorNodeCtor extends MathNode {
     new <
       TOp extends OperatorNodeMap[TFn],
       TFn extends OperatorNodeFn,
@@ -344,7 +344,7 @@ declare namespace math {
     ): OperatorNode<TOp, TFn, TArgs>
   }
   interface ParenthesisNode<TContent extends MathNode = MathNode>
-    extends MathNodeCommon {
+    extends MathNode {
     type: 'ParenthesisNode'
     isParenthesisNode: true
     content: TContent
@@ -355,7 +355,7 @@ declare namespace math {
     ): ParenthesisNode<TContent>
   }
 
-  interface RangeNode extends MathNodeCommon {
+  interface RangeNode extends MathNode {
     type: 'RangeNode'
     isRangeNode: true
     start: MathNode
@@ -366,7 +366,7 @@ declare namespace math {
     new (start: MathNode, end: MathNode, step?: MathNode): RangeNode
   }
 
-  interface RelationalNode extends MathNodeCommon {
+  interface RelationalNode extends MathNode {
     type: 'RelationalNode'
     isRelationalNode: true
     conditionals: string[]
@@ -376,7 +376,7 @@ declare namespace math {
     new (conditionals: string[], params: MathNode[]): RelationalNode
   }
 
-  interface SymbolNode extends MathNodeCommon {
+  interface SymbolNode extends MathNode {
     type: 'SymbolNode'
     isSymbolNode: true
     name: string
@@ -385,22 +385,10 @@ declare namespace math {
     new (name: string): SymbolNode
   }
 
-  type MathNode =
-    | AccessorNode
-    | ArrayNode
-    | AssignmentNode
-    | BlockNode
-    | ConditionalNode
-    | ConstantNode
-    | FunctionAssignmentNode
-    | FunctionNode
-    | IndexNode
-    | ObjectNode
-    | OperatorNode<OperatorNodeOp, OperatorNodeFn>
-    | ParenthesisNode
-    | RangeNode
-    | RelationalNode
-    | SymbolNode
+  /**
+   * @deprecated since version 11.3. Prefer `MathNode` instead
+   */
+  type MathNodeCommon = MathNode
 
   type MathJsFunctionName = keyof MathJsStatic
 
@@ -3146,7 +3134,7 @@ declare namespace math {
 
     isIndexNode(x: unknown): x is IndexNode
 
-    isNode(x: unknown): x is MathNodeCommon
+    isNode(x: unknown): x is MathNode
 
     isObjectNode(x: unknown): x is ObjectNode
 
@@ -3855,7 +3843,7 @@ declare namespace math {
     evaluate(scope?: any): any
   }
 
-  interface MathNodeCommon {
+  interface MathNode {
     isNode: true
     comment: string
     type: string
