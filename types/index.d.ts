@@ -222,18 +222,26 @@ declare namespace math {
     ): BlockNode
   }
 
-  interface ConditionalNode extends MathNode {
+  interface ConditionalNode<
+    TCond extends MathNode = MathNode,
+    TTrueNode extends MathNode = MathNode,
+    TFalseNode extends MathNode = MathNode
+  > extends MathNode {
     type: 'ConditionalNode'
     isConditionalNode: boolean
-    condition: MathNode
-    trueExpr: MathNode
-    falseExpr: MathNode
+    condition: TCond
+    trueExpr: TTrueNode
+    falseExpr: TFalseNode
   }
   interface ConditionalNodeCtor {
-    new (
-      condition: MathNode,
-      trueExpr: MathNode,
-      falseExpr: MathNode
+    new <
+      TCond extends MathNode = MathNode,
+      TTrueNode extends MathNode = MathNode,
+      TFalseNode extends MathNode = MathNode
+    >(
+      condition: TCond,
+      trueExpr: TTrueNode,
+      falseExpr: TFalseNode
     ): ConditionalNode
   }
 
