@@ -293,15 +293,18 @@ declare namespace math {
     onUndefinedFunction: (name: string) => any
   }
 
-  interface IndexNode extends MathNode {
+  interface IndexNode<TDims extends MathNode[] = MathNode[]> extends MathNode {
     type: 'IndexNode'
     isIndexNode: true
-    dimensions: MathNode[]
+    dimensions: TDims
     dotNotation: boolean
   }
   interface IndexNodeCtor {
-    new (dimensions: MathNode[]): IndexNode
-    new (dimensions: MathNode[], dotNotation: boolean): IndexNode
+    new <TDims extends MathNode[] = MathNode[]>(dimensions: TDims): IndexNode
+    new <TDims extends MathNode[] = MathNode[]>(
+      dimensions: TDims,
+      dotNotation: boolean
+    ): IndexNode<TDims>
   }
 
   interface ObjectNode extends MathNode {
