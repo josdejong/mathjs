@@ -245,15 +245,18 @@ declare namespace math {
     ): ConditionalNode
   }
 
-  interface ConstantNode extends MathNode {
+  interface ConstantNode<TValue extends string | number = string>
+    extends MathNode {
     type: 'ConstantNode'
     isConstantNode: true
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    value: any
+    value: TValue
   }
 
   interface ConstantNodeCtor {
-    new (constant: number): ConstantNode
+    new <TValue extends string | number = string>(
+      value: TValue
+    ): ConstantNode<TValue>
   }
 
   interface FunctionAssignmentNode extends MathNode {
