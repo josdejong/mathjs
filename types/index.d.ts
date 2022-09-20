@@ -307,13 +307,17 @@ declare namespace math {
     ): IndexNode<TDims>
   }
 
-  interface ObjectNode extends MathNode {
+  interface ObjectNode<
+    TProps extends Record<string, MathNode> = Record<string, MathNode>
+  > extends MathNode {
     type: 'ObjectNode'
     isObjectNode: true
-    properties: Record<string, MathNode>
+    properties: TProps
   }
   interface ObjectNodeCtor {
-    new (properties: Record<string, MathNode>): ObjectNode
+    new <TProps extends Record<string, MathNode> = Record<string, MathNode>>(
+      properties: TProps
+    ): ObjectNode<TProps>
   }
 
   type OperatorNodeMap = {
