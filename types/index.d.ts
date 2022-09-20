@@ -418,14 +418,18 @@ declare namespace math {
     ): RangeNode<TStart, TEnd, TStep>
   }
 
-  interface RelationalNode extends MathNode {
+  interface RelationalNode<TParams extends MathNode[] = MathNode[]>
+    extends MathNode {
     type: 'RelationalNode'
     isRelationalNode: true
     conditionals: string[]
-    params: MathNode[]
+    params: TParams
   }
   interface RelationalNodeCtor {
-    new (conditionals: string[], params: MathNode[]): RelationalNode
+    new <TParams extends MathNode[] = MathNode[]>(
+      conditionals: string[],
+      params: TParams
+    ): RelationalNode<TParams>
   }
 
   interface SymbolNode extends MathNode {
