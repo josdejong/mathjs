@@ -211,14 +211,14 @@ declare namespace math {
     ): AssignmentNode<TValue>
   }
 
-  interface BlockNode extends MathNode {
+  interface BlockNode<TNode extends MathNode = MathNode> extends MathNode {
     type: 'BlockNode'
     isBlockNode: true
-    blocks: Array<{ node: MathNode; visible: boolean }>
+    blocks: Array<{ node: TNode; visible: boolean }>
   }
   interface BlockNodeCtor {
-    new (
-      arr: Array<{ node: MathNode } | { node: MathNode; visible: boolean }>
+    new <TNode extends MathNode = MathNode>(
+      arr: Array<{ node: TNode } | { node: TNode; visible: boolean }>
     ): BlockNode
   }
 
