@@ -395,15 +395,27 @@ declare namespace math {
     ): ParenthesisNode<TContent>
   }
 
-  interface RangeNode extends MathNode {
+  interface RangeNode<
+    TStart extends MathNode = MathNode,
+    TEnd extends MathNode = MathNode,
+    TStep extends MathNode = MathNode
+  > extends MathNode {
     type: 'RangeNode'
     isRangeNode: true
-    start: MathNode
-    end: MathNode
-    step: MathNode | null
+    start: TStart
+    end: TEnd
+    step: TStep | null
   }
   interface RangeNodeCtor {
-    new (start: MathNode, end: MathNode, step?: MathNode): RangeNode
+    new <
+      TStart extends MathNode = MathNode,
+      TEnd extends MathNode = MathNode,
+      TStep extends MathNode = MathNode
+    >(
+      start: TStart,
+      end: TEnd,
+      step?: TStep
+    ): RangeNode<TStart, TEnd, TStep>
   }
 
   interface RelationalNode extends MathNode {
