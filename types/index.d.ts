@@ -259,15 +259,20 @@ declare namespace math {
     ): ConstantNode<TValue>
   }
 
-  interface FunctionAssignmentNode extends MathNode {
+  interface FunctionAssignmentNode<TExpr extends MathNode = MathNode>
+    extends MathNode {
     type: 'FunctionAssignmentNode'
     isFunctionAssignmentNode: true
     name: string
     params: string[]
-    expr: MathNode
+    expr: TExpr
   }
   interface FunctionAssignmentNodeCtor {
-    new (name: string, params: string[], expr: MathNode): FunctionAssignmentNode
+    new <TExpr extends MathNode = MathNode>(
+      name: string,
+      params: string[],
+      expr: TExpr
+    ): FunctionAssignmentNode<TExpr>
   }
 
   interface FunctionNode<
