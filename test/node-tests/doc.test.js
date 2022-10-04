@@ -63,7 +63,14 @@ function extractValue (spec) {
   try {
     value = eval(spec) // eslint-disable-line no-eval
   } catch (err) {
-    if (err instanceof SyntaxError || err instanceof ReferenceError) {
+    if (spec[0] === '[') {
+      // maybe it was an array with mathjs expressions in it
+      try {
+        value = math.evaluate(spec).toArray()
+      } catch (newError) {
+        value = spec
+      }
+    } else if (err instanceof SyntaxError || err instanceof ReferenceError) {
       value = spec
     } else {
       throw err
@@ -110,17 +117,21 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
 }
 
 function checkExpectation (want, got) {
-  if (Array.isArray(want) && !Array.isArray(got)) {
-    approx.deepEqual(got, math.matrix(want), 1e-9)
-  } else if (want instanceof math.Unit && got instanceof math.Unit) {
-    approx.deepEqual(got, want, 1e-9)
-  } else if (want instanceof math.Complex && got instanceof math.Complex) {
-    approx.deepEqual(got, want, 1e-9)
-  } else if (typeof want === 'number' &&
-             typeof got === 'number' &&
-             want !== got) {
-    approx.equal(got, want, 1e-9)
+  if (Array.isArray(want)) {
+    if (!Array.isArray(got)) {
+      want = math.matrix(want)
+    }
+    return approx.deepEqual(got, want, 1e-9)
+  }
+  if (want instanceof math.Unit && got instanceof math.Unit) {
+    return approx.deepEqual(got, want, 1e-9)
+  }
+  if (want instanceof math.Complex && got instanceof math.Complex) {
+    return approx.deepEqual(got, want, 1e-9)
+  }
+  if (typeof want === 'number' && typeof got === 'number' && want !== got) {
     console.log(`  Note: return value ${got} not exactly as expected: ${want}`)
+    return approx.equal(got, want, 1e-9)
   } else {
     assert.deepEqual(got, want)
   }
