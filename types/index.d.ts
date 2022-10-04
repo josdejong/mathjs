@@ -245,7 +245,7 @@ declare namespace math {
     ): ConditionalNode
   }
 
-  interface ConstantNode<TValue extends string | number = string>
+  interface ConstantNode<TValue extends string | number = number>
     extends MathNode {
     type: 'ConstantNode'
     isConstantNode: true
