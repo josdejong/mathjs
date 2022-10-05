@@ -78,6 +78,7 @@
     "math-expression-evaluator": "1.4.0",
     "mkdirp": "1.0.4",
     "mocha": "10.0.0",
+    "mocha-junit-reporter": "2.1.0",
     "ndarray": "1.0.19",
     "ndarray-determinant": "1.0.0",
     "ndarray-gemm": "1.0.0",
