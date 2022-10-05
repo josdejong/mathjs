@@ -102,4 +102,55 @@ describe('resolve', function () {
       }),
       /ReferenceError.*\{x, y, z\}/)
   })
+
+  it('should allow resolving custom nodes in custom ways', function () {
+    const mymath = math.create()
+    const Node = mymath.Node
+    class IntervalNode extends Node {
+      // a node that represents any value in a closed interval
+      constructor (left, right) {
+        super()
+        this.left = left
+        this.right = right
+      }
+
+      static name = 'IntervalNode'
+      get type () { return 'IntervalNode' }
+      get isIntervalNode () { return true }
+      clone () {
+        return new IntervalNode(this.left, this.right)
+      }
+
+      _toString (options) {
+        return `[|${this.left}, ${this.right}|]`
+      }
+
+      midpoint () {
+        return (this.left + this.right) / 2
+      }
+    }
+
+    mymath.typed.addTypes(
+      [{
+        name: 'IntervalNode',
+        test: entity => entity && entity.isIntervalNode
+      }],
+      'RangeNode') // Insert just before RangeNode in type order
+
+    // IntervalNodes resolve to their midpoint:
+    const intervalResolver = node => new mymath.ConstantNode(node.midpoint())
+    const resolveInterval = mymath.typed({
+      IntervalNode: intervalResolver,
+      'IntervalNode, Object|Map|null|undefined': intervalResolver,
+      'IntervalNode, Map|null|undefined, Set': intervalResolver
+    })
+    // Merge with standard resolve:
+    mymath.import({ resolve: resolveInterval })
+
+    // And finally test:
+    const innerNode = new IntervalNode(1, 3)
+    const outerNode = new mymath.OperatorNode(
+      '+', 'add', [innerNode, new mymath.ConstantNode(4)])
+    assert.strictEqual(mymath.resolve(outerNode).toString(), '2 + 4')
+  })
 })
