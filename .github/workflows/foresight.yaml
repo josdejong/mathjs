@@ -56,6 +56,6 @@ jobs:
         uses: runforesight/foresight-test-kit-action@v1
         with:
           api_key: ${{ secrets.FORESIGHT_API_KEY }}
-          test_framework: mocha
-          test_format: junit
+          test_framework: JEST
+          test_format: JUNIT
           test_path: "./test-results.xml"
