@@ -47,7 +47,7 @@ jobs:
           cache: 'npm'
 
       - run: npm ci
-      - run: npm run test:src -- --reporter mocha-junit-reporter
+      - run: npm run test:src -- --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results.xml
         env:
           CI: true
 
