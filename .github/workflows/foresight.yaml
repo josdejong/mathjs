@@ -47,7 +47,7 @@ jobs:
           cache: 'npm'
 
       - run: npm ci
-      - run: npm run test:src -- --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results/all-test-results.xml
+      - run: npm run test:src -- --reporter mocha-junit-reporter
         env:
           CI: true
 
@@ -58,4 +58,4 @@ jobs:
           api_key: ${{ secrets.FORESIGHT_API_KEY }}
           test_framework: JEST
           test_format: JUNIT
-          test_path: ./test-results
+          test_path: ./test-results.xml
