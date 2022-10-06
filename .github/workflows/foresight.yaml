@@ -6,12 +6,9 @@ name: Foresight CI Workflow
 
 on:
   push:
-    branches:
-      - '*'
-    tags:
+    branches: [ "main", "develop" ]
   pull_request:
-    branches:
-      - '*'
+    branches: [ "main", "develop" ]
   workflow_dispatch:
 
 jobs:
