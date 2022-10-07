@@ -1322,9 +1322,7 @@ Matrices examples
         ])
       )
     )
-    assert.ok(
-      math.deepEqual(math.pinv(4), 0.25)
-    )
+    assert.ok(math.deepEqual(math.pinv(4), 0.25))
   }
 }
 
