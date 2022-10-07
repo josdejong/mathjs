@@ -1298,23 +1298,32 @@ Matrices examples
   {
     assert.ok(
       math.deepEqual(
-        math.pinv([[1, 2], [3, 4]]),
-        [[-2, 1], [1.5, -0.5]]
+        math.pinv([
+          [1, 2],
+          [3, 4],
+        ]),
+        [
+          [-2, 1],
+          [1.5, -0.5],
+        ]
       )
     )
     assert.ok(
       math.deepEqual(
         math.pinv(
-          math.matrix([[1, 2], [3, 4]])
+          math.matrix([
+            [1, 2],
+            [3, 4],
+          ])
         ),
-        math.matrix([[-2, 1], [1.5, -0.5]])
+        math.matrix([
+          [-2, 1],
+          [1.5, -0.5],
+        ])
       )
     )
     assert.ok(
-      math.deepEqual(
-        math.pinv(4),
-        0.25
-      )
+      math.deepEqual(math.pinv(4), 0.25)
     )
   }
 }
