@@ -1897,7 +1897,7 @@ declare namespace math {
       compare?: 'asc' | 'desc' | ((a: any, b: any) => number)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): any
-    
+
     /**
      * Calculate the Moore–Penrose inverse of a matrix.
      * @param x Matrix to be inversed
