@@ -1293,7 +1293,7 @@ Matrices examples
       )
     )
   }
-  
+
   // Moore–Penrose inverse
   {
     assert.ok(
