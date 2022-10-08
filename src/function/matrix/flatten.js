@@ -1,4 +1,3 @@
-import { clone } from '../../utils/object.js'
 import { flatten as flattenArray } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
@@ -7,8 +6,8 @@ const dependencies = ['typed', 'matrix']
 
 export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
-   * Flatten a multi dimensional matrix into a single dimensional matrix.
-   * It is guaranteed to always return a clone of the argument.
+   * Flatten a multidimensional matrix into a single dimensional matrix.
+   * A new matrix is returned, the original matrix is left untouched.
    *
    * Syntax:
    *
@@ -27,12 +26,12 @@ export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ type
    */
   return typed(name, {
     Array: function (x) {
-      return flattenArray(clone(x))
+      return flattenArray(x)
     },
 
     Matrix: function (x) {
-      const flat = flattenArray(clone(x.toArray()))
-      // TODO: return the same matrix type as x
+      const flat = flattenArray(x.toArray())
+      // TODO: return the same matrix type as x (Dense or Sparse Matrix)
       return matrix(flat)
     }
   })
