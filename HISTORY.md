@@ -3,12 +3,12 @@
 # not yet published, 11.3.0
 
 - Allow creating new subclasses of `Node` in TypeScript. @mattvague.
+- Fix flatten() cloning entries of array/Matrix (#2799).
 
 
 # 2022-09-13, 11.2.1
 
 - Fix doc generator being broken, not generating a function reference.
-
 
 # 2022-09-12, 11.2.0
 
