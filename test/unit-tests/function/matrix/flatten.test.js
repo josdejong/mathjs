@@ -8,11 +8,11 @@ describe('flatten', function () {
     assert.deepStrictEqual(flatten([]), [])
   })
 
-  it('should clone the flattened array', function () {
+  it('should not clone the flattened array', function () {
     const c = math.complex()
     const flat = flatten([c])
     assert.deepStrictEqual(flat, [c])
-    assert(c !== flat[0])
+    assert(c === flat[0])
   })
 
   it('should flatten a 1 dimensional array', function () {
