@@ -1,5 +1,26 @@
 # History
 
+# not yet published, 11.3.0
+
+- Allow creating new subclasses of `Node` in TypeScript. @mattvague.
+- Fix flatten() cloning entries of array/Matrix (#2799).
+
+
+# 2022-09-13, 11.2.1
+
+- Fix doc generator being broken, not generating a function reference.
+
+# 2022-09-12, 11.2.0
+
+- Implement function `isRelationalNode` (#2731). Thanks @isaacbyr.
+- Added missing types `'largerEq'` and `'or'` in `OperatorNodeMap` in the
+  TypeScript definitions. Thanks @ajinkyac03.
+- Fixed typos in min func type defs (#2768). Thanks @mabdullahadeel.
+- Improved the TypeScript definitions for `pickRandom`. Thanks @mattvague.
+- Fixed documentation of unit `min` which means `minutes`, not `minim` (#2773).
+  Thanks @jasonhornsby.
+
+
 # 2022-08-23, 11.1.0
 
 - Add Unit constructor from value and pure (valueless) Unit (#2628).

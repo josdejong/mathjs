@@ -27,7 +27,6 @@ import {
   MathJsChain,
   MathJsFunctionName,
   MathNode,
-  MathNodeCommon,
   MathNumericType,
   MathType,
   Matrix,
@@ -42,7 +41,10 @@ import {
   SimplifyRule,
   SLUDecomposition,
   SymbolNode,
+  MathNodeCommon,
   Unit,
+  Node,
+  isSymbolNode,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -1004,7 +1006,6 @@ Expressions examples
     if (node.type !== 'ParenthesisNode') {
       throw Error(`expected ParenthesisNode, got ${node.type}`)
     }
-    const _innerNode = node.content
   }
 
   // scope can contain both variables and functions
@@ -1463,9 +1464,9 @@ Expression tree examples
   const math = create(all, {})
 
   // Filter an expression tree
-  const node: MathNode = math.parse('x^2 + x/4 + 3*y')
-  const filtered: MathNode[] = node.filter(
-    (node: MathNode) => node.type === 'SymbolNode' && node.name === 'x'
+  const node = math.parse('x^2 + x/4 + 3*y')
+  const filtered = node.filter(
+    (node) => isSymbolNode(node) && node.name === 'x'
   )
 
   const _arr: string[] = filtered.map((node: MathNode) => node.toString())
@@ -2076,6 +2077,7 @@ Factory Test
     math.isOperatorNode,
     math.isParenthesisNode,
     math.isRangeNode,
+    math.isRelationalNode,
     math.isSymbolNode,
     math.isChain,
   ]
@@ -2170,10 +2172,10 @@ Factory Test
     expectTypeOf(x).toMatchTypeOf<IndexNode>()
   }
   if (math.isNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<MathNodeCommon>()
+    expectTypeOf(x).toMatchTypeOf<MathNode>()
   }
   if (math.isNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<MathNodeCommon>()
+    expectTypeOf(x).toMatchTypeOf<MathNode>()
   }
   if (math.isObjectNode(x)) {
     expectTypeOf(x).toMatchTypeOf<ObjectNode>()
@@ -2188,6 +2190,9 @@ Factory Test
   }
   if (math.isRangeNode(x)) {
     expectTypeOf(x).toMatchTypeOf<RangeNode>()
+  }
+  if (math.isRelationalNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.RelationalNode>()
   }
   if (math.isSymbolNode(x)) {
     expectTypeOf(x).toMatchTypeOf<SymbolNode>()
@@ -2241,4 +2246,54 @@ Resolve examples
     math.resolve([math.parse('x + y'), 'x*x'], { x: 0 })
   ).toMatchTypeOf<MathNode[]>()
   expectTypeOf(math.resolve(math.matrix(['x', 'y']))).toMatchTypeOf<Matrix>()
+}
+
+/*
+Random examples
+*/
+{
+  const math = create(all, {})
+  expectTypeOf(math.pickRandom([1, 2, 3])).toMatchTypeOf<number>()
+  expectTypeOf(math.pickRandom(['a', { b: 10 }, 42])).toMatchTypeOf<
+    string | number | { b: number }
+  >()
+  expectTypeOf(math.pickRandom([1, 2, 3])).toMatchTypeOf<number>()
+  expectTypeOf(math.pickRandom([1, 2, 3], 2)).toMatchTypeOf<number[]>()
+
+  expectTypeOf(math.chain([1, 2, 3]).pickRandom(2)).toMatchTypeOf<
+    MathJsChain<number[]>
+  >()
+}
+
+/*
+MathNode examples
+*/
+{
+  class CustomNode extends Node {
+    a: MathNode
+    constructor(a: MathNode) {
+      super()
+      this.a = a
+    }
+  }
+
+  // Basic node
+  const instance1 = new Node()
+
+  // Built-in subclass of Node
+  const instance2 = new ConstantNode(2)
+
+  // Custom subclass of node
+  const instance3 = new CustomNode(new ConstantNode(2))
+
+  expectTypeOf(instance1).toMatchTypeOf<MathNode>()
+  expectTypeOf(instance1).toMatchTypeOf<MathNodeCommon>()
+
+  expectTypeOf(instance2).toMatchTypeOf<MathNode>()
+  expectTypeOf(instance2).toMatchTypeOf<MathNodeCommon>()
+  expectTypeOf(instance2).toMatchTypeOf<ConstantNode>()
+
+  expectTypeOf(instance3).toMatchTypeOf<MathNode>()
+  expectTypeOf(instance3).toMatchTypeOf<MathNodeCommon>()
+  expectTypeOf(instance3).toMatchTypeOf<CustomNode>()
 }
