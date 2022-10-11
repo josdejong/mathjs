@@ -1,6 +1,6 @@
 # History
 
-# not yet published, 11.3.0
+# 2022-10-11, 11.3.0
 
 - Allow creating new subclasses of `Node` in TypeScript. Thanks @mattvague.
 - Fix #2793: `flatten()` cloning entries of array/Matrix (#2799).
