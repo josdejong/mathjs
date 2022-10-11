@@ -1939,6 +1939,13 @@ declare namespace math {
     ): any
 
     /**
+     * Calculate the Moore–Penrose inverse of a matrix.
+     * @param x Matrix to be inversed
+     * @return The inverse of `x`.
+     */
+    pinv<T extends MathType>(x: T): T
+
+    /**
      * Create an array from a range. By default, the range end is excluded.
      * This can be customized by providing an extra parameter includeEnd.
      * @param str A string 'start:end' or 'start:step:end'
