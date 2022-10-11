@@ -6,6 +6,7 @@
 - Fix #2793: `flatten()` cloning entries of array/Matrix (#2799).
 - Fix #2627: TypeScript definitions of `pinv` missing (#2804). 
   Thanks @HanchaiN.
+- Update dependencies to `decimal.js@10.4.1`.
 
 
 # 2022-09-13, 11.2.1
