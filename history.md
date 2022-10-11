@@ -4,10 +4,18 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20221011-1130">2022-10-11, 11.3.0 <a href="#20221011-1130" title="Permalink">#</a></h1>
+
+- Allow creating new subclasses of `Node` in TypeScript. Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2793">#2793</a>: `flatten()` cloning entries of array/Matrix  <a href="https://github.com/josdejong/mathjs/issues/2799">#2799</a>).
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2627">#2627</a>: TypeScript definitions of `pinv` missing  <a href="https://github.com/josdejong/mathjs/issues/2804">#2804</a>). 
+  Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
+- Update dependencies to `decimal.js@10.4.1`.
+
+
 <h1 id="20220913-1121">2022-09-13, 11.2.1 <a href="#20220913-1121" title="Permalink">#</a></h1>
 
 - Fix doc generator being broken, not generating a function reference.
-
 
 <h1 id="20220912-1120">2022-09-12, 11.2.0 <a href="#20220912-1120" title="Permalink">#</a></h1>
 

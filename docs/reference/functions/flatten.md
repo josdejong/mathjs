@@ -6,8 +6,8 @@ layout: default
 
 <h1 id="function-flatten">Function flatten <a href="#function-flatten" title="Permalink">#</a></h1>
 
-Flatten a multi dimensional matrix into a single dimensional matrix.
-It is guaranteed to always return a clone of the argument.
+Flatten a multidimensional matrix into a single dimensional matrix.
+A new matrix is returned, the original matrix is left untouched.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>

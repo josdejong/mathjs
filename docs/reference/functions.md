@@ -138,7 +138,7 @@ Function | Description
 [math.expm(x)](functions/expm.html) | Compute the matrix exponential, expm(A) = e^A.
 [math.fft(arr)](functions/fft.html) | Calculate N-dimensional fourier transform.
 [math.filter(x,&nbsp;test)](functions/filter.html) | Filter the items in an array or one dimensional matrix.
-[math.flatten(x)](functions/flatten.html) | Flatten a multi dimensional matrix into a single dimensional matrix.
+[math.flatten(x)](functions/flatten.html) | Flatten a multidimensional matrix into a single dimensional matrix.
 [math.forEach(x,&nbsp;callback)](functions/forEach.html) | Iterate over all elements of a matrix/array, and executes the given callback function.
 [math.getMatrixDataType(x)](functions/getMatrixDataType.html) | Find the data type of all elements in a matrix or array, for example 'number' if all items are a number and 'Complex' if all values are complex numbers.
 [math.identity(n)](functions/identity.html) | Create a 2-dimensional identity matrix with size m x n or n x n.
