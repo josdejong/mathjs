@@ -138,11 +138,9 @@ describe('resolve', function () {
       'RangeNode') // Insert just before RangeNode in type order
 
     // IntervalNodes resolve to their midpoint:
-    const intervalResolver = node => new mymath.ConstantNode(node.midpoint())
     const resolveInterval = mymath.typed({
-      IntervalNode: intervalResolver,
-      'IntervalNode, Object|Map|null|undefined': intervalResolver,
-      'IntervalNode, Map|null|undefined, Set': intervalResolver
+      'IntervalNode, Map|null|undefined, Set':
+        (node, _scope, _within) => new mymath.ConstantNode(node.midpoint())
     })
     // Merge with standard resolve:
     mymath.import({ resolve: resolveInterval })

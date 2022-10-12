@@ -46,13 +46,13 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
    *     If there is a cyclic dependency among the variables in `scope`,
    *     resolution is impossible and a ReferenceError is thrown.
    */
-
-  // First we set up core implementations for different node types
-  // Note the 'within' argument that they all take is not documented, as it is
-  // used only for internal cycle detection
-  const resolvers = {
-    SymbolNode: typed.referToSelf(self =>
-      (symbol, scope, within = new Set()) => {
+  return typed('resolve', {
+    // First, the specific implementations that handle different Node types:
+    // (Note these take a "within" argument for cycle detection that is not
+    //  part of the documented operation, as it is used only for internal
+    //  cycle detection.)
+    'SymbolNode, Map | null | undefined, Set': typed.referToSelf(self =>
+      (symbol, scope, within) => {
         // The key case for resolve; most other nodes we just recurse.
         if (!scope) return symbol
         if (within.has(symbol.name)) {
@@ -78,16 +78,16 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
         return symbol
       }
     ),
-    OperatorNode: typed.referToSelf(self =>
-      (operator, scope, within = new Set()) => {
+    'OperatorNode, Map | null | undefined, Set': typed.referToSelf(self =>
+      (operator, scope, within) => {
         const args = operator.args.map(arg => self(arg, scope, within))
         // Has its own implementation because we don't recurse on the op also
         return new OperatorNode(
           operator.op, operator.fn, args, operator.implicit)
       }
     ),
-    FunctionNode: typed.referToSelf(self =>
-      (func, scope, within = new Set()) => {
+    'FunctionNode, Map | null | undefined, Set': typed.referToSelf(self =>
+      (func, scope, within) => {
         const args = func.args.map(arg => self(arg, scope, within))
         // The only reason this has a separate implementation of its own
         // is that we don't resolve the func.name itself. But is that
@@ -98,42 +98,34 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
         return new FunctionNode(func.name, args)
       }
     ),
-    Node: typed.referToSelf(self =>
-      (node, scope, within = new Set()) => {
+    'Node, Map | null | undefined, Set': typed.referToSelf(self =>
+      (node, scope, within) => {
         // The generic case: just recurse
         return node.map(child => self(child, scope, within))
       }
+    ),
+    // Second, generic forwarders to deal with optional arguments and different types:
+    Node: typed.referToSelf(
+      self => node => self(node, undefined, new Set())
+    ),
+    'Node, Map | null | undefined': typed.referToSelf(
+      self => (node, scope) => self(node, scope, new Set())
+    ),
+    'Node, Object': typed.referToSelf(
+      self => (node, objScope) => self(node, createMap(objScope), new Set())
+    ),
+    // And finally, the array/matrix handlers:
+    'Array | Matrix': typed.referToSelf(
+      self => A => A.map(n => self(n, undefined, new Set()))
+    ),
+    'Array | Matrix, Map | null | undefined': typed.referToSelf(
+      self => (A, scope) => A.map(n => self(n, scope, new Set()))
+    ),
+    'Array | Matrix, Object': typed.referToSelf(
+      self => (A, objScope) => A.map(n => self(n, createMap(objScope), new Set()))
+    ),
+    'Array | Matrix, Map | null | undefined, Set': typed.referToSelf(
+      self => (A, scope, within) => A.map(n => self(n, scope, within))
     )
-  }
-
-  // Now expand with all the possible argument types:
-  const nodeTypes = Object.keys(resolvers)
-  const scopeType = ', Map | null | undefined'
-  const objType = ', Object'
-  const withinType = ', Set'
-  for (const nodeType of nodeTypes) {
-    resolvers[nodeType + scopeType] = resolvers[nodeType]
-    resolvers[nodeType + scopeType + withinType] = resolvers[nodeType]
-    resolvers[nodeType + objType] = typed.referToSelf(self =>
-      (node, objScope) => self(node, createMap(objScope))
-    )
-    // Don't need to do nodeType + objType + withinType since we only get
-    // an obj instead of a Map scope in the outermost call, which has no
-    // "within" argument.
-  }
-
-  // Now add the array and matrix types:
-  Object.assign(resolvers, {
-    'Array | Matrix': typed.referToSelf(self => A => A.map(n => self(n))),
-    'Array | Matrix, null | undefined': typed.referToSelf(
-      self => A => A.map(n => self(n))),
-    'Array | Matrix, Map': typed.referToSelf(
-      self => (A, scope) => A.map(n => self(n, scope))),
-    'Array, Object': typed.referTo(
-      'Array,Map', selfAM => (A, scope) => selfAM(A, createMap(scope))),
-    'Matrix, Object': typed.referTo(
-      'Matrix,Map', selfMM => (A, scope) => selfMM(A, createMap(scope)))
   })
-
-  return typed('resolve', resolvers)
 })
