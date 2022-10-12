@@ -1,9 +1,12 @@
 # History
 
-# not yet published, 11.3.0
+# 2022-10-11, 11.3.0
 
-- Allow creating new subclasses of `Node` in TypeScript. @mattvague.
-- Fix flatten() cloning entries of array/Matrix (#2799).
+- Allow creating new subclasses of `Node` in TypeScript. Thanks @mattvague.
+- Fix #2793: `flatten()` cloning entries of array/Matrix (#2799).
+- Fix #2627: TypeScript definitions of `pinv` missing (#2804). 
+  Thanks @HanchaiN.
+- Update dependencies to `decimal.js@10.4.1`.
 
 
 # 2022-09-13, 11.2.1
