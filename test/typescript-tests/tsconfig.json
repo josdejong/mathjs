@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "target": "ES6",
     "paths": {
-      "mathjs": ["./index.d.ts"]
+      "mathjs": ["../../types/index.d.ts"]
     },
     "moduleResolution": "node",
     "typeRoots": [],
@@ -18,6 +18,6 @@
     "forceConsistentCasingInFileNames": true
   },
   "files": [
-    "./index.ts"
-  ],
+    "./testTypes.ts"
+  ]
 }

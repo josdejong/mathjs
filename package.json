@@ -162,7 +162,7 @@
     "test:all": "npm run test:src && npm run test:generated && npm run test:node && npm run test:types",
     "test:browser": "karma start test/browser-test-config/local-karma.js",
     "test:browserstack": "karma start test/browser-test-config/browserstack-karma.js",
-    "test:types": "cd types && tsc -p ./tsconfig.json && node --loader ts-node/esm ./index.ts",
+    "test:types": "tsc -p ./test/typescript-tests/tsconfig.json && node --loader ts-node/esm ./test/typescript-tests/testTypes.ts",
     "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test/unit-tests && echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
     "prepublishOnly": "npm run test:all && npm run lint",
     "update-authors": "node ./tools/update-authors.js"
