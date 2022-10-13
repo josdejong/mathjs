@@ -2,7 +2,10 @@
 
 # 2022-10-11, 11.3.0
 
-- Allow creating new subclasses of `Node` in TypeScript. Thanks @mattvague.
+- Allow creating new subclasses of `Node` in TypeScript (#2772). 
+  Note that this disables being able to narrow MathNodes by using the `.type`
+  property. Use typeguards like `isOperatorNode(...)` instead (see #2810).
+  Thanks @mattvague.
 - Fix #2793: `flatten()` cloning entries of array/Matrix (#2799).
 - Fix #2627: TypeScript definitions of `pinv` missing (#2804). 
   Thanks @HanchaiN.
