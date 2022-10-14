@@ -1318,9 +1318,7 @@ Units examples
 
   assert.strictEqual(math.evaluate('nonExistingSymbol'), null)
 
-  math.FunctionNode.onUndefinedFunction = (name: string) => {
-    console.error(`Function ${name} was not found.`)
-  }
+  math.FunctionNode.onUndefinedFunction = () => () => 42
 }
 
 /*
