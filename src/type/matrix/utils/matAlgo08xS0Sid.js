@@ -1,18 +1,17 @@
 import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
-import { scatter } from '../../../utils/collection.js'
 
-const name = 'algorithm06'
+const name = 'matAlgo08xS0Sid'
 const dependencies = ['typed', 'equalScalar']
 
-export const createAlgorithm06 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
+export const createMatAlgo08xS0Sid = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
    * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij).
-   * Callback function invoked (Anz U Bnz) times, where Anz and Bnz are the nonzero elements in both matrices.
+   * Callback function invoked MAX(NNZA, NNZB) times
    *
    *
    *          ┌  f(Aij, Bij)  ; A(i,j) !== 0 && B(i,j) !== 0
-   * C(i,j) = ┤
+   * C(i,j) = ┤  A(i,j)       ; A(i,j) !== 0 && B(i,j) === 0
    *          └  0            ; otherwise
    *
    *
@@ -24,13 +23,17 @@ export const createAlgorithm06 = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
    */
-  return function algorithm06 (a, b, callback) {
+  return function matAlgo08xS0Sid (a, b, callback) {
     // sparse matrix arrays
     const avalues = a._values
+    const aindex = a._index
+    const aptr = a._ptr
     const asize = a._size
     const adt = a._datatype
     // sparse matrix arrays
     const bvalues = b._values
+    const bindex = b._index
+    const bptr = b._ptr
     const bsize = b._size
     const bdt = b._datatype
 
@@ -39,6 +42,9 @@ export const createAlgorithm06 = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     // check rows & columns
     if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) { throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')') }
+
+    // sparse matrix cannot be a Pattern matrix
+    if (!avalues || !bvalues) { throw new Error('Cannot perform operation on Pattern Sparse Matrices') }
 
     // rows & columns
     const rows = asize[0]
@@ -66,16 +72,17 @@ export const createAlgorithm06 = /* #__PURE__ */ factory(name, dependencies, ({ 
     }
 
     // result arrays
-    const cvalues = avalues && bvalues ? [] : undefined
+    const cvalues = []
     const cindex = []
     const cptr = []
 
-    // workspaces
-    const x = cvalues ? [] : undefined
+    // workspace
+    const x = []
     // marks indicating we have a value in x for a given column
     const w = []
-    // marks indicating value in a given row has been updated
-    const u = []
+
+    // vars
+    let k, k0, k1, i
 
     // loop columns
     for (let j = 0; j < columns; j++) {
@@ -83,52 +90,44 @@ export const createAlgorithm06 = /* #__PURE__ */ factory(name, dependencies, ({ 
       cptr[j] = cindex.length
       // columns mark
       const mark = j + 1
-      // scatter the values of A(:,j) into workspace
-      scatter(a, j, w, x, u, mark, cindex, cf)
-      // scatter the values of B(:,j) into workspace
-      scatter(b, j, w, x, u, mark, cindex, cf)
-      // check we need to process values (non pattern matrix)
-      if (x) {
-        // initialize first index in j
-        let k = cptr[j]
-        // loop index in j
-        while (k < cindex.length) {
-          // row
-          const i = cindex[k]
-          // check function was invoked on current row (Aij !=0 && Bij != 0)
-          if (u[i] === mark) {
-            // value @ i
-            const v = x[i]
-            // check for zero value
-            if (!eq(v, zero)) {
-              // push value
-              cvalues.push(v)
-              // increment pointer
-              k++
-            } else {
-              // remove value @ i, do not increment pointer
-              cindex.splice(k, 1)
-            }
-          } else {
-            // remove value @ i, do not increment pointer
-            cindex.splice(k, 1)
-          }
+      // loop values in a
+      for (k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+        // row
+        i = aindex[k]
+        // mark workspace
+        w[i] = mark
+        // set value
+        x[i] = avalues[k]
+        // add index
+        cindex.push(i)
+      }
+      // loop values in b
+      for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+        // row
+        i = bindex[k]
+        // check value exists in workspace
+        if (w[i] === mark) {
+          // evaluate callback
+          x[i] = cf(x[i], bvalues[k])
         }
-      } else {
-        // initialize first index in j
-        let p = cptr[j]
-        // loop index in j
-        while (p < cindex.length) {
-          // row
-          const r = cindex[p]
-          // check function was invoked on current row (Aij !=0 && Bij != 0)
-          if (u[r] !== mark) {
-            // remove value @ i, do not increment pointer
-            cindex.splice(p, 1)
-          } else {
-            // increment pointer
-            p++
-          }
+      }
+      // initialize first index in j
+      k = cptr[j]
+      // loop index in j
+      while (k < cindex.length) {
+        // row
+        i = cindex[k]
+        // value @ i
+        const v = x[i]
+        // check for zero value
+        if (!eq(v, zero)) {
+          // push value
+          cvalues.push(v)
+          // increment pointer
+          k++
+        } else {
+          // remove value @ i, do not increment pointer
+          cindex.splice(k, 1)
         }
       }
     }

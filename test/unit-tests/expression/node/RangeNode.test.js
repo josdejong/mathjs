@@ -29,7 +29,7 @@ describe('RangeNode', function () {
   it('should throw an error when calling without new operator', function () {
     const start = new ConstantNode(0)
     const end = new ConstantNode(10)
-    assert.throws(function () { RangeNode([start, end]) }, SyntaxError)
+    assert.throws(function () { RangeNode([start, end]) }, TypeError)
   })
 
   it('should throw an error creating a RangeNode with wrong number or type of arguments', function () {

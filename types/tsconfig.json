@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "target": "ES6",
     "paths": {
       "mathjs": ["./index.d.ts"]
     },
@@ -15,5 +16,8 @@
     "strictNullChecks": false,
     "strictFunctionTypes": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "files": [
+    "./index.ts"
+  ],
 }

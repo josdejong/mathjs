@@ -50,9 +50,7 @@ export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return sign(x) * (1 - erfc3(y))
     },
 
-    'Array | Matrix': function (n) {
-      return deepMap(n, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => n => deepMap(n, self))
 
     // TODO: For complex numbers, use the approximation for the Faddeeva function
     //  from "More Efficient Computation of the Complex Error Function" (AMS)

@@ -1,35 +1,50 @@
 import {
-  create,
-  factory,
-  all,
-  MathJsFunctionName,
-  fractionDependencies,
+  AccessorNode,
   addDependencies,
-  divideDependencies,
-  formatDependencies,
-  MathNode,
-  MathJsChain,
+  all,
+  ArrayNode,
+  AssignmentNode,
   BigNumber,
-  MathCollection,
+  BlockNode,
   Complex,
-  Unit,
-  Fraction,
-  MathArray,
-  Index,
-  Matrix,
-  EvalFunction,
-  LUDecomposition,
-  QRDecomposition,
-  SLUDecomposition,
-  MathType,
-  MathNumericType,
+  ConditionalNode,
   ConstantNode,
+  create,
+  divideDependencies,
+  EvalFunction,
+  factory,
+  formatDependencies,
+  Fraction,
+  fractionDependencies,
+  FunctionAssignmentNode,
+  FunctionNode,
+  Help,
+  Index,
+  IndexNode,
+  LUDecomposition,
+  MathArray,
+  MathCollection,
+  MathJsChain,
+  MathJsFunctionName,
+  MathNode,
+  MathNumericType,
+  MathType,
+  Matrix,
+  ObjectNode,
   OperatorNode,
   OperatorNodeFn,
   OperatorNodeOp,
-  SymbolNode,
   ParenthesisNode,
+  PolarCoordinates,
+  QRDecomposition,
+  RangeNode,
   SimplifyRule,
+  SLUDecomposition,
+  SymbolNode,
+  MathNodeCommon,
+  Unit,
+  Node,
+  isSymbolNode,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -89,6 +104,22 @@ Basic usage examples
 
   math.variance(math.variance(m2by3, 'uncorrected'))
 
+  // count and sum check
+  math.count([10, 10, 10])
+  math.count([
+    [1, 2, 3],
+    [4, 5, 6],
+  ])
+  math.count('mathjs')
+
+  math.sum(1, 2, 3, 4)
+  math.sum([1, 2, 3, 4])
+  math.sum([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+  ])
+
   // expressions
   math.evaluate('1.2 * (2 + 4.5)')
 
@@ -109,8 +140,8 @@ Basic usage examples
   ) // Matrix + Array
 
   // narrowed type inference
-  const _b: math.Matrix = math.add(math.matrix([2]), math.matrix([3]))
-  const _c: math.Matrix = math.subtract(math.matrix([4]), math.matrix([5]))
+  const _b: Matrix = math.add(math.matrix([2]), math.matrix([3]))
+  const _c: Matrix = math.subtract(math.matrix([4]), math.matrix([5]))
 }
 
 /*
@@ -133,6 +164,23 @@ Bignumbers examples
       math.bignumber(1.5)
     )
   }
+}
+
+/*
+  Arithmetic function examples
+*/
+{
+  const math = create(all, {})
+
+  const _e: number = math.exp(1)
+  const _bige: BigNumber = math.exp(math.bignumber(1))
+  const _compe: Complex = math.exp(math.complex(1, 0))
+  // TODO: Typescript type declarations are not understanding typed-function's
+  // automatic conversions, so the following do not work:
+
+  // const _compeagain: Complex = math.exp(math.fraction(1, 1))
+  // const _eagain: number = math.exp('1')
+  // const _eanother: number = math.exp(true)
 }
 
 /*
@@ -525,21 +573,23 @@ Chaining examples
   expectTypeOf(math.chain(math.complex(1, 2)).cbrt()).toMatchTypeOf<
     MathJsChain<Complex>
   >()
-  expectTypeOf(math.chain([1, 2]).cbrt()).toMatchTypeOf<
-    MathJsChain<MathArray>
-  >()
-  expectTypeOf(
-    math
-      .chain(
-        math.matrix([
-          [1, 2],
-          [3, 4],
-        ])
-      )
-      .cbrt()
-  ).toMatchTypeOf<MathJsChain<Matrix>>()
+  // @ts-expect-error ... verify cbrt does not run on arrays.
+  assert.throws(() => math.chain([1, 2]).cbrt(), TypeError)
+  assert.throws(
+    () =>
+      // @ts-expect-error ... verify cbrt does not run on matrices.
+      math
+        .chain(
+          math.matrix([
+            [1, 2],
+            [3, 4],
+          ])
+        )
+        .cbrt(),
+    TypeError
+  )
 
-  // cbrt
+  // ceil
   expectTypeOf(math.chain(1).ceil()).toMatchTypeOf<
     MathJsChain<MathNumericType>
   >()
@@ -582,19 +632,23 @@ Chaining examples
   expectTypeOf(math.chain(math.complex(1, 2)).cube()).toMatchTypeOf<
     MathJsChain<Complex>
   >()
-  expectTypeOf(math.chain([1, 2]).cube()).toMatchTypeOf<
-    MathJsChain<MathArray>
-  >()
-  expectTypeOf(
-    math
-      .chain(
-        math.matrix([
-          [1, 2],
-          [3, 4],
-        ])
-      )
-      .cube()
-  ).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // @ts-expect-error ... verify cube does not run on arrays.
+  assert.throws(() => math.chain([1, 2]).cube(), TypeError)
+  assert.throws(
+    () =>
+      // @ts-expect-error ... verify cube does not run on matrices.
+      math
+        .chain(
+          math.matrix([
+            [1, 2],
+            [3, 4],
+          ])
+        )
+        .cube(),
+    TypeError
+  )
+
   expectTypeOf(math.chain(math.unit('furlong')).cube()).toMatchTypeOf<
     MathJsChain<Unit>
   >()
@@ -656,33 +710,40 @@ Chaining examples
 
   // exp
   expectTypeOf(math.chain(1).exp()).toMatchTypeOf<MathJsChain<MathType>>()
-  expectTypeOf(math.chain([1, 2]).exp()).toMatchTypeOf<MathJsChain<MathArray>>()
-  expectTypeOf(
-    math
-      .chain(
-        math.matrix([
-          [1, 2],
-          [3, 4],
-        ])
-      )
-      .exp()
-  ).toMatchTypeOf<MathJsChain<Matrix>>()
+  // @ts-expect-error ... verify exp does not run on arrays.
+  assert.throws(() => math.chain([1, 2]).exp(), TypeError)
+  assert.throws(
+    () =>
+      // @ts-expect-error ... verify exp does not run on matrices.
+      math
+        .chain(
+          math.matrix([
+            [1, 2],
+            [3, 4],
+          ])
+        )
+        .exp(),
+    TypeError
+  )
 
   // expm1
   expectTypeOf(math.chain(1).expm1()).toMatchTypeOf<MathJsChain<MathType>>()
-  expectTypeOf(math.chain([1, 2]).expm1()).toMatchTypeOf<
-    MathJsChain<MathArray>
-  >()
-  expectTypeOf(
-    math
-      .chain(
-        math.matrix([
-          [1, 2],
-          [3, 4],
-        ])
-      )
-      .expm1()
-  ).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // @ts-expect-error ... verify expm1 does not run on arrays
+  assert.throws(() => math.chain([1, 2]).expm1(), TypeError)
+  assert.throws(
+    () =>
+      // @ts-expect-error ... verify expm1 does not run on arrays
+      math
+        .chain(
+          math.matrix([
+            [1, 2],
+            [3, 4],
+          ])
+        )
+        .expm1(),
+    TypeError
+  )
 
   // gcd
   expectTypeOf(math.chain([1, 2]).gcd(3)).toMatchTypeOf<MathJsChain<number>>()
@@ -766,6 +827,11 @@ Chaining examples
       .log10()
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
+  expectTypeOf(math.chain([1, 2]).count()).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(math.chain('mathjs').count()).toMatchTypeOf<
+    MathJsChain<number>
+  >()
+  expectTypeOf(math.chain([1, 2]).sum()).toMatchTypeOf<MathJsChain<number>>()
   // TODO complete the rest of these...
 }
 
@@ -776,14 +842,17 @@ Simplify examples
   const math = create(all)
 
   math.simplify('2 * 1 * x ^ (2 - 1)')
+  math.simplifyConstant('2 * 1 * x ^ (2 - 1)')
+  math.simplifyCore('2 * 1 * x ^ (2 - 1)')
   math.simplify('2 * 3 * x', { x: 4 })
 
-  expectTypeOf(math.simplify.rules).toMatchTypeOf<Array<SimplifyRule>>
+  expectTypeOf(math.simplify.rules).toMatchTypeOf<Array<SimplifyRule>>()
 
   const f = math.parse('2 * 1 * x ^ (2 - 1)')
   math.simplify(f)
 
   math.simplify('0.4 * x', {}, { exactFractions: true })
+  math.simplifyConstant('0.4 * x', { exactFractions: true })
   math.simplify('0.4 * x', {}, { exactFractions: false })
   math.simplify('0.4 * x', {}, { fractionsLimit: 2 })
   math.simplify('0.4 * x', {}, { consoleDebug: false })
@@ -849,6 +918,13 @@ Simplify examples
     },
     (node: MathNode) => node,
   ])
+  math.simplifyCore('0.4 * x + 0', { exactFractions: false })
+
+  math
+    .chain('0.4 * x + 0')
+    .parse()
+    .simplifyCore({ exactFractions: false })
+    .simplifyConstant()
 }
 
 /*
@@ -883,13 +959,18 @@ Complex numbers examples
 
   // create a complex number from polar coordinates
   {
-    const p: math.PolarCoordinates = { r: math.sqrt(2), phi: math.pi / 4 }
-    const _c: math.Complex = math.complex(p)
+    const p: PolarCoordinates = {
+      r: math.sqrt(2) as number, // must be real but a sqrt could be Complex
+      phi: math.pi / 4,
+    }
+    const c: Complex = math.complex(p)
+    assert.strictEqual(c.im, 1)
+    assert.ok(Math.abs(c.re - 1) < 1e-12)
   }
 
   // get polar coordinates of a complex number
   {
-    const _p: math.PolarCoordinates = math.complex(3, 4).toPolar()
+    const _p: PolarCoordinates = math.complex(3, 4).toPolar()
   }
 }
 
@@ -925,7 +1006,6 @@ Expressions examples
     if (node.type !== 'ParenthesisNode') {
       throw Error(`expected ParenthesisNode, got ${node.type}`)
     }
-    const _innerNode = node.content
   }
 
   // scope can contain both variables and functions
@@ -948,7 +1028,7 @@ Expressions examples
 
   {
     const node2 = math.parse('x^a')
-    const _code2: math.EvalFunction = node2.compile()
+    const _code2: EvalFunction = node2.compile()
     node2.toString()
   }
 
@@ -1051,18 +1131,23 @@ Matrices examples
 
   // create matrices and arrays. a matrix is just a wrapper around an Array,
   // providing some handy utilities.
-  const a: math.Matrix = math.matrix([1, 4, 9, 16, 25])
-  const b: math.Matrix = math.matrix(math.ones([2, 3]))
+  const a: Matrix = math.matrix([1, 4, 9, 16, 25])
+  const b: Matrix = math.matrix(math.ones([2, 3]))
   b.size()
+
+  // @ts-expect-error ... ones() in a chain cannot take more dimensions
+  assert.throws(() => math.chain(3).ones(2, 'dense').done(), /Error:.*ones/)
+  // @ts-expect-error ... and neither can zeros()
+  assert.throws(() => math.chain(3).zeros(2, 'sparse').done(), /Error:.*zeros/)
 
   // the Array data of a Matrix can be retrieved using valueOf()
   const _array = a.valueOf()
 
   // Matrices can be cloned
-  const _clone: math.Matrix = a.clone()
+  const _clone: Matrix = a.clone()
 
   // perform operations with matrices
-  math.sqrt(a)
+  math.map(a, math.sqrt)
   math.factorial(a)
 
   // create and manipulate matrices. Arrays and Matrices can be used mixed.
@@ -1071,22 +1156,22 @@ Matrices examples
       [1, 2],
       [3, 4],
     ]
-    const b: math.Matrix = math.matrix([
+    const b: Matrix = math.matrix([
       [5, 6],
       [1, 1],
     ])
 
     b.subset(math.index(1, [0, 1]), [[7, 8]])
     const _c = math.multiply(a, b)
-    const f: math.Matrix = math.matrix([1, 0])
-    const _d: math.Matrix = f.subset(math.index(1))
+    const f: Matrix = math.matrix([1, 0])
+    const _d: Matrix = f.subset(math.index(1))
   }
 
   // get a sub matrix
   {
-    const a: math.Matrix = math.diag(math.range(1, 4))
+    const a: Matrix = math.diag(math.range(1, 4))
     a.subset(math.index([1, 2], [1, 2]))
-    const b: math.Matrix = math.range(1, 6)
+    const b: Matrix = math.range(1, 6)
     b.subset(math.index(math.range(1, 4)))
   }
 
@@ -1132,7 +1217,7 @@ Matrices examples
       [6, 4, 3]
     )
     assert.deepStrictEqual(
-      math.filter(['23', 'foo', '100', '55', 'bar'], /[0-9]+/),
+      math.filter(['23', 'foo', '100', '55', 'bar'], /\d+/),
       ['23', '100', '55']
     )
   }
@@ -1208,6 +1293,100 @@ Matrices examples
       )
     )
   }
+
+  // Moore–Penrose inverse
+  {
+    assert.ok(
+      math.deepEqual(
+        math.pinv([
+          [1, 2],
+          [3, 4],
+        ]),
+        [
+          [-2, 1],
+          [1.5, -0.5],
+        ]
+      )
+    )
+    assert.ok(
+      math.deepEqual(
+        math.pinv(
+          math.matrix([
+            [1, 2],
+            [3, 4],
+          ])
+        ),
+        math.matrix([
+          [-2, 1],
+          [1.5, -0.5],
+        ])
+      )
+    )
+    assert.ok(math.deepEqual(math.pinv(4), 0.25))
+  }
+}
+
+/*
+Math types examples: Type results after multiplying  'MathTypes' with matrices
+ */
+{
+  const math = create(all, {})
+
+  const abc: MathArray = [1, 2, 3, 4]
+  const bcd: MathArray = [
+    [1, 2, 3, 4],
+    [2, 3, 4, 5],
+    [4, 5, 6, 7],
+    [5, 6, 7, 8],
+  ]
+
+  const Mbcd = math.matrix(bcd)
+  const Mabc = math.matrix(abc)
+
+  // Number
+  const _r1 = math.multiply(1, 2)
+
+  // Unit
+  const a = math.unit(45, 'cm') // 450 mm
+  const b = math.unit(45, 'cm') // 450 mm
+  const _r2 = math.multiply(a, b)
+
+  // 1D JS Array
+  const r3 = math.multiply(abc, bcd)
+  const _r31 = r3[1] // By default least promised valid syntax
+
+  // 2D JS Array
+  const r12 = math.multiply(bcd, bcd)
+  // Example to sort ambiguity between multidimensional & singledimensional arrays
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const multiDimensional = (x: any): x is any[][] => x.length && x[0].length
+  if (multiDimensional(r12)) {
+    const _r1211 = r12[1][1]
+  }
+  const _r121 = r12[1] // Valid syntax
+
+  // Matrix: matrix * vector
+  const r7 = math.multiply(Mabc, bcd)
+  r7.toArray() // Matrix-es have toArray function
+
+  // Matrix
+  const _r8 = math.multiply(Mabc, 4)
+
+  // Matrix
+  const _r11 = math.multiply(4, Mabc)
+
+  // Matrix of units
+  const _r9 = math.multiply(Mabc, a)
+  const _r10 = math.multiply(a, Mabc)
+
+  // Matrix
+  const _r6 = math.multiply(abc, Mbcd)
+
+  // 2D JS Array
+  const _r5 = math.multiply(bcd, abc)
+
+  // Number
+  const _r4 = math.multiply(abc, math.transpose(abc))
 }
 
 /*
@@ -1285,6 +1464,7 @@ Units examples
   // use Unit as definition
   math.createUnit('c', { definition: b })
   math.createUnit('c', { definition: b }, { override: true })
+  math.createUnit('customUnit', math.unit(0.5, 'm'))
 
   // units can be added, subtracted, and multiplied or divided by numbers and by other units
   math.add(a, b)
@@ -1328,29 +1508,27 @@ Expression tree examples
   const math = create(all, {})
 
   // Filter an expression tree
-  const node: math.MathNode = math.parse('x^2 + x/4 + 3*y')
-  const filtered: math.MathNode[] = node.filter(
-    (node: math.MathNode) => node.type === 'SymbolNode' && node.name === 'x'
+  const node = math.parse('x^2 + x/4 + 3*y')
+  const filtered = node.filter(
+    (node) => isSymbolNode(node) && node.name === 'x'
   )
 
-  const _arr: string[] = filtered.map((node: math.MathNode) => node.toString())
+  const _arr: string[] = filtered.map((node: MathNode) => node.toString())
 
   // Traverse an expression tree
-  const node1: math.MathNode = math.parse('3 * x + 2')
-  node1.traverse(
-    (node: math.MathNode, _path: string, _parent: math.MathNode) => {
-      switch (node.type) {
-        case 'OperatorNode':
-          return node.type === 'OperatorNode'
-        case 'ConstantNode':
-          return node.type === 'ConstantNode'
-        case 'SymbolNode':
-          return node.type === 'SymbolNode'
-        default:
-          return
-      }
+  const node1: MathNode = math.parse('3 * x + 2')
+  node1.traverse((node: MathNode, _path: string, _parent: MathNode) => {
+    switch (node.type) {
+      case 'OperatorNode':
+        return node.type === 'OperatorNode'
+      case 'ConstantNode':
+        return node.type === 'ConstantNode'
+      case 'SymbolNode':
+        return node.type === 'SymbolNode'
+      default:
+        return
     }
-  )
+  })
 }
 
 /*
@@ -1413,9 +1591,9 @@ Function ceil examples
   )
 
   // numeric input, array or matrix of decimals
-  const numCeiled: math.MathArray = math.ceil(math.tau, [2, 3])
+  const numCeiled: MathArray = math.ceil(math.tau, [2, 3])
   assert.deepStrictEqual(numCeiled, [6.29, 6.284])
-  const bigCeiled: math.Matrix = math.ceil(
+  const bigCeiled: Matrix = math.ceil(
     math.bignumber(6.28318),
     math.matrix([2, 3])
   )
@@ -1489,9 +1667,9 @@ Function fix examples
   )
 
   // numeric input, array or matrix of decimals
-  const numFixed: math.MathArray = math.fix(math.tau, [2, 3])
+  const numFixed: MathArray = math.fix(math.tau, [2, 3])
   assert.deepStrictEqual(numFixed, [6.28, 6.283])
-  const bigFixed: math.Matrix = math.fix(
+  const bigFixed: Matrix = math.fix(
     math.bignumber(6.28318),
     math.matrix([2, 3])
   )
@@ -1565,9 +1743,9 @@ Function floor examples
   )
 
   // numeric input, array or matrix of decimals
-  const numFloored: math.MathArray = math.floor(math.tau, [2, 3])
+  const numFloored: MathArray = math.floor(math.tau, [2, 3])
   assert.deepStrictEqual(numFloored, [6.28, 6.283])
-  const bigFloored: math.Matrix = math.floor(
+  const bigFloored: Matrix = math.floor(
     math.bignumber(6.28318),
     math.matrix([2, 3])
   )
@@ -1641,9 +1819,9 @@ Function round examples
   )
 
   // numeric input, array or matrix of decimals
-  const numRounded: math.MathArray = math.round(math.tau, [2, 3])
+  const numRounded: MathArray = math.round(math.tau, [2, 3])
   assert.deepStrictEqual(numRounded, [6.28, 6.283])
-  const bigRounded: math.Matrix = math.round(
+  const bigRounded: Matrix = math.round(
     math.bignumber(6.28318),
     math.matrix([2, 3])
   )
@@ -1943,6 +2121,7 @@ Factory Test
     math.isOperatorNode,
     math.isParenthesisNode,
     math.isRangeNode,
+    math.isRelationalNode,
     math.isSymbolNode,
     math.isChain,
   ]
@@ -1955,22 +2134,22 @@ Factory Test
 
   // Check guards do type refinement
 
-  let x: unknown
+  const x: unknown = undefined
 
   if (math.isNumber(x)) {
     expectTypeOf(x).toMatchTypeOf<number>()
   }
   if (math.isBigNumber(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.BigNumber>()
+    expectTypeOf(x).toMatchTypeOf<BigNumber>()
   }
   if (math.isComplex(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.Complex>()
+    expectTypeOf(x).toMatchTypeOf<Complex>()
   }
   if (math.isFraction(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.Fraction>()
+    expectTypeOf(x).toMatchTypeOf<Fraction>()
   }
   if (math.isUnit(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.Unit>()
+    expectTypeOf(x).toMatchTypeOf<Unit>()
   }
   if (math.isString(x)) {
     expectTypeOf(x).toMatchTypeOf<string>()
@@ -1979,22 +2158,22 @@ Factory Test
     expectTypeOf(x).toMatchTypeOf<unknown[]>()
   }
   if (math.isMatrix(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.Matrix>()
+    expectTypeOf(x).toMatchTypeOf<Matrix>()
   }
   if (math.isDenseMatrix(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.Matrix>()
+    expectTypeOf(x).toMatchTypeOf<Matrix>()
   }
   if (math.isSparseMatrix(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.Matrix>()
+    expectTypeOf(x).toMatchTypeOf<Matrix>()
   }
   if (math.isIndex(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.Index>()
+    expectTypeOf(x).toMatchTypeOf<Index>()
   }
   if (math.isBoolean(x)) {
     expectTypeOf(x).toMatchTypeOf<boolean>()
   }
   if (math.isHelp(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.Help>()
+    expectTypeOf(x).toMatchTypeOf<Help>()
   }
   if (math.isDate(x)) {
     expectTypeOf(x).toMatchTypeOf<Date>()
@@ -2010,40 +2189,40 @@ Factory Test
   }
 
   if (math.isAccessorNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.AccessorNode>()
+    expectTypeOf(x).toMatchTypeOf<AccessorNode>()
   }
   if (math.isArrayNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.ArrayNode>()
+    expectTypeOf(x).toMatchTypeOf<ArrayNode>()
   }
   if (math.isAssignmentNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.AssignmentNode>()
+    expectTypeOf(x).toMatchTypeOf<AssignmentNode>()
   }
   if (math.isBlockNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.BlockNode>()
+    expectTypeOf(x).toMatchTypeOf<BlockNode>()
   }
   if (math.isConditionalNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.ConditionalNode>()
+    expectTypeOf(x).toMatchTypeOf<ConditionalNode>()
   }
   if (math.isConstantNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.ConstantNode>()
+    expectTypeOf(x).toMatchTypeOf<ConstantNode>()
   }
   if (math.isFunctionAssignmentNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.FunctionAssignmentNode>()
+    expectTypeOf(x).toMatchTypeOf<FunctionAssignmentNode>()
   }
   if (math.isFunctionNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.FunctionNode>()
+    expectTypeOf(x).toMatchTypeOf<FunctionNode>()
   }
   if (math.isIndexNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.IndexNode>()
+    expectTypeOf(x).toMatchTypeOf<IndexNode>()
   }
   if (math.isNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.MathNodeCommon>()
+    expectTypeOf(x).toMatchTypeOf<MathNode>()
   }
   if (math.isNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.MathNodeCommon>()
+    expectTypeOf(x).toMatchTypeOf<MathNode>()
   }
   if (math.isObjectNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.ObjectNode>()
+    expectTypeOf(x).toMatchTypeOf<ObjectNode>()
   }
   if (math.isOperatorNode(x)) {
     expectTypeOf(x).toMatchTypeOf<
@@ -2051,17 +2230,20 @@ Factory Test
     >()
   }
   if (math.isParenthesisNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.ParenthesisNode>()
+    expectTypeOf(x).toMatchTypeOf<ParenthesisNode>()
   }
   if (math.isRangeNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.RangeNode>()
+    expectTypeOf(x).toMatchTypeOf<RangeNode>()
+  }
+  if (math.isRelationalNode(x)) {
+    expectTypeOf(x).toMatchTypeOf<math.RelationalNode>()
   }
   if (math.isSymbolNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<math.SymbolNode>()
+    expectTypeOf(x).toMatchTypeOf<SymbolNode>()
   }
   if (math.isChain(x)) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expectTypeOf(x).toMatchTypeOf<math.MathJsChain<any>>()
+    expectTypeOf(x).toMatchTypeOf<MathJsChain<any>>()
   }
 }
 
@@ -2072,9 +2254,7 @@ Probability function examples
   const math = create(all, {})
 
   expectTypeOf(math.lgamma(1.5)).toMatchTypeOf<number>()
-  expectTypeOf(
-    math.lgamma(math.complex(1.5, -1.5))
-  ).toMatchTypeOf<math.Complex>()
+  expectTypeOf(math.lgamma(math.complex(1.5, -1.5))).toMatchTypeOf<Complex>()
 }
 
 /*
@@ -2100,11 +2280,64 @@ Resolve examples
 {
   const math = create(all, {})
 
+  expectTypeOf(math.resolve('x + y')).toMatchTypeOf<MathNode>()
   expectTypeOf(math.resolve(math.parse('x + y'))).toMatchTypeOf<MathNode>()
   expectTypeOf(
     math.resolve(math.parse('x + y'), { x: 0 })
   ).toMatchTypeOf<MathNode>()
-  expectTypeOf(math.resolve([math.parse('x + y')], { x: 0 })).toMatchTypeOf<
-    MathNode[]
+  expectTypeOf(math.resolve('x + y', { x: 0 })).toMatchTypeOf<MathNode>()
+  expectTypeOf(
+    math.resolve([math.parse('x + y'), 'x*x'], { x: 0 })
+  ).toMatchTypeOf<MathNode[]>()
+  expectTypeOf(math.resolve(math.matrix(['x', 'y']))).toMatchTypeOf<Matrix>()
+}
+
+/*
+Random examples
+*/
+{
+  const math = create(all, {})
+  expectTypeOf(math.pickRandom([1, 2, 3])).toMatchTypeOf<number>()
+  expectTypeOf(math.pickRandom(['a', { b: 10 }, 42])).toMatchTypeOf<
+    string | number | { b: number }
   >()
+  expectTypeOf(math.pickRandom([1, 2, 3])).toMatchTypeOf<number>()
+  expectTypeOf(math.pickRandom([1, 2, 3], 2)).toMatchTypeOf<number[]>()
+
+  expectTypeOf(math.chain([1, 2, 3]).pickRandom(2)).toMatchTypeOf<
+    MathJsChain<number[]>
+  >()
+}
+
+/*
+MathNode examples
+*/
+{
+  class CustomNode extends Node {
+    a: MathNode
+    constructor(a: MathNode) {
+      super()
+      this.a = a
+    }
+  }
+
+  // Basic node
+  const instance1 = new Node()
+
+  // Built-in subclass of Node
+  const instance2 = new ConstantNode(2)
+
+  // Custom subclass of node
+  const instance3 = new CustomNode(new ConstantNode(2))
+
+  expectTypeOf(instance1).toMatchTypeOf<MathNode>()
+  expectTypeOf(instance1).toMatchTypeOf<MathNodeCommon>()
+
+  expectTypeOf(instance2).toMatchTypeOf<MathNode>()
+  expectTypeOf(instance2).toMatchTypeOf<MathNodeCommon>()
+  expectTypeOf(instance2).toMatchTypeOf<ConstantNode>()
+
+  expectTypeOf(instance3).toMatchTypeOf<MathNode>()
+  expectTypeOf(instance3).toMatchTypeOf<MathNodeCommon>()
+  expectTypeOf(instance3).toMatchTypeOf<CustomNode>()
 }

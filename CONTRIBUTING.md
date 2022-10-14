@@ -4,10 +4,7 @@ Contributions to the math.js library are very welcome! We can't do this alone. Y
 
 ### What can I do?
 
-Search through the [issues](https://github.com/josdejong/mathjs/issues) looking
-  for something that looks interesting to you to pick up. Some issues are marked
-  ["help wanted"](https://github.com/josdejong/mathjs/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22),
-  these are typically issues which should be relatively easy to pick up.
+Search through the [issues](https://github.com/josdejong/mathjs/issues) looking for bugs that you can help fix, or look at [discussions/ideas](https://github.com/josdejong/mathjs/discussions/categories/ideas) to see if there is an idea for a new feature that that looks interesting to pick up.
 
 ### There are a few preferences regarding code contributions:
 

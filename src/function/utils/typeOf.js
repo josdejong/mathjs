@@ -6,46 +6,7 @@ const dependencies = ['typed']
 
 export const createTypeOf = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
-   * Determine the type of a variable.
-   *
-   * Function `typeOf` recognizes the following types of objects:
-   *
-   * Object                 | Returns       | Example
-   * ---------------------- | ------------- | ------------------------------------------
-   * null                   | `'null'`      | `math.typeOf(null)`
-   * number                 | `'number'`    | `math.typeOf(3.5)`
-   * boolean                | `'boolean'`   | `math.typeOf(true)`
-   * string                 | `'string'`    | `math.typeOf('hello world')`
-   * Array                  | `'Array'`     | `math.typeOf([1, 2, 3])`
-   * Date                   | `'Date'`      | `math.typeOf(new Date())`
-   * Function               | `'Function'`  | `math.typeOf(function () {})`
-   * Object                 | `'Object'`    | `math.typeOf({a: 2, b: 3})`
-   * RegExp                 | `'RegExp'`    | `math.typeOf(/a regexp/)`
-   * undefined              | `'undefined'` | `math.typeOf(undefined)`
-   * math.BigNumber         | `'BigNumber'` | `math.typeOf(math.bignumber('2.3e500'))`
-   * math.Chain             | `'Chain'`     | `math.typeOf(math.chain(2))`
-   * math.Complex           | `'Complex'`   | `math.typeOf(math.complex(2, 3))`
-   * math.Fraction          | `'Fraction'`  | `math.typeOf(math.fraction(1, 3))`
-   * math.Help              | `'Help'`      | `math.typeOf(math.help('sqrt'))`
-   * math.Help              | `'Help'`      | `math.typeOf(math.help('sqrt'))`
-   * math.Index             | `'Index'`     | `math.typeOf(math.index(1, 3))`
-   * math.Matrix            | `'Matrix'`    | `math.typeOf(math.matrix([[1,2], [3, 4]]))`
-   * math.Range             | `'Range'`     | `math.typeOf(math.range(0, 10))`
-   * math.ResultSet         | `'ResultSet'` | `math.typeOf(math.evaluate('a=2\nb=3'))`
-   * math.Unit              | `'Unit'`      | `math.typeOf(math.unit('45 deg'))`
-   * math.AccessorNode            | `'AccessorNode'`            | `math.typeOf(math.parse('A[2]'))`
-   * math.ArrayNode               | `'ArrayNode'`               | `math.typeOf(math.parse('[1,2,3]'))`
-   * math.AssignmentNode          | `'AssignmentNode'`          | `math.typeOf(math.parse('x=2'))`
-   * math.BlockNode               | `'BlockNode'`               | `math.typeOf(math.parse('a=2; b=3'))`
-   * math.ConditionalNode         | `'ConditionalNode'`         | `math.typeOf(math.parse('x<0 ? -x : x'))`
-   * math.ConstantNode            | `'ConstantNode'`            | `math.typeOf(math.parse('2.3'))`
-   * math.FunctionAssignmentNode  | `'FunctionAssignmentNode'`  | `math.typeOf(math.parse('f(x)=x^2'))`
-   * math.FunctionNode            | `'FunctionNode'`            | `math.typeOf(math.parse('sqrt(4)'))`
-   * math.IndexNode               | `'IndexNode'`               | `math.typeOf(math.parse('A[2]').index)`
-   * math.ObjectNode              | `'ObjectNode'`              | `math.typeOf(math.parse('{a:2}'))`
-   * math.ParenthesisNode         | `'ParenthesisNode'`         | `math.typeOf(math.parse('(2+3)'))`
-   * math.RangeNode               | `'RangeNode'`               | `math.typeOf(math.parse('1:10'))`
-   * math.SymbolNode              | `'SymbolNode'`              | `math.typeOf(math.parse('x'))`
+   * Determine the type of an entity.
    *
    * Syntax:
    *
@@ -53,10 +14,43 @@ export const createTypeOf = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * Examples:
    *
-   *    math.typeOf(3.5)                     // returns 'number'
-   *    math.typeOf(math.complex('2-4i'))    // returns 'Complex'
-   *    math.typeOf(math.unit('45 deg'))     // returns 'Unit'
-   *    math.typeOf('hello world')           // returns 'string'
+   *    // This list is intended to include all relevant types, for testing
+   *    // purposes:
+   *    math.typeOf(3.5)                      // returns 'number'
+   *    math.typeOf(math.complex('2-4i'))     // returns 'Complex'
+   *    math.typeOf(math.unit('45 deg'))      // returns 'Unit'
+   *    math.typeOf('hello world')            // returns 'string'
+   *    math.typeOf(null)                     // returns 'null'
+   *    math.typeOf(true)                     // returns 'boolean'
+   *    math.typeOf([1, 2, 3])                // returns 'Array'
+   *    math.typeOf(new Date())               // returns 'Date'
+   *    math.typeOf(function () {})           // returns 'function'
+   *    math.typeOf({a: 2, b: 3})             // returns 'Object'
+   *    math.typeOf(/a regexp/)               // returns 'RegExp'
+   *    math.typeOf(undefined)                // returns 'undefined'
+   *    math.typeOf(math.bignumber('23e99'))  // returns 'BigNumber'
+   *    math.typeOf(math.chain(2))            // returns 'Chain'
+   *    math.typeOf(math.fraction(1, 3))      // returns 'Fraction'
+   *    math.typeOf(math.help('sqrt'))        // returns 'Help'
+   *    math.typeOf(math.index(1, 3))         // returns 'Index'
+   *    math.typeOf(math.matrix([[1],[3]]))   // returns 'DenseMatrix'
+   *    math.typeOf(math.matrix([],'sparse')) // returns 'SparseMatrix'
+   *    math.typeOf(new math.Range(0, 10))    // returns 'Range'
+   *    math.typeOf(math.evaluate('a=2\na'))  // returns 'ResultSet'
+   *    math.typeOf(math.parse('A[2]'))       // returns 'AccessorNode'
+   *    math.typeOf(math.parse('[1,2,3]'))    // returns 'ArrayNode'
+   *    math.typeOf(math.parse('x=2'))        // returns 'AssignmentNode'
+   *    math.typeOf(math.parse('a=2; b=3'))   // returns 'BlockNode'
+   *    math.typeOf(math.parse('x<0?-1:1'))   // returns 'ConditionalNode'
+   *    math.typeOf(math.parse('2.3'))        // returns 'ConstantNode'
+   *    math.typeOf(math.parse('f(x)=x^2'))   // returns 'FunctionAssignmentNode'
+   *    math.typeOf(math.parse('sqrt(4)'))    // returns 'FunctionNode'
+   *    math.typeOf(math.parse('A[2]').index) // returns 'IndexNode'
+   *    math.typeOf(math.parse('{a:2}'))      // returns 'ObjectNode'
+   *    math.typeOf(math.parse('(2+3)'))      // returns 'ParenthesisNode'
+   *    math.typeOf(math.parse('1:10'))       // returns 'RangeNode'
+   *    math.typeOf(math.parse('a<b<c'))      // returns 'RelationalNode'
+   *    math.typeOf(math.parse('x'))          // returns 'SymbolNode'
    *
    * @param {*} x     The variable for which to test the type.
    * @return {string} Returns the name of the type. Primitive types are lower case,

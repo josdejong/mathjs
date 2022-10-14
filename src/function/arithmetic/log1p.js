@@ -59,14 +59,12 @@ export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    },
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self)),
 
-    'any, any': function (x, base) {
+    'any, any': typed.referToSelf(self => (x, base) => {
       // calculate logarithm for a specified base, log1p(x, base)
-      return divideScalar(this(x), log(base))
-    }
+      return divideScalar(self(x), log(base))
+    })
   })
 
   /**

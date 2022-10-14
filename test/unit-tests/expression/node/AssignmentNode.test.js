@@ -25,7 +25,8 @@ describe('AssignmentNode', function () {
   })
 
   it('should throw an error when calling without new operator', function () {
-    assert.throws(function () { AssignmentNode(new SymbolNode('a'), new Node()) }, SyntaxError)
+    assert.throws(
+      () => AssignmentNode(new SymbolNode('a'), new Node()), TypeError)
   })
 
   it('should throw an error when creating an AssignmentNode with a reserved keyword', function () {

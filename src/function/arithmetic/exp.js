@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { expNumber } from '../../plain/number/index.js'
 
 const name = 'exp'
@@ -7,8 +6,10 @@ const dependencies = ['typed']
 
 export const createExp = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
-   * Calculate the exponent of a value.
-   * For matrices, the function is evaluated element wise.
+   * Calculate the exponential of a value.
+   * For matrices, if you want the matrix exponential of square matrix, use
+   * the `expm` function; if you want to take the exponential of each element,
+   * see the examples.
    *
    * Syntax:
    *
@@ -20,7 +21,7 @@ export const createExp = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *    math.pow(math.e, 2)          // returns number 7.3890560989306495
    *    math.log(math.exp(2))        // returns number 2
    *
-   *    math.exp([1, 2, 3])
+   *    math.map([1, 2, 3], math.exp)
    *    // returns Array [
    *    //   2.718281828459045,
    *    //   7.3890560989306495,
@@ -29,10 +30,10 @@ export const createExp = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *
    * See also:
    *
-   *    expm1, log, pow
+   *    expm1, expm, log, pow
    *
-   * @param {number | BigNumber | Complex | Array | Matrix} x  A number or matrix to exponentiate
-   * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
+   * @param {number | BigNumber | Complex} x  A number to exponentiate
+   * @return {number | BigNumber | Complex} Exponential of `x`
    */
   return typed(name, {
     number: expNumber,
@@ -43,11 +44,6 @@ export const createExp = /* #__PURE__ */ factory(name, dependencies, ({ typed })
 
     BigNumber: function (x) {
       return x.exp()
-    },
-
-    'Array | Matrix': function (x) {
-      // TODO: exp(sparse) should return a dense matrix since exp(0)==1
-      return deepMap(x, this)
     }
   })
 })

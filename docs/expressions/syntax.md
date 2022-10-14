@@ -47,7 +47,11 @@ math.evaluate('2 + 3 * 4')   // 14
 math.evaluate('(2 + 3) * 4') // 20
 ```
 
-The following operators are available:
+The following operators are available. Note that almost every operator listed
+also has a function form with identical meaning that can be used
+interchangeably. For example, `x+y` will always evaluate identically to
+`add(x,y)`. For a full list of the equivalences, see the section on
+Functions below.
 
 Operator    | Name                       | Syntax      | Associativity | Example               | Result
 ----------- | -------------------------- | ----------  | ------------- | --------------------- | ---------------
@@ -197,6 +201,46 @@ const parser = math.parser()
 parser.evaluate('f = typed({"number": f(x) = x ^ 2 - 5})')
 ```
 
+Finally, as mentioned above, there is a function form for nearly every one of
+the mathematical operator symbols. Moreover, for some associative operators,
+the corresponding function allows arbitrarily many arguments. The table below
+gives the full correspondence.
+
+Operator Expression  | Equivalent Function Expression
+---------------------|-------------------------------
+`a or b`             |`or(a,b)`
+`a xor b`            |`xor(a,b)`
+`a and b`            |`and(a,b)`
+`a \| b`             |`bitOr(a,b)`
+`a ^\| b`            |`bitXor(a,b)`
+`a & b`              |`bitAnd(a,b)`
+`a == b`             |`equal(a,b)`
+`a != b`             |`unequal(a,b)`
+`a < b`              |`smaller(a,b)`
+`a > b`              |`larger(a,b)`
+`a <= b`             |`smallerEq(a,b)`
+`a << 3`             |`leftShift(a,3)`
+`a >> 3`             |`rightArithShift(a,3)`
+`a >>> 3`            |`rightLogShift(a,3)`
+`u to cm`            |`to(u, cm)`
+`a + b + c + ...`    |`add(a,b,c,...)`
+`a - b`              |`subtract(a,b)`
+`a * b * c * ...`    |`multiply(a,b,c,...)`
+`A .* B`             |`dotMultiply(A,B)`
+`A ./ B`             |`dotDivide(A,B)`
+`a mod b`            |`mod(a,b)`
+`+a`                 |`unaryPlus(a)`
+`-a`                 |`unaryMinus(a)`
+`~a`                 |`bitNot(a)`
+`not a`              |`not(a)`
+`a^b`                |`pow(a,b)`
+`A .^ B`             |`dotPow(A,B)`
+`a!`                 |`factorial(a)`
+`A'`                 |`ctranspose(A)`
+
+Note that math.js embodies a preference for the operator forms, in that calling
+`simplify` (see [Algebra](./algebra.md)) converts any instances of the function
+form into the corresponding operator.
 
 ## Constants and variables
 

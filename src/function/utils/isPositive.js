@@ -25,7 +25,7 @@ export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ t
    *    math.isPositive(0.5)                   // returns true
    *    math.isPositive(math.bignumber(2))     // returns true
    *    math.isPositive(math.fraction(-2, 5))  // returns false
-   *    math.isPositive(math.fraction(1,3))    // returns false
+   *    math.isPositive(math.fraction(1, 3))   // returns true
    *    math.isPositive('2')                   // returns true
    *    math.isPositive([2, 0, -3])            // returns [true, false, false]
    *
@@ -48,12 +48,9 @@ export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ t
       return x.s > 0 && x.n > 0
     },
 
-    Unit: function (x) {
-      return this(x.value)
-    },
+    Unit: typed.referToSelf(self =>
+      x => typed.find(self, x.valueType())(x.value)),
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

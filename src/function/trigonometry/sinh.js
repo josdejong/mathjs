@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { sinhNumber } from '../../plain/number/index.js'
 
 const name = 'sinh'
@@ -10,7 +9,8 @@ export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    * Calculate the hyperbolic sine of a value,
    * defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix hyperbolic sine, this function does
+   * not apply to matrices.
    *
    * Syntax:
    *
@@ -24,30 +24,11 @@ export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *
    *    cosh, tanh
    *
-   * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
-   * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic sine of x
+   * @param {number | BigNumber | Complex} x  Function input
+   * @return {number | BigNumber | Complex} Hyperbolic sine of x
    */
   return typed(name, {
     number: sinhNumber,
-
-    Complex: function (x) {
-      return x.sinh()
-    },
-
-    BigNumber: function (x) {
-      return x.sinh()
-    },
-
-    Unit: function (x) {
-      if (!x.hasBase(x.constructor.BASE_UNITS.ANGLE)) {
-        throw new TypeError('Unit in function sinh is no angle')
-      }
-      return this(x.value)
-    },
-
-    'Array | Matrix': function (x) {
-      // deep map collection, skip zeros since sinh(0) = 0
-      return deepMap(x, this, true)
-    }
+    'Complex | BigNumber': x => x.sinh()
   })
 })

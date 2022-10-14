@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { acotNumber } from '../../plain/number/index.js'
 
 const name = 'acot'
@@ -9,7 +8,8 @@ export const createAcot = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   /**
    * Calculate the inverse cotangent of a value, defined as `acot(x) = atan(1/x)`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix arccotanget, this function does not
+   * apply to matrices.
    *
    * Syntax:
    *
@@ -17,17 +17,16 @@ export const createAcot = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Examples:
    *
-   *    math.acot(0.5)           // returns number 0.4636476090008061
+   *    math.acot(0.5)           // returns number 1.1071487177940904
+   *    math.acot(2)             // returns number 0.4636476090008061
    *    math.acot(math.cot(1.5)) // returns number 1.5
-   *
-   *    math.acot(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
    *
    * See also:
    *
    *    cot, atan
    *
-   * @param {number | Complex | Array | Matrix} x   Function input
-   * @return {number | Complex | Array | Matrix} The arc cotangent of x
+   * @param {number | BigNumber| Complex} x   Function input
+   * @return {number | BigNumber| Complex} The arc cotangent of x
    */
   return typed(name, {
     number: acotNumber,
@@ -38,10 +37,6 @@ export const createAcot = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     BigNumber: function (x) {
       return new BigNumber(1).div(x).atan()
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

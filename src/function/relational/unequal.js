@@ -1,9 +1,8 @@
 import { factory } from '../../utils/factory.js'
-import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03.js'
-import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07.js'
-import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
-import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13.js'
+import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
+import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'unequal'
 const dependencies = [
@@ -15,11 +14,10 @@ const dependencies = [
 ]
 
 export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, equalScalar, matrix, DenseMatrix }) => {
-  const algorithm03 = createAlgorithm03({ typed })
-  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
-  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
-  const algorithm13 = createAlgorithm13({ typed })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
+  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Test whether two values are unequal.
@@ -64,75 +62,16 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the compared values are unequal, else returns false
    */
-  return typed('unequal', {
-
-    'any, any': function (x, y) {
-      // strict equality for null and undefined?
-      if (x === null) { return y !== null }
-      if (y === null) { return x !== null }
-      if (x === undefined) { return y !== undefined }
-      if (y === undefined) { return x !== undefined }
-
-      return _unequal(x, y)
-    },
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm07(x, y, _unequal)
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm03(y, x, _unequal, true)
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, _unequal, false)
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, _unequal)
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), matrix(y)).valueOf()
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return this(matrix(x), y)
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return this(x, matrix(y))
-    },
-
-    'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, _unequal, false)
-    },
-
-    'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, _unequal, false)
-    },
-
-    'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, _unequal, true)
-    },
-
-    'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, _unequal, true)
-    },
-
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, _unequal, false).valueOf()
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, _unequal, true).valueOf()
-    }
-  })
+  return typed(
+    name,
+    createUnequalNumber({ typed, equalScalar }),
+    matrixAlgorithmSuite({
+      elop: _unequal,
+      SS: matAlgo07xSSf,
+      DS: matAlgo03xDSf,
+      Ss: matAlgo12xSfs
+    })
+  )
 
   function _unequal (x, y) {
     return !equalScalar(x, y)

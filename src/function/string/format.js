@@ -96,14 +96,14 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * Examples:
    *
    *    math.format(6.4)                                        // returns '6.4'
-   *    math.format(1240000)                                    // returns '1.24e6'
+   *    math.format(1240000)                                    // returns '1.24e+6'
    *    math.format(1/3)                                        // returns '0.3333333333333333'
    *    math.format(1/3, 3)                                     // returns '0.333'
    *    math.format(21385, 2)                                   // returns '21000'
    *    math.format(12e8, {notation: 'fixed'})                  // returns '1200000000'
    *    math.format(2.3,  {notation: 'fixed', precision: 4})    // returns '2.3000'
    *    math.format(52.8, {notation: 'exponential'})            // returns '5.28e+1'
-   *    math.format(12400,{notation: 'engineering'})            // returns '12.400e+3'
+   *    math.format(12400, {notation: 'engineering'})           // returns '12.4e+3'
    *    math.format(2000, {lowerExp: -2, upperExp: 2})          // returns '2e+3'
    *
    *    function formatCurrency(value) {

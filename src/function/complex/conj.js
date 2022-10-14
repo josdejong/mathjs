@@ -31,20 +31,8 @@ export const createConj = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *            The complex conjugate of x
    */
   return typed(name, {
-    number: function (x) {
-      return x
-    },
-
-    BigNumber: function (x) {
-      return x
-    },
-
-    Complex: function (x) {
-      return x.conjugate()
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'number | BigNumber | Fraction': x => x,
+    Complex: x => x.conjugate(),
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

@@ -1,9 +1,9 @@
 import { factory } from '../../../utils/factory.js'
 
-const name = 'algorithm12'
+const name = 'matAlgo12xSfs'
 const dependencies = ['typed', 'DenseMatrix']
 
-export const createAlgorithm12 = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix }) => {
+export const createMatAlgo12xSfs = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix }) => {
   /**
    * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
    * Callback function invoked MxN times.
@@ -23,7 +23,7 @@ export const createAlgorithm12 = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
    */
-  return function algorithm12 (s, b, callback, inverse) {
+  return function matAlgo12xSfs (s, b, callback, inverse) {
     // sparse matrix arrays
     const avalues = s._values
     const aindex = s._index

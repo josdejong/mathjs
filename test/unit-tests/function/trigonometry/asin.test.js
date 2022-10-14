@@ -116,15 +116,17 @@ describe('asin', function () {
     assert.throws(function () { asin('string') })
   })
 
-  it('should calculate the arcsin element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => asin([1, 2, 3]), TypeError)
+    assert.throws(() => asin(matrix([1, 2, 3])), TypeError)
     // note: the results of asin(2) and asin(3) differs in octave
     // the next tests are verified with mathematica
     const asin123 = [
       1.57079632679490,
       complex(1.57079632679490, -1.31695789692482),
       complex(1.57079632679490, -1.76274717403909)]
-    approx.deepEqual(asin([1, 2, 3]), asin123)
-    approx.deepEqual(asin(matrix([1, 2, 3])), matrix(asin123))
+    approx.deepEqual(math.map([1, 2, 3], asin), asin123)
+    approx.deepEqual(math.map(matrix([1, 2, 3]), asin), matrix(asin123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

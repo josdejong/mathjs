@@ -4,7 +4,7 @@ import { errorTransform } from './utils/errorTransform.js'
 import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 
 const name = 'std'
-const dependencies = ['typed', 'sqrt', 'variance']
+const dependencies = ['typed', 'map', 'sqrt', 'variance']
 
 /**
  * Attach a transform function to math.std
@@ -13,8 +13,8 @@ const dependencies = ['typed', 'sqrt', 'variance']
  * This transform changed the `dim` parameter of function std
  * from one-based to zero based
  */
-export const createStdTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, sqrt, variance }) => {
-  const std = createStd({ typed, sqrt, variance })
+export const createStdTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, map, sqrt, variance }) => {
+  const std = createStd({ typed, map, sqrt, variance })
 
   return typed('std', {
     '...any': function (args) {

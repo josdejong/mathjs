@@ -162,10 +162,10 @@ declare namespace math {
   }
 
   interface NodeCtor {
-    new (): MathNodeCommon
+    new (): MathNode
   }
 
-  interface AccessorNode extends MathNodeCommon {
+  interface AccessorNode extends MathNode {
     type: 'AccessorNode'
     isAccessorNode: true
     object: MathNode
@@ -176,7 +176,7 @@ declare namespace math {
     new (object: MathNode, index: IndexNode): AccessorNode
   }
 
-  interface ArrayNode extends MathNodeCommon {
+  interface ArrayNode extends MathNode {
     type: 'ArrayNode'
     isArrayNode: true
     items: MathNode[]
@@ -185,7 +185,7 @@ declare namespace math {
     new (items: MathNode[]): ArrayNode
   }
 
-  interface AssignmentNode extends MathNodeCommon {
+  interface AssignmentNode extends MathNode {
     type: 'AssignmentNode'
     isAssignmentNode: true
     object: SymbolNode | AccessorNode
@@ -202,7 +202,7 @@ declare namespace math {
     ): AssignmentNode
   }
 
-  interface BlockNode extends MathNodeCommon {
+  interface BlockNode extends MathNode {
     type: 'BlockNode'
     isBlockNode: true
     blocks: Array<{ node: MathNode; visible: boolean }>
@@ -213,7 +213,7 @@ declare namespace math {
     ): BlockNode
   }
 
-  interface ConditionalNode extends MathNodeCommon {
+  interface ConditionalNode extends MathNode {
     type: 'ConditionalNode'
     isConditionalNode: boolean
     condition: MathNode
@@ -228,7 +228,7 @@ declare namespace math {
     ): ConditionalNode
   }
 
-  interface ConstantNode extends MathNodeCommon {
+  interface ConstantNode extends MathNode {
     type: 'ConstantNode'
     isConstantNode: true
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -239,7 +239,7 @@ declare namespace math {
     new (constant: number): ConstantNode
   }
 
-  interface FunctionAssignmentNode extends MathNodeCommon {
+  interface FunctionAssignmentNode extends MathNode {
     type: 'FunctionAssignmentNode'
     isFunctionAssignmentNode: true
     name: string
@@ -250,7 +250,7 @@ declare namespace math {
     new (name: string, params: string[], expr: MathNode): FunctionAssignmentNode
   }
 
-  interface FunctionNode extends MathNodeCommon {
+  interface FunctionNode extends MathNode {
     type: 'FunctionNode'
     isFunctionNode: true
     fn: SymbolNode
@@ -262,7 +262,7 @@ declare namespace math {
     onUndefinedFunction: (name: string) => any
   }
 
-  interface IndexNode extends MathNodeCommon {
+  interface IndexNode extends MathNode {
     type: 'IndexNode'
     isIndexNode: true
     dimensions: MathNode[]
@@ -273,7 +273,7 @@ declare namespace math {
     new (dimensions: MathNode[], dotNotation: boolean): IndexNode
   }
 
-  interface ObjectNode extends MathNodeCommon {
+  interface ObjectNode extends MathNode {
     type: 'ObjectNode'
     isObjectNode: true
     properties: Record<string, MathNode>
@@ -285,6 +285,7 @@ declare namespace math {
   type OperatorNodeMap = {
     xor: 'xor'
     and: 'and'
+    or: 'or'
     bitOr: '|'
     bitXor: '^|'
     bitAnd: '&'
@@ -293,6 +294,7 @@ declare namespace math {
     smaller: '<'
     larger: '>'
     smallerEq: '<='
+    largerEq: '>='
     leftShift: '<<'
     rightArithShift: '>>'
     rightLogShift: '>>>'
@@ -320,7 +322,7 @@ declare namespace math {
     TOp extends OperatorNodeMap[TFn] = never,
     TFn extends OperatorNodeFn = never,
     TArgs extends MathNode[] = MathNode[]
-  > extends MathNodeCommon {
+  > extends MathNode {
     type: 'OperatorNode'
     isOperatorNode: true
     op: TOp
@@ -331,7 +333,7 @@ declare namespace math {
     isBinary(): boolean
   }
 
-  interface OperatorNodeCtor extends MathNodeCommon {
+  interface OperatorNodeCtor extends MathNode {
     new <
       TOp extends OperatorNodeMap[TFn],
       TFn extends OperatorNodeFn,
@@ -344,7 +346,7 @@ declare namespace math {
     ): OperatorNode<TOp, TFn, TArgs>
   }
   interface ParenthesisNode<TContent extends MathNode = MathNode>
-    extends MathNodeCommon {
+    extends MathNode {
     type: 'ParenthesisNode'
     isParenthesisNode: true
     content: TContent
@@ -355,7 +357,7 @@ declare namespace math {
     ): ParenthesisNode<TContent>
   }
 
-  interface RangeNode extends MathNodeCommon {
+  interface RangeNode extends MathNode {
     type: 'RangeNode'
     isRangeNode: true
     start: MathNode
@@ -366,7 +368,7 @@ declare namespace math {
     new (start: MathNode, end: MathNode, step?: MathNode): RangeNode
   }
 
-  interface RelationalNode extends MathNodeCommon {
+  interface RelationalNode extends MathNode {
     type: 'RelationalNode'
     isRelationalNode: true
     conditionals: string[]
@@ -376,7 +378,7 @@ declare namespace math {
     new (conditionals: string[], params: MathNode[]): RelationalNode
   }
 
-  interface SymbolNode extends MathNodeCommon {
+  interface SymbolNode extends MathNode {
     type: 'SymbolNode'
     isSymbolNode: true
     name: string
@@ -387,22 +389,10 @@ declare namespace math {
     onUndefinedSymbol: (name: string) => any
   }
 
-  type MathNode =
-    | AccessorNode
-    | ArrayNode
-    | AssignmentNode
-    | BlockNode
-    | ConditionalNode
-    | ConstantNode
-    | FunctionAssignmentNode
-    | FunctionNode
-    | IndexNode
-    | ObjectNode
-    | OperatorNode<OperatorNodeOp, OperatorNodeFn>
-    | ParenthesisNode
-    | RangeNode
-    | RelationalNode
-    | SymbolNode
+  /**
+   * @deprecated since version 11.3. Prefer `MathNode` instead
+   */
+  type MathNodeCommon = MathNode
 
   type MathJsFunctionName = keyof MathJsStatic
 
@@ -481,6 +471,12 @@ declare namespace math {
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     reviver(): (key: any, value: any) => any
+
+    /**
+     * Returns replacer function that can be used as replacer in JSON.stringify function.
+     */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    replacer(): (key: any, value: any) => any
 
     /*************************************************************************
      * Core functions
@@ -593,7 +589,7 @@ declare namespace math {
      */
     createUnit(
       name: string,
-      definition?: string | UnitDefinition,
+      definition?: string | UnitDefinition | Unit,
       options?: CreateUnitOptions
     ): Unit
     /**
@@ -603,7 +599,7 @@ declare namespace math {
      * @returns The new unit
      */
     createUnit(
-      units: Record<string, string | UnitDefinition>,
+      units: Record<string, string | UnitDefinition | Unit>,
       options?: CreateUnitOptions
     ): Unit
 
@@ -651,7 +647,7 @@ declare namespace math {
      * @returns The created Matrix
      */
     matrix(
-      data: MathCollection,
+      data: MathCollection | string[],
       format?: 'sparse' | 'dense',
       dataType?: string
     ): Matrix
@@ -894,15 +890,26 @@ declare namespace math {
      */
     simplify: Simplify
 
+    simplifyConstant(
+      expr: MathNode | string,
+      options?: SimplifyOptions
+    ): MathNode
+    simplifyCore(expr: MathNode | string, options?: SimplifyOptions): MathNode
+
     /**
      *  Replaces variable nodes with their scoped values
      * @param node Tree to replace variable nodes in
      * @param scope Scope to read/write variables
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolve(node: MathNode, scope?: Record<string, any>): MathNode
+    resolve(node: MathNode | string, scope?: Record<string, any>): MathNode
+    resolve(
+      node: (MathNode | string)[],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      scope?: Record<string, any>
+    ): MathNode[]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolve(node: MathNode[], scope?: Record<string, any>): MathNode[]
+    resolve(node: Matrix, scope?: Record<string, any>): Matrix
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -964,8 +971,7 @@ declare namespace math {
     add(x: MathType, y: MathType): MathType
 
     /**
-     * Calculate the cubic root of a value. For matrices, the function is
-     * evaluated element wise.
+     * Calculate the cubic root of a value.
      * @param x Value for which to calculate the cubic root.
      * @param allRoots Optional, false by default. Only applicable when x is
      * a number or complex number. If true, all complex roots are returned,
@@ -973,10 +979,9 @@ declare namespace math {
      * @returns Returns the cubic root of x
      */
     cbrt(x: number, allRoots?: boolean): number
-    cbrt(x: BigNumber, allRoots?: boolean): BigNumber
+    cbrt(x: BigNumber): BigNumber
     cbrt(x: Complex, allRoots?: boolean): Complex
-    cbrt(x: MathArray, allRoots?: boolean): MathArray
-    cbrt(x: Matrix, allRoots?: boolean): Matrix
+    cbrt(x: Unit): Unit
 
     // Rounding functions, grouped for similarity, even though it breaks
     // the alphabetic order among arithmetic functions.
@@ -1046,8 +1051,6 @@ declare namespace math {
     cube(x: BigNumber): BigNumber
     cube(x: Fraction): Fraction
     cube(x: Complex): Complex
-    cube(x: MathArray): MathArray
-    cube(x: Matrix): Matrix
     cube(x: Unit): Unit
 
     /**
@@ -1097,8 +1100,6 @@ declare namespace math {
     exp(x: number): number
     exp(x: BigNumber): BigNumber
     exp(x: Complex): Complex
-    exp(x: MathArray): MathArray
-    exp(x: Matrix): Matrix
 
     /**
      * Calculate the value of subtracting 1 from the exponential value. For
@@ -1109,8 +1110,6 @@ declare namespace math {
     expm1(x: number): number
     expm1(x: BigNumber): BigNumber
     expm1(x: Complex): Complex
-    expm1(x: MathArray): MathArray
-    expm1(x: Matrix): Matrix
 
     /**
      * Calculate the greatest common divisor for two or more values or
@@ -1151,14 +1150,13 @@ declare namespace math {
     lcm(a: Matrix, b: Matrix): Matrix
 
     /**
-     * Calculate the logarithm of a value. For matrices, the function is
-     * evaluated element wise.
+     * Calculate the logarithm of a value.
      * @param x Value for which to calculate the logarithm.
      * @param base Optional base for the logarithm. If not provided, the
      * natural logarithm of x is calculated. Default value: e.
      * @returns Returns the logarithm of x
      */
-    log<T extends number | BigNumber | Complex | MathCollection>(
+    log<T extends number | BigNumber | Complex>(
       x: T,
       base?: number | BigNumber | Complex
     ): NoLiteralType<T>
@@ -1220,9 +1218,13 @@ declare namespace math {
      * @param y The second value to multiply
      * @returns Multiplication of x and y
      */
-    multiply<T extends Matrix | MathArray>(x: T, y: MathType): T
+
+    multiply<T extends Matrix>(x: T, y: MathType): Matrix
+    multiply<T extends Matrix>(x: MathType, y: T): Matrix
+
     multiply(x: Unit, y: Unit): Unit
     multiply(x: number, y: number): number
+    multiply(x: MathArray, y: MathArray): MathArray
     multiply(x: MathType, y: MathType): MathType
 
     /**
@@ -1277,21 +1279,19 @@ declare namespace math {
     sign(x: Unit): Unit
 
     /**
-     * Calculate the square root of a value. For matrices, the function is
-     * evaluated element wise.
+     * Calculate the square root of a value. For matrices, use either
+     * sqrtm for the matrix square root, or map(M, sqrt) to take the
+     * square root element wise.
      * @param x Value for which to calculate the square root
      * @returns Returns the square root of x
      */
-    sqrt(x: number): number
+    sqrt(x: number): number | Complex
     sqrt(x: BigNumber): BigNumber
     sqrt(x: Complex): Complex
-    sqrt(x: MathArray): MathArray
-    sqrt(x: Matrix): Matrix
     sqrt(x: Unit): Unit
 
     /**
-     * Compute the square of a value, x * x. For matrices, the function is
-     * evaluated element wise.
+     * Compute the square of a value, x * x.
      * @param x Number for which to calculate the square
      * @returns Squared value
      */
@@ -1299,8 +1299,6 @@ declare namespace math {
     square(x: BigNumber): BigNumber
     square(x: Fraction): Fraction
     square(x: Complex): Complex
-    square(x: MathArray): MathArray
-    square(x: Matrix): Matrix
     square(x: Unit): Unit
 
     /**
@@ -1854,14 +1852,37 @@ declare namespace math {
      * @param format The matrix storage format
      * @returns A matrix filled with ones
      */
-    ones(size: number | number[], format?: string): MathCollection
+    ones(
+      size?: number | number[] | BigNumber | BigNumber[],
+      format?: string
+    ): MathCollection
     /**
      * @param m The x dimension of the matrix
-     * @param n The y dimension of the amtrix
+     * @param n The y dimension of the matrix
      * @param format The matrix storage format
      * @returns A matrix filled with ones
      */
-    ones(m: number, n: number, format?: string): MathCollection
+    ones(
+      m: number | BigNumber,
+      n: number | BigNumber,
+      format?: string
+    ): MathCollection
+    /**
+     * @param m The x dimension of the matrix
+     * @param n The y dimension of the matrix
+     * @param p The z dimension of the matrix
+     * @param format The matrix storage format
+     * @returns A matrix filled with ones
+     */
+    ones(
+      m: number | BigNumber,
+      n: number | BigNumber,
+      p: number | BigNumber,
+      format?: string
+    ): MathCollection
+    /** Actually ones can take an arbitrary number of dimensions before the
+     ** optional format, not sure how to write that in TypeScript
+     **/
 
     /**
      * Partition-based selection of an array or 1D matrix. Will find the kth
@@ -1880,6 +1901,13 @@ declare namespace math {
       compare?: 'asc' | 'desc' | ((a: any, b: any) => number)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): any
+
+    /**
+     * Calculate the Moore–Penrose inverse of a matrix.
+     * @param x Matrix to be inversed
+     * @return The inverse of `x`.
+     */
+    pinv<T extends MathType>(x: T): T
 
     /**
      * Create an array from a range. By default, the range end is excluded.
@@ -2042,14 +2070,37 @@ declare namespace math {
      * @param format The matrix storage format
      * @returns A matrix filled with zeros
      */
-    zeros(size: number | number[], format?: string): MathCollection
+    zeros(
+      size?: number | number[] | BigNumber | BigNumber[],
+      format?: string
+    ): MathCollection
     /**
      * @param m The x dimension of the matrix
      * @param n The y dimension of the matrix
      * @param format The matrix storage format
      * @returns A matrix filled with zeros
      */
-    zeros(m: number, n: number, format?: string): MathCollection
+    zeros(
+      m: number | BigNumber,
+      n: number | BigNumber,
+      format?: string
+    ): MathCollection
+    /**
+     * @param m The x dimension of the matrix
+     * @param n The y dimension of the matrix
+     * @param p The z dimension of the matrix
+     * @param format The matrix storage format
+     * @returns A matrix filled with zeros
+     */
+    zeros(
+      m: number | BigNumber,
+      n: number | BigNumber,
+      p: number | BigNumber,
+      format?: string
+    ): MathCollection
+    /** Actually zeros can take any number of dimensions before the
+     ** optional format, not sure how to write that in TypeScript
+     **/
 
     /**
      * Calculate N-dimensional fourier transform
@@ -2096,13 +2147,11 @@ declare namespace math {
     /**
      * Compute the gamma function of a value using Lanczos approximation for
      * small values, and an extended Stirling approximation for large
-     * values. For matrices, the function is evaluated element wise.
+     * values.
      * @param n A real or complex number
      * @returns The gamma of n
      */
-    gamma<T extends number | BigNumber | Complex | MathCollection>(
-      n: T
-    ): NoLiteralType<T>
+    gamma<T extends number | BigNumber | Complex>(n: T): NoLiteralType<T>
 
     /**
      * Calculate the Kullback-Leibler (KL) divergence between two
@@ -2153,11 +2202,9 @@ declare namespace math {
      * undefined. Returns an array with the configured number of elements
      * when number is > 1.
      */
-    pickRandom(
-      array: number[],
-      number?: number,
-      weights?: number[]
-    ): number | number[]
+    pickRandom<T>(array: T[]): T
+    pickRandom<T>(array: T[], number: number): T[]
+    pickRandom<T>(array: T[], number: number, weights: number[]): T[]
 
     /**
      * Return a random number larger or equal to min and smaller than max
@@ -2528,9 +2575,9 @@ declare namespace math {
     median(...args: MathType[]): any
 
     /**
-     * Compute the maximum value of a matrix or a list of values. In case of
-     * a multi dimensional array, the maximum of the flattened array will be
-     * calculated. When dim is provided, the maximum over the selected
+     * Compute the minimum value of a matrix or a list of values. In case of
+     * a multi dimensional array, the minimun of the flattened array will be
+     * calculated. When dim is provided, the minimun over the selected
      * dimension will be calculated. Parameter dim is zero-based.
      * @param args A single matrix or or multiple scalar values
      * @returns The minimum value
@@ -2659,6 +2706,13 @@ declare namespace math {
     sum(array: MathCollection): any
 
     /**
+     * Count the number of elements of a matrix, array or string.
+     * @param x A matrix, array or string.
+     * @returns The number of members passed in parameters
+     */
+    count(x: MathCollection | string): number
+
+    /**
      * Compute the cumulative sum of a matrix or a list with values.
      * In case of a (multi dimensional) array or matrix, the cumulative sums
      * along a specified dimension (defaulting to the first) will be calculated.
@@ -2774,133 +2828,108 @@ declare namespace math {
      ************************************************************************/
 
     /**
-     * Calculate the inverse cosine of a value. For matrices, the function
-     * is evaluated element wise.
+     * Calculate the inverse cosine of a value.
      * @param x Function input
      * @returns The arc cosine of x
      */
-    acos(x: number): number
+    acos(x: number): number | Complex
     acos(x: BigNumber): BigNumber
     acos(x: Complex): Complex
-    acos(x: MathArray): MathArray
-    acos(x: Matrix): Matrix
 
     /**
      * Calculate the hyperbolic arccos of a value, defined as acosh(x) =
-     * ln(sqrt(x^2 - 1) + x). For matrices, the function is evaluated
-     * element wise.
+     * ln(sqrt(x^2 - 1) + x).
      * @param x Function input
      * @returns The hyperbolic arccosine of x
      */
-    acosh(x: number): number
+    acosh(x: number): number | Complex
     acosh(x: BigNumber): BigNumber
     acosh(x: Complex): Complex
-    acosh(x: MathArray): MathArray
-    acosh(x: Matrix): Matrix
 
     /**
-     * Calculate the inverse cotangent of a value. For matrices, the
-     * function is evaluated element wise.
+     * Calculate the inverse cotangent of a value.
      * @param x Function input
      * @returns The arc cotangent of x
      */
     acot(x: number): number
     acot(x: BigNumber): BigNumber
-    acot(x: MathArray): MathArray
-    acot(x: Matrix): Matrix
+    acot(x: Complex): Complex
 
     /**
      * Calculate the hyperbolic arccotangent of a value, defined as acoth(x)
-     * = (ln((x+1)/x) + ln(x/(x-1))) / 2. For matrices, the function is
-     * evaluated element wise.
+     * = (ln((x+1)/x) + ln(x/(x-1))) / 2.
      * @param x Function input
      * @returns The hyperbolic arccotangent of x
      */
     acoth(x: number): number
     acoth(x: BigNumber): BigNumber
-    acoth(x: MathArray): MathArray
-    acoth(x: Matrix): Matrix
+    acoth(x: Complex): Complex
 
     /**
-     * Calculate the inverse cosecant of a value. For matrices, the function
-     * is evaluated element wise.
+     * Calculate the inverse cosecant of a value.
      * @param x Function input
      * @returns The arc cosecant of x
      */
-    acsc(x: number): number
+    acsc(x: number): number | Complex
     acsc(x: BigNumber): BigNumber
-    acsc(x: MathArray): MathArray
-    acsc(x: Matrix): Matrix
+    acsc(x: Complex): Complex
 
     /**
      * Calculate the hyperbolic arccosecant of a value, defined as acsch(x)
-     * = ln(1/x + sqrt(1/x^2 + 1)). For matrices, the function is evaluated
-     * element wise.
+     * = ln(1/x + sqrt(1/x^2 + 1)).
      * @param x Function input
      * @returns The hyperbolic arccosecant of x
      */
     acsch(x: number): number
     acsch(x: BigNumber): BigNumber
-    acsch(x: MathArray): MathArray
-    acsch(x: Matrix): Matrix
+    acsch(x: Complex): Complex
 
     /**
-     * Calculate the inverse secant of a value. For matrices, the function
-     * is evaluated element wise.
+     * Calculate the inverse secant of a value.
      * @param x Function input
      * @returns The arc secant of x
      */
-    asec(x: number): number
+    asec(x: number): number | Complex
     asec(x: BigNumber): BigNumber
-    asec(x: MathArray): MathArray
-    asec(x: Matrix): Matrix
+    asec(x: Complex): Complex
 
     /**
      * Calculate the hyperbolic arcsecant of a value, defined as asech(x) =
-     * ln(sqrt(1/x^2 - 1) + 1/x). For matrices, the function is evaluated
-     * element wise.
+     * ln(sqrt(1/x^2 - 1) + 1/x).
      * @param x Function input
      * @returns The hyperbolic arcsecant of x
      */
-    asech(x: number): number
+    asech(x: number): number | Complex
     asech(x: BigNumber): BigNumber
-    asech(x: MathArray): MathArray
-    asech(x: Matrix): Matrix
+    asech(x: Complex): Complex
 
     /**
-     * Calculate the inverse sine of a value. For matrices, the function is
-     * evaluated element wise.
+     * Calculate the inverse sine of a value.
      * @param x Function input
      * @returns The arc sine of x
      */
-    asin(x: number): number
+    asin(x: number): number | Complex
     asin(x: BigNumber): BigNumber
     asin(x: Complex): Complex
-    asin(x: MathArray): MathArray
-    asin(x: Matrix): Matrix
 
     /**
      * Calculate the hyperbolic arcsine of a value, defined as asinh(x) =
-     * ln(x + sqrt(x^2 + 1)). For matrices, the function is evaluated
-     * element wise.
+     * ln(x + sqrt(x^2 + 1)).
      * @param x Function input
      * @returns The hyperbolic arcsine of x
      */
     asinh(x: number): number
     asinh(x: BigNumber): BigNumber
-    asinh(x: MathArray): MathArray
-    asinh(x: Matrix): Matrix
+    asinh(x: Complex): Complex
 
     /**
-     * Calculate the inverse tangent of a value. For matrices, the function
-     * is evaluated element wise.
+     * Calculate the inverse tangent of a value.
      * @param x Function input
      * @returns The arc tangent of x
      */
     atan(x: number): number
     atan(x: BigNumber): BigNumber
-    atan(x: MathArray): MathArray
-    atan(x: Matrix): Matrix
+    atan(x: Complex): Complex
 
     /**
      * Calculate the inverse tangent function with two arguments, y/x. By
@@ -2914,156 +2943,127 @@ declare namespace math {
 
     /**
      * Calculate the hyperbolic arctangent of a value, defined as atanh(x) =
-     * ln((1 + x)/(1 - x)) / 2. For matrices, the function is evaluated
-     * element wise.
+     * ln((1 + x)/(1 - x)) / 2.
      * @param x Function input
      * @returns The hyperbolic arctangent of x
      */
-    atanh(x: number): number
+    atanh(x: number): number | Complex
     atanh(x: BigNumber): BigNumber
-    atanh(x: MathArray): MathArray
-    atanh(x: Matrix): Matrix
+    atanh(x: Complex): Complex
 
     /**
-     * Calculate the cosine of a value. For matrices, the function is
-     * evaluated element wise.
+     * Calculate the cosine of a value.
      * @param x Function input
      * @returns The cosine of x
      */
     cos(x: number | Unit): number
     cos(x: BigNumber): BigNumber
     cos(x: Complex): Complex
-    cos(x: MathArray): MathArray
-    cos(x: Matrix): Matrix
 
     /**
      * Calculate the hyperbolic cosine of a value, defined as cosh(x) = 1/2
-     * * (exp(x) + exp(-x)). For matrices, the function is evaluated element
-     * wise.
+     * * (exp(x) + exp(-x)).
      * @param x Function input
      * @returns The hyperbolic cosine of x
      */
     cosh(x: number | Unit): number
     cosh(x: BigNumber): BigNumber
     cosh(x: Complex): Complex
-    cosh(x: MathArray): MathArray
-    cosh(x: Matrix): Matrix
 
     /**
      * Calculate the cotangent of a value. cot(x) is defined as 1 / tan(x).
-     * For matrices, the function is evaluated element wise.
      * @param x Function input
      * @returns The cotangent of x
      */
     cot(x: number | Unit): number
+    cot(x: BigNumber): BigNumber
     cot(x: Complex): Complex
-    cot(x: MathArray): MathArray
-    cot(x: Matrix): Matrix
 
     /**
      * Calculate the hyperbolic cotangent of a value, defined as coth(x) = 1
-     * / tanh(x). For matrices, the function is evaluated element wise.
+     * / tanh(x).
      * @param x Function input
      * @returns The hyperbolic cotangent of x
      */
     coth(x: number | Unit): number
+    coth(x: BigNumber): BigNumber
     coth(x: Complex): Complex
-    coth(x: MathArray): MathArray
-    coth(x: Matrix): Matrix
 
     /**
-     * Calculate the cosecant of a value, defined as csc(x) = 1/sin(x). For
-     * matrices, the function is evaluated element wise.
+     * Calculate the cosecant of a value, defined as csc(x) = 1/sin(x).
      * @param x Function input
      * @returns The cosecant hof x
      */
     csc(x: number | Unit): number
+    csc(x: BigNumber): BigNumber
     csc(x: Complex): Complex
-    csc(x: MathArray): MathArray
-    csc(x: Matrix): Matrix
 
     /**
      * Calculate the hyperbolic cosecant of a value, defined as csch(x) = 1
-     * / sinh(x). For matrices, the function is evaluated element wise.
+     * / sinh(x).
      * @param x Function input
      * @returns The hyperbolic cosecant of x
      */
     csch(x: number | Unit): number
+    csch(x: BigNumber): BigNumber
     csch(x: Complex): Complex
-    csch(x: MathArray): MathArray
-    csch(x: Matrix): Matrix
 
     /**
-     * Calculate the secant of a value, defined as sec(x) = 1/cos(x). For
-     * matrices, the function is evaluated element wise.
+     * Calculate the secant of a value, defined as sec(x) = 1/cos(x).
      * @param x Function input
      * @returns The secant of x
      */
     sec(x: number | Unit): number
+    sec(x: BigNumber): BigNumber
     sec(x: Complex): Complex
-    sec(x: MathArray): MathArray
-    sec(x: Matrix): Matrix
 
     /**
      * Calculate the hyperbolic secant of a value, defined as sech(x) = 1 /
-     * cosh(x). For matrices, the function is evaluated element wise.
+     * cosh(x).
      * @param x Function input
      * @returns The hyperbolic secant of x
      */
     sech(x: number | Unit): number
+    sech(x: BigNumber): BigNumber
     sech(x: Complex): Complex
-    sech(x: MathArray): MathArray
-    sech(x: Matrix): Matrix
 
     /**
-     * Calculate the sine of a value. For matrices, the function is
-     * evaluated element wise.
+     * Calculate the sine of a value.
      * @param x Function input
      * @returns The sine of x
      */
     sin(x: number | Unit): number
     sin(x: BigNumber): BigNumber
     sin(x: Complex): Complex
-    sin(x: MathArray): MathArray
-    sin(x: Matrix): Matrix
 
     /**
      * Calculate the hyperbolic sine of a value, defined as sinh(x) = 1/2 *
-     * (exp(x) - exp(-x)). For matrices, the function is evaluated element
-     * wise.
+     * (exp(x) - exp(-x)).
      * @param x Function input
      * @returns The hyperbolic sine of x
      */
     sinh(x: number | Unit): number
     sinh(x: BigNumber): BigNumber
     sinh(x: Complex): Complex
-    sinh(x: MathArray): MathArray
-    sinh(x: Matrix): Matrix
 
     /**
      * Calculate the tangent of a value. tan(x) is equal to sin(x) / cos(x).
-     * For matrices, the function is evaluated element wise.
      * @param x Function input
      * @returns The tangent of x
      */
     tan(x: number | Unit): number
     tan(x: BigNumber): BigNumber
     tan(x: Complex): Complex
-    tan(x: MathArray): MathArray
-    tan(x: Matrix): Matrix
 
     /**
      * Calculate the hyperbolic tangent of a value, defined as tanh(x) =
-     * (exp(2 * x) - 1) / (exp(2 * x) + 1). For matrices, the function is
-     * evaluated element wise.
+     * (exp(2 * x) - 1) / (exp(2 * x) + 1).
      * @param x Function input
      * @returns The hyperbolic tangent of x
      */
     tanh(x: number | Unit): number
     tanh(x: BigNumber): BigNumber
     tanh(x: Complex): Complex
-    tanh(x: MathArray): MathArray
-    tanh(x: Matrix): Matrix
 
     /*************************************************************************
      * Unit functions
@@ -3145,7 +3145,7 @@ declare namespace math {
 
     isIndexNode(x: unknown): x is IndexNode
 
-    isNode(x: unknown): x is MathNodeCommon
+    isNode(x: unknown): x is MathNode
 
     isObjectNode(x: unknown): x is ObjectNode
 
@@ -3156,6 +3156,8 @@ declare namespace math {
     isParenthesisNode(x: unknown): x is ParenthesisNode
 
     isRangeNode(x: unknown): x is RangeNode
+
+    isRelationalNode(x: unknown): x is RelationalNode
 
     isSymbolNode(x: unknown): x is SymbolNode
 
@@ -3852,7 +3854,7 @@ declare namespace math {
     evaluate(scope?: any): any
   }
 
-  interface MathNodeCommon {
+  interface MathNode {
     isNode: true
     comment: string
     type: string
@@ -4150,7 +4152,7 @@ declare namespace math {
      */
     createUnit(
       this: MathJsChain<string>,
-      definition?: string | UnitDefinition,
+      definition?: string | UnitDefinition | Unit,
       options?: CreateUnitOptions
     ): MathJsChain<Unit>
     /**
@@ -4164,7 +4166,7 @@ declare namespace math {
      * 0.
      */
     createUnit(
-      this: MathJsChain<Record<string, string | UnitDefinition>>,
+      this: MathJsChain<Record<string, string | UnitDefinition | Unit>>,
       options?: CreateUnitOptions
     ): MathJsChain<Unit>
 
@@ -4415,15 +4417,23 @@ declare namespace math {
      * pass a custom set of rules to the function as second argument. A rule
      * can be specified as an object, string, or function.
      * @param scope Scope to variables
+     * @param options Options to configure the behavior of simplify
      */
     simplify(
       this: MathJsChain<MathNode | string>,
       rules?: SimplifyRule[],
-      scope?: object
+      scope?: Map<string, MathType> | object,
+      options?: SimplifyOptions
     ): MathJsChain<MathNode>
 
-    // TODO check that this should even be here...
-    simplifyCore(expr: MathNode): MathNode
+    simplifyConstant(
+      this: MathJsChain<MathNode | string>,
+      options?: SimplifyOptions
+    ): MathJsChain<MathNode>
+    simplifyCore(
+      this: MathJsChain<MathNode | string>,
+      options?: SimplifyOptions
+    ): MathJsChain<MathNode>
 
     /**
      * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -4507,16 +4517,9 @@ declare namespace math {
      * if false (default) the principal root is returned.
      */
     cbrt(this: MathJsChain<number>, allRoots?: boolean): MathJsChain<number>
-    cbrt(
-      this: MathJsChain<BigNumber>,
-      allRoots?: boolean
-    ): MathJsChain<BigNumber>
+    cbrt(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
     cbrt(this: MathJsChain<Complex>, allRoots?: boolean): MathJsChain<Complex>
-    cbrt(
-      this: MathJsChain<MathArray>,
-      allRoots?: boolean
-    ): MathJsChain<MathArray>
-    cbrt(this: MathJsChain<Matrix>, allRoots?: boolean): MathJsChain<Matrix>
+    cbrt(this: MathJsChain<Unit>, allRoots?: boolean): MathJsChain<Unit>
 
     // Rounding functions grouped for similarity
 
@@ -4587,8 +4590,6 @@ declare namespace math {
     cube(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
     cube(this: MathJsChain<Fraction>): MathJsChain<Fraction>
     cube(this: MathJsChain<Complex>): MathJsChain<Complex>
-    cube(this: MathJsChain<MathArray>): MathJsChain<MathArray>
-    cube(this: MathJsChain<Matrix>): MathJsChain<Matrix>
     cube(this: MathJsChain<Unit>): MathJsChain<Unit>
 
     /**
@@ -4628,8 +4629,6 @@ declare namespace math {
     exp(this: MathJsChain<number>): MathJsChain<number>
     exp(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
     exp(this: MathJsChain<Complex>): MathJsChain<Complex>
-    exp(this: MathJsChain<MathArray>): MathJsChain<MathArray>
-    exp(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the value of subtracting 1 from the exponential value. For
@@ -4638,8 +4637,6 @@ declare namespace math {
     expm1(this: MathJsChain<number>): MathJsChain<number>
     expm1(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
     expm1(this: MathJsChain<Complex>): MathJsChain<Complex>
-    expm1(this: MathJsChain<MathArray>): MathJsChain<MathArray>
-    expm1(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
      * Calculate the greatest common divisor for two or more values or
@@ -4881,6 +4878,21 @@ declare namespace math {
       b: number | BigNumber
     ): MathJsChain<MathArray>
 
+    /**
+     * Count the number of elements of a matrix, array or string.
+     */
+    count(this: MathJsChain<MathCollection>): MathJsChain<number>
+    count(this: MathJsChain<string>): MathJsChain<number>
+
+    /**
+     * Compute the sum of a matrix or a list with values. In case of a
+     * (multi dimensional) array or matrix, the sum of all elements will be
+     * calculated.
+     */
+    sum(
+      this: MathJsChain<Array<number | BigNumber | Fraction>>
+    ): MathJsChain<number>
+    sum(this: MathJsChain<MathCollection>): MathJsChain<number>
     /*************************************************************************
      * Bitwise functions
      ************************************************************************/
@@ -5294,16 +5306,7 @@ declare namespace math {
      * @param format The matrix storage format
      */
     ones(
-      this: MathJsChain<number | number[]>,
-      format?: string
-    ): MathJsChain<MathCollection>
-
-    /**
-     * @param format The matrix storage format
-     */
-    ones(
-      this: MathJsChain<number>,
-      n: number,
+      this: MathJsChain<number | number[] | BigNumber | BigNumber[]>,
       format?: string
     ): MathJsChain<MathCollection>
 
@@ -5442,17 +5445,7 @@ declare namespace math {
      * @returns A matrix filled with zeros
      */
     zeros(
-      this: MathJsChain<number | number[]>,
-      format?: string
-    ): MathJsChain<MathCollection>
-
-    /**
-     * @param n The y dimension of the matrix
-     * @param format The matrix storage format
-     */
-    zeros(
-      this: MathJsChain<number>,
-      n: number,
+      this: MathJsChain<number | number[] | BigNumber | BigNumber[]>,
       format?: string
     ): MathJsChain<MathCollection>
 
@@ -5529,11 +5522,13 @@ declare namespace math {
      * @param number An int or float
      * @param weights An array of ints or floats
      */
-    pickRandom(
-      array: MathJsChain<number[]>,
-      number?: number,
-      weights?: number[]
-    ): MathJsChain<number | number[]>
+    pickRandom<T>(this: MathJsChain<T[]>): MathJsChain<T>
+    pickRandom<T>(this: MathJsChain<T[]>, number: number): MathJsChain<T[]>
+    pickRandom<T>(
+      this: MathJsChain<T[]>,
+      number: number,
+      weights: number[]
+    ): MathJsChain<T[]>
 
     /**
      * Return a random number larger or equal to min and smaller than max
@@ -5881,9 +5876,9 @@ declare namespace math {
     median(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
-     * Compute the maximum value of a matrix or a list of values. In case of
-     * a multi dimensional array, the maximum of the flattened array will be
-     * calculated. When dim is provided, the maximum over the selected
+     * Compute the minimum value of a matrix or a list of values. In case of
+     * a multi dimensional array, the minimum of the flattened array will be
+     * calculated. When dim is provided, the minimum over the selected
      * dimension will be calculated. Parameter dim is zero-based.
      * @param dim The minimum over the selected dimension
      */

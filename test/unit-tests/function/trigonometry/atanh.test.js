@@ -97,10 +97,12 @@ describe('atanh', function () {
     assert.throws(function () { atanh('string') })
   })
 
-  it('should calculate the arctan element-wise for arrays and matrices', function () {
+  it('should not operate on arrays and matrices', function () {
+    assert.throws(() => atanh([-1, 0, 1]), TypeError)
+    assert.throws(() => atanh(matrix([-1, 0, 1])), TypeError)
     const atanh101 = [-Infinity, 0, Infinity]
-    assert.deepStrictEqual(atanh([-1, 0, 1]), atanh101)
-    assert.deepStrictEqual(atanh(matrix([-1, 0, 1])), matrix(atanh101))
+    assert.deepStrictEqual(math.map([-1, 0, 1], atanh), atanh101)
+    assert.deepStrictEqual(math.map(matrix([-1, 0, 1]), atanh), matrix(atanh101))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

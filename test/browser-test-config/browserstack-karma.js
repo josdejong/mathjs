@@ -10,7 +10,6 @@ module.exports = function (config) {
       'bs_firefox_windows',
       'bs_chrome_mac',
       'bs_safari_mac',
-      'bs_ie_11',
       'bs_edge'
     ],
 
@@ -57,13 +56,6 @@ module.exports = function (config) {
         browser_version: '14.1',
         os: 'OS X',
         os_version: 'Big Sur'
-      },
-      bs_ie_11: {
-        base: 'BrowserStack',
-        browser: 'IE',
-        browser_version: '11',
-        os: 'Windows',
-        os_version: '10'
       },
       bs_edge: {
         base: 'BrowserStack',

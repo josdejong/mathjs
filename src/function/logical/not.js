@@ -32,6 +32,8 @@ export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *            Returns true when input is a zero or empty value.
    */
   return typed(name, {
+    'null | undefined': () => true,
+
     number: notNumber,
 
     Complex: function (x) {
@@ -42,12 +44,8 @@ export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return x.isZero() || x.isNaN()
     },
 
-    Unit: function (x) {
-      return x.value !== null ? this(x.value) : true
-    },
+    Unit: typed.referToSelf(self => x => typed.find(self, x.valueType())(x.value)),
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

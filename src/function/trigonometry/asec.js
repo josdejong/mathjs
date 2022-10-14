@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { asecNumber } from '../../plain/number/index.js'
 
 const name = 'asec'
@@ -9,7 +8,8 @@ export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   /**
    * Calculate the inverse secant of a value. Defined as `asec(x) = acos(1/x)`.
    *
-   * For matrices, the function is evaluated element wise.
+   * To avoid confusion with the matrix arcsecant, this function does not
+   * apply to matrices.
    *
    * Syntax:
    *
@@ -17,17 +17,17 @@ export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Examples:
    *
-   *    math.asec(0.5)           // returns 1.0471975511965979
+   *    math.asec(2)             // returns 1.0471975511965979
    *    math.asec(math.sec(1.5)) // returns 1.5
    *
-   *    math.asec(2)             // returns 0 + 1.3169578969248166 i
+   *    math.asec(0.5)           // returns Complex 0 + 1.3169578969248166i
    *
    * See also:
    *
    *    acos, acot, acsc
    *
-   * @param {number | Complex | Array | Matrix} x  Function input
-   * @return {number | Complex | Array | Matrix} The arc secant of x
+   * @param {number | BigNumber | Complex} x  Function input
+   * @return {number | BigNumber | Complex} The arc secant of x
    */
   return typed(name, {
     number: function (x) {
@@ -43,10 +43,6 @@ export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     BigNumber: function (x) {
       return new BigNumber(1).div(x).acos()
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, this)
     }
   })
 })

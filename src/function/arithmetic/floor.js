@@ -3,9 +3,9 @@ import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
 import { nearlyEqual } from '../../utils/number.js'
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
-import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11.js'
-import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12.js'
-import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'floor'
 const dependencies = ['typed', 'config', 'round', 'matrix', 'equalScalar', 'zeros', 'DenseMatrix']
@@ -36,9 +36,9 @@ export const createFloorNumber = /* #__PURE__ */ factory(
 )
 
 export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix }) => {
-  const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
-  const algorithm14 = createAlgorithm14({ typed })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   const floorNumber = createFloorNumber({ typed, config, round })
   /**
@@ -64,7 +64,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    const c = math.complex(3.24, -2.71)
    *    math.floor(c)                 // returns Complex 3 - 3i
-   *    math.floor(c, 1)              // returns Complex 3.2 - 2.8i
+   *    math.floor(c, 1)              // returns Complex 3.2 -2.8i
    *
    *    math.floor([3.2, 3.8, -4.7])       // returns Array [3, 3, -5]
    *    math.floor([3.21, 3.82, -4.71], 1)  // returns Array [3.2, 3.8, -4.8]
@@ -125,35 +125,37 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return x.floor(n.toNumber())
     },
 
-    'Array | Matrix': function (x) {
+    'Array | Matrix': typed.referToSelf(self => (x) => {
       // deep map collection, skip zeros since floor(0) = 0
-      return deepMap(x, this, true)
-    },
+      return deepMap(x, self, true)
+    }),
 
-    'Array, number | BigNumber': function (x, n) {
+    'Array, number | BigNumber': typed.referToSelf(self => (x, n) => {
       // deep map collection, skip zeros since ceil(0) = 0
-      return deepMap(x, i => this(i, n), true)
-    },
+      return deepMap(x, i => self(i, n), true)
+    }),
 
-    'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, this, false)
-    },
+    'SparseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
+      return matAlgo11xS0s(x, y, self, false)
+    }),
 
-    'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, this, false)
-    },
+    'DenseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
+      return matAlgo14xDs(x, y, self, false)
+    }),
 
-    'number | Complex | Fraction | BigNumber, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, this, true).valueOf()
-    },
+    'number | Complex | Fraction | BigNumber, Array':
+      typed.referToSelf(self => (x, y) => {
+        // use matrix implementation
+        return matAlgo14xDs(matrix(y), x, self, true).valueOf()
+      }),
 
-    'number | Complex | Fraction | BigNumber, Matrix': function (x, y) {
-      if (equalScalar(x, 0)) return zeros(y.size(), y.storage())
-      if (y.storage() === 'dense') {
-        return algorithm14(y, x, this, true)
-      }
-      return algorithm12(y, x, this, true)
-    }
+    'number | Complex | Fraction | BigNumber, Matrix':
+      typed.referToSelf(self => (x, y) => {
+        if (equalScalar(x, 0)) return zeros(y.size(), y.storage())
+        if (y.storage() === 'dense') {
+          return matAlgo14xDs(y, x, self, true)
+        }
+        return matAlgo12xSfs(y, x, self, true)
+      })
   })
 })
