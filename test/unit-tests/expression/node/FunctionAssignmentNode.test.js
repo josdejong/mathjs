@@ -303,12 +303,17 @@ describe('FunctionAssignmentNode', function () {
   })
 
   it('should throw an error when having duplicate variables', function () {
-    const a = new ConstantNode(2)
-    const n = new FunctionAssignmentNode('f', ['x', 'y', 'x'], a)
+    assert.throws(function () {
+      new FunctionAssignmentNode('f', ['x', 'x'], new ConstantNode(2))
+    }, new Error('Duplicate parameter name "x"'))
 
     assert.throws(function () {
-      n.map(function () { return undefined })
-    }, /Duplicate parameter name "x"/)
+      new FunctionAssignmentNode('f', ['x', 'y', 'x'], new ConstantNode(2))
+    }, new Error('Duplicate parameter name "x"'))
+
+    assert.throws(function () {
+      new FunctionAssignmentNode('f', ['y', 'x', 'x'], new ConstantNode(2))
+    }, new Error('Duplicate parameter name "x"'))
   })
 
   it('should transform a FunctionAssignmentNodes (nested) parameters', function () {
