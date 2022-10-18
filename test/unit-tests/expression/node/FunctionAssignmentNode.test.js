@@ -302,6 +302,15 @@ describe('FunctionAssignmentNode', function () {
     }, /Callback function must return a Node/)
   })
 
+  if('should throw an error when having duplicate variables', function () {
+    const a = new ConstantNode(2)
+    const n = new FunctionAssignmentNode('f', ['x', 'y', 'x'], a)
+
+    assert.throws(function () {
+      n.map(function () { return undefined })
+    }, /Duplicate parameter name "x"/)
+  })
+
   it('should transform a FunctionAssignmentNodes (nested) parameters', function () {
     // f(x) = 2 + x
     const a = new ConstantNode(2)
