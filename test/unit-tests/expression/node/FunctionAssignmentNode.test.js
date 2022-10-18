@@ -304,15 +304,15 @@ describe('FunctionAssignmentNode', function () {
 
   it('should throw an error when having duplicate variables', function () {
     assert.throws(function () {
-      new FunctionAssignmentNode('f', ['x', 'x'], new ConstantNode(2))
+      console.log(new FunctionAssignmentNode('f', ['x', 'x'], new ConstantNode(2)))
     }, new Error('Duplicate parameter name "x"'))
 
     assert.throws(function () {
-      new FunctionAssignmentNode('f', ['x', 'y', 'x'], new ConstantNode(2))
+      console.log(new FunctionAssignmentNode('f', ['x', 'y', 'x'], new ConstantNode(2)))
     }, new Error('Duplicate parameter name "x"'))
 
     assert.throws(function () {
-      new FunctionAssignmentNode('f', ['y', 'x', 'x'], new ConstantNode(2))
+      console.log(new FunctionAssignmentNode('f', ['y', 'x', 'x'], new ConstantNode(2)))
     }, new Error('Duplicate parameter name "x"'))
   })
 
