@@ -3139,14 +3139,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    *     base unit, the name of the newly create base unit. Otherwise, this property
    *     has no effect.
    *
-   * @param {Object} options   (optional) An object containing any of the following
-   * properties:
-   *   - override {boolean} Whether this unit should be allowed to override existing
-   *     units.
-   *
    * @return {Unit}
    */
-  Unit.createUnitSingle = function (name, obj, options) {
+  Unit.createUnitSingle = function (name, obj) {
     if (typeof (obj) === 'undefined' || obj === null) {
       obj = {}
     }
