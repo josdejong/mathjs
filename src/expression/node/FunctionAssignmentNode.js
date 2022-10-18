@@ -54,7 +54,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       if (keywords.has(name)) { throw new Error('Illegal function name, "' + name + '" is a reserved keyword') }
 
       const paramNames = new Set()
-      for (let param of params) {
+      for (const param of params) {
         const name = typeof param === 'string' ? param : param.name
         if (paramNames.has(name)) {
           throw new Error(`Duplicate parameter name "${name}"`)

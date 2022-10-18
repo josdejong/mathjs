@@ -302,7 +302,7 @@ describe('FunctionAssignmentNode', function () {
     }, /Callback function must return a Node/)
   })
 
-  if('should throw an error when having duplicate variables', function () {
+  it('should throw an error when having duplicate variables', function () {
     const a = new ConstantNode(2)
     const n = new FunctionAssignmentNode('f', ['x', 'y', 'x'], a)
 
