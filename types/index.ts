@@ -1488,6 +1488,19 @@ Units examples
   math.unit('1 m').splitUnit(['ft', 'in'])
 }
 
+/**
+ * Example of custom fallback for onUndefinedSymbol & onUndefinedFunction
+ */
+{
+  const math = create(all, {})
+
+  math.SymbolNode.onUndefinedSymbol = () => null
+
+  assert.strictEqual(math.evaluate('nonExistingSymbol'), null)
+
+  math.FunctionNode.onUndefinedFunction = () => () => 42
+}
+
 /*
 Expression tree examples
 */
