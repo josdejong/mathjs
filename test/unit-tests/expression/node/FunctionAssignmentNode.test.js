@@ -302,6 +302,24 @@ describe('FunctionAssignmentNode', function () {
     }, /Callback function must return a Node/)
   })
 
+  it('should throw an error when having duplicate variables', function () {
+    assert.throws(function () {
+      console.log(new FunctionAssignmentNode('f', ['x', 'x'], new ConstantNode(2)))
+    }, new Error('Duplicate parameter name "x"'))
+
+    assert.throws(function () {
+      console.log(new FunctionAssignmentNode('f', ['x', 'y', 'x'], new ConstantNode(2)))
+    }, new Error('Duplicate parameter name "x"'))
+
+    assert.throws(function () {
+      console.log(new FunctionAssignmentNode('f', ['y', 'x', 'x'], new ConstantNode(2)))
+    }, new Error('Duplicate parameter name "x"'))
+
+    assert.throws(function () {
+      console.log(new FunctionAssignmentNode('f', ['x', { name: 'x' }], new ConstantNode(2)))
+    }, new Error('Duplicate parameter name "x"'))
+  })
+
   it('should transform a FunctionAssignmentNodes (nested) parameters', function () {
     // f(x) = 2 + x
     const a = new ConstantNode(2)
