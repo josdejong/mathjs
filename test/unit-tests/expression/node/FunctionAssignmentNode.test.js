@@ -314,6 +314,10 @@ describe('FunctionAssignmentNode', function () {
     assert.throws(function () {
       console.log(new FunctionAssignmentNode('f', ['y', 'x', 'x'], new ConstantNode(2)))
     }, new Error('Duplicate parameter name "x"'))
+
+    assert.throws(function () {
+      console.log(new FunctionAssignmentNode('f', ['x', { name: 'x' }], new ConstantNode(2)))
+    }, new Error('Duplicate parameter name "x"'))
   })
 
   it('should transform a FunctionAssignmentNodes (nested) parameters', function () {
