@@ -4,9 +4,19 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20221019-1131">2022-10-19, 11.3.1 <a href="#20221019-1131" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2809">#2809</a>: code completion issues in some IDE's  <a href="https://github.com/josdejong/mathjs/issues/2812">#2812</a>).
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2818">#2818</a>: throw an error when a function assignment has duplicate 
+  parameter names  <a href="https://github.com/josdejong/mathjs/issues/2819">#2819</a>).
+- Update `decimal.js` to version `10.4.2`.
+
 <h1 id="20221011-1130">2022-10-11, 11.3.0 <a href="#20221011-1130" title="Permalink">#</a></h1>
 
-- Allow creating new subclasses of `Node` in TypeScript. Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+- Allow creating new subclasses of `Node` in TypeScript  <a href="https://github.com/josdejong/mathjs/issues/2772">#2772</a>). 
+  Note that this disables being able to narrow MathNodes by using the `.type`
+  property. Use typeguards like `isOperatorNode(...)` instead (see <a href="https://github.com/josdejong/mathjs/issues/2810">#2810</a>).
+  Thanks <a href="https://github.com/mattvague">@mattvague</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2793">#2793</a>: `flatten()` cloning entries of array/Matrix  <a href="https://github.com/josdejong/mathjs/issues/2799">#2799</a>).
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2627">#2627</a>: TypeScript definitions of `pinv` missing  <a href="https://github.com/josdejong/mathjs/issues/2804">#2804</a>). 
   Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
