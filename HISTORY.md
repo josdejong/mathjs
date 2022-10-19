@@ -1,5 +1,12 @@
 # History
 
+# 2022-10-19, 11.3.1
+
+- Fix #2809: code completion issues in some IDE's (#2812).
+- Fix #2818: throw an error when a function assignment has duplicate 
+  parameter names (#2819).
+- Update `decimal.js` to version `10.4.2`.
+
 # 2022-10-11, 11.3.0
 
 - Allow creating new subclasses of `Node` in TypeScript (#2772). 
