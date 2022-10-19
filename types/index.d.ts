@@ -3844,6 +3844,7 @@ declare namespace math {
     prefixes?: string
     offset?: number
     aliases?: string[]
+    baseName?: string
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
