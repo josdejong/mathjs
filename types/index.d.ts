@@ -162,73 +162,73 @@ declare namespace math {
   }
 
   interface NodeCtor {
-    new (): MathNode
+    new (): BaseNode
   }
 
-  interface AccessorNode extends MathNode {
+  interface AccessorNode extends BaseNode {
     type: 'AccessorNode'
     isAccessorNode: true
-    object: MathNode
+    object: BaseNode
     index: IndexNode
     name: string
   }
   interface AccessorNodeCtor {
-    new (object: MathNode, index: IndexNode): AccessorNode
+    new (object: BaseNode, index: IndexNode): AccessorNode
   }
 
-  interface ArrayNode extends MathNode {
+  interface ArrayNode extends BaseNode {
     type: 'ArrayNode'
     isArrayNode: true
-    items: MathNode[]
+    items: BaseNode[]
   }
   interface ArrayNodeCtor {
-    new (items: MathNode[]): ArrayNode
+    new (items: BaseNode[]): ArrayNode
   }
 
-  interface AssignmentNode extends MathNode {
+  interface AssignmentNode extends BaseNode {
     type: 'AssignmentNode'
     isAssignmentNode: true
     object: SymbolNode | AccessorNode
     index: IndexNode | null
-    value: MathNode
+    value: BaseNode
     name: string
   }
   interface AssignmentNodeCtor {
-    new (object: SymbolNode, value: MathNode): AssignmentNode
+    new (object: SymbolNode, value: BaseNode): AssignmentNode
     new (
       object: SymbolNode | AccessorNode,
       index: IndexNode,
-      value: MathNode
+      value: BaseNode
     ): AssignmentNode
   }
 
-  interface BlockNode extends MathNode {
+  interface BlockNode extends BaseNode {
     type: 'BlockNode'
     isBlockNode: true
-    blocks: Array<{ node: MathNode; visible: boolean }>
+    blocks: Array<{ node: BaseNode; visible: boolean }>
   }
   interface BlockNodeCtor {
     new (
-      arr: Array<{ node: MathNode } | { node: MathNode; visible: boolean }>
+      arr: Array<{ node: BaseNode } | { node: BaseNode; visible: boolean }>
     ): BlockNode
   }
 
-  interface ConditionalNode extends MathNode {
+  interface ConditionalNode extends BaseNode {
     type: 'ConditionalNode'
     isConditionalNode: boolean
-    condition: MathNode
-    trueExpr: MathNode
-    falseExpr: MathNode
+    condition: BaseNode
+    trueExpr: BaseNode
+    falseExpr: BaseNode
   }
   interface ConditionalNodeCtor {
     new (
-      condition: MathNode,
-      trueExpr: MathNode,
-      falseExpr: MathNode
+      condition: BaseNode,
+      trueExpr: BaseNode,
+      falseExpr: BaseNode
     ): ConditionalNode
   }
 
-  interface ConstantNode extends MathNode {
+  interface ConstantNode extends BaseNode {
     type: 'ConstantNode'
     isConstantNode: true
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -239,47 +239,47 @@ declare namespace math {
     new (constant: number): ConstantNode
   }
 
-  interface FunctionAssignmentNode extends MathNode {
+  interface FunctionAssignmentNode extends BaseNode {
     type: 'FunctionAssignmentNode'
     isFunctionAssignmentNode: true
     name: string
     params: string[]
-    expr: MathNode
+    expr: BaseNode
   }
   interface FunctionAssignmentNodeCtor {
-    new (name: string, params: string[], expr: MathNode): FunctionAssignmentNode
+    new (name: string, params: string[], expr: BaseNode): FunctionAssignmentNode
   }
 
-  interface FunctionNode extends MathNode {
+  interface FunctionNode extends BaseNode {
     type: 'FunctionNode'
     isFunctionNode: true
     fn: SymbolNode
-    args: MathNode[]
+    args: BaseNode[]
   }
   interface FunctionNodeCtor {
-    new (fn: MathNode | string, args: MathNode[]): FunctionNode
+    new (fn: BaseNode | string, args: BaseNode[]): FunctionNode
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onUndefinedFunction: (name: string) => any
   }
 
-  interface IndexNode extends MathNode {
+  interface IndexNode extends BaseNode {
     type: 'IndexNode'
     isIndexNode: true
-    dimensions: MathNode[]
+    dimensions: BaseNode[]
     dotNotation: boolean
   }
   interface IndexNodeCtor {
-    new (dimensions: MathNode[]): IndexNode
-    new (dimensions: MathNode[], dotNotation: boolean): IndexNode
+    new (dimensions: BaseNode[]): IndexNode
+    new (dimensions: BaseNode[], dotNotation: boolean): IndexNode
   }
 
-  interface ObjectNode extends MathNode {
+  interface ObjectNode extends BaseNode {
     type: 'ObjectNode'
     isObjectNode: true
-    properties: Record<string, MathNode>
+    properties: Record<string, BaseNode>
   }
   interface ObjectNodeCtor {
-    new (properties: Record<string, MathNode>): ObjectNode
+    new (properties: Record<string, BaseNode>): ObjectNode
   }
 
   type OperatorNodeMap = {
@@ -321,8 +321,8 @@ declare namespace math {
   interface OperatorNode<
     TOp extends OperatorNodeMap[TFn] = never,
     TFn extends OperatorNodeFn = never,
-    TArgs extends MathNode[] = MathNode[]
-  > extends MathNode {
+    TArgs extends BaseNode[] = BaseNode[]
+  > extends BaseNode {
     type: 'OperatorNode'
     isOperatorNode: true
     op: TOp
@@ -333,11 +333,11 @@ declare namespace math {
     isBinary(): boolean
   }
 
-  interface OperatorNodeCtor extends MathNode {
+  interface OperatorNodeCtor extends BaseNode {
     new <
       TOp extends OperatorNodeMap[TFn],
       TFn extends OperatorNodeFn,
-      TArgs extends MathNode[]
+      TArgs extends BaseNode[]
     >(
       op: TOp,
       fn: TFn,
@@ -345,40 +345,40 @@ declare namespace math {
       implicit?: boolean
     ): OperatorNode<TOp, TFn, TArgs>
   }
-  interface ParenthesisNode<TContent extends MathNode = MathNode>
-    extends MathNode {
+  interface ParenthesisNode<TContent extends BaseNode = BaseNode>
+    extends BaseNode {
     type: 'ParenthesisNode'
     isParenthesisNode: true
     content: TContent
   }
   interface ParenthesisNodeCtor {
-    new <TContent extends MathNode>(
+    new <TContent extends BaseNode>(
       content: TContent
     ): ParenthesisNode<TContent>
   }
 
-  interface RangeNode extends MathNode {
+  interface RangeNode extends BaseNode {
     type: 'RangeNode'
     isRangeNode: true
-    start: MathNode
-    end: MathNode
-    step: MathNode | null
+    start: BaseNode
+    end: BaseNode
+    step: BaseNode | null
   }
   interface RangeNodeCtor {
-    new (start: MathNode, end: MathNode, step?: MathNode): RangeNode
+    new (start: BaseNode, end: BaseNode, step?: BaseNode): RangeNode
   }
 
-  interface RelationalNode extends MathNode {
+  interface RelationalNode extends BaseNode {
     type: 'RelationalNode'
     isRelationalNode: true
     conditionals: string[]
-    params: MathNode[]
+    params: BaseNode[]
   }
   interface RelationalNodeCtor {
-    new (conditionals: string[], params: MathNode[]): RelationalNode
+    new (conditionals: string[], params: BaseNode[]): RelationalNode
   }
 
-  interface SymbolNode extends MathNode {
+  interface SymbolNode extends BaseNode {
     type: 'SymbolNode'
     isSymbolNode: true
     name: string
@@ -389,8 +389,44 @@ declare namespace math {
     onUndefinedSymbol: (name: string) => any
   }
 
+  interface MathNodeTypes {
+    AccessorNode: AccessorNode
+    ArrayNode: ArrayNode
+    AssignmentNode: AssignmentNode
+    BlockNode: BlockNode
+    ConditionalNode: ConditionalNode
+    ConstantNode: ConstantNode
+    FunctionAssignmentNode: FunctionAssignmentNode
+    FunctionNode: FunctionNode
+    IndexNode: IndexNode
+    ObjectNode: ObjectNode
+    OperatorNode: OperatorNode
+    ParenthesisNode: ParenthesisNode
+    RangeNode: RangeNode
+    RelationalNode: RelationalNode
+    SymbolNode: SymbolNode
+  }
+
   /**
-   * @deprecated since version 11.3. Prefer `MathNode` instead
+   * Discriminated union describing all registered node types
+   * 
+   * Deriving this union from MathNodeTypes makes the union extensible for implementors using `declare module 'mathjs'`
+   * 
+   * e.g.
+   * 
+   * declare module 'mathjs' {
+   *  interface MyNode extends BaseNode {
+   *  }
+
+   *  interface MathNodeTypes {
+   *    MyNode: MyNode
+   *  }
+   * }
+   */
+  type MathNode = MathNodeTypes[keyof MathNodeTypes]
+
+  /**
+   * @deprecated since version 11.3. Prefer `BaseNode` instead
    */
   type MathNodeCommon = MathNode
 
@@ -3855,7 +3891,7 @@ declare namespace math {
     evaluate(scope?: any): any
   }
 
-  interface MathNode {
+  interface BaseNode {
     isNode: true
     comment: string
     type: string
@@ -3901,9 +3937,9 @@ declare namespace math {
      * ```
      * var node = math.parse('x^2 + x/4 + 3*y');
      * var filtered = node.filter(function (node) {
-     * return node.isSymbolMathNode && node.name == 'x';
+     * return node.isSymbolNode && node.name == 'x';
      * });
-     * // returns an array with two entries: two SymbolMathNodes 'x'
+     * // returns an array with two entries: two SymbolNodes 'x'
      * ```
      *
      * The callback function is called as callback(node: MathNode, path:
@@ -3967,13 +4003,13 @@ declare namespace math {
      * and must return a MathNode. Parameter path is a string containing a
      * relative JSON Path.
      *
-     * For example, to replace all nodes of type SymbolMathNode having name
-     * ‘x’ with a ConstantMathNode with value 3:
+     * For example, to replace all nodes of type SymbolNode having name
+     * ‘x’ with a ConstantNode with value 3:
      * ```js
      * var node = math.parse('x^2 + 5*x');
      * var transformed = node.transform(function (node, path, parent) {
-     *   if (node.SymbolMathNode && node.name == 'x') {
-     *     return new math.expression.node.ConstantMathNode(3);
+     *   if (node.SymbolNode && node.name == 'x') {
+     *     return new math.expression.node.ConstantNode(3);
      *   }
      *   else {
      *     return node;
@@ -4001,18 +4037,18 @@ declare namespace math {
      * var node = math.parse('3 * x + 2');
      * node.traverse(function (node, path, parent) {
      * switch (node.type) {
-     * case 'OperatorMathNode': console.log(node.type, node.op);    break;
-     * case 'ConstantMathNode': console.log(node.type, node.value); break;
-     * case 'SymbolMathNode':   console.log(node.type, node.name);  break;
+     * case 'OperatorNode': console.log(node.type, node.op);    break;
+     * case 'ConstantNode': console.log(node.type, node.value); break;
+     * case 'SymbolNode':   console.log(node.type, node.name);  break;
      * default:             console.log(node.type);
      * }
      * });
      * // outputs:
-     * //   OperatorMathNode +
-     * //   OperatorMathNode *
-     * //   ConstantMathNode 3
-     * //   SymbolMathNode x
-     * //   ConstantMathNode 2
+     * //   OperatorNode +
+     * //   OperatorNode *
+     * //   ConstantNode 3
+     * //   SymbolNode x
+     * //   ConstantNode 2
      * ```
      */
     traverse(
