@@ -165,121 +165,159 @@ declare namespace math {
     new (): MathNode
   }
 
-  interface AccessorNode extends MathNode {
+  interface AccessorNode<TObject extends MathNode = MathNode> extends MathNode {
     type: 'AccessorNode'
     isAccessorNode: true
-    object: MathNode
+    object: TObject
     index: IndexNode
     name: string
   }
   interface AccessorNodeCtor {
-    new (object: MathNode, index: IndexNode): AccessorNode
+    new <TObject extends MathNode = MathNode>(
+      object: TObject,
+      index: IndexNode
+    ): AccessorNode<TObject>
   }
 
-  interface ArrayNode extends MathNode {
+  interface ArrayNode<TItems extends MathNode[] = MathNode[]> extends MathNode {
     type: 'ArrayNode'
     isArrayNode: true
-    items: MathNode[]
+    items: TItems
   }
   interface ArrayNodeCtor {
-    new (items: MathNode[]): ArrayNode
+    new <TItems extends MathNode[] = MathNode[]>(
+      items: MathNode[]
+    ): ArrayNode<TItems>
   }
 
-  interface AssignmentNode extends MathNode {
+  interface AssignmentNode<TValue extends MathNode = MathNode>
+    extends MathNode {
     type: 'AssignmentNode'
     isAssignmentNode: true
     object: SymbolNode | AccessorNode
     index: IndexNode | null
-    value: MathNode
+    value: TValue
     name: string
   }
   interface AssignmentNodeCtor {
-    new (object: SymbolNode, value: MathNode): AssignmentNode
-    new (
+    new <TValue extends MathNode = MathNode>(
+      object: SymbolNode,
+      value: TValue
+    ): AssignmentNode<TValue>
+    new <TValue extends MathNode = MathNode>(
       object: SymbolNode | AccessorNode,
       index: IndexNode,
-      value: MathNode
-    ): AssignmentNode
+      value: TValue
+    ): AssignmentNode<TValue>
   }
 
-  interface BlockNode extends MathNode {
+  interface BlockNode<TNode extends MathNode = MathNode> extends MathNode {
     type: 'BlockNode'
     isBlockNode: true
-    blocks: Array<{ node: MathNode; visible: boolean }>
+    blocks: Array<{ node: TNode; visible: boolean }>
   }
   interface BlockNodeCtor {
-    new (
-      arr: Array<{ node: MathNode } | { node: MathNode; visible: boolean }>
+    new <TNode extends MathNode = MathNode>(
+      arr: Array<{ node: TNode } | { node: TNode; visible: boolean }>
     ): BlockNode
   }
 
-  interface ConditionalNode extends MathNode {
+  interface ConditionalNode<
+    TCond extends MathNode = MathNode,
+    TTrueNode extends MathNode = MathNode,
+    TFalseNode extends MathNode = MathNode
+  > extends MathNode {
     type: 'ConditionalNode'
     isConditionalNode: boolean
-    condition: MathNode
-    trueExpr: MathNode
-    falseExpr: MathNode
+    condition: TCond
+    trueExpr: TTrueNode
+    falseExpr: TFalseNode
   }
   interface ConditionalNodeCtor {
-    new (
-      condition: MathNode,
-      trueExpr: MathNode,
-      falseExpr: MathNode
+    new <
+      TCond extends MathNode = MathNode,
+      TTrueNode extends MathNode = MathNode,
+      TFalseNode extends MathNode = MathNode
+    >(
+      condition: TCond,
+      trueExpr: TTrueNode,
+      falseExpr: TFalseNode
     ): ConditionalNode
   }
 
-  interface ConstantNode extends MathNode {
+  interface ConstantNode<TValue extends string | number = number>
+    extends MathNode {
     type: 'ConstantNode'
     isConstantNode: true
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    value: any
+    value: TValue
   }
 
   interface ConstantNodeCtor {
-    new (constant: number): ConstantNode
+    new <TValue extends string | number = string>(
+      value: TValue
+    ): ConstantNode<TValue>
   }
 
-  interface FunctionAssignmentNode extends MathNode {
+  interface FunctionAssignmentNode<TExpr extends MathNode = MathNode>
+    extends MathNode {
     type: 'FunctionAssignmentNode'
     isFunctionAssignmentNode: true
     name: string
     params: string[]
-    expr: MathNode
+    expr: TExpr
   }
   interface FunctionAssignmentNodeCtor {
-    new (name: string, params: string[], expr: MathNode): FunctionAssignmentNode
+    new <TExpr extends MathNode = MathNode>(
+      name: string,
+      params: string[],
+      expr: TExpr
+    ): FunctionAssignmentNode<TExpr>
   }
 
-  interface FunctionNode extends MathNode {
+  interface FunctionNode<
+    TFn = SymbolNode,
+    TArgs extends MathNode[] = MathNode[]
+  > extends MathNode {
     type: 'FunctionNode'
     isFunctionNode: true
-    fn: SymbolNode
-    args: MathNode[]
+    fn: TFn
+    args: TArgs
   }
   interface FunctionNodeCtor {
-    new (fn: MathNode | string, args: MathNode[]): FunctionNode
+    new <TFn = SymbolNode, TArgs extends MathNode[] = MathNode[]>(
+      fn: TFn,
+      args: SymbolNode
+    ): FunctionNode<TransferFunction, TArgs>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onUndefinedFunction: (name: string) => any
   }
 
-  interface IndexNode extends MathNode {
+  interface IndexNode<TDims extends MathNode[] = MathNode[]> extends MathNode {
     type: 'IndexNode'
     isIndexNode: true
-    dimensions: MathNode[]
+    dimensions: TDims
     dotNotation: boolean
   }
   interface IndexNodeCtor {
-    new (dimensions: MathNode[]): IndexNode
-    new (dimensions: MathNode[], dotNotation: boolean): IndexNode
+    new <TDims extends MathNode[] = MathNode[]>(dimensions: TDims): IndexNode
+    new <TDims extends MathNode[] = MathNode[]>(
+      dimensions: TDims,
+      dotNotation: boolean
+    ): IndexNode<TDims>
   }
 
-  interface ObjectNode extends MathNode {
+  interface ObjectNode<
+    TProps extends Record<string, MathNode> = Record<string, MathNode>
+  > extends MathNode {
     type: 'ObjectNode'
     isObjectNode: true
-    properties: Record<string, MathNode>
+    properties: TProps
   }
   interface ObjectNodeCtor {
-    new (properties: Record<string, MathNode>): ObjectNode
+    new <TProps extends Record<string, MathNode> = Record<string, MathNode>>(
+      properties: TProps
+    ): ObjectNode<TProps>
   }
 
   type OperatorNodeMap = {
@@ -357,25 +395,41 @@ declare namespace math {
     ): ParenthesisNode<TContent>
   }
 
-  interface RangeNode extends MathNode {
+  interface RangeNode<
+    TStart extends MathNode = MathNode,
+    TEnd extends MathNode = MathNode,
+    TStep extends MathNode = MathNode
+  > extends MathNode {
     type: 'RangeNode'
     isRangeNode: true
-    start: MathNode
-    end: MathNode
-    step: MathNode | null
+    start: TStart
+    end: TEnd
+    step: TStep | null
   }
   interface RangeNodeCtor {
-    new (start: MathNode, end: MathNode, step?: MathNode): RangeNode
+    new <
+      TStart extends MathNode = MathNode,
+      TEnd extends MathNode = MathNode,
+      TStep extends MathNode = MathNode
+    >(
+      start: TStart,
+      end: TEnd,
+      step?: TStep
+    ): RangeNode<TStart, TEnd, TStep>
   }
 
-  interface RelationalNode extends MathNode {
+  interface RelationalNode<TParams extends MathNode[] = MathNode[]>
+    extends MathNode {
     type: 'RelationalNode'
     isRelationalNode: true
     conditionals: string[]
-    params: MathNode[]
+    params: TParams
   }
   interface RelationalNodeCtor {
-    new (conditionals: string[], params: MathNode[]): RelationalNode
+    new <TParams extends MathNode[] = MathNode[]>(
+      conditionals: string[],
+      params: TParams
+    ): RelationalNode<TParams>
   }
 
   interface SymbolNode extends MathNode {
