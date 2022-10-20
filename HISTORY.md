@@ -1,5 +1,9 @@
 # History
 
+# Unpublished changes since 11.3.1
+
+- Add generics to remaining Node type definitions (#2733). Thanks @mattvague. 
+
 # 2022-10-19, 11.3.1
 
 - Fix #2809: code completion issues in some IDE's (#2812).
