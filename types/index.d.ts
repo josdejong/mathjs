@@ -319,8 +319,8 @@ declare namespace math {
   type OperatorNodeFn = keyof OperatorNodeMap
 
   interface OperatorNode<
-    TOp extends OperatorNodeMap[TFn] = never,
-    TFn extends OperatorNodeFn = never,
+    TFn extends OperatorNodeFn = OperatorNodeFn,
+    TOp extends OperatorNodeMap[TFn] = OperatorNodeMap[TFn],
     TArgs extends BaseNode[] = BaseNode[]
   > extends BaseNode {
     type: 'OperatorNode'
@@ -343,7 +343,7 @@ declare namespace math {
       fn: TFn,
       args: TArgs,
       implicit?: boolean
-    ): OperatorNode<TOp, TFn, TArgs>
+    ): OperatorNode<TFn, TOp, TArgs>
   }
   interface ParenthesisNode<TContent extends BaseNode = BaseNode>
     extends BaseNode {
@@ -3187,7 +3187,7 @@ declare namespace math {
 
     isOperatorNode(
       x: unknown
-    ): x is OperatorNode<OperatorNodeOp, OperatorNodeFn>
+    ): x is OperatorNode<OperatorNodeFn, OperatorNodeOp>
 
     isParenthesisNode(x: unknown): x is ParenthesisNode
 

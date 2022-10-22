@@ -32,8 +32,6 @@ import {
   Matrix,
   ObjectNode,
   OperatorNode,
-  OperatorNodeFn,
-  OperatorNodeOp,
   ParenthesisNode,
   PolarCoordinates,
   QRDecomposition,
@@ -41,10 +39,9 @@ import {
   SimplifyRule,
   SLUDecomposition,
   SymbolNode,
-  MathNodeCommon,
   Unit,
-  Node,
   isSymbolNode,
+  BaseNode,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -1089,16 +1086,16 @@ Transform examples
 {
   const math = create(all, {})
   {
-    const myTransform1 = (node: MathNode): OperatorNode<'+', 'add'> =>
+    const myTransform1 = (node: MathNode): OperatorNode<'add', '+'> =>
       new OperatorNode('+', 'add', [node, new ConstantNode(1)])
     const myTransform2 = (
-      node: OperatorNode<'+', 'add'>
-    ): OperatorNode<'-', 'subtract'> =>
+      node: OperatorNode<'add', '+'>
+    ): OperatorNode<'subtract', '-'> =>
       new OperatorNode('-', 'subtract', [node, new ConstantNode(5)])
 
     expectTypeOf(
       math.parse('sqrt(3^2 + 4^2)').transform(myTransform1)
-    ).toMatchTypeOf<OperatorNode<'+', 'add', MathNode[]>>()
+    ).toMatchTypeOf<OperatorNode<'add', '+', BaseNode[]>>()
 
     assert.deepStrictEqual(
       math.parse('sqrt(3^2 + 4^2)').transform(myTransform1).toString(),
@@ -1110,7 +1107,7 @@ Transform examples
         .parse('sqrt(3^2 + 4^2)')
         .transform(myTransform1)
         .transform(myTransform2)
-    ).toMatchTypeOf<OperatorNode<'-', 'subtract', MathNode[]>>()
+    ).toMatchTypeOf<OperatorNode<'subtract', '-', BaseNode[]>>()
 
     assert.deepStrictEqual(
       math
@@ -1845,7 +1842,7 @@ Function round examples
       new math.ConstantNode(3),
       new math.SymbolNode('x'),
     ])
-  ).toMatchTypeOf<OperatorNode<'/', 'divide', (ConstantNode | SymbolNode)[]>>()
+  ).toMatchTypeOf<OperatorNode<'divide', '/', (ConstantNode | SymbolNode)[]>>()
 
   expectTypeOf(new math.ConstantNode(1).clone()).toMatchTypeOf<ConstantNode>()
   expectTypeOf(
@@ -1854,7 +1851,7 @@ Function round examples
       new math.SymbolNode('x'),
     ]).clone()
   ).toMatchTypeOf<
-    OperatorNode<'*', 'multiply', (ConstantNode | SymbolNode)[]>
+    OperatorNode<'multiply', '*', (ConstantNode | SymbolNode)[]>
   >()
 
   expectTypeOf(
@@ -1866,7 +1863,7 @@ Function round examples
       new math.SymbolNode('x'),
     ]).cloneDeep()
   ).toMatchTypeOf<
-    OperatorNode<'+', 'unaryPlus', (ConstantNode | SymbolNode)[]>
+    OperatorNode<'unaryPlus', '+', (ConstantNode | SymbolNode)[]>
   >()
 
   expectTypeOf(
@@ -2225,9 +2222,7 @@ Factory Test
     expectTypeOf(x).toMatchTypeOf<ObjectNode>()
   }
   if (math.isOperatorNode(x)) {
-    expectTypeOf(x).toMatchTypeOf<
-      OperatorNode<OperatorNodeOp, OperatorNodeFn, MathNode[]>
-    >()
+    expectTypeOf(x).toMatchTypeOf<OperatorNode>()
   }
   if (math.isParenthesisNode(x)) {
     expectTypeOf(x).toMatchTypeOf<ParenthesisNode>()
@@ -2307,37 +2302,4 @@ Random examples
   expectTypeOf(math.chain([1, 2, 3]).pickRandom(2)).toMatchTypeOf<
     MathJsChain<number[]>
   >()
-}
-
-/*
-MathNode examples
-*/
-{
-  class CustomNode extends Node {
-    a: MathNode
-    constructor(a: MathNode) {
-      super()
-      this.a = a
-    }
-  }
-
-  // Basic node
-  const instance1 = new Node()
-
-  // Built-in subclass of Node
-  const instance2 = new ConstantNode(2)
-
-  // Custom subclass of node
-  const instance3 = new CustomNode(new ConstantNode(2))
-
-  expectTypeOf(instance1).toMatchTypeOf<MathNode>()
-  expectTypeOf(instance1).toMatchTypeOf<MathNodeCommon>()
-
-  expectTypeOf(instance2).toMatchTypeOf<MathNode>()
-  expectTypeOf(instance2).toMatchTypeOf<MathNodeCommon>()
-  expectTypeOf(instance2).toMatchTypeOf<ConstantNode>()
-
-  expectTypeOf(instance3).toMatchTypeOf<MathNode>()
-  expectTypeOf(instance3).toMatchTypeOf<MathNodeCommon>()
-  expectTypeOf(instance3).toMatchTypeOf<CustomNode>()
 }
