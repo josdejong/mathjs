@@ -1086,16 +1086,16 @@ Transform examples
 {
   const math = create(all, {})
   {
-    const myTransform1 = (node: MathNode): OperatorNode<'add', '+'> =>
+    const myTransform1 = (node: MathNode): OperatorNode<'add'> =>
       new OperatorNode('+', 'add', [node, new ConstantNode(1)])
     const myTransform2 = (
-      node: OperatorNode<'add', '+'>
-    ): OperatorNode<'subtract', '-'> =>
+      node: OperatorNode<'add'>
+    ): OperatorNode<'subtract'> =>
       new OperatorNode('-', 'subtract', [node, new ConstantNode(5)])
 
     expectTypeOf(
       math.parse('sqrt(3^2 + 4^2)').transform(myTransform1)
-    ).toMatchTypeOf<OperatorNode<'add', '+', BaseNode[]>>()
+    ).toMatchTypeOf<OperatorNode<'add', BaseNode[]>>()
 
     assert.deepStrictEqual(
       math.parse('sqrt(3^2 + 4^2)').transform(myTransform1).toString(),
@@ -1107,7 +1107,7 @@ Transform examples
         .parse('sqrt(3^2 + 4^2)')
         .transform(myTransform1)
         .transform(myTransform2)
-    ).toMatchTypeOf<OperatorNode<'subtract', '-', BaseNode[]>>()
+    ).toMatchTypeOf<OperatorNode<'subtract', BaseNode[]>>()
 
     assert.deepStrictEqual(
       math
@@ -1842,7 +1842,7 @@ Function round examples
       new math.ConstantNode(3),
       new math.SymbolNode('x'),
     ])
-  ).toMatchTypeOf<OperatorNode<'divide', '/', (ConstantNode | SymbolNode)[]>>()
+  ).toMatchTypeOf<OperatorNode<'divide', (ConstantNode | SymbolNode)[]>>()
 
   expectTypeOf(new math.ConstantNode(1).clone()).toMatchTypeOf<ConstantNode>()
   expectTypeOf(
@@ -1850,9 +1850,7 @@ Function round examples
       new math.ConstantNode(3),
       new math.SymbolNode('x'),
     ]).clone()
-  ).toMatchTypeOf<
-    OperatorNode<'multiply', '*', (ConstantNode | SymbolNode)[]>
-  >()
+  ).toMatchTypeOf<OperatorNode<'multiply', (ConstantNode | SymbolNode)[]>>()
 
   expectTypeOf(
     new math.ConstantNode(1).cloneDeep()
@@ -1862,9 +1860,7 @@ Function round examples
       new math.ConstantNode(3),
       new math.SymbolNode('x'),
     ]).cloneDeep()
-  ).toMatchTypeOf<
-    OperatorNode<'unaryPlus', '+', (ConstantNode | SymbolNode)[]>
-  >()
+  ).toMatchTypeOf<OperatorNode<'unaryPlus', (ConstantNode | SymbolNode)[]>>()
 
   expectTypeOf(
     math.clone(new math.ConstantNode(1))
