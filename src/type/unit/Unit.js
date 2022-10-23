@@ -2294,7 +2294,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     K: {
       name: 'K',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1,
       offset: 0
     },
@@ -2315,14 +2315,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     degR: {
       name: 'degR',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1 / 1.8,
       offset: 0
     },
     kelvin: {
       name: 'kelvin',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1,
       offset: 0
     },
@@ -2343,7 +2343,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     rankine: {
       name: 'rankine',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1 / 1.8,
       offset: 0
     },
