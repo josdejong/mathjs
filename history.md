@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20221025-1132">2022-10-25, 11.3.2 <a href="#20221025-1132" title="Permalink">#</a></h1>
+
+- Add generics to remaining Node type definitions  <a href="https://github.com/josdejong/mathjs/issues/2733">#2733</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>. 
+- Allow unit prefixes for (absolute) temperatures `kelvin`, `rankine`, 
+  `celsius`, and `fahrenheit`  <a href="https://github.com/josdejong/mathjs/issues/2824">#2824</a>). Thanks <a href="https://github.com/jfeist">@jfeist</a>
+
 <h1 id="20221019-1131">2022-10-19, 11.3.1 <a href="#20221019-1131" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2809">#2809</a>: code completion issues in some IDE's  <a href="https://github.com/josdejong/mathjs/issues/2812">#2812</a>).
