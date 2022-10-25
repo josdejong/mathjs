@@ -3,6 +3,8 @@
 # Unpublished changes since 11.3.1
 
 - Add generics to remaining Node type definitions (#2733). Thanks @mattvague. 
+- Allow unit prefixes for (absolute) temperatures `kelvin`, `rankine`, 
+  `celsius`, and `fahrenheit` (#2824). Thanks @jfeist
 
 # 2022-10-19, 11.3.1
 
