@@ -2301,14 +2301,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     degC: {
       name: 'degC',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1,
       offset: 273.15
     },
     degF: {
       name: 'degF',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1 / 1.8,
       offset: 459.67
     },
@@ -2329,14 +2329,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     celsius: {
       name: 'celsius',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1,
       offset: 273.15
     },
     fahrenheit: {
       name: 'fahrenheit',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1 / 1.8,
       offset: 459.67
     },
