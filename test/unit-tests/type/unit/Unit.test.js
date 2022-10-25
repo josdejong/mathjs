@@ -953,7 +953,7 @@ describe('Unit', function () {
       assert.deepStrictEqual(newMm, math2.Unit.parse('mm'))
     })
 
-    it('should support prefixes on specific units', () => {
+    it('should support prefixes on specific units', function () {
       assert.deepStrictEqual(Unit.parse('1 nK').toNumeric('K'), 1e-9)
       assert.deepStrictEqual(Unit.parse('1 ndegR').toNumeric('degR'), 1e-9)
       assert.deepStrictEqual(Unit.parse('1 ndegF').toNumeric('degF'), 1e-9)
