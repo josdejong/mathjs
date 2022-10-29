@@ -65,6 +65,9 @@ expm1Number.signature = n1
  * @returns {number} Returns the greatest common denominator of a and b
  */
 export function gcdNumber (a, b) {
+  //take an array as an input
+  ((a !== undefined & !b) & (typeof(a) == "object")) && ( b = a[1], a = a[0]);
+
   if (!isInteger(a) || !isInteger(b)) {
     throw new Error('Parameters in function gcd must be integer numbers')
   }
