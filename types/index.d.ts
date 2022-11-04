@@ -400,7 +400,7 @@ declare namespace math {
     FunctionNode: FunctionNode
     IndexNode: IndexNode
     ObjectNode: ObjectNode
-    OperatorNode: OperatorNode
+    OperatorNode: OperatorNode<OperatorNodeOp, OperatorNodeFn>
     ParenthesisNode: ParenthesisNode
     RangeNode: RangeNode
     RelationalNode: RelationalNode
