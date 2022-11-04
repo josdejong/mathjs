@@ -28,8 +28,12 @@ describe('simplifyConstant', function () {
       testSimplifyConstant('3 * x * 7 * y', '21 * x * y')
 
       // including an 'unevaluable' constant
-      // todo?: output here not currently as expected; instead outputting as '9 + "foo" + 11'.
-      // testSimplifyConstant('2 + 7 + "foo" + 3 + 8', '20 + "foo"')
+      // note: output here not currently as expected/desired  ( '20 + "foo"' )
+      testSimplifyConstant('2 + 7 + "foo" + 3 + 8', '9 + "foo" + 11')
+
+      // (^ todo (FIX): constant evaluation (in the default context) should be able to simplify all
+      // evaluable constants in a multi-arg expression containing a non evaluable/collapsable
+      // constant such as 'foo')
     })
 
     it('in non-commutative contexts', function () {
@@ -39,6 +43,9 @@ describe('simplifyConstant', function () {
       }
       const opts = { context }
 
+      /*
+       * Exprs. with non-constants/symbols
+      */
       // leading consts.
       testSimplifyConstant('2 + 2 + a', '4 + a', undefined, opts)
       testSimplifyConstant('2 * 2 * b', '4 * b', undefined, opts)
@@ -54,14 +61,17 @@ describe('simplifyConstant', function () {
       // collapsing of constants with a 'falsy' value (e.g. '0')
       testSimplifyConstant('a + 0 + 7 + b', 'a + 7 + b', undefined, opts)
 
-      // note:
-      // - tests with inverses of commutative operations. will not be as expected (i.e. 'fully
-      // simplified') if passed directly to simplifyConstant, and further they should not be needed.
-      // In the absence of prior application of standard rules which flatten substraction and division
-      // ops. (such as rule 'n / n1 -> n * n1 ^ (-1)' for div. and 'n - n1 -> n + -n1' for
-      // subtraction), constant args are not 'flattened' and consequently included in 'multi-arg
-      // expressions', therefore prohibiting evaluation of adjacent constants (in a non-commutative
-      // context) here.
+      // TODO: implement support for simplification of constant sub-expressions for inverses of
+      // commutative ops. (i.e. addition/subtraction), in cases for expressions with leading
+      // symbols, and with 'wedged' constants. Expected behaviour is illustrated with todo-tests
+      // below.
+      // - note that these tests are only apt for this block (multi arg expressions) if
+      // simplifyConstant is later able to flatten inverse commutative binary ops
+      // - for all of the following tests, output remains unchanged
+      // testSimplifyConstant('a + 2 - 2', 'a', undefined, opts)
+      // testSimplifyConstant('b + 4 - 2 - 1 + b', 'b + 1 + b', undefined, opts)
+      // testSimplifyConstant('c * 6 / 3', 'c * 2', undefined, opts)
+      // testSimplifyConstant('c * 1 / 1 * 3 * d', 'c * 3 * d', undefined, opts)
     })
   })
 
