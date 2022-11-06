@@ -773,7 +773,7 @@ describe('SparseMatrix', function () {
           [0, 0, 0, 0, 2, -1]
         ])
     })
-    
+
     it('should not add matrix element (zero)', function () {
       const m = new SparseMatrix([
         [0, 1],
