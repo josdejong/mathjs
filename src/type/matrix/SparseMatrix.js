@@ -510,8 +510,10 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         _remove(k, j, this._values, this._index, this._ptr)
       }
     } else {
-      // insert value @ (i, j)
-      _insert(k, i, j, v, this._values, this._index, this._ptr)
+      if (!eq(v, zero)) {
+        // insert value @ (i, j)
+        _insert(k, i, j, v, this._values, this._index, this._ptr)
+      }
     }
 
     return this
