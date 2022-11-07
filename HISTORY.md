@@ -1,5 +1,11 @@
 # History
 
+# 2022-11-07, 11.3.3
+
+- Fix a regression in the type definitions of `FunctionNode`, introduced in 
+  `v11.3.2`. See #2733. Thanks @dsteve.
+
+
 # 2022-10-25, 11.3.2
 
 - Add generics to remaining Node type definitions (#2733). Thanks @mattvague. 
