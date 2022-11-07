@@ -129,6 +129,13 @@ describe('simplify', function () {
     simplifyAndCompareEval('x^2+x-3+x^2', '2x^2+x-3', { x: 7 })
   })
 
+  it('should place constants at the end of expressions unless subtraction takes priority', function () {
+    simplifyAndCompare('2 + x', 'x + 2')
+    simplifyAndCompare('-2 + x', 'x - 2')
+    simplifyAndCompare('-2 + -x', '-x - 2')
+    simplifyAndCompare('2 + -x', '2 - x')
+  })
+
   it('should simplify exponents', function () {
     // power rule
     simplifyAndCompare('(x^2)^3', 'x^6')
@@ -350,6 +357,11 @@ describe('simplify', function () {
     simplifyAndCompare('x*y*-x/(x^2)', '-y')
     simplifyAndCompare('x/2*x', 'x^2/2')
     simplifyAndCompare('x*2*x', '2*x^2')
+  })
+
+  it('should preserve seperated numerical factors', function () {
+    simplifyAndCompare('2 * (2 * x + y)', '2 * (2 * x + y)')
+    simplifyAndCompare('-2 * (-2 * x + y)', '-(2 * (y - 2 * x))') // Failed before introduction of vd in #1915
   })
 
   it('should handle nested exponentiation', function () {
