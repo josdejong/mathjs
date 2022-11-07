@@ -2,8 +2,10 @@
 
 # 2022-11-07, 11.3.3
 
-- Fix a regression in the type definitions of `FunctionNode`, introduced in 
-  `v11.3.2`. See #2733. Thanks @dsteve.
+- Fix #2830: Prevent inserting zero values when creating a `SparseMatrix` from a 
+  `DenseMatrix` (#2836). Thanks @AlexandreAlvesDB.
+- Fix #2835: a regression in the type definitions of `FunctionNode`, introduced
+  in `v11.3.2`. See #2733. Thanks @dsteve.
 
 
 # 2022-10-25, 11.3.2
@@ -12,12 +14,14 @@
 - Allow unit prefixes for (absolute) temperatures `kelvin`, `rankine`, 
   `celsius`, and `fahrenheit` (#2824). Thanks @jfeist
 
+
 # 2022-10-19, 11.3.1
 
 - Fix #2809: code completion issues in some IDE's (#2812).
 - Fix #2818: throw an error when a function assignment has duplicate 
   parameter names (#2819).
 - Update `decimal.js` to version `10.4.2`.
+
 
 # 2022-10-11, 11.3.0
 
@@ -34,6 +38,7 @@
 # 2022-09-13, 11.2.1
 
 - Fix doc generator being broken, not generating a function reference.
+
 
 # 2022-09-12, 11.2.0
 
