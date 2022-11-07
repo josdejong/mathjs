@@ -4,11 +4,20 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20221107-1133">2022-11-07, 11.3.3 <a href="#20221107-1133" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2830">#2830</a>: Prevent inserting zero values when creating a `SparseMatrix` from a 
+  `DenseMatrix`  <a href="https://github.com/josdejong/mathjs/issues/2836">#2836</a>). Thanks <a href="https://github.com/AlexandreAlvesDB">@AlexandreAlvesDB</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2835">#2835</a>: a regression in the type definitions of `FunctionNode`, introduced
+  in `v11.3.2`. See <a href="https://github.com/josdejong/mathjs/issues/2733">#2733</a>. Thanks <a href="https://github.com/dsteve">@dsteve</a>.
+
+
 <h1 id="20221025-1132">2022-10-25, 11.3.2 <a href="#20221025-1132" title="Permalink">#</a></h1>
 
 - Add generics to remaining Node type definitions  <a href="https://github.com/josdejong/mathjs/issues/2733">#2733</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>. 
 - Allow unit prefixes for (absolute) temperatures `kelvin`, `rankine`, 
   `celsius`, and `fahrenheit`  <a href="https://github.com/josdejong/mathjs/issues/2824">#2824</a>). Thanks <a href="https://github.com/jfeist">@jfeist</a>
+
 
 <h1 id="20221019-1131">2022-10-19, 11.3.1 <a href="#20221019-1131" title="Permalink">#</a></h1>
 
@@ -16,6 +25,7 @@ layout: default
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2818">#2818</a>: throw an error when a function assignment has duplicate 
   parameter names  <a href="https://github.com/josdejong/mathjs/issues/2819">#2819</a>).
 - Update `decimal.js` to version `10.4.2`.
+
 
 <h1 id="20221011-1130">2022-10-11, 11.3.0 <a href="#20221011-1130" title="Permalink">#</a></h1>
 
@@ -32,6 +42,7 @@ layout: default
 <h1 id="20220913-1121">2022-09-13, 11.2.1 <a href="#20220913-1121" title="Permalink">#</a></h1>
 
 - Fix doc generator being broken, not generating a function reference.
+
 
 <h1 id="20220912-1120">2022-09-12, 11.2.0 <a href="#20220912-1120" title="Permalink">#</a></h1>
 

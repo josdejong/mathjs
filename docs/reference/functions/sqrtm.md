@@ -40,7 +40,7 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.sqrtm([[1, 2], [3, 4]]) // returns [[-2, 1], [1.5, -0.5]]
+math.sqrtm([[33, 24], [48, 57]]) // returns [[5, 2], [4, 7]]
 ```
 
 
