@@ -11,7 +11,33 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
 [![Codecov](https://codecov.io/gh/josdejong/mathjs/branch/develop/graph/badge.svg)](https://codecov.io/gh/josdejong/mathjs)
+[![Foresight](https://api-public.service.runforesight.com/api/v1/badge/test?repoId=13cb22bf-6cd5-4c4b-a9de-46081ac63ffb)](https://mathjs.app.runforesight.com/)
 [![Github Sponsor](https://camo.githubusercontent.com/7d9333b097b2f54a8957d126ab82937811489c9b75c3850f609985cf94cd29fe/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2532302d53706f6e736f722532306d652532306f6e2532304769744875622d6f72616e6765)](https://github.com/sponsors/josdejong)
+
+## Sponsors
+
+<table width="100%">
+<tr>
+<td>
+  <img width="1000" height="0">
+  <a href="https://www.runforesight.com/?utm_source=mathjs&utm_medium=sponsorship">
+  <img src="https://www.thundra.io/hubfs/RunForesight/GitHub%20Sponsorship%20banners/power-up-github.png"
+alt="Foresight" width="260" align="right">
+  </a>
+
+<h3>Foresight: Increase CI/CD Health & Test Performance</h3>
+
+  <p>
+Foresight provides full visibility and deep insights into the health
+and performance of your tests and CI pipelines. Assess the risk of
+changes, resolve bottlenecks, reduce build times, and deliver
+high-quality software at speed with Foresight.
+  </p>
+
+[Sign up now!](https://runforesight.com/?utm_source=mathjs&utm_medium=sponsorship)
+</td>
+</tr>
+</table>
 
 ## Features
 

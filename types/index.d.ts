@@ -162,122 +162,162 @@ declare namespace math {
   }
 
   interface NodeCtor {
-    new (): MathNodeCommon
+    new (): MathNode
   }
 
-  interface AccessorNode extends MathNodeCommon {
+  interface AccessorNode<TObject extends MathNode = MathNode> extends MathNode {
     type: 'AccessorNode'
     isAccessorNode: true
-    object: MathNode
+    object: TObject
     index: IndexNode
     name: string
   }
   interface AccessorNodeCtor {
-    new (object: MathNode, index: IndexNode): AccessorNode
+    new <TObject extends MathNode = MathNode>(
+      object: TObject,
+      index: IndexNode
+    ): AccessorNode<TObject>
   }
 
-  interface ArrayNode extends MathNodeCommon {
+  interface ArrayNode<TItems extends MathNode[] = MathNode[]> extends MathNode {
     type: 'ArrayNode'
     isArrayNode: true
-    items: MathNode[]
+    items: TItems
   }
   interface ArrayNodeCtor {
-    new (items: MathNode[]): ArrayNode
+    new <TItems extends MathNode[] = MathNode[]>(
+      items: MathNode[]
+    ): ArrayNode<TItems>
   }
 
-  interface AssignmentNode extends MathNodeCommon {
+  interface AssignmentNode<TValue extends MathNode = MathNode>
+    extends MathNode {
     type: 'AssignmentNode'
     isAssignmentNode: true
     object: SymbolNode | AccessorNode
     index: IndexNode | null
-    value: MathNode
+    value: TValue
     name: string
   }
   interface AssignmentNodeCtor {
-    new (object: SymbolNode, value: MathNode): AssignmentNode
-    new (
+    new <TValue extends MathNode = MathNode>(
+      object: SymbolNode,
+      value: TValue
+    ): AssignmentNode<TValue>
+    new <TValue extends MathNode = MathNode>(
       object: SymbolNode | AccessorNode,
       index: IndexNode,
-      value: MathNode
-    ): AssignmentNode
+      value: TValue
+    ): AssignmentNode<TValue>
   }
 
-  interface BlockNode extends MathNodeCommon {
+  interface BlockNode<TNode extends MathNode = MathNode> extends MathNode {
     type: 'BlockNode'
     isBlockNode: true
-    blocks: Array<{ node: MathNode; visible: boolean }>
+    blocks: Array<{ node: TNode; visible: boolean }>
   }
   interface BlockNodeCtor {
-    new (
-      arr: Array<{ node: MathNode } | { node: MathNode; visible: boolean }>
+    new <TNode extends MathNode = MathNode>(
+      arr: Array<{ node: TNode } | { node: TNode; visible: boolean }>
     ): BlockNode
   }
 
-  interface ConditionalNode extends MathNodeCommon {
+  interface ConditionalNode<
+    TCond extends MathNode = MathNode,
+    TTrueNode extends MathNode = MathNode,
+    TFalseNode extends MathNode = MathNode
+  > extends MathNode {
     type: 'ConditionalNode'
     isConditionalNode: boolean
-    condition: MathNode
-    trueExpr: MathNode
-    falseExpr: MathNode
+    condition: TCond
+    trueExpr: TTrueNode
+    falseExpr: TFalseNode
   }
   interface ConditionalNodeCtor {
-    new (
-      condition: MathNode,
-      trueExpr: MathNode,
-      falseExpr: MathNode
+    new <
+      TCond extends MathNode = MathNode,
+      TTrueNode extends MathNode = MathNode,
+      TFalseNode extends MathNode = MathNode
+    >(
+      condition: TCond,
+      trueExpr: TTrueNode,
+      falseExpr: TFalseNode
     ): ConditionalNode
   }
 
-  interface ConstantNode extends MathNodeCommon {
+  interface ConstantNode<TValue extends string | number = number>
+    extends MathNode {
     type: 'ConstantNode'
     isConstantNode: true
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    value: any
+    value: TValue
   }
 
   interface ConstantNodeCtor {
-    new (constant: number): ConstantNode
+    new <TValue extends string | number = string>(
+      value: TValue
+    ): ConstantNode<TValue>
   }
 
-  interface FunctionAssignmentNode extends MathNodeCommon {
+  interface FunctionAssignmentNode<TExpr extends MathNode = MathNode>
+    extends MathNode {
     type: 'FunctionAssignmentNode'
     isFunctionAssignmentNode: true
     name: string
     params: string[]
-    expr: MathNode
+    expr: TExpr
   }
   interface FunctionAssignmentNodeCtor {
-    new (name: string, params: string[], expr: MathNode): FunctionAssignmentNode
+    new <TExpr extends MathNode = MathNode>(
+      name: string,
+      params: string[],
+      expr: TExpr
+    ): FunctionAssignmentNode<TExpr>
   }
 
-  interface FunctionNode extends MathNodeCommon {
+  interface FunctionNode<
+    TFn = SymbolNode,
+    TArgs extends MathNode[] = MathNode[]
+  > extends MathNode {
     type: 'FunctionNode'
     isFunctionNode: true
-    fn: SymbolNode
-    args: MathNode[]
+    fn: TFn
+    args: TArgs
   }
   interface FunctionNodeCtor {
-    new (fn: MathNode | string, args: MathNode[]): FunctionNode
+    new <TFn = SymbolNode, TArgs extends MathNode[] = MathNode[]>(
+      fn: TFn,
+      args: TArgs
+    ): FunctionNode<TFn, TArgs>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onUndefinedFunction: (name: string) => any
   }
 
-  interface IndexNode extends MathNodeCommon {
+  interface IndexNode<TDims extends MathNode[] = MathNode[]> extends MathNode {
     type: 'IndexNode'
     isIndexNode: true
-    dimensions: MathNode[]
+    dimensions: TDims
     dotNotation: boolean
   }
   interface IndexNodeCtor {
-    new (dimensions: MathNode[]): IndexNode
-    new (dimensions: MathNode[], dotNotation: boolean): IndexNode
+    new <TDims extends MathNode[] = MathNode[]>(dimensions: TDims): IndexNode
+    new <TDims extends MathNode[] = MathNode[]>(
+      dimensions: TDims,
+      dotNotation: boolean
+    ): IndexNode<TDims>
   }
 
-  interface ObjectNode extends MathNodeCommon {
+  interface ObjectNode<
+    TProps extends Record<string, MathNode> = Record<string, MathNode>
+  > extends MathNode {
     type: 'ObjectNode'
     isObjectNode: true
-    properties: Record<string, MathNode>
+    properties: TProps
   }
   interface ObjectNodeCtor {
-    new (properties: Record<string, MathNode>): ObjectNode
+    new <TProps extends Record<string, MathNode> = Record<string, MathNode>>(
+      properties: TProps
+    ): ObjectNode<TProps>
   }
 
   type OperatorNodeMap = {
@@ -320,7 +360,7 @@ declare namespace math {
     TOp extends OperatorNodeMap[TFn] = never,
     TFn extends OperatorNodeFn = never,
     TArgs extends MathNode[] = MathNode[]
-  > extends MathNodeCommon {
+  > extends MathNode {
     type: 'OperatorNode'
     isOperatorNode: true
     op: TOp
@@ -331,7 +371,7 @@ declare namespace math {
     isBinary(): boolean
   }
 
-  interface OperatorNodeCtor extends MathNodeCommon {
+  interface OperatorNodeCtor extends MathNode {
     new <
       TOp extends OperatorNodeMap[TFn],
       TFn extends OperatorNodeFn,
@@ -344,7 +384,7 @@ declare namespace math {
     ): OperatorNode<TOp, TFn, TArgs>
   }
   interface ParenthesisNode<TContent extends MathNode = MathNode>
-    extends MathNodeCommon {
+    extends MathNode {
     type: 'ParenthesisNode'
     isParenthesisNode: true
     content: TContent
@@ -355,52 +395,58 @@ declare namespace math {
     ): ParenthesisNode<TContent>
   }
 
-  interface RangeNode extends MathNodeCommon {
+  interface RangeNode<
+    TStart extends MathNode = MathNode,
+    TEnd extends MathNode = MathNode,
+    TStep extends MathNode = MathNode
+  > extends MathNode {
     type: 'RangeNode'
     isRangeNode: true
-    start: MathNode
-    end: MathNode
-    step: MathNode | null
+    start: TStart
+    end: TEnd
+    step: TStep | null
   }
   interface RangeNodeCtor {
-    new (start: MathNode, end: MathNode, step?: MathNode): RangeNode
+    new <
+      TStart extends MathNode = MathNode,
+      TEnd extends MathNode = MathNode,
+      TStep extends MathNode = MathNode
+    >(
+      start: TStart,
+      end: TEnd,
+      step?: TStep
+    ): RangeNode<TStart, TEnd, TStep>
   }
 
-  interface RelationalNode extends MathNodeCommon {
+  interface RelationalNode<TParams extends MathNode[] = MathNode[]>
+    extends MathNode {
     type: 'RelationalNode'
     isRelationalNode: true
     conditionals: string[]
-    params: MathNode[]
+    params: TParams
   }
   interface RelationalNodeCtor {
-    new (conditionals: string[], params: MathNode[]): RelationalNode
+    new <TParams extends MathNode[] = MathNode[]>(
+      conditionals: string[],
+      params: TParams
+    ): RelationalNode<TParams>
   }
 
-  interface SymbolNode extends MathNodeCommon {
+  interface SymbolNode extends MathNode {
     type: 'SymbolNode'
     isSymbolNode: true
     name: string
   }
   interface SymbolNodeCtor {
     new (name: string): SymbolNode
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onUndefinedSymbol: (name: string) => any
   }
 
-  type MathNode =
-    | AccessorNode
-    | ArrayNode
-    | AssignmentNode
-    | BlockNode
-    | ConditionalNode
-    | ConstantNode
-    | FunctionAssignmentNode
-    | FunctionNode
-    | IndexNode
-    | ObjectNode
-    | OperatorNode<OperatorNodeOp, OperatorNodeFn>
-    | ParenthesisNode
-    | RangeNode
-    | RelationalNode
-    | SymbolNode
+  /**
+   * @deprecated since version 11.3. Prefer `MathNode` instead
+   */
+  type MathNodeCommon = MathNode
 
   type MathJsFunctionName = keyof MathJsStatic
 
@@ -1911,6 +1957,13 @@ declare namespace math {
     ): any
 
     /**
+     * Calculate the Moore–Penrose inverse of a matrix.
+     * @param x Matrix to be inversed
+     * @return The inverse of `x`.
+     */
+    pinv<T extends MathType>(x: T): T
+
+    /**
      * Create an array from a range. By default, the range end is excluded.
      * This can be customized by providing an extra parameter includeEnd.
      * @param str A string 'start:end' or 'start:step:end'
@@ -2203,11 +2256,9 @@ declare namespace math {
      * undefined. Returns an array with the configured number of elements
      * when number is > 1.
      */
-    pickRandom(
-      array: number[],
-      number?: number,
-      weights?: number[]
-    ): number | number[]
+    pickRandom<T>(array: T[]): T
+    pickRandom<T>(array: T[], number: number): T[]
+    pickRandom<T>(array: T[], number: number, weights: number[]): T[]
 
     /**
      * Return a random number larger or equal to min and smaller than max
@@ -2578,9 +2629,9 @@ declare namespace math {
     median(...args: MathType[]): any
 
     /**
-     * Compute the maximum value of a matrix or a list of values. In case of
-     * a multi dimensional array, the maximum of the flattened array will be
-     * calculated. When dim is provided, the maximum over the selected
+     * Compute the minimum value of a matrix or a list of values. In case of
+     * a multi dimensional array, the minimun of the flattened array will be
+     * calculated. When dim is provided, the minimun over the selected
      * dimension will be calculated. Parameter dim is zero-based.
      * @param args A single matrix or or multiple scalar values
      * @returns The minimum value
@@ -3148,7 +3199,7 @@ declare namespace math {
 
     isIndexNode(x: unknown): x is IndexNode
 
-    isNode(x: unknown): x is MathNodeCommon
+    isNode(x: unknown): x is MathNode
 
     isObjectNode(x: unknown): x is ObjectNode
 
@@ -3847,6 +3898,7 @@ declare namespace math {
     prefixes?: string
     offset?: number
     aliases?: string[]
+    baseName?: string
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -3857,7 +3909,7 @@ declare namespace math {
     evaluate(scope?: any): any
   }
 
-  interface MathNodeCommon {
+  interface MathNode {
     isNode: true
     comment: string
     type: string
@@ -5525,11 +5577,13 @@ declare namespace math {
      * @param number An int or float
      * @param weights An array of ints or floats
      */
-    pickRandom(
-      array: MathJsChain<number[]>,
-      number?: number,
-      weights?: number[]
-    ): MathJsChain<number | number[]>
+    pickRandom<T>(this: MathJsChain<T[]>): MathJsChain<T>
+    pickRandom<T>(this: MathJsChain<T[]>, number: number): MathJsChain<T[]>
+    pickRandom<T>(
+      this: MathJsChain<T[]>,
+      number: number,
+      weights: number[]
+    ): MathJsChain<T[]>
 
     /**
      * Return a random number larger or equal to min and smaller than max
@@ -5877,9 +5931,9 @@ declare namespace math {
     median(this: MathJsChain<MathCollection>, dim?: number): MathJsChain<any>
 
     /**
-     * Compute the maximum value of a matrix or a list of values. In case of
-     * a multi dimensional array, the maximum of the flattened array will be
-     * calculated. When dim is provided, the maximum over the selected
+     * Compute the minimum value of a matrix or a list of values. In case of
+     * a multi dimensional array, the minimum of the flattened array will be
+     * calculated. When dim is provided, the minimum over the selected
      * dimension will be calculated. Parameter dim is zero-based.
      * @param dim The minimum over the selected dimension
      */

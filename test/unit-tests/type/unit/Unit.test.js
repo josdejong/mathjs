@@ -952,6 +952,17 @@ describe('Unit', function () {
       assert.notDeepStrictEqual(oldMm, newMm)
       assert.deepStrictEqual(newMm, math2.Unit.parse('mm'))
     })
+
+    it('should support prefixes on specific units', function () {
+      assert.deepStrictEqual(Unit.parse('1 nK').toNumeric('K'), 1e-9)
+      assert.deepStrictEqual(Unit.parse('1 ndegR').toNumeric('degR'), 1e-9)
+      assert.deepStrictEqual(Unit.parse('1 ndegF').toNumeric('degF'), 1e-9)
+      assert.deepStrictEqual(Unit.parse('1 ndegC').toNumeric('degC'), 1e-9)
+      assert.deepStrictEqual(Unit.parse('1 nanorankine').toNumeric('rankine'), 1e-9)
+      assert.deepStrictEqual(Unit.parse('1 nanokelvin').toNumeric('kelvin'), 1e-9)
+      assert.deepStrictEqual(Unit.parse('1 nanocelsius').toNumeric('celsius'), 1e-9)
+      assert.deepStrictEqual(Unit.parse('1 nanofahrenheit').toNumeric('fahrenheit'), 1e-9)
+    })
   })
 
   describe('prefixes', function () {

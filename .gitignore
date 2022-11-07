@@ -12,4 +12,5 @@ node_modules
 .eslintcache
 
 lib
+test-results
 *.generated.js
