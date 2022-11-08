@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since 11.3.3
+
+- Fix #2825 partly: improve simplifying operations on constants in 
+  non-commutative contexts (#2827). Thanks @samueltlg.
+
+
 # 2022-11-07, 11.3.3
 
 - Fix #2830: Prevent inserting zero values when creating a `SparseMatrix` from a 
