@@ -897,16 +897,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       }
     } else if (rule instanceof SymbolNode) {
       // If the rule is a SymbolNode, then it carries a special meaning
-      // according to the first character or two of the symbol node name.
-      // n.*  - Matches any node
-      // c.*  - Matches a constant literal (5 or 3.2)
-      // cl.* - Matches a constant literal; same as c
-      // cd.* - Matches a decimal literal (5 or -3.2)
-      // ce.* - Matches a constant expression (-5 or √3)
-      // v.*  - Matches a variable; anything not matched by c (-5 or x)
-      // vl.* - Matches a variable literal (x or y)
-      // vd.* - Matches a non-decimal expression; anything not matched by cd (x or √3)
-      // ve.* - Matches a variable expression; anything not matched by ce (x or 2x)
+      // according to the first one or two characters of the symbol node name.
+      // These meanings are expalined in the documentation for simplify()
       if (rule.name.length === 0) {
         throw new Error('Symbol in rule has 0 length...!?')
       }
