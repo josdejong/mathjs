@@ -1,5 +1,62 @@
 # History
 
+# unpublished changes since 11.3.3
+
+- Fix #2825 partly: improve simplifying operations on constants in 
+  non-commutative contexts (#2827). Thanks @samueltlg.
+
+
+# 2022-11-07, 11.3.3
+
+- Fix #2830: Prevent inserting zero values when creating a `SparseMatrix` from a 
+  `DenseMatrix` (#2836). Thanks @AlexandreAlvesDB.
+- Fix #2835: a regression in the type definitions of `FunctionNode`, introduced
+  in `v11.3.2`. See #2733. Thanks @dsteve.
+
+
+# 2022-10-25, 11.3.2
+
+- Add generics to remaining Node type definitions (#2733). Thanks @mattvague. 
+- Allow unit prefixes for (absolute) temperatures `kelvin`, `rankine`, 
+  `celsius`, and `fahrenheit` (#2824). Thanks @jfeist
+
+
+# 2022-10-19, 11.3.1
+
+- Fix #2809: code completion issues in some IDE's (#2812).
+- Fix #2818: throw an error when a function assignment has duplicate 
+  parameter names (#2819).
+- Update `decimal.js` to version `10.4.2`.
+
+
+# 2022-10-11, 11.3.0
+
+- Allow creating new subclasses of `Node` in TypeScript (#2772). 
+  Note that this disables being able to narrow MathNodes by using the `.type`
+  property. Use typeguards like `isOperatorNode(...)` instead (see #2810).
+  Thanks @mattvague.
+- Fix #2793: `flatten()` cloning entries of array/Matrix (#2799).
+- Fix #2627: TypeScript definitions of `pinv` missing (#2804). 
+  Thanks @HanchaiN.
+- Update dependencies to `decimal.js@10.4.1`.
+
+
+# 2022-09-13, 11.2.1
+
+- Fix doc generator being broken, not generating a function reference.
+
+
+# 2022-09-12, 11.2.0
+
+- Implement function `isRelationalNode` (#2731). Thanks @isaacbyr.
+- Added missing types `'largerEq'` and `'or'` in `OperatorNodeMap` in the
+  TypeScript definitions. Thanks @ajinkyac03.
+- Fixed typos in min func type defs (#2768). Thanks @mabdullahadeel.
+- Improved the TypeScript definitions for `pickRandom`. Thanks @mattvague.
+- Fixed documentation of unit `min` which means `minutes`, not `minim` (#2773).
+  Thanks @jasonhornsby.
+
+
 # 2022-08-23, 11.1.0
 
 - Add Unit constructor from value and pure (valueless) Unit (#2628).

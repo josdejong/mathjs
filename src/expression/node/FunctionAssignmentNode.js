@@ -53,6 +53,16 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       if (!isNode(expr)) { throw new TypeError('Node expected for parameter "expr"') }
       if (keywords.has(name)) { throw new Error('Illegal function name, "' + name + '" is a reserved keyword') }
 
+      const paramNames = new Set()
+      for (const param of params) {
+        const name = typeof param === 'string' ? param : param.name
+        if (paramNames.has(name)) {
+          throw new Error(`Duplicate parameter name "${name}"`)
+        } else {
+          paramNames.add(name)
+        }
+      }
+
       this.name = name
       this.params = params.map(function (param) {
         return (param && param.name) || param

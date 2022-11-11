@@ -207,9 +207,13 @@ function validateAscii (done) {
 }
 
 async function generateDocs (done) {
-  const all = await import('file://' + REF_SRC + 'defaultInstance.js')
+  const all = (await import('file://' + REF_SRC + 'defaultInstance.js')).default
   const functionNames = Object.keys(all)
     .filter(key => typeof all[key] === 'function')
+
+  if (functionNames.length === 0) {
+    throw new Error('No function names found, is the doc generator broken?')
+  }
 
   docgenerator.cleanup(REF_DEST, REF_ROOT)
   docgenerator.iteratePath(functionNames, REF_SRC, REF_DEST, REF_ROOT)

@@ -29,9 +29,9 @@ Version 3 and older did use `eval` for the compile step. This is not
 directly a security issue but results in a larger possible attack surface.
 
 When running a node.js server, it's good to be aware of the different
-types of security risks. The risk whe running inside a browser may be
-limited though it's good to be aware of [Cross side scripting (XSS)](https://www.wikiwand.com/en/Cross-site_scripting) vulnerabilities. A nice overview of
-security risks of a node.js servers is listed in an article [Node.js security checklist](https://blog.risingstack.com/node-js-security-checklist/) by Gergely Nemeth.
+types of security risks. The risk when running inside a browser may be
+limited, though it's good to be aware of [Cross side scripting (XSS)](https://www.wikiwand.com/en/Cross-site_scripting) vulnerabilities. A nice overview of
+the security risks of node.js servers is listed in the article [Node.js security checklist](https://blog.risingstack.com/node-js-security-checklist/) by Gergely Nemeth.
 
 ### Less vulnerable expression parser
 

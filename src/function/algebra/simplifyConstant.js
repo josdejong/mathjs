@@ -302,21 +302,39 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
    * @return - Either a Node representing a binary expression or Fraction
    */
   function foldOp (fn, args, makeNode, options) {
-    return args.reduce(function (a, b) {
-      if (!isNode(a) && !isNode(b)) {
+    const first = args.shift()
+
+    // In the following reduction, sofar always has one of the three following
+    // forms: [NODE], [CONSTANT], or [NODE, CONSTANT]
+    const reduction = args.reduce((sofar, next) => {
+      if (!isNode(next)) {
+        const last = sofar.pop()
+
+        if (isNode(last)) {
+          return [last, next]
+        }
+        // Two constants in a row, try to fold them into one
         try {
-          return _eval(fn, [a, b], options)
-        } catch (ignoreandcontinue) {}
-        a = _toNode(a)
-        b = _toNode(b)
-      } else if (!isNode(a)) {
-        a = _toNode(a)
-      } else if (!isNode(b)) {
-        b = _toNode(b)
+          sofar.push(_eval(fn, [last, next], options))
+          return sofar
+        } catch (ignoreandcontinue) {
+          sofar.push(last)
+          // fall through to Node case
+        }
       }
 
-      return makeNode([a, b])
-    })
+      // Encountered a Node, or failed folding --
+      // collapse everything so far into a single tree:
+      sofar.push(_ensureNode(sofar.pop()))
+      const newtree = (sofar.length === 1) ? sofar[0] : makeNode(sofar)
+      return [makeNode([newtree, _ensureNode(next)])]
+    }, [first])
+
+    if (reduction.length === 1) {
+      return reduction[0]
+    }
+    // Might end up with a tree and a constant at the end:
+    return makeNode([reduction[0], _toNode(reduction[1])])
   }
 
   // destroys the original node and returns a folded one
