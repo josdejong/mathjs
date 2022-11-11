@@ -33,7 +33,7 @@ module.exports = {
       }
     },
     {
-      files: ['types/*.ts'],
+      files: ['*.ts'],
       extends: [
         'plugin:@typescript-eslint/recommended',
         'plugin:prettier/recommended' // this should come last
@@ -48,7 +48,7 @@ module.exports = {
       parserOptions: {
         ecmaVersion: 12,
         sourceType: 'module',
-        project: 'types/tsconfig.json'
+        project: 'tsconfig.json'
       }
     }
   ]

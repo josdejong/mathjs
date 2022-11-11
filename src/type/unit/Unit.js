@@ -2294,56 +2294,56 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     K: {
       name: 'K',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1,
       offset: 0
     },
     degC: {
       name: 'degC',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1,
       offset: 273.15
     },
     degF: {
       name: 'degF',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1 / 1.8,
       offset: 459.67
     },
     degR: {
       name: 'degR',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORT,
       value: 1 / 1.8,
       offset: 0
     },
     kelvin: {
       name: 'kelvin',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1,
       offset: 0
     },
     celsius: {
       name: 'celsius',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1,
       offset: 273.15
     },
     fahrenheit: {
       name: 'fahrenheit',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1 / 1.8,
       offset: 459.67
     },
     rankine: {
       name: 'rankine',
       base: BASE_UNITS.TEMPERATURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.LONG,
       value: 1 / 1.8,
       offset: 0
     },
@@ -3139,14 +3139,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    *     base unit, the name of the newly create base unit. Otherwise, this property
    *     has no effect.
    *
-   * @param {Object} options   (optional) An object containing any of the following
-   * properties:
-   *   - override {boolean} Whether this unit should be allowed to override existing
-   *     units.
-   *
    * @return {Unit}
    */
-  Unit.createUnitSingle = function (name, obj, options) {
+  Unit.createUnitSingle = function (name, obj) {
     if (typeof (obj) === 'undefined' || obj === null) {
       obj = {}
     }

@@ -774,6 +774,17 @@ describe('SparseMatrix', function () {
         ])
     })
 
+    it('should not add matrix element (zero)', function () {
+      const m = new SparseMatrix([
+        [0, 1],
+        [0, 0]
+      ])
+
+      m.set([0, 0], 0)
+
+      assert.deepStrictEqual(m._values.length, 1)
+    })
+
     it('should update matrix element (non zero)', function () {
       const m = new SparseMatrix([
         [10, 0, 0, 0, -2, 0],
