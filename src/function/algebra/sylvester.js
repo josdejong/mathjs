@@ -40,9 +40,11 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
 ) => {
   /**
    *
-   * Solves the real-valued Sylvester equation AX-XB=C for X, where A, B and C are
-   * matrices of appropriate dimensions, being A and B squared. The method used is
-   * the Bartels-Stewart algorithm.
+   * Solves the real-valued Sylvester equation AX+XB=C for X, where A, B and C are
+   * matrices of appropriate dimensions, being A and B squared. Notice that other
+   * equivalent definitions for the Sylvester equation exist and this function
+   * assumes the one presented in the original publication of the the Bartels-
+   * Stewart algorithm, which is implemented by this function.
    * https://en.wikipedia.org/wiki/Sylvester_equation
    *
    * Syntax:
@@ -52,7 +54,7 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
    * Examples:
    *
    *     const A = [[-1, -2], [1, 1]]
-   *     const B = [[-2, 1], [-1, 2]]
+   *     const B = [[2, -1], [1, -2]]
    *     const C = [[-3, 2], [3, 0]]
    *     math.sylvester(A, B, C)      // returns DenseMatrix [[-0.25, 0.25], [1.5, -1.25]]
    *
@@ -96,7 +98,7 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
     const sA = schur(A)
     const F = sA.T
     const U = sA.U
-    const sB = schur(B)
+    const sB = schur(multiply(-1, B))
     const G = sB.T
     const V = sB.U
     const D = multiply(multiply(transpose(U), C), V)

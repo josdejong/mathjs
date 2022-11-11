@@ -20,8 +20,8 @@ export const createLyap = /* #__PURE__ */ factory(name, dependencies, (
 ) => {
   /**
    *
-   * Solves the Continuous-time Lyapunov equation AP+PA'=Q for P, where Q is a positive semidefinite
-   * matrix.
+   * Solves the Continuous-time Lyapunov equation AP+PA'+Q=0 for P, where
+   * Q is an input matrix. When Q is symmetric, P is also symmetric.
    * https://en.wikipedia.org/wiki/Lyapunov_equation
    *
    * Syntax:
@@ -44,20 +44,16 @@ export const createLyap = /* #__PURE__ */ factory(name, dependencies, (
    */
   return typed(name, {
     'Matrix, Matrix': function (A, Q) {
-      const B = multiply(-1, transpose(A))
-      return sylvester(A, B, Q)
+      return sylvester(A, transpose(A), multiply(-1, Q))
     },
     'Array, Matrix': function (A, Q) {
-      const B = multiply(-1, transpose(matrix(A)))
-      return sylvester(matrix(A), B, Q)
+      return sylvester(matrix(A), transpose(matrix(A)), multiply(-1, Q))
     },
     'Matrix, Array': function (A, Q) {
-      const B = multiply(-1, transpose(A))
-      return sylvester(A, B, matrix(Q))
+      return sylvester(A, transpose(matrix(A)), matrix(multiply(-1, Q)))
     },
     'Array, Array': function (A, Q) {
-      const B = multiply(-1, transpose(matrix(A)))
-      return sylvester(matrix(A), B, matrix(Q)).toArray()
+      return sylvester(matrix(A), transpose(matrix(A)), matrix(multiply(-1, Q))).toArray()
     }
   })
 })
