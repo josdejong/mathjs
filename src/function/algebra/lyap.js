@@ -21,7 +21,9 @@ export const createLyap = /* #__PURE__ */ factory(name, dependencies, (
   /**
    *
    * Solves the Continuous-time Lyapunov equation AP+PA'+Q=0 for P, where
-   * Q is an input matrix. When Q is symmetric, P is also symmetric.
+   * Q is an input matrix. When Q is symmetric, P is also symmetric. Notice 
+   * that different equivalent definitions exist for the Continuous-time
+   * Lyapunov equation.
    * https://en.wikipedia.org/wiki/Lyapunov_equation
    *
    * Syntax:
