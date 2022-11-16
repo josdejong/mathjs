@@ -2,8 +2,11 @@
 
 # unpublished changes since 11.3.3
 
+- Implemented more wildcards to describe rules for `simplify`, making it easier
+  for example to describe unary minus (#1915). Thanks @thatcomputerguy0101.
 - Fix #2825 partly: improve simplifying operations on constants in 
   non-commutative contexts (#2827). Thanks @samueltlg.
+- Fix #2840: a bug in the type definition of `Node.traverse`. 
 
 
 # 2022-11-07, 11.3.3

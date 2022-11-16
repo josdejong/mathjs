@@ -4071,8 +4071,7 @@ declare namespace math {
      */
     traverse(
       callback: (node: MathNode, path: string, parent: MathNode) => void
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ): any
+    ): void
   }
 
   interface Parser {
