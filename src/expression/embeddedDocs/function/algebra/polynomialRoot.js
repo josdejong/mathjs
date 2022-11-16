@@ -1,5 +1,5 @@
 export const polynomialRootDocs = {
-  name: 'lusolve',
+  name: 'polynomialRoot',
   category: 'Algebra',
   syntax: [
     'x=polynomialRoot(-6, 3)',
