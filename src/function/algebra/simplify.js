@@ -447,6 +447,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     }
 
     if (isAssociative(newRule.l, context)) {
+      const nonCommutative = !isCommutative(newRule.l, context)
+      let leftExpandsym
+      // Gen. the LHS placeholder used in this NC-context specific expansion rules
+      if (nonCommutative) leftExpandsym = _getExpandPlaceholderSymbol()
+
       const makeNode = createMakeNodeFunction(newRule.l)
       const expandsym = _getExpandPlaceholderSymbol()
       newRule.expanded = {}
@@ -456,6 +461,20 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       flatten(newRule.expanded.l, context)
       unflattenr(newRule.expanded.l, context)
       newRule.expanded.r = makeNode([newRule.r, expandsym])
+
+      // In and for a non-commutative context, attempting with yet additional expansion rules makes
+      // way for more matches cases of multi-arg expressions; such that associative rules (such as
+      // 'n*n -> n^2') can be applied to exprs. such as 'a * b * b' and 'a * b * b * a'.
+      if (nonCommutative) {
+        // 'Non-commutative' 1: LHS (placeholder) only
+        newRule.expandedNC1 = {}
+        newRule.expandedNC1.l = makeNode([leftExpandsym, newRule.l.clone()])
+        newRule.expandedNC1.r = makeNode([leftExpandsym, newRule.r])
+        // 'Non-commutative' 2: farmost LHS and RHS placeholders
+        newRule.expandedNC2 = {}
+        newRule.expandedNC2.l = makeNode([leftExpandsym, newRule.expanded.l.clone()])
+        newRule.expandedNC2.r = makeNode([leftExpandsym, newRule.expanded.r])
+      }
     }
 
     return newRule
@@ -656,6 +675,16 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     if (!matches && rule.expanded) {
       repl = rule.expanded.r
       matches = _ruleMatch(rule.expanded.l, res, mergedContext)[0]
+      // Additional expansion-rules may be present for canonicalized rules in non-commutative
+      // contexts; making way for more potential matches for multi-operand/flattened exprs.
+      if (!matches && rule.expandedNC1) {
+        repl = rule.expandedNC1.r
+        matches = _ruleMatch(rule.expandedNC1.l, res, mergedContext)[0]
+      }
+      if (!matches && rule.expandedNC2) {
+        repl = rule.expandedNC2.r
+        matches = _ruleMatch(rule.expandedNC2.l, res, mergedContext)[0]
+      }
     }
 
     if (matches) {
@@ -880,8 +909,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         }
         res = mergeChildMatches(childMatches)
       } else if (node.args.length >= 2 && rule.args.length === 2) { // node is flattened, rule is not
-        // Associative operators/functions can be split in different ways so we check if the rule matches each
-        // them and return their union.
+        // Associative operators/functions can be split in different ways so we check if the rule
+        // matches for each of them and return their union.
         const splits = getSplits(node, context)
         let splitMatches = []
         for (let i = 0; i < splits.length; i++) {
