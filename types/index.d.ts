@@ -465,6 +465,11 @@ declare namespace math {
     R: MathCollection
   }
 
+  interface SchurDecomposition {
+    U: MathCollection
+    T: MathCollection
+  }
+
   interface FractionDefinition {
     a: number
     b: number
@@ -1806,6 +1811,41 @@ declare namespace math {
      * @returns The exponential of x
      */
     expm(x: Matrix): Matrix
+
+    /**
+     * Solves the real-valued Sylvester equation AX-XB=C for X, where A, B and C are
+     * matrices of appropriate dimensions, being A and B squared. The method used is
+     * the Bartels-Stewart algorithm.
+     * https://en.wikipedia.org/wiki/Sylvester_equation
+     * @param A  Matrix A
+     * @param B  Matrix B
+     * @param C  Matrix C
+     * @returns  Matrix X, solving the Sylvester equation
+     */
+    sylvester(
+      A: Matrix | MathArray,
+      B: Matrix | MathArray,
+      C: Matrix | MathArray
+    ): Matrix | MathArray
+
+    /**
+     * Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal
+     * and T is upper quasi-triangular.
+     * https://en.wikipedia.org/wiki/Schur_decomposition
+     * @param A  Matrix A
+     * @returns Object containing both matrix U and T of the Schur Decomposition A=UTU'
+     */
+    schur(A: Matrix | MathArray): SchurDecomposition
+
+    /**
+     * Solves the Continuous-time Lyapunov equation AP+PA'=Q for P, where Q is a positive semidefinite
+     * matrix.
+     * https://en.wikipedia.org/wiki/Lyapunov_equation
+     * @param A  Matrix A
+     * @param Q  Matrix Q
+     * @returns  Matrix P solution to the Continuous-time Lyapunov equation AP+PA'=Q
+     */
+    lyap(A: Matrix | MathArray, Q: Matrix | MathArray): Matrix | MathArray
 
     /**
      * Create a 2-dimensional identity matrix with size m x n or n x n. The
@@ -3572,6 +3612,9 @@ declare namespace math {
     invDependencies: FactoryFunctionMap
     expmDependencies: FactoryFunctionMap
     sqrtmDependencies: FactoryFunctionMap
+    sylvesterDependencies: FactoryFunctionMap
+    schurDependencies: FactoryFunctionMap
+    lyapDependencies: FactoryFunctionMap
     divideDependencies: FactoryFunctionMap
     distanceDependencies: FactoryFunctionMap
     intersectDependencies: FactoryFunctionMap
@@ -5271,6 +5314,26 @@ declare namespace math {
      */
 
     expm(this: MathJsChain<Matrix>): MathJsChain<Matrix>
+
+    /**
+     * Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal
+     * and T is upper quasi-triangular.
+     * https://en.wikipedia.org/wiki/Schur_decomposition
+     * @returns Object containing both matrix U and T of the Schur Decomposition A=UTU'
+     */
+    schur(this: MathJsChain<Matrix | MathArray>): SchurDecomposition
+
+    /**
+     * Solves the Continuous-time Lyapunov equation AP+PA'=Q for P, where Q is a positive semidefinite
+     * matrix.
+     * https://en.wikipedia.org/wiki/Lyapunov_equation
+     * @param Q  Matrix Q
+     * @returns  Matrix P solution to the Continuous-time Lyapunov equation AP+PA'=Q
+     */
+    lyap(
+      this: MathJsChain<Matrix | MathArray>,
+      Q: Matrix | MathArray
+    ): MathJsChain<Matrix | MathArray>
 
     /**
      * Create a 2-dimensional identity matrix with size m x n or n x n. The

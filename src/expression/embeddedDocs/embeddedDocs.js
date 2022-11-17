@@ -78,6 +78,9 @@ import { roundDocs } from './function/arithmetic/round.js'
 import { signDocs } from './function/arithmetic/sign.js'
 import { sqrtDocs } from './function/arithmetic/sqrt.js'
 import { sqrtmDocs } from './function/arithmetic/sqrtm.js'
+import { sylvesterDocs } from './function/matrix/sylvester.js'
+import { schurDocs } from './function/matrix/schur.js'
+import { lyapDocs } from './function/matrix/lyap.js'
 import { squareDocs } from './function/arithmetic/square.js'
 import { subtractDocs } from './function/arithmetic/subtract.js'
 import { unaryMinusDocs } from './function/arithmetic/unaryMinus.js'
@@ -467,6 +470,9 @@ export const embeddedDocs = {
   zeros: zerosDocs,
   fft: fftDocs,
   ifft: ifftDocs,
+  sylvester: sylvesterDocs,
+  schur: schurDocs,
+  lyap: lyapDocs,
 
   // functions - probability
   combinations: combinationsDocs,
