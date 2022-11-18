@@ -23,13 +23,17 @@ Function | Description
 [math.lsolveAll(L,&nbsp;b)](functions/lsolveAll.html) | Finds all solutions of a linear equation system by forwards substitution.
 [math.lup(A)](functions/lup.html) | Calculate the Matrix LU decomposition with partial pivoting.
 [math.lusolve(A,&nbsp;b)](functions/lusolve.html) | Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
+[math.lyap(A,&nbsp;Q)](functions/lyap.html) | Solves the Continuous-time Lyapunov equation AP+PA'+Q=0 for P, where Q is an input matrix.
+[polynomialRoot(constant, linearCoeff, quadraticCoeff, cubicCoeff)](functions/polynomialRoot.html) | Finds the numerical values of the distinct roots of a polynomial with real or complex coefficients.
 [math.qr(A)](functions/qr.html) | Calculate the Matrix QR decomposition.
 [rationalize(expr)](functions/rationalize.html) | Transform a rationalizable expression in a rational fraction.
 [resolve(expr,&nbsp;scope)](functions/resolve.html) | resolve(expr, scope) replaces variable nodes with their scoped values.
+[math.schur(A)](functions/schur.html) | Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal and T is upper quasi-triangular.
 [simplify(expr)](functions/simplify.html) | Simplify an expression tree.
 [simplifyConstant(expr)](functions/simplifyConstant.html) | simplifyConstant() takes a mathjs expression (either a Node representing a parse tree or a string which it parses to produce a node), and replaces any subexpression of it consisting entirely of constants with the computed value of that subexpression.
 [simplifyCore(expr)](functions/simplifyCore.html) | simplifyCore() performs single pass simplification suitable for applications requiring ultimate performance.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.html) | Calculate the Sparse Matrix LU decomposition with full pivoting.
+[math.sylvester(A,&nbsp;B,&nbsp;C)](functions/sylvester.html) | Solves the real-valued Sylvester equation AX+XB=C for X, where A, B and C are matrices of appropriate dimensions, being A and B squared.
 [symbolicEqual(expr1,&nbsp;expr2)](functions/symbolicEqual.html) | Attempts to determine if two expressions are symbolically equal, i.
 [math.usolve(U,&nbsp;b)](functions/usolve.html) | Finds one solution of a linear equation system by backward substitution.
 [math.usolveAll(U,&nbsp;b)](functions/usolveAll.html) | Finds all solutions of a linear equation system by backward substitution.

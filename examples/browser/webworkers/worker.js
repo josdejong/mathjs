@@ -1,4 +1,4 @@
-importScripts('https://unpkg.com/mathjs@11.3.3/lib/browser/math.js')
+importScripts('https://unpkg.com/mathjs@11.4.0/lib/browser/math.js')
 
 // create a parser
 const parser = self.math.parser()

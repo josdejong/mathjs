@@ -4,6 +4,20 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20221118-1140">2022-11-18, 11.4.0 <a href="#20221118-1140" title="Permalink">#</a></h1>
+
+- Implemented more wildcards to describe rules for `simplify`, making it easier
+  for example to describe unary minus  <a href="https://github.com/josdejong/mathjs/issues/1915">#1915</a>). Thanks <a href="https://github.com/thatcomputerguy0101">@thatcomputerguy0101</a>.
+- Implemented functions `schur`, `sylvester`, and `lyap`  <a href="https://github.com/josdejong/mathjs/issues/2646">#2646</a>). 
+  Thanks <a href="https://github.com/egidioln">@egidioln</a>.
+- Implemented function `polynomialRoot`, and use it in a benchmark  <a href="https://github.com/josdejong/mathjs/issues/2839">#2839</a>). 
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2825">#2825</a> partly: improve simplifying operations on constants in 
+  non-commutative contexts  <a href="https://github.com/josdejong/mathjs/issues/2827">#2827</a>). Thanks <a href="https://github.com/samueltlg">@samueltlg</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2840">#2840</a>: a bug in the docs and type definitions of `Node.traverse` and 
+  `Node.forEach`, they do return `void`.
+
+
 <h1 id="20221107-1133">2022-11-07, 11.3.3 <a href="#20221107-1133" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2830">#2830</a>: Prevent inserting zero values when creating a `SparseMatrix` from a 
