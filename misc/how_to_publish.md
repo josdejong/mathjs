@@ -25,7 +25,7 @@ correct date and version number in the header.
 
 - Commit the final code.
 - Merge the develop branch into the master branch.
-- Push to github.
+- Push to Github.
 
 Now go to Github Actions and verify if the tests run fine there as well:
 

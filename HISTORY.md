@@ -1,11 +1,13 @@
 # History
 
-# unpublished changes since 11.3.3
+# 2022-11-18, 11.4.0
 
 - Implemented more wildcards to describe rules for `simplify`, making it easier
   for example to describe unary minus (#1915). Thanks @thatcomputerguy0101.
 - Implemented functions `schur`, `sylvester`, and `lyap` (#2646). 
   Thanks @egidioln.
+- Implemented function `polynomialRoot`, and use it in a benchmark (#2839). 
+  Thanks @gwhitney.
 - Fix #2825 partly: improve simplifying operations on constants in 
   non-commutative contexts (#2827). Thanks @samueltlg.
 - Fix #2840: a bug in the docs and type definitions of `Node.traverse` and 
