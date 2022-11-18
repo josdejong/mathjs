@@ -184,6 +184,18 @@ Bignumbers examples
 }
 
 /*
+  Algebra function examples
+*/
+{
+  const math = create(all, {})
+  const derivVal = math.derivative('x^3 + x^2', 'x').evaluate({ x: 2 })
+  assert.strictEqual(derivVal, 16)
+  const roots = math.polynomialRoot(9, 6, 1)
+  assert.strictEqual(roots.length, 1) // double root, so only one of them
+  assert.strictEqual(roots[0], -3)
+}
+
+/*
 Chaining examples
 */
 {

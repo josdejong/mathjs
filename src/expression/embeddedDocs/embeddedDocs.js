@@ -36,6 +36,7 @@ import { lsolveDocs } from './function/algebra/lsolve.js'
 import { lsolveAllDocs } from './function/algebra/lsolveAll.js'
 import { lupDocs } from './function/algebra/lup.js'
 import { lusolveDocs } from './function/algebra/lusolve.js'
+import { polynomialRootDocs } from './function/algebra/polynomialRoot.js'
 import { qrDocs } from './function/algebra/qr.js'
 import { rationalizeDocs } from './function/algebra/rationalize.js'
 import { resolveDocs } from './function/algebra/resolve.js'
@@ -340,6 +341,7 @@ export const embeddedDocs = {
   lup: lupDocs,
   lusolve: lusolveDocs,
   leafCount: leafCountDocs,
+  polynomialRoot: polynomialRootDocs,
   resolve: resolveDocs,
   simplify: simplifyDocs,
   simplifyConstant: simplifyConstantDocs,

@@ -899,6 +899,22 @@ declare namespace math {
       threshold?: number
     ): MathArray
 
+    /* Finds the roots of a polynomial of degree three or less. Coefficients are given constant first
+     * followed by linear and higher powers in order; coefficients beyond the degree of the polynomial
+     * need not be specified.
+     * @param {number|Complex} constantCoeff
+     * @param {number|Complex} linearCoeff
+     * @param {number|Complex} quadraticCoeff
+     * @param {number|Complex} cubicCoeff
+     * @returns {Array<number|Complex>} array of roots of specified polynomial
+     */
+    polynomialRoot(
+      constantCoeff: number | Complex,
+      linearCoeff: number | Complex,
+      quadraticCoeff?: number | Complex,
+      cubicCoeff?: number | Complex
+    ): (number | Complex)[]
+
     /**
      * Calculate the Matrix QR decomposition. Matrix A is decomposed in two
      * matrices (Q, R) where Q is an orthogonal matrix and R is an upper
