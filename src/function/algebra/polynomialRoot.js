@@ -135,7 +135,8 @@ export const createPolynomialRoot = /* #__PURE__ */ factory(name, dependencies, 
               ),
               2)
           }
-          const rawRoots = cbrt(Ccubed, !!'allRoots').toArray().map(
+          const allRoots = true
+          const rawRoots = cbrt(Ccubed, allRoots).toArray().map(
             C => divide(add(b, C, divide(Delta0, C)), denom))
           return rawRoots.map(r => {
             if (typeOf(r) === 'Complex' && equalScalar(re(r), re(r) + im(r))) {
