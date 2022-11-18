@@ -33,7 +33,7 @@ module.exports = {
       }
     },
     {
-      files: ['types/*.ts', 'test/**/*.ts'],
+      files: ['*.ts'],
       extends: [
         'plugin:@typescript-eslint/recommended',
         'plugin:prettier/recommended' // this should come last

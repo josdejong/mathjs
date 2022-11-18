@@ -165,7 +165,7 @@ declare namespace math {
     new (): BaseNode
   }
 
-  interface AccessorNode extends BaseNode {
+  interface AccessorNode<TObject extends BaseNode = BaseNode> extends BaseNode {
     type: 'AccessorNode'
     isAccessorNode: true
     object: BaseNode
@@ -173,113 +173,151 @@ declare namespace math {
     name: string
   }
   interface AccessorNodeCtor {
-    new (object: BaseNode, index: IndexNode): AccessorNode
+    new <TObject extends BaseNode = BaseNode>(
+      object: TObject,
+      index: IndexNode
+    ): AccessorNode<TObject>
   }
 
-  interface ArrayNode extends BaseNode {
+  interface ArrayNode<TItems extends BaseNode[] = BaseNode[]> extends BaseNode 
     type: 'ArrayNode'
     isArrayNode: true
-    items: BaseNode[]
+    items: TItems
   }
   interface ArrayNodeCtor {
-    new (items: BaseNode[]): ArrayNode
+    new <TItems extends MathNode[] = MathNode[]>(
+      items: TItems
+    ): ArrayNode<TItems>
   }
 
-  interface AssignmentNode extends BaseNode {
+  interface AssignmentNode<TValue extends BaseNode = BaseNode>
+    extends BaseNode {
     type: 'AssignmentNode'
     isAssignmentNode: true
     object: SymbolNode | AccessorNode
     index: IndexNode | null
-    value: BaseNode
+    value: TValue
     name: string
   }
   interface AssignmentNodeCtor {
-    new (object: SymbolNode, value: BaseNode): AssignmentNode
-    new (
+    new <TValue extends BaseNode = BaseNode>(
+      object: SymbolNode,
+      value: TValue
+    ): AssignmentNode<TValue>
+    new <TValue extends BaseNode = BaseNode>(
       object: SymbolNode | AccessorNode,
       index: IndexNode,
-      value: BaseNode
-    ): AssignmentNode
+      value: TValue
+    ): AssignmentNode<TValue>
   }
 
-  interface BlockNode extends BaseNode {
+  interface BlockNode<TNode extends BaseNode = BaseNode> extends BaseNode {
     type: 'BlockNode'
     isBlockNode: true
-    blocks: Array<{ node: BaseNode; visible: boolean }>
+    blocks: Array<{ node: TNode; visible: boolean }>
   }
   interface BlockNodeCtor {
-    new (
-      arr: Array<{ node: BaseNode } | { node: BaseNode; visible: boolean }>
+    new <TNode extends BaseNode = BaseNode>(
+      arr: Array<{ node: TNode } | { node: TNode; visible: boolean }>
     ): BlockNode
   }
 
-  interface ConditionalNode extends BaseNode {
+  interface ConditionalNode<
+    TCond extends BaseNode = BaseNode,
+    TTrueNode extends BaseNode = BaseNode,
+    TFalseNode extends BaseNode = BaseNode
+  > extends BaseNode {
     type: 'ConditionalNode'
     isConditionalNode: boolean
-    condition: BaseNode
-    trueExpr: BaseNode
-    falseExpr: BaseNode
+    condition: TCond
+    trueExpr: TTrueNode
+    falseExpr: TFalseNode
   }
   interface ConditionalNodeCtor {
-    new (
-      condition: BaseNode,
-      trueExpr: BaseNode,
-      falseExpr: BaseNode
+    new <
+      TCond extends BaseNode = BaseNode,
+      TTrueNode extends BaseNode = BaseNode,
+      TFalseNode extends BaseNode = BaseNode
+    >(
+      condition: TCond,
+      trueExpr: TTrueNode,
+      falseExpr: TFalseNode
     ): ConditionalNode
   }
 
-  interface ConstantNode extends BaseNode {
+  interface ConstantNode<TValue extends string | number = number> extends BaseNode {
     type: 'ConstantNode'
     isConstantNode: true
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    value: any
+    value: TValue
   }
 
   interface ConstantNodeCtor {
-    new (constant: number): ConstantNode
+    new <TValue extends string | number = string>(
+      value: TValue
+    ): ConstantNode<TValue>
   }
 
-  interface FunctionAssignmentNode extends BaseNode {
+  interface FunctionAssignmentNode<TExpr extends BaseNode = BaseNode>
+    extends BaseNode {
     type: 'FunctionAssignmentNode'
     isFunctionAssignmentNode: true
     name: string
     params: string[]
-    expr: BaseNode
+    expr: TExpr
   }
   interface FunctionAssignmentNodeCtor {
-    new (name: string, params: string[], expr: BaseNode): FunctionAssignmentNode
+    new <TExpr extends BaseNode = BaseNode>(
+      name: string,
+      params: string[],
+      expr: TExpr
+    ): FunctionAssignmentNode<TExpr>
   }
 
-  interface FunctionNode extends BaseNode {
+  interface FunctionNode<
+    TFn = SymbolNode,
+    TArgs extends BaseNode[] = BaseNode[]
+  > extends MathNode {
     type: 'FunctionNode'
     isFunctionNode: true
-    fn: SymbolNode
-    args: BaseNode[]
+    fn: TFn
+    args: TArgs
   }
   interface FunctionNodeCtor {
-    new (fn: BaseNode | string, args: BaseNode[]): FunctionNode
+    new <TFn = SymbolNode, TArgs extends BaseNode[] = BaseNode[]>(
+      fn: TFn,
+      args: TArgs
+    ): FunctionNode<TFn, TArgs>
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onUndefinedFunction: (name: string) => any
   }
 
-  interface IndexNode extends BaseNode {
+  interface IndexNode<TDims extends BaseNode[] = BaseNode[]> extends BaseNode {
     type: 'IndexNode'
     isIndexNode: true
-    dimensions: BaseNode[]
+    dimensions: TDims
     dotNotation: boolean
   }
   interface IndexNodeCtor {
-    new (dimensions: BaseNode[]): IndexNode
-    new (dimensions: BaseNode[], dotNotation: boolean): IndexNode
+    new <TDims extends BaseNode[] = BaseNode[]>(dimensions: TDims): IndexNode
+    new <TDims extends BaseNode[] = BaseNode[]>(
+      dimensions: TDims,
+      dotNotation: boolean
+    ): IndexNode<TDims>
   }
 
-  interface ObjectNode extends BaseNode {
+  interface ObjectNode<
+    TProps extends Record<string, BaseNode> = Record<string, BaseNode>
+  > extends BaseNode {
     type: 'ObjectNode'
     isObjectNode: true
-    properties: Record<string, BaseNode>
+    properties: TProps
   }
   interface ObjectNodeCtor {
-    new (properties: Record<string, BaseNode>): ObjectNode
+    new <TProps extends Record<string, BaseNode> = Record<string, BaseNode>>(
+      properties: TProps
+    ): ObjectNode<TProps>
   }
 
   type OperatorNodeMap = {
@@ -357,25 +395,41 @@ declare namespace math {
     ): ParenthesisNode<TContent>
   }
 
-  interface RangeNode extends BaseNode {
+  interface RangeNode<
+    TStart extends BaseNode = BaseNode,
+    TEnd extends BaseNode = BaseNode,
+    TStep extends BaseNode = BaseNode
+  > extends MathNode {
     type: 'RangeNode'
     isRangeNode: true
-    start: BaseNode
-    end: BaseNode
-    step: BaseNode | null
+    start: TStart
+    end: TEnd
+    step: TStep | null
   }
   interface RangeNodeCtor {
-    new (start: BaseNode, end: BaseNode, step?: BaseNode): RangeNode
+    new <
+      TStart extends BaseNode = BaseNode,
+      TEnd extends BaseNode = BaseNode,
+      TStep extends BaseNode = BaseNode
+    >(
+      start: TStart,
+      end: TEnd,
+      step?: TStep
+    ): RangeNode<TStart, TEnd, TStep>
   }
 
-  interface RelationalNode extends BaseNode {
+  interface RelationalNode<TParams extends BaseNode[] = BaseNode[]>
+    extends BaseNode {
     type: 'RelationalNode'
     isRelationalNode: true
     conditionals: string[]
-    params: BaseNode[]
+    params: TParams
   }
   interface RelationalNodeCtor {
-    new (conditionals: string[], params: BaseNode[]): RelationalNode
+    new <TParams extends BaseNode[] = BaseNode[]>(
+      conditionals: string[],
+      params: TParams
+    ): RelationalNode<TParams>
   }
 
   interface SymbolNode extends BaseNode {
@@ -445,6 +499,11 @@ declare namespace math {
   interface QRDecomposition {
     Q: MathCollection
     R: MathCollection
+  }
+
+  interface SchurDecomposition {
+    U: MathCollection
+    T: MathCollection
   }
 
   interface FractionDefinition {
@@ -875,6 +934,22 @@ declare namespace math {
       order?: number,
       threshold?: number
     ): MathArray
+
+    /* Finds the roots of a polynomial of degree three or less. Coefficients are given constant first
+     * followed by linear and higher powers in order; coefficients beyond the degree of the polynomial
+     * need not be specified.
+     * @param {number|Complex} constantCoeff
+     * @param {number|Complex} linearCoeff
+     * @param {number|Complex} quadraticCoeff
+     * @param {number|Complex} cubicCoeff
+     * @returns {Array<number|Complex>} array of roots of specified polynomial
+     */
+    polynomialRoot(
+      constantCoeff: number | Complex,
+      linearCoeff: number | Complex,
+      quadraticCoeff?: number | Complex,
+      cubicCoeff?: number | Complex
+    ): (number | Complex)[]
 
     /**
      * Calculate the Matrix QR decomposition. Matrix A is decomposed in two
@@ -1788,6 +1863,41 @@ declare namespace math {
      * @returns The exponential of x
      */
     expm(x: Matrix): Matrix
+
+    /**
+     * Solves the real-valued Sylvester equation AX-XB=C for X, where A, B and C are
+     * matrices of appropriate dimensions, being A and B squared. The method used is
+     * the Bartels-Stewart algorithm.
+     * https://en.wikipedia.org/wiki/Sylvester_equation
+     * @param A  Matrix A
+     * @param B  Matrix B
+     * @param C  Matrix C
+     * @returns  Matrix X, solving the Sylvester equation
+     */
+    sylvester(
+      A: Matrix | MathArray,
+      B: Matrix | MathArray,
+      C: Matrix | MathArray
+    ): Matrix | MathArray
+
+    /**
+     * Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal
+     * and T is upper quasi-triangular.
+     * https://en.wikipedia.org/wiki/Schur_decomposition
+     * @param A  Matrix A
+     * @returns Object containing both matrix U and T of the Schur Decomposition A=UTU'
+     */
+    schur(A: Matrix | MathArray): SchurDecomposition
+
+    /**
+     * Solves the Continuous-time Lyapunov equation AP+PA'=Q for P, where Q is a positive semidefinite
+     * matrix.
+     * https://en.wikipedia.org/wiki/Lyapunov_equation
+     * @param A  Matrix A
+     * @param Q  Matrix Q
+     * @returns  Matrix P solution to the Continuous-time Lyapunov equation AP+PA'=Q
+     */
+    lyap(A: Matrix | MathArray, Q: Matrix | MathArray): Matrix | MathArray
 
     /**
      * Create a 2-dimensional identity matrix with size m x n or n x n. The
@@ -3554,6 +3664,9 @@ declare namespace math {
     invDependencies: FactoryFunctionMap
     expmDependencies: FactoryFunctionMap
     sqrtmDependencies: FactoryFunctionMap
+    sylvesterDependencies: FactoryFunctionMap
+    schurDependencies: FactoryFunctionMap
+    lyapDependencies: FactoryFunctionMap
     divideDependencies: FactoryFunctionMap
     distanceDependencies: FactoryFunctionMap
     intersectDependencies: FactoryFunctionMap
@@ -3959,8 +4072,8 @@ declare namespace math {
      */
     forEach(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      callback: (node: MathNode, path: string, parent: MathNode) => any
-    ): MathNode[]
+      callback: (node: MathNode, path: string, parent: MathNode) => void
+    ): void
 
     /**
      * Transform a node. Creates a new MathNode having it’s child's be the
@@ -4053,8 +4166,7 @@ declare namespace math {
      */
     traverse(
       callback: (node: MathNode, path: string, parent: MathNode) => void
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ): any
+    ): void
   }
 
   interface Parser {
@@ -5256,6 +5368,26 @@ declare namespace math {
     expm(this: MathJsChain<Matrix>): MathJsChain<Matrix>
 
     /**
+     * Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal
+     * and T is upper quasi-triangular.
+     * https://en.wikipedia.org/wiki/Schur_decomposition
+     * @returns Object containing both matrix U and T of the Schur Decomposition A=UTU'
+     */
+    schur(this: MathJsChain<Matrix | MathArray>): SchurDecomposition
+
+    /**
+     * Solves the Continuous-time Lyapunov equation AP+PA'=Q for P, where Q is a positive semidefinite
+     * matrix.
+     * https://en.wikipedia.org/wiki/Lyapunov_equation
+     * @param Q  Matrix Q
+     * @returns  Matrix P solution to the Continuous-time Lyapunov equation AP+PA'=Q
+     */
+    lyap(
+      this: MathJsChain<Matrix | MathArray>,
+      Q: Matrix | MathArray
+    ): MathJsChain<Matrix | MathArray>
+
+    /**
      * Create a 2-dimensional identity matrix with size m x n or n x n. The
      * matrix has ones on the diagonal and zeros elsewhere.
      * @param format The Matrix storage format
@@ -5305,7 +5437,7 @@ declare namespace math {
       this: MathJsChain<T>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback: (value: any, index: any, matrix: T) => void
-    ): MathJsChain<T>
+    ): void
 
     /**
      * Calculate the inverse of a square matrix.
