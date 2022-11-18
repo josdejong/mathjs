@@ -33,7 +33,7 @@ export const createForEach = /* #__PURE__ */ factory(name, dependencies, ({ type
     'Array, function': _forEach,
 
     'Matrix, function': function (x, callback) {
-      return x.forEach(callback)
+      x.forEach(callback)
     }
   })
 })

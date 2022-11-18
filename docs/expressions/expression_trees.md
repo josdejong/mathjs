@@ -93,10 +93,10 @@ All nodes have the following methods:
     // returns an array with two entries: two SymbolNodes 'x'
     ```
 
--   `forEach(callback: function) : Node[]`
+-   `forEach(callback: function) : void`
 
     Execute a callback for each of the child nodes of this node. The `callback`
-    function is called as `callback(child: Node, path: string, parent: Node)`.
+    function is called as `callback(child: Node, path: string, parent: Node): void`.
     Parameter `path` is a string containing a relative JSON Path.
 
     See also `traverse`, which is a recursive version of `forEach`.
@@ -207,7 +207,7 @@ All nodes have the following methods:
     transformed.toString() // returns '3 ^ 2 + 5 * 3'
     ```
 
--   `traverse(callback)`
+-   `traverse(callback: function): void`
 
     Recursively traverse all nodes in a node tree. Executes given callback for
     this node and each of its child nodes. Similar to `Array.forEach`, except

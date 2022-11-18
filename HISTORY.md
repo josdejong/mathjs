@@ -8,7 +8,8 @@
   Thanks @egidioln.
 - Fix #2825 partly: improve simplifying operations on constants in 
   non-commutative contexts (#2827). Thanks @samueltlg.
-- Fix #2840: a bug in the type definition of `Node.traverse`.
+- Fix #2840: a bug in the docs and type definitions of `Node.traverse` and 
+  `Node.forEach`, they do return `void`.
 
 
 # 2022-11-07, 11.3.3

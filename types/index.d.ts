@@ -4020,8 +4020,8 @@ declare namespace math {
      */
     forEach(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      callback: (node: MathNode, path: string, parent: MathNode) => any
-    ): MathNode[]
+      callback: (node: MathNode, path: string, parent: MathNode) => void
+    ): void
 
     /**
      * Transform a node. Creates a new MathNode having it’s child's be the
@@ -5385,7 +5385,7 @@ declare namespace math {
       this: MathJsChain<T>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback: (value: any, index: any, matrix: T) => void
-    ): MathJsChain<T>
+    ): void
 
     /**
      * Calculate the inverse of a square matrix.
