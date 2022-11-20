@@ -675,13 +675,12 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     if (!matches && rule.expanded) {
       repl = rule.expanded.r
       matches = _ruleMatch(rule.expanded.l, res, mergedContext)[0]
-      // Additional expansion-rules may be present for canonicalized rules in non-commutative
-      // contexts; making way for more potential matches for multi-operand/flattened exprs.
-      if (!matches && rule.expandedNC1) {
-        repl = rule.expandedNC1.r
-        matches = _ruleMatch(rule.expandedNC1.l, res, mergedContext)[0]
-      }
-      if (!matches && rule.expandedNC2) {
+    }
+    // Additional, non-commutative context expansion-rules
+    if (!matches && rule.expandedNC1) {
+      repl = rule.expandedNC1.r
+      matches = _ruleMatch(rule.expandedNC1.l, res, mergedContext)[0]
+      if (!matches) { // Existence of NC1 implies NC2
         repl = rule.expandedNC2.r
         matches = _ruleMatch(rule.expandedNC2.l, res, mergedContext)[0]
       }
