@@ -455,7 +455,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       const makeNode = createMakeNodeFunction(newRule.l)
       const expandsym = _getExpandPlaceholderSymbol()
       newRule.expanded = {}
-      newRule.expanded.l = makeNode([newRule.l.clone(), expandsym])
+      newRule.expanded.l = makeNode([newRule.l, expandsym])
       // Push the expandsym into the deepest possible branch.
       // This helps to match the newRule against nodes returned from getSplits() later on.
       flatten(newRule.expanded.l, context)
@@ -468,11 +468,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       if (nonCommutative) {
         // 'Non-commutative' 1: LHS (placeholder) only
         newRule.expandedNC1 = {}
-        newRule.expandedNC1.l = makeNode([leftExpandsym, newRule.l.clone()])
+        newRule.expandedNC1.l = makeNode([leftExpandsym, newRule.l])
         newRule.expandedNC1.r = makeNode([leftExpandsym, newRule.r])
         // 'Non-commutative' 2: farmost LHS and RHS placeholders
         newRule.expandedNC2 = {}
-        newRule.expandedNC2.l = makeNode([leftExpandsym, newRule.expanded.l.clone()])
+        newRule.expandedNC2.l = makeNode([leftExpandsym, newRule.expanded.l])
         newRule.expandedNC2.r = makeNode([leftExpandsym, newRule.expanded.r])
       }
     }
