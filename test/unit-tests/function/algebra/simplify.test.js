@@ -457,6 +457,7 @@ describe('simplify', function () {
     simplifyAndCompare('3*n*n*n*3', '3*n^2*n*3', {}, optsNCM)
     simplifyAndCompare('3*3*n*n*n*3', '9*n^2*n*3', {}, optsNCM)
     simplifyAndCompare('(w*z)*n*n*3', 'w*z*n^2*3', {}, optsNCM)
+    simplifyAndCompare('2*n*n*3*n*n*4', '2*n^2*3*n^2*4', {}, optsNCM) // 'double wedged', +applied >1x
     // ('v*(v*n1+n2) ->  v^2*n1+v*n2')
     simplifyAndCompare('w*x*(x*y+z)', 'w*(x^2*y+x*z)', {}, optsNCM)
     simplifyAndCompare('w*x*(x*y+z)*w', 'w*(x^2*y+x*z)*w', {}, optsNCM)
@@ -464,6 +465,7 @@ describe('simplify', function () {
     simplifyAndCompare('x+x+3', '2*x+3', {}, optsNCA)
     simplifyAndCompare('3+x+x', '3+2*x', {}, optsNCA)
     simplifyAndCompare('4+x+x+4', '4+2*x+4', {}, optsNCA)
+    simplifyAndCompare('4+x+x+5+x+x+6', '4+2*x+5+2*x+6', {}, optsNCA) // 'double wedged', +applied >1x
     // 'n+n -> 2*n'  &  'n3*n1 + n3*n2 -> n3*(n1+n2)'
     simplifyAndCompare('5+x+x+x+x+5', '5+4*x+5', {}, optsNCA)
 
