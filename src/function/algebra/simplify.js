@@ -345,6 +345,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { multiply: { commutative: false } }
     },
     {
+      s: 'n^n1 * n -> n^(n1+1)',
+      assuming: { divide: { total: true }, multiply: { commutative: false } }
+    },
+    {
       s: 'n1*n3^(-n4) + n2 * n3    -> (n1 + n2*n3^(n4 +  1))*n3^(-n4)',
       assuming: { multiply: { commutative: false } }
     },
