@@ -2,7 +2,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "ES6",
+    "paths": {
+      "mathjs": ["./types/index.d.ts"]
+    },
     "moduleResolution": "node",
+    "typeRoots": [],
+    "types": [],
     "lib": ["ES6", "DOM"],
     "module": "ESNEXT",
     "noEmit": true,
