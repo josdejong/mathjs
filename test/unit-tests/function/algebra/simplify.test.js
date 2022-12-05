@@ -438,40 +438,78 @@ describe('simplify', function () {
     simplifyAndCompare('100.8', '100.8', math.simplify.rules, {}, { exactFractions: true, fractionsLimit: 100 })
   })
 
-  it('should respect context changes to operator properties', function () {
+  describe('should respect context changes to operator properties', function () {
     const optsNCM = { context: { multiply: { commutative: false } } }
     const optsNCA = { context: { add: { commutative: false } } }
 
-    simplifyAndCompare('x*y+y*x', 'x*y+y*x', {}, optsNCM)
-    simplifyAndCompare('x*y-y*x', 'x*y-y*x', {}, optsNCM)
-    simplifyAndCompare('x*5', 'x*5', {}, optsNCM)
-    simplifyAndCompare('x*y*x^(-1)', 'x*y*x^(-1)', {}, optsNCM)
-    simplifyAndCompare('x*y/x', 'x*y*x^(-1)', {}, optsNCM)
-    simplifyAndCompare('x*y*(1/x)', 'x*y*x^(-1)', {}, optsNCM)
+    it('should not apply typically applicable rules (for non-commutative contexts)', function () {
+      // i.e. rule 'n3*n1+n3*n2-> n3*(n1+n2)' cannot apply (in this context operands cannot be rearranged)
+      simplifyAndCompare('x*y+y*x', 'x*y+y*x', {}, optsNCM)
+      // i.e. initial temporary/re-arrangement rules 'n-n1->n+-n1','-v->v*-1' do not apply -
+      // resulting in this expr. not being simplified to '0'
+      simplifyAndCompare('x*y-y*x', 'x*y-y*x', {}, optsNCM)
+      // Constants not shifted to left..
+      simplifyAndCompare('x*5', 'x*5', {}, optsNCM)
+      // i.e. 'x*x^-1' not permitted to ultimately cancel-out via 'n*n^n1->n^(n1+1)'
+      simplifyAndCompare('x*y*x^(-1)', 'x*y*x^(-1)', {}, optsNCM)
+      simplifyAndCompare('x*y/x', 'x*y*x^(-1)', {}, optsNCM)
+      simplifyAndCompare('x*y*(1/x)', 'x*y*x^(-1)', {}, optsNCM)
+      // 'n+n->2*n' & 'n1*n3+n2*n3 -> (n1+n2)*n3' cannot apply for NCA
+      simplifyAndCompare('z+2+z', 'z+2+z', {}, optsNCA)
+      simplifyAndCompare('2*z+3+2*z', '2*z+3+2*z', {}, optsNCA)
+    })
 
-    // Rules apply to *segments* of operands in NC multi-arg. exprs.
-    // ('n*n->n^2')
-    simplifyAndCompare('n*n*3', 'n^2*3', {}, optsNCM)
-    simplifyAndCompare('3*n*n', '3*n^2', {}, optsNCM)
-    simplifyAndCompare('3*n*n*3', '3*n^2*3', {}, optsNCM)
-    simplifyAndCompare('3*n*n*n*3', '3*n^2*n*3', {}, optsNCM)
-    simplifyAndCompare('3*3*n*n*n*3', '9*n^2*n*3', {}, optsNCM)
-    simplifyAndCompare('(w*z)*n*n*3', 'w*z*n^2*3', {}, optsNCM)
-    simplifyAndCompare('2*n*n*3*n*n*4', '2*n^2*3*n^2*4', {}, optsNCM) // 'double wedged', +applied >1x
-    // ('v*(v*n1+n2) ->  v^2*n1+v*n2')
-    simplifyAndCompare('w*x*(x*y+z)', 'w*(x^2*y+x*z)', {}, optsNCM)
-    simplifyAndCompare('w*x*(x*y+z)*w', 'w*(x^2*y+x*z)*w', {}, optsNCM)
-    //  'n+n -> 2*n'
-    simplifyAndCompare('x+x+3', '2*x+3', {}, optsNCA)
-    simplifyAndCompare('3+x+x', '3+2*x', {}, optsNCA)
-    simplifyAndCompare('4+x+x+4', '4+2*x+4', {}, optsNCA)
-    simplifyAndCompare('4+x+x+5+x+x+6', '4+2*x+5+2*x+6', {}, optsNCA) // 'double wedged', +applied >1x
-    // 'n+n -> 2*n'  &  'n3*n1 + n3*n2 -> n3*(n1+n2)'
-    simplifyAndCompare('5+x+x+x+x+5', '5+4*x+5', {}, optsNCA)
+    it('should still validly apply (term factoring and collection) rules', function () {
+      // exponent-factorings
+      simplifyAndCompare('x*x', 'x^2', {}, optsNCM)
+      simplifyAndCompare('x^2*x', 'x^3', {}, optsNCM)
+      simplifyAndCompare('x*x^2', 'x^3', {}, optsNCM)
+      simplifyAndCompare('x^3*x^2', 'x^5', {}, optsNCM)
+      simplifyAndCompare('x^(2y)*x^(3z)', 'x^(2y+3z)', {}, optsNCM)
+      // term collection
+      simplifyAndCompare('y+y', '2*y', {}, optsNCA)
+      simplifyAndCompare('y+2*y', '3*y', {}, optsNCM)
+      simplifyAndCompare('2*y+y', '3*y', {}, optsNCM)
+      simplifyAndCompare('2*y+4*y', '6*y', {}, optsNCM)
 
-    const optsNAA = { context: { add: { associative: false } } }
-    simplifyAndCompare(
-      'x + (-x+y)', 'x + (y-x)', {}, optsNAA, { parenthesis: 'all' })
+      // other factorings
+      const optsNCANCM = {
+        context: {
+          add: { commutative: false },
+          multiply: { commutative: false }
+        }
+      }
+      simplifyAndCompare('4+4*b', '4*(1+b)', {}, optsNCANCM)
+      simplifyAndCompare('4*b+4', '4*(b+1)', {}, optsNCANCM)
+    })
+
+    it('rules still apply for non-commutative \'multi-arg.\' expressions', function () {
+      // ('n*n->n^2')
+      simplifyAndCompare('n*n*3', 'n^2*3', {}, optsNCM)
+      simplifyAndCompare('3*n*n', '3*n^2', {}, optsNCM)
+      simplifyAndCompare('3*n*n*3', '3*n^2*3', {}, optsNCM)
+      // (the following two also subsequently apply 'n^n1*n->n^(n1+1)')
+      simplifyAndCompare('3*n*n*n*3', '3*n^3*3', {}, optsNCM)
+      simplifyAndCompare('3*3*n*n*n*3', '9*n^3*3', {}, optsNCM)
+      simplifyAndCompare('(w*z)*n*n*3', 'w*z*n^2*3', {}, optsNCM)
+      simplifyAndCompare('2*n*n*3*n*n*4', '2*n^2*3*n^2*4', {}, optsNCM) // 'double wedged', +applied >1x
+      // ('v*(v*n1+n2) ->  v^2*n1+v*n2')
+      simplifyAndCompare('w*x*(x*y+z)', 'w*(x^2*y+x*z)', {}, optsNCM)
+      simplifyAndCompare('w*x*(x*y+z)*w', 'w*(x^2*y+x*z)*w', {}, optsNCM)
+      //  'n+n -> 2*n'
+      simplifyAndCompare('x+x+3', '2*x+3', {}, optsNCA)
+      simplifyAndCompare('3+x+x', '3+2*x', {}, optsNCA)
+      simplifyAndCompare('4+x+x+4', '4+2*x+4', {}, optsNCA)
+      simplifyAndCompare('4+x+x+5+x+x+6', '4+2*x+5+2*x+6', {}, optsNCA) // 'double wedged', +applied >1x
+      // 'n+n -> 2*n'  &  'n3*n1 + n3*n2 -> n3*(n1+n2)'
+      simplifyAndCompare('5+x+x+x+x+5', '5+4*x+5', {}, optsNCA)
+    })
+
+    it('should respect absence of associativity', function () {
+      const optsNAA = { context: { add: { associative: false } } }
+      simplifyAndCompare(
+        'x + (-x+y)', 'x + (y-x)', {}, optsNAA, { parenthesis: 'all' })
+    })
   })
 
   it('performs other simplifications in unrelated contexts', function () {

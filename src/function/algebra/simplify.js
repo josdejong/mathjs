@@ -331,13 +331,22 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
     { l: 'n3^(-n4)*n1 +   n3  * n2', r: 'n3^(-n4)*(n1 + n3^(n4+1) *n2)' },
     { l: 'n3^(-n4)*n1 + n3^n5 * n2', r: 'n3^(-n4)*(n1 + n3^(n4+n5)*n2)' },
+    // noncommutative additional cases (term collection & factoring)
     {
-      s: 'n*vd + vd -> (n+1)*vd', // noncommutative additional cases
+      s: 'n*vd + vd -> (n+1)*vd',
+      assuming: { multiply: { commutative: false } }
+    },
+    {
+      s: 'vd + n*vd -> (1+n)*vd',
       assuming: { multiply: { commutative: false } }
     },
     {
       s: 'n1*n3 + n2*n3 -> (n1+n2)*n3',
       assuming: { multiply: { commutative: false } }
+    },
+    {
+      s: 'n^n1 * n -> n^(n1+1)',
+      assuming: { divide: { total: true }, multiply: { commutative: false } }
     },
     {
       s: 'n1*n3^(-n4) + n2 * n3    -> (n1 + n2*n3^(n4 +  1))*n3^(-n4)',
@@ -352,7 +361,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: 'cd*n + cd -> cd*(n+1)',
       assuming: { multiply: { commutative: false } }
     },
-
+    {
+      s: 'cd + cd*n -> cd*(1+n)',
+      assuming: { multiply: { commutative: false } }
+    },
     simplifyConstant, // Second: before returning expressions to "standard form"
 
     // make factors positive (and undo 'make non-constant terms positive')
