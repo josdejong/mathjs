@@ -6,6 +6,9 @@ describe('reshape', function () {
   it('should reshape an array', function () {
     const array = [[0, 1, 2], [3, 4, 5]]
     assert.deepStrictEqual(math.reshape(array, [3, 2]), [[0, 1], [2, 3], [4, 5]])
+
+    // should not have mutated array
+    assert.deepStrictEqual(array, [[0, 1, 2], [3, 4, 5]])
   })
 
   it('should reshape an array with bignumbers', function () {
@@ -24,6 +27,9 @@ describe('reshape', function () {
       math.matrix([[0, 1], [2, 3], [4, 5]]))
     assert.deepStrictEqual(math.reshape(matrix, math.matrix([3, 2])),
       math.matrix([[0, 1], [2, 3], [4, 5]]))
+
+    // should not have mutated array
+    assert.deepStrictEqual(matrix, math.matrix([[0, 1, 2], [3, 4, 5]]))
   })
 
   it('should reshape a flat single-element array into multiple dimensions', function () {
