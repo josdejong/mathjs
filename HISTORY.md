@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since 11.4.0
+
+- Improve `simplify` rule matches in non-commutative contexts (#2841). 
+  Thanks @samueltlg.
+
+
 # 2022-11-18, 11.4.0
 
 - Implemented more wildcards to describe rules for `simplify`, making it easier

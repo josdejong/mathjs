@@ -48,7 +48,7 @@ export const createReshape = /* #__PURE__ */ factory(name, dependencies, ({ type
   return typed(name, {
 
     'Matrix, Array': function (x, sizes) {
-      return x.reshape(sizes)
+      return x.reshape(sizes, true)
     },
 
     'Array, Array': function (x, sizes) {
