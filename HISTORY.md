@@ -1,10 +1,14 @@
 # History
 
-# unpublished changes since 11.4.0
+# 2022-12-05, 11.5.0
 
 - Improve `simplify` rule matches in non-commutative contexts (#2841). 
   Thanks @samueltlg.
-- Fix function `reshape` mutating the input in case of a matrix (see #2854). 
+- Simplify: add rules and restructure tests for non-commutative contexts
+  (#2847). Thanks @samueltlg.
+- Fix function `reshape` mutating the input in case of a matrix (see #2854).
+- Fix TypeScript types for `multiply()` with `number[]` and `number[][]`
+  (#2852). Thanks @hfhchan.
 
 
 # 2022-11-18, 11.4.0
