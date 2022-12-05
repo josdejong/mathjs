@@ -4,6 +4,7 @@
 
 - Improve `simplify` rule matches in non-commutative contexts (#2841). 
   Thanks @samueltlg.
+- Fix function `reshape` mutating the input in case of a matrix (see #2854). 
 
 
 # 2022-11-18, 11.4.0

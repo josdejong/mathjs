@@ -7,7 +7,7 @@ describe('reshape', function () {
     const array = [[0, 1, 2], [3, 4, 5]]
     assert.deepStrictEqual(math.reshape(array, [3, 2]), [[0, 1], [2, 3], [4, 5]])
 
-    // should not have mutated array
+    // should not have mutated the input
     assert.deepStrictEqual(array, [[0, 1, 2], [3, 4, 5]])
   })
 
@@ -28,7 +28,7 @@ describe('reshape', function () {
     assert.deepStrictEqual(math.reshape(matrix, math.matrix([3, 2])),
       math.matrix([[0, 1], [2, 3], [4, 5]]))
 
-    // should not have mutated array
+    // should not have mutated the input
     assert.deepStrictEqual(matrix, math.matrix([[0, 1, 2], [3, 4, 5]]))
   })
 
