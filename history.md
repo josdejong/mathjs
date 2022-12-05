@@ -4,6 +4,17 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20221205-1150">2022-12-05, 11.5.0 <a href="#20221205-1150" title="Permalink">#</a></h1>
+
+- Improve `simplify` rule matches in non-commutative contexts  <a href="https://github.com/josdejong/mathjs/issues/2841">#2841</a>). 
+  Thanks <a href="https://github.com/samueltlg">@samueltlg</a>.
+- Simplify: add rules and restructure tests for non-commutative contexts
+   <a href="https://github.com/josdejong/mathjs/issues/2847">#2847</a>). Thanks <a href="https://github.com/samueltlg">@samueltlg</a>.
+- Fix function `reshape` mutating the input in case of a matrix (see <a href="https://github.com/josdejong/mathjs/issues/2854">#2854</a>).
+- Fix TypeScript types for `multiply()` with `number[]` and `number[][]`
+   <a href="https://github.com/josdejong/mathjs/issues/2852">#2852</a>). Thanks <a href="https://github.com/hfhchan">@hfhchan</a>.
+
+
 <h1 id="20221118-1140">2022-11-18, 11.4.0 <a href="#20221118-1140" title="Permalink">#</a></h1>
 
 - Implemented more wildcards to describe rules for `simplify`, making it easier

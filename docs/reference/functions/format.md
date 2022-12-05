@@ -26,53 +26,53 @@ math.format(value, callback)
    An object with formatting options. Available options:
    - `notation: string`
      Number notation. Choose from:
-     - 'fixed'
+     - `'fixed'`
        Always use regular number notation.
-       For example '123.40' and '14000000'
-     - 'exponential'
+       For example `'123.40'` and `'14000000'`
+     - `'exponential'`
        Always use exponential notation.
-       For example '1.234e+2' and '1.4e+7'
-     - 'engineering'
+       For example `'1.234e+2'` and `'1.4e+7'`
+     - `'engineering'`
        Always use engineering notation: always have exponential notation,
-       and select the exponent to be a multiple of 3.
-       For example '123.4e+0' and '14.0e+6'
-     - 'auto' (default)
+       and select the exponent to be a multiple of `3`.
+       For example `'123.4e+0'` and `'14.0e+6'`
+     - `'auto'` (default)
        Regular number notation for numbers having an absolute value between
        `lower` and `upper` bounds, and uses exponential notation elsewhere.
        Lower bound is included, upper bound is excluded.
-       For example '123.4' and '1.4e7'.
-     - 'bin', 'oct, or 'hex'
+       For example `'123.4'` and `'1.4e7'`.
+     - `'bin'`, `'oct'`, or `'hex'`
        Format the number using binary, octal, or hexadecimal notation.
-       For example '0b1101' and '0x10fe'.
+       For example `'0b1101'` and `'0x10fe'`.
    - `wordSize: number`
      The word size in bits to use for formatting in binary, octal, or
-     hexadecimal notation. To be used only with 'bin', 'oct', or 'hex'
-     values for 'notation' option. When this option is defined the value
+     hexadecimal notation. To be used only with `'bin'`, `'oct'`, or `'hex'`
+     values for `notation` option. When this option is defined the value
      is formatted as a signed twos complement integer of the given word
      size and the size suffix is appended to the output.
-     For example format(-1, {notation: 'hex', wordSize: 8}) === '0xffi8'.
+     For example `format(-1, {notation: 'hex', wordSize: 8}) === '0xffi8'`.
      Default value is undefined.
    - `precision: number`
      Limit the number of digits of the formatted value.
-     For regular numbers, must be a number between 0 and 16.
+     For regular numbers, must be a number between `0` and `16`.
      For bignumbers, the maximum depends on the configured precision,
      see function `config()`.
-     In case of notations 'exponential', 'engineering', and 'auto', `precision`
-     defines the total number of significant digits returned.
-     In case of notation 'fixed', `precision` defines the number of
+     In case of notations `'exponential'`, `'engineering'`, and `'auto'`,
+     `precision` defines the total number of significant digits returned.
+     In case of notation `'fixed'`, `precision` defines the number of
      significant digits after the decimal point.
      `precision` is undefined by default.
    - `lowerExp: number`
      Exponent determining the lower boundary for formatting a value with
-     an exponent when `notation='auto`. Default value is `-3`.
+     an exponent when `notation='auto'`. Default value is `-3`.
    - `upperExp: number`
      Exponent determining the upper boundary for formatting a value with
-     an exponent when `notation='auto`. Default value is `5`.
-   - `fraction: string`. Available values: 'ratio' (default) or 'decimal'.
-     For example `format(fraction(1, 3))` will output '1/3' when 'ratio' is
-     configured, and will output `0.(3)` when 'decimal' is configured.
+     an exponent when `notation='auto'`. Default value is `5`.
+   - `fraction: string`. Available values: `'ratio'` (default) or `'decimal'`.
+     For example `format(fraction(1, 3))` will output `'1/3'` when `'ratio'`
+     is configured, and will output `'0.(3)'` when `'decimal'` is configured.
    - `truncate: number`. Specifies the maximum allowed length of the
-     returned string. If it would have been longer, the excess characters
+     returned string. If it had been longer, the excess characters
      are deleted and replaced with `'...'`.
 - `callback: function`
   A custom formatting function, invoked for all numeric elements in `value`,
