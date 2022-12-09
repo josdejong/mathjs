@@ -2079,9 +2079,9 @@ declare namespace math {
      * @param {string} [format]                              Result Matrix storage format. Default value: 'dense'.
      * @return {Matrix}                                      Rotation Matrix
      */
-    rotationMatrix<T extends Matrix>(
-      theta: number | BigNumber | Complex | Unit,
-      axis?: MathArray | Matrix,
+    rotationMatrix<T extends MathCollection>(
+      theta?: number | BigNumber | Complex | Unit,
+      axis?: T,
       format?: 'sparse' | 'dense'
     ): T
 

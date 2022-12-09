@@ -1419,6 +1419,38 @@ Sparse matrices examples
 }
 
 /*
+Rotation matrices examples
+*/
+{
+  const math = create(all, {})
+
+  // create a rotation matrix
+  const a = math.rotationMatrix()
+  const b = math.rotationMatrix(math.pi, [1, 1, 0], 'sparse')
+
+  expectTypeOf(a).toMatchTypeOf<MathCollection>()
+  expectTypeOf(b).toMatchTypeOf<MathCollection>()
+
+  assert.throws(
+    // @ts-expect-error ... verify format parameter is either null, 'sparse' or 'dense'
+    () => math.rotationMatrix(math.pi, [1, 1, 0], 'format'),
+    TypeError
+  )
+
+  assert.throws(
+    // @ts-expect-error ... verify theta is number
+    () => math.rotationMatrix('pi'),
+    TypeError
+  )
+
+  assert.throws(
+    // @ts-expect-error ... verify axis is of MathColletion Type
+    () => math.rotationMatrix(math.pi, 1),
+    TypeError
+  )
+}
+
+/*
 Units examples
 */
 {
