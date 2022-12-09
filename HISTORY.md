@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since 11.5.0
+
+- Add type definitions for function `rotationMatrix` (#2860). 
+  Thanks @brunoSnoww.
+
+
 # 2022-12-05, 11.5.0
 
 - Improve `simplify` rule matches in non-commutative contexts (#2841). 
