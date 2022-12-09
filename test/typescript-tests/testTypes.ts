@@ -2302,9 +2302,6 @@ Resolve examples
     math.resolve([math.parse('x + y'), 'x*x'], { x: 0 })
   ).toMatchTypeOf<MathNode[]>()
   expectTypeOf(math.resolve(math.matrix(['x', 'y']))).toMatchTypeOf<Matrix>()
-  expectTypeOf(
-    math.resolve(math.rotationMatrix(math.pi / 2))
-  ).toMatchTypeOf<Matrix>()
 }
 
 /*
