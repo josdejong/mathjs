@@ -2073,6 +2073,19 @@ declare namespace math {
     ): T
 
     /**
+     * Return a Rotation Matrix for a given angle in radians
+     * @param {number | BigNumber | Complex | Unit} theta    Rotation angle
+     * @param {Array | Matrix} [v]                           Rotation axis
+     * @param {string} [format]                              Result Matrix storage format. Default value: 'dense'.
+     * @return {Matrix}                                      Rotation Matrix
+     */
+    rotationMatrix<T extends MathCollection>(
+      theta?: number | BigNumber | Complex | Unit,
+      axis?: T,
+      format?: 'sparse' | 'dense'
+    ): T
+
+    /**
      * Return a row from a Matrix.
      * @param value An array or matrix
      * @param row The index of the row
