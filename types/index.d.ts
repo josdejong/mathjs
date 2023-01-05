@@ -898,7 +898,7 @@ declare namespace math {
       order?: number,
       threshold?: number
     ): MathArray
-    
+
     lusolve(
       A: LUDecomposition,
       b: Matrix | MathArray,
@@ -4524,7 +4524,7 @@ declare namespace math {
 
     lusolve(
       this: MathJsChain<LUDecomposition>,
-      b: Matrix | MathArray,
+      b: Matrix | MathArray
     ): MathJsChain<Matrix>
 
     /**
