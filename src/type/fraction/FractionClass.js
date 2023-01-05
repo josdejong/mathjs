@@ -1,3 +1,5 @@
+// Note: we name this file FractionClass.js and not Fraction.js as a workaround for Next.js getting
+// confused about the similarly named npm package fraction.js, see https://github.com/josdejong/mathjs/issues/2870
 import Fraction from 'fraction.js'
 import { factory } from '../../utils/factory.js'
 

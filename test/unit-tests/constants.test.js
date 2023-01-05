@@ -1,7 +1,7 @@
 import assert from 'assert'
 import approx from '../../tools/approx.js'
 import { createBigNumberClass } from '../../src/type/bignumber/BigNumber.js'
-import { createComplexClass } from '../../src/type/complex/Complex.js'
+import { createComplexClass } from '../../src/type/complex/ComplexClass.js'
 import {
   createE,
   createFalse,

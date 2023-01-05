@@ -1,3 +1,5 @@
+// Note: we name this file ComplexClass.js and not Complex.js as a workaround for Next.js getting
+// confused about the similarly named npm package complex.js, see https://github.com/josdejong/mathjs/issues/2870
 import Complex from 'complex.js'
 import { format } from '../../utils/number.js'
 import { isNumber, isUnit } from '../../utils/is.js'
