@@ -899,10 +899,7 @@ declare namespace math {
       threshold?: number
     ): MathArray
 
-    lusolve(
-      A: LUDecomposition,
-      b: Matrix | MathArray,
-    ): Matrix
+    lusolve(A: LUDecomposition, b: Matrix | MathArray): Matrix
 
     /* Finds the roots of a polynomial of degree three or less. Coefficients are given constant first
      * followed by linear and higher powers in order; coefficients beyond the degree of the polynomial
