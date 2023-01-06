@@ -4,6 +4,8 @@
 
 - Add type definitions for function `rotationMatrix` (#2860). 
   Thanks @brunoSnoww.
+- Add type signature for `lusolve(LUDecomposition, ...)` (#2864). 
+  Thanks @evanmiller.
 
 
 # 2022-12-05, 11.5.0
