@@ -30,6 +30,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       }
       return res
     })
+  gcdManySignature.Array = typed.referToSelf(self => (args) => self(...args))
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.

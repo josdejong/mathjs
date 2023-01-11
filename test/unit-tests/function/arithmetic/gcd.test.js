@@ -17,6 +17,11 @@ describe('gcd', function () {
     assert.strictEqual(gcd(25, 15, -10, 30), 5)
   })
 
+  it('should find the greatest common divisor of two or more numbers with array argument', function () {
+    assert.strictEqual(gcd([12, 8]), 4)
+    assert.strictEqual(gcd([25, 15, -10, 30]), 5)
+  })
+
   it('should calculate gcd for edge cases around zero', function () {
     assert.strictEqual(gcd(3, 0), 3)
     assert.strictEqual(gcd(-3, 0), 3)
