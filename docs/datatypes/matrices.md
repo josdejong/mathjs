@@ -122,14 +122,14 @@ math.range(3, -1, -1)   // [3, 2, 1, 0]
 
 ## Calculations
 
-All relevant functions of math.js support matrices and arrays.
+Most functions of math.js support matrices and arrays, and unary functions can applied element-wise using via `math.map(matrix, function)`.
 
 ```js
-// perform a calculation on a matrix
+// perform an element-wise operation on a matrix using math.map
 const a = math.matrix([1, 4, 9, 16, 25])  // Matrix, [1, 4, 9, 16, 25]
-math.sqrt(a)                              // Matrix, [1, 2, 3, 4, 5]
+math.map(a, math.sqrt)                    // Matrix, [1, 2, 3, 4, 5]
 
-// perform a calculation on an array
+// use a function that has built-in matrix and array support
 const b = [1, 2, 3, 4, 5] 
 math.factorial(b)                         // Array,  [1, 2, 6, 24, 120]
 
