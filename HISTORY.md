@@ -8,6 +8,7 @@
   Thanks @evanmiller.
 - Fix #2873: the rocket_trajectory_optimization.html example being partly 
   broken. Thanks @dvd101x.
+- Fix #2871: coverage report broken (#2877). Thanks @bornova.
 
 
 # 2022-12-05, 11.5.0
