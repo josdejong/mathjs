@@ -9,7 +9,7 @@ on:
         description: LT Access Key
         required: true
       sampleRepoLink:
-        description: https://github.com/gauravchawhan/mathjs
+        description: Link to the HyperExecute sample repo
         default: https://github.com/gauravchawhan/mathjs
         required: true
 jobs:
