@@ -4,9 +4,9 @@ on:
     inputs:
       username:
         required: true
-        description: gauravc
+        description: LT Username
       accessKey:
-        description: bjLu06LSMD38tqEcPEYDvvZbkXTaqi00mxq5IBLmLxFaLfm9Cn
+        description: LT Access Key
         required: true
       sampleRepoLink:
         description: https://github.com/gauravchawhan/mathjs
