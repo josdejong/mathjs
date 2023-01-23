@@ -36,7 +36,7 @@
   <div id="canvas-grid"></div>
 
   <script>
-    // Solve ODE `dx/dt = f(x,t), x(0) = x0` numerically. 
+    // Solve ODE `dx/dt = f(x,t), x(0) = x0` numerically.
     function ndsolve(f, x0, dt, tmax) {
       let x = x0.clone()  // Current values of variables
       const result = [x]  // Contains entire solution
@@ -191,9 +191,12 @@
     }])
     createChart([{
       label: 'drag acceleration (in m/s^2)',
-      data: sim.evaluate("concat(drag(result[:, 1], result[:, 2]) ./ result[:, 3], result[:, 6])")
+      data: sim.evaluate('result')
         .toArray()
-        .map(([dragAcc, t]) => ({ x: t.toNumber('s'), y: dragAcc.toNumber('m/s^2') })),
+        .map(([r, v, m, phi, gamma, t]) => ({
+          x: t.toNumber('s'),
+          y: sim.evaluate(`drag(${r},${v})/${m}`).toNumber('m/s^2')
+        }))
     }])
     createChart(
       [
