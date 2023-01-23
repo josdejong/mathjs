@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 11.5.1
+
+- Fix #2883: update documentation for stat functions, describe missing syntax.
+
+
 # unpublished changes since 11.5.0
 
 - Add type definitions for function `rotationMatrix` (#2860). 
