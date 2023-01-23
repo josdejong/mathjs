@@ -8,7 +8,7 @@ const dependencies = ['typed', 'config', 'numeric', 'smaller']
 export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, smaller }) => {
   /**
    * Compute the minimum value of a matrix or a  list of values.
-   * In case of a multi dimensional array, the minimum of the flattened array
+   * In case of a multidimensional array, the minimum of the flattened array
    * will be calculated. When `dim` is provided, the minimum over the selected
    * dimension will be calculated. Parameter `dim` is zero-based.
    *
@@ -16,7 +16,7 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    *     math.min(a, b, c, ...)
    *     math.min(A)
-   *     math.min(A, dim)
+   *     math.min(A, dimension)
    *
    * Examples:
    *

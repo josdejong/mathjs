@@ -11,7 +11,7 @@ const dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'apply',
 export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract, multiply, divide, apply, isNaN }) => {
   /**
    * Compute the variance of a matrix or a  list with values.
-   * In case of a (multi dimensional) array or matrix, the variance over all
+   * In case of a multidimensional array or matrix, the variance over all
    * elements will be calculated.
    *
    * Additionally, it is possible to compute the variance along the rows

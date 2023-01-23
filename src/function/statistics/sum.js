@@ -8,13 +8,14 @@ const dependencies = ['typed', 'config', 'add', 'numeric']
 export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, numeric }) => {
   /**
    * Compute the sum of a matrix or a list with values.
-   * In case of a (multi dimensional) array or matrix, the sum of all
+   * In case of a multidimensional array or matrix, the sum of all
    * elements will be calculated.
    *
    * Syntax:
    *
    *     math.sum(a, b, c, ...)
    *     math.sum(A)
+   *     math.sum(A, dimension)
    *
    * Examples:
    *
@@ -26,7 +27,7 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    *    mean, median, min, max, prod, std, variance, cumsum
    *
-   * @param {... *} args  A single matrix or or multiple scalar values
+   * @param {... *} args  A single matrix or multiple scalar values
    * @return {*} The sum of all values
    */
   return typed(name, {

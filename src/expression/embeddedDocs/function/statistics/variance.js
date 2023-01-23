@@ -4,7 +4,9 @@ export const varianceDocs = {
   syntax: [
     'variance(a, b, c, ...)',
     'variance(A)',
-    'variance(A, normalization)'
+    'variance(A, dimension)',
+    'variance(A, normalization)',
+    'variance(A, dimension, normalization)'
   ],
   description: 'Compute the variance of all values. Optional parameter normalization can be "unbiased" (default), "uncorrected", or "biased".',
   examples: [

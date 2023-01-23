@@ -9,7 +9,7 @@ const dependencies = ['typed', 'add', 'divide']
 export const createMean = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide }) => {
   /**
    * Compute the mean value of matrix or a list with values.
-   * In case of a multi dimensional array, the mean of the flattened array
+   * In case of a multidimensional array, the mean of the flattened array
    * will be calculated. When `dim` is provided, the maximum over the selected
    * dimension will be calculated. Parameter `dim` is zero-based.
    *
@@ -17,7 +17,7 @@ export const createMean = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *     math.mean(a, b, c, ...)
    *     math.mean(A)
-   *     math.mean(A, dim)
+   *     math.mean(A, dimension)
    *
    * Examples:
    *
