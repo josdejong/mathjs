@@ -1,4 +1,4 @@
-import Fraction from 'fraction.js/' // the trailing slash is a workaround for Next.js to prevent erroneous import of ./Fraction.js on case-insensitive filesystems, see https://github.com/josdejong/mathjs/issues/2870
+import Fraction from 'fraction.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'Fraction'

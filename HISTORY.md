@@ -5,8 +5,6 @@
 - Fix #2883: update documentation for stat functions, describe missing syntax.
 - Fix #2884: fix examples in the embedded docs of function `pow` and some other
   functions.
-- Fix #2870: implement a workaround for Next.js confusing npm package names 
-  `complex.js` and `fraction.js` with relative filenames.
 
 # unpublished changes since 11.5.0
 

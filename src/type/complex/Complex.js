@@ -1,4 +1,4 @@
-import Complex from 'complex.js/' // the trailing slash is a workaround for Next.js to prevent erroneous import of ./Complex.js on case-insensitive filesystems, see https://github.com/josdejong/mathjs/issues/2870
+import Complex from 'complex.js'
 import { format } from '../../utils/number.js'
 import { isNumber, isUnit } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
