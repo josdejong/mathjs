@@ -2,9 +2,9 @@ export const matrixFromColumnsDocs = {
   name: 'matrixFromColumns',
   category: 'Matrix',
   syntax: [
-    'math.matrixFromColumns(...arr)',
-    'math.matrixFromColumns(row1, row2)',
-    'math.matrixFromColumns(row1, row2, row3)'
+    'matrixFromColumns(...arr)',
+    'matrixFromColumns(row1, row2)',
+    'matrixFromColumns(row1, row2, row3)'
   ],
   description: 'Create a dense matrix from vectors as individual columns.',
   examples: [
