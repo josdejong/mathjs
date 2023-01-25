@@ -4,7 +4,9 @@ export const stdDocs = {
   syntax: [
     'std(a, b, c, ...)',
     'std(A)',
-    'std(A, normalization)'
+    'std(A, dimension)',
+    'std(A, normalization)',
+    'std(A, dimension, normalization)'
   ],
   description: 'Compute the standard deviation of all values, defined as std(A) = sqrt(variance(A)). Optional parameter normalization can be "unbiased" (default), "uncorrected", or "biased".',
   examples: [

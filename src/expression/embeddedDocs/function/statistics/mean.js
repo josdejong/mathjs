@@ -4,7 +4,7 @@ export const meanDocs = {
   syntax: [
     'mean(a, b, c, ...)',
     'mean(A)',
-    'mean(A, dim)'
+    'mean(A, dimension)'
   ],
   description: 'Compute the arithmetic mean of a list of values.',
   examples: [

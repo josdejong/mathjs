@@ -1,11 +1,20 @@
 # History
 
+# unpublished changes since 11.5.1
+
+- Fix #2883: update documentation for stat functions, describe missing syntax.
+- Fix #2884: fix examples in the embedded docs of function `pow` and some other
+  functions.
+
 # unpublished changes since 11.5.0
 
 - Add type definitions for function `rotationMatrix` (#2860). 
   Thanks @brunoSnoww.
 - Add type signature for `lusolve(LUDecomposition, ...)` (#2864). 
   Thanks @evanmiller.
+- Fix #2873: the rocket_trajectory_optimization.html example being partly 
+  broken. Thanks @dvd101x.
+- Fix #2871: coverage report broken (#2877). Thanks @bornova.
 
 
 # 2022-12-05, 11.5.0

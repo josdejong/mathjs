@@ -8,7 +8,7 @@ const dependencies = ['typed', 'config', 'multiplyScalar', 'numeric']
 export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, numeric }) => {
   /**
    * Compute the product of a matrix or a list with values.
-   * In case of a (multi dimensional) array or matrix, the sum of all
+   * In case of a multidimensional array or matrix, the sum of all
    * elements will be calculated.
    *
    * Syntax:

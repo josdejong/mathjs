@@ -4,7 +4,7 @@ export const maxDocs = {
   syntax: [
     'max(a, b, c, ...)',
     'max(A)',
-    'max(A, dim)'
+    'max(A, dimension)'
   ],
   description: 'Compute the maximum value of a list of values.',
   examples: [
