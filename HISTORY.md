@@ -1,11 +1,5 @@
 # History
 
-# unpublished changes since 11.5.1
-
-- Fix #2883: update documentation for stat functions, describe missing syntax.
-- Fix #2884: fix examples in the embedded docs of function `pow` and some other
-  functions.
-
 # unpublished changes since 11.5.0
 
 - Add type definitions for function `rotationMatrix` (#2860). 
@@ -15,6 +9,11 @@
 - Fix #2873: the rocket_trajectory_optimization.html example being partly 
   broken. Thanks @dvd101x.
 - Fix #2871: coverage report broken (#2877). Thanks @bornova.
+- Fix #2883: update documentation for stat functions, describe missing syntax.
+- Fix #2884: fix examples in the embedded docs of function `pow` and some other
+  functions.
+- Fix type definition of function `complex` for one numeric input (#2886), 
+  thanks @ariymarkowitz.
 
 
 # 2022-12-05, 11.5.0
