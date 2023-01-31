@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 11.5.0
+# 2023-01-31, 11.5.1
 
 - Add type definitions for function `rotationMatrix` (#2860). 
   Thanks @brunoSnoww.
@@ -14,7 +14,9 @@
   functions.
 - Fix type definition of function `complex` for one numeric input (#2886), 
   thanks @ariymarkowitz.
-
+- Fix type definitions of `map()` and `forEach()` (#2887), thanks @xiaohk.
+- Fix #2606: improve type definitions of `dotMultiply`, `dotPow` and 
+  `dotDivide` (#2890). Thanks @brunoSnoww.
 
 # 2022-12-05, 11.5.0
 
