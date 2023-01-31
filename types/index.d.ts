@@ -4756,10 +4756,15 @@ declare namespace math {
       this: MathJsChain<T>,
       y: MathType
     ): MathJsChain<T>
+    dotDivide<T extends MathCollection>(
+      this: MathJsChain<MathType>,
+      y: T
+    ): MathJsChain<T>
     dotDivide(this: MathJsChain<Unit>, y: MathType): MathJsChain<Unit>
+    dotDivide(this: MathJsChain<MathType>, y: Unit): MathJsChain<Unit>
     dotDivide(
       this: MathJsChain<MathNumericType>,
-      y: MathType
+      y: MathNumericType
     ): MathJsChain<MathNumericType>
 
     /**
@@ -4771,10 +4776,15 @@ declare namespace math {
       this: MathJsChain<T>,
       y: MathType
     ): MathJsChain<T>
+    dotMultiply<T extends MathCollection>(
+      this: MathJsChain<MathType>,
+      y: T
+    ): MathJsChain<T>
     dotMultiply(this: MathJsChain<Unit>, y: MathType): MathJsChain<Unit>
+    dotMultiply(this: MathJsChain<MathType>, y: Unit): MathJsChain<Unit>
     dotMultiply(
       this: MathJsChain<MathNumericType>,
-      y: MathType
+      y: MathNumericType
     ): MathJsChain<MathNumericType>
 
     /**
