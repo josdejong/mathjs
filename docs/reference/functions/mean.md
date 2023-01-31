@@ -7,7 +7,7 @@ layout: default
 <h1 id="function-mean">Function mean <a href="#function-mean" title="Permalink">#</a></h1>
 
 Compute the mean value of matrix or a list with values.
-In case of a multi dimensional array, the mean of the flattened array
+In case of a multidimensional array, the mean of the flattened array
 will be calculated. When `dim` is provided, the maximum over the selected
 dimension will be calculated. Parameter `dim` is zero-based.
 
@@ -17,7 +17,7 @@ dimension will be calculated. Parameter `dim` is zero-based.
 ```js
 math.mean(a, b, c, ...)
 math.mean(A)
-math.mean(A, dim)
+math.mean(A, dimension)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

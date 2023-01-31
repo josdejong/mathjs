@@ -4,6 +4,24 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20230131-1151">2023-01-31, 11.5.1 <a href="#20230131-1151" title="Permalink">#</a></h1>
+
+- Add type definitions for function `rotationMatrix`  <a href="https://github.com/josdejong/mathjs/issues/2860">#2860</a>). 
+  Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
+- Add type signature for `lusolve(LUDecomposition, ...)`  <a href="https://github.com/josdejong/mathjs/issues/2864">#2864</a>). 
+  Thanks <a href="https://github.com/evanmiller">@evanmiller</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2873">#2873</a>: the rocket_trajectory_optimization.html example being partly 
+  broken. Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2871">#2871</a>: coverage report broken  <a href="https://github.com/josdejong/mathjs/issues/2877">#2877</a>). Thanks <a href="https://github.com/bornova">@bornova</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2883">#2883</a>: update documentation for stat functions, describe missing syntax.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2884">#2884</a>: fix examples in the embedded docs of function `pow` and some other
+  functions.
+- Fix type definition of function `complex` for one numeric input  <a href="https://github.com/josdejong/mathjs/issues/2886">#2886</a>), 
+  thanks <a href="https://github.com/ariymarkowitz">@ariymarkowitz</a>.
+- Fix type definitions of `map()` and `forEach()`  <a href="https://github.com/josdejong/mathjs/issues/2887">#2887</a>), thanks <a href="https://github.com/xiaohk">@xiaohk</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2606">#2606</a>: improve type definitions of `dotMultiply`, `dotPow` and 
+  `dotDivide`  <a href="https://github.com/josdejong/mathjs/issues/2890">#2890</a>). Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
+
 <h1 id="20221205-1150">2022-12-05, 11.5.0 <a href="#20221205-1150" title="Permalink">#</a></h1>
 
 - Improve `simplify` rule matches in non-commutative contexts  <a href="https://github.com/josdejong/mathjs/issues/2841">#2841</a>). 

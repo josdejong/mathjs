@@ -7,7 +7,7 @@ layout: default
 <h1 id="function-prod">Function prod <a href="#function-prod" title="Permalink">#</a></h1>
 
 Compute the product of a matrix or a list with values.
-In case of a (multi dimensional) array or matrix, the sum of all
+In case of a multidimensional array or matrix, the sum of all
 elements will be calculated.
 
 

@@ -11,7 +11,7 @@ The sequence is sorted and the middle value is returned.
 Supported types of sequence values are: Number, BigNumber, Unit
 Supported types of probability are: Number, BigNumber
 
-In case of a (multi dimensional) array or matrix, the prob order quantile
+In case of a multidimensional array or matrix, the prob order quantile
 of all elements will be calculated.
 
 

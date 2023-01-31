@@ -7,7 +7,7 @@ layout: default
 <h1 id="function-min">Function min <a href="#function-min" title="Permalink">#</a></h1>
 
 Compute the minimum value of a matrix or a  list of values.
-In case of a multi dimensional array, the minimum of the flattened array
+In case of a multidimensional array, the minimum of the flattened array
 will be calculated. When `dim` is provided, the minimum over the selected
 dimension will be calculated. Parameter `dim` is zero-based.
 
@@ -17,7 +17,7 @@ dimension will be calculated. Parameter `dim` is zero-based.
 ```js
 math.min(a, b, c, ...)
 math.min(A)
-math.min(A, dim)
+math.min(A, dimension)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

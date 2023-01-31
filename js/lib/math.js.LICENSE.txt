@@ -23,11 +23,11 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 11.5.0
- * @date    2022-12-05
+ * @version 11.5.1
+ * @date    2023-01-31
  *
  * @license
- * Copyright (C) 2013-2022 Jos de Jong <wjosdejong@gmail.com>
+ * Copyright (C) 2013-2023 Jos de Jong <wjosdejong@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy

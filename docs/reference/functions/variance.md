@@ -7,7 +7,7 @@ layout: default
 <h1 id="function-variance">Function variance <a href="#function-variance" title="Permalink">#</a></h1>
 
 Compute the variance of a matrix or a  list with values.
-In case of a (multi dimensional) array or matrix, the variance over all
+In case of a multidimensional array or matrix, the variance over all
 elements will be calculated.
 
 Additionally, it is possible to compute the variance along the rows

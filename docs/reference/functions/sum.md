@@ -7,7 +7,7 @@ layout: default
 <h1 id="function-sum">Function sum <a href="#function-sum" title="Permalink">#</a></h1>
 
 Compute the sum of a matrix or a list with values.
-In case of a (multi dimensional) array or matrix, the sum of all
+In case of a multidimensional array or matrix, the sum of all
 elements will be calculated.
 
 
@@ -16,13 +16,14 @@ elements will be calculated.
 ```js
 math.sum(a, b, c, ...)
 math.sum(A)
+math.sum(A, dimension)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | ... * | A single matrix or or multiple scalar values
+`args` | ... * | A single matrix or multiple scalar values
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
