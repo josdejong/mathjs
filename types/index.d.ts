@@ -3794,12 +3794,12 @@ declare namespace math {
     size(): number[]
     map(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      callback: (a: any, b: number, c: Matrix) => any,
+      callback: (a: any, b: number[], c: Matrix) => any,
       skipZeros?: boolean
     ): Matrix
     forEach(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      callback: (a: any, b: number, c: Matrix) => void,
+      callback: (a: any, b: number[], c: Matrix) => void,
       skipZeros?: boolean
     ): void
     toArray(): MathArray
