@@ -622,7 +622,7 @@ declare namespace math {
      * complex number
      * @returns Returns a complex value
      */
-    complex(arg?: Complex | string | PolarCoordinates): Complex
+    complex(arg?: MathNumericType | string | PolarCoordinates): Complex
     complex(arg?: MathCollection): MathCollection
     /**
      * @param re Argument specifying the real part of the complex number
