@@ -1149,7 +1149,11 @@ declare namespace math {
      * @param y Denominator
      * @returns Quotient, x ./ y
      */
-    dotDivide(x: MathType, y: MathType): MathType
+    dotDivide<T extends MathCollection>(x: T, y: MathType): T
+    dotDivide<T extends MathCollection>(x: MathType, y: T): T
+    dotDivide(x: Unit, y: MathType): Unit
+    dotDivide(x: MathType, y: Unit): Unit
+    dotDivide(x: MathNumericType, y: MathNumericType): MathNumericType
 
     /**
      * Multiply two matrices element wise. The function accepts both
@@ -1158,7 +1162,11 @@ declare namespace math {
      * @param y Right hand value
      * @returns Multiplication of x and y
      */
-    dotMultiply(x: MathType, y: MathType): MathType
+    dotMultiply<T extends MathCollection>(x: T, y: MathType): T
+    dotMultiply<T extends MathCollection>(x: MathType, y: T): T
+    dotMultiply(x: Unit, y: MathType): Unit
+    dotMultiply(x: MathType, y: Unit): Unit
+    dotMultiply(x: MathNumericType, y: MathNumericType): MathNumericType
 
     /**
      * Calculates the power of x to y element wise.
@@ -1166,7 +1174,7 @@ declare namespace math {
      * @param y The exponent
      * @returns The value of x to the power y
      */
-    dotPow(x: MathType, y: MathType): MathType
+    dotPow<T extends MathType>(x: T, y: MathType): T
 
     /**
      * Calculate the exponent of a value. For matrices, the function is
@@ -4744,20 +4752,49 @@ declare namespace math {
      * and scalar values.
      * @param y Denominator
      */
-    dotDivide(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
+    dotDivide<T extends MathCollection>(
+      this: MathJsChain<T>,
+      y: MathType
+    ): MathJsChain<T>
+    dotDivide<T extends MathCollection>(
+      this: MathJsChain<MathType>,
+      y: T
+    ): MathJsChain<T>
+    dotDivide(this: MathJsChain<Unit>, y: MathType): MathJsChain<Unit>
+    dotDivide(this: MathJsChain<MathType>, y: Unit): MathJsChain<Unit>
+    dotDivide(
+      this: MathJsChain<MathNumericType>,
+      y: MathNumericType
+    ): MathJsChain<MathNumericType>
 
     /**
      * Multiply two matrices element wise. The function accepts both
      * matrices and scalar values.
      * @param y Right hand value
      */
-    dotMultiply(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
+    dotMultiply<T extends MathCollection>(
+      this: MathJsChain<T>,
+      y: MathType
+    ): MathJsChain<T>
+    dotMultiply<T extends MathCollection>(
+      this: MathJsChain<MathType>,
+      y: T
+    ): MathJsChain<T>
+    dotMultiply(this: MathJsChain<Unit>, y: MathType): MathJsChain<Unit>
+    dotMultiply(this: MathJsChain<MathType>, y: Unit): MathJsChain<Unit>
+    dotMultiply(
+      this: MathJsChain<MathNumericType>,
+      y: MathNumericType
+    ): MathJsChain<MathNumericType>
 
     /**
      * Calculates the power of x to y element wise.
      * @param y The exponent
      */
-    dotPow(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
+    dotPow<T extends MathType>(
+      this: MathJsChain<T>,
+      y: MathType
+    ): MathJsChain<T>
 
     /**
      * Calculate the exponent of a value. For matrices, the function is
