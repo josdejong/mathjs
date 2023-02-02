@@ -84,6 +84,16 @@ describe('row', function () {
     )
   })
 
+  it('should return the row of an 1x1 array', function () {
+    assert.deepStrictEqual(row([[5]], 0), [[5]])
+    assert.deepStrictEqual(row([[5], [6], [7]], 0), [[5]])
+  })
+
+  it('should return the row of an 1x1 matrix', function () {
+    assert.deepStrictEqual(row(matrix([[5]]), 0), matrix([[5]]))
+    assert.deepStrictEqual(row(matrix([[5], [6], [7]]), 0), matrix([[5]]))
+  })
+
   it('should return an empty matrix row', function () {
     const r = row(m, 2)
     assert.deepStrictEqual(

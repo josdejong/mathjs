@@ -5,6 +5,7 @@
 - Fix #2888: update type definitions of function `unit` to allow creating a 
   unit from a fraction or complex number.
 - Fix #2892: an error in the examples of the embedded help of function `sort`.
+- Fix #2891: functions `column` and `row` sometimes returning a scalar number. 
 
 # 2023-01-31, 11.5.1
 
