@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 11.5.1
+
+- Fix #2888: update type definitions of function `unit` to allow creating a 
+  unit from a fraction or complex number.
+
 # 2023-01-31, 11.5.1
 
 - Add type definitions for function `rotationMatrix` (#2860). 
