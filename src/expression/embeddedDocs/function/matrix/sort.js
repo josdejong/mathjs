@@ -8,7 +8,7 @@ export const sortDocs = {
   description: 'Sort the items in a matrix. Compare can be a string "asc", "desc", "natural", or a custom sort function.',
   examples: [
     'sort([5, 10, 1])',
-    'sort(["C", "B", "A", "D"])',
+    'sort(["C", "B", "A", "D"], "natural")',
     'sortByLength(a, b) = size(a)[1] - size(b)[1]',
     'sort(["Langdon", "Tom", "Sara"], sortByLength)',
     'sort(["10", "1", "2"], "natural")'
