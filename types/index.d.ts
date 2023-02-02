@@ -776,7 +776,7 @@ declare namespace math {
      * @param unit The unit to be created
      * @returns The created unit
      */
-    unit(value: number | BigNumber, unit: string): Unit
+    unit(value: number | BigNumber | Fraction | Complex, unit: string): Unit
     unit(value: MathCollection, unit: string): Unit[]
 
     /*************************************************************************
@@ -4397,7 +4397,7 @@ declare namespace math {
     unit(this: MathJsChain<string>, unit?: string): MathJsChain<Unit>
     unit(this: MathJsChain<Unit>, unit?: string): MathJsChain<Unit>
     unit(
-      this: MathJsChain<number | BigNumber>,
+      this: MathJsChain<number | BigNumber | Fraction | Complex>,
       unit?: string
     ): MathJsChain<Unit>
     unit(this: MathJsChain<MathCollection>, unit?: string): MathJsChain<Unit[]>
