@@ -679,7 +679,7 @@ Chaining examples
 
   // dotDivide
   expectTypeOf(math.chain(1).dotDivide(2)).toMatchTypeOf<
-    MathJsChain<MathType>
+    MathJsChain<MathNumericType>
   >()
   expectTypeOf(
     math
@@ -690,11 +690,11 @@ Chaining examples
         ])
       )
       .dotDivide(2)
-  ).toMatchTypeOf<MathJsChain<MathType>>()
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // dotMultiply
   expectTypeOf(math.chain(1).dotMultiply(2)).toMatchTypeOf<
-    MathJsChain<MathType>
+    MathJsChain<MathNumericType>
   >()
   expectTypeOf(
     math
@@ -705,10 +705,12 @@ Chaining examples
         ])
       )
       .dotMultiply(2)
-  ).toMatchTypeOf<MathJsChain<MathType>>()
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // dotPow
-  expectTypeOf(math.chain(1).dotPow(2)).toMatchTypeOf<MathJsChain<MathType>>()
+  expectTypeOf(math.chain(1).dotPow(2)).toMatchTypeOf<
+    MathJsChain<MathNumericType>
+  >()
   expectTypeOf(
     math
       .chain(
@@ -718,7 +720,7 @@ Chaining examples
         ])
       )
       .dotPow(2)
-  ).toMatchTypeOf<MathJsChain<MathType>>()
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
 
   // exp
   expectTypeOf(math.chain(1).exp()).toMatchTypeOf<MathJsChain<MathType>>()
@@ -1360,7 +1362,7 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
 
   // Unit
   const a = math.unit(45, 'cm') // 450 mm
-  const b = math.unit(45, 'cm') // 450 mm
+  const b = math.unit(math.fraction(90, 2), 'cm') // 450 mm
   const _r2 = math.multiply(a, b)
 
   // 1D JS Array

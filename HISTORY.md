@@ -2,11 +2,12 @@
 
 # unpublished changes since 11.5.1
 
-- Fix #2883: update documentation for stat functions, describe missing syntax.
-- Fix #2884: fix examples in the embedded docs of function `pow` and some other
-  functions.
+- Fix #2888: update type definitions of function `unit` to allow creating a 
+  unit from a fraction or complex number.
+- Fix #2892: an error in the examples of the embedded help of function `sort`.
+- Fix #2891: functions `column` and `row` sometimes returning a scalar number. 
 
-# unpublished changes since 11.5.0
+# 2023-01-31, 11.5.1
 
 - Add type definitions for function `rotationMatrix` (#2860). 
   Thanks @brunoSnoww.
@@ -15,7 +16,14 @@
 - Fix #2873: the rocket_trajectory_optimization.html example being partly 
   broken. Thanks @dvd101x.
 - Fix #2871: coverage report broken (#2877). Thanks @bornova.
-
+- Fix #2883: update documentation for stat functions, describe missing syntax.
+- Fix #2884: fix examples in the embedded docs of function `pow` and some other
+  functions.
+- Fix type definition of function `complex` for one numeric input (#2886), 
+  thanks @ariymarkowitz.
+- Fix type definitions of `map()` and `forEach()` (#2887), thanks @xiaohk.
+- Fix #2606: improve type definitions of `dotMultiply`, `dotPow` and 
+  `dotDivide` (#2890). Thanks @brunoSnoww.
 
 # 2022-12-05, 11.5.0
 

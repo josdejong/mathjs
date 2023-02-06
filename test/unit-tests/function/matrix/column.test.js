@@ -84,6 +84,16 @@ describe('column', function () {
     )
   })
 
+  it('should return the column of an 1x1 array', function () {
+    assert.deepStrictEqual(column([[5]], 0), [[5]])
+    assert.deepStrictEqual(column([[5, 6, 7]], 0), [[5]])
+  })
+
+  it('should return the column of an 1x1 matrix', function () {
+    assert.deepStrictEqual(column(matrix([[5]]), 0), matrix([[5]]))
+    assert.deepStrictEqual(column(matrix([[5, 6, 7]]), 0), matrix([[5]]))
+  })
+
   it('should return an empty matrix column', function () {
     const c = column(m, 2)
     assert.deepStrictEqual(
