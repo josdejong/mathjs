@@ -4,7 +4,7 @@ import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
+import { createBroadcastedMatrixAlgorithmSuite } from '../../type/matrix/utils/broadcastedMatrixAlgorithmSuite.js'
 
 const name = 'subtract'
 const dependencies = [
@@ -13,10 +13,15 @@ const dependencies = [
   'equalScalar',
   'addScalar',
   'unaryMinus',
-  'DenseMatrix'
+  'DenseMatrix',
+  'max',
+  'size',
+  'resize',
+  'reshape',
+  'concat',
 ]
 
-export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, DenseMatrix }) => {
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, DenseMatrix, max, size, resize, reshape, concat }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
@@ -24,7 +29,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, max, size, resize, reshape, concat })
 
   /**
    * Subtract two values, `x - y`.
@@ -88,7 +93,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
         return res
       })
     },
-    matrixAlgorithmSuite({
+    broadcastedMatrixAlgorithmSuite({
       SS: matAlgo05xSfSf,
       DS: matAlgo01xDSid,
       SD: matAlgo03xDSf,

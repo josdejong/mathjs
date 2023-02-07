@@ -3,7 +3,7 @@ import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
+import { createBroadcastedMatrixAlgorithmSuite } from '../../type/matrix/utils/broadcastedMatrixAlgorithmSuite.js'
 
 const name = 'dotPow'
 const dependencies = [
@@ -11,15 +11,20 @@ const dependencies = [
   'equalScalar',
   'matrix',
   'pow',
-  'DenseMatrix'
+  'DenseMatrix',
+  'max',
+  'size',
+  'resize',
+  'reshape',
+  'concat',
 ]
 
-export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix }) => {
+export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix, max, size, resize, reshape, concat }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, max, size, resize, reshape, concat  })
 
   const powScalarSignatures = {}
   for (const signature in pow.signatures) {
@@ -54,7 +59,7 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @param  {number | BigNumber | Complex | Unit | Array | Matrix} y  The exponent
    * @return {number | BigNumber | Complex | Unit | Array | Matrix}                     The value of `x` to the power `y`
    */
-  return typed(name, matrixAlgorithmSuite({
+  return typed(name, broadcastedMatrixAlgorithmSuite({
     elop: powScalar,
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,

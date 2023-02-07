@@ -4,7 +4,7 @@ import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
+import { createBroadcastedMatrixAlgorithmSuite } from '../../type/matrix/utils/broadcastedMatrixAlgorithmSuite.js'
 
 const name = 'dotDivide'
 const dependencies = [
@@ -12,16 +12,21 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'divideScalar',
-  'DenseMatrix'
+  'DenseMatrix',
+  'max',
+  'size',
+  'resize',
+  'reshape',
+  'concat',
 ]
 
-export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, DenseMatrix }) => {
+export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, DenseMatrix, max, size, resize, reshape, concat }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, max, size, resize, reshape, concat })
 
   /**
    * Divide two matrices element wise. The function accepts both matrices and
@@ -49,7 +54,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Denominator
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
    */
-  return typed(name, matrixAlgorithmSuite({
+  return typed(name, broadcastedMatrixAlgorithmSuite({
     elop: divideScalar,
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,

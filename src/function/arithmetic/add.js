@@ -2,7 +2,7 @@ import { factory } from '../../utils/factory.js'
 import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
 import { createMatAlgo04xSidSid } from '../../type/matrix/utils/matAlgo04xSidSid.js'
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
-import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
+import { createBroadcastedMatrixAlgorithmSuite } from '../../type/matrix/utils/broadcastedMatrixAlgorithmSuite.js'
 
 const name = 'add'
 const dependencies = [
@@ -11,15 +11,23 @@ const dependencies = [
   'addScalar',
   'equalScalar',
   'DenseMatrix',
-  'SparseMatrix'
+  'SparseMatrix',
+  'max',
+  'size',
+  'resize',
+  'reshape',
+  'concat',
 ]
 
-export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, equalScalar, DenseMatrix, SparseMatrix }) => {
+export const createAdd = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({
+    typed, matrix, addScalar, equalScalar, DenseMatrix, SparseMatrix, max, size, resize, reshape, concat }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
-
+  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, max, size, resize, reshape, concat })
   /**
    * Add two or more values, `x + y`.
    * For matrices, the function is evaluated element wise.
@@ -69,7 +77,7 @@ export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         return result
       })
     },
-    matrixAlgorithmSuite({
+    broadcastedMatrixAlgorithmSuite({
       elop: addScalar,
       DS: matAlgo01xDSid,
       SS: matAlgo04xSidSid,
