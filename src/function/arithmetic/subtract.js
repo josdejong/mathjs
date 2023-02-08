@@ -14,7 +14,7 @@ const dependencies = [
   'addScalar',
   'unaryMinus',
   'DenseMatrix',
-  'concat',
+  'concat'
 ]
 
 export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, DenseMatrix, concat }) => {

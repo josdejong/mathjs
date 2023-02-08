@@ -8,10 +8,10 @@ const name = 'broadcastedMatrixAlgorithmSuite'
 const dependencies = ['typed', 'matrix', 'concat']
 
 export const createBroadcastedMatrixAlgorithmSuite = /* #__PURE__ */ factory(
-  name, dependencies, ({ typed, matrix, concat}) => {
+  name, dependencies, ({ typed, matrix, concat }) => {
     const matAlgo13xDD = createMatAlgo13xDD({ typed })
     const matAlgo14xDs = createMatAlgo14xDs({ typed })
-    const broadcast = createBroadcast({ typed, concat})
+    const broadcast = createBroadcast({ typed, concat })
 
     /**
      * Return a signatures object with the usual boilerplate of
@@ -34,7 +34,7 @@ export const createBroadcastedMatrixAlgorithmSuite = /* #__PURE__ */ factory(
       const elop = options.elop
       const SD = options.SD || options.DS
       let matrixSignatures
-      if (elop) { 
+      if (elop) {
         // First the dense ones
         matrixSignatures = {
           'DenseMatrix, DenseMatrix': (x, y) => matAlgo13xDD(...broadcast(x, y), elop),

@@ -68,6 +68,7 @@ describe('dotMultiply', function () {
     const c = [[5], [6]]
     const d = [[5, 6]]
     const e = [[1, 2, 3]]
+    const f = [[1], [2], [3]]
 
     it('should multiply a all elements in a array by a number', function () {
       // matrix, array, range
@@ -96,6 +97,7 @@ describe('dotMultiply', function () {
       assert.throws(function () { dotMultiply(b, e) })
       assert.throws(function () { dotMultiply(e, b) })
       assert.throws(function () { dotMultiply(d, e) })
+      assert.throws(function () { dotMultiply(c, f) })
     })
   })
 
@@ -105,6 +107,7 @@ describe('dotMultiply', function () {
     const c = matrix([[5], [6]])
     const d = matrix([[5, 6]])
     const e = matrix([[1, 2, 3]])
+    const f = matrix([[1], [2], [3]])
 
     it('should multiply a all elements in a dense matrix by a number', function () {
       // matrix, array, range
@@ -133,6 +136,7 @@ describe('dotMultiply', function () {
       assert.throws(function () { dotMultiply(b, e) })
       assert.throws(function () { dotMultiply(e, a) })
       assert.throws(function () { dotMultiply(d, e) })
+      assert.throws(function () { dotMultiply(c, f) })
     })
   })
 

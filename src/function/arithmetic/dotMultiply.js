@@ -10,7 +10,7 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'multiplyScalar',
-  'concat',
+  'concat'
 ]
 
 export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar, concat }) => {

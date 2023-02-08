@@ -13,7 +13,7 @@ const dependencies = [
   'equalScalar',
   'divideScalar',
   'DenseMatrix',
-  'concat',
+  'concat'
 ]
 
 export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, DenseMatrix, concat }) => {
