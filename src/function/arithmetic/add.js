@@ -12,10 +12,6 @@ const dependencies = [
   'equalScalar',
   'DenseMatrix',
   'SparseMatrix',
-  'max',
-  'size',
-  'resize',
-  'reshape',
   'concat',
 ]
 
@@ -23,11 +19,11 @@ export const createAdd = /* #__PURE__ */ factory(
   name,
   dependencies,
   ({
-    typed, matrix, addScalar, equalScalar, DenseMatrix, SparseMatrix, max, size, resize, reshape, concat }) => {
+    typed, matrix, addScalar, equalScalar, DenseMatrix, SparseMatrix, concat }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, max, size, resize, reshape, concat })
+  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, concat })
   /**
    * Add two or more values, `x + y`.
    * For matrices, the function is evaluated element wise.

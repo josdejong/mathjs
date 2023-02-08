@@ -2,87 +2,60 @@ import { factory } from '../../../utils/factory.js'
 
 const name = 'broadcast'
 
-const dependancies = ['typed', 'max', 'size', 'resize', 'reshape', 'concat']
+const dependancies = ['typed', 'concat']
 
 export const createBroadcast = /* #__PURE__ */ factory(
   name, dependancies,
-  ({ typed, max, size, resize, reshape, concat }) => {
-    return function broadcast(...matrices) {
+  ({ typed, concat }) => {
+    /**
+   * Broadcasts two matrices, and return both in an array
+   * It checks if it's possible with broadcasting rules
+   *
+   * @param {Matrix}   A      First Matrix
+   * @param {Matrix}   B      Second Matrix
+   *
+   * @return {Matrix[]}      [ broadcastedA, broadcastedB ]
+   */
+    return typed(name, {
+      'Matrix, Matrix': (A, B) => {
+        let A_size
+        let B_size
+        const N = Math.max(A._size.length, B._size.length) // max number of dims
 
-      // consistently gets the size of an array, matrix or scalar as an array
-      sizeAsArray = typed(
-        'sizeAsArray',
-        {
-          'Array': (x) => size(x),
-          'any': (x) => size(x).toArray()
-        })
+        A._size.length < N ?
+          A_size = [...Array(N - A._size.length).fill(0), ...A._size] :
+          A_size = [...A._size] // clone
 
-      // aligns a shapte to a size in N dimensions
-      alignShape = (shape, nDims, pad) => shape.length < nDims ? resize(shape.reverse(), [nDims], pad).reverse() : shape
+        B._size.length < N ?
+          B_size = [...Array(N - B._size.length).fill(0), ...B._size] :
+          B_size = [...B._size] // clone
 
-      // calculates the shape needed to concat an array in a dimension
-      shapeToConcat = (Mat, dim) => alignShape(sizeAsArray(Mat), dim, 1)
+        let Max_size = []
 
-      // stretches a matrix up to a certain size on a dimensions
-      // TODO: use function repeat when it's available
-      stretch = (matrix, size, dim) => concat(...Array(size).fill(matrix), dim)
-
-      broadcast_shapes = typed(
-        // Calculates the final broadcastable shape from different shape inputs
-        // Throws an error if it brakes the broadcasting rules
-        'broadcast_shapes',
-        {
-          '...Array': (shapes) => {
-            const dims = shapes.map(shape => shape.length)
-            const N = max(dims)
-            const shapes_array = shapes.map((shape, i) => alignShape(shape, N, 0))
-            const max_shapes = max(shapes_array, 0)
-
-            shapes_array.forEach(
-              (shape, shapeID) => {
-                shape.forEach(
-                  (dim, dimID) => {
-                    if ((dim < max_shapes[dimID]) & (dim > 1))
-                      throw new Error(`shape missmatch: missmatch is found in arg ${shapeID} with shape (${shape}) not possible to broadcast dimension ${dimID} with size ${dim} to size ${max_shapes[dimID]}`)
-                  }
-                )
-              }
-            )
-            return max_shapes
-          }
+        for (let dim = 0; dim < N; dim++) {
+          Max_size[dim] = Math.max(A_size[dim], B_size[dim])
         }
-      )
 
-      const broadcastedMatrixSize = broadcast_shapes(...matrices.map(matrix => sizeAsArray(matrix)))
-      const N = broadcastedMatrixSize.length
-      const broadcasted_matrices =
-        matrices.map(matrix => {
-          let matrixSize
+        for (let dim = 0; dim < N; dim++) {
+          if ((A_size[dim] < Max_size[dim]) & (A_size[dim] > 1))
+            throw new Error(`shape missmatch: missmatch is found in arg with shape (${A_size}) not possible to broadcast dimension ${dim} with size ${A_size[dim]} to size ${Max_size[dim]}`)
+          if ((B_size[dim] < Max_size[dim]) & (B_size[dim] > 1))
+            throw new Error(`shape missmatch: missmatch is found in arg with shape (${B_size}) not possible to broadcast dimension ${dim} with size ${B_size[dim]} to size ${Max_size[dim]}`)
+        }
 
-          if (isScalar(matrix)) {
-            matrix = [matrix]
-          }
+        if (A._size.length < N)
+          A.reshape([...Array(N - A._size.length).fill(1), ...A._size])
+        else if (B._size.length < N)
+          B.reshape([...Array(N - B._size.length).fill(1), ...B._size])
 
-          matrixSize = sizeAsArray(matrix)
-
-          if (matrixSize.length < N) {
-            matrix = reshape(
-              matrix,
-              shapeToConcat(matrix, N))
-
-            matrixSize = sizeAsArray(matrix)
-          }
-
-          broadcastedMatrixSize.forEach(
-            (size, dim) => {
-              if (matrixSize[dim] < size) {
-                matrix = stretch(matrix, size, dim)
-              }
-            }
-          )
-          return matrix
-        })
-      console.log(broadcasted_matrices)
-      return broadcasted_matrices
-    }
-  })
+        for (let dim = 0; dim < N; dim++) {
+          if (A._size[dim] < Max_size[dim])
+            A = concat(...Array(Max_size[dim]).fill(A), dim)
+          if (B._size[dim] < Max_size[dim])
+            B = concat(...Array(Max_size[dim]).fill(B), dim)
+        }
+        return [A, B]
+      }
+    })
+  }
+)

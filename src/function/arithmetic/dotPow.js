@@ -12,19 +12,15 @@ const dependencies = [
   'matrix',
   'pow',
   'DenseMatrix',
-  'max',
-  'size',
-  'resize',
-  'reshape',
   'concat',
 ]
 
-export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix, max, size, resize, reshape, concat }) => {
+export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix, concat }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, max, size, resize, reshape, concat  })
+  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, concat  })
 
   const powScalarSignatures = {}
   for (const signature in pow.signatures) {
