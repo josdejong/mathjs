@@ -74,6 +74,9 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         return res
       }),
       Array: typed.referToSelf(self => (args) => {
+        if (args.length === 1 && Array.isArray(args[0]) && is1d(args[0])) {
+          return self(...args[0])
+        }
         if (is1d(args)) {
           return self(...args)
         }

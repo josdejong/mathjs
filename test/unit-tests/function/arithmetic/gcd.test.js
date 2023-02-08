@@ -18,12 +18,17 @@ describe('gcd', function () {
     assert.strictEqual(gcd(25, 15, -10, 30), 5)
   })
 
-  it('should find the greatest common divisor of two or more numbers with array argument', function () {
+  it('should find the greatest common divisor of two or more numbers with 1d array argument', function () {
     assert.strictEqual(gcd([12, 8]), 4)
     assert.strictEqual(gcd([25, 15, -10, 30]), 5)
   })
 
-  it('should throw exception on multi dimensional arrat argument', function () {
+  it('should find the greatest common divisor of two or more numbers with 1d array argument', function () {
+    assert.strictEqual(gcd([[12, 8]]), 4)
+    assert.strictEqual(gcd([[25, 15, -10, 30]]), 5)
+  })
+
+  it('should throw exception on multi dimensional array argument', function () {
     assert.throws(() => gcd([[1], [2]]), ArgumentsError)
   })
 
