@@ -92,8 +92,8 @@ describe('dotDivide', function () {
       assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [3 / 7, 4 / 8]]))
     })
 
-    it('should throw an error when dividing element-wise with differing size', function () {
-      assert.throws(function () { dotDivide([[1, 2], [3, 4]], [[1]]) })
+    it('should throw an error when dividing element-wise with not broadcastable sizes', function () {
+      assert.throws(function () { dotDivide([[1, 2], [3, 4]], [[1, 2, 3]]) })
     })
   })
 
@@ -127,8 +127,8 @@ describe('dotDivide', function () {
       assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [3 / 7, 4 / 8]]))
     })
 
-    it('should throw an error when dividing element-wise with differing size', function () {
-      assert.throws(function () { dotDivide(math.matrix([[1, 2], [3, 4]]), math.matrix([[1]])) })
+    it('should throw an error when dividing element-wise with not broadcastable sizes', function () {
+      assert.throws(function () { dotDivide(math.matrix([[1, 2], [3, 4]]), math.matrix([[1, 2, 3]])) })
     })
   })
 
