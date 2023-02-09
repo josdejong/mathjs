@@ -15,17 +15,18 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'zeros',
-  'DenseMatrix'
+  'DenseMatrix',
+  'concat'
 ]
 
-export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
+export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix, concat }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo08xS0Sid = createMatAlgo08xS0Sid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
   const useMatrixForArrayScalar = createUseMatrixForArrayScalar({ typed, matrix })
 
   /**

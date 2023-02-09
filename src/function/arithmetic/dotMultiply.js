@@ -2,7 +2,7 @@ import { factory } from '../../utils/factory.js'
 import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo09xS0Sf } from '../../type/matrix/utils/matAlgo09xS0Sf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
-import { createBroadcastedMatrixAlgorithmSuite } from '../../type/matrix/utils/broadcastedMatrixAlgorithmSuite.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'dotMultiply'
 const dependencies = [
@@ -17,7 +17,7 @@ export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ 
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Multiply two matrices element wise. The function accepts both matrices and
@@ -45,7 +45,7 @@ export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Right hand value
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Multiplication of `x` and `y`
    */
-  return typed(name, broadcastedMatrixAlgorithmSuite({
+  return typed(name, matrixAlgorithmSuite({
     elop: multiplyScalar,
     SS: matAlgo09xS0Sf,
     DS: matAlgo02xDS0,

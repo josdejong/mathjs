@@ -3,7 +3,7 @@ import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createBroadcastedMatrixAlgorithmSuite } from '../../type/matrix/utils/broadcastedMatrixAlgorithmSuite.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'dotPow'
 const dependencies = [
@@ -20,7 +20,7 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   const powScalarSignatures = {}
   for (const signature in pow.signatures) {
@@ -55,7 +55,7 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @param  {number | BigNumber | Complex | Unit | Array | Matrix} y  The exponent
    * @return {number | BigNumber | Complex | Unit | Array | Matrix}                     The value of `x` to the power `y`
    */
-  return typed(name, broadcastedMatrixAlgorithmSuite({
+  return typed(name, matrixAlgorithmSuite({
     elop: powScalar,
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,

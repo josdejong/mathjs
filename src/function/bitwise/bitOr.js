@@ -11,14 +11,15 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'DenseMatrix'
+  'DenseMatrix',
+  'concat'
 ]
 
-export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
+export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Bitwise OR two values, `x | y`.

@@ -2,7 +2,7 @@ import { factory } from '../../utils/factory.js'
 import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
 import { createMatAlgo04xSidSid } from '../../type/matrix/utils/matAlgo04xSidSid.js'
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
-import { createBroadcastedMatrixAlgorithmSuite } from '../../type/matrix/utils/broadcastedMatrixAlgorithmSuite.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'add'
 const dependencies = [
@@ -22,7 +22,7 @@ export const createAdd = /* #__PURE__ */ factory(
     const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
     const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
     const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-    const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, concat })
+    const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
     /**
    * Add two or more values, `x + y`.
    * For matrices, the function is evaluated element wise.
@@ -72,7 +72,7 @@ export const createAdd = /* #__PURE__ */ factory(
           return result
         })
       },
-      broadcastedMatrixAlgorithmSuite({
+      matrixAlgorithmSuite({
         elop: addScalar,
         DS: matAlgo01xDSid,
         SS: matAlgo04xSidSid,

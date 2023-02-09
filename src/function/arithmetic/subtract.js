@@ -4,7 +4,7 @@ import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createBroadcastedMatrixAlgorithmSuite } from '../../type/matrix/utils/broadcastedMatrixAlgorithmSuite.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'subtract'
 const dependencies = [
@@ -25,7 +25,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Subtract two values, `x - y`.
@@ -89,7 +89,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
         return res
       })
     },
-    broadcastedMatrixAlgorithmSuite({
+    matrixAlgorithmSuite({
       SS: matAlgo05xSfSf,
       DS: matAlgo01xDSid,
       SD: matAlgo03xDSf,

@@ -4,7 +4,7 @@ import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createBroadcastedMatrixAlgorithmSuite } from '../../type/matrix/utils/broadcastedMatrixAlgorithmSuite.js'
+import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'dotDivide'
 const dependencies = [
@@ -22,7 +22,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const broadcastedMatrixAlgorithmSuite = createBroadcastedMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Divide two matrices element wise. The function accepts both matrices and
@@ -50,7 +50,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Denominator
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
    */
-  return typed(name, broadcastedMatrixAlgorithmSuite({
+  return typed(name, matrixAlgorithmSuite({
     elop: divideScalar,
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,
