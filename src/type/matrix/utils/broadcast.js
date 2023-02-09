@@ -22,7 +22,7 @@ export const createBroadcast = /* #__PURE__ */ factory(
         let sizeB
         const N = Math.max(A._size.length, B._size.length) // max number of dims
         if (A._size.length === B._size.length) {
-          if (A_size.every((dim, i) => dim === B._size[i])) {
+          if (A._size.every((dim, i) => dim === B._size[i])) {
             // If matrices have the same size return them
             return [A, B]
           }
