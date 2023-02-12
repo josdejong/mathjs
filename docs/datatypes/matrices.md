@@ -122,7 +122,7 @@ math.range(3, -1, -1)   // [3, 2, 1, 0]
 
 ## Calculations
 
-Most functions of math.js support matrices and arrays, and unary functions can applied element-wise using via `math.map(matrix, function)`.
+Most functions of math.js support matrices and arrays. Unary functions can be applied element-wise using via `math.map(matrix, function)`.
 
 ```js
 // perform an element-wise operation on a matrix using math.map
