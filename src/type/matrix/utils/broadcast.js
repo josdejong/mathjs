@@ -27,11 +27,11 @@ export const createBroadcast = /* #__PURE__ */ factory(
         }
       } else {
         A._size.length < N
-          ? sizeA = [...Array(N - A._size.length).fill(0), ...A._size] // pad to the left to align dimensions to the right
+          ? sizeA = _padLeft(A._size, N, 0) // pad to the left to align dimensions to the right
           : sizeA = [...A._size] // clone
 
         B._size.length < N
-          ? sizeB = [...Array(N - B._size.length).fill(0), ...B._size] // pad to the left to align dimensions to the right
+          ? sizeB = _padLeft(B._size, N, 0) // pad to the left to align dimensions to the right
           : sizeB = [...B._size] // clone
       }
 
@@ -42,23 +42,33 @@ export const createBroadcast = /* #__PURE__ */ factory(
         sizeMax[dim] = Math.max(sizeA[dim], sizeB[dim])
       }
 
-      // check if the broadcasting rules apply for both matrices
+      // check if the broadcasting rules applyes for both matrices
       for (let dim = 0; dim < N; dim++) {
         if ((sizeA[dim] < sizeMax[dim]) & (sizeA[dim] > 1)) { throw new Error(`shape missmatch: missmatch is found in arg with shape (${sizeA}) not possible to broadcast dimension ${dim} with size ${sizeA[dim]} to size ${sizeMax[dim]}`) }
         if ((sizeB[dim] < sizeMax[dim]) & (sizeB[dim] > 1)) { throw new Error(`shape missmatch: missmatch is found in arg with shape (${sizeB}) not possible to broadcast dimension ${dim} with size ${sizeB[dim]} to size ${sizeMax[dim]}`) }
       }
 
       // reshape A or B if needed to make them ready for concat
-      if (A._size.length < N) { A.reshape([...Array(N - A._size.length).fill(1), ...A._size]) } else if (B._size.length < N) { B.reshape([...Array(N - B._size.length).fill(1), ...B._size]) }
+      if (A._size.length < N) { A.reshape(_padLeft(A._size, N, 1)) } else if (B._size.length < N) { B.reshape(_padLeft(B._size, N, 1)) }
 
-      // repeat the matrices on each dimension to make them the same size
+      // stretches the matrices on each dimension to make them the same size
       for (let dim = 0; dim < N; dim++) {
-        if (A._size[dim] < sizeMax[dim]) { A = concat(...Array(sizeMax[dim]).fill(A), dim) }
-        if (B._size[dim] < sizeMax[dim]) { B = concat(...Array(sizeMax[dim]).fill(B), dim) }
+        if (A._size[dim] < sizeMax[dim]) { A = _stretch(A, sizeMax[dim], dim) }
+        if (B._size[dim] < sizeMax[dim]) { B = _stretch(B, sizeMax[dim], dim) }
       }
 
       // return the array with the two broadcasted matrices
       return [A, B]
+    }
+
+    function _padLeft (shape, N, filler) {
+      // pads an array of dimensions with numbers to the left, unitl the number of dimensions is N
+      return [...Array(N - shape.length).fill(filler), ...shape]
+    }
+
+    function _stretch (arrayToStretch, sizeToStretch, dimToStretch) {
+      // stretches a matrix up to a certain size in a certain dimension
+      return concat(...Array(sizeToStretch).fill(arrayToStretch), dimToStretch)
     }
   }
 )
