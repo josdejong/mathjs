@@ -44,12 +44,16 @@ export const createBroadcast = /* #__PURE__ */ factory(
 
       // check if the broadcasting rules applyes for both matrices
       for (let dim = 0; dim < N; dim++) {
-        if ((sizeA[dim] < sizeMax[dim]) & (sizeA[dim] > 1)) { throw new Error(`shape missmatch: missmatch is found in arg with shape (${sizeA}) not possible to broadcast dimension ${dim} with size ${sizeA[dim]} to size ${sizeMax[dim]}`) }
-        if ((sizeB[dim] < sizeMax[dim]) & (sizeB[dim] > 1)) { throw new Error(`shape missmatch: missmatch is found in arg with shape (${sizeB}) not possible to broadcast dimension ${dim} with size ${sizeB[dim]} to size ${sizeMax[dim]}`) }
+        _checkRules(sizeA, sizeMax, dim)
+        _checkRules(sizeB, sizeMax, dim)
       }
 
       // reshape A or B if needed to make them ready for concat
-      if (A._size.length < N) { A.reshape(_padLeft(A._size, N, 1)) } else if (B._size.length < N) { B.reshape(_padLeft(B._size, N, 1)) }
+      if (A._size.length < N) {
+        A.reshape(_padLeft(A._size, N, 1))
+      } else if (B._size.length < N) {
+        B.reshape(_padLeft(B._size, N, 1))
+      }
 
       // stretches the matrices on each dimension to make them the same size
       for (let dim = 0; dim < N; dim++) {
@@ -69,6 +73,10 @@ export const createBroadcast = /* #__PURE__ */ factory(
     function _stretch (arrayToStretch, sizeToStretch, dimToStretch) {
       // stretches a matrix up to a certain size in a certain dimension
       return concat(...Array(sizeToStretch).fill(arrayToStretch), dimToStretch)
+    }
+
+    function _checkRules (shape, sizeMax, dim) {
+      if ((shape[dim] < sizeMax[dim]) & (shape[dim] > 1)) { throw new Error(`shape missmatch: missmatch is found in arg with shape (${shape}) not possible to broadcast dimension ${dim} with size ${shape[dim]} to size ${sizeMax[dim]}`) }
     }
   }
 )
