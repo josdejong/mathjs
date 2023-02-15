@@ -137,6 +137,10 @@ describe('smallerEq', function () {
       assert.deepStrictEqual(smallerEq([[1, 2, 0], [-1, 0, 2]], [[1, -1, 0], [-1, 1, 0]]), [[true, false, true], [true, true, false]])
     })
 
+    it('should compare broadcastable arrays', function () {
+      assert.deepStrictEqual(smallerEq([1, 2, 0], [[1], [-1]]), [[true, false, true], [false, false, false]])
+    })
+
     it('should compare array - dense matrix', function () {
       assert.deepStrictEqual(smallerEq([[1, 2, 0], [-1, 0, 2]], matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[true, false, true], [true, true, false]]))
     })

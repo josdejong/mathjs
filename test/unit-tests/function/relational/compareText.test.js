@@ -29,6 +29,10 @@ describe('compareText', function () {
       assert.deepStrictEqual(compareText([['D', 'E', 'C'], ['B', 'C', 'E']], [['F', 'B', 'C'], ['A', 'D', 'C']]), [[-1, 1, 0], [1, -1, 1]])
     })
 
+    it('should compare broadcastable arrays', function () {
+      assert.deepStrictEqual(compareText([['D', 'E', 'C']], [['F'], ['D']]), [[-1, -1, -1], [0, 1, -1]])
+    })
+
     it('should compare array - dense matrix', function () {
       assert.deepStrictEqual(compareText([['D', 'E', 'C'], ['B', 'C', 'E']], matrix([['F', 'B', 'C'], ['A', 'D', 'C']])), matrix([[-1, 1, 0], [1, -1, 1]]))
     })

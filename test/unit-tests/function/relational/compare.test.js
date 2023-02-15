@@ -122,6 +122,10 @@ describe('compare', function () {
       assert.deepStrictEqual(compare([[1, 2, 0], [-1, 0, 2]], [[3, -1, 0], [-2, 1, 0]]), [[-1, 1, 0], [1, -1, 1]])
     })
 
+    it('should compare broadcastable arrays', function () {
+      assert.deepStrictEqual(compare([[1, 3, 0]], [[3], [1]]), [[-1, 0, -1], [0, 1, -1]])
+    })
+
     it('should compare array - dense matrix', function () {
       assert.deepStrictEqual(compare([[1, 2, 0], [-1, 0, 2]], matrix([[3, -1, 0], [-2, 1, 0]])), matrix([[-1, 1, 0], [1, -1, 1]]))
     })

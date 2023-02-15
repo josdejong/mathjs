@@ -25,14 +25,16 @@ export const createBroadcast = /* #__PURE__ */ factory(
           // If matrices have the same size return them
           return [A, B]
         }
+        sizeA = [...A._size] // clone
+        sizeB = [...B._size] // clone
       } else {
-        A._size.length < N
-          ? sizeA = _padLeft(A._size, N, 0) // pad to the left to align dimensions to the right
-          : sizeA = [...A._size] // clone
+        sizeA = A._size.length < N
+          ? _padLeft(A._size, N, 0) // pad to the left to align dimensions to the right
+          : [...A._size] // clone
 
-        B._size.length < N
-          ? sizeB = _padLeft(B._size, N, 0) // pad to the left to align dimensions to the right
-          : sizeB = [...B._size] // clone
+        sizeB = B._size.length < N
+          ? _padLeft(B._size, N, 0) // pad to the left to align dimensions to the right
+          : [...B._size] // clone
       }
 
       // calculate the max dimensions

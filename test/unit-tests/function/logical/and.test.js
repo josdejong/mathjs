@@ -119,6 +119,10 @@ describe('and', function () {
       assert.deepStrictEqual(and([], []), [])
     })
 
+    it('should and broadcastable arrays', function () {
+      assert.deepStrictEqual(and([[0, 1, 0, 12]], [[0], [0], [1], [22]]), [[false, false, false, false], [false, false, false, false], [false, true, false, true], [false, true, false, true]])
+    })
+
     it('should and array - dense matrix', function () {
       assert.deepStrictEqual(and([0, 1, 0, 12], matrix([0, 0, 1, 22])), matrix([false, false, false, true]))
       assert.deepStrictEqual(and([], matrix([])), matrix([]))
