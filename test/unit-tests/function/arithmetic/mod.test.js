@@ -135,6 +135,11 @@ describe('mod', function () {
       approx.deepEqual(mod(3, [[4, 3], [2, 1]]), [[3, 0], [1, 0]])
     })
 
+    it('should perform element-wise modulus on broadcastable arrays', function () {
+      approx.deepEqual(mod([-40, -31], [[3], [1]]), [[2, 2], [0, 0]])
+      approx.deepEqual(mod([[-40], [-31]], [3, 1]), [[2, 0], [2, 0]])
+    })
+
     it('should perform element-wise modulus on array and array', function () {
       approx.deepEqual(mod([[-40, -31], [11, -23]], [[3, 7], [1, 3]]), [[2, 4], [0, 1]])
     })

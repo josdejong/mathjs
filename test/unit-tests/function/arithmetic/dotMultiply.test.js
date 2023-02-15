@@ -78,6 +78,15 @@ describe('dotMultiply', function () {
       approx.deepEqual(dotMultiply(2, [1, 2, 3, 4]), [2, 4, 6, 8])
     })
 
+    it('should multiply broadcastable arrays element-wise', function () {
+      const a2 = [1, 2]
+      const a3 = [[3], [4]]
+      const a4 = dotMultiply(a2, a3)
+      const a5 = dotMultiply(a3, a2)
+      assert.deepStrictEqual(a4, [[3, 6], [4, 8]])
+      assert.deepStrictEqual(a5, [[3, 6], [4, 8]])
+    })
+
     it('should perform element-wise (array .* array) multiplication', function () {
       approx.deepEqual(dotMultiply(a, b), [[5, 0], [0, 32]])
       approx.deepEqual(dotMultiply([[1, 2], [3, 4]], [[5, 6], [7, 8]]), [[5, 12], [21, 32]])

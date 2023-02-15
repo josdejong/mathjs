@@ -139,6 +139,11 @@ describe('nthRoot', function () {
       approx.deepEqual(nthRoot([[64, 3125], [0, -1]], [[3, 5], [1, 3]]), [[4, 5], [0, -1]])
     })
 
+    it('should return the nthRoot for broadcastable arrays', function () {
+      approx.deepEqual(nthRoot([64, 3125], [[3], [1]]), [[3.9999999999999996, 14.620088691064328], [64, 3125]])
+      approx.deepEqual(nthRoot([[64], [0]], [3, 5]), [[3.9999999999999996, 2.29739670999407], [0, 0]])
+    })
+
     it('should return the nthRoot for array - dense matrix', function () {
       approx.deepEqual(nthRoot([[64, 3125], [0, -1]], matrix([[3, 5], [1, 3]])), matrix([[4, 5], [0, -1]]))
     })
