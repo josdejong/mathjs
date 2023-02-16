@@ -1676,7 +1676,7 @@ declare namespace math {
       w: MathCollection,
       x: MathCollection,
       y: MathCollection,
-      z: MathCollection
+      z?: MathCollection
     ): MathArray
 
     /*************************************************************************
