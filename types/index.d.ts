@@ -5270,7 +5270,7 @@ declare namespace math {
       this: MathJsChain<MathCollection>,
       x: MathCollection,
       y: MathCollection,
-      z: MathCollection
+      z?: MathCollection
     ): MathJsChain<MathArray>
 
     /*************************************************************************

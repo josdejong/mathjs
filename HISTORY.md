@@ -6,6 +6,8 @@
   unit from a fraction or complex number.
 - Fix #2892: an error in the examples of the embedded help of function `sort`.
 - Fix #2891: functions `column` and `row` sometimes returning a scalar number. 
+- Fix #2896: define the fourth argument of function `intersect` as optional 
+  in the TypeScript definitions. Thanks @wodndb.
 
 # 2023-01-31, 11.5.1
 
