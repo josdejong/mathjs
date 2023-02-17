@@ -96,10 +96,6 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Array}         resulting array
    */
   function _czt (arr) {
-    function _ifft (arr) {
-      const size = arraySize(arr)
-      return dotDivide(conj(_ndFft(conj(arr))), size.reduce((acc, curr) => acc * curr, 1))
-    }
     const n = arr.length
     const w = exp(divideScalar(multiplyScalar(-1, multiplyScalar(I, tau)), n))
     const chirp = []
@@ -115,14 +111,15 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
       ...new Array(n + n - 1).fill(0).map((_, i) => divideScalar(1, chirp[i])),
       ...new Array(N2 - (n + n - 1)).fill(0)
     ]
-    const fftxp = _fft(xp)
-    const fftichirp = _fft(ichirp)
-    const r = _ifft(new Array(N2).fill(0).map((_, i) => multiplyScalar(fftxp[i], fftichirp[i])))
-    const res = []
+    const fftXp = _fft(xp)
+    const fftIchirp = _fft(ichirp)
+    const fftProduct = new Array(N2).fill(0).map((_, i) => multiplyScalar(fftXp[i], fftIchirp[i]))
+    const ifftProduct = dotDivide(conj(_ndFft(conj(fftProduct))), N2)
+    const ret = []
     for (let i = n - 1; i < n + n - 1; i++) {
-      res.push(multiplyScalar(r[i], chirp[i]))
+      ret.push(multiplyScalar(ifftProduct[i], chirp[i]))
     }
-    return res
+    return ret
   }
   /**
    * Perform an 1-dimensional Fourier transform
