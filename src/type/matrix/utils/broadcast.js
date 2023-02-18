@@ -17,25 +17,16 @@ export const createBroadcast = /* #__PURE__ */ factory(
    * @return {Matrix[]}      [ broadcastedA, broadcastedB ]
    */
     return (A, B) => {
-      let sizeA
-      let sizeB
       const N = Math.max(A._size.length, B._size.length) // max number of dims
       if (A._size.length === B._size.length) {
         if (A._size.every((dim, i) => dim === B._size[i])) {
           // If matrices have the same size return them
           return [A, B]
         }
-        sizeA = [...A._size] // clone
-        sizeB = [...B._size] // clone
-      } else {
-        sizeA = A._size.length < N
-          ? _padLeft(A._size, N, 0) // pad to the left to align dimensions to the right
-          : [...A._size] // clone
-
-        sizeB = B._size.length < N
-          ? _padLeft(B._size, N, 0) // pad to the left to align dimensions to the right
-          : [...B._size] // clone
       }
+
+      const sizeA = _padLeft(A._size, N, 0) // pad to the left to align dimensions to the right
+      const sizeB = _padLeft(B._size, N, 0) // pad to the left to align dimensions to the right
 
       // calculate the max dimensions
       const sizeMax = []

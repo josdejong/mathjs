@@ -14,4 +14,3 @@ node_modules
 lib
 test-results
 *.generated.js
-test.html
