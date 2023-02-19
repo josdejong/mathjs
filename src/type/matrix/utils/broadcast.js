@@ -16,7 +16,7 @@ export const createBroadcast = /* #__PURE__ */ factory(
    *
    * @return {Matrix[]}      [ broadcastedA, broadcastedB ]
    */
-    return (A, B) => {
+    return function (A, B) {
       const N = Math.max(A._size.length, B._size.length) // max number of dims
       if (A._size.length === B._size.length) {
         if (A._size.every((dim, i) => dim === B._size[i])) {
@@ -42,20 +42,22 @@ export const createBroadcast = /* #__PURE__ */ factory(
       }
 
       // reshape A or B if needed to make them ready for concat
-      if (A._size.length < N) {
-        A.reshape(_padLeft(A._size, N, 1))
-      } else if (B._size.length < N) {
-        B.reshape(_padLeft(B._size, N, 1))
+      let AA = A.clone()
+      let BB = B.clone()
+      if (AA._size.length < N) {
+        AA.reshape(_padLeft(AA._size, N, 1))
+      } else if (BB._size.length < N) {
+        BB.reshape(_padLeft(BB._size, N, 1))
       }
 
       // stretches the matrices on each dimension to make them the same size
       for (let dim = 0; dim < N; dim++) {
-        if (A._size[dim] < sizeMax[dim]) { A = _stretch(A, sizeMax[dim], dim) }
-        if (B._size[dim] < sizeMax[dim]) { B = _stretch(B, sizeMax[dim], dim) }
+        if (AA._size[dim] < sizeMax[dim]) { AA = _stretch(AA, sizeMax[dim], dim) }
+        if (BB._size[dim] < sizeMax[dim]) { BB = _stretch(BB, sizeMax[dim], dim) }
       }
 
       // return the array with the two broadcasted matrices
-      return [A, B]
+      return [AA, BB]
     }
 
     function _padLeft (shape, N, filler) {
