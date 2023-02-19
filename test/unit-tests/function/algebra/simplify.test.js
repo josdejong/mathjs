@@ -707,12 +707,14 @@ describe('simplify', function () {
   })
 
   it('can should simplify when given an ifCondition rule', function () {
-    let yBeforeXRule = [
+    const yBeforeXRule = [
       {
-        l: 've1 + ve2', r: 've2 + ve1', ifCondition: (matches) => {
+        l: 've1 + ve2',
+        r: 've2 + ve1',
+        ifCondition: (matches) => {
           return matches.placeholders.ve2.toString().indexOf('y') >= 0 && matches.placeholders.ve1.toString().indexOf('x') >= 0
         }
-       }
+      }
     ]
 
     simplifyAndCompare('x + y', 'y + x', yBeforeXRule)

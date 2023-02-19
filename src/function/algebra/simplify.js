@@ -700,7 +700,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     if (matches && rule.ifCondition) {
       if (!rule.ifCondition(matches)) {
-        matches = false;
+        matches = false
       }
     }
 
