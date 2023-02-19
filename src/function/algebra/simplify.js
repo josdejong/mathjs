@@ -449,7 +449,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     }
     newRule.l = removeParens(parse(newRule.l))
     newRule.r = removeParens(parse(newRule.r))
-    for (const prop of ['imposeContext', 'repeat', 'assuming']) {
+    for (const prop of ['imposeContext', 'repeat', 'assuming', 'ifCondition']) {
       if (prop in ruleObject) {
         newRule[prop] = ruleObject[prop]
       }
@@ -695,6 +695,12 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       if (!matches) { // Existence of NC1 implies NC2
         repl = rule.expandedNC2.r
         matches = _ruleMatch(rule.expandedNC2.l, res, mergedContext)[0]
+      }
+    }
+
+    if (matches && rule.ifCondition) {
+      if (!rule.ifCondition(matches)) {
+        matches = false;
       }
     }
 

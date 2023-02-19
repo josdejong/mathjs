@@ -705,4 +705,18 @@ describe('simplify', function () {
     assert(!isNaN(posex.evaluate(zeroes)))
     assert.notEqual(expr.evaluate(zeroes), posex.evaluate(zeroes))
   })
+
+  it('can should simplify when given an ifCondition rule', function () {
+    let yBeforeXRule = [
+      {
+        l: 've1 + ve2', r: 've2 + ve1', ifCondition: (matches) => {
+          return matches.placeholders.ve2.toString().indexOf('y') >= 0 && matches.placeholders.ve1.toString().indexOf('x') >= 0
+        }
+       }
+    ]
+
+    simplifyAndCompare('x + y', 'y + x', yBeforeXRule)
+    simplifyAndCompare('y + x', 'y + x', yBeforeXRule)
+    simplifyAndCompare('x^2 + y^2', 'y^2 + x^2', yBeforeXRule)
+  })
 })
