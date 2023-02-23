@@ -2,6 +2,12 @@
 
 # unpublished changes since 11.5.1
 
+- Implement broadcasting for the following functions and their corresponding
+  operator: `add`, `dotDivide`, `dotMultiply`, `dotPow`, `gcd`, `lcm`, `mod`, 
+  `nthRoot`, `subtract`, `bitAnd`, `bitOr`, `bitXor`, `leftShift`, 
+  `rightArithShift`, `rightLogShift`, `and`, `or`, `xor`, `compare`, 
+  `compareText`, `equal`, `larger`, `largerEq`, `smaller`, `smallerEq`, 
+  `unequal`, `atan2` and `to` (#2895, #2753). Thanks @dvd101x.
 - Implement support for non-power-of-2 fft (#2900, #2577). Thanks @cyavictor88.
 - Fix #2888: update type definitions of function `unit` to allow creating a 
   unit from a fraction or complex number.
