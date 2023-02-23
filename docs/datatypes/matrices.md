@@ -138,14 +138,35 @@ const c = [[2, 0], [-1, 3]]               // Array
 const d = math.matrix([[7, 1], [-2, 3]])  // Matrix
 math.multiply(c, d)                       // Matrix, [[14, 2], [-13, 8]]
 
-// add a number to a matrix
+// add a number to a matrix (see broadcasting)
 math.add(c, 2)                            // Array, [[4, 2], [1, 5]]
 
 // calculate the determinant of a matrix
 math.det(c)                               // 6
 math.det(d)                               // 23
 ```
+## Broadcasting
 
+Functions that require two or more matrix like arguments that operate elementwise automatically operate as if the arguments were the same size.
+
+```js
+A = math.matrix([1, 2])       // Matrix, [1, 2]
+math.add(A, 3)                // Matrix, [3, 4]
+
+B = math.matrix([[3], [4]])   // Matrix, [[3], [4]]
+math.add(A, B)                // Matrix, [[4, 5], [5, 6]]
+```
+Any index that is in one of the arguments, can be found as if it existed on the others when the size on that dimension is one or not existing. This is valid in N dimensions.
+
+It's not possible to broadcast in cases where the size in that dimension is higher than one.
+
+```js
+math.add([1, 2], [3, 4, 5])
+// Error: shape missmatch: missmatch is found in arg with shape (2) not possible to broadcast dimension 0 with size 2 to size 3
+
+math.add([[1], [2], [3]], [[4], [5]])
+// Error: shape missmatch: missmatch is found in arg with shape (2,1) not possible to broadcast dimension 0 with size 2 to size 3
+```
 
 ## Size and Dimensions
 

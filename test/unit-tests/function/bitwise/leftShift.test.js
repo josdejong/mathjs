@@ -100,6 +100,11 @@ describe('leftShift', function () {
       assert.deepStrictEqual(leftShift([[4, 8], [32, 0]], [[1, 2], [8, 0]]), [[8, 32], [8192, 0]])
     })
 
+    it('should left shift broadcastable arrays', function () {
+      assert.deepStrictEqual(leftShift([[1, 2]], [[4], [32]]), [[16, 32], [1, 2]])
+      assert.deepStrictEqual(leftShift([[4], [32]], [8, 0]), [[1024, 4], [8192, 32]])
+    })
+
     it('should left shift array - dense matrix', function () {
       assert.deepStrictEqual(leftShift([[1, 2], [8, 0]], matrix([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
       assert.deepStrictEqual(leftShift([[4, 8], [32, 0]], matrix([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))

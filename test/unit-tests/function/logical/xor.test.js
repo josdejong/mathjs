@@ -139,6 +139,11 @@ describe('xor', function () {
       assert.deepStrictEqual(xor([], []), [])
     })
 
+    it('should xor broadcastable arrays', function () {
+      assert.deepStrictEqual(xor([0, 1, 0, 12], [[0], [0], [1], [22]]), [[false, true, false, true], [false, true, false, true], [true, false, true, false], [true, false, true, false]])
+      assert.deepStrictEqual(xor([], []), [])
+    })
+
     it('should xor array - dense matrix', function () {
       assert.deepStrictEqual(xor([0, 1, 0, 12], matrix([0, 0, 1, 22])), matrix([false, true, true, false]))
       assert.deepStrictEqual(xor([], matrix([])), matrix([]))

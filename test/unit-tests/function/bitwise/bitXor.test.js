@@ -94,6 +94,11 @@ describe('bitXor', function () {
       assert.deepStrictEqual(bitXor([[1, 2], [3, 4]], [[5, 6], [7, 8]]), [[4, 4], [4, 12]])
     })
 
+    it('should bitwise xor broadcastable arrays', function () {
+      assert.deepStrictEqual(bitXor([[3, 4]], [[5], [6]]), [[6, 1], [5, 2]])
+      assert.deepStrictEqual(bitXor([[5], [6]], [[2, 3]]), [[7, 6], [4, 5]])
+    })
+
     it('should bitwise xor array - dense matrix', function () {
       assert.deepStrictEqual(bitXor([[1, 2], [3, 4]], matrix([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
     })

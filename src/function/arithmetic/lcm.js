@@ -9,14 +9,15 @@ const name = 'lcm'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar'
+  'equalScalar',
+  'concat'
 ]
 
-export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
+export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, concat }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   const lcmTypes = 'number | BigNumber | Fraction | Matrix | Array'
   const lcmManySignature = {}
