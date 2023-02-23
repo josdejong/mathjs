@@ -2,12 +2,17 @@
 
 # unpublished changes since 11.5.1
 
+- Implement support for non-power-of-2 fft (#2900, #2577). Thanks @cyavictor88.
 - Fix #2888: update type definitions of function `unit` to allow creating a 
   unit from a fraction or complex number.
 - Fix #2892: an error in the examples of the embedded help of function `sort`.
 - Fix #2891: functions `column` and `row` sometimes returning a scalar number. 
 - Fix #2896: define the fourth argument of function `intersect` as optional 
   in the TypeScript definitions. Thanks @wodndb.
+- Fix: quantileSeq not accepting a matrix as second argument `prob` (see #2902).
+- Fix broken examples in functions `to`, `distance`, `getMatrixDataType`, 
+  `subset`, and `max` (see #2902).
+
 
 # 2023-01-31, 11.5.1
 
@@ -26,6 +31,7 @@
 - Fix type definitions of `map()` and `forEach()` (#2887), thanks @xiaohk.
 - Fix #2606: improve type definitions of `dotMultiply`, `dotPow` and 
   `dotDivide` (#2890). Thanks @brunoSnoww.
+
 
 # 2022-12-05, 11.5.0
 
