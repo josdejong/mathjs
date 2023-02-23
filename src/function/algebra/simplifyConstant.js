@@ -360,8 +360,8 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           if (operatorFunctions.indexOf(node.name) === -1) {
             const args = node.args.map(arg => foldFraction(arg, options))
 
-            // If all args are numbers
-            if (!args.some(isNode)) {
+            // If all args are numbers and we want to simplify constanct functions down into a number
+            if (!args.some(isNode) && !options.exactConstantFunctions) {
               try {
                 return _eval(node.name, args, options)
               } catch (ignoreandcontinue) { }
