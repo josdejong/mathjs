@@ -113,11 +113,12 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
           }
         }
 
-        if (Array.isArray(probOrN)) {
+        if (isCollection(probOrN)) {
           // quantileSeq([a, b, c, d, ...], [prob1, prob2, ...][,sorted])
-          probArr = new Array(probOrN.length)
+          const probOrNArr = probOrN.valueOf()
+          probArr = new Array(probOrNArr.length)
           for (let i = 0; i < probArr.length; ++i) {
-            const currProb = probOrN[i]
+            const currProb = probOrNArr[i]
             if (isNumber(currProb)) {
               if (currProb < 0 || currProb > 1) {
                 throw new Error('Probability must be between 0 and 1, inclusive')
