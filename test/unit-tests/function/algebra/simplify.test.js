@@ -306,6 +306,8 @@ describe('simplify', function () {
     simplifyAndCompare('3+sin(4)', '3+sin(4)', {}, { exactConstantFunctions: true })
     // but still make sure to consolidate the numeric constants
     simplifyAndCompare('3+(4*3)', '15', {}, { exactConstantFunctions: true })
+    // when we say we want exact functions, abs is still exact
+    simplifyAndCompare('abs(-2)', '2', {}, { exactConstantFunctions: true })
   })
 
   it('should collect like terms', function () {

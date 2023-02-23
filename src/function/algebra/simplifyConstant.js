@@ -361,7 +361,10 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
             const args = node.args.map(arg => foldFraction(arg, options))
 
             // If all args are numbers and we want to simplify constanct functions down into a number
-            if (!args.some(isNode) && !options.exactConstantFunctions) {
+            // allow calling the following simple functions that return exact values
+            const exactFunctions = [...operatorFunctions, 'abs', 'ceil', 'fix', 'floor', 'round', 'sign', 'subtract', 'unaryMinus', 'unaryPlus']
+
+            if (!args.some(isNode) && (!options.exactConstantFunctions || exactFunctions.indexOf(node.name) > -1)) {
               try {
                 return _eval(node.name, args, options)
               } catch (ignoreandcontinue) { }
