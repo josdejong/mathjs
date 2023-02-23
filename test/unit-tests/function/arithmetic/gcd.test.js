@@ -106,6 +106,11 @@ describe('gcd', function () {
       assert.deepStrictEqual(gcd(3, [5, 18, 3]), [1, 3, 3])
     })
 
+    it('should find the greatest common divisor between broadcastable arrays', function () {
+      assert.deepStrictEqual(gcd([5, 18, 3], [[3], [2], [1]]), [[1, 3, 3], [1, 2, 1], [1, 1, 1]])
+      assert.deepStrictEqual(gcd([[5], [18], [3]], [3, 2, 1]), [[1, 1, 1], [3, 2, 1], [3, 1, 1]])
+    })
+
     it('should find the greatest common divisor array - array', function () {
       assert.deepStrictEqual(gcd([5, 2, 3], [25, 3, 6]), [5, 1, 3])
     })

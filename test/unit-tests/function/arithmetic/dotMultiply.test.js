@@ -67,6 +67,8 @@ describe('dotMultiply', function () {
     const b = [[5, 6], [0, 8]]
     const c = [[5], [6]]
     const d = [[5, 6]]
+    const e = [[1, 2, 3]]
+    const f = [[1], [2], [3]]
 
     it('should multiply a all elements in a array by a number', function () {
       // matrix, array, range
@@ -74,6 +76,15 @@ describe('dotMultiply', function () {
       approx.deepEqual(dotMultiply(3, a), [[3, 0], [9, 12]])
       approx.deepEqual(dotMultiply([1, 2, 3, 4], 2), [2, 4, 6, 8])
       approx.deepEqual(dotMultiply(2, [1, 2, 3, 4]), [2, 4, 6, 8])
+    })
+
+    it('should multiply broadcastable arrays element-wise', function () {
+      const a2 = [1, 2]
+      const a3 = [[3], [4]]
+      const a4 = dotMultiply(a2, a3)
+      const a5 = dotMultiply(a3, a2)
+      assert.deepStrictEqual(a4, [[3, 6], [4, 8]])
+      assert.deepStrictEqual(a5, [[3, 6], [4, 8]])
     })
 
     it('should perform element-wise (array .* array) multiplication', function () {
@@ -89,12 +100,13 @@ describe('dotMultiply', function () {
       approx.deepEqual(dotMultiply([[1, 2], [3, 4]], sparse([[5, 6], [7, 8]])), sparse([[5, 12], [21, 32]]))
     })
 
-    it('should throw an error if arrays are of different sizes', function () {
-      assert.throws(function () { dotMultiply(a, c) })
-      assert.throws(function () { dotMultiply(d, a) })
-      assert.throws(function () { dotMultiply(d, b) })
-      assert.throws(function () { dotMultiply(d, c) })
-      assert.throws(function () { dotMultiply(c, b) })
+    it('should throw an error if arrays are of different not broadcastable sizes', function () {
+      assert.throws(function () { dotMultiply(a, e) })
+      assert.throws(function () { dotMultiply(e, a) })
+      assert.throws(function () { dotMultiply(b, e) })
+      assert.throws(function () { dotMultiply(e, b) })
+      assert.throws(function () { dotMultiply(d, e) })
+      assert.throws(function () { dotMultiply(c, f) })
     })
   })
 
@@ -103,6 +115,8 @@ describe('dotMultiply', function () {
     const b = matrix([[5, 6], [0, 8]])
     const c = matrix([[5], [6]])
     const d = matrix([[5, 6]])
+    const e = matrix([[1, 2, 3]])
+    const f = matrix([[1], [2], [3]])
 
     it('should multiply a all elements in a dense matrix by a number', function () {
       // matrix, array, range
@@ -126,11 +140,12 @@ describe('dotMultiply', function () {
     })
 
     it('should throw an error if arrays are of different sizes', function () {
-      assert.throws(function () { dotMultiply(a, c) })
-      assert.throws(function () { dotMultiply(d, a) })
-      assert.throws(function () { dotMultiply(d, b) })
-      assert.throws(function () { dotMultiply(d, c) })
-      assert.throws(function () { dotMultiply(c, b) })
+      assert.throws(function () { dotMultiply(a, e) })
+      assert.throws(function () { dotMultiply(e, a) })
+      assert.throws(function () { dotMultiply(b, e) })
+      assert.throws(function () { dotMultiply(e, a) })
+      assert.throws(function () { dotMultiply(d, e) })
+      assert.throws(function () { dotMultiply(c, f) })
     })
   })
 
@@ -139,6 +154,8 @@ describe('dotMultiply', function () {
     const b = sparse([[5, 6], [0, 8]])
     const c = sparse([[5], [6]])
     const d = sparse([[5, 6]])
+    const e = sparse([[1, 2, 3]])
+    const f = sparse([[5], [6], [7]])
 
     it('should multiply a all elements in a sparse matrix by a number', function () {
       // matrix, array, range
@@ -162,11 +179,12 @@ describe('dotMultiply', function () {
     })
 
     it('should throw an error if arrays are of different sizes', function () {
-      assert.throws(function () { dotMultiply(a, c) })
-      assert.throws(function () { dotMultiply(d, a) })
-      assert.throws(function () { dotMultiply(d, b) })
-      assert.throws(function () { dotMultiply(d, c) })
-      assert.throws(function () { dotMultiply(c, b) })
+      assert.throws(function () { dotMultiply(a, e) })
+      assert.throws(function () { dotMultiply(e, a) })
+      assert.throws(function () { dotMultiply(b, e) })
+      assert.throws(function () { dotMultiply(e, b) })
+      assert.throws(function () { dotMultiply(d, e) })
+      assert.throws(function () { dotMultiply(c, f) })
     })
   })
 

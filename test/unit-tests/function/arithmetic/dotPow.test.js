@@ -100,6 +100,15 @@ describe('dotPow', function () {
       approx.deepEqual(dotPow(2, [[1, 2, 3], [4, 5, 0]]), [[2, 4, 8], [16, 32, 1]])
     })
 
+    it('should elevate broadcastable arrays element-wise', function () {
+      const a2 = [1, 2]
+      const a3 = [[3], [4]]
+      const a4 = dotPow(a2, a3)
+      const a5 = dotPow(a3, a2)
+      assert.deepStrictEqual(a4, [[1, 8], [1, 16]])
+      assert.deepStrictEqual(a5, [[3, 9], [4, 16]])
+    })
+
     it('should elevate array .^ array', function () {
       approx.deepEqual(dotPow([[1, 2, 0], [0, 1, 4]], [[2, 1, 0], [4, 1, 0]]), [[1, 2, 1], [0, 1, 1]])
     })

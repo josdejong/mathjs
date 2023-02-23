@@ -11,16 +11,19 @@ const dependencies = [
   'addScalar',
   'equalScalar',
   'DenseMatrix',
-  'SparseMatrix'
+  'SparseMatrix',
+  'concat'
 ]
 
-export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, equalScalar, DenseMatrix, SparseMatrix }) => {
-  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
-  const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
-  const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
-
-  /**
+export const createAdd = /* #__PURE__ */ factory(
+  name,
+  dependencies,
+  ({ typed, matrix, addScalar, equalScalar, DenseMatrix, SparseMatrix, concat }) => {
+    const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
+    const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
+    const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
+    const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+    /**
    * Add two or more values, `x + y`.
    * For matrices, the function is evaluated element wise.
    *
@@ -54,26 +57,26 @@ export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to add
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
    */
-  return typed(
-    name,
-    {
-      'any, any': addScalar,
+    return typed(
+      name,
+      {
+        'any, any': addScalar,
 
-      'any, any, ...any': typed.referToSelf(self => (x, y, rest) => {
-        let result = self(x, y)
+        'any, any, ...any': typed.referToSelf(self => (x, y, rest) => {
+          let result = self(x, y)
 
-        for (let i = 0; i < rest.length; i++) {
-          result = self(result, rest[i])
-        }
+          for (let i = 0; i < rest.length; i++) {
+            result = self(result, rest[i])
+          }
 
-        return result
+          return result
+        })
+      },
+      matrixAlgorithmSuite({
+        elop: addScalar,
+        DS: matAlgo01xDSid,
+        SS: matAlgo04xSidSid,
+        Ss: matAlgo10xSids
       })
-    },
-    matrixAlgorithmSuite({
-      elop: addScalar,
-      DS: matAlgo01xDSid,
-      SS: matAlgo04xSidSid,
-      Ss: matAlgo10xSids
-    })
-  )
-})
+    )
+  })

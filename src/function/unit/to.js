@@ -4,11 +4,12 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 const name = 'to'
 const dependencies = [
   'typed',
-  'matrix'
+  'matrix',
+  'concat'
 ]
 
-export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, concat }) => {
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Change the unit of a value.

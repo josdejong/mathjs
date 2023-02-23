@@ -12,16 +12,17 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'DenseMatrix'
+  'DenseMatrix',
+  'concat'
 ]
 
-export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
+export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Calculates the modulus, the remainder of an integer division.

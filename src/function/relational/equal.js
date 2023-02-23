@@ -9,14 +9,15 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'DenseMatrix'
+  'DenseMatrix',
+  'concat'
 ]
 
-export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
+export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Test whether two values are equal.

@@ -186,6 +186,14 @@ describe('bitOr', function () {
     assert.deepStrictEqual(bitOr([3, 9], 12), [15, 13])
   })
 
+  it('should bitwise or broadcastable arrays correctly', function () {
+    const a = [6, 4, 28]
+    const b = [[13], [92], [101]]
+
+    assert.deepStrictEqual(bitOr(a, b), [[15, 13, 29], [94, 92, 92], [103, 101, 125]])
+    assert.deepStrictEqual(bitOr(b, a), [[15, 13, 29], [94, 92, 92], [103, 101, 125]])
+  })
+
   it('should bitwise or a matrix and an array correctly', function () {
     const a = [6, 4, 28]
     const b = math.matrix([13, 92, 101])

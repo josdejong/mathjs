@@ -13,10 +13,11 @@ const dependencies = [
   'equalScalar',
   'addScalar',
   'unaryMinus',
-  'DenseMatrix'
+  'DenseMatrix',
+  'concat'
 ]
 
-export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, DenseMatrix }) => {
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, DenseMatrix, concat }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
@@ -24,7 +25,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Subtract two values, `x - y`.

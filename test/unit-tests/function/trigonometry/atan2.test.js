@@ -87,6 +87,11 @@ describe('atan2', function () {
       assert.deepStrictEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], [[-1, 0, 1], [1, 1, 1]]), pi), [[0.75, -0.5, 0], [0.25, -0.25, 0]])
     })
 
+    it('should calculate atan2 between broadcastable arrays', function () {
+      assert.deepStrictEqual(divide(atan2([[1, -1, 0]], [[-1], [1]]), pi), [[0.75, -0.75, 1], [0.25, -0.25, 0]])
+      assert.deepStrictEqual(divide(atan2([[-1], [1]], [1, -1, 0]), pi), [[-0.25, -0.75, -0.5], [0.25, 0.75, 0.5]])
+    })
+
     it('should calculate atan2 array - dense matrix', function () {
       assert.deepStrictEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], matrix([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
     })
