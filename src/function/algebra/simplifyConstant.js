@@ -6,7 +6,6 @@ import { noBignumber, noFraction } from '../../utils/noop.js'
 const name = 'simplifyConstant'
 const dependencies = [
   'typed',
-  'parse',
   'config',
   'mathWithTransform',
   'matrix',
@@ -24,7 +23,6 @@ const dependencies = [
 
 export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies, ({
   typed,
-  parse,
   config,
   mathWithTransform,
   matrix,

@@ -25,7 +25,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *
     * Syntax:
     *    math.distance([x1, y1], [x2, y2])
-    *-   math.distance({pointOneX: 4, pointOneY: 5}, {pointTwoX: 2, pointTwoY: 7})
+    *    math.distance({pointOneX: 4, pointOneY: 5}, {pointTwoX: 2, pointTwoY: 7})
     *    math.distance([x1, y1, z1], [x2, y2, z2])
     *    math.distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})
     *    math.distance([x1, y1, ... , N1], [x2, y2, ... , N2])
@@ -36,7 +36,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *    math.distance({pointX: 1, pointY: 4, pointZ: 7}, {lineOnePtX: 6, lineOnePtY: 3, lineOnePtZ: 4}, {lineTwoPtX: 2, lineTwoPtY: 8, lineTwoPtZ: 5})
     *    math.distance([x1, y1], [xCoeffLine, yCoeffLine, constant])
     *    math.distance({pointX: 10, pointY: 10}, {xCoeffLine: 8, yCoeffLine: 1, constant: 3})
-    *    math.distance([x1, y1, z1], [x0, y0, z0, a-tCoeff, b-tCoeff, c-tCoeff]) point and parametric equation of 3D line
+    *    math.distance([x1, y1, z1], [x0, y0, z0, a-tCoeff, b-tCoeff, c-tCoeff]) // point and parametric equation of 3D line
     *    math.distance([x, y, z], [x0, y0, z0, a, b, c])
     *    math.distance({pointX: 2, pointY: 5, pointZ: 9}, {x0: 4, y0: 6, z0: 3, a: 4, b: 2, c: 0})
     *
@@ -61,7 +61,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *    math.distance([2, 3, 1], [1, 1, 2, 5, 0, 1])    // Returns 2.3204774044612857
     *    math.distance(
     *     {pointX: 2, pointY: 3, pointZ: 1},
-    *     {x0: 1, y0: 1, z0: 2, a: 5, b: 0, c: 1}        // Returns 2.3204774044612857
+    *     {x0: 1, y0: 1, z0: 2, a: 5, b: 0, c: 1})       // Returns 2.3204774044612857
     *
     * @param {Array | Matrix | Object} x    Co-ordinates of first point
     * @param {Array | Matrix | Object} y    Co-ordinates of second point

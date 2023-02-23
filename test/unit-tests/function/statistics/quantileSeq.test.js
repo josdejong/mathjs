@@ -117,6 +117,11 @@ describe('quantileSeq', function () {
       [1.75, 2.2, 2.45, 2.7, 2.9, 3.1, 3.2, 3.3, 3.5])
   })
 
+  it('should return list quantiles for list of number probabilities being a matrix', function () {
+    approx.deepEqual(quantileSeq(math.matrix([3, -1, 5, 7]), math.matrix([1 / 3, 2 / 3])), [3, 5])
+    // FIXME: should return a matrix as output when the input is a matrix
+  })
+
   it('should return list quantiles for list of BigNumber probabilities', function () {
     const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
     assert.deepStrictEqual(quantileSeq(lst, [bignumber(0.25), bignumber(0.5), bignumber(0.75)]),
