@@ -118,7 +118,7 @@ describe('quantileSeq', function () {
   })
 
   it('should return list quantiles for list of number probabilities being a matrix', function () {
-    approx.deepEqual(quantileSeq(math.matrix([3, -1, 5, 7]), math.matrix([1/3, 2/3])), [ 3, 5 ])
+    approx.deepEqual(quantileSeq(math.matrix([3, -1, 5, 7]), math.matrix([1 / 3, 2 / 3])), [3, 5])
     // FIXME: should return a matrix as output when the input is a matrix
   })
 
