@@ -21,9 +21,9 @@ export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
    *
    * Examples:
    *
-   *    math.to(math.unit('2 inch'), 'cm')                   // returns Unit 5.08 cm
-   *    math.to(math.unit('2 inch'), math.unit(null, 'cm'))  // returns Unit 5.08 cm
-   *    math.to(math.unit(16, 'bytes'), 'bits')              // returns Unit 128 bits
+   *    math.to(math.unit('2 inch'), 'cm')             // returns Unit 5.08 cm
+   *    math.to(math.unit('2 inch'), math.unit('cm'))  // returns Unit 5.08 cm
+   *    math.to(math.unit(16, 'bytes'), 'bits')        // returns Unit 128 bits
    *
    * See also:
    *
