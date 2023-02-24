@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 11.5.1
+# 2023-02-24, 11.6.0
 
 - Implement broadcasting for the following functions and their corresponding
   operator: `add`, `dotDivide`, `dotMultiply`, `dotPow`, `gcd`, `lcm`, `mod`, 
