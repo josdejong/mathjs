@@ -127,10 +127,9 @@ gulp.task('copy', function () {
 /**
  * Clean all examples and docs
  */
-gulp.task('clean', function (cb) {
-  rimraf(DOCS_DEST, function () {
-    rimraf(EXAMPLES_DEST, cb);
-  });
+gulp.task('clean', async function () {
+  await rimraf(DOCS_DEST);
+  await rimraf(EXAMPLES_DEST);
 });
 
 /**

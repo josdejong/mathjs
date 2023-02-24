@@ -48,7 +48,7 @@ math.subset(d, math.index([0, 1], 1))   // returns [[2], [4]]
 
 // replace a subset
 const e = []
-const f = math.subset(e, math.index(0, [0, 2]), [5, 6])  // f = [[5, 6]] and e = [[5, 0, 6]]
+const f = math.subset(e, math.index(0, [0, 2]), [5, 6])  // f = [[5, 6]]
 const g = math.subset(f, math.index(1, 1), 7, 0)         // g = [[5, 6], [0, 7]]
 
 // get submatrix using ranges

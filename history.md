@@ -4,6 +4,26 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20230224-1160">2023-02-24, 11.6.0 <a href="#20230224-1160" title="Permalink">#</a></h1>
+
+- Implement broadcasting for the following functions and their corresponding
+  operator: `add`, `dotDivide`, `dotMultiply`, `dotPow`, `gcd`, `lcm`, `mod`, 
+  `nthRoot`, `subtract`, `bitAnd`, `bitOr`, `bitXor`, `leftShift`, 
+  `rightArithShift`, `rightLogShift`, `and`, `or`, `xor`, `compare`, 
+  `compareText`, `equal`, `larger`, `largerEq`, `smaller`, `smallerEq`, 
+  `unequal`, `atan2` and `to`  <a href="https://github.com/josdejong/mathjs/issues/2895">#2895</a>, <a href="https://github.com/josdejong/mathjs/issues/2753">#2753</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Implement support for non-power-of-2 fft  <a href="https://github.com/josdejong/mathjs/issues/2900">#2900</a>, <a href="https://github.com/josdejong/mathjs/issues/2577">#2577</a>). Thanks <a href="https://github.com/cyavictor88">@cyavictor88</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2888">#2888</a>: update type definitions of function `unit` to allow creating a 
+  unit from a fraction or complex number.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2892">#2892</a>: an error in the examples of the embedded help of function `sort`.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2891">#2891</a>: functions `column` and `row` sometimes returning a scalar number. 
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2896">#2896</a>: define the fourth argument of function `intersect` as optional 
+  in the TypeScript definitions. Thanks <a href="https://github.com/wodndb">@wodndb</a>.
+- Fix: quantileSeq not accepting a matrix as second argument `prob` (see <a href="https://github.com/josdejong/mathjs/issues/2902">#2902</a>).
+- Fix broken examples in functions `to`, `distance`, `getMatrixDataType`, 
+  `subset`, and `max` (see <a href="https://github.com/josdejong/mathjs/issues/2902">#2902</a>).
+
+
 <h1 id="20230131-1151">2023-01-31, 11.5.1 <a href="#20230131-1151" title="Permalink">#</a></h1>
 
 - Add type definitions for function `rotationMatrix`  <a href="https://github.com/josdejong/mathjs/issues/2860">#2860</a>). 
@@ -21,6 +41,7 @@ layout: default
 - Fix type definitions of `map()` and `forEach()`  <a href="https://github.com/josdejong/mathjs/issues/2887">#2887</a>), thanks <a href="https://github.com/xiaohk">@xiaohk</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2606">#2606</a>: improve type definitions of `dotMultiply`, `dotPow` and 
   `dotDivide`  <a href="https://github.com/josdejong/mathjs/issues/2890">#2890</a>). Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
+
 
 <h1 id="20221205-1150">2022-12-05, 11.5.0 <a href="#20221205-1150" title="Permalink">#</a></h1>
 
