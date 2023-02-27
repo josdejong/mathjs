@@ -243,8 +243,8 @@ b.resize([2])           // Matrix, size [2],    [7, 7]
 
 
 Outer dimensions of a matrix can be squeezed using the function `squeeze`. When
-getting or setting a subset in a matrix, the subset is automatically squeezed
-or unsqueezed.
+getting or setting a single value in a matrix using `subset`, the value is automatically squeezed
+or unsqueezed too.
 
 ```js
 // squeeze a matrix
@@ -252,9 +252,10 @@ const a = [[[0, 1, 2]]]
 math.squeeze(a)             // [0, 1, 2]
 math.squeeze([[3]])         // 3
 
-// subsets are automatically squeezed
+// when getting/setting a single value in a matrix using subset, 
+// it automatically squeeze/unsqueeze the value
 const b = math.matrix([[0, 1], [2, 3]])
-b.subset(math.index(1, 0))  // 2
+b.subset(math.index(1, 0))  // 2 and not [[2]]
 ```
 
 
@@ -269,12 +270,17 @@ in the matrix, and if not, a subset of the matrix will be returned.
 
 A subset can be defined using an `Index`. An `Index` contains a single value
 or a set of values for each dimension of a matrix. An `Index` can be
-created using the function `index`.
-Matrix indexes in math.js are zero-based, like most programming languages
-including JavaScript itself.
+created using the function `index`. When getting a single value from a matrix,
+`subset` will return the value itself instead of a matrix containing just this 
+value.
 
-Note that mathematical applications like Matlab and Octave work differently,
-as they use one-based indexes.
+The function `subset` normally returns a subset, but when getting or setting a
+single value in a matrix, the value itself is returned.
+
+
+Matrix indexes in math.js are zero-based, like most programming languages
+including JavaScript itself. Note that mathematical applications like Matlab 
+and Octave work differently, as they use one-based indexes.
 
 ```js
 // create some matrices
