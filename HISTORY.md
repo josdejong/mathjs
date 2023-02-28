@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 11.6.0
+
+- Fix #2907: determinant of empty matrix should be 1.
+
+
 # 2023-02-24, 11.6.0
 
 - Implement broadcasting for the following functions and their corresponding

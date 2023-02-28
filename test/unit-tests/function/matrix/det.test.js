@@ -131,6 +131,14 @@ describe('det', function () {
     ]), new math.BigNumber(-2))
   })
 
+  it('should return 1 for an empty array or matrix', function () {
+    assert.deepStrictEqual(det([]), 1)
+    assert.deepStrictEqual(det([[]]), 1)
+
+    assert.deepStrictEqual(det(math.matrix([])), 1)
+    assert.deepStrictEqual(det(math.matrix([[]])), 1)
+  })
+
   it('should not change the value of the initial matrix', function () {
     const m = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     det(m)
