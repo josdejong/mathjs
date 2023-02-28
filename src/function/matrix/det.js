@@ -58,6 +58,8 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
           // vector
           if (size[0] === 1) {
             return clone(x.valueOf()[0])
+          } if (size[0] === 0) {
+            return 1 // det of an empty matrix is per definition 1
           } else {
             throw new RangeError('Matrix must be square ' +
             '(size: ' + format(size) + ')')
@@ -65,11 +67,13 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
 
         case 2:
         {
-          // two dimensional array
+          // two-dimensional array
           const rows = size[0]
           const cols = size[1]
           if (rows === cols) {
             return _det(x.clone().valueOf(), rows, cols)
+          } if (cols === 0) {
+            return 1 // det of an empty matrix is per definition 1
           } else {
             throw new RangeError('Matrix must be square ' +
               '(size: ' + format(size) + ')')
