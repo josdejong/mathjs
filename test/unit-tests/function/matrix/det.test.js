@@ -134,9 +134,11 @@ describe('det', function () {
   it('should return 1 for an empty array or matrix', function () {
     assert.deepStrictEqual(det([]), 1)
     assert.deepStrictEqual(det([[]]), 1)
+    assert.deepStrictEqual(det([[], []]), 1)
 
     assert.deepStrictEqual(det(math.matrix([])), 1)
     assert.deepStrictEqual(det(math.matrix([[]])), 1)
+    assert.deepStrictEqual(det(math.matrix([[], []])), 1)
   })
 
   it('should not change the value of the initial matrix', function () {
