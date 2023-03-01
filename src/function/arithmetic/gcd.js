@@ -73,23 +73,17 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         }
         return res
       }),
-      Array: typed.referToSelf(self => (args) => {
-        if (args.length === 1 && Array.isArray(args[0]) && is1d(args[0])) {
-          return self(...args[0])
+      Array: typed.referToSelf(self => (array) => {
+        if (array.length === 1 && Array.isArray(array[0]) && is1d(array[0])) {
+          return self(...array[0])
         }
-        if (is1d(args)) {
-          return self(...args)
+        if (is1d(array)) {
+          return self(...array)
         }
         throw new ArgumentsError('gcd() supports only 1d matrices!')
       }),
-      Matrix: typed.referToSelf(self => (args) => {
-        if (args.size().length === 1) {
-          return self(args._data)
-        }
-        if (args.size()[0] === 1) {
-          return self(args._data[0])
-        }
-        throw new ArgumentsError('gcd() supports only 1d matrices!')
+      Matrix: typed.referToSelf(self => (matrix) => {
+        return self(matrix.toArray())
       })
     }
   )
