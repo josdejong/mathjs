@@ -2,6 +2,8 @@
 
 # unpublished changes since 11.6.0
 
+- Implement #2567: accept array as parameter for function `gcd` (#2878). 
+  Thanks @jakubriegel.
 - Fix #2907: determinant of empty matrix should be 1.
 
 
