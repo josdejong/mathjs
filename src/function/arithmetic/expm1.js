@@ -35,7 +35,7 @@ export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    exp, expm, log, pow
    *
-   * @param {number | BigNumber | Complex} x  A number or matrix to apply expm1
+   * @param {number | BigNumber | Complex} x  The number to exponentiate
    * @return {number | BigNumber | Complex} Exponential of `x`, minus one
    */
   return typed(name, {

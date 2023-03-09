@@ -51,7 +51,7 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
    *
    * @param  {number | BigNumber | Array | Matrix} x Value to be shifted
    * @param  {number | BigNumber} y Amount of shifts
-   * @return {number | BigNumber | Array | Matrix} `x` sign-filled shifted right `y` times
+   * @return {number | BigNumber | Array | Matrix} `x` zero-filled shifted right `y` times
    */
   return typed(
     name,

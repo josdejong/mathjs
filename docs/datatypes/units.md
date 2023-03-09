@@ -50,16 +50,26 @@ Use care when creating a unit with multiple terms in the denominator. Implicit m
 
 ```js
 // These three are identical
-const correct1 = math.unit('8.314 m^3 Pa / mol / K')          // Unit 8.314 (m^3 Pa) / (mol K)
-const correct2 = math.unit('8.314 (m^3 Pa) / (mol K)')        // Unit 8.314 (m^3 Pa) / (mol K)
-const correct3 = math.unit('8.314 (m^3 * Pa) / (mol * K)')    // Unit 8.314 (m^3 Pa) / (mol K)
+const correct1 = math.unit('8.314 m^3 Pa / mol / K')           // Unit 8.314 (m^3 Pa) / (mol K)
+const correct2 = math.unit('8.314 (m^3 Pa) / (mol K)')         // Unit 8.314 (m^3 Pa) / (mol K)
+const correct3 = math.unit('8.314 (m^3 * Pa) / (mol * K)')     // Unit 8.314 (m^3 Pa) / (mol K)
 ```
 But this expression, which omits the second `/` between `mol` and `K`, results in the wrong value:
 
 ```js
 // Missing the second '/' between 'mol' and 'K'
-const incorrect = math.unit('8.314 m^3 Pa / mol K')           // Unit 8.314 (m^3 Pa K) / mol
+const incorrect = math.unit('8.314 m^3 Pa / mol K')            // Unit 8.314 (m^3 Pa K) / mol
 ```
+
+The function `math.unit` has its own small parser. This parser differs a bit from the expression parser `math.evaluate`, and returns the expected result in this case:
+
+```js
+// using math.evaluate instead of math.unit
+const correct4 = math.evaluate('8.314 (m^3 * Pa) / (mol * K)') // Unit 8.314 (m^3 Pa) / (mol K)
+```
+
+In summary: be careful with implicit multiplication. In case of doubt, always use an explicit `*` and parenthesis.
+
 
 ## Calculations
 
@@ -69,7 +79,7 @@ Trigonometric functions like `cos` are also supported when the argument is an an
 ```js
 const a = math.unit(45, 'cm')       // Unit 450 mm
 const b = math.unit('0.1m')         // Unit 100 mm
-math.add(a, b)                      // Unit 0.65 m
+math.add(a, b)                      // Unit 0.55 m
 math.multiply(b, 2)                 // Unit 200 mm
 
 const c = math.unit(45, 'deg')      // Unit 45 deg
@@ -95,18 +105,15 @@ const F = math.multiply(q, math.cross(v, B))   // [0 N, 0 N, -1 N]
 
 All arithmetic operators act on the value of the unit as it is represented in SI units.
 This may lead to surprising behavior when working with temperature scales like `celsius` (or `degC`) and `fahrenheit` (or `degF`).
-In general you should avoid calculations using `celsius` and `fahrenheit`. Rather, use `kelvin` (or `K`) and `rankine` (or `degR`) instead.
+In general, you should avoid calculations using `celsius` and `fahrenheit`. Rather, use `kelvin` (or `K`) and `rankine` (or `degR`) instead.
 This example highlights some problems when using `celsius` and `fahrenheit` in calculations:
 
 ```js
 const T_14F = math.unit('14 degF')            // Unit 14 degF (263.15 K)
-const T_28F = math.multiply(T1, 2)            // Unit 487.67 degF (526.3 K), not 28 degF
+const T_28F = math.multiply(T_14F, 2)         // Unit 28 degF (270.93 K), not 526.3 K
 
 const Tnegative = math.unit(-13, 'degF')      // Unit -13 degF (248.15 K)
-const Tpositive = math.abs(T1)                // Unit -13 degF (248.15 K), not 13 degF
-
-const Trate1 = math.evaluate('5 (degC/hour)') // Unit 5 degC/hour
-const Trate2 = math.evaluate('(5 degC)/hour') // Unit 278.15 degC/hour
+const Tpositive = math.abs(Tnegative)         // Unit -13 degF (248.15 K), not 13 degF
 ```
 
 The expression parser supports units too. This is described in the section about

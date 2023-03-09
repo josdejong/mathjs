@@ -4,6 +4,10 @@
 
 - Implement #2567: accept array as parameter for function `gcd` (#2878). 
   Thanks @jakubriegel.
+- Fix #2908: improvements in the docs and examples of functions 
+  `partitionSelect`, `diff`, `expm1`, `round`, `nthRoots`, `sign`, 
+  `rigthArithShift`, `setIsSubset`, `setSize`, and the docs about units.
+  Thanks @tmtron.
 - Fix #2907: determinant of empty matrix should be 1.
 
 

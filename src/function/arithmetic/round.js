@@ -23,7 +23,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   /**
-   * Round a value towards the nearest integer.
+   * Round a value towards the nearest rounded value.
    * For matrices, the function is evaluated element wise.
    *
    * Syntax:
