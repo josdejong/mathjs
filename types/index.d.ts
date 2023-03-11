@@ -1375,7 +1375,7 @@ declare namespace math {
      * @returns Returns the input value when numeric, converts to a number
      * when input is non-numeric.
      */
-    unaryPlus<T extends MathType>(x: T): T
+    unaryPlus<T extends string | MathType>(x: T): T
 
     /**
      * Calculate the extended greatest common divisor for two values. See
@@ -4836,9 +4836,7 @@ declare namespace math {
      * @param x The number for which to determine the sign
      * @returns The sign of x
      */
-    sign<T extends MathNumericType | MathCollection | Unit>(
-      this: MathJsChain<T>
-    ): MathJsChain<T>
+    sign<T extends MathType>(this: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Calculate the square root of a value. For matrices, the function is
