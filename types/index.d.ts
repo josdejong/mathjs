@@ -1039,6 +1039,7 @@ declare namespace math {
      * @returns Sum of x and y
      */
     add<T extends MathType>(x: T, y: T): T
+    add(x: MathType, y: MathType): MathType
 
     /**
      * Calculate the cubic root of a value.
@@ -1279,10 +1280,10 @@ declare namespace math {
 
     multiply<T extends MathNumericType[]>(x: T, y: T[]): T
     multiply<T extends MathNumericType[]>(x: T[], y: T): T
-
     multiply<T extends MathArray>(x: T, y: T): T
-
-    multiply<T extends Unit | MathType>(x: T, y: T): T
+    multiply(x: Unit, y: Unit): Unit
+    multiply(x: number, y: number): number
+    multiply(x: MathType, y: MathType): MathType
 
     /**
      * Calculate the norm of a number, vector or matrix. The second
@@ -1354,6 +1355,7 @@ declare namespace math {
      * @returns Subtraction of x and y
      */
     subtract<T extends MathType>(x: T, y: T): T
+    subtract(x: MathType, y: MathType): MathType
 
     /**
      * Inverse the sign of a value, apply a unary minus operation. For
@@ -4529,6 +4531,7 @@ declare namespace math {
      * @param y Second value to add
      */
     add<T extends MathType>(this: MathJsChain<T>, y: T): MathJsChain<T>
+    add(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Apply a function that maps an array to a scalar along a given axis of the
@@ -4598,7 +4601,7 @@ declare namespace math {
     round<T extends MathNumericType | MathCollection>(
       this: MathJsChain<T>,
       n?: number | BigNumber | MathCollection
-    ): MathJsChain<MathNumericType>
+    ): MathJsChain<T>
 
     // End of rounding group
 
@@ -4615,6 +4618,9 @@ declare namespace math {
      * the inverse of y: x * inv(y).
      * @param y Denominator
      */
+    divide(this: MathJsChain<Unit>, y: Unit): MathJsChain<Unit | number>
+    divide(this: MathJsChain<Unit>, y: number): MathJsChain<Unit>
+    divide(this: MathJsChain<number>, y: number): MathJsChain<number>
     divide(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
