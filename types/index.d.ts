@@ -4843,7 +4843,9 @@ declare namespace math {
      * evaluated element wise.
      */
 
-    sqrt<T extends MathType>(this: MathJsChain<T>): MathJsChain<T>
+    sqrt<T extends number | BigNumber | Complex | MathCollection | Unit>(
+      this: MathJsChain<T>
+    ): MathJsChain<T>
 
     /**
      * Compute the square of a value, x * x. For matrices, the function is
@@ -4874,7 +4876,7 @@ declare namespace math {
      * function is evaluated element wise.
      */
 
-    unaryPlus<T extends MathType>(this: MathJsChain<T>): MathJsChain<T>
+    unaryPlus<T extends string | MathType>(this: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Calculate the extended greatest common divisor for two values. See
