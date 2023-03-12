@@ -776,7 +776,7 @@ declare namespace math {
      * @param unit The unit to be created
      * @returns The created unit
      */
-    unit(value: number | BigNumber | Fraction | Complex, unit: string): Unit
+    unit(value: MathNumericType, unit: string): Unit
     unit(value: MathCollection, unit: string): Unit[]
 
     /*************************************************************************
@@ -2355,10 +2355,7 @@ declare namespace math {
      * @returns Returns true when the input matrices have the same size and
      * each of their elements is equal.
      */
-    deepEqual(
-      x: MathType,
-      y: MathType
-    ): number | BigNumber | Fraction | Complex | Unit | MathCollection
+    deepEqual(x: MathType, y: MathType): MathType
 
     /**
      * Test whether two values are equal.
@@ -2527,10 +2524,7 @@ declare namespace math {
      * @returns The number of how many times the multiset contains the
      * element
      */
-    setMultiplicity(
-      e: number | BigNumber | Fraction | Complex,
-      a: MathCollection
-    ): number
+    setMultiplicity(e: MathNumericType, a: MathCollection): number
 
     /**
      * Create the powerset of a (multi)set. (The powerset contains very
@@ -3302,9 +3296,7 @@ declare namespace math {
      * @returns Returns true when x is zero. Throws an error in case of an
      * unknown data type.
      */
-    isZero(
-      x: number | BigNumber | Fraction | MathCollection | Unit | Complex
-    ): boolean
+    isZero(x: MathType): boolean
 
     /**
      * Determine the type of a variable.
@@ -4301,11 +4293,7 @@ declare namespace math {
      * @param unit The unit to be created
      */
     unit(this: MathJsChain<string>, unit?: string): MathJsChain<Unit>
-    unit(this: MathJsChain<Unit>, unit?: string): MathJsChain<Unit>
-    unit(
-      this: MathJsChain<number | BigNumber | Fraction | Complex>,
-      unit?: string
-    ): MathJsChain<Unit>
+    unit(this: MathJsChain<MathNumericType>, unit?: string): MathJsChain<Unit>
     unit(this: MathJsChain<MathCollection>, unit?: string): MathJsChain<Unit[]>
 
     /*************************************************************************
@@ -4609,9 +4597,7 @@ declare namespace math {
      * Compute the cube of a value, x * x * x. For matrices, the function is
      * evaluated element wise.
      */
-    cube<T extends number | BigNumber | Fraction | Complex | Unit>(
-      this: MathJsChain<T>
-    ): MathJsChain<T>
+    cube<T extends MathNumericType | Unit>(this: MathJsChain<T>): MathJsChain<T>
 
     /**
      * Divide two values, x / y. To divide matrices, x is multiplied with
@@ -5638,12 +5624,7 @@ declare namespace math {
      * accepts both matrices and scalar values.
      * @param y Second amtrix to compare
      */
-    deepEqual(
-      this: MathJsChain<MathType>,
-      y: MathType
-    ): MathJsChain<
-      number | BigNumber | Fraction | Complex | Unit | MathCollection
-    >
+    deepEqual(this: MathJsChain<MathType>, y: MathType): MathJsChain<MathType>
 
     /**
      * Test whether two values are equal.
@@ -5801,7 +5782,7 @@ declare namespace math {
      * @param a A multiset
      */
     setMultiplicity(
-      e: MathJsChain<number | BigNumber | Fraction | Complex>,
+      e: MathJsChain<MathNumericType>,
       a: MathCollection
     ): MathJsChain<number>
 
@@ -6103,7 +6084,7 @@ declare namespace math {
      * is evaluated element wise.
      */
 
-    acos<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    acos<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6113,7 +6094,7 @@ declare namespace math {
      * element wise.
      */
 
-    acosh<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    acosh<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6122,7 +6103,7 @@ declare namespace math {
      * function is evaluated element wise.
      */
 
-    acot<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    acot<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6132,7 +6113,7 @@ declare namespace math {
      * evaluated element wise.
      */
 
-    acoth<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    acoth<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6141,7 +6122,7 @@ declare namespace math {
      * is evaluated element wise.
      */
 
-    acsc<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    acsc<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6151,7 +6132,7 @@ declare namespace math {
      * element wise.
      */
 
-    acsch<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    acsch<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6160,7 +6141,7 @@ declare namespace math {
      * is evaluated element wise.
      */
 
-    asec<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    asec<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6170,7 +6151,7 @@ declare namespace math {
      * element wise.
      */
 
-    asech<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    asech<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6179,7 +6160,7 @@ declare namespace math {
      * evaluated element wise.
      */
 
-    asin<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    asin<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6189,7 +6170,7 @@ declare namespace math {
      * element wise.
      */
 
-    asinh<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    asinh<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6198,7 +6179,7 @@ declare namespace math {
      * is evaluated element wise.
      */
 
-    atan<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    atan<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6208,7 +6189,7 @@ declare namespace math {
      * be determined. For matrices, the function is evaluated element wise.
      */
 
-    atan2<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    atan2<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>,
       x: number
     ): MathJsChain<T>
@@ -6219,7 +6200,7 @@ declare namespace math {
      * element wise.
      */
 
-    atanh<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    atanh<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6228,7 +6209,7 @@ declare namespace math {
      * evaluated element wise.
      */
 
-    cos<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    cos<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6238,7 +6219,7 @@ declare namespace math {
      * wise.
      */
 
-    cosh<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    cosh<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6247,7 +6228,7 @@ declare namespace math {
      * For matrices, the function is evaluated element wise.
      */
 
-    cot<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    cot<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6256,7 +6237,7 @@ declare namespace math {
      * / tanh(x). For matrices, the function is evaluated element wise.
      */
 
-    coth<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    coth<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6265,7 +6246,7 @@ declare namespace math {
      * matrices, the function is evaluated element wise.
      */
 
-    csc<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    csc<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6274,7 +6255,7 @@ declare namespace math {
      * / sinh(x). For matrices, the function is evaluated element wise.
      */
 
-    csch<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    csch<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6283,7 +6264,7 @@ declare namespace math {
      * matrices, the function is evaluated element wise.
      */
 
-    sec<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    sec<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6292,7 +6273,7 @@ declare namespace math {
      * cosh(x). For matrices, the function is evaluated element wise.
      */
 
-    sech<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    sech<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6301,7 +6282,7 @@ declare namespace math {
      * evaluated element wise.
      */
 
-    sin<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    sin<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6311,7 +6292,7 @@ declare namespace math {
      * wise.
      */
 
-    sinh<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    sinh<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6320,7 +6301,7 @@ declare namespace math {
      * For matrices, the function is evaluated element wise.
      */
 
-    tan<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    tan<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6330,7 +6311,7 @@ declare namespace math {
      * evaluated element wise.
      */
 
-    tanh<T extends number | BigNumber | Fraction | Complex | MathCollection>(
+    tanh<T extends number | BigNumber | Complex | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<T>
 
@@ -6424,11 +6405,7 @@ declare namespace math {
      * evaluated element-wise in case of Array or Matrix input.
      */
 
-    isZero(
-      this: MathJsChain<
-        number | BigNumber | Fraction | MathCollection | Unit | Complex
-      >
-    ): MathJsChain<boolean>
+    isZero(this: MathJsChain<MathType>): MathJsChain<boolean>
 
     /**
      * Determine the type of a variable.
