@@ -1049,10 +1049,8 @@ declare namespace math {
      * if false (default) the principal root is returned.
      * @returns Returns the cubic root of x
      */
-    cbrt<T extends number | BigNumber | Complex | Unit>(
-      x: T,
-      allRoots?: boolean
-    ): T
+    cbrt(x: Complex, allRoots?: boolean): Complex
+    cbrt<T extends number | BigNumber | Unit>(x: T, allRoots?: boolean): T
 
     // Rounding functions, grouped for similarity, even though it breaks
     // the alphabetic order among arithmetic functions.
@@ -5135,8 +5133,8 @@ declare namespace math {
      * @param y Second value to xor
      */
     xor(
-      this: MathJsChain<MathType>,
-      y: MathType
+      this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
+      y: number | BigNumber | Complex | Unit | MathCollection
     ): MathJsChain<boolean | MathCollection>
 
     /*************************************************************************
