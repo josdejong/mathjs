@@ -1050,7 +1050,7 @@ declare namespace math {
      * @returns Returns the cubic root of x
      */
     cbrt(x: Complex, allRoots?: boolean): Complex
-    cbrt<T extends number | BigNumber | Unit>(x: T, allRoots?: boolean): T
+    cbrt<T extends number | BigNumber | Unit>(x: T): T
 
     // Rounding functions, grouped for similarity, even though it breaks
     // the alphabetic order among arithmetic functions.
