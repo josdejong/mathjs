@@ -9,6 +9,8 @@
   `rigthArithShift`, `setIsSubset`, `setSize`, and the docs about units.
   Thanks @tmtron.
 - Fix #2907: determinant of empty matrix should be 1.
+- Refactor index.d.ts by writing function declarations using a generic, 
+  reducing a lot of repetition (#2913). Thanks @brunoSnoww.
 
 
 # 2023-02-24, 11.6.0
