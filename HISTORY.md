@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 11.6.0
+# 2023-03-15, 11.7.0
 
 - Implement #2567: accept array as parameter for function `gcd` (#2878). 
   Thanks @jakubriegel.
