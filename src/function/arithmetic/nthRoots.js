@@ -89,7 +89,8 @@ export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *    nthRoot, pow, sqrt
    *
    * @param {number | BigNumber | Fraction | Complex} x Number to be rounded
-   * @return {number | BigNumber | Fraction | Complex}            Rounded value
+   * @param {number} [root=2] Optional root, default value is 2
+   * @return {number | BigNumber | Fraction | Complex} Returns the nth roots
    */
   return typed(name, {
     Complex: function (x) {

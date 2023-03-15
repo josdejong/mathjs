@@ -33,7 +33,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} x
    *            The number for which to determine the sign
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}e
+   * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
    *            The sign of `x`
    */
   return typed(name, {

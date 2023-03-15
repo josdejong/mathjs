@@ -1,8 +1,16 @@
 # History
 
-# unpublished changes since 11.6.0
+# 2023-03-15, 11.7.0
 
+- Implement #2567: accept array as parameter for function `gcd` (#2878). 
+  Thanks @jakubriegel.
+- Fix #2908: improvements in the docs and examples of functions 
+  `partitionSelect`, `diff`, `expm1`, `round`, `nthRoots`, `sign`, 
+  `rigthArithShift`, `setIsSubset`, `setSize`, and the docs about units.
+  Thanks @tmtron.
 - Fix #2907: determinant of empty matrix should be 1.
+- Refactor index.d.ts by writing function declarations using a generic, 
+  reducing a lot of repetition (#2913). Thanks @brunoSnoww.
 
 
 # 2023-02-24, 11.6.0
