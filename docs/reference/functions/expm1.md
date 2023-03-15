@@ -23,7 +23,7 @@ math.expm1(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex | A number or matrix to apply expm1
+`x` | number &#124; BigNumber &#124; Complex | The number to exponentiate
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

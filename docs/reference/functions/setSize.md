@@ -22,6 +22,7 @@ math.setSize(set, unique)
 Parameter | Type | Description
 --------- | ---- | -----------
 `a` | Array &#124; Matrix | A multiset
+`unique` | boolean | If true, only the unique values are counted. False by default
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

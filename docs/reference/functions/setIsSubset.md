@@ -27,7 +27,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-boolean | true | false
+boolean | Returns true when a1 is a subset of a2, returns false otherwise
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

@@ -4,6 +4,19 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20230315-1170">2023-03-15, 11.7.0 <a href="#20230315-1170" title="Permalink">#</a></h1>
+
+- Implement <a href="https://github.com/josdejong/mathjs/issues/2567">#2567</a>: accept array as parameter for function `gcd`  <a href="https://github.com/josdejong/mathjs/issues/2878">#2878</a>). 
+  Thanks <a href="https://github.com/jakubriegel">@jakubriegel</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2908">#2908</a>: improvements in the docs and examples of functions 
+  `partitionSelect`, `diff`, `expm1`, `round`, `nthRoots`, `sign`, 
+  `rigthArithShift`, `setIsSubset`, `setSize`, and the docs about units.
+  Thanks <a href="https://github.com/tmtron">@tmtron</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2907">#2907</a>: determinant of empty matrix should be 1.
+- Refactor index.d.ts by writing function declarations using a generic, 
+  reducing a lot of repetition  <a href="https://github.com/josdejong/mathjs/issues/2913">#2913</a>). Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
+
+
 <h1 id="20230224-1160">2023-02-24, 11.6.0 <a href="#20230224-1160" title="Permalink">#</a></h1>
 
 - Implement broadcasting for the following functions and their corresponding

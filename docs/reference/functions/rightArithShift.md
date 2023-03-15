@@ -28,7 +28,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Array &#124; Matrix | `x` sign-filled shifted right `y` times
+number &#124; BigNumber &#124; Array &#124; Matrix | `x` zero-filled shifted right `y` times
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

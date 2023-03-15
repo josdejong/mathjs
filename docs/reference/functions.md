@@ -69,7 +69,7 @@ Function | Description
 [math.nthRoot(a)](functions/nthRoot.html) | Calculate the nth root of a value.
 [math.nthRoots(x)](functions/nthRoots.html) | Calculate the nth roots of a value.
 [math.pow(x,&nbsp;y)](functions/pow.html) | Calculates the power of x to y, `x ^ y`.
-[math.round(x&nbsp;[,&nbsp;n])](functions/round.html) | Round a value towards the nearest integer.
+[math.round(x&nbsp;[,&nbsp;n])](functions/round.html) | Round a value towards the nearest rounded value.
 [math.sign(x)](functions/sign.html) | Compute the sign of a value.
 [math.sqrt(x)](functions/sqrt.html) | Calculate the square root of a value.
 [math.square(x)](functions/square.html) | Compute the square of a value, `x * x`.

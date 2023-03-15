@@ -42,13 +42,18 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.partitionSelect([5, 10, 1], 2)           // returns 10
-math.partitionSelect(['C', 'B', 'A', 'D'], 1) // returns 'B'
+math.partitionSelect([5, 10, 1], 2)                               // returns 10
+math.partitionSelect(['C', 'B', 'A', 'D'], 1, math.compareText)   // returns 'B'
 
 function sortByLength (a, b) {
   return a.length - b.length
 }
 math.partitionSelect(['Langdon', 'Tom', 'Sara'], 2, sortByLength) // returns 'Langdon'
+
+// the input array is mutated
+arr = [5, 2, 1]
+math.partitionSelect(arr, 0) // returns 1, arr is now: [1, 2, 5]
+math.partitionSelect(arr, 1, 'desc') // returns 2, arr is now: [5, 2, 1]
 ```
 
 

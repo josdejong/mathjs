@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-round">Function round <a href="#function-round" title="Permalink">#</a></h1>
 
-Round a value towards the nearest integer.
+Round a value towards the nearest rounded value.
 For matrices, the function is evaluated element wise.
 
 

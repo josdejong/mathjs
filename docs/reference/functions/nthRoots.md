@@ -24,12 +24,13 @@ math.nthRoots(x, root)
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | number &#124; BigNumber &#124; Fraction &#124; Complex | Number to be rounded
+`root` | number | Optional root, default value is 2 Default value: 2.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex | Rounded value
+number &#124; BigNumber &#124; Fraction &#124; Complex | Returns the nth roots
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

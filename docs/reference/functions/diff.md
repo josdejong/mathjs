@@ -27,7 +27,7 @@ math.diff(arr, dim)
 Parameter | Type | Description
 --------- | ---- | -----------
 `arr` | Array &#124; Matrix | An array or matrix
-`dim` | number | Dimension
+`dim` | number &#124; BigNumber | Dimension
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
