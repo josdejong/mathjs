@@ -114,7 +114,9 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @return {SymbolNode}
      */
     clone () {
-      return new SymbolNode(this.name)
+      const cloned = new SymbolNode(this.name)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

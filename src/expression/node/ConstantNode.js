@@ -75,7 +75,9 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @return {ConstantNode}
      */
     clone () {
-      return new ConstantNode(this.value)
+      const cloned = new ConstantNode(this.value)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

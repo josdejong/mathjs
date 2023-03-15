@@ -310,7 +310,9 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @return {FunctionNode}
      */
     clone () {
-      return new FunctionNode(this.fn, this.args.slice(0))
+      const cloned = new FunctionNode(this.fn, this.args.slice(0))
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

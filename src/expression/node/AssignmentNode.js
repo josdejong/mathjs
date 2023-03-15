@@ -231,7 +231,9 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
      * @return {AssignmentNode}
      */
     clone () {
-      return new AssignmentNode(this.object, this.index, this.value)
+      const cloned = new AssignmentNode(this.object, this.index, this.value)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

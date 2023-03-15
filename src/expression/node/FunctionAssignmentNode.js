@@ -149,8 +149,10 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
      * @return {FunctionAssignmentNode}
      */
     clone () {
-      return new FunctionAssignmentNode(
+      const cloned = new FunctionAssignmentNode(
         this.name, this.params.slice(0), this.expr)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

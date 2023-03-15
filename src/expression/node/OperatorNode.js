@@ -356,8 +356,10 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @return {OperatorNode}
      */
     clone () {
-      return new OperatorNode(
+      const cloned = new OperatorNode(
         this.op, this.fn, this.args.slice(0), this.implicit, this.isPercentage)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

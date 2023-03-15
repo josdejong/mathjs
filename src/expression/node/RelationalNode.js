@@ -109,7 +109,9 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
      * @return {RelationalNode}
      */
     clone () {
-      return new RelationalNode(this.conditionals, this.params)
+      const cloned = new RelationalNode(this.conditionals, this.params)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

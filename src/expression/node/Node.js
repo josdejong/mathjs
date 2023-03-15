@@ -23,6 +23,8 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
   }
 
   class Node {
+    sources = []
+
     get type () { return 'Node' }
     get isNode () { return true }
 
@@ -202,6 +204,15 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
     clone () {
       // must be implemented by each of the Node implementations
       throw new Error('Cannot clone a Node interface')
+    }
+
+    /**
+     * Set the source indices mapping this node back to its
+     * location in the original source string
+     * @param {SourceMapping[]} sources - the data mapping this node back to its source string
+     */
+    setSources (sources) {
+      this.sources = sources
     }
 
     /**

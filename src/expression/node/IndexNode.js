@@ -141,7 +141,9 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @return {IndexNode}
      */
     clone () {
-      return new IndexNode(this.dimensions.slice(0), this.dotNotation)
+      const cloned = new IndexNode(this.dimensions.slice(0), this.dotNotation)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

@@ -119,7 +119,9 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
         }
       })
 
-      return new BlockNode(blocks)
+      const cloned = new BlockNode(blocks)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

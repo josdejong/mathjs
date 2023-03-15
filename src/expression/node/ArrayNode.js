@@ -94,7 +94,9 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @return {ArrayNode}
      */
     clone () {
-      return new ArrayNode(this.items.slice(0))
+      const cloned = new ArrayNode(this.items.slice(0))
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

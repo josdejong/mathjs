@@ -121,7 +121,9 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
           properties[key] = this.properties[key]
         }
       }
-      return new ObjectNode(properties)
+      const cloned = new ObjectNode(properties)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

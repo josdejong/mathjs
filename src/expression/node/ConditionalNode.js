@@ -121,7 +121,9 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
      * @return {ConditionalNode}
      */
     clone () {
-      return new ConditionalNode(this.condition, this.trueExpr, this.falseExpr)
+      const cloned = new ConditionalNode(this.condition, this.trueExpr, this.falseExpr)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

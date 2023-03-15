@@ -136,7 +136,9 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @return {AccessorNode}
      */
     clone () {
-      return new AccessorNode(this.object, this.index)
+      const cloned = new AccessorNode(this.object, this.index)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

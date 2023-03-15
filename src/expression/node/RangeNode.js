@@ -146,7 +146,9 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @return {RangeNode}
      */
     clone () {
-      return new RangeNode(this.start, this.end, this.step && this.step)
+      const cloned = new RangeNode(this.start, this.end, this.step && this.step)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**

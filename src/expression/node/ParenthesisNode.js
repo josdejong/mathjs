@@ -79,7 +79,9 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
      * @return {ParenthesisNode}
      */
     clone () {
-      return new ParenthesisNode(this.content)
+      const cloned = new ParenthesisNode(this.content)
+      cloned.sources = this.sources
+      return cloned
     }
 
     /**
