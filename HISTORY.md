@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since 11.7.0
+
+- Implemented aliases `amp` and `amps` for unit `ampere` (#2917). 
+  Thanks @veggiesaurus.
+
+
 # 2023-03-15, 11.7.0
 
 - Implement #2567: accept array as parameter for function `gcd` (#2878). 
