@@ -2833,6 +2833,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     joules: 'joule',
 
     amperes: 'ampere',
+    amps: 'ampere',
+    amp: 'ampere',
     coulombs: 'coulomb',
     volts: 'volt',
     ohms: 'ohm',
