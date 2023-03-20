@@ -85,10 +85,10 @@ describe('addScalar', function () {
     assert.deepStrictEqual(add(math.fraction(1, 3), 1), math.fraction(4, 3))
   })
 
-  it('should throw an error when converting a number to a fraction that is not an exact representation', function () {
-    assert.throws(function () {
-      add(math.pi, math.fraction(1, 3))
-    }, /Cannot implicitly convert a number to a Fraction when there will be a loss of precision/)
+  it('should not throw an error when converting a number to a fraction that is not an exact representation but nearly equal', function () {
+    const oneThird = math.fraction(1, 3)
+    assert.strictEqual(oneThird.equals(0.3333333333333333), true)
+    assert.strictEqual(add(math.pi, math.fraction(1, 3)).valueOf(), 3.4749259869233007)
   })
 
   it('should add strings to numbers', function () {

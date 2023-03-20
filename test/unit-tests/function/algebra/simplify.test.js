@@ -300,7 +300,7 @@ describe('simplify', function () {
   })
 
   it('should simplify non-rational expressions with no symbols to number', function () {
-    simplifyAndCompare('3+sin(4)', '2.2431975046920716')
+    simplifyAndCompare('3+sin(4)', '2.2431975046920716', undefined, { exactFractions: false })
   })
 
   it('should collect like terms', function () {
