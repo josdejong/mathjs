@@ -59,6 +59,21 @@ describe('fraction', function () {
     assert.throws(function () { math.fraction(-Infinity) }, /Error: -Infinity cannot be represented as a fraction/)
     assert.throws(function () { math.fraction(NaN) }, /Error: NaN cannot be represented as a fraction/)
   })
+
+  it('should consider fractions equal if their difference is less than the default epsilon', function () {
+    const fractMath = math.create()
+    fractMath.config({ number: 'Fraction', epsilon: 1e-12 })
+    fractMath.createUnit('rotation', { definition: '360 deg', aliases: ['tour', 'tr'] })
+
+    const a = fractMath.unit(360, 'deg')
+    const b = fractMath.unit(1, 'rotation')
+    const fa = fractMath.fraction(a.value)
+    const fb = fractMath.fraction(b.value)
+
+    assert.strictEqual(a.equals(b), true)
+    assert.strictEqual(fa.equals(fb), true)
+    assert.strictEqual(fractMath.equal(fa, fb), true)
+  })
 })
 
 function equalFraction (a, b) {
