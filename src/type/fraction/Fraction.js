@@ -1,10 +1,11 @@
 import Fraction from 'fraction.js'
 import { factory } from '../../utils/factory.js'
+import { nearlyEqual } from '../../utils/number.js'
 
 const name = 'Fraction'
-const dependencies = []
+const dependencies = ['config']
 
-export const createFractionClass = /* #__PURE__ */ factory(name, dependencies, () => {
+export const createFractionClass = /* #__PURE__ */ factory(name, dependencies, ({ config }) => {
   /**
    * Attach type information
    */
@@ -12,6 +13,9 @@ export const createFractionClass = /* #__PURE__ */ factory(name, dependencies, (
   Fraction.prototype.constructor = Fraction
   Fraction.prototype.type = 'Fraction'
   Fraction.prototype.isFraction = true
+  Fraction.prototype.equals = function (fb) {
+    return nearlyEqual(this.valueOf(), fb.valueOf(), config.epsilon)
+  }
 
   /**
    * Get a JSON representation of a Fraction containing type information

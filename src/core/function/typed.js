@@ -78,7 +78,7 @@ import {
   isUnit
 } from '../../utils/is.js'
 import typedFunction from 'typed-function'
-import { digits } from '../../utils/number.js'
+import { digits, nearlyEqual } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 import { isMap } from '../../utils/map.js'
 
@@ -94,7 +94,8 @@ const dependencies = [
   '?BigNumber',
   '?Complex',
   '?DenseMatrix',
-  '?Fraction'
+  '?Fraction',
+  '?config'
 ]
 
 /**
@@ -102,7 +103,7 @@ const dependencies = [
  * @param {Object} dependencies   Object with data types like Complex and BigNumber
  * @returns {Function}
  */
-export const createTyped = /* #__PURE__ */ factory('typed', dependencies, function createTyped ({ BigNumber, Complex, DenseMatrix, Fraction }) {
+export const createTyped = /* #__PURE__ */ factory('typed', dependencies, function createTyped ({ BigNumber, Complex, DenseMatrix, Fraction, config }) {
   // TODO: typed-function must be able to silently ignore signatures with unknown data types
 
   // get a new instance of typed-function
@@ -225,9 +226,8 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         if (!Fraction) {
           throwNoFraction(x)
         }
-
         const f = new Fraction(x)
-        if (f.valueOf() !== x) {
+        if (!nearlyEqual(f.valueOf(), x, config.epsilon)) {
           throw new TypeError('Cannot implicitly convert a number to a Fraction when there will be a loss of precision ' +
             '(value: ' + x + '). ' +
             'Use function fraction(x) to convert to Fraction.')
