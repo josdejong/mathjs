@@ -33,7 +33,7 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
     },
 
     'Fraction, Fraction': function (x, y) {
-      return nearlyEqual(x.valueOf(), y.valueOf(), config.epsilon)
+      return x.equals(y)
     },
 
     'Complex, Complex': function (x, y) {
