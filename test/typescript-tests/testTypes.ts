@@ -775,7 +775,7 @@ Chaining examples
     math.gcd(math.bignumber(1), math.bignumber(1))
   ).toMatchTypeOf<BigNumber>()
   expectTypeOf(
-    math.gcd(
+    math.gcd([
       math.matrix([
         [1, 2],
         [3, 4],
@@ -783,8 +783,8 @@ Chaining examples
       math.matrix([
         [1, 2],
         [3, 4],
-      ])
-    )
+      ]),
+    ])
   ).toMatchTypeOf<Matrix>()
   expectTypeOf(
     math.gcd(
