@@ -4677,11 +4677,10 @@ declare namespace math {
      * Calculate the greatest common divisor for two or more values or
      * arrays. For matrices, the function is evaluated element wise.
      */
-    gcd<T extends number | BigNumber | MathCollection>(
+    gcd<T extends number | BigNumber | Fraction | Matrix>(
       this: MathJsChain<T[]>,
       ...args: T[]
     ): MathJsChain<T>
-    gcd(this: MathJsChain<Complex[]>, ...args: Fraction[]): MathJsChain<Complex>
 
     /**
      * Calculate the hypotenusa of a list with values. The hypotenusa is
