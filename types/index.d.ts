@@ -1186,9 +1186,10 @@ declare namespace math {
      * @param args Two or more integer numbers
      * @returns The greatest common divisor
      */
-    gcd<T extends (number | BigNumber | Fraction | MathCollection)[]>(
+    gcd<T extends number | BigNumber | Fraction | MathCollection>(
       ...args: T[]
     ): T
+    gcd<T extends number | BigNumber | Fraction | Matrix>(args: T[]): T
 
     /**
      * Calculate the hypotenusa of a list with values. The hypotenusa is
@@ -4676,11 +4677,10 @@ declare namespace math {
      * Calculate the greatest common divisor for two or more values or
      * arrays. For matrices, the function is evaluated element wise.
      */
-    gcd<T extends number | BigNumber | MathCollection>(
+    gcd<T extends number | BigNumber | Fraction | Matrix>(
       this: MathJsChain<T[]>,
       ...args: T[]
     ): MathJsChain<T>
-    gcd(this: MathJsChain<Complex[]>, ...args: Fraction[]): MathJsChain<Complex>
 
     /**
      * Calculate the hypotenusa of a list with values. The hypotenusa is
