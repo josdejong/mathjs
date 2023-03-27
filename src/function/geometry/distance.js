@@ -24,21 +24,8 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *    For parametric equation of a 3D line, x0, y0, z0, a, b, c are from: (x−x0, y−y0, z−z0) = t(a, b, c)
     *
     * Syntax:
-    *    math.distance([x1, y1], [x2, y2])
-    *    math.distance({pointOneX: 4, pointOneY: 5}, {pointTwoX: 2, pointTwoY: 7})
-    *    math.distance([x1, y1, z1], [x2, y2, z2])
-    *    math.distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})
-    *    math.distance([x1, y1, ... , N1], [x2, y2, ... , N2])
-    *    math.distance([[A], [B], [C]...])
-    *    math.distance([x1, y1], [LinePtX1, LinePtY1], [LinePtX2, LinePtY2])
-    *    math.distance({pointX: 1, pointY: 4}, {lineOnePtX: 6, lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8})
-    *    math.distance([x1, y1, z1], [LinePtX1, LinePtY1, LinePtZ1], [LinePtX2, LinePtY2, LinePtZ2])
-    *    math.distance({pointX: 1, pointY: 4, pointZ: 7}, {lineOnePtX: 6, lineOnePtY: 3, lineOnePtZ: 4}, {lineTwoPtX: 2, lineTwoPtY: 8, lineTwoPtZ: 5})
-    *    math.distance([x1, y1], [xCoeffLine, yCoeffLine, constant])
-    *    math.distance({pointX: 10, pointY: 10}, {xCoeffLine: 8, yCoeffLine: 1, constant: 3})
-    *    math.distance([x1, y1, z1], [x0, y0, z0, a-tCoeff, b-tCoeff, c-tCoeff]) // point and parametric equation of 3D line
-    *    math.distance([x, y, z], [x0, y0, z0, a, b, c])
-    *    math.distance({pointX: 2, pointY: 5, pointZ: 9}, {x0: 4, y0: 6, z0: 3, a: 4, b: 2, c: 0})
+    *
+    *    math.distance(pointOne, pointTwo, [pointThree])
     *
     * Examples:
     *    math.distance([0,0], [4,4])                     // Returns 5.656854249492381
