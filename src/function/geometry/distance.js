@@ -25,7 +25,18 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     *
     * Syntax:
     *
-    *    math.distance(pointOne, pointTwo, [pointThree])
+    *    math.distance([x1,y1], [x2,y2])
+    *    math.distance({pointOneX, pointOneY}, {pointTwoX, pointTwoY})
+    *    math.distance([x1,y1,z1], [x2,y2,z2])
+    *    math.distance({pointOneX, pointOneY, pointOneZ}, {pointTwoX, pointTwoY, pointTwoZ})
+    *    math.distance([x1,y1,z1,a1], [x2,y2,z2,a2])
+    *    math.distance([[x1,y1], [x2,y2], [x3,y3]])
+    *    math.distance([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3]])
+    *    math.distance([x1,y1], [x2,y2,z2])
+    *    math.distance([x1,y1], [x2,y2], [x3,y3])
+    *    math.distance({pointX, pointY}, {lineOnePtX, lineOnePtY}, {lineTwoPtX, lineTwoPtY})
+    *    math.distance([x1,y1,z1], [x0, y0, z0, a, b, c])
+    *    math.distance({pointX, pointY, pointZ}, {x0, y0, z0, a, b, c})
     *
     * Examples:
     *    math.distance([0,0], [4,4])                     // Returns 5.656854249492381
