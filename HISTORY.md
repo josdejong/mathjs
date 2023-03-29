@@ -5,6 +5,7 @@
 - Implemented aliases `amp` and `amps` for unit `ampere` (#2917). 
   Thanks @veggiesaurus.
 - Improve TypeScript definitions of function `gcd` (#2922). Thanks @brunoSnoww.
+- Fix #2923: improve docs of the function `distance` (#2924). Thanks @tmtron.
 
 
 # 2023-03-15, 11.7.0
