@@ -1,5 +1,4 @@
 import assert from 'assert'
-import Fraction from 'fraction.js'
 import math from '../../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const BigNumber = math.BigNumber
