@@ -664,12 +664,12 @@ declare namespace math {
 
     /**
      * Create a fraction convert a value to a fraction.
-     * @param args Arguments specifying the numerator and denominator of the
+     * @param value Arguments specifying the numerator and denominator of the
      * fraction
      * @returns Returns a fraction
      */
     fraction(
-      value: number | string | BigNumber | Fraction | FractionDefinition
+      value: number | string | BigNumber | Unit | Fraction | FractionDefinition
     ): Fraction
     fraction(values: MathCollection): MathCollection
     /**
@@ -4214,7 +4214,7 @@ declare namespace math {
      */
     fraction(
       this: MathJsChain<
-        number | string | BigNumber | Fraction | FractionDefinition
+        number | string | BigNumber | Unit | Fraction | FractionDefinition
       >,
       denominator?: number
     ): MathJsChain<Fraction>
