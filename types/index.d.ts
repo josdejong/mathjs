@@ -585,7 +585,7 @@ declare namespace math {
      * @returns The created bignumber
      */
     bignumber(
-      x?: number | string | Fraction | BigNumber | boolean | Fraction | null
+      x?: number | string | Fraction | BigNumber | Unit | boolean | null
     ): BigNumber
     bignumber<T extends MathCollection>(x: T): T
 
@@ -4148,7 +4148,7 @@ declare namespace math {
      */
     bignumber(
       this: MathJsChain<
-        number | string | Fraction | BigNumber | boolean | Fraction | null
+        number | string | Fraction | BigNumber | Unit | boolean | null
       >
     ): MathJsChain<BigNumber>
     bignumber<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
