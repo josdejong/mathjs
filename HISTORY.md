@@ -2,6 +2,8 @@
 
 # unpublished changes since 11.7.0
 
+- Extended functions `fraction`, `bignumber`, and `number` with support for 
+  units, see #2918 (#2926).
 - Implemented aliases `amp` and `amps` for unit `ampere` (#2917). 
   Thanks @veggiesaurus.
 - Improve TypeScript definitions of function `gcd` (#2922). Thanks @brunoSnoww.
