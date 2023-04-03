@@ -585,7 +585,7 @@ declare namespace math {
      * @returns The created bignumber
      */
     bignumber(
-      x?: number | string | Fraction | BigNumber | boolean | Fraction | null
+      x?: number | string | Fraction | BigNumber | Unit | boolean | null
     ): BigNumber
     bignumber<T extends MathCollection>(x: T): T
 
@@ -664,12 +664,12 @@ declare namespace math {
 
     /**
      * Create a fraction convert a value to a fraction.
-     * @param args Arguments specifying the numerator and denominator of the
+     * @param value Arguments specifying the numerator and denominator of the
      * fraction
      * @returns Returns a fraction
      */
     fraction(
-      value: number | string | BigNumber | Fraction | FractionDefinition
+      value: number | string | BigNumber | Unit | Fraction | FractionDefinition
     ): Fraction
     fraction(values: MathCollection): MathCollection
     /**
@@ -4148,7 +4148,7 @@ declare namespace math {
      */
     bignumber(
       this: MathJsChain<
-        number | string | Fraction | BigNumber | boolean | Fraction | null
+        number | string | Fraction | BigNumber | Unit | boolean | null
       >
     ): MathJsChain<BigNumber>
     bignumber<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
@@ -4214,7 +4214,7 @@ declare namespace math {
      */
     fraction(
       this: MathJsChain<
-        number | string | BigNumber | Fraction | FractionDefinition
+        number | string | BigNumber | Unit | Fraction | FractionDefinition
       >,
       denominator?: number
     ): MathJsChain<Fraction>

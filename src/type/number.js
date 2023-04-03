@@ -116,9 +116,11 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return x.valueOf()
     },
 
-    Unit: function (x) {
-      throw new Error('Second argument with valueless unit expected')
-    },
+    Unit: typed.referToSelf(self => (x) => {
+      const clone = x.clone()
+      clone.value = self(x.value)
+      return clone
+    }),
 
     null: function (x) {
       return 0
