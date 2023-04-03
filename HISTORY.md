@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 11.7.0
+# 2023-04-03 11.8.0
 
 - Extended functions `fraction`, `bignumber`, and `number` with support for 
   units, see #2918 (#2926).
