@@ -18,21 +18,18 @@ NOTE:
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.distance([x1, y1], [x2, y2])
-math.distance({pointOneX: 4, pointOneY: 5}, {pointTwoX: 2, pointTwoY: 7})
-math.distance([x1, y1, z1], [x2, y2, z2])
-math.distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9})
-math.distance([x1, y1, ... , N1], [x2, y2, ... , N2])
-math.distance([[A], [B], [C]...])
-math.distance([x1, y1], [LinePtX1, LinePtY1], [LinePtX2, LinePtY2])
-math.distance({pointX: 1, pointY: 4}, {lineOnePtX: 6, lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8})
-math.distance([x1, y1, z1], [LinePtX1, LinePtY1, LinePtZ1], [LinePtX2, LinePtY2, LinePtZ2])
-math.distance({pointX: 1, pointY: 4, pointZ: 7}, {lineOnePtX: 6, lineOnePtY: 3, lineOnePtZ: 4}, {lineTwoPtX: 2, lineTwoPtY: 8, lineTwoPtZ: 5})
-math.distance([x1, y1], [xCoeffLine, yCoeffLine, constant])
-math.distance({pointX: 10, pointY: 10}, {xCoeffLine: 8, yCoeffLine: 1, constant: 3})
-math.distance([x1, y1, z1], [x0, y0, z0, a-tCoeff, b-tCoeff, c-tCoeff]) // point and parametric equation of 3D line
-math.distance([x, y, z], [x0, y0, z0, a, b, c])
-math.distance({pointX: 2, pointY: 5, pointZ: 9}, {x0: 4, y0: 6, z0: 3, a: 4, b: 2, c: 0})
+math.distance([x1,y1], [x2,y2])
+math.distance({pointOneX, pointOneY}, {pointTwoX, pointTwoY})
+math.distance([x1,y1,z1], [x2,y2,z2])
+math.distance({pointOneX, pointOneY, pointOneZ}, {pointTwoX, pointTwoY, pointTwoZ})
+math.distance([x1,y1,z1,a1], [x2,y2,z2,a2])
+math.distance([[x1,y1], [x2,y2], [x3,y3]])
+math.distance([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3]])
+math.distance([x1,y1], [x2,y2,z2])
+math.distance([x1,y1], [x2,y2], [x3,y3])
+math.distance({pointX, pointY}, {lineOnePtX, lineOnePtY}, {lineTwoPtX, lineTwoPtY})
+math.distance([x1,y1,z1], [x0, y0, z0, a, b, c])
+math.distance({pointX, pointY, pointZ}, {x0, y0, z0, a, b, c})
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

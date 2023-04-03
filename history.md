@@ -4,6 +4,16 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20230403-1180">2023-04-03 11.8.0 <a href="#20230403-1180" title="Permalink">#</a></h1>
+
+- Extended functions `fraction`, `bignumber`, and `number` with support for 
+  units, see <a href="https://github.com/josdejong/mathjs/issues/2918">#2918</a>  <a href="https://github.com/josdejong/mathjs/issues/2926">#2926</a>).
+- Implemented aliases `amp` and `amps` for unit `ampere`  <a href="https://github.com/josdejong/mathjs/issues/2917">#2917</a>). 
+  Thanks <a href="https://github.com/veggiesaurus">@veggiesaurus</a>.
+- Improve TypeScript definitions of function `gcd`  <a href="https://github.com/josdejong/mathjs/issues/2922">#2922</a>). Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2923">#2923</a>: improve docs of the function `distance`  <a href="https://github.com/josdejong/mathjs/issues/2924">#2924</a>). Thanks <a href="https://github.com/tmtron">@tmtron</a>.
+
+
 <h1 id="20230315-1170">2023-03-15, 11.7.0 <a href="#20230315-1170" title="Permalink">#</a></h1>
 
 - Implement <a href="https://github.com/josdejong/mathjs/issues/2567">#2567</a>: accept array as parameter for function `gcd`  <a href="https://github.com/josdejong/mathjs/issues/2878">#2878</a>). 
