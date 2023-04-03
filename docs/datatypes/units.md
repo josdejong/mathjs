@@ -203,6 +203,26 @@ math.createUnit('θ', '1 rad')
 math.evaluate('1θ + 3 deg').toNumber('deg') // 60.29577951308232
 ```
 
+## Numeric type of the value of a unit
+
+The built-in units are always created with a value being a `number`. To turn the value into for example a `BigNumber` or `Fraction`, you can convert the value using the function `math.fraction` and `math.bignumber`:
+
+```js
+math.unit(math.fraction(10), 'inch').toNumeric('cm')  // Fraction 127/5
+math.fraction(math.unit(10, 'inch')).toNumeric('cm')  // Fraction 127/5
+
+math.bignumber(math.unit(10, 'inch')).toNumeric('cm') // BigNumber 25.4
+math.unit(math.bignumber(10), 'inch').toNumeric('cm') // BigNumber 25.4
+```
+
+When using the expression parser, it is possible to configure numeric values to be parsed as `Fraction` or `BigNumber`:
+
+```js
+math.config({ number: 'Fraction' })
+math.evaluate('10 inch').toNumeric('cm') // Fraction 127/5
+```
+
+
 ## API
 A `Unit` object contains the following functions:
 
