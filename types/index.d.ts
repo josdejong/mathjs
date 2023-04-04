@@ -33,6 +33,11 @@ declare namespace math {
     index: number
     text: string
   }
+  
+  // Additional options when building or cloning a node
+  interface MetaOptions {
+    sources: SourceMapping[]
+  }
 
   /** Available options for parse */
   interface ParseOptions {
