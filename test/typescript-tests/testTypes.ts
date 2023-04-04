@@ -764,27 +764,56 @@ Chaining examples
   expectTypeOf(math.chain([1, 2]).gcd(3, 4)).toMatchTypeOf<
     MathJsChain<number>
   >()
-  // TODO make gcd() work in the following cases
-  // expectTypeOf(math.chain([1, 2]).gcd()).toMatchTypeOf<MathJsChain<number>>()
-  // expectTypeOf(math.chain([[1], [2]]).gcd()).toMatchTypeOf<
-  //   MathJsChain<MathArray>
-  // >()
-  // expectTypeOf(
-  //   math.chain([math.bignumber(1), math.bignumber(1)]).gcd()
-  // ).toMatchTypeOf<MathJsChain<BigNumber>>()
-  // expectTypeOf(
-  //   math.chain([math.complex(1, 2), math.complex(1, 2)]).gcd()
-  // ).toMatchTypeOf<MathJsChain<Complex>>()
-  // expectTypeOf(
-  //   math
-  //     .chain(
-  //       math.matrix([
-  //         [1, 2],
-  //         [3, 4],
-  //       ])
-  //     )
-  //     .expm1()
-  // ).toMatchTypeOf<MathJsChain<Matrix>>()
+  expectTypeOf(math.chain([1, 2]).gcd()).toMatchTypeOf<MathJsChain<number>>()
+  expectTypeOf(
+    math.chain([math.bignumber(1), math.bignumber(1)]).gcd()
+  ).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(
+    math.chain([math.bignumber(1), math.bignumber(1)]).gcd()
+  ).toMatchTypeOf<MathJsChain<BigNumber>>()
+  expectTypeOf(
+    math.gcd(math.bignumber(1), math.bignumber(1))
+  ).toMatchTypeOf<BigNumber>()
+  expectTypeOf(
+    math.gcd([
+      math.matrix([
+        [1, 2],
+        [3, 4],
+      ]),
+      math.matrix([
+        [1, 2],
+        [3, 4],
+      ]),
+    ])
+  ).toMatchTypeOf<Matrix>()
+  expectTypeOf(
+    math.gcd(
+      [
+        [1, 2],
+        [3, 4],
+      ],
+      [
+        [1, 2],
+        [3, 4],
+      ]
+    )
+  ).toMatchTypeOf<MathArray>()
+
+  assert.throws(
+    () =>
+      // @ts-expect-error ... gcd() supports only 1d matrices!
+      math.gcd([
+        [
+          [1, 5],
+          [10, 49],
+        ],
+        [
+          [1, 5],
+          [5, 7],
+        ],
+      ]),
+    Error
+  )
 
   // hypot
   expectTypeOf(math.chain([1, 2]).hypot()).toMatchTypeOf<MathJsChain<number>>()

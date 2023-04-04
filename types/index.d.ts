@@ -591,7 +591,7 @@ declare namespace math {
      * @returns The created bignumber
      */
     bignumber(
-      x?: number | string | Fraction | BigNumber | boolean | Fraction | null
+      x?: number | string | Fraction | BigNumber | Unit | boolean | null
     ): BigNumber
     bignumber<T extends MathCollection>(x: T): T
 
@@ -670,12 +670,12 @@ declare namespace math {
 
     /**
      * Create a fraction convert a value to a fraction.
-     * @param args Arguments specifying the numerator and denominator of the
+     * @param value Arguments specifying the numerator and denominator of the
      * fraction
      * @returns Returns a fraction
      */
     fraction(
-      value: number | string | BigNumber | Fraction | FractionDefinition
+      value: number | string | BigNumber | Unit | Fraction | FractionDefinition
     ): Fraction
     fraction(values: MathCollection): MathCollection
     /**
@@ -1192,9 +1192,10 @@ declare namespace math {
      * @param args Two or more integer numbers
      * @returns The greatest common divisor
      */
-    gcd<T extends (number | BigNumber | Fraction | MathCollection)[]>(
+    gcd<T extends number | BigNumber | Fraction | MathCollection>(
       ...args: T[]
     ): T
+    gcd<T extends number | BigNumber | Fraction | Matrix>(args: T[]): T
 
     /**
      * Calculate the hypotenusa of a list with values. The hypotenusa is
@@ -4153,7 +4154,7 @@ declare namespace math {
      */
     bignumber(
       this: MathJsChain<
-        number | string | Fraction | BigNumber | boolean | Fraction | null
+        number | string | Fraction | BigNumber | Unit | boolean | null
       >
     ): MathJsChain<BigNumber>
     bignumber<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
@@ -4219,7 +4220,7 @@ declare namespace math {
      */
     fraction(
       this: MathJsChain<
-        number | string | BigNumber | Fraction | FractionDefinition
+        number | string | BigNumber | Unit | Fraction | FractionDefinition
       >,
       denominator?: number
     ): MathJsChain<Fraction>
@@ -4682,11 +4683,10 @@ declare namespace math {
      * Calculate the greatest common divisor for two or more values or
      * arrays. For matrices, the function is evaluated element wise.
      */
-    gcd<T extends number | BigNumber | MathCollection>(
+    gcd<T extends number | BigNumber | Fraction | Matrix>(
       this: MathJsChain<T[]>,
       ...args: T[]
     ): MathJsChain<T>
-    gcd(this: MathJsChain<Complex[]>, ...args: Fraction[]): MathJsChain<Complex>
 
     /**
      * Calculate the hypotenusa of a list with values. The hypotenusa is

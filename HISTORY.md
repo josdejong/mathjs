@@ -1,5 +1,15 @@
 # History
 
+# 2023-04-03 11.8.0
+
+- Extended functions `fraction`, `bignumber`, and `number` with support for 
+  units, see #2918 (#2926).
+- Implemented aliases `amp` and `amps` for unit `ampere` (#2917). 
+  Thanks @veggiesaurus.
+- Improve TypeScript definitions of function `gcd` (#2922). Thanks @brunoSnoww.
+- Fix #2923: improve docs of the function `distance` (#2924). Thanks @tmtron.
+
+
 # 2023-03-15, 11.7.0
 
 - Implement #2567: accept array as parameter for function `gcd` (#2878). 
