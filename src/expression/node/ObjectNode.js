@@ -16,9 +16,10 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
      * @extends {Node}
      * Holds an object with keys/values
      * @param {Object.<string, Node>} [properties]   object with key/value pairs
+     * @param {MetaOptions} object with additional options for building this node
      */
-    constructor (properties) {
-      super()
+    constructor (properties, meta = {}) {
+      super(meta)
       this.properties = properties || {}
 
       // validate input
@@ -112,17 +113,18 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {ObjectNode}
      */
-    clone () {
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
       const properties = {}
       for (const key in this.properties) {
         if (hasOwnProperty(this.properties, key)) {
           properties[key] = this.properties[key]
         }
       }
-      const cloned = new ObjectNode(properties)
-      cloned.sources = this.sources
+      const cloned = new ObjectNode(properties, meta)
       return cloned
     }
 

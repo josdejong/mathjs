@@ -47,9 +47,10 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Node} object                 The object from which to retrieve
      *                                      a property or subset.
      * @param {IndexNode} index             IndexNode containing ranges
+     * @param {MetaOptions} object with additional options for building this node
      */
-    constructor (object, index) {
-      super()
+    constructor (object, index, meta = {}) {
+      super(meta)
       if (!isNode(object)) {
         throw new TypeError('Node expected for parameter "object"')
       }
@@ -133,11 +134,12 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {AccessorNode}
      */
-    clone () {
-      const cloned = new AccessorNode(this.object, this.index)
-      cloned.sources = this.sources
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
+      const cloned = new AccessorNode(this.object, this.index, meta)
       return cloned
     }
 

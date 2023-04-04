@@ -65,9 +65,10 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
      *     global scope.
      * @param {Node} value
      *     The value to be assigned
+     * @param {MetaOptions} object with additional options for building this node
      */
-    constructor (object, index, value) {
-      super()
+    constructor (object, index, value, meta = {}) {
+      super(meta)
       this.object = object
       this.index = value ? index : null
       this.value = value || index
@@ -228,11 +229,12 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {AssignmentNode}
      */
-    clone () {
-      const cloned = new AssignmentNode(this.object, this.index, this.value)
-      cloned.sources = this.sources
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
+      const cloned = new AssignmentNode(this.object, this.index, this.value, meta)
       return cloned
     }
 

@@ -27,12 +27,13 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
      *     An array of conditional operators used to compare the parameters
      * @param {Node[]} params
      *     The parameters that will be compared
+     * @param {MetaOptions} object with additional options for building this node
      *
      * @constructor RelationalNode
      * @extends {Node}
      */
-    constructor (conditionals, params) {
-      super()
+    constructor (conditionals, params, meta = {}) {
+      super(meta)
       if (!Array.isArray(conditionals)) { throw new TypeError('Parameter conditionals must be an array') }
       if (!Array.isArray(params)) { throw new TypeError('Parameter params must be an array') }
       if (conditionals.length !== params.length - 1) {
@@ -106,11 +107,12 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {RelationalNode}
      */
-    clone () {
-      const cloned = new RelationalNode(this.conditionals, this.params)
-      cloned.sources = this.sources
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
+      const cloned = new RelationalNode(this.conditionals, this.params, meta)
       return cloned
     }
 

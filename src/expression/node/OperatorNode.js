@@ -249,9 +249,10 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Node[]} args         Operator arguments
      * @param {boolean} [implicit]  Is this an implicit multiplication?
      * @param {boolean} [isPercentage] Is this an percentage Operation?
+     * @param {MetaOptions} object with additional options for building this node
      */
-    constructor (op, fn, args, implicit, isPercentage) {
-      super()
+    constructor (op, fn, args, implicit = false, isPercentage = false, meta = {}) {
+      super(meta)
       // validate input
       if (typeof op !== 'string') {
         throw new TypeError('string expected for parameter "op"')
@@ -353,12 +354,13 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {OperatorNode}
      */
-    clone () {
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
       const cloned = new OperatorNode(
-        this.op, this.fn, this.args.slice(0), this.implicit, this.isPercentage)
-      cloned.sources = this.sources
+        this.op, this.fn, this.args.slice(0), this.implicit, this.isPercentage, meta)
       return cloned
     }
 

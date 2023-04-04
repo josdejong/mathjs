@@ -132,9 +132,14 @@ function checkExpectation (want, got) {
   if (typeof want === 'number' && typeof got === 'number' && want !== got) {
     console.log(`  Note: return value ${got} not exactly as expected: ${want}`)
     return approx.equal(got, want, 1e-9)
-  } else {
-    assert.deepEqual(got, want)
   }
+  if (want instanceof math.Node && got instanceof math.Node) {
+    got.traverse((node) => { node.sources = [] })
+    want.traverse((node) => { node.sources = [] })
+
+    return assert.deepEqual(got, want)
+  }
+  assert.deepEqual(got, want)
 }
 
 const OKundocumented = new Set([

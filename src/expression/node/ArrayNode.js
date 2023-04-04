@@ -14,9 +14,10 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @extends {Node}
      * Holds an 1-dimensional array with items
      * @param {Node[]} [items]   1 dimensional array with items
+     * @param {MetaOptions} object with additional options for building this node
      */
-    constructor (items) {
-      super()
+    constructor (items, meta = {}) {
+      super(meta)
       this.items = items || []
 
       // validate input
@@ -91,11 +92,12 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {ArrayNode}
      */
-    clone () {
-      const cloned = new ArrayNode(this.items.slice(0))
-      cloned.sources = this.sources
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
+      const cloned = new ArrayNode(this.items.slice(0), meta)
       return cloned
     }
 

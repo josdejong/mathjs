@@ -29,6 +29,17 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
     get isNode () { return true }
 
     /**
+     * @constructor Node
+     * A generic node, the parent of other AST nodes
+     * @param {MetaOptions} object with additional options for building this node
+     */
+    constructor (meta = {}) {
+      if (meta.sources) {
+        this.sources = meta.sources
+      }
+    }
+
+    /**
      * Evaluate the node
      * @param {Object} [scope]  Scope to read/write variables
      * @return {*}              Returns the result
@@ -204,15 +215,6 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
     clone () {
       // must be implemented by each of the Node implementations
       throw new Error('Cannot clone a Node interface')
-    }
-
-    /**
-     * Set the source indices mapping this node back to its
-     * location in the original source string
-     * @param {SourceMapping[]} sources - the data mapping this node back to its source string
-     */
-    setSources (sources) {
-      this.sources = sources
     }
 
     /**

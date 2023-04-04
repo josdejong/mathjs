@@ -13,10 +13,11 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
      * @extends {Node}
      * A parenthesis node describes manual parenthesis from the user input
      * @param {Node} content
+     * @param {MetaOptions} object with additional options for building this node
      * @extends {Node}
      */
-    constructor (content) {
-      super()
+    constructor (content, meta = {}) {
+      super(meta)
       // validate input
       if (!isNode(content)) {
         throw new TypeError('Node expected for parameter "content"')
@@ -76,11 +77,12 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {ParenthesisNode}
      */
-    clone () {
-      const cloned = new ParenthesisNode(this.content)
-      cloned.sources = this.sources
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
+      const cloned = new ParenthesisNode(this.content, meta)
       return cloned
     }
 

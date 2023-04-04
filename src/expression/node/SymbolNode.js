@@ -26,10 +26,11 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @extends {Node}
      * A symbol node can hold and resolve a symbol
      * @param {string} name
+     * @param {MetaOptions} object with additional options for building this node
      * @extends {Node}
      */
-    constructor (name) {
-      super()
+    constructor (name, meta = {}) {
+      super(meta)
       // validate input
       if (typeof name !== 'string') {
         throw new TypeError('String expected for parameter "name"')
@@ -111,11 +112,12 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {SymbolNode}
      */
-    clone () {
-      const cloned = new SymbolNode(this.name)
-      cloned.sources = this.sources
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
+      const cloned = new SymbolNode(this.name, meta)
       return cloned
     }
 

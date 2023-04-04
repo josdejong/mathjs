@@ -39,7 +39,7 @@ describe('RangeNode', function () {
     assert.throws(function () { console.log(new RangeNode()) }, TypeError)
     assert.throws(function () { console.log(new RangeNode(start)) }, TypeError)
     assert.throws(function () { console.log(new RangeNode([])) }, TypeError)
-    assert.throws(function () { console.log(new RangeNode(start, end, start, end)) }, Error)
+    assert.throws(function () { console.log(new RangeNode(start, end, start, end, end)) }, Error)
     assert.throws(function () { console.log(new RangeNode(0, 10)) }, TypeError)
   })
 

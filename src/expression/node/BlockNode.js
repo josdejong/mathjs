@@ -19,9 +19,10 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
      *            Object with properties block, which is a Node, and visible,
      *            which is a boolean. The property visible is optional and
      *            is true by default
+     * @param {MetaOptions} object with additional options for building this node
      */
-    constructor (blocks) {
-      super()
+    constructor (blocks, meta = {}) {
+      super(meta)
       // validate input, copy blocks
       if (!Array.isArray(blocks)) throw new Error('Array expected')
       this.blocks = blocks.map(function (block) {
@@ -109,9 +110,11 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {BlockNode}
      */
-    clone () {
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
       const blocks = this.blocks.map(function (block) {
         return {
           node: block.node,
@@ -119,8 +122,7 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
         }
       })
 
-      const cloned = new BlockNode(blocks)
-      cloned.sources = this.sources
+      const cloned = new BlockNode(blocks, meta)
       return cloned
     }
 

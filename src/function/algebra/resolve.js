@@ -65,12 +65,10 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
         nextWithin.add(node.name)
         return _resolve(value, scope, nextWithin)
       } else if (typeof value === 'number') {
-        const parsed = parse(String(value))
-        parsed.sources = []
+        const parsed = parse(String(value)).clone({ sources: [] })
         return parsed
       } else if (value !== undefined) {
-        const parsed = new ConstantNode(value)
-        parsed.sources = []
+        const parsed = new ConstantNode(value).clone({ sources: [] })
         return parsed
       } else {
         return node
@@ -79,19 +77,16 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
       const args = node.args.map(function (arg) {
         return _resolve(arg, scope, within)
       })
-      const newNode = new OperatorNode(node.op, node.fn, args, node.implicit)
-      newNode.sources = node.sources
+      const newNode = new OperatorNode(node.op, node.fn, args, node.implicit).clone({ sources: node.sources })
       return newNode
     } else if (isParenthesisNode(node)) {
-      const parenNode = new ParenthesisNode(_resolve(node.content, scope, within))
-      parenNode.sources = []
+      const parenNode = new ParenthesisNode(_resolve(node.content, scope, within)).clone({ sources: [] })
       return parenNode
     } else if (isFunctionNode(node)) {
       const args = node.args.map(function (arg) {
         return _resolve(arg, scope, within)
       })
-      const fnNode = new FunctionNode(node.name, args)
-      fnNode.sources = []
+      const fnNode = new FunctionNode(node.name, args).clone({ sources: [] })
       return fnNode
     }
 

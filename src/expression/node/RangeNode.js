@@ -45,14 +45,15 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @param {Node} start  included lower-bound
      * @param {Node} end    included upper-bound
      * @param {Node} [step] optional step
+     * @param {MetaOptions} object with additional options for building this node
      */
-    constructor (start, end, step) {
-      super()
+    constructor (start, end, step = null, meta = {}) {
+      super(meta)
       // validate inputs
       if (!isNode(start)) throw new TypeError('Node expected')
       if (!isNode(end)) throw new TypeError('Node expected')
       if (step && !isNode(step)) throw new TypeError('Node expected')
-      if (arguments.length > 3) throw new Error('Too many arguments')
+      if (arguments.length > 4) throw new Error('Too many arguments')
 
       this.start = start // included lower-bound
       this.end = end // included upper-bound
@@ -143,11 +144,12 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {RangeNode}
      */
-    clone () {
-      const cloned = new RangeNode(this.start, this.end, this.step && this.step)
-      cloned.sources = this.sources
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
+      const cloned = new RangeNode(this.start, this.end, this.step && this.step, meta)
       return cloned
     }
 

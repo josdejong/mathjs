@@ -41,9 +41,10 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
      *                                array with objects containing the name
      *                                and type of the parameter
      * @param {Node} expr             The function expression
+     * @param {MetaOptions} object with additional options for building this node
      */
-    constructor (name, params, expr) {
-      super()
+    constructor (name, params, expr, meta = {}) {
+      super(meta)
       // validate input
       if (typeof name !== 'string') { throw new TypeError('String expected for parameter "name"') }
       if (!Array.isArray(params)) {
@@ -146,12 +147,13 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {FunctionAssignmentNode}
      */
-    clone () {
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
       const cloned = new FunctionAssignmentNode(
-        this.name, this.params.slice(0), this.expr)
-      cloned.sources = this.sources
+        this.name, this.params.slice(0), this.expr, meta)
       return cloned
     }
 

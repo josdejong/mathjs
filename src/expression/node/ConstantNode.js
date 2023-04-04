@@ -19,11 +19,12 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      *     new ConstantNode('hello')
      *
      * @param {*} value    Value can be any type (number, BigNumber, string, ...)
+     * @param {MetaOptions} object with additional options for building this node
      * @constructor ConstantNode
      * @extends {Node}
      */
-    constructor (value) {
-      super()
+    constructor (value, meta = {}) {
+      super(meta)
       this.value = value
     }
 
@@ -72,11 +73,12 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {ConstantNode}
      */
-    clone () {
-      const cloned = new ConstantNode(this.value)
-      cloned.sources = this.sources
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
+      const cloned = new ConstantNode(this.value, meta)
       return cloned
     }
 
