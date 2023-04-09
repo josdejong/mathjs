@@ -140,7 +140,7 @@ function checkExpectation (want, got) {
 const OKundocumented = new Set([
   'addScalar', 'divideScalar', 'multiplyScalar', 'equalScalar',
   'docs', 'FibonacciHeap',
-  'IndexError', 'DimensionError', 'ArgumentsError'
+  'IndexError', 'DimensionError', 'ArgumentsError', 'default'
 ])
 
 const knownUndocumented = new Set([

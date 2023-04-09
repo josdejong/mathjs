@@ -218,7 +218,9 @@ Chaining examples
   expectTypeOf(math.chain(math.boolean(true))).toMatchTypeOf<
     mathjs.MathJsChain<boolean>
   >()
-  expectTypeOf(math.chain(true).boolean()).toMatchTypeOf<mathjs.MathJsChain<boolean>>()
+  expectTypeOf(math.chain(true).boolean()).toMatchTypeOf<
+    mathjs.MathJsChain<boolean>
+  >()
   expectTypeOf(math.chain([12, 13, 14]).boolean()).toMatchTypeOf<
     mathjs.MathJsChain<mathjs.MathCollection>
   >()
@@ -277,7 +279,9 @@ Chaining examples
   >()
 
   // number
-  expectTypeOf(math.chain('12').number()).toMatchTypeOf<mathjs.MathJsChain<number>>()
+  expectTypeOf(math.chain('12').number()).toMatchTypeOf<
+    mathjs.MathJsChain<number>
+  >()
   expectTypeOf(math.chain([12, 13, 14]).number()).toMatchTypeOf<
     mathjs.MathJsChain<mathjs.MathCollection>
   >()
@@ -293,13 +297,17 @@ Chaining examples
   >()
 
   // string
-  expectTypeOf(math.chain('test').string()).toMatchTypeOf<mathjs.MathJsChain<string>>()
+  expectTypeOf(math.chain('test').string()).toMatchTypeOf<
+    mathjs.MathJsChain<string>
+  >()
   expectTypeOf(math.chain([1, 2, 3]).string()).toMatchTypeOf<
     mathjs.MathJsChain<mathjs.MathCollection>
   >()
 
   // unit
-  expectTypeOf(math.chain(12).unit()).toMatchTypeOf<mathjs.MathJsChain<mathjs.Unit>>()
+  expectTypeOf(math.chain(12).unit()).toMatchTypeOf<
+    mathjs.MathJsChain<mathjs.Unit>
+  >()
   expectTypeOf(math.chain([1, 2, 3]).unit()).toMatchTypeOf<
     mathjs.MathJsChain<mathjs.Unit[]>
   >()
@@ -311,7 +319,9 @@ Chaining examples
 
   // evaluate
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  expectTypeOf(math.chain('1 + 1').evaluate()).toMatchTypeOf<mathjs.MathJsChain<any>>()
+  expectTypeOf(math.chain('1 + 1').evaluate()).toMatchTypeOf<
+    mathjs.MathJsChain<any>
+  >()
   expectTypeOf(math.chain(['1 + 1', '2 + 2']).evaluate()).toMatchTypeOf<
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mathjs.MathJsChain<any[]>
@@ -498,7 +508,9 @@ Chaining examples
   expectTypeOf(math.chain(math.complex(1, 2)).abs()).toMatchTypeOf<
     mathjs.MathJsChain<mathjs.Complex>
   >()
-  expectTypeOf(math.chain([1, 2]).abs()).toMatchTypeOf<mathjs.MathJsChain<mathjs.MathArray>>()
+  expectTypeOf(math.chain([1, 2]).abs()).toMatchTypeOf<
+    mathjs.MathJsChain<mathjs.MathArray>
+  >()
   expectTypeOf(
     math
       .chain(
@@ -514,8 +526,12 @@ Chaining examples
   >()
 
   // add
-  expectTypeOf(math.chain(1).add(2)).toMatchTypeOf<mathjs.MathJsChain<mathjs.MathType>>()
-  expectTypeOf(math.chain([1]).add(2)).toMatchTypeOf<mathjs.MathJsChain<mathjs.MathType>>()
+  expectTypeOf(math.chain(1).add(2)).toMatchTypeOf<
+    mathjs.MathJsChain<mathjs.MathType>
+  >()
+  expectTypeOf(math.chain([1]).add(2)).toMatchTypeOf<
+    mathjs.MathJsChain<mathjs.MathType>
+  >()
   expectTypeOf(
     math.chain(
       math.matrix([
@@ -625,7 +641,9 @@ Chaining examples
   expectTypeOf(math.chain(math.unit('furlong')).divide(6)).toMatchTypeOf<
     mathjs.MathJsChain<mathjs.Unit>
   >()
-  expectTypeOf(math.chain(2).divide(6)).toMatchTypeOf<mathjs.MathJsChain<number>>()
+  expectTypeOf(math.chain(2).divide(6)).toMatchTypeOf<
+    mathjs.MathJsChain<number>
+  >()
   expectTypeOf(math.chain([1, 2, 3]).divide(6)).toMatchTypeOf<
     mathjs.MathJsChain<mathjs.MathType>
   >()
@@ -676,7 +694,9 @@ Chaining examples
   ).toMatchTypeOf<mathjs.MathJsChain<mathjs.Matrix>>()
 
   // exp
-  expectTypeOf(math.chain(1).exp()).toMatchTypeOf<mathjs.MathJsChain<mathjs.MathType>>()
+  expectTypeOf(math.chain(1).exp()).toMatchTypeOf<
+    mathjs.MathJsChain<mathjs.MathType>
+  >()
   // @ts-expect-error ... verify exp does not run on arrays.
   assert.throws(() => math.chain([1, 2]).exp(), TypeError)
   assert.throws(
@@ -694,7 +714,9 @@ Chaining examples
   )
 
   // expm1
-  expectTypeOf(math.chain(1).expm1()).toMatchTypeOf<mathjs.MathJsChain<mathjs.MathType>>()
+  expectTypeOf(math.chain(1).expm1()).toMatchTypeOf<
+    mathjs.MathJsChain<mathjs.MathType>
+  >()
 
   // @ts-expect-error ... verify expm1 does not run on arrays
   assert.throws(() => math.chain([1, 2]).expm1(), TypeError)
@@ -713,11 +735,15 @@ Chaining examples
   )
 
   // gcd
-  expectTypeOf(math.chain([1, 2]).gcd(3)).toMatchTypeOf<mathjs.MathJsChain<number>>()
+  expectTypeOf(math.chain([1, 2]).gcd(3)).toMatchTypeOf<
+    mathjs.MathJsChain<number>
+  >()
   expectTypeOf(math.chain([1, 2]).gcd(3, 4)).toMatchTypeOf<
     mathjs.MathJsChain<number>
   >()
-  expectTypeOf(math.chain([1, 2]).gcd()).toMatchTypeOf<mathjs.MathJsChain<number>>()
+  expectTypeOf(math.chain([1, 2]).gcd()).toMatchTypeOf<
+    mathjs.MathJsChain<number>
+  >()
   expectTypeOf(
     math.chain([math.bignumber(1), math.bignumber(1)]).gcd()
   ).toMatchTypeOf<mathjs.MathJsChain<mathjs.BigNumber>>()
@@ -769,7 +795,9 @@ Chaining examples
   )
 
   // hypot
-  expectTypeOf(math.chain([1, 2]).hypot()).toMatchTypeOf<mathjs.MathJsChain<number>>()
+  expectTypeOf(math.chain([1, 2]).hypot()).toMatchTypeOf<
+    mathjs.MathJsChain<number>
+  >()
   expectTypeOf(
     math.chain([math.bignumber(1), math.bignumber(1)]).hypot()
   ).toMatchTypeOf<mathjs.MathJsChain<mathjs.BigNumber>>()
@@ -805,7 +833,9 @@ Chaining examples
   ).toMatchTypeOf<mathjs.MathJsChain<mathjs.BigNumber>>()
 
   // log10
-  expectTypeOf(math.chain(1).log10()).toMatchTypeOf<mathjs.MathJsChain<number>>()
+  expectTypeOf(math.chain(1).log10()).toMatchTypeOf<
+    mathjs.MathJsChain<number>
+  >()
   expectTypeOf(math.chain(math.bignumber(1)).log10()).toMatchTypeOf<
     mathjs.MathJsChain<mathjs.BigNumber>
   >()
@@ -823,11 +853,15 @@ Chaining examples
       .log10()
   ).toMatchTypeOf<mathjs.MathJsChain<mathjs.Matrix>>()
 
-  expectTypeOf(math.chain([1, 2]).count()).toMatchTypeOf<mathjs.MathJsChain<number>>()
+  expectTypeOf(math.chain([1, 2]).count()).toMatchTypeOf<
+    mathjs.MathJsChain<number>
+  >()
   expectTypeOf(math.chain('mathjs').count()).toMatchTypeOf<
     mathjs.MathJsChain<number>
   >()
-  expectTypeOf(math.chain([1, 2]).sum()).toMatchTypeOf<mathjs.MathJsChain<number>>()
+  expectTypeOf(math.chain([1, 2]).sum()).toMatchTypeOf<
+    mathjs.MathJsChain<number>
+  >()
   // TODO complete the rest of these...
 }
 
@@ -1085,12 +1119,17 @@ Transform examples
 {
   const math = mathjs.create(mathjs.all, {})
   {
-    const myTransform1 = (node: mathjs.MathNode): mathjs.OperatorNode<'+', 'add'> =>
+    const myTransform1 = (
+      node: mathjs.MathNode
+    ): mathjs.OperatorNode<'+', 'add'> =>
       new mathjs.OperatorNode('+', 'add', [node, new mathjs.ConstantNode(1)])
     const myTransform2 = (
       node: mathjs.OperatorNode<'+', 'add'>
     ): mathjs.OperatorNode<'-', 'subtract'> =>
-      new mathjs.OperatorNode('-', 'subtract', [node, new mathjs.ConstantNode(5)])
+      new mathjs.OperatorNode('-', 'subtract', [
+        node,
+        new mathjs.ConstantNode(5),
+      ])
 
     expectTypeOf(
       math.parse('sqrt(3^2 + 4^2)').transform(myTransform1)
@@ -1541,22 +1580,26 @@ Expression tree examples
     (node) => mathjs.isSymbolNode(node) && node.name === 'x'
   )
 
-  const _arr: string[] = filtered.map((node: mathjs.MathNode) => node.toString())
+  const _arr: string[] = filtered.map((node: mathjs.MathNode) =>
+    node.toString()
+  )
 
   // Traverse an expression tree
   const node1: mathjs.MathNode = math.parse('3 * x + 2')
-  node1.traverse((node: mathjs.MathNode, _path: string, _parent: mathjs.MathNode) => {
-    switch (node.type) {
-      case 'OperatorNode':
-        return node.type === 'OperatorNode'
-      case 'ConstantNode':
-        return node.type === 'ConstantNode'
-      case 'SymbolNode':
-        return node.type === 'SymbolNode'
-      default:
-        return
+  node1.traverse(
+    (node: mathjs.MathNode, _path: string, _parent: mathjs.MathNode) => {
+      switch (node.type) {
+        case 'OperatorNode':
+          return node.type === 'OperatorNode'
+        case 'ConstantNode':
+          return node.type === 'ConstantNode'
+        case 'SymbolNode':
+          return node.type === 'SymbolNode'
+        default:
+          return
+      }
     }
-  })
+  )
 }
 
 /*
@@ -1873,16 +1916,28 @@ Function round examples
       new math.ConstantNode(3),
       new math.SymbolNode('x'),
     ])
-  ).toMatchTypeOf<mathjs.OperatorNode<'/', 'divide', (mathjs.ConstantNode | mathjs.SymbolNode)[]>>()
+  ).toMatchTypeOf<
+    mathjs.OperatorNode<
+      '/',
+      'divide',
+      (mathjs.ConstantNode | mathjs.SymbolNode)[]
+    >
+  >()
 
-  expectTypeOf(new math.ConstantNode(1).clone()).toMatchTypeOf<mathjs.ConstantNode>()
+  expectTypeOf(
+    new math.ConstantNode(1).clone()
+  ).toMatchTypeOf<mathjs.ConstantNode>()
   expectTypeOf(
     new math.OperatorNode('*', 'multiply', [
       new math.ConstantNode(3),
       new math.SymbolNode('x'),
     ]).clone()
   ).toMatchTypeOf<
-    mathjs.OperatorNode<'*', 'multiply', (mathjs.ConstantNode | mathjs.SymbolNode)[]>
+    mathjs.OperatorNode<
+      '*',
+      'multiply',
+      (mathjs.ConstantNode | mathjs.SymbolNode)[]
+    >
   >()
 
   expectTypeOf(
@@ -1894,7 +1949,11 @@ Function round examples
       new math.SymbolNode('x'),
     ]).cloneDeep()
   ).toMatchTypeOf<
-    mathjs.OperatorNode<'+', 'unaryPlus', (mathjs.ConstantNode | mathjs.SymbolNode)[]>
+    mathjs.OperatorNode<
+      '+',
+      'unaryPlus',
+      (mathjs.ConstantNode | mathjs.SymbolNode)[]
+    >
   >()
 
   expectTypeOf(
@@ -1920,15 +1979,13 @@ JSON serialization/deserialization
 Extend functionality with import
  */
 
-declare module 'mathjs' {
-  interface MathJsStatic {
-    testFun(): number
-    value: number
-  }
+interface MyMathJsStatic extends mathjs.MathJsStatic {
+  testFun(): number
+  value: number
 }
 
 {
-  const math = mathjs.create(mathjs.all, {})
+  const math = mathjs.create(mathjs.all, {}) as MyMathJsStatic
   const testFun = () => 5
 
   math.import(
@@ -2024,12 +2081,16 @@ Factory Test
   // create a factory function
   const name = 'negativeSquare'
   const dependencies: mathjs.MathJsFunctionName[] = ['multiply', 'unaryMinus']
-  const createNegativeSquare = mathjs.factory(name, dependencies, (injected) => {
-    const { multiply, unaryMinus } = injected
-    return function negativeSquare(x: number): number {
-      return unaryMinus(multiply(x, x))
+  const createNegativeSquare = mathjs.factory(
+    name,
+    dependencies,
+    (injected) => {
+      const { multiply, unaryMinus } = injected
+      return function negativeSquare(x: number): number {
+        return unaryMinus(multiply(x, x))
+      }
     }
-  })
+  )
 
   // create an instance of the function yourself:
   const multiply = (a: number, b: number) => a * b
@@ -2050,10 +2111,10 @@ Factory Test
   // Create just the functions we need
   const { fraction, add, divide, format } = mathjs.create(
     {
-      mathjs.fractionDependencies,
-      mathjs.addDependencies,
-      mathjs.divideDependencies,
-      mathjs.formatDependencies,
+      fractionDependencies: mathjs.fractionDependencies,
+      addDependencies: mathjs.addDependencies,
+      divideDependencies: mathjs.divideDependencies,
+      formatDependencies: mathjs.formatDependencies,
     },
     config
   )
@@ -2254,7 +2315,11 @@ Factory Test
   }
   if (math.isOperatorNode(x)) {
     expectTypeOf(x).toMatchTypeOf<
-      mathjs.OperatorNode<mathjs.OperatorNodeOp, mathjs.OperatorNodeFn, mathjs.MathNode[]>
+      mathjs.OperatorNode<
+        mathjs.OperatorNodeOp,
+        mathjs.OperatorNodeFn,
+        mathjs.MathNode[]
+      >
     >()
   }
   if (math.isParenthesisNode(x)) {
@@ -2282,7 +2347,9 @@ Probability function examples
   const math = mathjs.create(mathjs.all, {})
 
   expectTypeOf(math.lgamma(1.5)).toMatchTypeOf<number>()
-  expectTypeOf(math.lgamma(math.complex(1.5, -1.5))).toMatchTypeOf<mathjs.Complex>()
+  expectTypeOf(
+    math.lgamma(math.complex(1.5, -1.5))
+  ).toMatchTypeOf<mathjs.Complex>()
 }
 
 /*
@@ -2309,7 +2376,9 @@ Resolve examples
   const math = mathjs.create(mathjs.all, {})
 
   expectTypeOf(math.resolve('x + y')).toMatchTypeOf<mathjs.MathNode>()
-  expectTypeOf(math.resolve(math.parse('x + y'))).toMatchTypeOf<mathjs.MathNode>()
+  expectTypeOf(
+    math.resolve(math.parse('x + y'))
+  ).toMatchTypeOf<mathjs.MathNode>()
   expectTypeOf(
     math.resolve(math.parse('x + y'), { x: 0 })
   ).toMatchTypeOf<mathjs.MathNode>()
@@ -2317,7 +2386,9 @@ Resolve examples
   expectTypeOf(
     math.resolve([math.parse('x + y'), 'x*x'], { x: 0 })
   ).toMatchTypeOf<mathjs.MathNode[]>()
-  expectTypeOf(math.resolve(math.matrix(['x', 'y']))).toMatchTypeOf<mathjs.Matrix>()
+  expectTypeOf(
+    math.resolve(math.matrix(['x', 'y']))
+  ).toMatchTypeOf<mathjs.Matrix>()
 }
 
 /*
