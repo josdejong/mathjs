@@ -2,7 +2,7 @@ import { Decimal } from 'decimal.js'
 
 declare const math: math.MathJsStatic
 export as namespace math
-export = math
+export default math
 
 type NoLiteralType<T> = T extends number
   ? number
