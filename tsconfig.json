@@ -5,7 +5,7 @@
     "paths": {
       "mathjs": ["./types/index.d.ts"]
     },
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "typeRoots": [],
     "types": [],
     "lib": ["ES6", "DOM"],
