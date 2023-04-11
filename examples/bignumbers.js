@@ -2,7 +2,7 @@
 
 // BigNumbers
 
-const { create, all } = require('..')
+const { create, all } = require('math.js')
 
 // configure the default type of numbers as BigNumbers
 const config = {
@@ -11,7 +11,7 @@ const config = {
   number: 'BigNumber',
 
   // Number of significant digits for BigNumbers
-  precision: 20
+  precision: 20,
 }
 const math = create(all, config)
 
@@ -25,8 +25,10 @@ print(math.add(math.bignumber(0.1), math.bignumber(0.2))) // BigNumber, 0.3
 print(math.divide(math.bignumber(0.3), math.bignumber(0.2))) // BigNumber, 1.5
 console.log()
 
-console.log('create BigNumbers from strings when exceeding the range of a number')
-print(math.bignumber(1.2e+500)) // BigNumber, Infinity      WRONG
+console.log(
+  'create BigNumbers from strings when exceeding the range of a number'
+)
+print(math.bignumber(1.2e500)) // BigNumber, Infinity      WRONG
 print(math.bignumber('1.2e+500')) // BigNumber, 1.2e+500
 console.log()
 
@@ -47,6 +49,6 @@ console.log()
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
-function print (value) {
+function print(value) {
   console.log(math.format(value))
 }

@@ -1,22 +1,15 @@
 // chaining
 
 // load math.js (using node.js)
-const math = require('..')
+const math = require('math.js')
 
 // create a chained operation using the function `chain(value)`
 // end a chain using done(). Let's calculate (3 + 4) * 2
-const a = math.chain(3)
-  .add(4)
-  .multiply(2)
-  .done()
+const a = math.chain(3).add(4).multiply(2).done()
 print(a) // 14
 
 // Another example, calculate square(sin(pi / 4))
-const b = math.chain(math.pi)
-  .divide(4)
-  .sin()
-  .square()
-  .done()
+const b = math.chain(math.pi).divide(4).sin().square().done()
 print(b) // 0.5
 
 // A chain has a few special methods: done, toString, valueOf, get, and set.
@@ -34,23 +27,21 @@ print(chain.valueOf()) // 0.66666666666667
 print(chain + 2) // 2.6666666666667
 
 // the function subset can be used to get or replace sub matrices
-const array = [[1, 2], [3, 4]]
-const v = math.chain(array)
-  .subset(math.index(1, 0))
-  .done()
+const array = [
+  [1, 2],
+  [3, 4],
+]
+const v = math.chain(array).subset(math.index(1, 0)).done()
 print(v) // 3
 
-const m = math.chain(array)
-  .subset(math.index(0, 0), 8)
-  .multiply(3)
-  .done()
+const m = math.chain(array).subset(math.index(0, 0), 8).multiply(3).done()
 print(m) // [[24, 6], [9, 12]]
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
-function print (value) {
+function print(value) {
   const precision = 14
   console.log(math.format(value, precision))
 }

@@ -8,7 +8,7 @@
  */
 
 // load math.js (using node.js)
-const math = require('..')
+const math = require('math.js')
 
 // 1. using the function math.evaluate
 //
@@ -28,17 +28,15 @@ print(math.evaluate('cos(45 deg)')) // 0.70711
 
 // evaluate multiple expressions at once
 console.log('\nevaluate multiple expressions at once')
-print(math.evaluate([
-  'f = 3',
-  'g = 4',
-  'f * g'
-])) // [3, 4, 12]
+print(math.evaluate(['f = 3', 'g = 4', 'f * g'])) // [3, 4, 12]
 
 // provide a scope (just a regular JavaScript Object)
-console.log('\nevaluate expressions providing a scope with variables and functions')
+console.log(
+  '\nevaluate expressions providing a scope with variables and functions'
+)
 const scope = {
   a: 3,
-  b: 4
+  b: 4,
 }
 
 // variables can be read from the scope
@@ -86,7 +84,7 @@ const code2 = node2.compile()
 print(node2.toString()) // "x ^ a"
 const scope2 = {
   x: 3,
-  a: 2
+  a: 2,
 }
 print(code2.evaluate(scope2)) // 9
 
@@ -116,7 +114,7 @@ print(code3.evaluate()) // 5
 console.log('\nprovide a scope')
 const code4 = math.compile('a = a + 3')
 const scope3 = {
-  a: 7
+  a: 7,
 }
 code4.evaluate(scope3)
 print(scope3.a) // 10
@@ -182,7 +180,7 @@ parser.clear()
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
-function print (value) {
+function print(value) {
   const precision = 14
   console.log(math.format(value, precision))
 }

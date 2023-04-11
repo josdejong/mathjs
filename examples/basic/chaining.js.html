@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <h3 style="text-align: center">MathJS Basic Examples</h3>
+
+    <script src="https://embed.runkit.com"></script>
+    <div id="my-element"></div>
+    <script>
+      var notebook = RunKit.createNotebook({
+        // the parent element for the new notebook
+        element: document.getElementById('my-element'),
+        // specify the source of the notebook
+        source:
+          "// math.js has support for symbolic computation (CAS). It can parse\n//\n//expressions in an expression tree and do algebraic operations like simplification and derivation on this tree.\n// load math.js (using node.js) \nconst { simplify, parse, derivative } = require('mathjs')\n // simplify an expression\n console.log('simplify expressions')\n//\nconsole.log(simplify('3 + 2 / 4').toString()) //\n '7 / 2'\n console.log(simplify('2x + 3x').toString()) // '5 * x'\nconsole.log(simplify('2 * 3 * x', { x: 4 }).toString()) // '24'\n console.log(simplify('x^2 + x + 3 + x^2').toString()) // '2 * x ^ 2 + x + 3'\nconsole.log(simplify('x * y * -x / (x ^ 2)').toString()) // '-y'\n// work with an expression tree, evaluate results\nconst f = parse('2x + x')//\n  const simplified = simplify(f)//\nconsole.log(simplified.toString()) // '3 * x'\n console.log(simplified.evaluate({ x: 4 })) // 12\n console.log()//\n// calculate a derivative\n console.log('calculate derivatives')//\nconsole.log(derivative('2x^2 + 3x + 4', 'x').toString()) // '4 * x + 3'\nconsole.log(derivative('sin(2x)', 'x').toString()) // '2 * cos(2 * x)'\n // work with an expression tree, evaluate results\nconst h = parse('x^2 + x')//\nconst dh = derivative(h, 'x')//\nconsole.log(dh.toString()) // '2 * x + 1'\n  console.log(dh.evaluate({ x: 3 })) // '7'\n ;",
+      })
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>

@@ -58,6 +58,40 @@ app.get('/mathjs', function (req, res) {
     })
 })
 
+app.get('/fraction.js.html', function (req, res) {
+  res.sendFile(path.join(__dirname, '../convert_fraction_to_bignumber.js.html'))
+})
+
+app.get('/custom_argument_parsing.js.html', function (req, res) {
+  res.sendFile(path.join(__dirname, '../custom_argument_parsing.js.html'))
+})
+
+app.get('/custom_datatype.js.html', function (req, res) {
+  res.sendFile(path.join(__dirname, '../custom_datatype.js.html'))
+})
+
+app.get('/custom_evaluate_using_import.js.html', function (req, res) {
+  res.sendFile(path.join(__dirname, '../custom_evaluate_using_import.js.html'))
+})
+
+app.get('/custom_evaluate_using_factories.js.html', function (req, res) {
+  res.sendFile(
+    path.join(__dirname, '../custom_evaluate_using_factories.js.html')
+  )
+})
+
+app.get('/custom_relational_functions.js.html', function (req, res) {
+  res.sendFile(path.join(__dirname, '../custom_relational_functions.js.html'))
+})
+
+app.get('/custom_loading.mjs.html', function (req, res) {
+  res.sendFile(path.join(__dirname, '../custom_loading.mjs.html'))
+})
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../index.html'))
+})
+
 /**
  * Format error messages as string
  * @param {Error} err
@@ -90,29 +124,4 @@ app.listen(PORT, function () {
       PORT +
       '/mathjs?expr=sqrt(16)'
   )
-})
-
-app.get('/algebra.js.html', function (req, res) {
-  res.sendFile(path.join(__dirname, '../../basic/algebra.js.html'))
-})
-
-app.get('/basic_usage.js.html', function (req, res) {
-  res.sendFile(path.join(__dirname, '../../basic/basic_usage.js.html'))
-})
-
-app.get('/bignumbers.js.html', function (req, res) {
-  res.sendFile(path.join(__dirname, '../../basic/bignumbers.js.html'))
-})
-
-app.get('/chaining.js.html', function (req, res) {
-  res.sendFile(path.join(__dirname, '../../basic/chaining.js.html'))
-})
-
-app.get('/complex_numbers.js.html', function (req, res) {
-  res.sendFile(path.join(__dirname, '../../basic/complex_numbers.js.html'))
-})
-
-app.get('/expressions.js.html', function (req, res) {
-  //res.sendFile(path.join(__dirname, '../../basic/expression.js.html'))
-  res.sendFile(path.join(__dirname, '../../basic/expressions.js.html'))
 })

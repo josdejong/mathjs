@@ -1,7 +1,17 @@
 // complex numbers
 
 // load js (using node.js)
-const { complex, add, multiply, sin, sqrt, pi, equal, sort, format } = require('..')
+const {
+  complex,
+  add,
+  multiply,
+  sin,
+  sqrt,
+  pi,
+  equal,
+  sort,
+  format,
+} = require('math.js')
 
 // create a complex number with a numeric real and complex part
 console.log('create and manipulate complex numbers')
@@ -61,7 +71,7 @@ console.log('sorted:', format(values, 14)) // [1 + i, 3 - 7i, 5 + 3i]
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
-function print (value) {
+function print(value) {
   const precision = 14
   console.log(format(value, precision))
 }
