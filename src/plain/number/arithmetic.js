@@ -1,4 +1,4 @@
-import { cbrt, expm1, isInteger, log10, log1p, log2, sign, toFixed } from '../../utils/number.js'
+import { cbrt, expm1, isInteger, log10, log1p, log2, sign, toFixed, precisionRound } from '../../utils/number.js'
 
 const n1 = 'number'
 const n2 = 'number, number'
@@ -161,7 +161,14 @@ export function modNumber (x, y) {
     // We don't use JavaScript's % operator here as this doesn't work
     // correctly for x < 0 and x === 0
     // see https://en.wikipedia.org/wiki/Modulo_operation
-    return x - y * Math.floor(x / y)
+    const result = x - y * Math.floor(x / y)
+    // const precision = result < 0 ? 0 : 1  
+    if ((result + '').length >= 15 && (result + '').indexOf('.') > -1) {
+      return Number(result.toFixed(1))
+    } else {
+      return result
+    }
+    // return ((result + '').length >= 15) ? precisionRound(result, precision) : result
   } else if (y === 0) {
     return x
   } else { // y < 0
