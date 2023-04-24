@@ -82,8 +82,8 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Syntax:
    *
-   *     simplifyCore(expr)
-   *     simplifyCore(expr, options)
+   *     math.simplifyCore(expr)
+   *     math.simplifyCore(expr, options)
    *
    * Examples:
    *

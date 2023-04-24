@@ -153,13 +153,13 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *
    * Syntax:
    *
-   *     simplify(expr)
-   *     simplify(expr, rules)
-   *     simplify(expr, rules)
-   *     simplify(expr, rules, scope)
-   *     simplify(expr, rules, scope, options)
-   *     simplify(expr, scope)
-   *     simplify(expr, scope, options)
+   *     math.simplify(expr)
+   *     math.simplify(expr, rules)
+   *     math.simplify(expr, rules)
+   *     math.simplify(expr, rules, scope)
+   *     math.simplify(expr, rules, scope, options)
+   *     math.simplify(expr, scope)
+   *     math.simplify(expr, scope, options)
    *
    * Examples:
    *

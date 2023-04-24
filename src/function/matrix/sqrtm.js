@@ -49,7 +49,7 @@ export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * Syntax:
    *
-   *     X = math.sqrtm(A)
+   *     math.sqrtm(A)
    *
    * Examples:
    *
