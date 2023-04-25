@@ -33,7 +33,7 @@ math.import([
 
   factory('pow', ['typed'], function createBigIntPow ({ typed }) {
     return typed('pow', {
-      'BigInt, BigInt': (a, b) => a ** b
+      'BigInt, BigInt': (a, b) => Math.pow(a, b)
     })
   })
 ])

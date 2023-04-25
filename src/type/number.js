@@ -96,13 +96,13 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       if (wordSizeSuffixMatch) {
         // x is a signed bin, oct, or hex literal
         // num is the value of string x if x is interpreted as unsigned
-        if (num > 2 ** size - 1) {
+        if (num > Math.pow(2, size) - 1) {
           // literal is too large for size suffix
           throw new SyntaxError(`String "${x}" is out of range`)
         }
         // check if the bit at index size - 1 is set and if so do the twos complement
-        if (num >= 2 ** (size - 1)) {
-          num = num - 2 ** size
+        if (num >= Math.pow(2, (size - 1))) {
+          num = num - Math.pow(2, size)
         }
       }
       return num

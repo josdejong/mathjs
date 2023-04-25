@@ -121,14 +121,14 @@ function formatNumberToBase (n, base, size) {
     if (!isInteger(size)) {
       throw new Error('size must be an integer')
     }
-    if (n > 2 ** (size - 1) - 1 || n < -(2 ** (size - 1))) {
+    if (n > Math.pow(2, (size - 1)) - 1 || n < -Math.pow(2, size - 1)) {
       throw new Error(`Value must be in range [-2^${size - 1}, 2^${size - 1}-1]`)
     }
     if (!isInteger(n)) {
       throw new Error('Value must be an integer')
     }
     if (n < 0) {
-      n = n + 2 ** size
+      n = n + Math.pow(2, size)
     }
     suffix = `i${size}`
   }

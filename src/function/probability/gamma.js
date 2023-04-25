@@ -63,12 +63,12 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     // t = z + gammaG + 0.5
     const t = new Complex(n.re + gammaG + 0.5, n.im)
 
-    // y = sqrt(2 * pi) * t ** (z + 0.5) * exp(-t) * x
+    // y = sqrt(2 * pi) * Math.pow(t, (z + 0.5)) * exp(-t) * x
     const twoPiSqrt = Math.sqrt(2 * Math.PI)
     const tpow = t.pow(n.add(0.5))
     const expt = t.neg().exp()
 
-    // y = [x] * [sqrt(2 * pi)] * [t ** (z + 0.5)] * [exp(-t)]
+    // y = [x] * [sqrt(2 * pi)] * [Math.pow(t, (z + 0.5))] * [exp(-t)]
     return x.mul(twoPiSqrt).mul(tpow).mul(expt)
   }
 
