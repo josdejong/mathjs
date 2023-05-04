@@ -47,9 +47,10 @@ Math.js can be downloaded or linked from various content delivery networks:
 Or download the full bundle directly from [unpkg](https://unpkg.com):
 
 <p>
-    <a href="https://unpkg.com/mathjs@11.8.0/lib/browser/math.js">
-      math.js (version 11.8.0, <span id="size">195 kB</span>, minified and gzipped)
-    </a> and if needed the <a href="https://unpkg.com/mathjs@11.8.0/lib/browser/math.js.map">source map</a>
+    <a 
+      href="https://unpkg.com/mathjs@11.8.0/lib/browser/math.js"
+    >math.js (version 11.8.0, <span id="size">195 kB</span>, minified and gzipped)</a> 
+    and if needed the <a href="https://unpkg.com/mathjs@11.8.0/lib/browser/math.js.map">source map</a>
 </p>
 
 Too large for you? Create your own [custom bundle](docs/custom_bundling.html).
