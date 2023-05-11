@@ -249,7 +249,7 @@ export { createUnequalNumber as createUnequal } from './function/relational/uneq
 
 // special
 export { createErf } from './function/special/erf.js'
-
+export { createRiemannZeta } from './function/special/riemannZeta.js'
 // statistics
 export { createMode } from './function/statistics/mode.js'
 export { createProd } from './function/statistics/prod.js'
