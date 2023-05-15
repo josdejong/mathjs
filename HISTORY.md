@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since 11.8.0
+
+- Fix #2938: make the syntax description of all functions consistent in the
+  docs (#2941). Thanks @dvd101x.
+
+
 # 2023-04-03 11.8.0
 
 - Extended functions `fraction`, `bignumber`, and `number` with support for 
