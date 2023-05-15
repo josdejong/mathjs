@@ -31,7 +31,7 @@ export const createLeafCount = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Syntax:
    *
-   *     leafCount(expr)
+   *     math.leafCount(expr)
    *
    * Examples:
    *

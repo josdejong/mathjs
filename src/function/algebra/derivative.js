@@ -43,8 +43,8 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Syntax:
    *
-   *     derivative(expr, variable)
-   *     derivative(expr, variable, options)
+   *     math.derivative(expr, variable)
+   *     math.derivative(expr, variable, options)
    *
    * Examples:
    *
