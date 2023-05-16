@@ -4,6 +4,7 @@
 
 - Fix #2938: make the syntax description of all functions consistent in the
   docs (#2941). Thanks @dvd101x.
+- Drop official support for Node.js 14, has reached end of life.
 
 
 # 2023-04-03 11.8.0
