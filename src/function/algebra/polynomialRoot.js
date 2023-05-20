@@ -39,7 +39,7 @@ export const createPolynomialRoot = /* #__PURE__ */ factory(name, dependencies, 
    *
    * Syntax:
    *
-   *     polynomialRoot(constant, linearCoeff, quadraticCoeff, cubicCoeff)
+   *     math.polynomialRoot(constant, linearCoeff, quadraticCoeff, cubicCoeff)
    *
    * Examples:
    *     // linear
