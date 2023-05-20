@@ -41,10 +41,9 @@ import {
   SimplifyRule,
   SLUDecomposition,
   SymbolNode,
-  MathNodeCommon,
   Unit,
-  Node,
   isSymbolNode,
+  BaseNode,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -1141,7 +1140,7 @@ Transform examples
 
     expectTypeOf(
       math.parse('sqrt(3^2 + 4^2)').transform(myTransform1)
-    ).toMatchTypeOf<OperatorNode<'+', 'add', MathNode[]>>()
+    ).toMatchTypeOf<OperatorNode<'+', 'add', BaseNode[]>>()
 
     assert.deepStrictEqual(
       math.parse('sqrt(3^2 + 4^2)').transform(myTransform1).toString(),
@@ -1153,7 +1152,7 @@ Transform examples
         .parse('sqrt(3^2 + 4^2)')
         .transform(myTransform1)
         .transform(myTransform2)
-    ).toMatchTypeOf<OperatorNode<'-', 'subtract', MathNode[]>>()
+    ).toMatchTypeOf<OperatorNode<'-', 'subtract', BaseNode[]>>()
 
     assert.deepStrictEqual(
       math
@@ -2301,7 +2300,7 @@ Factory Test
   }
   if (math.isOperatorNode(x)) {
     expectTypeOf(x).toMatchTypeOf<
-      OperatorNode<OperatorNodeOp, OperatorNodeFn, MathNode[]>
+      OperatorNode<OperatorNodeOp, OperatorNodeFn, BaseNode[]>
     >()
   }
   if (math.isParenthesisNode(x)) {
@@ -2382,37 +2381,4 @@ Random examples
   expectTypeOf(math.chain([1, 2, 3]).pickRandom(2)).toMatchTypeOf<
     MathJsChain<number[]>
   >()
-}
-
-/*
-MathNode examples
-*/
-{
-  class CustomNode extends Node {
-    a: MathNode
-    constructor(a: MathNode) {
-      super()
-      this.a = a
-    }
-  }
-
-  // Basic node
-  const instance1 = new Node()
-
-  // Built-in subclass of Node
-  const instance2 = new ConstantNode(2)
-
-  // Custom subclass of node
-  const instance3 = new CustomNode(new ConstantNode(2))
-
-  expectTypeOf(instance1).toMatchTypeOf<MathNode>()
-  expectTypeOf(instance1).toMatchTypeOf<MathNodeCommon>()
-
-  expectTypeOf(instance2).toMatchTypeOf<MathNode>()
-  expectTypeOf(instance2).toMatchTypeOf<MathNodeCommon>()
-  expectTypeOf(instance2).toMatchTypeOf<ConstantNode>()
-
-  expectTypeOf(instance3).toMatchTypeOf<MathNode>()
-  expectTypeOf(instance3).toMatchTypeOf<MathNodeCommon>()
-  expectTypeOf(instance3).toMatchTypeOf<CustomNode>()
 }
