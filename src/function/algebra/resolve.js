@@ -25,7 +25,7 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Syntax:
    *
-   *     resolve(expr, scope)
+   *     math.resolve(expr, scope)
    *
    * Examples:
    *
