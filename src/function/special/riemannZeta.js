@@ -8,6 +8,11 @@ export const createRiemannZeta = /* #__PURE__ */ factory(name, dependencies, ({ 
    * Compute the Riemann Zeta function of a value using an infinite series for
    * all of the complex plane using Riemann's Functional equation.
    *
+   * Based off the paper by Xavier Gourdon and Pascal Sebah
+   * ( http://numbers.computation.free.fr/Constants/Miscellaneous/zetaevaluations.pdf )
+   *
+   * Implementation and slight modification by Anik Patel
+   *
    *
    * Syntax:
    *
@@ -126,6 +131,7 @@ export const createRiemannZeta = /* #__PURE__ */ factory(name, dependencies, ({ 
     return multiply(c, S)
   }
 
+  // Return the value of the function
   return typed(name, {
     number: s => zeta(new Complex(s)),
     Complex: zeta,
