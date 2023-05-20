@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
-const name = 'riemannZeta'
-const dependencies = ['typed', 'config', 'multiply', 'pow', 'divide', 'factorial', 'gamma', 'sin', 'subtract', 'add', 'Complex']
+const name = 'zeta'
+const dependencies = ['typed', 'config', 'multiply', 'pow', 'divide', 'factorial', 'equal', 'gamma', 'sin', 'subtract', 'add', 'Complex', 'BigNumber']
 
-export const createRiemannZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiply, pow, divide, factorial, gamma, sin, subtract, add, Complex }) => {
+export const createRiemannZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiply, pow, divide, factorial, equal, gamma, sin, subtract, add, Complex, BigNumber }) => {
   /**
    * Compute the Riemann Zeta function of a value using an infinite series for
    * all of the complex plane using Riemann's Functional equation.
@@ -11,20 +11,19 @@ export const createRiemannZeta = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * Syntax:
    *
-   *    math.riemannZeta(n)
+   *    math.zeta(n)
    *
    * Examples:
-   *  FIX::
-   *    math.riemannZeta(5)       // returns 1.0369277551433699...
-   *    math.riemannZeta(-0.5)    // returns -0.2078862249773...
-   *    math.riemannZeta(math.i)  // returns 0.0033002..., -0.4181554491...i
+   *
+   *    math.zeta(5)       // returns 1.0369277551433699...
+   *    math.zeta(-0.5)    // returns -0.2078862249773...
+   *    math.zeta(math.i)  // returns 0.0033002..., -0.4181554491...i
    *
    *
-   * @param {number | Complex} z   A real or complex number
-   * @return {number | Complex}    The zeta of `z`
+   * @param {number | Complex | BigNumber} s   A real or complex number
+   * @return {number | Complex | BigNumber}    The Riemann Zeta of `s`
    */
   function zeta (s) {
-    s = Complex(s)
     if (s.re === 0 && s.im === 0) {
       return -0.5
     }
@@ -47,6 +46,30 @@ export const createRiemannZeta = /* #__PURE__ */ factory(name, dependencies, ({ 
     c = multiply(c, gamma(subtract(1, s)))
     return multiply(c, zeta(subtract(1, s)))
   }
+  // Big Number alias
+  function zetaBigNumber (x) {
+    if (x === 0) {
+      return -0.5
+    }
+    if (equal(x, 1)) {
+      return NaN
+    }
+    if (!x.isFinite() && !x.isNegative()) {
+      return 1
+    }
+    if (!x.isFinite() && x.isNegative()) {
+      return NaN
+    }
+    // 15 decimals of accuracy
+    const n = 20
+    if (x > -(n - 1) / 2) { return fBigNumber(x, n) }
+
+    // Function Equation for reflection to x < 1
+    let c = multiply(pow(2, x), pow(BigNumber(Math.PI), subtract(x, 1)))
+    c = multiply(c, (sin(multiply(BigNumber(Math.PI / 2), x))))
+    c = multiply(c, gamma(subtract(1, x)))
+    return multiply(c, zetaBigNumber(subtract(1, x)))
+  }
 
   /**
    * Calculate a portion of the sum
@@ -61,6 +84,18 @@ export const createRiemannZeta = /* #__PURE__ */ factory(name, dependencies, ({ 
     }
 
     return n * S
+  }
+  // Big Number alias
+  function dBigNumber (k, n) {
+    let S = BigNumber(0)
+    const bn = BigNumber(n)
+    for (let j = k; j <= n; j++) {
+      const bj = BigNumber(j)
+      const factor = divide(multiply(factorial(add(bn, subtract(bj, 1))), pow(4, bj)), multiply(factorial(subtract(bn, bj)), factorial(multiply(2, bj))))
+      S = add(S, factor)
+    }
+
+    return multiply(n, S)
   }
   /**
    * Calculate the positive Riemann Zeta function
@@ -79,9 +114,21 @@ export const createRiemannZeta = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     return multiply(c, S)
   }
+  // Big Number alias
+  function fBigNumber (s, n) {
+    const c = divide(1, multiply(dBigNumber(0, n), subtract(1, pow(2, subtract(1, s)))))
+    let S = new BigNumber(0)
+    for (let k = 1; k <= n; k++) {
+      S = S.add(
+        divide(multiply((-1) ** (k - 1), dBigNumber(k, n)), pow(k, s))
+      )
+    }
+    return multiply(c, S)
+  }
 
   return typed(name, {
-    number: zeta,
-    Complex: zeta
+    number: s => zeta(new Complex(s)),
+    Complex: zeta,
+    BigNumber: zetaBigNumber
   })
 })

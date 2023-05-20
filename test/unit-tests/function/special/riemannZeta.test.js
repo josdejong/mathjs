@@ -3,7 +3,7 @@
 import assert from 'assert'
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
-const zeta = math.riemannZeta
+const zeta = math.zeta
 
 describe('Riemann Zeta', function () {
   it('should calculate the Riemann Zeta Function of a positive integer', function () {
@@ -14,7 +14,6 @@ describe('Riemann Zeta', function () {
     approx.equal(zeta(5), 1.0369277551433699)
     assert.strictEqual(zeta(Infinity), 1) // shouldn't stall
   })
-
   it('should calculate the Riemann Zeta Function of a nonpositive integer', function () {
     assert.strictEqual(zeta(0), -0.5)
     approx.equal(zeta(-1), -1 / 12)
@@ -22,6 +21,17 @@ describe('Riemann Zeta', function () {
     approx.equal(zeta(-3), 1 / 120)
     approx.equal(zeta(-13), -1 / 12)
     assert.ok(isNaN(zeta(-Infinity)))
+  })
+  it('should calculate the Riemann Zeta Function of a Big Number', function () {
+    assert.ok(isNaN(zeta(math.BigNumber(1))))
+    approx.equal(zeta(math.BigNumber(2)), 1.6449340668482264)
+    approx.equal(zeta(math.BigNumber(-2)), 0)
+    approx.equal(zeta(math.BigNumber(20)), 1.000000953962033872)
+    approx.equal(zeta(math.BigNumber(-21)), -281.4601449275362318)
+    approx.equal(zeta(math.BigNumber(50)), 1.0000000000000008881)
+    approx.equal(zeta(math.BigNumber(-211)), 2.727488e231)
+    approx.equal(zeta(math.BigNumber(100)), 1.000000000000000000)
+    assert.strictEqual(zeta(Infinity), 1) // shouldn't stall
   })
 
   it('should calculate the Riemann Zeta Function of a rational number', function () {

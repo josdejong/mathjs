@@ -182,6 +182,7 @@ import { setSizeDocs } from './function/set/setSize.js'
 import { setSymDifferenceDocs } from './function/set/setSymDifference.js'
 import { setUnionDocs } from './function/set/setUnion.js'
 import { erfDocs } from './function/special/erf.js'
+import { zetaDocs } from './function/special/riemannZeta.js'
 import { madDocs } from './function/statistics/mad.js'
 import { maxDocs } from './function/statistics/max.js'
 import { meanDocs } from './function/statistics/mean.js'
@@ -517,6 +518,7 @@ export const embeddedDocs = {
 
   // functions - special
   erf: erfDocs,
+  zeta: zetaDocs,
 
   // functions - statistics
   cumsum: cumSumDocs,
