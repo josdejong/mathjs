@@ -4,6 +4,8 @@
 
 - Fix #2938: make the syntax description of all functions consistent in the
   docs (#2941). Thanks @dvd101x.
+- Fix #2954: improve the TypeScript definitions the return type of functions
+  `min` and `max` (#2955). Thanks @Maxim-Mazurok.
 - Drop official support for Node.js 14, has reached end of life.
 
 
