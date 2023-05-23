@@ -2580,7 +2580,7 @@ declare namespace math {
      * @param x A real or complex number
      * @returns The Riemann Zeta of x
      */
-    riemannZeta<T extends number | Complex | MathCollection>(
+    riemannZeta<T extends number | Complex | BigNumber | MathCollection>(
       x: T
     ): NoLiteralType<T>
 
