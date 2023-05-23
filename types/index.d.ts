@@ -2606,8 +2606,7 @@ declare namespace math {
      * @param args A single matrix or multiple scalar values
      * @returns The maximum value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    max(...args: MathType[]): any
+    max<T extends MathType[]>(...args: T): T[number]
     /**
      * @param A A single matrix
      * @param dim The maximum over the selected dimension
@@ -2649,14 +2648,13 @@ declare namespace math {
 
     /**
      * Compute the minimum value of a matrix or a list of values. In case of
-     * a multi dimensional array, the minimun of the flattened array will be
-     * calculated. When dim is provided, the minimun over the selected
+     * a multi dimensional array, the minimum of the flattened array will be
+     * calculated. When dim is provided, the minimum over the selected
      * dimension will be calculated. Parameter dim is zero-based.
      * @param args A single matrix or or multiple scalar values
      * @returns The minimum value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    min(...args: MathType[]): any
+    min<T extends MathType[]>(...args: T): T[number]
     /**
      * @param A A single matrix
      * @param dim The minimum over the selected dimension
