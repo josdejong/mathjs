@@ -48,12 +48,13 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
      * @param {Node} condition   Condition, must result in a boolean
      * @param {Node} trueExpr    Expression evaluated when condition is true
      * @param {Node} falseExpr   Expression evaluated when condition is true
+     * @param {MetaOptions} object with additional options for building this node
      *
      * @constructor ConditionalNode
      * @extends {Node}
      */
-    constructor (condition, trueExpr, falseExpr) {
-      super()
+    constructor (condition, trueExpr, falseExpr, meta = {}) {
+      super(meta)
       if (!isNode(condition)) { throw new TypeError('Parameter condition must be a Node') }
       if (!isNode(trueExpr)) { throw new TypeError('Parameter trueExpr must be a Node') }
       if (!isNode(falseExpr)) { throw new TypeError('Parameter falseExpr must be a Node') }
@@ -118,10 +119,13 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {ConditionalNode}
      */
-    clone () {
-      return new ConditionalNode(this.condition, this.trueExpr, this.falseExpr)
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
+      const cloned = new ConditionalNode(this.condition, this.trueExpr, this.falseExpr, meta)
+      return cloned
     }
 
     /**

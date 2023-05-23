@@ -28,6 +28,17 @@ declare namespace math {
     [key: string]: FactoryFunction<any> | FactoryFunctionMap
   }
 
+  // Maps a parsed node back to its place in the original source string
+  interface SourceMapping {
+    index: number
+    text: string
+  }
+
+  // Additional options when building or cloning a node
+  interface MetaOptions {
+    sources: SourceMapping[]
+  }
+
   /** Available options for parse */
   interface ParseOptions {
     /** a set of custom nodes */

@@ -23,8 +23,21 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
   }
 
   class Node {
+    sources = []
+
     get type () { return 'Node' }
     get isNode () { return true }
+
+    /**
+     * @constructor Node
+     * A generic node, the parent of other AST nodes
+     * @param {MetaOptions} object with additional options for building this node
+     */
+    constructor (meta = {}) {
+      if (meta.sources) {
+        this.sources = meta.sources
+      }
+    }
 
     /**
      * Evaluate the node

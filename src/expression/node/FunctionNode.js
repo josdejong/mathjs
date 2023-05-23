@@ -94,9 +94,10 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      *     Item resolving to a function on which to invoke
      *     the arguments, typically a SymboNode or AccessorNode
      * @param {./Node[]} args
+     * @param {MetaOptions} object with additional options for building this node
      */
-    constructor (fn, args) {
-      super()
+    constructor (fn, args = [], meta = {}) {
+      super(meta)
       if (typeof fn === 'string') {
         fn = new SymbolNode(fn)
       }
@@ -307,10 +308,13 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {FunctionNode}
      */
-    clone () {
-      return new FunctionNode(this.fn, this.args.slice(0))
+    clone (meta = {}) {
+      meta.sources = meta.sources || this.sources
+      const cloned = new FunctionNode(this.fn, this.args.slice(0), meta)
+      return cloned
     }
 
     /**

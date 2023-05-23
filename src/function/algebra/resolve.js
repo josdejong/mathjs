@@ -65,9 +65,11 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
         nextWithin.add(node.name)
         return _resolve(value, scope, nextWithin)
       } else if (typeof value === 'number') {
-        return parse(String(value))
+        const parsed = parse(String(value)).clone({ sources: [] })
+        return parsed
       } else if (value !== undefined) {
-        return new ConstantNode(value)
+        const parsed = new ConstantNode(value).clone({ sources: [] })
+        return parsed
       } else {
         return node
       }
@@ -75,14 +77,17 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
       const args = node.args.map(function (arg) {
         return _resolve(arg, scope, within)
       })
-      return new OperatorNode(node.op, node.fn, args, node.implicit)
+      const newNode = new OperatorNode(node.op, node.fn, args, node.implicit).clone({ sources: node.sources })
+      return newNode
     } else if (isParenthesisNode(node)) {
-      return new ParenthesisNode(_resolve(node.content, scope, within))
+      const parenNode = new ParenthesisNode(_resolve(node.content, scope, within)).clone({ sources: [] })
+      return parenNode
     } else if (isFunctionNode(node)) {
       const args = node.args.map(function (arg) {
         return _resolve(arg, scope, within)
       })
-      return new FunctionNode(node.name, args)
+      const fnNode = new FunctionNode(node.name, args).clone({ sources: [] })
+      return fnNode
     }
 
     // Otherwise just recursively resolve any children (might also work

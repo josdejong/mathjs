@@ -25,9 +25,10 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      *     Optional property describing whether this index was written using dot
      *     notation like `a.b`, or using bracket notation like `a["b"]`
      *     (which is the default). This property is used for string conversion.
+     * @param {MetaOptions} object with additional options for building this node
      */
-    constructor (dimensions, dotNotation) {
-      super()
+    constructor (dimensions, dotNotation = false, meta = {}) {
+      super(meta)
       this.dimensions = dimensions
       this.dotNotation = dotNotation || false
 
@@ -138,10 +139,12 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} object with additional options for cloning this node
      * @return {IndexNode}
      */
-    clone () {
-      return new IndexNode(this.dimensions.slice(0), this.dotNotation)
+    clone (meta = {}) {
+      const cloned = new IndexNode(this.dimensions.slice(0), this.dotNotation, meta)
+      return cloned
     }
 
     /**
