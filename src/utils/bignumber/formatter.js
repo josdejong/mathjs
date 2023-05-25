@@ -225,7 +225,7 @@ export function toEngineering (value, precision) {
 
   let valueStr = valueWithoutExp.toPrecision(precision)
   if (valueStr.indexOf('e') !== -1) {
-    valueStr = valueWithoutExp.toString()
+    valueStr = Number(valueStr).toString()
   }
 
   return valueStr + 'e' + (e >= 0 ? '+' : '') + newExp.toString()
