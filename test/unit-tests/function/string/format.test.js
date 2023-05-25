@@ -336,8 +336,8 @@ describe('format', function () {
         assert.strictEqual(math.format(bignumber('0.0000000000001234567890123456789'), { notation: 'engineering', precision: 16 }), '123.4567890123457e-15')
       })
       it('should format numbers starting with more than 3 sig figs that target 1 or 2 sig figs', function () {
-        assert.strictEqual(math.format(bignumber(.333333333333333), { notation: 'engineering', precision: 1 }), '300e-3')
-        assert.strictEqual(math.format(bignumber(.333333333333333), { notation: 'engineering', precision: 2 }), '330e-3')
+        assert.strictEqual(math.format(bignumber(0.333333333333333), { notation: 'engineering', precision: 1 }), '300e-3')
+        assert.strictEqual(math.format(bignumber(0.333333333333333), { notation: 'engineering', precision: 2 }), '330e-3')
         assert.strictEqual(math.format(bignumber(33.333333333333333), { notation: 'engineering', precision: 1 }), '30e+0')
         assert.strictEqual(math.format(bignumber(333.333333333333333), { notation: 'engineering', precision: 2 }), '330e+0')
         assert.strictEqual(math.format(bignumber(333333.333333333333333), { notation: 'engineering', precision: 1 }), '300e+3')
