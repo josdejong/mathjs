@@ -343,6 +343,7 @@ describe('format', function () {
         assert.strictEqual(math.format(bignumber(333333.333333333), { notation: 'engineering', precision: 1 }), '300e+3')
         assert.strictEqual(math.format(bignumber(777777.77777777), { notation: 'engineering', precision: 1 }), '800e+3')
         assert.strictEqual(math.format(bignumber(777777.77777777), { notation: 'engineering', precision: 2 }), '780e+3')
+        assert.strictEqual(math.format(bignumber(-0.000000000777777), { notation: 'engineering', precision: 2 }), '-780e-12')
       })
     })
 
