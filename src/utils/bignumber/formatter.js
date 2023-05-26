@@ -212,7 +212,7 @@ export function format (value, options) {
 
 /**
  * Format a BigNumber in engineering notation. Like '1.23e+6', '2.3e+0', '3.500e-3'
- * @param {BigNumber | string} value
+ * @param {BigNumber} value
  * @param {number} [precision]        Optional number of significant figures to return.
  */
 export function toEngineering (value, precision) {
@@ -225,7 +225,8 @@ export function toEngineering (value, precision) {
 
   let valueStr = valueWithoutExp.toPrecision(precision)
   if (valueStr.indexOf('e') !== -1) {
-    valueStr = Number(valueStr).toString()
+    const BigNumber = value.constructor
+    valueStr = new BigNumber(valueStr).toFixed()
   }
 
   return valueStr + 'e' + (e >= 0 ? '+' : '') + newExp.toString()
