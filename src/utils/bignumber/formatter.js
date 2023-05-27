@@ -143,7 +143,7 @@ export function format (value, options) {
     // determine precision from options
     if (typeof options === 'number') {
       precision = options
-    } else if (options.precision) {
+    } else if (options.precision !== undefined) {
       precision = options.precision
     }
 

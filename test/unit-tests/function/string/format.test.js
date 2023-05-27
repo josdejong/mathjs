@@ -217,6 +217,19 @@ describe('format', function () {
       assert.strictEqual(bigmath.format(oneThird, 18), '0.333333333333333333')
     })
 
+    it('should format big numbers with fixed precision', function () {
+      const oneThird = math.bignumber(1).div(3)
+      const twoThirds = math.bignumber(2).div(3)
+      assert.strictEqual(math.format(oneThird, { notation: 'fixed', precision: 10 }), '0.3333333333')
+      assert.strictEqual(math.format(oneThird.mul(-1), { notation: 'fixed', precision: 10 }), '-0.3333333333')
+      assert.strictEqual(math.format(twoThirds, { notation: 'fixed', precision: 10 }), '0.6666666667')
+      assert.strictEqual(math.format(twoThirds, { notation: 'fixed', precision: 20 }), '0.66666666666666666667')
+      assert.strictEqual(math.format(oneThird, { notation: 'fixed', precision: 20 }), '0.33333333333333333333')
+      assert.strictEqual(math.format(oneThird, { notation: 'fixed', precision: 0 }), '0')
+      assert.strictEqual(math.format(twoThirds, { notation: 'fixed', precision: 0 }), '1')
+      assert.strictEqual(math.format(math.bignumber('123456789.123456789'), { notation: 'fixed', precision: 5 }), '123456789.12346')
+    })
+
     describe('engineering notation', function () {
       const bignumber = math.bignumber
 
