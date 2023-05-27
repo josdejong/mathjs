@@ -4,6 +4,7 @@ import { createMatAlgo04xSidSid } from '../../type/matrix/utils/matAlgo04xSidSid
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { gcdNumber } from '../../plain/number/index.js'
+import { ArgumentsError } from '../../error/ArgumentsError.js'
 
 const name = 'gcd'
 const dependencies = [
@@ -15,22 +16,18 @@ const dependencies = [
   'concat'
 ]
 
+const gcdTypes = 'number | BigNumber | Fraction | Matrix | Array'
+const gcdManyTypesSignature = `${gcdTypes}, ${gcdTypes}, ...${gcdTypes}`
+
+function is1d (array) {
+  return !array.some(element => Array.isArray(element))
+}
+
 export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix, concat }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
-
-  const gcdTypes = 'number | BigNumber | Fraction | Matrix | Array'
-  const gcdManySignature = {}
-  gcdManySignature[`${gcdTypes}, ${gcdTypes}, ...${gcdTypes}`] =
-    typed.referToSelf(self => (a, b, args) => {
-      let res = self(a, b)
-      for (let i = 0; i < args.length; i++) {
-        res = self(res, args[i])
-      }
-      return res
-    })
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.
@@ -69,7 +66,27 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       DS: matAlgo01xDSid,
       Ss: matAlgo10xSids
     }),
-    gcdManySignature
+    {
+      [gcdManyTypesSignature]: typed.referToSelf(self => (a, b, args) => {
+        let res = self(a, b)
+        for (let i = 0; i < args.length; i++) {
+          res = self(res, args[i])
+        }
+        return res
+      }),
+      Array: typed.referToSelf(self => (array) => {
+        if (array.length === 1 && Array.isArray(array[0]) && is1d(array[0])) {
+          return self(...array[0])
+        }
+        if (is1d(array)) {
+          return self(...array)
+        }
+        throw new ArgumentsError('gcd() supports only 1d matrices!')
+      }),
+      Matrix: typed.referToSelf(self => (matrix) => {
+        return self(matrix.toArray())
+      })
+    }
   )
 
   /**

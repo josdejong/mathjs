@@ -65,6 +65,12 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
       return x
     },
 
+    Unit: typed.referToSelf(self => (x) => {
+      const clone = x.clone()
+      clone.value = self(x.value)
+      return clone
+    }),
+
     Fraction: function (x) {
       return new BigNumber(x.n).div(x.d).times(x.s)
     },

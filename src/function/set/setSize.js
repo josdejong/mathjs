@@ -23,8 +23,9 @@ export const createSetSize = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *    setUnion, setIntersect, setDifference
    *
-   * @param {Array | Matrix}    a  A multiset
-   * @return {number}            The number of elements of the (multi)set
+   * @param {Array | Matrix} a  A multiset
+   * @param {boolean} [unique]  If true, only the unique values are counted. False by default
+   * @return {number}           The number of elements of the (multi)set
    */
   return typed(name, {
     'Array | Matrix': function (a) {

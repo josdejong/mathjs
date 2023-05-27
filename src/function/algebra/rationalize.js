@@ -67,10 +67,10 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Syntax:
    *
-   *     rationalize(expr)
-   *     rationalize(expr, detailed)
-   *     rationalize(expr, scope)
-   *     rationalize(expr, scope, detailed)
+   *     math.rationalize(expr)
+   *     math.rationalize(expr, detailed)
+   *     math.rationalize(expr, scope)
+   *     math.rationalize(expr, scope, detailed)
    *
    * Examples:
    *

@@ -48,8 +48,8 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
    *
    * Syntax:
    *
-   *     simplifyConstant(expr)
-   *     simplifyConstant(expr, options)
+   *     math.simplifyConstant(expr)
+   *     math.simplifyConstant(expr, options)
    *
    * Examples:
    *
