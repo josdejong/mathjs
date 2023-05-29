@@ -110,7 +110,7 @@ describe('solveODE', function () {
   it('should solve when y0 is a scalar', function () {
     const sol = solveODE(f, tspan, y0[0])
     assert.deepStrictEqual(
-      withinTolerance(sol.y, exactSol(sol.t, [y0[0]]).map(x => x[0]), 2 * tol),
+      withinTolerance(sol.y, exactSol(sol.t, [y0[0]]).map(x => x[0]), tol),
       true
     )
   })
