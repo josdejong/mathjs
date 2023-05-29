@@ -13,27 +13,30 @@ const smaller = math.smaller
 const smallerEq = math.smallerEq
 const largerEq = math.largerEq
 const multiply = math.multiply
+const dotMultiply = math.dotMultiply
 const divide = math.divide
 const diff = math.diff
 const unit = math.unit
+const map = math.map
+const transpose = math.transpose
 
 function withinTolerance (A, B, tol) {
-  const maxAbsError = abs(subtract(A, B))
+  const maxAbsError = max(abs(subtract(A, B)))
   return smaller(maxAbsError, tol)
 }
 
 describe('solveODE', function () {
   function f (t, y) { return y }
+  function exactSol (T, y0) { return dotMultiply(y0, map(transpose([T]), exp)) } // this is only valid for y' = y
   const tspan = [0, 4]
   const y0 = [1, 2]
-  const exactSol = multiply(y0, exp(tspan[1])) // this is only valid for y' = y
 
   it('should throw an error if the first argument is not a function', function () {
     assert.throws(function () {
       const sol = solveODE('notAFunction', tspan, y0)
       assert.deepStrictEqual(
-        withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-        [true, true]
+        withinTolerance(sol.y, exactSol(sol.t, y0), tol),
+        true
       )
     }, /TypeError: Unexpected type of argument in function solveODE \(expected: function.*/)
   })
@@ -42,8 +45,8 @@ describe('solveODE', function () {
     assert.throws(function () {
       const sol = solveODE(f, 'NotAnArrayLike', y0)
       assert.deepStrictEqual(
-        withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-        [true, true]
+        withinTolerance(sol.y, exactSol(sol.t, y0), tol),
+        true
       )
     }, /TypeError: Unexpected type of argument in function solveODE \(expected: Array or Matrix,.*/)
   })
@@ -53,8 +56,8 @@ describe('solveODE', function () {
       const wrongTSpan = [tspan[0]]
       const sol = solveODE(f, wrongTSpan, y0)
       assert.deepStrictEqual(
-        withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-        [true, true]
+        withinTolerance(sol.y, exactSol(sol.t, y0), tol),
+        true
       )
     }, /TypeError: Unexpected type of argument in function.*/)
   })
@@ -64,8 +67,8 @@ describe('solveODE', function () {
       const method = 'wrongMethodName'
       const sol = solveODE(f, tspan, y0, { method })
       assert.deepStrictEqual(
-        withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-        [true, true]
+        withinTolerance(sol.y, exactSol(sol.t, y0), tol),
+        true
       )
     }, /TypeError: .* is not a function/)
   })
@@ -73,24 +76,25 @@ describe('solveODE', function () {
   it('should solve close to the analytical solution', function () {
     const sol = solveODE(f, tspan, y0)
     assert.deepStrictEqual(
-      withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-      [true, true]
+      withinTolerance(sol.y, exactSol(sol.t, y0), tol),
+      true
     )
   })
 
   it('should solve backwards', function () {
-    const sol = solveODE(f, [tspan[1], tspan[0]], exactSol)
+    const exactSolEnd = exactSol([4], y0)[0]
+    const sol = solveODE(f, [tspan[1], tspan[0]], exactSolEnd)
     assert.deepStrictEqual(
-      withinTolerance(sol.y[sol.y.length - 1], y0, tol),
-      [true, true]
+      withinTolerance(sol.y, exactSol(sol.t, sol.y[sol.y.length - 1]), tol),
+      true
     )
   })
 
   it('should solve if the arguments are matrices', function () {
     const sol = solveODE(f, matrix(tspan), matrix(y0))
     assert.deepStrictEqual(
-      withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-      [true, true]
+      withinTolerance(sol.y, exactSol(sol.t, y0), tol),
+      true
     )
   })
 
@@ -98,15 +102,15 @@ describe('solveODE', function () {
     const options = {}
     const sol = solveODE(f, matrix(tspan), matrix(y0), options)
     assert.deepStrictEqual(
-      withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-      [true, true]
+      withinTolerance(sol.y, exactSol(sol.t, y0), tol),
+      true
     )
   })
 
   it('should solve when y0 is a scalar', function () {
     const sol = solveODE(f, tspan, y0[0])
     assert.deepStrictEqual(
-      withinTolerance(sol.y[sol.y.length - 1], exactSol[0], tol),
+      withinTolerance(sol.y, exactSol(sol.t, [y0[0]]).map(x => x[0]), 2 * tol),
       true
     )
   })
@@ -116,41 +120,40 @@ describe('solveODE', function () {
     function fWithUnits (t, y) { return divide(y, seconds) }
     const tspanWithUnits = multiply(tspan, seconds)
     const sol = solveODE(fWithUnits, tspanWithUnits, y0)
-
     assert.deepStrictEqual(
-      withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-      [true, true]
+      withinTolerance(sol.y, exactSol(divide(sol.t, seconds), y0), tol),
+      true
     )
   })
 
   it('should solve close to the analytical solution with RK23 method', function () {
     const sol = solveODE(f, tspan, y0, { method: 'RK23' })
     assert.deepStrictEqual(
-      withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-      [true, true]
+      withinTolerance(sol.y, exactSol(sol.t, y0), tol),
+      true
     )
   })
 
   it('should solve close to the analytical solution with RK45 method', function () {
     const sol = solveODE(f, tspan, y0, { method: 'RK45' })
     assert.deepStrictEqual(
-      withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-      [true, true]
+      withinTolerance(sol.y, exactSol(sol.t, y0), tol),
+      true
     )
   })
 
   it('should solve with method name in lower case', function () {
     const sol = solveODE(f, tspan, y0, { method: 'rk45' })
     assert.deepStrictEqual(
-      withinTolerance(sol.y[sol.y.length - 1], exactSol, tol),
-      [true, true]
+      withinTolerance(sol.y, exactSol(sol.t, y0), tol),
+      true
     )
   })
 
   it('should solve with less steps if a higher tolerance is specified', function () {
     const sol = solveODE(f, tspan, y0, { method: 'RK45', tol: 1e-2 })
     assert.deepStrictEqual(
-      smaller(sol.y.length - 1, 6),
+      smallerEq(sol.y.length, 6),
       true
     )
   })
