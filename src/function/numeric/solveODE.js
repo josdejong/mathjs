@@ -36,7 +36,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
   /**
      * Numerical Integration of Ordinary Differential Equations
      *
-     * Two variable step methods are privded:
+     * Two variable step methods are provided:
      * - "RK23": Bogacki–Shampine method
      * - "RK45": Dormand-Prince method RK5(4)7M (default)
      *
@@ -48,7 +48,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
      * - `options` should be an object with the following information:
      *   - `method` ('RK45'): ['RK23', 'RK45']
      *   - `tol` (1e-3): A numeric value
-     *   - `initialStep`: A numeric value or unit
+     *   - `firstStep`: A numeric value or unit
      *   - `minStep`: minimum step size of the method
      *   - `maxStep`: maximum step size of the method
      *   - `minDelta` (0.2): minimum ratio of change for the step
@@ -66,7 +66,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
      *     const tspan = [0, 4]
      *     const y0 = 1
      *     math.solveODE(func, tspan, y0)
-     *     math.solveODE(func, tspan, [1, 1.1])
+     *     math.solveODE(func, tspan, [1, 2])
      *     math.solveODE(func, tspan, y0, { method:"RK23", maxStep:0.1 })
      *
      * See also:
@@ -97,9 +97,9 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
       const maxIter = options.maxIter ? options.maxIter : 10_000 // stop inifite evaluation if something goes wrong
       const [a, c, b, bp] = [butcherTableau.a, butcherTableau.c, butcherTableau.b, butcherTableau.bp]
 
-      let h = options.initialStep
-        ? options.initialStep
-        : divide(subtract(tf, t0), steps) // define the initial step size
+      let h = options.firstStep
+        ? options.firstStep
+        : divide(subtract(tf, t0), steps) // define the first step size
       const t = [t0] // start the time array
       const y = [y0] // start the solution array
 
