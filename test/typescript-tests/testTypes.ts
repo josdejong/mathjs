@@ -2416,3 +2416,25 @@ MathNode examples
   expectTypeOf(instance3).toMatchTypeOf<MathNodeCommon>()
   expectTypeOf(instance3).toMatchTypeOf<CustomNode>()
 }
+
+/*
+min/max return types
+*/
+{
+  const math = create(all, {})
+  expectTypeOf(math.min(1, 2, 3)).toMatchTypeOf<number>()
+  expectTypeOf(
+    math.min(math.bignumber('123'), math.bignumber('456'))
+  ).toMatchTypeOf<BigNumber>()
+  expectTypeOf(math.min(123, math.bignumber('456'))).toMatchTypeOf<
+    number | BigNumber
+  >()
+
+  expectTypeOf(math.max(1, 2, 3)).toMatchTypeOf<number>()
+  expectTypeOf(
+    math.max(math.bignumber('123'), math.bignumber('456'))
+  ).toMatchTypeOf<BigNumber>()
+  expectTypeOf(math.max(123, math.bignumber('456'))).toMatchTypeOf<
+    number | BigNumber
+  >()
+}
