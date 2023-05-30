@@ -242,11 +242,11 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
   return typed('solveODE', {
     'function, Array, Array, Object': _solveODE,
     'function, Array, Array': (f, T, y0) => _solveODE(f, T, y0, {}),
-    'function, Array, number | BigNumber': (f, T, y0) => {
+    'function, Array, number | BigNumber | Unit': (f, T, y0) => {
       const sol = _solveODE(f, T, [y0], {})
       return { t: sol.t, y: sol.y.map((Y) => Y[0]) }
     },
-    'function, Array, number | BigNumber, Object': (f, T, y0, options) => {
+    'function, Array, number | BigNumber | Unit, Object': (f, T, y0, options) => {
       const sol = _solveODE(f, T, [y0], options)
       return { t: sol.t, y: sol.y.map((Y) => Y[0]) }
     }
