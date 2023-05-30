@@ -1,10 +1,10 @@
+import { isBigNumber, isMatrix, isArray } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
-import { isBigNumber, isMatrix } from '../../../utils/is.js'
 
 const name = 'index'
-const dependencies = ['typed', 'Index']
+const dependencies = ['typed', 'Index', 'getMatrixDataType']
 
-export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index }) => {
+export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index, getMatrixDataType }) => {
   /**
    * Create an index. An Index can store ranges having start, step, and end
    * for multiple dimensions.
@@ -19,7 +19,7 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * - A number
    * - A string for getting/setting an object property
    * - An instance of `Range`
-   * - A one-dimensional Array or a Matrix with numbers
+   * - A one-dimensional Array or a Matrix with numbers or booleans
    *
    * Indexes must be zero-based, integer numbers.
    *
@@ -43,7 +43,14 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       const ranges = args.map(function (arg) {
         if (isBigNumber(arg)) {
           return arg.toNumber() // convert BigNumber to Number
-        } else if (Array.isArray(arg) || isMatrix(arg)) {
+        } else if (isArray(arg) || isMatrix(arg)) {
+          if (getMatrixDataType(arg) === 'boolean') {
+            if (isArray(arg)) {
+              return _boolToIndex(arg)
+            } else if (isMatrix(arg)) {
+              return _boolToIndex(arg.toArray())
+            }
+          }
           return arg.map(function (elem) {
             // convert BigNumber to Number
             return isBigNumber(elem) ? elem.toNumber() : elem
@@ -53,9 +60,15 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         }
       })
 
+      function _boolToIndex (booleans) {
+        // convert an array of booleans to index
+        return booleans.map((_, i) => i).filter((_, i) => booleans[i])
+      }
+
       const res = new Index()
       Index.apply(res, ranges)
       return res
     }
-  })
+  }
+  )
 })
