@@ -117,11 +117,13 @@ describe('solveODE', function () {
 
   it('should solve with units', function () {
     const seconds = unit('s')
+    const meters = unit('m')
     function fWithUnits (t, y) { return divide(y, seconds) }
     const tspanWithUnits = multiply(tspan, seconds)
-    const sol = solveODE(fWithUnits, tspanWithUnits, y0)
+    const y0withUnits = multiply(y0, meters)
+    const sol = solveODE(fWithUnits, tspanWithUnits, y0withUnits)
     assert.deepStrictEqual(
-      withinTolerance(sol.y, exactSol(divide(sol.t, seconds), y0), tol),
+      withinTolerance(divide(sol.y, meters), exactSol(divide(sol.t, seconds), y0), tol),
       true
     )
   })
