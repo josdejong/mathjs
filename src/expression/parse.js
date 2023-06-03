@@ -578,6 +578,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function parseStart (expression, extraNodes) {
     const state = initialState()
+    expression = expression
+      .replaceAll(/\bmin\b(?!\()/g, 'minute') // avoid confusion of unit min and function min()
+      .replaceAll(/\bsec\b(?!\()/g, 's') // avoid confusion of unit sec and function sec()
     Object.assign(state, { expression, extraNodes })
     getToken(state)
 
