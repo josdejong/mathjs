@@ -297,6 +297,12 @@ describe('Unit', function () {
       assert.strictEqual(u4.fixPrefix, true)
     })
 
+    it('should avoid nearly-zero results due to roundoff in offset', function () {
+      const u1 = new Unit(32, 'degF')
+      const u2 = u1.to('degC')
+      assert.strictEqual(u2.value, 0)
+    })
+
     it('should convert a unit with a fraction', function () {
       const u1 = new Unit(math.fraction(1, 3), 'm')
 
