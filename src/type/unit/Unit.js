@@ -843,6 +843,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       const otherUnitOffset = multiplyScalar(otherUnitValue, otherNominalOffset)
 
       other.value = subtract(addScalar(value, thisUnitOffset), otherUnitOffset)
+
+      // avoid nearly-zero results due to roundoff in offset
+      if (abs(other.value) < config.epsilon) {
+        other.value = convert(0)
+      }
     }
     other.fixPrefix = true
     other.skipAutomaticSimplification = true
