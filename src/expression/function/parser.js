@@ -28,7 +28,7 @@ export const createParser = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *     parser.evaluate('f(2, 3)')               // 8
    *
    *     // get and set variables and functions
-   *     const x = parser.get('x')                // 7
+   *     const x = parser.get('x')                // 3.5
    *     const f = parser.get('f')                // function
    *     const g = f(3, 2)                        // 9
    *     parser.set('h', 500)
