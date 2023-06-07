@@ -297,10 +297,11 @@ describe('Unit', function () {
       assert.strictEqual(u4.fixPrefix, true)
     })
 
-    it('should avoid nearly-zero results due to roundoff in offset', function () {
-      const u1 = new Unit(32, 'degF')
-      const u2 = u1.to('degC')
-      assert.strictEqual(u2.value, 0)
+    it('should avoid round-off in offset conversions', function () {
+      assert.strictEqual(math.unit('-40 degC').to('degF').toString(), '-40 degF')
+      assert.strictEqual(math.unit('32 degF').to('degC').toString(), '0 degC')
+      assert.strictEqual(math.unit('68 degF').to('degC').toString(), '20 degC')
+      assert.strictEqual(math.unit('212 degF').to('degC').toString(), '100 degC')
     })
 
     it('should convert a unit with a fraction', function () {
