@@ -2,6 +2,7 @@
 
 # unpublished changes since 11.8.0
 
+- Fix #2880: not possible to map cube root `cbrt`.
 - Fix #2938: make the syntax description of all functions consistent in the
   docs (#2941). Thanks @dvd101x.
 - Fix #2954: improve the TypeScript definitions the return type of functions
