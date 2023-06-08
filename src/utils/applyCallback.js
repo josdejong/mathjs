@@ -39,10 +39,17 @@ export function applyCallback (callback, value, index, array, mappingFnName) {
     return callback(value, index, array)
   }
 
+  /**
+   * @param {function} signature The selected signature of the typed-function
+   * @param {Array} args List with arguments to apply to the selected signature
+   * @returns {*} Returns the return value of the invoked signature
+   * @throws {TypeError} Throws an error when no matching signature was found
+   */
   function tryWithArgs (signature, args) {
     try {
-      return signature.apply(null, args)
+      return signature.apply(signature, args)
     } catch (err) {
+      // Enrich the error message so the user understands that it took place inside the callback function
       if (err instanceof TypeError && err.data?.category === 'wrongType') {
         const argsDesc = []
         argsDesc.push(`value: ${_typeOf(value)}`)
