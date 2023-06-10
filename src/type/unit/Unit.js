@@ -834,20 +834,15 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       /* Need to adjust value by difference in offset to convert */
       const convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
 
-      const thisUnitValue = convert(this.units[0].unit.value)
-      const thisNominalOffset = convert(this.units[0].unit.offset)
+      const thisUnitValue = this.units[0].unit.value
+      const thisNominalOffset = this.units[0].unit.offset
       const thisUnitOffset = multiplyScalar(thisUnitValue, thisNominalOffset)
 
-      const otherUnitValue = convert(other.units[0].unit.value)
-      const otherNominalOffset = convert(other.units[0].unit.offset)
+      const otherUnitValue = other.units[0].unit.value
+      const otherNominalOffset = other.units[0].unit.offset
       const otherUnitOffset = multiplyScalar(otherUnitValue, otherNominalOffset)
 
-      other.value = subtract(addScalar(value, thisUnitOffset), otherUnitOffset)
-
-      // avoid nearly-zero results due to roundoff in offset
-      if (abs(other.value) < config.epsilon) {
-        other.value = convert(0)
-      }
+      other.value = addScalar(value, convert(subtract(thisUnitOffset, otherUnitOffset)))
     }
     other.fixPrefix = true
     other.skipAutomaticSimplification = true
@@ -2294,8 +2289,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // Temperature
     // K(C) = °C + 273.15
-    // K(F) = (°F + 459.67) / 1.8
-    // K(R) = °R / 1.8
+    // K(F) = (°F + 459.67) * (5 / 9)
+    // K(R) = °R * (5 / 9)
     K: {
       name: 'K',
       base: BASE_UNITS.TEMPERATURE,
@@ -2314,14 +2309,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'degF',
       base: BASE_UNITS.TEMPERATURE,
       prefixes: PREFIXES.SHORT,
-      value: 1 / 1.8,
+      value: new Fraction(5, 9),
       offset: 459.67
     },
     degR: {
       name: 'degR',
       base: BASE_UNITS.TEMPERATURE,
       prefixes: PREFIXES.SHORT,
-      value: 1 / 1.8,
+      value: new Fraction(5, 9),
       offset: 0
     },
     kelvin: {
@@ -2342,14 +2337,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'fahrenheit',
       base: BASE_UNITS.TEMPERATURE,
       prefixes: PREFIXES.LONG,
-      value: 1 / 1.8,
+      value: new Fraction(5, 9),
       offset: 459.67
     },
     rankine: {
       name: 'rankine',
       base: BASE_UNITS.TEMPERATURE,
       prefixes: PREFIXES.LONG,
-      value: 1 / 1.8,
+      value: new Fraction(5, 9),
       offset: 0
     },
 
@@ -3000,6 +2995,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     },
 
     number: function (x) {
+      if (x?.isFraction) return number(x)
       return x
     }
   }
