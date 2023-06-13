@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'zeta'
-const dependencies = ['typed', 'config', 'multiply', 'pow', 'divide', 'factorial', 'equal', 'gamma', 'sin', 'subtract', 'add', 'Complex', 'BigNumber', 'pi']
+const dependencies = ['typed', 'multiply', 'pow', 'divide', 'factorial', 'equal', 'gamma', 'sin', 'subtract', 'add', '?Complex', '?BigNumber', 'pi']
 
-export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiply, pow, divide, factorial, equal, gamma, sin, subtract, add, Complex, BigNumber, pi }) => {
+export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, multiply, pow, divide, factorial, equal, gamma, sin, subtract, add, Complex, BigNumber, pi }) => {
   /**
    * Compute the Riemann Zeta function of a value using an infinite series for
    * all of the complex plane using Riemann's Functional equation.
@@ -20,9 +20,9 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Examples:
    *
-   *    math.zeta(5)       // returns 1.0369277551433699...
-   *    math.zeta(-0.5)    // returns -0.2078862249773...
-   *    math.zeta(math.i)  // returns 0.0033002..., -0.4181554491...i
+   *    math.zeta(5)       // returns 1.03692775514337 + 0i
+   *    math.zeta(-0.5)    // returns -0.2078862249773449 + 0i
+   *    math.zeta(math.i)  // returns 0.0033002236853253153 - 0.4181554491413212i
    *
    *
    * @param {number | Complex | BigNumber} s   A Real, Complex or BigNumber parameter to to the Riemann Zeta Function
@@ -51,6 +51,7 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     c = multiply(c, gamma(subtract(1, s)))
     return multiply(c, zeta(subtract(1, s)))
   }
+
   // Big Number alias
   function zetaBigNumber (x) {
     if (x === 0) {
@@ -90,6 +91,7 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     return n * S
   }
+
   // Big Number alias
   function dBigNumber (k, n) {
     let S = new BigNumber(0)
@@ -102,6 +104,7 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     return multiply(n, S)
   }
+
   /**
    * Calculate the positive Riemann Zeta function
    * @param {number} s   a real or complex number with s.re > 1
@@ -119,6 +122,7 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     return multiply(c, S)
   }
+
   // Big Number alias
   function fBigNumber (s, n) {
     const c = divide(1, multiply(dBigNumber(0, n), subtract(1, pow(2, subtract(1, s)))))
