@@ -1581,12 +1581,14 @@ declare namespace math {
      * a 3D line, x0, y0, z0, a, b, c are from: (x−x0, y−y0, z−z0) = t(a, b,
      * c)
      * @param x Coordinates of the first point
-     * @param y Coordinates of the second point
+     * @param y Coordinates of the second point OR coefficients of a line in 3D OR first end-point of a line if the calculation is for distance between point and a line in 2D
+     * @param z Coordinates of second end-point of a line if the calculation is for distance between point and a line in 2D
      * @returns Returns the distance from two/three points
      */
     distance(
       x: MathCollection | object,
-      y: MathCollection | object
+      y: MathCollection | object,
+      z?: MathCollection | object
     ): number | BigNumber
 
     /**
