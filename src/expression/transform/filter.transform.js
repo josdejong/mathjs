@@ -1,8 +1,8 @@
-import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
+import { applyCallback } from '../../utils/applyCallback.js'
 import { filter, filterRegExp } from '../../utils/array.js'
-import { maxArgumentCount } from '../../utils/function.js'
-import { compileInlineExpression } from './utils/compileInlineExpression.js'
 import { factory } from '../../utils/factory.js'
+import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
+import { compileInlineExpression } from './utils/compileInlineExpression.js'
 
 const name = 'filter'
 const dependencies = ['typed']
@@ -65,17 +65,8 @@ export const createFilterTransform = /* #__PURE__ */ factory(name, dependencies,
  * @private
  */
 function _filter (x, callback) {
-  // figure out what number of arguments the callback function expects
-  const args = maxArgumentCount(callback)
-
   return filter(x, function (value, index, array) {
     // invoke the callback function with the right number of arguments
-    if (args === 1) {
-      return callback(value)
-    } else if (args === 2) {
-      return callback(value, [index + 1])
-    } else { // 3 or -1
-      return callback(value, [index + 1], array)
-    }
+    return applyCallback(callback, value, [index + 1], array, 'filter')
   })
 }
