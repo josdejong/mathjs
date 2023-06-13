@@ -17,24 +17,24 @@ Function | Description
 
 Function | Description
 ---- | -----------
-[derivative(expr,&nbsp;variable)](functions/derivative.html) | Takes the derivative of an expression expressed in parser Nodes.
-[leafCount(expr)](functions/leafCount.html) | Gives the number of "leaf nodes" in the parse tree of the given expression A leaf node is one that has no subexpressions, essentially either a symbol or a constant.
+[math.derivative(expr,&nbsp;variable)](functions/derivative.html) | Takes the derivative of an expression expressed in parser Nodes.
+[math.leafCount(expr)](functions/leafCount.html) | Gives the number of "leaf nodes" in the parse tree of the given expression A leaf node is one that has no subexpressions, essentially either a symbol or a constant.
 [math.lsolve(L,&nbsp;b)](functions/lsolve.html) | Finds one solution of a linear equation system by forwards substitution.
 [math.lsolveAll(L,&nbsp;b)](functions/lsolveAll.html) | Finds all solutions of a linear equation system by forwards substitution.
 [math.lup(A)](functions/lup.html) | Calculate the Matrix LU decomposition with partial pivoting.
 [math.lusolve(A,&nbsp;b)](functions/lusolve.html) | Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
 [math.lyap(A,&nbsp;Q)](functions/lyap.html) | Solves the Continuous-time Lyapunov equation AP+PA'+Q=0 for P, where Q is an input matrix.
-[polynomialRoot(constant, linearCoeff, quadraticCoeff, cubicCoeff)](functions/polynomialRoot.html) | Finds the numerical values of the distinct roots of a polynomial with real or complex coefficients.
+[math.polynomialRoot(constant, linearCoeff, quadraticCoeff, cubicCoeff)](functions/polynomialRoot.html) | Finds the numerical values of the distinct roots of a polynomial with real or complex coefficients.
 [math.qr(A)](functions/qr.html) | Calculate the Matrix QR decomposition.
-[rationalize(expr)](functions/rationalize.html) | Transform a rationalizable expression in a rational fraction.
-[resolve(expr,&nbsp;scope)](functions/resolve.html) | resolve(expr, scope) replaces variable nodes with their scoped values.
+[math.rationalize(expr)](functions/rationalize.html) | Transform a rationalizable expression in a rational fraction.
+[math.resolve(expr,&nbsp;scope)](functions/resolve.html) | resolve(expr, scope) replaces variable nodes with their scoped values.
 [math.schur(A)](functions/schur.html) | Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal and T is upper quasi-triangular.
-[simplify(expr)](functions/simplify.html) | Simplify an expression tree.
-[simplifyConstant(expr)](functions/simplifyConstant.html) | simplifyConstant() takes a mathjs expression (either a Node representing a parse tree or a string which it parses to produce a node), and replaces any subexpression of it consisting entirely of constants with the computed value of that subexpression.
-[simplifyCore(expr)](functions/simplifyCore.html) | simplifyCore() performs single pass simplification suitable for applications requiring ultimate performance.
+[math.simplify(expr)](functions/simplify.html) | Simplify an expression tree.
+[math.simplifyConstant(expr)](functions/simplifyConstant.html) | simplifyConstant() takes a mathjs expression (either a Node representing a parse tree or a string which it parses to produce a node), and replaces any subexpression of it consisting entirely of constants with the computed value of that subexpression.
+[math.simplifyCore(expr)](functions/simplifyCore.html) | simplifyCore() performs single pass simplification suitable for applications requiring ultimate performance.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.html) | Calculate the Sparse Matrix LU decomposition with full pivoting.
 [math.sylvester(A,&nbsp;B,&nbsp;C)](functions/sylvester.html) | Solves the real-valued Sylvester equation AX+XB=C for X, where A, B and C are matrices of appropriate dimensions, being A and B squared.
-[symbolicEqual(expr1,&nbsp;expr2)](functions/symbolicEqual.html) | Attempts to determine if two expressions are symbolically equal, i.
+[math.symbolicEqual(expr1,&nbsp;expr2)](functions/symbolicEqual.html) | Attempts to determine if two expressions are symbolically equal, i.
 [math.usolve(U,&nbsp;b)](functions/usolve.html) | Finds one solution of a linear equation system by backward substitution.
 [math.usolveAll(U,&nbsp;b)](functions/usolveAll.html) | Finds all solutions of a linear equation system by backward substitution.
 
@@ -164,7 +164,7 @@ Function | Description
 [math.row(value,&nbsp;index)](functions/row.html) | Return a row from a Matrix.
 [math.size(x)](functions/size.html) | Calculate the size of a matrix or scalar.
 [math.sort(x)](functions/sort.html) | Sort the items in a matrix.
-[X&nbsp;=&nbsp;math.sqrtm(A)](functions/sqrtm.html) | Calculate the principal square root of a square matrix.
+[math.sqrtm(A)](functions/sqrtm.html) | Calculate the principal square root of a square matrix.
 [math.squeeze(x)](functions/squeeze.html) | Squeeze a matrix, remove inner and outer singleton dimensions from a matrix.
 [math.subset(x,&nbsp;index&nbsp;[,&nbsp;replacement])](functions/subset.html) | Get or set a subset of a matrix or string.
 [math.trace(x)](functions/trace.html) | Calculate the trace of a matrix: the sum of the elements on the main diagonal of a square matrix.

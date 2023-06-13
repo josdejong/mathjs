@@ -23,8 +23,8 @@ simplifies down to 0. So there are two important caveats:
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-symbolicEqual(expr1, expr2)
-symbolicEqual(expr1, expr2, options)
+math.symbolicEqual(expr1, expr2)
+math.symbolicEqual(expr1, expr2, options)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -51,11 +51,11 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-symbolicEqual('x*y', 'y*x') // Returns true
-symbolicEqual('x*y', 'y*x', {context: {multiply: {commutative: false}}}) // Returns false
-symbolicEqual('x/y', '(y*x^(-1))^(-1)') // Returns true
-symbolicEqual('abs(x)','x') // Returns false
-symbolicEqual('abs(x)','x', simplify.positiveContext) // Returns true
+math.symbolicEqual('x*y', 'y*x') // Returns true
+math.symbolicEqual('x*y', 'y*x', {context: {multiply: {commutative: false}}}) // Returns false
+math.symbolicEqual('x/y', '(y*x^(-1))^(-1)') // Returns true
+math.symbolicEqual('abs(x)','x') // Returns false
+math.symbolicEqual('abs(x)','x', simplify.positiveContext) // Returns true
 ```
 
 

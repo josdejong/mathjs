@@ -92,13 +92,13 @@ For more details on the theory, see:
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-simplify(expr)
-simplify(expr, rules)
-simplify(expr, rules)
-simplify(expr, rules, scope)
-simplify(expr, rules, scope, options)
-simplify(expr, scope)
-simplify(expr, scope, options)
+math.simplify(expr)
+math.simplify(expr, rules)
+math.simplify(expr, rules)
+math.simplify(expr, rules, scope)
+math.simplify(expr, rules, scope, options)
+math.simplify(expr, scope)
+math.simplify(expr, scope, options)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

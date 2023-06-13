@@ -20,7 +20,7 @@ does so. In many cases, `simplify()` reduces the leaf count.
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-leafCount(expr)
+math.leafCount(expr)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

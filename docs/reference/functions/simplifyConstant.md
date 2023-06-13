@@ -15,8 +15,8 @@ value of that subexpression.
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-simplifyConstant(expr)
-simplifyConstant(expr, options)
+math.simplifyConstant(expr)
+math.simplifyConstant(expr, options)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

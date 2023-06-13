@@ -4,7 +4,23 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
-<h1 id="20230403-1180">2023-04-03 11.8.0 <a href="#20230403-1180" title="Permalink">#</a></h1>
+<h1 id="20230613-1181">2023-06-13, 11.8.1 <a href="#20230613-1181" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2964">#2964</a>: issue in function ` distance` when calculate the distance from 
+  a point to a line  <a href="https://github.com/josdejong/mathjs/issues/2965">#2965</a>). Thanks <a href="https://github.com/Kiku-CN">@Kiku-CN</a>. 
+- Fix `math.format` not working correctly for `engineering` notation when using
+  BigNumbers and for `fixed` notation with `precision: 0` configured  <a href="https://github.com/josdejong/mathjs/issues/2956">#2956</a>). 
+  Thanks <a href="https://github.com/mgreminger">@mgreminger</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2880">#2880</a>: not possible to map cube root `cbrt`.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2938">#2938</a>: make the syntax description of all functions consistent in the
+  docs  <a href="https://github.com/josdejong/mathjs/issues/2941">#2941</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2954">#2954</a>: improve the TypeScript definitions the return type of functions
+  `min` and `max`  <a href="https://github.com/josdejong/mathjs/issues/2955">#2955</a>). Thanks <a href="https://github.com/Maxim-Mazurok">@Maxim-Mazurok</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2959">#2959</a>: typo in an example in the docs. Thanks <a href="https://github.com/kunalagrwl">@kunalagrwl</a>.
+- Drop official support for Node.js 14, has reached end of life.
+
+
+<h1 id="20230403-1180">2023-04-03, 11.8.0 <a href="#20230403-1180" title="Permalink">#</a></h1>
 
 - Extended functions `fraction`, `bignumber`, and `number` with support for 
   units, see <a href="https://github.com/josdejong/mathjs/issues/2918">#2918</a>  <a href="https://github.com/josdejong/mathjs/issues/2926">#2926</a>).

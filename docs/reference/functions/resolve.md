@@ -12,7 +12,7 @@ resolve(expr, scope) replaces variable nodes with their scoped values
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-resolve(expr, scope)
+math.resolve(expr, scope)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

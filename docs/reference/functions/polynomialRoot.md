@@ -14,7 +14,7 @@ formulas for the roots.
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-polynomialRoot(constant, linearCoeff, quadraticCoeff, cubicCoeff)
+math.polynomialRoot(constant, linearCoeff, quadraticCoeff, cubicCoeff)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

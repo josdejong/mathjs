@@ -15,10 +15,10 @@ exponents, returning the coefficients of numerator.
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-rationalize(expr)
-rationalize(expr, detailed)
-rationalize(expr, scope)
-rationalize(expr, scope, detailed)
+math.rationalize(expr)
+math.rationalize(expr, detailed)
+math.rationalize(expr, scope)
+math.rationalize(expr, scope, detailed)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

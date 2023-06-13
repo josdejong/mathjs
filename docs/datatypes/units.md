@@ -33,16 +33,16 @@ const c = math.unit('2 inch')             // Unit 2 inch
 const d = math.unit('90 km/h')            // Unit 90 km/h
 const e = math.unit('101325 kg/(m s^2)')  // Unit 101325 kg / (m s^2)
 
-const d = c.to('cm')                      // Unit 5.08 cm
+const f = c.to('cm')                      // Unit 5.08 cm
 b.toNumber('gram')                        // Number 100
 math.number(b, 'gram')                    // Number 100
 
 c.equals(a)                               // false
-c.equals(d)                               // true
+c.equals(f)                               // true
 c.equalBase(a)                            // true
 c.equalBase(b)                            // false
 
-d.toString()                              // String "5.08 cm"
+f.toString()                              // String "5.08 cm"
 
 const kph = math.unit('km/h')             // valueless Unit km/h
 const mps = math.unit('m/s')              // valueless Unit m/s

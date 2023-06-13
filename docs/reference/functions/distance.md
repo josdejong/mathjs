@@ -25,10 +25,10 @@ math.distance({pointOneX, pointOneY, pointOneZ}, {pointTwoX, pointTwoY, pointTwo
 math.distance([x1,y1,z1,a1], [x2,y2,z2,a2])
 math.distance([[x1,y1], [x2,y2], [x3,y3]])
 math.distance([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3]])
-math.distance([x1,y1], [x2,y2,z2])
-math.distance([x1,y1], [x2,y2], [x3,y3])
+math.distance([pointX,pointY], [a,b,c])
+math.distance([pointX,pointY], [lineOnePtX,lineOnePtY], [lineTwoPtX,lineTwoPtY])
 math.distance({pointX, pointY}, {lineOnePtX, lineOnePtY}, {lineTwoPtX, lineTwoPtY})
-math.distance([x1,y1,z1], [x0, y0, z0, a, b, c])
+math.distance([pointX,pointY,pointZ], [x0, y0, z0, a, b, c])
 math.distance({pointX, pointY, pointZ}, {x0, y0, z0, a, b, c})
 ```
 
@@ -67,11 +67,11 @@ math.distance([1, 0, 1, 0], [0, -1, 0, -1])     // Returns 2
 math.distance([[1, 2], [1, 2], [1, 3]])         // Returns [0, 1, 1]
 math.distance([[1,2,4], [1,2,6], [8,1,3]])      // Returns [2, 7.14142842854285, 7.681145747868608]
 math.distance([10, 10], [8, 1, 3])              // Returns 11.535230316796387
-math.distance([10, 10], [2, 3], [-8, 0])        // Returns 8.759953130362847
+math.distance([0, 0], [3, 0], [0, 4])        // Returns 2.4
 math.distance(
- {pointX: 1, pointY: 4},
- {lineOnePtX: 6, lineOnePtY: 3},
- {lineTwoPtX: 2, lineTwoPtY: 8})                // Returns 2.720549372624744
+ {pointX: 0, pointY: 0},
+ {lineOnePtX: 3, lineOnePtY: 0},
+ {lineTwoPtX: 0, lineTwoPtY: 4})                // Returns 2.4
 math.distance([2, 3, 1], [1, 1, 2, 5, 0, 1])    // Returns 2.3204774044612857
 math.distance(
  {pointX: 2, pointY: 3, pointZ: 1},

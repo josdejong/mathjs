@@ -50,14 +50,9 @@ math.map([1, 2, 3], function(value) {
   return value * value
 })  // returns [1, 4, 9]
 
-// The calling convention for the callback can cause subtleties:
-math.map([1, 2, 3], math.format)
-// throws TypeError: map attempted to call 'format(1,[0])' but argument 2 of type Array does not match expected type number or function or Object or string or boolean
-// [This happens because `format` _can_ take a second argument,
-// but its semantics don't match that of the 2nd argument `map` provides]
-
-// To avoid this error, use a function that takes exactly the
-// desired arguments:
+// The callback is normally called with three arguments:
+//    callback(value, index, Array)
+// If you want to call with only one argument, use:
 math.map([1, 2, 3], x => math.format(x)) // returns ['1', '2', '3']
 ```
 

@@ -15,7 +15,7 @@ https://en.wikipedia.org/wiki/Square_root_of_a_matrix
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-X = math.sqrtm(A)
+math.sqrtm(A)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
