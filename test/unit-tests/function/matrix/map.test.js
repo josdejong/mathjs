@@ -63,6 +63,16 @@ describe('map', function () {
     assert.deepStrictEqual(output, [3, 4, 5])
   })
 
+  it('should invoke a typed function with correct number of arguments (4)', function () {
+    // cbrt has a syntax cbrt(x, allRoots), but it should invoke cbrt(x) here
+    assert.deepStrictEqual(math.map([1, 8, 27], math.cbrt), [1, 2, 3])
+  })
+
+  it('should invoke a typed function with correct number of arguments (5)', function () {
+    // cbrt has a syntax cbrt(x, allRoots), but it should invoke cbrt(x) here
+    assert.deepStrictEqual(math.map([1, 8, 27], math.format), ['1', '8', '27'])
+  })
+
   it('should throw an error if called with unsupported type', function () {
     assert.throws(function () { math.map(1, function () {}) })
     assert.throws(function () { math.map('arr', function () {}) })
@@ -72,10 +82,15 @@ describe('map', function () {
     assert.throws(function () { math.map([1, 2, 3]) })
   })
 
-  it('should throw an error if the callback argument types are incorrect',
-    function () {
-      assert.throws(() => math.map([1, 2, 3], math.format), TypeError)
-    })
+  it('should throw an error if the callback argument types are incorrect (1)', function () {
+    assert.throws(() => math.map([1, 2, 3], math.equalText),
+      /Function map cannot apply callback arguments to function equalText: Unexpected type of argument in function compareText \(expected: string or Array or Matrix, actual: number, index: 0\)/)
+  })
+
+  it('should throw an error if the callback argument types are incorrect (2)', function () {
+    assert.throws(() => math.map([math.sin, 2, 3], math.sqrt),
+      /TypeError: Function map cannot apply callback arguments sqrt\(value: function, index: Array, array: Array\) at index \[0]/)
+  })
 
   it('should operate from the parser', function () {
     assert.deepStrictEqual(

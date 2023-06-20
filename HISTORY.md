@@ -1,6 +1,30 @@
 # History
 
-# 2023-04-03 11.8.0
+# 2023-06-20, 11.8.2
+
+- Fix #2971: improve typings of statistics functions `min`, `max`, `mean`, 
+  `median`, `mode`, `std`, `sum`, `prod`, `variance`. Fixes a regression 
+  introduced in v11.8.1.
+- Fix #2972: type definitions of `Unit.divide(Unit)` have a wrong return type.
+
+
+# 2023-06-13, 11.8.1
+
+- Fix #2964: issue in function ` distance` when calculate the distance from 
+  a point to a line (#2965). Thanks @Kiku-CN. 
+- Fix `math.format` not working correctly for `engineering` notation when using
+  BigNumbers and for `fixed` notation with `precision: 0` configured (#2956). 
+  Thanks @mgreminger.
+- Fix #2880: not possible to map cube root `cbrt`.
+- Fix #2938: make the syntax description of all functions consistent in the
+  docs (#2941). Thanks @dvd101x.
+- Fix #2954: improve the TypeScript definitions the return type of functions
+  `min` and `max` (#2955). Thanks @Maxim-Mazurok.
+- Fix #2959: typo in an example in the docs. Thanks @kunalagrwl.
+- Drop official support for Node.js 14, has reached end of life.
+
+
+# 2023-04-03, 11.8.0
 
 - Extended functions `fraction`, `bignumber`, and `number` with support for 
   units, see #2918 (#2926).
