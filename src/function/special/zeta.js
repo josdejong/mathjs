@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'zeta'
-const dependencies = ['typed', 'multiply', 'pow', 'divide', 'factorial', 'equal', 'smallerEq', 'isNegative', 'gamma', 'sin', 'subtract', 'add', '?Complex', '?BigNumber', 'pi']
+const dependencies = ['typed', 'config', 'multiply', 'pow', 'divide', 'factorial', 'equal', 'smallerEq', 'isNegative', 'gamma', 'sin', 'subtract', 'add', '?Complex', '?BigNumber', 'pi']
 
-export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, multiply, pow, divide, factorial, equal, smallerEq, isNegative, gamma, sin, subtract, add, Complex, BigNumber, pi }) => {
+export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiply, pow, divide, factorial, equal, smallerEq, isNegative, gamma, sin, subtract, add, Complex, BigNumber, pi }) => {
   /**
    * Compute the Riemann Zeta function of a value using an infinite series for
    * all of the complex plane using Riemann's Functional equation.
@@ -29,17 +29,25 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | Complex | BigNumber}    The Riemann Zeta of `s`
    */
   return typed(name, {
-    number: (s) => zetaNumeric(s, value => value),
-    BigNumber: (s) => zetaNumeric(s, value => new BigNumber(value)),
+    number: (s) => zetaNumeric(s, value => value, () => 20),
+    BigNumber: (s) => zetaNumeric(
+      s,
+        value => new BigNumber(value),
+      () => {
+          // epsilon is for example 1e-12. Extract the positive exponent 12 from that
+          return Math.abs(Math.log10(config.epsilon))
+      }
+    ),
     Complex: zetaComplex
   })
 
   /**
    * @param {number | BigNumber} s
    * @param {(value: number) => number | BigNumber} createValue
+   * @param {(value: number | BigNumber | Complex) => number} determineDigits
    * @returns {number | BigNumber}
    */
-  function zetaNumeric (s, createValue) {
+  function zetaNumeric (s, createValue, determineDigits) {
     if (equal(s, 0)) {
       return createValue(-0.5)
     }
@@ -50,8 +58,7 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return isNegative(s) ? createValue(NaN) : createValue(1)
     }
 
-    // FIXME: recon with configured precision (config.epsilon)
-    return zeta(s, createValue, () => 20, s => s)
+    return zeta(s, createValue, determineDigits, s => s)
   }
 
   /**
