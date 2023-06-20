@@ -20,8 +20,8 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Examples:
    *
-   *    math.zeta(5)       // returns 1.03692775514337 + 0i
-   *    math.zeta(-0.5)    // returns -0.2078862249773449 + 0i
+   *    math.zeta(5)       // returns 1.0369277551433895
+   *    math.zeta(-0.5)    // returns -0.2078862249773449
    *    math.zeta(math.i)  // returns 0.0033002236853253153 - 0.4181554491413212i
    *
    *
