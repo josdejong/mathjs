@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20230620-1182">2023-06-20, 11.8.2 <a href="#20230620-1182" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2971">#2971</a>: improve typings of statistics functions `min`, `max`, `mean`, 
+  `median`, `mode`, `std`, `sum`, `prod`, `variance`. Fixes a regression 
+  introduced in v11.8.1.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2972">#2972</a>: type definitions of `Unit.divide(Unit)` have a wrong return type.
+
+
 <h1 id="20230613-1181">2023-06-13, 11.8.1 <a href="#20230613-1181" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2964">#2964</a>: issue in function ` distance` when calculate the distance from 
