@@ -3880,7 +3880,7 @@ declare namespace math {
     equalBase(unit: Unit): boolean
     equals(unit: Unit): boolean
     multiply(unit: Unit): Unit
-    divide(unit: Unit): Unit
+    divide(unit: Unit): Unit | number
     pow(unit: Unit): Unit
     abs(unit: Unit): Unit
     to(unit: string): Unit
