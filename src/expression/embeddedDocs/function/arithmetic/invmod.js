@@ -6,9 +6,9 @@ export const invmodDocs = {
   ],
   description: 'Calculate the (modular) multiplicative inverse of a modulo b. Solution to the equation ax ≣ 1 (mod b)',
   examples: [
-    'invmod(8, 12)=NaN',
-    'invmod(7, 13)=2',
-    'invmod(15151, 15122)=10429'
+    'invmod(8, 12)',
+    'invmod(7, 13)',
+    'invmod(15151, 15122)'
   ],
   seealso: ['gcd', 'xgcd']
 }
