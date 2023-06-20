@@ -32,10 +32,10 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     number: (s) => zetaNumeric(s, value => value, () => 20),
     BigNumber: (s) => zetaNumeric(
       s,
-        value => new BigNumber(value),
+      value => new BigNumber(value),
       () => {
-          // epsilon is for example 1e-12. Extract the positive exponent 12 from that
-          return Math.abs(Math.log10(config.epsilon))
+        // epsilon is for example 1e-12. Extract the positive exponent 12 from that
+        return Math.abs(Math.log10(config.epsilon))
       }
     ),
     Complex: zetaComplex

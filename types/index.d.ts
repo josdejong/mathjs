@@ -5944,7 +5944,9 @@ declare namespace math {
      * Compute the Riemann Zeta function of a value using an infinite series
      * and Riemann's Functional equation.
      */
-    zeta<T extends number | Complex | BigNumber>(this: MathJsChain<T>): MathJsChain<T>
+    zeta<T extends number | Complex | BigNumber>(
+      this: MathJsChain<T>
+    ): MathJsChain<T>
 
     /*************************************************************************
      * Statistics functions

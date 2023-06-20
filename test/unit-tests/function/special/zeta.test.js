@@ -7,7 +7,7 @@ import math from '../../../../src/defaultInstance.js'
 const zeta = math.zeta
 const epsilon = 1e-6 // FIXME: make zeta work with an epsilon of 1e-12
 
-function approxEqual(a, b) {
+function approxEqual (a, b) {
   approx.equal(a, b, epsilon)
 }
 
@@ -37,7 +37,7 @@ describe('Riemann Zeta', function () {
     const math2 = math.create()
     math2.config({ epsilon: bigEpsilon })
 
-    function bigApproxEqual(a, b) {
+    function bigApproxEqual (a, b) {
       assert.strictEqual(
         a.toSignificantDigits(digits).valueOf(),
         b.toSignificantDigits(digits).valueOf(),
