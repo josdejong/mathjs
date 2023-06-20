@@ -1,6 +1,6 @@
 # History
 
-# not yet published, 11.8.2
+# 2023-06-20, 11.8.2
 
 - Fix #2971: improve typings of statistics functions `min`, `max`, `mean`, 
   `median`, `mode`, `std`, `sum`, `prod`, `variance`. Fixes a regression 
