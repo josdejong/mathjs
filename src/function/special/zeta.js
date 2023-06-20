@@ -25,57 +25,63 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *    math.zeta(math.i)  // returns 0.0033002236853253153 - 0.4181554491413212i
    *
    *
-   * @param {number | Complex | BigNumber} s   A Real, Complex or BigNumber parameter to to the Riemann Zeta Function
+   * @param {number | Complex | BigNumber} s   A Real, Complex or BigNumber parameter to the Riemann Zeta Function
    * @return {number | Complex | BigNumber}    The Riemann Zeta of `s`
    */
   return typed(name, {
-    'number': (s) => {
-      if (equal(s, 0)) {
-        return -0.5 // FIXME: return BigNumber when needed
-      }
-      if (equal(s, 1)) {
-        return NaN // FIXME: return BigNumber when needed
-      }
-      if (!isFinite(s)) {
-        return isNegative(s) ? NaN : 1 // FIXME: return BigNumber when needed
-      }
-
-      return zeta(s, value => value, () => 20, s => s)
-    },
-
-    'BigNumber': (s) => {
-      if (equal(s, 0)) {
-        return -0.5 // FIXME: return BigNumber when needed
-      }
-      if (equal(s, 1)) {
-        return NaN // FIXME: return BigNumber when needed
-      }
-      if (!isFinite(s)) {
-        return isNegative(s) ? NaN : 1 // FIXME: return BigNumber when needed
-      }
-
-      return zeta(s, value => new BigNumber(value), () => 20, s => s)
-    },
-
-    Complex: s => {
-      if (s.re === 0 && s.im === 0) {
-        return new Complex(-0.5)
-      }
-      if (s.re === 1) {
-        return new Complex(NaN, NaN)
-      }
-      if (s.re === Infinity && s.im === 0) {
-        return new Complex(1)
-      }
-      if (s.im === Infinity || s.re === -Infinity) {
-        return new Complex(NaN, NaN)
-      }
-
-      return zeta(s, value => value, s => Math.round(1.3 * 15 + 0.9 * Math.abs(s.im)), s => s.re)
-    }
+    number: (s) => zetaNumeric(s, value => value),
+    BigNumber: (s) => zetaNumeric(s, value => new BigNumber(value)),
+    Complex: zetaComplex
   })
 
-  // Big Number alias
+  /**
+   * @param {number | BigNumber} s
+   * @param {(value: number) => number | BigNumber} createValue
+   * @returns {number | BigNumber}
+   */
+  function zetaNumeric (s, createValue) {
+    if (equal(s, 0)) {
+      return createValue(-0.5)
+    }
+    if (equal(s, 1)) {
+      return createValue(NaN)
+    }
+    if (!isFinite(s)) {
+      return isNegative(s) ? createValue(NaN) : createValue(1)
+    }
+
+    // FIXME: recon with configured precision (config.epsilon)
+    return zeta(s, createValue, () => 20, s => s)
+  }
+
+  /**
+   * @param {Complex} s
+   * @returns {Complex}
+   */
+  function zetaComplex (s) {
+    if (s.re === 0 && s.im === 0) {
+      return new Complex(-0.5)
+    }
+    if (s.re === 1) {
+      return new Complex(NaN, NaN)
+    }
+    if (s.re === Infinity && s.im === 0) {
+      return new Complex(1)
+    }
+    if (s.im === Infinity || s.re === -Infinity) {
+      return new Complex(NaN, NaN)
+    }
+
+    return zeta(s, value => value, s => Math.round(1.3 * 15 + 0.9 * Math.abs(s.im)), s => s.re)
+  }
+
+  /**
+   * @param {number | BigNumber | Complex} s
+   * @param {(value: number) => number | BigNumber | Complex} createValue
+   * @param {(value: number | BigNumber | Complex) => number} determineDigits
+   * @param {(value: number | BigNumber | Complex) => number} getRe
+   * @returns {*|number}
+   */
   function zeta (s, createValue, determineDigits, getRe) {
     const n = determineDigits(s)
     if (getRe(s) > -(n - 1) / 2) {
@@ -98,7 +104,10 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   function d (k, n) {
     let S = k
     for (let j = k; smallerEq(j, n); j = add(j, 1)) {
-      const factor = divide(multiply(factorial(add(n, subtract(j, 1))), pow(4, j)), multiply(factorial(subtract(n, j)), factorial(multiply(2, j))))
+      const factor = divide(
+        multiply(factorial(add(n, subtract(j, 1))), pow(4, j)),
+        multiply(factorial(subtract(n, j)), factorial(multiply(2, j)))
+      )
       S = add(S, factor)
     }
 

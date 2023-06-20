@@ -25,16 +25,18 @@ describe('Riemann Zeta', function () {
     assert.ok(isNaN(zeta(-Infinity)))
   })
 
-  it('should calculate the Riemann Zeta Function of a Big Number', function () {
-    assert.ok(isNaN(zeta(math.BigNumber(1))))
-    approx.equal(zeta(math.BigNumber(2)), 1.6449340668482264)
-    approx.equal(zeta(math.BigNumber(-2)), 0)
-    approx.equal(zeta(math.BigNumber(20)), 1.000000953962033872)
-    approx.equal(zeta(math.BigNumber(-21)), -281.4601449275362318)
-    approx.equal(zeta(math.BigNumber(50)), 1.0000000000000008881)
-    approx.equal(zeta(math.BigNumber(-211)), 2.727488e231)
-    approx.equal(zeta(math.BigNumber(100)), 1.000000000000000000)
-    assert.strictEqual(zeta(Infinity), 1) // shouldn't stall
+  it('should calculate the Riemann Zeta Function of a BigNumber', function () {
+    approx.equal(zeta(math.bignumber(0)), math.bignumber(-0.5))
+    assert.ok(zeta(math.bignumber(1)).isNaN())
+    approx.equal(zeta(math.bignumber(2)), math.bignumber(1.6449340668482264))
+    approx.equal(zeta(math.bignumber(-2)), math.bignumber(0))
+    approx.equal(zeta(math.bignumber(20)), math.bignumber(1.000000953962033872))
+    approx.equal(zeta(math.bignumber(-21)), math.bignumber(-281.4601449275362318))
+    approx.equal(zeta(math.bignumber(50)), math.bignumber(1.0000000000000008881))
+    approx.equal(zeta(math.bignumber(-211)), math.bignumber(2.727488e231))
+    approx.equal(zeta(math.bignumber(100)), math.bignumber(1.000000000000000000))
+    approx.equal(zeta(math.bignumber(Infinity)), math.bignumber(1)) // shouldn't stall
+    approx.equal(zeta(math.bignumber(-Infinity)), math.bignumber(NaN)) // shouldn't stall
   })
 
   it('should calculate the Riemann Zeta Function of a rational number', function () {
