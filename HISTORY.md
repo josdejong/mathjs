@@ -1,5 +1,13 @@
 # History
 
+# not yet published, 11.8.2
+
+- Fix #2971: improve typings of statistics functions `min`, `max`, `mean`, 
+  `median`, `mode`, `std`, `sum`, `prod`, `variance`. Fixes a regression 
+  introduced in v11.8.1.
+- Fix #2972: type definitions of `Unit.divide(Unit)` have a wrong return type.
+
+
 # 2023-06-13, 11.8.1
 
 - Fix #2964: issue in function ` distance` when calculate the distance from 
