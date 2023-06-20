@@ -13,10 +13,12 @@ type NoLiteralType<T> = T extends number
   : T
 
 declare namespace math {
+  // TODO: introduce generics for MathCollection, MathMatrix, and MathArray
   type MathNumericType = number | BigNumber | Fraction | Complex
-  type MathArray = MathNumericType[] | MathNumericType[][]
+  type MathScalarType = MathNumericType | Unit
+  type MathArray = MathNumericType[] | MathNumericType[][] // TODO: MathArray can also contain Unit
   type MathCollection = MathArray | Matrix
-  type MathType = MathNumericType | Unit | MathCollection
+  type MathType = MathScalarType | MathCollection
   type MathExpression = string | string[] | MathCollection
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -2605,35 +2607,60 @@ declare namespace math {
      * of a multi dimensional array, the maximum of the flattened array will
      * be calculated. When dim is provided, the maximum over the selected
      * dimension will be calculated. Parameter dim is zero-based.
-     * @param args A single matrix or multiple scalar values
+     * @param args Multiple scalar values
      * @returns The maximum value
      */
-    max<T extends MathType[]>(...args: T): T[number]
+    max<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The maximum value
+     */
+    max(...args: MathScalarType[]): MathScalarType
     /**
      * @param A A single matrix
-     * @param dim The maximum over the selected dimension
+     * @param dimension The maximum over the selected dimension
      * @returns The maximum value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    max(A: MathCollection, dim?: number): any
+    max<T extends MathScalarType>(
+      A: T[] | T[][],
+      dimension?: number | BigNumber
+    ): T
+    /**
+     * @param A A single matrix
+     * @param dimension The maximum over the selected dimension
+     * @returns The maximum value
+     */
+    max(A: MathCollection, dimension?: number | BigNumber): MathScalarType
 
     /**
      * Compute the mean value of matrix or a list with values. In case of a
      * multi dimensional array, the mean of the flattened array will be
      * calculated. When dim is provided, the maximum over the selected
      * dimension will be calculated. Parameter dim is zero-based.
-     * @param args A single matrix or multiple scalar values
+     * @param args Multiple scalar values
      * @returns The mean of all values
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mean(...args: MathType[]): any
+    mean<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The mean value
+     */
+    mean(...args: MathScalarType[]): MathScalarType
     /**
      * @param A A single matrix
-     * @param dim The mean over the selected dimension
-     * @returns The mean of all values
+     * @param dimension The mean over the selected dimension
+     * @returns The mean value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mean(A: MathCollection, dim?: number): any
+    mean<T extends MathScalarType>(
+      A: T[] | T[][],
+      dimension?: number | BigNumber
+    ): T
+    /**
+     * @param A A single matrix
+     * @param dimension The mean over the selected dimension
+     * @returns The mean value
+     */
+    mean(A: MathCollection, dimension?: number | BigNumber): MathScalarType
 
     /**
      * Compute the median of a matrix or a list with values. The values are
@@ -2642,48 +2669,103 @@ declare namespace math {
      * types of values are: Number, BigNumber, Unit In case of a (multi
      * dimensional) array or matrix, the median of all elements will be
      * calculated.
-     * @param args A single matrix or or multiple scalar values
-     * @returns The median
+     * @param args Multiple scalar values
+     * @returns The median value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    median(...args: MathType[]): any
+    median<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The median value
+     */
+    median(...args: MathScalarType[]): MathScalarType
+    /**
+     * @param A A single matrix
+     * @returns The median value
+     */
+    median<T extends MathScalarType>(A: T[] | T[][]): T
+    /**
+     * @param A A single matrix
+     * @returns The median value
+     */
+    median(A: MathCollection): MathScalarType
 
     /**
      * Compute the minimum value of a matrix or a list of values. In case of
      * a multi dimensional array, the minimum of the flattened array will be
      * calculated. When dim is provided, the minimum over the selected
      * dimension will be calculated. Parameter dim is zero-based.
-     * @param args A single matrix or or multiple scalar values
+     * @param args multiple scalar values
      * @returns The minimum value
      */
-    min<T extends MathType[]>(...args: T): T[number]
+    min<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The minimum value
+     */
+    min(...args: MathScalarType[]): MathScalarType
     /**
      * @param A A single matrix
-     * @param dim The minimum over the selected dimension
+     * @param dimension The minimum over the selected dimension
      * @returns The minimum value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    min(A: MathCollection, dim?: number): any
+    min<T extends MathScalarType>(
+      A: T[] | T[][],
+      dimension?: number | BigNumber
+    ): T
+    /**
+     * @param A A single matrix
+     * @param dimension The minimum over the selected dimension
+     * @returns The minimum value
+     */
+    min(A: MathCollection, dimension?: number | BigNumber): MathScalarType
 
     /**
      * Computes the mode of a set of numbers or a list with values(numbers
      * or characters). If there are more than one modes, it returns a list
      * of those values.
-     * @param args A single matrix
+     * @param args Multiple scalar values
      * @returns The mode of all values
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mode(...args: MathType[]): any
+    mode<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The mode of all values
+     */
+    mode(...args: MathScalarType[]): MathScalarType
+    /**
+     * @param A A single matrix
+     * @returns The median value
+     */
+    mode<T extends MathScalarType>(A: T[] | T[][]): T
+    /**
+     * @param A A single matrix
+     * @returns The mode of all values
+     */
+    mode(A: MathCollection): MathScalarType
 
     /**
      * Compute the product of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the sum of all elements will be
      * calculated.
-     * @param args A single matrix or multiple scalar values
+     * @param args Multiple scalar values
      * @returns The product of all values
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    prod(...args: MathType[]): any
+    prod<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The product of all values
+     */
+    prod(...args: MathScalarType[]): MathScalarType
+    /**
+     * @param A A single matrix
+     * @returns The product of all values
+     */
+    prod<T extends MathScalarType>(A: T[] | T[][]): T
+    /**
+     * @param A A single matrix
+     * @returns The product of all values
+     */
+    prod(A: MathCollection): MathScalarType
 
     /**
      * Compute the prob order quantile of a matrix or a list with values.
@@ -2715,10 +2797,15 @@ declare namespace math {
      * values: 'unbiased' (default) The sum of squared errors is divided by
      * (n - 1) 'uncorrected' The sum of squared errors is divided by n
      * 'biased' The sum of squared errors is divided by (n + 1)
-     * @param a variadic argument of number to calculate standard deviation
-     * @returns The standard deviation array
+     * @param args variadic argument of number to calculate standard deviation
+     * @returns The standard deviation
      */
-    std(...values: number[]): number
+    std<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The standard deviation
+     */
+    std(...args: MathScalarType[]): MathScalarType
     /**
      * Compute the standard deviation of a matrix or a list with values. The
      * standard deviations is defined as the square root of the variance:
@@ -2740,7 +2827,7 @@ declare namespace math {
       array: MathCollection,
       dimension?: number,
       normalization?: 'unbiased' | 'uncorrected' | 'biased'
-    ): number[]
+    ): MathNumericType[]
     /**
      * Compute the standard deviation of a matrix or a list with values. The
      * standard deviations is defined as the square root of the variance:
@@ -2760,7 +2847,7 @@ declare namespace math {
     std(
       array: MathCollection,
       normalization: 'unbiased' | 'uncorrected' | 'biased'
-    ): number
+    ): MathNumericType
 
     /**
      * Compute the sum of a matrix or a list with values. In case of a
@@ -2769,14 +2856,27 @@ declare namespace math {
      * @param args A single matrix or multiple scalar values
      * @returns The sum of all values
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    sum(...args: Array<number | BigNumber | Fraction>): any
+    sum<T extends MathScalarType>(...args: T[]): T
     /**
-     * @param array A single matrix
+     * @param args Multiple scalar values
      * @returns The sum of all values
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    sum(array: MathCollection): any
+    sum(...args: MathScalarType[]): MathScalarType
+    /**
+     * @param A A single matrix
+     * @param dimension The sum over the selected dimension
+     * @returns The sum of all values
+     */
+    sum<T extends MathScalarType>(
+      A: T[] | T[][],
+      dimension?: number | BigNumber
+    ): T
+    /**
+     * @param A A single matrix
+     * @param dimension The sum over the selected dimension
+     * @returns The sum of all values
+     */
+    sum(A: MathCollection, dimension?: number | BigNumber): MathScalarType
 
     /**
      * Count the number of elements of a matrix, array or string.
@@ -2814,8 +2914,7 @@ declare namespace math {
      * @param args A single matrix or multiple scalar values
      * @returns The variance
      */
-    variance(...args: Array<number | BigNumber | Fraction>): number
-
+    variance(...args: MathNumericType[]): MathNumericType
     /**
      * Compute the variance of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the variance over all elements
@@ -2838,7 +2937,7 @@ declare namespace math {
       array: MathCollection,
       dimension?: number,
       normalization?: 'unbiased' | 'uncorrected' | 'biased'
-    ): number[]
+    ): MathNumericType[]
     /**
      * @param array A single matrix
      * @param normalization normalization Determines how to normalize the
@@ -2849,7 +2948,7 @@ declare namespace math {
     variance(
       array: MathCollection,
       normalization: 'unbiased' | 'uncorrected' | 'biased'
-    ): number
+    ): MathNumericType
 
     /*************************************************************************
      * String functions
@@ -3791,7 +3890,7 @@ declare namespace math {
     equalBase(unit: Unit): boolean
     equals(unit: Unit): boolean
     multiply(unit: Unit): Unit
-    divide(unit: Unit): Unit
+    divide(unit: Unit): Unit | number
     pow(unit: Unit): Unit
     abs(unit: Unit): Unit
     to(unit: string): Unit
