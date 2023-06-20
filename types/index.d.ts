@@ -2584,9 +2584,7 @@ declare namespace math {
      * @param s A real, complex or BigNumber
      * @returns The Riemann Zeta of s
      */
-    zeta<T extends number | Complex | BigNumber | MathCollection>(
-      x: T
-    ): NoLiteralType<T>
+    zeta<T extends number | Complex | BigNumber>(s: T): T
 
     /*************************************************************************
      * Statistics functions
@@ -5946,9 +5944,7 @@ declare namespace math {
      * Compute the Riemann Zeta function of a value using an infinite series
      * and Riemann's Functional equation.
      */
-    zeta<T extends number | Complex | BigNumber | MathCollection>(
-      this: MathJsChain<T>
-    ): MathJsChain<NoLiteralType<T>>
+    zeta<T extends number | Complex | BigNumber>(this: MathJsChain<T>): MathJsChain<T>
 
     /*************************************************************************
      * Statistics functions
