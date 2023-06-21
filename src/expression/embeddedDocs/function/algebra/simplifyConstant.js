@@ -7,7 +7,7 @@ export const simplifyConstantDocs = {
   ],
   description: 'Replace constant subexpressions of node with their values.',
   examples: [
-    'simplifyConatant("(3-3)*x")',
+    'simplifyConstant("(3-3)*x")',
     'simplifyConstant(parse("z-cos(tau/8)"))'
   ],
   seealso: [

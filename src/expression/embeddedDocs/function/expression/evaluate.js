@@ -8,7 +8,7 @@ export const evaluateDocs = {
   description: 'Evaluate an expression or an array with expressions.',
   examples: [
     'evaluate("2 + 3")',
-    'evaluate("sqrt(" + 4 + ")")'
+    'evaluate(concat("sqrt(", string(4), ")"))'
   ],
   seealso: []
 }
