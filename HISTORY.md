@@ -1,5 +1,11 @@
 # History
 
+# not yet published, 11.8.3
+
+- Fix #2973: fixes and improvements in the embedded docs (#2976). 
+  Thanks @dvd101x.
+
+
 # 2023-06-20, 11.8.2
 
 - Fix #2971: improve typings of statistics functions `min`, `max`, `mean`, 
