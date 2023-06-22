@@ -147,6 +147,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     '|': true,
     '^|': true,
     '=': true,
+    ':=': true,
     ':': true,
     '?': true,
 
@@ -664,18 +665,24 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     const node = parseConditional(state)
 
-    if (state.token === '=') {
+    if (state.token === '=' || state.token === ':=') {
+      const assignString = state.token
+
       if (isSymbolNode(node)) {
         // parse a variable assignment like 'a = 2/3'
         name = node.name
         getTokenSkipNewline(state)
         value = parseAssignment(state)
-        return new AssignmentNode(new SymbolNode(name), value)
+        const assignmentNode = new AssignmentNode(new SymbolNode(name), value)
+        assignmentNode.assignString = assignString
+        return assignmentNode
       } else if (isAccessorNode(node)) {
         // parse a matrix subset assignment like 'A[1,2] = 4'
         getTokenSkipNewline(state)
         value = parseAssignment(state)
-        return new AssignmentNode(node.object, node.index, value)
+        const assignmentNode = new AssignmentNode(node.object, node.index, value)
+        assignmentNode.assignString = assignString
+        return assignmentNode
       } else if (isFunctionNode(node) && isSymbolNode(node.fn)) {
         // parse function assignment like 'f(x) = x^2'
         valid = true
@@ -693,7 +700,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         if (valid) {
           getTokenSkipNewline(state)
           value = parseAssignment(state)
-          return new FunctionAssignmentNode(name, args, value)
+          const assignmentNode = new FunctionAssignmentNode(name, args, value)
+          assignmentNode.assignString = assignString
+          return assignmentNode
         }
       }
 

@@ -71,6 +71,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       this.object = object
       this.index = value ? index : null
       this.value = value || index
+      this.assignString = '='
 
       // validate input
       if (!isSymbolNode(object) && !isAccessorNode(object)) {
@@ -248,7 +249,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
         value = '(' + value + ')'
       }
 
-      return object + index + ' = ' + value
+      return `${object}${index} ${this.assignString} ${value}`
     }
 
     /**
@@ -294,7 +295,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
 
       return object + index +
         '<span class="math-operator math-assignment-operator ' +
-        'math-variable-assignment-operator math-binary-operator">=</span>' +
+        'math-variable-assignment-operator math-binary-operator">' + this.assignString + '</span>' +
         value
     }
 
@@ -312,7 +313,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
         value = `\\left(${value}\\right)`
       }
 
-      return object + index + ':=' + value
+      return `${object}${index}${this.assignString}${value}`
     }
   }
 

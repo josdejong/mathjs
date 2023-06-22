@@ -59,8 +59,13 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
       if (!isNode(falseExpr)) { throw new TypeError('Parameter falseExpr must be a Node') }
 
       this.condition = condition
+      this.condition.assignString = ':='
+
       this.trueExpr = trueExpr
+      this.trueExpr.assignString = ':='
+
       this.falseExpr = falseExpr
+      this.falseExpr.assignString = ':='
     }
 
     static name = name

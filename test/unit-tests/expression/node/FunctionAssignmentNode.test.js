@@ -390,8 +390,8 @@ describe('FunctionAssignmentNode', function () {
   })
 
   it('should respect the \'all\' parenthesis option', function () {
-    const expr = math.parse('f(x)=x+1')
-    assert.strictEqual(expr.toString({ parenthesis: 'all' }), 'f(x) = (x + 1)')
+    const expr = math.parse('f(x) := x+1')
+    assert.strictEqual(expr.toString({ parenthesis: 'all' }), 'f(x) := (x + 1)')
     assert.strictEqual(expr.toTex({ parenthesis: 'all' }), '\\mathrm{f}\\left(x\\right):=\\left( x+1\\right)')
   })
 
@@ -465,6 +465,7 @@ describe('FunctionAssignmentNode', function () {
     const o = new OperatorNode('/', 'divide', [x, a])
     const p = new OperatorNode('^', 'pow', [o, a])
     const n = new FunctionAssignmentNode('f', ['x'], p)
+    n.assignString = ':='
 
     assert.strictEqual(n.toTex(), '\\mathrm{f}\\left(x\\right):=\\left({\\frac{ x}{2}}\\right)^{2}')
   })
@@ -473,9 +474,10 @@ describe('FunctionAssignmentNode', function () {
     const a = new ConstantNode(2)
 
     const n1 = new AssignmentNode(new SymbolNode('a'), a)
+    n1.assignString = ':='
     const n = new FunctionAssignmentNode('f', ['x'], n1)
 
-    assert.strictEqual(n.toTex(), '\\mathrm{f}\\left(x\\right):=\\left( a:=2\\right)')
+    assert.strictEqual(n.toTex(), '\\mathrm{f}\\left(x\\right)=\\left( a:=2\\right)')
   })
 
   it('should LaTeX a FunctionAssignmentNode with custom toTex', function () {

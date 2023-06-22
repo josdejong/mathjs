@@ -71,6 +71,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
         return (param && param.type) || 'any'
       })
       this.expr = expr
+      this.assignString = '='
     }
 
     static name = name
@@ -165,7 +166,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       if (needParenthesis(this, parenthesis, options && options.implicit)) {
         expr = '(' + expr + ')'
       }
-      return this.name + '(' + this.params.join(', ') + ') = ' + expr
+      return `${this.name}(${this.params.join(', ')}) ${this.assignString} ${expr}`
     }
 
     /**
@@ -227,7 +228,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
         params.join('<span class="math-separator">,</span>') +
         '<span class="math-parenthesis math-round-parenthesis">)</span>' +
         '<span class="math-operator math-assignment-operator ' +
-        'math-variable-assignment-operator math-binary-operator">=</span>' +
+        'math-variable-assignment-operator math-binary-operator">' + this.assignString + '</span>' +
         expr
     }
 
@@ -245,7 +246,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       }
 
       return '\\mathrm{' + this.name +
-        '}\\left(' + this.params.map(toSymbol).join(',') + '\\right):=' + expr
+        '}\\left(' + this.params.map(toSymbol).join(',') + '\\right)' + this.assignString + expr
     }
   }
 
