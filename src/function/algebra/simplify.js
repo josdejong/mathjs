@@ -428,7 +428,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     { l: 'n+-n1', r: 'n-n1' }, // undo replace 'subtract'
 
-    { l: 'n+-(n1)', r: 'n-(n1)' },
+    { l: 'n+-(n1)', r: 'n-(n1)' }
 
   ]
 
