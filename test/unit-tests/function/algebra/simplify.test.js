@@ -423,6 +423,11 @@ describe('simplify', function () {
     simplifyAndCompare('x-0', 'x')
   })
 
+  it('should remove + before -', function () {
+    assert.strictEqual(math.simplify('y + (-x*b) + a * -5').toString(), 'y - 5 * a - x * b')
+    assert.strictEqual(math.simplify('+3y + (-2z) + x * (-3)').toString(), '3 y - 3 * x - 2 * z')
+  })
+
   it('options parameters', function () {
     simplifyAndCompare('0.1*x', 'x/10')
     simplifyAndCompare('0.1*x', 'x/10', math.simplify.rules, {}, { exactFractions: true })
