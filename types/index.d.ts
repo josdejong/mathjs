@@ -2501,7 +2501,7 @@ declare namespace math {
 
     /**
      * Create the intersection of two (multi)sets. Multi-dimension arrays
-     * will be converted to single-dimension arrays before the operation.
+     * will be cnverted to single-dimension arrays before the operation.
      * @param a1 A (multi)set
      * @param a2 A (multi)set
      * @returns The intersection of two (multi)sets
@@ -2566,6 +2566,7 @@ declare namespace math {
      */
     setUnion<T extends MathCollection>(a1: T, a2: MathCollection): T
 
+
     /*************************************************************************
      * Signal functions
      ************************************************************************/
@@ -2577,6 +2578,16 @@ declare namespace math {
      * @returns The transfer function as array of numerator and denominator
      */
     zpk2tf<T extends MathCollection>(z: T, p: T, k?: number): T
+
+    /**
+     * Calculates the frequency response of a filter given its numerator and denominator coefficients.
+     * @param b The numerator polynomial of the filter
+     * @param a The denominator polynomial of the filter
+     * @param w The range of frequencies in which the response is to be calculated
+     * @returns The frequency response
+     * 
+     */
+    freqz<T extends MathCollection>(b: T, a: T, w?: T): T
 
     /*************************************************************************
      * Special functions
@@ -3624,6 +3635,7 @@ declare namespace math {
     setSymDifferenceDependencies: FactoryFunctionMap
     setUnionDependencies: FactoryFunctionMap
     zpk2tfDependencies: FactoryFunctionMap
+    freqzDependencies: FactoryFunctionMap
     addDependencies: FactoryFunctionMap
     hypotDependencies: FactoryFunctionMap
     normDependencies: FactoryFunctionMap
@@ -5944,6 +5956,16 @@ declare namespace math {
       z: T,
       p: T,
       k?: T
+    ): MathJsChain<MathArray | MathArray[]>
+
+    /**
+     * Calculates the frequency response of a filter given its numerator and denominator coefficients.
+     */
+    freqz<T extends number | MathArray | MathArray[]>(
+      this: MathJsChain<T>,
+      b: T,
+      a: T,
+      w?: T
     ): MathJsChain<MathArray | MathArray[]>
 
     /*************************************************************************
