@@ -17,12 +17,12 @@ export const createZpk2tf = /* #__PURE__ */ factory(name, dependencies, ({ typed
      *      math.zpk2tf(z, p, k)
      *
      * Examples:
-     *    math.zpk2tf([1, 2], [3, 4], 5)    // returns [5]
+     *    math.zpk2tf([1, 2], [-1, -2], 1)    // returns [[1, -3, 2], [1, 3, 2]]
      *
-     * @param {Array | Complex} z
-     * @param {Array | Complex} p
-     * @param {number | Complex} k
-     * @return {Array | Complex}
+     * @param {Array} z
+     * @param {Array} p
+     * @param {number} k
+     * @return {Array}
      *
      */
   return typed(name, {
