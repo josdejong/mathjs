@@ -249,6 +249,7 @@ export { createUnequalNumber as createUnequal } from './function/relational/uneq
 
 // signal
 export { createZpk2tf } from './function/signal/zpk2tf.js'
+export { createFreqz } from './function/signal/freqz.js'
 
 // special
 export { createErf } from './function/special/erf.js'
