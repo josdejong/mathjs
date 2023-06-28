@@ -2566,7 +2566,6 @@ declare namespace math {
      */
     setUnion<T extends MathCollection>(a1: T, a2: MathCollection): T
 
-
     /*************************************************************************
      * Signal functions
      ************************************************************************/
@@ -2585,7 +2584,7 @@ declare namespace math {
      * @param a The denominator polynomial of the filter
      * @param w The range of frequencies in which the response is to be calculated
      * @returns The frequency response
-     * 
+     *
      */
     freqz<T extends MathCollection>(b: T, a: T, w?: T): T
 
