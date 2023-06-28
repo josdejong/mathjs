@@ -2567,6 +2567,18 @@ declare namespace math {
     setUnion<T extends MathCollection>(a1: T, a2: MathCollection): T
 
     /*************************************************************************
+     * Signal functions
+     ************************************************************************/
+    /**
+     * Compute the transfer function of a zero-pole-gain model.
+     * @param z Zeroes of the model
+     * @param p Poles of the model
+     * @param k Gain of the model
+     * @returns The transfer function as array of numerator and denominator
+     */
+    zpk2tf<T extends MathCollection>(z: T, p: T, k?: number): T
+
+    /*************************************************************************
      * Special functions
      ************************************************************************/
 
@@ -3611,6 +3623,7 @@ declare namespace math {
     setSizeDependencies: FactoryFunctionMap
     setSymDifferenceDependencies: FactoryFunctionMap
     setUnionDependencies: FactoryFunctionMap
+    zpk2tfDependencies: FactoryFunctionMap
     addDependencies: FactoryFunctionMap
     hypotDependencies: FactoryFunctionMap
     normDependencies: FactoryFunctionMap
@@ -5919,6 +5932,19 @@ declare namespace math {
       this: MathJsChain<T>,
       a2: MathCollection
     ): MathJsChain<T>
+
+    /*************************************************************************
+     * Signal functions
+     ************************************************************************/
+    /**
+     * Compute the transfer function of a zero-pole-gain model.
+     */
+    zpk2tf<T extends number | MathArray | MathArray[]>(
+      this: MathJsChain<T>,
+      z: T,
+      p: T,
+      k?: T
+    ): MathJsChain<MathArray | MathArray[]>
 
     /*************************************************************************
      * Special functions
