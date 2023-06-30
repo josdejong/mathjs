@@ -392,6 +392,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // undo temporary rules
     // { l: '(-1) * n', r: '-n' }, // #811 added test which proved this is redundant
     { l: 'n+-n1', r: 'n-n1' }, // undo replace 'subtract'
+    { l: 'n+-(n1)', r: 'n-(n1)' },
     {
       s: 'n*(n1^-1) -> n/n1', // undo replace 'divide'; for * commutative
       assuming: { multiply: { commutative: true } } // o.w. / not conventional
@@ -425,9 +426,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { multiply: { associative: true } }
     },
 
-    { l: 'n1/(-n2)', r: '-n1/n2' },
-
-    { l: 'n+-(n1)', r: 'n-(n1)' }
+    { l: 'n1/(-n2)', r: '-n1/n2' }
 
   ]
 
