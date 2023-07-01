@@ -236,6 +236,7 @@ import { numericDocs } from './function/utils/numeric.js'
 import { octDocs } from './function/utils/oct.js'
 import { printDocs } from './function/utils/print.js'
 import { typeOfDocs } from './function/utils/typeOf.js'
+import { solveODEDocs } from './function/numeric/solveODE.js'
 
 export const embeddedDocs = {
 
@@ -475,6 +476,9 @@ export const embeddedDocs = {
   sylvester: sylvesterDocs,
   schur: schurDocs,
   lyap: lyapDocs,
+
+  // functions - numeric
+  solveODE: solveODEDocs,
 
   // functions - probability
   combinations: combinationsDocs,

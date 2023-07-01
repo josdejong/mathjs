@@ -1,4 +1,4 @@
-import { isUnit } from '../../utils/is.js'
+import { isUnit, isBigNumber } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'solveODE'
@@ -14,7 +14,9 @@ const dependencies = [
   'isPositive',
   'isNegative',
   'larger',
-  'smaller'
+  'smaller',
+  'matrix',
+  'bignumber'
 ]
 
 export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
@@ -30,7 +32,9 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
     isPositive,
     isNegative,
     larger,
-    smaller
+    smaller,
+    matrix,
+    bignumber
   }
 ) => {
   /**
@@ -42,9 +46,9 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
      *
      * The arguments are expected as follows.
      *
-     * - `func` should be the forcing function `f(t,y)`
+     * - `func` should be the forcing function `f(t, y)`
      * - `tspan` should be a vector of two numbers or units `[tStart, tEnd]`
-     * - `y0` the initial values, should be a scalar or a flat array
+     * - `y0` the initial state values, should be a scalar or a flat array
      * - `options` should be an object with the following information:
      *   - `method` ('RK45'): ['RK23', 'RK45']
      *   - `tol` (1e-3): A numeric value
@@ -54,6 +58,12 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
      *   - `minDelta` (0.2): minimum ratio of change for the step
      *   - `maxDelta` (5): maximum ratio of change for the step
      *   - `maxIter` (1e4): maximum number of iterations
+     *
+     * The returned value is an object with `{t, y}` please note that even though `t` means time, it can represent any other independant variable like `x`:
+     * - `t` an array of size `[n]`
+     * - `y` the states array can be in two ways
+     *   - **if `y0` is a scalar:** returns an array-like of size `[n]`
+     *   - **if `y0` is a flat array-like of size [m]:** returns an array like of size `[n, m]`
      *
      * Syntax:
      *
@@ -71,7 +81,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
      *
      * See also:
      *
-     *     simplifyCore, derivative, evaluate, parse, rationalize, resolve
+     *     derivative, simplifyCore
      *
      * @param {function} func The forcing function f(t,y)
      * @param {Array | Matrix} tspan The time span
@@ -85,30 +95,37 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
 
     return function (f, T, y0, options) {
       // adaptive runge kutta methods
+      const hasBigNumbers = T.some(isBigNumber) || y0.some(isBigNumber)
 
-      const t0 = T[0] // initial time
-      const tf = T[1] // final time
-      const steps = 1 // divide the time in this number of steps
+      const t0 = hasBigNumbers ? bignumber(T[0]) : T[0] // initial time
+      const tf = hasBigNumbers ? bignumber(T[1]) : T[1] // final time
+      const steps = 1 // divide time in this number of steps
       const tol = options.tol ? options.tol : 1e-4 // define a tolerance (must be an option)
-      const maxStep = options.maxStep
-      const minStep = options.minStep
+      const maxStep = hasBigNumbers ? bignumber(options.maxStep) : options.maxStep
+      const minStep = hasBigNumbers ? bignumber(options.minStep) : options.minStep
       const minDelta = options.minDelta ? options.minDelta : 0.2
       const maxDelta = options.maxDelta ? options.maxDelta : 5
       const maxIter = options.maxIter ? options.maxIter : 10_000 // stop inifite evaluation if something goes wrong
-      const [a, c, b, bp] = [butcherTableau.a, butcherTableau.c, butcherTableau.b, butcherTableau.bp]
-
+      const [a, c, b, bp] = hasBigNumbers
+        ? [
+            bignumber(butcherTableau.a),
+            bignumber(butcherTableau.c),
+            bignumber(butcherTableau.b),
+            bignumber(butcherTableau.bp)
+          ]
+        : [butcherTableau.a, butcherTableau.c, butcherTableau.b, butcherTableau.bp]
       let h = options.firstStep
-        ? options.firstStep
+        ? hasBigNumbers ? bignumber(options.firstStep) : options.firstStep
         : divide(subtract(tf, t0), steps) // define the first step size
-      const t = [t0] // start the time array
-      const y = [y0] // start the solution array
+      const t = hasBigNumbers ? [bignumber(t0)] : [t0] // start the time array
+      const y = hasBigNumbers ? [bignumber(y0)] : [y0] // start the solution array
 
       const dletaB = subtract(b, bp) // b - bp
 
       let n = 0
       let iter = 0
       // iterate unitil it reaches either the final time or maximum iterations
-      while (ongoing(t[n], tf, h) && iter < maxIter) {
+      while (ongoing(t[n], tf, h)) {
         const k = []
 
         // trim the time step so that it doesn't overshoot
@@ -160,6 +177,9 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
           h = isPositive(h) ? abs(minStep) : multiply(-1, abs(minStep))
         }
         iter++
+        if (iter > maxIter) {
+          throw new Error('Maximum number of iterations reached, try changing options')
+        }
       }
       return { t, y }
     }
@@ -216,9 +236,17 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
       RK23: _rk23,
       RK45: _rk45
     }
-    const methodOptions = { ...opt } // clone the options object
-    delete methodOptions.method // delete the method as it won't be needed
-    return methods[method.toUpperCase()](f, T, y0, methodOptions)
+    if (method.toUpperCase() in methods) {
+      const methodOptions = { ...opt } // clone the options object
+      delete methodOptions.method // delete the method as it won't be needed
+      return methods[method.toUpperCase()](f, T, y0, methodOptions)
+    } else {
+      // throw an error indicating there is no such method
+      const methodsWithQuotes = Object.keys(methods).map(x => `"${x}"`)
+      // generates a string of methods like: "BDF", "RK23" and "RK45"
+      const availableMethodsString = `${methodsWithQuotes.slice(0, -1).join(', ')} and ${methodsWithQuotes.slice(-1)}`
+      throw new Error(`Unavailable method "${method}". Available methods are ${availableMethodsString}`)
+    }
   }
 
   function ongoing (t, tf, h) {
@@ -239,16 +267,32 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
       : h
   }
 
+  function _matrixSolveODE (f, T, y0, options) {
+    // receives matrices and returns matrices
+    const sol = _solveODE(f, T.toArray(), y0.toArray(), options)
+    return { t: matrix(sol.t), y: matrix(sol.y) }
+  }
+
   return typed('solveODE', {
     'function, Array, Array, Object': _solveODE,
+    'function, Matrix, Matrix, Object': _matrixSolveODE,
     'function, Array, Array': (f, T, y0) => _solveODE(f, T, y0, {}),
+    'function, Matrix, Matrix': (f, T, y0) => _matrixSolveODE(f, T, y0, {}),
     'function, Array, number | BigNumber | Unit': (f, T, y0) => {
       const sol = _solveODE(f, T, [y0], {})
       return { t: sol.t, y: sol.y.map((Y) => Y[0]) }
     },
+    'function, Matrix, number | BigNumber | Unit': (f, T, y0) => {
+      const sol = _solveODE(f, T.toArray(), [y0], {})
+      return { t: matrix(sol.t), y: matrix(sol.y.map((Y) => Y[0])) }
+    },
     'function, Array, number | BigNumber | Unit, Object': (f, T, y0, options) => {
       const sol = _solveODE(f, T, [y0], options)
       return { t: sol.t, y: sol.y.map((Y) => Y[0]) }
+    },
+    'function, Matrix, number | BigNumber | Unit, Object': (f, T, y0, options) => {
+      const sol = _solveODE(f, T.toArray(), [y0], options)
+      return { t: matrix(sol.t), y: matrix(sol.y.map((Y) => Y[0])) }
     }
   })
 })
