@@ -99,15 +99,15 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
       // adaptive runge kutta methods
       const hasBigNumbers = T.some(isBigNumber) || y0.some(isBigNumber)
       const wrongTSpan = !((isNumeric(T[0]) && isNumeric(T[1])) || (isUnit(T[0]) && isUnit(T[1])))
-      if(wrongTSpan){
+      if (wrongTSpan) {
         throw new Error('"tspan" must be an Array of two numeric values or two units [tStart, tEnd]')
       }
       const t0 = hasBigNumbers ? bignumber(T[0]) : T[0] // initial time
       const tf = hasBigNumbers ? bignumber(T[1]) : T[1] // final time
       const steps = 1 // divide time in this number of steps
       const tol = options.tol ? options.tol : 1e-4 // define a tolerance (must be an option)
-      const maxStep = hasBigNumbers ? bignumber(options.maxStep) : options.maxStep
-      const minStep = hasBigNumbers ? bignumber(options.minStep) : options.minStep
+      const maxStep = options.maxStep ? hasBigNumbers ? bignumber(options.maxStep) : options.maxStep : null
+      const minStep = options.minStep ? hasBigNumbers ? bignumber(options.minStep) : options.minStep : null
       const minDelta = options.minDelta ? options.minDelta : 0.2
       const maxDelta = options.maxDelta ? options.maxDelta : 5
       const maxIter = options.maxIter ? options.maxIter : 10_000 // stop inifite evaluation if something goes wrong
@@ -167,13 +167,22 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
 
         // estimate the delta value that will affect the step size
         const delta = 0.84 * (tol / TE) ** (1 / 5)
-
-        if (delta < minDelta) {
-          h = multiply(h, minDelta)
-        } else if (delta > maxDelta) {
-          h = multiply(h, maxDelta)
+        if (hasBigNumbers) {
+          if (smaller(delta, minDelta)) {
+            h = multiply(h, bignumber(minDelta))
+          } else if (larger(delta, maxDelta)) {
+            h = multiply(h, bignumber(maxDelta))
+          } else {
+            h = multiply(h, bignumber(delta))
+          }
         } else {
-          h = multiply(h, delta)
+          if (delta < minDelta) {
+            h = multiply(h, minDelta)
+          } else if (delta > maxDelta) {
+            h = multiply(h, maxDelta)
+          } else {
+            h = multiply(h, delta)
+          }
         }
 
         if (maxStep && larger(abs(h), abs(maxStep))) {

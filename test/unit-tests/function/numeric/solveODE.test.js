@@ -21,12 +21,13 @@ const map = math.map
 const transpose = math.transpose
 const isMatrix = math.isMatrix
 const bignumber = math.bignumber
+const number = math.number
 
 describe('solveODE', function () {
   function f (t, y) { return subtract(y, t) }
   function exactSol (T, y0) { return add(dotMultiply(subtract(y0, 1), map(transpose([T]), exp)), transpose([T]), 1) } // this is only valid for y' = y - t
   const tspan = [0, 4]
-  const y0 = [1, 2]
+  const y0 = [1.5, 2]
 
   it('should throw an error if the first argument is not a function', function () {
     assert.throws(function () {
@@ -80,12 +81,10 @@ describe('solveODE', function () {
     )
   })
 
-  /*
   it('should solve if the arguments have bignumbers', function () {
     const sol = solveODE(f, bignumber(tspan), bignumber(y0))
-    approx.deepEqual(sol.y, bignumber(exactSol(sol.t, y0)), tol)
+    approx.deepEqual(number(sol.y), exactSol(number(sol.t), y0), tol)
   })
-  */
 
   it('should solve with options even if they are empty', function () {
     const options = {}
@@ -123,7 +122,7 @@ describe('solveODE', function () {
     approx.deepEqual(sol.y, exactSol(sol.t, y0), tol)
   })
 
-  it('should solve with less steps if a higher tolerance is specified', function () {
+  it('should solve with few steps if a higher tolerance is specified', function () {
     const sol = solveODE(f, tspan, y0, { method: 'RK45', tol: 1e-2 })
     assert.deepStrictEqual(
       smallerEq(sol.y.length, 6),
