@@ -13,6 +13,7 @@ const dependencies = [
   'abs',
   'isPositive',
   'isNegative',
+  'isNumeric',
   'larger',
   'smaller',
   'matrix',
@@ -31,6 +32,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
     abs,
     isPositive,
     isNegative,
+    isNumeric,
     larger,
     smaller,
     matrix,
@@ -96,7 +98,10 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
     return function (f, T, y0, options) {
       // adaptive runge kutta methods
       const hasBigNumbers = T.some(isBigNumber) || y0.some(isBigNumber)
-
+      const wrongTSpan = !((isNumeric(T[0]) && isNumeric(T[1])) || (isUnit(T[0]) && isUnit(T[1])))
+      if(wrongTSpan){
+        throw new Error('"tspan" must be an Array of two numeric values or two units [tStart, tEnd]')
+      }
       const t0 = hasBigNumbers ? bignumber(T[0]) : T[0] // initial time
       const tf = hasBigNumbers ? bignumber(T[1]) : T[1] // final time
       const steps = 1 // divide time in this number of steps

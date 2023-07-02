@@ -44,7 +44,7 @@ describe('solveODE', function () {
     assert.throws(function () {
       const wrongTSpan = [tspan[0]]
       solveODE(f, wrongTSpan, y0)
-    }, /TypeError: Unexpected type of argument in function.*/)
+    }, /Error: "tspan" must be an Array of two numeric values.*/)
   })
 
   it('should throw an error if the name of the method is wrong', function () {
