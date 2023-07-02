@@ -97,7 +97,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
 
     return function (f, tspan, y0, options) {
       // adaptive runge kutta methods
-      const hasBigNumbers = tspan.some(isBigNumber) || y0.some(isBigNumber)
+      const hasBigNumbers = [...tspan, ...y0, options.maxStep, options.minStep].some(isBigNumber)
       const wrongTSpan = !((tspan.length === 2) && ((isNumeric(tspan[0]) && isNumeric(tspan[1])) || (isUnit(tspan[0]) && isUnit(tspan[1]))))
       if (wrongTSpan) {
         throw new Error('"tspan" must be an Array of two numeric values or two units [tStart, tEnd]')
