@@ -53,8 +53,8 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
      * - `y0` the initial state values, should be a scalar or a flat array
      * - `options` should be an object with the following information:
      *   - `method` ('RK45'): ['RK23', 'RK45']
-     *   - `tol` (1e-3): A numeric value
-     *   - `firstStep`: A numeric value or unit
+     *   - `tol` (1e-3): Numeric tolerance of the method, the solver keeps the error estimates less than this value
+     *   - `firstStep`: Initial step size
      *   - `minStep`: minimum step size of the method
      *   - `maxStep`: maximum step size of the method
      *   - `minDelta` (0.2): minimum ratio of change for the step
