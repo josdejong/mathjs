@@ -1,4 +1,5 @@
 import approx from '../../../../tools/approx.js'
+import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 
 const freqz = math.freqz
@@ -24,4 +25,8 @@ describe('freqz', function () {
       w: [0, 0.62831853, 1.25663706, 1.88495559, 2.51327412]
     })
   })
+
+  it('should error with negative number of points', function () {
+    assert.throws(function () { freqz([1, 2], [1, 2, 3], -1) }, /w must be a positive number/)
+  }) 
 })

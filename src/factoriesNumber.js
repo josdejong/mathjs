@@ -247,10 +247,6 @@ export { createLargerEqNumber as createLargerEq } from './function/relational/la
 export { createDeepEqual } from './function/relational/deepEqual.js'
 export { createUnequalNumber as createUnequal } from './function/relational/unequal.js'
 
-// signal
-export { createZpk2tf } from './function/signal/zpk2tf.js'
-export { createFreqz } from './function/signal/freqz.js'
-
 // special
 export { createErf } from './function/special/erf.js'
 

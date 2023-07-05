@@ -6,10 +6,11 @@ const dependencies = [
   'typed',
   'add',
   'multiply',
-  '?Complex'
+  'Complex',
+  'number'
 ]
 
-export const createZpk2tf = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, Complex }) => {
+export const createZpk2tf = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, Complex, number }) => {
   /**
      * Compute the transfer function of a zero-pole-gain model.
      *
@@ -19,6 +20,8 @@ export const createZpk2tf = /* #__PURE__ */ factory(name, dependencies, ({ typed
      * Examples:
      *    math.zpk2tf([1, 2], [-1, -2], 1)    // returns [[1, -3, 2], [1, 3, 2]]
      *
+     * See also:
+     *   freqz
      * @param {Array} z
      * @param {Array} p
      * @param {number} k
@@ -35,6 +38,14 @@ export const createZpk2tf = /* #__PURE__ */ factory(name, dependencies, ({ typed
   })
 
   function _zpk2tf (z, p, k) {
+    // if z is bignumber, convert it to number
+    if (z.some((el) => el.type === 'BigNumber')) {
+      z = z.map((el) => number(el))
+    }
+    // if p is bignumber, convert it to number
+    if (p.some((el) => el.type === 'BigNumber')) {
+      p = p.map((el) => number(el))
+    }
     let num = [Complex(1, 0)]
     let den = [Complex(1, 0)]
     for (let i = 0; i < z.length; i++) {

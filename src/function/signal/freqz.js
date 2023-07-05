@@ -6,49 +6,85 @@ const dependencies = [
   'typed',
   'add',
   'multiply',
-  '?Complex',
-  'divide'
+  'Complex',
+  'divide',
+  'matrix'
 ]
 
-export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, Complex, divide }) => {
+export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, Complex, divide, matrix }) => {
   /**
      * Calculates the frequency response of a filter given its numerator and denominator coefficients.
+     * 
+     * Syntax:
+     *    math.freqz(b, a)
+     *    math.freqz(b, a, w)
+     * 
+     * Examples:
+     *   math.freqz([1, 2], [1, 2, 3]) // returns { h: [0.5+0j, 0.49999895+2.04531841e-03j, ..... ], w: [0, 0.00613592, 0.01227185, 0.01840777, 0.02454369, .... ] }
+     *   math.freqz([1, 2], [1, 2, 3], [0, 1]) // returns { h: [0.5+0.j, 0.45436781+0.38598051j], w: [0, 1] }
+     * 
+     * See also:
+     *  zpk2tf
+     * 
      * @param {Array.<number>} b The numerator coefficients of the filter.
      * @param {Array.<number>} a The denominator coefficients of the filter.
-     * @param {Array.<number>} [w] A vector of frequencies (in radians/sample) at which the frequency response is to be computed.
-     * @returns {Array.<number>} The frequency response.
+     * @param {Array.<number>} [w] A vector of frequencies (in radians/sample) at which the frequency response is to be computed or the number of points to compute (if a number is not provided, the default is 512 points)
+     * @returns {Object} An object with two properties: h, a vector containing the complex frequency response, and w, a vector containing the normalized frequencies (in radians/sample) at which the response was computed.
      *
-     * @example
-     *  freqz([1, 2], [1, 2, 3]); // returns [0.5, 0.5]
-     *  freqz([1, 2], [1, 2, 3], [0, 1]); // returns [0.5, 0.5]
      *
      */
   return typed(name, {
     'Array, Array': function (b, a) {
-      return _freqz(b, a)
+      let w = []
+      for (let i = 0; i < 512; i++) {
+        w.push(i / 512 * Math.PI)
+      }
+      return _freqz(b, a, w)
     },
     'Array, Array, Array': function (b, a, w) {
       return _freqz(b, a, w)
     },
     'Array, Array, number': function (b, a, w) {
-      return _freqz(b, a, w)
-    }
-  })
-
-  function _freqz (b, a, w) {
-    if (w === undefined) {
-      w = []
-      for (let i = 0; i < 512; i++) {
-        w.push(i / 512 * Math.PI)
+      if (w < 0) {
+        throw new Error('w must be a positive number')
       }
-    }
-    if (typeof w === 'number') {
       const w2 = []
       for (let i = 0; i < w; i++) {
         w2.push(i / w * Math.PI)
       }
-      w = w2
+      return _freqz(b, a, w2)
+    },
+    'Matrix, Matrix': function (b, a) {
+      const {w, h} = _freqz(b.valueOf(), a.valueOf())
+      return {
+        w: matrix(w),
+        h: matrix(h)
+      }
+    },
+    'Matrix, Matrix, Array': function (b, a, w) {
+      const {h} = _freqz(b.valueOf(), a.valueOf(), w)
+      return {
+        h: matrix(h),
+        w: matrix(w)
+      }
+    },
+    'Matrix, Matrix, number': function (b, a, w) {
+      if (w < 0) {
+        throw new Error('w must be a positive number')
+      }
+      const w2 = []
+      for (let i = 0; i < w; i++) {
+        w2.push(i / w * Math.PI)
+      }
+      const {h} = _freqz(b.valueOf(), a.valueOf(), w2)
+      return {
+        h: matrix(h),
+        w: matrix(w2)
+      }
     }
+  })
+
+  function _freqz (b, a, w) {
     const num = []
     const den = []
     for (let i = 0; i < w.length; i++) {
