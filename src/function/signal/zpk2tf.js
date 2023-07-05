@@ -6,7 +6,7 @@ const dependencies = [
   'typed',
   'add',
   'multiply',
-  'Complex'
+  '?Complex'
 ]
 
 export const createZpk2tf = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, Complex }) => {

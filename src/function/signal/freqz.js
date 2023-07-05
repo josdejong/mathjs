@@ -6,7 +6,7 @@ const dependencies = [
   'typed',
   'add',
   'multiply',
-  'Complex',
+  '?Complex',
   'divide'
 ]
 
