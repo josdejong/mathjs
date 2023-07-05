@@ -2501,7 +2501,7 @@ declare namespace math {
 
     /**
      * Create the intersection of two (multi)sets. Multi-dimension arrays
-     * will be cnverted to single-dimension arrays before the operation.
+     * will be converted to single-dimension arrays before the operation.
      * @param a1 A (multi)set
      * @param a2 A (multi)set
      * @returns The intersection of two (multi)sets
