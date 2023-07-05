@@ -20,7 +20,11 @@ export function assignFactory ({ subset, matrix }) {
     try {
       if (Array.isArray(object)) {
         // we use matrix.subset here instead of the function subset because we must not clone the contents
-        return matrix(object).subset(index, value).valueOf()
+        const temp = matrix(object)
+        // make sure we do have the original array inside the temporary Matrix, we *want* to mutate it
+        temp._data = object
+        temp.subset(index, value)
+        return object
       } else if (object && typeof object.subset === 'function') { // Matrix
         return object.subset(index, value)
       } else if (typeof object === 'string') {
