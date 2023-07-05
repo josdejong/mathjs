@@ -2,6 +2,8 @@
 
 # not yet published, 11.8.3
 
+- Fix #2974: `simplify` puts plus and minus signs next to each other (#2981).
+  Thanks @MaybePixem.
 - Fix #2973: fixes and improvements in the embedded docs (#2976). 
   Thanks @dvd101x.
 
