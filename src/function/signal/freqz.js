@@ -14,18 +14,18 @@ const dependencies = [
 export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, Complex, divide, matrix }) => {
   /**
      * Calculates the frequency response of a filter given its numerator and denominator coefficients.
-     * 
+     *
      * Syntax:
      *    math.freqz(b, a)
      *    math.freqz(b, a, w)
-     * 
+     *
      * Examples:
      *   math.freqz([1, 2], [1, 2, 3], 4) // returns { h: [0.5+0j, 0.47685+0.2861j, 0.2500+0.75j,  -0.770+0.4625j], w: [0, 0.7853981633974483, 1.5707963267948966, 2.356194490192345 ] }
      *   math.freqz([1, 2], [1, 2, 3], [0, 1]) // returns { h: [0.5+0.j, 0.45436781+0.38598051j], w: [0, 1] }
-     * 
+     *
      * See also:
      *  zpk2tf
-     * 
+     *
      * @param {Array.<number>} b The numerator coefficients of the filter.
      * @param {Array.<number>} a The denominator coefficients of the filter.
      * @param {Array.<number>} [w] A vector of frequencies (in radians/sample) at which the frequency response is to be computed or the number of points to compute (if a number is not provided, the default is 512 points)
@@ -35,7 +35,7 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
      */
   return typed(name, {
     'Array, Array': function (b, a) {
-      let w = []
+      const w = []
       for (let i = 0; i < 512; i++) {
         w.push(i / 512 * Math.PI)
       }
@@ -55,14 +55,14 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return _freqz(b, a, w2)
     },
     'Matrix, Matrix': function (b, a) {
-      const {w, h} = _freqz(b.valueOf(), a.valueOf())
+      const { w, h } = _freqz(b.valueOf(), a.valueOf())
       return {
         w: matrix(w),
         h: matrix(h)
       }
     },
     'Matrix, Matrix, Array': function (b, a, w) {
-      const {h} = _freqz(b.valueOf(), a.valueOf(), w)
+      const { h } = _freqz(b.valueOf(), a.valueOf(), w)
       return {
         h: matrix(h),
         w: matrix(w)
@@ -76,7 +76,7 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       for (let i = 0; i < w; i++) {
         w2.push(i / w * Math.PI)
       }
-      const {h} = _freqz(b.valueOf(), a.valueOf(), w2)
+      const { h } = _freqz(b.valueOf(), a.valueOf(), w2)
       return {
         h: matrix(h),
         w: matrix(w2)

@@ -28,5 +28,5 @@ describe('freqz', function () {
 
   it('should error with negative number of points', function () {
     assert.throws(function () { freqz([1, 2], [1, 2, 3], -1) }, /w must be a positive number/)
-  }) 
+  })
 })
