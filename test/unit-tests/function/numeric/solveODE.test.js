@@ -76,19 +76,25 @@ describe('solveODE', function () {
     }, /"firstStep" must be positive/)
   })
 
-  it('should throw an error if the minStep is not positive', function () {
+  it('should throw an error if the minStep is not positive or zero', function () {
     assert.throws(function () {
       solveODE(f, tspan, y0, { minStep: -1 })
-    }, /"minStep" must be positive/)
-    assert.throws(function () {
-      solveODE(f, tspan, y0, { minStep: 0 })
-    }, /"minStep" must be positive/)
+    }, /"minStep" must be positive or zero/)
     assert.throws(function () {
       solveODE(f, tspan, y0, { minStep: unit(-1, 's') })
-    }, /"minStep" must be positive/)
-    assert.throws(function () {
-      solveODE(f, tspan, y0, { minStep: unit(0, 's') })
-    }, /"minStep" must be positive/)
+    }, /"minStep" must be positive or zero/)
+  })
+
+  it('should solve when minStep is zero', function () {
+    const sol = solveODE(f, tspan, y0, { minStep: 0 })
+    approx.deepEqual(sol.y, exactSol(sol.t, y0), tol)
+    const seconds = unit('s')
+    const meters = unit('m')
+    function fWithUnits (t, y) { return subtract(divide(y, seconds), multiply(t, divide(meters, multiply(seconds, seconds)))) }
+    const tspanWithUnits = multiply(tspan, seconds)
+    const y0withUnits = multiply(y0, meters)
+    const solU = solveODE(fWithUnits, tspanWithUnits, y0withUnits, { minStep: unit(0, 's') })
+    approx.deepEqual(divide(solU.y, meters), exactSol(divide(solU.t, seconds), y0), tol)
   })
 
   it('should throw an error if the maxStep is not positive', function () {

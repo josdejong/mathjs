@@ -12,6 +12,7 @@ const dependencies = [
   'map',
   'abs',
   'isPositive',
+  'isNegative',
   'larger',
   'smaller',
   'matrix',
@@ -30,6 +31,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
     map,
     abs,
     isPositive,
+    isNegative,
     larger,
     smaller,
     matrix,
@@ -111,8 +113,8 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
         throw new Error('"maxStep" must be positive')
       }
       const minStep = options.minStep
-      if (minStep !== undefined && !isPositive(minStep)) {
-        throw new Error('"minStep" must be positive')
+      if (minStep && isNegative(minStep)) {
+        throw new Error('"minStep" must be positive or zero')
       }
       const timeVars = [t0, tf, firstStep, minStep, maxStep].filter(x => x !== undefined)
       if (!(timeVars.every(isNumOrBig) || timeVars.every(isUnit))) {
