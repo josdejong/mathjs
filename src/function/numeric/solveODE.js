@@ -1,4 +1,4 @@
-import { isUnit, isBigNumber } from '../../utils/is.js'
+import { isUnit, isNumber, isBigNumber } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'solveODE'
@@ -12,12 +12,11 @@ const dependencies = [
   'map',
   'abs',
   'isPositive',
-  'isNegative',
-  'isNumeric',
   'larger',
   'smaller',
   'matrix',
-  'bignumber'
+  'bignumber',
+  'unaryMinus'
 ]
 
 export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
@@ -31,12 +30,11 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
     map,
     abs,
     isPositive,
-    isNegative,
-    isNumeric,
     larger,
     smaller,
     matrix,
-    bignumber
+    bignumber,
+    unaryMinus
   }
 ) => {
   /**
@@ -97,20 +95,35 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
 
     return function (f, tspan, y0, options) {
       // adaptive runge kutta methods
-      const hasBigNumbers = [...tspan, ...y0, options.maxStep, options.minStep].some(isBigNumber)
-      const wrongTSpan = !((tspan.length === 2) && ((isNumeric(tspan[0]) && isNumeric(tspan[1])) || (isUnit(tspan[0]) && isUnit(tspan[1]))))
+      const wrongTSpan = !((tspan.length === 2) && (tspan.every(isNumOrBig) || tspan.every(isUnit)))
       if (wrongTSpan) {
         throw new Error('"tspan" must be an Array of two numeric values or two units [tStart, tEnd]')
       }
       const t0 = tspan[0] // initial time
       const tf = tspan[1] // final time
+      const isForwards = larger(tf, t0)
+      const firstStep = options.firstStep
+      if (firstStep !== undefined && !isPositive(firstStep)) {
+        throw new Error('"firstStep" must be positive')
+      }
+      const maxStep = options.maxStep
+      if (maxStep !== undefined && !isPositive(maxStep)) {
+        throw new Error('"maxStep" must be positive')
+      }
+      const minStep = options.minStep
+      if (minStep !== undefined && !isPositive(minStep)) {
+        throw new Error('"minStep" must be positive')
+      }
+      const timeVars = [t0, tf, firstStep, minStep, maxStep].filter(x => x !== undefined)
+      if (!(timeVars.every(isNumOrBig) || timeVars.every(isUnit))) {
+        throw new Error('Inconsistent type of "t" dependant variables')
+      }
       const steps = 1 // divide time in this number of steps
       const tol = options.tol ? options.tol : 1e-4 // define a tolerance (must be an option)
-      const maxStep = options.maxStep
-      const minStep = options.minStep
       const minDelta = options.minDelta ? options.minDelta : 0.2
       const maxDelta = options.maxDelta ? options.maxDelta : 5
       const maxIter = options.maxIter ? options.maxIter : 10_000 // stop inifite evaluation if something goes wrong
+      const hasBigNumbers = [t0, tf, ...y0, maxStep, minStep].some(isBigNumber)
       const [a, c, b, bp] = hasBigNumbers
         ? [
             bignumber(butcherTableau.a),
@@ -119,13 +132,14 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
             bignumber(butcherTableau.bp)
           ]
         : [butcherTableau.a, butcherTableau.c, butcherTableau.b, butcherTableau.bp]
-      let h = options.firstStep
-        ? options.firstStep
+
+      let h = firstStep
+        ? isForwards ? firstStep : unaryMinus(firstStep)
         : divide(subtract(tf, t0), steps) // define the first step size
       const t = [t0] // start the time array
       const y = [y0] // start the solution array
 
-      const dletaB = subtract(b, bp) // b - bp
+      const deltaB = subtract(b, bp) // b - bp
 
       let n = 0
       let iter = 0
@@ -134,7 +148,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
         const k = []
 
         // trim the time step so that it doesn't overshoot
-        h = trimStep(t[n], tf, h)
+        h = trimStep(t[n], tf, h, isForwards)
 
         // calculate the first value of k
         k.push(f(t[n], y[n]))
@@ -152,14 +166,14 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
         // estimate the error by comparing solutions of different orders
         const TE = max(
           abs(
-            map(multiply(dletaB, k), (X) =>
+            map(multiply(deltaB, k), (X) =>
               isUnit(X) ? X.value : X
             )
           )
         )
 
         if (TE < tol && tol / TE > 1 / 4) {
-          // if within tol then push everything
+          // push solution if within tol
           t.push(add(t[n], h))
           y.push(add(y[n], multiply(h, b, k)))
           n++
@@ -177,10 +191,10 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
         delta = hasBigNumbers ? bignumber(delta) : delta
         h = multiply(h, delta)
 
-        if (maxStep && larger(abs(h), abs(maxStep))) {
-          h = isPositive(h) ? abs(maxStep) : multiply(-1, abs(maxStep))
-        } else if (minStep && smaller(abs(h), abs(minStep))) {
-          h = isPositive(h) ? abs(minStep) : multiply(-1, abs(minStep))
+        if (maxStep && larger(abs(h), maxStep)) {
+          h = isForwards ? maxStep : unaryMinus(maxStep)
+        } else if (minStep && smaller(abs(h), minStep)) {
+          h = isForwards ? minStep : unaryMinus(minStep)
         }
         iter++
         if (iter > maxIter) {
@@ -262,15 +276,20 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
       : larger(t, tf)
   }
 
-  function trimStep (t, tf, h) {
+  function trimStep (t, tf, h, isForwards) {
     // Trims the time step so that the next step doesn't overshoot
     const next = add(t, h)
     return (
-      (isPositive(h) && larger(next, tf)) ||
-            (isNegative(h) && smaller(next, tf))
+      (isForwards && larger(next, tf)) ||
+            (!isForwards && smaller(next, tf))
     )
       ? subtract(tf, t)
       : h
+  }
+
+  function isNumOrBig (x) {
+    // checks if it's a number or bignumber
+    return isBigNumber(x) || isNumber(x)
   }
 
   function _matrixSolveODE (f, T, y0, options) {

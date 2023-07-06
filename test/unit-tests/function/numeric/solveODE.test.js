@@ -61,6 +61,78 @@ describe('solveODE', function () {
     }, /Maximum number of iterations reached.*/)
   })
 
+  it('should throw an error if the firstStep is not positive', function () {
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { firstStep: -1 })
+    }, /"firstStep" must be positive/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { firstStep: 0 })
+    }, /"firstStep" must be positive/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { firstStep: unit(-1, 's') })
+    }, /"firstStep" must be positive/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { firstStep: unit(0, 's') })
+    }, /"firstStep" must be positive/)
+  })
+
+  it('should throw an error if the minStep is not positive', function () {
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { minStep: -1 })
+    }, /"minStep" must be positive/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { minStep: 0 })
+    }, /"minStep" must be positive/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { minStep: unit(-1, 's') })
+    }, /"minStep" must be positive/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { minStep: unit(0, 's') })
+    }, /"minStep" must be positive/)
+  })
+
+  it('should throw an error if the maxStep is not positive', function () {
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { maxStep: -1 })
+    }, /"maxStep" must be positive/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { maxStep: 0 })
+    }, /"maxStep" must be positive/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { maxStep: unit(-1, 's') })
+    }, /"maxStep" must be positive/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { maxStep: unit(0, 's') })
+    }, /"maxStep" must be positive/)
+  })
+
+  it('should throw an error if the time dependant variables do not match', function () {
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { firstStep: unit(1, 's') })
+    }, /Inconsistent type of "t" dependant variables/)
+    assert.throws(function () {
+      solveODE(f, [unit(tspan[0], 's'), unit(tspan[1], 's')], y0, { maxStep: unit(2, 's'), firstStep: 1 })
+    }, /Inconsistent type of "t" dependant variables/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { firstStep: unit(1, 's') })
+    }, /Inconsistent type of "t" dependant variables/)
+    assert.throws(function () {
+      solveODE(f, [unit(tspan[0], 's'), unit(tspan[1], 's')], y0, { firstStep: 1 })
+    }, /Inconsistent type of "t" dependant variables/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { maxStep: unit(1, 's') })
+    }, /Inconsistent type of "t" dependant variables/)
+    assert.throws(function () {
+      solveODE(f, [unit(tspan[0], 's'), unit(tspan[1], 's')], y0, { maxStep: 1 })
+    }, /Inconsistent type of "t" dependant variables/)
+    assert.throws(function () {
+      solveODE(f, tspan, y0, { minStep: unit(1, 's') })
+    }, /Inconsistent type of "t" dependant variables/)
+    assert.throws(function () {
+      solveODE(f, [unit(tspan[0], 's'), unit(tspan[1], 's')], y0, { minStep: 1 })
+    }, /Inconsistent type of "t" dependant variables/)
+  })
+
   it('should solve close to the analytical solution', function () {
     const sol = solveODE(f, tspan, y0)
     approx.deepEqual(sol.y, exactSol(sol.t, y0), tol)
