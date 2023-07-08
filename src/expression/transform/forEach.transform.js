@@ -1,7 +1,7 @@
-import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
-import { maxArgumentCount } from '../../utils/function.js'
+import { applyCallback } from '../../utils/applyCallback.js'
 import { forEach } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
+import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
 import { compileInlineExpression } from './utils/compileInlineExpression.js'
 
 const name = 'forEach'
@@ -38,9 +38,6 @@ export const createForEachTransform = /* #__PURE__ */ factory(name, dependencies
   // one-based version of forEach
   const _forEach = typed('forEach', {
     'Array | Matrix, function': function (array, callback) {
-      // figure out what number of arguments the callback function expects
-      const args = maxArgumentCount(callback)
-
       const recurse = function (value, index) {
         if (Array.isArray(value)) {
           forEach(value, function (child, i) {
@@ -49,13 +46,7 @@ export const createForEachTransform = /* #__PURE__ */ factory(name, dependencies
           })
         } else {
           // invoke the callback function with the right number of arguments
-          if (args === 1) {
-            callback(value)
-          } else if (args === 2) {
-            callback(value, index)
-          } else { // 3 or -1
-            callback(value, index, array)
-          }
+          return applyCallback(callback, value, index, array, 'forEach')
         }
       }
       recurse(array.valueOf(), []) // pass Array

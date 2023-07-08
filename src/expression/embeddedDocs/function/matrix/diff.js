@@ -14,16 +14,15 @@ export const diffDocs = {
     'If something is passed as a matrix it will be returned as a matrix but other than that all matrices are converted to arrays'
   ],
   examples: [
-    'diff([1, 2, 4, 7, 0])',
-    'diff([1, 2, 4, 7, 0], 0)',
-    'diff(matrix([1, 2, 4, 7, 0]))',
-    'diff([[1, 2], [3, 4]])',
-    'diff([[1, 2], [3, 4]], 0)',
-    'diff([[1, 2], [3, 4]], 1)',
-    'diff([[1, 2], [3, 4]], bignumber(1))',
-    'diff(matrix([[1, 2], [3, 4]]), 1)',
-    'diff([[1, 2], matrix([3, 4])], 1)'
-
+    'A = [1, 2, 4, 7, 0]',
+    'diff(A)',
+    'diff(A, 1)',
+    'B = [[1, 2], [3, 4]]',
+    'diff(B)',
+    'diff(B, 1)',
+    'diff(B, 2)',
+    'diff(B, bignumber(2))',
+    'diff([[1, 2], matrix([3, 4])], 2)'
   ],
   seealso: ['subtract', 'partitionSelect']
 }
