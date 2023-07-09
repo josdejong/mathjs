@@ -21,7 +21,7 @@ describe('subset', function () {
     assert.deepStrictEqual(subset([math.bignumber(2)], index([true])), math.bignumber(2))
   })
 
-  it('should return an empty value with an empty object', function () {
+  it('should return an empty value with an empty index', function () {
     assert.deepStrictEqual(subset(a, index([], 1)), [])
     assert.deepStrictEqual(subset(b, index([], 1)), math.matrix())
   })
@@ -32,7 +32,7 @@ describe('subset', function () {
     assert.deepStrictEqual(math.evaluate('[bignumber(2)][[true]]'), math.bignumber(2))
   })
 
-  it('should return empty values with an empty index in the parser', function () {
+  it('should return empty value with an empty index in the parser', function () {
     assert.deepStrictEqual(math.evaluate('a[[],1]', { a }), [])
     assert.deepStrictEqual(math.evaluate('b[[],1]', { b }), math.matrix())
   })
