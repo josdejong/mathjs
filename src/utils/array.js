@@ -1,5 +1,5 @@
 import { isInteger } from './number.js'
-import { isNumber } from './is.js'
+import { isNumber, isArray, isString } from './is.js'
 import { format } from './string.js'
 import { DimensionError } from '../error/DimensionError.js'
 import { IndexError } from '../error/IndexError.js'
@@ -86,12 +86,38 @@ export function validate (array, size) {
  * @param {number} [length] Length of the array
  */
 export function validateIndex (index, length) {
-  if (!isNumber(index) || !isInteger(index)) {
-    throw new TypeError('Index must be an integer (value: ' + index + ')')
+  if (index !== undefined) {
+    if (!isNumber(index) || !isInteger(index)) {
+      throw new TypeError('Index must be an integer (value: ' + index + ')')
+    }
+    if (index < 0 || (typeof length === 'number' && index >= length)) {
+      throw new IndexError(index, length)
+    }
   }
-  if (index < 0 || (typeof length === 'number' && index >= length)) {
-    throw new IndexError(index, length)
+}
+
+/**
+ * Test if and index has empty values
+ * @param {number} index    Zero-based index
+ */
+export function isEmptyIndex (index) {
+  for (let i = 0; i < index._dimensions.length; ++i) {
+    const dimension = index._dimensions[i]
+    if (isArray(dimension)) {
+      if (dimension.isRange) {
+        if (dimension.start === dimension.end) {
+          return true
+        }
+      } else if (dimension._size[0] === 0) {
+        return true
+      }
+    } else if (isString(dimension)) {
+      if (dimension.length === 0) {
+        return true
+      }
+    }
   }
+  return false
 }
 
 /**
