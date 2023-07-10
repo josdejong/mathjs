@@ -145,12 +145,14 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
 
       let n = 0
       let iter = 0
+      const ongoing = _createOngoing(isForwards)
+      const trimStep = _createTrimStep(isForwards)
       // iterate unitil it reaches either the final time or maximum iterations
-      while (ongoing(t[n], tf, h)) {
+      while (ongoing(t[n], tf)) {
         const k = []
 
         // trim the time step so that it doesn't overshoot
-        h = trimStep(t[n], tf, h, isForwards)
+        h = trimStep(t[n], tf, h)
 
         // calculate the first value of k
         k.push(f(t[n], y[n]))
@@ -271,22 +273,17 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
     }
   }
 
-  function ongoing (t, tf, h) {
-    // returns true if the time has not reached tf for both postitive an negative step (h)
-    return isPositive(h)
-      ? smaller(t, tf)
-      : larger(t, tf)
+  function _createOngoing (isForwards) {
+    // returns the correct function to test if it's still iterating
+    return isForwards ? smaller : larger
   }
 
-  function trimStep (t, tf, h, isForwards) {
-    // Trims the time step so that the next step doesn't overshoot
-    const next = add(t, h)
-    return (
-      (isForwards && larger(next, tf)) ||
-            (!isForwards && smaller(next, tf))
-    )
-      ? subtract(tf, t)
-      : h
+  function _createTrimStep (isForwards) {
+    const outOfBounds = isForwards ? larger : smaller
+    return function (t, tf, h) {
+      const next = add(t, h)
+      return outOfBounds(next, tf) ? subtract(tf, t) : h
+    }
   }
 
   function isNumOrBig (x) {
