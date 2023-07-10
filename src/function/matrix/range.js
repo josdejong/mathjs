@@ -56,41 +56,33 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     'string, boolean': _strRange,
 
     'number, number': function (start, end) {
-      return _out(_rangeEx(start, end, 1))
+      return _out(_range(start, end, 1, false))
     },
     'number, number, number': function (start, end, step) {
-      return _out(_rangeEx(start, end, step))
+      return _out(_range(start, end, step, false))
     },
     'number, number, boolean': function (start, end, includeEnd) {
-      return includeEnd
-        ? _out(_rangeInc(start, end, 1))
-        : _out(_rangeEx(start, end, 1))
+      return _out(_range(start, end, 1, includeEnd))
     },
     'number, number, number, boolean': function (start, end, step, includeEnd) {
-      return includeEnd
-        ? _out(_rangeInc(start, end, step))
-        : _out(_rangeEx(start, end, step))
+      return _out(_range(start, end, step, includeEnd))
     },
 
     'BigNumber, BigNumber': function (start, end) {
       const BigNumber = start.constructor
 
-      return _out(_bigRangeEx(start, end, new BigNumber(1)))
+      return _out(_bigRange(start, end, new BigNumber(1), false))
     },
     'BigNumber, BigNumber, BigNumber': function (start, end, step) {
-      return _out(_bigRangeEx(start, end, step))
+      return _out(_bigRange(start, end, step, false))
     },
     'BigNumber, BigNumber, boolean': function (start, end, includeEnd) {
       const BigNumber = start.constructor
 
-      return includeEnd
-        ? _out(_bigRangeInc(start, end, new BigNumber(1)))
-        : _out(_bigRangeEx(start, end, new BigNumber(1)))
+      return _out(_bigRange(start, end, new BigNumber(1), includeEnd))
     },
     'BigNumber, BigNumber, BigNumber, boolean': function (start, end, step, includeEnd) {
-      return includeEnd
-        ? _out(_bigRangeInc(start, end, step))
-        : _out(_bigRangeEx(start, end, step))
+      return _out(_bigRange(start, end, step, includeEnd))
     }
 
   })
@@ -109,124 +101,62 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       throw new SyntaxError('String "' + str + '" is no valid range')
     }
 
-    let fn
     if (config.number === 'BigNumber') {
       if (bignumber === undefined) {
         noBignumber()
       }
 
-      fn = includeEnd ? _bigRangeInc : _bigRangeEx
-      return _out(fn(
+      return _out(_bigRange(
         bignumber(r.start),
         bignumber(r.end),
-        bignumber(r.step)))
+        bignumber(r.step)),
+      includeEnd)
     } else {
-      fn = includeEnd ? _rangeInc : _rangeEx
-      return _out(fn(r.start, r.end, r.step))
+      return _out(_range(r.start, r.end, r.step, includeEnd))
     }
   }
 
   /**
-   * Create a range with numbers. End is excluded
+   * Create a range with numbers.
    * @param {number} start
    * @param {number} end
    * @param {number} step
+   * @param {boolean} includeEnd
    * @returns {Array} range
    * @private
    */
-  function _rangeEx (start, end, step) {
+  function _range (start, end, step, includeEnd) {
     const array = []
+    const ongoing = step > 0
+      ? includeEnd ? smallerEq : smaller
+      : includeEnd ? largerEq : larger
     let x = start
-    if (step > 0) {
-      while (smaller(x, end)) {
-        array.push(x)
-        x += step
-      }
-    } else if (step < 0) {
-      while (larger(x, end)) {
-        array.push(x)
-        x += step
-      }
+    while (ongoing(x, end)) {
+      array.push(x)
+      x += step
     }
-
     return array
   }
 
   /**
-   * Create a range with numbers. End is included
-   * @param {number} start
-   * @param {number} end
-   * @param {number} step
-   * @returns {Array} range
-   * @private
-   */
-  function _rangeInc (start, end, step) {
-    const array = []
-    let x = start
-    if (step > 0) {
-      while (smallerEq(x, end)) {
-        array.push(x)
-        x += step
-      }
-    } else if (step < 0) {
-      while (largerEq(x, end)) {
-        array.push(x)
-        x += step
-      }
-    }
-
-    return array
-  }
-
-  /**
-   * Create a range with big numbers. End is excluded
+   * Create a range with big numbers.
    * @param {BigNumber} start
    * @param {BigNumber} end
    * @param {BigNumber} step
+   * @param {boolean} includeEnd
    * @returns {Array} range
    * @private
    */
-  function _bigRangeEx (start, end, step) {
+  function _bigRange (start, end, step, includeEnd) {
     const zero = bignumber(0)
     const array = []
+    const ongoing = step.gt(zero)
+      ? includeEnd ? smallerEq : smaller
+      : includeEnd ? largerEq : larger
     let x = start
-    if (step.gt(zero)) {
-      while (smaller(x, end)) {
-        array.push(x)
-        x = x.plus(step)
-      }
-    } else if (step.lt(zero)) {
-      while (larger(x, end)) {
-        array.push(x)
-        x = x.plus(step)
-      }
-    }
-
-    return array
-  }
-
-  /**
-   * Create a range with big numbers. End is included
-   * @param {BigNumber} start
-   * @param {BigNumber} end
-   * @param {BigNumber} step
-   * @returns {Array} range
-   * @private
-   */
-  function _bigRangeInc (start, end, step) {
-    const zero = bignumber(0)
-    const array = []
-    let x = start
-    if (step.gt(zero)) {
-      while (smallerEq(x, end)) {
-        array.push(x)
-        x = x.plus(step)
-      }
-    } else if (step.lt(zero)) {
-      while (largerEq(x, end)) {
-        array.push(x)
-        x = x.plus(step)
-      }
+    while (ongoing(x, end)) {
+      array.push(x)
+      x = x.plus(step)
     }
 
     return array
