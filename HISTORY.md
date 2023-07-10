@@ -6,6 +6,8 @@
   Thanks @MaybePixem.
 - Fix #2973: fixes and improvements in the embedded docs (#2976). 
   Thanks @dvd101x.
+- Fix #2996: two errors in the examples in the documentation about Expression 
+  trees.
 
 
 # 2023-06-20, 11.8.2
