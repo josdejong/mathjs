@@ -25,11 +25,11 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * - `str: string`
    *   A string 'start:end' or 'start:step:end'
-   * - `start: {number | BigNumber}`
+   * - `start: {number | BigNumber | Unit}`
    *   Start of the range
-   * - `end: number | BigNumber`
+   * - `end: number | BigNumber | Unit`
    *   End of the range, excluded by default, included when parameter includeEnd=true
-   * - `step: number | BigNumber`
+   * - `step: number | BigNumber | Unit`
    *   Step size. Default value is 1.
    * - `includeEnd: boolean`
    *   Option to specify whether to include the end or not. False by default.
@@ -82,6 +82,12 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return _out(_range(start, end, new BigNumber(1), includeEnd))
     },
     'BigNumber, BigNumber, BigNumber, boolean': function (start, end, step, includeEnd) {
+      return _out(_range(start, end, step, includeEnd))
+    },
+    'Unit, Unit, Unit': function (start, end, step) {
+      return _out(_range(start, end, step, false))
+    },
+    'Unit, Unit, Unit, boolean': function (start, end, step, includeEnd) {
       return _out(_range(start, end, step, includeEnd))
     }
 
