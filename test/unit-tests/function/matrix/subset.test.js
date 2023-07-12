@@ -4,6 +4,7 @@ const subset = math.subset
 const matrix = math.matrix
 const Range = math.Range
 const index = math.index
+const mathPredictable = math.create({ predictable: true })
 
 describe('subset', function () {
   const a = [[1, 2], [3, 4]]
@@ -19,6 +20,7 @@ describe('subset', function () {
     assert.deepStrictEqual(subset(a, index([true, true], 1)), [[2], [4]])
     assert.deepStrictEqual(subset(a, index([false, true], [true, false])), 3)
     assert.deepStrictEqual(subset([math.bignumber(2)], index([true])), math.bignumber(2))
+    assert.deepStrictEqual(subset(a, mathPredictable.index([false, true], [true, false])), [[3]])
   })
 
   it('should return an empty value with an empty index', function () {

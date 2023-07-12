@@ -4,9 +4,9 @@ import { isInteger } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'Index'
-const dependencies = ['ImmutableDenseMatrix']
+const dependencies = ['config', 'ImmutableDenseMatrix']
 
-export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ ImmutableDenseMatrix }) => {
+export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ config, ImmutableDenseMatrix }) => {
   /**
    * Create an index. An Index can store ranges and sets for multiple dimensions.
    * Matrix.get, Matrix.set, and math.subset accept an Index as input.
@@ -48,7 +48,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
         // size
         const size = m.size()
         // scalar
-        if (size.length !== 1 || size[0] !== 1) {
+        if (config.predictable || (size.length !== 1 || size[0] !== 1)) {
           this._isScalar = false
         }
       } else if (typeof arg === 'number') {
