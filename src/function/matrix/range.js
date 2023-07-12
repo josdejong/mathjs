@@ -2,9 +2,9 @@ import { factory } from '../../utils/factory.js'
 import { noBignumber, noMatrix } from '../../utils/noop.js'
 
 const name = 'range'
-const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq']
+const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq', 'add', 'isPositive']
 
-export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq }) => {
+export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq, add, isPositive }) => {
   /**
    * Create an array from a range.
    * By default, the range end is excluded. This can be customized by providing
@@ -71,18 +71,18 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     'BigNumber, BigNumber': function (start, end) {
       const BigNumber = start.constructor
 
-      return _out(_bigRange(start, end, new BigNumber(1), false))
+      return _out(_range(start, end, new BigNumber(1), false))
     },
     'BigNumber, BigNumber, BigNumber': function (start, end, step) {
-      return _out(_bigRange(start, end, step, false))
+      return _out(_range(start, end, step, false))
     },
     'BigNumber, BigNumber, boolean': function (start, end, includeEnd) {
       const BigNumber = start.constructor
 
-      return _out(_bigRange(start, end, new BigNumber(1), includeEnd))
+      return _out(_range(start, end, new BigNumber(1), includeEnd))
     },
     'BigNumber, BigNumber, BigNumber, boolean': function (start, end, step, includeEnd) {
-      return _out(_bigRange(start, end, step, includeEnd))
+      return _out(_range(start, end, step, includeEnd))
     }
 
   })
@@ -106,7 +106,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         noBignumber()
       }
 
-      return _out(_bigRange(
+      return _out(_range(
         bignumber(r.start),
         bignumber(r.end),
         bignumber(r.step)),
@@ -117,48 +117,24 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   }
 
   /**
-   * Create a range with numbers.
-   * @param {number} start
-   * @param {number} end
-   * @param {number} step
+   * Create a range with numbers or BigNumbers
+   * @param {number | BigNumber} start
+   * @param {number | BigNumber} end
+   * @param {number | BigNumber} step
    * @param {boolean} includeEnd
    * @returns {Array} range
    * @private
    */
   function _range (start, end, step, includeEnd) {
     const array = []
-    const ongoing = step > 0
+    const ongoing = isPositive(step)
       ? includeEnd ? smallerEq : smaller
       : includeEnd ? largerEq : larger
     let x = start
     while (ongoing(x, end)) {
       array.push(x)
-      x += step
+      x = add(x, step)
     }
-    return array
-  }
-
-  /**
-   * Create a range with big numbers.
-   * @param {BigNumber} start
-   * @param {BigNumber} end
-   * @param {BigNumber} step
-   * @param {boolean} includeEnd
-   * @returns {Array} range
-   * @private
-   */
-  function _bigRange (start, end, step, includeEnd) {
-    const zero = bignumber(0)
-    const array = []
-    const ongoing = step.gt(zero)
-      ? includeEnd ? smallerEq : smaller
-      : includeEnd ? largerEq : larger
-    let x = start
-    while (ongoing(x, end)) {
-      array.push(x)
-      x = x.plus(step)
-    }
-
     return array
   }
 
