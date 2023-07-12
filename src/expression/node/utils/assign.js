@@ -19,7 +19,10 @@ export function assignFactory ({ subset, matrix }) {
   return function assign (object, index, value) {
     try {
       if (Array.isArray(object)) {
-        // we use matrix.subset here instead of the function subset because we must not clone the contents
+        // FIXME: here we want to use the matrix.subset method on a plain Array, but we do not have this function
+        //  available right now. We should extract this method into a plain function acting on Arrays.
+        //  For now, we use an ugly workaround to be able to adjust a nested value inside a plain array
+        //  without cloning the array contents.
         const temp = matrix(object)
         // make sure we do have the original array inside the temporary Matrix, we *want* to mutate it
         temp._data = object
