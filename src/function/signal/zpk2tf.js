@@ -34,6 +34,12 @@ export const createZpk2tf = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
     'Array,Array': function (z, p) {
       return _zpk2tf(z, p, 1)
+    },
+    'Matrix,Matrix,number': function (z, p, k) {
+      return _zpk2tf(z.valueOf(), p.valueOf(), k)
+    },
+    'Matrix,Matrix': function (z, p) {
+      return _zpk2tf(z.valueOf(), p.valueOf(), 1)
     }
   })
 

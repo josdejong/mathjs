@@ -2576,7 +2576,7 @@ declare namespace math {
      * @param k Gain of the model
      * @returns The transfer function as array of numerator and denominator
      */
-    zpk2tf<T extends MathCollection>(z: T, p: T, k?: number): { w: T; h: T }
+    zpk2tf<T extends MathCollection>(z: T, p: T, k?: number): T
 
     /**
      * Calculates the frequency response of a filter given its numerator and denominator coefficients.
@@ -5961,10 +5961,9 @@ declare namespace math {
      */
     freqz<T extends number | MathArray | MathArray[]>(
       this: MathJsChain<T>,
-      b: T,
       a: T,
       w?: T | number
-    ): MathJsChain<object>
+    ): MathJsChain<{ w: T; h: T }>
 
     /*************************************************************************
      * Special functions

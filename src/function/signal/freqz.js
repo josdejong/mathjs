@@ -20,8 +20,8 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
      *    math.freqz(b, a, w)
      *
      * Examples:
-     *   math.freqz([1, 2], [1, 2, 3], 4) // returns { h: [0.5+0j, 0.47685+0.2861j, 0.2500+0.75j,  -0.770+0.4625j], w: [0, 0.7853981633974483, 1.5707963267948966, 2.356194490192345 ] }
-     *   math.freqz([1, 2], [1, 2, 3], [0, 1]) // returns { h: [0.5+0.j, 0.45436781+0.38598051j], w: [0, 1] }
+     *   math.freqz([1, 2], [1, 2, 3], 4) // returns { h: [0.5+0i, 0.47685+0.2861i, 0.2500+0.75i,  -0.770+0.4625i], w: [0, 0.7853981633974483, 1.5707963267948966, 2.356194490192345 ] }
+     *   math.freqz([1, 2], [1, 2, 3], [0, 1]) // returns { h: [0.5+0.i, 0.45436781+0.38598051i], w: [0, 1] }
      *
      * See also:
      *  zpk2tf
@@ -35,10 +35,7 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
      */
   return typed(name, {
     'Array, Array': function (b, a) {
-      const w = []
-      for (let i = 0; i < 512; i++) {
-        w.push(i / 512 * Math.PI)
-      }
+      const w = createBins(512)
       return _freqz(b, a, w)
     },
     'Array, Array, Array': function (b, a, w) {
@@ -48,21 +45,19 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       if (w < 0) {
         throw new Error('w must be a positive number')
       }
-      const w2 = []
-      for (let i = 0; i < w; i++) {
-        w2.push(i / w * Math.PI)
-      }
+      const w2 = createBins(w)
       return _freqz(b, a, w2)
     },
     'Matrix, Matrix': function (b, a) {
-      const { w, h } = _freqz(b.valueOf(), a.valueOf())
+      const w = createBins(512)
+      const { w2, h } = _freqz(b.valueOf(), a.valueOf(),w)
       return {
-        w: matrix(w),
+        w: matrix(w2),
         h: matrix(h)
       }
     },
-    'Matrix, Matrix, Array': function (b, a, w) {
-      const { h } = _freqz(b.valueOf(), a.valueOf(), w)
+    'Matrix, Matrix, Matrix': function (b, a, w) {
+      const { h } = _freqz(b.valueOf(), a.valueOf(), w.valueOf())
       return {
         h: matrix(h),
         w: matrix(w)
@@ -72,10 +67,7 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       if (w < 0) {
         throw new Error('w must be a positive number')
       }
-      const w2 = []
-      for (let i = 0; i < w; i++) {
-        w2.push(i / w * Math.PI)
-      }
+      const w2 = createBins(w)
       const { h } = _freqz(b.valueOf(), a.valueOf(), w2)
       return {
         h: matrix(h),
@@ -104,5 +96,13 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       h.push(divide(num[i], den[i]))
     }
     return { h, w }
+  }
+
+  function createBins(n) {
+    const bins = []
+    for (let i = 0; i < n; i++) {
+      bins.push(i)
+    }
+    return bins
   }
 })
