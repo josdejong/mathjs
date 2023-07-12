@@ -1,7 +1,8 @@
 # History
 
-# not yet published, 11.8.3
+# not yet published, 11.9.0
 
+- Implement `solveODE` (#2958). Thanks @dvd101x.
 - Fix #2974: `simplify` puts plus and minus signs next to each other (#2981).
   Thanks @MaybePixem.
 - Fix #2973: fixes and improvements in the embedded docs (#2976). 
