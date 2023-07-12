@@ -50,7 +50,7 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
     'Matrix, Matrix': function (b, a) {
       const w = createBins(512)
-      const { w2, h } = _freqz(b.valueOf(), a.valueOf(),w)
+      const { w2, h } = _freqz(b.valueOf(), a.valueOf(), w)
       return {
         w: matrix(w2),
         h: matrix(h)
@@ -98,10 +98,10 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     return { h, w }
   }
 
-  function createBins(n) {
+  function createBins (n) {
     const bins = []
     for (let i = 0; i < n; i++) {
-      bins.push(i)
+      bins.push(i / n * Math.PI)
     }
     return bins
   }
