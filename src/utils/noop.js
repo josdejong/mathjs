@@ -1,4 +1,3 @@
-
 export function noBignumber () {
   throw new Error('No "bignumber" implementation available')
 }
