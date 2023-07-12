@@ -1,4 +1,4 @@
-import { maxArgumentCount } from '../../utils/function.js'
+import { applyCallback } from '../../utils/applyCallback.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'map'
@@ -26,14 +26,9 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *      return value * value
    *    })  // returns [1, 4, 9]
    *
-   *    // The calling convention for the callback can cause subtleties:
-   *    math.map([1, 2, 3], math.format)
-   *    // throws TypeError: map attempted to call 'format(1,[0])' but argument 2 of type Array does not match expected type number or function or Object or string or boolean
-   *    // [This happens because `format` _can_ take a second argument,
-   *    // but its semantics don't match that of the 2nd argument `map` provides]
-   *
-   *    // To avoid this error, use a function that takes exactly the
-   *    // desired arguments:
+   *    // The callback is normally called with three arguments:
+   *    //    callback(value, index, Array)
+   *    // If you want to call with only one argument, use:
    *    math.map([1, 2, 3], x => math.format(x)) // returns ['1', '2', '3']
    *
    * See also:
@@ -63,9 +58,6 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
  * @private
  */
 function _map (array, callback) {
-  // figure out what number of arguments the callback function expects
-  const args = maxArgumentCount(callback)
-
   const recurse = function (value, index) {
     if (Array.isArray(value)) {
       return value.map(function (child, i) {
@@ -73,34 +65,8 @@ function _map (array, callback) {
         return recurse(child, index.concat(i))
       })
     } else {
-      try {
-        // invoke the callback function with the right number of arguments
-        if (args === 1) {
-          return callback(value)
-        } else if (args === 2) {
-          return callback(value, index)
-        } else { // 3 or -1
-          return callback(value, index, array)
-        }
-      } catch (err) {
-        // But maybe the arguments still weren't right
-        if (err instanceof TypeError &&
-            'data' in err &&
-            err.data.category === 'wrongType') {
-          let newmsg = `map attempted to call '${err.data.fn}(${value}`
-          const indexString = JSON.stringify(index)
-          if (args === 2) {
-            newmsg += ',' + indexString
-          } else if (args !== 1) {
-            newmsg += `,${indexString},${array}`
-          }
-          newmsg += `)' but argument ${err.data.index + 1} of type `
-          newmsg += `${err.data.actual} does not match expected type `
-          newmsg += err.data.expected.join(' or ')
-          throw new TypeError(newmsg)
-        }
-        throw err
-      }
+      // invoke the callback function with the right number of arguments
+      return applyCallback(callback, value, index, array, 'map')
     }
   }
 

@@ -45,6 +45,7 @@ import {
   Unit,
   Node,
   isSymbolNode,
+  MathScalarType,
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -2423,18 +2424,71 @@ min/max return types
 {
   const math = create(all, {})
   expectTypeOf(math.min(1, 2, 3)).toMatchTypeOf<number>()
+  expectTypeOf(math.min([1, 2, 3])).toMatchTypeOf<number>()
   expectTypeOf(
     math.min(math.bignumber('123'), math.bignumber('456'))
   ).toMatchTypeOf<BigNumber>()
+  expectTypeOf(
+    math.min(math.unit('5cm'), math.unit('10cm'))
+  ).toMatchTypeOf<Unit>()
+  expectTypeOf(
+    math.min([math.unit('5cm'), math.unit('10cm')])
+  ).toMatchTypeOf<Unit>()
   expectTypeOf(math.min(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber
+    number | BigNumber | Fraction | Complex | Unit
   >()
+  expectTypeOf(
+    math.min(
+      [
+        [1, 2],
+        [3, 4],
+      ],
+      1
+    )
+  ).toMatchTypeOf<MathScalarType>()
 
   expectTypeOf(math.max(1, 2, 3)).toMatchTypeOf<number>()
+  expectTypeOf(math.max([1, 2, 3])).toMatchTypeOf<number>()
   expectTypeOf(
     math.max(math.bignumber('123'), math.bignumber('456'))
   ).toMatchTypeOf<BigNumber>()
-  expectTypeOf(math.max(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber
+  expectTypeOf(
+    math.max(math.unit('5cm'), math.unit('10cm'))
+  ).toMatchTypeOf<Unit>()
+  expectTypeOf(
+    math.max([math.unit('5cm'), math.unit('10cm')])
+  ).toMatchTypeOf<Unit>()
+  expectTypeOf(
+    math.max(123, math.bignumber('456'))
+  ).toMatchTypeOf<MathScalarType>()
+
+  expectTypeOf(math.mean(1, 2, 3)).toMatchTypeOf<number>()
+  expectTypeOf(math.mean([1, 2, 3])).toMatchTypeOf<number>()
+  expectTypeOf(
+    math.mean(math.bignumber('123'), math.bignumber('456'))
+  ).toMatchTypeOf<BigNumber>()
+  expectTypeOf(
+    math.mean(math.unit('5cm'), math.unit('10cm'))
+  ).toMatchTypeOf<Unit>()
+  expectTypeOf(
+    math.mean([math.unit('5cm'), math.unit('10cm')])
+  ).toMatchTypeOf<Unit>()
+  expectTypeOf(math.mean(123, math.bignumber('456'))).toMatchTypeOf<
+    number | BigNumber | Fraction | Complex | Unit
+  >()
+
+  expectTypeOf(math.median(1, 2, 3)).toMatchTypeOf<number>()
+  expectTypeOf(math.median([1, 2, 3])).toMatchTypeOf<number>()
+  expectTypeOf(
+    math.median(math.bignumber('123'), math.bignumber('456'))
+  ).toMatchTypeOf<BigNumber>()
+  expectTypeOf(
+    math.median(math.unit('5cm'), math.unit('10cm'))
+  ).toMatchTypeOf<Unit>()
+  expectTypeOf(
+    math.median([math.unit('5cm'), math.unit('10cm')])
+  ).toMatchTypeOf<Unit>()
+  expectTypeOf(math.median(123, math.bignumber('456'))).toMatchTypeOf<
+    number | BigNumber | Fraction | Complex | Unit
   >()
 }

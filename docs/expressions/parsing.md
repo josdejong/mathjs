@@ -192,7 +192,7 @@ parser.evaluate('f(x, y) = x^y')        // f(x, y)
 parser.evaluate('f(2, 3)')              // 8
 
 // get and set variables and functions
-const x = parser.get('x')               // x = 7
+const x = parser.get('x')               // x = 3.5
 const f = parser.get('f')               // function
 const g = f(3, 3)                       // g = 27
 parser.set('h', 500)
