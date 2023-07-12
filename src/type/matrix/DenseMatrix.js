@@ -922,22 +922,19 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * Preprocess data, which can be an Array or DenseMatrix with nested Arrays and
    * Matrices. Clones all (nested) Arrays, and replaces all nested Matrices with Arrays
    * @memberof DenseMatrix
-   * @param {Array} data
+   * @param {Array | Matrix} data
    * @return {Array} data
    */
   function preprocess (data) {
-    const clone = data.slice()
-
-    for (let i = 0, ii = clone.length; i < ii; i++) {
-      const elem = clone[i]
-      if (isArray(elem)) {
-        clone[i] = preprocess(elem)
-      } else if (isMatrix(elem)) {
-        clone[i] = preprocess(elem.valueOf())
-      }
+    if (isMatrix(data)) {
+      return preprocess(data.valueOf())
     }
 
-    return clone
+    if (isArray(data)) {
+      return data.map(preprocess)
+    }
+
+    return data
   }
 
   return DenseMatrix
