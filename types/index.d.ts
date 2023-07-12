@@ -5951,8 +5951,7 @@ declare namespace math {
      * Compute the transfer function of a zero-pole-gain model.
      */
     zpk2tf<T extends MathCollection>(
-      this: MathJsChain<T>,
-      z: T,
+      this: MathJsChain<T>, // chained variable will be used as z
       p: T,
       k?: number
     ): MathJsChain<T>
