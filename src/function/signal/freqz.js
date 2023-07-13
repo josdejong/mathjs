@@ -49,10 +49,11 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return _freqz(b, a, w2)
     },
     'Matrix, Matrix': function (b, a) {
-      const w = createBins(512)
-      const { w2, h } = _freqz(b.valueOf(), a.valueOf(), w)
+      // console.log('here')
+      const _w = createBins(512)
+      const { w, h } = _freqz(b.valueOf(), a.valueOf(), _w)
       return {
-        w: matrix(w2),
+        w: matrix(w),
         h: matrix(h)
       }
     },
@@ -67,11 +68,11 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       if (w < 0) {
         throw new Error('w must be a positive number')
       }
-      const w2 = createBins(w)
-      const { h } = _freqz(b.valueOf(), a.valueOf(), w2)
+      const _w = createBins(w)
+      const { h } = _freqz(b.valueOf(), a.valueOf(), _w)
       return {
         h: matrix(h),
-        w: matrix(w2)
+        w: matrix(_w)
       }
     }
   })
