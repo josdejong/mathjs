@@ -28,7 +28,7 @@ describe('freqz', function () {
   })
 
   it('should return the frequency response of a zero-pole-gain model when not given w parameter', function () {
-    const {h,w} = freqz([math.complex(1, 0), math.complex(-1, -5)], [math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)]) 
+    const { h, w } = freqz([math.complex(1, 0), math.complex(-1, -5)], [math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)])
     approx.deepEqual(h.length, 512)
     approx.deepEqual(w.length, 512)
   })
@@ -36,11 +36,10 @@ describe('freqz', function () {
   it('should return the frequency response of a zero-pole-gain model given b and a as matrix and not given w parameter', function () {
     const b = math.matrix([math.complex(1, 0), math.complex(-1, -5)])
     const a = math.matrix([math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)])
-    const {h,w} = freqz(b, a)
-    approx.deepEqual(h._size, [512,])
-    approx.deepEqual(w._size, [512,])
+    const { h, w } = freqz(b, a)
+    approx.deepEqual(h._size, [512])
+    approx.deepEqual(w._size, [512])
   })
-
 
   it('should return the frequency response of a zero-pole-gain model given array as w parameter', function () {
     approx.deepEqual(
