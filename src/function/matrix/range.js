@@ -40,6 +40,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *     math.range(2, -3, -1)   // [2, 1, 0, -1, -2]
    *     math.range('2:1:6')     // [2, 3, 4, 5]
    *     math.range(2, 6, true)  // [2, 3, 4, 5, 6]
+   *     math.range(math.unit(2, 'm'), math.unit(-3, 'm'), math.unit(-1, 'm')) // [2 m, 1 m, 0 m , -1 m, -2 m]
    *
    * See also:
    *
@@ -124,9 +125,9 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
   /**
    * Create a range with numbers or BigNumbers
-   * @param {number | BigNumber} start
-   * @param {number | BigNumber} end
-   * @param {number | BigNumber} step
+   * @param {number | BigNumber | Unit} start
+   * @param {number | BigNumber | Unit} end
+   * @param {number | BigNumber | Unit} step
    * @param {boolean} includeEnd
    * @returns {Array} range
    * @private
