@@ -45,5 +45,4 @@ describe('zpk2tf', function () {
     approx.deepEqual(zpk2tf(math.matrix([math.complex(1, 5)]), math.matrix([math.complex(-2, 0), math.complex(-3, 0)])),
       [[math.complex(1, 0), math.complex(-1, -5)], [math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)]])
   })
-
 })

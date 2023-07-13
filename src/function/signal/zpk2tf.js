@@ -22,10 +22,11 @@ export const createZpk2tf = /* #__PURE__ */ factory(name, dependencies, ({ typed
      *
      * See also:
      *   freqz
-     * @param {Array} z
-     * @param {Array} p
-     * @param {number} k
-     * @return {Array}
+     *
+     * @param {Array} z Array of zeros values
+     * @param {Array} p Array of poles values
+     * @param {number} k Gain value
+     * @return {Array} Two dimensional array containing the numerator (first row) and denominator (second row) polynomials
      *
      */
   return typed(name, {
