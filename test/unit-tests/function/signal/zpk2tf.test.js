@@ -33,4 +33,17 @@ describe('zpk2tf', function () {
     approx.deepEqual(zpk2tf(math.bignumber([1, 5]), math.bignumber([-2, -3])),
       [[math.complex(1, 0), math.complex(-6, 0), math.complex(5, 0)], [math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)]])
   })
+
+  it('should return the transfer function of a zero-pole-gain model with matrix parameters', function () {
+    approx.deepEqual(zpk2tf(math.matrix([math.complex(1, 5)]), math.matrix([math.complex(-2, 0), math.complex(-3, 0)]), 1),
+      [[math.complex(1, 0), math.complex(-1, -5)], [math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)]])
+    approx.deepEqual(zpk2tf(math.matrix([math.complex(1, 5)]), math.matrix([math.complex(-2, 0), math.complex(-3, 0)]), 2),
+      [[math.complex(2, 0), math.complex(-2, -10)], [math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)]])
+  })
+
+  it('should return the transfer function of a zero-pole model with matrix parameters', function () {
+    approx.deepEqual(zpk2tf(math.matrix([math.complex(1, 5)]), math.matrix([math.complex(-2, 0), math.complex(-3, 0)])),
+      [[math.complex(1, 0), math.complex(-1, -5)], [math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)]])
+  })
+
 })

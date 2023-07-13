@@ -5,8 +5,9 @@ import math from '../../../../src/defaultInstance.js'
 const freqz = math.freqz
 
 describe('freqz', function () {
-  it('should return the frequency response of a zero-pole-gain model', function () {
-    approx.deepEqual(freqz([math.complex(1, 0), math.complex(-1, -5)], [math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)], 5), {
+  it('should return the frequency response of a zero-pole-gain model given number as w parameter', function () {
+    approx.deepEqual(
+      freqz([math.complex(1, 0), math.complex(-1, -5)], [math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)], 5), {
       h: [math.complex(0, -0.4166666666666667),
         math.complex(0.08934733914100848, -0.3891571989056336),
         math.complex(0.19350242447606233, -0.43679084380970035),
@@ -23,6 +24,41 @@ describe('freqz', function () {
         math.complex(-4.102237436136192, -5.234357386651877)
       ],
       w: [0, 0.62831853, 1.25663706, 1.88495559, 2.51327412]
+    })
+  })
+
+  it('should return the frequency response of a zero-pole-gain model given array as w parameter', function () {
+    approx.deepEqual(
+      freqz([math.complex(1, 0), math.complex(-1, -5)], [math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)], [0, 1, 2]), {
+      h: [math.complex(0, -0.4166666666666667),
+        math.complex(0.1419346, -0.4055241),
+        math.complex(0.62506469, -0.59840473)
+      ],
+      w: [0, 1, 2]
+    })
+  })
+
+  it('should return the frequency response of a zero-pole-gain model given matrix as b,a and w parameter', function () {
+    approx.deepEqual(
+      freqz(math.matrix([math.complex(1, 0), math.complex(-1, -5)]), math.matrix([math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)]), math.matrix([0, 1, 2])), {
+      h: math.matrix([math.complex(0, -0.4166666666666667),
+        math.complex(0.1419346, -0.4055241),
+        math.complex(0.62506469, -0.59840473)
+      ]),
+      w: math.matrix([0, 1, 2])
+    })
+  })
+
+  it('should return the frequency response of a zero-pole-gain model given matrix as b,a and number as w parameter', function () {
+    approx.deepEqual(
+      freqz(math.matrix([math.complex(1, 0), math.complex(-1, -5)]), math.matrix([math.complex(1, 0), math.complex(5, 0), math.complex(6, 0)]), 5), {
+      h: math.matrix([math.complex(0, -0.4166666666666667),
+        math.complex(0.08934733914100848, -0.3891571989056336),
+        math.complex(0.19350242447606233, -0.43679084380970035),
+        math.complex(0.5068505396172553, -0.5776505671214675),
+        math.complex(1.5607298559987381, -0.26338443553329166)
+      ]),
+      w: math.matrix([0, 0.62831853, 1.25663706, 1.88495559, 2.51327412])
     })
   })
 
