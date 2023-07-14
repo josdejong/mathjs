@@ -6,9 +6,9 @@ import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'subset'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed', 'matrix', 'config']
 
-export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config }) => {
   /**
    * Get or set a subset of a matrix or string.
    *
@@ -63,7 +63,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
       validateIndexSourceSize(value, index)
       const m = matrix(value)
       const subset = m.subset(index) // returns a Matrix
-      return index.isScalar()
+      return (index.isScalar() && !config.predictable)
         ? subset
         : subset.valueOf() // return an Array (like the input)
     },

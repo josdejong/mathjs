@@ -12,9 +12,13 @@ describe('subset', function () {
   const b = math.matrix(a)
 
   it('should get the right subset of an array', function () {
-    // assert.deepStrictEqual(subset(a, index(new Range(0, 2), 1)), [[2], [4]])
+    assert.deepStrictEqual(subset(a, index(new Range(0, 2), 1)), [[2], [4]])
     assert.deepStrictEqual(subset(a, index(1, 0)), 3)
     assert.deepStrictEqual(subset([math.bignumber(2)], index(0)), math.bignumber(2))
+  })
+
+  it('should return the right subset of an array, with the same shape as the array if predictable', function () {
+    assert.deepStrictEqual(mathPredictable.subset(a, index(1, 0)), [[3]])
   })
 
   it('should get the right subset of an array of booleans', function () {

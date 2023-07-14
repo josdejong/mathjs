@@ -9,10 +9,10 @@ import { maxArgumentCount } from '../../utils/function.js'
 
 const name = 'DenseMatrix'
 const dependencies = [
-  'Matrix'
+  'Matrix', 'config'
 ]
 
-export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ Matrix }) => {
+export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ Matrix, config }) => {
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
    * @class DenseMatrix
@@ -231,7 +231,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     }
 
     const isScalar = index.isScalar()
-    if (isScalar) {
+    if (isScalar && !config.predictable) {
       // return a scalar
       return matrix.get(index.min())
     } else {

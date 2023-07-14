@@ -29,7 +29,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ c
    * @Constructor Index
    * @param {...*} ranges
    */
-  function Index(ranges) {
+  function Index (ranges) {
     if (!(this instanceof Index)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -52,7 +52,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ c
 
         if (getMatrixDataType(arg) === 'boolean') {
           if (argIsArray) m = _createImmutableMatrix(_booleansArrayToNumbersForIndex(arg).valueOf())
-          if (argIsMatrix) m = _createImmutableMatrix(_booleansMatrixToNumbersForIndex(arg._data).valueOf())
+          if (argIsMatrix) m = _createImmutableMatrix(_booleansArrayToNumbersForIndex(arg._data).valueOf())
           sourceSize = arg.valueOf().length
         } else {
           m = _createImmutableMatrix(arg.valueOf())
@@ -84,7 +84,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ c
   Index.prototype.type = 'Index'
   Index.prototype.isIndex = true
 
-  function _createImmutableMatrix(arg) {
+  function _createImmutableMatrix (arg) {
     // loop array elements
     for (let i = 0, l = arg.length; i < l; i++) {
       if (typeof arg[i] !== 'number' || !isInteger(arg[i])) {
@@ -296,7 +296,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ c
  * @param {Array} booleanArrayIndex An array of booleans
  * @return {Array} A set of numbers ready for index
  */
-function _booleansArrayToNumbersForIndex(booleanArrayIndex) {
+function _booleansArrayToNumbersForIndex (booleanArrayIndex) {
   // gets an array of booleans and returns an array of numbers
   const indexOfNumbers = []
   booleanArrayIndex.forEach((bool, idx) => {

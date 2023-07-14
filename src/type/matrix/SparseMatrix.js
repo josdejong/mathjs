@@ -11,10 +11,11 @@ const name = 'SparseMatrix'
 const dependencies = [
   'typed',
   'equalScalar',
-  'Matrix'
+  'Matrix',
+  'config'
 ]
 
-export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, Matrix }) => {
+export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, Matrix, config }) => {
   /**
    * Sparse Matrix implementation. This type implements
    * a [Compressed Column Storage](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_column_(CSC_or_CCS))
@@ -260,7 +261,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     }
 
     const isScalar = idx.isScalar()
-    if (isScalar) {
+    if (isScalar && !config.predictable) {
       // return a scalar
       return matrix.get(idx.min())
     }
