@@ -1,5 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
+import { DimensionError } from '../../../../src/error/DimensionError.js'
 const subset = math.subset
 const matrix = math.matrix
 const Range = math.Range
@@ -18,8 +19,8 @@ describe('subset', function () {
 
   it('should get the right subset of an array of booleans', function () {
     assert.deepStrictEqual(subset(a, index([true, true], 1)), [[2], [4]])
-    assert.deepStrictEqual(subset(a, index([false, true], [true, false])), 3)
-    assert.deepStrictEqual(subset([math.bignumber(2)], index([true])), math.bignumber(2))
+    assert.deepStrictEqual(subset(a, index([false, true], [true, false])), [[3]])
+    assert.deepStrictEqual(subset([math.bignumber(2)], index([true])), [math.bignumber(2)])
     assert.deepStrictEqual(subset(a, mathPredictable.index([false, true], [true, false])), [[3]])
   })
 
@@ -30,8 +31,19 @@ describe('subset', function () {
 
   it('should get the right subset of an array of booleans in the parser', function () {
     assert.deepStrictEqual(math.evaluate('a[[true, true], 2]', { a }), [[2], [4]])
-    assert.deepStrictEqual(math.evaluate('a[[false, true], [true, false]]', { a }), 3)
-    assert.deepStrictEqual(math.evaluate('[bignumber(2)][[true]]'), math.bignumber(2))
+    assert.deepStrictEqual(math.evaluate('a[[false, true], [true, false]]', { a }), [[3]])
+    assert.deepStrictEqual(math.evaluate('[bignumber(2)][[true]]'), math.matrix([math.bignumber(2)]))
+  })
+
+  it('should throw an error if the array of booleans doesn\'t have the same size as the array', function () {
+    assert.throws(function () { subset(a, index([true], 0)) }, DimensionError)
+    assert.throws(function () { subset(a, index([true, true, false], 1)) }, DimensionError)
+    assert.throws(function () { subset(a, index(0, [true])) }, DimensionError)
+    assert.throws(function () { subset(a, index(0, [true, true, false])) }, DimensionError)
+    assert.throws(function () { subset(b, index([true], 0)) }, DimensionError)
+    assert.throws(function () { subset(b, index([true, true, false], 1)) }, DimensionError)
+    assert.throws(function () { subset(b, index(0, [true])) }, DimensionError)
+    assert.throws(function () { subset(b, index(0, [true, true, false])) }, DimensionError)
   })
 
   it('should return empty value with an empty index in the parser', function () {

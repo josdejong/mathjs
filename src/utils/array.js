@@ -80,6 +80,21 @@ export function validate (array, size) {
 }
 
 /**
+ * Validate whether the source of the index matches the size of the Array
+ * @param {Array | Matrix} array    Array to be validated
+ * @param {Index} index  Index with the source information to validate
+ * @throws DimensionError
+ */
+export function validateIndexSourceSize (value, index) {
+  const valueSize = value.isMatrix ? value._size : arraySize(value)
+  const sourceSize = index._sourceSize
+  // checks if the source size is not null and matches the valueSize
+  sourceSize.forEach((sourceDim, i) => {
+    if (sourceDim !== null && sourceDim !== valueSize[i]) { throw new DimensionError(sourceDim, valueSize[i]) }
+  })
+}
+
+/**
  * Test whether index is an integer number with index >= 0 and index < length
  * when length is provided
  * @param {number} index    Zero-based index

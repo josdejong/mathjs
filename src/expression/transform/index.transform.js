@@ -1,6 +1,5 @@
 import { isArray, isBigNumber, isMatrix, isNumber, isRange } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
-import { booleansArrayToIndex, booleansMatrixToIndex } from '../../type/matrix/utils/indexBoolean.js'
 
 const name = 'index'
 const dependencies = ['Index', 'getMatrixDataType']
@@ -17,21 +16,14 @@ export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, 
     for (let i = 0, ii = arguments.length; i < ii; i++) {
       let arg = arguments[i]
 
-      // change from one-based to zero based, convert Booleans to Numbers and convert BigNumber to number
+      // change from one-based to zero based, convert BigNumber to number and leave Array of Booleans as is
       if (isRange(arg)) {
         arg.start--
         arg.end -= (arg.step > 0 ? 0 : 2)
       } else if (arg && arg.isSet === true) {
         arg = arg.map(function (v) { return v - 1 })
       } else if (isArray(arg) || isMatrix(arg)) {
-        if (getMatrixDataType(arg) === 'boolean') {
-          if (isArray(arg)) {
-            arg = booleansArrayToIndex(arg)
-          }
-          if (isMatrix(arg)) {
-            arg = booleansMatrixToIndex(arg)
-          }
-        } else {
+        if (getMatrixDataType(arg) !== 'boolean') {
           arg = arg.map(function (v) { return v - 1 })
         }
       } else if (isNumber(arg)) {

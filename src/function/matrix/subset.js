@@ -1,6 +1,6 @@
 import { isIndex } from '../../utils/is.js'
 import { clone } from '../../utils/object.js'
-import { isEmptyIndex, validateIndex } from '../../utils/array.js'
+import { isEmptyIndex, validateIndex, validateIndexSourceSize } from '../../utils/array.js'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
@@ -53,12 +53,14 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *                                          math.matrix elements will be left undefined.
    * @return {Array | Matrix | string} Either the retrieved subset or the updated matrix.
    */
+
   return typed(name, {
     // get subset
     'Array, Index': function (value, index) {
       if (isEmptyIndex(index)) {
         return []
       }
+      validateIndexSourceSize(value, index)
       const m = matrix(value)
       const subset = m.subset(index) // returns a Matrix
       return index.isScalar()
@@ -70,6 +72,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
       if (isEmptyIndex(index)) {
         return matrix()
       }
+      validateIndexSourceSize(value, index)
       return value.subset(index)
     },
 
@@ -82,6 +85,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
       if (isEmptyIndex(index)) {
         return value
       }
+      validateIndexSourceSize(value, index)
       return matrix(clone(value))
         .subset(index, replacement, undefined)
         .valueOf()
@@ -91,6 +95,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
       if (isEmptyIndex(index)) {
         return value
       }
+      validateIndexSourceSize(value, index)
       return matrix(clone(value))
         .subset(index, replacement, defaultValue)
         .valueOf()
@@ -100,6 +105,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
       if (isEmptyIndex(index)) {
         return value
       }
+      validateIndexSourceSize(value, index)
       return value.clone().subset(index, replacement)
     },
 
@@ -107,6 +113,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
       if (isEmptyIndex(index)) {
         return value
       }
+      validateIndexSourceSize(value, index)
       return value.clone().subset(index, replacement, defaultValue)
     },
 
@@ -132,6 +139,7 @@ function _getSubstring (str, index) {
   if (isEmptyIndex(index)) {
     return ''
   }
+  validateIndexSourceSize(Array.from(str), index)
 
   if (index.size().length !== 1) {
     throw new DimensionError(index.size().length, 1)
@@ -170,6 +178,7 @@ function _setSubstring (str, index, replacement, defaultValue) {
   if (isEmptyIndex(index)) {
     return str
   }
+  validateIndexSourceSize(Array.from(str), index)
   if (index.size().length !== 1) {
     throw new DimensionError(index.size().length, 1)
   }
@@ -251,7 +260,6 @@ function _setObjectProperty (object, index, replacement) {
   if (isEmptyIndex(index)) {
     return object
   }
-
   if (index.size().length !== 1) {
     throw new DimensionError(index.size(), 1)
   }

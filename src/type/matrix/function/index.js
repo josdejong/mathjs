@@ -1,11 +1,10 @@
 import { isBigNumber, isMatrix, isArray } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
-import { booleansArrayToIndex, booleansMatrixToIndex } from '../utils/indexBoolean.js'
 
 const name = 'index'
-const dependencies = ['typed', 'Index', 'getMatrixDataType']
+const dependencies = ['typed', 'Index']
 
-export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index, getMatrixDataType }) => {
+export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index }) => {
   /**
    * Create an index. An Index can store ranges having start, step, and end
    * for multiple dimensions.
@@ -47,13 +46,6 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         if (isBigNumber(arg)) {
           return arg.toNumber() // convert BigNumber to Number and Booleans to Numbers
         } else if (isArray(arg) || isMatrix(arg)) {
-          if (getMatrixDataType(arg) === 'boolean') {
-            if (isArray(arg)) {
-              return booleansArrayToIndex(arg)
-            } else if (isMatrix(arg)) {
-              return booleansMatrixToIndex(arg)
-            }
-          }
           return arg.map(function (elem) {
             // convert BigNumber to Number
             return isBigNumber(elem) ? elem.toNumber() : elem
