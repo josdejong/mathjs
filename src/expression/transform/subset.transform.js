@@ -3,10 +3,10 @@ import { errorTransform } from './utils/errorTransform.js'
 import { createSubset } from '../../function/matrix/subset.js'
 
 const name = 'subset'
-const dependencies = ['typed', 'matrix', 'config']
+const dependencies = ['typed', 'matrix', 'config', 'zeros', 'add']
 
-export const createSubsetTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config }) => {
-  const subset = createSubset({ typed, matrix, config })
+export const createSubsetTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config, zeros, add }) => {
+  const subset = createSubset({ typed, matrix, config, zeros, add })
 
   /**
    * Attach a transform function to math.subset

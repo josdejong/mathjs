@@ -6,9 +6,9 @@ import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'subset'
-const dependencies = ['typed', 'matrix', 'config']
+const dependencies = ['typed', 'matrix', 'config', 'zeros', 'add']
 
-export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config }) => {
+export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config, zeros, add }) => {
   /**
    * Get or set a subset of a matrix or string.
    *
@@ -87,7 +87,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
       }
       validateIndexSourceSize(value, index)
       return matrix(clone(value))
-        .subset(index, replacement, undefined)
+        .subset(index, _broadcastReplacement(replacement, index), undefined)
         .valueOf()
     },
 
@@ -106,7 +106,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
         return value
       }
       validateIndexSourceSize(value, index)
-      return value.clone().subset(index, replacement)
+      return value.clone().subset(index, _broadcastReplacement(replacement, index))
     },
 
     'Matrix, Index, any, any': function (value, index, replacement, defaultValue) {
@@ -121,6 +121,21 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
     'string, Index, string, string': _setSubstring,
     'Object, Index, any': _setObjectProperty
   })
+  function _broadcastReplacement (replacement, index) {
+    if (typeof replacement === 'string') {
+      throw new Error('can\'t boradcast a string')
+    }
+    if (index._isScalar) {
+      return replacement
+    }
+
+    const indexSize = index.size()
+    if (indexSize.every(d => d > 0)) {
+      return add(replacement, zeros(indexSize))
+    } else {
+      return replacement
+    }
+  }
 })
 
 /**

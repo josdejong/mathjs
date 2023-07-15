@@ -19,6 +19,7 @@ describe('subset', function () {
 
   it('should return the right subset of an array, with the same shape as the array if predictable', function () {
     assert.deepStrictEqual(mathPredictable.subset(a, index(1, 0)), [[3]])
+    assert.deepStrictEqual(mathPredictable.subset(a, index(0, 1)), [[2]])
   })
 
   it('should get the right subset of an array of booleans', function () {
@@ -108,10 +109,24 @@ describe('subset', function () {
     assert.deepStrictEqual(subset(d, index(0, 0), 123), [[123, 2], [3, 4]])
   })
 
+  it('should set the right subset of an array if the replacement can be broadcasted to the index', function () {
+    assert.deepStrictEqual(d, [[1, 2], [3, 4]])
+    assert.deepStrictEqual(subset(d, index(new Range(0, 2), 1), -2), [[1, -2], [3, -2]])
+    assert.deepStrictEqual(d, [[1, 2], [3, 4]])
+    assert.deepStrictEqual(subset(d, index(2, new Range(0, 2)), [5]), [[1, 2], [3, 4], [5, 5]])
+    assert.deepStrictEqual(d, [[1, 2], [3, 4]])
+    assert.deepStrictEqual(subset(d, index(0, [0, 1]), 123), [[123, 123], [3, 4]])
+  })
+
   it('should set a subset of an array with undefined default value', function () {
     const a = []
     assert.deepStrictEqual(subset(a, index(2), 1), [0, 0, 1])
     assert.deepStrictEqual(subset(a, index(2), 1, null), [null, null, 1])
+  })
+
+  it('should set a subset of an array by broadcasting the replacement', function () {
+    assert.deepStrictEqual(subset(d, index([0, 1], 1), -2), [[1, -2], [3, -2]])
+    // assert.deepStrictEqual(subset(d, index(new Range(0, 2), 1), -2), [[1, -2], [3, -2]])
   })
 
   it('should throw an error if setting the subset of an array with an invalid replacement', function () {
