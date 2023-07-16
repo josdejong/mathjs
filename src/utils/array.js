@@ -775,7 +775,7 @@ export function broadcastTo (array, toSize) {
     Asize = arraySize(A)
   }
 
-  // stretches the arryas on each dimension to make them the same size
+  // stretches the array on each dimension to make it the same size as index
   for (let dim = 0; dim < N; dim++) {
     if (Asize[dim] < broadcastedSize[dim]) {
       A = stretch(A, broadcastedSize[dim], dim)
@@ -783,6 +783,25 @@ export function broadcastTo (array, toSize) {
     }
   }
   return A
+}
+
+/**
+ * Broadcasts arrays and returns the broadcasted arrays in an array
+ * @param  {...Array | any} arrays
+ * @returns
+ */
+export function broadcastArrays (...arrays) {
+  if (arrays.length === 0) {
+    throw new Error('Insuficient number of argumnets in function broadcastArrays')
+  }
+  if (arrays.length === 1) {
+    return arrays[0]
+  }
+  const sizes = arrays.map(function (array) { return arraySize(array) })
+  const broadcastedSize = broadcastSizes(...sizes)
+  const broadcastedArrays = []
+  arrays.forEach(function (array) { broadcastedArrays.push(broadcastTo(array, broadcastedSize)) })
+  return broadcastedArrays
 }
 
 /**

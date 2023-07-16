@@ -14,7 +14,8 @@ import {
   broadcastTo,
   concat,
   checkBroadcastingRules,
-  stretch
+  stretch,
+  broadcastArrays
 } from '../../../src/utils/array.js'
 
 describe('util.array', function () {
@@ -642,6 +643,19 @@ describe('util.array', function () {
       assert.throws(function () { checkBroadcastingRules([2, 2], [3, 2]) })
       assert.throws(function () { checkBroadcastingRules([2, 2], [2, 3]) })
       assert.throws(function () { checkBroadcastingRules([2, 2], [1, 2]) })
+    })
+  })
+
+  describe('broadcastArrays', function () {
+    it('should broadcast many arrays', function () {
+      assert.deepStrictEqual(broadcastArrays([1, 2], [3, 4]), [[1, 2], [3, 4]])
+      assert.deepStrictEqual(broadcastArrays([1, 2], [[3], [4]]), [[[1, 2], [1, 2]], [[3, 3], [4, 4]]])
+      assert.deepStrictEqual(broadcastArrays([1, 2], [[3], [4]], [5, 6]), [[[1, 2], [1, 2]], [[3, 3], [4, 4]], [[5, 6], [5, 6]]])
+    })
+    it('should throw an arryor when the broadcasting rules don\'t apply', function () {
+      assert.throws(function () { broadcastArrays([1, 2], [1, 2, 3]) })
+      assert.throws(function () { broadcastArrays([1, 2], [1, 2, 3], [4, 5]) })
+      assert.throws(function () { broadcastArrays([[1, 2], [1, 2]], [[1, 2, 3]]) })
     })
   })
 })
