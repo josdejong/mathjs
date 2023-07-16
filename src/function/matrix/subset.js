@@ -97,7 +97,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
       }
       validateIndexSourceSize(value, index)
       return matrix(clone(value))
-        .subset(index, replacement, defaultValue)
+        .subset(index, _broadcastReplacement(replacement, index), defaultValue)
         .valueOf()
     },
 
@@ -114,13 +114,21 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
         return value
       }
       validateIndexSourceSize(value, index)
-      return value.clone().subset(index, replacement, defaultValue)
+      return value.clone().subset(index, _broadcastReplacement(replacement, index), defaultValue)
     },
 
     'string, Index, string': _setSubstring,
     'string, Index, string, string': _setSubstring,
     'Object, Index, any': _setObjectProperty
   })
+
+  /**
+   * Broadcasts a replacment value to be the same size as index
+   * @param {number | BigNumber | Array | Matrix} replacement Replacement value to try to broadcast
+   * @param {*} index Index value
+   * @returns broadcasted replacement that matches the size of index
+   */
+
   function _broadcastReplacement (replacement, index) {
     if (typeof replacement === 'string') {
       throw new Error('can\'t boradcast a string')
@@ -131,7 +139,11 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     const indexSize = index.size()
     if (indexSize.every(d => d > 0)) {
-      return add(replacement, zeros(indexSize))
+      try {
+        return add(replacement, zeros(indexSize))
+      } catch (error) {
+        return replacement
+      }
     } else {
       return replacement
     }
@@ -180,7 +192,7 @@ function _getSubstring (str, index) {
  * @param {string} str            string to be replaced
  * @param {Index} index           An index or list of indices (character positions)
  * @param {string} replacement    Replacement string
- * @param {string} [defaultValue] Default value to be uses when resizing
+ * @param {string} [defaultValue] Default value to be used when resizing
  *                                the string. is ' ' by default
  * @returns {string} result
  * @private

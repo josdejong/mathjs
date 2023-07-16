@@ -1,5 +1,5 @@
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
-import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array.js'
+import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo } from '../../utils/array.js'
 import { format } from '../../utils/string.js'
 import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
@@ -321,10 +321,22 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       if (sSize.length !== 0) {
         throw new TypeError('Scalar expected')
       }
-
       matrix.set(index.min(), submatrix, defaultValue)
     } else {
       // set a submatrix
+
+      // broadcast submatrix
+      if (!deepStrictEqual(sSize, iSize)) {
+        try {
+          if (sSize.length === 0) {
+            submatrix = broadcastTo([submatrix], iSize)
+          } else {
+            submatrix = broadcastTo(submatrix, iSize)
+          }
+          sSize = arraySize(submatrix)
+        } catch {
+        }
+      }
 
       // validate dimensions
       if (iSize.length < matrix._size.length) {

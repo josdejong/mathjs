@@ -9,7 +9,12 @@ import {
   squeeze,
   unsqueeze,
   validate,
-  validateIndex
+  validateIndex,
+  broadcastSizes,
+  broadcastTo,
+  concat,
+  checkBroadcastingRules,
+  stretch
 } from '../../../src/utils/array.js'
 
 describe('util.array', function () {
@@ -51,6 +56,10 @@ describe('util.array', function () {
   })
 
   describe('resize', function () {
+    it('should resize a scalar', function () {
+      const a = 0
+      assert.deepStrictEqual(resize(a, [3]), [0, 0, 0])
+    })
     it('should resize a 1 dimensional array', function () {
       let a = []
 
@@ -580,6 +589,59 @@ describe('util.array', function () {
     it('should remove the unique identifier from every element of the array', function () {
       assert.deepStrictEqual(generalize([]), [])
       assert.deepStrictEqual(generalize([{ value: 1, identifier: 0 }, { value: 1, identifier: 1 }, { value: 2, identifier: 0 }]), [1, 1, 2])
+    })
+  })
+
+  describe('broadcastSizes', function () {
+    it('should calculate the broadcasted sizes', function () {
+      assert.deepStrictEqual(broadcastSizes([1, 2], [2, 2]), [2, 2])
+      assert.deepStrictEqual(broadcastSizes([3, 2], [1, 2], [3, 1]), [3, 2])
+    })
+    it('should throw an error when the broadcasting rules are not followed', function () {
+      assert.throws(function () { broadcastSizes([2, 2], [3, 2]) }, /Error: shape missmatch: missmatch is found in arg with shape.*/)
+    })
+  })
+
+  describe('broadcastTo', function () {
+    it('should leave an array as such when broadcasting to the same size', function () {
+      const a = [10, 20]
+      const b = [[10, 20]]
+      assert.deepStrictEqual(broadcastTo(a, [2]), a)
+      assert.deepStrictEqual(broadcastTo(b, [1, 2]), b)
+    })
+    it('should broadcast an array to a certain size', function () {
+      assert.deepStrictEqual(broadcastTo([10, 20], [2, 2]), [[10, 20], [10, 20]])
+      assert.deepStrictEqual(broadcastTo([[10, 20]], [3, 2]), [[10, 20], [10, 20], [10, 20]])
+    })
+    it('should throw an error when not possible to broadcast to', function () {
+      assert.throws(function () { broadcastTo([10, 20], [1]) })
+    })
+  })
+
+  describe('concat', function () {
+    it('should concat arrays', function () {
+      assert.deepStrictEqual(concat([[1, 2]], [[1, 2]], 0), [[1, 2], [1, 2]])
+      assert.deepStrictEqual(concat([[1, 2]], [[1, 2]], 1), [[1, 2, 1, 2]])
+    })
+  })
+
+  describe('stretch', function () {
+    it('should stretch arrays in the specified direction', function () {
+      assert.deepStrictEqual(stretch([[1, 2]], 3, 0), [[1, 2], [1, 2], [1, 2]])
+      assert.deepStrictEqual(stretch([[1, 2]], 3, 1), [[1, 2, 1, 2, 1, 2]])
+    })
+  })
+
+  describe('checkBroadcastingRules', function () {
+    it('should not throw an error if the broadcasting rules are ok', function () {
+      assert.doesNotThrow(function () { checkBroadcastingRules([1, 2], [1, 2]) })
+      assert.doesNotThrow(function () { checkBroadcastingRules([1, 2], [2, 2]) })
+      assert.doesNotThrow(function () { checkBroadcastingRules([2, 1], [2, 2]) })
+    })
+    it('should throw an error if the broadcasting rules are not ok', function () {
+      assert.throws(function () { checkBroadcastingRules([2, 2], [3, 2]) })
+      assert.throws(function () { checkBroadcastingRules([2, 2], [2, 3]) })
+      assert.throws(function () { checkBroadcastingRules([2, 2], [1, 2]) })
     })
   })
 })
