@@ -1989,9 +1989,9 @@ declare namespace math {
       includeEnd?: boolean
     ): Matrix
     range(
-      start: number | BigNumber,
-      end: number | BigNumber,
-      step: number | BigNumber,
+      start: number | BigNumber | Unit,
+      end: number | BigNumber | Unit,
+      step: number | BigNumber | Unit,
       includeEnd?: boolean
     ): Matrix
 
@@ -5453,9 +5453,9 @@ declare namespace math {
       includeEnd?: boolean
     ): MathJsChain<Matrix>
     range(
-      this: MathJsChain<number | BigNumber>,
-      end: number | BigNumber,
-      step: number | BigNumber,
+      this: MathJsChain<number | BigNumber | Unit>,
+      end: number | BigNumber | Unit,
+      step: number | BigNumber | Unit,
       includeEnd?: boolean
     ): MathJsChain<Matrix>
 
