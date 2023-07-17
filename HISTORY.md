@@ -1,10 +1,18 @@
 # History
 
-# not yet published, 11.8.3
+# not yet published, 11.9.0
 
+- Implement function `solveODE` (#2958). Thanks @dvd101x.
+- Implement functions `zpk2tf` and `freqz` (#2988, #2969). Thanks @alykhaled.
 - Fix #2974: `simplify` puts plus and minus signs next to each other (#2981).
   Thanks @MaybePixem.
 - Fix #2973: fixes and improvements in the embedded docs (#2976). 
+  Thanks @dvd101x.
+- Fix #2996: two errors in the examples in the documentation about Expression 
+  trees.
+- Fix round-off errors near zero when converting temperatures (#2962). 
+  Thanks @costerwi.
+- Refactored function `range`, reducing the amount of code (#2995).
   Thanks @dvd101x.
 
 
