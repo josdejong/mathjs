@@ -821,5 +821,5 @@ export function stretch (arrayToStretch, sizeToStretch, dimToStretch) {
  * @returns cloned array
  */
 export function clone (array) {
-  return JSON.parse(JSON.stringify(array))
+  return Object.assign([], array)
 }
