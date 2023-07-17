@@ -123,7 +123,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     }
   }
 
-/**
+  /**
    * Create a range with numbers or BigNumbers
    * @param {number | BigNumber | Unit} start
    * @param {number | BigNumber | Unit} end
