@@ -4,6 +4,7 @@
 
 - Implement function `solveODE` (#2958). Thanks @dvd101x.
 - Implement functions `zpk2tf` and `freqz` (#2988, #2969). Thanks @alykhaled.
+- Implement support for units in function `range` (#2997). Thanks @dvd101x.
 - Fix #2974: `simplify` puts plus and minus signs next to each other (#2981).
   Thanks @MaybePixem.
 - Fix #2973: fixes and improvements in the embedded docs (#2976). 
