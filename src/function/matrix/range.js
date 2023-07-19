@@ -25,11 +25,11 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * - `str: string`
    *   A string 'start:end' or 'start:step:end'
-   * - `start: {number | BigNumber}`
+   * - `start: {number | BigNumber | Unit}`
    *   Start of the range
-   * - `end: number | BigNumber`
+   * - `end: number | BigNumber | Unit`
    *   End of the range, excluded by default, included when parameter includeEnd=true
-   * - `step: number | BigNumber`
+   * - `step: number | BigNumber | Unit`
    *   Step size. Default value is 1.
    * - `includeEnd: boolean`
    *   Option to specify whether to include the end or not. False by default.
@@ -40,6 +40,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *     math.range(2, -3, -1)   // [2, 1, 0, -1, -2]
    *     math.range('2:1:6')     // [2, 3, 4, 5]
    *     math.range(2, 6, true)  // [2, 3, 4, 5, 6]
+   *     math.range(math.unit(2, 'm'), math.unit(-3, 'm'), math.unit(-1, 'm')) // [2 m, 1 m, 0 m , -1 m, -2 m]
    *
    * See also:
    *
@@ -83,6 +84,12 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
     'BigNumber, BigNumber, BigNumber, boolean': function (start, end, step, includeEnd) {
       return _out(_range(start, end, step, includeEnd))
+    },
+    'Unit, Unit, Unit': function (start, end, step) {
+      return _out(_range(start, end, step, false))
+    },
+    'Unit, Unit, Unit, boolean': function (start, end, step, includeEnd) {
+      return _out(_range(start, end, step, includeEnd))
     }
 
   })
@@ -118,9 +125,9 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
   /**
    * Create a range with numbers or BigNumbers
-   * @param {number | BigNumber} start
-   * @param {number | BigNumber} end
-   * @param {number | BigNumber} step
+   * @param {number | BigNumber | Unit} start
+   * @param {number | BigNumber | Unit} end
+   * @param {number | BigNumber | Unit} step
    * @param {boolean} includeEnd
    * @returns {Array} range
    * @private
