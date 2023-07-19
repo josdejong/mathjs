@@ -876,7 +876,7 @@ describe('multiply', function () {
   })
 
   describe('immutable operations', function () {
-    it ('should not mutate the input (arrays)', function () {
+    it('should not mutate the input (arrays)', function () {
       const a = Object.freeze([[1, 2], [3, 4]])
       const b = Object.freeze([[5, 6], [7, 8]])
 
@@ -885,7 +885,7 @@ describe('multiply', function () {
       assert.deepStrictEqual(b, [[5, 6], [7, 8]])
     })
 
-    it ('should not mutate the input (arrays with nested Matrices)', function () {
+    it('should not mutate the input (arrays with nested Matrices)', function () {
       const a = Object.freeze([math.matrix([1, 2]), math.matrix([3, 4])])
       const b = Object.freeze([math.matrix([5, 6]), math.matrix([7, 8])])
 
