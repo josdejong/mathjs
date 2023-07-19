@@ -1,6 +1,6 @@
 # History
 
-# not yet published, 11.9.0
+# 2023-07-19, 11.9.0
 
 - Implement function `solveODE` (#2958). Thanks @dvd101x.
 - Implement functions `zpk2tf` and `freqz` (#2988, #2969). Thanks @alykhaled.
