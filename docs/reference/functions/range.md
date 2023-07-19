@@ -28,11 +28,11 @@ math.range(start, end, step [, includeEnd])  // Create a range with start, step,
 
 - `str: string`
   A string 'start:end' or 'start:step:end'
-- `start: {number | BigNumber}`
+- `start: {number | BigNumber | Unit}`
   Start of the range
-- `end: number | BigNumber`
+- `end: number | BigNumber | Unit`
   End of the range, excluded by default, included when parameter includeEnd=true
-- `step: number | BigNumber`
+- `step: number | BigNumber | Unit`
   Step size. Default value is 1.
 - `includeEnd: boolean`
   Option to specify whether to include the end or not. False by default.
@@ -63,6 +63,7 @@ math.range(2, 6)        // [2, 3, 4, 5]
 math.range(2, -3, -1)   // [2, 1, 0, -1, -2]
 math.range('2:1:6')     // [2, 3, 4, 5]
 math.range(2, 6, true)  // [2, 3, 4, 5, 6]
+math.range(math.unit(2, 'm'), math.unit(-3, 'm'), math.unit(-1, 'm')) // [2 m, 1 m, 0 m , -1 m, -2 m]
 ```
 
 

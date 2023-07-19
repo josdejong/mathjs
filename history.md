@@ -4,6 +4,23 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20230719-1190">2023-07-19, 11.9.0 <a href="#20230719-1190" title="Permalink">#</a></h1>
+
+- Implement function `solveODE`  <a href="https://github.com/josdejong/mathjs/issues/2958">#2958</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Implement functions `zpk2tf` and `freqz`  <a href="https://github.com/josdejong/mathjs/issues/2988">#2988</a>, <a href="https://github.com/josdejong/mathjs/issues/2969">#2969</a>). Thanks <a href="https://github.com/alykhaled">@alykhaled</a>.
+- Implement support for units in function `range`  <a href="https://github.com/josdejong/mathjs/issues/2997">#2997</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2974">#2974</a>: `simplify` puts plus and minus signs next to each other  <a href="https://github.com/josdejong/mathjs/issues/2981">#2981</a>).
+  Thanks <a href="https://github.com/MaybePixem">@MaybePixem</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2973">#2973</a>: fixes and improvements in the embedded docs  <a href="https://github.com/josdejong/mathjs/issues/2976">#2976</a>). 
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2996">#2996</a>: two errors in the examples in the documentation about Expression 
+  trees.
+- Fix round-off errors near zero when converting temperatures  <a href="https://github.com/josdejong/mathjs/issues/2962">#2962</a>). 
+  Thanks <a href="https://github.com/costerwi">@costerwi</a>.
+- Refactored function `range`, reducing the amount of code  <a href="https://github.com/josdejong/mathjs/issues/2995">#2995</a>).
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+
+
 <h1 id="20230620-1182">2023-06-20, 11.8.2 <a href="#20230620-1182" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2971">#2971</a>: improve typings of statistics functions `min`, `max`, `mean`, 

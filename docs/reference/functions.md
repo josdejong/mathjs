@@ -171,6 +171,12 @@ Function | Description
 [math.transpose(x)](functions/transpose.html) | Transpose a matrix.
 [math.zeros(m,&nbsp;n,&nbsp;p,&nbsp;...)](functions/zeros.html) | Create a matrix filled with zeros.
 
+<h2 id="numeric-functions">Numeric functions <a href="#numeric-functions" title="Permalink">#</a></h2>
+
+Function | Description
+---- | -----------
+[math.solveODE(func,&nbsp;tspan,&nbsp;y0)](functions/solveODE.html) | Numerical Integration of Ordinary Differential Equations  Two variable step methods are provided: - "RK23": Bogacki–Shampine method - "RK45": Dormand-Prince method RK5(4)7M (default)  The arguments are expected as follows.
+
 <h2 id="probability-functions">Probability functions <a href="#probability-functions" title="Permalink">#</a></h2>
 
 Function | Description
@@ -217,6 +223,13 @@ Function | Description
 [math.setSize(set)](functions/setSize.html) | Count the number of elements of a (multi)set.
 [math.setSymDifference(set1,&nbsp;set2)](functions/setSymDifference.html) | Create the symmetric difference of two (multi)sets.
 [math.setUnion(set1,&nbsp;set2)](functions/setUnion.html) | Create the union of two (multi)sets.
+
+<h2 id="signal-functions">Signal functions <a href="#signal-functions" title="Permalink">#</a></h2>
+
+Function | Description
+---- | -----------
+[math.freqz(b,&nbsp;a)](functions/freqz.html) | Calculates the frequency response of a filter given its numerator and denominator coefficients.
+[math.zpk2tf(z,&nbsp;p,&nbsp;k)](functions/zpk2tf.html) | Compute the transfer function of a zero-pole-gain model.
 
 <h2 id="special-functions">Special functions <a href="#special-functions" title="Permalink">#</a></h2>
 
