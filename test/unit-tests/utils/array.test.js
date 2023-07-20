@@ -1,4 +1,5 @@
 import assert from 'assert'
+import math from '../../../src/defaultInstance.js'
 import {
   arraySize,
   flatten,
@@ -10,6 +11,7 @@ import {
   unsqueeze,
   validate,
   validateIndex,
+  isEmptyIndex,
   broadcastSizes,
   broadcastTo,
   concat,
@@ -624,6 +626,15 @@ describe('util.array', function () {
       assert.deepStrictEqual(concat([[1, 2]], [[1, 2]], 0), [[1, 2], [1, 2]])
       assert.deepStrictEqual(concat([[1, 2]], [[1, 2]], 1), [[1, 2, 1, 2]])
     })
+    it('should return arrays as such if only one is supplied', function () {
+      assert.deepStrictEqual(concat([[1, 2], [3, 4]], 0), [[1, 2], [3, 4]])
+      assert.deepStrictEqual(concat([1, 2], 0), [1, 2])
+    })
+    it('should throw an error when the wrong number of arguments is supplied', function () {
+      assert.throws(function () { concat([[1, 2], [3, 4]]) })
+      assert.throws(function () { concat(1) })
+      assert.throws(function () { concat() })
+    })
   })
 
   describe('stretch', function () {
@@ -652,10 +663,38 @@ describe('util.array', function () {
       assert.deepStrictEqual(broadcastArrays([1, 2], [[3], [4]]), [[[1, 2], [1, 2]], [[3, 3], [4, 4]]])
       assert.deepStrictEqual(broadcastArrays([1, 2], [[3], [4]], [5, 6]), [[[1, 2], [1, 2]], [[3, 3], [4, 4]], [[5, 6], [5, 6]]])
     })
+    it('should broadcast leave arrays as such when only one is supplied', function () {
+      assert.deepStrictEqual(broadcastArrays([1, 2]), [1, 2], [3, 4])
+      assert.deepStrictEqual(broadcastArrays([[3], [4]]), [[3], [4]])
+      assert.deepStrictEqual(broadcastArrays([[5, 6]]), [[5, 6]])
+    })
     it('should throw an arryor when the broadcasting rules don\'t apply', function () {
       assert.throws(function () { broadcastArrays([1, 2], [1, 2, 3]) })
       assert.throws(function () { broadcastArrays([1, 2], [1, 2, 3], [4, 5]) })
       assert.throws(function () { broadcastArrays([[1, 2], [1, 2]], [[1, 2, 3]]) })
+    })
+    it('should throw an arryor when not enough arguments are supplied', function () {
+      assert.throws(function () { broadcastArrays() })
+    })
+  })
+  describe('isEmptyIndex', function () {
+    it('should detect an empty index in arrays', function () {
+      assert.deepStrictEqual(isEmptyIndex(math.index([])), true)
+      assert.deepStrictEqual(isEmptyIndex(math.index(1)), false)
+      assert.deepStrictEqual(isEmptyIndex(math.index([], 1)), true)
+      assert.deepStrictEqual(isEmptyIndex(math.index(0, 1)), false)
+    })
+    it('should detect an empty index in ranges', function () {
+      assert.deepStrictEqual(isEmptyIndex(math.index(new math.Range(0, 0))), true)
+      assert.deepStrictEqual(isEmptyIndex(math.index(new math.Range(0, 1))), false)
+      assert.deepStrictEqual(isEmptyIndex(math.index(new math.Range(0, 0), 1)), true)
+      assert.deepStrictEqual(isEmptyIndex(math.index(0, new math.Range(0, 1))), false)
+    })
+    it('should detect an empty index in text', function () {
+      assert.deepStrictEqual(isEmptyIndex(math.index('')), true)
+      assert.deepStrictEqual(isEmptyIndex(math.index('someText')), false)
+      assert.deepStrictEqual(isEmptyIndex(math.index('', 1)), true)
+      assert.deepStrictEqual(isEmptyIndex(math.index(0, 'someText')), false)
     })
   })
 })

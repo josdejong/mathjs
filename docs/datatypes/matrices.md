@@ -331,6 +331,44 @@ method `.set()`, the matrix will be resized. By default, new items will be
 initialized with zero, but it is possible to specify an alternative value using
 the optional third argument `defaultValue`.
 
+## Advanced Indexing
+
+It is also possible to use an array of booleans for index. This allows some advanced 
+capabilities as the array can come from conditions of other functions it allows for 
+filtering, replacing many values and setting specific values.
+
+```js
+const q = [1, 2, 3, 4]
+math.subset(q, math.index([true, false, true, false]))      // Array [1, 3]
+// making a filter
+math.subset(q, math.index(math.larger(q, 2)))               // Array [3, 4]
+// a filter with no matches
+math.subset(q, math.index(math.larger(q, 5)))               // Array []
+// setting specific values, please note that the replacement value is broadcasted
+q = math.subset(q, math.index(math.smaller(q, 3)), 0)       // q = [0, 0, 3, 4]
+// it is also possible to replace specific values
+math.subset(q, math.index(math.equal(q, 0)), [1, 2])        // q = [1, 2, 3, 4]
+```
+
+The same can be accomplished in the parser in a much more compact manner. Please note that everything after `#` are comments.
+```js
+math.evaluate(`
+q = [1, 2, 3, 4]
+q[[true, false, true, false]] # Matrix [1, 3]
+q[q>2]                        # Matrix [3, 4]
+q[q>5]                        # Matrix []
+q[q <3] = 0                   # q = [0, 0, 3, 4]
+q[q==0] = [1, 2]              # q = [1, 2, 3, 4]
+`)
+```
+The expression inside the index can be as complex as needed as long it evaluates to an array of booleans of the same size.
+```js
+math.evaluate(`
+q = [1, 2, 3, 4]
+r = [6, 5, 4, 3]
+q[q > 3 and r < 4]     # [4]
+`)
+```
 
 ## Iterating
 

@@ -119,12 +119,12 @@ export function validateIndex (index, length) {
 export function isEmptyIndex (index) {
   for (let i = 0; i < index._dimensions.length; ++i) {
     const dimension = index._dimensions[i]
-    if (isArray(dimension)) {
-      if (dimension.isRange) {
-        if (dimension.start === dimension.end) {
-          return true
-        }
-      } else if (dimension._size[0] === 0) {
+    if (dimension._data && isArray(dimension._data)) {
+      if (dimension._size[0] === 0) {
+        return true
+      }
+    } if (dimension.isRange) {
+      if (dimension.start === dimension.end) {
         return true
       }
     } else if (isString(dimension)) {
@@ -670,7 +670,7 @@ export function contains (array, item) {
  * @return {Array} c            The concatenated matrix
  * @private
  */
-function _concat (a, b, concatDim, dim) {
+function concatRecursive (a, b, concatDim, dim) {
   if (dim < concatDim) {
     // recurse into next dimension
     if (a.length !== b.length) {
@@ -679,7 +679,7 @@ function _concat (a, b, concatDim, dim) {
 
     const c = []
     for (let i = 0; i < a.length; i++) {
-      c[i] = _concat(a[i], b[i], concatDim, dim + 1)
+      c[i] = concatRecursive(a[i], b[i], concatDim, dim + 1)
     }
     return c
   } else {
@@ -702,7 +702,7 @@ export function concat () {
     return arrays[0]
   }
   if (arrays.length > 1) {
-    return arrays.slice(1).reduce(function (A, B) { return _concat(A, B, concatDim, 0) }, arrays[0])
+    return arrays.slice(1).reduce(function (A, B) { return concatRecursive(A, B, concatDim, 0) }, arrays[0])
   } else {
     throw new Error('Wrong number of arguments in function concat')
   }

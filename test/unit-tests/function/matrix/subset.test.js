@@ -5,7 +5,6 @@ const subset = math.subset
 const matrix = math.matrix
 const Range = math.Range
 const index = math.index
-const mathPredictable = math.create({ predictable: true })
 
 describe('subset', function () {
   const a = [[1, 2], [3, 4]]
@@ -17,21 +16,19 @@ describe('subset', function () {
     assert.deepStrictEqual(subset([math.bignumber(2)], index(0)), math.bignumber(2))
   })
 
-  it('should return the right subset of an array, with the same shape as the array if predictable', function () {
-    assert.deepStrictEqual(mathPredictable.subset(a, index(1, 0)), [[3]])
-    assert.deepStrictEqual(mathPredictable.subset(a, index(0, 1)), [[2]])
-  })
-
   it('should get the right subset of an array of booleans', function () {
     assert.deepStrictEqual(subset(a, index([true, true], 1)), [[2], [4]])
     assert.deepStrictEqual(subset(a, index([false, true], [true, false])), [[3]])
     assert.deepStrictEqual(subset([math.bignumber(2)], index([true])), [math.bignumber(2)])
-    assert.deepStrictEqual(subset(a, mathPredictable.index([false, true], [true, false])), [[3]])
   })
 
   it('should return an empty value with an empty index', function () {
     assert.deepStrictEqual(subset(a, index([], 1)), [])
+    assert.deepStrictEqual(subset(a, index(new math.Range(0, 0), 1)), [])
     assert.deepStrictEqual(subset(b, index([], 1)), math.matrix())
+    assert.deepStrictEqual(subset(b, index(new math.Range(0, 0), 1)), math.matrix())
+    assert.deepStrictEqual(subset({ a: 1 }, index('')), undefined)
+    assert.deepStrictEqual(subset('hello', index('')), '')
   })
 
   it('should get the right subset of an array of booleans in the parser', function () {
@@ -51,9 +48,10 @@ describe('subset', function () {
     assert.throws(function () { subset(b, index(0, [true, true, false])) }, DimensionError)
   })
 
-  it('should return empty value with an empty index in the parser', function () {
+  it('should return an empty value with an empty index in the parser', function () {
     assert.deepStrictEqual(math.evaluate('a[[],1]', { a }), [])
     assert.deepStrictEqual(math.evaluate('b[[],1]', { b }), math.matrix())
+    // TODO: add test for objects and strings: currently throws no access property when it's ""
   })
 
   it('should throw an error if trying to access an invalid subset of an array', function () {
@@ -126,7 +124,7 @@ describe('subset', function () {
 
   it('should set a subset of an array by broadcasting the replacement', function () {
     assert.deepStrictEqual(subset(d, index([0, 1], 1), -2), [[1, -2], [3, -2]])
-    // assert.deepStrictEqual(subset(d, index(new Range(0, 2), 1), -2), [[1, -2], [3, -2]])
+    assert.deepStrictEqual(subset(d, index(new Range(0, 2), 1), -2), [[1, -2], [3, -2]])
   })
 
   it('should throw an error if setting the subset of an array with an invalid replacement', function () {

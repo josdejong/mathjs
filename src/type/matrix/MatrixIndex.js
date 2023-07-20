@@ -300,7 +300,9 @@ function _booleansArrayToNumbersForIndex (booleanArrayIndex) {
   // gets an array of booleans and returns an array of numbers
   const indexOfNumbers = []
   booleanArrayIndex.forEach((bool, idx) => {
-    if (bool) indexOfNumbers.push(idx)
+    if (bool) {
+      indexOfNumbers.push(idx)
+    }
   })
   return indexOfNumbers
 }
