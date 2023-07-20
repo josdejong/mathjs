@@ -3,6 +3,8 @@ import math from '../../../../src/defaultInstance.js'
 const range = math.range
 const matrix = math.matrix
 const bignumber = math.bignumber
+const unit = math.unit
+const evaluate = math.evaluate
 
 describe('range', function () {
   it('should parse a valid string correctly', function () {
@@ -84,6 +86,18 @@ describe('range', function () {
     assert.throws(function () { bigmath.range('1:a') }, /is no valid range/)
   })
 
+  it('should create a range with units', function () {
+    assert.deepStrictEqual(range(unit(1, 'm'), unit(3, 'm'), unit(1, 'm')), matrix([unit(1, 'm'), unit(2, 'm')]))
+    assert.deepStrictEqual(range(unit(3, 'm'), unit(1, 'm'), unit(-1, 'm')), matrix([unit(3, 'm'), unit(2, 'm')]))
+  })
+
+  it('should parse a range with units', function () {
+    assert.deepStrictEqual(evaluate('1m:1m:3m'), matrix([unit(1, 'm'), unit(2, 'm'), unit(3, 'm')]))
+    assert.deepStrictEqual(evaluate('3m:-1m:0m'), matrix([unit(3, 'm'), unit(2, 'm'), unit(1, 'm'), unit(0, 'm')]))
+    assert.deepStrictEqual(evaluate('range(1m,3m,1m)'), matrix([unit(1, 'm'), unit(2, 'm'), unit(3, 'm')]))
+    assert.deepStrictEqual(evaluate('range(3m,0m,-1m)'), matrix([unit(3, 'm'), unit(2, 'm'), unit(1, 'm'), unit(0, 'm')]))
+  })
+
   it('should gracefully handle round-off errors', function () {
     assert.deepStrictEqual(range(1, 2, 0.1, true)._size, [11])
     assert.deepStrictEqual(range(0.1, 0.2, 0.01, true)._size, [11])
@@ -129,8 +143,12 @@ describe('range', function () {
     assert.throws(function () { range('invalid range') }, SyntaxError)
   })
 
-  it('should throw an error if called with a unit', function () {
+  it('should throw an error if called with a single unit value', function () {
     assert.throws(function () { range(math.unit('5cm')) }, TypeError)
+  })
+
+  it('should throw an error if called with a single only two units value', function () {
+    assert.throws(function () { range(math.unit('0cm'), math.unit('5cm')) }, TypeError)
   })
 
   it('should throw an error if called with a complex number', function () {
