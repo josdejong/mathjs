@@ -85,6 +85,7 @@ const webpackConfig = {
     globalObject: 'this',
     filename: FILE
   },
+  node: false, // to make sure Webpack doesn't generate 'new Function("return this")' in the bundle output, see https://github.com/josdejong/mathjs/issues/3001
   plugins: [
     bannerPlugin
     // new webpack.optimize.ModuleConcatenationPlugin()

@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 11.9.0
+
+- Fix #3001: mathjs bundle containing `new Function(...)` (CSP issue).
+
+
 # 2023-07-19, 11.9.0
 
 - Implement function `solveODE` (#2958). Thanks @dvd101x.
