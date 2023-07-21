@@ -71,6 +71,7 @@ describe('subset', function () {
     const obj = { foo: 'bar' }
     const i = index('a', 'b')
     assert.throws(function () { subset(obj, i) }, /DimensionError/)
+    assert.throws(function () { subset(obj, 'notAnIndex') }, /TypeError.*/)
   })
 
   it('should get the right subset of a matrix', function () {
@@ -107,6 +108,19 @@ describe('subset', function () {
     assert.deepStrictEqual(subset(d, index(0, 0), 123), [[123, 2], [3, 4]])
   })
 
+  it('should leave arrays as such if the index is empty', function () {
+    assert.deepStrictEqual(subset(d, index([], 1), 1), d)
+    assert.deepStrictEqual(subset(d, index(1, new Range(0, 0)), 1), d)
+    assert.deepStrictEqual(subset(d, index([], 1), 1, 1), d)
+    assert.deepStrictEqual(subset(d, index(1, new Range(0, 0)), 1, 1), d)
+    assert.deepStrictEqual(subset(g, index([], 1), 1), g)
+    assert.deepStrictEqual(subset(g, index(1, new Range(0, 0)), 1), g)
+    assert.deepStrictEqual(subset(g, index([], 1), 1, 1), g)
+    assert.deepStrictEqual(subset(g, index(1, new Range(0, 0)), 1, 1), g)
+    assert.deepStrictEqual(subset('hello', index([]), 'x'), 'hello')
+    assert.deepStrictEqual(subset('hello', index([]), 'x', 'x'), 'hello')
+  })
+
   it('should set the right subset of an array if the replacement can be broadcasted to the index', function () {
     assert.deepStrictEqual(d, [[1, 2], [3, 4]])
     assert.deepStrictEqual(subset(d, index(new Range(0, 2), 1), -2), [[1, -2], [3, -2]])
@@ -116,18 +130,38 @@ describe('subset', function () {
     assert.deepStrictEqual(subset(d, index(0, [0, 1]), 123), [[123, 123], [3, 4]])
   })
 
+  it('should set the right subset of an array or matrix with default value if the replacement can\'t be broadcasted to the index', function () {
+    assert.deepStrictEqual(subset(d, index(2, 1), 7, 0), [[1, 2], [3, 4], [0, 7]])
+    assert.deepStrictEqual(subset(g, index(2, 1), 7, 0), math.matrix([[1, 2], [3, 4], [0, 7]]))
+    assert.deepStrictEqual(subset(d, index(1, 2), 7, 0), [[1, 2, 0], [3, 4, 7]])
+    assert.deepStrictEqual(subset(g, index(1, 2), 7, 0), math.matrix([[1, 2, 0], [3, 4, 7]]))
+  })
+
   it('should set a subset of an array with undefined default value', function () {
     const a = []
     assert.deepStrictEqual(subset(a, index(2), 1), [0, 0, 1])
     assert.deepStrictEqual(subset(a, index(2), 1, null), [null, null, 1])
   })
 
-  it('should set a subset of an array by broadcasting the replacement', function () {
+  it('should set a subset of an array or matrix by broadcasting the replacement', function () {
     assert.deepStrictEqual(subset(d, index([0, 1], 1), -2), [[1, -2], [3, -2]])
     assert.deepStrictEqual(subset(d, index(new Range(0, 2), 1), -2), [[1, -2], [3, -2]])
+    assert.deepStrictEqual(subset(g, index([0, 1], 1), -2), math.matrix([[1, -2], [3, -2]]))
+    assert.deepStrictEqual(subset(g, index(new Range(0, 2), 1), -2), math.matrix([[1, -2], [3, -2]]))
   })
 
-  it('should throw an error if setting the subset of an array with an invalid replacement', function () {
+  it('should throw an error if setting the subset of an array with an invalid array of booleans', function () {
+    assert.throws(function () { subset(d, index([true], 0), 123) }, DimensionError)
+    assert.throws(function () { subset(d, index(0, [true, false, true]), 123) }, DimensionError)
+    assert.throws(function () { subset(g, index([true], 0), 123) }, DimensionError)
+    assert.throws(function () { subset(g, index(0, [true, false, true]), 123) }, DimensionError)
+    assert.throws(function () { subset(d, index([true], 0), 123, 1) }, DimensionError)
+    assert.throws(function () { subset(d, index(0, [true, false, true]), 123, 1) }, DimensionError)
+    assert.throws(function () { subset(g, index([true], 0), 123, 1) }, DimensionError)
+    assert.throws(function () { subset(g, index(0, [true, false, true]), 123, 1) }, DimensionError)
+  })
+
+  it('should throw an error if setting the subset of an array with an invalid index', function () {
     assert.throws(function () { subset(d, index(1), 123) }, RangeError)
     assert.throws(function () { subset(d, index(1.3, 0), 123) }, TypeError)
   })
@@ -183,6 +217,15 @@ describe('subset', function () {
       const res = subset(obj, index('foo'), 'bar')
       assert.deepStrictEqual(res, { foo: 'bar' })
       assert.deepStrictEqual(obj, {}) // should leave the original object untouched
+      const res2 = subset(obj, index(''), 'bar')
+      assert.deepStrictEqual(res2, {}) // should leave the original object untouched
+    })
+
+    it('should throw an error when attempting to index an object with something other than a string', function () {
+      const obj = { foo: 'bar' }
+      assert.throws(function () { subset(obj, index(1)) }, /TypeError/)
+      assert.throws(function () { subset(obj, index([1]), 1) }, /TypeError/)
+      assert.throws(function () { subset(obj, index([true]), 1, 1) }, /TypeError/)
     })
 
     it('should throw an error if setting the subset of a string with an invalid replacement', function () {
@@ -202,6 +245,7 @@ describe('subset', function () {
     it('should throw an error if in case of an invalid index type', function () {
       assert.throws(function () { subset('hello', 2) }, /TypeError: Unexpected type of argument/)
       assert.throws(function () { subset('hello', 2, 'A') }, /TypeError: Unexpected type of argument/)
+      assert.throws(function () { subset('hello', 2, 'A', 'B') }, /TypeError: Unexpected type of argument/)
     })
   })
 
