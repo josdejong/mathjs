@@ -59,9 +59,8 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
   return typed(name, {
     'Array|Matrix, number|BigNumber|Array': (data, prob) => quantileSeq(data, prob, false),
     'Array|Matrix, number|BigNumber|Array, boolean': quantileSeq,
-    'Array|Matrix, number|BigNumber|Array, number': (data, prob, dim) => _quantileSeqDim(data, prob, false, dim)
-
-    // '...any': (args) => quantileSeq(...args)
+    'Array|Matrix, number|BigNumber|Array, number': (data, prob, dim) => _quantileSeqDim(data, prob, false, dim),
+    'Array|Matrix, number|BigNumber|Array, boolean, number': (data, prob, sorted, dim) => _quantileSeqDim(data, prob, sorted, dim)
   })
 
   function _quantileSeqDim (data, prob, sorted, dim) {

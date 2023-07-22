@@ -33,6 +33,28 @@ describe('quantileSeq', function () {
     assert.deepStrictEqual(quantileSeq(arr, 0.5, 1), [2.9000000000000004, 3.2])
     assert.deepStrictEqual(quantileSeq(arr, 0.75, 1), [3.2499999999999996, 3.6499999999999995])
     assert.deepStrictEqual(quantileSeq(arr, 1, 1), [3.7, 4.1])
+    assert.deepStrictEqual(quantileSeq(arr, 0, false, 1), [1.3, 1.2])
+    assert.deepStrictEqual(quantileSeq(arr, 0.25, false, 1), [2.325, 2.675])
+    assert.deepStrictEqual(quantileSeq(arr, 0.5, false, 1), [2.9000000000000004, 3.2])
+    assert.deepStrictEqual(quantileSeq(arr, 0.75, false, 1), [3.2499999999999996, 3.6499999999999995])
+    assert.deepStrictEqual(quantileSeq(arr, 1, false, 1), [3.7, 4.1])
+  })
+
+  it('should return the quantileSeq from a multidimensional array in the specified dimension in the parser', function () {
+    const arr = [
+      [3.7, 2.7, 3.3, 1.3, 2.2, 3.1],
+      [3.8, 2.5, 3.2, 1.2, 3.2, 4.1]
+    ]
+    assert.deepStrictEqual(math.evaluate('quantileSeq(arr, 0, 2)', { arr }), [1.3, 1.2])
+    assert.deepStrictEqual(quantileSeq(arr, 0.25, 1), [2.325, 2.675])
+    assert.deepStrictEqual(quantileSeq(arr, 0.5, 1), [2.9000000000000004, 3.2])
+    assert.deepStrictEqual(quantileSeq(arr, 0.75, 1), [3.2499999999999996, 3.6499999999999995])
+    assert.deepStrictEqual(quantileSeq(arr, 1, 1), [3.7, 4.1])
+    assert.deepStrictEqual(quantileSeq(arr, 0, false, 1), [1.3, 1.2])
+    assert.deepStrictEqual(quantileSeq(arr, 0.25, false, 1), [2.325, 2.675])
+    assert.deepStrictEqual(quantileSeq(arr, 0.5, false, 1), [2.9000000000000004, 3.2])
+    assert.deepStrictEqual(quantileSeq(arr, 0.75, false, 1), [3.2499999999999996, 3.6499999999999995])
+    assert.deepStrictEqual(quantileSeq(arr, 1, false, 1), [3.7, 4.1])
   })
 
   it('should return the quantileSeq from an ascending array with number probability', function () {
