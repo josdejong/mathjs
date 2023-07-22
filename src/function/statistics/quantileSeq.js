@@ -1,15 +1,16 @@
 import { isBigNumber, isCollection, isNumber } from '../../utils/is.js'
-import { isInteger } from '../../utils/number.js'
 import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
+import { createApply } from '../matrix/apply.js'
 
 const name = 'quantileSeq'
-const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare']
+const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare', 'isInteger']
 
-export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare }) => {
+export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare, isInteger }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
-   * The sequence is sorted and the middle value is returned.
+   * The sequence is sorted and the middle value is returned. If the value
+   * lays in between then a linear approximation is used.
    * Supported types of sequence values are: Number, BigNumber, Unit
    * Supported types of probability are: Number, BigNumber
    *
@@ -41,6 +42,33 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param {Boolean} sorted=false              is data sorted in ascending order
    * @return {Number, BigNumber, Unit, Array}   Quantile(s)
    */
+
+  const apply = createApply({ typed, isInteger })
+  /**
+   * Check if array value types are valid, throw error otherwise.
+   * @param {number | BigNumber | Unit} x
+   * @param {number | BigNumber | Unit} x
+   * @private
+   */
+  const validate = typed({
+    'number | BigNumber | Unit': function (x) {
+      return x
+    }
+  })
+
+  return typed(name, {
+    'Array|Matrix, number|BigNumber|Array': (data, prob) => quantileSeq(data, prob, false),
+    'Array|Matrix, number|BigNumber|Array, boolean': quantileSeq,
+    'Array|Matrix, number|BigNumber|Array, number': (data, prob, dim) => _quantileSeqDim(data, prob, false, dim)
+
+    // '...any': (args) => quantileSeq(...args)
+  })
+
+  function _quantileSeqDim (data, prob, sorted, dim) {
+    // return [1.3, 1.2]
+    return apply(data, dim, x => quantileSeq(x, prob, sorted))
+  }
+
   function quantileSeq (data, probOrN, sorted) {
     let probArr, dataArr, one
 
@@ -238,18 +266,4 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
     const one = new fracPart.constructor(1)
     return add(multiply(left, one.minus(fracPart)), multiply(right, fracPart))
   }
-
-  /**
-   * Check if array value types are valid, throw error otherwise.
-   * @param {number | BigNumber | Unit} x
-   * @param {number | BigNumber | Unit} x
-   * @private
-   */
-  const validate = typed({
-    'number | BigNumber | Unit': function (x) {
-      return x
-    }
-  })
-
-  return quantileSeq
 })
