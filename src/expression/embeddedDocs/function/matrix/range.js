@@ -16,6 +16,7 @@ export const rangeDocs = {
     'range(3, 7)',
     'range(0, 12, 2)',
     'range("4:10")',
+    'range(1m, 1m, 3m)',
     'a = [1, 2, 3, 4; 5, 6, 7, 8]',
     'a[1:2, 1:2]'
   ],

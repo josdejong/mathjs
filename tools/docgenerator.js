@@ -7,7 +7,7 @@
  */
 const fs = require('fs')
 const glob = require('glob')
-const mkdirp = require('mkdirp')
+const { mkdirp } = require('mkdirp')
 const del = require('del')
 const log = require('fancy-log')
 

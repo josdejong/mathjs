@@ -259,6 +259,8 @@ export { createResolve } from './function/algebra/resolve.js'
 export { createSymbolicEqual } from './function/algebra/symbolicEqual.js'
 export { createDerivative } from './function/algebra/derivative.js'
 export { createRationalize } from './function/algebra/rationalize.js'
+export { createZpk2tf } from './function/signal/zpk2tf.js'
+export { createFreqz } from './function/signal/freqz.js'
 export { createReviver } from './json/reviver.js'
 export { createReplacer } from './json/replacer.js'
 export {
