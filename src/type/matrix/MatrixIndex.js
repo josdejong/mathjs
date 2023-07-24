@@ -292,7 +292,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 }, { isClass: true })
 
 /**
- * Receives an array of boolenas and returns an array of Numbers for Index
+ * Receives an array of booleans and returns an array of Numbers for Index
  * @param {Array} booleanArrayIndex An array of booleans
  * @return {Array} A set of numbers ready for index
  */

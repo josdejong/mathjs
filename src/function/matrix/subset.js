@@ -65,7 +65,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
       validateIndexSourceSize(value, index)
       const m = matrix(value)
       const subset = m.subset(index) // returns a Matrix
-      return (index.isScalar())
+      return index.isScalar()
         ? subset
         : subset.valueOf() // return an Array (like the input)
     },
