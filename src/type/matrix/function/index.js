@@ -44,7 +44,7 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     '...number | string | BigNumber | Range | Array | Matrix': function (args) {
       const ranges = args.map(function (arg) {
         if (isBigNumber(arg)) {
-          return arg.toNumber() // convert BigNumber to Number and Booleans to Numbers
+          return arg.toNumber() // convert BigNumber to Number
         } else if (isArray(arg) || isMatrix(arg)) {
           return arg.map(function (elem) {
             // convert BigNumber to Number
@@ -59,6 +59,5 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       Index.apply(res, ranges)
       return res
     }
-  }
-  )
+  })
 })
