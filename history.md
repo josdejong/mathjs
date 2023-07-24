@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20230724-1191">2023-07-24, 11.9.1 <a href="#20230724-1191" title="Permalink">#</a></h1>
+
+- Fix a security vulnerability in `FunctionNode` and `SymbolNode` allowing
+  arbitrary code execution via `math.evaluate`. Thanks Harry Chen.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3001">#3001</a>: mathjs bundle containing `new Function(...)` (CSP issue).
+
+
 <h1 id="20230719-1190">2023-07-19, 11.9.0 <a href="#20230719-1190" title="Permalink">#</a></h1>
 
 - Implement function `solveODE`  <a href="https://github.com/josdejong/mathjs/issues/2958">#2958</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
