@@ -2,6 +2,8 @@
 
 # unpublished changes since 11.9.0
 
+- Fix a security vulnerability in `FunctionNode` and `SymbolNode` allowing
+  arbitrary code execution via `math.evaluate`. Thanks Harry Chen.
 - Fix #3001: mathjs bundle containing `new Function(...)` (CSP issue).
 
 
