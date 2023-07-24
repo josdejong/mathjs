@@ -88,12 +88,14 @@ function isSafeProperty (object, prop) {
  * Throws an error when that's not the case.
  * @param {Object} object
  * @param {string} method
+ * @return {function} Returns the method when valid
  */
-// TODO: merge this function into assign.js?
-function validateSafeMethod (object, method) {
+function getSafeMethod (object, method) {
   if (!isSafeMethod(object, method)) {
     throw new Error('No access to method "' + method + '"')
   }
+
+  return object[method]
 }
 
 /**
@@ -158,6 +160,6 @@ export { setSafeProperty }
 export { isSafeProperty }
 export { hasSafeProperty }
 export { getSafeProperties }
-export { validateSafeMethod }
+export { getSafeMethod }
 export { isSafeMethod }
 export { isPlainObject }

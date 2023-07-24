@@ -1,7 +1,13 @@
 // test boolean utils
 import assert from 'assert'
 
-import { isPlainObject, isSafeMethod, isSafeProperty } from '../../../src/utils/customs.js'
+import {
+  getSafeMethod,
+  getSafeProperty,
+  isPlainObject,
+  isSafeMethod,
+  isSafeProperty
+} from '../../../src/utils/customs.js'
 import math from '../../../src/defaultInstance.js'
 
 describe('customs', function () {
@@ -110,6 +116,20 @@ describe('customs', function () {
     })
   })
 
+  describe('getSafeMethod', function () {
+    it('should return a method when safe', function () {
+      const obj = { getName: () => 'Joe' }
+
+      assert.strictEqual(getSafeMethod(obj, 'getName'), obj.getName)
+    })
+
+    it('should throw an exception when a method is unsafe', function () {
+      assert.throws(() => {
+        getSafeMethod(Function, 'constructor')
+      }, /Error: No access to method "constructor"/)
+    })
+  })
+
   describe('isSafeProperty', function () {
     it('should test properties on plain objects', function () {
       const object = {}
@@ -157,6 +177,32 @@ describe('customs', function () {
       const array2 = Object.create(array1)
       array2.length = Infinity
       assert.strictEqual(isSafeProperty(array2, 'length'), true)
+    })
+  })
+
+  describe('getSafeProperty', function () {
+    it('should return a method when safe', function () {
+      const obj = { getName: () => 'Joe' }
+
+      assert.strictEqual(getSafeProperty(obj, 'getName'), obj.getName)
+    })
+
+    it('should return a property when safe', function () {
+      const obj = { username: 'Joe' }
+
+      assert.strictEqual(getSafeProperty(obj, 'username'), 'Joe')
+    })
+
+    it('should throw an exception when a method is unsafe', function () {
+      assert.throws(() => {
+        getSafeProperty(Function, 'constructor')
+      }, /Error: No access to property "constructor"/)
+    })
+
+    it('should throw an exception when a property is unsafe', function () {
+      assert.throws(() => {
+        getSafeProperty({ constructor: 'test' }, 'constructor')
+      }, /Error: No access to property "constructor"/)
     })
   })
 
