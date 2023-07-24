@@ -123,7 +123,7 @@ export function isEmptyIndex (index) {
       if (dimension._size[0] === 0) {
         return true
       }
-    } if (dimension.isRange) {
+    } else if (dimension.isRange) {
       if (dimension.start === dimension.end) {
         return true
       }

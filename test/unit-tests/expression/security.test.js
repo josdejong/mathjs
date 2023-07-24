@@ -362,6 +362,16 @@ describe('security', function () {
     assert.throws(function () { math.evaluate('unit("5cm").valueOf') }, /Cannot access method "valueOf" as a property/)
   })
 
+  it('should not allow accessing constructor via FunctionNode.name', function () {
+    assert.throws(function () {
+      // could execute a nodejs script like "return process.mainModule.require(child_process).execSync(whoami)"
+      const result = math.evaluate('evalFunctionNode=parse("constructor(\'return process.version\')")._compile({},{});' +
+        'f=evalFunctionNode(null,cos);' +
+        'f()')
+      console.warn('Hacked! node.js version:', result.entries[0])
+    }, /No access to property "constructor"/)
+  })
+
   it('should not have access to specific namespaces', function () {
     Object.keys(math.expression.mathWithTransform).forEach(function (name) {
       const value = math.expression.mathWithTransform[name]
