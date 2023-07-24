@@ -6,7 +6,7 @@ const del = require('del')
 const log = require('fancy-log')
 const webpack = require('webpack')
 const babel = require('gulp-babel')
-const mkdirp = require('mkdirp')
+const { mkdirp } = require('mkdirp')
 const docgenerator = require('./tools/docgenerator')
 const entryGenerator = require('./tools/entryGenerator')
 const validateAsciiChars = require('./tools/validateAsciiChars')
@@ -85,6 +85,7 @@ const webpackConfig = {
     globalObject: 'this',
     filename: FILE
   },
+  node: false, // to make sure Webpack doesn't generate 'new Function("return this")' in the bundle output, see https://github.com/josdejong/mathjs/issues/3001
   plugins: [
     bannerPlugin
     // new webpack.optimize.ModuleConcatenationPlugin()

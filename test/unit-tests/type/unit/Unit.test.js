@@ -297,6 +297,21 @@ describe('Unit', function () {
       assert.strictEqual(u4.fixPrefix, true)
     })
 
+    it('should avoid round-off in offset conversions', function () {
+      assert.strictEqual(math.unit('-218.79 degC').to('degF').toString(), '-361.822 degF')
+      assert.strictEqual(math.unit('-40 degC').to('degF').toString(), '-40 degF')
+      assert.strictEqual(math.unit('32 degF').to('degC').toString(), '0 degC')
+      assert.strictEqual(math.unit('68 degF').to('degC').toString(), '20 degC')
+      assert.strictEqual(math.unit('98.6 degF').to('degC').toString(), '37 degC')
+      assert.strictEqual(math.unit('212 degF').to('degC').toString(), '100 degC')
+    })
+
+    it('should avoid bignumber round-off in offset conversions', function () {
+      assert.deepEqual(math.unit(math.bignumber(32), 'degF').toNumeric('degC'), math.bignumber(0))
+      assert.deepEqual(math.unit(math.bignumber(10.5), 'degC').toNumeric('degF'), math.bignumber(50.9))
+      assert.deepEqual(math.unit(math.bignumber(98.6), 'degF').toNumeric('degC'), math.bignumber(37))
+    })
+
     it('should convert a unit with a fraction', function () {
       const u1 = new Unit(math.fraction(1, 3), 'm')
 
