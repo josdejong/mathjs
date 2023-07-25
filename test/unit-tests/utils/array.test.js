@@ -615,6 +615,7 @@ describe('util.array', function () {
     it('should broadcast an array to a certain size', function () {
       assert.deepStrictEqual(broadcastTo([10, 20], [2, 2]), [[10, 20], [10, 20]])
       assert.deepStrictEqual(broadcastTo([[10, 20]], [3, 2]), [[10, 20], [10, 20], [10, 20]])
+      assert.deepStrictEqual(broadcastTo([1, 2, 3], [1, 2, 3]), [[[1, 2, 3], [1, 2, 3]]])
     })
     it('should throw an error when not possible to broadcast to', function () {
       assert.throws(function () { broadcastTo([10, 20], [1]) })
