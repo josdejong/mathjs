@@ -59,9 +59,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
   return typed(name, {
     // get subset
     'Array, Index': function (value, index) {
-      if (isEmptyIndex(index)) {
-        return []
-      }
+      if (isEmptyIndex(index)) { return [] }
       validateIndexSourceSize(value, index)
       const m = matrix(value)
       const subset = m.subset(index) // returns a Matrix
@@ -71,9 +69,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'Matrix, Index': function (value, index) {
-      if (isEmptyIndex(index)) {
-        return matrix()
-      }
+      if (isEmptyIndex(index)) { return matrix() }
       validateIndexSourceSize(value, index)
       return value.subset(index)
     },
@@ -84,9 +80,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     // set subset
     'Array, Index, any': function (value, index, replacement) {
-      if (isEmptyIndex(index)) {
-        return value
-      }
+      if (isEmptyIndex(index)) { return value }
       validateIndexSourceSize(value, index)
       return matrix(clone(value))
         .subset(index, _broadcastReplacement(replacement, index), undefined)
@@ -94,9 +88,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'Array, Index, any, any': function (value, index, replacement, defaultValue) {
-      if (isEmptyIndex(index)) {
-        return value
-      }
+      if (isEmptyIndex(index)) { return value }
       validateIndexSourceSize(value, index)
       return matrix(clone(value))
         .subset(index, _broadcastReplacement(replacement, index), defaultValue)
@@ -104,17 +96,13 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'Matrix, Index, any': function (value, index, replacement) {
-      if (isEmptyIndex(index)) {
-        return value
-      }
+      if (isEmptyIndex(index)) { return value }
       validateIndexSourceSize(value, index)
       return value.clone().subset(index, _broadcastReplacement(replacement, index))
     },
 
     'Matrix, Index, any, any': function (value, index, replacement, defaultValue) {
-      if (isEmptyIndex(index)) {
-        return value
-      }
+      if (isEmptyIndex(index)) { return value }
       validateIndexSourceSize(value, index)
       return value.clone().subset(index, _broadcastReplacement(replacement, index), defaultValue)
     },
@@ -165,9 +153,7 @@ function _getSubstring (str, index) {
     throw new TypeError('Index expected')
   }
 
-  if (isEmptyIndex(index)) {
-    return ''
-  }
+  if (isEmptyIndex(index)) { return '' }
   validateIndexSourceSize(Array.from(str), index)
 
   if (index.size().length !== 1) {
@@ -204,9 +190,7 @@ function _setSubstring (str, index, replacement, defaultValue) {
     // TODO: better error message
     throw new TypeError('Index expected')
   }
-  if (isEmptyIndex(index)) {
-    return str
-  }
+  if (isEmptyIndex(index)) { return str }
   validateIndexSourceSize(Array.from(str), index)
   if (index.size().length !== 1) {
     throw new DimensionError(index.size().length, 1)
@@ -261,9 +245,7 @@ function _setSubstring (str, index, replacement, defaultValue) {
  * @private
  */
 function _getObjectProperty (object, index) {
-  if (isEmptyIndex(index)) {
-    return undefined
-  }
+  if (isEmptyIndex(index)) { return undefined }
 
   if (index.size().length !== 1) {
     throw new DimensionError(index.size(), 1)
@@ -286,9 +268,7 @@ function _getObjectProperty (object, index) {
  * @private
  */
 function _setObjectProperty (object, index, replacement) {
-  if (isEmptyIndex(index)) {
-    return object
-  }
+  if (isEmptyIndex(index)) { return object }
   if (index.size().length !== 1) {
     throw new DimensionError(index.size(), 1)
   }
