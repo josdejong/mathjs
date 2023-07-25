@@ -760,7 +760,7 @@ export function checkBroadcastingRules (size, toSize) {
  */
 export function broadcastTo (array, toSize) {
   let Asize = arraySize(array)
-  if (deepStrictEqual(array, toSize)) {
+  if (deepStrictEqual(Asize, toSize)) {
     return array
   }
   checkBroadcastingRules(Asize, toSize)
