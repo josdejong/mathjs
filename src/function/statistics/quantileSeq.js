@@ -9,8 +9,7 @@ const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare', 
 export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare, isInteger }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
-   * The sequence is sorted and the middle value is returned. If the value
-   * lays in between then a linear approximation is used.
+   * The sequence is sorted and the middle value is returned.
    * Supported types of sequence values are: Number, BigNumber, Unit
    * Supported types of probability are: Number, BigNumber
    *
