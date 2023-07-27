@@ -58,54 +58,46 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
   return typed(name, {
     // get subset
-    'Array, Index': function (value, index) {
-      if (isEmptyIndex(index)) { return [] }
-      validateIndexSourceSize(value, index)
-      const m = matrix(value)
-      const subset = m.subset(index) // returns a Matrix
-      return index.isScalar()
-        ? subset
-        : subset.valueOf() // return an Array (like the input)
-    },
-
     'Matrix, Index': function (value, index) {
       if (isEmptyIndex(index)) { return matrix() }
       validateIndexSourceSize(value, index)
       return value.subset(index)
     },
 
+    'Array, Index': typed.referTo('Matrix, Index', function (subsetRef) {
+      return function (value, index) {
+        const subsetResult = subsetRef(matrix(value), index)
+        return index.isScalar() ? subsetResult : subsetResult.valueOf()
+      }
+    }),
+
     'Object, Index': _getObjectProperty,
 
     'string, Index': _getSubstring,
 
     // set subset
-    'Array, Index, any': function (value, index, replacement) {
-      if (isEmptyIndex(index)) { return value }
-      validateIndexSourceSize(value, index)
-      return matrix(clone(value))
-        .subset(index, _broadcastReplacement(replacement, index), undefined)
-        .valueOf()
-    },
-
-    'Array, Index, any, any': function (value, index, replacement, defaultValue) {
-      if (isEmptyIndex(index)) { return value }
-      validateIndexSourceSize(value, index)
-      return matrix(clone(value))
-        .subset(index, _broadcastReplacement(replacement, index), defaultValue)
-        .valueOf()
-    },
-
-    'Matrix, Index, any': function (value, index, replacement) {
-      if (isEmptyIndex(index)) { return value }
-      validateIndexSourceSize(value, index)
-      return value.clone().subset(index, _broadcastReplacement(replacement, index))
-    },
-
     'Matrix, Index, any, any': function (value, index, replacement, defaultValue) {
       if (isEmptyIndex(index)) { return value }
       validateIndexSourceSize(value, index)
       return value.clone().subset(index, _broadcastReplacement(replacement, index), defaultValue)
     },
+
+    'Array, Index, any, any': typed.referTo('Matrix, Index, any, any', function (subsetRef) {
+      return function (value, index, replacement, defaultValue) {
+        const subsetResult = subsetRef(matrix(value), index, replacement, defaultValue)
+        return subsetResult.isMatrix ? subsetResult.valueOf() : subsetResult
+      }
+    }),
+
+    'Array, Index, any': typed.referTo('Matrix, Index, any, any', function (subsetRef) {
+      return function (value, index, replacement) {
+        return subsetRef(matrix(value), index, replacement, undefined).valueOf()
+      }
+    }),
+
+    'Matrix, Index, any': typed.referTo('Matrix, Index, any, any', function (subsetRef) {
+      return function (value, index, replacement) { return subsetRef(value, index, replacement, undefined) }
+    }),
 
     'string, Index, string': _setSubstring,
     'string, Index, string, string': _setSubstring,
