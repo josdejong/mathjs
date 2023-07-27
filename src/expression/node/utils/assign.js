@@ -19,8 +19,14 @@ export function assignFactory ({ subset, matrix }) {
   return function assign (object, index, value) {
     try {
       if (Array.isArray(object)) {
-        // we use matrix.subset here instead of the function subset because we must not clone the contents
-        return matrix(object).subset(index, value).valueOf()
+        const result = matrix(object).subset(index, value).valueOf()
+
+        // shallow copy all (updated) items into the original array
+        result.forEach((item, index) => {
+          object[index] = item
+        })
+
+        return object
       } else if (object && typeof object.subset === 'function') { // Matrix
         return object.subset(index, value)
       } else if (typeof object === 'string') {
