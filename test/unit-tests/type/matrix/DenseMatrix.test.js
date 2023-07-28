@@ -158,6 +158,34 @@ describe('DenseMatrix', function () {
     it('should throw an error when called with invalid datatype', function () {
       assert.throws(function () { console.log(new DenseMatrix([], 1)) })
     })
+
+    it('should not mutate the input data when creating a Matrix (1)', function () {
+      const data = [[1, 2]]
+      Object.freeze(data)
+
+      const matrix = new DenseMatrix(data) // should not throw "TypeError: Cannot assign to read only property '0' of object '[object Array]'"
+      assert.deepStrictEqual(matrix.valueOf(), [[1, 2]])
+      assert.notStrictEqual(matrix.valueOf(), data)
+    })
+
+    it('should not mutate the input data when creating a Matrix (2)', function () {
+      const nestedMatrix = new DenseMatrix([1, 2])
+      const data = [nestedMatrix]
+
+      const matrix = new DenseMatrix(data)
+      assert.deepStrictEqual(matrix._data, [[1, 2]])
+      assert.deepStrictEqual(data, [nestedMatrix]) // should not have replaced the nestedMatrix in data itself
+    })
+
+    it('should not mutate the input data operating on a Matrix', function () {
+      const data = [[1, 2]]
+
+      const matrix = new DenseMatrix(data)
+      matrix.set([0, 1], 42)
+
+      assert.deepStrictEqual(matrix, new DenseMatrix([[1, 42]]))
+      assert.deepStrictEqual(data, [[1, 2]])
+    })
   })
 
   describe('size', function () {

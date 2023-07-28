@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 11.9.1
+
+- Fix #2990: `DenseMatrix` can mutate input arrays (#2991).
+
+
 # 2023-07-24, 11.9.1
 
 - Fix a security vulnerability in `FunctionNode` and `SymbolNode` allowing
