@@ -613,9 +613,6 @@ describe('DenseMatrix', function () {
       m.subset(index(0, new Range(0, 2)), [1, 1]) // 2
       assert.deepStrictEqual(m, new DenseMatrix([[1, 1], [0, 0]]))
 
-      m.subset(index(new Range(0, 2), 0), [2, 2]) // 2
-      assert.deepStrictEqual(m, new DenseMatrix([[2, 1], [2, 0]]))
-
       m = new DenseMatrix([[[0], [0], [0]]]) // 1x3x1
       m.subset(index(0, new Range(0, 3), 0), [1, 2, 3]) // 3
       assert.deepStrictEqual(m, new DenseMatrix([[[1], [2], [3]]]))
@@ -696,7 +693,7 @@ describe('DenseMatrix', function () {
     it('should throw an error in case of dimension mismatch', function () {
       const m = new DenseMatrix([[1, 2, 3], [4, 5, 6]])
       assert.throws(function () { m.subset(index(new Range(0, 2)), [100, 100]) }, /Dimension mismatch/)
-      assert.throws(function () { m.subset(index(new Range(0, 2), new Range(0, 2)), [100, 100]) }, /Dimension mismatch/)
+      assert.throws(function () { m.subset(index(new Range(0, 2), new Range(0, 2)), [100, 100, 100]) }, /Dimension mismatch/)
     })
   })
 

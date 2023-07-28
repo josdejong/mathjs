@@ -689,6 +689,17 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('a[2:end-1, 2:end-1]', scope), math.matrix([[2, 0], [9, 9]]))
     })
 
+    it('should get and set broadcasted submatrices in the parser', function () {
+      const scope = {}
+      parseAndEval('A = [1, 2, 3, 4]', scope)
+      assert.deepStrictEqual(parseAndEval('A[A>2]', scope), math.matrix([3, 4]))
+      parseAndEval('A[A>2] = 20', scope)
+      assert.deepStrictEqual(scope.A, math.matrix([1, 2, 20, 20]))
+      parseAndEval('A = [1, 2, 3, 4]', scope)
+      parseAndEval('A[A > 2] = [15]', scope)
+      assert.deepStrictEqual(scope.A, math.matrix([1, 2, 15, 15]))
+    })
+
     it('should merge nested matrices', function () {
       const scope = {}
       parseAndEval('a=[1,2;3,4]', scope)
