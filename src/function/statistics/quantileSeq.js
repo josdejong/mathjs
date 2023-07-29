@@ -1,4 +1,4 @@
-import { isBigNumber, isCollection, isNumber } from '../../utils/is.js'
+import { isBigNumber, isNumber } from '../../utils/is.js'
 import { isInteger } from '../../utils/number.js'
 import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
@@ -41,109 +41,114 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param {Boolean} sorted=false              is data sorted in ascending order
    * @return {Number, BigNumber, Unit, Array}   Quantile(s)
    */
-  function quantileSeq (data, probOrN, sorted) {
-    let probArr, dataArr, one
 
-    if (arguments.length < 2 || arguments.length > 3) {
-      throw new SyntaxError('Function quantileSeq requires two or three parameters')
+  return typed(name, {
+    'Array | Matrix, number | BigNumber | Unit': (data, p) => _quantileSeqProbNumber(data, p, false),
+    'Array | Matrix, number | BigNumber | Unit, boolean': _quantileSeqProbNumber,
+    'Array | Matrix, Array | Matrix': (data, p) => _quantileSeqProbCoolection(data, p, false),
+    'Array | Matrix, Array | Matrix, boolean': _quantileSeqProbCoolection
+  })
+
+  function _quantileSeqProbNumber (data, probOrN, sorted) {
+    let probArr, one
+    const dataArr = data.valueOf()
+    if (isNumber(probOrN)) {
+      if (probOrN < 0) {
+        throw new Error('N/prob must be non-negative')
+      }
+
+      if (probOrN <= 1) {
+        // quantileSeq([a, b, c, d, ...], prob[,sorted])
+        return _quantileSeq(dataArr, probOrN, sorted)
+      }
+
+      if (probOrN > 1) {
+        // quantileSeq([a, b, c, d, ...], N[,sorted])
+        if (!isInteger(probOrN)) {
+          throw new Error('N must be a positive integer')
+        }
+
+        const nPlusOne = probOrN + 1
+        probArr = new Array(probOrN)
+        for (let i = 0; i < probOrN; i++) {
+          probArr[i] = _quantileSeq(dataArr, (i + 1) / nPlusOne, sorted)
+        }
+        return probArr
+      }
     }
 
-    if (isCollection(data)) {
-      sorted = sorted || false
-      if (typeof sorted === 'boolean') {
-        dataArr = data.valueOf()
-        if (isNumber(probOrN)) {
-          if (probOrN < 0) {
-            throw new Error('N/prob must be non-negative')
-          }
+    if (isBigNumber(probOrN)) {
+      const BigNumber = probOrN.constructor
 
-          if (probOrN <= 1) {
-            // quantileSeq([a, b, c, d, ...], prob[,sorted])
-            return _quantileSeq(dataArr, probOrN, sorted)
-          }
+      if (probOrN.isNegative()) {
+        throw new Error('N/prob must be non-negative')
+      }
 
-          if (probOrN > 1) {
-            // quantileSeq([a, b, c, d, ...], N[,sorted])
-            if (!isInteger(probOrN)) {
-              throw new Error('N must be a positive integer')
-            }
+      one = new BigNumber(1)
 
-            const nPlusOne = probOrN + 1
-            probArr = new Array(probOrN)
-            for (let i = 0; i < probOrN;) {
-              probArr[i] = _quantileSeq(dataArr, (++i) / nPlusOne, sorted)
-            }
-            return probArr
-          }
+      if (probOrN.lte(one)) {
+        // quantileSeq([a, b, c, d, ...], prob[,sorted])
+        return new BigNumber(_quantileSeq(dataArr, probOrN, sorted))
+      }
+
+      if (probOrN.gt(one)) {
+        // quantileSeq([a, b, c, d, ...], N[,sorted])
+        if (!probOrN.isInteger()) {
+          throw new Error('N must be a positive integer')
         }
 
-        if (isBigNumber(probOrN)) {
-          const BigNumber = probOrN.constructor
-
-          if (probOrN.isNegative()) {
-            throw new Error('N/prob must be non-negative')
-          }
-
-          one = new BigNumber(1)
-
-          if (probOrN.lte(one)) {
-            // quantileSeq([a, b, c, d, ...], prob[,sorted])
-            return new BigNumber(_quantileSeq(dataArr, probOrN, sorted))
-          }
-
-          if (probOrN.gt(one)) {
-            // quantileSeq([a, b, c, d, ...], N[,sorted])
-            if (!probOrN.isInteger()) {
-              throw new Error('N must be a positive integer')
-            }
-
-            // largest possible Array length is 2^32-1
-            // 2^32 < 10^15, thus safe conversion guaranteed
-            const intN = probOrN.toNumber()
-            if (intN > 4294967295) {
-              throw new Error('N must be less than or equal to 2^32-1, as that is the maximum length of an Array')
-            }
-
-            const nPlusOne = new BigNumber(intN + 1)
-            probArr = new Array(intN)
-            for (let i = 0; i < intN;) {
-              probArr[i] = new BigNumber(_quantileSeq(dataArr, new BigNumber(++i).div(nPlusOne), sorted))
-            }
-            return probArr
-          }
+        // largest possible Array length is 2^32-1
+        // 2^32 < 10^15, thus safe conversion guaranteed
+        const intN = probOrN.toNumber()
+        if (intN > 4294967295) {
+          throw new Error('N must be less than or equal to 2^32-1, as that is the maximum length of an Array')
         }
 
-        if (isCollection(probOrN)) {
-          // quantileSeq([a, b, c, d, ...], [prob1, prob2, ...][,sorted])
-          const probOrNArr = probOrN.valueOf()
-          probArr = new Array(probOrNArr.length)
-          for (let i = 0; i < probArr.length; ++i) {
-            const currProb = probOrNArr[i]
-            if (isNumber(currProb)) {
-              if (currProb < 0 || currProb > 1) {
-                throw new Error('Probability must be between 0 and 1, inclusive')
-              }
-            } else if (isBigNumber(currProb)) {
-              one = new currProb.constructor(1)
-              if (currProb.isNegative() || currProb.gt(one)) {
-                throw new Error('Probability must be between 0 and 1, inclusive')
-              }
-            } else {
-              throw new TypeError('Unexpected type of argument in function quantileSeq') // FIXME: becomes redundant when converted to typed-function
-            }
-
-            probArr[i] = _quantileSeq(dataArr, currProb, sorted)
-          }
-          return probArr
+        const nPlusOne = new BigNumber(intN + 1)
+        probArr = new Array(intN)
+        for (let i = 0; i < intN; i++) {
+          probArr[i] = new BigNumber(_quantileSeq(dataArr, new BigNumber(i + 1).div(nPlusOne), sorted))
         }
+        return probArr
+      }
+    }
+  }
 
+  /**
+   * Calculate the prob order quantile of an n-dimensional array.
+   *
+   * @param {Array, Matrix} array
+   * @param {Array, Matrix} prob
+   * @param {Boolean} sorted
+   * @return {Number, BigNumber, Unit} prob order quantile
+   * @private
+   */
+
+  function _quantileSeqProbCoolection (data, probOrN, sorted) {
+    const dataArr = data.valueOf()
+    let one
+
+    // quantileSeq([a, b, c, d, ...], [prob1, prob2, ...][,sorted])
+    const probOrNArr = probOrN.valueOf()
+    const probArr = new Array(probOrNArr.length)
+    for (let i = 0; i < probArr.length; ++i) {
+      const currProb = probOrNArr[i]
+      if (isNumber(currProb)) {
+        if (currProb < 0 || currProb > 1) {
+          throw new Error('Probability must be between 0 and 1, inclusive')
+        }
+      } else if (isBigNumber(currProb)) {
+        one = new currProb.constructor(1)
+        if (currProb.isNegative() || currProb.gt(one)) {
+          throw new Error('Probability must be between 0 and 1, inclusive')
+        }
+      } else {
         throw new TypeError('Unexpected type of argument in function quantileSeq') // FIXME: becomes redundant when converted to typed-function
       }
 
-      throw new TypeError('Unexpected type of argument in function quantileSeq') // FIXME: becomes redundant when converted to typed-function
+      probArr[i] = _quantileSeq(dataArr, currProb, sorted)
     }
-
-    throw new TypeError('Unexpected type of argument in function quantileSeq') // FIXME: becomes redundant when converted to typed-function
+    return probArr
   }
 
   /**
@@ -167,9 +172,6 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
       const fracPart = index % 1
       if (fracPart === 0) {
         const value = sorted ? flat[index] : partitionSelect(flat, index)
-
-        validate(value)
-
         return value
       }
 
@@ -192,9 +194,6 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
         }
       }
 
-      validate(left)
-      validate(right)
-
       // Q(prob) = (1-f)*A[floor(index)] + f*A[floor(index)+1]
       return add(multiply(left, 1 - fracPart), multiply(right, fracPart))
     }
@@ -204,9 +203,6 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
     if (index.isInteger()) {
       index = index.toNumber()
       const value = sorted ? flat[index] : partitionSelect(flat, index)
-
-      validate(value)
-
       return value
     }
 
@@ -231,25 +227,8 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
       }
     }
 
-    validate(left)
-    validate(right)
-
     // Q(prob) = (1-f)*A[floor(index)] + f*A[floor(index)+1]
     const one = new fracPart.constructor(1)
     return add(multiply(left, one.minus(fracPart)), multiply(right, fracPart))
   }
-
-  /**
-   * Check if array value types are valid, throw error otherwise.
-   * @param {number | BigNumber | Unit} x
-   * @param {number | BigNumber | Unit} x
-   * @private
-   */
-  const validate = typed({
-    'number | BigNumber | Unit': function (x) {
-      return x
-    }
-  })
-
-  return quantileSeq
 })

@@ -151,9 +151,9 @@ describe('quantileSeq', function () {
   })
 
   it('should throw an error if called with invalid number of arguments', function () {
-    assert.throws(function () { quantileSeq() }, SyntaxError)
-    assert.throws(function () { quantileSeq(2) }, SyntaxError)
-    assert.throws(function () { quantileSeq([], 2, 3, 1) }, SyntaxError)
+    assert.throws(function () { quantileSeq() }, TypeError)
+    assert.throws(function () { quantileSeq(2) }, TypeError)
+    assert.throws(function () { quantileSeq([], 2, 3, 1) }, TypeError)
   })
 
   it('should throw an error if called with unsupported type of arguments', function () {
