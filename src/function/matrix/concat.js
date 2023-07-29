@@ -1,6 +1,6 @@
 import { isBigNumber, isMatrix, isNumber } from '../../utils/is.js'
 import { clone } from '../../utils/object.js'
-import { arraySize } from '../../utils/array.js'
+import { arraySize, concat as _concat } from '../../utils/array.js'
 import { IndexError } from '../../error/IndexError.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
@@ -94,7 +94,7 @@ export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
       let res = matrices.shift()
       while (matrices.length) {
-        res = _concat(res, matrices.shift(), dim, 0)
+        res = _concat(res, matrices.shift(), dim)
       }
 
       return asMatrix ? matrix(res) : res
@@ -105,31 +105,3 @@ export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed
     }
   })
 })
-
-/**
- * Recursively concatenate two matrices.
- * The contents of the matrices is not cloned.
- * @param {Array} a             Multi dimensional array
- * @param {Array} b             Multi dimensional array
- * @param {number} concatDim    The dimension on which to concatenate (zero-based)
- * @param {number} dim          The current dim (zero-based)
- * @return {Array} c            The concatenated matrix
- * @private
- */
-function _concat (a, b, concatDim, dim) {
-  if (dim < concatDim) {
-    // recurse into next dimension
-    if (a.length !== b.length) {
-      throw new DimensionError(a.length, b.length)
-    }
-
-    const c = []
-    for (let i = 0; i < a.length; i++) {
-      c[i] = _concat(a[i], b[i], concatDim, dim + 1)
-    }
-    return c
-  } else {
-    // concatenate this dimension
-    return a.concat(b)
-  }
-}

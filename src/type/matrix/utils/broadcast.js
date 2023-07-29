@@ -1,3 +1,4 @@
+import { checkBroadcastingRules } from '../../../utils/array.js'
 import { factory } from '../../../utils/factory.js'
 
 const name = 'broadcast'
@@ -36,10 +37,8 @@ export const createBroadcast = /* #__PURE__ */ factory(
       }
 
       // check if the broadcasting rules applyes for both matrices
-      for (let dim = 0; dim < N; dim++) {
-        _checkRules(sizeA, sizeMax, dim)
-        _checkRules(sizeB, sizeMax, dim)
-      }
+      checkBroadcastingRules(sizeA, sizeMax)
+      checkBroadcastingRules(sizeB, sizeMax)
 
       // reshape A or B if needed to make them ready for concat
       let AA = A.clone()
@@ -68,10 +67,6 @@ export const createBroadcast = /* #__PURE__ */ factory(
     function _stretch (arrayToStretch, sizeToStretch, dimToStretch) {
       // stretches a matrix up to a certain size in a certain dimension
       return concat(...Array(sizeToStretch).fill(arrayToStretch), dimToStretch)
-    }
-
-    function _checkRules (shape, sizeMax, dim) {
-      if ((shape[dim] < sizeMax[dim]) & (shape[dim] > 1)) { throw new Error(`shape missmatch: missmatch is found in arg with shape (${shape}) not possible to broadcast dimension ${dim} with size ${shape[dim]} to size ${sizeMax[dim]}`) }
     }
   }
 )
