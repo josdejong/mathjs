@@ -45,8 +45,8 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
   return typed(name, {
     'Array | Matrix, number | BigNumber | Unit': (data, p) => _quantileSeqProbNumber(data, p, false),
     'Array | Matrix, number | BigNumber | Unit, boolean': _quantileSeqProbNumber,
-    'Array | Matrix, Array | Matrix': (data, p) => _quantileSeqProbCoolection(data, p, false),
-    'Array | Matrix, Array | Matrix, boolean': _quantileSeqProbCoolection
+    'Array | Matrix, Array | Matrix': (data, p) => _quantileSeqProbCollection(data, p, false),
+    'Array | Matrix, Array | Matrix, boolean': _quantileSeqProbCollection
   })
 
   function _quantileSeqProbNumber (data, probOrN, sorted) {
@@ -124,7 +124,7 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @private
    */
 
-  function _quantileSeqProbCoolection (data, probOrN, sorted) {
+  function _quantileSeqProbCollection (data, probOrN, sorted) {
     const dataArr = data.valueOf()
     let one
 
