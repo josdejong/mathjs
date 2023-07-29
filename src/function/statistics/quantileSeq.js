@@ -142,8 +142,6 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
         if (currProb.isNegative() || currProb.gt(one)) {
           throw new Error('Probability must be between 0 and 1, inclusive')
         }
-      } else {
-        throw new TypeError('Unexpected type of argument in function quantileSeq') // FIXME: becomes redundant when converted to typed-function
       }
 
       probArr[i] = _quantileSeq(dataArr, currProb, sorted)
