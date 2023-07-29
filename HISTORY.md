@@ -1,7 +1,17 @@
 # History
 
-# not yet published, 11.8.3
+# 2023-07-24, 11.9.1
 
+- Fix a security vulnerability in `FunctionNode` and `SymbolNode` allowing
+  arbitrary code execution via `math.evaluate`. Thanks Harry Chen.
+- Fix #3001: mathjs bundle containing `new Function(...)` (CSP issue).
+
+
+# 2023-07-19, 11.9.0
+
+- Implement function `solveODE` (#2958). Thanks @dvd101x.
+- Implement functions `zpk2tf` and `freqz` (#2988, #2969). Thanks @alykhaled.
+- Implement support for units in function `range` (#2997). Thanks @dvd101x.
 - Fix #2974: `simplify` puts plus and minus signs next to each other (#2981).
   Thanks @MaybePixem.
 - Fix #2973: fixes and improvements in the embedded docs (#2976). 
@@ -10,6 +20,8 @@
   trees.
 - Fix round-off errors near zero when converting temperatures (#2962). 
   Thanks @costerwi.
+- Refactored function `range`, reducing the amount of code (#2995).
+  Thanks @dvd101x.
 
 
 # 2023-06-20, 11.8.2

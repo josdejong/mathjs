@@ -181,6 +181,8 @@ import { setPowersetDocs } from './function/set/setPowerset.js'
 import { setSizeDocs } from './function/set/setSize.js'
 import { setSymDifferenceDocs } from './function/set/setSymDifference.js'
 import { setUnionDocs } from './function/set/setUnion.js'
+import { zpk2tfDocs } from './function/signal/zpk2tf.js'
+import { freqzDocs } from './function/signal/freqz.js'
 import { erfDocs } from './function/special/erf.js'
 import { madDocs } from './function/statistics/mad.js'
 import { maxDocs } from './function/statistics/max.js'
@@ -518,6 +520,10 @@ export const embeddedDocs = {
   setSize: setSizeDocs,
   setSymDifference: setSymDifferenceDocs,
   setUnion: setUnionDocs,
+
+  // functions - signal
+  zpk2tf: zpk2tfDocs,
+  freqz: freqzDocs,
 
   // functions - special
   erf: erfDocs,
