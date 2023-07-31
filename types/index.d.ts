@@ -2600,6 +2600,16 @@ declare namespace math {
      */
     erf<T extends number | MathCollection>(x: T): NoLiteralType<T>
 
+    /**
+     * Compute the Riemann Zeta function of a value using an infinite series
+     * and Riemann's Functional equation.
+     * @param s A real, complex or BigNumber
+     * @returns The Riemann Zeta of s
+     */
+    zeta<T extends number | Complex | BigNumber | MathCollection>(
+      x: T
+    ): NoLiteralType<T>
+
     /*************************************************************************
      * Statistics functions
      ************************************************************************/
@@ -5974,6 +5984,14 @@ declare namespace math {
      * approximations for different intervals of x.
      */
     erf<T extends number | MathCollection>(
+      this: MathJsChain<T>
+    ): MathJsChain<NoLiteralType<T>>
+
+    /**
+     * Compute the Riemann Zeta function of a value using an infinite series
+     * and Riemann's Functional equation.
+     */
+    zeta<T extends number | Complex | BigNumber | MathCollection>(
       this: MathJsChain<T>
     ): MathJsChain<NoLiteralType<T>>
 
