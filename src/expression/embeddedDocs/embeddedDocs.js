@@ -79,9 +79,9 @@ import { roundDocs } from './function/arithmetic/round.js'
 import { signDocs } from './function/arithmetic/sign.js'
 import { sqrtDocs } from './function/arithmetic/sqrt.js'
 import { sqrtmDocs } from './function/arithmetic/sqrtm.js'
-import { sylvesterDocs } from './function/matrix/sylvester.js'
-import { schurDocs } from './function/matrix/schur.js'
-import { lyapDocs } from './function/matrix/lyap.js'
+import { sylvesterDocs } from './function/algebra/sylvester.js'
+import { schurDocs } from './function/algebra/schur.js'
+import { lyapDocs } from './function/algebra/lyap.js'
 import { squareDocs } from './function/arithmetic/square.js'
 import { subtractDocs } from './function/arithmetic/subtract.js'
 import { unaryMinusDocs } from './function/arithmetic/unaryMinus.js'
@@ -181,6 +181,8 @@ import { setPowersetDocs } from './function/set/setPowerset.js'
 import { setSizeDocs } from './function/set/setSize.js'
 import { setSymDifferenceDocs } from './function/set/setSymDifference.js'
 import { setUnionDocs } from './function/set/setUnion.js'
+import { zpk2tfDocs } from './function/signal/zpk2tf.js'
+import { freqzDocs } from './function/signal/freqz.js'
 import { erfDocs } from './function/special/erf.js'
 import { madDocs } from './function/statistics/mad.js'
 import { maxDocs } from './function/statistics/max.js'
@@ -236,6 +238,7 @@ import { numericDocs } from './function/utils/numeric.js'
 import { octDocs } from './function/utils/oct.js'
 import { printDocs } from './function/utils/print.js'
 import { typeOfDocs } from './function/utils/typeOf.js'
+import { solveODEDocs } from './function/numeric/solveODE.js'
 
 export const embeddedDocs = {
 
@@ -476,6 +479,9 @@ export const embeddedDocs = {
   schur: schurDocs,
   lyap: lyapDocs,
 
+  // functions - numeric
+  solveODE: solveODEDocs,
+
   // functions - probability
   combinations: combinationsDocs,
   combinationsWithRep: combinationsWithRepDocs,
@@ -514,6 +520,10 @@ export const embeddedDocs = {
   setSize: setSizeDocs,
   setSymDifference: setSymDifferenceDocs,
   setUnion: setUnionDocs,
+
+  // functions - signal
+  zpk2tf: zpk2tfDocs,
+  freqz: freqzDocs,
 
   // functions - special
   erf: erfDocs,

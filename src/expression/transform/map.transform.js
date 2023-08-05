@@ -1,7 +1,7 @@
-import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
-import { maxArgumentCount } from '../../utils/function.js'
+import { applyCallback } from '../../utils/applyCallback.js'
 import { map } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
+import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
 import { compileInlineExpression } from './utils/compileInlineExpression.js'
 
 const name = 'map'
@@ -50,7 +50,7 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
 }, { isTransformFunction: true })
 
 /**
- * Map for a multi dimensional array. One-based indexes
+ * Map for a multidimensional array. One-based indexes
  * @param {Array} array
  * @param {function} callback
  * @param {Array} orig
@@ -58,9 +58,6 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
  * @private
  */
 function _map (array, callback, orig) {
-  // figure out what number of arguments the callback function expects
-  const argsCount = maxArgumentCount(callback)
-
   function recurse (value, index) {
     if (Array.isArray(value)) {
       return map(value, function (child, i) {
@@ -69,13 +66,7 @@ function _map (array, callback, orig) {
       })
     } else {
       // invoke the (typed) callback function with the right number of arguments
-      if (argsCount === 1) {
-        return callback(value)
-      } else if (argsCount === 2) {
-        return callback(value, index)
-      } else { // 3 or -1
-        return callback(value, index, orig)
-      }
+      return applyCallback(callback, value, index, orig, 'map')
     }
   }
 

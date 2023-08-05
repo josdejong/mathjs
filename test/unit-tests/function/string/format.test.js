@@ -217,6 +217,19 @@ describe('format', function () {
       assert.strictEqual(bigmath.format(oneThird, 18), '0.333333333333333333')
     })
 
+    it('should format big numbers with fixed precision', function () {
+      const oneThird = math.bignumber(1).div(3)
+      const twoThirds = math.bignumber(2).div(3)
+      assert.strictEqual(math.format(oneThird, { notation: 'fixed', precision: 10 }), '0.3333333333')
+      assert.strictEqual(math.format(oneThird.mul(-1), { notation: 'fixed', precision: 10 }), '-0.3333333333')
+      assert.strictEqual(math.format(twoThirds, { notation: 'fixed', precision: 10 }), '0.6666666667')
+      assert.strictEqual(math.format(twoThirds, { notation: 'fixed', precision: 20 }), '0.66666666666666666667')
+      assert.strictEqual(math.format(oneThird, { notation: 'fixed', precision: 20 }), '0.33333333333333333333')
+      assert.strictEqual(math.format(oneThird, { notation: 'fixed', precision: 0 }), '0')
+      assert.strictEqual(math.format(twoThirds, { notation: 'fixed', precision: 0 }), '1')
+      assert.strictEqual(math.format(math.bignumber('123456789.123456789'), { notation: 'fixed', precision: 5 }), '123456789.12346')
+    })
+
     describe('engineering notation', function () {
       const bignumber = math.bignumber
 
@@ -334,6 +347,16 @@ describe('format', function () {
         assert.strictEqual(math.format(bignumber('0.000000000000123456'), { notation: 'engineering', precision: 16 }), '123.4560000000000e-15')
         assert.strictEqual(math.format(bignumber('0.0000000000001234567890123456789'), { notation: 'engineering', precision: 3 }), '123e-15')
         assert.strictEqual(math.format(bignumber('0.0000000000001234567890123456789'), { notation: 'engineering', precision: 16 }), '123.4567890123457e-15')
+      })
+      it('should format numbers starting with more than 3 sig figs that target 1 or 2 sig figs', function () {
+        assert.strictEqual(math.format(bignumber(0.333333333333333), { notation: 'engineering', precision: 1 }), '300e-3')
+        assert.strictEqual(math.format(bignumber(0.333333333333333), { notation: 'engineering', precision: 2 }), '330e-3')
+        assert.strictEqual(math.format(bignumber(33.33333333333), { notation: 'engineering', precision: 1 }), '30e+0')
+        assert.strictEqual(math.format(bignumber(333.33333333333), { notation: 'engineering', precision: 2 }), '330e+0')
+        assert.strictEqual(math.format(bignumber(333333.333333333), { notation: 'engineering', precision: 1 }), '300e+3')
+        assert.strictEqual(math.format(bignumber(777777.77777777), { notation: 'engineering', precision: 1 }), '800e+3')
+        assert.strictEqual(math.format(bignumber(777777.77777777), { notation: 'engineering', precision: 2 }), '780e+3')
+        assert.strictEqual(math.format(bignumber(-0.000000000777777), { notation: 'engineering', precision: 2 }), '-780e-12')
       })
     })
 

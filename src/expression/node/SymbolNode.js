@@ -62,7 +62,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
         // (like an x when inside the expression of a function
         // assignment `f(x) = ...`)
         return function (scope, args, context) {
-          return args[name]
+          return getSafeProperty(args, name)
         }
       } else if (name in math) {
         return function (scope, args, context) {

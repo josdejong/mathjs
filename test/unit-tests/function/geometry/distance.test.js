@@ -28,7 +28,7 @@ describe('distance', function () {
   })
 
   it('should calculate distance for inputs passed as objects', function () {
-    assert.deepStrictEqual(math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 6, lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }), 2.720549372624744)
+    assert.deepStrictEqual(math.distance({ pointX: 0, pointY: 0 }, { lineOnePtX: 3, lineOnePtY: 0 }, { lineTwoPtX: 0, lineTwoPtY: 4 }), 2.4)
     assert.deepStrictEqual(math.distance({ pointX: 10, pointY: 10 }, { xCoeffLine: 8, yCoeffLine: 1, constant: 3 }), 11.535230316796387)
     assert.strictEqual(math.distance({ pointOneX: 0, pointOneY: 0 }, { pointTwoX: 10, pointTwoY: 10 }), 14.142135623730951)
     assert.throws(function () { math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 'l', lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }) }, TypeError)
@@ -53,6 +53,9 @@ describe('distance', function () {
     assert.throws(function () { math.distance(['2', '3'], math.matrix([1, 2]), [1, 2]) }, TypeError)
     assert.throws(function () { math.distance([2, 3], math.matrix(['a', 'b']), [1, 2]) }, TypeError)
     assert.throws(function () { math.distance([2, 3], math.matrix([1, 2]), ['a', 'b']) }, TypeError)
+    assert.throws(function () { math.distance(math.matrix([0, 0]), math.matrix([3, 0]), math.matrix([3, 0])) }, TypeError)
+    assert.throws(function () { math.distance([0, 0], [3, 0], [3, 0]) }, TypeError)
+    assert.throws(function () { math.distance({ pointX: 0, pointY: 0 }, { lineOnePtX: 3, lineOnePtY: 0 }, { lineTwoPtX: 3, lineTwoPtY: 0 }) }, TypeError)
     assert.throws(function () { math.distance({ pointX: 'l', pointY: 4 }, { lineOnePtX: 1, lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }) }, TypeError)
     assert.throws(function () { math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 'l', lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }) }, TypeError)
     assert.throws(function () { math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 1, lineOnePtY: 3 }, { lineTwoPtX: 'l', lineTwoPtY: 8 }) }, TypeError)
@@ -103,10 +106,16 @@ describe('distance', function () {
   })
 
   it('should calculate distance between a point and a line segment given by two points in 2D accurately', function () {
-    assert.deepStrictEqual(math.distance(math.matrix([10, 10]), math.matrix([2, 3]), math.matrix([-8, 0])), 8.759953130362847)
-    assert.deepStrictEqual(math.distance([0.23, -0.1240], [-0.232, 13.292], [-0.34, 0.346]), 10.658908662088363)
-    assert.deepStrictEqual(math.distance([-10, 0.54], [38, 12.8], [94.33, -239]), 10.012171799590002)
-    assert.deepStrictEqual(math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 6, lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }), 2.720549372624744)
+    assert.deepStrictEqual(math.distance(math.matrix([8, 0]), math.matrix([10, 0]), math.matrix([5, 0])), 0)
+    assert.deepStrictEqual(math.distance(math.matrix([8, 3]), math.matrix([10, 0]), math.matrix([5, 0])), 3)
+    assert.deepStrictEqual(math.distance(math.matrix([0, 0]), math.matrix([3, 0]), math.matrix([0, 4])), 2.4)
+    assert.deepStrictEqual(math.distance([8, 0], [10, 0], [5, 0]), 0)
+    assert.deepStrictEqual(math.distance([8, 3], [10, 0], [5, 0]), 3)
+    assert.deepStrictEqual(math.distance([0, 0], [3, 0], [0, 4]), 2.4)
+    assert.deepStrictEqual(math.distance({ pointX: 8, pointY: 0 }, { lineOnePtX: 10, lineOnePtY: 0 }, { lineTwoPtX: 5, lineTwoPtY: 0 }), 0)
+    assert.deepStrictEqual(math.distance({ pointX: 8, pointY: 3 }, { lineOnePtX: 10, lineOnePtY: 0 }, { lineTwoPtX: 5, lineTwoPtY: 0 }), 3)
+    assert.deepStrictEqual(math.distance({ pointX: 0, pointY: 0 }, { lineOnePtX: 3, lineOnePtY: 0 }, { lineTwoPtX: 0, lineTwoPtY: 4 }), 2.4)
+    assert.deepStrictEqual(math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 6, lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }), 3.2796489996607274)
   })
 
   it('should calculate distance between point and line segment(with parametric co-ordinates) in 3D accurately', function () {
@@ -132,9 +141,9 @@ describe('distance', function () {
     assert.deepStrictEqual(bigmath.evaluate('distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 10})'), bignumber('3.4641016151377545870548926830117'))
     assert.deepStrictEqual(bigmath.evaluate('distance([[0,2],[-2,0],[0,2]])'), [bignumber('2.8284271247461900976033774484194'), bignumber('0'), bignumber('2.8284271247461900976033774484194')])
     assert.deepStrictEqual(bigmath.evaluate('distance([[1,2,4],[1,2,6],[8,1,3]])'), [bignumber('2'), bignumber('7.1414284285428499979993998113673'), bignumber('7.6811457478686081757696870217314')])
-    assert.deepStrictEqual(bigmath.evaluate('distance([0.23, -0.1240], [-0.232, 13.292], [-0.34, 0.346])'), bignumber('10.658908662088362142660358292758'))
+    assert.deepStrictEqual(bigmath.evaluate('distance([0.23, -0.1240], [-0.232, 13.292], [-0.34, 0.346])'), bignumber('0.57390093231864283264935146782154'))
     assert.deepStrictEqual(bigmath.evaluate('distance({pointX: 1, pointY: 4}, {lineOnePtX: 6, lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8})'),
-      bignumber('2.7205493726247441306311612969564'))
+      bignumber('3.2796489996607273760061602723673'))
     assert.deepStrictEqual(bigmath.evaluate('distance([0.1123, -0.242], [0.1316, -0.2421, 0.122135])'), bignumber('0.709482134734344383494644726006'))
     assert.deepStrictEqual(bigmath.evaluate('distance({pointX: 10, pointY: 10}, {xCoeffLine: 8, yCoeffLine: 1, constant: 3})'), bignumber('11.535230316796386425693769698742'))
     assert.deepStrictEqual(bigmath.evaluate('distance([2, 3, 1], [1, 1, 2, 5, 0, 1])'), bignumber('2.3204774044612855517320588018918'))

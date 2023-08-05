@@ -13,10 +13,12 @@ type NoLiteralType<T> = T extends number
   : T
 
 declare namespace math {
+  // TODO: introduce generics for MathCollection, MathMatrix, and MathArray
   type MathNumericType = number | BigNumber | Fraction | Complex
-  type MathArray = MathNumericType[] | MathNumericType[][]
+  type MathScalarType = MathNumericType | Unit
+  type MathArray = MathNumericType[] | MathNumericType[][] // TODO: MathArray can also contain Unit
   type MathCollection = MathArray | Matrix
-  type MathType = MathNumericType | Unit | MathCollection
+  type MathType = MathScalarType | MathCollection
   type MathExpression = string | string[] | MathCollection
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -1581,12 +1583,14 @@ declare namespace math {
      * a 3D line, x0, y0, z0, a, b, c are from: (x−x0, y−y0, z−z0) = t(a, b,
      * c)
      * @param x Coordinates of the first point
-     * @param y Coordinates of the second point
+     * @param y Coordinates of the second point OR coefficients of a line in 3D OR first end-point of a line if the calculation is for distance between point and a line in 2D
+     * @param z Coordinates of second end-point of a line if the calculation is for distance between point and a line in 2D
      * @returns Returns the distance from two/three points
      */
     distance(
       x: MathCollection | object,
-      y: MathCollection | object
+      y: MathCollection | object,
+      z?: MathCollection | object
     ): number | BigNumber
 
     /**
@@ -1985,9 +1989,9 @@ declare namespace math {
       includeEnd?: boolean
     ): Matrix
     range(
-      start: number | BigNumber,
-      end: number | BigNumber,
-      step: number | BigNumber,
+      start: number | BigNumber | Unit,
+      end: number | BigNumber | Unit,
+      step: number | BigNumber | Unit,
       includeEnd?: boolean
     ): Matrix
 
@@ -2563,6 +2567,28 @@ declare namespace math {
     setUnion<T extends MathCollection>(a1: T, a2: MathCollection): T
 
     /*************************************************************************
+     * Signal functions
+     ************************************************************************/
+    /**
+     * Compute the transfer function of a zero-pole-gain model.
+     * @param z Zeroes of the model
+     * @param p Poles of the model
+     * @param k Gain of the model
+     * @returns The transfer function as array of numerator and denominator
+     */
+    zpk2tf<T extends MathCollection>(z: T, p: T, k?: number): T
+
+    /**
+     * Calculates the frequency response of a filter given its numerator and denominator coefficients.
+     * @param b The numerator polynomial of the filter
+     * @param a The denominator polynomial of the filter
+     * @param w The range of frequencies in which the response is to be calculated
+     * @returns The frequency response
+     *
+     */
+    freqz<T extends MathCollection>(b: T, a: T, w?: number | T): { w: T; h: T }
+
+    /*************************************************************************
      * Special functions
      ************************************************************************/
 
@@ -2593,36 +2619,60 @@ declare namespace math {
      * of a multi dimensional array, the maximum of the flattened array will
      * be calculated. When dim is provided, the maximum over the selected
      * dimension will be calculated. Parameter dim is zero-based.
-     * @param args A single matrix or multiple scalar values
+     * @param args Multiple scalar values
      * @returns The maximum value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    max(...args: MathType[]): any
+    max<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The maximum value
+     */
+    max(...args: MathScalarType[]): MathScalarType
     /**
      * @param A A single matrix
-     * @param dim The maximum over the selected dimension
+     * @param dimension The maximum over the selected dimension
      * @returns The maximum value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    max(A: MathCollection, dim?: number): any
+    max<T extends MathScalarType>(
+      A: T[] | T[][],
+      dimension?: number | BigNumber
+    ): T
+    /**
+     * @param A A single matrix
+     * @param dimension The maximum over the selected dimension
+     * @returns The maximum value
+     */
+    max(A: MathCollection, dimension?: number | BigNumber): MathScalarType
 
     /**
      * Compute the mean value of matrix or a list with values. In case of a
      * multi dimensional array, the mean of the flattened array will be
      * calculated. When dim is provided, the maximum over the selected
      * dimension will be calculated. Parameter dim is zero-based.
-     * @param args A single matrix or multiple scalar values
+     * @param args Multiple scalar values
      * @returns The mean of all values
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mean(...args: MathType[]): any
+    mean<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The mean value
+     */
+    mean(...args: MathScalarType[]): MathScalarType
     /**
      * @param A A single matrix
-     * @param dim The mean over the selected dimension
-     * @returns The mean of all values
+     * @param dimension The mean over the selected dimension
+     * @returns The mean value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mean(A: MathCollection, dim?: number): any
+    mean<T extends MathScalarType>(
+      A: T[] | T[][],
+      dimension?: number | BigNumber
+    ): T
+    /**
+     * @param A A single matrix
+     * @param dimension The mean over the selected dimension
+     * @returns The mean value
+     */
+    mean(A: MathCollection, dimension?: number | BigNumber): MathScalarType
 
     /**
      * Compute the median of a matrix or a list with values. The values are
@@ -2631,49 +2681,103 @@ declare namespace math {
      * types of values are: Number, BigNumber, Unit In case of a (multi
      * dimensional) array or matrix, the median of all elements will be
      * calculated.
-     * @param args A single matrix or or multiple scalar values
-     * @returns The median
+     * @param args Multiple scalar values
+     * @returns The median value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    median(...args: MathType[]): any
+    median<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The median value
+     */
+    median(...args: MathScalarType[]): MathScalarType
+    /**
+     * @param A A single matrix
+     * @returns The median value
+     */
+    median<T extends MathScalarType>(A: T[] | T[][]): T
+    /**
+     * @param A A single matrix
+     * @returns The median value
+     */
+    median(A: MathCollection): MathScalarType
 
     /**
      * Compute the minimum value of a matrix or a list of values. In case of
-     * a multi dimensional array, the minimun of the flattened array will be
-     * calculated. When dim is provided, the minimun over the selected
+     * a multi dimensional array, the minimum of the flattened array will be
+     * calculated. When dim is provided, the minimum over the selected
      * dimension will be calculated. Parameter dim is zero-based.
-     * @param args A single matrix or or multiple scalar values
+     * @param args multiple scalar values
      * @returns The minimum value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    min(...args: MathType[]): any
+    min<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The minimum value
+     */
+    min(...args: MathScalarType[]): MathScalarType
     /**
      * @param A A single matrix
-     * @param dim The minimum over the selected dimension
+     * @param dimension The minimum over the selected dimension
      * @returns The minimum value
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    min(A: MathCollection, dim?: number): any
+    min<T extends MathScalarType>(
+      A: T[] | T[][],
+      dimension?: number | BigNumber
+    ): T
+    /**
+     * @param A A single matrix
+     * @param dimension The minimum over the selected dimension
+     * @returns The minimum value
+     */
+    min(A: MathCollection, dimension?: number | BigNumber): MathScalarType
 
     /**
      * Computes the mode of a set of numbers or a list with values(numbers
      * or characters). If there are more than one modes, it returns a list
      * of those values.
-     * @param args A single matrix
+     * @param args Multiple scalar values
      * @returns The mode of all values
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mode(...args: MathType[]): any
+    mode<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The mode of all values
+     */
+    mode(...args: MathScalarType[]): MathScalarType
+    /**
+     * @param A A single matrix
+     * @returns The median value
+     */
+    mode<T extends MathScalarType>(A: T[] | T[][]): T
+    /**
+     * @param A A single matrix
+     * @returns The mode of all values
+     */
+    mode(A: MathCollection): MathScalarType
 
     /**
      * Compute the product of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the sum of all elements will be
      * calculated.
-     * @param args A single matrix or multiple scalar values
+     * @param args Multiple scalar values
      * @returns The product of all values
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    prod(...args: MathType[]): any
+    prod<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The product of all values
+     */
+    prod(...args: MathScalarType[]): MathScalarType
+    /**
+     * @param A A single matrix
+     * @returns The product of all values
+     */
+    prod<T extends MathScalarType>(A: T[] | T[][]): T
+    /**
+     * @param A A single matrix
+     * @returns The product of all values
+     */
+    prod(A: MathCollection): MathScalarType
 
     /**
      * Compute the prob order quantile of a matrix or a list with values.
@@ -2705,10 +2809,15 @@ declare namespace math {
      * values: 'unbiased' (default) The sum of squared errors is divided by
      * (n - 1) 'uncorrected' The sum of squared errors is divided by n
      * 'biased' The sum of squared errors is divided by (n + 1)
-     * @param a variadic argument of number to calculate standard deviation
-     * @returns The standard deviation array
+     * @param args variadic argument of number to calculate standard deviation
+     * @returns The standard deviation
      */
-    std(...values: number[]): number
+    std<T extends MathScalarType>(...args: T[]): T
+    /**
+     * @param args Multiple scalar values
+     * @returns The standard deviation
+     */
+    std(...args: MathScalarType[]): MathScalarType
     /**
      * Compute the standard deviation of a matrix or a list with values. The
      * standard deviations is defined as the square root of the variance:
@@ -2730,7 +2839,7 @@ declare namespace math {
       array: MathCollection,
       dimension?: number,
       normalization?: 'unbiased' | 'uncorrected' | 'biased'
-    ): number[]
+    ): MathNumericType[]
     /**
      * Compute the standard deviation of a matrix or a list with values. The
      * standard deviations is defined as the square root of the variance:
@@ -2750,7 +2859,7 @@ declare namespace math {
     std(
       array: MathCollection,
       normalization: 'unbiased' | 'uncorrected' | 'biased'
-    ): number
+    ): MathNumericType
 
     /**
      * Compute the sum of a matrix or a list with values. In case of a
@@ -2759,14 +2868,27 @@ declare namespace math {
      * @param args A single matrix or multiple scalar values
      * @returns The sum of all values
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    sum(...args: Array<number | BigNumber | Fraction>): any
+    sum<T extends MathScalarType>(...args: T[]): T
     /**
-     * @param array A single matrix
+     * @param args Multiple scalar values
      * @returns The sum of all values
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    sum(array: MathCollection): any
+    sum(...args: MathScalarType[]): MathScalarType
+    /**
+     * @param A A single matrix
+     * @param dimension The sum over the selected dimension
+     * @returns The sum of all values
+     */
+    sum<T extends MathScalarType>(
+      A: T[] | T[][],
+      dimension?: number | BigNumber
+    ): T
+    /**
+     * @param A A single matrix
+     * @param dimension The sum over the selected dimension
+     * @returns The sum of all values
+     */
+    sum(A: MathCollection, dimension?: number | BigNumber): MathScalarType
 
     /**
      * Count the number of elements of a matrix, array or string.
@@ -2804,8 +2926,7 @@ declare namespace math {
      * @param args A single matrix or multiple scalar values
      * @returns The variance
      */
-    variance(...args: Array<number | BigNumber | Fraction>): number
-
+    variance(...args: MathNumericType[]): MathNumericType
     /**
      * Compute the variance of a matrix or a list with values. In case of a
      * (multi dimensional) array or matrix, the variance over all elements
@@ -2828,7 +2949,7 @@ declare namespace math {
       array: MathCollection,
       dimension?: number,
       normalization?: 'unbiased' | 'uncorrected' | 'biased'
-    ): number[]
+    ): MathNumericType[]
     /**
      * @param array A single matrix
      * @param normalization normalization Determines how to normalize the
@@ -2839,7 +2960,7 @@ declare namespace math {
     variance(
       array: MathCollection,
       normalization: 'unbiased' | 'uncorrected' | 'biased'
-    ): number
+    ): MathNumericType
 
     /*************************************************************************
      * String functions
@@ -3512,6 +3633,8 @@ declare namespace math {
     setSizeDependencies: FactoryFunctionMap
     setSymDifferenceDependencies: FactoryFunctionMap
     setUnionDependencies: FactoryFunctionMap
+    zpk2tfDependencies: FactoryFunctionMap
+    freqzDependencies: FactoryFunctionMap
     addDependencies: FactoryFunctionMap
     hypotDependencies: FactoryFunctionMap
     normDependencies: FactoryFunctionMap
@@ -3781,7 +3904,7 @@ declare namespace math {
     equalBase(unit: Unit): boolean
     equals(unit: Unit): boolean
     multiply(unit: Unit): Unit
-    divide(unit: Unit): Unit
+    divide(unit: Unit): Unit | number
     pow(unit: Unit): Unit
     abs(unit: Unit): Unit
     to(unit: string): Unit
@@ -5354,9 +5477,9 @@ declare namespace math {
       includeEnd?: boolean
     ): MathJsChain<Matrix>
     range(
-      this: MathJsChain<number | BigNumber>,
-      end: number | BigNumber,
-      step: number | BigNumber,
+      this: MathJsChain<number | BigNumber | Unit>,
+      end: number | BigNumber | Unit,
+      step: number | BigNumber | Unit,
       includeEnd?: boolean
     ): MathJsChain<Matrix>
 
@@ -5820,6 +5943,27 @@ declare namespace math {
       this: MathJsChain<T>,
       a2: MathCollection
     ): MathJsChain<T>
+
+    /*************************************************************************
+     * Signal functions
+     ************************************************************************/
+    /**
+     * Compute the transfer function of a zero-pole-gain model.
+     */
+    zpk2tf<T extends MathCollection>(
+      this: MathJsChain<T>, // chained variable will be used as z
+      p: T,
+      k?: number
+    ): MathJsChain<T>
+
+    /**
+     * Calculates the frequency response of a filter given its numerator and denominator coefficients.
+     */
+    freqz<T extends number | MathArray | MathArray[]>(
+      this: MathJsChain<T>,
+      a: T,
+      w?: T | number
+    ): MathJsChain<{ w: T; h: T }>
 
     /*************************************************************************
      * Special functions
