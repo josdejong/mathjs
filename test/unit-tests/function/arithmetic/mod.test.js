@@ -34,9 +34,9 @@ describe('mod', function () {
     approx.equal(mod(-5, 3), 1)
   })
 
-  it ('should be precise if odd numbers are involved'), function () {
+  it ('should be precise if odd numbers are involved', function () {
     assert.strictEqual(mod(0.15, 0.05), 0)
-  }
+  })
 
   it('should throw an error if the divisor is negative', function () {
     assert.throws(function () { mod(10, -4) })

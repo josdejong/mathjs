@@ -1,4 +1,5 @@
 import { isInteger, nearlyEqual } from '../../utils/number.js'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
 import { factory } from '../../utils/factory.js'
 import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
 import { createMatAlgo04xSidSid } from '../../type/matrix/utils/matAlgo04xSidSid.js'
@@ -129,7 +130,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     // https://en.wikipedia.org/wiki/Euclidean_algorithm
     const zero = new BigNumber(0)
     while (!b.isZero()) {
-      const r = a.mod(b)
+      const r = _modBigNumber(a, b)
       a = b
       b = r
     }
@@ -137,12 +138,12 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
   }
 
   /**
- * Calculate the modulus of two numbers
- * @param {number} x
- * @param {number} y
- * @returns {number} res
- * @private
- */
+   * Calculate the mod of two numbers
+   * @param {number} x
+   * @param {number} y
+   * @returns {number} res
+   * @private
+   */
   function _modNumber (x, y) {
     if (y === 0) {
       return x
@@ -156,6 +157,29 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         : result
     } else {
       return x - Math.abs(y) * Math.floor(x / Math.abs(y))
+    }
+  }
+
+  /**
+   * Calculate the mod of two BigNumbers
+   * @param {number} x
+   * @param {number} y
+   * @returns {number} res
+   * @private
+   */
+  function _modBigNumber (x, y) {
+    if (y === 0) {
+      return x
+    }
+    // then y < 0 or y > 0
+    const div = x.div(y.abs())
+    if (bigNearlyEqual(div, round(div), config.epsilon)) {
+      const result = x.sub(y.mul(round(div)))
+      return bigNearlyEqual(result, round(result), config.epsilon)
+        ? round(result)
+        : result
+    } else {
+      return x.sub(y.mul(div.floor()))
     }
   }
 })

@@ -73,8 +73,8 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
           throw new Error('Cannot calculate mod for a negative divisor')
         } else if (y.isZero()) {
           return x
-        } // else {}
-        let div = x.div(y)
+        }
+        const div = x.div(y)
         if (bigNearlyEqual(div, round(div), config.epsilon)) {
           const result = x.sub(y.mul(round(div)))
           return bigNearlyEqual(result, round(result), config.epsilon)
@@ -83,7 +83,6 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
         } else {
           return x.sub(y.mul(div.floor()))
         }
-
       },
 
       'Fraction, Fraction': function (x, y) {
