@@ -1,4 +1,5 @@
 import { cbrt, expm1, isInteger, log10, log1p, log2, sign, toFixed } from '../../utils/number.js'
+import { Decimal } from 'decimal.js';
 
 const n1 = 'number'
 const n2 = 'number, number'
@@ -157,14 +158,20 @@ log1pNumber.signature = n1
  * @private
  */
 export function modNumber (x, y) {
-  if (y > 0) {
-    // We don't use JavaScript's % operator here as this doesn't work
-    // correctly for x < 0 and x === 0
-    // see https://en.wikipedia.org/wiki/Modulo_operation
-    return x - y * Math.floor(x / y)
-  } else if (y === 0) {
-    return x
-  } else { // y < 0
+  // Create Decimal instances for the input parameters x and y
+  const decimalX = new Decimal(x);
+  const decimalY = new Decimal(y);
+
+  // Check if y is greater than 0
+  if (decimalY.gt(0)) {
+    // Calculate the modulus of decimalX with respect to decimalY
+    const result = decimalX.mod(decimalY);
+    // Convert the result to a regular JavaScript number and return
+    return result.toNumber();
+  } else if (decimalY.eq(0)) {
+    // If y is equal to 0, return x as the result
+    return x;
+  } else {
     // TODO: implement mod for a negative divisor
     throw new Error('Cannot calculate mod for a negative divisor')
   }
