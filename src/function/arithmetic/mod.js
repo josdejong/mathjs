@@ -1,22 +1,26 @@
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
+import { nearlyEqual } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { modNumber } from '../../plain/number/index.js'
+// import { modNumber } from '../../plain/number/index.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'mod'
 const dependencies = [
   'typed',
+  'config',
+  'round',
   'matrix',
   'equalScalar',
   'DenseMatrix',
   'concat'
 ]
 
-export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
+export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, equalScalar, DenseMatrix, concat }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
@@ -62,13 +66,24 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
   return typed(
     name,
     {
-      'number, number': modNumber,
+      'number, number': _modNumber,
 
       'BigNumber, BigNumber': function (x, y) {
         if (y.isNeg()) {
           throw new Error('Cannot calculate mod for a negative divisor')
+        } else if (y.isZero()) {
+          return x
+        } // else {}
+        let div = x.div(y)
+        if (bigNearlyEqual(div, round(div), config.epsilon)) {
+          const result = x.sub(y.mul(round(div)))
+          return bigNearlyEqual(result, round(result), config.epsilon)
+            ? round(result)
+            : result
+        } else {
+          return x.sub(y.mul(div.floor()))
         }
-        return y.isZero() ? x : x.mod(y)
+
       },
 
       'Fraction, Fraction': function (x, y) {
@@ -87,4 +102,35 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       sS: matAlgo12xSfs
     })
   )
+
+  /**
+ * Calculate the modulus of two numbers
+ * @param {number} x
+ * @param {number} y
+ * @returns {number} res
+ * @private
+ */
+  function _modNumber (x, y) {
+    if (y > 0) {
+      // We don't use JavaScript's % operator here as this doesn't work
+      // correctly for x < 0 and x === 0
+      // see https://en.wikipedia.org/wiki/Modulo_operation
+
+      // To ensure precision with float approximation
+      const div = x / y
+      if (nearlyEqual(div, round(div), config.epsilon)) {
+        const result = x - y * round(div)
+        return nearlyEqual(result, round(result), config.epsilon)
+          ? round(result)
+          : result
+      } else { // Math.floor is precise
+        return x - y * Math.floor(x / y)
+      }
+    } else if (y === 0) {
+      return x
+    } else { // y < 0
+      // TODO: implement mod for a negative divisor
+      throw new Error('Cannot calculate mod for a negative divisor')
+    }
+  }
 })

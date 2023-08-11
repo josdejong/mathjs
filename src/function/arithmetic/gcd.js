@@ -1,14 +1,17 @@
+import { isInteger, nearlyEqual } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
 import { createMatAlgo04xSidSid } from '../../type/matrix/utils/matAlgo04xSidSid.js'
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
-import { gcdNumber } from '../../plain/number/index.js'
+// import { gcdNumber } from '../../plain/number/index.js'
 import { ArgumentsError } from '../../error/ArgumentsError.js'
 
 const name = 'gcd'
 const dependencies = [
   'typed',
+  'config',
+  'round',
   'matrix',
   'equalScalar',
   'BigNumber',
@@ -23,7 +26,7 @@ function is1d (array) {
   return !array.some(element => Array.isArray(element))
 }
 
-export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix, concat }) => {
+export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config, round, equalScalar, BigNumber, DenseMatrix, concat }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
@@ -57,7 +60,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
   return typed(
     name,
     {
-      'number, number': gcdNumber,
+      'number, number': _gcdNumber,
       'BigNumber, BigNumber': _gcdBigNumber,
       'Fraction, Fraction': (x, y) => x.gcd(y)
     },
@@ -90,6 +93,28 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
   )
 
   /**
+ * Calculate gcd for numbers
+ * @param {number} a
+ * @param {number} b
+ * @returns {number} Returns the greatest common denominator of a and b
+ * @private
+ */
+  function _gcdNumber (a, b) {
+    if (!isInteger(a) || !isInteger(b)) {
+      throw new Error('Parameters in function gcd must be integer numbers')
+    }
+
+    // https://en.wikipedia.org/wiki/Euclidean_algorithm
+    let r
+    while (b !== 0) {
+      r = _modNumber(a, b)
+      a = b
+      b = r
+    }
+    return (a < 0) ? -a : a
+  }
+
+  /**
    * Calculate gcd for BigNumbers
    * @param {BigNumber} a
    * @param {BigNumber} b
@@ -109,5 +134,28 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       b = r
     }
     return a.lt(zero) ? a.neg() : a
+  }
+
+  /**
+ * Calculate the modulus of two numbers
+ * @param {number} x
+ * @param {number} y
+ * @returns {number} res
+ * @private
+ */
+  function _modNumber (x, y) {
+    if (y === 0) {
+      return x
+    }
+    // then y < 0 or y > 0
+    const div = x / Math.abs(y)
+    if (nearlyEqual(div, round(div), config.epsilon)) {
+      const result = x - y * round(div)
+      return nearlyEqual(result, round(result), config.epsilon)
+        ? round(result)
+        : result
+    } else {
+      return x - Math.abs(y) * Math.floor(x / Math.abs(y))
+    }
   }
 })
