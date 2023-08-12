@@ -10,7 +10,7 @@ export const printDocs = {
     'print("Lucy is $age years old", {age: 5})',
     'print("The value of pi is $pi", {pi: pi}, 3)',
     'print("Hello, $user.name!", {user: {name: "John"}})',
-    'print("Values: $0, $1, $2", [6, 9, 4])'
+    'print("Values: $1, $2, $3", [6, 9, 4])'
   ],
   seealso: ['format']
 }
