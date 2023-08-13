@@ -69,8 +69,8 @@ function _print (template, values, options) {
   return template.replace(/\$([\w.]+)/g, function (original, key) {
     const keys = key.split('.')
     let value = values[keys.shift()]
-    if (value !== undefined) {
-      value = value.isMatrix ? value.toArray() : value
+    if (value !== undefined && value.isMatrix) {
+      value = value.toArray()
     }
     while (keys.length && value !== undefined) {
       const k = keys.shift()
