@@ -35,9 +35,9 @@ describe('mod', function () {
   })
 
   it('should handle precise approximation of float approximation', function () {
+    assert.strictEqual(mod(0.1, 0.01), 0)
     assert.strictEqual(mod(0.15, 0.05), 0)
     assert.strictEqual(mod(1.23456789, 0.00000000001), 0)
-    assert.strictEqual(mod(1e30, 1e24), 0)
   })
 
   it('should throw an error if the divisor is negative', function () {

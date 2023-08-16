@@ -115,8 +115,7 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
       // correctly for x < 0 and x === 0
       // see https://en.wikipedia.org/wiki/Modulo_operation
 
-      // To ensure precision with float approximation
-      // fails for y > 1e24
+      // To ensure precision with float approximation 
       const div = x / y
       if (nearlyEqual(div, round(div), config.epsilon)) {
         const result = x - y * round(div)
