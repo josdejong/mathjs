@@ -102,7 +102,7 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     })
   )
 
-  /**
+/**
  * Calculate the modulus of two numbers
  * @param {number} x
  * @param {number} y
