@@ -63,15 +63,19 @@ describe('eigs', function () {
     approx.deepEqual(eigs(
       [[5, 2.3], [2.3, 1]]).values, [-0.04795013082563382, 6.047950130825635]
     )
+    approx.deepEqual(
+      eigs([[1, 2], [4, 3]]).vectors,
+      [[1, 1], [-2, 1]]
+    )
   })
 
   it('calculates eigenvalues for 2x2 matrix with complex entries', function () {
     approx.deepEqual(
       eigs([[3, -2], [complex(4, 2), -1]]).values,
-      [complex(0.08982028, 2.197368227), complex(1.91017972, -2.197368227)])
+      [complex(1.91017972, -2.197368227), complex(0.08982028, 2.197368227)])
     approx.deepEqual(
       eigs([[2, -2], [complex(0, 2), complex(0, -2)]]).values,
-      [0, complex(2, -2)])
+      [complex(2, -2), 0])
   })
 
   it('calculates eigenvalues for 3x3 and 4x4 matrix', function () {
