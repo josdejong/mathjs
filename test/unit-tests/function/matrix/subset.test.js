@@ -1,5 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
+import { DimensionError } from '../../../../src/error/DimensionError.js'
 const subset = math.subset
 const matrix = math.matrix
 const Range = math.Range
@@ -13,6 +14,44 @@ describe('subset', function () {
     assert.deepStrictEqual(subset(a, index(new Range(0, 2), 1)), [[2], [4]])
     assert.deepStrictEqual(subset(a, index(1, 0)), 3)
     assert.deepStrictEqual(subset([math.bignumber(2)], index(0)), math.bignumber(2))
+  })
+
+  it('should get the right subset of an array of booleans', function () {
+    assert.deepStrictEqual(subset(a, index([true, true], 1)), [[2], [4]])
+    assert.deepStrictEqual(subset(a, index([false, true], [true, false])), [[3]])
+    assert.deepStrictEqual(subset([math.bignumber(2)], index([true])), [math.bignumber(2)])
+  })
+
+  it('should return an empty value with an empty index', function () {
+    assert.deepStrictEqual(subset(a, index([], 1)), [])
+    assert.deepStrictEqual(subset(a, index(new math.Range(0, 0), 1)), [])
+    assert.deepStrictEqual(subset(b, index([], 1)), math.matrix())
+    assert.deepStrictEqual(subset(b, index(new math.Range(0, 0), 1)), math.matrix())
+    assert.deepStrictEqual(subset({ a: 1 }, index('')), undefined)
+    assert.deepStrictEqual(subset('hello', index('')), '')
+  })
+
+  it('should get the right subset of an array of booleans in the parser', function () {
+    assert.deepStrictEqual(math.evaluate('a[[true, true], 2]', { a }), [[2], [4]])
+    assert.deepStrictEqual(math.evaluate('a[[false, true], [true, false]]', { a }), [[3]])
+    assert.deepStrictEqual(math.evaluate('[bignumber(2)][[true]]'), math.matrix([math.bignumber(2)]))
+  })
+
+  it('should throw an error if the array of booleans doesn\'t have the same size as the array', function () {
+    assert.throws(function () { subset(a, index([true], 0)) }, DimensionError)
+    assert.throws(function () { subset(a, index([true, true, false], 1)) }, DimensionError)
+    assert.throws(function () { subset(a, index(0, [true])) }, DimensionError)
+    assert.throws(function () { subset(a, index(0, [true, true, false])) }, DimensionError)
+    assert.throws(function () { subset(b, index([true], 0)) }, DimensionError)
+    assert.throws(function () { subset(b, index([true, true, false], 1)) }, DimensionError)
+    assert.throws(function () { subset(b, index(0, [true])) }, DimensionError)
+    assert.throws(function () { subset(b, index(0, [true, true, false])) }, DimensionError)
+  })
+
+  it('should return an empty value with an empty index in the parser', function () {
+    assert.deepStrictEqual(math.evaluate('a[[],1]', { a }), [])
+    assert.deepStrictEqual(math.evaluate('b[[],1]', { b }), math.matrix())
+    // TODO: add test for objects and strings: currently throws no access property when it's ""
   })
 
   it('should throw an error if trying to access an invalid subset of an array', function () {
@@ -32,6 +71,7 @@ describe('subset', function () {
     const obj = { foo: 'bar' }
     const i = index('a', 'b')
     assert.throws(function () { subset(obj, i) }, /DimensionError/)
+    assert.throws(function () { subset(obj, 'notAnIndex') }, /TypeError.*/)
   })
 
   it('should get the right subset of a matrix', function () {
@@ -68,13 +108,60 @@ describe('subset', function () {
     assert.deepStrictEqual(subset(d, index(0, 0), 123), [[123, 2], [3, 4]])
   })
 
+  it('should leave arrays as such if the index is empty', function () {
+    assert.deepStrictEqual(subset(d, index([], 1), 1), d)
+    assert.deepStrictEqual(subset(d, index(1, new Range(0, 0)), 1), d)
+    assert.deepStrictEqual(subset(d, index([], 1), 1, 1), d)
+    assert.deepStrictEqual(subset(d, index(1, new Range(0, 0)), 1, 1), d)
+    assert.deepStrictEqual(subset(g, index([], 1), 1), g)
+    assert.deepStrictEqual(subset(g, index(1, new Range(0, 0)), 1), g)
+    assert.deepStrictEqual(subset(g, index([], 1), 1, 1), g)
+    assert.deepStrictEqual(subset(g, index(1, new Range(0, 0)), 1, 1), g)
+    assert.deepStrictEqual(subset('hello', index([]), 'x'), 'hello')
+    assert.deepStrictEqual(subset('hello', index([]), 'x', 'x'), 'hello')
+  })
+
+  it('should set the right subset of an array if the replacement can be broadcasted to the index', function () {
+    assert.deepStrictEqual(d, [[1, 2], [3, 4]])
+    assert.deepStrictEqual(subset(d, index(new Range(0, 2), 1), -2), [[1, -2], [3, -2]])
+    assert.deepStrictEqual(d, [[1, 2], [3, 4]])
+    assert.deepStrictEqual(subset(d, index(2, new Range(0, 2)), [5]), [[1, 2], [3, 4], [5, 5]])
+    assert.deepStrictEqual(d, [[1, 2], [3, 4]])
+    assert.deepStrictEqual(subset(d, index(0, [0, 1]), 123), [[123, 123], [3, 4]])
+  })
+
+  it('should set the right subset of an array or matrix with default value if the replacement can\'t be broadcasted to the index', function () {
+    assert.deepStrictEqual(subset(d, index(2, 1), 7, 0), [[1, 2], [3, 4], [0, 7]])
+    assert.deepStrictEqual(subset(g, index(2, 1), 7, 0), math.matrix([[1, 2], [3, 4], [0, 7]]))
+    assert.deepStrictEqual(subset(d, index(1, 2), 7, 0), [[1, 2, 0], [3, 4, 7]])
+    assert.deepStrictEqual(subset(g, index(1, 2), 7, 0), math.matrix([[1, 2, 0], [3, 4, 7]]))
+  })
+
   it('should set a subset of an array with undefined default value', function () {
     const a = []
     assert.deepStrictEqual(subset(a, index(2), 1), [0, 0, 1])
     assert.deepStrictEqual(subset(a, index(2), 1, null), [null, null, 1])
   })
 
-  it('should throw an error if setting the subset of an array with an invalid replacement', function () {
+  it('should set a subset of an array or matrix by broadcasting the replacement', function () {
+    assert.deepStrictEqual(subset(d, index([0, 1], 1), -2), [[1, -2], [3, -2]])
+    assert.deepStrictEqual(subset(d, index(new Range(0, 2), 1), -2), [[1, -2], [3, -2]])
+    assert.deepStrictEqual(subset(g, index([0, 1], 1), -2), math.matrix([[1, -2], [3, -2]]))
+    assert.deepStrictEqual(subset(g, index(new Range(0, 2), 1), -2), math.matrix([[1, -2], [3, -2]]))
+  })
+
+  it('should throw an error if setting the subset of an array with an invalid array of booleans', function () {
+    assert.throws(function () { subset(d, index([true], 0), 123) }, DimensionError)
+    assert.throws(function () { subset(d, index(0, [true, false, true]), 123) }, DimensionError)
+    assert.throws(function () { subset(g, index([true], 0), 123) }, DimensionError)
+    assert.throws(function () { subset(g, index(0, [true, false, true]), 123) }, DimensionError)
+    assert.throws(function () { subset(d, index([true], 0), 123, 1) }, DimensionError)
+    assert.throws(function () { subset(d, index(0, [true, false, true]), 123, 1) }, DimensionError)
+    assert.throws(function () { subset(g, index([true], 0), 123, 1) }, DimensionError)
+    assert.throws(function () { subset(g, index(0, [true, false, true]), 123, 1) }, DimensionError)
+  })
+
+  it('should throw an error if setting the subset of an array with an invalid index', function () {
     assert.throws(function () { subset(d, index(1), 123) }, RangeError)
     assert.throws(function () { subset(d, index(1.3, 0), 123) }, TypeError)
   })
@@ -130,6 +217,15 @@ describe('subset', function () {
       const res = subset(obj, index('foo'), 'bar')
       assert.deepStrictEqual(res, { foo: 'bar' })
       assert.deepStrictEqual(obj, {}) // should leave the original object untouched
+      const res2 = subset(obj, index(''), 'bar')
+      assert.deepStrictEqual(res2, {}) // should leave the original object untouched
+    })
+
+    it('should throw an error when attempting to index an object with something other than a string', function () {
+      const obj = { foo: 'bar' }
+      assert.throws(function () { subset(obj, index(1)) }, /TypeError/)
+      assert.throws(function () { subset(obj, index([1]), 1) }, /TypeError/)
+      assert.throws(function () { subset(obj, index([true]), 1, 1) }, /TypeError/)
     })
 
     it('should throw an error if setting the subset of a string with an invalid replacement', function () {
@@ -149,6 +245,7 @@ describe('subset', function () {
     it('should throw an error if in case of an invalid index type', function () {
       assert.throws(function () { subset('hello', 2) }, /TypeError: Unexpected type of argument/)
       assert.throws(function () { subset('hello', 2, 'A') }, /TypeError: Unexpected type of argument/)
+      assert.throws(function () { subset('hello', 2, 'A', 'B') }, /TypeError: Unexpected type of argument/)
     })
   })
 
