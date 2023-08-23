@@ -2,6 +2,7 @@ import { factory } from '../../utils/factory.js'
 import { format } from '../../utils/string.js'
 import { createComplexEigs } from './eigs/complexEigs.js'
 import { createRealSymmetric } from './eigs/realSymetric.js'
+import { createTrivial } from './eigs/trivialCase.js'
 import { typeOf, isNumber, isBigNumber, isComplex, isFraction } from '../../utils/is.js'
 
 const name = 'eigs'
@@ -11,6 +12,7 @@ const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtra
 export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, qr, usolve, usolveAll, im, re, smaller, matrixFromColumns, dot }) => {
   const doRealSymetric = createRealSymmetric({ config, addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add, divideScalar, sqrt })
   const doComplexEigs = createComplexEigs({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolve, usolveAll, equal, complex, larger, smaller, matrixFromColumns, dot })
+  const doTrivial = createTrivial({ addScalar, subtract, multiplyScalar, sqrt, divideScalar })
 
   /**
    * Compute eigenvalues and eigenvectors of a matrix. The eigenvalues are sorted by their absolute value, ascending.
@@ -92,11 +94,17 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
 
       if (isSymmetric(arr, N, prec)) {
         const type = coerceTypes(mat, arr, N)
+        if (N === 2) {
+          return doTrivial(arr)
+        }
         return doRealSymetric(arr, N, prec, type)
       }
     }
 
     const type = coerceTypes(mat, arr, N)
+    if (N === 2) {
+      return doTrivial(arr)
+    }
     return doComplexEigs(arr, N, prec, type)
   }
 

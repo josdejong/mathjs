@@ -15,10 +15,6 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
       findVectors = true
     }
 
-    if (N === 2) {
-      return trivialCase(arr, findVectors)
-    }
-
     // TODO check if any row/col are zero except the diagonal
 
     // make sure corresponding rows and columns have similar magnitude
@@ -58,29 +54,6 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     }
 
     return { values, vectors }
-  }
-
-  function trivialCase (arr, findVectors) {
-    const a = arr[0][0]
-    const b = arr[0][1]
-    const c = arr[1][0]
-    const d = arr[1][1]
-    const values = eigenvalues2x2(a, b, c, d)
-
-    if (!findVectors) {
-      return {
-        values,
-        vectors: undefined
-      }
-    }
-
-    const eigenvector1 = [divideScalar(c, subtract(values[0], a)), 1]
-    const eigenvector2 = [divideScalar(c, subtract(values[1], a)), 1]
-
-    return {
-      values,
-      vectors: [eigenvector1, eigenvector2]
-    }
   }
 
   /**

@@ -65,17 +65,25 @@ describe('eigs', function () {
     )
     approx.deepEqual(
       eigs([[1, 2], [4, 3]]).vectors,
-      [[1, 1], [-2, 1]]
+      [[-2, 1], [1, 1]]
+    )
+    approx.deepEqual(
+      eigs([[5, 2.3], [2.3, 1]]).vectors,
+      [[-0.45563, 1], [2.19476, 1]]
+    )
+    approx.deepEqual(
+      eigs([[2.0, 1.0], [0.0, 2.0]]).vectors,
+      [[0, 1], [0, 1]]
     )
   })
 
   it('calculates eigenvalues for 2x2 matrix with complex entries', function () {
     approx.deepEqual(
       eigs([[3, -2], [complex(4, 2), -1]]).values,
-      [complex(1.91017972, -2.197368227), complex(0.08982028, 2.197368227)])
+      [complex(0.08982028, 2.197368227), complex(1.91017972, -2.197368227)])
     approx.deepEqual(
       eigs([[2, -2], [complex(0, 2), complex(0, -2)]]).values,
-      [complex(2, -2), 0])
+      [0, complex(2, -2)])
   })
 
   it('calculates eigenvalues for 3x3 and 4x4 matrix', function () {
@@ -205,8 +213,8 @@ describe('eigs', function () {
     const eig = eigs(B)
 
     assert.strictEqual(eig.values[0].toString(),
-      '-0.9999999999999999999999999999999999999999999999999999999999999999')
+      '-1')
     assert.strictEqual(eig.values[1].toString(),
-      '0.9999999999999999999999999999999999999999999999999999999999999999')
+      '1')
   })
 })
