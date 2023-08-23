@@ -2915,8 +2915,8 @@ declare namespace math {
     cumsum(...args: MathType[]): MathType[]
     /**
      * @param array A single matrix
-     * @param dim The dimension along which to sum (defaults to 0)
-     * @returns The cumulative sums along the given dimension
+     * @p    corr(xArray: MathCollection, yArray: MathCollection): MathNumericType
+ms along the given dimension
      */
     cumsum(array: MathCollection, dim?: number): MathCollection
 
@@ -2968,6 +2968,17 @@ declare namespace math {
     variance(
       array: MathCollection,
       normalization: 'unbiased' | 'uncorrected' | 'biased'
+    ): MathNumericType
+
+    /**
+     * Calculate the correlation coefficient between two matrix.
+     * @param {Array} xArray A matrix to compute correlation coefficient
+     * @param {Array} yArray A matrix to compute correlation coefficient
+     * @returns correlation coefficient
+     */
+    corr(
+      xArray: MathCollection,
+      yArray: MathCollection
     ): MathNumericType
 
     /*************************************************************************
