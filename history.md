@@ -4,6 +4,16 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20230823-11100">2023-08-23, 11.10.0 <a href="#20230823-11100" title="Permalink">#</a></h1>
+
+- Extend function `quantileSeq` with support for a `dimension`  <a href="https://github.com/josdejong/mathjs/issues/3002">#3002</a>).
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Implement <a href="https://github.com/josdejong/mathjs/issues/2735">#2735</a>: Support indexing with an array of booleans, for 
+  example `a[[true, false, true]]` and `a[a > 2]`  <a href="https://github.com/josdejong/mathjs/issues/2994">#2994</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Implement function `zeta`  <a href="https://github.com/josdejong/mathjs/issues/2950">#2950</a>, <a href="https://github.com/josdejong/mathjs/issues/2975">#2975</a>, <a href="https://github.com/josdejong/mathjs/issues/2904">#2904</a>). Thanks <a href="https://github.com/Bobingstern">@Bobingstern</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2990">#2990</a>: `DenseMatrix` can mutate input arrays  <a href="https://github.com/josdejong/mathjs/issues/2991">#2991</a>).
+
+
 <h1 id="20230724-1191">2023-07-24, 11.9.1 <a href="#20230724-1191" title="Permalink">#</a></h1>
 
 - Fix a security vulnerability in `FunctionNode` and `SymbolNode` allowing

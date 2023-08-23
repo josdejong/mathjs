@@ -335,6 +335,49 @@ method `.set()`, the matrix will be resized. By default, new items will be
 initialized with zero, but it is possible to specify an alternative value using
 the optional third argument `defaultValue`.
 
+<h2 id="advanced-indexing">Advanced Indexing <a href="#advanced-indexing" title="Permalink">#</a></h2>
+
+Boolean array indexing is a technique that allows you to filter, replace, and set values in an array based on logical conditions. This can be done by creating a boolean array that represents the desired conditions, and then using that array as an index to select the elements of the original array that meet those conditions.
+
+For example, a boolean array can be created to represent all the even numbers in an array, and then used to filter the original array to only include the even numbers. Alternatively, a boolean array can be created to represent all the elements of an array that are greater than a certain value, and then used to replace all the elements of the original array that are greater than that value with a new value.
+
+
+```js
+const q = [1, 2, 3, 4]
+math.subset(q, math.index([true, false, true, false]))      // Array [1, 3]
+
+// filtering
+math.subset(q, math.index(math.larger(q, 2)))               // Array [3, 4]
+
+// filtering with no matches
+math.subset(q, math.index(math.larger(q, 5)))               // Array []
+
+// setting specific values, please note that the replacement value is broadcasted
+q = math.subset(q, math.index(math.smaller(q, 3)), 0)       // q = [0, 0, 3, 4]
+
+// replacing specific values
+math.subset(q, math.index(math.equal(q, 0)), [1, 2])        // q = [1, 2, 3, 4]
+```
+
+The same can be accomplished in the parser in a much more compact manner. Please note that everything after `#` are comments.
+```js
+math.evaluate(`
+q = [1, 2, 3, 4]
+q[[true, false, true, false]] # Matrix [1, 3]
+q[q>2]                        # Matrix [3, 4]
+q[q>5]                        # Matrix []
+q[q <3] = 0                   # q = [0, 0, 3, 4]
+q[q==0] = [1, 2]              # q = [1, 2, 3, 4]
+`)
+```
+The expression inside the index can be as complex as needed as long it evaluates to an array of booleans of the same size.
+```js
+math.evaluate(`
+q = [1, 2, 3, 4]
+r = [6, 5, 4, 3]
+q[q > 3 and r < 4]     # [4]
+`)
+```
 
 <h2 id="iterating">Iterating <a href="#iterating" title="Permalink">#</a></h2>
 

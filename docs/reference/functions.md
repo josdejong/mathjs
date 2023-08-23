@@ -236,6 +236,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.erf(x)](functions/erf.html) | Compute the erf function of a value using a rational Chebyshev approximations for different intervals of x.
+[math.zeta(n)](functions/zeta.html) | Compute the Riemann Zeta function of a value using an infinite series for all of the complex plane using Riemann's Functional equation.
 
 <h2 id="statistics-functions">Statistics functions <a href="#statistics-functions" title="Permalink">#</a></h2>
 
