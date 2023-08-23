@@ -213,7 +213,7 @@ function CommandLineEditor (params) {
 
         // math functions and constants
         for (var func in math) {
-          if (math.hasOwnProperty(func)) {
+          if (math.expression.mathWithTransform.hasOwnProperty(func)) {
             if (func.indexOf(keyword) == 0
                 && !completionMatches.includes(func)) {
               completionMatches.push(func);
