@@ -13,6 +13,7 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Implementation and slight modification by Anik Patel
    *
+   * Note: the implementation is accurate up to about 6 digits.
    *
    * Syntax:
    *
