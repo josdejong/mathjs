@@ -8,7 +8,7 @@ export const polynomialRootDocs = {
   ],
   description: 'Finds the roots of a univariate polynomial given by its coefficients starting from constant, linear, and so on, increasing in degree.',
   examples: [
-    'a = polynomialRoot(-6, 11, -6 1)'
+    'a = polynomialRoot(-6, 11, -6, 1)'
   ],
   seealso: [
     'cbrt', 'sqrt'

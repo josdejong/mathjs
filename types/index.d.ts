@@ -1989,9 +1989,9 @@ declare namespace math {
       includeEnd?: boolean
     ): Matrix
     range(
-      start: number | BigNumber,
-      end: number | BigNumber,
-      step: number | BigNumber,
+      start: number | BigNumber | Unit,
+      end: number | BigNumber | Unit,
+      step: number | BigNumber | Unit,
       includeEnd?: boolean
     ): Matrix
 
@@ -2565,6 +2565,28 @@ declare namespace math {
      * @returns The union of two (multi)sets
      */
     setUnion<T extends MathCollection>(a1: T, a2: MathCollection): T
+
+    /*************************************************************************
+     * Signal functions
+     ************************************************************************/
+    /**
+     * Compute the transfer function of a zero-pole-gain model.
+     * @param z Zeroes of the model
+     * @param p Poles of the model
+     * @param k Gain of the model
+     * @returns The transfer function as array of numerator and denominator
+     */
+    zpk2tf<T extends MathCollection>(z: T, p: T, k?: number): T
+
+    /**
+     * Calculates the frequency response of a filter given its numerator and denominator coefficients.
+     * @param b The numerator polynomial of the filter
+     * @param a The denominator polynomial of the filter
+     * @param w The range of frequencies in which the response is to be calculated
+     * @returns The frequency response
+     *
+     */
+    freqz<T extends MathCollection>(b: T, a: T, w?: number | T): { w: T; h: T }
 
     /*************************************************************************
      * Special functions
@@ -3619,6 +3641,8 @@ declare namespace math {
     setSizeDependencies: FactoryFunctionMap
     setSymDifferenceDependencies: FactoryFunctionMap
     setUnionDependencies: FactoryFunctionMap
+    zpk2tfDependencies: FactoryFunctionMap
+    freqzDependencies: FactoryFunctionMap
     addDependencies: FactoryFunctionMap
     hypotDependencies: FactoryFunctionMap
     normDependencies: FactoryFunctionMap
@@ -5461,9 +5485,9 @@ declare namespace math {
       includeEnd?: boolean
     ): MathJsChain<Matrix>
     range(
-      this: MathJsChain<number | BigNumber>,
-      end: number | BigNumber,
-      step: number | BigNumber,
+      this: MathJsChain<number | BigNumber | Unit>,
+      end: number | BigNumber | Unit,
+      step: number | BigNumber | Unit,
       includeEnd?: boolean
     ): MathJsChain<Matrix>
 
@@ -5927,6 +5951,27 @@ declare namespace math {
       this: MathJsChain<T>,
       a2: MathCollection
     ): MathJsChain<T>
+
+    /*************************************************************************
+     * Signal functions
+     ************************************************************************/
+    /**
+     * Compute the transfer function of a zero-pole-gain model.
+     */
+    zpk2tf<T extends MathCollection>(
+      this: MathJsChain<T>, // chained variable will be used as z
+      p: T,
+      k?: number
+    ): MathJsChain<T>
+
+    /**
+     * Calculates the frequency response of a filter given its numerator and denominator coefficients.
+     */
+    freqz<T extends number | MathArray | MathArray[]>(
+      this: MathJsChain<T>,
+      a: T,
+      w?: T | number
+    ): MathJsChain<{ w: T; h: T }>
 
     /*************************************************************************
      * Special functions

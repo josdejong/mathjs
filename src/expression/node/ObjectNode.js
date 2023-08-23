@@ -1,8 +1,8 @@
-import { isNode } from '../../utils/is.js'
-import { escape, stringify } from '../../utils/string.js'
-import { isSafeProperty } from '../../utils/customs.js'
-import { hasOwnProperty } from '../../utils/object.js'
+import { getSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
+import { isNode } from '../../utils/is.js'
+import { hasOwnProperty } from '../../utils/object.js'
+import { escape, stringify } from '../../utils/string.js'
 
 const name = 'ObjectNode'
 const dependencies = [
@@ -58,11 +58,9 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
           // so you cannot create a key like {"co\\u006Estructor": null}
           const stringifiedKey = stringify(key)
           const parsedKey = JSON.parse(stringifiedKey)
-          if (!isSafeProperty(this.properties, parsedKey)) {
-            throw new Error('No access to property "' + parsedKey + '"')
-          }
+          const prop = getSafeProperty(this.properties, key)
 
-          evalEntries[parsedKey] = this.properties[key]._compile(math, argNames)
+          evalEntries[parsedKey] = prop._compile(math, argNames)
         }
       }
 
