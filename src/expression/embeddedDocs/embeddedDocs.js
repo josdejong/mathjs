@@ -184,6 +184,7 @@ import { setUnionDocs } from './function/set/setUnion.js'
 import { zpk2tfDocs } from './function/signal/zpk2tf.js'
 import { freqzDocs } from './function/signal/freqz.js'
 import { erfDocs } from './function/special/erf.js'
+import { zetaDocs } from './function/special/zeta.js'
 import { madDocs } from './function/statistics/mad.js'
 import { maxDocs } from './function/statistics/max.js'
 import { meanDocs } from './function/statistics/mean.js'
@@ -527,6 +528,7 @@ export const embeddedDocs = {
 
   // functions - special
   erf: erfDocs,
+  zeta: zetaDocs,
 
   // functions - statistics
   cumsum: cumSumDocs,
