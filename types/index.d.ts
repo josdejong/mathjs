@@ -2976,7 +2976,7 @@ declare namespace math {
      * @param {Array} y The second matrix to compute correlation coefficient
      * @returns correlation coefficient
      */
-    corr(xArray: MathCollection, yArray: MathCollection): MathType
+    corr(x: MathCollection, y: MathCollection): MathType
 
     /*************************************************************************
      * String functions
