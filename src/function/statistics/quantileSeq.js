@@ -1,12 +1,12 @@
 import { isBigNumber, isNumber } from '../../utils/is.js'
-import { isInteger } from '../../utils/number.js'
 import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
+import { createApply } from '../matrix/apply.js'
 
 const name = 'quantileSeq'
-const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare']
+const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare', 'isInteger']
 
-export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare }) => {
+export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare, isInteger }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned.
@@ -42,12 +42,23 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @return {Number, BigNumber, Unit, Array}   Quantile(s)
    */
 
+  const apply = createApply({ typed, isInteger })
+
   return typed(name, {
     'Array | Matrix, number | BigNumber | Unit': (data, p) => _quantileSeqProbNumber(data, p, false),
+    'Array | Matrix, number | BigNumber | Unit, number': (data, prob, dim) => _quantileSeqDim(data, prob, false, dim, _quantileSeqProbNumber),
     'Array | Matrix, number | BigNumber | Unit, boolean': _quantileSeqProbNumber,
+    'Array | Matrix, number | BigNumber | Unit, boolean, number': (data, prob, sorted, dim) => _quantileSeqDim(data, prob, sorted, dim, _quantileSeqProbNumber),
     'Array | Matrix, Array | Matrix': (data, p) => _quantileSeqProbCollection(data, p, false),
-    'Array | Matrix, Array | Matrix, boolean': _quantileSeqProbCollection
+    'Array | Matrix, Array | Matrix, number': (data, prob, dim) => _quantileSeqDim(data, prob, false, dim, _quantileSeqProbCollection),
+    'Array | Matrix, Array | Matrix, boolean': _quantileSeqProbCollection,
+    'Array | Matrix, Array | Matrix, boolean, number': (data, prob, sorted, dim) => _quantileSeqDim(data, prob, sorted, dim, _quantileSeqProbCollection)
   })
+
+  function _quantileSeqDim (data, prob, sorted, dim, fn) {
+    // return [1.3, 1.2]
+    return apply(data, dim, x => fn(x, prob, sorted))
+  }
 
   function _quantileSeqProbNumber (data, probOrN, sorted) {
     let probArr, one
