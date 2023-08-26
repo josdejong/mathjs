@@ -2459,7 +2459,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     erg: {
       name: 'erg',
       base: BASE_UNITS.ENERGY,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORTLONG, // Both kiloerg and kerg are acceptable
       value: 1e-7,
       offset: 0
     },
