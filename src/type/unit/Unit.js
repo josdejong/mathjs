@@ -2452,7 +2452,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     joule: {
       name: 'joule',
       base: BASE_UNITS.ENERGY,
-      prefixes: PREFIXES.SHORT,
+      prefixes: PREFIXES.LONG,
       value: 1,
       offset: 0
     },
