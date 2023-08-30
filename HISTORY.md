@@ -1,5 +1,16 @@
 # History
 
+# not yet published, 11.10.1
+
+- Fix #3020: `lruQueue` using the global `hasOwnProperty` which may be 
+  polluted.
+- Add support for prefixes for the unit `erg`, and restrict prefixes of the
+  unit `joule` to only long prefixes like `kilo` and no short prefixes 
+  like `k`. Thanks @costerwi.
+- Add a new browser example `examples/browser/lorenz.html` that uses `solveODE`
+  and plots the result in a chart. Thanks @dvd101x.
+
+
 # 2023-08-23, 11.10.0
 
 - Extend function `quantileSeq` with support for a `dimension` (#3002).
