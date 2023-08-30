@@ -25,6 +25,8 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *    math.zeta(-0.5)    // returns -0.2078862249773449
    *    math.zeta(math.i)  // returns 0.0033002236853253153 - 0.4181554491413212i
    *
+   * See also:
+   *    erf
    *
    * @param {number | Complex | BigNumber} s   A Real, Complex or BigNumber parameter to the Riemann Zeta Function
    * @return {number | Complex | BigNumber}    The Riemann Zeta of `s`
