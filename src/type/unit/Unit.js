@@ -2452,14 +2452,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     joule: {
       name: 'joule',
       base: BASE_UNITS.ENERGY,
-      prefixes: PREFIXES.SHORT,
+      prefixes: PREFIXES.LONG,
       value: 1,
       offset: 0
     },
     erg: {
       name: 'erg',
       base: BASE_UNITS.ENERGY,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORTLONG, // Both kiloerg and kerg are acceptable
       value: 1e-7,
       offset: 0
     },
