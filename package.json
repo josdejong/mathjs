@@ -95,25 +95,39 @@
   },
   "type": "module",
   "main": "./lib/cjs",
-  "types": "./types/index.d.ts",
   "module": "./lib/esm",
   "unpkg": "./lib/browser/math.js",
   "jsdelivr": "./lib/browser/math.js",
   "exports": {
     ".": {
-      "types": "./types/index.d.ts",
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js"
+      "import": {
+        "types": "./lib/esm/index.d.ts",
+        "default": "./lib/esm/index.js"
+      },
+      "require": {
+        "types": "./lib/cjs/index.d.cts",
+        "default": "./lib/cjs/index.js"
+      }
     },
     "./number": {
-      "types": "./types/index.d.ts",
-      "import": "./lib/esm/number.js",
-      "require": "./lib/cjs/number.js"
+      "import": {
+        "types": "./lib/esm/index.d.ts",
+        "default": "./lib/esm/number.js"
+      },
+      "require": {
+        "types": "./lib/cjs/index.d.cts",
+        "default": "./lib/cjs/number.js"
+      }
     },
     "./lib/esm/number": {
-      "types": "./types/index.d.ts",
-      "import": "./lib/esm/number.js",
-      "require": "./lib/cjs/number.js"
+      "import": {
+        "types": "./lib/esm/index.d.ts",
+        "default": "./lib/esm/number.js"
+      },
+      "require": {
+        "types": "./lib/cjs/index.d.cts",
+        "default": "./lib/cjs/number.js"
+      }
     },
     "./package.json": "./package.json",
     "./lib/browser/math.js": "./lib/browser/math.js",
@@ -131,7 +145,6 @@
     "dist",
     "lib",
     "main",
-    "types",
     "number.cjs",
     "LICENSE",
     "NOTICE",

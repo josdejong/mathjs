@@ -31,6 +31,10 @@ const REF_DIR = path.join(__dirname, '/docs')
 const REF_DEST = `${REF_DIR}/reference/functions`
 const REF_ROOT = `${REF_DIR}/reference`
 
+const TYPES_SRC = path.join(__dirname, '/types/index.d.ts')
+const TYPES_DEST_ESM = path.join(__dirname, '/lib/esm/index.d.ts')
+const TYPES_DEST_CJS = path.join(__dirname, '/lib/cjs/index.d.cts')
+
 const MATH_JS = `${COMPILE_BROWSER}/${FILE}`
 const COMPILED_HEADER = `${COMPILE_CJS}/header.js`
 
@@ -222,6 +226,15 @@ async function generateDocs (done) {
   done()
 }
 
+function copyTypes(done) {
+  const types = fs.readFileSync(TYPES_SRC)
+
+  fs.writeFileSync(TYPES_DEST_ESM, types)
+  fs.writeFileSync(TYPES_DEST_CJS, types)
+
+  done()
+}
+
 function generateEntryFiles (done) {
   entryGenerator.generateEntryFiles().then(() => {
     done()
@@ -252,6 +265,8 @@ gulp.task('clean', clean)
 
 gulp.task('docs', generateDocs)
 
+gulp.task('copyTypes', copyTypes)
+
 // check whether any of the source files contains non-ascii characters
 gulp.task('validate:ascii', validateAscii)
 
@@ -276,6 +291,7 @@ gulp.task('default', gulp.series(
   compileCommonJs,
   compileEntryFiles,
   compileESModules, // Must be after generateEntryFiles
+  copyTypes,
   writeCompiledHeader,
   bundle,
   generateDocs
