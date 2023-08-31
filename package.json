@@ -29,7 +29,7 @@
     "complex.js": "^2.1.1",
     "decimal.js": "^10.4.3",
     "escape-latex": "^1.2.0",
-    "fraction.js": "^4.2.0",
+    "fraction.js": "4.2.0",
     "javascript-natural-sort": "^0.7.1",
     "seedrandom": "^3.0.5",
     "tiny-emitter": "^2.1.0",
