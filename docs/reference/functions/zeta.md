@@ -48,7 +48,9 @@ Type | Description
 math.zeta(5)       // returns 1.0369277551433895
 math.zeta(-0.5)    // returns -0.2078862249773449
 math.zeta(math.i)  // returns 0.0033002236853253153 - 0.4181554491413212i
-
 ```
 
 
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
+
+[erf](erf.html)
