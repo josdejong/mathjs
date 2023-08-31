@@ -2,7 +2,7 @@
 
 # 2023-08-31, 11.10.1
 
-- Temporarily lock `fraction.js@4.2.0`, see #3022.
+- Upgrade to `fraction.js@4.3.4`, see #3022.
 - Fix #3020: `lruQueue` using the global `hasOwnProperty` which may be 
   polluted.
 - Add support for prefixes for the unit `erg`, and restrict prefixes of the
