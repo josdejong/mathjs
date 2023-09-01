@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since 11.10.1
+
+- Implement function `corr` to calculate the correlation between two matrices
+  (#3015, #2624). Thanks @vrushaket. 
+
+
 # 2023-08-31, 11.10.1
 
 - Upgrade to `fraction.js@4.3.4`, see #3022.
@@ -7,9 +13,9 @@
   polluted.
 - Add support for prefixes for the unit `erg`, and restrict prefixes of the
   unit `joule` to only long prefixes like `kilo` and no short prefixes 
-  like `k`. Thanks @costerwi.
+  like `k` (#3019). Thanks @costerwi.
 - Add a new browser example `examples/browser/lorenz.html` that uses `solveODE`
-  and plots the result in a chart. Thanks @dvd101x.
+  and plots the result in a chart (#3018). Thanks @dvd101x.
 
 
 # 2023-08-23, 11.10.0
