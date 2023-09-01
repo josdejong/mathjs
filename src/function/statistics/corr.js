@@ -14,8 +14,15 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *     math.corr([1, 2, 3, 4, 5], [4, 5, 6, 7, 8])     // returns 1
    *     math.corr([1, 2.2, 3, 4.8, 5], [4, 5.3, 6.6, 7, 8])     // returns 0.9569941688503644
-   *     math.corr(matrix([[1, 2.2, 3, 4.8, 5], [1, 2, 3, 4, 5]]), matrix([[4, 5.3, 6.6, 7, 8], [1, 2, 3, 4, 5]]))    // returns [0.9569941688503644, 1])
+   *     math.corr(math.matrix([[1, 2.2, 3, 4.8, 5], [1, 2, 3, 4, 5]]), math.matrix([[4, 5.3, 6.6, 7, 8], [1, 2, 3, 4, 5]])) // returns DenseMatrix [0.9569941688503644, 1]
    *
+   * See also:
+   *
+   *     median, mean, min, max, sum, prod, std, variance
+   *
+   * @param {Array | Matrix} A The first array or matrix to compute correlation coefficient
+   * @param {Array | Matrix} B The second array or matrix to compute correlation coefficient
+   * @return {*} The correlation coefficient
    */
   return typed(name, {
     'Array, Array': function (A, B) {
