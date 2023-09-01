@@ -161,7 +161,12 @@ export function modNumber (x, y) {
     // We don't use JavaScript's % operator here as this doesn't work
     // correctly for x < 0 and x === 0
     // see https://en.wikipedia.org/wiki/Modulo_operation
-    return x - y * Math.floor(x / y)
+    const result = x - y * Math.floor(x / y)
+    if ((result + '').length >= 15 && (result + '').indexOf('.') > -1) {
+      return Number(result.toFixed(1))
+    } else {
+      return result
+    }
   } else if (y === 0) {
     return x
   } else { // y < 0
