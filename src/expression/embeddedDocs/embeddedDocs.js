@@ -197,7 +197,7 @@ import { stdDocs } from './function/statistics/std.js'
 import { cumSumDocs } from './function/statistics/cumsum.js'
 import { sumDocs } from './function/statistics/sum.js'
 import { varianceDocs } from './function/statistics/variance.js'
-import { correlationDocs } from './function/statistics/correlation.js'
+import { corrDocs } from './function/statistics/corr.js'
 import { acosDocs } from './function/trigonometry/acos.js'
 import { acoshDocs } from './function/trigonometry/acosh.js'
 import { acotDocs } from './function/trigonometry/acot.js'
@@ -544,7 +544,7 @@ export const embeddedDocs = {
   std: stdDocs,
   sum: sumDocs,
   variance: varianceDocs,
-  corr: correlationDocs,
+  corr: corrDocs,
 
   // functions - trigonometry
   acos: acosDocs,

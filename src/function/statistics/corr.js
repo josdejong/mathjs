@@ -2,7 +2,7 @@ import { factory } from '../../utils/factory.js'
 const name = 'corr'
 const dependencies = ['typed', 'matrix', 'mean', 'sqrt', 'sum', 'add', 'subtract', 'multiply', 'pow', 'divide']
 
-export const createCorrelation = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, sqrt, sum, add, subtract, multiply, pow, divide }) => {
+export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, sqrt, sum, add, subtract, multiply, pow, divide }) => {
   /**
    * Compute the correlation coefficient of a two list with values, For matrices, the matrix correlation coefficient is calculated.
    *

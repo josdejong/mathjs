@@ -1,4 +1,4 @@
-export const correlationDocs = {
+export const corrDocs = {
   name: 'corr',
   category: 'Statistics',
   syntax: [
