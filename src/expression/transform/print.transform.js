@@ -1,5 +1,6 @@
 import { createPrint } from '../../function/string/print.js'
 import { factory } from '../../utils/factory.js'
+import { printTemplate } from '../../utils/print.js'
 
 const name = 'print'
 const dependencies = ['typed', 'matrix', 'zeros', 'add']
@@ -12,7 +13,7 @@ export const createPrintTransform = /* #__PURE__ */ factory(name, dependencies, 
   })
 
   function _convertTemplateToZeroBasedIndex (template) {
-    return template.replace(/\$[\w.]+/g, (x) => {
+    return template.replace(printTemplate, (x) => {
       const parts = x.slice(1).split('.')
       const result = parts.map(function (part) {
         if (!isNaN(part) && part.length > 0) {
