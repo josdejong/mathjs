@@ -28,7 +28,7 @@ Stores values for a scalar unit and its postfix. (eg `100 mm` or `100 kg`). Alth
 Stores values for a fractional number.
 
 - [Overview](../datatypes/fractions.html)
-- [Class API](https://github.com/infusion/Fraction.js/)
+- [Class API](https://github.com/rawify/Fraction.js)
 
 <h2 id="bignumber">BigNumber <a href="#bignumber" title="Permalink">#</a></h2>
 

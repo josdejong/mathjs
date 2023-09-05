@@ -5,7 +5,7 @@ layout: default
 <h1 id="fractions">Fractions <a href="#fractions" title="Permalink">#</a></h1>
 
 For calculations with fractions, math.js supports a `Fraction` data type. 
-Fraction support is powered by [fraction.js](https://github.com/infusion/Fraction.js).
+Fraction support is powered by [fraction.js](https://github.com/rawify/Fraction.js).
 Unlike [numbers](numbers.html) and [BigNumbers](./bignumbers.html), fractions can 
 store numbers with infinitely repeating decimals, for example `1/3 = 0.3333333...`, 
 which can be represented as `0.(3)`, or `2/7` which can be represented as `0.(285714)`.

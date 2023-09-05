@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20230905-11110">2023-09-05, 11.11.0 <a href="#20230905-11110" title="Permalink">#</a></h1>
+
+- Implement function `corr` to calculate the correlation between two matrices
+   <a href="https://github.com/josdejong/mathjs/issues/3015">#3015</a>, <a href="https://github.com/josdejong/mathjs/issues/2624">#2624</a>). Thanks <a href="https://github.com/vrushaket">@vrushaket</a>. 
+- Lock `fraction.js` at version `4.3.4` for now, see <a href="https://github.com/josdejong/mathjs/issues/3024">#3024</a>, 3022, 
+  https://github.com/rawify/Fraction.js/issues/68.
+
+
 <h1 id="20230831-11101">2023-08-31, 11.10.1 <a href="#20230831-11101" title="Permalink">#</a></h1>
 
 - Upgrade to `fraction.js@4.3.4`, see <a href="https://github.com/josdejong/mathjs/issues/3022">#3022</a>.
@@ -11,9 +19,9 @@ layout: default
   polluted.
 - Add support for prefixes for the unit `erg`, and restrict prefixes of the
   unit `joule` to only long prefixes like `kilo` and no short prefixes 
-  like `k`. Thanks <a href="https://github.com/costerwi">@costerwi</a>.
+  like `k`  <a href="https://github.com/josdejong/mathjs/issues/3019">#3019</a>). Thanks <a href="https://github.com/costerwi">@costerwi</a>.
 - Add a new browser example `examples/browser/lorenz.html` that uses `solveODE`
-  and plots the result in a chart. Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+  and plots the result in a chart  <a href="https://github.com/josdejong/mathjs/issues/3018">#3018</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 
 
 <h1 id="20230823-11100">2023-08-23, 11.10.0 <a href="#20230823-11100" title="Permalink">#</a></h1>

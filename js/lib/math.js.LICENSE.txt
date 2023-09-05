@@ -8,10 +8,10 @@
  **/
 
 /**
- * @license Fraction.js v4.2.0 05/03/2022
+ * @license Fraction.js v4.3.0 20/08/2023
  * https://www.xarg.org/2014/03/rational-numbers-in-javascript/
  *
- * Copyright (c) 2021, Robert Eisele (robert@xarg.org)
+ * Copyright (c) 2023, Robert Eisele (robert@raw.org)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  **/
 
@@ -23,8 +23,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 11.10.1
- * @date    2023-08-31
+ * @version 11.11.0
+ * @date    2023-09-05
  *
  * @license
  * Copyright (C) 2013-2023 Jos de Jong <wjosdejong@gmail.com>

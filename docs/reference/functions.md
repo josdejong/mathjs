@@ -242,6 +242,7 @@ Function | Description
 
 Function | Description
 ---- | -----------
+[math.corr(A,&nbsp;B)](functions/corr.html) | Compute the correlation coefficient of a two list with values, For matrices, the matrix correlation coefficient is calculated.
 [math.cumsum(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/cumsum.html) | Compute the cumulative sum of a matrix or a list with values.
 [math.mad(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/mad.html) | Compute the median absolute deviation of a matrix or a list with values.
 [math.max(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/max.html) | Compute the maximum value of a matrix or a  list with values.
