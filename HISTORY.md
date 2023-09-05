@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 11.10.1
+# 2023-09-05, 11.11.0
 
 - Implement function `corr` to calculate the correlation between two matrices
   (#3015, #2624). Thanks @vrushaket. 
