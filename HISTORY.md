@@ -4,6 +4,8 @@
 
 - Implement function `corr` to calculate the correlation between two matrices
   (#3015, #2624). Thanks @vrushaket. 
+- Lock `fraction.js` at version `4.3.4` for now, see #3024, 3022, 
+  https://github.com/rawify/Fraction.js/issues/68.
 
 
 # 2023-08-31, 11.10.1
