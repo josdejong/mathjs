@@ -249,7 +249,7 @@ export { createUnequalNumber as createUnequal } from './function/relational/uneq
 
 // special
 export { createErf } from './function/special/erf.js'
-
+export { createZeta } from './function/special/zeta.js'
 // statistics
 export { createMode } from './function/statistics/mode.js'
 export { createProd } from './function/statistics/prod.js'
@@ -263,6 +263,7 @@ export { createMad } from './function/statistics/mad.js'
 export { createVariance } from './function/statistics/variance.js'
 export { createQuantileSeq } from './function/statistics/quantileSeq.js'
 export { createStd } from './function/statistics/std.js'
+export { createCorr } from './function/statistics/corr.js'
 
 // string
 export { createFormat } from './function/string/format.js'
