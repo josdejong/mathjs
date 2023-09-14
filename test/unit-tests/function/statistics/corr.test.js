@@ -16,11 +16,19 @@ describe('correlation', function () {
     assert.deepStrictEqual(corr(math.matrix([[1, 2.2, 3, 4.8, 5], [1, 2, 3, 4, 5]]), math.matrix([[4, 5.3, 6.6, 7, 8], [1, 2, 3, 4, 5]])), [0.9569941688503644, 1])
   })
 
-  it('should throw an error if called with invalid number of arguments', function () {
+  it('should throw an error if called with zero arguments', function () {
     assert.throws(function () { corr() })
   })
 
   it('should throw an error if called with an empty array', function () {
     assert.throws(function () { corr([]) })
+  })
+
+  it('should throw an error if called with invalid number of arguments', function () {
+    assert.throws(function () { corr(math.matrix([2, 4, 6, 8]), math.matrix([1, 2, 3])) })
+  })
+
+  it('should throw an error if called with number of arguments do not have same size', function () {
+    assert.throws(function () { corr(math.matrix([[1, 2.2, 3, 4.8, 5], [1, 2, 3, 4, 5]]), math.matrix([[4, 5.3, 6.6, 7, 8]])) })
   })
 })
