@@ -47,7 +47,7 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const correlations = []
     if (isMatrix(A) && isMatrix(B)) {
       if (A.size().toString() !== B.size().toString()) {
-        throw new Error('Dimension mismatch. Matrix A and B must have the same size.')
+        throw new SyntaxError('Dimension mismatch. Matrix A and B must have the same size.')
       } else if (A.size().length > 1) {
         for (let i = 0; i < A.size()[0]; i++) {
           correlations.push(correlation(A.toArray()[i], B.toArray()[i]))
@@ -57,11 +57,11 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return correlation(A.toArray(), B.toArray())
     } else if (Array.isArray(A[0]) && Array.isArray(B[0])) {
       if (A.length !== B.length) {
-        throw new Error('Dimension mismatch. Array A and B must have the same length.')
+        throw new SyntaxError('Dimension mismatch. Array A and B must have the same length.')
       }
       for (let i = 0; i < A.length; i++) {
         if (A[i].length !== B[i].length) {
-          throw new Error('Dimension mismatch. Array A and B must have the same number of elements.')
+          throw new SyntaxError('Dimension mismatch. Array A and B must have the same number of elements.')
         }
         correlations.push(correlation(A[i], B[i]))
       }
