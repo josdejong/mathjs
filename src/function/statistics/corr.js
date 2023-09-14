@@ -1,4 +1,6 @@
 import { factory } from '../../utils/factory.js'
+import { isMatrix } from '../../utils/is.js'
+
 const name = 'corr'
 const dependencies = ['typed', 'matrix', 'mean', 'sqrt', 'sum', 'add', 'subtract', 'multiply', 'pow', 'divide']
 
@@ -13,8 +15,10 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * Examples:
    *
    *     math.corr([1, 2, 3, 4, 5], [4, 5, 6, 7, 8])     // returns 1
-   *     math.corr([1, 2.2, 3, 4.8, 5], [4, 5.3, 6.6, 7, 8])     // returns 0.9569941688503644
-   *     math.corr(math.matrix([[1, 2.2, 3, 4.8, 5], [1, 2, 3, 4, 5]]), math.matrix([[4, 5.3, 6.6, 7, 8], [1, 2, 3, 4, 5]])) // returns DenseMatrix [0.9569941688503644, 1]
+   *     math.corr([1, 2.2, 3, 4.8, 5], [4, 5.3, 6.6, 7, 8])     //returns 0.9569941688503644
+   *     math.corr([[1, 2.2, 3, 4.8, 5], [4, 5.3, 6.6, 7, 8]],[[1, 2.2, 3, 4.8, 5], [4, 5.3, 6.6, 7, 8]])   // returns [1,1]
+   *     math.corr(math.matrix([2, 4, 6, 8]), math.matrix([1, 2, 3, 6]))    // returns 0.9561828874675149
+   *     math.corr(math.matrix([[1, 2.2, 3, 4.8, 5], [1, 2, 3, 4, 5]]), math.matrix([[4, 5.3, 6.6, 7, 8], [1, 2, 3, 4, 5]]) // returns [0.9569941688503644, 1]
    *
    * See also:
    *
@@ -28,8 +32,8 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     'Array, Array': function (A, B) {
       return _corr(A, B)
     },
-    'Matrix, Matrix': function (xMatrix, yMatrix) {
-      return matrix(_corr(xMatrix.toArray(), yMatrix.toArray()))
+    'Matrix, Matrix': function (A, B) {
+      return _corr(A, B)
     }
   })
   /**
@@ -40,9 +44,25 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @private
    */
   function _corr (A, B) {
-    if (Array.isArray(A[0]) && Array.isArray(B[0])) {
-      const correlations = []
+    const correlations = []
+    if (isMatrix(A) && isMatrix(B)) {
+      if (A.size().toString() !== B.size().toString()) {
+        throw new Error('Dimension mismatch. Matrix A and B must have the same size.')
+      } else if (A.size().length > 1) {
+        for (let i = 0; i < A.size()[0]; i++) {
+          correlations.push(correlation(A.toArray()[i], B.toArray()[i]))
+        }
+        return correlations
+      }
+      return correlation(A.toArray(), B.toArray())
+    } else if (Array.isArray(A[0]) && Array.isArray(B[0])) {
+      if (A.length !== B.length) {
+        throw new Error('Dimension mismatch. Array A and B must have the same length.')
+      }
       for (let i = 0; i < A.length; i++) {
+        if (A[i].length !== B[i].length) {
+          throw new Error('Dimension mismatch. Array A and B must have the same number of elements.')
+        }
         correlations.push(correlation(A[i], B[i]))
       }
       return correlations
