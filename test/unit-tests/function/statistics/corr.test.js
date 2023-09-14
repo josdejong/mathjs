@@ -24,11 +24,19 @@ describe('correlation', function () {
     assert.throws(function () { corr([]) })
   })
 
-  it('should throw an error if called with invalid number of arguments', function () {
+  it('should throw an error if called with different number of arguments', function () {
     assert.throws(function () { corr(math.matrix([2, 4, 6, 8]), math.matrix([1, 2, 3])) })
   })
 
   it('should throw an error if called with number of arguments do not have same size', function () {
     assert.throws(function () { corr(math.matrix([[1, 2.2, 3, 4.8, 5], [1, 2, 3, 4, 5]]), math.matrix([[4, 5.3, 6.6, 7, 8]])) })
+  })
+
+  it('should throw an error if called with different number of arguments', function () {
+    assert.throws(function () { corr([1, 2, 3, 4, 5], [4, 5, 6, 7]) })
+  })
+
+  it('should throw an error if called with number of arguments do not have same size', function () {
+    assert.throws(function () { corr([[1, 2, 3, 4, 5], [4, 5, 6, 7]], [[1, 2, 3, 4, 5]]) })
   })
 })
