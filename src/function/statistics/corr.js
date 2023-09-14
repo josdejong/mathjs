@@ -67,6 +67,9 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
       return correlations
     } else {
+      if (A.length !== B.length) {
+        throw new SyntaxError('Dimension mismatch. Array A and B must have the same number of elements.')
+      }
       return correlation(A, B)
     }
   }
