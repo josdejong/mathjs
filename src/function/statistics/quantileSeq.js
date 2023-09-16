@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory.js'
 import { createApply } from '../matrix/apply.js'
 
 const name = 'quantileSeq'
-const dependencies = ['typed', 'bignumber', 'add', 'divide', 'multiply', 'partitionSelect', 'compare', 'isInteger', 'smaller', 'smallerEq', 'larger']
+const dependencies = ['typed', 'bignumber', 'add', 'subtract', 'divide', 'multiply', 'partitionSelect', 'compare', 'isInteger', 'smaller', 'smallerEq', 'larger']
 
-export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, bignumber, add, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger }) => {
+export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, bignumber, add, subtract, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned.
@@ -132,68 +132,35 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
       throw new Error('Cannot calculate quantile of an empty sequence')
     }
 
-    if (isNumber(prob)) {
-      const index = prob * (len - 1)
-      const fracPart = index % 1
-      if (fracPart === 0) {
-        const value = sorted ? flat[index] : partitionSelect(flat, index)
-        return value
-      }
+    const index = isNumber(prob) ? prob * (len - 1) : prob.times(len - 1)
+    const integerPart = isNumber(prob) ? Math.floor(index) : index.floor().toNumber()
+    const fracPart = isNumber(prob) ? index % 1 : index.minus(integerPart)
 
-      const integerPart = Math.floor(index)
-
-      let left
-      let right
-      if (sorted) {
-        left = flat[integerPart]
-        right = flat[integerPart + 1]
-      } else {
-        right = partitionSelect(flat, integerPart + 1)
-
-        // max of partition is kth largest
-        left = flat[integerPart]
-        for (let i = 0; i < integerPart; ++i) {
-          if (compare(flat[i], left) > 0) {
-            left = flat[i]
-          }
-        }
-      }
-
-      // Q(prob) = (1-f)*A[floor(index)] + f*A[floor(index)+1]
-      return add(multiply(left, 1 - fracPart), multiply(right, fracPart))
+    if (isInteger(index)) {
+      return sorted
+        ? flat[index]
+        : partitionSelect(
+          flat,
+          isNumber(prob) ? index : index.valueOf()
+        )
     }
-
-    // If prob is a BigNumber
-    let index = prob.times(len - 1)
-    if (index.isInteger()) {
-      index = index.toNumber()
-      const value = sorted ? flat[index] : partitionSelect(flat, index)
-      return value
-    }
-
-    const integerPart = index.floor()
-    const fracPart = index.minus(integerPart)
-    const integerPartNumber = integerPart.toNumber()
-
     let left
     let right
     if (sorted) {
-      left = flat[integerPartNumber]
-      right = flat[integerPartNumber + 1]
+      left = flat[integerPart]
+      right = flat[integerPart + 1]
     } else {
-      right = partitionSelect(flat, integerPartNumber + 1)
+      right = partitionSelect(flat, integerPart + 1)
 
       // max of partition is kth largest
-      left = flat[integerPartNumber]
-      for (let i = 0; i < integerPartNumber; ++i) {
+      left = flat[integerPart]
+      for (let i = 0; i < integerPart; ++i) {
         if (compare(flat[i], left) > 0) {
           left = flat[i]
         }
       }
     }
-
     // Q(prob) = (1-f)*A[floor(index)] + f*A[floor(index)+1]
-    const one = new fracPart.constructor(1)
-    return add(multiply(left, one.minus(fracPart)), multiply(right, fracPart))
+    return add(multiply(left, subtract(1, fracPart)), multiply(right, fracPart))
   }
 })

@@ -3,7 +3,7 @@ import { createQuantileSeq } from '../../function/statistics/quantileSeq.js'
 import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 
 const name = 'quantileSeq'
-const dependencies = ['typed', 'bignumber', 'add', 'divide', 'multiply', 'partitionSelect', 'compare', 'isInteger', 'smaller', 'smallerEq', 'larger']
+const dependencies = ['typed', 'bignumber', 'add', 'subtract', 'divide', 'multiply', 'partitionSelect', 'compare', 'isInteger', 'smaller', 'smallerEq', 'larger']
 
 /**
  * Attach a transform function to math.quantileSeq
@@ -12,8 +12,8 @@ const dependencies = ['typed', 'bignumber', 'add', 'divide', 'multiply', 'partit
  * This transform changed the `dim` parameter of function std
  * from one-based to zero based
  */
-export const createQuantileSeqTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, bignumber, add, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger }) => {
-  const quantileSeq = createQuantileSeq({ typed, bignumber, add, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger })
+export const createQuantileSeqTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, bignumber, add, subtract, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger }) => {
+  const quantileSeq = createQuantileSeq({ typed, bignumber, add, subtract, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger })
 
   return typed('quantileSeq', {
     'Array|Matrix, number|BigNumber|Array, number': (arr, prob, dim) => quantileSeq(arr, prob, dimToZeroBase(dim)),
