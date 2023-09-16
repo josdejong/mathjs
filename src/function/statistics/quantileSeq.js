@@ -1,4 +1,4 @@
-import { isBigNumber, isNumber } from '../../utils/is.js'
+import { isNumber } from '../../utils/is.js'
 import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { createApply } from '../matrix/apply.js'
@@ -107,25 +107,11 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
 
   function _quantileSeqProbCollection (data, probOrN, sorted) {
     const dataArr = data.valueOf()
-    let one
-
     // quantileSeq([a, b, c, d, ...], [prob1, prob2, ...][,sorted])
     const probOrNArr = probOrN.valueOf()
     const probArr = []
     for (let i = 0; i < probOrNArr.length; ++i) {
-      const currProb = probOrNArr[i]
-      if (isNumber(currProb)) {
-        if (currProb < 0 || currProb > 1) {
-          throw new Error('Probability must be between 0 and 1, inclusive')
-        }
-      } else if (isBigNumber(currProb)) {
-        one = new currProb.constructor(1)
-        if (currProb.isNegative() || currProb.gt(one)) {
-          throw new Error('Probability must be between 0 and 1, inclusive')
-        }
-      }
-
-      probArr.push(_quantileSeq(dataArr, currProb, sorted))
+      probArr.push(_quantileSeq(dataArr, probOrNArr[i], sorted))
     }
     return probArr
   }
