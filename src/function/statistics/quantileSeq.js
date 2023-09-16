@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory.js'
 import { createApply } from '../matrix/apply.js'
 
 const name = 'quantileSeq'
-const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare', 'isInteger']
+const dependencies = ['typed', 'bignumber', 'add', 'divide', 'multiply', 'partitionSelect', 'compare', 'isInteger', 'smaller', 'smallerEq', 'larger']
 
-export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare, isInteger }) => {
+export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, bignumber, add, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned.
@@ -45,10 +45,10 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
   const apply = createApply({ typed, isInteger })
 
   return typed(name, {
-    'Array | Matrix, number | BigNumber | Unit': (data, p) => _quantileSeqProbNumber(data, p, false),
-    'Array | Matrix, number | BigNumber | Unit, number': (data, prob, dim) => _quantileSeqDim(data, prob, false, dim, _quantileSeqProbNumber),
-    'Array | Matrix, number | BigNumber | Unit, boolean': _quantileSeqProbNumber,
-    'Array | Matrix, number | BigNumber | Unit, boolean, number': (data, prob, sorted, dim) => _quantileSeqDim(data, prob, sorted, dim, _quantileSeqProbNumber),
+    'Array | Matrix, number | BigNumber': (data, p) => _quantileSeqProbNumber(data, p, false),
+    'Array | Matrix, number | BigNumber, number': (data, prob, dim) => _quantileSeqDim(data, prob, false, dim, _quantileSeqProbNumber),
+    'Array | Matrix, number | BigNumber, boolean': _quantileSeqProbNumber,
+    'Array | Matrix, number | BigNumber, boolean, number': (data, prob, sorted, dim) => _quantileSeqDim(data, prob, sorted, dim, _quantileSeqProbNumber),
     'Array | Matrix, Array | Matrix': (data, p) => _quantileSeqProbCollection(data, p, false),
     'Array | Matrix, Array | Matrix, number': (data, prob, dim) => _quantileSeqDim(data, prob, false, dim, _quantileSeqProbCollection),
     'Array | Matrix, Array | Matrix, boolean': _quantileSeqProbCollection,
@@ -56,72 +56,42 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
   })
 
   function _quantileSeqDim (data, prob, sorted, dim, fn) {
-    // return [1.3, 1.2]
     return apply(data, dim, x => fn(x, prob, sorted))
   }
 
   function _quantileSeqProbNumber (data, probOrN, sorted) {
-    let probArr, one
+    let probArr
     const dataArr = data.valueOf()
-    if (isNumber(probOrN)) {
-      if (probOrN < 0) {
-        throw new Error('N/prob must be non-negative')
-      }
-
-      if (probOrN <= 1) {
-        // quantileSeq([a, b, c, d, ...], prob[,sorted])
-        return _quantileSeq(dataArr, probOrN, sorted)
-      }
-
-      if (probOrN > 1) {
-        // quantileSeq([a, b, c, d, ...], N[,sorted])
-        if (!isInteger(probOrN)) {
-          throw new Error('N must be a positive integer')
-        }
-
-        const nPlusOne = probOrN + 1
-        probArr = new Array(probOrN)
-        for (let i = 0; i < probOrN; i++) {
-          probArr[i] = _quantileSeq(dataArr, (i + 1) / nPlusOne, sorted)
-        }
-        return probArr
-      }
+    if (smaller(probOrN, 0)) {
+      throw new Error('N/prob must be non-negative')
     }
-
-    if (isBigNumber(probOrN)) {
-      const BigNumber = probOrN.constructor
-
-      if (probOrN.isNegative()) {
-        throw new Error('N/prob must be non-negative')
+    if (smallerEq(probOrN, 1)) {
+      // quantileSeq([a, b, c, d, ...], prob[,sorted])
+      return isNumber(probOrN)
+        ? _quantileSeq(dataArr, probOrN, sorted)
+        : bignumber(_quantileSeq(dataArr, probOrN, sorted))
+    }
+    if (larger(probOrN, 1)) {
+      // quantileSeq([a, b, c, d, ...], N[,sorted])
+      if (!isInteger(probOrN)) {
+        throw new Error('N must be a positive integer')
       }
 
-      one = new BigNumber(1)
-
-      if (probOrN.lte(one)) {
-        // quantileSeq([a, b, c, d, ...], prob[,sorted])
-        return new BigNumber(_quantileSeq(dataArr, probOrN, sorted))
+      // largest possible Array length is 2^32-1
+      // 2^32 < 10^15, thus safe conversion guaranteed
+      if (larger(probOrN, 4294967295)) {
+        throw new Error('N must be less than or equal to 2^32-1, as that is the maximum length of an Array')
       }
 
-      if (probOrN.gt(one)) {
-        // quantileSeq([a, b, c, d, ...], N[,sorted])
-        if (!probOrN.isInteger()) {
-          throw new Error('N must be a positive integer')
-        }
+      const nPlusOne = add(probOrN, 1)
+      probArr = []
 
-        // largest possible Array length is 2^32-1
-        // 2^32 < 10^15, thus safe conversion guaranteed
-        const intN = probOrN.toNumber()
-        if (intN > 4294967295) {
-          throw new Error('N must be less than or equal to 2^32-1, as that is the maximum length of an Array')
-        }
-
-        const nPlusOne = new BigNumber(intN + 1)
-        probArr = new Array(intN)
-        for (let i = 0; i < intN; i++) {
-          probArr[i] = new BigNumber(_quantileSeq(dataArr, new BigNumber(i + 1).div(nPlusOne), sorted))
-        }
-        return probArr
+      for (let i = 0; smaller(i, probOrN); i++) {
+        const prob = divide(i + 1, nPlusOne)
+        probArr.push(_quantileSeq(dataArr, prob, sorted))
       }
+
+      return isNumber(probOrN) ? probArr : bignumber(probArr)
     }
   }
 
@@ -141,8 +111,8 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     // quantileSeq([a, b, c, d, ...], [prob1, prob2, ...][,sorted])
     const probOrNArr = probOrN.valueOf()
-    const probArr = new Array(probOrNArr.length)
-    for (let i = 0; i < probArr.length; ++i) {
+    const probArr = []
+    for (let i = 0; i < probOrNArr.length; ++i) {
       const currProb = probOrNArr[i]
       if (isNumber(currProb)) {
         if (currProb < 0 || currProb > 1) {
@@ -155,7 +125,7 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
         }
       }
 
-      probArr[i] = _quantileSeq(dataArr, currProb, sorted)
+      probArr.push(_quantileSeq(dataArr, currProb, sorted))
     }
     return probArr
   }
