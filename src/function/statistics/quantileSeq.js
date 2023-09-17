@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory.js'
 import { createApply } from '../matrix/apply.js'
 
 const name = 'quantileSeq'
-const dependencies = ['typed', 'bignumber', 'add', 'subtract', 'divide', 'multiply', 'partitionSelect', 'compare', 'isInteger', 'smaller', 'smallerEq', 'larger']
+const dependencies = ['typed', '?bignumber', 'add', 'subtract', 'divide', 'multiply', 'partitionSelect', 'compare', 'isInteger', 'smaller', 'smallerEq', 'larger']
 
 export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, bignumber, add, subtract, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger }) => {
   /**

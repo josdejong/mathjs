@@ -16,8 +16,14 @@ export const createQuantileSeqTransform = /* #__PURE__ */ factory(name, dependen
   const quantileSeq = createQuantileSeq({ typed, bignumber, add, subtract, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger })
 
   return typed('quantileSeq', {
-    'Array|Matrix, number|BigNumber|Array, number': (arr, prob, dim) => quantileSeq(arr, prob, dimToZeroBase(dim)),
-    'Array|Matrix, number|BigNumber|Array, boolean, number': (arr, prob, sorted, dim) => quantileSeq(arr, prob, sorted, dimToZeroBase(dim))
+    'Array | Matrix, number | BigNumber': quantileSeq,
+    'Array | Matrix, number | BigNumber, number': (arr, prob, dim) => quantileSeq(arr, prob, dimToZeroBase(dim)),
+    'Array | Matrix, number | BigNumber, boolean': quantileSeq,
+    'Array | Matrix, number | BigNumber, boolean, number': (arr, prob, sorted, dim) => quantileSeq(arr, prob, sorted, dimToZeroBase(dim)),
+    'Array | Matrix, Array | Matrix': quantileSeq,
+    'Array | Matrix, Array | Matrix, number': (data, prob, dim) => quantileSeq(data, prob, dimToZeroBase(dim)),
+    'Array | Matrix, Array | Matrix, boolean': quantileSeq,
+    'Array | Matrix, Array | Matrix, boolean, number': (data, prob, sorted, dim) => quantileSeq(data, prob, sorted, dimToZeroBase(dim))
   })
 
   function dimToZeroBase (dim) {
