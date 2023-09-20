@@ -2970,6 +2970,14 @@ declare namespace math {
       normalization: 'unbiased' | 'uncorrected' | 'biased'
     ): MathNumericType
 
+    /**
+     * Calculate the correlation coefficient between two matrix.
+     * @param {Array | Matrix} x The first array or matrix to compute correlation coefficient
+     * @param {Array | Matrix} y The second array or matrix to compute correlation coefficient
+     * @returns correlation coefficient
+     */
+    corr(x: MathCollection, y: MathCollection): MathType
+
     /*************************************************************************
      * String functions
      ************************************************************************/

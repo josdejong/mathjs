@@ -64,6 +64,7 @@ exports.equal = function equal (a, b, epsilon) {
  * Will deep compare all values of Arrays and Objects element wise.
  * @param {*} a
  * @param {*} b
+ * @param {number} [epsilon]
  */
 exports.deepEqual = function deepEqual (a, b, epsilon) {
   let prop, i, len
