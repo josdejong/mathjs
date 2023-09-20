@@ -1,4 +1,5 @@
 import { factory } from '../../utils/factory.js'
+
 const name = 'corr'
 const dependencies = ['typed', 'matrix', 'mean', 'sqrt', 'sum', 'add', 'subtract', 'multiply', 'pow', 'divide']
 
@@ -13,8 +14,8 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * Examples:
    *
    *     math.corr([1, 2, 3, 4, 5], [4, 5, 6, 7, 8])     // returns 1
-   *     math.corr([1, 2.2, 3, 4.8, 5], [4, 5.3, 6.6, 7, 8])     // returns 0.9569941688503644
-   *     math.corr(math.matrix([[1, 2.2, 3, 4.8, 5], [1, 2, 3, 4, 5]]), math.matrix([[4, 5.3, 6.6, 7, 8], [1, 2, 3, 4, 5]])) // returns DenseMatrix [0.9569941688503644, 1]
+   *     math.corr([1, 2.2, 3, 4.8, 5], [4, 5.3, 6.6, 7, 8])     //returns 0.9569941688503644
+   *     math.corr([[1, 2.2, 3, 4.8, 5], [4, 5.3, 6.6, 7, 8]],[[1, 2.2, 3, 4.8, 5], [4, 5.3, 6.6, 7, 8]])   // returns [1,1]
    *
    * See also:
    *
@@ -28,8 +29,9 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     'Array, Array': function (A, B) {
       return _corr(A, B)
     },
-    'Matrix, Matrix': function (xMatrix, yMatrix) {
-      return matrix(_corr(xMatrix.toArray(), yMatrix.toArray()))
+    'Matrix, Matrix': function (A, B) {
+      const res = _corr(A.toArray(), B.toArray())
+      return Array.isArray(res) ? matrix(res) : res
     }
   })
   /**
@@ -40,13 +42,22 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @private
    */
   function _corr (A, B) {
+    const correlations = []
     if (Array.isArray(A[0]) && Array.isArray(B[0])) {
-      const correlations = []
+      if (A.length !== B.length) {
+        throw new SyntaxError('Dimension mismatch. Array A and B must have the same length.')
+      }
       for (let i = 0; i < A.length; i++) {
+        if (A[i].length !== B[i].length) {
+          throw new SyntaxError('Dimension mismatch. Array A and B must have the same number of elements.')
+        }
         correlations.push(correlation(A[i], B[i]))
       }
       return correlations
     } else {
+      if (A.length !== B.length) {
+        throw new SyntaxError('Dimension mismatch. Array A and B must have the same number of elements.')
+      }
       return correlation(A, B)
     }
   }
