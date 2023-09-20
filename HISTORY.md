@@ -5,7 +5,9 @@
 - Fix #2989: use one-based indices in `print` in the parser (#3009). 
   Thanks @dvd101x. 
 - Fix #2936: `mod` sometimes giving wrong results due to internal round-off
-  errors (#3011). Thanks @praisennamonu1. 
+  errors (#3011). Thanks @praisennamonu1.
+- Internal refactor of `quantileSeq`, and fixed the embedded help (#3003). 
+  Thanks @dvd101x.
 
 
 # 2023-09-05, 11.11.0

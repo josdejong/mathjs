@@ -7,6 +7,8 @@ const name = 'quantileSeq'
 const dependencies = ['typed', '?bignumber', 'add', 'subtract', 'divide', 'multiply', 'partitionSelect', 'compare', 'isInteger', 'smaller', 'smallerEq', 'larger']
 
 export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, bignumber, add, subtract, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger }) => {
+  const apply = createApply({ typed, isInteger })
+
   /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned.
@@ -41,9 +43,6 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @param {Boolean} sorted=false              is data sorted in ascending order
    * @return {Number, BigNumber, Unit, Array}   Quantile(s)
    */
-
-  const apply = createApply({ typed, isInteger })
-
   return typed(name, {
     'Array | Matrix, number | BigNumber': (data, p) => _quantileSeqProbNumber(data, p, false),
     'Array | Matrix, number | BigNumber, number': (data, prob, dim) => _quantileSeqDim(data, prob, false, dim, _quantileSeqProbNumber),
