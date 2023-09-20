@@ -1234,7 +1234,10 @@ describe('parse', function () {
     it('should parse mod %', function () {
       approx.equal(parseAndEval('8 % 3'), 2)
       approx.equal(parseAndEval('80% pi'), 1.4601836602551685)
-      assert.throws(function () { parseAndEval('3%(-100)') }, /Cannot calculate mod for a negative divisor/)
+    })
+
+    it('should parse mod % for negative divisors', function () {
+      assert.strictEqual(parseAndEval('3%(-100)'), -97)
     })
 
     it('should parse % value', function () {
