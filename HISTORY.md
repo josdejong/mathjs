@@ -1,7 +1,32 @@
 # History
 
-# unpublished changes since 11.9.1
+# 2023-09-05, 11.11.0
 
+- Implement function `corr` to calculate the correlation between two matrices
+  (#3015, #2624). Thanks @vrushaket. 
+- Lock `fraction.js` at version `4.3.4` for now, see #3024, 3022, 
+  https://github.com/rawify/Fraction.js/issues/68.
+
+
+# 2023-08-31, 11.10.1
+
+- Upgrade to `fraction.js@4.3.4`, see #3022.
+- Fix #3020: `lruQueue` using the global `hasOwnProperty` which may be 
+  polluted.
+- Add support for prefixes for the unit `erg`, and restrict prefixes of the
+  unit `joule` to only long prefixes like `kilo` and no short prefixes 
+  like `k` (#3019). Thanks @costerwi.
+- Add a new browser example `examples/browser/lorenz.html` that uses `solveODE`
+  and plots the result in a chart (#3018). Thanks @dvd101x.
+
+
+# 2023-08-23, 11.10.0
+
+- Extend function `quantileSeq` with support for a `dimension` (#3002).
+  Thanks @dvd101x.
+- Implement #2735: Support indexing with an array of booleans, for 
+  example `a[[true, false, true]]` and `a[a > 2]` (#2994). Thanks @dvd101x.
+- Implement function `zeta` (#2950, #2975, #2904). Thanks @Bobingstern.
 - Fix #2990: `DenseMatrix` can mutate input arrays (#2991).
 
 
