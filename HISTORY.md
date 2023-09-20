@@ -8,6 +8,7 @@
   errors (#3011). Thanks @praisennamonu1.
 - Internal refactor of `quantileSeq`, and fixed the embedded help (#3003). 
   Thanks @dvd101x.
+- Updated dependencies and devDependencies.
 
 
 # 2023-09-05, 11.11.0
