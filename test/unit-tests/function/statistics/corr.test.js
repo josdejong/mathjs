@@ -13,7 +13,7 @@ describe('correlation', function () {
 
   it('should return the correlation coefficient from matrix', function () {
     assert.strictEqual((corr(math.matrix([2, 4, 6, 8]), math.matrix([1, 2, 3, 6]))), 0.9561828874675149)
-    assert.deepStrictEqual(corr(math.matrix([[1, 2.2, 3, 4.8, 5], [1, 2, 3, 4, 5]]), math.matrix([[4, 5.3, 6.6, 7, 8], [1, 2, 3, 4, 5]])), [0.9569941688503644, 1])
+    assert.deepStrictEqual(corr(math.matrix([[1, 2.2, 3, 4.8, 5], [1, 2, 3, 4, 5]]), math.matrix([[4, 5.3, 6.6, 7, 8], [1, 2, 3, 4, 5]])).toArray(), [0.9569941688503644, 1])
   })
 
   it('should throw an error if called with zero arguments', function () {

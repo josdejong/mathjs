@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-import { isMatrix } from '../../utils/is.js'
 
 const name = 'corr'
 const dependencies = ['typed', 'matrix', 'mean', 'sqrt', 'sum', 'add', 'subtract', 'multiply', 'pow', 'divide']
@@ -31,7 +30,8 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return _corr(A, B)
     },
     'Matrix, Matrix': function (A, B) {
-      return _corr(A, B)
+      const res = _corr(A.toArray(), B.toArray())
+      return Array.isArray(res) ? matrix(res) : res
     }
   })
   /**
@@ -43,17 +43,7 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   function _corr (A, B) {
     const correlations = []
-    if (isMatrix(A) && isMatrix(B)) {
-      if (A.size().toString() !== B.size().toString()) {
-        throw new SyntaxError('Dimension mismatch. Matrix A and B must have the same size.')
-      } else if (A.size().length > 1) {
-        for (let i = 0; i < A.size()[0]; i++) {
-          correlations.push(correlation(A.toArray()[i], B.toArray()[i]))
-        }
-        return correlations
-      }
-      return correlation(A.toArray(), B.toArray())
-    } else if (Array.isArray(A[0]) && Array.isArray(B[0])) {
+    if (Array.isArray(A[0]) && Array.isArray(B[0])) {
       if (A.length !== B.length) {
         throw new SyntaxError('Dimension mismatch. Array A and B must have the same length.')
       }
