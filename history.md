@@ -4,6 +4,17 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20230920-11111">2023-09-20, 11.11.1 <a href="#20230920-11111" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2989">#2989</a>: use one-based indices in `print` in the parser  <a href="https://github.com/josdejong/mathjs/issues/3009">#3009</a>). 
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>. 
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2936">#2936</a>: `mod` sometimes giving wrong results due to internal round-off
+  errors  <a href="https://github.com/josdejong/mathjs/issues/3011">#3011</a>). Thanks <a href="https://github.com/praisennamonu1">@praisennamonu1</a>.
+- Internal refactor of `quantileSeq`, and fixed the embedded help  <a href="https://github.com/josdejong/mathjs/issues/3003">#3003</a>). 
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Updated dependencies and devDependencies.
+
+
 <h1 id="20230905-11110">2023-09-05, 11.11.0 <a href="#20230905-11110" title="Permalink">#</a></h1>
 
 - Implement function `corr` to calculate the correlation between two matrices
