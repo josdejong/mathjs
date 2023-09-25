@@ -4985,6 +4985,21 @@ declare namespace math {
     subtract<T extends MathType>(this: MathJsChain<T>, y: T): MathJsChain<T>
 
     /**
+     * Determines if two expressions are symbolically equal, i.e. one is the
+     * result of valid algebraic manipulations on the other.
+     * @param {Node|string} expr1 The first expression to compare
+     * @param {Node|string} expr2 The second expression to compare
+     * @param {Object} [options] Optional option object, passed to simplify
+     * @returns {boolean} Returns true if a valid manipulation making the
+     * expressions equal is found.
+     */
+    symbolicEqual(
+      expr1: MathNode | string,
+      expr2: MathNode | string,
+      options?: SimplifyOptions
+    ): MathJsChain<boolean>;
+
+    /**
      * Inverse the sign of a value, apply a unary minus operation. For
      * matrices, the function is evaluated element wise. Boolean values and
      * strings will be converted to a number. For complex numbers, both real
