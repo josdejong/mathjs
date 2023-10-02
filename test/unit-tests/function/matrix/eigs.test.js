@@ -220,6 +220,24 @@ describe('eigs', function () {
     approx.equal(ev2[1].vector[1], 2 * ev2[1].vector[0])
   })
 
+  it('accepts a precision argument', function () {
+    // The following is a matrix with an algebraically triple eigenvalue
+    // equal to 2 which has a unique eigenvector (up to scale, of course).
+    // It is from https://web.uvic.ca/~tbazett/diffyqs/sec_multeigen.html
+    // The iterative eigenvalue calculation currently being used has a
+    // great deal of difficulty converging. So we can get eigs to produce
+    // **something** by using a very low precision, but the results are
+    // basically garbage, so we don't actually check them.
+    const bad = [[2, 0, 0], [-1, -1, 9], [0, -1, 5]]
+    const junk = eigs(bad, 1e-4)
+    assert.strictEqual(junk.values.length, 3)
+    const junkm = eigs(matrix(bad), 1e-4)
+    assert.deepStrictEqual(junkm.values.size(), [3])
+    // Hopefully in future iterations of mathjs we can ratchet down
+    // these precision values and actually test the return values for
+    // correctness.
+  })
+
   it('diagonalizes matrix with bigNumber', function () {
     const x = [[bignum(1), bignum(0)], [bignum(0), bignum(1)]]
     approx.deepEqual(eigs(x).values, [bignum(1), bignum(1)])
