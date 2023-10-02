@@ -27,7 +27,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
     let Sij = new Array(N)
     // Sij is Identity Matrix
     for (let i = 0; i < N; i++) {
-      Sij[i] = createArray(N, 0)
+      Sij[i] = Array(N).fill(0)
       Sij[i][i] = 1.0
     }
     // initial error
@@ -40,7 +40,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
       Sij = Sij1(Sij, psi, i, j)
       Vab = getAij(x)
     }
-    const Ei = createArray(N, 0) // eigenvalues
+    const Ei = Array(N).fill(0) // eigenvalues
     for (let i = 0; i < N; i++) {
       Ei[i] = x[i][i]
     }
@@ -55,7 +55,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
     let Sij = new Array(N)
     // Sij is Identity Matrix
     for (let i = 0; i < N; i++) {
-      Sij[i] = createArray(N, 0)
+      Sij[i] = Array(N).fill(0)
       Sij[i][i] = 1.0
     }
     // initial error
@@ -68,7 +68,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
       Sij = Sij1Big(Sij, psi, i, j)
       Vab = getAijBig(x)
     }
-    const Ei = createArray(N, 0) // eigenvalues
+    const Ei = Array(N).fill(0) // eigenvalues
     for (let i = 0; i < N; i++) {
       Ei[i] = x[i][i]
     }
@@ -101,8 +101,8 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
     const N = Sij.length
     const c = Math.cos(theta)
     const s = Math.sin(theta)
-    const Ski = createArray(N, 0)
-    const Skj = createArray(N, 0)
+    const Ski = Array(N).fill(0)
+    const Skj = Array(N).fill(0)
     for (let k = 0; k < N; k++) {
       Ski[k] = c * Sij[k][i] - s * Sij[k][j]
       Skj[k] = s * Sij[k][i] + c * Sij[k][j]
@@ -118,8 +118,8 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
     const N = Sij.length
     const c = cos(theta)
     const s = sin(theta)
-    const Ski = createArray(N, bignumber(0))
-    const Skj = createArray(N, bignumber(0))
+    const Ski = Array(N).fill(bignumber(0))
+    const Skj = Array(N).fill(bignumber(0))
     for (let k = 0; k < N; k++) {
       Ski[k] = subtract(multiplyScalar(c, Sij[k][i]), multiplyScalar(s, Sij[k][j]))
       Skj[k] = addScalar(multiplyScalar(s, Sij[k][i]), multiplyScalar(c, Sij[k][j]))
@@ -138,8 +138,8 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
     const s = bignumber(sin(theta))
     const c2 = multiplyScalar(c, c)
     const s2 = multiplyScalar(s, s)
-    const Aki = createArray(N, bignumber(0))
-    const Akj = createArray(N, bignumber(0))
+    const Aki = Array(N).fill(bignumber(0))
+    const Akj = Array(N).fill(bignumber(0))
     // 2cs Hij
     const csHij = multiply(bignumber(2), c, s, Hij[i][j])
     //  Aii
@@ -174,8 +174,8 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
     const s = Math.sin(theta)
     const c2 = c * c
     const s2 = s * s
-    const Aki = createArray(N, 0)
-    const Akj = createArray(N, 0)
+    const Aki = Array(N).fill(0)
+    const Akj = Array(N).fill(0)
     //  Aii
     const Aii = c2 * Hij[i][i] - 2 * c * s * Hij[i][j] + s2 * Hij[j][j]
     const Ajj = s2 * Hij[i][i] + 2 * c * s * Hij[i][j] + c2 * Hij[j][j]
@@ -237,10 +237,10 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   function sorting (E, S) {
     const N = E.length
     const values = Array(N)
-    const vectors = Array(N)
+    const vecs = Array(N)
 
     for (let k = 0; k < N; k++) {
-      vectors[k] = Array(N)
+      vecs[k] = Array(N)
     }
     for (let i = 0; i < N; i++) {
       let minID = 0
@@ -253,29 +253,12 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
       }
       values[i] = E.splice(minID, 1)[0]
       for (let k = 0; k < N; k++) {
-        vectors[k][i] = S[k][minID]
+        vecs[i][k] = S[k][minID]
         S[k].splice(minID, 1)
       }
     }
-
-    return { values, vectors }
-  }
-
-  /**
-   * Create an array of a certain size and fill all items with an initial value
-   * @param {number} size
-   * @param {number} value
-   * @return {number[]}
-   */
-  function createArray (size, value) {
-    // TODO: as soon as all browsers support Array.fill, use that instead (IE doesn't support it)
-    const array = new Array(size)
-
-    for (let i = 0; i < size; i++) {
-      array[i] = value
-    }
-
-    return array
+    const eigenvectors = vecs.map((vector, i) => ({ value: values[i], vector }))
+    return { values, eigenvectors }
   }
 
   return main

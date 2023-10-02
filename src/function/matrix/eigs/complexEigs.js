@@ -1,6 +1,6 @@
 import { clone } from '../../../utils/object.js'
 
-export function createComplexEigs ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, inv, qr, usolve, usolveAll, equal, complex, larger, smaller, matrixFromColumns, dot }) {
+export function createComplexEigs ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, size, reshape, inv, qr, usolve, usolveAll, equal, complex, larger, smaller, matrixFromColumns, dot }) {
   /**
    * @param {number[][]} arr the matrix to find eigenvalues of
    * @param {number} N size of the matrix
@@ -46,14 +46,13 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     // (So U = C⁻¹ arr C and the relationship between current arr
     // and original A is unchanged.)
 
-    let vectors
+    let eigenvectors
 
     if (findVectors) {
-      vectors = findEigenvectors(arr, N, C, R, values, prec, type)
-      vectors = matrixFromColumns(...vectors)
+      eigenvectors = findEigenvectors(arr, N, C, R, values, prec, type)
     }
 
-    return { values, vectors }
+    return { values, eigenvectors }
   }
 
   /**
@@ -350,7 +349,6 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
           ))
           inflateMatrix(Qpartial, N)
           Qtotal = multiply(Qtotal, Qpartial)
-
           if (n > 2) {
             Qpartial = diag(Array(n - 2).fill(one))
           }
@@ -433,9 +431,6 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     const b = Array(N).fill(zero)
     const E = diag(Array(N).fill(one))
 
-    // eigenvalues for which usolve failed (due to numerical error)
-    const failedLambdas = []
-
     for (let i = 0; i < len; i++) {
       const λ = uniqueValues[i]
       const S = subtract(U, multiply(λ, E)) // the characteristic matrix
@@ -444,15 +439,11 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
       solutions.shift() // ignore the null vector
 
       // looks like we missed something, try inverse iteration
+      // But if that fails, just presume that the original matrix truly
+      // was defective.
       while (solutions.length < multiplicities[i]) {
         const approxVec = inverseIterate(S, N, solutions, prec, type)
-
-        if (approxVec == null) {
-          // no more vectors were found
-          failedLambdas.push(λ)
-          break
-        }
-
+        if (approxVec === null) { break } // no more vectors were found
         solutions.push(approxVec)
       }
 
@@ -460,14 +451,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
       const correction = multiply(inv(R), C)
       solutions = solutions.map(v => multiply(correction, v))
 
-      vectors.push(...solutions.map(v => flatten(v)))
-    }
-
-    if (failedLambdas.length !== 0) {
-      const err = new Error('Failed to find eigenvectors for the following eigenvalues: ' + failedLambdas.join(', '))
-      err.values = values
-      err.vectors = vectors
-      throw err
+      vectors.push(...solutions.map(v => ({ value: λ, vector: flatten(v) })))
     }
 
     return vectors
@@ -514,19 +498,17 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     }
 
     // matrix is not diagonalizable
-    // compute off-diagonal elements of N = A - λI
-    // N₁₂ = 0 ⇒ S = ( N⃗₁, I⃗₁ )
-    // N₁₂ ≠ 0 ⇒ S = ( N⃗₂, I⃗₂ )
-
+    // compute diagonal elements of N = A - λI
     const na = subtract(a, l1)
-    const nb = subtract(b, l1)
-    const nc = subtract(c, l1)
     const nd = subtract(d, l1)
 
-    if (smaller(abs(nb), prec)) {
-      return [[na, one], [nc, zero]]
+    // N⃗₂ = 0 ⇒ S = ( N⃗₁, I⃗₁ )
+    // N⃗₁ ≠ 0 ⇒ S = ( N⃗₂, I⃗₂ )
+
+    if (smaller(abs(b), prec) && smaller(abs(nd), prec)) {
+      return [[na, one], [c, zero]]
     } else {
-      return [[nb, zero], [nd, one]]
+      return [[b, zero], [nd, one]]
     }
   }
 
@@ -614,12 +596,19 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
     // you better choose a random vector before I count to five
     let i = 0
-    while (true) {
+    for (; i < 5; ++i) {
       b = randomOrthogonalVector(N, orthog, type)
-      b = usolve(A, b)
-
+      try {
+        b = usolve(A, b)
+      } catch {
+        // That direction didn't work, likely because the original matrix
+        // was defective. But still make the full number of tries...
+        continue
+      }
       if (larger(norm(b), largeNum)) { break }
-      if (++i >= 5) { return null }
+    }
+    if (i >= 5) {
+      return null // couldn't find any orthogonal vector in the image
     }
 
     // you better converge before I count to ten
@@ -664,7 +653,9 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * Project vector v to the orthogonal complement of an array of vectors
    */
   function orthogonalComplement (v, orthog) {
-    for (const w of orthog) {
+    const vectorShape = size(v)
+    for (let w of orthog) {
+      w = reshape(w, vectorShape) // make sure this is just a vector computation
       // v := v − (w, v)/∥w∥² w
       v = subtract(v, multiply(divideScalar(dot(w, v), dot(w, w)), w))
     }
