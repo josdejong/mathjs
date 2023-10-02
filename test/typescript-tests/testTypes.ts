@@ -1286,7 +1286,7 @@ Matrices examples
   {
     const D = [
       [1, 1],
-      [0, 1],
+      [0, 1]
     ]
     const eig = math.eigs(D)
     assert.ok(math.deepEqual(eig.values, [1, 1]))
