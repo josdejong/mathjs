@@ -94,12 +94,18 @@ describe('eigs', function () {
         [1.0, 1.0, 1.0]]).values,
     [0, 0, 3]
     )
-    approx.deepEqual(eigs(
+    const sym4 =
       [[0.6163396801190624, -3.8571699139231796, 2.852995822026198, 4.1957619745869845],
         [-3.8571699139231796, 0.7047577966772156, 0.9122549659760404, 0.9232933211541949],
         [2.852995822026198, 0.9122549659760404, 1.6598316026960402, -1.2931270747054358],
-        [4.1957619745869845, 0.9232933211541949, -1.2931270747054358, -4.665994662426116]]).values,
-    [-0.9135495807127523, 2.26552473288741, 5.6502090685149735, -8.687249803623432]
+        [4.1957619745869845, 0.9232933211541949, -1.2931270747054358, -4.665994662426116]]
+    const fullValues = eigs(sym4).values
+    approx.deepEqual(fullValues,
+      [-0.9135495807127523, 2.26552473288741, 5.6502090685149735, -8.687249803623432]
+    )
+    assert.deepStrictEqual(
+      fullValues,
+      eigs(sym4, { eigenvectors: false }).values
     )
   })
 
@@ -147,6 +153,8 @@ describe('eigs', function () {
       [4.14, 4.27, 3.05, 2.24, 2.73, -4.47]]
     const ans = eigs(H)
     const E = ans.values
+    const justvalues = eigs(H, { eigenvectors: false })
+    assert.deepStrictEqual(E, justvalues.values)
     testEigenvectors(ans,
       (v, j) => approx.deepEqual(multiply(E[j], v), multiply(H, v))
     )
@@ -251,6 +259,8 @@ describe('eigs', function () {
       [4.24, -4.68, -3.33, 1.67, 2.80, 2.73],
       [4.14, 4.27, 3.05, 2.24, 2.73, -4.47]])
     const ans = eigs(H)
+    const justvalues = eigs(H, { eigenvectors: false })
+    assert.deepStrictEqual(ans.values, justvalues.values)
     const E = ans.values
     const Vcols = ans.eigenvectors.map(obj => obj.vector)
     const V = matrixFromColumns(...Vcols)
