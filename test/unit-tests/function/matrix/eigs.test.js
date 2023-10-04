@@ -4,6 +4,11 @@ import approx from '../../../../tools/approx.js'
 const { eigs, add, complex, divide, exp, fraction, matrix, matrixFromColumns, multiply, abs, size, transpose, bignumber: bignum, zeros, Matrix, Complex } = math
 
 describe('eigs', function () {
+  // helper to examine eigenvectors
+  function testEigenvectors (soln, predicate) {
+    soln.eigenvectors.forEach((ev, i) => predicate(ev.vector, i))
+  }
+
   it('only accepts a square matrix', function () {
     assert.throws(function () { eigs(matrix([[1, 2, 3], [4, 5, 6]])) }, /Matrix must be square/)
     assert.throws(function () { eigs([[1, 2, 3], [4, 5, 6]]) }, /Matrix must be square/)
@@ -16,36 +21,30 @@ describe('eigs', function () {
   it('follows aiao-mimo', function () {
     const realSymArray = eigs([[1, 0], [0, 1]])
     assert(Array.isArray(realSymArray.values) && typeof realSymArray.values[0] === 'number')
-    for (let ix = 0; ix < 2; ++ix) {
-      assert(Array.isArray(realSymArray.eigenvectors[ix].vector))
-    }
+    testEigenvectors(realSymArray, vector => assert(Array.isArray(vector)))
     assert(typeof realSymArray.eigenvectors[0].vector[0] === 'number')
 
     const genericArray = eigs([[0, 1], [-1, 0]])
     assert(Array.isArray(genericArray.values) && genericArray.values[0] instanceof Complex)
-    for (let ix = 0; ix < 2; ++ix) {
-      assert(Array.isArray(genericArray.eigenvectors[ix].vector))
-    }
-    assert(genericArray.eigenvectors[0].vector[0] instanceof Complex)
+    testEigenvectors(genericArray,
+      vector => assert(Array.isArray(vector) && vector[0] instanceof Complex)
+    )
 
     const realSymMatrix = eigs(matrix([[1, 0], [0, 1]]))
     assert(realSymMatrix.values instanceof Matrix)
     assert.deepStrictEqual(size(realSymMatrix.values), matrix([2]))
-    for (let ix = 0; ix < 2; ++ix) {
-      assert(realSymMatrix.eigenvectors[ix].vector instanceof Matrix)
-      assert.deepStrictEqual(
-        size(realSymMatrix.eigenvectors[ix].vector),
-        matrix([2]))
-    }
+    testEigenvectors(realSymMatrix, vector => {
+      assert(vector instanceof Matrix)
+      assert.deepStrictEqual(size(vector), matrix([2]))
+    })
 
     const genericMatrix = eigs(matrix([[0, 1], [-1, 0]]))
     assert(genericMatrix.values instanceof Matrix)
     assert.deepStrictEqual(size(genericMatrix.values), matrix([2]))
-    for (let ix = 0; ix < 2; ++ix) {
-      assert(genericMatrix.eigenvectors[ix].vector instanceof Matrix)
-      assert.deepStrictEqual(
-        size(genericMatrix.eigenvectors[ix].vector), matrix([2]))
-    }
+    testEigenvectors(genericMatrix, vector => {
+      assert(vector instanceof Matrix)
+      assert.deepStrictEqual(size(vector), matrix([2]))
+    })
   })
 
   it('only accepts a matrix with valid element type', function () {
@@ -148,10 +147,9 @@ describe('eigs', function () {
       [4.14, 4.27, 3.05, 2.24, 2.73, -4.47]]
     const ans = eigs(H)
     const E = ans.values
-    for (let j = 0; j < 6; j++) {
-      const v = ans.eigenvectors[j].vector
-      approx.deepEqual(multiply(E[j], v), multiply(H, v))
-    }
+    testEigenvectors(ans,
+      (v, j) => approx.deepEqual(multiply(E[j], v), multiply(H, v))
+    )
     const Vcols = ans.eigenvectors.map(obj => obj.vector)
     const V = matrixFromColumns(...Vcols)
     const VtHV = multiply(transpose(V), H, V)
@@ -168,11 +166,10 @@ describe('eigs', function () {
     const cnt = 0.1
     const Ath = multiply(exp(multiply(complex(0, 1), -cnt)), A)
     const Hth = divide(add(Ath, transpose(Ath)), 2)
-    const { values, eigenvectors } = eigs(Hth)
-    for (const i of [0, 1, 2]) {
-      const v = eigenvectors[i].vector
-      approx.deepEqual(multiply(Hth, v), multiply(values[i], v))
-    }
+    const example = eigs(Hth)
+    testEigenvectors(example, (v, i) =>
+      approx.deepEqual(multiply(Hth, v), multiply(example.values[i], v))
+    )
   })
 
   it('supports fractions', function () {
@@ -225,17 +222,19 @@ describe('eigs', function () {
     // equal to 2 which has a unique eigenvector (up to scale, of course).
     // It is from https://web.uvic.ca/~tbazett/diffyqs/sec_multeigen.html
     // The iterative eigenvalue calculation currently being used has a
-    // great deal of difficulty converging. So we can get eigs to produce
-    // **something** by using a very low precision, but the results are
-    // basically garbage, so we don't actually check them.
-    const bad = [[2, 0, 0], [-1, -1, 9], [0, -1, 5]]
-    const junk = eigs(bad, 1e-4)
-    assert.strictEqual(junk.values.length, 3)
-    const junkm = eigs(matrix(bad), 1e-4)
-    assert.deepStrictEqual(junkm.values.size(), [3])
-    // Hopefully in future iterations of mathjs we can ratchet down
-    // these precision values and actually test the return values for
-    // correctness.
+    // great deal of difficulty converging. We can use a fine precision,
+    // but it still doesn't produce good eigenvalues. Hopefully someday
+    // we'll be able to get closer.
+    const difficult = [[2, 0, 0], [-1, -1, 9], [0, -1, 5]]
+    const poor = eigs(difficult, 1e-14)
+    assert.strictEqual(poor.values.length, 3)
+    approx.deepEqual(poor.values, [2, 2, 2], 6e-6)
+    // Note the eigenvectors are junk, so we don't test them. The function
+    // eigs thinks there are three of them, for example. Hopefully some
+    // future iteration of mathjs will be able to discover there is really
+    // only one.
+    const poorm = eigs(matrix(difficult), 1e-14)
+    assert.deepStrictEqual(poorm.values.size(), [3])
   })
 
   it('diagonalizes matrix with bigNumber', function () {

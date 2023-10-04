@@ -1282,7 +1282,7 @@ Matrices examples
     assert.strictEqual(math.matrix([1, 2, 3]) instanceof math.Matrix, true)
   }
 
-  // Eigenvalues and eigenvectors (should this be extended?)
+  // Eigenvalues and eigenvectors
   {
     const D = [
       [1, 1],

@@ -65,45 +65,20 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
     // streamlined. It is done because the Matrix object carries some
     // type information about its entries, and so constructing the matrix
     // is a roundabout way of doing type detection.
-    Array: function (x) { return computeValuesAndVectors(matrix(x)) },
+    Array: function (x) { return doEigs(matrix(x)) },
     'Array, number|BigNumber': function (x, prec) {
-      return computeValuesAndVectors(matrix(x), prec)
+      return doEigs(matrix(x), prec)
     },
     Matrix: function (mat) {
-      return computeValuesAndVectors(mat, undefined, true)
+      return doEigs(mat, undefined, true)
     },
     'Matrix, number|BigNumber': function (mat, prec) {
-      return computeValuesAndVectors(mat, prec, true)
+      return doEigs(mat, prec, true)
     }
   })
 
-  function computeValuesAndVectors (mat, prec, matricize = false) {
-    if (prec === undefined) {
-      prec = config.epsilon
-    }
-
-    let result
-    const arr = mat.toArray()
-    const asize = mat.size()
-
-    if (asize.length !== 2 || asize[0] !== asize[1]) {
-      throw new RangeError(`Matrix must be square (size: ${format(asize)})`)
-    }
-
-    const N = asize[0]
-
-    if (isReal(arr, N, prec)) {
-      coerceReal(arr, N)
-
-      if (isSymmetric(arr, N, prec)) {
-        const type = coerceTypes(mat, arr, N)
-        result = doRealSymmetric(arr, N, prec, type)
-      }
-    }
-    if (!result) {
-      const type = coerceTypes(mat, arr, N)
-      result = doComplexEigs(arr, N, prec, type)
-    }
+  function doEigs (mat, prec, matricize = false) {
+    const result = computeValuesAndVectors(mat, prec)
     if (matricize) {
       result.values = matrix(result.values)
       result.eigenvectors = result.eigenvectors.map(({ value, vector }) =>
@@ -117,6 +92,34 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
       }
     })
     return result
+  }
+
+  function computeValuesAndVectors (mat, prec) {
+    if (prec === undefined) {
+      prec = config.epsilon
+    }
+
+    const arr = mat.toArray() // NOTE: arr is guaranteed to be unaliased
+    // and so safe to modify in place
+    const asize = mat.size()
+
+    if (asize.length !== 2 || asize[0] !== asize[1]) {
+      throw new RangeError(`Matrix must be square (size: ${format(asize)})`)
+    }
+
+    const N = asize[0]
+
+    if (isReal(arr, N, prec)) {
+      coerceReal(arr, N) // modifies arr by side effect
+
+      if (isSymmetric(arr, N, prec)) {
+        const type = coerceTypes(mat, arr, N) // modifies arr by side effect
+        return doRealSymmetric(arr, N, prec, type)
+      }
+    }
+
+    const type = coerceTypes(mat, arr, N) // modifies arr by side effect
+    return doComplexEigs(arr, N, prec, type)
   }
 
   /** @return {boolean} */

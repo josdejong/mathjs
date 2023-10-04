@@ -23,9 +23,9 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     const R = balance(arr, N, prec, type, findVectors)
 
     // R is the row transformation matrix
-    // arr = A' = R A R⁻¹, A is the original matrix
+    // arr = A' = R A R^-1, A is the original matrix
     // (if findVectors is false, R is undefined)
-    // (And so to return to original matrix: A = R⁻¹ arr R)
+    // (And so to return to original matrix: A = R^-1 arr R)
 
     // TODO if magnitudes of elements vary over many orders,
     // move greatest elements to the top left corner
@@ -35,7 +35,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     // updates the transformation matrix R with new row operationsq
     // MODIFIES arr by side effect!
     reduceToHessenberg(arr, N, prec, type, findVectors, R)
-    // still true that original A = R⁻¹ arr R)
+    // still true that original A = R^-1 arr R)
 
     // find eigenvalues
     const { values, C } = iterateUntilTriangular(arr, N, prec, type, findVectors)
@@ -43,7 +43,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     // values is the list of eigenvalues, C is the column
     // transformation matrix that transforms arr, the hessenberg
     // matrix, to upper triangular
-    // (So U = C⁻¹ arr C and the relationship between current arr
+    // (So U = C^-1 arr C and the relationship between current arr
     // and original A is unchanged.)
 
     let eigenvectors
@@ -254,7 +254,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
     // The Francis Algorithm
     // The core idea of this algorithm is that doing successive
-    // A' = Q⁺AQ transformations will eventually converge to block-
+    // A' = QtAQ transformations will eventually converge to block-
     // upper-triangular with diagonal blocks either 1x1 or 2x2.
     // The Q here is the one from the QR decomposition, A = QR.
     // Since the eigenvalues of a block-upper-triangular matrix are
@@ -276,7 +276,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     // N×N matrix describing the overall transformation done during the QR algorithm
     let Qtotal = findVectors ? diag(Array(N).fill(one)) : undefined
 
-    // n×n matrix describing the QR transformations done since last convergence
+    // nxn matrix describing the QR transformations done since last convergence
     let Qpartial = findVectors ? diag(Array(n).fill(one)) : undefined
 
     // last eigenvalue converged before this many steps
@@ -289,7 +289,12 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
       // Perform the factorization
 
-      const k = 0 // TODO set close to an eigenvalue
+      const k = arr[n - 1][n - 1] // TODO this is apparently a somewhat
+      // old-fashioned choice; ideally set close to an eigenvalue, or
+      // perhaps better yet switch to the implicit QR version that is sometimes
+      // specifically called the "Francis algorithm" that is alluded to
+      // in the following TODO. (Or perhaps we switch to an independently
+      // optimized third-party package for the linear algebra operations...)
 
       for (let i = 0; i < n; i++) {
         arr[i][i] = subtract(arr[i][i], k)
@@ -411,18 +416,18 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     const uniqueValues = []
     const multiplicities = []
 
-    for (const λ of values) {
-      const i = indexOf(uniqueValues, λ, equal)
+    for (const lambda of values) {
+      const i = indexOf(uniqueValues, lambda, equal)
 
       if (i === -1) {
-        uniqueValues.push(λ)
+        uniqueValues.push(lambda)
         multiplicities.push(1)
       } else {
         multiplicities[i] += 1
       }
     }
 
-    // find eigenvectors by solving U − λE = 0
+    // find eigenvectors by solving U − lambdaE = 0
     // TODO replace with an iterative eigenvector algorithm
     // (this one might fail for imprecise eigenvalues)
 
@@ -432,8 +437,8 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     const E = diag(Array(N).fill(one))
 
     for (let i = 0; i < len; i++) {
-      const λ = uniqueValues[i]
-      const S = subtract(U, multiply(λ, E)) // the characteristic matrix
+      const lambda = uniqueValues[i]
+      const S = subtract(U, multiply(lambda, E)) // the characteristic matrix
 
       let solutions = usolveAll(S, b)
       solutions.shift() // ignore the null vector
@@ -451,7 +456,8 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
       const correction = multiply(inv(R), C)
       solutions = solutions.map(v => multiply(correction, v))
 
-      vectors.push(...solutions.map(v => ({ value: λ, vector: flatten(v) })))
+      vectors.push(
+        ...solutions.map(v => ({ value: lambda, vector: flatten(v) })))
     }
 
     return vectors
@@ -462,7 +468,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    * @return {[number,number]}
    */
   function eigenvalues2x2 (a, b, c, d) {
-    // λ± = ½ trA ± ½ √( tr²A - 4 detA )
+    // lambda_+- = 1/2 trA +- 1/2 sqrt( tr^2 A - 4 detA )
     const trA = addScalar(a, d)
     const detA = subtract(multiplyScalar(a, d), multiplyScalar(b, c))
     const x = multiplyScalar(trA, 0.5)
@@ -473,7 +479,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
   /**
    * For an 2x2 matrix compute the transformation matrix S,
-   * so that SAS⁻¹ is an upper triangular matrix
+   * so that SAS^-1 is an upper triangular matrix
    * @return {[[number,number],[number,number]]}
    * @see https://math.berkeley.edu/~ogus/old/Math_54-05/webfoils/jordan.pdf
    * @see http://people.math.harvard.edu/~knill/teaching/math21b2004/exhibits/2dmatrices/index.html
@@ -498,12 +504,12 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     }
 
     // matrix is not diagonalizable
-    // compute diagonal elements of N = A - λI
+    // compute diagonal elements of N = A - lambdaI
     const na = subtract(a, l1)
     const nd = subtract(d, l1)
 
-    // N⃗₂ = 0 ⇒ S = ( N⃗₁, I⃗₁ )
-    // N⃗₁ ≠ 0 ⇒ S = ( N⃗₂, I⃗₂ )
+    // col(N,2) = 0  implies  S = ( col(N,1), e_1 )
+    // col(N,2) != 0 implies  S = ( col(N,2), e_2 )
 
     if (smaller(abs(b), prec) && smaller(abs(nd), prec)) {
       return [[na, one], [c, zero]]
@@ -513,7 +519,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
   }
 
   /**
-   * Enlarge the matrix from n×n to N×N, setting the new
+   * Enlarge the matrix from nxn to NxN, setting the new
    * elements to 1 on diagonal and 0 elsewhere
    */
   function inflateMatrix (arr, N) {
@@ -656,7 +662,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     const vectorShape = size(v)
     for (let w of orthog) {
       w = reshape(w, vectorShape) // make sure this is just a vector computation
-      // v := v − (w, v)/∥w∥² w
+      // v := v − (w, v)/|w|^2 w
       v = subtract(v, multiply(divideScalar(dot(w, v), dot(w, w)), w))
     }
 
