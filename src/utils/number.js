@@ -623,7 +623,7 @@ export function nearlyEqual (x, y, epsilon) {
   if (isFinite(x) && isFinite(y)) {
     // check numbers are very close, needed when comparing numbers near zero
     const diff = Math.abs(x - y)
-    if (diff < DBL_EPSILON) {
+    if (diff <= DBL_EPSILON) {
       return true
     } else {
       // use relative error

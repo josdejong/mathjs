@@ -1282,6 +1282,17 @@ Matrices examples
     assert.strictEqual(math.matrix([1, 2, 3]) instanceof math.Matrix, true)
   }
 
+  // Eigenvalues and eigenvectors
+  {
+    const D = [
+      [1, 1],
+      [0, 1]
+    ]
+    const eig = math.eigs(D)
+    assert.ok(math.deepEqual(eig.values, [1, 1]))
+    assert.deepStrictEqual(eig.eigenvectors, [{ value: 1, vector: [1, 0] }])
+  }
+
   // Fourier transform and inverse
   {
     assert.ok(
