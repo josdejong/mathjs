@@ -150,7 +150,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     }
 
     // return the diagonal row transformation matrix
-    return diag(Rdiag)
+    return findVectors ? diag(Rdiag) : null
   }
 
   /**

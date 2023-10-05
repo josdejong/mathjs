@@ -243,6 +243,9 @@ describe('eigs', function () {
     // only one.
     const poorm = eigs(matrix(difficult), 1e-14)
     assert.deepStrictEqual(poorm.values.size(), [3])
+    // Make sure the precision argument can go in the options object
+    const stillbad = eigs(difficult, { precision: 1e-14, eigenvectors: false })
+    assert.deepStrictEqual(stillbad.values, poor.values)
   })
 
   it('diagonalizes matrix with bigNumber', function () {
