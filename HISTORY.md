@@ -1,5 +1,11 @@
 # History
 
+# not yet published, 12.0.0
+
+- Fix #2879, #2927, #3014: find eigenvectors of defective matrices.
+  Thanks @gwhitney.
+
+
 # unpublished changes since 11.11.1
 
 - Fix #3025: improve handling of matrices and error handling 
