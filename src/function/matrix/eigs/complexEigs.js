@@ -10,11 +10,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    *
    * @returns {{ values: number[], vectors: number[][] }}
    */
-  function complexEigs (arr, N, prec, type, findVectors) {
-    if (findVectors === undefined) {
-      findVectors = true
-    }
-
+  function complexEigs (arr, N, prec, type, findVectors = true) {
     // TODO check if any row/col are zero except the diagonal
 
     // make sure corresponding rows and columns have similar magnitude
