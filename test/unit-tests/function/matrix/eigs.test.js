@@ -30,13 +30,17 @@ describe('eigs', function () {
       vector => assert(Array.isArray(vector) && vector[0] instanceof Complex)
     )
 
-    const realSymMatrix = eigs(matrix([[1, 0], [0, 1]]))
+    const id2 = matrix([[1, 0], [0, 1]])
+    const realSymMatrix = eigs(id2)
     assert(realSymMatrix.values instanceof Matrix)
     assert.deepStrictEqual(size(realSymMatrix.values), matrix([2]))
     testEigenvectors(realSymMatrix, vector => {
       assert(vector instanceof Matrix)
       assert.deepStrictEqual(size(vector), matrix([2]))
     })
+    // Check we get exact values in this trivial case with lower precision
+    const rough = eigs(id2, { precision: 1e-6 })
+    assert.deepStrictEqual(realSymMatrix, rough)
 
     const genericMatrix = eigs(matrix([[0, 1], [-1, 0]]))
     assert(genericMatrix.values instanceof Matrix)
