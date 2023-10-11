@@ -4,6 +4,7 @@
 
 - Fix #2879, #2927, #3014: find eigenvectors of defective matrices.
   Thanks @gwhitney.
+- Drop official support for Node.js 14 and 16.
 
 
 # 2023-10-11, 11.11.2
