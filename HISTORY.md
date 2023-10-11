@@ -4,6 +4,7 @@
 
 - Fix #3025: improve handling of matrices and error handling 
   in function `corr` (#3030). Thanks @vrushaket.
+- Fix #3074: improve error message when using function `max` in `derivative`.
 
 
 # 2023-09-20, 11.11.1
