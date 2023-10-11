@@ -798,6 +798,12 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj.foo[1].bar', { obj: { foo: [{ bar: 4 }] } }), 4)
     })
 
+    it('should get a property with the name of an operator like "to" or "in"', function () {
+      assert.deepStrictEqual(parseAndEval('obj.mod', { obj: { mod: 42 } }), 42)
+      assert.deepStrictEqual(parseAndEval('obj.in', { obj: { in: 42 } }), 42)
+      assert.deepStrictEqual(parseAndEval('obj.to', { obj: { to: 42 } }), 42)
+    })
+
     it('should set an object property', function () {
       const scope = { obj: { a: 3 } }
       const res = parseAndEval('obj["b"] = 2', scope)
