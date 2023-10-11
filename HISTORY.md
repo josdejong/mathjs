@@ -6,10 +6,13 @@
   Thanks @gwhitney.
 
 
-# unpublished changes since 11.11.1
+# 2023-10-11, 11.11.2
 
 - Fix #3025: improve handling of matrices and error handling 
   in function `corr` (#3030). Thanks @vrushaket.
+- Fix #3074: improve error message when using function `max` in `derivative`.
+- Fix #3073: fix parsing quotes inside a string.
+- Fix #2027: cannot use named operators like `to` or `mod` as property name. 
 
 
 # 2023-09-20, 11.11.1

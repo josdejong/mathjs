@@ -238,8 +238,12 @@ describe('derivative', function () {
   })
 
   it('should throw error if expressions contain unsupported operators or functions', function () {
-    assert.throws(function () { derivative('x << 2', 'x') }, /Error: Operator "<<" is not supported by derivative/)
-    assert.throws(function () { derivative('subset(x)', 'x') }, /Error: Function "subset" is not supported by derivative/)
+    assert.throws(function () { derivative('x << 2', 'x') }, /Error: Operator "<<" is not supported by derivative, or a wrong number of arguments is passed/)
+    assert.throws(function () { derivative('subset(x)', 'x') }, /Error: Function "subset" is not supported by derivative, or a wrong number of arguments is passed/)
+    assert.throws(function () { derivative('max(x)', 'x') }, /Error: Function "max" is not supported by derivative, or a wrong number of arguments is passed/)
+    assert.throws(function () { derivative('max(x, y)', 'x') }, /Error: Function "max" is not supported by derivative, or a wrong number of arguments is passed/)
+    assert.throws(function () { derivative('max(x, 1)', 'x') }, /Error: Function "max" is not supported by derivative, or a wrong number of arguments is passed/)
+    assert.throws(function () { derivative('add(2,3,x)', 'x') }, /Error: Function "add" is not supported by derivative, or a wrong number of arguments is passed/)
   })
 
   it('should have controlled behavior on arguments errors', function () {
