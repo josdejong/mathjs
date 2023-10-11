@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20231011-11112">2023-10-11, 11.11.2 <a href="#20231011-11112" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3025">#3025</a>: improve handling of matrices and error handling 
+  in function `corr`  <a href="https://github.com/josdejong/mathjs/issues/3030">#3030</a>). Thanks <a href="https://github.com/vrushaket">@vrushaket</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3074">#3074</a>: improve error message when using function `max` in `derivative`.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3073">#3073</a>: fix parsing quotes inside a string.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2027">#2027</a>: cannot use named operators like `to` or `mod` as property name. 
+
+
 <h1 id="20230920-11111">2023-09-20, 11.11.1 <a href="#20230920-11111" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2989">#2989</a>: use one-based indices in `print` in the parser  <a href="https://github.com/josdejong/mathjs/issues/3009">#3009</a>). 
