@@ -469,7 +469,7 @@ describe('AssignmentNode', function () {
     const n = new AssignmentNode(object, value)
 
     assert.strictEqual(n.toString({ parenthesis: 'all' }), 'a = (1)')
-    assert.strictEqual(n.toTex({ parenthesis: 'all' }), ' a:=\\left(1\\right)')
+    assert.strictEqual(n.toTex({ parenthesis: 'all' }), ' a=\\left(1\\right)')
   })
 
   it('should stringify a AssignmentNode', function () {
@@ -532,7 +532,7 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(2)
     const a = new AssignmentNode(new SymbolNode('a'), value)
 
-    assert.strictEqual(a.toTex(), ' a:=2')
+    assert.strictEqual(a.toTex(), ' a=2')
   })
 
   it('should LaTeX an AssignmentNode containing an AssignmentNode', function () {
@@ -540,7 +540,7 @@ describe('AssignmentNode', function () {
     const a = new AssignmentNode(new SymbolNode('a'), value)
     const q = new AssignmentNode(new SymbolNode('q'), a)
 
-    assert.strictEqual(q.toTex(), ' q:=\\left( a:=2\\right)')
+    assert.strictEqual(q.toTex(), ' q=\\left( a=2\\right)')
   })
 
   it('should LaTeX an AssignmentNode with custom toTex', function () {

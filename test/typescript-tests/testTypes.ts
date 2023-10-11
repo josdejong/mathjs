@@ -45,7 +45,7 @@ import {
   Unit,
   Node,
   isSymbolNode,
-  MathScalarType,
+  MathScalarType
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -62,11 +62,11 @@ Basic usage examples
 
   const m2by2 = [
     [-1, 2],
-    [3, 1],
+    [3, 1]
   ]
   const m2by3 = [
     [1, 2, 3],
-    [4, 5, 6],
+    [4, 5, 6]
   ]
 
   // functions and constants
@@ -109,7 +109,7 @@ Basic usage examples
   math.count([10, 10, 10])
   math.count([
     [1, 2, 3],
-    [4, 5, 6],
+    [4, 5, 6]
   ])
   math.count('mathjs')
 
@@ -118,7 +118,7 @@ Basic usage examples
   math.sum([
     [1, 2],
     [3, 4],
-    [5, 6],
+    [5, 6]
   ])
 
   // expressions
@@ -152,7 +152,7 @@ Bignumbers examples
   // configure the default type of numbers as BigNumbers
   const math = create(all, {
     number: 'BigNumber',
-    precision: 20,
+    precision: 20
   })
 
   {
@@ -217,7 +217,7 @@ Chaining examples
   // the function subset can be used to get or replace sub matrices
   const array = [
     [1, 2],
-    [3, 4],
+    [3, 4]
   ]
   const v = math.chain(array).subset(math.index(1, 0)).done()
   assert.strictEqual(v, 3)
@@ -292,7 +292,7 @@ Chaining examples
   expectTypeOf(
     math.chain(
       math.createUnit({
-        fresnel: '1234',
+        fresnel: '1234'
       })
     )
   ).toMatchTypeOf<MathJsChain<Unit>>()
@@ -391,7 +391,7 @@ Chaining examples
     math
       .chain([
         [1, 2],
-        [3, 4],
+        [3, 4]
       ])
       .lsolve([1, 2])
   ).toMatchTypeOf<MathJsChain<MathArray>>()
@@ -400,7 +400,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .lsolve([1, 2])
@@ -411,7 +411,7 @@ Chaining examples
     math
       .chain([
         [1, 2],
-        [3, 4],
+        [3, 4]
       ])
       .lup()
   ).toMatchTypeOf<MathJsChain<LUDecomposition>>()
@@ -420,7 +420,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .lup()
@@ -432,7 +432,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .lusolve(math.matrix([1, 2]))
@@ -443,7 +443,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .lusolve([1, 2])
@@ -453,7 +453,7 @@ Chaining examples
     math
       .chain([
         [1, 2],
-        [3, 4],
+        [3, 4]
       ])
       .lusolve(math.matrix([1, 2]))
   ).toMatchTypeOf<MathJsChain<MathArray>>()
@@ -462,7 +462,7 @@ Chaining examples
     math
       .chain([
         [1, 2],
-        [3, 4],
+        [3, 4]
       ])
       .lusolve([1, 2])
   ).toMatchTypeOf<MathJsChain<MathArray>>()
@@ -472,7 +472,7 @@ Chaining examples
     math
       .chain([
         [1, 2],
-        [3, 4],
+        [3, 4]
       ])
       .qr()
   ).toMatchTypeOf<MathJsChain<QRDecomposition>>()
@@ -481,7 +481,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .qr()
@@ -509,7 +509,7 @@ Chaining examples
       .chain(
         math.sparse([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .slu(2, 0.5)
@@ -520,7 +520,7 @@ Chaining examples
     math
       .chain([
         [1, 2],
-        [3, 4],
+        [3, 4]
       ])
       .usolve([1, 2])
   ).toMatchTypeOf<MathJsChain<MathArray>>()
@@ -529,7 +529,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .usolve([1, 2])
@@ -552,7 +552,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .abs()
@@ -568,7 +568,7 @@ Chaining examples
     math.chain(
       math.matrix([
         [1, 2],
-        [3, 4],
+        [3, 4]
       ])
     )
   ).toMatchTypeOf<MathJsChain<Matrix>>()
@@ -595,7 +595,7 @@ Chaining examples
         .chain(
           math.matrix([
             [1, 2],
-            [3, 4],
+            [3, 4]
           ])
         )
         .cbrt(),
@@ -655,7 +655,7 @@ Chaining examples
         .chain(
           math.matrix([
             [1, 2],
-            [3, 4],
+            [3, 4]
           ])
         )
         .cube(),
@@ -687,7 +687,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .dotDivide(2)
@@ -702,7 +702,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .dotMultiply(2)
@@ -717,7 +717,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .dotPow(2)
@@ -734,7 +734,7 @@ Chaining examples
         .chain(
           math.matrix([
             [1, 2],
-            [3, 4],
+            [3, 4]
           ])
         )
         .exp(),
@@ -753,7 +753,7 @@ Chaining examples
         .chain(
           math.matrix([
             [1, 2],
-            [3, 4],
+            [3, 4]
           ])
         )
         .expm1(),
@@ -779,23 +779,23 @@ Chaining examples
     math.gcd([
       math.matrix([
         [1, 2],
-        [3, 4],
+        [3, 4]
       ]),
       math.matrix([
         [1, 2],
-        [3, 4],
-      ]),
+        [3, 4]
+      ])
     ])
   ).toMatchTypeOf<Matrix>()
   expectTypeOf(
     math.gcd(
       [
         [1, 2],
-        [3, 4],
+        [3, 4]
       ],
       [
         [1, 2],
-        [3, 4],
+        [3, 4]
       ]
     )
   ).toMatchTypeOf<MathArray>()
@@ -806,12 +806,12 @@ Chaining examples
       math.gcd([
         [
           [1, 5],
-          [10, 49],
+          [10, 49]
         ],
         [
           [1, 5],
-          [5, 7],
-        ],
+          [5, 7]
+        ]
       ]),
     Error
   )
@@ -835,13 +835,13 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .lcm(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
   ).toMatchTypeOf<MathJsChain<Matrix>>()
@@ -865,7 +865,7 @@ Chaining examples
       .chain(
         math.matrix([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ])
       )
       .log10()
@@ -910,9 +910,9 @@ Simplify examples
           trivial: true,
           total: true,
           commutative: true,
-          associative: true,
-        },
-      },
+          associative: true
+        }
+      }
     }
   )
 
@@ -927,17 +927,17 @@ Simplify examples
           trivial: true,
           total: true,
           commutative: true,
-          associative: true,
-        },
+          associative: true
+        }
       },
       imposeContext: {
         multiply: {
           trivial: true,
           total: true,
           commutative: true,
-          associative: true,
-        },
-      },
+          associative: true
+        }
+      }
     },
     {
       l: 'n * n',
@@ -948,19 +948,19 @@ Simplify examples
           trivial: true,
           total: true,
           commutative: true,
-          associative: true,
-        },
+          associative: true
+        }
       },
       imposeContext: {
         multiply: {
           trivial: true,
           total: true,
           commutative: true,
-          associative: true,
-        },
-      },
+          associative: true
+        }
+      }
     },
-    (node: MathNode) => node,
+    (node: MathNode) => node
   ])
   math.simplifyCore('0.4 * x + 0', { exactFractions: false })
 
@@ -1005,7 +1005,7 @@ Complex numbers examples
   {
     const p: PolarCoordinates = {
       r: math.sqrt(2) as number, // must be real but a sqrt could be Complex
-      phi: math.pi / 4,
+      phi: math.pi / 4
     }
     const c: Complex = math.complex(p)
     assert.strictEqual(c.im, 1)
@@ -1063,7 +1063,7 @@ Expressions examples
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const scope: any = {
       a: 3,
-      b: 4,
+      b: 4
     }
     const f = math.evaluate('f(x) = x ^ a', scope)
     f(2)
@@ -1113,7 +1113,7 @@ Fractions examples
 {
   // configure the default type of numbers as Fractions
   const math = create(all, {
-    number: 'Fraction',
+    number: 'Fraction'
   })
 
   const x = math.fraction(0.125)
@@ -1198,11 +1198,11 @@ Matrices examples
   {
     const a = [
       [1, 2],
-      [3, 4],
+      [3, 4]
     ]
     const b: Matrix = math.matrix([
       [5, 6],
-      [1, 1],
+      [1, 1]
     ])
 
     b.subset(math.index(1, [0, 1]), [[7, 8]])
@@ -1269,11 +1269,11 @@ Matrices examples
   // concat matrix
   {
     assert.deepStrictEqual(math.concat([[0, 1, 2]], [[1, 2, 3]]), [
-      [0, 1, 2, 1, 2, 3],
+      [0, 1, 2, 1, 2, 3]
     ])
     assert.deepStrictEqual(math.concat([[0, 1, 2]], [[1, 2, 3]], 0), [
       [0, 1, 2],
-      [1, 2, 3],
+      [1, 2, 3]
     ])
   }
 
@@ -1282,17 +1282,28 @@ Matrices examples
     assert.strictEqual(math.matrix([1, 2, 3]) instanceof math.Matrix, true)
   }
 
+  // Eigenvalues and eigenvectors
+  {
+    const D = [
+      [1, 1],
+      [0, 1]
+    ]
+    const eig = math.eigs(D)
+    assert.ok(math.deepEqual(eig.values, [1, 1]))
+    assert.deepStrictEqual(eig.eigenvectors, [{ value: 1, vector: [1, 0] }])
+  }
+
   // Fourier transform and inverse
   {
     assert.ok(
       math.deepEqual(
         math.fft([
           [1, 0],
-          [1, 0],
+          [1, 0]
         ]),
         [
           [math.complex(2, 0), math.complex(2, 0)],
-          [math.complex(0, 0), math.complex(0, 0)],
+          [math.complex(0, 0), math.complex(0, 0)]
         ]
       )
     )
@@ -1301,12 +1312,12 @@ Matrices examples
         math.fft(
           math.matrix([
             [1, 0],
-            [1, 0],
+            [1, 0]
           ])
         ),
         math.matrix([
           [math.complex(2, 0), math.complex(2, 0)],
-          [math.complex(0, 0), math.complex(0, 0)],
+          [math.complex(0, 0), math.complex(0, 0)]
         ])
       )
     )
@@ -1314,11 +1325,11 @@ Matrices examples
       math.deepEqual(
         math.ifft([
           [2, 2],
-          [0, 0],
+          [0, 0]
         ]),
         [
           [math.complex(1, 0), math.complex(0, 0)],
-          [math.complex(1, 0), math.complex(0, 0)],
+          [math.complex(1, 0), math.complex(0, 0)]
         ]
       )
     )
@@ -1327,12 +1338,12 @@ Matrices examples
         math.ifft(
           math.matrix([
             [2, 2],
-            [0, 0],
+            [0, 0]
           ])
         ),
         math.matrix([
           [math.complex(1, 0), math.complex(0, 0)],
-          [math.complex(1, 0), math.complex(0, 0)],
+          [math.complex(1, 0), math.complex(0, 0)]
         ])
       )
     )
@@ -1344,11 +1355,11 @@ Matrices examples
       math.deepEqual(
         math.pinv([
           [1, 2],
-          [3, 4],
+          [3, 4]
         ]),
         [
           [-2, 1],
-          [1.5, -0.5],
+          [1.5, -0.5]
         ]
       )
     )
@@ -1357,12 +1368,12 @@ Matrices examples
         math.pinv(
           math.matrix([
             [1, 2],
-            [3, 4],
+            [3, 4]
           ])
         ),
         math.matrix([
           [-2, 1],
-          [1.5, -0.5],
+          [1.5, -0.5]
         ])
       )
     )
@@ -1381,7 +1392,7 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
     [1, 2, 3, 4],
     [2, 3, 4, 5],
     [4, 5, 6, 7],
-    [5, 6, 7, 8],
+    [5, 6, 7, 8]
   ]
 
   const Mbcd = math.matrix(bcd)
@@ -1506,7 +1517,7 @@ Units examples
   )
   math.createUnit('knot', {
     definition: '0.514444 m/s',
-    aliases: ['knots', 'kt', 'kts'],
+    aliases: ['knots', 'kt', 'kts']
   })
   math.createUnit(
     'knot',
@@ -1518,23 +1529,23 @@ Units examples
     {
       definition: '0.514444 m/s',
       aliases: ['knots', 'kt', 'kts'],
-      prefixes: 'long',
+      prefixes: 'long'
     },
     { override: true }
   )
   math.createUnit(
     {
       foo2: {
-        prefixes: 'long',
+        prefixes: 'long'
       },
       bar: '40 foo',
       baz: {
         definition: '1 bar/hour',
-        prefixes: 'long',
-      },
+        prefixes: 'long'
+      }
     },
     {
-      override: true,
+      override: true
     }
   )
   // use Unit as definition
@@ -1676,7 +1687,7 @@ Function ceil examples
   assert.deepStrictEqual(bigCeiled, math.matrix(math.bignumber([6.29, 6.284])))
   assert.deepStrictEqual(math.ceil(math.fraction(44, 7), [2, 3]), [
     math.fraction(629, 100),
-    math.fraction(6286, 1000),
+    math.fraction(6286, 1000)
   ])
 
   // @ts-expect-error ... verify ceil(array, array) throws an error (for now)
@@ -1752,7 +1763,7 @@ Function fix examples
   assert.deepStrictEqual(bigFixed, math.matrix(math.bignumber([6.28, 6.283])))
   assert.deepStrictEqual(math.fix(math.fraction(44, 7), [2, 3]), [
     math.fraction(628, 100),
-    math.fraction(6285, 1000),
+    math.fraction(6285, 1000)
   ])
 
   // @ts-expect-error ... verify fix(array, array) throws an error (for now)
@@ -1828,7 +1839,7 @@ Function floor examples
   assert.deepStrictEqual(bigFloored, math.matrix(math.bignumber([6.28, 6.283])))
   assert.deepStrictEqual(math.floor(math.fraction(44, 7), [2, 3]), [
     math.fraction(628, 100),
-    math.fraction(6285, 1000),
+    math.fraction(6285, 1000)
   ])
 
   // @ts-expect-error ... verify floor(array, array) throws an error (for now)
@@ -1904,7 +1915,7 @@ Function round examples
   assert.deepStrictEqual(bigRounded, math.matrix(math.bignumber([6.28, 6.283])))
   assert.deepStrictEqual(math.round(math.fraction(44, 7), [2, 3]), [
     math.fraction(629, 100),
-    math.fraction(6286, 1000),
+    math.fraction(6286, 1000)
   ])
 
   // @ts-expect-error ... verify round(array, array) throws an error (for now)
@@ -1919,7 +1930,7 @@ Function round examples
   expectTypeOf(
     new math.OperatorNode('/', 'divide', [
       new math.ConstantNode(3),
-      new math.SymbolNode('x'),
+      new math.SymbolNode('x')
     ])
   ).toMatchTypeOf<OperatorNode<'/', 'divide', (ConstantNode | SymbolNode)[]>>()
 
@@ -1927,7 +1938,7 @@ Function round examples
   expectTypeOf(
     new math.OperatorNode('*', 'multiply', [
       new math.ConstantNode(3),
-      new math.SymbolNode('x'),
+      new math.SymbolNode('x')
     ]).clone()
   ).toMatchTypeOf<
     OperatorNode<'*', 'multiply', (ConstantNode | SymbolNode)[]>
@@ -1939,7 +1950,7 @@ Function round examples
   expectTypeOf(
     new math.OperatorNode('+', 'unaryPlus', [
       new math.ConstantNode(3),
-      new math.SymbolNode('x'),
+      new math.SymbolNode('x')
     ]).cloneDeep()
   ).toMatchTypeOf<
     OperatorNode<'+', 'unaryPlus', (ConstantNode | SymbolNode)[]>
@@ -1957,7 +1968,7 @@ JSON serialization/deserialization
   const math = create(all, {})
 
   const data = {
-    bigNumber: math.bignumber('1.5'),
+    bigNumber: math.bignumber('1.5')
   }
   const stringified = JSON.stringify(data)
   const parsed = JSON.parse(stringified, math.reviver)
@@ -1982,7 +1993,7 @@ declare module 'mathjs' {
   math.import(
     {
       testFun,
-      value: 10,
+      value: 10
     },
     {}
   )
@@ -1994,7 +2005,7 @@ declare module 'mathjs' {
   expectTypeOf(
     math.import({
       myvalue: 42,
-      myFunc: (name: string) => `myFunc ${name}`,
+      myFunc: (name: string) => `myFunc ${name}`
     })
   ).toMatchTypeOf<void>()
 
@@ -2002,10 +2013,10 @@ declare module 'mathjs' {
     math.import(
       {
         myvalue: 42,
-        myFunc: (name: string) => `myFunc ${name}`,
+        myFunc: (name: string) => `myFunc ${name}`
       },
       {
-        override: true,
+        override: true
       }
     )
   ).toMatchTypeOf<void>()
@@ -2013,10 +2024,10 @@ declare module 'mathjs' {
   expectTypeOf(
     math.import(
       {
-        myvalue2: 42,
+        myvalue2: 42
       },
       {
-        silent: true,
+        silent: true
       }
     )
   ).toMatchTypeOf<void>()
@@ -2024,28 +2035,28 @@ declare module 'mathjs' {
   expectTypeOf(
     math.import(
       {
-        myvalue3: 42,
+        myvalue3: 42
       },
       {
-        wrap: true,
+        wrap: true
       }
     )
   ).toMatchTypeOf<void>()
 
   expectTypeOf(
     math.import({
-      myvalue4: 42,
+      myvalue4: 42
     })
   ).toMatchTypeOf<void>()
 
   expectTypeOf(
     math.import([
       {
-        myvalue5: 42,
+        myvalue5: 42
       },
       {
-        myFunc2: (name: string) => `myFunc2 ${name}`,
-      },
+        myFunc2: (name: string) => `myFunc2 ${name}`
+      }
     ])
   ).toMatchTypeOf<void>()
 }
@@ -2101,7 +2112,7 @@ Factory Test
       fractionDependencies,
       addDependencies,
       divideDependencies,
-      formatDependencies,
+      formatDependencies
     },
     config
   )
@@ -2147,7 +2158,7 @@ Factory Test
   assert.deepStrictEqual(math.hasNumericValue([2.3, 'foo', false]), [
     true,
     false,
-    true,
+    true
   ])
   assert.strictEqual(math.hasNumericValue(math.fraction(4)), true)
   assert.strictEqual(math.hasNumericValue(math.complex('2-4i')), false)
@@ -2199,7 +2210,7 @@ Factory Test
     math.isRangeNode,
     math.isRelationalNode,
     math.isSymbolNode,
-    math.isChain,
+    math.isChain
   ]
 
   isFuncs.forEach((f) => {
@@ -2345,7 +2356,7 @@ toTex examples
   // TODO add proper types for toTex options
   expectTypeOf(
     math.parse('a/b').toTex({
-      a: '123',
+      a: '123'
     })
   ).toMatchTypeOf<string>()
 }
@@ -2441,7 +2452,7 @@ min/max return types
     math.min(
       [
         [1, 2],
-        [3, 4],
+        [3, 4]
       ],
       1
     )

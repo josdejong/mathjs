@@ -323,7 +323,7 @@ describe('ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
 
     // note that b is enclosed in \\mathrm{...} since it's a unit
-    assert.strictEqual(n.toTex(), '\\begin{cases} { a:=2}, &\\quad{\\text{if }\\;true}\\\\{\\mathrm{b}:=3}, &\\quad{\\text{otherwise}}\\end{cases}')
+    assert.strictEqual(n.toTex(), '\\begin{cases} { a=2}, &\\quad{\\text{if }\\;true}\\\\{\\mathrm{b}=3}, &\\quad{\\text{otherwise}}\\end{cases}')
   })
 
   it('should LaTeX a ConditionalNode with custom toTex', function () {

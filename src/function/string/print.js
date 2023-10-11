@@ -1,6 +1,7 @@
 import { format } from '../../utils/string.js'
 import { isString } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
+import { printTemplate } from '../../utils/print.js'
 
 const name = 'print'
 const dependencies = ['typed']
@@ -66,9 +67,12 @@ export const createPrint = /* #__PURE__ */ factory(name, dependencies, ({ typed 
  * @private
  */
 function _print (template, values, options) {
-  return template.replace(/\$([\w.]+)/g, function (original, key) {
+  return template.replace(printTemplate, function (original, key) {
     const keys = key.split('.')
     let value = values[keys.shift()]
+    if (value !== undefined && value.isMatrix) {
+      value = value.toArray()
+    }
     while (keys.length && value !== undefined) {
       const k = keys.shift()
       value = k ? value[k] : value + '.'

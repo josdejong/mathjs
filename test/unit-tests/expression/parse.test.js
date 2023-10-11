@@ -364,6 +364,19 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   "hi" '), 'hi')
     })
 
+    it('should parse a string containing quotes', function () {
+      // quote
+      assert.deepStrictEqual(parseAndEval('"with\'quote"'), "with'quote")
+
+      // escaped quote -> remove escape character
+      assert.deepStrictEqual(parseAndEval('"with\\"quote"'), 'with"quote')
+      assert.deepStrictEqual(parseAndEval('"with\\\'quote"'), "with'quote")
+
+      // escaped escape character -> remove two escape characters
+      assert.deepStrictEqual(parseAndEval('"with\\\\\\"quote"'), 'with\\"quote')
+      assert.deepStrictEqual(parseAndEval('"with\\\\\'quote"'), "with\\'quote")
+    })
+
     it('should parse a with escaped characters', function () {
       assert.deepStrictEqual(parseAndEval('"line end\\nnext"'), 'line end\nnext')
       assert.deepStrictEqual(parseAndEval('"line end\\n"'), 'line end\n')
@@ -420,7 +433,20 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   \'hi\' '), 'hi')
     })
 
-    it('should parse a with escaped characters', function () {
+    it('should parse a string containing quotes', function () {
+      // quote
+      assert.deepStrictEqual(parseAndEval("'with\"quote'"), 'with"quote')
+
+      // escaped quote -> remove escape character
+      assert.deepStrictEqual(parseAndEval("'with\\'quote'"), "with'quote")
+      assert.deepStrictEqual(parseAndEval("'with\\\"quote'"), 'with"quote')
+
+      // escaped escape character -> remove two escape characters
+      assert.deepStrictEqual(parseAndEval("'with\\\\\\'quote'"), "with\\'quote")
+      assert.deepStrictEqual(parseAndEval("'with\\\\\"quote'"), 'with\\"quote')
+    })
+
+    it('should parse a string with escaped characters', function () {
       assert.deepStrictEqual(parseAndEval('\'line end\\nnext\''), 'line end\nnext')
       assert.deepStrictEqual(parseAndEval('\'line end\\n\''), 'line end\n')
       assert.deepStrictEqual(parseAndEval('\'tab\\tnext\''), 'tab\tnext')
@@ -770,6 +796,12 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj.foo[2][3]', { obj: { foo: ['hello', 'world'] } }), 'r')
       assert.deepStrictEqual(parseAndEval('obj.foo[2][end]', { obj: { foo: ['hello', 'world'] } }), 'd')
       assert.deepStrictEqual(parseAndEval('obj.foo[1].bar', { obj: { foo: [{ bar: 4 }] } }), 4)
+    })
+
+    it('should get a property with the name of an operator like "to" or "in"', function () {
+      assert.deepStrictEqual(parseAndEval('obj.mod', { obj: { mod: 42 } }), 42)
+      assert.deepStrictEqual(parseAndEval('obj.in', { obj: { in: 42 } }), 42)
+      assert.deepStrictEqual(parseAndEval('obj.to', { obj: { to: 42 } }), 42)
     })
 
     it('should set an object property', function () {
@@ -1234,7 +1266,10 @@ describe('parse', function () {
     it('should parse mod %', function () {
       approx.equal(parseAndEval('8 % 3'), 2)
       approx.equal(parseAndEval('80% pi'), 1.4601836602551685)
-      assert.throws(function () { parseAndEval('3%(-100)') }, /Cannot calculate mod for a negative divisor/)
+    })
+
+    it('should parse mod % for negative divisors', function () {
+      assert.strictEqual(parseAndEval('3%(-100)'), -97)
     })
 
     it('should parse % value', function () {

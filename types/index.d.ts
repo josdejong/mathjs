@@ -1753,9 +1753,8 @@ declare namespace math {
      * Compute eigenvalues and eigenvectors of a matrix.
      * The eigenvalues are sorted by their absolute value, ascending.
      * An eigenvalue with multiplicity k will be listed k times.
-     * The eigenvectors are returned as columns of a matrix – the eigenvector
-     * that belongs to the j-th eigenvalue in the list (eg. values[j]) is the
-     * j-th column (eg. column(vectors, j)). If the algorithm fails to converge,
+     * The eigenvectors are returned as an array of objects, each with a
+     * `value` and a `vector`. If the algorithm fails to converge,
      * it will throw an error – in that case, however, you may still find useful
      * information in err.values and err.vectors
      * @param x Matrix to be diagonalized
@@ -1765,7 +1764,13 @@ declare namespace math {
     eigs(
       x: MathCollection,
       prec?: number | BigNumber
-    ): { values: MathCollection; vectors: MathCollection }
+    ): {
+      values: MathCollection
+      eigenvectors: {
+        value: number | BigNumber
+        vector: MathCollection
+      }[]
+    }
 
     /**
      * Compute the matrix exponential, expm(A) = e^A. The matrix must be
@@ -2969,6 +2974,14 @@ declare namespace math {
       array: MathCollection,
       normalization: 'unbiased' | 'uncorrected' | 'biased'
     ): MathNumericType
+
+    /**
+     * Calculate the correlation coefficient between two matrix.
+     * @param {Array | Matrix} x The first array or matrix to compute correlation coefficient
+     * @param {Array | Matrix} y The second array or matrix to compute correlation coefficient
+     * @returns correlation coefficient
+     */
+    corr(x: MathCollection, y: MathCollection): MathType
 
     /*************************************************************************
      * String functions

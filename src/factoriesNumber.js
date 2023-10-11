@@ -263,6 +263,7 @@ export { createMad } from './function/statistics/mad.js'
 export { createVariance } from './function/statistics/variance.js'
 export { createQuantileSeq } from './function/statistics/quantileSeq.js'
 export { createStd } from './function/statistics/std.js'
+export { createCorr } from './function/statistics/corr.js'
 
 // string
 export { createFormat } from './function/string/format.js'
