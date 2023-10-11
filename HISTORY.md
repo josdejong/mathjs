@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 11.11.1
+# 2023-10-11, 11.11.2
 
 - Fix #3025: improve handling of matrices and error handling 
   in function `corr` (#3030). Thanks @vrushaket.
