@@ -2,9 +2,33 @@
 
 # not yet published, 12.0.0
 
-- Fix #2879, #2927, #3014: find eigenvectors of defective matrices.
-  Thanks @gwhitney.
+Breaking changes:
+
+- Fix #2879, #2927, #3014: change the confusing interface of `eigs`.
+  Before, functions `eigs` returned an object:
+  ```
+  { values: MathCollection; vectors: MathCollection }
+  ```
+  where `vectors` was a 2d matrix of which the columns contained the vectors.
+  This is changed to `eigs` returning an object:
+  ```
+  { 
+    values: MathCollection
+    eigenvectors: Array<{
+      value: number | BigNumber
+      vector: MathCollection
+    }>
+  }
+  ```
+  Where `eigenvectors` is an array containing an object with the corresponding
+  eigenvalue and vector.
+- Change the assignment operator of .toTex output from `:=` to `=` (see #2980, 
+  #3032).
 - Drop official support for Node.js 14 and 16.
+
+Fixes:
+
+- Find eigenvectors of defective matrices (#3037). Thanks @gwhitney.
 
 
 # 2023-10-11, 11.11.2
