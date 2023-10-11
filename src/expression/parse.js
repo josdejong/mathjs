@@ -1466,7 +1466,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       if (currentCharacter(state) === '\\') {
         // escape character, immediately process the next
         // character to prevent stopping at a next '\"'
-        str += currentCharacter(state)
+        const cNext = nextCharacter(state)
+        if (cNext !== "'") {
+          str += currentCharacter(state)
+        }
         next(state)
       }
 
@@ -1517,7 +1520,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       if (currentCharacter(state) === '\\') {
         // escape character, immediately process the next
         // character to prevent stopping at a next '\''
-        str += currentCharacter(state)
+        const cNext = nextCharacter(state)
+        if (cNext !== "'" && cNext !== '"') {
+          str += currentCharacter(state)
+        }
         next(state)
       }
 
@@ -1531,7 +1537,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     }
     getToken(state)
 
-    return JSON.parse('"' + str + '"') // unescape escaped characters
+    return JSON.parse('"' + str.replace(/"/g, '\\"') + '"') // unescape escaped characters
   }
 
   /**

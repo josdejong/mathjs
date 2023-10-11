@@ -364,6 +364,19 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   "hi" '), 'hi')
     })
 
+    it('should parse a string containing quotes', function () {
+      // quote
+      assert.deepStrictEqual(parseAndEval('"with\'quote"'), "with'quote")
+
+      // escaped quote -> remove escape character
+      assert.deepStrictEqual(parseAndEval('"with\\"quote"'), 'with"quote')
+      assert.deepStrictEqual(parseAndEval('"with\\\'quote"'), "with'quote")
+
+      // escaped escape character -> remove two escape characters
+      assert.deepStrictEqual(parseAndEval('"with\\\\\\"quote"'), 'with\\"quote')
+      assert.deepStrictEqual(parseAndEval('"with\\\\\'quote"'), "with\\'quote")
+    })
+
     it('should parse a with escaped characters', function () {
       assert.deepStrictEqual(parseAndEval('"line end\\nnext"'), 'line end\nnext')
       assert.deepStrictEqual(parseAndEval('"line end\\n"'), 'line end\n')
@@ -420,7 +433,20 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   \'hi\' '), 'hi')
     })
 
-    it('should parse a with escaped characters', function () {
+    it('should parse a string containing quotes', function () {
+      // quote
+      assert.deepStrictEqual(parseAndEval("'with\"quote'"), 'with"quote')
+
+      // escaped quote -> remove escape character
+      assert.deepStrictEqual(parseAndEval("'with\\'quote'"), "with'quote")
+      assert.deepStrictEqual(parseAndEval("'with\\\"quote'"), 'with"quote')
+
+      // escaped escape character -> remove two escape characters
+      assert.deepStrictEqual(parseAndEval("'with\\\\\\'quote'"), "with\\'quote")
+      assert.deepStrictEqual(parseAndEval("'with\\\\\"quote'"), 'with\\"quote')
+    })
+
+    it('should parse a string with escaped characters', function () {
       assert.deepStrictEqual(parseAndEval('\'line end\\nnext\''), 'line end\nnext')
       assert.deepStrictEqual(parseAndEval('\'line end\\n\''), 'line end\n')
       assert.deepStrictEqual(parseAndEval('\'tab\\tnext\''), 'tab\tnext')
