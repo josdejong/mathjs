@@ -245,7 +245,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       }
 
       return '\\mathrm{' + this.name +
-        '}\\left(' + this.params.map(toSymbol).join(',') + '\\right):=' + expr
+        '}\\left(' + this.params.map(toSymbol).join(',') + '\\right)=' + expr
     }
   }
 

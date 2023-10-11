@@ -312,7 +312,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
         value = `\\left(${value}\\right)`
       }
 
-      return object + index + ':=' + value
+      return object + index + '=' + value
     }
   }
 
