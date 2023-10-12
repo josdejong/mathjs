@@ -7,7 +7,7 @@ The code base of Mathjs is writting in JavaScript. The TypeScript definitions ar
 The over all structure is:
 
 - The library exports the core function `create` which creates a MathJS instance and returns `MathJsInstance`.
-- Mathjs has a special function `chain`, which allows you to use the functions in a chained way, like `chain(2).add(3).done()`. The function `chain` returns an interface `MathJsChain`, which contains all mathjs functions and constants as a method. Unlike the static function, the methods are defined with the chain object `this` as first argument.
+- Mathjs has a special function `chain`, which allows you to use the functions in a chained way, like `chain(2).add(3).done()`. The function `chain` returns an interface `MathJsChain`, which contains all mathjs functions and constants as a method. Unlike the static functions, these methods are defined with the chain instance `this` as first argument.
 - The library exports collections with factory functions of all functions and their dependencies. To create an instance of the function `add`, one can do `create(addDependencies)` for example. To import all functions, one can do `create(all)`.
 - The library also returns a static instance, which can directly be used like `import { add } from 'mathjs'`.
 
@@ -15,8 +15,8 @@ The over all structure is:
 
 Maintaining the TypeScript types is done manually. When adding a function, one has to create the following TypeScript definitions:
 
-1. Add a normal definition inside `MathJsInstance`
-2. Add a chained definition inside `MathJsChain`
+1. Add a normal definition inside `interface MathJsInstance {...}`
+2. Add a chained definition inside `interface MathJsChain {...}`
 3. Add a static definition inside `export const {...} : MathJsInstance`
 4. Add a dependencies definition inside `export const {...} : Record<string, FactoryFunctionMap>`
 
