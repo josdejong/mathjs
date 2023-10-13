@@ -1418,9 +1418,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // dot notation like variable.prop
         getToken(state)
 
-        if (state.tokenType !== TOKENTYPE.SYMBOL) {
+        const isPropertyName = state.tokenType === TOKENTYPE.SYMBOL ||
+          (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)
+        if (!isPropertyName) {
           throw createSyntaxError(state, 'Property name expected after dot')
         }
+
         params.push(new ConstantNode(state.token))
         getToken(state)
 
@@ -1466,7 +1469,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       if (currentCharacter(state) === '\\') {
         // escape character, immediately process the next
         // character to prevent stopping at a next '\"'
-        str += currentCharacter(state)
+        const cNext = nextCharacter(state)
+        if (cNext !== "'") {
+          str += currentCharacter(state)
+        }
         next(state)
       }
 
@@ -1517,7 +1523,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       if (currentCharacter(state) === '\\') {
         // escape character, immediately process the next
         // character to prevent stopping at a next '\''
-        str += currentCharacter(state)
+        const cNext = nextCharacter(state)
+        if (cNext !== "'" && cNext !== '"') {
+          str += currentCharacter(state)
+        }
         next(state)
       }
 
@@ -1531,7 +1540,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     }
     getToken(state)
 
-    return JSON.parse('"' + str + '"') // unescape escaped characters
+    return JSON.parse('"' + str.replace(/"/g, '\\"') + '"') // unescape escaped characters
   }
 
   /**

@@ -765,7 +765,8 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     node.compile().evaluate()
-    throw new Error('Expected TypeError, but none found')
+
+    throw new Error('Function "' + node.name + '" is not supported by derivative, or a wrong number of arguments is passed')
   }
 
   /**
