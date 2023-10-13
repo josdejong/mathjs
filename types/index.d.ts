@@ -2449,6 +2449,21 @@ declare namespace math {
     ): boolean | MathCollection
 
     /**
+     * Determines if two expressions are symbolically equal, i.e. one is the
+     * result of valid algebraic manipulations on the other.
+     * @param {Node|string} expr1 The first expression to compare
+     * @param {Node|string} expr2 The second expression to compare
+     * @param {Object} [options] Optional option object, passed to simplify
+     * @returns {boolean} Returns true if a valid manipulation making the
+     * expressions equal is found.
+     */
+    symbolicEqual(
+      expr1: MathType | string,
+      expr2: MathType | string,
+      options?: SimplifyOptions
+    ): boolean | MathCollection
+
+    /**
      * Test whether two values are unequal. The function tests whether the
      * relative difference between x and y is larger than the configured
      * epsilon. The function cannot be used to compare values smaller than
@@ -4985,21 +5000,6 @@ declare namespace math {
     subtract<T extends MathType>(this: MathJsChain<T>, y: T): MathJsChain<T>
 
     /**
-     * Determines if two expressions are symbolically equal, i.e. one is the
-     * result of valid algebraic manipulations on the other.
-     * @param {Node|string} expr1 The first expression to compare
-     * @param {Node|string} expr2 The second expression to compare
-     * @param {Object} [options] Optional option object, passed to simplify
-     * @returns {boolean} Returns true if a valid manipulation making the
-     * expressions equal is found.
-     */
-    symbolicEqual(
-      expr1: MathNode | string,
-      expr2: MathNode | string,
-      options?: SimplifyOptions
-    ): MathJsChain<boolean>;
-
-    /**
      * Inverse the sign of a value, apply a unary minus operation. For
      * matrices, the function is evaluated element wise. Boolean values and
      * strings will be converted to a number. For complex numbers, both real
@@ -5855,6 +5855,21 @@ declare namespace math {
     smallerEq(
       this: MathJsChain<MathType | string>,
       y: MathType | string
+    ): MathJsChain<boolean | MathCollection>
+
+    /**
+     * Determines if two expressions are symbolically equal, i.e. one is the
+     * result of valid algebraic manipulations on the other.
+     * @param {Node|string} expr1 The first expression to compare
+     * @param {Node|string} expr2 The second expression to compare
+     * @param {Object} [options] Optional option object, passed to simplify
+     * @returns {boolean} Returns true if a valid manipulation making the
+     * expressions equal is found.
+     */
+    symbolicEqual(
+      this: MathJsChain<MathType | string>,
+      expr2: MathType | string,
+      options?: SimplifyOptions
     ): MathJsChain<boolean | MathCollection>
 
     /**
