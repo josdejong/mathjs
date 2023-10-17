@@ -12,12 +12,13 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'addScalar',
+  'subtractScalar',
   'unaryMinus',
   'DenseMatrix',
   'concat'
 ]
 
-export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, DenseMatrix, concat }) => {
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, subtractScalar, unaryMinus, DenseMatrix, concat }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
@@ -63,33 +64,20 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
   return typed(
     name,
     {
-      'number, number': (x, y) => x - y,
-      'Complex, Complex': (x, y) => x.sub(y),
-      'BigNumber, BigNumber': (x, y) => x.minus(y),
-      'Fraction, Fraction': (x, y) => x.sub(y),
+      'any, any': addScalar,
 
-      'Unit, Unit': typed.referToSelf(self => (x, y) => {
-        if (x.value === null) {
-          throw new Error('Parameter x contains a unit with undefined value')
+      'any, any, ...any': typed.referToSelf(self => (x, y, rest) => {
+        let result = self(x, y)
+
+        for (let i = 0; i < rest.length; i++) {
+          result = self(result, rest[i])
         }
 
-        if (y.value === null) {
-          throw new Error('Parameter y contains a unit with undefined value')
-        }
-
-        if (!x.equalBase(y)) {
-          throw new Error('Units do not match')
-        }
-
-        const res = x.clone()
-        res.value =
-          typed.find(self, [res.valueType(), y.valueType()])(res.value, y.value)
-        res.fixPrefix = false
-
-        return res
+        return result
       })
     },
     matrixAlgorithmSuite({
+      elop: subtractScalar,
       SS: matAlgo05xSfSf,
       DS: matAlgo01xDSid,
       SD: matAlgo03xDSf,

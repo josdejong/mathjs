@@ -3,8 +3,8 @@ import assert from 'assert'
 
 import approx from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
-const bignumber = math.bignumber
-const subtract = math.subtract
+import Decimal from 'decimal.js'
+const { subtract, BigNumber } = math
 
 describe('subtract', function () {
   it('should subtract two numbers correctly', function () {
@@ -33,25 +33,32 @@ describe('subtract', function () {
     assert.strictEqual(subtract(false, 2), -2)
   })
 
-  it('should subtract bignumbers', function () {
-    assert.deepStrictEqual(subtract(bignumber(0.3), bignumber(0.2)), bignumber(0.1))
-    assert.deepStrictEqual(subtract(bignumber('2.3e5001'), bignumber('3e5000')), bignumber('2e5001'))
-    assert.deepStrictEqual(subtract(bignumber('1e19'), bignumber('1')), bignumber('9999999999999999999'))
+  it('should subtract new BigNumbers', function () {
+    assert.deepStrictEqual(subtract(new BigNumber(0.3), new BigNumber(0.2)), new BigNumber(0.1))
+    assert.deepStrictEqual(subtract(new BigNumber('2.3e5001'), new BigNumber('3e5000')), new BigNumber('2e5001'))
+    assert.deepStrictEqual(subtract(new BigNumber('1e19'), new BigNumber('1')), new BigNumber('9999999999999999999'))
   })
 
-  it('should subtract mixed numbers and bignumbers', function () {
-    assert.deepStrictEqual(subtract(bignumber(0.3), 0.2), bignumber(0.1))
-    assert.deepStrictEqual(subtract(0.3, bignumber(0.2)), bignumber(0.1))
+  it('should subtract mixed numbers and new BigNumbers', function () {
+    assert.deepStrictEqual(subtract(new BigNumber(0.3), 0.2), new BigNumber(0.1))
+    assert.deepStrictEqual(subtract(0.3, new BigNumber(0.2)), new BigNumber(0.1))
 
-    assert.throws(function () { subtract(1 / 3, bignumber(1).div(3)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
-    assert.throws(function () { subtract(bignumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+    assert.throws(function () { subtract(1 / 3, new BigNumber(1).div(3)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+    assert.throws(function () { subtract(new BigNumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
   })
 
-  it('should subtract mixed booleans and bignumbers', function () {
-    assert.deepStrictEqual(subtract(bignumber(1.1), true), bignumber(0.1))
-    assert.deepStrictEqual(subtract(bignumber(1.1), false), bignumber(1.1))
-    assert.deepStrictEqual(subtract(false, bignumber(0.2)), bignumber(-0.2))
-    assert.deepStrictEqual(subtract(true, bignumber(0.2)), bignumber(0.8))
+  it('should add Decimals', function () {
+    assert.deepStrictEqual(subtract(Decimal(0.2), Decimal(0.1)), Decimal(0.1))
+    assert.deepStrictEqual(subtract(Decimal(0.3), 0.2), Decimal(0.1))
+    assert.deepStrictEqual(subtract(Decimal(0.1), new BigNumber(0.2)).toString(), '-0.1')
+    assert.deepStrictEqual(subtract(new BigNumber(0.2), Decimal(0.1)).toString(), '0.1')
+  })
+
+  it('should subtract mixed booleans and new BigNumbers', function () {
+    assert.deepStrictEqual(subtract(new BigNumber(1.1), true), new BigNumber(0.1))
+    assert.deepStrictEqual(subtract(new BigNumber(1.1), false), new BigNumber(1.1))
+    assert.deepStrictEqual(subtract(false, new BigNumber(0.2)), new BigNumber(-0.2))
+    assert.deepStrictEqual(subtract(true, new BigNumber(0.2)), new BigNumber(0.8))
   })
 
   it('should subtract two complex numbers correctly', function () {
@@ -67,8 +74,8 @@ describe('subtract', function () {
   })
 
   it('should throw an error for mixed complex numbers and big numbers', function () {
-    assert.deepStrictEqual(subtract(math.complex(3, 4), math.bignumber(10)), math.complex(-7, 4))
-    assert.deepStrictEqual(subtract(math.bignumber(10), math.complex(3, 4)), math.complex(7, -4))
+    assert.deepStrictEqual(subtract(math.complex(3, 4), new BigNumber(10)), math.complex(-7, 4))
+    assert.deepStrictEqual(subtract(new BigNumber(10), math.complex(3, 4)), math.complex(7, -4))
   })
 
   it('should subtract two fractions', function () {
@@ -88,7 +95,7 @@ describe('subtract', function () {
   it('should subtract two quantities of the same unit', function () {
     approx.deepEqual(subtract(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(-155.93, 'km'))
 
-    assert.deepStrictEqual(subtract(math.unit(math.bignumber(5), 'km'), math.unit(math.bignumber(2), 'km')), math.unit(math.bignumber(3), 'km'))
+    assert.deepStrictEqual(subtract(math.unit(new BigNumber(5), 'km'), math.unit(new BigNumber(2), 'km')), math.unit(new BigNumber(3), 'km'))
 
     assert.deepStrictEqual(subtract(math.unit(math.complex(10, 10), 'K'), math.unit(math.complex(3, 4), 'K')), math.unit(math.complex(7, 6), 'K'))
     assert.deepStrictEqual(subtract(math.unit(math.complex(10, 10), 'K'), math.unit(3, 'K')), math.unit(math.complex(7, 10), 'K'))
@@ -123,8 +130,8 @@ describe('subtract', function () {
   })
 
   it('should throw an error if subtracting numbers from units', function () {
-    assert.throws(function () { subtract(math.unit(5, 'km'), bignumber(2)) }, TypeError)
-    assert.throws(function () { subtract(bignumber(2), math.unit(5, 'km')) }, TypeError)
+    assert.throws(function () { subtract(math.unit(5, 'km'), new BigNumber(2)) }, TypeError)
+    assert.throws(function () { subtract(new BigNumber(2), math.unit(5, 'km')) }, TypeError)
   })
 
   it('should throw an error when used with a string', function () {
