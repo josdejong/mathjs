@@ -6,7 +6,7 @@ import math from '../../../../src/defaultInstance.js'
 import Decimal from 'decimal.js'
 const { subtract, BigNumber } = math
 
-describe('subtract', function () {
+describe('subtractScalar', function () {
   it('should subtract two numbers correctly', function () {
     assert.deepStrictEqual(subtract(4, 2), 2)
     assert.deepStrictEqual(subtract(4, -4), 8)
