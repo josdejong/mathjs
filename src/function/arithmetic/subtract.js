@@ -11,14 +11,13 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'addScalar',
   'subtractScalar',
   'unaryMinus',
   'DenseMatrix',
   'concat'
 ]
 
-export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, subtractScalar, unaryMinus, DenseMatrix, concat }) => {
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, subtractScalar, unaryMinus, DenseMatrix, concat }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })

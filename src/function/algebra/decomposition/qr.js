@@ -15,7 +15,7 @@ const dependencies = [
   'addScalar',
   'divideScalar',
   'multiplyScalar',
-  'subtract',
+  'subtractScalar',
   'complex'
 ]
 
@@ -34,7 +34,7 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
     addScalar,
     divideScalar,
     multiplyScalar,
-    subtract,
+    subtractScalar,
     complex
   }
 ) => {
@@ -159,7 +159,7 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
 
       if (!isZero(alpha)) {
         // first element in vector u
-        const u1 = subtract(pivot, alpha)
+        const u1 = subtractScalar(pivot, alpha)
 
         // w = v * u1 / |u|    (only elements k to (rows-1) are used)
         w[k] = 1
@@ -198,7 +198,7 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
 
           for (i = k; i < rows; i++) {
             Rdata[i][j] = multiplyScalar(
-              subtract(Rdata[i][j], multiplyScalar(w[i], s)),
+              subtractScalar(Rdata[i][j], multiplyScalar(w[i], s)),
               conjSgn
             )
           }
@@ -223,7 +223,7 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
 
           for (j = k; j < rows; ++j) {
             Qdata[i][j] = divideScalar(
-              subtract(Qdata[i][j], multiplyScalar(s, conj(w[j]))),
+              subtractScalar(Qdata[i][j], multiplyScalar(s, conj(w[j]))),
               conjSgn
             )
           }
