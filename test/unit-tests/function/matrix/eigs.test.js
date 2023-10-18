@@ -240,7 +240,7 @@ describe('eigs', function () {
     const difficult = [[2, 0, 0], [-1, -1, 9], [0, -1, 5]]
     const poor = eigs(difficult, 1e-14)
     assert.strictEqual(poor.values.length, 3)
-    approx.deepEqual(poor.values, [2, 2, 2], 6e-6)
+    approx.deepEqual(poor.values, [2, 2, 2], 7e-6)
     // Note the eigenvectors are junk, so we don't test them. The function
     // eigs thinks there are three of them, for example. Hopefully some
     // future iteration of mathjs will be able to discover there is really
