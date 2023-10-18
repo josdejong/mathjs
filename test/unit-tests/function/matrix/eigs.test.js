@@ -107,10 +107,9 @@ describe('eigs', function () {
     approx.deepEqual(fullValues,
       [-0.9135495807127523, 2.26552473288741, 5.6502090685149735, -8.687249803623432]
     )
-    assert.deepStrictEqual(
-      fullValues,
-      eigs(sym4, { eigenvectors: false }).values
-    )
+    const justEigs = eigs(sym4, { eigenvectors: false })
+    assert.deepStrictEqual(fullValues, justEigs.values)
+    assert.ok(!('eigenvectors' in justEigs))
   })
 
   it('calculates eigenvalues and eigenvectors for 5x5 matrix', function () {
@@ -162,6 +161,7 @@ describe('eigs', function () {
     testEigenvectors(ans,
       (v, j) => approx.deepEqual(multiply(E[j], v), multiply(H, v))
     )
+    assert.ok(!('eigenvectors' in justvalues))
     const Vcols = ans.eigenvectors.map(obj => obj.vector)
     const V = matrixFromColumns(...Vcols)
     const VtHV = multiply(transpose(V), H, V)
@@ -250,6 +250,7 @@ describe('eigs', function () {
     // Make sure the precision argument can go in the options object
     const stillbad = eigs(difficult, { precision: 1e-14, eigenvectors: false })
     assert.deepStrictEqual(stillbad.values, poor.values)
+    assert.ok(!('eigenvectors' in stillbad))
   })
 
   it('diagonalizes matrix with bigNumber', function () {
@@ -268,6 +269,7 @@ describe('eigs', function () {
     const ans = eigs(H)
     const justvalues = eigs(H, { eigenvectors: false })
     assert.deepStrictEqual(ans.values, justvalues.values)
+    assert.ok(!('eigenvectors' in justvalues))
     const E = ans.values
     const Vcols = ans.eigenvectors.map(obj => obj.vector)
     const V = matrixFromColumns(...Vcols)

@@ -42,13 +42,12 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     // (So U = C^-1 arr C and the relationship between current arr
     // and original A is unchanged.)
 
-    let eigenvectors
-
     if (findVectors) {
-      eigenvectors = findEigenvectors(arr, N, C, R, values, prec, type)
+      const eigenvectors = findEigenvectors(arr, N, C, R, values, prec, type)
+      return { values, eigenvectors }
     }
 
-    return { values, eigenvectors }
+    return { values }
   }
 
   /**
