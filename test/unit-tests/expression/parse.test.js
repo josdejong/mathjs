@@ -396,6 +396,16 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('"\\u221B"'), '∛')
     })
 
+    it('should throw an error on an invalid unicode character', function () {
+      assert.throws(() => parseAndEval('"\\ud8'), /Invalid unicode character \\ud8/)
+      assert.throws(() => parseAndEval('"\\ud8TT'), /Invalid unicode character \\ud8TT/)
+    })
+
+    it('should throw an error on an invalid escape character', function () {
+      assert.throws(() => parseAndEval('"\\y'), /Bad escape character \\y/)
+      assert.throws(() => parseAndEval('"\\v'), /Bad escape character \\v/)
+    })
+
     it('should throw an error with invalid strings', function () {
       assert.throws(function () { parseAndEval('"hi') }, SyntaxError)
       assert.throws(function () { parseAndEval(' hi" ') }, Error)

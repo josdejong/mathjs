@@ -74,6 +74,11 @@ describe('string', function () {
     it('should format a string with escape characters', function () {
       assert.strictEqual(format('with " double quote'), '"with \\" double quote"')
       assert.strictEqual(format('with \\ backslash'), '"with \\\\ backslash"')
+      assert.strictEqual(format('with \b'), '"with \\b"')
+      assert.strictEqual(format('with \f'), '"with \\f"')
+      assert.strictEqual(format('with \n newline'), '"with \\n newline"')
+      assert.strictEqual(format('with \r'), '"with \\r"')
+      assert.strictEqual(format('with \t tab'), '"with \\t tab"')
     })
 
     it('should format an object', function () {
