@@ -364,7 +364,7 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   "hi" '), 'hi')
     })
 
-    it('should parse a string containing quotes', function () {
+    it('should parse a string containing escape characters', function () {
       // quote
       assert.deepStrictEqual(parseAndEval('"with\'quote"'), "with'quote")
 
@@ -384,6 +384,16 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('"tab\\t"'), 'tab\t')
       assert.deepStrictEqual(parseAndEval('"escaped backslash\\\\next"'), 'escaped backslash\\next')
       assert.deepStrictEqual(parseAndEval('"escaped backslash\\\\"'), 'escaped backslash\\')
+    })
+
+    it('should parse unicode characters', function () {
+      assert.deepStrictEqual(parseAndEval('"★"'), '★')
+      assert.deepStrictEqual(parseAndEval('"😀"'), '😀')
+      assert.deepStrictEqual(parseAndEval('"\ud83d\ude00"'), '\ud83d\ude00')
+
+      assert.deepStrictEqual(parseAndEval('"\\ud83d\\ude00"'), '😀')
+      assert.deepStrictEqual(parseAndEval('"\\u2140"'), '⅀')
+      assert.deepStrictEqual(parseAndEval('"\\u221B"'), '∛')
     })
 
     it('should throw an error with invalid strings', function () {
@@ -433,7 +443,7 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   \'hi\' '), 'hi')
     })
 
-    it('should parse a string containing quotes', function () {
+    it('should parse a string containing escape characters', function () {
       // quote
       assert.deepStrictEqual(parseAndEval("'with\"quote'"), 'with"quote')
 
