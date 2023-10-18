@@ -54,27 +54,14 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    *    add
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x
-   *            Initial value
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y
-   *            Value to subtract from `x`
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
-   *            Subtraction of `x` and `y`
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Initial value
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Value to subtract from `x`
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Subtraction of `x` and `y`
    */
   return typed(
     name,
     {
-      'any, any': addScalar,
-
-      'any, any, ...any': typed.referToSelf(self => (x, y, rest) => {
-        let result = self(x, y)
-
-        for (let i = 0; i < rest.length; i++) {
-          result = self(result, rest[i])
-        }
-
-        return result
-      })
+      'any, any': subtractScalar
     },
     matrixAlgorithmSuite({
       elop: subtractScalar,
