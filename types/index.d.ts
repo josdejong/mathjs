@@ -2458,10 +2458,10 @@ declare namespace math {
      * expressions equal is found.
      */
     symbolicEqual(
-      expr1: MathType | string,
-      expr2: MathType | string,
+      expr1: MathNode | string,
+      expr2: MathNode | string,
       options?: SimplifyOptions
-    ): boolean | MathCollection
+    ): boolean
 
     /**
      * Test whether two values are unequal. The function tests whether the
@@ -5867,10 +5867,10 @@ declare namespace math {
      * expressions equal is found.
      */
     symbolicEqual(
-      this: MathJsChain<MathType | string>,
-      expr2: MathType | string,
+      this: MathJsChain<MathNode | string>,
+      expr2: MathNode | string,
       options?: SimplifyOptions
-    ): MathJsChain<boolean | MathCollection>
+    ): boolean
 
     /**
      * Test whether two values are unequal. The function tests whether the
