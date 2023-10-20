@@ -1291,6 +1291,13 @@ Matrices examples
     const eig = math.eigs(D)
     assert.ok(math.deepEqual(eig.values, [1, 1]))
     assert.deepStrictEqual(eig.eigenvectors, [{ value: 1, vector: [1, 0] }])
+    const eigvv = math.eigs(D, { precision: 1e-6 })
+    assert.ok(math.deepEqual(eigvv.values, [1, 1]))
+    assert.deepStrictEqual(eigvv.eigenvectors, [{ value: 1, vector: [1, 0] }])
+    const eigv = math.eigs(D, { eigenvectors: false })
+    assert.ok(math.deepEqual(eigv.values, [1, 1]))
+    //@ts-expect-error  ...verify that eigenvectors not expected to be there
+    eigv.eigenvectors
   }
 
   // Fourier transform and inverse

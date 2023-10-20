@@ -7,28 +7,31 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
    * @param {number} prec
    * @param {'number' | 'BigNumber'} type
    */
-  function main (arr, N, prec = config.epsilon, type) {
+  function main (arr, N, prec = config.epsilon, type, computeVectors) {
     if (type === 'number') {
-      return diag(arr, prec)
+      return diag(arr, prec, computeVectors)
     }
 
     if (type === 'BigNumber') {
-      return diagBig(arr, prec)
+      return diagBig(arr, prec, computeVectors)
     }
 
     throw TypeError('Unsupported data type: ' + type)
   }
 
   // diagonalization implementation for number (efficient)
-  function diag (x, precision) {
+  function diag (x, precision, computeVectors) {
     const N = x.length
     const e0 = Math.abs(precision / N)
     let psi
-    let Sij = new Array(N)
-    // Sij is Identity Matrix
-    for (let i = 0; i < N; i++) {
-      Sij[i] = Array(N).fill(0)
-      Sij[i][i] = 1.0
+    let Sij
+    if (computeVectors) {
+      Sij = new Array(N)
+      // Sij is Identity Matrix
+      for (let i = 0; i < N; i++) {
+        Sij[i] = Array(N).fill(0)
+        Sij[i][i] = 1.0
+      }
     }
     // initial error
     let Vab = getAij(x)
@@ -37,26 +40,29 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
       const j = Vab[0][1]
       psi = getTheta(x[i][i], x[j][j], x[i][j])
       x = x1(x, psi, i, j)
-      Sij = Sij1(Sij, psi, i, j)
+      if (computeVectors) Sij = Sij1(Sij, psi, i, j)
       Vab = getAij(x)
     }
     const Ei = Array(N).fill(0) // eigenvalues
     for (let i = 0; i < N; i++) {
       Ei[i] = x[i][i]
     }
-    return sorting(clone(Ei), clone(Sij))
+    return sorting(clone(Ei), Sij, computeVectors)
   }
 
   // diagonalization implementation for bigNumber
-  function diagBig (x, precision) {
+  function diagBig (x, precision, computeVectors) {
     const N = x.length
     const e0 = abs(precision / N)
     let psi
-    let Sij = new Array(N)
-    // Sij is Identity Matrix
-    for (let i = 0; i < N; i++) {
-      Sij[i] = Array(N).fill(0)
-      Sij[i][i] = 1.0
+    let Sij
+    if (computeVectors) {
+      Sij = new Array(N)
+      // Sij is Identity Matrix
+      for (let i = 0; i < N; i++) {
+        Sij[i] = Array(N).fill(0)
+        Sij[i][i] = 1.0
+      }
     }
     // initial error
     let Vab = getAijBig(x)
@@ -65,7 +71,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
       const j = Vab[0][1]
       psi = getThetaBig(x[i][i], x[j][j], x[i][j])
       x = x1Big(x, psi, i, j)
-      Sij = Sij1Big(Sij, psi, i, j)
+      if (computeVectors) Sij = Sij1Big(Sij, psi, i, j)
       Vab = getAijBig(x)
     }
     const Ei = Array(N).fill(0) // eigenvalues
@@ -73,7 +79,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
       Ei[i] = x[i][i]
     }
     // return [clone(Ei), clone(Sij)]
-    return sorting(clone(Ei), clone(Sij))
+    return sorting(clone(Ei), Sij, computeVectors)
   }
 
   // get angle
@@ -234,13 +240,15 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   }
 
   // sort results
-  function sorting (E, S) {
+  function sorting (E, S, computeVectors) {
     const N = E.length
     const values = Array(N)
-    const vecs = Array(N)
-
-    for (let k = 0; k < N; k++) {
-      vecs[k] = Array(N)
+    let vecs
+    if (computeVectors) {
+      vecs = Array(N)
+      for (let k = 0; k < N; k++) {
+        vecs[k] = Array(N)
+      }
     }
     for (let i = 0; i < N; i++) {
       let minID = 0
@@ -252,11 +260,14 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
         }
       }
       values[i] = E.splice(minID, 1)[0]
-      for (let k = 0; k < N; k++) {
-        vecs[i][k] = S[k][minID]
-        S[k].splice(minID, 1)
+      if (computeVectors) {
+        for (let k = 0; k < N; k++) {
+          vecs[i][k] = S[k][minID]
+          S[k].splice(minID, 1)
+        }
       }
     }
+    if (!computeVectors) return { values }
     const eigenvectors = vecs.map((vector, i) => ({ value: values[i], vector }))
     return { values, eigenvectors }
   }

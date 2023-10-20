@@ -1763,7 +1763,10 @@ declare namespace math {
      */
     eigs(
       x: MathCollection,
-      prec?: number | BigNumber
+      opts?:
+        | number
+        | BigNumber
+        | { precision?: number | BigNumber; eigenvectors?: true }
     ): {
       values: MathCollection
       eigenvectors: {
@@ -1771,7 +1774,10 @@ declare namespace math {
         vector: MathCollection
       }[]
     }
-
+    eigs(
+      x: MathCollection,
+      opts: { eigenvectors: false; precision?: number | BigNumber }
+    ): { values: MathCollection }
     /**
      * Compute the matrix exponential, expm(A) = e^A. The matrix must be
      * square. Not to be confused with exp(a), which performs element-wise
