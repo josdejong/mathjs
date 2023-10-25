@@ -3514,6 +3514,7 @@ declare namespace math {
     absDependencies: FactoryFunctionMap
     applyDependencies: FactoryFunctionMap
     addScalarDependencies: FactoryFunctionMap
+    subtractScalarDependencies: FactoryFunctionMap
     cbrtDependencies: FactoryFunctionMap
     ceilDependencies: FactoryFunctionMap
     cubeDependencies: FactoryFunctionMap
