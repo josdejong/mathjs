@@ -71,6 +71,16 @@ describe('string', function () {
       assert.strictEqual(format('string'), '"string"')
     })
 
+    it('should format a string with escape characters', function () {
+      assert.strictEqual(format('with " double quote'), '"with \\" double quote"')
+      assert.strictEqual(format('with \\ backslash'), '"with \\\\ backslash"')
+      assert.strictEqual(format('with \b'), '"with \\b"')
+      assert.strictEqual(format('with \f'), '"with \\f"')
+      assert.strictEqual(format('with \n newline'), '"with \\n newline"')
+      assert.strictEqual(format('with \r'), '"with \\r"')
+      assert.strictEqual(format('with \t tab'), '"with \\t tab"')
+    })
+
     it('should format an object', function () {
       const obj = {
         a: 1.1111,
@@ -79,6 +89,11 @@ describe('string', function () {
 
       assert.strictEqual(format(obj), '{"a": 1.1111, "b": 2.2222 + 3i}')
       assert.strictEqual(format(obj, 3), '{"a": 1.11, "b": 2.22 + 3i}')
+    })
+
+    it('should format an object with escape characters', function () {
+      assert.strictEqual(format({ 'with " double quote': 42 }), '{"with \\" double quote": 42}')
+      assert.strictEqual(format({ 'with \\ backslash': 42 }), '{"with \\\\ backslash": 42}')
     })
 
     it('should format an object with its own format function', function () {
