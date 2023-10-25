@@ -5,7 +5,7 @@ const name = 'distance'
 const dependencies = [
   'typed',
   'addScalar',
-  'subtract',
+  'subtractScalar',
   'divideScalar',
   'multiplyScalar',
   'deepEqual',
@@ -13,7 +13,7 @@ const dependencies = [
   'abs'
 ]
 
-export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typed, addScalar, subtract, multiplyScalar, divideScalar, deepEqual, sqrt, abs }) => {
+export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typed, addScalar, subtractScalar, multiplyScalar, divideScalar, deepEqual, sqrt, abs }) => {
   /**
     * Calculates:
     *    The eucledian distance between two points in N-dimensional spaces.
@@ -73,9 +73,9 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
         if (!_2d(z)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for third argument') }
         if (deepEqual(y, z)) { throw new TypeError('LinePoint1 should not be same with LinePoint2') }
-        const xCoeff = subtract(z[1], y[1])
-        const yCoeff = subtract(y[0], z[0])
-        const constant = subtract(multiplyScalar(z[0], y[1]), multiplyScalar(y[0], z[1]))
+        const xCoeff = subtractScalar(z[1], y[1])
+        const yCoeff = subtractScalar(y[0], z[0])
+        const constant = subtractScalar(multiplyScalar(z[0], y[1]), multiplyScalar(y[0], z[1]))
 
         return _distancePointLine2D(x[0], x[1], xCoeff, yCoeff, constant)
       } else {
@@ -90,9 +90,9 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         if (deepEqual(_objectToArray(y), _objectToArray(z))) { throw new TypeError('LinePoint1 should not be same with LinePoint2') }
         if ('pointX' in x && 'pointY' in x && 'lineOnePtX' in y &&
           'lineOnePtY' in y && 'lineTwoPtX' in z && 'lineTwoPtY' in z) {
-          const xCoeff = subtract(z.lineTwoPtY, y.lineOnePtY)
-          const yCoeff = subtract(y.lineOnePtX, z.lineTwoPtX)
-          const constant = subtract(multiplyScalar(z.lineTwoPtX, y.lineOnePtY), multiplyScalar(y.lineOnePtX, z.lineTwoPtY))
+          const xCoeff = subtractScalar(z.lineTwoPtY, y.lineOnePtY)
+          const yCoeff = subtractScalar(y.lineOnePtX, z.lineTwoPtX)
+          const constant = subtractScalar(multiplyScalar(z.lineTwoPtX, y.lineOnePtY), multiplyScalar(y.lineOnePtX, z.lineTwoPtY))
           return _distancePointLine2D(x.pointX, x.pointY, xCoeff, yCoeff, constant)
         } else {
           throw new TypeError('Key names do not match')
@@ -270,9 +270,9 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
   }
 
   function _distancePointLine3D (x, y, z, x0, y0, z0, a, b, c) {
-    let num = [subtract(multiplyScalar(subtract(y0, y), c), multiplyScalar(subtract(z0, z), b)),
-      subtract(multiplyScalar(subtract(z0, z), a), multiplyScalar(subtract(x0, x), c)),
-      subtract(multiplyScalar(subtract(x0, x), b), multiplyScalar(subtract(y0, y), a))]
+    let num = [subtractScalar(multiplyScalar(subtractScalar(y0, y), c), multiplyScalar(subtractScalar(z0, z), b)),
+      subtractScalar(multiplyScalar(subtractScalar(z0, z), a), multiplyScalar(subtractScalar(x0, x), c)),
+      subtractScalar(multiplyScalar(subtractScalar(x0, x), b), multiplyScalar(subtractScalar(y0, y), a))]
     num = sqrt(addScalar(addScalar(multiplyScalar(num[0], num[0]), multiplyScalar(num[1], num[1])), multiplyScalar(num[2], num[2])))
     const den = sqrt(addScalar(addScalar(multiplyScalar(a, a), multiplyScalar(b, b)), multiplyScalar(c, c)))
     return divideScalar(num, den)
@@ -283,7 +283,7 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let result = 0
     let diff = 0
     for (let i = 0; i < vectorSize; i++) {
-      diff = subtract(x[i], y[i])
+      diff = subtractScalar(x[i], y[i])
       result = addScalar(multiplyScalar(diff, diff), result)
     }
     return sqrt(result)

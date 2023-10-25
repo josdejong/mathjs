@@ -7,12 +7,12 @@ const dependencies = [
   'matrix',
   'divideScalar',
   'multiplyScalar',
-  'subtract',
+  'subtractScalar',
   'equalScalar',
   'DenseMatrix'
 ]
 
-export const createUsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtract, equalScalar, DenseMatrix }) => {
+export const createUsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtractScalar, equalScalar, DenseMatrix }) => {
   const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**
@@ -82,7 +82,7 @@ export const createUsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
           for (let j = i - 1; j >= 0; j--) {
             // b[j] -= b[i] * M[j,i]
-            b[j] = subtract(b[j], multiplyScalar(b[i], M[j][i]))
+            b[j] = subtractScalar(b[j], multiplyScalar(b[i], M[j][i]))
           }
         } else if (!equalScalar(b[i], 0)) {
           // singular row, nonzero RHS
@@ -103,7 +103,7 @@ export const createUsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
           bNew[i] = 1
 
           for (let j = i - 1; j >= 0; j--) {
-            bNew[j] = subtract(bNew[j], M[j][i])
+            bNew[j] = subtractScalar(bNew[j], M[j][i])
           }
 
           B.push(bNew)
@@ -163,7 +163,7 @@ export const createUsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
           // loop upper triangular
           for (let j = 0, lastIndex = iIndices.length; j < lastIndex; j++) {
             const J = iIndices[j]
-            b[J] = subtract(b[J], multiplyScalar(b[i], iValues[j]))
+            b[J] = subtractScalar(b[J], multiplyScalar(b[i], iValues[j]))
           }
         } else if (!equalScalar(b[i], 0)) {
           // singular row, nonzero RHS
@@ -186,7 +186,7 @@ export const createUsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
           // loop upper triangular
           for (let j = 0, lastIndex = iIndices.length; j < lastIndex; j++) {
             const J = iIndices[j]
-            bNew[J] = subtract(bNew[J], iValues[j])
+            bNew[J] = subtractScalar(bNew[J], iValues[j])
           }
 
           B.push(bNew)
