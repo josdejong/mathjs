@@ -86,7 +86,7 @@ function _format (value, options) {
   }
 
   if (isString(value)) {
-    return '"' + value + '"'
+    return stringify(value)
   }
 
   if (typeof value === 'function') {
@@ -101,7 +101,7 @@ function _format (value, options) {
       return value.toString(options)
     } else {
       const entries = Object.keys(value).map(key => {
-        return '"' + key + '": ' + format(value[key], options)
+        return stringify(key) + ': ' + format(value[key], options)
       })
 
       return '{' + entries.join(', ') + '}'
@@ -122,26 +122,22 @@ export function stringify (value) {
   let escaped = ''
   let i = 0
   while (i < text.length) {
-    let c = text.charAt(i)
-
-    if (c === '\\') {
-      escaped += c
-      i++
-
-      c = text.charAt(i)
-      if (c === '' || '"\\/bfnrtu'.indexOf(c) === -1) {
-        escaped += '\\' // no valid escape character -> escape it
-      }
-      escaped += c
-    } else if (c === '"') {
-      escaped += '\\"'
-    } else {
-      escaped += c
-    }
+    const c = text.charAt(i)
+    escaped += (c in controlCharacters) ? controlCharacters[c] : c
     i++
   }
 
   return '"' + escaped + '"'
+}
+
+const controlCharacters = {
+  '"': '\\"',
+  '\\': '\\\\',
+  '\b': '\\b',
+  '\f': '\\f',
+  '\n': '\\n',
+  '\r': '\\r',
+  '\t': '\\t'
 }
 
 /**
