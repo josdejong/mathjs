@@ -2460,6 +2460,21 @@ declare namespace math {
     ): boolean | MathCollection
 
     /**
+     * Determines if two expressions are symbolically equal, i.e. one is the
+     * result of valid algebraic manipulations on the other.
+     * @param {Node|string} expr1 The first expression to compare
+     * @param {Node|string} expr2 The second expression to compare
+     * @param {Object} [options] Optional option object, passed to simplify
+     * @returns {boolean} Returns true if a valid manipulation making the
+     * expressions equal is found.
+     */
+    symbolicEqual(
+      expr1: MathNode | string,
+      expr2: MathNode | string,
+      options?: SimplifyOptions
+    ): boolean
+
+    /**
      * Test whether two values are unequal. The function tests whether the
      * relative difference between x and y is larger than the configured
      * epsilon. The function cannot be used to compare values smaller than
@@ -3525,6 +3540,7 @@ declare namespace math {
     absDependencies: FactoryFunctionMap
     applyDependencies: FactoryFunctionMap
     addScalarDependencies: FactoryFunctionMap
+    subtractScalarDependencies: FactoryFunctionMap
     cbrtDependencies: FactoryFunctionMap
     ceilDependencies: FactoryFunctionMap
     cubeDependencies: FactoryFunctionMap
@@ -5852,6 +5868,21 @@ declare namespace math {
       this: MathJsChain<MathType | string>,
       y: MathType | string
     ): MathJsChain<boolean | MathCollection>
+
+    /**
+     * Determines if two expressions are symbolically equal, i.e. one is the
+     * result of valid algebraic manipulations on the other.
+     * @param {Node|string} expr1 The first expression to compare
+     * @param {Node|string} expr2 The second expression to compare
+     * @param {Object} [options] Optional option object, passed to simplify
+     * @returns {boolean} Returns true if a valid manipulation making the
+     * expressions equal is found.
+     */
+    symbolicEqual(
+      this: MathJsChain<MathNode | string>,
+      expr2: MathNode | string,
+      options?: SimplifyOptions
+    ): boolean
 
     /**
      * Test whether two values are unequal. The function tests whether the
