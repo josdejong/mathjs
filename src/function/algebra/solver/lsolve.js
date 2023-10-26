@@ -7,12 +7,12 @@ const dependencies = [
   'matrix',
   'divideScalar',
   'multiplyScalar',
-  'subtract',
+  'subtractScalar',
   'equalScalar',
   'DenseMatrix'
 ]
 
-export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtract, equalScalar, DenseMatrix }) => {
+export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtractScalar, equalScalar, DenseMatrix }) => {
   const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**
@@ -87,7 +87,7 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
         // loop rows
         for (let i = j + 1; i < rows; i++) {
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, mdata[i][j]))]
+          bdata[i] = [subtractScalar(bdata[i][0] || 0, multiplyScalar(xj, mdata[i][j]))]
         }
       } else {
         // degenerate row, we can choose any value
@@ -158,7 +158,7 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
         for (let k = 0, l = jIndices.length; k < l; k++) {
           const i = jIndices[k]
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, jValues[k]))]
+          bdata[i] = [subtractScalar(bdata[i][0] || 0, multiplyScalar(xj, jValues[k]))]
         }
 
         x[j] = [xj]

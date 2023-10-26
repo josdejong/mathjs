@@ -5,7 +5,7 @@ const name = 'stirlingS2'
 const dependencies = [
   'typed',
   'addScalar',
-  'subtract',
+  'subtractScalar',
   'multiplyScalar',
   'divideScalar',
   'pow',
@@ -22,7 +22,7 @@ export const createStirlingS2 = /* #__PURE__ */ factory(name, dependencies, (
   {
     typed,
     addScalar,
-    subtract,
+    subtractScalar,
     multiplyScalar,
     divideScalar,
     pow,

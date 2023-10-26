@@ -10,11 +10,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
    *
    * @returns {{ values: number[], vectors: number[][] }}
    */
-  function complexEigs (arr, N, prec, type, findVectors) {
-    if (findVectors === undefined) {
-      findVectors = true
-    }
-
+  function complexEigs (arr, N, prec, type, findVectors = true) {
     // TODO check if any row/col are zero except the diagonal
 
     // make sure corresponding rows and columns have similar magnitude
@@ -46,13 +42,12 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     // (So U = C^-1 arr C and the relationship between current arr
     // and original A is unchanged.)
 
-    let eigenvectors
-
     if (findVectors) {
-      eigenvectors = findEigenvectors(arr, N, C, R, values, prec, type)
+      const eigenvectors = findEigenvectors(arr, N, C, R, values, prec, type)
+      return { values, eigenvectors }
     }
 
-    return { values, eigenvectors }
+    return { values }
   }
 
   /**
@@ -95,9 +90,8 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
         for (let j = 0; j < N; j++) {
           if (i === j) continue
-          const c = abs(arr[i][j]) // should be real
-          colNorm = addScalar(colNorm, c)
-          rowNorm = addScalar(rowNorm, c)
+          colNorm = addScalar(colNorm, abs(arr[j][i]))
+          rowNorm = addScalar(rowNorm, abs(arr[i][j]))
         }
 
         if (!equal(colNorm, 0) && !equal(rowNorm, 0)) {
@@ -136,13 +130,13 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
               if (i === j) {
                 continue
               }
-              arr[i][j] = multiplyScalar(arr[i][j], f)
-              arr[j][i] = multiplyScalar(arr[j][i], g)
+              arr[i][j] = multiplyScalar(arr[i][j], g)
+              arr[j][i] = multiplyScalar(arr[j][i], f)
             }
 
             // keep track of transformations
             if (findVectors) {
-              Rdiag[i] = multiplyScalar(Rdiag[i], f)
+              Rdiag[i] = multiplyScalar(Rdiag[i], g)
             }
           }
         }
@@ -150,7 +144,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     }
 
     // return the diagonal row transformation matrix
-    return diag(Rdiag)
+    return findVectors ? diag(Rdiag) : null
   }
 
   /**

@@ -30,13 +30,17 @@ describe('eigs', function () {
       vector => assert(Array.isArray(vector) && vector[0] instanceof Complex)
     )
 
-    const realSymMatrix = eigs(matrix([[1, 0], [0, 1]]))
+    const id2 = matrix([[1, 0], [0, 1]])
+    const realSymMatrix = eigs(id2)
     assert(realSymMatrix.values instanceof Matrix)
     assert.deepStrictEqual(size(realSymMatrix.values), matrix([2]))
     testEigenvectors(realSymMatrix, vector => {
       assert(vector instanceof Matrix)
       assert.deepStrictEqual(size(vector), matrix([2]))
     })
+    // Check we get exact values in this trivial case with lower precision
+    const rough = eigs(id2, { precision: 1e-6 })
+    assert.deepStrictEqual(realSymMatrix, rough)
 
     const genericMatrix = eigs(matrix([[0, 1], [-1, 0]]))
     assert(genericMatrix.values instanceof Matrix)
@@ -94,13 +98,18 @@ describe('eigs', function () {
         [1.0, 1.0, 1.0]]).values,
     [0, 0, 3]
     )
-    approx.deepEqual(eigs(
+    const sym4 =
       [[0.6163396801190624, -3.8571699139231796, 2.852995822026198, 4.1957619745869845],
         [-3.8571699139231796, 0.7047577966772156, 0.9122549659760404, 0.9232933211541949],
         [2.852995822026198, 0.9122549659760404, 1.6598316026960402, -1.2931270747054358],
-        [4.1957619745869845, 0.9232933211541949, -1.2931270747054358, -4.665994662426116]]).values,
-    [-0.9135495807127523, 2.26552473288741, 5.6502090685149735, -8.687249803623432]
+        [4.1957619745869845, 0.9232933211541949, -1.2931270747054358, -4.665994662426116]]
+    const fullValues = eigs(sym4).values
+    approx.deepEqual(fullValues,
+      [-0.9135495807127523, 2.26552473288741, 5.6502090685149735, -8.687249803623432]
     )
+    const justEigs = eigs(sym4, { eigenvectors: false })
+    assert.deepStrictEqual(fullValues, justEigs.values)
+    assert.ok(!('eigenvectors' in justEigs))
   })
 
   it('calculates eigenvalues and eigenvectors for 5x5 matrix', function () {
@@ -147,9 +156,12 @@ describe('eigs', function () {
       [4.14, 4.27, 3.05, 2.24, 2.73, -4.47]]
     const ans = eigs(H)
     const E = ans.values
+    const justvalues = eigs(H, { eigenvectors: false })
+    assert.deepStrictEqual(E, justvalues.values)
     testEigenvectors(ans,
       (v, j) => approx.deepEqual(multiply(E[j], v), multiply(H, v))
     )
+    assert.ok(!('eigenvectors' in justvalues))
     const Vcols = ans.eigenvectors.map(obj => obj.vector)
     const V = matrixFromColumns(...Vcols)
     const VtHV = multiply(transpose(V), H, V)
@@ -228,13 +240,17 @@ describe('eigs', function () {
     const difficult = [[2, 0, 0], [-1, -1, 9], [0, -1, 5]]
     const poor = eigs(difficult, 1e-14)
     assert.strictEqual(poor.values.length, 3)
-    approx.deepEqual(poor.values, [2, 2, 2], 6e-6)
+    approx.deepEqual(poor.values, [2, 2, 2], 7e-6)
     // Note the eigenvectors are junk, so we don't test them. The function
     // eigs thinks there are three of them, for example. Hopefully some
     // future iteration of mathjs will be able to discover there is really
     // only one.
     const poorm = eigs(matrix(difficult), 1e-14)
     assert.deepStrictEqual(poorm.values.size(), [3])
+    // Make sure the precision argument can go in the options object
+    const stillbad = eigs(difficult, { precision: 1e-14, eigenvectors: false })
+    assert.deepStrictEqual(stillbad.values, poor.values)
+    assert.ok(!('eigenvectors' in stillbad))
   })
 
   it('diagonalizes matrix with bigNumber', function () {
@@ -251,6 +267,9 @@ describe('eigs', function () {
       [4.24, -4.68, -3.33, 1.67, 2.80, 2.73],
       [4.14, 4.27, 3.05, 2.24, 2.73, -4.47]])
     const ans = eigs(H)
+    const justvalues = eigs(H, { eigenvectors: false })
+    assert.deepStrictEqual(ans.values, justvalues.values)
+    assert.ok(!('eigenvectors' in justvalues))
     const E = ans.values
     const Vcols = ans.eigenvectors.map(obj => obj.vector)
     const V = matrixFromColumns(...Vcols)

@@ -1756,7 +1756,10 @@ export interface MathJsInstance extends MathJsFactory {
    */
   eigs(
     x: MathCollection,
-    prec?: number | BigNumber
+    opts?:
+      | number
+      | BigNumber
+      | { precision?: number | BigNumber; eigenvectors?: true }
   ): {
     values: MathCollection
     eigenvectors: {
@@ -1764,7 +1767,10 @@ export interface MathJsInstance extends MathJsFactory {
       vector: MathCollection
     }[]
   }
-
+  eigs(
+    x: MathCollection,
+    opts: { eigenvectors: false; precision?: number | BigNumber }
+  ): { values: MathCollection }
   /**
    * Compute the matrix exponential, expm(A) = e^A. The matrix must be
    * square. Not to be confused with exp(a), which performs element-wise
@@ -2441,6 +2447,21 @@ export interface MathJsInstance extends MathJsFactory {
   ): boolean | MathCollection
 
   /**
+   * Determines if two expressions are symbolically equal, i.e. one is the
+   * result of valid algebraic manipulations on the other.
+   * @param {Node|string} expr1 The first expression to compare
+   * @param {Node|string} expr2 The second expression to compare
+   * @param {Object} [options] Optional option object, passed to simplify
+   * @returns {boolean} Returns true if a valid manipulation making the
+   * expressions equal is found.
+   */
+  symbolicEqual(
+    expr1: MathNode | string,
+    expr2: MathNode | string,
+    options?: SimplifyOptions
+  ): boolean
+
+  /**
    * Test whether two values are unequal. The function tests whether the
    * relative difference between x and y is larger than the configured
    * epsilon. The function cannot be used to compare values smaller than
@@ -2454,7 +2475,10 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when the compared values are unequal, else
    * returns false
    */
-  unequal(x: MathType | string, y: MathType | string): boolean | MathCollection
+  unequal(
+    x: MathType | string,
+    y: MathType | string
+  ): boolean | MathCollection
 
   /*************************************************************************
    * Set functions
@@ -5824,6 +5848,21 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathType | string>,
     y: MathType | string
   ): MathJsChain<boolean | MathCollection>
+
+  /**
+   * Determines if two expressions are symbolically equal, i.e. one is the
+   * result of valid algebraic manipulations on the other.
+   * @param {Node|string} expr1 The first expression to compare
+   * @param {Node|string} expr2 The second expression to compare
+   * @param {Object} [options] Optional option object, passed to simplify
+   * @returns {boolean} Returns true if a valid manipulation making the
+   * expressions equal is found.
+   */
+  symbolicEqual(
+    this: MathJsChain<MathNode | string>,
+    expr2: MathNode | string,
+    options?: SimplifyOptions
+  ): boolean
 
   /**
    * Test whether two values are unequal. The function tests whether the

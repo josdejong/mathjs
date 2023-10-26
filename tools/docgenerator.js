@@ -43,6 +43,7 @@ const SYNTAX = {
 
 const IGNORE_FUNCTIONS = {
   addScalar: true,
+  subtractScalar: true,
   divideScalar: true,
   multiplyScalar: true,
   equalScalar: true,

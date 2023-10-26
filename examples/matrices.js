@@ -60,7 +60,7 @@ console.log()
 // this will mutate the matrix
 console.log('set and get a value')
 const p = math.matrix([[1, 2], [3, 4]])
-p.set([0, 10], 5)
+p.set([0, 1], 5)
 print(p) // [[1, 5], [3, 4]]
 const p21 = p.get([1, 0])
 print(p21) // 3
