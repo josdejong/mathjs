@@ -3467,12 +3467,12 @@ export interface MathJsInstance extends MathJsFactory {
 }
 
 /**
- * @deprecated The interface MathJsStatic is renamed to MathJsInstance
+ * @deprecated since v12.0.0. The interface MathJsStatic has been renamed to MathJsInstance
  */
 export type MathJsStatic = MathJsInstance
 
 /**
- * @deprecated use MathJsFactory instead and import dependency maps directly from the library
+ * @deprecated since v12.0.0. Use MathJsFactory instead and import dependency maps directly from the library
  */
 export type FactoryDependencies = void
 
