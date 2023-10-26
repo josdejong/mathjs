@@ -1,5 +1,16 @@
 # History
 
+# 2023-10-25, 11.12.0
+
+- Implemented function `subtractScalar` (#3081, #2643), thanks @vrushaket.
+- Fix #3073: function format not escaping control characters and double 
+  quotes (#3082).
+- Fix: function `clone` not throwing an error when passing an unsupported
+  type like a function.
+- Fix: #2960 add type definition of function `symbolicEqual` (#3035),
+  thanks @juancodeaudio.
+
+
 # 2023-10-11, 11.11.2
 
 - Fix #3025: improve handling of matrices and error handling 
