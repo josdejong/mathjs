@@ -138,7 +138,7 @@ Function | Description
 [math.diag(X)](functions/diag.html) | Create a diagonal matrix or retrieve the diagonal of a matrix  When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
 [math.diff(arr)](functions/diff.html) | Create a new matrix or array of the difference between elements of the given array The optional dim parameter lets you specify the dimension to evaluate the difference of If no dimension parameter is passed it is assumed as dimension 0  Dimension is zero-based in javascript and one-based in the parser and can be a number or bignumber Arrays must be 'rectangular' meaning arrays like [1, 2] If something is passed as a matrix it will be returned as a matrix but other than that all matrices are converted to arrays.
 [math.dot(x,&nbsp;y)](functions/dot.html) | Calculate the dot product of two vectors.
-[math.eigs(x,&nbsp;[prec])](functions/eigs.html) | Compute eigenvalues and eigenvectors of a matrix.
+[math.eigs(x,&nbsp;[prec])](functions/eigs.html) | Compute eigenvalues and optionally eigenvectors of a square matrix.
 [math.expm(x)](functions/expm.html) | Compute the matrix exponential, expm(A) = e^A.
 [math.fft(arr)](functions/fft.html) | Calculate N-dimensional fourier transform.
 [math.filter(x,&nbsp;test)](functions/filter.html) | Filter the items in an array or one dimensional matrix.

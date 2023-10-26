@@ -23,7 +23,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 11.12.0
+ * @version 12.0.0
  * @date    2023-10-26
  *
  * @license

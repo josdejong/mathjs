@@ -4,10 +4,47 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
-<h1 id="20231025-11120">2023-10-25, 11.12.0 <a href="#20231025-11120" title="Permalink">#</a></h1>
+
+<h1 id="20231026-1200">2023-10-26, 12.0.0 <a href="#20231026-1200" title="Permalink">#</a></h1>
+
+Breaking changes:
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2879">#2879</a>, <a href="https://github.com/josdejong/mathjs/issues/2927">#2927</a>, <a href="https://github.com/josdejong/mathjs/issues/3014">#3014</a>: change the confusing interface of `eigs`.
+  Before, functions `eigs` returned an object:
+  ```
+  { values: MathCollection; vectors: MathCollection }
+  ```
+  where `vectors` was a 2d matrix of which the columns contained the vectors.
+  This is changed to `eigs` returning an object:
+  ```
+  { 
+    values: MathCollection
+    eigenvectors: Array<{
+      value: number | BigNumber
+      vector: MathCollection
+    }>
+  }
+  ```
+  Where `eigenvectors` is an array containing an object with the corresponding
+  eigenvalue and vector.
+- Refactored the TypeScript type definitions to make them work with a `NodeNext`
+  module resolution  <a href="https://github.com/josdejong/mathjs/issues/3079">#3079</a>, <a href="https://github.com/josdejong/mathjs/issues/2919">#2919</a>). 
+  - Type `MathJsStatic` is renamed to `MathJsInstance`.
+  - Type `FactoryDependencies` is deprecated, use `MathJsFactory` instead, and 
+    import dependency maps directly from the library.
+- Change the assignment operator of .toTex output from `:=` to `=` (see <a href="https://github.com/josdejong/mathjs/issues/2980">#2980</a>, 
+  <a href="https://github.com/josdejong/mathjs/issues/3032">#3032</a>).
+- Drop official support for Node.js 14 and 16.
+
+Fixes:
+
+- Find eigenvectors of defective matrices  <a href="https://github.com/josdejong/mathjs/issues/3037">#3037</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+
+
+<h1 id="20231026-11120">2023-10-26, 11.12.0 <a href="#20231026-11120" title="Permalink">#</a></h1>
 
 - Implemented function `subtractScalar`  <a href="https://github.com/josdejong/mathjs/issues/3081">#3081</a>, <a href="https://github.com/josdejong/mathjs/issues/2643">#2643</a>), thanks <a href="https://github.com/vrushaket">@vrushaket</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/3073">#3073</a>: function format not escaping control characters and double 
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3073">#3073</a>: function format not escaping control characters and double
   quotes  <a href="https://github.com/josdejong/mathjs/issues/3082">#3082</a>).
 - Fix: function `clone` not throwing an error when passing an unsupported
   type like a function.

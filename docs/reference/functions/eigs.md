@@ -6,17 +6,41 @@ layout: default
 
 <h1 id="function-eigs">Function eigs <a href="#function-eigs" title="Permalink">#</a></h1>
 
-Compute eigenvalues and eigenvectors of a matrix. The eigenvalues are sorted by their absolute value, ascending.
-An eigenvalue with multiplicity k will be listed k times. The eigenvectors are returned as columns of a matrix –
-the eigenvector that belongs to the j-th eigenvalue in the list (eg. `values[j]`) is the j-th column (eg. `column(vectors, j)`).
-If the algorithm fails to converge, it will throw an error – in that case, however, you may still find useful information
+Compute eigenvalues and optionally eigenvectors of a square matrix.
+The eigenvalues are sorted by their absolute value, ascending, and
+returned as a vector in the `values` property of the returned project.
+An eigenvalue with algebraic multiplicity k will be listed k times, so
+that the returned `values` vector always has length equal to the size
+of the input matrix.
+
+The `eigenvectors` property of the return value provides the eigenvectors.
+It is an array of plain objects: the `value` property of each gives the
+associated eigenvalue, and the `vector` property gives the eigenvector
+itself. Note that the same `value` property will occur as many times in
+the list provided by `eigenvectors` as the geometric multiplicity of
+that value.
+
+If the algorithm fails to converge, it will throw an error –
+in that case, however, you may still find useful information
 in `err.values` and `err.vectors`.
+
+Note that the 'precision' option does not directly specify the _accuracy_
+of the returned eigenvalues. Rather, it determines how small an entry
+of the iterative approximations to an upper triangular matrix must be
+in order to be considered zero. The actual accuracy of the returned
+eigenvalues may be greater or less than the precision, depending on the
+conditioning of the matrix and how far apart or close the actual
+eigenvalues are. Note that currently, relatively simple, "traditional"
+methods of eigenvalue computation are being used; this is not a modern,
+high-precision eigenvalue computation. That said, it should typically
+produce fairly reasonable results.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.eigs(x, [prec])
+math.eigs(x, {options})
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -24,13 +48,13 @@ math.eigs(x, [prec])
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Array &#124; Matrix | Matrix to be diagonalized
-`prec` | number &#124; BigNumber | Precision, default value: 1e-15
+`opts` | number &#124; BigNumber &#124; OptsObject | Object with keys `precision`, defaulting to config.epsilon, and `eigenvectors`, defaulting to true and specifying whether to compute eigenvectors. If just a number, specifies precision.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-{values: Array &#124; Matrix, vectors: Array &#124; Matrix} | Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
+{values: Array &#124; Matrix, eigenvectors?: Array&lt;EVobj&gt;}} Object containing an array of eigenvalues and an array of {value: number &#124; BigNumber, vector: Array &#124; Matrix | objects. The eigenvectors property is undefined if eigenvectors were not requested.
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -42,14 +66,18 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-const { eigs, multiply, column, transpose } = math
+const { eigs, multiply, column, transpose, matrixFromColumns } = math
 const H = [[5, 2.3], [2.3, 1]]
-const ans = eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors as columns]}
+const ans = eigs(H) // returns {values: [E1,E2...sorted], eigenvectors: [{value: E1, vector: v2}, {value: e, vector: v2}, ...]
 const E = ans.values
-const U = ans.vectors
-multiply(H, column(U, 0)) // returns multiply(E[0], column(U, 0))
-const UTxHxU = multiply(transpose(U), H, U) // diagonalizes H
-E[0] == UTxHxU[0][0]  // returns true
+const V = ans.eigenvectors
+multiply(H, V[0].vector)) // returns multiply(E[0], V[0].vector))
+const U = matrixFromColumns(...V.map(obj => obj.vector))
+const UTxHxU = multiply(transpose(U), H, U) // diagonalizes H if possible
+E[0] == UTxHxU[0][0]  // returns true always
+
+// Compute only approximate eigenvalues:
+const {values} = eigs(H, {eigenvectors: false, precision: 1e-6})
 ```
 
 
