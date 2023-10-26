@@ -1987,7 +1987,7 @@ Extend functionality with import
  */
 
 declare module 'mathjs' {
-  interface MathJsStatic {
+  interface MathJsInstance {
     testFun(): number
     value: number
   }
