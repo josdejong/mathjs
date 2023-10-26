@@ -13,7 +13,7 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html) (cl
   <meta charset="utf-8">
   <title>math.js | pretty printing with MathJax</title>
 
-  <script src="https://unpkg.com/mathjs@11.11.2/lib/browser/math.js"></script>
+  <script src="https://unpkg.com/mathjs@11.12.0/lib/browser/math.js"></script>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 

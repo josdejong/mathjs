@@ -20,7 +20,7 @@ const divide = (a, b) => a / b
 
 // create a mathjs instance with hardly any functions
 // there are some functions created which are used internally by evaluate though,
-// for example by the Unit class which has dependencies on addScalar, subtract,
+// for example by the Unit class which has dependencies on addScalar, subtractScalar,
 // multiplyScalar, etc.
 const math = create(evaluateDependencies)
 

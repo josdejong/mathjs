@@ -4,6 +4,17 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20231025-11120">2023-10-25, 11.12.0 <a href="#20231025-11120" title="Permalink">#</a></h1>
+
+- Implemented function `subtractScalar`  <a href="https://github.com/josdejong/mathjs/issues/3081">#3081</a>, <a href="https://github.com/josdejong/mathjs/issues/2643">#2643</a>), thanks <a href="https://github.com/vrushaket">@vrushaket</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3073">#3073</a>: function format not escaping control characters and double 
+  quotes  <a href="https://github.com/josdejong/mathjs/issues/3082">#3082</a>).
+- Fix: function `clone` not throwing an error when passing an unsupported
+  type like a function.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/2960">#2960</a> add type definition of function `symbolicEqual`  <a href="https://github.com/josdejong/mathjs/issues/3035">#3035</a>),
+  thanks <a href="https://github.com/juancodeaudio">@juancodeaudio</a>.
+
+
 <h1 id="20231011-11112">2023-10-11, 11.11.2 <a href="#20231011-11112" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/3025">#3025</a>: improve handling of matrices and error handling 
