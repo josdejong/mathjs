@@ -5,7 +5,8 @@
 
 Breaking changes:
 
-- Fix #2879, #2927, #3014: change the confusing interface of `eigs`.
+- Fix #2879, #2927, #3014: change the confusing interface of `eigs` (#3037),
+  thanks @gwhitney.
   Before, functions `eigs` returned an object:
   ```
   { values: MathCollection; vectors: MathCollection }
@@ -28,9 +29,14 @@ Breaking changes:
   - Type `MathJsStatic` is renamed to `MathJsInstance`.
   - Type `FactoryDependencies` is deprecated, use `MathJsFactory` instead, and 
     import dependency maps directly from the library.
-- Change the assignment operator of .toTex output from `:=` to `=` (see #2980, 
-  #3032).
+- Change the assignment operator of `.toTex()` output from `:=` to `=` (see 
+  #2980, #2987).
 - Drop official support for Node.js 14 and 16.
+
+Features:
+
+- Function `eigs` now has an option to turn off calculation of eigenvectors 
+  (#3057, #2180). Thanks @gwhitney.
 
 Fixes:
 
