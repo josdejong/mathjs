@@ -2475,10 +2475,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when the compared values are unequal, else
    * returns false
    */
-  unequal(
-    x: MathType | string,
-    y: MathType | string
-  ): boolean | MathCollection
+  unequal(x: MathType | string, y: MathType | string): boolean | MathCollection
 
   /*************************************************************************
    * Set functions
