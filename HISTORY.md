@@ -1,7 +1,7 @@
 # History
 
 
-# not yet published, 12.0.0
+# 2023-10-26, 12.0.0
 
 Breaking changes:
 
@@ -23,6 +23,11 @@ Breaking changes:
   ```
   Where `eigenvectors` is an array containing an object with the corresponding
   eigenvalue and vector.
+- Refactored the TypeScript type definitions to make them work with a `NodeNext`
+  module resolution (#3079, #2919). 
+  - Type `MathJsStatic` is renamed to `MathJsInstance`.
+  - Type `FactoryDependencies` is deprecated, use `MathJsFactory` instead, and 
+    import dependency maps directly from the library.
 - Change the assignment operator of .toTex output from `:=` to `=` (see #2980, 
   #3032).
 - Drop official support for Node.js 14 and 16.
@@ -32,7 +37,7 @@ Fixes:
 - Find eigenvectors of defective matrices (#3037). Thanks @gwhitney.
 
 
-# 2023-10-25, 11.12.0
+# 2023-10-26, 11.12.0
 
 - Implemented function `subtractScalar` (#3081, #2643), thanks @vrushaket.
 - Fix #3073: function format not escaping control characters and double
