@@ -1,0 +1,31 @@
+
+html, body{
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#app{
+  display: flex;
+  overflow: hidden;
+  flex: 1;
+  flex-direction: row;
+  width: 100vw;
+}
+#editor{
+  flex: 1;
+  overflow: auto;
+  box-sizing: border-box;
+}
+#app > article{
+  flex: 1;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 1em
+}
