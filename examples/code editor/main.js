@@ -6,6 +6,7 @@ import Alpine from 'alpinejs'
 import 'katex/dist/katex.min.css'
 import katex from 'katex'
 
+import { EditorState } from "@codemirror/state"
 import { EditorView, basicSetup } from "codemirror"
 import { create, all } from 'mathjs'
 
@@ -14,7 +15,23 @@ const math = create(all)
 const digits = 14
 let parser = math.parser()
 
-let editor = new EditorView({
+const doc = [
+  "round(e, 3)",
+  "atan2(3, -3) / pi",
+  "log(10000, 10)",
+  "sqrt(-4)",
+  "derivative('x^2 + x', 'x')",
+  "pow([[-1, 2], [3, 1]], 2)",
+  "# expressions",
+  "1.2 * (2 + 4.5)",
+  "12.7 cm to inch",
+  "sin(45 deg) ^ 2",
+  "9 / 3 + 2i",
+  "det([-1, 2; 3, 1])"
+].join('\n')
+
+let startState = EditorState.create({
+  doc,
   extensions: [
     basicSetup,
     EditorView.updateListener.of((update) => {
@@ -24,6 +41,10 @@ let editor = new EditorView({
       }
     })
   ],
+})
+
+let editor = new EditorView({
+  state: startState,
   parent: document.querySelector('#editor')
 })
 

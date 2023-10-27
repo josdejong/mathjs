@@ -10,7 +10,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 #app{
   display: flex;
   overflow: hidden;
@@ -22,7 +21,12 @@ body {
   flex: 1;
   overflow: auto;
   box-sizing: border-box;
+  display: flex;
 }
+#editor > .cm-editor{
+  flex:1
+}
+
 #app > article{
   flex: 1;
   overflow: auto;
