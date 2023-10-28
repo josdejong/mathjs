@@ -15,7 +15,8 @@
       <ul>
         <template x-for="expression in expressions">
           <li x-bind:id="`F${expression.from}T${expression.to}`"
-          x-html="expression.result"
+          x-html="expression.outputs"
+          x-show="expression.visible"
           ></li>
         </template>
       </ul>

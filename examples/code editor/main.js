@@ -67,14 +67,14 @@ function getExpressions(str) {
     const linesToTest = lines.slice(nextLineToParse, lineID + 1).join('\n');
     if (canBeParsed(linesToTest)) {
       if (!isEmptyString(linesToTest)) {
-        result.push({ from: nextLineToParse, to: lineID, text: linesToTest });
+        result.push({ from: nextLineToParse, to: lineID, source: linesToTest });
       }
       nextLineToParse = lineID + 1;
     }
   }
   const linesToTest = lines.slice(nextLineToParse).join('\n');
   if (!isEmptyString(linesToTest)) {
-    result.push({ from: nextLineToParse, to: lines.length - 1, text: linesToTest });
+    result.push({ from: nextLineToParse, to: lines.length - 1, source: linesToTest });
   }
   return result;
 }
@@ -92,15 +92,6 @@ function isEmptyString(str) {
   return str.trim() === ""
 }
 
-function formatResults(result) {
-  if (typeof result === "object" && result.isResultSet) {
-    return result.entries.map(r => formatResult(r)).join('')
-  }
-  else {
-    return formatResult(result)
-  }
-}
-
 const formatResult = math.typed({
   'number': x => math.format(x, { precision: digits }),
   'undefined': () => '',
@@ -112,19 +103,27 @@ const formatResult = math.typed({
 }
 )
 
+function processExpressions(expressions) {
+  return expressions.map(expression => {
+    const result = calc(expression.source)
+    const outputs = formatResult(result)
+    const visible = result === undefined ? false : result.isResultSet ? false : true
+    return ({
+      ...expression,
+      outputs,
+      visible
+    })
+  })
+}
+
 window.Alpine = Alpine
 
 Alpine.data(
   'app',
   () => ({
-    init() {
-    },
-    expressions: getExpressions(editor.state.doc.toString()),
+    expressions: processExpressions(getExpressions(editor.state.doc.toString())),
     get calcExpressions() {
-      this.expressions = expressions.map(expression => ({
-        ...expression,
-        result: formatResult(calc(expression.text))
-      }))
+      this.expressions = processExpressions(getExpressions(editor.state.doc.toString()))
     }
   })
 )
