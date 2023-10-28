@@ -10,10 +10,11 @@ import { EditorState } from "@codemirror/state"
 import { EditorView, basicSetup } from "codemirror"
 import { create, all } from 'mathjs'
 
-const results = document.querySelector("#result")
 const math = create(all)
 const digits = 14
 let parser = math.parser()
+
+let expressions
 
 const doc = [
   "round(e, 3)",
@@ -36,8 +37,7 @@ let startState = EditorState.create({
     basicSetup,
     EditorView.updateListener.of((update) => {
       if (update.docChanged) {
-        const text = update.state.doc.toString()
-        results.innerHTML = calc(text)
+        expressions = getExpressions(update.state.doc.toString())
       }
     })
   ],
@@ -48,34 +48,17 @@ let editor = new EditorView({
   parent: document.querySelector('#editor')
 })
 
-function calc(text) {
-  const expressions = splitByParse(text)
-  let results = ""
-  let listOfIDText = []
-
-  expressions.forEach(expression => {
-    let result
-    try {
-      result = parser.evaluate(expression.text)
-    } catch (error) {
-      result = error.toString()
-    }
-    const idText = `F${expression.from}T${expression.to}`
-    let currentID = idText
-    listOfIDText.push({ from: expression.from, to: expression.to })
-    if (result !== undefined) {
-      const resultText = formatResults(result)
-      if (result.entries && result.entries.length > 0) {
-        results += `<li id='${idText}'>${resultText}</li>`
-      } else if (result.entries === undefined) {
-        results += `<li id='${idText}'>${resultText}</li>`
-      }
-    }
-  })
-  return `<ul>${results}</ul>`
+function calc(expression) {
+  let result
+  try {
+    result = parser.evaluate(expression)
+  } catch (error) {
+    result = error.toString()
+  }
+  return result
 }
 
-function splitByParse(str) {
+function getExpressions(str) {
   const lines = str.split('\n');
   let nextLineToParse = 0;
   const result = [];
@@ -111,10 +94,10 @@ function isEmptyString(str) {
 
 function formatResults(result) {
   if (typeof result === "object" && result.isResultSet) {
-      return result.entries.map(r => formatResult(r)).join('')
+    return result.entries.map(r => formatResult(r)).join('')
   }
   else {
-      return formatResult(result)
+    return formatResult(result)
   }
 }
 
@@ -125,9 +108,25 @@ const formatResult = math.typed({
   'any': math.typed.referTo(
     'number',
     fnumber => x => katex.renderToString(math.parse(fnumber(x)).toTex())
-    )}
+  )
+}
 )
 
 window.Alpine = Alpine
+
+Alpine.data(
+  'app',
+  () => ({
+    init() {
+    },
+    expressions: getExpressions(editor.state.doc.toString()),
+    get calcExpressions() {
+      this.expressions = expressions.map(expression => ({
+        ...expression,
+        result: formatResult(calc(expression.text))
+      }))
+    }
+  })
+)
 
 Alpine.start()
