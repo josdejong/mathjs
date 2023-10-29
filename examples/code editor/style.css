@@ -1,5 +1,5 @@
-
-html, body{
+html,
+body {
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -10,26 +10,33 @@ body {
   display: flex;
   flex-direction: column;
 }
-#app{
+
+#app {
   display: flex;
   overflow: hidden;
   flex: 1;
   flex-direction: row;
   width: 100vw;
 }
-#editor{
+
+#editor {
   flex: 1;
   overflow: auto;
   box-sizing: border-box;
   display: flex;
 }
-#editor > .cm-editor{
-  flex:1
+
+#editor>.cm-editor {
+  flex: 1
 }
 
-#app > article{
+#app>article {
   flex: 1;
   overflow: auto;
   box-sizing: border-box;
   padding: 1em
+}
+
+li.highligted {
+  background-color: rgba(0, 150, 255, 0.3);
 }

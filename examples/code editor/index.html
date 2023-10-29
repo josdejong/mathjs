@@ -10,12 +10,16 @@
 
 <body>
   <div id="app" x-data="app">
-    <div id="editor" x-on:input.debounce="calcExpressions"></div>
+    <div id="editor" x-on:input.debounce="calcExpressions" x-on:keyup="getCurrentLine"></div>
     <article id="result" class="markdown-body">
-      <template x-for="expression in expressions">
-        <p x-bind:id="`F${expression.from}T${expression.to}`" x-html="expression.outputs" x-show="expression.visible">
-        </p>
-      </template>
+      <ul>
+        <template x-for="expression in expressions">
+          <li :class=" (currentLine >= expression.from) && (currentLine <= expression.to) ? 'highligted' : ''"
+            x-html="expression.outputs" x-show="expression.visible"
+            x-effect="if((currentLine >= expression.from) && (currentLine <= expression.to)) $el.scrollIntoView()">
+          </li>
+        </template>
+      </ul>
     </article>
   </div>
   <script type="module" src="/main.js"></script>

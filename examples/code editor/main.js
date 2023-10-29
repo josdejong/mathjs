@@ -6,9 +6,15 @@ import Alpine from 'alpinejs'
 import 'katex/dist/katex.min.css'
 import katex from 'katex'
 
+import { mathjsLang } from './mathjs-lang.js'
+
 import { EditorState } from "@codemirror/state"
 import { EditorView, basicSetup } from "codemirror"
 import { create, all } from 'mathjs'
+
+import {
+  StreamLanguage
+} from '@codemirror/language'
 
 const math = create(all)
 const digits = 14
@@ -35,6 +41,7 @@ let startState = EditorState.create({
   doc,
   extensions: [
     basicSetup,
+    StreamLanguage.define(mathjsLang(math)),
     EditorView.updateListener.of((update) => {
       if (update.docChanged) {
         expressions = getExpressions(update.state.doc.toString())
@@ -100,8 +107,7 @@ const formatResult = math.typed({
     'number',
     fnumber => x => katex.renderToString(math.parse(fnumber(x)).toTex())
   )
-}
-)
+})
 
 function processExpressions(expressions) {
   parser.clear()
@@ -117,14 +123,21 @@ function processExpressions(expressions) {
   })
 }
 
+
 window.Alpine = Alpine
 
 Alpine.data(
   'app',
   () => ({
     expressions: processExpressions(getExpressions(editor.state.doc.toString())),
+    currentLine: -1,
     get calcExpressions() {
       this.expressions = processExpressions(getExpressions(editor.state.doc.toString()))
+    },
+    get getCurrentLine() {
+      this.currentLine = editor.state.doc.lineAt(
+        editor.state.selection.ranges[editor.state.selection.mainIndex].from
+      ).number - 1
     }
   })
 )
