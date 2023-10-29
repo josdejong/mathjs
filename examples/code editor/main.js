@@ -104,6 +104,7 @@ const formatResult = math.typed({
 )
 
 function processExpressions(expressions) {
+  parser.clear()
   return expressions.map(expression => {
     const result = calc(expression.source)
     const outputs = formatResult(result)

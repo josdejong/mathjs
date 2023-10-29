@@ -12,14 +12,10 @@
   <div id="app" x-data="app">
     <div id="editor" x-on:input.debounce="calcExpressions"></div>
     <article id="result" class="markdown-body">
-      <ul>
-        <template x-for="expression in expressions">
-          <li x-bind:id="`F${expression.from}T${expression.to}`"
-          x-html="expression.outputs"
-          x-show="expression.visible"
-          ></li>
-        </template>
-      </ul>
+      <template x-for="expression in expressions">
+        <p x-bind:id="`F${expression.from}T${expression.to}`" x-html="expression.outputs" x-show="expression.visible">
+        </p>
+      </template>
     </article>
   </div>
   <script type="module" src="/main.js"></script>
