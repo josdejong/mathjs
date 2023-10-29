@@ -11,6 +11,7 @@ import { mathjsLang } from './mathjs-lang.js'
 import { EditorState } from "@codemirror/state"
 import { EditorView, basicSetup } from "codemirror"
 import { create, all } from 'mathjs'
+import getExpressions from './getExpressions'
 
 import {
   StreamLanguage
@@ -63,40 +64,6 @@ function calc(expression) {
     result = error.toString()
   }
   return result
-}
-
-function getExpressions(str) {
-  const lines = str.split('\n');
-  let nextLineToParse = 0;
-  const result = [];
-
-  for (let lineID = 0; lineID < lines.length; lineID++) {
-    const linesToTest = lines.slice(nextLineToParse, lineID + 1).join('\n');
-    if (canBeParsed(linesToTest)) {
-      if (!isEmptyString(linesToTest)) {
-        result.push({ from: nextLineToParse, to: lineID, source: linesToTest });
-      }
-      nextLineToParse = lineID + 1;
-    }
-  }
-  const linesToTest = lines.slice(nextLineToParse).join('\n');
-  if (!isEmptyString(linesToTest)) {
-    result.push({ from: nextLineToParse, to: lines.length - 1, source: linesToTest });
-  }
-  return result;
-}
-
-function canBeParsed(expression) {
-  try {
-    math.parse(expression)
-    return true
-  } catch (error) {
-    return false
-  }
-}
-
-function isEmptyString(str) {
-  return str.trim() === ""
 }
 
 const formatResult = math.typed({
