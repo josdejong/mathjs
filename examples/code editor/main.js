@@ -20,8 +20,9 @@ import {
 const math = create(all)
 const digits = 14
 let parser = math.parser()
-
-let expressions
+const editorDOM = document.querySelector('#editor')
+const docChanged = new CustomEvent('docChanged')
+const selectionChanged = new CustomEvent('selectionChanged')
 
 const doc = [
   "round(e, 3)",
@@ -45,7 +46,9 @@ let startState = EditorState.create({
     StreamLanguage.define(mathjsLang(math)),
     EditorView.updateListener.of((update) => {
       if (update.docChanged) {
-        expressions = getExpressions(update.state.doc.toString())
+        editorDOM.dispatchEvent(docChanged)
+      } else if (update.selectionSet) {
+        editorDOM.dispatchEvent(selectionChanged)
       }
     })
   ],
@@ -53,7 +56,7 @@ let startState = EditorState.create({
 
 let editor = new EditorView({
   state: startState,
-  parent: document.querySelector('#editor')
+  parent: editorDOM
 })
 
 function calc(expression) {
