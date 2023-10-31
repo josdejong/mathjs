@@ -10,7 +10,8 @@
 
 <body>
   <div id="app" x-data="app">
-    <div id="editor" @doc-changed.camel.debounce="calcExpressions" @doc-changed.camel="getCurrentLine" @selection-changed.camel="getCurrentLine"></div>
+    <div id="editor" @doc-changed.camel.debounce="calcExpressions" @doc-changed.camel="getCurrentLine"
+      @selection-changed.camel="getCurrentLine"></div>
     <article id="result" class="markdown-body">
       <ul>
         <template x-for="expression in expressions">

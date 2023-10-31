@@ -69,7 +69,7 @@ function calc(expression) {
   return result
 }
 
-const formatResult = math.typed({
+const formatResultTyped = math.typed({
   'number': x => math.format(x, { precision: digits }),
   'undefined': () => '',
   'string': x => `<code>${x}</code>`,
@@ -78,6 +78,13 @@ const formatResult = math.typed({
     fnumber => x => katex.renderToString(math.parse(fnumber(x)).toTex())
   )
 })
+
+function formatResult(x){
+  if(typeof x === 'object' && x.isHelp){
+    return `<pre>${math.format(x)}</pre>`
+  }
+  return formatResultTyped(x)
+}
 
 function processExpressions(expressions) {
   parser.clear()
@@ -100,7 +107,7 @@ Alpine.data(
   'app',
   () => ({
     expressions: processExpressions(getExpressions(editor.state.doc.toString())),
-    currentLine: -1,
+    currentLine: 1,
     get calcExpressions() {
       this.expressions = processExpressions(getExpressions(editor.state.doc.toString()))
     },
