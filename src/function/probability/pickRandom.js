@@ -50,8 +50,8 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
    * @param {Array | Matrix} array     A one dimensional array
    * @param {Int} number               An int or float
    * @param {Array | Matrix} weights   An array of ints or floats
-   * @return {number | Array}          Returns a single random value from array when number is 1 or undefined.
-   *                                   Returns an array with the configured number of elements when number is > 1.
+   * @return {number | Array}          Returns a single random value from array when number is undefined.
+   *                                   Returns an array with the configured number of elements when number is defined.
    */
   return typed(name, {
     'Array | Matrix': function (possibles) {
