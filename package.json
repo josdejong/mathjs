@@ -26,8 +26,6 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.22.6",
-    "alpinejs": "^3.13.2",
-    "codemirror": "^6.0.1",
     "complex.js": "^2.1.1",
     "decimal.js": "^10.4.3",
     "escape-latex": "^1.2.0",
