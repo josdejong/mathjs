@@ -23,6 +23,7 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
   /**
    * Logical `or`. Test if at least one value is defined with a nonzero/nonempty value.
    * For matrices, the function is evaluated element wise.
+   * For non-matrices, the function is evaluated lazily.
    *
    * Syntax:
    *

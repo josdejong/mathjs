@@ -26,6 +26,7 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
   /**
    * Logical `and`. Test whether two values are both defined with a nonzero/nonempty value.
    * For matrices, the function is evaluated element wise.
+   * For non-matrices, the function is evaluated lazily.
    *
    * Syntax:
    *
