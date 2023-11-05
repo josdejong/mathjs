@@ -361,3 +361,5 @@ export { createVarianceTransform } from './expression/transform/variance.transfo
 export { createPrintTransform } from './expression/transform/print.transform.js'
 export { createAndTransform } from './expression/transform/and.transform.js'
 export { createOrTransform } from './expression/transform/or.transform.js'
+export { createBitAndTransform } from './expression/transform/bitAnd.transform.js'
+export { createBitOrTransform } from './expression/transform/bitOr.transform.js'
