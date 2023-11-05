@@ -5,6 +5,7 @@ import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
 import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators.js'
 import { latexOperators } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
+import { createSubScope } from '../../utils/scope.js'
 
 const name = 'OperatorNode'
 const dependencies = [
@@ -304,7 +305,14 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         return arg._compile(math, argNames)
       })
 
-      if (evalArgs.length === 1) {
+      if (typeof fn === 'function' && fn.rawArgs === true) {
+        // pass unevaluated parameters (nodes) to the function
+        // "raw" evaluation
+        const rawArgs = this.args
+        return function evalOperatorNode (scope, args, context) {
+          return fn(rawArgs, math, createSubScope(scope, args), scope)
+        }
+      } else if (evalArgs.length === 1) {
         const evalArg0 = evalArgs[0]
         return function evalOperatorNode (scope, args, context) {
           return fn(evalArg0(scope, args, context))
