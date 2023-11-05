@@ -359,3 +359,5 @@ export { createQuantileSeqTransform } from './expression/transform/quantileSeq.t
 export { createCumSumTransform } from './expression/transform/cumsum.transform.js'
 export { createVarianceTransform } from './expression/transform/variance.transform.js'
 export { createPrintTransform } from './expression/transform/print.transform.js'
+export { createAndTransform } from './expression/transform/and.transform.js'
+export { createOrTransform } from './expression/transform/or.transform.js'
