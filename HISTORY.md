@@ -1,6 +1,12 @@
 # History
 
 
+# unpublished changes since 12.0.0
+
+- Fix #3087: extend function `mod` with support for negative divisors in when
+  using `BigNumber` or `Fraction`.
+
+
 # 2023-10-26, 12.0.0
 
 Breaking changes:
