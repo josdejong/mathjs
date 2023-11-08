@@ -118,10 +118,8 @@ describe('round', function () {
     assert.deepStrictEqual(round(complex(2.157, math.pi), bignumber(2)), complex(2.16, 3.14))
   })
 
-  it('should throw an error if used with a unit', function () {
-    assert.throws(function () { round(math.unit('5cm')) }, TypeError, 'Function round(unit) not supported')
-    assert.throws(function () { round(math.unit('5cm'), 2) }, TypeError, 'Function round(unit) not supported')
-    assert.throws(function () { round(math.unit('5cm'), bignumber(2)) }, TypeError, 'Function round(unit) not supported')
+  it('should round unit', function () {
+    assert.strictEqual(round(math.unit('3.12345cm'), 3, math.unit('cm')), math.unit('3.123cm'))
   })
 
   it('should convert to a number when used with a string', function () {

@@ -68,6 +68,12 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return new BigNumber(x).toDecimalPlaces(n.toNumber())
     },
 
+    // Same as above but without the options.
+    'Unit | string | Object, number, Unit | string | Object': function (value, decimals, valuelessUnit) {
+      const valueless = value.toNumber(valuelessUnit)
+      return valuelessUnit.multiply(roundNumber(valueless, decimals))
+    },
+
     Complex: function (x) {
       return x.round()
     },
