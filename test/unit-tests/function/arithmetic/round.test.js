@@ -119,7 +119,7 @@ describe('round', function () {
   })
 
   it('should round unit', function () {
-    assert.strictEqual(round(math.unit('3.12345cm'), 3, math.unit('cm')), math.unit('3.123cm'))
+    assert.deepStrictEqual(round(math.unit('3.12345cm'), 3, math.unit('cm')), math.unit('3.123cm'))
   })
 
   it('should convert to a number when used with a string', function () {
