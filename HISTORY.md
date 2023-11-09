@@ -1,6 +1,13 @@
 # History
 
 
+# unpublished changes since 12.0.0
+
+- Fix #3087: extend function `mod` with support for negative divisors in when
+  using `BigNumber` or `Fraction`.
+- Fix #3092: a typo in an error message when converting a string into a number.
+
+
 # 2023-10-26, 12.0.0
 
 Breaking changes:

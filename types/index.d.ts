@@ -2275,9 +2275,8 @@ export interface MathJsInstance extends MathJsFactory {
    * @param array A one dimensional array
    * @param number An int or float
    * @param weights An array of ints or floats
-   * @returns Returns a single random value from array when number is 1 or
-   * undefined. Returns an array with the configured number of elements
-   * when number is > 1.
+   * @returns Returns a single random value from array when number is undefined.
+   * Returns an array with the configured number of elements when number is defined.
    */
   pickRandom<T>(array: T[]): T
   pickRandom<T>(array: T[], number: number): T[]
