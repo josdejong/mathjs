@@ -23,7 +23,6 @@ export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed
   /**
    * Bitwise AND two values, `x & y`.
    * For matrices, the function is evaluated element wise.
-   * For non-matrices, the function is evaluated lazily.
    *
    * Syntax:
    *

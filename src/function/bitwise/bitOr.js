@@ -24,7 +24,6 @@ export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   /**
    * Bitwise OR two values, `x | y`.
    * For matrices, the function is evaluated element wise.
-   * For non-matrices, the function is evaluated lazily.
    * For units, the function is evaluated on the lowest print base.
    *
    * Syntax:
