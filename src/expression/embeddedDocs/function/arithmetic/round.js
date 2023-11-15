@@ -13,7 +13,9 @@ export const roundDocs = {
     'round(-4.2)',
     'round(-4.8)',
     'round(pi, 3)',
-    'round(123.45678, 2)'
+    'round(123.45678, 2)',
+    'round(3.241cm, 2, cm)',
+    'round([3.2, 3.8, -4.7])'
   ],
   seealso: ['ceil', 'floor', 'fix']
 }

@@ -9,6 +9,7 @@ const fraction = math.fraction
 const matrix = math.matrix
 const sparse = math.sparse
 const round = math.round
+const unit = math.unit
 
 describe('round', function () {
   it('should round a number to te given number of decimals', function () {
@@ -118,10 +119,38 @@ describe('round', function () {
     assert.deepStrictEqual(round(complex(2.157, math.pi), bignumber(2)), complex(2.16, 3.14))
   })
 
-  it('should throw an error if used with a unit', function () {
-    assert.throws(function () { round(math.unit('5cm')) }, TypeError, 'Function round(unit) not supported')
-    assert.throws(function () { round(math.unit('5cm'), 2) }, TypeError, 'Function round(unit) not supported')
-    assert.throws(function () { round(math.unit('5cm'), bignumber(2)) }, TypeError, 'Function round(unit) not supported')
+  it('should round units', function () {
+    assert.deepStrictEqual(round(unit('3.12345 cm'), 3, unit('cm')), unit('3.123 cm'))
+    assert.deepStrictEqual(round(unit('3.12345 cm'), unit('cm')), unit('3 cm'))
+    assert.deepStrictEqual(round(unit('2 inch'), unit('cm')), unit('5 cm'))
+    assert.deepStrictEqual(round(unit('2 inch'), 1, unit('cm')), unit('5.1 cm'))
+
+    // bignumber values
+    assert.deepStrictEqual(round(unit('3.12345 cm'), bignumber(2), unit('cm')), unit('3.12 cm'))
+    assert.deepStrictEqual(round(unit(bignumber('2'), 'inch'), unit('cm')), unit(bignumber('5'), 'cm'))
+    assert.deepStrictEqual(round(unit(bignumber('2'), 'inch'), bignumber(1), unit('cm')), unit(bignumber('5.1'), 'cm'))
+
+    // first argument is a collection
+    assert.deepStrictEqual(round([unit('2 inch'), unit('3 inch')], unit('cm')), [unit('5 cm'), unit('8 cm')])
+    assert.deepStrictEqual(round(matrix([unit('2 inch'), unit('3 inch')]), unit('cm')), matrix([unit('5 cm'), unit('8 cm')]))
+
+    // decimals is a collection
+    assert.deepStrictEqual(round(unit('3.12345 cm'), [0, 1, 2], unit('cm')), [unit('3 cm'), unit('3.1 cm'), unit('3.12 cm')])
+
+    // unit is a collection
+    assert.deepStrictEqual(round(unit('3.12345 cm'), [unit('cm'), unit('mm')]), [unit('3 cm'), unit('31 mm')])
+    assert.deepStrictEqual(round(unit('3.12345 cm'), 1, [unit('cm'), unit('mm')]), [unit('3.1 cm'), unit('31.2 mm')])
+  })
+
+  it('should throw an error if used with a unit without valueless unit', function () {
+    assert.throws(function () { round(unit('5cm')) }, TypeError, 'Function round(unit) not supported')
+    assert.throws(function () { round(unit('5cm'), 2) }, TypeError, 'Function round(unit) not supported')
+    assert.throws(function () { round(unit('5cm'), bignumber(2)) }, TypeError, 'Function round(unit) not supported')
+  })
+
+  it('should throw an error if used with a unit with a second unit that is not valueless', function () {
+    assert.throws(function () { round(unit('2 inch'), 1, unit('10 cm')) }, Error)
+    assert.throws(function () { round(unit('2 inch'), unit('10 cm')) }, Error)
   })
 
   it('should convert to a number when used with a string', function () {

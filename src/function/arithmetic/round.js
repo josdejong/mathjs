@@ -30,6 +30,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    math.round(x)
    *    math.round(x, n)
+   *    math.round(unit, n, valuelessUnit)
    *
    * Examples:
    *
@@ -47,14 +48,21 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *    const c = math.complex(3.2, -2.7)
    *    math.round(c)                // returns Complex 3 - 3i
    *
+   *    const unit = math.unit('3.241 cm')
+   *    const cm = math.unit('cm')
+   *    const mm = math.unit('mm')
+   *    math.round(unit, 1, cm)      // returns Unit 3.2 cm
+   *    math.round(unit, 1, mm)      // returns Unit 32.4 mm
+   *
    *    math.round([3.2, 3.8, -4.7]) // returns Array [3, 4, -5]
    *
    * See also:
    *
    *    ceil, fix, floor
    *
-   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
+   * @param  {Unit} [valuelessUnit]                                        A valueless unit
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   return typed(name, {
@@ -109,43 +117,75 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return x.round(n.toNumber())
     },
 
-    // deep map collection, skip zeros since round(0) = 0
-    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true)),
-
-    'SparseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
-      return matAlgo11xS0s(x, y, self, false)
+    'Unit, number, Unit': typed.referToSelf(self => function (x, n, unit) {
+      const valueless = x.toNumeric(unit)
+      return unit.multiply(self(valueless, n))
     }),
 
-    'DenseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
-      return matAlgo14xDs(x, y, self, false)
+    'Unit, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
+
+    'Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
+
+    'Array | Matrix, number, Unit': typed.referToSelf(self => (x, n, unit) => {
+      // deep map collection, skip zeros since round(0) = 0
+      return deepMap(x, (value) => self(value, n, unit), true)
     }),
 
-    'Array, number | BigNumber': typed.referToSelf(self => (x, y) => {
+    'Array | Matrix, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
+
+    'Array | Matrix, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
+
+    'Unit, Array | Matrix, Unit': typed.referToSelf(self => (x, nCollection, unit) => {
+      // deep map collection, skip zeros since round(0) = 0
+      return deepMap(nCollection, (n) => self(x, n, unit), true)
+    }),
+
+    'Unit, number | BigNumber, Array | Matrix': typed.referToSelf(self => (x, n, unitCollection) => {
+      // deep map collection, skip zeros since round(0) = 0
+      return deepMap(unitCollection, (unit) => self(x, n, unit), true)
+    }),
+
+    'Unit, Array | Matrix': typed.referToSelf(self => (x, unitCollection) => self(x, 0, unitCollection)),
+
+    'Array | Matrix': typed.referToSelf(self => x => {
+      // deep map collection, skip zeros since round(0) = 0
+      return deepMap(x, self, true)
+    }),
+
+    'SparseMatrix, number | BigNumber': typed.referToSelf(self => (x, n) => {
+      return matAlgo11xS0s(x, n, self, false)
+    }),
+
+    'DenseMatrix, number | BigNumber': typed.referToSelf(self => (x, n) => {
+      return matAlgo14xDs(x, n, self, false)
+    }),
+
+    'Array, number | BigNumber': typed.referToSelf(self => (x, n) => {
       // use matrix implementation
-      return matAlgo14xDs(matrix(x), y, self, false).valueOf()
+      return matAlgo14xDs(matrix(x), n, self, false).valueOf()
     }),
 
-    'number | Complex | BigNumber | Fraction, SparseMatrix': typed.referToSelf(self => (x, y) => {
+    'number | Complex | BigNumber | Fraction, SparseMatrix': typed.referToSelf(self => (x, n) => {
       // check scalar is zero
       if (equalScalar(x, 0)) {
         // do not execute algorithm, result will be a zero matrix
-        return zeros(y.size(), y.storage())
+        return zeros(n.size(), n.storage())
       }
-      return matAlgo12xSfs(y, x, self, true)
+      return matAlgo12xSfs(n, x, self, true)
     }),
 
-    'number | Complex | BigNumber | Fraction, DenseMatrix': typed.referToSelf(self => (x, y) => {
+    'number | Complex | BigNumber | Fraction, DenseMatrix': typed.referToSelf(self => (x, n) => {
       // check scalar is zero
       if (equalScalar(x, 0)) {
         // do not execute algorithm, result will be a zero matrix
-        return zeros(y.size(), y.storage())
+        return zeros(n.size(), n.storage())
       }
-      return matAlgo14xDs(y, x, self, true)
+      return matAlgo14xDs(n, x, self, true)
     }),
 
-    'number | Complex | BigNumber | Fraction, Array': typed.referToSelf(self => (x, y) => {
+    'number | Complex | BigNumber | Fraction, Array': typed.referToSelf(self => (x, n) => {
       // use matrix implementation
-      return matAlgo14xDs(matrix(y), x, self, true).valueOf()
+      return matAlgo14xDs(matrix(n), x, self, true).valueOf()
     })
   })
 })
