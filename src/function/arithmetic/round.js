@@ -30,6 +30,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    math.round(x)
    *    math.round(x, n)
+   *    math.round(unit, valuelessUnit)
    *    math.round(unit, n, valuelessUnit)
    *
    * Examples:

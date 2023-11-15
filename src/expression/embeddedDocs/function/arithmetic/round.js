@@ -3,7 +3,9 @@ export const roundDocs = {
   category: 'Arithmetic',
   syntax: [
     'round(x)',
-    'round(x, n)'
+    'round(x, n)',
+    'round(unit, valuelessUnit)',
+    'round(unit, n, valuelessUnit)',
   ],
   description:
       'round a value towards the nearest integer.If x is complex, both real and imaginary part are rounded towards the nearest integer. When n is specified, the value is rounded to n decimals.',
