@@ -1104,13 +1104,10 @@ export interface MathJsInstance extends MathJsFactory {
     n?: number | BigNumber
   ): NoLiteralType<T>
   round<U extends MathCollection>(x: MathNumericType, n: U): U
-  round(x: Unit, n: number | BigNumber, unit: Unit): Unit
-  round(x: Unit, unit: Unit): Unit
   round<U extends MathCollection>(x: U, unit: Unit): U
+  round(x: Unit, unit: Unit): Unit
+  round(x: Unit, n: number | BigNumber, unit: Unit): Unit
   round<U extends MathCollection>(x: U, n: number | BigNumber, unit: Unit): U
-  round<U extends MathCollection>(x: Unit, n: U, unit: Unit): U
-  round<U extends MathCollection>(x: Unit, n: number | BigNumber, unit: U): U
-  round<U extends MathCollection>(x: Unit, unit: U): U
 
   // End of group of rounding functions
 
@@ -4751,34 +4748,20 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathNumericType | U>,
     n: U
   ): MathJsChain<U>
-  round(
-    this: MathJsChain<Unit>,
-    n: number | BigNumber,
-    unit: Unit
-  ): MathJsChain<Unit>
   round(this: MathJsChain<Unit>, unit: Unit): MathJsChain<Unit>
   round<U extends MathCollection>(
     this: MathJsChain<U>,
     unit: Unit
   ): MathJsChain<U>
+  round(
+    this: MathJsChain<Unit>,
+    n: number | BigNumber,
+    unit: Unit
+  ): MathJsChain<Unit>
   round<U extends MathCollection>(
     this: MathJsChain<U>,
     n: number | BigNumber,
     unit: Unit
-  ): MathJsChain<U>
-  round<U extends MathCollection>(
-    this: MathJsChain<Unit>,
-    n: U,
-    unit: Unit
-  ): MathJsChain<U>
-  round<U extends MathCollection>(
-    this: MathJsChain<Unit>,
-    n: number | BigNumber,
-    unit: U
-  ): MathJsChain<U>
-  round<U extends MathCollection>(
-    this: MathJsChain<Unit>,
-    unit: U
   ): MathJsChain<U>
 
   // End of rounding group

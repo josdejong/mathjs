@@ -136,18 +136,6 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'Array | Matrix, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
 
-    'Unit, Array | Matrix, Unit': typed.referToSelf(self => (x, nCollection, unit) => {
-      // deep map collection, skip zeros since round(0) = 0
-      return deepMap(nCollection, (n) => self(x, n, unit), true)
-    }),
-
-    'Unit, number | BigNumber, Array | Matrix': typed.referToSelf(self => (x, n, unitCollection) => {
-      // deep map collection, skip zeros since round(0) = 0
-      return deepMap(unitCollection, (unit) => self(x, n, unit), true)
-    }),
-
-    'Unit, Array | Matrix': typed.referToSelf(self => (x, unitCollection) => self(x, 0, unitCollection)),
-
     'Array | Matrix': typed.referToSelf(self => x => {
       // deep map collection, skip zeros since round(0) = 0
       return deepMap(x, self, true)
