@@ -3,10 +3,11 @@
 
 # unpublished changes since 12.0.0
 
-- Fix #3087: extend function `mod` with support for negative divisors in when
-  using `BigNumber` or `Fraction`.
-- Fix #3092: a typo in an error message when converting a string into a number.
-- Fix #3094: function `derivative` mutates the input expression when it fails.
+- Feat: Extend function `round` with support for units (#2761, #3095). 
+- Feat: Extend function `mod` with support for negative divisors in when
+  using `BigNumber` or `Fraction` (#3087).
+- Fix: #3092 a typo in an error message when converting a string into a number.
+- Fix: #3094 function `derivative` mutates the input expression when it fails.
 
 
 # 2023-10-26, 12.0.0
