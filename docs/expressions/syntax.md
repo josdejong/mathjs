@@ -479,7 +479,7 @@ const parser = math.parser()
 parser.evaluate('a = 2 + 3i')   // Complex, 2 + 3i
 parser.evaluate('b = a - 3i')   // Complex, 2 + 0i
 parser.evaluate('number(b)')    // Number,  2
-parser.evaluate('number(a)')    // Error: 2 + i is no valid number
+parser.evaluate('number(a)')    // Error: unexpected type of argument
 ```
 
 

@@ -5,11 +5,21 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20231117-1210">2023-11-17, 12.1.0 <a href="#20231117-1210" title="Permalink">#</a></h1>
+
+- Feat: Extend function `round` with support for units  <a href="https://github.com/josdejong/mathjs/issues/2761">#2761</a>, <a href="https://github.com/josdejong/mathjs/issues/3095">#3095</a>). 
+- Feat: Extend function `mod` with support for negative divisors in when
+  using `BigNumber` or `Fraction`  <a href="https://github.com/josdejong/mathjs/issues/3087">#3087</a>).
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3092">#3092</a> a typo in an error message when converting a string into a number.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3094">#3094</a> function `derivative` mutates the input expression when it fails.
+
+
 <h1 id="20231026-1200">2023-10-26, 12.0.0 <a href="#20231026-1200" title="Permalink">#</a></h1>
 
 Breaking changes:
 
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2879">#2879</a>, <a href="https://github.com/josdejong/mathjs/issues/2927">#2927</a>, <a href="https://github.com/josdejong/mathjs/issues/3014">#3014</a>: change the confusing interface of `eigs`.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2879">#2879</a>, <a href="https://github.com/josdejong/mathjs/issues/2927">#2927</a>, <a href="https://github.com/josdejong/mathjs/issues/3014">#3014</a>: change the confusing interface of `eigs`  <a href="https://github.com/josdejong/mathjs/issues/3037">#3037</a>),
+  thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
   Before, functions `eigs` returned an object:
   ```
   { values: MathCollection; vectors: MathCollection }
@@ -32,9 +42,14 @@ Breaking changes:
   - Type `MathJsStatic` is renamed to `MathJsInstance`.
   - Type `FactoryDependencies` is deprecated, use `MathJsFactory` instead, and 
     import dependency maps directly from the library.
-- Change the assignment operator of .toTex output from `:=` to `=` (see <a href="https://github.com/josdejong/mathjs/issues/2980">#2980</a>, 
-  <a href="https://github.com/josdejong/mathjs/issues/3032">#3032</a>).
+- Change the assignment operator of `.toTex()` output from `:=` to `=` (see 
+  <a href="https://github.com/josdejong/mathjs/issues/2980">#2980</a>, <a href="https://github.com/josdejong/mathjs/issues/2987">#2987</a>).
 - Drop official support for Node.js 14 and 16.
+
+Features:
+
+- Function `eigs` now has an option to turn off calculation of eigenvectors 
+   <a href="https://github.com/josdejong/mathjs/issues/3057">#3057</a>, <a href="https://github.com/josdejong/mathjs/issues/2180">#2180</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 
 Fixes:
 

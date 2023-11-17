@@ -15,14 +15,17 @@ For matrices, the function is evaluated element wise.
 ```js
 math.round(x)
 math.round(x, n)
+math.round(unit, valuelessUnit)
+math.round(unit, n, valuelessUnit)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Value to be rounded
 `n` | number &#124; BigNumber &#124; Array | Number of decimals Default value: 0.
+`valuelessUnit` | Unit | A valueless unit
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -53,6 +56,12 @@ math.round(123.45678, 2)     // returns number 123.46
 
 const c = math.complex(3.2, -2.7)
 math.round(c)                // returns Complex 3 - 3i
+
+const unit = math.unit('3.241 cm')
+const cm = math.unit('cm')
+const mm = math.unit('mm')
+math.round(unit, 1, cm)      // returns Unit 3.2 cm
+math.round(unit, 1, mm)      // returns Unit 32.4 mm
 
 math.round([3.2, 3.8, -4.7]) // returns Array [3, 4, -5]
 ```
