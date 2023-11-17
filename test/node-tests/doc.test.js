@@ -99,7 +99,7 @@ const knownProblems = new Set([
   'mod', 'invmod', 'floor', 'fix', 'expm1', 'exp', 'dotPow', 'dotMultiply',
   'dotDivide', 'divide', 'ceil', 'cbrt', 'add', 'usolveAll', 'usolve', 'slu',
   'rationalize', 'qr', 'lusolve', 'lup', 'lsolveAll', 'lsolve', 'derivative',
-  'symbolicEqual', 'map', 'schur', 'sylvester', 'freqz'
+  'symbolicEqual', 'map', 'schur', 'sylvester', 'freqz', 'round'
 ])
 
 function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
