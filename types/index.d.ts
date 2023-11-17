@@ -5,10 +5,10 @@ export as namespace math
 export type NoLiteralType<T> = T extends number
   ? number
   : T extends string
-  ? string
-  : T extends boolean
-  ? boolean
-  : T
+    ? string
+    : T extends boolean
+      ? boolean
+      : T
 
 // TODO: introduce generics for MathCollection, MathMatrix, and MathArray
 export type MathNumericType = number | BigNumber | Fraction | Complex
