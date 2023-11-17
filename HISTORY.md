@@ -1,7 +1,7 @@
 # History
 
 
-# unpublished changes since 12.0.0
+# 2023-11-17, 12.1.0
 
 - Feat: Extend function `round` with support for units (#2761, #3095). 
 - Feat: Extend function `mod` with support for negative divisors in when
