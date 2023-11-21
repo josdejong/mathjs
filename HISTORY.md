@@ -1,6 +1,11 @@
 # History
 
 
+# unpublished changes since 12.1.0
+
+- Fix: #3096 embedded docs of eigs throwing an error.
+
+
 # 2023-11-17, 12.1.0
 
 - Feat: Extend function `round` with support for units (#2761, #3095). 
