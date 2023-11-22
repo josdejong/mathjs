@@ -117,7 +117,7 @@ describe('sum', function () {
     assert.throws(function () { sum(2, 3, null) }, /Cannot calculate sum, unexpected type of argument/)
     assert.throws(function () { sum([2, 3, null]) }, /Cannot calculate sum, unexpected type of argument/)
     assert.throws(function () { sum('a', 'b') }, /Error: Cannot convert "a" to a number/)
-    assert.throws(function () { sum('a') }, /SyntaxError: String "a" is no valid number/)
+    assert.throws(function () { sum('a') }, /SyntaxError: String "a" is not a valid number/)
   })
 
   it('should LaTeX sum', function () {

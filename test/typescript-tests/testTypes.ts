@@ -633,6 +633,9 @@ Chaining examples
   expectTypeOf(math.chain([1]).round()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.unit('5.2cm')).round(math.unit('cm'))
+  ).toMatchTypeOf<MathJsChain<Unit>>()
 
   // cube
   expectTypeOf(math.chain(1).cube()).toMatchTypeOf<MathJsChain<number>>()
@@ -1902,6 +1905,16 @@ Function round examples
   assert.deepStrictEqual(
     math.round(c, math.bignumber(1)),
     math.complex(3.2, -2.7)
+  )
+
+  // unit input
+  assert.deepStrictEqual(
+    math.round(math.unit('5.21 cm'), math.unit('cm')),
+    math.unit('5 cm')
+  )
+  assert.deepStrictEqual(
+    math.round(math.unit('5.21 cm'), 1, math.unit('cm')),
+    math.unit('5.2 cm')
   )
 
   // array input

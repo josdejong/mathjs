@@ -308,9 +308,9 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('0x12u') })
       assert.throws(function () { parseAndEval('0x12i-8') })
 
-      assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is no valid number/)
-      assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is no valid number/)
-      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is no valid number/)
+      assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is not a valid number/)
+      assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is not a valid number/)
+      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is not a valid number/)
     })
   })
 

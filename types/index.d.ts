@@ -5,10 +5,10 @@ export as namespace math
 export type NoLiteralType<T> = T extends number
   ? number
   : T extends string
-  ? string
-  : T extends boolean
-  ? boolean
-  : T
+    ? string
+    : T extends boolean
+      ? boolean
+      : T
 
 // TODO: introduce generics for MathCollection, MathMatrix, and MathArray
 export type MathNumericType = number | BigNumber | Fraction | Complex
@@ -1104,6 +1104,10 @@ export interface MathJsInstance extends MathJsFactory {
     n?: number | BigNumber
   ): NoLiteralType<T>
   round<U extends MathCollection>(x: MathNumericType, n: U): U
+  round<U extends MathCollection>(x: U, unit: Unit): U
+  round(x: Unit, unit: Unit): Unit
+  round(x: Unit, n: number | BigNumber, unit: Unit): Unit
+  round<U extends MathCollection>(x: U, n: number | BigNumber, unit: Unit): U
 
   // End of group of rounding functions
 
@@ -4740,6 +4744,25 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<T>,
     n?: number | BigNumber | MathCollection
   ): MathJsChain<T>
+  round<U extends MathCollection>(
+    this: MathJsChain<MathNumericType | U>,
+    n: U
+  ): MathJsChain<U>
+  round(this: MathJsChain<Unit>, unit: Unit): MathJsChain<Unit>
+  round<U extends MathCollection>(
+    this: MathJsChain<U>,
+    unit: Unit
+  ): MathJsChain<U>
+  round(
+    this: MathJsChain<Unit>,
+    n: number | BigNumber,
+    unit: Unit
+  ): MathJsChain<Unit>
+  round<U extends MathCollection>(
+    this: MathJsChain<U>,
+    n: number | BigNumber,
+    unit: Unit
+  ): MathJsChain<U>
 
   // End of rounding group
 
