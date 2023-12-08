@@ -1,10 +1,11 @@
 # History
 
 
-# unpublished changes since 12.1.0
+# 2023-12-08, 12.2.0
 
 - Feat: lazy evaluation of operators `and`, `or`, `&`, `|` (#3090, #3101, 
-  #2766). Thanks @smith120bh. 
+  #2766). Thanks @smith120bh.
+- Fix: passing a 4th argument with a scope to raw functions.
 - Fix: #3096 embedded docs of eigs throwing an error.
 
 
