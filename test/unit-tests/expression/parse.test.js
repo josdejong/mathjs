@@ -1465,6 +1465,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true & false'), 0)
       assert.strictEqual(parseAndEval('false & true'), 0)
       assert.strictEqual(parseAndEval('false & false'), 0)
+
+      assert.strictEqual(parseAndEval('0 & undefined'), 0)
+      assert.strictEqual(parseAndEval('false & undefined'), 0)
+      assert.throws(function () { parseAndEval('true & undefined') }, TypeError)
+    })
+
+    it('should parse bitwise and & lazily', function () {
+      const scope = {}
+      parseAndEval('(a=false) & (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: false })
     })
 
     it('should parse bitwise xor ^|', function () {
@@ -1483,6 +1493,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true | false'), 1)
       assert.strictEqual(parseAndEval('false | true'), 1)
       assert.strictEqual(parseAndEval('false | false'), 0)
+
+      assert.strictEqual(parseAndEval('-1 | undefined'), -1)
+      assert.strictEqual(parseAndEval('true | undefined'), 1)
+      assert.throws(function () { parseAndEval('false | undefined') }, TypeError)
+    })
+
+    it('should parse bitwise or | lazily', function () {
+      const scope = {}
+      parseAndEval('(a=true) | (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: true })
     })
 
     it('should parse bitwise left shift <<', function () {
@@ -1506,6 +1526,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true and false'), false)
       assert.strictEqual(parseAndEval('false and true'), false)
       assert.strictEqual(parseAndEval('false and false'), false)
+
+      assert.strictEqual(parseAndEval('0 and undefined'), false)
+      assert.strictEqual(parseAndEval('false and undefined'), false)
+      assert.throws(function () { parseAndEval('true and undefined') }, TypeError)
+    })
+
+    it('should parse logical and lazily', function () {
+      const scope = {}
+      parseAndEval('(a=false) and (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: false })
     })
 
     it('should parse logical xor', function () {
@@ -1524,6 +1554,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true or false'), true)
       assert.strictEqual(parseAndEval('false or true'), true)
       assert.strictEqual(parseAndEval('false or false'), false)
+
+      assert.strictEqual(parseAndEval('2 or undefined'), true)
+      assert.strictEqual(parseAndEval('true or undefined'), true)
+      assert.throws(function () { parseAndEval('false or undefined') }, TypeError)
+    })
+
+    it('should parse logical or lazily', function () {
+      const scope = {}
+      parseAndEval('(a=true) or (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: true })
     })
 
     it('should parse logical not', function () {
