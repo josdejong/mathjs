@@ -169,7 +169,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
             const rawArgs = this.args
             return function evalFunctionNode (scope, args, context) {
               const fn = resolveFn(scope)
-              return fn(rawArgs, math, createSubScope(scope, args), scope)
+              return fn(rawArgs, math, createSubScope(scope, args))
             }
           } else {
             // "regular" evaluation
@@ -213,7 +213,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
             }
             if (fn.rawArgs) {
               // "Raw" evaluation
-              return fn(rawArgs, math, createSubScope(scope, args), scope)
+              return fn(rawArgs, math, createSubScope(scope, args))
             } else {
               const values = evalArgs.map(
                 (evalArg) => evalArg(scope, args, context))
@@ -239,7 +239,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
           if (fn?.rawArgs) {
             // "Raw" evaluation
-            return fn(rawArgs, math, createSubScope(scope, args), scope)
+            return fn(rawArgs, math, createSubScope(scope, args))
           } else {
             // "regular" evaluation
             const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
@@ -264,7 +264,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
           }
           if (fn.rawArgs) {
             // "Raw" evaluation
-            return fn(rawArgs, math, createSubScope(scope, args), scope)
+            return fn(rawArgs, math, createSubScope(scope, args))
           } else {
             // "regular" evaluation
             const values = evalArgs.map(
