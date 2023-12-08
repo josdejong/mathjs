@@ -5,6 +5,14 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20231208-1220">2023-12-08, 12.2.0 <a href="#20231208-1220" title="Permalink">#</a></h1>
+
+- Feat: lazy evaluation of operators `and`, `or`, `&`, `|`  <a href="https://github.com/josdejong/mathjs/issues/3090">#3090</a>, <a href="https://github.com/josdejong/mathjs/issues/3101">#3101</a>, 
+  <a href="https://github.com/josdejong/mathjs/issues/2766">#2766</a>). Thanks <a href="https://github.com/smith120bh">@smith120bh</a>.
+- Fix: passing a 4th argument with a scope to raw functions.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3096">#3096</a> embedded docs of eigs throwing an error.
+
+
 <h1 id="20231117-1210">2023-11-17, 12.1.0 <a href="#20231117-1210" title="Permalink">#</a></h1>
 
 - Feat: Extend function `round` with support for units  <a href="https://github.com/josdejong/mathjs/issues/2761">#2761</a>, <a href="https://github.com/josdejong/mathjs/issues/3095">#3095</a>). 
