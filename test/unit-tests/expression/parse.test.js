@@ -1471,6 +1471,12 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('true & undefined') }, TypeError)
     })
 
+    it('should parse bitwise and & lazily', function () {
+      const scope = {}
+      parseAndEval('(a=false) & (b=true)', scope)
+      assert.deepStrictEqual(scope, {a: false })
+    })
+
     it('should parse bitwise xor ^|', function () {
       assert.strictEqual(parseAndEval('2 ^| 6'), 4)
       assert.strictEqual(parseAndEval('5 ^| 3'), 6)
@@ -1491,6 +1497,12 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('-1 | undefined'), -1)
       assert.strictEqual(parseAndEval('true | undefined'), 1)
       assert.throws(function () { parseAndEval('false | undefined') }, TypeError)
+    })
+
+    it('should parse bitwise or | lazily', function () {
+      const scope = {}
+      parseAndEval('(a=true) | (b=true)', scope)
+      assert.deepStrictEqual(scope, {a: true })
     })
 
     it('should parse bitwise left shift <<', function () {
@@ -1520,6 +1532,12 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('true and undefined') }, TypeError)
     })
 
+    it('should parse logical and lazily', function () {
+      const scope = {}
+      parseAndEval('(a=false) and (b=true)', scope)
+      assert.deepStrictEqual(scope, {a: false })
+    })
+
     it('should parse logical xor', function () {
       assert.strictEqual(parseAndEval('2 xor 6'), false)
       assert.strictEqual(parseAndEval('2 xor 0'), true)
@@ -1540,6 +1558,12 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('2 or undefined'), true)
       assert.strictEqual(parseAndEval('true or undefined'), true)
       assert.throws(function () { parseAndEval('false or undefined') }, TypeError)
+    })
+
+    it('should parse logical or lazily', function () {
+      const scope = {}
+      parseAndEval('(a=true) or (b=true)', scope)
+      assert.deepStrictEqual(scope, {a: true })
     })
 
     it('should parse logical not', function () {

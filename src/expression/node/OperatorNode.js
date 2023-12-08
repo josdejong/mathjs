@@ -310,7 +310,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         // "raw" evaluation
         const rawArgs = this.args
         return function evalOperatorNode (scope, args, context) {
-          return fn(rawArgs, math, createSubScope(scope, args), scope)
+          return fn(rawArgs, math, scope)
         }
       } else if (evalArgs.length === 1) {
         const evalArg0 = evalArgs[0]
