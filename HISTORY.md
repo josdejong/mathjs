@@ -3,6 +3,8 @@
 
 # unpublished changes since 12.1.0
 
+- Feat: lazy evaluation of operators `and`, `or`, `&`, `|` (#3090, #3101, 
+  #2766). Thanks @smith120bh. 
 - Fix: #3096 embedded docs of eigs throwing an error.
 
 
