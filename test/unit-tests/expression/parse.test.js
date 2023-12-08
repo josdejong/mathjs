@@ -1474,7 +1474,7 @@ describe('parse', function () {
     it('should parse bitwise and & lazily', function () {
       const scope = {}
       parseAndEval('(a=false) & (b=true)', scope)
-      assert.deepStrictEqual(scope, {a: false })
+      assert.deepStrictEqual(scope, { a: false })
     })
 
     it('should parse bitwise xor ^|', function () {
@@ -1502,7 +1502,7 @@ describe('parse', function () {
     it('should parse bitwise or | lazily', function () {
       const scope = {}
       parseAndEval('(a=true) | (b=true)', scope)
-      assert.deepStrictEqual(scope, {a: true })
+      assert.deepStrictEqual(scope, { a: true })
     })
 
     it('should parse bitwise left shift <<', function () {
@@ -1535,7 +1535,7 @@ describe('parse', function () {
     it('should parse logical and lazily', function () {
       const scope = {}
       parseAndEval('(a=false) and (b=true)', scope)
-      assert.deepStrictEqual(scope, {a: false })
+      assert.deepStrictEqual(scope, { a: false })
     })
 
     it('should parse logical xor', function () {
@@ -1563,7 +1563,7 @@ describe('parse', function () {
     it('should parse logical or lazily', function () {
       const scope = {}
       parseAndEval('(a=true) or (b=true)', scope)
-      assert.deepStrictEqual(scope, {a: true })
+      assert.deepStrictEqual(scope, { a: true })
     })
 
     it('should parse logical not', function () {

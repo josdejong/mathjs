@@ -5,7 +5,6 @@ import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
 import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators.js'
 import { latexOperators } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
-import { createSubScope } from '../../utils/scope.js'
 
 const name = 'OperatorNode'
 const dependencies = [
