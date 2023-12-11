@@ -122,6 +122,7 @@ export const createSign = /* #__PURE__ */ createNumberFactory('sign', signNumber
 export const createSqrt = /* #__PURE__ */ createNumberFactory('sqrt', sqrtNumber)
 export const createSquare = /* #__PURE__ */ createNumberFactory('square', squareNumber)
 export const createSubtract = /* #__PURE__ */ createNumberFactory('subtract', subtractNumber)
+export { createSummation } from './function/arithmetic/summation.js'
 export const createXgcd = /* #__PURE__ */ createNumberFactory('xgcd', xgcdNumber)
 export const createDivideScalar = /* #__PURE__ */ createNumberFactory('divideScalar', divideNumber)
 export const createPow = /* #__PURE__ */ createNumberFactory('pow', powNumber)
