@@ -304,7 +304,7 @@ describe('BlockNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'BlockNode',
-      blocks: [bBlock, cBlock]
+      blocks: [{ node: b.toJSON(), visible: false }, { node: c.toJSON(), visible: true }]
     })
 
     const parsed = BlockNode.fromJSON(json)

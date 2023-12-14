@@ -589,7 +589,7 @@ describe('OperatorNode', function () {
       mathjs: 'OperatorNode',
       op: '+',
       fn: 'add',
-      args: [one, two],
+      args: [one.toJSON(), two.toJSON()],
       implicit: true,
       isPercentage: false
     })

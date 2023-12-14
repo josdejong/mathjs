@@ -1,3 +1,4 @@
+export { createfromJSON } from './json/fromJSON.js'
 export { createTyped } from './core/function/typed.js'
 export { createResultSet } from './type/resultset/ResultSet.js'
 export { createBigNumberClass } from './type/bignumber/BigNumber.js'

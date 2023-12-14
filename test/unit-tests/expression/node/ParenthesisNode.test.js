@@ -173,7 +173,7 @@ describe('ParenthesisNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'ParenthesisNode',
-      content: b
+      content: b.toJSON()
     })
 
     const parsed = ParenthesisNode.fromJSON(json)

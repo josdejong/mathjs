@@ -6,10 +6,11 @@ import { escape, stringify } from '../../utils/string.js'
 
 const name = 'ObjectNode'
 const dependencies = [
-  'Node'
+  'Node',
+  'fromJSON'
 ]
 
-export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
+export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, fromJSON }) => {
   class ObjectNode extends Node {
     /**
      * @constructor ObjectNode
@@ -146,7 +147,7 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
     toJSON () {
       return {
         mathjs: name,
-        properties: this.properties
+        properties: Object.keys(this.properties).reduce((object, prop) => ({ ...object, [prop]: this.properties[prop]?.toJSON() }), {})
       }
     }
 
@@ -158,7 +159,7 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
      * @returns {ObjectNode}
      */
     static fromJSON (json) {
-      return new ObjectNode(json.properties)
+      return new ObjectNode(Object.keys(json.properties).reduce((object, prop) => ({ ...object, [prop]: fromJSON(json.properties[prop]) }), {}))
     }
 
     /**

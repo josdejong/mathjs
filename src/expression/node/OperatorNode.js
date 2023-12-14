@@ -8,10 +8,11 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'OperatorNode'
 const dependencies = [
-  'Node'
+  'Node',
+  'fromJSON'
 ]
 
-export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
+export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, fromJSON }) => {
   /**
    * Returns true if the expression starts with a constant, under
    * the current parenthesization:
@@ -470,7 +471,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         mathjs: name,
         op: this.op,
         fn: this.fn,
-        args: this.args,
+        args: (this.args || []).map(a => a.toJSON()),
         implicit: this.implicit,
         isPercentage: this.isPercentage
       }
@@ -491,7 +492,8 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      */
     static fromJSON (json) {
       return new OperatorNode(
-        json.op, json.fn, json.args, json.implicit, json.isPercentage)
+        json.op, json.fn, json.args?.map(fromJSON), json.implicit, json.isPercentage
+      )
     }
 
     /**

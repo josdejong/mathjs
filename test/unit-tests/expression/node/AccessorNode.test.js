@@ -527,7 +527,7 @@ describe('AccessorNode', function () {
     assert.deepStrictEqual(json, {
       mathjs: 'AccessorNode',
       index: node.index,
-      object: a
+      object: a.toJSON()
     })
 
     const parsed = AccessorNode.fromJSON(json)

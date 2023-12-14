@@ -327,9 +327,9 @@ describe('RangeNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'RangeNode',
-      start: a,
-      end: b,
-      step: c
+      start: a.toJSON(),
+      end: b.toJSON(),
+      step: c.toJSON()
     })
 
     const parsed = RangeNode.fromJSON(json)

@@ -466,8 +466,8 @@ describe('FunctionNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'FunctionNode',
-      fn: a,
-      args: [b, c]
+      fn: a.toJSON(),
+      args: [b.toJSON(), c.toJSON()]
     })
 
     const parsed = FunctionNode.fromJSON(json)

@@ -10,10 +10,11 @@ const name = 'FunctionNode'
 const dependencies = [
   'math',
   'Node',
-  'SymbolNode'
+  'SymbolNode',
+  'fromJSON'
 ]
 
-export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({ math, Node, SymbolNode }) => {
+export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({ math, Node, SymbolNode, fromJSON }) => {
   /* format to fixed length */
   const strin = entity => format(entity, { truncate: 78 })
 
@@ -373,8 +374,8 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     toJSON () {
       return {
         mathjs: name,
-        fn: this.fn,
-        args: this.args
+        fn: this.fn?.toJSON(),
+        args: this.args?.map(a => a.toJSON())
       }
     }
 
@@ -386,7 +387,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @returns {FunctionNode}
      */
     static fromJSON = function (json) {
-      return new FunctionNode(json.fn, json.args)
+      return new FunctionNode(fromJSON(json.fn), json.args?.map(fromJSON))
     }
 
     /**

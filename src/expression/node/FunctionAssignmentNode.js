@@ -10,10 +10,11 @@ import { factory } from '../../utils/factory.js'
 const name = 'FunctionAssignmentNode'
 const dependencies = [
   'typed',
-  'Node'
+  'Node',
+  'fromJSON'
 ]
 
-export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ typed, Node }) => {
+export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ typed, Node, fromJSON }) => {
   /**
    * Is parenthesis needed?
    * @param {Node} node
@@ -184,7 +185,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
             type: types[index]
           }
         }),
-        expr: this.expr
+        expr: this.expr?.toJSON()
       }
     }
 
@@ -200,7 +201,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
      * @returns {FunctionAssignmentNode}
      */
     static fromJSON (json) {
-      return new FunctionAssignmentNode(json.name, json.params, json.expr)
+      return new FunctionAssignmentNode(json.name, json.params, fromJSON(json.expr))
     }
 
     /**

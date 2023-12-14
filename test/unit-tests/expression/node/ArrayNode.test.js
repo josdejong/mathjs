@@ -284,7 +284,7 @@ describe('ArrayNode', function () {
 
     assert.deepStrictEqual(json, {
       mathjs: 'ArrayNode',
-      items: [b, c]
+      items: [b.toJSON(), c.toJSON()]
     })
 
     const parsed = ArrayNode.fromJSON(json)
