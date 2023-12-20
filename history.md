@@ -5,6 +5,11 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20231220-1221">2023-12-20, 12.2.1 <a href="#20231220-1221" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3109">#3109</a>: method `Node.toHTML` not accepting a custom `handler`.
+
+
 <h1 id="20231208-1220">2023-12-08, 12.2.0 <a href="#20231208-1220" title="Permalink">#</a></h1>
 
 - Feat: lazy evaluation of operators `and`, `or`, `&`, `|`  <a href="https://github.com/josdejong/mathjs/issues/3090">#3090</a>, <a href="https://github.com/josdejong/mathjs/issues/3101">#3101</a>, 
