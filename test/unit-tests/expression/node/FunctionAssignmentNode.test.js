@@ -436,6 +436,29 @@ describe('FunctionAssignmentNode', function () {
     assert.strictEqual(n.toString({ handler: customFunction }), '[func](x, )=const(1, number)')
   })
 
+  it('should stringify a FunctionAssignmentNode with custom toHTML', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node, options) {
+      if (node.type === 'FunctionAssignmentNode') {
+        let string = '[' + node.name + ']('
+        node.params.forEach(function (param) {
+          string += param + ', '
+        })
+
+        string += ')=' + node.expr.toHTML(options)
+        return string
+      } else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
+      }
+    }
+
+    const a = new ConstantNode(1)
+
+    const n = new FunctionAssignmentNode('func', ['x'], a)
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), '[func](x, )=const(1, number)')
+  })
+
   it('toJSON and fromJSON', function () {
     const expr = new SymbolNode('add')
     const node = new FunctionAssignmentNode('f', [

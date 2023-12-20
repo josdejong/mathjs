@@ -394,7 +394,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Object} options
      * @return {string} str
      */
-    toHTML (options) {
+    _toHTML (options) {
       const args = this.args.map(function (arg) {
         return arg.toHTML(options)
       })

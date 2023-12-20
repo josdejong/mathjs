@@ -1,6 +1,11 @@
 # History
 
 
+# unpublished changes since 12.2.0
+
+- Fix #3109: method `Node.toHTML` not accepting a custom `handler`.
+
+
 # 2023-12-08, 12.2.0
 
 - Feat: lazy evaluation of operators `and`, `or`, `&`, `|` (#3090, #3101, 

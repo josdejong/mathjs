@@ -158,6 +158,19 @@ describe('ConstantNode', function () {
     assert.strictEqual(n.toString({ handler: customFunction }), 'const(1)')
   })
 
+  it('should stringify a ConstantNode with custom toHTML', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node) {
+      if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ')'
+      }
+    }
+
+    const n = new ConstantNode(1)
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), 'const(1)')
+  })
+
   it('toJSON and fromJSON', function () {
     const a = new ConstantNode(2.3)
 

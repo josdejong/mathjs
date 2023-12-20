@@ -507,6 +507,25 @@ describe('AssignmentNode', function () {
     assert.strictEqual(n.toString({ handler: customFunction }), 'a equals const(1, number)')
   })
 
+  it('should stringify an AssignmentNode with custom toHTML', function () {
+    // Also checks if custom funcions get passed to the children
+    const customFunction = function (node, options) {
+      if (node.type === 'AssignmentNode') {
+        return node.object.toHTML(options) +
+            (node.index ? node.index.toHTML(options) : '') +
+            ' equals ' + node.value.toHTML(options)
+      } else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
+      }
+    }
+
+    const object = new SymbolNode('a')
+    const value = new ConstantNode(1)
+    const n = new AssignmentNode(object, value)
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), '<span class="math-symbol">a</span> equals const(1, number)')
+  })
+
   it('toJSON and fromJSON', function () {
     const a = new SymbolNode('a')
     const b = new ConstantNode(1)

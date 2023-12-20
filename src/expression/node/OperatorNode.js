@@ -499,7 +499,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Object} options
      * @return {string} str
      */
-    toHTML (options) {
+    _toHTML (options) {
       const parenthesis =
           (options && options.parenthesis) ? options.parenthesis : 'keep'
       const implicit = (options && options.implicit) ? options.implicit : 'hide'

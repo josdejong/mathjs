@@ -123,7 +123,7 @@ describe('SymbolNode', function () {
     assert.strictEqual(s.toString(), 'foo')
   })
 
-  it('should stringigy a SymbolNode with custom toString', function () {
+  it('should stringify a SymbolNode with custom toString', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {
       if (node.type === 'SymbolNode') {
@@ -134,6 +134,19 @@ describe('SymbolNode', function () {
     const n = new SymbolNode('a')
 
     assert.strictEqual(n.toString({ handler: customFunction }), 'symbol(a)')
+  })
+
+  it('should stringify a SymbolNode with custom toHTML', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node, options) {
+      if (node.type === 'SymbolNode') {
+        return 'symbol(' + node.name + ')'
+      }
+    }
+
+    const n = new SymbolNode('a')
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), 'symbol(a)')
   })
 
   it('toJSON and fromJSON', function () {
