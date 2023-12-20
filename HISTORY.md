@@ -1,7 +1,7 @@
 # History
 
 
-# unpublished changes since 12.2.0
+# 2023-12-20, 12.2.1
 
 - Fix #3109: method `Node.toHTML` not accepting a custom `handler`.
 
