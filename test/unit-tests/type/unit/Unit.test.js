@@ -737,8 +737,8 @@ describe('Unit', function () {
     })
 
     it('should format a unit with a bignumber', function () {
-      assert.strictEqual(new Unit(math.bignumber(1).plus(1e-24), 'm').format(), '1.000000000000000000000001 m')
-      assert.strictEqual(new Unit(math.bignumber(1e24).plus(1), 'm').format(), '1.000000000000000000000001 Ym')
+      assert.strictEqual(new Unit(math.bignumber(1).plus(1e-30), 'm').format(), '1.000000000000000000000000000001 m')
+      assert.strictEqual(new Unit(math.bignumber(1e30).plus(1), 'm').format(), '1.000000000000000000000000000001 Qm')
     })
 
     it('should format a unit with a fraction', function () {

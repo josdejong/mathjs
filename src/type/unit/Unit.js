@@ -1275,6 +1275,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       E: { name: 'E', value: 1e18, scientific: true },
       Z: { name: 'Z', value: 1e21, scientific: true },
       Y: { name: 'Y', value: 1e24, scientific: true },
+      R: { name: 'R', value: 1e27, scientific: true },
+      Q: { name: 'Q', value: 1e30, scientific: true },
 
       d: { name: 'd', value: 1e-1, scientific: false },
       c: { name: 'c', value: 1e-2, scientific: false },
@@ -1285,7 +1287,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       f: { name: 'f', value: 1e-15, scientific: true },
       a: { name: 'a', value: 1e-18, scientific: true },
       z: { name: 'z', value: 1e-21, scientific: true },
-      y: { name: 'y', value: 1e-24, scientific: true }
+      y: { name: 'y', value: 1e-24, scientific: true },
+      r: { name: 'r', value: 1e-27, scientific: true },
+      q: { name: 'q', value: 1e-30, scientific: true }
     },
     LONG: {
       '': { name: '', value: 1, scientific: true },
@@ -1300,6 +1304,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       exa: { name: 'exa', value: 1e18, scientific: true },
       zetta: { name: 'zetta', value: 1e21, scientific: true },
       yotta: { name: 'yotta', value: 1e24, scientific: true },
+      ronna: { name: 'ronna', value: 1e27, scientific: true },
+      quetta: { name: 'quetta', value: 1e30, scientific: true },
 
       deci: { name: 'deci', value: 1e-1, scientific: false },
       centi: { name: 'centi', value: 1e-2, scientific: false },
@@ -1310,7 +1316,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       femto: { name: 'femto', value: 1e-15, scientific: true },
       atto: { name: 'atto', value: 1e-18, scientific: true },
       zepto: { name: 'zepto', value: 1e-21, scientific: true },
-      yocto: { name: 'yocto', value: 1e-24, scientific: true }
+      yocto: { name: 'yocto', value: 1e-24, scientific: true },
+      ronto: { name: 'ronto', value: 1e-27, scientific: true },
+      quecto: { name: 'quecto', value: 1e-30, scientific: true }
     },
     SQUARED: {
       '': { name: '', value: 1, scientific: true },
@@ -1325,6 +1333,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       E: { name: 'E', value: 1e36, scientific: true },
       Z: { name: 'Z', value: 1e42, scientific: true },
       Y: { name: 'Y', value: 1e48, scientific: true },
+      R: { name: 'R', value: 1e54, scientific: true },
+      Q: { name: 'Q', value: 1e60, scientific: true },
 
       d: { name: 'd', value: 1e-2, scientific: false },
       c: { name: 'c', value: 1e-4, scientific: false },
@@ -1335,7 +1345,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       f: { name: 'f', value: 1e-30, scientific: true },
       a: { name: 'a', value: 1e-36, scientific: true },
       z: { name: 'z', value: 1e-42, scientific: true },
-      y: { name: 'y', value: 1e-48, scientific: true }
+      y: { name: 'y', value: 1e-48, scientific: true },
+      r: { name: 'r', value: 1e-54, scientific: true },
+      q: { name: 'q', value: 1e-60, scientific: true }
     },
     CUBIC: {
       '': { name: '', value: 1, scientific: true },
@@ -1350,6 +1362,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       E: { name: 'E', value: 1e54, scientific: true },
       Z: { name: 'Z', value: 1e63, scientific: true },
       Y: { name: 'Y', value: 1e72, scientific: true },
+      R: { name: 'R', value: 1e81, scientific: true },
+      Q: { name: 'Q', value: 1e90, scientific: true },
 
       d: { name: 'd', value: 1e-3, scientific: false },
       c: { name: 'c', value: 1e-6, scientific: false },
@@ -1360,7 +1374,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       f: { name: 'f', value: 1e-45, scientific: true },
       a: { name: 'a', value: 1e-54, scientific: true },
       z: { name: 'z', value: 1e-63, scientific: true },
-      y: { name: 'y', value: 1e-72, scientific: true }
+      y: { name: 'y', value: 1e-72, scientific: true },
+      r: { name: 'r', value: 1e-81, scientific: true },
+      q: { name: 'q', value: 1e-90, scientific: true }
     },
     BINARY_SHORT_SI: {
       '': { name: '', value: 1, scientific: true },
