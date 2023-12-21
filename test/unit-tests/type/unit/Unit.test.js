@@ -1008,6 +1008,20 @@ describe('Unit', function () {
       assert.strictEqual(Unit.parse('5 rm').toString(), '5 rm')
       assert.strictEqual(Unit.parse('5 qm').toString(), '5 qm')
     })
+
+    it('should create square meter correctly', function () {
+      assert.strictEqual(Unit.parse('5 Qm2').toString(), '5 Qm2')
+      assert.strictEqual(Unit.parse('5 Rm2').toString(), '5 Rm2')
+      assert.strictEqual(Unit.parse('5 rm2').toString(), '5 rm2')
+      assert.strictEqual(Unit.parse('5 qm2').toString(), '5 qm2')
+    })
+
+    it('should create cubic meter correctly', function () {
+      assert.strictEqual(Unit.parse('5 Qm3').toString(), '5 Qm3')
+      assert.strictEqual(Unit.parse('5 Rm3').toString(), '5 Rm3')
+      assert.strictEqual(Unit.parse('5 rm3').toString(), '5 rm3')
+      assert.strictEqual(Unit.parse('5 qm3').toString(), '5 qm3')
+    })
   })
 
   describe('_isDerived', function () {
