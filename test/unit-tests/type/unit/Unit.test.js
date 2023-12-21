@@ -992,17 +992,6 @@ describe('Unit', function () {
       assert.strictEqual(Unit.parse('5 millibar').toString(), '5 millibar')
       assert.strictEqual(Unit.parse('5 mbar').toString(), '5 mbar')
     })
-
-    it('should accept both long and short prefixes: Q, R, r, and q', function () {
-      assert.strictEqual(Unit.parse('5 quettameter').toString(), '5 quettameter')
-      assert.strictEqual(Unit.parse('5 Qm').toString(), '5 Qm')
-      assert.strictEqual(Unit.parse('5 ronnameter').toString(), '5 ronnameter')
-      assert.strictEqual(Unit.parse('5 Rm').toString(), '5 Rm')
-      assert.strictEqual(Unit.parse('5 rontometer').toString(), '5 rontometer')
-      assert.strictEqual(Unit.parse('5 rm').toString(), '5 rm')
-      assert.strictEqual(Unit.parse('5 quectometer').toString(), '5 quectometer')
-      assert.strictEqual(Unit.parse('5 qm').toString(), '5 qm')
-    })
   })
 
   describe('metric prefixes adopted by BIPM in 2022: Q(uetta), R(onna), r(onto), and q(uecto)', function () {
