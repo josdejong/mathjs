@@ -996,31 +996,31 @@ describe('Unit', function () {
 
   describe('metric prefixes adopted by BIPM in 2022: Q(uetta), R(onna), r(onto), and q(uecto)', function () {
     it('should accept long prefixes', function () {
-      assert.strictEqual(Unit.parse('5 quettameter').toString(), '5 quettameter')
-      assert.strictEqual(Unit.parse('5 ronnameter').toString(), '5 ronnameter')
-      assert.strictEqual(Unit.parse('5 rontometer').toString(), '5 rontometer')
-      assert.strictEqual(Unit.parse('5 quectometer').toString(), '5 quectometer')
+      assert.strictEqual(new Unit(math.bignumber(1e30), 'meter').format(), '1 quettameter')
+      assert.strictEqual(new Unit(math.bignumber(1e27), 'meter').format(), '1 ronnameter')
+      assert.strictEqual(new Unit(math.bignumber(1e-27), 'meter').format(), '1 rontometer')
+      assert.strictEqual(new Unit(math.bignumber(1e-30), 'meter').format(), '1 quectometer')
     })
 
     it('should accept short prefixes', function () {
-      assert.strictEqual(Unit.parse('5 Qm').toString(), '5 Qm')
-      assert.strictEqual(Unit.parse('5 Rm').toString(), '5 Rm')
-      assert.strictEqual(Unit.parse('5 rm').toString(), '5 rm')
-      assert.strictEqual(Unit.parse('5 qm').toString(), '5 qm')
+      assert.strictEqual(new Unit(math.bignumber(1e30), 'm').format(), '1 Qm')
+      assert.strictEqual(new Unit(math.bignumber(1e27), 'm').format(), '1 Rm')
+      assert.strictEqual(new Unit(math.bignumber(1e-27), 'm').format(), '1 rm')
+      assert.strictEqual(new Unit(math.bignumber(1e-30), 'm').format(), '1 qm')
     })
 
     it('should create square meter correctly', function () {
-      assert.strictEqual(Unit.parse('5 Qm2').toString(), '5 Qm2')
-      assert.strictEqual(Unit.parse('5 Rm2').toString(), '5 Rm2')
-      assert.strictEqual(Unit.parse('5 rm2').toString(), '5 rm2')
-      assert.strictEqual(Unit.parse('5 qm2').toString(), '5 qm2')
+      assert.strictEqual(new Unit(math.bignumber(1e60), 'm2').format(), '1 Qm2')
+      assert.strictEqual(new Unit(math.bignumber(1e54), 'm2').format(), '1 Rm2')
+      assert.strictEqual(new Unit(math.bignumber(1e-54), 'm2').format(), '1 rm2')
+      assert.strictEqual(new Unit(math.bignumber(1e-60), 'm2').format(), '1 qm2')
     })
 
     it('should create cubic meter correctly', function () {
-      assert.strictEqual(Unit.parse('5 Qm3').toString(), '5 Qm3')
-      assert.strictEqual(Unit.parse('5 Rm3').toString(), '5 Rm3')
-      assert.strictEqual(Unit.parse('5 rm3').toString(), '5 rm3')
-      assert.strictEqual(Unit.parse('5 qm3').toString(), '5 qm3')
+      assert.strictEqual(new Unit(math.bignumber(1e90), 'm3').format(), '1 Qm3')
+      assert.strictEqual(new Unit(math.bignumber(1e81), 'm3').format(), '1 Rm3')
+      assert.strictEqual(new Unit(math.bignumber(1e-81), 'm3').format(), '1 rm3')
+      assert.strictEqual(new Unit(math.bignumber(1e-90), 'm3').format(), '1 qm3')
     })
   })
 
