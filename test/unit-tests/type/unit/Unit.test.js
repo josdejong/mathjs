@@ -1326,6 +1326,7 @@ describe('Unit', function () {
       assert.strictEqual(Unit.parse('3 ft').toSI().format(10), '0.9144 m')
       assert.strictEqual(Unit.parse('0.111 ft^2').toSI().format(10), '0.01031223744 m^2')
       assert.strictEqual(Unit.parse('1 kgf').toSI().toString(), '9.80665 (kg m) / s^2')
+      assert.strictEqual(Unit.parse('300 degC').toSI().toString(), '573.15 K')
     })
 
     it('should return SI units for valueless units', function () {
