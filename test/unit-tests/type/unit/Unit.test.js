@@ -393,6 +393,7 @@ describe('Unit', function () {
     it('should convert a unitless quantity', function () {
       const u = Unit.parse('5', { allowNoUnits: true })
       assert.strictEqual(u.toNumeric(), 5)
+      assert.strictEqual(u.toNumeric('mm/m'), 5000)
     })
 
     it('should convert a binary prefixes (1)', function () {
