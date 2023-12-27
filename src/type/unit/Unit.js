@@ -828,7 +828,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     if (this.value === null || this._isDerived() ||
-        this.units.length === 0 ||
+        this.units.length === 0 || other.units.length === 0 ||
         this.units[0].unit.offset === other.units[0].unit.offset) {
       other.value = clone(value)
     } else {
