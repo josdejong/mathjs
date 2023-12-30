@@ -1,5 +1,6 @@
 import { cbrt, expm1, isInteger, log10, log1p, log2, sign, toFixed } from '../../utils/number.js'
-
+import Big from 'big.js'
+import Fraction from 'fraction.js'
 const n1 = 'number'
 const n2 = 'number, number'
 
@@ -160,7 +161,26 @@ export function modNumber (x, y) {
   // We don't use JavaScript's % operator here as this doesn't work
   // correctly for x < 0 and x === 0
   // see https://en.wikipedia.org/wiki/Modulo_operation
-  return (y === 0) ? x : x - y * Math.floor(x / y)
+  if (y === 0) {
+    throw new Error('Cannot divide by zero')
+  }
+
+  if (x instanceof Big || y instanceof Big) {
+    // Use big.js for big numbers
+    const bigX = new Big(x)
+    const bigY = new Big(y)
+    const result = bigX.mod(bigY)
+    return result
+  } else if (x instanceof Fraction || y instanceof Fraction) {
+    // Use fraction.js for fractions
+    const fractionX = new Fraction(x)
+    const fractionY = new Fraction(y)
+    const result = fractionX.mod(fractionY)
+    return result
+  } else {
+    // Use standard modulo for other cases
+    return (y === 0) ? x : x - y * Math.floor(x / y)
+  }
 }
 modNumber.signature = n2
 
