@@ -229,26 +229,32 @@ describe('derivative', function () {
     assert.throws(function () {
       const node = new OperatorNode('/', 'myDivide', [c12, c4, x])
       derivative(node, 'x')
-    }, /Error: Operator "\/" is not supported by derivative, or a wrong number of arguments is passed/)
+    }, /Error: Cannot process operator "\/" in derivative: the operator is not supported, undefined, or the number of arguments passed to it are not supported/)
 
     assert.throws(function () {
       const node = new OperatorNode('^', 'myPow', [c12, c4, x])
       derivative(node, 'x')
-    }, /Error: Operator "\^" is not supported by derivative, or a wrong number of arguments is passed/)
+    }, /Error: Cannot process operator "\^" in derivative: the operator is not supported, undefined, or the number of arguments passed to it are not supported/)
+  })
+
+  it('should not mutate the input expression', function () {
+    const expr = math.parse('min(x, y)')
+    assert.strictEqual(expr.toString(), 'min(x, y)')
+
+    assert.throws(() => { math.derivative(expr, 'x') },
+      /Error: Cannot process function "min" in derivative: the function is not supported, undefined, or the number of arguments passed to it are not supported/
+    )
+
+    assert.strictEqual(expr.toString(), 'min(x, y)')
   })
 
   it('should throw error if expressions contain unsupported operators or functions', function () {
-    assert.throws(function () { derivative('x << 2', 'x') }, /Error: Operator "<<" is not supported by derivative/)
-    assert.throws(function () { derivative('subset(x)', 'x') }, /Error: Function "subset" is not supported by derivative/)
-  })
-
-  it('should have controlled behavior on arguments errors', function () {
-    assert.throws(function () {
-      derivative('sqrt()', 'x')
-    }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Unit or Fraction or string or boolean, index: 0\)/)
-    assert.throws(function () {
-      derivative('sqrt(12, 2x)', 'x')
-    }, /TypeError: Too many arguments in function sqrt \(expected: 1, actual: 2\)/)
+    assert.throws(function () { derivative('x << 2', 'x') }, /Error: Cannot process operator "<<" in derivative: the operator is not supported, undefined, or the number of arguments passed to it are not supported/)
+    assert.throws(function () { derivative('subset(x)', 'x') }, /Error: Cannot process function "subset" in derivative: the function is not supported, undefined, or the number of arguments passed to it are not supported/)
+    assert.throws(function () { derivative('max(x)', 'x') }, /Error: Cannot process function "max" in derivative: the function is not supported, undefined, or the number of arguments passed to it are not supported/)
+    assert.throws(function () { derivative('max(x, y)', 'x') }, /Error: Cannot process function "max" in derivative: the function is not supported, undefined, or the number of arguments passed to it are not supported/)
+    assert.throws(function () { derivative('max(x, 1)', 'x') }, /Error: Cannot process function "max" in derivative: the function is not supported, undefined, or the number of arguments passed to it are not supported/)
+    assert.throws(function () { derivative('add(2,3,x)', 'x') }, /Error: Cannot process function "add" in derivative: the function is not supported, undefined, or the number of arguments passed to it are not supported/)
   })
 
   it('should throw error for incorrect argument types', function () {
@@ -273,6 +279,12 @@ describe('derivative', function () {
     assert.throws(function () {
       derivative('x + 2', 'x', {}, true, 42)
     }, /TypeError: Too many arguments in function derivative \(expected: 3, actual: 5\)/)
+  })
+
+  it('should throw error in case of an unknown function', function () {
+    assert.throws(function () {
+      derivative('foo(x)', 'x')
+    }, /Error: Cannot process function "foo" in derivative: the function is not supported, undefined, or the number of arguments passed to it are not supported/)
   })
 
   it('should LaTeX expressions involving derivative', function () {

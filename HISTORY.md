@@ -1,5 +1,121 @@
 # History
 
+
+# 2023-12-20, 12.2.1
+
+- Fix #3109: method `Node.toHTML` not accepting a custom `handler`.
+
+
+# 2023-12-08, 12.2.0
+
+- Feat: lazy evaluation of operators `and`, `or`, `&`, `|` (#3090, #3101, 
+  #2766). Thanks @smith120bh.
+- Fix: passing a 4th argument with a scope to raw functions.
+- Fix: #3096 embedded docs of eigs throwing an error.
+
+
+# 2023-11-17, 12.1.0
+
+- Feat: Extend function `round` with support for units (#2761, #3095). 
+- Feat: Extend function `mod` with support for negative divisors in when
+  using `BigNumber` or `Fraction` (#3087).
+- Fix: #3092 a typo in an error message when converting a string into a number.
+- Fix: #3094 function `derivative` mutates the input expression when it fails.
+
+
+# 2023-10-26, 12.0.0
+
+Breaking changes:
+
+- Fix #2879, #2927, #3014: change the confusing interface of `eigs` (#3037),
+  thanks @gwhitney.
+  Before, functions `eigs` returned an object:
+  ```
+  { values: MathCollection; vectors: MathCollection }
+  ```
+  where `vectors` was a 2d matrix of which the columns contained the vectors.
+  This is changed to `eigs` returning an object:
+  ```
+  { 
+    values: MathCollection
+    eigenvectors: Array<{
+      value: number | BigNumber
+      vector: MathCollection
+    }>
+  }
+  ```
+  Where `eigenvectors` is an array containing an object with the corresponding
+  eigenvalue and vector.
+- Refactored the TypeScript type definitions to make them work with a `NodeNext`
+  module resolution (#3079, #2919). 
+  - Type `MathJsStatic` is renamed to `MathJsInstance`.
+  - Type `FactoryDependencies` is deprecated, use `MathJsFactory` instead, and 
+    import dependency maps directly from the library.
+- Change the assignment operator of `.toTex()` output from `:=` to `=` (see 
+  #2980, #2987).
+- Drop official support for Node.js 14 and 16.
+
+Features:
+
+- Function `eigs` now has an option to turn off calculation of eigenvectors 
+  (#3057, #2180). Thanks @gwhitney.
+
+Fixes:
+
+- Find eigenvectors of defective matrices (#3037). Thanks @gwhitney.
+
+
+# 2023-10-26, 11.12.0
+
+- Implemented function `subtractScalar` (#3081, #2643), thanks @vrushaket.
+- Fix #3073: function format not escaping control characters and double
+  quotes (#3082).
+- Fix: function `clone` not throwing an error when passing an unsupported
+  type like a function.
+- Fix: #2960 add type definition of function `symbolicEqual` (#3035),
+  thanks @juancodeaudio.
+
+
+# 2023-10-11, 11.11.2
+
+- Fix #3025: improve handling of matrices and error handling 
+  in function `corr` (#3030). Thanks @vrushaket.
+- Fix #3074: improve error message when using function `max` in `derivative`.
+- Fix #3073: fix parsing quotes inside a string.
+- Fix #2027: cannot use named operators like `to` or `mod` as property name. 
+
+
+# 2023-09-20, 11.11.1
+
+- Fix #2989: use one-based indices in `print` in the parser (#3009). 
+  Thanks @dvd101x. 
+- Fix #2936: `mod` sometimes giving wrong results due to internal round-off
+  errors (#3011). Thanks @praisennamonu1.
+- Internal refactor of `quantileSeq`, and fixed the embedded help (#3003). 
+  Thanks @dvd101x.
+- Updated dependencies and devDependencies.
+
+
+# 2023-09-05, 11.11.0
+
+- Implement function `corr` to calculate the correlation between two matrices
+  (#3015, #2624). Thanks @vrushaket. 
+- Lock `fraction.js` at version `4.3.4` for now, see #3024, 3022, 
+  https://github.com/rawify/Fraction.js/issues/68.
+
+
+# 2023-08-31, 11.10.1
+
+- Upgrade to `fraction.js@4.3.4`, see #3022.
+- Fix #3020: `lruQueue` using the global `hasOwnProperty` which may be 
+  polluted.
+- Add support for prefixes for the unit `erg`, and restrict prefixes of the
+  unit `joule` to only long prefixes like `kilo` and no short prefixes 
+  like `k` (#3019). Thanks @costerwi.
+- Add a new browser example `examples/browser/lorenz.html` that uses `solveODE`
+  and plots the result in a chart (#3018). Thanks @dvd101x.
+
+
 # 2023-08-23, 11.10.0
 
 - Extend function `quantileSeq` with support for a `dimension` (#3002).

@@ -165,6 +165,19 @@ describe('ParenthesisNode', function () {
     assert.strictEqual(n.toString({ handler: customFunction }), '[1]')
   })
 
+  it('should stringify a ParenthesisNode with custom toHTML', function () {
+    const customFunction = function (node, options) {
+      if (node.type === 'ParenthesisNode') {
+        return '[' + node.content.toHTML(options) + ']'
+      }
+    }
+
+    const c = new math.ConstantNode(1)
+    const n = new math.ParenthesisNode(c)
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), '[<span class="math-number">1</span>]')
+  })
+
   it('toJSON and fromJSON', function () {
     const b = new ConstantNode(2)
     const node = new ParenthesisNode(b)

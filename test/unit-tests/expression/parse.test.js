@@ -308,9 +308,9 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('0x12u') })
       assert.throws(function () { parseAndEval('0x12i-8') })
 
-      assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is no valid number/)
-      assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is no valid number/)
-      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is no valid number/)
+      assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is not a valid number/)
+      assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is not a valid number/)
+      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is not a valid number/)
     })
   })
 
@@ -364,6 +364,19 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   "hi" '), 'hi')
     })
 
+    it('should parse a string containing escape characters', function () {
+      // quote
+      assert.deepStrictEqual(parseAndEval('"with\'quote"'), "with'quote")
+
+      // escaped quote -> remove escape character
+      assert.deepStrictEqual(parseAndEval('"with\\"quote"'), 'with"quote')
+      assert.deepStrictEqual(parseAndEval('"with\\\'quote"'), "with'quote")
+
+      // escaped escape character -> remove two escape characters
+      assert.deepStrictEqual(parseAndEval('"with\\\\\\"quote"'), 'with\\"quote')
+      assert.deepStrictEqual(parseAndEval('"with\\\\\'quote"'), "with\\'quote")
+    })
+
     it('should parse a with escaped characters', function () {
       assert.deepStrictEqual(parseAndEval('"line end\\nnext"'), 'line end\nnext')
       assert.deepStrictEqual(parseAndEval('"line end\\n"'), 'line end\n')
@@ -371,6 +384,26 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('"tab\\t"'), 'tab\t')
       assert.deepStrictEqual(parseAndEval('"escaped backslash\\\\next"'), 'escaped backslash\\next')
       assert.deepStrictEqual(parseAndEval('"escaped backslash\\\\"'), 'escaped backslash\\')
+    })
+
+    it('should parse unicode characters', function () {
+      assert.deepStrictEqual(parseAndEval('"★"'), '★')
+      assert.deepStrictEqual(parseAndEval('"😀"'), '😀')
+      assert.deepStrictEqual(parseAndEval('"\ud83d\ude00"'), '\ud83d\ude00')
+
+      assert.deepStrictEqual(parseAndEval('"\\ud83d\\ude00"'), '😀')
+      assert.deepStrictEqual(parseAndEval('"\\u2140"'), '⅀')
+      assert.deepStrictEqual(parseAndEval('"\\u221B"'), '∛')
+    })
+
+    it('should throw an error on an invalid unicode character', function () {
+      assert.throws(() => parseAndEval('"\\ud8'), /Invalid unicode character \\ud8/)
+      assert.throws(() => parseAndEval('"\\ud8TT'), /Invalid unicode character \\ud8TT/)
+    })
+
+    it('should throw an error on an invalid escape character', function () {
+      assert.throws(() => parseAndEval('"\\y'), /Bad escape character \\y/)
+      assert.throws(() => parseAndEval('"\\v'), /Bad escape character \\v/)
     })
 
     it('should throw an error with invalid strings', function () {
@@ -420,7 +453,20 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   \'hi\' '), 'hi')
     })
 
-    it('should parse a with escaped characters', function () {
+    it('should parse a string containing escape characters', function () {
+      // quote
+      assert.deepStrictEqual(parseAndEval("'with\"quote'"), 'with"quote')
+
+      // escaped quote -> remove escape character
+      assert.deepStrictEqual(parseAndEval("'with\\'quote'"), "with'quote")
+      assert.deepStrictEqual(parseAndEval("'with\\\"quote'"), 'with"quote')
+
+      // escaped escape character -> remove two escape characters
+      assert.deepStrictEqual(parseAndEval("'with\\\\\\'quote'"), "with\\'quote")
+      assert.deepStrictEqual(parseAndEval("'with\\\\\"quote'"), 'with\\"quote')
+    })
+
+    it('should parse a string with escaped characters', function () {
       assert.deepStrictEqual(parseAndEval('\'line end\\nnext\''), 'line end\nnext')
       assert.deepStrictEqual(parseAndEval('\'line end\\n\''), 'line end\n')
       assert.deepStrictEqual(parseAndEval('\'tab\\tnext\''), 'tab\tnext')
@@ -770,6 +816,12 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj.foo[2][3]', { obj: { foo: ['hello', 'world'] } }), 'r')
       assert.deepStrictEqual(parseAndEval('obj.foo[2][end]', { obj: { foo: ['hello', 'world'] } }), 'd')
       assert.deepStrictEqual(parseAndEval('obj.foo[1].bar', { obj: { foo: [{ bar: 4 }] } }), 4)
+    })
+
+    it('should get a property with the name of an operator like "to" or "in"', function () {
+      assert.deepStrictEqual(parseAndEval('obj.mod', { obj: { mod: 42 } }), 42)
+      assert.deepStrictEqual(parseAndEval('obj.in', { obj: { in: 42 } }), 42)
+      assert.deepStrictEqual(parseAndEval('obj.to', { obj: { to: 42 } }), 42)
     })
 
     it('should set an object property', function () {
@@ -1234,7 +1286,10 @@ describe('parse', function () {
     it('should parse mod %', function () {
       approx.equal(parseAndEval('8 % 3'), 2)
       approx.equal(parseAndEval('80% pi'), 1.4601836602551685)
-      assert.throws(function () { parseAndEval('3%(-100)') }, /Cannot calculate mod for a negative divisor/)
+    })
+
+    it('should parse mod % for negative divisors', function () {
+      assert.strictEqual(parseAndEval('3%(-100)'), -97)
     })
 
     it('should parse % value', function () {
@@ -1410,6 +1465,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true & false'), 0)
       assert.strictEqual(parseAndEval('false & true'), 0)
       assert.strictEqual(parseAndEval('false & false'), 0)
+
+      assert.strictEqual(parseAndEval('0 & undefined'), 0)
+      assert.strictEqual(parseAndEval('false & undefined'), 0)
+      assert.throws(function () { parseAndEval('true & undefined') }, TypeError)
+    })
+
+    it('should parse bitwise and & lazily', function () {
+      const scope = {}
+      parseAndEval('(a=false) & (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: false })
     })
 
     it('should parse bitwise xor ^|', function () {
@@ -1428,6 +1493,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true | false'), 1)
       assert.strictEqual(parseAndEval('false | true'), 1)
       assert.strictEqual(parseAndEval('false | false'), 0)
+
+      assert.strictEqual(parseAndEval('-1 | undefined'), -1)
+      assert.strictEqual(parseAndEval('true | undefined'), 1)
+      assert.throws(function () { parseAndEval('false | undefined') }, TypeError)
+    })
+
+    it('should parse bitwise or | lazily', function () {
+      const scope = {}
+      parseAndEval('(a=true) | (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: true })
     })
 
     it('should parse bitwise left shift <<', function () {
@@ -1451,6 +1526,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true and false'), false)
       assert.strictEqual(parseAndEval('false and true'), false)
       assert.strictEqual(parseAndEval('false and false'), false)
+
+      assert.strictEqual(parseAndEval('0 and undefined'), false)
+      assert.strictEqual(parseAndEval('false and undefined'), false)
+      assert.throws(function () { parseAndEval('true and undefined') }, TypeError)
+    })
+
+    it('should parse logical and lazily', function () {
+      const scope = {}
+      parseAndEval('(a=false) and (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: false })
     })
 
     it('should parse logical xor', function () {
@@ -1469,6 +1554,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true or false'), true)
       assert.strictEqual(parseAndEval('false or true'), true)
       assert.strictEqual(parseAndEval('false or false'), false)
+
+      assert.strictEqual(parseAndEval('2 or undefined'), true)
+      assert.strictEqual(parseAndEval('true or undefined'), true)
+      assert.throws(function () { parseAndEval('false or undefined') }, TypeError)
+    })
+
+    it('should parse logical or lazily', function () {
+      const scope = {}
+      parseAndEval('(a=true) or (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: true })
     })
 
     it('should parse logical not', function () {

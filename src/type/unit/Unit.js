@@ -10,7 +10,7 @@ const dependencies = [
   '?on',
   'config',
   'addScalar',
-  'subtract',
+  'subtractScalar',
   'multiplyScalar',
   'divideScalar',
   'pow',
@@ -30,7 +30,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   on,
   config,
   addScalar,
-  subtract,
+  subtractScalar,
   multiplyScalar,
   divideScalar,
   pow,
@@ -790,7 +790,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         const unitValue = convert(ret.units[0].unit.value)
         const nominalOffset = convert(ret.units[0].unit.offset)
         const unitOffset = multiplyScalar(unitValue, nominalOffset)
-        ret.value = subtract(abs(addScalar(ret.value, unitOffset)), unitOffset)
+        ret.value = subtractScalar(abs(addScalar(ret.value, unitOffset)), unitOffset)
       }
     }
 
@@ -842,7 +842,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       const otherNominalOffset = other.units[0].unit.offset
       const otherUnitOffset = multiplyScalar(otherUnitValue, otherNominalOffset)
 
-      other.value = addScalar(value, convert(subtract(thisUnitOffset, otherUnitOffset)))
+      other.value = addScalar(value, convert(subtractScalar(thisUnitOffset, otherUnitOffset)))
     }
     other.fixPrefix = true
     other.skipAutomaticSimplification = true
@@ -1238,7 +1238,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
       const y = new Unit(xFixed, parts[i].toString())
       ret.push(y)
-      x = subtract(x, y)
+      x = subtractScalar(x, y)
     }
 
     // This little bit fixes a bug where the remainder should be 0 but is a little bit off.
@@ -2452,14 +2452,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     joule: {
       name: 'joule',
       base: BASE_UNITS.ENERGY,
-      prefixes: PREFIXES.SHORT,
+      prefixes: PREFIXES.LONG,
       value: 1,
       offset: 0
     },
     erg: {
       name: 'erg',
       base: BASE_UNITS.ENERGY,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORTLONG, // Both kiloerg and kerg are acceptable
       value: 1e-7,
       offset: 0
     },

@@ -122,7 +122,7 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
      * @return {string} str
      * @override
      */
-    toHTML (options) {
+    _toHTML (options) {
       if ((!options) ||
           (options && !options.parenthesis) ||
           (options && options.parenthesis === 'keep')) {

@@ -3,7 +3,7 @@ import { createQuantileSeq } from '../../function/statistics/quantileSeq.js'
 import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 
 const name = 'quantileSeq'
-const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare', 'isInteger']
+const dependencies = ['typed', 'bignumber', 'add', 'subtract', 'divide', 'multiply', 'partitionSelect', 'compare', 'isInteger', 'smaller', 'smallerEq', 'larger']
 
 /**
  * Attach a transform function to math.quantileSeq
@@ -12,12 +12,18 @@ const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare', 
  * This transform changed the `dim` parameter of function std
  * from one-based to zero based
  */
-export const createQuantileSeqTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare, isInteger }) => {
-  const quantileSeq = createQuantileSeq({ typed, add, multiply, partitionSelect, compare, isInteger })
+export const createQuantileSeqTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, bignumber, add, subtract, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger }) => {
+  const quantileSeq = createQuantileSeq({ typed, bignumber, add, subtract, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger })
 
   return typed('quantileSeq', {
-    'Array|Matrix, number|BigNumber|Array, number': (arr, prob, dim) => quantileSeq(arr, prob, dimToZeroBase(dim)),
-    'Array|Matrix, number|BigNumber|Array, boolean, number': (arr, prob, sorted, dim) => quantileSeq(arr, prob, sorted, dimToZeroBase(dim))
+    'Array | Matrix, number | BigNumber': quantileSeq,
+    'Array | Matrix, number | BigNumber, number': (arr, prob, dim) => quantileSeq(arr, prob, dimToZeroBase(dim)),
+    'Array | Matrix, number | BigNumber, boolean': quantileSeq,
+    'Array | Matrix, number | BigNumber, boolean, number': (arr, prob, sorted, dim) => quantileSeq(arr, prob, sorted, dimToZeroBase(dim)),
+    'Array | Matrix, Array | Matrix': quantileSeq,
+    'Array | Matrix, Array | Matrix, number': (data, prob, dim) => quantileSeq(data, prob, dimToZeroBase(dim)),
+    'Array | Matrix, Array | Matrix, boolean': quantileSeq,
+    'Array | Matrix, Array | Matrix, boolean, number': (data, prob, sorted, dim) => quantileSeq(data, prob, sorted, dimToZeroBase(dim))
   })
 
   function dimToZeroBase (dim) {
