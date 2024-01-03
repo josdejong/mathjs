@@ -283,12 +283,12 @@ export interface FunctionNode<
   type: 'FunctionNode'
   isFunctionNode: true
   fn: TFn
-  args: TArgs
+  args: [...TArgs]
 }
 export interface FunctionNodeCtor {
   new <TFn = SymbolNode, TArgs extends MathNode[] = MathNode[]>(
     fn: TFn,
-    args: TArgs
+    args: [...TArgs]
   ): FunctionNode<TFn, TArgs>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onUndefinedFunction: (name: string) => any
@@ -367,7 +367,7 @@ export interface OperatorNode<
   isOperatorNode: true
   op: TOp
   fn: TFn
-  args: TArgs
+  args: [...TArgs]
   implicit: boolean
   isUnary(): boolean
   isBinary(): boolean
@@ -381,7 +381,7 @@ export interface OperatorNodeCtor extends MathNode {
   >(
     op: TOp,
     fn: TFn,
-    args: TArgs,
+    args: [...TArgs],
     implicit?: boolean
   ): OperatorNode<TOp, TFn, TArgs>
 }
@@ -423,12 +423,12 @@ export interface RelationalNode<TParams extends MathNode[] = MathNode[]>
   type: 'RelationalNode'
   isRelationalNode: true
   conditionals: string[]
-  params: TParams
+  params: [...TParams]
 }
 export interface RelationalNodeCtor {
   new <TParams extends MathNode[] = MathNode[]>(
     conditionals: string[],
-    params: TParams
+    params: [...TParams]
   ): RelationalNode<TParams>
 }
 
