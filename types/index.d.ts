@@ -298,13 +298,13 @@ export interface IndexNode<TDims extends MathNode[] = MathNode[]>
   extends MathNode {
   type: 'IndexNode'
   isIndexNode: true
-  dimensions: TDims
+  dimensions: [...TDims]
   dotNotation: boolean
 }
 export interface IndexNodeCtor {
-  new <TDims extends MathNode[] = MathNode[]>(dimensions: TDims): IndexNode
+  new <TDims extends MathNode[] = MathNode[]>(dimensions: [...TDims]): IndexNode
   new <TDims extends MathNode[] = MathNode[]>(
-    dimensions: TDims,
+    dimensions: [...TDims],
     dotNotation: boolean
   ): IndexNode<TDims>
 }
