@@ -780,7 +780,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   Unit.prototype.abs = function () {
     const ret = this.clone()
     if (ret.value !== null) {
-      if (ret._isDerived() || ret.units[0].unit.offset === 0) {
+      if (ret._isDerived() || ret.units.length === 0 || ret.units[0].unit.offset === 0) {
         ret.value = abs(ret.value)
       } else {
         // To give the correct, but unexpected, results for units with an offset.
@@ -828,6 +828,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     if (this.value === null || this._isDerived() ||
+        this.units.length === 0 || other.units.length === 0 ||
         this.units[0].unit.offset === other.units[0].unit.offset) {
       other.value = clone(value)
     } else {
