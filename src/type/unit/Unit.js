@@ -1022,11 +1022,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Replace this unit list with the proposed list
     ret.units = proposedUnitList
 
-    ret.value = null
     ret.fixPrefix = true
     ret.skipAutomaticSimplification = true
 
     if (this.value !== null) {
+      ret.value = null
       return this.to(ret)
     }
     return ret
