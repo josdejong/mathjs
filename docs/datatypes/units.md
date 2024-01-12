@@ -124,7 +124,7 @@ units on the page [Syntax](../expressions/syntax.md#units).
 You can add your own units to Math.js using the `math.createUnit` function. The following example defines a new unit `furlong`, then uses the user-defined unit in a calculation:
 
 ```js
-math.createUnit('furlong', '220 yards') 
+math.createUnit('furlong', '220 yards')
 math.evaluate('1 mile to furlong')            // 8 furlong
 ```
 
@@ -132,7 +132,7 @@ If you cannot express the new unit in terms of any existing unit, then the secon
 
 ```js
 // A 'foo' cannot be expressed in terms of any other unit.
-math.createUnit('foo') 
+math.createUnit('foo')
 math.evaluate('8 foo * 4 feet')               // 32 foo feet
 ```
 
@@ -338,6 +338,8 @@ peta    | P             | 1e15
 exa     | E             | 1e18
 zetta   | Z             | 1e21
 yotta   | Y             | 1e24
+ronna   | R             | 1e27
+quetta  | Q             | 1e30
 
 Name    | Abbreviation  | Value
 ------  | ------------- | -----
@@ -351,6 +353,8 @@ femto   | f             | 1e-15
 atto    | a             | 1e-18
 zepto   | z             | 1e-21
 yocto   | y             | 1e-24
+ronto   | r             | 1e-27
+quecto  | q             | 1e-30
 
 The following binary prefixes are available.
 They can be used with units `bits` (`b`) and `bytes` (`B`).
