@@ -6,6 +6,7 @@
 - Implement support new metric prefixes: `ronna` (`R`), `quetta` (`Q`), 
   `ronto` (`r`), and `quecto` (`q`) (#3113, #3112). Thanks @AlexEdgcomb.
 - Fix a bug converting a unitless unit (#3117). Thanks @costerwi.
+- Fix: #3097 `toSI()` wrongly converting `degC` (#3118). Thanks @costerwi.
 
 
 # 2023-12-20, 12.2.1
