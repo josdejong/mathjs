@@ -1026,6 +1026,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     ret.fixPrefix = true
     ret.skipAutomaticSimplification = true
 
+    if (this.value !== null) {
+      ret.value = null
+      return this.to(ret)
+    }
     return ret
   }
 
