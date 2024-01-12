@@ -1,7 +1,7 @@
 # History
 
 
-# unpublished changes since 12.2.1
+# 2024-01-12, 12.3.0
 
 - Implement support new metric prefixes: `ronna` (`R`), `quetta` (`Q`), 
   `ronto` (`r`), and `quecto` (`q`) (#3113, #3112). Thanks @AlexEdgcomb.
