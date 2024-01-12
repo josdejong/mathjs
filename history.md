@@ -5,6 +5,14 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20240112-1230">2024-01-12, 12.3.0 <a href="#20240112-1230" title="Permalink">#</a></h1>
+
+- Implement support new metric prefixes: `ronna` (`R`), `quetta` (`Q`), 
+  `ronto` (`r`), and `quecto` (`q`)  <a href="https://github.com/josdejong/mathjs/issues/3113">#3113</a>, <a href="https://github.com/josdejong/mathjs/issues/3112">#3112</a>). Thanks <a href="https://github.com/AlexEdgcomb">@AlexEdgcomb</a>.
+- Fix a bug converting a unitless unit  <a href="https://github.com/josdejong/mathjs/issues/3117">#3117</a>). Thanks <a href="https://github.com/costerwi">@costerwi</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3097">#3097</a> `toSI()` wrongly converting `degC`  <a href="https://github.com/josdejong/mathjs/issues/3118">#3118</a>). Thanks <a href="https://github.com/costerwi">@costerwi</a>.
+
+
 <h1 id="20231220-1221">2023-12-20, 12.2.1 <a href="#20231220-1221" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/3109">#3109</a>: method `Node.toHTML` not accepting a custom `handler`.
