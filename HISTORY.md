@@ -1,6 +1,13 @@
 # History
 
 
+# unpublished changes since 12.2.1
+
+- Implement support new metric prefixes: `ronna` (`R`), `quetta` (`Q`), 
+  `ronto` (`r`), and `quecto` (`q`) (#3113, #3112). Thanks @AlexEdgcomb.
+- Fix a bug converting a unitless unit (#3117). Thanks @costerwi.
+
+
 # 2023-12-20, 12.2.1
 
 - Fix #3109: method `Node.toHTML` not accepting a custom `handler`.
