@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vite App</title>
+  <title>math.js | code editor</title>
 </head>
 
 <body>
@@ -13,7 +13,8 @@
       @selection-changed.camel="getCurrentLine"></div>
     <article id="result" class="markdown-body">
       <template x-for="expression in expressions">
-        <pre class="results" :class=" (currentLine >= expression.from) && (currentLine <= expression.to) ? 'highligted' : ''"
+        <pre class="results"
+          :class=" (currentLine >= expression.from) && (currentLine <= expression.to) ? 'highligted' : ''"
           x-html="expression.outputs" x-show="expression.visible"
           x-effect="if((currentLine >= expression.from) && (currentLine <= expression.to)) $el.scrollIntoView({ block: 'nearest', inline: 'start'})">
         </pre>
