@@ -59,6 +59,12 @@ let editor = new EditorView({
   parent: editorDOM
 })
 
+/**
+ * Evaluates a given expression using a parser.
+ *
+ * @param {string} expression - The expression to evaluate.
+ * @returns {any} The result of the evaluation, or the error message if an error occurred.
+*/
 function calc(expression) {
   let result
   try {
@@ -69,21 +75,40 @@ function calc(expression) {
   return result
 }
 
+/**
+ * Formats result depending on the type of result
+ * 
+ * @param {number, string, Help, any} result - The result to format
+ * @returns {string} The string in HTML with the formated result
+ */
 const formatResult = math.typed({
-  'number': x => math.format(x, { precision: digits }),
-  'string': x => `<code>${x}</code>`,
-  'Help': x => `<pre>${math.format(x)}</pre>`,
+  'number': result => math.format(result, { precision: digits }),
+  'string': result => `<code>${result}</code>`,
+  'Help': result => `<pre>${math.format(result)}</pre>`,
   'any': math.typed.referTo(
     'number',
-    fnumber => x => katex.renderToString(math.parse(fnumber(x)).toTex())
+    fnumber => result => katex.renderToString(math.parse(fnumber(result)).toTex())
   )
 })
 
+/**
+ * Processes an array of expressions by evaluating them, formatting the results,
+ * and determining their visibility.
+ *
+ * @param {Array<{from: number, to: number, source: string}>} expressions - An array of objects representing expressions,
+ *   where each object has `from`, `to`, and `source` properties.
+ * @returns {Array<{from: number, to: number, source: string, outputs: any, visible: boolean}>} An array of processed expressions,
+ *   where each object has additional `outputs` and `visible` properties.
+ */
 function processExpressions(expressions) {
   parser.clear()
   return expressions.map(expression => {
     const result = calc(expression.source)
     const outputs = formatResult(result)
+    // Determine visibility based on the result type:
+    // - Undefined results are hidden.
+    // - Results with an `isResultSet` property (presumably indicating a result set) are hidden.
+    // - All other results are visible.
     const visible = result === undefined ? false : result.isResultSet ? false : true
     return ({
       ...expression,
