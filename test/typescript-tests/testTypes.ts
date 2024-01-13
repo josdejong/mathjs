@@ -2535,3 +2535,10 @@ Match types of exact positional arguments.
   expectTypeOf(node4.args[0]).toMatchTypeOf<ConstantNode>()
   expectTypeOf(node4.args[1].args[0]).toMatchTypeOf<SymbolNode>()
 }
+{
+  const node1 = new ConstantNode(2)
+  const node2 = new SymbolNode('x')
+  const node3 = new ArrayNode([node1, node2])
+  expectTypeOf(node3.items[0]).toMatchTypeOf<ConstantNode>()
+  expectTypeOf(node3.items[1]).toMatchTypeOf<SymbolNode>()
+}

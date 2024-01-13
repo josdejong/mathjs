@@ -183,11 +183,11 @@ export interface ArrayNode<TItems extends MathNode[] = MathNode[]>
   extends MathNode {
   type: 'ArrayNode'
   isArrayNode: true
-  items: TItems
+  items: [...TItems]
 }
 export interface ArrayNodeCtor {
   new <TItems extends MathNode[] = MathNode[]>(
-    items: MathNode[]
+    items: [...TItems]
   ): ArrayNode<TItems>
 }
 
