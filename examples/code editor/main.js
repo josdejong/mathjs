@@ -1,8 +1,6 @@
 import './style.css'
 import 'github-markdown-css/github-markdown.css'
 
-import Alpine from 'alpinejs'
-
 import 'katex/dist/katex.min.css'
 import katex from 'katex'
 
@@ -17,12 +15,16 @@ import {
   StreamLanguage
 } from '@codemirror/language'
 
+let arrayOfResults
+let previousExpression
+let timer
+const timeout = 250 // milliseconds
+
 const math = create(all)
 const digits = 14
 let parser = math.parser()
 const editorDOM = document.querySelector('#editor')
-const docChanged = new CustomEvent('docChanged')
-const selectionChanged = new CustomEvent('selectionChanged')
+const resultsDOM = document.querySelector('#result')
 
 const doc = [
   "round(e, 3)",
@@ -46,9 +48,15 @@ let startState = EditorState.create({
     StreamLanguage.define(mathjsLang(math)),
     EditorView.updateListener.of((update) => {
       if (update.docChanged) {
-        editorDOM.dispatchEvent(docChanged)
+        // if doc changed debounce and update results after a timeout
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          updateResults()
+          previousExpression = null
+          updateSelection()
+        }, timeout)
       } else if (update.selectionSet) {
-        editorDOM.dispatchEvent(selectionChanged)
+        updateSelection()
       }
     })
   ],
@@ -107,7 +115,7 @@ function processExpressions(expressions) {
     const outputs = formatResult(result)
     // Determine visibility based on the result type:
     // - Undefined results are hidden.
-    // - Results with an `isResultSet` property (presumably indicating a result set) are hidden.
+    // - Results with an `isResultSet` property are hidden.
     // - All other results are visible.
     const visible = result === undefined ? false : result.isResultSet ? false : true
     return ({
@@ -118,22 +126,44 @@ function processExpressions(expressions) {
   })
 }
 
-window.Alpine = Alpine
+function updateResults() {
+  arrayOfResults = processExpressions(getExpressions(editor.state.doc.toString()))
+  resultsDOM.innerHTML = resultsToHTML(arrayOfResults)
+}
 
-Alpine.data(
-  'app',
-  () => ({
-    expressions: processExpressions(getExpressions(editor.state.doc.toString())),
-    currentLine: 1,
-    get calcExpressions() {
-      this.expressions = processExpressions(getExpressions(editor.state.doc.toString()))
-    },
-    get getCurrentLine() {
-      this.currentLine = editor.state.doc.lineAt(
-        editor.state.selection.ranges[editor.state.selection.mainIndex].from
-      ).number - 1
+function updateSelection() {
+  const currentLine = editor.state.doc.lineAt(
+    editor.state.selection.ranges[editor.state.selection.mainIndex].from
+  ).number - 1
+  let currentExpression
+
+  arrayOfResults.forEach((result, i) => {
+    if (
+      (currentLine >= result.from) && (currentLine <= result.to)
+    ) {
+      currentExpression = i
     }
   })
-)
+  if (currentExpression !== previousExpression) {
+    const previousResult = document.querySelector('#result').children[previousExpression]
+    if (previousResult !== undefined) {
+      previousResult.className = null
+    }
+    const currentResult = document.querySelector('#result').children[currentExpression]
+    if (currentResult !== undefined) {
+      currentResult.className = 'highligted'
+      currentResult.scrollIntoView({ block: 'nearest', inline: 'start' })
+    }
+    previousExpression = currentExpression
+  }
+}
 
-Alpine.start()
+function resultsToHTML(results) {
+  return results.map(el => {
+    const elementStyle = el.visible ? '' : 'style="display:none"'
+    return `<pre ${elementStyle}>${el.outputs}</pre>`
+  }
+  ).join('')
+}
+
+updateResults()
