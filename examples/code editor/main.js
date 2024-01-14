@@ -126,38 +126,87 @@ function processExpressions(expressions) {
   })
 }
 
+/**
+ * Updates the displayed results based on the editor's current content.
+ *
+ * @function updateResults
+ * @requires getExpressions, processExpressions, resultsToHTML
+ *
+ * @description
+ * 1. Extracts expressions from the editor's content.
+ * 2. Evaluates and analyzes the expressions.
+ * 3. Generates HTML to display the processed results.
+ * 4. Renders the generated HTML in the designated results container.
+ */
 function updateResults() {
-  arrayOfResults = processExpressions(getExpressions(editor.state.doc.toString()))
-  resultsDOM.innerHTML = resultsToHTML(arrayOfResults)
+  // Extract expressions from the editor's content.
+  const expressions = getExpressions(editor.state.doc.toString());
+
+  // Evaluate and analyze the expressions.
+  const processedResults = processExpressions(expressions);
+
+  // Generate HTML to display the results.
+  const resultsHtml = resultsToHTML(processedResults);
+
+  // Render the generated HTML in the results container.
+  resultsDOM.innerHTML = resultsHtml;
 }
 
+/**
+* Updates the visual highlighting of results based on the current line selection in the editor.
+*
+* @function updateSelection
+* @requires editor, arrayOfResults (renamed to processedResults for clarity)
+*
+* @description
+* 1. Determines the current line number in the editor's selection.
+* 2. Finds the corresponding result (processed expression) that matches the current line.
+* 3. If a different result is selected than before:
+*   - Removes highlighting from the previously selected result.
+*   - Highlights the newly selected result.
+*   - Scrolls the newly selected result into view.
+*/
 function updateSelection() {
-  const currentLine = editor.state.doc.lineAt(
+  const selectedLine = editor.state.doc.lineAt(
     editor.state.selection.ranges[editor.state.selection.mainIndex].from
-  ).number - 1
-  let currentExpression
+  ).number - 1;
 
-  arrayOfResults.forEach((result, i) => {
-    if (
-      (currentLine >= result.from) && (currentLine <= result.to)
-    ) {
-      currentExpression = i
+  let selectedExpressionIndex;
+
+  processedResults.forEach((result, index) => {
+    if ((selectedLine >= result.from) && (selectedLine <= result.to)) {
+      selectedExpressionIndex = index;
     }
-  })
-  if (currentExpression !== previousExpression) {
-    const previousResult = document.querySelector('#result').children[previousExpression]
-    if (previousResult !== undefined) {
-      previousResult.className = null
+  });
+
+  if (selectedExpressionIndex !== previousSelectedExpressionIndex) {
+    const previouslyHighlightedResult = document.querySelector('#result').children[previousSelectedExpressionIndex];
+    if (previouslyHighlightedResult !== undefined) {
+      previouslyHighlightedResult.className = null;
     }
-    const currentResult = document.querySelector('#result').children[currentExpression]
-    if (currentResult !== undefined) {
-      currentResult.className = 'highligted'
-      currentResult.scrollIntoView({ block: 'nearest', inline: 'start' })
+
+    const currentlySelectedResult = document.querySelector('#result').children[selectedExpressionIndex];
+    if (currentlySelectedResult !== undefined) {
+      currentlySelectedResult.className = 'highlighted';
+      currentlySelectedResult.scrollIntoView({ block: 'nearest', inline: 'start' });
     }
-    previousExpression = currentExpression
+
+    previousSelectedExpressionIndex = selectedExpressionIndex;
   }
 }
 
+/**
+* Converts an array of processed results into HTML elements for display.
+*
+* @function resultsToHTML
+* @param {Array<{from: number, to: number, source: string, outputs: any, visible: boolean}>} results - An array of processed results, where each object has:
+*   - from: The starting line number of the expression.
+*   - to: The ending line number of the expression.
+*   - source: The original expression string.
+*   - outputs: The formatted result of evaluating the expression.
+*   - visible: A boolean indicating whether the result should be displayed or hidden.
+* @returns {string} A string of HTML elements representing the results, where each result is enclosed in a <pre> tag with appropriate styling based on its visibility.
+*/
 function resultsToHTML(results) {
   return results.map(el => {
     const elementStyle = el.visible ? '' : 'style="display:none"'
