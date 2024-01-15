@@ -15,8 +15,8 @@ import {
   StreamLanguage
 } from '@codemirror/language'
 
-let arrayOfResults
-let previousExpression
+let processedExpressions
+let previousSelectedExpressionIndex
 let timer
 const timeout = 250 // milliseconds
 
@@ -52,7 +52,7 @@ let startState = EditorState.create({
         clearTimeout(timer)
         timer = setTimeout(() => {
           updateResults()
-          previousExpression = null
+          previousSelectedExpressionIndex = null
           updateSelection()
         }, timeout)
       } else if (update.selectionSet) {
@@ -143,10 +143,10 @@ function updateResults() {
   const expressions = getExpressions(editor.state.doc.toString());
 
   // Evaluate and analyze the expressions.
-  const processedResults = processExpressions(expressions);
+  processedExpressions = processExpressions(expressions);
 
   // Generate HTML to display the results.
-  const resultsHtml = resultsToHTML(processedResults);
+  const resultsHtml = resultsToHTML(processedExpressions);
 
   // Render the generated HTML in the results container.
   resultsDOM.innerHTML = resultsHtml;
@@ -156,7 +156,7 @@ function updateResults() {
 * Updates the visual highlighting of results based on the current line selection in the editor.
 *
 * @function updateSelection
-* @requires editor, arrayOfResults (renamed to processedResults for clarity)
+* @requires editor, processedExpressions
 *
 * @description
 * 1. Determines the current line number in the editor's selection.
@@ -173,7 +173,7 @@ function updateSelection() {
 
   let selectedExpressionIndex;
 
-  processedResults.forEach((result, index) => {
+  processedExpressions.forEach((result, index) => {
     if ((selectedLine >= result.from) && (selectedLine <= result.to)) {
       selectedExpressionIndex = index;
     }
