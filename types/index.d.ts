@@ -183,11 +183,11 @@ export interface ArrayNode<TItems extends MathNode[] = MathNode[]>
   extends MathNode {
   type: 'ArrayNode'
   isArrayNode: true
-  items: TItems
+  items: [...TItems]
 }
 export interface ArrayNodeCtor {
   new <TItems extends MathNode[] = MathNode[]>(
-    items: MathNode[]
+    items: [...TItems]
   ): ArrayNode<TItems>
 }
 
@@ -283,12 +283,12 @@ export interface FunctionNode<
   type: 'FunctionNode'
   isFunctionNode: true
   fn: TFn
-  args: TArgs
+  args: [...TArgs]
 }
 export interface FunctionNodeCtor {
   new <TFn = SymbolNode, TArgs extends MathNode[] = MathNode[]>(
     fn: TFn,
-    args: TArgs
+    args: [...TArgs]
   ): FunctionNode<TFn, TArgs>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onUndefinedFunction: (name: string) => any
@@ -298,13 +298,13 @@ export interface IndexNode<TDims extends MathNode[] = MathNode[]>
   extends MathNode {
   type: 'IndexNode'
   isIndexNode: true
-  dimensions: TDims
+  dimensions: [...TDims]
   dotNotation: boolean
 }
 export interface IndexNodeCtor {
-  new <TDims extends MathNode[] = MathNode[]>(dimensions: TDims): IndexNode
+  new <TDims extends MathNode[] = MathNode[]>(dimensions: [...TDims]): IndexNode
   new <TDims extends MathNode[] = MathNode[]>(
-    dimensions: TDims,
+    dimensions: [...TDims],
     dotNotation: boolean
   ): IndexNode<TDims>
 }
@@ -367,7 +367,7 @@ export interface OperatorNode<
   isOperatorNode: true
   op: TOp
   fn: TFn
-  args: TArgs
+  args: [...TArgs]
   implicit: boolean
   isUnary(): boolean
   isBinary(): boolean
@@ -381,7 +381,7 @@ export interface OperatorNodeCtor extends MathNode {
   >(
     op: TOp,
     fn: TFn,
-    args: TArgs,
+    args: [...TArgs],
     implicit?: boolean
   ): OperatorNode<TOp, TFn, TArgs>
 }
@@ -423,12 +423,12 @@ export interface RelationalNode<TParams extends MathNode[] = MathNode[]>
   type: 'RelationalNode'
   isRelationalNode: true
   conditionals: string[]
-  params: TParams
+  params: [...TParams]
 }
 export interface RelationalNodeCtor {
   new <TParams extends MathNode[] = MathNode[]>(
     conditionals: string[],
-    params: TParams
+    params: [...TParams]
   ): RelationalNode<TParams>
 }
 

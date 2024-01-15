@@ -2523,3 +2523,22 @@ min/max return types
     number | BigNumber | Fraction | Complex | Unit
   >()
 }
+
+/*
+Match types of exact positional arguments.
+*/
+{
+  const node1 = new ConstantNode(2)
+  const node2 = new SymbolNode('x')
+  const node3 = new FunctionNode('sqrt', [node2])
+  const node4 = new OperatorNode('+', 'add', [node1, node3])
+  expectTypeOf(node4.args[0]).toMatchTypeOf<ConstantNode>()
+  expectTypeOf(node4.args[1].args[0]).toMatchTypeOf<SymbolNode>()
+}
+{
+  const node1 = new ConstantNode(2)
+  const node2 = new SymbolNode('x')
+  const node3 = new ArrayNode([node1, node2])
+  expectTypeOf(node3.items[0]).toMatchTypeOf<ConstantNode>()
+  expectTypeOf(node3.items[1]).toMatchTypeOf<SymbolNode>()
+}
