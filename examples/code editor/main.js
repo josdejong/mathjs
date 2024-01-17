@@ -1,30 +1,25 @@
 import './style.css'
 import 'github-markdown-css/github-markdown.css'
-
 import 'katex/dist/katex.min.css'
+import { StreamLanguage } from '@codemirror/language'
+import { EditorState } from '@codemirror/state'
+import { basicSetup, EditorView } from 'codemirror'
 import katex from 'katex'
-
+import { all, create } from 'mathjs'
+import getExpressions from './getExpressions'
 import { mathjsLang } from './mathjs-lang.js'
 
-import { EditorState } from "@codemirror/state"
-import { EditorView, basicSetup } from "codemirror"
-import { create, all } from 'mathjs'
-import getExpressions from './getExpressions'
+const timeout = 250 // milliseconds
+const digits = 14
 
-import {
-  StreamLanguage
-} from '@codemirror/language'
+const math = create(all)
+const parser = math.parser()
+const editorDOM = document.querySelector('#editor')
+const resultsDOM = document.querySelector('#result')
 
 let processedExpressions
 let previousSelectedExpressionIndex
 let timer
-const timeout = 250 // milliseconds
-
-const math = create(all)
-const digits = 14
-let parser = math.parser()
-const editorDOM = document.querySelector('#editor')
-const resultsDOM = document.querySelector('#result')
 
 const doc = [
   "round(e, 3)",
@@ -85,7 +80,7 @@ function calc(expression) {
 
 /**
  * Formats result depending on the type of result
- * 
+ *
  * @param {number, string, Help, any} result - The result to format
  * @returns {string} The string in HTML with the formated result
  */
