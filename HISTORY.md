@@ -1,6 +1,12 @@
 # History
 
 
+# unpublished changes since 12.3.0
+
+- Improved the typings of the arguments of `ArrayNode`, `FunctionNode`, 
+  `IndexNode`, `OperatorNode`, and `RelationalNode` (#3123). Thanks @sylee957.
+
+
 # 2024-01-12, 12.3.0
 
 - Implement support new metric prefixes: `ronna` (`R`), `quetta` (`Q`), 
