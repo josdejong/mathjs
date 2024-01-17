@@ -7,6 +7,8 @@
   `IndexNode`, `OperatorNode`, and `RelationalNode` (#3123). Thanks @sylee957.
 - Added a fully featured code editor example with CodeMirror and Katex (#3027).
   Thanks @dvd101x.
+- Fix: #3114 build warnings related to a number of wrong `/* #__PURE__ */` 
+  annotations.
 
 
 # 2024-01-12, 12.3.0

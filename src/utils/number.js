@@ -24,7 +24,7 @@ export function isInteger (value) {
  * @param {number} x
  * @returns {number}
  */
-export const sign = /* #__PURE__ */ Math.sign || function (x) {
+export const sign = Math.sign || function (x) {
   if (x > 0) {
     return 1
   } else if (x < 0) {
@@ -39,7 +39,7 @@ export const sign = /* #__PURE__ */ Math.sign || function (x) {
  * @param {number} x
  * @returns {number}
  */
-export const log2 = /* #__PURE__ */ Math.log2 || function log2 (x) {
+export const log2 = Math.log2 || function log2 (x) {
   return Math.log(x) / Math.LN2
 }
 
@@ -48,7 +48,7 @@ export const log2 = /* #__PURE__ */ Math.log2 || function log2 (x) {
  * @param {number} x
  * @returns {number}
  */
-export const log10 = /* #__PURE__ */ Math.log10 || function log10 (x) {
+export const log10 = Math.log10 || function log10 (x) {
   return Math.log(x) / Math.LN10
 }
 
@@ -57,7 +57,7 @@ export const log10 = /* #__PURE__ */ Math.log10 || function log10 (x) {
  * @param {number} x
  * @returns {number}
  */
-export const log1p = /* #__PURE__ */ Math.log1p || function (x) {
+export const log1p = Math.log1p || function (x) {
   return Math.log(x + 1)
 }
 
@@ -70,7 +70,7 @@ export const log1p = /* #__PURE__ */ Math.log1p || function (x) {
  * @param {number} x
  * @returns {number} Returns the cubic root of x
  */
-export const cbrt = /* #__PURE__ */ Math.cbrt || function cbrt (x) {
+export const cbrt = Math.cbrt || function cbrt (x) {
   if (x === 0) {
     return x
   }
@@ -97,7 +97,7 @@ export const cbrt = /* #__PURE__ */ Math.cbrt || function cbrt (x) {
  * @param {number} x
  * @return {number} res
  */
-export const expm1 = /* #__PURE__ */ Math.expm1 || function expm1 (x) {
+export const expm1 = Math.expm1 || function expm1 (x) {
   return (x >= 2e-4 || x <= -2e-4)
     ? Math.exp(x) - 1
     : x + x * x / 2 + x * x * x / 6
