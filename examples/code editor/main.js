@@ -116,9 +116,9 @@ function processExpressions(expressions) {
     const outputs = formatResult(result)
     // Determine visibility based on the result type:
     // - Undefined results are hidden.
-    // - Results with an `isResultSet` property are hidden.
+    // - Results with an `isResultSet` property are hidden when empty.
     // - All other results are visible.
-    const visible = result === undefined ? false : result.isResultSet ? false : true
+    const visible = result === undefined ? false : (result.isResultSet && result.entries.length === 0) ? false : true
     return ({
       ...expression,
       outputs,
