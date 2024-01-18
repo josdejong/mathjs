@@ -22,10 +22,12 @@ body {
   flex: 1;
   height: auto;
   display: flex;
+  overflow: auto;
 }
 
 #editor>.cm-editor {
-  flex: 1
+  flex: 1;
+  overflow: scroll;
 }
 
 #app>article {

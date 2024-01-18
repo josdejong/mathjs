@@ -46,6 +46,7 @@ let startState = EditorState.create({
   extensions: [
     basicSetup,
     StreamLanguage.define(mathjsLang(math)),
+    EditorView.lineWrapping,
     EditorView.updateListener.of((update) => {
       if (update.docChanged) {
         // if doc changed debounce and update results after a timeout
