@@ -29,13 +29,12 @@ describe('kron', function () {
   })
 
   it('should calculate product for empty 2D Arrays', function () {
-    assert.deepStrictEqual(math.kron([[]], [[]]), [[]])
+    assert.deepStrictEqual(math.kron([[]], [[]]), [])
   })
-
   it('should calculate product for 1D Arrays', function () {
     assert.deepStrictEqual(math.kron([1, 1], [[1, 0], [0, 1]]), [[1, 0, 1, 0], [0, 1, 0, 1]])
     assert.deepStrictEqual(math.kron([[1, 0], [0, 1]], [1, 1]), [[1, 1, 0, 0], [0, 0, 1, 1]])
-    assert.deepStrictEqual(math.kron([1, 2, 6, 8], [12, 1, 2, 3]), [[12, 1, 2, 3, 24, 2, 4, 6, 72, 6, 12, 18, 96, 8, 16, 24]])
+    assert.deepStrictEqual(math.kron([1, 2, 6, 8], [12, 1, 2, 3]), [12, 1, 2, 3, 24, 2, 4, 6, 72, 6, 12, 18, 96, 8, 16, 24])
   })
 
   it('should support complex numbers', function () {

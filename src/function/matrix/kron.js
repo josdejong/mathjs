@@ -72,6 +72,11 @@ export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const t = []
     let r = []
 
+    // Check if both a and b are of length 1
+    if (a.length === 1 && b.length === 1) {
+      return a[0].flatMap((y) => b[0].map((x) => multiplyScalar(y, x)))
+    }
+
     return a.map(function (a) {
       return b.map(function (b) {
         r = []
