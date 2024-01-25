@@ -39,9 +39,7 @@ export const createIsZero = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *                    Throws an error in case of an unknown data type.
    */
   return typed(name, {
-    'number | BigNumber | Complex | Fraction': function (x) {
-      return equalScalar(x, 0)
-    },
+    'number | BigNumber | Complex | Fraction': x => equalScalar(x, 0),
 
     Unit: typed.referToSelf(self =>
       x => typed.find(self, x.valueType())(x.value)),
