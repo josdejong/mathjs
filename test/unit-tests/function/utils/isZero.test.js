@@ -19,6 +19,16 @@ describe('isZero', function () {
     assert.strictEqual(isZero(NaN), false)
   })
 
+  it('should test whether a number is almost zero', function () {
+    const mymath = math.create()
+    assert.strictEqual(mymath.isZero(1e-16), true)
+    assert.strictEqual(mymath.isZero(1e-2), false)
+    mymath.config({ epsilon: 1e-3 })
+    assert.strictEqual(mymath.isZero(1e-16), true)
+    // assert.strictEqual(mymath.isZero(1e-4), true)
+    // assert.strictEqual(mymath.isZero(1e-2), false)
+  })
+
   it('should test whether a boolean is zero', function () {
     assert.strictEqual(isZero(true), false)
     assert.strictEqual(isZero(false), true)
