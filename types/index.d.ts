@@ -1200,7 +1200,7 @@ export interface MathJsInstance extends MathJsFactory {
    * whole matrix.
    * @returns Returns the hypothenuse of the input values.
    */
-  hypot<T extends (number | BigNumber)[]>(...args: T[]): T
+  hypot<T extends number | BigNumber>(...args: T[]): T
 
   /**
    * Calculate the least common multiple for two or more values or arrays.
