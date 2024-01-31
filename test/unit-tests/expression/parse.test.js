@@ -1538,6 +1538,14 @@ describe('parse', function () {
       assert.deepStrictEqual(scope, { a: false })
     })
 
+    it('should parse logical and inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = x > 2 and x < 4', scope)
+      assert.strictEqual(f(1), false)
+      assert.strictEqual(f(3), true)
+      assert.strictEqual(f(5), false)
+    })
+
     it('should parse logical xor', function () {
       assert.strictEqual(parseAndEval('2 xor 6'), false)
       assert.strictEqual(parseAndEval('2 xor 0'), true)
@@ -1558,6 +1566,14 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('2 or undefined'), true)
       assert.strictEqual(parseAndEval('true or undefined'), true)
       assert.throws(function () { parseAndEval('false or undefined') }, TypeError)
+    })
+
+    it('should parse logical or inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = x < 2 or x > 4', scope)
+      assert.strictEqual(f(1), true)
+      assert.strictEqual(f(3), false)
+      assert.strictEqual(f(5), true)
     })
 
     it('should parse logical or lazily', function () {
