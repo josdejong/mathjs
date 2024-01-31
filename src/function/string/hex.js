@@ -19,8 +19,8 @@ const dependencies = ['typed', 'format']
  *    oct
  *    bin
  *
- * @param {number} value    Value to be stringified
- * @param {number} wordSize Optional word size (see `format`)
+ * @param {number | BigNumber} value    Value to be stringified
+ * @param {number | BigNumber} wordSize Optional word size (see `format`)
  * @return {string}         The formatted value
  */
 export const createHex = factory(name, dependencies, ({ typed, format }) => {
@@ -28,7 +28,7 @@ export const createHex = factory(name, dependencies, ({ typed, format }) => {
     'number | BigNumber': function (n) {
       return format(n, { notation: 'hex' })
     },
-    'number | BigNumber, number': function (n, wordSize) {
+    'number | BigNumber, number | BigNumber': function (n, wordSize) {
       return format(n, { notation: 'hex', wordSize })
     }
   })

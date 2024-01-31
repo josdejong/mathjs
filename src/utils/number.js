@@ -1,4 +1,4 @@
-import { isNumber } from './is.js'
+import { isBigNumber, isNumber, isObject } from './is.js'
 
 /**
  * @typedef {{sign: '+' | '-' | '', coefficients: number[], exponent: number}} SplitValue
@@ -239,31 +239,7 @@ export function format (value, options) {
     return 'NaN'
   }
 
-  // default values for options
-  let notation = 'auto'
-  let precision
-  let wordSize
-
-  if (options) {
-    // determine notation from options
-    if (options.notation) {
-      notation = options.notation
-    }
-
-    // determine precision from options
-    if (isNumber(options)) {
-      precision = options
-    } else if (isNumber(options.precision)) {
-      precision = options.precision
-    }
-
-    if (options.wordSize) {
-      wordSize = options.wordSize
-      if (typeof (wordSize) !== 'number') {
-        throw new Error('Option "wordSize" must be a number')
-      }
-    }
-  }
+  const { notation, precision, wordSize } = normalizeFormatOptions(options)
 
   // handle the various notations
   switch (notation) {
@@ -287,7 +263,7 @@ export function format (value, options) {
 
     case 'auto':
       // remove trailing zeros after the decimal point
-      return toPrecision(value, precision, options && options)
+      return toPrecision(value, precision, options)
         .replace(/((\.\d*?)(0+))($|e)/, function () {
           const digits = arguments[2]
           const e = arguments[4]
@@ -298,6 +274,49 @@ export function format (value, options) {
       throw new Error('Unknown notation "' + notation + '". ' +
         'Choose "auto", "exponential", "fixed", "bin", "oct", or "hex.')
   }
+}
+
+/**
+ * Normalize format options into an object:
+ *   {
+ *     notation: string,
+ *     precision: number | undefined,
+ *     wordSize: number | undefined
+ *   }
+ */
+export function normalizeFormatOptions (options) {
+  // default values for options
+  let notation = 'auto'
+  let precision
+  let wordSize
+
+  if (options !== undefined) {
+    if (isNumber(options)) {
+      precision = options
+    } else if (isBigNumber(options)) {
+      precision = options.toNumber()
+    } else if (isObject(options)) {
+      if (options.precision !== undefined) {
+        precision = _toNumberOrThrow(options.precision, () => {
+          throw new Error('Option "precision" must be a number or BigNumber')
+        })
+      }
+
+      if (options.wordSize !== undefined) {
+        wordSize = _toNumberOrThrow(options.wordSize, () => {
+          throw new Error('Option "wordSize" must be a number or BigNumber')
+        })
+      }
+
+      if (options.notation) {
+        notation = options.notation
+      }
+    } else {
+      throw new Error('Unsupported type of options, number, BigNumber, or object expected')
+    }
+  }
+
+  return { notation, precision, wordSize }
 }
 
 /**
@@ -478,8 +497,8 @@ export function toPrecision (value, precision, options) {
   }
 
   // determine lower and upper bound for exponential notation.
-  const lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3
-  const upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5
+  const lowerExp = _toNumberOrDefault(options?.lowerExp, -3)
+  const upperExp = _toNumberOrDefault(options?.upperExp, 5)
 
   const split = splitNumber(value)
   const rounded = precision ? roundDigits(split, precision) : split
@@ -695,4 +714,24 @@ export function copysign (x, y) {
   const signx = x > 0 ? true : x < 0 ? false : 1 / x === Infinity
   const signy = y > 0 ? true : y < 0 ? false : 1 / y === Infinity
   return signx ^ signy ? -x : x
+}
+
+function _toNumberOrThrow (value, onError) {
+  if (isNumber(value)) {
+    return value
+  } else if (isBigNumber(value)) {
+    return value.toNumber()
+  } else {
+    onError()
+  }
+}
+
+function _toNumberOrDefault (value, defaultValue) {
+  if (isNumber(value)) {
+    return value
+  } else if (isBigNumber(value)) {
+    return value.toNumber()
+  } else {
+    return defaultValue
+  }
 }
