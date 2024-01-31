@@ -65,6 +65,8 @@ describe('round', function () {
   })
 
   it('should round bignumbers', function () {
+    assert.deepStrictEqual(round(bignumber(0.145 * 100)), bignumber(15))
+    assert.deepStrictEqual(round(bignumber(0.145 * 100), bignumber(0)), bignumber(15))
     assert.deepStrictEqual(round(bignumber(2.7)), bignumber(3))
     assert.deepStrictEqual(round(bignumber(2.5)), bignumber(3))
     assert.deepStrictEqual(round(bignumber(-2.5)), bignumber(-3))
@@ -92,6 +94,8 @@ describe('round', function () {
   })
 
   it('should gracefully handle round-off errors', function () {
+    assert.strictEqual(round(0.145 * 100), 15)
+    assert.strictEqual(round((0.145 * 100), 0), 15)
     assert.strictEqual(round(3.0000000000000004), 3)
     assert.strictEqual(round(7.999999999999999), 8)
     assert.strictEqual(round(-3.0000000000000004), -3)
