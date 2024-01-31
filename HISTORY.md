@@ -9,6 +9,9 @@
   Thanks @dvd101x.
 - Fix: #3114 build warnings related to a number of wrong `/* #__PURE__ */` 
   annotations.
+- Fix: #3142 support BigNumber values for the options of function `format`:
+  `precision`, `wordSize`, `lowerExp`, `upperExp`. Support BigNumber values
+  for the option `wordSize` in the functions `hex`, `bin`, and `oct`. 
 - Docs: #3145 fix documentation about REPL, it does require a build step 
   nowadays.
 
