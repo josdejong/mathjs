@@ -9,6 +9,8 @@
   Thanks @dvd101x.
 - Fix: #3114 build warnings related to a number of wrong `/* #__PURE__ */` 
   annotations.
+- Docs: #3145 fix documentation about REPL, it does require a build step 
+  nowadays.
 
 
 # 2024-01-12, 12.3.0
