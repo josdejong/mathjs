@@ -79,7 +79,8 @@ describe('object', function () {
     })
 
     it('should throw an error in case of an unsupported type', function () {
-      assert.throws(function () { clone(/a regexp/) }, /Cannot clone/)
+      assert.throws(function () { clone(/a regexp/) }, /Cannot clone: unknown type of value/)
+      assert.throws(function () { clone(() => 42) }, /Cannot clone: unknown type of value/)
     })
   })
 

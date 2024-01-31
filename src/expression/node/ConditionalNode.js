@@ -204,7 +204,7 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
      * @param {Object} options
      * @return {string} str
      */
-    toHTML (options) {
+    _toHTML (options) {
       const parenthesis =
           (options && options.parenthesis) ? options.parenthesis : 'keep'
       const precedence =

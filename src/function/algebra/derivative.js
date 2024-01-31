@@ -226,10 +226,6 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     },
 
     'FunctionNode, Object': function (node, constNodes) {
-      if (node.args.length !== 1) {
-        funcArgsCheck(node)
-      }
-
       if (constNodes[node] !== undefined) {
         return createConstantNode(0)
       }
@@ -303,9 +299,12 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
           }
           break
         case 'pow':
-          constNodes[arg1] = constNodes[node.args[1]]
-          // Pass to pow operator node parser
-          return _derivative(new OperatorNode('^', 'pow', [arg0, node.args[1]]), constNodes)
+          if (node.args.length === 2) {
+            constNodes[arg1] = constNodes[node.args[1]]
+            // Pass to pow operator node parser
+            return _derivative(new OperatorNode('^', 'pow', [arg0, node.args[1]]), constNodes)
+          }
+          break
         case 'exp':
           // d/dx(e^x) = e^x
           funcDerivative = new FunctionNode('exp', [arg0.clone()])
@@ -563,7 +562,9 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
           ])
           break
         case 'gamma': // Needs digamma function, d/dx(gamma(x)) = gamma(x)digamma(x)
-        default: throw new Error('Function "' + node.name + '" is not supported by derivative, or a wrong number of arguments is passed')
+        default:
+          throw new Error('Cannot process function "' + node.name + '" in derivative: ' +
+          'the function is not supported, undefined, or the number of arguments passed to it are not supported')
       }
 
       let op, func
@@ -740,33 +741,10 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
         ])
       }
 
-      throw new Error('Operator "' + node.op + '" is not supported by derivative, or a wrong number of arguments is passed')
+      throw new Error('Cannot process operator "' + node.op + '" in derivative: ' +
+        'the operator is not supported, undefined, or the number of arguments passed to it are not supported')
     }
   })
-
-  /**
-   * Ensures the number of arguments for a function are correct,
-   * and will throw an error otherwise.
-   *
-   * @param {FunctionNode} node
-   */
-  function funcArgsCheck (node) {
-    // TODO add min, max etc
-    if ((node.name === 'log' || node.name === 'nthRoot' || node.name === 'pow') && node.args.length === 2) {
-      return
-    }
-
-    // There should be an incorrect number of arguments if we reach here
-
-    // Change all args to constants to avoid unidentified
-    // symbol error when compiling function
-    for (let i = 0; i < node.args.length; ++i) {
-      node.args[i] = createConstantNode(0)
-    }
-
-    node.compile().evaluate()
-    throw new Error('Expected TypeError, but none found')
-  }
 
   /**
    * Helper function to create a constant node with a specific type

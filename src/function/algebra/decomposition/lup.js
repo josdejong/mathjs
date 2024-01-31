@@ -9,7 +9,7 @@ const dependencies = [
   'addScalar',
   'divideScalar',
   'multiplyScalar',
-  'subtract',
+  'subtractScalar',
   'larger',
   'equalScalar',
   'unaryMinus',
@@ -26,7 +26,7 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
     addScalar,
     divideScalar,
     multiplyScalar,
-    subtract,
+    subtractScalar,
     larger,
     equalScalar,
     unaryMinus,
@@ -119,7 +119,7 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
             // s = l[i, k] - data[k, j]
             s = addScalar(s, multiplyScalar(data[i][k], data[k][j]))
           }
-          data[i][j] = subtract(data[i][j], s)
+          data[i][j] = subtractScalar(data[i][j], s)
         }
       }
       // row with larger value in cvector, row >= j

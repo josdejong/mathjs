@@ -20,8 +20,8 @@ const dependencies = ['typed', 'format']
  *    oct
  *    hex
  *
- * @param {number} value    Value to be stringified
- * @param {number} wordSize Optional word size (see `format`)
+ * @param {number | BigNumber} value    Value to be stringified
+ * @param {number | BigNumber} wordSize Optional word size (see `format`)
  * @return {string}         The formatted value
  */
 export const createBin = factory(name, dependencies, ({ typed, format }) => {
@@ -29,7 +29,7 @@ export const createBin = factory(name, dependencies, ({ typed, format }) => {
     'number | BigNumber': function (n) {
       return format(n, { notation: 'bin' })
     },
-    'number | BigNumber, number': function (n, wordSize) {
+    'number | BigNumber, number | BigNumber': function (n, wordSize) {
       return format(n, { notation: 'bin', wordSize })
     }
   })

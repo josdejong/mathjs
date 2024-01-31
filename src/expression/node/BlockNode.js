@@ -163,7 +163,7 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
      * @return {string} str
      * @override
      */
-    toHTML (options) {
+    _toHTML (options) {
       return this.blocks.map(function (param) {
         return param.node.toHTML(options) +
           (param.visible ? '' : '<span class="math-separator">;</span>')

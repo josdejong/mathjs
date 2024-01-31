@@ -121,17 +121,24 @@ See section below                 | Implicit multiplication
 `to`, `in`                        | Unit conversion
 `<<`, `>>`, `>>>`                 | Bitwise left shift, bitwise right arithmetic shift, bitwise right logical shift
 `==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
-`&`                               | Bitwise and
+`&`                               | Bitwise and (lazily evaluated)
 <code>^&#124;</code>              | Bitwise xor
-<code>&#124;</code>               | Bitwise or
-`and`                             | Logical and
+<code>&#124;</code>               | Bitwise or (lazily evaluated)
+`and`                             | Logical and (lazily evaluated)
 `xor`                             | Logical xor
-`or`                              | Logical or
+`or`                              | Logical or (lazily evaluated)
 `?`, `:`                          | Conditional expression
 `=`                               | Assignment
 `,`                               | Parameter and column separator
 `;`                               | Row separator
 `\n`, `;`                         | Statement separators
+
+Lazy evaluation is used where logically possible for bitwise and logical
+operators. In the following example, the value of `x` will not even be 
+evaluated because it cannot effect the final result: 
+```js
+math.evaluate('false and x')        // false, no matter what x equals
+```
 
 
 ## Functions
@@ -475,7 +482,7 @@ const parser = math.parser()
 parser.evaluate('a = 2 + 3i')   // Complex, 2 + 3i
 parser.evaluate('b = a - 3i')   // Complex, 2 + 0i
 parser.evaluate('number(b)')    // Number,  2
-parser.evaluate('number(a)')    // Error: 2 + i is no valid number
+parser.evaluate('number(a)')    // Error: unexpected type of argument
 ```
 
 

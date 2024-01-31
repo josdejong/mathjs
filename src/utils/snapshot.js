@@ -146,6 +146,7 @@ export function createSnapshotFromFactories (factories) {
     'equalScalar',
     'apply',
     'addScalar',
+    'subtractScalar',
     'multiplyScalar',
     'print',
     'divideScalar',

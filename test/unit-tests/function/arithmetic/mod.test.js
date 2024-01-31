@@ -34,8 +34,14 @@ describe('mod', function () {
     approx.equal(mod(-5, 3), 1)
   })
 
-  it('should throw an error if the divisor is negative', function () {
-    assert.throws(function () { mod(10, -4) })
+  it('should handle precise approximation of float approximation', function () {
+    approx.equal(mod(0.1, 0.01), 0)
+    approx.equal(mod(0.15, 0.05), 0)
+    approx.equal(mod(1.23456789, 0.00000000001), 0)
+  })
+
+  it('should calculate mod for negative divisor', function () {
+    assert.strictEqual(mod(10, -4), -2)
   })
 
   it('should throw an error if used with wrong number of arguments', function () {
@@ -67,8 +73,8 @@ describe('mod', function () {
     assert.deepStrictEqual(mod(bignumber(-5), bignumber(3)), bignumber(1))
   })
 
-  it('should throw an error if the divisor in modulus of bignumbers is negative', function () {
-    assert.throws(function () { mod(bignumber(10), bignumber(-4)) })
+  it('should calculate the modulus of bignumbers for a negative divisor', function () {
+    assert.deepStrictEqual(mod(bignumber(10), bignumber(-4)), bignumber(-2))
   })
 
   it('should calculate the modulus of mixed numbers and bignumbers', function () {
@@ -120,8 +126,8 @@ describe('mod', function () {
     assert.strictEqual(mod(math.fraction(-5), math.fraction(3)).toString(), '1')
   })
 
-  it('should throw an error if the divosor in modulus of fractions is negative', function () {
-    assert.throws(function () { mod(math.fraction(10), math.fraction(-4)) })
+  it('should calculate the modulus of fractions for a negative divisor', function () {
+    assert.strictEqual(mod(math.fraction(10), math.fraction(-4)).toString(), '-2')
   })
 
   it('should calculate modulus of mixed fractions and numbers', function () {

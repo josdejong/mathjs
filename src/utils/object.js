@@ -1,4 +1,4 @@
-import { isBigNumber } from './is.js'
+import { isBigNumber, isObject } from './is.js'
 
 /**
  * Clone an object
@@ -34,10 +34,13 @@ export function clone (x) {
 
   if (x instanceof Date) return new Date(x.valueOf())
   if (isBigNumber(x)) return x // bignumbers are immutable
-  if (x instanceof RegExp) throw new TypeError('Cannot clone ' + x) // TODO: clone a RegExp
 
   // object
-  return mapObject(x, clone)
+  if (isObject(x)) {
+    return mapObject(x, clone)
+  }
+
+  throw new TypeError(`Cannot clone: unknown type of value (value: ${x})`)
 }
 
 /**

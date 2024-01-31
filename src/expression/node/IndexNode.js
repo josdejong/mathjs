@@ -204,7 +204,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @param {Object} options
      * @return {string} str
      */
-    toHTML (options) {
+    _toHTML (options) {
       // format the parameters like "[1, 0:5]"
       const dimensions = []
       for (let i = 0; i < this.dimensions.length; i++) {

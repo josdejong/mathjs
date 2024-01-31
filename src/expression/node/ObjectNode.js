@@ -167,7 +167,7 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
      * @return {string} str
      * @override
      */
-    toHTML (options) {
+    _toHTML (options) {
       const entries = []
       for (const key in this.properties) {
         if (hasOwnProperty(this.properties, key)) {
