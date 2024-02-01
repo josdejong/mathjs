@@ -14,6 +14,8 @@
   for the option `wordSize` in the functions `hex`, `bin`, and `oct`. 
 - Fix: #3125 type definitions of function `hypot` (#3144). 
   Thanks @silentmissile.
+- Fix: #3141 `help(config)` altering the actual `config` when evaluating the 
+  examples.
 - Docs: #3145 fix documentation about REPL, it does require a build step 
   nowadays.
 
