@@ -41,7 +41,7 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *      - `'bin'`, `'oct'`, or `'hex'`
    *        Format the number using binary, octal, or hexadecimal notation.
    *        For example `'0b1101'` and `'0x10fe'`.
-   *    - `wordSize: number`
+   *    - `wordSize: number | BigNumber`
    *      The word size in bits to use for formatting in binary, octal, or
    *      hexadecimal notation. To be used only with `'bin'`, `'oct'`, or `'hex'`
    *      values for `notation` option. When this option is defined the value
@@ -49,7 +49,7 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *      size and the size suffix is appended to the output.
    *      For example `format(-1, {notation: 'hex', wordSize: 8}) === '0xffi8'`.
    *      Default value is undefined.
-   *    - `precision: number`
+   *    - `precision: number | BigNumber`
    *      Limit the number of digits of the formatted value.
    *      For regular numbers, must be a number between `0` and `16`.
    *      For bignumbers, the maximum depends on the configured precision,
@@ -125,6 +125,6 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    */
   return typed(name, {
     any: formatString,
-    'any, Object | function | number': formatString
+    'any, Object | function | number | BigNumber': formatString
   })
 })
