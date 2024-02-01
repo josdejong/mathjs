@@ -72,19 +72,15 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   return typed(name, {
     number: function (x) {
-      if (nearlyEqual(x, roundNumber(x, epsilonExponent), config.epsilon)) {
-        return roundNumber(roundNumber(x, epsilonExponent))
-      } else {
-        return roundNumber
-      }
+      const xEpsilon = roundNumber(x, epsilonExponent)
+      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      return roundNumber(xSelected)
     },
 
     'number, number': function (x, n) {
-      if (nearlyEqual(x, roundNumber(x, epsilonExponent), config.epsilon)) {
-        return roundNumber(roundNumber(x, epsilonExponent), n)
-      } else {
-        return roundNumber
-      }
+      const xEpsilon = roundNumber(x, epsilonExponent)
+      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      return roundNumber(xSelected, n)
     },
 
     'number, BigNumber': function (x, n) {
@@ -111,21 +107,17 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     BigNumber: function (x) {
-      if (bigNearlyEqual(x, x.toDecimalPlaces(epsilonExponent), config.epsilon)) {
-        return x.toDecimalPlaces(epsilonExponent).toDecimalPlaces(0)
-      } else {
-        return x.toDecimalPlaces(0)
-      }
+      const xEpsilon = new BigNumber(x).toDecimalPlaces(epsilonExponent)
+      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      return xSelected.toDecimalPlaces(0)
     },
 
     'BigNumber, BigNumber': function (x, n) {
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
-      if (bigNearlyEqual(x, x.toDecimalPlaces(epsilonExponent), config.epsilon)) {
-        return x.toDecimalPlaces(epsilonExponent).toDecimalPlaces(n.toNumber())
-      } else {
-        return x.toDecimalPlaces(n.toNumber())
-      }
+      const xEpsilon = new BigNumber(x).toDecimalPlaces(epsilonExponent)
+      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      return xSelected.toDecimalPlaces(n.toNumber())
     },
 
     Fraction: function (x) {
