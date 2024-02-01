@@ -1,0 +1,60 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#app {
+  display: flex;
+  overflow: hidden;
+  flex: 1;
+  flex-direction: row;
+}
+
+#editor {
+  flex: 1;
+  height: auto;
+  display: flex;
+  overflow: auto;
+}
+
+#editor>.cm-editor {
+  flex: 1;
+  overflow: scroll;
+}
+
+#app>article {
+  flex: 1;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+article.markdown-body .results {
+  padding: 0.5em;
+  margin: 0.5em;
+}
+
+article.markdown-body > .highlighted {
+  background-color: rgba(0, 150, 255, 0.2);
+}
+
+article.markdown-body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1em;
+}
+
+@media (max-width: 767px) {
+  .markdown-body {
+    padding: 15px;
+  }
+}

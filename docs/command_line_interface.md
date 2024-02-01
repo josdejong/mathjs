@@ -72,10 +72,9 @@ $ mathjs --string --parenthesis=all
 
 <h1 id="command-line-debugging-repl">Command line debugging (REPL) <a href="#command-line-debugging-repl" title="Permalink">#</a></h1>
 
-For debugging purposes, `bin/repl.js` provides a REPL (Read Evaluate Print Loop)
-for interactive testing of mathjs without having to build new build files after every
-little change to the source files. You can either start it directly (`./bin/repl.js`) or
-via node (`node bin/repl.js`).
+The library also provides a REPL (Read Evaluate Print Loop) via `bin/repl.js` which
+loads mathjs in a Node.js command line environment.
+You can either start it directly (`./bin/repl.js`) or via node (`node bin/repl.js`).
 
 You can exit using either [ctrl]-[C] or [ctrl]-[D].
 

@@ -5,6 +5,25 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20240201-1231">2024-02-01, 12.3.1 <a href="#20240201-1231" title="Permalink">#</a></h1>
+
+- Improved the typings of the arguments of `ArrayNode`, `FunctionNode`, 
+  `IndexNode`, `OperatorNode`, and `RelationalNode`  <a href="https://github.com/josdejong/mathjs/issues/3123">#3123</a>). Thanks <a href="https://github.com/sylee957">@sylee957</a>.
+- Added a fully featured code editor example with CodeMirror and Katex  <a href="https://github.com/josdejong/mathjs/issues/3027">#3027</a>).
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3114">#3114</a> build warnings related to a number of wrong `/* #__PURE__ */` 
+  annotations.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3142">#3142</a> support BigNumber values for the options of function `format`:
+  `precision`, `wordSize`, `lowerExp`, `upperExp`. Support BigNumber values
+  for the option `wordSize` in the functions `hex`, `bin`, and `oct`. 
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3125">#3125</a> type definitions of function `hypot`  <a href="https://github.com/josdejong/mathjs/issues/3144">#3144</a>). 
+  Thanks <a href="https://github.com/silentmissile">@silentmissile</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3141">#3141</a> `help(config)` altering the actual `config` when evaluating the 
+  examples.
+- Docs: <a href="https://github.com/josdejong/mathjs/issues/3145">#3145</a> fix documentation about REPL, it does require a build step 
+  nowadays.
+
+
 <h1 id="20240112-1230">2024-01-12, 12.3.0 <a href="#20240112-1230" title="Permalink">#</a></h1>
 
 - Implement support new metric prefixes: `ronna` (`R`), `quetta` (`Q`), 
