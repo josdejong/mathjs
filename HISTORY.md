@@ -1,7 +1,7 @@
 # History
 
 
-# unpublished changes since 12.3.0
+# 2024-02-01, 12.3.1
 
 - Improved the typings of the arguments of `ArrayNode`, `FunctionNode`, 
   `IndexNode`, `OperatorNode`, and `RelationalNode` (#3123). Thanks @sylee957.
