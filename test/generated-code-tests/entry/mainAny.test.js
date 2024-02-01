@@ -119,7 +119,7 @@ describe('mainAny', function () {
     assert.deepStrictEqual(scope, { b: 2 })
   })
 
-  it('should evaluate assignement and access', function () {
+  it('should evaluate assignment and access', function () {
     const math = create(all)
     const evaluate = math.evaluate
 
