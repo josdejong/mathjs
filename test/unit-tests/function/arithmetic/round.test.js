@@ -11,6 +11,10 @@ const sparse = math.sparse
 const round = math.round
 const unit = math.unit
 
+//                                        1         2         3         4         5         6
+//                            xx.1234567890123456789012345678901234567890123456789012345678901234
+const testBigNum = bignumber('10.9999999999999999999999999999999999999999999999999999999999999998')
+
 describe('round', function () {
   it('should round a number to te given number of decimals', function () {
     approx.equal(round(math.pi), 3)
@@ -26,6 +30,9 @@ describe('round', function () {
     assert.strictEqual(round(-2.5), -3)
     assert.strictEqual(round(-2.7), -3)
     assert.strictEqual(round(-2.5, 0), -3)
+    assert.strictEqual(round(6.999999999999998, 15), 6.999999999999998)
+    assert.strictEqual(round(6.999999999999998, 14), 7)
+    assert.strictEqual(round(2.555555555555555, 13), 2.5555555555556)
   })
 
   it('should round booleans (yeah, not really useful but it should be supported)', function () {
@@ -67,6 +74,8 @@ describe('round', function () {
   it('should round bignumbers', function () {
     assert.deepStrictEqual(round(bignumber(0.145 * 100)), bignumber(15))
     assert.deepStrictEqual(round(bignumber(0.145 * 100), bignumber(0)), bignumber(15))
+    assert.deepStrictEqual(round(testBigNum, bignumber(63)), bignumber(11))
+    assert.deepStrictEqual(round(testBigNum, bignumber(64)), testBigNum)
     assert.deepStrictEqual(round(bignumber(2.7)), bignumber(3))
     assert.deepStrictEqual(round(bignumber(2.5)), bignumber(3))
     assert.deepStrictEqual(round(bignumber(-2.5)), bignumber(-3))

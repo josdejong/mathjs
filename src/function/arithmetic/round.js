@@ -1,7 +1,6 @@
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
-import { nearlyEqual, splitNumber } from '../../utils/number.js'
-import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
+import { splitNumber } from '../../utils/number.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
@@ -72,15 +71,17 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   return typed(name, {
     number: function (x) {
+      // Handle round off errors by first rounding to epsilon precision
       const xEpsilon = roundNumber(x, epsilonExponent)
-      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
-      return roundNumber(xSelected)
+      return roundNumber(xEpsilon)
     },
 
     'number, number': function (x, n) {
-      const xEpsilon = roundNumber(x, epsilonExponent)
-      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
-      return roundNumber(xSelected, n)
+      // Same as number: unless user specifies more decimals than epsilon
+      const dynamicEpsilonExponent = (n < 15) ? (n + 1) : n
+      const epsilonExponentSelected = epsilonExponent > dynamicEpsilonExponent ? epsilonExponent : dynamicEpsilonExponent
+      const xEpsilon = roundNumber(x, epsilonExponentSelected)
+      return roundNumber(xEpsilon, n)
     },
 
     'number, BigNumber': function (x, n) {
@@ -107,17 +108,19 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     BigNumber: function (x) {
+      // Handle round off errors by first rounding to epsilon precision
       const xEpsilon = new BigNumber(x).toDecimalPlaces(epsilonExponent)
-      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
-      return xSelected.toDecimalPlaces(0)
+      return xEpsilon.toDecimalPlaces(0)
     },
 
     'BigNumber, BigNumber': function (x, n) {
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
-      const xEpsilon = new BigNumber(x).toDecimalPlaces(epsilonExponent)
-      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
-      return xSelected.toDecimalPlaces(n.toNumber())
+      // Same as BigNumber: unless user specifies more decimals than epsilon
+      const dynamicEpsilonExponent = (n < 64) ? (n + 1) : n
+      const epsilonExponentSelected = epsilonExponent > dynamicEpsilonExponent ? new BigNumber(epsilonExponent) : new BigNumber(dynamicEpsilonExponent)
+      const xEpsilon = x.toDecimalPlaces(epsilonExponentSelected.toNumber())
+      return xEpsilon.toDecimalPlaces(n.toNumber())
     },
 
     Fraction: function (x) {
