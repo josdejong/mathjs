@@ -1,7 +1,7 @@
 # History
 
 
-# unpublished changes since 12.3.0
+# 2024-02-01, 12.3.1
 
 - Improved the typings of the arguments of `ArrayNode`, `FunctionNode`, 
   `IndexNode`, `OperatorNode`, and `RelationalNode` (#3123). Thanks @sylee957.
@@ -12,6 +12,10 @@
 - Fix: #3142 support BigNumber values for the options of function `format`:
   `precision`, `wordSize`, `lowerExp`, `upperExp`. Support BigNumber values
   for the option `wordSize` in the functions `hex`, `bin`, and `oct`. 
+- Fix: #3125 type definitions of function `hypot` (#3144). 
+  Thanks @silentmissile.
+- Fix: #3141 `help(config)` altering the actual `config` when evaluating the 
+  examples.
 - Docs: #3145 fix documentation about REPL, it does require a build step 
   nowadays.
 
