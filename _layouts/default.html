@@ -79,7 +79,7 @@
 
 <div id="footer">
   <a href="https://mathjs.org">mathjs.org</a> &bull;
-  <a href="https://github.com/josdejong/mathjs#license" target="_blank">copyright &copy; 2013-2023 jos de jong</a> &bull;
+  <a href="https://github.com/josdejong/mathjs#license" target="_blank">copyright &copy; 2013-<span id="year"></span> jos de jong</a> &bull;
   <a href="https://www.toptal.com/designers/subtlepatterns/bright-squares" target="_blank">background by waseem dahman</a>
 </div>
 
@@ -90,6 +90,8 @@
 </div>
 
 <script type="text/javascript">
+  document.getElementById('year').innerHTML = new Date().getFullYear()
+  
   // change layout for different screen sizes
   function resize () {
     var width = document.body.clientWidth;
