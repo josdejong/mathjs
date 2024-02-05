@@ -1,11 +1,13 @@
 import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 import { isNegativeNumber } from '../../plain/number/index.js'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
+import { nearlyEqual } from '../../utils/number.js'
 
 const name = 'isNegative'
-const dependencies = ['typed']
+const dependencies = ['typed', 'config']
 
-export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ typed, config }) => {
   /**
    * Test whether a value is negative: smaller than zero.
    * The function supports types `number`, `BigNumber`, `Fraction`, and `Unit`.
@@ -36,15 +38,13 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
    *                    Throws an error in case of an unknown data type.
    */
   return typed(name, {
-    number: isNegativeNumber,
+    number: x => nearlyEqual(x, 0, config.epsilon) ? false : isNegativeNumber(x),
 
-    BigNumber: function (x) {
-      return x.isNeg() && !x.isZero() && !x.isNaN()
-    },
+    BigNumber: x => bigNearlyEqual(x, new x.constructor(0), config.epsilon)
+      ? false
+      : x.isNeg() && !x.isZero() && !x.isNaN(),
 
-    Fraction: function (x) {
-      return x.s < 0 // It's enough to decide on the sign
-    },
+    Fraction: x => x.s < 0, // It's enough to decide on the sign
 
     Unit: typed.referToSelf(self =>
       x => typed.find(self, x.valueType())(x.value)),
