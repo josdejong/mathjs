@@ -110,11 +110,11 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // a dense
     const adata = a._data
     const asize = a._size
-    const adt = a._datatype == undefined ? a.getDataType() : a._datatype;
+    const adt = a._datatype == undefined ? a.getDataType() : a._datatype
     // b dense
     const bdata = b._data
     const bsize = b._size
-    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype;
+    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype
     // rows & columns
     const alength = asize[0]
     const bcolumns = bsize[1]
@@ -150,12 +150,19 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       c[j] = sum
     }
 
-    // return matrix
-    return a.createDenseMatrix({
+    // matrix to return
+    const return_matrix = a.createDenseMatrix({
       data: c,
       size: [bcolumns],
       datatype: dt
     })
+
+    // Set the type to undefined if it wasn't defined for a or b
+    if (adt != a._datatype || bdt != b._datatype)
+      return_matrix._datatype = undefined
+
+    // return matrix
+    return return_matrix
   }
 
   /**
@@ -198,10 +205,10 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // a dense
     const adata = a._data
     const asize = a._size
-    const adt = a._datatype == undefined ? a.getDataType() : a._datatype;
+    const adt = a._datatype == undefined ? a.getDataType() : a._datatype
     // b dense
     const bdata = b._data
-    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype;
+    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype
     // rows & columns
     const arows = asize[0]
     const acolumns = asize[1]
@@ -239,12 +246,19 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       c[i] = sum
     }
 
-    // return matrix
-    return a.createDenseMatrix({
+    // matrix to return
+    const return_matrix = a.createDenseMatrix({
       data: c,
       size: [arows],
       datatype: dt
     })
+
+    // Set the type to undefined if it wasn't defined for a or b
+    if (adt != a._datatype || bdt != b._datatype)
+      return_matrix._datatype = undefined
+
+    // return matrix
+    return return_matrix
   }
 
   /**
@@ -259,11 +273,11 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // a dense
     const adata = a._data
     const asize = a._size
-    const adt = a._datatype == undefined ? a.getDataType() : a._datatype;
+    const adt = a._datatype == undefined ? a.getDataType() : a._datatype
     // b dense
     const bdata = b._data
     const bsize = b._size
-    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype;
+    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype
     // rows & columns
     const arows = asize[0]
     const acolumns = asize[1]
@@ -306,6 +320,20 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
         c[i][j] = sum
       }
     }
+
+    // matrix to return
+    const return_matrix = a.createDenseMatrix({
+      data: c,
+      size: [arows, bcolumns],
+      datatype: dt
+    })
+
+    // Set the type to undefined if it wasn't defined for a or b
+    if (adt != a._datatype || bdt != b._datatype)
+      return_matrix._datatype = undefined
+
+    // return matrix
+    return return_matrix
   }
 
   /**
@@ -320,13 +348,13 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // a dense
     const adata = a._data
     const asize = a._size
-    const adt = a._datatype == undefined ? a.getDataType() : a._datatype;
+    const adt = a._datatype == undefined ? a.getDataType() : a._datatype
     // b sparse
     const bvalues = b._values
     const bindex = b._index
     const bptr = b._ptr
     const bsize = b._size
-    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype;
+    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype
     // validate b matrix
     if (!bvalues) { throw new Error('Cannot multiply Dense Matrix times Pattern only Matrix') }
     // rows & columns
@@ -413,6 +441,10 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // update ptr
     cptr[bcolumns] = cindex.length
 
+    // Set the type to undefined if it doesn't match
+    if (adt != a._datatype || bdt != b._datatype)
+      c._datatype = undefined
+
     // return sparse matrix
     return c
   }
@@ -430,12 +462,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const avalues = a._values
     const aindex = a._index
     const aptr = a._ptr
-    const adt = a._datatype == undefined ? a.getDataType() : a._datatype;
+    const adt = a._datatype == undefined ? a.getDataType() : a._datatype
     // validate a matrix
     if (!avalues) { throw new Error('Cannot multiply Pattern only Matrix times Dense Matrix') }
     // b dense
     const bdata = b._data
-    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype;
+    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype
     // rows & columns
     const arows = a._size[0]
     const brows = b._size[0]
@@ -509,14 +541,20 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // update ptr
     cptr[1] = cindex.length
 
-    // return sparse matrix
-    return a.createSparseMatrix({
+    // matrix to return
+    const return_matrix = a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
       size: [arows, 1],
       datatype: dt
     })
+
+    // Set the type to undefined if it wasn't defined for a or b
+    if (adt != a._datatype || bdt != b._datatype)
+      return_matrix._datatype = undefined
+
+    return return_matrix
   }
 
   /**
@@ -532,12 +570,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const avalues = a._values
     const aindex = a._index
     const aptr = a._ptr
-    const adt = a._datatype == undefined ? a.getDataType() : a._datatype;
+    const adt = a._datatype == undefined ? a.getDataType() : a._datatype
     // validate a matrix
     if (!avalues) { throw new Error('Cannot multiply Pattern only Matrix times Dense Matrix') }
     // b dense
     const bdata = b._data
-    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype;
+    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype
     // rows & columns
     const arows = a._size[0]
     const brows = b._size[0]
@@ -626,6 +664,10 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // update ptr
     cptr[bcolumns] = cindex.length
 
+    // Set the type to undefined if it wasn't defined for a or b
+    if (adt != a._datatype || bdt != b._datatype)
+      c._datatype = undefined
+
     // return sparse matrix
     return c
   }
@@ -643,12 +685,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const avalues = a._values
     const aindex = a._index
     const aptr = a._ptr
-    const adt = a._datatype == undefined ? a.getDataType() : a._datatype;
+    const adt = a._datatype == undefined ? a.getDataType() : a._datatype
     // b sparse
     const bvalues = b._values
     const bindex = b._index
     const bptr = b._ptr
-    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype;
+    const bdt = b._datatype == undefined ? b.getDataType() : b._datatype
 
     // rows & columns
     const arows = a._size[0]
@@ -748,6 +790,10 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     }
     // update ptr
     cptr[bcolumns] = cindex.length
+
+    // Set the type to undefined if it wasn't defined for a or b
+    if (adt != a._datatype || bdt != b._datatype)
+      c._datatype = undefined
 
     // return sparse matrix
     return c
