@@ -127,7 +127,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -221,7 +221,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -291,7 +291,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -373,7 +373,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let zero = 0
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -488,7 +488,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let zero = 0
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -593,7 +593,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let zero = 0
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -706,7 +706,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
