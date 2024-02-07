@@ -141,6 +141,13 @@ describe('parse', function () {
       assert.strictEqual(scope.f(3), 9)
     })
 
+    it('should support variable assignment inside a function definition', function () {
+      const scope = {}
+      parse('f(x)=(y=x)*2').compile().evaluate(scope)
+      assert.strictEqual(scope.f(2), 4)
+      assert.strictEqual(scope.y, 2)
+    })
+
     it('should spread a function over multiple lines', function () {
       assert.deepStrictEqual(parse('add(\n4\n,\n2\n)').compile().evaluate(), 6)
     })
@@ -1544,6 +1551,15 @@ describe('parse', function () {
       assert.strictEqual(f(1), false)
       assert.strictEqual(f(3), true)
       assert.strictEqual(f(5), false)
+    })
+
+    it('should use a variable assignment with a rawArgs function inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = (a=false) and (b=true)', scope)
+      assert.deepStrictEqual(parseAndEval('f(2)', scope), false)
+      assert.deepStrictEqual(Object.keys(scope), ['f', 'a'])
+      assert.strictEqual(scope.f, f)
+      assert.strictEqual(scope.a, false)
     })
 
     it('should parse logical xor', function () {
