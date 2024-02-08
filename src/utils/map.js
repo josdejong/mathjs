@@ -9,10 +9,8 @@ import { isObject } from './is.js'
  * will stop using this method, as all objects will be Maps, rather than
  * more security prone objects.
  */
-export class ObjectWrappingMap extends Map {
+export class ObjectWrappingMap {
   constructor (object) {
-    super()
-
     this.wrappedObject = object
   }
 
@@ -72,15 +70,13 @@ export class ObjectWrappingMap extends Map {
  * In this case, values `x` and `y` are read/written to map `b`,
  * all other values are read/written to map `a`.
  */
-export class PartitionedMap extends Map {
+export class PartitionedMap {
   /**
    * @param {Map} a
    * @param {Map} b
    * @param {Set} bKeys
    */
   constructor (a, b, bKeys) {
-    super()
-
     this.a = a
     this.b = b
     this.bKeys = bKeys
