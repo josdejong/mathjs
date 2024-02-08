@@ -38,7 +38,9 @@ export class ObjectWrappingMap extends Map {
   }
 
   forEach (callback) {
-    this.keys().forEach(key => callback(this.get(key), key, this))
+    for (const key of this.keys()) {
+      callback(this.get(key), key, this)
+    }
   }
 
   delete (key) {

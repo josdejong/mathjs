@@ -84,8 +84,27 @@ describe('maps', function () {
 
     assert.ok(!map.has('not-in-this-map'))
 
-    // TODO: test forEach
-    // TODO: test entries
+    // forEach
+    const log = []
+    map.forEach((value, key) => (log.push([key, value])))
+    assert.deepStrictEqual(log, [
+      ['a', 1],
+      ['b', 2],
+      ['c', 3],
+      ['d', 4],
+      ['e', 5],
+      ['f', 6]
+    ])
+
+    // entries
+    const it = map.entries()
+    assert.deepStrictEqual(it.next(), { done: false, value: ['a', 1] })
+    assert.deepStrictEqual(it.next(), { done: false, value: ['b', 2] })
+    assert.deepStrictEqual(it.next(), { done: false, value: ['c', 3] })
+    assert.deepStrictEqual(it.next(), { done: false, value: ['d', 4] })
+    assert.deepStrictEqual(it.next(), { done: false, value: ['e', 5] })
+    assert.deepStrictEqual(it.next(), { done: false, value: ['f', 6] })
+    assert.deepStrictEqual(it.next(), { done: true, value: undefined })
 
     // We can get the same object out using toObject
     const innerObject = toObject(map)
