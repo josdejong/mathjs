@@ -1,6 +1,14 @@
 # History
 
 
+# 2024-02-08, 12.3.2
+
+- Improved the performance of custom defined functions in the expression
+  parser (#3150).
+- Fix: #3143 cannot use `and` and `or` inside a function definition. 
+  Regression since `v12.1.0` (#3150).
+
+
 # 2024-02-01, 12.3.1
 
 - Improved the typings of the arguments of `ArrayNode`, `FunctionNode`, 
