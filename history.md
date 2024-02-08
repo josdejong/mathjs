@@ -5,6 +5,14 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20240208-1232">2024-02-08, 12.3.2 <a href="#20240208-1232" title="Permalink">#</a></h1>
+
+- Improved the performance of custom defined functions in the expression
+  parser  <a href="https://github.com/josdejong/mathjs/issues/3150">#3150</a>).
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3143">#3143</a> cannot use `and` and `or` inside a function definition. 
+  Regression since `v12.1.0`  <a href="https://github.com/josdejong/mathjs/issues/3150">#3150</a>).
+
+
 <h1 id="20240201-1231">2024-02-01, 12.3.1 <a href="#20240201-1231" title="Permalink">#</a></h1>
 
 - Improved the typings of the arguments of `ArrayNode`, `FunctionNode`, 

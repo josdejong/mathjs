@@ -111,16 +111,17 @@ allowing the function to process the arguments in a customized way. Raw
 functions are called as:
 
 ```
-rawFunction(args: Node[], math: Object, scope: Object)
+rawFunction(args: Node[], math: Object, scope: Map)
 ```
 
 Where :
 
 - `args` is an Array with nodes of the parsed arguments.
 - `math` is the math namespace against which the expression was compiled.
-- `scope` is a shallow _copy_ of the `scope` object provided when evaluating 
-  the expression, optionally extended with nested variables like a function 
-  parameter `x` of in a custom defined function like `f(x) = x^2`.
+- `scope` is a `Map` containing the variables defined in the scope passed 
+  via `evaluate(scope)`. In case of using a custom defined function like
+  `f(x) = rawFunction(x) ^ 2`, the scope passed to `rawFunction` also contains
+  the current value of parameter `x`.
 
 Raw functions must be imported in the `math` namespace, as they need to be
 processed at compile time. They are not supported when passed via a scope
