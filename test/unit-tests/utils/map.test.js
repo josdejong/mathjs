@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { isMap, ObjectWrappingMap, toObject, createMap, assign } from '../../../src/utils/map.js'
+import { isMap, ObjectWrappingMap, toObject, createMap, assign, PartitionedMap } from '../../../src/utils/map.js'
 
 describe('maps', function () {
   it('should provide isMap, a function to tell maps from non-maps', function () {
@@ -69,17 +69,188 @@ describe('maps', function () {
     }
 
     // keys()
-    assert.deepStrictEqual(map.keys(), ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+    assert.deepStrictEqual([...map.keys()], ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
 
     for (const key of map.keys()) {
       assert.ok(map.has(key))
     }
 
+    // size(
+    assert.strictEqual(map.size, 7)
+
+    // delete
+    map.delete('g')
+    assert.deepStrictEqual([...map.keys()], ['a', 'b', 'c', 'd', 'e', 'f'])
+
     assert.ok(!map.has('not-in-this-map'))
+
+    // forEach
+    const log = []
+    map.forEach((value, key) => (log.push([key, value])))
+    assert.deepStrictEqual(log, [
+      ['a', 1],
+      ['b', 2],
+      ['c', 3],
+      ['d', 4],
+      ['e', 5],
+      ['f', 6]
+    ])
+
+    // entries
+    const it = map.entries()
+    assert.deepStrictEqual(it.next(), { done: false, value: ['a', 1] })
+    assert.deepStrictEqual(it.next(), { done: false, value: ['b', 2] })
+    assert.deepStrictEqual(it.next(), { done: false, value: ['c', 3] })
+    assert.deepStrictEqual(it.next(), { done: false, value: ['d', 4] })
+    assert.deepStrictEqual(it.next(), { done: false, value: ['e', 5] })
+    assert.deepStrictEqual(it.next(), { done: false, value: ['f', 6] })
+    assert.deepStrictEqual(it.next(), { done: true, value: undefined })
 
     // We can get the same object out using toObject
     const innerObject = toObject(map)
     assert.strictEqual(innerObject, obj)
+
+    // clear
+    map.clear()
+    assert.deepStrictEqual([...map.keys()], [])
+    assert.deepStrictEqual(Object.keys(obj), [])
+  })
+
+  describe('PartitionedMap', function () {
+    function createPartitionedMap (bKeys) {
+      const a = new Map()
+      const b = new Map()
+      const p = new PartitionedMap(a, b, new Set(bKeys))
+      return { a, b, p }
+    }
+
+    it('get, set', function () {
+      const { a, b, p } = createPartitionedMap(['b'])
+      p
+        .set('a', 2)
+        .set('b', 3)
+
+      assert.strictEqual(p.get('a'), 2)
+      assert.strictEqual(p.get('b'), 3)
+      assert.strictEqual(p.get('c'), undefined)
+
+      assert.strictEqual(a.get('a'), 2)
+      assert.strictEqual(a.get('b'), undefined)
+
+      assert.strictEqual(b.get('a'), undefined)
+      assert.strictEqual(b.get('b'), 3)
+    })
+
+    it('has', function () {
+      const { a, b, p } = createPartitionedMap(['b'])
+      p
+        .set('a', 2)
+        .set('b', 3)
+
+      assert.strictEqual(p.has('a'), true)
+      assert.strictEqual(p.has('b'), true)
+      assert.strictEqual(p.has('c'), false)
+
+      assert.strictEqual(a.has('a'), true)
+      assert.strictEqual(a.has('b'), false)
+
+      assert.strictEqual(b.has('a'), false)
+      assert.strictEqual(b.has('b'), true)
+
+      assert.deepStrictEqual([...p.keys()], ['a', 'b'])
+      assert.deepStrictEqual([...a.keys()], ['a'])
+      assert.deepStrictEqual([...b.keys()], ['b'])
+    })
+
+    it('keys', function () {
+      const { a, b, p } = createPartitionedMap(['b'])
+      p.set('a', 2)
+      p.set('b', 3)
+
+      assert.deepStrictEqual([...p.keys()], ['a', 'b'])
+      assert.deepStrictEqual([...a.keys()], ['a'])
+      assert.deepStrictEqual([...b.keys()], ['b'])
+    })
+
+    it('forEach', function () {
+      const { a, b, p } = createPartitionedMap(['b'])
+      p.set('a', 2)
+      p.set('b', 3)
+      p.set('c', 4)
+
+      const pLog = []
+      p.forEach((value, key) => (pLog.push([key, value])))
+      assert.deepStrictEqual(pLog, [
+        ['a', 2],
+        ['c', 4],
+        ['b', 3]
+      ])
+
+      const aLog = []
+      a.forEach((value, key) => (aLog.push([key, value])))
+      assert.deepStrictEqual(aLog, [
+        ['a', 2],
+        ['c', 4]
+      ])
+
+      const bLog = []
+      b.forEach((value, key) => (bLog.push([key, value])))
+      assert.deepStrictEqual(bLog, [
+        ['b', 3]
+      ])
+    })
+
+    it('entries', function () {
+      const { p } = createPartitionedMap(['b'])
+      p.set('a', 2)
+      p.set('b', 3)
+      p.set('c', 4)
+
+      const it = p.entries()
+
+      assert.deepStrictEqual(it.next(), { done: false, value: ['a', 2] })
+      assert.deepStrictEqual(it.next(), { done: false, value: ['c', 4] })
+      assert.deepStrictEqual(it.next(), { done: false, value: ['b', 3] })
+      assert.deepStrictEqual(it.next(), { done: true, value: undefined })
+    })
+
+    it('size', function () {
+      const { p } = createPartitionedMap(['b'])
+      p.set('a', 2)
+      p.set('b', 3)
+      assert.strictEqual(p.size, 2)
+
+      p.set('c', 4)
+      assert.strictEqual(p.size, 3)
+
+      p.delete('c')
+      assert.strictEqual(p.size, 2)
+    })
+
+    it('delete', function () {
+      const { a, b, p } = createPartitionedMap(['b'])
+      p
+        .set('a', 2)
+        .set('b', 3)
+
+      p.delete('a')
+
+      assert.deepStrictEqual([...p.keys()], ['b'])
+      assert.deepStrictEqual([...a.keys()], [])
+      assert.deepStrictEqual([...b.keys()], ['b'])
+    })
+
+    it('clear', function () {
+      const { a, b, p } = createPartitionedMap(['b'])
+      a.set('a', 2)
+      b.set('b', 3)
+
+      p.clear()
+
+      assert.deepStrictEqual([...p.keys()], [])
+      assert.deepStrictEqual([...a.keys()], [])
+      assert.deepStrictEqual([...b.keys()], [])
+    })
   })
 
   it('should create a map from objects, maps, or undefined', function () {
