@@ -86,7 +86,6 @@
     katex.render(String.raw`z_0`, document.querySelector("#z0Label"))
     katex.render(String.raw`\epsilon`, document.querySelector("#epsilonLabel"))
 
-
     const inputs = document.querySelector("#inputs")
 
     // define the constants for the Lorenz attractor
@@ -94,24 +93,24 @@
     const beta = document.querySelector("#beta")
     const rho = document.querySelector("#rho")
 
+    // define the initial location
     const x0 = document.querySelector('#x0')
     const y0 = document.querySelector('#y0')
     const z0 = document.querySelector('#z0')
 
+    // define the tolerance for the solution
     const epsilon = document.querySelector('#epsilon')
 
     const layout = {
-        uirevision: 'true', height: 600
+        uirevision: 'true', height: 500
     }
 
     const t_span = [0, 100]
-    let y_0 = [x0.value, y0.value, z0.value]
 
     inputs.addEventListener("change", updateSolution)
 
+    let trace
     // solve the Lorenz attractor with the initial values
-    let sol = math.solveODE(createLorenz(sigma.value, rho.value, beta.value), t_span, y_0)
-    let trace = createTrace(sol)
     updateSolution()
 
     // crates a trace in the format needed for plotly
@@ -147,8 +146,8 @@
     }
 
     function updateSolution() {
-        y_0 = [x0.value, y0.value, z0.value]
-        sol = math.solveODE(createLorenz(sigma.value, rho.value, beta.value), t_span, y_0, { tol: epsilon.value })
+        const y_0 = [x0.value, y0.value, z0.value]
+        const sol = math.solveODE(createLorenz(sigma.value, rho.value, beta.value), t_span, y_0, { tol: epsilon.value })
         trace = createTrace(sol)
         // reactively render the plot on update
         Plotly.react('LorenzGraph', trace, layout)
