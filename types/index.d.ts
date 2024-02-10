@@ -2760,22 +2760,22 @@ export interface MathJsInstance extends MathJsFactory {
    * @param args Multiple scalar values
    * @returns The mode of all values
    */
-  mode<T extends MathScalarType>(...args: T[]): T
+  mode<T extends MathScalarType>(...args: T[]): T[]
   /**
    * @param args Multiple scalar values
    * @returns The mode of all values
    */
-  mode(...args: MathScalarType[]): MathScalarType
+  mode(...args: MathScalarType[]): MathScalarType[]
   /**
    * @param A A single matrix
    * @returns The median value
    */
-  mode<T extends MathScalarType>(A: T[] | T[][]): T
+  mode<T extends MathScalarType>(A: T[] | T[][]): T[]
   /**
    * @param A A single matrix
    * @returns The mode of all values
    */
-  mode(A: MathCollection): MathScalarType
+  mode(A: MathCollection): MathScalarType[]
 
   /**
    * Compute the product of a matrix or a list with values. In case of a
