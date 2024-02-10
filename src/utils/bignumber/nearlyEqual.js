@@ -1,41 +1,36 @@
 /**
- * Compares two BigNumbers.
- * @param {BigNumber} x       First value to compare
- * @param {BigNumber} y       Second value to compare
- * @param {number} [epsilon]  The maximum relative difference between x and y
- *                            If epsilon is undefined or null, the function will
- *                            test whether x and y are exactly equal.
- * @return {boolean} whether the two numbers are nearly equal
+ * Determines if two numbers are considered nearly equal based on relative and absolute tolerances.
+ *
+ * @param {BigNumber} a - The first number to compare.
+ * @param {BigNumber} b - The second number to compare.
+ * @param {number} [relTol=1e-09] - The relative tolerance, indicating the maximum allowed difference relative to the larger absolute value. Must be greater than 0.
+ * @param {number} [absTol=0] - The minimum absolute tolerance, useful for comparisons near zero. Must be at least 0.
+ * @returns {boolean} True if the numbers are considered nearly equal, false otherwise.
+ *
+ * @throws {Error} If `relTol` is less than or equal to 0.
+ * @throws {Error} If `absTol` is less than 0.
+ *
+ * @example
+ * nearlyEqual(1.000000001, 1.0, 1e-9);            // true
+ * nearlyEqual(1.000000002, 1.0, 1e-9);            // false
+ * nearlyEqual(1.0, 1.01, undefined, 0.01);        // true
+ * nearlyEqual(0.000000001, 0.0, undefined, 1e-8); // true
  */
-export function nearlyEqual (x, y, epsilon) {
-  // if epsilon is null or undefined, test whether x and y are exactly equal
-  if (epsilon === null || epsilon === undefined) {
-    return x.eq(y)
+export function nearlyEqual (a, b, relTol = 1e-09, absTol = 0) {
+  if (relTol <= 0) {
+    throw new Error('Relative tolerance must be greater than 0')
   }
 
-  // use "==" operator, handles infinities
-  if (x.eq(y)) {
+  if (absTol < 0) {
+    throw new Error('Absolute tolerance must be at least 0')
+  }
+
+  if (!a.isFinite() || !b.isFinite()) {
+    return a.eq(b)
+  }
+  if (a.eq(b)) {
     return true
   }
-
-  // NaN
-  if (x.isNaN() || y.isNaN()) {
-    return false
-  }
-
-  // at this point x and y should be finite
-  if (x.isFinite() && y.isFinite()) {
-    // check numbers are very close, needed when comparing numbers near zero
-    const diff = x.minus(y).abs()
-    if (diff.isZero()) {
-      return true
-    } else {
-      // use relative error
-      const max = x.constructor.max(x.abs(), y.abs())
-      return diff.lte(max.times(epsilon))
-    }
-  }
-
-  // Infinite and Number or negative Infinite and positive Infinite cases
-  return false
+  // abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+  return a.minus(b).abs().lte(a.constructor.max(a.constructor.max(a.abs(), b.abs()).mul(relTol), absTol))
 }
