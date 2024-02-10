@@ -1,12 +1,10 @@
 /**
- * Determines if two numbers are considered nearly equal based on relative and absolute tolerances.
- *
- * @param {BigNumber} a - The first number to compare.
- * @param {BigNumber} b - The second number to compare.
+ * Compares two BigNumbers.
+ * @param {BigNumber} a - First value to compare
+ * @param {BigNumber} b - Second value to compare
  * @param {number} [relTol=1e-09] - The relative tolerance, indicating the maximum allowed difference relative to the larger absolute value. Must be greater than 0.
  * @param {number} [absTol=0] - The minimum absolute tolerance, useful for comparisons near zero. Must be at least 0.
- * @returns {boolean} True if the numbers are considered nearly equal, false otherwise.
- *
+ * @returns {boolean} whether the two numbers are nearly equal
  * @throws {Error} If `relTol` is less than or equal to 0.
  * @throws {Error} If `absTol` is less than 0.
  *
@@ -24,7 +22,7 @@ export function nearlyEqual (a, b, relTol = 1e-09, absTol = 0) {
   if (absTol < 0) {
     throw new Error('Absolute tolerance must be at least 0')
   }
-
+  // NaN
   if (a.isNaN() || b.isNaN()) {
     return false
   }
@@ -32,6 +30,7 @@ export function nearlyEqual (a, b, relTol = 1e-09, absTol = 0) {
   if (!a.isFinite() || !b.isFinite()) {
     return a.eq(b)
   }
+  // use "==" operator, handles infinities
   if (a.eq(b)) {
     return true
   }
