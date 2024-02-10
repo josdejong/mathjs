@@ -617,15 +617,23 @@ export function nearlyEqual (a, b, relTol = 1e-09, absTol = 0) {
   if (relTol <= 0) {
     throw new Error('Relative tolerance must be greater than 0')
   }
+
   if (absTol < 0) {
     throw new Error('Absolute tolerance must be at least 0')
   }
+
+  if (isNaN(a) || isNaN(b)) {
+    return false
+  }
+
   if (!isFinite(a) || !isFinite(b)) {
     return a === b
   }
+
   if (a === b) {
     return true
   }
+
   // abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
   return Math.abs(a - b) <= Math.max(relTol * Math.max(Math.abs(a), Math.abs(b)), absTol)
 }

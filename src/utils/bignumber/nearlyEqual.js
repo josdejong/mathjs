@@ -25,6 +25,10 @@ export function nearlyEqual (a, b, relTol = 1e-09, absTol = 0) {
     throw new Error('Absolute tolerance must be at least 0')
   }
 
+  if (a.isNaN() || b.isNaN()) {
+    return false
+  }
+
   if (!a.isFinite() || !b.isFinite()) {
     return a.eq(b)
   }
