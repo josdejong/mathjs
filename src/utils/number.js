@@ -596,43 +596,35 @@ export function digits (value) {
 export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
 
 /**
- * Compares two floating point numbers.
- * @param {number} x          First value to compare
- * @param {number} y          Second value to compare
- * @param {number} [epsilon]  The maximum relative difference between x and y
- *                            If epsilon is undefined or null, the function will
- *                            test whether x and y are exactly equal.
- * @return {boolean} whether the two numbers are nearly equal
-*/
-export function nearlyEqual (x, y, epsilon) {
-  // if epsilon is null or undefined, test whether x and y are exactly equal
-  if (epsilon === null || epsilon === undefined) {
-    return x === y
+ * Determines if two numbers are considered nearly equal based on relative and absolute tolerances.
+ *
+ * @param {number} a - The first number to compare.
+ * @param {number} b - The second number to compare.
+ * @param {number} [rel_tol=1e-09] - The relative tolerance, indicating the maximum allowed difference relative to the larger absolute value. Must be greater than 0.
+ * @param {number} [abs_tol=0] - The minimum absolute tolerance, useful for comparisons near zero. Must be at least 0.
+ * @returns {boolean} True if the numbers are considered nearly equal, false otherwise.
+ *
+ * @throws {Error} If `rel_tol` is less than or equal to 0.
+ * @throws {Error} If `abs_tol` is less than 0.
+ *
+ * @example
+ * nearlyEqual(1.000000001, 1.0, 1e-9);            // true
+ * nearlyEqual(1.000000002, 1.0, 1e-9);            // false
+ * nearlyEqual(1.0, 1.01, undefined, 0.01);        // true
+ * nearlyEqual(0.000000001, 0.0, undefined, 1e-8); // true
+ */
+export function nearlyEqual(a, b, rel_tol = 1e-09, abs_tol = 0) {
+  if(rel_tol <= 0){
+    throw new Error('Relative tolerance must be greater than 0')
+  }
+  if(abs_tol < 0){
+    throw new Error('Absolute tolerance must be at least 0')
+  }
+  if(!isFinite(a) || !isFinite(b)){
+    return a === b
   }
 
-  if (x === y) {
-    return true
-  }
-
-  // NaN
-  if (isNaN(x) || isNaN(y)) {
-    return false
-  }
-
-  // at this point x and y should be finite
-  if (isFinite(x) && isFinite(y)) {
-    // check numbers are very close, needed when comparing numbers near zero
-    const diff = Math.abs(x - y)
-    if (diff < DBL_EPSILON) {
-      return true
-    } else {
-      // use relative error
-      return diff <= Math.max(Math.abs(x), Math.abs(y)) * epsilon
-    }
-  }
-
-  // Infinite and Number or negative Infinite and positive Infinite cases
-  return false
+  return Math.abs(a - b) <= Math.max(rel_tol * Math.max(Math.abs(a), Math.abs(b)), abs_tol)
 }
 
 /**
