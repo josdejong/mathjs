@@ -613,14 +613,14 @@ export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-
  * nearlyEqual(1.0, 1.01, undefined, 0.01);        // true
  * nearlyEqual(0.000000001, 0.0, undefined, 1e-8); // true
  */
-export function nearlyEqual(a, b, rel_tol = 1e-09, abs_tol = 0) {
-  if(rel_tol <= 0){
+export function nearlyEqual (a, b, rel_tol = 1e-09, abs_tol = 0) {
+  if (rel_tol <= 0) {
     throw new Error('Relative tolerance must be greater than 0')
   }
-  if(abs_tol < 0){
+  if (abs_tol < 0) {
     throw new Error('Absolute tolerance must be at least 0')
   }
-  if(!isFinite(a) || !isFinite(b)){
+  if (!isFinite(a) || !isFinite(b)) {
     return a === b
   }
 
