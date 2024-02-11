@@ -13,6 +13,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
         integrity="sha512-fHwaWebuwA7NSF5Qg/af4UeDx9XqUpYpOGgubo3yWu+b2IQR4UeQwbb42Ti7gVAjNtVoI/I9TEoYeu9omwcC6g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #LorenzGraph {
+            flex: 2;
+        }
+
+        #inputsDiv {
+            flex: 1;
+        }
+    </style>
 </head>
 
 <body>
@@ -102,7 +116,7 @@
     const epsilon = document.querySelector('#epsilon')
 
     const layout = {
-        uirevision: 'true', height: 500
+        uirevision: 'true', height: 600
     }
 
     const t_span = [0, 100]
