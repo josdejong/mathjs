@@ -614,6 +614,25 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('[[[1],[2]],[[3],[4]]]'), math.matrix([[[1], [2]], [[3], [4]]]))
     })
 
+    it('should parse a matrix with trailing commas', function () {
+      assert.ok(parseAndEval('[1,2;3,4;]') instanceof Matrix)
+
+      const m = parseAndEval('[1,2,3;4,5,6;]')
+      assert.deepStrictEqual(m.size(), [2, 3])
+      assert.deepStrictEqual(m, math.matrix([[1, 2, 3], [4, 5, 6]]))
+
+      const b = parseAndEval('[5, 6; 1, 1;]')
+      assert.deepStrictEqual(b.size(), [2, 2])
+      assert.deepStrictEqual(b, math.matrix([[5, 6], [1, 1]]))
+
+      // from 1 to n dimensions
+      assert.deepStrictEqual(parseAndEval('[ ]'), math.matrix([]))
+      assert.deepStrictEqual(parseAndEval('[1,2,3,]'), math.matrix([1, 2, 3]))
+      assert.deepStrictEqual(parseAndEval('[1;2;3;]'), math.matrix([[1], [2], [3]]))
+      assert.deepStrictEqual(parseAndEval('[[1,2],[3,4],]'), math.matrix([[1, 2], [3, 4]]))
+      assert.deepStrictEqual(parseAndEval('[[[1],[2]],[[3],[4]],]'), math.matrix([[[1], [2]], [[3], [4]]]))
+    })
+
     it('should parse an empty matrix', function () {
       assert.deepStrictEqual(parseAndEval('[]'), math.matrix([]))
     })
@@ -2333,7 +2352,7 @@ describe('parse', function () {
 
     try {
       mathClone.evaluate('f(x)=1;config({clone:f})')
-    } catch (err) {}
+    } catch (err) { }
 
     assert.strictEqual(mathClone.evaluate('2'), 2)
   })
