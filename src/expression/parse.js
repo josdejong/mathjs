@@ -1601,7 +1601,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getToken(state)
 
       // parse expression
-      if (state.token !== ']') {
+      if (state.token !== ']' && state.token !== ';') {
         params[len] = parseAssignment(state)
         len++
       }
