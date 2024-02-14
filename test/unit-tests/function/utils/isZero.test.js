@@ -19,6 +19,14 @@ describe('isZero', function () {
     assert.strictEqual(isZero(NaN), false)
   })
 
+  it('should test whether a number is near zero', function () {
+    // when epsilon is 1e-12
+    assert.strictEqual(isZero(1e-17), true)
+    assert.strictEqual(isZero(1e-16), true)
+    assert.strictEqual(isZero(1e-15), false)
+    assert.strictEqual(isZero(1e-14), false)
+  })
+
   it('should test whether a boolean is zero', function () {
     assert.strictEqual(isZero(true), false)
     assert.strictEqual(isZero(false), true)

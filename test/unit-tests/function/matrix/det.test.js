@@ -38,6 +38,12 @@ describe('det', function () {
       [2, 7, 4, 3, 7]
     ]), 1176)
     assert.strictEqual(det(diag([4, -5, 6])), -120)
+    assert.strictEqual(
+      det([
+        [6.123234262925839e-17, -1, 1],
+        [-0.8660253882408142, 0.5, 1],
+        [-0.6495190262794495, -0.3749999701976776, 1]
+      ]), 0.4330126459590976)
   })
 
   it('should return the determinant of a sparse matrix', function () {
