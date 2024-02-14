@@ -84,6 +84,9 @@ describe('abs', function () {
 
     u = abs(unit(complex(-4, 3), 'in'))
     assert.strictEqual(u.toString(), '5 in')
+
+    u = abs(unit(-10)) // dimensionless unit
+    assert.strictEqual(u.toString(), '10')
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

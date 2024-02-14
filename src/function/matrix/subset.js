@@ -1,14 +1,14 @@
 import { isIndex } from '../../utils/is.js'
 import { clone } from '../../utils/object.js'
-import { validateIndex } from '../../utils/array.js'
+import { isEmptyIndex, validateIndex, validateIndexSourceSize } from '../../utils/array.js'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'subset'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed', 'matrix', 'zeros', 'add']
 
-export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, zeros, add }) => {
   /**
    * Get or set a subset of a matrix or string.
    *
@@ -20,13 +20,15 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *     // get a subset
    *     const d = [[1, 2], [3, 4]]
-   *     math.subset(d, math.index(1, 0))        // returns 3
-   *     math.subset(d, math.index([0, 1], 1))   // returns [[2], [4]]
+   *     math.subset(d, math.index(1, 0))             // returns 3
+   *     math.subset(d, math.index([0, 1], 1))        // returns [[2], [4]]
+   *     math.subset(d, math.index([false, true], 0)) // returns [[3]]
    *
    *     // replace a subset
    *     const e = []
-   *     const f = math.subset(e, math.index(0, [0, 2]), [5, 6])  // f = [[5, 6]]
-   *     const g = math.subset(f, math.index(1, 1), 7, 0)         // g = [[5, 6], [0, 7]]
+   *     const f = math.subset(e, math.index(0, [0, 2]), [5, 6])  // f = [[5, 0, 6]]
+   *     const g = math.subset(f, math.index(1, 1), 7, 0)         // g = [[5, 0, 6], [0, 7, 0]]
+   *     math.subset(g, math.index([false, true], 1), 8)          // returns [[5, 0, 6], [0, 8, 0]]
    *
    *     // get submatrix using ranges
    *     const M = [
@@ -34,7 +36,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *       [4,5,6],
    *       [7,8,9]
    *     ]
-   *     math.subset(M, math.index(math.range(0,2), math.range(0,3))) // [[1,2,3],[4,5,6]]
+   *     math.subset(M, math.index(math.range(0,2), math.range(0,3))) // [[1, 2, 3], [4, 5, 6]]
    *
    * See also:
    *
@@ -53,49 +55,81 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *                                          math.matrix elements will be left undefined.
    * @return {Array | Matrix | string} Either the retrieved subset or the updated matrix.
    */
+
   return typed(name, {
     // get subset
-    'Array, Index': function (value, index) {
-      const m = matrix(value)
-      const subset = m.subset(index) // returns a Matrix
-      return index.isScalar()
-        ? subset
-        : subset.valueOf() // return an Array (like the input)
-    },
-
     'Matrix, Index': function (value, index) {
+      if (isEmptyIndex(index)) { return matrix() }
+      validateIndexSourceSize(value, index)
       return value.subset(index)
     },
+
+    'Array, Index': typed.referTo('Matrix, Index', function (subsetRef) {
+      return function (value, index) {
+        const subsetResult = subsetRef(matrix(value), index)
+        return index.isScalar() ? subsetResult : subsetResult.valueOf()
+      }
+    }),
 
     'Object, Index': _getObjectProperty,
 
     'string, Index': _getSubstring,
 
     // set subset
-    'Array, Index, any': function (value, index, replacement) {
-      return matrix(clone(value))
-        .subset(index, replacement, undefined)
-        .valueOf()
-    },
-
-    'Array, Index, any, any': function (value, index, replacement, defaultValue) {
-      return matrix(clone(value))
-        .subset(index, replacement, defaultValue)
-        .valueOf()
-    },
-
-    'Matrix, Index, any': function (value, index, replacement) {
-      return value.clone().subset(index, replacement)
-    },
-
     'Matrix, Index, any, any': function (value, index, replacement, defaultValue) {
-      return value.clone().subset(index, replacement, defaultValue)
+      if (isEmptyIndex(index)) { return value }
+      validateIndexSourceSize(value, index)
+      return value.clone().subset(index, _broadcastReplacement(replacement, index), defaultValue)
     },
+
+    'Array, Index, any, any': typed.referTo('Matrix, Index, any, any', function (subsetRef) {
+      return function (value, index, replacement, defaultValue) {
+        const subsetResult = subsetRef(matrix(value), index, replacement, defaultValue)
+        return subsetResult.isMatrix ? subsetResult.valueOf() : subsetResult
+      }
+    }),
+
+    'Array, Index, any': typed.referTo('Matrix, Index, any, any', function (subsetRef) {
+      return function (value, index, replacement) {
+        return subsetRef(matrix(value), index, replacement, undefined).valueOf()
+      }
+    }),
+
+    'Matrix, Index, any': typed.referTo('Matrix, Index, any, any', function (subsetRef) {
+      return function (value, index, replacement) { return subsetRef(value, index, replacement, undefined) }
+    }),
 
     'string, Index, string': _setSubstring,
     'string, Index, string, string': _setSubstring,
     'Object, Index, any': _setObjectProperty
   })
+
+  /**
+   * Broadcasts a replacment value to be the same size as index
+   * @param {number | BigNumber | Array | Matrix} replacement Replacement value to try to broadcast
+   * @param {*} index Index value
+   * @returns broadcasted replacement that matches the size of index
+   */
+
+  function _broadcastReplacement (replacement, index) {
+    if (typeof replacement === 'string') {
+      throw new Error('can\'t boradcast a string')
+    }
+    if (index._isScalar) {
+      return replacement
+    }
+
+    const indexSize = index.size()
+    if (indexSize.every(d => d > 0)) {
+      try {
+        return add(replacement, zeros(indexSize))
+      } catch (error) {
+        return replacement
+      }
+    } else {
+      return replacement
+    }
+  }
 })
 
 /**
@@ -110,6 +144,10 @@ function _getSubstring (str, index) {
     // TODO: better error message
     throw new TypeError('Index expected')
   }
+
+  if (isEmptyIndex(index)) { return '' }
+  validateIndexSourceSize(Array.from(str), index)
+
   if (index.size().length !== 1) {
     throw new DimensionError(index.size().length, 1)
   }
@@ -134,7 +172,7 @@ function _getSubstring (str, index) {
  * @param {string} str            string to be replaced
  * @param {Index} index           An index or list of indices (character positions)
  * @param {string} replacement    Replacement string
- * @param {string} [defaultValue] Default value to be uses when resizing
+ * @param {string} [defaultValue] Default value to be used when resizing
  *                                the string. is ' ' by default
  * @returns {string} result
  * @private
@@ -144,6 +182,8 @@ function _setSubstring (str, index, replacement, defaultValue) {
     // TODO: better error message
     throw new TypeError('Index expected')
   }
+  if (isEmptyIndex(index)) { return str }
+  validateIndexSourceSize(Array.from(str), index)
   if (index.size().length !== 1) {
     throw new DimensionError(index.size().length, 1)
   }
@@ -197,6 +237,8 @@ function _setSubstring (str, index, replacement, defaultValue) {
  * @private
  */
 function _getObjectProperty (object, index) {
+  if (isEmptyIndex(index)) { return undefined }
+
   if (index.size().length !== 1) {
     throw new DimensionError(index.size(), 1)
   }
@@ -218,6 +260,7 @@ function _getObjectProperty (object, index) {
  * @private
  */
 function _setObjectProperty (object, index, replacement) {
+  if (isEmptyIndex(index)) { return object }
   if (index.size().length !== 1) {
     throw new DimensionError(index.size(), 1)
   }

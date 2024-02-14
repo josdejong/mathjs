@@ -291,6 +291,29 @@ describe('BlockNode', function () {
     assert.strictEqual(n.toString({ handler: customFunction }), 'const(1, number); const(2, number); ')
   })
 
+  it('should stringify a BlockNode with custom toHML', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node, options) {
+      if (node.type === 'BlockNode') {
+        let string = ''
+        node.blocks.forEach(function (block) {
+          string += block.node.toHTML(options) + '; '
+        })
+
+        return string
+      } else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
+      }
+    }
+
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
+
+    const n = new BlockNode([{ node: a }, { node: b }])
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), 'const(1, number); const(2, number); ')
+  })
+
   it('toJSON and fromJSON', function () {
     const b = new ConstantNode(1)
     const c = new ConstantNode(2)
@@ -318,7 +341,7 @@ describe('BlockNode', function () {
       { node: new SymbolNode('foo'), visible: true }
     ])
 
-    assert.strictEqual(n.toTex(), '5\\;\\;\n foo:=3;\\;\\;\n foo')
+    assert.strictEqual(n.toTex(), '5\\;\\;\n foo=3;\\;\\;\n foo')
   })
 
   it('should LaTeX a BlockNode with custom toTex', function () {

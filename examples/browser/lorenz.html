@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>math.js | Lorenz Attractor</title>
+    <script src="../../lib/browser/math.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.25.2.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+    <div id="LorenzGraph"></div>
+</body>
+<script defer>
+
+    // define the constants for the Lorenz attractor
+    const sigma = 10
+    const beta = 2.7
+    const rho = 28
+
+    // solve the Lorenz attractor
+    const sol = math.solveODE(lorenz, [0, 100], [1, 1, 1])
+
+    // make colors that represents time differences in the solution
+    const diff = math.diff(sol.t)
+    const color = [diff[0], ...diff]
+
+    // render the plot using plotly
+    Plotly.newPlot('LorenzGraph',
+        [{
+            x: sol.y.map(u => u[0]),
+            y: sol.y.map(u => u[1]),
+            z: sol.y.map(u => u[2]),
+            line: { color, colorscale: 'Jet' },
+            type: "scatter3d",
+            mode: "lines"
+        }],
+        { width: 800, height: 600 }
+    )
+
+    // define the lorenz attractor
+    function lorenz(t, u) {
+        const [x, y, z] = u
+        return [
+            sigma * (y - x),
+            x * (rho - z) - y,
+            x * y - beta * z
+        ]
+    }
+</script>
+
+</html>

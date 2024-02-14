@@ -393,6 +393,7 @@ describe('Unit', function () {
     it('should convert a unitless quantity', function () {
       const u = Unit.parse('5', { allowNoUnits: true })
       assert.strictEqual(u.toNumeric(), 5)
+      assert.strictEqual(u.toNumeric('mm/m'), 5000)
     })
 
     it('should convert a binary prefixes (1)', function () {
@@ -737,8 +738,8 @@ describe('Unit', function () {
     })
 
     it('should format a unit with a bignumber', function () {
-      assert.strictEqual(new Unit(math.bignumber(1).plus(1e-24), 'm').format(), '1.000000000000000000000001 m')
-      assert.strictEqual(new Unit(math.bignumber(1e24).plus(1), 'm').format(), '1.000000000000000000000001 Ym')
+      assert.strictEqual(new Unit(math.bignumber(1).plus(1e-30), 'm').format(), '1.000000000000000000000000000001 m')
+      assert.strictEqual(new Unit(math.bignumber(1e30).plus(1), 'm').format(), '1.000000000000000000000000000001 Qm')
     })
 
     it('should format a unit with a fraction', function () {
@@ -991,6 +992,36 @@ describe('Unit', function () {
       assert.strictEqual(Unit.parse('5 bar').toString(), '5 bar')
       assert.strictEqual(Unit.parse('5 millibar').toString(), '5 millibar')
       assert.strictEqual(Unit.parse('5 mbar').toString(), '5 mbar')
+    })
+  })
+
+  describe('metric prefixes adopted by BIPM in 2022: Q(uetta), R(onna), r(onto), and q(uecto)', function () {
+    it('should accept long prefixes', function () {
+      assert.strictEqual(new Unit(math.bignumber(1e30), 'meter').format(), '1 quettameter')
+      assert.strictEqual(new Unit(math.bignumber(1e27), 'meter').format(), '1 ronnameter')
+      assert.strictEqual(new Unit(math.bignumber(1e-27), 'meter').format(), '1 rontometer')
+      assert.strictEqual(new Unit(math.bignumber(1e-30), 'meter').format(), '1 quectometer')
+    })
+
+    it('should accept short prefixes', function () {
+      assert.strictEqual(new Unit(math.bignumber(1e30), 'm').format(), '1 Qm')
+      assert.strictEqual(new Unit(math.bignumber(1e27), 'm').format(), '1 Rm')
+      assert.strictEqual(new Unit(math.bignumber(1e-27), 'm').format(), '1 rm')
+      assert.strictEqual(new Unit(math.bignumber(1e-30), 'm').format(), '1 qm')
+    })
+
+    it('should create square meter correctly', function () {
+      assert.strictEqual(new Unit(math.bignumber(1e60), 'm2').format(), '1 Qm2')
+      assert.strictEqual(new Unit(math.bignumber(1e54), 'm2').format(), '1 Rm2')
+      assert.strictEqual(new Unit(math.bignumber(1e-54), 'm2').format(), '1 rm2')
+      assert.strictEqual(new Unit(math.bignumber(1e-60), 'm2').format(), '1 qm2')
+    })
+
+    it('should create cubic meter correctly', function () {
+      assert.strictEqual(new Unit(math.bignumber(1e90), 'm3').format(), '1 Qm3')
+      assert.strictEqual(new Unit(math.bignumber(1e81), 'm3').format(), '1 Rm3')
+      assert.strictEqual(new Unit(math.bignumber(1e-81), 'm3').format(), '1 rm3')
+      assert.strictEqual(new Unit(math.bignumber(1e-90), 'm3').format(), '1 qm3')
     })
   })
 
@@ -1326,6 +1357,7 @@ describe('Unit', function () {
       assert.strictEqual(Unit.parse('3 ft').toSI().format(10), '0.9144 m')
       assert.strictEqual(Unit.parse('0.111 ft^2').toSI().format(10), '0.01031223744 m^2')
       assert.strictEqual(Unit.parse('1 kgf').toSI().toString(), '9.80665 (kg m) / s^2')
+      assert.strictEqual(Unit.parse('300 degC').toSI().toString(), '573.15 K')
     })
 
     it('should return SI units for valueless units', function () {

@@ -7,12 +7,12 @@ const dependencies = [
   'matrix',
   'divideScalar',
   'multiplyScalar',
-  'subtract',
+  'subtractScalar',
   'equalScalar',
   'DenseMatrix'
 ]
 
-export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtract, equalScalar, DenseMatrix }) => {
+export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtractScalar, equalScalar, DenseMatrix }) => {
   const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**
@@ -90,7 +90,7 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
         // loop rows
         for (let i = j - 1; i >= 0; i--) {
           // update copy of b
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, mdata[i][j]))]
+          bdata[i] = [subtractScalar(bdata[i][0] || 0, multiplyScalar(xj, mdata[i][j]))]
         }
       } else {
         // zero value at j
@@ -162,7 +162,7 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
         for (let k = 0, lastIndex = jIndices.length; k < lastIndex; k++) {
           const i = jIndices[k]
-          bdata[i] = [subtract(bdata[i][0], multiplyScalar(xj, jValues[k]))]
+          bdata[i] = [subtractScalar(bdata[i][0], multiplyScalar(xj, jValues[k]))]
         }
 
         x[j] = [xj]

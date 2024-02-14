@@ -133,7 +133,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @return {string} str
      * @override
      */
-    toHTML (options) {
+    _toHTML (options) {
       const name = escape(this.name)
 
       if (name === 'true' || name === 'false') {

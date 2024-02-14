@@ -1,0 +1,22 @@
+{
+  "name": "code-editor",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "5.0.11"
+  },
+  "dependencies": {
+    "@codemirror/language": "6.10.0",
+    "@codemirror/state": "6.4.0",
+    "codemirror": "6.0.1",
+    "github-markdown-css": "5.5.0",
+    "katex": "0.16.9",
+    "mathjs": "12.3.0"
+  }
+}

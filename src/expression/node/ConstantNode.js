@@ -92,7 +92,7 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Object} options
      * @return {string} str
      */
-    toHTML (options) {
+    _toHTML (options) {
       const value = this._toString(options)
 
       switch (typeOf(this.value)) {

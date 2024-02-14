@@ -138,7 +138,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @return {string} str
      * @override
      */
-    toHTML (options) {
+    _toHTML (options) {
       const items = this.items.map(function (node) {
         return node.toHTML(options)
       })

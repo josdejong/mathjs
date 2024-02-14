@@ -1,12 +1,12 @@
-import { isMatrix, isRange } from '../../utils/is.js'
+import { isArray, isMatrix, isRange } from '../../utils/is.js'
 import { clone } from '../../utils/object.js'
 import { isInteger } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'Index'
-const dependencies = ['ImmutableDenseMatrix']
+const dependencies = ['ImmutableDenseMatrix', 'getMatrixDataType']
 
-export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ ImmutableDenseMatrix }) => {
+export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ ImmutableDenseMatrix, getMatrixDataType }) => {
   /**
    * Create an index. An Index can store ranges and sets for multiple dimensions.
    * Matrix.get, Matrix.set, and math.subset accept an Index as input.
@@ -19,7 +19,9 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    *     A string (containing a name of an object property)
    *     An instance of Range
    *     An Array with the Set values
+   *     An Array with Booleans
    *     A Matrix with the Set values
+   *     A Matrix with Booleans
    *
    * The parameters start, end, and step must be integer numbers.
    *
@@ -33,22 +35,34 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
     }
 
     this._dimensions = []
+    this._sourceSize = []
     this._isScalar = true
 
     for (let i = 0, ii = arguments.length; i < ii; i++) {
       const arg = arguments[i]
-
+      const argIsArray = isArray(arg)
+      const argIsMatrix = isMatrix(arg)
+      let sourceSize = null
       if (isRange(arg)) {
         this._dimensions.push(arg)
         this._isScalar = false
-      } else if (Array.isArray(arg) || isMatrix(arg)) {
+      } else if (argIsArray || argIsMatrix) {
         // create matrix
-        const m = _createImmutableMatrix(arg.valueOf())
+        let m
+
+        if (getMatrixDataType(arg) === 'boolean') {
+          if (argIsArray) m = _createImmutableMatrix(_booleansArrayToNumbersForIndex(arg).valueOf())
+          if (argIsMatrix) m = _createImmutableMatrix(_booleansArrayToNumbersForIndex(arg._data).valueOf())
+          sourceSize = arg.valueOf().length
+        } else {
+          m = _createImmutableMatrix(arg.valueOf())
+        }
+
         this._dimensions.push(m)
         // size
         const size = m.size()
         // scalar
-        if (size.length !== 1 || size[0] !== 1) {
+        if (size.length !== 1 || size[0] !== 1 || sourceSize !== null) {
           this._isScalar = false
         }
       } else if (typeof arg === 'number') {
@@ -59,6 +73,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
       } else {
         throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range')
       }
+      this._sourceSize.push(sourceSize)
       // TODO: implement support for wildcard '*'
     }
   }
@@ -89,6 +104,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
     const index = new Index()
     index._dimensions = clone(this._dimensions)
     index._isScalar = this._isScalar
+    index._sourceSize = this._sourceSize
     return index
   }
 
@@ -274,3 +290,19 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
   return Index
 }, { isClass: true })
+
+/**
+ * Receives an array of booleans and returns an array of Numbers for Index
+ * @param {Array} booleanArrayIndex An array of booleans
+ * @return {Array} A set of numbers ready for index
+ */
+function _booleansArrayToNumbersForIndex (booleanArrayIndex) {
+  // gets an array of booleans and returns an array of numbers
+  const indexOfNumbers = []
+  booleanArrayIndex.forEach((bool, idx) => {
+    if (bool) {
+      indexOfNumbers.push(idx)
+    }
+  })
+  return indexOfNumbers
+}

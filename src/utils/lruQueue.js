@@ -19,7 +19,7 @@ export function lruQueue (limit) {
       base = 1
       return
     }
-    while (!hasOwnProperty.call(queue, ++base)) continue
+    while (!Object.prototype.hasOwnProperty.call(queue, ++base)) { /* empty */ }
   }
   limit = Math.abs(limit)
   return {
@@ -36,7 +36,7 @@ export function lruQueue (limit) {
       }
       delete queue[oldIndex]
       if (base !== oldIndex) return undefined
-      while (!hasOwnProperty.call(queue, ++base)) continue
+      while (!Object.prototype.hasOwnProperty.call(queue, ++base)) { /* empty */ }
       return undefined
     },
     delete: del,

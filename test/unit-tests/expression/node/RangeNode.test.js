@@ -312,6 +312,27 @@ describe('RangeNode', function () {
     assert.strictEqual(n.toString({ handler: customFunction }), 'from const(1, number) to const(2, number) with steps of const(3, number)')
   })
 
+  it('should stringify a RangeNode with custom toHTML', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node, options) {
+      if (node.type === 'RangeNode') {
+        return 'from ' + node.start.toHTML(options) +
+          ' to ' + node.end.toHTML(options) +
+          ' with steps of ' + node.step.toHTML(options)
+      } else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
+      }
+    }
+
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
+    const c = new ConstantNode(3)
+
+    const n = new RangeNode(a, b, c)
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), 'from const(1, number) to const(2, number) with steps of const(3, number)')
+  })
+
   it('should respect the \'all\' parenthesis option', function () {
     assert.strictEqual(math.parse('1:2:3').toString({ parenthesis: 'all' }), '(1):(2):(3)')
     assert.strictEqual(math.parse('1:2:3').toTex({ parenthesis: 'all' }), '\\left(1\\right):\\left(2\\right):\\left(3\\right)')

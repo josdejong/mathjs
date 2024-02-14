@@ -2,7 +2,7 @@ import { DEFAULT_CONFIG } from '../core/config.js'
 import { MATRIX_OPTIONS, NUMBER_OPTIONS } from '../core/function/config.js'
 
 // create a read-only version of config
-export const config = /* #__PURE__ */ function (options) {
+export const config = function (options) {
   if (options) {
     throw new Error('The global config is readonly. \n' +
       'Please create a mathjs instance if you want to change the default configuration. \n' +

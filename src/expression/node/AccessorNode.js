@@ -158,7 +158,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Object} options
      * @return {string}
      */
-    toHTML (options) {
+    _toHTML (options) {
       let object = this.object.toHTML(options)
       if (needParenthesis(this.object)) {
         object =

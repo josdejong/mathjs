@@ -1,5 +1,5 @@
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
-import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array.js'
+import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo } from '../../utils/array.js'
 import { format } from '../../utils/string.js'
 import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
@@ -321,10 +321,22 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       if (sSize.length !== 0) {
         throw new TypeError('Scalar expected')
       }
-
       matrix.set(index.min(), submatrix, defaultValue)
     } else {
       // set a submatrix
+
+      // broadcast submatrix
+      if (!deepStrictEqual(sSize, iSize)) {
+        try {
+          if (sSize.length === 0) {
+            submatrix = broadcastTo([submatrix], iSize)
+          } else {
+            submatrix = broadcastTo(submatrix, iSize)
+          }
+          sSize = arraySize(submatrix)
+        } catch {
+        }
+      }
 
       // validate dimensions
       if (iSize.length < matrix._size.length) {
@@ -920,19 +932,18 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
   /**
    * Preprocess data, which can be an Array or DenseMatrix with nested Arrays and
-   * Matrices. Replaces all nested Matrices with Arrays
+   * Matrices. Clones all (nested) Arrays, and replaces all nested Matrices with Arrays
    * @memberof DenseMatrix
-   * @param {Array} data
+   * @param {Array | Matrix} data
    * @return {Array} data
    */
   function preprocess (data) {
-    for (let i = 0, ii = data.length; i < ii; i++) {
-      const elem = data[i]
-      if (isArray(elem)) {
-        data[i] = preprocess(elem)
-      } else if (elem && elem.isMatrix === true) {
-        data[i] = preprocess(elem.valueOf())
-      }
+    if (isMatrix(data)) {
+      return preprocess(data.valueOf())
+    }
+
+    if (isArray(data)) {
+      return data.map(preprocess)
     }
 
     return data

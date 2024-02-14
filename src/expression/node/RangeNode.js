@@ -217,7 +217,7 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @param {Object} options
      * @return {string} str
      */
-    toHTML (options) {
+    _toHTML (options) {
       const parenthesis =
           (options && options.parenthesis) ? options.parenthesis : 'keep'
       const parens =
