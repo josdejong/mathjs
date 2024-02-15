@@ -1,6 +1,12 @@
 # History
 
 
+# Unpublished changes since 12.3.2
+
+- Docs: describe method `getAllAsMap` in the Parser docs (#3158, #3157).
+  Thanks @dvd101x.
+
+
 # 2024-02-08, 12.3.2
 
 - Improved the performance of custom defined functions in the expression
