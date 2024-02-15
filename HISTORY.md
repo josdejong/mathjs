@@ -1,6 +1,22 @@
 # History
 
 
+# Unpublished changes since 12.3.2
+
+- Feat: implement support for trailing commas in matrices (#3154, #2968).
+  Thanks @dvd101x.
+- Docs: describe method `getAllAsMap` in the Parser docs (#3158, #3157).
+  Thanks @dvd101x.
+
+
+# 2024-02-08, 12.3.2
+
+- Improved the performance of custom defined functions in the expression
+  parser (#3150).
+- Fix: #3143 cannot use `and` and `or` inside a function definition. 
+  Regression since `v12.1.0` (#3150).
+
+
 # 2024-02-01, 12.3.1
 
 - Improved the typings of the arguments of `ArrayNode`, `FunctionNode`, 
