@@ -640,6 +640,24 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('[[[1],[2]],[[3],[4]],]'), math.matrix([[[1], [2]], [[3], [4]]]))
     })
 
+    it('should throw an error when multiple trailing commas/semicolons are in a matrix', function () {
+      assert.throws(function () {
+        parseAndEval('[1,2,3,,] ')
+      }, /SyntaxError: Value expected/)
+
+      assert.throws(function () {
+        parseAndEval('[1,2;3,4;,] ')
+      }, /SyntaxError: Value expected/)
+
+      assert.throws(function () {
+        parseAndEval('[1;2;3;;]')
+      }, /SyntaxError: Value expected/)
+
+      assert.throws(function () {
+        parseAndEval('[[[1],[2]],[[3],[4]],,]')
+      }, /SyntaxError: Value expected/)
+    })
+
     it('should parse an empty matrix', function () {
       assert.deepStrictEqual(parseAndEval('[]'), math.matrix([]))
     })
