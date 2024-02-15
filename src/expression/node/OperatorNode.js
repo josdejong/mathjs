@@ -1,5 +1,6 @@
 import { isNode, isConstantNode, isOperatorNode, isParenthesisNode } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
+import { createSubScope } from '../../utils/scope.js'
 import { escape } from '../../utils/string.js'
 import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
 import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators.js'
@@ -309,7 +310,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         // "raw" evaluation
         const rawArgs = this.args
         return function evalOperatorNode (scope, args, context) {
-          return fn(rawArgs, math, scope)
+          return fn(rawArgs, math, createSubScope(scope, args))
         }
       } else if (evalArgs.length === 1) {
         const evalArg0 = evalArgs[0]

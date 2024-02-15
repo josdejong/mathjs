@@ -1200,7 +1200,8 @@ export interface MathJsInstance extends MathJsFactory {
    * whole matrix.
    * @returns Returns the hypothenuse of the input values.
    */
-  hypot<T extends (number | BigNumber)[]>(...args: T[]): T
+  hypot<T extends number | BigNumber>(...args: T[]): T
+  hypot<T extends number | BigNumber>(args: T[]): T
 
   /**
    * Calculate the least common multiple for two or more values or arrays.
@@ -3012,7 +3013,7 @@ export interface MathJsInstance extends MathJsFactory {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    options?: FormatOptions | number | ((item: any) => string),
+    options?: FormatOptions | number | BigNumber | ((item: any) => string),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     callback?: (value: any) => string
   ): string
@@ -3860,8 +3861,10 @@ export interface Matrix {
   ): void
   toArray(): MathArray
   valueOf(): MathArray
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  format(options?: FormatOptions | number | ((value: any) => string)): string
+  format(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    options?: FormatOptions | number | BigNumber | ((value: any) => string)
+  ): string
   toString(): string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   toJSON(): any
@@ -4252,19 +4255,19 @@ export interface FormatOptions {
    * case of notation 'fixed', precision defines the number of significant
    * digits after the decimal point, and is 0 by default.
    */
-  precision?: number
+  precision?: number | BigNumber
 
   /**
    * Exponent determining the lower boundary for formatting a value with
    * an exponent when notation='auto. Default value is -3.
    */
-  lowerExp?: number
+  lowerExp?: number | BigNumber
 
   /**
    * Exponent determining the upper boundary for formatting a value with
    * an exponent when notation='auto. Default value is 5.
    */
-  upperExp?: number
+  upperExp?: number | BigNumber
 
   /**
    * Available values: 'ratio' (default) or 'decimal'. For example
@@ -4272,6 +4275,15 @@ export interface FormatOptions {
    * and will output 0.(3) when 'decimal' is configured.
    */
   fraction?: string
+
+  /**
+   * The word size in bits to use for formatting in binary, octal, or
+   * hexadecimal notation. To be used only with `'bin'`, `'oct'`, or `'hex'`
+   * values for `notation` option. When this option is defined the value
+   * is formatted as a signed twos complement integer of the given word
+   * size and the size suffix is appended to the output.
+   */
+  wordSize?: number | BigNumber
 }
 
 export interface Help {
