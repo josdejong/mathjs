@@ -10,6 +10,7 @@ const matrix = math.matrix
 const sparse = math.sparse
 const round = math.round
 const unit = math.unit
+const math2 = math.create()
 
 //                                        1         2         3         4         5         6
 //                            xx.1234567890123456789012345678901234567890123456789012345678901234
@@ -170,6 +171,17 @@ describe('round', function () {
     assert.deepStrictEqual(round(math.range(0, 2.1, 1 / 3)), math.matrix([0, 0, 1, 1, 1, 2, 2]))
     assert.deepStrictEqual(round([1.7, 2.3]), [2, 2])
     assert.deepStrictEqual(round(math.matrix([1.7, 2.3])).valueOf(), [2, 2])
+  })
+
+  describe('changing config.epsilon during runtime', function () {
+    it('uses default config.epsilon of 1e-12', function () {
+      assert.strictEqual(math2.round((0.000000000001459), 12), 1e-12)
+    })
+
+    it('uses updated config.epsilon value', function () {
+      math2.config({ epsilon: 1e-13 })
+      assert.strictEqual(math2.round((0.000000000001459), 12), 2e-12)
+    })
   })
 
   describe('Array', function () {

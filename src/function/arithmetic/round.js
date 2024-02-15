@@ -23,7 +23,10 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-  const epsilonExponent = Math.abs(splitNumber(config.epsilon).exponent)
+
+  function toExp (epsilon) {
+    return Math.abs(splitNumber(epsilon).exponent)
+  }
 
   /**
    * Round a value towards the nearest rounded value.
@@ -72,15 +75,16 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   return typed(name, {
     number: function (x) {
       // Handle round off errors by first rounding to epsilon precision
-      const xEpsilon = roundNumber(x, epsilonExponent)
+      const xEpsilon = roundNumber(x, toExp(config.epsilon))
       return roundNumber(xEpsilon)
     },
 
     'number, number': function (x, n) {
       // Same as number: unless user specifies more decimals than epsilon
-      const dynamicEpsilonExponent = (n < 15) ? (n + 1) : n
-      const epsilonExponentSelected = epsilonExponent > dynamicEpsilonExponent ? epsilonExponent : dynamicEpsilonExponent
-      const xEpsilon = roundNumber(x, epsilonExponentSelected)
+      const epsilonExponent = toExp(config.epsilon)
+      if (n >= epsilonExponent) { return roundNumber(x, n) }
+
+      const xEpsilon = roundNumber(x, epsilonExponent)
       return roundNumber(xEpsilon, n)
     },
 
@@ -109,7 +113,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     BigNumber: function (x) {
       // Handle round off errors by first rounding to epsilon precision
-      const xEpsilon = new BigNumber(x).toDecimalPlaces(epsilonExponent)
+      const xEpsilon = new BigNumber(x).toDecimalPlaces(toExp(config.epsilon))
       return xEpsilon.toDecimalPlaces(0)
     },
 
@@ -117,9 +121,11 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
       // Same as BigNumber: unless user specifies more decimals than epsilon
-      const dynamicEpsilonExponent = (n < 64) ? (n + 1) : n
-      const epsilonExponentSelected = epsilonExponent > dynamicEpsilonExponent ? new BigNumber(epsilonExponent) : new BigNumber(dynamicEpsilonExponent)
-      const xEpsilon = x.toDecimalPlaces(epsilonExponentSelected.toNumber())
+      const epsilonExponent = toExp(config.epsilon)
+
+      if (n >= epsilonExponent) { return x.toDecimalPlaces(n.toNumber()) }
+
+      const xEpsilon = x.toDecimalPlaces(epsilonExponent)
       return xEpsilon.toDecimalPlaces(n.toNumber())
     },
 
