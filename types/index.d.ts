@@ -2768,7 +2768,7 @@ export interface MathJsInstance extends MathJsFactory {
   mode(...args: MathScalarType[]): MathScalarType[]
   /**
    * @param A A single matrix
-   * @returns The median value
+   * @returns The mode value
    */
   mode<T extends MathScalarType>(A: T[] | T[][]): T[]
   /**

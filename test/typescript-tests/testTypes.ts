@@ -45,7 +45,8 @@ import {
   Unit,
   Node,
   isSymbolNode,
-  MathScalarType
+  MathScalarType,
+  mode
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -2541,4 +2542,30 @@ Match types of exact positional arguments.
   const node3 = new ArrayNode([node1, node2])
   expectTypeOf(node3.items[0]).toMatchTypeOf<ConstantNode>()
   expectTypeOf(node3.items[1]).toMatchTypeOf<SymbolNode>()
+}
+
+/**
+ * mode Return Types
+ */
+{
+  const math = create(all, {})
+  const a = math.mode<number>([1, 2, 3])
+  expectTypeOf(a).toMatchTypeOf<number[]>()
+  assert.strictEqual(a, [1, 2, 3])
+
+  const b = math.mode<number>([
+    [1, 2],
+    [2, 2],
+    [3, 5]
+  ])
+  expectTypeOf(b).toMatchTypeOf<number[]>()
+  assert.strictEqual(b, [2])
+
+  const c = math.mode<number>(1, 2, 2, 2, 3, 5)
+  expectTypeOf(c).toMatchTypeOf<number[]>()
+  assert.strictEqual(c, [2])
+
+  const d = math.mode(1, 2, 2, 2, 3, 5)
+  expectTypeOf(d).toMatchTypeOf<number[]>()
+  assert.strictEqual(d, [2])
 }
