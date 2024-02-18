@@ -1,6 +1,14 @@
 # History
 
 
+# Unpublished changes since 12.3.2
+
+- Feat: implement support for trailing commas in matrices (#3154, #2968).
+  Thanks @dvd101x.
+- Docs: describe method `getAllAsMap` in the Parser docs (#3158, #3157).
+  Thanks @dvd101x.
+
+
 # 2024-02-08, 12.3.2
 
 - Improved the performance of custom defined functions in the expression
