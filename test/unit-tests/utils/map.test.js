@@ -219,7 +219,7 @@ describe('maps', function () {
     })
 
     it('copy', function () {
-      const { a, b, p } = createPartitionedMap(['b'])
+      const { p } = createPartitionedMap(['b'])
       p
         .set('a', 2)
         .set('b', 3)
