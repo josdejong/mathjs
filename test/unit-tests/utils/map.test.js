@@ -110,6 +110,10 @@ describe('maps', function () {
     const innerObject = toObject(map)
     assert.strictEqual(innerObject, obj)
 
+    // Create a new Map
+    const copy = new Map(map)
+    assert.deepStrictEqual([...copy.keys()], [...map.keys()])
+
     // clear
     map.clear()
     assert.deepStrictEqual([...map.keys()], [])
@@ -212,6 +216,16 @@ describe('maps', function () {
       assert.deepStrictEqual(it.next(), { done: false, value: ['c', 4] })
       assert.deepStrictEqual(it.next(), { done: false, value: ['b', 3] })
       assert.deepStrictEqual(it.next(), { done: true, value: undefined })
+    })
+
+    it('copy', function () {
+      const { p } = createPartitionedMap(['b'])
+      p
+        .set('a', 2)
+        .set('b', 3)
+
+      const copy = new Map(p)
+      assert.deepStrictEqual([...copy.keys()], [...p.keys()])
     })
 
     it('size', function () {
