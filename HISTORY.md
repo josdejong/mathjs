@@ -5,6 +5,9 @@
 
 - Feat: implement support for trailing commas in matrices (#3154, #2968).
   Thanks @dvd101x.
+- Fix: `PartitionedMap` and `ObjectWrappingMap` missing a property 
+  `Symbol.iterator`, causing problems when trying `new Map(scope)`. See
+  https://github.com/josdejong/mathjs/discussions/3156#discussioncomment-8516994
 - Docs: describe method `getAllAsMap` in the Parser docs (#3158, #3157).
   Thanks @dvd101x.
 

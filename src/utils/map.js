@@ -12,6 +12,8 @@ import { isObject } from './is.js'
 export class ObjectWrappingMap {
   constructor (object) {
     this.wrappedObject = object
+
+    this[Symbol.iterator] = this.entries
   }
 
   keys () {
@@ -80,6 +82,8 @@ export class PartitionedMap {
     this.a = a
     this.b = b
     this.bKeys = bKeys
+
+    this[Symbol.iterator] = this.entries
   }
 
   get (key) {
