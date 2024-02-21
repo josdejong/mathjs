@@ -373,7 +373,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       index: cindex,
       ptr: cptr,
       size: [arows, bcolumns],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
 
     // loop b columns
@@ -419,11 +419,6 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     }
     // update ptr
     cptr[bcolumns] = cindex.length
-
-    // Set the type to undefined if it doesn't match
-    if (adt !== a._datatype || bdt !== b._datatype) {
-      c._datatype = undefined
-    }
 
     // return sparse matrix
     return c
@@ -588,7 +583,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       index: cindex,
       ptr: cptr,
       size: [arows, bcolumns],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
 
     // workspace
@@ -637,11 +632,6 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     }
     // update ptr
     cptr[bcolumns] = cindex.length
-
-    // Set the type to undefined if it wasn't defined for a or b
-    if (adt !== a._datatype || bdt !== b._datatype) {
-      c._datatype = undefined
-    }
 
     // return sparse matrix
     return c
@@ -699,7 +689,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       index: cindex,
       ptr: cptr,
       size: [arows, bcolumns],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
 
     // workspace
@@ -765,11 +755,6 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     }
     // update ptr
     cptr[bcolumns] = cindex.length
-
-    // Set the type to undefined if it wasn't defined for a or b
-    if (adt !== a._datatype || bdt !== b._datatype) {
-      c._datatype = undefined
-    }
 
     // return sparse matrix
     return c
