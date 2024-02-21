@@ -141,6 +141,13 @@ describe('parse', function () {
       assert.strictEqual(scope.f(3), 9)
     })
 
+    it('should support variable assignment inside a function definition', function () {
+      const scope = {}
+      parse('f(x)=(y=x)*2').compile().evaluate(scope)
+      assert.strictEqual(scope.f(2), 4)
+      assert.strictEqual(scope.y, 2)
+    })
+
     it('should spread a function over multiple lines', function () {
       assert.deepStrictEqual(parse('add(\n4\n,\n2\n)').compile().evaluate(), 6)
     })
@@ -612,6 +619,43 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('[1;2;3]'), math.matrix([[1], [2], [3]]))
       assert.deepStrictEqual(parseAndEval('[[1,2],[3,4]]'), math.matrix([[1, 2], [3, 4]]))
       assert.deepStrictEqual(parseAndEval('[[[1],[2]],[[3],[4]]]'), math.matrix([[[1], [2]], [[3], [4]]]))
+    })
+
+    it('should parse a matrix with trailing commas', function () {
+      assert.ok(parseAndEval('[1,2;3,4;]') instanceof Matrix)
+
+      const m = parseAndEval('[1,2,3;4,5,6;]')
+      assert.deepStrictEqual(m.size(), [2, 3])
+      assert.deepStrictEqual(m, math.matrix([[1, 2, 3], [4, 5, 6]]))
+
+      const b = parseAndEval('[5, 6; 1, 1;]')
+      assert.deepStrictEqual(b.size(), [2, 2])
+      assert.deepStrictEqual(b, math.matrix([[5, 6], [1, 1]]))
+
+      // from 1 to n dimensions
+      assert.deepStrictEqual(parseAndEval('[ ]'), math.matrix([]))
+      assert.deepStrictEqual(parseAndEval('[1,2,3,]'), math.matrix([1, 2, 3]))
+      assert.deepStrictEqual(parseAndEval('[1;2;3;]'), math.matrix([[1], [2], [3]]))
+      assert.deepStrictEqual(parseAndEval('[[1,2],[3,4],]'), math.matrix([[1, 2], [3, 4]]))
+      assert.deepStrictEqual(parseAndEval('[[[1],[2]],[[3],[4]],]'), math.matrix([[[1], [2]], [[3], [4]]]))
+    })
+
+    it('should throw an error when multiple trailing commas/semicolons are in a matrix', function () {
+      assert.throws(function () {
+        parseAndEval('[1,2,3,,] ')
+      }, /SyntaxError: Value expected/)
+
+      assert.throws(function () {
+        parseAndEval('[1,2;3,4;,] ')
+      }, /SyntaxError: Value expected/)
+
+      assert.throws(function () {
+        parseAndEval('[1;2;3;;]')
+      }, /SyntaxError: Value expected/)
+
+      assert.throws(function () {
+        parseAndEval('[[[1],[2]],[[3],[4]],,]')
+      }, /SyntaxError: Value expected/)
     })
 
     it('should parse an empty matrix', function () {
@@ -1538,6 +1582,23 @@ describe('parse', function () {
       assert.deepStrictEqual(scope, { a: false })
     })
 
+    it('should parse logical and inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = x > 2 and x < 4', scope)
+      assert.strictEqual(f(1), false)
+      assert.strictEqual(f(3), true)
+      assert.strictEqual(f(5), false)
+    })
+
+    it('should use a variable assignment with a rawArgs function inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = (a=false) and (b=true)', scope)
+      assert.deepStrictEqual(parseAndEval('f(2)', scope), false)
+      assert.deepStrictEqual(Object.keys(scope), ['f', 'a'])
+      assert.strictEqual(scope.f, f)
+      assert.strictEqual(scope.a, false)
+    })
+
     it('should parse logical xor', function () {
       assert.strictEqual(parseAndEval('2 xor 6'), false)
       assert.strictEqual(parseAndEval('2 xor 0'), true)
@@ -1558,6 +1619,14 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('2 or undefined'), true)
       assert.strictEqual(parseAndEval('true or undefined'), true)
       assert.throws(function () { parseAndEval('false or undefined') }, TypeError)
+    })
+
+    it('should parse logical or inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = x < 2 or x > 4', scope)
+      assert.strictEqual(f(1), true)
+      assert.strictEqual(f(3), false)
+      assert.strictEqual(f(5), true)
     })
 
     it('should parse logical or lazily', function () {
@@ -2333,7 +2402,7 @@ describe('parse', function () {
 
     try {
       mathClone.evaluate('f(x)=1;config({clone:f})')
-    } catch (err) {}
+    } catch (err) { }
 
     assert.strictEqual(mathClone.evaluate('2'), 2)
   })

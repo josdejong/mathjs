@@ -30,8 +30,8 @@ const array = [[2, 0], [-1, 3]]               // Array
 const matrix = math.matrix([[7, 1], [-2, 3]]) // Matrix
 
 // perform a calculation on an array and matrix
-math.square(array)                            // Array,  [[4, 0], [1, 9]]
-math.square(matrix)                           // Matrix, [[49, 1], [4, 9]]
+math.map(array, math.square)                  // Array,  [[4, 0], [1, 9]]
+math.map(matrix, math.square)                 // Matrix, [[49, 1], [4, 9]]
 
 // perform calculations with mixed array and matrix input
 math.add(array, matrix)                       // Matrix, [[9, 1], [-3, 6]]
