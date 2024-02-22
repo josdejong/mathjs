@@ -90,8 +90,8 @@ var fn = function (header, level, title) {
 };
 var injectPermalinks = replace(/^(#+) (.*)$/mg, fn);
 var injectPermalinks2 = replace(/^(#+) (.*)$/mg, fn);
-var injectClickableIssueTags = replace(/[ (](#(\d+))/mg, function (match, tag, number) {
-  return ' <a href="https://github.com/josdejong/mathjs/issues/' + number + '">' + tag + '</a>'
+var injectClickableIssueTags = replace(/([ (])(#(\d+))/mg, function (match, pre, tag, number) {
+  return pre + '<a href="https://github.com/josdejong/mathjs/issues/' + number + '">' + tag + '</a>'
 });
 var injectClickableUserTags = replace(/ (@([0-9a-zA-Z_-]+))/mg, function (match, tag, username) {
   return ' <a href="https://github.com/' + username + '">' + tag + '</a>'

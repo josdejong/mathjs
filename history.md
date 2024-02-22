@@ -7,39 +7,39 @@ layout: default
 
 <h1 id="20240222-1240">2024-02-22, 12.4.0 <a href="#20240222-1240" title="Permalink">#</a></h1>
 
-- Feat: implement support for trailing commas in matrices  <a href="https://github.com/josdejong/mathjs/issues/3154">#3154</a>, <a href="https://github.com/josdejong/mathjs/issues/2968">#2968</a>).
+- Feat: implement support for trailing commas in matrices (<a href="https://github.com/josdejong/mathjs/issues/3154">#3154</a>, <a href="https://github.com/josdejong/mathjs/issues/2968">#2968</a>).
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Feat: improve the performance of `multiply` a lot by adding matrix type 
-  inferencing  <a href="https://github.com/josdejong/mathjs/issues/3149">#3149</a>). Thanks <a href="https://github.com/RandomGamingDev">@RandomGamingDev</a>.
-- Fix: <a href="https://github.com/josdejong/mathjs/issues/3100">#3100</a> function `round` not handling round-off errors  <a href="https://github.com/josdejong/mathjs/issues/3136">#3136</a>). 
+  inferencing (<a href="https://github.com/josdejong/mathjs/issues/3149">#3149</a>). Thanks <a href="https://github.com/RandomGamingDev">@RandomGamingDev</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3100">#3100</a> function `round` not handling round-off errors (<a href="https://github.com/josdejong/mathjs/issues/3136">#3136</a>). 
   Thanks <a href="https://github.com/BrianFugate">@BrianFugate</a>.
 - Fix: `PartitionedMap` and `ObjectWrappingMap` missing a property 
-  `Symbol.iterator`, causing problems when trying `new Map(scope)`  <a href="https://github.com/josdejong/mathjs/issues/3156">#3156</a>).
-- Fix: type definitions of function `mode`  <a href="https://github.com/josdejong/mathjs/issues/3153">#3153</a>). Thanks <a href="https://github.com/rich-martinez">@rich-martinez</a>.
-- Docs: describe method `getAllAsMap` in the Parser docs  <a href="https://github.com/josdejong/mathjs/issues/3158">#3158</a>, <a href="https://github.com/josdejong/mathjs/issues/3157">#3157</a>).
+  `Symbol.iterator`, causing problems when trying `new Map(scope)` (<a href="https://github.com/josdejong/mathjs/issues/3156">#3156</a>).
+- Fix: type definitions of function `mode` (<a href="https://github.com/josdejong/mathjs/issues/3153">#3153</a>). Thanks <a href="https://github.com/rich-martinez">@rich-martinez</a>.
+- Docs: describe method `getAllAsMap` in the Parser docs (<a href="https://github.com/josdejong/mathjs/issues/3158">#3158</a>, <a href="https://github.com/josdejong/mathjs/issues/3157">#3157</a>).
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 
 
 <h1 id="20240208-1232">2024-02-08, 12.3.2 <a href="#20240208-1232" title="Permalink">#</a></h1>
 
 - Improved the performance of custom defined functions in the expression
-  parser  <a href="https://github.com/josdejong/mathjs/issues/3150">#3150</a>).
+  parser (<a href="https://github.com/josdejong/mathjs/issues/3150">#3150</a>).
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3143">#3143</a> cannot use `and` and `or` inside a function definition. 
-  Regression since `v12.1.0`  <a href="https://github.com/josdejong/mathjs/issues/3150">#3150</a>).
+  Regression since `v12.1.0` (<a href="https://github.com/josdejong/mathjs/issues/3150">#3150</a>).
 
 
 <h1 id="20240201-1231">2024-02-01, 12.3.1 <a href="#20240201-1231" title="Permalink">#</a></h1>
 
 - Improved the typings of the arguments of `ArrayNode`, `FunctionNode`, 
-  `IndexNode`, `OperatorNode`, and `RelationalNode`  <a href="https://github.com/josdejong/mathjs/issues/3123">#3123</a>). Thanks <a href="https://github.com/sylee957">@sylee957</a>.
-- Added a fully featured code editor example with CodeMirror and Katex  <a href="https://github.com/josdejong/mathjs/issues/3027">#3027</a>).
+  `IndexNode`, `OperatorNode`, and `RelationalNode` (<a href="https://github.com/josdejong/mathjs/issues/3123">#3123</a>). Thanks <a href="https://github.com/sylee957">@sylee957</a>.
+- Added a fully featured code editor example with CodeMirror and Katex (<a href="https://github.com/josdejong/mathjs/issues/3027">#3027</a>).
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3114">#3114</a> build warnings related to a number of wrong `/* #__PURE__ */` 
   annotations.
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3142">#3142</a> support BigNumber values for the options of function `format`:
   `precision`, `wordSize`, `lowerExp`, `upperExp`. Support BigNumber values
   for the option `wordSize` in the functions `hex`, `bin`, and `oct`. 
-- Fix: <a href="https://github.com/josdejong/mathjs/issues/3125">#3125</a> type definitions of function `hypot`  <a href="https://github.com/josdejong/mathjs/issues/3144">#3144</a>). 
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3125">#3125</a> type definitions of function `hypot` (<a href="https://github.com/josdejong/mathjs/issues/3144">#3144</a>). 
   Thanks <a href="https://github.com/silentmissile">@silentmissile</a>.
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3141">#3141</a> `help(config)` altering the actual `config` when evaluating the 
   examples.
@@ -50,9 +50,9 @@ layout: default
 <h1 id="20240112-1230">2024-01-12, 12.3.0 <a href="#20240112-1230" title="Permalink">#</a></h1>
 
 - Implement support new metric prefixes: `ronna` (`R`), `quetta` (`Q`), 
-  `ronto` (`r`), and `quecto` (`q`)  <a href="https://github.com/josdejong/mathjs/issues/3113">#3113</a>, <a href="https://github.com/josdejong/mathjs/issues/3112">#3112</a>). Thanks <a href="https://github.com/AlexEdgcomb">@AlexEdgcomb</a>.
-- Fix a bug converting a unitless unit  <a href="https://github.com/josdejong/mathjs/issues/3117">#3117</a>). Thanks <a href="https://github.com/costerwi">@costerwi</a>.
-- Fix: <a href="https://github.com/josdejong/mathjs/issues/3097">#3097</a> `toSI()` wrongly converting `degC`  <a href="https://github.com/josdejong/mathjs/issues/3118">#3118</a>). Thanks <a href="https://github.com/costerwi">@costerwi</a>.
+  `ronto` (`r`), and `quecto` (`q`) (<a href="https://github.com/josdejong/mathjs/issues/3113">#3113</a>, <a href="https://github.com/josdejong/mathjs/issues/3112">#3112</a>). Thanks <a href="https://github.com/AlexEdgcomb">@AlexEdgcomb</a>.
+- Fix a bug converting a unitless unit (<a href="https://github.com/josdejong/mathjs/issues/3117">#3117</a>). Thanks <a href="https://github.com/costerwi">@costerwi</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3097">#3097</a> `toSI()` wrongly converting `degC` (<a href="https://github.com/josdejong/mathjs/issues/3118">#3118</a>). Thanks <a href="https://github.com/costerwi">@costerwi</a>.
 
 
 <h1 id="20231220-1221">2023-12-20, 12.2.1 <a href="#20231220-1221" title="Permalink">#</a></h1>
@@ -62,7 +62,7 @@ layout: default
 
 <h1 id="20231208-1220">2023-12-08, 12.2.0 <a href="#20231208-1220" title="Permalink">#</a></h1>
 
-- Feat: lazy evaluation of operators `and`, `or`, `&`, `|`  <a href="https://github.com/josdejong/mathjs/issues/3090">#3090</a>, <a href="https://github.com/josdejong/mathjs/issues/3101">#3101</a>, 
+- Feat: lazy evaluation of operators `and`, `or`, `&`, `|` (<a href="https://github.com/josdejong/mathjs/issues/3090">#3090</a>, <a href="https://github.com/josdejong/mathjs/issues/3101">#3101</a>, 
   <a href="https://github.com/josdejong/mathjs/issues/2766">#2766</a>). Thanks <a href="https://github.com/smith120bh">@smith120bh</a>.
 - Fix: passing a 4th argument with a scope to raw functions.
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3096">#3096</a> embedded docs of eigs throwing an error.
@@ -70,9 +70,9 @@ layout: default
 
 <h1 id="20231117-1210">2023-11-17, 12.1.0 <a href="#20231117-1210" title="Permalink">#</a></h1>
 
-- Feat: Extend function `round` with support for units  <a href="https://github.com/josdejong/mathjs/issues/2761">#2761</a>, <a href="https://github.com/josdejong/mathjs/issues/3095">#3095</a>). 
+- Feat: Extend function `round` with support for units (<a href="https://github.com/josdejong/mathjs/issues/2761">#2761</a>, <a href="https://github.com/josdejong/mathjs/issues/3095">#3095</a>). 
 - Feat: Extend function `mod` with support for negative divisors in when
-  using `BigNumber` or `Fraction`  <a href="https://github.com/josdejong/mathjs/issues/3087">#3087</a>).
+  using `BigNumber` or `Fraction` (<a href="https://github.com/josdejong/mathjs/issues/3087">#3087</a>).
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3092">#3092</a> a typo in an error message when converting a string into a number.
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3094">#3094</a> function `derivative` mutates the input expression when it fails.
 
@@ -81,7 +81,7 @@ layout: default
 
 Breaking changes:
 
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2879">#2879</a>, <a href="https://github.com/josdejong/mathjs/issues/2927">#2927</a>, <a href="https://github.com/josdejong/mathjs/issues/3014">#3014</a>: change the confusing interface of `eigs`  <a href="https://github.com/josdejong/mathjs/issues/3037">#3037</a>),
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2879">#2879</a>, <a href="https://github.com/josdejong/mathjs/issues/2927">#2927</a>, <a href="https://github.com/josdejong/mathjs/issues/3014">#3014</a>: change the confusing interface of `eigs` (<a href="https://github.com/josdejong/mathjs/issues/3037">#3037</a>),
   thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
   Before, functions `eigs` returned an object:
   ```
@@ -101,7 +101,7 @@ Breaking changes:
   Where `eigenvectors` is an array containing an object with the corresponding
   eigenvalue and vector.
 - Refactored the TypeScript type definitions to make them work with a `NodeNext`
-  module resolution  <a href="https://github.com/josdejong/mathjs/issues/3079">#3079</a>, <a href="https://github.com/josdejong/mathjs/issues/2919">#2919</a>). 
+  module resolution (<a href="https://github.com/josdejong/mathjs/issues/3079">#3079</a>, <a href="https://github.com/josdejong/mathjs/issues/2919">#2919</a>). 
   - Type `MathJsStatic` is renamed to `MathJsInstance`.
   - Type `FactoryDependencies` is deprecated, use `MathJsFactory` instead, and 
     import dependency maps directly from the library.
@@ -112,28 +112,28 @@ Breaking changes:
 Features:
 
 - Function `eigs` now has an option to turn off calculation of eigenvectors 
-   <a href="https://github.com/josdejong/mathjs/issues/3057">#3057</a>, <a href="https://github.com/josdejong/mathjs/issues/2180">#2180</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+  (<a href="https://github.com/josdejong/mathjs/issues/3057">#3057</a>, <a href="https://github.com/josdejong/mathjs/issues/2180">#2180</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 
 Fixes:
 
-- Find eigenvectors of defective matrices  <a href="https://github.com/josdejong/mathjs/issues/3037">#3037</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Find eigenvectors of defective matrices (<a href="https://github.com/josdejong/mathjs/issues/3037">#3037</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 
 
 <h1 id="20231026-11120">2023-10-26, 11.12.0 <a href="#20231026-11120" title="Permalink">#</a></h1>
 
-- Implemented function `subtractScalar`  <a href="https://github.com/josdejong/mathjs/issues/3081">#3081</a>, <a href="https://github.com/josdejong/mathjs/issues/2643">#2643</a>), thanks <a href="https://github.com/vrushaket">@vrushaket</a>.
+- Implemented function `subtractScalar` (<a href="https://github.com/josdejong/mathjs/issues/3081">#3081</a>, <a href="https://github.com/josdejong/mathjs/issues/2643">#2643</a>), thanks <a href="https://github.com/vrushaket">@vrushaket</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/3073">#3073</a>: function format not escaping control characters and double
-  quotes  <a href="https://github.com/josdejong/mathjs/issues/3082">#3082</a>).
+  quotes (<a href="https://github.com/josdejong/mathjs/issues/3082">#3082</a>).
 - Fix: function `clone` not throwing an error when passing an unsupported
   type like a function.
-- Fix: <a href="https://github.com/josdejong/mathjs/issues/2960">#2960</a> add type definition of function `symbolicEqual`  <a href="https://github.com/josdejong/mathjs/issues/3035">#3035</a>),
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/2960">#2960</a> add type definition of function `symbolicEqual` (<a href="https://github.com/josdejong/mathjs/issues/3035">#3035</a>),
   thanks <a href="https://github.com/juancodeaudio">@juancodeaudio</a>.
 
 
 <h1 id="20231011-11112">2023-10-11, 11.11.2 <a href="#20231011-11112" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/3025">#3025</a>: improve handling of matrices and error handling 
-  in function `corr`  <a href="https://github.com/josdejong/mathjs/issues/3030">#3030</a>). Thanks <a href="https://github.com/vrushaket">@vrushaket</a>.
+  in function `corr` (<a href="https://github.com/josdejong/mathjs/issues/3030">#3030</a>). Thanks <a href="https://github.com/vrushaket">@vrushaket</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/3074">#3074</a>: improve error message when using function `max` in `derivative`.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/3073">#3073</a>: fix parsing quotes inside a string.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2027">#2027</a>: cannot use named operators like `to` or `mod` as property name. 
@@ -141,11 +141,11 @@ Fixes:
 
 <h1 id="20230920-11111">2023-09-20, 11.11.1 <a href="#20230920-11111" title="Permalink">#</a></h1>
 
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2989">#2989</a>: use one-based indices in `print` in the parser  <a href="https://github.com/josdejong/mathjs/issues/3009">#3009</a>). 
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2989">#2989</a>: use one-based indices in `print` in the parser (<a href="https://github.com/josdejong/mathjs/issues/3009">#3009</a>). 
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>. 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2936">#2936</a>: `mod` sometimes giving wrong results due to internal round-off
-  errors  <a href="https://github.com/josdejong/mathjs/issues/3011">#3011</a>). Thanks <a href="https://github.com/praisennamonu1">@praisennamonu1</a>.
-- Internal refactor of `quantileSeq`, and fixed the embedded help  <a href="https://github.com/josdejong/mathjs/issues/3003">#3003</a>). 
+  errors (<a href="https://github.com/josdejong/mathjs/issues/3011">#3011</a>). Thanks <a href="https://github.com/praisennamonu1">@praisennamonu1</a>.
+- Internal refactor of `quantileSeq`, and fixed the embedded help (<a href="https://github.com/josdejong/mathjs/issues/3003">#3003</a>). 
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Updated dependencies and devDependencies.
 
@@ -153,7 +153,7 @@ Fixes:
 <h1 id="20230905-11110">2023-09-05, 11.11.0 <a href="#20230905-11110" title="Permalink">#</a></h1>
 
 - Implement function `corr` to calculate the correlation between two matrices
-   <a href="https://github.com/josdejong/mathjs/issues/3015">#3015</a>, <a href="https://github.com/josdejong/mathjs/issues/2624">#2624</a>). Thanks <a href="https://github.com/vrushaket">@vrushaket</a>. 
+  (<a href="https://github.com/josdejong/mathjs/issues/3015">#3015</a>, <a href="https://github.com/josdejong/mathjs/issues/2624">#2624</a>). Thanks <a href="https://github.com/vrushaket">@vrushaket</a>. 
 - Lock `fraction.js` at version `4.3.4` for now, see <a href="https://github.com/josdejong/mathjs/issues/3024">#3024</a>, 3022, 
   https://github.com/rawify/Fraction.js/issues/68.
 
@@ -165,19 +165,19 @@ Fixes:
   polluted.
 - Add support for prefixes for the unit `erg`, and restrict prefixes of the
   unit `joule` to only long prefixes like `kilo` and no short prefixes 
-  like `k`  <a href="https://github.com/josdejong/mathjs/issues/3019">#3019</a>). Thanks <a href="https://github.com/costerwi">@costerwi</a>.
+  like `k` (<a href="https://github.com/josdejong/mathjs/issues/3019">#3019</a>). Thanks <a href="https://github.com/costerwi">@costerwi</a>.
 - Add a new browser example `examples/browser/lorenz.html` that uses `solveODE`
-  and plots the result in a chart  <a href="https://github.com/josdejong/mathjs/issues/3018">#3018</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+  and plots the result in a chart (<a href="https://github.com/josdejong/mathjs/issues/3018">#3018</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 
 
 <h1 id="20230823-11100">2023-08-23, 11.10.0 <a href="#20230823-11100" title="Permalink">#</a></h1>
 
-- Extend function `quantileSeq` with support for a `dimension`  <a href="https://github.com/josdejong/mathjs/issues/3002">#3002</a>).
+- Extend function `quantileSeq` with support for a `dimension` (<a href="https://github.com/josdejong/mathjs/issues/3002">#3002</a>).
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Implement <a href="https://github.com/josdejong/mathjs/issues/2735">#2735</a>: Support indexing with an array of booleans, for 
-  example `a[[true, false, true]]` and `a[a > 2]`  <a href="https://github.com/josdejong/mathjs/issues/2994">#2994</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
-- Implement function `zeta`  <a href="https://github.com/josdejong/mathjs/issues/2950">#2950</a>, <a href="https://github.com/josdejong/mathjs/issues/2975">#2975</a>, <a href="https://github.com/josdejong/mathjs/issues/2904">#2904</a>). Thanks <a href="https://github.com/Bobingstern">@Bobingstern</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2990">#2990</a>: `DenseMatrix` can mutate input arrays  <a href="https://github.com/josdejong/mathjs/issues/2991">#2991</a>).
+  example `a[[true, false, true]]` and `a[a > 2]` (<a href="https://github.com/josdejong/mathjs/issues/2994">#2994</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Implement function `zeta` (<a href="https://github.com/josdejong/mathjs/issues/2950">#2950</a>, <a href="https://github.com/josdejong/mathjs/issues/2975">#2975</a>, <a href="https://github.com/josdejong/mathjs/issues/2904">#2904</a>). Thanks <a href="https://github.com/Bobingstern">@Bobingstern</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2990">#2990</a>: `DenseMatrix` can mutate input arrays (<a href="https://github.com/josdejong/mathjs/issues/2991">#2991</a>).
 
 
 <h1 id="20230724-1191">2023-07-24, 11.9.1 <a href="#20230724-1191" title="Permalink">#</a></h1>
@@ -189,18 +189,18 @@ Fixes:
 
 <h1 id="20230719-1190">2023-07-19, 11.9.0 <a href="#20230719-1190" title="Permalink">#</a></h1>
 
-- Implement function `solveODE`  <a href="https://github.com/josdejong/mathjs/issues/2958">#2958</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
-- Implement functions `zpk2tf` and `freqz`  <a href="https://github.com/josdejong/mathjs/issues/2988">#2988</a>, <a href="https://github.com/josdejong/mathjs/issues/2969">#2969</a>). Thanks <a href="https://github.com/alykhaled">@alykhaled</a>.
-- Implement support for units in function `range`  <a href="https://github.com/josdejong/mathjs/issues/2997">#2997</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2974">#2974</a>: `simplify` puts plus and minus signs next to each other  <a href="https://github.com/josdejong/mathjs/issues/2981">#2981</a>).
+- Implement function `solveODE` (<a href="https://github.com/josdejong/mathjs/issues/2958">#2958</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Implement functions `zpk2tf` and `freqz` (<a href="https://github.com/josdejong/mathjs/issues/2988">#2988</a>, <a href="https://github.com/josdejong/mathjs/issues/2969">#2969</a>). Thanks <a href="https://github.com/alykhaled">@alykhaled</a>.
+- Implement support for units in function `range` (<a href="https://github.com/josdejong/mathjs/issues/2997">#2997</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2974">#2974</a>: `simplify` puts plus and minus signs next to each other (<a href="https://github.com/josdejong/mathjs/issues/2981">#2981</a>).
   Thanks <a href="https://github.com/MaybePixem">@MaybePixem</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2973">#2973</a>: fixes and improvements in the embedded docs  <a href="https://github.com/josdejong/mathjs/issues/2976">#2976</a>). 
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2973">#2973</a>: fixes and improvements in the embedded docs (<a href="https://github.com/josdejong/mathjs/issues/2976">#2976</a>). 
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2996">#2996</a>: two errors in the examples in the documentation about Expression 
   trees.
-- Fix round-off errors near zero when converting temperatures  <a href="https://github.com/josdejong/mathjs/issues/2962">#2962</a>). 
+- Fix round-off errors near zero when converting temperatures (<a href="https://github.com/josdejong/mathjs/issues/2962">#2962</a>). 
   Thanks <a href="https://github.com/costerwi">@costerwi</a>.
-- Refactored function `range`, reducing the amount of code  <a href="https://github.com/josdejong/mathjs/issues/2995">#2995</a>).
+- Refactored function `range`, reducing the amount of code (<a href="https://github.com/josdejong/mathjs/issues/2995">#2995</a>).
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 
 
@@ -215,15 +215,15 @@ Fixes:
 <h1 id="20230613-1181">2023-06-13, 11.8.1 <a href="#20230613-1181" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2964">#2964</a>: issue in function ` distance` when calculate the distance from 
-  a point to a line  <a href="https://github.com/josdejong/mathjs/issues/2965">#2965</a>). Thanks <a href="https://github.com/Kiku-CN">@Kiku-CN</a>. 
+  a point to a line (<a href="https://github.com/josdejong/mathjs/issues/2965">#2965</a>). Thanks <a href="https://github.com/Kiku-CN">@Kiku-CN</a>. 
 - Fix `math.format` not working correctly for `engineering` notation when using
-  BigNumbers and for `fixed` notation with `precision: 0` configured  <a href="https://github.com/josdejong/mathjs/issues/2956">#2956</a>). 
+  BigNumbers and for `fixed` notation with `precision: 0` configured (<a href="https://github.com/josdejong/mathjs/issues/2956">#2956</a>). 
   Thanks <a href="https://github.com/mgreminger">@mgreminger</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2880">#2880</a>: not possible to map cube root `cbrt`.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2938">#2938</a>: make the syntax description of all functions consistent in the
-  docs  <a href="https://github.com/josdejong/mathjs/issues/2941">#2941</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+  docs (<a href="https://github.com/josdejong/mathjs/issues/2941">#2941</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2954">#2954</a>: improve the TypeScript definitions the return type of functions
-  `min` and `max`  <a href="https://github.com/josdejong/mathjs/issues/2955">#2955</a>). Thanks <a href="https://github.com/Maxim-Mazurok">@Maxim-Mazurok</a>.
+  `min` and `max` (<a href="https://github.com/josdejong/mathjs/issues/2955">#2955</a>). Thanks <a href="https://github.com/Maxim-Mazurok">@Maxim-Mazurok</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2959">#2959</a>: typo in an example in the docs. Thanks <a href="https://github.com/kunalagrwl">@kunalagrwl</a>.
 - Drop official support for Node.js 14, has reached end of life.
 
@@ -231,16 +231,16 @@ Fixes:
 <h1 id="20230403-1180">2023-04-03, 11.8.0 <a href="#20230403-1180" title="Permalink">#</a></h1>
 
 - Extended functions `fraction`, `bignumber`, and `number` with support for 
-  units, see <a href="https://github.com/josdejong/mathjs/issues/2918">#2918</a>  <a href="https://github.com/josdejong/mathjs/issues/2926">#2926</a>).
-- Implemented aliases `amp` and `amps` for unit `ampere`  <a href="https://github.com/josdejong/mathjs/issues/2917">#2917</a>). 
+  units, see <a href="https://github.com/josdejong/mathjs/issues/2918">#2918</a> (<a href="https://github.com/josdejong/mathjs/issues/2926">#2926</a>).
+- Implemented aliases `amp` and `amps` for unit `ampere` (<a href="https://github.com/josdejong/mathjs/issues/2917">#2917</a>). 
   Thanks <a href="https://github.com/veggiesaurus">@veggiesaurus</a>.
-- Improve TypeScript definitions of function `gcd`  <a href="https://github.com/josdejong/mathjs/issues/2922">#2922</a>). Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2923">#2923</a>: improve docs of the function `distance`  <a href="https://github.com/josdejong/mathjs/issues/2924">#2924</a>). Thanks <a href="https://github.com/tmtron">@tmtron</a>.
+- Improve TypeScript definitions of function `gcd` (<a href="https://github.com/josdejong/mathjs/issues/2922">#2922</a>). Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2923">#2923</a>: improve docs of the function `distance` (<a href="https://github.com/josdejong/mathjs/issues/2924">#2924</a>). Thanks <a href="https://github.com/tmtron">@tmtron</a>.
 
 
 <h1 id="20230315-1170">2023-03-15, 11.7.0 <a href="#20230315-1170" title="Permalink">#</a></h1>
 
-- Implement <a href="https://github.com/josdejong/mathjs/issues/2567">#2567</a>: accept array as parameter for function `gcd`  <a href="https://github.com/josdejong/mathjs/issues/2878">#2878</a>). 
+- Implement <a href="https://github.com/josdejong/mathjs/issues/2567">#2567</a>: accept array as parameter for function `gcd` (<a href="https://github.com/josdejong/mathjs/issues/2878">#2878</a>). 
   Thanks <a href="https://github.com/jakubriegel">@jakubriegel</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2908">#2908</a>: improvements in the docs and examples of functions 
   `partitionSelect`, `diff`, `expm1`, `round`, `nthRoots`, `sign`, 
@@ -248,7 +248,7 @@ Fixes:
   Thanks <a href="https://github.com/tmtron">@tmtron</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2907">#2907</a>: determinant of empty matrix should be 1.
 - Refactor index.d.ts by writing function declarations using a generic, 
-  reducing a lot of repetition  <a href="https://github.com/josdejong/mathjs/issues/2913">#2913</a>). Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
+  reducing a lot of repetition (<a href="https://github.com/josdejong/mathjs/issues/2913">#2913</a>). Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
 
 
 <h1 id="20230224-1160">2023-02-24, 11.6.0 <a href="#20230224-1160" title="Permalink">#</a></h1>
@@ -258,8 +258,8 @@ Fixes:
   `nthRoot`, `subtract`, `bitAnd`, `bitOr`, `bitXor`, `leftShift`, 
   `rightArithShift`, `rightLogShift`, `and`, `or`, `xor`, `compare`, 
   `compareText`, `equal`, `larger`, `largerEq`, `smaller`, `smallerEq`, 
-  `unequal`, `atan2` and `to`  <a href="https://github.com/josdejong/mathjs/issues/2895">#2895</a>, <a href="https://github.com/josdejong/mathjs/issues/2753">#2753</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
-- Implement support for non-power-of-2 fft  <a href="https://github.com/josdejong/mathjs/issues/2900">#2900</a>, <a href="https://github.com/josdejong/mathjs/issues/2577">#2577</a>). Thanks <a href="https://github.com/cyavictor88">@cyavictor88</a>.
+  `unequal`, `atan2` and `to` (<a href="https://github.com/josdejong/mathjs/issues/2895">#2895</a>, <a href="https://github.com/josdejong/mathjs/issues/2753">#2753</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Implement support for non-power-of-2 fft (<a href="https://github.com/josdejong/mathjs/issues/2900">#2900</a>, <a href="https://github.com/josdejong/mathjs/issues/2577">#2577</a>). Thanks <a href="https://github.com/cyavictor88">@cyavictor88</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2888">#2888</a>: update type definitions of function `unit` to allow creating a 
   unit from a fraction or complex number.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2892">#2892</a>: an error in the examples of the embedded help of function `sort`.
@@ -273,44 +273,44 @@ Fixes:
 
 <h1 id="20230131-1151">2023-01-31, 11.5.1 <a href="#20230131-1151" title="Permalink">#</a></h1>
 
-- Add type definitions for function `rotationMatrix`  <a href="https://github.com/josdejong/mathjs/issues/2860">#2860</a>). 
+- Add type definitions for function `rotationMatrix` (<a href="https://github.com/josdejong/mathjs/issues/2860">#2860</a>). 
   Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
-- Add type signature for `lusolve(LUDecomposition, ...)`  <a href="https://github.com/josdejong/mathjs/issues/2864">#2864</a>). 
+- Add type signature for `lusolve(LUDecomposition, ...)` (<a href="https://github.com/josdejong/mathjs/issues/2864">#2864</a>). 
   Thanks <a href="https://github.com/evanmiller">@evanmiller</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2873">#2873</a>: the rocket_trajectory_optimization.html example being partly 
   broken. Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2871">#2871</a>: coverage report broken  <a href="https://github.com/josdejong/mathjs/issues/2877">#2877</a>). Thanks <a href="https://github.com/bornova">@bornova</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2871">#2871</a>: coverage report broken (<a href="https://github.com/josdejong/mathjs/issues/2877">#2877</a>). Thanks <a href="https://github.com/bornova">@bornova</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2883">#2883</a>: update documentation for stat functions, describe missing syntax.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2884">#2884</a>: fix examples in the embedded docs of function `pow` and some other
   functions.
-- Fix type definition of function `complex` for one numeric input  <a href="https://github.com/josdejong/mathjs/issues/2886">#2886</a>), 
+- Fix type definition of function `complex` for one numeric input (<a href="https://github.com/josdejong/mathjs/issues/2886">#2886</a>), 
   thanks <a href="https://github.com/ariymarkowitz">@ariymarkowitz</a>.
-- Fix type definitions of `map()` and `forEach()`  <a href="https://github.com/josdejong/mathjs/issues/2887">#2887</a>), thanks <a href="https://github.com/xiaohk">@xiaohk</a>.
+- Fix type definitions of `map()` and `forEach()` (<a href="https://github.com/josdejong/mathjs/issues/2887">#2887</a>), thanks <a href="https://github.com/xiaohk">@xiaohk</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2606">#2606</a>: improve type definitions of `dotMultiply`, `dotPow` and 
-  `dotDivide`  <a href="https://github.com/josdejong/mathjs/issues/2890">#2890</a>). Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
+  `dotDivide` (<a href="https://github.com/josdejong/mathjs/issues/2890">#2890</a>). Thanks <a href="https://github.com/brunoSnoww">@brunoSnoww</a>.
 
 
 <h1 id="20221205-1150">2022-12-05, 11.5.0 <a href="#20221205-1150" title="Permalink">#</a></h1>
 
-- Improve `simplify` rule matches in non-commutative contexts  <a href="https://github.com/josdejong/mathjs/issues/2841">#2841</a>). 
+- Improve `simplify` rule matches in non-commutative contexts (<a href="https://github.com/josdejong/mathjs/issues/2841">#2841</a>). 
   Thanks <a href="https://github.com/samueltlg">@samueltlg</a>.
 - Simplify: add rules and restructure tests for non-commutative contexts
-   <a href="https://github.com/josdejong/mathjs/issues/2847">#2847</a>). Thanks <a href="https://github.com/samueltlg">@samueltlg</a>.
+  (<a href="https://github.com/josdejong/mathjs/issues/2847">#2847</a>). Thanks <a href="https://github.com/samueltlg">@samueltlg</a>.
 - Fix function `reshape` mutating the input in case of a matrix (see <a href="https://github.com/josdejong/mathjs/issues/2854">#2854</a>).
 - Fix TypeScript types for `multiply()` with `number[]` and `number[][]`
-   <a href="https://github.com/josdejong/mathjs/issues/2852">#2852</a>). Thanks <a href="https://github.com/hfhchan">@hfhchan</a>.
+  (<a href="https://github.com/josdejong/mathjs/issues/2852">#2852</a>). Thanks <a href="https://github.com/hfhchan">@hfhchan</a>.
 
 
 <h1 id="20221118-1140">2022-11-18, 11.4.0 <a href="#20221118-1140" title="Permalink">#</a></h1>
 
 - Implemented more wildcards to describe rules for `simplify`, making it easier
-  for example to describe unary minus  <a href="https://github.com/josdejong/mathjs/issues/1915">#1915</a>). Thanks <a href="https://github.com/thatcomputerguy0101">@thatcomputerguy0101</a>.
-- Implemented functions `schur`, `sylvester`, and `lyap`  <a href="https://github.com/josdejong/mathjs/issues/2646">#2646</a>). 
+  for example to describe unary minus (<a href="https://github.com/josdejong/mathjs/issues/1915">#1915</a>). Thanks <a href="https://github.com/thatcomputerguy0101">@thatcomputerguy0101</a>.
+- Implemented functions `schur`, `sylvester`, and `lyap` (<a href="https://github.com/josdejong/mathjs/issues/2646">#2646</a>). 
   Thanks <a href="https://github.com/egidioln">@egidioln</a>.
-- Implemented function `polynomialRoot`, and use it in a benchmark  <a href="https://github.com/josdejong/mathjs/issues/2839">#2839</a>). 
+- Implemented function `polynomialRoot`, and use it in a benchmark (<a href="https://github.com/josdejong/mathjs/issues/2839">#2839</a>). 
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2825">#2825</a> partly: improve simplifying operations on constants in 
-  non-commutative contexts  <a href="https://github.com/josdejong/mathjs/issues/2827">#2827</a>). Thanks <a href="https://github.com/samueltlg">@samueltlg</a>.
+  non-commutative contexts (<a href="https://github.com/josdejong/mathjs/issues/2827">#2827</a>). Thanks <a href="https://github.com/samueltlg">@samueltlg</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2840">#2840</a>: a bug in the docs and type definitions of `Node.traverse` and 
   `Node.forEach`, they do return `void`.
 
@@ -318,34 +318,34 @@ Fixes:
 <h1 id="20221107-1133">2022-11-07, 11.3.3 <a href="#20221107-1133" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2830">#2830</a>: Prevent inserting zero values when creating a `SparseMatrix` from a 
-  `DenseMatrix`  <a href="https://github.com/josdejong/mathjs/issues/2836">#2836</a>). Thanks <a href="https://github.com/AlexandreAlvesDB">@AlexandreAlvesDB</a>.
+  `DenseMatrix` (<a href="https://github.com/josdejong/mathjs/issues/2836">#2836</a>). Thanks <a href="https://github.com/AlexandreAlvesDB">@AlexandreAlvesDB</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2835">#2835</a>: a regression in the type definitions of `FunctionNode`, introduced
   in `v11.3.2`. See <a href="https://github.com/josdejong/mathjs/issues/2733">#2733</a>. Thanks <a href="https://github.com/dsteve">@dsteve</a>.
 
 
 <h1 id="20221025-1132">2022-10-25, 11.3.2 <a href="#20221025-1132" title="Permalink">#</a></h1>
 
-- Add generics to remaining Node type definitions  <a href="https://github.com/josdejong/mathjs/issues/2733">#2733</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>. 
+- Add generics to remaining Node type definitions (<a href="https://github.com/josdejong/mathjs/issues/2733">#2733</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>. 
 - Allow unit prefixes for (absolute) temperatures `kelvin`, `rankine`, 
-  `celsius`, and `fahrenheit`  <a href="https://github.com/josdejong/mathjs/issues/2824">#2824</a>). Thanks <a href="https://github.com/jfeist">@jfeist</a>
+  `celsius`, and `fahrenheit` (<a href="https://github.com/josdejong/mathjs/issues/2824">#2824</a>). Thanks <a href="https://github.com/jfeist">@jfeist</a>
 
 
 <h1 id="20221019-1131">2022-10-19, 11.3.1 <a href="#20221019-1131" title="Permalink">#</a></h1>
 
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2809">#2809</a>: code completion issues in some IDE's  <a href="https://github.com/josdejong/mathjs/issues/2812">#2812</a>).
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2809">#2809</a>: code completion issues in some IDE's (<a href="https://github.com/josdejong/mathjs/issues/2812">#2812</a>).
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2818">#2818</a>: throw an error when a function assignment has duplicate 
-  parameter names  <a href="https://github.com/josdejong/mathjs/issues/2819">#2819</a>).
+  parameter names (<a href="https://github.com/josdejong/mathjs/issues/2819">#2819</a>).
 - Update `decimal.js` to version `10.4.2`.
 
 
 <h1 id="20221011-1130">2022-10-11, 11.3.0 <a href="#20221011-1130" title="Permalink">#</a></h1>
 
-- Allow creating new subclasses of `Node` in TypeScript  <a href="https://github.com/josdejong/mathjs/issues/2772">#2772</a>). 
+- Allow creating new subclasses of `Node` in TypeScript (<a href="https://github.com/josdejong/mathjs/issues/2772">#2772</a>). 
   Note that this disables being able to narrow MathNodes by using the `.type`
   property. Use typeguards like `isOperatorNode(...)` instead (see <a href="https://github.com/josdejong/mathjs/issues/2810">#2810</a>).
   Thanks <a href="https://github.com/mattvague">@mattvague</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2793">#2793</a>: `flatten()` cloning entries of array/Matrix  <a href="https://github.com/josdejong/mathjs/issues/2799">#2799</a>).
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2627">#2627</a>: TypeScript definitions of `pinv` missing  <a href="https://github.com/josdejong/mathjs/issues/2804">#2804</a>). 
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2793">#2793</a>: `flatten()` cloning entries of array/Matrix (<a href="https://github.com/josdejong/mathjs/issues/2799">#2799</a>).
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2627">#2627</a>: TypeScript definitions of `pinv` missing (<a href="https://github.com/josdejong/mathjs/issues/2804">#2804</a>). 
   Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
 - Update dependencies to `decimal.js@10.4.1`.
 
@@ -357,18 +357,18 @@ Fixes:
 
 <h1 id="20220912-1120">2022-09-12, 11.2.0 <a href="#20220912-1120" title="Permalink">#</a></h1>
 
-- Implement function `isRelationalNode`  <a href="https://github.com/josdejong/mathjs/issues/2731">#2731</a>). Thanks <a href="https://github.com/isaacbyr">@isaacbyr</a>.
+- Implement function `isRelationalNode` (<a href="https://github.com/josdejong/mathjs/issues/2731">#2731</a>). Thanks <a href="https://github.com/isaacbyr">@isaacbyr</a>.
 - Added missing types `'largerEq'` and `'or'` in `OperatorNodeMap` in the
   TypeScript definitions. Thanks <a href="https://github.com/ajinkyac03">@ajinkyac03</a>.
-- Fixed typos in min func type defs  <a href="https://github.com/josdejong/mathjs/issues/2768">#2768</a>). Thanks <a href="https://github.com/mabdullahadeel">@mabdullahadeel</a>.
+- Fixed typos in min func type defs (<a href="https://github.com/josdejong/mathjs/issues/2768">#2768</a>). Thanks <a href="https://github.com/mabdullahadeel">@mabdullahadeel</a>.
 - Improved the TypeScript definitions for `pickRandom`. Thanks <a href="https://github.com/mattvague">@mattvague</a>.
-- Fixed documentation of unit `min` which means `minutes`, not `minim`  <a href="https://github.com/josdejong/mathjs/issues/2773">#2773</a>).
+- Fixed documentation of unit `min` which means `minutes`, not `minim` (<a href="https://github.com/josdejong/mathjs/issues/2773">#2773</a>).
   Thanks <a href="https://github.com/jasonhornsby">@jasonhornsby</a>.
 
 
 <h1 id="20220823-1110">2022-08-23, 11.1.0 <a href="#20220823-1110" title="Permalink">#</a></h1>
 
-- Add Unit constructor from value and pure (valueless) Unit  <a href="https://github.com/josdejong/mathjs/issues/2628">#2628</a>).
+- Add Unit constructor from value and pure (valueless) Unit (<a href="https://github.com/josdejong/mathjs/issues/2628">#2628</a>).
   Thanks <a href="https://github.com/costerwi">@costerwi</a>
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2144">#2144</a>: `examples/advanced/custom_loading.js` was broken.
 - Fix JSON `replacer` function missing in the TypeScript definitions. 
@@ -396,7 +396,7 @@ Breaking changes:
       have been removed.
     - There are new static functions available like `typed.referTo`, 
       `typed.referToSelf`, `typed.addTypes`, `typed.addConversions`.
-- Implement amended "Rule 2" for implicit multiplication  <a href="https://github.com/josdejong/mathjs/issues/2370">#2370</a>, <a href="https://github.com/josdejong/mathjs/issues/2460">#2460</a>):
+- Implement amended "Rule 2" for implicit multiplication (<a href="https://github.com/josdejong/mathjs/issues/2370">#2370</a>, <a href="https://github.com/josdejong/mathjs/issues/2460">#2460</a>):
   when having a division followed by an implicit multiplication, the division 
   gets higher precedence over the implicit multiplication when (a) the 
   numerator is a constant with optionally a prefix operator (`-`, `+`, `~`), 
@@ -405,16 +405,16 @@ Breaking changes:
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Drop elementwise matrix support for trigonometric functions, exp, log, gamma,
   square, sqrt, cube, and cbrt to prevent confusion with standard matrix 
-  functions  <a href="https://github.com/josdejong/mathjs/issues/2440">#2440</a>, <a href="https://github.com/josdejong/mathjs/issues/2465">#2465</a>). Instead, use `math.map(matrix, fn)`. 
+  functions (<a href="https://github.com/josdejong/mathjs/issues/2440">#2440</a>, <a href="https://github.com/josdejong/mathjs/issues/2465">#2465</a>). Instead, use `math.map(matrix, fn)`. 
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Simplify: convert equivalent function calls into operators, for example, 
-  `add(2, x)` will now be simplified into `2 + x`  <a href="https://github.com/josdejong/mathjs/issues/2415">#2415</a>, <a href="https://github.com/josdejong/mathjs/issues/2466">#2466</a>).
+  `add(2, x)` will now be simplified into `2 + x` (<a href="https://github.com/josdejong/mathjs/issues/2415">#2415</a>, <a href="https://github.com/josdejong/mathjs/issues/2466">#2466</a>).
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
-- Removed the automatic conversion from `number` to `string`  <a href="https://github.com/josdejong/mathjs/issues/2482">#2482</a>).
+- Removed the automatic conversion from `number` to `string` (<a href="https://github.com/josdejong/mathjs/issues/2482">#2482</a>).
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2412">#2412</a>: let function `diff` return an empty matrix when the input contains
-  only one element  <a href="https://github.com/josdejong/mathjs/issues/2422">#2422</a>).
-- Internal refactoring in the `simplifyCore` logic  <a href="https://github.com/josdejong/mathjs/issues/2490">#2490</a>, <a href="https://github.com/josdejong/mathjs/issues/2484">#2484</a>, <a href="https://github.com/josdejong/mathjs/issues/2459">#2459</a>).
+  only one element (<a href="https://github.com/josdejong/mathjs/issues/2422">#2422</a>).
+- Internal refactoring in the `simplifyCore` logic (<a href="https://github.com/josdejong/mathjs/issues/2490">#2490</a>, <a href="https://github.com/josdejong/mathjs/issues/2484">#2484</a>, <a href="https://github.com/josdejong/mathjs/issues/2459">#2459</a>).
   The function `simplifyCore` will no longer (partially) merge constants, that 
   behavior has been moved to `simplifyConstant`. The combination of 
   `simplifyConstant` and `simplifyCore` is still close to the old behavior 
@@ -424,12 +424,12 @@ Breaking changes:
   Thanks to the refactoring, `simplify` is more thorough in reducing constants. 
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Disable support for splitting rest parameters in chained calculations 
-   <a href="https://github.com/josdejong/mathjs/issues/2485">#2485</a>, <a href="https://github.com/josdejong/mathjs/issues/2474">#2474</a>). For example: `math.chain(3).max(4, 2).done()` will now throw
+  (<a href="https://github.com/josdejong/mathjs/issues/2485">#2485</a>, <a href="https://github.com/josdejong/mathjs/issues/2474">#2474</a>). For example: `math.chain(3).max(4, 2).done()` will now throw
   an error rather than return `4`, because the rest parameter of 
   `math.max(...number)` has been split between the contents of the chain and 
   the arguments to the max call. Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Function `typeOf` now returns `function` (lowercase) for a function instead 
-  of `Function`  <a href="https://github.com/josdejong/mathjs/issues/2560">#2560</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+  of `Function` (<a href="https://github.com/josdejong/mathjs/issues/2560">#2560</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 
 Non-breaking changes:
 
@@ -439,9 +439,9 @@ Non-breaking changes:
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2608">#2608</a>: clarify the docs on the need to configure a smaller `epsilon`
   when using BigNumbers.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2613">#2613</a>: describe matrix methods `get` and `set` in the docs.
-- Fix link to `math.rationalize` in the docs  <a href="https://github.com/josdejong/mathjs/issues/2616">#2616</a>). Thanks <a href="https://github.com/nukisman">@nukisman</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2621">#2621</a>: add TypeScript definitions for `count`  <a href="https://github.com/josdejong/mathjs/issues/2622">#2622</a>). Thanks <a href="https://github.com/Hansuku">@Hansuku</a>.
-- Improved TypeScript definitions of `multiply`  <a href="https://github.com/josdejong/mathjs/issues/2623">#2623</a>). Thanks <a href="https://github.com/Windrill">@Windrill</a>.
+- Fix link to `math.rationalize` in the docs (<a href="https://github.com/josdejong/mathjs/issues/2616">#2616</a>). Thanks <a href="https://github.com/nukisman">@nukisman</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2621">#2621</a>: add TypeScript definitions for `count` (<a href="https://github.com/josdejong/mathjs/issues/2622">#2622</a>). Thanks <a href="https://github.com/Hansuku">@Hansuku</a>.
+- Improved TypeScript definitions of `multiply` (<a href="https://github.com/josdejong/mathjs/issues/2623">#2623</a>). Thanks <a href="https://github.com/Windrill">@Windrill</a>.
 
 
 <h1 id="20220628-version-1064">2022-06-28, version 10.6.4 <a href="#20220628-version-1064" title="Permalink">#</a></h1>
@@ -472,16 +472,16 @@ Non-breaking changes:
 
 <h1 id="20220524-version-1060">2022-05-24, version 10.6.0 <a href="#20220524-version-1060" title="Permalink">#</a></h1>
 
-- Implementation of fourier transform functions `fft` and `ifft`  <a href="https://github.com/josdejong/mathjs/issues/2540">#2540</a>).
+- Implementation of fourier transform functions `fft` and `ifft` (<a href="https://github.com/josdejong/mathjs/issues/2540">#2540</a>).
   Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
-- Fix TypeScript types not being listed in the exported fields  <a href="https://github.com/josdejong/mathjs/issues/2569">#2569</a>).
+- Fix TypeScript types not being listed in the exported fields (<a href="https://github.com/josdejong/mathjs/issues/2569">#2569</a>).
   Thanks <a href="https://github.com/mattvague">@mattvague</a>. 
-- Large improvements in TypeScript definitions for chained expressions  <a href="https://github.com/josdejong/mathjs/issues/2537">#2537</a>).
+- Large improvements in TypeScript definitions for chained expressions (<a href="https://github.com/josdejong/mathjs/issues/2537">#2537</a>).
   Thanks <a href="https://github.com/mattvague">@mattvague</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2571">#2571</a>: improve TypeScript definition of functions `clone` and `cloneDeep` 
-   <a href="https://github.com/josdejong/mathjs/issues/2572">#2572</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+  (<a href="https://github.com/josdejong/mathjs/issues/2572">#2572</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>.
 - Fix the first argument of `derivative` holding the expression not correctly
-  being converted when using `.toTex()`  <a href="https://github.com/josdejong/mathjs/issues/2564">#2564</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+  being converted when using `.toTex()` (<a href="https://github.com/josdejong/mathjs/issues/2564">#2564</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>.
 
 
 <h1 id="20220511-version-1053">2022-05-11, version 10.5.3 <a href="#20220511-version-1053" title="Permalink">#</a></h1>
@@ -498,7 +498,7 @@ Non-breaking changes:
   `devDependencies`, causing problems in projects that use a different version
   of this dependency. Thanks <a href="https://github.com/Kolahzary">@Kolahzary</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2550">#2550</a>: remove `examples/node_modules` folder from the npm package.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2528">#2528</a>: improve contribution guidelines  <a href="https://github.com/josdejong/mathjs/issues/2548">#2548</a>).
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2528">#2528</a>: improve contribution guidelines (<a href="https://github.com/josdejong/mathjs/issues/2548">#2548</a>).
 - Document `SymbolNode.onUndefinedSymbol` and 
   `FunctionNode.onUndefinedFunction`.
 
@@ -507,50 +507,50 @@ Non-breaking changes:
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2526">#2526</a>, <a href="https://github.com/josdejong/mathjs/issues/2529">#2529</a>: improve TypeScript definitions of function `round`, `fix`,
   `floor`, `ceil`, and `nthRoot`, and improved the number only implementations 
-  of those functions   <a href="https://github.com/josdejong/mathjs/issues/2531">#2531</a>, <a href="https://github.com/josdejong/mathjs/issues/2539">#2539</a>). Thanks <a href="https://github.com/simlaticak">@simlaticak</a> and <a href="https://github.com/gwhitney">@gwhitney</a>.
+  of those functions  (<a href="https://github.com/josdejong/mathjs/issues/2531">#2531</a>, <a href="https://github.com/josdejong/mathjs/issues/2539">#2539</a>). Thanks <a href="https://github.com/simlaticak">@simlaticak</a> and <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2532">#2532</a>: matrix index symbol `end` not working when used inside
   a sub-expression.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2524">#2524</a>: In generating AUTHORS list, ignore a list of specific commits
-  (e.g., to avoid spurious duplicates in list).  <a href="https://github.com/josdejong/mathjs/issues/2543">#2543</a>)
-- Add type definitions of function `resolve`  <a href="https://github.com/josdejong/mathjs/issues/2536">#2536</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>.
+  (e.g., to avoid spurious duplicates in list). (<a href="https://github.com/josdejong/mathjs/issues/2543">#2543</a>)
+- Add type definitions of function `resolve` (<a href="https://github.com/josdejong/mathjs/issues/2536">#2536</a>). Thanks <a href="https://github.com/mattvague">@mattvague</a>.
 
 
 <h1 id="20220419-version-1050">2022-04-19, version 10.5.0 <a href="#20220419-version-1050" title="Permalink">#</a></h1>
 
-- Implement <a href="https://github.com/josdejong/mathjs/issues/1563">#1563</a>: function `pinv`, Moore–Penrose inverse  <a href="https://github.com/josdejong/mathjs/issues/2521">#2521</a>). 
+- Implement <a href="https://github.com/josdejong/mathjs/issues/1563">#1563</a>: function `pinv`, Moore–Penrose inverse (<a href="https://github.com/josdejong/mathjs/issues/2521">#2521</a>). 
   Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
 - Optimize function `det` for integers by switching to the Bareiss algorithm: 
-  no more round-off errors for integer input  <a href="https://github.com/josdejong/mathjs/issues/2516">#2516</a>). Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
+  no more round-off errors for integer input (<a href="https://github.com/josdejong/mathjs/issues/2516">#2516</a>). Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
 - Implement <a href="https://github.com/josdejong/mathjs/issues/2463">#2463</a>: allow negative integer powers of invertible square matrices
-   <a href="https://github.com/josdejong/mathjs/issues/2517">#2517</a>). Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
+  (<a href="https://github.com/josdejong/mathjs/issues/2517">#2517</a>). Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
 - Implement the `lgamma` function (defined as log(gamma(z))) for number and
-  Complex types. Supersedes <a href="https://github.com/josdejong/mathjs/issues/320">#320</a>.  <a href="https://github.com/josdejong/mathjs/issues/2417">#2417</a>). Thanks <a href="https://github.com/yifanwww">@yifanwww</a>.
+  Complex types. Supersedes <a href="https://github.com/josdejong/mathjs/issues/320">#320</a>. (<a href="https://github.com/josdejong/mathjs/issues/2417">#2417</a>). Thanks <a href="https://github.com/yifanwww">@yifanwww</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2523">#2523</a>: update to the latest complex.js to improve `sin(z)` for small
-  `im(z)`  <a href="https://github.com/josdejong/mathjs/issues/2525">#2525</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2526">#2526</a>: update TypeScript definition of `ceil`  <a href="https://github.com/josdejong/mathjs/issues/2531">#2531</a>). Thanks <a href="https://github.com/simlaticak">@simlaticak</a>
-- Change mocha reporter to 'dot' to avoid excessively long log files.  <a href="https://github.com/josdejong/mathjs/issues/2520">#2520</a>)
+  `im(z)` (<a href="https://github.com/josdejong/mathjs/issues/2525">#2525</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2526">#2526</a>: update TypeScript definition of `ceil` (<a href="https://github.com/josdejong/mathjs/issues/2531">#2531</a>). Thanks <a href="https://github.com/simlaticak">@simlaticak</a>
+- Change mocha reporter to 'dot' to avoid excessively long log files. (<a href="https://github.com/josdejong/mathjs/issues/2520">#2520</a>)
 
 
 <h1 id="20220408-version-1043">2022-04-08, version 10.4.3 <a href="#20220408-version-1043" title="Permalink">#</a></h1>
 
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2508">#2508</a>: improve the precision of stirlingS2  <a href="https://github.com/josdejong/mathjs/issues/2509">#2509</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2508">#2508</a>: improve the precision of stirlingS2 (<a href="https://github.com/josdejong/mathjs/issues/2509">#2509</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2514">#2514</a>: implement optional argument `base` in the number implementation
-  of function `log`  <a href="https://github.com/josdejong/mathjs/issues/2515">#2515</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
-- Improve the documentation on operator `;`  <a href="https://github.com/josdejong/mathjs/issues/2512">#2512</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+  of function `log` (<a href="https://github.com/josdejong/mathjs/issues/2515">#2515</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Improve the documentation on operator `;` (<a href="https://github.com/josdejong/mathjs/issues/2512">#2512</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 
 
 <h1 id="20220329-version-1042">2022-03-29, version 10.4.2 <a href="#20220329-version-1042" title="Permalink">#</a></h1>
 
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2499">#2499</a>: different behavior for unit conversion "degC" and "K"  <a href="https://github.com/josdejong/mathjs/issues/2501">#2501</a>).
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2499">#2499</a>: different behavior for unit conversion "degC" and "K" (<a href="https://github.com/josdejong/mathjs/issues/2501">#2501</a>).
   Also disables getting the sign for units with an offset, which is ambiguous. 
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2503">#2503</a>: fix an issue in `log()` for complex numbers in which the imaginary
   part is much larger in absolute value than the real part, fixed in 
-  `complex.js@2.1.0`  <a href="https://github.com/josdejong/mathjs/issues/2505">#2505</a>), thanks <a href="https://github.com/gwhitney">@gwhitney</a>, <a href="https://github.com/infusion">@infusion</a>.
+  `complex.js@2.1.0` (<a href="https://github.com/josdejong/mathjs/issues/2505">#2505</a>), thanks <a href="https://github.com/gwhitney">@gwhitney</a>, <a href="https://github.com/infusion">@infusion</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2493">#2493</a>: unclear error message when an entity that is not a function
-  is being called as a function  <a href="https://github.com/josdejong/mathjs/issues/2494">#2494</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
-- Some fixes in the docs on units  <a href="https://github.com/josdejong/mathjs/issues/2498">#2498</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
-- Add `forEach` example in embedded docs  <a href="https://github.com/josdejong/mathjs/issues/2507">#2507</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+  is being called as a function (<a href="https://github.com/josdejong/mathjs/issues/2494">#2494</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Some fixes in the docs on units (<a href="https://github.com/josdejong/mathjs/issues/2498">#2498</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Add `forEach` example in embedded docs (<a href="https://github.com/josdejong/mathjs/issues/2507">#2507</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Correct approx.deepEqual() to accept an epsilon argument giving the
   comparison tolerance. It was already being called this way, but was
   silently ignoring the tolerance. Thanks <a href="https://github.com/yifanwww">@yifanwww</a>.
@@ -558,44 +558,44 @@ Non-breaking changes:
 
 <h1 id="20220323-version-1041">2022-03-23, version 10.4.1 <a href="#20220323-version-1041" title="Permalink">#</a></h1>
 
-- Improve TypeScript definitions for function `unit`  <a href="https://github.com/josdejong/mathjs/issues/2479">#2479</a>). 
+- Improve TypeScript definitions for function `unit` (<a href="https://github.com/josdejong/mathjs/issues/2479">#2479</a>). 
   Thanks <a href="https://github.com/SinanAkkoyun">@SinanAkkoyun</a>.
-- Add tests for type declarations  <a href="https://github.com/josdejong/mathjs/issues/2448">#2448</a>). Thanks <a href="https://github.com/samestep">@samestep</a>.
+- Add tests for type declarations (<a href="https://github.com/josdejong/mathjs/issues/2448">#2448</a>). Thanks <a href="https://github.com/samestep">@samestep</a>.
 - Further improvement to TypeScript definitions of `std` and `variance`
   (make dimension parameter optional, <a href="https://github.com/josdejong/mathjs/issues/2474">#2474</a>). Thanks <a href="https://github.com/NattapongSiri">@NattapongSiri</a>.
 - Next step (as per <a href="https://github.com/josdejong/mathjs/issues/2431">#2431</a>) for full publication of "is" functions like
   `isMatrix` etc: Provide TypeScript definitions of "is" functions and
-  make them type guards.  <a href="https://github.com/josdejong/mathjs/issues/2432">#2432</a>). Thanks <a href="https://github.com/ChristopherChudzicki">@ChristopherChudzicki</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2491">#2491</a>: Multi line object expressions don't work with comments  <a href="https://github.com/josdejong/mathjs/issues/2492">#2492</a>).
+  make them type guards. (<a href="https://github.com/josdejong/mathjs/issues/2432">#2432</a>). Thanks <a href="https://github.com/ChristopherChudzicki">@ChristopherChudzicki</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2491">#2491</a>: Multi line object expressions don't work with comments (<a href="https://github.com/josdejong/mathjs/issues/2492">#2492</a>).
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2478">#2478</a>: a bug in calculating the eigenvectors when dealing with complex
-  numbers  <a href="https://github.com/josdejong/mathjs/issues/2496">#2496</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+  numbers (<a href="https://github.com/josdejong/mathjs/issues/2496">#2496</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Update project dependencies and devDependencies.
 
 
 <h1 id="20220307-version-1040">2022-03-07, version 10.4.0 <a href="#20220307-version-1040" title="Permalink">#</a></h1>
 
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2461">#2461</a>: make sure `simplifyCore` recurses over all binary nodes  <a href="https://github.com/josdejong/mathjs/issues/2462">#2462</a>).
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2461">#2461</a>: make sure `simplifyCore` recurses over all binary nodes (<a href="https://github.com/josdejong/mathjs/issues/2462">#2462</a>).
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2429">#2429</a>: fix the TypeScript definitions of functions `std` and `variance`
-   <a href="https://github.com/josdejong/mathjs/issues/2455">#2455</a>). Thanks <a href="https://github.com/NattapongSiri">@NattapongSiri</a>.
+  (<a href="https://github.com/josdejong/mathjs/issues/2455">#2455</a>). Thanks <a href="https://github.com/NattapongSiri">@NattapongSiri</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1633">#1633</a>: implement a `cumsum` function generating cumulative sums of a list
-  of values or a matrix.  <a href="https://github.com/josdejong/mathjs/issues/1870">#1870</a>). Thanks <a href="https://github.com/hjonasson">@hjonasson</a>.
+  of values or a matrix. (<a href="https://github.com/josdejong/mathjs/issues/1870">#1870</a>). Thanks <a href="https://github.com/hjonasson">@hjonasson</a>.
 - Upgrade to the latest version of `Fraction.js`, having more strict input, 
   only accepting an integer numerator and denominator. See <a href="https://github.com/josdejong/mathjs/issues/2427">#2427</a>.
-- Fix typo in documentation example for `format`.  <a href="https://github.com/josdejong/mathjs/issues/2468">#2468</a>) Thanks <a href="https://github.com/abranhe">@abranhe</a>.
+- Fix typo in documentation example for `format`. (<a href="https://github.com/josdejong/mathjs/issues/2468">#2468</a>) Thanks <a href="https://github.com/abranhe">@abranhe</a>.
 - Write unit tests for all jsdoc examples. See <a href="https://github.com/josdejong/mathjs/issues/2452">#2452</a>. Thanks <a href="https://github.com/gwhitney">@gwhitney</a>. 
 
 
 <h1 id="20210302-version-1030">2021-03-02, version 10.3.0 <a href="#20210302-version-1030" title="Permalink">#</a></h1>
 
-- Fix <a href="https://github.com/josdejong/mathjs/issues/1260">#1260</a>: implement function `symbolicEqual`  <a href="https://github.com/josdejong/mathjs/issues/2424">#2424</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1260">#1260</a>: implement function `symbolicEqual` (<a href="https://github.com/josdejong/mathjs/issues/2424">#2424</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2441">#2441</a>, <a href="https://github.com/josdejong/mathjs/issues/2442">#2442</a>: support passing a function as argument to functions created
-  in the expression parser  <a href="https://github.com/josdejong/mathjs/issues/2443">#2443</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2325">#2325</a>: improve documentation of subset indices  <a href="https://github.com/josdejong/mathjs/issues/2446">#2446</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+  in the expression parser (<a href="https://github.com/josdejong/mathjs/issues/2443">#2443</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2325">#2325</a>: improve documentation of subset indices (<a href="https://github.com/josdejong/mathjs/issues/2446">#2446</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2439">#2439</a>: fix a bug in `complexEigs` in which real-valued norms were 
-  inadvertently being typed as complex numbers  <a href="https://github.com/josdejong/mathjs/issues/2445">#2445</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2436">#2436</a>: improve documentation and error message of function `map`  <a href="https://github.com/josdejong/mathjs/issues/2457">#2457</a>).
+  inadvertently being typed as complex numbers (<a href="https://github.com/josdejong/mathjs/issues/2445">#2445</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2436">#2436</a>: improve documentation and error message of function `map` (<a href="https://github.com/josdejong/mathjs/issues/2457">#2457</a>).
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 
 
@@ -610,9 +610,9 @@ Non-breaking changes:
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2385">#2385</a>: function `rotate` missing in TypeScript definitions. 
   Thanks <a href="https://github.com/DIVYA-19">@DIVYA-19</a>.
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2450">#2450</a>: Add BigNumber to parameter type in `math.unit` and add TypeScript
-  types for `Unit.simplify` and `Unit.units`  <a href="https://github.com/josdejong/mathjs/issues/2353">#2353</a>). Thanks <a href="https://github.com/joshhansen">@joshhansen</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/2383">#2383</a>: detect infinite loops in `simplify`  <a href="https://github.com/josdejong/mathjs/issues/2405">#2405</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
-- Fix <a href="https://github.com/josdejong/mathjs/issues/1423">#1423</a>: collect like factors and cancel like terms in sums  <a href="https://github.com/josdejong/mathjs/issues/2388">#2388</a>). 
+  types for `Unit.simplify` and `Unit.units` (<a href="https://github.com/josdejong/mathjs/issues/2353">#2353</a>). Thanks <a href="https://github.com/joshhansen">@joshhansen</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/2383">#2383</a>: detect infinite loops in `simplify` (<a href="https://github.com/josdejong/mathjs/issues/2405">#2405</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1423">#1423</a>: collect like factors and cancel like terms in sums (<a href="https://github.com/josdejong/mathjs/issues/2388">#2388</a>). 
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 
 
@@ -629,9 +629,9 @@ Non-breaking changes:
 
 - Implemented function `invmod`, see <a href="https://github.com/josdejong/mathjs/issues/2368">#2368</a>, <a href="https://github.com/josdejong/mathjs/issues/1744">#1744</a>. Thanks <a href="https://github.com/thetazero">@thetazero</a>.
 - Improvements and fixes in function `simplify`, thanks <a href="https://github.com/gwhitney">@gwhitney</a>:
-  - Fix <a href="https://github.com/josdejong/mathjs/issues/1179">#1179</a>, <a href="https://github.com/josdejong/mathjs/issues/1290">#1290</a>: improve collection of non-constant like terms  <a href="https://github.com/josdejong/mathjs/issues/2384">#2384</a>).
-  - Fix <a href="https://github.com/josdejong/mathjs/issues/2152">#2152</a>: do not transform strings into numbers  <a href="https://github.com/josdejong/mathjs/issues/2372">#2372</a>).
-  - Fix <a href="https://github.com/josdejong/mathjs/issues/1913">#1913</a>: implement support for array and object simplification  <a href="https://github.com/josdejong/mathjs/issues/2382">#2382</a>).
+  - Fix <a href="https://github.com/josdejong/mathjs/issues/1179">#1179</a>, <a href="https://github.com/josdejong/mathjs/issues/1290">#1290</a>: improve collection of non-constant like terms (<a href="https://github.com/josdejong/mathjs/issues/2384">#2384</a>).
+  - Fix <a href="https://github.com/josdejong/mathjs/issues/2152">#2152</a>: do not transform strings into numbers (<a href="https://github.com/josdejong/mathjs/issues/2372">#2372</a>).
+  - Fix <a href="https://github.com/josdejong/mathjs/issues/1913">#1913</a>: implement support for array and object simplification (<a href="https://github.com/josdejong/mathjs/issues/2382">#2382</a>).
 - Fix <a href="https://github.com/josdejong/mathjs/issues/2379">#2379</a>: add embedded documentation for function `print`.
 - Remove broken example from the embedded documentation of function `forEach`.
 
@@ -1274,7 +1274,7 @@ Breaking changes:
 
 <h1 id="20190302-version-560">2019-03-02, version 5.6.0 <a href="#20190302-version-560" title="Permalink">#</a></h1>
 
-- Upgrade decimal.js to v10.1.1  <a href="https://github.com/josdejong/mathjs/issues/1421">#1421</a>).
+- Upgrade decimal.js to v10.1.1 (<a href="https://github.com/josdejong/mathjs/issues/1421">#1421</a>).
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1418">#1418</a>: missing whitespace when stringifying an expression
   containing "not".
 
@@ -1284,7 +1284,7 @@ Breaking changes:
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1401">#1401</a>: methods `map` and `forEach` of `SparseMatrix` not working
   correctly when indexes are unordered.
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1404">#1404</a>: inconsistent rounding of negative numbers.
-- Upgrade tiny-emitter to v2.1.0  <a href="https://github.com/josdejong/mathjs/issues/1397">#1397</a>).
+- Upgrade tiny-emitter to v2.1.0 (<a href="https://github.com/josdejong/mathjs/issues/1397">#1397</a>).
 
 
 <h1 id="20190125-version-542">2019-01-25, version 5.4.2 <a href="#20190125-version-542" title="Permalink">#</a></h1>
@@ -1299,7 +1299,7 @@ Breaking changes:
 <h1 id="20190110-version-541">2019-01-10, version 5.4.1 <a href="#20190110-version-541" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1378">#1378</a>: negative bignumbers not formatted correctly.
-- Upgrade fraction.js to version 4.0.12  <a href="https://github.com/josdejong/mathjs/issues/1369">#1369</a>).
+- Upgrade fraction.js to version 4.0.12 (<a href="https://github.com/josdejong/mathjs/issues/1369">#1369</a>).
 
 
 <h1 id="20181209-version-540">2018-12-09, version 5.4.0 <a href="#20181209-version-540" title="Permalink">#</a></h1>
