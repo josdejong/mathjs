@@ -476,19 +476,6 @@ parser.evaluate('i * i')        // Number,  -1
 parser.evaluate('sqrt(-4)')     // Complex, 2i
 ```
 
-Math.js does not automatically convert complex numbers with an imaginary part
-of zero to numbers. They can be converted to a number using the function
-`number`.
-
-```js
-// convert a complex number to a number
-const parser = math.parser()
-parser.evaluate('a = 2 + 3i')   // Complex, 2 + 3i
-parser.evaluate('b = a - 3i')   // Complex, 2 + 0i
-parser.evaluate('number(b)')    // Number,  2
-parser.evaluate('number(a)')    // Error: unexpected type of argument
-```
-
 
 <h3 id="units">Units <a href="#units" title="Permalink">#</a></h3>
 

@@ -5,6 +5,21 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20240222-1240">2024-02-22, 12.4.0 <a href="#20240222-1240" title="Permalink">#</a></h1>
+
+- Feat: implement support for trailing commas in matrices  <a href="https://github.com/josdejong/mathjs/issues/3154">#3154</a>, <a href="https://github.com/josdejong/mathjs/issues/2968">#2968</a>).
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: improve the performance of `multiply` a lot by adding matrix type 
+  inferencing  <a href="https://github.com/josdejong/mathjs/issues/3149">#3149</a>). Thanks <a href="https://github.com/RandomGamingDev">@RandomGamingDev</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3100">#3100</a> function `round` not handling round-off errors  <a href="https://github.com/josdejong/mathjs/issues/3136">#3136</a>). 
+  Thanks <a href="https://github.com/BrianFugate">@BrianFugate</a>.
+- Fix: `PartitionedMap` and `ObjectWrappingMap` missing a property 
+  `Symbol.iterator`, causing problems when trying `new Map(scope)`  <a href="https://github.com/josdejong/mathjs/issues/3156">#3156</a>).
+- Fix: type definitions of function `mode`  <a href="https://github.com/josdejong/mathjs/issues/3153">#3153</a>). Thanks <a href="https://github.com/rich-martinez">@rich-martinez</a>.
+- Docs: describe method `getAllAsMap` in the Parser docs  <a href="https://github.com/josdejong/mathjs/issues/3158">#3158</a>, <a href="https://github.com/josdejong/mathjs/issues/3157">#3157</a>).
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+
+
 <h1 id="20240208-1232">2024-02-08, 12.3.2 <a href="#20240208-1232" title="Permalink">#</a></h1>
 
 - Improved the performance of custom defined functions in the expression
