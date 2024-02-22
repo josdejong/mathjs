@@ -1,7 +1,7 @@
 # History
 
 
-# Unpublished changes since 12.3.2
+# 2024-02-22, 12.4.0
 
 - Feat: implement support for trailing commas in matrices (#3154, #2968).
   Thanks @dvd101x.
