@@ -167,7 +167,9 @@ The parser contains the following functions:
 - `get(name)`
   Retrieve a variable or function from the parser's scope.
 - `getAll()`
-  Retrieve a map with all defined a variables from the parser's scope.
+  Retrieve an object with all defined variables in the parser's scope.
+- `getAllAsMap()`
+  Retrieve a map with all defined variables in the parser's scope.
 - `remove(name)`
   Remove a variable or function from the parser's scope.
 - `set(name, value)`

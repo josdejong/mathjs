@@ -1,6 +1,21 @@
 # History
 
 
+# 2024-02-22, 12.4.0
+
+- Feat: implement support for trailing commas in matrices (#3154, #2968).
+  Thanks @dvd101x.
+- Feat: improve the performance of `multiply` a lot by adding matrix type 
+  inferencing (#3149). Thanks @RandomGamingDev.
+- Fix: #3100 function `round` not handling round-off errors (#3136). 
+  Thanks @BrianFugate.
+- Fix: `PartitionedMap` and `ObjectWrappingMap` missing a property 
+  `Symbol.iterator`, causing problems when trying `new Map(scope)` (#3156).
+- Fix: type definitions of function `mode` (#3153). Thanks @rich-martinez.
+- Docs: describe method `getAllAsMap` in the Parser docs (#3158, #3157).
+  Thanks @dvd101x.
+
+
 # 2024-02-08, 12.3.2
 
 - Improved the performance of custom defined functions in the expression
