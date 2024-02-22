@@ -7,6 +7,8 @@
   Thanks @dvd101x.
 - Feat: improve the performance of `multiply` a lot by adding matrix type 
   inferencing (#3149). Thanks @RandomGamingDev.
+- Fix: #3100 function `round` not handling round-off errors (#3136). 
+  Thanks @BrianFugate.
 - Fix: `PartitionedMap` and `ObjectWrappingMap` missing a property 
   `Symbol.iterator`, causing problems when trying `new Map(scope)` (#3156).
 - Fix: type definitions of function `mode` (#3153). Thanks @rich-martinez.
