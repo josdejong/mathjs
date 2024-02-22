@@ -329,6 +329,7 @@ describe('Testing examples from (jsdoc) comments', function () {
   const allNames = Object.keys(math)
   const srcPath = path.resolve(__dirname, '../../src') + '/'
   const allDocs = docgenerator.collectDocs(allNames, srcPath)
+
   it("should cover all names (but doesn't yet)", function () {
     const documented = new Set(Object.keys(allDocs))
     const badUndocumented = allNames.filter(name => {

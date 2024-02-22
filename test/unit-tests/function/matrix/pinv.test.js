@@ -53,6 +53,7 @@ describe('pinv', function () {
         break
     }
   }
+
   it('should return the inverse of a number', function () {
     check(4, 1 / 4, true)
     check(math.bignumber(4), math.bignumber(1 / 4), true)

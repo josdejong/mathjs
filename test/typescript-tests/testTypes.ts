@@ -2542,3 +2542,34 @@ Match types of exact positional arguments.
   expectTypeOf(node3.items[0]).toMatchTypeOf<ConstantNode>()
   expectTypeOf(node3.items[1]).toMatchTypeOf<SymbolNode>()
 }
+
+/**
+ * mode Return Types
+ */
+{
+  const math = create(all, {})
+  const a = math.mode<number>([1, 2, 3])
+  expectTypeOf(a).toMatchTypeOf<number[]>()
+  assert.deepStrictEqual(a, [1, 2, 3])
+
+  const b = math.mode<number>([
+    [1, 2],
+    [2, 2],
+    [3, 5]
+  ])
+  expectTypeOf(b).toMatchTypeOf<number[]>()
+  assert.deepStrictEqual(b, [2])
+
+  const c = math.mode<number>(1, 2, 2, 2, 3, 5)
+  expectTypeOf(c).toMatchTypeOf<number[]>()
+  assert.deepStrictEqual(c, [2])
+
+  const d = math.mode(1, 2, 2, 2, 3, 5)
+  expectTypeOf(d).toMatchTypeOf<number[]>()
+  assert.deepStrictEqual(d, [2])
+
+  const mathCollection = math.concat([1, 2, 3], [1], [4, 5])
+  const e = math.mode(mathCollection)
+  expectTypeOf(e).toMatchTypeOf<MathScalarType[]>()
+  assert.deepStrictEqual(e, [1])
+}

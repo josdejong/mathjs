@@ -28,13 +28,13 @@ export const createMatAlgo01xDSid = /* #__PURE__ */ factory(name, dependencies, 
     // dense matrix arrays
     const adata = denseMatrix._data
     const asize = denseMatrix._size
-    const adt = denseMatrix._datatype
+    const adt = denseMatrix._datatype || denseMatrix.getDataType()
     // sparse matrix arrays
     const bvalues = sparseMatrix._values
     const bindex = sparseMatrix._index
     const bptr = sparseMatrix._ptr
     const bsize = sparseMatrix._size
-    const bdt = sparseMatrix._datatype
+    const bdt = sparseMatrix._datatype || sparseMatrix._data === undefined ? sparseMatrix._datatype : sparseMatrix.getDataType()
 
     // validate dimensions
     if (asize.length !== bsize.length) { throw new DimensionError(asize.length, bsize.length) }
@@ -50,7 +50,7 @@ export const createMatAlgo01xDSid = /* #__PURE__ */ factory(name, dependencies, 
     const columns = asize[1]
 
     // process data types
-    const dt = typeof adt === 'string' && adt === bdt ? adt : undefined
+    const dt = typeof adt === 'string' && adt !== 'mixed' && adt === bdt ? adt : undefined
     // callback function
     const cf = dt ? typed.find(callback, [dt, dt]) : callback
 
@@ -97,7 +97,7 @@ export const createMatAlgo01xDSid = /* #__PURE__ */ factory(name, dependencies, 
     return denseMatrix.createDenseMatrix({
       data: cdata,
       size: [rows, columns],
-      datatype: dt
+      datatype: adt === denseMatrix._datatype && bdt === sparseMatrix._datatype ? dt : undefined
     })
   }
 })

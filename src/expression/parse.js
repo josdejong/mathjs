@@ -1544,8 +1544,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           while (state.token === ';') { // eslint-disable-line no-unmodified-loop-condition
             getToken(state)
 
-            params[rows] = parseRow(state)
-            rows++
+            if (state.token !== ']') {
+              params[rows] = parseRow(state)
+              rows++
+            }
           }
 
           if (state.token !== ']') {
@@ -1599,8 +1601,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getToken(state)
 
       // parse expression
-      params[len] = parseAssignment(state)
-      len++
+      if (state.token !== ']' && state.token !== ';') {
+        params[len] = parseAssignment(state)
+        len++
+      }
     }
 
     return new ArrayNode(params)
