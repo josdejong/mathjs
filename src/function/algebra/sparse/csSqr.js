@@ -1,3 +1,6 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
 import { csPermute } from './csPermute.js'
 import { csPost } from './csPost.js'
 import { csEtree } from './csEtree.js'
@@ -25,8 +28,6 @@ export const createCsSqr = /* #__PURE__ */ factory(name, dependencies, ({ add, m
    *                                  symbolic ordering and analysis for LU decomposition (false)
    *
    * @return {Object}                 The Symbolic ordering and analysis for matrix A
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
   return function csSqr (order, a, qr) {
     // a arrays

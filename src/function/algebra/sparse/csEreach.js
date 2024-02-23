@@ -1,3 +1,6 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
 import { csMark } from './csMark.js'
 import { csMarked } from './csMarked.js'
 
@@ -11,8 +14,6 @@ import { csMarked } from './csMarked.js'
  *                                  The first n entries is the nonzero pattern, the last n entries is the stack
  *
  * @return {Number}                 The index for the nonzero pattern
- *
- * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csEreach (a, k, parent, w) {
   // a arrays
