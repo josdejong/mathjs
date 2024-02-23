@@ -1,3 +1,6 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
 import { csMarked } from './csMarked.js'
 import { csMark } from './csMark.js'
 import { csUnflip } from './csUnflip.js'
@@ -15,8 +18,6 @@ import { csUnflip } from './csUnflip.js'
  * @param {Array}   pinv            The inverse row permutation vector, must be null for L * x = b
  *
  * @return {Number}                 New value of top
- *
- * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csDfs (j, g, top, xi, pinv) {
   // g arrays

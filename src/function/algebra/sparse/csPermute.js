@@ -1,3 +1,7 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
+
 /**
  * Permutes a sparse matrix C = P * A * Q
  *
@@ -7,8 +11,6 @@
  * @param {boolean} values          Create a pattern matrix (false), values and pattern otherwise
  *
  * @return {Matrix}                 C = P * A * Q, null on error
- *
- * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csPermute (a, pinv, q, values) {
   // a arrays
