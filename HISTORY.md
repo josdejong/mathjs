@@ -1,6 +1,11 @@
 # History
 
 
+# unpublished changes since 12.4.0
+
+- Fix #3163: `toTex` wrongly returning `Infinity` for large BigNumbers. 
+
+
 # 2024-02-22, 12.4.0
 
 - Feat: implement support for trailing commas in matrices (#3154, #2968).
