@@ -185,6 +185,19 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     'Infinity'
   ]
 
+  const ESCAPE_CHARACTERS = {
+    '"': '"',
+    "'": "'",
+    '\\': '\\',
+    '/': '/',
+    b: '\b',
+    f: '\f',
+    n: '\n',
+    r: '\r',
+    t: '\t'
+    // note that \u is handled separately in parseStringToken()
+  }
+
   function initialState () {
     return {
       extraNodes: {}, // current extra nodes, must be careful not to mutate
@@ -1339,7 +1352,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       return node
     }
 
-    return parseDoubleQuotesString(state)
+    return parseString(state)
   }
 
   /**
@@ -1418,9 +1431,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // dot notation like variable.prop
         getToken(state)
 
-        if (state.tokenType !== TOKENTYPE.SYMBOL) {
+        const isPropertyName = state.tokenType === TOKENTYPE.SYMBOL ||
+          (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)
+        if (!isPropertyName) {
           throw createSyntaxError(state, 'Property name expected after dot')
         }
+
         params.push(new ConstantNode(state.token))
         getToken(state)
 
@@ -1433,66 +1449,15 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * Parse a double quotes string.
+   * Parse a single or double quoted string.
    * @return {Node} node
    * @private
    */
-  function parseDoubleQuotesString (state) {
+  function parseString (state) {
     let node, str
 
-    if (state.token === '"') {
-      str = parseDoubleQuotesStringToken(state)
-
-      // create constant
-      node = new ConstantNode(str)
-
-      // parse index parameters
-      node = parseAccessors(state, node)
-
-      return node
-    }
-
-    return parseSingleQuotesString(state)
-  }
-
-  /**
-   * Parse a string surrounded by double quotes "..."
-   * @return {string}
-   */
-  function parseDoubleQuotesStringToken (state) {
-    let str = ''
-
-    while (currentCharacter(state) !== '' && currentCharacter(state) !== '"') {
-      if (currentCharacter(state) === '\\') {
-        // escape character, immediately process the next
-        // character to prevent stopping at a next '\"'
-        str += currentCharacter(state)
-        next(state)
-      }
-
-      str += currentCharacter(state)
-      next(state)
-    }
-
-    getToken(state)
-    if (state.token !== '"') {
-      throw createSyntaxError(state, 'End of string " expected')
-    }
-    getToken(state)
-
-    return JSON.parse('"' + str + '"') // unescape escaped characters
-  }
-
-  /**
-   * Parse a single quotes string.
-   * @return {Node} node
-   * @private
-   */
-  function parseSingleQuotesString (state) {
-    let node, str
-
-    if (state.token === '\'') {
-      str = parseSingleQuotesStringToken(state)
+    if (state.token === '"' || state.token === "'") {
+      str = parseStringToken(state, state.token)
 
       // create constant
       node = new ConstantNode(str)
@@ -1507,31 +1472,50 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * Parse a string surrounded by single quotes '...'
+   * Parse a string surrounded by single or double quotes
+   * @param {Object} state
+   * @param {"'" | "\""} quote
    * @return {string}
    */
-  function parseSingleQuotesStringToken (state) {
+  function parseStringToken (state, quote) {
     let str = ''
 
-    while (currentCharacter(state) !== '' && currentCharacter(state) !== '\'') {
+    while (currentCharacter(state) !== '' && currentCharacter(state) !== quote) {
       if (currentCharacter(state) === '\\') {
-        // escape character, immediately process the next
-        // character to prevent stopping at a next '\''
+        next(state)
+
+        const char = currentCharacter(state)
+        const escapeChar = ESCAPE_CHARACTERS[char]
+        if (escapeChar !== undefined) {
+          // an escaped control character like \" or \n
+          str += escapeChar
+          state.index += 1
+        } else if (char === 'u') {
+          // escaped unicode character
+          const unicode = state.expression.slice(state.index + 1, state.index + 5)
+          if (/^[0-9A-Fa-f]{4}$/.test(unicode)) { // test whether the string holds four hexadecimal values
+            str += String.fromCharCode(parseInt(unicode, 16))
+            state.index += 5
+          } else {
+            throw createSyntaxError(state, `Invalid unicode character \\u${unicode}`)
+          }
+        } else {
+          throw createSyntaxError(state, `Bad escape character \\${char}`)
+        }
+      } else {
+        // any regular character
         str += currentCharacter(state)
         next(state)
       }
-
-      str += currentCharacter(state)
-      next(state)
     }
 
     getToken(state)
-    if (state.token !== '\'') {
-      throw createSyntaxError(state, 'End of string \' expected')
+    if (state.token !== quote) {
+      throw createSyntaxError(state, `End of string ${quote} expected`)
     }
     getToken(state)
 
-    return JSON.parse('"' + str + '"') // unescape escaped characters
+    return str
   }
 
   /**
@@ -1560,8 +1544,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           while (state.token === ';') { // eslint-disable-line no-unmodified-loop-condition
             getToken(state)
 
-            params[rows] = parseRow(state)
-            rows++
+            if (state.token !== ']') {
+              params[rows] = parseRow(state)
+              rows++
+            }
           }
 
           if (state.token !== ']') {
@@ -1615,8 +1601,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getToken(state)
 
       // parse expression
-      params[len] = parseAssignment(state)
-      len++
+      if (state.token !== ']' && state.token !== ';') {
+        params[len] = parseAssignment(state)
+        len++
+      }
     }
 
     return new ArrayNode(params)
@@ -1638,10 +1626,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
         if (state.token !== '}') {
           // parse key
-          if (state.token === '"') {
-            key = parseDoubleQuotesStringToken(state)
-          } else if (state.token === '\'') {
-            key = parseSingleQuotesStringToken(state)
+          if (state.token === '"' || state.token === "'") {
+            key = parseStringToken(state, state.token)
           } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
             key = state.token
             getToken(state)

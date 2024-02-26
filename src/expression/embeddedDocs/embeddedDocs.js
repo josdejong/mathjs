@@ -181,7 +181,10 @@ import { setPowersetDocs } from './function/set/setPowerset.js'
 import { setSizeDocs } from './function/set/setSize.js'
 import { setSymDifferenceDocs } from './function/set/setSymDifference.js'
 import { setUnionDocs } from './function/set/setUnion.js'
+import { zpk2tfDocs } from './function/signal/zpk2tf.js'
+import { freqzDocs } from './function/signal/freqz.js'
 import { erfDocs } from './function/special/erf.js'
+import { zetaDocs } from './function/special/zeta.js'
 import { madDocs } from './function/statistics/mad.js'
 import { maxDocs } from './function/statistics/max.js'
 import { meanDocs } from './function/statistics/mean.js'
@@ -194,6 +197,7 @@ import { stdDocs } from './function/statistics/std.js'
 import { cumSumDocs } from './function/statistics/cumsum.js'
 import { sumDocs } from './function/statistics/sum.js'
 import { varianceDocs } from './function/statistics/variance.js'
+import { corrDocs } from './function/statistics/corr.js'
 import { acosDocs } from './function/trigonometry/acos.js'
 import { acoshDocs } from './function/trigonometry/acosh.js'
 import { acotDocs } from './function/trigonometry/acot.js'
@@ -236,6 +240,7 @@ import { numericDocs } from './function/utils/numeric.js'
 import { octDocs } from './function/utils/oct.js'
 import { printDocs } from './function/utils/print.js'
 import { typeOfDocs } from './function/utils/typeOf.js'
+import { solveODEDocs } from './function/numeric/solveODE.js'
 
 export const embeddedDocs = {
 
@@ -476,6 +481,9 @@ export const embeddedDocs = {
   schur: schurDocs,
   lyap: lyapDocs,
 
+  // functions - numeric
+  solveODE: solveODEDocs,
+
   // functions - probability
   combinations: combinationsDocs,
   combinationsWithRep: combinationsWithRepDocs,
@@ -515,8 +523,13 @@ export const embeddedDocs = {
   setSymDifference: setSymDifferenceDocs,
   setUnion: setUnionDocs,
 
+  // functions - signal
+  zpk2tf: zpk2tfDocs,
+  freqz: freqzDocs,
+
   // functions - special
   erf: erfDocs,
+  zeta: zetaDocs,
 
   // functions - statistics
   cumsum: cumSumDocs,
@@ -531,6 +544,7 @@ export const embeddedDocs = {
   std: stdDocs,
   sum: sumDocs,
   variance: varianceDocs,
+  corr: corrDocs,
 
   // functions - trigonometry
   acos: acosDocs,

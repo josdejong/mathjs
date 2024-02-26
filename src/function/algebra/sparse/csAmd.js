@@ -1,3 +1,6 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
 import { factory } from '../../../utils/factory.js'
 import { csFkeep } from './csFkeep.js'
 import { csFlip } from './csFlip.js'
@@ -16,8 +19,6 @@ export const createCsAmd = /* #__PURE__ */ factory(name, dependencies, ({ add, m
    * heuristic for finding a permutation P so that P*A*P' has fewer nonzeros in its factorization
    * than A. It is a gready method that selects the sparsest pivot row and column during the course
    * of a right looking sparse Cholesky factorization.
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    *
    * @param {Number} order    0: Natural, 1: Cholesky, 2: LU, 3: QR
    * @param {Matrix} m        Sparse Matrix

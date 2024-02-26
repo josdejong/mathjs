@@ -438,6 +438,31 @@ describe('FunctionNode', function () {
     assert.strictEqual(n2.toString({ handler: customFunction }), '[subtract](const(1, number), const(2, number), )')
   })
 
+  it('should stringify a FunctionNode with custom toHTML', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node, options) {
+      if (node.type === 'FunctionNode') {
+        let string = '[' + node.name + ']('
+        node.args.forEach(function (arg) {
+          string += arg.toHTML(options) + ', '
+        })
+        string += ')'
+        return string
+      } else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
+      }
+    }
+
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
+
+    const n1 = new FunctionNode(new SymbolNode('add'), [a, b])
+    const n2 = new FunctionNode(new SymbolNode('subtract'), [a, b])
+
+    assert.strictEqual(n1.toHTML({ handler: customFunction }), '[add](const(1, number), const(2, number), )')
+    assert.strictEqual(n2.toHTML({ handler: customFunction }), '[subtract](const(1, number), const(2, number), )')
+  })
+
   it('should stringify a FunctionNode with custom toString for a single function', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = {

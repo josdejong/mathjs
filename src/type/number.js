@@ -35,7 +35,7 @@ function makeNumberFromNonDecimalParts (parts) {
   }
   const result = n + f
   if (isNaN(result)) {
-    throw new SyntaxError('String "' + parts.input + '" is no valid number')
+    throw new SyntaxError('String "' + parts.input + '" is not a valid number')
   }
   return result
 }
@@ -91,7 +91,7 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       }
       let num = Number(x)
       if (isNaN(num)) {
-        throw new SyntaxError('String "' + x + '" is no valid number')
+        throw new SyntaxError('String "' + x + '" is not a valid number')
       }
       if (wordSizeSuffixMatch) {
         // x is a signed bin, oct, or hex literal

@@ -17,10 +17,10 @@ describe('numeric', function () {
     assert.throws(() => { numeric(null, 'number') }, /Cannot convert/)
     assert.throws(() => { numeric([], 'number') }, /Cannot convert/)
     assert.throws(() => { numeric({}, 'number') }, /Cannot convert/)
-    assert.throws(() => { numeric('foo', 'number') }, /is no valid number/)
-    assert.throws(() => { numeric('2.3.4', 'number') }, /is no valid number/)
-    assert.throws(() => { numeric('234a', 'number') }, /is no valid number/)
-    assert.throws(() => { numeric('234 1', 'number') }, /is no valid number/)
+    assert.throws(() => { numeric('foo', 'number') }, /is not a valid number/)
+    assert.throws(() => { numeric('2.3.4', 'number') }, /is not a valid number/)
+    assert.throws(() => { numeric('234a', 'number') }, /is not a valid number/)
+    assert.throws(() => { numeric('234 1', 'number') }, /is not a valid number/)
   })
 
   it('should return Infinity', function () {

@@ -1,5 +1,6 @@
 import { isNode, isConstantNode, isOperatorNode, isParenthesisNode } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
+import { createSubScope } from '../../utils/scope.js'
 import { escape } from '../../utils/string.js'
 import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
 import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators.js'
@@ -304,7 +305,14 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         return arg._compile(math, argNames)
       })
 
-      if (evalArgs.length === 1) {
+      if (typeof fn === 'function' && fn.rawArgs === true) {
+        // pass unevaluated parameters (nodes) to the function
+        // "raw" evaluation
+        const rawArgs = this.args
+        return function evalOperatorNode (scope, args, context) {
+          return fn(rawArgs, math, createSubScope(scope, args))
+        }
+      } else if (evalArgs.length === 1) {
         const evalArg0 = evalArgs[0]
         return function evalOperatorNode (scope, args, context) {
           return fn(evalArg0(scope, args, context))
@@ -492,7 +500,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Object} options
      * @return {string} str
      */
-    toHTML (options) {
+    _toHTML (options) {
       const parenthesis =
           (options && options.parenthesis) ? options.parenthesis : 'keep'
       const implicit = (options && options.implicit) ? options.implicit : 'hide'

@@ -1,11 +1,13 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
+
 /**
  * It sets the p[i] equal to the sum of c[0] through c[i-1].
  *
  * @param {Array}   ptr             The Sparse Matrix ptr array
  * @param {Array}   c               The Sparse Matrix ptr array
  * @param {Number}  n               The number of columns
- *
- * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csCumsum (ptr, c, n) {
   // variables

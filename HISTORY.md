@@ -1,10 +1,208 @@
 # History
 
-# not yet published, 11.8.3
 
+# unpublished changes since 12.4.0
+
+- Fix #3163: `toTex` wrongly returning `Infinity` for large BigNumbers.
+- Fix #3162: add license information about CSParse (#3164).
+
+
+# 2024-02-22, 12.4.0
+
+- Feat: implement support for trailing commas in matrices (#3154, #2968).
+  Thanks @dvd101x.
+- Feat: improve the performance of `multiply` a lot by adding matrix type 
+  inferencing (#3149). Thanks @RandomGamingDev.
+- Fix: #3100 function `round` not handling round-off errors (#3136). 
+  Thanks @BrianFugate.
+- Fix: `PartitionedMap` and `ObjectWrappingMap` missing a property 
+  `Symbol.iterator`, causing problems when trying `new Map(scope)` (#3156).
+- Fix: type definitions of function `mode` (#3153). Thanks @rich-martinez.
+- Docs: describe method `getAllAsMap` in the Parser docs (#3158, #3157).
+  Thanks @dvd101x.
+
+
+# 2024-02-08, 12.3.2
+
+- Improved the performance of custom defined functions in the expression
+  parser (#3150).
+- Fix: #3143 cannot use `and` and `or` inside a function definition. 
+  Regression since `v12.1.0` (#3150).
+
+
+# 2024-02-01, 12.3.1
+
+- Improved the typings of the arguments of `ArrayNode`, `FunctionNode`, 
+  `IndexNode`, `OperatorNode`, and `RelationalNode` (#3123). Thanks @sylee957.
+- Added a fully featured code editor example with CodeMirror and Katex (#3027).
+  Thanks @dvd101x.
+- Fix: #3114 build warnings related to a number of wrong `/* #__PURE__ */` 
+  annotations.
+- Fix: #3142 support BigNumber values for the options of function `format`:
+  `precision`, `wordSize`, `lowerExp`, `upperExp`. Support BigNumber values
+  for the option `wordSize` in the functions `hex`, `bin`, and `oct`. 
+- Fix: #3125 type definitions of function `hypot` (#3144). 
+  Thanks @silentmissile.
+- Fix: #3141 `help(config)` altering the actual `config` when evaluating the 
+  examples.
+- Docs: #3145 fix documentation about REPL, it does require a build step 
+  nowadays.
+
+
+# 2024-01-12, 12.3.0
+
+- Implement support new metric prefixes: `ronna` (`R`), `quetta` (`Q`), 
+  `ronto` (`r`), and `quecto` (`q`) (#3113, #3112). Thanks @AlexEdgcomb.
+- Fix a bug converting a unitless unit (#3117). Thanks @costerwi.
+- Fix: #3097 `toSI()` wrongly converting `degC` (#3118). Thanks @costerwi.
+
+
+# 2023-12-20, 12.2.1
+
+- Fix #3109: method `Node.toHTML` not accepting a custom `handler`.
+
+
+# 2023-12-08, 12.2.0
+
+- Feat: lazy evaluation of operators `and`, `or`, `&`, `|` (#3090, #3101, 
+  #2766). Thanks @smith120bh.
+- Fix: passing a 4th argument with a scope to raw functions.
+- Fix: #3096 embedded docs of eigs throwing an error.
+
+
+# 2023-11-17, 12.1.0
+
+- Feat: Extend function `round` with support for units (#2761, #3095). 
+- Feat: Extend function `mod` with support for negative divisors in when
+  using `BigNumber` or `Fraction` (#3087).
+- Fix: #3092 a typo in an error message when converting a string into a number.
+- Fix: #3094 function `derivative` mutates the input expression when it fails.
+
+
+# 2023-10-26, 12.0.0
+
+Breaking changes:
+
+- Fix #2879, #2927, #3014: change the confusing interface of `eigs` (#3037),
+  thanks @gwhitney.
+  Before, functions `eigs` returned an object:
+  ```
+  { values: MathCollection; vectors: MathCollection }
+  ```
+  where `vectors` was a 2d matrix of which the columns contained the vectors.
+  This is changed to `eigs` returning an object:
+  ```
+  { 
+    values: MathCollection
+    eigenvectors: Array<{
+      value: number | BigNumber
+      vector: MathCollection
+    }>
+  }
+  ```
+  Where `eigenvectors` is an array containing an object with the corresponding
+  eigenvalue and vector.
+- Refactored the TypeScript type definitions to make them work with a `NodeNext`
+  module resolution (#3079, #2919). 
+  - Type `MathJsStatic` is renamed to `MathJsInstance`.
+  - Type `FactoryDependencies` is deprecated, use `MathJsFactory` instead, and 
+    import dependency maps directly from the library.
+- Change the assignment operator of `.toTex()` output from `:=` to `=` (see 
+  #2980, #2987).
+- Drop official support for Node.js 14 and 16.
+
+Features:
+
+- Function `eigs` now has an option to turn off calculation of eigenvectors 
+  (#3057, #2180). Thanks @gwhitney.
+
+Fixes:
+
+- Find eigenvectors of defective matrices (#3037). Thanks @gwhitney.
+
+
+# 2023-10-26, 11.12.0
+
+- Implemented function `subtractScalar` (#3081, #2643), thanks @vrushaket.
+- Fix #3073: function format not escaping control characters and double
+  quotes (#3082).
+- Fix: function `clone` not throwing an error when passing an unsupported
+  type like a function.
+- Fix: #2960 add type definition of function `symbolicEqual` (#3035),
+  thanks @juancodeaudio.
+
+
+# 2023-10-11, 11.11.2
+
+- Fix #3025: improve handling of matrices and error handling 
+  in function `corr` (#3030). Thanks @vrushaket.
+- Fix #3074: improve error message when using function `max` in `derivative`.
+- Fix #3073: fix parsing quotes inside a string.
+- Fix #2027: cannot use named operators like `to` or `mod` as property name. 
+
+
+# 2023-09-20, 11.11.1
+
+- Fix #2989: use one-based indices in `print` in the parser (#3009). 
+  Thanks @dvd101x. 
+- Fix #2936: `mod` sometimes giving wrong results due to internal round-off
+  errors (#3011). Thanks @praisennamonu1.
+- Internal refactor of `quantileSeq`, and fixed the embedded help (#3003). 
+  Thanks @dvd101x.
+- Updated dependencies and devDependencies.
+
+
+# 2023-09-05, 11.11.0
+
+- Implement function `corr` to calculate the correlation between two matrices
+  (#3015, #2624). Thanks @vrushaket. 
+- Lock `fraction.js` at version `4.3.4` for now, see #3024, 3022, 
+  https://github.com/rawify/Fraction.js/issues/68.
+
+
+# 2023-08-31, 11.10.1
+
+- Upgrade to `fraction.js@4.3.4`, see #3022.
+- Fix #3020: `lruQueue` using the global `hasOwnProperty` which may be 
+  polluted.
+- Add support for prefixes for the unit `erg`, and restrict prefixes of the
+  unit `joule` to only long prefixes like `kilo` and no short prefixes 
+  like `k` (#3019). Thanks @costerwi.
+- Add a new browser example `examples/browser/lorenz.html` that uses `solveODE`
+  and plots the result in a chart (#3018). Thanks @dvd101x.
+
+
+# 2023-08-23, 11.10.0
+
+- Extend function `quantileSeq` with support for a `dimension` (#3002).
+  Thanks @dvd101x.
+- Implement #2735: Support indexing with an array of booleans, for 
+  example `a[[true, false, true]]` and `a[a > 2]` (#2994). Thanks @dvd101x.
+- Implement function `zeta` (#2950, #2975, #2904). Thanks @Bobingstern.
+- Fix #2990: `DenseMatrix` can mutate input arrays (#2991).
+
+
+# 2023-07-24, 11.9.1
+
+- Fix a security vulnerability in `FunctionNode` and `SymbolNode` allowing
+  arbitrary code execution via `math.evaluate`. Thanks Harry Chen.
+- Fix #3001: mathjs bundle containing `new Function(...)` (CSP issue).
+
+
+# 2023-07-19, 11.9.0
+
+- Implement function `solveODE` (#2958). Thanks @dvd101x.
+- Implement functions `zpk2tf` and `freqz` (#2988, #2969). Thanks @alykhaled.
+- Implement support for units in function `range` (#2997). Thanks @dvd101x.
 - Fix #2974: `simplify` puts plus and minus signs next to each other (#2981).
   Thanks @MaybePixem.
 - Fix #2973: fixes and improvements in the embedded docs (#2976). 
+  Thanks @dvd101x.
+- Fix #2996: two errors in the examples in the documentation about Expression 
+  trees.
+- Fix round-off errors near zero when converting temperatures (#2962). 
+  Thanks @costerwi.
+- Refactored function `range`, reducing the amount of code (#2995).
   Thanks @dvd101x.
 
 

@@ -256,6 +256,20 @@ describe('ObjectNode', function () {
     assert.strictEqual(n.toString({ handler: customFunction }), '{"a": const(1, number), "b": const(2, number)}')
   })
 
+  it('should stringify an ObjectNode with custom toHTML', function () {
+    const customFunction = function (node, options) {
+      if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
+      }
+    }
+
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
+    const n = new ObjectNode({ a, b })
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), '<span class="math-parenthesis math-curly-parenthesis">{</span><span class="math-symbol math-property">a</span><span class="math-operator math-assignment-operator math-property-assignment-operator math-binary-operator">:</span>const(1, number)<span class="math-separator">,</span><span class="math-symbol math-property">b</span><span class="math-operator math-assignment-operator math-property-assignment-operator math-binary-operator">:</span>const(2, number)<span class="math-parenthesis math-curly-parenthesis">}</span>')
+  })
+
   it('toJSON and fromJSON', function () {
     const b = new ConstantNode(1)
     const c = new ConstantNode(2)

@@ -621,6 +621,19 @@ describe('OperatorNode', function () {
     )
   })
 
+  it('should HTML an OperatorNode with custom handler for a single operator', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node, options) {
+      if ((node.type === 'OperatorNode') && (node.fn === 'add')) {
+        return `${node.args[0].toHTML(options)} plus ${node.args[1].toHTML(options)}`
+      } else if (node.type === 'ConstantNode') {
+        return '<span class="my-number">' + node.value + '</span>'
+      }
+    }
+
+    assert.strictEqual(add23.toTex({ handler: customFunction }), '<span class="my-number">2</span> plus <span class="my-number">3</span>')
+  })
+
   it('should format implicit multiplications between ConstantNodes with parentheses', function () {
     ex({ i: '(3)x', skeep: '(3) x', sauto: '3 x', lkeep: '\\left(3\\right)~ x', lauto: '3~ x' })
     ex({

@@ -12,6 +12,7 @@ describe('lib/cjs', function () {
       done()
     })
   })
+
   it('should load numbers only via commonjs', function (done) {
     const filename = path.join(__dirname, 'commonjsAppNumberOnly.cjs')
     cp.exec('node ' + filename, function (error, result) {

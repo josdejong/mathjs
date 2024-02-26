@@ -100,7 +100,7 @@ describe('max', function () {
     assert.throws(function () { max([2, null, 4]) }, /TypeError: Cannot calculate max, unexpected type of argument/)
     assert.throws(function () { max([[2, 5], [4, null], [1, 7]], 0) }, /TypeError: Cannot calculate max, unexpected type of argument/)
     assert.throws(function () { max('a', 'b') }, /Error: Cannot convert "b" to a number/)
-    assert.throws(function () { max('a') }, /SyntaxError: String "a" is no valid number/)
+    assert.throws(function () { max('a') }, /SyntaxError: String "a" is not a valid number/)
   })
 
   it('should return undefined if called with an empty array', function () {

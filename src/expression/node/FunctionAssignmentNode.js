@@ -208,7 +208,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
      * @param {Object} options
      * @return {string} str
      */
-    toHTML (options) {
+    _toHTML (options) {
       const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
       const params = []
       for (let i = 0; i < this.params.length; i++) {
@@ -245,7 +245,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       }
 
       return '\\mathrm{' + this.name +
-        '}\\left(' + this.params.map(toSymbol).join(',') + '\\right):=' + expr
+        '}\\left(' + this.params.map(toSymbol).join(',') + '\\right)=' + expr
     }
   }
 

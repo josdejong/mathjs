@@ -7,11 +7,12 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![Version](https://img.shields.io/npm/v/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Downloads](https://img.shields.io/npm/dm/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Build Status](https://github.com/josdejong/mathjs/workflows/Node.js%20CI/badge.svg)](https://github.com/josdejong/mathjs/actions)
-[![Maintenance](https://img.shields.io/maintenance/yes/2023.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/maintenance/yes/2024.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
 [![Codecov](https://codecov.io/gh/josdejong/mathjs/branch/develop/graph/badge.svg)](https://codecov.io/gh/josdejong/mathjs)
-[![Github Sponsor](https://camo.githubusercontent.com/7d9333b097b2f54a8957d126ab82937811489c9b75c3850f609985cf94cd29fe/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2532302d53706f6e736f722532306d652532306f6e2532304769744875622d6f72616e6765)](https://github.com/sponsors/josdejong)
+[![Github Sponsor](https://img.shields.io/github/sponsors/josdejong
+)](https://github.com/sponsors/josdejong)
 
 ## Features
 
@@ -135,7 +136,7 @@ A common case is to implement a new function. This involves the following steps:
 - Write documentation on the function in the source code comment of `myNewFunction.js`. This documentation is used to auto generate documentation on the website.
 - Write embedded documentation for the new function in `./src/expression/embeddedDocs/function/arithmetic/myNewFunction.js`. Add the new documentation to the index file `./src/expression/embeddedDocs/embeddedDocs.js`.
 - Write unit tests for the function in `./test/unit-tests/function/arithmetic/myNewFunction.test.js`.
-- Write a TypeScript definition for the new function in `./types/index.d.ts`, and write tests for it in `./types/index.ts`. Normally, two definitions need to be added: one for the static function `math.myNewFunction(...)` and one for the chained API `math.chain(...).myNewFunction(...)`.
+- Write the necessary TypeScript definitions for the new function in `./types/index.d.ts`, and write tests for it in `./test/typescript-tests/testTypes.ts`. This is described in [./types/EXPLANATION.md](./types/EXPLANATION.md).
 - Ensure the code style is ok by running `npm run lint` (run `npm run format` to fix the code style automatically).
 
 
@@ -194,7 +195,10 @@ Thanks Github Actions and BrowserStack for the generous free hosting of this ope
 
 ## License
 
-Copyright (C) 2013-2023 Jos de Jong <wjosdejong@gmail.com>
+mathjs is published under the Apache 2.0 license:
+
+```
+Copyright (C) 2013-2024 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -207,3 +211,28 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
+
+mathjs contains a JavaScript port of the [CSparse](https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source) library, published under the LGPL-2.1+ license:
+
+```
+CSparse: a Concise Sparse matrix package.
+Copyright (c) 2006, Timothy A. Davis.
+http://www.suitesparse.com
+
+--------------------------------------------------------------------------------
+
+CSparse is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+CSparse is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this Module; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+```

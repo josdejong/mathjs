@@ -300,6 +300,27 @@ describe('ConditionalNode', function () {
     assert.strictEqual(n.toString({ handler: customFunction }), 'if const(1, number) then const(2, number) else const(3, number)')
   })
 
+  it('should stringify a ConditionalNode with custom toHTML', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node, options) {
+      if (node.type === 'ConditionalNode') {
+        return 'if ' + node.condition.toHTML(options) +
+          ' then ' + node.trueExpr.toHTML(options) +
+          ' else ' + node.falseExpr.toHTML(options)
+      } else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
+      }
+    }
+
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
+    const c = new ConstantNode(3)
+
+    const n = new ConditionalNode(a, b, c)
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), 'if const(1, number) then const(2, number) else const(3, number)')
+  })
+
   it('toJSON and fromJSON', function () {
     const a = new SymbolNode('x')
     const b = new ConstantNode(2)
@@ -323,7 +344,7 @@ describe('ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
 
     // note that b is enclosed in \\mathrm{...} since it's a unit
-    assert.strictEqual(n.toTex(), '\\begin{cases} { a:=2}, &\\quad{\\text{if }\\;true}\\\\{\\mathrm{b}:=3}, &\\quad{\\text{otherwise}}\\end{cases}')
+    assert.strictEqual(n.toTex(), '\\begin{cases} { a=2}, &\\quad{\\text{if }\\;true}\\\\{\\mathrm{b}=3}, &\\quad{\\text{otherwise}}\\end{cases}')
   })
 
   it('should LaTeX a ConditionalNode with custom toTex', function () {
