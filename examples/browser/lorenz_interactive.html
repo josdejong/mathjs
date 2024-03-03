@@ -14,23 +14,31 @@
         integrity="sha512-fHwaWebuwA7NSF5Qg/af4UeDx9XqUpYpOGgubo3yWu+b2IQR4UeQwbb42Ti7gVAjNtVoI/I9TEoYeu9omwcC6g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        body,
+        html {
+            width: 100%;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+
         body {
             display: flex;
             flex-direction: column;
         }
 
         #LorenzGraph {
-            flex: 2;
+            flex: 1;
         }
 
         #inputsDiv {
-            flex: 1;
+            z-index: 1;
+            position: absolute;
         }
     </style>
 </head>
 
 <body>
-    <h1>Lorenz Attractor</h1>
     <div id="LorenzGraph"></div>
     <div id="inputsDiv">
         <fieldset name="inputs" id="inputs">
@@ -88,10 +96,8 @@
             </table>
         </fieldset>
     </div>
-    <div id="LorenzEquation">(dx/dt) = sigma(y-x); (dy/dt) = x(rho-z)-y; (dz/dt) = x*y - beta*z</div>
 </body>
 <script defer>
-    katex.render(String.raw`{\begin{aligned}{\frac {\mathrm {d} x}{\mathrm {d} t}}&=\sigma (y-x),\\{\frac {\mathrm {d} y}{\mathrm {d} t}}&=x(\rho -z)-y,\\{\frac {\mathrm {d} z}{\mathrm {d} t}}&=xy-\beta z.\end{aligned}}`, document.querySelector("#LorenzEquation"))
     katex.render(String.raw`\sigma`, document.querySelector("#sigmaLabel"))
     katex.render(String.raw`\beta`, document.querySelector("#betaLabel"))
     katex.render(String.raw`\rho`, document.querySelector("#rhoLabel"))
@@ -116,7 +122,21 @@
     const epsilon = document.querySelector('#epsilon')
 
     const layout = {
-        uirevision: 'true', height: 600
+        interactive: true,
+        title: 'Lorenz Attractor',
+        uirevision: 'true',
+        sliders: [{
+            name: 'sigma',
+            currentvalue: {
+                xanchor: 'right',
+                prefix: 'color: ',
+                font: {
+                    color: '#888',
+                    size: 20
+                }
+            },
+            steps: [{ label: 'g', method: "updateSolution" }, { label: 'f' }]
+        }]
     }
 
     const t_span = [0, 100]
