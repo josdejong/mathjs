@@ -5,6 +5,7 @@
 
 - Fix #3163: `toTex` wrongly returning `Infinity` for large BigNumbers.
 - Fix #3162: add license information about CSParse (#3164).
+- Fix: faster startup time of the CLI and REPL by loading the bundle.
 
 
 # 2024-02-22, 12.4.0

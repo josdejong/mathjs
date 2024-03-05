@@ -59,7 +59,7 @@ const PRECISION = 14 // decimals
  * @return {*}
  */
 function getMath () {
-  return require('../lib/cjs/defaultInstance.js').default
+  return require('../lib/browser/math.js')
 }
 
 /**
