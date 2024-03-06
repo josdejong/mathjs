@@ -3,6 +3,8 @@
 
 # unpublished changes since 12.4.0
 
+- Feat: implement an interactive version of the Lorenz example, and show the
+  chart full screen (#3151). Thanks @dvd101x.
 - Fix #3163: `toTex` wrongly returning `Infinity` for large BigNumbers.
 - Fix #3162: add license information about CSParse (#3164).
 - Fix: faster startup time of the CLI and REPL by loading the bundle.
