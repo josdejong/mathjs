@@ -28,6 +28,7 @@ describe('sylvester', function () {
       [-1.0935231387905004, 4.113817086842746, 5.747671819196675, -0.9408309030864932, 2.967655969930743]
     ]), 'fro') < 1e-3)
   })
+
   it('should solve sylvester equation of order 5 with Matrices', function () {
     assert.ok(math.norm(math.subtract(math.sylvester(math.matrix([
       [-5.3, -1.4, -0.2, 0.7],

@@ -1,3 +1,7 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
+
 /**
  * This function determines if j is a leaf of the ith row subtree.
  * Consider A(i,j), node j in ith row subtree and return lca(jprev,j)
@@ -11,8 +15,6 @@
  * @param {Number}  ancestor        The index offset within the workspace for the ancestor array
  *
  * @return {Object}
- *
- * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csLeaf (i, j, w, first, maxfirst, prevleaf, ancestor) {
   let s, sparent

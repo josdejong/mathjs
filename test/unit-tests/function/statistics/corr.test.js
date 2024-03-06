@@ -39,6 +39,7 @@ describe('correlation', function () {
   it('should throw an error if called with number of arguments do not have same size', function () {
     assert.throws(function () { corr([[1, 2, 3, 4, 5], [4, 5, 6, 7]], [[1, 2, 3, 4, 5], []]) })
   })
+
   it('should throw an error if called with number of arguments do not have same size', function () {
     assert.throws(function () { corr([1, 2, 3, 4, 5], [1, 2, 3, 4]) })
   })

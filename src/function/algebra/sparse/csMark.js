@@ -1,3 +1,7 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
+
 import { csFlip } from './csFlip.js'
 
 /**
@@ -5,8 +9,6 @@ import { csFlip } from './csFlip.js'
  *
  * @param {Array}   w               The array
  * @param {Number}  j               The array index
- *
- * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csMark (w, j) {
   // mark w[j]

@@ -1,3 +1,7 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
+
 import { csMarked } from './csMarked.js'
 import { csMark } from './csMark.js'
 import { csDfs } from './csDfs.js'
@@ -15,8 +19,6 @@ import { csDfs } from './csDfs.js'
  * @param {Array}   pinv            The inverse row permutation vector
  *
  * @return {Number}                 The index for the nonzero pattern
- *
- * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csReach (g, b, k, xi, pinv) {
   // g arrays
