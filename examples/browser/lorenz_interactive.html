@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>math.js | Lorenz Attractor</title>
+    <script src="../../lib/browser/math.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.28.0.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+        integrity="sha512-LQNxIMR5rXv7o+b1l8+N1EZMfhG7iFZ9HhnbJkTp4zjNr5Wvst75AqUeFDxeRUa7l5vEDyUiAip//r+EFLLCyA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+        integrity="sha512-fHwaWebuwA7NSF5Qg/af4UeDx9XqUpYpOGgubo3yWu+b2IQR4UeQwbb42Ti7gVAjNtVoI/I9TEoYeu9omwcC6g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body,
+        html {
+            width: 100%;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #LorenzGraph {
+            flex: 1;
+        }
+
+        #inputsDiv {
+            z-index: 1;
+            position: absolute;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="LorenzGraph"></div>
+    <div id="inputsDiv">
+        <fieldset name="inputs" id="inputs">
+            <legend for="inputs">Inputs:</legend>
+            <table>
+                <tr>
+                    <td>
+                        <label for="sigma" id="sigmaLabel">sigma</label>
+                    </td>
+                    <td>
+                        <input type="range" id="sigma" name="sigma" value=10 min=9 max=11 step=0.01>
+                    </td>
+                    <td>
+                        <label for="beta" id="betaLabel">beta</label>
+                    </td>
+                    <td>
+                        <input type="range" id="beta" name="beta" value=8/3 min=2 max=4 step=0.01>
+                    </td>
+                    <td>
+                        <label for="rho" id="rhoLabel">rho</label>
+                    </td>
+                    <td>
+                        <input type="range" id="rho" name="rho" value=28 min=20 max=30 step=0.01>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="x0" id="x0Label">x0</label>
+                    </td>
+                    <td>
+                        <input type="range" id="x0" name="x0" value=1 min=-5 max=5 step=0.01>
+                    </td>
+                    <td>
+                        <label for="y0" id="y0Label">y0</label>
+                    </td>
+                    <td>
+                        <input type="range" id="y0" name="y0" value=1 min=-5 max=5 step=0.01>
+
+                    </td>
+                    <td>
+                        <label for="z0" id="z0Label">z0</label>
+                    </td>
+                    <td>
+                        <input type="range" id="z0" name="z0" value=0 min=-5 max=5 step=0.01>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="epsilon" id="epsilonLabel">epsilon</label>
+                    </td>
+                    <td>
+                        <input type="range" id="epsilon" name="epsilon" value=0.01 min=0.0001 max=0.1 step=0.0001>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+</body>
+<script defer>
+    katex.render(String.raw`\sigma`, document.querySelector("#sigmaLabel"))
+    katex.render(String.raw`\beta`, document.querySelector("#betaLabel"))
+    katex.render(String.raw`\rho`, document.querySelector("#rhoLabel"))
+    katex.render(String.raw`x_0`, document.querySelector("#x0Label"))
+    katex.render(String.raw`y_0`, document.querySelector("#y0Label"))
+    katex.render(String.raw`z_0`, document.querySelector("#z0Label"))
+    katex.render(String.raw`\epsilon`, document.querySelector("#epsilonLabel"))
+
+    const inputs = document.querySelector("#inputs")
+
+    // define the constants for the Lorenz attractor
+    const sigma = document.querySelector("#sigma")
+    const beta = document.querySelector("#beta")
+    const rho = document.querySelector("#rho")
+
+    // define the initial location
+    const x0 = document.querySelector('#x0')
+    const y0 = document.querySelector('#y0')
+    const z0 = document.querySelector('#z0')
+
+    // define the tolerance for the solution
+    const epsilon = document.querySelector('#epsilon')
+
+    const layout = {
+        interactive: true,
+        title: 'Lorenz Attractor',
+        uirevision: 'true',
+        sliders: [{
+            name: 'sigma',
+            currentvalue: {
+                xanchor: 'right',
+                prefix: 'color: ',
+                font: {
+                    color: '#888',
+                    size: 20
+                }
+            },
+            steps: [{ label: 'g', method: "updateSolution" }, { label: 'f' }]
+        }]
+    }
+
+    const t_span = [0, 100]
+
+    inputs.addEventListener("change", updateSolution)
+
+    let trace
+    // solve the Lorenz attractor with the initial values
+    updateSolution()
+
+    // crates a trace in the format needed for plotly
+    function createTrace(sol) {
+        // make colors that represents time differences in the solution
+        const diff = math.diff(sol.t)
+        const color = [diff[0], ...diff]
+        const trace = [{
+            x: sol.y.map(u => u[0]),
+            y: sol.y.map(u => u[1]),
+            z: sol.y.map(u => u[2]),
+            line: {
+                color,
+                colorscale: 'Jet'
+            },
+            type: "scatter3d",
+            mode: "lines"
+        }]
+        return trace
+    }
+
+    function createLorenz(sigma, rho, beta) {
+        // define the lorenz attractor as a function of t and u in the format needed for solveODE
+        return function lorenz(t, u) {
+            const [x, y, z] = u
+            // return x', y', z'
+            return [
+                sigma * (y - x),
+                x * (rho - z) - y,
+                x * y - beta * z
+            ]
+        }
+    }
+
+    function updateSolution() {
+        const y_0 = [x0.value, y0.value, z0.value]
+        const sol = math.solveODE(createLorenz(sigma.value, rho.value, beta.value), t_span, y_0, { tol: epsilon.value })
+        trace = createTrace(sol)
+        // reactively render the plot on update
+        Plotly.react('LorenzGraph', trace, layout)
+    }
+
+</script>
+
+</html>
