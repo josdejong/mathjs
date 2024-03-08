@@ -3344,6 +3344,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   Unit.BASE_UNITS = BASE_UNITS
   Unit.UNIT_SYSTEMS = UNIT_SYSTEMS
   Unit.UNITS = UNITS
+  Unit.ALIASES = ALIASES
 
   return Unit
 }, { isClass: true })
