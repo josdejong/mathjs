@@ -1,7 +1,7 @@
 # History
 
 
-# unpublished changes since 12.4.0
+# 2024-03-13, 12.4.1
 
 - Docs: implement an interactive version of the Lorenz example, and show the
   chart full screen (#3151). Thanks @dvd101x.
