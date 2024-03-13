@@ -8,10 +8,10 @@
 - Fix #3172: simplify `"true and true"`.
 - Fix #3163: `toTex` wrongly returning `Infinity` for large BigNumbers.
 - Fix #3162: add license information about CSParse (#3164).
-- Fix: expose `math.Unit.ALIASES` (see #3175).
+- Fix #3175: cannot delete units using `math.Unit.deleteUnit`.
 - Fix: faster startup time of the CLI and REPL by loading the bundle.
 - Fix: remove using polyfill.io inside the example
-  pretty_printing_with_mathjax.html (#3167). Thanks @SukkaW.
+  `pretty_printing_with_mathjax.html` (#3167). Thanks @SukkaW.
 
 
 # 2024-02-22, 12.4.0
