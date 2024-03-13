@@ -13,9 +13,25 @@ File: [lorenz.html](lorenz.html) (click for a live demo)
 <head>
     <meta charset="UTF-8">
     <title>math.js | Lorenz Attractor</title>
-    <script src="https://unpkg.com/mathjs@12.4.0/lib/browser/math.js"></script>
+    <script src="https://unpkg.com/mathjs@12.4.1/lib/browser/math.js"></script>
 
     <script src="https://cdn.plot.ly/plotly-2.25.2.min.js" charset="utf-8"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+        } 
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #LorenzGraph {
+            flex: 1;
+        }
+    </style>
 </head>
 
 <body>
@@ -45,7 +61,11 @@ File: [lorenz.html](lorenz.html) (click for a live demo)
             type: "scatter3d",
             mode: "lines"
         }],
-        { width: 800, height: 600 }
+        {
+            responsive: true,
+            uirevision: 'true',
+            title:"Lorenz Attractor",
+        }
     )
 
     // define the lorenz attractor

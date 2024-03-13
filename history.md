@@ -5,6 +5,19 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h1 id="20240313-1241">2024-03-13, 12.4.1 <a href="#20240313-1241" title="Permalink">#</a></h1>
+
+- Docs: implement an interactive version of the Lorenz example, and show the
+  chart full screen (<a href="https://github.com/josdejong/mathjs/issues/3151">#3151</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3172">#3172</a>: simplify `"true and true"`.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3163">#3163</a>: `toTex` wrongly returning `Infinity` for large BigNumbers.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3162">#3162</a>: add license information about CSParse (<a href="https://github.com/josdejong/mathjs/issues/3164">#3164</a>).
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3175">#3175</a>: cannot delete units using `math.Unit.deleteUnit`.
+- Fix: faster startup time of the CLI and REPL by loading the bundle.
+- Fix: remove using polyfill.io inside the example
+  `pretty_printing_with_mathjax.html` (<a href="https://github.com/josdejong/mathjs/issues/3167">#3167</a>). Thanks <a href="https://github.com/SukkaW">@SukkaW</a>.
+
+
 <h1 id="20240222-1240">2024-02-22, 12.4.0 <a href="#20240222-1240" title="Permalink">#</a></h1>
 
 - Feat: implement support for trailing commas in matrices (<a href="https://github.com/josdejong/mathjs/issues/3154">#3154</a>, <a href="https://github.com/josdejong/mathjs/issues/2968">#2968</a>).

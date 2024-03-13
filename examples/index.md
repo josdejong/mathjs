@@ -25,6 +25,7 @@ layout: default
 - [Currency conversion](browser\currency_conversion.html.html)
 - [Custom separators](browser\custom_separators.html.html)
 - [Lorenz](browser\lorenz.html.html)
+- [Lorenz interactive](browser\lorenz_interactive.html.html)
 - [Plot](browser\plot.html.html)
 - [Pretty printing with mathjax](browser\pretty_printing_with_mathjax.html.html)
 - [Printing html](browser\printing_html.html.html)
