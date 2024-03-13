@@ -1,6 +1,19 @@
 # History
 
 
+# 2024-03-13, 12.4.1
+
+- Docs: implement an interactive version of the Lorenz example, and show the
+  chart full screen (#3151). Thanks @dvd101x.
+- Fix #3172: simplify `"true and true"`.
+- Fix #3163: `toTex` wrongly returning `Infinity` for large BigNumbers.
+- Fix #3162: add license information about CSParse (#3164).
+- Fix #3175: cannot delete units using `math.Unit.deleteUnit`.
+- Fix: faster startup time of the CLI and REPL by loading the bundle.
+- Fix: remove using polyfill.io inside the example
+  `pretty_printing_with_mathjax.html` (#3167). Thanks @SukkaW.
+
+
 # 2024-02-22, 12.4.0
 
 - Feat: implement support for trailing commas in matrices (#3154, #2968).

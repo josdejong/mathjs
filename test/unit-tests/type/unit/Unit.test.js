@@ -1324,6 +1324,29 @@ describe('Unit', function () {
     })
   })
 
+  describe('deleteUnit', function () {
+    it('should delete a unit', function () {
+      const math2 = math.create()
+
+      assert.strictEqual(math2.evaluate('5 b').toString(), '5 b')
+      assert.strictEqual(math2.evaluate('5 bytes').toString(), '5 bytes')
+      assert.strictEqual(math2.evaluate('5 byte').toString(), '5 byte') // alias of "bytes"
+
+      math2.Unit.deleteUnit('b')
+      math2.Unit.deleteUnit('bytes')
+      math2.Unit.deleteUnit('byte')
+
+      assert.throws(() => math2.evaluate('5 b').toString(), 'foo')
+      assert.throws(() => math2.evaluate('5 bytes').toString(), 'foo')
+      assert.throws(() => math2.evaluate('5 byte').toString(), 'foo')
+
+      // should not have changed the original math
+      assert.strictEqual(math.evaluate('5 b').toString(), '5 b')
+      assert.strictEqual(math.evaluate('5 bytes').toString(), '5 bytes')
+      assert.strictEqual(math.evaluate('5 byte').toString(), '5 byte')
+    })
+  })
+
   describe('splitUnit', function () {
     it('should split a unit into parts', function () {
       assert.strictEqual((new Unit(1, 'm')).splitUnit(['ft', 'in']).toString(), '3 ft,3.3700787401574765 in')

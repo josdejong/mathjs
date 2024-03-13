@@ -1,3 +1,6 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
 import { csReach } from './csReach.js'
 import { factory } from '../../../utils/factory.js'
 
@@ -25,8 +28,6 @@ export const createCsSpsolve = /* #__PURE__ */ factory(name, dependencies, ({ di
    * @param {boolean} lo              The lower (true) upper triangular (false) flag
    *
    * @return {Number}                 The index for the nonzero pattern
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
   return function csSpsolve (g, b, k, xi, x, pinv, lo) {
     // g arrays

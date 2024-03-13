@@ -1,3 +1,6 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
 import { csCumsum } from './csCumsum.js'
 import { factory } from '../../../utils/factory.js'
 
@@ -16,8 +19,6 @@ export const createCsSymperm = /* #__PURE__ */ factory(name, dependencies, ({ co
    * @param {boolean} values          Process matrix values (true)
    *
    * @return {Matrix}                 The C matrix, C = P * A * P'
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
   return function csSymperm (a, pinv, values) {
     // A matrix arrays

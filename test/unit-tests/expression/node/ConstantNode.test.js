@@ -189,6 +189,11 @@ describe('ConstantNode', function () {
     assert.strictEqual(new ConstantNode(3).toTex(), '3')
     assert.deepStrictEqual(new ConstantNode(3).toTex(), '3')
     assert.deepStrictEqual(new ConstantNode(math.bignumber('3')).toTex(), '3')
+    assert.deepStrictEqual(new ConstantNode(math.bignumber('1.3e7')).toTex(), '1.3\\cdot10^{+7}')
+    assert.deepStrictEqual(new ConstantNode(math.bignumber('1e500')).toTex(), '1\\cdot10^{+500}')
+    assert.deepStrictEqual(new ConstantNode(math.bignumber('1e-500')).toTex(), '1\\cdot10^{-500}')
+    assert.deepStrictEqual(new ConstantNode(math.bignumber('12345678901234567890')).toTex(),
+      '1.234567890123456789\\cdot10^{+19}')
     assert.strictEqual(new ConstantNode('hi').toTex(), '\\mathtt{"hi"}')
     assert.strictEqual(new ConstantNode(true).toTex(), 'true')
     assert.strictEqual(new ConstantNode(false).toTex(), 'false')

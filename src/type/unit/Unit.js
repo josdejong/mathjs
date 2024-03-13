@@ -2767,6 +2767,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   // aliases (formerly plurals)
+  // note that ALIASES is only used at creation to create more entries in UNITS by copying the aliased units
   const ALIASES = {
     meters: 'meter',
     inches: 'inch',
@@ -3327,8 +3328,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       alias.name = aliasName
       Unit.UNITS[aliasName] = alias
     }
-    // delete the memoization cache, since adding a new unit to the array
-    // invalidates all old results
+
+    // delete the memoization cache because we created a new unit
     delete _findUnit.cache
 
     return new Unit(null, name)
@@ -3336,6 +3337,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   Unit.deleteUnit = function (name) {
     delete Unit.UNITS[name]
+
+    // delete the memoization cache because we deleted a unit
+    delete _findUnit.cache
   }
 
   // expose arrays with prefixes, dimensions, units, systems
