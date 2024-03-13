@@ -244,6 +244,9 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
         if (isConstantNode(a0)) {
           if (a0.value) {
             if (isAlwaysBoolean(a1)) return a1
+            if (isConstantNode(a1)) {
+              return a1.value ? nodeT : nodeF
+            }
           } else {
             return nodeF
           }

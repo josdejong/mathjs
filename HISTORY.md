@@ -5,6 +5,7 @@
 
 - Docs: implement an interactive version of the Lorenz example, and show the
   chart full screen (#3151). Thanks @dvd101x.
+- Fix #3172: simplify `"true and true"`.
 - Fix #3163: `toTex` wrongly returning `Infinity` for large BigNumbers.
 - Fix #3162: add license information about CSParse (#3164).
 - Fix: expose `math.Unit.ALIASES` (see #3175).
