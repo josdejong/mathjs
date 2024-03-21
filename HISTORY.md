@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 12.4.1
+
+- Docs: correct the docs about `traverse` returning void (#3177). 
+  Thanks @rohildshah.
+
 
 # 2024-03-13, 12.4.1
 
