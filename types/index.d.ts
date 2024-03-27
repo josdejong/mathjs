@@ -13,7 +13,7 @@ export type NoLiteralType<T> = T extends number
 // TODO: introduce generics for MathCollection, MathMatrix, and MathArray
 export type MathNumericType = number | BigNumber | Fraction | Complex
 export type MathScalarType = MathNumericType | Unit
-export type MathArray = MathNumericType[] | MathNumericType[][] // TODO: MathArray can also contain Unit
+export type MathArray = MathNumericType[] | MathArray[] // TODO: MathArray can also contain Unit
 export type MathCollection = MathArray | Matrix
 export type MathType = MathScalarType | MathCollection
 export type MathExpression = string | string[] | MathCollection
