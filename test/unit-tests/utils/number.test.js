@@ -44,16 +44,17 @@ describe('number', function () {
   })
 
   it('should count the number of significant digits of a number', function () {
-    assert.strictEqual(digits(0), 0)
-    assert.strictEqual(digits(2), 1)
-    assert.strictEqual(digits(1234), 4)
-    assert.strictEqual(digits(2.34), 3)
-    assert.strictEqual(digits(3000), 1)
-    assert.strictEqual(digits(0.0034), 2)
-    assert.strictEqual(digits(120.5e50), 4)
-    assert.strictEqual(digits(1120.5e+50), 5)
-    assert.strictEqual(digits(120.52e-50), 5)
-    assert.strictEqual(digits(Math.PI), 16)
+    assert.strictEqual(digits(0), '')
+    assert.strictEqual(digits(2), '2')
+    assert.strictEqual(digits(1234), '1234')
+    assert.strictEqual(digits(2.34), '234')
+    assert.strictEqual(digits(3000), '3')
+    assert.strictEqual(digits(0.0034), '34')
+    assert.strictEqual(digits(120.5e50), '1205')
+    assert.strictEqual(digits(1120.5e+50), '11205')
+    assert.strictEqual(digits(120.52e-50), '12052')
+    assert.strictEqual(digits(-1234), '1234')
+    assert.strictEqual(digits(Math.PI), '3141592653589793')
   })
 
   it('should format a number using toFixed', function () {
