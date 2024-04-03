@@ -2,6 +2,8 @@
 
 # unpublished changes since 12.4.1
 
+- Fix: #3180 fix type definitions of functions `add` and `multiply` to allow
+  more than two arguments. 
 - Docs: correct the docs about `traverse` returning void (#3177). 
   Thanks @rohildshah.
 

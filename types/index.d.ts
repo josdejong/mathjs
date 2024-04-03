@@ -1036,7 +1036,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Sum of x and y
    */
   add<T extends MathType>(x: T, y: T): T
+  add<T extends MathType>(...values: T[]): T
   add(x: MathType, y: MathType): MathType
+  add(...values: MathType[]): MathType
 
   /**
    * Calculate the cubic root of a value.
@@ -1283,6 +1285,8 @@ export interface MathJsInstance extends MathJsFactory {
   multiply(x: Unit, y: Unit): Unit
   multiply(x: number, y: number): number
   multiply(x: MathType, y: MathType): MathType
+  multiply<T extends MathType>(...values: T[]): T
+  multiply(...values: MathType[]): MathType
 
   /**
    * Calculate the norm of a number, vector or matrix. The second
