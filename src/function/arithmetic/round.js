@@ -77,7 +77,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     number: function (x) {
       // Handle round off errors by first rounding to epsilon precision
       const xEpsilon = roundNumber(x, toExponent(config.epsilon))
-      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon, config.epsilon * 1e-3) ? xEpsilon : x
       return roundNumber(xSelected)
     },
 
@@ -87,7 +87,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       if (n >= epsilonExponent) { return roundNumber(x, n) }
 
       const xEpsilon = roundNumber(x, epsilonExponent)
-      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon, config.epsilon * 1e-3) ? xEpsilon : x
       return roundNumber(xSelected, n)
     },
 
@@ -117,7 +117,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     BigNumber: function (x) {
       // Handle round off errors by first rounding to epsilon precision
       const xEpsilon = new BigNumber(x).toDecimalPlaces(toExponent(config.epsilon))
-      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon, config.epsilon * 1e-3) ? xEpsilon : x
       return xSelected.toDecimalPlaces(0)
     },
 
@@ -129,7 +129,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       if (n >= epsilonExponent) { return x.toDecimalPlaces(n.toNumber()) }
 
       const xEpsilon = x.toDecimalPlaces(epsilonExponent)
-      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon, config.epsilon * 1e-3) ? xEpsilon : x
       return xSelected.toDecimalPlaces(n.toNumber())
     },
 

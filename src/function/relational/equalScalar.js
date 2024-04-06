@@ -25,11 +25,11 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
     },
 
     'number, number': function (x, y) {
-      return nearlyEqual(x, y, config.epsilon)
+      return nearlyEqual(x, y, config.epsilon, config.epsilon * 1e-3)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.eq(y) || bigNearlyEqual(x, y, config.epsilon)
+      return x.eq(y) || bigNearlyEqual(x, y, config.epsilon, config.epsilon * 1e-3)
     },
 
     'Fraction, Fraction': function (x, y) {
@@ -45,7 +45,7 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
 export const createEqualScalarNumber = factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return nearlyEqual(x, y, config.epsilon)
+      return nearlyEqual(x, y, config.epsilon, config.epsilon * 1e-3)
     }
   })
 })

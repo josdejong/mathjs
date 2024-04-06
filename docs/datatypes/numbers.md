@@ -73,11 +73,12 @@ false, as the addition `0.1 + 0.2` introduces a round-off error and does not
 return exactly `0.3`.
 
 To solve this problem, the relational functions of math.js check whether the
-relative difference between the compared values is smaller than the configured
+relative and absolute differences between the compared values is smaller than the configured
 option `epsilon`. In pseudo code (without exceptions for 0, Infinity and NaN):
 
-    diff = abs(x - y)
-    nearlyEqual = (diff <= max(abs(x), abs(y)) * EPSILON) OR (diff < DBL_EPSILON)
+    relTol = epsilon
+    absTol = epsilon / 1000
+    abs(a-b) <= max(relTol * max(abs(a), abs(b)), absTol)
 
 where:
 

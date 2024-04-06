@@ -14,7 +14,7 @@
  * nearlyEqual(1.0, 1.009, undefined, 0.02);       // true
  * nearlyEqual(0.000000001, 0.0, undefined, 1e-8); // true
  */
-export function nearlyEqual (a, b, relTol = Number.EPSILON, absTol = 1e-12) {
+export function nearlyEqual (a, b, relTol = 1e-9, absTol = 0) {
   if (relTol <= 0) {
     throw new Error('Relative tolerance must be greater than 0')
   }
@@ -34,6 +34,6 @@ export function nearlyEqual (a, b, relTol = Number.EPSILON, absTol = 1e-12) {
   if (a.eq(b)) {
     return true
   }
-  // abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+  // abs(a-b) <= max(relTol * max(abs(a), abs(b)), absTol)
   return a.minus(b).abs().lte(a.constructor.max(a.constructor.max(a.abs(), b.abs()).mul(relTol), absTol))
 }

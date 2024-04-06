@@ -9,5 +9,5 @@ import { nearlyEqual } from './number.js'
  * @returns {boolean}
  */
 export function complexEquals (x, y, epsilon) {
-  return nearlyEqual(x.re, y.re, epsilon) && nearlyEqual(x.im, y.im, epsilon)
+  return nearlyEqual(x.re, y.re, epsilon, epsilon * 1e-3) && nearlyEqual(x.im, y.im, epsilon, epsilon * 1e-3)
 }
