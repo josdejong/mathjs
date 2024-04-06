@@ -43,7 +43,7 @@ describe('nearlyEqual', function () {
   it('should test whether two small numbers are nearly equal (always true)', function () {
     const epsilon = 1e-2
     assert.strictEqual(nearlyEqual(new BigNumber('1e-200'), new BigNumber('0.99e-200'), epsilon, epsilon * 1e-3), true)
-    assert.strictEqual(nearlyEqual(new BigNumber('1e-200'), new BigNumber('10e-200'), epsilon, epsilon * 1e-3), false)
+    assert.strictEqual(nearlyEqual(new BigNumber('1e-200'), new BigNumber('10e-200'), epsilon, epsilon * 1e-3), true)
   })
 
   it('should compare with zero', function () {
@@ -52,7 +52,7 @@ describe('nearlyEqual', function () {
     assert.strictEqual(nearlyEqual(new BigNumber(0), new BigNumber(-0), epsilon, epsilon * 1e-3), true)
     assert.strictEqual(nearlyEqual(new BigNumber(0), new BigNumber(1.2), epsilon, epsilon * 1e-3), false)
     assert.strictEqual(nearlyEqual(new BigNumber(0), new BigNumber(1e30), epsilon, epsilon * 1e-3), false)
-    assert.strictEqual(nearlyEqual(new BigNumber(0), new BigNumber(1e-30), epsilon, epsilon * 1e-3), false)
+    assert.strictEqual(nearlyEqual(new BigNumber(0), new BigNumber(1e-3), epsilon, epsilon * 1e-3), false)
   })
 
   it('should compare with Infinity', function () {
@@ -73,11 +73,17 @@ describe('nearlyEqual', function () {
     assert.strictEqual(nearlyEqual(new BigNumber(NaN), new BigNumber(NaN), epsilon, epsilon * 1e-3), false)
   })
 
-  it('should do exact comparison when epsilon is null or undefined', function () {
+  it('should use default values when absTol and relTol are undefined', function () {
     assert.strictEqual(nearlyEqual(new BigNumber(1.2), new BigNumber(1.2)), true)
-    assert.strictEqual(nearlyEqual(new BigNumber(1.2), new BigNumber(1.2), null), true)
+    assert.strictEqual(nearlyEqual(new BigNumber(1.2), new BigNumber(1.2), undefined), true)
+    assert.strictEqual(nearlyEqual(new BigNumber(1.2), new BigNumber(1.2), undefined, undefined), true)
 
-    assert.strictEqual(nearlyEqual(new BigNumber(1.2).plus(1e-18), new BigNumber(1.2)), false)
-    assert.strictEqual(nearlyEqual(new BigNumber(1.2).plus(1e-18), new BigNumber(1.2), null), false)
+    assert.strictEqual(nearlyEqual(new BigNumber(1.2).plus(1e-18), new BigNumber(1.2)), true)
+    assert.strictEqual(nearlyEqual(new BigNumber(1.2).plus(1e-18), new BigNumber(1.2), undefined), true)
+    assert.strictEqual(nearlyEqual(new BigNumber(1.2).plus(1e-18), new BigNumber(1.2), undefined, undefined), true)
+
+    assert.strictEqual(nearlyEqual(new BigNumber(1.2).plus(1e-8), new BigNumber(1.2)), false)
+    assert.strictEqual(nearlyEqual(new BigNumber(1.2).plus(1e-8), new BigNumber(1.2), undefined), false)
+    assert.strictEqual(nearlyEqual(new BigNumber(1.2).plus(1e-8), new BigNumber(1.2), undefined, undefined), false)
   })
 })

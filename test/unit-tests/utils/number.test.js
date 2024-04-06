@@ -576,12 +576,18 @@ describe('number', function () {
       assert.strictEqual(nearlyEqual(NaN, NaN, epsilon, epsilon * 1e-3), false)
     })
 
-    it('should do exact comparison when rtol is null or undefined', function () {
+    it('should use default values when absTol and relTol are undefined', function () {
       assert.strictEqual(nearlyEqual(1.2, 1.2), true)
-      assert.strictEqual(nearlyEqual(1.2, 1.2, null, 0), true)
+      assert.strictEqual(nearlyEqual(1.2, 1.2, undefined), true)
+      assert.strictEqual(nearlyEqual(1.2, 1.2, undefined, undefined), true)
 
-      assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3), false)
-      assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3, null), false)
+      assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3), true)
+      assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3, undefined), true)
+      assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3, undefined, undefined), true)
+
+      assert.strictEqual(nearlyEqual(1.2 + 1e-8, 1.2), false)
+      assert.strictEqual(nearlyEqual(1.2 + 1e-8, 1.2, undefined), false)
+      assert.strictEqual(nearlyEqual(1.2 + 1e-8, 1.2, undefined, undefined), false)
     })
   })
 })
