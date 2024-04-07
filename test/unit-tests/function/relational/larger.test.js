@@ -90,7 +90,7 @@ describe('larger', function () {
     assert.strictEqual(larger(unit('101cm'), unit('1m')), true)
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.larger(1, 0.991), true)
     assert.strictEqual(mymath.larger(mymath.bignumber(1), mymath.bignumber(0.991)), true)

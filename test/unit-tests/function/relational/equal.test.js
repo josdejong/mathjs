@@ -146,7 +146,7 @@ describe('equal', function () {
     assert.throws(function () { equal('A', 'B') }, /Cannot convert "A" to a number/)
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.equal(1, 0.991), false)
     assert.strictEqual(mymath.equal(mymath.bignumber(1), mymath.bignumber(0.991)), false)

@@ -544,7 +544,9 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Set configuration options for math.js, and get current options. Will
    * emit a ‘config’ event, with arguments (curr, prev, changes).
-   * @param options Available options: {number} epsilon Minimum relative
+   * @param options Available options: {number} relTol Minimum relative
+   * difference between two compared values, used by all comparison
+   * functions. {number} absTol Minimum absolute
    * difference between two compared values, used by all comparison
    * functions. {string} matrix A string ‘Matrix’ (default) or ‘Array’.
    * {string} number A string ‘number’ (default), ‘BigNumber’, or
@@ -2318,7 +2320,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x
    * == y. x and y are considered equal when the relative difference
-   * between x and y is smaller than the configured epsilon. The function
+   * between x and y is smaller than the configured relTol and absTol. The function
    * cannot be used to compare values smaller than approximately 2.22e-16.
    * For matrices, the function is evaluated element wise.
    * @param x First value to compare
@@ -2372,7 +2374,7 @@ export interface MathJsInstance extends MathJsFactory {
    * Test whether two values are equal.
    *
    * The function tests whether the relative difference between x and y is
-   * smaller than the configured epsilon. The function cannot be used to
+   * smaller than the configured relTol and absTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16. For matrices, the
    * function is evaluated element wise. In case of complex numbers, x.re
    * must equal y.re, and x.im must equal y.im. Values null and undefined
@@ -2400,7 +2402,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Test whether value x is larger than y. The function returns true when
    * x is larger than y and the relative difference between x and y is
-   * larger than the configured epsilon. The function cannot be used to
+   * larger than the configured relTol and absTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16. For matrices, the
    * function is evaluated element wise.
    * @param x First value to compare
@@ -2412,7 +2414,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Test whether value x is larger or equal to y. The function returns
    * true when x is larger than y or the relative difference between x and
-   * y is smaller than the configured epsilon. The function cannot be used
+   * y is smaller than the configured relTol and absTol. The function cannot be used
    * to compare values smaller than approximately 2.22e-16. For matrices,
    * the function is evaluated element wise.
    * @param x First value to compare
@@ -2425,7 +2427,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Test whether value x is smaller than y. The function returns true
    * when x is smaller than y and the relative difference between x and y
-   * is smaller than the configured epsilon. The function cannot be used
+   * is smaller than the configured relTol and absTol. The function cannot be used
    * to compare values smaller than approximately 2.22e-16. For matrices,
    * the function is evaluated element wise.
    * @param x First value to compare
@@ -2437,7 +2439,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Test whether value x is smaller or equal to y. The function returns
    * true when x is smaller than y or the relative difference between x
-   * and y is smaller than the configured epsilon. The function cannot be
+   * and y is smaller than the configured relTol and absTol. The function cannot be
    * used to compare values smaller than approximately 2.22e-16. For
    * matrices, the function is evaluated element wise.
    * @param x First value to compare
@@ -2468,7 +2470,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Test whether two values are unequal. The function tests whether the
    * relative difference between x and y is larger than the configured
-   * epsilon. The function cannot be used to compare values smaller than
+   * relTol and absTol. The function cannot be used to compare values smaller than
    * approximately 2.22e-16. For matrices, the function is evaluated
    * element wise. In case of complex numbers, x.re must unequal y.re, or
    * x.im must unequal y.im. Values null and undefined are compared
@@ -4292,7 +4294,8 @@ export interface Help {
 }
 
 export interface ConfigOptions {
-  epsilon?: number
+  relTol?: number
+  absTol?: number
   matrix?: 'Matrix' | 'Array'
   number?: 'number' | 'BigNumber' | 'Fraction'
   precision?: number
@@ -5763,7 +5766,7 @@ export interface MathJsChain<TValue> {
   /**
    * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x
    * == y. x and y are considered equal when the relative difference
-   * between x and y is smaller than the configured epsilon. The function
+   * between x and y is smaller than the configured relTol and absTol. The function
    * cannot be used to compare values smaller than approximately 2.22e-16.
    * For matrices, the function is evaluated element wise.
    * @param y Second value to compare
@@ -5805,7 +5808,7 @@ export interface MathJsChain<TValue> {
    * Test whether two values are equal.
    *
    * The function tests whether the relative difference between x and y is
-   * smaller than the configured epsilon. The function cannot be used to
+   * smaller than the configured relTol and absTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16. For matrices, the
    * function is evaluated element wise. In case of complex numbers, x.re
    * must equal y.re, and x.im must equal y.im. Values null and undefined
@@ -5831,7 +5834,7 @@ export interface MathJsChain<TValue> {
   /**
    * Test whether value x is larger than y. The function returns true when
    * x is larger than y and the relative difference between x and y is
-   * larger than the configured epsilon. The function cannot be used to
+   * larger than the configured relTol and absTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16. For matrices, the
    * function is evaluated element wise.
    * @param y Second value to compare
@@ -5844,7 +5847,7 @@ export interface MathJsChain<TValue> {
   /**
    * Test whether value x is larger or equal to y. The function returns
    * true when x is larger than y or the relative difference between x and
-   * y is smaller than the configured epsilon. The function cannot be used
+   * y is smaller than the configured relTol and absTol. The function cannot be used
    * to compare values smaller than approximately 2.22e-16. For matrices,
    * the function is evaluated element wise.
    * @param y Second value to vcompare
@@ -5857,7 +5860,7 @@ export interface MathJsChain<TValue> {
   /**
    * Test whether value x is smaller than y. The function returns true
    * when x is smaller than y and the relative difference between x and y
-   * is smaller than the configured epsilon. The function cannot be used
+   * is smaller than the configured relTol and absTol. The function cannot be used
    * to compare values smaller than approximately 2.22e-16. For matrices,
    * the function is evaluated element wise.
    * @param y Second value to vcompare
@@ -5870,7 +5873,7 @@ export interface MathJsChain<TValue> {
   /**
    * Test whether value x is smaller or equal to y. The function returns
    * true when x is smaller than y or the relative difference between x
-   * and y is smaller than the configured epsilon. The function cannot be
+   * and y is smaller than the configured relTol and absTol. The function cannot be
    * used to compare values smaller than approximately 2.22e-16. For
    * matrices, the function is evaluated element wise.
    * @param y Second value to compare
@@ -5898,7 +5901,7 @@ export interface MathJsChain<TValue> {
   /**
    * Test whether two values are unequal. The function tests whether the
    * relative difference between x and y is larger than the configured
-   * epsilon. The function cannot be used to compare values smaller than
+   * relTol and absTol. The function cannot be used to compare values smaller than
    * approximately 2.22e-16. For matrices, the function is evaluated
    * element wise. In case of complex numbers, x.re must unequal y.re, or
    * x.im must unequal y.im. Values null and undefined are compared

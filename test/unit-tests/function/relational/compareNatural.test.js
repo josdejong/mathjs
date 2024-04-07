@@ -219,7 +219,7 @@ describe('compareNatural', function () {
     assert.strictEqual(compareNatural({ a: 2, b: { c: 3 } }, { a: 2, b: { c: 4 } }), -1)
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
 
     assert.strictEqual(mymath.compareNatural(1, 0.991), 1)

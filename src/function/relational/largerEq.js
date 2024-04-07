@@ -27,7 +27,7 @@ export const createLargerEq = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * Test whether value x is larger or equal to y.
    *
    * The function returns true when x is larger than y or the relative
-   * difference between x and y is smaller than the configured epsilon. The
+   * difference between x and y is smaller than the configured relTol and absTol. The
    * function cannot be used to compare values smaller than approximately 2.22e-16.
    *
    * For matrices, the function is evaluated element wise.

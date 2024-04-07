@@ -29,8 +29,11 @@ export function configFactory (config, emit) {
    *     math.evaluate('0.4')                // outputs Fraction 2/5
    *
    * @param {Object} [options] Available options:
-   *                            {number} epsilon
+   *                            {number} relTol
    *                              Minimum relative difference between two
+   *                              compared values, used by all comparison functions.
+   *                            {number} absTol
+   *                              Minimum absolute difference between two
    *                              compared values, used by all comparison functions.
    *                            {string} matrix
    *                              A string 'Matrix' (default) or 'Array'.
