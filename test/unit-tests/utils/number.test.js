@@ -585,9 +585,9 @@ describe('number', function () {
       assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3, undefined), true)
       assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3, undefined, undefined), true)
 
-      assert.strictEqual(nearlyEqual(1.2 + 1e-8, 1.2), false)
-      assert.strictEqual(nearlyEqual(1.2 + 1e-8, 1.2, undefined), false)
-      assert.strictEqual(nearlyEqual(1.2 + 1e-8, 1.2, undefined, undefined), false)
+      assert.strictEqual(nearlyEqual(1.2 + 1e-7, 1.2), false)
+      assert.strictEqual(nearlyEqual(1.2 + 1e-7, 1.2, undefined), false)
+      assert.strictEqual(nearlyEqual(1.2 + 1e-7, 1.2, undefined, undefined), false)
     })
   })
 })

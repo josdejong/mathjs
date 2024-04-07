@@ -173,13 +173,13 @@ describe('round', function () {
     assert.deepStrictEqual(round(math.matrix([1.7, 2.3])).valueOf(), [2, 2])
   })
 
-  describe('changing config.epsilon during runtime', function () {
-    it('uses default config.epsilon of 1e-12', function () {
+  describe('changing config.relTol during runtime', function () {
+    it('uses default config.relTol of 1e-12', function () {
       assert.strictEqual(math2.round((0.000000000001459), 12), 1e-12)
       assert.deepStrictEqual(math2.round(bignumber(1.49e-12), bignumber(12)), bignumber(1e-12))
     })
 
-    it('uses updated config.epsilon value', function () {
+    it('uses updated config.relTol value', function () {
       math2.config({ epsilon: 1e-13 })
       assert.strictEqual(math2.round((0.000000000001459), 12), 1e-12)
       assert.deepStrictEqual(math2.round(bignumber(1.49e-12), bignumber(12)), bignumber(1e-12))

@@ -76,18 +76,18 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   return typed(name, {
     number: function (x) {
       // Handle round off errors by first rounding to epsilon precision
-      const xEpsilon = roundNumber(x, toExponent(config.epsilon))
-      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon, config.epsilon * 1e-3) ? xEpsilon : x
+      const xEpsilon = roundNumber(x, toExponent(config.relTol))
+      const xSelected = nearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
       return roundNumber(xSelected)
     },
 
     'number, number': function (x, n) {
       // Same as number: unless user specifies more decimals than epsilon
-      const epsilonExponent = toExponent(config.epsilon)
+      const epsilonExponent = toExponent(config.relTol)
       if (n >= epsilonExponent) { return roundNumber(x, n) }
 
       const xEpsilon = roundNumber(x, epsilonExponent)
-      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon, config.epsilon * 1e-3) ? xEpsilon : x
+      const xSelected = nearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
       return roundNumber(xSelected, n)
     },
 
@@ -116,8 +116,8 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     BigNumber: function (x) {
       // Handle round off errors by first rounding to epsilon precision
-      const xEpsilon = new BigNumber(x).toDecimalPlaces(toExponent(config.epsilon))
-      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon, config.epsilon * 1e-3) ? xEpsilon : x
+      const xEpsilon = new BigNumber(x).toDecimalPlaces(toExponent(config.relTol))
+      const xSelected = bigNearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
       return xSelected.toDecimalPlaces(0)
     },
 
@@ -125,11 +125,11 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
       // Same as BigNumber: unless user specifies more decimals than epsilon
-      const epsilonExponent = toExponent(config.epsilon)
+      const epsilonExponent = toExponent(config.relTol)
       if (n >= epsilonExponent) { return x.toDecimalPlaces(n.toNumber()) }
 
       const xEpsilon = x.toDecimalPlaces(epsilonExponent)
-      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon, config.epsilon * 1e-3) ? xEpsilon : x
+      const xSelected = bigNearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
       return xSelected.toDecimalPlaces(n.toNumber())
     },
 

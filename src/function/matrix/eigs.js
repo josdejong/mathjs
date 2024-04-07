@@ -68,7 +68,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *
    * @param {Array | Matrix} x  Matrix to be diagonalized
    *
-   * @param {number | BigNumber | OptsObject} [opts] Object with keys `precision`, defaulting to config.epsilon, and `eigenvectors`, defaulting to true and specifying whether to compute eigenvectors. If just a number, specifies precision.
+   * @param {number | BigNumber | OptsObject} [opts] Object with keys `precision`, defaulting to config.relTol, and `eigenvectors`, defaulting to true and specifying whether to compute eigenvectors. If just a number, specifies precision.
    * @return {{values: Array|Matrix, eigenvectors?: Array<EVobj>}} Object containing an array of eigenvalues and an array of {value: number|BigNumber, vector: Array|Matrix} objects. The eigenvectors property is undefined if eigenvectors were not requested.
    *
    */
@@ -100,7 +100,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
 
   function doEigs (mat, opts = {}) {
     const computeVectors = 'eigenvectors' in opts ? opts.eigenvectors : true
-    const prec = opts.precision ?? config.epsilon
+    const prec = opts.precision ?? config.relTol
     const result = computeValuesAndVectors(mat, prec, computeVectors)
     if (opts.matricize) {
       result.values = matrix(result.values)

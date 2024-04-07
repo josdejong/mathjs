@@ -57,7 +57,7 @@ export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ ty
       'boolean, boolean': (x, y) => (x <= y),
 
       'BigNumber, BigNumber': function (x, y) {
-        return x.lte(y) || bigNearlyEqual(x, y, config.epsilon, config.epsilon * 1e-3)
+        return x.lte(y) || bigNearlyEqual(x, y, config.relTol, config.absTol)
       },
 
       'Fraction, Fraction': (x, y) => (x.compare(y) !== 1),
@@ -78,7 +78,7 @@ export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ ty
 export const createSmallerEqNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return x <= y || nearlyEqual(x, y, config.epsilon, config.epsilon * 1e-3)
+      return x <= y || nearlyEqual(x, y, config.relTol, config.absTol)
     }
   })
 })

@@ -152,7 +152,7 @@ describe('equal', function () {
     assert.strictEqual(mymath.equal(mymath.bignumber(1), mymath.bignumber(0.991)), false)
     assert.strictEqual(mymath.equal(mymath.complex(1, 0), mymath.complex(0.991, 0)), false)
 
-    mymath.config({ epsilon: 1e-2 })
+    mymath.config({ relTol: 1e-2 })
     assert.strictEqual(mymath.equal(1, 0.991), true)
     assert.strictEqual(mymath.equal(mymath.bignumber(1), mymath.bignumber(0.991)), true)
     assert.strictEqual(mymath.equal(mymath.complex(1, 0), mymath.complex(0.991, 0)), true)

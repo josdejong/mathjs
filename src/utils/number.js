@@ -627,11 +627,11 @@ export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-
  *
  * @example
  * nearlyEqual(1.000000001, 1.0, 1e-8);            // true
- * nearlyEqual(1.000000002, 1.0, 1e-9);            // false
+ * nearlyEqual(1.000000002, 1.0, 0);            // false
  * nearlyEqual(1.0, 1.009, undefined, 0.01);       // true
  * nearlyEqual(0.000000001, 0.0, undefined, 1e-8); // true
  */
-export function nearlyEqual (a, b, relTol = 1e-12, absTol = 1e-9) {
+export function nearlyEqual (a, b, relTol = 1e-8, absTol = 0) {
   if (relTol <= 0) {
     throw new Error('Relative tolerance must be greater than 0')
   }

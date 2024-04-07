@@ -72,7 +72,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
       },
 
       'BigNumber, BigNumber': function (x, y) {
-        return bigNearlyEqual(x, y, config.epsilon, config.epsilon * 1e-3)
+        return bigNearlyEqual(x, y, config.relTol, config.absTol)
           ? new BigNumber(0)
           : new BigNumber(x.cmp(y))
       },
@@ -97,7 +97,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
 export const createCompareNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return nearlyEqual(x, y, config.epsilon, config.epsilon * 1e-3)
+      return nearlyEqual(x, y, config.relTol, config.absTol)
         ? 0
         : (x > y ? 1 : -1)
     }

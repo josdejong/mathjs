@@ -95,7 +95,7 @@ describe('larger', function () {
     assert.strictEqual(mymath.larger(1, 0.991), true)
     assert.strictEqual(mymath.larger(mymath.bignumber(1), mymath.bignumber(0.991)), true)
 
-    mymath.config({ epsilon: 1e-2 })
+    mymath.config({ relTol: 1e-2 })
     assert.strictEqual(mymath.larger(1, 0.991), false)
     assert.strictEqual(mymath.larger(mymath.bignumber(1), mymath.bignumber(0.991)), false)
   })

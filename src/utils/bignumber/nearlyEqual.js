@@ -9,8 +9,8 @@
  * @throws {Error} If `absTol` is less than 0.
  *
  * @example
- * nearlyEqual(1.000000001, 1.0, 1e-8);            // true
- * nearlyEqual(1.000000002, 1.0, 1e-9);            // false
+ * nearlyEqual(1.000000001, 1.0, 1e-9);            // true
+ * nearlyEqual(1.000000002, 1.0, 0);            // false
  * nearlyEqual(1.0, 1.009, undefined, 0.02);       // true
  * nearlyEqual(0.000000001, 0.0, undefined, 1e-8); // true
  */
