@@ -52,23 +52,33 @@ export function configFactory (config, emit) {
    */
   function _config (options) {
     if (options) {
-      const prev = mapObject(config, clone)
+      if (options.epsilon !== undefined) {
+        // backwards compatibility
+        console.warn('Warning: The configuration option "epsilon" is deprecated. Use "relTol" and "absTol" instead.')
+        const optionsFix = mapObject(options, clone)
+        optionsFix.relTol = options.epsilon
+        optionsFix.absTol = options.epsilon * 1e-3
+        delete optionsFix.epsilon
+        return _config(optionsFix)
+      } else {
+        const prev = mapObject(config, clone)
 
-      // validate some of the options
-      validateOption(options, 'matrix', MATRIX_OPTIONS)
-      validateOption(options, 'number', NUMBER_OPTIONS)
+        // validate some of the options
+        validateOption(options, 'matrix', MATRIX_OPTIONS)
+        validateOption(options, 'number', NUMBER_OPTIONS)
 
-      // merge options
-      deepExtend(config, options)
+        // merge options
+        deepExtend(config, options)
 
-      const curr = mapObject(config, clone)
+        const curr = mapObject(config, clone)
 
-      const changes = mapObject(options, clone)
+        const changes = mapObject(options, clone)
 
-      // emit 'config' event
-      emit('config', curr, prev, changes)
+        // emit 'config' event
+        emit('config', curr, prev, changes)
 
-      return curr
+        return curr
+      }
     } else {
       return mapObject(config, clone)
     }

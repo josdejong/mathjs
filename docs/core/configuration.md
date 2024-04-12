@@ -9,7 +9,7 @@ import { create, all } from 'mathjs'
 // create a mathjs instance with configuration
 const config = {
   relTol: 1e-12,
-  absTol: 1e.15,
+  absTol: 1e-15,
   matrix: 'Matrix',
   number: 'number',
   precision: 64,
