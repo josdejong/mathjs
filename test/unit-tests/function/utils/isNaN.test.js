@@ -67,6 +67,10 @@ describe('isNegative', function () {
     assert.deepStrictEqual(isNaN(math.matrix([0, 5, -2, NaN])), math.matrix([false, false, false, true]))
   })
 
+  it('should test isNaN element wise on a Matrix of units', function () {
+    assert.deepStrictEqual(isNaN(math.matrix([new Unit(3, 'ft'), new Unit(NaN, 'ft')])), math.matrix([false, true]))
+  })
+
   it('should throw an error in case of unsupported data types', function () {
     assert.throws(function () { isNaN(new Date()) }, /TypeError: Unexpected type of argument/)
     assert.throws(function () { isNaN({}) }, /TypeError: Unexpected type of argument/)
