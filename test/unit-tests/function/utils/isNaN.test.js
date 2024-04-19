@@ -59,11 +59,11 @@ describe('isNegative', function () {
     assert.strictEqual(isNaN(''), false)
   })
 
-  it('should test isNegative element wise on an Array', function () {
+  it('should test isNaN element wise on an Array', function () {
     assert.deepStrictEqual(isNaN([0, 5, -2, NaN]), [false, false, false, true])
   })
 
-  it('should test isNegative element wise on a Matrix', function () {
+  it('should test isNaN element wise on a Matrix', function () {
     assert.deepStrictEqual(isNaN(math.matrix([0, 5, -2, NaN])), math.matrix([false, false, false, true]))
   })
 
