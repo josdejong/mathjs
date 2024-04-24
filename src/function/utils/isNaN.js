@@ -54,8 +54,6 @@ export const createIsNaN = /* #__PURE__ */ factory(name, dependencies, ({ typed 
       return Number.isNaN(x.value)
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, Number.isNaN)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })
