@@ -1,5 +1,5 @@
 import typedFunction from 'typed-function'
-import { deepFlatten, isLegacyFactory, values } from '../utils/object.js'
+import { deepFlatten, isLegacyFactory } from '../utils/object.js'
 import * as emitter from './../utils/emitter.js'
 import { importFactory } from './function/import.js'
 import { configFactory } from './function/config.js'
@@ -219,7 +219,7 @@ export function create (factories, config) {
   // listen for changes in config, import all functions again when changed
   // TODO: move this listener into the import function?
   math.on('config', () => {
-    values(importedFactories).forEach(factory => {
+    Object.values(importedFactories).forEach(factory => {
       if (factory && factory.meta && factory.meta.recreateOnConfigChange) {
         // FIXME: only re-create when the current instance is the same as was initially created
         // FIXME: delete the functions/constants before importing them again?
@@ -237,7 +237,7 @@ export function create (factories, config) {
 
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
-  math.import(values(deepFlatten(factories)))
+  math.import(Object.values(deepFlatten(factories)))
 
   math.ArgumentsError = ArgumentsError
   math.DimensionError = DimensionError
