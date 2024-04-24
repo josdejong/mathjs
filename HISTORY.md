@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 12.4.1
+# 2024-04-24, 12.4.2
 
 - Fix #3192: function `isNaN` returns `false` for `NaN` units in a matrix or
   array (#3193). Thanks @lgerin.
