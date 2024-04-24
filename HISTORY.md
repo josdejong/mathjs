@@ -1,5 +1,14 @@
 # History
 
+# 2024-04-24, 12.4.2
+
+- Fix #3192: function `isNaN` returns `false` for `NaN` units in a matrix or
+  array (#3193). Thanks @lgerin.
+- Fix: #3180 fix type definitions of functions `add` and `multiply` to allow
+  more than two arguments. 
+- Docs: correct the docs about `traverse` returning void (#3177). 
+  Thanks @rohildshah.
+
 
 # 2024-03-13, 12.4.1
 
