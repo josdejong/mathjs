@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20240424-1242">2024-04-24, 12.4.2 <a href="#20240424-1242" title="Permalink">#</a></h1>
+
+- Fix <a href="https://github.com/josdejong/mathjs/issues/3192">#3192</a>: function `isNaN` returns `false` for `NaN` units in a matrix or
+  array (<a href="https://github.com/josdejong/mathjs/issues/3193">#3193</a>). Thanks <a href="https://github.com/lgerin">@lgerin</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3180">#3180</a> fix type definitions of functions `add` and `multiply` to allow
+  more than two arguments. 
+- Docs: correct the docs about `traverse` returning void (<a href="https://github.com/josdejong/mathjs/issues/3177">#3177</a>). 
+  Thanks <a href="https://github.com/rohildshah">@rohildshah</a>.
+
 
 <h1 id="20240313-1241">2024-03-13, 12.4.1 <a href="#20240313-1241" title="Permalink">#</a></h1>
 
