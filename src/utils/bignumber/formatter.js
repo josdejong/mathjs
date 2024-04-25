@@ -201,7 +201,7 @@ export function toEngineering (value, precision) {
   const valueWithoutExp = value.mul(Math.pow(10, -newExp))
 
   let valueStr = valueWithoutExp.toPrecision(precision)
-  if (valueStr.indexOf('e') !== -1) {
+  if (valueStr.includes('e')) {
     const BigNumber = value.constructor
     valueStr = new BigNumber(valueStr).toFixed()
   }

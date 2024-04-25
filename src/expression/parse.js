@@ -1341,7 +1341,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       if (hasOwnProperty(CONSTANTS, name)) { // true, false, null, ...
         node = new ConstantNode(CONSTANTS[name])
-      } else if (NUMERIC_CONSTANTS.indexOf(name) !== -1) { // NaN, Infinity
+      } else if (NUMERIC_CONSTANTS.includes(name)) { // NaN, Infinity
         node = new ConstantNode(numeric(name, 'number'))
       } else {
         node = new SymbolNode(name)
@@ -1373,7 +1373,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     let params
 
     while ((state.token === '(' || state.token === '[' || state.token === '.') &&
-        (!types || types.indexOf(state.token) !== -1)) { // eslint-disable-line no-unmodified-loop-condition
+        (!types || types.includes(state.token))) { // eslint-disable-line no-unmodified-loop-condition
       params = []
 
       if (state.token === '(') {

@@ -355,7 +355,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         {
           // Process operators as OperatorNode
           const operatorFunctions = ['add', 'multiply']
-          if (operatorFunctions.indexOf(node.name) === -1) {
+          if (!operatorFunctions.includes(node.name)) {
             const args = node.args.map(arg => foldFraction(arg, options))
 
             // If all args are numbers

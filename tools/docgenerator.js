@@ -378,7 +378,7 @@ function validateDoc (doc) {
   const issues = []
 
   function ignore (field) {
-    return IGNORE_WARNINGS[field].indexOf(doc.name) !== -1
+    return IGNORE_WARNINGS[field].includes(doc.name)
   }
 
   if (!doc.name) {
@@ -558,10 +558,10 @@ function collectDocs (functionNames, inputPath) {
     let category
 
     // Note: determining whether a file is a function and what it's category
-    // is is a bit tricky and quite specific to the structure of the code,
+    // is a bit tricky and quite specific to the structure of the code,
     // we reckon with some edge cases here.
-    if (path.indexOf('docs') === -1 && functionIndex !== -1) {
-      if (path.indexOf('expression') !== -1) {
+    if (!path.includes('docs') && functionIndex !== -1) {
+      if (path.includes('expression')) {
         category = 'expression'
       } else if (/\/lib\/cjs\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
         // for type/bignumber/function/bignumber.js, type/fraction/function/fraction.js, etc
@@ -579,7 +579,7 @@ function collectDocs (functionNames, inputPath) {
       category = 'construction'
     }
 
-    if (functionNames.indexOf(name) === -1 || IGNORE_FUNCTIONS[name]) {
+    if (!functionNames.includes(name) || IGNORE_FUNCTIONS[name]) {
       category = null
     }
 
@@ -601,7 +601,7 @@ function collectDocs (functionNames, inputPath) {
     const fn = functions[name]
     const code = String(fs.readFileSync(fn.fullPath))
 
-    const isFunction = (functionNames.indexOf(name) !== -1) && !IGNORE_FUNCTIONS[name]
+    const isFunction = (functionNames.includes(name)) && !IGNORE_FUNCTIONS[name]
     const doc = isFunction ? generateDoc(name, code) : null
 
     if (isFunction && doc) {

@@ -221,7 +221,7 @@ function generateDependenciesFiles ({ suffix, factories, entryFolder }) {
           .filter(dependency => !IGNORED_DEPENDENCIES[dependency])
           .filter(dependency => {
             if (!exists[dependency]) {
-              if (factory.dependencies.indexOf(dependency) !== -1) {
+              if (factory.dependencies.includes(dependency)) {
                 throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}" (suffix: ${suffix})`)
               }
 
@@ -348,7 +348,7 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
           .filter(dependency => {
             // TODO: this code is duplicated. extract it in a separate function
             if (!pureExists[dependency]) {
-              if (factory.dependencies.indexOf(dependency) !== -1) {
+              if (factory.dependencies.includes(dependency)) {
                 throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}" (suffix: ${suffix})`)
               }
 
@@ -381,7 +381,7 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
 
             // TODO: this code is duplicated. extract it in a separate function
             if (!impureExists[dependency]) {
-              // if (factory.dependencies.indexOf(dependency) !== -1) {
+              // if (factory.dependencies.includes(dependency)) {
               //   throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
               // }
 
@@ -414,7 +414,7 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
 
             // TODO: this code is duplicated. extract it in a separate function
             if (!impureExists[dependency]) {
-              // if (factory.dependencies.indexOf(dependency) !== -1) {
+              // if (factory.dependencies.includes(dependency)) {
               //   throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
               // }
 
