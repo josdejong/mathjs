@@ -4300,6 +4300,7 @@ export interface Help {
 export interface ConfigOptions {
   relTol?: number
   absTol?: number
+  epsilon?: number
   matrix?: 'Matrix' | 'Array'
   number?: 'number' | 'BigNumber' | 'Fraction'
   precision?: number

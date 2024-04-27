@@ -17,4 +17,10 @@ describe('config', function () {
   })
 
   // TODO: test function config
+
+  it('should work with config epsilon during depercation', function () {
+    const math2 = math.create()
+    assert.doesNotThrow(function () { math2.config({ epsilon: 1e-5 }) })
+    assert.strictEqual(math2.config().relTol, 1e-5)
+  })
 })

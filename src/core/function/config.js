@@ -1,4 +1,4 @@
-import { clone, mapObject, deepExtend } from '../../utils/object.js'
+import { clone, deepExtend } from '../../utils/object.js'
 import { DEFAULT_CONFIG } from '../config.js'
 
 export const MATRIX_OPTIONS = ['Matrix', 'Array'] // valid values for option matrix
@@ -53,34 +53,33 @@ export function configFactory (config, emit) {
   function _config (options) {
     if (options) {
       if (options.epsilon !== undefined) {
-        // backwards compatibility
+        // this if is only for backwards compatibility, it can be removed in the future.
         console.warn('Warning: The configuration option "epsilon" is deprecated. Use "relTol" and "absTol" instead.')
-        const optionsFix = mapObject(options, clone)
+        const optionsFix = clone(options)
         optionsFix.relTol = options.epsilon
         optionsFix.absTol = options.epsilon * 1e-3
         delete optionsFix.epsilon
         return _config(optionsFix)
-      } else {
-        const prev = mapObject(config, clone)
-
-        // validate some of the options
-        validateOption(options, 'matrix', MATRIX_OPTIONS)
-        validateOption(options, 'number', NUMBER_OPTIONS)
-
-        // merge options
-        deepExtend(config, options)
-
-        const curr = mapObject(config, clone)
-
-        const changes = mapObject(options, clone)
-
-        // emit 'config' event
-        emit('config', curr, prev, changes)
-
-        return curr
       }
+      const prev = clone(config)
+
+      // validate some of the options
+      validateOption(options, 'matrix', MATRIX_OPTIONS)
+      validateOption(options, 'number', NUMBER_OPTIONS)
+
+      // merge options
+      deepExtend(config, options)
+
+      const curr = clone(config)
+
+      const changes = clone(options)
+
+      // emit 'config' event
+      emit('config', curr, prev, changes)
+
+      return curr
     } else {
-      return mapObject(config, clone)
+      return clone(config)
     }
   }
 
