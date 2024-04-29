@@ -902,7 +902,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     return {
       mathjs: 'Unit',
       value: this._denormalize(this.value),
-      unit: this.formatUnits(),
+      unit: this.units.length > 0 ? this.formatUnits() : null,
       fixPrefix: this.fixPrefix
     }
   }
@@ -915,7 +915,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Unit}
    */
   Unit.fromJSON = function (json) {
-    const unit = new Unit(json.value, json.unit)
+    const unit = new Unit(json.value, json.unit ?? undefined)
     unit.fixPrefix = json.fixPrefix || false
     return unit
   }

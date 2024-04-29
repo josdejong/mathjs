@@ -70,6 +70,26 @@ describe('reviver', function () {
     assert.deepStrictEqual(obj, u)
   })
 
+  it('should parse a stringified Unit with a value only', function () {
+    const json = '{"mathjs":"Unit","value":5,"unit":null,"fixPrefix":false}'
+    const u = new math.Unit(5)
+
+    const obj = JSON.parse(json, reviver)
+
+    assert(obj instanceof math.Unit)
+    assert.deepStrictEqual(obj, u)
+  })
+
+  it('should parse a stringified Unit without a value', function () {
+    const json = '{"mathjs":"Unit","value":null,"unit":"cm","fixPrefix":false}'
+    const u = new math.Unit(null, 'cm')
+
+    const obj = JSON.parse(json, reviver)
+
+    assert(obj instanceof math.Unit)
+    assert.deepStrictEqual(obj, u)
+  })
+
   it('should parse a stringified Range (2)', function () {
     const json = '{"mathjs":"Range","start":2,"end":10,"step":2}'
     const r = new math.Range(2, 10, 2)
