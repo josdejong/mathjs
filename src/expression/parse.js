@@ -1024,7 +1024,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * multiply, divide, modulus
+   * multiply, divide
    * @return {Node} node
    * @private
    */
@@ -1102,7 +1102,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseRule2 (state) {
-    let node = parsePercentage(state)
+    let node = parseModulusPercentage(state)
     let last = node
     const tokenStates = []
 
@@ -1125,7 +1125,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             Object.assign(state, tokenStates.pop())
             tokenStates.pop()
-            last = parsePercentage(state)
+            last = parseModulusPercentage(state)
             node = new OperatorNode('/', 'divide', [node, last])
           } else {
             // Not a match, so rewind
@@ -1147,11 +1147,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * percentage or mod
+   * modulus and percentage
    * @return {Node} node
    * @private
    */
-  function parsePercentage (state) {
+  function parseModulusPercentage (state) {
     let node, name, fn, params
 
     node = parseUnary(state)
@@ -1160,6 +1160,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       '%': 'mod',
       mod: 'mod'
     }
+
     while (hasOwnProperty(operators, state.token)) {
       name = state.token
       fn = operators[name]
