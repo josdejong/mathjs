@@ -2655,7 +2655,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   max(...args: MathScalarType[]): MathScalarType
   /**
-   * @param A An array of scalar values
+   * @param A A single matrix
    * @param dimension The maximum over the selected dimension
    * @returns The maximum value
    */
@@ -2685,7 +2685,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   mean(...args: MathScalarType[]): MathScalarType
   /**
-   * @param A An array of scalar values
+   * @param A A single matrix
    * @param dimension The mean over the selected dimension
    * @returns The mean value
    */
@@ -2742,7 +2742,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   min(...args: MathScalarType[]): MathScalarType
   /**
-   * @param A An array of scalar values
+   * @param A A single matrix
    * @param dimension The minimum over the selected dimension
    * @returns The minimum value
    */
@@ -2771,7 +2771,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   mode(...args: MathScalarType[]): MathScalarType[]
   /**
-   * @param A An array of scalar values
+   * @param A A single matrix
    * @returns The mode value
    */
   mode<T extends MathScalarType>(A: T[] | T[][]): T[]
@@ -2795,7 +2795,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   prod(...args: MathScalarType[]): MathScalarType
   /**
-   * @param A An array of scalar values
+   * @param A A single matrix
    * @returns The product of all values
    */
   prod<T extends MathScalarType>(A: T[] | T[][]): T
@@ -2806,7 +2806,7 @@ export interface MathJsInstance extends MathJsFactory {
   prod(A: MathCollection): MathScalarType
 
   /**
-   * @param A An array of scalar values
+   * @param A A single matrix
    * @param probOrN prob is the order of the quantile, while N is the
    * amount of evenly distributed steps of probabilities; only one of
    * these options can be provided
@@ -2914,7 +2914,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   sum(...args: MathScalarType[]): MathScalarType
   /**
-   * @param A An array of scalar values
+   * @param A A single matrix
    * @param dimension The sum over the selected dimension
    * @returns The sum of all values
    */
