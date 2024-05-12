@@ -4300,6 +4300,9 @@ export interface Help {
 export interface ConfigOptions {
   relTol?: number
   absTol?: number
+  /**
+   * @deprecated Use `relTol` and `absTol` instead
+   */
   epsilon?: number
   matrix?: 'Matrix' | 'Array'
   number?: 'number' | 'BigNumber' | 'Fraction'
