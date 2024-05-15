@@ -2536,7 +2536,7 @@ Statistics functions' return types
     MathScalarType | MathArray
   >()
   expectTypeOf(
-    math.quantileSeq([math.unit('5cm'), math.unit('10cm')])
+    math.quantileSeq([math.unit('5cm'), math.unit('10cm')], 0.75)
   ).toMatchTypeOf<Unit>()
 }
 
