@@ -40,10 +40,10 @@ export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ t
    *                    Throws an error in case of an unknown data type.
    */
   return typed(name, {
-    number: x => nearlyEqual(x, 0, config.epsilon) ? false : isPositiveNumber(x),
+    number: x => nearlyEqual(x, 0, config.relTol, config.absTol) ? false : isPositiveNumber(x),
 
     BigNumber: x =>
-      bigNearlyEqual(x, new x.constructor(0), config.epsilon)
+      bigNearlyEqual(x, new x.constructor(0), config.relTol, config.absTol)
         ? false
         : !x.isNeg() && !x.isZero() && !x.isNaN(),
 

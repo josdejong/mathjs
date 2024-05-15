@@ -38,9 +38,9 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
    *                    Throws an error in case of an unknown data type.
    */
   return typed(name, {
-    number: x => nearlyEqual(x, 0, config.epsilon) ? false : isNegativeNumber(x),
+    number: x => nearlyEqual(x, 0, config.relTol, config.absTol) ? false : isNegativeNumber(x),
 
-    BigNumber: x => bigNearlyEqual(x, new x.constructor(0), config.epsilon)
+    BigNumber: x => bigNearlyEqual(x, new x.constructor(0), config.relTol, config.absTol)
       ? false
       : x.isNeg() && !x.isZero() && !x.isNaN(),
 

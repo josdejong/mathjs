@@ -18,7 +18,6 @@ describe('isNegative', function () {
   })
 
   it('should test whether a number is near negative', function () {
-    // when epsilon is 1e-12
     assert.strictEqual(isNegative(1e-17), false)
     assert.strictEqual(isNegative(-1e-17), false)
     assert.strictEqual(isNegative(1e-14), false)
