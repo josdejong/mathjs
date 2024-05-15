@@ -23,7 +23,7 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * Test whether two values are equal.
    *
    * The function tests whether the relative difference between x and y is
-   * smaller than the configured epsilon. The function cannot be used to
+   * smaller than the configured relTol and absTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16.
    *
    * For matrices, the function is evaluated element wise.

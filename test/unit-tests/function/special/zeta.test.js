@@ -35,7 +35,7 @@ describe('Riemann Zeta', function () {
     const digits = Math.abs(Math.log10(bigEpsilon))
 
     const math2 = math.create()
-    math2.config({ epsilon: bigEpsilon })
+    math2.config({ relTol: bigEpsilon, absTol: bigEpsilon * 1e-3 })
 
     function bigApproxEqual (a, b) {
       assert.strictEqual(

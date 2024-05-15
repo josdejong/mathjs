@@ -1,7 +1,11 @@
 export const DEFAULT_CONFIG = {
   // minimum relative difference between two compared values,
   // used by all comparison functions
-  epsilon: 1e-12,
+  relTol: 1e-12,
+
+  // minimum absolute difference between two compared values,
+  // used by all comparison functions
+  absTol: 1e-15,
 
   // type of default matrix output. Choose 'matrix' (default) or 'array'
   matrix: 'Matrix',

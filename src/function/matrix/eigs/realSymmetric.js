@@ -7,7 +7,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
    * @param {number} prec
    * @param {'number' | 'BigNumber'} type
    */
-  function main (arr, N, prec = config.epsilon, type, computeVectors) {
+  function main (arr, N, prec = config.relTol, type, computeVectors) {
     if (type === 'number') {
       return diag(arr, prec, computeVectors)
     }
@@ -85,7 +85,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   // get angle
   function getTheta (aii, ajj, aij) {
     const denom = (ajj - aii)
-    if (Math.abs(denom) <= config.epsilon) {
+    if (Math.abs(denom) <= config.relTol) {
       return Math.PI / 4.0
     } else {
       return 0.5 * Math.atan(2.0 * aij / (ajj - aii))
@@ -95,7 +95,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
   // get angle
   function getThetaBig (aii, ajj, aij) {
     const denom = subtract(ajj, aii)
-    if (abs(denom) <= config.epsilon) {
+    if (abs(denom) <= config.relTol) {
       return bignumber(-1).acos().div(4)
     } else {
       return multiplyScalar(0.5, atan(multiply(2.0, aij, inv(denom))))

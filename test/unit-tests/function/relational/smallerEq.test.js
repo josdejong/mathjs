@@ -95,12 +95,12 @@ describe('smallerEq', function () {
     assert.strictEqual(smallerEq(unit('101cm'), unit('1m')), false)
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.smallerEq(1.01, 1), false)
     assert.strictEqual(mymath.smallerEq(mymath.bignumber(1.01), mymath.bignumber(1)), false)
 
-    mymath.config({ epsilon: 1e-2 })
+    mymath.config({ relTol: 1e-2 })
     assert.strictEqual(mymath.smallerEq(1.01, 1), true)
     assert.strictEqual(mymath.smallerEq(mymath.bignumber(1.01), mymath.bignumber(1)), true)
   })

@@ -173,12 +173,12 @@ describe('compare', function () {
     })
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.compare(1, 0.991), 1)
     assert.strictEqual(mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), '1')
 
-    mymath.config({ epsilon: 1e-2 })
+    mymath.config({ relTol: 1e-2 })
     assert.strictEqual(mymath.compare(1, 0.991), 0)
     assert.strictEqual(mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), '0')
   })

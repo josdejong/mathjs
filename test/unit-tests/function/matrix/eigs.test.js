@@ -214,7 +214,7 @@ describe('eigs', function () {
     approx.equal(ev[1].value, 2)
     approx.equal(ev[0].vector[0], 0)
     approx.equal(ev[0].vector[1], 0)
-    assert.ok(abs(ev[0].vector[2]) > math.config.epsilon)
+    assert.ok(abs(ev[0].vector[2]) > math.config.relTol)
     approx.equal(ev[1].vector[0], -ev[1].vector[2])
     approx.equal(ev[1].vector[1], 0)
     const web2 = eigs([[1, 1, 0], [0, 1, 2], [0, 0, 3]]) // https://www2.math.upenn.edu/~moose/240S2013/slides7-31.pdf
@@ -224,7 +224,7 @@ describe('eigs', function () {
     assert.strictEqual(ev2[1].value, 3)
     assert.strictEqual(ev2[0].vector[1], 0)
     assert.strictEqual(ev2[0].vector[2], 0)
-    assert.ok(abs(ev2[0].vector[0]) > math.config.epsilon)
+    assert.ok(abs(ev2[0].vector[0]) > math.config.relTol)
     assert.strictEqual(ev2[1].vector[1], ev2[1].vector[2])
     approx.equal(ev2[1].vector[1], 2 * ev2[1].vector[0])
   })
