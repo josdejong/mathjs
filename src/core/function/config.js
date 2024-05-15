@@ -88,23 +88,13 @@ export function configFactory (config, emit) {
 }
 
 /**
- * Test whether an Array contains a specific item.
- * @param {Array.<string>} array
- * @param {string} item
- * @return {boolean}
- */
-function contains (array, item) {
-  return array.indexOf(item) !== -1
-}
-
-/**
  * Validate an option
  * @param {Object} options         Object with options
  * @param {string} name            Name of the option to validate
  * @param {Array.<string>} values  Array with valid values for this option
  */
 function validateOption (options, name, values) {
-  if (options[name] !== undefined && !contains(values, options[name])) {
+  if (options[name] !== undefined && !values.includes(options[name])) {
     // unknown value
     console.warn('Warning: Unknown value "' + options[name] + '" for configuration option "' + name + '". ' +
       'Available options: ' + values.map(value => JSON.stringify(value)).join(', ') + '.')

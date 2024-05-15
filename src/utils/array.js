@@ -651,16 +651,6 @@ export function initial (array) {
 }
 
 /**
- * Test whether an array or string contains an item
- * @param {Array | string} array
- * @param {*} item
- * @return {boolean}
- */
-export function contains (array, item) {
-  return array.indexOf(item) !== -1
-}
-
-/**
  * Recursively concatenate two matrices.
  * The contents of the matrices is not cloned.
  * @param {Array} a             Multi dimensional array

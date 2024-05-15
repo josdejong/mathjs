@@ -14,7 +14,7 @@ export function improveErrorMessage (err, fnName, value) {
   // TODO: add information with the index (also needs transform in expression parser)
   let details
 
-  if (String(err).indexOf('Unexpected type') !== -1) {
+  if (String(err).includes('Unexpected type')) {
     details = arguments.length > 2
       ? ' (type: ' + typeOf(value) + ', value: ' + JSON.stringify(value) + ')'
       : ' (type: ' + err.data.actual + ')'
@@ -22,7 +22,7 @@ export function improveErrorMessage (err, fnName, value) {
     return new TypeError('Cannot calculate ' + fnName + ', unexpected type of argument' + details)
   }
 
-  if (String(err).indexOf('complex numbers') !== -1) {
+  if (String(err).includes('complex numbers')) {
     details = arguments.length > 2
       ? ' (type: ' + typeOf(value) + ', value: ' + JSON.stringify(value) + ')'
       : ''

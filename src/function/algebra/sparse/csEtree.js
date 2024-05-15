@@ -1,11 +1,13 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
+
 /**
  * Computes the elimination tree of Matrix A (using triu(A)) or the
  * elimination tree of A'A without forming A'A.
  *
  * @param {Matrix}  a               The A Matrix
  * @param {boolean} ata             A value of true the function computes the etree of A'A
- *
- * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csEtree (a, ata) {
   // check inputs

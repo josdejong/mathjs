@@ -79,6 +79,10 @@ Basic usage examples
   math.pow(m2by2, 2)
   const angle = 0.2
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
+  math.add(2, 3, 4)
+  math.add(2, 3, math.bignumber(4))
+  math.multiply(2, 3, 4)
+  math.multiply(2, 3, math.bignumber(4))
 
   // std and variance check
 

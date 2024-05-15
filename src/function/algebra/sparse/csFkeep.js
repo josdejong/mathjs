@@ -1,3 +1,7 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
+
 /**
  * Keeps entries in the matrix when the callback function returns true, removes the entry otherwise
  *
@@ -10,8 +14,6 @@
  * @param {any}      other          The state
  *
  * @return                          The number of nonzero elements in the matrix
- *
- * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csFkeep (a, callback, other) {
   // a arrays

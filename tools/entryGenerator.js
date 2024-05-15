@@ -221,7 +221,7 @@ function generateDependenciesFiles ({ suffix, factories, entryFolder }) {
           .filter(dependency => !IGNORED_DEPENDENCIES[dependency])
           .filter(dependency => {
             if (!exists[dependency]) {
-              if (factory.dependencies.indexOf(dependency) !== -1) {
+              if (factory.dependencies.includes(dependency)) {
                 throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}" (suffix: ${suffix})`)
               }
 
@@ -266,7 +266,7 @@ function generateDependenciesFiles ({ suffix, factories, entryFolder }) {
 function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
   const braceOpen = '{' // a hack to be able to create a single brace open character in handlebars
 
-  const sortedFactories = sortFactories(values(factories))
+  const sortedFactories = sortFactories(Object.values(factories))
 
   // sort the factories, and split them in three groups:
   // - transform: the transform functions
@@ -281,9 +281,9 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
       if (isTransform(factory)) {
         transformFactories.push(factory)
       } else if (
-        contains(factory.dependencies, 'math') ||
-        contains(factory.dependencies, 'mathWithTransform') ||
-        contains(factory.dependencies, 'classes') ||
+        factory.dependencies.includes('math') ||
+        factory.dependencies.includes( 'mathWithTransform') ||
+        factory.dependencies.includes( 'classes') ||
         isTransform(factory) ||
         factory.dependencies.some(dependency => {
           return impureFactories.find(f => f.fn === stripOptionalNotation(dependency))
@@ -348,7 +348,7 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
           .filter(dependency => {
             // TODO: this code is duplicated. extract it in a separate function
             if (!pureExists[dependency]) {
-              if (factory.dependencies.indexOf(dependency) !== -1) {
+              if (factory.dependencies.includes(dependency)) {
                 throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}" (suffix: ${suffix})`)
               }
 
@@ -381,7 +381,7 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
 
             // TODO: this code is duplicated. extract it in a separate function
             if (!impureExists[dependency]) {
-              // if (factory.dependencies.indexOf(dependency) !== -1) {
+              // if (factory.dependencies.includes(dependency)) {
               //   throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
               // }
 
@@ -414,7 +414,7 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
 
             // TODO: this code is duplicated. extract it in a separate function
             if (!impureExists[dependency]) {
-              // if (factory.dependencies.indexOf(dependency) !== -1) {
+              // if (factory.dependencies.includes(dependency)) {
               //   throw new Error(`Required dependency "${dependency}" missing for factory "${factory.fn}"`)
               // }
 
@@ -531,14 +531,6 @@ function sortFactories (factories) {
   }
 
   return sortedFactories
-}
-
-function values (object) {
-  return Object.keys(object).map(key => object[key])
-}
-
-function contains (array, item) {
-  return array.indexOf(item) !== -1
 }
 
 function isTransform (factory) {
