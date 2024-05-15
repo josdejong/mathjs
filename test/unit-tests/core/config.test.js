@@ -19,9 +19,9 @@ describe('config', function () {
 
   // TODO: test function config
 
-  it('should work with config epsilon during depercation', function () {
+  it('should work with config epsilon during deprecation', function () {
     const math2 = math.create()
-    // Add a spy to temporary disable console.warn
+    // Add a spy to temporarily disable console.warn
     const warnStub = sinon.stub(console, 'warn')
 
     // Set epsilon to throw a warning and set relTol and absTol
