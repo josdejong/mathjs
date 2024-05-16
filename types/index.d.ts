@@ -2806,6 +2806,19 @@ export interface MathJsInstance extends MathJsFactory {
   prod(A: MathCollection): MathScalarType
 
   /**
+   * @param A A single matrix
+   * @param probOrN prob is the order of the quantile, while N is the
+   * amount of evenly distributed steps of probabilities; only one of
+   * these options can be provided
+   * @param sorted =false is data sorted in ascending order
+   * @returns Quantile(s)
+   */
+  quantileSeq<T extends MathScalarType>(
+    A: T[] | T[][],
+    prob: number | BigNumber | MathArray,
+    sorted?: boolean
+  ): T
+  /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned. Supported
    * types of sequence values are: Number, BigNumber, Unit Supported types
@@ -2823,7 +2836,7 @@ export interface MathJsInstance extends MathJsFactory {
     A: MathCollection,
     prob: number | BigNumber | MathArray,
     sorted?: boolean
-  ): number | BigNumber | Unit | MathArray
+  ): MathScalarType | MathArray
 
   /**
    * Compute the standard deviation of a matrix or a list with values. The
