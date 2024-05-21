@@ -1,14 +1,14 @@
 /* eslint-disable no-loss-of-precision */
 
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual as _approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 
 const zeta = math.zeta
 const epsilon = 1e-6 // FIXME: make zeta work with an epsilon of 1e-12
 
 function approxEqual (a, b) {
-  approx.equal(a, b, epsilon)
+  _approxEqual(a, b, epsilon)
 }
 
 describe('Riemann Zeta', function () {

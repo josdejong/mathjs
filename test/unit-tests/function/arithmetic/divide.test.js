@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const divide = math.divide
 const bignumber = math.bignumber
 const complex = math.complex
@@ -29,7 +29,7 @@ describe('divide', function () {
   it('should divide mixed numbers and booleans', function () {
     assert.strictEqual(divide(2, true), 2)
     assert.strictEqual(divide(2, false), Infinity)
-    approx.equal(divide(true, 2), 0.5)
+    approxEqual(divide(true, 2), 0.5)
     assert.strictEqual(divide(false, 2), 0)
   })
 
@@ -55,36 +55,36 @@ describe('divide', function () {
   })
 
   it('should divide two complex numbers', function () {
-    approx.deepEqual(divide(complex('2+3i'), 2), complex('1+1.5i'))
-    approx.deepEqual(divide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'))
-    approx.deepEqual(divide(complex('2i'), complex('4i')), complex('0.5'))
-    approx.deepEqual(divide(4, complex('1+2i')), complex('0.8 - 1.6i'))
-    approx.deepEqual(divide(math.i, 0), complex(Infinity, Infinity))
-    approx.deepEqual(divide(complex(0, 1), 0), complex(Infinity, Infinity))
-    approx.deepEqual(divide(complex(1, 0), 0), complex(Infinity, Infinity))
-    approx.deepEqual(divide(complex(0, 1), complex(0, 0)), complex(Infinity, Infinity))
-    approx.deepEqual(divide(complex(1, 1), complex(0, 0)), complex(Infinity, Infinity))
-    approx.deepEqual(divide(complex(1, -1), complex(0, 0)), complex(Infinity, -Infinity))
-    approx.deepEqual(divide(complex(-1, 1), complex(0, 0)), complex(-Infinity, Infinity))
-    approx.deepEqual(divide(complex(1, 1), complex(0, 1)), complex(1, -1))
-    approx.deepEqual(divide(complex(1, 1), complex(1, 0)), complex(1, 1))
+    approxDeepEqual(divide(complex('2+3i'), 2), complex('1+1.5i'))
+    approxDeepEqual(divide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'))
+    approxDeepEqual(divide(complex('2i'), complex('4i')), complex('0.5'))
+    approxDeepEqual(divide(4, complex('1+2i')), complex('0.8 - 1.6i'))
+    approxDeepEqual(divide(math.i, 0), complex(Infinity, Infinity))
+    approxDeepEqual(divide(complex(0, 1), 0), complex(Infinity, Infinity))
+    approxDeepEqual(divide(complex(1, 0), 0), complex(Infinity, Infinity))
+    approxDeepEqual(divide(complex(0, 1), complex(0, 0)), complex(Infinity, Infinity))
+    approxDeepEqual(divide(complex(1, 1), complex(0, 0)), complex(Infinity, Infinity))
+    approxDeepEqual(divide(complex(1, -1), complex(0, 0)), complex(Infinity, -Infinity))
+    approxDeepEqual(divide(complex(-1, 1), complex(0, 0)), complex(-Infinity, Infinity))
+    approxDeepEqual(divide(complex(1, 1), complex(0, 1)), complex(1, -1))
+    approxDeepEqual(divide(complex(1, 1), complex(1, 0)), complex(1, 1))
 
-    approx.deepEqual(divide(complex(2, 3), complex(4, 5)), complex('0.5609756097560976 + 0.0487804878048781i'))
-    approx.deepEqual(divide(complex(2, 3), complex(4, -5)), complex('-0.170731707317073 + 0.536585365853659i'))
-    approx.deepEqual(divide(complex(2, 3), complex(-4, 5)), complex('0.170731707317073 - 0.536585365853659i'))
-    approx.deepEqual(divide(complex(2, 3), complex(-4, -5)), complex('-0.5609756097560976 - 0.0487804878048781i'))
-    approx.deepEqual(divide(complex(2, -3), complex(4, 5)), complex('-0.170731707317073 - 0.536585365853659i'))
-    approx.deepEqual(divide(complex(2, -3), complex(4, -5)), complex('0.5609756097560976 - 0.0487804878048781i'))
-    approx.deepEqual(divide(complex(2, -3), complex(-4, 5)), complex('-0.5609756097560976 + 0.0487804878048781i'))
-    approx.deepEqual(divide(complex(2, -3), complex(-4, -5)), complex('0.170731707317073 + 0.536585365853659i'))
-    approx.deepEqual(divide(complex(-2, 3), complex(4, 5)), complex('0.170731707317073 + 0.536585365853659i'))
-    approx.deepEqual(divide(complex(-2, 3), complex(4, -5)), complex('-0.5609756097560976 + 0.0487804878048781i'))
-    approx.deepEqual(divide(complex(-2, 3), complex(-4, 5)), complex('0.5609756097560976 - 0.0487804878048781i'))
-    approx.deepEqual(divide(complex(-2, 3), complex(-4, -5)), complex('-0.170731707317073 - 0.536585365853659i'))
-    approx.deepEqual(divide(complex(-2, -3), complex(4, 5)), complex('-0.5609756097560976 - 0.0487804878048781i'))
-    approx.deepEqual(divide(complex(-2, -3), complex(4, -5)), complex('0.170731707317073 - 0.536585365853659i'))
-    approx.deepEqual(divide(complex(-2, -3), complex(-4, 5)), complex('-0.170731707317073 + 0.536585365853659i'))
-    approx.deepEqual(divide(complex(-2, -3), complex(-4, -5)), complex('0.5609756097560976 + 0.0487804878048781i'))
+    approxDeepEqual(divide(complex(2, 3), complex(4, 5)), complex('0.5609756097560976 + 0.0487804878048781i'))
+    approxDeepEqual(divide(complex(2, 3), complex(4, -5)), complex('-0.170731707317073 + 0.536585365853659i'))
+    approxDeepEqual(divide(complex(2, 3), complex(-4, 5)), complex('0.170731707317073 - 0.536585365853659i'))
+    approxDeepEqual(divide(complex(2, 3), complex(-4, -5)), complex('-0.5609756097560976 - 0.0487804878048781i'))
+    approxDeepEqual(divide(complex(2, -3), complex(4, 5)), complex('-0.170731707317073 - 0.536585365853659i'))
+    approxDeepEqual(divide(complex(2, -3), complex(4, -5)), complex('0.5609756097560976 - 0.0487804878048781i'))
+    approxDeepEqual(divide(complex(2, -3), complex(-4, 5)), complex('-0.5609756097560976 + 0.0487804878048781i'))
+    approxDeepEqual(divide(complex(2, -3), complex(-4, -5)), complex('0.170731707317073 + 0.536585365853659i'))
+    approxDeepEqual(divide(complex(-2, 3), complex(4, 5)), complex('0.170731707317073 + 0.536585365853659i'))
+    approxDeepEqual(divide(complex(-2, 3), complex(4, -5)), complex('-0.5609756097560976 + 0.0487804878048781i'))
+    approxDeepEqual(divide(complex(-2, 3), complex(-4, 5)), complex('0.5609756097560976 - 0.0487804878048781i'))
+    approxDeepEqual(divide(complex(-2, 3), complex(-4, -5)), complex('-0.170731707317073 - 0.536585365853659i'))
+    approxDeepEqual(divide(complex(-2, -3), complex(4, 5)), complex('-0.5609756097560976 - 0.0487804878048781i'))
+    approxDeepEqual(divide(complex(-2, -3), complex(4, -5)), complex('0.170731707317073 - 0.536585365853659i'))
+    approxDeepEqual(divide(complex(-2, -3), complex(-4, 5)), complex('-0.170731707317073 + 0.536585365853659i'))
+    approxDeepEqual(divide(complex(-2, -3), complex(-4, -5)), complex('0.5609756097560976 + 0.0487804878048781i'))
   })
 
   it('should divide mixed complex numbers and numbers', function () {
@@ -125,7 +125,7 @@ describe('divide', function () {
     assert.strictEqual(divide(math.fraction(10), math.unit(4, 'mg/s')).toString(), '5/2 s / mg')
     assert.strictEqual(divide(math.fraction(10), math.unit(math.fraction(4), 'mg/s')).toString(), '5/2 s / mg')
 
-    approx.equal(math.format(divide(10, math.unit(math.complex(1, 2), 'm/s')), 14), '(2 - 4i) s / m')
+    approxEqual(math.format(divide(10, math.unit(math.complex(1, 2), 'm/s')), 14), '(2 - 4i) s / m')
   })
 
   it('should divide two units', function () {
@@ -171,7 +171,7 @@ describe('divide', function () {
   })
 
   it('should divide 1 over a matrix (matrix inverse)', function () {
-    approx.deepEqual(divide(1, [
+    approxDeepEqual(divide(1, [
       [1, 4, 7],
       [3, 0, 5],
       [-1, 9, 11]

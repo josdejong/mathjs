@@ -1,7 +1,7 @@
 // test add
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 import Decimal from 'decimal.js'
 const { add, BigNumber } = math
@@ -116,11 +116,11 @@ describe('addScalar', function () {
   })
 
   it('should add two measures of the same unit', function () {
-    approx.deepEqual(add(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(165.93, 'km'))
+    approxDeepEqual(add(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(165.93, 'km'))
 
-    approx.deepEqual(add(math.unit(math.fraction(1, 3), 'm'), math.unit(math.fraction(1, 3), 'm')).toString(), '2/3 m')
+    approxDeepEqual(add(math.unit(math.fraction(1, 3), 'm'), math.unit(math.fraction(1, 3), 'm')).toString(), '2/3 m')
 
-    approx.deepEqual(add(math.unit(math.complex(-3, 2), 'g'), math.unit(math.complex(5, -6), 'g')).toString(), '(2 - 4i) g')
+    approxDeepEqual(add(math.unit(math.complex(-3, 2), 'g'), math.unit(math.complex(5, -6), 'g')).toString(), '(2 - 4i) g')
   })
 
   it('should add units properly even when they have offsets', function () {
@@ -128,7 +128,7 @@ describe('addScalar', function () {
     assert.deepStrictEqual(add(t, math.unit(1, 'degC')), math.unit(21, 'degC'))
     t = math.unit(68, 'degF')
     assert.deepStrictEqual(add(t, math.unit(2, 'degF')), math.unit(70, 'degF'))
-    approx.deepEqual(add(t, math.unit(1, 'degC')), math.unit(69.8, 'degF'))
+    approxDeepEqual(add(t, math.unit(1, 'degC')), math.unit(69.8, 'degF'))
   })
 
   it('should throw an error for two measures of different units', function () {

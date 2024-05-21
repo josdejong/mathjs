@@ -1,7 +1,7 @@
 // test lup
 import assert from 'assert'
 
-import approx from '../../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../../tools/approx.js'
 import math from '../../../../../src/defaultInstance.js'
 
 describe('lup', function () {
@@ -16,7 +16,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [0, 1])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, n x n, no permutations, sparse', function () {
@@ -30,7 +30,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [0, 1])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, n x n, no permutations, dense format', function () {
@@ -44,7 +44,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [0, 1])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, m x n, m < n, no permutations, dense format', function () {
@@ -77,7 +77,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [0, 1])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, m x n, m > n, no permutations, dense format', function () {
@@ -112,7 +112,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [0, 1, 2])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, n x n, dense format', function () {
@@ -127,7 +127,7 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    approx.deepEqual(
+    approxDeepEqual(
       r.L.valueOf(),
       [
         [1, 0, 0, 0],
@@ -136,7 +136,7 @@ describe('lup', function () {
         [0.06666666666666667, -0.4, -0.5714285714285776, 1]
       ])
     // U
-    approx.deepEqual(
+    approxDeepEqual(
       r.U.valueOf(),
       [
         [240, -2700, 6480, -4200],
@@ -147,7 +147,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [3, 1, 0, 2])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 3 x 3, zero pivote value, dense format', function () {
@@ -160,7 +160,7 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    approx.deepEqual(
+    approxDeepEqual(
       r.L.valueOf(),
       [
         [1, 0, 0],
@@ -168,7 +168,7 @@ describe('lup', function () {
         [0.25, 0, 1.0]
       ])
     // U
-    approx.deepEqual(
+    approxDeepEqual(
       r.U.valueOf(),
       [
         [4, 8, 9],
@@ -178,7 +178,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [2, 1, 0])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 3 x 2, complex numbers, dense format', function () {
@@ -191,7 +191,7 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    approx.deepEqual(
+    approxDeepEqual(
       r.L.valueOf(),
       [
         [1, 0],
@@ -199,7 +199,7 @@ describe('lup', function () {
         [math.complex(0.3333333, 0), 1]
       ])
     // U
-    approx.deepEqual(
+    approxDeepEqual(
       r.U.valueOf(),
       [
         [math.complex(0, 3), 10],
@@ -208,7 +208,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [0, 1, 2])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, m x n, m < n, no permutations, sparse', function () {
@@ -237,7 +237,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [0, 1])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, m x n, m > n, no permutations, sparse', function () {
@@ -268,7 +268,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [0, 1, 2])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, n x n, sparse', function () {
@@ -283,7 +283,7 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    approx.deepEqual(
+    approxDeepEqual(
       r.L.valueOf(),
       [
         [1, 0, 0, 0],
@@ -292,7 +292,7 @@ describe('lup', function () {
         [0.06666666666666667, -0.4, -0.5714285714285776, 1]
       ])
     // U
-    approx.deepEqual(
+    approxDeepEqual(
       r.U.valueOf(),
       [
         [240, -2700, 6480, -4200],
@@ -303,7 +303,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [3, 1, 0, 2])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 3 x 3, zero pivote value, sparse', function () {
@@ -317,7 +317,7 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    approx.deepEqual(
+    approxDeepEqual(
       r.L.valueOf(),
       [
         [1, 0, 0],
@@ -325,7 +325,7 @@ describe('lup', function () {
         [0.25, 0, 1.0]
       ])
     // U
-    approx.deepEqual(
+    approxDeepEqual(
       r.U.valueOf(),
       [
         [4, 8, 9],
@@ -335,7 +335,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [2, 1, 0])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 3 x 2, complex numbers, sparse', function () {
@@ -348,7 +348,7 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    approx.deepEqual(
+    approxDeepEqual(
       r.L.valueOf(),
       [
         [1, 0],
@@ -356,7 +356,7 @@ describe('lup', function () {
         [math.complex(0.3333333, 0), 1]
       ])
     // U
-    approx.deepEqual(
+    approxDeepEqual(
       r.U.valueOf(),
       [
         [math.complex(0, 3), 10],
@@ -365,7 +365,7 @@ describe('lup', function () {
     // P
     assert.deepStrictEqual(r.p, [0, 1, 2])
     // verify
-    approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   /**

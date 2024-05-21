@@ -19,7 +19,7 @@ function isNumber (value) {
  * @param {Number | BigNumber | Complex | Fraction} b
  * @param {Number} [epsilon]
  */
-export function equal (a, b, epsilon) {
+export function approxEqual (a, b, epsilon) {
   if (epsilon === undefined) {
     epsilon = EPSILON
   }
@@ -40,19 +40,19 @@ export function equal (a, b, epsilon) {
       assert.ok(diff <= maxDiff, (a + ' ~= ' + b + ' (epsilon: ' + epsilon + ')'))
     }
   } else if (a && a.isBigNumber) {
-    return equal(a.toNumber(), b, epsilon)
+    return approxEqual(a.toNumber(), b, epsilon)
   } else if (b && b.isBigNumber) {
-    return equal(a, b.toNumber(), epsilon)
+    return approxEqual(a, b.toNumber(), epsilon)
   } else if ((a && a.isComplex) || (b && b.isComplex)) {
     if (a && a.isComplex && b && b.isComplex) {
-      equal(a.re, b.re, epsilon)
-      equal(a.im, b.im, epsilon)
+      approxEqual(a.re, b.re, epsilon)
+      approxEqual(a.im, b.im, epsilon)
     } else if (a && a.isComplex) {
-      equal(a.re, b, epsilon)
-      equal(a.im, 0, epsilon)
+      approxEqual(a.re, b, epsilon)
+      approxEqual(a.im, 0, epsilon)
     } else if (b && b.isComplex) {
-      equal(a, b.re, epsilon)
-      equal(0, b.im, epsilon)
+      approxEqual(a, b.re, epsilon)
+      approxEqual(0, b.im, epsilon)
     }
   } else {
     assert.strictEqual(a, b)
@@ -66,20 +66,20 @@ export function equal (a, b, epsilon) {
  * @param {*} b
  * @param {number} [epsilon]
  */
-export function deepEqual (a, b, epsilon) {
+export function approxDeepEqual (a, b, epsilon) {
   let prop, i, len
 
   if (Array.isArray(a) && Array.isArray(b)) {
     assert.strictEqual(a.length, b.length, a + ' ~= ' + b)
     for (i = 0, len = a.length; i < len; i++) {
-      deepEqual(a[i], b[i], epsilon)
+      approxDeepEqual(a[i], b[i], epsilon)
     }
   } else if (a instanceof Object && b instanceof Object) {
     for (prop in a) {
       if (hasOwnProperty(a, prop)) {
         assert.ok(hasOwnProperty(b, prop), a[prop] + ' ~= ' + b[prop] +
           ' (epsilon: ' + epsilon + ', prop: ' + prop + ')')
-        deepEqual(a[prop], b[prop], epsilon)
+        approxDeepEqual(a[prop], b[prop], epsilon)
       }
     }
 
@@ -87,12 +87,10 @@ export function deepEqual (a, b, epsilon) {
       if (hasOwnProperty(b, prop)) {
         assert.ok(hasOwnProperty(a, prop), a[prop] + ' ~= ' + b[prop] +
           ' (epsilon: ' + epsilon + ', prop: ' + prop + ')')
-        deepEqual(a[prop], b[prop], epsilon)
+        approxDeepEqual(a[prop], b[prop], epsilon)
       }
     }
   } else {
-    equal(a, b, epsilon)
+    approxEqual(a, b, epsilon)
   }
 }
-
-export default { equal, deepEqual }

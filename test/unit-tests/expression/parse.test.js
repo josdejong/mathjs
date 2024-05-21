@@ -1,7 +1,7 @@
 // test parse
 import assert from 'assert'
 
-import approx from '../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../tools/approx.js'
 import math from '../../../src/defaultInstance.js'
 
 const parse = math.parse
@@ -31,7 +31,7 @@ function parseAndStringifyWithParens (expr) {
 
 describe('parse', function () {
   it('should parse a single expression', function () {
-    approx.equal(parse('2 + 6 / 3').compile().evaluate(), 4)
+    approxEqual(parse('2 + 6 / 3').compile().evaluate(), 4)
   })
 
   it('should parse an empty expression', function () {
@@ -285,7 +285,7 @@ describe('parse', function () {
     })
 
     it('should parse a number followed by e', function () {
-      approx.equal(parseAndEval('2e'), 2 * Math.E)
+      approxEqual(parseAndEval('2e'), 2 * Math.E)
     })
 
     it('should throw an error with invalid numbers', function () {
@@ -536,28 +536,28 @@ describe('parse', function () {
     })
 
     it('should correctly parse negative temperatures', function () {
-      approx.deepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'))
-      approx.deepEqual(parseAndEval('--6 celsius'), new Unit(6, 'celsius'))
-      approx.deepEqual(parseAndEval('-6 celsius to fahrenheit'),
+      approxDeepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'))
+      approxDeepEqual(parseAndEval('--6 celsius'), new Unit(6, 'celsius'))
+      approxDeepEqual(parseAndEval('-6 celsius to fahrenheit'),
         new Unit(21.2, 'fahrenheit').to('fahrenheit'))
     })
 
     it('should convert units', function () {
       const scope = {}
-      approx.deepEqual(parseAndEval('(5.08 cm * 1000) to inch', scope),
+      approxDeepEqual(parseAndEval('(5.08 cm * 1000) to inch', scope),
         math.unit(2000, 'inch').to('inch'))
-      approx.deepEqual(parseAndEval('a = (5.08 cm * 1000) to mm', scope),
+      approxDeepEqual(parseAndEval('a = (5.08 cm * 1000) to mm', scope),
         math.unit(50800, 'mm').to('mm'))
-      approx.deepEqual(parseAndEval('a to inch', scope),
+      approxDeepEqual(parseAndEval('a to inch', scope),
         math.unit(2000, 'inch').to('inch'))
 
-      approx.deepEqual(parseAndEval('10 celsius to fahrenheit'),
+      approxDeepEqual(parseAndEval('10 celsius to fahrenheit'),
         math.unit(50, 'fahrenheit').to('fahrenheit'))
-      approx.deepEqual(parseAndEval('20 celsius to fahrenheit'),
+      approxDeepEqual(parseAndEval('20 celsius to fahrenheit'),
         math.unit(68, 'fahrenheit').to('fahrenheit'))
-      approx.deepEqual(parseAndEval('50 fahrenheit to celsius'),
+      approxDeepEqual(parseAndEval('50 fahrenheit to celsius'),
         math.unit(10, 'celsius').to('celsius'))
-      approx.deepEqual(parseAndEval('degC to degF'),
+      approxDeepEqual(parseAndEval('degC to degF'),
         math.unit(1.8, 'degF').to('degF'))
     })
 
@@ -570,25 +570,25 @@ describe('parse', function () {
     })
 
     it('should evaluate operator "to" with correct precedence ', function () {
-      approx.deepEqual(parseAndEval('5.08 cm * 1000 to inch'),
+      approxDeepEqual(parseAndEval('5.08 cm * 1000 to inch'),
         new Unit(2000, 'inch').to('inch'))
     })
 
     it('should evaluate operator "in" (alias of "to") ', function () {
-      approx.deepEqual(parseAndEval('5.08 cm in inch'),
+      approxDeepEqual(parseAndEval('5.08 cm in inch'),
         new Unit(2, 'inch').to('inch'))
     })
 
     it('should evaluate unit "in" (should not conflict with operator "in")', function () {
-      approx.deepEqual(parseAndEval('2 in'), new Unit(2, 'in'))
-      approx.deepEqual(parseAndEval('5.08 cm in in'), new Unit(2, 'in').to('in'))
-      approx.deepEqual(parseAndEval('5 in in in'), new Unit(5, 'in').to('in'))
-      approx.deepEqual(parseAndEval('2 in to meter'), new Unit(2, 'inch').to('meter'))
-      approx.deepEqual(parseAndEval('2 in in meter'), new Unit(2, 'inch').to('meter'))
-      approx.deepEqual(parseAndEval('a in inch', { a: new Unit(5.08, 'cm') }), new Unit(2, 'inch').to('inch'))
-      approx.deepEqual(parseAndEval('(2+3) in'), new Unit(5, 'in'))
-      approx.deepEqual(parseAndEval('a in', { a: 5 }), new Unit(5, 'in'))
-      approx.deepEqual(parseAndEval('0.5in + 1.5in to cm'), new Unit(5.08, 'cm').to('cm'))
+      approxDeepEqual(parseAndEval('2 in'), new Unit(2, 'in'))
+      approxDeepEqual(parseAndEval('5.08 cm in in'), new Unit(2, 'in').to('in'))
+      approxDeepEqual(parseAndEval('5 in in in'), new Unit(5, 'in').to('in'))
+      approxDeepEqual(parseAndEval('2 in to meter'), new Unit(2, 'inch').to('meter'))
+      approxDeepEqual(parseAndEval('2 in in meter'), new Unit(2, 'inch').to('meter'))
+      approxDeepEqual(parseAndEval('a in inch', { a: new Unit(5.08, 'cm') }), new Unit(2, 'inch').to('inch'))
+      approxDeepEqual(parseAndEval('(2+3) in'), new Unit(5, 'in'))
+      approxDeepEqual(parseAndEval('a in', { a: 5 }), new Unit(5, 'in'))
+      approxDeepEqual(parseAndEval('0.5in + 1.5in to cm'), new Unit(5.08, 'cm').to('cm'))
     })
   })
 
@@ -957,7 +957,7 @@ describe('parse', function () {
     })
 
     it('should invoke a function on an object with the right context', function () {
-      approx.equal(parseAndEval('(2.54 cm).toNumeric("inch")'), 1)
+      approxEqual(parseAndEval('(2.54 cm).toNumeric("inch")'), 1)
       assert.deepStrictEqual(parseAndEval('bignumber(2).plus(3)'), math.bignumber(5))
       assert.deepStrictEqual(parseAndEval('bignumber(2)["plus"](3)'), math.bignumber(5))
     })
@@ -1053,8 +1053,8 @@ describe('parse', function () {
     it('should parse symbolic constants', function () {
       assert.strictEqual(parse('i').type, 'SymbolNode')
       assert.deepStrictEqual(parseAndEval('i'), new Complex(0, 1))
-      approx.equal(parseAndEval('pi'), Math.PI)
-      approx.equal(parseAndEval('e'), Math.E)
+      approxEqual(parseAndEval('pi'), Math.PI)
+      approxEqual(parseAndEval('e'), Math.E)
     })
 
     it('should parse constants', function () {
@@ -1074,7 +1074,7 @@ describe('parse', function () {
 
     it('should evaluate constants', function () {
       // Do these tests really belong in constants.test.js ?
-      approx.equal(math.sin(math.pi / 2), 1)
+      approxEqual(math.sin(math.pi / 2), 1)
 
       assert.deepStrictEqual(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), math.complex(0))
       assert.deepStrictEqual(math.round(math.evaluate('1+e^(pi*i)'), 5), math.complex(0))
@@ -1094,7 +1094,7 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('a + 2', scope), 2.75)
       assert.strictEqual(parseAndEval('a = 2', scope), 2)
       assert.strictEqual(parseAndEval('a + 2', scope), 4)
-      approx.equal(parseAndEval('pi * 2', scope), 6.283185307179586)
+      approxEqual(parseAndEval('pi * 2', scope), 6.283185307179586)
     })
 
     it('should throw an error on undefined symbol', function () {
@@ -1139,7 +1139,7 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('sqrt(-4)'), new Complex(0, 2))
       assert.strictEqual(parseAndEval('abs(-4.2)'), 4.2)
       assert.strictEqual(parseAndEval('add(2, 3)'), 5)
-      approx.deepEqual(parseAndEval('1+exp(pi*i)'), new Complex(0, 0))
+      approxDeepEqual(parseAndEval('1+exp(pi*i)'), new Complex(0, 0))
       assert.strictEqual(parseAndEval('unequal(2, 3)'), true)
     })
 
@@ -1241,10 +1241,10 @@ describe('parse', function () {
 
   describe('parentheses', function () {
     it('should parse parentheses overriding the default precedence', function () {
-      approx.equal(parseAndEval('2 - (2 - 2)'), 2)
-      approx.equal(parseAndEval('2 - ((2 - 2) - 2)'), 4)
-      approx.equal(parseAndEval('3 * (2 + 3)'), 15)
-      approx.equal(parseAndEval('(2 + 3) * 3'), 15)
+      approxEqual(parseAndEval('2 - (2 - 2)'), 2)
+      approxEqual(parseAndEval('2 - ((2 - 2) - 2)'), 4)
+      approxEqual(parseAndEval('3 * (2 + 3)'), 15)
+      approxEqual(parseAndEval('(2 + 3) * 3'), 15)
     })
 
     it('should throw an error in case of unclosed parentheses', function () {
@@ -1254,8 +1254,8 @@ describe('parse', function () {
 
   describe('operators', function () {
     it('should parse operations', function () {
-      approx.equal(parseAndEval('(2+3)/4'), 1.25)
-      approx.equal(parseAndEval('2+3/4'), 2.75)
+      approxEqual(parseAndEval('(2+3)/4'), 1.25)
+      approxEqual(parseAndEval('2+3/4'), 2.75)
       assert.strictEqual(parse('0 + 2').toString(), '0 + 2')
     })
 
@@ -1281,21 +1281,21 @@ describe('parse', function () {
     })
 
     it('should parse dotMultiply .*', function () {
-      approx.deepEqual(parseAndEval('2.*3'), 6)
-      approx.deepEqual(parseAndEval('2e3.*3'), 6e3)
-      approx.deepEqual(parseAndEval('2 .* 3'), 6)
-      approx.deepEqual(parseAndEval('4 .* 2'), 8)
-      approx.deepEqual(parseAndEval('8 .* 2 .* 2'), 32)
+      approxDeepEqual(parseAndEval('2.*3'), 6)
+      approxDeepEqual(parseAndEval('2e3.*3'), 6e3)
+      approxDeepEqual(parseAndEval('2 .* 3'), 6)
+      approxDeepEqual(parseAndEval('4 .* 2'), 8)
+      approxDeepEqual(parseAndEval('8 .* 2 .* 2'), 32)
       assert.deepStrictEqual(parseAndEval('a=3; a.*4'), new ResultSet([12]))
 
       assert.deepStrictEqual(parseAndEval('[1,2,3] .* [1,2,3]'), math.matrix([1, 4, 9]))
     })
 
     it('should parse dotPower .^', function () {
-      approx.deepEqual(parseAndEval('2.^3'), 8)
-      approx.deepEqual(parseAndEval('2 .^ 3'), 8)
-      approx.deepEqual(parseAndEval('-2.^2'), -4) // -(2^2)
-      approx.deepEqual(parseAndEval('2.^3.^4'), 2.41785163922926e+24) // 2^(3^4)
+      approxDeepEqual(parseAndEval('2.^3'), 8)
+      approxDeepEqual(parseAndEval('2 .^ 3'), 8)
+      approxDeepEqual(parseAndEval('-2.^2'), -4) // -(2^2)
+      approxDeepEqual(parseAndEval('2.^3.^4'), 2.41785163922926e+24) // 2^(3^4)
 
       assert.deepStrictEqual(parseAndEval('[2,3] .^ [2,3]'), math.matrix([4, 27]))
     })
@@ -1328,8 +1328,8 @@ describe('parse', function () {
     })
 
     it('should parse mod %', function () {
-      approx.equal(parseAndEval('8 % 3'), 2)
-      approx.equal(parseAndEval('80% pi'), 1.4601836602551685)
+      approxEqual(parseAndEval('8 % 3'), 2)
+      approxEqual(parseAndEval('80% pi'), 1.4601836602551685)
     })
 
     it('should parse mod % for negative divisors', function () {
@@ -1337,40 +1337,40 @@ describe('parse', function () {
     })
 
     it('should parse % value', function () {
-      approx.equal(parseAndEval('8 % '), 0.08)
-      approx.equal(parseAndEval('100%'), 1)
+      approxEqual(parseAndEval('8 % '), 0.08)
+      approxEqual(parseAndEval('100%'), 1)
     })
 
     it('should parse % with multiplication', function () {
-      approx.equal(parseAndEval('100*50%'), 50)
-      approx.equal(parseAndEval('50%*100'), 50)
+      approxEqual(parseAndEval('100*50%'), 50)
+      approxEqual(parseAndEval('50%*100'), 50)
       assert.throws(function () { parseAndEval('50%(*100)') }, /Value expected/)
     })
 
     it('should parse % with division', function () {
-      approx.equal(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
-      approx.equal(parseAndEval('100/50%*2'), 400) // should be treated as (100÷(50%))×2
-      approx.equal(parseAndEval('50%/100'), 0.005)
+      approxEqual(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
+      approxEqual(parseAndEval('100/50%*2'), 400) // should be treated as (100÷(50%))×2
+      approxEqual(parseAndEval('50%/100'), 0.005)
       assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
     })
 
     it('should parse % with addition', function () {
-      approx.equal(parseAndEval('100+3%'), 103)
-      approx.equal(parseAndEval('3%+100'), 100.03)
+      approxEqual(parseAndEval('100+3%'), 103)
+      approxEqual(parseAndEval('3%+100'), 100.03)
     })
 
     it('should parse % with subtraction', function () {
-      approx.equal(parseAndEval('100-3%'), 97)
-      approx.equal(parseAndEval('3%-100'), -99.97)
+      approxEqual(parseAndEval('100-3%'), 97)
+      approxEqual(parseAndEval('3%-100'), -99.97)
     })
 
     it('should parse operator mod', function () {
-      approx.equal(parseAndEval('8 mod 3'), 2)
+      approxEqual(parseAndEval('8 mod 3'), 2)
     })
 
     it('should parse multiply *', function () {
-      approx.equal(parseAndEval('4 * 2'), 8)
-      approx.equal(parseAndEval('8 * 2 * 2'), 32)
+      approxEqual(parseAndEval('4 * 2'), 8)
+      approxEqual(parseAndEval('8 * 2 * 2'), 32)
     })
 
     it('should parse implicit multiplication', function () {
@@ -1485,9 +1485,9 @@ describe('parse', function () {
     })
 
     it('should parse pow ^', function () {
-      approx.equal(parseAndEval('2^3'), 8)
-      approx.equal(parseAndEval('-2^2'), -4) // -(2^2)
-      approx.equal(parseAndEval('2^3^4'), 2.41785163922926e+24) // 2^(3^4)
+      approxEqual(parseAndEval('2^3'), 8)
+      approxEqual(parseAndEval('-2^2'), -4) // -(2^2)
+      approxEqual(parseAndEval('2^3^4'), 2.41785163922926e+24) // 2^(3^4)
     })
 
     it('should parse smaller <', function () {
@@ -1806,12 +1806,12 @@ describe('parse', function () {
     })
 
     it('should parse to', function () {
-      approx.deepEqual(parseAndEval('2.54 cm to inch'), math.unit(1, 'inch').to('inch'))
-      approx.deepEqual(parseAndEval('2.54 cm + 2 inch to foot'), math.unit(0.25, 'foot').to('foot'))
+      approxDeepEqual(parseAndEval('2.54 cm to inch'), math.unit(1, 'inch').to('inch'))
+      approxDeepEqual(parseAndEval('2.54 cm + 2 inch to foot'), math.unit(0.25, 'foot').to('foot'))
     })
 
     it('should parse in', function () {
-      approx.deepEqual(parseAndEval('2.54 cm in inch'), math.unit(1, 'inch').to('inch'))
+      approxDeepEqual(parseAndEval('2.54 cm in inch'), math.unit(1, 'inch').to('inch'))
     })
 
     it('should parse factorial !', function () {
@@ -2052,11 +2052,11 @@ describe('parse', function () {
 
   describe('functions', function () {
     it('should evaluate function "mod"', function () {
-      approx.equal(parseAndEval('mod(8, 3)'), 2)
+      approxEqual(parseAndEval('mod(8, 3)'), 2)
     })
 
     it('should evaluate function "to" ', function () {
-      approx.deepEqual(parseAndEval('to(5.08 cm * 1000, inch)'),
+      approxDeepEqual(parseAndEval('to(5.08 cm * 1000, inch)'),
         math.unit(2000, 'inch').to('inch'))
     })
 
@@ -2089,11 +2089,11 @@ describe('parse', function () {
     })
 
     it('should work with mixed numbers and bignumbers', function () {
-      approx.equal(bigmath.evaluate('pi + 1'), 4.141592653589793)
+      approxEqual(bigmath.evaluate('pi + 1'), 4.141592653589793)
     })
 
     it('should evaluate functions not supporting bignumbers', function () {
-      approx.equal(bigmath.evaluate('sin(0.1)'), 0.09983341664682815)
+      approxEqual(bigmath.evaluate('sin(0.1)'), 0.09983341664682815)
     })
 
     it('should create a range from bignumbers', function () {

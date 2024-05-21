@@ -276,7 +276,7 @@ const _importFromStream = function (stream) {
 /**
  * Imports a Matrix Market matrix from the filesystem. (https://math.nist.gov/MatrixMarket/)
  */
-const _import = typed('importMatrix', {
+export const marketImport = typed('importMatrix', {
   Array: function (files) {
     return Promise.all(files.map(file => _import(file)))
   },
@@ -285,7 +285,3 @@ const _import = typed('importMatrix', {
     return _importFromStream(input)
   }
 })
-
-module.exports = {
-  import: _import
-}

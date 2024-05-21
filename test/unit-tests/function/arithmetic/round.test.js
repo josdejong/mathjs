@@ -1,7 +1,7 @@
 // test round
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const complex = math.complex
@@ -18,12 +18,12 @@ const testBigNum = bignumber('10.99999999999999999999999999999999999999999999999
 
 describe('round', function () {
   it('should round a number to te given number of decimals', function () {
-    approx.equal(round(math.pi), 3)
-    approx.equal(round(math.pi * 1000), 3142)
-    approx.equal(round(math.pi, 3), 3.142)
-    approx.equal(round(math.pi, 6), 3.141593)
-    approx.equal(round(1234.5678, 2), 1234.57)
-    approx.equal(round(2.135, 2), 2.14)
+    approxEqual(round(math.pi), 3)
+    approxEqual(round(math.pi * 1000), 3142)
+    approxEqual(round(math.pi, 3), 3.142)
+    approxEqual(round(math.pi, 6), 3.141593)
+    approxEqual(round(1234.5678, 2), 1234.57)
+    approxEqual(round(2.135, 2), 2.14)
 
     assert.strictEqual(round(2.7), 3)
     assert.strictEqual(round(2.5), 3)
@@ -37,10 +37,10 @@ describe('round', function () {
   })
 
   it('should round booleans (yeah, not really useful but it should be supported)', function () {
-    approx.equal(round(true), 1)
-    approx.equal(round(false), 0)
-    approx.equal(round(true, 2), 1)
-    approx.equal(round(false, 2), 0)
+    approxEqual(round(true), 1)
+    approxEqual(round(false), 0)
+    approxEqual(round(true, 2), 1)
+    approxEqual(round(false, 2), 0)
   })
 
   it('should throw an error on invalid type of value', function () {

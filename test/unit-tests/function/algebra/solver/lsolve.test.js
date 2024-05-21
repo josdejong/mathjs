@@ -1,7 +1,7 @@
 // test lsolve
 import assert from 'assert'
 
-import approx from '../../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../../tools/approx.js'
 import math from '../../../../../src/defaultInstance.js'
 
 describe('lsolve', function () {
@@ -17,7 +17,7 @@ describe('lsolve', function () {
 
     const x = math.lsolve(m, b)
 
-    approx.deepEqual(x, [[1], [1], [1], [1]])
+    approxDeepEqual(x, [[1], [1], [1], [1]])
   })
 
   it('should solve linear system 4 x 4, array and column array', function () {
@@ -36,7 +36,7 @@ describe('lsolve', function () {
     ]
     const x = math.lsolve(m, b)
 
-    approx.deepEqual(x, [[1], [1], [1], [1]])
+    approxDeepEqual(x, [[1], [1], [1], [1]])
   })
 
   it('should solve linear system 4 x 4, matrices', function () {
@@ -52,7 +52,7 @@ describe('lsolve', function () {
     const x = math.lsolve(m, b)
 
     assert(x instanceof math.Matrix)
-    approx.deepEqual(x, math.matrix([[1], [1], [1], [1]]))
+    approxDeepEqual(x, math.matrix([[1], [1], [1], [1]]))
   })
 
   it('should solve linear system 4 x 4, sparse matrices', function () {
@@ -68,7 +68,7 @@ describe('lsolve', function () {
     const x = math.lsolve(m, b)
 
     assert(x instanceof math.Matrix)
-    approx.deepEqual(x, math.matrix([[1], [1], [1], [1]]))
+    approxDeepEqual(x, math.matrix([[1], [1], [1], [1]]))
   })
 
   it('should solve linear system 4 x 4, matrix and column matrix', function () {
@@ -89,7 +89,7 @@ describe('lsolve', function () {
     const x = math.lsolve(m, b)
 
     assert(x instanceof math.Matrix)
-    approx.deepEqual(x, math.matrix([[1], [1], [1], [1]]))
+    approxDeepEqual(x, math.matrix([[1], [1], [1], [1]]))
   })
 
   it('should solve linear system 4 x 4, sparse matrix and column matrix', function () {
@@ -110,7 +110,7 @@ describe('lsolve', function () {
     const x = math.lsolve(m, b)
 
     assert(x instanceof math.Matrix)
-    approx.deepEqual(x, math.matrix([[1], [1], [1], [1]]))
+    approxDeepEqual(x, math.matrix([[1], [1], [1], [1]]))
   })
 
   it('should throw exception when matrix is singular', function () {

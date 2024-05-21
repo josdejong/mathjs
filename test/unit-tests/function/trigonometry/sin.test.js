@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const EPSILON = 1e-13
 const pi = math.pi
 const complex = math.complex
@@ -11,21 +11,21 @@ const bigmath = math.create({ precision: 242 })
 
 describe('sin', function () {
   it('should return the sine of a boolean', function () {
-    approx.equal(sin(true), 0.841470984807897)
-    approx.equal(sin(false), 0)
+    approxEqual(sin(true), 0.841470984807897)
+    approxEqual(sin(false), 0)
   })
 
   it('should return the sine of a number', function () {
-    approx.equal(sin(0), 0, EPSILON)
-    approx.equal(sin(pi / 8), 0.382683432365090, EPSILON)
-    approx.equal(sin(pi / 4), Math.SQRT1_2, EPSILON)
-    approx.equal(sin(pi / 2), 1, EPSILON)
-    approx.equal(sin(pi * 3 / 4), 0.707106781186548, EPSILON)
-    approx.equal(sin(pi), 0, EPSILON)
-    approx.equal(sin(pi * 5 / 4), -0.707106781186548, EPSILON)
-    approx.equal(sin(pi * 3 / 2), -1, EPSILON)
-    approx.equal(sin(pi * 7 / 4), -0.707106781186548, EPSILON)
-    approx.equal(sin(pi * 2), 0, EPSILON)
+    approxEqual(sin(0), 0, EPSILON)
+    approxEqual(sin(pi / 8), 0.382683432365090, EPSILON)
+    approxEqual(sin(pi / 4), Math.SQRT1_2, EPSILON)
+    approxEqual(sin(pi / 2), 1, EPSILON)
+    approxEqual(sin(pi * 3 / 4), 0.707106781186548, EPSILON)
+    approxEqual(sin(pi), 0, EPSILON)
+    approxEqual(sin(pi * 5 / 4), -0.707106781186548, EPSILON)
+    approxEqual(sin(pi * 3 / 2), -1, EPSILON)
+    approxEqual(sin(pi * 7 / 4), -0.707106781186548, EPSILON)
+    approxEqual(sin(pi * 2), 0, EPSILON)
   })
 
   it('should return the sine of a bignumber', function () {
@@ -50,7 +50,7 @@ describe('sin', function () {
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau (like 6, 7)
     for (let x = -20; x < 20; x += 1) {
-      approx.equal(bigmath2.sin(bigmath2.bignumber(x)).toNumber(), Math.sin(x), EPSILON)
+      approxEqual(bigmath2.sin(bigmath2.bignumber(x)).toNumber(), Math.sin(x), EPSILON)
     }
 
     const bigPi = bigmath2.pi
@@ -74,24 +74,24 @@ describe('sin', function () {
   it('should return the sine of a complex number', function () {
     const re = 9.15449914691143
     const im = 4.16890695996656
-    approx.deepEqual(sin(complex('2+3i')), complex(re, -im), EPSILON)
-    approx.deepEqual(sin(complex('2-3i')), complex(re, im), EPSILON)
-    approx.deepEqual(sin(complex('-2+3i')), complex(-re, -im), EPSILON)
-    approx.deepEqual(sin(complex('-2-3i')), complex(-re, im), EPSILON)
-    approx.deepEqual(sin(complex('i')), complex(0, 1.175201193643801), EPSILON)
-    approx.deepEqual(sin(complex('1')), complex(0.841470984807897, 0), EPSILON)
-    approx.deepEqual(sin(complex('1+i')), complex(1.298457581415977, 0.634963914784736), EPSILON)
-    approx.deepEqual(sin(complex('1e-10i')), complex('1e-10i'), EPSILON)
+    approxDeepEqual(sin(complex('2+3i')), complex(re, -im), EPSILON)
+    approxDeepEqual(sin(complex('2-3i')), complex(re, im), EPSILON)
+    approxDeepEqual(sin(complex('-2+3i')), complex(-re, -im), EPSILON)
+    approxDeepEqual(sin(complex('-2-3i')), complex(-re, im), EPSILON)
+    approxDeepEqual(sin(complex('i')), complex(0, 1.175201193643801), EPSILON)
+    approxDeepEqual(sin(complex('1')), complex(0.841470984807897, 0), EPSILON)
+    approxDeepEqual(sin(complex('1+i')), complex(1.298457581415977, 0.634963914784736), EPSILON)
+    approxDeepEqual(sin(complex('1e-10i')), complex('1e-10i'), EPSILON)
   })
 
   it('should return the sine of an angle', function () {
-    approx.equal(sin(unit('45deg')), 0.707106781186548, EPSILON)
-    approx.equal(sin(unit('-45deg')), -0.707106781186548, EPSILON)
+    approxEqual(sin(unit('45deg')), 0.707106781186548, EPSILON)
+    approxEqual(sin(unit('-45deg')), -0.707106781186548, EPSILON)
 
     assert(math.isBigNumber(sin(unit(math.bignumber(45), 'deg'))))
-    approx.equal(sin(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548, EPSILON)
+    approxEqual(sin(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548, EPSILON)
 
-    approx.deepEqual(sin(unit(complex('1+i'), 'rad')), complex(1.298457581415977, 0.634963914784736), EPSILON)
+    approxDeepEqual(sin(unit(complex('1+i'), 'rad')), complex(1.298457581415977, 0.634963914784736), EPSILON)
   })
 
   it('should throw an error if called with an invalid unit', function () {
@@ -106,12 +106,12 @@ describe('sin', function () {
 
   it('should not operate on an array', function () {
     assert.throws(() => sin([1, 2, 3]), TypeError)
-    approx.deepEqual(math.map([1, 2, 3], sin), sin123, EPSILON)
+    approxDeepEqual(math.map([1, 2, 3], sin), sin123, EPSILON)
   })
 
   it('should not operate on a matrix', function () {
     assert.throws(() => sin(matrix([1, 2, 3])), TypeError)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), sin), matrix(sin123), EPSILON)
+    approxDeepEqual(math.map(matrix([1, 2, 3]), sin), matrix(sin123), EPSILON)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
