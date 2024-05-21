@@ -5,6 +5,7 @@
 - Fix: serialization of Units without a value, see #1240.
 - Fix: outdated, incorrect documentation about the order of precedence for
   operator modulus `%`. See #3189.
+- Fix: #3197 improve `quantileSeq` type definitions (#3198). Thanks @domdomegg.
 
 
 # 2024-04-24, 12.4.2
