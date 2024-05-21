@@ -30,13 +30,13 @@ math.config({ number: 'Fraction' })
 // this conversion:
 // - must be inserted in the conversions list before the conversion Fraction -> number
 // - must be added to the conversions before loading functions into math.js
-// math.typed.addConversion({
-//   from: 'Fraction',
-//   to: 'BigNumber',
-//   convert: function (fraction) {
-//     return new math.BigNumber(fraction.n).div(fraction.d)
-//   }
-// })
+math.typed.addConversion({
+  from: 'Fraction',
+  to: 'BigNumber',
+  convert: function (fraction) {
+    return new math.BigNumber(fraction.n).div(fraction.d)
+  }
+})
 
 // Import all data types, functions, constants, the expression parser, etc.
 math.import(allExceptLoaded)
