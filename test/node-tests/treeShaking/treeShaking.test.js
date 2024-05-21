@@ -12,7 +12,7 @@ import path from 'node:path'
 import cp from 'node:child_process'
 import assert from 'node:assert'
 import { fileURLToPath } from 'node:url'
-import del from 'del'
+import { deleteSync } from 'del'
 import webpack from 'webpack'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -31,8 +31,8 @@ describe('tree shaking', function () {
   })
 
   function cleanup () {
-    del.sync(path.join(__dirname, bundleName))
-    del.sync(path.join(__dirname, bundleLicenseName))
+    deleteSync(path.join(__dirname, bundleName))
+    deleteSync(path.join(__dirname, bundleLicenseName))
   }
 
   it('should apply tree-shaking when bundling', function (done) {

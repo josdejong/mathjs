@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import gulp from 'gulp'
-import del from 'del'
+import { deleteAsync } from 'del'
 import log from 'fancy-log'
 import webpack from 'webpack'
 import babel from 'gulp-babel'
@@ -235,8 +235,8 @@ function generateEntryFilesCallback (done) {
  *
  * @returns {Promise<string[]> | *}
  */
-function clean () {
-  return del([
+async function clean () {
+  await deleteAsync([
     // legacy compiled files
     './es/',
 

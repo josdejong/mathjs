@@ -6,9 +6,9 @@
  * functions code, and generate a markdown file with the documentation.
  */
 import fs from 'node:fs'
-import glob from 'glob'
+import { glob } from 'glob'
 import { mkdirp } from 'mkdirp'
-import del from 'del'
+import { deleteSync } from 'del'
 import log from 'fancy-log'
 
 // special cases for function syntax
@@ -528,7 +528,7 @@ export function generateMarkdown (doc, functions) {
  */
 export function cleanup (outputPath, outputRoot) {
   // cleanup previous docs
-  del.sync([
+  deleteSync([
     outputPath + '/*.md',
     outputRoot + '/functions.md'
   ])
@@ -545,9 +545,13 @@ export function cleanup (outputPath, outputRoot) {
  *     giving the relevant information
  */
 export function collectDocs (functionNames, inputPath) {
-  // glob@8 doesn't work on Windows, which has \ separators instead of /
-  const linuxInputPath = inputPath.replace(/\\/g, '/') + '**/*.js'
-  const files = glob.sync(linuxInputPath)
+  function normalizeWindowsPath(path) {
+    return path.replace(/\\/g, '/')
+  }
+
+  // glob doesn't work on Windows, which has \ separators instead of /
+  const linuxInputPath = normalizeWindowsPath(inputPath + '**/*.js')
+  const files = glob.sync(linuxInputPath).sort().map(normalizeWindowsPath)
 
   // generate path information for each of the files
   const functions = {} // TODO: change to array
