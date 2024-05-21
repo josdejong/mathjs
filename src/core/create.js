@@ -63,8 +63,11 @@ import { DEFAULT_CONFIG } from './config.js'
  *                             The object can contain nested objects,
  *                             all nested objects will be flattened.
  * @param {Object} [config]    Available options:
- *                            {number} epsilon
+ *                            {number} relTol
  *                              Minimum relative difference between two
+ *                              compared values, used by all comparison functions.
+ *                            {number} absTol
+ *                              Minimum absolute difference between two
  *                              compared values, used by all comparison functions.
  *                            {string} matrix
  *                              A string 'Matrix' (default) or 'Array'.

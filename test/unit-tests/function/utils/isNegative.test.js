@@ -17,6 +17,13 @@ describe('isNegative', function () {
     assert.strictEqual(isNegative(NaN), false)
   })
 
+  it('should test whether a number is near negative', function () {
+    assert.strictEqual(isNegative(1e-17), false)
+    assert.strictEqual(isNegative(-1e-17), false)
+    assert.strictEqual(isNegative(1e-14), false)
+    assert.strictEqual(isNegative(-1e-14), true)
+  })
+
   it('should test whether a boolean is negative', function () {
     assert.strictEqual(isNegative(true), false)
     assert.strictEqual(isNegative(false), false)

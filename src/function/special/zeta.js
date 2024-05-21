@@ -37,8 +37,8 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       s,
       value => new BigNumber(value),
       () => {
-        // epsilon is for example 1e-12. Extract the positive exponent 12 from that
-        return Math.abs(Math.log10(config.epsilon))
+        // relTol is for example 1e-12. Extract the positive exponent 12 from that
+        return Math.abs(Math.log10(config.relTol))
       }
     ),
     Complex: zetaComplex

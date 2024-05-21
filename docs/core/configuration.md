@@ -8,7 +8,8 @@ import { create, all } from 'mathjs'
 
 // create a mathjs instance with configuration
 const config = {
-  epsilon: 1e-12,
+  relTol: 1e-12,
+  absTol: 1e-15,
   matrix: 'Matrix',
   number: 'number',
   precision: 64,
@@ -28,9 +29,13 @@ math.config({
 
 The following configuration options are available:
 
-- `epsilon`. The minimum relative difference used to test equality between two
+- `relTol`. The minimum relative difference used to test equality between two
   compared values. This value is used by all relational functions.
   Default value is `1e-12`.
+
+- `absTol`. The minimum absolute difference used to test equality between two
+  compared values. This value is used by all relational functions.
+  Default value is `1e-15`.
 
 - `matrix`. The default type of matrix output for functions.
   Available values are: `'Matrix'` (default) or `'Array'`.

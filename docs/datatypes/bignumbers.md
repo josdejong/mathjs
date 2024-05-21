@@ -24,7 +24,8 @@ math.config({
   number: 'BigNumber',      // Default type of number:
                             // 'number' (default), 'BigNumber', or 'Fraction'
   precision: 64,            // Number of significant digits for BigNumbers
-  epsilon: 1e-60
+  relTol: 1e-60,
+  absTol: 1e-63
 })
 
 // use math
@@ -34,12 +35,12 @@ math.evaluate('0.1 + 0.2')  // BigNumber, 0.3
 The default precision for BigNumber is 64 digits, and can be configured with
 the option `precision`. 
 
-Note that we also change the configuration of `epsilon` 
-to be close to the precision limit of our BigNumbers. `epsilon` is used for 
+Note that we also change the configuration of `relTol` and `absTol` 
+to be close to the precision limit of our BigNumbers. `relTol` and `absTol` are used for 
 example in relational and rounding functions (`equal`, `larger`, `smaller`, 
 `round`, `floor`, etc) to determine when a value is nearly equal, 
-see [Equality](numbers.md#equality). If we would leave `epsilon` unchanged, 
-having the default value of `1e-12`, we could get inaccurate and misleading 
+see [Equality](numbers.md#equality). If we would leave `relTol` and `absTol`  unchanged, 
+having the default value of `1e-12` and `1e-15` respectively, we could get inaccurate and misleading 
 results since we're now working with a higher precision.
 
 
