@@ -156,7 +156,9 @@ gulp.task('copyExamples', function () {
   return gulp.src(EXAMPLES_SRC)
       .pipe(replace(/src=".*lib\/browser\/math.js"/, 'src="' + script + '"'))
       .pipe(replace(/'.*lib\/browser\/math.js'/, "'" + script + "'"))
-      .pipe(replace(/require\('..\/index'\)/, "require('mathjs')"))
+      .pipe(replace("from '../lib/esm/index.js'", "from 'mathjs'"))
+      .pipe(replace("from '../../lib/esm/index.js'", "from 'mathjs'"))
+      .pipe(replace("from '../../lib/esm/number.js'", "from 'mathjs/number'"))
       .pipe(gulp.dest(EXAMPLES_DEST));
 });
 
