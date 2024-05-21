@@ -1,11 +1,12 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
-const approx = require('../../../../../tools/approx')
-const math = require('../../../../../lib/cjs/defaultInstance').default
-const { csPermute } = require('../../../../../lib/cjs/function/algebra/sparse/csPermute')
-const { createCsLu } = require('../../../../../lib/cjs/function/algebra/sparse/csLu')
-const { createCsSqr } = require('../../../../../lib/cjs/function/algebra/sparse/csSqr')
-const market = require('../../../../../tools/matrixmarket')
+import { create, all } from '../../../../../lib/esm/index.js'
+import approx from '../../../../../tools/approx.js'
+import market from '../../../../../tools/matrixmarket.js'
+import { csPermute } from '../../../../../lib/esm/function/algebra/sparse/csPermute.js'
+import { createCsLu } from '../../../../../lib/esm/function/algebra/sparse/csLu.js'
+import { createCsSqr } from '../../../../../lib/esm/function/algebra/sparse/csSqr.js'
 
+const math = create(all)
 const { abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, SparseMatrix } = math
 
 const csLu = createCsLu({ abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })

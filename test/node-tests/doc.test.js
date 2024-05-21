@@ -1,10 +1,12 @@
 import assert from 'node:assert'
 import path from 'node:path'
-
+import { fileURLToPath } from 'node:url'
 import approx from '../../tools/approx.js'
 import { collectDocs } from '../../tools/docgenerator.mjs'
-import math from '../../lib/esm/index.js'
+import { create, all } from '../../lib/esm/index.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const math = create(all)
 const debug = process.argv.includes('--debug-docs')
 
 function extractExpectation (comment, optional = false) {

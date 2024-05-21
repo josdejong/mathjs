@@ -1,12 +1,11 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
-const math = require('../../../../../lib/cjs/defaultInstance').default
-const { createCsAmd } = require('../../../../../lib/cjs/function/algebra/sparse/csAmd')
+import assert from 'node:assert'
+import { create, all } from '../../../../../lib/esm/index.js'
+import approx from '../../../../../tools/approx.js'
+import market from '../../../../../tools/matrixmarket.js'
+import { createCsAmd } from '../../../../../lib/esm/function/algebra/sparse/csAmd.js'
 
-const assert = require('assert')
-const approx = require('../../../../../tools/approx')
-const market = require('../../../../../tools/matrixmarket')
-
-const { add, multiply, transpose } = math
+const { add, multiply, transpose } = create(all)
 const csAmd = createCsAmd({ add, multiply, transpose })
 
 describe('csAmd', function () {

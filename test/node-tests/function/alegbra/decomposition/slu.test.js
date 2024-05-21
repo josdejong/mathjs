@@ -1,7 +1,9 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
-const math = require('../../../../../lib/cjs/defaultInstance').default
-const approx = require('../../../../../tools/approx')
-const market = require('../../../../../tools/matrixmarket')
+import { create, all } from '../../../../../lib/esm/index.js'
+import approx from '../../../../../tools/approx.js'
+import market from '../../../../../tools/matrixmarket.js'
+
+const math = create(all)
 
 describe('slu - matrix market', function () {
   it('should decompose matrix, 48 x 48, natural ordering (order=0), full pivoting, matrix market', function (done) {
