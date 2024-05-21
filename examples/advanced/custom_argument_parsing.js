@@ -7,7 +7,7 @@
  * will be invoked with unevaluated arguments, allowing the function
  * to process the arguments in a customized way.
  */
-const { create, all } = require('../..')
+import { create, all } from '../../lib/esm/index.js'
 const math = create(all)
 
 /**

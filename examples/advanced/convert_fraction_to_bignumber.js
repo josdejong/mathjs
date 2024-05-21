@@ -13,7 +13,7 @@
 
 // Create an empty math.js instance, with only typed
 // (every instance contains `import` and `config` also out of the box)
-const { create, typedDependencies, all } = require('../..')
+import { create, typedDependencies, all } from '../../lib/esm/index.js'
 const math = create({
   typedDependencies
 })
@@ -30,13 +30,13 @@ math.config({ number: 'Fraction' })
 // this conversion:
 // - must be inserted in the conversions list before the conversion Fraction -> number
 // - must be added to the conversions before loading functions into math.js
-math.typed.conversions.unshift({
-  from: 'Fraction',
-  to: 'BigNumber',
-  convert: function (fraction) {
-    return new math.BigNumber(fraction.n).div(fraction.d)
-  }
-})
+// math.typed.addConversion({
+//   from: 'Fraction',
+//   to: 'BigNumber',
+//   convert: function (fraction) {
+//     return new math.BigNumber(fraction.n).div(fraction.d)
+//   }
+// })
 
 // Import all data types, functions, constants, the expression parser, etc.
 math.import(allExceptLoaded)

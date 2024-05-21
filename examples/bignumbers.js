@@ -1,8 +1,5 @@
-/* eslint-disable no-loss-of-precision */
-
 // BigNumbers
-
-const { create, all } = require('..')
+import { create, all } from '../lib/esm/index.js'
 
 // configure the default type of numbers as BigNumbers
 const config = {
