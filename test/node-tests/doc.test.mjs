@@ -1,9 +1,9 @@
-const assert = require('assert')
-const path = require('path')
+import assert from 'node:assert'
+import path from 'node:path'
 
-const approx = require('../../tools/approx.js')
-const docgenerator = require('../../tools/docgenerator.js')
-const math = require('../..')
+import approx from '../../tools/approx.js'
+import { collectDocs } from '../../tools/docgenerator.mjs'
+import math from '../../lib/esm/index.js'
 
 const debug = process.argv.includes('--debug-docs')
 
@@ -328,7 +328,7 @@ const knownUndocumented = new Set([
 describe('Testing examples from (jsdoc) comments', function () {
   const allNames = Object.keys(math)
   const srcPath = path.resolve(__dirname, '../../src') + '/'
-  const allDocs = docgenerator.collectDocs(allNames, srcPath)
+  const allDocs = collectDocs(allNames, srcPath)
 
   it("should cover all names (but doesn't yet)", function () {
     const documented = new Set(Object.keys(allDocs))

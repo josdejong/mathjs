@@ -1,15 +1,17 @@
-// @ts-nocheck
-const fs = require('fs')
-const path = require('path')
-const gulp = require('gulp')
-const del = require('del')
-const log = require('fancy-log')
-const webpack = require('webpack')
-const babel = require('gulp-babel')
-const { mkdirp } = require('mkdirp')
-const docgenerator = require('./tools/docgenerator')
-const entryGenerator = require('./tools/entryGenerator')
-const validateAsciiChars = require('./tools/validateAsciiChars')
+import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
+import gulp from 'gulp'
+import del from 'del'
+import log from 'fancy-log'
+import webpack from 'webpack'
+import babel from 'gulp-babel'
+import { mkdirp } from 'mkdirp'
+import { cleanup, iteratePath }  from './tools/docgenerator.mjs'
+import { generateEntryFiles } from './tools/entryGenerator.js'
+import validateAsciiChars from './tools/validateAsciiChars.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const SRC_DIR = path.join(__dirname, '/src')
 const BUNDLE_ENTRY = `${SRC_DIR}/defaultInstance.js`
@@ -216,14 +218,14 @@ async function generateDocs (done) {
     throw new Error('No function names found, is the doc generator broken?')
   }
 
-  docgenerator.cleanup(REF_DEST, REF_ROOT)
-  docgenerator.iteratePath(functionNames, REF_SRC, REF_DEST, REF_ROOT)
+  cleanup(REF_DEST, REF_ROOT)
+  iteratePath(functionNames, REF_SRC, REF_DEST, REF_ROOT)
 
   done()
 }
 
-function generateEntryFiles (done) {
-  entryGenerator.generateEntryFiles().then(() => {
+function generateEntryFilesCallback (done) {
+  generateEntryFiles().then(() => {
     done()
   })
 }
@@ -272,10 +274,10 @@ gulp.task('watch', function watch () {
 gulp.task('default', gulp.series(
   clean,
   updateVersionFile,
-  generateEntryFiles,
+  generateEntryFilesCallback,
   compileCommonJs,
   compileEntryFiles,
-  compileESModules, // Must be after generateEntryFiles
+  compileESModules, // Must be after generateEntryFilesCallback
   writeCompiledHeader,
   bundle,
   generateDocs
