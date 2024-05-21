@@ -1,11 +1,8 @@
-const fs = require('fs')
-const typed = require('typed-function')
-const { create, all } = require('../lib/cjs/index.js')
-const math = create(all)
-const Spa = math.Spa
-const DenseMatrix = math.DenseMatrix
-const SparseMatrix = math.SparseMatrix
-const FibonacciHeap = math.FibonacciHeap
+import fs from 'node:fs'
+import typed from 'typed-function'
+import { create, all } from '../lib/esm/index.js'
+
+const { Spa, DenseMatrix, SparseMatrix, FibonacciHeap } = create(all)
 
 const _importFromStream = function (stream) {
   return new Promise(function (resolve, reject) {

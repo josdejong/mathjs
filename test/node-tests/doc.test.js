@@ -2,7 +2,7 @@ import assert from 'node:assert'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import approx from '../../tools/approx.js'
-import { collectDocs } from '../../tools/docgenerator.mjs'
+import { collectDocs } from '../../tools/docgenerator.js'
 import { create, all } from '../../lib/esm/index.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

@@ -7,9 +7,9 @@ import log from 'fancy-log'
 import webpack from 'webpack'
 import babel from 'gulp-babel'
 import { mkdirp } from 'mkdirp'
-import { cleanup, iteratePath }  from './tools/docgenerator.mjs'
+import { cleanup, iteratePath }  from './tools/docgenerator.js'
 import { generateEntryFiles } from './tools/entryGenerator.js'
-import validateAsciiChars from './tools/validateAsciiChars.js'
+import { getAllFiles, validateChars } from './tools/validateAsciiChars.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -190,8 +190,8 @@ function validateAscii (done) {
   const Reset = '\x1b[0m'
   const BgRed = '\x1b[41m'
 
-  validateAsciiChars.getAllFiles(SRC_DIR)
-    .map(validateAsciiChars.validateChars)
+  getAllFiles(SRC_DIR)
+    .map(validateChars)
     .forEach(function (invalidChars) {
       invalidChars.forEach(function (res) {
         console.log(res.insideComment ? '' : BgRed,

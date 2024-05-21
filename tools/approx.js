@@ -1,5 +1,5 @@
-const assert = require('assert')
-const hasOwnProperty = require('./utils').hasOwnProperty
+import assert from 'node:assert'
+import { hasOwnProperty } from './utils.js'
 
 const EPSILON = 0.0001
 
@@ -19,7 +19,7 @@ function isNumber (value) {
  * @param {Number | BigNumber | Complex | Fraction} b
  * @param {Number} [epsilon]
  */
-exports.equal = function equal (a, b, epsilon) {
+export function equal (a, b, epsilon) {
   if (epsilon === undefined) {
     epsilon = EPSILON
   }
@@ -40,19 +40,19 @@ exports.equal = function equal (a, b, epsilon) {
       assert.ok(diff <= maxDiff, (a + ' ~= ' + b + ' (epsilon: ' + epsilon + ')'))
     }
   } else if (a && a.isBigNumber) {
-    return exports.equal(a.toNumber(), b, epsilon)
+    return equal(a.toNumber(), b, epsilon)
   } else if (b && b.isBigNumber) {
-    return exports.equal(a, b.toNumber(), epsilon)
+    return equal(a, b.toNumber(), epsilon)
   } else if ((a && a.isComplex) || (b && b.isComplex)) {
     if (a && a.isComplex && b && b.isComplex) {
-      exports.equal(a.re, b.re, epsilon)
-      exports.equal(a.im, b.im, epsilon)
+      equal(a.re, b.re, epsilon)
+      equal(a.im, b.im, epsilon)
     } else if (a && a.isComplex) {
-      exports.equal(a.re, b, epsilon)
-      exports.equal(a.im, 0, epsilon)
+      equal(a.re, b, epsilon)
+      equal(a.im, 0, epsilon)
     } else if (b && b.isComplex) {
-      exports.equal(a, b.re, epsilon)
-      exports.equal(0, b.im, epsilon)
+      equal(a, b.re, epsilon)
+      equal(0, b.im, epsilon)
     }
   } else {
     assert.strictEqual(a, b)
@@ -66,7 +66,7 @@ exports.equal = function equal (a, b, epsilon) {
  * @param {*} b
  * @param {number} [epsilon]
  */
-exports.deepEqual = function deepEqual (a, b, epsilon) {
+export function deepEqual (a, b, epsilon) {
   let prop, i, len
 
   if (Array.isArray(a) && Array.isArray(b)) {
@@ -91,6 +91,8 @@ exports.deepEqual = function deepEqual (a, b, epsilon) {
       }
     }
   } else {
-    exports.equal(a, b, epsilon)
+    equal(a, b, epsilon)
   }
 }
+
+export default { equal, deepEqual }
