@@ -25,7 +25,7 @@
     "unit"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.24.4",
+    "@babel/runtime": "^7.24.5",
     "complex.js": "^2.1.1",
     "decimal.js": "^10.4.3",
     "escape-latex": "^1.2.0",
@@ -36,10 +36,10 @@
     "typed-function": "^4.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.24.4",
+    "@babel/core": "7.24.5",
     "@babel/plugin-transform-object-assign": "7.24.1",
     "@babel/plugin-transform-runtime": "7.24.3",
-    "@babel/preset-env": "7.24.4",
+    "@babel/preset-env": "7.24.5",
     "@babel/register": "7.23.7",
     "@types/assert": "1.5.10",
     "@types/mocha": "10.0.6",
@@ -50,7 +50,7 @@
     "benchmark": "2.1.4",
     "c8": "9.1.0",
     "codecov": "3.8.3",
-    "core-js": "3.37.0",
+    "core-js": "3.37.1",
     "del": "6.1.1",
     "dtslint": "4.2.1",
     "eslint": "8.57.0",
