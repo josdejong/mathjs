@@ -24,7 +24,7 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * See also:
    *
-   *    boolean, complex, index, matrix, string, unit
+   *    number, bigint, boolean, complex, index, matrix, string, unit
    *
    * @param {number | string | Fraction | BigNumber | Array | Matrix | boolean | null} [value]  Value for the big number,
    *                                                    0 by default.
