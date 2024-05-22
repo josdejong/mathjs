@@ -27,7 +27,7 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @param {string | number | BigNumber | BigInt | Fraction | boolean | Array | Matrix | null} [value]  Value to be converted
    * @return {BigInt | Array | Matrix} The created BigInt
    */
-  return typed('bigint', {
+  const bigint = typed('bigint', {
     '': function () {
       return 0n
     },
@@ -58,4 +58,15 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
+
+  // reviver function to parse a JSON object like:
+  //
+  //     {"mathjs":"bigint","value":"123"}
+  //
+  // into a BigInt 123n
+  bigint.fromJSON = function (json) {
+    return BigInt(json.value)
+  }
+
+  return bigint
 })

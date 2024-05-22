@@ -33,6 +33,13 @@ describe('replacer', function () {
     assert.deepStrictEqual(JSON.stringify(b, replacer), json)
   })
 
+  it('should stringify a BigInt', function () {
+    const b = 12345678901234567890n
+    const json = '{"mathjs":"BigInt","value":"12345678901234567890"}'
+
+    assert.deepStrictEqual(JSON.stringify(b, replacer), json)
+  })
+
   it('should stringify a Fraction', function () {
     const b = new math.Fraction(0.375)
     const json = '{"mathjs":"Fraction","n":3,"d":8}'

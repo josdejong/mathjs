@@ -261,6 +261,17 @@ Chaining examples
     MathJsChain<MathCollection>
   >()
 
+  // bigint
+  expectTypeOf(math.chain(math.bigint(12))).toMatchTypeOf<
+    MathJsChain<bigint>
+  >()
+  expectTypeOf(math.chain(12).bigint()).toMatchTypeOf<
+    MathJsChain<bigint>
+  >()
+  expectTypeOf(math.chain([12, 13, 14]).bigint()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
+
   // chain
   expectTypeOf(math.chain(12).bignumber().clone()).toMatchTypeOf<
     MathJsChain<BigNumber>
