@@ -18,6 +18,11 @@ describe('typeOf', function () {
     assert.strictEqual(math.typeOf(NaN), 'number')
   })
 
+  it('should return bignumber type for a bigint', function () {
+    assert.strictEqual(math.typeOf(42n), 'bigint')
+    assert.strictEqual(math.typeOf(math.bigint('42')), 'bigint')
+  })
+
   it('should return bignumber type for a bignumber', function () {
     assert.strictEqual(math.typeOf(math.bignumber(0.1)), 'BigNumber')
     assert.strictEqual(math.typeOf(new math.BigNumber('0.2')), 'BigNumber')

@@ -279,6 +279,7 @@ const knownUndocumented = new Set([
   'nuclearMagneton',
   'null',
   'number',
+  'bigint',
   'ObjectNode',
   'OperatorNode',
   'ParenthesisNode',

@@ -36,15 +36,15 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return x
     },
 
-    'number': function (x) {
+    number: function (x) {
       return BigInt(x.toFixed())
     },
 
-    'BigNumber': function (x) {
+    BigNumber: function (x) {
       return BigInt(x.round().toString())
     },
 
-    'Fraction': function (x) {
+    Fraction: function (x) {
       return BigInt(x.valueOf().toFixed())
     },
 

@@ -66,13 +66,12 @@ describe('bigint', function () {
   })
 
   it('should throw an error with wrong type of arguments', function () {
-    assert.throws(function () { bigint(math.unit('5cm'), 2)}, TypeError);
+    assert.throws(function () { bigint(math.unit('5cm'), 2) }, TypeError)
     assert.throws(function () { bigint(math.unit('5cm'), new Date()) }, TypeError)
     assert.throws(function () { bigint('23', 2) }, TypeError)
   })
 
-  // FIXME: add bigint support for LaTeX
-  it.skip('should LaTeX bigint', function () {
+  it('should LaTeX bigint', function () {
     const expr1 = math.parse('bigint()')
     const expr2 = math.parse('bigint(1)')
 

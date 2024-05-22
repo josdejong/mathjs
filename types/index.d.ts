@@ -600,7 +600,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   bigint(
     x?: number | string | Fraction | BigNumber | bigint | boolean | null
-  ): BigNumber
+  ): bigint
   bigint<T extends MathCollection>(x: T): T
 
   /**
@@ -3397,7 +3397,7 @@ export interface MathJsInstance extends MathJsFactory {
    * Test whether a value is an numeric value. In case of a string,
    *  true is returned if the string contains a numeric value.
    * @param x Value to be tested
-   * @returns Returns true when x is a number, BigNumber, Fraction, Boolean, or a String containing number.
+   * @returns Returns true when x is a number, BigNumber, bigint, Fraction, Boolean, or a String containing number.
    * Returns false for other types.
    * Throws an error in case of unknown types.
    */
@@ -3438,12 +3438,12 @@ export interface MathJsInstance extends MathJsFactory {
    * Test whether a value is an numeric value. The function is evaluated
    * element-wise in case of Array or Matrix input.
    * @param x Value to be tested
-   * @returns Returns true when x is a number, BigNumber, Fraction, or
+   * @returns Returns true when x is a number, BigNumber, bigint, Fraction, or
    * boolean. Returns false for other types. Throws an error in case of
    * unknown types.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  isNumeric(x: any): x is number | BigNumber | Fraction | boolean
+  isNumeric(x: any): x is number | BigNumber | bigint | Fraction | boolean
 
   /**
    * Test whether a value is positive: larger than zero. The function
@@ -4366,7 +4366,7 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<
       number | string | Fraction | BigNumber | bigint | boolean | null
     >
-  ): MathJsChain<BigNumber>
+  ): MathJsChain<bigint>
   bigint<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
 
   /**
@@ -6640,7 +6640,7 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<boolean>
 
   /**
-   * Test whether a value is an numeric value. The function is evaluated
+   * Test whether a value is a numeric value. The function is evaluated
    * element-wise in case of Array or Matrix input.
    */
 

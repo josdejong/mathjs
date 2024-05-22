@@ -262,12 +262,8 @@ Chaining examples
   >()
 
   // bigint
-  expectTypeOf(math.chain(math.bigint(12))).toMatchTypeOf<
-    MathJsChain<bigint>
-  >()
-  expectTypeOf(math.chain(12).bigint()).toMatchTypeOf<
-    MathJsChain<bigint>
-  >()
+  expectTypeOf(math.chain(math.bigint(12))).toMatchTypeOf<MathJsChain<bigint>>()
+  expectTypeOf(math.chain(12).bigint()).toMatchTypeOf<MathJsChain<bigint>>()
   expectTypeOf(math.chain([12, 13, 14]).bigint()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
