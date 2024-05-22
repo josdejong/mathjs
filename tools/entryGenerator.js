@@ -1,8 +1,10 @@
-const fs = require('fs')
-const path = require('path')
-const Handlebars = require('handlebars')
-const hasOwnProperty = require('./utils').hasOwnProperty
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import Handlebars from 'handlebars'
+import { hasOwnProperty } from './utils.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ENTRY_FOLDER = path.join(__dirname, '../src/entry')
 
 const IGNORED_DEPENDENCIES = {
@@ -149,7 +151,7 @@ Chain.createProxy(math)
 export { embeddedDocs as docs } from '../expression/embeddedDocs/embeddedDocs.js'
 `)
 
-exports.generateEntryFiles = async function () {
+export async function generateEntryFiles () {
   const factoriesAny = await import('../src/factoriesAny.js')
   const factoriesNumber = await import('../src/factoriesNumber.js')
 
@@ -486,9 +488,7 @@ function findKey (object, value) {
  * @param {Array} factories
  * @return {Array} Returns sorted factories
  */
-exports.sortFactories = sortFactories
-
-function sortFactories (factories) {
+export function sortFactories (factories) {
   const loaded = {}
   const leftOverFactories = factories.slice()
   const sortedFactories = []

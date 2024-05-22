@@ -2,8 +2,8 @@
 
 // browserify benchmark/unit_parser.js -o ./benchmark_unit_parser.js
 
-const Benchmark = require('benchmark')
-const math = require('../..')
+import Benchmark from 'benchmark'
+import { Unit, evaluate } from '../../lib/esm/index.js'
 
 // expose on window when using bundled in a browser
 if (typeof window !== 'undefined') {
@@ -20,10 +20,10 @@ let total = 0
 const suite = new Benchmark.Suite()
 suite
   .add('Unit.parse', function () {
-    total += math.Unit.parse('mm').dimensions[0]
+    total += Unit.parse('mm').dimensions[0]
   })
   .add('evaluate', function () {
-    total += math.evaluate(expr).size()[0]
+    total += evaluate(expr).size()[0]
   })
   .on('cycle', function (event) {
     console.log(String(event.target))

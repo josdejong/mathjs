@@ -1,7 +1,5 @@
 // complex numbers
-
-// load js (using node.js)
-const { complex, add, multiply, sin, sqrt, pi, equal, sort, format } = require('..')
+import { complex, add, multiply, sin, sqrt, pi, equal, sort, format } from '../lib/esm/index.js'
 
 // create a complex number with a numeric real and complex part
 console.log('create and manipulate complex numbers')

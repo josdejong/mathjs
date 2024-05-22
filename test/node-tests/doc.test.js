@@ -1,10 +1,12 @@
-const assert = require('assert')
-const path = require('path')
+import assert from 'node:assert'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { approxEqual, approxDeepEqual } from '../../tools/approx.js'
+import { collectDocs } from '../../tools/docgenerator.js'
+import { create, all } from '../../lib/esm/index.js'
 
-const approx = require('../../tools/approx.js')
-const docgenerator = require('../../tools/docgenerator.js')
-const math = require('../..')
-
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const math = create(all)
 const debug = process.argv.includes('--debug-docs')
 
 function extractExpectation (comment, optional = false) {
@@ -128,23 +130,23 @@ function checkExpectation (want, got) {
     if (!Array.isArray(got)) {
       want = math.matrix(want)
     }
-    return approx.deepEqual(got, want, 1e-9)
+    return approxDeepEqual(got, want, 1e-9)
   }
   if (want instanceof math.Unit && got instanceof math.Unit) {
-    return approx.deepEqual(got, want, 1e-9)
+    return approxDeepEqual(got, want, 1e-9)
   }
   if (want instanceof math.Complex && got instanceof math.Complex) {
-    return approx.deepEqual(got, want, 1e-9)
+    return approxDeepEqual(got, want, 1e-9)
   }
   if (typeof want === 'number' && typeof got === 'number' && want !== got) {
     issueCount++
     if (debug) {
       console.log(`  Note: return value ${got} not exactly as expected: ${want}`)
     }
-    return approx.equal(got, want, 1e-9)
+    return approxEqual(got, want, 1e-9)
   }
   if (typeof want !== 'undefined') {
-    return approx.deepEqual(got, want)
+    return approxDeepEqual(got, want)
   } else {
     // don't check if we don't know what the result is supposed to be
   }
@@ -328,7 +330,7 @@ const knownUndocumented = new Set([
 describe('Testing examples from (jsdoc) comments', function () {
   const allNames = Object.keys(math)
   const srcPath = path.resolve(__dirname, '../../src') + '/'
-  const allDocs = docgenerator.collectDocs(allNames, srcPath)
+  const allDocs = collectDocs(allNames, srcPath)
 
   it("should cover all names (but doesn't yet)", function () {
     const documented = new Set(Object.keys(allDocs))

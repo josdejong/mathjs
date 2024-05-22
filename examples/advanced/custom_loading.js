@@ -1,9 +1,9 @@
 import {
-  create,
-  fractionDependencies,
   addDependencies,
+  create,
   divideDependencies,
-  formatDependencies
+  formatDependencies,
+  fractionDependencies
 } from '../../lib/esm/index.js'
 
 const config = {

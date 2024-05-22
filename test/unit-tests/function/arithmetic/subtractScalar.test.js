@@ -1,7 +1,7 @@
 // test subtractScalar
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 import Decimal from 'decimal.js'
 const { subtractScalar, BigNumber } = math
@@ -93,7 +93,7 @@ describe('subtractScalar', function () {
   })
 
   it('should subtractScalar two quantities of the same unit', function () {
-    approx.deepEqual(subtractScalar(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(-155.93, 'km'))
+    approxDeepEqual(subtractScalar(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(-155.93, 'km'))
 
     assert.deepStrictEqual(subtractScalar(math.unit(new BigNumber(5), 'km'), math.unit(new BigNumber(2), 'km')), math.unit(new BigNumber(3), 'km'))
 
@@ -105,8 +105,8 @@ describe('subtractScalar', function () {
     let t = math.unit(20, 'degC')
     assert.deepStrictEqual(subtractScalar(t, math.unit(1, 'degC')), math.unit(19, 'degC'))
     t = math.unit(68, 'degF')
-    approx.deepEqual(subtractScalar(t, math.unit(2, 'degF')), math.unit(66, 'degF'))
-    approx.deepEqual(subtractScalar(t, math.unit(1, 'degC')), math.unit(66.2, 'degF'))
+    approxDeepEqual(subtractScalar(t, math.unit(2, 'degF')), math.unit(66, 'degF'))
+    approxDeepEqual(subtractScalar(t, math.unit(1, 'degC')), math.unit(66.2, 'degF'))
   })
 
   it('should throw an error if subtracting two quantities of different units', function () {

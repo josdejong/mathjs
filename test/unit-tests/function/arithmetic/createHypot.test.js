@@ -1,7 +1,7 @@
 // test hypot
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const hypot = math.hypot
 const bignumber = math.bignumber
@@ -10,7 +10,7 @@ describe('hypot', function () {
   it('should return the hypot of numbers', function () {
     assert.strictEqual(hypot(3, 4), 5)
     assert.strictEqual(hypot(3, -4), 5)
-    approx.equal(hypot(3, 4, 5), 7.0710678118654755)
+    approxEqual(hypot(3, 4, 5), 7.0710678118654755)
     assert.strictEqual(hypot(-2), 2)
     assert.strictEqual(hypot(0), 0)
     assert.strictEqual(hypot(Infinity), Infinity)

@@ -1,7 +1,7 @@
 // test sign
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const fraction = math.fraction
@@ -34,7 +34,7 @@ describe('sign', function () {
   })
 
   it('should calculate the sign of a complex value', function () {
-    approx.deepEqual(math.sign(math.complex(2, -3)), math.complex(0.554700196225229, -0.832050294337844))
+    approxDeepEqual(math.sign(math.complex(2, -3)), math.complex(0.554700196225229, -0.832050294337844))
   })
 
   it('should calculate the sign of a unit', function () {

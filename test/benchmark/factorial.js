@@ -1,6 +1,6 @@
-const Benchmark = require('benchmark')
-const BigNumber = require('decimal.js')
-const padRight = require('pad-right')
+import Benchmark from 'benchmark'
+import padRight from 'pad-right'
+import BigNumber from 'decimal.js'
 
 function pad (text) {
   return padRight(text, 40, ' ')

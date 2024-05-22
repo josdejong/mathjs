@@ -1,7 +1,7 @@
 // we use the number only implementation in order to not pull in
 // the `Unit` class for example. when using as library,
-// use require('mathjs/number')
-const { create, evaluateDependencies, factory } = require('../../lib/cjs/number.js')
+// use import 'mathjs/number'
+import { create, evaluateDependencies, factory } from '../../lib/esm/number.js'
 
 // custom implementations of all functions you want to support
 const add = (a, b) => a + b

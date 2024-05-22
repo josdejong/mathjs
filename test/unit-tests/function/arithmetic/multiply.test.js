@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const multiply = math.multiply
 const divide = math.divide
 const matrix = math.matrix
@@ -14,14 +14,14 @@ const unit = math.unit
 describe('multiply', function () {
   describe('Scalar', function () {
     it('should multiply two numbers correctly', function () {
-      approx.equal(multiply(2, 3), 6)
-      approx.equal(multiply(-2, 3), -6)
-      approx.equal(multiply(-2, -3), 6)
-      approx.equal(multiply(5, 0), 0)
-      approx.equal(multiply(0, 5), 0)
-      approx.deepEqual(multiply(0, Infinity), NaN)
-      approx.deepEqual(multiply(2, Infinity), Infinity)
-      approx.deepEqual(multiply(-2, Infinity), -Infinity)
+      approxEqual(multiply(2, 3), 6)
+      approxEqual(multiply(-2, 3), -6)
+      approxEqual(multiply(-2, -3), 6)
+      approxEqual(multiply(5, 0), 0)
+      approxEqual(multiply(0, 5), 0)
+      approxDeepEqual(multiply(0, Infinity), NaN)
+      approxDeepEqual(multiply(2, Infinity), Infinity)
+      approxDeepEqual(multiply(-2, Infinity), -Infinity)
     })
 
     it('should multiply booleans', function () {
@@ -65,50 +65,50 @@ describe('multiply', function () {
     })
 
     it('should multiply two complex numbers correctly', function () {
-      approx.deepEqual(multiply(complex(2, 3), 2), complex(4, 6))
-      approx.deepEqual(multiply(complex(2, -3), -2), complex(-4, 6))
-      approx.deepEqual(multiply(complex(2, -3), 2), complex(4, -6))
-      approx.deepEqual(multiply(complex(-2, 3), 2), complex(-4, 6))
-      approx.deepEqual(multiply(complex(-2, -3), 2), complex(-4, -6))
-      approx.deepEqual(multiply(2, complex(2, 3)), complex(4, 6))
-      approx.deepEqual(multiply(i, complex(2, 3)), complex(-3, 2))
-      approx.deepEqual(multiply(complex(0, 1), complex(2, 3)), complex(-3, 2))
-      approx.deepEqual(multiply(complex(1, 1), complex(2, 3)), complex(-1, 5))
-      approx.deepEqual(multiply(complex(2, 3), complex(1, 1)), complex(-1, 5))
-      approx.deepEqual(multiply(complex(2, 3), complex(2, 3)), complex(-5, 12))
-      approx.deepEqual(divide(complex(-5, 12), complex(2, 3)), complex(2, 3))
-      approx.deepEqual(multiply(complex(2, 3), 0), complex(0, 0))
-      approx.deepEqual(multiply(complex(0, 3), complex(0, -4)), complex(12, 0))
-      approx.deepEqual(multiply(multiply(3, i), multiply(-4, i)), complex(12, 0))
-      approx.deepEqual(multiply(math.i, Infinity), complex(Infinity, Infinity))
-      approx.deepEqual(multiply(Infinity, math.i), complex(Infinity, Infinity))
+      approxDeepEqual(multiply(complex(2, 3), 2), complex(4, 6))
+      approxDeepEqual(multiply(complex(2, -3), -2), complex(-4, 6))
+      approxDeepEqual(multiply(complex(2, -3), 2), complex(4, -6))
+      approxDeepEqual(multiply(complex(-2, 3), 2), complex(-4, 6))
+      approxDeepEqual(multiply(complex(-2, -3), 2), complex(-4, -6))
+      approxDeepEqual(multiply(2, complex(2, 3)), complex(4, 6))
+      approxDeepEqual(multiply(i, complex(2, 3)), complex(-3, 2))
+      approxDeepEqual(multiply(complex(0, 1), complex(2, 3)), complex(-3, 2))
+      approxDeepEqual(multiply(complex(1, 1), complex(2, 3)), complex(-1, 5))
+      approxDeepEqual(multiply(complex(2, 3), complex(1, 1)), complex(-1, 5))
+      approxDeepEqual(multiply(complex(2, 3), complex(2, 3)), complex(-5, 12))
+      approxDeepEqual(divide(complex(-5, 12), complex(2, 3)), complex(2, 3))
+      approxDeepEqual(multiply(complex(2, 3), 0), complex(0, 0))
+      approxDeepEqual(multiply(complex(0, 3), complex(0, -4)), complex(12, 0))
+      approxDeepEqual(multiply(multiply(3, i), multiply(-4, i)), complex(12, 0))
+      approxDeepEqual(multiply(math.i, Infinity), complex(Infinity, Infinity))
+      approxDeepEqual(multiply(Infinity, math.i), complex(Infinity, Infinity))
 
-      approx.deepEqual(multiply(complex(2, 0), complex(0, 2)), complex(0, 4))
-      approx.deepEqual(multiply(complex(0, 2), complex(0, 2)), -4)
-      approx.deepEqual(multiply(complex(2, 2), complex(0, 2)), complex(-4, 4))
-      approx.deepEqual(multiply(complex(2, 0), complex(2, 2)), complex(4, 4))
-      approx.deepEqual(multiply(complex(0, 2), complex(2, 2)), complex(-4, 4))
-      approx.deepEqual(multiply(complex(2, 2), complex(2, 2)), complex(0, 8))
-      approx.deepEqual(multiply(complex(2, 0), complex(2, 0)), 4)
-      approx.deepEqual(multiply(complex(0, 2), complex(2, 0)), complex(0, 4))
-      approx.deepEqual(multiply(complex(2, 2), complex(2, 0)), complex(4, 4))
+      approxDeepEqual(multiply(complex(2, 0), complex(0, 2)), complex(0, 4))
+      approxDeepEqual(multiply(complex(0, 2), complex(0, 2)), -4)
+      approxDeepEqual(multiply(complex(2, 2), complex(0, 2)), complex(-4, 4))
+      approxDeepEqual(multiply(complex(2, 0), complex(2, 2)), complex(4, 4))
+      approxDeepEqual(multiply(complex(0, 2), complex(2, 2)), complex(-4, 4))
+      approxDeepEqual(multiply(complex(2, 2), complex(2, 2)), complex(0, 8))
+      approxDeepEqual(multiply(complex(2, 0), complex(2, 0)), 4)
+      approxDeepEqual(multiply(complex(0, 2), complex(2, 0)), complex(0, 4))
+      approxDeepEqual(multiply(complex(2, 2), complex(2, 0)), complex(4, 4))
 
-      approx.deepEqual(multiply(complex(2, 3), complex(4, 5)), complex(-7, 22))
-      approx.deepEqual(multiply(complex(2, 3), complex(4, -5)), complex(23, 2))
-      approx.deepEqual(multiply(complex(2, 3), complex(-4, 5)), complex(-23, -2))
-      approx.deepEqual(multiply(complex(2, 3), complex(-4, -5)), complex(7, -22))
-      approx.deepEqual(multiply(complex(2, -3), complex(4, 5)), complex(23, -2))
-      approx.deepEqual(multiply(complex(2, -3), complex(4, -5)), complex(-7, -22))
-      approx.deepEqual(multiply(complex(2, -3), complex(-4, 5)), complex(7, 22))
-      approx.deepEqual(multiply(complex(2, -3), complex(-4, -5)), complex(-23, 2))
-      approx.deepEqual(multiply(complex(-2, 3), complex(4, 5)), complex(-23, 2))
-      approx.deepEqual(multiply(complex(-2, 3), complex(4, -5)), complex(7, 22))
-      approx.deepEqual(multiply(complex(-2, 3), complex(-4, 5)), complex(-7, -22))
-      approx.deepEqual(multiply(complex(-2, 3), complex(-4, -5)), complex(23, -2))
-      approx.deepEqual(multiply(complex(-2, -3), complex(4, 5)), complex(7, -22))
-      approx.deepEqual(multiply(complex(-2, -3), complex(4, -5)), complex(-23, -2))
-      approx.deepEqual(multiply(complex(-2, -3), complex(-4, 5)), complex(23, 2))
-      approx.deepEqual(multiply(complex(-2, -3), complex(-4, -5)), complex(-7, 22))
+      approxDeepEqual(multiply(complex(2, 3), complex(4, 5)), complex(-7, 22))
+      approxDeepEqual(multiply(complex(2, 3), complex(4, -5)), complex(23, 2))
+      approxDeepEqual(multiply(complex(2, 3), complex(-4, 5)), complex(-23, -2))
+      approxDeepEqual(multiply(complex(2, 3), complex(-4, -5)), complex(7, -22))
+      approxDeepEqual(multiply(complex(2, -3), complex(4, 5)), complex(23, -2))
+      approxDeepEqual(multiply(complex(2, -3), complex(4, -5)), complex(-7, -22))
+      approxDeepEqual(multiply(complex(2, -3), complex(-4, 5)), complex(7, 22))
+      approxDeepEqual(multiply(complex(2, -3), complex(-4, -5)), complex(-23, 2))
+      approxDeepEqual(multiply(complex(-2, 3), complex(4, 5)), complex(-23, 2))
+      approxDeepEqual(multiply(complex(-2, 3), complex(4, -5)), complex(7, 22))
+      approxDeepEqual(multiply(complex(-2, 3), complex(-4, 5)), complex(-7, -22))
+      approxDeepEqual(multiply(complex(-2, 3), complex(-4, -5)), complex(23, -2))
+      approxDeepEqual(multiply(complex(-2, -3), complex(4, 5)), complex(7, -22))
+      approxDeepEqual(multiply(complex(-2, -3), complex(4, -5)), complex(-23, -2))
+      approxDeepEqual(multiply(complex(-2, -3), complex(-4, 5)), complex(23, 2))
+      approxDeepEqual(multiply(complex(-2, -3), complex(-4, -5)), complex(-7, 22))
     })
 
     it('should multiply mixed complex numbers and numbers', function () {
@@ -171,7 +171,7 @@ describe('multiply', function () {
 
     it('should evaluate a complicated unit multiplication', function () {
       const v1 = math.evaluate('0.1 kg/s * 4.2 J/degC/g * 5 degC')
-      approx.equal(v1.value, 2100)
+      approxEqual(v1.value, 2100)
     })
 
     it('should multiply valueless units correctly', function () {
@@ -220,8 +220,8 @@ describe('multiply', function () {
     const a = [[1, 2], [3, 4]]
     const b = [[2, 0], [0, 2]]
 
-    approx.deepEqual(multiply(a, matrix(b)), matrix([[2, 4], [6, 8]]))
-    approx.deepEqual(multiply(matrix(a), b), matrix([[2, 4], [6, 8]]))
+    approxDeepEqual(multiply(a, matrix(b)), matrix([[2, 4], [6, 8]]))
+    approxDeepEqual(multiply(matrix(a), b), matrix([[2, 4], [6, 8]]))
 
     // test with vectors, returning a scalar
     const c = [1, 2, 3]
@@ -288,16 +288,16 @@ describe('multiply', function () {
       const a = [1, 2, 3]
       const b = [4, 5, 6]
 
-      approx.deepEqual(multiply(a, b), 32)
-      approx.deepEqual(multiply(matrix(a), matrix(b)), 32)
+      approxDeepEqual(multiply(a, b), 32)
+      approxDeepEqual(multiply(matrix(a), matrix(b)), 32)
     })
 
     it('should conjugate the first argument in dot product', function () {
       const a = [complex(1, 2), complex(3, 4)]
       const b = [complex(5, 6), complex(7, 8)]
 
-      approx.deepEqual(multiply(a, b), complex(70, -8))
-      approx.deepEqual(multiply(matrix(a), matrix(b)), complex(70, -8))
+      approxDeepEqual(multiply(a, b), complex(70, -8))
+      approxDeepEqual(multiply(matrix(a), matrix(b)), complex(70, -8))
     })
 
     it('should multiply row vector x column vector', function () {
@@ -338,11 +338,11 @@ describe('multiply', function () {
         [4, 9, 2]
       ]
 
-      approx.deepEqual(multiply(a, b), [26, 38, 26])
-      approx.deepEqual(multiply(b, a), [28, 34, 28])
+      approxDeepEqual(multiply(a, b), [26, 38, 26])
+      approxDeepEqual(multiply(b, a), [28, 34, 28])
 
-      approx.deepEqual(multiply(matrix(a), matrix(b)), matrix([26, 38, 26]))
-      approx.deepEqual(multiply(matrix(b), matrix(a)), matrix([28, 34, 28]))
+      approxDeepEqual(multiply(matrix(a), matrix(b)), matrix([26, 38, 26]))
+      approxDeepEqual(multiply(matrix(b), matrix(a)), matrix([28, 34, 28]))
     })
   })
 
@@ -544,7 +544,7 @@ describe('multiply', function () {
 
       const r = multiply(l, u)
 
-      approx.deepEqual(
+      approxDeepEqual(
         r.valueOf(),
         [
           [240, -2700, 6480, -4200],
@@ -560,19 +560,19 @@ describe('multiply', function () {
     const d = matrix([[5, 6]])
 
     it('should perform element-wise multiplication if multiplying a matrix and a number', function () {
-      approx.deepEqual(multiply(a, 3), matrix([[3, 6], [9, 12]]))
-      approx.deepEqual(multiply(3, a), matrix([[3, 6], [9, 12]]))
+      approxDeepEqual(multiply(a, 3), matrix([[3, 6], [9, 12]]))
+      approxDeepEqual(multiply(3, a), matrix([[3, 6], [9, 12]]))
     })
 
     it('should perform matrix multiplication', function () {
-      approx.deepEqual(multiply(a, b), matrix([[19, 22], [43, 50]]))
-      approx.deepEqual(multiply(a, c), matrix([[17], [39]]))
-      approx.deepEqual(multiply(d, a), matrix([[23, 34]]))
-      approx.deepEqual(multiply(d, b), matrix([[67, 78]]))
-      approx.deepEqual(multiply(d, c), matrix([[61]]))
-      approx.deepEqual(multiply([[1, 2], [3, 4]], [[5, 6], [7, 8]]), [[19, 22], [43, 50]])
-      approx.deepEqual(multiply([1, 2, 3, 4], 2), [2, 4, 6, 8])
-      approx.deepEqual(multiply(matrix([1, 2, 3, 4]), 2), matrix([2, 4, 6, 8]))
+      approxDeepEqual(multiply(a, b), matrix([[19, 22], [43, 50]]))
+      approxDeepEqual(multiply(a, c), matrix([[17], [39]]))
+      approxDeepEqual(multiply(d, a), matrix([[23, 34]]))
+      approxDeepEqual(multiply(d, b), matrix([[67, 78]]))
+      approxDeepEqual(multiply(d, c), matrix([[61]]))
+      approxDeepEqual(multiply([[1, 2], [3, 4]], [[5, 6], [7, 8]]), [[19, 22], [43, 50]])
+      approxDeepEqual(multiply([1, 2, 3, 4], 2), [2, 4, 6, 8])
+      approxDeepEqual(multiply(matrix([1, 2, 3, 4]), 2), matrix([2, 4, 6, 8]))
     })
   })
 
@@ -753,7 +753,7 @@ describe('multiply', function () {
       const r = multiply(l, u)
 
       assert(r.storage(), 'sparse')
-      approx.deepEqual(
+      approxDeepEqual(
         r.valueOf(),
         [
           [240, -2700, 6480, -4200],
@@ -769,16 +769,16 @@ describe('multiply', function () {
     const d = matrix([[5, 6]], 'sparse')
 
     it('should perform element-wise multiplication if multiplying a matrix and a number', function () {
-      approx.deepEqual(multiply(a, 3), matrix([[3, 6], [9, 12]], 'sparse'))
-      approx.deepEqual(multiply(3, a), matrix([[3, 6], [9, 12]], 'sparse'))
+      approxDeepEqual(multiply(a, 3), matrix([[3, 6], [9, 12]], 'sparse'))
+      approxDeepEqual(multiply(3, a), matrix([[3, 6], [9, 12]], 'sparse'))
     })
 
     it('should perform matrix multiplication', function () {
-      approx.deepEqual(multiply(a, b), matrix([[19, 22], [43, 50]], 'sparse'))
-      approx.deepEqual(multiply(a, c), matrix([[17], [39]], 'sparse'))
-      approx.deepEqual(multiply(d, a), matrix([[23, 34]], 'sparse'))
-      approx.deepEqual(multiply(d, b), matrix([[67, 78]], 'sparse'))
-      approx.deepEqual(multiply(d, c), matrix([[61]], 'sparse'))
+      approxDeepEqual(multiply(a, b), matrix([[19, 22], [43, 50]], 'sparse'))
+      approxDeepEqual(multiply(a, c), matrix([[17], [39]], 'sparse'))
+      approxDeepEqual(multiply(d, a), matrix([[23, 34]], 'sparse'))
+      approxDeepEqual(multiply(d, b), matrix([[67, 78]], 'sparse'))
+      approxDeepEqual(multiply(d, c), matrix([[61]], 'sparse'))
     })
 
     it('should multiply two pattern matrices correctly', function () {

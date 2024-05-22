@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -11,18 +11,18 @@ const biggermath = math.create({ number: 'BigNumber', precision: 22 })
 
 describe('csch', function () {
   it('should return the csch of a boolean', function () {
-    approx.equal(csch(true), 0.85091812823932)
-    approx.equal(csch(false), Number.POSITIVE_INFINITY)
+    approxEqual(csch(true), 0.85091812823932)
+    approxEqual(csch(false), Number.POSITIVE_INFINITY)
   })
 
   it('should return the csch of a number', function () {
-    approx.equal(csch(0), Number.POSITIVE_INFINITY)
-    approx.equal(csch(pi), 0.086589537530047)
-    approx.equal(csch(1), 0.85091812823932)
-    approx.equal(csch(2), 0.27572056477178)
-    approx.equal(csch(3), 0.099821569668823)
-    approx.equal(csch(1e-22), Number.POSITIVE_INFINITY)
-    approx.equal(csch(-1e-22), Number.NEGATIVE_INFINITY)
+    approxEqual(csch(0), Number.POSITIVE_INFINITY)
+    approxEqual(csch(pi), 0.086589537530047)
+    approxEqual(csch(1), 0.85091812823932)
+    approxEqual(csch(2), 0.27572056477178)
+    approxEqual(csch(3), 0.099821569668823)
+    approxEqual(csch(1e-22), Number.POSITIVE_INFINITY)
+    approxEqual(csch(-1e-22), Number.NEGATIVE_INFINITY)
   })
 
   it('should return the csch of a bignumber', function () {
@@ -39,9 +39,9 @@ describe('csch', function () {
   })
 
   it('should return the csch of a complex number', function () {
-    approx.deepEqual(csch(complex('1')), complex(0.85091812823932, 0))
-    approx.deepEqual(csch(complex('i')), complex(0, -1.1883951057781))
-    approx.deepEqual(csch(complex('2 + i')), complex(0.14136302161241, -0.22837506559969))
+    approxDeepEqual(csch(complex('1')), complex(0.85091812823932, 0))
+    approxDeepEqual(csch(complex('i')), complex(0, -1.1883951057781))
+    approxDeepEqual(csch(complex('2 + i')), complex(0.14136302161241, -0.22837506559969))
   })
 
   it('should throw an error on an angle', function () {
@@ -60,12 +60,12 @@ describe('csch', function () {
 
   it('should not operate on an array', function () {
     assert.throws(() => csch([1, 2, 3]), TypeError)
-    approx.deepEqual(math.map([1, 2, 3], csch), csch123)
+    approxDeepEqual(math.map([1, 2, 3], csch), csch123)
   })
 
   it('should not operate on a matrix', function () {
     assert.throws(() => csch(matrix([1, 2, 3])), TypeError)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), csch), matrix(csch123))
+    approxDeepEqual(math.map(matrix([1, 2, 3]), csch), matrix(csch123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

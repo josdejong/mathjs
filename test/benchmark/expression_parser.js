@@ -2,11 +2,13 @@
 
 // browserify benchmark/expression_parser.js -o ./benchmark_expression_parser.js
 
-const assert = require('assert')
-const Benchmark = require('benchmark')
-const padRight = require('pad-right')
-const math = require('../..')
-const { getSafeProperty } = require('../../lib/cjs/utils/customs')
+import assert from 'node:assert'
+import Benchmark from 'benchmark'
+import padRight from 'pad-right'
+import { create, all } from '../../lib/esm/index.js'
+import { getSafeProperty } from '../../lib/esm/utils/customs.js'
+
+const math = create(all)
 
 // expose on window when using bundled in a browser
 if (typeof window !== 'undefined') {

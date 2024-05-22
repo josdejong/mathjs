@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -14,16 +14,16 @@ const Big = bigmath.bignumber
 
 describe('acot', function () {
   it('should return the arccot of a boolean', function () {
-    approx.equal(acot(true), pi / 4)
+    approxEqual(acot(true), pi / 4)
     assert.strictEqual(acot(false), pi / 2)
   })
 
   it('should return the arccot of a number', function () {
-    approx.equal(acot(-1) / pi, -0.25)
-    approx.equal(acot(-0.5), -1.107148717794)
+    approxEqual(acot(-1) / pi, -0.25)
+    approxEqual(acot(-0.5), -1.107148717794)
     assert.strictEqual(acot(0), pi / 2)
-    approx.equal(acot(0.5), 1.107148717794)
-    approx.equal(acot(1) / pi, 0.25)
+    approxEqual(acot(0.5), 1.107148717794)
+    approxEqual(acot(1) / pi, 0.25)
 
     assert.strictEqual(acot(-Infinity), -0)
     assert.strictEqual(acot(Infinity), 0)
@@ -58,11 +58,11 @@ describe('acot', function () {
   })
 
   it('should be the inverse function of cot', function () {
-    approx.equal(acot(cot(-1)), -1)
-    approx.equal(acot(cot(0)), 0)
-    approx.equal(acot(cot(0.1)), 0.1)
-    approx.equal(acot(cot(0.5)), 0.5)
-    approx.equal(acot(cot(2)), -1.14159265358979)
+    approxEqual(acot(cot(-1)), -1)
+    approxEqual(acot(cot(0)), 0)
+    approxEqual(acot(cot(0.1)), 0.1)
+    approxEqual(acot(cot(0.5)), 0.5)
+    approxEqual(acot(cot(2)), -1.14159265358979)
   })
 
   it('should be the inverse function of bignumber cot', function () {
@@ -79,13 +79,13 @@ describe('acot', function () {
   it('should return the arccot of a complex number', function () {
     const re = 0.160875277198321
     const im = 0.229072682968539
-    approx.deepEqual(acot(complex('2+3i')), complex(re, -im))
-    approx.deepEqual(acot(complex('2-3i')), complex(re, im))
-    approx.deepEqual(acot(complex('-2+3i')), complex(-re, -im))
-    approx.deepEqual(acot(complex('-2-3i')), complex(-re, im))
+    approxDeepEqual(acot(complex('2+3i')), complex(re, -im))
+    approxDeepEqual(acot(complex('2-3i')), complex(re, im))
+    approxDeepEqual(acot(complex('-2+3i')), complex(-re, -im))
+    approxDeepEqual(acot(complex('-2-3i')), complex(-re, im))
     assert.deepStrictEqual(acot(complex('i')), complex(0, -Infinity))
-    approx.deepEqual(acot(complex('1')), complex(pi / 4, 0))
-    approx.deepEqual(acot(complex('1+i')), complex(0.553574358897, -0.4023594781085))
+    approxDeepEqual(acot(complex('1')), complex(pi / 4, 0))
+    approxDeepEqual(acot(complex('1+i')), complex(0.553574358897, -0.4023594781085))
   })
 
   it('should throw an error if called with a unit', function () {
@@ -102,8 +102,8 @@ describe('acot', function () {
     assert.throws(() => acot(matrix([1, 2, 3])), TypeError)
     // matrix, array, range
     const acot123 = [pi / 4, 0.4636476090008, 0.3217505543966]
-    approx.deepEqual(math.map([1, 2, 3], acot), acot123)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), acot), matrix(acot123))
+    approxDeepEqual(math.map([1, 2, 3], acot), acot123)
+    approxDeepEqual(math.map(matrix([1, 2, 3]), acot), matrix(acot123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
