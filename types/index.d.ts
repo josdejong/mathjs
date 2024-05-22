@@ -739,7 +739,15 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created number
    */
   number(
-    value?: string | number | BigNumber | bigint | Fraction | boolean | Unit | null
+    value?:
+      | string
+      | number
+      | BigNumber
+      | bigint
+      | Fraction
+      | boolean
+      | Unit
+      | null
   ): number
   number(value?: MathCollection): number | MathCollection
   /**
@@ -3451,7 +3459,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when x is NaN. Throws an error in case of an
    * unknown data type.
    */
-  isNaN(x: number | BigNumber | bigint | Fraction | MathCollection | Unit): boolean
+  isNaN(
+    x: number | BigNumber | bigint | Fraction | MathCollection | Unit
+  ): boolean
 
   /**
    * Test whether a value is negative: smaller than zero. The function
@@ -3461,7 +3471,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when x is larger than zero. Throws an error in
    * case of an unknown data type.
    */
-  isNegative(x: number | BigNumber | bigint | Fraction | MathCollection | Unit): boolean
+  isNegative(
+    x: number | BigNumber | bigint | Fraction | MathCollection | Unit
+  ): boolean
 
   /**
    * Test whether a value is an numeric value. The function is evaluated
@@ -3482,7 +3494,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when x is larger than zero. Throws an error in
    * case of an unknown data type.
    */
-  isPositive(x: number | BigNumber | bigint | Fraction | MathCollection | Unit): boolean
+  isPositive(
+    x: number | BigNumber | bigint | Fraction | MathCollection | Unit
+  ): boolean
 
   /**
    * Test whether a value is prime: has no divisors other than itself and
@@ -6710,7 +6724,9 @@ export interface MathJsChain<TValue> {
    */
 
   isPositive(
-    this: MathJsChain<number | BigNumber | bigint | Fraction | MathCollection | Unit>
+    this: MathJsChain<
+      number | BigNumber | bigint | Fraction | MathCollection | Unit
+    >
   ): MathJsChain<boolean>
 
   /**
