@@ -683,7 +683,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns a fraction
    */
   fraction(
-    value: number | string | BigNumber | Unit | Fraction | FractionDefinition
+    value: number | string | BigNumber | bigint | Unit | Fraction | FractionDefinition
   ): Fraction
   fraction(values: MathCollection): MathCollection
   /**
@@ -4430,7 +4430,7 @@ export interface MathJsChain<TValue> {
    */
   fraction(
     this: MathJsChain<
-      number | string | BigNumber | Unit | Fraction | FractionDefinition
+      number | string | BigNumber | bigint | Unit | Fraction | FractionDefinition
     >,
     denominator?: number
   ): MathJsChain<Fraction>
