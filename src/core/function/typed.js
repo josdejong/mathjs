@@ -75,7 +75,7 @@ import {
   isString,
   isSymbolNode,
   isUndefined,
-  isUnit
+  isUnit, isBigInt
 } from '../../utils/is.js'
 import typedFunction from 'typed-function'
 import { digits } from '../../utils/number.js'
@@ -116,6 +116,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'number', test: isNumber },
     { name: 'Complex', test: isComplex },
     { name: 'BigNumber', test: isBigNumber },
+    { name: 'BigInt', test: isBigInt },
     { name: 'Fraction', test: isFraction },
     { name: 'Unit', test: isUnit },
     // The following type matches a valid variable name, i.e., an alphanumeric
@@ -200,6 +201,27 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         }
 
         return new Complex(x.toNumber(), 0)
+      }
+    }, {
+      from: 'BigInt',
+      to: 'number',
+      convert: function (x) {
+        if (x > Number.MAX_SAFE_INTEGER) {
+          throw new TypeError('Cannot implicitly convert BigInt to number: ' +
+            'value exceeds the max safe integer value (value: ' + x + ')')
+        }
+
+        return Number(x)
+      }
+    },{
+      from: 'BigInt',
+      to: 'BigNumber',
+      convert: function (x) {
+        if (!BigNumber) {
+          throwNoBignumber(x)
+        }
+
+        return new BigNumber(x.toString())
       }
     }, {
       from: 'Fraction',
