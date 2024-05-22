@@ -118,7 +118,7 @@ The code of `mathjs` is written in ES modules, and requires all files to have a 
 
 What mathjs tries to achieve is to offer an environment where you can do calculations with mixed data types,
 like multiplying a regular `number` with a `Complex` number or a `BigNumber`, and work with all of those in matrices.
-Mathjs also allows to add a new data type, like say `BigInt`, with little effort.
+Mathjs also allows to add a new data type with little effort.
 
 The solution that mathjs uses has two main ingredients:
 

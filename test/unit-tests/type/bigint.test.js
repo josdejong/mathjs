@@ -71,7 +71,7 @@ describe('bigint', function () {
     assert.throws(function () { bigint('23', 2) }, TypeError)
   })
 
-  // FIXME: add BigInt support for LaTeX
+  // FIXME: add bigint support for LaTeX
   it.skip('should LaTeX bigint', function () {
     const expr1 = math.parse('bigint()')
     const expr2 = math.parse('bigint(1)')

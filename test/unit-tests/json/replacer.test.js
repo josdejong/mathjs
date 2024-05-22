@@ -33,9 +33,9 @@ describe('replacer', function () {
     assert.deepStrictEqual(JSON.stringify(b, replacer), json)
   })
 
-  it('should stringify a BigInt', function () {
+  it('should stringify a bigint', function () {
     const b = 12345678901234567890n
-    const json = '{"mathjs":"BigInt","value":"12345678901234567890"}'
+    const json = '{"mathjs":"bigint","value":"12345678901234567890"}'
 
     assert.deepStrictEqual(JSON.stringify(b, replacer), json)
   })

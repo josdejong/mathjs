@@ -27,7 +27,7 @@ export const createReplacer = /* #__PURE__ */ factory(name, dependencies, () => 
 
     if (typeof value === 'bigint') {
       return {
-        mathjs: 'BigInt',
+        mathjs: 'bigint',
         value: String(value)
       }
     }

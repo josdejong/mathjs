@@ -26,7 +26,7 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    number, bigint, boolean, complex, index, matrix, string, unit
    *
-   * @param {number | string | Fraction | BigNumber | BigInt | Array | Matrix | boolean | null} [value]  Value for the big number,
+   * @param {number | string | Fraction | BigNumber | bigint | Array | Matrix | boolean | null} [value]  Value for the big number,
    *                                                    0 by default.
    * @returns {BigNumber} The created bignumber
    */
@@ -65,7 +65,7 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
       return x
     },
 
-    BigInt: function (x) {
+    bigint: function (x) {
       return new BigNumber(x.toString())
     },
 

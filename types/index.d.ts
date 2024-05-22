@@ -587,9 +587,21 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created bignumber
    */
   bignumber(
-    x?: number | string | Fraction | BigNumber | Unit | boolean | null
+    x?: number | string | Fraction | BigNumber | bigint | Unit | boolean | null
   ): BigNumber
   bignumber<T extends MathCollection>(x: T): T
+
+  /**
+   * Create a bigint, which can store integers with arbitrary precision.
+   * When a matrix is provided, all elements will be converted to
+   * bigint.
+   * @param x Value for the integer, 0 by default.
+   * @returns The created bigint
+   */
+  bigint(
+    x?: number | string | Fraction | BigNumber | bigint | boolean | null
+  ): BigNumber
+  bigint<T extends MathCollection>(x: T): T
 
   /**
    * Create a boolean or convert a string or number to a boolean. In case
@@ -4341,10 +4353,21 @@ export interface MathJsChain<TValue> {
    */
   bignumber(
     this: MathJsChain<
-      number | string | Fraction | BigNumber | Unit | boolean | null
+      number | string | Fraction | BigNumber | bigint | Unit | boolean | null
     >
   ): MathJsChain<BigNumber>
   bignumber<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
+
+  /**
+   * Create a bigint, which can store integers with arbitrary precision.
+   * When a matrix is provided, all elements will be converted to bigint.
+   */
+  bigint(
+    this: MathJsChain<
+      number | string | Fraction | BigNumber | bigint | boolean | null
+    >
+  ): MathJsChain<BigNumber>
+  bigint<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
 
   /**
    * Create a boolean or convert a string or number to a boolean. In case

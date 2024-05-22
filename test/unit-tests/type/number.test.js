@@ -22,7 +22,7 @@ describe('number', function () {
     approxEqual(number(math.bignumber('1.3e500')), Infinity)
   })
 
-  it('should convert a BigInt to a number', function () {
+  it('should convert a bigint to a number', function () {
     assert.strictEqual(number(123n), 123)
     assert.strictEqual(number(12345678901234567890n).toString(), '12345678901234567000') // note: we've lost digits here
   })

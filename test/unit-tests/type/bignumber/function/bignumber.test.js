@@ -71,7 +71,7 @@ describe('bignumber', function () {
     assert.strictEqual(b.toString(), '0.6666666666666666666666666666666666666666666666666666666666666667')
   })
 
-  it('should create a bignumber from a BigInt', function () {
+  it('should create a bignumber from a bigint', function () {
     assert.deepStrictEqual(math.bignumber(12345678901234567890n), new BigNumber('12345678901234567890'))
   })
 

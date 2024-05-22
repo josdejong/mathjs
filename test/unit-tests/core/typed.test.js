@@ -39,7 +39,7 @@ describe('typed', function () {
     assert.strictEqual(math.isBigNumber(), false)
   })
 
-  it('should test whether a value is a BigInt', function () {
+  it('should test whether a value is a bigint', function () {
     assert.strictEqual(math.isBigInt(2n), true)
     assert.strictEqual(math.isBigInt(BigInt(2)), true)
     assert.strictEqual(math.isBigInt(2), false)
@@ -338,7 +338,7 @@ describe('typed', function () {
     assert.strictEqual(math.isChain(), false)
   })
 
-  it('should convert a BigInt to number if possible', function () {
+  it('should convert a bigint to number if possible', function () {
     const double = math.typed('double', {
       number: (x) => x + x
     })
@@ -348,7 +348,7 @@ describe('typed', function () {
     assert.throws(() => double(12345678901234567890n), /value exceeds the max safe integer/)
   })
 
-  it('should convert a BigInt to BigNumber', function () {
+  it('should convert a bigint to BigNumber', function () {
     const double = math.typed('double', {
       BigNumber: (x) => x.plus(x)
     })

@@ -38,8 +38,8 @@ describe('reviver', function () {
     assert.deepStrictEqual(obj, b)
   })
 
-  it('should parse a stringified BigInt', function () {
-    const json = '{"mathjs":"BigInt","value":"12345678901234567890"}'
+  it('should parse a stringified bigint', function () {
+    const json = '{"mathjs":"bigint","value":"12345678901234567890"}'
 
     assert.deepStrictEqual(JSON.parse(json, reviver), 12345678901234567890n)
   })
