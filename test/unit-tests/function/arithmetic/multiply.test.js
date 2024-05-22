@@ -62,8 +62,8 @@ describe('multiply', function () {
     })
 
     it('should multiply mixed bigints and BigNumbers', function () {
-      assert.deepStrictEqual(multiply(new bignumber(2), 3n), new bignumber(6))
-      assert.deepStrictEqual(multiply(2n, new bignumber(3)), new bignumber(6))
+      assert.deepStrictEqual(multiply(bignumber(2), 3n), bignumber(6))
+      assert.deepStrictEqual(multiply(2n, bignumber(3)), bignumber(6))
     })
 
     it('should throw an error when multipling mixed fractions and bignumbers', function () {
