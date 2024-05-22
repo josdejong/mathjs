@@ -44,6 +44,7 @@ describe('bigint', function () {
   })
 
   it('should throw an error if called with an invalid string', function () {
+    assert.throws(function () { bigint('2.3') }, SyntaxError)
     assert.throws(function () { bigint('2.3.4') }, SyntaxError)
     assert.throws(function () { bigint('23a') }, SyntaxError)
   })
