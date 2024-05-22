@@ -683,7 +683,14 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns a fraction
    */
   fraction(
-    value: number | string | BigNumber | bigint | Unit | Fraction | FractionDefinition
+    value:
+      | number
+      | string
+      | BigNumber
+      | bigint
+      | Unit
+      | Fraction
+      | FractionDefinition
   ): Fraction
   fraction(values: MathCollection): MathCollection
   /**
@@ -742,6 +749,28 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created number
    */
   number(unit: Unit, valuelessUnit: Unit | string): number
+
+  /**
+   * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
+   * @param value The value to be converted
+   * @param outputType The desired numeric output type
+   */
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'number'
+  ): number
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'BigNumber'
+  ): BigNumber
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'bigint'
+  ): bigint
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'Fraction'
+  ): Fraction
 
   /**
    * Create a Sparse Matrix. The function creates a new math.type.Matrix
@@ -4430,7 +4459,13 @@ export interface MathJsChain<TValue> {
    */
   fraction(
     this: MathJsChain<
-      number | string | BigNumber | bigint | Unit | Fraction | FractionDefinition
+      | number
+      | string
+      | BigNumber
+      | bigint
+      | Unit
+      | Fraction
+      | FractionDefinition
     >,
     denominator?: number
   ): MathJsChain<Fraction>
@@ -4472,6 +4507,27 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathCollection>,
     valuelessUnit?: Unit | string
   ): MathJsChain<MathCollection>
+
+  /**
+   * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
+   * @param outputType The desired numeric output type
+   */
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'number'
+  ): MathJsChain<number>
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'BigNumber'
+  ): MathJsChain<BigNumber>
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'bigint'
+  ): MathJsChain<bigint>
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'Fraction'
+  ): MathJsChain<Fraction>
 
   /**
    * Create a Sparse Matrix. The function creates a new math.type.Matrix

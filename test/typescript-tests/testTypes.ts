@@ -341,6 +341,14 @@ Chaining examples
     MathJsChain<MathCollection>
   >()
 
+  // numeric
+  expectTypeOf(math.chain('12').numeric('bigint')).toMatchTypeOf<
+    MathJsChain<bigint>
+  >()
+  expectTypeOf(math.chain(12).numeric('BigNumber')).toMatchTypeOf<
+    MathJsChain<BigNumber>
+  >()
+
   // sparse
   expectTypeOf(math.chain([12, 13, 14, 15]).sparse()).toMatchTypeOf<
     MathJsChain<Matrix>
