@@ -39,6 +39,14 @@ describe('typed', function () {
     assert.strictEqual(math.isBigNumber(), false)
   })
 
+  it('should test whether a value is a BigInt', function () {
+    assert.strictEqual(math.isBigInt(2n), true)
+    assert.strictEqual(math.isBigInt(BigInt(2)), true)
+    assert.strictEqual(math.isBigInt(2), false)
+    assert.strictEqual(math.isBigInt(null), false)
+    assert.strictEqual(math.isBigInt(), false)
+  })
+
   it('should recognize a Decimal as a BigNumber', function () {
     assert.strictEqual(math.isBigNumber(Decimal(2)), true)
     assert.strictEqual(math.isBigNumber(Decimal('2.6666666')), true)

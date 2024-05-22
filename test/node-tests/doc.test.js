@@ -163,6 +163,7 @@ const knownUndocumented = new Set([
   'isNumber',
   'isComplex',
   'isBigNumber',
+  'isBigInt',
   'isFraction',
   'isUnit',
   'isString',

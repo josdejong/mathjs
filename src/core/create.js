@@ -43,7 +43,8 @@ import {
   isString,
   isSymbolNode,
   isUndefined,
-  isUnit
+  isUnit,
+  isBigInt
 } from '../utils/is.js'
 import { ArgumentsError } from '../error/ArgumentsError.js'
 import { DimensionError } from '../error/DimensionError.js'
@@ -107,6 +108,7 @@ export function create (factories, config) {
     isNumber,
     isComplex,
     isBigNumber,
+    isBigInt,
     isFraction,
     isUnit,
     isString,
