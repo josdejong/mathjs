@@ -112,6 +112,10 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return x.toNumber()
     },
 
+    BigInt: function (x) {
+      return Number(x)
+    },
+
     Fraction: function (x) {
       return x.valueOf()
     },

@@ -17,12 +17,17 @@ describe('number', function () {
     approxEqual(number(null), 0)
   })
 
-  it('should convert a bignumber to a number', function () {
+  it('should convert a BigNumber to a number', function () {
     approxEqual(number(math.bignumber(0.1)), 0.1)
     approxEqual(number(math.bignumber('1.3e500')), Infinity)
   })
 
-  it('should convert a fraction to a number', function () {
+  it('should convert a BigInt to a number', function () {
+    assert.strictEqual(number(123n), 123)
+    assert.strictEqual(number(12345678901234567890n).toString(), '12345678901234567000') // note: we've lost digits here
+  })
+
+  it('should convert a Fraction to a number', function () {
     approxEqual(number(math.fraction(2, 5)), 0.4)
   })
 
