@@ -17,6 +17,13 @@ describe('isPositive', function () {
     assert.strictEqual(isPositive(NaN), false)
   })
 
+  it('should test whether a bigint is positive', function () {
+    assert.strictEqual(isPositive(0n), false)
+    assert.strictEqual(isPositive(-0n), false)
+    assert.strictEqual(isPositive(2n), true)
+    assert.strictEqual(isPositive(-3n), false)
+  })
+
   it('should test whether a number is near positive', function () {
     assert.strictEqual(isPositive(1e-17), false)
     assert.strictEqual(isPositive(-1e-17), false)

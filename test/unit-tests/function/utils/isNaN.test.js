@@ -16,6 +16,12 @@ describe('isNegative', function () {
     assert.strictEqual(isNaN(NaN), true)
   })
 
+  it('should test whether a bigint is NaN', function () {
+    assert.strictEqual(isNaN(0n), false)
+    assert.strictEqual(isNaN(2n), false)
+    assert.strictEqual(isNaN(-3n), false)
+  })
+
   it('should test whether a boolean is NaN', function () {
     assert.strictEqual(isNaN(true), false)
     assert.strictEqual(isNaN(false), false)

@@ -35,7 +35,7 @@ export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ t
    *
    *    isNumeric, isZero, isNegative, isInteger
    *
-   * @param {number | BigNumber | Fraction | Unit | Array | Matrix} x  Value to be tested
+   * @param {number | BigNumber | bigint | Fraction | Unit | Array | Matrix} x  Value to be tested
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
@@ -46,6 +46,8 @@ export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ t
       bigNearlyEqual(x, new x.constructor(0), config.relTol, config.absTol)
         ? false
         : !x.isNeg() && !x.isZero() && !x.isNaN(),
+
+    bigint: x => x > 0n,
 
     Fraction: x => x.s > 0 && x.n > 0,
 

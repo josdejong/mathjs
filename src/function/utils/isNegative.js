@@ -33,7 +33,7 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
    *
    *    isNumeric, isPositive, isZero, isInteger
    *
-   * @param {number | BigNumber | Fraction | Unit | Array | Matrix} x  Value to be tested
+   * @param {number | BigNumber | bigint | Fraction | Unit | Array | Matrix} x  Value to be tested
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
@@ -43,6 +43,8 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
     BigNumber: x => bigNearlyEqual(x, new x.constructor(0), config.relTol, config.absTol)
       ? false
       : x.isNeg() && !x.isZero() && !x.isNaN(),
+
+    bigint: x => x < 0n,
 
     Fraction: x => x.s < 0, // It's enough to decide on the sign
 
