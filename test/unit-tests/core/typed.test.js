@@ -357,4 +357,13 @@ describe('typed', function () {
     assert.deepStrictEqual(double(2n), math.bignumber(4))
     assert.deepStrictEqual(double(12345678901234567890n), math.bignumber('24691357802469135780'))
   })
+
+  it('should convert a bigint to Fraction', function () {
+    const double = math.typed('double', {
+      Fraction: (x) => x.add(x)
+    })
+
+    assert.deepStrictEqual(double(math.fraction(2)), math.fraction(4))
+    assert.deepStrictEqual(double(2n), math.fraction(4))
+  })
 })

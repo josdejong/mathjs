@@ -19,6 +19,10 @@ describe('divide', function () {
     assert.ok(isNaN(divide(0, 0)))
   })
 
+  it('should divide bigint', function () {
+    assert.strictEqual(divide(6n, 3n), 2n)
+  })
+
   it('should divide booleans', function () {
     assert.strictEqual(divide(true, true), 1)
     assert.strictEqual(divide(true, false), Infinity)
@@ -31,6 +35,11 @@ describe('divide', function () {
     assert.strictEqual(divide(2, false), Infinity)
     approxEqual(divide(true, 2), 0.5)
     assert.strictEqual(divide(false, 2), 0)
+  })
+
+  it('should divide mixed numbers and bigint', function () {
+    assert.strictEqual(divide(6, 3n), 2)
+    assert.strictEqual(divide(6n, 3), 2)
   })
 
   it('should divide bignumbers', function () {
@@ -106,6 +115,11 @@ describe('divide', function () {
   it('should divide mixed fractions and numbers', function () {
     assert.deepStrictEqual(divide(1, math.fraction(3)), math.fraction(1, 3))
     assert.deepStrictEqual(divide(math.fraction(1), 3), math.fraction(1, 3))
+  })
+
+  it('should divide mixed fractions and bigints', function () {
+    assert.deepStrictEqual(divide(1n, math.fraction(3)), math.fraction(1, 3))
+    assert.deepStrictEqual(divide(math.fraction(1), 3n), math.fraction(1, 3))
   })
 
   it('should divide units by a number', function () {

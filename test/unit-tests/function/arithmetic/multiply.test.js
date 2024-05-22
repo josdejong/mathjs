@@ -24,6 +24,10 @@ describe('multiply', function () {
       approxDeepEqual(multiply(-2, Infinity), -Infinity)
     })
 
+    it('should multiply bigint', function () {
+      assert.strictEqual(multiply(2n, 3n), 6n)
+    })
+
     it('should multiply booleans', function () {
       assert.strictEqual(multiply(true, true), 1)
       assert.strictEqual(multiply(true, false), 0)
@@ -38,6 +42,11 @@ describe('multiply', function () {
       assert.strictEqual(multiply(false, 2), 0)
     })
 
+    it('should multiply mixed numbers and bigint', function () {
+      assert.strictEqual(multiply(2, 3n), 6)
+      assert.strictEqual(multiply(2n, 3), 6)
+    })
+
     it('should multiply bignumbers', function () {
       assert.deepStrictEqual(multiply(bignumber(1.5), bignumber(0.2)), bignumber(0.3))
       assert.deepStrictEqual(multiply(bignumber('1.3e5000'), bignumber('2')), bignumber('2.6e5000'))
@@ -50,6 +59,11 @@ describe('multiply', function () {
 
       assert.throws(function () { multiply(1 / 3, bignumber(1).div(3)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
       assert.throws(function () { multiply(bignumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+    })
+
+    it('should multiply mixed bigints and BigNumbers', function () {
+      assert.deepStrictEqual(multiply(new bignumber(2), 3n), new bignumber(6))
+      assert.deepStrictEqual(multiply(2n, new bignumber(3)), new bignumber(6))
     })
 
     it('should throw an error when multipling mixed fractions and bignumbers', function () {
@@ -132,6 +146,11 @@ describe('multiply', function () {
     it('should multiply mixed fractions and numbers', function () {
       assert.deepStrictEqual(multiply(2, math.fraction(1, 3)), math.fraction(2, 3))
       assert.deepStrictEqual(multiply(math.fraction(1, 3), 2), math.fraction(2, 3))
+    })
+
+    it('should multiply mixed fractions and bigints', function () {
+      assert.deepStrictEqual(multiply(2n, math.fraction(1, 3)), math.fraction(2, 3))
+      assert.deepStrictEqual(multiply(math.fraction(1, 3), 2n), math.fraction(2, 3))
     })
 
     it('should multiply a number and a unit correctly', function () {

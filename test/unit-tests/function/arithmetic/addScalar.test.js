@@ -15,6 +15,10 @@ describe('addScalar', function () {
     assert.strictEqual(add(-5, -3), -8)
   })
 
+  it('should add bigint', function () {
+    assert.strictEqual(add(2n, 3n), 5n)
+  })
+
   it('should add booleans', function () {
     assert.strictEqual(add(true, true), 2)
     assert.strictEqual(add(true, false), 1)
@@ -33,6 +37,11 @@ describe('addScalar', function () {
     assert.strictEqual(add(false, 2), 2)
   })
 
+  it('should add mixed numbers and bigint', function () {
+    assert.strictEqual(add(2, 3n), 5)
+    assert.strictEqual(add(2n, 3), 5)
+  })
+
   it('should add BigNumbers', function () {
     assert.deepStrictEqual(add(new BigNumber(0.1), new BigNumber(0.2)), new BigNumber(0.3))
     assert.deepStrictEqual(add(new BigNumber('2e5001'), new BigNumber('3e5000')), new BigNumber('2.3e5001'))
@@ -45,6 +54,11 @@ describe('addScalar', function () {
 
     assert.throws(function () { add(1 / 3, new BigNumber(1)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { add(new BigNumber(1), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+  })
+
+  it('should add mixed bigints and BigNumbers', function () {
+    assert.deepStrictEqual(add(new BigNumber(2), 3n), new BigNumber(5))
+    assert.deepStrictEqual(add(2n, new BigNumber(3)), new BigNumber(5))
   })
 
   it('should add mixed booleans and BigNumbers', function () {
@@ -83,6 +97,11 @@ describe('addScalar', function () {
   it('should add mixed fractions and numbers', function () {
     assert.deepStrictEqual(add(1, math.fraction(1, 3)), math.fraction(4, 3))
     assert.deepStrictEqual(add(math.fraction(1, 3), 1), math.fraction(4, 3))
+  })
+
+  it('should add mixed fractions and bigints', function () {
+    assert.deepStrictEqual(add(1n, math.fraction(1, 3)), math.fraction(4, 3))
+    assert.deepStrictEqual(add(math.fraction(1, 3), 1n), math.fraction(4, 3))
   })
 
   it('should throw an error when converting a number to a fraction that is not an exact representation', function () {

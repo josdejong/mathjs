@@ -224,6 +224,16 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         return new BigNumber(x.toString())
       }
     }, {
+      from: 'bigint',
+      to: 'Fraction',
+      convert: function (x) {
+        if (!Fraction) {
+          throwNoFraction(x)
+        }
+
+        return new Fraction(x.toString())
+      }
+    }, {
       from: 'Fraction',
       to: 'BigNumber',
       convert: function (x) {
