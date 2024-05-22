@@ -1,4 +1,4 @@
-import assert from 'node:assert'
+import assert from 'assert' // do not use 'node:assert' here, that is not supported by Karma
 import { hasOwnProperty } from './utils.js'
 
 const EPSILON = 0.0001
