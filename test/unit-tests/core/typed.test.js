@@ -338,23 +338,23 @@ describe('typed', function () {
     assert.strictEqual(math.isChain(), false)
   })
 
-  it('should convert a BigInt to number if possible', () => {
+  it('should convert a BigInt to number if possible', function () {
     const double = math.typed('double', {
-      'number': (x) => x + x
+      number: (x) => x + x
     })
 
     assert.strictEqual(double(2), 4)
     assert.strictEqual(double(2n), 4)
-    assert.throws(() => double(123456789012345678901234567890n), /value exceeds the max safe integer/)
+    assert.throws(() => double(12345678901234567890n), /value exceeds the max safe integer/)
   })
 
-  it('should convert a BigInt to BigNumber', () => {
+  it('should convert a BigInt to BigNumber', function () {
     const double = math.typed('double', {
-      'BigNumber': (x) => x.plus(x)
+      BigNumber: (x) => x.plus(x)
     })
 
     assert.deepStrictEqual(double(math.bignumber(2)), math.bignumber(4))
     assert.deepStrictEqual(double(2n), math.bignumber(4))
-    assert.deepStrictEqual(double(123456789012345678901234567890n), math.bignumber('246913578024691357802469135780'))
+    assert.deepStrictEqual(double(12345678901234567890n), math.bignumber('24691357802469135780'))
   })
 })

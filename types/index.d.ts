@@ -11,7 +11,7 @@ export type NoLiteralType<T> = T extends number
       : T
 
 // TODO: introduce generics for MathCollection, MathMatrix, and MathArray
-export type MathNumericType = number | BigNumber | Fraction | Complex
+export type MathNumericType = number | BigNumber | bigint | Fraction | Complex
 export type MathScalarType = MathNumericType | Unit
 export type MathArray = MathNumericType[] | MathNumericType[][] // TODO: MathArray can also contain Unit
 export type MathCollection = MathArray | Matrix
@@ -3292,6 +3292,8 @@ export interface MathJsInstance extends MathJsFactory {
 
   isBigNumber(x: unknown): x is BigNumber
 
+  isBigInt(x: unknown): x is bigint
+
   isComplex(x: unknown): x is Complex
 
   isFraction(x: unknown): x is Fraction
@@ -4439,7 +4441,7 @@ export interface MathJsChain<TValue> {
    */
   number(
     this: MathJsChain<
-      string | number | BigNumber | Fraction | boolean | Unit | null
+      string | number | BigNumber | bigint | Fraction | boolean | Unit | null
     >,
     valuelessUnit?: Unit | string
   ): MathJsChain<number>

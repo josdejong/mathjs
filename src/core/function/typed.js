@@ -213,7 +213,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
 
         return Number(x)
       }
-    },{
+    }, {
       from: 'BigInt',
       to: 'BigNumber',
       convert: function (x) {

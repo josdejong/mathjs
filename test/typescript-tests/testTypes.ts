@@ -2470,7 +2470,7 @@ Statistics functions' return types
     math.min([math.unit('5cm'), math.unit('10cm')])
   ).toMatchTypeOf<Unit>()
   expectTypeOf(math.min(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber | Fraction | Complex | Unit
+    number | BigNumber | bigint | Fraction | Complex | Unit
   >()
   expectTypeOf(
     math.min(
@@ -2509,7 +2509,7 @@ Statistics functions' return types
     math.mean([math.unit('5cm'), math.unit('10cm')])
   ).toMatchTypeOf<Unit>()
   expectTypeOf(math.mean(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber | Fraction | Complex | Unit
+    number | BigNumber | bigint | Fraction | Complex | Unit
   >()
 
   expectTypeOf(math.median(1, 2, 3)).toMatchTypeOf<number>()
@@ -2524,7 +2524,7 @@ Statistics functions' return types
     math.median([math.unit('5cm'), math.unit('10cm')])
   ).toMatchTypeOf<Unit>()
   expectTypeOf(math.median(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber | Fraction | Complex | Unit
+    number | BigNumber | bigint | Fraction | Complex | Unit
   >()
 
   expectTypeOf(math.quantileSeq([1, 2, 3], 0.75)).toMatchTypeOf<number>()
