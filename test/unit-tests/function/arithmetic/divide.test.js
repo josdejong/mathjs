@@ -40,6 +40,9 @@ describe('divide', function () {
   it('should divide mixed numbers and bigint', function () {
     assert.strictEqual(divide(6, 3n), 2)
     assert.strictEqual(divide(6n, 3), 2)
+
+    assert.throws(function () { divide(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+    assert.throws(function () { divide(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
   })
 
   it('should divide bignumbers', function () {

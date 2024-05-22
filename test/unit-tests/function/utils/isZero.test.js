@@ -19,6 +19,13 @@ describe('isZero', function () {
     assert.strictEqual(isZero(NaN), false)
   })
 
+  it('should test whether a bigint is zero', function () {
+    assert.strictEqual(isZero(0n), true)
+    assert.strictEqual(isZero(-0n), true)
+    assert.strictEqual(isZero(2n), false)
+    assert.strictEqual(isZero(-3n), false)
+  })
+
   it('should test whether a number is near zero', function () {
     assert.strictEqual(isZero(1e-17), true)
     assert.strictEqual(isZero(1e-16), true)

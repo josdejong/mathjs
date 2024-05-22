@@ -34,12 +34,12 @@ export const createIsZero = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    isNumeric, isPositive, isNegative, isInteger
    *
-   * @param {number | BigNumber | Complex | Fraction | Unit | Array | Matrix} x       Value to be tested
+   * @param {number | BigNumber | bigint | Complex | Fraction | Unit | Array | Matrix} x       Value to be tested
    * @return {boolean}  Returns true when `x` is zero.
    *                    Throws an error in case of an unknown data type.
    */
   return typed(name, {
-    'number | BigNumber | Complex | Fraction': x => equalScalar(x, 0),
+    'number | BigNumber | bigint | Complex | Fraction': x => equalScalar(x, 0),
 
     Unit: typed.referToSelf(self =>
       x => typed.find(self, x.valueType())(x.value)),

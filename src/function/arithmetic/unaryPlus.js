@@ -25,9 +25,9 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    unaryMinus, add, subtract
    *
-   * @param  {number | BigNumber | Fraction | string | Complex | Unit | Array | Matrix} x
+   * @param  {number | BigNumber | bigint | Fraction | string | Complex | Unit | Array | Matrix} x
    *            Input value
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix}
    *            Returns the input value when numeric, converts to a number when input is non-numeric.
    */
   return typed(name, {
@@ -39,6 +39,10 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
     BigNumber: function (x) {
       return x // bignumbers are immutable
+    },
+
+    bigint: function (x) {
+      return x
     },
 
     Fraction: function (x) {

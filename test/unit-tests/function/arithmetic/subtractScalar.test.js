@@ -40,6 +40,9 @@ describe('subtractScalar', function () {
   it('should subtractScalar mixed numbers and bigint', function () {
     assert.strictEqual(subtractScalar(7, 3n), 4)
     assert.strictEqual(subtractScalar(7n, 3), 4)
+
+    assert.throws(function () { subtractScalar(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+    assert.throws(function () { subtractScalar(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
   })
 
   it('should subtractScalar new BigNumbers', function () {

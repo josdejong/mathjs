@@ -46,6 +46,12 @@ describe('unaryPlus', function () {
     assert.deepStrictEqual(math.unaryPlus(0), 0)
   })
 
+  it('should perform unary plus of a bigint', function () {
+    assert.deepStrictEqual(math.unaryPlus(2n), 2n)
+    assert.deepStrictEqual(math.unaryPlus(-2n), -2n)
+    assert.deepStrictEqual(math.unaryPlus(0n), 0n)
+  })
+
   it('should perform unary plus of a big number', function () {
     assert.deepStrictEqual(math.unaryPlus(bignumber(2)), bignumber(2))
     assert.deepStrictEqual(math.unaryPlus(bignumber(-2)), bignumber(-2))

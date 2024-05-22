@@ -19,6 +19,14 @@ describe('clone', function () {
     assert.strictEqual(b, 1)
   })
 
+  it('should clone a bigint', function () {
+    let a = 1n
+    const b = math.clone(a)
+    a = 2n
+    assert.strictEqual(a, 2n)
+    assert.strictEqual(b, 1n)
+  })
+
   it('should throw an error on wrong number of arguments', function () {
     assert.throws(function () { math.clone() }, /TypeError: Too few arguments/)
     assert.throws(function () { math.clone(2, 4) }, /TypeError: Too many arguments/)

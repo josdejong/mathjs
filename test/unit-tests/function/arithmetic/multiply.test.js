@@ -45,6 +45,9 @@ describe('multiply', function () {
     it('should multiply mixed numbers and bigint', function () {
       assert.strictEqual(multiply(2, 3n), 6)
       assert.strictEqual(multiply(2n, 3), 6)
+
+      assert.throws(function () { multiply(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+      assert.throws(function () { multiply(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
     })
 
     it('should multiply bignumbers', function () {

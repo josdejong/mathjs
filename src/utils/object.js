@@ -15,7 +15,7 @@ export function clone (x) {
   const type = typeof x
 
   // immutable primitive types
-  if (type === 'number' || type === 'string' || type === 'boolean' ||
+  if (type === 'number' || type === 'bigint' || type === 'string' || type === 'boolean' ||
       x === null || x === undefined) {
     return x
   }

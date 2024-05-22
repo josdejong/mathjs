@@ -59,6 +59,9 @@ describe('addScalar', function () {
   it('should add mixed bigints and BigNumbers', function () {
     assert.deepStrictEqual(add(new BigNumber(2), 3n), new BigNumber(5))
     assert.deepStrictEqual(add(2n, new BigNumber(3)), new BigNumber(5))
+
+    assert.throws(function () { add(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+    assert.throws(function () { add(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
   })
 
   it('should add mixed booleans and BigNumbers', function () {

@@ -26,13 +26,15 @@ export const createUnaryMinus = /* #__PURE__ */ factory(name, dependencies, ({ t
    *
    *    add, subtract, unaryPlus
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Number to be inverted.
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x Number to be inverted.
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
    */
   return typed(name, {
     number: unaryMinusNumber,
 
     'Complex | BigNumber | Fraction': x => x.neg(),
+
+    bigint: x => -x,
 
     Unit: typed.referToSelf(self => x => {
       const res = x.clone()

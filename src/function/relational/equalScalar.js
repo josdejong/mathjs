@@ -13,8 +13,8 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
   /**
    * Test whether two scalar values are nearly equal.
    *
-   * @param  {number | BigNumber | Fraction | boolean | Complex | Unit} x   First value to compare
-   * @param  {number | BigNumber | Fraction | boolean | Complex} y          Second value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Complex | Unit} x   First value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Complex} y          Second value to compare
    * @return {boolean}                                                  Returns true when the compared values are equal, else returns false
    * @private
    */
@@ -30,6 +30,10 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     'BigNumber, BigNumber': function (x, y) {
       return x.eq(y) || bigNearlyEqual(x, y, config.relTol, config.absTol)
+    },
+
+    'bigint, bigint': function (x, y) {
+      return x === y
     },
 
     'Fraction, Fraction': function (x, y) {
