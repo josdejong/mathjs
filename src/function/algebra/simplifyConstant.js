@@ -1,5 +1,6 @@
 import { isFraction, isMatrix, isNode, isArrayNode, isConstantNode, isIndexNode, isObjectNode, isOperatorNode } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
+import { isIntegerStr } from '../../utils/number.js'
 import { createUtil } from './simplify/util.js'
 import { noBignumber, noFraction } from '../../utils/noop.js'
 
@@ -112,6 +113,12 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       }
       return new ConstantNode(n) // old parameters: (n.toString(), 'number')
     },
+    bigint: function (n) {
+      if (n < 0n) {
+        return unaryMinusNode(new ConstantNode(-n))
+      }
+      return new ConstantNode(n)
+    },
     Complex: function (s) {
       throw new Error('Cannot convert Complex number to Node')
     },
@@ -156,6 +163,8 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           noBignumber()
         }
         return bignumber(s)
+      } else if (config.number === 'bigint' && isIntegerStr(s)) {
+        return BigInt(s)
       } else if (config.number === 'Fraction') {
         if (fraction === undefined) {
           noFraction()
@@ -173,6 +182,10 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
 
     'number, Object': function (s, options) {
       return _exactFraction(s, options)
+    },
+
+    'bigint, Object': function (s, options) {
+      return s
     },
 
     'Complex, Object': function (s, options) {
@@ -343,6 +356,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       case 'ConstantNode':
         switch (typeof node.value) {
           case 'number': return _toNumber(node.value, options)
+          case 'bigint': return _toNumber(node.value, options)
           case 'string': return node.value
           default:
             if (!isNaN(node.value)) return _toNumber(node.value, options)

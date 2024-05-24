@@ -47,7 +47,7 @@ The following configuration options are available:
 
 - `number`. The type of numeric output for functions which cannot
   determine the numeric type from the inputs. For most functions though,
-  the type of output is determined from the the input:
+  the type of output is determined from the input:
   a number as input will return a number as output,
   a BigNumber as input returns a BigNumber as output.
 
@@ -56,10 +56,11 @@ The following configuration options are available:
   setting. But `math.sqrt(4)` will always return the number `2`
   regardless of the `number` configuration, because the input is a number.
 
-  Available values are: `'number'` (default), `'BigNumber'`, or `'Fraction'`.
-  [BigNumbers](../datatypes/bignumbers.js) have higher precision than the default
-  numbers of JavaScript, and [`Fractions`](../datatypes/fractions.js) store
-  values in terms of a numerator and denominator.
+  Available values are: `'number'` (default), `'BigNumber'`, `'bigint'`, or `'Fraction'`.
+  [BigNumbers](../datatypes/bignumbers.js) have higher precision than the default numbers of JavaScript, 
+  [bigint](../datatypes/bigints.md) can represent large integer numbers, 
+  and [`Fractions`](../datatypes/fractions.js) store values in terms of a numerator and 
+  denominator.
 
 - `precision`. The maximum number of significant digits for BigNumbers.
   This setting only applies to BigNumbers, not to numbers.

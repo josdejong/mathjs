@@ -10,7 +10,7 @@ export const DEFAULT_CONFIG = {
   // type of default matrix output. Choose 'matrix' (default) or 'array'
   matrix: 'Matrix',
 
-  // type of default number output. Choose 'number' (default) 'BigNumber', or 'Fraction
+  // type of default number output. Choose 'number' (default) 'BigNumber', 'bigint', or 'Fraction
   number: 'number',
 
   // number of significant digits in BigNumbers

@@ -2144,6 +2144,19 @@ describe('parse', function () {
     })
   })
 
+  describe('bigint', function () {
+    const bigmath = math.create({
+      number: 'bigint'
+    })
+
+    it('should parse integer numbers as bigint', function () {
+      assert.deepStrictEqual(bigmath.evaluate('123123123123123123123'), 123123123123123123123n)
+      assert.deepStrictEqual(bigmath.evaluate('-123123123123123123123'), -123123123123123123123n)
+      assert.deepStrictEqual(bigmath.evaluate('2.3'), 2.3)
+      assert.deepStrictEqual(bigmath.evaluate('-2.3'), -2.3)
+    })
+  })
+
   describe('scope', function () {
     it('should use a given scope for assignments', function () {
       const scope = {
