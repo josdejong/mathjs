@@ -14,6 +14,14 @@ describe('bitAnd', function () {
     assert.strictEqual(bitAnd(-5, -3), -7)
   })
 
+  it('should bitwise and two bigints', function () {
+    assert.strictEqual(bitAnd(53n, 131n), 1n)
+    assert.strictEqual(bitAnd(2n, 3n), 2n)
+    assert.strictEqual(bitAnd(-2n, 3n), 2n)
+    assert.strictEqual(bitAnd(2n, -3n), 0n)
+    assert.strictEqual(bitAnd(-5n, -3n), -7n)
+  })
+
   it('should bitwise and booleans', function () {
     assert.strictEqual(bitAnd(true, true), 1)
     assert.strictEqual(bitAnd(true, false), 0)
@@ -42,6 +50,11 @@ describe('bitAnd', function () {
     assert.deepStrictEqual(bitAnd(1, bignumber(2)), bignumber(0))
     assert.deepStrictEqual(bitAnd(bignumber(7), 9), bignumber(1))
     assert.deepStrictEqual(bitAnd(7, bignumber(9)), bignumber(1))
+  })
+
+  it('should bitwise and mixed numbers and bigints', function () {
+    assert.strictEqual(bitAnd(53n, 131), 1)
+    assert.strictEqual(bitAnd(53, 131n), 1)
   })
 
   it('should bitwise and mixed booleans and bignumbers', function () {

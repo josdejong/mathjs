@@ -49,9 +49,9 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    leftShift, bitNot, bitOr, bitXor, rightArithShift, rightLogShift
    *
-   * @param  {number | BigNumber | Array | Matrix} x Value to be shifted
-   * @param  {number | BigNumber} y Amount of shifts
-   * @return {number | BigNumber | Array | Matrix} `x` shifted left `y` times
+   * @param  {number | BigNumber | bigint | Array | Matrix} x Value to be shifted
+   * @param  {number | BigNumber | bigint} y Amount of shifts
+   * @return {number | BigNumber | bigint | Array | Matrix} `x` shifted left `y` times
    */
   return typed(
     name,
@@ -59,6 +59,8 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
       'number, number': leftShiftNumber,
 
       'BigNumber, BigNumber': leftShiftBigNumber,
+
+      'bigint, bigint': (x, y) => x << y,
 
       'SparseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
         // check scalar

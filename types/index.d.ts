@@ -1314,9 +1314,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Divisor
    * @returns Returns the remainder of x divided by y
    */
-  mod<T extends number | BigNumber | Fraction | MathCollection>(
+  mod<T extends number | BigNumber | bigint | Fraction | MathCollection>(
     x: T,
-    y: number | BigNumber | Fraction | MathCollection
+    y: number | BigNumber | bigint | Fraction | MathCollection
   ): NoLiteralType<T>
 
   /**
@@ -1373,7 +1373,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y The exponent
    * @returns x to the power y
    */
-  pow(x: MathType, y: number | BigNumber | Complex): MathType
+  pow(x: MathType, y: number | BigNumber | bigint | Complex): MathType
 
   /**
    * Compute the sign of a value. The sign of a value x is: 1 when x > 1
@@ -1452,9 +1452,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Second value to and
    * @returns AND of x and y
    */
-  bitAnd<T extends number | BigNumber | MathCollection>(
+  bitAnd<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): NoLiteralType<T>
 
   /**
@@ -1464,7 +1464,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param x Value to not
    * @returns NOT of x
    */
-  bitNot<T extends number | BigNumber | MathCollection>(x: T): T
+  bitNot<T extends number | BigNumber | bigint | MathCollection>(x: T): T
 
   /**
    * Bitwise OR two values, x | y. For matrices, the function is evaluated
@@ -1474,7 +1474,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Second value to or
    * @returns OR of x and y
    */
-  bitOr<T extends number | BigNumber | MathCollection>(x: T, y: T): T
+  bitOr<T extends number | BigNumber | bigint | MathCollection>(x: T, y: T): T
 
   /**
    * Bitwise XOR two values, x ^ y. For matrices, the function is
@@ -1483,9 +1483,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Second value to xor
    * @returns XOR of x and y
    */
-  bitXor<T extends number | BigNumber | MathCollection>(
+  bitXor<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): NoLiteralType<T>
 
   /**
@@ -1496,9 +1496,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Amount of shifts
    * @returns x shifted left y times
    */
-  leftShift<T extends number | BigNumber | MathCollection>(
+  leftShift<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): NoLiteralType<T>
 
   /**
@@ -1509,9 +1509,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Amount of shifts
    * @returns x sign-filled shifted right y times
    */
-  rightArithShift<T extends number | BigNumber | MathCollection>(
+  rightArithShift<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): NoLiteralType<T>
 
   /**
@@ -1682,8 +1682,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   and(
-    x: number | BigNumber | Complex | Unit | MathCollection,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1693,7 +1693,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when input is a zero or empty value.
    */
   not(
-    x: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1706,8 +1706,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   or(
-    x: number | BigNumber | Complex | Unit | MathCollection,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1720,8 +1720,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   xor(
-    x: number | BigNumber | Complex | Unit | MathCollection,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /*************************************************************************
@@ -5064,9 +5064,9 @@ export interface MathJsChain<TValue> {
    * @see http://en.wikipedia.org/wiki/Modulo_operation.
    * @param y Divisor
    */
-  mod<T extends number | BigNumber | Fraction | MathCollection>(
+  mod<T extends number | BigNumber | bigint | Fraction | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber | Fraction | MathCollection
+    y: number | BigNumber | bigint | Fraction | MathCollection
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5112,7 +5112,7 @@ export interface MathJsChain<TValue> {
    */
   pow(
     this: MathJsChain<MathType>,
-    y: number | BigNumber | Complex
+    y: number | BigNumber | bigint | Complex
   ): MathJsChain<MathType>
 
   /**
@@ -5198,9 +5198,9 @@ export interface MathJsChain<TValue> {
    * evaluated element wise.
    * @param y Second value to and
    */
-  bitAnd<T extends number | BigNumber | MathCollection>(
+  bitAnd<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5209,7 +5209,7 @@ export interface MathJsChain<TValue> {
    * base.
    */
 
-  bitNot<T extends number | BigNumber | MathCollection>(
+  bitNot<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>
   ): MathJsChain<T>
 
@@ -5219,7 +5219,7 @@ export interface MathJsChain<TValue> {
    * print base.
    * @param y Second value to or
    */
-  bitOr<T extends number | BigNumber | MathCollection>(
+  bitOr<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
     y: T
   ): MathJsChain<T>
@@ -5229,9 +5229,9 @@ export interface MathJsChain<TValue> {
    * evaluated element wise.
    * @param y Second value to xor
    */
-  bitXor<T extends number | BigNumber | MathCollection>(
+  bitXor<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5240,9 +5240,9 @@ export interface MathJsChain<TValue> {
    * function is evaluated on the best prefix base.
    * @param y Amount of shifts
    */
-  leftShift<T extends number | BigNumber | MathCollection>(
+  leftShift<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5251,9 +5251,9 @@ export interface MathJsChain<TValue> {
    * the function is evaluated on the best prefix base.
    * @param y Amount of shifts
    */
-  rightArithShift<T extends number | BigNumber | MathCollection>(
+  rightArithShift<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5405,8 +5405,10 @@ export interface MathJsChain<TValue> {
    * @param y Second value to and
    */
   and(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -5414,7 +5416,9 @@ export interface MathJsChain<TValue> {
    * the function is evaluated element wise.
    */
   not(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -5424,8 +5428,10 @@ export interface MathJsChain<TValue> {
    * @param y Second value to or
    */
   or(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -5435,8 +5441,10 @@ export interface MathJsChain<TValue> {
    * @param y Second value to xor
    */
   xor(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /*************************************************************************

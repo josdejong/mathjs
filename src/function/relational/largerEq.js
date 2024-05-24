@@ -46,8 +46,8 @@ export const createLargerEq = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    *    equal, unequal, smaller, smallerEq, larger, compare
    *
-   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
-   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is larger or equal to y, else returns false
    */
   return typed(
@@ -58,6 +58,10 @@ export const createLargerEq = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
       'BigNumber, BigNumber': function (x, y) {
         return x.gte(y) || bigNearlyEqual(x, y, config.relTol, config.absTol)
+      },
+
+      'bigint, bigint': function (x, y) {
+        return x >= y
       },
 
       'Fraction, Fraction': (x, y) => (x.compare(y) !== -1),

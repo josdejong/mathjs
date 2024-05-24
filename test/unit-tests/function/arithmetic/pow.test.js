@@ -24,6 +24,14 @@ describe('pow', function () {
     approxDeepEqual(pow(2, 1.5), 2.82842712474619)
   })
 
+  it('should exponentiate a bigint to the given power', function () {
+    assert.strictEqual(pow(2n, 3n), 8n)
+    assert.strictEqual(pow(2n, 4n), 16n)
+    assert.strictEqual(pow(-2n, 2n), 4n)
+    assert.strictEqual(pow(3n, 3n), 27n)
+    assert.throws(() => pow(3n, -2n))
+  })
+
   it('should exponentiate a negative number to a non-integer power', function () {
     approxDeepEqual(pow(-2, 1.5), complex(0, -2.82842712474619))
     approxDeepEqual(pow(-8, 1 / 3), complex(1, 1.732050807568877))
