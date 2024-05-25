@@ -4523,7 +4523,7 @@ export interface MathJsChain<TValue> {
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.evaluate();
-   * @param options Available options: nodes - a set of custome nodes
+   * @param options Available options: nodes - a set of custom nodes
    */
   parse(
     this: MathJsChain<MathExpression>,

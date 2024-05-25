@@ -20,7 +20,7 @@ Maintaining the TypeScript types is done manually. When adding a function, one h
 3. Add a static definition inside `export const {...} : MathJsInstance`
 4. Add a dependencies definition inside `export const {...} : Record<string, FactoryFunctionMap>`
 
-For exampe for the function `add`, we can have the following definitions:
+For example for the function `add`, we can have the following definitions:
 
 ```ts 
 // instance
