@@ -182,6 +182,10 @@ describe('multiply', function () {
       assert.strictEqual(multiply(unit('inch'), 2).toString(), '2 inch')
     })
 
+    it('should multiply a bigint and a unit value correctly', function () {
+      assert.strictEqual(multiply(2n, unit('5 mm')).toString(), '10 mm')
+    })
+
     it('should multiply two units correctly', function () {
       assert.strictEqual(multiply(unit('2 m'), unit('4 m')).toString(), '8 m^2')
       assert.strictEqual(multiply(unit('2 ft'), unit('4 ft')).toString(), '8 ft^2')

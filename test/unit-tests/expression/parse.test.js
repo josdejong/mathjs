@@ -2150,10 +2150,17 @@ describe('parse', function () {
     })
 
     it('should parse integer numbers as bigint', function () {
-      assert.deepStrictEqual(bigmath.evaluate('123123123123123123123'), 123123123123123123123n)
-      assert.deepStrictEqual(bigmath.evaluate('-123123123123123123123'), -123123123123123123123n)
-      assert.deepStrictEqual(bigmath.evaluate('2.3'), 2.3)
-      assert.deepStrictEqual(bigmath.evaluate('-2.3'), -2.3)
+      assert.strictEqual(bigmath.evaluate('123123123123123123123'), 123123123123123123123n)
+      assert.strictEqual(bigmath.evaluate('-123123123123123123123'), -123123123123123123123n)
+      assert.strictEqual(bigmath.evaluate('2.3'), 2.3)
+      assert.strictEqual(bigmath.evaluate('-2.3'), -2.3)
+    })
+
+    it('should evaluate units with bigint values (falling back to number)', function () {
+      assert.strictEqual(bigmath.evaluate('5 mm').toString(), '5 mm')
+      assert.strictEqual(bigmath.evaluate('5.5 mm').toString(), '5.5 mm')
+      assert.strictEqual(bigmath.evaluate('2 * 5 mm').toString(), '10 mm')
+      assert.strictEqual(bigmath.evaluate('2.5 * 4 mm').toString(), '10 mm')
     })
   })
 
