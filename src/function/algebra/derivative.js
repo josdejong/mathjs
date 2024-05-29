@@ -1,5 +1,6 @@
 import { isConstantNode, typeOf } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
+import { safeNumberType } from '../../utils/number.js'
 
 const name = 'derivative'
 const dependencies = [
@@ -754,7 +755,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {ConstantNode}
    */
   function createConstantNode (value, valueType) {
-    return new ConstantNode(numeric(value, valueType || config.number))
+    return new ConstantNode(numeric(value, valueType || safeNumberType(config.number, String(value))))
   }
 
   return derivative

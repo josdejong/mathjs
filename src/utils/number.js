@@ -30,6 +30,26 @@ export function isIntegerStr (str) {
 }
 
 /**
+ * Ensure the number type is compatible with the provided value.
+ * If not, return 'number' instead.
+ *
+ * For example, safeNumberType('bigint', '2.3') will return 'number' and
+ * not 'bigint' because trying to create a bigint with value 2.3 would
+ * throw an exception.
+ *
+ * @param {'number' | 'BigNumber' | 'bigint' | 'Fraction'} numberType
+ * @param {string} numberStr
+ * @returns {'number' | 'BigNumber' | 'bigint' | 'Fraction'}
+ */
+export function safeNumberType (numberType, numberStr) {
+  if (numberType === 'bigint' && !isIntegerStr(numberStr)) {
+    return 'number'
+  }
+
+  return numberType
+}
+
+/**
  * Calculate the sign of a number
  * @param {number} x
  * @returns {number}

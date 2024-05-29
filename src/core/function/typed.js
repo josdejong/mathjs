@@ -299,6 +299,16 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       }
     }, {
       from: 'string',
+      to: 'bigint',
+      convert: function (x) {
+        try {
+          return BigInt(x)
+        } catch (err) {
+          throw new Error('Cannot convert "' + x + '" to BigInt')
+        }
+      }
+    }, {
+      from: 'string',
       to: 'Fraction',
       convert: function (x) {
         if (!Fraction) {

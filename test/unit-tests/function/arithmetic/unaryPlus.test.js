@@ -32,6 +32,9 @@ describe('unaryPlus', function () {
     const bigmath = math.create({ number: 'bigint' })
     assert.deepStrictEqual(bigmath.unaryPlus('20000000000000000000001'), 20000000000000000000001n)
     assert.deepStrictEqual(bigmath.unaryPlus('-20000000000000000000001'), -20000000000000000000001n)
+    assert.deepStrictEqual(bigmath.unaryPlus('2.4'), 2.4) // fallback to number
+    assert.deepStrictEqual(bigmath.unaryPlus(true), 1n)
+    assert.deepStrictEqual(bigmath.unaryPlus(false), 0n)
   })
 
   // TODO: this is temporary until the test above works again

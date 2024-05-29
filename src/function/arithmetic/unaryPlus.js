@@ -1,6 +1,7 @@
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
 import { unaryPlusNumber } from '../../plain/number/index.js'
+import { safeNumberType } from '../../utils/number.js'
 
 const name = 'unaryPlus'
 const dependencies = ['typed', 'config', 'numeric']
@@ -57,11 +58,11 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true)),
 
     boolean: function (x) {
-      return numeric(+x, config.number)
+      return numeric(x ? 1 : 0, config.number)
     },
 
     string: function (x) {
-      return numeric(x, config.number)
+      return numeric(x, safeNumberType(config.number, x))
     }
   })
 })

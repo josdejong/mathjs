@@ -1,7 +1,7 @@
 import { factory } from '../utils/factory.js'
 import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
 import { deepMap } from '../utils/collection.js'
-import { isIntegerStr } from '../utils/number.js'
+import { safeNumberType } from '../utils/number.js'
 import { hasOwnProperty } from '../utils/object.js'
 
 const name = 'parse'
@@ -1679,7 +1679,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       numberStr = state.token
       getToken(state)
 
-      const numericType = config.number !== 'bigint' || isIntegerStr(numberStr) ? config.number : 'number'
+      const numericType = safeNumberType(config.number, numberStr)
       const value = numeric(numberStr, numericType)
 
       return new ConstantNode(value)

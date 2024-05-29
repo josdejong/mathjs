@@ -1,6 +1,6 @@
 import { isFraction, isMatrix, isNode, isArrayNode, isConstantNode, isIndexNode, isObjectNode, isOperatorNode } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
-import { isIntegerStr } from '../../utils/number.js'
+import { safeNumberType } from '../../utils/number.js'
 import { createUtil } from './simplify/util.js'
 import { noBignumber, noFraction } from '../../utils/noop.js'
 
@@ -158,14 +158,16 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   // BigNumbers are left alone
   const _toNumber = typed({
     'string, Object': function (s, options) {
-      if (config.number === 'BigNumber') {
+      const numericType = safeNumberType(config.number, s)
+
+      if (numericType === 'BigNumber') {
         if (bignumber === undefined) {
           noBignumber()
         }
         return bignumber(s)
-      } else if (config.number === 'bigint' && isIntegerStr(s)) {
+      } else if (numericType === 'bigint') {
         return BigInt(s)
-      } else if (config.number === 'Fraction') {
+      } else if (numericType === 'Fraction') {
         if (fraction === undefined) {
           noFraction()
         }
