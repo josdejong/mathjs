@@ -2,7 +2,6 @@ import assert from 'assert'
 import math from '../../../../../src/defaultInstance.js'
 import { deepForEach } from '../../../../../src/utils/collection.js'
 
-
 const DenseMatrix = math.DenseMatrix
 
 describe('deepForEach', function () {
@@ -47,7 +46,6 @@ describe('deepForEach', function () {
     deepForEach(matrix, value => result.push(value))
     assert.deepStrictEqual(result, [1, 2, 3, 4])
   })
-
 
   it('should call the callback with each element of a matrix after converting to array', function () {
     const matrix = math.matrix([[1, 2], [3, 4]])
