@@ -71,6 +71,13 @@ describe('addScalar', function () {
     assert.deepStrictEqual(add(true, new BigNumber(0.2)), new math.BigNumber(1.2))
   })
 
+  it('should add mixed booleans and bigint', function () {
+    assert.deepStrictEqual(add(2n, true), 3n)
+    assert.deepStrictEqual(add(2n, false), 2n)
+    assert.deepStrictEqual(add(true, 2n), 3n)
+    assert.deepStrictEqual(add(false, 2n), 2n)
+  })
+
   it('should add mixed complex numbers and BigNumbers', function () {
     assert.deepStrictEqual(add(math.complex(3, -4), new BigNumber(2)), math.complex(5, -4))
     assert.deepStrictEqual(add(new BigNumber(2), math.complex(3, -4)), math.complex(5, -4))

@@ -353,6 +353,12 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       }
     }, {
       from: 'boolean',
+      to: 'bigint',
+      convert: function (x) {
+        return BigInt(+x)
+      }
+    }, {
+      from: 'boolean',
       to: 'Fraction',
       convert: function (x) {
         if (!Fraction) {
