@@ -99,7 +99,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     // make sure returning numeric value: parse a string into a numeric value
     if (typeof res === 'string') {
-      res = numeric(res, safeNumberType(config.number, res))
+      res = numeric(res, safeNumberType(res, config))
     }
 
     return res

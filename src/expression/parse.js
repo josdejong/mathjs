@@ -1679,7 +1679,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       numberStr = state.token
       getToken(state)
 
-      const numericType = safeNumberType(config.number, numberStr)
+      const numericType = safeNumberType(numberStr, config)
       const value = numeric(numberStr, numericType)
 
       return new ConstantNode(value)

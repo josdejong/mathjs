@@ -755,7 +755,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {ConstantNode}
    */
   function createConstantNode (value, valueType) {
-    return new ConstantNode(numeric(value, valueType || safeNumberType(config.number, String(value))))
+    return new ConstantNode(numeric(value, valueType || safeNumberType(String(value), config)))
   }
 
   return derivative

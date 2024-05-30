@@ -158,7 +158,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   // BigNumbers are left alone
   const _toNumber = typed({
     'string, Object': function (s, options) {
-      const numericType = safeNumberType(config.number, s)
+      const numericType = safeNumberType(s, config)
 
       if (numericType === 'BigNumber') {
         if (bignumber === undefined) {

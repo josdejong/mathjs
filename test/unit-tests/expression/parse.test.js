@@ -2156,6 +2156,17 @@ describe('parse', function () {
       assert.strictEqual(bigmath.evaluate('-2.3'), -2.3)
     })
 
+    it('should fallback on the configured bigintFallback when parsing as bigint', function () {
+      const bigmathFallback = math.create({
+        number: 'bigint',
+        bigintFallback: 'BigNumber'
+      })
+
+      assert.strictEqual(bigmathFallback.evaluate('42'), 42n)
+      assert.deepStrictEqual(bigmathFallback.evaluate('2.3'), bigmathFallback.bignumber('2.3'))
+      assert.deepStrictEqual(bigmathFallback.evaluate('-2.3'), bigmathFallback.bignumber('-2.3'))
+    })
+
     it('should evaluate units with bigint values (falling back to number)', function () {
       assert.strictEqual(bigmath.evaluate('5 mm').toString(), '5 mm')
       assert.strictEqual(bigmath.evaluate('5.5 mm').toString(), '5.5 mm')

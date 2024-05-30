@@ -4375,7 +4375,8 @@ export interface ConfigOptions {
    */
   epsilon?: number
   matrix?: 'Matrix' | 'Array'
-  number?: 'number' | 'BigNumber' | 'Fraction'
+  number?: 'number' | 'BigNumber' | 'bigint' | 'Fraction'
+  bigintFallback?: 'number' | 'BigNumber' | 'Fraction'
   precision?: number
   predictable?: boolean
   randomSeed?: string | null

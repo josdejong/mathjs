@@ -99,7 +99,7 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     // make sure returning numeric value: parse a string into a numeric value
     if (typeof min === 'string') {
-      min = numeric(min, safeNumberType(config.number, min))
+      min = numeric(min, safeNumberType(min, config))
     }
 
     return min

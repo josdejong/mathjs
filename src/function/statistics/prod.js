@@ -68,7 +68,7 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     // make sure returning numeric value: parse a string into a numeric value
     if (typeof prod === 'string') {
-      prod = numeric(prod, safeNumberType(config.number, prod))
+      prod = numeric(prod, safeNumberType(prod, config))
     }
 
     if (prod === undefined) {

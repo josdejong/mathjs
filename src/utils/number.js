@@ -33,20 +33,26 @@ export function isIntegerStr (str) {
  * Ensure the number type is compatible with the provided value.
  * If not, return 'number' instead.
  *
- * For example, safeNumberType('bigint', '2.3') will return 'number' and
- * not 'bigint' because trying to create a bigint with value 2.3 would
- * throw an exception.
+ * For example:
  *
- * @param {'number' | 'BigNumber' | 'bigint' | 'Fraction'} numberType
+ *     safeNumberType('2.3', { number: 'bigint', bigintFallback: 'number' })
+ *
+ * will return 'number' and not 'bigint' because trying to create a bigint with
+ * value 2.3 would throw an exception.
+ *
  * @param {string} numberStr
+ * @param {{
+ *   number: 'number' | 'BigNumber' | 'bigint' | 'Fraction'
+ *   bigintFallback: 'number' | 'BigNumber' | 'Fraction'
+ * }} config
  * @returns {'number' | 'BigNumber' | 'bigint' | 'Fraction'}
  */
-export function safeNumberType (numberType, numberStr) {
-  if (numberType === 'bigint' && !isIntegerStr(numberStr)) {
-    return 'number'
+export function safeNumberType (numberStr, config) {
+  if (config.number === 'bigint' && !isIntegerStr(numberStr)) {
+    return config.bigintFallback
   }
 
-  return numberType
+  return config.number
 }
 
 /**

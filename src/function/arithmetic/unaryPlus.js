@@ -62,7 +62,7 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     string: function (x) {
-      return numeric(x, safeNumberType(config.number, x))
+      return numeric(x, safeNumberType(x, config))
     }
   })
 })

@@ -10,8 +10,12 @@ export const DEFAULT_CONFIG = {
   // type of default matrix output. Choose 'matrix' (default) or 'array'
   matrix: 'Matrix',
 
-  // type of default number output. Choose 'number' (default) 'BigNumber', 'bigint', or 'Fraction
+  // type of default number output. Choose 'number' (default) 'BigNumber', 'bigint', or 'Fraction'
   number: 'number',
+
+  // type of fallback used for config { number: 'bigint' } when a value cannot be represented
+  // in the configured type. Choose 'number' (default) 'BigNumber', 'bigint', or 'Fraction'.
+  bigintFallback: 'number',
 
   // number of significant digits in BigNumbers
   precision: 64,
