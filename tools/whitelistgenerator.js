@@ -1,8 +1,9 @@
 // generates a whitelist of safe methods and functions
-const hasOwnProperty = require('./utils').hasOwnProperty
+import { hasOwnProperty } from './utils.js'
+import { create, all } from '../lib/esm/index.js'
 
 // math.js functions (can be used when chaining
-const math = require('../index')
+const math = create(all)
 const chain = {
   done: true,
   valueOf: true,

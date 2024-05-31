@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const asinh = math.asinh
 const sinh = math.sinh
@@ -16,17 +16,17 @@ const Big = bigmath.bignumber
 
 describe('asinh', function () {
   it('should return the hyperbolic arcsin of a boolean', function () {
-    approx.equal(asinh(true), 0.8813735870195430)
+    approxEqual(asinh(true), 0.8813735870195430)
     assert.strictEqual(asinh(false), 0)
   })
 
   it('should return the hyperbolic arcsin of a number', function () {
-    approx.equal(asinh(-2), -1.44363547517881034249327674027311)
-    approx.equal(asinh(-1), -0.88137358701954302523260932497979)
-    approx.equal(asinh(0), 0)
-    approx.equal(asinh(1), 0.88137358701954302523260932497979)
-    approx.equal(asinh(2), 1.44363547517881034249327674027311)
-    approx.equal(asinh(pi), 1.8622957433108482198883613251826)
+    approxEqual(asinh(-2), -1.44363547517881034249327674027311)
+    approxEqual(asinh(-1), -0.88137358701954302523260932497979)
+    approxEqual(asinh(0), 0)
+    approxEqual(asinh(1), 0.88137358701954302523260932497979)
+    approxEqual(asinh(2), 1.44363547517881034249327674027311)
+    approxEqual(asinh(pi), 1.8622957433108482198883613251826)
   })
 
   it('should return the hyperbolic arcsin of a bignumber', function () {
@@ -43,11 +43,11 @@ describe('asinh', function () {
   })
 
   it('should be the inverse function of hyperbolic sin', function () {
-    approx.equal(asinh(sinh(-1)), -1)
-    approx.equal(asinh(sinh(0)), 0)
-    approx.equal(asinh(sinh(0.1)), 0.1)
-    approx.equal(asinh(sinh(0.5)), 0.5)
-    approx.equal(asinh(sinh(2)), 2)
+    approxEqual(asinh(sinh(-1)), -1)
+    approxEqual(asinh(sinh(0)), 0)
+    approxEqual(asinh(sinh(0.1)), 0.1)
+    approxEqual(asinh(sinh(0.5)), 0.5)
+    approxEqual(asinh(sinh(2)), 2)
   })
 
   it('should be the inverse function of bignumber sinh', function () {
@@ -61,13 +61,13 @@ describe('asinh', function () {
   })
 
   it('should return the arcsinh of a complex number', function () {
-    approx.deepEqual(asinh(complex('2+3i')), complex(1.9686379257931, 0.9646585044076028))
-    approx.deepEqual(asinh(complex('2-3i')), complex(1.9686379257931, -0.9646585044076028))
-    approx.deepEqual(asinh(complex('-2+3i')), complex(-1.9686379257931, 0.9646585044076028))
-    approx.deepEqual(asinh(complex('-2-3i')), complex(-1.9686379257931, -0.9646585044076028))
-    approx.deepEqual(asinh(complex('1+i')), complex(1.0612750619050357, 0.6662394324925153))
-    approx.deepEqual(asinh(complex('i')), complex(0, pi / 2))
-    approx.deepEqual(asinh(complex('1')), complex(0.881373587019543025, 0))
+    approxDeepEqual(asinh(complex('2+3i')), complex(1.9686379257931, 0.9646585044076028))
+    approxDeepEqual(asinh(complex('2-3i')), complex(1.9686379257931, -0.9646585044076028))
+    approxDeepEqual(asinh(complex('-2+3i')), complex(-1.9686379257931, 0.9646585044076028))
+    approxDeepEqual(asinh(complex('-2-3i')), complex(-1.9686379257931, -0.9646585044076028))
+    approxDeepEqual(asinh(complex('1+i')), complex(1.0612750619050357, 0.6662394324925153))
+    approxDeepEqual(asinh(complex('i')), complex(0, pi / 2))
+    approxDeepEqual(asinh(complex('1')), complex(0.881373587019543025, 0))
     assert.deepStrictEqual(asinh(complex('0')), complex(0, 0))
   })
 
@@ -84,8 +84,8 @@ describe('asinh', function () {
     assert.throws(() => asinh([1, 2, 3]), TypeError)
     assert.throws(() => asinh(matrix([1, 2, 3])), TypeError)
     const asinh123 = [0.881373587019543025, 1.4436354751788103, 1.8184464592320668]
-    approx.deepEqual(math.map([1, 2, 3], asinh), asinh123)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), asinh), matrix(asinh123))
+    approxDeepEqual(math.map([1, 2, 3], asinh), asinh123)
+    approxDeepEqual(math.map(matrix([1, 2, 3]), asinh), matrix(asinh123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

@@ -175,6 +175,7 @@ export {
 
 // create
 export { createNumber } from './type/number.js'
+export { createBigint } from './type/bigint.js'
 export { createString } from './type/string.js'
 export { createBoolean } from './type/boolean.js'
 export { createParser } from './expression/function/parser.js'

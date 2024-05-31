@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const acos = math.acos
 const cos = math.cos
@@ -15,19 +15,19 @@ const Big = bigmath.bignumber
 
 describe('acos', function () {
   it('should return the arccos of a boolean', function () {
-    approx.equal(acos(true), 0)
-    approx.equal(acos(false), 0.5 * pi)
+    approxEqual(acos(true), 0)
+    approxEqual(acos(false), 0.5 * pi)
   })
 
   it('should return the arccos of a number', function () {
-    approx.equal(acos(-1) / pi, 1)
-    approx.equal(acos(-0.5) / pi, 2 / 3)
-    approx.equal(acos(0) / pi, 0.5)
-    approx.equal(acos(0.5) / pi, 1 / 3)
-    approx.equal(acos(1) / pi, 0)
+    approxEqual(acos(-1) / pi, 1)
+    approxEqual(acos(-0.5) / pi, 2 / 3)
+    approxEqual(acos(0) / pi, 0.5)
+    approxEqual(acos(0.5) / pi, 1 / 3)
+    approxEqual(acos(1) / pi, 0)
 
-    approx.deepEqual(acos(-2), complex('3.14159265358979 - 1.31695789692482i'))
-    approx.deepEqual(acos(2), complex('1.316957896924817i'))
+    approxDeepEqual(acos(-2), complex('3.14159265358979 - 1.31695789692482i'))
+    approxDeepEqual(acos(2), complex('1.316957896924817i'))
   })
 
   it('should return the arccos of a number when predictable:true', function () {
@@ -53,11 +53,11 @@ describe('acos', function () {
   })
 
   it('should be the inverse function of cos', function () {
-    approx.equal(acos(cos(-1)), 1)
-    approx.equal(acos(cos(0)), 0)
-    approx.equal(acos(cos(0.1)), 0.1)
-    approx.equal(acos(cos(0.5)), 0.5)
-    approx.equal(acos(cos(2)), 2)
+    approxEqual(acos(cos(-1)), 1)
+    approxEqual(acos(cos(0)), 0)
+    approxEqual(acos(cos(0.1)), 0.1)
+    approxEqual(acos(cos(0.5)), 0.5)
+    approxEqual(acos(cos(2)), 2)
   })
 
   it('should be the inverse function of bignumber cos', function () {
@@ -75,13 +75,13 @@ describe('acos', function () {
   })
 
   it('should return the arccos of a complex number', function () {
-    approx.deepEqual(acos(complex('2+3i')), complex(1.00014354247380, -1.98338702991654))
-    approx.deepEqual(acos(complex('2-3i')), complex(1.00014354247380, 1.98338702991654))
-    approx.deepEqual(acos(complex('-2+3i')), complex(2.14144911111600, -1.98338702991654))
-    approx.deepEqual(acos(complex('-2-3i')), complex(2.14144911111600, 1.98338702991654))
-    approx.deepEqual(acos(complex('i')), complex(1.570796326794897, -0.881373587019543))
-    approx.deepEqual(acos(complex('1')), complex(0, 0))
-    approx.deepEqual(acos(complex('1+i')), complex(0.904556894302381, -1.061275061905036))
+    approxDeepEqual(acos(complex('2+3i')), complex(1.00014354247380, -1.98338702991654))
+    approxDeepEqual(acos(complex('2-3i')), complex(1.00014354247380, 1.98338702991654))
+    approxDeepEqual(acos(complex('-2+3i')), complex(2.14144911111600, -1.98338702991654))
+    approxDeepEqual(acos(complex('-2-3i')), complex(2.14144911111600, 1.98338702991654))
+    approxDeepEqual(acos(complex('i')), complex(1.570796326794897, -0.881373587019543))
+    approxDeepEqual(acos(complex('1')), complex(0, 0))
+    approxDeepEqual(acos(complex('1+i')), complex(0.904556894302381, -1.061275061905036))
   })
 
   it('should throw an error if called with a unit', function () {
@@ -98,8 +98,8 @@ describe('acos', function () {
     // note: the results of acos(2) and acos(3) differs in octave
     // the next tests are verified with mathematica
     const acos123 = [0, complex(0, 1.316957896924817), complex(0, 1.762747174039086)]
-    approx.deepEqual(math.map([1, 2, 3], acos), acos123)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), acos), matrix(acos123))
+    approxDeepEqual(math.map([1, 2, 3], acos), acos123)
+    approxDeepEqual(math.map(matrix([1, 2, 3]), acos), matrix(acos123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

@@ -27,8 +27,8 @@ export const createCube = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *
    *    multiply, square, pow, cbrt
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit} x  Number for which to calculate the cube
-   * @return {number | BigNumber | Fraction | Complex | Unit} Cube of x
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit} x  Number for which to calculate the cube
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit} Cube of x
    */
   return typed(name, {
     number: cubeNumber,
@@ -39,6 +39,10 @@ export const createCube = /* #__PURE__ */ factory(name, dependencies, ({ typed }
 
     BigNumber: function (x) {
       return x.times(x).times(x)
+    },
+
+    bigint: function (x) {
+      return x * x * x
     },
 
     Fraction: function (x) {

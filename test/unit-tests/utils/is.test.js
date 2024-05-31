@@ -1,6 +1,7 @@
 import assert from 'assert'
-import { isBoolean, isNumber, isObject, isString } from '../../../src/utils/is.js'
 import math from '../../../src/defaultInstance.js'
+import { isBigInt, isBoolean, isNumber, isObject, isString } from '../../../src/utils/is.js'
+
 const { bignumber, complex, fraction, matrix, parse } = math
 
 describe('is', function () {
@@ -59,5 +60,13 @@ describe('is', function () {
     assert.strictEqual(isNumber(null), false)
     assert.strictEqual(isNumber(undefined), false)
     assert.strictEqual(isNumber(), false)
+  })
+
+  it('isBigInt', function () {
+    assert.strictEqual(isBigInt(2n), true)
+    assert.strictEqual(isBigInt(BigInt(2)), true)
+    assert.strictEqual(isBigInt(2), false)
+    assert.strictEqual(isBigInt(), false)
+    assert.strictEqual(isBigInt(null), false)
   })
 })

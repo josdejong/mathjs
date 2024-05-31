@@ -75,7 +75,7 @@ import {
   isString,
   isSymbolNode,
   isUndefined,
-  isUnit
+  isUnit, isBigInt
 } from '../../utils/is.js'
 import typedFunction from 'typed-function'
 import { digits } from '../../utils/number.js'
@@ -116,6 +116,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'number', test: isNumber },
     { name: 'Complex', test: isComplex },
     { name: 'BigNumber', test: isBigNumber },
+    { name: 'bigint', test: isBigInt },
     { name: 'Fraction', test: isFraction },
     { name: 'Unit', test: isUnit },
     // The following type matches a valid variable name, i.e., an alphanumeric
@@ -202,6 +203,37 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         return new Complex(x.toNumber(), 0)
       }
     }, {
+      from: 'bigint',
+      to: 'number',
+      convert: function (x) {
+        if (x > Number.MAX_SAFE_INTEGER) {
+          throw new TypeError('Cannot implicitly convert bigint to number: ' +
+            'value exceeds the max safe integer value (value: ' + x + ')')
+        }
+
+        return Number(x)
+      }
+    }, {
+      from: 'bigint',
+      to: 'BigNumber',
+      convert: function (x) {
+        if (!BigNumber) {
+          throwNoBignumber(x)
+        }
+
+        return new BigNumber(x.toString())
+      }
+    }, {
+      from: 'bigint',
+      to: 'Fraction',
+      convert: function (x) {
+        if (!Fraction) {
+          throwNoFraction(x)
+        }
+
+        return new Fraction(x.toString())
+      }
+    }, {
       from: 'Fraction',
       to: 'BigNumber',
       convert: function (x) {
@@ -267,6 +299,16 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       }
     }, {
       from: 'string',
+      to: 'bigint',
+      convert: function (x) {
+        try {
+          return BigInt(x)
+        } catch (err) {
+          throw new Error('Cannot convert "' + x + '" to BigInt')
+        }
+      }
+    }, {
+      from: 'string',
       to: 'Fraction',
       convert: function (x) {
         if (!Fraction) {
@@ -308,6 +350,12 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         }
 
         return new BigNumber(+x)
+      }
+    }, {
+      from: 'boolean',
+      to: 'bigint',
+      convert: function (x) {
+        return BigInt(+x)
       }
     }, {
       from: 'boolean',

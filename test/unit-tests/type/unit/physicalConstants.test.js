@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual } from '../../../../tools/approx.js'
 import {
   createAtomicMass,
   createAvogadro,
@@ -60,7 +60,7 @@ const { BigNumber, Unit } = math
 describe('physical constants', function () {
   it('should return the correct value and unit for physical constants', function () {
     // Note: to keep these unit tests readable and compact, the toString() of the units is compared
-    const config = { number: 'number', precision: 64, epsilon: 1e-12 }
+    const config = { number: 'number', precision: 64, relTol: 1e-12 }
     const dependencies = { config, BigNumber, Unit }
 
     // Universal constants
@@ -96,7 +96,7 @@ describe('physical constants', function () {
     assert.strictEqual(createClassicalElectronRadius(dependencies).toString(), '2.8179403262e-15 m')
     assert.strictEqual(createElectronMass(dependencies).toString(), '9.1093837015e-31 kg')
     assert.strictEqual(createFermiCoupling(dependencies).toString(), '1.1663787e-5 GeV^-2')
-    approx.equal(createFineStructure(dependencies), 7.2973525693e-3)
+    approxEqual(createFineStructure(dependencies), 7.2973525693e-3)
     assert.strictEqual(createHartreeEnergy(dependencies).toString(), '4.3597447222071e-18 J')
     assert.strictEqual(createProtonMass(dependencies).toString(), '1.67262192369e-27 kg')
     assert.strictEqual(createDeuteronMass(dependencies).toString(), '3.3435830926e-27 kg')
@@ -104,8 +104,8 @@ describe('physical constants', function () {
     assert.strictEqual(createQuantumOfCirculation(dependencies).toString(), '3.6369475516e-4 m^2 / s')
     assert.strictEqual(createRydberg(dependencies).toString(), '1.097373156816e+7 m^-1')
     assert.strictEqual(createThomsonCrossSection(dependencies).toString(), '6.6524587321e-29 m^2')
-    approx.equal(createWeakMixingAngle(dependencies), 0.22290)
-    approx.equal(createEfimovFactor(dependencies), 22.7)
+    approxEqual(createWeakMixingAngle(dependencies), 0.22290)
+    approxEqual(createEfimovFactor(dependencies), 22.7)
 
     // Physico-chemical constants
     assert.strictEqual(createAtomicMass(dependencies).toString(), '1.6605390666e-27 kg')
@@ -117,7 +117,7 @@ describe('physical constants', function () {
     assert.strictEqual(createGasConstant(dependencies).toString(), '8.31446261815324 J / (K mol)')
     assert.strictEqual(createMolarPlanckConstant(dependencies).toString(), '3.990312712893431e-10 (J s) / mol')
     assert.strictEqual(createMolarVolume(dependencies).toString(), '0.022413969545014137 m^3 / mol')
-    approx.equal(createSackurTetrode(dependencies), -1.16487052358)
+    approxEqual(createSackurTetrode(dependencies), -1.16487052358)
     assert.strictEqual(createSecondRadiation(dependencies).toString(), '0.014387768775039337 m K')
     assert.strictEqual(createStefanBoltzmann(dependencies).toString(), '5.67037441918443e-8 W / (m^2 K^4)')
     assert.strictEqual(createWienDisplacement(dependencies).toString(), '0.002897771955 m K')
@@ -137,7 +137,7 @@ describe('physical constants', function () {
   })
 
   it('should create BigNumber unit values if configured', function () {
-    const config = { number: 'BigNumber', precision: 64, epsilon: 1e-12 }
+    const config = { number: 'BigNumber', precision: 64, relTol: 1e-12 }
     const dependencies = { config, BigNumber, Unit }
     const molarMass = createMolarMass(dependencies)
 

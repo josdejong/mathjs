@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -141,8 +141,8 @@ describe('atan2', function () {
 
   it('should calculate the atan2 element-wise for arrays and matrices', function () {
     // array, matrix, range
-    approx.deepEqual(divide(atan2([1, 0, -1], [1, 0, -1]), pi), [0.25, 0, -0.75])
-    approx.deepEqual(divide(atan2(
+    approxDeepEqual(divide(atan2([1, 0, -1], [1, 0, -1]), pi), [0.25, 0, -0.75])
+    approxDeepEqual(divide(atan2(
       matrix([1, 0, -1]),
       matrix([1, 0, -1])), pi),
     matrix([0.25, 0, -0.75]))

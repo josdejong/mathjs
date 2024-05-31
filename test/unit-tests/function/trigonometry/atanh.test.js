@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const atanh = math.atanh
 const tanh = math.tanh
@@ -22,16 +22,16 @@ describe('atanh', function () {
   })
 
   it('should return the hyperbolic arctan of a number', function () {
-    approx.deepEqual(atanh(-2), complex(-0.54930614433405485, pi / 2))
-    approx.deepEqual(atanh(2), complex(0.54930614433405485, -pi / 2))
+    approxDeepEqual(atanh(-2), complex(-0.54930614433405485, pi / 2))
+    approxDeepEqual(atanh(2), complex(0.54930614433405485, -pi / 2))
     // assert.ok(isNaN(atanh(-2)))
     // assert.ok(isNaN(atanh(2)))
 
-    approx.equal(atanh(-1), -Infinity)
-    approx.equal(atanh(-0.5), -0.54930614433405484569762261846)
-    approx.equal(atanh(0), 0)
-    approx.equal(atanh(0.5), 0.54930614433405484569762261846)
-    approx.equal(atanh(1), Infinity)
+    approxEqual(atanh(-1), -Infinity)
+    approxEqual(atanh(-0.5), -0.54930614433405484569762261846)
+    approxEqual(atanh(0), 0)
+    approxEqual(atanh(0.5), 0.54930614433405484569762261846)
+    approxEqual(atanh(1), Infinity)
   })
 
   it('should return the hyperbolic arctan of a number when predictable:true', function () {
@@ -54,10 +54,10 @@ describe('atanh', function () {
   })
 
   it('should be the inverse function of hyperbolic tan', function () {
-    approx.equal(atanh(tanh(-1)), -1)
-    approx.equal(atanh(tanh(0)), 0)
-    approx.equal(atanh(tanh(0.1)), 0.1)
-    approx.equal(atanh(tanh(0.5)), 0.5)
+    approxEqual(atanh(tanh(-1)), -1)
+    approxEqual(atanh(tanh(0)), 0)
+    approxEqual(atanh(tanh(0.1)), 0.1)
+    approxEqual(atanh(tanh(0.5)), 0.5)
   })
 
   it('should be the inverse function of bignumber tanh', function () {
@@ -75,17 +75,17 @@ describe('atanh', function () {
   })
 
   it('should return the arctanh of a complex number', function () {
-    approx.deepEqual(atanh(complex('2+3i')), complex(0.1469466662255, 1.33897252229449))
-    approx.deepEqual(atanh(complex('2-3i')), complex(0.1469466662255, -1.33897252229449))
-    approx.deepEqual(atanh(complex('-2+3i')), complex(-0.1469466662255, 1.33897252229449))
-    approx.deepEqual(atanh(complex('-2-3i')), complex(-0.1469466662255, -1.33897252229449))
-    approx.deepEqual(atanh(complex('1+i')), complex(0.402359478108525, 1.01722196789785137))
-    approx.deepEqual(atanh(complex('i')), complex(0, pi / 4))
+    approxDeepEqual(atanh(complex('2+3i')), complex(0.1469466662255, 1.33897252229449))
+    approxDeepEqual(atanh(complex('2-3i')), complex(0.1469466662255, -1.33897252229449))
+    approxDeepEqual(atanh(complex('-2+3i')), complex(-0.1469466662255, 1.33897252229449))
+    approxDeepEqual(atanh(complex('-2-3i')), complex(-0.1469466662255, -1.33897252229449))
+    approxDeepEqual(atanh(complex('1+i')), complex(0.402359478108525, 1.01722196789785137))
+    approxDeepEqual(atanh(complex('i')), complex(0, pi / 4))
 
-    approx.deepEqual(atanh(complex('2')), complex(0.54930614433405485, -pi / 2))
+    approxDeepEqual(atanh(complex('2')), complex(0.54930614433405485, -pi / 2))
     assert.deepStrictEqual(atanh(complex('1')), complex(Infinity, 0))
     assert.deepStrictEqual(atanh(complex('0')), complex(0, 0))
-    approx.deepEqual(atanh(complex('-2')), complex(-0.54930614433405485, pi / 2))
+    approxDeepEqual(atanh(complex('-2')), complex(-0.54930614433405485, pi / 2))
   })
 
   it('should throw an error if called with a unit', function () {

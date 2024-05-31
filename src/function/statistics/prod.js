@@ -1,5 +1,6 @@
 import { deepForEach } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
+import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'prod'
@@ -67,7 +68,7 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     // make sure returning numeric value: parse a string into a numeric value
     if (typeof prod === 'string') {
-      prod = numeric(prod, config.number)
+      prod = numeric(prod, safeNumberType(prod, config))
     }
 
     if (prod === undefined) {

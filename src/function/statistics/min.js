@@ -1,5 +1,6 @@
 import { containsCollections, deepForEach, reduce } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
+import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'min'
@@ -98,7 +99,7 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     // make sure returning numeric value: parse a string into a numeric value
     if (typeof min === 'string') {
-      min = numeric(min, config.number)
+      min = numeric(min, safeNumberType(min, config))
     }
 
     return min

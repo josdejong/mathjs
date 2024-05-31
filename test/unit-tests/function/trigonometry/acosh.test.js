@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const acosh = math.acosh
 const cosh = math.cosh
@@ -18,20 +18,20 @@ const Big = bigmath.bignumber
 describe('acosh', function () {
   it('should return the hyperbolic arccos of a boolean', function () {
     assert.strictEqual(acosh(true), 0)
-    approx.deepEqual(acosh(false), complex(0, pi / 2))
+    approxDeepEqual(acosh(false), complex(0, pi / 2))
     // assert.ok(isNaN(acosh(false)))
   })
 
   it('should return the hyperbolic arccos of a number', function () {
-    approx.deepEqual(acosh(-2), complex(1.31695789692481670862504634730797, pi))
-    approx.deepEqual(acosh(0), complex(0, pi / 2))
+    approxDeepEqual(acosh(-2), complex(1.31695789692481670862504634730797, pi))
+    approxDeepEqual(acosh(0), complex(0, pi / 2))
     // assert.ok(isNaN(acosh(-2)))
     // assert.ok(isNaN(acosh(0)))
 
-    approx.equal(acosh(1), 0)
-    approx.equal(acosh(2), 1.31695789692481670862504634730797)
-    approx.equal(acosh(3), 1.7627471740390860504652186499595)
-    approx.equal(acosh(pi), 1.811526272460853107021852049305)
+    approxEqual(acosh(1), 0)
+    approxEqual(acosh(2), 1.31695789692481670862504634730797)
+    approxEqual(acosh(3), 1.7627471740390860504652186499595)
+    approxEqual(acosh(pi), 1.811526272460853107021852049305)
   })
 
   it('should return NaN for values out of range and predictable:true', function () {
@@ -51,11 +51,11 @@ describe('acosh', function () {
   })
 
   it('should be the inverse function of hyperbolic cos', function () {
-    approx.equal(acosh(cosh(-1)), 1)
-    approx.equal(acosh(cosh(0)), 0)
-    approx.equal(acosh(cosh(0.1)), 0.1)
-    approx.equal(acosh(cosh(0.5)), 0.5)
-    approx.equal(acosh(cosh(2)), 2)
+    approxEqual(acosh(cosh(-1)), 1)
+    approxEqual(acosh(cosh(0)), 0)
+    approxEqual(acosh(cosh(0.1)), 0.1)
+    approxEqual(acosh(cosh(0.5)), 0.5)
+    approxEqual(acosh(cosh(2)), 2)
   })
 
   it('should be the inverse function of bignumber cosh', function () {
@@ -76,14 +76,14 @@ describe('acosh', function () {
   })
 
   it('should return the arccosh of a complex number', function () {
-    approx.deepEqual(acosh(complex('2+3i')), complex(1.9833870299165, 1.000143542473797))
-    approx.deepEqual(acosh(complex('2-3i')), complex(1.9833870299165, -1.000143542473797))
-    approx.deepEqual(acosh(complex('-2+3i')), complex(1.9833870299165, 2.14144911111600))
-    approx.deepEqual(acosh(complex('-2-3i')), complex(1.9833870299165, -2.14144911111600))
-    approx.deepEqual(acosh(complex('1+i')), complex(1.061275061905036, 0.904556894302381))
-    approx.deepEqual(acosh(complex('i')), complex(0.881373587019543, 1.570796326794897))
+    approxDeepEqual(acosh(complex('2+3i')), complex(1.9833870299165, 1.000143542473797))
+    approxDeepEqual(acosh(complex('2-3i')), complex(1.9833870299165, -1.000143542473797))
+    approxDeepEqual(acosh(complex('-2+3i')), complex(1.9833870299165, 2.14144911111600))
+    approxDeepEqual(acosh(complex('-2-3i')), complex(1.9833870299165, -2.14144911111600))
+    approxDeepEqual(acosh(complex('1+i')), complex(1.061275061905036, 0.904556894302381))
+    approxDeepEqual(acosh(complex('i')), complex(0.881373587019543, 1.570796326794897))
     assert.deepStrictEqual(acosh(complex('1')), complex(-0, 0))
-    approx.deepEqual(acosh(complex('0')), complex(0, pi / 2))
+    approxDeepEqual(acosh(complex('0')), complex(0, pi / 2))
   })
 
   it('should throw an error if called with a unit', function () {
@@ -99,8 +99,8 @@ describe('acosh', function () {
     assert.throws(() => acosh([1, 2, 3]), TypeError)
     assert.throws(() => acosh(matrix([1, 2, 3])), TypeError)
     const acosh123 = [0, 1.3169578969248167, 1.7627471740390860504]
-    approx.deepEqual(math.map([1, 2, 3], acosh), acosh123)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), acosh), matrix(acosh123))
+    approxDeepEqual(math.map([1, 2, 3], acosh), acosh123)
+    approxDeepEqual(math.map(matrix([1, 2, 3]), acosh), matrix(acosh123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

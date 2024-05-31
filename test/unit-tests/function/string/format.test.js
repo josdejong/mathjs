@@ -12,6 +12,12 @@ describe('format', function () {
     assert.strictEqual(math.format(2.3e6), '2.3e+6')
   })
 
+  it('should format bigints', function () {
+    assert.strictEqual(math.format(42n), '42')
+    assert.strictEqual(math.format(-4n), '-4')
+    assert.strictEqual(math.format(123123123123123123123n), '123123123123123123123')
+  })
+
   it('should format strings', function () {
     assert.strictEqual(math.format('hello'), '"hello"')
   })

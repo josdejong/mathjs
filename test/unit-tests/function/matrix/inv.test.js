@@ -1,7 +1,7 @@
 // test inv
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const inv = math.inv
 
@@ -20,7 +20,7 @@ describe('inv', function () {
     assert.deepStrictEqual(inv([4]), [1 / 4])
     assert.deepStrictEqual(inv([[4]]), [[1 / 4]])
 
-    approx.deepEqual(inv([
+    approxDeepEqual(inv([
       [1, 4, 7],
       [3, 0, 5],
       [-1, 9, 11]
@@ -30,7 +30,7 @@ describe('inv', function () {
       [-3.375, 1.625, 1.5]
     ])
 
-    approx.deepEqual(inv([
+    approxDeepEqual(inv([
       [2, -1, 0],
       [-1, 2, -1],
       [0, -1, 2]
@@ -41,7 +41,7 @@ describe('inv', function () {
     ])
 
     // the following will force swapping of empty rows in the middle of the matrix
-    approx.deepEqual(inv([
+    approxDeepEqual(inv([
       [1, 0, 0],
       [0, 0, 1],
       [0, 1, 0]
@@ -51,7 +51,7 @@ describe('inv', function () {
       [0, 1, 0]
     ])
 
-    approx.deepEqual(inv([
+    approxDeepEqual(inv([
       [1, 0, 0],
       [0, -1, 1],
       [0, 0, 1]
@@ -94,7 +94,7 @@ describe('inv', function () {
   })
 
   it('should avoid issues with elements that are almost zero', function () {
-    approx.deepEqual(inv([
+    approxDeepEqual(inv([
       [0, 1, 0, 788],
       [-1, 0, 0, 692],
       [0, 0, 1, 0],
@@ -106,7 +106,7 @@ describe('inv', function () {
       [0, 0, 0, 1]
     ])
 
-    approx.deepEqual(inv([
+    approxDeepEqual(inv([
       [6.123233995736766e-17, 1, 0, 788],
       [-1, 6.123233995736766e-17, 0, 692],
       [0, 0, 1, 0],

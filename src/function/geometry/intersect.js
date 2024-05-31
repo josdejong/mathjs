@@ -119,7 +119,7 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     const d2 = subtract(o2, p2b)
     const det = subtract(multiplyScalar(d1[0], d2[1]), multiplyScalar(d2[0], d1[1]))
     if (isZero(det)) return null
-    if (smaller(abs(det), config.epsilon)) {
+    if (smaller(abs(det), config.relTol)) {
       return null
     }
     const d20o11 = multiplyScalar(d2[0], o1[1])

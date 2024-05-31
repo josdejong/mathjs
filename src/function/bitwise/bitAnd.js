@@ -38,15 +38,16 @@ export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    bitNot, bitOr, bitXor, leftShift, rightArithShift, rightLogShift
    *
-   * @param  {number | BigNumber | Array | Matrix} x First value to and
-   * @param  {number | BigNumber | Array | Matrix} y Second value to and
-   * @return {number | BigNumber | Array | Matrix} AND of `x` and `y`
+   * @param  {number | BigNumber | bigint | Array | Matrix} x First value to and
+   * @param  {number | BigNumber | bigint | Array | Matrix} y Second value to and
+   * @return {number | BigNumber | bigint | Array | Matrix} AND of `x` and `y`
    */
   return typed(
     name,
     {
       'number, number': bitAndNumber,
-      'BigNumber, BigNumber': bitAndBigNumber
+      'BigNumber, BigNumber': bitAndBigNumber,
+      'bigint, bigint': (x, y) => x & y
     },
     matrixAlgorithmSuite({
       SS: matAlgo06xS0S0,

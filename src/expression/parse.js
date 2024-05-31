@@ -1,6 +1,7 @@
 import { factory } from '../utils/factory.js'
 import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
 import { deepMap } from '../utils/collection.js'
+import { safeNumberType } from '../utils/number.js'
 import { hasOwnProperty } from '../utils/object.js'
 
 const name = 'parse'
@@ -1678,7 +1679,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       numberStr = state.token
       getToken(state)
 
-      return new ConstantNode(numeric(numberStr, config.number))
+      const numericType = safeNumberType(numberStr, config)
+      const value = numeric(numberStr, numericType)
+
+      return new ConstantNode(value)
     }
 
     return parseParentheses(state)

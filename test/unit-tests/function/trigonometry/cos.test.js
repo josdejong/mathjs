@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -11,22 +11,22 @@ const biggermath = math.create({ number: 'BigNumber', precision: 238 })
 
 describe('cos', function () {
   it('should return the cosine of a boolean', function () {
-    approx.equal(cos(true), 0.54030230586814)
-    approx.equal(cos(false), 1)
+    approxEqual(cos(true), 0.54030230586814)
+    approxEqual(cos(false), 1)
   })
 
   it('should return the cosine of a number', function () {
-    approx.equal(cos(0), 1)
-    approx.equal(cos(pi * 1 / 4), 0.707106781186548)
-    approx.equal(cos(pi * 1 / 8), 0.923879532511287)
-    approx.equal(cos(pi * 2 / 4), 0)
-    approx.equal(cos(pi * 3 / 4), -0.707106781186548)
-    approx.equal(cos(pi * 4 / 4), -1)
-    approx.equal(cos(pi * 5 / 4), -0.707106781186548)
-    approx.equal(cos(pi * 6 / 4), 0)
-    approx.equal(cos(pi * 7 / 4), 0.707106781186548)
-    approx.equal(cos(pi * 8 / 4), 1)
-    approx.equal(cos(pi / 4), Math.SQRT1_2)
+    approxEqual(cos(0), 1)
+    approxEqual(cos(pi * 1 / 4), 0.707106781186548)
+    approxEqual(cos(pi * 1 / 8), 0.923879532511287)
+    approxEqual(cos(pi * 2 / 4), 0)
+    approxEqual(cos(pi * 3 / 4), -0.707106781186548)
+    approxEqual(cos(pi * 4 / 4), -1)
+    approxEqual(cos(pi * 5 / 4), -0.707106781186548)
+    approxEqual(cos(pi * 6 / 4), 0)
+    approxEqual(cos(pi * 7 / 4), 0.707106781186548)
+    approxEqual(cos(pi * 8 / 4), 1)
+    approxEqual(cos(pi / 4), Math.SQRT1_2)
   })
 
   it('should return the cosine of a bignumber', function () {
@@ -56,7 +56,7 @@ describe('cos', function () {
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau (like 6, 7)
     for (let x = -20; x < 20; x += 1) {
-      approx.equal(bigmath.cos(bigmath.bignumber(x)).toNumber(), Math.cos(x))
+      approxEqual(bigmath.cos(bigmath.bignumber(x)).toNumber(), Math.cos(x))
     }
 
     assert.deepStrictEqual(bigmath.cos(bigPi.div(4)).toString(), '0.7071067811865475')
@@ -71,24 +71,24 @@ describe('cos', function () {
   it('should return the cosine of a complex number', function () {
     const re = 4.18962569096881
     const im = 9.10922789375534
-    approx.deepEqual(cos(complex('2+3i')), complex(-re, -im))
-    approx.deepEqual(cos(complex('2-3i')), complex(-re, im))
-    approx.deepEqual(cos(complex('-2+3i')), complex(-re, im))
-    approx.deepEqual(cos(complex('-2-3i')), complex(-re, -im))
-    approx.deepEqual(cos(complex('i')), complex(1.54308063481524, 0))
-    approx.deepEqual(cos(complex('1')), complex(0.540302305868140, 0))
-    approx.deepEqual(cos(complex('1+i')), complex(0.833730025131149, -0.988897705762865))
-    approx.deepEqual(cos(complex('1e-10+1e-10i')), complex('1-1e-20i'))
+    approxDeepEqual(cos(complex('2+3i')), complex(-re, -im))
+    approxDeepEqual(cos(complex('2-3i')), complex(-re, im))
+    approxDeepEqual(cos(complex('-2+3i')), complex(-re, im))
+    approxDeepEqual(cos(complex('-2-3i')), complex(-re, -im))
+    approxDeepEqual(cos(complex('i')), complex(1.54308063481524, 0))
+    approxDeepEqual(cos(complex('1')), complex(0.540302305868140, 0))
+    approxDeepEqual(cos(complex('1+i')), complex(0.833730025131149, -0.988897705762865))
+    approxDeepEqual(cos(complex('1e-10+1e-10i')), complex('1-1e-20i'))
   })
 
   it('should return the cosine of an angle', function () {
-    approx.equal(cos(unit('45deg')), 0.707106781186548)
-    approx.equal(cos(unit('-135deg')), -0.707106781186548)
+    approxEqual(cos(unit('45deg')), 0.707106781186548)
+    approxEqual(cos(unit('-135deg')), -0.707106781186548)
 
     assert(math.isBigNumber(cos(unit(math.bignumber(45), 'deg'))))
-    approx.equal(cos(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548)
+    approxEqual(cos(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548)
 
-    approx.deepEqual(cos(unit(complex(1, 1), 'rad')), complex(0.833730025131149, -0.988897705762865))
+    approxDeepEqual(cos(unit(complex(1, 1), 'rad')), complex(0.833730025131149, -0.988897705762865))
   })
 
   it('should throw an error if called with an invalid unit', function () {
@@ -103,12 +103,12 @@ describe('cos', function () {
 
   it('should not operate on a matrix', function () {
     assert.throws(() => cos(matrix([1, 2, 3])), TypeError)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), cos), matrix(cos123))
+    approxDeepEqual(math.map(matrix([1, 2, 3]), cos), matrix(cos123))
   })
 
   it('should not operate on an array', function () {
     assert.throws(() => cos([1, 2, 3]), TypeError)
-    approx.deepEqual(math.map([1, 2, 3], cos), cos123)
+    approxDeepEqual(math.map([1, 2, 3], cos), cos123)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -11,16 +11,16 @@ const biggermath = math.create({ number: 'BigNumber', precision: 21 })
 
 describe('coth', function () {
   it('should return the coth of a boolean', function () {
-    approx.equal(coth(true), 1.3130352854993)
-    approx.equal(coth(false), Number.POSITIVE_INFINITY)
+    approxEqual(coth(true), 1.3130352854993)
+    approxEqual(coth(false), Number.POSITIVE_INFINITY)
   })
 
   it('should return the coth of a number', function () {
-    approx.equal(coth(0), Number.POSITIVE_INFINITY)
-    approx.equal(coth(pi), 1.0037418731973)
-    approx.equal(coth(1), 1.3130352854993)
-    approx.equal(coth(2), 1.0373147207275)
-    approx.equal(coth(3), 1.0049698233137)
+    approxEqual(coth(0), Number.POSITIVE_INFINITY)
+    approxEqual(coth(pi), 1.0037418731973)
+    approxEqual(coth(1), 1.3130352854993)
+    approxEqual(coth(2), 1.0373147207275)
+    approxEqual(coth(3), 1.0049698233137)
   })
 
   it('should return the coth of a bignumber', function () {
@@ -36,9 +36,9 @@ describe('coth', function () {
   })
 
   it('should return the coth of a complex number', function () {
-    approx.deepEqual(coth(complex('1')), complex(1.3130352854993, 0))
-    approx.deepEqual(coth(complex('i')), complex(0, -0.64209261593433))
-    approx.deepEqual(coth(complex('2 + i')), complex(0.98432922645819, -0.032797755533753))
+    approxDeepEqual(coth(complex('1')), complex(1.3130352854993, 0))
+    approxDeepEqual(coth(complex('i')), complex(0, -0.64209261593433))
+    approxDeepEqual(coth(complex('2 + i')), complex(0.98432922645819, -0.032797755533753))
   })
 
   it('should throw an error on an angle', function () {
@@ -57,12 +57,12 @@ describe('coth', function () {
 
   it('should not operate on an array', function () {
     assert.throws(() => coth([1, 2, 3]), TypeError)
-    approx.deepEqual(math.map([1, 2, 3], coth), coth123)
+    approxDeepEqual(math.map([1, 2, 3], coth), coth123)
   })
 
   it('should not operate on a matrix', function () {
     assert.throws(() => coth(matrix([1, 2, 3])), TypeError)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), coth), matrix(coth123))
+    approxDeepEqual(math.map(matrix([1, 2, 3]), coth), matrix(coth123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

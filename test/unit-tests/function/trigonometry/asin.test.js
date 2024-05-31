@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -15,19 +15,19 @@ const Big = bigmath.bignumber
 
 describe('asin', function () {
   it('should return the arcsin of a boolean', function () {
-    approx.equal(asin(true), 0.5 * pi)
+    approxEqual(asin(true), 0.5 * pi)
     assert.strictEqual(asin(false), 0)
   })
 
   it('should return the arcsin of a number', function () {
-    approx.equal(asin(-1) / pi, -0.5)
-    approx.equal(asin(-0.5) / pi, -1 / 6)
-    approx.equal(asin(0) / pi, 0)
-    approx.equal(asin(0.5) / pi, 1 / 6)
-    approx.equal(asin(1) / pi, 0.5)
+    approxEqual(asin(-1) / pi, -0.5)
+    approxEqual(asin(-0.5) / pi, -1 / 6)
+    approxEqual(asin(0) / pi, 0)
+    approxEqual(asin(0.5) / pi, 1 / 6)
+    approxEqual(asin(1) / pi, 0.5)
 
-    approx.deepEqual(asin(-2), complex('-1.57079632679490 + 1.31695789692482i'))
-    approx.deepEqual(asin(2), complex('1.57079632679490 - 1.31695789692482i'))
+    approxDeepEqual(asin(-2), complex('-1.57079632679490 + 1.31695789692482i'))
+    approxDeepEqual(asin(2), complex('1.57079632679490 - 1.31695789692482i'))
   })
 
   it('should return the arccos of a number when predictable:true', function () {
@@ -63,11 +63,11 @@ describe('asin', function () {
   })
 
   it('should be the inverse function of sin', function () {
-    approx.equal(asin(sin(-1)), -1)
-    approx.equal(asin(sin(0)), 0)
-    approx.equal(asin(sin(0.1)), 0.1)
-    approx.equal(asin(sin(0.5)), 0.5)
-    approx.equal(asin(sin(2)), 1.14159265358979)
+    approxEqual(asin(sin(-1)), -1)
+    approxEqual(asin(sin(0)), 0)
+    approxEqual(asin(sin(0.1)), 0.1)
+    approxEqual(asin(sin(0.5)), 0.5)
+    approxEqual(asin(sin(2)), 1.14159265358979)
   })
 
   it('should be the inverse function of bignumber sin', function () {
@@ -98,13 +98,13 @@ describe('asin', function () {
   it('should return the arcsin of a complex number', function () {
     const re = 0.570652784321099
     const im = 1.983387029916536
-    approx.deepEqual(asin(complex('2+3i')), complex(re, im))
-    approx.deepEqual(asin(complex('2-3i')), complex(re, -im))
-    approx.deepEqual(asin(complex('-2+3i')), complex(-re, im))
-    approx.deepEqual(asin(complex('-2-3i')), complex(-re, -im))
-    approx.deepEqual(asin(complex('i')), complex(0, 0.881373587019543))
-    approx.deepEqual(asin(complex('1')), complex(1.57079632679490, 0))
-    approx.deepEqual(asin(complex('1+i')), complex(0.666239432492515, 1.061275061905036))
+    approxDeepEqual(asin(complex('2+3i')), complex(re, im))
+    approxDeepEqual(asin(complex('2-3i')), complex(re, -im))
+    approxDeepEqual(asin(complex('-2+3i')), complex(-re, im))
+    approxDeepEqual(asin(complex('-2-3i')), complex(-re, -im))
+    approxDeepEqual(asin(complex('i')), complex(0, 0.881373587019543))
+    approxDeepEqual(asin(complex('1')), complex(1.57079632679490, 0))
+    approxDeepEqual(asin(complex('1+i')), complex(0.666239432492515, 1.061275061905036))
   })
 
   it('should throw an error if called with a unit', function () {
@@ -125,8 +125,8 @@ describe('asin', function () {
       1.57079632679490,
       complex(1.57079632679490, -1.31695789692482),
       complex(1.57079632679490, -1.76274717403909)]
-    approx.deepEqual(math.map([1, 2, 3], asin), asin123)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), asin), matrix(asin123))
+    approxDeepEqual(math.map([1, 2, 3], asin), asin123)
+    approxDeepEqual(math.map(matrix([1, 2, 3]), asin), matrix(asin123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

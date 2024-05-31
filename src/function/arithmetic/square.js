@@ -28,9 +28,9 @@ export const createSquare = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    multiply, cube, sqrt, pow
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit} x
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit} x
    *            Number for which to calculate the square
-   * @return {number | BigNumber | Fraction | Complex | Unit}
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit}
    *            Squared value
    */
   return typed(name, {
@@ -42,6 +42,10 @@ export const createSquare = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     BigNumber: function (x) {
       return x.times(x)
+    },
+
+    bigint: function (x) {
+      return x * x
     },
 
     Fraction: function (x) {

@@ -33,6 +33,10 @@ describe('object', function () {
       assert.strictEqual(clone(2.3), 2.3)
     })
 
+    it('should clone bigint', function () {
+      assert.strictEqual(clone(4n), 4n)
+    })
+
     it('should clone strings', function () {
       assert.strictEqual(clone('hello'), 'hello')
     })

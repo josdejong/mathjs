@@ -1,4 +1,4 @@
-const { create, all, factory } = require('../..')
+import { all, create, factory } from '../../lib/esm/index.js'
 
 // First let's see what the default behavior is:
 // strings are compared by their numerical value

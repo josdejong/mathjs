@@ -1,4 +1,4 @@
-import approx from '../../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../../tools/approx.js'
 import math from '../../../../../src/defaultInstance.js'
 
 describe('slu', function () {
@@ -15,7 +15,7 @@ describe('slu', function () {
     const r = math.slu(m, 0, 1)
 
     // verify M[p,q]=L*U
-    approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 4 x 4, amd(A+A\') (order=1)', function () {
@@ -31,7 +31,7 @@ describe('slu', function () {
     const r = math.slu(m, 1, 1)
 
     // verify M[p,q]=L*U
-    approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 4 x 4, amd(A\'*A) (order=2), partial pivoting', function () {
@@ -47,7 +47,7 @@ describe('slu', function () {
     const r = math.slu(m, 2, 1)
 
     // verify M[p,q]=L*U
-    approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 4 x 4, amd(A\'*A) (order=3), partial pivoting', function () {
@@ -63,7 +63,7 @@ describe('slu', function () {
     const r = math.slu(m, 3, 1)
 
     // verify M[p,q]=L*U
-    approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
+    approxDeepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   /**

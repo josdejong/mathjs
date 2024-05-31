@@ -16,6 +16,7 @@ import { tauDocs } from './constants/tau.js'
 import { trueDocs } from './constants/true.js'
 import { versionDocs } from './constants/version.js'
 import { bignumberDocs } from './construction/bignumber.js'
+import { bigintDocs } from './construction/bigint.js'
 import { booleanDocs } from './construction/boolean.js'
 import { complexDocs } from './construction/complex.js'
 import { createUnitDocs } from './construction/createUnit.js'
@@ -246,6 +247,7 @@ export const embeddedDocs = {
 
   // construction functions
   bignumber: bignumberDocs,
+  bigint: bigintDocs,
   boolean: booleanDocs,
   complex: complexDocs,
   createUnit: createUnitDocs,

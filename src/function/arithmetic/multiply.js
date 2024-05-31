@@ -789,9 +789,9 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    *    divide, prod, cross, dot
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First value to multiply
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to multiply
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
    */
   return typed(name, multiplyScalar, {
     // we extend the signatures of multiplyScalar with signatures dealing with matrices

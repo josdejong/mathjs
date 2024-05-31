@@ -20,6 +20,18 @@ describe('rightArithShift', function () {
     assert.strictEqual(rightArithShift(-13, 3), -2)
   })
 
+  it('should right arithmetically shift a bigint by a given amount', function () {
+    assert.strictEqual(rightArithShift(0n, 1000n), 0n)
+    assert.strictEqual(rightArithShift(2n, 0n), 2n)
+    assert.strictEqual(rightArithShift(12n, 3n), 1n)
+    assert.strictEqual(rightArithShift(32n, 4n), 2n)
+    assert.strictEqual(rightArithShift(-1n, 1000n), -1n)
+    assert.strictEqual(rightArithShift(-12n, 2n), -3n)
+    assert.strictEqual(rightArithShift(122n, 3n), 15n)
+    assert.strictEqual(rightArithShift(-13n, 2n), -4n)
+    assert.strictEqual(rightArithShift(-13n, 3n), -2n)
+  })
+
   it('should right arithmetically shift booleans by a boolean amount', function () {
     assert.strictEqual(rightArithShift(true, true), 0)
     assert.strictEqual(rightArithShift(true, false), 1)
@@ -33,6 +45,11 @@ describe('rightArithShift', function () {
     assert.strictEqual(rightArithShift(true, 0), 1)
     assert.strictEqual(rightArithShift(true, 1), 0)
     assert.strictEqual(rightArithShift(false, 2), 0)
+  })
+
+  it('should right arithmetically shift with a mix of numbers and bigints', function () {
+    assert.strictEqual(rightArithShift(122, 3n), 15)
+    assert.strictEqual(rightArithShift(122n, 3), 15)
   })
 
   it('should right arithmetically shift bignumbers', function () {

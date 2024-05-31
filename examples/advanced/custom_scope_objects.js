@@ -1,4 +1,4 @@
-const { create, all } = require('../..')
+import { all, create } from '../../lib/esm/index.js'
 
 const math = create(all)
 

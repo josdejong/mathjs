@@ -2,6 +2,7 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 const isNumeric = math.isNumeric
 const bignumber = math.bignumber
+const bigint = math.bigint
 const fraction = math.fraction
 
 describe('isNumeric', function () {
@@ -9,6 +10,8 @@ describe('isNumeric', function () {
     assert.strictEqual(isNumeric(2), true)
     assert.strictEqual(isNumeric(true), true)
     assert.strictEqual(isNumeric(bignumber(2.3)), true)
+    assert.strictEqual(isNumeric(bigint('42')), true)
+    assert.strictEqual(isNumeric(42n), true)
     assert.strictEqual(isNumeric(fraction(1, 3)), true)
 
     assert.strictEqual(isNumeric('2'), false)

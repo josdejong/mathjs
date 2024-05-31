@@ -1,10 +1,10 @@
 // test performance of resolving scope variables in the expression parser
 
-const Benchmark = require('benchmark')
-const math = require('../..')
+import Benchmark from 'benchmark'
+import { evaluate } from '../../lib/esm/index.js'
 
 const scope = { a: 2, b: 3, c: 4 }
-const f = math.evaluate('f(x, y) = a + b + c + x + y', scope)
+const f = evaluate('f(x, y) = a + b + c + x + y', scope)
 
 console.log('f(5, 6) = ' + f(5, 6))
 
