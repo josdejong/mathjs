@@ -38,7 +38,7 @@ export function configFactory (config, emit) {
    *                            {string} matrix
    *                              A string 'Matrix' (default) or 'Array'.
    *                            {string} number
-   *                              A string 'number' (default), 'BigNumber', or 'Fraction'
+   *                              A string 'number' (default), 'BigNumber', 'bigint', or 'Fraction'
    *                            {number} precision
    *                              The number of significant digits for BigNumbers.
    *                              Not applicable for Numbers.

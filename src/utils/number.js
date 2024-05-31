@@ -20,6 +20,42 @@ export function isInteger (value) {
 }
 
 /**
+ * Check if a string contains an integer
+ * @param {string} str
+ * @return {boolean} isInteger
+ */
+export function isIntegerStr (str) {
+  // regex matching strings like "123" and "-123"
+  return /^-?\d+$/.test(str)
+}
+
+/**
+ * Ensure the number type is compatible with the provided value.
+ * If not, return 'number' instead.
+ *
+ * For example:
+ *
+ *     safeNumberType('2.3', { number: 'bigint', numberFallback: 'number' })
+ *
+ * will return 'number' and not 'bigint' because trying to create a bigint with
+ * value 2.3 would throw an exception.
+ *
+ * @param {string} numberStr
+ * @param {{
+ *   number: 'number' | 'BigNumber' | 'bigint' | 'Fraction'
+ *   numberFallback: 'number' | 'BigNumber'
+ * }} config
+ * @returns {'number' | 'BigNumber' | 'bigint' | 'Fraction'}
+ */
+export function safeNumberType (numberStr, config) {
+  if (config.number === 'bigint' && !isIntegerStr(numberStr)) {
+    return config.numberFallback
+  }
+
+  return config.number
+}
+
+/**
  * Calculate the sign of a number
  * @param {number} x
  * @returns {number}

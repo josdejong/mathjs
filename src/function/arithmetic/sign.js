@@ -31,9 +31,9 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    abs
    *
-   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} x
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Array | Matrix | Unit} x
    *            The number for which to determine the sign
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
+   * @return {number | BigNumber | bigint | Fraction | Complex | Array | Matrix | Unit}
    *            The sign of `x`
    */
   return typed(name, {
@@ -45,6 +45,10 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     BigNumber: function (x) {
       return new BigNumber(x.cmp(0))
+    },
+
+    bigint: function (x) {
+      return x > 0n ? 1n : x < 0n ? -1n : 0n
     },
 
     Fraction: function (x) {

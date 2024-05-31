@@ -19,6 +19,12 @@ describe('sign', function () {
     assert.strictEqual(math.sign(0), 0)
   })
 
+  it('should calculate the sign of a bigint', function () {
+    assert.strictEqual(math.sign(3n), 1n)
+    assert.strictEqual(math.sign(-3n), -1n)
+    assert.strictEqual(math.sign(0n), 0n)
+  })
+
   it('should calculate the sign of a big number', function () {
     assert.deepStrictEqual(math.sign(bignumber(3)), bignumber(1))
     assert.deepStrictEqual(math.sign(bignumber(-3)), bignumber(-1))

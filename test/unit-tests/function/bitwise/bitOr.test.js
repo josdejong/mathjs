@@ -14,6 +14,14 @@ describe('bitOr', function () {
     assert.strictEqual(bitOr(-5, -3), -1)
   })
 
+  it('should bitwise or two bigints', function () {
+    assert.strictEqual(bitOr(53n, 131n), 183n)
+    assert.strictEqual(bitOr(2n, 3n), 3n)
+    assert.strictEqual(bitOr(-2n, 3n), -1n)
+    assert.strictEqual(bitOr(2n, -3n), -1n)
+    assert.strictEqual(bitOr(-5n, -3n), -1n)
+  })
+
   it('should bitwise or booleans', function () {
     assert.strictEqual(bitOr(true, true), 1)
     assert.strictEqual(bitOr(true, false), 1)
@@ -41,6 +49,11 @@ describe('bitOr', function () {
     assert.deepStrictEqual(bitOr(1, bignumber(2)), bignumber(3))
     assert.deepStrictEqual(bitOr(bignumber(7), 9), bignumber(15))
     assert.deepStrictEqual(bitOr(7, bignumber(9)), bignumber(15))
+  })
+
+  it('should bitwise or mixed numbers and bigints', function () {
+    assert.strictEqual(bitOr(53, 131n), 183)
+    assert.strictEqual(bitOr(53n, 131), 183)
   })
 
   it('should bitwise or mixed booleans and bignumbers', function () {

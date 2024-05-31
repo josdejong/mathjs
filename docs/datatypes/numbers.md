@@ -50,7 +50,7 @@ const ans = math.add(0.1, 0.2)     //  0.30000000000000004
 math.format(ans, {precision: 14})  // '0.3'
 ```
 
-Alternatives are to use [Fractions](fractions.md) which store a number as a numerator and denominator, or [BigNumbers](bignumbers.md), which store a number with a higher precision.
+Alternatives are to use [Fractions](fractions.md) which store a number as a numerator and denominator, [BigNumbers](bignumbers.md) which store a number with a higher precision, or [bigint](bigints.md) which can store larger integer numbers.
 
 
 ## Minimum and maximum

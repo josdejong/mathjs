@@ -12,9 +12,9 @@ export const createSubtractScalar = /* #__PURE__ */ factory(name, dependencies, 
    *
    * This function does not support collections (Array or Matrix).
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit} x   First value
-   * @param  {number | BigNumber | Fraction | Complex} y          Second value to be subtracted from `x`
-   * @return {number | BigNumber | Fraction | Complex | Unit}     Difference of `x` and `y`
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit} x   First value
+   * @param  {number | BigNumber | bigint | Fraction | Complex} y          Second value to be subtracted from `x`
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit}     Difference of `x` and `y`
    * @private
    */
   return typed(name, {
@@ -27,6 +27,10 @@ export const createSubtractScalar = /* #__PURE__ */ factory(name, dependencies, 
 
     'BigNumber, BigNumber': function (x, y) {
       return x.minus(y)
+    },
+
+    'bigint, bigint': function (x, y) {
+      return x - y
     },
 
     'Fraction, Fraction': function (x, y) {

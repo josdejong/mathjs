@@ -261,6 +261,13 @@ Chaining examples
     MathJsChain<MathCollection>
   >()
 
+  // bigint
+  expectTypeOf(math.chain(math.bigint(12))).toMatchTypeOf<MathJsChain<bigint>>()
+  expectTypeOf(math.chain(12).bigint()).toMatchTypeOf<MathJsChain<bigint>>()
+  expectTypeOf(math.chain([12, 13, 14]).bigint()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
+
   // chain
   expectTypeOf(math.chain(12).bignumber().clone()).toMatchTypeOf<
     MathJsChain<BigNumber>
@@ -332,6 +339,14 @@ Chaining examples
   expectTypeOf(math.chain('12').number()).toMatchTypeOf<MathJsChain<number>>()
   expectTypeOf(math.chain([12, 13, 14]).number()).toMatchTypeOf<
     MathJsChain<MathCollection>
+  >()
+
+  // numeric
+  expectTypeOf(math.chain('12').numeric('bigint')).toMatchTypeOf<
+    MathJsChain<bigint>
+  >()
+  expectTypeOf(math.chain(12).numeric('BigNumber')).toMatchTypeOf<
+    MathJsChain<BigNumber>
   >()
 
   // sparse
@@ -2470,7 +2485,7 @@ Statistics functions' return types
     math.min([math.unit('5cm'), math.unit('10cm')])
   ).toMatchTypeOf<Unit>()
   expectTypeOf(math.min(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber | Fraction | Complex | Unit
+    number | BigNumber | bigint | Fraction | Complex | Unit
   >()
   expectTypeOf(
     math.min(
@@ -2509,7 +2524,7 @@ Statistics functions' return types
     math.mean([math.unit('5cm'), math.unit('10cm')])
   ).toMatchTypeOf<Unit>()
   expectTypeOf(math.mean(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber | Fraction | Complex | Unit
+    number | BigNumber | bigint | Fraction | Complex | Unit
   >()
 
   expectTypeOf(math.median(1, 2, 3)).toMatchTypeOf<number>()
@@ -2524,7 +2539,7 @@ Statistics functions' return types
     math.median([math.unit('5cm'), math.unit('10cm')])
   ).toMatchTypeOf<Unit>()
   expectTypeOf(math.median(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber | Fraction | Complex | Unit
+    number | BigNumber | bigint | Fraction | Complex | Unit
   >()
 
   expectTypeOf(math.quantileSeq([1, 2, 3], 0.75)).toMatchTypeOf<number>()

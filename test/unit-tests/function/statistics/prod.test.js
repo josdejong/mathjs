@@ -25,6 +25,24 @@ describe('prod', function () {
     assert.strictEqual(prod([['1', '3'], ['5', '2']]), 30)
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
+  it.skip('should return the product of strings (with BigNumber config)', function () {
+    // TODO: requires math.add to recon with config.number when parsing strings
+    const bigmath = math.create({ number: 'BigNumber' })
+    assert.deepStrictEqual(bigmath.prod('10', '3', '4', '2'), bigmath.bignumber('240'))
+    assert.deepStrictEqual(bigmath.prod('10'), bigmath.bignumber(10))
+  })
+
+  // eslint-disable-next-line mocha/no-skipped-tests
+  it.skip('should return the product of strings (with bigint config)', function () {
+    // TODO: requires math.add to recon with config.number when parsing strings
+    const bigmath = math.create({ number: 'bigint' })
+    assert.strictEqual(bigmath.prod('10', '3', '4', '2'), 240n)
+    assert.strictEqual(bigmath.prod('10'), 10n)
+    assert.strictEqual(bigmath.prod('2.5'), 2.5) // fallback to number
+    assert.strictEqual(bigmath.prod('2.5', '4'), 10) // fallback to number
+  })
+
   it('should return the product of complex numbers', function () {
     assert.deepStrictEqual(prod(new Complex(2, 3), new Complex(-1, 2)), new Complex(-8, 1))
   })

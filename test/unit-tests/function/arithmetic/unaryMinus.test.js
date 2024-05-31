@@ -26,6 +26,12 @@ describe('unaryMinus', function () {
     assert.deepStrictEqual(math.unaryMinus(0), -0)
   })
 
+  it('should perform unary minus of a bigint', function () {
+    assert.deepStrictEqual(math.unaryMinus(2n), -2n)
+    assert.deepStrictEqual(math.unaryMinus(-2n), 2n)
+    assert.deepStrictEqual(math.unaryMinus(0n), -0n)
+  })
+
   it('should perform unary minus of a big number', function () {
     assert.deepStrictEqual(math.unaryMinus(bignumber(2)), bignumber(-2))
     assert.deepStrictEqual(math.unaryMinus(bignumber(-2)), bignumber(2))

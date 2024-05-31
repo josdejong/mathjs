@@ -32,6 +32,20 @@ describe('mod', function () {
     approxEqual(mod(0, 3), 0)
     approxEqual(mod(-10, 4), 2)
     approxEqual(mod(-5, 3), 1)
+    approxEqual(mod(-7, 6), 5)
+    approxEqual(mod(-8, 4), 0)
+  })
+
+  it('should calculate the modulus of two bigints', function () {
+    assert.strictEqual(mod(1n, 1n), 0n)
+    assert.strictEqual(mod(0n, 1n), 0n)
+    assert.strictEqual(mod(1n, 0n), 1n)
+    assert.strictEqual(mod(0n, 0n), 0n)
+    assert.strictEqual(mod(7n, 0n), 7n)
+    assert.strictEqual(mod(-10, 4), 2)
+    assert.strictEqual(mod(-5n, 3n), 1n)
+    assert.strictEqual(mod(-7n, 6n), 5n)
+    assert.strictEqual(mod(-8n, 4n), 0n)
   })
 
   it('should handle precise approximation of float approximation', function () {

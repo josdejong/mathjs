@@ -11,7 +11,7 @@ export type NoLiteralType<T> = T extends number
       : T
 
 // TODO: introduce generics for MathCollection, MathMatrix, and MathArray
-export type MathNumericType = number | BigNumber | Fraction | Complex
+export type MathNumericType = number | BigNumber | bigint | Fraction | Complex
 export type MathScalarType = MathNumericType | Unit
 export type MathArray = MathNumericType[] | MathNumericType[][] // TODO: MathArray can also contain Unit
 export type MathCollection = MathArray | Matrix
@@ -587,9 +587,21 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created bignumber
    */
   bignumber(
-    x?: number | string | Fraction | BigNumber | Unit | boolean | null
+    x?: number | string | Fraction | BigNumber | bigint | Unit | boolean | null
   ): BigNumber
   bignumber<T extends MathCollection>(x: T): T
+
+  /**
+   * Create a bigint, which can store integers with arbitrary precision.
+   * When a matrix is provided, all elements will be converted to
+   * bigint.
+   * @param x Value for the integer, 0 by default.
+   * @returns The created bigint
+   */
+  bigint(
+    x?: number | string | Fraction | BigNumber | bigint | boolean | null
+  ): bigint
+  bigint<T extends MathCollection>(x: T): T
 
   /**
    * Create a boolean or convert a string or number to a boolean. In case
@@ -671,7 +683,14 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns a fraction
    */
   fraction(
-    value: number | string | BigNumber | Unit | Fraction | FractionDefinition
+    value:
+      | number
+      | string
+      | BigNumber
+      | bigint
+      | Unit
+      | Fraction
+      | FractionDefinition
   ): Fraction
   fraction(values: MathCollection): MathCollection
   /**
@@ -720,7 +739,15 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created number
    */
   number(
-    value?: string | number | BigNumber | Fraction | boolean | Unit | null
+    value?:
+      | string
+      | number
+      | BigNumber
+      | bigint
+      | Fraction
+      | boolean
+      | Unit
+      | null
   ): number
   number(value?: MathCollection): number | MathCollection
   /**
@@ -730,6 +757,28 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created number
    */
   number(unit: Unit, valuelessUnit: Unit | string): number
+
+  /**
+   * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
+   * @param value The value to be converted
+   * @param outputType The desired numeric output type
+   */
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'number'
+  ): number
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'BigNumber'
+  ): BigNumber
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'bigint'
+  ): bigint
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'Fraction'
+  ): Fraction
 
   /**
    * Create a Sparse Matrix. The function creates a new math.type.Matrix
@@ -1265,9 +1314,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Divisor
    * @returns Returns the remainder of x divided by y
    */
-  mod<T extends number | BigNumber | Fraction | MathCollection>(
+  mod<T extends number | BigNumber | bigint | Fraction | MathCollection>(
     x: T,
-    y: number | BigNumber | Fraction | MathCollection
+    y: number | BigNumber | bigint | Fraction | MathCollection
   ): NoLiteralType<T>
 
   /**
@@ -1324,7 +1373,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y The exponent
    * @returns x to the power y
    */
-  pow(x: MathType, y: number | BigNumber | Complex): MathType
+  pow(x: MathType, y: number | BigNumber | bigint | Complex): MathType
 
   /**
    * Compute the sign of a value. The sign of a value x is: 1 when x > 1
@@ -1403,9 +1452,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Second value to and
    * @returns AND of x and y
    */
-  bitAnd<T extends number | BigNumber | MathCollection>(
+  bitAnd<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): NoLiteralType<T>
 
   /**
@@ -1415,7 +1464,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param x Value to not
    * @returns NOT of x
    */
-  bitNot<T extends number | BigNumber | MathCollection>(x: T): T
+  bitNot<T extends number | BigNumber | bigint | MathCollection>(x: T): T
 
   /**
    * Bitwise OR two values, x | y. For matrices, the function is evaluated
@@ -1425,7 +1474,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Second value to or
    * @returns OR of x and y
    */
-  bitOr<T extends number | BigNumber | MathCollection>(x: T, y: T): T
+  bitOr<T extends number | BigNumber | bigint | MathCollection>(x: T, y: T): T
 
   /**
    * Bitwise XOR two values, x ^ y. For matrices, the function is
@@ -1434,9 +1483,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Second value to xor
    * @returns XOR of x and y
    */
-  bitXor<T extends number | BigNumber | MathCollection>(
+  bitXor<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): NoLiteralType<T>
 
   /**
@@ -1447,9 +1496,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Amount of shifts
    * @returns x shifted left y times
    */
-  leftShift<T extends number | BigNumber | MathCollection>(
+  leftShift<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): NoLiteralType<T>
 
   /**
@@ -1460,9 +1509,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Amount of shifts
    * @returns x sign-filled shifted right y times
    */
-  rightArithShift<T extends number | BigNumber | MathCollection>(
+  rightArithShift<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): NoLiteralType<T>
 
   /**
@@ -1633,8 +1682,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   and(
-    x: number | BigNumber | Complex | Unit | MathCollection,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1644,7 +1693,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when input is a zero or empty value.
    */
   not(
-    x: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1657,8 +1706,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   or(
-    x: number | BigNumber | Complex | Unit | MathCollection,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1671,8 +1720,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   xor(
-    x: number | BigNumber | Complex | Unit | MathCollection,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /*************************************************************************
@@ -3292,6 +3341,8 @@ export interface MathJsInstance extends MathJsFactory {
 
   isBigNumber(x: unknown): x is BigNumber
 
+  isBigInt(x: unknown): x is bigint
+
   isComplex(x: unknown): x is Complex
 
   isFraction(x: unknown): x is Fraction
@@ -3383,7 +3434,7 @@ export interface MathJsInstance extends MathJsFactory {
    * Test whether a value is an numeric value. In case of a string,
    *  true is returned if the string contains a numeric value.
    * @param x Value to be tested
-   * @returns Returns true when x is a number, BigNumber, Fraction, Boolean, or a String containing number.
+   * @returns Returns true when x is a number, BigNumber, bigint, Fraction, Boolean, or a String containing number.
    * Returns false for other types.
    * Throws an error in case of unknown types.
    */
@@ -3408,7 +3459,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when x is NaN. Throws an error in case of an
    * unknown data type.
    */
-  isNaN(x: number | BigNumber | Fraction | MathCollection | Unit): boolean
+  isNaN(
+    x: number | BigNumber | bigint | Fraction | MathCollection | Unit
+  ): boolean
 
   /**
    * Test whether a value is negative: smaller than zero. The function
@@ -3418,18 +3471,20 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when x is larger than zero. Throws an error in
    * case of an unknown data type.
    */
-  isNegative(x: number | BigNumber | Fraction | MathCollection | Unit): boolean
+  isNegative(
+    x: number | BigNumber | bigint | Fraction | MathCollection | Unit
+  ): boolean
 
   /**
    * Test whether a value is an numeric value. The function is evaluated
    * element-wise in case of Array or Matrix input.
    * @param x Value to be tested
-   * @returns Returns true when x is a number, BigNumber, Fraction, or
+   * @returns Returns true when x is a number, BigNumber, bigint, Fraction, or
    * boolean. Returns false for other types. Throws an error in case of
    * unknown types.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  isNumeric(x: any): x is number | BigNumber | Fraction | boolean
+  isNumeric(x: any): x is number | BigNumber | bigint | Fraction | boolean
 
   /**
    * Test whether a value is positive: larger than zero. The function
@@ -3439,7 +3494,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when x is larger than zero. Throws an error in
    * case of an unknown data type.
    */
-  isPositive(x: number | BigNumber | Fraction | MathCollection | Unit): boolean
+  isPositive(
+    x: number | BigNumber | bigint | Fraction | MathCollection | Unit
+  ): boolean
 
   /**
    * Test whether a value is prime: has no divisors other than itself and
@@ -4318,7 +4375,8 @@ export interface ConfigOptions {
    */
   epsilon?: number
   matrix?: 'Matrix' | 'Array'
-  number?: 'number' | 'BigNumber' | 'Fraction'
+  number?: 'number' | 'BigNumber' | 'bigint' | 'Fraction'
+  numberFallback?: 'number' | 'BigNumber'
   precision?: number
   predictable?: boolean
   randomSeed?: string | null
@@ -4339,10 +4397,21 @@ export interface MathJsChain<TValue> {
    */
   bignumber(
     this: MathJsChain<
-      number | string | Fraction | BigNumber | Unit | boolean | null
+      number | string | Fraction | BigNumber | bigint | Unit | boolean | null
     >
   ): MathJsChain<BigNumber>
   bignumber<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
+
+  /**
+   * Create a bigint, which can store integers with arbitrary precision.
+   * When a matrix is provided, all elements will be converted to bigint.
+   */
+  bigint(
+    this: MathJsChain<
+      number | string | Fraction | BigNumber | bigint | boolean | null
+    >
+  ): MathJsChain<bigint>
+  bigint<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
 
   /**
    * Create a boolean or convert a string or number to a boolean. In case
@@ -4405,7 +4474,13 @@ export interface MathJsChain<TValue> {
    */
   fraction(
     this: MathJsChain<
-      number | string | BigNumber | Unit | Fraction | FractionDefinition
+      | number
+      | string
+      | BigNumber
+      | bigint
+      | Unit
+      | Fraction
+      | FractionDefinition
     >,
     denominator?: number
   ): MathJsChain<Fraction>
@@ -4439,7 +4514,7 @@ export interface MathJsChain<TValue> {
    */
   number(
     this: MathJsChain<
-      string | number | BigNumber | Fraction | boolean | Unit | null
+      string | number | BigNumber | bigint | Fraction | boolean | Unit | null
     >,
     valuelessUnit?: Unit | string
   ): MathJsChain<number>
@@ -4447,6 +4522,27 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathCollection>,
     valuelessUnit?: Unit | string
   ): MathJsChain<MathCollection>
+
+  /**
+   * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
+   * @param outputType The desired numeric output type
+   */
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'number'
+  ): MathJsChain<number>
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'BigNumber'
+  ): MathJsChain<BigNumber>
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'bigint'
+  ): MathJsChain<bigint>
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'Fraction'
+  ): MathJsChain<Fraction>
 
   /**
    * Create a Sparse Matrix. The function creates a new math.type.Matrix
@@ -4969,9 +5065,9 @@ export interface MathJsChain<TValue> {
    * @see http://en.wikipedia.org/wiki/Modulo_operation.
    * @param y Divisor
    */
-  mod<T extends number | BigNumber | Fraction | MathCollection>(
+  mod<T extends number | BigNumber | bigint | Fraction | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber | Fraction | MathCollection
+    y: number | BigNumber | bigint | Fraction | MathCollection
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5017,7 +5113,7 @@ export interface MathJsChain<TValue> {
    */
   pow(
     this: MathJsChain<MathType>,
-    y: number | BigNumber | Complex
+    y: number | BigNumber | bigint | Complex
   ): MathJsChain<MathType>
 
   /**
@@ -5103,9 +5199,9 @@ export interface MathJsChain<TValue> {
    * evaluated element wise.
    * @param y Second value to and
    */
-  bitAnd<T extends number | BigNumber | MathCollection>(
+  bitAnd<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5114,7 +5210,7 @@ export interface MathJsChain<TValue> {
    * base.
    */
 
-  bitNot<T extends number | BigNumber | MathCollection>(
+  bitNot<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>
   ): MathJsChain<T>
 
@@ -5124,7 +5220,7 @@ export interface MathJsChain<TValue> {
    * print base.
    * @param y Second value to or
    */
-  bitOr<T extends number | BigNumber | MathCollection>(
+  bitOr<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
     y: T
   ): MathJsChain<T>
@@ -5134,9 +5230,9 @@ export interface MathJsChain<TValue> {
    * evaluated element wise.
    * @param y Second value to xor
    */
-  bitXor<T extends number | BigNumber | MathCollection>(
+  bitXor<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5145,9 +5241,9 @@ export interface MathJsChain<TValue> {
    * function is evaluated on the best prefix base.
    * @param y Amount of shifts
    */
-  leftShift<T extends number | BigNumber | MathCollection>(
+  leftShift<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5156,9 +5252,9 @@ export interface MathJsChain<TValue> {
    * the function is evaluated on the best prefix base.
    * @param y Amount of shifts
    */
-  rightArithShift<T extends number | BigNumber | MathCollection>(
+  rightArithShift<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5310,8 +5406,10 @@ export interface MathJsChain<TValue> {
    * @param y Second value to and
    */
   and(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -5319,7 +5417,9 @@ export interface MathJsChain<TValue> {
    * the function is evaluated element wise.
    */
   not(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -5329,8 +5429,10 @@ export interface MathJsChain<TValue> {
    * @param y Second value to or
    */
   or(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -5340,8 +5442,10 @@ export interface MathJsChain<TValue> {
    * @param y Second value to xor
    */
   xor(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /*************************************************************************
@@ -6591,7 +6695,7 @@ export interface MathJsChain<TValue> {
    */
 
   isInteger(
-    this: MathJsChain<number | BigNumber | Fraction | MathCollection>
+    this: MathJsChain<number | BigNumber | bigint | Fraction | MathCollection>
   ): MathJsChain<boolean>
 
   /**
@@ -6615,7 +6719,7 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<boolean>
 
   /**
-   * Test whether a value is an numeric value. The function is evaluated
+   * Test whether a value is a numeric value. The function is evaluated
    * element-wise in case of Array or Matrix input.
    */
 
@@ -6629,7 +6733,9 @@ export interface MathJsChain<TValue> {
    */
 
   isPositive(
-    this: MathJsChain<number | BigNumber | Fraction | MathCollection | Unit>
+    this: MathJsChain<
+      number | BigNumber | bigint | Fraction | MathCollection | Unit
+    >
   ): MathJsChain<boolean>
 
   /**
@@ -6639,7 +6745,7 @@ export interface MathJsChain<TValue> {
    */
 
   isPrime(
-    this: MathJsChain<number | BigNumber | MathCollection>
+    this: MathJsChain<number | BigNumber | bigint | MathCollection>
   ): MathJsChain<boolean>
 
   /**

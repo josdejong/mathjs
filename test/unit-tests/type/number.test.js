@@ -1,5 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
+import { isIntegerStr } from '../../../src/utils/number.js'
 import { approxEqual } from '../../../tools/approx.js'
 const number = math.number
 
@@ -17,12 +18,17 @@ describe('number', function () {
     approxEqual(number(null), 0)
   })
 
-  it('should convert a bignumber to a number', function () {
+  it('should convert a BigNumber to a number', function () {
     approxEqual(number(math.bignumber(0.1)), 0.1)
     approxEqual(number(math.bignumber('1.3e500')), Infinity)
   })
 
-  it('should convert a fraction to a number', function () {
+  it('should convert a bigint to a number', function () {
+    assert.strictEqual(number(123n), 123)
+    assert.strictEqual(number(12345678901234567890n).toString(), '12345678901234567000') // note: we've lost digits here
+  })
+
+  it('should convert a Fraction to a number', function () {
     approxEqual(number(math.fraction(2, 5)), 0.4)
   })
 
@@ -33,6 +39,17 @@ describe('number', function () {
 
   it('should convert a unit to a number', function () {
     approxEqual(number(math.unit('52cm'), 'm'), 0.52)
+  })
+
+  it('should test whether a string contains an integer', function () {
+    assert.strictEqual(isIntegerStr('123'), true)
+    assert.strictEqual(isIntegerStr('-123'), true)
+    assert.strictEqual(isIntegerStr('123123123123123123123123123123123'), true)
+    assert.strictEqual(isIntegerStr('-123123123123123123123123123123123'), true)
+    assert.strictEqual(isIntegerStr('2.4'), false)
+    assert.strictEqual(isIntegerStr('2e3'), false)
+    assert.strictEqual(isIntegerStr(''), false)
+    assert.strictEqual(isIntegerStr('a'), false)
   })
 
   it('should convert the value of a unit to a number', function () {

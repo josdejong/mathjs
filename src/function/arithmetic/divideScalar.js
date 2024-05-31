@@ -11,9 +11,9 @@ export const createDivideScalar = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * This function does not support collections (Array or Matrix).
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit} x   Numerator
-   * @param  {number | BigNumber | Fraction | Complex} y          Denominator
-   * @return {number | BigNumber | Fraction | Complex | Unit}     Quotient, `x / y`
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit} x   Numerator
+   * @param  {number | BigNumber | bigint | Fraction | Complex} y          Denominator
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit}     Quotient, `x / y`
    * @private
    */
   return typed(name, {
@@ -27,6 +27,10 @@ export const createDivideScalar = /* #__PURE__ */ factory(name, dependencies, ({
 
     'BigNumber, BigNumber': function (x, y) {
       return x.div(y)
+    },
+
+    'bigint, bigint': function (x, y) {
+      return x / y
     },
 
     'Fraction, Fraction': function (x, y) {

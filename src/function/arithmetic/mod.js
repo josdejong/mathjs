@@ -59,9 +59,9 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    *    divide
    *
-   * @param  {number | BigNumber | Fraction | Array | Matrix} x Dividend
-   * @param  {number | BigNumber | Fraction | Array | Matrix} y Divisor
-   * @return {number | BigNumber | Fraction | Array | Matrix} Returns the remainder of `x` divided by `y`.
+   * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} x Dividend
+   * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} y Divisor
+   * @return {number | BigNumber | bigint | Fraction | Array | Matrix} Returns the remainder of `x` divided by `y`.
    */
   return typed(
     name,
@@ -70,6 +70,19 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
       'BigNumber, BigNumber': function (x, y) {
         return y.isZero() ? x : x.sub(y.mul(floor(x.div(y))))
+      },
+
+      'bigint, bigint': function (x, y) {
+        if (y === 0n) {
+          return x
+        }
+
+        if (x < 0) {
+          const m = x % y
+          return m === 0n ? m : m + y
+        }
+
+        return x % y
       },
 
       'Fraction, Fraction': function (x, y) {

@@ -24,6 +24,10 @@ describe('multiply', function () {
       approxDeepEqual(multiply(-2, Infinity), -Infinity)
     })
 
+    it('should multiply bigint', function () {
+      assert.strictEqual(multiply(2n, 3n), 6n)
+    })
+
     it('should multiply booleans', function () {
       assert.strictEqual(multiply(true, true), 1)
       assert.strictEqual(multiply(true, false), 0)
@@ -38,6 +42,14 @@ describe('multiply', function () {
       assert.strictEqual(multiply(false, 2), 0)
     })
 
+    it('should multiply mixed numbers and bigint', function () {
+      assert.strictEqual(multiply(2, 3n), 6)
+      assert.strictEqual(multiply(2n, 3), 6)
+
+      assert.throws(function () { multiply(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+      assert.throws(function () { multiply(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+    })
+
     it('should multiply bignumbers', function () {
       assert.deepStrictEqual(multiply(bignumber(1.5), bignumber(0.2)), bignumber(0.3))
       assert.deepStrictEqual(multiply(bignumber('1.3e5000'), bignumber('2')), bignumber('2.6e5000'))
@@ -50,6 +62,11 @@ describe('multiply', function () {
 
       assert.throws(function () { multiply(1 / 3, bignumber(1).div(3)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
       assert.throws(function () { multiply(bignumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+    })
+
+    it('should multiply mixed bigints and BigNumbers', function () {
+      assert.deepStrictEqual(multiply(bignumber(2), 3n), bignumber(6))
+      assert.deepStrictEqual(multiply(2n, bignumber(3)), bignumber(6))
     })
 
     it('should throw an error when multipling mixed fractions and bignumbers', function () {
@@ -134,6 +151,11 @@ describe('multiply', function () {
       assert.deepStrictEqual(multiply(math.fraction(1, 3), 2), math.fraction(2, 3))
     })
 
+    it('should multiply mixed fractions and bigints', function () {
+      assert.deepStrictEqual(multiply(2n, math.fraction(1, 3)), math.fraction(2, 3))
+      assert.deepStrictEqual(multiply(math.fraction(1, 3), 2n), math.fraction(2, 3))
+    })
+
     it('should multiply a number and a unit correctly', function () {
       assert.strictEqual(multiply(2, unit('5 mm')).toString(), '10 mm')
       assert.strictEqual(multiply(2, unit('5 mm')).toString(), '10 mm')
@@ -158,6 +180,10 @@ describe('multiply', function () {
       assert.strictEqual(multiply(unit('mm'), 2).toString(), '2 mm')
       assert.strictEqual(multiply(unit('km'), 2).toString(), '2 km')
       assert.strictEqual(multiply(unit('inch'), 2).toString(), '2 inch')
+    })
+
+    it('should multiply a bigint and a unit value correctly', function () {
+      assert.strictEqual(multiply(2n, unit('5 mm')).toString(), '10 mm')
     })
 
     it('should multiply two units correctly', function () {

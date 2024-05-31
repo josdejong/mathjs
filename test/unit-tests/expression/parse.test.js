@@ -2144,6 +2144,37 @@ describe('parse', function () {
     })
   })
 
+  describe('bigint', function () {
+    const bigmath = math.create({
+      number: 'bigint'
+    })
+
+    it('should parse integer numbers as bigint', function () {
+      assert.strictEqual(bigmath.evaluate('123123123123123123123'), 123123123123123123123n)
+      assert.strictEqual(bigmath.evaluate('-123123123123123123123'), -123123123123123123123n)
+      assert.strictEqual(bigmath.evaluate('2.3'), 2.3)
+      assert.strictEqual(bigmath.evaluate('-2.3'), -2.3)
+    })
+
+    it('should fallback on the configured numberFallback when parsing as bigint', function () {
+      const bigmathFallback = math.create({
+        number: 'bigint',
+        numberFallback: 'BigNumber'
+      })
+
+      assert.strictEqual(bigmathFallback.evaluate('42'), 42n)
+      assert.deepStrictEqual(bigmathFallback.evaluate('2.3'), bigmathFallback.bignumber('2.3'))
+      assert.deepStrictEqual(bigmathFallback.evaluate('-2.3'), bigmathFallback.bignumber('-2.3'))
+    })
+
+    it('should evaluate units with bigint values (falling back to number)', function () {
+      assert.strictEqual(bigmath.evaluate('5 mm').toString(), '5 mm')
+      assert.strictEqual(bigmath.evaluate('5.5 mm').toString(), '5.5 mm')
+      assert.strictEqual(bigmath.evaluate('2 * 5 mm').toString(), '10 mm')
+      assert.strictEqual(bigmath.evaluate('2.5 * 4 mm').toString(), '10 mm')
+    })
+  })
+
   describe('scope', function () {
     it('should use a given scope for assignments', function () {
       const scope = {
