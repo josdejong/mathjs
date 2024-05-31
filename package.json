@@ -162,11 +162,6 @@
   "engines": {
     "node": ">= 18"
   },
-  "browserslist": [
-    "last 1 version",
-    "> 0.1%",
-    "not dead"
-  ],
   "bugs": {
     "url": "https://github.com/josdejong/mathjs/issues"
   },
