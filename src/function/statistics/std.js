@@ -88,7 +88,7 @@ export const createStd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         return sqrt(v)
       }
     } catch (err) {
-      if (err instanceof TypeError && err.message.indexOf(' variance') !== -1) {
+      if (err instanceof TypeError && err.message.includes(' variance')) {
         throw new TypeError(err.message.replace(' variance', ' std'))
       } else {
         throw err

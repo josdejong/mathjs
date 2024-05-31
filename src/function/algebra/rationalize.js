@@ -252,7 +252,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
             recPoly(node.args[0])
           }
         } else {
-          if (oper.indexOf(node.op) === -1) {
+          if (!oper.includes(node.op)) {
             throw new Error('Operator ' + node.op + ' invalid in polynomial expression')
           }
           for (let i = 0; i < node.args.length; i++) {
@@ -536,7 +536,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
         throw new Error('There is an unsolved function call')
       } else if (tp === 'OperatorNode') {
         // ***** OperatorName *****
-        if ('+-*^'.indexOf(node.op) === -1) throw new Error('Operator ' + node.op + ' invalid')
+        if (!'+-*^'.includes(node.op)) throw new Error('Operator ' + node.op + ' invalid')
 
         if (noPai !== null) {
           // -(unary),^  : children of *,+,-

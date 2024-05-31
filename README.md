@@ -160,6 +160,10 @@ Then, the tests can be executed:
 
     npm test
 
+To test the type definitions:
+
+    npm run test:types
+
 Additionally, the tests can be run on FireFox using [headless mode](https://developer.mozilla.org/en-US/Firefox/Headless_mode):
 
     npm run test:browser

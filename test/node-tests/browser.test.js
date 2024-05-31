@@ -22,7 +22,7 @@ describe('lib/browser', function () {
     // don't output all warnings "math.foo.bar is move to math.bar, ..."
     const originalWarn = console.warn
     console.warn = (...args) => {
-      if (args.join(' ').indexOf('is moved to') === -1) {
+      if (!args.join(' ').includes('is moved to')) {
         originalWarn.apply(console, args)
       }
     }
@@ -85,7 +85,7 @@ describe('lib/browser', function () {
       const obj = math[prop]
       if (math.typeOf(obj) !== 'Object') {
         try {
-          if (ignore.indexOf(prop) === -1) {
+          if (!ignore.includes(prop)) {
             math.help(prop).toString()
           }
         } catch (err) {

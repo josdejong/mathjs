@@ -5,7 +5,7 @@ const approx = require('../../tools/approx.js')
 const docgenerator = require('../../tools/docgenerator.js')
 const math = require('../..')
 
-const debug = process.argv.indexOf('--debug-docs') !== -1
+const debug = process.argv.includes('--debug-docs')
 
 function extractExpectation (comment, optional = false) {
   if (comment === '') return undefined

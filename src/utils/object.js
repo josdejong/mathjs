@@ -392,5 +392,5 @@ export function pickShallow (object, properties) {
 
 // helper function to test whether a string contains a path like 'user.name'
 function isPath (str) {
-  return str.indexOf('.') !== -1
+  return str.includes('.')
 }

@@ -114,8 +114,9 @@ Operators                         | Description
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
 `+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
+`%`, `mod`                        | percentage, modulus
 See section below                 | Implicit multiplication
-`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, percentage, modulus
+`*`, `/`, `.*`, `./`              | Multiply, divide
 `+`, `-`                          | Add, subtract
 `:`                               | Range
 `to`, `in`                        | Unit conversion

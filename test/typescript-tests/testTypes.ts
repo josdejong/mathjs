@@ -2454,7 +2454,7 @@ MathNode examples
 }
 
 /*
-min/max return types
+Statistics functions' return types
 */
 {
   const math = create(all, {})
@@ -2526,6 +2526,18 @@ min/max return types
   expectTypeOf(math.median(123, math.bignumber('456'))).toMatchTypeOf<
     number | BigNumber | Fraction | Complex | Unit
   >()
+
+  expectTypeOf(math.quantileSeq([1, 2, 3], 0.75)).toMatchTypeOf<number>()
+  expectTypeOf(math.quantileSeq([[1, 2, 3]], 0.75)).toMatchTypeOf<number>()
+  expectTypeOf(
+    math.quantileSeq([math.bignumber('123')], 0.75)
+  ).toMatchTypeOf<BigNumber>()
+  expectTypeOf(math.quantileSeq(math.matrix([1, 2, 3]), 0.75)).toMatchTypeOf<
+    MathScalarType | MathArray
+  >()
+  expectTypeOf(
+    math.quantileSeq([math.unit('5cm'), math.unit('10cm')], 0.75)
+  ).toMatchTypeOf<Unit>()
 }
 
 /*

@@ -1,6 +1,6 @@
 # Mathjs TypeScript types
 
-The code base of Mathjs is writting in JavaScript. The TypeScript definitions are maintained separately. 
+The code base of Mathjs is written in JavaScript. The TypeScript definitions are maintained separately. 
 
 ## Library structure
 
@@ -51,4 +51,16 @@ export const {
   addDependencies,
   // ...
 } : Record<string, FactoryFunctionMap>
+```
+
+## Testing the type definitions
+
+The types are defined in `types/index.d.ts`.
+
+The tests for the type definitions are located in `test/typescript-types/testTypes.ts`.
+
+To run the tests for the type definitions:
+
+```
+npm run test:types
 ```
