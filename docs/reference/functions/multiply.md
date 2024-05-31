@@ -21,14 +21,14 @@ math.multiply(x, y, z, ...)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | First value to multiply
-`y` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Second value to multiply
+`x` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | First value to multiply
+`y` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Second value to multiply
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Multiplication of `x` and `y`
+number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Multiplication of `x` and `y`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

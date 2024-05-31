@@ -22,13 +22,13 @@ math.square(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit |  Number for which to calculate the square
+`x` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Complex &#124; Unit |  Number for which to calculate the square
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit |  Squared value
+number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Complex &#124; Unit |  Squared value
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

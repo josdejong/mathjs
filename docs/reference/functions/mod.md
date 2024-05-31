@@ -27,14 +27,14 @@ math.mod(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Dividend
-`y` | number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Divisor
+`x` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Array &#124; Matrix | Dividend
+`y` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Array &#124; Matrix | Divisor
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Returns the remainder of `x` divided by `y`.
+number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Array &#124; Matrix | Returns the remainder of `x` divided by `y`.
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

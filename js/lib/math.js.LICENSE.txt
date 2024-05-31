@@ -1,4 +1,10 @@
-/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+/*!
+ *  decimal.js v10.4.3
+ *  An arbitrary-precision Decimal type for JavaScript.
+ *  https://github.com/MikeMcl/decimal.js
+ *  Copyright (c) 2022 Michael Mclaughlin <M8ch88l@gmail.com>
+ *  MIT Licence
+ */
 
 /**
  * @license Complex.js v2.1.1 12/05/2020
@@ -8,7 +14,7 @@
  **/
 
 /**
- * @license Fraction.js v4.3.0 20/08/2023
+ * @license Fraction.js v4.3.7 31/08/2023
  * https://www.xarg.org/2014/03/rational-numbers-in-javascript/
  *
  * Copyright (c) 2023, Robert Eisele (robert@raw.org)
@@ -23,8 +29,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 12.4.2
- * @date    2024-04-24
+ * @version 13.0.0
+ * @date    2024-05-31
  *
  * @license
  * Copyright (C) 2013-2024 Jos de Jong <wjosdejong@gmail.com>

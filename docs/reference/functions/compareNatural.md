@@ -13,7 +13,7 @@ For types of values that can't be compared mathematically,
 the function compares in a natural way.
 
 For numeric values, x and y are considered equal when the relative
-difference between x and y is smaller than the configured epsilon.
+difference between x and y is smaller than the configured relTol and absTol.
 The function cannot be used to compare values smaller than
 approximately 2.22e-16.
 

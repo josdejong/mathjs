@@ -1,8 +1,5 @@
-/* eslint-disable no-loss-of-precision */
-
 // BigNumbers
-
-const { create, all } = require('..')
+import { create, all } from 'mathjs'
 
 // configure the default type of numbers as BigNumbers
 const config = {

@@ -7,8 +7,8 @@ layout: default
 File: [serialization.js](serialization.js)
 
 ```js
-// load math.js (using node.js)
-const { complex, replacer, reviver, typeOf } = require('..')
+// serialization
+import { complex, replacer, reviver, typeOf } from 'mathjs'
 
 // serialize a math.js data type into a JSON string
 // the replacer function is needed to correctly stringify a value like Infinity

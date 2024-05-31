@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-numeric">Function numeric <a href="#function-numeric" title="Permalink">#</a></h1>
 
-Convert a numeric input to a specific numeric type: number, BigNumber, or Fraction.
+Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -19,14 +19,14 @@ math.numeric(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | string &#124; number &#124; BigNumber &#124; Fraction |  A numeric value or a string containing a numeric value
+`value` | string &#124; number &#124; BigNumber &#124; bigint &#124; Fraction |  A numeric value or a string containing a numeric value
 `outputType` | string |  Desired numeric output type. Available values: 'number', 'BigNumber', or 'Fraction'
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction |  Returns an instance of the numeric in the requested type
+number &#124; BigNumber &#124; bigint &#124; Fraction |  Returns an instance of the numeric in the requested type
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -40,6 +40,7 @@ Type | Description
 ```js
 math.numeric('4')                           // returns 4
 math.numeric('4', 'number')                 // returns 4
+math.numeric('4', 'bigint')                 // returns 4n
 math.numeric('4', 'BigNumber')              // returns BigNumber 4
 math.numeric('4', 'Fraction')               // returns Fraction 4
 math.numeric(4, 'Fraction')                 // returns Fraction 4
@@ -52,5 +53,6 @@ math.numeric(math.fraction(2, 5), 'number') // returns 0.4
 [number](number.html),
 [fraction](fraction.html),
 [bignumber](bignumber.html),
+[bigint](bigint.html),
 [string](string.html),
 [format](format.html)

@@ -30,6 +30,7 @@ Math.js can be used in the browser, in node.js and in any JavaScript engine. Ins
 - **[Data Types](datatypes/index.html)**
   - [Numbers](datatypes/numbers.html)
   - [BigNumbers](datatypes/bignumbers.html)
+  - [bigints](datatypes/bigints.html)
   - [Fractions](datatypes/fractions.html)
   - [Complex Numbers](datatypes/complex_numbers.html)
   - [Matrices](datatypes/matrices.html)

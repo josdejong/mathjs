@@ -22,13 +22,13 @@ math.unaryPlus(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; string &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Input value
+`x` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; string &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Input value
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Returns the input value when numeric, converts to a number when input is non-numeric.
+number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Returns the input value when numeric, converts to a number when input is non-numeric.
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

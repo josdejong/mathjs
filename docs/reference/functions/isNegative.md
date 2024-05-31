@@ -22,7 +22,7 @@ math.isNegative(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Unit &#124; Array &#124; Matrix | Value to be tested
+`x` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Unit &#124; Array &#124; Matrix | Value to be tested
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

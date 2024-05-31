@@ -9,7 +9,7 @@ layout: default
 Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
 
 x and y are considered equal when the relative difference between x and y
-is smaller than the configured epsilon. The function cannot be used to
+is smaller than the configured absTol and relTol. The function cannot be used to
 compare values smaller than approximately 2.22e-16.
 
 For matrices, the function is evaluated element wise.
@@ -26,14 +26,14 @@ math.compare(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Unit &#124; string &#124; Array &#124; Matrix | First value to compare
-`y` | number &#124; BigNumber &#124; Fraction &#124; Unit &#124; string &#124; Array &#124; Matrix | Second value to compare
+`x` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Unit &#124; string &#124; Array &#124; Matrix | First value to compare
+`y` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Unit &#124; string &#124; Array &#124; Matrix | Second value to compare
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Returns the result of the comparison: 1 when x > y, -1 when x < y, and 0 when x == y.
+number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Array &#124; Matrix | Returns the result of the comparison: 1 when x > y, -1 when x < y, and 0 when x == y.
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

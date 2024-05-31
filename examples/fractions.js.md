@@ -8,9 +8,7 @@ File: [fractions.js](fractions.js)
 
 ```js
 // Fractions
-
-// load math.js (using node.js)
-const { create, all } = require('..')
+import { create, all } from 'mathjs'
 
 // configure the default type of numbers as Fractions
 const config = {

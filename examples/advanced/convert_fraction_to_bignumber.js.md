@@ -22,7 +22,7 @@ File: [convert_fraction_to_bignumber.js](convert_fraction_to_bignumber.js)
 
 // Create an empty math.js instance, with only typed
 // (every instance contains `import` and `config` also out of the box)
-const { create, typedDependencies, all } = require('../..')
+import { create, typedDependencies, all } from 'mathjs'
 const math = create({
   typedDependencies
 })
@@ -39,7 +39,7 @@ math.config({ number: 'Fraction' })
 // this conversion:
 // - must be inserted in the conversions list before the conversion Fraction -> number
 // - must be added to the conversions before loading functions into math.js
-math.typed.conversions.unshift({
+math.typed.addConversion({
   from: 'Fraction',
   to: 'BigNumber',
   convert: function (fraction) {

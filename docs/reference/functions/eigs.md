@@ -48,7 +48,7 @@ math.eigs(x, {options})
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Array &#124; Matrix | Matrix to be diagonalized
-`opts` | number &#124; BigNumber &#124; OptsObject | Object with keys `precision`, defaulting to config.epsilon, and `eigenvectors`, defaulting to true and specifying whether to compute eigenvectors. If just a number, specifies precision.
+`opts` | number &#124; BigNumber &#124; OptsObject | Object with keys `precision`, defaulting to config.relTol, and `eigenvectors`, defaulting to true and specifying whether to compute eigenvectors. If just a number, specifies precision.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

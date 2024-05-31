@@ -27,7 +27,7 @@ File: [more_secure_eval.js](more_secure_eval.js)
 // functionality, these functions can be disabled, as demonstrated in this
 // example.
 
-const { create, all } = require('../..')
+import { all, create } from 'mathjs'
 const math = create(all)
 
 const limitedEvaluate = math.evaluate

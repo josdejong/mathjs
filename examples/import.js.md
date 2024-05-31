@@ -12,9 +12,7 @@ File: [import.js](import.js)
  * `import` function. The function `import` accepts a module name or an object
  * containing functions and variables.
  */
-
-// load math.js (using node.js)
-const { create, all } = require('..')
+import { create, all } from 'mathjs'
 const math = create(all)
 
 /**

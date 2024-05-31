@@ -20,8 +20,8 @@ math.xor(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | First value to check
-`y` | number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Second value to check
+`x` | number &#124; BigNumber &#124; bigint &#124; Complex &#124; Unit &#124; Array &#124; Matrix | First value to check
+`y` | number &#124; BigNumber &#124; bigint &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Second value to check
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

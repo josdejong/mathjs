@@ -21,14 +21,14 @@ math.leftShift(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Array &#124; Matrix | Value to be shifted
-`y` | number &#124; BigNumber | Amount of shifts
+`x` | number &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix | Value to be shifted
+`y` | number &#124; BigNumber &#124; bigint | Amount of shifts
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Array &#124; Matrix | `x` shifted left `y` times
+number &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix | `x` shifted left `y` times
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

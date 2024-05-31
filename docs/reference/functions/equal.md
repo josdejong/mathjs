@@ -9,7 +9,7 @@ layout: default
 Test whether two values are equal.
 
 The function tests whether the relative difference between x and y is
-smaller than the configured epsilon. The function cannot be used to
+smaller than the configured relTol and absTol. The function cannot be used to
 compare values smaller than approximately 2.22e-16.
 
 For matrices, the function is evaluated element wise.
@@ -30,8 +30,8 @@ math.equal(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; boolean &#124; Complex &#124; Unit &#124; string &#124; Array &#124; Matrix | First value to compare
-`y` | number &#124; BigNumber &#124; boolean &#124; Complex &#124; Unit &#124; string &#124; Array &#124; Matrix | Second value to compare
+`x` | number &#124; BigNumber &#124; bigint &#124; boolean &#124; Complex &#124; Unit &#124; string &#124; Array &#124; Matrix | First value to compare
+`y` | number &#124; BigNumber &#124; bigint &#124; boolean &#124; Complex &#124; Unit &#124; string &#124; Array &#124; Matrix | Second value to compare
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

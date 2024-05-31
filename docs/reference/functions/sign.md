@@ -25,13 +25,13 @@ math.sign(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  The number for which to determine the sign
+`x` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  The number for which to determine the sign
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  The sign of `x`
+number &#124; BigNumber &#124; bigint &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  The sign of `x`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

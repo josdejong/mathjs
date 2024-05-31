@@ -9,7 +9,7 @@ layout: default
 Test whether value x is smaller or equal to y.
 
 The function returns true when x is smaller than y or the relative
-difference between x and y is smaller than the configured epsilon. The
+difference between x and y is smaller than the configured relTol and absTol. The
 function cannot be used to compare values smaller than approximately 2.22e-16.
 
 For matrices, the function is evaluated element wise.
@@ -26,8 +26,8 @@ math.smallerEq(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; boolean &#124; Unit &#124; string &#124; Array &#124; Matrix | First value to compare
-`y` | number &#124; BigNumber &#124; Fraction &#124; boolean &#124; Unit &#124; string &#124; Array &#124; Matrix | Second value to compare
+`x` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; boolean &#124; Unit &#124; string &#124; Array &#124; Matrix | First value to compare
+`y` | number &#124; BigNumber &#124; bigint &#124; Fraction &#124; boolean &#124; Unit &#124; string &#124; Array &#124; Matrix | Second value to compare
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

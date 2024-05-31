@@ -7,7 +7,7 @@ layout: default
 File: [custom_relational_functions.js](custom_relational_functions.js)
 
 ```js
-const { create, all, factory } = require('../..')
+import { all, create, factory } from 'mathjs'
 
 // First let's see what the default behavior is:
 // strings are compared by their numerical value

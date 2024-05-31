@@ -1,7 +1,8 @@
 // This example demonstrates importing a custom data type,
 // and extending an existing function (add) with support for this data type.
 
-const { create, factory, all } = require('../..')
+import { all, create, factory } from 'mathjs'
+
 const math = create(all)
 
 // factory function which defines a new data type CustomValue

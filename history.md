@@ -4,6 +4,33 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20240531-1300">2024-05-31, 13.0.0 <a href="#20240531-1300" title="Permalink">#</a></h1>
+
+Breaking changes: 
+
+- Change `isZero`, `isPositive`, and `isNegative` to respect `config.epsilon`
+  (<a href="https://github.com/josdejong/mathjs/issues/3139">#3139</a>, <a href="https://github.com/josdejong/mathjs/issues/2838">#2838</a>).
+- Change the behavior of the internal `nearlyEqual` to align with Python and 
+  Julia (<a href="https://github.com/josdejong/mathjs/issues/3152">#3152</a>, <a href="https://github.com/josdejong/mathjs/issues/2838">#2838</a>)
+- Upgrade to `fraction.js@4.3.7`,
+  see https://github.com/rawify/Fraction.js/issues/68.
+
+Non-breaking changes:
+
+- Implemented support for `bigint` (<a href="https://github.com/josdejong/mathjs/issues/3207">#3207</a>, <a href="https://github.com/josdejong/mathjs/issues/3207">#3207</a>)
+- Implemented a new config option `config.numberFallback` needed for `bigint` 
+  (<a href="https://github.com/josdejong/mathjs/issues/3207">#3207</a>).
+- Internal: refactored tooling to ES modules and upgraded all devDependencies.
+
+
+<h1 id="20240531-1243">2024-05-31, 12.4.3 <a href="#20240531-1243" title="Permalink">#</a></h1>
+
+- Fix: serialization of Units without a value, see <a href="https://github.com/josdejong/mathjs/issues/1240">#1240</a>.
+- Fix: outdated, incorrect documentation about the order of precedence for
+  operator modulus `%`. See <a href="https://github.com/josdejong/mathjs/issues/3189">#3189</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3197">#3197</a> improve `quantileSeq` type definitions (<a href="https://github.com/josdejong/mathjs/issues/3198">#3198</a>). Thanks <a href="https://github.com/domdomegg">@domdomegg</a>.
+
+
 <h1 id="20240424-1242">2024-04-24, 12.4.2 <a href="#20240424-1242" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/3192">#3192</a>: function `isNaN` returns `false` for `NaN` units in a matrix or

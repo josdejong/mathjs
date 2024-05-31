@@ -315,7 +315,7 @@ Function | Description
 [math.isPositive(x)](functions/isPositive.html) | Test whether a value is positive: larger than zero.
 [math.isPrime(x)](functions/isPrime.html) | Test whether a value is prime: has no divisors other than itself and one.
 [math.isZero(x)](functions/isZero.html) | Test whether a value is zero.
-[math.numeric(x)](functions/numeric.html) | Convert a numeric input to a specific numeric type: number, BigNumber, or Fraction.
+[math.numeric(x)](functions/numeric.html) | Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
 [math.typeOf(x)](functions/typeOf.html) | Determine the type of an entity.
 
 

@@ -40,6 +40,7 @@ Type | Description
 // This list is intended to include all relevant types, for testing
 // purposes:
 math.typeOf(3.5)                      // returns 'number'
+math.typeOf(42n)                      // returns 'bigint'
 math.typeOf(math.complex('2-4i'))     // returns 'Complex'
 math.typeOf(math.unit('45 deg'))      // returns 'Unit'
 math.typeOf('hello world')            // returns 'string'

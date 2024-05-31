@@ -1,10 +1,10 @@
 import {
-  create,
-  fractionDependencies,
   addDependencies,
+  create,
   divideDependencies,
-  formatDependencies
-} from '../../lib/esm/index.js'
+  formatDependencies,
+  fractionDependencies
+} from 'mathjs'
 
 const config = {
   // optionally, you can specify configuration

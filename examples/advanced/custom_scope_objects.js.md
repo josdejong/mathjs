@@ -7,7 +7,7 @@ layout: default
 File: [custom_scope_objects.js](custom_scope_objects.js)
 
 ```js
-const { create, all } = require('../..')
+import { all, create } from 'mathjs'
 
 const math = create(all)
 

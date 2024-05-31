@@ -8,9 +8,7 @@ File: [complex_numbers.js](complex_numbers.js)
 
 ```js
 // complex numbers
-
-// load js (using node.js)
-const { complex, add, multiply, sin, sqrt, pi, equal, sort, format } = require('..')
+import { complex, add, multiply, sin, sqrt, pi, equal, sort, format } from 'mathjs'
 
 // create a complex number with a numeric real and complex part
 console.log('create and manipulate complex numbers')

@@ -8,9 +8,7 @@ File: [objects.js](objects.js)
 
 ```js
 // objects
-
-// load math.js (using node.js)
-const { evaluate, format } = require('..')
+import { evaluate, format } from 'mathjs'
 
 // create an object. Keys can be symbols or strings
 print(evaluate('{x: 2 + 1, y: 4}')) // {"x": 3, "y": 4}

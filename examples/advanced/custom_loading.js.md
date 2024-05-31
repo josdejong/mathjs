@@ -4,16 +4,16 @@ layout: default
 
 # Custom loading
 
-File: [custom_loading.mjs](custom_loading.mjs)
+File: [custom_loading.js](custom_loading.js)
 
-```mjs
+```js
 import {
-  create,
-  fractionDependencies,
   addDependencies,
+  create,
   divideDependencies,
-  formatDependencies
-} from '../../lib/esm/index.js'
+  formatDependencies,
+  fractionDependencies
+} from 'mathjs'
 
 const config = {
   // optionally, you can specify configuration

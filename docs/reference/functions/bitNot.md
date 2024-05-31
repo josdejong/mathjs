@@ -21,13 +21,13 @@ math.bitNot(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Array &#124; Matrix | Value to not
+`x` | number &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix | Value to not
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Array &#124; Matrix | NOT of `x`
+number &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix | NOT of `x`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

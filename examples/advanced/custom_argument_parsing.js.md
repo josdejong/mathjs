@@ -16,7 +16,7 @@ File: [custom_argument_parsing.js](custom_argument_parsing.js)
  * will be invoked with unevaluated arguments, allowing the function
  * to process the arguments in a customized way.
  */
-const { create, all } = require('../..')
+import { create, all } from 'mathjs'
 const math = create(all)
 
 /**

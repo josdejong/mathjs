@@ -15,7 +15,7 @@ File: [function_transform.js](function_transform.js)
  * *transform* for the function. A transform is a function wrapping around a
  * function to be transformed or completely replaces a function.
  */
-const { create, all } = require('../..')
+import { all, create } from 'mathjs'
 const math = create(all)
 
 // create a function

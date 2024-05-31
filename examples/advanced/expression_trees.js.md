@@ -7,7 +7,7 @@ layout: default
 File: [expression_trees.js](expression_trees.js)
 
 ```js
-const { parse, ConstantNode } = require('../..')
+import { parse, ConstantNode } from 'mathjs'
 
 // Filter an expression tree
 console.log('Filter all symbol nodes "x" in the expression "x^2 + x/4 + 3*y"')

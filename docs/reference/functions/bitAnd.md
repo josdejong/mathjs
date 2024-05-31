@@ -20,14 +20,14 @@ math.bitAnd(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Array &#124; Matrix | First value to and
-`y` | number &#124; BigNumber &#124; Array &#124; Matrix | Second value to and
+`x` | number &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix | First value to and
+`y` | number &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix | Second value to and
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Array &#124; Matrix | AND of `x` and `y`
+number &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix | AND of `x` and `y`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

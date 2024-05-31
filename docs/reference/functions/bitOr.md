@@ -21,14 +21,14 @@ math.bitOr(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Array &#124; Matrix | First value to or
-`y` | number &#124; BigNumber &#124; Array &#124; Matrix | Second value to or
+`x` | number &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix | First value to or
+`y` | number &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix | Second value to or
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Array &#124; Matrix | OR of `x` and `y`
+number &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix | OR of `x` and `y`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
