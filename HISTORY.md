@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 12.4.2
+# 2024-05-31, 12.4.3
 
 - Fix: serialization of Units without a value, see #1240.
 - Fix: outdated, incorrect documentation about the order of precedence for
