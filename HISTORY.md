@@ -10,6 +10,8 @@ Breaking changes:
   Julia (#3152, #2838)
 - Upgrade to `fraction.js@4.3.7`,
   see https://github.com/rawify/Fraction.js/issues/68.
+- Dropped support for JavaScript engines that do not fully support ES6 or 
+  `bigint`, or are not actively maintained.
 
 Non-breaking changes:
 
