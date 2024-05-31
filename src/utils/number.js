@@ -35,7 +35,7 @@ export function isIntegerStr (str) {
  *
  * For example:
  *
- *     safeNumberType('2.3', { number: 'bigint', bigintFallback: 'number' })
+ *     safeNumberType('2.3', { number: 'bigint', numberFallback: 'number' })
  *
  * will return 'number' and not 'bigint' because trying to create a bigint with
  * value 2.3 would throw an exception.
@@ -43,13 +43,13 @@ export function isIntegerStr (str) {
  * @param {string} numberStr
  * @param {{
  *   number: 'number' | 'BigNumber' | 'bigint' | 'Fraction'
- *   bigintFallback: 'number' | 'BigNumber' | 'Fraction'
+ *   numberFallback: 'number' | 'BigNumber'
  * }} config
  * @returns {'number' | 'BigNumber' | 'bigint' | 'Fraction'}
  */
 export function safeNumberType (numberStr, config) {
   if (config.number === 'bigint' && !isIntegerStr(numberStr)) {
-    return config.bigintFallback
+    return config.numberFallback
   }
 
   return config.number

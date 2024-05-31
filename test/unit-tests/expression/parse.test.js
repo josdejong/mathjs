@@ -2156,10 +2156,10 @@ describe('parse', function () {
       assert.strictEqual(bigmath.evaluate('-2.3'), -2.3)
     })
 
-    it('should fallback on the configured bigintFallback when parsing as bigint', function () {
+    it('should fallback on the configured numberFallback when parsing as bigint', function () {
       const bigmathFallback = math.create({
         number: 'bigint',
-        bigintFallback: 'BigNumber'
+        numberFallback: 'BigNumber'
       })
 
       assert.strictEqual(bigmathFallback.evaluate('42'), 42n)

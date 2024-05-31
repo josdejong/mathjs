@@ -64,10 +64,10 @@ The following configuration options are available:
   and [`Fractions`](../datatypes/fractions.js) store values in terms of a numerator and 
   denominator.
 
-- `bigintFallback`. When `number` is configured with value `'bigint'`, and a value cannot
-  be represented as bigint, like in `math.evaluate('2.3')`, the value will be parsed in 
-  the type configured with `bigintFallback`. Available values: `'number'` (default), 
-  `'BigNumber'`, or `'Fraction'`.
+- `numberFallback`. When `number` is configured for example with value `'bigint'`,
+  and a value cannot be represented as `bigint` like in `math.evaluate('2.3')`, 
+  the value will be parsed in the type configured with `numberFallback`. 
+  Available values: `'number'` (default) or `'BigNumber'`.
 
 - `precision`. The maximum number of significant digits for BigNumbers.
   This setting only applies to BigNumbers, not to numbers.
