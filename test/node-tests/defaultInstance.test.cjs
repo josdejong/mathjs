@@ -12,7 +12,8 @@ describe('defaultInstance', function () {
       number: 'number',
       precision: 64,
       predictable: false,
-      epsilon: 1e-12,
+      relTol: 1e-12,
+      absTol: 1e-15,
       randomSeed: null
     })
   })
@@ -29,7 +30,8 @@ describe('defaultInstance', function () {
       number: 'BigNumber',
       precision: 64,
       predictable: false,
-      epsilon: 1e-12,
+      relTol: 1e-12,
+      absTol: 1e-15,
       randomSeed: null
     })
   })
@@ -72,7 +74,8 @@ describe('defaultInstance', function () {
       number: 'BigNumber',
       precision: 4,
       predictable: true,
-      epsilon: 1e-12,
+      relTol: 1e-12,
+      absTol: 1e-15,
       randomSeed: null
     })
 
@@ -92,7 +95,8 @@ describe('defaultInstance', function () {
       number: 'number',
       precision: 64,
       predictable: false,
-      epsilon: 1e-12,
+      relTol: 1e-12,
+      absTol: 1e-15,
       randomSeed: null
     })
 

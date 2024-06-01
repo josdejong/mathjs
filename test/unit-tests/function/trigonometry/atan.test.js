@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -13,16 +13,16 @@ const Big = bigmath.bignumber
 
 describe('atan', function () {
   it('should return the arctan of a boolean', function () {
-    approx.equal(atan(true), 0.25 * pi)
-    approx.equal(atan(false), 0)
+    approxEqual(atan(true), 0.25 * pi)
+    approxEqual(atan(false), 0)
   })
 
   it('should return the arctan of a number', function () {
-    approx.equal(atan(-1) / pi, -0.25)
-    approx.equal(atan(-0.5) / pi, -0.147583617650433)
-    approx.equal(atan(0) / pi, 0)
-    approx.equal(atan(0.5) / pi, 0.147583617650433)
-    approx.equal(atan(1) / pi, 0.25)
+    approxEqual(atan(-1) / pi, -0.25)
+    approxEqual(atan(-0.5) / pi, -0.147583617650433)
+    approxEqual(atan(0) / pi, 0)
+    approxEqual(atan(0.5) / pi, 0.147583617650433)
+    approxEqual(atan(1) / pi, 0.25)
   })
 
   it('should return the arctan of a bignumber', function () {
@@ -53,11 +53,11 @@ describe('atan', function () {
   })
 
   it('should be the inverse function of tan', function () {
-    approx.equal(atan(tan(-1)), -1)
-    approx.equal(atan(tan(0)), 0)
-    approx.equal(atan(tan(0.1)), 0.1)
-    approx.equal(atan(tan(0.5)), 0.5)
-    approx.equal(atan(tan(2)), -1.14159265358979)
+    approxEqual(atan(tan(-1)), -1)
+    approxEqual(atan(tan(0)), 0)
+    approxEqual(atan(tan(0.1)), 0.1)
+    approxEqual(atan(tan(0.5)), 0.5)
+    approxEqual(atan(tan(2)), -1.14159265358979)
   })
 
   it('should be the inverse function of bignumber tan', function () {
@@ -73,14 +73,14 @@ describe('atan', function () {
   it('should return the arctan of a complex number', function () {
     const re = 1.409921049596575
     const im = 0.229072682968539
-    approx.deepEqual(atan(complex('2+3i')), complex(re, im))
-    approx.deepEqual(atan(complex('2-3i')), complex(re, -im))
-    approx.deepEqual(atan(complex('-2+3i')), complex(-re, im))
-    approx.deepEqual(atan(complex('-2-3i')), complex(-re, -im))
-    approx.deepEqual(atan(complex('i')), complex(0, Infinity))
-    approx.deepEqual(atan(complex('-i')), complex(0, -Infinity))
-    approx.deepEqual(atan(complex('1')), complex(0.785398163397448, 0))
-    approx.deepEqual(atan(complex('1+i')), complex(1.017221967897851, 0.402359478108525))
+    approxDeepEqual(atan(complex('2+3i')), complex(re, im))
+    approxDeepEqual(atan(complex('2-3i')), complex(re, -im))
+    approxDeepEqual(atan(complex('-2+3i')), complex(-re, im))
+    approxDeepEqual(atan(complex('-2-3i')), complex(-re, -im))
+    approxDeepEqual(atan(complex('i')), complex(0, Infinity))
+    approxDeepEqual(atan(complex('-i')), complex(0, -Infinity))
+    approxDeepEqual(atan(complex('1')), complex(0.785398163397448, 0))
+    approxDeepEqual(atan(complex('1+i')), complex(1.017221967897851, 0.402359478108525))
   })
 
   it('should throw an error if called with a unit', function () {
@@ -97,8 +97,8 @@ describe('atan', function () {
     assert.throws(() => atan(matrix([1, 2, 3])), TypeError)
     // matrix, array, range
     const atan123 = [0.785398163397448, 1.107148717794090, 1.249045772398254]
-    approx.deepEqual(math.map([1, 2, 3], atan), atan123)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), atan), matrix(atan123))
+    approxDeepEqual(math.map([1, 2, 3], atan), atan123)
+    approxDeepEqual(math.map(matrix([1, 2, 3]), atan), matrix(atan123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

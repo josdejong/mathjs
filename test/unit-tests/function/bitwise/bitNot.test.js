@@ -17,6 +17,12 @@ describe('bitNot', function () {
     assert.deepStrictEqual(bitNot(0), -1)
   })
 
+  it('should perform bitwise not of a bigint', function () {
+    assert.deepStrictEqual(bitNot(2n), -3n)
+    assert.deepStrictEqual(bitNot(-2n), 1n)
+    assert.deepStrictEqual(bitNot(0n), -1n)
+  })
+
   it('should perform bitwise not of a bignumber', function () {
     assert.deepStrictEqual(bitNot(bignumber(2)), bignumber(-3))
     assert.deepStrictEqual(bitNot(bignumber(-2)), bignumber(1))

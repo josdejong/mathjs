@@ -1,7 +1,7 @@
 // test lsolveAll
 import assert from 'assert'
 
-import approx from '../../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../../tools/approx.js'
 import math from '../../../../../src/defaultInstance.js'
 
 describe('lsolveAll', function () {
@@ -17,7 +17,7 @@ describe('lsolveAll', function () {
 
     const x = math.lsolveAll(m, b)
 
-    approx.deepEqual(x, [[[1], [1], [1], [1]]])
+    approxDeepEqual(x, [[[1], [1], [1], [1]]])
   })
 
   it('should solve linear system 4 x 4, array and column array', function () {
@@ -36,7 +36,7 @@ describe('lsolveAll', function () {
     ]
     const x = math.lsolveAll(m, b)
 
-    approx.deepEqual(x, [[[1], [1], [1], [1]]])
+    approxDeepEqual(x, [[[1], [1], [1], [1]]])
   })
 
   it('should solve linear system 4 x 4, matrices', function () {
@@ -52,7 +52,7 @@ describe('lsolveAll', function () {
     const x = math.lsolveAll(m, b)
 
     assert(x[0] instanceof math.Matrix)
-    approx.deepEqual(x, [math.matrix([[1], [1], [1], [1]])])
+    approxDeepEqual(x, [math.matrix([[1], [1], [1], [1]])])
   })
 
   it('should solve linear system 4 x 4, sparse matrices', function () {
@@ -68,7 +68,7 @@ describe('lsolveAll', function () {
     const x = math.lsolveAll(m, b)
 
     assert(x[0] instanceof math.Matrix)
-    approx.deepEqual(x, [math.matrix([[1], [1], [1], [1]])])
+    approxDeepEqual(x, [math.matrix([[1], [1], [1], [1]])])
   })
 
   it('should solve linear system 4 x 4, matrix and column matrix', function () {
@@ -89,7 +89,7 @@ describe('lsolveAll', function () {
     const x = math.lsolveAll(m, b)
 
     assert(x[0] instanceof math.Matrix)
-    approx.deepEqual(x, [math.matrix([[1], [1], [1], [1]])])
+    approxDeepEqual(x, [math.matrix([[1], [1], [1], [1]])])
   })
 
   it('should solve linear system 4 x 4, sparse matrix and column matrix', function () {
@@ -110,7 +110,7 @@ describe('lsolveAll', function () {
     const x = math.lsolveAll(m, b)
 
     assert(x[0] instanceof math.Matrix)
-    approx.deepEqual(x, [math.matrix([[1], [1], [1], [1]])])
+    approxDeepEqual(x, [math.matrix([[1], [1], [1], [1]])])
   })
 
   it('should return an empty array when there is no solution', function () {
@@ -120,34 +120,34 @@ describe('lsolveAll', function () {
   })
 
   it('should solve systems with singular dense matrices', function () {
-    approx.deepEqual(
+    approxDeepEqual(
       math.lsolveAll([[2, 0, 0], [1, 0, 0], [-1, 1, 1]], [4, 2, 1]),
       [[[2], [0], [3]], [[2], [1], [2]]]
     )
 
-    approx.deepEqual(
+    approxDeepEqual(
       math.lsolveAll([[0, 0, 0], [1, 1, 0], [2, 1, 0]], [0, 2, 2]),
       [[[0], [2], [0]], [[0], [2], [1]]]
     )
 
-    approx.deepEqual(
+    approxDeepEqual(
       math.lsolveAll([[0, 0, 0], [1, 1, 0], [1, 1, 0]], [0, 2, 2]),
       [[[0], [2], [0]], [[1], [1], [0]], [[0], [2], [1]]]
     )
   })
 
   it('should solve systems with singular sparse matrices', function () {
-    approx.deepEqual(
+    approxDeepEqual(
       math.lsolveAll(math.matrix([[2, 0, 0], [1, 0, 0], [-1, 1, 1]], 'sparse'), [4, 2, 1]),
       [math.matrix([[2], [0], [3]]), math.matrix([[2], [1], [2]])]
     )
 
-    approx.deepEqual(
+    approxDeepEqual(
       math.lsolveAll(math.matrix([[0, 0, 0], [1, 1, 0], [2, 1, 0]], 'sparse'), [0, 2, 2]),
       [math.matrix([[0], [2], [0]]), math.matrix([[0], [2], [1]])]
     )
 
-    approx.deepEqual(
+    approxDeepEqual(
       math.lsolveAll(math.matrix([[0, 0, 0], [1, 1, 0], [1, 1, 0]], 'sparse'), [0, 2, 2]),
       [math.matrix([[0], [2], [0]]), math.matrix([[1], [1], [0]]), math.matrix([[0], [2], [1]])]
     )

@@ -19,6 +19,12 @@ describe('square', function () {
     assert.strictEqual(square(0), 0)
   })
 
+  it('should return the square of a bigint', function () {
+    assert.strictEqual(square(4n), 16n)
+    assert.strictEqual(square(-2n), 4n)
+    assert.strictEqual(square(0n), 0n)
+  })
+
   it('should return the square of a big number', function () {
     assert.deepStrictEqual(square(bignumber(4)), bignumber(16))
     assert.deepStrictEqual(square(bignumber(-2)), bignumber(4))

@@ -272,7 +272,7 @@ export function importFactory (typed, load, math, importedFactories) {
 
       if (instance && typeof instance.transform === 'function') {
         throw new Error('Transforms cannot be attached to factory functions. ' +
-            'Please create a separate function for it with exports.path="expression.transform"')
+            'Please create a separate function for it with export const path = "expression.transform"')
       }
 
       if (existing === undefined || options.override) {

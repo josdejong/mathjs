@@ -26,12 +26,13 @@ export const createBitNot = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    bitAnd, bitOr, bitXor, leftShift, rightArithShift, rightLogShift
    *
-   * @param  {number | BigNumber | Array | Matrix} x Value to not
-   * @return {number | BigNumber | Array | Matrix} NOT of `x`
+   * @param  {number | BigNumber | bigint | Array | Matrix} x Value to not
+   * @return {number | BigNumber | bigint | Array | Matrix} NOT of `x`
    */
   return typed(name, {
     number: bitNotNumber,
     BigNumber: bitNotBigNumber,
+    bigint: x => ~x,
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

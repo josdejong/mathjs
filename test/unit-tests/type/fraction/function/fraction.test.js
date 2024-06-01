@@ -32,6 +32,10 @@ describe('fraction', function () {
     equalFraction(f, new Fraction('0.6666666666666666666666666666666666666666666666666666666666666667'))
   })
 
+  it('should create a fraction from a bigint', function () {
+    equalFraction(math.fraction(42n), new Fraction('42'))
+  })
+
   it('should convert the number value of a Unit to Fraction', function () {
     equalFraction(math.fraction(math.unit(0.5, 'cm')).toNumeric('cm'), new Fraction(1, 2))
     equalFraction(math.fraction(math.unit(10, 'inch')).toNumeric('cm'), new Fraction(127, 5))

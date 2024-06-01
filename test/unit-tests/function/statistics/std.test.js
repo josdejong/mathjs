@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const BigNumber = math.BigNumber
 const Complex = math.Complex
@@ -20,11 +20,11 @@ describe('std', function () {
 
   it('should return the standard deviation of complex numbers', function () {
     //
-    approx.deepEqual(std(new Complex(2, 4), new Complex(4, 2)), new Complex(1.41421, -1.41421))
+    approxDeepEqual(std(new Complex(2, 4), new Complex(4, 2)), new Complex(1.41421, -1.41421))
   })
 
   it('should return the standard deviation of mixed numbers and complex numbers', function () {
-    approx.deepEqual(std(2, new Complex(6, 4)), new Complex(2.82842, 2.82842))
+    approxDeepEqual(std(2, new Complex(6, 4)), new Complex(2.82842, 2.82842))
   })
 
   it('should return the standard deviation from an array', function () {
@@ -126,14 +126,14 @@ describe('std', function () {
     const b = new Unit(5, 'cm')
     const c = new Unit(8, 'cm')
     const res = math.unit(3, 'cm')
-    approx.equal(std([a, b, c]).toNumber('cm'), res.toNumber('cm'))
+    approxEqual(std([a, b, c]).toNumber('cm'), res.toNumber('cm'))
   })
 
   it('should compute the standard deviation value of quantities with compatible units', function () {
     const a = math.unit(1, 'm')
     const b = math.unit(50, 'cm')
     const c = math.unit(math.sqrt(1250), 'cm')
-    approx.equal(std([a, b]).toNumber('cm'), c.toNumber('cm'))
+    approxEqual(std([a, b]).toNumber('cm'), c.toNumber('cm'))
   })
 
   it('should not compute the standard deviation value of quantities with incompatible units', function () {

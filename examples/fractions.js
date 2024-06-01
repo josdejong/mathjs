@@ -1,7 +1,5 @@
 // Fractions
-
-// load math.js (using node.js)
-const { create, all } = require('..')
+import { create, all } from '../lib/esm/index.js'
 
 // configure the default type of numbers as Fractions
 const config = {

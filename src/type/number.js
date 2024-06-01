@@ -60,7 +60,7 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * See also:
    *
-   *    bignumber, boolean, complex, index, matrix, string, unit
+   *    bignumber, bigint, boolean, numeric, complex, index, matrix, string, unit
    *
    * @param {string | number | BigNumber | Fraction | boolean | Array | Matrix | Unit | null} [value]  Value to be converted
    * @param {Unit | string} [valuelessUnit] A valueless unit, used to convert a unit to a number
@@ -110,6 +110,10 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     BigNumber: function (x) {
       return x.toNumber()
+    },
+
+    bigint: function (x) {
+      return Number(x)
     },
 
     Fraction: function (x) {

@@ -31,6 +31,9 @@ math.sqrt(4.41e2)                // 21
 // use BigNumbers
 math.add(math.bignumber(0.1), math.bignumber(0.2)) // BigNumber, 0.3
 
+// use bigint
+math.add(300000000000000000n, 1n) // 300000000000000001n
+
 // use Fractions
 math.add(math.fraction(1), math.fraction(3)) // Fraction, 0.(3)
 

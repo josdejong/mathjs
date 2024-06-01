@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 import { isBigNumber, isFraction } from '../../../../src/utils/is.js'
 import { hasOwnProperty } from '../../../../src/utils/object.js'
@@ -231,21 +231,21 @@ describe('Unit', function () {
   describe('toNumber', function () {
     it('should convert a unit to a number', function () {
       const u = new Unit(5000, 'cm')
-      approx.equal(u.toNumber('mm'), 50000)
+      approxEqual(u.toNumber('mm'), 50000)
 
-      approx.equal(new Unit(5.08, 'cm').toNumber('inch'), 2)
+      approxEqual(new Unit(5.08, 'cm').toNumber('inch'), 2)
 
-      approx.equal(new Unit(101325, 'N/m^2').toNumber('lbf/in^2'), 14.6959487763741)
+      approxEqual(new Unit(101325, 'N/m^2').toNumber('lbf/in^2'), 14.6959487763741)
     })
 
     it('should convert a unit with fixed prefix to a number', function () {
       const u1 = new Unit(5000, 'cm')
       const u2 = u1.to('km')
-      approx.equal(u2.toNumber('mm'), 50000)
+      approxEqual(u2.toNumber('mm'), 50000)
 
       const u3 = new Unit(981, 'cm/s^2')
       const u4 = u3.to('km/ms^2')
-      approx.equal(u4.toNumber('m/s^2'), 9.81)
+      approxEqual(u4.toNumber('m/s^2'), 9.81)
     })
 
     it('should convert a unit with fraction to a number', function () {
@@ -326,7 +326,7 @@ describe('Unit', function () {
     it('should convert a Complex unit', function () {
       const u1 = new Unit(math.complex(300, 400), 'kPa')
       const u2 = u1.to('lbf/in^2')
-      approx.deepEqual(u2.value, math.complex(300000, 400000))
+      approxDeepEqual(u2.value, math.complex(300000, 400000))
       assert.deepStrictEqual(u2.toString(), '(43.511321319062766 + 58.01509509208368i) lbf / in^2')
     })
 
@@ -663,7 +663,7 @@ describe('Unit', function () {
           unit: 'cm',
           fixPrefix: false
         })
-      approx.deepEqual(new Unit(math.complex(2, 4), 'g').toJSON(),
+      approxDeepEqual(new Unit(math.complex(2, 4), 'g').toJSON(),
         {
           mathjs: 'Unit',
           value: math.complex(2, 4),
@@ -822,37 +822,37 @@ describe('Unit', function () {
       assert.strictEqual(unit1.units[0].prefix.name, 'k')
 
       unit1 = Unit.parse('-5mg')
-      approx.equal(unit1.value, -0.000005)
+      approxEqual(unit1.value, -0.000005)
       assert.strictEqual(unit1.units[0].unit.name, 'g')
       assert.strictEqual(unit1.units[0].prefix.name, 'm')
 
       unit1 = Unit.parse('5.2mg')
-      approx.equal(unit1.value, 0.0000052)
+      approxEqual(unit1.value, 0.0000052)
       assert.strictEqual(unit1.units[0].unit.name, 'g')
       assert.strictEqual(unit1.units[0].prefix.name, 'm')
 
       unit1 = Unit.parse('300 kg/minute')
-      approx.equal(unit1.value, 5)
+      approxEqual(unit1.value, 5)
       assert.strictEqual(unit1.units[0].unit.name, 'g')
       assert.strictEqual(unit1.units[1].unit.name, 'minute')
       assert.strictEqual(unit1.units[0].prefix.name, 'k')
 
       unit1 = Unit.parse('981 cm/s^2')
-      approx.equal(unit1.value, 9.81)
+      approxEqual(unit1.value, 9.81)
       assert.strictEqual(unit1.units[0].unit.name, 'm')
       assert.strictEqual(unit1.units[1].unit.name, 's')
       assert.strictEqual(unit1.units[1].power, -2)
       assert.strictEqual(unit1.units[0].prefix.name, 'c')
 
       unit1 = Unit.parse('981 cm*s^-2')
-      approx.equal(unit1.value, 9.81)
+      approxEqual(unit1.value, 9.81)
       assert.strictEqual(unit1.units[0].unit.name, 'm')
       assert.strictEqual(unit1.units[1].unit.name, 's')
       assert.strictEqual(unit1.units[1].power, -2)
       assert.strictEqual(unit1.units[0].prefix.name, 'c')
 
       unit1 = Unit.parse('8.314 kg m^2 / s^2 / K / mol')
-      approx.equal(unit1.value, 8.314)
+      approxEqual(unit1.value, 8.314)
       assert.strictEqual(unit1.units[0].unit.name, 'g')
       assert.strictEqual(unit1.units[1].unit.name, 'm')
       assert.strictEqual(unit1.units[2].unit.name, 's')
@@ -866,28 +866,28 @@ describe('Unit', function () {
       assert.strictEqual(unit1.units[0].prefix.name, 'k')
 
       unit1 = Unit.parse('5exabytes')
-      approx.equal(unit1.value, 4e19)
+      approxEqual(unit1.value, 4e19)
       assert.strictEqual(unit1.units[0].unit.name, 'bytes')
 
       unit1 = Unit.parse('1 / s')
-      approx.equal(unit1.value, 1)
+      approxEqual(unit1.value, 1)
       assert.strictEqual(unit1.units[0].unit.name, 's')
       assert.strictEqual(unit1.units[0].power, -1)
 
       unit1 = Unit.parse('1/s')
-      approx.equal(unit1.value, 1)
+      approxEqual(unit1.value, 1)
       assert.strictEqual(unit1.units[0].unit.name, 's')
       assert.strictEqual(unit1.units[0].power, -1)
 
       unit1 = Unit.parse('1 * s')
-      approx.equal(unit1.value, 1)
+      approxEqual(unit1.value, 1)
       assert.strictEqual(unit1.units[0].unit.name, 's')
       assert.strictEqual(unit1.units[0].power, 1)
     })
 
     it('should parse expressions with nested parentheses correctly', function () {
       let unit1 = Unit.parse('8.314 kg (m^2 / (s^2 / (K^-1 / mol)))')
-      approx.equal(unit1.value, 8.314)
+      approxEqual(unit1.value, 8.314)
       assert.strictEqual(unit1.units[0].unit.name, 'g')
       assert.strictEqual(unit1.units[1].unit.name, 'm')
       assert.strictEqual(unit1.units[2].unit.name, 's')
@@ -923,7 +923,7 @@ describe('Unit', function () {
     it('should parse units with correct precedence', function () {
       const unit1 = Unit.parse('1  m^3 / kg s^2') // implicit multiplication
 
-      approx.equal(unit1.value, 1)
+      approxEqual(unit1.value, 1)
       assert.strictEqual(unit1.units[0].unit.name, 'm')
       assert.strictEqual(unit1.units[1].unit.name, 'g')
       assert.strictEqual(unit1.units[2].unit.name, 's')
@@ -1118,12 +1118,12 @@ describe('Unit', function () {
       assert.strictEqual(unit2.units[0].prefix.name, 'kilo')
 
       const unit3 = new Unit(5, 'inches')
-      approx.equal(unit3.value, 0.127)
+      approxEqual(unit3.value, 0.127)
       assert.strictEqual(unit3.units[0].unit.name, 'inches')
       assert.strictEqual(unit3.units[0].prefix.name, '')
 
       const unit4 = new Unit(9.81, 'meters/second^2')
-      approx.equal(unit4.value, 9.81)
+      approxEqual(unit4.value, 9.81)
       assert.strictEqual(unit4.units[0].unit.name, 'meters')
       assert.strictEqual(unit4.units[0].prefix.name, '')
 

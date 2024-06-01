@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 
 const complex = math.complex
 const nthRoots = math.nthRoots
@@ -27,7 +27,7 @@ describe('nthRoots', function () {
   it('should return the correct answer for Complex values', function () {
     const roots = nthRoots(complex(3, 4), 2)
 
-    approx.deepEqual(roots, [
+    approxDeepEqual(roots, [
       complex(2, 1),
       complex(-2.0000000000000004, -0.9999999999999999)
     ])

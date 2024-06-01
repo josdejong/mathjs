@@ -5,6 +5,7 @@ export {
   isArrayNode,
   isAssignmentNode,
   isBigNumber,
+  isBigInt,
   isBlockNode,
   isBoolean,
   isChain,

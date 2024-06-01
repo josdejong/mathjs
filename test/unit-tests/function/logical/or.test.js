@@ -96,6 +96,14 @@ describe('or', function () {
     assert.strictEqual(or(bignumber(0), bignumber(0)), false)
   })
 
+  it('should or bigints', function () {
+    assert.strictEqual(or(1n, 1n), true)
+    assert.strictEqual(or(-1n, 1n), true)
+    assert.strictEqual(or(-1n, -1n), true)
+    assert.strictEqual(or(0n, -1n), true)
+    assert.strictEqual(or(1n, 0n), true)
+  })
+
   it('should or mixed numbers and bignumbers', function () {
     assert.strictEqual(or(bignumber(2), 3), true)
     assert.strictEqual(or(2, bignumber(2)), true)
@@ -105,6 +113,11 @@ describe('or', function () {
     assert.strictEqual(or(bignumber(0), 0), false)
     assert.strictEqual(or(bignumber(2), 0), true)
     assert.strictEqual(or(bignumber(0), 0), false)
+  })
+
+  it('should or mixed numbers and bigints', function () {
+    assert.strictEqual(or(2n, 3), true)
+    assert.strictEqual(or(2, 3n), true)
   })
 
   it('should or two units', function () {

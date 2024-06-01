@@ -53,9 +53,9 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    *    add
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Initial value
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Value to subtract from `x`
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Subtraction of `x` and `y`
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x Initial value
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Value to subtract from `x`
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} Subtraction of `x` and `y`
    */
   return typed(
     name,

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const quantileSeq = math.quantileSeq
@@ -14,10 +14,10 @@ describe('quantileSeq', function () {
     assert.strictEqual(quantileSeq(lst, 0.25, false), 2.325)
     assert.strictEqual(quantileSeq(lst, 0.3), 2.45)
     assert.strictEqual(quantileSeq(lst, 0.4), 2.7)
-    approx.equal(quantileSeq(lst, 0.5), 2.9)
+    approxEqual(quantileSeq(lst, 0.5), 2.9)
     assert.strictEqual(quantileSeq(lst, 0.6), 3.1)
     assert.strictEqual(quantileSeq(lst, 0.7), 3.2)
-    approx.equal(quantileSeq(lst, 0.75), 3.25)
+    approxEqual(quantileSeq(lst, 0.75), 3.25)
     assert.strictEqual(quantileSeq(lst, 0.8), 3.3)
     assert.strictEqual(quantileSeq(lst, 0.9), 3.5)
     assert.strictEqual(quantileSeq(lst, 1), 3.7)
@@ -65,10 +65,10 @@ describe('quantileSeq', function () {
     assert.strictEqual(quantileSeq(lst, 0.25, true), 2.325)
     assert.strictEqual(quantileSeq(lst, 0.3, true), 2.45)
     assert.strictEqual(quantileSeq(lst, 0.4, true), 2.7)
-    approx.equal(quantileSeq(lst, 0.5, true), 2.9)
+    approxEqual(quantileSeq(lst, 0.5, true), 2.9)
     assert.strictEqual(quantileSeq(lst, 0.6, true), 3.1)
     assert.strictEqual(quantileSeq(lst, 0.7, true), 3.2)
-    approx.equal(quantileSeq(lst, 0.75, true), 3.25)
+    approxEqual(quantileSeq(lst, 0.75, true), 3.25)
     assert.strictEqual(quantileSeq(lst, 0.8, true), 3.3)
     assert.strictEqual(quantileSeq(lst, 0.9, true), 3.5)
     assert.strictEqual(quantileSeq(lst, 1, true), 3.7)
@@ -95,7 +95,7 @@ describe('quantileSeq', function () {
   // FIXME: should return the quantileSeq of an array of bignumbers with number probability
   // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should return the quantileSeq of an array of bignumbers with number probability', function () {
-    approx.equal(quantileSeq([bignumber(0.5377), bignumber(1.8339), bignumber(-2.2588), bignumber(0.8622),
+    approxEqual(quantileSeq([bignumber(0.5377), bignumber(1.8339), bignumber(-2.2588), bignumber(0.8622),
       bignumber(0.3188), bignumber(-1.3077), bignumber(-0.4336), bignumber(0.3426),
       bignumber(3.5784), bignumber(2.7694)], 0.3),
     0.09308)
@@ -117,28 +117,28 @@ describe('quantileSeq', function () {
   })
 
   it('should return the quantileSeq from a 2d array', function () {
-    approx.equal(quantileSeq([
+    approxEqual(quantileSeq([
       [3.7, 2.7, 3.3],
       [1.3, 2.2, 3.1]
     ], 0.75), 3.25)
   })
 
   it('should return the quantileSeq from an ascending 2d array', function () {
-    approx.equal(quantileSeq([
+    approxEqual(quantileSeq([
       [1.3, 2.2, 2.7],
       [3.1, 3.3, 3.7]
     ], 0.75, true), 3.25)
   })
 
   it('should return the quantileSeq from a 2d matrix', function () {
-    approx.equal(quantileSeq(math.matrix([
+    approxEqual(quantileSeq(math.matrix([
       [3.7, 2.7, 3.3],
       [1.3, 2.2, 3.1]
     ]), 0.75), 3.25)
   })
 
   it('should return the quantileSeq from an ascending 2d matrix', function () {
-    approx.equal(quantileSeq(math.matrix([
+    approxEqual(quantileSeq(math.matrix([
       [1.3, 2.2, 2.7],
       [3.1, 3.3, 3.7]
     ]), 0.75, true), 3.25)
@@ -146,13 +146,13 @@ describe('quantileSeq', function () {
 
   it('should return list quantiles for list of number probabilities', function () {
     const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
-    approx.deepEqual(quantileSeq(lst, [0.25, 0.5, 0.75]), [2.325, 2.9, 3.25])
-    approx.deepEqual(quantileSeq(lst, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]),
+    approxDeepEqual(quantileSeq(lst, [0.25, 0.5, 0.75]), [2.325, 2.9, 3.25])
+    approxDeepEqual(quantileSeq(lst, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]),
       [1.75, 2.2, 2.45, 2.7, 2.9, 3.1, 3.2, 3.3, 3.5])
   })
 
   it('should return list quantiles for list of number probabilities being a matrix', function () {
-    approx.deepEqual(quantileSeq(math.matrix([3, -1, 5, 7]), math.matrix([1 / 3, 2 / 3])), [3, 5])
+    approxDeepEqual(quantileSeq(math.matrix([3, -1, 5, 7]), math.matrix([1 / 3, 2 / 3])), [3, 5])
     // FIXME: should return a matrix as output when the input is a matrix
   })
 
@@ -167,15 +167,15 @@ describe('quantileSeq', function () {
 
   it('should return list quantiles for list of number and BigNumber probabilities', function () {
     const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
-    approx.deepEqual(quantileSeq(lst, [0.25, bignumber(0.5), 0.75]), [2.325, 2.9, 3.25])
-    approx.deepEqual(quantileSeq(lst, [0.1, 0.2, bignumber(0.3), 0.4, 0.5, 0.6, 0.7, bignumber(0.8), 0.9]),
+    approxDeepEqual(quantileSeq(lst, [0.25, bignumber(0.5), 0.75]), [2.325, 2.9, 3.25])
+    approxDeepEqual(quantileSeq(lst, [0.1, 0.2, bignumber(0.3), 0.4, 0.5, 0.6, 0.7, bignumber(0.8), 0.9]),
       [1.75, 2.2, 2.45, 2.7, 2.9, 3.1, 3.2, 3.3, 3.5])
   })
 
   it('should return the evenly number spaced quantiles of an array', function () {
     const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
-    approx.deepEqual(quantileSeq(lst, 3), [2.325, 2.9, 3.25])
-    approx.deepEqual(quantileSeq(lst, 9), [1.75, 2.2, 2.45, 2.7, 2.9, 3.1, 3.2, 3.3, 3.5])
+    approxDeepEqual(quantileSeq(lst, 3), [2.325, 2.9, 3.25])
+    approxDeepEqual(quantileSeq(lst, 9), [1.75, 2.2, 2.45, 2.7, 2.9, 3.1, 3.2, 3.3, 3.5])
   })
 
   it('should return the evenly BigNumber spaced quantiles of an array', function () {

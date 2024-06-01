@@ -1,7 +1,7 @@
 // test subtractScalar
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 import Decimal from 'decimal.js'
 const { subtractScalar, BigNumber } = math
@@ -19,6 +19,10 @@ describe('subtractScalar', function () {
     assert.deepStrictEqual(subtractScalar(0, 3), -3)
   })
 
+  it('should subtractScalar bigint', function () {
+    assert.strictEqual(subtractScalar(7n, 3n), 4n)
+  })
+
   it('should subtractScalar booleans', function () {
     assert.strictEqual(subtractScalar(true, true), 0)
     assert.strictEqual(subtractScalar(true, false), 1)
@@ -33,6 +37,14 @@ describe('subtractScalar', function () {
     assert.strictEqual(subtractScalar(false, 2), -2)
   })
 
+  it('should subtractScalar mixed numbers and bigint', function () {
+    assert.strictEqual(subtractScalar(7, 3n), 4)
+    assert.strictEqual(subtractScalar(7n, 3), 4)
+
+    assert.throws(function () { subtractScalar(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+    assert.throws(function () { subtractScalar(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+  })
+
   it('should subtractScalar new BigNumbers', function () {
     assert.deepStrictEqual(subtractScalar(new BigNumber(0.3), new BigNumber(0.2)), new BigNumber(0.1))
     assert.deepStrictEqual(subtractScalar(new BigNumber('2.3e5001'), new BigNumber('3e5000')), new BigNumber('2e5001'))
@@ -45,6 +57,11 @@ describe('subtractScalar', function () {
 
     assert.throws(function () { subtractScalar(1 / 3, new BigNumber(1).div(3)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { subtractScalar(new BigNumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+  })
+
+  it('should subtractScalar mixed bigints and BigNumbers', function () {
+    assert.deepStrictEqual(subtractScalar(new BigNumber(7), 3n), new BigNumber(4))
+    assert.deepStrictEqual(subtractScalar(7n, new BigNumber(3)), new BigNumber(4))
   })
 
   it('should add Decimals', function () {
@@ -92,8 +109,13 @@ describe('subtractScalar', function () {
     assert.deepStrictEqual(subtractScalar(math.fraction(1, 3), 1), math.fraction(-2, 3))
   })
 
+  it('should subtractScalar mixed fractions and numbers', function () {
+    assert.deepStrictEqual(subtractScalar(1n, math.fraction(1, 3)), math.fraction(2, 3))
+    assert.deepStrictEqual(subtractScalar(math.fraction(1, 3), 1n), math.fraction(-2, 3))
+  })
+
   it('should subtractScalar two quantities of the same unit', function () {
-    approx.deepEqual(subtractScalar(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(-155.93, 'km'))
+    approxDeepEqual(subtractScalar(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(-155.93, 'km'))
 
     assert.deepStrictEqual(subtractScalar(math.unit(new BigNumber(5), 'km'), math.unit(new BigNumber(2), 'km')), math.unit(new BigNumber(3), 'km'))
 
@@ -105,8 +127,8 @@ describe('subtractScalar', function () {
     let t = math.unit(20, 'degC')
     assert.deepStrictEqual(subtractScalar(t, math.unit(1, 'degC')), math.unit(19, 'degC'))
     t = math.unit(68, 'degF')
-    approx.deepEqual(subtractScalar(t, math.unit(2, 'degF')), math.unit(66, 'degF'))
-    approx.deepEqual(subtractScalar(t, math.unit(1, 'degC')), math.unit(66.2, 'degF'))
+    approxDeepEqual(subtractScalar(t, math.unit(2, 'degF')), math.unit(66, 'degF'))
+    approxDeepEqual(subtractScalar(t, math.unit(1, 'degC')), math.unit(66.2, 'degF'))
   })
 
   it('should throw an error if subtracting two quantities of different units', function () {

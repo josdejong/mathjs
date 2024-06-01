@@ -24,6 +24,12 @@ describe('not', function () {
     assert.strictEqual(not(NaN), true)
   })
 
+  it('should not a bigint', function () {
+    assert.strictEqual(not(1n), false)
+    assert.strictEqual(not(-1n), false)
+    assert.strictEqual(not(0n), true)
+  })
+
   it('should not complex numbers', function () {
     assert.strictEqual(not(complex(1, 1)), false)
     assert.strictEqual(not(complex(0, 1)), false)

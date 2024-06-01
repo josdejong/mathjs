@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const matrix = math.matrix
 const Unit = math.Unit
@@ -8,52 +8,52 @@ const unit = math.unit
 describe('to', function () {
   it('should perform the given unit conversion', function () {
     const a = math.unit('500 cm'); a.fixPrefix = true
-    approx.deepEqual(math.to(unit('5m'), unit('cm')), a)
+    approxDeepEqual(math.to(unit('5m'), unit('cm')), a)
 
     const b = math.unit('1 foot'); b.fixPrefix = true
-    approx.deepEqual(math.to(unit('12 inch'), unit('foot')), b)
+    approxDeepEqual(math.to(unit('12 inch'), unit('foot')), b)
 
     const c = math.unit('1 inch'); c.fixPrefix = true
-    approx.deepEqual(math.to(unit('2.54 cm'), unit('inch')), c)
+    approxDeepEqual(math.to(unit('2.54 cm'), unit('inch')), c)
 
     const d = math.unit('68 fahrenheit'); d.fixPrefix = true
-    approx.deepEqual(math.to(unit('20 celsius'), unit('fahrenheit')), d)
+    approxDeepEqual(math.to(unit('20 celsius'), unit('fahrenheit')), d)
 
     const e = math.unit('0.002 m3'); e.fixPrefix = true
-    approx.deepEqual(math.to(unit('2 litre'), unit('m3')), e)
+    approxDeepEqual(math.to(unit('2 litre'), unit('m3')), e)
   })
 
   describe('Array', function () {
     it('should perform the given unit conversion, array - scalar', function () {
-      approx.deepEqual(math.to([unit('1cm'), unit('2 inch'), unit('2km')], unit('foot')), [new Unit(0.032808, 'foot').to('foot'), new Unit(0.16667, 'foot').to('foot'), new Unit(6561.7, 'foot').to('foot')])
-      approx.deepEqual(math.to(unit('1cm'), [unit('cm'), unit('foot'), unit('km'), unit('m')]), [new Unit(1, 'cm').to('cm'), new Unit(1, 'cm').to('foot'), new Unit(1, 'cm').to('km'), new Unit(1, 'cm').to('m')])
+      approxDeepEqual(math.to([unit('1cm'), unit('2 inch'), unit('2km')], unit('foot')), [new Unit(0.032808, 'foot').to('foot'), new Unit(0.16667, 'foot').to('foot'), new Unit(6561.7, 'foot').to('foot')])
+      approxDeepEqual(math.to(unit('1cm'), [unit('cm'), unit('foot'), unit('km'), unit('m')]), [new Unit(1, 'cm').to('cm'), new Unit(1, 'cm').to('foot'), new Unit(1, 'cm').to('km'), new Unit(1, 'cm').to('m')])
     })
 
     it('should perform the given unit conversion, array - array', function () {
-      approx.deepEqual(math.to([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]], [[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]]), [[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]])
+      approxDeepEqual(math.to([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]], [[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]]), [[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]])
     })
 
     it('should perform the given unit conversion, between broadcastable arrays', function () {
-      approx.deepEqual(math.to([unit('1 cm'), unit('2 inch')], [[unit('foot')], [unit('cm')]]), [[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('1cm').to('cm'), unit('2 inch').to('cm')]])
+      approxDeepEqual(math.to([unit('1 cm'), unit('2 inch')], [[unit('foot')], [unit('cm')]]), [[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('1cm').to('cm'), unit('2 inch').to('cm')]])
     })
 
     it('should perform the given unit conversion, array - dense matrix', function () {
-      approx.deepEqual(math.to([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]], matrix([[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]])), matrix([[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]]))
+      approxDeepEqual(math.to([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]], matrix([[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]])), matrix([[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]]))
     })
   })
 
   describe('DenseMatrix', function () {
     it('should perform the given unit conversion, dense matrix - scalar', function () {
-      approx.deepEqual(math.to(matrix([unit('1cm'), unit('2 inch'), unit('2km')]), unit('foot')), matrix([new Unit(0.032808, 'foot').to('foot'), new Unit(0.16667, 'foot').to('foot'), new Unit(6561.7, 'foot').to('foot')]))
-      approx.deepEqual(math.to(unit('1cm'), matrix([unit('cm'), unit('foot'), unit('km'), unit('m')])), matrix([new Unit(1, 'cm').to('cm'), new Unit(1, 'cm').to('foot'), new Unit(1, 'cm').to('km'), new Unit(1, 'cm').to('m')]))
+      approxDeepEqual(math.to(matrix([unit('1cm'), unit('2 inch'), unit('2km')]), unit('foot')), matrix([new Unit(0.032808, 'foot').to('foot'), new Unit(0.16667, 'foot').to('foot'), new Unit(6561.7, 'foot').to('foot')]))
+      approxDeepEqual(math.to(unit('1cm'), matrix([unit('cm'), unit('foot'), unit('km'), unit('m')])), matrix([new Unit(1, 'cm').to('cm'), new Unit(1, 'cm').to('foot'), new Unit(1, 'cm').to('km'), new Unit(1, 'cm').to('m')]))
     })
 
     it('should perform the given unit conversion, dense matrix - array', function () {
-      approx.deepEqual(math.to(matrix([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]]), [[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]]), matrix([[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]]))
+      approxDeepEqual(math.to(matrix([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]]), [[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]]), matrix([[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]]))
     })
 
     it('should perform the given unit conversion, dense matrix - dense matrix', function () {
-      approx.deepEqual(math.to(matrix([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]]), matrix([[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]])), matrix([[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]]))
+      approxDeepEqual(math.to(matrix([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]]), matrix([[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]])), matrix([[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]]))
     })
   })
 

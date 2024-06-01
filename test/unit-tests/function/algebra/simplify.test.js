@@ -279,6 +279,12 @@ describe('simplify', function () {
     assert.deepStrictEqual(bigmath.simplify('3 + 1 / 11111111111111111111').evaluate(), bigmath.evaluate('3 + 1 / 11111111111111111111'))
   })
 
+  it('should preserve the value of bigints', function () {
+    const bigmath = math.create({ number: 'bigint' })
+    assert.deepStrictEqual(bigmath.simplify('70000000000000000123 + 1').evaluate(), 70000000000000000124n)
+    assert.deepStrictEqual(bigmath.simplify('70000000000000000123 + 5e3').evaluate(), 70000000000000010000)
+  })
+
   it('should not change the value of numbers when converting to fractions (1)', function () {
     simplifyAndCompareEval('1e-10', '1e-10')
   })

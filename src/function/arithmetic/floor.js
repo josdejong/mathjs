@@ -14,7 +14,7 @@ export const createFloorNumber = /* #__PURE__ */ factory(
   name, ['typed', 'config', 'round'], ({ typed, config, round }) => {
     return typed(name, {
       number: function (x) {
-        if (nearlyEqual(x, round(x), config.epsilon)) {
+        if (nearlyEqual(x, round(x), config.relTol, config.absTol)) {
           return round(x)
         } else {
           return Math.floor(x)
@@ -22,7 +22,7 @@ export const createFloorNumber = /* #__PURE__ */ factory(
       },
 
       'number, number': function (x, n) {
-        if (nearlyEqual(x, round(x, n), config.epsilon)) {
+        if (nearlyEqual(x, round(x, n), config.relTol, config.absTol)) {
           return round(x, n)
         } else {
           let [number, exponent] = `${x}e`.split('e')
@@ -98,7 +98,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     BigNumber: function (x) {
-      if (bigNearlyEqual(x, round(x), config.epsilon)) {
+      if (bigNearlyEqual(x, round(x), config.relTol, config.absTol)) {
         return round(x)
       } else {
         return x.floor()
@@ -106,7 +106,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     'BigNumber, BigNumber': function (x, n) {
-      if (bigNearlyEqual(x, round(x, n), config.epsilon)) {
+      if (bigNearlyEqual(x, round(x, n), config.relTol, config.absTol)) {
         return round(x, n)
       } else {
         return x.toDecimalPlaces(n.toNumber(), Decimal.ROUND_FLOOR)

@@ -6,7 +6,7 @@
  * *transform* for the function. A transform is a function wrapping around a
  * function to be transformed or completely replaces a function.
  */
-const { create, all } = require('../..')
+import { all, create } from '../../lib/esm/index.js'
 const math = create(all)
 
 // create a function

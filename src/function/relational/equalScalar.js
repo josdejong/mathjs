@@ -13,8 +13,8 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
   /**
    * Test whether two scalar values are nearly equal.
    *
-   * @param  {number | BigNumber | Fraction | boolean | Complex | Unit} x   First value to compare
-   * @param  {number | BigNumber | Fraction | boolean | Complex} y          Second value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Complex | Unit} x   First value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Complex} y          Second value to compare
    * @return {boolean}                                                  Returns true when the compared values are equal, else returns false
    * @private
    */
@@ -25,11 +25,15 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
     },
 
     'number, number': function (x, y) {
-      return nearlyEqual(x, y, config.epsilon)
+      return nearlyEqual(x, y, config.relTol, config.absTol)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.eq(y) || bigNearlyEqual(x, y, config.epsilon)
+      return x.eq(y) || bigNearlyEqual(x, y, config.relTol, config.absTol)
+    },
+
+    'bigint, bigint': function (x, y) {
+      return x === y
     },
 
     'Fraction, Fraction': function (x, y) {
@@ -37,7 +41,7 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
     },
 
     'Complex, Complex': function (x, y) {
-      return complexEquals(x, y, config.epsilon)
+      return complexEquals(x, y, config.relTol, config.absTol)
     }
   }, compareUnits)
 })
@@ -45,7 +49,7 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
 export const createEqualScalarNumber = factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return nearlyEqual(x, y, config.epsilon)
+      return nearlyEqual(x, y, config.relTol, config.absTol)
     }
   })
 })
