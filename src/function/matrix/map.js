@@ -1,10 +1,11 @@
 import { applyCallback } from '../../utils/applyCallback.js'
+import { broadcastArrays } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'map'
-const dependencies = ['typed']
+const dependencies = ['typed', 'subset', 'index']
 
-export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, subset, index }) => {
   /**
    * Create a new matrix or array with the results of a callback function executed on
    * each entry of a given matrix/array.
@@ -46,6 +47,16 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
 
     'Matrix, function': function (x, callback) {
       return x.map(callback)
+    },
+
+    'Array, Array, function': function (X, Y, callback) {
+      const broadcastedArrays = broadcastArrays(X, Y)
+      const broadCastedX = broadcastedArrays[0]
+      const broadCastedY = broadcastedArrays[1]
+
+      return _mapArray(broadCastedX, function (x, thisIndex) {
+        return callback(x, subset(broadCastedY, index(...thisIndex)))
+      })
     }
   })
 })

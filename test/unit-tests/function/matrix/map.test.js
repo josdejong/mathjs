@@ -16,6 +16,14 @@ describe('map', function () {
     assert.ok(Array.isArray(arr2))
   })
 
+  it('should map two arrays', function () {
+    const arrA = [[1, 2, 3], [4, 5, 6]]
+    const arrB = [[10, 20, 30], [40, 50, 60]]
+    const arr2 = math.map(arrA, arrB, function (valueA, valueB) { return valueA * 2 + valueB })
+    assert.deepStrictEqual(arr2, [[12, 24, 36], [48, 60, 72]])
+    assert.ok(Array.isArray(arr2))
+  })
+
   it('should invoke callback with parameters value, index, obj', function () {
     const arr = [[1, 2, 3], [4, 5, 6]]
 
