@@ -49,16 +49,23 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
       return x.map(callback)
     },
 
-    'Array, Array, function': function (X, Y, callback) {
-      const broadcastedArrays = broadcastArrays(X, Y)
-      const broadCastedX = broadcastedArrays[0]
-      const broadCastedY = broadcastedArrays[1]
-
-      return _mapArray(broadCastedX, function (x, thisIndex) {
-        return callback(x, subset(broadCastedY, index(...thisIndex)))
-      })
+    'Array, Array, function':
+    function (X, Y, callback) {
+      return _mapArrays(X, Y, callback)
     }
+
   })
+  /** Map for multiple arrays */
+  function _mapArrays (...args) {
+    const N = args.length - 1
+    const arrays = broadcastArrays(...args.slice(0, N))
+    const callback = args[N]
+    const firstArray = arrays[0]
+    return _mapArray(firstArray, (x, idx) => {
+      const values = [x, ...arrays.slice(1).map(array => subset(array, index(...idx)))]
+      return callback(...values, idx, ...arrays)
+    })
+  }
 })
 
 /**
