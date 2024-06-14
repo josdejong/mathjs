@@ -1,13 +1,21 @@
 export const DEFAULT_CONFIG = {
   // minimum relative difference between two compared values,
   // used by all comparison functions
-  epsilon: 1e-12,
+  relTol: 1e-12,
+
+  // minimum absolute difference between two compared values,
+  // used by all comparison functions
+  absTol: 1e-15,
 
   // type of default matrix output. Choose 'matrix' (default) or 'array'
   matrix: 'Matrix',
 
-  // type of default number output. Choose 'number' (default) 'BigNumber', or 'Fraction
+  // type of default number output. Choose 'number' (default) 'BigNumber', 'bigint', or 'Fraction'
   number: 'number',
+
+  // type of fallback used for config { number: 'bigint' } when a value cannot be represented
+  // in the configured numeric type. Choose 'number' (default) or 'BigNumber'.
+  numberFallback: 'number',
 
   // number of significant digits in BigNumbers
   precision: 64,

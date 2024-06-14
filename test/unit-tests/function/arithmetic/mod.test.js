@@ -1,7 +1,7 @@
 // test mod
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const matrix = math.matrix
@@ -23,21 +23,35 @@ describe('mod', function () {
     assert.strictEqual(mod(0, 0), 0)
     assert.strictEqual(mod(7, 0), 7)
 
-    approx.equal(mod(7, 2), 1)
-    approx.equal(mod(9, 3), 0)
-    approx.equal(mod(10, 4), 2)
-    approx.equal(mod(-10, 4), 2)
-    approx.equal(mod(8.2, 3), 2.2)
-    approx.equal(mod(4, 1.5), 1)
-    approx.equal(mod(0, 3), 0)
-    approx.equal(mod(-10, 4), 2)
-    approx.equal(mod(-5, 3), 1)
+    approxEqual(mod(7, 2), 1)
+    approxEqual(mod(9, 3), 0)
+    approxEqual(mod(10, 4), 2)
+    approxEqual(mod(-10, 4), 2)
+    approxEqual(mod(8.2, 3), 2.2)
+    approxEqual(mod(4, 1.5), 1)
+    approxEqual(mod(0, 3), 0)
+    approxEqual(mod(-10, 4), 2)
+    approxEqual(mod(-5, 3), 1)
+    approxEqual(mod(-7, 6), 5)
+    approxEqual(mod(-8, 4), 0)
+  })
+
+  it('should calculate the modulus of two bigints', function () {
+    assert.strictEqual(mod(1n, 1n), 0n)
+    assert.strictEqual(mod(0n, 1n), 0n)
+    assert.strictEqual(mod(1n, 0n), 1n)
+    assert.strictEqual(mod(0n, 0n), 0n)
+    assert.strictEqual(mod(7n, 0n), 7n)
+    assert.strictEqual(mod(-10, 4), 2)
+    assert.strictEqual(mod(-5n, 3n), 1n)
+    assert.strictEqual(mod(-7n, 6n), 5n)
+    assert.strictEqual(mod(-8n, 4n), 0n)
   })
 
   it('should handle precise approximation of float approximation', function () {
-    approx.equal(mod(0.1, 0.01), 0)
-    approx.equal(mod(0.15, 0.05), 0)
-    approx.equal(mod(1.23456789, 0.00000000001), 0)
+    approxEqual(mod(0.1, 0.01), 0)
+    approxEqual(mod(0.15, 0.05), 0)
+    approxEqual(mod(1.23456789, 0.00000000001), 0)
   })
 
   it('should calculate mod for negative divisor', function () {
@@ -137,63 +151,63 @@ describe('mod', function () {
 
   describe('Array', function () {
     it('should perform element-wise modulus on array and scalar', function () {
-      approx.deepEqual(mod([[-4, -3, 0, -1], [0, 1, 2, 3]], 3), [[2, 0, 0, 2], [0, 1, 2, 0]])
-      approx.deepEqual(mod(3, [[4, 3], [2, 1]]), [[3, 0], [1, 0]])
+      approxDeepEqual(mod([[-4, -3, 0, -1], [0, 1, 2, 3]], 3), [[2, 0, 0, 2], [0, 1, 2, 0]])
+      approxDeepEqual(mod(3, [[4, 3], [2, 1]]), [[3, 0], [1, 0]])
     })
 
     it('should perform element-wise modulus on broadcastable arrays', function () {
-      approx.deepEqual(mod([-40, -31], [[3], [1]]), [[2, 2], [0, 0]])
-      approx.deepEqual(mod([[-40], [-31]], [3, 1]), [[2, 0], [2, 0]])
+      approxDeepEqual(mod([-40, -31], [[3], [1]]), [[2, 2], [0, 0]])
+      approxDeepEqual(mod([[-40], [-31]], [3, 1]), [[2, 0], [2, 0]])
     })
 
     it('should perform element-wise modulus on array and array', function () {
-      approx.deepEqual(mod([[-40, -31], [11, -23]], [[3, 7], [1, 3]]), [[2, 4], [0, 1]])
+      approxDeepEqual(mod([[-40, -31], [11, -23]], [[3, 7], [1, 3]]), [[2, 4], [0, 1]])
     })
 
     it('should perform element-wise modulus on array and dense matrix', function () {
-      approx.deepEqual(mod([[-40, -31], [11, -23]], matrix([[3, 7], [1, 3]])), matrix([[2, 4], [0, 1]]))
+      approxDeepEqual(mod([[-40, -31], [11, -23]], matrix([[3, 7], [1, 3]])), matrix([[2, 4], [0, 1]]))
     })
 
     it('should perform element-wise modulus on array and sparse matrix', function () {
-      approx.deepEqual(mod([[-40, -31], [11, -23]], sparse([[3, 7], [1, 3]])), matrix([[2, 4], [0, 1]]))
+      approxDeepEqual(mod([[-40, -31], [11, -23]], sparse([[3, 7], [1, 3]])), matrix([[2, 4], [0, 1]]))
     })
   })
 
   describe('DenseMatrix', function () {
     it('should perform element-wise modulus on dense matrix and scalar', function () {
-      approx.deepEqual(mod(matrix([[-4, -3, 0, -1], [0, 1, 2, 3]]), 3), matrix([[2, 0, 0, 2], [0, 1, 2, 0]]))
-      approx.deepEqual(mod(3, matrix([[4, 3], [2, 1]])), matrix([[3, 0], [1, 0]]))
+      approxDeepEqual(mod(matrix([[-4, -3, 0, -1], [0, 1, 2, 3]]), 3), matrix([[2, 0, 0, 2], [0, 1, 2, 0]]))
+      approxDeepEqual(mod(3, matrix([[4, 3], [2, 1]])), matrix([[3, 0], [1, 0]]))
     })
 
     it('should perform element-wise modulus on dense matrix and array', function () {
-      approx.deepEqual(mod(matrix([[-40, -31], [11, -23]]), [[3, 7], [1, 3]]), matrix([[2, 4], [0, 1]]))
+      approxDeepEqual(mod(matrix([[-40, -31], [11, -23]]), [[3, 7], [1, 3]]), matrix([[2, 4], [0, 1]]))
     })
 
     it('should perform element-wise modulus on dense matrix and dense matrix', function () {
-      approx.deepEqual(mod(matrix([[-40, -31], [11, -23]]), matrix([[3, 7], [1, 3]])), matrix([[2, 4], [0, 1]]))
+      approxDeepEqual(mod(matrix([[-40, -31], [11, -23]]), matrix([[3, 7], [1, 3]])), matrix([[2, 4], [0, 1]]))
     })
 
     it('should perform element-wise modulus on dense matrix and sparse matrix', function () {
-      approx.deepEqual(mod(matrix([[-40, -31], [11, -23]]), sparse([[3, 7], [1, 3]])), matrix([[2, 4], [0, 1]]))
+      approxDeepEqual(mod(matrix([[-40, -31], [11, -23]]), sparse([[3, 7], [1, 3]])), matrix([[2, 4], [0, 1]]))
     })
   })
 
   describe('SparseMatrix', function () {
     it('should perform element-wise modulus on sparse matrix and scalar', function () {
-      approx.deepEqual(mod(sparse([[-4, -3, 0, -1], [0, 1, 2, 3]]), 3), sparse([[2, 0, 0, 2], [0, 1, 2, 0]]))
-      approx.deepEqual(mod(3, sparse([[4, 3], [2, 1]])), matrix([[3, 0], [1, 0]]))
+      approxDeepEqual(mod(sparse([[-4, -3, 0, -1], [0, 1, 2, 3]]), 3), sparse([[2, 0, 0, 2], [0, 1, 2, 0]]))
+      approxDeepEqual(mod(3, sparse([[4, 3], [2, 1]])), matrix([[3, 0], [1, 0]]))
     })
 
     it('should perform element-wise modulus on sparse matrix and array', function () {
-      approx.deepEqual(mod(sparse([[-40, -31], [11, -23]]), [[3, 7], [1, 3]]), sparse([[2, 4], [0, 1]]))
+      approxDeepEqual(mod(sparse([[-40, -31], [11, -23]]), [[3, 7], [1, 3]]), sparse([[2, 4], [0, 1]]))
     })
 
     it('should perform element-wise modulus on sparse matrix and dense matrix', function () {
-      approx.deepEqual(mod(sparse([[-40, -31], [11, -23]]), matrix([[3, 7], [1, 3]])), sparse([[2, 4], [0, 1]]))
+      approxDeepEqual(mod(sparse([[-40, -31], [11, -23]]), matrix([[3, 7], [1, 3]])), sparse([[2, 4], [0, 1]]))
     })
 
     it('should perform element-wise modulus on sparse matrix and sparse matrix', function () {
-      approx.deepEqual(mod(sparse([[-40, -31], [11, -23]]), sparse([[3, 7], [1, 3]])), sparse([[2, 4], [0, 1]]))
+      approxDeepEqual(mod(sparse([[-40, -31], [11, -23]]), sparse([[3, 7], [1, 3]])), sparse([[2, 4], [0, 1]]))
     })
   })
 

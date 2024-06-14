@@ -1,5 +1,6 @@
 import { containsCollections, deepForEach, reduce } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
+import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'sum'
@@ -69,7 +70,7 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
       sum = numeric(0, config.number)
     }
     if (typeof sum === 'string') {
-      sum = numeric(sum, config.number)
+      sum = numeric(sum, safeNumberType(sum, config))
     }
 
     return sum

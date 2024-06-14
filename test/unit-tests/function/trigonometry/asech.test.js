@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const asech = math.asech
 const sech = math.sech
@@ -22,15 +22,15 @@ describe('asech', function () {
   })
 
   it('should return the hyperbolic arcsec of a number', function () {
-    approx.deepEqual(asech(-0.5), complex(1.3169578969, pi))
-    approx.deepEqual(asech(2), complex(0, pi / 3))
+    approxDeepEqual(asech(-0.5), complex(1.3169578969, pi))
+    approxDeepEqual(asech(2), complex(0, pi / 3))
     // assert.ok(isNaN(asech(-0.5)))
     // assert.ok(isNaN(asech(2)))
 
     assert.strictEqual(asech(0), Infinity)
-    approx.equal(asech(0.25), 2.0634370688955605467272811726201)
-    approx.equal(asech(0.5), 1.31695789692481670862504634730797)
-    approx.equal(asech(0.75), 0.7953654612239056305278909331478)
+    approxEqual(asech(0.25), 2.0634370688955605467272811726201)
+    approxEqual(asech(0.5), 1.31695789692481670862504634730797)
+    approxEqual(asech(0.75), 0.7953654612239056305278909331478)
     assert.strictEqual(asech(1), 0)
   })
 
@@ -58,11 +58,11 @@ describe('asech', function () {
   })
 
   it('should be the inverse function of hyperbolic sec', function () {
-    approx.equal(asech(sech(-1)), 1)
-    approx.equal(asech(sech(0)), 0)
-    approx.equal(asech(sech(0.1)), 0.1)
-    approx.equal(asech(sech(0.5)), 0.5)
-    approx.equal(asech(sech(2)), 2)
+    approxEqual(asech(sech(-1)), 1)
+    approxEqual(asech(sech(0)), 0)
+    approxEqual(asech(sech(0.1)), 0.1)
+    approxEqual(asech(sech(0.5)), 0.5)
+    approxEqual(asech(sech(2)), 2)
   })
 
   it('should be the inverse function of bignumber sech', function () {
@@ -76,18 +76,18 @@ describe('asech', function () {
   })
 
   it('should return the arcsech of a complex number', function () {
-    approx.deepEqual(asech(complex('2+3i')), complex(0.23133469857397, -1.420410722467035))
-    approx.deepEqual(asech(complex('2-3i')), complex(0.23133469857397, 1.420410722467035))
-    approx.deepEqual(asech(complex('-2+3i')), complex(0.23133469857397, -1.72118193112275858))
-    approx.deepEqual(asech(complex('-2-3i')), complex(0.23133469857397, 1.72118193112275858))
-    approx.deepEqual(asech(complex('1+i')), complex(0.5306375309525178, -1.11851787964370594))
-    approx.deepEqual(asech(complex('i')), complex(0.881373587019543, -1.570796326794897))
-    approx.deepEqual(asech(complex('2')), complex(0, pi / 3))
+    approxDeepEqual(asech(complex('2+3i')), complex(0.23133469857397, -1.420410722467035))
+    approxDeepEqual(asech(complex('2-3i')), complex(0.23133469857397, 1.420410722467035))
+    approxDeepEqual(asech(complex('-2+3i')), complex(0.23133469857397, -1.72118193112275858))
+    approxDeepEqual(asech(complex('-2-3i')), complex(0.23133469857397, 1.72118193112275858))
+    approxDeepEqual(asech(complex('1+i')), complex(0.5306375309525178, -1.11851787964370594))
+    approxDeepEqual(asech(complex('i')), complex(0.881373587019543, -1.570796326794897))
+    approxDeepEqual(asech(complex('2')), complex(0, pi / 3))
     assert.deepStrictEqual(asech(complex('1')), complex(-0, 0))
-    approx.deepEqual(asech(complex('0.5')), complex(1.3169578969248, 0))
+    approxDeepEqual(asech(complex('0.5')), complex(1.3169578969248, 0))
     assert.deepStrictEqual(asech(complex('0')), complex(Infinity, Infinity))
-    approx.deepEqual(asech(complex('-0.5')), complex(1.3169578969248, pi))
-    approx.deepEqual(asech(complex('-1')), complex(0, pi))
+    approxDeepEqual(asech(complex('-0.5')), complex(1.3169578969248, pi))
+    approxDeepEqual(asech(complex('-1')), complex(0, pi))
   })
 
   it('should throw an error if called with a unit', function () {

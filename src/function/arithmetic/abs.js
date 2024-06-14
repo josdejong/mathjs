@@ -25,15 +25,17 @@ export const createAbs = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *
    *    sign
    *
-   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} x
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Array | Matrix | Unit} x
    *            A number or matrix for which to get the absolute value
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
+   * @return {number | BigNumber | bigint | Fraction | Complex | Array | Matrix | Unit}
    *            Absolute value of `x`
    */
   return typed(name, {
     number: absNumber,
 
     'Complex | BigNumber | Fraction | Unit': x => x.abs(),
+
+    bigint: x => x < 0n ? -x : x,
 
     // deep map collection, skip zeros since abs(0) = 0
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true))

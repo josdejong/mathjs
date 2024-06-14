@@ -24,7 +24,7 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
    * Test whether two values are unequal.
    *
    * The function tests whether the relative difference between x and y is
-   * larger than the configured epsilon. The function cannot be used to compare
+   * larger than the configured relTol and absTol. The function cannot be used to compare
    * values smaller than approximately 2.22e-16.
    *
    * For matrices, the function is evaluated element wise.

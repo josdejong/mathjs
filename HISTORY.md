@@ -1,6 +1,27 @@
 # History
 
-# unpublished changes since 12.4.2
+# 2024-05-31, 13.0.0
+
+Breaking changes: 
+
+- Change `isZero`, `isPositive`, and `isNegative` to respect `config.epsilon`
+  (#3139, #2838).
+- Change the behavior of the internal `nearlyEqual` to align with Python and 
+  Julia (#3152, #2838)
+- Upgrade to `fraction.js@4.3.7`,
+  see https://github.com/rawify/Fraction.js/issues/68.
+- Dropped support for JavaScript engines that do not fully support ES6 or 
+  `bigint`, or are not actively maintained.
+
+Non-breaking changes:
+
+- Implemented support for `bigint` (#3207, #3207)
+- Implemented a new config option `config.numberFallback` needed for `bigint` 
+  (#3207).
+- Internal: refactored tooling to ES modules and upgraded all devDependencies.
+
+
+# 2024-05-31, 12.4.3
 
 - Fix: serialization of Units without a value, see #1240.
 - Fix: outdated, incorrect documentation about the order of precedence for

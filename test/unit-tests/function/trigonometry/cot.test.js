@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -10,21 +10,21 @@ const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 
 describe('cot', function () {
   it('should return the cotan of a boolean', function () {
-    approx.equal(cot(true), 0.642092615934331)
-    approx.equal(cot(false), Infinity)
+    approxEqual(cot(true), 0.642092615934331)
+    approxEqual(cot(false), Infinity)
   })
 
   it('should return the cotan of a number', function () {
-    approx.equal(cot(0), Infinity)
-    approx.equal(1 / cot(pi * 1 / 8), 0.414213562373095)
-    approx.equal(1 / cot(pi * 1 / 4), 1)
-    approx.equal(cot(pi * 2 / 4), 0)
-    approx.equal(1 / cot(pi * 3 / 4), -1)
-    approx.equal(1 / cot(pi * 4 / 4), 0)
-    approx.equal(1 / cot(pi * 5 / 4), 1)
-    approx.equal(cot(pi * 6 / 4), 0)
-    approx.equal(1 / cot(pi * 7 / 4), -1)
-    approx.equal(1 / cot(pi * 8 / 4), 0)
+    approxEqual(cot(0), Infinity)
+    approxEqual(1 / cot(pi * 1 / 8), 0.414213562373095)
+    approxEqual(1 / cot(pi * 1 / 4), 1)
+    approxEqual(cot(pi * 2 / 4), 0)
+    approxEqual(1 / cot(pi * 3 / 4), -1)
+    approxEqual(1 / cot(pi * 4 / 4), 0)
+    approxEqual(1 / cot(pi * 5 / 4), 1)
+    approxEqual(cot(pi * 6 / 4), 0)
+    approxEqual(1 / cot(pi * 7 / 4), -1)
+    approxEqual(1 / cot(pi * 8 / 4), 0)
   })
 
   it('should return the cotan of a bignumber', function () {
@@ -49,23 +49,23 @@ describe('cot', function () {
   it('should return the cotan of a complex number', function () {
     const re = 0.00373971037633696
     const im = 0.99675779656935837
-    approx.deepEqual(cot(complex('2+3i')), complex(-re, -im))
-    approx.deepEqual(cot(complex('2-3i')), complex(-re, im))
-    approx.deepEqual(cot(complex('-2+3i')), complex(re, -im))
-    approx.deepEqual(cot(complex('-2-3i')), complex(re, im))
-    approx.deepEqual(cot(complex('i')), complex(0, -1.313035285499331))
-    approx.deepEqual(cot(complex('1')), complex(0.642092615934331, 0))
-    approx.deepEqual(cot(complex('1+i')), complex(0.217621561854403, -0.868014142895925))
+    approxDeepEqual(cot(complex('2+3i')), complex(-re, -im))
+    approxDeepEqual(cot(complex('2-3i')), complex(-re, im))
+    approxDeepEqual(cot(complex('-2+3i')), complex(re, -im))
+    approxDeepEqual(cot(complex('-2-3i')), complex(re, im))
+    approxDeepEqual(cot(complex('i')), complex(0, -1.313035285499331))
+    approxDeepEqual(cot(complex('1')), complex(0.642092615934331, 0))
+    approxDeepEqual(cot(complex('1+i')), complex(0.217621561854403, -0.868014142895925))
   })
 
   it('should return the cotan of an angle', function () {
-    approx.equal(cot(unit('45deg')), 1)
-    approx.equal(cot(unit('-45deg')), -1)
+    approxEqual(cot(unit('45deg')), 1)
+    approxEqual(cot(unit('-45deg')), -1)
 
     assert(math.isBigNumber(cot(unit(math.bignumber(45), 'deg'))))
-    approx.equal(cot(unit(math.bignumber(45), 'deg')).toNumber(), 1)
+    approxEqual(cot(unit(math.bignumber(45), 'deg')).toNumber(), 1)
 
-    approx.deepEqual(cot(math.unit(complex('1+i'), 'rad')), complex(0.217621561854403, -0.868014142895925))
+    approxDeepEqual(cot(math.unit(complex('1+i'), 'rad')), complex(0.217621561854403, -0.868014142895925))
   })
 
   it('should throw an error if called with an invalid unit', function () {
@@ -80,12 +80,12 @@ describe('cot', function () {
 
   it('should not operate on an array', function () {
     assert.throws(() => cot([1, 2, 3]), TypeError)
-    approx.deepEqual(math.map([1, 2, 3], cot), cot123)
+    approxDeepEqual(math.map([1, 2, 3], cot), cot123)
   })
 
   it('should not operate on a matrix', function () {
     assert.throws(() => cot(matrix([1, 2, 3])), TypeError)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), cot), matrix(cot123))
+    approxDeepEqual(math.map(matrix([1, 2, 3]), cot), matrix(cot123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

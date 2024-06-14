@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const arg = math.arg
 
@@ -13,7 +13,7 @@ describe('arg', function () {
     assert.strictEqual(arg(1), 0)
     assert.strictEqual(arg(2), 0)
     assert.strictEqual(arg(0), 0)
-    approx.equal(arg(-2), 3.141592653589793)
+    approxEqual(arg(-2), 3.141592653589793)
   })
 
   it('should compute the argument of a bignumber', function () {

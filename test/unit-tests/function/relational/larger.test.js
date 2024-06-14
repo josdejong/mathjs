@@ -20,6 +20,16 @@ describe('larger', function () {
     assert.strictEqual(larger(-3, -2), false)
   })
 
+  it('should compare two bigints correctly', function () {
+    assert.strictEqual(larger(2n, 3n), false)
+    assert.strictEqual(larger(2n, 2n), false)
+    assert.strictEqual(larger(2n, 1n), true)
+    assert.strictEqual(larger(0n, 0n), false)
+    assert.strictEqual(larger(-2n, 2n), false)
+    assert.strictEqual(larger(-2n, -3n), true)
+    assert.strictEqual(larger(-3n, -2n), false)
+  })
+
   it('should compare two floating point numbers correctly', function () {
     // Infinity
     assert.strictEqual(larger(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false)
@@ -64,6 +74,17 @@ describe('larger', function () {
     assert.throws(function () { larger(bignumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
   })
 
+  it('should compare mixed numbers and bigints', function () {
+    assert.strictEqual(larger(2n, 3), false)
+    assert.strictEqual(larger(2, 2n), false)
+
+    assert.throws(function () { larger(1 / 3, bignumber(1).div(3)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+    assert.throws(function () { larger(bignumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+
+    assert.throws(function () { larger(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+    assert.throws(function () { larger(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+  })
+
   it('should compare mixed booleans and bignumbers', function () {
     assert.strictEqual(larger(bignumber(0.1), true), false)
     assert.strictEqual(larger(bignumber(1), true), false)
@@ -83,6 +104,11 @@ describe('larger', function () {
     assert.strictEqual(larger(math.fraction(2), 2), false)
   })
 
+  it('should compare mixed fractions and bigints', function () {
+    assert.strictEqual(larger(1n, math.fraction(1, 3)), true)
+    assert.strictEqual(larger(math.fraction(2), 2n), false)
+  })
+
   it('should add two measures of the same unit', function () {
     assert.strictEqual(larger(unit('100cm'), unit('10inch')), true)
     assert.strictEqual(larger(unit('99cm'), unit('1m')), false)
@@ -90,12 +116,12 @@ describe('larger', function () {
     assert.strictEqual(larger(unit('101cm'), unit('1m')), true)
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.larger(1, 0.991), true)
     assert.strictEqual(mymath.larger(mymath.bignumber(1), mymath.bignumber(0.991)), true)
 
-    mymath.config({ epsilon: 1e-2 })
+    mymath.config({ relTol: 1e-2 })
     assert.strictEqual(mymath.larger(1, 0.991), false)
     assert.strictEqual(mymath.larger(mymath.bignumber(1), mymath.bignumber(0.991)), false)
   })

@@ -44,9 +44,9 @@ export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    multiply
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x   Numerator
-   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} y          Denominator
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                      Quotient, `x / y`
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x   Numerator
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Array | Matrix} y          Denominator
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix}                      Quotient, `x / y`
    */
   return typed('divide', extend({
     // we extend the signatures of divideScalar with signatures dealing with matrices

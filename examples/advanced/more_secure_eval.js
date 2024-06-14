@@ -18,7 +18,7 @@
 // functionality, these functions can be disabled, as demonstrated in this
 // example.
 
-const { create, all } = require('../..')
+import { all, create } from '../../lib/esm/index.js'
 const math = create(all)
 
 const limitedEvaluate = math.evaluate

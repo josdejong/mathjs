@@ -1,7 +1,7 @@
 // test sqrtm
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 
 describe('sqrtm', function () {
@@ -12,10 +12,10 @@ describe('sqrtm', function () {
   const BB = [[7, 10], [15, 22]]
 
   it('should return the principal square root of a matrix', function () {
-    approx.deepEqual(math.sqrtm(AA), A)
-    approx.deepEqual(math.sqrtm(BB), B)
+    approxDeepEqual(math.sqrtm(AA), A)
+    approxDeepEqual(math.sqrtm(BB), B)
 
-    approx.deepEqual(
+    approxDeepEqual(
       math.sqrtm(
         [[5, -4, 1, 0, 0],
           [-4, 6, -4, 1, 0],
@@ -40,10 +40,10 @@ describe('sqrtm', function () {
   })
 
   it('math.pow(math.sqrtm(A), 2) should equal A', function () {
-    approx.deepEqual(math.pow(math.sqrtm(A), 2), A)
-    approx.deepEqual(math.pow(math.sqrtm(B), 2), B)
-    approx.deepEqual(math.pow(math.sqrtm(AA), 2), AA)
-    approx.deepEqual(math.pow(math.sqrtm(BB), 2), BB)
+    approxDeepEqual(math.pow(math.sqrtm(A), 2), A)
+    approxDeepEqual(math.pow(math.sqrtm(B), 2), B)
+    approxDeepEqual(math.pow(math.sqrtm(AA), 2), AA)
+    approxDeepEqual(math.pow(math.sqrtm(BB), 2), BB)
   })
 
   it('should throw an error in case of non-square matrices', function () {

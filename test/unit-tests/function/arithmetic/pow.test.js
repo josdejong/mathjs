@@ -1,7 +1,7 @@
 // test exp
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const mathPredictable = math.create({ predictable: true })
 const bignumber = math.bignumber
@@ -13,20 +13,28 @@ const pow = math.pow
 
 describe('pow', function () {
   it('should exponentiate a number to the given power', function () {
-    approx.deepEqual(pow(2, 3), 8)
-    approx.deepEqual(pow(2, 4), 16)
-    approx.deepEqual(pow(-2, 2), 4)
-    approx.deepEqual(pow(3, 3), 27)
-    approx.deepEqual(pow(3, -2), 0.111111111111111)
-    approx.deepEqual(pow(-3, -2), 0.111111111111111)
-    approx.deepEqual(pow(3, -3), 0.0370370370370370)
-    approx.deepEqual(pow(-3, -3), -0.0370370370370370)
-    approx.deepEqual(pow(2, 1.5), 2.82842712474619)
+    approxDeepEqual(pow(2, 3), 8)
+    approxDeepEqual(pow(2, 4), 16)
+    approxDeepEqual(pow(-2, 2), 4)
+    approxDeepEqual(pow(3, 3), 27)
+    approxDeepEqual(pow(3, -2), 0.111111111111111)
+    approxDeepEqual(pow(-3, -2), 0.111111111111111)
+    approxDeepEqual(pow(3, -3), 0.0370370370370370)
+    approxDeepEqual(pow(-3, -3), -0.0370370370370370)
+    approxDeepEqual(pow(2, 1.5), 2.82842712474619)
+  })
+
+  it('should exponentiate a bigint to the given power', function () {
+    assert.strictEqual(pow(2n, 3n), 8n)
+    assert.strictEqual(pow(2n, 4n), 16n)
+    assert.strictEqual(pow(-2n, 2n), 4n)
+    assert.strictEqual(pow(3n, 3n), 27n)
+    assert.throws(() => pow(3n, -2n))
   })
 
   it('should exponentiate a negative number to a non-integer power', function () {
-    approx.deepEqual(pow(-2, 1.5), complex(0, -2.82842712474619))
-    approx.deepEqual(pow(-8, 1 / 3), complex(1, 1.732050807568877))
+    approxDeepEqual(pow(-2, 1.5), complex(0, -2.82842712474619))
+    approxDeepEqual(pow(-8, 1 / 3), complex(1, 1.732050807568877))
   })
 
   it('should exponentiate a negative number to a non-integer power with predictable:true', function () {
@@ -37,23 +45,23 @@ describe('pow', function () {
   })
 
   it('should return a real-valued root if one exists with predictable:true', function () {
-    approx.equal(mathPredictable.pow(-8, 1 / 3), -2)
-    approx.equal(mathPredictable.pow(-8, 2 / 3), 4)
-    approx.equal(mathPredictable.pow(-8, 3 / 3), -8)
-    approx.equal(mathPredictable.pow(-8, 4 / 3), 16)
-    approx.equal(mathPredictable.pow(-8, 5 / 3), -32)
-    approx.equal(mathPredictable.pow(-8, -5 / 3), -0.03125)
-    approx.equal(mathPredictable.pow(-1, 2 / 3), 1)
-    approx.equal(mathPredictable.pow(-1, 50 / 99), 1)
-    approx.equal(mathPredictable.pow(-1, 49 / 99), -1)
-    approx.equal(mathPredictable.pow(-17, 29 / 137), -1.8216292479175)
-    approx.equal(mathPredictable.pow(-1, 0), 1)
-    approx.equal(mathPredictable.pow(-1, 0.2), -1)
-    approx.equal(mathPredictable.pow(-1, 1), -1)
+    approxEqual(mathPredictable.pow(-8, 1 / 3), -2)
+    approxEqual(mathPredictable.pow(-8, 2 / 3), 4)
+    approxEqual(mathPredictable.pow(-8, 3 / 3), -8)
+    approxEqual(mathPredictable.pow(-8, 4 / 3), 16)
+    approxEqual(mathPredictable.pow(-8, 5 / 3), -32)
+    approxEqual(mathPredictable.pow(-8, -5 / 3), -0.03125)
+    approxEqual(mathPredictable.pow(-1, 2 / 3), 1)
+    approxEqual(mathPredictable.pow(-1, 50 / 99), 1)
+    approxEqual(mathPredictable.pow(-1, 49 / 99), -1)
+    approxEqual(mathPredictable.pow(-17, 29 / 137), -1.8216292479175)
+    approxEqual(mathPredictable.pow(-1, 0), 1)
+    approxEqual(mathPredictable.pow(-1, 0.2), -1)
+    approxEqual(mathPredictable.pow(-1, 1), -1)
 
-    approx.equal(mathPredictable.pow(4, 2), 16)
-    approx.equal(mathPredictable.pow(4, 0.5), 2)
-    approx.equal(mathPredictable.pow(-4, 2), 16)
+    approxEqual(mathPredictable.pow(4, 2), 16)
+    approxEqual(mathPredictable.pow(4, 0.5), 2)
+    approxEqual(mathPredictable.pow(-4, 2), 16)
 
     assert(isNaN(mathPredictable.pow(-1, 49 / 100)))
     assert(isNaN(mathPredictable.pow(-17, 29 / 138)))
@@ -83,9 +91,9 @@ describe('pow', function () {
   })
 
   it('should exponentiate a negative bignumber to a non-integer power', function () {
-    approx.deepEqual(pow(bignumber(-2), bignumber(1.5)), complex(0, -2.82842712474619))
-    approx.deepEqual(pow(-2, bignumber(1.5)), complex(0, -2.82842712474619))
-    approx.deepEqual(pow(bignumber(-2), 1.5), complex(0, -2.82842712474619))
+    approxDeepEqual(pow(bignumber(-2), bignumber(1.5)), complex(0, -2.82842712474619))
+    approxDeepEqual(pow(-2, bignumber(1.5)), complex(0, -2.82842712474619))
+    approxDeepEqual(pow(bignumber(-2), 1.5), complex(0, -2.82842712474619))
   })
 
   it('should exponentiate a negative bignumber to a non-integer power', function () {
@@ -117,8 +125,8 @@ describe('pow', function () {
   it('should exponentiate a fraction to an non-integer power', function () {
     assert.deepStrictEqual(math.pow(fraction(27, 8), fraction(2, 3)), fraction(9, 4))
 
-    approx.deepEqual(math.pow(fraction(4), 1.5114), 8.127434364206053)
-    approx.deepEqual(math.pow(fraction(4), fraction(1.5114)), 8.127434364206053)
+    approxDeepEqual(math.pow(fraction(4), 1.5114), 8.127434364206053)
+    approxDeepEqual(math.pow(fraction(4), fraction(1.5114)), 8.127434364206053)
 
     assert.throws(function () { mathPredictable.pow(fraction(3), fraction(1.5114)) },
       /Result of pow is non-rational and cannot be expressed as a fraction/)
@@ -158,48 +166,48 @@ describe('pow', function () {
   })
 
   it('should exponentiate a complex number to the given power', function () {
-    approx.deepEqual(pow(complex(3, 0), 2), complex(9, 0))
-    approx.deepEqual(pow(complex(0, 2), 2), complex(-4, 0))
+    approxDeepEqual(pow(complex(3, 0), 2), complex(9, 0))
+    approxDeepEqual(pow(complex(0, 2), 2), complex(-4, 0))
 
-    approx.deepEqual(pow(complex(-1, -1), complex(-1, -1)), complex('-0.0284750589322119 +  0.0606697332231795i'))
-    approx.deepEqual(pow(complex(-1, -1), complex(-1, 1)), complex('-6.7536199239765713 +  3.1697803027015614i'))
-    approx.deepEqual(pow(complex(-1, -1), complex(0, -1)), complex('0.0891447921553914 - 0.0321946742909677i'))
-    approx.deepEqual(pow(complex(-1, -1), complex(0, 1)), complex('9.92340022667813 + 3.58383962127501i'))
-    approx.deepEqual(pow(complex(-1, -1), complex(1, -1)), complex('-0.1213394664463591 -  0.0569501178644237i'))
-    approx.deepEqual(pow(complex(-1, -1), complex(1, 1)), complex('-6.3395606054031211 - 13.5072398479531426i'))
-    approx.deepEqual(pow(complex(-1, 1), complex(-1, -1)), complex('-6.7536199239765713 -  3.1697803027015614i'))
-    approx.deepEqual(pow(complex(-1, 1), complex(-1, 1)), complex('-0.0284750589322119 -  0.0606697332231795i'))
-    approx.deepEqual(pow(complex(-1, 1), complex(0, -1)), complex('9.92340022667813 - 3.58383962127501i'))
-    approx.deepEqual(pow(complex(-1, 1), complex(0, 1)), complex('0.0891447921553914 + 0.0321946742909677i'))
-    approx.deepEqual(pow(complex(-1, 1), complex(1, -1)), complex('-6.3395606054031211 + 13.5072398479531426i'))
-    approx.deepEqual(pow(complex(-1, 1), complex(1, 1)), complex('-0.1213394664463591 +  0.0569501178644237i'))
+    approxDeepEqual(pow(complex(-1, -1), complex(-1, -1)), complex('-0.0284750589322119 +  0.0606697332231795i'))
+    approxDeepEqual(pow(complex(-1, -1), complex(-1, 1)), complex('-6.7536199239765713 +  3.1697803027015614i'))
+    approxDeepEqual(pow(complex(-1, -1), complex(0, -1)), complex('0.0891447921553914 - 0.0321946742909677i'))
+    approxDeepEqual(pow(complex(-1, -1), complex(0, 1)), complex('9.92340022667813 + 3.58383962127501i'))
+    approxDeepEqual(pow(complex(-1, -1), complex(1, -1)), complex('-0.1213394664463591 -  0.0569501178644237i'))
+    approxDeepEqual(pow(complex(-1, -1), complex(1, 1)), complex('-6.3395606054031211 - 13.5072398479531426i'))
+    approxDeepEqual(pow(complex(-1, 1), complex(-1, -1)), complex('-6.7536199239765713 -  3.1697803027015614i'))
+    approxDeepEqual(pow(complex(-1, 1), complex(-1, 1)), complex('-0.0284750589322119 -  0.0606697332231795i'))
+    approxDeepEqual(pow(complex(-1, 1), complex(0, -1)), complex('9.92340022667813 - 3.58383962127501i'))
+    approxDeepEqual(pow(complex(-1, 1), complex(0, 1)), complex('0.0891447921553914 + 0.0321946742909677i'))
+    approxDeepEqual(pow(complex(-1, 1), complex(1, -1)), complex('-6.3395606054031211 + 13.5072398479531426i'))
+    approxDeepEqual(pow(complex(-1, 1), complex(1, 1)), complex('-0.1213394664463591 +  0.0569501178644237i'))
 
-    approx.deepEqual(pow(complex(0, -1), complex(-1, -1)), complex('0.000000000000000 + 0.207879576350762i'))
-    approx.deepEqual(pow(complex(0, -1), complex(-1, 1)), complex('0.000000000000000 + 4.810477380965351i'))
-    approx.deepEqual(pow(complex(0, -1), complex(1, -1)), complex('0.000000000000000 - 0.207879576350762i'))
-    approx.deepEqual(pow(complex(0, -1), complex(1, 1)), complex('0.000000000000000 - 4.810477380965351i'))
-    approx.deepEqual(pow(complex(0, 1), complex(-1, -1)), complex('0.000000000000000 - 4.810477380965351i'))
-    approx.deepEqual(pow(complex(0, 1), complex(-1, 1)), complex('0.000000000000000 - 0.207879576350762i'))
-    approx.deepEqual(pow(complex(0, 1), complex(1, -1)), complex('0.000000000000000 + 4.810477380965351i'))
-    approx.deepEqual(pow(complex(0, 1), complex(1, 1)), complex('0.000000000000000 + 0.207879576350762i'))
+    approxDeepEqual(pow(complex(0, -1), complex(-1, -1)), complex('0.000000000000000 + 0.207879576350762i'))
+    approxDeepEqual(pow(complex(0, -1), complex(-1, 1)), complex('0.000000000000000 + 4.810477380965351i'))
+    approxDeepEqual(pow(complex(0, -1), complex(1, -1)), complex('0.000000000000000 - 0.207879576350762i'))
+    approxDeepEqual(pow(complex(0, -1), complex(1, 1)), complex('0.000000000000000 - 4.810477380965351i'))
+    approxDeepEqual(pow(complex(0, 1), complex(-1, -1)), complex('0.000000000000000 - 4.810477380965351i'))
+    approxDeepEqual(pow(complex(0, 1), complex(-1, 1)), complex('0.000000000000000 - 0.207879576350762i'))
+    approxDeepEqual(pow(complex(0, 1), complex(1, -1)), complex('0.000000000000000 + 4.810477380965351i'))
+    approxDeepEqual(pow(complex(0, 1), complex(1, 1)), complex('0.000000000000000 + 0.207879576350762i'))
 
-    approx.deepEqual(pow(complex(1, -1), complex(-1, -1)), complex('0.2918503793793073 +  0.1369786269150605i'))
-    approx.deepEqual(pow(complex(1, -1), complex(-1, 1)), complex('0.6589325864505904 +  1.4039396486303144i'))
-    approx.deepEqual(pow(complex(1, -1), complex(0, -1)), complex('0.428829006294368 - 0.154871752464247i'))
-    approx.deepEqual(pow(complex(1, -1), complex(0, 1)), complex('2.062872235080905 + 0.745007062179724i'))
-    approx.deepEqual(pow(complex(1, -1), complex(1, -1)), complex('0.2739572538301211 -  0.5837007587586147i'))
-    approx.deepEqual(pow(complex(1, -1), complex(1, 1)), complex('2.8078792972606288 -  1.3178651729011805i'))
-    approx.deepEqual(pow(complex(1, 1), complex(-1, -1)), complex('0.6589325864505904 -  1.4039396486303144i'))
-    approx.deepEqual(pow(complex(1, 1), complex(-1, 1)), complex('0.2918503793793073 -  0.1369786269150605i'))
-    approx.deepEqual(pow(complex(1, 1), complex(0, -1)), complex('2.062872235080905 - 0.745007062179724i'))
-    approx.deepEqual(pow(complex(1, 1), complex(0, 1)), complex('0.428829006294368 + 0.154871752464247i'))
-    approx.deepEqual(pow(complex(1, 1), complex(1, -1)), complex('2.8078792972606288 +  1.3178651729011805i'))
-    approx.deepEqual(pow(complex(1, 1), complex(1, 1)), complex('0.2739572538301211 +  0.5837007587586147i'))
+    approxDeepEqual(pow(complex(1, -1), complex(-1, -1)), complex('0.2918503793793073 +  0.1369786269150605i'))
+    approxDeepEqual(pow(complex(1, -1), complex(-1, 1)), complex('0.6589325864505904 +  1.4039396486303144i'))
+    approxDeepEqual(pow(complex(1, -1), complex(0, -1)), complex('0.428829006294368 - 0.154871752464247i'))
+    approxDeepEqual(pow(complex(1, -1), complex(0, 1)), complex('2.062872235080905 + 0.745007062179724i'))
+    approxDeepEqual(pow(complex(1, -1), complex(1, -1)), complex('0.2739572538301211 -  0.5837007587586147i'))
+    approxDeepEqual(pow(complex(1, -1), complex(1, 1)), complex('2.8078792972606288 -  1.3178651729011805i'))
+    approxDeepEqual(pow(complex(1, 1), complex(-1, -1)), complex('0.6589325864505904 -  1.4039396486303144i'))
+    approxDeepEqual(pow(complex(1, 1), complex(-1, 1)), complex('0.2918503793793073 -  0.1369786269150605i'))
+    approxDeepEqual(pow(complex(1, 1), complex(0, -1)), complex('2.062872235080905 - 0.745007062179724i'))
+    approxDeepEqual(pow(complex(1, 1), complex(0, 1)), complex('0.428829006294368 + 0.154871752464247i'))
+    approxDeepEqual(pow(complex(1, 1), complex(1, -1)), complex('2.8078792972606288 +  1.3178651729011805i'))
+    approxDeepEqual(pow(complex(1, 1), complex(1, 1)), complex('0.2739572538301211 +  0.5837007587586147i'))
   })
 
   it('should exponentiate a complex number to the given bignumber power', function () {
-    approx.deepEqual(pow(complex(3, 0), math.bignumber(2)), complex(9, 0))
-    approx.deepEqual(pow(complex(0, 2), math.bignumber(2)), complex(-4, 0))
+    approxDeepEqual(pow(complex(3, 0), math.bignumber(2)), complex(9, 0))
+    approxDeepEqual(pow(complex(0, 2), math.bignumber(2)), complex(-4, 0))
   })
 
   it('should correctly calculate unit ^ number', function () {
@@ -237,8 +245,8 @@ describe('pow', function () {
   it('should raise a square matrix to the power 2', function () {
     const a = [[1, 2], [3, 4]]
     const res = [[7, 10], [15, 22]]
-    approx.deepEqual(pow(a, 2), res)
-    approx.deepEqual(pow(matrix(a), 2), matrix(res))
+    approxDeepEqual(pow(a, 2), res)
+    approxDeepEqual(pow(matrix(a), 2), matrix(res))
   })
 
   it('should raise an inverted matrix for power -1', function () {
@@ -252,21 +260,21 @@ describe('pow', function () {
       [1 / 2, 1, 1 / 2],
       [1 / 4, 1 / 2, 3 / 4]
     ]
-    approx.deepEqual(pow(a, -1), res)
-    approx.deepEqual(pow(matrix(a), -1), matrix(res))
+    approxDeepEqual(pow(a, -1), res)
+    approxDeepEqual(pow(matrix(a), -1), matrix(res))
   })
 
   it('should return identity matrix for power 0', function () {
     const a = [[1, 2], [3, 4]]
     const res = [[1, 0], [0, 1]]
-    approx.deepEqual(pow(a, 0), res)
-    approx.deepEqual(pow(matrix(a), 0), matrix(res))
+    approxDeepEqual(pow(a, 0), res)
+    approxDeepEqual(pow(matrix(a), 0), matrix(res))
   })
 
   it('should compute large size of square matrix', function () {
     const a = math.identity(30).valueOf()
-    approx.deepEqual(pow(a, 1000), a)
-    approx.deepEqual(pow(matrix(a), 1000), matrix(a))
+    approxDeepEqual(pow(a, 1000), a)
+    approxDeepEqual(pow(matrix(a), 1000), matrix(a))
   })
 
   it('should throw an error when calculating the power of a non square matrix', function () {

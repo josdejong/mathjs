@@ -1,7 +1,7 @@
 // test log
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
@@ -17,16 +17,16 @@ describe('log', function () {
   })
 
   it('should return the log of positive numbers', function () {
-    approx.deepEqual(log(1), 0)
-    approx.deepEqual(log(2), 0.693147180559945)
-    approx.deepEqual(log(3), 1.098612288668110)
-    approx.deepEqual(math.exp(log(100)), 100)
+    approxDeepEqual(log(1), 0)
+    approxDeepEqual(log(2), 0.693147180559945)
+    approxDeepEqual(log(3), 1.098612288668110)
+    approxDeepEqual(math.exp(log(100)), 100)
   })
 
   it('should return the log of negative numbers', function () {
-    approx.deepEqual(log(-1), complex('0.000000000000000 + 3.141592653589793i'))
-    approx.deepEqual(log(-2), complex('0.693147180559945 + 3.141592653589793i'))
-    approx.deepEqual(log(-3), complex('1.098612288668110 + 3.141592653589793i'))
+    approxDeepEqual(log(-1), complex('0.000000000000000 + 3.141592653589793i'))
+    approxDeepEqual(log(-2), complex('0.693147180559945 + 3.141592653589793i'))
+    approxDeepEqual(log(-3), complex('1.098612288668110 + 3.141592653589793i'))
   })
 
   it('should return the log of negative numbers with predictable: true', function () {
@@ -35,14 +35,14 @@ describe('log', function () {
   })
 
   it('should return the log of zero', function () {
-    approx.deepEqual(log(0), -Infinity)
+    approxDeepEqual(log(0), -Infinity)
   })
 
   it('should return the log base N of a number', function () {
-    approx.deepEqual(log(100, 10), 2)
-    approx.deepEqual(log(1000, 10), 3)
-    approx.deepEqual(log(8, 2), 3)
-    approx.deepEqual(log(16, 2), 4)
+    approxDeepEqual(log(100, 10), 2)
+    approxDeepEqual(log(1000, 10), 3)
+    approxDeepEqual(log(8, 2), 3)
+    approxDeepEqual(log(16, 2), 4)
   })
 
   it('should throw an error if invalid number of arguments', function () {
@@ -68,9 +68,9 @@ describe('log', function () {
   it('should return the log of negative bignumbers', function () {
     const bigmath = math.create({ precision: 100 })
 
-    approx.deepEqual(bigmath.log(bigmath.bignumber(-1)), complex('0.000000000000000 + 3.141592653589793i'))
-    approx.deepEqual(bigmath.log(bigmath.bignumber(-2)), complex('0.693147180559945 + 3.141592653589793i'))
-    approx.deepEqual(bigmath.log(bigmath.bignumber(-3)), complex('1.098612288668110 + 3.141592653589793i'))
+    approxDeepEqual(bigmath.log(bigmath.bignumber(-1)), complex('0.000000000000000 + 3.141592653589793i'))
+    approxDeepEqual(bigmath.log(bigmath.bignumber(-2)), complex('0.693147180559945 + 3.141592653589793i'))
+    approxDeepEqual(bigmath.log(bigmath.bignumber(-3)), complex('1.098612288668110 + 3.141592653589793i'))
   })
 
   it('should return the log of negative bignumbers with predictable:true', function () {
@@ -84,13 +84,13 @@ describe('log', function () {
   })
 
   it('should return the log of a complex number', function () {
-    approx.deepEqual(log(math.i), complex('1.570796326794897i'))
-    approx.deepEqual(log(complex(0, -1)), complex('-1.570796326794897i'))
-    approx.deepEqual(log(complex(1, 1)), complex('0.346573590279973 + 0.785398163397448i'))
-    approx.deepEqual(log(complex(1, -1)), complex('0.346573590279973 - 0.785398163397448i'))
-    approx.deepEqual(log(complex(-1, -1)), complex('0.346573590279973 - 2.356194490192345i'))
-    approx.deepEqual(log(complex(-1, 1)), complex('0.346573590279973 + 2.356194490192345i'))
-    approx.deepEqual(log(complex(1, 0)), complex(0, 0))
+    approxDeepEqual(log(math.i), complex('1.570796326794897i'))
+    approxDeepEqual(log(complex(0, -1)), complex('-1.570796326794897i'))
+    approxDeepEqual(log(complex(1, 1)), complex('0.346573590279973 + 0.785398163397448i'))
+    approxDeepEqual(log(complex(1, -1)), complex('0.346573590279973 - 0.785398163397448i'))
+    approxDeepEqual(log(complex(-1, -1)), complex('0.346573590279973 - 2.356194490192345i'))
+    approxDeepEqual(log(complex(-1, 1)), complex('0.346573590279973 + 2.356194490192345i'))
+    approxDeepEqual(log(complex(1, 0)), complex(0, 0))
   })
 
   it('should handle complex number with large imaginary part', function () {
@@ -99,7 +99,7 @@ describe('log', function () {
     const imaginary = [1e15, 1e17, 1e20, 1e30]
     for (const r of real) {
       for (const im of imaginary) {
-        approx.deepEqual(log(complex(r, im)), complex(Math.log(im), tau4))
+        approxDeepEqual(log(complex(r, im)), complex(Math.log(im), tau4))
       }
     }
   })
@@ -115,9 +115,9 @@ describe('log', function () {
   it('should not operate on a matrix', function () {
     const res = [0, 0.693147180559945, 1.098612288668110, 1.386294361119891]
     assert.throws(() => log([1, 2, 3, 4]), TypeError)
-    approx.deepEqual(math.map([1, 2, 3, 4], x => log(x)), res)
-    approx.deepEqual(math.map(matrix([1, 2, 3, 4]), x => log(x)), matrix(res))
-    approx.deepEqual(math.map(matrix([[1, 2], [3, 4]]), x => log(x)),
+    approxDeepEqual(math.map([1, 2, 3, 4], x => log(x)), res)
+    approxDeepEqual(math.map(matrix([1, 2, 3, 4]), x => log(x)), matrix(res))
+    approxDeepEqual(math.map(matrix([[1, 2], [3, 4]]), x => log(x)),
       matrix([[0, 0.693147180559945], [1.098612288668110, 1.386294361119891]]))
   })
 

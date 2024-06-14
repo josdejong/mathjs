@@ -30,7 +30,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
    * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
    *
    * x and y are considered equal when the relative difference between x and y
-   * is smaller than the configured epsilon. The function cannot be used to
+   * is smaller than the configured absTol and relTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16.
    *
    * For matrices, the function is evaluated element wise.
@@ -58,9 +58,9 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *    equal, unequal, smaller, smallerEq, larger, largerEq, compareNatural, compareText
    *
-   * @param  {number | BigNumber | Fraction | Unit | string | Array | Matrix} x First value to compare
-   * @param  {number | BigNumber | Fraction | Unit | string | Array | Matrix} y Second value to compare
-   * @return {number | BigNumber | Fraction | Array | Matrix} Returns the result of the comparison:
+   * @param  {number | BigNumber | bigint | Fraction | Unit | string | Array | Matrix} x First value to compare
+   * @param  {number | BigNumber | bigint | Fraction | Unit | string | Array | Matrix} y Second value to compare
+   * @return {number | BigNumber | bigint | Fraction | Array | Matrix} Returns the result of the comparison:
    *                                                          1 when x > y, -1 when x < y, and 0 when x == y.
    */
   return typed(
@@ -72,9 +72,13 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
       },
 
       'BigNumber, BigNumber': function (x, y) {
-        return bigNearlyEqual(x, y, config.epsilon)
+        return bigNearlyEqual(x, y, config.relTol, config.absTol)
           ? new BigNumber(0)
           : new BigNumber(x.cmp(y))
+      },
+
+      'bigint, bigint': function (x, y) {
+        return x === y ? 0n : (x > y ? 1n : -1n)
       },
 
       'Fraction, Fraction': function (x, y) {
@@ -97,7 +101,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
 export const createCompareNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return nearlyEqual(x, y, config.epsilon)
+      return nearlyEqual(x, y, config.relTol, config.absTol)
         ? 0
         : (x > y ? 1 : -1)
     }

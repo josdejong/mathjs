@@ -27,7 +27,7 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
    * Test whether value x is smaller than y.
    *
    * The function returns true when x is smaller than y and the relative
-   * difference between x and y is smaller than the configured epsilon. The
+   * difference between x and y is smaller than the configured relTol and absTol. The
    * function cannot be used to compare values smaller than approximately 2.22e-16.
    *
    * For matrices, the function is evaluated element wise.
@@ -50,8 +50,8 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *    equal, unequal, smallerEq, smaller, smallerEq, compare
    *
-   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
-   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
    */
   return typed(
@@ -61,8 +61,10 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
       'boolean, boolean': (x, y) => x < y,
 
       'BigNumber, BigNumber': function (x, y) {
-        return x.lt(y) && !bigNearlyEqual(x, y, config.epsilon)
+        return x.lt(y) && !bigNearlyEqual(x, y, config.relTol, config.absTol)
       },
+
+      'bigint, bigint': (x, y) => x < y,
 
       'Fraction, Fraction': (x, y) => (x.compare(y) === -1),
 
@@ -82,7 +84,7 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
 export const createSmallerNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return x < y && !nearlyEqual(x, y, config.epsilon)
+      return x < y && !nearlyEqual(x, y, config.relTol, config.absTol)
     }
   })
 })

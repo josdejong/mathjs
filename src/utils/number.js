@@ -20,6 +20,42 @@ export function isInteger (value) {
 }
 
 /**
+ * Check if a string contains an integer
+ * @param {string} str
+ * @return {boolean} isInteger
+ */
+export function isIntegerStr (str) {
+  // regex matching strings like "123" and "-123"
+  return /^-?\d+$/.test(str)
+}
+
+/**
+ * Ensure the number type is compatible with the provided value.
+ * If not, return 'number' instead.
+ *
+ * For example:
+ *
+ *     safeNumberType('2.3', { number: 'bigint', numberFallback: 'number' })
+ *
+ * will return 'number' and not 'bigint' because trying to create a bigint with
+ * value 2.3 would throw an exception.
+ *
+ * @param {string} numberStr
+ * @param {{
+ *   number: 'number' | 'BigNumber' | 'bigint' | 'Fraction'
+ *   numberFallback: 'number' | 'BigNumber'
+ * }} config
+ * @returns {'number' | 'BigNumber' | 'bigint' | 'Fraction'}
+ */
+export function safeNumberType (numberStr, config) {
+  if (config.number === 'bigint' && !isIntegerStr(numberStr)) {
+    return config.numberFallback
+  }
+
+  return config.number
+}
+
+/**
  * Calculate the sign of a number
  * @param {number} x
  * @returns {number}
@@ -616,42 +652,45 @@ export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-
 
 /**
  * Compares two floating point numbers.
- * @param {number} x          First value to compare
- * @param {number} y          Second value to compare
- * @param {number} [epsilon]  The maximum relative difference between x and y
- *                            If epsilon is undefined or null, the function will
- *                            test whether x and y are exactly equal.
+ * @param {number} a - First value to compare
+ * @param {number} b - Second value to compare
+ * @param {number} [relTol=1e-09] - The relative tolerance, indicating the maximum allowed difference relative to the larger absolute value. Must be greater than 0.
+ * @param {number} [absTol=1e-12] - The minimum absolute tolerance, useful for comparisons near zero. Must be at least 0.
  * @return {boolean} whether the two numbers are nearly equal
-*/
-export function nearlyEqual (x, y, epsilon) {
-  // if epsilon is null or undefined, test whether x and y are exactly equal
-  if (epsilon === null || epsilon === undefined) {
-    return x === y
+ *
+ * @throws {Error} If `relTol` is less than or equal to 0.
+ * @throws {Error} If `absTol` is less than 0.
+ *
+ * @example
+ * nearlyEqual(1.000000001, 1.0, 1e-8);            // true
+ * nearlyEqual(1.000000002, 1.0, 0);            // false
+ * nearlyEqual(1.0, 1.009, undefined, 0.01);       // true
+ * nearlyEqual(0.000000001, 0.0, undefined, 1e-8); // true
+ */
+export function nearlyEqual (a, b, relTol = 1e-8, absTol = 0) {
+  if (relTol <= 0) {
+    throw new Error('Relative tolerance must be greater than 0')
   }
 
-  if (x === y) {
-    return true
+  if (absTol < 0) {
+    throw new Error('Absolute tolerance must be at least 0')
   }
 
   // NaN
-  if (isNaN(x) || isNaN(y)) {
+  if (isNaN(a) || isNaN(b)) {
     return false
   }
 
-  // at this point x and y should be finite
-  if (isFinite(x) && isFinite(y)) {
-    // check numbers are very close, needed when comparing numbers near zero
-    const diff = Math.abs(x - y)
-    if (diff <= DBL_EPSILON) {
-      return true
-    } else {
-      // use relative error
-      return diff <= Math.max(Math.abs(x), Math.abs(y)) * epsilon
-    }
+  if (!isFinite(a) || !isFinite(b)) {
+    return a === b
   }
 
-  // Infinite and Number or negative Infinite and positive Infinite cases
-  return false
+  if (a === b) {
+    return true
+  }
+
+  // abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+  return Math.abs(a - b) <= Math.max(relTol * Math.max(Math.abs(a), Math.abs(b)), absTol)
 }
 
 /**

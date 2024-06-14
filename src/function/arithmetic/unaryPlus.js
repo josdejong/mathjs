@@ -1,11 +1,12 @@
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
 import { unaryPlusNumber } from '../../plain/number/index.js'
+import { safeNumberType } from '../../utils/number.js'
 
 const name = 'unaryPlus'
-const dependencies = ['typed', 'config', 'BigNumber']
+const dependencies = ['typed', 'config', 'numeric']
 
-export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, BigNumber }) => {
+export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric }) => {
   /**
    * Unary plus operation.
    * Boolean values and strings will be converted to a number, numeric values will be returned as is.
@@ -25,9 +26,9 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    unaryMinus, add, subtract
    *
-   * @param  {number | BigNumber | Fraction | string | Complex | Unit | Array | Matrix} x
+   * @param  {number | BigNumber | bigint | Fraction | string | Complex | Unit | Array | Matrix} x
    *            Input value
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix}
    *            Returns the input value when numeric, converts to a number when input is non-numeric.
    */
   return typed(name, {
@@ -41,6 +42,10 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
       return x // bignumbers are immutable
     },
 
+    bigint: function (x) {
+      return x
+    },
+
     Fraction: function (x) {
       return x // fractions are immutable
     },
@@ -52,9 +57,12 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
     // deep map collection, skip zeros since unaryPlus(0) = 0
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true)),
 
-    'boolean | string': function (x) {
-      // convert to a number or bignumber
-      return (config.number === 'BigNumber') ? new BigNumber(+x) : +x
+    boolean: function (x) {
+      return numeric(x ? 1 : 0, config.number)
+    },
+
+    string: function (x) {
+      return numeric(x, safeNumberType(x, config))
     }
   })
 })

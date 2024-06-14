@@ -31,7 +31,7 @@ export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    isNumeric, isPositive, isNegative, isZero
    *
-   * @param {number | BigNumber | Fraction | Array | Matrix} x   Value to be tested
+   * @param {number | BigNumber | bigint | Fraction | Array | Matrix} x   Value to be tested
    * @return {boolean}  Returns true when `x` contains a numeric, integer value.
    *                    Throws an error in case of an unknown data type.
    */
@@ -40,6 +40,10 @@ export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
     BigNumber: function (x) {
       return x.isInt()
+    },
+
+    bigint: function (x) {
+      return true
     },
 
     Fraction: function (x) {

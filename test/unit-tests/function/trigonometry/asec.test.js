@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const asec = math.asec
 const sec = math.sec
@@ -22,13 +22,13 @@ describe('asec', function () {
   })
 
   it('should return the arcsec of a number', function () {
-    approx.equal(asec(-2) / pi, 2 / 3)
-    approx.equal(asec(-1) / pi, 1)
-    approx.equal(asec(1) / pi, 0)
-    approx.equal(asec(2) / pi, 1 / 3)
+    approxEqual(asec(-2) / pi, 2 / 3)
+    approxEqual(asec(-1) / pi, 1)
+    approxEqual(asec(1) / pi, 0)
+    approxEqual(asec(2) / pi, 1 / 3)
 
-    approx.deepEqual(asec(-0.5), complex(pi, -1.3169578969248))
-    approx.deepEqual(asec(0.5), complex(0, 1.3169578969248))
+    approxDeepEqual(asec(-0.5), complex(pi, -1.3169578969248))
+    approxDeepEqual(asec(0.5), complex(0, 1.3169578969248))
   })
 
   it('should return the arcsec of a number when predictable:true', function () {
@@ -66,11 +66,11 @@ describe('asec', function () {
   })
 
   it('should be the inverse function of sec', function () {
-    approx.equal(asec(sec(-1)), 1)
-    approx.equal(asec(sec(0)), 0)
-    approx.equal(asec(sec(0.1)), 0.1)
-    approx.equal(asec(sec(0.5)), 0.5)
-    approx.equal(asec(sec(2)), 2)
+    approxEqual(asec(sec(-1)), 1)
+    approxEqual(asec(sec(0)), 0)
+    approxEqual(asec(sec(0.1)), 0.1)
+    approxEqual(asec(sec(0.5)), 0.5)
+    approxEqual(asec(sec(2)), 2)
   })
 
   it('should be the inverse function of bignumber sec', function () {
@@ -82,16 +82,16 @@ describe('asec', function () {
   })
 
   it('should return the arcsec of a complex number', function () {
-    approx.deepEqual(asec(complex('2+3i')), complex(1.42041072246703, 0.23133469857397))
-    approx.deepEqual(asec(complex('2-3i')), complex(1.42041072246703, -0.23133469857397))
-    approx.deepEqual(asec(complex('-2+3i')), complex(1.7211819311228, 0.2313346985739733))
-    approx.deepEqual(asec(complex('-2-3i')), complex(1.7211819311228, -0.2313346985739733))
-    approx.deepEqual(asec(complex('i')), complex(1.570796326794897, 0.881373587019543))
-    approx.deepEqual(asec(complex('1+i')), complex(1.1185178796437059, 0.530637530952517826))
-    approx.deepEqual(asec(complex('1')), complex(0, 0))
-    approx.deepEqual(asec(complex('0.5')), complex(0, 1.3169578969248))
-    approx.deepEqual(asec(complex('0')), complex(0, Infinity))
-    approx.deepEqual(asec(complex('-0.5')), complex(pi, -1.3169578969248))
+    approxDeepEqual(asec(complex('2+3i')), complex(1.42041072246703, 0.23133469857397))
+    approxDeepEqual(asec(complex('2-3i')), complex(1.42041072246703, -0.23133469857397))
+    approxDeepEqual(asec(complex('-2+3i')), complex(1.7211819311228, 0.2313346985739733))
+    approxDeepEqual(asec(complex('-2-3i')), complex(1.7211819311228, -0.2313346985739733))
+    approxDeepEqual(asec(complex('i')), complex(1.570796326794897, 0.881373587019543))
+    approxDeepEqual(asec(complex('1+i')), complex(1.1185178796437059, 0.530637530952517826))
+    approxDeepEqual(asec(complex('1')), complex(0, 0))
+    approxDeepEqual(asec(complex('0.5')), complex(0, 1.3169578969248))
+    approxDeepEqual(asec(complex('0')), complex(0, Infinity))
+    approxDeepEqual(asec(complex('-0.5')), complex(pi, -1.3169578969248))
   })
 
   it('should throw an error if called with a unit', function () {
@@ -107,8 +107,8 @@ describe('asec', function () {
     assert.throws(() => asec([1, 2, 3]), TypeError)
     assert.throws(() => asec(matrix([1, 2, 3])), TypeError)
     const asec123 = [0, pi / 3, 1.23095941734077468]
-    approx.deepEqual(math.map([1, 2, 3], asec), asec123)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), asec), matrix(asec123))
+    approxDeepEqual(math.map([1, 2, 3], asec), asec123)
+    approxDeepEqual(math.map(matrix([1, 2, 3]), asec), matrix(asec123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

@@ -42,6 +42,10 @@ export function isBigNumber (x) {
   return false
 }
 
+export function isBigInt (x) {
+  return typeof x === 'bigint'
+}
+
 export function isComplex (x) {
   return (x && typeof x === 'object' && Object.getPrototypeOf(x).isComplex === true) || false
 }

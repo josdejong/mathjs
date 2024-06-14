@@ -18,7 +18,7 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      *     new ConstantNode(2.3)
      *     new ConstantNode('hello')
      *
-     * @param {*} value    Value can be any type (number, BigNumber, string, ...)
+     * @param {*} value    Value can be any type (number, BigNumber, bigint, string, ...)
      * @constructor ConstantNode
      * @extends {Node}
      */
@@ -97,6 +97,7 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
 
       switch (typeOf(this.value)) {
         case 'number':
+        case 'bigint':
         case 'BigNumber':
         case 'Fraction':
           return '<span class="math-number">' + value + '</span>'
@@ -162,6 +163,10 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
           }
 
           return value
+        }
+
+        case 'bigint': {
+          return value.toString()
         }
 
         case 'Fraction':
