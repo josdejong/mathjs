@@ -2,7 +2,7 @@ import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isStri
 import { isInteger } from '../../utils/number.js'
 import { format } from '../../utils/string.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
-import { arraySize, getArrayDataType, processSizesWildcard, unsqueeze, validateIndex } from '../../utils/array.js'
+import { arraySize, broadcastTo, getArrayDataType, processSizesWildcard, unsqueeze, validateIndex } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { maxArgumentCount } from '../../utils/function.js'
@@ -807,6 +807,22 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // The value indices are inserted out of order, but apparently that's... still OK?
 
     return m
+  }
+
+  /**
+ * Broadcasts the sparse matrix to a new size.
+ * If the current size is the same as the new size, the current matrix is returned.
+ * Otherwise, a new matrix is created with the new size and the values of the current matrix broadcasted to it.
+ *
+ * @param {Array<number>} size - The new size for the matrix.
+ * @returns {SparseMatrix} A new SparseMatrix instance with the specified size.
+ */
+  SparseMatrix.prototype.broadcastTo = function (size) {
+    if (deepStrictEqual(this._size, size)) {
+      return this
+    } else {
+      return this.create(broadcastTo(this.toArray(), size))
+    }
   }
 
   /**

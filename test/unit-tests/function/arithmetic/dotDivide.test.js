@@ -171,8 +171,8 @@ describe('dotDivide', function () {
       assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [0, 4 / 8]]))
     })
 
-    it('should throw an error when dividing element-wise with differing size', function () {
-      assert.throws(function () { dotDivide(math.sparse([[1, 2], [3, 4]]), math.sparse([[1]])) })
+    it('should throw an error when dividing element-wise with differing size is not broadcastable', function () {
+      assert.throws(function () { dotDivide(math.sparse([[1, 2], [3, 4]]), math.sparse([1, 2, 3])) })
     })
   })
 
