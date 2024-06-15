@@ -526,7 +526,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     if (deepStrictEqual(this._size, size)) {
       return this
     } else {
-      return this.create(broadcastTo(this.toArray(), size))
+      return this.create(broadcastTo(this.toArray(), size), this._datatype)
     }
   }
 

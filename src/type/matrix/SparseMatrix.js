@@ -821,7 +821,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     if (deepStrictEqual(this._size, size)) {
       return this
     } else {
-      return this.create(broadcastTo(this.toArray(), size))
+      return this.create(broadcastTo(this.toArray(), size), this._datatype)
     }
   }
 
