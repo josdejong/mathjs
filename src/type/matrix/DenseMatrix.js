@@ -515,22 +515,6 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   }
 
   /**
- * Broadcasts the dense matrix to a new size.
- * If the current size is the same as the new size, the current matrix is returned.
- * Otherwise, a new matrix is created with the new size and the values of the current matrix broadcasted to it.
- *
- * @param {Array<number>} size - The new size for the matrix.
- * @returns {DenseMatrix} A new SparseMatrix instance with the specified size.
- */
-  DenseMatrix.prototype.broadcastTo = function (size) {
-    if (deepStrictEqual(this._size, size)) {
-      return this
-    } else {
-      return this.create(broadcastTo(this.toArray(), size), this._datatype)
-    }
-  }
-
-  /**
    * Create a clone of the matrix
    * @memberof DenseMatrix
    * @return {DenseMatrix} clone

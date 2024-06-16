@@ -1,9 +1,7 @@
 import assert from 'assert'
 import math from '../../../../../src/defaultInstance.js'
-import { createBroadcast } from '../../../../../src/type/matrix/utils/broadcast.js'
-const concat = math.concat
+import { broadcast } from '../../../../../src/type/matrix/utils/broadcast.js'
 const matrix = math.matrix
-const broadcast = createBroadcast({ concat })
 
 describe('broadcast', function () {
   it('should return matrices as such if they are the same size', function () {
